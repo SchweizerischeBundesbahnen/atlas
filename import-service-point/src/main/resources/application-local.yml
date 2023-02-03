@@ -14,8 +14,8 @@ spring:
     name: import-service-point
   servlet:
     multipart:
-      max-file-size: 100MB
-      max-request-size: 100MB
+      max-file-size: 300MB
+      max-request-size: 300MB
   sleuth:
     baggage:
       remote-fields: Correlation-Id

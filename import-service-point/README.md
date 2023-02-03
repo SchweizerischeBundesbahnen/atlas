@@ -99,13 +99,17 @@ Job to scale the import process.
 
 The import ServicePoint Job is responsible to:
 
-* download, parse and groupy by didok number the **DINSTSTELLEN_V3_IMPORT_xxx.csv** from the Amazon S3 Bucket
+* download, parse and groupy by didok number the **DINSTSTELLEN_V3_IMPORT_{date_time}.csv** from the Amazon S3 Bucket
 * send over HTTP chunks with lists of ServicePoints grouped by didok number (multithreading)
 * a retry system is configured on the step level when certain exception are thrown
   (see [StepUtils.java](src/main/java/ch/sbb/importservice/utils/StepUtils.java))
 * the [RecoveryJobsRunner.java](src/main/java/ch/sbb/importservice/recovery/RecoveryJobsRunner.java) checks at startup if
   there are jobs not completed. When an icompleted job is found, it will be restarted
 * After a job has been completed (successfully or unsuccessfully) an email notification is sent to TechSupport-ATLAS@sbb.ch
+
+#### Import Service API calls
+
+See [ImportServicePointBatchControllerApiV1.java](src/main/java/ch/sbb/importservice/contoller/ImportServicePointBatchControllerApiV1.java)
 
 ### Tech Stack
 

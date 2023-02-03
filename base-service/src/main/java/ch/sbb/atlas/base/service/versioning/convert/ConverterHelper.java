@@ -41,15 +41,17 @@ public final class ConverterHelper {
     }
 
     editedProperties.removeAll(propertiesEqualsBetweenCurrentAndEdited);
+    //standard case
     if (!deletePropertyWhenNull) {
       List<Property> propertiesNotEmpty = editedProperties.stream()
           .filter(Property::isNotEmpty)
           .collect(Collectors.toList());
       return buildEntity(currentVersion.getId(), propertiesNotEmpty);
     } else {
-      // TODO: remove hardcoded version property key
-      List<Property> version = editedProperties.stream().filter(property -> !property.getKey().equals("version")).toList();
-      return buildEntity(currentVersion.getId(), version);
+      //import case
+      List<Property> propertiesWithoutDoNotOverride = editedProperties.stream().filter(property -> !property.isDoNotOverride())
+          .toList();
+      return buildEntity(currentVersion.getId(), propertiesWithoutDoNotOverride);
     }
   }
 
@@ -104,7 +106,7 @@ public final class ConverterHelper {
       Field declaredField = ReflectionHelper.getFieldAccessible(versionClass,
           property.getFieldName());
       Object propertyValue = declaredField.get(version);
-      return buildProperty(property.getFieldName(), propertyValue, property.isIgnoreDiff());
+      return buildProperty(property.getFieldName(), propertyValue, property.isIgnoreDiff(), property.isDoNotOverride());
     } catch (NoSuchFieldException | IllegalAccessException e) {
       log.error("Error during parse field {}", e.getMessage());
       throw new VersioningException("Error during parse field " + e.getMessage(), e);
@@ -126,7 +128,7 @@ public final class ConverterHelper {
           Field relationDeclaredField = ReflectionHelper.getFieldAccessible(
               oneToOneObject.getClass(), relation);
           Object relationField = relationDeclaredField.get(oneToOneObject);
-          relationProperties.add(buildProperty(relation, relationField, property.isIgnoreDiff()));
+          relationProperties.add(buildProperty(relation, relationField, property.isIgnoreDiff(), property.isDoNotOverride()));
         }
         Entity entityOneToOne = entityRelationBuilder.properties(relationProperties).build();
         return propertyBuilder.oneToOne(entityOneToOne).build();
@@ -159,7 +161,7 @@ public final class ConverterHelper {
             Field relationDeclaredField = ReflectionHelper.getFieldAccessible(
                 oneToManyRelation.getClass(), relation);
             Object relationField = relationDeclaredField.get(oneToManyRelation);
-            relationProperties.add(buildProperty(relation, relationField, property.isIgnoreDiff()));
+            relationProperties.add(buildProperty(relation, relationField, property.isIgnoreDiff(), property.isDoNotOverride()));
           }
           entityRelations.add(entityRelationBuilder.properties(relationProperties).build());
         }
@@ -179,9 +181,10 @@ public final class ConverterHelper {
   }
 
   private static Property buildProperty(String fieldName, Object propertyValue,
-      boolean ignoreDiff) {
+      boolean ignoreDiff, boolean isDoNotOverride) {
     return Property.builder()
         .key(fieldName)
+        .doNotOverride(isDoNotOverride)
         .ignoreDiff(ignoreDiff)
         .value(propertyValue)
         .build();
