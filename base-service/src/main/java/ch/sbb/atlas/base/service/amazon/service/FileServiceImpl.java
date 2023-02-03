@@ -17,6 +17,7 @@ public class FileServiceImpl implements FileService {
 
   public static final String ZIP = ".zip";
   private static final String DOCKER_FILE_DIRECTORY = "/usr/local/atlas/tmp/";
+
   @Value("${spring.profiles.active:local}")
   @Setter
   private String activeProfile;
@@ -45,8 +46,9 @@ public class FileServiceImpl implements FileService {
 
   @Override
   public String getDir() {
-    String pathnameExportDir = "." + File.separator + "export" + File.separator;
+    log.info("Getting Directory for activeProfile={}", activeProfile);
     if ("local".equals(activeProfile) || activeProfile == null) {
+      String pathnameExportDir = "." + File.separator + "export" + File.separator;
       File dir = new File(pathnameExportDir);
       if (!dir.exists()) {
         dir.mkdirs();
