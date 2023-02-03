@@ -9,12 +9,12 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @EnableFeignClients
 @SpringBootApplication
-public class ImportServiceApplication {
+public class ImportServicePointApplication {
 
   public static void main(String[] args) {
     TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("Europe/Zurich")));
     KafkaTruststorePreparation.setupTruststore();
-    SpringApplication.run(ImportServiceApplication.class, args);
+    SpringApplication.run(ImportServicePointApplication.class, args);
   }
 
 }
