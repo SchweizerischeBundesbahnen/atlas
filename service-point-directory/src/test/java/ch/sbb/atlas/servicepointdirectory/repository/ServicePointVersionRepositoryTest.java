@@ -162,7 +162,6 @@ public class ServicePointVersionRepositoryTest {
         .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2020, 1, 1))
         .validTo(LocalDate.of(2020, 12, 31))
-        .operatingPointType(OperatingPointType.STOP_POINT)
         .meansOfTransport(Set.of(MeanOfTransport.BUS))
         .build();
 
@@ -175,8 +174,6 @@ public class ServicePointVersionRepositoryTest {
     assertThat(savedVersion.getCategories()).isEmpty();
 
     assertThat(savedVersion.isOperatingPoint()).isTrue();
-    assertThat(savedVersion.getOperatingPointType().hasTimetable()).isTrue();
-    assertThat(savedVersion.getOperatingPointType().getDesignationDe()).isEqualTo("Haltestelle");
   }
 
   @Test
@@ -221,7 +218,6 @@ public class ServicePointVersionRepositoryTest {
         .statusDidok3(ServicePointStatus.from(1))
         .businessOrganisation("somesboid")
         .status(Status.VALIDATED)
-        .operatingPointType(OperatingPointType.STOP_POINT)
         .meansOfTransport(Set.of(MeanOfTransport.BUS))
         .stopPointType(StopPointType.ORDERLY)
         .validFrom(LocalDate.of(2020, 1, 1))
@@ -255,7 +251,6 @@ public class ServicePointVersionRepositoryTest {
         .statusDidok3(ServicePointStatus.from(1))
         .businessOrganisation("somesboid")
         .status(Status.VALIDATED)
-        .operatingPointType(OperatingPointType.STOP_POINT)
         .meansOfTransport(Set.of(MeanOfTransport.BUS))
         .stopPointType(StopPointType.ORDERLY)
         .validFrom(LocalDate.of(2020, 1, 1))
@@ -287,7 +282,6 @@ public class ServicePointVersionRepositoryTest {
         .statusDidok3(ServicePointStatus.from(1))
         .businessOrganisation("somesboid")
         .status(Status.VALIDATED)
-        .operatingPointType(OperatingPointType.STOP_POINT)
         .meansOfTransport(Set.of(MeanOfTransport.BUS))
         .stopPointType(StopPointType.ORDERLY)
         .validFrom(LocalDate.of(2020, 1, 1))
