@@ -7,7 +7,10 @@ import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeoloca
 import ch.sbb.atlas.servicepointdirectory.enumeration.Category;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
 import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
+import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointTechnicalTimetableType;
+import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointTrafficPointType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointType;
+import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointWithoutTimetableType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.ServicePointStatus;
 import ch.sbb.atlas.servicepointdirectory.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.SwissCanton;
@@ -18,18 +21,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import org.apache.commons.lang3.ObjectUtils;
 
 public class ServicePointCsvToEntityMapper implements
     Function<ServicePointCsvModel, ServicePointVersion> {
-
-  private static OperatingPointType getOperatingPointType(ServicePointCsvModel servicePointCsvModel) {
-    return OperatingPointType.from(
-        ObjectUtils.firstNonNull(servicePointCsvModel.getBpBetriebspunktArtId(),
-            servicePointCsvModel.getBpvbBetriebspunktArtId(),
-            servicePointCsvModel.getBpofBetriebspunktArtId(),
-            servicePointCsvModel.getBptfBetriebspunktArtId()));
-  }
 
   private static Set<Category> getCategories(ServicePointCsvModel servicePointCsvModel) {
     return Arrays.stream(Objects.nonNull(servicePointCsvModel.getDsKategorienIds())
@@ -105,7 +99,10 @@ public class ServicePointCsvToEntityMapper implements
         .categories(getCategories(servicePointCsvModel))
         .meansOfTransport(meansOfTransport)
         .stopPointType(StopPointType.from(servicePointCsvModel.getHTypId()))
-        .operatingPointType(getOperatingPointType(servicePointCsvModel))
+        .operatingPointType(OperatingPointType.from(servicePointCsvModel.getBpBetriebspunktArtId()))
+        .operatingPointWithoutTimetableType(OperatingPointWithoutTimetableType.from(servicePointCsvModel.getBpofBetriebspunktArtId()))
+        .operatingPointTechnicalTimetableType(OperatingPointTechnicalTimetableType.from(servicePointCsvModel.getBptfBetriebspunktArtId()))
+        .operatingPointTrafficPointType(OperatingPointTrafficPointType.from(servicePointCsvModel.getBpvbBetriebspunktArtId()))
         .freightServicePoint(servicePointCsvModel.getIsBedienpunkt())
         .operatingPoint(servicePointCsvModel.getIsBetriebspunkt())
         .operatingPointWithTimetable(servicePointCsvModel.getIsFahrplan())

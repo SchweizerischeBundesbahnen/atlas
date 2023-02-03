@@ -9,6 +9,7 @@ import ch.sbb.atlas.servicepointdirectory.api.ServicePointRequestParams;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointVersionModel;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberNotFoundException;
+import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
@@ -37,7 +38,7 @@ public class ServicePointController implements ServicePointApiV1 {
         .build();
     Page<ServicePointVersion> servicePointVersions = servicePointService.findAll(searchRestrictions);
     return Container.<ServicePointVersionModel>builder()
-        .objects(servicePointVersions.stream().map(ServicePointVersionModel::fromEntity).toList())
+        .objects(servicePointVersions.stream().map(ServicePointVersionMapper::fromEntity).toList())
         .totalCount(servicePointVersions.getTotalElements())
         .build();
   }
@@ -47,7 +48,7 @@ public class ServicePointController implements ServicePointApiV1 {
     ServicePointNumber number = ServicePointNumber.of(servicePointNumber);
     List<ServicePointVersionModel> servicePointVersions = servicePointService.findServicePoint(
             number).stream()
-        .map(ServicePointVersionModel::fromEntity).toList();
+        .map(ServicePointVersionMapper::fromEntity).toList();
     if (servicePointVersions.isEmpty()) {
       throw new ServicePointNumberNotFoundException(number);
     }
@@ -56,7 +57,7 @@ public class ServicePointController implements ServicePointApiV1 {
 
   @Override
   public ServicePointVersionModel getServicePointVersion(Long id) {
-    return servicePointService.findById(id).map(ServicePointVersionModel::fromEntity)
+    return servicePointService.findById(id).map(ServicePointVersionMapper::fromEntity)
         .orElseThrow(() -> new IdNotFoundException(id));
   }
 

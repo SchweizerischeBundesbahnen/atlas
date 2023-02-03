@@ -1,13 +1,16 @@
 package ch.sbb.atlas.servicepointdirectory.api;
 
+import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
 import ch.sbb.atlas.base.service.model.api.BaseVersionModel;
 import ch.sbb.atlas.base.service.model.validation.DatesValidator;
-import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Category;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
 import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
+import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointTechnicalTimetableType;
+import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointTrafficPointType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointType;
+import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointWithoutTimetableType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.ServicePointStatus;
 import ch.sbb.atlas.servicepointdirectory.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
@@ -95,6 +98,24 @@ public class ServicePointVersionModel extends BaseVersionModel implements DatesV
   @Schema(accessMode = AccessMode.READ_ONLY)
   private CodeAndDesignation operatingPointTypeInformation;
 
+  @Schema(description = "OperatingPointWithoutTimetableType")
+  private OperatingPointWithoutTimetableType operatingPointWithoutTimetableType;
+
+  @Schema(accessMode = AccessMode.READ_ONLY)
+  private CodeAndDesignation operatingPointWithoutTimetableTypeInformation;
+
+  @Schema(description = "OperatingPointTechnicalTimetableType")
+  private OperatingPointTechnicalTimetableType operatingPointTechnicalTimetableType;
+
+  @Schema(accessMode = AccessMode.READ_ONLY)
+  private CodeAndDesignation operatingPointTechnicalTimetableTypeInformation;
+
+  @Schema(description = "OperatingPointTrafficPointType")
+  private OperatingPointTrafficPointType operatingPointTrafficPointType;
+
+  @Schema(accessMode = AccessMode.READ_ONLY)
+  private CodeAndDesignation operatingPointTrafficPointTypeInformation;
+
   @Schema(description = "ServicePoint is OperatingPointRouteNetwork", example = "false")
   private boolean operatingPointRouteNetwork;
 
@@ -118,47 +139,14 @@ public class ServicePointVersionModel extends BaseVersionModel implements DatesV
   private String fotComment;
 
   private ServicePointGeolocationModel servicePointGeolocation;
+
+  @Schema(description = "Status", accessMode = AccessMode.READ_ONLY)
+  private Status status;
+
   @NotNull
   private LocalDate validFrom;
   @NotNull
   private LocalDate validTo;
-
-  public static ServicePointVersionModel fromEntity(ServicePointVersion servicePointVersion) {
-    return ServicePointVersionModel.builder()
-        .id(servicePointVersion.getId())
-        .number(servicePointVersion.getNumber())
-        .sloid(servicePointVersion.getSloid())
-        .designationLong(servicePointVersion.getDesignationLong())
-        .designationOfficial(servicePointVersion.getDesignationOfficial())
-        .abbreviation(servicePointVersion.getAbbreviation())
-        .statusDidok3(servicePointVersion.getStatusDidok3())
-        .statusDidok3Information(CodeAndDesignation.fromEnum(servicePointVersion.getStatusDidok3()))
-        .operatingPoint(servicePointVersion.isOperatingPoint())
-        .operatingPointWithTimetable(servicePointVersion.isOperatingPointWithTimetable())
-        .freightServicePoint(servicePointVersion.isFreightServicePoint())
-        .sortCodeOfDestinationStation(servicePointVersion.getSortCodeOfDestinationStation())
-        .businessOrganisation(servicePointVersion.getBusinessOrganisation())
-        .categories(new ArrayList<>(servicePointVersion.getCategories()))
-        .categoriesInformation(servicePointVersion.getCategories().stream().map(CodeAndDesignation::fromEnum).toList())
-        .operatingPointType(servicePointVersion.getOperatingPointType())
-        .operatingPointTypeInformation(CodeAndDesignation.fromEnum(servicePointVersion.getOperatingPointType()))
-        .operatingPointRouteNetwork(servicePointVersion.isOperatingPointRouteNetwork())
-        .operatingPointKilometerMaster(servicePointVersion.getOperatingPointKilometerMaster())
-        .meansOfTransport(new ArrayList<>(servicePointVersion.getMeansOfTransport()))
-        .meansOfTransportInformation(
-            servicePointVersion.getMeansOfTransport().stream().map(CodeAndDesignation::fromEnum).toList())
-        .stopPointType(servicePointVersion.getStopPointType())
-        .stopPointTypeInformation(CodeAndDesignation.fromEnum(servicePointVersion.getStopPointType()))
-        .fotComment(servicePointVersion.getComment())
-        .servicePointGeolocation(ServicePointGeolocationModel.fromEntity(servicePointVersion.getServicePointGeolocation()))
-        .validFrom(servicePointVersion.getValidFrom())
-        .validTo(servicePointVersion.getValidTo())
-        .creationDate(servicePointVersion.getCreationDate())
-        .creator(servicePointVersion.getCreator())
-        .editionDate(servicePointVersion.getEditionDate())
-        .editor(servicePointVersion.getEditor())
-        .build();
-  }
 
   @JsonInclude
   @Schema(description = "ServicePoint has a Geolocation")
@@ -193,7 +181,7 @@ public class ServicePointVersionModel extends BaseVersionModel implements DatesV
   @JsonInclude
   @Schema(description = "ServicePoint is FareStop", example = "false")
   public boolean isFareStop() {
-    return operatingPointType == OperatingPointType.TARIFF_POINT;
+    return operatingPointTrafficPointType == OperatingPointTrafficPointType.TARIFF_POINT;
   }
 
   @JsonInclude
@@ -205,7 +193,7 @@ public class ServicePointVersionModel extends BaseVersionModel implements DatesV
   @JsonInclude
   @Schema(description = "ServicePoint is BorderPoint", example = "false")
   public boolean isBorderPoint() {
-    return operatingPointType == OperatingPointType.COUNTRY_BORDER;
+    return operatingPointTechnicalTimetableType == OperatingPointTechnicalTimetableType.COUNTRY_BORDER;
   }
 
   @JsonInclude
