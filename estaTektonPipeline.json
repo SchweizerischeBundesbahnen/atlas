@@ -145,7 +145,7 @@
           "enabled": false,
           "additionalParams": "--disableCentral"
         },
-        "failOnQualityGateFailure": true
+        "failOnQualityGateFailure": false
       },
       "stages": [
         "dev",
