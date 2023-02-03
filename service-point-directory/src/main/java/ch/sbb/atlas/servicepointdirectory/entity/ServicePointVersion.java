@@ -33,6 +33,7 @@ import ch.sbb.atlas.user.administration.security.BusinessOrganisationAssociated;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Stream;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -254,6 +255,18 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
   @AssertTrue(message = "Country needs to be the same as in ServicePointNumber")
   public boolean isValidCountry() {
     return getCountry() == getNumber().getCountry();
+  }
+
+  @AssertTrue(message = "At most one of OperatingPointWithoutTimetableType, OperatingPointTechnicalTimetableType, "
+      + "OperatingPointTrafficPointType may be set")
+  public boolean isValidType() {
+    long mutualTypes = Stream.of(
+        getOperatingPointWithoutTimetableType() != null,
+        getOperatingPointTechnicalTimetableType() != null,
+        getOperatingPointTrafficPointType() != null)
+        .filter(i -> i)
+        .count();
+    return mutualTypes <= 1;
   }
 
   public Set<MeanOfTransport> getMeansOfTransport() {
