@@ -22,7 +22,10 @@ import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeoloca
 import ch.sbb.atlas.servicepointdirectory.enumeration.Category;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
 import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
+import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointTechnicalTimetableType;
+import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointTrafficPointType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointType;
+import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointWithoutTimetableType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.ServicePointStatus;
 import ch.sbb.atlas.servicepointdirectory.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
@@ -137,6 +140,18 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
   @AtlasVersionableProperty
   private OperatingPointType operatingPointType;
 
+  @Enumerated(EnumType.STRING)
+  @AtlasVersionableProperty
+  private OperatingPointWithoutTimetableType operatingPointWithoutTimetableType;
+
+  @Enumerated(EnumType.STRING)
+  @AtlasVersionableProperty
+  private OperatingPointTechnicalTimetableType operatingPointTechnicalTimetableType;
+
+  @Enumerated(EnumType.STRING)
+  @AtlasVersionableProperty
+  private OperatingPointTrafficPointType operatingPointTrafficPointType;
+
   @AtlasVersionableProperty
   private boolean operatingPointRouteNetwork;
 
@@ -207,7 +222,7 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
 
   @ToString.Include
   public boolean isFareStop() {
-    return operatingPointType == OperatingPointType.TARIFF_POINT;
+    return operatingPointTrafficPointType == OperatingPointTrafficPointType.TARIFF_POINT;
   }
 
   @ToString.Include
@@ -217,7 +232,7 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
 
   @ToString.Include
   public boolean isBorderPoint() {
-    return operatingPointType == OperatingPointType.COUNTRY_BORDER;
+    return operatingPointTechnicalTimetableType == OperatingPointTechnicalTimetableType.COUNTRY_BORDER;
   }
 
   @ToString.Include
