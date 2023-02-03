@@ -20,6 +20,7 @@ import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 import javax.validation.Valid;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
@@ -211,6 +212,18 @@ public class ServicePointVersionModel extends BaseVersionModel implements DatesV
   public boolean isValidFreightServicePoint() {
     return !(getNumber().getCountry() == Country.SWITZERLAND && freightServicePoint && !getValidFrom().isBefore(LocalDate.now()))
         || StringUtils.isNotBlank(sortCodeOfDestinationStation);
+  }
+
+  @AssertTrue(message = "At most one of OperatingPointWithoutTimetableType, OperatingPointTechnicalTimetableType, "
+      + "OperatingPointTrafficPointType may be set")
+  public boolean isValidType() {
+    long mutualTypes = Stream.of(
+            getOperatingPointWithoutTimetableType() != null,
+            getOperatingPointTechnicalTimetableType() != null,
+            getOperatingPointTrafficPointType() != null)
+        .filter(i -> i)
+        .count();
+    return mutualTypes <= 1;
   }
 
   public List<MeanOfTransport> getMeansOfTransport() {
