@@ -59,7 +59,8 @@ public class SublineVersion extends BaseVersion implements Versionable,
   @AtlasVersionableProperty
   private String mainlineSlnid;
 
-  @GeneratorType(type = SublineSlnidGenerator.class, when = GenerationTime.INSERT)
+  @SublineSlnidGeneratorV2
+//  @GeneratorType(type = SublineSlnidGenerator.class, when = GenerationTime.INSERT)
   @Column(updatable = false)
   @AtlasVersionableProperty
   private String slnid;
