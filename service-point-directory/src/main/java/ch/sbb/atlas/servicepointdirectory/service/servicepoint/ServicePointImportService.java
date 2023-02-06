@@ -41,10 +41,6 @@ public class ServicePointImportService {
   ) {
     List<ServicePointItemImportResult> importResults = new ArrayList<>();
     for (ServicePointCsvModelContainer container : servicePointCsvModelContainers) {
-      log.info("Import Service Point with didokCode {} and {} versions",
-          container.getDidokCode(),
-          container.getServicePointCsvModelList().size()
-      );
       List<ServicePointVersion> servicePointVersions = container.getServicePointCsvModelList()
           .stream()
           .map(new ServicePointCsvToEntityMapper())
