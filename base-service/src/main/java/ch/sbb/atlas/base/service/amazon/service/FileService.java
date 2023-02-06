@@ -4,7 +4,9 @@ import java.io.File;
 
 public interface FileService {
 
-    File zipFile(File file);
+  File zipFile(File file);
 
-    String getDir();
+  String getDir();
+
+  boolean clearDir();
 }
