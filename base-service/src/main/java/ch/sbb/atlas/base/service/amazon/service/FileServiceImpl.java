@@ -4,6 +4,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import lombok.Setter;
@@ -56,6 +60,16 @@ public class FileServiceImpl implements FileService {
       return pathnameExportDir;
     }
     return DOCKER_FILE_DIRECTORY;
+  }
+
+  @Override
+  public boolean clearDir() {
+    Optional<File[]> filesInDir = Optional.ofNullable(new File(getDir()).listFiles());
+    if (filesInDir.isEmpty()) {
+      return true;
+    }
+    Set<Boolean> deletionResults = Arrays.stream(filesInDir.get()).map(File::delete).collect(Collectors.toSet());
+    return deletionResults.size() == 1 && deletionResults.contains(true);
   }
 
 }
