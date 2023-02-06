@@ -55,7 +55,6 @@ public class RecoveryJobsRunner implements ApplicationRunner {
     log.info("Checking jobs to recover...");
     recoverJob(IMPORT_SERVICE_POINT_CSV_JOB_NAME);
     recoverJob(IMPORT_LOADING_POINT_CSV_JOB_NAME);
-
   }
 
   void recoverJob(String jobName)
