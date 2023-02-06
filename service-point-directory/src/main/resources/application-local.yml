@@ -77,7 +77,13 @@ info:
 
 logging:
   level:
-    root: ERROR
+    root: INFO
     com:
       azure:
         identity: WARN
+    ch:
+      sbb:
+        atlas:
+          base:
+            service:
+              versioning: ERROR
