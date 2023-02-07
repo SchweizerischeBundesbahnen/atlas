@@ -10,7 +10,10 @@ import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeoloca
 import ch.sbb.atlas.servicepointdirectory.enumeration.Category;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
 import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
+import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointTechnicalTimetableType;
+import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointTrafficPointType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointType;
+import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointWithoutTimetableType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.ServicePointStatus;
 import ch.sbb.atlas.servicepointdirectory.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.SwissCanton;
@@ -248,7 +251,7 @@ public class ServicePointCsvToEntityMapperTest {
         .meansOfTransport(Collections.emptySet())
         .operatingPoint(true)
         .operatingPointWithTimetable(false)
-        .operatingPointType(OperatingPointType.ROUTE_SPEED_CHANGE)
+        .operatingPointWithoutTimetableType(OperatingPointWithoutTimetableType.ROUTE_SPEED_CHANGE)
         .creationDate(LocalDateTime.of(LocalDate.of(2021, 12, 13), LocalTime.of(15, 21, 36)))
         .creator("u150522")
         .editionDate(LocalDateTime.of(LocalDate.of(2021, 12, 13), LocalTime.of(15, 21, 55)))
@@ -330,7 +333,7 @@ public class ServicePointCsvToEntityMapperTest {
         .meansOfTransport(Collections.emptySet())
         .operatingPoint(true)
         .operatingPointWithTimetable(true)
-        .operatingPointType(OperatingPointType.LANGE_CHANGE)
+        .operatingPointTechnicalTimetableType(OperatingPointTechnicalTimetableType.LANGE_CHANGE)
         .creationDate(LocalDateTime.of(LocalDate.of(2018, 1, 31), LocalTime.of(13, 2, 54)))
         .creator("u150522")
         .editionDate(LocalDateTime.of(LocalDate.of(2022, 2, 24), LocalTime.of(21, 48, 25)))
@@ -494,7 +497,7 @@ public class ServicePointCsvToEntityMapperTest {
         .validFrom(LocalDate.of(2017, 11, 2))
         .validTo(LocalDate.of(2099, 12, 31))
         .categories(new HashSet<>())
-        .operatingPointType(OperatingPointType.COUNTRY_BORDER)
+        .operatingPointTechnicalTimetableType(OperatingPointTechnicalTimetableType.COUNTRY_BORDER)
         .operatingPoint(true)
         .operatingPointWithTimetable(true)
         .creationDate(LocalDateTime.of(LocalDate.of(2017, 11, 9), LocalTime.of(11, 53, 5)))
@@ -577,7 +580,7 @@ public class ServicePointCsvToEntityMapperTest {
         .validFrom(LocalDate.of(2020, 12, 13))
         .validTo(LocalDate.of(2099, 12, 31))
         .categories(new HashSet<>())
-        .operatingPointType(OperatingPointType.TARIFF_POINT)
+        .operatingPointTrafficPointType(OperatingPointTrafficPointType.TARIFF_POINT)
         .creationDate(LocalDateTime.of(LocalDate.of(2017, 11, 9), LocalTime.of(11, 53, 5)))
         .creator("GSU_DIDOK")
         .editionDate(LocalDateTime.of(LocalDate.of(2020, 8, 13), LocalTime.of(14, 20, 18)))
@@ -762,7 +765,7 @@ public class ServicePointCsvToEntityMapperTest {
         .categories(new HashSet<>())
         .operatingPoint(true)
         .operatingPointWithTimetable(true)
-        .operatingPointType(OperatingPointType.ASSIGNED_OPERATING_POINT)
+        .operatingPointTechnicalTimetableType(OperatingPointTechnicalTimetableType.ASSIGNED_OPERATING_POINT)
         .operatingPointKilometerMaster(ServicePointNumber.of(85050047))
         .operatingPointRouteNetwork(false)
         .creationDate(LocalDateTime.of(LocalDate.of(2019, 12, 10), LocalTime.of(13, 33, 34)))
@@ -855,7 +858,7 @@ public class ServicePointCsvToEntityMapperTest {
         .categories(Set.of(Category.MAINTENANCE_POINT, Category.MIGRATION_MOBILE_EQUIPE))
         .operatingPoint(true)
         .operatingPointWithTimetable(true)
-        .operatingPointType(OperatingPointType.UNKNOWN)
+        .operatingPointTechnicalTimetableType(OperatingPointTechnicalTimetableType.UNKNOWN)
         .creationDate(LocalDateTime.of(LocalDate.of(2017, 11, 10), LocalTime.of(14, 45, 12)))
         .creator("fs45117")
         .editionDate(LocalDateTime.of(LocalDate.of(2018, 3, 6), LocalTime.of(8, 15, 7)))
@@ -980,5 +983,70 @@ public class ServicePointCsvToEntityMapperTest {
         .getServicePointGeolocation())
         .usingRecursiveComparison()
         .ignoringFields("servicePointVersion").isEqualTo(expectedServicePointGeolocation);
+  }
+
+  @Test
+  void shouldImportInventarpunktNotSpecific() throws IOException {
+    // given
+    String csvLine = csvHeader + """
+        30;85;CH;30;85000307;2000-02-07;2007-02-26;3;Basel EuroAirport P;;BSEU;1;1;0;0;0;0;1;;;;;;;;;{3fabbf5d-cac0-43c9-a872-585157e8e984};100001;{1474a26d-942c-46d1-baa4-2a9f12cf5ac6};2018-02-19 13:44:02;2018-02-19 13:44:02;Inventarpunkt;Point d'inventaire;punto di inventario;Inventarpunkt;30;;;;;;0;0;;Nicht spezifiziert;Non spécifié;Non spezificato;Nicht spezifiziert;37;0;;;;;;;;;;;;;;;;;;;;;;;;;;;2000-02-07;2099-12-31;;11;SBB;CFF;FFS;SBB;Schweizerische Bundesbahnen SBB;Chemins de fer fédéraux suisses CFF;Ferrovie federali svizzere FFS;Schweizerische Bundesbahnen SBB;1|10|14;Unterhaltstelle|Hostname|Migr. (alt Uhst Diverse);Point d'entretien|Nom d'hôte|Migr. (alt Uhst Diverse);Punto di manutenzione|Hostname|Migr. (alt Uhst Diverse);Unterhaltstelle|Hostname|Migr. (alt Uhst Diverse);;;;;ch:1:sloid:30;;;;;;;;;1;;;;;;;;;;;;;;;;;;;85000307;;SBB;;#0001;Schweizerische Bundesbahnen SBB;CHE-102.909.703;fs45117;fs45117;WGS84WEB
+        """;
+
+    MappingIterator<ServicePointCsvModel> mappingIterator = DidokCsvMapper.CSV_MAPPER.readerFor(
+        ServicePointCsvModel.class).with(DidokCsvMapper.CSV_SCHEMA).readValues(csvLine);
+    ServicePointCsvModel servicePointCsvModel = mappingIterator.next();
+
+    // when
+    ServicePointVersion servicePointVersion = servicePointCsvToEntityMapper.apply(
+        servicePointCsvModel);
+
+    ServicePointVersion expectedServicePoint = ServicePointVersion
+        .builder()
+        .number(ServicePointNumber.of(85000307))
+        .sloid("ch:1:sloid:30")
+        .numberShort(30)
+        .country(Country.SWITZERLAND)
+        .designationLong(null)
+        .designationOfficial("Basel EuroAirport P")
+        .abbreviation("BSEU")
+        .meansOfTransport(Collections.emptySet())
+        .statusDidok3(ServicePointStatus.IN_OPERATION)
+        .businessOrganisation("ch:1:sboid:100001")
+        .comment(null)
+        .status(Status.VALIDATED)
+        .operatingPoint(true)
+        .operatingPointWithTimetable(true)
+        .validFrom(LocalDate.of(2000, 2, 7))
+        .validTo(LocalDate.of(2007, 2, 26))
+        .categories(Set.of(Category.MIGRATION_DIVERSE, Category.HOSTNAME, Category.MAINTENANCE_POINT))
+        .operatingPointType(OperatingPointType.INVENTORY_POINT)
+        .operatingPointTechnicalTimetableType(OperatingPointTechnicalTimetableType.UNKNOWN)
+        .creationDate(LocalDateTime.of(LocalDate.of(2018, 2, 19), LocalTime.of(13, 44, 2)))
+        .creator("fs45117")
+        .editionDate(LocalDateTime.of(LocalDate.of(2018, 2, 19), LocalTime.of(13, 44, 2)))
+        .editor("fs45117")
+        .build();
+
+    // IS_BETRIEBSPUNKT
+    assertThat(expectedServicePoint.isOperatingPoint()).isTrue();
+    // IS_FAHRPLAN
+    assertThat(expectedServicePoint.isOperatingPointWithTimetable()).isTrue();
+    // IS_HALTESTELLE
+    assertThat(expectedServicePoint.isStopPoint()).isFalse();
+    // IS_BEDIENPUNKT
+    assertThat(expectedServicePoint.isFreightServicePoint()).isFalse();
+    // IS_VERKEHRSPUNKT
+    assertThat(expectedServicePoint.isTrafficPoint()).isFalse();
+    // IS_GRENZPUNKT
+    assertThat(expectedServicePoint.isBorderPoint()).isFalse();
+    // IS_BPS
+    assertThat(expectedServicePoint.isOperatingPointRouteNetwork()).isFalse();
+    // IS_BPK
+    assertThat(expectedServicePoint.isOperatingPointKilometer()).isFalse();
+
+    assertThat(servicePointVersion)
+        .usingRecursiveComparison()
+        .ignoringFields("servicePointGeolocation")
+        .isEqualTo(expectedServicePoint);
   }
 }
