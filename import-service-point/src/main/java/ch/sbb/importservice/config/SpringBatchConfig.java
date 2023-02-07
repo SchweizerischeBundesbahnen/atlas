@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadPoolExecutor;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -32,6 +33,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @Configuration
 @EnableBatchProcessing
 @AllArgsConstructor
+@Slf4j
 public class SpringBatchConfig {
 
   private static final int CHUNK_SIZE = 20;
@@ -59,6 +61,7 @@ public class SpringBatchConfig {
     } else {
       actualServicePotinCsvModelsFromS3 = csvService.getActualServicePointCsvModelsFromS3();
     }
+    log.info("Start sending requests to service-point-directory with chunkSize: {}...", CHUNK_SIZE);
     return new ThreadSafeListItemReader<>(Collections.synchronizedList(actualServicePotinCsvModelsFromS3));
   }
 
