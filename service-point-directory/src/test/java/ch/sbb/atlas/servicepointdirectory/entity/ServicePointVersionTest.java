@@ -5,7 +5,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
 import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
-import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointType;
+import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointTrafficPointType;
+import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointWithoutTimetableType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.ServicePointStatus;
 import ch.sbb.atlas.servicepointdirectory.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
@@ -33,7 +34,6 @@ class ServicePointVersionTest {
         .statusDidok3(ServicePointStatus.from(1))
         .businessOrganisation("somesboid")
         .status(Status.VALIDATED)
-        .operatingPointType(OperatingPointType.STOP_POINT)
         .meansOfTransport(Set.of(MeanOfTransport.BUS))
         .stopPointType(StopPointType.ORDERLY)
         .validFrom(LocalDate.of(2020, 1, 1))
@@ -122,4 +122,31 @@ class ServicePointVersionTest {
     assertThat(constraintViolations).isNotEmpty();
   }
 
+  @Test
+  void shouldNotAcceptSpeedChangeAndTariffPoint() {
+    // Given
+    ServicePointVersion servicePoint = ServicePointVersion.builder()
+        .number(ServicePointNumber.of(85070003))
+        .numberShort(1)
+        .country(Country.SWITZERLAND)
+        .designationLong("long designation")
+        .designationOfficial("official designation")
+        .abbreviation("BE")
+        .statusDidok3(ServicePointStatus.from(1))
+        .businessOrganisation("somesboid")
+        .status(Status.VALIDATED)
+        .meansOfTransport(Set.of(MeanOfTransport.BUS))
+        .stopPointType(StopPointType.ORDERLY)
+        .operatingPointWithoutTimetableType(OperatingPointWithoutTimetableType.ROUTE_SPEED_CHANGE)
+        .operatingPointTrafficPointType(OperatingPointTrafficPointType.TARIFF_POINT)
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 12, 31))
+        .version(1)
+        .build();
+    //when
+    Set<ConstraintViolation<ServicePointVersion>> constraintViolations = validator.validate(servicePoint);
+
+    //then
+    assertThat(constraintViolations).isNotEmpty();
+  }
 }
