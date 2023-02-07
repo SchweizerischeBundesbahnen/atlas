@@ -22,7 +22,10 @@ import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeoloca
 import ch.sbb.atlas.servicepointdirectory.enumeration.Category;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
 import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
+import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointTechnicalTimetableType;
+import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointTrafficPointType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointType;
+import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointWithoutTimetableType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.ServicePointStatus;
 import ch.sbb.atlas.servicepointdirectory.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
@@ -30,6 +33,7 @@ import ch.sbb.atlas.user.administration.security.BusinessOrganisationAssociated;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Stream;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -137,6 +141,18 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
   @AtlasVersionableProperty
   private OperatingPointType operatingPointType;
 
+  @Enumerated(EnumType.STRING)
+  @AtlasVersionableProperty
+  private OperatingPointWithoutTimetableType operatingPointWithoutTimetableType;
+
+  @Enumerated(EnumType.STRING)
+  @AtlasVersionableProperty
+  private OperatingPointTechnicalTimetableType operatingPointTechnicalTimetableType;
+
+  @Enumerated(EnumType.STRING)
+  @AtlasVersionableProperty
+  private OperatingPointTrafficPointType operatingPointTrafficPointType;
+
   @AtlasVersionableProperty
   private boolean operatingPointRouteNetwork;
 
@@ -207,7 +223,7 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
 
   @ToString.Include
   public boolean isFareStop() {
-    return operatingPointType == OperatingPointType.TARIFF_POINT;
+    return operatingPointTrafficPointType == OperatingPointTrafficPointType.TARIFF_POINT;
   }
 
   @ToString.Include
@@ -217,7 +233,7 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
 
   @ToString.Include
   public boolean isBorderPoint() {
-    return operatingPointType == OperatingPointType.COUNTRY_BORDER;
+    return operatingPointTechnicalTimetableType == OperatingPointTechnicalTimetableType.COUNTRY_BORDER;
   }
 
   @ToString.Include
@@ -239,6 +255,18 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
   @AssertTrue(message = "Country needs to be the same as in ServicePointNumber")
   public boolean isValidCountry() {
     return getCountry() == getNumber().getCountry();
+  }
+
+  @AssertTrue(message = "At most one of OperatingPointWithoutTimetableType, OperatingPointTechnicalTimetableType, "
+      + "OperatingPointTrafficPointType may be set")
+  public boolean isValidType() {
+    long mutualTypes = Stream.of(
+        getOperatingPointWithoutTimetableType() != null,
+        getOperatingPointTechnicalTimetableType() != null,
+        getOperatingPointTrafficPointType() != null)
+        .filter(i -> i)
+        .count();
+    return mutualTypes <= 1;
   }
 
   public Set<MeanOfTransport> getMeansOfTransport() {
