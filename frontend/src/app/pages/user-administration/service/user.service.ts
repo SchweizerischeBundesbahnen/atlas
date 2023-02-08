@@ -8,7 +8,7 @@ import {
   UserPermissionVersionModel,
 } from '../../../api';
 import { map } from 'rxjs/operators';
-import { User } from '../../../api/model/user';
+import { User } from '../../../api';
 
 @Injectable({
   providedIn: 'root',
