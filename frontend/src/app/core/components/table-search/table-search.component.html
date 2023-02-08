@@ -3,20 +3,20 @@
     <div [class]="'d-flex flex-column col-6 pe-3 search-box ' + searchTextColumnStyle">
       <mat-label class="font-bold-lg">{{ 'COMMON.SEARCH.SEARCH_CRITERIA' | translate }}</mat-label>
       <mat-form-field appearance="outline">
-        <mat-chip-list #chipList data-cy="table-search-strings">
-          <mat-chip (removed)="removeSearch(search)" *ngFor="let search of searchStrings">
+        <mat-chip-grid #chipList data-cy="table-search-strings">
+          <mat-chip-row (removed)="removeSearch(search)" *ngFor="let search of searchStrings">
             {{ search }}
             <button matChipRemove>
               <em class="bi bi-x-circle-fill"></em>
             </button>
-          </mat-chip>
+          </mat-chip-row>
           <input
             (matChipInputTokenEnd)="addSearch($event)"
             [matChipInputFor]="chipList"
             data-cy="table-search-chip-input"
           />
           <em class="bi bi-search me-2"></em>
-        </mat-chip-list>
+        </mat-chip-grid>
       </mat-form-field>
     </div>
   </div>
@@ -68,7 +68,7 @@
         <mat-error *ngFor="let validationError of getDateControlValidation()">
           {{
             validationError.error
-              | translate: { date: getMinOrMaxDateDisplay(validationError.value) }
+              | translate : { date: getMinOrMaxDateDisplay(validationError.value) }
           }}
         </mat-error>
       </mat-form-field>

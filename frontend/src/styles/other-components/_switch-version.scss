@@ -24,7 +24,7 @@ app-switch-version table {
 
     tr {
       width: 42.5rem;
-      &.mat-row {
+      &.mat-mdc-row {
         height: auto;
       }
 
@@ -65,12 +65,12 @@ app-switch-version table {
     tr {
       display: flex;
       border-bottom: 2px solid variables.$gray-900;
-      &.mat-header-row {
+      &.mat-mdc-header-row {
         height: auto;
       }
       th {
         width: 20%;
-        &.mat-header-cell {
+        &.mat-mdc-header-cell {
           border-bottom: 0;
         }
         &:first-child {
