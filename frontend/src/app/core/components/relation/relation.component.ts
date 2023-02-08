@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core
 import { DateService } from '../../date/date.service';
 import { TableColumn } from '../table/table-column';
 import { MatSort, Sort } from '@angular/material/sort';
-import { MatLegacyTable as MatTable } from '@angular/material/legacy-table';
+import { MatTable } from '@angular/material/table';
 
 @Component({
   selector: 'app-relation',

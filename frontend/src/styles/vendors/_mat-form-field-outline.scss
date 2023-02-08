@@ -1,6 +1,7 @@
 @use 'src/styles/variables' as variables;
 
 // TODO: move to vendor/_<control-name>.scss
+/* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
 .mat-form-field-type-mat-date-range-input .mat-form-field-infix {
   width: fit-content !important;
 }
@@ -9,16 +10,16 @@
 // Overwrite angular material disabled styles
 // ------------------------------
 mat-form-field {
-  &.mat-form-field.mat-form-field-disabled .mat-input-element {
+  &.mat-mdc-form-field.mat-form-field-disabled .mat-mdc-input-element {
     color: variables.$black;
   }
-
-  &.override-material-error-messages-space.mat-form-field.mat-form-field-type-mat-date-range-input.mat-form-field-invalid,
+  /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
+  &.override-material-error-messages-space.mat-mdc-form-field.mat-form-field-type-mat-date-range-input.mat-form-field-invalid,
   .mat-form-field-subscript-wrapper,
   .mat-form-field-underline {
     position: unset;
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
   .mat-form-field-infix {
     border-top: 5px solid transparent;
   }
@@ -26,14 +27,15 @@ mat-form-field {
 
 // Material style overrides for dropdown in form
 mat-form-field.form-outline {
+  /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
   .mat-form-field-wrapper {
     margin: 0 !important;
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
   .mat-form-field-subscript-wrapper {
     padding-left: unset;
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
   .mat-form-field-flex .mat-form-field-infix {
     padding: 11px 0 6px 0;
   }
@@ -41,30 +43,30 @@ mat-form-field.form-outline {
   .mat-focused {
     padding-right: unset;
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of select that may no longer apply for the MDC version.*/
   .mat-select-arrow-wrapper {
     transform: none;
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of select that may no longer apply for the MDC version.*/
   .mat-select-arrow {
     color: variables.$primary-400;
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of select that may no longer apply for the MDC version.*/
   .mat-select-placeholder {
     color: variables.$primary-400;
     font-weight: 500;
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of select that may no longer apply for the MDC version.*/
   .mat-select-disabled .mat-select-min-line {
     color: unset;
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of select that may no longer apply for the MDC version.*/
   .mat-select-min-line {
     color: variables.$primary-400;
     font-weight: 500;
   }
-
-  .mat-select.mat-select-invalid .mat-select-arrow {
+  /* TODO(mdc-migration): The following rule targets internal classes of select that may no longer apply for the MDC version.*/
+  .mat-mdc-select.mat-select-invalid .mat-select-arrow {
     color: unset;
   }
 }
@@ -73,6 +75,7 @@ mat-form-field.form-outline {
 .mat-form-field-appearance-outline,
 .mat-form-field-appearance-outline:hover,
 .mat-form-field-appearance-outline.mat-focused {
+  /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
   .mat-form-field-outline,
   .mat-form-field-outline-thick .mat-form-field-outline-start,
   .mat-form-field-outline-thick .mat-form-field-outline-end,
@@ -80,7 +83,7 @@ mat-form-field.form-outline {
     color: variables.$primary-400;
     border-width: 3px;
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
   .mat-form-field-flex .mat-form-field-infix {
     border: unset;
     margin-bottom: 2px;
@@ -91,6 +94,7 @@ mat-form-field.form-outline {
 .mat-form-field-invalid,
 .mat-form-field-invalid:hover,
 .mat-form-field-invalid.mat-focused {
+  /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
   .mat-form-field-outline,
   .mat-form-field-outline-thick .mat-form-field-outline-start,
   .mat-form-field-outline-thick .mat-form-field-outline-end,
@@ -102,6 +106,7 @@ mat-form-field.form-outline {
 
 .mat-form-field-appearance-outline.mat-form-field-disabled,
 .mat-form-field-appearance-outline:hover.mat-form-field-disabled {
+  /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
   .mat-form-field-flex .mat-form-field-outline {
     color: variables.$gray-400;
     border-width: 1px;

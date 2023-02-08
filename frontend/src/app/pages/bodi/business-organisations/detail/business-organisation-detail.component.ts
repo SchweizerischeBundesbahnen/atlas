@@ -18,10 +18,7 @@ import { Pages } from '../../../pages';
 import { Page } from 'src/app/core/model/page';
 import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
 import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
-import {
-  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
-  MatLegacyDialogRef as MatDialogRef,
-} from '@angular/material/legacy-dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
 import { BusinessOrganisationDetailFormGroup } from './business-organisation-detail-form-group';
 import { BusinessOrganisationLanguageService } from '../../../../core/form-components/bo-select/business-organisation-language.service';
