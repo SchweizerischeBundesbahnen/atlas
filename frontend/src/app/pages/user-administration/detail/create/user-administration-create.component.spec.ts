@@ -13,7 +13,10 @@ import {
 import { of } from 'rxjs';
 import { Router } from '@angular/router';
 import { Component, Input } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import {
+  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
+  MatLegacyDialogRef as MatDialogRef,
+} from '@angular/material/legacy-dialog';
 import { User } from '../../../../api';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MaterialModule } from '../../../../core/module/material.module';
