@@ -31,11 +31,12 @@ mat-sidenav-content {
   background-color: variables.$gray-100;
 }
 
-.mat-list-item {
+.mat-mdc-list-item {
   min-height: 56px;
   height: auto !important;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version. */
 .mat-list-item-content {
   padding: 16px 22px 16px variables.$navigationPaddingLeftDefault !important;
 }
@@ -50,6 +51,7 @@ mat-sidenav-content {
     }
     margin-left: $largeScreenWidth !important;
   }
+  /* TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version. */
   .mat-list-item-content {
     padding-left: variables.$navigationPaddingLeftLarge !important;
   }

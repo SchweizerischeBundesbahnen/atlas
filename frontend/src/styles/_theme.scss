@@ -26,6 +26,6 @@ $app-theme: mat.define-light-theme(
 //  If you don't need the default component typographies but still want the hierarchy styles,
 //  you can delete this line and instead use:
 //    `@include mat.legacy-typography-hierarchy(typography.$atlas-typography);`
-@include mat.all-legacy-component-typographies(typography.$atlas-typography);
-@include mat.legacy-core();
-@include mat.all-legacy-component-themes($app-theme);
+@include mat.all-component-typographies(typography.$atlas-typography);
+@include mat.core();
+@include mat.all-component-themes($app-theme);

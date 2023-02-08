@@ -1,9 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import {
-  MatLegacySnackBar as MatSnackBar,
-  MatLegacySnackBarConfig as MatSnackBarConfig,
-  MatLegacySnackBarRef as MatSnackBarRef,
-} from '@angular/material/legacy-snack-bar';
+import { MatSnackBar, MatSnackBarConfig, MatSnackBarRef } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { NotificationParamMessage } from './notification-param-message';
 import { catchError, Subject, Subscription } from 'rxjs';
