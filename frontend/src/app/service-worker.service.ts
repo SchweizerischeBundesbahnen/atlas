@@ -3,7 +3,7 @@ import { filter, first } from 'rxjs/operators';
 import { concat, interval } from 'rxjs';
 import { DialogComponent } from './core/components/dialog/dialog.component';
 import { SwUpdate } from '@angular/service-worker';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 
 @Injectable()
 export class ServiceWorkerService {
