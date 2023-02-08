@@ -8,16 +8,13 @@ import { of } from 'rxjs';
 import moment from 'moment';
 import { Page } from '../../model/page';
 import { NotificationService } from '../../notification/notification.service';
-import {
-  MAT_LEGACY_SNACK_BAR_DATA as MAT_SNACK_BAR_DATA,
-  MatLegacySnackBarRef as MatSnackBarRef,
-} from '@angular/material/legacy-snack-bar';
+import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MaterialModule } from '../../module/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 import { ApplicationType } from 'src/app/api';
 import { AuthService } from '../../auth/auth.service';
 import { authServiceMock } from '../../../app.testing.module';

@@ -8,7 +8,7 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { MatLegacyChipInputEvent as MatChipInputEvent } from '@angular/material/legacy-chips';
+import { MatChipInputEvent } from '@angular/material/chips';
 import { statusChoice, TableSearch } from './table-search';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { DATE_PATTERN, MAX_DATE, MIN_DATE } from '../../date/date.service';

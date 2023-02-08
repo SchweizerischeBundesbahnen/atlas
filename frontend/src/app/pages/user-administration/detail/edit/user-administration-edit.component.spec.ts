@@ -10,7 +10,7 @@ import {
 import { Component } from '@angular/core';
 import { MaterialModule } from '../../../../core/module/material.module';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 import { EditTitlePipe } from './edit-title.pipe';
 import SpyObj = jasmine.SpyObj;
 import { UserService } from '../../service/user.service';

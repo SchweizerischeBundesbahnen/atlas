@@ -13,10 +13,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import moment from 'moment/moment';
 import { Pages } from '../../../pages';
-import {
-  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
-  MatLegacyDialogRef as MatDialogRef,
-} from '@angular/material/legacy-dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { LineVersionSnapshotDetailFormGroup } from './line-version-snapshot-detail-form-group';
 import { takeUntil } from 'rxjs/operators';
 import { WorkflowFormGroup } from '../../../../core/workflow/workflow-form-group';
