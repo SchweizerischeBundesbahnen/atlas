@@ -10,9 +10,12 @@
 
     <div class="col-12 d-flex">
       <div class="d-flex flex-column col-4 pe-3">
-        <mat-label class="font-bold-lg">{{ 'LIDI.SUBLINE.NUMBER' | translate }}</mat-label>
+        <div class="info-icon-position">
+          <mat-label class="font-bold-lg">{{ 'LIDI.SUBLINE.NUMBER' | translate }}</mat-label>
+          <form-info-icon infoTitle="{{ 'LIDI.SUBLINE.NUMBER_INFO' | translate }}"></form-info-icon>
+        </div>
         <mat-label class="font-regular-sm"
-          >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ '31.001:a' }} |
+          >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ '1' }} |
           {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}</mat-label
         >
         <mat-form-field>
@@ -39,7 +42,6 @@
       <div class="d-flex flex-column col-8 pe-3">
         <div class="info-icon-position">
           <mat-label class="font-bold-lg">{{ 'LIDI.LONG_NAME' | translate }} </mat-label>
-          <form-info-icon infoTitle="{{ 'LIDI.LONG_NAME_INFO' | translate }}"></form-info-icon>
         </div>
         <mat-label class="font-regular-sm"
           >{{ 'FORM.FOR_EXAMPLE' | translate }}
@@ -135,7 +137,6 @@
           <mat-label class="font-bold-lg subtitle-margin required-indicator"
             >{{ 'LIDI.PAYMENT.TYPE' | translate }}
           </mat-label>
-          <form-info-icon infoTitle="{{ 'LIDI.PAYMENT.TYPE_INFO' | translate }}"></form-info-icon>
         </div>
         <mat-form-field appearance="outline" class="form-outline">
           <mat-select
