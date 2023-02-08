@@ -6,7 +6,7 @@ import { NotificationService } from '../../../../core/notification/notification.
 import { ActivatedRoute, Router } from '@angular/router';
 import { Pages } from '../../../pages';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { User } from '../../../../api';
 import { FormControl, FormGroup } from '@angular/forms';
 

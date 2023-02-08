@@ -1,6 +1,9 @@
 import { Component, EventEmitter, Input, Output, TemplateRef, ViewChild } from '@angular/core';
 import { MatSort, Sort, SortDirection } from '@angular/material/sort';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import {
+  MatLegacyPaginator as MatPaginator,
+  LegacyPageEvent as PageEvent,
+} from '@angular/material/legacy-paginator';
 import { TableColumn } from './table-column';
 import { DateService } from '../../date/date.service';
 import { TranslatePipe } from '@ngx-translate/core';

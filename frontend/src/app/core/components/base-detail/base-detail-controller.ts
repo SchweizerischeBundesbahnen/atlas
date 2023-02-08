@@ -8,7 +8,7 @@ import { Page } from '../../model/page';
 import { NotificationService } from '../../notification/notification.service';
 import { DateService } from '../../date/date.service';
 import { ApplicationRole, ApplicationType, Status } from '../../../api';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { AuthService } from '../../auth/auth.service';
 import { ValidationService } from '../../validation/validation.service';
 import { ActivatedRoute } from '@angular/router';

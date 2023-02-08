@@ -1,7 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 
 import { NotificationService } from './notification.service';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import {
+  MatLegacySnackBar as MatSnackBar,
+  MatLegacySnackBarModule as MatSnackBarModule,
+} from '@angular/material/legacy-snack-bar';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { MaterialModule } from '../module/material.module';

@@ -5,7 +5,10 @@ import { of, throwError } from 'rxjs';
 import { PaymentType, SublinesService, SublineType, SublineVersion } from '../../../../api';
 import { SublineDetailComponent } from './subline-detail.component';
 import { HttpErrorResponse } from '@angular/common/http';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import {
+  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
+  MatLegacyDialogRef as MatDialogRef,
+} from '@angular/material/legacy-dialog';
 import { AppTestingModule, authServiceMock } from '../../../../app.testing.module';
 import { InfoIconComponent } from '../../../../core/form-components/info-icon/info-icon.component';
 import { SearchSelectComponent } from '../../../../core/form-components/search-select/search-select.component';
