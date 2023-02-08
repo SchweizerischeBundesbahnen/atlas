@@ -27,9 +27,6 @@
           <mat-label class="font-bold-lg required-indicator"
             >{{ 'TTFN.SWISS_TIMETABLE_FIELD_NUMBER' | translate }}
           </mat-label>
-          <form-info-icon
-            infoTitle="{{ 'TTFN.SWISS_TIMETABLE_FIELD_NUMBER_INFO' | translate }}"
-          ></form-info-icon>
         </div>
         <mat-label class="font-regular-sm">
           {{ 'FORM.FOR_EXAMPLE' | translate }} {{ 'r.30.003' }} |
@@ -50,7 +47,6 @@
       <div class="d-flex flex-column col-12 pe-3">
         <div class="info-icon-position">
           <mat-label class="font-bold-lg">{{ 'TTFN.DESCRIPTION' | translate }} </mat-label>
-          <form-info-icon infoTitle="{{ 'TTFN.DESCRIPTION_INFO' | translate }}"></form-info-icon>
         </div>
         <mat-label class="font-regular-sm">
           {{ 'FORM.FOR_EXAMPLE' | translate }} {{ 'Bern Bahnhof - Eigerplatz - Weissenbühl' }} |
@@ -82,7 +78,7 @@
     <span class="font-bold-2xl">{{ 'FORM.SUPPLEMENTARY_INFORMATION' | translate }}</span>
     <div class="col-12 d-flex mt-3">
       <div class="d-flex flex-column col-6">
-        <form-comment [formGroup]="form"></form-comment>
+        <form-comment [formGroup]="form" [displayInfoIcon]="false"></form-comment>
       </div>
     </div>
   </form>
