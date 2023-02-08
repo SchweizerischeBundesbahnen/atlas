@@ -1,5 +1,5 @@
 import { Component, Injector } from '@angular/core';
-import { MatFormField } from '@angular/material/form-field';
+import { MatLegacyFormField as MatFormField } from '@angular/material/legacy-form-field';
 import { ValidationService } from '../../validation/validation.service';
 
 @Component({
