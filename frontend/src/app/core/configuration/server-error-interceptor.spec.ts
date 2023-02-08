@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { ServerErrorInterceptor } from './server-error-interceptor';
 import { NotificationService } from '../notification/notification.service';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { TranslateModule } from '@ngx-translate/core';
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from '../module/material.module';

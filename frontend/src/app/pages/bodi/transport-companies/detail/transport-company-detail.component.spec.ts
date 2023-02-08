@@ -7,7 +7,7 @@ import {
   TransportCompanyRelationsService,
 } from '../../../../api';
 import { TransportCompanyDetailComponent } from './transport-company-detail.component';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { AuthService } from '../../../../core/auth/auth.service';
 import { RelationComponent } from '../../../../core/components/relation/relation.component';
