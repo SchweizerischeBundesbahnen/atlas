@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { RouteToDialogComponent } from './route-to-dialog.component';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { AppTestingModule } from '../../../app.testing.module';
 import { ActivatedRoute, Data, Router } from '@angular/router';
 import { of, Subject } from 'rxjs';

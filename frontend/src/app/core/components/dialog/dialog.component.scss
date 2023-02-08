@@ -21,17 +21,17 @@
     }
   }
 
-  .mat-dialog-container {
+  .mat-mdc-dialog-container {
     background: variables.$white;
     border-radius: variables.$border-radius;
     padding: 64px;
   }
 
-  .mat-dialog-content {
+  .mat-mdc-dialog-content {
     padding-top: 15px;
   }
 
-  .mat-dialog-actions {
+  .mat-mdc-dialog-actions {
     padding-top: 80px;
   }
 }
