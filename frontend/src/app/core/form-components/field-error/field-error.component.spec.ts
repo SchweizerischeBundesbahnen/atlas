@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatFormField } from '@angular/material/form-field';
+import { MatLegacyFormField as MatFormField } from '@angular/material/legacy-form-field';
 import { FieldErrorComponent } from './field-error.component';
 import { AppTestingModule } from '../../../app.testing.module';
 
