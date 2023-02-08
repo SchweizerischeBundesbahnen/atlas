@@ -1,10 +1,10 @@
 @use '@angular/material' as mat;
 
-$atlas-typography: mat.define-legacy-typography-config(
+$atlas-typography: mat.define-typography-config(
   $font-family: 'IBM Plex Sans',
   // mat-typography-level(font-size, line-height, font-weight)
-  $subheading-2: mat.define-typography-level(20px, 160%, 400),
-  $body-1: mat.define-typography-level(16px, 150%, 400),
+  $subtitle-1: mat.define-typography-level(20px, 160%, 400),
+  $body-2: mat.define-typography-level(16px, 150%, 400),
   $button: mat.define-typography-level(16px, 150%, 500),
   /*
    // see levels: https://material.angular.io/guide/typography#typography-levels

@@ -1,6 +1,6 @@
 @use 'src/styles/variables' as variables;
 
-.mat-snack-bar-container {
+.mat-mdc-snack-bar-container {
   margin: unset !important;
   position: absolute;
   top: 4.5rem;
@@ -74,7 +74,7 @@ snack-bar-container.notification {
   }
 }
 
-.mat-simple-snackbar-action {
+.mat-mdc-snack-bar-action {
   position: absolute;
   top: 0.4rem;
   right: 0.4rem;
