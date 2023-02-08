@@ -1,29 +1,33 @@
 @use 'src/styles/variables' as variables;
 
+/* TODO(mdc-migration): The following rule targets internal classes of paginator that may no longer apply for the MDC version.*/
+/* TODO(mdc-migration): The following rule targets internal classes of paginator that may no longer apply for the MDC version.*/
+/* TODO(mdc-migration): The following rule targets internal classes of paginator that may no longer apply for the MDC version.*/
 mat-paginator {
   // Display it on the left
-  .mat-paginator-container {
+  .mat-mdc-paginator-container {
     justify-content: unset;
     padding: unset;
     color: variables.$gray-900;
     align-items: baseline;
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of paginator that may no longer apply for the MDC version.*/
   .mat-paginator-page-size-select {
     width: 70px;
   }
 
-  .mat-paginator-page-size-label {
+  .mat-mdc-paginator-page-size-label {
     margin-left: 0;
   }
 
   // Page switcher color
-  .mat-icon-button {
+  .mat-mdc-icon-button {
     color: variables.$primary-400;
   }
 
   // Selection color
-  .mat-select {
+  .mat-mdc-select {
+    /* TODO(mdc-migration): The following rule targets internal classes of select that may no longer apply for the MDC version.*/
     .mat-select-value,
     .mat-select-arrow {
       color: variables.$primary-400;
@@ -31,8 +35,9 @@ mat-paginator {
   }
 
   // Use atlas defined font size
-  .mat-paginator,
-  .mat-paginator-page-size .mat-select-trigger {
+  /* TODO(mdc-migration): The following rule targets internal classes of select that may no longer apply for the MDC version.*/
+  .mat-mdc-paginator,
+  .mat-mdc-paginator-page-size .mat-select-trigger {
     font-size: unset;
   }
 }
