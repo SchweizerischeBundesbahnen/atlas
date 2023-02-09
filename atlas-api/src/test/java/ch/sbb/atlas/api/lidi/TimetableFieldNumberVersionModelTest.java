@@ -5,13 +5,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.lidi.TimetableFieldNumberVersionVersionModel.TimetableFieldNumberVersionVersionModelBuilder;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
 import org.junit.jupiter.api.Test;
 
 public class TimetableFieldNumberVersionModelTest {
