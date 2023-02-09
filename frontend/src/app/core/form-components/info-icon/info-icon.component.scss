@@ -7,3 +7,9 @@ span {
 svg path {
   fill: variables.$primary-400;
 }
+
+:host.atlas-info-link {
+  svg:hover {
+    cursor: pointer;
+  }
+}
