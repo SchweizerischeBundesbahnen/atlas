@@ -1,9 +1,9 @@
 package ch.sbb.scheduling.service;
 
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
+import io.micrometer.tracing.annotation.ContinueSpan;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cloud.sleuth.annotation.ContinueSpan;
 import org.springframework.retry.RetryCallback;
 import org.springframework.retry.RetryContext;
 import org.springframework.retry.interceptor.MethodInvocationRetryCallback;
@@ -22,7 +22,7 @@ class RetryListener extends RetryListenerSupport {
     @Override
     @ContinueSpan
     public <T, E extends Throwable> void close(RetryContext context,
-            RetryCallback<T, E> callback, Throwable throwable) {
+        RetryCallback<T, E> callback, Throwable throwable) {
         if (throwable != null) {
             String jobName = getJobName(callback);
             log.error("Unable to recover job {} from  Exception", jobName, throwable);
@@ -36,7 +36,7 @@ class RetryListener extends RetryListenerSupport {
     @ContinueSpan
     @Override
     public <T, E extends Throwable> void onError(RetryContext context, RetryCallback<T, E> callback,
-            Throwable throwable) {
+        Throwable throwable) {
         if (throwable != null) {
             log.error("Exception Occurred on {}, Retry Count {} ", getJobName(callback), context.getRetryCount(), throwable);
             super.onError(context, callback, throwable);

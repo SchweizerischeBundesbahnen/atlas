@@ -1,12 +1,12 @@
 package ch.sbb.atlas.searching.specification;
 
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
+import jakarta.persistence.metamodel.SingularAttribute;
 import java.util.List;
 import java.util.Objects;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import javax.persistence.metamodel.SingularAttribute;
 import org.springframework.data.jpa.domain.Specification;
 
 public class EnumSpecification<T> implements Specification<T> {
@@ -23,7 +23,7 @@ public class EnumSpecification<T> implements Specification<T> {
     this.notIn = false;
   }
 
-  public EnumSpecification(List<?> enumRestrictions, SingularAttribute<T, ?> enumAttribute, Boolean notIn){
+  public EnumSpecification(List<?> enumRestrictions, SingularAttribute<T, ?> enumAttribute, Boolean notIn) {
     this.enumRestrictions = Objects.requireNonNull(enumRestrictions);
     this.enumAttribute = enumAttribute;
     this.notIn = notIn;
