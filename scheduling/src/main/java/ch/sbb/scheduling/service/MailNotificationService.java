@@ -1,5 +1,7 @@
 package ch.sbb.scheduling.service;
 
+import brave.Tracer;
+import brave.propagation.TraceContext;
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import ch.sbb.atlas.kafka.model.mail.MailType;
 import java.util.ArrayList;
@@ -9,8 +11,6 @@ import java.util.Map;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.sleuth.TraceContext;
-import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -52,7 +52,7 @@ public class MailNotificationService {
   String getCurrentSpan() {
     if (tracer.currentSpan() != null) {
       TraceContext context = Objects.requireNonNull(tracer.currentSpan()).context();
-      return context.traceId();
+      return String.valueOf(context.traceId());
     }
     throw new IllegalStateException("No Tracer found!");
   }

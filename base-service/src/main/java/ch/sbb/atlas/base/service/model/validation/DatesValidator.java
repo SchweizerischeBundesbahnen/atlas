@@ -2,8 +2,8 @@ package ch.sbb.atlas.base.service.model.validation;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.AssertTrue;
 import java.time.LocalDate;
-import javax.validation.constraints.AssertTrue;
 
 public interface DatesValidator {
 

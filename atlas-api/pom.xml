@@ -17,6 +17,10 @@
    </properties>
    <dependencies>
       <dependency>
+         <artifactId>springdoc-openapi-common</artifactId>
+         <groupId>org.springdoc</groupId>
+      </dependency>
+      <dependency>
          <artifactId>spring-boot-starter-json</artifactId>
          <groupId>org.springframework.boot</groupId>
       </dependency>
@@ -25,12 +29,9 @@
          <groupId>org.springframework.cloud</groupId>
       </dependency>
       <dependency>
-         <artifactId>springdoc-openapi-ui</artifactId>
-         <groupId>org.springdoc</groupId>
-      </dependency>
-      <dependency>
          <artifactId>swagger-core</artifactId>
          <groupId>io.swagger.core.v3</groupId>
+         <version>${swagger-core.version}</version>
       </dependency>
       <dependency>
          <artifactId>spring-boot-starter-validation</artifactId>
