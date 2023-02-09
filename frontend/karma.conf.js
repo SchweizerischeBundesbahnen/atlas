@@ -52,10 +52,10 @@ module.exports = function (config) {
       ],
     },
     browserConsoleLogOptions: {level: 'error'},
-    browsers: ['Chrome'],
+    browsers: ['Chrome', 'ChromeHeadless'],
     customLaunchers: {
       ChromeHeadlessNoSandbox: {
-        base: "Chrome",
+        base: "ChromeHeadless",
         flags: ["--no-sandbox"],
         displayName: "ChromeHeadlessNoSandbox"
       }
@@ -65,7 +65,6 @@ module.exports = function (config) {
     colors: true,
     logLevel: config.LOG_ERROR,
     autoWatch: true,
-    singleRun: false,
     restartOnFileChange: true,
   });
 };
