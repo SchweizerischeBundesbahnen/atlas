@@ -2,9 +2,9 @@ package ch.sbb.atlas.api.bodi;
 
 import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
