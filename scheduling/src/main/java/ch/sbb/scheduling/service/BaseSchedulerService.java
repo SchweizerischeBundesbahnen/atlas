@@ -2,8 +2,8 @@ package ch.sbb.scheduling.service;
 
 import ch.sbb.scheduling.exception.SchedulingExecutionException;
 import feign.Response;
+import io.micrometer.tracing.annotation.ContinueSpan;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cloud.sleuth.annotation.ContinueSpan;
 import org.springframework.http.HttpStatus;
 
 @Slf4j
