@@ -19,10 +19,6 @@
    </properties>
    <dependencies>
       <dependency>
-         <artifactId>spring-cloud-starter-sleuth</artifactId>
-         <groupId>org.springframework.cloud</groupId>
-      </dependency>
-      <dependency>
          <artifactId>spring-boot-starter-actuator</artifactId>
          <groupId>org.springframework.boot</groupId>
       </dependency>
@@ -52,7 +48,8 @@
       </dependency>
       <dependency>
          <artifactId>hibernate-jpamodelgen</artifactId>
-         <groupId>org.hibernate</groupId>
+         <groupId>org.hibernate.orm</groupId>
+         <version>${hibernate.jpa-modelgen.version}</version>
       </dependency>
       <dependency>
          <artifactId>flyway-core</artifactId>
@@ -79,11 +76,11 @@
          <groupId>ch.sbb.atlas</groupId>
          <version>1.173.0</version>
       </dependency>
-     <dependency>
-       <groupId>ch.sbb.atlas</groupId>
-       <artifactId>user-administration-security</artifactId>
-       <version>1.173.0</version>
-     </dependency>
+      <dependency>
+         <groupId>ch.sbb.atlas</groupId>
+         <artifactId>user-administration-security</artifactId>
+         <version>1.173.0</version>
+      </dependency>
       <dependency>
          <artifactId>postgresql</artifactId>
          <groupId>org.postgresql</groupId>

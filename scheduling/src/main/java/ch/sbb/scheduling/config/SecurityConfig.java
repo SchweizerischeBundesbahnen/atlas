@@ -47,19 +47,16 @@ public class SecurityConfig {
 
         .and()
 
-        // @see <a href="https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#jc-authorize-requests">Authorize Requests</a>
-        .authorizeRequests(authorizeRequests ->
-            authorizeRequests
-                .mvcMatchers(HttpMethod.GET, "/actuator/**").permitAll()
-                .anyRequest().authenticated()
-        )
+        .authorizeHttpRequests()
+        .requestMatchers(HttpMethod.GET, "/actuator/**").permitAll()
+        .anyRequest().authenticated();
 
-        // @see <a href="https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#oauth2resourceserver">OAuth 2.0 Resource Server</a>
-        .oauth2ResourceServer()
+    // @see <a href="https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#oauth2resourceserver">OAuth
+    // 2.0 Resource Server</a>
+    http.oauth2ResourceServer()
         .jwt()
         .jwtAuthenticationConverter(jwtAuthenticationConverter())
         .and().and().oauth2Login();
-    ;
     return http.build();
   }
 
@@ -98,6 +95,5 @@ public class SecurityConfig {
     roleConverter.setAuthoritiesClaimName(ROLES_KEY);
     return roleConverter;
   }
-
 
 }

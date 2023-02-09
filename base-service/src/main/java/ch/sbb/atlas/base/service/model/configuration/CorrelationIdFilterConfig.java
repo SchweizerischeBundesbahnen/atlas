@@ -1,9 +1,9 @@
 package ch.sbb.atlas.base.service.model.configuration;
 
-import javax.servlet.Filter;
-import javax.servlet.http.HttpServletResponse;
-import org.springframework.cloud.sleuth.Span;
-import org.springframework.cloud.sleuth.Tracer;
+import brave.Span;
+import brave.Tracer;
+import jakarta.servlet.Filter;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 
 public class CorrelationIdFilterConfig {
@@ -17,7 +17,7 @@ public class CorrelationIdFilterConfig {
       if (currentSpan != null) {
         HttpServletResponse resp = (HttpServletResponse) response;
         // putting trace id value in [Correlation-Id] response header
-        resp.addHeader(CORRELATION_ID, currentSpan.context().traceId());
+        resp.addHeader(CORRELATION_ID, String.valueOf(currentSpan.context().traceId()));
       }
       chain.doFilter(request, response);
     };
