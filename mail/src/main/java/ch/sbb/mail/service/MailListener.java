@@ -1,7 +1,7 @@
 package ch.sbb.mail.service;
 
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaHandler;

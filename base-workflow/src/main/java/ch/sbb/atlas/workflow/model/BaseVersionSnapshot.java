@@ -1,10 +1,10 @@
 package ch.sbb.atlas.workflow.model;
 
 import ch.sbb.atlas.base.service.model.workflow.WorkflowStatus;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.MappedSuperclass;
-import javax.validation.constraints.NotNull;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.MappedSuperclass;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,8 +17,8 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @ToString
 @SuperBuilder
-@MappedSuperclass
 @AllArgsConstructor
+@MappedSuperclass
 public abstract class BaseVersionSnapshot implements AtlasVersionSnapshotable {
 
   @NotNull
