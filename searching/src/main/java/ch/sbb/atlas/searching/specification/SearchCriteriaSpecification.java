@@ -1,12 +1,12 @@
 package ch.sbb.atlas.searching.specification;
 
 import ch.sbb.atlas.searching.predicates.StringPredicates;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import java.util.List;
 import java.util.Objects;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import org.springframework.data.jpa.domain.Specification;
 
 public class SearchCriteriaSpecification<T> implements Specification<T> {
@@ -27,9 +27,9 @@ public class SearchCriteriaSpecification<T> implements Specification<T> {
       CriteriaBuilder criteriaBuilder) {
     return criteriaBuilder.and(searchCriteria.stream().map(searchString -> criteriaBuilder.or(
         searchPaths.stream()
-                   .map(path -> StringPredicates.likeIgnoreCase(criteriaBuilder, root.get(path).as(String.class),
-                       searchString))
-                   .toArray(Predicate[]::new))
+            .map(path -> StringPredicates.likeIgnoreCase(criteriaBuilder, root.get(path).as(String.class),
+                searchString))
+            .toArray(Predicate[]::new))
     ).toArray(Predicate[]::new));
   }
 }
