@@ -52,12 +52,11 @@ module.exports = function (config) {
       ],
     },
     browserConsoleLogOptions: {level: 'error'},
-    browsers: ['Chrome', 'ChromeHeadless'],
+    browsers: ['Chrome', 'ChromeHeadless', 'ChromeHeadlessNoSandbox'],
     customLaunchers: {
       ChromeHeadlessNoSandbox: {
         base: "ChromeHeadless",
         flags: ["--no-sandbox"],
-        displayName: "ChromeHeadlessNoSandbox"
       }
     },
     reporters: ['progress', 'kjhtml'],
