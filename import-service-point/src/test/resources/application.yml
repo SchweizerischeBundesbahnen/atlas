@@ -26,6 +26,11 @@ logging:
         test: error
         web: error
 
+batch:
+  config:
+    service-point-directory:
+      chuck-size: 20
+
 mail:
   receiver:
     schduling: forza.napoli@sbb.ch
