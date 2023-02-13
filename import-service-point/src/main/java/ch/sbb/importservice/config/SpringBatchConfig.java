@@ -8,6 +8,7 @@ import ch.sbb.atlas.base.service.imports.servicepoint.servicepoint.ServicePointC
 import ch.sbb.importservice.listener.JobCompletitionListener;
 import ch.sbb.importservice.reader.ThreadSafeListItemReader;
 import ch.sbb.importservice.service.CsvService;
+import ch.sbb.importservice.service.JobHelperService;
 import ch.sbb.importservice.utils.StepUtils;
 import ch.sbb.importservice.writer.LoadingPointApiWriter;
 import ch.sbb.importservice.writer.ServicePointApiWriter;
@@ -39,16 +40,13 @@ public class SpringBatchConfig {
   private static final int CHUNK_SIZE = 20;
   private static final int THREAD_EXECUTION_SIZE = 64;
   private final JobBuilderFactory jobBuilderFactory;
-
   private final StepBuilderFactory stepBuilderFactory;
-
   private final ServicePointApiWriter servicePointApiWriter;
-
   private final LoadingPointApiWriter loadingPointApiWriter;
-
   private final CsvService csvService;
-
   private final JobCompletitionListener jobCompletitionListener;
+
+  private final JobHelperService jobHelperService;
 
   @StepScope
   @Bean
@@ -61,7 +59,8 @@ public class SpringBatchConfig {
     } else {
       actualServicePotinCsvModelsFromS3 = csvService.getActualServicePointCsvModelsFromS3();
     }
-    log.info("Start sending requests to service-point-directory with chunkSize: {}...", CHUNK_SIZE);
+    log.info("Start sending requests to service-point-directory with chunkSize: {}...",
+        jobHelperService.getServicePointDirectoryChunkSize());
     return new ThreadSafeListItemReader<>(Collections.synchronizedList(actualServicePotinCsvModelsFromS3));
   }
 
@@ -76,6 +75,7 @@ public class SpringBatchConfig {
     } else {
       actualLoadingPotinCsvModelsFromS3 = csvService.getActualLoadingPointCsvModelsFromS3();
     }
+
     return new ThreadSafeListItemReader<>(Collections.synchronizedList(actualLoadingPotinCsvModelsFromS3));
   }
 
@@ -83,7 +83,7 @@ public class SpringBatchConfig {
   public Step parseServicePointCsvStep(ThreadSafeListItemReader<ServicePointCsvModelContainer> servicePointlistItemReader) {
     String stepName = "parseServicePointCsvStep";
     return stepBuilderFactory.get(stepName)
-        .<ServicePointCsvModelContainer, ServicePointCsvModelContainer>chunk(CHUNK_SIZE)
+        .<ServicePointCsvModelContainer, ServicePointCsvModelContainer>chunk(jobHelperService.getServicePointDirectoryChunkSize())
         .reader(servicePointlistItemReader)
         .writer(servicePointApiWriter)
         .faultTolerant()
