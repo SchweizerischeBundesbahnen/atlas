@@ -11,7 +11,6 @@ public class SublineSlnidGenerator implements ValueGenerator<String> {
 
   @Override
   public String generateValue(Session session, Object entity) {
-    // For tests only
     Optional<String> presetSlnid = getPresetSlnid(entity);
     if (presetSlnid.isPresent()) {
       return presetSlnid.get();
