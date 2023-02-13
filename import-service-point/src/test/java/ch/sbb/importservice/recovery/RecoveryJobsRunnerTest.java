@@ -9,6 +9,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import ch.sbb.atlas.base.service.amazon.service.FileService;
 import ch.sbb.importservice.repository.ImportProcessedItemRepository;
 import java.util.HashMap;
 import java.util.List;
@@ -52,6 +53,9 @@ public class RecoveryJobsRunnerTest {
   private JobExecution jobExecution;
 
   @Mock
+  private FileService fileService;
+
+  @Mock
   @Qualifier(IMPORT_SERVICE_POINT_CSV_JOB_NAME)
   private Job importServicePointCsvJob;
 
@@ -66,7 +70,7 @@ public class RecoveryJobsRunnerTest {
   public void setUp() {
     MockitoAnnotations.openMocks(this);
     recoveryJobsRunner = new RecoveryJobsRunner(jobExplorer, jobLauncher, jobRepository, importProcessedItemRepository,
-        importServicePointCsvJob, importLoadingPointCsvJob);
+        importServicePointCsvJob, importLoadingPointCsvJob, fileService);
   }
 
   @Test
@@ -89,6 +93,7 @@ public class RecoveryJobsRunnerTest {
     //then
     verify(jobLauncher).run(eq(importServicePointCsvJob), any());
     verify(jobLauncher, never()).run(eq(importLoadingPointCsvJob), any());
+    verify(fileService).clearDir();
   }
 
   @Test
@@ -98,6 +103,7 @@ public class RecoveryJobsRunnerTest {
     //then
     verify(jobLauncher, never()).run(eq(importServicePointCsvJob), any());
     verify(jobLauncher, never()).run(eq(importLoadingPointCsvJob), any());
+    verify(fileService).clearDir();
   }
 
   @Test
@@ -120,5 +126,6 @@ public class RecoveryJobsRunnerTest {
     //then
     verify(jobLauncher).run(eq(importLoadingPointCsvJob), any());
     verify(jobLauncher, never()).run(eq(importServicePointCsvJob), any());
+    verify(fileService).clearDir();
   }
 }
