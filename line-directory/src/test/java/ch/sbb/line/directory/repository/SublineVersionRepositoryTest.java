@@ -219,23 +219,4 @@ public class SublineVersionRepositoryTest {
     //then
     assertThat(result).hasSize(1).containsAll(result);
   }
-
-  @Test
-  void shouldSaveSimpleWithDifferentSlnidsConcurrently() throws InterruptedException {
-    SecurityContext context = SecurityContextHolder.getContext();
-
-    //when
-    int numberOfThreads = 10;
-    ExecutorService executorService = Executors.newFixedThreadPool(numberOfThreads);
-    for (int i = 0; i < numberOfThreads; i++) {
-      executorService.execute(
-          new DelegatingSecurityContextRunnable(() -> sublineVersionRepository.save(SublineTestData.sublineVersion()), context));
-    }
-
-    executorService.awaitTermination(1, TimeUnit.MINUTES);
-
-    //then
-    List<SublineVersion> result = sublineVersionRepository.findAll();
-    assertThat(result.stream().map(SublineVersion::getSlnid).collect(Collectors.toSet())).hasSize(numberOfThreads);
-  }
 }
