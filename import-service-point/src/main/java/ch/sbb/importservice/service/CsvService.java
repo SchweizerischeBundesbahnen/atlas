@@ -53,6 +53,7 @@ public class CsvService {
     LocalDate matchingDate = jobHelperService.getDateForImportFileToDownload(IMPORT_SERVICE_POINT_CSV_JOB_NAME);
     log.info("CSV File to import: {}", file.getName());
     List<ServicePointCsvModel> servicePointCsvModels = getCsvModelsToUpdate(file, matchingDate, ServicePointCsvModel.class);
+    fileHelperService.deleteConsumedFile(file);
     return mapToServicePointCsvModelContainers(
         servicePointCsvModels);
   }
