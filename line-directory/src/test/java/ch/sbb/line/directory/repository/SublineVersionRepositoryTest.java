@@ -8,10 +8,17 @@ import ch.sbb.line.directory.SublineTestData;
 import ch.sbb.line.directory.entity.SublineVersion;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.concurrent.DelegatingSecurityContextRunnable;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
@@ -211,5 +218,24 @@ public class SublineVersionRepositoryTest {
 
     //then
     assertThat(result).hasSize(1).containsAll(result);
+  }
+
+  @Test
+  void shouldSaveSimpleWithDifferentSlnidsConcurrently() throws InterruptedException {
+    SecurityContext context = SecurityContextHolder.getContext();
+
+    //when
+    int numberOfThreads = 10;
+    ExecutorService executorService = Executors.newFixedThreadPool(numberOfThreads);
+    for (int i = 0; i < numberOfThreads; i++) {
+      executorService.execute(
+          new DelegatingSecurityContextRunnable(() -> sublineVersionRepository.save(SublineTestData.sublineVersion()), context));
+    }
+
+    executorService.awaitTermination(1, TimeUnit.MINUTES);
+
+    //then
+    List<SublineVersion> result = sublineVersionRepository.findAll();
+    assertThat(result.stream().map(SublineVersion::getSlnid).collect(Collectors.toSet())).hasSize(numberOfThreads);
   }
 }
