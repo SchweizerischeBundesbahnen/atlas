@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Files;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +40,15 @@ public class FileHelperService {
   public File downloadImportFileFromS3(String csvImportFilePrefix) {
     try {
       return downloadImportFileWithPrefix(csvImportFilePrefix);
+    } catch (IOException e) {
+      throw new FileException(e);
+    }
+  }
+
+  public void deleteConsumedFile(File file) {
+    try {
+      log.info("Delete file {} ", file.getAbsolutePath());
+      Files.deleteIfExists(file.toPath());
     } catch (IOException e) {
       throw new FileException(e);
     }
