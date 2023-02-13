@@ -10,6 +10,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.BatchStatus;
@@ -17,6 +18,7 @@ import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
 import org.springframework.batch.core.JobParameter;
 import org.springframework.batch.core.explore.JobExplorer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -26,6 +28,10 @@ public class JobHelperService {
 
   public static final LocalDate MIN_LOCAL_DATE = LocalDate.of(1700, 1, 1);
   private final JobExplorer jobExplorer;
+  
+  @Getter
+  @Value("${batch.config.service-point-directory.chuck-size}")
+  private Integer servicePointDirectoryChunkSize;
 
   public boolean isDateMatchedBetweenTodayAndMatchingDate(LocalDate matchingDate, LocalDate lastEditionDate) {
     LocalDate today = LocalDate.now();
