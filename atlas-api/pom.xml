@@ -7,7 +7,7 @@
       <artifactId>atlas</artifactId>
       <groupId>ch.sbb.atlas</groupId>
       <relativePath>../pom.xml</relativePath>
-      <version>1.165.0</version>
+      <version>1.166.0</version>
    </parent>
    <artifactId>atlas-api</artifactId>
    <name>Atlas API</name>
@@ -39,12 +39,12 @@
       <dependency>
          <artifactId>base-service</artifactId>
          <groupId>ch.sbb.atlas</groupId>
-         <version>1.165.0</version>
+         <version>1.166.0</version>
       </dependency>
       <dependency>
          <artifactId>base-workflow</artifactId>
          <groupId>ch.sbb.atlas</groupId>
-         <version>1.165.0</version>
+         <version>1.166.0</version>
       </dependency>
       <dependency>
          <artifactId>lombok</artifactId>
@@ -73,7 +73,7 @@
       <dependency>
          <artifactId>base-service</artifactId>
          <groupId>ch.sbb.atlas</groupId>
-         <version>1.165.0</version>
+         <version>1.166.0</version>
          <scope>test</scope>
          <type>test-jar</type>
          <exclusions>
