@@ -1,6 +1,5 @@
 package ch.sbb.importservice.listener;
 
-import ch.sbb.atlas.base.service.amazon.service.FileService;
 import ch.sbb.atlas.base.service.imports.servicepoint.model.ItemImportResponseStatus;
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import ch.sbb.importservice.entitiy.ImportProcessItem;
@@ -24,7 +23,6 @@ public class JobCompletitionListener implements JobExecutionListener {
   private final MailNotificationService mailNotificationService;
   private final ImportProcessedItemRepository importProcessedItemRepository;
   private final MailProducerService mailProducerService;
-  private final FileService fileService;
 
   @Override
   public void beforeJob(JobExecution jobExecution) {
@@ -41,9 +39,6 @@ public class JobCompletitionListener implements JobExecutionListener {
     if (ExitStatus.FAILED.equals(jobExecution.getExitStatus())) {
       sendUnsuccessffulyNotification(stepExecution);
       importProcessedItemRepository.deleteAllByStepExecutionId(stepExecution.getId());
-    }
-    if (!fileService.clearDir()) {
-      throw new RuntimeException("Could not clear directory");
     }
   }
 
