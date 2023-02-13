@@ -7,6 +7,7 @@ import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_LOADING_
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_SERVICE_POINT_CSV_JOB_NAME;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.START_AT_JOB_PARAMETER;
 
+import ch.sbb.atlas.base.service.amazon.service.FileService;
 import ch.sbb.importservice.repository.ImportProcessedItemRepository;
 import java.util.Map;
 import lombok.AllArgsConstructor;
@@ -50,9 +51,12 @@ public class RecoveryJobsRunner implements ApplicationRunner {
   @Qualifier(IMPORT_LOADING_POINT_CSV_JOB_NAME)
   private final Job importLoadingPointCsvJob;
 
+  private final FileService fileService;
+
   @Override
   public void run(ApplicationArguments args) throws Exception {
     log.info("Checking jobs to recover...");
+    cleanDownloadedFiles();
     recoverJob(IMPORT_SERVICE_POINT_CSV_JOB_NAME);
     recoverJob(IMPORT_LOADING_POINT_CSV_JOB_NAME);
   }
@@ -60,6 +64,7 @@ public class RecoveryJobsRunner implements ApplicationRunner {
   void recoverJob(String jobName)
       throws JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException,
       JobParametersInvalidException {
+
     log.info("Checking for job {}...", jobName);
     JobInstance jobInstance = jobExplorer.getLastJobInstance(jobName);
     if (jobInstance != null) {
@@ -67,12 +72,7 @@ public class RecoveryJobsRunner implements ApplicationRunner {
       if (lastJobExecution != null && lastJobExecution.getStatus().isRunning()) {
         JobParameters jobParameters = getJobParameters(lastJobExecution);
         if (hasJobParameterExecutionBatch(jobParameters)) {
-          log.info("Found a Job status {} to recover...", lastJobExecution.getStatus());
-          log.info("Recovering job {} ...", lastJobExecution);
-          updateLastJobExecutionStatus(lastJobExecution);
-          clearImportedProcessedItem(lastJobExecution);
-          JobExecution execution = jobLauncher.run(getJobToRecover(jobName), jobParameters);
-          log.info(execution.toString());
+          doRevoverUnfinishedJob(jobName, lastJobExecution, jobParameters);
         } else {
           log.info("No job {} found to recover.", jobName);
         }
@@ -81,6 +81,22 @@ public class RecoveryJobsRunner implements ApplicationRunner {
       }
     }
     log.info("No job {} found to recover.", jobName);
+  }
+
+  private void doRevoverUnfinishedJob(String jobName, JobExecution lastJobExecution, JobParameters jobParameters)
+      throws JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException,
+      JobParametersInvalidException {
+    log.info("Found a Job status {} to recover...", lastJobExecution.getStatus());
+    log.info("Recovering job {} ...", lastJobExecution);
+    updateLastJobExecutionStatus(lastJobExecution);
+    clearImportedProcessedItem(lastJobExecution);
+    JobExecution execution = jobLauncher.run(getJobToRecover(jobName), jobParameters);
+    log.info(execution.toString());
+  }
+
+  private void cleanDownloadedFiles() {
+    log.info("Cleaning downloaded csv files directory..");
+    fileService.clearDir();
   }
 
   private boolean hasJobParameterExecutionBatch(JobParameters jobParameters) {
