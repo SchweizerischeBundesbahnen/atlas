@@ -6,5 +6,5 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./info-icon.component.scss'],
 })
 export class InfoIconComponent {
-  @Input() infoTitle!: string;
+  @Input() infoTitle = '';
 }
