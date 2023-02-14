@@ -10,20 +10,18 @@ import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeoloca
 import ch.sbb.atlas.servicepointdirectory.enumeration.Category;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
 import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
-import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.ServicePointStatus;
 import ch.sbb.atlas.servicepointdirectory.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.SwissCanton;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
-@Transactional
 public class ServicePointVersionRepositoryTest {
 
   private final ServicePointVersionRepository servicePointVersionRepository;
@@ -294,5 +292,56 @@ public class ServicePointVersionRepositoryTest {
 
     // then
     assertThat(result).isFalse();
+  }
+
+  @Test
+  void shouldLoadServicePointVersionWithCategoriesAndMeansOfTransport() {
+    // given
+    ServicePointGeolocation servicePointGeolocation = ServicePointGeolocation
+        .builder()
+        .spatialReference(SpatialReference.LV95)
+        .east(2600037.945)
+        .north(1199749.812)
+        .height(2540.21)
+        .country(Country.SWITZERLAND)
+        .swissCanton(SwissCanton.BERN)
+        .swissDistrictName("Bern")
+        .swissDistrictNumber(5)
+        .swissMunicipalityNumber(5)
+        .swissMunicipalityName("Bern")
+        .swissLocalityName("Bern")
+        .build();
+
+    ServicePointNumber servicePointNumber = ServicePointNumber.of(85070003);
+    ServicePointVersion servicePoint = ServicePointVersion
+        .builder()
+        .number(servicePointNumber)
+        .numberShort(1)
+        .country(Country.SWITZERLAND)
+        .designationLong("long designation")
+        .designationOfficial("official designation")
+        .abbreviation("BE")
+        .statusDidok3(ServicePointStatus.from(1))
+        .businessOrganisation("somesboid")
+        .status(Status.VALIDATED)
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 12, 31))
+        .categories(Set.of(Category.BORDER_POINT, Category.DISTRIBUTION_POINT))
+        .meansOfTransport(Set.of(MeanOfTransport.BUS, MeanOfTransport.TRAIN))
+        .servicePointGeolocation(servicePointGeolocation)
+        .build();
+    servicePointGeolocation.setServicePointVersion(servicePoint);
+    servicePointVersionRepository.save(servicePoint);
+
+    // when
+    List<ServicePointVersion> result = servicePointVersionRepository.findAllByNumberOrderByValidFrom(
+        servicePointNumber);
+
+    // then
+    assertThat(result).hasSize(1);
+    assertThat(result.get(0).getCategories()).hasSize(2);
+    assertThat(result.get(0).getMeansOfTransport()).hasSize(2);
+    assertThat(result.get(0).hasGeolocation()).isTrue();
+    assertThat(result.get(0).getServicePointGeolocation()).isNotNull();
   }
 }
