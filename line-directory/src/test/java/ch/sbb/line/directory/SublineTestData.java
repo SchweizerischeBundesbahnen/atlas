@@ -13,7 +13,7 @@ import java.time.LocalDate;
 
 public class SublineTestData {
 
-  public static final String MAINLINE_SLNID = "mainlineSlnid";
+  public static final String MAINLINE_SLNID = "ch:1:slnid:1000546";
 
   public static SublineVersionBuilder<?, ?> sublineVersionBuilder() {
     return SublineVersion.builder()

@@ -76,7 +76,9 @@ public class LineService {
 
   public void skipWorkflow(Long lineVersionId) {
     LineVersion lineVersion = findById(lineVersionId).orElseThrow(() -> new IdNotFoundException(lineVersionId));
-    lineVersion.setStatus(Status.VALIDATED);
+    if (lineVersion.getStatus() == Status.DRAFT) {
+      lineVersion.setStatus(Status.VALIDATED);
+    }
   }
 
   public void deleteById(Long id) {
