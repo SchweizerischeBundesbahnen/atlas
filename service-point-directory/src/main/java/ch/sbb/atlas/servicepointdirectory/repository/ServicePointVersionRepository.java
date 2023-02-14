@@ -8,11 +8,11 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ServicePointVersionRepository extends
-    JpaRepository<ServicePointVersion, Long>, JpaSpecificationExecutor<ServicePointVersion> {
+public interface ServicePointVersionRepository extends JpaRepository<ServicePointVersion, Long>,
+    JpaSpecificationExecutor<ServicePointVersion> {
 
   List<ServicePointVersion> findAllByNumberOrderByValidFrom(ServicePointNumber number);
 
   boolean existsByNumber(ServicePointNumber servicePointNumber);
-  
+
 }
