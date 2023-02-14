@@ -17,6 +17,7 @@ import { Component, Input } from '@angular/core';
 import { ErrorNotificationComponent } from '../../../core/notification/error/error-notification.component';
 import { InfoIconComponent } from '../../../core/form-components/info-icon/info-icon.component';
 import { MockAppDetailWrapperComponent, MockBoSelectComponent } from '../../../app.testing.mocks';
+import { CommentComponent } from '../../../core/form-components/comment/comment.component';
 
 const version: TimetableFieldNumberVersion = {
   id: 1,
@@ -100,6 +101,7 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
         MockBoSelectComponent,
         ErrorNotificationComponent,
         InfoIconComponent,
+        CommentComponent,
       ],
       imports: [AppTestingModule],
       providers: [
