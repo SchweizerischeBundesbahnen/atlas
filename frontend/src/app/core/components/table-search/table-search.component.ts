@@ -115,7 +115,12 @@ export class TableSearchComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.searchStatusType === 'WORKFLOW_STATUS') {
-      this.STATUS_OPTIONS = Object.values(WorkflowStatus);
+      this.STATUS_OPTIONS = Object.values(WorkflowStatus).filter(
+        (value) =>
+          value === WorkflowStatus.Added ||
+          value === WorkflowStatus.Approved ||
+          value === WorkflowStatus.Rejected
+      );
       this.STATUS_TYPES_PREFIX_LABEL = 'WORKFLOW.STATUS.';
     }
   }
