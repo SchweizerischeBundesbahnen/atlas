@@ -154,10 +154,10 @@
       "DESCRIPTION": "Hier finden Sie alle Informationen zu den berechtigten Benutzern und können diese verwalten."
     },
     "SERVICE_POINTS": {
-          "TITLE": "Dienststellen verwalten",
-          "TITLE_HEADER": "Dienststellen",
-          "DESCRIPTION": "Hier finden Sie alle Informationen zum Bearbeiten und neu Erstellen von Dienststellen."
-        },
+      "TITLE": "Dienststellen verwalten",
+      "TITLE_HEADER": "Dienststellen",
+      "DESCRIPTION": "Hier finden Sie alle Informationen zum Bearbeiten und neu Erstellen von Dienststellen."
+    },
     "DETAILS": "Details"
   },
   "PAGINATOR": {
@@ -343,9 +343,9 @@
     "LINE_VERSION_SNAPSHOT": {
       "LINE_VERSION_NOT_EXISTS_WARNING_TOOLTIP": "Die Version der Linie existiert nicht mehr: sie wurde entweder gelöscht oder mit anderen Versionen zusammengelegt.",
       "DETAIL_WORKFLOW_INFORMATION": "Informationen zur Anhörung",
-      "DETAIL_LINE_SNAPSHOT": "Historisierte Linien Detail",
-      "NAVIGATE_TO_VERSION": "Gehe zur Linie Detail Ansicht",
-      "NAVIGATE_TO_SNAPHOT": "Gehe zur Historisierte Linien Detail Ansicht",
+      "DETAIL_LINE_SNAPSHOT": "Historisierte Linien Details",
+      "NAVIGATE_TO_VERSION": "Gehe zur Linien Detail Ansicht",
+      "NAVIGATE_TO_SNAPHOT": "Gehe zur Liste aller Anhörungen dieser Linie",
       "TAB_HEADER": "Linien Anhörungen",
       "TABLE_HEADER": "Linien Anhörungen",
       "TABLE": {
