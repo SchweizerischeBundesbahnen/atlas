@@ -26,6 +26,13 @@ spring:
     name: service-point-directory
   jpa:
     open-in-view: false
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        order_inserts: true
+        jdbc:
+          batch_size: 500
   jmx:
     enabled: true
   security:

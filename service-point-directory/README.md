@@ -4,11 +4,11 @@
 
 - [Service Point Directory in ATLAS](#service-point-directory-in-atlas)
 - [Links](#links)
-  * [Localhost](#localhost)
-  * [Development](#development)
-  * [Test](#test)
-  * [Integration](#integration)
-  * [Production](#production)
+    * [Localhost](#localhost)
+    * [Development](#development)
+    * [Test](#test)
+    * [Integration](#integration)
+    * [Production](#production)
 - [Legacy Documentation - DB Schema - Didok](#legacy-documentation---db-schema---didok)
 
 <!-- tocstop -->
@@ -23,12 +23,59 @@ The main goal is to serve the following business objects:
 
 Each of these business objects has its own versioning.
 
-`TrafficPointElements` and `LoadingPoints` always belong to a `ServicePoint`, referencing it via `servicePointNumber`.
+`TrafficPointElements` and `LoadingPoints` always belong to a `ServicePoint`, referencing it
+via `servicePointNumber`.
 
 These objects are stored and represented in our [Database Schema](src/docs/db-schema.md)
-Additional business documentation may be found on Confluence: https://confluence.sbb.ch/display/ATLAS/%5BDiDok%5D+Dienststellenverwaltung
+Additional business documentation may be found on
+Confluence: https://confluence.sbb.ch/display/ATLAS/%5BDiDok%5D+Dienststellenverwaltung
 
-A glossary of used abbreviations may be found here: https://confluence.sbb.ch/display/ATLAS/%5BATLAS%5D+Glossar
+A glossary of used abbreviations may be found
+here: https://confluence.sbb.ch/display/ATLAS/%5BATLAS%5D+Glossar
+
+## Service Point geographic data in ATLAS
+
+The main goal is to serve geographic information about service points and visualize on a map,
+without
+using any 3rd-party services or SDKs.
+
+### How?
+
+All coordinates and attributes of service points, are mapped
+as [mapbox vector tiles](https://docs.mapbox.com/data/tilesets/guides/vector-tiles-standards/).
+
+Then the resulting vector tile object is serialized
+to [Google Protobufs (PBF)](https://github.com/protocolbuffers/protobuf),
+and send in response back to a web client.
+
+Protobuf is open source and it performs better than
+json+gzip: https://auth0.com/blog/beating-json-performance-with-protobuf/
+
+There are several open source web client libraries, to read and display protobuf vector tiles on
+a map in Web:
+
+- [Mapbox GL JS](https://github.com/mapbox/mapbox-gl-js) - JavaScript/WebGL vector maps library.
+- [MapLibre GL](https://github.com/maplibre/maplibre-gl-js) - Is a community led fork derived from
+  Mapbox GL JS prior to their switch to a non-OSS license.
+- [OpenLayers](https://openlayers.org/en/latest/examples/mapbox-vector-layer.html) - JavaScript
+  vector & raster library.
+- [Vector Tiles Google Maps](https://github.com/techjb/Vector-Tiles-Google-Maps) - Render vector
+  tile layers on Google Maps.
+
+_(Find an extended list on https://github.com/mapbox/awesome-vector-tiles)._
+
+We are using [MapLibre](https://maplibre.org/), which is the best Open Source alternative of the
+Mapbox GL Client.
+
+The JAVA Backend vector tiles encoder service, was found
+on [GitHub](https://github.com/ElectronicChartCentre/java-vector-tile) and simplified to handle
+Point-Geometries-Only.
+
+#### Important DEV-notice
+
+Always provide all input coordinates for vector tiles in Wgs84WebMercator spatial
+reference (https://epsg.io/3857), which is the coordinate system, used for rendering maps in Google
+Maps, OpenStreetMap, etc.
 
 ## Links
 
@@ -75,9 +122,10 @@ A glossary of used abbreviations may be found here: https://confluence.sbb.ch/di
 * Swagger
   UI:  https://service-point-directory.sbb-cloud.net/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
 
-
 ## Legacy Documentation - DB Schema - Didok
 
 - Model: https://confluence.sbb.ch/display/ADIDOK/Datenbank
-- Migration plan: https://sbb.sharepoint.com/:x:/s/didok-atlas/ERrMJki5bFtMqGjShTeKSOQBkUqI2hq4cPixMOXZHqUucg?e=etg8dr
-- ServicePoint Category Tree: https://confluence.sbb.ch/display/ADIDOK/Big+Picture#BigPicture-Kategorienbaum
+- Migration
+  plan: https://sbb.sharepoint.com/:x:/s/didok-atlas/ERrMJki5bFtMqGjShTeKSOQBkUqI2hq4cPixMOXZHqUucg?e=etg8dr
+- ServicePoint Category
+  Tree: https://confluence.sbb.ch/display/ADIDOK/Big+Picture#BigPicture-Kategorienbaum
