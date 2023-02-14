@@ -8,34 +8,54 @@ import ch.sbb.line.directory.SublineTestData;
 import ch.sbb.line.directory.entity.SublineVersion;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.concurrent.DelegatingSecurityContextRunnable;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
 @Transactional
 public class SublineVersionRepositoryTest {
 
-  private static final SublineVersion SUBLINE_VERSION = SublineTestData.sublineVersion();
   private final SublineVersionRepository sublineVersionRepository;
+  private SublineVersion defaultSublineVersion;
 
   @Autowired
   public SublineVersionRepositoryTest(SublineVersionRepository sublineVersionRepository) {
     this.sublineVersionRepository = sublineVersionRepository;
   }
 
+  @BeforeEach
+  void setUp() {
+    defaultSublineVersion = SublineTestData.sublineVersion();
+  }
+
+  @AfterEach
+  void tearDown() {
+    sublineVersionRepository.deleteAll();
+  }
+
   @Test
   void shouldGetSimpleVersion() {
     //given
-    sublineVersionRepository.save(SUBLINE_VERSION);
+    sublineVersionRepository.save(defaultSublineVersion);
 
     //when
     SublineVersion result = sublineVersionRepository.findAll().get(0);
 
     //then
     assertThat(result).usingRecursiveComparison().ignoringActualNullFields().isEqualTo(
-        SUBLINE_VERSION);
+        defaultSublineVersion);
     assertThat(result.getSlnid()).startsWith("ch:1:slnid:");
+    assertThat(result.getSlnid()).startsWith(result.getMainlineSlnid());
 
     assertThat(result.getCreationDate()).isNotNull();
     assertThat(result.getEditionDate()).isNotNull();
@@ -47,7 +67,7 @@ public class SublineVersionRepositoryTest {
   @Test
   void shouldGetCountVersions() {
     //when
-    sublineVersionRepository.save(SUBLINE_VERSION);
+    sublineVersionRepository.save(defaultSublineVersion);
     long result = sublineVersionRepository.count();
 
     //then
@@ -57,7 +77,7 @@ public class SublineVersionRepositoryTest {
   @Test
   void shouldDeleteVersion() {
     //given
-    SublineVersion sublineVersion = sublineVersionRepository.save(SUBLINE_VERSION);
+    SublineVersion sublineVersion = sublineVersionRepository.save(defaultSublineVersion);
 
     //when
     sublineVersionRepository.delete(sublineVersion);
@@ -70,11 +90,11 @@ public class SublineVersionRepositoryTest {
   @Test
   void shouldDeleteVersions() {
     //given
-    SublineVersion sublineVersion = sublineVersionRepository.saveAndFlush(SUBLINE_VERSION);
+    SublineVersion sublineVersion = sublineVersionRepository.saveAndFlush(defaultSublineVersion);
     String slnid = sublineVersion.getSlnid();
     List<SublineVersion> sublineVersions = sublineVersionRepository.findAllBySlnidOrderByValidFrom(
         slnid);
-    assertThat(sublineVersions.size()).isEqualTo(1);
+    assertThat(sublineVersions).hasSize(1);
 
     //when
     sublineVersionRepository.deleteAll(sublineVersions);
@@ -102,7 +122,7 @@ public class SublineVersionRepositoryTest {
                        .build());
     // When
     assertThat(
-        sublineVersionRepository.findSwissLineNumberOverlaps(SUBLINE_VERSION).isEmpty()).isTrue();
+        sublineVersionRepository.findSwissLineNumberOverlaps(defaultSublineVersion)).isEmpty();
 
     // Then
   }
@@ -121,7 +141,7 @@ public class SublineVersionRepositoryTest {
                                                  .build());
     // When
     assertThat(
-        sublineVersionRepository.findSwissLineNumberOverlaps(SUBLINE_VERSION).isEmpty()).isFalse();
+        sublineVersionRepository.findSwissLineNumberOverlaps(defaultSublineVersion)).isNotEmpty();
 
     // Then
   }
@@ -139,7 +159,7 @@ public class SublineVersionRepositoryTest {
                        .build());
     // When
     assertThat(
-        sublineVersionRepository.findSwissLineNumberOverlaps(SUBLINE_VERSION).isEmpty()).isFalse();
+        sublineVersionRepository.findSwissLineNumberOverlaps(defaultSublineVersion)).isNotEmpty();
 
     // Then
   }
@@ -153,13 +173,11 @@ public class SublineVersionRepositoryTest {
     // Given
     sublineVersionRepository.save(
         SublineTestData.sublineVersionBuilder().validFrom(LocalDate.of(2000, 1, 1))
-                       .validTo(LocalDate.of(2020, 10, 31))
-                       .build());
-    // When
-    assertThat(
-        sublineVersionRepository.findSwissLineNumberOverlaps(SUBLINE_VERSION).isEmpty()).isFalse();
+            .validTo(LocalDate.of(2020, 10, 31))
+            .build());
 
     // Then
+    assertThat(sublineVersionRepository.findSwissLineNumberOverlaps(defaultSublineVersion)).isNotEmpty();
   }
 
   /**
@@ -169,25 +187,21 @@ public class SublineVersionRepositoryTest {
   @Test
   void shouldAllowUpdateOnSameLineVersion() {
     // Given
-    SublineVersion entity = sublineVersionRepository.save(SUBLINE_VERSION);
-    // When
-    assertThat(
-        sublineVersionRepository.findSwissLineNumberOverlaps(SUBLINE_VERSION).isEmpty()).isTrue();
-
+    sublineVersionRepository.save(defaultSublineVersion);
     // Then
+    assertThat(sublineVersionRepository.findSwissLineNumberOverlaps(defaultSublineVersion)).isEmpty();
   }
 
   @Test
   void shouldGetFullLineVersions() {
     //given
-    sublineVersionRepository.save(SUBLINE_VERSION);
+    sublineVersionRepository.save(defaultSublineVersion);
 
     //when
     List<SublineVersion> result = sublineVersionRepository.getFullSublineVersions();
 
     //then
-    assertThat(result.size()).isEqualTo(1);
-    assertThat(result).containsAll(result);
+    assertThat(result).hasSize(1).containsAll(result);
   }
 
   @Test
@@ -203,8 +217,6 @@ public class SublineVersionRepositoryTest {
         LocalDate.of(2022, 1, 1));
 
     //then
-    assertThat(result.size()).isEqualTo(1);
-    assertThat(result).containsAll(result);
-
+    assertThat(result).hasSize(1).containsAll(result);
   }
 }

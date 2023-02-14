@@ -34,15 +34,18 @@ public abstract class BaseWorkflowProcessingService<T extends BaseVersion, Y ext
   void evaluateWorkflowProcessingStatus(WorkflowEvent lineWorkflowEvent, T objectVersion, Z versionSnapshot) {
     Status preUpdateStatus = objectVersion.getStatus();
 
-    switch (lineWorkflowEvent.getWorkflowStatus()) {
-      case ADDED -> objectVersion.setStatus(Status.IN_REVIEW);
-      case APPROVED -> objectVersion.setStatus(Status.VALIDATED);
-      case REJECTED -> objectVersion.setStatus(Status.DRAFT);
-      default -> throw new IllegalStateException("Use case not yet implemented!!");
+    if (preUpdateStatus != Status.REVOKED) {
+      switch (lineWorkflowEvent.getWorkflowStatus()) {
+        case ADDED -> objectVersion.setStatus(Status.IN_REVIEW);
+        case APPROVED -> objectVersion.setStatus(Status.VALIDATED);
+        case REJECTED -> objectVersion.setStatus(Status.DRAFT);
+        default -> throw new IllegalStateException("Use case not yet implemented!!");
+      }
+
+      versionSnapshot.setStatus(objectVersion.getStatus());
+      objectVersionSnapshotRepository.save(versionSnapshot);
+      log.info("Changed Object status from {} to {}", preUpdateStatus, objectVersion.getStatus());
     }
-    versionSnapshot.setStatus(objectVersion.getStatus());
-    objectVersionSnapshotRepository.save(versionSnapshot);
-    log.info("Changed Object status from {} to {}", preUpdateStatus, objectVersion.getStatus());
   }
 
   public T getObjectVersion(WorkflowEvent lineWorkflowEvent) {

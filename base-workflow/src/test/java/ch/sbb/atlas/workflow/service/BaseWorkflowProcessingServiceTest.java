@@ -25,7 +25,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public class BaseWorkflowEntityProcessingServiceTest {
+public class BaseWorkflowProcessingServiceTest {
 
   @Mock
   private ObjectVersionRepository objectVersionRepository;
@@ -48,7 +48,7 @@ public class BaseWorkflowEntityProcessingServiceTest {
   @Test
   public void shouldProcessWorkflowSuccessfully() {
     //given
-    WorkflowEvent workflowEvent = BaseWorkflowEntityProcessingServiceTest.WorkflowEvent.builder()
+    WorkflowEvent workflowEvent = BaseWorkflowProcessingServiceTest.WorkflowEvent.builder()
         .workflowId(1000L)
         .businessObjectId(1000L)
         .workflowStatus(WorkflowStatus.ADDED)
@@ -82,7 +82,7 @@ public class BaseWorkflowEntityProcessingServiceTest {
   @Test
   public void shouldUpdateObjectStatusToValidated() {
     //given
-    WorkflowEvent workflowEvent = BaseWorkflowEntityProcessingServiceTest.WorkflowEvent.builder()
+    WorkflowEvent workflowEvent = BaseWorkflowProcessingServiceTest.WorkflowEvent.builder()
         .workflowId(1000L)
         .businessObjectId(1000L)
         .workflowStatus(WorkflowStatus.APPROVED)
@@ -115,7 +115,7 @@ public class BaseWorkflowEntityProcessingServiceTest {
   @Test
   public void shouldUpdateObjectStatusToDraft() {
     //given
-    WorkflowEvent workflowEvent = BaseWorkflowEntityProcessingServiceTest.WorkflowEvent.builder()
+    WorkflowEvent workflowEvent = BaseWorkflowProcessingServiceTest.WorkflowEvent.builder()
         .workflowId(1000L)
         .businessObjectId(1000L)
         .workflowStatus(WorkflowStatus.REJECTED)
@@ -148,7 +148,7 @@ public class BaseWorkflowEntityProcessingServiceTest {
   @Test
   public void shouldNotProcessWorkflowWhenWorkflowStatusNotImplemenmted() {
     //given
-    WorkflowEvent workflowEvent = BaseWorkflowEntityProcessingServiceTest.WorkflowEvent.builder()
+    WorkflowEvent workflowEvent = BaseWorkflowProcessingServiceTest.WorkflowEvent.builder()
         .workflowId(1000L)
         .businessObjectId(1000L)
         .workflowStatus(WorkflowStatus.HEARING)
@@ -168,6 +168,40 @@ public class BaseWorkflowEntityProcessingServiceTest {
     assertThrows(IllegalStateException.class,
         () -> workflowProcessingService.processWorkflow(workflowEvent, objectVersion, objectVersionSnapshot));
 
+  }
+
+  @Test
+  public void shouldNotUpdateObjectStatusIfRevoked() {
+    //given
+    WorkflowEvent workflowEvent = BaseWorkflowProcessingServiceTest.WorkflowEvent.builder()
+        .workflowId(1000L)
+        .businessObjectId(1000L)
+        .workflowStatus(WorkflowStatus.ADDED)
+        .build();
+    ObjectVersion objectVersion = ObjectVersion.builder()
+        .status(Status.REVOKED)
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 2, 1))
+        .build();
+    when(objectVersionRepository.findById(1000L)).thenReturn(Optional.of(objectVersion));
+
+    ObjectWorkflowEntityVersion objectWorkflowVersion = ObjectWorkflowEntityVersion.builder()
+        .workflowId(workflowEvent.getWorkflowId())
+        .workflowProcessingStatus(WorkflowProcessingStatus.getProcessingStatus(workflowEvent.getWorkflowStatus()))
+        .objectVersion(objectVersion)
+        .build();
+
+    ObjectVersionSnapshot objectVersionSnapshot = ObjectVersionSnapshot.builder()
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 2, 1))
+        .build();
+
+    //when
+    workflowProcessingService.processWorkflow(workflowEvent, objectVersion, objectVersionSnapshot);
+    //then
+    verify(objectWorkflowRepository).save(objectWorkflowVersion);
+    verify(objectVersionRepository).save(objectVersion);
+    assertThat(objectVersion.getStatus()).isEqualTo(Status.REVOKED);
   }
 
   public interface ObjectVersionRepository extends JpaRepository<ObjectVersion, Long> {
