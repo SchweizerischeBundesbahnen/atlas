@@ -1,7 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.geodata.mapper;
 
+import ch.sbb.atlas.base.service.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeoData;
-import ch.sbb.atlas.servicepointdirectory.enumeration.SpatialReference;
 import ch.sbb.atlas.servicepointdirectory.model.CoordinatePair;
 import ch.sbb.atlas.servicepointdirectory.transformer.CoordinateTransformer;
 import java.util.Collection;

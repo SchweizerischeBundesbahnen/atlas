@@ -1,10 +1,10 @@
 package ch.sbb.atlas.servicepointdirectory.geodata.transformer;
 
+import ch.sbb.atlas.base.service.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.servicepointdirectory.enumeration.SpatialReference;
 import java.util.Map;
 import org.assertj.core.data.Offset;
 import org.junit.jupiter.api.Test;
