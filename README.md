@@ -246,3 +246,4 @@ ATLAS Angular App. See [Frontend documentation](frontend/README.md);
 ## Troubleshooting
 
 * [Sonarqube](documentation/Troubleshooting.md)
+
