@@ -2,7 +2,7 @@ package ch.sbb.business.organisation.directory.service.crd;
 
 import ch.sbb.business.organisation.directory.service.crd.CrdSoapClientConfig.CrdHeaders;
 import java.util.List;
-import javax.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBElement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
