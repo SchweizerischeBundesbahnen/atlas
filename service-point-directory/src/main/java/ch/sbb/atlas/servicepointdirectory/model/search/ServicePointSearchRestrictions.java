@@ -11,7 +11,7 @@ import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion_;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import javax.persistence.metamodel.SingularAttribute;
+import jakarta.persistence.metamodel.SingularAttribute;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;

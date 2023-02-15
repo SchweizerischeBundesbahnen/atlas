@@ -1,8 +1,8 @@
 package ch.sbb.business.organisation.directory.converter;
 
 import ch.sbb.atlas.api.bodi.enumeration.BusinessType;
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 
 @Converter
 public class BusinessTypeConverter implements AttributeConverter<BusinessType, String> {

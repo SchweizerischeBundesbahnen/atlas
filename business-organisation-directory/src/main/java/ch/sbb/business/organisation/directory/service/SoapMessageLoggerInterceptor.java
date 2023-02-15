@@ -1,7 +1,7 @@
 package ch.sbb.business.organisation.directory.service;
 
 import java.io.ByteArrayOutputStream;
-import javax.xml.soap.SOAPMessage;
+import jakarta.xml.soap.SOAPMessage;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
