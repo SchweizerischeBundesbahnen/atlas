@@ -1,8 +1,8 @@
 package ch.sbb.line.directory.converter;
 
 import ch.sbb.line.directory.model.CmykColor;
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 
 @Converter
 public class CmykColorConverter implements AttributeConverter<CmykColor, String> {

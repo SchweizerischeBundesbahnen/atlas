@@ -16,34 +16,38 @@
    <name>Atlas</name>
    <description>ATLAS - SKI Business Application</description>
    <properties>
+      <!-- Project Settings -->
       <java.version>17</java.version>
       <maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
       <timestamp>${maven.build.timestamp}</timestamp>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+      <!-- Spring -->
       <spring-cloud.version>2022.0.1</spring-cloud.version>
+
       <flyway-db.version>9.14.0</flyway-db.version>
+      <springdoc-openapi.version>1.6.14</springdoc-openapi.version>
+      <swagger-core.version>2.2.8</swagger-core.version>
+      <hibernate.jpa-modelgen.version>6.1.7.Final</hibernate.jpa-modelgen.version>
+
+      <!-- REST Doc -->
       <asciidoctor-plugin.version>2.2.2</asciidoctor-plugin.version>
       <spring-restdocs-mockmvc.version>3.0.0</spring-restdocs-mockmvc.version>
       <spring-auto-rest-docs-core.version>2.0.11</spring-auto-rest-docs-core.version>
-      <!-- Spring Boot Overrides -->
-      <!-- https://github.com/projectlombok/lombok/issues/3180 -->
-      <lombok.version>1.18.22</lombok.version>
-      <proj4j.version>1.2.2</proj4j.version>
 
-      <swagger-core.version>2.2.8</swagger-core.version>
-      <hibernate.jpa-modelgen.version>6.2.0.CR1</hibernate.jpa-modelgen.version>
-      <springdoc-openapi.version>1.6.14</springdoc-openapi.version>
+      <!-- Geo Data Libs -->
+      <proj4j.version>1.2.3</proj4j.version>
    </properties>
    <modules>
-      <!-- Order is important here-->
-      <!-- Libs first-->
+      <!-- Order is important here -->
+      <!-- Libs first -->
       <module>kafka</module>
       <module>base-service</module>
       <module>base-workflow</module>
       <module>searching</module>
       <module>user-administration-security</module>
       <module>atlas-api</module>
-      <!--  Services-->
+      <!--  Services -->
       <module>mail</module>
       <module>scheduling</module>
       <module>line-directory</module>
@@ -52,7 +56,7 @@
       <module>import-service-point</module>
       <module>user-administration</module>
       <module>workflow</module>
-      <!-- Combine APIs-->
+      <!-- Combine APIs -->
       <module>apim-configuration</module>
       <module>gateway</module>
       <module>frontend</module>
@@ -68,15 +72,13 @@
             <type>pom</type>
             <version>${spring-cloud.version}</version>
          </dependency>
-         <!--<dependency>
-            <artifactId>springdoc-openapi</artifactId>
-            <groupId>org.springdoc</groupId>
-            <scope>import</scope>
-            <type>pom</type>
-            <version>${springdoc-openapi.version}</version>
-         </dependency>-->
 
          <!-- Third Party-->
+         <dependency>
+            <artifactId>hibernate-jpamodelgen</artifactId>
+            <groupId>org.hibernate.orm</groupId>
+            <version>${hibernate.jpa-modelgen.version}</version>
+         </dependency>
          <dependency>
             <artifactId>springdoc-openapi-ui</artifactId>
             <groupId>org.springdoc</groupId>
@@ -187,6 +189,20 @@
                <artifactId>maven-compiler-plugin</artifactId>
                <groupId>org.apache.maven.plugins</groupId>
                <version>${maven-compiler-plugin.version}</version>
+               <configuration>
+                  <annotationProcessorPaths>
+                     <path>
+                        <groupId>org.projectlombok</groupId>
+                        <artifactId>lombok</artifactId>
+                        <version>${lombok.version}</version>
+                     </path>
+                     <path>
+                        <groupId>org.hibernate.orm</groupId>
+                        <artifactId>hibernate-jpamodelgen</artifactId>
+                        <version>${hibernate.jpa-modelgen.version}</version>
+                     </path>
+                  </annotationProcessorPaths>
+               </configuration>
             </plugin>
             <plugin>
                <artifactId>maven-source-plugin</artifactId>
