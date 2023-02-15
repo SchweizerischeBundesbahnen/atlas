@@ -36,6 +36,9 @@
 
       <!-- Geo Data Libs -->
       <proj4j.version>1.2.3</proj4j.version>
+
+      <!-- Spring Overrides -->
+      <junit-jupiter.version>5.8.2</junit-jupiter.version>
    </properties>
    <modules>
       <!-- Order is important here -->
@@ -221,18 +224,6 @@
                </executions>
                <groupId>org.apache.maven.plugins</groupId>
                <version>${maven-source-plugin.version}</version>
-            </plugin>
-            <plugin>
-               <artifactId>maven-jaxb2-plugin</artifactId>
-               <executions>
-                  <execution>
-                     <goals>
-                        <goal>generate</goal>
-                     </goals>
-                  </execution>
-               </executions>
-               <groupId>org.jvnet.jaxb2.maven2</groupId>
-               <version>0.15.2</version>
             </plugin>
          </plugins>
       </pluginManagement>
