@@ -2,7 +2,15 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
-import { LinesService, LineType, LineVersion, PaymentType, Status } from '../../../../api';
+import {
+  LinesService,
+  LineType,
+  LineVersion,
+  LineVersionWorkflow,
+  PaymentType,
+  Status,
+  WorkflowProcessingStatus,
+} from '../../../../api';
 import { LineDetailComponent } from './line-detail.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -16,6 +24,7 @@ import {
 import { AuthService } from '../../../../core/auth/auth.service';
 import { LineDetailFormComponent } from './line-detail-form/line-detail-form.component';
 import { CommentComponent } from '../../../../core/form-components/comment/comment.component';
+import { LinkIconComponent } from '../../../../core/form-components/link-icon/link-icon.component';
 
 const lineVersion: LineVersion = {
   id: 1234,
@@ -33,6 +42,7 @@ const lineVersion: LineVersion = {
   colorBackRgb: '',
   colorFontCmyk: '',
   colorFontRgb: '',
+  lineVersionWorkflows: new Set<LineVersionWorkflow>(),
 };
 
 const error = new HttpErrorResponse({
@@ -194,6 +204,74 @@ describe('LineDetailComponent for new lineVersion', () => {
       expect(component.form.enabled).toBeTrue();
     });
   });
+
+  describe('Show snapshot history', () => {
+    it('Should show snapshot history without workflow but orderly and validated', () => {
+      //given
+      lineVersion.status = Status.Validated;
+      lineVersion.lineType = LineType.Orderly;
+      lineVersion.lineVersionWorkflows?.clear();
+      fixture.componentInstance.record = lineVersion;
+      //when
+      const result = fixture.componentInstance.showSnapshotHistoryLink();
+      //then
+      expect(result).toBeTruthy();
+    });
+
+    it('Should not show snapshot history without workflow when Temporary and validated', () => {
+      //given
+      lineVersion.status = Status.Validated;
+      lineVersion.lineType = LineType.Temporary;
+      lineVersion.lineVersionWorkflows?.clear();
+      fixture.componentInstance.record = lineVersion;
+      //when
+      const result = fixture.componentInstance.showSnapshotHistoryLink();
+      //then
+      expect(result).toBeFalsy();
+    });
+
+    it('Should not show snapshot history without workflow when Operational and validated', () => {
+      //given
+      lineVersion.status = Status.Validated;
+      lineVersion.lineType = LineType.Operational;
+      lineVersion.lineVersionWorkflows?.clear();
+      fixture.componentInstance.record = lineVersion;
+      //when
+      const result = fixture.componentInstance.showSnapshotHistoryLink();
+      //then
+      expect(result).toBeFalsy();
+    });
+
+    it('Should show snapshot history with workflow evaluated', () => {
+      //given
+      const lineWorkflow: LineVersionWorkflow = {
+        workflowId: 1,
+        workflowProcessingStatus: WorkflowProcessingStatus.Evaluated,
+      };
+      lineVersion.lineVersionWorkflows?.add(lineWorkflow);
+      fixture.componentInstance.record = lineVersion;
+
+      //when
+      const result = fixture.componentInstance.showSnapshotHistoryLink();
+      //then
+      expect(result).toBeTruthy();
+    });
+
+    it('Should show snapshot history with workflow in progress', () => {
+      //given
+      const lineWorkflow: LineVersionWorkflow = {
+        workflowId: 1,
+        workflowProcessingStatus: WorkflowProcessingStatus.InProgress,
+      };
+      lineVersion.lineVersionWorkflows?.add(lineWorkflow);
+      fixture.componentInstance.record = lineVersion;
+
+      //when
+      const result = fixture.componentInstance.showSnapshotHistoryLink();
+      //then
+      expect(result).toBeTruthy();
+    });
+  });
 });
 
 function setupTestBed(linesService: LinesService, data: { lineDetail: string | LineVersion }) {
@@ -206,6 +284,7 @@ function setupTestBed(linesService: LinesService, data: { lineDetail: string | L
       ErrorNotificationComponent,
       InfoIconComponent,
       CommentComponent,
+      LinkIconComponent,
     ],
     imports: [AppTestingModule],
     providers: [
