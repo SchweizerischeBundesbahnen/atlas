@@ -61,7 +61,12 @@
       <dependency>
          <artifactId>aws-java-sdk</artifactId>
          <groupId>com.amazonaws</groupId>
-         <version>1.12.316</version>
+      </dependency>
+      <!-- Needed for AWS -->
+      <dependency>
+         <artifactId>jaxb-api</artifactId>
+         <groupId>javax.xml.bind</groupId>
+         <version>2.4.0-b180830.0359</version>
       </dependency>
       <dependency>
          <artifactId>lombok</artifactId>
