@@ -23,6 +23,7 @@ import { LineDetailFormComponent } from '../../lines/detail/line-detail-form/lin
 import { LinkIconComponent } from '../../../../core/form-components/link-icon/link-icon.component';
 import { of } from 'rxjs';
 import { CommentComponent } from '../../../../core/form-components/comment/comment.component';
+import { UserDetailInfoComponent } from '../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
 
 const lineVersionSnapsot: LineVersionSnapshot = {
   id: 1234,
@@ -118,6 +119,7 @@ function setupTestBed(
       InfoIconComponent,
       MockDialogCloseComponent,
       CommentComponent,
+      UserDetailInfoComponent,
     ],
     imports: [AppTestingModule],
     providers: [
