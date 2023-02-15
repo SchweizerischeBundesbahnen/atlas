@@ -55,8 +55,7 @@
       </dependency>
       <dependency>
          <artifactId>hibernate-jpamodelgen</artifactId>
-         <groupId>org.hibernate</groupId>
-         <version>${hibernate.jpa-modelgen.version}</version>
+         <groupId>org.hibernate.orm</groupId>
       </dependency>
       <dependency>
          <artifactId>base-service</artifactId>
@@ -113,6 +112,10 @@
          <artifactId>h2</artifactId>
          <groupId>com.h2database</groupId>
          <scope>test</scope>
+      </dependency>
+      <dependency>
+         <groupId>org.springdoc</groupId>
+         <artifactId>springdoc-openapi-common</artifactId>
       </dependency>
    </dependencies>
    <build>
