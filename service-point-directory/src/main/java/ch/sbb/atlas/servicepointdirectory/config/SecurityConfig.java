@@ -9,6 +9,7 @@ import ch.sbb.atlas.user.administration.security.UserAdministrationConfig;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.HttpMethod;
@@ -31,6 +32,7 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 
 @Import(UserAdministrationConfig.class)
 @EnableWebSecurity
+@Configuration
 public class SecurityConfig {
 
   @Value("${spring.security.oauth2.resourceserver.jwt.issuer-uri}")
