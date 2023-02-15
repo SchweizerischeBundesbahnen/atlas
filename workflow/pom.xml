@@ -39,7 +39,7 @@
          <groupId>org.springframework.boot</groupId>
       </dependency>
       <dependency>
-         <artifactId>springdoc-openapi-ui</artifactId>
+         <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
          <groupId>org.springdoc</groupId>
       </dependency>
       <dependency>
