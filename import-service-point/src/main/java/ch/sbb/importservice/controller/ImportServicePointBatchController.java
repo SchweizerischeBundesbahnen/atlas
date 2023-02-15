@@ -1,4 +1,4 @@
-package ch.sbb.importservice.contoller;
+package ch.sbb.importservice.controller;
 
 import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_BATCH_PARAMETER;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_TYPE_PARAMETER;
