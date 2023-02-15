@@ -87,7 +87,7 @@ public class SublineControllerApiTest extends BaseControllerWithAmazonS3ApiTest 
             .build();
     //when
     lineVersionModel.setValidFrom(LocalDate.of(2000, 1, 2));
-    mvc.perform(post("/v1/sublines/versions/")
+    mvc.perform(post("/v1/sublines/versions")
             .contentType(contentType)
             .content(mapper.writeValueAsString(sublineVersionModel)))
         .andExpect(status().isCreated());
@@ -105,7 +105,7 @@ public class SublineControllerApiTest extends BaseControllerWithAmazonS3ApiTest 
     sublineController.createSublineVersion(sublineVersionModel);
 
     //when
-    mvc.perform(get("/v1/sublines/")
+    mvc.perform(get("/v1/sublines")
             .queryParam("page", "0")
             .queryParam("size", "5")
             .queryParam("sort", "swissSublineNumber,asc"))
@@ -184,7 +184,7 @@ public class SublineControllerApiTest extends BaseControllerWithAmazonS3ApiTest 
         sublineVersionModel);
 
     //when
-    mvc.perform(post("/v1/sublines/versions/")
+    mvc.perform(post("/v1/sublines/versions")
             .contentType(contentType)
             .content(mapper.writeValueAsString(sublineVersionModel)))
         .andExpect(status().isConflict())
@@ -298,7 +298,7 @@ public class SublineControllerApiTest extends BaseControllerWithAmazonS3ApiTest 
             .build();
 
     //when
-    mvc.perform(post("/v1/sublines/versions/")
+    mvc.perform(post("/v1/sublines/versions")
             .contentType(contentType)
             .content(mapper.writeValueAsString(sublineVersionModel)))
         .andExpect(status().isCreated());
