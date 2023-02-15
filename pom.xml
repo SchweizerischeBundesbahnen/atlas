@@ -26,7 +26,6 @@
       <spring-cloud.version>2022.0.1</spring-cloud.version>
 
       <flyway-db.version>9.14.0</flyway-db.version>
-      <springdoc-openapi.version>1.6.14</springdoc-openapi.version>
       <swagger-core.version>2.2.8</swagger-core.version>
       <hibernate.jpa-modelgen.version>6.1.7.Final</hibernate.jpa-modelgen.version>
 
@@ -80,14 +79,14 @@
             <version>${hibernate.jpa-modelgen.version}</version>
          </dependency>
          <dependency>
-            <artifactId>springdoc-openapi-ui</artifactId>
             <groupId>org.springdoc</groupId>
-            <version>${springdoc-openapi.version}</version>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.0.2</version>
          </dependency>
          <dependency>
-            <artifactId>springdoc-openapi-common</artifactId>
             <groupId>org.springdoc</groupId>
-            <version>${springdoc-openapi.version}</version>
+            <artifactId>springdoc-openapi-starter-common</artifactId>
+            <version>2.0.2</version>
          </dependency>
          <dependency>
             <artifactId>flyway-core</artifactId>
@@ -104,6 +103,12 @@
             <artifactId>proj4j-epsg</artifactId>
             <version>${proj4j.version}</version>
          </dependency>
+         <dependency>
+            <artifactId>aws-java-sdk</artifactId>
+            <groupId>com.amazonaws</groupId>
+            <version>1.12.316</version>
+         </dependency>
+
          <dependency>
             <artifactId>spring-restdocs-mockmvc</artifactId>
             <groupId>org.springframework.restdocs</groupId>
