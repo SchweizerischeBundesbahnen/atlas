@@ -6,7 +6,7 @@ import ch.sbb.atlas.searching.SpecificationBuilder;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisation;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisation_;
 import java.util.List;
-import javax.persistence.metamodel.SingularAttribute;
+import jakarta.persistence.metamodel.SingularAttribute;
 import lombok.Getter;
 import lombok.Singular;
 import lombok.ToString;

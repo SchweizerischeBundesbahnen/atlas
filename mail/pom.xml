@@ -55,7 +55,7 @@
          <version>1.173.0</version>
          <exclusions>
             <exclusion>
-               <groupId>org.hibernate</groupId>
+               <groupId>org.hibernate.orm</groupId>
                <artifactId>hibernate-jpamodelgen</artifactId>
             </exclusion>
             <exclusion>
