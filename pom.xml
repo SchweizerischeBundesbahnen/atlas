@@ -36,9 +36,6 @@
 
       <!-- Geo Data Libs -->
       <proj4j.version>1.2.3</proj4j.version>
-
-      <!-- Spring Overrides -->
-      <junit-jupiter.version>5.8.2</junit-jupiter.version>
    </properties>
    <modules>
       <!-- Order is important here -->
