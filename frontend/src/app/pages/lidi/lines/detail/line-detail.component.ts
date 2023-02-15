@@ -7,7 +7,6 @@ import {
   LineVersionWorkflow,
   PaymentType,
   Status,
-  WorkflowProcessingStatus,
 } from '../../../../api';
 import { BaseDetailController } from '../../../../core/components/base-detail/base-detail-controller';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -109,11 +108,15 @@ export class LineDetailComponent
   showSnapshotHistoryLink(): boolean {
     const lineVersionWorkflows: LineVersionWorkflow[] = [];
     this.record.lineVersionWorkflows?.forEach((lvw) => lineVersionWorkflows.push(lvw));
-    return (
-      lineVersionWorkflows.filter(
-        (lvw) => lvw.workflowProcessingStatus === WorkflowProcessingStatus.Evaluated
-      ).length > 0
-    );
+    if (lineVersionWorkflows.length > 0) {
+      return true;
+    } else if (
+      this.record.lineType === LineType.Orderly &&
+      this.record.status === Status.Validated
+    ) {
+      return true;
+    }
+    return false;
   }
 
   updateRecord(): void {
