@@ -108,7 +108,7 @@
                </execution>
             </executions>
             <groupId>org.apache.maven.plugins</groupId>
-            <version>3.3.0</version>
+            <version>${maven-jar-plugin.version}</version>
          </plugin>
       </plugins>
    </build>

@@ -11,7 +11,7 @@ import ch.sbb.business.organisation.directory.service.crd.CrdClientImpl;
 import ch.sbb.business.organisation.directory.service.crd.CrdSoapClientConfig;
 import java.io.IOException;
 import java.util.List;
-import javax.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBElement;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;

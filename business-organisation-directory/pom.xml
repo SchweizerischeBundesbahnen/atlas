@@ -69,6 +69,11 @@
          <groupId>org.springframework.ws</groupId>
       </dependency>
       <dependency>
+         <artifactId>jaxb-api</artifactId>
+         <groupId>javax.xml.bind</groupId>
+         <version>2.4.0-b180830.0359</version>
+      </dependency>
+      <dependency>
          <artifactId>httpclient</artifactId>
          <groupId>org.apache.httpcomponents</groupId>
       </dependency>
@@ -90,8 +95,7 @@
       </dependency>
       <dependency>
          <artifactId>hibernate-jpamodelgen</artifactId>
-         <groupId>org.hibernate</groupId>
-         <version>${hibernate.jpa-modelgen.version}</version>
+         <groupId>org.hibernate.orm</groupId>
       </dependency>
       <dependency>
          <artifactId>flyway-core</artifactId>
