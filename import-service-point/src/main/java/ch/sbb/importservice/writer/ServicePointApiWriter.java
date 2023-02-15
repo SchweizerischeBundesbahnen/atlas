@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.configuration.annotation.StepScope;
+import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.stereotype.Component;
 
@@ -16,8 +17,8 @@ import org.springframework.stereotype.Component;
 public class ServicePointApiWriter extends BaseApiWriter implements ItemWriter<ServicePointCsvModelContainer> {
 
   @Override
-  public void write(List<? extends ServicePointCsvModelContainer> servicePoints) {
-    List<ServicePointCsvModelContainer> servicePointCsvModels = new ArrayList<>(servicePoints);
+  public void write(Chunk<? extends ServicePointCsvModelContainer> servicePoints) {
+    List<ServicePointCsvModelContainer> servicePointCsvModels = new ArrayList<>(servicePoints.getItems());
     ServicePointImportReqModel servicePointImportReqModel = new ServicePointImportReqModel();
     servicePointImportReqModel.setServicePointCsvModelContainers(servicePointCsvModels);
     Long stepExecutionId = stepExecution.getId();
