@@ -43,8 +43,8 @@
          <groupId>org.springframework.boot</groupId>
       </dependency>
       <dependency>
-         <artifactId>springdoc-openapi-ui</artifactId>
          <groupId>org.springdoc</groupId>
+         <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
       </dependency>
       <dependency>
          <artifactId>hibernate-jpamodelgen</artifactId>
