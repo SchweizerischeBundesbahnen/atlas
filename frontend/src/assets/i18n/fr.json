@@ -343,9 +343,9 @@
     "LINE_VERSION_SNAPSHOT": {
       "LINE_VERSION_NOT_EXISTS_WARNING_TOOLTIP": "La version de la ligne n'existe plus : elle a été soit supprimée, soit fusionnée avec d'autres versions.",
       "DETAIL_WORKFLOW_INFORMATION": "Informations sur les auditions",
-      "DETAIL_LINE_SNAPSHOT": "Détail des lignes historiques",
+      "DETAIL_LINE_SNAPSHOT": "Détails des lignes historiques",
       "NAVIGATE_TO_VERSION": "Accéder à la vue détaillée de la ligne",
-      "NAVIGATE_TO_SNAPHOT": "Aller à la vue détaillée de la ligne historique",
+      "NAVIGATE_TO_SNAPHOT": "Accéder à la liste de toutes les audiences de cette ligne",
       "TAB_HEADER": "Lignes Auditions",
       "TABLE_HEADER": "Lignes Auditions",
       "TABLE": {
