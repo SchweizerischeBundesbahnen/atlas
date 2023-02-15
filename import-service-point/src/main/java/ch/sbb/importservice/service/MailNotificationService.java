@@ -1,5 +1,6 @@
 package ch.sbb.importservice.service;
 
+import brave.propagation.TraceContext;
 import ch.sbb.atlas.base.service.imports.servicepoint.model.ItemImportResponseStatus;
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import ch.sbb.atlas.kafka.model.mail.MailType;
@@ -13,10 +14,9 @@ import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.StepExecution;
-import org.springframework.batch.core.metrics.BatchMetrics;
+import org.springframework.batch.core.observability.BatchMetrics;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.sleuth.TraceContext;
-import org.springframework.cloud.sleuth.Tracer;
+import brave.Tracer;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -123,7 +123,7 @@ public class MailNotificationService {
   String getCurrentSpan() {
     if (tracer.currentSpan() != null) {
       TraceContext context = Objects.requireNonNull(tracer.currentSpan()).context();
-      return context.traceId();
+      return context.traceIdString();
     }
     throw new IllegalStateException("No Tracer found!");
   }
