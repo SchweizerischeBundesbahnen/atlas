@@ -7,8 +7,6 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +44,7 @@ public class JobHelperServiceTest {
   }
 
   @Test
-  public void shouldReturMinDateWhenNoJobExecutionWasFound() {
+  public void shouldReturnMinDateWhenNoJobExecutionWasFound() {
     //when
     LocalDate result = jobHelperService.getDateForImportFileToDownload("myJob");
     //then
@@ -55,10 +53,10 @@ public class JobHelperServiceTest {
   }
 
   @Test
-  public void shouldReturDateWhenJobExecutionWasFound() {
+  public void shouldReturnDateWhenJobExecutionWasFound() {
     //given
-    Map<String, JobParameter> parameters = new HashMap<>();
-    parameters.put(EXECUTION_TYPE_PARAMETER, new JobParameter("BATCH"));
+    Map<String, JobParameter<?>> parameters = new HashMap<>();
+    parameters.put(EXECUTION_TYPE_PARAMETER, new JobParameter<>("BATCH", String.class));
     when(jobExplorer.findJobInstancesByJobName(any(), anyInt(), anyInt())).thenReturn(List.of(jobInstance));
     when(jobExplorer.getLastJobExecution(jobInstance)).thenReturn(jobExecution);
     when(jobExecution.getJobParameters()).thenReturn(jobParameters);
@@ -67,8 +65,7 @@ public class JobHelperServiceTest {
 
     LocalDate successfullyJobExecutionLocalDate = LocalDate.of(2000, 1, 1);
 
-    Date date = Date.from(successfullyJobExecutionLocalDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-    when(jobExecution.getCreateTime()).thenReturn(date);
+    when(jobExecution.getCreateTime()).thenReturn(successfullyJobExecutionLocalDate.atStartOfDay());
     //when
     LocalDate result = jobHelperService.getDateForImportFileToDownload("myJob");
     //then
