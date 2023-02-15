@@ -1,4 +1,4 @@
-package ch.sbb.importservice.contoller;
+package ch.sbb.importservice.controller;
 
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
