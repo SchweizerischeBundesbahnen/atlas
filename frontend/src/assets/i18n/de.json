@@ -23,7 +23,7 @@
     "CANCEL": "Abbrechen",
     "COVERAGE": {
       "HEADING": "Validierungen",
-      "LINE_SUBLINE": "Line / Teillinie",
+      "LINE_SUBLINE": "Linie / Teillinie",
       "LINE_TIMETABLE_FIELD": "Line / Fahrplanfeld",
       "COMPLETE": "Vollständig",
       "INCOMPLETE": "Lückenhaft"
