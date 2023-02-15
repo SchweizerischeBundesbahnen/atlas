@@ -17,7 +17,7 @@ public class CorrelationIdFilterConfig {
       if (currentSpan != null) {
         HttpServletResponse resp = (HttpServletResponse) response;
         // putting trace id value in [Correlation-Id] response header
-        resp.addHeader(CORRELATION_ID, String.valueOf(currentSpan.context().traceId()));
+        resp.addHeader(CORRELATION_ID, currentSpan.context().traceIdString());
       }
       chain.doFilter(request, response);
     };

@@ -7,7 +7,7 @@ import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion.Fields;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
