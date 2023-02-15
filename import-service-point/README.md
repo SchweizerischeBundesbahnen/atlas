@@ -109,7 +109,7 @@ The import ServicePoint Job is responsible to:
 
 #### Import Service API calls
 
-See [ImportServicePointBatchControllerApiV1.java](src/main/java/ch/sbb/importservice/contoller/ImportServicePointBatchControllerApiV1.java)
+See [ImportServicePointBatchControllerApiV1.java](src/main/java/ch/sbb/importservice/controller/ImportServicePointBatchControllerApiV1.java)
 
 ### Tech Stack
 
