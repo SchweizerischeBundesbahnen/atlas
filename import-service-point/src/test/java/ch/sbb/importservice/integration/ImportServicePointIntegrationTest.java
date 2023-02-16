@@ -1,7 +1,7 @@
 package ch.sbb.importservice.integration;
 
-import static ch.sbb.importservice.controller.ImportServicePointBatchController.IMPORT_LOADING_POINT_CSV_JOB;
-import static ch.sbb.importservice.controller.ImportServicePointBatchController.IMPORT_SERVICE_POINT_CSV_JOB;
+import static ch.sbb.importservice.controller.ImportServicePointBatchControllerApiV1.IMPORT_LOADING_POINT_CSV_JOB;
+import static ch.sbb.importservice.controller.ImportServicePointBatchControllerApiV1.IMPORT_SERVICE_POINT_CSV_JOB;
 import static ch.sbb.importservice.service.CsvService.DINSTELLE_FILE_PREFIX;
 import static ch.sbb.importservice.service.JobHelperService.MIN_LOCAL_DATE;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_BATCH_PARAMETER;
