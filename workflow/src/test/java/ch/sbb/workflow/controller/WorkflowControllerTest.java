@@ -68,7 +68,7 @@ public class WorkflowControllerTest extends BaseControllerApiTest {
 
     controller.startWorkflow(workflowModel);
 
-    mvc.perform(get("/v1/workflows/"))
+    mvc.perform(get("/v1/workflows"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(1)));
   }
@@ -121,7 +121,7 @@ public class WorkflowControllerTest extends BaseControllerApiTest {
         .build();
 
     //given
-    mvc.perform(post("/v1/workflows/")
+    mvc.perform(post("/v1/workflows")
         .contentType(contentType)
         .content(mapper.writeValueAsString(workflowModel))
     ).andExpect(status().isCreated());
@@ -145,7 +145,7 @@ public class WorkflowControllerTest extends BaseControllerApiTest {
         .build();
 
     //given
-    mvc.perform(post("/v1/workflows/")
+    mvc.perform(post("/v1/workflows")
             .contentType(contentType)
             .content(mapper.writeValueAsString(workflowModel))
         ).andExpect(status().isBadRequest())
@@ -180,7 +180,7 @@ public class WorkflowControllerTest extends BaseControllerApiTest {
         .build();
 
     //given
-    mvc.perform(post("/v1/workflows/")
+    mvc.perform(post("/v1/workflows")
             .contentType(contentType)
             .content(mapper.writeValueAsString(workflowModel))
         ).andExpect(status().isBadRequest())
@@ -216,7 +216,7 @@ public class WorkflowControllerTest extends BaseControllerApiTest {
             .build();
 
     //given
-    mvc.perform(post("/v1/workflows/")
+    mvc.perform(post("/v1/workflows")
                     .contentType(contentType)
                     .content(mapper.writeValueAsString(workflowModel))
             ).andExpect(status().isBadRequest())
