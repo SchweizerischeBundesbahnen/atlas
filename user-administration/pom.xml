@@ -36,9 +36,8 @@
          <artifactId>spring-boot-starter-actuator</artifactId>
       </dependency>
       <dependency>
-         <groupId>org.springframework.kafka</groupId>
-         <artifactId>spring-kafka-test</artifactId>
-         <scope>test</scope>
+         <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+         <groupId>org.springdoc</groupId>
       </dependency>
 
       <dependency>
@@ -107,6 +106,17 @@
          <artifactId>spring-security-test</artifactId>
          <groupId>org.springframework.security</groupId>
          <scope>test</scope>
+      </dependency>
+      <dependency>
+         <groupId>org.springframework.kafka</groupId>
+         <artifactId>spring-kafka-test</artifactId>
+         <scope>test</scope>
+         <exclusions>
+            <exclusion>
+               <groupId>*</groupId>
+               <artifactId>*</artifactId>
+            </exclusion>
+         </exclusions>
       </dependency>
       <dependency>
          <artifactId>h2</artifactId>
