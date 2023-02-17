@@ -3,7 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { LineType, PaymentType } from '../../../../../api';
 
 @Component({
-  selector: 'line-deatil-form',
+  selector: 'line-detail-form',
   templateUrl: './line-detail-form.component.html',
   styleUrls: ['./line-detail-form.component.scss'],
 })
