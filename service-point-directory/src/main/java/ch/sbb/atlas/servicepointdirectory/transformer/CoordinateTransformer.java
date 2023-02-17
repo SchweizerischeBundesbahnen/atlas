@@ -2,11 +2,11 @@ package ch.sbb.atlas.servicepointdirectory.transformer;
 
 import ch.sbb.atlas.base.service.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.servicepointdirectory.model.CoordinatePair;
+import jakarta.validation.Valid;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
-import jakarta.validation.Valid;
 import org.locationtech.proj4j.CRSFactory;
 import org.locationtech.proj4j.CoordinateReferenceSystem;
 import org.locationtech.proj4j.CoordinateTransform;
@@ -17,9 +17,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class CoordinateTransformer {
 
-  private final CoordinateTransformFactory coordinateTransformFactory =
-      new CoordinateTransformFactory();
-  private final Map<SpatialReference, CoordinateReferenceSystem> referenceSystemMap = new EnumMap<>(SpatialReference.class);
+  private final CoordinateTransformFactory coordinateTransformFactory = new CoordinateTransformFactory();
+  private final Map<SpatialReference, CoordinateReferenceSystem> referenceSystemMap =
+      new EnumMap<>(SpatialReference.class);
   private final Map<String, CoordinateTransform> coordinateTransformers = new ConcurrentHashMap<>();
 
   public CoordinateTransformer() {
