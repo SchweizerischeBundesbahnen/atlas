@@ -4,6 +4,7 @@ import ch.sbb.atlas.base.service.imports.servicepoint.model.ItemImportResponseSt
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import ch.sbb.atlas.kafka.model.mail.MailType;
 import ch.sbb.importservice.entitiy.ImportProcessItem;
+import io.micrometer.tracing.Span;
 import io.micrometer.tracing.TraceContext;
 import io.micrometer.tracing.Tracer;
 import java.time.Duration;
@@ -121,8 +122,9 @@ public class MailNotificationService {
   }
 
   String getCurrentSpan() {
-    if (tracer.currentSpan() != null) {
-      TraceContext context = Objects.requireNonNull(tracer.currentSpan()).context();
+    Span currentSpan = tracer.currentSpan();
+    if (currentSpan != null) {
+      TraceContext context = currentSpan.context();
       return context.traceId();
     }
     throw new IllegalStateException("No Tracer found!");
