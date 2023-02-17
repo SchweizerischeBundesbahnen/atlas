@@ -21,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,9 +52,13 @@ public class TransportCompanyService {
     return transportCompanyRepository.existsById(id);
   }
 
+  @Async
   public void saveTransportCompaniesFromBav() {
+    log.info("Starting async load");
     List<TransportCompanyCsvModel> transportCompaniesFromBav = getTransportCompaniesFromBav();
+
     saveTransportCompanies(transportCompaniesFromBav);
+    log.info("{} Transport Companies saved asynchronously", transportCompaniesFromBav.size());
 
     validateRelationsAndNotifyBusiness();
   }
