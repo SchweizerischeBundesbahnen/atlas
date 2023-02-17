@@ -21,7 +21,7 @@ public class ImportServicePointBatchSchedulerService extends BaseSchedulerServic
     this.clientName = "ImportServicePointBatch-Client";
   }
 
-  @Retryable(label = "triggerImportServicePointBatch", value = SchedulingExecutionException.class, maxAttempts = 4, backoff =
+  @Retryable(label = "triggerImportServicePointBatch", retryFor = SchedulingExecutionException.class, maxAttempts = 4, backoff =
   @Backoff(delay = 65000))
   @Scheduled(cron = "${scheduler.import-service-point.service-point-trigger-batch.chron}", zone = "${scheduler.zone}")
   @SchedulerLock(name = "triggerImportServicePointBatch", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
