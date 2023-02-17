@@ -19,20 +19,20 @@ import lombok.experimental.FieldNameConstants;
 @Schema(name = "TransportCompanyRelation")
 public class TransportCompanyRelationModel {
 
-  @Schema(description = "Transport Company Id", required = true, example = "5")
+  @Schema(description = "Transport Company Id", example = "5")
   @NotNull
   private Long transportCompanyId;
 
-  @Schema(description = "Swiss Business Organisation ID (SBOID)", example = "ch:1:sboid:100052", required = true)
+  @Schema(description = "Swiss Business Organisation ID (SBOID)", example = "ch:1:sboid:100052")
   @Size(min = AtlasFieldLengths.MIN_STRING_LENGTH, max = AtlasFieldLengths.LENGTH_32)
   @NotNull
   private String sboid;
 
-  @Schema(description = "Valid From", example = "2022-01-01", required = true)
+  @Schema(description = "Valid From", example = "2022-01-01")
   @NotNull
   private LocalDate validFrom;
 
-  @Schema(description = "Valid To", example = "2022-01-01", required = true)
+  @Schema(description = "Valid To", example = "2022-01-01")
   @NotNull
   private LocalDate validTo;
 
