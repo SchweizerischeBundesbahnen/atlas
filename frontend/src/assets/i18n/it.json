@@ -338,7 +338,7 @@
         "DELETE_SUCCESS": "Linea parziale cancellata con successo.",
         "DELETE_ERROR": "Si è verificato un errore durante la cancellazione della linea parziale."
       },
-      "NUMBER_INFO": "La denominazione linea parziale viene in genere utilizzata a solo scopo informativo per indicare di quale linea parziale si tratta esattamente."
+      "NUMBER_INFO": "Si tratta dell’informazione (cifre, lettere o combinazione di cifre e lettere) con cui la linea parziale viene comunicata al viaggiatore. L’informazione viene comunicata nella sua interezza e non comprende informazioni diverse. In genere corrisponde al numero di linea della linea sovraordinata."
     },
     "LINE_VERSION_SNAPSHOT": {
       "LINE_VERSION_NOT_EXISTS_WARNING_TOOLTIP": "La versione della linea non esiste più: è stata cancellata oppure unita ad altre versioni.",
