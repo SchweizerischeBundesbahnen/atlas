@@ -338,7 +338,7 @@
         "DELETE_SUCCESS": "Le ligne partielle a été supprimée avec succès.",
         "DELETE_ERROR": "Une erreur est survenue lors de la suppression de la ligne partielle."
       },
-      "NUMBER_INFO": "En règle générale, la désignation est utilisée uniquement à des fins informatives pour préciser la ligne partielle dont il s’agit."
+      "NUMBER_INFO": "Information (chiffres, lettres ou combinaison des deux) dans le cadre de laquelle la ligne partielle est communiquée aux voyageurs. Elle est communiquée dans sa globalité et non pas sous la forme de différentes informations. En général, elle correspond au numéro de la ligne supérieure."
     },
     "LINE_VERSION_SNAPSHOT": {
       "LINE_VERSION_NOT_EXISTS_WARNING_TOOLTIP": "La version de la ligne n'existe plus : elle a été soit supprimée, soit fusionnée avec d'autres versions.",
