@@ -12,10 +12,6 @@ management:
 spring:
   application:
     name: mail
-  sleuth:
-    baggage:
-      remote-fields: Correlation-Id
-      correlation-fields: Correlation-Id
   mail:
     host: smtp-app.sbb.ch
     port: 587

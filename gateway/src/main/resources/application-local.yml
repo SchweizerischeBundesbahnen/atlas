@@ -1,10 +1,6 @@
 server:
   port: 8888
 spring:
-  sleuth:
-    baggage:
-      remote-fields: Correlation-Id
-      correlation-fields: Correlation-Id
   application:
     name: gateway
   cloud:
@@ -36,7 +32,8 @@ logging:
     org:
       springframework:
         cloud:
-          gateway: DEBUG
+          gateway:
+            handler: DEBUG
 gateway:
   routes:
     line-directory: http://localhost:8082

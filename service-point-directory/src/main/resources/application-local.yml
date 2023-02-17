@@ -13,10 +13,6 @@ management:
         include: health, info, metrics
 
 spring:
-  sleuth:
-    baggage:
-      remote-fields: "Correlation-Id"
-      correlation-fields: "Correlation-Id"
   datasource:
     url: jdbc:postgresql://localhost:5439/service-point-directory?currentSchema=service-point-directory
     username: user

@@ -12,10 +12,6 @@ management:
 spring:
   application:
     name: scheduling
-  sleuth:
-    baggage:
-      remote-fields: Correlation-Id
-      correlation-fields: Correlation-Id
   datasource:
     url: jdbc:postgresql://localhost:5436/scheduling
     username: user
