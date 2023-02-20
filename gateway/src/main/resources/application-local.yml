@@ -13,7 +13,14 @@ spring:
             allowed-headers: "*"
             exposed-headers:
               - "Correlation-Id"
+      observability:
+        enabled: true
 management:
+  tracing:
+    enabled: true
+    baggage:
+      correlation:
+        enabled: true
   endpoint:
     health:
       show-details: always
@@ -32,8 +39,10 @@ logging:
     org:
       springframework:
         cloud:
-          gateway:
-            handler: DEBUG
+          gateway: ERROR
+  pattern:
+    console: timestamp=%d thread=%t loglevel=%-5p class=%c appname=atlas traceid=%X{traceId} spanid=%X{spanId} message="%m"%n
+
 gateway:
   routes:
     line-directory: http://localhost:8082
