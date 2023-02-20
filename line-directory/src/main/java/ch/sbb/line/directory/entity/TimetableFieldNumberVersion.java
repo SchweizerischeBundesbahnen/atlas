@@ -2,14 +2,12 @@ package ch.sbb.line.directory.entity;
 
 import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
 import ch.sbb.atlas.base.service.model.entity.BaseVersion;
+import ch.sbb.atlas.base.service.model.entity.BusinessIdGeneration;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.base.service.versioning.model.Versionable;
 import ch.sbb.atlas.base.service.versioning.model.VersionableProperty.RelationType;
 import ch.sbb.atlas.user.administration.security.BusinessOrganisationAssociated;
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,6 +19,9 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,8 +30,6 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.GenerationTime;
-import org.hibernate.annotations.GeneratorType;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -59,7 +58,7 @@ public class TimetableFieldNumberVersion extends BaseVersion implements Versiona
   private Set<TimetableFieldLineRelation> lineRelations = new HashSet<>();
 
   @AtlasVersionableProperty
-  @GeneratorType(type = TtfnidGenerator.class, when = GenerationTime.INSERT)
+  @BusinessIdGeneration(valueGenerator = TtfnidGenerator.class)
   @Column(updatable = false)
   private String ttfnid;
 
