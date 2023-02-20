@@ -36,6 +36,8 @@
 
       <!-- Geo Data Libs -->
       <proj4j.version>1.2.3</proj4j.version>
+      <jts.version>1.19.0</jts.version>
+      <protoc.version>3.21.12</protoc.version>
    </properties>
    <modules>
       <!-- Order is important here -->
@@ -102,6 +104,22 @@
             <groupId>org.locationtech.proj4j</groupId>
             <artifactId>proj4j-epsg</artifactId>
             <version>${proj4j.version}</version>
+         </dependency>
+         <dependency>
+            <groupId>org.locationtech.jts</groupId>
+            <artifactId>jts-core</artifactId>
+            <version>${jts.version}</version>
+         </dependency>
+         <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protoc</artifactId>
+            <version>${protoc.version}</version>
+            <type>pom</type>
+         </dependency>
+         <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+            <version>${protoc.version}</version>
          </dependency>
          <dependency>
             <artifactId>aws-java-sdk</artifactId>
