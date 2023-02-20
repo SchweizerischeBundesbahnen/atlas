@@ -25,10 +25,10 @@ public abstract class BusinessIdGenerator implements ValueGenerator<String> {
       return presetSlnid.get();
     }
 
-    long result = Long.parseLong(
-        session.createNativeQuery("SELECT nextval('" + dbSequence + "') as nextval")
+    long result =
+        session.createNativeQuery("SELECT nextval('" + dbSequence + "') as nextval", Long.class)
             .setFlushMode(FlushModeType.COMMIT)
-            .getSingleResult().toString());
+            .getSingleResult();
     return businessIdPrefix + result;
   }
 
