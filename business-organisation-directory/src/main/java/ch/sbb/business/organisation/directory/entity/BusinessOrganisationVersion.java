@@ -3,13 +3,11 @@ package ch.sbb.business.organisation.directory.entity;
 import ch.sbb.atlas.api.bodi.enumeration.BusinessType;
 import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
 import ch.sbb.atlas.base.service.model.entity.BaseVersion;
+import ch.sbb.atlas.base.service.model.entity.BusinessIdGeneration;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.base.service.versioning.model.Versionable;
 import ch.sbb.business.organisation.directory.converter.BusinessTypeConverter;
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.ElementCollection;
@@ -21,6 +19,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,8 +29,6 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.GenerationTime;
-import org.hibernate.annotations.GeneratorType;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -50,7 +49,7 @@ public class BusinessOrganisationVersion extends BaseVersion implements Versiona
       allocationSize = 1, initialValue = 1000)
   private Long id;
 
-  @GeneratorType(type = SboidGenerator.class, when = GenerationTime.INSERT)
+  @BusinessIdGeneration(valueGenerator = SboidGenerator.class)
   @Column(updatable = false)
   @AtlasVersionableProperty
   private String sboid;

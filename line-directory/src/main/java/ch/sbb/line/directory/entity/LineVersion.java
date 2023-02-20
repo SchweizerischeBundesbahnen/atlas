@@ -1,20 +1,18 @@
 package ch.sbb.line.directory.entity;
 
+import ch.sbb.atlas.api.lidi.enumaration.LineType;
+import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
 import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
 import ch.sbb.atlas.base.service.model.entity.BaseVersion;
+import ch.sbb.atlas.base.service.model.entity.BusinessIdGeneration;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.base.service.versioning.model.Versionable;
 import ch.sbb.atlas.user.administration.security.BusinessOrganisationAssociated;
 import ch.sbb.line.directory.converter.CmykColorConverter;
 import ch.sbb.line.directory.converter.RgbColorConverter;
-import ch.sbb.atlas.api.lidi.enumaration.LineType;
-import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
 import ch.sbb.line.directory.model.CmykColor;
 import ch.sbb.line.directory.model.RgbColor;
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
@@ -30,6 +28,9 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -38,8 +39,6 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.GenerationTime;
-import org.hibernate.annotations.GeneratorType;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -65,7 +64,7 @@ public class LineVersion extends BaseVersion implements Versionable,
   @AtlasVersionableProperty
   private String swissLineNumber;
 
-  @GeneratorType(type = SlnidGenerator.class, when = GenerationTime.INSERT)
+  @BusinessIdGeneration(valueGenerator = SlnidGenerator.class)
   @Column(updatable = false)
   @AtlasVersionableProperty
   private String slnid;
