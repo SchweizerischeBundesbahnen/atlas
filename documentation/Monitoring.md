@@ -7,12 +7,16 @@ https://confluence.sbb.ch/pages/viewpage.action?pageId=1450380751
 
 ### Backend Configuration
 
-Add the following dependency to add [Spring Sleuth](https://spring.io/projects/spring-cloud-sleuth).
+Add the following dependency to add [Micrometer](https://micrometer.io/).
 
 ```xml
 <dependency>
-    <groupId>org.springframework.cloud</groupId>
-    <artifactId>spring-cloud-starter-sleuth</artifactId>
+   <groupId>io.micrometer</groupId>
+   <artifactId>micrometer-tracing</artifactId>
+</dependency>
+<dependency>
+   <groupId>io.micrometer</groupId>
+   <artifactId>micrometer-tracing-bridge-brave</artifactId>
 </dependency>
 ```
 
