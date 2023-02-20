@@ -30,7 +30,7 @@ public class GatewayRequestLogging {
           ServerHttpResponse response = exchange.getResponse();
           if (response.getHeaders().containsKey(headerValue)) {
             log.info("Routing [{}] response with {}=[{}] from path [{}] with statusCode=[{}]", request.getMethod(), loggingKey,
-                response.getHeaders().get(FEIGN_TRACING_HEADER), request.getPath(), response.getStatusCode());
+                response.getHeaders().get(headerValue), request.getPath(), response.getStatusCode());
           }
         }))), -1);
   }
