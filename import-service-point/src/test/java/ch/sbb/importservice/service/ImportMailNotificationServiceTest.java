@@ -1,9 +1,6 @@
 package ch.sbb.importservice.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import ch.sbb.atlas.kafka.model.mail.MailType;
@@ -42,8 +39,8 @@ class ImportMailNotificationServiceTest {
     expectedMailContent.put("stepExecutionInformation", "Step [myStep with id 123] executed in ");
     JobExecution jobExecution = new JobExecution(1L);
     StepExecution stepExecution = new StepExecution("myStep", jobExecution);
+    stepExecution.getExecutionContext().put("traceId", "abc123");
     stepExecution.setId(123L);
-    doReturn("abc123").when(notificationService).getCurrentSpan();
     //when
     MailNotification result = notificationService.buildMailErrorNotification("import", stepExecution);
 
@@ -68,8 +65,8 @@ class ImportMailNotificationServiceTest {
     expectedMailContent.put("stepExecutionInformation", "Step [myStep with id 123] executed in ");
     JobExecution jobExecution = new JobExecution(1L);
     StepExecution stepExecution = new StepExecution("myStep", jobExecution);
+    stepExecution.getExecutionContext().put("traceId", "abc123");
     stepExecution.setId(123L);
-    doReturn("abc123").when(notificationService).getCurrentSpan();
     //when
     MailNotification result = notificationService.buildMailErrorNotification("import", stepExecution);
 
@@ -79,23 +76,6 @@ class ImportMailNotificationServiceTest {
     assertThat(result.getSubject()).isEqualTo("Job [import] execution failed");
     assertThat(result.getTemplateProperties()).isNotEmpty();
     assertThat(result.getTemplateProperties()).containsOnly(expectedMailContent);
-  }
-
-  @Test
-  public void shouldThrowIllegalStateExceptionWhenCurrentSpanIsNull() {
-    //given
-    when(tracer.currentSpan()).thenReturn(null);
-    JobExecution jobExecution = new JobExecution(1L);
-    StepExecution stepExecution = new StepExecution("myStep", jobExecution);
-    //when
-    assertThrows(IllegalStateException.class, () -> notificationService.buildMailErrorNotification("import", stepExecution));
-
-  }
-
-  @Test
-  public void shouldThrowIllegalStateExceptionWhenSpanIsNull() {
-    //when
-    assertThrows(IllegalStateException.class, () -> notificationService.getCurrentSpan());
   }
 
 }
