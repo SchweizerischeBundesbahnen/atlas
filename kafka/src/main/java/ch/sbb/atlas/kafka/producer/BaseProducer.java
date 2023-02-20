@@ -18,11 +18,12 @@ public abstract class BaseProducer<T extends AtlasEvent> {
   public void produceEvent(T event, String kafkaKey) {
     CompletableFuture<SendResult<String, Object>> future = kafkaTemplate.send(getTopic(), kafkaKey, event);
     future.whenComplete((result, exception) -> {
+      String traceparent = new String(result.getProducerRecord().headers().headers("traceparent").iterator().next().value());
       if (exception == null) {
-        log.info("Kafka: Sent message=[{}] with offset=[{}]", event,
+        log.info("Kafka, traceparent={}: Sent message=[{}] with offset=[{}]", traceparent, event,
             result.getRecordMetadata().offset());
       } else {
-        log.error("Kafka: Unable to send message=[{}] due to {}: ", event,
+        log.error("Kafka, traceparent={}: Unable to send message=[{}] due to {}: ", traceparent, event,
             exception.getMessage());
       }
     });
