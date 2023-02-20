@@ -104,7 +104,7 @@ The Cypress Videos results are stored to the following Amazon S3 Bucket:
 
 ### Correlation-Id
 
-The Atlas services use [Spring Cloud Sleuth](https://spring.io/projects/spring-cloud-sleuth) to add to the log a
+The Atlas services use [Micrometer](https://micrometer.io/) to add to the log a
 **Correlation-Id** which spreads between the services up to the snack bar in the fronted.
 
 We can use the **Correlation-Id** to search it in [Splunk](documentation/Logging.md) or [Instana](documentation/Monitoring.md).
