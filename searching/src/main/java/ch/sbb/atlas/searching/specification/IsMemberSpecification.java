@@ -5,6 +5,7 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import jakarta.persistence.metamodel.PluralAttribute;
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -14,6 +15,9 @@ import org.springframework.data.jpa.domain.Specification;
 // <E> CollectionElementType
 // <T> RootType
 public class IsMemberSpecification<T, C extends Collection<E>, E> implements Specification<T> {
+
+  @Serial
+  private static final long serialVersionUID = 1;
 
   private final PluralAttribute<T, C, E> pluralAttribute;
   private final Collection<E> collection;

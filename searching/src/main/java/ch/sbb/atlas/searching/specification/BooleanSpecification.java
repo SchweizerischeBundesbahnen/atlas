@@ -5,11 +5,15 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import jakarta.persistence.metamodel.SingularAttribute;
+import java.io.Serial;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 
 @RequiredArgsConstructor
 public class BooleanSpecification<T> implements Specification<T> {
+
+  @Serial
+  private static final long serialVersionUID = 1;
 
   private final SingularAttribute<T, Boolean> attribute;
   private final Boolean value;
