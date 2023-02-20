@@ -50,12 +50,11 @@
          <artifactId>spring-cloud-starter-openfeign</artifactId>
          <groupId>org.springframework.cloud</groupId>
       </dependency>
-      <!-- TODO: check if this is necessary -->
       <!-- Feign Client Specific Micrometer-->
-<!--      <dependency>-->
-<!--         <groupId>io.github.openfeign</groupId>-->
-<!--         <artifactId>feign-micrometer</artifactId>-->
-<!--      </dependency>-->
+      <dependency>
+         <groupId>io.github.openfeign</groupId>
+         <artifactId>feign-micrometer</artifactId>
+      </dependency>
       <dependency>
          <artifactId>spring-boot-starter-web</artifactId>
          <groupId>org.springframework.boot</groupId>
