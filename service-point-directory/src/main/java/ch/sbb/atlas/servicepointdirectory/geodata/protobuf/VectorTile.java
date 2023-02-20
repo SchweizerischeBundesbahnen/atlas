@@ -3,10 +3,9 @@
 
 package ch.sbb.atlas.servicepointdirectory.geodata.protobuf;
 
-import lombok.Generated;
+import jakarta.annotation.Generated;
 
-@Generated
-// See: "https://github.com/ElectronicChartCentre/java-vector-tile"
+@Generated("https://github.com/ElectronicChartCentre/java-vector-tile")
 public final class VectorTile {
   private VectorTile() {}
   public static void registerAllExtensions(
