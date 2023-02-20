@@ -1,6 +1,7 @@
 package ch.sbb.atlas.base.service.model.entity;
 
 import ch.sbb.atlas.base.service.model.entity.BusinessIdGeneration.BusinessIdValueGeneration;
+import java.io.Serial;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import org.hibernate.annotations.ValueGenerationType;
@@ -15,6 +16,9 @@ public @interface BusinessIdGeneration {
   Class<? extends ValueGenerator<?>> valueGenerator();
 
   class BusinessIdValueGeneration implements AnnotationValueGeneration<BusinessIdGeneration> {
+
+    @Serial
+    private static final long serialVersionUID = 1;
 
     protected ValueGenerator<?> valueGenerator;
 
