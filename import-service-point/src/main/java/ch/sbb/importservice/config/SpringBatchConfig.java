@@ -5,7 +5,8 @@ import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_SERVICE_
 
 import ch.sbb.atlas.base.service.imports.servicepoint.loadingpoint.LoadingPointCsvModel;
 import ch.sbb.atlas.base.service.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
-import ch.sbb.importservice.listener.JobCompletitionListener;
+import ch.sbb.importservice.listener.JobCompletionListener;
+import ch.sbb.importservice.listener.StepTracerListener;
 import ch.sbb.importservice.reader.ThreadSafeListItemReader;
 import ch.sbb.importservice.service.CsvService;
 import ch.sbb.importservice.service.JobHelperService;
@@ -47,7 +48,8 @@ public class SpringBatchConfig {
   private final ServicePointApiWriter servicePointApiWriter;
   private final LoadingPointApiWriter loadingPointApiWriter;
   private final CsvService csvService;
-  private final JobCompletitionListener jobCompletitionListener;
+  private final JobCompletionListener jobCompletionListener;
+  private final StepTracerListener stepTracerListener;
 
   private final JobHelperService jobHelperService;
 
@@ -92,6 +94,7 @@ public class SpringBatchConfig {
         .faultTolerant()
         .backOffPolicy(StepUtils.getBackOffPolicy(stepName))
         .retryPolicy(StepUtils.getRetryPolicy(stepName))
+        .listener(stepTracerListener)
         .taskExecutor(asyncTaskExecutor())
         .build();
   }
@@ -113,7 +116,7 @@ public class SpringBatchConfig {
   @Bean
   public Job importServicePointCsvJob(ThreadSafeListItemReader<ServicePointCsvModelContainer> servicePointlistItemReader) {
     return new JobBuilder(IMPORT_SERVICE_POINT_CSV_JOB_NAME, jobRepository)
-        .listener(jobCompletitionListener)
+        .listener(jobCompletionListener)
         .incrementer(new RunIdIncrementer())
         .flow(parseServicePointCsvStep(servicePointlistItemReader))
         .end()
@@ -123,7 +126,7 @@ public class SpringBatchConfig {
   @Bean
   public Job importLoadingPointCsvJob(ThreadSafeListItemReader<LoadingPointCsvModel> loadingPointlistItemReader) {
     return new JobBuilder(IMPORT_LOADING_POINT_CSV_JOB_NAME, jobRepository)
-        .listener(jobCompletitionListener)
+        .listener(jobCompletionListener)
         .incrementer(new RunIdIncrementer())
         .flow(parseLoadingPointCsvStep(loadingPointlistItemReader))
         .end()

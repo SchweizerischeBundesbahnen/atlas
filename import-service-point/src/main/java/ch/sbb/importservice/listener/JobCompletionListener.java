@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class JobCompletitionListener implements JobExecutionListener {
+public class JobCompletionListener implements JobExecutionListener {
 
   private final MailNotificationService mailNotificationService;
   private final ImportProcessedItemRepository importProcessedItemRepository;
