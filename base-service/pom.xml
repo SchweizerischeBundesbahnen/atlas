@@ -34,16 +34,26 @@
       <!-- For BaseVersion -->
       <dependency>
          <artifactId>hibernate-jpamodelgen</artifactId>
-         <groupId>org.hibernate</groupId>
+         <groupId>org.hibernate.orm</groupId>
+         <version>${hibernate.jpa-modelgen.version}</version>
       </dependency>
       <!-- For correlation id-->
       <dependency>
-         <artifactId>spring-cloud-starter-sleuth</artifactId>
-         <groupId>org.springframework.cloud</groupId>
+         <groupId>io.micrometer</groupId>
+         <artifactId>micrometer-tracing</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>io.micrometer</groupId>
+         <artifactId>micrometer-tracing-bridge-brave</artifactId>
       </dependency>
       <dependency>
          <artifactId>spring-cloud-starter-openfeign</artifactId>
          <groupId>org.springframework.cloud</groupId>
+      </dependency>
+      <!-- Feign Client Specific Micrometer-->
+      <dependency>
+         <groupId>io.github.openfeign</groupId>
+         <artifactId>feign-micrometer</artifactId>
       </dependency>
       <dependency>
          <artifactId>spring-boot-starter-web</artifactId>
@@ -56,8 +66,8 @@
       <dependency>
          <artifactId>aws-java-sdk</artifactId>
          <groupId>com.amazonaws</groupId>
-         <version>1.12.316</version>
       </dependency>
+      <!-- Needed for AWS -->
       <dependency>
          <artifactId>jaxb-api</artifactId>
          <groupId>javax.xml.bind</groupId>
@@ -105,6 +115,7 @@
       <dependency>
          <artifactId>swagger-core</artifactId>
          <groupId>io.swagger.core.v3</groupId>
+         <version>${swagger-core.version}</version>
       </dependency>
       <dependency>
          <artifactId>spring-boot-starter-validation</artifactId>
@@ -143,7 +154,7 @@
                </execution>
             </executions>
             <groupId>org.apache.maven.plugins</groupId>
-            <version>3.3.0</version>
+            <version>${maven-jar-plugin.version}</version>
          </plugin>
       </plugins>
    </build>

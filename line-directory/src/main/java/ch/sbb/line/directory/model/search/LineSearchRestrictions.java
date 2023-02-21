@@ -8,7 +8,7 @@ import ch.sbb.line.directory.entity.Line_;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import java.util.List;
 import java.util.Optional;
-import javax.persistence.metamodel.SingularAttribute;
+import jakarta.persistence.metamodel.SingularAttribute;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Singular;

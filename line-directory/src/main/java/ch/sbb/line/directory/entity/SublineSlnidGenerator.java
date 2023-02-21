@@ -1,9 +1,9 @@
 package ch.sbb.line.directory.entity;
 
 import ch.sbb.line.directory.entity.SublineVersion.Fields;
+import jakarta.persistence.FlushModeType;
 import java.lang.reflect.Field;
 import java.util.Optional;
-import org.hibernate.FlushMode;
 import org.hibernate.Session;
 import org.hibernate.tuple.ValueGenerator;
 
@@ -17,11 +17,11 @@ public class SublineSlnidGenerator implements ValueGenerator<String> {
     }
 
     String mainlineSlnid = getMainlineSlnid(entity);
-    String sublinePartNumber = session
-        .createNativeQuery("SELECT count(*)+1 from subline_version where mainline_slnid = ?")
-        .setFlushMode(FlushMode.COMMIT)
+    Long sublinePartNumber = session
+        .createNativeQuery("SELECT count(*)+1 from subline_version where mainline_slnid = ?", Long.class)
+        .setFlushMode(FlushModeType.COMMIT)
         .setParameter(1, mainlineSlnid)
-        .getSingleResult().toString();
+        .getSingleResult();
     return mainlineSlnid + ":" + sublinePartNumber;
   }
 

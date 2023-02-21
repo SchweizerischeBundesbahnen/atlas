@@ -1,5 +1,6 @@
 package ch.sbb.scheduling.service;
 
+import ch.sbb.scheduling.aspect.annotation.SpanTracing;
 import ch.sbb.scheduling.client.LiDiClient;
 import ch.sbb.scheduling.exception.SchedulingExecutionException;
 import feign.Response;
@@ -21,72 +22,91 @@ public class LidiSchedulerService extends BaseSchedulerService {
     this.clientName = "LiDi-Client";
   }
 
-  @Retryable(label = "exportFullLineVersions", value = SchedulingExecutionException.class, maxAttempts = 4, backoff = @Backoff(delay = 65000))
+  @SpanTracing
+  @Retryable(label = "exportFullLineVersions", value = SchedulingExecutionException.class, maxAttempts = 4, backoff =
+  @Backoff(delay = 65000))
   @Scheduled(cron = "${scheduler.lidi.export.line.full.chron}", zone = "${scheduler.zone}")
   @SchedulerLock(name = "exportFullLineVersions", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
   public Response exportFullLineVersions() {
-    return executeRequest(liDiClient.putLiDiLineExportFull(), "Full Line Versions CSV/ZIP");
+    return executeRequest(liDiClient::putLiDiLineExportFull, "Full Line Versions CSV/ZIP");
   }
 
-  @Retryable(label = "exportActualLineVersions", value = SchedulingExecutionException.class, maxAttempts = 4, backoff = @Backoff(delay = 65000))
+  @SpanTracing
+  @Retryable(label = "exportActualLineVersions", retryFor = SchedulingExecutionException.class, maxAttempts = 4, backoff =
+  @Backoff(delay = 65000))
   @Scheduled(cron = "${scheduler.lidi.export.line.actual.chron}", zone = "${scheduler.zone}")
   @SchedulerLock(name = "exportActualLineVersions", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
   public Response exportActualLineVersions() {
-    return executeRequest(liDiClient.putLiDiLineExportActual(), "Actual Line Versions CSV/ZIP");
+    return executeRequest(liDiClient::putLiDiLineExportActual, "Actual Line Versions CSV/ZIP");
   }
 
-  @Retryable(label = "exportFutureTimetableLineVersions", value = SchedulingExecutionException.class, maxAttempts = 4, backoff = @Backoff(delay = 65000))
+  @SpanTracing
+  @Retryable(label = "exportFutureTimetableLineVersions", retryFor = SchedulingExecutionException.class, maxAttempts = 4,
+      backoff = @Backoff(delay = 65000))
   @Scheduled(cron = "${scheduler.lidi.export.line.future.chron}", zone = "${scheduler.zone}")
   @SchedulerLock(name = "exportFutureTimetableLineVersions", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
   public Response exportNextTimetableLineVersions() {
-    return executeRequest(liDiClient.putLiDiLineExportNextTimetableVersions(),
+    return executeRequest(liDiClient::putLiDiLineExportNextTimetableVersions,
         "Future Timetable Line Versions CSV/ZIP");
   }
 
-  @Retryable(label = "exportFullSublineVersions", value = SchedulingExecutionException.class, maxAttempts = 4, backoff = @Backoff(delay = 65000))
+  @SpanTracing
+  @Retryable(label = "exportFullSublineVersions", retryFor = SchedulingExecutionException.class, maxAttempts = 4, backoff =
+  @Backoff(delay = 65000))
   @Scheduled(cron = "${scheduler.lidi.export.subline.full.chron}", zone = "${scheduler.zone}")
   @SchedulerLock(name = "exportFullSublineVersions", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
   public Response exportFullSublineVersions() {
-    return executeRequest(liDiClient.putLiDiSublineExportFull(), "Full Subline Versions CSV/ZIP");
+    return executeRequest(liDiClient::putLiDiSublineExportFull, "Full Subline Versions CSV/ZIP");
   }
 
-  @Retryable(label = "exportActualSublineVersions", value = SchedulingExecutionException.class, maxAttempts = 4, backoff = @Backoff(delay = 65000))
+  @SpanTracing
+  @Retryable(label = "exportActualSublineVersions", retryFor = SchedulingExecutionException.class, maxAttempts = 4, backoff =
+  @Backoff(delay = 65000))
   @Scheduled(cron = "${scheduler.lidi.export.subline.actual.chron}", zone = "${scheduler.zone}")
   @SchedulerLock(name = "exportActualSublineLineVersions", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
   public Response exportActualSublineVersions() {
-    return executeRequest(liDiClient.putLiDiSublineExportActual(),
+    return executeRequest(liDiClient::putLiDiSublineExportActual,
         "Actual Subline Versions CSV/ZIP");
   }
 
-  @Retryable(label = "exportFutureTimetableSublineVersions", value = SchedulingExecutionException.class, maxAttempts = 4, backoff = @Backoff(delay = 65000))
+  @SpanTracing
+  @Retryable(label = "exportFutureTimetableSublineVersions", retryFor = SchedulingExecutionException.class, maxAttempts = 4,
+      backoff = @Backoff(delay = 65000))
   @Scheduled(cron = "${scheduler.lidi.export.subline.future.chron}", zone = "${scheduler.zone}")
   @SchedulerLock(name = "exportFutureTimetableSublineVersions", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
   public Response exportNextTimetableSublineVersions() {
-    return executeRequest(liDiClient.putLiDiSublineExportNextTimetableVersions(),
+    return executeRequest(liDiClient::putLiDiSublineExportNextTimetableVersions,
         "Future Timetable Subline Versions CSV/ZIP");
   }
 
-  @Retryable(label = "exportFullTimetableFieldNumberVersions", value = SchedulingExecutionException.class, maxAttempts = 4, backoff = @Backoff(delay = 65000))
+  @SpanTracing
+  @Retryable(label = "exportFullTimetableFieldNumberVersions", retryFor = SchedulingExecutionException.class, maxAttempts = 4,
+      backoff = @Backoff(delay = 65000))
   @Scheduled(cron = "${scheduler.lidi.export.timetable.full.chron}", zone = "${scheduler.zone}")
   @SchedulerLock(name = "exportFullTimetableFieldNumberVersions", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
   public Response exportFullTimetableFieldNumberVersions() {
-    return executeRequest(liDiClient.putLiDiTimetableFieldNumberExportFull(),
+    return executeRequest(liDiClient::putLiDiTimetableFieldNumberExportFull,
         "Full TimetableFieldNumber Versions CSV/ZIP");
   }
 
-  @Retryable(label = "exportActualTimetableFieldNumberVersions", value = SchedulingExecutionException.class, maxAttempts = 4, backoff = @Backoff(delay = 65000))
+  @SpanTracing
+  @Retryable(label = "exportActualTimetableFieldNumberVersions", retryFor = SchedulingExecutionException.class, maxAttempts = 4
+      , backoff = @Backoff(delay = 65000))
   @Scheduled(cron = "${scheduler.lidi.export.timetable.actual.chron}", zone = "${scheduler.zone}")
   @SchedulerLock(name = "exportActualTimetableFieldNumberVersions", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
   public Response exportActualTimetableFieldNumberVersions() {
-    return executeRequest(liDiClient.putLiDiTimetableFieldNumberExportActual(),
+    return executeRequest(liDiClient::putLiDiTimetableFieldNumberExportActual,
         "Actual TimetableFieldNumber Versions CSV/ZIP");
   }
 
-  @Retryable(label = "exportFutureTimetableTimetableFieldNumberVersions", value = SchedulingExecutionException.class, maxAttempts = 4, backoff = @Backoff(delay = 65000))
+  @SpanTracing
+  @Retryable(label = "exportFutureTimetableTimetableFieldNumberVersions", retryFor = SchedulingExecutionException.class,
+      maxAttempts = 4, backoff = @Backoff(delay = 65000))
   @Scheduled(cron = "${scheduler.lidi.export.timetable.future.chron}", zone = "${scheduler.zone}")
-  @SchedulerLock(name = "exportFutureTimetableTimetableFieldNumberSublineVersions", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
+  @SchedulerLock(name = "exportFutureTimetableTimetableFieldNumberSublineVersions", lockAtMostFor = "PT1M", lockAtLeastFor =
+      "PT1M")
   public Response exportNextTimetableTimetableFieldNumberVersions() {
-    return executeRequest(liDiClient.putLiDiTimetableFieldNumberExportNextTimetableVersions(),
+    return executeRequest(liDiClient::putLiDiTimetableFieldNumberExportNextTimetableVersions,
         "Future Timetable TimetableFieldNumber Versions CSV/ZIP");
   }
 

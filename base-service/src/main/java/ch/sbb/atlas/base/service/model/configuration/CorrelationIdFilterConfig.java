@@ -1,9 +1,9 @@
 package ch.sbb.atlas.base.service.model.configuration;
 
-import javax.servlet.Filter;
-import javax.servlet.http.HttpServletResponse;
-import org.springframework.cloud.sleuth.Span;
-import org.springframework.cloud.sleuth.Tracer;
+import io.micrometer.tracing.Span;
+import io.micrometer.tracing.Tracer;
+import jakarta.servlet.Filter;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 
 public class CorrelationIdFilterConfig {
