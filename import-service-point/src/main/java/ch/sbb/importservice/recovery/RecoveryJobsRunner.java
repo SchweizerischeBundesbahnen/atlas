@@ -100,7 +100,7 @@ public class RecoveryJobsRunner implements ApplicationRunner {
   }
 
   private boolean hasJobParameterExecutionBatch(JobParameters jobParameters) {
-    Map<String, JobParameter> parameters = jobParameters.getParameters();
+    Map<String, JobParameter<?>> parameters = jobParameters.getParameters();
     return parameters.containsKey(EXECUTION_TYPE_PARAMETER) && EXECUTION_BATCH_PARAMETER.equals(
         parameters.get(EXECUTION_TYPE_PARAMETER).getValue());
   }
@@ -129,14 +129,14 @@ public class RecoveryJobsRunner implements ApplicationRunner {
 
   private JobParameters getJobParameters(JobExecution lastJobExecution) {
     JobParameters lastJobExecutionJobParameters = lastJobExecution.getJobParameters();
-    Map<String, JobParameter> parameters = lastJobExecutionJobParameters.getParameters();
-    JobParameter fullPathFileName = parameters.get(FULL_PATH_FILENAME_JOB_PARAMETER);
+    Map<String, JobParameter<?>> parameters = lastJobExecutionJobParameters.getParameters();
+    JobParameter<?> fullPathFileName = parameters.get(FULL_PATH_FILENAME_JOB_PARAMETER);
 
     JobParametersBuilder jobParametersBuilder = new JobParametersBuilder()
         .addLong(START_AT_JOB_PARAMETER, System.currentTimeMillis());
 
     if (fullPathFileName != null) {
-      jobParametersBuilder.addParameter(FULL_PATH_FILENAME_JOB_PARAMETER, fullPathFileName);
+      jobParametersBuilder.addJobParameter(FULL_PATH_FILENAME_JOB_PARAMETER, fullPathFileName);
     }
     jobParametersBuilder.addJobParameters(lastJobExecutionJobParameters);
     JobParameters jobParameters = jobParametersBuilder.toJobParameters();

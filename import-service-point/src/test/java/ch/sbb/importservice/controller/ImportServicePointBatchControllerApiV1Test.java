@@ -1,4 +1,4 @@
-package ch.sbb.importservice.contoller;
+package ch.sbb.importservice.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;

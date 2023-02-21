@@ -6,7 +6,7 @@ import ch.sbb.atlas.searching.SpecificationBuilder;
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.entity.TimetableFieldNumber_;
 import java.util.List;
-import javax.persistence.metamodel.SingularAttribute;
+import jakarta.persistence.metamodel.SingularAttribute;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;

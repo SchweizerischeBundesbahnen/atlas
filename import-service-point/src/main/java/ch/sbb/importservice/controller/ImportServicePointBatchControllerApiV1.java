@@ -1,4 +1,4 @@
-package ch.sbb.importservice.contoller;
+package ch.sbb.importservice.controller;
 
 import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_BATCH_PARAMETER;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_TYPE_PARAMETER;
@@ -9,6 +9,9 @@ import static ch.sbb.importservice.utils.JobDescriptionConstants.START_AT_JOB_PA
 
 import ch.sbb.importservice.exception.JobExecutionException;
 import ch.sbb.importservice.service.FileHelperService;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.io.File;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,16 +25,22 @@ import org.springframework.batch.core.repository.JobExecutionAlreadyRunningExcep
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+@Tag(name = "Import Service Point Batch")
+@RequestMapping("v1/import")
 @RestController
 @AllArgsConstructor
 @Slf4j
-public class ImportServicePointBatchController implements ImportServicePointBatchControllerApiV1 {
+public class ImportServicePointBatchControllerApiV1 {
 
   public static final String IMPORT_LOADING_POINT_CSV_JOB = "importLoadingPointCsvJob";
   public static final String IMPORT_SERVICE_POINT_CSV_JOB = "importServicePointCsvJob";
@@ -45,7 +54,11 @@ public class ImportServicePointBatchController implements ImportServicePointBatc
   @Qualifier(IMPORT_LOADING_POINT_CSV_JOB)
   private final Job importLoadingPointCsvJob;
 
-  @Override
+  @PostMapping("service-point-batch")
+  @ResponseStatus(HttpStatus.OK)
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200"),
+  })
   @Async
   public void startServicePointImportBatch() {
     JobParameters jobParameters = new JobParametersBuilder()
@@ -60,7 +73,11 @@ public class ImportServicePointBatchController implements ImportServicePointBatc
     }
   }
 
-  @Override
+  @PostMapping("service-point")
+  @ResponseStatus(HttpStatus.OK)
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200"),
+  })
   public ResponseEntity<?> startServicePointImport(@RequestParam("file") MultipartFile multipartFile) {
     File file = fileHelperService.getFileFromMultipart(multipartFile);
     JobParameters jobParameters = new JobParametersBuilder()
@@ -78,7 +95,11 @@ public class ImportServicePointBatchController implements ImportServicePointBatc
     }
   }
 
-  @Override
+  @PostMapping("loading-point")
+  @ResponseStatus(HttpStatus.OK)
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200"),
+  })
   public ResponseEntity<?> startLoadingPointImport(@RequestParam("file") MultipartFile multipartFile) {
     File file = fileHelperService.getFileFromMultipart(multipartFile);
     JobParameters jobParameters = new JobParametersBuilder()

@@ -6,10 +6,10 @@ import ch.sbb.atlas.searching.specification.InSpecification;
 import ch.sbb.atlas.searching.specification.SearchCriteriaSpecification;
 import ch.sbb.atlas.searching.specification.SingleStringSpecification;
 import ch.sbb.atlas.searching.specification.ValidOnSpecification;
+import jakarta.persistence.metamodel.SingularAttribute;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import javax.persistence.metamodel.SingularAttribute;
 import lombok.Builder;
 import org.springframework.data.jpa.domain.Specification;
 
