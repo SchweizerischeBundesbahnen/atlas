@@ -3,7 +3,7 @@ package ch.sbb.atlas.servicepointdirectory.model;
 import ch.sbb.atlas.base.service.imports.servicepoint.enumeration.SpatialReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

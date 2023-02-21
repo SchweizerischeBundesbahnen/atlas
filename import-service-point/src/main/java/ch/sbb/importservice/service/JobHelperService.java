@@ -4,10 +4,8 @@ import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_BATCH
 import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_TYPE_PARAMETER;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import lombok.Getter;
@@ -48,8 +46,7 @@ public class JobHelperService {
     if (!jobExecutions.isEmpty()) {
       JobExecution lastSuccessfullyJobExecution = getLastSuccessfullyJobExecution(jobExecutions);
       if (lastSuccessfullyJobExecution != null) {
-        Date lastSuccessfullyJobExecutionCreateTime = lastSuccessfullyJobExecution.getCreateTime();
-        return convertToLocalDateViaInstant(lastSuccessfullyJobExecutionCreateTime);
+        return lastSuccessfullyJobExecution.getCreateTime().toLocalDate();
       }
     }
     //In this case there is no COMPLETED Job, so we need to import the whole File
@@ -70,7 +67,7 @@ public class JobHelperService {
     jobInstances.forEach(jobInstance -> {
       JobExecution lastJobExecution = jobExplorer.getLastJobExecution(jobInstance);
       if (lastJobExecution != null) {
-        Map<String, JobParameter> parameters = lastJobExecution.getJobParameters().getParameters();
+        Map<String, JobParameter<?>> parameters = lastJobExecution.getJobParameters().getParameters();
         if (parameters.containsKey(EXECUTION_TYPE_PARAMETER) && EXECUTION_BATCH_PARAMETER.equals(
             parameters.get(EXECUTION_TYPE_PARAMETER).getValue())) {
           jobExecutions.add(lastJobExecution);
@@ -78,12 +75,6 @@ public class JobHelperService {
       }
     });
     return jobExecutions;
-  }
-
-  private LocalDate convertToLocalDateViaInstant(Date dateToConvert) {
-    return dateToConvert.toInstant()
-        .atZone(ZoneId.systemDefault())
-        .toLocalDate();
   }
 
 }

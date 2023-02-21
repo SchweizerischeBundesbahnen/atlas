@@ -4,7 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 import java.util.Map;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.cloud.gateway.filter.factory.RewritePathGatewayFilterFactory;
 import org.springframework.cloud.gateway.handler.predicate.PathRoutePredicateFactory;
 import org.springframework.cloud.gateway.route.Route;
@@ -15,7 +18,15 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 class RouteConfigTest {
 
+  @Mock
+  private GatewayRequestLogging gatewayRequestLogging;
+
   private final RouteConfig routeConfig = new RouteConfig();
+
+  @BeforeEach
+  void setUp() {
+    MockitoAnnotations.openMocks(this);
+  }
 
   @Test
   void shouldConfigureRoutesCorrectly() {
@@ -27,7 +38,7 @@ class RouteConfigTest {
 
     // When
     RouteLocator routeLocator = routeConfig.routes(
-        new RouteLocatorBuilder(createMockGatewayContext()), gatewayConfig);
+        new RouteLocatorBuilder(createMockGatewayContext()), gatewayConfig, gatewayRequestLogging);
 
     // Then
     List<Route> routes = routeLocator.getRoutes().collectList().block();
