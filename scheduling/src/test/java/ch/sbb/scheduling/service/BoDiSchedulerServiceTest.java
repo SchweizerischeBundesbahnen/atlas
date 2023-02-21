@@ -24,10 +24,13 @@ public class BoDiSchedulerServiceTest {
   @Mock
   private BoDiClient boDiClient;
 
+  @Mock
+  private ScheduledObservationService scheduledObservationService;
+
   @BeforeEach
   public void setUp() {
     MockitoAnnotations.openMocks(this);
-    boDiSchedulerService = new BoDiSchedulerService(boDiClient);
+    boDiSchedulerService = new BoDiSchedulerService(boDiClient, scheduledObservationService);
   }
 
   @Test
