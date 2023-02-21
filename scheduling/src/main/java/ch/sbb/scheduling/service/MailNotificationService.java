@@ -52,7 +52,7 @@ public class MailNotificationService {
   String getCurrentSpan() {
     if (tracer.currentSpan() != null) {
       TraceContext context = Objects.requireNonNull(tracer.currentSpan()).context();
-      return String.valueOf(context.traceId());
+      return context.traceIdString();
     }
     throw new IllegalStateException("No Tracer found!");
   }
