@@ -24,25 +24,22 @@ class LidiSchedulerServiceTest {
   @Mock
   private LiDiClient liDiClient;
 
-  @Mock
-  private ScheduledObservationService scheduledObservationService;
-
   @BeforeEach
   public void setUp() {
     MockitoAnnotations.openMocks(this);
-    lidiSchedulerService = new LidiSchedulerService(liDiClient, scheduledObservationService);
+    lidiSchedulerService = new LidiSchedulerService(liDiClient);
   }
 
   @Test
   public void shouldExportFullLineVersionsSuccessfully() {
     //given
     Response response = Response.builder()
-                                .status(200)
-                                .reason("OK")
-                                .request(
-                                    Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
-                                        null, Util.UTF_8, null))
-                                .build();
+        .status(200)
+        .reason("OK")
+        .request(
+            Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                null, Util.UTF_8, null))
+        .build();
     when(liDiClient.putLiDiLineExportFull()).thenReturn(response);
 
     //when
@@ -57,12 +54,12 @@ class LidiSchedulerServiceTest {
   public void shouldExportFullLineVersionsUnsuccessful() {
     //given
     Response response = Response.builder()
-                                .status(HttpStatus.BAD_REQUEST.value())
-                                .reason("Bad Request")
-                                .request(
-                                    Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
-                                        null, Util.UTF_8, null))
-                                .build();
+        .status(HttpStatus.BAD_REQUEST.value())
+        .reason("Bad Request")
+        .request(
+            Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                null, Util.UTF_8, null))
+        .build();
     when(liDiClient.putLiDiLineExportFull()).thenReturn(response);
 
     //when
@@ -74,12 +71,12 @@ class LidiSchedulerServiceTest {
   public void shouldExportActualLineVersionsSuccessfully() {
     //given
     Response response = Response.builder()
-                                .status(200)
-                                .reason("OK")
-                                .request(
-                                    Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
-                                        null, Util.UTF_8, null))
-                                .build();
+        .status(200)
+        .reason("OK")
+        .request(
+            Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                null, Util.UTF_8, null))
+        .build();
     when(liDiClient.putLiDiLineExportActual()).thenReturn(response);
 
     //when
@@ -94,12 +91,12 @@ class LidiSchedulerServiceTest {
   public void shouldExportActualLineVersionsUnsuccessful() {
     //given
     Response response = Response.builder()
-                                .status(HttpStatus.BAD_REQUEST.value())
-                                .reason("Bad Request")
-                                .request(
-                                    Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
-                                        null, Util.UTF_8, null))
-                                .build();
+        .status(HttpStatus.BAD_REQUEST.value())
+        .reason("Bad Request")
+        .request(
+            Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                null, Util.UTF_8, null))
+        .build();
     when(liDiClient.putLiDiLineExportActual()).thenReturn(response);
 
     //when
@@ -111,12 +108,12 @@ class LidiSchedulerServiceTest {
   public void shouldNextTimetableLineVersionsSuccessfully() {
     //given
     Response response = Response.builder()
-                                .status(200)
-                                .reason("OK")
-                                .request(
-                                    Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
-                                        null, Util.UTF_8, null))
-                                .build();
+        .status(200)
+        .reason("OK")
+        .request(
+            Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                null, Util.UTF_8, null))
+        .build();
     when(liDiClient.putLiDiLineExportNextTimetableVersions()).thenReturn(response);
 
     //when
@@ -131,12 +128,12 @@ class LidiSchedulerServiceTest {
   public void shouldExportNextTimetableLineVersionsUnsuccessful() {
     //given
     Response response = Response.builder()
-                                .status(HttpStatus.BAD_REQUEST.value())
-                                .reason("Bad Request")
-                                .request(
-                                    Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
-                                        null, Util.UTF_8, null))
-                                .build();
+        .status(HttpStatus.BAD_REQUEST.value())
+        .reason("Bad Request")
+        .request(
+            Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                null, Util.UTF_8, null))
+        .build();
     when(liDiClient.putLiDiLineExportNextTimetableVersions()).thenReturn(response);
 
     //when
@@ -144,17 +141,16 @@ class LidiSchedulerServiceTest {
         () -> lidiSchedulerService.exportNextTimetableLineVersions());
   }
 
-
   @Test
   public void shouldExportFullSublineVersionsSuccessfully() {
     //given
     Response response = Response.builder()
-                                .status(200)
-                                .reason("OK")
-                                .request(
-                                    Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
-                                        null, Util.UTF_8, null))
-                                .build();
+        .status(200)
+        .reason("OK")
+        .request(
+            Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                null, Util.UTF_8, null))
+        .build();
     when(liDiClient.putLiDiSublineExportFull()).thenReturn(response);
 
     //when
@@ -169,12 +165,12 @@ class LidiSchedulerServiceTest {
   public void shouldExportFullSublineVersionsUnsuccessful() {
     //given
     Response response = Response.builder()
-                                .status(HttpStatus.BAD_REQUEST.value())
-                                .reason("Bad Request")
-                                .request(
-                                    Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
-                                        null, Util.UTF_8, null))
-                                .build();
+        .status(HttpStatus.BAD_REQUEST.value())
+        .reason("Bad Request")
+        .request(
+            Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                null, Util.UTF_8, null))
+        .build();
     when(liDiClient.putLiDiSublineExportFull()).thenReturn(response);
 
     //when
@@ -186,12 +182,12 @@ class LidiSchedulerServiceTest {
   public void shouldExportActualSublineVersionsSuccessfully() {
     //given
     Response response = Response.builder()
-                                .status(200)
-                                .reason("OK")
-                                .request(
-                                    Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
-                                        null, Util.UTF_8, null))
-                                .build();
+        .status(200)
+        .reason("OK")
+        .request(
+            Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                null, Util.UTF_8, null))
+        .build();
     when(liDiClient.putLiDiSublineExportActual()).thenReturn(response);
 
     //when
@@ -206,12 +202,12 @@ class LidiSchedulerServiceTest {
   public void shouldExportActualSublineVersionsUnsuccessful() {
     //given
     Response response = Response.builder()
-                                .status(HttpStatus.BAD_REQUEST.value())
-                                .reason("Bad Request")
-                                .request(
-                                    Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
-                                        null, Util.UTF_8, null))
-                                .build();
+        .status(HttpStatus.BAD_REQUEST.value())
+        .reason("Bad Request")
+        .request(
+            Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                null, Util.UTF_8, null))
+        .build();
     when(liDiClient.putLiDiSublineExportActual()).thenReturn(response);
 
     //when
@@ -223,12 +219,12 @@ class LidiSchedulerServiceTest {
   public void shouldNextTimetableSublineVersionsSuccessfully() {
     //given
     Response response = Response.builder()
-                                .status(200)
-                                .reason("OK")
-                                .request(
-                                    Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
-                                        null, Util.UTF_8, null))
-                                .build();
+        .status(200)
+        .reason("OK")
+        .request(
+            Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                null, Util.UTF_8, null))
+        .build();
     when(liDiClient.putLiDiSublineExportNextTimetableVersions()).thenReturn(response);
 
     //when
@@ -243,12 +239,12 @@ class LidiSchedulerServiceTest {
   public void shouldExporttNextTimetableSublineVersionsUnsuccessful() {
     //given
     Response response = Response.builder()
-                                .status(HttpStatus.BAD_REQUEST.value())
-                                .reason("Bad Request")
-                                .request(
-                                    Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
-                                        null, Util.UTF_8, null))
-                                .build();
+        .status(HttpStatus.BAD_REQUEST.value())
+        .reason("Bad Request")
+        .request(
+            Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                null, Util.UTF_8, null))
+        .build();
     when(liDiClient.putLiDiSublineExportNextTimetableVersions()).thenReturn(response);
 
     //when
@@ -260,12 +256,12 @@ class LidiSchedulerServiceTest {
   public void shouldExportFullTimetableFieldNumberVersionsSuccessfully() {
     //given
     Response response = Response.builder()
-                                .status(200)
-                                .reason("OK")
-                                .request(
-                                    Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
-                                        null, Util.UTF_8, null))
-                                .build();
+        .status(200)
+        .reason("OK")
+        .request(
+            Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                null, Util.UTF_8, null))
+        .build();
     when(liDiClient.putLiDiTimetableFieldNumberExportFull()).thenReturn(response);
 
     //when
@@ -280,12 +276,12 @@ class LidiSchedulerServiceTest {
   public void shouldExportFullTimetableFieldNumberVersionsUnsuccessful() {
     //given
     Response response = Response.builder()
-                                .status(HttpStatus.BAD_REQUEST.value())
-                                .reason("Bad Request")
-                                .request(
-                                    Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
-                                        null, Util.UTF_8, null))
-                                .build();
+        .status(HttpStatus.BAD_REQUEST.value())
+        .reason("Bad Request")
+        .request(
+            Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                null, Util.UTF_8, null))
+        .build();
     when(liDiClient.putLiDiTimetableFieldNumberExportFull()).thenReturn(response);
 
     //when
@@ -297,12 +293,12 @@ class LidiSchedulerServiceTest {
   public void shouldExportActualTimetableFieldNumberVersionsSuccessfully() {
     //given
     Response response = Response.builder()
-                                .status(200)
-                                .reason("OK")
-                                .request(
-                                    Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
-                                        null, Util.UTF_8, null))
-                                .build();
+        .status(200)
+        .reason("OK")
+        .request(
+            Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                null, Util.UTF_8, null))
+        .build();
     when(liDiClient.putLiDiTimetableFieldNumberExportActual()).thenReturn(response);
 
     //when
@@ -317,12 +313,12 @@ class LidiSchedulerServiceTest {
   public void shouldExportActualTimetableFieldNumberVersionsUnsuccessful() {
     //given
     Response response = Response.builder()
-                                .status(HttpStatus.BAD_REQUEST.value())
-                                .reason("Bad Request")
-                                .request(
-                                    Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
-                                        null, Util.UTF_8, null))
-                                .build();
+        .status(HttpStatus.BAD_REQUEST.value())
+        .reason("Bad Request")
+        .request(
+            Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                null, Util.UTF_8, null))
+        .build();
     when(liDiClient.putLiDiTimetableFieldNumberExportActual()).thenReturn(response);
 
     //when
@@ -334,12 +330,12 @@ class LidiSchedulerServiceTest {
   public void shouldNextTimetableTimetableFieldNumberVersionsSuccessfully() {
     //given
     Response response = Response.builder()
-                                .status(200)
-                                .reason("OK")
-                                .request(
-                                    Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
-                                        null, Util.UTF_8, null))
-                                .build();
+        .status(200)
+        .reason("OK")
+        .request(
+            Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                null, Util.UTF_8, null))
+        .build();
     when(liDiClient.putLiDiTimetableFieldNumberExportNextTimetableVersions()).thenReturn(response);
 
     //when
@@ -354,12 +350,12 @@ class LidiSchedulerServiceTest {
   public void shouldExportNextTimetableTimetableFieldNumberVersionsUnsuccessful() {
     //given
     Response response = Response.builder()
-                                .status(HttpStatus.BAD_REQUEST.value())
-                                .reason("Bad Request")
-                                .request(
-                                    Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
-                                        null, Util.UTF_8, null))
-                                .build();
+        .status(HttpStatus.BAD_REQUEST.value())
+        .reason("Bad Request")
+        .request(
+            Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                null, Util.UTF_8, null))
+        .build();
     when(liDiClient.putLiDiTimetableFieldNumberExportNextTimetableVersions()).thenReturn(response);
 
     //when
