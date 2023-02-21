@@ -24,25 +24,22 @@ public class BoDiSchedulerServiceTest {
   @Mock
   private BoDiClient boDiClient;
 
-  @Mock
-  private ScheduledObservationService scheduledObservationService;
-
   @BeforeEach
   public void setUp() {
     MockitoAnnotations.openMocks(this);
-    boDiSchedulerService = new BoDiSchedulerService(boDiClient, scheduledObservationService);
+    boDiSchedulerService = new BoDiSchedulerService(boDiClient);
   }
 
   @Test
   public void shouldPostLoadCompaniesFromCRDSuccessfully() {
     //given
     Response response = Response.builder()
-                                .status(200)
-                                .reason("OK")
-                                .request(
-                                    Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
-                                        null, Util.UTF_8, null))
-                                .build();
+        .status(200)
+        .reason("OK")
+        .request(
+            Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                null, Util.UTF_8, null))
+        .build();
     when(boDiClient.postLoadCompaniesFromCRD()).thenReturn(response);
 
     //when
@@ -57,12 +54,12 @@ public class BoDiSchedulerServiceTest {
   public void shouldPostLoadCompaniesFromCRDUnsuccessful() {
     //given
     Response response = Response.builder()
-                                .status(HttpStatus.BAD_REQUEST.value())
-                                .reason("Bad Request")
-                                .request(
-                                    Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
-                                        null, Util.UTF_8, null))
-                                .build();
+        .status(HttpStatus.BAD_REQUEST.value())
+        .reason("Bad Request")
+        .request(
+            Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                null, Util.UTF_8, null))
+        .build();
     when(boDiClient.postLoadCompaniesFromCRD()).thenReturn(response);
 
     //when
@@ -76,12 +73,12 @@ public class BoDiSchedulerServiceTest {
   public void shouldPostLoadCompaniesFromBAVSuccessfully() {
     //given
     Response response = Response.builder()
-                                .status(200)
-                                .reason("OK")
-                                .request(
-                                    Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
-                                        null, Util.UTF_8, null))
-                                .build();
+        .status(200)
+        .reason("OK")
+        .request(
+            Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                null, Util.UTF_8, null))
+        .build();
     when(boDiClient.postLoadTransportCompaniesFromBav()).thenReturn(response);
 
     //when
@@ -96,12 +93,12 @@ public class BoDiSchedulerServiceTest {
   public void shouldPostLoadCompaniesFromBAVUnsuccessful() {
     //given
     Response response = Response.builder()
-                                .status(HttpStatus.BAD_REQUEST.value())
-                                .reason("Bad Request")
-                                .request(
-                                    Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
-                                        null, Util.UTF_8, null))
-                                .build();
+        .status(HttpStatus.BAD_REQUEST.value())
+        .reason("Bad Request")
+        .request(
+            Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                null, Util.UTF_8, null))
+        .build();
     when(boDiClient.postLoadTransportCompaniesFromBav()).thenReturn(response);
 
     //when
@@ -114,12 +111,12 @@ public class BoDiSchedulerServiceTest {
   public void shouldExportFullBusinessOrganisationVersionsSuccessfully() {
     //given
     Response response = Response.builder()
-                                .status(200)
-                                .reason("OK")
-                                .request(
-                                    Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
-                                        null, Util.UTF_8, null))
-                                .build();
+        .status(200)
+        .reason("OK")
+        .request(
+            Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                null, Util.UTF_8, null))
+        .build();
     when(boDiClient.putBoDiBusinessOrganisationExportFull()).thenReturn(response);
 
     //when
@@ -134,12 +131,12 @@ public class BoDiSchedulerServiceTest {
   public void shouldExportFullBusinessOrganisationVersionsUnsuccessful() {
     //given
     Response response = Response.builder()
-                                .status(HttpStatus.BAD_REQUEST.value())
-                                .reason("Bad Request")
-                                .request(
-                                    Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
-                                        null, Util.UTF_8, null))
-                                .build();
+        .status(HttpStatus.BAD_REQUEST.value())
+        .reason("Bad Request")
+        .request(
+            Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                null, Util.UTF_8, null))
+        .build();
     when(boDiClient.putBoDiBusinessOrganisationExportFull()).thenReturn(response);
 
     //when
@@ -151,12 +148,12 @@ public class BoDiSchedulerServiceTest {
   public void shouldExportActualBusinessOrganisationVersionsSuccessfully() {
     //given
     Response response = Response.builder()
-                                .status(200)
-                                .reason("OK")
-                                .request(
-                                    Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
-                                        null, Util.UTF_8, null))
-                                .build();
+        .status(200)
+        .reason("OK")
+        .request(
+            Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                null, Util.UTF_8, null))
+        .build();
     when(boDiClient.putBoDiBusinessOrganisationExportActual()).thenReturn(response);
 
     //when
@@ -171,12 +168,12 @@ public class BoDiSchedulerServiceTest {
   public void shouldExportActualBusinessOrganisationVersionsUnsuccessful() {
     //given
     Response response = Response.builder()
-                                .status(HttpStatus.BAD_REQUEST.value())
-                                .reason("Bad Request")
-                                .request(
-                                    Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
-                                        null, Util.UTF_8, null))
-                                .build();
+        .status(HttpStatus.BAD_REQUEST.value())
+        .reason("Bad Request")
+        .request(
+            Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                null, Util.UTF_8, null))
+        .build();
     when(boDiClient.putBoDiBusinessOrganisationExportActual()).thenReturn(response);
 
     //when
@@ -188,12 +185,12 @@ public class BoDiSchedulerServiceTest {
   public void shouldNextTimetableBusinessOrganisationVersionsSuccessfully() {
     //given
     Response response = Response.builder()
-                                .status(200)
-                                .reason("OK")
-                                .request(
-                                    Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
-                                        null, Util.UTF_8, null))
-                                .build();
+        .status(200)
+        .reason("OK")
+        .request(
+            Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                null, Util.UTF_8, null))
+        .build();
     when(boDiClient.putBoDiBusinessOrganisationExportNextTimetableVersions()).thenReturn(response);
 
     //when
@@ -208,12 +205,12 @@ public class BoDiSchedulerServiceTest {
   public void shouldExportNextTimetableBusinessOrganisationVersionsUnsuccessful() {
     //given
     Response response = Response.builder()
-                                .status(HttpStatus.BAD_REQUEST.value())
-                                .reason("Bad Request")
-                                .request(
-                                    Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
-                                        null, Util.UTF_8, null))
-                                .build();
+        .status(HttpStatus.BAD_REQUEST.value())
+        .reason("Bad Request")
+        .request(
+            Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                null, Util.UTF_8, null))
+        .build();
     when(boDiClient.putBoDiBusinessOrganisationExportNextTimetableVersions()).thenReturn(response);
 
     //when
