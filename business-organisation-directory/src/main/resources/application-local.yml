@@ -1,8 +1,4 @@
 spring:
-  sleuth:
-    baggage:
-      remote-fields: "Correlation-Id"
-      correlation-fields: "Correlation-Id"
   datasource:
     url: jdbc:postgresql://localhost:5435/business-organisation-directory?currentSchema=business_organisation_directory
     username: user

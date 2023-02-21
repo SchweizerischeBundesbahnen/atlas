@@ -5,22 +5,22 @@
    <modelVersion>4.0.0</modelVersion>
 
    <name>Atlas Business Organisation Directory</name>
+
    <parent>
       <artifactId>atlas</artifactId>
       <groupId>ch.sbb.atlas</groupId>
       <relativePath>../pom.xml</relativePath>
       <version>1.173.0</version>
    </parent>
+
    <artifactId>business-organisation-directory</artifactId>
    <description>BusinessOrganisationDirectory</description>
+
    <properties>
       <maven.deploy.skip>true</maven.deploy.skip>
    </properties>
+
    <dependencies>
-      <dependency>
-         <artifactId>spring-cloud-starter-sleuth</artifactId>
-         <groupId>org.springframework.cloud</groupId>
-      </dependency>
       <dependency>
          <artifactId>spring-boot-starter-actuator</artifactId>
          <groupId>org.springframework.boot</groupId>
@@ -89,12 +89,12 @@
          <groupId>org.springframework.boot</groupId>
       </dependency>
       <dependency>
-         <artifactId>springdoc-openapi-ui</artifactId>
+         <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
          <groupId>org.springdoc</groupId>
       </dependency>
       <dependency>
          <artifactId>hibernate-jpamodelgen</artifactId>
-         <groupId>org.hibernate</groupId>
+         <groupId>org.hibernate.orm</groupId>
       </dependency>
       <dependency>
          <artifactId>flyway-core</artifactId>
@@ -183,16 +183,29 @@
             <groupId>org.jacoco</groupId>
          </plugin>
          <plugin>
-            <artifactId>maven-jaxb2-plugin</artifactId>
+            <groupId>com.sun.xml.ws</groupId>
+            <artifactId>jaxws-maven-plugin</artifactId>
+            <version>4.0.1</version>
             <configuration>
-               <generatePackage>ch.sbb.business.organisation.directory.service.crd</generatePackage>
-               <schemaDirectory>${project.basedir}/src/main/resources/crd</schemaDirectory>
-               <schemaIncludes>
-                  <include>crd.wsdl</include>
-               </schemaIncludes>
-               <schemaLanguage>WSDL</schemaLanguage>
+               <wsdlDirectory>${project.basedir}/src/main/resources/crd</wsdlDirectory>
+               <sourceDestDir>${project.build.directory}/generated-sources/wsdl/src/main/java</sourceDestDir>
+               <extension>true</extension>
             </configuration>
-            <groupId>org.jvnet.jaxb2.maven2</groupId>
+            <executions>
+               <execution>
+                  <id>generate-crd-api</id>
+                  <phase>generate-sources</phase>
+                  <goals>
+                     <goal>wsimport</goal>
+                  </goals>
+                  <configuration>
+                     <wsdlFiles>
+                        <wsdlFile>crd.wsdl</wsdlFile>
+                     </wsdlFiles>
+                     <packageName>ch.sbb.business.organisation.directory.service.crd</packageName>
+                  </configuration>
+               </execution>
+            </executions>
          </plugin>
       </plugins>
    </build>

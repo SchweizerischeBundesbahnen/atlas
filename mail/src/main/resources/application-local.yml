@@ -12,10 +12,6 @@ management:
 spring:
   application:
     name: mail
-  sleuth:
-    baggage:
-      remote-fields: Correlation-Id
-      correlation-fields: Correlation-Id
   mail:
     host: smtp-app.sbb.ch
     port: 587
@@ -57,3 +53,7 @@ kafka:
     mail:
       topic: atlas.mail
       groupId: atlas.kafka.mail.groupId
+
+logging:
+  pattern:
+    console: timestamp=%d thread=%t loglevel=%-5p class=%c appname=atlas traceid=%X{traceId} spanid=%X{spanId} message="%m"%n

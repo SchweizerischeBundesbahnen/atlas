@@ -33,6 +33,7 @@ public class WorkflowController implements WorkflowApiV1 {
 
   @Override
   public WorkflowModel startWorkflow(WorkflowStartModel workflowStartModel) {
+    log.info("Starting workflow");
     Workflow workflow = service.startWorkflow(WorkflowStartMapper.toEntity(workflowStartModel));
     return WorkflowMapper.toNewModel(workflow);
   }
@@ -40,6 +41,7 @@ public class WorkflowController implements WorkflowApiV1 {
   @Override
   @PreAuthorize("@userAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI)")
   public WorkflowModel examinantCheck(Long id, ExaminantWorkflowCheckModel examinantWorkflowCheckModel) {
+    log.info("Checking workflow");
     Workflow workflow = service.examinantCheck(id, examinantWorkflowCheckModel);
     return WorkflowMapper.toModel(workflow);
   }

@@ -12,10 +12,6 @@ management:
 spring:
   application:
     name: scheduling
-  sleuth:
-    baggage:
-      remote-fields: Correlation-Id
-      correlation-fields: Correlation-Id
   datasource:
     url: jdbc:postgresql://localhost:5436/scheduling
     username: user
@@ -127,3 +123,7 @@ atlas:
 mail:
   receiver:
     scheduling: TechSupport-ATLAS@sbb.ch
+
+logging:
+  pattern:
+    console: timestamp=%d thread=%t loglevel=%-5p class=%c appname=atlas traceid=%X{traceId} spanid=%X{spanId} message="%m"%n

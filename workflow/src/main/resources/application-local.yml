@@ -17,10 +17,6 @@ info:
 spring:
   application:
     name: workflow
-  sleuth:
-    baggage:
-      remote-fields: Correlation-Id
-      correlation-fields: Correlation-Id
   datasource:
     url: jdbc:postgresql://localhost:5438/workflow
     username: user

@@ -9,6 +9,7 @@ import ch.sbb.atlas.user.administration.security.UserAdministrationConfig;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.HttpMethod;
@@ -31,9 +32,8 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 
 @Import(UserAdministrationConfig.class)
 @EnableWebSecurity
+@Configuration
 public class SecurityConfig {
-
-  private static final String ROLES_KEY = "roles";
 
   @Value("${spring.security.oauth2.resourceserver.jwt.issuer-uri}")
   private String issuerUri;
@@ -42,7 +42,7 @@ public class SecurityConfig {
   private String serviceName;
 
   @Bean
-  protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+  protected SecurityFilterChain filterChain(HttpSecurity http, AccessDeniedHandler accessDeniedHandler) throws Exception {
     http
         // CORS: by default Spring uses a bean with the name of corsConfigurationSource: @see ch.sbb.esta.config.CorsConfig
         .cors(withDefaults())
@@ -54,12 +54,12 @@ public class SecurityConfig {
 
         // @see <a href="https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#jc-authorize-requests">Authorize
         // Requests</a>
-        .authorizeRequests(authorizeRequests ->
+        .authorizeHttpRequests(authorizeRequests ->
             authorizeRequests
-                .mvcMatchers(HttpMethod.GET, "/actuator/**").permitAll()
-                .mvcMatchers("/swagger-ui/**").permitAll()
-                .mvcMatchers("/v3/api-docs/**").permitAll()
-                .mvcMatchers("/static/rest-api.html").permitAll()
+                .requestMatchers(HttpMethod.GET, "/actuator/**").permitAll()
+                .requestMatchers("/swagger-ui/**").permitAll()
+                .requestMatchers("/v3/api-docs/**").permitAll()
+                .requestMatchers("/static/rest-api.html").permitAll()
 
                 // Method security may also be configured using the annotations <code>@PreAuthorize</code> and
                 // <code>@PostAuthorize</code>
@@ -68,11 +68,11 @@ public class SecurityConfig {
                 // Security Expressions</a>
                 // In order to use these annotations, you have to enable global-method-security using
                 // <code>@EnableGlobalMethodSecurity(prePostEnabled = true)</code>.
-                .mvcMatchers(HttpMethod.DELETE, "/**").hasRole(Role.ATLAS_ADMIN)
+                .requestMatchers(HttpMethod.DELETE, "/**").hasRole(Role.ATLAS_ADMIN)
                 .anyRequest().authenticated()
         )
         .exceptionHandling()
-        .accessDeniedHandler(accessDeniedHandler())
+        .accessDeniedHandler(accessDeniedHandler)
         .and()
 
         // @see <a href="https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#oauth2resourceserver">OAuth
@@ -116,7 +116,7 @@ public class SecurityConfig {
   private JwtGrantedAuthoritiesConverter azureAdRoleConverter() {
     JwtGrantedAuthoritiesConverter roleConverter = new JwtGrantedAuthoritiesConverter();
     roleConverter.setAuthorityPrefix(Role.ROLE_PREFIX);
-    roleConverter.setAuthoritiesClaimName(ROLES_KEY);
+    roleConverter.setAuthoritiesClaimName(Role.ROLES_JWT_KEY);
     return roleConverter;
   }
 
