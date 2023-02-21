@@ -1,5 +1,6 @@
 package ch.sbb.scheduling.service;
 
+import ch.sbb.scheduling.aspect.annotation.SpanTracing;
 import ch.sbb.scheduling.client.BoDiClient;
 import ch.sbb.scheduling.exception.SchedulingExecutionException;
 import feign.Response;
@@ -16,13 +17,14 @@ public class BoDiSchedulerService extends BaseSchedulerService {
 
   private final BoDiClient boDiClient;
 
-  public BoDiSchedulerService(BoDiClient boDiClient, ScheduledObservationService scheduledObservationService) {
+  public BoDiSchedulerService(BoDiClient boDiClient) {
     this.boDiClient = boDiClient;
-    this.scheduledObservationService = scheduledObservationService;
     this.clientName = "BoDi-Client";
   }
 
-  @Retryable(label = "loadCompaniesFromCRD", retryFor = SchedulingExecutionException.class, maxAttempts = 4, backoff = @Backoff(delay
+  @SpanTracing
+  @Retryable(label = "loadCompaniesFromCRD", retryFor = SchedulingExecutionException.class, maxAttempts = 4, backoff =
+  @Backoff(delay
       = 65000))
   @Scheduled(cron = "${scheduler.bodi.import.tu.crd.chron}", zone = "${scheduler.zone}")
   @SchedulerLock(name = "loadCompaniesFromCRD", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
@@ -30,7 +32,9 @@ public class BoDiSchedulerService extends BaseSchedulerService {
     return executeRequest(boDiClient::postLoadCompaniesFromCRD, "Import Companies from CRD");
   }
 
-  @Retryable(label = "loadTransportCompaniesFromBav", retryFor = SchedulingExecutionException.class, maxAttempts = 4, backoff = @Backoff(delay = 65000))
+  @SpanTracing
+  @Retryable(label = "loadTransportCompaniesFromBav", retryFor = SchedulingExecutionException.class, maxAttempts = 4, backoff =
+  @Backoff(delay = 65000))
   @Scheduled(cron = "${scheduler.bodi.import.tu.bav.chron}", zone = "${scheduler.zone}")
   @SchedulerLock(name = "loadTransportCompaniesFromBav", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
   public Response postLoadTransportCompaniesFromBav() {
@@ -38,7 +42,9 @@ public class BoDiSchedulerService extends BaseSchedulerService {
         "Import Companies from BAV");
   }
 
-  @Retryable(label = "exportFullBusinessOrganisationVersions", retryFor = SchedulingExecutionException.class, maxAttempts = 4, backoff = @Backoff(delay = 65000))
+  @SpanTracing
+  @Retryable(label = "exportFullBusinessOrganisationVersions", retryFor = SchedulingExecutionException.class, maxAttempts = 4,
+      backoff = @Backoff(delay = 65000))
   @Scheduled(cron = "${scheduler.bodi.export.business-organisation.full.chron}", zone = "${scheduler.zone}")
   @SchedulerLock(name = "exportFullBusinessOrganisationVersions", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
   public Response exportFullBusinessOrganisationVersions() {
@@ -46,7 +52,9 @@ public class BoDiSchedulerService extends BaseSchedulerService {
         "Full BusinessOrganisation Versions CSV/ZIP");
   }
 
-  @Retryable(label = "exportActualBusinessOrganisationVersions", retryFor = SchedulingExecutionException.class, maxAttempts = 4, backoff = @Backoff(delay = 65000))
+  @SpanTracing
+  @Retryable(label = "exportActualBusinessOrganisationVersions", retryFor = SchedulingExecutionException.class, maxAttempts = 4
+      , backoff = @Backoff(delay = 65000))
   @Scheduled(cron = "${scheduler.bodi.export.business-organisation.actual.chron}", zone = "${scheduler.zone}")
   @SchedulerLock(name = "exportActualBusinessOrganisationVersions", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
   public Response exportActualBusinessOrganisationVersions() {
@@ -54,7 +62,9 @@ public class BoDiSchedulerService extends BaseSchedulerService {
         "Actual BusinessOrganisation Versions CSV/ZIP");
   }
 
-  @Retryable(label = "exportFutureBusinessOrganisationVersions", retryFor = SchedulingExecutionException.class, maxAttempts = 4, backoff = @Backoff(delay = 65000))
+  @SpanTracing
+  @Retryable(label = "exportFutureBusinessOrganisationVersions", retryFor = SchedulingExecutionException.class, maxAttempts = 4
+      , backoff = @Backoff(delay = 65000))
   @Scheduled(cron = "${scheduler.bodi.export.business-organisation.future.chron}", zone = "${scheduler.zone}")
   @SchedulerLock(name = "exportFutureBusinessOrganisationVersions", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
   public Response exportNextTimetableBusinessOrganisationVersions() {
