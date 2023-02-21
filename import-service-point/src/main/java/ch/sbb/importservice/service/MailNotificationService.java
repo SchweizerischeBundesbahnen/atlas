@@ -9,21 +9,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.StepExecution;
-import org.springframework.batch.core.metrics.BatchMetrics;
+import org.springframework.batch.core.observability.BatchMetrics;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.sleuth.TraceContext;
-import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class MailNotificationService {
-
-  private final Tracer tracer;
 
   @Value("${mail.receiver.import-service-point}")
   private List<String> schedulingNotificationAddresses;
@@ -58,7 +55,7 @@ public class MailNotificationService {
     Map<String, Object> mailContentProperty = new HashMap<>();
     mailContentProperty.put("jobName", jobName);
     mailContentProperty.put("stepExecutionInformation", stepExecutionInformation);
-    mailContentProperty.put("correlationId", getCurrentSpan());
+    mailContentProperty.put("correlationId", getCurrentSpan(stepExecution));
     mailContentProperty.put("importProcessItemsSize", importProcessItems.size());
     mailContentProperty.put("successImportedItemsSize", successImportedItems.size());
     mailContentProperty.put("failedImportedItemsSize", failedImportedItems.size());
@@ -92,7 +89,7 @@ public class MailNotificationService {
     mailContentProperty.put("exception", getException(stepExecution));
     mailContentProperty.put("cause", getCause(stepExecution));
     mailContentProperty.put("jobParameter", getParameters(stepExecution));
-    mailContentProperty.put("correlationId", getCurrentSpan());
+    mailContentProperty.put("correlationId", getCurrentSpan(stepExecution));
     mailProperties.add(mailContentProperty);
     return mailProperties;
   }
@@ -120,12 +117,8 @@ public class MailNotificationService {
     return stringBuilder.toString();
   }
 
-  String getCurrentSpan() {
-    if (tracer.currentSpan() != null) {
-      TraceContext context = Objects.requireNonNull(tracer.currentSpan()).context();
-      return context.traceId();
-    }
-    throw new IllegalStateException("No Tracer found!");
+  String getCurrentSpan(StepExecution stepExecution) {
+    return stepExecution.getExecutionContext().getString("traceId");
   }
 
   private List<ImportProcessItem> filterByStatus(List<ImportProcessItem> allImportProcessedItem,

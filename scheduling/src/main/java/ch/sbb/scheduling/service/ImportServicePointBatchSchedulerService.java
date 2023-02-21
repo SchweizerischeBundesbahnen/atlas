@@ -1,5 +1,6 @@
 package ch.sbb.scheduling.service;
 
+import ch.sbb.scheduling.aspect.annotation.SpanTracing;
 import ch.sbb.scheduling.client.ImportServicePointBatchClient;
 import ch.sbb.scheduling.exception.SchedulingExecutionException;
 import feign.Response;
@@ -21,12 +22,13 @@ public class ImportServicePointBatchSchedulerService extends BaseSchedulerServic
     this.clientName = "ImportServicePointBatch-Client";
   }
 
-  @Retryable(label = "triggerImportServicePointBatch", value = SchedulingExecutionException.class, maxAttempts = 4, backoff =
+  @SpanTracing
+  @Retryable(label = "triggerImportServicePointBatch", retryFor = SchedulingExecutionException.class, maxAttempts = 4, backoff =
   @Backoff(delay = 65000))
   @Scheduled(cron = "${scheduler.import-service-point.service-point-trigger-batch.chron}", zone = "${scheduler.zone}")
   @SchedulerLock(name = "triggerImportServicePointBatch", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
   public Response postTriggerImportServicePointBatch() {
-    return executeRequest(importServicePointBatchClient.postTriggerImportServicePointBatch(),
+    return executeRequest(importServicePointBatchClient::postTriggerImportServicePointBatch,
         "Trigger Import Service Point Batch");
   }
 

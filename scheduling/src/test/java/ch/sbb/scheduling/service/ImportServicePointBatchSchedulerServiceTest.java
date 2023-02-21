@@ -23,7 +23,7 @@ public class ImportServicePointBatchSchedulerServiceTest {
 
   @Mock
   private ImportServicePointBatchClient client;
-
+  
   @BeforeEach
   public void setUp() {
     MockitoAnnotations.openMocks(this);

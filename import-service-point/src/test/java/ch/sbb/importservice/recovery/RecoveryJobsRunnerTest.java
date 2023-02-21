@@ -79,8 +79,8 @@ public class RecoveryJobsRunnerTest {
     //given
     StepExecution stepExecution = new StepExecution("myStep", jobExecution);
     stepExecution.setId(132L);
-    Map<String, JobParameter> parameters = new HashMap<>();
-    parameters.put(EXECUTION_TYPE_PARAMETER, new JobParameter("BATCH"));
+    Map<String, JobParameter<?>> parameters = new HashMap<>();
+    parameters.put(EXECUTION_TYPE_PARAMETER, new JobParameter<>("BATCH", String.class));
     when(jobParameters.getParameters()).thenReturn(parameters);
     when(jobExecution.getStatus()).thenReturn(BatchStatus.STARTING);
     when(jobExecution.getJobParameters()).thenReturn(jobParameters);
@@ -112,8 +112,8 @@ public class RecoveryJobsRunnerTest {
     //given
     StepExecution stepExecution = new StepExecution("myStep", jobExecution);
     stepExecution.setId(132L);
-    Map<String, JobParameter> parameters = new HashMap<>();
-    parameters.put(EXECUTION_TYPE_PARAMETER, new JobParameter("BATCH"));
+    Map<String, JobParameter<?>> parameters = new HashMap<>();
+    parameters.put(EXECUTION_TYPE_PARAMETER, new JobParameter<>("BATCH", String.class));
     when(jobParameters.getParameters()).thenReturn(parameters);
     when(jobExecution.getStatus()).thenReturn(BatchStatus.STARTING);
     when(jobExecution.getJobParameters()).thenReturn(jobParameters);

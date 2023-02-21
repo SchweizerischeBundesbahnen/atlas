@@ -1,8 +1,8 @@
 package ch.sbb.atlas.base.service.model.entity;
 
+import jakarta.persistence.FlushModeType;
 import java.lang.reflect.Field;
 import java.util.Optional;
-import org.hibernate.FlushMode;
 import org.hibernate.Session;
 import org.hibernate.tuple.ValueGenerator;
 
@@ -25,10 +25,10 @@ public abstract class BusinessIdGenerator implements ValueGenerator<String> {
       return presetSlnid.get();
     }
 
-    long result = Long.parseLong(
-        session.createNativeQuery("SELECT nextval('" + dbSequence + "') as nextval")
-               .setFlushMode(FlushMode.COMMIT)
-               .getSingleResult().toString());
+    long result =
+        session.createNativeQuery("SELECT nextval('" + dbSequence + "') as nextval", Long.class)
+            .setFlushMode(FlushModeType.COMMIT)
+            .getSingleResult();
     return businessIdPrefix + result;
   }
 
