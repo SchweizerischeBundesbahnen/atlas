@@ -8,13 +8,13 @@ import ch.sbb.atlas.base.service.model.api.BaseVersionModel;
 import ch.sbb.atlas.base.service.model.validation.DatesValidator;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Set;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -117,6 +117,5 @@ public class BusinessOrganisationVersionModel extends BaseVersionModel implement
   @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)", example = "5",
       accessMode = AccessMode.READ_ONLY)
   private Integer etagVersion;
-
 
 }

@@ -8,9 +8,9 @@ import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.longName;
 import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.paymentType;
 import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.slnid;
 import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.swissLineNumber;
+import static ch.sbb.atlas.api.lidi.enumaration.ModelType.LINE;
 import static ch.sbb.line.directory.converter.CmykColorConverter.fromCmykString;
 import static ch.sbb.line.directory.converter.RgbColorConverter.fromHex;
-import static ch.sbb.atlas.api.lidi.enumaration.ModelType.LINE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -21,20 +21,20 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.atlas.api.lidi.LineVersionModel;
+import ch.sbb.atlas.api.lidi.LineVersionModel.Fields;
+import ch.sbb.atlas.api.lidi.LineVersionSnapshotModel;
+import ch.sbb.atlas.api.lidi.SublineVersionModel;
+import ch.sbb.atlas.api.lidi.enumaration.CoverageType;
+import ch.sbb.atlas.api.lidi.enumaration.LineType;
+import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
+import ch.sbb.atlas.api.lidi.enumaration.SublineType;
 import ch.sbb.atlas.base.service.model.Status;
 import ch.sbb.atlas.base.service.model.api.ErrorResponse;
 import ch.sbb.atlas.base.service.model.controller.BaseControllerWithAmazonS3ApiTest;
 import ch.sbb.atlas.base.service.model.workflow.WorkflowStatus;
 import ch.sbb.line.directory.LineTestData;
-import ch.sbb.atlas.api.lidi.LineVersionModel;
-import ch.sbb.atlas.api.lidi.LineVersionModel.Fields;
-import ch.sbb.atlas.api.lidi.LineVersionSnapshotModel;
-import ch.sbb.atlas.api.lidi.SublineVersionModel;
 import ch.sbb.line.directory.entity.LineVersionSnapshot;
-import ch.sbb.atlas.api.lidi.enumaration.CoverageType;
-import ch.sbb.atlas.api.lidi.enumaration.LineType;
-import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
-import ch.sbb.atlas.api.lidi.enumaration.SublineType;
 import ch.sbb.line.directory.repository.CoverageRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.LineVersionSnapshotRepository;
@@ -87,7 +87,7 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
     lineController.createLineVersion(lineVersionModel);
 
     //when
-    mvc.perform(get("/v1/lines/")
+    mvc.perform(get("/v1/lines")
             .queryParam("page", "0")
             .queryParam("size", "5")
             .queryParam("sort", "swissLineNumber,asc"))
@@ -243,7 +243,7 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
     lineController.createLineVersion(lineVersionModel);
     //when
     lineVersionModel.setSwissLineNumber("b0.IC3");
-    mvc.perform(post("/v1/lines/versions/")
+    mvc.perform(post("/v1/lines/versions")
         .contentType(contentType)
         .content(mapper.writeValueAsString(lineVersionModel))
     ).andExpect(status().isCreated());
@@ -359,7 +359,7 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
 
     //when
     lineVersionModel.setValidFrom(LocalDate.of(2000, 1, 2));
-    mvc.perform(post("/v1/lines/versions/")
+    mvc.perform(post("/v1/lines/versions")
             .contentType(contentType)
             .content(mapper.writeValueAsString(lineVersionModel)))
         .andExpect(status().isConflict())

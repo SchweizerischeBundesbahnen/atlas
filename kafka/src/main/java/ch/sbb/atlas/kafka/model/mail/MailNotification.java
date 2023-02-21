@@ -2,12 +2,12 @@ package ch.sbb.atlas.kafka.model.mail;
 
 import ch.sbb.atlas.kafka.model.workflow.event.AtlasEvent;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

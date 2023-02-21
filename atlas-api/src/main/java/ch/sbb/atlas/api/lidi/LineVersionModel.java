@@ -9,12 +9,12 @@ import ch.sbb.atlas.base.service.model.api.BaseVersionModel;
 import ch.sbb.atlas.base.service.model.validation.DatesValidator;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Set;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -132,5 +132,3 @@ public class LineVersionModel extends BaseVersionModel implements DatesValidator
   @Schema(description = "Workflows related to the line version", accessMode = AccessMode.READ_ONLY)
   private Set<LineVersionWorkflowModel> lineVersionWorkflows;
 }
-
-

@@ -6,6 +6,7 @@ import static org.springframework.security.oauth2.jwt.JwtClaimNames.AUD;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
@@ -25,6 +26,7 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtGra
 import org.springframework.security.web.SecurityFilterChain;
 
 @EnableWebSecurity
+@Configuration
 public class SecurityConfig {
 
   private static final String ROLE_PREFIX = "ROLE_";
@@ -47,19 +49,18 @@ public class SecurityConfig {
 
         .and()
 
-        // @see <a href="https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#jc-authorize-requests">Authorize Requests</a>
-        .authorizeRequests(authorizeRequests ->
+        .authorizeHttpRequests(authorizeRequests ->
             authorizeRequests
-                .mvcMatchers(HttpMethod.GET, "/actuator/**").permitAll()
-                .anyRequest().authenticated()
+              .requestMatchers(HttpMethod.GET, "/actuator/**").permitAll()
+              .anyRequest().authenticated()
         )
 
-        // @see <a href="https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#oauth2resourceserver">OAuth 2.0 Resource Server</a>
+        // @see <a href="https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#oauth2resourceserver">OAuth
+        // 2.0 Resource Server</a>
         .oauth2ResourceServer()
         .jwt()
         .jwtAuthenticationConverter(jwtAuthenticationConverter())
         .and().and().oauth2Login();
-    ;
     return http.build();
   }
 
@@ -98,6 +99,5 @@ public class SecurityConfig {
     roleConverter.setAuthoritiesClaimName(ROLES_KEY);
     return roleConverter;
   }
-
 
 }

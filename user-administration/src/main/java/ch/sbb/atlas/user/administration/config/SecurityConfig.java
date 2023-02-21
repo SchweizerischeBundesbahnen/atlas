@@ -7,6 +7,7 @@ import ch.sbb.atlas.base.service.model.configuration.Role;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
@@ -26,10 +27,8 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtGra
 import org.springframework.security.web.SecurityFilterChain;
 
 @EnableWebSecurity
+@Configuration
 public class SecurityConfig {
-
-  private static final String ROLE_PREFIX = "ROLE_";
-  private static final String ROLES_KEY = "roles";
 
   @Value("${spring.security.oauth2.resourceserver.jwt.issuer-uri}")
   private String issuerUri;
@@ -50,12 +49,12 @@ public class SecurityConfig {
 
         // @see <a href="https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#jc-authorize-requests">Authorize
         // Requests</a>
-        .authorizeRequests(authorizeRequests ->
+        .authorizeHttpRequests(authorizeRequests ->
             authorizeRequests
-                .mvcMatchers(HttpMethod.GET, "/actuator/**").permitAll()
-                .mvcMatchers("/swagger-ui/**").permitAll()
-                .mvcMatchers("/v3/api-docs/**").permitAll()
-                .mvcMatchers("/static/rest-api.html").permitAll()
+                .requestMatchers(HttpMethod.GET, "/actuator/**").permitAll()
+                .requestMatchers("/swagger-ui/**").permitAll()
+                .requestMatchers("/v3/api-docs/**").permitAll()
+                .requestMatchers("/static/rest-api.html").permitAll()
 
                 // Method security may also be configured using the annotations <code>@PreAuthorize</code> and
                 // <code>@PostAuthorize</code>
@@ -64,9 +63,9 @@ public class SecurityConfig {
                 // Security Expressions</a>
                 // In order to use these annotations, you have to enable global-method-security using
                 // <code>@EnableGlobalMethodSecurity(prePostEnabled = true)</code>.
-                .mvcMatchers(HttpMethod.GET, "/v1/users/current").authenticated()
-                .mvcMatchers(HttpMethod.GET, "/v1/users/*/displayname").authenticated()
-                .mvcMatchers("/**").hasAnyRole(Role.ATLAS_ADMIN)
+                .requestMatchers(HttpMethod.GET, "/v1/users/current").authenticated()
+                .requestMatchers(HttpMethod.GET, "/v1/users/*/displayname").authenticated()
+                .requestMatchers("/**").hasAnyRole(Role.ATLAS_ADMIN)
                 .anyRequest().authenticated()
         )
 
@@ -109,8 +108,8 @@ public class SecurityConfig {
    */
   private JwtGrantedAuthoritiesConverter azureAdRoleConverter() {
     JwtGrantedAuthoritiesConverter roleConverter = new JwtGrantedAuthoritiesConverter();
-    roleConverter.setAuthorityPrefix(ROLE_PREFIX);
-    roleConverter.setAuthoritiesClaimName(ROLES_KEY);
+    roleConverter.setAuthorityPrefix(Role.ROLE_PREFIX);
+    roleConverter.setAuthoritiesClaimName(Role.ROLES_JWT_KEY);
     return roleConverter;
   }
 }

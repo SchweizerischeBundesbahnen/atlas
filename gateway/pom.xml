@@ -19,20 +19,20 @@
 
    <dependencies>
       <dependency>
-         <groupId>org.springframework.cloud</groupId>
-         <artifactId>spring-cloud-starter-sleuth</artifactId>
-      </dependency>
-      <dependency>
          <groupId>org.springframework.boot</groupId>
          <artifactId>spring-boot-starter-actuator</artifactId>
       </dependency>
       <dependency>
-         <groupId>org.springframework.cloud</groupId>
-         <artifactId>spring-cloud-starter-gateway</artifactId>
+         <groupId>io.micrometer</groupId>
+         <artifactId>micrometer-tracing</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>io.micrometer</groupId>
+         <artifactId>micrometer-tracing-bridge-brave</artifactId>
       </dependency>
       <dependency>
          <groupId>org.springframework.cloud</groupId>
-         <artifactId>spring-cloud-starter-openfeign</artifactId>
+         <artifactId>spring-cloud-starter-gateway</artifactId>
       </dependency>
       <dependency>
          <groupId>org.springframework.boot</groupId>

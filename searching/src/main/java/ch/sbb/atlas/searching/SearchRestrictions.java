@@ -1,10 +1,10 @@
 package ch.sbb.atlas.searching;
 
 import ch.sbb.atlas.base.service.model.Status;
+import jakarta.persistence.metamodel.SingularAttribute;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import javax.persistence.metamodel.SingularAttribute;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Singular;
@@ -35,9 +35,9 @@ public abstract class SearchRestrictions<T> {
 
   protected Specification<T> getBaseSpecification() {
     return specificationBuilder().searchCriteriaSpecification(searchCriterias)
-                                 .and(specificationBuilder().validOnSpecification(getValidOn()))
-                                 .and(specificationBuilder().enumSpecification(getStatusRestrictions(),
-                                     getStatus()));
+        .and(specificationBuilder().validOnSpecification(getValidOn()))
+        .and(specificationBuilder().enumSpecification(getStatusRestrictions(),
+            getStatus()));
   }
 
   protected abstract SingularAttribute<T, Status> getStatus();

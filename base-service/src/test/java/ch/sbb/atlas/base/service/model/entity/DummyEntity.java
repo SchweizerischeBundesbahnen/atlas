@@ -1,15 +1,12 @@
 package ch.sbb.atlas.base.service.model.entity;
 
-
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.GenerationTime;
-import org.hibernate.annotations.GeneratorType;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,6 +19,6 @@ class DummyEntity {
   @Id
   private Long id;
 
-  @GeneratorType(type = SboidGenerator.class, when = GenerationTime.INSERT)
+  @BusinessIdGeneration(valueGenerator = SboidGenerator.class)
   private String sboid;
 }
