@@ -10,13 +10,15 @@ import org.springframework.context.annotation.Configuration;
 public class RouteConfig {
 
   @Bean
-  public RouteLocator routes(RouteLocatorBuilder routeLocatorBuilder, GatewayConfig gatewayConfig) {
+  public RouteLocator routes(RouteLocatorBuilder routeLocatorBuilder, GatewayConfig gatewayConfig,
+      GatewayRequestLogging gatewayRequestLogging) {
     Builder routeBuilder = routeLocatorBuilder.routes();
     gatewayConfig.getRoutes().forEach((application, uri) ->
         routeBuilder
             .route(application, p -> p
                 .path("/" + application + "/**")
-                .filters(f -> f.rewritePath("/" + application + "/(?<path>.*)", "/$\\{path}"))
+                .filters(f -> f.rewritePath("/" + application + "/(?<path>.*)", "/$\\{path}")
+                    .filter(gatewayRequestLogging.log()))
                 .uri(uri)
             ));
     return routeBuilder.build();

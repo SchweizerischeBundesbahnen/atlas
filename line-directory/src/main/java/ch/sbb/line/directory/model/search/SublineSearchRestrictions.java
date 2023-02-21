@@ -7,7 +7,7 @@ import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.Subline_;
 import ch.sbb.atlas.api.lidi.enumaration.SublineType;
 import java.util.List;
-import javax.persistence.metamodel.SingularAttribute;
+import jakarta.persistence.metamodel.SingularAttribute;
 import lombok.Getter;
 import lombok.Singular;
 import lombok.ToString;

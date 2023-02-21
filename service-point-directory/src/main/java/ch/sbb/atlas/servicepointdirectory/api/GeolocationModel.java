@@ -5,10 +5,10 @@ import ch.sbb.atlas.servicepointdirectory.entity.geolocation.GeolocationBaseEnti
 import ch.sbb.atlas.servicepointdirectory.model.CoordinatePair;
 import ch.sbb.atlas.servicepointdirectory.transformer.CoordinateTransformer;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.HashMap;
+import jakarta.validation.constraints.NotNull;
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.stream.Stream;
-import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -54,7 +54,7 @@ public class GeolocationModel {
   }
 
   static Map<SpatialReference, CoordinatePair> getTransformedCoordinates(GeolocationBaseEntity entity) {
-    Map<SpatialReference, CoordinatePair> coordinates = new HashMap<>();
+    Map<SpatialReference, CoordinatePair> coordinates = new EnumMap<>(SpatialReference.class);
 
     CoordinateTransformer coordinateTransformer = new CoordinateTransformer();
     Stream.of(SpatialReference.values()).forEach(spatialReference -> {

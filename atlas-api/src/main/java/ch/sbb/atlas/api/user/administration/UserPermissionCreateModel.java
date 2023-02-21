@@ -4,14 +4,14 @@ import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import javax.validation.Valid;
-import javax.validation.constraints.AssertTrue;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Data;
 
@@ -19,11 +19,11 @@ import lombok.Data;
 @Builder
 public class UserPermissionCreateModel {
 
-  @Schema(description = "SBB User-ID", example = "u123456", required = true)
+  @Schema(description = "SBB User-ID", example = "u123456")
   @NotEmpty
   private String sbbUserId;
 
-  @Schema(description = "User permissions", required = true)
+  @Schema(description = "User permissions")
   @NotNull
   @Size(min = 1)
   private List<@Valid @NotNull UserPermissionVersionModel> permissions;

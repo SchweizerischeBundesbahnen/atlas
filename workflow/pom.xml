@@ -19,10 +19,6 @@
    </properties>
    <dependencies>
       <dependency>
-         <artifactId>spring-cloud-starter-sleuth</artifactId>
-         <groupId>org.springframework.cloud</groupId>
-      </dependency>
-      <dependency>
          <artifactId>spring-boot-starter-actuator</artifactId>
          <groupId>org.springframework.boot</groupId>
       </dependency>
@@ -43,7 +39,7 @@
          <groupId>org.springframework.boot</groupId>
       </dependency>
       <dependency>
-         <artifactId>springdoc-openapi-ui</artifactId>
+         <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
          <groupId>org.springdoc</groupId>
       </dependency>
       <dependency>
