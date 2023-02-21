@@ -2,13 +2,13 @@ package ch.sbb.atlas.base.service.model.validation;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -22,9 +22,9 @@ class DatesValidatorTest {
   void shouldMakeSureFromIsBeforeTo() {
     // Given
     DummyDatesValidator object = DummyDatesValidator.builder()
-                                                    .validFrom(LocalDate.of(2001, 1, 1))
-                                                    .validTo(LocalDate.of(2000, 12, 31))
-                                                    .build();
+        .validFrom(LocalDate.of(2001, 1, 1))
+        .validTo(LocalDate.of(2000, 12, 31))
+        .build();
     //when
     Set<ConstraintViolation<DummyDatesValidator>> constraintViolations = validator.validate(
         object);
@@ -32,8 +32,8 @@ class DatesValidatorTest {
     //then
     assertThat(constraintViolations).hasSize(1);
     List<String> violationMessages = constraintViolations.stream()
-                                                         .map(ConstraintViolation::getMessage)
-                                                         .collect(Collectors.toList());
+        .map(ConstraintViolation::getMessage)
+        .collect(Collectors.toList());
     assertThat(violationMessages).contains("validTo must not be before validFrom");
   }
 
@@ -41,11 +41,11 @@ class DatesValidatorTest {
   public void shouldHaveDateValidationExceptionWhenValidFromIsBefore1700_1_1() {
     //given
     DummyDatesValidator dummyDatesValidator = DummyDatesValidator.builder()
-                                                                 .validFrom(
-                                                                     LocalDate.of(1699, 12, 31))
-                                                                 .validTo(
-                                                                     LocalDate.of(2000, 12, 31))
-                                                                 .build();
+        .validFrom(
+            LocalDate.of(1699, 12, 31))
+        .validTo(
+            LocalDate.of(2000, 12, 31))
+        .build();
     //when
     Set<ConstraintViolation<DummyDatesValidator>> constraintViolations = validator.validate(
         dummyDatesValidator);
@@ -60,11 +60,11 @@ class DatesValidatorTest {
   public void shouldHaveDateValidationExceptionWhenValidFromIsAfter2099_12_31() {
     //given
     DummyDatesValidator dummyDatesValidator = DummyDatesValidator.builder()
-                                                                 .validTo(
-                                                                     LocalDate.of(2000, 12, 31))
-                                                                 .validFrom(
-                                                                     LocalDate.of(10000, 1, 1))
-                                                                 .build();
+        .validTo(
+            LocalDate.of(2000, 12, 31))
+        .validFrom(
+            LocalDate.of(10000, 1, 1))
+        .build();
     //when
     Set<ConstraintViolation<DummyDatesValidator>> constraintViolations = validator.validate(
         dummyDatesValidator);
@@ -72,8 +72,8 @@ class DatesValidatorTest {
     //then
     assertThat(constraintViolations).isNotEmpty().hasSize(2);
     List<String> violationMessages = constraintViolations.stream()
-                                                         .map(ConstraintViolation::getMessage)
-                                                         .collect(Collectors.toList());
+        .map(ConstraintViolation::getMessage)
+        .collect(Collectors.toList());
     assertThat(violationMessages).contains("validTo must not be before validFrom",
         "ValidFrom must be between 1.1.1700 and 31.12.9999");
   }
@@ -82,11 +82,11 @@ class DatesValidatorTest {
   public void shouldHaveDateValidationExceptionWhenValidToIsBefore1700_1_1() {
     //given
     DummyDatesValidator dummyDatesValidator = DummyDatesValidator.builder()
-                                                                 .validFrom(
-                                                                     LocalDate.of(2000, 12, 31))
-                                                                 .validTo(
-                                                                     LocalDate.of(1699, 12, 31))
-                                                                 .build();
+        .validFrom(
+            LocalDate.of(2000, 12, 31))
+        .validTo(
+            LocalDate.of(1699, 12, 31))
+        .build();
     //when
     Set<ConstraintViolation<DummyDatesValidator>> constraintViolations = validator.validate(
         dummyDatesValidator);
@@ -94,8 +94,8 @@ class DatesValidatorTest {
     //then
     assertThat(constraintViolations).isNotEmpty().hasSize(2);
     List<String> violationMessages = constraintViolations.stream()
-                                                         .map(ConstraintViolation::getMessage)
-                                                         .collect(Collectors.toList());
+        .map(ConstraintViolation::getMessage)
+        .collect(Collectors.toList());
     assertThat(violationMessages).contains("validTo must not be before validFrom",
         "ValidTo must be between 1.1.1700 and 31.12.9999");
   }
@@ -104,10 +104,10 @@ class DatesValidatorTest {
   public void shouldHaveDateValidationExceptionWhenValidToIsAfter9999_12_31() {
     //given
     DummyDatesValidator dummyDatesValidator = DummyDatesValidator.builder()
-                                                                 .validFrom(
-                                                                     LocalDate.of(2000, 12, 31))
-                                                                 .validTo(LocalDate.of(10000, 1, 1))
-                                                                 .build();
+        .validFrom(
+            LocalDate.of(2000, 12, 31))
+        .validTo(LocalDate.of(10000, 1, 1))
+        .build();
     //when
     Set<ConstraintViolation<DummyDatesValidator>> constraintViolations = validator.validate(
         dummyDatesValidator);
@@ -115,8 +115,8 @@ class DatesValidatorTest {
     //then
     assertThat(constraintViolations).isNotEmpty().hasSize(1);
     List<String> violationMessages = constraintViolations.stream()
-                                                         .map(ConstraintViolation::getMessage)
-                                                         .collect(Collectors.toList());
+        .map(ConstraintViolation::getMessage)
+        .collect(Collectors.toList());
     assertThat(violationMessages).contains("ValidTo must be between 1.1.1700 and 31.12.9999");
   }
 
@@ -129,6 +129,4 @@ class DatesValidatorTest {
     private final LocalDate validTo;
 
   }
-
-
 }

@@ -7,6 +7,8 @@ import ch.sbb.atlas.kafka.model.mail.MailType;
 import com.icegreen.greenmail.configuration.GreenMailConfiguration;
 import com.icegreen.greenmail.junit5.GreenMailExtension;
 import com.icegreen.greenmail.util.ServerSetupTest;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,8 +17,6 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -60,11 +60,11 @@ class EmailServiceIntegrationTest {
   public void shouldThrowExceptionWhenSmtpServerIsDown() {
     //given
     MailNotification mail = MailNotification.builder()
-                                            .content("Ciao ragazzi")
-                                            .from("as@cc.ch")
-                                            .subject("Hello")
-                                            .to(singletonList("as@cc.ch"))
-                                            .build();
+        .content("Ciao ragazzi")
+        .from("as@cc.ch")
+        .subject("Hello")
+        .to(singletonList("as@cc.ch"))
+        .build();
     //when
     mailService.sendSimpleMail(mail);
 
@@ -74,11 +74,11 @@ class EmailServiceIntegrationTest {
   public void shouldThrowExceptionWhenSendSimpleEmailHasNotRecipientAddress() {
     //given
     MailNotification mail = MailNotification.builder()
-                                            .content("Ciao ragazzi")
-                                            .from("aa@bb.ch")
-                                            .subject("Hello")
-                                            .to(new ArrayList<>())
-                                            .build();
+        .content("Ciao ragazzi")
+        .from("aa@bb.ch")
+        .subject("Hello")
+        .to(new ArrayList<>())
+        .build();
 
     //when
     assertThatExceptionOfType(MailSendException.class).isThrownBy(
@@ -90,11 +90,11 @@ class EmailServiceIntegrationTest {
   public void shouldThrowExceptionWhenSendSimpleEmailHasNotWellFormedRecipientAddress() {
     //given
     MailNotification mail = MailNotification.builder()
-                                            .content("Ciao ragazzi")
-                                            .from("as@cc.ch")
-                                            .subject("Hello")
-                                            .to(singletonList("123as   }$§d!!0"))
-                                            .build();
+        .content("Ciao ragazzi")
+        .from("as@cc.ch")
+        .subject("Hello")
+        .to(singletonList("123as   }$§d!!0"))
+        .build();
 
     //when
     assertThatExceptionOfType(MailSendException.class).isThrownBy(
@@ -121,12 +121,12 @@ class EmailServiceIntegrationTest {
     templateProperties.add(objectMap2);
 
     MailNotification mail = MailNotification.builder()
-                                            .mailType(MailType.TU_IMPORT)
-                                            .to(singletonList("a@b.c"))
-                                            .from("to-be@ignored.ch")
-                                            .subject("To be ignored")
-                                            .content("To be ignored")
-                                            .templateProperties(templateProperties).build();
+        .mailType(MailType.TU_IMPORT)
+        .to(singletonList("a@b.c"))
+        .from("to-be@ignored.ch")
+        .subject("To be ignored")
+        .content("To be ignored")
+        .templateProperties(templateProperties).build();
 
     //when
     mailService.sendEmailWithHtmlTemplate(mail);
@@ -149,10 +149,10 @@ class EmailServiceIntegrationTest {
   public void shouldThrowExceptionWhenSendSimpleEmailHasNotWellFormedFromAddress() {
     //given
     MailNotification mail = MailNotification.builder()
-                                            .content("Ciao ragazzi")
-                                            .subject("Hello")
-                                            .to(singletonList("123as   }$§d!!0"))
-                                            .build();
+        .content("Ciao ragazzi")
+        .subject("Hello")
+        .to(singletonList("123as   }$§d!!0"))
+        .build();
 
     //when
     assertThatExceptionOfType(MailSendException.class).isThrownBy(
@@ -164,11 +164,11 @@ class EmailServiceIntegrationTest {
   public void shouldThrowExceptionWhenSendEmailWithHtmlTemplateHasNotRecipientAddress() {
     //given
     MailNotification mail = MailNotification.builder()
-                                            .content("Ciao ragazzi")
-                                            .from("aa@bb.ch")
-                                            .subject("Hello")
-                                            .to(new ArrayList<>())
-                                            .build();
+        .content("Ciao ragazzi")
+        .from("aa@bb.ch")
+        .subject("Hello")
+        .to(new ArrayList<>())
+        .build();
 
     //when
     assertThatExceptionOfType(MailSendException.class).isThrownBy(
@@ -180,11 +180,11 @@ class EmailServiceIntegrationTest {
   public void shouldThrowExceptionWhenSendEmailWithHtmlTemplateHasNotWellFormedRecipientAddress() {
     //given
     MailNotification mail = MailNotification.builder()
-                                            .content("Ciao ragazzi")
-                                            .from("as@cc.ch")
-                                            .subject("Hello")
-                                            .to(singletonList("123as   }$§d!!0"))
-                                            .build();
+        .content("Ciao ragazzi")
+        .from("as@cc.ch")
+        .subject("Hello")
+        .to(singletonList("123as   }$§d!!0"))
+        .build();
 
     //when
     assertThatExceptionOfType(MailSendException.class).isThrownBy(
@@ -196,11 +196,11 @@ class EmailServiceIntegrationTest {
   public void shouldThrowExceptionWhenSendEmailWithHtmlTemplateHasNotWellFormedFromAddress() {
     //given
     MailNotification mail = MailNotification.builder()
-                                            .content("Ciao ragazzi")
-                                            .from("123as   }$§d!!0")
-                                            .subject("Hello")
-                                            .to(singletonList("123as   }$§d!!0"))
-                                            .build();
+        .content("Ciao ragazzi")
+        .from("123as   }$§d!!0")
+        .subject("Hello")
+        .to(singletonList("123as   }$§d!!0"))
+        .build();
 
     //when
     assertThatExceptionOfType(MailSendException.class).isThrownBy(
@@ -209,10 +209,10 @@ class EmailServiceIntegrationTest {
 
   private MailNotification createMail() {
     return MailNotification.builder()
-                           .subject("Hello world")
-                           .from("no-reply@aa.com")
-                           .to(singletonList("info@aa.com"))
-                           .content("Ciao Ragazzi.")
-                           .build();
+        .subject("Hello world")
+        .from("no-reply@aa.com")
+        .to(singletonList("info@aa.com"))
+        .content("Ciao Ragazzi.")
+        .build();
   }
 }
