@@ -16,8 +16,9 @@ public class BoDiSchedulerService extends BaseSchedulerService {
 
   private final BoDiClient boDiClient;
 
-  public BoDiSchedulerService(BoDiClient boDiClient) {
+  public BoDiSchedulerService(BoDiClient boDiClient, ScheduledObservationService scheduledObservationService) {
     this.boDiClient = boDiClient;
+    this.scheduledObservationService = scheduledObservationService;
     this.clientName = "BoDi-Client";
   }
 
@@ -26,14 +27,14 @@ public class BoDiSchedulerService extends BaseSchedulerService {
   @Scheduled(cron = "${scheduler.bodi.import.tu.crd.chron}", zone = "${scheduler.zone}")
   @SchedulerLock(name = "loadCompaniesFromCRD", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
   public Response postLoadCompaniesFromCRD() {
-    return executeRequest(boDiClient.postLoadCompaniesFromCRD(), "Import Companies from CRD");
+    return executeRequest(boDiClient::postLoadCompaniesFromCRD, "Import Companies from CRD");
   }
 
   @Retryable(label = "loadTransportCompaniesFromBav", retryFor = SchedulingExecutionException.class, maxAttempts = 4, backoff = @Backoff(delay = 65000))
   @Scheduled(cron = "${scheduler.bodi.import.tu.bav.chron}", zone = "${scheduler.zone}")
   @SchedulerLock(name = "loadTransportCompaniesFromBav", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
   public Response postLoadTransportCompaniesFromBav() {
-    return executeRequest(boDiClient.postLoadTransportCompaniesFromBav(),
+    return executeRequest(boDiClient::postLoadTransportCompaniesFromBav,
         "Import Companies from BAV");
   }
 
@@ -41,7 +42,7 @@ public class BoDiSchedulerService extends BaseSchedulerService {
   @Scheduled(cron = "${scheduler.bodi.export.business-organisation.full.chron}", zone = "${scheduler.zone}")
   @SchedulerLock(name = "exportFullBusinessOrganisationVersions", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
   public Response exportFullBusinessOrganisationVersions() {
-    return executeRequest(boDiClient.putBoDiBusinessOrganisationExportFull(),
+    return executeRequest(boDiClient::putBoDiBusinessOrganisationExportFull,
         "Full BusinessOrganisation Versions CSV/ZIP");
   }
 
@@ -49,7 +50,7 @@ public class BoDiSchedulerService extends BaseSchedulerService {
   @Scheduled(cron = "${scheduler.bodi.export.business-organisation.actual.chron}", zone = "${scheduler.zone}")
   @SchedulerLock(name = "exportActualBusinessOrganisationVersions", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
   public Response exportActualBusinessOrganisationVersions() {
-    return executeRequest(boDiClient.putBoDiBusinessOrganisationExportActual(),
+    return executeRequest(boDiClient::putBoDiBusinessOrganisationExportActual,
         "Actual BusinessOrganisation Versions CSV/ZIP");
   }
 
@@ -57,7 +58,7 @@ public class BoDiSchedulerService extends BaseSchedulerService {
   @Scheduled(cron = "${scheduler.bodi.export.business-organisation.future.chron}", zone = "${scheduler.zone}")
   @SchedulerLock(name = "exportFutureBusinessOrganisationVersions", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
   public Response exportNextTimetableBusinessOrganisationVersions() {
-    return executeRequest(boDiClient.putBoDiBusinessOrganisationExportNextTimetableVersions(),
+    return executeRequest(boDiClient::putBoDiBusinessOrganisationExportNextTimetableVersions,
         "Future Timetable BusinessOrganisation Versions CSV/ZIP");
   }
 

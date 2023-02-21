@@ -24,10 +24,13 @@ class LidiSchedulerServiceTest {
   @Mock
   private LiDiClient liDiClient;
 
+  @Mock
+  private ScheduledObservationService scheduledObservationService;
+
   @BeforeEach
   public void setUp() {
     MockitoAnnotations.openMocks(this);
-    lidiSchedulerService = new LidiSchedulerService(liDiClient);
+    lidiSchedulerService = new LidiSchedulerService(liDiClient, scheduledObservationService);
   }
 
   @Test

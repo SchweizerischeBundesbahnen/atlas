@@ -24,10 +24,13 @@ public class ImportServicePointBatchSchedulerServiceTest {
   @Mock
   private ImportServicePointBatchClient client;
 
+  @Mock
+  private ScheduledObservationService scheduledObservationService;
+
   @BeforeEach
   public void setUp() {
     MockitoAnnotations.openMocks(this);
-    importServicePointBatchSchedulerService = new ImportServicePointBatchSchedulerService(client);
+    importServicePointBatchSchedulerService = new ImportServicePointBatchSchedulerService(client, scheduledObservationService);
   }
 
   @Test
