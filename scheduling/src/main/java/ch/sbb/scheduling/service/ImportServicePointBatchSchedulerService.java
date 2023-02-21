@@ -16,9 +16,10 @@ public class ImportServicePointBatchSchedulerService extends BaseSchedulerServic
 
   private final ImportServicePointBatchClient importServicePointBatchClient;
 
-  public ImportServicePointBatchSchedulerService(ImportServicePointBatchClient importServicePointBatchClient) {
+  public ImportServicePointBatchSchedulerService(ImportServicePointBatchClient importServicePointBatchClient, ScheduledObservationService scheduledObservationService) {
     this.importServicePointBatchClient = importServicePointBatchClient;
     this.clientName = "ImportServicePointBatch-Client";
+    this.scheduledObservationService = scheduledObservationService;
   }
 
   @Retryable(label = "triggerImportServicePointBatch", retryFor = SchedulingExecutionException.class, maxAttempts = 4, backoff =
@@ -26,7 +27,7 @@ public class ImportServicePointBatchSchedulerService extends BaseSchedulerServic
   @Scheduled(cron = "${scheduler.import-service-point.service-point-trigger-batch.chron}", zone = "${scheduler.zone}")
   @SchedulerLock(name = "triggerImportServicePointBatch", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
   public Response postTriggerImportServicePointBatch() {
-    return executeRequest(importServicePointBatchClient.postTriggerImportServicePointBatch(),
+    return executeRequest(importServicePointBatchClient::postTriggerImportServicePointBatch,
         "Trigger Import Service Point Batch");
   }
 
