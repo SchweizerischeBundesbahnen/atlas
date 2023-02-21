@@ -17,6 +17,9 @@ public class ScheduledObservationService {
   }
 
   public void stopObservation() {
-    observationRegistry.getCurrentObservation().stop();
+    Observation currentObservation = observationRegistry.getCurrentObservation();
+    if (currentObservation != null) {
+      currentObservation.stop();
+    }
   }
 }
