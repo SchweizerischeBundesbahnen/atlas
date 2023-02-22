@@ -1,6 +1,6 @@
 package ch.sbb.atlas.api.user.administration;
 
-import ch.sbb.atlas.base.service.model.api.BaseVersionModel;
+import ch.sbb.atlas.api.model.BaseVersionModel;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import io.swagger.v3.oas.annotations.media.Schema;

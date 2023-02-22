@@ -74,7 +74,7 @@ See [AmazonConfig.java](../../../line-directory/src/main/java/ch/sbb/line/direct
 
 ##### Configure beans
 
-Configure [FileService.java](../../src/main/java/ch/sbb/atlas/base/service/amazon/service/FileService.java)
+Configure [FileService.java](../../src/main/java/ch/sbb/atlas/amazon/service/FileService.java)
 bean:
 
 ~~~java
@@ -87,6 +87,6 @@ public FileService fileService(){
 ### Export Data
 
 1. Extend a CSV model class
-   from [VersionCsvModel.java](../../src/main/java/ch/sbb/atlas/base/service/export/model/VersionCsvModel.java)
+   from [VersionCsvModel.java](../../src/main/java/ch/sbb/atlas/export/model/VersionCsvModel.java)
 2. Extend the
-   class [BaseExportService.java](../../src/main/java/ch/sbb/atlas/base/service/export/BaseExportService.java)
+   class [BaseExportService.java](../../src/main/java/ch/sbb/atlas/export/BaseExportService.java)

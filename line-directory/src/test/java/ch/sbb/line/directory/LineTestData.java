@@ -1,6 +1,6 @@
 package ch.sbb.line.directory;
 
-import ch.sbb.atlas.base.service.model.Status;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.api.lidi.LineVersionModel;
 import ch.sbb.atlas.api.lidi.LineVersionModel.LineVersionModelBuilder;
 import ch.sbb.line.directory.entity.Line;

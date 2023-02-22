@@ -3,7 +3,7 @@ package ch.sbb.line.directory.validation;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
 
-import ch.sbb.atlas.base.service.versioning.model.Versionable;
+import ch.sbb.atlas.versioning.model.Versionable;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.atlas.api.lidi.enumaration.SublineType;

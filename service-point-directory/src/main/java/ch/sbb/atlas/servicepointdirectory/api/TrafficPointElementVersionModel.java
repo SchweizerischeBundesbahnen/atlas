@@ -1,8 +1,8 @@
 package ch.sbb.atlas.servicepointdirectory.api;
 
-import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
-import ch.sbb.atlas.base.service.model.api.BaseVersionModel;
-import ch.sbb.atlas.base.service.model.validation.DatesValidator;
+import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.api.model.BaseVersionModel;
+import ch.sbb.atlas.validation.DatesValidator;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.enumeration.TrafficPointElementType;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;

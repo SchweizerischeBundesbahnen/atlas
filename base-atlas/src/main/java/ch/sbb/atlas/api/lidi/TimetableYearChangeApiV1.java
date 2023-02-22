@@ -1,6 +1,6 @@
 package ch.sbb.atlas.api.lidi;
 
-import ch.sbb.atlas.base.service.model.api.ErrorResponse;
+import ch.sbb.atlas.api.model.ErrorResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
