@@ -6,8 +6,8 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.atlas.base.service.model.Status;
-import ch.sbb.atlas.base.service.model.api.Container;
+import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.api.model.Container;
 import ch.sbb.line.directory.SublineTestData;
 import ch.sbb.atlas.api.lidi.SublineModel;
 import ch.sbb.atlas.api.lidi.SublineVersionModel;

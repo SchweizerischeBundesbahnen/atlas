@@ -1,7 +1,7 @@
 package ch.sbb.atlas.api.bodi;
 
-import ch.sbb.atlas.base.service.model.api.Container;
-import ch.sbb.atlas.base.service.model.configuration.Role;
+import ch.sbb.atlas.api.model.Container;
+import ch.sbb.atlas.configuration.Role;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;

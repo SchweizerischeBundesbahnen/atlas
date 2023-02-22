@@ -3,7 +3,7 @@ package ch.sbb.atlas.servicepointdirectory.geodata.service;
 import static ch.sbb.atlas.servicepointdirectory.repository.ServicePointGeolocationRepository.coordinatesBetween;
 import static ch.sbb.atlas.servicepointdirectory.repository.ServicePointGeolocationRepository.validAtDate;
 
-import ch.sbb.atlas.base.service.imports.servicepoint.enumeration.SpatialReference;
+import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeoData;
 import ch.sbb.atlas.servicepointdirectory.geodata.mapper.ServicePointGeoDataMapper;
 import ch.sbb.atlas.servicepointdirectory.geodata.protobuf.VectorTile.Tile;

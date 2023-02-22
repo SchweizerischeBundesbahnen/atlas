@@ -1,7 +1,7 @@
 package ch.sbb.line.directory.model.csv;
 
-import ch.sbb.atlas.base.service.export.model.VersionCsvModel;
-import ch.sbb.atlas.base.service.model.Status;
+import ch.sbb.atlas.export.model.VersionCsvModel;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.converter.CmykColorConverter;
 import ch.sbb.line.directory.converter.RgbColorConverter;
 import ch.sbb.line.directory.entity.LineVersion;

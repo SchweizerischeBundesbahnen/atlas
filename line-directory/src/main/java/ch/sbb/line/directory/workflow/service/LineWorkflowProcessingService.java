@@ -2,8 +2,8 @@ package ch.sbb.line.directory.workflow.service;
 
 import static ch.sbb.atlas.workflow.model.WorkflowProcessingStatus.getProcessingStatus;
 
-import ch.sbb.atlas.base.service.model.workflow.WorkflowEvent;
-import ch.sbb.atlas.base.service.model.workflow.WorkflowStatus;
+import ch.sbb.atlas.workflow.model.WorkflowEvent;
+import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.atlas.workflow.model.WorkflowProcessingStatus;
 import ch.sbb.atlas.workflow.repository.ObjectWorkflowRepository;
 import ch.sbb.atlas.workflow.service.BaseWorkflowProcessingService;

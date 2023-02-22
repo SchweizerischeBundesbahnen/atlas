@@ -1,6 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.geodata.transformer;
 
-import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
+import ch.sbb.atlas.model.controller.IntegrationTest;
 import org.assertj.core.data.Offset;
 import org.junit.jupiter.api.Test;
 import org.locationtech.jts.geom.Envelope;

@@ -4,9 +4,9 @@ import static ch.sbb.line.directory.converter.CmykColorConverter.fromCmykString;
 import static ch.sbb.line.directory.converter.RgbColorConverter.fromHex;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.base.service.model.Status;
-import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
-import ch.sbb.atlas.base.service.model.workflow.WorkflowStatus;
+import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.line.directory.entity.LineVersionSnapshot;
 import ch.sbb.line.directory.entity.LineVersionSnapshot.LineVersionSnapshotBuilder;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;

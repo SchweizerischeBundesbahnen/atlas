@@ -1,9 +1,9 @@
 package ch.sbb.atlas.api.workflow;
 
-import ch.sbb.atlas.base.service.model.api.AtlasCharacterSetsRegex;
-import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
-import ch.sbb.atlas.base.service.model.workflow.WorkflowStatus;
-import ch.sbb.atlas.base.service.model.workflow.WorkflowType;
+import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
+import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.workflow.model.WorkflowStatus;
+import ch.sbb.atlas.workflow.model.WorkflowType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.constraints.NotBlank;
