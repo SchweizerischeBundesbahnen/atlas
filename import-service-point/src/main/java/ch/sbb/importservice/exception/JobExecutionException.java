@@ -1,9 +1,9 @@
 package ch.sbb.importservice.exception;
 
-import ch.sbb.atlas.base.service.model.api.ErrorResponse;
-import ch.sbb.atlas.base.service.model.api.ErrorResponse.Detail;
-import ch.sbb.atlas.base.service.model.api.ErrorResponse.DisplayInfo;
-import ch.sbb.atlas.base.service.model.exception.AtlasException;
+import ch.sbb.atlas.api.model.ErrorResponse;
+import ch.sbb.atlas.api.model.ErrorResponse.Detail;
+import ch.sbb.atlas.api.model.ErrorResponse.DisplayInfo;
+import ch.sbb.atlas.model.exception.AtlasException;
 import java.util.List;
 import java.util.TreeSet;
 import lombok.RequiredArgsConstructor;

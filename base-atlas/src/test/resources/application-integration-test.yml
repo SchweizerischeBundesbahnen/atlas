@@ -30,3 +30,8 @@ logging:
           test: error
         test: error
         web: error
+
+atlas:
+  client:
+    gateway:
+      url: http://localhost:8888

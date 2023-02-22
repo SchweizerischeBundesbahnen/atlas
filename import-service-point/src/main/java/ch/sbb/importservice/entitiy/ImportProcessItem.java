@@ -1,6 +1,6 @@
 package ch.sbb.importservice.entitiy;
 
-import ch.sbb.atlas.base.service.imports.servicepoint.model.ItemImportResponseStatus;
+import ch.sbb.atlas.imports.servicepoint.model.ItemImportResponseStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

@@ -1,7 +1,7 @@
 package ch.sbb.atlas.api.lidi.workflow;
 
-import ch.sbb.atlas.base.service.model.workflow.WorkflowEvent;
-import ch.sbb.atlas.base.service.model.workflow.WorkflowStatus;
+import ch.sbb.atlas.workflow.model.WorkflowEvent;
+import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;

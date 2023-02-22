@@ -1,7 +1,7 @@
 package ch.sbb.atlas.user.administration.security;
 
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationModel;
-import ch.sbb.atlas.base.service.model.service.UserService;
+import ch.sbb.atlas.service.UserService;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
