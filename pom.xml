@@ -43,7 +43,7 @@
       <!-- Order is important here -->
       <!-- Libs first -->
       <module>kafka</module>
-      <module>base-service</module>
+      <module>base-atlas</module>
       <module>base-workflow</module>
       <module>searching</module>
       <module>user-administration-security</module>
