@@ -1,6 +1,6 @@
 package ch.sbb.business.organisation.directory.service;
 
-import ch.sbb.atlas.base.service.model.exception.NotFoundException.IdNotFoundException;
+import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.business.organisation.directory.controller.CompanySearchRestrictions;
 import ch.sbb.business.organisation.directory.entity.Company;
 import ch.sbb.business.organisation.directory.repository.CompanyRepository;

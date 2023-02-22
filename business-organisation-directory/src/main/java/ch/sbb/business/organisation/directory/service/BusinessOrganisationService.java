@@ -1,9 +1,9 @@
 package ch.sbb.business.organisation.directory.service;
 
-import ch.sbb.atlas.base.service.model.Status;
-import ch.sbb.atlas.base.service.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.atlas.base.service.versioning.model.VersionedObject;
-import ch.sbb.atlas.base.service.versioning.service.VersionableService;
+import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
+import ch.sbb.atlas.versioning.model.VersionedObject;
+import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.business.organisation.directory.controller.BusinessOrganisationSearchRestrictions;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisation;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;

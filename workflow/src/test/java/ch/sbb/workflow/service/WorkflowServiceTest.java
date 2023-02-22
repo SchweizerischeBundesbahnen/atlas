@@ -8,9 +8,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.atlas.base.service.model.exception.NotFoundException;
-import ch.sbb.atlas.base.service.model.workflow.WorkflowStatus;
-import ch.sbb.atlas.base.service.model.workflow.WorkflowType;
+import ch.sbb.atlas.model.exception.NotFoundException;
+import ch.sbb.atlas.workflow.model.WorkflowStatus;
+import ch.sbb.atlas.workflow.model.WorkflowType;
 import ch.sbb.atlas.api.workflow.ExaminantWorkflowCheckModel;
 import ch.sbb.atlas.api.workflow.PersonModel;
 import ch.sbb.workflow.entity.Workflow;
