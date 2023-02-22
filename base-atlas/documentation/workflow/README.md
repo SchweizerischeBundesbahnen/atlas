@@ -3,6 +3,7 @@
 <!-- toc -->
 
 - [Workflow Lib](#workflow-lib)
+- [How to use](#how-to-use)
 
 <!-- tocstop -->
 
@@ -24,4 +25,3 @@ In order to use this library, add the following snippet to the service **pom.xml
    <version>${revision}</version>
 </dependency>
 ```
-

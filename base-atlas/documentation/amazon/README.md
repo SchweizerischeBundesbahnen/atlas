@@ -3,14 +3,14 @@
 <!-- toc -->
 
 - [Links](#links)
-- [Atlas Amazon S3 Client](README.md#atlas-amazon-s3-client)
+- [Atlas Amazon S3 Client](#atlas-amazon-s3-client)
 - [Atlas Users onboarding](#atlas-users-onboarding)
 - [Development](#development)
-    * [S3 Bucket](#s3-bucket)
-        + [Naming convention](#naming-convention)
-            - [Buckets name](#buckets-name)
-            - [Buckets directory](#buckets-directory)
-    * [Intellij Plugin](#intellij-plugin)
+  * [S3 Bucket](#s3-bucket)
+    + [Naming convention](#naming-convention)
+      - [Buckets name](#buckets-name)
+      - [Buckets directory](#buckets-directory)
+  * [Intellij Plugin](#intellij-plugin)
 
 <!-- tocstop -->
 
