@@ -1,7 +1,7 @@
 package ch.sbb.line.directory.entity;
 
-import ch.sbb.atlas.base.service.model.Status;
-import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
+import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.workflow.model.BaseVersionSnapshot;
 import ch.sbb.line.directory.converter.CmykColorConverter;
 import ch.sbb.line.directory.converter.RgbColorConverter;

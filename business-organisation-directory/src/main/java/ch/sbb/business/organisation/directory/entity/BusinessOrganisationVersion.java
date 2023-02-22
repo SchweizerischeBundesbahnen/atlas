@@ -1,12 +1,12 @@
 package ch.sbb.business.organisation.directory.entity;
 
 import ch.sbb.atlas.api.bodi.enumeration.BusinessType;
-import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
-import ch.sbb.atlas.base.service.model.entity.BaseVersion;
-import ch.sbb.atlas.base.service.model.entity.BusinessIdGeneration;
-import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionable;
-import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionableProperty;
-import ch.sbb.atlas.base.service.versioning.model.Versionable;
+import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.model.entity.BaseVersion;
+import ch.sbb.atlas.model.entity.BusinessIdGeneration;
+import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
+import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
+import ch.sbb.atlas.versioning.model.Versionable;
 import ch.sbb.business.organisation.directory.converter.BusinessTypeConverter;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;

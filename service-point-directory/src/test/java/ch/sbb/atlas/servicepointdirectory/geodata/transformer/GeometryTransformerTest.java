@@ -1,7 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.geodata.transformer;
 
-import ch.sbb.atlas.base.service.imports.servicepoint.enumeration.SpatialReference;
-import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
+import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
+import ch.sbb.atlas.model.controller.IntegrationTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -1,6 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.model.search;
 
-import ch.sbb.atlas.base.service.model.Status;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.searching.SearchRestrictions;
 import ch.sbb.atlas.searching.SpecificationBuilder;
 import ch.sbb.atlas.searching.specification.IsMemberSpecification;

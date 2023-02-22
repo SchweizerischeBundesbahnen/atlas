@@ -14,6 +14,7 @@
    </parent>
    <artifactId>line-directory</artifactId>
    <description>LineDirectory</description>
+
    <dependencies>
       <dependency>
          <artifactId>spring-boot-starter-actuator</artifactId>
@@ -53,22 +54,7 @@
       </dependency>
 
       <dependency>
-         <artifactId>searching</artifactId>
-         <groupId>ch.sbb.atlas</groupId>
-         <version>1.175.0</version>
-      </dependency>
-      <dependency>
-         <artifactId>atlas-api</artifactId>
-         <groupId>ch.sbb.atlas</groupId>
-         <version>1.175.0</version>
-      </dependency>
-      <dependency>
-         <artifactId>base-service</artifactId>
-         <groupId>ch.sbb.atlas</groupId>
-         <version>1.175.0</version>
-      </dependency>
-      <dependency>
-         <artifactId>base-workflow</artifactId>
+         <artifactId>base-atlas</artifactId>
          <groupId>ch.sbb.atlas</groupId>
          <version>1.175.0</version>
       </dependency>
@@ -88,7 +74,7 @@
          <optional>true</optional>
       </dependency>
       <dependency>
-         <artifactId>base-service</artifactId>
+         <artifactId>base-atlas</artifactId>
          <classifier>tests</classifier>
          <groupId>ch.sbb.atlas</groupId>
          <scope>test</scope>

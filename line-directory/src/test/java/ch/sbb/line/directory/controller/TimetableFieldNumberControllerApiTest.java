@@ -8,9 +8,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.atlas.base.service.model.Status;
-import ch.sbb.atlas.base.service.model.api.ErrorResponse;
-import ch.sbb.atlas.base.service.model.controller.BaseControllerWithAmazonS3ApiTest;
+import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.api.model.ErrorResponse;
+import ch.sbb.atlas.model.controller.BaseControllerWithAmazonS3ApiTest;
 import ch.sbb.atlas.api.lidi.LineVersionModel.Fields;
 import ch.sbb.atlas.api.lidi.TimetableFieldNumberVersionVersionModel;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
