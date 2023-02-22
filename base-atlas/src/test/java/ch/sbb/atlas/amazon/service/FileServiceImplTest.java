@@ -2,7 +2,6 @@ package ch.sbb.atlas.amazon.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.amazon.service.FileServiceImpl;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;

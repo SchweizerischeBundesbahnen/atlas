@@ -1,6 +1,5 @@
 package ch.sbb.atlas.model.exception;
 
-import ch.sbb.atlas.model.exception.NotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
