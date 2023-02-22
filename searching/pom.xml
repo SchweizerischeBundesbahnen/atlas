@@ -13,9 +13,6 @@
    <artifactId>searching</artifactId>
    <name>Atlas Searching</name>
    <description>Atlas Searching</description>
-   <properties>
-      <maven.deploy.skip>true</maven.deploy.skip>
-   </properties>
    <dependencies>
       <dependency>
          <artifactId>base-service</artifactId>
