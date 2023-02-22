@@ -2,7 +2,6 @@ package ch.sbb.atlas.amazon.helper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.amazon.helper.FutureTimetableHelper;
 import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 

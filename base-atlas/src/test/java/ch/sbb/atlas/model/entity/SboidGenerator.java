@@ -1,7 +1,5 @@
 package ch.sbb.atlas.model.entity;
 
-import ch.sbb.atlas.model.entity.BusinessIdGenerator;
-
 class SboidGenerator extends BusinessIdGenerator {
 
   public SboidGenerator() {
