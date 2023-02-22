@@ -1,6 +1,6 @@
 package ch.sbb.atlas.user.administration.config;
 
-import ch.sbb.atlas.base.service.model.configuration.AtlasExceptionHandler;
+import ch.sbb.atlas.configuration.handler.AtlasExceptionHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

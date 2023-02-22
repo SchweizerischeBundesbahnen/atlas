@@ -1,7 +1,7 @@
 package ch.sbb.importservice.service;
 
-import ch.sbb.atlas.base.service.amazon.service.AmazonService;
-import ch.sbb.atlas.base.service.amazon.service.FileService;
+import ch.sbb.atlas.amazon.service.AmazonService;
+import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.importservice.exception.FileException;
 import java.io.File;
 import java.io.FileOutputStream;

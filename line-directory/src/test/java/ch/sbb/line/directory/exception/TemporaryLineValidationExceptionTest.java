@@ -2,7 +2,7 @@ package ch.sbb.line.directory.exception;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.base.service.model.api.ErrorResponse.Parameter;
+import ch.sbb.atlas.api.model.ErrorResponse.Parameter;
 import ch.sbb.line.directory.LineTestData;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

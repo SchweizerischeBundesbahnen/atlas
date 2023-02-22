@@ -1,6 +1,6 @@
 package ch.sbb.line.directory.model.search;
 
-import ch.sbb.atlas.base.service.model.workflow.WorkflowStatus;
+import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.atlas.searching.SpecificationBuilder;
 import ch.sbb.atlas.workflow.model.BaseVersionSnapshot_;
 import ch.sbb.line.directory.entity.LineVersionSnapshot;

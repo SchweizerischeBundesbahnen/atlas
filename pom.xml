@@ -43,11 +43,8 @@
       <!-- Order is important here -->
       <!-- Libs first -->
       <module>kafka</module>
-      <module>base-service</module>
-      <module>base-workflow</module>
-      <module>searching</module>
+      <module>base-atlas</module>
       <module>user-administration-security</module>
-      <module>atlas-api</module>
       <!--  Services -->
       <module>mail</module>
       <module>scheduling</module>
