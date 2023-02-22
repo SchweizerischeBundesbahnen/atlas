@@ -2,7 +2,7 @@ package ch.sbb.business.organisation.directory.exception;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.base.service.model.api.ErrorResponse;
+import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.business.organisation.directory.entity.TransportCompany;
 import ch.sbb.business.organisation.directory.entity.TransportCompanyRelation;
 import java.time.LocalDate;

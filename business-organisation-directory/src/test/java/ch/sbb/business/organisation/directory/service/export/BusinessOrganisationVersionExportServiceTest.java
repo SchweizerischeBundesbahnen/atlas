@@ -4,9 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.atlas.base.service.amazon.service.AmazonService;
-import ch.sbb.atlas.base.service.amazon.service.FileService;
-import ch.sbb.atlas.base.service.model.exception.ExportException;
+import ch.sbb.atlas.amazon.service.AmazonService;
+import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.export.exception.ExportException;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
 import ch.sbb.business.organisation.directory.repository.BusinessOrganisationVersionRepository;
 import java.io.File;

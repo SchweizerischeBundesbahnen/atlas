@@ -1,8 +1,8 @@
 package ch.sbb.workflow.entity;
 
-import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
-import ch.sbb.atlas.base.service.model.workflow.WorkflowStatus;
-import ch.sbb.atlas.base.service.model.workflow.WorkflowType;
+import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.workflow.model.WorkflowStatus;
+import ch.sbb.atlas.workflow.model.WorkflowType;
 import java.time.LocalDateTime;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

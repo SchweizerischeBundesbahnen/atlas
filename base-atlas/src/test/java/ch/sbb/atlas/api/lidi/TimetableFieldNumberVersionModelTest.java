@@ -2,8 +2,8 @@ package ch.sbb.atlas.api.lidi;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.base.service.model.Status;
-import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
+import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.lidi.TimetableFieldNumberVersionVersionModel.TimetableFieldNumberVersionVersionModelBuilder;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;

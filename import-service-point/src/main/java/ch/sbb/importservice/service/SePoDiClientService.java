@@ -1,7 +1,7 @@
 package ch.sbb.importservice.service;
 
-import ch.sbb.atlas.base.service.imports.servicepoint.model.ServicePointImportReqModel;
-import ch.sbb.atlas.base.service.imports.servicepoint.model.ServicePointItemImportResult;
+import ch.sbb.atlas.imports.servicepoint.model.ServicePointImportReqModel;
+import ch.sbb.atlas.imports.servicepoint.model.ServicePointItemImportResult;
 import ch.sbb.importservice.client.SePoDiClient;
 import java.util.List;
 import lombok.AllArgsConstructor;
