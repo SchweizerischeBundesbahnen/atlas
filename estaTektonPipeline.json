@@ -96,7 +96,7 @@
           "enabled": true,
           "additionalParams": "-DskipTests=true -Dskip.npm.exec.ci=false -Dskip.npm.exec.build=true -Dskip.npm.exec.publish=true -DskipITs -Dsonar.exclusions=**/node_modules/**,**/src/app/api/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/karma.conf.js,**/instana.js,**/polyfills.ts"
         },
-        "failOnQualityGateFailure": false,
+        "failOnQualityGateFailure": true,
         "owaspDependencyCheck": {
           "enabled": false,
           "additionalParams": "--disableCentral"
@@ -145,7 +145,7 @@
           "enabled": false,
           "additionalParams": "--disableCentral"
         },
-        "failOnQualityGateFailure": false
+        "failOnQualityGateFailure": true
       },
       "stages": [
         "dev",
