@@ -1,0 +1,73 @@
+package ch.sbb.atlas.amazon.service;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+
+@Slf4j
+public class FileServiceImpl implements FileService {
+
+  public static final String ZIP = ".zip";
+  private static final String DOCKER_FILE_DIRECTORY = "/usr/local/atlas/tmp/";
+
+  @Value("${spring.profiles.active:local}")
+  @Setter
+  private String activeProfile;
+
+  @Override
+  public File zipFile(File file) {
+    String filename = file.getName();
+    File zipFile = new File(file.toPath().getParent() + "/" + file.getName() + ZIP);
+
+    try (ZipOutputStream zipStream = new ZipOutputStream(new FileOutputStream(zipFile));
+        InputStream inputStream = new FileInputStream(file)) {
+
+      ZipEntry entry = new ZipEntry(filename);
+      zipStream.putNextEntry(entry);
+      inputStream.transferTo(zipStream);
+      zipStream.flush();
+
+    } catch (Exception e) {
+      log.error("Error during write ZipFile", e);
+    }
+    if (!zipFile.canRead()) {
+      zipFile.setReadable(true);
+    }
+    return zipFile;
+  }
+
+  @Override
+  public String getDir() {
+    log.info("Getting Directory for activeProfile={}", activeProfile);
+    if ("local".equals(activeProfile) || activeProfile == null) {
+      String pathnameExportDir = "." + File.separator + "export" + File.separator;
+      File dir = new File(pathnameExportDir);
+      if (!dir.exists()) {
+        dir.mkdirs();
+      }
+      return pathnameExportDir;
+    }
+    return DOCKER_FILE_DIRECTORY;
+  }
+
+  @Override
+  public boolean clearDir() {
+    Optional<File[]> filesInDir = Optional.ofNullable(new File(getDir()).listFiles());
+    if (filesInDir.isEmpty()) {
+      return true;
+    }
+    Set<Boolean> deletionResults = Arrays.stream(filesInDir.get()).map(File::delete).collect(Collectors.toSet());
+    return deletionResults.size() == 1 && deletionResults.contains(true);
+  }
+
+}

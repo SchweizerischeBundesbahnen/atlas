@@ -1,7 +1,7 @@
 package ch.sbb.business.organisation.directory.entity;
 
 import ch.sbb.atlas.api.bodi.enumeration.BusinessType;
-import ch.sbb.atlas.base.service.model.Status;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.business.organisation.directory.converter.BusinessTypeConverter;
 import java.time.LocalDate;
 import java.util.Set;

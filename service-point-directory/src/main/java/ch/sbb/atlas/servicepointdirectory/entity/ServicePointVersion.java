@@ -7,13 +7,13 @@ import static ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePoint
 import static ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation.Fields.swissMunicipalityName;
 import static ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation.Fields.swissMunicipalityNumber;
 
-import ch.sbb.atlas.base.service.model.Status;
-import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
-import ch.sbb.atlas.base.service.model.validation.DatesValidator;
-import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionable;
-import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionableProperty;
-import ch.sbb.atlas.base.service.versioning.model.Versionable;
-import ch.sbb.atlas.base.service.versioning.model.VersionableProperty.RelationType;
+import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.validation.DatesValidator;
+import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
+import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
+import ch.sbb.atlas.versioning.model.Versionable;
+import ch.sbb.atlas.versioning.model.VersionableProperty.RelationType;
 import ch.sbb.atlas.servicepointdirectory.converter.CategoryConverter;
 import ch.sbb.atlas.servicepointdirectory.converter.MeanOfTransportConverter;
 import ch.sbb.atlas.servicepointdirectory.converter.ServicePointNumberConverter;

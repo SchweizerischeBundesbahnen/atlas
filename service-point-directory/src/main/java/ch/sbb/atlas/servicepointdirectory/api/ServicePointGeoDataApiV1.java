@@ -1,6 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.api;
 
-import ch.sbb.atlas.base.service.model.api.AtlasApiConstants;
+import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.servicepointdirectory.geodata.protobuf.VectorTile;
 import java.time.LocalDate;
 import java.util.Optional;

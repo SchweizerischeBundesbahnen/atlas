@@ -1,9 +1,9 @@
 package ch.sbb.atlas.servicepointdirectory.api;
 
-import ch.sbb.atlas.base.service.model.Status;
-import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
-import ch.sbb.atlas.base.service.model.api.BaseVersionModel;
-import ch.sbb.atlas.base.service.model.validation.DatesValidator;
+import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.api.model.BaseVersionModel;
+import ch.sbb.atlas.validation.DatesValidator;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Category;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
 import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;

@@ -1,6 +1,6 @@
 package ch.sbb.line.directory.service;
 
-import ch.sbb.atlas.base.service.model.exception.NotFoundException.IdNotFoundException;
+import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.line.directory.entity.LineVersionSnapshot;
 import ch.sbb.line.directory.model.search.LineVersionSnapshotSearchRestrictions;
 import ch.sbb.line.directory.repository.LineVersionSnapshotRepository;

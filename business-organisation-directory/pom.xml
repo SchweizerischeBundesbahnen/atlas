@@ -15,6 +15,7 @@
 
    <artifactId>business-organisation-directory</artifactId>
    <description>BusinessOrganisationDirectory</description>
+
    <dependencies>
       <dependency>
          <artifactId>spring-boot-starter-actuator</artifactId>
@@ -44,11 +45,6 @@
       <dependency>
          <groupId>ch.sbb.atlas</groupId>
          <artifactId>kafka</artifactId>
-         <version>1.175.0</version>
-      </dependency>
-      <dependency>
-         <groupId>ch.sbb.atlas</groupId>
-         <artifactId>atlas-api</artifactId>
          <version>1.175.0</version>
       </dependency>
       <dependency>
@@ -96,12 +92,7 @@
          <groupId>org.flywaydb</groupId>
       </dependency>
       <dependency>
-         <artifactId>base-service</artifactId>
-         <groupId>ch.sbb.atlas</groupId>
-         <version>1.175.0</version>
-      </dependency>
-      <dependency>
-         <artifactId>searching</artifactId>
+         <artifactId>base-atlas</artifactId>
          <groupId>ch.sbb.atlas</groupId>
          <version>1.175.0</version>
       </dependency>
@@ -116,7 +107,7 @@
          <optional>true</optional>
       </dependency>
       <dependency>
-         <artifactId>base-service</artifactId>
+         <artifactId>base-atlas</artifactId>
          <classifier>tests</classifier>
          <groupId>ch.sbb.atlas</groupId>
          <scope>test</scope>
