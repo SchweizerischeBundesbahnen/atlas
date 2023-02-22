@@ -12,9 +12,6 @@
    <artifactId>base-service</artifactId>
    <name>Atlas Base Service Library</name>
    <description>Atlas Base Service Library</description>
-   <properties>
-      <maven.deploy.skip>true</maven.deploy.skip>
-   </properties>
    <dependencies>
       <!-- For BaseVersion -->
       <dependency>
