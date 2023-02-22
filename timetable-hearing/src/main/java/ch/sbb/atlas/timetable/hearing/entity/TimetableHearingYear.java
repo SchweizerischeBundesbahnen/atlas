@@ -7,6 +7,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
@@ -28,6 +30,8 @@ import lombok.experimental.SuperBuilder;
 public class TimetableHearingYear extends BaseEntity {
 
   @Id
+  @Min(2010)
+  @Max(2099)
   private Long timetableYear;
 
   @Column(columnDefinition = "DATE")
