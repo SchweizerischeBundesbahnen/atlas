@@ -1,11 +1,11 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
-import ch.sbb.atlas.versioning.model.VersionedObject;
-import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
+import ch.sbb.atlas.versioning.model.VersionedObject;
+import ch.sbb.atlas.versioning.service.VersionableService;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
