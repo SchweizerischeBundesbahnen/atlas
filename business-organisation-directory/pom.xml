@@ -16,10 +16,6 @@
    <artifactId>business-organisation-directory</artifactId>
    <description>BusinessOrganisationDirectory</description>
 
-   <properties>
-      <maven.deploy.skip>true</maven.deploy.skip>
-   </properties>
-
    <dependencies>
       <dependency>
          <artifactId>spring-boot-starter-actuator</artifactId>
