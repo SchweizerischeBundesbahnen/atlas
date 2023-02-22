@@ -24,8 +24,9 @@ public class SpanTracingAspect {
     Observation observation = Observation.start("schedulerObservation", observationRegistry).start();
     try (Scope ignored = observation.openScope()) {
       Object proceed = joinPoint.proceed();
-      if (observationRegistry.getCurrentObservation() != null) {
-        observationRegistry.getCurrentObservation().stop();
+      Observation currentObservation = observationRegistry.getCurrentObservation();
+      if (currentObservation != null) {
+        currentObservation.stop();
         log.info("Stop observation...");
       } else {
         throw new IllegalStateException("observationRegistry is null");
