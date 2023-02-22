@@ -3,10 +3,6 @@ package ch.sbb.atlas.versioning.annotation;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import ch.sbb.atlas.versioning.annotation.AtlasAnnotationProcessor;
-import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
-import ch.sbb.atlas.versioning.annotation.AtlasVersionableException;
-import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.versioning.model.Versionable;
 import ch.sbb.atlas.versioning.model.VersionableProperty;
 import ch.sbb.atlas.versioning.model.VersionableProperty.RelationType;

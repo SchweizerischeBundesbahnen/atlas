@@ -1,9 +1,9 @@
 package ch.sbb.atlas.api.bodi;
 
-import ch.sbb.atlas.api.bodi.enumeration.BusinessType;
-import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.api.bodi.enumeration.BusinessType;
+import ch.sbb.atlas.model.Status;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.constraints.Max;
