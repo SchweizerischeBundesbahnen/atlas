@@ -1,6 +1,6 @@
 package ch.sbb.line.directory.entity;
 
-import ch.sbb.atlas.base.service.model.Status;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.api.lidi.enumaration.SublineType;
 import java.time.LocalDate;
 import jakarta.persistence.Column;

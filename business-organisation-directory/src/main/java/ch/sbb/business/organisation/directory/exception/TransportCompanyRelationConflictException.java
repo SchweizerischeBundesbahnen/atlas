@@ -1,10 +1,10 @@
 package ch.sbb.business.organisation.directory.exception;
 
-import ch.sbb.atlas.base.service.model.api.ErrorResponse;
-import ch.sbb.atlas.base.service.model.api.ErrorResponse.Detail;
-import ch.sbb.atlas.base.service.model.api.ErrorResponse.DisplayInfo;
-import ch.sbb.atlas.base.service.model.api.ErrorResponse.ValidFromDetail;
-import ch.sbb.atlas.base.service.model.exception.AtlasException;
+import ch.sbb.atlas.api.model.ErrorResponse;
+import ch.sbb.atlas.api.model.ErrorResponse.Detail;
+import ch.sbb.atlas.api.model.ErrorResponse.DisplayInfo;
+import ch.sbb.atlas.api.model.ErrorResponse.ValidFromDetail;
+import ch.sbb.atlas.model.exception.AtlasException;
 import ch.sbb.business.organisation.directory.entity.TransportCompany;
 import ch.sbb.business.organisation.directory.entity.TransportCompanyRelation;
 import ch.sbb.business.organisation.directory.entity.TransportCompanyRelation.Fields;

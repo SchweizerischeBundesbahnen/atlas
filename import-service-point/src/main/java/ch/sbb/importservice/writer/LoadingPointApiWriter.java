@@ -1,7 +1,6 @@
 package ch.sbb.importservice.writer;
 
-import ch.sbb.atlas.base.service.imports.servicepoint.loadingpoint.LoadingPointCsvModel;
-import java.util.List;
+import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointCsvModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.ItemWriter;

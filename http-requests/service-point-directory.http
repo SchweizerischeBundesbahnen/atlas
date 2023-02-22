@@ -1,3 +1,0 @@
-### get count
-GET {{host-service-point-directory}}/v1/service-points/count
-Authorization: Bearer {{access_token}}

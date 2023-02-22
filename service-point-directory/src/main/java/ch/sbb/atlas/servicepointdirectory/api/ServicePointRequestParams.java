@@ -1,7 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.api;
 
-import ch.sbb.atlas.base.service.model.Status;
-import ch.sbb.atlas.base.service.model.api.AtlasApiConstants;
+import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Category;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
 import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;

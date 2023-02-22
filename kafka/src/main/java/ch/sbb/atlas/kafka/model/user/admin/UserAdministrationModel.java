@@ -1,6 +1,6 @@
 package ch.sbb.atlas.kafka.model.user.admin;
 
-import ch.sbb.atlas.kafka.model.workflow.event.AtlasEvent;
+import ch.sbb.atlas.kafka.model.AtlasEvent;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashSet;

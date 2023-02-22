@@ -1,7 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
-import ch.sbb.atlas.base.service.model.api.Container;
-import ch.sbb.atlas.base.service.model.exception.NotFoundException.IdNotFoundException;
+import ch.sbb.atlas.api.model.Container;
+import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.api.LoadingPointApiV1;
 import ch.sbb.atlas.servicepointdirectory.api.LoadingPointVersionModel;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;

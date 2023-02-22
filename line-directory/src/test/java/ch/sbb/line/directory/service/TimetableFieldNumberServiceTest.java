@@ -3,7 +3,7 @@ package ch.sbb.line.directory.service;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 
-import ch.sbb.atlas.base.service.versioning.service.VersionableService;
+import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion.TimetableFieldNumberVersionBuilder;
 import ch.sbb.line.directory.repository.TimetableFieldNumberRepository;
