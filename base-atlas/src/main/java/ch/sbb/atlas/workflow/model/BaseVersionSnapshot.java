@@ -1,6 +1,5 @@
 package ch.sbb.atlas.workflow.model;
 
-import ch.sbb.atlas.base.service.model.workflow.WorkflowStatus;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.MappedSuperclass;

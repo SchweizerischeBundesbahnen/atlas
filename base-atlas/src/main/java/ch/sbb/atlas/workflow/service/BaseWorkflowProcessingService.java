@@ -1,10 +1,10 @@
 package ch.sbb.atlas.workflow.service;
 
-import ch.sbb.atlas.base.service.model.Status;
-import ch.sbb.atlas.base.service.model.entity.BaseVersion;
-import ch.sbb.atlas.base.service.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.atlas.base.service.model.workflow.WorkflowEvent;
-import ch.sbb.atlas.base.service.model.workflow.WorkflowStatus;
+import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.model.entity.BaseVersion;
+import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
+import ch.sbb.atlas.workflow.model.WorkflowEvent;
+import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.atlas.workflow.repository.ObjectWorkflowRepository;
 import ch.sbb.atlas.workflow.model.AtlasVersionSnapshotable;
 import ch.sbb.atlas.workflow.model.BaseWorkflowEntity;

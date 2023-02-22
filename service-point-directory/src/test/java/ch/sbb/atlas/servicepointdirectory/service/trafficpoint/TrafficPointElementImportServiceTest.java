@@ -2,7 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
+import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepository;
 import java.io.IOException;
 import java.io.InputStream;

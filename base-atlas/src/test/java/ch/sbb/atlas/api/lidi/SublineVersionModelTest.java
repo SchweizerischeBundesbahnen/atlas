@@ -3,7 +3,7 @@ package ch.sbb.atlas.api.lidi;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.api.lidi.SublineVersionModel.SublineVersionModelBuilder;
-import ch.sbb.atlas.base.service.model.Status;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
 import ch.sbb.atlas.api.lidi.enumaration.SublineType;
 import jakarta.validation.ConstraintViolation;

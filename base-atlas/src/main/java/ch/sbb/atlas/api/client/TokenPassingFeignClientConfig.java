@@ -1,6 +1,6 @@
 package ch.sbb.atlas.api.client;
 
-import ch.sbb.atlas.base.service.model.service.UserService;
+import ch.sbb.atlas.service.UserService;
 import feign.RequestInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

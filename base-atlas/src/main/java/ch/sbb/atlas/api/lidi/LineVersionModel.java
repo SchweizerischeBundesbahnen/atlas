@@ -2,11 +2,11 @@ package ch.sbb.atlas.api.lidi;
 
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
-import ch.sbb.atlas.base.service.model.Status;
-import ch.sbb.atlas.base.service.model.api.AtlasCharacterSetsRegex;
-import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
-import ch.sbb.atlas.base.service.model.api.BaseVersionModel;
-import ch.sbb.atlas.base.service.model.validation.DatesValidator;
+import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
+import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.api.model.BaseVersionModel;
+import ch.sbb.atlas.validation.DatesValidator;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.constraints.NotBlank;

@@ -1,10 +1,10 @@
 package ch.sbb.line.directory.exception;
 
-import ch.sbb.atlas.base.service.model.api.ErrorResponse;
-import ch.sbb.atlas.base.service.model.api.ErrorResponse.Detail;
-import ch.sbb.atlas.base.service.model.api.ErrorResponse.DisplayInfo;
-import ch.sbb.atlas.base.service.model.api.ErrorResponse.ValidFromDetail;
-import ch.sbb.atlas.base.service.model.exception.AtlasException;
+import ch.sbb.atlas.api.model.ErrorResponse;
+import ch.sbb.atlas.api.model.ErrorResponse.Detail;
+import ch.sbb.atlas.api.model.ErrorResponse.DisplayInfo;
+import ch.sbb.atlas.api.model.ErrorResponse.ValidFromDetail;
+import ch.sbb.atlas.model.exception.AtlasException;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion.Fields;
 import java.util.ArrayList;

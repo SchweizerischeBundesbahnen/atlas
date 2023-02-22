@@ -3,7 +3,7 @@ package ch.sbb.line.directory.converter;
 import static ch.sbb.line.directory.LineTestData.lineVersionModelBuilder;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
+import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.api.lidi.LineVersionModel;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;

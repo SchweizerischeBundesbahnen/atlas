@@ -1,6 +1,6 @@
 package ch.sbb.workflow.kafka;
 
-import ch.sbb.atlas.base.service.model.workflow.WorkflowType;
+import ch.sbb.atlas.workflow.model.WorkflowType;
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import ch.sbb.workflow.entity.Workflow;
 import ch.sbb.workflow.service.lidi.LineWorkflowService;

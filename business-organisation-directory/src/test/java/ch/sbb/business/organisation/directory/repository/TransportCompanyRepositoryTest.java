@@ -2,7 +2,7 @@ package ch.sbb.business.organisation.directory.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
+import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.business.organisation.directory.entity.TransportCompany;
 import ch.sbb.business.organisation.directory.entity.TransportCompany.TransportCompanyBuilder;
 import ch.sbb.business.organisation.directory.entity.TransportCompanyRelation;

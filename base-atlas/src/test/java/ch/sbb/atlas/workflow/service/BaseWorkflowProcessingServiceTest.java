@@ -6,9 +6,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.atlas.base.service.model.Status;
-import ch.sbb.atlas.base.service.model.entity.BaseVersion;
-import ch.sbb.atlas.base.service.model.workflow.WorkflowStatus;
+import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.model.entity.BaseVersion;
+import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.atlas.workflow.model.BaseVersionSnapshot;
 import ch.sbb.atlas.workflow.model.BaseWorkflowEntity;
 import ch.sbb.atlas.workflow.model.WorkflowProcessingStatus;
@@ -222,7 +222,7 @@ public class BaseWorkflowProcessingServiceTest {
 
     @Override
     protected ObjectWorkflowEntityVersion buildObjectVersionWorkflow(
-        ch.sbb.atlas.base.service.model.workflow.WorkflowEvent workflowEvent, ObjectVersion object) {
+        ch.sbb.atlas.workflow.model.WorkflowEvent workflowEvent, ObjectVersion object) {
       return ObjectWorkflowEntityVersion.builder()
           .objectVersion(object)
           .workflowId(workflowEvent.getWorkflowId())
@@ -288,7 +288,7 @@ public class BaseWorkflowProcessingServiceTest {
   }
   
   @SuperBuilder
-  public static class WorkflowEvent extends ch.sbb.atlas.base.service.model.workflow.WorkflowEvent {
+  public static class WorkflowEvent extends ch.sbb.atlas.workflow.model.WorkflowEvent {
     
   }
 

@@ -5,8 +5,8 @@ import static ch.sbb.atlas.servicepointdirectory.model.TestData.testServicePoint
 import static ch.sbb.atlas.servicepointdirectory.repository.ServicePointGeolocationRepository.coordinatesBetween;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.base.service.imports.servicepoint.enumeration.SpatialReference;
-import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
+import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
+import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeoData;
 import java.util.List;
