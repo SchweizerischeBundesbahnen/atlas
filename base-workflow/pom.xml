@@ -7,7 +7,7 @@
       <artifactId>atlas</artifactId>
       <groupId>ch.sbb.atlas</groupId>
       <relativePath>../pom.xml</relativePath>
-      <version>1.174.0</version>
+      <version>1.175.0</version>
    </parent>
    <artifactId>base-workflow</artifactId>
    <name>Atlas Base Workflow Library</name>
@@ -20,12 +20,12 @@
       <dependency>
          <artifactId>base-service</artifactId>
          <groupId>ch.sbb.atlas</groupId>
-         <version>1.174.0</version>
+         <version>1.175.0</version>
       </dependency>
       <dependency>
          <artifactId>kafka</artifactId>
          <groupId>ch.sbb.atlas</groupId>
-         <version>1.174.0</version>
+         <version>1.175.0</version>
       </dependency>
       <dependency>
          <artifactId>lombok</artifactId>
