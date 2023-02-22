@@ -1,8 +1,8 @@
 package ch.sbb.atlas.timetable.hearing.entity;
 
+import ch.sbb.atlas.model.SwissCanton;
 import ch.sbb.atlas.model.entity.BaseEntity;
 import ch.sbb.atlas.timetable.hearing.enumeration.StatementStatus;
-import ch.sbb.atlas.timetable.hearing.enumeration.SwissCanton;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
