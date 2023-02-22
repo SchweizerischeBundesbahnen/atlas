@@ -3,7 +3,6 @@ package ch.sbb.atlas.versioning.date;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import ch.sbb.atlas.versioning.date.DateHelper;
 import ch.sbb.atlas.versioning.exception.VersioningException;
 import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
