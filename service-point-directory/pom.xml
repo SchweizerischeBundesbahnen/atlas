@@ -15,6 +15,7 @@
 
    <artifactId>service-point-directory</artifactId>
    <description>ServicePointDirectory</description>
+
    <dependencies>
       <dependency>
          <groupId>org.springframework.boot</groupId>
@@ -58,12 +59,7 @@
          <groupId>org.hibernate.orm</groupId>
       </dependency>
       <dependency>
-         <artifactId>base-service</artifactId>
-         <groupId>ch.sbb.atlas</groupId>
-         <version>1.175.0</version>
-      </dependency>
-      <dependency>
-         <artifactId>searching</artifactId>
+         <artifactId>base-atlas</artifactId>
          <groupId>ch.sbb.atlas</groupId>
          <version>1.175.0</version>
       </dependency>
@@ -120,7 +116,7 @@
          </exclusions>
       </dependency>
       <dependency>
-         <artifactId>base-service</artifactId>
+         <artifactId>base-atlas</artifactId>
          <classifier>tests</classifier>
          <groupId>ch.sbb.atlas</groupId>
          <scope>test</scope>

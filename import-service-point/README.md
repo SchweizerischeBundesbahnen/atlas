@@ -85,7 +85,7 @@ This project uses [Semantic Versioning](https://semver.org/).
 ### Spring Batch
 
 We use [Spring Batch Jobs](https://docs.spring.io/spring-batch/docs/current/reference/html/) to import CSV file from
-[ATLAS Amazon S3 Bucket](../../atlas/base-service/documentaion/amazon/README.md).
+[ATLAS Amazon S3 Bucket](../base-atlas/documentation/amazon/README.md).
 
 Since CSV file sizes can be very large, we
 use [Async Chunk Steps](https://docs.spring.io/spring-batch/docs/current/reference/html/scalability.html#scalability) within the

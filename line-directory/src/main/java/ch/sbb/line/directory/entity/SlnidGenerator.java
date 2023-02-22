@@ -1,6 +1,6 @@
 package ch.sbb.line.directory.entity;
 
-import ch.sbb.atlas.base.service.model.entity.BusinessIdGenerator;
+import ch.sbb.atlas.model.entity.BusinessIdGenerator;
 
 public class SlnidGenerator extends BusinessIdGenerator {
 

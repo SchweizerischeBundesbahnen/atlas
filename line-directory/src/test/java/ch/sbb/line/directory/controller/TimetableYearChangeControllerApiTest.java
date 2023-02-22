@@ -6,7 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.atlas.base.service.model.controller.BaseControllerApiTest;
+import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import org.junit.jupiter.api.Test;
 
 public class TimetableYearChangeControllerApiTest extends BaseControllerApiTest {

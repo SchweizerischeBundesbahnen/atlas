@@ -1,7 +1,7 @@
 package ch.sbb.line.directory.model.csv;
 
-import ch.sbb.atlas.base.service.export.model.VersionCsvModel;
-import ch.sbb.atlas.base.service.model.Status;
+import ch.sbb.atlas.export.model.VersionCsvModel;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
 import ch.sbb.atlas.api.lidi.enumaration.SublineType;
