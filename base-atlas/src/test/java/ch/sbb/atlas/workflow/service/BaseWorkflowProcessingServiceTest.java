@@ -1,6 +1,5 @@
 package ch.sbb.atlas.workflow.service;
 
-import static ch.sbb.atlas.workflow.model.WorkflowProcessingStatus.IN_PROGRESS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -216,7 +215,7 @@ public class BaseWorkflowProcessingServiceTest {
       BaseWorkflowProcessingService<ObjectVersion, ObjectWorkflowEntityVersion, ObjectVersionSnapshot> {
 
     public ObjectWorkflowProcessingService(JpaRepository<ObjectVersion, Long> objectVersionRepository,
-        ch.sbb.atlas.workflow.repository.ObjectWorkflowRepository<ObjectWorkflowEntityVersion> objectWorkflowRepository,
+        ObjectWorkflowRepository<ObjectWorkflowEntityVersion> objectWorkflowRepository,
         JpaRepository<ObjectVersionSnapshot, Long> objectVersionSnapshotRepository) {
       super(objectVersionRepository, objectWorkflowRepository, objectVersionSnapshotRepository);
     }
@@ -227,7 +226,7 @@ public class BaseWorkflowProcessingServiceTest {
       return ObjectWorkflowEntityVersion.builder()
           .objectVersion(object)
           .workflowId(workflowEvent.getWorkflowId())
-          .workflowProcessingStatus(IN_PROGRESS)
+          .workflowProcessingStatus(WorkflowProcessingStatus.IN_PROGRESS)
           .build();
     }
   }

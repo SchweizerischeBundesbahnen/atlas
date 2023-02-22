@@ -10,10 +10,13 @@
       <artifactId>atlas</artifactId>
       <groupId>ch.sbb.atlas</groupId>
       <relativePath>../pom.xml</relativePath>
-      <version>1.175.0</version>
+      <version>1.174.0</version>
    </parent>
    <description>Atlas Workflow Service</description>
    <artifactId>workflow</artifactId>
+   <properties>
+      <maven.deploy.skip>true</maven.deploy.skip>
+   </properties>
    <dependencies>
       <dependency>
          <artifactId>spring-boot-starter-actuator</artifactId>
@@ -56,26 +59,21 @@
       <dependency>
          <artifactId>base-atlas</artifactId>
          <groupId>ch.sbb.atlas</groupId>
-         <version>1.175.0</version>
+         <version>1.174.0</version>
       </dependency>
       <dependency>
          <groupId>ch.sbb.atlas</groupId>
          <artifactId>kafka</artifactId>
-         <version>1.175.0</version>
+         <version>1.174.0</version>
       </dependency>
       <dependency>
          <groupId>ch.sbb.atlas</groupId>
          <artifactId>user-administration-security</artifactId>
-         <version>1.175.0</version>
+         <version>1.174.0</version>
       </dependency>
       <dependency>
          <artifactId>spring-cloud-starter-openfeign</artifactId>
          <groupId>org.springframework.cloud</groupId>
-      </dependency>
-      <dependency>
-         <groupId>ch.sbb.atlas</groupId>
-         <artifactId>atlas-api</artifactId>
-         <version>1.175.0</version>
       </dependency>
       <dependency>
          <artifactId>spring-boot-starter-test</artifactId>
@@ -103,7 +101,7 @@
          <groupId>ch.sbb.atlas</groupId>
          <scope>test</scope>
          <type>test-jar</type>
-         <version>1.175.0</version>
+         <version>1.174.0</version>
       </dependency>
       <dependency>
          <artifactId>h2</artifactId>
