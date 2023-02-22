@@ -10,7 +10,7 @@ This is the Atlas Workflow libary.
 
 ## Workflow Lib
 
-This library should be used by Atlas services implementing Atlas Workflows (see [Atlas Workflow](../workflow/README.md)).
+This library should be used by Atlas services implementing Atlas Workflows (see [Atlas Workflow](../../../workflow/README.md)).
 
 ## How to use
 
