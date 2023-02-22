@@ -1,5 +1,6 @@
 package ch.sbb.atlas.timetable.hearing.entity;
 
+import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.model.SwissCanton;
 import ch.sbb.atlas.model.entity.BaseEntity;
 import ch.sbb.atlas.timetable.hearing.enumeration.StatementStatus;
@@ -12,7 +13,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -41,13 +45,14 @@ public class TimetableHearingStatement extends BaseEntity {
 
   // Information regarding subject
   @NotNull
+  @Min(2010)
+  @Max(2099)
   private Long timetableYear;
 
   @NotNull
   @Enumerated(EnumType.STRING)
   private StatementStatus statementStatus;
 
-  @NotNull
   private String ttfnid;
 
   @NotNull
@@ -55,35 +60,47 @@ public class TimetableHearingStatement extends BaseEntity {
   private SwissCanton swissCanton;
 
   @NotNull
+  @Size(max = AtlasFieldLengths.LENGTH_50)
   private String stopPlace;
 
   @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
-  private Set<String> responsibleTransportCompanies;
+  private Set<@Size(max = AtlasFieldLengths.LENGTH_50) String> responsibleTransportCompanies;
 
   // Statement giver information
   @NotNull
+  @Size(max = AtlasFieldLengths.LENGTH_100)
   private String firstName;
   @NotNull
+  @Size(max = AtlasFieldLengths.LENGTH_100)
   private String lastName;
   @NotNull
+  @Size(max = AtlasFieldLengths.LENGTH_100)
   private String organisation;
   @NotNull
+  @Size(max = AtlasFieldLengths.LENGTH_100)
   private String street;
   @NotNull
+  @Min(1000)
+  @Max(99999)
   private Integer zip;
   @NotNull
+  @Size(max = AtlasFieldLengths.LENGTH_50)
   private String city;
   @NotNull
+  @Size(max = AtlasFieldLengths.LENGTH_100)
   private String email;
 
   // Statement
   @NotNull
+  @Size(max = AtlasFieldLengths.LENGTH_2000)
   private String statement;
 
+  // TODO: ist des vom Bürger oder was ist das?
   @NotNull
+  @Size(max = AtlasFieldLengths.LENGTH_2000)
   private String justification;
 
   @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
-  private Set<String> documents;
+  private Set<@Size(max = AtlasFieldLengths.LENGTH_50) String> documents;
 
 }
