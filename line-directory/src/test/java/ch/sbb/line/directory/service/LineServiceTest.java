@@ -11,8 +11,8 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.atlas.base.service.model.exception.NotFoundException;
-import ch.sbb.atlas.base.service.versioning.service.VersionableService;
+import ch.sbb.atlas.model.exception.NotFoundException;
+import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.atlas.searching.SpecificationBuilder;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.entity.Line;

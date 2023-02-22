@@ -1,9 +1,9 @@
 package ch.sbb.line.directory.exception;
 
-import ch.sbb.atlas.base.service.model.Status;
-import ch.sbb.atlas.base.service.model.api.ErrorResponse;
-import ch.sbb.atlas.base.service.model.api.ErrorResponse.Detail;
-import ch.sbb.atlas.base.service.model.exception.AtlasException;
+import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.api.model.ErrorResponse;
+import ch.sbb.atlas.api.model.ErrorResponse.Detail;
+import ch.sbb.atlas.model.exception.AtlasException;
 import ch.sbb.line.directory.entity.Line;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
 import java.util.List;
 import java.util.TreeSet;
 
-import static ch.sbb.atlas.base.service.model.api.ErrorResponse.DisplayInfo.builder;
+import static ch.sbb.atlas.api.model.ErrorResponse.DisplayInfo.builder;
 
 @RequiredArgsConstructor
 public class LineInReviewValidationException extends AtlasException {

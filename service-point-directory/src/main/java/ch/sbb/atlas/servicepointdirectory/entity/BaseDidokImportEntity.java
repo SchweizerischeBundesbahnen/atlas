@@ -1,7 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.entity;
 
-import ch.sbb.atlas.base.service.model.service.UserService;
-import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionableProperty;
+import ch.sbb.atlas.service.UserService;
+import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import jakarta.persistence.Column;

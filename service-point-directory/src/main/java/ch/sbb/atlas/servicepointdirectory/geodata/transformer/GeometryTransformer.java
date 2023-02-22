@@ -1,6 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.geodata.transformer;
 
-import ch.sbb.atlas.base.service.imports.servicepoint.enumeration.SpatialReference;
+import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.servicepointdirectory.model.CoordinatePair;
 import ch.sbb.atlas.servicepointdirectory.transformer.CoordinateTransformer;
 import java.util.EnumMap;
