@@ -11,9 +11,7 @@
     <artifactId>apim-configuration</artifactId>
     <packaging>jar</packaging>
     <name>Atlas APIM Configuration</name>
-    <properties>
-        <maven.deploy.skip>false</maven.deploy.skip>
-    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
