@@ -19,7 +19,7 @@ In order to use this library, add the following snippet to the service **pom.xml
 ```xml
 
 <dependency>
-   <artifactId>base-workflow</artifactId>
+   <artifactId>base-atlas</artifactId>
    <groupId>ch.sbb.atlas</groupId>
    <version>${revision}</version>
 </dependency>

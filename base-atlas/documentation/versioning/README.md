@@ -36,14 +36,11 @@ defined!** :warning:
 Add in the **pom.xml**:
 
 ```
-<dependencies>
-....
-  <dependency>
-    <groupId>ch.sbb</groupId>
-	<artifactId>atlas-versioning</artifactId>
-	<version>0.8.0</version>
-  </dependency>
-<dependencies>
+<dependency>
+   <artifactId>base-atlas</artifactId>
+   <groupId>ch.sbb.atlas</groupId>
+   <version>${revision}</version>
+</dependency>
 ```
 
 ### Integrate versioning-library

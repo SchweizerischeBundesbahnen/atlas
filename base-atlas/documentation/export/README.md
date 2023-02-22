@@ -25,9 +25,8 @@ In order to be able to export CSV fiels to [SBB Amazon S3](../amazon/README.md) 
 library in your application pom:
 
 ~~~xml
-
 <dependency>
-   <artifactId>base-service</artifactId>
+   <artifactId>base-atlas</artifactId>
    <groupId>ch.sbb.atlas</groupId>
    <version>${revision}</version>
 </dependency>
@@ -80,7 +79,7 @@ bean:
 ~~~java
 @Bean
 public FileService fileService(){
-    return new FileService();
+    return new FileServiceImpl();
     }  
 ~~~
 
