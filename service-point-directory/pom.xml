@@ -10,7 +10,7 @@
       <artifactId>atlas</artifactId>
       <groupId>ch.sbb.atlas</groupId>
       <relativePath>../pom.xml</relativePath>
-      <version>1.174.0</version>
+      <version>1.175.0</version>
    </parent>
 
    <artifactId>service-point-directory</artifactId>
@@ -60,22 +60,22 @@
       <dependency>
          <artifactId>base-service</artifactId>
          <groupId>ch.sbb.atlas</groupId>
-         <version>1.174.0</version>
+         <version>1.175.0</version>
       </dependency>
       <dependency>
          <artifactId>searching</artifactId>
          <groupId>ch.sbb.atlas</groupId>
-         <version>1.174.0</version>
+         <version>1.175.0</version>
       </dependency>
       <dependency>
          <groupId>ch.sbb.atlas</groupId>
          <artifactId>kafka</artifactId>
-         <version>1.174.0</version>
+         <version>1.175.0</version>
       </dependency>
       <dependency>
          <groupId>ch.sbb.atlas</groupId>
          <artifactId>user-administration-security</artifactId>
-         <version>1.174.0</version>
+         <version>1.175.0</version>
       </dependency>
       <dependency>
          <groupId>org.locationtech.proj4j</groupId>
@@ -125,7 +125,7 @@
          <groupId>ch.sbb.atlas</groupId>
          <scope>test</scope>
          <type>test-jar</type>
-         <version>1.174.0</version>
+         <version>1.175.0</version>
       </dependency>
       <dependency>
          <artifactId>h2</artifactId>
