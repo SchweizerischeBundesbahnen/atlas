@@ -13,9 +13,6 @@
 
   <name>Atlas User Administration Security Handler</name>
   <artifactId>user-administration-security</artifactId>
-  <properties>
-    <maven.deploy.skip>true</maven.deploy.skip>
-  </properties>
   <dependencies>
     <dependency>
       <groupId>ch.sbb.atlas</groupId>
