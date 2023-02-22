@@ -1,11 +1,11 @@
 package ch.sbb.atlas.api.lidi;
 
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
-import ch.sbb.atlas.base.service.model.Status;
-import ch.sbb.atlas.base.service.model.api.AtlasApiConstants;
-import ch.sbb.atlas.base.service.model.api.Container;
-import ch.sbb.atlas.base.service.model.api.ErrorResponse;
-import ch.sbb.atlas.base.service.model.workflow.WorkflowStatus;
+import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.api.AtlasApiConstants;
+import ch.sbb.atlas.api.model.Container;
+import ch.sbb.atlas.api.model.ErrorResponse;
+import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;

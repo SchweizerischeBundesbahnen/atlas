@@ -2,8 +2,8 @@ package ch.sbb.business.organisation.directory.controller;
 
 import ch.sbb.atlas.api.bodi.TransportCompanyApiV1;
 import ch.sbb.atlas.api.bodi.TransportCompanyModel;
-import ch.sbb.atlas.base.service.model.api.Container;
-import ch.sbb.atlas.base.service.model.exception.NotFoundException.IdNotFoundException;
+import ch.sbb.atlas.api.model.Container;
+import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.business.organisation.directory.entity.TransportCompany;
 import ch.sbb.business.organisation.directory.mapper.TransportCompanyMapper;
 import ch.sbb.business.organisation.directory.service.TransportCompanyService;

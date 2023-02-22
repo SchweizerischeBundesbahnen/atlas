@@ -1,6 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
 
-import ch.sbb.atlas.base.service.imports.servicepoint.BaseDidokCsvModel;
+import ch.sbb.atlas.imports.servicepoint.BaseDidokCsvModel;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

@@ -2,7 +2,7 @@ package ch.sbb.line.directory.exception;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.base.service.model.api.ErrorResponse;
+import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion.TimetableFieldNumberVersionBuilder;
 import java.time.LocalDate;

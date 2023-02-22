@@ -1,6 +1,6 @@
 package ch.sbb.atlas.api.user.administration;
 
-import ch.sbb.atlas.base.service.model.api.Container;
+import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
