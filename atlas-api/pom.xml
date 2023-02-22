@@ -35,7 +35,7 @@
          <groupId>org.springframework.boot</groupId>
       </dependency>
       <dependency>
-         <artifactId>base-service</artifactId>
+         <artifactId>base-atlas</artifactId>
          <groupId>ch.sbb.atlas</groupId>
          <version>1.175.0</version>
       </dependency>
@@ -69,7 +69,7 @@
          <scope>test</scope>
       </dependency>
       <dependency>
-         <artifactId>base-service</artifactId>
+         <artifactId>base-atlas</artifactId>
          <groupId>ch.sbb.atlas</groupId>
          <version>1.175.0</version>
          <scope>test</scope>
