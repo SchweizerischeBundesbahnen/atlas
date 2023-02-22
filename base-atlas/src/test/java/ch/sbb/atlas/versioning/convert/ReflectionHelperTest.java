@@ -3,7 +3,6 @@ package ch.sbb.atlas.versioning.convert;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import ch.sbb.atlas.versioning.convert.ReflectionHelper;
 import java.lang.reflect.Field;
 import java.util.List;
 import org.junit.jupiter.api.Test;

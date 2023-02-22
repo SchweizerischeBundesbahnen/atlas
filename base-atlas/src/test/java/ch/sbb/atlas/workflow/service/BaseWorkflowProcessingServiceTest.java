@@ -8,10 +8,10 @@ import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.entity.BaseVersion;
-import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.atlas.workflow.model.BaseVersionSnapshot;
 import ch.sbb.atlas.workflow.model.BaseWorkflowEntity;
 import ch.sbb.atlas.workflow.model.WorkflowProcessingStatus;
+import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.atlas.workflow.repository.ObjectWorkflowRepository;
 import java.time.LocalDate;
 import java.util.Optional;
