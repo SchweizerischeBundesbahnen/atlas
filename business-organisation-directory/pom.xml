@@ -101,11 +101,6 @@
          <version>1.174.0</version>
       </dependency>
       <dependency>
-         <artifactId>searching</artifactId>
-         <groupId>ch.sbb.atlas</groupId>
-         <version>1.174.0</version>
-      </dependency>
-      <dependency>
          <artifactId>postgresql</artifactId>
          <groupId>org.postgresql</groupId>
          <scope>runtime</scope>
