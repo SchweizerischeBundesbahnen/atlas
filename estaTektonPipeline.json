@@ -56,6 +56,11 @@
       "imageName": "workflow"
     },
     {
+      "artifactoryDockerRepo": "atlas.docker",
+      "dockerFile": "timetable-hearing/docker/Dockerfile",
+      "imageName": "timetable-hearing"
+    },
+    {
       "dockerFile": "frontend/docker/Dockerfile",
       "imageName": "atlas-frontend",
       "artifactoryDockerRepo": "atlas.docker",
