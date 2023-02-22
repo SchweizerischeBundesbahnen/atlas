@@ -1,7 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.entity.geolocation;
 
 import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
-import ch.sbb.atlas.servicepointdirectory.enumeration.SwissCanton;
+import ch.sbb.atlas.model.SwissCanton;
 import java.time.LocalDate;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
