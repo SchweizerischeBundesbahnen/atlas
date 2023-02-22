@@ -22,16 +22,17 @@ public class SpanTracingAspect {
   public Object executeSpanTracing(ProceedingJoinPoint joinPoint) throws Throwable {
     log.info("Start observation...");
     Observation observation = Observation.start("schedulerObservation", observationRegistry).start();
-    Scope scope = observation.openScope();
-    Object proceed = joinPoint.proceed();
-    if (observationRegistry.getCurrentObservation() != null) {
-      observationRegistry.getCurrentObservation().stop();
-    } else {
-      throw new IllegalStateException("observationRegistry is null");
+    try (Scope ignored = observation.openScope()) {
+      Object proceed = joinPoint.proceed();
+      Observation currentObservation = observationRegistry.getCurrentObservation();
+      if (currentObservation != null) {
+        currentObservation.stop();
+        log.info("Stop observation...");
+      } else {
+        throw new IllegalStateException("observationRegistry is null");
+      }
+      return proceed;
     }
-    scope.close();
-    log.info("Stop observation...");
-    return proceed;
   }
 
 }

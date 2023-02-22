@@ -12,9 +12,6 @@
    </parent>
    <name>Atlas Kafka</name>
    <artifactId>kafka</artifactId>
-   <properties>
-      <maven.deploy.skip>true</maven.deploy.skip>
-   </properties>
    <dependencies>
       <dependency>
          <artifactId>spring-boot-starter-web</artifactId>
