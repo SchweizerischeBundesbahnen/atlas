@@ -9,9 +9,9 @@
       <relativePath>../pom.xml</relativePath>
       <version>1.175.0</version>
    </parent>
-   <artifactId>base-service</artifactId>
-   <name>Atlas Base Service Library</name>
-   <description>Atlas Base Service Library</description>
+   <artifactId>base-atlas</artifactId>
+   <name>Atlas Base Library</name>
+   <description>Atlas Base Library</description>
    <dependencies>
       <!-- For BaseVersion -->
       <dependency>
