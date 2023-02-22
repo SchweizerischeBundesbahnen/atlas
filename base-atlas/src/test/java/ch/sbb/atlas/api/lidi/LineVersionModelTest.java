@@ -2,10 +2,10 @@ package ch.sbb.atlas.api.lidi;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.api.lidi.LineVersionModel.LineVersionModelBuilder;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
+import ch.sbb.atlas.model.Status;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
