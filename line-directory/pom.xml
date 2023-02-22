@@ -56,11 +56,6 @@
       </dependency>
 
       <dependency>
-         <artifactId>searching</artifactId>
-         <groupId>ch.sbb.atlas</groupId>
-         <version>1.174.0</version>
-      </dependency>
-      <dependency>
          <artifactId>base-atlas</artifactId>
          <groupId>ch.sbb.atlas</groupId>
          <version>1.174.0</version>
