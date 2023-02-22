@@ -2,10 +2,10 @@ package ch.sbb.atlas.timetable.hearing.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.model.SwissCanton;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.timetable.hearing.entity.TimetableHearingStatement;
 import ch.sbb.atlas.timetable.hearing.enumeration.StatementStatus;
-import ch.sbb.atlas.timetable.hearing.enumeration.SwissCanton;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
