@@ -16,7 +16,6 @@
    <properties>
       <microsoft-graph-sdk-version>5.33.0</microsoft-graph-sdk-version>
       <azure-identity-version>1.5.4</azure-identity-version>
-      <maven.deploy.skip>true</maven.deploy.skip>
    </properties>
    <dependencies>
       <dependency>
