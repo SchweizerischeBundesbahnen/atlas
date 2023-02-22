@@ -1,6 +1,6 @@
 package ch.sbb.atlas.api.workflow;
 
-import ch.sbb.atlas.base.service.model.api.AtlasCharacterSetsRegex;
+import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;

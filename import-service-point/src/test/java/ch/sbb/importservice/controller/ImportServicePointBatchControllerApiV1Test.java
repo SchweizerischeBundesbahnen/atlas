@@ -7,9 +7,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.atlas.base.service.imports.servicepoint.model.ServicePointItemImportResult;
-import ch.sbb.atlas.base.service.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
-import ch.sbb.atlas.base.service.model.controller.BaseControllerApiTest;
+import ch.sbb.atlas.imports.servicepoint.model.ServicePointItemImportResult;
+import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
+import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.importservice.ServicePointTestData;
 import ch.sbb.importservice.client.SePoDiClient;
 import ch.sbb.importservice.service.CsvService;

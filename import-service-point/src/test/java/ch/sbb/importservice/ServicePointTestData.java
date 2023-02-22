@@ -1,10 +1,10 @@
 package ch.sbb.importservice;
 
-import ch.sbb.atlas.base.service.imports.servicepoint.model.ItemImportResponseStatus;
-import ch.sbb.atlas.base.service.imports.servicepoint.model.ServicePointImportReqModel;
-import ch.sbb.atlas.base.service.imports.servicepoint.model.ServicePointItemImportResult;
-import ch.sbb.atlas.base.service.imports.servicepoint.servicepoint.ServicePointCsvModel;
-import ch.sbb.atlas.base.service.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
+import ch.sbb.atlas.imports.servicepoint.model.ItemImportResponseStatus;
+import ch.sbb.atlas.imports.servicepoint.model.ServicePointImportReqModel;
+import ch.sbb.atlas.imports.servicepoint.model.ServicePointItemImportResult;
+import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
+import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;

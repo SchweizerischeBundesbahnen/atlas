@@ -1,7 +1,7 @@
 package ch.sbb.atlas.user.administration.exception;
 
-import ch.sbb.atlas.base.service.model.api.ErrorResponse;
-import ch.sbb.atlas.base.service.model.exception.AtlasException;
+import ch.sbb.atlas.api.model.ErrorResponse;
+import ch.sbb.atlas.model.exception.AtlasException;
 import java.util.TreeSet;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

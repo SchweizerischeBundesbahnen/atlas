@@ -2,7 +2,6 @@ package ch.sbb.atlas.workflow.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.base.service.model.workflow.WorkflowStatus;
 import org.junit.jupiter.api.Test;
 
 public class WorkflowProcessingStatusTest {
