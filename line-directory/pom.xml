@@ -14,9 +14,6 @@
    </parent>
    <artifactId>line-directory</artifactId>
    <description>LineDirectory</description>
-   <properties>
-      <maven.deploy.skip>true</maven.deploy.skip>
-   </properties>
    <dependencies>
       <dependency>
          <artifactId>spring-boot-starter-actuator</artifactId>
