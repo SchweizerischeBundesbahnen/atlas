@@ -23,7 +23,7 @@ public class LidiSchedulerService extends BaseSchedulerService {
   }
 
   @SpanTracing
-  @Retryable(label = "exportFullLineVersions", value = SchedulingExecutionException.class, maxAttempts = 4, backoff =
+  @Retryable(label = "exportFullLineVersions", retryFor = SchedulingExecutionException.class, maxAttempts = 4, backoff =
   @Backoff(delay = 65000))
   @Scheduled(cron = "${scheduler.lidi.export.line.full.chron}", zone = "${scheduler.zone}")
   @SchedulerLock(name = "exportFullLineVersions", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
