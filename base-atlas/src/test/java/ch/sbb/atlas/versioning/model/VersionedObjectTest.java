@@ -1,12 +1,8 @@
 package ch.sbb.atlas.versioning.model;
 
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.versioning.exception.VersioningException;
-import ch.sbb.atlas.versioning.model.Entity;
-import ch.sbb.atlas.versioning.model.VersionedObject;
-import ch.sbb.atlas.versioning.model.VersioningAction;
 import java.time.LocalDate;
 import java.util.Collections;
 import org.junit.jupiter.api.Test;
