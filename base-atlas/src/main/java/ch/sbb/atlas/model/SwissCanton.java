@@ -1,4 +1,4 @@
-package ch.sbb.atlas.timetable.hearing.enumeration;
+package ch.sbb.atlas.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Objects;
@@ -6,7 +6,6 @@ import java.util.stream.Stream;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-//TODO: move to model and use shared
 @Schema(enumAsRef = true, example = "BERN")
 @RequiredArgsConstructor
 @Getter
