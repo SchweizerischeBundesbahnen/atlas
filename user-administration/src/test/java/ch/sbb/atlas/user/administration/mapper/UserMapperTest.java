@@ -9,7 +9,6 @@ import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationModel;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionModel;
 import ch.sbb.atlas.api.user.administration.enumeration.UserAccountStatus;
-import ch.sbb.atlas.user.administration.mapper.UserMapper;
 import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.Test;

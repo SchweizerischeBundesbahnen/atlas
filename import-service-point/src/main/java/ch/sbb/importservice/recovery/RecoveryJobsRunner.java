@@ -7,7 +7,7 @@ import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_LOADING_
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_SERVICE_POINT_CSV_JOB_NAME;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.START_AT_JOB_PARAMETER;
 
-import ch.sbb.atlas.base.service.amazon.service.FileService;
+import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.importservice.repository.ImportProcessedItemRepository;
 import java.util.Map;
 import lombok.AllArgsConstructor;

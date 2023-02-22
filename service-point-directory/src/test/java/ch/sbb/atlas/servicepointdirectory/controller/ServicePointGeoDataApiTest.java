@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.atlas.base.service.model.controller.BaseControllerApiTest;
+import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointGeoDataApiV1;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;

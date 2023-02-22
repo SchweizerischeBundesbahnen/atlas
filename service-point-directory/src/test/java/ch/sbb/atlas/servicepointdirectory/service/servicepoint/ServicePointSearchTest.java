@@ -2,8 +2,8 @@ package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.base.service.model.Status;
-import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
+import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointRequestParams;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;

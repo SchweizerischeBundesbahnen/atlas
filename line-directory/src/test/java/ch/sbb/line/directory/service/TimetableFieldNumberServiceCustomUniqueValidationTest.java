@@ -1,7 +1,7 @@
 package ch.sbb.line.directory.service;
 
-import ch.sbb.atlas.base.service.model.Status;
-import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
+import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.exception.TimetableFieldNumberConflictException;
 import ch.sbb.line.directory.repository.TimetableFieldNumberVersionRepository;

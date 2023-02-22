@@ -9,7 +9,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.atlas.base.service.amazon.service.FileService;
+import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.importservice.repository.ImportProcessedItemRepository;
 import java.util.HashMap;
 import java.util.List;

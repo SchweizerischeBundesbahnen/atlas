@@ -1,6 +1,6 @@
 package ch.sbb.line.directory.configuration;
 
-import ch.sbb.atlas.base.service.model.configuration.CorrelationIdFilterConfig;
+import ch.sbb.atlas.configuration.filter.CorrelationIdFilterConfig;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 

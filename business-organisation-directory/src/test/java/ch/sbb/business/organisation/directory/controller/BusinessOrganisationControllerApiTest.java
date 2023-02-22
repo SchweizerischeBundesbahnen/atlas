@@ -1,8 +1,8 @@
 package ch.sbb.business.organisation.directory.controller;
 
 import ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel;
-import ch.sbb.atlas.base.service.model.Status;
-import ch.sbb.atlas.base.service.model.controller.BaseControllerWithAmazonS3ApiTest;
+import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.model.controller.BaseControllerWithAmazonS3ApiTest;
 import ch.sbb.business.organisation.directory.BusinessOrganisationData;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
 import ch.sbb.atlas.api.bodi.enumeration.BusinessType;

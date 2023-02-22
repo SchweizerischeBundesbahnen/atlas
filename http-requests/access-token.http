@@ -1,7 +1,0 @@
-### Get Token
-POST {{tokenUrl}}
-Content-Type: application/x-www-form-urlencoded
-
-grant_type=password&client_id={{clientId}}&client_secret={{clientSecret}}&username={{username}}&password={{password}}&scope={{scope}}
-
-> {% client.global.set("access_token", response.body.access_token); %}

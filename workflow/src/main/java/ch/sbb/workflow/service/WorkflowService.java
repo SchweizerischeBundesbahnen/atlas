@@ -2,10 +2,10 @@ package ch.sbb.workflow.service;
 
 import ch.sbb.atlas.api.client.line.workflow.LineWorkflowClient;
 import ch.sbb.atlas.api.workflow.ExaminantWorkflowCheckModel;
-import ch.sbb.atlas.base.service.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.atlas.base.service.model.workflow.WorkflowEvent;
-import ch.sbb.atlas.base.service.model.workflow.WorkflowStatus;
-import ch.sbb.atlas.base.service.model.workflow.WorkflowType;
+import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
+import ch.sbb.atlas.workflow.model.WorkflowEvent;
+import ch.sbb.atlas.workflow.model.WorkflowStatus;
+import ch.sbb.atlas.workflow.model.WorkflowType;
 import ch.sbb.workflow.entity.Workflow;
 import ch.sbb.workflow.exception.BusinessObjectCurrentlyInReviewException;
 import ch.sbb.workflow.exception.BusinessObjectCurrentlyNotInReviewException;

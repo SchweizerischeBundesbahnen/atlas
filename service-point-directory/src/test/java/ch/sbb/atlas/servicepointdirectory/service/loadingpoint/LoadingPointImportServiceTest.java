@@ -2,9 +2,9 @@ package ch.sbb.atlas.servicepointdirectory.service.loadingpoint;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.base.service.imports.servicepoint.loadingpoint.LoadingPointCsvModel;
-import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
-import ch.sbb.atlas.base.service.model.controller.WithMockJwtAuthentication;
+import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointCsvModel;
+import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.model.controller.WithMockJwtAuthentication;
 import ch.sbb.atlas.servicepointdirectory.repository.LoadingPointVersionRepository;
 import java.io.IOException;
 import java.io.InputStream;
