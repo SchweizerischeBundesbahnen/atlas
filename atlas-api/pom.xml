@@ -12,9 +12,6 @@
    <artifactId>atlas-api</artifactId>
    <name>Atlas API</name>
    <description>Atlas API</description>
-   <properties>
-      <maven.deploy.skip>true</maven.deploy.skip>
-   </properties>
    <dependencies>
       <dependency>
          <artifactId>springdoc-openapi-starter-common</artifactId>
