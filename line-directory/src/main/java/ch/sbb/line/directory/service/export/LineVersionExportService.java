@@ -2,12 +2,12 @@ package ch.sbb.line.directory.service.export;
 
 import static java.util.stream.Collectors.toList;
 
-import ch.sbb.atlas.base.service.amazon.helper.FutureTimetableHelper;
-import ch.sbb.atlas.base.service.amazon.service.AmazonService;
-import ch.sbb.atlas.base.service.amazon.service.FileService;
-import ch.sbb.atlas.base.service.export.BaseExportService;
-import ch.sbb.atlas.base.service.export.ExportType;
-import ch.sbb.atlas.base.service.export.model.VersionCsvModel;
+import ch.sbb.atlas.amazon.helper.FutureTimetableHelper;
+import ch.sbb.atlas.amazon.service.AmazonService;
+import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.export.BaseExportService;
+import ch.sbb.atlas.export.ExportType;
+import ch.sbb.atlas.export.model.VersionCsvModel;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.model.csv.LineVersionCsvModel;
 import ch.sbb.line.directory.repository.LineVersionRepository;

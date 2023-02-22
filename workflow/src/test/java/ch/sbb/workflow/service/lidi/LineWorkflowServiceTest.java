@@ -1,8 +1,8 @@
 package ch.sbb.workflow.service.lidi;
 
-import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
+import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
-import ch.sbb.atlas.base.service.model.workflow.WorkflowStatus;
+import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.Workflow;
 import org.junit.jupiter.api.Test;

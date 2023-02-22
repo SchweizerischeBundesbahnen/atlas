@@ -1,6 +1,6 @@
 package ch.sbb.importservice.service;
 
-import ch.sbb.atlas.base.service.imports.servicepoint.model.ItemImportResponseStatus;
+import ch.sbb.atlas.imports.servicepoint.model.ItemImportResponseStatus;
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import ch.sbb.atlas.kafka.model.mail.MailType;
 import ch.sbb.importservice.entitiy.ImportProcessItem;

@@ -1,10 +1,10 @@
 package ch.sbb.atlas.servicepointdirectory.entity;
 
-import ch.sbb.atlas.base.service.model.api.AtlasFieldLengths;
-import ch.sbb.atlas.base.service.model.validation.DatesValidator;
-import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionable;
-import ch.sbb.atlas.base.service.versioning.annotation.AtlasVersionableProperty;
-import ch.sbb.atlas.base.service.versioning.model.Versionable;
+import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.validation.DatesValidator;
+import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
+import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
+import ch.sbb.atlas.versioning.model.Versionable;
 import ch.sbb.atlas.servicepointdirectory.converter.ServicePointNumberConverter;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
 import ch.sbb.atlas.servicepointdirectory.enumeration.TrafficPointElementType;

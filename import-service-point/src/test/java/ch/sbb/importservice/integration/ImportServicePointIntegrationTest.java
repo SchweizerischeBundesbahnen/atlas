@@ -18,11 +18,11 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.atlas.base.service.imports.servicepoint.loadingpoint.LoadingPointCsvModel;
-import ch.sbb.atlas.base.service.imports.servicepoint.model.ServicePointItemImportResult;
-import ch.sbb.atlas.base.service.imports.servicepoint.servicepoint.ServicePointCsvModel;
-import ch.sbb.atlas.base.service.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
-import ch.sbb.atlas.base.service.model.controller.IntegrationTest;
+import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointCsvModel;
+import ch.sbb.atlas.imports.servicepoint.model.ServicePointItemImportResult;
+import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
+import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
+import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.importservice.ServicePointTestData;
 import ch.sbb.importservice.client.SePoDiClient;
 import ch.sbb.importservice.service.CsvService;
