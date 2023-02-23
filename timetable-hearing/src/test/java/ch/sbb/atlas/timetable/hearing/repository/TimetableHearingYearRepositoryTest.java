@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.timetable.hearing.entity.TimetableHearingYear;
+import ch.sbb.atlas.timetable.hearing.enumeration.HearingStatus;
 import java.time.LocalDate;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -30,6 +31,7 @@ public class TimetableHearingYearRepositoryTest {
   void shouldCreateNewHearingYear() {
     TimetableHearingYear timetableHearingYear = TimetableHearingYear.builder()
         .timetableYear(YEAR)
+        .hearingStatus(HearingStatus.PLANNED)
         .hearingFrom(LocalDate.of(2022, 1, 1))
         .hearingTo(LocalDate.of(2022, 2, 1))
         .statementCreatableExternal(true)
