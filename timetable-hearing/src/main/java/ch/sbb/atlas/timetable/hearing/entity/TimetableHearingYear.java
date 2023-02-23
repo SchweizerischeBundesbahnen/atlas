@@ -1,10 +1,13 @@
 package ch.sbb.atlas.timetable.hearing.entity;
 
 import ch.sbb.atlas.model.entity.BaseEntity;
+import ch.sbb.atlas.timetable.hearing.enumeration.HearingStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Max;
@@ -33,6 +36,10 @@ public class TimetableHearingYear extends BaseEntity {
   @Min(2010)
   @Max(2099)
   private Long timetableYear;
+
+  @NotNull
+  @Enumerated(EnumType.STRING)
+  private HearingStatus hearingStatus;
 
   @Column(columnDefinition = "DATE")
   @NotNull
