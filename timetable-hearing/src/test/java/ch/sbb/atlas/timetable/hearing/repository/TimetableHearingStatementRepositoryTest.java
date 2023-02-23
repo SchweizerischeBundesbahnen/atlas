@@ -54,4 +54,18 @@ public class TimetableHearingStatementRepositoryTest {
     assertThat(savedStatement.getResponsibleTransportCompanies()).hasSize(2);
     assertThat(savedStatement.getDocuments()).hasSize(3);
   }
+
+  @Test
+  void shouldCreateMinimalHearingStatement() {
+    TimetableHearingStatement statement = TimetableHearingStatement.builder()
+        .timetableYear(2023L)
+        .statementStatus(StatementStatus.RECEIVED)
+        .email("mike@thebike.com")
+        .statement("Ich mag bitte mehr Bös fahren")
+        .build();
+
+    TimetableHearingStatement savedStatement = timetableHearingStatementRepository.save(statement);
+
+    assertThat(savedStatement.getId()).isNotNull();
+  }
 }
