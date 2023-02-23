@@ -1,4 +1,4 @@
-import moment from 'moment/moment';
+import moment from 'moment';
 import { Injectable } from '@angular/core';
 
 export const DATE_PATTERN = 'DD.MM.yyyy';
