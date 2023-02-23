@@ -1,4 +1,4 @@
-<form [formGroup]="form">
+<ng-container [formGroup]="form">
   <h2 *ngIf="newRecord" class="font-bold-2xl mb-4">
     {{ 'LIDI.NEW_LINE_INFORMATION' | translate }}
   </h2>
@@ -11,12 +11,13 @@
       </div>
       <mat-label class="font-regular-sm"
         >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ 'IC8' }} |
-        {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}
+        {{ 'FORM.MAX_CHARS' | translate : { numberOfChars: 50 } }}
       </mat-label>
-      <mat-form-field>
-        <input data-cy="number" formControlName="number" matInput />
+      <!--<mat-form-field appearance="outline">
+        <input data-cy="number" formControlName="number" matInput/>
         <mat-error fieldErrors></mat-error>
-      </mat-form-field>
+      </mat-form-field>-->
+      <!--<atlas-text-field></atlas-text-field>-->
     </div>
     <div class="d-flex flex-column col-9">
       <div class="info-icon-position">
@@ -26,12 +27,13 @@
       <mat-label class="font-regular-sm">
         {{ 'FORM.FOR_EXAMPLE' | translate }}
         {{ 'Brig - Bern - Zürich HB - Romanshorn' }} |
-        {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 255 } }}
+        {{ 'FORM.MAX_CHARS' | translate : { numberOfChars: 255 } }}
       </mat-label>
-      <mat-form-field>
-        <input data-cy="description" formControlName="description" matInput />
+      <!--<mat-form-field>
+        <input data-cy="description" formControlName="description" matInput/>
         <mat-error fieldErrors></mat-error>
-      </mat-form-field>
+      </mat-form-field>-->
+      <!--<atlas-text-field></atlas-text-field>-->
     </div>
   </div>
 
@@ -41,7 +43,7 @@
       <mat-label class="font-regular-sm">
         {{ 'FORM.FOR_EXAMPLE' | translate }}
         {{ 'Brig - Bern - Zürich HB - Romanshorn' }} |
-        {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 255 } }}
+        {{ 'FORM.MAX_CHARS' | translate : { numberOfChars: 255 } }}
       </mat-label>
       <mat-form-field>
         <input data-cy="longName" formControlName="longName" matInput />
@@ -63,18 +65,19 @@
       </div>
       <mat-label class="font-regular-sm">
         {{ 'FORM.FOR_EXAMPLE' | translate }} {{ 'b0.IC8' }} |
-        {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}
+        {{ 'FORM.MAX_CHARS' | translate : { numberOfChars: 50 } }}
       </mat-label>
-      <mat-form-field>
-        <input data-cy="swissLineNumber" formControlName="swissLineNumber" matInput />
+      <!--<mat-form-field>
+        <input data-cy="swissLineNumber" formControlName="swissLineNumber" matInput/>
         <mat-error fieldErrors></mat-error>
-      </mat-form-field>
+      </mat-form-field>-->
+      <atlas-text-field [controlName]="'swissLineNumber'"></atlas-text-field>
     </div>
 
     <div class="d-flex flex-column col-4 pe-3">
       <mat-label class="font-bold-lg">{{ 'LIDI.ALTERNATIVE_NAME' | translate }} </mat-label>
       <mat-label class="font-regular-sm">
-        {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}
+        {{ 'FORM.MAX_CHARS' | translate : { numberOfChars: 50 } }}
       </mat-label>
       <mat-form-field>
         <input data-cy="alternativeName" formControlName="alternativeName" matInput />
@@ -85,7 +88,7 @@
     <div class="d-flex flex-column col-4">
       <mat-label class="font-bold-lg">{{ 'LIDI.COMBINATION_NAME' | translate }} </mat-label>
       <mat-label class="font-regular-sm">
-        {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}
+        {{ 'FORM.MAX_CHARS' | translate : { numberOfChars: 50 } }}
       </mat-label>
       <mat-form-field>
         <input data-cy="combinationName" formControlName="combinationName" matInput />
@@ -221,4 +224,4 @@
       <form-comment [formGroup]="form" [displayInfoIcon]="false"></form-comment>
     </div>
   </div>
-</form>
+</ng-container>

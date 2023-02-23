@@ -8,8 +8,21 @@
 // Theme (based on Material)
 @use 'theme';
 
-// Vendors
-@use 'vendors/material';
+// Angular Material Components
+@use 'am-components/mat-button';
+@use 'am-components/mat-chip';
+@use 'am-components/mat-date-range-input';
+@use 'am-components/mat-form-field';
+@use 'am-components/mat-form-field-default';
+@use 'am-components/mat-form-field-outline';
+@use 'am-components/mat-label';
+@use 'am-components/mat-nav-list';
+@use 'am-components/mat-paginator';
+@use 'am-components/mat-slide-toggle';
+@use 'am-components/mat-snack-bar';
+@use 'am-components/mat-tab';
+@use 'am-components/mat-table';
+@use 'am-components/ng-select';
 
 // App 3rd party components
 @use 'other-components/components';

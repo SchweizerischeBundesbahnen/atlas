@@ -20,6 +20,7 @@ export class LidiOverviewComponent {
       title: 'LIDI.LINE_VERSION_SNAPSHOT.TAB_HEADER',
     },
   ];
+  activeTab = this.TABS[0];
 
   constructor(private route: ActivatedRoute, private router: Router) {}
 

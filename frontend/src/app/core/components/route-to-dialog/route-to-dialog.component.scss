@@ -13,13 +13,16 @@
 }
 
 .route-to-dialog-panel {
-  overflow: unset;
   max-width: 100% !important;
 
   .mat-mdc-dialog-container {
     background: variables.$white;
     border-radius: variables.$border-radius;
     padding: 64px 80px 144px;
-    overflow: unset;
+    min-width: 1200px;
+
+    .mat-mdc-dialog-surface {
+      box-shadow: none;
+    }
   }
 }
