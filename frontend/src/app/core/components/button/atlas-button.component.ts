@@ -85,7 +85,7 @@ export class AtlasButtonComponent {
     if (
       [AtlasButtonType.CREATE, AtlasButtonType.CREATE_CHECKING_PERMISSION].includes(this.buttonType)
     ) {
-      return 'mat-raised-button';
+      return 'atlas-raised-button';
     }
     if (
       [AtlasButtonType.FOOTER_NON_EDIT, AtlasButtonType.FOOTER_EDIT_MODE].includes(this.buttonType)
