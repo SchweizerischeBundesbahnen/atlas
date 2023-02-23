@@ -98,7 +98,7 @@
         },
         "failOnQualityGateFailure": true,
         "owaspDependencyCheck": {
-          "enabled": false,
+          "enabled": true,
           "additionalParams": "--disableCentral"
         }
       },
