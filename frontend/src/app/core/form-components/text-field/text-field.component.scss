@@ -1,0 +1,37 @@
+@use 'src/styles/variables';
+
+input:focus {
+  outline: none;
+}
+
+input {
+  margin-top: 5px;
+
+  border-top-style: hidden;
+  border-left: 1px solid variables.$gray-400;
+  border-right: 1px solid variables.$gray-400;
+  border-bottom: 1px solid variables.$gray-400;
+
+  height: 32px;
+  width: 100%;
+  padding: 2px 5px;
+
+  &:hover,
+  &:focus {
+    border-color: variables.$primary-300;
+    border-width: 3px;
+
+    padding: 2px 3px 0 3px;
+  }
+
+  &.ng-invalid:not(.ng-pristine) {
+    border-color: red;
+    border-width: 3px;
+
+    padding: 2px 3px 0 3px;
+  }
+}
+
+span {
+  color: red;
+}

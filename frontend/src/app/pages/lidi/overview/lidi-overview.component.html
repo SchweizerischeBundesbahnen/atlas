@@ -16,20 +16,21 @@
     buttonText="LIDI.SUBLINE.NEW"
   ></atlas-button>
 
-  <nav mat-tab-nav-bar class="tabs" data-cy="tabs">
+  <nav mat-tab-nav-bar class="tabs" data-cy="tabs" [tabPanel]="tabPanel">
     <a
       mat-tab-link
+      class="font-bold-xl"
       *ngFor="let tab of TABS"
       [routerLink]="tab.link"
-      routerLinkActive
-      #rla="routerLinkActive"
-      [active]="rla.isActive"
-      [class]="'font-bold-xl ' + (rla.isActive ? 'color-gray-900' : 'color-primary-400')"
+      (click)="activeTab = tab"
+      [active]="activeTab === tab"
     >
       {{ tab.title | translate }}
     </a>
   </nav>
   <div class="white-table-container-tabs">
-    <router-outlet></router-outlet>
+    <mat-tab-nav-panel #tabPanel>
+      <router-outlet></router-outlet>
+    </mat-tab-nav-panel>
   </div>
 </div>
