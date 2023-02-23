@@ -166,6 +166,10 @@
     "RANGE_LABEL1": "0 von {{length}}",
     "RANGE_LABEL2": "{{startIndex}} - {{endIndex}} von {{length}}"
   },
+  "VALIDATION_ATLAS_FORM_COMPONENT": {
+    "REQUIRED": "Dies ist ein Pflichtfeld.",
+    "MAXLENGTH": "Es sind maximal {{maxlength.requiredLength}} Zeichen erlaubt."
+  },
   "VALIDATION": {
     "REQUIRED": "Dies ist ein Pflichtfeld.",
     "BLANK": "Dieses Feld darf nicht leer sein.",
