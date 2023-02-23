@@ -45,8 +45,6 @@ public class TimetableHearingStatement extends BaseEntity {
 
   // Information regarding subject
   @NotNull
-  @Min(2010)
-  @Max(2099)
   private Long timetableYear;
 
   @NotNull
@@ -55,11 +53,9 @@ public class TimetableHearingStatement extends BaseEntity {
 
   private String ttfnid;
 
-  @NotNull
   @Enumerated(EnumType.STRING)
   private SwissCanton swissCanton;
 
-  @NotNull
   @Size(max = AtlasFieldLengths.LENGTH_50)
   private String stopPlace;
 
@@ -67,23 +63,17 @@ public class TimetableHearingStatement extends BaseEntity {
   private Set<@Size(max = AtlasFieldLengths.LENGTH_50) String> responsibleTransportCompanies;
 
   // Statement giver information
-  @NotNull
   @Size(max = AtlasFieldLengths.LENGTH_100)
   private String firstName;
-  @NotNull
   @Size(max = AtlasFieldLengths.LENGTH_100)
   private String lastName;
-  @NotNull
   @Size(max = AtlasFieldLengths.LENGTH_100)
   private String organisation;
-  @NotNull
   @Size(max = AtlasFieldLengths.LENGTH_100)
   private String street;
-  @NotNull
   @Min(1000)
   @Max(99999)
   private Integer zip;
-  @NotNull
   @Size(max = AtlasFieldLengths.LENGTH_50)
   private String city;
   @NotNull
@@ -92,15 +82,15 @@ public class TimetableHearingStatement extends BaseEntity {
 
   // Statement
   @NotNull
-  @Size(max = AtlasFieldLengths.LENGTH_2000)
+  @Size(max = AtlasFieldLengths.LENGTH_5000)
   private String statement;
 
-  // TODO: ist des vom Bürger oder was ist das?
-  @NotNull
-  @Size(max = AtlasFieldLengths.LENGTH_2000)
-  private String justification;
-
+  @Size(max = 3)
   @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
   private Set<@Size(max = AtlasFieldLengths.LENGTH_50) String> documents;
+
+  // FoT Justification field for comments
+  @Size(max = AtlasFieldLengths.LENGTH_5000)
+  private String justification;
 
 }
