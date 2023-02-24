@@ -111,6 +111,17 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldFindServicePointVersionByFromAndToDate() throws Exception {
+    String fromDate = servicePointVersion.getValidFrom().plusDays(1)
+        .format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN));
+    String toDate = servicePointVersion.getValidTo().minusDays(1)
+        .format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN));
+    mvc.perform(get("/v1/service-points?fromDate=" + fromDate + "&toDate=" + toDate))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.totalCount", is(1)));
+  }
+
+  @Test
   void shouldFailOnInvalidServicePointNumber() throws Exception {
     mvc.perform(get("/v1/service-points/123"))
         .andExpect(status().isNotFound());
