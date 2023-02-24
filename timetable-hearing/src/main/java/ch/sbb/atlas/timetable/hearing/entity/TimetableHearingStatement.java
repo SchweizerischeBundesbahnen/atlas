@@ -4,7 +4,7 @@ import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.model.SwissCanton;
 import ch.sbb.atlas.model.entity.BaseEntity;
 import ch.sbb.atlas.timetable.hearing.TimetableHearingConstants;
-import ch.sbb.atlas.timetable.hearing.enumeration.StatementStatus;
+import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
