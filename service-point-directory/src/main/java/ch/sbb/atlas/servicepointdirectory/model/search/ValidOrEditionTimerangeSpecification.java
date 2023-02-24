@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.model.search;
 
+import ch.sbb.atlas.servicepointdirectory.entity.BaseDidokImportEntity_;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion_;
 import java.io.Serial;
@@ -36,10 +37,10 @@ public class ValidOrEditionTimerangeSpecification implements Specification<Servi
     }
 
     if (createdAfter != null) {
-      predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get(ServicePointVersion_.creationDate), createdAfter));
+      predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get(BaseDidokImportEntity_.creationDate), createdAfter));
     }
     if (modifiedAfter != null) {
-      predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get(ServicePointVersion_.editionDate), modifiedAfter));
+      predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get(BaseDidokImportEntity_.editionDate), modifiedAfter));
     }
     return criteriaBuilder.and(predicates.toArray(Predicate[]::new));
   }

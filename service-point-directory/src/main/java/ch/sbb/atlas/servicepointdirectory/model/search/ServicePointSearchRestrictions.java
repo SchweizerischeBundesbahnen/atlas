@@ -74,8 +74,10 @@ public class ServicePointSearchRestrictions extends SearchRestrictions<ServicePo
             servicePointRequestParams.getOperatingPoint()))
         .and(specificationBuilder().booleanSpecification(ServicePointVersion_.operatingPointWithTimetable,
             servicePointRequestParams.getWithTimetable()))
-        .and(new ValidOrEditionTimerangeSpecification(servicePointRequestParams.getFromDate(),
-            servicePointRequestParams.getToDate(), servicePointRequestParams.getCreatedAfter(),
+        .and(new ValidOrEditionTimerangeSpecification(
+            servicePointRequestParams.getFromDate(),
+            servicePointRequestParams.getToDate(),
+            servicePointRequestParams.getCreatedAfter(),
             servicePointRequestParams.getModifiedAfter()));
   }
 
