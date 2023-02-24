@@ -7,7 +7,7 @@ import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.timetable.hearing.entity.StatementDocument;
 import ch.sbb.atlas.timetable.hearing.entity.StatementSender;
 import ch.sbb.atlas.timetable.hearing.entity.TimetableHearingStatement;
-import ch.sbb.atlas.timetable.hearing.enumeration.StatementStatus;
+import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;

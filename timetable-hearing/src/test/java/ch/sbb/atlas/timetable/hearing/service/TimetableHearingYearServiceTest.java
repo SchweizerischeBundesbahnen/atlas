@@ -3,15 +3,19 @@ package ch.sbb.atlas.timetable.hearing.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import ch.sbb.atlas.api.timetable.hearing.enumeration.HearingStatus;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.timetable.hearing.entity.TimetableHearingYear;
-import ch.sbb.atlas.timetable.hearing.enumeration.HearingStatus;
 import ch.sbb.atlas.timetable.hearing.exception.HearingCurrentlyActiveException;
+import ch.sbb.atlas.timetable.hearing.model.TimetableHearingYearSearchRestrictions;
 import ch.sbb.atlas.timetable.hearing.repository.TimetableHearingYearRepository;
 import java.time.LocalDate;
+import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @IntegrationTest
 public class TimetableHearingYearServiceTest {
@@ -54,6 +58,25 @@ public class TimetableHearingYearServiceTest {
 
     TimetableHearingYear hearingYear = timetableHearingYearService.getHearingYear(YEAR);
     assertThat(hearingYear).isNotNull();
+  }
+
+  @Test
+  void shouldGetHearingYearByStaus() {
+    timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+
+    Page<TimetableHearingYear> hearingYears =
+        timetableHearingYearService.getHearingYears(TimetableHearingYearSearchRestrictions.builder()
+            .pageable(Pageable.unpaged())
+            .statusRestrictions(Set.of(HearingStatus.PLANNED))
+            .build());
+    assertThat(hearingYears.getTotalElements()).isEqualTo(1);
+
+    hearingYears =
+        timetableHearingYearService.getHearingYears(TimetableHearingYearSearchRestrictions.builder()
+            .pageable(Pageable.unpaged())
+            .statusRestrictions(Set.of(HearingStatus.ACTIVE))
+            .build());
+    assertThat(hearingYears.getTotalElements()).isZero();
   }
 
   @Test

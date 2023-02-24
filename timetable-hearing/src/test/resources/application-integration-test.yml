@@ -44,3 +44,10 @@ info:
   app:
     name: timetable-hearing
     version: @version@
+
+kafka:
+  atlas:
+    user:
+      administration:
+        topic: atlas.user.administration
+        groupId: atlas.kafka.timetable.hearing.user.administration.groupId
