@@ -63,7 +63,7 @@ public class ServicePointSearchTest {
             .servicePointRequestParams(ServicePointRequestParams.builder()
                 .sloids(List.of("supersloid"))
                 .build()).build());
-    assertThat(servicePointVersions.getTotalElements()).isEqualTo(0);
+    assertThat(servicePointVersions.getTotalElements()).isZero();
   }
 
   @Test
@@ -130,7 +130,7 @@ public class ServicePointSearchTest {
             .servicePointRequestParams(ServicePointRequestParams.builder()
                 .statusRestrictions(List.of(Status.DRAFT))
                 .build()).build());
-    assertThat(servicePointVersions.getTotalElements()).isEqualTo(0);
+    assertThat(servicePointVersions.getTotalElements()).isZero();
   }
 
   @Test
@@ -140,7 +140,7 @@ public class ServicePointSearchTest {
             .servicePointRequestParams(ServicePointRequestParams.builder()
                 .meansOfTransport(List.of(MeanOfTransport.TRAIN))
                 .build()).build());
-    assertThat(servicePointVersions.getTotalElements()).isEqualTo(0);
+    assertThat(servicePointVersions.getTotalElements()).isZero();
   }
 
   @Test
@@ -161,7 +161,7 @@ public class ServicePointSearchTest {
             .servicePointRequestParams(ServicePointRequestParams.builder()
                 .operatingPoint(false)
                 .build()).build());
-    assertThat(servicePointVersions.getTotalElements()).isEqualTo(0);
+    assertThat(servicePointVersions.getTotalElements()).isZero();
   }
 
   @Test
@@ -183,7 +183,7 @@ public class ServicePointSearchTest {
             .servicePointRequestParams(ServicePointRequestParams.builder()
                 .withTimetable(false)
                 .build()).build());
-    assertThat(servicePointVersions.getTotalElements()).isEqualTo(0);
+    assertThat(servicePointVersions.getTotalElements()).isZero();
   }
 
   @Test
@@ -205,7 +205,7 @@ public class ServicePointSearchTest {
             .servicePointRequestParams(ServicePointRequestParams.builder()
                 .validOn(LocalDate.of(2099, 1, 1))
                 .build()).build());
-    assertThat(servicePointVersions.getTotalElements()).isEqualTo(0);
+    assertThat(servicePointVersions.getTotalElements()).isZero();
   }
 
   @Test
@@ -225,7 +225,7 @@ public class ServicePointSearchTest {
             .servicePointRequestParams(ServicePointRequestParams.builder()
                 .fromDate(servicePointVersion.getValidFrom().minusDays(1))
                 .build()).build());
-    assertThat(servicePointVersions.getTotalElements()).isEqualTo(0);
+    assertThat(servicePointVersions.getTotalElements()).isZero();
   }
 
   @Test
@@ -245,7 +245,7 @@ public class ServicePointSearchTest {
             .servicePointRequestParams(ServicePointRequestParams.builder()
                 .toDate(servicePointVersion.getValidTo().plusDays(1))
                 .build()).build());
-    assertThat(servicePointVersions.getTotalElements()).isEqualTo(0);
+    assertThat(servicePointVersions.getTotalElements()).isZero();
   }
 
   @Test
@@ -253,7 +253,7 @@ public class ServicePointSearchTest {
     Page<ServicePointVersion> servicePointVersions =
         servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
             .servicePointRequestParams(ServicePointRequestParams.builder()
-                .createdAfter(servicePointVersion.getCreationDate().plusSeconds(1))
+                .createdAfter(servicePointVersion.getCreationDate().minusSeconds(1))
                 .build()).build());
     assertThat(servicePointVersions.getTotalElements()).isEqualTo(1);
   }
@@ -263,9 +263,9 @@ public class ServicePointSearchTest {
     Page<ServicePointVersion> servicePointVersions =
         servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
             .servicePointRequestParams(ServicePointRequestParams.builder()
-                .createdAfter(servicePointVersion.getCreationDate().minusSeconds(1))
+                .createdAfter(servicePointVersion.getCreationDate().plusSeconds(1))
                 .build()).build());
-    assertThat(servicePointVersions.getTotalElements()).isEqualTo(0);
+    assertThat(servicePointVersions.getTotalElements()).isZero();
   }
 
   @Test
@@ -273,7 +273,7 @@ public class ServicePointSearchTest {
     Page<ServicePointVersion> servicePointVersions =
         servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
             .servicePointRequestParams(ServicePointRequestParams.builder()
-                .modifiedAfter(servicePointVersion.getEditionDate())
+                .modifiedAfter(servicePointVersion.getEditionDate().minusSeconds(1))
                 .build()).build());
     assertThat(servicePointVersions.getTotalElements()).isEqualTo(1);
   }
@@ -283,8 +283,8 @@ public class ServicePointSearchTest {
     Page<ServicePointVersion> servicePointVersions =
         servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
             .servicePointRequestParams(ServicePointRequestParams.builder()
-                .modifiedAfter(servicePointVersion.getEditionDate().minusSeconds(1))
+                .modifiedAfter(servicePointVersion.getEditionDate().plusSeconds(1))
                 .build()).build());
-    assertThat(servicePointVersions.getTotalElements()).isEqualTo(0);
+    assertThat(servicePointVersions.getTotalElements()).isZero();
   }
 }
