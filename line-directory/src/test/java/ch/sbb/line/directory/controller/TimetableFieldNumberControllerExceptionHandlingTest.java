@@ -14,7 +14,7 @@ import java.util.Collections;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.mapping.PropertyReferenceException;
-import org.springframework.data.util.ClassTypeInformation;
+import org.springframework.data.util.TypeInformation;
 import org.springframework.security.test.context.support.WithMockUser;
 
 public class TimetableFieldNumberControllerExceptionHandlingTest extends BaseControllerApiTest {
@@ -29,7 +29,7 @@ public class TimetableFieldNumberControllerExceptionHandlingTest extends BaseCon
     when(timetableFieldNumberService.getVersionsSearched(any(
         TimetableFieldNumberSearchRestrictions.class))).thenThrow(
         new PropertyReferenceException("nam",
-            ClassTypeInformation.from(TimetableFieldNumber.class), Collections.emptyList()));
+            TypeInformation.of(TimetableFieldNumber.class), Collections.emptyList()));
     // When
     // Then
     mvc.perform(get("/v1/field-numbers")
