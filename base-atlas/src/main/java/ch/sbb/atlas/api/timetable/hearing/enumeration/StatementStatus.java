@@ -1,4 +1,4 @@
-package ch.sbb.atlas.timetable.hearing.enumeration;
+package ch.sbb.atlas.api.timetable.hearing.enumeration;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 

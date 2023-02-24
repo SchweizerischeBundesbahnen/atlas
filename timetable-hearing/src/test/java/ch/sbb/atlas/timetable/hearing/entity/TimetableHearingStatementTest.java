@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.model.SwissCanton;
 import ch.sbb.atlas.timetable.hearing.entity.TimetableHearingStatement.TimetableHearingStatementBuilder;
-import ch.sbb.atlas.timetable.hearing.enumeration.StatementStatus;
+import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;

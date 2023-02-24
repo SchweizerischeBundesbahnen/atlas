@@ -1,12 +1,14 @@
 package ch.sbb.atlas.timetable.hearing.service;
 
+import ch.sbb.atlas.api.timetable.hearing.enumeration.HearingStatus;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.timetable.hearing.entity.TimetableHearingYear;
-import ch.sbb.atlas.timetable.hearing.enumeration.HearingStatus;
 import ch.sbb.atlas.timetable.hearing.exception.HearingCurrentlyActiveException;
+import ch.sbb.atlas.timetable.hearing.model.TimetableHearingYearSearchRestrictions;
 import ch.sbb.atlas.timetable.hearing.repository.TimetableHearingYearRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +19,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class TimetableHearingYearService {
 
   private final TimetableHearingYearRepository timetableHearingYearRepository;
+
+  public Page<TimetableHearingYear> getHearingYears(TimetableHearingYearSearchRestrictions searchRestrictions) {
+    return timetableHearingYearRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
+  }
 
   public TimetableHearingYear getHearingYear(Long year) {
     return timetableHearingYearRepository.findById(year).orElseThrow(() -> new IdNotFoundException(year));
