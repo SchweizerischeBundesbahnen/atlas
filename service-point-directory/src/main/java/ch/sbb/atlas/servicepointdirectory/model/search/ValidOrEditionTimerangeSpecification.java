@@ -30,10 +30,10 @@ public class ValidOrEditionTimerangeSpecification implements Specification<Servi
   public Predicate toPredicate(Root<ServicePointVersion> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
     List<Predicate> predicates = new ArrayList<>();
     if (fromDate != null) {
-      predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get(ServicePointVersion_.validFrom), fromDate));
+      predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get(ServicePointVersion_.validFrom), fromDate));
     }
     if (toDate != null) {
-      predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get(ServicePointVersion_.validTo), toDate));
+      predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get(ServicePointVersion_.validTo), toDate));
     }
 
     if (createdAfter != null) {
