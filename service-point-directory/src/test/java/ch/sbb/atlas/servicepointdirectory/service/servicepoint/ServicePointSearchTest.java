@@ -210,40 +210,52 @@ public class ServicePointSearchTest {
 
   @Test
   void shouldFindBernWylereggByWithFromDate() {
+    LocalDate fromDate = servicePointVersion.getValidFrom().minusDays(1);
+    assertThat(fromDate).isBefore(servicePointVersion.getValidFrom());
+
     Page<ServicePointVersion> servicePointVersions =
         servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
             .servicePointRequestParams(ServicePointRequestParams.builder()
-                .fromDate(servicePointVersion.getValidFrom())
+                .fromDate(fromDate)
                 .build()).build());
     assertThat(servicePointVersions.getTotalElements()).isEqualTo(1);
   }
 
   @Test
   void shouldNotFindBernWylereggByWithFromDate() {
+    LocalDate fromDate = servicePointVersion.getValidFrom().plusDays(1);
+    assertThat(fromDate).isAfter(servicePointVersion.getValidFrom());
+
     Page<ServicePointVersion> servicePointVersions =
         servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
             .servicePointRequestParams(ServicePointRequestParams.builder()
-                .fromDate(servicePointVersion.getValidFrom().minusDays(1))
+                .fromDate(fromDate)
                 .build()).build());
     assertThat(servicePointVersions.getTotalElements()).isZero();
   }
 
   @Test
   void shouldFindBernWylereggByWithToDate() {
+    LocalDate toDate = servicePointVersion.getValidTo().plusDays(1);
+    assertThat(toDate).isAfter(servicePointVersion.getValidTo());
+
     Page<ServicePointVersion> servicePointVersions =
         servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
             .servicePointRequestParams(ServicePointRequestParams.builder()
-                .toDate(servicePointVersion.getValidTo())
+                .toDate(toDate)
                 .build()).build());
     assertThat(servicePointVersions.getTotalElements()).isEqualTo(1);
   }
 
   @Test
   void shouldNotFindBernWylereggByWithToDate() {
+    LocalDate toDate = servicePointVersion.getValidTo().minusDays(1);
+    assertThat(toDate).isBefore(servicePointVersion.getValidTo());
+
     Page<ServicePointVersion> servicePointVersions =
         servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
             .servicePointRequestParams(ServicePointRequestParams.builder()
-                .toDate(servicePointVersion.getValidTo().plusDays(1))
+                .toDate(toDate)
                 .build()).build());
     assertThat(servicePointVersions.getTotalElements()).isZero();
   }
