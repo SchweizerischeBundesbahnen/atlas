@@ -1,11 +1,7 @@
 <form [formGroup]="form">
   <input type="text" [formControlName]="controlName" />
 
-  <span *ngIf="hasError | async">
-    {{ (errorTranslationKeyToShow | async)! | translate : form.get(controlName)?.errors }}
+  <span *ngIf="(isTouched || isDirty) && (hasError | async)">
+    {{ errorTranslationKeyToShow | translate : errorArgs }}
   </span>
-
-  <!--<span *ngIf="!hideError()">
-    {{ getFirstErrorTranslationKey() | translate: form.get(controlName)?.errors }}
-  </span>-->
 </form>

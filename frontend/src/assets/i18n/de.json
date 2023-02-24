@@ -168,7 +168,8 @@
   },
   "VALIDATION_ATLAS_FORM_COMPONENT": {
     "REQUIRED": "Dies ist ein Pflichtfeld.",
-    "MAXLENGTH": "Es sind maximal {{maxlength.requiredLength}} Zeichen erlaubt."
+    "MAXLENGTH": "Es sind maximal {{maxlength.requiredLength}} Zeichen erlaubt.",
+    "PATTERN": "Ungültiges Format. Erlaubte Zeichen sind: {{pattern.allowedCharacters}}"
   },
   "VALIDATION": {
     "REQUIRED": "Dies ist ein Pflichtfeld.",

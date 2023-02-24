@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormGroup, FormGroupDirective } from '@angular/forms';
-import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { FormGroup, FormGroupDirective, ValidationErrors } from '@angular/forms';
+import { concat, debounceTime, EMPTY, Observable, of } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'atlas-text-field',
@@ -13,43 +13,54 @@ export class TextFieldComponent implements OnInit {
 
   form: FormGroup = new FormGroup({});
 
-  hasError: Observable<boolean> = of(false);
-  errorTranslationKeyToShow: Observable<string> = of('');
+  hasError: Observable<boolean> = EMPTY;
+  errorTranslationKeyToShow = '';
+  errorArgs: ValidationErrors | null | undefined;
 
   constructor(private rootFormGroup: FormGroupDirective) {}
+
+  get isTouched(): boolean {
+    return !!this.form.get(this.controlName)?.touched;
+  }
+
+  get isDirty(): boolean {
+    return !!this.form.get(this.controlName)?.dirty;
+  }
 
   ngOnInit() {
     this.form = this.rootFormGroup.control;
 
     const formControl = this.form.get(this.controlName);
     if (formControl) {
-      this.hasError = formControl.valueChanges.pipe(
-        map(() => {
-          return !this.hideError();
-        })
-      );
-      this.errorTranslationKeyToShow = this.hasError.pipe(
-        map((hasError) => {
+      this.hasError = concat(
+        // start value
+        of(formControl.invalid),
+
+        // on value changes
+        formControl.valueChanges.pipe(
+          debounceTime(150),
+          map(() => this.hasErrors())
+        )
+      ).pipe(
+        tap((hasError) => {
           if (hasError) {
-            return this.getFirstErrorTranslationKey();
+            this.errorTranslationKeyToShow = this.getFirstErrorTranslationKey();
+            this.errorArgs = this.form.get(this.controlName)?.errors;
           }
-          return '';
         })
       );
     }
   }
 
-  hideError(): boolean {
+  hasErrors(): boolean {
     const formControl = this.form.get(this.controlName);
-    return !formControl ? true : formControl.valid || formControl.pristine;
+    return !formControl ? false : formControl.invalid;
   }
 
   getFirstErrorTranslationKey(): string {
-    console.log('test');
     const validationErrors = this.form.get(this.controlName)?.errors;
-    if (!validationErrors) {
-      return '';
-    }
-    return `VALIDATION_ATLAS_FORM_COMPONENT.${Object.keys(validationErrors)[0].toUpperCase()}`;
+    return validationErrors
+      ? `VALIDATION_ATLAS_FORM_COMPONENT.${Object.keys(validationErrors)[0].toUpperCase()}`
+      : '';
   }
 }
