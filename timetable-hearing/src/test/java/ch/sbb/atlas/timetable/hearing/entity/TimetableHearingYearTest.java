@@ -2,7 +2,7 @@ package ch.sbb.atlas.timetable.hearing.entity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.timetable.hearing.enumeration.HearingStatus;
+import ch.sbb.atlas.api.timetable.hearing.enumeration.HearingStatus;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
