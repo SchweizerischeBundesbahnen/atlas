@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.timetable.hearing.entity.TimetableHearingYear;
-import ch.sbb.atlas.timetable.hearing.enumeration.HearingStatus;
+import ch.sbb.atlas.api.timetable.hearing.enumeration.HearingStatus;
 import java.time.LocalDate;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
