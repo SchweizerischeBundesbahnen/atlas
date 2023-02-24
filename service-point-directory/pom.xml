@@ -124,6 +124,11 @@
          <version>1.175.0</version>
       </dependency>
       <dependency>
+         <artifactId>spring-restdocs-mockmvc</artifactId>
+         <groupId>org.springframework.restdocs</groupId>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
          <artifactId>h2</artifactId>
          <groupId>com.h2database</groupId>
          <scope>test</scope>
