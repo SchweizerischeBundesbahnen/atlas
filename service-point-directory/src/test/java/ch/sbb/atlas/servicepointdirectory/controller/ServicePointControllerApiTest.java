@@ -4,7 +4,6 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -53,7 +52,6 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldGetServicePoint() throws Exception {
     mvc.perform(get("/v1/service-points/85890087")).andExpect(status().isOk())
-        .andDo(print())
         .andExpect(jsonPath("$[0]." + Fields.id, is(servicePointVersion.getId().intValue())))
         .andExpect(jsonPath("$[0].number.number", is(8589008)))
         .andExpect(jsonPath("$[0]." + Fields.designationOfficial, is("Bern, Wyleregg")))
@@ -112,9 +110,9 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
 
   @Test
   void shouldFindServicePointVersionByFromAndToDate() throws Exception {
-    String fromDate = servicePointVersion.getValidFrom().plusDays(1)
+    String fromDate = servicePointVersion.getValidFrom().minusDays(1)
         .format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN));
-    String toDate = servicePointVersion.getValidTo().minusDays(1)
+    String toDate = servicePointVersion.getValidTo().plusDays(1)
         .format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN));
     mvc.perform(get("/v1/service-points?fromDate=" + fromDate + "&toDate=" + toDate))
         .andExpect(status().isOk())
