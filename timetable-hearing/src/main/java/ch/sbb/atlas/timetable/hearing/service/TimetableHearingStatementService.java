@@ -1,8 +1,8 @@
 package ch.sbb.atlas.timetable.hearing.service;
 
+import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.timetable.hearing.entity.TimetableHearingStatement;
-import ch.sbb.atlas.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.timetable.hearing.repository.TimetableHearingStatementRepository;
 import ch.sbb.atlas.timetable.hearing.repository.TimetableHearingYearRepository;
 import lombok.RequiredArgsConstructor;
