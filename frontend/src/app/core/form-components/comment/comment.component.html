@@ -1,16 +1,12 @@
 <div [formGroup]="formGroup" class="d-flex flex-column">
   <div class="info-icon-position">
-    <mat-label class="font-bold-lg" [ngClass]="required ? 'required-indicator' : ''"
+    <mat-label [ngClass]="required ? 'required-indicator' : ''" class="font-bold-lg"
       >{{ label | translate }}
     </mat-label>
-    <form-info-icon
-      *ngIf="displayInfoIcon"
-      infoTitle="{{ 'FORM.COMMENT_INFO' | translate }}"
-    ></form-info-icon>
   </div>
   <mat-label *ngIf="displayLabel" class="font-regular-sm">
     {{ 'FORM.TEXT' | translate }} |
-    {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 1500 } }}
+    {{ 'FORM.MAX_CHARS' | translate : { numberOfChars: 1500 } }}
   </mat-label>
   <mat-form-field appearance="outline" class="atlas-text-area">
     <textarea data-cy="comment" formControlName="comment" matInput rows="7"></textarea>
