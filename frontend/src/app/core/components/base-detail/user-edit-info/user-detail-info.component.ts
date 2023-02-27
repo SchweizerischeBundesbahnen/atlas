@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { UserAdministrationService } from '../../../../api';
-import moment from 'moment/moment';
+import moment from 'moment';
 import { DATE_TIME_FORMAT } from '../../../date/date.service';
 import { catchError, forkJoin, Observable, of } from 'rxjs';
 import { CreationEditionRecord } from './creation-edition-record';
@@ -13,6 +13,10 @@ import { map } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserDetailInfoComponent {
+  private _record$: Observable<CreationEditionRecord | undefined> = of(undefined);
+
+  constructor(private readonly userAdministrationService: UserAdministrationService) {}
+
   @Input()
   set record(record: CreationEditionRecord) {
     this._record$ = this.getProcessedCreationEdition(record);
@@ -21,10 +25,6 @@ export class UserDetailInfoComponent {
   get processedRecord(): Observable<CreationEditionRecord | undefined> {
     return this._record$;
   }
-
-  private _record$: Observable<CreationEditionRecord | undefined> = of(undefined);
-
-  constructor(private readonly userAdministrationService: UserAdministrationService) {}
 
   private getProcessedCreationEdition(
     record: CreationEditionRecord
