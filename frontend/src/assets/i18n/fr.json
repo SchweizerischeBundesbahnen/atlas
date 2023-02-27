@@ -16,7 +16,7 @@
   "COMMON": {
     "BACK_TO_OVERVIEW": "Retour au sommaire",
     "SAVE": "Sauvegarder",
-    "ADD": "Hinzufügen__fr__",
+    "ADD": "Ajouter",
     "EDIT": "Modifier",
     "REVOKE": "Saisie des erreurs",
     "DELETE": "Effacer",
@@ -84,9 +84,8 @@
     "SUPPLEMENTARY_INFORMATION": "Informations supplémentaires",
     "OPTIONAL": "(optionnel)",
     "COMMENT": "Commentaire",
-    "COMMENT_INFO": "Commentaire tooltip à remplacer",
     "TEXT": "Texte libre",
-    "DROPDOWN_SEARCH_RESULT_INFO": "Angezeigt werden {{pageSize}} von {{totalCount}} gefundenen Elementen. (genauere Suche notwendig)__fr__"
+    "DROPDOWN_SEARCH_RESULT_INFO": "Les éléments affichés sont {{pageSize}} sur {{totalCount}}. (recherche plus précise nécessaire)"
   },
   "VERSION_TABLE": {
     "TITLE": "Versions avec validité différente",
@@ -258,7 +257,6 @@
     "SUBLINE_TYPE": "Type de ligne partielle",
     "BUSINESS_ORGANISATION": "Organisation commerciale",
     "OVERVIEW_BUSINESS_ORGANISATION": "Organisation\ncommerciale",
-    "BUSINESS_ORGANISATION_INFO": "Tooltip organisation commerciale à remplacer",
     "SLNID": "SLNID",
     "PAYMENT": {
       "TYPE": "Mode de paiement",
@@ -374,7 +372,7 @@
       "ABBREVIATION_IT": "Abbréviation IT",
       "ABBREVIATION_EN": "Abbréviation EN",
       "SBOID": "Swiss Business Organisation\nID (SBOID)",
-      "SAID": "Swiss Administration\nID (SAID)__fr__",
+      "SAID": "Swiss Administration\nID (SAID)",
       "ORGANISATION_NUMBER": "Numéro",
       "CONTACT": "E-mail organisation",
       "BUSINESS_TYPE": "Type d'organisation commerciale",
@@ -414,7 +412,7 @@
       }
     },
     "TRANSPORT_COMPANIES": {
-      "BO_RELATION_TITLE": "Zugehörige Geschäftsorganisationen__fr__",
+      "BO_RELATION_TITLE": "Organisations commerciales associées",
       "ID_NAN_ERROR": "L'identifiant d'une entreprise de transport doit être un nombre",
       "BASIC_DATA": "Informations sur l'entreprise de transport",
       "OFFICIAL_DATA": "Données officielles",
