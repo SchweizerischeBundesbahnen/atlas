@@ -1,12 +1,12 @@
 package ch.sbb.line.directory.model.csv;
 
+import ch.sbb.atlas.api.lidi.enumaration.LineType;
+import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
 import ch.sbb.atlas.export.model.VersionCsvModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.converter.CmykColorConverter;
 import ch.sbb.line.directory.converter.RgbColorConverter;
 import ch.sbb.line.directory.entity.LineVersion;
-import ch.sbb.atlas.api.lidi.enumaration.LineType;
-import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonPropertyOrder({"slnid", "validFrom", "validTo", "swissLineNumber", "status", "lineType",
-    "paymentType", "numer", "businessOrganisation", "alternativeName", "combinationName",
+    "paymentType", "number", "businessOrganisation", "alternativeName", "combinationName",
     "longName", "colorFontRgb", "colorBackRgb", "colorFontCmyk", "colorBackCmyk", "icon",
     "description", "comment", "creationTime", "editionTime"})
 public class LineVersionCsvModel implements VersionCsvModel {
@@ -47,7 +47,7 @@ public class LineVersionCsvModel implements VersionCsvModel {
   @JsonProperty("paymentType")
   private PaymentType paymentType;
 
-  @JsonProperty("numer")
+  @JsonProperty("number")
   private String number;
 
   @JsonProperty("businessOrganisation")
