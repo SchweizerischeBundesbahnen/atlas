@@ -14,7 +14,7 @@ import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { DATE_PATTERN, MAX_DATE, MIN_DATE } from '../../date/date.service';
 import { FormControl, FormGroup, ValidationErrors } from '@angular/forms';
 import { Status, WorkflowStatus } from '../../../api';
-import moment from 'moment/moment';
+import moment from 'moment';
 import { ValidationService } from '../../validation/validation.service';
 import { BusinessOrganisationSelectComponent } from '../../form-components/bo-select/business-organisation-select.component';
 import { BaseTableSearch, SearchStatusType } from './base-table-search';
