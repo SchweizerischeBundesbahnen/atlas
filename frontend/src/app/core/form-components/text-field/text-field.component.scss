@@ -16,8 +16,8 @@ input {
   width: 100%;
   padding: 2px 5px;
 
-  &:hover,
-  &:focus {
+  &:hover:not(:disabled),
+  &:focus:not(:disabled) {
     border-color: variables.$primary-300;
     border-width: 3px;
 
@@ -34,5 +34,5 @@ input {
 }
 
 .error {
-  color: red;
+  color: variables.$errorColor;
 }
