@@ -1,7 +1,19 @@
+<div class="info-icon-position">
+  <mat-label class="font-bold-lg">{{ fieldLabel | translate }} </mat-label>
+  <form-info-icon
+    *ngIf="infoIconTitle"
+    infoTitle="{{ infoIconTitle | translate }}"
+  ></form-info-icon>
+</div>
+<mat-label *ngFor="let fieldExample of fieldExamples" class="font-regular-sm">
+  <span class="font-regular-sm">
+    {{ translate(fieldExample) }}
+  </span>
+</mat-label>
 <form [formGroup]="form">
-  <input type="text" [formControlName]="controlName" />
+  <input [formControlName]="controlName" matInput type="text" />
 
-  <span *ngIf="(isTouched || isDirty) && (hasError | async)">
+  <span *ngIf="(isTouched || isDirty) && (hasError | async)" class="error">
     {{ errorTranslationKeyToShow | translate : errorArgs }}
   </span>
 </form>
