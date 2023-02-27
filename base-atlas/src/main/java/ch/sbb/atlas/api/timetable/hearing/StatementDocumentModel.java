@@ -1,11 +1,9 @@
 package ch.sbb.atlas.api.timetable.hearing;
 
-import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,10 +26,12 @@ public class StatementDocumentModel {
   @Schema(description = "Technical identifier", example = "1", accessMode = AccessMode.READ_ONLY)
   private Long id;
 
-  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
+  @Schema(description = "FileName of uploaded document", example = "Document.pdf", accessMode = AccessMode.READ_ONLY)
   @Size(max = AtlasFieldLengths.LENGTH_500)
+  @NotNull
   private String fileName;
 
+  @Schema(description = "Content length", example = "1123123", accessMode = AccessMode.READ_ONLY)
   @NotNull
   private Long fileSize;
 
