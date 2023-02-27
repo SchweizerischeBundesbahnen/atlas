@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.model.SwissCanton;
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.timetable.hearing.entity.StatementDocument;
+import ch.sbb.atlas.timetable.hearing.entity.StatementSender;
 import ch.sbb.atlas.timetable.hearing.entity.TimetableHearingStatement;
 import ch.sbb.atlas.timetable.hearing.enumeration.StatementStatus;
 import java.util.Set;
@@ -35,17 +37,29 @@ public class TimetableHearingStatementRepositoryTest {
         .swissCanton(SwissCanton.BERN)
         .stopPlace("Erste Haltestelle ... weisst ja")
         .responsibleTransportCompanies(Set.of("#0001", "#0002"))
-        .firstName("Mike")
-        .lastName("von Bike")
-        .organisation("Bewerber")
-        .street("Hauptstrasse 1")
-        .zip(39012)
-        .city("Algund")
-        .email("mike@thebike.com")
+        .statementSender(StatementSender.builder()
+            .firstName("Mike")
+            .lastName("von Bike")
+            .organisation("Bewerber")
+            .street("Hauptstrasse 1")
+            .zip(39012)
+            .city("Algund")
+            .email("mike@thebike.com")
+            .build())
         .statement("Ich mag bitte mehr Bös fahren")
         .justification("Weil ich mag")
-        .documents(Set.of("c40f78d3-c7a5-4c3f-bad9-7002ce901dd7", "d8aa292c-4791-4a5d-8d35-314d2390be3c",
-            "ba9ff578-1c61-401a-9e13-3906150ae788"))
+        .documents(Set.of(StatementDocument.builder()
+                .fileName("doc1")
+                .fileSize(6454L)
+                .build(),
+            StatementDocument.builder()
+                .fileName("doc2")
+                .fileSize(2454L)
+                .build(),
+            StatementDocument.builder()
+                .fileName("doc3")
+                .fileSize(3454L)
+                .build()))
         .build();
 
     TimetableHearingStatement savedStatement = timetableHearingStatementRepository.save(statement);
@@ -60,7 +74,9 @@ public class TimetableHearingStatementRepositoryTest {
     TimetableHearingStatement statement = TimetableHearingStatement.builder()
         .timetableYear(2023L)
         .statementStatus(StatementStatus.RECEIVED)
-        .email("mike@thebike.com")
+        .statementSender(StatementSender.builder()
+            .email("mike@thebike.com")
+            .build())
         .statement("Ich mag bitte mehr Bös fahren")
         .build();
 
