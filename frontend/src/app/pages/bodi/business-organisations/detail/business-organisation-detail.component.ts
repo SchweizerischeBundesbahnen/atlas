@@ -12,7 +12,7 @@ import { NotificationService } from '../../../../core/notification/notification.
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { takeUntil } from 'rxjs/operators';
 import { catchError, Subject } from 'rxjs';
-import moment from 'moment/moment';
+import moment from 'moment';
 import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
 import { Pages } from '../../../pages';
 import { Page } from 'src/app/core/model/page';
@@ -32,8 +32,8 @@ export class BusinessOrganisationDetailComponent
   extends BaseDetailController<BusinessOrganisationVersion>
   implements OnInit, OnDestroy
 {
-  private ngUnsubscribe = new Subject<void>();
   BUSINESS_TYPES = Object.values(BusinessType);
+  private ngUnsubscribe = new Subject<void>();
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public dialogData: any,
