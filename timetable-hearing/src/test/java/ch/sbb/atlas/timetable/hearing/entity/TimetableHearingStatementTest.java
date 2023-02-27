@@ -23,17 +23,29 @@ class TimetableHearingStatementTest {
         .swissCanton(SwissCanton.BERN)
         .stopPlace("Erste Haltestelle ... weisst ja")
         .responsibleTransportCompanies(Set.of("#0001", "#0002"))
-        .firstName("Mike")
-        .lastName("von Bike")
-        .organisation("Bewerber")
-        .street("Hauptstrasse 1")
-        .zip(39012)
-        .city("Algund")
-        .email("mike@thebike.com")
+        .statementSender(StatementSender.builder()
+            .firstName("Mike")
+            .lastName("von Bike")
+            .organisation("Bewerber")
+            .street("Hauptstrasse 1")
+            .zip(39012)
+            .city("Algund")
+            .email("mike@thebike.com")
+            .build())
         .statement("Ich mag bitte mehr Bös fahren")
         .justification("Weil ich mag")
-        .documents(Set.of("c40f78d3-c7a5-4c3f-bad9-7002ce901dd7", "d8aa292c-4791-4a5d-8d35-314d2390be3c",
-            "ba9ff578-1c61-401a-9e13-3906150ae788"))
+        .documents(Set.of(StatementDocument.builder()
+                .fileName("doc1")
+                .fileSize(6454L)
+                .build(),
+            StatementDocument.builder()
+                .fileName("doc2")
+                .fileSize(2454L)
+                .build(),
+            StatementDocument.builder()
+                .fileName("doc3")
+                .fileSize(3454L)
+                .build()))
         .build();
 
     //when
@@ -59,7 +71,10 @@ class TimetableHearingStatementTest {
   void shouldNotAcceptZipCodesWithThreeDigits() {
     // given
     TimetableHearingStatement statement = minimalStatement()
-        .zip(999)
+        .statementSender(StatementSender.builder()
+            .email("mike@thebike.com")
+            .zip(999)
+            .build())
         .build();
 
     //when
@@ -73,7 +88,10 @@ class TimetableHearingStatementTest {
   void shouldNotAcceptZipCodesWithSixDigits() {
     // given
     TimetableHearingStatement statement = minimalStatement()
-        .zip(100000)
+        .statementSender(StatementSender.builder()
+            .email("mike@thebike.com")
+            .zip(100000)
+            .build())
         .build();
 
     //when
@@ -87,8 +105,22 @@ class TimetableHearingStatementTest {
   void shouldNotAcceptMoreThanThreeDocuments() {
     // given
     TimetableHearingStatement statement = minimalStatement()
-        .documents(Set.of("c40f78d3-c7a5-4c3f-bad9-7002ce901dd7", "d8aa292c-4791-4a5d-8d35-314d2390be3c",
-            "ba9ff578-1c61-401a-9e13-3906150ae788", "ba9ff578-1c61-401a-9e13-3906150ae780"))
+        .documents(Set.of(StatementDocument.builder()
+                .fileName("doc1")
+                .fileSize(6454L)
+                .build(),
+            StatementDocument.builder()
+                .fileName("doc2")
+                .fileSize(2454L)
+                .build(),
+            StatementDocument.builder()
+                .fileName("doc3")
+                .fileSize(3454L)
+                .build(),
+            StatementDocument.builder()
+                .fileName("doc4")
+                .fileSize(4454L)
+                .build()))
         .build();
 
     //when
@@ -102,7 +134,9 @@ class TimetableHearingStatementTest {
     return TimetableHearingStatement.builder()
         .timetableYear(2023L)
         .statementStatus(StatementStatus.RECEIVED)
-        .email("mike@thebike.com")
+        .statementSender(StatementSender.builder()
+            .email("mike@thebike.com")
+            .build())
         .statement("Ich mag bitte mehr Bös fahren")
         .version(1);
   }

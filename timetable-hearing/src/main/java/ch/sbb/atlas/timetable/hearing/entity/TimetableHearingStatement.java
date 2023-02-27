@@ -3,6 +3,7 @@ package ch.sbb.atlas.timetable.hearing.entity;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.model.SwissCanton;
 import ch.sbb.atlas.model.entity.BaseEntity;
+import ch.sbb.atlas.timetable.hearing.TimetableHearingConstants;
 import ch.sbb.atlas.timetable.hearing.enumeration.StatementStatus;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
@@ -12,9 +13,9 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.util.Set;
@@ -62,32 +63,17 @@ public class TimetableHearingStatement extends BaseEntity {
   @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
   private Set<@Size(max = AtlasFieldLengths.LENGTH_50) String> responsibleTransportCompanies;
 
-  // Statement giver information
-  @Size(max = AtlasFieldLengths.LENGTH_100)
-  private String firstName;
-  @Size(max = AtlasFieldLengths.LENGTH_100)
-  private String lastName;
-  @Size(max = AtlasFieldLengths.LENGTH_100)
-  private String organisation;
-  @Size(max = AtlasFieldLengths.LENGTH_100)
-  private String street;
-  @Min(1000)
-  @Max(99999)
-  private Integer zip;
-  @Size(max = AtlasFieldLengths.LENGTH_50)
-  private String city;
-  @NotNull
-  @Size(max = AtlasFieldLengths.LENGTH_100)
-  private String email;
+  @Valid
+  private StatementSender statementSender;
 
   // Statement
   @NotNull
   @Size(max = AtlasFieldLengths.LENGTH_5000)
   private String statement;
 
-  @Size(max = 3)
-  @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
-  private Set<@Size(max = AtlasFieldLengths.LENGTH_50) String> documents;
+  @Size(max = TimetableHearingConstants.MAX_DOCUMENTS)
+  @OneToMany(mappedBy = "statement", fetch = FetchType.EAGER)
+  private Set<StatementDocument> documents;
 
   // FoT Justification field for comments
   @Size(max = AtlasFieldLengths.LENGTH_5000)

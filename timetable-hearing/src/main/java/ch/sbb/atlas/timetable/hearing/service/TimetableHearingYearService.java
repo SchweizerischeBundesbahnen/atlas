@@ -1,10 +1,10 @@
 package ch.sbb.atlas.timetable.hearing.service;
 
+import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.timetable.hearing.entity.TimetableHearingYear;
 import ch.sbb.atlas.timetable.hearing.enumeration.HearingStatus;
 import ch.sbb.atlas.timetable.hearing.exception.HearingCurrentlyActiveException;
 import ch.sbb.atlas.timetable.hearing.repository.TimetableHearingYearRepository;
-import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,42 +18,46 @@ public class TimetableHearingYearService {
 
   private final TimetableHearingYearRepository timetableHearingYearRepository;
 
-  public TimetableHearingYear createTimetableHearing(Long year, LocalDate hearingFrom, LocalDate hearingTo) {
-    return timetableHearingYearRepository.save(TimetableHearingYear.builder()
-        .timetableYear(year)
-        .hearingFrom(hearingFrom)
-        .hearingTo(hearingTo)
-        .hearingStatus(HearingStatus.PLANNED)
-        .statementCreatableExternal(true)
-        .statementCreatableInternal(true)
-        .statementEditable(true)
-        .build());
+  public TimetableHearingYear getHearingYear(Long year) {
+    return timetableHearingYearRepository.findById(year).orElseThrow(() -> new IdNotFoundException(year));
   }
 
-  // Attention: concurrent-update, check it
-  public void startTimetableHearing(TimetableHearingYear hearing) {
-    if (timetableHearingYearRepository.hearingActive()) {
+  public TimetableHearingYear createTimetableHearing(TimetableHearingYear timetableHearingYear) {
+    timetableHearingYear.setHearingStatus(HearingStatus.PLANNED);
+    timetableHearingYear.setStatementCreatableExternal(true);
+    timetableHearingYear.setStatementCreatableInternal(true);
+    timetableHearingYear.setStatementEditable(true);
+    return timetableHearingYearRepository.save(timetableHearingYear);
+  }
+
+  public TimetableHearingYear startTimetableHearing(TimetableHearingYear timetableHearingYear) {
+    mayTransitionToHearingStatus(timetableHearingYear, HearingStatus.ACTIVE);
+
+    timetableHearingYear.setHearingStatus(HearingStatus.ACTIVE);
+    timetableHearingYear.setStatementCreatableExternal(true);
+    timetableHearingYear.setStatementCreatableInternal(true);
+    timetableHearingYear.setStatementEditable(true);
+    return timetableHearingYearRepository.save(timetableHearingYear);
+  }
+
+  public TimetableHearingYear updateTimetableHearingSettings(TimetableHearingYear timetableHearingYear) {
+    return timetableHearingYearRepository.save(timetableHearingYear);
+  }
+
+  public TimetableHearingYear closeTimetableHearing(TimetableHearingYear timetableHearingYear) {
+    mayTransitionToHearingStatus(timetableHearingYear, HearingStatus.ARCHIVED);
+
+    timetableHearingYear.setHearingStatus(HearingStatus.ARCHIVED);
+    return timetableHearingYearRepository.save(timetableHearingYear);
+  }
+
+  private void mayTransitionToHearingStatus(TimetableHearingYear timetableHearingYear, HearingStatus hearingStatus) {
+    if (hearingStatus == HearingStatus.ACTIVE && timetableHearingYearRepository.hearingActive()) {
       throw new HearingCurrentlyActiveException();
     }
-
-    hearing.setHearingStatus(HearingStatus.ACTIVE);
-    hearing.setStatementCreatableExternal(true);
-    hearing.setStatementCreatableInternal(true);
-    hearing.setStatementEditable(true);
-  }
-
-  // Attention: concurrent-update, check it
-  public TimetableHearingYear updateTimetableHearingSettings(TimetableHearingYear hearing) {
-    // Settings from model
-    hearing.setStatementCreatableExternal(false);
-    hearing.setStatementCreatableInternal(false);
-    hearing.setStatementEditable(false);
-    return hearing;
-  }
-
-  // Attention: concurrent-update, check it
-  public void closeTimetableHearing(TimetableHearingYear hearing) {
-    hearing.setHearingStatus(HearingStatus.ARCHIVED);
+    if (hearingStatus == HearingStatus.ARCHIVED && timetableHearingYear.getHearingStatus() != HearingStatus.ACTIVE) {
+      throw new IllegalStateException("Cannot close hearing, since it is not active");
+    }
   }
 
 }

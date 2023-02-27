@@ -14,6 +14,10 @@
 
 ## Hearing Documentation
 
+Every year (usually around June/July) the citizens may give feedback on the next iteration of the public transport timetable.
+This service helps stakeholders of public transportation manage these statements and alter the future timetable according to 
+these wishes.
+
 Business documentation on the timetable hearings can be found on https://confluence.sbb.ch/pages/viewpage.action?pageId=1970146851
 
 ## Links
