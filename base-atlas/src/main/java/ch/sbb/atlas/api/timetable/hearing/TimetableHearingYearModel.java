@@ -36,7 +36,6 @@ public class TimetableHearingYearModel extends BaseVersionModel {
   @Schema(description = "TimetableYear", example = "2024")
   private Long timetableYear;
 
-  @NotNull
   @Schema(accessMode = AccessMode.READ_ONLY)
   private HearingStatus hearingStatus;
 

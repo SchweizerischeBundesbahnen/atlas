@@ -48,23 +48,24 @@ public class TimetableHearingYearController implements TimetableHearingYearApiV1
   }
 
   @Override
-  public TimetableHearingYearModel startHearingYear(TimetableHearingYearModel hearingYearModel) {
-    TimetableHearingYear startedHearing = timetableHearingYearService.startTimetableHearing(
-        TimeTableHearingYearMapper.toEntity(hearingYearModel));
+  public TimetableHearingYearModel startHearingYear(Long year) {
+    TimetableHearingYear hearingYear = timetableHearingYearService.getHearingYear(year);
+    TimetableHearingYear startedHearing = timetableHearingYearService.startTimetableHearing(hearingYear);
     return TimeTableHearingYearMapper.toModel(startedHearing);
   }
 
   @Override
-  public TimetableHearingYearModel updateTimetableHearingSettings(TimetableHearingYearModel hearingYearModel) {
+  public TimetableHearingYearModel updateTimetableHearingSettings(Long year, TimetableHearingYearModel hearingYearModel) {
+    timetableHearingYearService.getHearingYear(year);
     TimetableHearingYear updatedHearing = timetableHearingYearService.updateTimetableHearingSettings(
         TimeTableHearingYearMapper.toEntity(hearingYearModel));
     return TimeTableHearingYearMapper.toModel(updatedHearing);
   }
 
   @Override
-  public TimetableHearingYearModel closeTimetableHearing(TimetableHearingYearModel hearingYearModel) {
-    TimetableHearingYear closedHearing = timetableHearingYearService.closeTimetableHearing(
-        TimeTableHearingYearMapper.toEntity(hearingYearModel));
+  public TimetableHearingYearModel closeTimetableHearing(Long year) {
+    TimetableHearingYear hearingYear = timetableHearingYearService.getHearingYear(year);
+    TimetableHearingYear closedHearing = timetableHearingYearService.closeTimetableHearing(hearingYear);
     return TimeTableHearingYearMapper.toModel(closedHearing);
   }
 }
