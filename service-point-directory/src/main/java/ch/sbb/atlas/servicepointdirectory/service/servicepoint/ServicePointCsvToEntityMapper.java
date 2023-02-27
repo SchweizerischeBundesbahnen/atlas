@@ -13,7 +13,7 @@ import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointWithoutTimetableType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.ServicePointStatus;
 import ch.sbb.atlas.servicepointdirectory.enumeration.StopPointType;
-import ch.sbb.atlas.servicepointdirectory.enumeration.SwissCanton;
+import ch.sbb.atlas.model.SwissCanton;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import java.util.Arrays;
 import java.util.Objects;
