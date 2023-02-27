@@ -13,6 +13,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import java.util.List;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -77,8 +78,8 @@ public class TimetableHearingStatementModel extends BaseVersionModel {
   private String statement;
 
   // TODO: how do we want to recieve documents on REST?
-  @Size(max = 3)
-  private Set<@Size(max = AtlasFieldLengths.LENGTH_50) String> documents;
+  @Size(max = TimetableHearingConstants.MAX_DOCUMENTS)
+  private List<StatementDocumentModel> documents;
 
   @Size(max = AtlasFieldLengths.LENGTH_5000)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)

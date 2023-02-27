@@ -1,4 +1,4 @@
-package ch.sbb.atlas.timetable.hearing;
+package ch.sbb.atlas.api.timetable.hearing;
 
 import lombok.experimental.UtilityClass;
 
