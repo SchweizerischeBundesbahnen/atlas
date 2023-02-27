@@ -127,20 +127,14 @@
          <dependency>
             <artifactId>spring-restdocs-mockmvc</artifactId>
             <groupId>org.springframework.restdocs</groupId>
-            <scope>test</scope>
             <version>${spring-restdocs-mockmvc.version}</version>
-         </dependency>
-         <dependency>
-            <artifactId>spring-auto-restdocs-core</artifactId>
-            <groupId>capital.scalable</groupId>
             <scope>test</scope>
-            <version>${spring-auto-rest-docs-core.version}</version>
          </dependency>
-
          <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-properties-migrator</artifactId>
-            <scope>runtime</scope>
+            <groupId>capital.scalable</groupId>
+            <artifactId>spring-auto-restdocs-core</artifactId>
+            <version>${spring-auto-rest-docs-core.version}</version>
+            <scope>test</scope>
          </dependency>
       </dependencies>
    </dependencyManagement>
@@ -148,9 +142,16 @@
       <pluginManagement>
          <plugins>
             <plugin>
+               <groupId>org.asciidoctor</groupId>
                <artifactId>asciidoctor-maven-plugin</artifactId>
+               <version>${asciidoctor-plugin.version}</version>
                <executions>
                   <execution>
+                     <id>generate-docs</id>
+                     <phase>prepare-package</phase>
+                     <goals>
+                        <goal>process-asciidoc</goal>
+                     </goals>
                      <configuration>
                         <attributes>
                            <buildTime>${maven.build.timestamp}</buildTime>
@@ -163,15 +164,15 @@
                         <outputDirectory>target/classes/static</outputDirectory>
                         <sourceDirectory>src/docs/asciidocs</sourceDirectory>
                      </configuration>
-                     <goals>
-                        <goal>process-asciidoc</goal>
-                     </goals>
-                     <id>generate-docs</id>
-                     <phase>prepare-package</phase>
                   </execution>
                </executions>
-               <groupId>org.asciidoctor</groupId>
-               <version>${asciidoctor-plugin.version}</version>
+               <dependencies>
+                  <dependency>
+                     <groupId>org.springframework.restdocs</groupId>
+                     <artifactId>spring-restdocs-asciidoctor</artifactId>
+                     <version>${spring-restdocs.version}</version>
+                  </dependency>
+               </dependencies>
             </plugin>
             <plugin>
                <artifactId>jacoco-maven-plugin</artifactId>
