@@ -14,6 +14,8 @@ export class TextFieldComponent implements OnInit {
   @Input() controlName!: string;
   @Input() fieldLabel!: string;
   @Input() infoIconTitle!: string;
+  @Input() infoIconLink!: string;
+  @Input() required!: boolean;
   @Input() fieldExamples!: Array<FieldExample>;
 
   form: FormGroup = new FormGroup({});
