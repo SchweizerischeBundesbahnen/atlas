@@ -1,9 +1,8 @@
 package ch.sbb.atlas.timetable.hearing.mapper;
 
-import ch.sbb.atlas.api.timetable.hearing.StatementSenderModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
-import ch.sbb.atlas.timetable.hearing.entity.StatementSender;
 import ch.sbb.atlas.timetable.hearing.entity.TimetableHearingStatement;
+import java.util.stream.Collectors;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -17,17 +16,9 @@ public class TimeTableHearingStatementMapper {
         .swissCanton(statementModel.getSwissCanton())
         .stopPlace(statementModel.getStopPlace())
         .responsibleTransportCompanies(statementModel.getResponsibleTransportCompanies())
-        .statementSender(StatementSender.builder()
-            .firstName(statementModel.getStatementSender().getFirstName())
-            .lastName(statementModel.getStatementSender().getLastName())
-            .organisation(statementModel.getStatementSender().getOrganisation())
-            .street(statementModel.getStatementSender().getStreet())
-            .zip(statementModel.getStatementSender().getZip())
-            .city(statementModel.getStatementSender().getCity())
-            .email(statementModel.getStatementSender().getEmail())
-            .build())
+        .statementSender(StatementSenderMapper.toEntity(statementModel.getStatementSender()))
         .statement(statementModel.getStatement())
-        .documents(statementModel.getDocuments())
+        .documents(statementModel.getDocuments().stream().map(StatementDocumentMapper::toEntity).collect(Collectors.toSet()))
         .justification(statementModel.getJustification())
         .version(statementModel.getEtagVersion())
         .build();
@@ -41,23 +32,12 @@ public class TimeTableHearingStatementMapper {
         .swissCanton(statement.getSwissCanton())
         .stopPlace(statement.getStopPlace())
         .responsibleTransportCompanies(statement.getResponsibleTransportCompanies())
-        .statementSender(mapToSender(statement.getStatementSender()))
+        .statementSender(StatementSenderMapper.toModel(statement.getStatementSender()))
         .statement(statement.getStatement())
-        .documents(statement.getDocuments())
+        .documents(statement.getDocuments().stream().map(StatementDocumentMapper::toModel).toList())
         .justification(statement.getJustification())
         .etagVersion(statement.getVersion())
         .build();
   }
 
-  private static StatementSenderModel mapToSender(StatementSender statementSender) {
-    return StatementSenderModel.builder()
-        .firstName(statementSender.getFirstName())
-        .lastName(statementSender.getLastName())
-        .organisation(statementSender.getOrganisation())
-        .street(statementSender.getStreet())
-        .zip(statementSender.getZip())
-        .city(statementSender.getCity())
-        .email(statementSender.getEmail())
-        .build();
-  }
 }
