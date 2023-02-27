@@ -19,28 +19,24 @@ public class TimetableHearingStatementService {
   private final TimetableHearingStatementRepository timetableHearingStatementRepository;
   private final TimetableHearingYearRepository timetableHearingYearRepository;
 
-  public TimetableHearingStatement createHearingStatement() {
-    Long year = 2023L;
-    if (!timetableHearingYearRepository.existsById(year)) {
-      throw new IdNotFoundException(year);
-    }
-    TimetableHearingStatement statement = TimetableHearingStatement.builder()
-        .timetableYear(year)
-        .statementStatus(StatementStatus.RECEIVED)
-        .email("mike@thebike.com")
-        .statement("Ich mag bitte mehr Bös fahren")
-        .build();
+  public TimetableHearingStatement createHearingStatement(TimetableHearingStatement statement) {
+    checkThatTimetableHearingYearExists(statement);
+
+    statement.setStatementStatus(StatementStatus.RECEIVED);
     return timetableHearingStatementRepository.save(statement);
   }
 
   public TimetableHearingStatement updateHearingStatement(TimetableHearingStatement statement) {
-    Long year = 2024L; // Year may be updated
-    if (!timetableHearingYearRepository.existsById(year)) {
-      throw new IdNotFoundException(year);
-    }
-    statement.setTimetableYear(year);
-    statement.setStatement("Züge auch mehr fahren");
-    return statement;
+    checkThatTimetableHearingYearExists(statement);
+
+    return timetableHearingStatementRepository.save(statement);
   }
+
+  private void checkThatTimetableHearingYearExists(TimetableHearingStatement statement) {
+    if (!timetableHearingYearRepository.existsById(statement.getTimetableYear())) {
+      throw new IdNotFoundException(statement.getTimetableYear());
+    }
+  }
+
 
 }
