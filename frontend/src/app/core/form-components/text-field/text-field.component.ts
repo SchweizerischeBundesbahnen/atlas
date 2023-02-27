@@ -2,6 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormGroupDirective, ValidationErrors } from '@angular/forms';
 import { concat, debounceTime, EMPTY, Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
+import { FieldExample } from './field-example';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'atlas-text-field',
@@ -10,6 +12,9 @@ import { map, tap } from 'rxjs/operators';
 })
 export class TextFieldComponent implements OnInit {
   @Input() controlName!: string;
+  @Input() fieldLabel!: string;
+  @Input() infoIconTitle!: string;
+  @Input() fieldExamples!: Array<FieldExample>;
 
   form: FormGroup = new FormGroup({});
 
@@ -17,7 +22,10 @@ export class TextFieldComponent implements OnInit {
   errorTranslationKeyToShow = '';
   errorArgs: ValidationErrors | null | undefined;
 
-  constructor(private rootFormGroup: FormGroupDirective) {}
+  constructor(
+    private readonly rootFormGroup: FormGroupDirective,
+    private readonly translatePipe: TranslatePipe
+  ) {}
 
   get isTouched(): boolean {
     return !!this.form.get(this.controlName)?.touched;
@@ -62,5 +70,17 @@ export class TextFieldComponent implements OnInit {
     return validationErrors
       ? `VALIDATION_ATLAS_FORM_COMPONENT.${Object.keys(validationErrors)[0].toUpperCase()}`
       : '';
+  }
+
+  translate(fieldExample: FieldExample): string {
+    if (fieldExample.label && !fieldExample.numberOfChars) {
+      return this.translatePipe.transform(fieldExample.label);
+    }
+    if (fieldExample.label && fieldExample.numberOfChars) {
+      return this.translatePipe.transform(fieldExample.label, {
+        numberOfChars: fieldExample.numberOfChars,
+      });
+    }
+    return fieldExample.label!;
   }
 }

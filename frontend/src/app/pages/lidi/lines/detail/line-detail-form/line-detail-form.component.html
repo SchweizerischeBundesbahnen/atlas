@@ -5,35 +5,32 @@
 
   <div class="col-12 d-flex">
     <div class="d-flex flex-column col-3 pe-3">
-      <div class="info-icon-position">
-        <mat-label class="font-bold-lg">{{ 'LIDI.LINE.NUMBER' | translate }} </mat-label>
-        <form-info-icon infoTitle="{{ 'LIDI.LINE.NUMBER_INFO' | translate }}"></form-info-icon>
-      </div>
-      <mat-label class="font-regular-sm"
-        >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ 'IC8' }} |
-        {{ 'FORM.MAX_CHARS' | translate : { numberOfChars: 50 } }}
-      </mat-label>
-      <!--<mat-form-field appearance="outline">
-        <input data-cy="number" formControlName="number" matInput/>
-        <mat-error fieldErrors></mat-error>
-      </mat-form-field>-->
-      <!--<atlas-text-field></atlas-text-field>-->
+      <atlas-text-field
+        [fieldExamples]="[
+          { label: 'FORM.FOR_EXAMPLE', translate: true },
+          { label: 'IC8', translate: false },
+          { label: 'FORM.MAX_CHARS', translate: true, numberOfChars: 50 }
+        ]"
+        controlName="number"
+        data-cy="number"
+        fieldLabel="LIDI.LINE.NUMBER"
+        infoIconTitle="LIDI.LINE.NUMBER_INFO"
+      >
+      </atlas-text-field>
     </div>
     <div class="d-flex flex-column col-9">
-      <div class="info-icon-position">
-        <mat-label class="font-bold-lg">{{ 'LIDI.LINE.DESCRIPTION' | translate }} </mat-label>
-        <form-info-icon infoTitle="{{ 'LIDI.LINE.DESCRIPTION_INFO' | translate }}"></form-info-icon>
-      </div>
-      <mat-label class="font-regular-sm">
-        {{ 'FORM.FOR_EXAMPLE' | translate }}
-        {{ 'Brig - Bern - Zürich HB - Romanshorn' }} |
-        {{ 'FORM.MAX_CHARS' | translate : { numberOfChars: 255 } }}
-      </mat-label>
-      <!--<mat-form-field>
-        <input data-cy="description" formControlName="description" matInput/>
-        <mat-error fieldErrors></mat-error>
-      </mat-form-field>-->
-      <!--<atlas-text-field></atlas-text-field>-->
+      <atlas-text-field
+        [fieldExamples]="[
+          { label: 'FORM.FOR_EXAMPLE', translate: true },
+          { label: 'Brig - Bern - Zürich HB - Romanshorn', translate: false },
+          { label: 'FORM.MAX_CHARS', translate: true, numberOfChars: 255 }
+        ]"
+        controlName="description"
+        data-cy="description"
+        fieldLabel="LIDI.LINE.DESCRIPTION"
+        infoIconTitle="LIDI.LINE.DESCRIPTION_INFO"
+      >
+      </atlas-text-field>
     </div>
   </div>
 
@@ -221,7 +218,7 @@
   <span class="font-bold-2xl">{{ 'FORM.SUPPLEMENTARY_INFORMATION' | translate }}</span>
   <div class="col-12 d-flex mt-3">
     <div class="d-flex flex-column col-6">
-      <form-comment [formGroup]="form" [displayInfoIcon]="false"></form-comment>
+      <form-comment [displayInfoIcon]="false" [formGroup]="form"></form-comment>
     </div>
   </div>
 </ng-container>
