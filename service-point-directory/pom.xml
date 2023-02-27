@@ -124,6 +124,16 @@
          <version>1.179.0</version>
       </dependency>
       <dependency>
+         <artifactId>spring-restdocs-mockmvc</artifactId>
+         <groupId>org.springframework.restdocs</groupId>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
+         <artifactId>spring-auto-restdocs-core</artifactId>
+         <groupId>capital.scalable</groupId>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
          <artifactId>h2</artifactId>
          <groupId>com.h2database</groupId>
          <scope>test</scope>
@@ -144,6 +154,13 @@
             <filtering>true</filtering>
          </testResource>
       </testResources>
+      <extensions>
+         <extension>
+            <groupId>kr.motd.maven</groupId>
+            <artifactId>os-maven-plugin</artifactId>
+            <version>1.7.1</version>
+         </extension>
+      </extensions>
       <plugins>
          <plugin>
             <groupId>org.springframework.boot</groupId>
@@ -159,6 +176,23 @@
          <plugin>
             <artifactId>jacoco-maven-plugin</artifactId>
             <groupId>org.jacoco</groupId>
+         </plugin>
+         <plugin>
+            <groupId>org.xolstice.maven.plugins</groupId>
+            <artifactId>protobuf-maven-plugin</artifactId>
+            <version>0.6.1</version>
+            <extensions>true</extensions>
+            <executions>
+               <execution>
+                  <goals>
+                     <goal>compile</goal>
+                  </goals>
+               </execution>
+            </executions>
+            <configuration>
+               <protoSourceRoot>${project.basedir}/src/main/resources/protobuf</protoSourceRoot>
+               <protocArtifact>com.google.protobuf:protoc:${protoc.version}:exe:${os.detected.classifier}</protocArtifact>
+            </configuration>
          </plugin>
       </plugins>
    </build>
