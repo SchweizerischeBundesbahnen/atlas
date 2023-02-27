@@ -4,7 +4,7 @@ import { TimetableFieldNumberDetailComponent } from './timetable-field-number-de
 import { AbstractControl, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TimetableFieldNumbersService, TimetableFieldNumberVersion } from '../../../api';
-import moment from 'moment/moment';
+import moment from 'moment';
 import { of, throwError } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HomeComponent } from '../../home/home.component';

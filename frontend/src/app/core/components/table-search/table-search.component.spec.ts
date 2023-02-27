@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TableSearchComponent } from './table-search.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { By } from '@angular/platform-browser';
-import moment from 'moment/moment';
+import moment from 'moment';
 import { Status } from '../../../api';
 import { AppTestingModule } from '../../../app.testing.module';
 import { DateIconComponent } from '../../form-components/date-icon/date-icon.component';
