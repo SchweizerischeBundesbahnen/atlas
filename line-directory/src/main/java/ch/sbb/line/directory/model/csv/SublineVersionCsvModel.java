@@ -1,10 +1,10 @@
 package ch.sbb.line.directory.model.csv;
 
+import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
+import ch.sbb.atlas.api.lidi.enumaration.SublineType;
 import ch.sbb.atlas.export.model.VersionCsvModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.entity.SublineVersion;
-import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
-import ch.sbb.atlas.api.lidi.enumaration.SublineType;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonPropertyOrder({"slnid", "mainlineSlnid", "validFrom", "validTo", "swissSublineNumber",
-    "status", "sublineType", "paymentType", "numer", "businessOrganisation", "longName",
+    "status", "sublineType", "paymentType", "number", "businessOrganisation", "longName",
     "description", "creationTime", "editionTime"})
 public class SublineVersionCsvModel implements VersionCsvModel {
 
@@ -47,7 +47,7 @@ public class SublineVersionCsvModel implements VersionCsvModel {
   @JsonProperty("paymentType")
   private PaymentType paymentType;
 
-  @JsonProperty("numer")
+  @JsonProperty("number")
   private String number;
 
   @JsonProperty("businessOrganisation")
