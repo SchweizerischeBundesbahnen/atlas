@@ -1,19 +1,21 @@
 <div class="info-icon-position">
-  <mat-label class="font-bold-lg">{{ fieldLabel | translate }} </mat-label>
+  <mat-label [ngClass]="required ? 'required-indicator' : ''" class="font-bold-lg"
+    >{{ fieldLabel | translate }}
+  </mat-label>
   <form-info-icon
-    *ngIf="infoIconTitle"
+    *ngIf="infoIconTitle || infoIconLink"
+    infoLink="infoIconLink"
+    infoLinkTranslationKey="{{ infoIconLink ? infoIconLink : '' }}"
     infoTitle="{{ infoIconTitle | translate }}"
   ></form-info-icon>
 </div>
 <mat-label *ngFor="let fieldExample of fieldExamples" class="font-regular-sm">
-  <span class="font-regular-sm">
-    {{ translate(fieldExample) }}
-  </span>
+  {{ translate(fieldExample) }}
 </mat-label>
 <form [formGroup]="form">
-  <input [formControlName]="controlName" matInput type="text" />
+  <input [formControlName]="controlName" type="text" />
 
-  <span *ngIf="(isTouched || isDirty) && (hasError | async)" class="error">
+  <span *ngIf="(isTouched || isDirty) && (hasError | async)" class="error font-regular-xs">
     {{ errorTranslationKeyToShow | translate : errorArgs }}
   </span>
 </form>
