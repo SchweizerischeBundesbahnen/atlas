@@ -62,8 +62,13 @@ CREATE TABLE timetable_hearing_statement_responsible_transport_companies
 -- Timetable Hearing Statement Documents
 -----------------------------------------------------------------------------------------
 
-CREATE TABLE timetable_hearing_statement_documents
+CREATE TABLE statement_document
 (
-    timetable_hearing_statement_id BIGINT      NOT NULL,
-    documents                      VARCHAR(50) NOT NULL
+    id                             BIGINT       NOT NULL,
+    timetable_hearing_statement_id BIGINT       NOT NULL,
+    file_name                      VARCHAR(500) NOT NULL,
+    file_size                      BIGINT       NOT NULL,
+    foreign key (timetable_hearing_statement_id) references timetable_hearing_statement (id)
 );
+
+CREATE SEQUENCE statement_document_seq START WITH 1000 INCREMENT BY 1;
