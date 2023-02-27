@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.imports.servicepoint.BaseDidokCsvModel;
 import ch.sbb.atlas.imports.servicepoint.model.ServicePointImportReqModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
@@ -18,6 +19,7 @@ import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
 import java.io.InputStream;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -25,7 +27,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 public class ServicePointControllerApiTest extends BaseControllerApiTest {
 
@@ -51,7 +52,6 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldGetServicePoint() throws Exception {
     mvc.perform(get("/v1/service-points/85890087")).andExpect(status().isOk())
-        .andDo(MockMvcResultHandlers.print())
         .andExpect(jsonPath("$[0]." + Fields.id, is(servicePointVersion.getId().intValue())))
         .andExpect(jsonPath("$[0].number.number", is(8589008)))
         .andExpect(jsonPath("$[0]." + Fields.designationOfficial, is("Bern, Wyleregg")))
@@ -91,6 +91,32 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldGetServicePointVersionById() throws Exception {
     mvc.perform(get("/v1/service-points/versions/" + servicePointVersion.getId())).andExpect(status().isOk());
+  }
+
+  @Test
+  void shouldFindServicePointVersionByModifiedAfter() throws Exception {
+    String modifiedAfterQueryString = servicePointVersion.getEditionDate().plusDays(1)
+        .format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN));
+    mvc.perform(get("/v1/service-points?modifiedAfter=" + modifiedAfterQueryString))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.totalCount", is(0)));
+
+    modifiedAfterQueryString = servicePointVersion.getEditionDate().minusDays(1)
+        .format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN));
+    mvc.perform(get("/v1/service-points?modifiedAfter=" + modifiedAfterQueryString))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.totalCount", is(1)));
+  }
+
+  @Test
+  void shouldFindServicePointVersionByFromAndToDate() throws Exception {
+    String fromDate = servicePointVersion.getValidFrom().minusDays(1)
+        .format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN));
+    String toDate = servicePointVersion.getValidTo().plusDays(1)
+        .format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN));
+    mvc.perform(get("/v1/service-points?fromDate=" + fromDate + "&toDate=" + toDate))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.totalCount", is(1)));
   }
 
   @Test

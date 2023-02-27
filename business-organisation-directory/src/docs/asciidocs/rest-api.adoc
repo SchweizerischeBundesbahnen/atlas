@@ -76,7 +76,7 @@ include::{snippets}/business-organisation-controller-api-test/should-return-conf
 
 = Export Business Organisation
 
-include::../../../../base-atlas/documentaion/amazon/Amazon_S3_Buckets_Users_Onboarding.adoc[]
+include::../../../../base-atlas/documentation/amazon/Amazon_S3_Buckets_Users_Onboarding.adoc[]
 
 == Export Full Business Organisation Versions Csv and Zip file to Amazon S3 Bucket
 
