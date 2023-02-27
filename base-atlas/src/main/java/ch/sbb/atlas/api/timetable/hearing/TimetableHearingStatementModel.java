@@ -13,8 +13,8 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -44,7 +44,6 @@ public class TimetableHearingStatementModel extends BaseVersionModel {
   @Schema(description = "TimetableYear", example = "2024")
   private Long timetableYear;
 
-  @NotNull
   @Schema(description = "Current status")
   private StatementStatus statementStatus;
 
@@ -65,7 +64,8 @@ public class TimetableHearingStatementModel extends BaseVersionModel {
   @Schema(description = "StopPlace information for the statement", example = "Bern, Wyleregg")
   private String stopPlace;
 
-  private Set<@Size(max = AtlasFieldLengths.LENGTH_50) String> responsibleTransportCompanies;
+  @Schema(description = "Responsible TransportCompanies")
+  private List<@Size(max = AtlasFieldLengths.LENGTH_50) String> responsibleTransportCompanies;
 
   @NotNull
   @Valid
@@ -77,8 +77,8 @@ public class TimetableHearingStatementModel extends BaseVersionModel {
   @Schema(description = "Statement of citizen", example = "I need some more busses please.")
   private String statement;
 
-  // TODO: how do we want to recieve documents on REST?
   @Size(max = TimetableHearingConstants.MAX_DOCUMENTS)
+  @Schema(description = "List of uploaded documents")
   private List<StatementDocumentModel> documents;
 
   @Size(max = AtlasFieldLengths.LENGTH_5000)
@@ -88,4 +88,18 @@ public class TimetableHearingStatementModel extends BaseVersionModel {
 
   @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)", example = "5")
   private Integer etagVersion;
+
+  public List<String> getResponsibleTransportCompanies() {
+    if (responsibleTransportCompanies == null) {
+      return new ArrayList<>();
+    }
+    return responsibleTransportCompanies;
+  }
+
+  public List<StatementDocumentModel> getDocuments() {
+    if (documents == null) {
+      return new ArrayList<>();
+    }
+    return documents;
+  }
 }

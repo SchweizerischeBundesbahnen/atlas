@@ -1,4 +1,8 @@
 spring:
+  servlet:
+    multipart:
+      max-request-size: 20MB
+      max-file-size: 10MB
   datasource:
     url: jdbc:postgresql://localhost:5441/timetable-hearing?currentSchema=timetable_hearing
     username: user
