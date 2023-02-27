@@ -16,7 +16,7 @@
   "COMMON": {
     "BACK_TO_OVERVIEW": "Torna al sommario",
     "SAVE": "Salva",
-    "ADD": "Hinzufügen__it__",
+    "ADD": "Aggiungi",
     "EDIT": "Modifica",
     "REVOKE": "Revocare",
     "DELETE": "Eliminare",
@@ -84,7 +84,6 @@
     "SUPPLEMENTARY_INFORMATION": "Informazioni supplementari",
     "OPTIONAL": "(opzionale)",
     "COMMENT": "Commento",
-    "COMMENT_INFO": "Kommentar Tooltip to replace __IT__",
     "TEXT": "Testo libero",
     "DROPDOWN_SEARCH_RESULT_INFO": "Angezeigt werden {{pageSize}} von {{totalCount}} gefundenen Elementen. (genauere Suche notwendig)__it__"
   },
@@ -95,7 +94,7 @@
   },
   "DIALOG": {
     "OK": "Avanti",
-    "RELOAD": "Neu laden__it__",
+    "RELOAD": "Ricarica",
     "CANCEL": "Annulla",
     "BACK": "Tornare al modulo di immissione dati",
     "WARNING": "Attenzione!",
@@ -110,10 +109,10 @@
     "CONFIRM_BO_TRANSFER": "Modificando l'organizzazione aziendale, si perde l'autorizzazione a modificare l'oggetto a partire dalla data di mutazione."
   },
   "SW_DIALOG": {
-    "UPDATE_TITLE": "Neue Version verfügbar__it__",
-    "UPDATE_MESSAGE": "Es ist eine neue Version von Atlas verfügbar. Bitte laden Sie die Seite neu.__it__",
-    "UNRECOVERABLE_TITLE": "Es ist ein Fehler aufgetreten__it__",
-    "UNRECOVERABLE_MESSAGE": "Bitte laden Sie die Seite neu.__it__"
+    "UPDATE_TITLE": "Nuova versione disponibile.",
+    "UPDATE_MESSAGE": "È disponibile una nuova versione di Atlas. Ricaricare la pagina.",
+    "UNRECOVERABLE_TITLE": "Si è verificato un errore.",
+    "UNRECOVERABLE_MESSAGE": "Ricaricare la pagina."
   },
   "PROFILE": {
     "HELLO": "Ciao,",
@@ -258,7 +257,6 @@
     "SUBLINE_TYPE": "Tipo linea parziale",
     "BUSINESS_ORGANISATION": "Organizzazione aziendale",
     "OVERVIEW_BUSINESS_ORGANISATION": "Organizzazione\naziendale",
-    "BUSINESS_ORGANISATION_INFO": "Geschäftsorganisation Tooltip to replace __IT__",
     "SLNID": "SLNID",
     "PAYMENT": {
       "TYPE": "Metodo di pagamento",
@@ -414,7 +412,7 @@
       }
     },
     "TRANSPORT_COMPANIES": {
-      "BO_RELATION_TITLE": "Zugehörige Geschäftsorganisationen__it__",
+      "BO_RELATION_TITLE": "Organizzazioni aziendali associate",
       "ID_NAN_ERROR": "L'ID di una azienda di trasporto deve essere un numero",
       "BASIC_DATA": "Informazioni sull'azienda di trasporto",
       "OFFICIAL_DATA": "Dati ufficiali",
