@@ -34,7 +34,7 @@ public class TimetableHearingYear extends BaseEntity {
 
   @Id
   @Min(2010)
-  @Max(2099)
+  @Max(9999)
   private Long timetableYear;
 
   @NotNull
