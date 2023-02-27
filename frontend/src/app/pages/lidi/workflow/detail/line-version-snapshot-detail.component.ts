@@ -11,7 +11,7 @@ import {
 import { Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
-import moment from 'moment/moment';
+import moment from 'moment';
 import { Pages } from '../../../pages';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { LineVersionSnapshotDetailFormGroup } from './line-version-snapshot-detail-form-group';
