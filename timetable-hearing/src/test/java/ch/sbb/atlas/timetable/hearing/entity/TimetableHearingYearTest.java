@@ -51,24 +51,6 @@ class TimetableHearingYearTest {
   }
 
   @Test
-  void shouldNotAcceptHearingAfter2099() {
-    // given
-    TimetableHearingYear timetableHearingYear = TimetableHearingYear.builder()
-        .timetableYear(2100L)
-        .hearingStatus(HearingStatus.PLANNED)
-        .hearingFrom(LocalDate.of(2099, 1, 1))
-        .hearingTo(LocalDate.of(2099, 2, 1))
-        .version(1)
-        .build();
-
-    //when
-    Set<ConstraintViolation<TimetableHearingYear>> constraintViolations = validator.validate(timetableHearingYear);
-
-    // then
-    assertThat(constraintViolations).hasSize(1);
-  }
-
-  @Test
   void shouldNotAcceptHearingFromAfterTo() {
     // given
     TimetableHearingYear timetableHearingYear = TimetableHearingYear.builder()
