@@ -84,7 +84,6 @@
     "SUPPLEMENTARY_INFORMATION": "Ergänzende Angaben",
     "OPTIONAL": "(optional)",
     "COMMENT": "Kommentar",
-    "COMMENT_INFO": "Kommentar Tooltip to replace",
     "TEXT": "Freitext",
     "DROPDOWN_SEARCH_RESULT_INFO": "Angezeigt werden {{pageSize}} von {{totalCount}} gefundenen Elementen. (genauere Suche notwendig)"
   },
@@ -258,7 +257,6 @@
     "SUBLINE_TYPE": "Teillinientyp",
     "BUSINESS_ORGANISATION": "Geschäftsorganisation",
     "OVERVIEW_BUSINESS_ORGANISATION": "Geschäfts-\norganisation",
-    "BUSINESS_ORGANISATION_INFO": "Geschäftsorganisation Tooltip to replace",
     "SLNID": "SLNID",
     "PAYMENT": {
       "TYPE": "Bezahlungsart",
