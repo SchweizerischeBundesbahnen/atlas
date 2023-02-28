@@ -1,10 +1,19 @@
 package ch.sbb.atlas.api.timetable.hearing;
 
+import ch.sbb.atlas.api.model.Container;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel.Fields;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springdoc.core.converters.models.PageableAsQueryParam;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,14 +25,30 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("v1/timetable-hearing/statements")
 public interface TimetableHearingStatementApiV1 {
 
+  @GetMapping
+  @PageableAsQueryParam
+  Container<TimetableHearingStatementModel> getStatements(
+      @Parameter(hidden = true) @PageableDefault(sort = {Fields.timetableYear, Fields.id}) Pageable pageable,
+      @ParameterObject TimetableHearingStatementRequestParams statementRequestParams);
+
+  @GetMapping(path = "{id}")
+  TimetableHearingStatementModel getStatement(@PathVariable Long id);
+
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   TimetableHearingStatementModel createStatement(
       @RequestPart @Valid TimetableHearingStatementModel statement,
       @RequestPart(required = false) List<MultipartFile> documents);
 
-  @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  @ResponseStatus(HttpStatus.CREATED)
+  @PostMapping(path = "external", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  TimetableHearingStatementModel createStatementExternal(
+      @RequestPart @Valid TimetableHearingStatementModel statement,
+      @RequestPart(required = false) List<MultipartFile> documents);
+
+  @PutMapping(path = "{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   TimetableHearingStatementModel updateStatement(
+      @PathVariable Long id,
       @RequestPart @Valid TimetableHearingStatementModel statement,
       @RequestPart(required = false) List<MultipartFile> documents
   );

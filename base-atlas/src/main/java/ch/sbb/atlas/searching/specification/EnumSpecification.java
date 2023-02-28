@@ -5,6 +5,7 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import jakarta.persistence.metamodel.SingularAttribute;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import org.springframework.data.jpa.domain.Specification;
@@ -17,10 +18,12 @@ public class EnumSpecification<T> implements Specification<T> {
   private final SingularAttribute<T, ?> enumAttribute;
   private final Boolean notIn;
 
+  public EnumSpecification(Enum<?> enumRestriction, SingularAttribute<T, ?> enumAttribute) {
+    this(enumRestriction == null ? Collections.emptyList() : Collections.singletonList(enumRestriction), enumAttribute, false);
+  }
+
   public EnumSpecification(List<?> enumRestrictions, SingularAttribute<T, ?> enumAttribute) {
-    this.enumRestrictions = Objects.requireNonNull(enumRestrictions);
-    this.enumAttribute = enumAttribute;
-    this.notIn = false;
+    this(enumRestrictions, enumAttribute, false);
   }
 
   public EnumSpecification(List<?> enumRestrictions, SingularAttribute<T, ?> enumAttribute, Boolean notIn) {
