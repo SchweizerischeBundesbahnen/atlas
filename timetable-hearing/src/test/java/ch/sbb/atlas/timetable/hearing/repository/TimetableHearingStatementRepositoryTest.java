@@ -48,19 +48,22 @@ public class TimetableHearingStatementRepositoryTest {
             .build())
         .statement("Ich mag bitte mehr Bös fahren")
         .justification("Weil ich mag")
-        .documents(Set.of(StatementDocument.builder()
-                .fileName("doc1")
-                .fileSize(6454L)
-                .build(),
-            StatementDocument.builder()
-                .fileName("doc2")
-                .fileSize(2454L)
-                .build(),
-            StatementDocument.builder()
-                .fileName("doc3")
-                .fileSize(3454L)
-                .build()))
         .build();
+    statement.setDocuments(Set.of(StatementDocument.builder()
+            .statement(statement)
+            .fileName("doc1")
+            .fileSize(6454L)
+            .build(),
+        StatementDocument.builder()
+            .statement(statement)
+            .fileName("doc2")
+            .fileSize(2454L)
+            .build(),
+        StatementDocument.builder()
+            .statement(statement)
+            .fileName("doc3")
+            .fileSize(3454L)
+            .build()));
 
     TimetableHearingStatement savedStatement = timetableHearingStatementRepository.save(statement);
 
