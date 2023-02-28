@@ -1,16 +1,21 @@
 package ch.sbb.atlas.timetable.hearing.controller;
 
+import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementApiV1;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementRequestParams;
 import ch.sbb.atlas.timetable.hearing.entity.StatementDocument;
 import ch.sbb.atlas.timetable.hearing.entity.TimetableHearingStatement;
 import ch.sbb.atlas.timetable.hearing.mapper.TimeTableHearingStatementMapper;
 import ch.sbb.atlas.timetable.hearing.model.TimetableFieldNumberInformation;
+import ch.sbb.atlas.timetable.hearing.model.TimetableHearingStatementSearchRestrictions;
 import ch.sbb.atlas.timetable.hearing.service.TimetableFieldNumberResolverService;
 import ch.sbb.atlas.timetable.hearing.service.TimetableHearingStatementService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,15 +27,26 @@ public class TimetableHearingStatementController implements TimetableHearingStat
   private final TimetableHearingStatementService timetableHearingStatementService;
   private final TimetableFieldNumberResolverService timetableFieldNumberResolverService;
 
-  // TODO: getter für übersichten nach Jahr und Kanton
+  @Override
+  public Container<TimetableHearingStatementModel> getStatements(Pageable pageable,
+      TimetableHearingStatementRequestParams statementRequestParams) {
+    Page<TimetableHearingStatement> hearingStatements = timetableHearingStatementService.getHearingStatements(
+        TimetableHearingStatementSearchRestrictions.builder()
+            .pageable(pageable)
+            .statementRequestParams(statementRequestParams).build());
+    return Container.<TimetableHearingStatementModel>builder()
+        .objects(hearingStatements.stream().map(TimeTableHearingStatementMapper::toModel).toList())
+        .totalCount(hearingStatements.getTotalElements())
+        .build();
+  }
+
+  public TimetableHearingStatementModel getStatement(Long id) {
+    return TimeTableHearingStatementMapper.toModel(timetableHearingStatementService.getStatementById(id));
+  }
 
   @Override
   public TimetableHearingStatementModel createStatement(TimetableHearingStatementModel statement,
       List<MultipartFile> documents) {
-    String resolvedTtfnid =
-        timetableFieldNumberResolverService.resolveTtfnid(TimetableFieldNumberInformation.fromStatementModel(statement));
-    statement.setTtfnid(resolvedTtfnid);
-
     TimetableHearingStatement statementToCreate = TimeTableHearingStatementMapper.toEntity(statement);
     addFilesToStatement(documents, statementToCreate);
 
@@ -39,8 +55,20 @@ public class TimetableHearingStatementController implements TimetableHearingStat
   }
 
   @Override
-  public TimetableHearingStatementModel updateStatement(TimetableHearingStatementModel statement,
+  public TimetableHearingStatementModel createStatementExternal(TimetableHearingStatementModel statement,
       List<MultipartFile> documents) {
+    String resolvedTtfnid =
+        timetableFieldNumberResolverService.resolveTtfnid(TimetableFieldNumberInformation.fromStatementModel(statement));
+    statement.setTtfnid(resolvedTtfnid);
+
+    return createStatement(statement, documents);
+  }
+
+  @Override
+  public TimetableHearingStatementModel updateStatement(Long id, TimetableHearingStatementModel statement,
+      List<MultipartFile> documents) {
+    timetableHearingStatementService.getStatementById(id);
+
     String resolvedTtfnid =
         timetableFieldNumberResolverService.resolveTtfnid(TimetableFieldNumberInformation.fromStatementModel(statement));
     statement.setTtfnid(resolvedTtfnid);
