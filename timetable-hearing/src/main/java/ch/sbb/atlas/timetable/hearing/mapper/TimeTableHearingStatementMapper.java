@@ -40,6 +40,10 @@ public class TimeTableHearingStatementMapper {
         .statement(statement.getStatement())
         .documents(statement.getDocuments().stream().map(StatementDocumentMapper::toModel).toList())
         .justification(statement.getJustification())
+        .creationDate(statement.getCreationDate())
+        .creator(statement.getCreator())
+        .editionDate(statement.getEditionDate())
+        .editor(statement.getEditor())
         .etagVersion(statement.getVersion())
         .build();
   }

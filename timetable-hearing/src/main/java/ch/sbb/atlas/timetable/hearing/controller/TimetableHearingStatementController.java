@@ -7,10 +7,10 @@ import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementRequestParams
 import ch.sbb.atlas.timetable.hearing.entity.StatementDocument;
 import ch.sbb.atlas.timetable.hearing.entity.TimetableHearingStatement;
 import ch.sbb.atlas.timetable.hearing.mapper.TimeTableHearingStatementMapper;
-import ch.sbb.atlas.timetable.hearing.model.TimetableFieldNumberInformation;
 import ch.sbb.atlas.timetable.hearing.model.TimetableHearingStatementSearchRestrictions;
 import ch.sbb.atlas.timetable.hearing.service.TimetableFieldNumberResolverService;
 import ch.sbb.atlas.timetable.hearing.service.TimetableHearingStatementService;
+import ch.sbb.atlas.timetable.hearing.service.TimetableHearingYearService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class TimetableHearingStatementController implements TimetableHearingStatementApiV1 {
 
   private final TimetableHearingStatementService timetableHearingStatementService;
+  private final TimetableHearingYearService timetableHearingYearService;
   private final TimetableFieldNumberResolverService timetableFieldNumberResolverService;
 
   @Override
@@ -58,8 +59,11 @@ public class TimetableHearingStatementController implements TimetableHearingStat
   public TimetableHearingStatementModel createStatementExternal(TimetableHearingStatementModel statement,
       List<MultipartFile> documents) {
     String resolvedTtfnid =
-        timetableFieldNumberResolverService.resolveTtfnid(TimetableFieldNumberInformation.fromStatementModel(statement));
+        timetableFieldNumberResolverService.resolveTtfnid(statement.getTimetableFieldNumber());
     statement.setTtfnid(resolvedTtfnid);
+
+    Long activeHearingYear = timetableHearingYearService.getActiveHearingYear().getTimetableYear();
+    statement.setTimetableYear(activeHearingYear);
 
     return createStatement(statement, documents);
   }
@@ -68,10 +72,6 @@ public class TimetableHearingStatementController implements TimetableHearingStat
   public TimetableHearingStatementModel updateStatement(Long id, TimetableHearingStatementModel statement,
       List<MultipartFile> documents) {
     timetableHearingStatementService.getStatementById(id);
-
-    String resolvedTtfnid =
-        timetableFieldNumberResolverService.resolveTtfnid(TimetableFieldNumberInformation.fromStatementModel(statement));
-    statement.setTtfnid(resolvedTtfnid);
 
     TimetableHearingStatement statementUpdate = TimeTableHearingStatementMapper.toEntity(statement);
     addFilesToStatement(documents, statementUpdate);
@@ -82,8 +82,9 @@ public class TimetableHearingStatementController implements TimetableHearingStat
 
   private void addFilesToStatement(List<MultipartFile> documents, TimetableHearingStatement statement) {
     if (documents != null) {
-      log.info("Statement {}, adding {} documents", statement.getId(), documents.size());
+      log.info("Statement {}, adding {} documents", statement.getId() == null ? "new" : statement.getId(), documents.size());
       documents.forEach(multipartFile -> statement.getDocuments().add(StatementDocument.builder()
+          .statement(statement)
           .fileName(multipartFile.getOriginalFilename())
           .fileSize(multipartFile.getSize())
           .build()));
