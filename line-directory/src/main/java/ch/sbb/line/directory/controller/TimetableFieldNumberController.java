@@ -5,7 +5,7 @@ import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.api.lidi.TimetableFieldNumberApiV1;
 import ch.sbb.atlas.api.lidi.TimetableFieldNumberModel;
-import ch.sbb.atlas.api.lidi.TimetableFieldNumberVersionVersionModel;
+import ch.sbb.atlas.api.lidi.TimetableFieldNumberVersionModel;
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.exception.TtfnidNotFoundException;
@@ -31,8 +31,8 @@ public class TimetableFieldNumberController implements TimetableFieldNumberApiV1
 
   private final TimetableFieldNumberVersionExportService versionExportService;
 
-  static TimetableFieldNumberVersionVersionModel toModel(TimetableFieldNumberVersion version) {
-    return TimetableFieldNumberVersionVersionModel.builder()
+  static TimetableFieldNumberVersionModel toModel(TimetableFieldNumberVersion version) {
+    return TimetableFieldNumberVersionModel.builder()
         .id(version.getId())
         .description(version.getDescription())
         .number(version.getNumber())
@@ -54,8 +54,8 @@ public class TimetableFieldNumberController implements TimetableFieldNumberApiV1
 
   @Override
   public Container<TimetableFieldNumberModel> getOverview(Pageable pageable,
-      List<String> searchCriteria, Optional<String> businessOrganisation,
-      Optional<LocalDate> validOn, List<Status> statusChoices) {
+      List<String> searchCriteria, String number, String businessOrganisation,
+      LocalDate validOn, List<Status> statusChoices) {
     log.info(
         "Load TimetableFieldNumbers using pageable={}, searchCriteriaSpecification={}, validOn={} and statusChoices={}",
         pageable, searchCriteria, validOn, statusChoices);
@@ -63,9 +63,10 @@ public class TimetableFieldNumberController implements TimetableFieldNumberApiV1
         TimetableFieldNumberSearchRestrictions.builder()
             .pageable(pageable)
             .searchCriterias(searchCriteria)
+            .number(number)
             .statusRestrictions(statusChoices)
-            .validOn(validOn)
-            .businessOrganisation(businessOrganisation)
+            .validOn(Optional.ofNullable(validOn))
+            .businessOrganisation(Optional.ofNullable(businessOrganisation))
             .build());
     List<TimetableFieldNumberModel> versions = timetableFieldNumberPage.stream().map(this::toModel)
         .toList();
@@ -90,8 +91,8 @@ public class TimetableFieldNumberController implements TimetableFieldNumberApiV1
   }
 
   @Override
-  public List<TimetableFieldNumberVersionVersionModel> getAllVersionsVersioned(String ttfnId) {
-    List<TimetableFieldNumberVersionVersionModel> timetableFieldNumberVersionModels =
+  public List<TimetableFieldNumberVersionModel> getAllVersionsVersioned(String ttfnId) {
+    List<TimetableFieldNumberVersionModel> timetableFieldNumberVersionModels =
         timetableFieldNumberService.getAllVersionsVersioned(
                 ttfnId)
             .stream()
@@ -105,8 +106,8 @@ public class TimetableFieldNumberController implements TimetableFieldNumberApiV1
   }
 
   @Override
-  public List<TimetableFieldNumberVersionVersionModel> revokeTimetableFieldNumber(String ttfnId) {
-    List<TimetableFieldNumberVersionVersionModel> versions = timetableFieldNumberService.revokeTimetableFieldNumber(ttfnId)
+  public List<TimetableFieldNumberVersionModel> revokeTimetableFieldNumber(String ttfnId) {
+    List<TimetableFieldNumberVersionModel> versions = timetableFieldNumberService.revokeTimetableFieldNumber(ttfnId)
         .stream()
         .map(TimetableFieldNumberController::toModel)
         .toList();
@@ -117,8 +118,8 @@ public class TimetableFieldNumberController implements TimetableFieldNumberApiV1
   }
 
   @Override
-  public TimetableFieldNumberVersionVersionModel createVersion(
-      TimetableFieldNumberVersionVersionModel newVersion) {
+  public TimetableFieldNumberVersionModel createVersion(
+      TimetableFieldNumberVersionModel newVersion) {
     newVersion.setStatus(Status.VALIDATED);
     TimetableFieldNumberVersion createdVersion = timetableFieldNumberService.create(
         toEntity(newVersion));
@@ -126,8 +127,8 @@ public class TimetableFieldNumberController implements TimetableFieldNumberApiV1
   }
 
   @Override
-  public List<TimetableFieldNumberVersionVersionModel> updateVersionWithVersioning(Long id,
-      TimetableFieldNumberVersionVersionModel newVersion) {
+  public List<TimetableFieldNumberVersionModel> updateVersionWithVersioning(Long id,
+      TimetableFieldNumberVersionModel newVersion) {
     TimetableFieldNumberVersion versionToUpdate = timetableFieldNumberService.findById(id)
         .orElseThrow(() ->
             new IdNotFoundException(
@@ -163,7 +164,7 @@ public class TimetableFieldNumberController implements TimetableFieldNumberApiV1
   }
 
   private TimetableFieldNumberVersion toEntity(
-      TimetableFieldNumberVersionVersionModel timetableFieldNumberVersionModel) {
+      TimetableFieldNumberVersionModel timetableFieldNumberVersionModel) {
     return TimetableFieldNumberVersion.builder()
         .id(timetableFieldNumberVersionModel.getId())
         .description(

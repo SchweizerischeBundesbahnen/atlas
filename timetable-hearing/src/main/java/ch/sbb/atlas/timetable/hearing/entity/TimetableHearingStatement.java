@@ -1,10 +1,11 @@
 package ch.sbb.atlas.timetable.hearing.entity;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
-import ch.sbb.atlas.model.SwissCanton;
-import ch.sbb.atlas.model.entity.BaseEntity;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingConstants;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
+import ch.sbb.atlas.model.SwissCanton;
+import ch.sbb.atlas.model.entity.BaseEntity;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -72,7 +73,7 @@ public class TimetableHearingStatement extends BaseEntity {
   private String statement;
 
   @Size(max = TimetableHearingConstants.MAX_DOCUMENTS)
-  @OneToMany(mappedBy = "statement", fetch = FetchType.EAGER)
+  @OneToMany(mappedBy = "statement", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   private Set<StatementDocument> documents;
 
   // FoT Justification field for comments
