@@ -1,9 +1,7 @@
 ==== Version {version}
 
-* ServicePoints*
-* TrafficPointElements*
-* LoadingPoints*
+Timetable Hearings are held each year.
 
-**Versioning**
+Every year citizens may provide statements on the next iteration of the public transport timetable.
 
-Business objects marked with a * may be created and updated using the Atlas Versioning Engine. The rules and supported cases may be found in the user handbook.
+This is the initial API for year and statement handling.
