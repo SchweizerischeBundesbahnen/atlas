@@ -23,7 +23,7 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @Schema(name = "TimetableFieldNumberVersion")
-public class TimetableFieldNumberVersionVersionModel extends BaseVersionModel implements DatesValidator {
+public class TimetableFieldNumberVersionModel extends BaseVersionModel implements DatesValidator {
 
   @Schema(description = "Technical identifier", example = "1")
   private Long id;

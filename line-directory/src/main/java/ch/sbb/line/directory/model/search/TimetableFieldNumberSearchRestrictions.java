@@ -5,11 +5,13 @@ import ch.sbb.atlas.searching.BusinessOrganisationDependentSearchRestriction;
 import ch.sbb.atlas.searching.SpecificationBuilder;
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.entity.TimetableFieldNumber_;
-import java.util.List;
 import jakarta.persistence.metamodel.SingularAttribute;
+import java.util.List;
+import java.util.Optional;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+import org.springframework.data.jpa.domain.Specification;
 
 @Getter
 @ToString
@@ -17,9 +19,17 @@ import lombok.experimental.SuperBuilder;
 public class TimetableFieldNumberSearchRestrictions extends
     BusinessOrganisationDependentSearchRestriction<TimetableFieldNumber> {
 
+  private String number;
+
   @Override
   protected SingularAttribute<TimetableFieldNumber, Status> getStatus() {
     return TimetableFieldNumber_.status;
+  }
+
+  @Override
+  public Specification<TimetableFieldNumber> getSpecification() {
+    return getBaseSpecification().and(
+        specificationBuilder().singleStringSpecification(Optional.ofNullable(number)));
   }
 
   @Override
@@ -30,6 +40,7 @@ public class TimetableFieldNumberSearchRestrictions extends
                 TimetableFieldNumber.Fields.description,
                 TimetableFieldNumber.Fields.ttfnid,
                 TimetableFieldNumber.Fields.number))
+        .singleStringAttribute(TimetableFieldNumber_.number)
         .validFromAttribute(TimetableFieldNumber_.validFrom)
         .validToAttribute(TimetableFieldNumber_.validTo)
         .build();
