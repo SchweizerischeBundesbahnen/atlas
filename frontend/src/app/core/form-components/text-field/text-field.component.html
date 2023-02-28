@@ -3,9 +3,13 @@
     >{{ fieldLabel | translate }}
   </mat-label>
   <form-info-icon
-    *ngIf="infoIconTitle || infoIconLink"
-    infoLink="infoIconLink"
-    infoLinkTranslationKey="{{ infoIconLink ? infoIconLink : '' }}"
+    *ngIf="infoIconLink"
+    infoLink
+    infoLinkTranslationKey="{{ infoIconLink }}"
+    infoTitle="{{ infoIconTitle | translate }}"
+  ></form-info-icon>
+  <form-info-icon
+    *ngIf="infoIconTitle && !infoIconLink"
     infoTitle="{{ infoIconTitle | translate }}"
   ></form-info-icon>
 </div>
@@ -13,9 +17,16 @@
   {{ translate(fieldExample) }}
 </mat-label>
 <form [formGroup]="form">
-  <input [formControlName]="controlName" type="text" />
-
-  <span *ngIf="(isTouched || isDirty) && (hasError | async)" class="error font-regular-xs">
-    {{ errorTranslationKeyToShow | translate : errorArgs }}
-  </span>
+  <div class="text-field-wrapper">
+    <div class="text-field-flex">
+      <input [formControlName]="controlName" type="text" />
+      <ng-container
+        #customChildInputTemplate
+        *ngTemplateOutlet="customChildInputTemplate"
+      ></ng-container>
+    </div>
+    <span *ngIf="(isTouched || isDirty) && (hasError | async)" class="error font-regular-xs">
+      {{ errorTranslationKeyToShow | translate : errorArgs }}
+    </span>
+  </div>
 </form>
