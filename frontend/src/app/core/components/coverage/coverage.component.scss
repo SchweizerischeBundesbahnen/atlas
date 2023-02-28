@@ -1,11 +1,15 @@
-.complete {
+.mat-mdc-standard-chip.mdc-evolution-chip--disabled.complete {
   background-color: #008000c9;
 }
 
-.incomplete {
+.mat-mdc-standard-chip.mdc-evolution-chip--disabled.incomplete {
   background-color: orange;
 }
 
 .text {
   padding-left: 1rem;
+}
+
+.mat-mdc-standard-chip.mdc-evolution-chip--disabled {
+  opacity: unset;
 }
