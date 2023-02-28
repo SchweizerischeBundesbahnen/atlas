@@ -6,6 +6,7 @@ import ch.sbb.atlas.timetable.hearing.entity.TimetableHearingYear;
 import ch.sbb.atlas.timetable.hearing.exception.HearingCurrentlyActiveException;
 import ch.sbb.atlas.timetable.hearing.model.TimetableHearingYearSearchRestrictions;
 import ch.sbb.atlas.timetable.hearing.repository.TimetableHearingYearRepository;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,15 @@ public class TimetableHearingYearService {
 
   public Page<TimetableHearingYear> getHearingYears(TimetableHearingYearSearchRestrictions searchRestrictions) {
     return timetableHearingYearRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
+  }
+
+  public TimetableHearingYear getActiveHearingYear() {
+    TimetableHearingYearSearchRestrictions searchRestrictions =
+        TimetableHearingYearSearchRestrictions.builder().
+            statusRestrictions(Set.of(HearingStatus.ACTIVE))
+            .build();
+    return timetableHearingYearRepository.findAll(searchRestrictions.getSpecification()).stream().findFirst()
+        .orElseThrow(() -> new IllegalStateException("No active HearingYear"));
   }
 
   public TimetableHearingYear getHearingYear(Long year) {

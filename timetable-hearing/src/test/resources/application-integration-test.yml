@@ -51,3 +51,7 @@ kafka:
       administration:
         topic: atlas.user.administration
         groupId: atlas.kafka.timetable.hearing.user.administration.groupId
+atlas:
+  client:
+    gateway:
+      url: "http://localhost:8888"

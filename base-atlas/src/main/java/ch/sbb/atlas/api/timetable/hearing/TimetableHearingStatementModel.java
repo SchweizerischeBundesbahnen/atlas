@@ -40,7 +40,6 @@ public class TimetableHearingStatementModel extends BaseVersionModel {
 
   @Min(2010)
   @Max(2099)
-  @NotNull
   @Schema(description = "TimetableYear", example = "2024")
   private Long timetableYear;
 
@@ -50,11 +49,8 @@ public class TimetableHearingStatementModel extends BaseVersionModel {
   @Schema(description = "TimetableFieldNumberId regarding the statement", example = "ch:1:ttfnid:123234")
   private String ttfnid;
 
-  @Schema(description = "Timetable field number", example = "b0.123")
-  private String swissTimetableFieldNumber;
-
-  @Schema(description = "TimetableFieldNumberId regarding the statement", example = "ch:1:ttfnid:123234")
-  private String timetableFieldDescription;
+  @Schema(description = "Timetable field number", example = "07.061")
+  private String timetableFieldNumber;
 
   @Schema(description = "Canton, the statement is for")
   private SwissCanton swissCanton;

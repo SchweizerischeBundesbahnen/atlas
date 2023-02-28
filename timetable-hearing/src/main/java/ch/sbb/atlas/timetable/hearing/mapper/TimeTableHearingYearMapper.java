@@ -29,6 +29,10 @@ public class TimeTableHearingYearMapper {
         .statementCreatableExternal(hearingYear.isStatementCreatableExternal())
         .statementCreatableInternal(hearingYear.isStatementCreatableInternal())
         .statementEditable(hearingYear.isStatementEditable())
+        .creationDate(hearingYear.getCreationDate())
+        .creator(hearingYear.getCreator())
+        .editionDate(hearingYear.getEditionDate())
+        .editor(hearingYear.getEditor())
         .etagVersion(hearingYear.getVersion())
         .build();
   }
