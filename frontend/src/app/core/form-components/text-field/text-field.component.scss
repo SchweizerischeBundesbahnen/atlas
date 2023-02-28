@@ -40,3 +40,15 @@ input[disabled] {
 .error {
   color: variables.$errorColor;
 }
+
+.text-field-wrapper {
+  position: relative;
+  padding-bottom: 1.25em;
+}
+
+.text-field-flex {
+  display: inline-flex;
+  align-items: baseline;
+  box-sizing: border-box;
+  width: 100%;
+}
