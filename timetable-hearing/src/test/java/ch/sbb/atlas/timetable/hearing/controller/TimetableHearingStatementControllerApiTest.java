@@ -8,6 +8,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -77,9 +78,9 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
         .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
         .ttfnid("ch:1:ttfnid:12341241")
         .statementSender(StatementSenderModel.builder()
-            .email("mike@thebike.com")
+            .email("fabienne.mueller@sbb.ch")
             .build())
-        .statement("Ich mag bitte mehr Bös fahren")
+        .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
         .build();
 
     MockMultipartFile statementJson = new MockMultipartFile("statement", null,
@@ -87,6 +88,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
 
     mvc.perform(multipart(HttpMethod.POST, "/v1/timetable-hearing/statements")
             .file(statementJson))
+        .andDo(print())
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
         .andExpect(jsonPath("$." + Fields.ttfnid, is("ch:1:ttfnid:12341241")))
@@ -99,7 +101,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
         .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
         .statementSender(StatementSenderModel.builder()
             .build())
-        .statement("Ich mag bitte mehr Bös fahren")
+        .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
         .build();
 
     MockMultipartFile statementJson = new MockMultipartFile("statement", null,
@@ -115,9 +117,9 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
     TimetableHearingStatementModel statement = TimetableHearingStatementModel.builder()
         .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
         .statementSender(StatementSenderModel.builder()
-            .email("mike@thebike.com")
+            .email("fabienne.mueller@sbb.ch")
             .build())
-        .statement("Ich mag bitte mehr Bös fahren")
+        .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
         .build();
 
     MockMultipartFile statementJson = new MockMultipartFile("statement", null,
@@ -174,9 +176,9 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
         TimetableHearingStatementModel.builder()
             .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
             .statementSender(StatementSenderModel.builder()
-                .email("mike@thebike.com")
+                .email("fabienne.mueller@sbb.ch")
                 .build())
-            .statement("Ich mag bitte mehr Bös fahren")
+            .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
             .build(),
         Collections.emptyList());
 
@@ -198,9 +200,9 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
         TimetableHearingStatementModel.builder()
             .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
             .statementSender(StatementSenderModel.builder()
-                .email("mike@thebike.com")
+                .email("fabienne.mueller@sbb.ch")
                 .build())
-            .statement("Ich mag bitte mehr Bös fahren")
+            .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
             .build(),
         Collections.emptyList());
 
@@ -221,9 +223,9 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
         TimetableHearingStatementModel.builder()
             .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
             .statementSender(StatementSenderModel.builder()
-                .email("mike@thebike.com")
+                .email("fabienne.mueller@sbb.ch")
                 .build())
-            .statement("Ich mag bitte mehr Bös fahren")
+            .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
             .build(),
         Collections.emptyList());
 
@@ -239,9 +241,9 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
         TimetableHearingStatementModel.builder()
             .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
             .statementSender(StatementSenderModel.builder()
-                .email("mike@thebike.com")
+                .email("fabienne.mueller@sbb.ch")
                 .build())
-            .statement("Ich mag bitte mehr Bös fahren")
+            .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
             .build(),
         Collections.emptyList());
 
