@@ -1,27 +1,29 @@
 @use 'src/styles/variables' as variables;
 
 .mat-mdc-snack-bar-container {
-  margin: unset !important;
-  position: absolute;
-  top: 4.5rem;
-  right: 24px;
+  margin-top: 4.5rem !important;
+  margin-right: 1.5rem !important;
+  max-width: 33vw;
+  min-width: 344px;
+  border-radius: 2rem;
+  --mdc-snackbar-container-color: unset;
 }
 
-snack-bar-container.success {
+.mat-mdc-snack-bar-container.success {
   background-color: variables.$successColor;
 }
 
-snack-bar-container.error {
+.mat-mdc-snack-bar-container.error {
   background-color: variables.$errorColor;
   white-space: unset !important;
 }
 
-snack-bar-container.warning {
+.mat-mdc-snack-bar-container.warning {
   background-color: variables.$warnColor;
   white-space: unset !important;
 }
 
-snack-bar-container.notification {
+.mat-mdc-snack-bar-container.notification {
   color: variables.$white;
 }
 
