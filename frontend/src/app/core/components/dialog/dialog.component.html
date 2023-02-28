@@ -1,9 +1,9 @@
-<div class="dialog-close-panel">
-  <button mat-icon-button [disableRipple]="true" [mat-dialog-close]="false">
+<div class="dialog-close-panel dialog-close-icon-container">
+  <button class="close-icon-btn" [mat-dialog-close]="false">
     <em class="bi bi-x fs-2"></em>
   </button>
 </div>
-<div data-cy="dialog">
+<div class="dialog" data-cy="dialog">
   <h1 class="font-bold-4xl">{{ data.title | translate }}</h1>
   <mat-dialog-content>{{ data.message | translate }}</mat-dialog-content>
   <mat-dialog-actions class="justify-content-end">
