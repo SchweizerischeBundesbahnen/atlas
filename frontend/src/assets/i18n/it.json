@@ -85,7 +85,7 @@
     "OPTIONAL": "(opzionale)",
     "COMMENT": "Commento",
     "TEXT": "Testo libero",
-    "DROPDOWN_SEARCH_RESULT_INFO": "Angezeigt werden {{pageSize}} von {{totalCount}} gefundenen Elementen. (genauere Suche notwendig)__it__"
+    "DROPDOWN_SEARCH_RESULT_INFO": "Vengono visualizzati {{pageSize}} degli elementi {{totalCount}} trovati. (è necessaria una ricerca più precisa)"
   },
   "VERSION_TABLE": {
     "TITLE": "Versioni con validità diversa",
@@ -372,7 +372,7 @@
       "ABBREVIATION_IT": "Abbreviazione IT",
       "ABBREVIATION_EN": "Abbreviazione EN",
       "SBOID": "Swiss Business Organisation\nID (SBOID)",
-      "SAID": "Swiss Administration\nID (SAID)__it__",
+      "SAID": "Swiss Administration\nID (SAID)",
       "ORGANISATION_NUMBER": "Numero",
       "CONTACT": "E-Mail organizzazione",
       "BUSINESS_TYPE": "Tipo di organizzazione commerciale",
