@@ -12,7 +12,7 @@ import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.model.controller.BaseControllerWithAmazonS3ApiTest;
 import ch.sbb.atlas.api.lidi.LineVersionModel.Fields;
-import ch.sbb.atlas.api.lidi.TimetableFieldNumberVersionVersionModel;
+import ch.sbb.atlas.api.lidi.TimetableFieldNumberVersionModel;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.repository.TimetableFieldNumberVersionRepository;
 import ch.sbb.line.directory.service.export.TimetableFieldNumberVersionExportService;
@@ -55,8 +55,8 @@ public class TimetableFieldNumberControllerApiTest extends BaseControllerWithAma
   @Test
   void shouldCreateTimetableFieldNumber() throws Exception {
     //given
-    TimetableFieldNumberVersionVersionModel timetableFieldNumberVersionModel =
-        TimetableFieldNumberVersionVersionModel.builder()
+    TimetableFieldNumberVersionModel timetableFieldNumberVersionModel =
+        TimetableFieldNumberVersionModel.builder()
             .validTo(LocalDate.of(2000, 12, 31))
             .validFrom(LocalDate.of(2000, 1, 1))
             .businessOrganisation("sbb")
@@ -98,12 +98,12 @@ public class TimetableFieldNumberControllerApiTest extends BaseControllerWithAma
         .andReturn()
         .getResponse()
         .getContentAsString();
-    List<TimetableFieldNumberVersionVersionModel> response = mapper.readValue(responseBody,
+    List<TimetableFieldNumberVersionModel> response = mapper.readValue(responseBody,
         new TypeReference<>() {
         });
 
     assertThat(response).size().isEqualTo(1);
-    TimetableFieldNumberVersionVersionModel timetableFieldNumberVersionModel = response.get(0);
+    TimetableFieldNumberVersionModel timetableFieldNumberVersionModel = response.get(0);
 
     // When first update it is ok
     timetableFieldNumberVersionModel.setComment("Neuer Kommentar");
@@ -146,7 +146,7 @@ public class TimetableFieldNumberControllerApiTest extends BaseControllerWithAma
         .build();
     versionRepository.save(secondVersion);
     //When
-    TimetableFieldNumberVersionVersionModel timetableFieldNumberVersionModel = TimetableFieldNumberVersionVersionModel.builder()
+    TimetableFieldNumberVersionModel timetableFieldNumberVersionModel = TimetableFieldNumberVersionModel.builder()
         .validFrom(
             version.getValidFrom())
         .validTo(
@@ -242,7 +242,7 @@ public class TimetableFieldNumberControllerApiTest extends BaseControllerWithAma
   }
 
   private MockHttpServletRequestBuilder createUpdateRequest(
-      TimetableFieldNumberVersionVersionModel timetableFieldNumberVersionModel)
+      TimetableFieldNumberVersionModel timetableFieldNumberVersionModel)
       throws JsonProcessingException {
     return post("/v1/field-numbers/versions/" + timetableFieldNumberVersionModel.getId())
         .contentType(MediaType.APPLICATION_JSON)
