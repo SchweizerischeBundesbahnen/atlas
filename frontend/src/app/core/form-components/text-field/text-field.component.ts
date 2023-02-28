@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ContentChild, Input, OnInit, TemplateRef } from '@angular/core';
 import { FormGroup, FormGroupDirective, ValidationErrors } from '@angular/forms';
 import { concat, debounceTime, EMPTY, Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
@@ -17,6 +17,7 @@ export class TextFieldComponent implements OnInit {
   @Input() infoIconLink!: string;
   @Input() required!: boolean;
   @Input() fieldExamples!: Array<FieldExample>;
+  @ContentChild('customChildInputTemplate') customChildInputTemplate!: TemplateRef<any>;
 
   form: FormGroup = new FormGroup({});
 
@@ -75,12 +76,12 @@ export class TextFieldComponent implements OnInit {
   }
 
   translate(fieldExample: FieldExample): string {
-    if (fieldExample.label && !fieldExample.numberOfChars) {
+    if (fieldExample.label && !fieldExample.arg) {
       return this.translatePipe.transform(fieldExample.label);
     }
-    if (fieldExample.label && fieldExample.numberOfChars) {
+    if (fieldExample.label && fieldExample.arg) {
       return this.translatePipe.transform(fieldExample.label, {
-        numberOfChars: fieldExample.numberOfChars,
+        [fieldExample.arg!.key]: fieldExample.arg?.value,
       });
     }
     return fieldExample.label!;
