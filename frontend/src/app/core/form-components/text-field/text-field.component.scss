@@ -33,6 +33,10 @@ input {
   }
 }
 
+input[disabled] {
+  background: unset;
+}
+
 .error {
   color: variables.$errorColor;
 }
