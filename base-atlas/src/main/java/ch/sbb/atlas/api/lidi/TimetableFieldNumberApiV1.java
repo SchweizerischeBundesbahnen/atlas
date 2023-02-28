@@ -15,7 +15,6 @@ import jakarta.validation.Valid;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -27,31 +26,32 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Tag(name = "Timetable field numbers")
-@RequestMapping("v1/field-numbers")
 public interface TimetableFieldNumberApiV1 {
 
-  @GetMapping
+  String BASE_PATH = "v1/field-numbers";
+
+  @GetMapping(BASE_PATH)
   @PageableAsQueryParam
   Container<TimetableFieldNumberModel> getOverview(
       @Parameter(hidden = true) Pageable pageable,
       @Parameter @RequestParam(required = false) List<String> searchCriteria,
-      @RequestParam(required = false) Optional<String> businessOrganisation,
-      @Parameter @RequestParam(required = false) @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN) Optional<LocalDate> validOn,
+      @Parameter @RequestParam(required = false) String number,
+      @RequestParam(required = false) String businessOrganisation,
+      @Parameter @RequestParam(required = false) @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN) LocalDate validOn,
       @Parameter @RequestParam(required = false) List<Status> statusChoices);
 
-  @GetMapping("versions/{ttfnId}")
-  List<TimetableFieldNumberVersionVersionModel> getAllVersionsVersioned(@PathVariable String ttfnId);
+  @GetMapping(BASE_PATH + "/versions/{ttfnId}")
+  List<TimetableFieldNumberVersionModel> getAllVersionsVersioned(@PathVariable String ttfnId);
 
-  @PostMapping("{ttfnId}/revoke")
+  @PostMapping(BASE_PATH + "/{ttfnId}/revoke")
   @PreAuthorize("@userAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).TTFN)")
-  List<TimetableFieldNumberVersionVersionModel> revokeTimetableFieldNumber(@PathVariable String ttfnId);
+  List<TimetableFieldNumberVersionModel> revokeTimetableFieldNumber(@PathVariable String ttfnId);
 
-  @PostMapping({"versions/{id}"})
+  @PostMapping(BASE_PATH + "/versions/{id}")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200"),
       @ApiResponse(responseCode = "409", description = "Number or SwissTimeTableFieldNumber are already taken", content =
@@ -59,32 +59,32 @@ public interface TimetableFieldNumberApiV1 {
       @ApiResponse(responseCode = "412", description = "Entity has already been updated (etagVersion out of date)", content =
       @Content(schema = @Schema(implementation = ErrorResponse.class)))
   })
-  List<TimetableFieldNumberVersionVersionModel> updateVersionWithVersioning(@PathVariable Long id,
-      @RequestBody @Valid TimetableFieldNumberVersionVersionModel newVersion);
+  List<TimetableFieldNumberVersionModel> updateVersionWithVersioning(@PathVariable Long id,
+      @RequestBody @Valid TimetableFieldNumberVersionModel newVersion);
 
-  @PostMapping("versions")
+  @PostMapping(BASE_PATH + "/versions")
   @ResponseStatus(HttpStatus.CREATED)
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201"),
       @ApiResponse(responseCode = "409", description = "Number or SwissTimeTableFieldNumber are already taken", content =
       @Content(schema = @Schema(implementation = ErrorResponse.class)))
   })
-  TimetableFieldNumberVersionVersionModel createVersion(
-      @RequestBody @Valid TimetableFieldNumberVersionVersionModel newVersion);
+  TimetableFieldNumberVersionModel createVersion(
+      @RequestBody @Valid TimetableFieldNumberVersionModel newVersion);
 
-  @DeleteMapping({"/{ttfnid}"})
+  @DeleteMapping(BASE_PATH + "/{ttfnid}")
   void deleteVersions(@PathVariable String ttfnid);
 
   @Operation(description = "Export all Timetable Field Number versions as csv and zip file to the ATLAS Amazon S3 Bucket")
-  @PostMapping(value = "/export-csv/full", produces = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping(path = BASE_PATH + "/export-csv/full", produces = MediaType.APPLICATION_JSON_VALUE)
   List<URL> exportFullTimetableFieldNumberVersions();
 
   @Operation(description = "Export all actual Timetable Field Number versions as csv and zip file to the ATLAS Amazon S3 Bucket")
-  @PostMapping(value = "/export-csv/actual", produces = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping(path = BASE_PATH + "/export-csv/actual", produces = MediaType.APPLICATION_JSON_VALUE)
   List<URL> exportActualTimetableFieldNumberVersions();
 
   @Operation(description = "Export all Timetable Field Number versions for the current timetable year change as csv and zip "
       + "file to the ATLAS Amazon S3 Bucket")
-  @PostMapping(value = "/export-csv/timetable-year-change", produces = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping(path = BASE_PATH + "/export-csv/timetable-year-change", produces = MediaType.APPLICATION_JSON_VALUE)
   List<URL> exportTimetableYearChangeTimetableFieldNumberVersions();
 }
