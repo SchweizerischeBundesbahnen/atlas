@@ -8,8 +8,6 @@
     {{ 'FORM.TEXT' | translate }} |
     {{ 'FORM.MAX_CHARS' | translate : { numberOfChars: 1500 } }}
   </mat-label>
-  <mat-form-field appearance="outline" class="atlas-text-area">
-    <textarea data-cy="comment" formControlName="comment" matInput rows="7"></textarea>
-    <mat-error fieldErrors></mat-error>
-  </mat-form-field>
+  <textarea data-cy="comment" formControlName="comment" matInput rows="7"></textarea>
+  <!--  <mat-error fieldErrors></mat-error>-->
 </div>
