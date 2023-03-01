@@ -148,64 +148,45 @@
       <form-url-component [formGroup]="form"></form-url-component>
     </div>
     <div class="d-flex flex-column col-3 pe-3">
-      <mat-label class="font-bold-lg required-indicator"
-        >{{ 'LIDI.LINE.FONT_RGB' | translate }}
-      </mat-label>
-      <mat-label class="font-regular-sm"
-        >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ '#4AC44F' }}</mat-label
-      >
       <app-rgb-picker
         [formGroup]="form"
         attributeName="colorFontRgb"
         data-cy="colorFontRgb"
         defaultColor="#000000"
+        label="LIDI.LINE.FONT_RGB"
       ></app-rgb-picker>
     </div>
-
     <div class="d-flex flex-column col-3">
-      <mat-label class="font-bold-lg required-indicator"
-        >{{ 'LIDI.LINE.FONT_CMYK' | translate }}
-      </mat-label>
-      <mat-label class="font-regular-sm"
-        >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ '0,0,0,100' }}</mat-label
-      >
       <app-cmyk-picker
         [formGroup]="form"
         attributeName="colorFontCmyk"
         data-cy="colorFontCmyk"
         defaultColor="100,100,100,100"
+        exampleLabel="0,0,0,100"
+        label="LIDI.LINE.FONT_CMYK"
       ></app-cmyk-picker>
     </div>
   </div>
 
   <div class="col-12 d-flex justify-content-end mt-3">
     <div class="d-flex flex-column col-3 pe-3">
-      <mat-label class="font-bold-lg required-indicator"
-        >{{ 'LIDI.LINE.BACKGROUND_RGB' | translate }}
-      </mat-label>
-      <mat-label class="font-regular-sm"
-        >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ '#4AC44F' }}</mat-label
-      >
       <app-rgb-picker
         [formGroup]="form"
         attributeName="colorBackRgb"
         data-cy="colorBackRgb"
         defaultColor="#FFFFFF"
+        label="LIDI.LINE.BACKGROUND_RGB"
       ></app-rgb-picker>
     </div>
 
     <div class="d-flex flex-column col-3">
-      <mat-label class="font-bold-lg required-indicator"
-        >{{ 'LIDI.LINE.BACKGROUND_CMYK' | translate }}
-      </mat-label>
-      <mat-label class="font-regular-sm"
-        >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ '85,10,65,0' }}</mat-label
-      >
       <app-cmyk-picker
         [formGroup]="form"
         attributeName="colorBackCmyk"
         data-cy="colorBackCmyk"
         defaultColor="0,0,0,0"
+        exampleLabel="85,10,65,0"
+        label="LIDI.LINE.BACKGROUND_CMYK"
       ></app-cmyk-picker>
     </div>
   </div>

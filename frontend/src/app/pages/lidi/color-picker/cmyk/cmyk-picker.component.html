@@ -1,17 +1,22 @@
-<mat-form-field [formGroup]="formGroup">
-  <div class="field-input-container">
-    <div
-      class="color-indicator {{ formControl.value ? 'border border-dark rounded-1' : '' }}"
-      [style.background-color]="toRbg(formControl.value) || 'transparent'"
-    ></div>
-    <input
-      matInput
-      formControlName="{{ attributeName }}"
-      data-cy="cmyk-picker-input"
-      [withDefaultValue]="defaultColor"
-    />
-  </div>
-  <mat-error *ngIf="formControl.hasError('pattern')">{{
-    'VALIDATION.CMYK_INVALID' | translate
-  }}</mat-error>
-</mat-form-field>
+<div class="field-input-container">
+  <atlas-text-field
+    [customInputNgStyle]="{ 'padding-left': '30px' }"
+    [fieldExamples]="[
+      { label: 'FORM.FOR_EXAMPLE', translate: true },
+      { label: exampleLabel, translate: false }
+    ]"
+    [required]="true"
+    controlName="{{ attributeName }}"
+    data-cy="cmyk-picker-input"
+    fieldLabel="{{ label }}"
+  >
+    <ng-template #customChildInputPrefixTemplate>
+      <div
+        [style.background-color]="toRbg(formControl.value) || 'transparent'"
+        class="color-indicator {{
+          formControl.value ? 'border border-dark rounded-1' : ''
+        }} preview-color"
+      ></div>
+    </ng-template>
+  </atlas-text-field>
+</div>
