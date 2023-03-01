@@ -11,6 +11,7 @@
 img {
   margin-left: 5px;
   margin-bottom: 15px;
+  margin-top: 50px;
   cursor: pointer;
 }
 
@@ -18,4 +19,10 @@ img {
   display: flex;
   width: 100%;
   padding-left: 0.4375em;
+}
+
+.preview-color {
+  position: absolute;
+  margin-left: 10px;
+  margin-top: 11px;
 }
