@@ -169,7 +169,8 @@
   "VALIDATION_ATLAS_FORM_COMPONENT": {
     "REQUIRED": "Dies ist ein Pflichtfeld.",
     "MAXLENGTH": "Es sind maximal {{maxlength.requiredLength}} Zeichen erlaubt.",
-    "PATTERN": "Ungültiges Format. Erlaubte Zeichen sind: {{pattern.allowedCharacters}}"
+    "PATTERN": "Ungültiges Format. Erlaubte Zeichen sind: {{pattern.allowedCharacters}}",
+    "DATE_RANGE_ERROR": "Das Gültig-von Datum darf nicht grösser als das Gültig-bis Datum sein: {{date}}"
   },
   "VALIDATION": {
     "REQUIRED": "Dies ist ein Pflichtfeld.",
