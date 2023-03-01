@@ -19,7 +19,17 @@
 <form [formGroup]="form">
   <div class="text-field-wrapper">
     <div class="text-field-flex">
-      <input *ngIf="!datePicker" [formControlName]="controlName" type="text" />
+      <ng-container
+        #customChildInputPrefixTemplate
+        *ngTemplateOutlet="customChildInputPrefixTemplate"
+      >
+      </ng-container>
+      <input
+        *ngIf="!datePicker"
+        [formControlName]="controlName"
+        [ngStyle]="customInputNgStyle"
+        type="text"
+      />
       <input
         *ngIf="datePicker"
         [formControlName]="controlName"
@@ -28,8 +38,8 @@
         [min]="datePicker.minDate"
       />
       <ng-container
-        #customChildInputTemplate
-        *ngTemplateOutlet="customChildInputTemplate"
+        #customChildInputPostfixTemplate
+        *ngTemplateOutlet="customChildInputPostfixTemplate"
       ></ng-container>
     </div>
   </div>
