@@ -4,6 +4,7 @@ import { concat, debounceTime, EMPTY, Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { FieldExample } from './field-example';
 import { TranslatePipe } from '@ngx-translate/core';
+import { FieldDatePicker } from './field-date-picker';
 
 @Component({
   selector: 'atlas-text-field',
@@ -17,6 +18,7 @@ export class TextFieldComponent implements OnInit {
   @Input() infoIconLink!: string;
   @Input() required!: boolean;
   @Input() fieldExamples!: Array<FieldExample>;
+  @Input() datePicker!: FieldDatePicker;
   @ContentChild('customChildInputTemplate') customChildInputTemplate!: TemplateRef<any>;
 
   form: FormGroup = new FormGroup({});
