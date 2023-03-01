@@ -11,7 +11,7 @@
       data-cy="validFrom"
       fieldLabel="COMMON.VALID_FROM"
     >
-      <ng-template #customChildInputTemplate>
+      <ng-template #customChildInputPostfixTemplate>
         <mat-datepicker-toggle [for]="validFromPicker" matIconSuffix>
           <mat-icon matDatepickerToggleIcon>
             <form-date-icon [enabled]="formGroup.controls.validFrom.enabled"></form-date-icon>
@@ -34,7 +34,7 @@
       data-cy="validTo"
       fieldLabel="COMMON.VALID_TO"
     >
-      <ng-template #customChildInputTemplate>
+      <ng-template #customChildInputPostfixTemplate>
         <mat-datepicker-toggle [for]="validToPicker" matSuffix>
           <mat-icon matDatepickerToggleIcon>
             <form-date-icon [enabled]="formGroup.controls.validTo.enabled"></form-date-icon>
