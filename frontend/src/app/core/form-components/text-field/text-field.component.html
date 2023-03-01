@@ -19,14 +19,18 @@
 <form [formGroup]="form">
   <div class="text-field-wrapper">
     <div class="text-field-flex">
-      <input [formControlName]="controlName" type="text" />
+      <input *ngIf="!datePicker" [formControlName]="controlName" type="text" />
+      <input
+        *ngIf="datePicker"
+        [formControlName]="controlName"
+        [matDatepicker]="datePicker.matDatePicker!"
+        [max]="datePicker.maxDate"
+        [min]="datePicker.minDate"
+      />
       <ng-container
         #customChildInputTemplate
         *ngTemplateOutlet="customChildInputTemplate"
       ></ng-container>
     </div>
-    <span *ngIf="(isTouched || isDirty) && (hasError | async)" class="error font-regular-xs">
-      {{ errorTranslationKeyToShow | translate : errorArgs }}
-    </span>
   </div>
 </form>
