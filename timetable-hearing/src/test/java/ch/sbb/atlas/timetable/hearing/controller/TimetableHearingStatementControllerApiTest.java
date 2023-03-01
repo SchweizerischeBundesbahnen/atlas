@@ -20,6 +20,7 @@ import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel.Fields;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingYearModel;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
+import ch.sbb.atlas.model.controller.AtlasMockMultipartFile;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.timetable.hearing.repository.TimetableHearingYearRepository;
 import java.time.LocalDate;
@@ -63,7 +64,8 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
         .number("1.1")
         .ttfnid("ch:1:ttfnid:123123123")
         .build();
-    when(timetableFieldNumberClient.getOverview(any(), any(), eq(returnedTimetableFieldNumber.getNumber()), any(), any(), any())).thenReturn(
+    when(timetableFieldNumberClient.getOverview(any(), any(), eq(returnedTimetableFieldNumber.getNumber()), any(), any(),
+        any())).thenReturn(
         Container.<TimetableFieldNumberModel>builder().objects(List.of(returnedTimetableFieldNumber)).totalCount(1L).build());
   }
 
@@ -83,8 +85,8 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
         .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
         .build();
 
-    MockMultipartFile statementJson = new MockMultipartFile("statement", null,
-        MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement).getBytes());
+    MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
+        MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
 
     mvc.perform(multipart(HttpMethod.POST, "/v1/timetable-hearing/statements")
             .file(statementJson))
@@ -104,8 +106,8 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
         .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
         .build();
 
-    MockMultipartFile statementJson = new MockMultipartFile("statement", null,
-        MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement).getBytes());
+    MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
+        MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
 
     mvc.perform(multipart(HttpMethod.POST, "/v1/timetable-hearing/statements")
             .file(statementJson))
@@ -122,14 +124,14 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
         .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
         .build();
 
-    MockMultipartFile statementJson = new MockMultipartFile("statement", null,
-        MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement).getBytes());
+    MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
+        MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
 
     mvc.perform(multipart(HttpMethod.POST, "/v1/timetable-hearing/statements")
             .file(statementJson)
-            .file(new MockMultipartFile("documents", "doc1.pdf", MediaType.MULTIPART_FORM_DATA_VALUE, "Tolles PDF".getBytes()))
-            .file(new MockMultipartFile("documents", "doc2.pdf", MediaType.MULTIPART_FORM_DATA_VALUE,
-                "Noch ein tolles PDF".getBytes())))
+            .file(new AtlasMockMultipartFile("documents", "doc1.pdf", MediaType.MULTIPART_FORM_DATA_VALUE, "Tolles PDF"))
+            .file(new AtlasMockMultipartFile("documents", "doc2.pdf", MediaType.MULTIPART_FORM_DATA_VALUE, "Noch ein tolles "
+                + "PDF")))
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
         .andExpect(jsonPath("$." + Fields.documents, hasSize(2)));
@@ -156,14 +158,14 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
          	"stopPlace": "Bern, Wyleregg"
          }
         """;
-    MockMultipartFile statementJson = new MockMultipartFile("statement", null,
-        MediaType.APPLICATION_JSON_VALUE, statement.getBytes());
+    MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
+        MediaType.APPLICATION_JSON_VALUE, statement);
 
     mvc.perform(multipart(HttpMethod.POST, "/v1/timetable-hearing/statements/external")
             .file(statementJson)
-            .file(new MockMultipartFile("documents", "doc1.pdf", MediaType.MULTIPART_FORM_DATA_VALUE, "Tolles PDF".getBytes()))
-            .file(new MockMultipartFile("documents", "doc2.pdf", MediaType.MULTIPART_FORM_DATA_VALUE,
-                "Noch ein tolles PDF".getBytes())))
+            .file(new AtlasMockMultipartFile("documents", "doc1.pdf", MediaType.MULTIPART_FORM_DATA_VALUE, "Tolles PDF"))
+            .file(new AtlasMockMultipartFile("documents", "doc2.pdf", MediaType.MULTIPART_FORM_DATA_VALUE,
+                "Noch ein tolles PDF")))
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
         .andExpect(jsonPath("$." + Fields.documents, hasSize(2)))
@@ -184,8 +186,8 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
 
     statement.setStatementStatus(StatementStatus.JUNK);
 
-    MockMultipartFile statementJson = new MockMultipartFile("statement", null,
-        MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement).getBytes());
+    MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
+        MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
 
     mvc.perform(multipart(HttpMethod.PUT, "/v1/timetable-hearing/statements/" + statement.getId())
             .file(statementJson))
@@ -206,12 +208,12 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
             .build(),
         Collections.emptyList());
 
-    MockMultipartFile statementJson = new MockMultipartFile("statement", null,
-        MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement).getBytes());
+    MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
+        MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
 
     mvc.perform(multipart(HttpMethod.PUT, "/v1/timetable-hearing/statements/" + statement.getId())
             .file(statementJson)
-            .file(new MockMultipartFile("documents", "doc1.pdf", MediaType.MULTIPART_FORM_DATA_VALUE, "Tolles PDF".getBytes())))
+            .file(new AtlasMockMultipartFile("documents", "doc1.pdf", MediaType.MULTIPART_FORM_DATA_VALUE, "Tolles PDF")))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
         .andExpect(jsonPath("$." + Fields.documents, hasSize(1)));
