@@ -19,7 +19,10 @@ export class TextFieldComponent implements OnInit {
   @Input() required!: boolean;
   @Input() fieldExamples!: Array<FieldExample>;
   @Input() datePicker!: FieldDatePicker;
-  @ContentChild('customChildInputTemplate') customChildInputTemplate!: TemplateRef<any>;
+  @Input() customInputNgStyle!: Record<string, string | undefined | null>;
+  @ContentChild('customChildInputPostfixTemplate')
+  customChildInputPostfixTemplate!: TemplateRef<any>;
+  @ContentChild('customChildInputPrefixTemplate') customChildInputPrefixTemplate!: TemplateRef<any>;
 
   form: FormGroup = new FormGroup({});
 
