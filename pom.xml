@@ -46,6 +46,7 @@
       <module>base-atlas</module>
       <module>user-administration-security</module>
       <!--  Services -->
+      <module>timetable-hearing</module>
       <module>mail</module>
       <module>scheduling</module>
       <module>line-directory</module>
@@ -54,7 +55,6 @@
       <module>import-service-point</module>
       <module>user-administration</module>
       <module>workflow</module>
-      <module>timetable-hearing</module>
       <!-- Combine APIs -->
       <module>apim-configuration</module>
       <module>gateway</module>
