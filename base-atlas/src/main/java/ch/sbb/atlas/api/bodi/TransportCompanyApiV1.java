@@ -12,25 +12,28 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Tag(name = "Transport Companies")
-@RequestMapping("v1/transport-companies")
 public interface TransportCompanyApiV1 {
 
+  String BASE_PATH = "v1/transport-companies";
+
   @Secured(Role.ROLE_PREFIX + Role.ATLAS_ADMIN)
-  @PostMapping("loadFromBAV")
+  @PostMapping(BASE_PATH + "/loadFromBAV")
   void loadTransportCompaniesFromBav();
 
-  @GetMapping
+  @GetMapping(BASE_PATH)
   @PageableAsQueryParam
   Container<TransportCompanyModel> getTransportCompanies(
       @Parameter(hidden = true) Pageable pageable,
       @Parameter @RequestParam(required = false) List<String> searchCriteria,
       @Parameter @RequestParam(required = false) List<TransportCompanyStatus> statusChoices);
 
-  @GetMapping("{id}")
+  @GetMapping(BASE_PATH + "/bySboid")
+  List<TransportCompanyModel> getTransportCompaniesBySboid(@Parameter @RequestParam String sboid);
+
+  @GetMapping(BASE_PATH + "/{id}")
   TransportCompanyModel getTransportCompany(@PathVariable Long id);
 
 }
