@@ -66,7 +66,7 @@ include::{snippets}/timetable-hearing-year-controller-api-test/should-close-hear
 
 == Create Hearing Statement - Successfully
 
-include::{snippets}/timetable-hearing-statement-controller-api-test/should-create-statement/auto-section.adoc[]
+include::{snippets}/timetable-hearing-statement-controller-api-test/should-create-statement-without-documents/auto-section.adoc[]
 
 == Create Hearing Statement from External (e.g. SKI Web)- Successfully
 

@@ -12,8 +12,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.atlas.api.bodi.TransportCompanyModel;
+import ch.sbb.atlas.api.client.bodi.TransportCompanyClient;
 import ch.sbb.atlas.api.client.lidi.TimetableFieldNumberClient;
 import ch.sbb.atlas.api.lidi.TimetableFieldNumberModel;
+import ch.sbb.atlas.api.lidi.TimetableFieldNumberVersionModel;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.timetable.hearing.StatementSenderModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
@@ -43,6 +46,8 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
       .hearingFrom(LocalDate.of(2021, 1, 1))
       .hearingTo(LocalDate.of(2021, 2, 1))
       .build();
+  public static final String TTFNID = "ch:1:ttfnid:123123123";
+  public static final String SBOID = "ch:1:sboid:123451";
 
   @Autowired
   private TimetableHearingYearRepository timetableHearingYearRepository;
@@ -56,17 +61,40 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
   @MockBean
   private TimetableFieldNumberClient timetableFieldNumberClient;
 
+  @MockBean
+  private TransportCompanyClient transportCompanyClient;
+
   @BeforeEach
   void setUp() {
     timetableHearingYearController.createHearingYear(TIMETABLE_HEARING_YEAR);
 
     TimetableFieldNumberModel returnedTimetableFieldNumber = TimetableFieldNumberModel.builder()
         .number("1.1")
-        .ttfnid("ch:1:ttfnid:123123123")
+        .ttfnid(TTFNID)
+        .businessOrganisation(SBOID)
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(9999, 12, 31))
         .build();
     when(timetableFieldNumberClient.getOverview(any(), any(), eq(returnedTimetableFieldNumber.getNumber()), any(), any(),
         any())).thenReturn(
         Container.<TimetableFieldNumberModel>builder().objects(List.of(returnedTimetableFieldNumber)).totalCount(1L).build());
+
+    TimetableFieldNumberVersionModel returnedTimetableFieldNumberVersion = TimetableFieldNumberVersionModel.builder()
+        .number("1.1")
+        .ttfnid(TTFNID)
+        .businessOrganisation(SBOID)
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(9999, 12, 31))
+        .build();
+    when(timetableFieldNumberClient.getAllVersionsVersioned(TTFNID)).thenReturn(List.of(returnedTimetableFieldNumberVersion));
+
+    TransportCompanyModel transportCompanyModel = TransportCompanyModel.builder()
+        .id(1L)
+        .number("#0001")
+        .abbreviation("SBB")
+        .businessRegisterName("Schweizerische Bundesbahnen SBB")
+        .build();
+    when(transportCompanyClient.getTransportCompaniesBySboid(SBOID)).thenReturn(List.of(transportCompanyModel));
   }
 
   @AfterEach
