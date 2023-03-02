@@ -4,7 +4,6 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
@@ -14,18 +13,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.sbb.atlas.api.bodi.TransportCompanyModel;
 import ch.sbb.atlas.api.client.bodi.TransportCompanyClient;
-import ch.sbb.atlas.api.client.lidi.TimetableFieldNumberClient;
-import ch.sbb.atlas.api.lidi.TimetableFieldNumberModel;
-import ch.sbb.atlas.api.lidi.TimetableFieldNumberVersionModel;
-import ch.sbb.atlas.api.model.Container;
-import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementSenderModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel.Fields;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementSenderModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingYearModel;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.model.controller.AtlasMockMultipartFile;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
+import ch.sbb.line.directory.entity.TimetableFieldNumber;
+import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.repository.TimetableHearingYearRepository;
+import ch.sbb.line.directory.service.TimetableFieldNumberService;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -34,6 +32,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
@@ -59,7 +59,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
   private TimetableHearingStatementController timetableHearingStatementController;
 
   @MockBean
-  private TimetableFieldNumberClient timetableFieldNumberClient;
+  private TimetableFieldNumberService timetableFieldNumberService;
 
   @MockBean
   private TransportCompanyClient transportCompanyClient;
@@ -68,25 +68,24 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
   void setUp() {
     timetableHearingYearController.createHearingYear(TIMETABLE_HEARING_YEAR);
 
-    TimetableFieldNumberModel returnedTimetableFieldNumber = TimetableFieldNumberModel.builder()
+    TimetableFieldNumber returnedTimetableFieldNumber = TimetableFieldNumber.builder()
         .number("1.1")
         .ttfnid(TTFNID)
         .businessOrganisation(SBOID)
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(9999, 12, 31))
         .build();
-    when(timetableFieldNumberClient.getOverview(any(), any(), eq(returnedTimetableFieldNumber.getNumber()), any(), any(),
-        any())).thenReturn(
-        Container.<TimetableFieldNumberModel>builder().objects(List.of(returnedTimetableFieldNumber)).totalCount(1L).build());
+    when(timetableFieldNumberService.getVersionsSearched(any())).thenReturn(new PageImpl<>(List.of(returnedTimetableFieldNumber),
+        Pageable.unpaged(), 1L));
 
-    TimetableFieldNumberVersionModel returnedTimetableFieldNumberVersion = TimetableFieldNumberVersionModel.builder()
+    TimetableFieldNumberVersion returnedTimetableFieldNumberVersion = TimetableFieldNumberVersion.builder()
         .number("1.1")
         .ttfnid(TTFNID)
         .businessOrganisation(SBOID)
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(9999, 12, 31))
         .build();
-    when(timetableFieldNumberClient.getAllVersionsVersioned(TTFNID)).thenReturn(List.of(returnedTimetableFieldNumberVersion));
+    when(timetableFieldNumberService.getAllVersionsVersioned(TTFNID)).thenReturn(List.of(returnedTimetableFieldNumberVersion));
 
     TransportCompanyModel transportCompanyModel = TransportCompanyModel.builder()
         .id(1L)
