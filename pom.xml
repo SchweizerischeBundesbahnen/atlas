@@ -46,7 +46,6 @@
       <module>base-atlas</module>
       <module>user-administration-security</module>
       <!--  Services -->
-      <module>timetable-hearing</module>
       <module>mail</module>
       <module>scheduling</module>
       <module>line-directory</module>
