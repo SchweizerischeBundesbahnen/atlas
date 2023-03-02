@@ -80,3 +80,8 @@ amazon:
   region: "eu-central-1"
   bucketName: "atlas-data-export-dev-dev"
   objectExpirationDays: 30
+
+atlas:
+  client:
+    gateway:
+      url: "http://localhost:8888"
