@@ -113,22 +113,6 @@ services:
       - "-c"
       - "datestyle=iso, ymd"
 
-  timetable-hearing-db:
-    image: postgres:15.2
-    restart: always
-    ports:
-      - "5441:5432"
-    environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: pwd
-      POSTGRES_DB: timetable-hearing
-    volumes:
-      - "/var/lib/postgresql/data"
-    command:
-      - "postgres"
-      - "-c"
-      - "datestyle=iso, ymd"
-
   zookeeper:
     image: wurstmeister/zookeeper
     ports:
