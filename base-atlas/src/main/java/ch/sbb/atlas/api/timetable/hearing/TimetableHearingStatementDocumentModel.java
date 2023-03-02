@@ -20,8 +20,8 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @SuperBuilder
 @FieldNameConstants
-@Schema(name = "StatementDocument")
-public class StatementDocumentModel {
+@Schema(name = "TimetableHearingStatementDocument")
+public class TimetableHearingStatementDocumentModel {
 
   @Schema(description = "Technical identifier", example = "1", accessMode = AccessMode.READ_ONLY)
   private Long id;
