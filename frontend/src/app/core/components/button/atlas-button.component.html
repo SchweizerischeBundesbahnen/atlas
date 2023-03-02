@@ -1,11 +1,10 @@
 <div *ngIf="isButtonVisible()" [ngClass]="wrapperStyleClass + ' btn-' + buttonType">
   <button
-    mat-raised-button
     [class]="getButtonStyleClass()"
     (click)="buttonClicked.emit()"
     [type]="submitButton ? 'submit' : 'button'"
     [disabled]="disabled"
-    [attr.data-cy]="buttonDataCy"
+    attr.data-cy="{{ buttonDataCy }}"
   >
     {{ buttonText | translate }}
   </button>
