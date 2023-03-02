@@ -20,6 +20,7 @@ export class BodiOverviewComponent {
       title: 'BODI.COMPANIES.COMPANIES',
     },
   ];
+  activeTab = this.TABS[0];
 
   constructor(private route: ActivatedRoute, private router: Router) {}
 

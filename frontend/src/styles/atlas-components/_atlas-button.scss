@@ -2,7 +2,26 @@
 
 button.atlas-raised-button {
   border-radius: variables.$border-radius;
-  padding: 28px 20px;
+  border: unset;
+  background-color: variables.$white !important;
+  height: 56px;
+  padding: 0 20px;
+}
+
+button.footer-btn {
+  background-color: variables.$primary-500;
+  color: variables.$white;
+  border-color: variables.$white;
+
+  &:hover:not(:disabled) {
+    color: variables.$primary-500;
+    background-color: variables.$white;
+  }
+
+  &:disabled {
+    color: variables.$primary-300;
+    border-color: variables.$primary-300;
+  }
 }
 
 .atlas-primary-btn {
