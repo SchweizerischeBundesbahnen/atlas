@@ -1,29 +1,32 @@
-// app variables (color, size, etc.)
+// variables include
 @use 'variables';
-@use 'core/atlas-core';
 
-// Presentation framework
-@use 'bootstrap/scss/bootstrap';
-
-// Theme (based on Material)
+// theme include
 @use 'theme';
 
-// Angular Material Components
-@use 'am-components/mat-button';
+// /third-party include
+@use 'third-party/components';
+
+// /core includes
+@use 'core/atlas-core';
+@use 'core/color-classes';
+@use 'core/font-classes';
+@use 'core/html_body';
+
+// /atlas-components includes
+@use 'atlas-components/atlas-button';
+@use 'atlas-components/switch-version';
+
+// /am-components includes
 @use 'am-components/mat-chip';
 @use 'am-components/mat-date-range-input';
-@use 'am-components/mat-form-field';
-@use 'am-components/mat-form-field-default';
-@use 'am-components/mat-form-field-outline';
+@use 'am-components/mat-dialog';
+//@use 'am-components/mat-form-field-default';
+//@use 'am-components/mat-form-field-outline';
 @use 'am-components/mat-label';
-@use 'am-components/mat-nav-list';
 @use 'am-components/mat-paginator';
 @use 'am-components/mat-slide-toggle';
 @use 'am-components/mat-snack-bar';
 @use 'am-components/mat-tab';
 @use 'am-components/mat-table';
 @use 'am-components/ng-select';
-@use 'am-components/mat-dialog';
-
-// App 3rd party components
-@use 'other-components/components';
