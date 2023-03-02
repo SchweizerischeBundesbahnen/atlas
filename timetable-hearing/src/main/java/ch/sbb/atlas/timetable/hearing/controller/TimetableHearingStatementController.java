@@ -8,6 +8,7 @@ import ch.sbb.atlas.timetable.hearing.entity.StatementDocument;
 import ch.sbb.atlas.timetable.hearing.entity.TimetableHearingStatement;
 import ch.sbb.atlas.timetable.hearing.mapper.TimeTableHearingStatementMapper;
 import ch.sbb.atlas.timetable.hearing.model.TimetableHearingStatementSearchRestrictions;
+import ch.sbb.atlas.timetable.hearing.service.ResponsibleTransportCompaniesResolverService;
 import ch.sbb.atlas.timetable.hearing.service.TimetableFieldNumberResolverService;
 import ch.sbb.atlas.timetable.hearing.service.TimetableHearingStatementService;
 import ch.sbb.atlas.timetable.hearing.service.TimetableHearingYearService;
@@ -27,6 +28,7 @@ public class TimetableHearingStatementController implements TimetableHearingStat
   private final TimetableHearingStatementService timetableHearingStatementService;
   private final TimetableHearingYearService timetableHearingYearService;
   private final TimetableFieldNumberResolverService timetableFieldNumberResolverService;
+  private final ResponsibleTransportCompaniesResolverService responsibleTransportCompaniesResolverService;
 
   @Override
   public Container<TimetableHearingStatementModel> getStatements(Pageable pageable,
@@ -61,6 +63,11 @@ public class TimetableHearingStatementController implements TimetableHearingStat
     String resolvedTtfnid =
         timetableFieldNumberResolverService.resolveTtfnid(statement.getTimetableFieldNumber());
     statement.setTtfnid(resolvedTtfnid);
+
+    List<String> responsibleTransportCompanies =
+        responsibleTransportCompaniesResolverService.resolveResponsibleTransportCompanies(
+        resolvedTtfnid);
+    statement.setResponsibleTransportCompanies(responsibleTransportCompanies);
 
     Long activeHearingYear = timetableHearingYearService.getActiveHearingYear().getTimetableYear();
     statement.setTimetableYear(activeHearingYear);

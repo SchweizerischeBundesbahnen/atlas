@@ -1,5 +1,6 @@
 package ch.sbb.business.organisation.directory.service;
 
+import ch.sbb.atlas.api.bodi.TransportCompanyModel;
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import ch.sbb.atlas.kafka.model.mail.MailType;
 import ch.sbb.business.organisation.directory.controller.TransportCompanySearchRestrictions;
@@ -128,4 +129,7 @@ public class TransportCompanyService {
                                                  }).toList();
   }
 
+  public List<TransportCompany> findBySboid(String sboid) {
+    return transportCompanyRepository.findAllWithSboid(sboid);
+  }
 }

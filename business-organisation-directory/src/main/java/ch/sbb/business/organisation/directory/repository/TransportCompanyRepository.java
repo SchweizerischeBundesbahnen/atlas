@@ -19,4 +19,10 @@ public interface TransportCompanyRepository extends JpaRepository<TransportCompa
       + "(ch.sbb.atlas.api.bodi.enumeration.TransportCompanyStatus.INACTIVE, "
       + "ch.sbb.atlas.api.bodi.enumeration.TransportCompanyStatus.LIQUIDATED))")
   List<TransportCompany> findTransportCompaniesWithInvalidRelations();
+
+  @Query("select tc from transport_company tc "
+      + "join transport_company_relation tr "
+      + "on tr.transportCompany=tc "
+      + "where tr.sboid=:sboid")
+  List<TransportCompany> findAllWithSboid(String sboid);
 }
