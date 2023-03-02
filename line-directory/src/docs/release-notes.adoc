@@ -18,4 +18,4 @@ Timetable Hearings are held each year.
 
 Every year citizens may provide statements on the next iteration of the public transport timetable.
 
-This is the initial API for year and statement handling.
+Due to the close coupling between TimetableFieldNumbers and TimetableHearings, they are presented by LineDirectory
