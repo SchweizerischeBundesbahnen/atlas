@@ -3,6 +3,9 @@ package ch.sbb.atlas.api.timetable.hearing;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel.Fields;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Encoding;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -42,6 +45,7 @@ public interface TimetableHearingStatementApiV1 {
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping(path = "external", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  @RequestBody(content = @Content(encoding = @Encoding(name = "statement", contentType = MediaType.APPLICATION_JSON_VALUE)))
   TimetableHearingStatementModel createStatementExternal(
       @RequestPart @Valid TimetableHearingStatementModel statement,
       @RequestPart(required = false) List<MultipartFile> documents);
