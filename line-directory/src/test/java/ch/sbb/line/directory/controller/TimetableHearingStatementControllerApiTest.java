@@ -18,7 +18,7 @@ import ch.sbb.atlas.api.client.lidi.TimetableFieldNumberClient;
 import ch.sbb.atlas.api.lidi.TimetableFieldNumberModel;
 import ch.sbb.atlas.api.lidi.TimetableFieldNumberVersionModel;
 import ch.sbb.atlas.api.model.Container;
-import ch.sbb.atlas.api.timetable.hearing.StatementSenderModel;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementSenderModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel.Fields;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingYearModel;
@@ -107,7 +107,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
     TimetableHearingStatementModel statement = TimetableHearingStatementModel.builder()
         .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
         .ttfnid("ch:1:ttfnid:12341241")
-        .statementSender(StatementSenderModel.builder()
+        .statementSender(TimetableHearingStatementSenderModel.builder()
             .email("fabienne.mueller@sbb.ch")
             .build())
         .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
@@ -129,7 +129,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
   void shouldReportInvalidJsonInStatementWithoutDocuments() throws Exception {
     TimetableHearingStatementModel statement = TimetableHearingStatementModel.builder()
         .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
-        .statementSender(StatementSenderModel.builder()
+        .statementSender(TimetableHearingStatementSenderModel.builder()
             .build())
         .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
         .build();
@@ -146,7 +146,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
   void shouldCreateStatementWithTwoDocuments() throws Exception {
     TimetableHearingStatementModel statement = TimetableHearingStatementModel.builder()
         .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
-        .statementSender(StatementSenderModel.builder()
+        .statementSender(TimetableHearingStatementSenderModel.builder()
             .email("fabienne.mueller@sbb.ch")
             .build())
         .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
@@ -205,7 +205,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
     TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
         TimetableHearingStatementModel.builder()
             .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
-            .statementSender(StatementSenderModel.builder()
+            .statementSender(TimetableHearingStatementSenderModel.builder()
                 .email("fabienne.mueller@sbb.ch")
                 .build())
             .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
@@ -229,7 +229,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
     TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
         TimetableHearingStatementModel.builder()
             .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
-            .statementSender(StatementSenderModel.builder()
+            .statementSender(TimetableHearingStatementSenderModel.builder()
                 .email("fabienne.mueller@sbb.ch")
                 .build())
             .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
@@ -252,7 +252,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
     TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
         TimetableHearingStatementModel.builder()
             .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
-            .statementSender(StatementSenderModel.builder()
+            .statementSender(TimetableHearingStatementSenderModel.builder()
                 .email("fabienne.mueller@sbb.ch")
                 .build())
             .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
@@ -270,7 +270,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
     TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
         TimetableHearingStatementModel.builder()
             .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
-            .statementSender(StatementSenderModel.builder()
+            .statementSender(TimetableHearingStatementSenderModel.builder()
                 .email("fabienne.mueller@sbb.ch")
                 .build())
             .statement("Ich hätte gerne mehrere Verbindungen am Abend.")

@@ -65,7 +65,7 @@ public class TimetableHearingStatementModel extends BaseVersionModel {
 
   @NotNull
   @Valid
-  private StatementSenderModel statementSender;
+  private TimetableHearingStatementSenderModel statementSender;
 
   @NotNull
   @Size(max = AtlasFieldLengths.LENGTH_5000)
@@ -75,7 +75,7 @@ public class TimetableHearingStatementModel extends BaseVersionModel {
 
   @Size(max = TimetableHearingConstants.MAX_DOCUMENTS)
   @Schema(description = "List of uploaded documents")
-  private List<StatementDocumentModel> documents;
+  private List<TimetableHearingStatementDocumentModel> documents;
 
   @Size(max = AtlasFieldLengths.LENGTH_5000)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
@@ -92,7 +92,7 @@ public class TimetableHearingStatementModel extends BaseVersionModel {
     return responsibleTransportCompanies;
   }
 
-  public List<StatementDocumentModel> getDocuments() {
+  public List<TimetableHearingStatementDocumentModel> getDocuments() {
     if (documents == null) {
       return new ArrayList<>();
     }
