@@ -4,8 +4,8 @@ import ch.sbb.atlas.amazon.helper.FutureTimetableHelper;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.bodi.TransportCompanyModel;
 import ch.sbb.atlas.api.client.bodi.TransportCompanyClient;
-import ch.sbb.atlas.api.client.lidi.TimetableFieldNumberClient;
-import ch.sbb.atlas.api.lidi.TimetableFieldNumberVersionModel;
+import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
+import ch.sbb.line.directory.service.TimetableFieldNumberService;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ResponsibleTransportCompaniesResolverService {
 
-  private final TimetableFieldNumberClient timetableFieldNumberClient;
+  private final TimetableFieldNumberService timetableFieldNumberService;
   private final TransportCompanyClient transportCompanyClient;
 
   public List<String> resolveResponsibleTransportCompanies(String ttfnid) {
@@ -40,12 +40,12 @@ public class ResponsibleTransportCompaniesResolverService {
 
   private String resolveBusinessOrganisationSboid(String ttfnid) {
     if (ttfnid != null) {
-      List<TimetableFieldNumberVersionModel> timetableFieldNumberVersions =
-          timetableFieldNumberClient.getAllVersionsVersioned(ttfnid);
+      List<TimetableFieldNumberVersion> timetableFieldNumberVersions =
+          timetableFieldNumberService.getAllVersionsVersioned(ttfnid);
 
       LocalDate beginningOfNextTimetableYear = FutureTimetableHelper.getActualTimetableYearChangeDate(LocalDate.now());
 
-      TimetableFieldNumberVersionModel versionValidOnNextTimetableYear = timetableFieldNumberVersions.stream().filter(
+      TimetableFieldNumberVersion versionValidOnNextTimetableYear = timetableFieldNumberVersions.stream().filter(
               version -> version.getValidFrom().isBefore(beginningOfNextTimetableYear) && version.getValidTo()
                   .isAfter(beginningOfNextTimetableYear))
           .findFirst()
