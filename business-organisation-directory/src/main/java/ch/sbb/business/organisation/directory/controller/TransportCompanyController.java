@@ -49,6 +49,11 @@ public class TransportCompanyController implements TransportCompanyApiV1 {
   }
 
   @Override
+  public List<TransportCompanyModel> getTransportCompaniesBySboid(String sboid) {
+    return transportCompanyService.findBySboid(sboid).stream().map(TransportCompanyMapper::fromEntity).toList();
+  }
+
+  @Override
   public TransportCompanyModel getTransportCompany(Long id) {
     return transportCompanyService.findById(id)
                                   .map(TransportCompanyMapper::fromEntity)
