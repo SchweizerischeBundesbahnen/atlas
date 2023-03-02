@@ -9,6 +9,7 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -25,6 +26,7 @@ public class TimetableFieldNumberResolverService {
 
       Page<TimetableFieldNumber> timetableFieldNumbers = timetableFieldNumberService.getVersionsSearched(
           TimetableFieldNumberSearchRestrictions.builder()
+              .pageable(Pageable.unpaged())
               .number(timetableFieldNumber)
               .validOn(Optional.of(beginningOfNextTimetableYear))
               .build());

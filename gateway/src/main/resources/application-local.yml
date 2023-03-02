@@ -51,4 +51,3 @@ gateway:
     workflow: http://localhost:8087
     service-point-directory: http://localhost:8088
     import-service-point: http://localhost:8090
-    timetable-hearing: http://localhost:8091
