@@ -3,3 +3,6 @@ production:
     - line-directory
     - business-organisation-directory
     - user-administration
+  excludePatterns:
+    - timetable-hearing
+    - TimetableHearing

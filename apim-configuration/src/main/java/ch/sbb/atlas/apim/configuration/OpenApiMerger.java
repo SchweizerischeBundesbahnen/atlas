@@ -8,13 +8,16 @@ import io.swagger.v3.oas.models.info.Info;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 public class OpenApiMerger {
 
     private static final String NEWLINE = "<br/>";
     private final String version;
     private final OpenApiExportConfig openApiExportConfig;
+    private final ProductionConfiguration productiveApiConfiguration;
 
     public OpenAPI getCombinedApi(Map<String, OpenAPI> openApis) {
         return createAtlasApi(openApis).components(combineComponents(openApis))
@@ -57,7 +60,9 @@ public class OpenApiMerger {
     private Components combineComponents(Map<String, OpenAPI> apis) {
         Components components = new Components();
         for (OpenAPI openAPI : apis.values()) {
-            openAPI.getComponents().getSchemas().forEach(components::addSchemas);
+            openAPI.getComponents().getSchemas().entrySet().stream()
+                .filter(entry -> openApiExportConfig != OpenApiExportConfig.PROD || isNotExcluded(entry.getKey()))
+                .forEach(entry -> components.addSchemas(entry.getKey(), entry.getValue()));
         }
         return components;
     }
@@ -67,9 +72,17 @@ public class OpenApiMerger {
         for (Map.Entry<String, OpenAPI> openAPI : apis.entrySet()) {
             openAPI.getValue()
                     .getPaths()
-                    .forEach((key, value) -> paths.addPathItem("/" + openAPI.getKey() + key, value));
+                    .forEach((path, value) -> {
+                        if (openApiExportConfig != OpenApiExportConfig.PROD || isNotExcluded(path)) {
+                            paths.addPathItem("/" + openAPI.getKey() + path, value);
+                        }
+                    });
         }
         return paths;
+    }
+
+    private boolean isNotExcluded(String key) {
+        return productiveApiConfiguration.getExcludePatterns().stream().noneMatch(key::contains);
     }
 
 }

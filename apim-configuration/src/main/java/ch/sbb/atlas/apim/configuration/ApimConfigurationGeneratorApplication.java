@@ -17,6 +17,7 @@ import java.util.stream.Stream;
 public class ApimConfigurationGeneratorApplication implements CommandLineRunner {
 
     private final OpenApiLoader openApiLoader;
+    private final ProductionConfiguration productiveApiConfiguration;
 
     public static void main(String[] args) {
         SpringApplication.run(ApimConfigurationGeneratorApplication.class, args);
@@ -36,7 +37,7 @@ public class ApimConfigurationGeneratorApplication implements CommandLineRunner 
         Map<String, OpenAPI> openApis = openApiExportConfig == OpenApiExportConfig.PROD ? openApiLoader.loadProductiveApisOnly() : openApiLoader.loadAllApis();
 
         log.info("Loaded successfully ...");
-        OpenAPI combinedApi = new OpenApiMerger(version, openApiExportConfig).getCombinedApi(openApis);
+        OpenAPI combinedApi = new OpenApiMerger(version, openApiExportConfig, productiveApiConfiguration).getCombinedApi(openApis);
         log.info("Combined successfully ...");
         OpenApiYamlExporter.export(combinedApi, openApiExportConfig.getExportDirectory());
         log.info("Exported combined API successfully");
