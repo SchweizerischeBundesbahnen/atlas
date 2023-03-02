@@ -23,8 +23,8 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @SuperBuilder
 @FieldNameConstants
-@Schema(name = "StatementSender")
-public class StatementSenderModel {
+@Schema(name = "TimetableHearingStatementSender")
+public class TimetableHearingStatementSenderModel {
 
   @Schema(description = "First Name", example = "Fabienne")
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
