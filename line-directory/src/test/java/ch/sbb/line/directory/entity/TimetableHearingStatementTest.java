@@ -2,8 +2,8 @@ package ch.sbb.line.directory.entity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.model.SwissCanton;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
+import ch.sbb.atlas.model.SwissCanton;
 import ch.sbb.line.directory.entity.TimetableHearingStatement.TimetableHearingStatementBuilder;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
@@ -22,7 +22,12 @@ class TimetableHearingStatementTest {
         .ttfnid("ch:1:ttfnid:1235234")
         .swissCanton(SwissCanton.BERN)
         .stopPlace("Erste Haltestelle ... weisst ja")
-        .responsibleTransportCompanies(Set.of("#0001", "#0002"))
+        .responsibleTransportCompanies(Set.of(ResponsibleTransportCompany.builder()
+            .transportCompanyId(1L)
+            .number("#0001")
+            .abbreviation("SBB")
+            .businessRegisterName("Schweizerische Bundesbahnen")
+            .build()))
         .statementSender(StatementSender.builder()
             .firstName("Mike")
             .lastName("von Bike")
