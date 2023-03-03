@@ -4,7 +4,9 @@ import ch.sbb.atlas.amazon.helper.FutureTimetableHelper;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.bodi.TransportCompanyModel;
 import ch.sbb.atlas.api.client.bodi.TransportCompanyClient;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
+import ch.sbb.line.directory.mapper.ResponsibleTransportCompanyMapper;
 import ch.sbb.line.directory.service.TimetableFieldNumberService;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -22,7 +24,7 @@ public class ResponsibleTransportCompaniesResolverService {
   private final TimetableFieldNumberService timetableFieldNumberService;
   private final TransportCompanyClient transportCompanyClient;
 
-  public List<String> resolveResponsibleTransportCompanies(String ttfnid) {
+  public List<TimetableHearingStatementResponsibleTransportCompanyModel> resolveResponsibleTransportCompanies(String ttfnid) {
     if (ttfnid != null) {
       String sboid = resolveBusinessOrganisationSboid(ttfnid);
       return resolveTransportCompanies(sboid);
@@ -30,10 +32,12 @@ public class ResponsibleTransportCompaniesResolverService {
     return Collections.emptyList();
   }
 
-  private List<String> resolveTransportCompanies(String sboid) {
+  private List<TimetableHearingStatementResponsibleTransportCompanyModel> resolveTransportCompanies(String sboid) {
     if (sboid != null) {
       List<TransportCompanyModel> transportCompaniesBySboid = transportCompanyClient.getTransportCompaniesBySboid(sboid);
-      return transportCompaniesBySboid.stream().map(TransportCompanyModel::getNumber).toList();
+      return transportCompaniesBySboid.stream()
+          .map(ResponsibleTransportCompanyMapper::toResponsibleTransportCompany)
+          .toList();
     }
     return Collections.emptyList();
   }
