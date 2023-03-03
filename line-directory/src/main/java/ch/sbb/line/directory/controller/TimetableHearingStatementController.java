@@ -4,6 +4,7 @@ import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementApiV1;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementRequestParams;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
 import ch.sbb.line.directory.entity.StatementDocument;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
 import ch.sbb.line.directory.mapper.TimeTableHearingStatementMapper;
@@ -64,7 +65,7 @@ public class TimetableHearingStatementController implements TimetableHearingStat
         timetableFieldNumberResolverService.resolveTtfnid(statement.getTimetableFieldNumber());
     statement.setTtfnid(resolvedTtfnid);
 
-    List<String> responsibleTransportCompanies =
+    List<TimetableHearingStatementResponsibleTransportCompanyModel> responsibleTransportCompanies =
         responsibleTransportCompaniesResolverService.resolveResponsibleTransportCompanies(
         resolvedTtfnid);
     statement.setResponsibleTransportCompanies(responsibleTransportCompanies);

@@ -2,9 +2,10 @@ package ch.sbb.line.directory.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.model.SwissCanton;
 import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
+import ch.sbb.line.directory.entity.ResponsibleTransportCompany;
 import ch.sbb.line.directory.entity.StatementDocument;
 import ch.sbb.line.directory.entity.StatementSender;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
@@ -36,7 +37,6 @@ public class TimetableHearingStatementRepositoryTest {
         .ttfnid("ch:1:ttfnid:1235234")
         .swissCanton(SwissCanton.BERN)
         .stopPlace("Erste Haltestelle ... weisst ja")
-        .responsibleTransportCompanies(Set.of("#0001", "#0002"))
         .statementSender(StatementSender.builder()
             .firstName("Mike")
             .lastName("von Bike")
@@ -64,11 +64,18 @@ public class TimetableHearingStatementRepositoryTest {
             .fileName("doc3")
             .fileSize(3454L)
             .build()));
+    statement.setResponsibleTransportCompanies(Set.of(ResponsibleTransportCompany.builder()
+        .statement(statement)
+        .transportCompanyId(1L)
+        .number("#0001")
+        .abbreviation("SBB")
+        .businessRegisterName("Schweizerische Bundesbahnen")
+        .build()));
 
     TimetableHearingStatement savedStatement = timetableHearingStatementRepository.save(statement);
 
     assertThat(savedStatement.getId()).isNotNull();
-    assertThat(savedStatement.getResponsibleTransportCompanies()).hasSize(2);
+    assertThat(savedStatement.getResponsibleTransportCompanies()).hasSize(1);
     assertThat(savedStatement.getDocuments()).hasSize(3);
   }
 
