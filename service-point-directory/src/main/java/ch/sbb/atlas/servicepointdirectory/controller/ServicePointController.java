@@ -1,8 +1,8 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
+import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.imports.servicepoint.model.ServicePointImportReqModel;
 import ch.sbb.atlas.imports.servicepoint.model.ServicePointItemImportResult;
-import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointApiV1;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointRequestParams;
@@ -32,6 +32,8 @@ public class ServicePointController implements ServicePointApiV1 {
   @Override
   public Container<ServicePointVersionModel> getServicePoints(Pageable pageable,
       ServicePointRequestParams servicePointRequestParams) {
+    log.info("Loading ServicePointVersions with pageable={} and servicePointRequestParams={}", pageable,
+        servicePointRequestParams);
     ServicePointSearchRestrictions searchRestrictions = ServicePointSearchRestrictions.builder()
         .pageable(pageable)
         .servicePointRequestParams(servicePointRequestParams)

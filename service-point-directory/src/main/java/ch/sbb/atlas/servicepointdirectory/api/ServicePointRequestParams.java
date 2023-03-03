@@ -19,6 +19,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.Singular;
+import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
@@ -26,6 +27,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 public class ServicePointRequestParams {
 
   @Singular(ignoreNullCollections = true)
