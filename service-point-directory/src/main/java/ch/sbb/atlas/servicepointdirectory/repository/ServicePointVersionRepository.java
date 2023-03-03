@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.EntityGraph.EntityGraphType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
@@ -19,8 +20,8 @@ public interface ServicePointVersionRepository extends JpaRepository<ServicePoin
   @EntityGraph(attributePaths = {Fields.servicePointGeolocation, Fields.categories, Fields.meansOfTransport})
   List<ServicePointVersion> findAllByNumberOrderByValidFrom(ServicePointNumber number);
 
-  @EntityGraph(attributePaths = {Fields.servicePointGeolocation, Fields.categories, Fields.meansOfTransport})
   @Override
+  @EntityGraph(attributePaths = {Fields.servicePointGeolocation}, type = EntityGraphType.LOAD)
   Page<ServicePointVersion> findAll(Specification specification, Pageable pageable);
 
   boolean existsByNumber(ServicePointNumber servicePointNumber);

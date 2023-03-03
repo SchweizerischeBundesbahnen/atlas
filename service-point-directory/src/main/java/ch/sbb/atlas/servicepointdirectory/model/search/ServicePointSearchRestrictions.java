@@ -3,15 +3,15 @@ package ch.sbb.atlas.servicepointdirectory.model.search;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.searching.SearchRestrictions;
 import ch.sbb.atlas.searching.SpecificationBuilder;
-import ch.sbb.atlas.searching.specification.IsMemberSpecification;
+import ch.sbb.atlas.searching.specification.ElementCollectionContainsAnySpecification;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointRequestParams;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion.Fields;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion_;
+import jakarta.persistence.metamodel.SingularAttribute;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import jakarta.persistence.metamodel.SingularAttribute;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
@@ -64,12 +64,12 @@ public class ServicePointSearchRestrictions extends SearchRestrictions<ServicePo
         .and(specificationBuilder().stringInSpecification(servicePointRequestParams.getBusinessOrganisationSboids(),
             ServicePointVersion_.businessOrganisation))
         .and(specificationBuilder().enumSpecification(servicePointRequestParams.getCountries(), ServicePointVersion_.country))
-        .and(new IsMemberSpecification<>(servicePointRequestParams.getCategories(), ServicePointVersion_.categories))
+        .and(new ElementCollectionContainsAnySpecification<>(servicePointRequestParams.getCategories(), ServicePointVersion_.categories))
         .and(specificationBuilder().enumSpecification(servicePointRequestParams.getOperatingPointTypes(),
             ServicePointVersion_.operatingPointType))
         .and(specificationBuilder().enumSpecification(servicePointRequestParams.getStopPointTypes(),
             ServicePointVersion_.stopPointType))
-        .and(new IsMemberSpecification<>(servicePointRequestParams.getMeansOfTransport(), ServicePointVersion_.meansOfTransport))
+        .and(new ElementCollectionContainsAnySpecification<>(servicePointRequestParams.getMeansOfTransport(), ServicePointVersion_.meansOfTransport))
         .and(specificationBuilder().booleanSpecification(ServicePointVersion_.operatingPoint,
             servicePointRequestParams.getOperatingPoint()))
         .and(specificationBuilder().booleanSpecification(ServicePointVersion_.operatingPointWithTimetable,
