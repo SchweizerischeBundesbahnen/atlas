@@ -54,9 +54,16 @@ CREATE SEQUENCE timetable_hearing_statement_seq START WITH 1000 INCREMENT BY 1;
 
 CREATE TABLE timetable_hearing_statement_responsible_transport_companies
 (
-    timetable_hearing_statement_id  BIGINT      NOT NULL,
-    responsible_transport_companies VARCHAR(50) NOT NULL
+    id                             BIGINT NOT NULL PRIMARY KEY,
+    timetable_hearing_statement_id BIGINT NOT NULL,
+    transport_company_id           BIGINT NOT NULL,
+    number                         varchar(50),
+    abbreviation                   varchar(50),
+    business_register_name         varchar(950),
+    foreign key (timetable_hearing_statement_id) references timetable_hearing_statement (id)
 );
+
+CREATE SEQUENCE timetable_hearing_statement_responsible_transport_companies_seq START WITH 1000 INCREMENT BY 1;
 
 -----------------------------------------------------------------------------------------
 -- Timetable Hearing Statement Documents
