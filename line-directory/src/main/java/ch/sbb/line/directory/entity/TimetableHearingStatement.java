@@ -6,7 +6,6 @@ import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.model.SwissCanton;
 import ch.sbb.atlas.model.entity.BaseEntity;
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -61,8 +60,8 @@ public class TimetableHearingStatement extends BaseEntity {
   @Size(max = AtlasFieldLengths.LENGTH_50)
   private String stopPlace;
 
-  @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
-  private Set<@Size(max = AtlasFieldLengths.LENGTH_50) String> responsibleTransportCompanies;
+  @OneToMany(mappedBy = "statement", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  private Set<ResponsibleTransportCompany> responsibleTransportCompanies;
 
   @Valid
   private StatementSender statementSender;

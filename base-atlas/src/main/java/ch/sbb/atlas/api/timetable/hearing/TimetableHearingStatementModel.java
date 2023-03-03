@@ -15,6 +15,7 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -60,8 +61,7 @@ public class TimetableHearingStatementModel extends BaseVersionModel {
   @Schema(description = "StopPlace information for the statement", example = "Bern, Wyleregg")
   private String stopPlace;
 
-  @Schema(description = "Responsible TransportCompanies")
-  private List<@Size(max = AtlasFieldLengths.LENGTH_50) String> responsibleTransportCompanies;
+  private List<TimetableHearingStatementResponsibleTransportCompanyModel> responsibleTransportCompanies;
 
   @NotNull
   @Valid
@@ -85,17 +85,11 @@ public class TimetableHearingStatementModel extends BaseVersionModel {
   @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)", example = "5")
   private Integer etagVersion;
 
-  public List<String> getResponsibleTransportCompanies() {
-    if (responsibleTransportCompanies == null) {
-      return new ArrayList<>();
-    }
-    return responsibleTransportCompanies;
+  public List<TimetableHearingStatementResponsibleTransportCompanyModel> getResponsibleTransportCompanies() {
+    return Objects.requireNonNullElseGet(responsibleTransportCompanies, ArrayList::new);
   }
 
   public List<TimetableHearingStatementDocumentModel> getDocuments() {
-    if (documents == null) {
-      return new ArrayList<>();
-    }
-    return documents;
+    return Objects.requireNonNullElseGet(documents, ArrayList::new);
   }
 }
