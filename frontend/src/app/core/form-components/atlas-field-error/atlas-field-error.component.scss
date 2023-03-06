@@ -1,0 +1,5 @@
+@use 'src/styles/variables' as variables;
+
+span {
+  color: variables.$errorColor;
+}
