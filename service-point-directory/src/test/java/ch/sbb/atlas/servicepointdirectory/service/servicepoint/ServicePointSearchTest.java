@@ -299,4 +299,23 @@ public class ServicePointSearchTest {
                 .build()).build());
     assertThat(servicePointVersions.getTotalElements()).isZero();
   }
+
+  @Test
+  void shouldFindServicePointsWithPageable() {
+    // Given
+    servicePointVersionRepository.deleteAll();
+
+    int numberOfTotalServicePoints = 10;
+    for (int i = 0; i < numberOfTotalServicePoints; i++) {
+      servicePointVersionRepository.save(ServicePointTestData.getVersionWithCategoriesAndMeansOfTransport(i));
+    }
+
+    // When
+    Page<ServicePointVersion> servicePointVersions =
+        servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.ofSize(5))
+            .servicePointRequestParams(ServicePointRequestParams.builder().build()).build());
+
+    // Then
+    assertThat(servicePointVersions.getTotalElements()).isEqualTo(numberOfTotalServicePoints);
+  }
 }
