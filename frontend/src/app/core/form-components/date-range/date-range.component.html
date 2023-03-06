@@ -1,47 +1,56 @@
 <div [formGroup]="formGroup" class="col-12 d-flex mt-3">
-  <div class="d-flex flex-column col-6">
-    <atlas-text-field
-      [datePicker]="{ matDatePicker: validFromPicker!, minDate: MIN_DATE, maxDate: MAX_DATE }"
+  <div class="d-flex flex-column col-6 pe-3">
+    <app-atlas-lable-field
       [fieldExamples]="[
         { label: 'FORM.FOR_EXAMPLE', translate: true },
         { label: EXAMPLE_DATE_FROM, translate: false }
       ]"
       [required]="true"
-      controlName="validFrom"
-      data-cy="validFrom"
       fieldLabel="COMMON.VALID_FROM"
-    >
-      <ng-template #customChildInputPostfixTemplate>
-        <mat-datepicker-toggle [for]="validFromPicker" matIconSuffix>
-          <mat-icon matDatepickerToggleIcon>
-            <form-date-icon [enabled]="formGroup.controls.validFrom.enabled"></form-date-icon>
-          </mat-icon>
-        </mat-datepicker-toggle>
-        <mat-datepicker #validFromPicker></mat-datepicker>
-      </ng-template>
-    </atlas-text-field>
+    ></app-atlas-lable-field>
+    <div class="text-field-flex">
+      <input
+        [matDatepicker]="validFromPicker!"
+        [max]="MAX_DATE"
+        [min]="MIN_DATE"
+        data-cy="validFrom"
+        formControlName="validFrom"
+        required
+      />
+      <mat-datepicker-toggle [for]="validFromPicker">
+        <mat-icon matDatepickerToggleIcon>
+          <form-date-icon [enabled]="formGroup.controls.validFrom.enabled"></form-date-icon>
+        </mat-icon>
+      </mat-datepicker-toggle>
+      <mat-datepicker #validFromPicker></mat-datepicker>
+    </div>
+    <app-atlas-field-error [form]="formGroup" controlName="validFrom"></app-atlas-field-error>
   </div>
-
   <div class="d-flex flex-column col-6">
-    <atlas-text-field
-      [datePicker]="{ matDatePicker: validToPicker!, minDate: MIN_DATE, maxDate: MAX_DATE }"
+    <app-atlas-lable-field
       [fieldExamples]="[
         { label: 'FORM.FOR_EXAMPLE', translate: true },
-        { label: EXAMPLE_DATE_FROM, translate: false }
+        { label: EXAMPLE_DATE_TO, translate: false }
       ]"
       [required]="true"
-      controlName="validTo"
-      data-cy="validTo"
       fieldLabel="COMMON.VALID_TO"
-    >
-      <ng-template #customChildInputPostfixTemplate>
-        <mat-datepicker-toggle [for]="validToPicker" matSuffix>
-          <mat-icon matDatepickerToggleIcon>
-            <form-date-icon [enabled]="formGroup.controls.validTo.enabled"></form-date-icon>
-          </mat-icon>
-        </mat-datepicker-toggle>
-        <mat-datepicker #validToPicker></mat-datepicker>
-      </ng-template>
-    </atlas-text-field>
+    ></app-atlas-lable-field>
+    <div class="text-field-flex">
+      <input
+        [matDatepicker]="validToPicker!"
+        [max]="MAX_DATE"
+        [min]="MIN_DATE"
+        data-cy="validTo"
+        formControlName="validTo"
+        required
+      />
+      <mat-datepicker-toggle [for]="validToPicker">
+        <mat-icon matDatepickerToggleIcon>
+          <form-date-icon [enabled]="formGroup.controls.validTo.enabled"></form-date-icon>
+        </mat-icon>
+      </mat-datepicker-toggle>
+      <mat-datepicker #validToPicker></mat-datepicker>
+    </div>
+    <app-atlas-field-error [form]="formGroup" controlName="validTo"></app-atlas-field-error>
   </div>
 </div>
