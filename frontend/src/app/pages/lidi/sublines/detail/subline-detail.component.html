@@ -10,46 +10,59 @@
 
     <div class="col-12 d-flex">
       <div class="d-flex flex-column col-4 pe-3">
-        <div class="info-icon-position">
-          <mat-label class="font-bold-lg">{{ 'LIDI.SUBLINE.NUMBER' | translate }}</mat-label>
-          <form-info-icon infoTitle="{{ 'LIDI.SUBLINE.NUMBER_INFO' | translate }}"></form-info-icon>
-        </div>
-        <mat-label class="font-regular-sm"
-          >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ '1' }} |
-          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}</mat-label
+        <atlas-text-field
+          [fieldExamples]="[
+            { label: 'FORM.FOR_EXAMPLE', translate: true },
+            { label: '1', translate: false },
+            { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '50' } }
+          ]"
+          controlName="number"
+          data-cy="number"
+          fieldLabel="LIDI.SUBLINE.NUMBER"
+          infoIconTitle="LIDI.SUBLINE.NUMBER_INFO"
         >
-        <mat-form-field>
-          <input data-cy="number" formControlName="number" matInput />
-          <mat-error fieldErrors></mat-error>
-        </mat-form-field>
+        </atlas-text-field>
       </div>
 
       <div class="d-flex flex-column col-8">
-        <mat-label class="font-bold-lg">{{ 'LIDI.SUBLINE.DESCRIPTION' | translate }}</mat-label>
-        <mat-label class="font-regular-sm"
-          >{{ 'FORM.FOR_EXAMPLE' | translate }}
-          {{ 'Thun Bahnhof - Gwatt Deltapark - Einigen - Spiez Bahnhof' }} |
-          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 255 } }}</mat-label
+        <atlas-text-field
+          [fieldExamples]="[
+            { label: 'FORM.FOR_EXAMPLE', translate: true },
+            { label: 'Thun Bahnhof - Gwatt Deltapark - Einigen - Spiez Bahnhof', translate: false },
+            {
+              label: 'FORM.MAX_CHARS',
+              translate: true,
+              arg: { key: 'numberOfChars', value: '255' }
+            }
+          ]"
+          controlName="description"
+          data-cy="description"
+          fieldLabel="LIDI.SUBLINE.DESCRIPTION"
         >
-        <mat-form-field>
-          <input data-cy="description" formControlName="description" matInput />
-          <mat-error fieldErrors></mat-error>
-        </mat-form-field>
+        </atlas-text-field>
       </div>
     </div>
 
     <div class="col-12 d-flex">
       <div class="d-flex flex-column col-8 pe-3">
-        <mat-label class="font-bold-lg">{{ 'LIDI.LONG_NAME' | translate }} </mat-label>
-        <mat-label class="font-regular-sm"
-          >{{ 'FORM.FOR_EXAMPLE' | translate }}
-          {{ 'Thun Bahnhof - Schadau - Gwatt Deltapark - Einigen - Spiez Bahnhof' }} |
-          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 255 } }}</mat-label
+        <atlas-text-field
+          [fieldExamples]="[
+            { label: 'FORM.FOR_EXAMPLE', translate: true },
+            {
+              label: 'Thun Bahnhof - Schadau - Gwatt Deltapark - Einigen - Spiez Bahnhof',
+              translate: false
+            },
+            {
+              label: 'FORM.MAX_CHARS',
+              translate: true,
+              arg: { key: 'numberOfChars', value: '255' }
+            }
+          ]"
+          controlName="longName"
+          data-cy="longName"
+          fieldLabel="LIDI.LONG_NAME"
         >
-        <mat-form-field>
-          <input data-cy="longName" formControlName="longName" matInput />
-          <mat-error fieldErrors></mat-error>
-        </mat-form-field>
+        </atlas-text-field>
       </div>
 
       <div class="d-flex flex-column col-4">
@@ -83,17 +96,18 @@
 
     <div class="col-12 d-flex">
       <div class="d-flex flex-column col-3">
-        <mat-label class="font-bold-lg required-indicator">{{
-          'LIDI.SWISS_SUBLINE_NUMBER' | translate
-        }}</mat-label>
-        <mat-label class="font-regular-sm"
-          >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ 'r.31.001:a' }} |
-          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}</mat-label
+        <atlas-text-field
+          [fieldExamples]="[
+            { label: 'FORM.FOR_EXAMPLE', translate: true },
+            { label: 'r.31.001:a', translate: false },
+            { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '50' } }
+          ]"
+          [required]="true"
+          controlName="swissSublineNumber"
+          data-cy="swissSublineNumber"
+          fieldLabel="LIDI.SWISS_SUBLINE_NUMBER"
         >
-        <mat-form-field>
-          <input data-cy="swissSublineNumber" formControlName="swissSublineNumber" matInput />
-          <mat-error fieldErrors></mat-error>
-        </mat-form-field>
+        </atlas-text-field>
       </div>
     </div>
 
