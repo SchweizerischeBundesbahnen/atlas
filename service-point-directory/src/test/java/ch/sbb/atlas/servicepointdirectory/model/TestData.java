@@ -7,7 +7,7 @@ import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeoData
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
 import ch.sbb.atlas.servicepointdirectory.enumeration.ServicePointStatus;
-import ch.sbb.atlas.model.SwissCanton;
+import ch.sbb.atlas.kafka.model.SwissCanton;
 import java.time.LocalDate;
 
 public class TestData {
