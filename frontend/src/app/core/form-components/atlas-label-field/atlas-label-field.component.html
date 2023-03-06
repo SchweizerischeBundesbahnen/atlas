@@ -1,7 +1,7 @@
 <div class="info-icon-position">
-  <mat-label [ngClass]="required ? 'required-indicator' : ''" class="font-bold-lg"
+  <span [ngClass]="required ? 'required-indicator' : ''" class="font-bold-lg"
     >{{ fieldLabel | translate }}
-  </mat-label>
+  </span>
   <form-info-icon
     *ngIf="infoIconLink"
     infoLink
@@ -13,6 +13,6 @@
     infoTitle="{{ infoIconTitle | translate }}"
   ></form-info-icon>
 </div>
-<mat-label *ngFor="let fieldExample of fieldExamples" class="font-regular-sm">
+<span *ngFor="let fieldExample of fieldExamples" class="font-regular-sm">
   {{ translate(fieldExample) }}
-</mat-label>
+</span>
