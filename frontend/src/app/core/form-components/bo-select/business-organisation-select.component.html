@@ -1,13 +1,13 @@
 <form-search-select
-  [items$]="businessOrganisations"
+  (changeTrigger)="boSelectionChanged.emit($event)"
+  (searchTrigger)="searchBusinessOrganisation($event)"
+  [bindValueInp]="valueExtraction"
   [controlName]="controlName"
   [formGroup]="formGroup"
-  [bindValueInp]="valueExtraction"
-  (searchTrigger)="searchBusinessOrganisation($event)"
-  (changeTrigger)="boSelectionChanged.emit($event)"
+  [items$]="businessOrganisations"
 >
   <div class="d-flex flex-column">
-    <mat-label class="font-bold-lg" [ngClass]="formModus ? 'required-indicator' : ''">{{
+    <mat-label [ngClass]="formModus ? 'required-indicator' : ''" class="font-bold-lg">{{
       'BODI.BUSINESS_ORGANISATION.BUSINESS_ORGANISATION' | translate
     }}</mat-label>
     <mat-label *ngIf="formModus" class="font-regular-sm">
