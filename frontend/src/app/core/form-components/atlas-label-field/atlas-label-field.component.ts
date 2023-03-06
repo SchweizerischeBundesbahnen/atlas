@@ -3,11 +3,10 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { FieldExample } from '../text-field/field-example';
 
 @Component({
-  selector: 'app-atlas-lable-field',
-  templateUrl: './atlas-lable-field.component.html',
-  styleUrls: ['./atlas-lable-field.component.scss'],
+  selector: 'app-atlas-label-field',
+  templateUrl: './atlas-label-field.component.html',
 })
-export class AtlasLableFieldComponent {
+export class AtlasLabelFieldComponent {
   @Input() required!: boolean;
   @Input() fieldLabel!: string;
   @Input() infoIconTitle!: string;
