@@ -21,12 +21,12 @@ public class UserPermissionCreateModelTest {
     UserPermissionCreateModel createModel = UserPermissionCreateModel.builder()
         .sbbUserId("u123456")
         .permissions(List.of(
-            UserPermissionVersionModel.builder()
+            UserPermissionModel.builder()
                 .sboids(List.of())
                 .role(ApplicationRole.WRITER)
                 .application(ApplicationType.TTFN)
                 .build(),
-            UserPermissionVersionModel.builder()
+            UserPermissionModel.builder()
                 .sboids(List.of())
                 .role(ApplicationRole.WRITER)
                 .application(ApplicationType.TTFN)
@@ -48,7 +48,7 @@ public class UserPermissionCreateModelTest {
     UserPermissionCreateModel createModel = UserPermissionCreateModel.builder()
         .sbbUserId("u123456")
         .permissions(List.of(
-            UserPermissionVersionModel.builder()
+            UserPermissionModel.builder()
                 .sboids(List.of("ch:1:sboid:test"))
                 .role(ApplicationRole.SUPERVISOR)
                 .application(ApplicationType.TTFN)
@@ -70,7 +70,7 @@ public class UserPermissionCreateModelTest {
     UserPermissionCreateModel createModel = UserPermissionCreateModel.builder()
         .sbbUserId("u123456")
         .permissions(List.of(
-            UserPermissionVersionModel.builder()
+            UserPermissionModel.builder()
                 .sboids(List.of("ch:1:sboid:test"))
                 .role(ApplicationRole.WRITER)
                 .application(ApplicationType.BODI)

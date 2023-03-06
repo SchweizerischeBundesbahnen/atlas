@@ -26,7 +26,7 @@ public class UserPermissionCreateModel {
   @Schema(description = "User permissions")
   @NotNull
   @Size(min = 1)
-  private List<@Valid @NotNull UserPermissionVersionModel> permissions;
+  private List<@Valid @NotNull UserPermissionModel> permissions;
 
   @Schema(hidden = true)
   @JsonIgnore
