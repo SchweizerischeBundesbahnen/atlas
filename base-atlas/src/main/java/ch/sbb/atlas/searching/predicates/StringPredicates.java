@@ -21,6 +21,6 @@ public final class StringPredicates {
       escapedSearchString = escapedSearchString.replace(PERCENT, "\\%");
     }
     return criteriaBuilder.like(criteriaBuilder.lower(path),
-        PERCENT + escapedSearchString.toLowerCase() + PERCENT);
+        PERCENT + escapedSearchString.toLowerCase() + PERCENT, '\\');
   }
 }
