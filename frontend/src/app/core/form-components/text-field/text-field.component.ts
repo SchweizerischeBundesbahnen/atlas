@@ -1,10 +1,9 @@
 import { Component, ContentChild, Input, OnInit, TemplateRef } from '@angular/core';
-import { FormGroup, FormGroupDirective, ValidationErrors } from '@angular/forms';
-import { concat, debounceTime, EMPTY, Observable, of } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { FormGroup, FormGroupDirective } from '@angular/forms';
 import { FieldExample } from './field-example';
 import { TranslatePipe } from '@ngx-translate/core';
 import { FieldDatePicker } from './field-date-picker';
+import { AtlasFieldCustomError } from '../atlas-field-error/atlas-field-custom-error';
 
 @Component({
   selector: 'atlas-text-field',
@@ -20,64 +19,20 @@ export class TextFieldComponent implements OnInit {
   @Input() fieldExamples!: Array<FieldExample>;
   @Input() datePicker!: FieldDatePicker;
   @Input() customInputNgStyle!: Record<string, string | undefined | null>;
+  @Input() customError!: AtlasFieldCustomError;
   @ContentChild('customChildInputPostfixTemplate')
   customChildInputPostfixTemplate!: TemplateRef<any>;
   @ContentChild('customChildInputPrefixTemplate') customChildInputPrefixTemplate!: TemplateRef<any>;
 
   form: FormGroup = new FormGroup({});
 
-  hasError: Observable<boolean> = EMPTY;
-  errorTranslationKeyToShow = '';
-  errorArgs: ValidationErrors | null | undefined;
-
   constructor(
     private readonly rootFormGroup: FormGroupDirective,
     private readonly translatePipe: TranslatePipe
   ) {}
 
-  get isTouched(): boolean {
-    return !!this.form.get(this.controlName)?.touched;
-  }
-
-  get isDirty(): boolean {
-    return !!this.form.get(this.controlName)?.dirty;
-  }
-
   ngOnInit() {
     this.form = this.rootFormGroup.control;
-
-    const formControl = this.form.get(this.controlName);
-    if (formControl) {
-      this.hasError = concat(
-        // start value
-        of(formControl.invalid),
-
-        // on value changes
-        formControl.valueChanges.pipe(
-          debounceTime(150),
-          map(() => this.hasErrors())
-        )
-      ).pipe(
-        tap((hasError) => {
-          if (hasError) {
-            this.errorTranslationKeyToShow = this.getFirstErrorTranslationKey();
-            this.errorArgs = this.form.get(this.controlName)?.errors;
-          }
-        })
-      );
-    }
-  }
-
-  hasErrors(): boolean {
-    const formControl = this.form.get(this.controlName);
-    return !formControl ? false : formControl.invalid;
-  }
-
-  getFirstErrorTranslationKey(): string {
-    const validationErrors = this.form.get(this.controlName)?.errors;
-    return validationErrors
-      ? `VALIDATION_ATLAS_FORM_COMPONENT.${Object.keys(validationErrors)[0].toUpperCase()}`
-      : '';
   }
 
   translate(fieldExample: FieldExample): string {
