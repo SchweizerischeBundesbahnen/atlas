@@ -54,7 +54,7 @@ public enum OperatingPointTechnicalTimetableType implements CodeAndDesignations 
       "Fehlerprofil", "technischerfahrplan", "FP", "PC", "PE", null),
   EX_STOP_POINT(15, true, "Ehemalige Haltestelle mit Infrastruktur", "Ancien arrêt avec infrastructure",
       "Precedente fermata con infrastruttura", "Haltestelle ausser Betrieb", "technischerfahrplan", "Hab", "aai", "pfi", null),
-  ROUTE_SPEED_CHANGE(70, false, "Streckengeschwindigkeitswechsel", "Changement de vitesse de ligne",
+  ROUTE_SPEED_CHANGE(70, true, "Streckengeschwindigkeitswechsel", "Changement de vitesse de ligne",
       "Variazioni di velocità di linea", "Streckengeschwindigkeitswechsel", "technischerfahrplan", "Stkmh", "Stkmh", "Stkmh",
       null),
 
