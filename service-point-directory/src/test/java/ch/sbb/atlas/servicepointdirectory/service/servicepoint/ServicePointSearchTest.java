@@ -102,17 +102,6 @@ public class ServicePointSearchTest {
   }
 
   @Test
-  void shouldFindBernWylereggByMeansOfTransport() {
-    Page<ServicePointVersion> servicePointVersions =
-        servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
-            .servicePointRequestParams(ServicePointRequestParams.builder()
-                .meansOfTransport(List.of(MeanOfTransport.BUS))
-                .build()).build());
-    assertThat(servicePointVersions.getTotalElements()).isEqualTo(1);
-    assertThat(servicePointVersions.getContent().get(0).getDesignationOfficial()).isEqualTo("Bern, Wyleregg");
-  }
-
-  @Test
   void shouldFindBernWylereggByStatus() {
     Page<ServicePointVersion> servicePointVersions =
         servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
@@ -131,6 +120,17 @@ public class ServicePointSearchTest {
                 .statusRestrictions(List.of(Status.DRAFT))
                 .build()).build());
     assertThat(servicePointVersions.getTotalElements()).isZero();
+  }
+
+  @Test
+  void shouldFindBernWylereggByMeansOfTransport() {
+    Page<ServicePointVersion> servicePointVersions =
+        servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
+            .servicePointRequestParams(ServicePointRequestParams.builder()
+                .meansOfTransport(List.of(MeanOfTransport.BUS, MeanOfTransport.METRO))
+                .build()).build());
+    assertThat(servicePointVersions.getTotalElements()).isEqualTo(1);
+    assertThat(servicePointVersions.getContent().get(0).getDesignationOfficial()).isEqualTo("Bern, Wyleregg");
   }
 
   @Test
@@ -298,5 +298,24 @@ public class ServicePointSearchTest {
                 .modifiedAfter(servicePointVersion.getEditionDate().plusSeconds(1))
                 .build()).build());
     assertThat(servicePointVersions.getTotalElements()).isZero();
+  }
+
+  @Test
+  void shouldFindServicePointsWithPageable() {
+    // Given
+    servicePointVersionRepository.deleteAll();
+
+    int numberOfTotalServicePoints = 10;
+    for (int i = 0; i < numberOfTotalServicePoints; i++) {
+      servicePointVersionRepository.save(ServicePointTestData.getVersionWithCategoriesAndMeansOfTransport(i));
+    }
+
+    // When
+    Page<ServicePointVersion> servicePointVersions =
+        servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.ofSize(5))
+            .servicePointRequestParams(ServicePointRequestParams.builder().build()).build());
+
+    // Then
+    assertThat(servicePointVersions.getTotalElements()).isEqualTo(numberOfTotalServicePoints);
   }
 }
