@@ -13,7 +13,7 @@ import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.api.user.administration.UserModel.Fields;
 import ch.sbb.atlas.api.user.administration.UserPermissionCreateModel;
-import ch.sbb.atlas.api.user.administration.UserPermissionVersionModel;
+import ch.sbb.atlas.api.user.administration.UserPermissionModel;
 import ch.sbb.atlas.user.administration.entity.UserPermission;
 import ch.sbb.atlas.user.administration.repository.UserPermissionRepository;
 import java.util.HashSet;
@@ -108,14 +108,14 @@ public class UserAdministrationControllerApiTest extends BaseControllerApiTest {
 
   @Test
   void shouldCreateUserPermission() throws Exception {
-    UserPermissionVersionModel userPermissionModelWriter = UserPermissionVersionModel.builder()
+    UserPermissionModel userPermissionModelWriter = UserPermissionModel.builder()
         .role(ApplicationRole.WRITER)
         .application(
             ApplicationType.TTFN)
         .sboids(List.of(
             "ch:1:sboid:test"))
         .build();
-    UserPermissionVersionModel userPermissionModelReader = UserPermissionVersionModel.builder()
+    UserPermissionModel userPermissionModelReader = UserPermissionModel.builder()
         .role(ApplicationRole.READER)
         .application(
             ApplicationType.BODI)
@@ -161,7 +161,7 @@ public class UserAdministrationControllerApiTest extends BaseControllerApiTest {
         .builder()
         .sbbUserId("u236171")
         .permissions(List.of(
-            UserPermissionVersionModel.builder()
+            UserPermissionModel.builder()
                 .role(ApplicationRole.WRITER)
                 .application(ApplicationType.TTFN)
                 .sboids(List.of("ch:1:sboid:test"))
@@ -189,7 +189,7 @@ public class UserAdministrationControllerApiTest extends BaseControllerApiTest {
     UserPermissionCreateModel editedPermissions = UserPermissionCreateModel.builder()
         .sbbUserId("u236171")
         .permissions(List.of(
-            UserPermissionVersionModel.builder()
+            UserPermissionModel.builder()
                 .application(
                     ApplicationType.TTFN)
                 .role(
