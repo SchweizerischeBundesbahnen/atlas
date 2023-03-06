@@ -10,48 +10,48 @@
 
     <div class="col-12 d-flex">
       <div class="d-flex flex-column col-6 pe-3">
-        <mat-label class="font-bold-lg required-indicator">{{
-          'TTFN.NUMBER' | translate
-        }}</mat-label>
-        <mat-label class="font-regular-sm">
-          {{ 'FORM.FOR_EXAMPLE' | translate }} {{ '30.003' }} |
-          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}
-        </mat-label>
-        <mat-form-field>
-          <input data-cy="number" formControlName="number" matInput />
-          <mat-error fieldErrors></mat-error>
-        </mat-form-field>
+        <atlas-text-field
+          [fieldExamples]="[
+            { label: 'FORM.FOR_EXAMPLE', translate: true },
+            { label: '30.003 |', translate: false },
+            { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '50' } }
+          ]"
+          [required]="true"
+          controlName="number"
+          data-cy="number"
+          fieldLabel="TTFN.NUMBER"
+        >
+        </atlas-text-field>
       </div>
       <div class="d-flex flex-column col-6 pe-3">
-        <mat-label class="font-bold-lg required-indicator"
-          >{{ 'TTFN.SWISS_TIMETABLE_FIELD_NUMBER' | translate }}
-        </mat-label>
-        <mat-label class="font-regular-sm">
-          {{ 'FORM.FOR_EXAMPLE' | translate }} {{ 'r.30.003' }} |
-          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}
-        </mat-label>
-        <mat-form-field>
-          <input
-            data-cy="swissTimetableFieldNumber"
-            formControlName="swissTimetableFieldNumber"
-            matInput
-          />
-          <mat-error fieldErrors></mat-error>
-        </mat-form-field>
+        <atlas-text-field
+          [fieldExamples]="[
+            { label: 'FORM.FOR_EXAMPLE', translate: true },
+            { label: '30.003 |', translate: false },
+            { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '50' } }
+          ]"
+          [required]="true"
+          controlName="swissTimetableFieldNumber"
+          data-cy="swissTimetableFieldNumber"
+          fieldLabel="TTFN.SWISS_TIMETABLE_FIELD_NUMBER"
+        >
+        </atlas-text-field>
       </div>
     </div>
 
     <div class="col-12 d-flex">
       <div class="d-flex flex-column col-12 pe-3">
-        <mat-label class="font-bold-lg">{{ 'TTFN.DESCRIPTION' | translate }} </mat-label>
-        <mat-label class="font-regular-sm">
-          {{ 'FORM.FOR_EXAMPLE' | translate }} {{ 'Bern Bahnhof - Eigerplatz - Weissenbühl' }} |
-          {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 255 } }}
-        </mat-label>
-        <mat-form-field>
-          <input data-cy="description" formControlName="description" matInput />
-          <mat-error fieldErrors></mat-error>
-        </mat-form-field>
+        <atlas-text-field
+          [fieldExamples]="[
+            { label: 'FORM.FOR_EXAMPLE', translate: true },
+            { label: 'Bern Bahnhof - Eigerplatz - Weissenbühl |', translate: false },
+            { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '50' } }
+          ]"
+          controlName="description"
+          data-cy="description"
+          fieldLabel="TTFN.DESCRIPTION"
+        >
+        </atlas-text-field>
       </div>
     </div>
 
@@ -74,7 +74,7 @@
     <span class="font-bold-2xl">{{ 'FORM.SUPPLEMENTARY_INFORMATION' | translate }}</span>
     <div class="col-12 d-flex mt-3">
       <div class="d-flex flex-column col-6">
-        <form-comment [formGroup]="form" [displayInfoIcon]="false"></form-comment>
+        <form-comment [displayInfoIcon]="false" [formGroup]="form"></form-comment>
       </div>
     </div>
   </form>
