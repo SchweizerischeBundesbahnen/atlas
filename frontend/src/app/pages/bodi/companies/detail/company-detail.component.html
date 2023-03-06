@@ -9,74 +9,65 @@
     {{ 'BODI.COMPANIES.BASIC_DATA' | translate }}
   </h2>
 
-  <div class="col-12 d-flex">
-    <div class="d-flex flex-column col-6 pe-3">
-      <div class="info-icon-position">
-        <mat-label class="font-bold-lg">{{ 'BODI.COMPANIES.UIC_CODE' | translate }} </mat-label>
+  <form [formGroup]="companyFormGroup">
+    <div class="col-12 d-flex">
+      <div class="d-flex flex-column col-6 pe-3">
+        <atlas-text-field
+          controlName="uicCode"
+          data-cy="uicCode"
+          fieldLabel="BODI.COMPANIES.UIC_CODE"
+        ></atlas-text-field>
       </div>
-      <mat-form-field>
-        <input data-cy="uicCode" disabled matInput value="{{ company.uicCode }}" />
-      </mat-form-field>
+
+      <div class="d-flex flex-column col-6 pe-3">
+        <atlas-text-field
+          controlName="countryCodeIso"
+          data-cy="countryCodeIso"
+          fieldLabel="BODI.COMPANIES.COUNTRY_CODE"
+        ></atlas-text-field>
+      </div>
     </div>
 
-    <div class="d-flex flex-column col-6 pe-3">
-      <div class="info-icon-position">
-        <mat-label class="font-bold-lg">{{ 'BODI.COMPANIES.COUNTRY_CODE' | translate }} </mat-label>
+    <div class="col-12 d-flex">
+      <div class="d-flex flex-column col-12 pe-3">
+        <atlas-text-field
+          controlName="shortName"
+          data-cy="shortName"
+          fieldLabel="BODI.COMPANIES.SHORT_NAME"
+        ></atlas-text-field>
       </div>
-      <mat-form-field>
-        <input [value]="company.countryCodeIso" data-cy="countryCodeIso" disabled matInput />
-      </mat-form-field>
     </div>
-  </div>
 
-  <div class="col-12 d-flex">
-    <div class="d-flex flex-column col-12 pe-3">
-      <div class="info-icon-position">
-        <mat-label class="font-bold-lg">{{ 'BODI.COMPANIES.SHORT_NAME' | translate }} </mat-label>
+    <div class="col-12 d-flex">
+      <div class="d-flex flex-column col-12 pe-3">
+        <atlas-text-field
+          controlName="name"
+          data-cy="name"
+          fieldLabel="BODI.COMPANIES.NAME"
+        ></atlas-text-field>
       </div>
-      <mat-form-field>
-        <input [value]="company.shortName" data-cy="shortName" disabled matInput />
-      </mat-form-field>
     </div>
-  </div>
 
-  <div class="col-12 d-flex">
-    <div class="d-flex flex-column col-12 pe-3">
-      <div class="info-icon-position">
-        <mat-label class="font-bold-lg">{{ 'BODI.COMPANIES.NAME' | translate }} </mat-label>
+    <div class="col-12 d-flex">
+      <div class="d-flex flex-column col-12 pe-3">
+        <atlas-text-field controlName="url" data-cy="url" fieldLabel="BODI.COMPANIES.URL">
+          <ng-template #customChildInputPostfixTemplate>
+            <a [attr.href]="prependHttp(companyFormGroup.value.url)" target="_blank">
+              <link-icon></link-icon>
+            </a>
+          </ng-template>
+        </atlas-text-field>
       </div>
-      <mat-form-field>
-        <input [value]="company.name" data-cy="name" disabled matInput />
-      </mat-form-field>
     </div>
-  </div>
 
-  <div class="col-12 d-flex">
-    <div class="d-flex flex-column col-12 pe-3">
-      <div class="info-icon-position">
-        <mat-label class="font-bold-lg">{{ 'BODI.COMPANIES.URL' | translate }} </mat-label>
-      </div>
-      <mat-form-field>
-        <input [value]="company.url" data-cy="url" disabled matInput />
-        <a
-          [attr.href]="prependHttp(company.url)"
-          [ngClass]="{ isDisabled: !company.url }"
-          matSuffix
-          target="_blank"
-        >
-          <link-icon></link-icon>
-        </a>
-      </mat-form-field>
+    <div class="footer fixed-bottom d-flex align-items-center justify-content-center">
+      <atlas-button
+        [mat-dialog-close]="true"
+        buttonDataCy="back-to-overview"
+        buttonText="COMMON.BACK_TO_OVERVIEW"
+        buttonType="footerNonEdit"
+      >
+      </atlas-button>
     </div>
-  </div>
-
-  <div class="footer fixed-bottom d-flex align-items-center justify-content-center">
-    <atlas-button
-      [mat-dialog-close]="true"
-      buttonDataCy="back-to-overview"
-      buttonText="COMMON.BACK_TO_OVERVIEW"
-      buttonType="footerNonEdit"
-    >
-    </atlas-button>
-  </div>
+  </form>
 </div>
