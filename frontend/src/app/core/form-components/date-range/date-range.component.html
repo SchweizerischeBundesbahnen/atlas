@@ -1,13 +1,13 @@
 <div [formGroup]="formGroup" class="col-12 d-flex mt-3">
   <div class="d-flex flex-column col-6 pe-3">
-    <app-atlas-lable-field
+    <app-atlas-label-field
       [fieldExamples]="[
         { label: 'FORM.FOR_EXAMPLE', translate: true },
         { label: EXAMPLE_DATE_FROM, translate: false }
       ]"
       [required]="true"
       fieldLabel="COMMON.VALID_FROM"
-    ></app-atlas-lable-field>
+    ></app-atlas-label-field>
     <div class="text-field-flex">
       <input
         [matDatepicker]="validFromPicker!"
@@ -27,14 +27,14 @@
     <app-atlas-field-error [form]="formGroup" controlName="validFrom"></app-atlas-field-error>
   </div>
   <div class="d-flex flex-column col-6">
-    <app-atlas-lable-field
+    <app-atlas-label-field
       [fieldExamples]="[
         { label: 'FORM.FOR_EXAMPLE', translate: true },
         { label: EXAMPLE_DATE_TO, translate: false }
       ]"
       [required]="true"
       fieldLabel="COMMON.VALID_TO"
-    ></app-atlas-lable-field>
+    ></app-atlas-label-field>
     <div class="text-field-flex">
       <input
         [matDatepicker]="validToPicker!"
