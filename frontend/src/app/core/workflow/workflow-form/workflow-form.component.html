@@ -1,7 +1,7 @@
 <form [formGroup]="formGroup">
   <div class="col-12 d-flex">
     <div class="d-flex flex-column col-5">
-      <div class="d-flex flex-column col-11 me-3">
+      <div class="d-flex flex-column col-11 me-3 mb-3">
         <form-comment
           [formGroup]="formGroup"
           [label]="commentLabel"
@@ -13,50 +13,42 @@
       <span class="font-bold-lg">{{ personLabel | translate }}</span>
       <div class="col-12 d-flex">
         <div class="d-flex flex-column col-7 pe-3">
-          <div class="info-icon-position">
-            <mat-label class="font-bold-lg required-indicator"
-              >{{ 'WORKFLOW.PERSON.FIRSTNAME' | translate }}
-            </mat-label>
-          </div>
-          <mat-form-field>
-            <input data-cy="workflowPersonFirstName" formControlName="firstName" matInput />
-            <mat-error fieldErrors></mat-error>
-          </mat-form-field>
+          <atlas-text-field
+            [required]="true"
+            controlName="firstName"
+            data-cy="workflowPersonFirstName"
+            fieldLabel="WORKFLOW.PERSON.FIRSTNAME"
+          >
+          </atlas-text-field>
         </div>
         <div class="d-flex flex-column col-7 pe-3">
-          <div class="info-icon-position">
-            <mat-label class="font-bold-lg required-indicator"
-              >{{ 'WORKFLOW.PERSON.LASTNAME' | translate }}
-            </mat-label>
-          </div>
-          <mat-form-field>
-            <input data-cy="workflowPersonLastName" formControlName="lastName" matInput />
-            <mat-error fieldErrors></mat-error>
-          </mat-form-field>
+          <atlas-text-field
+            [required]="true"
+            controlName="lastName"
+            data-cy="workflowPersonLastName"
+            fieldLabel="WORKFLOW.PERSON.LASTNAME"
+          >
+          </atlas-text-field>
         </div>
       </div>
       <div class="col-12 d-flex">
         <div class="d-flex flex-column col-7 pe-3">
-          <div class="info-icon-position">
-            <mat-label class="font-bold-lg required-indicator"
-              >{{ 'WORKFLOW.PERSON.FUNCTION' | translate }}
-            </mat-label>
-          </div>
-          <mat-form-field>
-            <input data-cy="workflowPersonFunction" formControlName="function" matInput />
-            <mat-error fieldErrors></mat-error>
-          </mat-form-field>
+          <atlas-text-field
+            [required]="true"
+            controlName="function"
+            data-cy="workflowPersonFunction"
+            fieldLabel="WORKFLOW.PERSON.FUNCTION"
+          >
+          </atlas-text-field>
         </div>
         <div *ngIf="hasMail" class="d-flex flex-column col-7 pe-3">
-          <div class="info-icon-position">
-            <mat-label class="font-bold-lg required-indicator"
-              >{{ 'WORKFLOW.PERSON.MAIL' | translate }}
-            </mat-label>
-          </div>
-          <mat-form-field>
-            <input data-cy="workflowPersonMail" formControlName="mail" matInput />
-            <mat-error fieldErrors></mat-error>
-          </mat-form-field>
+          <atlas-text-field
+            [required]="true"
+            controlName="mail"
+            data-cy="workflowPersonMail"
+            fieldLabel="WORKFLOW.PERSON.MAIL"
+          >
+          </atlas-text-field>
         </div>
       </div>
     </div>
