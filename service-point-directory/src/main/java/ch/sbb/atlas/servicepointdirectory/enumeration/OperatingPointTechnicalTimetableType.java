@@ -43,7 +43,7 @@ public enum OperatingPointTechnicalTimetableType implements CodeAndDesignations 
   INTERSECTION(11, true, "Ausweiche", "Évitement", "Incrocio", "Ausweiche", "technischerfahrplan", "Ausw", "évit", "incr", null),
   CONNECTING_POINT(9, true, "Anschlusspunkt", "Point de raccordement", "Punto di raccordo ", "Anschlusspunkt",
       "technischerfahrplan", "Apt", "prc", "prc", null),
-  LANGE_CHANGE(8, true, "Spurwechsel", "Diagonale d'échange", "Cambio binario ", "Spurwechsel", "technischerfahrplan", "Spw",
+  LANE_CHANGE(8, true, "Spurwechsel", "Diagonale d'échange", "Cambio binario ", "Spurwechsel", "technischerfahrplan", "Spw",
       "diag", "c bin", null),
   BRANCH(7, true, "Abzweigung, Verzweigung, Spaltweiche", "Bifurcation", "Diramazione", "Abzweigung, Verzweigung, Spaltweiche ",
       "technischerfahrplan", "Vzw", "bif", "drm", null),
@@ -54,6 +54,9 @@ public enum OperatingPointTechnicalTimetableType implements CodeAndDesignations 
       "Fehlerprofil", "technischerfahrplan", "FP", "PC", "PE", null),
   EX_STOP_POINT(15, true, "Ehemalige Haltestelle mit Infrastruktur", "Ancien arrêt avec infrastructure",
       "Precedente fermata con infrastruttura", "Haltestelle ausser Betrieb", "technischerfahrplan", "Hab", "aai", "pfi", null),
+  ROUTE_SPEED_CHANGE(70, true, "Streckengeschwindigkeitswechsel", "Changement de vitesse de ligne",
+      "Variazioni di velocità di linea", "Streckengeschwindigkeitswechsel", "technischerfahrplan", "Stkmh", "Stkmh", "Stkmh",
+      null),
 
   ;
 
