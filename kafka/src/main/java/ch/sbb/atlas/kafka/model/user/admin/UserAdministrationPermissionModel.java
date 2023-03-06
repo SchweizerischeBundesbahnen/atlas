@@ -1,5 +1,6 @@
 package ch.sbb.atlas.kafka.model.user.admin;
 
+import ch.sbb.atlas.kafka.model.SwissCanton;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,5 +29,8 @@ public class UserAdministrationPermissionModel implements Serializable {
 
   @Builder.Default
   private Set<String> sboids = new HashSet<>();
+
+  @Builder.Default
+  private Set<SwissCanton> swissCantons = new HashSet<>();
 
 }

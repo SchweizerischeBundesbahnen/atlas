@@ -1,5 +1,6 @@
 package ch.sbb.atlas.user.administration.entity;
 
+import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.entity.BaseEntity;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
@@ -51,5 +52,9 @@ public class UserPermission extends BaseEntity {
   @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
   @CollectionTable(name = "business_organisation_user_permission")
   private Set<String> sboid;
+
+  @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
+  @CollectionTable(name = "canton_user_permission")
+  private Set<SwissCanton> swissCantons;
 
 }
