@@ -14,29 +14,17 @@
       >
       </ng-container>
       <input
-        *ngIf="!datePicker && !rgbPicker"
+        *ngIf="!datePicker"
         [formControlName]="controlName"
         [ngStyle]="customInputNgStyle"
         type="text"
       />
       <input
-        *ngIf="datePicker && !rgbPicker"
+        *ngIf="datePicker"
         [formControlName]="controlName"
         [matDatepicker]="datePicker.matDatePicker!"
         [max]="datePicker.maxDate"
         [min]="datePicker.minDate"
-      />
-      <input
-        #input
-        (change)="onChangeColor(input.value)"
-        (keydown)="closeColorPickerDialog($event)"
-        *ngIf="!datePicker && rgbPicker"
-        [formControlName]="controlName"
-        [ngStyle]="customInputNgStyle"
-        [value]="rgbPicker.value"
-        data-cy="rgb-picker-input"
-        matInput
-        trim
       />
       <ng-container
         #customChildInputPostfixTemplate
