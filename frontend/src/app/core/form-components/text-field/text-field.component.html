@@ -42,5 +42,10 @@
         *ngTemplateOutlet="customChildInputPostfixTemplate"
       ></ng-container>
     </div>
+    <app-atlas-field-error
+      [customError]="customError"
+      [form]="form"
+      controlName="{{ controlName }}"
+    ></app-atlas-field-error>
   </div>
 </form>
