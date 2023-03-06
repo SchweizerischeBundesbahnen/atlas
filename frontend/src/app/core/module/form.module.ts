@@ -16,7 +16,7 @@ import { LinkIconComponent } from '../form-components/link-icon/link-icon.compon
 import { InfoLinkDirective } from '../form-components/info-icon/info-link.directive';
 import { TextFieldComponent } from '../form-components/text-field/text-field.component';
 import { AtlasFieldErrorComponent } from '../form-components/atlas-field-error/atlas-field-error.component';
-import { AtlasLableFieldComponent } from '../form-components/atlas-lable-field/atlas-lable-field.component';
+import { AtlasLabelFieldComponent } from '../form-components/atlas-label-field/atlas-label-field.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +34,7 @@ import { AtlasLableFieldComponent } from '../form-components/atlas-lable-field/a
     InfoLinkDirective,
     TextFieldComponent,
     AtlasFieldErrorComponent,
-    AtlasLableFieldComponent,
+    AtlasLabelFieldComponent,
   ],
   imports: [CommonModule, MaterialModule, TranslateModule],
   exports: [
@@ -51,7 +51,7 @@ import { AtlasLableFieldComponent } from '../form-components/atlas-lable-field/a
     InfoLinkDirective,
     TextFieldComponent,
     AtlasFieldErrorComponent,
-    AtlasLableFieldComponent,
+    AtlasLabelFieldComponent,
   ],
 })
 export class FormModule {}
