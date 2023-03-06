@@ -1,5 +1,6 @@
 <div class="field-input-container">
   <atlas-text-field
+    [customError]="{ errorKey: 'pattern', translationKey: 'VALIDATION.CMYK_INVALID' }"
     [customInputNgStyle]="{ 'padding-left': '30px' }"
     [fieldExamples]="[
       { label: 'FORM.FOR_EXAMPLE', translate: true },

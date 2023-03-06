@@ -1,0 +1,3 @@
+<span *ngIf="(isTouched || isDirty) && (hasError | async)" class="font-regular-sm">
+  {{ errorTranslationKeyToShow | translate : validationErrors }}
+</span>
