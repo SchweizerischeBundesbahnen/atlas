@@ -6,7 +6,7 @@ import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.api.user.administration.UserPermissionCreateModel;
-import ch.sbb.atlas.api.user.administration.UserPermissionVersionModel;
+import ch.sbb.atlas.api.user.administration.UserPermissionModel;
 import ch.sbb.atlas.user.administration.entity.UserPermission;
 import ch.sbb.atlas.user.administration.repository.UserPermissionRepository;
 import java.util.List;
@@ -57,7 +57,7 @@ public class UserAdministrationServiceUpdateTest {
     UserPermissionCreateModel editedPermissions = UserPermissionCreateModel.builder()
         .sbbUserId(SBBUID)
         .permissions(List.of(
-            UserPermissionVersionModel.builder()
+            UserPermissionModel.builder()
                 .application(
                     ApplicationType.TTFN)
                 .role(
@@ -85,7 +85,7 @@ public class UserAdministrationServiceUpdateTest {
     UserPermissionCreateModel editedPermissions = UserPermissionCreateModel.builder()
         .sbbUserId(SBBUID)
         .permissions(List.of(
-            UserPermissionVersionModel.builder()
+            UserPermissionModel.builder()
                 .application(
                     ApplicationType.TTFN)
                 .role(
@@ -112,7 +112,7 @@ public class UserAdministrationServiceUpdateTest {
     UserPermissionCreateModel editedPermissions = UserPermissionCreateModel.builder()
         .sbbUserId(SBBUID)
         .permissions(List.of(
-            UserPermissionVersionModel.builder()
+            UserPermissionModel.builder()
                 .application(
                     ApplicationType.LIDI)
                 .role(
@@ -140,7 +140,7 @@ public class UserAdministrationServiceUpdateTest {
     UserPermissionCreateModel editedPermissions = UserPermissionCreateModel.builder()
         .sbbUserId(SBBUID)
         .permissions(List.of(
-            UserPermissionVersionModel.builder()
+            UserPermissionModel.builder()
                 .application(
                     ApplicationType.LIDI)
                 .role(

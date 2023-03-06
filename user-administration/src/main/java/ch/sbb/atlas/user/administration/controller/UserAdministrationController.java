@@ -7,7 +7,7 @@ import ch.sbb.atlas.api.user.administration.UserAdministrationApiV1;
 import ch.sbb.atlas.api.user.administration.UserDisplayNameModel;
 import ch.sbb.atlas.api.user.administration.UserModel;
 import ch.sbb.atlas.api.user.administration.UserPermissionCreateModel;
-import ch.sbb.atlas.api.user.administration.UserPermissionVersionModel;
+import ch.sbb.atlas.api.user.administration.UserPermissionModel;
 import ch.sbb.atlas.user.administration.entity.UserPermission;
 import ch.sbb.atlas.user.administration.exception.LimitedPageSizeRequestException;
 import ch.sbb.atlas.user.administration.mapper.UserMapper;
@@ -81,11 +81,11 @@ public class UserAdministrationController implements UserAdministrationApiV1 {
     return userModel;
   }
 
-  private Set<UserPermissionVersionModel> getUserPermissionModels(String userId) {
+  private Set<UserPermissionModel> getUserPermissionModels(String userId) {
     return getUserPermissionModels(userAdministrationService.getUserPermissions(userId));
   }
 
-  private Set<UserPermissionVersionModel> getUserPermissionModels(List<UserPermission> userPermissions) {
+  private Set<UserPermissionModel> getUserPermissionModels(List<UserPermission> userPermissions) {
     return userPermissions.stream().map(UserPermissionMapper::toModel).collect(Collectors.toSet());
   }
 
