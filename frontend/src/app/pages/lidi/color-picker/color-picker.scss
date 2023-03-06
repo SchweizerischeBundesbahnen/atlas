@@ -1,17 +1,12 @@
 @use 'src/styles/variables' as variables;
 
-.mat-mdc-form-field {
-  width: 100%;
-}
-
-.mat-mdc-input-element {
-  width: inherit;
+form {
+  flex-grow: 1;
 }
 
 img {
   margin-left: 5px;
   margin-bottom: 15px;
-  margin-top: 50px;
   cursor: pointer;
 }
 
@@ -25,4 +20,8 @@ img {
   position: absolute;
   margin-left: 10px;
   margin-top: 11px;
+}
+
+.padding-left {
+  padding-left: 30px !important;
 }
