@@ -1,21 +1,10 @@
-<div class="info-icon-position">
-  <mat-label [ngClass]="required ? 'required-indicator' : ''" class="font-bold-lg"
-    >{{ fieldLabel | translate }}
-  </mat-label>
-  <form-info-icon
-    *ngIf="infoIconLink"
-    infoLink
-    infoLinkTranslationKey="{{ infoIconLink }}"
-    infoTitle="{{ infoIconTitle | translate }}"
-  ></form-info-icon>
-  <form-info-icon
-    *ngIf="infoIconTitle && !infoIconLink"
-    infoTitle="{{ infoIconTitle | translate }}"
-  ></form-info-icon>
-</div>
-<mat-label *ngFor="let fieldExample of fieldExamples" class="font-regular-sm">
-  {{ translate(fieldExample) }}
-</mat-label>
+<app-atlas-lable-field
+  [fieldExamples]="fieldExamples"
+  [required]="required"
+  fieldLabel="{{ fieldLabel }}"
+  infoIconLink="{{ infoIconLink }}"
+  infoIconTitle="{{ infoIconTitle }}"
+></app-atlas-lable-field>
 <form [formGroup]="form">
   <div class="text-field-wrapper">
     <div class="text-field-flex">
@@ -25,17 +14,29 @@
       >
       </ng-container>
       <input
-        *ngIf="!datePicker"
+        *ngIf="!datePicker && !rgbPicker"
         [formControlName]="controlName"
         [ngStyle]="customInputNgStyle"
         type="text"
       />
       <input
-        *ngIf="datePicker"
+        *ngIf="datePicker && !rgbPicker"
         [formControlName]="controlName"
         [matDatepicker]="datePicker.matDatePicker!"
         [max]="datePicker.maxDate"
         [min]="datePicker.minDate"
+      />
+      <input
+        #input
+        (change)="onChangeColor(input.value)"
+        (keydown)="closeColorPickerDialog($event)"
+        *ngIf="!datePicker && rgbPicker"
+        [formControlName]="controlName"
+        [ngStyle]="customInputNgStyle"
+        [value]="rgbPicker.value"
+        data-cy="rgb-picker-input"
+        matInput
+        trim
       />
       <ng-container
         #customChildInputPostfixTemplate

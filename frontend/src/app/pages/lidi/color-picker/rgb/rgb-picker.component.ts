@@ -15,7 +15,11 @@ import { Keys } from '../../../../core/constants/keys';
 @Component({
   selector: 'app-rgb-picker [attributeName]',
   templateUrl: './rgb-picker.component.html',
-  styleUrls: ['./rgb-picker.component.scss', '../color-indicator.scss'],
+  styleUrls: [
+    '../color-picker.scss',
+    '../color-indicator.scss',
+    '../../../../core/form-components/text-field/text-field.component.scss',
+  ],
 })
 export class RgbPickerComponent implements OnInit, OnChanges {
   @ViewChild('colorPicker', { read: ColorPickerDirective })
@@ -25,6 +29,7 @@ export class RgbPickerComponent implements OnInit, OnChanges {
   @Input() formGroup!: FormGroup;
   @Input() defaultColor!: string;
   @Input() label!: string;
+  customError = { errorKey: 'pattern', translationKey: 'VALIDATION.COLOR_INVALID' };
 
   color = '#FFFFFF';
 
@@ -45,7 +50,9 @@ export class RgbPickerComponent implements OnInit, OnChanges {
   }
 
   onChangeColor(color: string) {
-    this.addKeydownEventToColorPicker();
+    if (this.addKeydownEventToColorPicker != undefined) {
+      this.addKeydownEventToColorPicker();
+    }
 
     if (color) {
       this.formControl.patchValue(color.toUpperCase());
@@ -58,7 +65,10 @@ export class RgbPickerComponent implements OnInit, OnChanges {
 
   closeColorPickerDialog($event: KeyboardEvent) {
     if ($event.key === Keys.TAB) {
-      this.colorPickerDirective.closeDialog();
+      if (this.colorPickerDirective) {
+        console.log(this.colorPickerDirective);
+        this.colorPickerDirective.closeDialog();
+      }
     }
   }
 
