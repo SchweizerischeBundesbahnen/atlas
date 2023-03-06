@@ -15,6 +15,7 @@ import { BoSelectionDisplayPipe } from '../form-components/bo-select/bo-selectio
 import { LinkIconComponent } from '../form-components/link-icon/link-icon.component';
 import { InfoLinkDirective } from '../form-components/info-icon/info-link.directive';
 import { TextFieldComponent } from '../form-components/text-field/text-field.component';
+import { AtlasFieldErrorComponent } from '../form-components/atlas-field-error/atlas-field-error.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { TextFieldComponent } from '../form-components/text-field/text-field.com
     BoSelectionDisplayPipe,
     InfoLinkDirective,
     TextFieldComponent,
+    AtlasFieldErrorComponent,
   ],
   imports: [CommonModule, MaterialModule, TranslateModule],
   exports: [

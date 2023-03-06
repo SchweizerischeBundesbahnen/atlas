@@ -9,5 +9,5 @@
     {{ 'FORM.MAX_CHARS' | translate : { numberOfChars: 1500 } }}
   </mat-label>
   <textarea data-cy="comment" formControlName="comment" matInput rows="7"></textarea>
-  <!--  <mat-error fieldErrors></mat-error>-->
+  <app-atlas-field-error [form]="formGroup" controlName="comment"></app-atlas-field-error>
 </div>
