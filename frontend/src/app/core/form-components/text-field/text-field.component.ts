@@ -1,7 +1,6 @@
 import { Component, ContentChild, Input, OnInit, TemplateRef } from '@angular/core';
 import { FormGroup, FormGroupDirective } from '@angular/forms';
 import { FieldExample } from './field-example';
-import { FieldDatePicker } from './field-date-picker';
 import { AtlasFieldCustomError } from '../atlas-field-error/atlas-field-custom-error';
 
 @Component({
@@ -16,7 +15,6 @@ export class TextFieldComponent implements OnInit {
   @Input() infoIconLink!: string;
   @Input() required!: boolean;
   @Input() fieldExamples!: Array<FieldExample>;
-  @Input() datePicker!: FieldDatePicker;
   @Input() customInputNgStyle!: Record<string, string | undefined | null>;
   @Input() customError!: AtlasFieldCustomError;
   @ContentChild('customChildInputPostfixTemplate')
