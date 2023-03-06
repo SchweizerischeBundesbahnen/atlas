@@ -1,9 +1,0 @@
-@use 'src/styles/variables' as variables;
-
-mat-date-range-input {
-  &.mat-date-range-input .mat-start-date,
-  &.mat-date-range-input .mat-date-range-input-separator,
-  &.mat-date-range-input .mat-end-date {
-    color: variables.$black;
-  }
-}
