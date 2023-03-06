@@ -2,7 +2,7 @@ package ch.sbb.atlas.user.administration.service;
 
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.api.user.administration.UserPermissionCreateModel;
-import ch.sbb.atlas.api.user.administration.UserPermissionVersionModel;
+import ch.sbb.atlas.api.user.administration.UserPermissionModel;
 import ch.sbb.atlas.user.administration.entity.UserPermission;
 import ch.sbb.atlas.user.administration.exception.UserPermissionConflictException;
 import ch.sbb.atlas.user.administration.mapper.UserPermissionCreateMapper;
@@ -57,7 +57,7 @@ public class UserAdministrationService {
     });
   }
 
-  private Consumer<UserPermission> updateExistingPermissions(UserPermissionVersionModel editedPermission) {
+  private Consumer<UserPermission> updateExistingPermissions(UserPermissionModel editedPermission) {
     return userPermission -> {
       userPermission.setRole(editedPermission.getRole());
       userPermission.setSboid(new HashSet<>(editedPermission.getSboids()));
