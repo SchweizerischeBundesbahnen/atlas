@@ -13,19 +13,7 @@
         *ngTemplateOutlet="customChildInputPrefixTemplate"
       >
       </ng-container>
-      <input
-        *ngIf="!datePicker"
-        [formControlName]="controlName"
-        [ngStyle]="customInputNgStyle"
-        type="text"
-      />
-      <input
-        *ngIf="datePicker"
-        [formControlName]="controlName"
-        [matDatepicker]="datePicker.matDatePicker!"
-        [max]="datePicker.maxDate"
-        [min]="datePicker.minDate"
-      />
+      <input [formControlName]="controlName" [ngStyle]="customInputNgStyle" type="text" />
       <ng-container
         #customChildInputPostfixTemplate
         *ngTemplateOutlet="customChildInputPostfixTemplate"
