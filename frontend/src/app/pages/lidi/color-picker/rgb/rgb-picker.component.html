@@ -1,37 +1,51 @@
+<app-atlas-lable-field
+  [fieldExamples]="[
+    { label: 'FORM.FOR_EXAMPLE', translate: true },
+    { label: '#4AC44F', translate: false }
+  ]"
+  [required]="true"
+  fieldLabel="{{ label }}"
+></app-atlas-lable-field>
 <div class="d-flex align-items-center">
-  <atlas-text-field
-    [customError]="{ errorKey: 'pattern', translationKey: 'VALIDATION.COLOR_INVALID' }"
-    [customInputNgStyle]="{ 'padding-left': '30px' }"
-    [fieldExamples]="[
-      { label: 'FORM.FOR_EXAMPLE', translate: true },
-      { label: '#4AC44F', translate: false }
-    ]"
-    [required]="true"
-    controlName="{{ attributeName }}"
-    data-cy="rgb-picker-input"
-    fieldLabel="{{ label }}"
-  >
-    <ng-template #customChildInputPrefixTemplate>
-      <div
-        [style.background-color]="color || 'transparent'"
-        class="color-indicator {{ color ? 'border border-dark rounded-1' : '' }} preview-color"
-      ></div>
-    </ng-template>
-  </atlas-text-field>
-
-  <img
-    #colorPicker
-    (colorPickerChange)="onChangeColor($event)"
-    [(colorPicker)]="color"
-    [cpAlphaChannel]="'disabled'"
-    [cpDisableInput]="true"
-    [cpDisabled]="formControl.disabled"
-    [cpOutputFormat]="'hex'"
-    [ngStyle]="formControl.disabled ? { cursor: 'initial' } : {}"
-    [src]="
-      formControl.disabled
-        ? 'assets/images/color-picker-inactive.svg'
-        : 'assets/images/color-picker-active.svg'
-    "
-  />
+  <form [formGroup]="formGroup">
+    <div class="text-field-wrapper">
+      <div class="text-field-flex">
+        <div
+          [style.background-color]="color || 'transparent'"
+          class="color-indicator {{ color ? 'border border-dark rounded-1' : '' }} preview-color"
+        ></div>
+        <input
+          #input
+          (change)="onChangeColor(input.value)"
+          (keydown)="closeColorPickerDialog($event)"
+          [value]="color"
+          class="padding-left"
+          data-cy="rgb-picker-input"
+          formControlName="{{ attributeName }}"
+          matInput
+          trim
+        />
+        <img
+          #colorPicker
+          (colorPickerChange)="onChangeColor($event)"
+          [(colorPicker)]="color"
+          [cpAlphaChannel]="'disabled'"
+          [cpDisableInput]="true"
+          [cpDisabled]="formControl.disabled"
+          [cpOutputFormat]="'hex'"
+          [ngStyle]="formControl.disabled ? { cursor: 'initial' } : {}"
+          [src]="
+            formControl.disabled
+              ? 'assets/images/color-picker-inactive.svg'
+              : 'assets/images/color-picker-active.svg'
+          "
+        />
+      </div>
+      <app-atlas-field-error
+        [customError]="customError"
+        [form]="formGroup"
+        controlName="{{ attributeName }}"
+      ></app-atlas-field-error>
+    </div>
+  </form>
 </div>
