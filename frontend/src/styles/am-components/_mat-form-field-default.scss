@@ -1,123 +1,123 @@
-@use 'src/styles/variables' as variables;
-
-%default-border-style {
-  border-style: solid;
-  border-top-style: none;
-  padding-right: 0.5rem;
-}
-
-%text-padding-left-default {
-  padding-left: 0.3rem;
-}
-
-%default-border {
-  border-color: variables.$gray-400;
-  border-width: 1px;
-}
-
-%bold-border {
-  border-width: 3px;
-  margin-bottom: -2px;
-}
-
-/* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
-/*.mat-focused .mat-form-field-flex .mat-form-field-infix,
-.mat-form-field-flex .mat-form-field-infix:hover {
-  border-color: variables.$primary-300;
-  @extend %bold-border;
-  @extend %default-border-style;
-}*/
-
-/* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
-/*.mat-form-field-disabled:hover .mat-form-field-flex .mat-form-field-infix {
-  @extend %default-border;
-  margin-bottom: unset;
-  margin-left: unset;
-}
-
-/* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.
-.mat-form-field-invalid .mat-form-field-flex .mat-form-field-infix {
-  border-color: variables.$warnColor;
-  @extend %bold-border;
-  @extend %default-border-style;
-}
-
-mat-form-field {
-  /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.
-  .mat-form-field-flex .mat-form-field-infix,
-  .mat-form-field-disabled .mat-form-field-infix {
-    @extend %default-border;
-    @extend %default-border-style;
-
-    input,
-    mat-select {
-      padding-left: 0.3rem;
-      height: 19px;
-    }
-  }
-}
-
-.mat-form-field:not(.mat-form-field-appearance-legacy) .mat-form-field-prefix .mat-mdc-icon-button,
-.mat-form-field:not(.mat-form-field-appearance-legacy) .mat-form-field-suffix .mat-icon-button {
-  height: 36px !important;
-}
-
-/* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.
-.mat-form-field-appearance-outline .mat-form-field-prefix,
-.mat-form-field-appearance-outline .mat-form-field-suffix {
-  top: 0.1em !important;
-}
-
-/* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.
-.mat-form-field-appearance-legacy .mat-form-field-underline {
-  display: none;
-}
-
-mat-form-field.atlas-text-area {
-  /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.
-  .mat-form-field-outline,
-  .mat-form-field-outline-thick {
-    color: variables.$gray-400;
-  }
-}
-
-// Formfields in Detail Dialogs
-.detail-wrapper mat-form-field {
-  margin-top: 16px;
-}
-*/
-
-mat-form-field[appearance='outline'] {
-  margin-top: 16px;
-
-  .mat-mdc-text-field-wrapper:hover {
-    .mdc-notched-outline__leading {
-      border-left: 3px solid red;
-    }
-
-    .mdc-notched-outline__trailing {
-      border-bottom: 3px solid red;
-      border-right: 3px solid red;
-    }
-  }
-
-  .mdc-notched-outline {
-    .mdc-notched-outline__leading {
-      border-top-left-radius: 0;
-      border-top: none;
-    }
-
-    .mdc-notched-outline__trailing {
-      border-top: none;
-      border-top-right-radius: 0;
-    }
-  }
-
-  .mat-mdc-form-field-flex {
-    .mat-mdc-form-field-infix {
-      min-height: 30px;
-      padding-top: 0;
-      padding-bottom: 0;
-    }
-  }
-}
+//@use 'src/styles/variables' as variables;
+//
+//%default-border-style {
+//  border-style: solid;
+//  border-top-style: none;
+//  padding-right: 0.5rem;
+//}
+//
+//%text-padding-left-default {
+//  padding-left: 0.3rem;
+//}
+//
+//%default-border {
+//  border-color: variables.$gray-400;
+//  border-width: 1px;
+//}
+//
+//%bold-border {
+//  border-width: 3px;
+//  margin-bottom: -2px;
+//}
+//
+///* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
+///*.mat-focused .mat-form-field-flex .mat-form-field-infix,
+//.mat-form-field-flex .mat-form-field-infix:hover {
+//  border-color: variables.$primary-300;
+//  @extend %bold-border;
+//  @extend %default-border-style;
+//}*/
+//
+///* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
+///*.mat-form-field-disabled:hover .mat-form-field-flex .mat-form-field-infix {
+//  @extend %default-border;
+//  margin-bottom: unset;
+//  margin-left: unset;
+//}
+//
+///* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.
+//.mat-form-field-invalid .mat-form-field-flex .mat-form-field-infix {
+//  border-color: variables.$warnColor;
+//  @extend %bold-border;
+//  @extend %default-border-style;
+//}
+//
+//mat-form-field {
+//  /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.
+//  .mat-form-field-flex .mat-form-field-infix,
+//  .mat-form-field-disabled .mat-form-field-infix {
+//    @extend %default-border;
+//    @extend %default-border-style;
+//
+//    input,
+//    mat-select {
+//      padding-left: 0.3rem;
+//      height: 19px;
+//    }
+//  }
+//}
+//
+//.mat-form-field:not(.mat-form-field-appearance-legacy) .mat-form-field-prefix .mat-mdc-icon-button,
+//.mat-form-field:not(.mat-form-field-appearance-legacy) .mat-form-field-suffix .mat-icon-button {
+//  height: 36px !important;
+//}
+//
+///* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.
+//.mat-form-field-appearance-outline .mat-form-field-prefix,
+//.mat-form-field-appearance-outline .mat-form-field-suffix {
+//  top: 0.1em !important;
+//}
+//
+///* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.
+//.mat-form-field-appearance-legacy .mat-form-field-underline {
+//  display: none;
+//}
+//
+//mat-form-field.atlas-text-area {
+//  /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.
+//  .mat-form-field-outline,
+//  .mat-form-field-outline-thick {
+//    color: variables.$gray-400;
+//  }
+//}
+//
+//// Formfields in Detail Dialogs
+//.detail-wrapper mat-form-field {
+//  margin-top: 16px;
+//}
+//*/
+//
+//mat-form-field[appearance='outline'] {
+//  margin-top: 16px;
+//
+//  .mat-mdc-text-field-wrapper:hover {
+//    .mdc-notched-outline__leading {
+//      border-left: 3px solid red;
+//    }
+//
+//    .mdc-notched-outline__trailing {
+//      border-bottom: 3px solid red;
+//      border-right: 3px solid red;
+//    }
+//  }
+//
+//  .mdc-notched-outline {
+//    .mdc-notched-outline__leading {
+//      border-top-left-radius: 0;
+//      border-top: none;
+//    }
+//
+//    .mdc-notched-outline__trailing {
+//      border-top: none;
+//      border-top-right-radius: 0;
+//    }
+//  }
+//
+//  .mat-mdc-form-field-flex {
+//    .mat-mdc-form-field-infix {
+//      min-height: 30px;
+//      padding-top: 0;
+//      padding-bottom: 0;
+//    }
+//  }
+//}
