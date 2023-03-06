@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AtlasLableFieldComponent } from './atlas-lable-field.component';
+import { AtlasLabelFieldComponent } from './atlas-label-field.component';
 
 describe('AtlasLableFieldComponent', () => {
-  let component: AtlasLableFieldComponent;
-  let fixture: ComponentFixture<AtlasLableFieldComponent>;
+  let component: AtlasLabelFieldComponent;
+  let fixture: ComponentFixture<AtlasLabelFieldComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AtlasLableFieldComponent],
+      declarations: [AtlasLabelFieldComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(AtlasLableFieldComponent);
+    fixture = TestBed.createComponent(AtlasLabelFieldComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
