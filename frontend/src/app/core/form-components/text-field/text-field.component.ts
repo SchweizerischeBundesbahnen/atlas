@@ -3,7 +3,6 @@ import { FormGroup, FormGroupDirective } from '@angular/forms';
 import { FieldExample } from './field-example';
 import { FieldDatePicker } from './field-date-picker';
 import { AtlasFieldCustomError } from '../atlas-field-error/atlas-field-custom-error';
-import { RgbPicker } from '../../../pages/lidi/color-picker/rgb/rgb-picker';
 
 @Component({
   selector: 'atlas-text-field',
@@ -18,7 +17,6 @@ export class TextFieldComponent implements OnInit {
   @Input() required!: boolean;
   @Input() fieldExamples!: Array<FieldExample>;
   @Input() datePicker!: FieldDatePicker;
-  @Input() rgbPicker!: RgbPicker;
   @Input() customInputNgStyle!: Record<string, string | undefined | null>;
   @Input() customError!: AtlasFieldCustomError;
   @ContentChild('customChildInputPostfixTemplate')
@@ -31,13 +29,5 @@ export class TextFieldComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.rootFormGroup.control;
-  }
-
-  onChangeColor(color: string) {
-    this.rgbPicker.onChangeColor(color);
-  }
-
-  closeColorPickerDialog($event: KeyboardEvent) {
-    this.rgbPicker.closeColorPickerDialog($event);
   }
 }
