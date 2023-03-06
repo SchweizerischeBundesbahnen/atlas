@@ -1,6 +1,7 @@
 package ch.sbb.atlas.api.user.administration;
 
 import ch.sbb.atlas.api.model.BaseVersionModel;
+import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -20,7 +21,8 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class UserPermissionVersionModel extends BaseVersionModel {
+@Schema(name = "UserPermission")
+public class UserPermissionModel extends BaseVersionModel {
 
   @NotNull
   private ApplicationRole role;
@@ -32,5 +34,10 @@ public class UserPermissionVersionModel extends BaseVersionModel {
   @NotNull
   @Builder.Default
   private List<@NotEmpty String> sboids = new ArrayList<>();
+
+  @Schema(description = "Cantons the user has administrative rights on", type = "List", example = "[\"BERN\"]")
+  @NotNull
+  @Builder.Default
+  private List<SwissCanton> swissCantons = new ArrayList<>();
 
 }
