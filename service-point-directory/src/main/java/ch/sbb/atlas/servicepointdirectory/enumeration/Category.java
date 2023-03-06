@@ -43,7 +43,11 @@ public enum Category implements CodeAndDesignations {
       "Migration (alt Uhst TCV Personenverkehr)"),
   TRAVEL_AGENCY(21, "Reisebüro", "Agence de voyage", "Agenzia di viaggi", "Travel Agency", null),
   TRAVEL_AGENCY_ORGANISATION(22, "Reisebüro Organisation", "Organisation de l'agence de vo", "Organizzazione delle agenzie d",
-      "Travel Agency Organization", null);
+      "Travel Agency Organization", null),
+  ROUTE_SPEED_CHANGE(70, "Streckengeschwindigkeitswechsel", "Changement de vitesse de ligne", "Variazioni di velocità di linea"
+      , "Streckengeschwindigkeitswechsel", null),
+
+  ;
 
   private final Integer id;
   private final String designationDe;
