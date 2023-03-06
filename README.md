@@ -70,6 +70,9 @@ It's applications share the following architectural goal:
     - **Test**: https://atlas.test.sbb-cloud.net
     - **Int**: https://atlas.int.sbb-cloud.net
     - **Prod**: https://atlas.sbb-cloud.net
+- **Developer Portal**:
+  - **INT**: https://developer-int.sbb.ch/apis?text=atlas&all=
+  - **PROD**: https://developer.sbb.ch/apis?text=atlas&all=
 - **Jenkins**: https://ci.sbb.ch/job/KI_ATLAS/job/atlas/job/master/ :warning: **deprecated**
 - **Jenkins-E2E**: https://ci.sbb.ch/job/KI_ATLAS_E2E/job/atlas/ :warning: **deprecated**
 
