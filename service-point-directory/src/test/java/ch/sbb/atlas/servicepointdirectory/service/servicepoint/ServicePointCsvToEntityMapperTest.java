@@ -333,7 +333,7 @@ public class ServicePointCsvToEntityMapperTest {
         .meansOfTransport(Collections.emptySet())
         .operatingPoint(true)
         .operatingPointWithTimetable(true)
-        .operatingPointTechnicalTimetableType(OperatingPointTechnicalTimetableType.LANGE_CHANGE)
+        .operatingPointTechnicalTimetableType(OperatingPointTechnicalTimetableType.LANE_CHANGE)
         .creationDate(LocalDateTime.of(LocalDate.of(2018, 1, 31), LocalTime.of(13, 2, 54)))
         .creator("u150522")
         .editionDate(LocalDateTime.of(LocalDate.of(2022, 2, 24), LocalTime.of(21, 48, 25)))
