@@ -12,7 +12,7 @@ import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
 import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepointdirectory.enumeration.ServicePointStatus;
 import ch.sbb.atlas.servicepointdirectory.enumeration.StopPointType;
-import ch.sbb.atlas.model.SwissCanton;
+import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import java.time.LocalDate;
 import java.util.List;
