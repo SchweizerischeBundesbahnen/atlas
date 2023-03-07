@@ -8,11 +8,13 @@ import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeoloca
 import ch.sbb.atlas.servicepointdirectory.enumeration.Category;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
 import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
+import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointTechnicalTimetableType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.ServicePointStatus;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.experimental.UtilityClass;
@@ -116,6 +118,51 @@ public class ServicePointTestData {
 
     geolocation.setServicePointVersion(servicePoint);
     return servicePoint;
+  }
+
+  public static ServicePointVersion createServicePointVersionWithCountryBorder() {
+    ServicePointGeolocation servicePointGeolocation = ServicePointGeolocation
+        .builder()
+        .spatialReference(SpatialReference.LV95)
+        .east(2604525D)
+        .north(1259900D)
+        .height(370D)
+        .country(Country.SWITZERLAND)
+        .creationDate(LocalDateTime.of(LocalDate.of(2017, 11, 9), LocalTime.of(11, 53, 5)))
+        .creator("GSU_DIDOK")
+        .editionDate(LocalDateTime.of(LocalDate.of(2019, 5, 20), LocalTime.of(15, 3, 58)))
+        .editor("fs45117")
+        .build();
+
+    ServicePointVersion servicePointVersionWithCountryBorder = ServicePointVersion
+        .builder()
+        .servicePointGeolocation(servicePointGeolocation)
+        .number(ServicePointNumber.of(85197616))
+        .sloid("ch:1:sloid:19761")
+        .numberShort(19761)
+        .country(Country.SWITZERLAND)
+        .designationLong(null)
+        .designationOfficial("Flüh Grenze")
+        .abbreviation(null)
+        .meansOfTransport(Collections.emptySet())
+        .statusDidok3(ServicePointStatus.IN_OPERATION)
+        .businessOrganisation("ch:1:sboid:100019")
+        .comment("(Tram)")
+        .status(Status.VALIDATED)
+        .validFrom(LocalDate.of(2017, 11, 2))
+        .validTo(LocalDate.of(2099, 12, 31))
+        .categories(new HashSet<>())
+        .operatingPointTechnicalTimetableType(OperatingPointTechnicalTimetableType.COUNTRY_BORDER)
+        .operatingPoint(true)
+        .operatingPointWithTimetable(true)
+        .creationDate(LocalDateTime.of(LocalDate.of(2017, 11, 9), LocalTime.of(11, 53, 5)))
+        .creator("GSU_DIDOK")
+        .editionDate(LocalDateTime.of(LocalDate.of(2019, 5, 20), LocalTime.of(15, 3, 58)))
+        .editor("fs45117")
+        .build();
+    servicePointGeolocation.setServicePointVersion(servicePointVersionWithCountryBorder);
+
+    return servicePointVersionWithCountryBorder;
   }
 
 }

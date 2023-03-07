@@ -9,6 +9,7 @@ import ch.sbb.atlas.servicepointdirectory.api.ServicePointRequestParams;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
 import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
+import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointTechnicalTimetableType;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import java.time.LocalDate;
@@ -318,4 +319,34 @@ public class ServicePointSearchTest {
     // Then
     assertThat(servicePointVersions.getTotalElements()).isEqualTo(numberOfTotalServicePoints);
   }
+
+  @Test
+  void givenServicePointVersionWithCountryBorderWhenSearchWithCountryBorderThenFindOne() {
+    // Given
+    servicePointVersionRepository.save(ServicePointTestData.createServicePointVersionWithCountryBorder());
+    // When
+    Page<ServicePointVersion> servicePointVersions =
+        servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
+            .servicePointRequestParams(ServicePointRequestParams.builder()
+                .operatingPointTechnicalTimetableTypes(List.of(OperatingPointTechnicalTimetableType.COUNTRY_BORDER))
+                .build()).build());
+    // Then
+    assertThat(servicePointVersions.getTotalElements()).isEqualTo(1);
+    assertThat(servicePointVersions.getContent().get(0).getDesignationOfficial()).isEqualTo("Flüh Grenze");
+  }
+
+  @Test
+  void givenServicePointVersionWithCountryBorderWhenSearchWithPropertyLineThenFindNone() {
+    // given
+    servicePointVersionRepository.save(ServicePointTestData.createServicePointVersionWithCountryBorder());
+    // when
+    Page<ServicePointVersion> servicePointVersions =
+        servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
+            .servicePointRequestParams(ServicePointRequestParams.builder()
+                .operatingPointTechnicalTimetableTypes(List.of(OperatingPointTechnicalTimetableType.PROPERTY_LINE))
+                .build()).build());
+    // then
+    assertThat(servicePointVersions.getTotalElements()).isEqualTo(0);
+  }
+
 }
