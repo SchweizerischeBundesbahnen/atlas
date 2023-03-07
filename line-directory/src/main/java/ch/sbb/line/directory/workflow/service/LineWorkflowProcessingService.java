@@ -30,7 +30,7 @@ public class LineWorkflowProcessingService extends
     super(objectRepository, objectWorkflowRepository, objectVerionSnapshotRepositroy);
   }
 
-  @PreAuthorize("@userAdministrationService.hasUserPermissionsToCreate(#lineVersion, T(ch.sbb.atlas.kafka.model.user.admin"
+  @PreAuthorize("@businessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#lineVersion, T(ch.sbb.atlas.kafka.model.user.admin"
       + ".ApplicationType).LIDI)")
   public WorkflowStatus processLineWorkflow(WorkflowEvent lineWorkflowEvent, LineVersion lineVersion) {
     log.info("Started Workflow processing: {}", lineWorkflowEvent);

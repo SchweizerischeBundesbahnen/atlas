@@ -19,7 +19,7 @@ public interface TransportCompanyRelationApiV1 {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  @PreAuthorize("@userAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).BODI)")
+  @PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).BODI)")
   TransportCompanyBoRelationModel createTransportCompanyRelation(@RequestBody @Valid TransportCompanyRelationModel model);
 
   @GetMapping("{transportCompanyId}")

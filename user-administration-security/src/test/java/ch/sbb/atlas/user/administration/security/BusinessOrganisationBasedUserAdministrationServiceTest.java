@@ -17,17 +17,17 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-class UserAdministrationServiceTest {
+class BusinessOrganisationBasedUserAdministrationServiceTest {
 
     @Mock
     private UserPermissionHolder userPermissionHolder;
 
-    private UserAdministrationService userAdministrationService;
+    private BusinessOrganisationBasedUserAdministrationService businessOrganisationBasedUserAdministrationService;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        userAdministrationService = new UserAdministrationService(userPermissionHolder);
+        businessOrganisationBasedUserAdministrationService = new BusinessOrganisationBasedUserAdministrationService(userPermissionHolder);
         when(userPermissionHolder.isAdmin()).thenReturn(false);
         when(userPermissionHolder.getCurrentUserSbbUid()).thenReturn("e123456");
     }
@@ -38,7 +38,7 @@ class UserAdministrationServiceTest {
         when(userPermissionHolder.isAdmin()).thenReturn(true);
 
         // When
-        boolean permissionsToCreate = userAdministrationService.hasUserPermissionsToCreate(
+        boolean permissionsToCreate = businessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(
                 BusinessObject.createDummy().build(), ApplicationType.LIDI);
 
         // Then
@@ -60,7 +60,7 @@ class UserAdministrationServiceTest {
                 .build()));
 
         // When
-        boolean permissionsToCreate = userAdministrationService.hasUserPermissionsToCreate(
+        boolean permissionsToCreate = businessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(
                 BusinessObject.createDummy().build(), ApplicationType.LIDI);
 
         // Then
@@ -82,7 +82,7 @@ class UserAdministrationServiceTest {
                 .build()));
 
         // When
-        boolean permissionsToCreate = userAdministrationService.hasUserPermissionsToCreate(
+        boolean permissionsToCreate = businessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(
                 BusinessObject.createDummy().build(), ApplicationType.LIDI);
 
         // Then
@@ -104,7 +104,7 @@ class UserAdministrationServiceTest {
                 .build()));
 
         // When
-        boolean permissionsToCreate = userAdministrationService.hasUserPermissionsToCreate(
+        boolean permissionsToCreate = businessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(
                 BusinessObject.createDummy().build(), ApplicationType.LIDI);
 
         // Then
@@ -129,7 +129,7 @@ class UserAdministrationServiceTest {
                 .build()));
 
         // When
-        boolean permissionsToCreate = userAdministrationService.hasUserPermissionsToCreate(
+        boolean permissionsToCreate = businessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(
                 BusinessObject.createDummy().build(), ApplicationType.LIDI);
 
         // Then
@@ -142,7 +142,7 @@ class UserAdministrationServiceTest {
         when(userPermissionHolder.isAdmin()).thenReturn(true);
 
         // When
-        boolean permissionsToUpdate = userAdministrationService.hasUserPermissionsToUpdate(
+        boolean permissionsToUpdate = businessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdate(
                 BusinessObject.createDummy().build(),
                 List.of(BusinessObject.createDummy().anotherValue("previousValue").build()),
                 ApplicationType.LIDI);
@@ -166,7 +166,7 @@ class UserAdministrationServiceTest {
                 .build()));
 
         // When
-        boolean permissionsToUpdate = userAdministrationService.hasUserPermissionsToUpdate(
+        boolean permissionsToUpdate = businessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdate(
                 BusinessObject.createDummy().build(),
                 List.of(BusinessObject.createDummy().anotherValue("previousValue").build()),
                 ApplicationType.LIDI);
@@ -190,7 +190,7 @@ class UserAdministrationServiceTest {
                 .build()));
 
         // When
-        boolean permissionsToUpdate = userAdministrationService.hasUserPermissionsToUpdate(
+        boolean permissionsToUpdate = businessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdate(
                 BusinessObject.createDummy().build(),
                 List.of(BusinessObject.createDummy().anotherValue("previousValue").build()),
                 ApplicationType.LIDI);
@@ -214,7 +214,7 @@ class UserAdministrationServiceTest {
                 .build()));
 
         // When
-        boolean permissionsToUpdate = userAdministrationService.hasUserPermissionsToUpdate(
+        boolean permissionsToUpdate = businessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdate(
                 BusinessObject.createDummy().build(),
                 List.of(BusinessObject.createDummy().anotherValue("previousValue").build()),
                 ApplicationType.LIDI);
@@ -241,7 +241,7 @@ class UserAdministrationServiceTest {
                 .build()));
 
         // When
-        boolean permissionsToUpdate = userAdministrationService.hasUserPermissionsToUpdate(
+        boolean permissionsToUpdate = businessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdate(
                 BusinessObject.createDummy().build(),
                 List.of(BusinessObject.createDummy().anotherValue("previousValue").build()),
                 ApplicationType.LIDI);
@@ -268,7 +268,7 @@ class UserAdministrationServiceTest {
                 .build()));
 
         // When
-        boolean permissionsToUpdate = userAdministrationService.hasUserPermissionsToUpdate(
+        boolean permissionsToUpdate = businessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdate(
                 BusinessObject.createDummy()
                         .businessOrganisation("sboid1")
                         .validFrom(LocalDate.of(2020, 1, 1))
@@ -304,7 +304,7 @@ class UserAdministrationServiceTest {
                 .build()));
 
         // When
-        boolean permissionsToUpdate = userAdministrationService.hasUserPermissionsToUpdate(
+        boolean permissionsToUpdate = businessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdate(
                 BusinessObject.createDummy()
                         .businessOrganisation("sboid1")
                         .validFrom(LocalDate.of(2020, 1, 1))
@@ -339,7 +339,7 @@ class UserAdministrationServiceTest {
                 .build()));
 
         // When
-        boolean permissionsToUpdate = userAdministrationService.hasUserPermissionsToUpdate(
+        boolean permissionsToUpdate = businessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdate(
                 BusinessObject.createDummy()
                         .businessOrganisation("sboid2")
                         .validFrom(LocalDate.of(2021, 1, 1))
@@ -358,7 +358,7 @@ class UserAdministrationServiceTest {
         when(userPermissionHolder.isAdmin()).thenReturn(true);
 
         // When
-        boolean bodiPermissions = userAdministrationService.isAtLeastSupervisor(ApplicationType.BODI);
+        boolean bodiPermissions = businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(ApplicationType.BODI);
 
         // Then
         assertThat(bodiPermissions).isTrue();
@@ -379,7 +379,7 @@ class UserAdministrationServiceTest {
                 .build()));
 
         // When
-        boolean bodiPermissions = userAdministrationService.isAtLeastSupervisor(ApplicationType.BODI);
+        boolean bodiPermissions = businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(ApplicationType.BODI);
 
         // Then
         assertThat(bodiPermissions).isTrue();
@@ -400,7 +400,7 @@ class UserAdministrationServiceTest {
                 .build()));
 
         // When
-        boolean bodiPermissions = userAdministrationService.isAtLeastSupervisor(ApplicationType.BODI);
+        boolean bodiPermissions = businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(ApplicationType.BODI);
 
         // Then
         assertThat(bodiPermissions).isFalse();
@@ -421,7 +421,7 @@ class UserAdministrationServiceTest {
                 .build()));
 
         // When
-        boolean bodiPermissions = userAdministrationService.isAtLeastSupervisor(ApplicationType.BODI);
+        boolean bodiPermissions = businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(ApplicationType.BODI);
 
         // Then
         assertThat(bodiPermissions).isFalse();
@@ -442,7 +442,7 @@ class UserAdministrationServiceTest {
                 .build()));
 
         // When
-        boolean bodiPermissions = userAdministrationService.isAtLeastSupervisor(ApplicationType.BODI);
+        boolean bodiPermissions = businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(ApplicationType.BODI);
 
         // Then
         assertThat(bodiPermissions).isFalse();
@@ -454,7 +454,7 @@ class UserAdministrationServiceTest {
         when(userPermissionHolder.getCurrentUser()).thenReturn(Optional.empty());
 
         // When
-        boolean bodiPermissions = userAdministrationService.isAtLeastSupervisor(ApplicationType.BODI);
+        boolean bodiPermissions = businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(ApplicationType.BODI);
 
         // Then
         assertThat(bodiPermissions).isFalse();
