@@ -2,17 +2,15 @@
   <div class="font-bold-lg mb-2">
     <span>{{ 'COMMON.COVERAGE.HEADING' | translate }}</span>
   </div>
-  <mat-chip-listbox [disabled]="true" aria-labelledby="coverage" class="ms-5" id="coverage">
+  <mat-chip-listbox aria-labelledby="coverage" class="ms-2 mt-4" id="coverage">
     <span class="color-primary-400 font-bold-base mb-2 ms-4 me-3 mt-2">{{
       heading | translate
     }}</span>
-    <mat-chip-option [ngClass]="coverage.coverageType!.toLowerCase()">
-      <span class="text font-bold-base">
+    <mat-chip [ngClass]="coverage.coverageType!.toLowerCase()">
+      <span class="text font-bold-base pe-1">
         {{ 'COMMON.COVERAGE.' + this.coverage.coverageType | translate }}
       </span>
-      <mat-chip-avatar>
-        <i [ngClass]="getIcon(this.coverage.coverageType!)"></i>
-      </mat-chip-avatar>
-    </mat-chip-option>
+      <i [ngClass]="getIcon(this.coverage.coverageType!)"></i>
+    </mat-chip>
   </mat-chip-listbox>
 </div>
