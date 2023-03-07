@@ -70,6 +70,7 @@ public class ServicePointSearchRestrictions extends SearchRestrictions<ServicePo
         .and(specificationBuilder().enumSpecification(servicePointRequestParams.getStopPointTypes(),
             ServicePointVersion_.stopPointType))
         .and(new ElementCollectionContainsAnySpecification<>(servicePointRequestParams.getMeansOfTransport(), ServicePointVersion_.meansOfTransport))
+        .and(specificationBuilder().enumSpecification(servicePointRequestParams.getOperatingPointTechnicalTimetableTypes(), ServicePointVersion_.operatingPointTechnicalTimetableType))
         .and(specificationBuilder().booleanSpecification(ServicePointVersion_.operatingPoint,
             servicePointRequestParams.getOperatingPoint()))
         .and(specificationBuilder().booleanSpecification(ServicePointVersion_.operatingPointWithTimetable,
