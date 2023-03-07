@@ -50,7 +50,7 @@ Define the user administration topic.
 `@Import(UserAdministrationConfig.class)` to include the config to the application context.
 
 ```java
-@PreAuthorize("@userAdministrationService.hasUserPermissionsToCreate(#businessObject, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI)")
+@PreAuthorize("@businessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#businessObject, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI)")
 public LineVersion create(LineVersion businessObject) {
     return save(businessObject);
 }
