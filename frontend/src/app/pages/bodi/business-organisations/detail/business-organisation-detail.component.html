@@ -178,7 +178,7 @@
               {{ 'BODI.BUSINESS_ORGANISATION.BUSINESS_TYPES.' + type | translate }}
             </mat-option>
           </mat-select>
-          <mat-error fieldErrors></mat-error>
+          <app-atlas-field-error [form]="form" controlName="businessTypes"></app-atlas-field-error>
         </mat-form-field>
       </div>
     </div>
