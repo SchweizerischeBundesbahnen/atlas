@@ -1,5 +1,6 @@
 @use 'src/styles/variables' as variables;
 
 span {
-  color: variables.$errorColor;
+  color: variables.$warnColor;
+  font-size: 75% !important;
 }
