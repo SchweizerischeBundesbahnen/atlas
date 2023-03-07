@@ -1,3 +1,10 @@
-<span *ngIf="(isTouched || isDirty) && (hasError | async)" class="font-regular-sm">
-  {{ errorTranslationKeyToShow | translate : validationErrors }}
-</span>
+<div *ngIf="!customError">
+  <span *ngFor="let validationError of errors" class="font-regular-sm">
+    {{ validationError.error | translate : validationError.params }}
+  </span>
+</div>
+<div *ngIf="error">
+  <span class="font-regular-sm">
+    {{ error | translate }}
+  </span>
+</div>
