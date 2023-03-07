@@ -1,4 +1,4 @@
-<form-search-select
+<!--<form-search-select
   [items$]="userSearchResults$"
   [formGroup]="form"
   [controlName]="'userSearch'"
@@ -8,4 +8,16 @@
   <ng-template #labelOptionTemplates let-item>
     {{ item | userSelectFormat }}
   </ng-template>
-</form-search-select>
+</form-search-select>-->
+
+<div class="dropdown-search-wrapper">
+  <input
+    #searchUserInput
+    type="text"
+    placeholder="Search.."
+    (keyup)="searchUser(searchUserInput.value)"
+  />
+  <div class="dropdown-element-wrapper" *ngIf="userSearchResults$ | async as users">
+    <span class="dropdown-element" *ngFor="let user of users">{{ user | userSelectFormat }}</span>
+  </div>
+</div>
