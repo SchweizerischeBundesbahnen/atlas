@@ -144,8 +144,8 @@
               {{ 'LIDI.SUBLINE.TYPES.' + type | translate }}
             </mat-option>
           </mat-select>
-          <mat-error fieldErrors></mat-error>
         </mat-form-field>
+        <app-atlas-field-error [form]="form" controlName="sublineType"></app-atlas-field-error>
       </div>
 
       <div class="d-flex flex-column col-3">
@@ -162,8 +162,8 @@
               {{ 'LIDI.PAYMENT.' + type | translate }}
             </mat-option>
           </mat-select>
-          <mat-error fieldErrors></mat-error>
         </mat-form-field>
+        <app-atlas-field-error [form]="form" controlName="paymentType"></app-atlas-field-error>
       </div>
     </div>
   </form>
