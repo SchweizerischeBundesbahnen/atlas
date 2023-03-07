@@ -16,15 +16,13 @@
 // /atlas-components includes
 @use 'atlas-components/atlas-button';
 @use 'atlas-components/switch-version';
+@use 'atlas-components/atlas-snack-bar';
 
 // /am-components includes
 @use 'am-components/mat-dialog';
-//@use 'am-components/mat-form-field-default';
-//@use 'am-components/mat-form-field-outline';
 @use 'am-components/mat-label';
 @use 'am-components/mat-paginator';
 @use 'am-components/mat-slide-toggle';
-@use 'am-components/mat-snack-bar';
 @use 'am-components/mat-tab';
 @use 'am-components/mat-table';
 @use 'am-components/ng-select';
