@@ -11,8 +11,8 @@ import { AtlasFieldCustomError } from '../atlas-field-error/atlas-field-custom-e
 export class TextFieldComponent {
   @Input() controlName!: string;
   @Input() fieldLabel!: string;
-  @Input() infoIconTitle!: string;
-  @Input() infoIconLink!: string;
+  @Input() infoIconTitle?: string;
+  @Input() infoIconLink?: string;
   @Input() required!: boolean;
   @Input() fieldExamples!: Array<FieldExample>;
   @Input() customInputNgStyle!: Record<string, string | undefined | null>;
