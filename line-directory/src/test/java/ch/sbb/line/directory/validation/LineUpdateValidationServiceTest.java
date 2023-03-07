@@ -6,7 +6,7 @@ import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
-import ch.sbb.atlas.user.administration.security.UserAdministrationService;
+import ch.sbb.atlas.user.administration.security.BusinessOrganisationBasedUserAdministrationService;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
@@ -22,19 +22,19 @@ import org.mockito.MockitoAnnotations;
 class LineUpdateValidationServiceTest {
 
   @Mock
-  private UserAdministrationService userAdministrationService;
+  private BusinessOrganisationBasedUserAdministrationService businessOrganisationBasedUserAdministrationService;
 
   private LineUpdateValidationService lineUpdateValidationService;
 
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    lineUpdateValidationService = new LineUpdateValidationService(userAdministrationService);
+    lineUpdateValidationService = new LineUpdateValidationService(businessOrganisationBasedUserAdministrationService);
   }
 
   @Test
   void shouldNotBeAllowedToUpdateInReviewVersionAsWriterOrSuperuser() {
-    when(userAdministrationService.isAtLeastSupervisor(ApplicationType.LIDI)).thenReturn(false);
+    when(businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(ApplicationType.LIDI)).thenReturn(false);
 
     LineVersion currentLineVersion = LineTestData.lineVersionBuilder().status(Status.IN_REVIEW).build();
     LineVersion editedLineVersion = LineTestData.lineVersionBuilder().description("This is better").build();
@@ -46,7 +46,7 @@ class LineUpdateValidationServiceTest {
 
   @Test
   void shouldNotBeAllowedToUpdateOtherVersionOverlappingInReviewVersionAsWriterOrSuperuser() {
-    when(userAdministrationService.isAtLeastSupervisor(ApplicationType.LIDI)).thenReturn(false);
+    when(businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(ApplicationType.LIDI)).thenReturn(false);
 
     LineVersion currentLineVersion1 = LineTestData.lineVersionBuilder()
         .status(Status.DRAFT)
@@ -71,7 +71,7 @@ class LineUpdateValidationServiceTest {
 
   @Test
   void shouldBeAllowedToUpdateOtherVersionNotOverlappingInReviewVersionAsWriterOrSuperuser() {
-    when(userAdministrationService.isAtLeastSupervisor(ApplicationType.LIDI)).thenReturn(false);
+    when(businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(ApplicationType.LIDI)).thenReturn(false);
 
     LineVersion currentLineVersion1 = LineTestData.lineVersionBuilder()
         .status(Status.DRAFT)
@@ -95,7 +95,7 @@ class LineUpdateValidationServiceTest {
 
   @Test
   void shouldBeAllowedToUpdateInReviewVersionAsSupervisor() {
-    when(userAdministrationService.isAtLeastSupervisor(ApplicationType.LIDI)).thenReturn(true);
+    when(businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(ApplicationType.LIDI)).thenReturn(true);
 
     LineVersion currentLineVersion = LineTestData.lineVersionBuilder().status(Status.IN_REVIEW).build();
     LineVersion editedLineVersion = LineTestData.lineVersionBuilder().description("This is better").build();
@@ -106,7 +106,7 @@ class LineUpdateValidationServiceTest {
 
   @Test
   void shouldNotBeAllowedToUpdateValidityOrTypeInReviewVersionAsSupervisor() {
-    when(userAdministrationService.isAtLeastSupervisor(ApplicationType.LIDI)).thenReturn(true);
+    when(businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(ApplicationType.LIDI)).thenReturn(true);
 
     LineVersion currentLineVersion = LineTestData.lineVersionBuilder().status(Status.IN_REVIEW).build();
     LineVersion editedLineVersion = LineTestData.lineVersionBuilder().lineType(LineType.TEMPORARY).build();
