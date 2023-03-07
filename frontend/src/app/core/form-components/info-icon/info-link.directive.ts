@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
   selector: '[infoLink]',
 })
 export class InfoLinkDirective {
-  @Input() infoLinkTranslationKey = '';
+  @Input() infoLink = '';
 
   constructor(
     private readonly element: ElementRef,
@@ -16,8 +16,8 @@ export class InfoLinkDirective {
 
   @HostListener('click') onClick() {
     try {
-      this.translateService.get(this.infoLinkTranslationKey).subscribe((link) => {
-        if (link === this.infoLinkTranslationKey) {
+      this.translateService.get(this.infoLink).subscribe((link) => {
+        if (link === this.infoLink) {
           throw 'Could not evaluate translationKey correctly';
         }
         window.open(link, '_blank');
