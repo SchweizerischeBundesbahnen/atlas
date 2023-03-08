@@ -26,15 +26,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Tag(name = "Timetable field numbers")
+@RequestMapping("v1/field-numbers")
 public interface TimetableFieldNumberApiV1 {
 
-  String BASE_PATH = "v1/field-numbers";
-
-  @GetMapping(BASE_PATH)
+  @GetMapping
   @PageableAsQueryParam
   Container<TimetableFieldNumberModel> getOverview(
       @Parameter(hidden = true) Pageable pageable,
@@ -44,14 +44,14 @@ public interface TimetableFieldNumberApiV1 {
       @Parameter @RequestParam(required = false) @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN) LocalDate validOn,
       @Parameter @RequestParam(required = false) List<Status> statusChoices);
 
-  @GetMapping(BASE_PATH + "/versions/{ttfnId}")
+  @GetMapping("/versions/{ttfnId}")
   List<TimetableFieldNumberVersionModel> getAllVersionsVersioned(@PathVariable String ttfnId);
 
-  @PostMapping(BASE_PATH + "/{ttfnId}/revoke")
+  @PostMapping("/{ttfnId}/revoke")
   @PreAuthorize("@userAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).TTFN)")
   List<TimetableFieldNumberVersionModel> revokeTimetableFieldNumber(@PathVariable String ttfnId);
 
-  @PostMapping(BASE_PATH + "/versions/{id}")
+  @PostMapping("/versions/{id}")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200"),
       @ApiResponse(responseCode = "409", description = "Number or SwissTimeTableFieldNumber are already taken", content =
@@ -62,7 +62,7 @@ public interface TimetableFieldNumberApiV1 {
   List<TimetableFieldNumberVersionModel> updateVersionWithVersioning(@PathVariable Long id,
       @RequestBody @Valid TimetableFieldNumberVersionModel newVersion);
 
-  @PostMapping(BASE_PATH + "/versions")
+  @PostMapping("/versions")
   @ResponseStatus(HttpStatus.CREATED)
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201"),
@@ -72,19 +72,19 @@ public interface TimetableFieldNumberApiV1 {
   TimetableFieldNumberVersionModel createVersion(
       @RequestBody @Valid TimetableFieldNumberVersionModel newVersion);
 
-  @DeleteMapping(BASE_PATH + "/{ttfnid}")
+  @DeleteMapping("/{ttfnid}")
   void deleteVersions(@PathVariable String ttfnid);
 
   @Operation(description = "Export all Timetable Field Number versions as csv and zip file to the ATLAS Amazon S3 Bucket")
-  @PostMapping(path = BASE_PATH + "/export-csv/full", produces = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping(path = "/export-csv/full", produces = MediaType.APPLICATION_JSON_VALUE)
   List<URL> exportFullTimetableFieldNumberVersions();
 
   @Operation(description = "Export all actual Timetable Field Number versions as csv and zip file to the ATLAS Amazon S3 Bucket")
-  @PostMapping(path = BASE_PATH + "/export-csv/actual", produces = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping(path = "/export-csv/actual", produces = MediaType.APPLICATION_JSON_VALUE)
   List<URL> exportActualTimetableFieldNumberVersions();
 
   @Operation(description = "Export all Timetable Field Number versions for the current timetable year change as csv and zip "
       + "file to the ATLAS Amazon S3 Bucket")
-  @PostMapping(path = BASE_PATH + "/export-csv/timetable-year-change", produces = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping(path = "/export-csv/timetable-year-change", produces = MediaType.APPLICATION_JSON_VALUE)
   List<URL> exportTimetableYearChangeTimetableFieldNumberVersions();
 }
