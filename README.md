@@ -57,8 +57,7 @@ It's applications share the following architectural goal:
     - **INT/PROD**: https://argocd-server-atlas-argocd.apps.maggie.sbb-aws.net/
 - **Sonarqube**: https://codequality.sbb.ch/dashboard?id=ch.sbb.atlas%3Aatlas&branch=master
 - **JFrog Artifactory**:
-    - **npm**: https://bin.sbb.ch/ui/repos/tree/General/atlas.npm%2Fatlas-frontend
-    - **docker**: https://bin.sbb.ch/ui/repos/tree/General/atlas.docker%2Fatlas-frontend
+    - **docker**: https://bin.sbb.ch/ui/repos/tree/General/atlas.docker/atlas/atlas-frontend
 - **Openshift**:
     - **Dev**: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-dev
     - **Test**: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-test
