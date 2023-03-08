@@ -2,16 +2,12 @@
   <span [ngClass]="required ? 'required-indicator' : ''" class="font-bold-lg"
     >{{ fieldLabel | translate }}
   </span>
-  <form-info-icon
-    *ngIf="infoIconLink"
-    infoLink
-    infoLinkTranslationKey="{{ infoIconLink }}"
-    infoTitle="{{ infoIconTitle | translate }}"
-  ></form-info-icon>
-  <form-info-icon
-    *ngIf="infoIconTitle && !infoIconLink"
-    infoTitle="{{ infoIconTitle | translate }}"
-  ></form-info-icon>
+  <ng-template [ngIf]="infoIconLink">
+    <form-info-icon [infoLink]="infoIconLink!"></form-info-icon>
+  </ng-template>
+  <ng-template [ngIf]="infoIconTitle">
+    <form-info-icon [infoTitle]="infoIconTitle | translate"></form-info-icon>
+  </ng-template>
 </div>
 <span *ngFor="let fieldExample of fieldExamples" class="font-regular-sm">
   {{ translate(fieldExample) }}
