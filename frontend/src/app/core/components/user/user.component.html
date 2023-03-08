@@ -1,4 +1,4 @@
-<ng-template [ngIf]="isAuthenticated">
+<ng-template [ngIf]="isAuthenticated" xmlns="http://www.w3.org/1999/html">
   <button [matMenuTriggerFor]="profile" id="user-menu-button" mat-button title="{{ userName }}">
     <div class="user-presentation d-inline-flex">
       <div class="user-icon bg-color-primary-500">
@@ -8,28 +8,30 @@
     </div>
   </button>
   <mat-menu #profile="matMenu">
-    <div class="ps-1 pe-1 flex-column">
-      <div *ngIf="roles || permissions" id="user-roles-modal">
-        <div class="d-inline-block ps-2">
-          <em class="bi bi-people-fill"></em>
+    <div class="font-regular-base">
+      <div class="ps-1 pe-1 flex-column">
+        <div *ngIf="roles || permissions" id="user-roles-modal">
+          <div class="d-inline-block ps-2">
+            <em class="bi bi-people-fill"></em>
+          </div>
+          <div class="d-inline-block">
+            <span class="mb-0 user-info-modal">{{ 'PROFILE.YOUR_ROLES' | translate }}</span>
+          </div>
+          <div *ngFor="let role of roles" class="user-role-item">
+            <em class="bi bi-circle-fill user-roles-list-item pe-1"></em>
+            {{ 'COMMON.ROLES.' + role | translate }}
+          </div>
+          <div *ngFor="let permission of permissions" class="user-role-item">
+            <em class="bi bi-circle-fill user-roles-list-item pe-1"></em>
+            {{ permission.application }}: {{ 'COMMON.ROLES.' + permission.role | translate }}
+          </div>
         </div>
-        <div class="d-inline-block">
-          <span class="mb-0 user-info-modal">{{ 'PROFILE.YOUR_ROLES' | translate }}</span>
-        </div>
-        <div *ngFor="let role of roles" class="user-role-item">
-          <em class="bi bi-circle-fill user-roles-list-item pe-1"></em>
-          {{ 'COMMON.ROLES.' + role | translate }}
-        </div>
-        <div *ngFor="let permission of permissions" class="user-role-item">
-          <em class="bi bi-circle-fill user-roles-list-item pe-1"></em>
-          {{ permission.application }}: {{ 'COMMON.ROLES.' + permission.role | translate }}
-        </div>
+        <hr />
+        <button (click)="logout()" class="w-100" id="logout" mat-button>
+          <em class="bi bi-box-arrow-right"></em>
+          {{ 'PROFILE.LOGOUT' | translate }}
+        </button>
       </div>
-      <hr />
-      <button (click)="logout()" class="w-100" id="logout" mat-button>
-        <em class="bi bi-box-arrow-right"></em>
-        {{ 'PROFILE.LOGOUT' | translate }}
-      </button>
     </div>
   </mat-menu>
 </ng-template>
