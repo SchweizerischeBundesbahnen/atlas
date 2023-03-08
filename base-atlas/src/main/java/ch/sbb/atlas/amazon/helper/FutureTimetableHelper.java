@@ -12,7 +12,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class FutureTimetableHelper {
 
-  public static final int DECEMBER_MONTH_AS_NUMER = 12;
+  public static final int DECEMBER_MONTH_AS_NUMBER = 12;
 
 
   /**
@@ -30,7 +30,7 @@ public class FutureTimetableHelper {
 
   public static LocalDate getActualTimetableYearChangeDate(LocalDate localDate) {
     return localDate
-        .withMonth(DECEMBER_MONTH_AS_NUMER)
+        .withMonth(DECEMBER_MONTH_AS_NUMBER)
         .with(TemporalAdjusters.dayOfWeekInMonth(2, DayOfWeek.SATURDAY))
         .plusDays(1);
   }
