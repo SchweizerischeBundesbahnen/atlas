@@ -9,7 +9,7 @@ import static org.mockito.Mockito.when;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.model.exception.NotFoundException;
 import ch.sbb.atlas.api.lidi.TimetableFieldNumberModel;
-import ch.sbb.atlas.api.lidi.TimetableFieldNumberVersionVersionModel;
+import ch.sbb.atlas.api.lidi.TimetableFieldNumberVersionModel;
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.model.search.TimetableFieldNumberSearchRestrictions;
@@ -60,8 +60,8 @@ public class TimetableFieldNumberControllerTest {
         .build();
   }
 
-  private static TimetableFieldNumberVersionVersionModel createModel() {
-    return TimetableFieldNumberVersionVersionModel.builder()
+  private static TimetableFieldNumberVersionModel createModel() {
+    return TimetableFieldNumberVersionModel.builder()
         .ttfnid("ch:1:ttfnid:100000")
         .description("FPFN Description")
         .number("BEX")
@@ -81,7 +81,7 @@ public class TimetableFieldNumberControllerTest {
   @Test
   public void shouldSaveNewVersion() {
     // Given
-    TimetableFieldNumberVersionVersionModel timetableFieldNumberVersionModel = createModel();
+    TimetableFieldNumberVersionModel timetableFieldNumberVersionModel = createModel();
 
     // When
     timetableFieldNumberController.createVersion(timetableFieldNumberVersionModel);
@@ -105,7 +105,7 @@ public class TimetableFieldNumberControllerTest {
 
     // When
     Container<TimetableFieldNumberModel> timetableFieldNumberContainer = timetableFieldNumberController.getOverview(
-        Pageable.unpaged(), Collections.emptyList(), Optional.empty(), Optional.empty(),
+        Pageable.unpaged(), Collections.emptyList(), null, null, null,
         Collections.emptyList());
 
     // Then

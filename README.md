@@ -27,7 +27,6 @@ This is the repository for business relevant services for ATLAS.
   * [User Administration](#user-administration)
   * [Service-Point-Directory](#service-point-directory)
   * [Import Service-Point](#import-service-point)
-  * [Timetable-Hearing](#timetable-hearing)
   * [Base Service lib](#base-service-lib)
   * [Base Workflow lib](#base-workflow-lib)
   * [Frontend](#frontend)
@@ -227,12 +226,6 @@ See [Service-Point-Directory documentation](service-point-directory/README.md);
 
 Spring Batch Job to import CSV from Amazon or provided files to [Service-Point-Directory](#service-point-directory)
 See [Import-Service-Point documentation](import-service-point/README.md);
-
-### Timetable-Hearing
-
-This service manages citizens statements regarding plans on future timetables.
-See [Timetable Hearing documentation](timetable-hearing/README.md);
-
 
 ### Base Service lib
 
