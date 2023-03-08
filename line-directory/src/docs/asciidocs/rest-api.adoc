@@ -229,3 +229,60 @@ include::{snippets}/timetable-year-change-controller-api-test/should-return-erro
 == Get Next Timetable Years change - Error: param smaller than 1
 
 include::{snippets}/timetable-year-change-controller-api-test/should-return-error-when-next-future-time-tables-is-zero/auto-section.adoc[]
+
+
+= Timetable Hearing - Year
+
+== Create Hearing Year - Successfully
+
+include::{snippets}/timetable-hearing-year-controller-api-test/should-create-hearing-year/auto-section.adoc[]
+
+== Get Hearing Year - Successfully
+
+include::{snippets}/timetable-hearing-year-controller-api-test/should-get-hearing-year/auto-section.adoc[]
+
+== Get Hearing Years by Status - Successfully
+
+include::{snippets}/timetable-hearing-year-controller-api-test/should-get-hearing-year-by-status/auto-section.adoc[]
+
+== Start Hearing Year - Successfully
+
+include::{snippets}/timetable-hearing-year-controller-api-test/should-start-hearing-year/auto-section.adoc[]
+
+== Update Settings of Hearing Year - Successfully
+
+include::{snippets}/timetable-hearing-year-controller-api-test/should-update-settings-of-hearing-year/auto-section.adoc[]
+
+== Close Hearing Year - Successfully
+
+include::{snippets}/timetable-hearing-year-controller-api-test/should-close-hearing-year/auto-section.adoc[]
+
+= Timetable Hearing - Statements
+
+== Create Hearing Statement - Successfully
+
+include::{snippets}/timetable-hearing-statement-controller-api-test/should-create-statement-without-documents/auto-section.adoc[]
+
+== Create Hearing Statement from External (e.g. SKI Web)- Successfully
+
+include::{snippets}/timetable-hearing-statement-controller-api-test/should-create-statement-external-from-ski-web/auto-section.adoc[]
+
+== Create Hearing Statement with Documents - Successfully
+
+include::{snippets}/timetable-hearing-statement-controller-api-test/should-create-statement-with-two-documents/auto-section.adoc[]
+
+== Get Hearing Statement - Successfully
+
+include::{snippets}/timetable-hearing-statement-controller-api-test/should-get-statement-by-id/auto-section.adoc[]
+
+== Get Hearing Statements by Year - Successfully
+
+include::{snippets}/timetable-hearing-statement-controller-api-test/should-get-statement-by-hearing-year/auto-section.adoc[]
+
+== Update Hearing Statement - Successfully
+
+include::{snippets}/timetable-hearing-statement-controller-api-test/should-update-statement/auto-section.adoc[]
+
+== Update Hearing Statement adding documents - Successfully
+
+include::{snippets}/timetable-hearing-statement-controller-api-test/should-update-statement-with-additional-documents/auto-section.adoc[]

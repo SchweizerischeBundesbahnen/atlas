@@ -54,7 +54,6 @@
       <module>import-service-point</module>
       <module>user-administration</module>
       <module>workflow</module>
-      <module>timetable-hearing</module>
       <!-- Combine APIs -->
       <module>apim-configuration</module>
       <module>gateway</module>
