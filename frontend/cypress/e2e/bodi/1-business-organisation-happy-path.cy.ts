@@ -27,6 +27,10 @@ describe('Business Organisation Directory', {testIsolation: false}, () => {
     CommonUtils.assertTableHeader(0, 5, 'Gültig bis');
   });
 
+  it('PreStep-4: check if business organisation already exists', () => {
+    BodiUtils.checkIfBoAlreadyExists(organisation);
+  });
+
   it('Step-4: Go to page Add new Version', () => {
     BodiUtils.clickOnAddBusinessOrganisationVersion();
     BodiUtils.fillBusinessOrganisationVersionForm(organisation);

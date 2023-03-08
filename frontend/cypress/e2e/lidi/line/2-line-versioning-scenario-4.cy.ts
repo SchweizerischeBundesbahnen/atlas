@@ -14,7 +14,7 @@ import BodiDependentUtils from '../../../support/util/bodi-dependent-utils';
  * Version:      1     4              2              5        3
  */
 
-describe('LiDi: Versioning Linie Scenario 4', () => {
+describe('LiDi: Versioning Linie Scenario 4', {testIsolation: false}, () => {
   const firstLinieVersion = LidiUtils.getFirstLineVersion();
   const secondLineVersion = LidiUtils.getSecondLineVersion();
   const thirdLineVersion = LidiUtils.getThirdLineVersion();

@@ -1,6 +1,7 @@
 import CommonUtils from './common-utils';
 import { DataCy } from '../data-cy';
 import BodiDependentUtils from './bodi-dependent-utils';
+import AngularMaterialConstants from "./angular-material-constants";
 
 export default class TtfnUtils {
   static navigateToTimetableFieldNumber() {
@@ -51,7 +52,7 @@ export default class TtfnUtils {
     );
 
     cy.get('tbody').find('tr').should('have.length', 1).then(($el) => {
-      if (!$el.hasClass("mat-no-data-row")){
+      if (!$el.hasClass(AngularMaterialConstants.TABLE_NOW_DATA_ROW_CLASS)){
         $el.trigger('click');
         CommonUtils.deleteItem();
       }

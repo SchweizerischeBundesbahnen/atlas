@@ -1,5 +1,6 @@
 import CommonUtils from './common-utils';
 import { DataCy } from '../data-cy';
+import AngularMaterialConstants from "./angular-material-constants";
 
 export default class BodiUtils {
 
@@ -104,7 +105,7 @@ export default class BodiUtils {
     CommonUtils.assertItemValue(DataCy.ABBREVIATION_EN, version.abbreviationEn);
     CommonUtils.assertItemValue(DataCy.CONTACT_ENTERPRISE_EMAIL, version.contactEnterpriseEmail);
     CommonUtils.assertItemText(
-      DataCy.BUSINESS_TYPES + ' .mat-mdc-select-value-text > .mat-mdc-select-min-line',
+      DataCy.BUSINESS_TYPES + AngularMaterialConstants.MAT_SELECT_TEXT_DEEP_SELECT,
       version.businessTypes[0] + ', ' + version.businessTypes[1] + ', ' + version.businessTypes[2]
     );
 
@@ -149,7 +150,7 @@ export default class BodiUtils {
   static checkIfBoAlreadyExists(businessOrganisation: any){
     this.searchBusinessOrganisation(businessOrganisation);
     cy.get('tbody').find('tr').should('have.length', 1).then(($el) => {
-      if (!$el.hasClass("mat-no-data-row")){
+      if (!$el.hasClass(AngularMaterialConstants.TABLE_NOW_DATA_ROW_CLASS)){
         $el.trigger('click');
         BodiUtils.assertContainsBusinessOrganisationVersion(businessOrganisation);
         CommonUtils.deleteItem();

@@ -3,7 +3,7 @@ import CommonUtils from '../../../support/util/common-utils';
 import { DataCy } from '../../../support/data-cy';
 import BodiDependentUtils from '../../../support/util/bodi-dependent-utils';
 
-describe('Teillinie', () => {
+describe('Teillinie', {testIsolation: false}, () => {
   const sublineVersion = LidiUtils.getFirstSublineVersion();
   let mainline: any;
 

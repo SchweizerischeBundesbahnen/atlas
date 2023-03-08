@@ -3,7 +3,7 @@ import CommonUtils from '../../support/util/common-utils';
 import { DataCy } from '../../support/data-cy';
 import BodiDependentUtils from '../../support/util/bodi-dependent-utils';
 
-describe('Fahrplanfeldnummer', () => {
+describe('Fahrplanfeldnummer', {testIsolation: false}, () => {
   const firstVersion = TtfnUtils.getFirstVersion();
 
   it('Step-1: Login on ATLAS', () => {
