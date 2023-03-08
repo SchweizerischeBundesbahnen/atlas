@@ -36,7 +36,9 @@ public class OpenApiLoader {
   }
   private Map<String, OpenAPI> loadOpenApis(boolean includeProductiveApisOnly) {
     Map<String, OpenAPI> result = new HashMap<>();
-    try (Stream<Path> pathStream = Files.walk(Paths.get("src/main/resources/apis"))) {
+    Path sourcePath = Paths.get("src/main/resources/apis");
+    log.info("From Source Path {}", sourcePath.toAbsolutePath());
+    try (Stream<Path> pathStream = Files.walk(sourcePath)) {
       List<File> apiSpecs = pathStream.filter(Files::isRegularFile)
               .map(Path::toFile).toList();
       log.info("Found {} OpenAPI specs", apiSpecs.size());

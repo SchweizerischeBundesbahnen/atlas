@@ -2,18 +2,20 @@
 
 <!-- toc -->
 
-- [ATLAS](#atlas)
-- [Project Versioning](#project-versioning)
-- [Links](#links)
-    * [Localhost](#localhost)
-    * [Development](#development)
-    * [Test](#test)
-    * [Integration](#integration)
-    * [Production](#production)
-    * [Project Infrastructure](#project-infrastructure)
-    * [Tech Stack](#tech-stack)
-    * [Test RESTful Web services](#test-restful-web-services)
-- [Scheduler Export](#scheduler-export)
+  * [ATLAS](#atlas)
+  * [Project Versioning](#project-versioning)
+  * [Links](#links)
+    + [Localhost](#localhost)
+    + [Development](#development)
+    + [Test](#test)
+    + [Integration](#integration)
+    + [Production](#production)
+    + [Project Infrastructure](#project-infrastructure)
+    + [Tech Stack](#tech-stack)
+    + [Test RESTful Web services](#test-restful-web-services)
+  * [Scheduler Export](#scheduler-export)
+    + [Line Export Bucket expiration policy](#line-export-bucket-expiration-policy)
+- [Timetable Hearing](#timetable-hearing)
 
 <!-- tocstop -->
 
@@ -146,3 +148,11 @@ multiple times.
 
 The **amazon.bucket.object-expiration-days** property defines that a file after n days will be
 deleted, see [application.yml](src/main/resources/application-local.yml)
+
+# Timetable Hearing
+
+Every year (usually around June/July) the citizens may give feedback on the next iteration of the public transport timetable.
+This service helps stakeholders of public transportation manage these statements and alter the future timetable according to
+these wishes.
+
+Business documentation on the timetable hearings can be found on https://confluence.sbb.ch/pages/viewpage.action?pageId=1970146851

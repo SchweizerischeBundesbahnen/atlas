@@ -2,12 +2,12 @@ package ch.sbb.business.organisation.directory.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.api.bodi.enumeration.TransportCompanyStatus;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.business.organisation.directory.entity.TransportCompany;
 import ch.sbb.business.organisation.directory.entity.TransportCompany.TransportCompanyBuilder;
 import ch.sbb.business.organisation.directory.entity.TransportCompanyRelation;
 import ch.sbb.business.organisation.directory.entity.TransportCompanyRelation.TransportCompanyRelationBuilder;
-import ch.sbb.atlas.api.bodi.enumeration.TransportCompanyStatus;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
@@ -26,7 +26,6 @@ public class TransportCompanyRepositoryTest {
 
   @Autowired
   private TransportCompanyRelationRepository transportCompanyRelationRepository;
-
 
   @AfterEach
   void tearDown() {
@@ -65,20 +64,38 @@ public class TransportCompanyRepositoryTest {
     assertThat(result).isEmpty();
   }
 
+  @Test
+  void shouldFindTransportCompaniesWithGivenSboid() {
+    transportCompanyRepository.saveAndFlush(transportCompany().build());
+    transportCompanyRelationRepository.saveAndFlush(relation().build());
+
+    List<TransportCompany> result = transportCompanyRepository.findAllWithSboid("beste sboid");
+    assertThat(result).hasSize(1);
+  }
+
+  @Test
+  void shouldNotFindTransportCompaniesWithUnknownSboid() {
+    transportCompanyRepository.saveAndFlush(transportCompany().build());
+    transportCompanyRelationRepository.saveAndFlush(relation().build());
+
+    List<TransportCompany> result = transportCompanyRepository.findAllWithSboid("beste typo sboid");
+    assertThat(result).isEmpty();
+  }
+
   TransportCompanyBuilder<?, ?> transportCompany() {
     return TransportCompany.builder()
-                           .id(TRANSPORT_COMPANY_ID)
-                           .description("Beste Company")
-                           .number("#0001")
-                           .enterpriseId("enterprisige ID");
+        .id(TRANSPORT_COMPANY_ID)
+        .description("Beste Company")
+        .number("#0001")
+        .enterpriseId("enterprisige ID");
   }
 
   TransportCompanyRelationBuilder<?, ?> relation() {
     return TransportCompanyRelation.builder()
-                                   .id(1L)
-                                   .transportCompany(transportCompany().build())
-                                   .sboid("beste sboid")
-                                   .validFrom(LocalDate.now().minusYears(1))
-                                   .validTo(LocalDate.now().plusYears(1));
+        .id(1L)
+        .transportCompany(transportCompany().build())
+        .sboid("beste sboid")
+        .validFrom(LocalDate.now().minusYears(1))
+        .validTo(LocalDate.now().plusYears(1));
   }
 }

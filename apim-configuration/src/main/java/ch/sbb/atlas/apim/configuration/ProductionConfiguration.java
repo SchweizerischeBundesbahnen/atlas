@@ -13,5 +13,6 @@ import org.springframework.stereotype.Component;
 class ProductionConfiguration {
 
   private List<String> apis;
+  private List<String> excludePatterns;
 
 }
