@@ -4,6 +4,7 @@ import ch.sbb.atlas.api.timetable.hearing.enumeration.HearingStatus;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.line.directory.entity.TimetableHearingYear;
 import ch.sbb.line.directory.exception.HearingCurrentlyActiveException;
+import ch.sbb.line.directory.exception.NoHearingCurrentlyActiveException;
 import ch.sbb.line.directory.model.TimetableHearingYearSearchRestrictions;
 import ch.sbb.line.directory.repository.TimetableHearingYearRepository;
 import java.util.Set;
@@ -31,7 +32,7 @@ public class TimetableHearingYearService {
             statusRestrictions(Set.of(HearingStatus.ACTIVE))
             .build();
     return timetableHearingYearRepository.findAll(searchRestrictions.getSpecification()).stream().findFirst()
-        .orElseThrow(() -> new IllegalStateException("No active HearingYear"));
+        .orElseThrow(NoHearingCurrentlyActiveException::new);
   }
 
   public TimetableHearingYear getHearingYear(Long year) {
