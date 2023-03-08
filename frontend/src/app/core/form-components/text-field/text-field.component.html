@@ -13,7 +13,12 @@
         *ngTemplateOutlet="customChildInputPrefixTemplate"
       >
       </ng-container>
-      <input [formControlName]="controlName" [ngStyle]="customInputNgStyle" type="text" />
+      <input
+        [formControlName]="controlName"
+        [ngStyle]="customInputNgStyle"
+        type="text"
+        [attr.data-cy]="controlName"
+      />
       <ng-container
         #customChildInputPostfixTemplate
         *ngTemplateOutlet="customChildInputPostfixTemplate"
