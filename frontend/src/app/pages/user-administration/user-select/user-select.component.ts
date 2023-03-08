@@ -1,25 +1,49 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { Observable, of } from 'rxjs';
-import { UserService } from '../service/user.service';
-import { User } from '../../../api';
+import {
+  Component,
+  ContentChild,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  TemplateRef,
+} from '@angular/core';
+import { debounceTime, distinctUntilChanged, Observable, of, Subject } from 'rxjs';
+import { takeUntil, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-user-select',
   templateUrl: './user-select.component.html',
   styleUrls: ['user-select.component.scss'],
 })
-export class UserSelectComponent {
-  constructor(private readonly userService: UserService) {}
+export class UserSelectComponent<T> implements OnInit, OnDestroy {
+  //@Input() form!: FormGroup;
+  @Input() searchResults$: Observable<T[]> = of([]);
+  @Output() selectionChange: EventEmitter<T> = new EventEmitter<T>();
+  @Output() valueChanged: EventEmitter<string> = new EventEmitter<string>();
+  @ContentChild(TemplateRef) dropdownElementTemplateRef!: TemplateRef<unknown>;
 
-  @Input() form!: FormGroup;
-  @Output() selectionChange: EventEmitter<User> = new EventEmitter<User>();
-  userSearchResults$: Observable<User[]> = of([]);
+  displayDropdownElements = false;
 
-  searchUser(searchQuery: string): void {
-    if (!searchQuery) {
-      return;
-    }
-    this.userSearchResults$ = this.userService.searchUsers(searchQuery);
+  keyUpEvent = new Subject<string>();
+  ngOnDestroyEvent = new Subject();
+
+  ngOnInit() {
+    this.keyUpEvent
+      .pipe(
+        takeUntil(this.ngOnDestroyEvent),
+        debounceTime(1000),
+        distinctUntilChanged(),
+        tap((value) => {
+          if (value.length > 1) {
+            this.valueChanged.emit(value);
+          }
+        })
+      )
+      .subscribe();
+  }
+
+  ngOnDestroy() {
+    this.ngOnDestroyEvent.complete();
   }
 }
