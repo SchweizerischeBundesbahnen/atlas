@@ -3,7 +3,7 @@ package ch.sbb.line.directory.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
-import ch.sbb.atlas.model.SwissCanton;
+import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.line.directory.entity.ResponsibleTransportCompany;
 import ch.sbb.line.directory.entity.StatementDocument;
