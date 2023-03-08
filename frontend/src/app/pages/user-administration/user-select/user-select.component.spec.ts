@@ -47,7 +47,7 @@ describe('UserSelectComponent', () => {
     );
     component.searchUser('testQuery');
     expect(userServiceSpy.searchUsers).toHaveBeenCalledOnceWith('testQuery');
-    component.userSearchResults$.subscribe((val) => {
+    component.searchResults$.subscribe((val) => {
       expect(val).toEqual([
         {
           sbbUserId: 'u236171',

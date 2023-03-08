@@ -46,9 +46,14 @@
             <mat-label class="font-bold-lg">{{ 'USER_ADMIN.TABLE_HEADER' | translate }}</mat-label>
           </div>
           <app-user-select
-            [form]="userSearchForm"
+            [searchResults$]="userSearchResult$"
             (selectionChange)="checkIfUserExists($event)"
-          ></app-user-select>
+            (valueChanged)="userSearchResult$ = userService.searchUsers($event)"
+          >
+            <ng-template let-item>
+              {{ item | userSelectFormat }}
+            </ng-template>
+          </app-user-select>
         </ng-container>
 
         <ng-template #filterTemplate>
