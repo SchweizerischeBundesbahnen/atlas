@@ -47,18 +47,24 @@ public class ResponsibleTransportCompaniesResolverService {
       List<TimetableFieldNumberVersion> timetableFieldNumberVersions =
           timetableFieldNumberService.getAllVersionsVersioned(ttfnid);
 
-      LocalDate beginningOfNextTimetableYear = FutureTimetableHelper.getActualTimetableYearChangeDate(LocalDate.now());
-
-      TimetableFieldNumberVersion versionValidOnNextTimetableYear = timetableFieldNumberVersions.stream().filter(
-              version -> version.getValidFrom().isBefore(beginningOfNextTimetableYear) && version.getValidTo()
-                  .isAfter(beginningOfNextTimetableYear))
-          .findFirst()
-          .orElseThrow(() -> new IllegalStateException("There is no version valid at " + beginningOfNextTimetableYear.format(
-              DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN_CH))));
+      TimetableFieldNumberVersion versionValidOnNextTimetableYear = getVersionValidOnNextTimetableYear(
+          timetableFieldNumberVersions);
 
       return versionValidOnNextTimetableYear.getBusinessOrganisation();
     }
     return null;
+  }
+
+  private static TimetableFieldNumberVersion getVersionValidOnNextTimetableYear(
+      List<TimetableFieldNumberVersion> timetableFieldNumberVersions) {
+    LocalDate beginningOfNextTimetableYear = FutureTimetableHelper.getActualTimetableYearChangeDate(LocalDate.now());
+
+    return timetableFieldNumberVersions.stream().filter(
+            version -> version.getValidFrom().isBefore(beginningOfNextTimetableYear) && version.getValidTo()
+                .isAfter(beginningOfNextTimetableYear))
+        .findFirst()
+        .orElseThrow(() -> new IllegalStateException("There is no version valid at " + beginningOfNextTimetableYear.format(
+            DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN_CH))));
   }
 
 }
