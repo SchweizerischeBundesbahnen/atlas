@@ -171,7 +171,7 @@ export default class CommonUtils {
   }
 
   static chooseMatOptionByText(value: string) {
-    cy.get('.mat-option-text').then((options) => {
+    cy.get('mat-option > span').then((options) => {
       for (const option of options) {
         if (option.innerText === value) {
           option.click(); // this is jquery click() not cypress click()
@@ -212,7 +212,7 @@ export default class CommonUtils {
   }
 
   static typeSearchInput(pathToIntercept: string, searchSelector: string, value: string) {
-    cy.intercept('GET', pathToIntercept).as('searchItemUlrIntercept');
+    cy.intercept(pathToIntercept).as('searchItemUlrIntercept');
     cy.get(searchSelector).clear().type(value).type('{enter}').wait('@searchItemUlrIntercept');
   }
 

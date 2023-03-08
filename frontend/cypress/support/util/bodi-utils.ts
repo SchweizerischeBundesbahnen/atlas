@@ -35,11 +35,7 @@ export default class BodiUtils {
   }
 
   static fillBusinessOrganisationVersionForm(version: any) {
-    // force-workaround for disabled input field error (https://github.com/cypress-io/cypress/issues/5830)
-    CommonUtils.getClearType(DataCy.VALID_FROM, version.validFrom, true);
-    CommonUtils.getClearType(DataCy.VALID_TO, version.validTo, true);
-
-    CommonUtils.getClearType(DataCy.ORGANISATION_NUMBER, version.organisationNumber);
+    CommonUtils.getClearType(DataCy.ORGANISATION_NUMBER, version.organisationNumber, true);
     CommonUtils.getClearType(DataCy.DESCRIPTION_DE, version.descriptionDe);
     CommonUtils.getClearType(DataCy.DESCRIPTION_FR, version.descriptionFr);
     CommonUtils.getClearType(DataCy.DESCRIPTION_IT, version.descriptionIt);
@@ -48,6 +44,10 @@ export default class BodiUtils {
     CommonUtils.getClearType(DataCy.ABBREVIATION_FR, version.abbreviationFr);
     CommonUtils.getClearType(DataCy.ABBREVIATION_IT, version.abbreviationIt);
     CommonUtils.getClearType(DataCy.ABBREVIATION_EN, version.abbreviationEn);
+
+    CommonUtils.getClearType(DataCy.VALID_FROM, version.validFrom, true);
+    CommonUtils.getClearType(DataCy.VALID_TO, version.validTo, true);
+
     CommonUtils.getClearType(DataCy.CONTACT_ENTERPRISE_EMAIL, version.contactEnterpriseEmail);
     CommonUtils.selectItemFromDropdownSearchItem(DataCy.BUSINESS_TYPES, version.businessTypes[0]);
     CommonUtils.selectItemFromDropdownSearchItem(DataCy.BUSINESS_TYPES, version.businessTypes[1]);
@@ -104,7 +104,7 @@ export default class BodiUtils {
     CommonUtils.assertItemValue(DataCy.ABBREVIATION_EN, version.abbreviationEn);
     CommonUtils.assertItemValue(DataCy.CONTACT_ENTERPRISE_EMAIL, version.contactEnterpriseEmail);
     CommonUtils.assertItemText(
-      DataCy.BUSINESS_TYPES + ' .mat-select-value-text > .mat-select-min-line',
+      DataCy.BUSINESS_TYPES + ' .mat-mdc-select-value-text > .mat-mdc-select-min-line',
       version.businessTypes[0] + ', ' + version.businessTypes[1] + ', ' + version.businessTypes[2]
     );
 
@@ -158,7 +158,7 @@ export default class BodiUtils {
   }
 
   static switchTabToBusinessOrganisations() {
-    this.interceptBusinessOrganisations('#mat-tab-link-0');
+    this.interceptBusinessOrganisations('#mat-tab-link-1');
   }
 
   static switchTabToTU() {

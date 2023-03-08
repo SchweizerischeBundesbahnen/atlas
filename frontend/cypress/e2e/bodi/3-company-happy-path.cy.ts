@@ -2,7 +2,7 @@ import BodiUtils from '../../support/util/bodi-utils';
 import CommonUtils from '../../support/util/common-utils';
 import { DataCy } from '../../support/data-cy';
 
-describe('Company', () => {
+describe('Company', {testIsolation: false}, () => {
   it('Step-1: ATLAS Login', () => {
     cy.atlasLogin();
   });

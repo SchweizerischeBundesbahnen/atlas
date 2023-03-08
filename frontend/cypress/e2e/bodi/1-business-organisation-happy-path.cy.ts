@@ -1,7 +1,7 @@
 import BodiUtils from '../../support/util/bodi-utils';
 import CommonUtils from '../../support/util/common-utils';
 
-describe('Business Organisation Directory', () => {
+describe('Business Organisation Directory', {testIsolation: false}, () => {
   const organisation = BodiUtils.getBusinessOrganisationVersion();
 
   it('Step-1: Login on ATLAS', () => {
@@ -25,10 +25,6 @@ describe('Business Organisation Directory', () => {
     CommonUtils.assertTableHeader(0, 3, 'GO-Nummer');
     CommonUtils.assertTableHeader(0, 4, 'Gültig von');
     CommonUtils.assertTableHeader(0, 5, 'Gültig bis');
-  });
-
-  it('PreStep-4: check if business organisation already exists', () => {
-    BodiUtils.checkIfBoAlreadyExists(organisation);
   });
 
   it('Step-4: Go to page Add new Version', () => {
