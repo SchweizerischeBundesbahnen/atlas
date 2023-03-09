@@ -11,6 +11,8 @@ import { ErrorNotificationComponent } from '../../../../core/notification/error/
 import { InfoIconComponent } from '../../../../core/form-components/info-icon/info-icon.component';
 import { MockAppDetailWrapperComponent } from '../../../../app.testing.mocks';
 import { AuthService } from '../../../../core/auth/auth.service';
+import { FormModule } from '../../../../core/module/form.module';
+import { TranslatePipe } from '@ngx-translate/core';
 
 const businessOrganisationVersion: BusinessOrganisationVersion = {
   id: 1234,
@@ -100,9 +102,9 @@ describe('BusinessOrganisationDetailComponent for existing BusinessOrganisationV
     fixture.detectChanges();
 
     const snackBarContainer =
-      fixture.nativeElement.offsetParent.querySelector('snack-bar-container');
+      fixture.nativeElement.offsetParent.querySelector('mat-snack-bar-container');
     expect(snackBarContainer).toBeDefined();
-    expect(snackBarContainer.textContent).toBe(
+    expect(snackBarContainer.textContent.trim()).toEqual(
       'BODI.BUSINESS_ORGANISATION.NOTIFICATION.EDIT_SUCCESS'
     );
     expect(snackBarContainer.classList).toContain('success');
@@ -126,9 +128,9 @@ describe('BusinessOrganisationDetailComponent for existing BusinessOrganisationV
     fixture.detectChanges();
 
     const snackBarContainer =
-      fixture.nativeElement.offsetParent.querySelector('snack-bar-container');
+      fixture.nativeElement.offsetParent.querySelector('mat-snack-bar-container');
     expect(snackBarContainer).toBeDefined();
-    expect(snackBarContainer.textContent).toBe(
+    expect(snackBarContainer.textContent.trim()).toBe(
       'BODI.BUSINESS_ORGANISATION.NOTIFICATION.DELETE_SUCCESS'
     );
     expect(snackBarContainer.classList).toContain('success');
@@ -167,9 +169,9 @@ describe('BusinessOrganisationDetailComponent for new BusinessOrganisationVersio
       fixture.detectChanges();
 
       const snackBarContainer =
-        fixture.nativeElement.offsetParent.querySelector('snack-bar-container');
+        fixture.nativeElement.offsetParent.querySelector('mat-snack-bar-container');
       expect(snackBarContainer).toBeDefined();
-      expect(snackBarContainer.textContent).toBe(
+      expect(snackBarContainer.textContent.trim()).toBe(
         'BODI.BUSINESS_ORGANISATION.NOTIFICATION.ADD_SUCCESS'
       );
       expect(snackBarContainer.classList).toContain('success');
@@ -197,7 +199,7 @@ function setupTestBed(
       ErrorNotificationComponent,
       InfoIconComponent,
     ],
-    imports: [AppTestingModule],
+    imports: [AppTestingModule, FormModule],
     providers: [
       { provide: FormBuilder },
       { provide: BusinessOrganisationsService, useValue: businessOrganisationsService },
@@ -206,6 +208,7 @@ function setupTestBed(
         provide: MAT_DIALOG_DATA,
         useValue: data,
       },
+      { provide: TranslatePipe },
     ],
   })
     .compileComponents()

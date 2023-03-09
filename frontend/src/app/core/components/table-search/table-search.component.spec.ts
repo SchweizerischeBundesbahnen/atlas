@@ -33,7 +33,9 @@ describe('TableSearchComponent', () => {
 
   it('should change activeStatuses on selection changes', () => {
     spyOn(component.searchEvent, 'emit');
-    const statusSelectTrigger = fixture.debugElement.query(By.css('.mat-select-trigger'));
+    const statusSelectTrigger = fixture.debugElement.query(
+      By.css('mat-select[data-cy="table-search-status-input"]')
+    );
     statusSelectTrigger.nativeElement.click();
     fixture.detectChanges();
 
