@@ -10,7 +10,7 @@ import {
   DetailDialogEvents,
   RouteToDialogService,
 } from '../../../core/components/route-to-dialog/route-to-dialog.service';
-import { Observable, of, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { tableColumns } from './table-column-definition';
 import { ApplicationType } from '../../../api';
 import { SearchType, SearchTypes } from './search-type';
@@ -42,10 +42,8 @@ export class UserAdministrationOverviewComponent implements OnInit, OnDestroy {
   readonly tableColumns = tableColumns;
   private readonly dialogClosedEventSubscription: Subscription;
 
-  userSearchResult$: Observable<User[]> = of([]);
-
   constructor(
-    readonly userService: UserService,
+    private readonly userService: UserService,
     private readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly routeToDialogService: RouteToDialogService
