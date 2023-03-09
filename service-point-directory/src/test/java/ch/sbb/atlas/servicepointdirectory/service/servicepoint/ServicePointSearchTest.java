@@ -13,6 +13,7 @@ import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointTechnicalTim
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -321,7 +322,7 @@ public class ServicePointSearchTest {
   }
 
   @Test
-  void givenServicePointVersionWithCountryBorderWhenSearchWithCountryBorderThenFindOne() {
+  void shouldFindOperatingPointTechnicalTimetableTypeCountryBorder() {
     // Given
     servicePointVersionRepository.save(ServicePointTestData.createServicePointVersionWithCountryBorder());
     // When
@@ -336,17 +337,59 @@ public class ServicePointSearchTest {
   }
 
   @Test
-  void givenServicePointVersionWithCountryBorderWhenSearchWithPropertyLineThenFindNone() {
-    // given
+  void shouldNotFindOperatingPointTechnicalTimetableTypePropertyLine() {
+    // Given
     servicePointVersionRepository.save(ServicePointTestData.createServicePointVersionWithCountryBorder());
-    // when
+    // When
     Page<ServicePointVersion> servicePointVersions =
         servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
             .servicePointRequestParams(ServicePointRequestParams.builder()
                 .operatingPointTechnicalTimetableTypes(List.of(OperatingPointTechnicalTimetableType.PROPERTY_LINE))
                 .build()).build());
-    // then
+    // Then
     assertThat(servicePointVersions.getTotalElements()).isEqualTo(0);
+  }
+
+  @Test
+  void shouldFindBernWylereggByUicCoutryCodes85and10() {
+    Page<ServicePointVersion> servicePointVersions =
+        servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
+            .servicePointRequestParams(ServicePointRequestParams.builder()
+                .uicCountryCodes(Arrays.asList(85, 10))
+                .build()).build());
+    assertThat(servicePointVersions.getTotalElements()).isEqualTo(1);
+    assertThat(servicePointVersions.getContent().get(0).getDesignationOfficial()).isEqualTo("Bern, Wyleregg");
+  }
+
+  @Test
+  void shouldNotFindBernWylereggByCountryCodes55and85() {
+    Page<ServicePointVersion> servicePointVersions =
+        servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
+            .servicePointRequestParams(ServicePointRequestParams.builder()
+                .uicCountryCodes(Arrays.asList(55, 10))
+                .build()).build());
+    assertThat(servicePointVersions.getTotalElements()).isZero();
+  }
+
+  @Test
+  void shouldFindBernWylereggByIsoCountryCodeCH() {
+    Page<ServicePointVersion> servicePointVersions =
+        servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
+            .servicePointRequestParams(ServicePointRequestParams.builder()
+                .isoCountryCodes(List.of("CH", "DE"))
+                .build()).build());
+    assertThat(servicePointVersions.getTotalElements()).isEqualTo(1);
+    assertThat(servicePointVersions.getContent().get(0).getDesignationOfficial()).isEqualTo("Bern, Wyleregg");
+  }
+
+  @Test
+  void shouldNotFindBernWylereggByIsoCountryCodeHU() {
+    Page<ServicePointVersion> servicePointVersions =
+        servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
+            .servicePointRequestParams(ServicePointRequestParams.builder()
+                .isoCountryCodes(List.of("HU", "DE"))
+                .build()).build());
+    assertThat(servicePointVersions.getTotalElements()).isZero();
   }
 
 }

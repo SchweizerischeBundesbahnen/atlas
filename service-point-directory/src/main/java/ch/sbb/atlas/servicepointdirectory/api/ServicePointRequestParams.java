@@ -35,6 +35,10 @@ public class ServicePointRequestParams {
   private List<String> sloids = new ArrayList<>();
   @Singular(ignoreNullCollections = true)
   private List<Integer> numbers = new ArrayList<>();
+  @Singular(ignoreNullCollections = true)
+  private List<Integer> uicCountryCodes = new ArrayList<>();
+  @Singular(ignoreNullCollections = true)
+  private List<String> isoCountryCodes = new ArrayList<>();
   @Singular(value = "numberShort", ignoreNullCollections = true)
   private List<Integer> numbersShort = new ArrayList<>();
   @Singular(ignoreNullCollections = true)
