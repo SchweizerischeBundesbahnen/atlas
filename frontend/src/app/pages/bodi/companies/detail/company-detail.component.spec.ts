@@ -5,8 +5,14 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { ErrorNotificationComponent } from '../../../../core/notification/error/error-notification.component';
 import { InfoIconComponent } from '../../../../core/form-components/info-icon/info-icon.component';
-import { Component } from '@angular/core';
+import { Component, ContentChild, Input, TemplateRef } from '@angular/core';
 import { LinkIconComponent } from '../../../../core/form-components/link-icon/link-icon.component';
+import { FormGroup } from '@angular/forms';
+import { AtlasLabelFieldComponent } from '../../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { AtlasFieldErrorComponent } from '../../../../core/form-components/atlas-field-error/atlas-field-error.component';
+import { FieldExample } from '../../../../core/form-components/text-field/field-example';
+import { AtlasFieldCustomError } from '../../../../core/form-components/atlas-field-error/atlas-field-custom-error';
 
 const company: Company = {
   uicCode: 1234,
@@ -21,6 +27,25 @@ let fixture: ComponentFixture<CompanyDetailComponent>;
   template: '',
 })
 class MockDialogCloseComponent {}
+
+@Component({
+  selector: 'atlas-text-field',
+  template: '<p>Mock Table Component</p>',
+})
+class MockAtlasTextFieldComponent {
+  @Input() controlName!: string;
+  @Input() fieldLabel!: string;
+  @Input() infoIconTitle!: string;
+  @Input() infoIconLink!: string;
+  @Input() required!: boolean;
+  @Input() fieldExamples!: Array<FieldExample>;
+  @Input() customInputNgStyle!: Record<string, string | undefined | null>;
+  @Input() customError!: AtlasFieldCustomError;
+  @ContentChild('customChildInputPostfixTemplate')
+  customChildInputPostfixTemplate!: TemplateRef<any>;
+  @ContentChild('customChildInputPrefixTemplate') customChildInputPrefixTemplate!: TemplateRef<any>;
+  @Input() formGroup!: FormGroup;
+}
 
 describe('CompanyDetailComponent', () => {
   const mockData = {
@@ -61,6 +86,9 @@ function setupTestBed(data: { companyDetail: string | Company }) {
       InfoIconComponent,
       LinkIconComponent,
       MockDialogCloseComponent,
+      AtlasLabelFieldComponent,
+      AtlasFieldErrorComponent,
+      MockAtlasTextFieldComponent,
     ],
     imports: [AppTestingModule],
     providers: [
@@ -68,6 +96,7 @@ function setupTestBed(data: { companyDetail: string | Company }) {
         provide: MAT_DIALOG_DATA,
         useValue: data,
       },
+      { provide: TranslatePipe },
     ],
   })
     .compileComponents()

@@ -5,6 +5,9 @@ import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { ColorPickerModule } from 'ngx-color-picker';
+import { AtlasFieldErrorComponent } from '../../../../core/form-components/atlas-field-error/atlas-field-error.component';
+import { AtlasLabelFieldComponent } from '../../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 describe('RgbPickerComponent', () => {
   let component: RgbPickerComponent;
@@ -13,7 +16,8 @@ describe('RgbPickerComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppTestingModule, ColorPickerModule],
-      declarations: [RgbPickerComponent],
+      declarations: [RgbPickerComponent, AtlasFieldErrorComponent, AtlasLabelFieldComponent],
+      providers: [{ provide: TranslatePipe }],
     }).compileComponents();
   });
 
@@ -47,7 +51,8 @@ describe('RgbPickerComponent', () => {
     colorRgb.markAsTouched();
     fixture.detectChanges();
 
-    const errorMessage = fixture.debugElement.query(By.css('mat-error')).nativeElement.innerText;
+    const errorMessage = fixture.debugElement.query(By.css('app-atlas-field-error')).nativeElement
+      .innerText;
     expect(errorMessage).toBe('VALIDATION.COLOR_INVALID');
   });
 });
