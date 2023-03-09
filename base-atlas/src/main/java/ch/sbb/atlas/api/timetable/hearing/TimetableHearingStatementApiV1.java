@@ -51,7 +51,7 @@ public interface TimetableHearingStatementApiV1 {
       @RequestPart(required = false) List<MultipartFile> documents);
 
   @PutMapping(path = "{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-  TimetableHearingStatementModel updateStatement(
+  TimetableHearingStatementModel updateHearingStatement(
       @PathVariable Long id,
       @RequestPart @Valid TimetableHearingStatementModel statement,
       @RequestPart(required = false) List<MultipartFile> documents
