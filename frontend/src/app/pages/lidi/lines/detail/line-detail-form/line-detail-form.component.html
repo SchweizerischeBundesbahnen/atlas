@@ -12,6 +12,7 @@
           { label: ' |', translate: false },
           { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '50' } }
         ]"
+        [formGroup]="form"
         controlName="number"
         fieldLabel="LIDI.LINE.NUMBER"
         infoIconTitle="LIDI.LINE.NUMBER_INFO"
@@ -26,6 +27,7 @@
           { label: ' |', translate: false },
           { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '255' } }
         ]"
+        [formGroup]="form"
         controlName="description"
         fieldLabel="LIDI.LINE.DESCRIPTION"
         infoIconTitle="LIDI.LINE.DESCRIPTION_INFO"
@@ -43,6 +45,7 @@
           { label: ' |', translate: false },
           { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '255' } }
         ]"
+        [formGroup]="form"
         controlName="longName"
         fieldLabel="LIDI.LONG_NAME"
       >
@@ -59,6 +62,7 @@
           { label: ' |', translate: false },
           { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '50' } }
         ]"
+        [formGroup]="form"
         [required]="true"
         controlName="swissLineNumber"
         fieldLabel="LIDI.SWISS_LINE_NUMBER"
@@ -71,6 +75,7 @@
         [fieldExamples]="[
           { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '50' } }
         ]"
+        [formGroup]="form"
         controlName="alternativeName"
         fieldLabel="LIDI.ALTERNATIVE_NAME"
       ></atlas-text-field>
@@ -81,6 +86,7 @@
         [fieldExamples]="[
           { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '50' } }
         ]"
+        [formGroup]="form"
         controlName="combinationName"
         fieldLabel="LIDI.COMBINATION_NAME"
       ></atlas-text-field>
