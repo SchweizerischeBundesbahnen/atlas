@@ -5,7 +5,7 @@
   infoIconLink="{{ infoIconLink }}"
   infoIconTitle="{{ infoIconTitle }}"
 ></app-atlas-label-field>
-<form [formGroup]="form">
+<form [formGroup]="formGroup">
   <div class="text-field-wrapper">
     <div class="text-field-flex">
       <ng-container
@@ -26,7 +26,7 @@
     </div>
     <app-atlas-field-error
       [customError]="customError"
-      [form]="form"
+      [form]="formGroup"
       controlName="{{ controlName }}"
     ></app-atlas-field-error>
   </div>
