@@ -11,7 +11,11 @@
   }}</mat-label>
   <mat-label class="font-regular-sm">{{ 'FORM.FOR_EXAMPLE' | translate }} u123456</mat-label>
 </div>
-<app-user-select (selectionChange)="selectUser($event)"></app-user-select>
+<atlas-search-select (selectionChange)="selectUser($event)" type="userAdministration">
+  <ng-template let-item>
+    {{ item | userSelectFormat }}
+  </ng-template>
+</atlas-search-select>
 <p *ngIf="userHasAlreadyPermissions" class="color-error">
   {{ 'USER_ADMIN.SELECTED_USER_HAS_ALREADY_PERMISSIONS' | translate }}
 </p>

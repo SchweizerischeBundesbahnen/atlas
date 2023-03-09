@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { BusinessOrganisation } from '../../../api';
-import { BusinessOrganisationLanguageService } from './business-organisation-language.service';
+import { BusinessOrganisationLanguageService } from '../../service/business-organisation-language.service';
 
 @Pipe({
   name: 'boSelectionDisplay',

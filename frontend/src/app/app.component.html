@@ -23,3 +23,17 @@
     </mat-sidenav-container>
   </div>
 </div>
+
+<!-- template for BusinessOrganisation search-select field label -->
+<ng-template [formTemplateKey]="'businessOrganisationSearchSelectLabel'">
+  <div class="d-flex flex-column mb-3">
+    <span class="font-bold-lg required-indicator">{{
+      'BODI.BUSINESS_ORGANISATION.BUSINESS_ORGANISATION' | translate
+    }}</span>
+    <span class="font-regular-sm">
+      {{ 'BODI.BUSINESS_ORGANISATION.ORGANISATION_NUMBER' | translate }} -
+      {{ 'BODI.BUSINESS_ORGANISATION.ABBREVIATION' | translate }} -
+      {{ 'BODI.BUSINESS_ORGANISATION.DESCRIPTION' | translate }} - SAID
+    </span>
+  </div>
+</ng-template>
