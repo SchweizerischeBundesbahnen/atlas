@@ -23,24 +23,7 @@ import lombok.experimental.UtilityClass;
 public class ServicePointTestData {
 
   public static ServicePointVersion getBernWyleregg() {
-    ServicePointGeolocation geolocation = ServicePointGeolocation
-        .builder()
-        .spatialReference(SpatialReference.LV95)
-        .east(2600783D)
-        .north(1201099D)
-        .height(555D)
-        .country(Country.SWITZERLAND)
-        .swissMunicipalityNumber(351)
-        .swissCanton(SwissCanton.BERN)
-        .swissDistrictName("Bern-Mittelland")
-        .swissDistrictNumber(246)
-        .swissMunicipalityName("Bern")
-        .swissLocalityName("Bern")
-        .creationDate(LocalDateTime.of(LocalDate.of(2021, 3, 22), LocalTime.of(9, 26, 29)))
-        .creator("fs45117")
-        .editionDate(LocalDateTime.of(LocalDate.of(2022, 2, 23), LocalTime.of(17, 10, 10)))
-        .editor("fs45117")
-        .build();
+    ServicePointGeolocation geolocation = getServicePointGeolocationBernMittelland();
 
     ServicePointVersion servicePoint = ServicePointVersion
         .builder()
@@ -58,7 +41,7 @@ public class ServicePointTestData {
         .validFrom(LocalDate.of(2014, 12, 14))
         .validTo(LocalDate.of(2021, 3, 31))
         .categories(new HashSet<>())
-        .meansOfTransport(Set.of(MeanOfTransport.BUS, MeanOfTransport.BOAT)) // in order to test Hibernate Query there are intentionally 2 MeanOfTransport
+        .meansOfTransport(Set.of(MeanOfTransport.BUS))
         .operatingPoint(true)
         .operatingPointWithTimetable(true)
         .creationDate(LocalDateTime.of(LocalDate.of(2021, 3, 22), LocalTime.of(9, 26, 29)))
@@ -72,24 +55,7 @@ public class ServicePointTestData {
   }
 
   public static ServicePointVersion getVersionWithCategoriesAndMeansOfTransport(int servicePointId) {
-    ServicePointGeolocation geolocation = ServicePointGeolocation
-        .builder()
-        .spatialReference(SpatialReference.LV95)
-        .east(2600783D)
-        .north(1201099D)
-        .height(555D)
-        .country(Country.SWITZERLAND)
-        .swissMunicipalityNumber(351)
-        .swissCanton(SwissCanton.BERN)
-        .swissDistrictName("Bern-Mittelland")
-        .swissDistrictNumber(246)
-        .swissMunicipalityName("Bern")
-        .swissLocalityName("Bern")
-        .creationDate(LocalDateTime.of(LocalDate.of(2021, 3, 22), LocalTime.of(9, 26, 29)))
-        .creator("fs45117")
-        .editionDate(LocalDateTime.of(LocalDate.of(2022, 2, 23), LocalTime.of(17, 10, 10)))
-        .editor("fs45117")
-        .build();
+    ServicePointGeolocation geolocation = getServicePointGeolocationBernMittelland();
 
     ServicePointVersion servicePoint = ServicePointVersion
         .builder()
@@ -120,19 +86,30 @@ public class ServicePointTestData {
     return servicePoint;
   }
 
-  public static ServicePointVersion createServicePointVersionWithCountryBorder() {
-    ServicePointGeolocation servicePointGeolocation = ServicePointGeolocation
+  private static ServicePointGeolocation getServicePointGeolocationBernMittelland() {
+    ServicePointGeolocation geolocation = ServicePointGeolocation
         .builder()
         .spatialReference(SpatialReference.LV95)
-        .east(2604525D)
-        .north(1259900D)
-        .height(370D)
+        .east(2600783D)
+        .north(1201099D)
+        .height(555D)
         .country(Country.SWITZERLAND)
-        .creationDate(LocalDateTime.of(LocalDate.of(2017, 11, 9), LocalTime.of(11, 53, 5)))
-        .creator("GSU_DIDOK")
-        .editionDate(LocalDateTime.of(LocalDate.of(2019, 5, 20), LocalTime.of(15, 3, 58)))
+        .swissMunicipalityNumber(351)
+        .swissCanton(SwissCanton.BERN)
+        .swissDistrictName("Bern-Mittelland")
+        .swissDistrictNumber(246)
+        .swissMunicipalityName("Bern")
+        .swissLocalityName("Bern")
+        .creationDate(LocalDateTime.of(LocalDate.of(2021, 3, 22), LocalTime.of(9, 26, 29)))
+        .creator("fs45117")
+        .editionDate(LocalDateTime.of(LocalDate.of(2022, 2, 23), LocalTime.of(17, 10, 10)))
         .editor("fs45117")
         .build();
+    return geolocation;
+  }
+
+  public static ServicePointVersion createServicePointVersionWithCountryBorder() {
+    ServicePointGeolocation servicePointGeolocation = getServicePointGeolocation();
 
     ServicePointVersion servicePointVersionWithCountryBorder = ServicePointVersion
         .builder()
@@ -163,6 +140,56 @@ public class ServicePointTestData {
     servicePointGeolocation.setServicePointVersion(servicePointVersionWithCountryBorder);
 
     return servicePointVersionWithCountryBorder;
+  }
+
+  public static ServicePointVersion createServicePointVersionWithMultipleMeanOfTransport() {
+    ServicePointGeolocation servicePointGeolocation = getServicePointGeolocation();
+
+    ServicePointVersion servicePointVersionWithCountryBorder = ServicePointVersion
+        .builder()
+        .servicePointGeolocation(servicePointGeolocation)
+        .number(ServicePointNumber.of(85197616))
+        .sloid("ch:1:sloid:19761")
+        .numberShort(19761)
+        .country(Country.SWITZERLAND)
+        .designationLong(null)
+        .designationOfficial("Flüh Grenze")
+        .abbreviation(null)
+        .meansOfTransport(Set.of(MeanOfTransport.BUS, MeanOfTransport.TRAM, MeanOfTransport.TRAIN))
+        .statusDidok3(ServicePointStatus.IN_OPERATION)
+        .businessOrganisation("ch:1:sboid:100019")
+        .comment("(Tram)")
+        .status(Status.VALIDATED)
+        .validFrom(LocalDate.of(2017, 11, 2))
+        .validTo(LocalDate.of(2099, 12, 31))
+        .categories(new HashSet<>())
+        .operatingPointTechnicalTimetableType(OperatingPointTechnicalTimetableType.COUNTRY_BORDER)
+        .operatingPoint(true)
+        .operatingPointWithTimetable(true)
+        .creationDate(LocalDateTime.of(LocalDate.of(2017, 11, 9), LocalTime.of(11, 53, 5)))
+        .creator("GSU_DIDOK")
+        .editionDate(LocalDateTime.of(LocalDate.of(2019, 5, 20), LocalTime.of(15, 3, 58)))
+        .editor("fs45117")
+        .build();
+    servicePointGeolocation.setServicePointVersion(servicePointVersionWithCountryBorder);
+
+    return servicePointVersionWithCountryBorder;
+  }
+
+  private static ServicePointGeolocation getServicePointGeolocation() {
+    ServicePointGeolocation servicePointGeolocation = ServicePointGeolocation
+        .builder()
+        .spatialReference(SpatialReference.LV95)
+        .east(2604525D)
+        .north(1259900D)
+        .height(370D)
+        .country(Country.SWITZERLAND)
+        .creationDate(LocalDateTime.of(LocalDate.of(2017, 11, 9), LocalTime.of(11, 53, 5)))
+        .creator("GSU_DIDOK")
+        .editionDate(LocalDateTime.of(LocalDate.of(2019, 5, 20), LocalTime.of(15, 3, 58)))
+        .editor("fs45117")
+        .build();
+    return servicePointGeolocation;
   }
 
 }
