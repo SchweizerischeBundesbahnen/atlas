@@ -9,6 +9,7 @@ import { TransportCompaniesComponent } from './transport-companies/transport-com
 import { TransportCompanyDetailComponent } from './transport-companies/detail/transport-company-detail.component';
 import { CompaniesComponent } from './companies/companies.component';
 import { CompanyDetailComponent } from './companies/detail/company-detail.component';
+import { AtlasSearchSelectModule } from '../../core/form-components/atlas-search-select/atlas-search-select.module';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,6 @@ import { CompanyDetailComponent } from './companies/detail/company-detail.compon
     CompaniesComponent,
     CompanyDetailComponent,
   ],
-  imports: [CoreModule, BodiRoutingModule, FormModule],
+  imports: [CoreModule, BodiRoutingModule, FormModule, AtlasSearchSelectModule],
 })
 export class BodiModule {}

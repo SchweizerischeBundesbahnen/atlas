@@ -45,26 +45,30 @@
           <div class="mb-1">
             <mat-label class="font-bold-lg">{{ 'USER_ADMIN.TABLE_HEADER' | translate }}</mat-label>
           </div>
-          <app-user-select
-            [searchResults$]="userSearchResult$"
+          <!-- todo: add functionality -->
+          <atlas-search-select
             (selectionChange)="checkIfUserExists($event)"
-            (valueChanged)="userSearchResult$ = userService.searchUsers($event)"
+            type="userAdministration"
           >
             <ng-template let-item>
               {{ item | userSelectFormat }}
             </ng-template>
-          </app-user-select>
+          </atlas-search-select>
         </ng-container>
 
         <ng-template #filterTemplate>
           <div class="d-flex flex-row">
-            <bo-select
-              class="col-6 pe-1"
-              [formGroup]="boForm"
-              [controlName]="boSearchCtrlName"
-              [formModus]="false"
-              (boSelectionChanged)="filterChanged()"
-            ></bo-select>
+            <div class="d-flex flex-column col-6 pe-1">
+              <span class="font-bold-lg">{{
+                'BODI.BUSINESS_ORGANISATION.BUSINESS_ORGANISATION' | translate
+              }}</span>
+              <!-- todo: add functionality -->
+              <atlas-search-select (selectionChange)="filterChanged()" type="businessOrganisation">
+                <ng-template let-item>
+                  {{ item | boSelectionDisplay }}
+                </ng-template>
+              </atlas-search-select>
+            </div>
 
             <div class="d-flex flex-column col-6 ps-1">
               <mat-label class="font-bold-lg">{{

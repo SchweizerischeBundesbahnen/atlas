@@ -100,15 +100,20 @@
       [tableColumns]="transportCompanyRelationTableColumns"
       [titleTranslationKey]="'BODI.TRANSPORT_COMPANIES.BO_RELATION_TITLE'"
     >
-      <form *ngIf="editMode" class="col-12 d-flex">
-        <bo-select
-          [formGroup]="form"
-          class="col-6 me-3 mt-3"
-          controlName="businessOrganisation"
-          data-cy="businessOrganisation"
-          valueExtraction=""
+      <form *ngIf="editMode" class="col-12 d-flex relation-form-height">
+        <atlas-search-select
+          [formCtrl]="form.get('businessOrganisation')"
+          formTemplateLabelKey="businessOrganisationSearchSelectLabel"
+          type="businessOrganisation"
+          class="mt-3 me-3"
+          [selectedItem]="selectedBusinessOrganisation$ | async"
+          (selectionChange)="onBusinessOrganisationChange($event)"
         >
-        </bo-select>
+          <ng-template let-item>
+            {{ item | boSelectionDisplay }}
+          </ng-template>
+        </atlas-search-select>
+
         <form-date-range [formGroup]="form" class="col-6"></form-date-range>
       </form>
     </app-relation>
