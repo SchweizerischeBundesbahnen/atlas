@@ -24,6 +24,11 @@ import { LinkIconComponent } from '../../../../core/form-components/link-icon/li
 import { of } from 'rxjs';
 import { CommentComponent } from '../../../../core/form-components/comment/comment.component';
 import { UserDetailInfoComponent } from '../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import { AtlasLabelFieldComponent } from '../../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import { AtlasFieldErrorComponent } from '../../../../core/form-components/atlas-field-error/atlas-field-error.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { TextFieldComponent } from '../../../../core/form-components/text-field/text-field.component';
+import { InfoLinkDirective } from '../../../../core/form-components/info-icon/info-link.directive';
 
 const lineVersionSnapsot: LineVersionSnapshot = {
   id: 1234,
@@ -113,13 +118,17 @@ function setupTestBed(
       LineVersionSnapshotDetailComponent,
       MockAppDetailWrapperComponent,
       LineDetailFormComponent,
-      LinkIconComponent,
       MockBoSelectComponent,
       ErrorNotificationComponent,
-      InfoIconComponent,
       MockDialogCloseComponent,
       CommentComponent,
       UserDetailInfoComponent,
+      AtlasLabelFieldComponent,
+      AtlasFieldErrorComponent,
+      TextFieldComponent,
+      InfoIconComponent,
+      LinkIconComponent,
+      InfoLinkDirective,
     ],
     imports: [AppTestingModule],
     providers: [
@@ -130,6 +139,7 @@ function setupTestBed(
         provide: MAT_DIALOG_DATA,
         useValue: data,
       },
+      { provide: TranslatePipe },
     ],
   })
     .compileComponents()

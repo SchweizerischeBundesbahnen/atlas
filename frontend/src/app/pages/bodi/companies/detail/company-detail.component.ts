@@ -25,7 +25,7 @@ export class CompanyDetailComponent implements OnInit {
         uicCode: new FormControl({ value: this.company.uicCode, disabled: true }),
         countryCodeIso: new FormControl({ value: this.company.countryCodeIso, disabled: true }),
         shortName: new FormControl({ value: this.company.shortName, disabled: true }),
-        name: new FormControl({ value: this.company.shortName, disabled: true }),
+        name: new FormControl({ value: this.company.name, disabled: true }),
         url: new FormControl({ value: this.company.url, disabled: true }),
       });
     }
