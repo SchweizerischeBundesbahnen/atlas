@@ -49,6 +49,7 @@ It's applications share the following architectural goal:
 
 ![ATLAS Big Picture](documentation/image/ATLAS_Infrastruktur.svg)
 
+
 ## Links
 
 - **Tekton**: https://tekton-control-panel-atlas-tekton.sbb-cloud.net/projects/KI_ATLAS/repositories/atlas
