@@ -13,11 +13,13 @@ import { statusChoice, TableSearch } from './table-search';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { DATE_PATTERN, MAX_DATE, MIN_DATE } from '../../date/date.service';
 import { FormControl, FormGroup, ValidationErrors } from '@angular/forms';
-import { Status, WorkflowStatus } from '../../../api';
+import { BusinessOrganisation, Status, WorkflowStatus } from '../../../api';
 import moment from 'moment';
 import { ValidationService } from '../../validation/validation.service';
-import { BusinessOrganisationSelectComponent } from '../../form-components/bo-select/business-organisation-select.component';
 import { BaseTableSearch, SearchStatusType } from './base-table-search';
+import { BusinessOrganisationSearchService } from '../../service/business-organisation-search.service';
+import { EMPTY, Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-table-search',
@@ -36,8 +38,6 @@ export class TableSearchComponent implements OnInit {
   @Output() searchEvent: EventEmitter<BaseTableSearch> = new EventEmitter<BaseTableSearch>();
   @ViewChild('validOnInput') validOnInput!: ElementRef;
 
-  @ViewChild(BusinessOrganisationSelectComponent)
-  businessOrganisationSelectComponent!: BusinessOrganisationSelectComponent;
   boSearchForm = new FormGroup<BusinessOrganisationSearch>({
     businessOrganisation: new FormControl(),
   });
@@ -58,7 +58,12 @@ export class TableSearchComponent implements OnInit {
   MIN_DATE = MIN_DATE;
   MAX_DATE = MAX_DATE;
 
-  constructor(private readonly validationService: ValidationService) {}
+  selectedBusinessOrganisation$: Observable<BusinessOrganisation> = EMPTY;
+
+  constructor(
+    private readonly validationService: ValidationService,
+    private readonly businessOrganisationSearchService: BusinessOrganisationSearchService
+  ) {}
 
   getDateControlValidation() {
     return this.validationService.getValidation(this.dateControl.errors);
@@ -101,16 +106,22 @@ export class TableSearchComponent implements OnInit {
     this.emitSearch();
   }
 
-  businessOrganisationChanged($event: any) {
-    this.boSearchForm.patchValue($event, { emitEvent: false });
+  businessOrganisationChanged(businessOrganisation: BusinessOrganisation | null) {
+    this.boSearchForm.patchValue(
+      { businessOrganisation: businessOrganisation?.sboid },
+      { emitEvent: false }
+    );
+    this.selectedBusinessOrganisation$ = businessOrganisation ? of(businessOrganisation) : of();
     this.emitSearch();
   }
 
   restoreBusinessOrganisation(sboid: string) {
-    if (this.businessOrganisationSelectComponent) {
-      this.boSearchForm.patchValue({ businessOrganisation: sboid }, { emitEvent: false });
-      this.businessOrganisationSelectComponent.searchBusinessOrganisation(sboid);
-    }
+    this.boSearchForm.patchValue({ businessOrganisation: sboid }, { emitEvent: false });
+    this.selectedBusinessOrganisation$ = sboid
+      ? this.businessOrganisationSearchService
+          .searchByString(sboid)
+          .pipe(map((businessOrganisations) => businessOrganisations[0]))
+      : of();
   }
 
   ngOnInit(): void {
