@@ -3,7 +3,7 @@ import { TableColumn } from '../../../core/components/table/table-column';
 import { ApplicationRole, ApplicationType, BusinessOrganisation } from '../../../api';
 import { FormControl, FormGroup } from '@angular/forms';
 import { UserPermissionManager } from '../service/user-permission-manager';
-import { BusinessOrganisationLanguageService } from '../../../core/form-components/bo-select/business-organisation-language.service';
+import { BusinessOrganisationLanguageService } from '../../../core/service/business-organisation-language.service';
 import { Observable, of, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 
