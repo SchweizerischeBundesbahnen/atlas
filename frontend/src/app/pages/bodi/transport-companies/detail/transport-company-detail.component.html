@@ -22,6 +22,7 @@
     <div class="col-12 d-flex">
       <div class="d-flex flex-column col-6 pe-3">
         <atlas-text-field
+          [formGroup]="transportFormGroup"
           controlName="number"
           fieldLabel="BODI.TRANSPORT_COMPANIES.NUMBER"
         ></atlas-text-field>
@@ -29,6 +30,7 @@
 
       <div class="d-flex flex-column col-6 pe-3">
         <atlas-text-field
+          [formGroup]="transportFormGroup"
           controlName="abbreviation"
           fieldLabel="BODI.TRANSPORT_COMPANIES.ABBREVIATION"
         ></atlas-text-field>
@@ -38,12 +40,14 @@
     <div class="col-12 d-flex">
       <div class="d-flex flex-column col-6 pe-3">
         <atlas-text-field
+          [formGroup]="transportFormGroup"
           controlName="description"
           fieldLabel="BODI.TRANSPORT_COMPANIES.DESCRIPTION"
         ></atlas-text-field>
       </div>
       <div class="d-flex flex-column col-6 pe-3">
         <atlas-text-field
+          [formGroup]="transportFormGroup"
           controlName="enterpriseId"
           fieldLabel="BODI.TRANSPORT_COMPANIES.ENTERPRISE_ID"
         ></atlas-text-field>
@@ -54,6 +58,7 @@
     <div class="col-12 d-flex mt-3">
       <div class="d-flex flex-column col pe-3">
         <atlas-text-field
+          [formGroup]="transportFormGroup"
           controlName="businessRegisterName"
           fieldLabel="BODI.TRANSPORT_COMPANIES.BUSINESS_REGISTER_NAME"
         ></atlas-text-field>
@@ -63,6 +68,7 @@
     <div class="col-12 d-flex mt-3">
       <div class="d-flex flex-column col pe-3">
         <atlas-text-field
+          [formGroup]="transportFormGroup"
           controlName="businessRegisterNumber"
           fieldLabel="BODI.TRANSPORT_COMPANIES.BUSINESS_REGISTER_NUMBER"
         ></atlas-text-field>
