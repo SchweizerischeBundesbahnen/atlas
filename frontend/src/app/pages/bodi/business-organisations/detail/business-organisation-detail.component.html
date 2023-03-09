@@ -18,6 +18,7 @@
             { label: ' |', translate: false },
             { label: 'max. 99999', translate: false }
           ]"
+          [formGroup]="form"
           [required]="true"
           controlName="organisationNumber"
           fieldLabel="BODI.BUSINESS_ORGANISATION.ORGANISATION_NUMBER"
@@ -35,6 +36,7 @@
             { label: ' |', translate: false },
             { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '10' } }
           ]"
+          [formGroup]="form"
           [required]="true"
           controlName="abbreviationDe"
           fieldLabel="BODI.BUSINESS_ORGANISATION.ABBREVIATION_DE"
@@ -49,6 +51,7 @@
             { label: ' |', translate: false },
             { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '60' } }
           ]"
+          [formGroup]="form"
           [required]="true"
           controlName="descriptionDe"
           fieldLabel="BODI.BUSINESS_ORGANISATION.DESCRIPTION_DE"
@@ -65,6 +68,7 @@
             { label: ' |', translate: false },
             { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '10' } }
           ]"
+          [formGroup]="form"
           [required]="true"
           controlName="abbreviationFr"
           fieldLabel="BODI.BUSINESS_ORGANISATION.ABBREVIATION_FR"
@@ -79,6 +83,7 @@
             { label: ' |', translate: false },
             { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '60' } }
           ]"
+          [formGroup]="form"
           [required]="true"
           controlName="descriptionFr"
           fieldLabel="BODI.BUSINESS_ORGANISATION.DESCRIPTION_FR"
@@ -95,6 +100,7 @@
             { label: ' |', translate: false },
             { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '10' } }
           ]"
+          [formGroup]="form"
           [required]="true"
           controlName="abbreviationIt"
           fieldLabel="BODI.BUSINESS_ORGANISATION.ABBREVIATION_IT"
@@ -109,6 +115,7 @@
             { label: ' |', translate: false },
             { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '60' } }
           ]"
+          [formGroup]="form"
           [required]="true"
           controlName="descriptionIt"
           fieldLabel="BODI.BUSINESS_ORGANISATION.DESCRIPTION_IT"
@@ -125,6 +132,7 @@
             { label: ' |', translate: false },
             { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '10' } }
           ]"
+          [formGroup]="form"
           [required]="true"
           controlName="abbreviationEn"
           fieldLabel="BODI.BUSINESS_ORGANISATION.ABBREVIATION_EN"
@@ -139,6 +147,7 @@
             { label: ' |', translate: false },
             { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '60' } }
           ]"
+          [formGroup]="form"
           [required]="true"
           controlName="descriptionEn"
           fieldLabel="BODI.BUSINESS_ORGANISATION.DESCRIPTION_EN"
@@ -188,6 +197,7 @@
               arg: { key: 'numberOfChars', value: '255' }
             }
           ]"
+          [formGroup]="form"
           controlName="contactEnterpriseEmail"
           fieldLabel="BODI.BUSINESS_ORGANISATION.CONTACT"
         ></atlas-text-field>

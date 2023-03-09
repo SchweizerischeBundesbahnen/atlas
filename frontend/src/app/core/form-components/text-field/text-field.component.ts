@@ -1,5 +1,5 @@
-import { Component, ContentChild, Input, OnInit, TemplateRef } from '@angular/core';
-import { FormGroup, FormGroupDirective } from '@angular/forms';
+import { Component, ContentChild, Input, TemplateRef } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { FieldExample } from './field-example';
 import { AtlasFieldCustomError } from '../atlas-field-error/atlas-field-custom-error';
 
@@ -8,7 +8,7 @@ import { AtlasFieldCustomError } from '../atlas-field-error/atlas-field-custom-e
   templateUrl: './text-field.component.html',
   styleUrls: ['./text-field.component.scss'],
 })
-export class TextFieldComponent implements OnInit {
+export class TextFieldComponent {
   @Input() controlName!: string;
   @Input() fieldLabel!: string;
   @Input() infoIconTitle!: string;
@@ -20,12 +20,5 @@ export class TextFieldComponent implements OnInit {
   @ContentChild('customChildInputPostfixTemplate')
   customChildInputPostfixTemplate!: TemplateRef<any>;
   @ContentChild('customChildInputPrefixTemplate') customChildInputPrefixTemplate!: TemplateRef<any>;
-
-  form: FormGroup = new FormGroup({});
-
-  constructor(private readonly rootFormGroup: FormGroupDirective) {}
-
-  ngOnInit() {
-    this.form = this.rootFormGroup.control;
-  }
+  @Input() formGroup!: FormGroup;
 }
