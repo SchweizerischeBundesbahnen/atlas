@@ -9,11 +9,12 @@ import {
 } from '../../../api';
 import { map } from 'rxjs/operators';
 import { User } from '../../../api';
+import { SearchByString } from '../../../core/form-components/atlas-search-select/search-by-string';
 
 @Injectable({
   providedIn: 'root',
 })
-export class UserService {
+export class UserService implements SearchByString<User> {
   constructor(
     private readonly userAdministrationService: UserAdministrationService,
     private readonly userInformationService: UserInformationService
@@ -36,7 +37,7 @@ export class UserService {
     return this.userAdministrationService.getUser(userId);
   }
 
-  searchUsers(searchQuery: string): Observable<User[]> {
+  searchByString(searchQuery: string): Observable<User[]> {
     return this.userInformationService.searchUsers(searchQuery);
   }
 
