@@ -5,6 +5,7 @@ import ch.sbb.atlas.api.timetable.hearing.TimetableHearingConstants;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.model.SwissCanton;
 import ch.sbb.atlas.model.entity.BaseEntity;
+import ch.sbb.atlas.service.UserService;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -79,4 +80,10 @@ public class TimetableHearingStatement extends BaseEntity {
   @Size(max = AtlasFieldLengths.LENGTH_5000)
   private String justification;
 
+  @Override
+  public void onPrePersist() {
+    String sbbUid = UserService.isClientCredentialAuthentication() ? "SKI" : UserService.getSbbUid();
+    setCreator(sbbUid);
+    setEditor(sbbUid);
+  }
 }
