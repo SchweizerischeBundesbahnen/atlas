@@ -4,6 +4,9 @@ import { DateRangeComponent } from './date-range.component';
 import { AppTestingModule } from '../../../app.testing.module';
 import { FormControl, FormGroup } from '@angular/forms';
 import { DateIconComponent } from '../date-icon/date-icon.component';
+import { AtlasFieldErrorComponent } from '../atlas-field-error/atlas-field-error.component';
+import { AtlasLabelFieldComponent } from '../atlas-label-field/atlas-label-field.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 describe('DateRangeComponent', () => {
   let component: DateRangeComponent;
@@ -11,8 +14,14 @@ describe('DateRangeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DateRangeComponent, DateIconComponent],
+      declarations: [
+        DateRangeComponent,
+        DateIconComponent,
+        AtlasFieldErrorComponent,
+        AtlasLabelFieldComponent,
+      ],
       imports: [AppTestingModule],
+      providers: [{ provide: TranslatePipe }],
     }).compileComponents();
   });
 
