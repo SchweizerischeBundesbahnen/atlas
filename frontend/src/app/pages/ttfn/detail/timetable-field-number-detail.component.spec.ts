@@ -18,6 +18,10 @@ import { ErrorNotificationComponent } from '../../../core/notification/error/err
 import { InfoIconComponent } from '../../../core/form-components/info-icon/info-icon.component';
 import { MockAppDetailWrapperComponent, MockBoSelectComponent } from '../../../app.testing.mocks';
 import { CommentComponent } from '../../../core/form-components/comment/comment.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { AtlasFieldErrorComponent } from '../../../core/form-components/atlas-field-error/atlas-field-error.component';
+import { AtlasLabelFieldComponent } from '../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import { TextFieldComponent } from '../../../core/form-components/text-field/text-field.component';
 
 const version: TimetableFieldNumberVersion = {
   id: 1,
@@ -101,6 +105,9 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
         MockBoSelectComponent,
         ErrorNotificationComponent,
         InfoIconComponent,
+        AtlasFieldErrorComponent,
+        AtlasLabelFieldComponent,
+        TextFieldComponent,
         CommentComponent,
       ],
       imports: [AppTestingModule],
@@ -112,6 +119,7 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
           provide: MAT_DIALOG_DATA,
           useValue: mockData,
         },
+        { provide: TranslatePipe },
       ],
     })
       .compileComponents()
@@ -137,9 +145,9 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
     fixture.detectChanges();
 
     const snackBarContainer =
-      fixture.nativeElement.offsetParent.querySelector('snack-bar-container');
+      fixture.nativeElement.offsetParent.querySelector('mat-snack-bar-container');
     expect(snackBarContainer).toBeDefined();
-    expect(snackBarContainer.textContent).toBe('TTFN.NOTIFICATION.EDIT_SUCCESS');
+    expect(snackBarContainer.textContent.trim()).toBe('TTFN.NOTIFICATION.EDIT_SUCCESS');
     expect(snackBarContainer.classList).toContain('success');
     expect(router.navigate).toHaveBeenCalled();
   });
@@ -161,9 +169,9 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
     fixture.detectChanges();
 
     const snackBarContainer =
-      fixture.nativeElement.offsetParent.querySelector('snack-bar-container');
+      fixture.nativeElement.offsetParent.querySelector('mat-snack-bar-container');
     expect(snackBarContainer).toBeDefined();
-    expect(snackBarContainer.textContent).toBe('TTFN.NOTIFICATION.DELETE_SUCCESS');
+    expect(snackBarContainer.textContent.trim()).toBe('TTFN.NOTIFICATION.DELETE_SUCCESS');
     expect(snackBarContainer.classList).toContain('success');
     expect(dialogRef.close).toHaveBeenCalled();
   });
@@ -203,6 +211,7 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
           provide: AuthService,
           useValue: authServiceMock,
         },
+        { provide: TranslatePipe },
       ],
     }).compileComponents();
   });
@@ -375,9 +384,9 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
       fixture.detectChanges();
 
       const snackBarContainer =
-        fixture.nativeElement.offsetParent.querySelector('snack-bar-container');
+        fixture.nativeElement.offsetParent.querySelector('mat-snack-bar-container');
       expect(snackBarContainer).toBeDefined();
-      expect(snackBarContainer.textContent).toBe('TTFN.NOTIFICATION.ADD_SUCCESS');
+      expect(snackBarContainer.textContent.trim()).toBe('TTFN.NOTIFICATION.ADD_SUCCESS');
       expect(snackBarContainer.classList).toContain('success');
       expect(router.navigate).toHaveBeenCalled();
     });
