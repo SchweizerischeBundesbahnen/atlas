@@ -13,6 +13,7 @@
     <div class="col-12 d-flex">
       <div class="d-flex flex-column col-6 pe-3">
         <atlas-text-field
+          [formGroup]="companyFormGroup"
           controlName="uicCode"
           data-cy="uicCode"
           fieldLabel="BODI.COMPANIES.UIC_CODE"
@@ -21,6 +22,7 @@
 
       <div class="d-flex flex-column col-6 pe-3">
         <atlas-text-field
+          [formGroup]="companyFormGroup"
           controlName="countryCodeIso"
           data-cy="countryCodeIso"
           fieldLabel="BODI.COMPANIES.COUNTRY_CODE"
@@ -31,6 +33,7 @@
     <div class="col-12 d-flex">
       <div class="d-flex flex-column col-12 pe-3">
         <atlas-text-field
+          [formGroup]="companyFormGroup"
           controlName="shortName"
           data-cy="shortName"
           fieldLabel="BODI.COMPANIES.SHORT_NAME"
@@ -41,6 +44,7 @@
     <div class="col-12 d-flex">
       <div class="d-flex flex-column col-12 pe-3">
         <atlas-text-field
+          [formGroup]="companyFormGroup"
           controlName="name"
           data-cy="name"
           fieldLabel="BODI.COMPANIES.NAME"

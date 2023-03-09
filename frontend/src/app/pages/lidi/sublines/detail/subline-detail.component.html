@@ -17,6 +17,7 @@
             { label: ' |', translate: false },
             { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '50' } }
           ]"
+          [formGroup]="form"
           controlName="number"
           fieldLabel="LIDI.SUBLINE.NUMBER"
           infoIconTitle="LIDI.SUBLINE.NUMBER_INFO"
@@ -36,6 +37,7 @@
               arg: { key: 'numberOfChars', value: '255' }
             }
           ]"
+          [formGroup]="form"
           controlName="description"
           fieldLabel="LIDI.SUBLINE.DESCRIPTION"
         >
@@ -59,6 +61,7 @@
               arg: { key: 'numberOfChars', value: '255' }
             }
           ]"
+          [formGroup]="form"
           controlName="longName"
           fieldLabel="LIDI.LONG_NAME"
         >
@@ -103,6 +106,7 @@
             { label: ' |', translate: false },
             { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '50' } }
           ]"
+          [formGroup]="form"
           [required]="true"
           controlName="swissSublineNumber"
           fieldLabel="LIDI.SWISS_SUBLINE_NUMBER"

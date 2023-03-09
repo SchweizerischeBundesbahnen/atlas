@@ -14,6 +14,7 @@
       <div class="col-12 d-flex">
         <div class="d-flex flex-column col-7 pe-3">
           <atlas-text-field
+            [formGroup]="formGroup"
             [required]="true"
             controlName="firstName"
             data-cy="workflowPersonFirstName"
@@ -23,6 +24,7 @@
         </div>
         <div class="d-flex flex-column col-7 pe-3">
           <atlas-text-field
+            [formGroup]="formGroup"
             [required]="true"
             controlName="lastName"
             data-cy="workflowPersonLastName"
@@ -34,6 +36,7 @@
       <div class="col-12 d-flex">
         <div class="d-flex flex-column col-7 pe-3">
           <atlas-text-field
+            [formGroup]="formGroup"
             [required]="true"
             controlName="function"
             data-cy="workflowPersonFunction"
@@ -43,6 +46,7 @@
         </div>
         <div *ngIf="hasMail" class="d-flex flex-column col-7 pe-3">
           <atlas-text-field
+            [formGroup]="formGroup"
             [required]="true"
             controlName="mail"
             data-cy="workflowPersonMail"
