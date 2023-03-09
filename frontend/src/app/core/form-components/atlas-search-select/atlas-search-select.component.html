@@ -1,0 +1,44 @@
+<div class="dropdown-search-wrapper">
+  <ng-container
+    *ngTemplateOutlet="formTemplateStore.getTemplate(formTemplateLabelKey) ?? null"
+  ></ng-container>
+  <input
+    #searchUserInput
+    type="text"
+    (keyup)="keyUpEvent.next(searchUserInput.value)"
+    (focus)="displayDropdownElements = true"
+    (blur)="onInputBlur()"
+    [disabled]="formCtrl?.disabled"
+    [value]="displayedItem"
+  />
+  <i class="bi bi-x clear-all-icon" (click)="selectionChange.emit()"></i>
+  <i
+    class="bi bi-caret-down-fill open-dropdown-icon"
+    [class.rotate-180]="displayDropdownElements"
+    (click)="displayDropdownElements = !displayDropdownElements"
+  ></i>
+  <div [class.display-none]="!displayDropdownElements">
+    <ng-container *ngIf="searchResults$ | async as items">
+      <div class="dropdown-element-wrapper" *ngIf="items.length > 0">
+        <span
+          class="dropdown-element"
+          *ngFor="let item of items"
+          (click)="selectionChange.emit(item); displayDropdownElements = false"
+        >
+          <ng-container
+            *ngTemplateOutlet="dropdownElementTemplateRef; context: { $implicit: item }"
+          ></ng-container>
+        </span>
+      </div>
+
+      <span *ngIf="loadingStarted$ | async; else loadingFinished">Loading...</span>
+
+      <ng-template #loadingFinished>
+        <span *ngIf="searchUserInput.value.length > 1 && items.length === 0">{{
+          'COMMON.SEARCH.NO_RESULTS_FOUND' | translate
+        }}</span>
+      </ng-template>
+    </ng-container>
+    <span *ngIf="searchUserInput.value.length < 2">{{ 'COMMON.TYPE_TO_SEARCH' | translate }}</span>
+  </div>
+</div>
