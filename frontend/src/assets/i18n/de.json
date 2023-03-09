@@ -63,7 +63,8 @@
     "SEARCH": {
       "VALIDITY": "Gültig am",
       "SEARCH_CRITERIA": "Suche",
-      "SEARCH_FOR": "Suche nach"
+      "SEARCH_FOR": "Suche nach",
+      "NO_RESULTS_FOUND": "Es wurden keine Resultate gefunden"
     },
     "NOTIFICATION": {
       "OPTIMISTIC_LOCK_ERROR": "Das Objekt wurde entweder bereits gelöscht oder in der Zwischenzeit bearbeitet. Bitte laden Sie die Seite neu, indem Sie die Taste F5 drücken."

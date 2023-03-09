@@ -21,7 +21,7 @@ import { WhitespaceValidator } from '../../../../core/validation/whitespace/whit
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
 import { BusinessOrganisationDetailFormGroup } from './business-organisation-detail-form-group';
-import { BusinessOrganisationLanguageService } from '../../../../core/form-components/bo-select/business-organisation-language.service';
+import { BusinessOrganisationLanguageService } from '../../../../core/service/business-organisation-language.service';
 import { AuthService } from '../../../../core/auth/auth.service';
 
 @Component({
