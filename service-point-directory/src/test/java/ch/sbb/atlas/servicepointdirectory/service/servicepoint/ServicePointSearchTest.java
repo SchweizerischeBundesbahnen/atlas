@@ -392,4 +392,20 @@ public class ServicePointSearchTest {
     assertThat(servicePointVersions.getTotalElements()).isZero();
   }
 
+  @Test
+  void shouldFindOnlyOneServicePointForServicePointWithMultipleMeanOfTransports() {
+    // Given
+    servicePointVersionRepository.deleteAll();
+    servicePointVersionRepository.save(ServicePointTestData.createServicePointVersionWithMultipleMeanOfTransport());
+    // When
+    Page<ServicePointVersion> servicePointVersions =
+        servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
+            .servicePointRequestParams(ServicePointRequestParams.builder()
+                .uicCountryCodes(Arrays.asList(85))
+                .build()).build());
+    // Then
+    assertThat(servicePointVersions.getTotalElements()).isEqualTo(1);
+    assertThat(servicePointVersions.getContent().get(0).getDesignationOfficial()).isEqualTo("Flüh Grenze");
+  }
+
 }
