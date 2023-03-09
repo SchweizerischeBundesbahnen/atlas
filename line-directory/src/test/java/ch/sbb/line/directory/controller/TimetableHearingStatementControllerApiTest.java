@@ -179,7 +179,6 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
          		"zip": 3000,
          		"city": "Bern"
          	},
-         	"timetableYear": 2024,
          	"timetableFieldNumber": "1.1",
          	"swissCanton": "BERN",
          	"stopPlace": "Bern, Wyleregg"
