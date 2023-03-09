@@ -1,0 +1,12 @@
+.atlas-dialog-backdrop {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.atlas-dialog-panel mat-dialog-container {
+  .mat-mdc-dialog-surface {
+    //uses internal Angular Material design API!
+    background-color: #ffffff;
+    border-radius: 28px;
+    padding: 7px;
+  }
+}
