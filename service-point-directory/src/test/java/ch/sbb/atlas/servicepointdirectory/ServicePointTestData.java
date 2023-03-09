@@ -58,7 +58,7 @@ public class ServicePointTestData {
         .validFrom(LocalDate.of(2014, 12, 14))
         .validTo(LocalDate.of(2021, 3, 31))
         .categories(new HashSet<>())
-        .meansOfTransport(Set.of(MeanOfTransport.BUS))
+        .meansOfTransport(Set.of(MeanOfTransport.BUS, MeanOfTransport.BOAT)) // in order to test Hibernate Query there are intentionally 2 MeanOfTransport
         .operatingPoint(true)
         .operatingPointWithTimetable(true)
         .creationDate(LocalDateTime.of(LocalDate.of(2021, 3, 22), LocalTime.of(9, 26, 29)))
