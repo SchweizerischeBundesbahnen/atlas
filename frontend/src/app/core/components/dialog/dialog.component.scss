@@ -26,3 +26,8 @@
 mat-dialog-actions {
   padding-top: 80px;
 }
+
+.message {
+  color: variables.$black;
+  padding-left: unset;
+}
