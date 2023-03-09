@@ -12,10 +12,10 @@ public final class UserService {
 
   public static String getSbbUid() {
     Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    if (principal instanceof Jwt) {
-      return ((Jwt) principal).getClaimAsString("sbbuid");
-    } else if (principal instanceof String) {
-      return (String) principal;
+    if (principal instanceof Jwt jwt) {
+      return getSbbuidFromJwt(jwt);
+    } else if (principal instanceof String stringAuth) {
+      return stringAuth;
     }
     throw new IllegalStateException("No Authentication found!");
   }
@@ -26,5 +26,13 @@ public final class UserService {
 
   public static Jwt getAccessToken() {
     return (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+  }
+
+  public static boolean isClientCredentialAuthentication() {
+    return getSbbuidFromJwt(getAccessToken()) == null;
+  }
+
+  private static String getSbbuidFromJwt(Jwt jwt) {
+    return jwt.getClaimAsString("sbbuid");
   }
 }

@@ -77,7 +77,7 @@ public class TimetableHearingStatementController implements TimetableHearingStat
   }
 
   @Override
-  public TimetableHearingStatementModel updateStatement(Long id, TimetableHearingStatementModel statement,
+  public TimetableHearingStatementModel updateHearingStatement(Long id, TimetableHearingStatementModel statement,
       List<MultipartFile> documents) {
     timetableHearingStatementService.getStatementById(id);
 
