@@ -4,6 +4,10 @@ import { CommentComponent } from './comment.component';
 import { AppTestingModule } from '../../../app.testing.module';
 import { FormControl, FormGroup } from '@angular/forms';
 import { InfoIconComponent } from '../info-icon/info-icon.component';
+import { AtlasFieldErrorComponent } from '../atlas-field-error/atlas-field-error.component';
+import { AtlasLabelFieldComponent } from '../atlas-label-field/atlas-label-field.component';
+import { TextFieldComponent } from '../text-field/text-field.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 describe('CommentComponent', () => {
   let component: CommentComponent;
@@ -11,8 +15,15 @@ describe('CommentComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CommentComponent, InfoIconComponent],
+      declarations: [
+        CommentComponent,
+        InfoIconComponent,
+        AtlasFieldErrorComponent,
+        AtlasLabelFieldComponent,
+        TextFieldComponent,
+      ],
       imports: [AppTestingModule],
+      providers: [{ provide: TranslatePipe }],
     }).compileComponents();
   });
 
