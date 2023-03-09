@@ -109,4 +109,9 @@ public enum Country {
     return Arrays.stream(Country.values()).filter(country -> Objects.equals(country.getUicCode(), uicCode)).findFirst()
         .orElse(null);
   }
+
+  public static Country filterCountriesWithSpecifiedIsoCode(String isoCode) {
+    return Arrays.stream(Country.values()).filter(country -> Objects.equals(country.getIsoCode(), isoCode)).findFirst()
+        .orElse(null);
+  }
 }
