@@ -11,7 +11,6 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { AuthService } from '../../../../core/auth/auth.service';
 import { RelationComponent } from '../../../../core/components/relation/relation.component';
-import { SearchSelectComponent } from '../../../../core/form-components/search-select/search-select.component';
 import moment from 'moment';
 import { of } from 'rxjs';
 import { CommentComponent } from '../../../../core/form-components/comment/comment.component';
@@ -21,6 +20,7 @@ import { TextFieldComponent } from '../../../../core/form-components/text-field/
 import { AtlasLabelFieldComponent } from '../../../../core/form-components/atlas-label-field/atlas-label-field.component';
 import { AtlasFieldErrorComponent } from '../../../../core/form-components/atlas-field-error/atlas-field-error.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { AtlasSearchSelectComponent } from '../../../../core/form-components/atlas-search-select/atlas-search-select.component';
 
 const transportCompany: TransportCompany = {
   id: 1234,
@@ -180,7 +180,7 @@ function setupTestBed(data: (TransportCompany | TransportCompanyBoRelation[])[])
     declarations: [
       TransportCompanyDetailComponent,
       RelationComponent,
-      SearchSelectComponent,
+      AtlasSearchSelectComponent,
       CommentComponent,
       MockDialogCloseComponent,
       MockAtlasButtonComponent,
