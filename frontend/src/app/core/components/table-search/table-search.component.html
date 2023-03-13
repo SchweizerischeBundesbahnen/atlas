@@ -4,7 +4,11 @@
       <mat-label class="font-bold-lg">{{ 'COMMON.SEARCH.SEARCH_CRITERIA' | translate }}</mat-label>
       <div class="search-main-field mb-4">
         <mat-chip-grid #chipList data-cy="table-search-strings">
-          <mat-chip-row (removed)="removeSearch(search)" *ngFor="let search of searchStrings">
+          <mat-chip-row
+            (removed)="removeSearch(search)"
+            *ngFor="let search of searchStrings"
+            class="font-bold-sm"
+          >
             {{ search }}
             <button matChipRemove>
               <i class="bi bi-x-circle-fill"></i>
