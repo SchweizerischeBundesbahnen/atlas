@@ -192,4 +192,35 @@ public class ServicePointTestData {
     return servicePointGeolocation;
   }
 
+  public static ServicePointVersion createServicePointVersionWithoutServicePointGeolocation() {
+
+    ServicePointVersion servicePointVersionWithCountryBorder = ServicePointVersion
+        .builder()
+        .number(ServicePointNumber.of(85197616))
+        .sloid("ch:1:sloid:19761")
+        .numberShort(19761)
+        .country(Country.SWITZERLAND)
+        .designationLong(null)
+        .designationOfficial("Flüh Grenze")
+        .abbreviation(null)
+        .meansOfTransport(Set.of(MeanOfTransport.BUS, MeanOfTransport.TRAM, MeanOfTransport.TRAIN))
+        .statusDidok3(ServicePointStatus.IN_OPERATION)
+        .businessOrganisation("ch:1:sboid:100019")
+        .comment("(Tram)")
+        .status(Status.VALIDATED)
+        .validFrom(LocalDate.of(2017, 11, 2))
+        .validTo(LocalDate.of(2099, 12, 31))
+        .categories(new HashSet<>())
+        .operatingPointTechnicalTimetableType(OperatingPointTechnicalTimetableType.COUNTRY_BORDER)
+        .operatingPoint(true)
+        .operatingPointWithTimetable(true)
+        .creationDate(LocalDateTime.of(LocalDate.of(2017, 11, 9), LocalTime.of(11, 53, 5)))
+        .creator("GSU_DIDOK")
+        .editionDate(LocalDateTime.of(LocalDate.of(2019, 5, 20), LocalTime.of(15, 3, 58)))
+        .editor("fs45117")
+        .build();
+
+    return servicePointVersionWithCountryBorder;
+  }
+
 }
