@@ -1,16 +1,16 @@
 @use 'src/styles/variables' as variables;
 
-.mat-sort-header-content {
-  text-align: left !important;
-}
-
-.mat-sort-header-container {
-  align-items: baseline !important;
-}
-
 .atlas-table {
   border-collapse: separate;
   -webkit-border-vertical-spacing: 16px !important;
+
+  // Header Styling
+  th {
+    div {
+      text-align: left !important;
+      align-items: baseline !important;
+    }
+  }
 
   // Header Arrow on not sorted columns: show always, be blue
   .mat-sort-header-container:not(.mat-sort-header-sorted) .mat-sort-header-arrow {
@@ -24,8 +24,24 @@
     color: variables.$gray-900;
   }
 
+  // Row Styling
   .atlas-table-row:hover {
     background-color: variables.$gray-100 !important;
     cursor: pointer;
+  }
+
+  // Cell Styling
+  .bordered-cell {
+    padding: 10px !important;
+
+    border-bottom: 1px solid variables.$border-color !important;
+    border-color: variables.$border-color;
+    border-left-width: 1px;
+    border-left-style: solid;
+
+    &:last-of-type {
+      border-right-width: 1px;
+      border-right-style: solid;
+    }
   }
 }
