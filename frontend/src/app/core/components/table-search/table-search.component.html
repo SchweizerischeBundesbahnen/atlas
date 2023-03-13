@@ -58,30 +58,27 @@
     </div>
     <div *ngIf="displayValidOn" class="d-flex flex-column col-3">
       <mat-label class="font-bold-lg">{{ 'COMMON.SEARCH.VALIDITY' | translate }}</mat-label>
-      <mat-form-field appearance="outline" class="form-outline">
-        <input
-          #validOnInput
-          (dateChange)="onDateChanged($event)"
-          [formControl]="dateControl"
-          [matDatepicker]="picker"
-          [max]="MAX_DATE"
-          [min]="MIN_DATE"
-          data-cy="table-search-date-input"
-          matInput
-        />
-        <mat-datepicker-toggle [for]="picker" matSuffix>
-          <mat-icon matDatepickerToggleIcon>
-            <form-date-icon [enabled]="true"></form-date-icon>
-          </mat-icon>
-        </mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-        <mat-error *ngFor="let validationError of getDateControlValidation()">
-          {{
-            validationError.error
-              | translate : { date: getMinOrMaxDateDisplay(validationError.value) }
-          }}
-        </mat-error>
-      </mat-form-field>
+      <div class="search-date-field">
+        <div class="container-date-field">
+          <input
+            #validOnInput
+            (dateChange)="onDateChanged($event)"
+            [formControl]="dateControl"
+            [matDatepicker]="picker"
+            [max]="MAX_DATE"
+            [min]="MIN_DATE"
+            data-cy="table-search-date-input"
+            matInput
+          />
+          <mat-datepicker-toggle [for]="picker" matSuffix>
+            <mat-icon matDatepickerToggleIcon>
+              <form-date-icon [enabled]="true"></form-date-icon>
+            </mat-icon>
+          </mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </div>
+      </div>
+      <app-atlas-field-error [control]="dateControl"></app-atlas-field-error>
     </div>
   </div>
 </div>
