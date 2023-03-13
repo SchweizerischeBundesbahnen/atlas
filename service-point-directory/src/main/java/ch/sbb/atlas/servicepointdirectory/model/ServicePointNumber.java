@@ -41,7 +41,7 @@ public final class ServicePointNumber {
 
   @NotNull
   @JsonInclude
-  @Schema(description = "UicCountryCode", example = "85")
+  @Schema(description = "UicCountryCode, Indicates which country allocated the service point number and is to be interpreted organisationally, not territorially.", example = "85")
   public Integer getUicCountryCode() {
     if (getCountry() == null) {
       return null;
