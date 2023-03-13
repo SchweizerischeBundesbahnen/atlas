@@ -49,6 +49,8 @@ It's applications share the following architectural goal:
 
 ![ATLAS Big Picture](documentation/image/ATLAS_Infrastruktur.svg)
 
+Application MEGAID: `ADB3AE9A60E510ED`
+
 
 ## Links
 
