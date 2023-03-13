@@ -20,12 +20,13 @@
     mat-table
     matSort
     matSortDirection="asc"
+    class="atlas-table"
   >
     <ng-container *ngFor="let column of tableColumns">
       <ng-container matColumnDef="{{ column.value }}">
         <th
           *matHeaderCellDef
-          class="font-bold-base color-primary-400 translated-paragraph"
+          class="font-bold-base color-primary-400 translated-paragraph bordered-cell"
           mat-header-cell
           mat-sort-header
           scope="col"
@@ -35,7 +36,7 @@
         <td
           *matCellDef="let value"
           [title]="showTitle(column, value[column.value])"
-          class="table-cell"
+          class="table-cell bordered-cell"
           mat-cell
         >
           {{ format(column, value[column.value]) }}
@@ -44,7 +45,12 @@
     </ng-container>
 
     <tr *matHeaderRowDef="getColumnValues()" mat-header-row></tr>
-    <tr (click)="edit(row)" *matRowDef="let row; columns: getColumnValues()" mat-row></tr>
+    <tr
+      (click)="edit(row)"
+      *matRowDef="let row; columns: getColumnValues()"
+      mat-row
+      class="atlas-table-row"
+    ></tr>
 
     <!-- Row shown when there is no matching data. -->
     <tr *matNoDataRow class="mat-row">
