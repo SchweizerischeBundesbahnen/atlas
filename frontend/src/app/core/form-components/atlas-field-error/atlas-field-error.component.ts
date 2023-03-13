@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { AtlasFieldCustomError } from './atlas-field-custom-error';
 import { ValidationService } from '../../validation/validation.service';
 
@@ -11,16 +11,21 @@ import { ValidationService } from '../../validation/validation.service';
 export class AtlasFieldErrorComponent {
   @Input() controlName!: string;
   @Input() form: FormGroup = new FormGroup({});
+  @Input() control!: FormControl;
   @Input() customError!: AtlasFieldCustomError;
 
   constructor(private validationService: ValidationService) {}
 
   get errors() {
-    const formField = this.form.get(this.controlName);
-    const validationErrors = this.getValidationErrors();
-    if (validationErrors) {
-      if ((validationErrors['required'] && formField?.touched) || !validationErrors['required']) {
-        return this.validationService.getValidation(validationErrors || null);
+    if (this.control) {
+      return this.validationService.getValidation(this.control.errors || null);
+    } else {
+      const formField = this.form.get(this.controlName);
+      const validationErrors = this.getValidationErrors();
+      if (validationErrors) {
+        if ((validationErrors['required'] && formField?.touched) || !validationErrors['required']) {
+          return this.validationService.getValidation(validationErrors || null);
+        }
       }
     }
     return null;
