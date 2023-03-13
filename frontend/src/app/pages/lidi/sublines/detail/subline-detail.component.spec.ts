@@ -8,7 +8,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AppTestingModule, authServiceMock } from '../../../../app.testing.module';
 import { InfoIconComponent } from '../../../../core/form-components/info-icon/info-icon.component';
-import { SearchSelectComponent } from '../../../../core/form-components/search-select/search-select.component';
 import {
   MockAppDetailWrapperComponent,
   MockBoSelectComponent,
@@ -20,6 +19,7 @@ import { LinkIconComponent } from '../../../../core/form-components/link-icon/li
 import { AtlasLabelFieldComponent } from '../../../../core/form-components/atlas-label-field/atlas-label-field.component';
 import { AtlasFieldErrorComponent } from '../../../../core/form-components/atlas-field-error/atlas-field-error.component';
 import { TextFieldComponent } from '../../../../core/form-components/text-field/text-field.component';
+import { AtlasSearchSelectComponent } from '../../../../core/form-components/atlas-search-select/atlas-search-select.component';
 
 const sublineVersion: SublineVersion = {
   id: 1234,
@@ -190,7 +190,7 @@ function setupTestBed(
       MockBoSelectComponent,
       InfoIconComponent,
       LinkIconComponent,
-      SearchSelectComponent,
+      AtlasSearchSelectComponent,
       MainlineSelectOptionPipe,
       AtlasLabelFieldComponent,
       AtlasFieldErrorComponent,
