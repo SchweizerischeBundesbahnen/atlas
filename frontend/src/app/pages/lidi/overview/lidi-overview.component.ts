@@ -1,11 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Pages } from '../../pages';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TabService } from '../../tab.service';
 
 @Component({
   templateUrl: './lidi-overview.component.html',
 })
-export class LidiOverviewComponent {
+export class LidiOverviewComponent implements OnInit {
   TABS = [
     {
       link: Pages.LINES.path,
@@ -22,7 +23,11 @@ export class LidiOverviewComponent {
   ];
   activeTab = this.TABS[0];
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private tabService: TabService
+  ) {}
 
   newLine() {
     this.router
@@ -38,5 +43,12 @@ export class LidiOverviewComponent {
         relativeTo: this.route,
       })
       .then();
+  }
+
+  ngOnInit(): void {
+    if (this.router.url) {
+      const currentTabIndex = this.tabService.getCurrentTabIndex(this.router.url, this.TABS);
+      this.activeTab = this.TABS[currentTabIndex];
+    }
   }
 }
