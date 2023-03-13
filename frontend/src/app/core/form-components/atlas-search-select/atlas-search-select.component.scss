@@ -3,7 +3,8 @@
 input {
   box-sizing: border-box;
   padding: 10px;
-  border: 1px solid variables.$primary-400;
+  outline: 1px solid variables.$primary-400;
+  border: unset;
   width: 100%;
   border-radius: 5px;
   height: 34px;
