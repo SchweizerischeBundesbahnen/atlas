@@ -38,15 +38,31 @@
   }
 }
 
-.container {
+.container-date-field {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: stretch;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.form-style {
+.search-date-field {
   display: flex;
+  border: 1px solid variables.$primary-400;
+  border-radius: 5px;
+  height: 34px;
+  padding-left: 1rem;
+  width: 100%;
+
+  &:focus-within,
+  &:hover {
+    outline: 3px solid variables.$primary-400;
+  }
+
+  input {
+    border: unset;
+    outline: unset;
+    width: 100%;
+    padding-right: 3rem;
+  }
 }
 
 .search-row {
