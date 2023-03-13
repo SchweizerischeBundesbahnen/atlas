@@ -18,6 +18,7 @@ public class ServicePointGeoDataController implements ServicePointGeoDataApiV1 {
 
   private final ServicePointGeoDataService servicePointGeoDataService;
 
+  @Override
   public VectorTile.Tile getServicePointsGeoData(Integer z, Integer x, Integer y, Optional<LocalDate> validAtDate) {
     return servicePointGeoDataService.getGeoData(z, x, y, validAtDate.orElse(LocalDate.now()));
   }
