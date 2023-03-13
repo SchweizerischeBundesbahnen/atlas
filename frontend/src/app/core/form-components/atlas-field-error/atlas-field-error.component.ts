@@ -27,7 +27,7 @@ export class AtlasFieldErrorComponent {
   }
 
   get error() {
-    let validationErrors = this.getValidationErrors();
+    const validationErrors = this.getValidationErrors();
     if (validationErrors) {
       if (this.customError && validationErrors[this.customError.errorKey]) {
         return this.customError.translationKey;
