@@ -19,20 +19,6 @@ table {
   text-overflow: ellipsis;
 }
 
-.bordered-cell {
-  padding: 10px !important;
-
-  border-bottom: 1px solid variables.$border-color !important;
-  border-color: variables.$border-color;
-  border-left-width: 1px;
-  border-left-style: solid;
-
-  &:last-of-type {
-    border-right-width: 1px;
-    border-right-style: solid;
-  }
-}
-
 .space-between {
   display: flex;
   justify-content: space-between;
