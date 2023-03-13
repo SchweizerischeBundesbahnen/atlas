@@ -2,6 +2,7 @@ package ch.sbb.atlas.searching.specification;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import jakarta.persistence.metamodel.SingularAttribute;
@@ -40,6 +41,10 @@ public class EnumByConversionSpecification<T, U> implements Specification<T> {
     if (enumRestrictions.stream().allMatch(Objects::isNull)) {
       return criteriaBuilder.or();
     }
-    return notIn ? root.get(enumAttribute).in(enumRestrictions).not() : root.get(enumAttribute).in(enumRestrictions);
+    return notIn ? getPathSingular(root).in(enumRestrictions).not() : getPathSingular(root).in(enumRestrictions);
+  }
+
+  Path<?> getPathSingular(Root<T> root) {
+    return root.get(enumAttribute);
   }
 }
