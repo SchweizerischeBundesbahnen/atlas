@@ -9,9 +9,11 @@ import ch.sbb.atlas.servicepointdirectory.api.ServicePointRequestParams;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
 import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
+import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointTechnicalTimetableType;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -318,4 +320,107 @@ public class ServicePointSearchTest {
     // Then
     assertThat(servicePointVersions.getTotalElements()).isEqualTo(numberOfTotalServicePoints);
   }
+
+  @Test
+  void shouldFindOperatingPointTechnicalTimetableTypeCountryBorder() {
+    // Given
+    servicePointVersionRepository.save(ServicePointTestData.createServicePointVersionWithCountryBorder());
+    // When
+    Page<ServicePointVersion> servicePointVersions =
+        servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
+            .servicePointRequestParams(ServicePointRequestParams.builder()
+                .operatingPointTechnicalTimetableTypes(List.of(OperatingPointTechnicalTimetableType.COUNTRY_BORDER))
+                .build()).build());
+    // Then
+    assertThat(servicePointVersions.getTotalElements()).isEqualTo(1);
+    assertThat(servicePointVersions.getContent().get(0).getDesignationOfficial()).isEqualTo("Flüh Grenze");
+  }
+
+  @Test
+  void shouldNotFindOperatingPointTechnicalTimetableTypePropertyLine() {
+    // Given
+    servicePointVersionRepository.save(ServicePointTestData.createServicePointVersionWithCountryBorder());
+    // When
+    Page<ServicePointVersion> servicePointVersions =
+        servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
+            .servicePointRequestParams(ServicePointRequestParams.builder()
+                .operatingPointTechnicalTimetableTypes(List.of(OperatingPointTechnicalTimetableType.PROPERTY_LINE))
+                .build()).build());
+    // Then
+    assertThat(servicePointVersions.getTotalElements()).isEqualTo(0);
+  }
+
+  @Test
+  void shouldFindBernWylereggByUicCoutryCodes85and10() {
+    Page<ServicePointVersion> servicePointVersions =
+        servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
+            .servicePointRequestParams(ServicePointRequestParams.builder()
+                .uicCountryCodes(Arrays.asList(85, 10))
+                .build()).build());
+    assertThat(servicePointVersions.getTotalElements()).isEqualTo(1);
+    assertThat(servicePointVersions.getContent().get(0).getDesignationOfficial()).isEqualTo("Bern, Wyleregg");
+  }
+
+  @Test
+  void shouldNotFindBernWylereggByCountryCodes55and85() {
+    Page<ServicePointVersion> servicePointVersions =
+        servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
+            .servicePointRequestParams(ServicePointRequestParams.builder()
+                .uicCountryCodes(Arrays.asList(55, 10))
+                .build()).build());
+    assertThat(servicePointVersions.getTotalElements()).isZero();
+  }
+
+  @Test
+  void shouldFindBernWylereggByIsoCountryCodeCH() {
+    Page<ServicePointVersion> servicePointVersions =
+        servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
+            .servicePointRequestParams(ServicePointRequestParams.builder()
+                .isoCountryCodes(List.of("CH", "DE"))
+                .build()).build());
+    assertThat(servicePointVersions.getTotalElements()).isEqualTo(1);
+    assertThat(servicePointVersions.getContent().get(0).getDesignationOfficial()).isEqualTo("Bern, Wyleregg");
+  }
+
+  @Test
+  void shouldNotFindBernWylereggByIsoCountryCodeHU() {
+    Page<ServicePointVersion> servicePointVersions =
+        servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
+            .servicePointRequestParams(ServicePointRequestParams.builder()
+                .isoCountryCodes(List.of("HU", "DE"))
+                .build()).build());
+    assertThat(servicePointVersions.getTotalElements()).isZero();
+  }
+
+  @Test
+  void shouldNotFindAnyCountryByIsoCountryCodeWhenThereIsNoServicePointGeolocation() {
+    // Given
+    servicePointVersionRepository.deleteAll();
+    servicePointVersionRepository.save(ServicePointTestData.createServicePointVersionWithoutServicePointGeolocation());
+    // When
+    Page<ServicePointVersion> servicePointVersions =
+        servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
+            .servicePointRequestParams(ServicePointRequestParams.builder()
+                .isoCountryCodes(List.of("CH", "DE"))
+                .build()).build());
+    // Then
+    assertThat(servicePointVersions.getTotalElements()).isZero();
+  }
+
+  @Test
+  void shouldFindOnlyOneServicePointForServicePointWithMultipleMeanOfTransports() {
+    // Given
+    servicePointVersionRepository.deleteAll();
+    servicePointVersionRepository.save(ServicePointTestData.createServicePointVersionWithMultipleMeanOfTransport());
+    // When
+    Page<ServicePointVersion> servicePointVersions =
+        servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
+            .servicePointRequestParams(ServicePointRequestParams.builder()
+                .uicCountryCodes(Arrays.asList(85))
+                .build()).build());
+    // Then
+    assertThat(servicePointVersions.getTotalElements()).isEqualTo(1);
+    assertThat(servicePointVersions.getContent().get(0).getDesignationOfficial()).isEqualTo("Flüh Grenze");
+  }
+
 }

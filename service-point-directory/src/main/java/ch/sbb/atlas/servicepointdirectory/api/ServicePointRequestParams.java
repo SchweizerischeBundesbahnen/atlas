@@ -5,6 +5,7 @@ import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Category;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
 import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
+import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointTechnicalTimetableType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
@@ -34,6 +35,10 @@ public class ServicePointRequestParams {
   private List<String> sloids = new ArrayList<>();
   @Singular(ignoreNullCollections = true)
   private List<Integer> numbers = new ArrayList<>();
+  @Singular(ignoreNullCollections = true)
+  private List<Integer> uicCountryCodes = new ArrayList<>();
+  @Singular(ignoreNullCollections = true)
+  private List<String> isoCountryCodes = new ArrayList<>();
   @Singular(value = "numberShort", ignoreNullCollections = true)
   private List<Integer> numbersShort = new ArrayList<>();
   @Singular(ignoreNullCollections = true)
@@ -42,6 +47,8 @@ public class ServicePointRequestParams {
   private List<String> businessOrganisationSboids = new ArrayList<>();
   @Singular(ignoreNullCollections = true)
   private List<Country> countries = new ArrayList<>();
+  @Singular(ignoreNullCollections = true)
+  private List<OperatingPointTechnicalTimetableType> operatingPointTechnicalTimetableTypes = new ArrayList<>();
   @Singular(ignoreNullCollections = true)
   private List<Category> categories = new ArrayList<>();
   @Singular(ignoreNullCollections = true)
