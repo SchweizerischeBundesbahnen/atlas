@@ -3,14 +3,14 @@
 </div>
 
 <app-table
-  [tableSearchFieldTemplate]="sublineTypeSelection"
-  [tableData]="sublines"
-  [totalCount]="totalCount$"
-  [tableColumns]="sublinesTableColumns"
-  [canEdit]="true"
-  [isLoading]="isLoading"
   (editElementEvent)="editVersion($event)"
   (getTableElementsEvent)="getOverview($event)"
+  [canEdit]="true"
+  [isLoading]="isLoading"
+  [tableColumns]="sublinesTableColumns"
+  [tableData]="sublines"
+  [tableSearchFieldTemplate]="sublineTypeSelection"
+  [totalCount]="totalCount$"
   data-cy="lidi-sublines"
 >
 </app-table>
@@ -18,17 +18,18 @@
 <ng-template #sublineTypeSelection>
   <div class="d-flex flex-column col pe-3">
     <mat-label class="font-bold-lg">{{ 'LIDI.SUBLINE_TYPE' | translate }}</mat-label>
-    <mat-form-field appearance="outline" class="form-outline">
+    <div class="multi-select-search">
       <mat-select
         (selectionChange)="onSublineTypeSelectionChange()"
         [(value)]="activeSublineTypes"
-        multiple
+        class="font-bold-base"
         data-cy="table-search-subline-type"
+        multiple
       >
         <mat-option *ngFor="let sublineType of SUBLINE_TYPES" [value]="sublineType">{{
           'LIDI.SUBLINE.TYPES.' + sublineType | translate
         }}</mat-option>
       </mat-select>
-    </mat-form-field>
+    </div>
   </div>
 </ng-template>

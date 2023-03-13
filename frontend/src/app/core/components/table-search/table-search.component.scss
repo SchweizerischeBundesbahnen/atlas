@@ -1,16 +1,21 @@
 @use 'src/styles/variables' as variables;
 
-.search-main-field {
-  border: 1px solid variables.$primary-400;
-  background-color: variables.$gray-50;
+%atlas-outline {
+  outline: 1px solid variables.$primary-400;
   border-radius: 5px;
-  min-height: 50px;
   padding-left: 1rem;
 
   &:focus-within,
   &:hover {
     outline: 3px solid variables.$primary-400;
   }
+}
+
+// Main search field
+.search-main-field {
+  @extend %atlas-outline;
+  background-color: variables.$gray-50;
+  min-height: 50px;
 
   input {
     margin-left: 8px;
@@ -29,7 +34,6 @@
 
     mat-chip-row {
       margin: 1px 2px;
-      height: 22px;
 
       i {
         font-size: 15px;
@@ -38,6 +42,7 @@
   }
 }
 
+//Date search field
 .container-date-field {
   display: flex;
   align-items: center;
@@ -45,17 +50,10 @@
 }
 
 .search-date-field {
+  @extend %atlas-outline;
   display: flex;
-  border: 1px solid variables.$primary-400;
-  border-radius: 5px;
   height: 34px;
-  padding-left: 1rem;
   width: 100%;
-
-  &:focus-within,
-  &:hover {
-    outline: 3px solid variables.$primary-400;
-  }
 
   input {
     border: unset;
@@ -65,6 +63,11 @@
   }
 }
 
+mat-select {
+  width: 100%;
+}
+
+// search row
 .search-row {
   display: flex;
   flex-direction: row;
