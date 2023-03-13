@@ -11,8 +11,8 @@ import {
 import { MatChipInputEvent } from '@angular/material/chips';
 import { statusChoice, TableSearch } from './table-search';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-import { DATE_PATTERN, MAX_DATE, MIN_DATE } from '../../date/date.service';
-import { FormControl, FormGroup, ValidationErrors } from '@angular/forms';
+import { MAX_DATE, MIN_DATE } from '../../date/date.service';
+import { FormControl, FormGroup } from '@angular/forms';
 import { BusinessOrganisation, Status, WorkflowStatus } from '../../../api';
 import moment from 'moment';
 import { ValidationService } from '../../validation/validation.service';
@@ -67,11 +67,6 @@ export class TableSearchComponent implements OnInit {
 
   getDateControlValidation() {
     return this.validationService.getValidation(this.dateControl.errors);
-  }
-
-  getMinOrMaxDateDisplay(validationErrors: ValidationErrors) {
-    if (validationErrors.min) return validationErrors.min.format(DATE_PATTERN);
-    if (validationErrors.max) return validationErrors.max.format(DATE_PATTERN);
   }
 
   statusSelectionChange(): void {
