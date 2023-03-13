@@ -43,10 +43,11 @@
     <ng-container [ngTemplateOutlet]="additionalFieldTemplate"></ng-container>
     <div *ngIf="displayStatus" class="d-flex flex-column col-3">
       <mat-label class="font-bold-lg">{{ 'COMMON.STATUS' | translate }}</mat-label>
-      <mat-form-field appearance="outline" class="form-outline">
+      <div class="multi-select-search">
         <mat-select
           (selectionChange)="statusSelectionChange()"
           [(value)]="activeStatuses"
+          class="font-bold-base"
           data-cy="table-search-status-input"
           multiple
         >
@@ -54,7 +55,7 @@
             >{{ STATUS_TYPES_PREFIX_LABEL + status | translate }}
           </mat-option>
         </mat-select>
-      </mat-form-field>
+      </div>
     </div>
     <div *ngIf="displayValidOn" class="d-flex flex-column col-3">
       <mat-label class="font-bold-lg">{{ 'COMMON.SEARCH.VALIDITY' | translate }}</mat-label>

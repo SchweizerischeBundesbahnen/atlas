@@ -3,17 +3,17 @@
 </div>
 
 <app-table
-  [tableSearchFieldTemplate]="transportCompanyTypeSelection"
-  [tableData]="transportCompanies"
-  [totalCount]="totalCount"
-  [tableColumns]="tableColumns"
-  [canEdit]="true"
-  [isLoading]="isLoading"
   (editElementEvent)="editVersion($event)"
   (getTableElementsEvent)="getOverview($event)"
+  [canEdit]="true"
+  [displayBusinessOrganisationSearch]="false"
   [displayStatusSearch]="false"
   [displayValidOnSearch]="false"
-  [displayBusinessOrganisationSearch]="false"
+  [isLoading]="isLoading"
+  [tableColumns]="tableColumns"
+  [tableData]="transportCompanies"
+  [tableSearchFieldTemplate]="transportCompanyTypeSelection"
+  [totalCount]="totalCount"
   data-cy="bodi-transport-companies"
 >
 </app-table>
@@ -21,17 +21,18 @@
 <ng-template #transportCompanyTypeSelection>
   <div class="d-flex flex-column col-3 pe-3">
     <mat-label class="font-bold-lg">{{ 'BODI.TRANSPORT_COMPANIES.STATUS' | translate }}</mat-label>
-    <mat-form-field appearance="outline" class="form-outline">
+    <div class="multi-select-search">
       <mat-select
         (selectionChange)="onStatusSelectionChange()"
         [(value)]="activeStatusTypes"
-        multiple
+        class="font-bold-base"
         data-cy="table-search-status"
+        multiple
       >
         <mat-option *ngFor="let status of STATUS_TYPES" [value]="status">{{
           'BODI.TRANSPORT_COMPANIES.TRANSPORT_COMPANY_STATUS.' + status | translate
         }}</mat-option>
       </mat-select>
-    </mat-form-field>
+    </div>
   </div>
 </ng-template>
