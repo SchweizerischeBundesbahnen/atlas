@@ -2,22 +2,23 @@
   <div class="search-row">
     <div [class]="'d-flex flex-column col-6 pe-3 search-box ' + searchTextColumnStyle">
       <mat-label class="font-bold-lg">{{ 'COMMON.SEARCH.SEARCH_CRITERIA' | translate }}</mat-label>
-      <mat-form-field appearance="outline">
+      <div class="search-main-field mb-4">
         <mat-chip-grid #chipList data-cy="table-search-strings">
           <mat-chip-row (removed)="removeSearch(search)" *ngFor="let search of searchStrings">
             {{ search }}
             <button matChipRemove>
-              <em class="bi bi-x-circle-fill"></em>
+              <i class="bi bi-x-circle-fill"></i>
             </button>
           </mat-chip-row>
           <input
             (matChipInputTokenEnd)="addSearch($event)"
             [matChipInputFor]="chipList"
+            class="font-regular-base"
             data-cy="table-search-chip-input"
           />
-          <em class="bi bi-search me-2"></em>
+          <i class="bi bi-search"></i>
         </mat-chip-grid>
-      </mat-form-field>
+      </div>
     </div>
   </div>
   <div class="search-row">

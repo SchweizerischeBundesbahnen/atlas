@@ -17,7 +17,7 @@ export class AtlasFieldErrorComponent {
 
   get errors() {
     const formField = this.form.get(this.controlName);
-    let validationErrors = this.getValidationErrors();
+    const validationErrors = this.getValidationErrors();
     if (validationErrors) {
       if ((validationErrors['required'] && formField?.touched) || !validationErrors['required']) {
         return this.validationService.getValidation(validationErrors || null);
