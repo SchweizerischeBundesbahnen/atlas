@@ -1,29 +1,29 @@
 <div class="ps-5 pt-5">
   <atlas-button
-    buttonType="createCheckingPermission"
+    (buttonClicked)="newLine()"
     applicationType="LIDI"
     buttonDataCy="new-line"
-    wrapperStyleClass="mb-3"
-    (buttonClicked)="newLine()"
     buttonText="LIDI.LINE.NEW"
+    buttonType="createCheckingPermission"
+    wrapperStyleClass="mb-3"
   ></atlas-button>
   <atlas-button
-    buttonType="createCheckingPermission"
+    (buttonClicked)="newSubline()"
     applicationType="LIDI"
     buttonDataCy="new-subline"
-    wrapperStyleClass="mb-5"
-    (buttonClicked)="newSubline()"
     buttonText="LIDI.SUBLINE.NEW"
+    buttonType="createCheckingPermission"
+    wrapperStyleClass="mb-5"
   ></atlas-button>
 
-  <nav mat-tab-nav-bar class="tabs" data-cy="tabs" [tabPanel]="tabPanel">
+  <nav [tabPanel]="tabPanel" class="tabs" data-cy="tabs" mat-tab-nav-bar>
     <a
-      mat-tab-link
-      class="font-bold-xl"
-      *ngFor="let tab of TABS"
-      [routerLink]="tab.link"
       (click)="activeTab = tab"
+      *ngFor="let tab of TABS"
       [active]="activeTab === tab"
+      [routerLink]="tab.link"
+      class="font-bold-xl"
+      mat-tab-link
     >
       {{ tab.title | translate }}
     </a>
