@@ -1,0 +1,19 @@
+@use 'src/styles/variables' as variables;
+// Multi Select Search
+.multi-select-search {
+  outline: 1px solid variables.$primary-400;
+  border-radius: 5px;
+  height: 34px;
+  padding-left: 1rem;
+  width: 100%;
+
+  &:focus-within,
+  &:hover {
+    outline: 3px solid variables.$primary-400;
+  }
+
+  mat-select {
+    padding-top: 4px;
+    width: 95%;
+  }
+}
