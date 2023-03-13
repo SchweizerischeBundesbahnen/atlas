@@ -52,6 +52,7 @@ public class ServicePointGeolocationModel extends GeolocationModel {
                 .localityName(servicePointGeolocation.getSwissLocalityName())
                 .build())
             .build())
+        .spatialReference(servicePointGeolocation.getSpatialReference())
         .lv95(coordinates.get(SpatialReference.LV95))
         .wgs84(coordinates.get(SpatialReference.WGS84))
         .wgs84web(coordinates.get(SpatialReference.WGS84WEB))
