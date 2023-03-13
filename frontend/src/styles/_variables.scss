@@ -2,7 +2,7 @@
 // see https://sass-lang.com/documentation/variables
 
 $media-screen-limit: 1920px;
-$media-types: [ 'screen', 'print' ];
+$media-types: [ 'screen', 'print'];
 
 @mixin default-screen() {
   @each $type in $media-types {
@@ -69,3 +69,4 @@ $footerHeight: 8rem;
 
 $border-radius: 28px;
 $border-radius-small: 5px;
+$border-color: rgba(0, 0, 0, 0.12);
