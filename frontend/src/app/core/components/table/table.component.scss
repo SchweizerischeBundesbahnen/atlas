@@ -19,39 +19,21 @@ table {
   text-overflow: ellipsis;
 }
 
+.bordered-cell {
+  padding: 10px !important;
+
+  border-bottom: 1px solid variables.$border-color !important;
+  border-color: variables.$border-color;
+  border-left-width: 1px;
+  border-left-style: solid;
+
+  &:last-of-type {
+    border-right-width: 1px;
+    border-right-style: solid;
+  }
+}
+
 .space-between {
   display: flex;
   justify-content: space-between;
-}
-
-.mat-mdc-row:hover {
-  background-color: variables.$gray-100;
-  cursor: pointer;
-}
-
-:host::ng-deep {
-  // No padding on start and end of table
-  th.mat-mdc-header-cell:first-of-type,
-  td.mat-mdc-cell:first-of-type,
-  td.mat-mdc-footer-cell:first-of-type {
-    padding-left: 0;
-  }
-
-  th.mat-mdc-header-cell:last-of-type,
-  td.mat-mdc-cell:last-of-type,
-  td.mat-mdc-footer-cell:last-of-type {
-    padding-right: 0;
-  }
-
-  // Header Arrow on not sorted columns: show always, be blue
-  .mat-sort-header-container:not(.mat-sort-header-sorted) .mat-sort-header-arrow {
-    opacity: 0.54 !important;
-    transform: translateY(0px) !important;
-    color: variables.$primary-400;
-  }
-
-  // Sorted header should be grayscaled
-  .mat-sort-header-sorted {
-    color: variables.$gray-900;
-  }
 }
