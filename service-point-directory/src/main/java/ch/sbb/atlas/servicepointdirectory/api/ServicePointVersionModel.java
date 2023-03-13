@@ -50,33 +50,38 @@ public class ServicePointVersionModel extends BaseVersionModel implements DatesV
   private ServicePointNumber number;
 
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
-  @Schema(description = "SwissLocation ID", example = "ch:1:sloid:18771")
+  @Schema(description = "Unique code for locations that is used in customer information. By means of this ID, the connection between stops and bus / station stop area or boarding area can be established.
+  The structure is described in the “Swiss Location ID” specification, chapter 4.2. The document is available here.
+  https://transportdatamanagement.ch/standards/", example = "ch:1:sloid:18771")
   private String sloid;
 
-  @Schema(description = "Designation Long", example = "Biel/Bienne Bözingenfeld/Champs-de-Boujean")
+  @Schema(description = "Long designation of a location Maximum length 50 characters. Used primarily in customer information. Not all systems can process names of this length.", example = "Biel/Bienne Bözingenfeld/Champs-de-Boujean")
   @Size(max = AtlasFieldLengths.LENGTH_50)
   private String designationLong;
 
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_30)
-  @Schema(description = "Official Designation", example = "Biel/Bienne Bözingenfeld/Champ")
+  @Schema(description = "Official designation of a location that must be used by all recipients. Maximum length 30 characters.", example = "Biel/Bienne Bözingenfeld/Champ")
   private String designationOfficial;
 
   @Size(max = AtlasFieldLengths.LENGTH_6)
-  @Schema(description = "AbbreviationDidok", example = "BIBD")
+  @Schema(description = "Location abbreviation. Mainly used by the railways. Maximum length is 6 characters, AN (alphanumeric). Abbreviations may not be used as a code for identifying locations.", example = "BIBD")
   private String abbreviation;
 
   @NotNull
-  @Schema(description = "Status")
+  @Schema(description = "Status, Code of status of the service point, useful for specific business tasks (filter).")
   private ServicePointStatus statusDidok3;
 
   @NotNull
   @Schema(accessMode = AccessMode.READ_ONLY)
   private CodeAndDesignation statusDidok3Information;
 
+  @Schema(description = "Indicates if this a operatingPoint")
   private boolean operatingPoint;
 
+  @Schema(description = "Indicates if this a operatingPoint including Timetables")
   private boolean operatingPointWithTimetable;
-
+  
+  @Schema(description = "Indicates if this a Service Point for freights")
   private boolean freightServicePoint;
 
   @Size(max = AtlasFieldLengths.LENGTH_10)
@@ -87,31 +92,31 @@ public class ServicePointVersionModel extends BaseVersionModel implements DatesV
   @Schema(description = "SBOID of the associated BusinessOrganisation", example = "ch:1:sboid:100001")
   private String businessOrganisation;
 
-  @Schema(description = "ServicePoint Categories")
+  @Schema(description = "ServicePoint Categories: Assignment of service points to defined business cases.")
   private List<Category> categories;
 
-  @Schema(accessMode = AccessMode.READ_ONLY)
+  @Schema(accessMode = AccessMode.READ_ONLY, description ="Details to the categories")
   private List<CodeAndDesignation> categoriesInformation;
 
-  @Schema(description = "OperatingPointType")
+  @Schema(description = "OperatingPointType, Specifies the detailed intended use of a operating point")
   private OperatingPointType operatingPointType;
 
-  @Schema(accessMode = AccessMode.READ_ONLY)
+  @Schema(accessMode = AccessMode.READ_ONLY, description = "Details to the operationPointType")
   private CodeAndDesignation operatingPointTypeInformation;
 
-  @Schema(description = "OperatingPointWithoutTimetableType")
+  @Schema(description = "OperatingPointWithoutTimetableType, Specifies the detailed intended use of a operating point without timetable (deprecated)")
   private OperatingPointWithoutTimetableType operatingPointWithoutTimetableType;
 
   @Schema(accessMode = AccessMode.READ_ONLY)
   private CodeAndDesignation operatingPointWithoutTimetableTypeInformation;
 
-  @Schema(description = "OperatingPointTechnicalTimetableType")
+  @Schema(description = "OperatingPointTechnicalTimetableType, All service points relevant for timetable planning and publication. ")
   private OperatingPointTechnicalTimetableType operatingPointTechnicalTimetableType;
 
-  @Schema(accessMode = AccessMode.READ_ONLY)
+  @Schema(accessMode = AccessMode.READ_ONLY, description = "Details to the OperatingPointTechnicalTimetableType")
   private CodeAndDesignation operatingPointTechnicalTimetableTypeInformation;
 
-  @Schema(description = "OperatingPointTrafficPointType")
+  @Schema(description = "OperatingPointTrafficPointType, Specifies the detailed intended use of a traffic point")
   private OperatingPointTrafficPointType operatingPointTrafficPointType;
 
   @Schema(accessMode = AccessMode.READ_ONLY)
@@ -121,18 +126,19 @@ public class ServicePointVersionModel extends BaseVersionModel implements DatesV
   private boolean operatingPointRouteNetwork;
 
   @Valid
+  @Schema(description = "Reference to a operatingPointRouteNetwork. OperatingPointKilometer are always related to a operatingPointRouteNetwork")
   private ServicePointNumber operatingPointKilometerMaster;
 
-  @Schema(description = "Means of transport. Mandatory for StopPoints")
+  @Schema(description = "Means of transport. Indicates for which means of transport a stop is intended/equipped. Mandatory for StopPoints")
   private List<MeanOfTransport> meansOfTransport;
 
   @Schema(accessMode = AccessMode.READ_ONLY)
   private List<CodeAndDesignation> meansOfTransportInformation;
 
-  @Schema(description = "Type of the StopPoint")
+  @Schema(description = "Type of the StopPoint, Indicates for which type of traffic (e.g. regular traffic) a stop was recorded. ")
   private StopPointType stopPointType;
 
-  @Schema(accessMode = AccessMode.READ_ONLY)
+  @Schema(accessMode = AccessMode.READ_ONLY, description = "Details to the StopPointType")
   private CodeAndDesignation stopPointTypeInformation;
 
   @Size(max = AtlasFieldLengths.LENGTH_1500)
@@ -156,7 +162,7 @@ public class ServicePointVersionModel extends BaseVersionModel implements DatesV
   }
 
   @JsonInclude
-  @Schema(description = "ServicePoint is OperatingPoint")
+  @Schema(description = "ServicePoint is OperatingPoint, Operating points refers to the totality of operationally used service points. These are not necessarily traffic-relevant service points. ")
   public boolean isOperatingPoint() {
     return operatingPointType != null || isTrafficPoint();
   }
