@@ -3,12 +3,14 @@ package ch.sbb.atlas.servicepointdirectory.model.search;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.searching.SearchRestrictions;
 import ch.sbb.atlas.searching.SpecificationBuilder;
-import ch.sbb.atlas.searching.specification.EnumByConversionSpecification;
 import ch.sbb.atlas.searching.specification.ElementCollectionContainsAnySpecification;
+import ch.sbb.atlas.searching.specification.EnumByConversionServicePointGeolocationSpecification;
+import ch.sbb.atlas.searching.specification.EnumByConversionSpecification;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointRequestParams;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion.Fields;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion_;
+import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation_;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
 import jakarta.persistence.metamodel.SingularAttribute;
 import java.time.LocalDate;
@@ -78,7 +80,8 @@ public class ServicePointSearchRestrictions extends SearchRestrictions<ServicePo
         .and(specificationBuilder().booleanSpecification(ServicePointVersion_.operatingPointWithTimetable,
             servicePointRequestParams.getWithTimetable()))
         .and(new EnumByConversionSpecification<>(servicePointRequestParams.getUicCountryCodes(), Country::from, ServicePointVersion_.country))
-        .and(new EnumByConversionSpecification<>(servicePointRequestParams.getIsoCountryCodes(), Country::filterCountriesWithSpecifiedIsoCode, ServicePointVersion_.country))
+        .and(new EnumByConversionServicePointGeolocationSpecification<>(servicePointRequestParams.getIsoCountryCodes(), Country::filterCountriesWithSpecifiedIsoCode, ServicePointVersion_.servicePointGeolocation,
+            ServicePointGeolocation_.country))
         .and(new ValidOrEditionTimerangeSpecification(
             servicePointRequestParams.getFromDate(),
             servicePointRequestParams.getToDate(),

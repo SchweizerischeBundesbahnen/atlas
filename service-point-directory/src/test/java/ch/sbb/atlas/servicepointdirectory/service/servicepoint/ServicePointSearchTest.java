@@ -393,6 +393,21 @@ public class ServicePointSearchTest {
   }
 
   @Test
+  void shouldNotFindAnyCountryByIsoCountryCodeWhenThereIsNoServicePointGeolocation() {
+    // Given
+    servicePointVersionRepository.deleteAll();
+    servicePointVersionRepository.save(ServicePointTestData.createServicePointVersionWithoutServicePointGeolocation());
+    // When
+    Page<ServicePointVersion> servicePointVersions =
+        servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
+            .servicePointRequestParams(ServicePointRequestParams.builder()
+                .isoCountryCodes(List.of("CH", "DE"))
+                .build()).build());
+    // Then
+    assertThat(servicePointVersions.getTotalElements()).isZero();
+  }
+
+  @Test
   void shouldFindOnlyOneServicePointForServicePointWithMultipleMeanOfTransports() {
     // Given
     servicePointVersionRepository.deleteAll();
