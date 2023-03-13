@@ -1,24 +1,4 @@
-.mat-mdc-table {
-  border-collapse: separate;
-  -webkit-border-vertical-spacing: 16px !important;
-}
-
-th.mat-mdc-header-cell,
-td.mat-mdc-cell,
-td.mat-mdc-footer-cell {
-  padding: 10px !important;
-  border-color: rgba(0, 0, 0, 0.12);
-
-  border-left-width: 1px;
-  border-left-style: solid;
-}
-
-th.mat-mdc-header-cell,
-td.mat-mdc-cell:last-child,
-td.mat-mdc-footer-cell {
-  border-right-width: 1px;
-  border-right-style: solid;
-}
+@use 'src/styles/variables' as variables;
 
 .mat-sort-header-content {
   text-align: left !important;
@@ -26,4 +6,26 @@ td.mat-mdc-footer-cell {
 
 .mat-sort-header-container {
   align-items: baseline !important;
+}
+
+.atlas-table {
+  border-collapse: separate;
+  -webkit-border-vertical-spacing: 16px !important;
+
+  // Header Arrow on not sorted columns: show always, be blue
+  .mat-sort-header-container:not(.mat-sort-header-sorted) .mat-sort-header-arrow {
+    opacity: 0.54 !important;
+    transform: translateY(0px) !important;
+    color: variables.$primary-400;
+  }
+
+  // Sorted header should be grayscaled
+  .mat-sort-header-sorted {
+    color: variables.$gray-900;
+  }
+
+  .atlas-table-row:hover {
+    background-color: variables.$gray-100 !important;
+    cursor: pointer;
+  }
 }
