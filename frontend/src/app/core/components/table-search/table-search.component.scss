@@ -47,6 +47,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
 }
 
 .search-date-field {
@@ -59,7 +60,10 @@
     border: unset;
     outline: unset;
     width: 100%;
-    padding-right: 3rem;
+  }
+
+  mat-datepicker-toggle {
+    width: 6%;
   }
 }
 
