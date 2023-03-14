@@ -10,7 +10,7 @@ import org.springframework.test.web.servlet.MvcResult;
 public class BaseControllerWithAmazonS3ApiTest extends BaseControllerApiTest {
 
   @Autowired
-  private AmazonS3 amazonS3;
+  private List<AmazonS3> amazonS3;
 
   protected void deleteFileFromBucket(MvcResult mvcResult, String dir)
       throws UnsupportedEncodingException {
@@ -19,7 +19,7 @@ public class BaseControllerWithAmazonS3ApiTest extends BaseControllerApiTest {
     responseContent.forEach(s -> {
       String escapedString = s.replace("\"", "").replace("[", "").replace("]", "");
       String filePathToRemove = escapedString.substring(escapedString.lastIndexOf("/"));
-      amazonS3.deleteObject("atlas-data-export-dev-dev", dir + filePathToRemove);
+      amazonS3.forEach(i -> i.deleteObject("atlas-data-export-dev-dev", dir + filePathToRemove));
     });
 
   }
