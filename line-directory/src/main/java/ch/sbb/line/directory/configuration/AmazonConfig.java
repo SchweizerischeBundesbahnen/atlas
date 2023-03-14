@@ -5,13 +5,23 @@ import ch.sbb.atlas.amazon.config.AmazonConfigProps;
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.amazon.service.AmazonServiceImpl;
 import ch.sbb.atlas.amazon.service.FileService;
-import com.amazonaws.services.s3.AmazonS3;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class AmazonConfig {
+
+    public static final String EXPORT_FILES = "export-files";
+    public static final String HEARING_DOCUMENTS = "hearing-documents";
+
+    @Value("${amazon.bucketConfigs.export-files.bucketName}")
+    private String bucketNameExportFiles;
+
+    @Value("${amazon.bucketConfigs.hearing-documents.bucketName}")
+    private String bucketNameHearingDocument;
 
     @Bean
     @ConfigurationProperties(prefix = "amazon")
@@ -20,13 +30,15 @@ public class AmazonConfig {
     }
 
     @Bean
-    public AmazonS3 getAmazonS3Client() {
-        return AmazonAtlasConfig.configureAmazonS3Client(amazonConfigProps());
+    @Qualifier(EXPORT_FILES)
+    public AmazonService amazonExportService(FileService fileService) {
+        return new AmazonServiceImpl(AmazonAtlasConfig.configureAmazonS3Client(amazonConfigProps(), EXPORT_FILES), fileService, bucketNameExportFiles);
     }
 
     @Bean
-    public AmazonService amazonService(FileService fileService) {
-        return new AmazonServiceImpl(getAmazonS3Client(), fileService);
+    @Qualifier(HEARING_DOCUMENTS)
+    public AmazonService amazonHearingDocumentService(FileService fileService) {
+        return new AmazonServiceImpl(AmazonAtlasConfig.configureAmazonS3Client(amazonConfigProps(), HEARING_DOCUMENTS), fileService, bucketNameHearingDocument);
     }
 
 }

@@ -8,6 +8,7 @@ import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.export.BaseExportService;
 import ch.sbb.atlas.export.ExportType;
 import ch.sbb.atlas.export.model.VersionCsvModel;
+import ch.sbb.line.directory.configuration.AmazonConfig;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.model.csv.LineVersionCsvModel;
 import ch.sbb.line.directory.repository.LineVersionRepository;
@@ -15,6 +16,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import java.io.File;
 import java.time.LocalDate;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,7 +24,7 @@ public class LineVersionExportService extends BaseExportService<LineVersion> {
 
   private final LineVersionRepository lineVersionRepository;
 
-  public LineVersionExportService(FileService fileServiceImpl, AmazonService amazonService,
+  public LineVersionExportService(FileService fileServiceImpl, @Qualifier(AmazonConfig.EXPORT_FILES) AmazonService amazonService,
       LineVersionRepository lineVersionRepository) {
     super(fileServiceImpl, amazonService);
     this.lineVersionRepository = lineVersionRepository;

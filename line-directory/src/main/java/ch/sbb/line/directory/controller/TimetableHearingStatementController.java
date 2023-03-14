@@ -9,10 +9,10 @@ import ch.sbb.line.directory.entity.StatementDocument;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
 import ch.sbb.line.directory.mapper.TimeTableHearingStatementMapper;
 import ch.sbb.line.directory.model.TimetableHearingStatementSearchRestrictions;
+import ch.sbb.line.directory.service.hearing.ResponsibleTransportCompaniesResolverService;
 import ch.sbb.line.directory.service.hearing.TimetableFieldNumberResolverService;
 import ch.sbb.line.directory.service.hearing.TimetableHearingStatementService;
 import ch.sbb.line.directory.service.hearing.TimetableHearingYearService;
-import ch.sbb.line.directory.service.hearing.ResponsibleTransportCompaniesResolverService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,6 +44,7 @@ public class TimetableHearingStatementController implements TimetableHearingStat
         .build();
   }
 
+  @Override
   public TimetableHearingStatementModel getStatement(Long id) {
     return TimeTableHearingStatementMapper.toModel(timetableHearingStatementService.getStatementById(id));
   }
