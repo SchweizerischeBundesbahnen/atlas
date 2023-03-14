@@ -63,8 +63,7 @@
     "SEARCH": {
       "VALIDITY": "Valable le",
       "SEARCH_CRITERIA": "Recherche",
-      "SEARCH_FOR": "Recherche de",
-      "NO_RESULTS_FOUND": "Aucun résultat trouvé"
+      "SEARCH_FOR": "Recherche de"
     },
     "NOTIFICATION": {
       "OPTIMISTIC_LOCK_ERROR": "Soit l’objet a déjà été supprimé, soit il a été traité entre-temps. Veuillez recharger la page en appuyant sur la touche F5."

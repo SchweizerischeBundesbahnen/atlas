@@ -12,8 +12,6 @@ import { environment } from '../environments/environment';
 import { AtlasApiModule, Configuration } from './api';
 import { DateModule } from './core/module/date.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { TemplateStoreDirective } from './template-store.directive';
-import { TemplateStore } from './template-store';
 
 // AoT requires an exported function for factories
 const httpLoaderFactory = (http: HttpClient) => new TranslateHttpLoader(http);
@@ -23,7 +21,7 @@ function withBasePath(basePath: string) {
 }
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, TemplateStoreDirective],
+  declarations: [AppComponent, HomeComponent],
   imports: [
     CoreModule,
     DateModule.forRoot(),
@@ -45,6 +43,5 @@ function withBasePath(basePath: string) {
     }),
   ],
   bootstrap: [AppComponent],
-  providers: [TemplateStore],
 })
 export class AppModule {}

@@ -1,0 +1,43 @@
+<!--<form-search-select
+  [items$]="userSearchResults$"
+  [formGroup]="form"
+  [controlName]="'userSearch'"
+  (searchTrigger)="searchUser($event)"
+  (changeTrigger)="selectionChange.emit($event)"
+>
+  <ng-template #labelOptionTemplates let-item>
+    {{ item | userSelectFormat }}
+  </ng-template>
+</form-search-select>-->
+
+<div class="dropdown-search-wrapper">
+  <input
+    #searchUserInput
+    type="text"
+    placeholder="Search..."
+    (keyup)="keyUpEvent.next(searchUserInput.value)"
+    (focus)="displayDropdownElements = true"
+    (blur)="displayDropdownElements = false"
+  />
+  <ng-container *ngIf="searchResults$ | async as items">
+    <div class="dropdown-element-wrapper" *ngIf="items.length > 0 && displayDropdownElements">
+      <span
+        class="dropdown-element"
+        *ngFor="let item of items"
+        (click)="displayDropdownElements = false; selectionChange.emit(item)"
+      >
+        <ng-container
+          *ngTemplateOutlet="dropdownElementTemplateRef; context: { $implicit: item }"
+        ></ng-container>
+      </span>
+    </div>
+
+    <span *ngIf="displayDropdownElements && searchUserInput.value.length > 1 && items.length === 0">
+      Keine Resultate gefunden
+    </span>
+
+    <span *ngIf="displayDropdownElements && searchUserInput.value.length <= 1"
+      >Type min 2 characters</span
+    >
+  </ng-container>
+</div>
