@@ -1,18 +1,22 @@
 package ch.sbb.atlas.amazon.config;
 
+import java.util.Map;
 import lombok.Data;
 
 @Data
 public class AmazonConfigProps {
-
-    private String accessKey;
-
-    private String secretKey;
-
     private String region;
 
-    private String bucketName;
+    private Map<String, AmazonBucketConfig> bucketConfigs;
 
-    private int objectExpirationDays;
+    @Data
+    public static class AmazonBucketConfig {
+        private String accessKey;
 
+        private String secretKey;
+
+        private String bucketName;
+
+        private int objectExpirationDays;
+    }
 }
