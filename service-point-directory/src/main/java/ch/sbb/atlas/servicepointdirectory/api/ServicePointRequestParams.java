@@ -39,9 +39,11 @@ public class ServicePointRequestParams {
   @Singular(ignoreNullCollections = true)
   private List<Integer> numbers = new ArrayList<>();
 
+  @Schema(description ="List of UIC Country codes", example ="85", defaultValue = "85")
   @Singular(ignoreNullCollections = true)
   private List<Integer> uicCountryCodes = new ArrayList<>();
 
+  @Schema(description ="List of Iso Country codes", example ="CH")
   @Singular(ignoreNullCollections = true)
   private List<String> isoCountryCodes = new ArrayList<>();
 
@@ -63,18 +65,19 @@ public class ServicePointRequestParams {
   @Singular(ignoreNullCollections = true)
   private List<Country> countries = new ArrayList<>();
 
+  @Schema(description = "All service points relevant for timetable planning")
   @Singular(ignoreNullCollections = true)
   private List<OperatingPointTechnicalTimetableType> operatingPointTechnicalTimetableTypes = new ArrayList<>();
 
-  @Schema(description = "")
+  @Schema(description = "Assignment of service points to defined business cases")
   @Singular(ignoreNullCollections = true)
   private List<Category> categories = new ArrayList<>();
 
-  @Schema(description = "")
+  @Schema(description = "detailed intended use of a operating point")
   @Singular(ignoreNullCollections = true)
   private List<OperatingPointType> operatingPointTypes = new ArrayList<>();
 
-  @Schema(description = "")
+  @Schema(description = "indicates for which type of traffic (e.g. regular traffic) a stop was recorded.")
   @Singular(ignoreNullCollections = true)
   private List<StopPointType> stopPointTypes = new ArrayList<>();
 
