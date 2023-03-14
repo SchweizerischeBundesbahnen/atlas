@@ -39,7 +39,7 @@ describe('TabServiceService', () => {
     expect(currentTabIndex).toBe(2);
   });
 
-  it('should return index -1', () => {
+  it('should return index -1 on unknown link', () => {
     //given
     const TABS = [
       {
@@ -55,7 +55,7 @@ describe('TabServiceService', () => {
         title: 'LIDI.LINE_VERSION_SNAPSHOT.TAB_HEADER',
       },
     ];
-    const url = 'http://localhost:4200/line-directory/workflows';
+    const url = 'http://localhost:4200/line-directory/unknown';
     //when
     const currentTabIndex = service.getCurrentTabIndex(url, TABS);
 

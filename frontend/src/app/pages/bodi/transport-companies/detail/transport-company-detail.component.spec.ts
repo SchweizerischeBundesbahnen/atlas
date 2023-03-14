@@ -20,7 +20,7 @@ import { TextFieldComponent } from '../../../../core/form-components/text-field/
 import { AtlasLabelFieldComponent } from '../../../../core/form-components/atlas-label-field/atlas-label-field.component';
 import { AtlasFieldErrorComponent } from '../../../../core/form-components/atlas-field-error/atlas-field-error.component';
 import { TranslatePipe } from '@ngx-translate/core';
-import { AtlasSearchSelectComponent } from '../../../../core/form-components/atlas-search-select/atlas-search-select.component';
+import { SearchSelectComponent } from '../../../../core/form-components/search-select/search-select.component';
 
 const transportCompany: TransportCompany = {
   id: 1234,
@@ -180,7 +180,7 @@ function setupTestBed(data: (TransportCompany | TransportCompanyBoRelation[])[])
     declarations: [
       TransportCompanyDetailComponent,
       RelationComponent,
-      AtlasSearchSelectComponent,
+      SearchSelectComponent,
       CommentComponent,
       MockDialogCloseComponent,
       MockAtlasButtonComponent,
