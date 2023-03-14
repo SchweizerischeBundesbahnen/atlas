@@ -1,7 +1,6 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import {
   ApplicationType,
-  BusinessOrganisation,
   Line,
   LinesService,
   PaymentType,
@@ -11,7 +10,7 @@ import {
 } from '../../../../api';
 import { DateService } from 'src/app/core/date/date.service';
 import { BaseDetailController } from '../../../../core/components/base-detail/base-detail-controller';
-import { catchError, EMPTY, Observable, of, Subject, takeUntil } from 'rxjs';
+import { catchError, Observable, of, Subject, takeUntil } from 'rxjs';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -28,7 +27,6 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
 import { SublineDetailFormGroup } from './subline-detail-form-group';
 import { AuthService } from '../../../../core/auth/auth.service';
-import { BusinessOrganisationSearchService } from '../../../../core/service/business-organisation-search.service';
 
 @Component({
   templateUrl: './subline-detail.component.html',
@@ -43,7 +41,6 @@ export class SublineDetailComponent
 
   private ngUnsubscribe = new Subject<void>();
   mainlines$: Observable<Line[]> = of([]);
-  selectedBusinessOrganisation$: Observable<BusinessOrganisation> = EMPTY;
 
   readonly mainlineSlnidFormControlName = 'mainlineSlnid';
 
@@ -59,8 +56,7 @@ export class SublineDetailComponent
     private linesService: LinesService,
     protected dialogService: DialogService,
     protected authService: AuthService,
-    protected activatedRoute: ActivatedRoute,
-    private readonly businessOrganisationSearchService: BusinessOrganisationSearchService
+    protected activatedRoute: ActivatedRoute
   ) {
     super(dialogRef, dialogService, notificationService, authService, activatedRoute);
   }
@@ -72,19 +68,6 @@ export class SublineDetailComponent
         .getLine(this.record.mainlineSlnid)
         .pipe(map((value) => [value]));
     }
-    const sboid: string = this.form.get('businessOrganisation')?.value;
-    if (sboid) {
-      this.selectedBusinessOrganisation$ = this.businessOrganisationSearchService
-        .searchByString(sboid)
-        .pipe(map((businessOrganisations) => businessOrganisations[0]));
-    } else {
-      this.selectedBusinessOrganisation$ = of();
-    }
-  }
-
-  onBusinessOrganisationChange(businessOrganisations: BusinessOrganisation | null) {
-    this.form.patchValue({ businessOrganisations: businessOrganisations });
-    this.selectedBusinessOrganisation$ = businessOrganisations ? of(businessOrganisations) : of();
   }
 
   getPageType(): Page {
