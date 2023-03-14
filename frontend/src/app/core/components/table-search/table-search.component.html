@@ -27,18 +27,13 @@
   </div>
   <div class="search-row">
     <div *ngIf="displayBusinessOrganisationSearch" class="d-flex flex-column col-3">
-      <span class="font-bold-lg">{{
-        'BODI.BUSINESS_ORGANISATION.BUSINESS_ORGANISATION' | translate
-      }}</span>
-      <atlas-search-select
-        (selectionChange)="businessOrganisationChanged($event)"
-        [selectedItem]="selectedBusinessOrganisation$ | async"
-        type="businessOrganisation"
+      <bo-select
+        (selectedBusinessOrganisationChanged)="businessOrganisationChanged($event)"
+        [formGroup]="boSearchForm"
+        [formModus]="false"
+        controlName="businessOrganisation"
       >
-        <ng-template let-item>
-          {{ item | boSelectionDisplay }}
-        </ng-template>
-      </atlas-search-select>
+      </bo-select>
     </div>
     <ng-container [ngTemplateOutlet]="additionalFieldTemplate"></ng-container>
     <div *ngIf="displayStatus" class="d-flex flex-column col-3">

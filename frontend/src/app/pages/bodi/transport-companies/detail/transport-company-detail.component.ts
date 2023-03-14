@@ -8,8 +8,8 @@ import {
   TransportCompanyRelationsService,
 } from '../../../../api';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { EMPTY, Observable, of } from 'rxjs';
-import { switchMap, tap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { AuthService } from '../../../../core/auth/auth.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
@@ -17,7 +17,7 @@ import moment, { Moment } from 'moment';
 import { TableColumn } from '../../../../core/components/table/table-column';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { NotificationService } from '../../../../core/notification/notification.service';
-import { BusinessOrganisationLanguageService } from '../../../../core/service/business-organisation-language.service';
+import { BusinessOrganisationLanguageService } from '../../../../core/form-components/bo-select/business-organisation-language.service';
 import { TransportCompanyFormGroup } from './transport-company-form-group';
 
 @Component({
@@ -28,8 +28,11 @@ export class TransportCompanyDetailComponent implements OnInit {
   transportCompany!: TransportCompany;
   transportFormGroup!: FormGroup<TransportCompanyFormGroup>;
   transportCompanyRelations!: TransportCompanyBoRelation[];
+  businessOrganisationSearchResults: Observable<BusinessOrganisation[]> = of([]);
   selectedTransportCompanyRelationIndex = -1;
   editMode = false;
+  totalCountOfFoundBusinessOrganisations = 0;
+  readonly pageSizeForBusinessOrganisationSearch = 100;
   readonly transportCompanyRelationTableColumns: TableColumn<TransportCompanyBoRelation>[] = [
     {
       headerTitle: 'BODI.BUSINESS_ORGANISATION.SAID',
@@ -66,7 +69,6 @@ export class TransportCompanyDetailComponent implements OnInit {
       formatAsDate: true,
     },
   ];
-  selectedBusinessOrganisation$: Observable<BusinessOrganisation> = EMPTY;
 
   readonly form = new FormGroup(
     {
@@ -90,6 +92,12 @@ export class TransportCompanyDetailComponent implements OnInit {
     readonly dialogRef: MatDialogRef<any>
   ) {}
 
+  readonly selectOption = (item: BusinessOrganisation) => {
+    return `${item.organisationNumber} - ${item[this.getCurrentLanguageAbbreviation()]} - ${
+      item[this.getCurrentLanguageDescription()]
+    }`;
+  };
+
   ngOnInit() {
     this.transportCompany = this.dialogData.transportCompanyDetail[0];
     this.transportCompanyRelations = this.dialogData.transportCompanyDetail[1];
@@ -109,11 +117,6 @@ export class TransportCompanyDetailComponent implements OnInit {
       }),
       comment: new FormControl({ value: this.transportCompany.comment, disabled: true }),
     });
-  }
-
-  onBusinessOrganisationChange(businessOrganisation: BusinessOrganisation | null) {
-    this.form.patchValue({ businessOrganisation: businessOrganisation });
-    this.selectedBusinessOrganisation$ = businessOrganisation ? of(businessOrganisation) : of();
   }
 
   isAdmin(): boolean {
@@ -138,6 +141,25 @@ export class TransportCompanyDetailComponent implements OnInit {
       });
   }
 
+  getBusinessOrganisations(searchString: string): void {
+    if (!searchString) return;
+    this.businessOrganisationSearchResults = this.businessOrganisationsService
+      .getAllBusinessOrganisations(
+        [searchString],
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        this.pageSizeForBusinessOrganisationSearch
+      )
+      .pipe(
+        map((value) => {
+          this.totalCountOfFoundBusinessOrganisations = value.totalCount!;
+          return value.objects ?? [];
+        })
+      );
+  }
+
   createRelation(): void {
     this.form.markAllAsTouched();
     if (this.form.invalid) return;
@@ -155,7 +177,6 @@ export class TransportCompanyDetailComponent implements OnInit {
             tap(() => {
               this.editMode = false;
               this.form.reset();
-              this.selectedBusinessOrganisation$ = of();
               this.selectedTransportCompanyRelationIndex = this.transportCompanyRelations.findIndex(
                 (item) => item.id === savedRelation.id
               );
@@ -188,7 +209,6 @@ export class TransportCompanyDetailComponent implements OnInit {
   private cancelEdit(): void {
     this.editMode = false;
     this.form.reset();
-    this.selectedBusinessOrganisation$ = of();
   }
 
   private reloadRelations(): Observable<TransportCompanyBoRelation[]> {
