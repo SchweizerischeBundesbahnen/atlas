@@ -29,7 +29,7 @@
     "int"
   ],
   "scope": "public",
-  "provider": "public-miniwaf-maggie.app.sbb.ch",
+  "provider": "public-maggie.app.sbb.ch",
   "routing_over_wsg": false,
   "owner_email": "TechSupport-ATLAS@sbb.ch",
   "contact": {
