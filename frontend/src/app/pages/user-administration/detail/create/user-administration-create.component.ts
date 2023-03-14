@@ -8,6 +8,7 @@ import { Pages } from '../../../pages';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { MatDialogRef } from '@angular/material/dialog';
 import { User } from '../../../../api';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-user-administration-create',
@@ -19,6 +20,9 @@ export class UserAdministrationCreateComponent {
   userHasAlreadyPermissions = false;
   selectedUserHasNoUserId = false;
   saveEnabled = true;
+  readonly userSearchForm: FormGroup = new FormGroup({
+    userSearch: new FormControl<string | null>(null),
+  });
 
   constructor(
     private readonly userService: UserService,
