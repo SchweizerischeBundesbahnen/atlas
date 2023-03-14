@@ -113,7 +113,8 @@
       <mat-label class="font-bold-lg required-indicator subtitle-margin"
         >{{ 'LIDI.TYPE' | translate }}
       </mat-label>
-      <mat-form-field appearance="outline" class="form-outline">
+      <span class="fake-lable-space"></span>
+      <div [class.disabled]="form.disabled" class="multi-select-search">
         <mat-select
           data-cy="type"
           formControlName="lineType"
@@ -123,15 +124,16 @@
             {{ 'LIDI.LINE.TYPES.' + type | translate }}
           </mat-option>
         </mat-select>
-      </mat-form-field>
+      </div>
       <app-atlas-field-error [form]="form" controlName="lineType"></app-atlas-field-error>
     </div>
 
-    <div class="d-flex flex-column col-3">
+    <div class="d-flex flex-column col-3 space-right">
       <mat-label class="font-bold-lg required-indicator subtitle-margin"
         >{{ 'LIDI.PAYMENT.TYPE' | translate }}
       </mat-label>
-      <mat-form-field appearance="outline" class="form-outline">
+      <span class="fake-lable-space"></span>
+      <div [class.disabled]="form.disabled" class="multi-select-search">
         <mat-select
           data-cy="paymentType"
           formControlName="paymentType"
@@ -141,7 +143,7 @@
             {{ 'LIDI.PAYMENT.' + type | translate }}
           </mat-option>
         </mat-select>
-      </mat-form-field>
+      </div>
       <app-atlas-field-error [form]="form" controlName="paymentType"></app-atlas-field-error>
     </div>
   </div>
