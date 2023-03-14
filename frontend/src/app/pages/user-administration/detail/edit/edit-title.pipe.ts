@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
-import { User } from '../../../api';
+import { User } from '../../../../api';
 
 @Pipe({
   name: 'editTitle',

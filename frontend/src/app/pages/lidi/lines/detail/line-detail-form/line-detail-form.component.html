@@ -101,18 +101,12 @@
 
   <div class="col-12 d-flex mt-3">
     <div class="d-flex flex-column col-6 pe-3">
-      <!-- todo: sboidRestrictions -->
-      <atlas-search-select
-        [formCtrl]="form.get('businessOrganisation')"
-        [selectedItem]="selectedBusinessOrganisation$ | async"
-        (selectionChange)="onBusinessOrganisationChange($event)"
-        formTemplateLabelKey="businessOrganisationSearchSelectLabel"
-        type="businessOrganisation"
-      >
-        <ng-template let-item>
-          {{ item | boSelectionDisplay }}
-        </ng-template>
-      </atlas-search-select>
+      <bo-select
+        [formGroup]="form"
+        [sboidsRestrictions]="boSboidRestriction"
+        controlName="businessOrganisation"
+        data-cy="businessOrganisation"
+      ></bo-select>
     </div>
 
     <div class="d-flex flex-column col-3 pe-3">

@@ -29,7 +29,6 @@ import { AtlasButtonComponent } from '../components/button/atlas-button.componen
 import { WorkflowComponent } from '../workflow/workflow.component';
 import { WorkflowFormComponent } from '../workflow/workflow-form/workflow-form.component';
 import { WorkflowCheckFormComponent } from '../workflow/workflow-check-form/workflow-check-form.component';
-import { AtlasSearchSelectModule } from '../form-components/atlas-search-select/atlas-search-select.module';
 
 const coreComponents = [
   WorkflowFormComponent,
@@ -75,7 +74,6 @@ const coreComponents = [
         sendAccessToken: true,
       },
     }),
-    AtlasSearchSelectModule,
   ],
   exports: [...coreComponents, CommonModule, MaterialModule, TranslateModule],
   providers: [TranslatePipe],

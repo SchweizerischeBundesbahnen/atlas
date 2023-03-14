@@ -63,8 +63,7 @@
     "SEARCH": {
       "VALIDITY": "Valido il",
       "SEARCH_CRITERIA": "Ricerca",
-      "SEARCH_FOR": "Ricerca di",
-      "NO_RESULTS_FOUND": "__it__Es wurden keine Resultate gefunden"
+      "SEARCH_FOR": "Ricerca di"
     },
     "NOTIFICATION": {
       "OPTIMISTIC_LOCK_ERROR": "L’oggetto è già stato cancellato o nel frattempo è stato modificato. Ricaricare la pagina premendo il tasto F5."

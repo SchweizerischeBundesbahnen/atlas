@@ -12,8 +12,6 @@ import { MainlineSelectOptionPipe } from './sublines/detail/mainline-select-opti
 import { LidiWorkflowOverviewComponent } from './workflow/overview/lidi-workflow-overview.component';
 import { LineVersionSnapshotDetailComponent } from './workflow/detail/line-version-snapshot-detail.component';
 import { LineDetailFormComponent } from './lines/detail/line-detail-form/line-detail-form.component';
-import { AtlasSearchSelectModule } from '../../core/form-components/atlas-search-select/atlas-search-select.module';
-import { BoSelectionDisplayPipe } from '../../core/components/table-search/bo-selection-display.pipe';
 
 @NgModule({
   declarations: [
@@ -27,7 +25,6 @@ import { BoSelectionDisplayPipe } from '../../core/components/table-search/bo-se
     SublineDetailComponent,
     MainlineSelectOptionPipe,
   ],
-  imports: [CoreModule, ColorModule, LidiRoutingModule, FormModule, AtlasSearchSelectModule],
-  providers: [BoSelectionDisplayPipe],
+  imports: [CoreModule, ColorModule, LidiRoutingModule, FormModule],
 })
 export class LidiModule {}

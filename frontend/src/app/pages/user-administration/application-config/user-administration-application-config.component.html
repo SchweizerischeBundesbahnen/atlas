@@ -39,16 +39,11 @@
           (selectedIndexChanged)="selectedIndex = $event"
           (deleteRelation)="remove()"
         >
-          <div *ngIf="!readOnly" table-button-between class="mb-3 search-select-wrapper">
-            <!-- todo: add functionality -->
-            <atlas-search-select
-              formTemplateLabelKey="businessOrganisationSearchSelectLabel"
-              type="businessOrganisation"
-            >
-              <ng-template let-item>
-                {{ item | boSelectionDisplay }}
-              </ng-template>
-            </atlas-search-select>
+          <div *ngIf="!readOnly" table-button-between class="mb-3 bo-select-wrapper">
+            <bo-select
+              [formGroup]="businessOrganisationForm"
+              [controlName]="boFormCtrlName"
+            ></bo-select>
           </div>
         </app-relation>
       </ng-template>
