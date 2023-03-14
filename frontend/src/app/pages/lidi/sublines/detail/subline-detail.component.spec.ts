@@ -19,7 +19,7 @@ import { LinkIconComponent } from '../../../../core/form-components/link-icon/li
 import { AtlasLabelFieldComponent } from '../../../../core/form-components/atlas-label-field/atlas-label-field.component';
 import { AtlasFieldErrorComponent } from '../../../../core/form-components/atlas-field-error/atlas-field-error.component';
 import { TextFieldComponent } from '../../../../core/form-components/text-field/text-field.component';
-import { AtlasSearchSelectComponent } from '../../../../core/form-components/atlas-search-select/atlas-search-select.component';
+import { SearchSelectComponent } from '../../../../core/form-components/search-select/search-select.component';
 
 const sublineVersion: SublineVersion = {
   id: 1234,
@@ -190,7 +190,7 @@ function setupTestBed(
       MockBoSelectComponent,
       InfoIconComponent,
       LinkIconComponent,
-      AtlasSearchSelectComponent,
+      SearchSelectComponent,
       MainlineSelectOptionPipe,
       AtlasLabelFieldComponent,
       AtlasFieldErrorComponent,
