@@ -30,14 +30,14 @@ public class AmazonServiceTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        amazonService = new AmazonServiceImpl(amazonS3, fileService);
+        amazonService = new AmazonServiceImpl(amazonS3, fileService, "bucket");
     }
 
     @Test
     public void shouldPutFile() throws IOException {
         //given
         Path tempFile = createTempFile();
-        amazonService.setBucketName("bucket");
+//        amazonService.setBucketName("bucket");
         //when
         amazonService.putFile(tempFile.toFile(), "dir");
         //then
@@ -50,7 +50,7 @@ public class AmazonServiceTest {
         //given
         Path tempFile = createTempFile();
         Path zipFile = createTempFile();
-        amazonService.setBucketName("bucket");
+//        amazonService.setBucketName("bucket");
         when(fileService.zipFile(tempFile.toFile())).thenReturn(zipFile.toFile());
         //when
         amazonService.putZipFile(tempFile.toFile(), "dir");
