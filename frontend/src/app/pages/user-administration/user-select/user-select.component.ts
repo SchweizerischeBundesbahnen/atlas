@@ -7,7 +7,6 @@ import { User } from '../../../api';
 @Component({
   selector: 'app-user-select',
   templateUrl: './user-select.component.html',
-  styleUrls: ['user-select.component.scss'],
 })
 export class UserSelectComponent {
   constructor(private readonly userService: UserService) {}
