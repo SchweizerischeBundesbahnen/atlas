@@ -2,17 +2,16 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   ApplicationType,
-  BusinessOrganisation,
   TimetableFieldNumbersService,
   TimetableFieldNumberVersion,
 } from '../../../api';
 import { BaseDetailController } from '../../../core/components/base-detail/base-detail-controller';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from '../../../core/notification/notification.service';
-import { catchError, EMPTY, Observable, of, Subject } from 'rxjs';
+import { catchError, Subject } from 'rxjs';
 import moment from 'moment';
 import { DateRangeValidator } from '../../../core/validation/date-range/date-range-validator';
-import { map, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import { Pages } from '../../pages';
 import { Page } from '../../../core/model/page';
@@ -22,7 +21,6 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AtlasFieldLengthValidator } from '../../../core/validation/field-lengths/atlas-field-length-validator';
 import { TimetableFieldNumberDetailFormGroup } from './timetable-field-number-detail-form-group';
 import { AuthService } from '../../../core/auth/auth.service';
-import { BusinessOrganisationSearchService } from '../../../core/service/business-organisation-search.service';
 
 @Component({
   selector: 'app-timetable-field-number-detail',
@@ -35,8 +33,6 @@ export class TimetableFieldNumberDetailComponent
 {
   private ngUnsubscribe = new Subject<void>();
 
-  selectedBusinessOrganisation$: Observable<BusinessOrganisation> = EMPTY;
-
   constructor(
     @Inject(MAT_DIALOG_DATA) public dialogData: any,
     private router: Router,
@@ -45,27 +41,13 @@ export class TimetableFieldNumberDetailComponent
     protected notificationService: NotificationService,
     protected dialogService: DialogService,
     protected authService: AuthService,
-    protected activatedRoute: ActivatedRoute,
-    private readonly businessOrganisationSearchService: BusinessOrganisationSearchService
+    protected activatedRoute: ActivatedRoute
   ) {
     super(dialogRef, dialogService, notificationService, authService, activatedRoute);
   }
 
   ngOnInit() {
     super.ngOnInit();
-    const sboid = this.form.get('businessOrganisation')?.value;
-    if (sboid) {
-      this.selectedBusinessOrganisation$ = this.businessOrganisationSearchService
-        .searchByString(sboid)
-        .pipe(map((businessOrganisations) => businessOrganisations[0]));
-    } else {
-      this.selectedBusinessOrganisation$ = of();
-    }
-  }
-
-  onBusinessOrganisationChange(businessOrganisation: BusinessOrganisation | null) {
-    this.form.patchValue({ businessOrganisation: businessOrganisation?.sboid });
-    this.selectedBusinessOrganisation$ = businessOrganisation ? of(businessOrganisation) : of();
   }
 
   readRecord(): TimetableFieldNumberVersion {
