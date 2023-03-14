@@ -9,6 +9,7 @@
     [dataSource]="_records"
     [ngClass]="{ admin: editable }"
     (matSortChange)="sortChanged($event)"
+    class="atlas-table"
   >
     <ng-container *ngFor="let column of tableColumns" matColumnDef="{{ column.columnDef }}">
       <th
@@ -16,11 +17,11 @@
         mat-header-cell
         *matHeaderCellDef
         [mat-sort-header]="column.columnDef!"
-        class="font-bold-base color-primary-400"
+        class="font-bold-base color-primary-400 bordered-cell"
       >
         {{ column.headerTitle | translate }}
       </th>
-      <td mat-cell *matCellDef="let value">
+      <td mat-cell *matCellDef="let value" class="bordered-cell">
         {{ getValue(value, column) }}
       </td>
     </ng-container>
