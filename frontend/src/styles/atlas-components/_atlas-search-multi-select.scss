@@ -17,3 +17,20 @@
     width: 95%;
   }
 }
+
+.disabled {
+  outline: 1px solid variables.$gray-400;
+
+  &:focus-within,
+  &:hover {
+    outline: 1px solid variables.$gray-400;
+  }
+}
+
+.fake-lable-space {
+  height: 15px;
+}
+
+.space-right {
+  padding-right: 2px;
+}
