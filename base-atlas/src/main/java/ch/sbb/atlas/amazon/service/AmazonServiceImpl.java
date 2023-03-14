@@ -3,6 +3,7 @@ package ch.sbb.atlas.amazon.service;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.PutObjectResult;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
@@ -14,18 +15,17 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import org.springframework.beans.factory.annotation.Value;
 
 @RequiredArgsConstructor
 public class AmazonServiceImpl implements AmazonService {
 
   private final AmazonS3 amazonS3;
   private final FileService fileService;
+  private final String bucketName;
 
-  @Setter
-  @Value("${amazon.bucketName}")
-  private String bucketName;
+//  @Setter
+//  @Value("${amazon.bucketName}")
+//  private String bucketName;
 
   @Override
   public URL putFile(File file, String dir) throws IOException {
@@ -71,7 +71,7 @@ public class AmazonServiceImpl implements AmazonService {
       String filePathName = getFilePathName(file, dir);
       putObjectRequest = new PutObjectRequest(bucketName, filePathName, inputStream,
           metadata);
-      amazonS3.putObject(putObjectRequest);
+      PutObjectResult putObjectResult = amazonS3.putObject(putObjectRequest);
       url = amazonS3.getUrl(bucketName, filePathName);
       return url;
     }
