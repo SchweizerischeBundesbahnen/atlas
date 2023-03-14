@@ -11,7 +11,7 @@
   }}</mat-label>
   <mat-label class="font-regular-sm">{{ 'FORM.FOR_EXAMPLE' | translate }} u123456</mat-label>
 </div>
-<app-user-select (selectionChange)="selectUser($event)"></app-user-select>
+<app-user-select [form]="userSearchForm" (selectionChange)="selectUser($event)"></app-user-select>
 <p *ngIf="userHasAlreadyPermissions" class="color-error">
   {{ 'USER_ADMIN.SELECTED_USER_HAS_ALREADY_PERMISSIONS' | translate }}
 </p>
