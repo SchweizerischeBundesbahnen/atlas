@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AtlasSearchSelectComponent } from './atlas-search-select.component';
-import { UserService } from '../../../pages/user-administration/service/user.service';
+import { UserSelectComponent } from './user-select.component';
+import { UserService } from '../service/user.service';
 import { of } from 'rxjs';
 import { Component, Input } from '@angular/core';
 
@@ -17,18 +17,18 @@ class MockFormSearchSelectComponent {
 }
 
 describe('UserSelectComponent', () => {
-  let component: AtlasSearchSelectComponent;
-  let fixture: ComponentFixture<AtlasSearchSelectComponent>;
+  let component: UserSelectComponent;
+  let fixture: ComponentFixture<UserSelectComponent>;
 
   const userServiceSpy = jasmine.createSpyObj('UserService', ['searchUsers']);
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AtlasSearchSelectComponent, MockFormSearchSelectComponent],
+      declarations: [UserSelectComponent, MockFormSearchSelectComponent],
       providers: [{ provide: UserService, useValue: userServiceSpy }],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(AtlasSearchSelectComponent);
+    fixture = TestBed.createComponent(UserSelectComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

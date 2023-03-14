@@ -14,7 +14,7 @@ import {
   DetailDialogEvents,
   RouteToDialogService,
 } from '../../../core/components/route-to-dialog/route-to-dialog.service';
-import { BusinessOrganisationLanguageService } from '../../../core/service/business-organisation-language.service';
+import { BusinessOrganisationLanguageService } from '../../../core/form-components/bo-select/business-organisation-language.service';
 import { DEFAULT_STATUS_SELECTION } from '../../../core/constants/status.choices';
 
 @Component({
