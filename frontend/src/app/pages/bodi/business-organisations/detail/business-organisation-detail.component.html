@@ -160,14 +160,14 @@
       <form-date-range [formGroup]="form"></form-date-range>
     </div>
 
-    <div class="col-12 d-flex mt-3">
+    <div class="col-12 d-flex mt-3 ps-1 pe-3">
       <div class="d-flex flex-column col-12">
         <div class="info-icon-position">
           <mat-label class="font-bold-lg subtitle-margin"
             >{{ 'BODI.BUSINESS_ORGANISATION.BUSINESS_TYPE' | translate }}
           </mat-label>
         </div>
-        <mat-form-field appearance="outline" class="form-outline">
+        <div [class.disabled]="form.disabled" class="multi-select-search">
           <mat-select
             data-cy="businessTypes"
             formControlName="businessTypes"
@@ -179,7 +179,7 @@
             </mat-option>
           </mat-select>
           <app-atlas-field-error [form]="form" controlName="businessTypes"></app-atlas-field-error>
-        </mat-form-field>
+        </div>
       </div>
     </div>
     <span class="font-bold-2xl">{{ 'FORM.SUPPLEMENTARY_INFORMATION' | translate }}</span>
