@@ -3,3 +3,52 @@
 i.bi {
   font-size: variables.$navigationItemFontSize;
 }
+
+.snack-bar-error-container {
+  display: flex;
+
+  .snack-bar-error-container-text {
+    padding-top: 1rem;
+    padding-right: 1rem;
+
+    ul {
+      margin-bottom: 0.2rem !important;
+    }
+  }
+
+  .snack-bar-error-generic-text {
+    padding-right: 1.5rem;
+  }
+
+  .dismiss {
+    position: absolute;
+    right: 1rem;
+  }
+
+  .data {
+    float: left;
+    overflow: auto;
+    max-height: 70vh;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px variables.$white;
+    border-radius: 10px;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: variables.$white;
+    border-radius: 10px;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #f3d1d1;
+  }
+}

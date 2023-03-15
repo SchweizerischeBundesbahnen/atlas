@@ -20,9 +20,13 @@ import { AtlasButtonComponent } from '../components/button/atlas-button.componen
 import { Observable, of } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { DialogService } from '../components/dialog/dialog.service';
-import WorkflowTypeEnum = Workflow.WorkflowTypeEnum;
 import { Component, Input } from '@angular/core';
 import { Role } from '../auth/role';
+import { AtlasFieldErrorComponent } from '../form-components/atlas-field-error/atlas-field-error.component';
+import { AtlasLabelFieldComponent } from '../form-components/atlas-label-field/atlas-label-field.component';
+import { TextFieldComponent } from '../form-components/text-field/text-field.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import WorkflowTypeEnum = Workflow.WorkflowTypeEnum;
 
 @Component({
   selector: 'app-workflow-check-form',
@@ -94,12 +98,20 @@ describe('WorkflowComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppTestingModule, MatExpansionModule],
-      declarations: [WorkflowComponent, AtlasButtonComponent, MockWorkflowCheckFormComponent],
+      declarations: [
+        WorkflowComponent,
+        AtlasButtonComponent,
+        MockWorkflowCheckFormComponent,
+        AtlasFieldErrorComponent,
+        AtlasLabelFieldComponent,
+        TextFieldComponent,
+      ],
       providers: [
         { provide: UserAdministrationService, useValue: userAdministrationServiceMock },
         { provide: WorkflowService, useValue: workflowServiceMock },
         { provide: AuthService, useValue: authServiceMock },
         { provide: DialogService, useValue: dialogServiceSpy },
+        { provide: TranslatePipe },
       ],
     }).compileComponents();
 
