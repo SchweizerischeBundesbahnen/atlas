@@ -23,10 +23,6 @@ public class AmazonServiceImpl implements AmazonService {
   private final FileService fileService;
   private final String bucketName;
 
-//  @Setter
-//  @Value("${amazon.bucketName}")
-//  private String bucketName;
-
   @Override
   public URL putFile(File file, String dir) throws IOException {
     ObjectMetadata metadata = new ObjectMetadata();
@@ -56,6 +52,11 @@ public class AmazonServiceImpl implements AmazonService {
       fileOutputStream.write(s3InputStream.readAllBytes());
       return fileDownload;
     }
+  }
+
+  @Override
+  public void deleteFile(String filePath) {
+    amazonS3.deleteObject(bucketName, filePath);
   }
 
   @Override
