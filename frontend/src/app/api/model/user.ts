@@ -10,7 +10,7 @@
  * Do not edit the class manually.
  */
 import { UserAccountStatus } from './userAccountStatus';
-import { UserPermissionVersionModel } from './userPermissionVersionModel';
+import { UserPermission } from './userPermission';
 
 export interface User {
   /**
@@ -37,5 +37,5 @@ export interface User {
   /**
    * User permissions
    */
-  permissions?: Set<UserPermissionVersionModel>;
+  permissions?: Set<UserPermission>;
 }

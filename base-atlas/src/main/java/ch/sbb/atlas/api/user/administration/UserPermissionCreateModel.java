@@ -17,6 +17,7 @@ import lombok.Data;
 
 @Data
 @Builder
+@Schema(name = "UserPermissionCreate")
 public class UserPermissionCreateModel {
 
   @Schema(description = "SBB User-ID", example = "u123456")
