@@ -1,0 +1,27 @@
+@use 'src/styles/variables' as variables;
+
+%snack-bar-container {
+  margin-top: 4.5rem !important;
+  margin-right: 1.5rem !important;
+  max-width: 33vw;
+  min-width: 344px;
+  border-radius: 2rem;
+  --mdc-snackbar-container-color: unset;
+}
+
+.success {
+  @extend %snack-bar-container;
+  background-color: variables.$successColor;
+}
+
+.error {
+  @extend %snack-bar-container;
+  background-color: variables.$errorColor;
+  white-space: unset !important;
+}
+
+.warning {
+  @extend %snack-bar-container;
+  background-color: variables.$warnColor;
+  white-space: unset !important;
+}

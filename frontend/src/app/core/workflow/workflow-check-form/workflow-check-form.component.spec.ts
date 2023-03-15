@@ -10,6 +10,10 @@ import { WorkflowFormComponent } from '../workflow-form/workflow-form.component'
 import { AtlasButtonComponent } from '../../components/button/atlas-button.component';
 import { WorkflowService } from '../../../api';
 import { of } from 'rxjs';
+import { AtlasFieldErrorComponent } from '../../form-components/atlas-field-error/atlas-field-error.component';
+import { AtlasLabelFieldComponent } from '../../form-components/atlas-label-field/atlas-label-field.component';
+import { TextFieldComponent } from '../../form-components/text-field/text-field.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 let isAtLeastSupervisor = true;
 const authServiceMock: Partial<AuthService> = {
@@ -34,10 +38,14 @@ describe('WorkflowCheckFormComponent', () => {
         AtlasButtonComponent,
         InfoIconComponent,
         CommentComponent,
+        AtlasFieldErrorComponent,
+        AtlasLabelFieldComponent,
+        TextFieldComponent,
       ],
       providers: [
         { provide: AuthService, useValue: authServiceMock },
         { provide: WorkflowService, useValue: workflowServiceSpy },
+        { provide: TranslatePipe },
       ],
       imports: [AppTestingModule],
     }).compileComponents();

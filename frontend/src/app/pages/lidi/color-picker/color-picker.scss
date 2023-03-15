@@ -1,11 +1,7 @@
 @use 'src/styles/variables' as variables;
 
-.mat-form-field {
-  width: 100%;
-}
-
-.mat-input-element {
-  width: inherit;
+form {
+  flex-grow: 1;
 }
 
 img {
@@ -18,4 +14,14 @@ img {
   display: flex;
   width: 100%;
   padding-left: 0.4375em;
+}
+
+.preview-color {
+  position: absolute;
+  margin-left: 10px;
+  margin-top: 11px;
+}
+
+.padding-left {
+  padding-left: 30px !important;
 }

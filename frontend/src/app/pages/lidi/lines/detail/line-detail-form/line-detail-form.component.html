@@ -1,96 +1,95 @@
-<form [formGroup]="form">
+<ng-container [formGroup]="form">
   <h2 *ngIf="newRecord" class="font-bold-2xl mb-4">
     {{ 'LIDI.NEW_LINE_INFORMATION' | translate }}
   </h2>
 
   <div class="col-12 d-flex">
     <div class="d-flex flex-column col-3 pe-3">
-      <div class="info-icon-position">
-        <mat-label class="font-bold-lg">{{ 'LIDI.LINE.NUMBER' | translate }} </mat-label>
-        <form-info-icon infoTitle="{{ 'LIDI.LINE.NUMBER_INFO' | translate }}"></form-info-icon>
-      </div>
-      <mat-label class="font-regular-sm"
-        >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ 'IC8' }} |
-        {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}
-      </mat-label>
-      <mat-form-field>
-        <input data-cy="number" formControlName="number" matInput />
-        <mat-error fieldErrors></mat-error>
-      </mat-form-field>
+      <atlas-text-field
+        [fieldExamples]="[
+          { label: 'FORM.FOR_EXAMPLE', translate: true },
+          { label: 'IC8', translate: false },
+          { label: ' |', translate: false },
+          { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '50' } }
+        ]"
+        [formGroup]="form"
+        controlName="number"
+        fieldLabel="LIDI.LINE.NUMBER"
+        infoIconTitle="LIDI.LINE.NUMBER_INFO"
+      >
+      </atlas-text-field>
     </div>
     <div class="d-flex flex-column col-9">
-      <div class="info-icon-position">
-        <mat-label class="font-bold-lg">{{ 'LIDI.LINE.DESCRIPTION' | translate }} </mat-label>
-        <form-info-icon infoTitle="{{ 'LIDI.LINE.DESCRIPTION_INFO' | translate }}"></form-info-icon>
-      </div>
-      <mat-label class="font-regular-sm">
-        {{ 'FORM.FOR_EXAMPLE' | translate }}
-        {{ 'Brig - Bern - Zürich HB - Romanshorn' }} |
-        {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 255 } }}
-      </mat-label>
-      <mat-form-field>
-        <input data-cy="description" formControlName="description" matInput />
-        <mat-error fieldErrors></mat-error>
-      </mat-form-field>
+      <atlas-text-field
+        [fieldExamples]="[
+          { label: 'FORM.FOR_EXAMPLE', translate: true },
+          { label: 'Brig - Bern - Zürich HB - Romanshorn', translate: false },
+          { label: ' |', translate: false },
+          { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '255' } }
+        ]"
+        [formGroup]="form"
+        controlName="description"
+        fieldLabel="LIDI.LINE.DESCRIPTION"
+        infoIconTitle="LIDI.LINE.DESCRIPTION_INFO"
+      >
+      </atlas-text-field>
     </div>
   </div>
 
   <div class="col-12 d-flex mt-3">
     <div class="d-flex flex-column col-12">
-      <mat-label class="font-bold-lg">{{ 'LIDI.LONG_NAME' | translate }} </mat-label>
-      <mat-label class="font-regular-sm">
-        {{ 'FORM.FOR_EXAMPLE' | translate }}
-        {{ 'Brig - Bern - Zürich HB - Romanshorn' }} |
-        {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 255 } }}
-      </mat-label>
-      <mat-form-field>
-        <input data-cy="longName" formControlName="longName" matInput />
-        <mat-error fieldErrors></mat-error>
-      </mat-form-field>
+      <atlas-text-field
+        [fieldExamples]="[
+          { label: 'FORM.FOR_EXAMPLE', translate: true },
+          { label: 'Brig - Bern - Zürich HB - Romanshorn', translate: false },
+          { label: ' |', translate: false },
+          { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '255' } }
+        ]"
+        [formGroup]="form"
+        controlName="longName"
+        fieldLabel="LIDI.LONG_NAME"
+      >
+      </atlas-text-field>
     </div>
   </div>
 
   <div class="col-12 d-flex mt-3">
     <div class="d-flex flex-column col-4 pe-3">
-      <div class="info-icon-position">
-        <mat-label class="font-bold-lg required-indicator"
-          >{{ 'LIDI.SWISS_LINE_NUMBER' | translate }}
-        </mat-label>
-        <form-info-icon
-          infoLink
-          infoLinkTranslationKey="LIDI.SWISS_LINE_NUMBER_INFO_LINK"
-        ></form-info-icon>
-      </div>
-      <mat-label class="font-regular-sm">
-        {{ 'FORM.FOR_EXAMPLE' | translate }} {{ 'b0.IC8' }} |
-        {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}
-      </mat-label>
-      <mat-form-field>
-        <input data-cy="swissLineNumber" formControlName="swissLineNumber" matInput />
-        <mat-error fieldErrors></mat-error>
-      </mat-form-field>
+      <atlas-text-field
+        [fieldExamples]="[
+          { label: 'FORM.FOR_EXAMPLE', translate: true },
+          { label: 'b0.IC8', translate: false },
+          { label: ' |', translate: false },
+          { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '50' } }
+        ]"
+        [formGroup]="form"
+        [required]="true"
+        controlName="swissLineNumber"
+        fieldLabel="LIDI.SWISS_LINE_NUMBER"
+        infoIconLink="LIDI.SWISS_LINE_NUMBER_INFO_LINK"
+      ></atlas-text-field>
     </div>
 
     <div class="d-flex flex-column col-4 pe-3">
-      <mat-label class="font-bold-lg">{{ 'LIDI.ALTERNATIVE_NAME' | translate }} </mat-label>
-      <mat-label class="font-regular-sm">
-        {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}
-      </mat-label>
-      <mat-form-field>
-        <input data-cy="alternativeName" formControlName="alternativeName" matInput />
-        <mat-error fieldErrors></mat-error>
-      </mat-form-field>
+      <atlas-text-field
+        [fieldExamples]="[
+          { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '50' } }
+        ]"
+        [formGroup]="form"
+        controlName="alternativeName"
+        fieldLabel="LIDI.ALTERNATIVE_NAME"
+      ></atlas-text-field>
     </div>
 
     <div class="d-flex flex-column col-4">
-      <mat-label class="font-bold-lg">{{ 'LIDI.COMBINATION_NAME' | translate }} </mat-label>
-      <mat-label class="font-regular-sm">
-        {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 50 } }}
-      </mat-label>
-      <mat-form-field>
-        <input data-cy="combinationName" formControlName="combinationName" matInput />
-        <mat-error fieldErrors></mat-error>
-      </mat-form-field>
+      <atlas-text-field
+        [fieldExamples]="[
+          { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '50' } }
+        ]"
+        [formGroup]="form"
+        controlName="combinationName"
+        fieldLabel="LIDI.COMBINATION_NAME"
+      ></atlas-text-field>
     </div>
   </div>
 
@@ -100,7 +99,7 @@
     <form-date-range [formGroup]="form"></form-date-range>
   </div>
 
-  <div class="col-12 d-flex mt-3">
+  <div class="col-12 d-flex mt-3 pb-3">
     <div class="d-flex flex-column col-6 pe-3">
       <bo-select
         [formGroup]="form"
@@ -114,7 +113,8 @@
       <mat-label class="font-bold-lg required-indicator subtitle-margin"
         >{{ 'LIDI.TYPE' | translate }}
       </mat-label>
-      <mat-form-field appearance="outline" class="form-outline">
+      <span class="fake-lable-space"></span>
+      <div [class.disabled]="form.disabled" class="multi-select-search">
         <mat-select
           data-cy="type"
           formControlName="lineType"
@@ -124,15 +124,16 @@
             {{ 'LIDI.LINE.TYPES.' + type | translate }}
           </mat-option>
         </mat-select>
-        <mat-error fieldErrors></mat-error>
-      </mat-form-field>
+      </div>
+      <app-atlas-field-error [form]="form" controlName="lineType"></app-atlas-field-error>
     </div>
 
-    <div class="d-flex flex-column col-3">
+    <div class="d-flex flex-column col-3 space-right">
       <mat-label class="font-bold-lg required-indicator subtitle-margin"
         >{{ 'LIDI.PAYMENT.TYPE' | translate }}
       </mat-label>
-      <mat-form-field appearance="outline" class="form-outline">
+      <span class="fake-lable-space"></span>
+      <div [class.disabled]="form.disabled" class="multi-select-search">
         <mat-select
           data-cy="paymentType"
           formControlName="paymentType"
@@ -142,8 +143,8 @@
             {{ 'LIDI.PAYMENT.' + type | translate }}
           </mat-option>
         </mat-select>
-        <mat-error fieldErrors></mat-error>
-      </mat-form-field>
+      </div>
+      <app-atlas-field-error [form]="form" controlName="paymentType"></app-atlas-field-error>
     </div>
   </div>
 
@@ -153,64 +154,45 @@
       <form-url-component [formGroup]="form"></form-url-component>
     </div>
     <div class="d-flex flex-column col-3 pe-3">
-      <mat-label class="font-bold-lg required-indicator"
-        >{{ 'LIDI.LINE.FONT_RGB' | translate }}
-      </mat-label>
-      <mat-label class="font-regular-sm"
-        >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ '#4AC44F' }}</mat-label
-      >
       <app-rgb-picker
         [formGroup]="form"
         attributeName="colorFontRgb"
         data-cy="colorFontRgb"
         defaultColor="#000000"
+        label="LIDI.LINE.FONT_RGB"
       ></app-rgb-picker>
     </div>
-
     <div class="d-flex flex-column col-3">
-      <mat-label class="font-bold-lg required-indicator"
-        >{{ 'LIDI.LINE.FONT_CMYK' | translate }}
-      </mat-label>
-      <mat-label class="font-regular-sm"
-        >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ '0,0,0,100' }}</mat-label
-      >
       <app-cmyk-picker
         [formGroup]="form"
         attributeName="colorFontCmyk"
         data-cy="colorFontCmyk"
         defaultColor="100,100,100,100"
+        exampleLabel="0,0,0,100"
+        label="LIDI.LINE.FONT_CMYK"
       ></app-cmyk-picker>
     </div>
   </div>
 
   <div class="col-12 d-flex justify-content-end mt-3">
     <div class="d-flex flex-column col-3 pe-3">
-      <mat-label class="font-bold-lg required-indicator"
-        >{{ 'LIDI.LINE.BACKGROUND_RGB' | translate }}
-      </mat-label>
-      <mat-label class="font-regular-sm"
-        >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ '#4AC44F' }}</mat-label
-      >
       <app-rgb-picker
         [formGroup]="form"
         attributeName="colorBackRgb"
         data-cy="colorBackRgb"
         defaultColor="#FFFFFF"
+        label="LIDI.LINE.BACKGROUND_RGB"
       ></app-rgb-picker>
     </div>
 
     <div class="d-flex flex-column col-3">
-      <mat-label class="font-bold-lg required-indicator"
-        >{{ 'LIDI.LINE.BACKGROUND_CMYK' | translate }}
-      </mat-label>
-      <mat-label class="font-regular-sm"
-        >{{ 'FORM.FOR_EXAMPLE' | translate }} {{ '85,10,65,0' }}</mat-label
-      >
       <app-cmyk-picker
         [formGroup]="form"
         attributeName="colorBackCmyk"
         data-cy="colorBackCmyk"
         defaultColor="0,0,0,0"
+        exampleLabel="85,10,65,0"
+        label="LIDI.LINE.BACKGROUND_CMYK"
       ></app-cmyk-picker>
     </div>
   </div>
@@ -218,7 +200,7 @@
   <span class="font-bold-2xl">{{ 'FORM.SUPPLEMENTARY_INFORMATION' | translate }}</span>
   <div class="col-12 d-flex mt-3">
     <div class="d-flex flex-column col-6">
-      <form-comment [formGroup]="form" [displayInfoIcon]="false"></form-comment>
+      <form-comment [displayInfoIcon]="false" [formGroup]="form"></form-comment>
     </div>
   </div>
-</form>
+</ng-container>
