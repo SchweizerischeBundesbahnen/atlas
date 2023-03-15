@@ -4,6 +4,22 @@ $navMenuBtnHeight: 79px;
 $navMenuBtnDefaultLeft: 32.5px;
 $navMenuBtnLargeLeft: 56.5px;
 
+mat-sidenav {
+  background-color: variables.$navigationBackground;
+
+  mat-nav-list {
+    padding: initial;
+  }
+}
+
+mat-sidenav-content {
+  margin-left: 240px !important;
+
+  &.content-menu-closed {
+    margin-left: 139px;
+  }
+}
+
 .app-body {
   margin: 0;
   padding: 0;
@@ -18,16 +34,22 @@ $navMenuBtnLargeLeft: 56.5px;
   position: absolute;
   width: variables.$navigationDefaultSize;
   height: $navMenuBtnHeight;
-  vertical-align: middle;
   z-index: 2;
-  padding: 0 !important;
-  padding-top: 25px !important;
-  padding-left: $navMenuBtnDefaultLeft !important;
-  margin: 0 !important;
+  padding: 25px 0 0 $navMenuBtnDefaultLeft;
   font-weight: bold;
   text-align: left;
   color: variables.$primary-400;
-  border-radius: 0;
+  border-radius: initial;
+}
+
+.sidenav-menu-close-btn {
+  background-color: variables.$navigationBackground;
+  width: 100%;
+  text-align: left;
+  height: $navMenuBtnHeight;
+  padding: 25px 0 0 $navMenuBtnDefaultLeft;
+  font-weight: bold;
+  color: variables.$primary-400;
 }
 
 .bi-arrow-left,
@@ -35,19 +57,6 @@ $navMenuBtnLargeLeft: 56.5px;
   &:before {
     padding-right: 8px;
   }
-}
-
-.sidenav-menu-btn span {
-  padding-left: 0;
-  white-space: nowrap;
-}
-
-.nav-list-spacer {
-  height: $navMenuBtnHeight !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  background: variables.$navigationBackground;
-  cursor: pointer;
 }
 
 .full-height {
@@ -62,15 +71,5 @@ $navMenuBtnLargeLeft: 56.5px;
 
 .page-container {
   height: calc(100vh - #{variables.$headerHeight});
-}
-
-.page-container mat-sidenav {
-  height: 100%;
-}
-
-@include variables.large-screen() {
-  .sidenav-menu-btn {
-    width: variables.$navigationLargeSize;
-    padding: 25px 0 0 $navMenuBtnLargeLeft !important;
-  }
+  background: #f2f2f2;
 }

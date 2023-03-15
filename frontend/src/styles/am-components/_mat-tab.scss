@@ -1,0 +1,39 @@
+@use 'src/styles/variables' as variables;
+
+nav[mat-tab-nav-bar].tabs {
+  .mat-mdc-tab-link {
+    opacity: unset;
+    display: unset;
+    background-color: variables.$gray-100;
+    border-radius: variables.$border-radius-small variables.$border-radius-small 0 0;
+    margin-right: 5px;
+    flex-grow: 0;
+    overflow: hidden;
+    color: variables.$primary-400;
+
+    &.mdc-tab--active {
+      background-color: white;
+      color: variables.$gray-900;
+    }
+
+    .mdc-tab__text-label {
+      color: inherit;
+    }
+
+    &:first-child {
+      border-top-left-radius: variables.$border-radius;
+    }
+
+    &:last-child {
+      border-top-right-radius: variables.$border-radius;
+    }
+
+    .mdc-tab-indicator {
+      display: none;
+    }
+  }
+}
+
+.asd {
+  background-color: #4471c7;
+}

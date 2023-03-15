@@ -1,15 +1,13 @@
 <div [formGroup]="formGroup" class="d-flex flex-column">
-  <div class="info-icon-position">
-    <mat-label [ngClass]="required ? 'required-indicator' : ''" class="font-bold-lg"
-      >{{ label | translate }}
-    </mat-label>
-  </div>
-  <mat-label *ngIf="displayLabel" class="font-regular-sm">
-    {{ 'FORM.TEXT' | translate }} |
-    {{ 'FORM.MAX_CHARS' | translate : { numberOfChars: 1500 } }}
-  </mat-label>
-  <mat-form-field appearance="outline" class="atlas-text-area">
-    <textarea data-cy="comment" formControlName="comment" matInput rows="7"></textarea>
-    <mat-error fieldErrors></mat-error>
-  </mat-form-field>
+  <app-atlas-label-field
+    [fieldExamples]="[
+      { label: 'FORM.TEXT', translate: true },
+      { label: ' |', translate: false },
+      { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '1500' } }
+    ]"
+    [required]="required"
+    fieldLabel="{{ label }}"
+  ></app-atlas-label-field>
+  <textarea data-cy="comment" formControlName="comment" matInput rows="7"></textarea>
+  <app-atlas-field-error [form]="formGroup" controlName="comment"></app-atlas-field-error>
 </div>
