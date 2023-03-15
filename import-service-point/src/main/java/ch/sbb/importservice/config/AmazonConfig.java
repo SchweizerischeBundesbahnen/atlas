@@ -17,7 +17,7 @@ public class AmazonConfig {
   public static final String EXPORT_FILES = "export-files";
 
   @Value("${amazon.bucketConfigs.export-files.bucketName}")
-  private String bucketName;
+  public static String bucketName;
 
   @Bean
   @ConfigurationProperties(prefix = "amazon")
