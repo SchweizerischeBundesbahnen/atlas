@@ -4,7 +4,7 @@
     (click)="buttonClicked.emit()"
     [type]="submitButton ? 'submit' : 'button'"
     [disabled]="disabled"
-    [attr.data-cy]="buttonDataCy"
+    attr.data-cy="{{ buttonDataCy }}"
   >
     {{ buttonText | translate }}
   </button>
