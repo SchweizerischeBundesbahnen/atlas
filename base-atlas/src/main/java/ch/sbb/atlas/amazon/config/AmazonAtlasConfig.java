@@ -27,8 +27,8 @@ public class AmazonAtlasConfig {
 
         Rule lifeCycleRules = getExpirationRule(amazonBucketConfig);
 
-            BucketLifecycleConfiguration bucketLifecycleConfiguration = new BucketLifecycleConfiguration().withRules(lifeCycleRules);
-            s3Client.setBucketLifecycleConfiguration(amazonBucketConfig.getBucketName(), bucketLifecycleConfiguration);
+        BucketLifecycleConfiguration bucketLifecycleConfiguration = new BucketLifecycleConfiguration().withRules(lifeCycleRules);
+        s3Client.setBucketLifecycleConfiguration(amazonBucketConfig.getBucketName(), bucketLifecycleConfiguration);
         return s3Client;
     }
 

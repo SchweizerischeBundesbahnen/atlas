@@ -1,6 +1,7 @@
 package ch.sbb.line.directory.configuration;
 
-import ch.sbb.atlas.amazon.config.AmazonAtlasConfig;
+import static ch.sbb.atlas.amazon.config.AmazonAtlasConfig.configureAmazonS3Client;
+
 import ch.sbb.atlas.amazon.config.AmazonConfigProps;
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.amazon.service.AmazonServiceImpl;
@@ -32,13 +33,13 @@ public class AmazonConfig {
     @Bean
     @Qualifier(EXPORT_FILES)
     public AmazonService amazonExportService(FileService fileService) {
-        return new AmazonServiceImpl(AmazonAtlasConfig.configureAmazonS3Client(amazonConfigProps(), EXPORT_FILES), fileService, bucketNameExportFiles);
+        return new AmazonServiceImpl(configureAmazonS3Client(amazonConfigProps(), EXPORT_FILES), fileService, bucketNameExportFiles);
     }
 
     @Bean
     @Qualifier(HEARING_DOCUMENTS)
     public AmazonService amazonHearingDocumentService(FileService fileService) {
-        return new AmazonServiceImpl(AmazonAtlasConfig.configureAmazonS3Client(amazonConfigProps(), HEARING_DOCUMENTS), fileService, bucketNameHearingDocument);
+        return new AmazonServiceImpl(configureAmazonS3Client(amazonConfigProps(), HEARING_DOCUMENTS), fileService, bucketNameHearingDocument);
     }
 
 }
