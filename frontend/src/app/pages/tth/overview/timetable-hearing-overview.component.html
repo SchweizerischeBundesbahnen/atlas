@@ -1,1 +1,12 @@
-<p>timetable-hearing-overview works!</p>
+<div class="ps-5 pt-5 pb-5">
+  <div class="card-container pt-5 pb-4">
+    <div>
+      <atlas-canton-card [canton]="swiss"></atlas-canton-card>
+    </div>
+  </div>
+  <div class="card-container">
+    <div *ngFor="let canton of cantons">
+      <atlas-canton-card [canton]="canton"></atlas-canton-card>
+    </div>
+  </div>
+</div>
