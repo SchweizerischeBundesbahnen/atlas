@@ -29,7 +29,7 @@ describe('UserPermissionManager', () => {
       },
     ]);
     tick();
-    userPermissionManager.clearSboidsIfNotWriter();
+    userPermissionManager.clearSboidsAndCantonsIfNotWriter();
     expect(userPermissionManager.userPermission.permissions[0].sboids).toEqual([
       'ch:1:sboid:writer',
     ]);

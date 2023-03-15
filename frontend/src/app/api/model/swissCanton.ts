@@ -11,7 +11,7 @@
  */
 
 /**
- * SwissCanton the location is in
+ * Cantons the user has administrative rights on
  */
 export type SwissCanton =
   | 'ZURICH'

@@ -9,7 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { UserPermissionVersionModel } from './userPermissionVersionModel';
+import { UserPermission } from './userPermission';
 
 export interface UserPermissionCreateModel {
   /**
@@ -19,5 +19,5 @@ export interface UserPermissionCreateModel {
   /**
    * User permissions
    */
-  permissions: Array<UserPermissionVersionModel>;
+  permissions: Array<UserPermission>;
 }
