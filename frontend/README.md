@@ -16,6 +16,7 @@ See [ESTA Documentation](https://confluence.sbb.ch/display/CLEW/ESTA-Web).
       - [Cypress Tests results for troubleshooting](#cypress-tests-results-for-troubleshooting)
   * [Set SBB Artifactory as npm registry](#set-sbb-artifactory-as-npm-registry)
   * [Azure AD App Registration](#azure-ad-app-registration)
+  * [Test Service Worker:](#test-service-worker)
 - [Monitoring and Logging](#monitoring-and-logging)
 
 <!-- tocstop -->
