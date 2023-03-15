@@ -13,5 +13,7 @@ public interface AmazonService {
 
   File pullFile(String filePath) throws IOException;
 
+  void deleteFile(String filePath);
+
   List<String> getS3ObjectKeysFromPrefix(String dirPath, String prefix);
 }
