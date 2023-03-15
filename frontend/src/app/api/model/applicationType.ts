@@ -10,10 +10,11 @@
  * Do not edit the class manually.
  */
 
-export type ApplicationType = 'TTFN' | 'LIDI' | 'BODI';
+export type ApplicationType = 'TTFN' | 'LIDI' | 'BODI' | 'TIMETABLE_HEARING';
 
 export const ApplicationType = {
   Ttfn: 'TTFN' as ApplicationType,
   Lidi: 'LIDI' as ApplicationType,
   Bodi: 'BODI' as ApplicationType,
+  TimetableHearing: 'TIMETABLE_HEARING' as ApplicationType,
 };

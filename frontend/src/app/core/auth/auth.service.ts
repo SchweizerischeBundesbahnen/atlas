@@ -10,7 +10,7 @@ import {
   ApplicationRole,
   ApplicationType,
   UserAdministrationService,
-  UserPermissionVersionModel,
+  UserPermission,
 } from '../../api';
 
 @Injectable({
@@ -20,7 +20,7 @@ export class AuthService {
   readonly eventUserComponentNotification: EventEmitter<User> = new EventEmitter<User>();
   private readonly REQUESTED_ROUTE_STORAGE_KEY = 'requested_route';
 
-  private permissions: UserPermissionVersionModel[] = [];
+  private permissions: UserPermission[] = [];
 
   constructor(
     private oauthService: OAuthService,
@@ -78,7 +78,7 @@ export class AuthService {
   // Determines if we show the create button
   static hasPermissionsToCreateWithPermissions(
     applicationType: ApplicationType,
-    permissions: UserPermissionVersionModel[],
+    permissions: UserPermission[],
     isAdmin: boolean
   ): boolean {
     if (isAdmin) {
@@ -97,7 +97,7 @@ export class AuthService {
   static hasPermissionsToWriteWithPermissions(
     applicationType: ApplicationType,
     sboid: string | undefined,
-    permissions: UserPermissionVersionModel[],
+    permissions: UserPermission[],
     isAdmin: boolean
   ): boolean {
     if (isAdmin) {
@@ -143,16 +143,21 @@ export class AuthService {
   }
 
   private static getApplicationPermission(
-    permissions: UserPermissionVersionModel[],
+    permissions: UserPermission[],
     applicationType: ApplicationType
-  ): UserPermissionVersionModel {
+  ): UserPermission {
     const applicationPermissions = permissions.filter(
       (permission) => permission.application === applicationType
     );
     if (applicationPermissions.length === 1) {
       return applicationPermissions[0];
     }
-    return { application: applicationType, role: ApplicationRole.Reader, sboids: [] };
+    return {
+      application: applicationType,
+      role: ApplicationRole.Reader,
+      sboids: [],
+      swissCantons: [],
+    };
   }
 
   login() {

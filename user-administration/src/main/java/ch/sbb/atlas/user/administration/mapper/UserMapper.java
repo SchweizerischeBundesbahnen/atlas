@@ -31,15 +31,12 @@ public class UserMapper {
     Set<UserAdministrationPermissionModel> permissionModels = userModel.getPermissions().stream()
         .map(
             permission -> UserAdministrationPermissionModel.builder()
-                .application(
-                    permission.getApplication())
-                .role(
-                    permission.getRole())
-                .sboids(
-                    new HashSet<>(permission.getSboids()))
+                .application(permission.getApplication())
+                .role(permission.getRole())
+                .sboids(new HashSet<>(permission.getSboids()))
+                .swissCantons(new HashSet<>(permission.getSwissCantons()))
                 .build())
-        .collect(
-            Collectors.toSet());
+        .collect(Collectors.toSet());
     return UserAdministrationModel.builder()
         .sbbUserId(userModel.getSbbUserId())
         .permissions(permissionModels)
