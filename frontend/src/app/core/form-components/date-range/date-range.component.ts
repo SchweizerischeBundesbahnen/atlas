@@ -5,6 +5,7 @@ import { FormGroup } from '@angular/forms';
 @Component({
   selector: 'form-date-range',
   templateUrl: './date-range.component.html',
+  styleUrls: ['../text-field/text-field.component.scss'],
 })
 export class DateRangeComponent {
   @Input() formGroup!: FormGroup;

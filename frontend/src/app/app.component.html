@@ -1,22 +1,19 @@
 <div class="d-flex flex-column full-height-no-scroll">
   <app-header></app-header>
   <div class="app-body">
-    <div [@fadeInOut]="sidenav.opened" class="sidenav-menu-btn btn me-3" (click)="sidenav.toggle()">
-      <ng-container [ngSwitch]="sidenav.opened">
-        <span *ngSwitchCase="false" class="bi-list">{{ 'MENU.TITLE' | translate }}</span>
-        <span *ngSwitchCase="true" class="bi-arrow-left">{{
-          'MENU.TITLE_OPENED' | translate
-        }}</span>
-      </ng-container>
+    <div *ngIf="!sideNavOpened" class="sidenav-menu-btn btn" (click)="toggleSideNav()">
+      <span class="bi-list">{{ 'MENU.TITLE' | translate }}</span>
     </div>
     <mat-sidenav-container class="page-container">
-      <mat-sidenav #sidenav mode="side" opened>
+      <mat-sidenav #sidenav mode="side" [opened]="sideNavOpened">
         <mat-nav-list>
-          <div class="nav-list-spacer" (click)="sidenav.toggle()">&nbsp;</div>
+          <div class="sidenav-menu-close-btn btn" (click)="toggleSideNav()">
+            <span class="bi-arrow-left">{{ 'MENU.TITLE_OPENED' | translate }}</span>
+          </div>
           <app-side-nav></app-side-nav>
         </mat-nav-list>
       </mat-sidenav>
-      <mat-sidenav-content [ngClass]="!sidenav.opened ? 'content-menu-closed' : ''">
+      <mat-sidenav-content [class.content-menu-closed]="!sideNavOpened">
         <div class="full-height">
           <app-loading-spinner [isLoading]="loadingSpinnerService.isLoading" [fullScreen]="true">
           </app-loading-spinner>

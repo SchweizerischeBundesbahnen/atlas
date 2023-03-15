@@ -1,11 +1,22 @@
 <h3 class="font-bold-lg">{{ 'VERSION_TABLE.TITLE' | translate }}</h3>
-<table mat-table multiTemplateDataRows [dataSource]="records" data-cy="version-switch">
+<table
+  mat-table
+  multiTemplateDataRows
+  [dataSource]="records"
+  data-cy="version-switch"
+  class="atlas-table"
+>
   <ng-container *ngFor="let column of tableColumns" matColumnDef="{{ column.value }}">
-    <th scope="col" mat-header-cell *matHeaderCellDef class="font-bold-base color-primary-400">
+    <th
+      scope="col"
+      mat-header-cell
+      *matHeaderCellDef
+      class="font-bold-base color-primary-400 bordered-cell"
+    >
       {{ column.headerTitle | translate }}
     </th>
     <ng-container *matCellDef="let value">
-      <td mat-cell *ngIf="!value.placeholder">
+      <td mat-cell *ngIf="!value.placeholder" class="bordered-cell">
         {{ format(value[column.value!], column) }}
       </td>
     </ng-container>

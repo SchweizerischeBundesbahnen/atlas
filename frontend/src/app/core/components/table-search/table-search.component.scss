@@ -1,29 +1,77 @@
 @use 'src/styles/variables' as variables;
 
-:host::ng-deep {
-  mat-form-field mat-chip-list .mat-chip-list-wrapper {
-    margin-right: unset !important;
-    padding-left: 0.3rem;
+%atlas-outline {
+  outline: 1px solid variables.$primary-400;
+  border-radius: 5px;
+  padding-left: 1rem;
 
-    mat-chip {
-      min-height: 20px;
-      padding: 0 7px;
-      margin: 1px 2px;
-    }
-  }
-
-  .mat-standard-chip {
-    height: unset !important;
-    word-break: break-all;
-    max-width: 90%;
-  }
-
-  .search-box .mat-form-field-appearance-outline .mat-form-field-outline {
-    background-color: variables.$gray-50;
-    border-radius: 5px;
+  &:focus-within,
+  &:hover {
+    outline: 3px solid variables.$primary-400;
   }
 }
 
+// Main search field
+.search-main-field {
+  @extend %atlas-outline;
+  background-color: variables.$gray-50;
+  min-height: 50px;
+
+  input {
+    margin-left: 8px;
+    margin-top: 6px;
+  }
+
+  i.bi-search {
+    margin-top: 8px;
+    margin-left: 8px;
+    float: right;
+  }
+
+  mat-chip-grid {
+    margin-left: 8px;
+    margin-top: 4px;
+
+    mat-chip-row {
+      margin: 1px 2px;
+
+      i {
+        font-size: 15px;
+      }
+    }
+  }
+}
+
+//Date search field
+.container-date-field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.search-date-field {
+  @extend %atlas-outline;
+  display: flex;
+  height: 34px;
+  width: 100%;
+
+  input {
+    border: unset;
+    outline: unset;
+    width: 100%;
+  }
+
+  mat-datepicker-toggle {
+    width: 6%;
+  }
+}
+
+mat-select {
+  width: 100%;
+}
+
+// search row
 .search-row {
   display: flex;
   flex-direction: row;

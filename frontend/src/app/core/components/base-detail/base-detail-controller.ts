@@ -3,7 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { Record } from './record';
 import { DialogService } from '../dialog/dialog.service';
 import { EMPTY, Observable, of, Subject } from 'rxjs';
-import moment from 'moment/moment';
+import moment from 'moment';
 import { Page } from '../../model/page';
 import { NotificationService } from '../../notification/notification.service';
 import { DateService } from '../../date/date.service';
@@ -42,34 +42,6 @@ export abstract class BaseDetailController<TYPE extends Record> implements OnIni
   ngOnInit(): void {
     this.init();
     this.showSwitch = !!Array.isArray(this.records);
-  }
-
-  private init() {
-    this.getRecord();
-    if (this.records) {
-      this.records.forEach((item, index) => (item.versionNumber = index + 1));
-    }
-    this.form = this.getFormGroup(this.record);
-    this.switchVersionEvent.next(this.record);
-    if (this.isExistingRecord()) {
-      this.form.disable();
-    } else {
-      this.form.enable();
-    }
-  }
-
-  private getRecord() {
-    const records = this.readRecord();
-
-    //if is a version/s already persist get switched or actual version and fill the Form
-    if (Array.isArray(records) && records.length > 0) {
-      this.records = records;
-      this.sortRecords();
-      this.setSelectedRecord(this.evaluateSelectedRecord(this.records));
-    } else {
-      //is creating a new version, prepare empty Form
-      this.setSelectedRecord(records);
-    }
   }
 
   evaluateSelectedRecord(records: Array<TYPE>) {
@@ -274,6 +246,34 @@ export abstract class BaseDetailController<TYPE extends Record> implements OnIni
 
   protected getFormControlsToDisable(): string[] {
     return [];
+  }
+
+  private init() {
+    this.getRecord();
+    if (this.records) {
+      this.records.forEach((item, index) => (item.versionNumber = index + 1));
+    }
+    this.form = this.getFormGroup(this.record);
+    this.switchVersionEvent.next(this.record);
+    if (this.isExistingRecord()) {
+      this.form.disable();
+    } else {
+      this.form.enable();
+    }
+  }
+
+  private getRecord() {
+    const records = this.readRecord();
+
+    //if is a version/s already persist get switched or actual version and fill the Form
+    if (Array.isArray(records) && records.length > 0) {
+      this.records = records;
+      this.sortRecords();
+      this.setSelectedRecord(this.evaluateSelectedRecord(this.records));
+    } else {
+      //is creating a new version, prepare empty Form
+      this.setSelectedRecord(records);
+    }
   }
 
   private isVersionSwitched() {

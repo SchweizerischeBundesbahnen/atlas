@@ -65,29 +65,29 @@ describe('SideNavComponent', () => {
   });
 
   it('home route should be active', () => {
-    assertActiveNavItem('PAGES.HOME');
+    assertActiveNavItem('PAGES.HOME_MENU');
   });
 
   it('timetable route should be active', async () => {
     await router.navigate(['timetable-field-number']);
     fixture.detectChanges();
-    assertActiveNavItem('PAGES.TTFN.TITLE');
+    assertActiveNavItem('PAGES.TTFN.TITLE_MENU');
   });
 
   it('line directory route should be active', async () => {
     await router.navigate(['line-directory']);
     fixture.detectChanges();
-    assertActiveNavItem('PAGES.LIDI.TITLE');
+    assertActiveNavItem('PAGES.LIDI.TITLE_MENU');
   });
 
   const assertActiveNavItem = (pageTitle: string) => {
-    const navItems = fixture.debugElement.queryAll(By.css('a'));
+    const navItems = fixture.debugElement.queryAll(By.css('div'));
     const activeNavItemIndex = navItems.findIndex((item) =>
       Object.keys(item.classes).includes('route-active')
     );
-    expect(activeNavItemIndex).toBe(
-      component.enabledPages.findIndex((page) => page.title === pageTitle)
+
+    expect(navItems[activeNavItemIndex].nativeNode.querySelector('span').textContent).toBe(
+      pageTitle
     );
-    expect(activeNavItemIndex).toBe(component.activePageIndex);
   };
 });

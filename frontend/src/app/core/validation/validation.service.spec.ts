@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { ValidationService } from './validation.service';
-import moment from 'moment/moment';
+import moment from 'moment';
 
 describe('ValidationService', () => {
   let service: ValidationService;

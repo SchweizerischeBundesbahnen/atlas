@@ -1,0 +1,33 @@
+<app-atlas-label-field
+  [fieldExamples]="fieldExamples"
+  [required]="required"
+  fieldLabel="{{ fieldLabel }}"
+  infoIconLink="{{ infoIconLink }}"
+  infoIconTitle="{{ infoIconTitle }}"
+></app-atlas-label-field>
+<form [formGroup]="formGroup">
+  <div class="text-field-wrapper">
+    <div class="text-field-flex">
+      <ng-container
+        #customChildInputPrefixTemplate
+        *ngTemplateOutlet="customChildInputPrefixTemplate"
+      >
+      </ng-container>
+      <input
+        [formControlName]="controlName"
+        [ngStyle]="customInputNgStyle"
+        type="text"
+        [attr.data-cy]="controlName"
+      />
+      <ng-container
+        #customChildInputPostfixTemplate
+        *ngTemplateOutlet="customChildInputPostfixTemplate"
+      ></ng-container>
+    </div>
+    <app-atlas-field-error
+      [customError]="customError"
+      [form]="formGroup"
+      controlName="{{ controlName }}"
+    ></app-atlas-field-error>
+  </div>
+</form>

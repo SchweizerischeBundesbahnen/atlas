@@ -1,25 +1,28 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { LoadingSpinnerService } from './core/components/loading-spinner/loading-spinner.service';
-import { animate, style, transition, trigger } from '@angular/animations';
 import { ServiceWorkerService } from './service-worker.service';
+import { MatSidenav } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  animations: [
-    trigger('fadeInOut', [
-      transition('true <=> false', [style({ opacity: 0 }), animate(650, style({ opacity: 1 }))]),
-    ]),
-  ],
   providers: [ServiceWorkerService],
 })
 export class AppComponent {
+  @ViewChild('sidenav') sideNav?: MatSidenav;
+  sideNavOpened = true;
+
   constructor(
     public loadingSpinnerService: LoadingSpinnerService,
     private readonly _swService: ServiceWorkerService
   ) {
     loadingSpinnerService.initLoadingSpinner();
+  }
+
+  toggleSideNav(): void {
+    this.sideNav?.toggle();
+    this.sideNavOpened = !!this.sideNav?.opened;
   }
 }
 
