@@ -4,6 +4,10 @@
   overflow: auto;
   height: calc(100% - #{variables.$footerHeight});
   pointer-events: auto !important;
+
+  * {
+    overflow: unset;
+  }
 }
 
 .route-to-dialog-backdrop {
