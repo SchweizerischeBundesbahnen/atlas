@@ -3,14 +3,14 @@
 </div>
 
 <app-table
-  [tableSearchFieldTemplate]="lineTypeSelection"
-  [tableData]="lineVersions"
-  [totalCount]="totalCount$"
-  [tableColumns]="linesTableColumns"
-  [canEdit]="true"
-  [isLoading]="isLoading"
   (editElementEvent)="editVersion($event)"
   (getTableElementsEvent)="getOverview($event)"
+  [canEdit]="true"
+  [isLoading]="isLoading"
+  [tableColumns]="linesTableColumns"
+  [tableData]="lineVersions"
+  [tableSearchFieldTemplate]="lineTypeSelection"
+  [totalCount]="totalCount$"
   data-cy="lidi-lines"
 >
 </app-table>
@@ -18,17 +18,18 @@
 <ng-template #lineTypeSelection>
   <div class="d-flex flex-column col-3 pe-3">
     <mat-label class="font-bold-lg">{{ 'LIDI.TYPE' | translate }}</mat-label>
-    <mat-form-field appearance="outline" class="form-outline">
+    <div class="multi-select-search">
       <mat-select
         (selectionChange)="onLineTypeSelectionChange()"
         [(value)]="activeLineTypes"
-        multiple
+        class="font-bold-base"
         data-cy="table-search-line-type"
+        multiple
       >
         <mat-option *ngFor="let lineType of LINE_TYPES" [value]="lineType">{{
           'LIDI.LINE.TYPES.' + lineType | translate
         }}</mat-option>
       </mat-select>
-    </mat-form-field>
+    </div>
   </div>
 </ng-template>

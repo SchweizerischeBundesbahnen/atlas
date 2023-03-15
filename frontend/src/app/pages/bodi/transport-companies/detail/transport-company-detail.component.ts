@@ -18,35 +18,21 @@ import { TableColumn } from '../../../../core/components/table/table-column';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { BusinessOrganisationLanguageService } from '../../../../core/form-components/bo-select/business-organisation-language.service';
+import { TransportCompanyFormGroup } from './transport-company-form-group';
 
 @Component({
   templateUrl: './transport-company-detail.component.html',
   styleUrls: ['./transport-company-detail.component.scss'],
 })
 export class TransportCompanyDetailComponent implements OnInit {
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public dialogData: any,
-    private readonly businessOrganisationsService: BusinessOrganisationsService,
-    private readonly transportCompanyRelationsService: TransportCompanyRelationsService,
-    private readonly authService: AuthService,
-    private readonly businessOrganisationLanguageService: BusinessOrganisationLanguageService,
-    private readonly dialogService: DialogService,
-    private readonly notificationService: NotificationService,
-    readonly dialogRef: MatDialogRef<any>
-  ) {}
-
-  private static readonly commentControlName = 'comment';
-
   transportCompany!: TransportCompany;
+  transportFormGroup!: FormGroup<TransportCompanyFormGroup>;
   transportCompanyRelations!: TransportCompanyBoRelation[];
   businessOrganisationSearchResults: Observable<BusinessOrganisation[]> = of([]);
   selectedTransportCompanyRelationIndex = -1;
-
   editMode = false;
-
   totalCountOfFoundBusinessOrganisations = 0;
   readonly pageSizeForBusinessOrganisationSearch = 100;
-
   readonly transportCompanyRelationTableColumns: TableColumn<TransportCompanyBoRelation>[] = [
     {
       headerTitle: 'BODI.BUSINESS_ORGANISATION.SAID',
@@ -84,13 +70,6 @@ export class TransportCompanyDetailComponent implements OnInit {
     },
   ];
 
-  readonly commentFormGroup = new FormGroup({
-    [TransportCompanyDetailComponent.commentControlName]: new FormControl<string | undefined>({
-      disabled: true,
-      value: undefined,
-    }),
-  });
-
   readonly form = new FormGroup(
     {
       businessOrganisation: new FormControl<BusinessOrganisation | null>(null, [
@@ -102,6 +81,17 @@ export class TransportCompanyDetailComponent implements OnInit {
     [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
   );
 
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public dialogData: any,
+    private readonly businessOrganisationsService: BusinessOrganisationsService,
+    private readonly transportCompanyRelationsService: TransportCompanyRelationsService,
+    private readonly authService: AuthService,
+    private readonly businessOrganisationLanguageService: BusinessOrganisationLanguageService,
+    private readonly dialogService: DialogService,
+    private readonly notificationService: NotificationService,
+    readonly dialogRef: MatDialogRef<any>
+  ) {}
+
   readonly selectOption = (item: BusinessOrganisation) => {
     return `${item.organisationNumber} - ${item[this.getCurrentLanguageAbbreviation()]} - ${
       item[this.getCurrentLanguageDescription()]
@@ -111,9 +101,22 @@ export class TransportCompanyDetailComponent implements OnInit {
   ngOnInit() {
     this.transportCompany = this.dialogData.transportCompanyDetail[0];
     this.transportCompanyRelations = this.dialogData.transportCompanyDetail[1];
-    this.commentFormGroup
-      .get(TransportCompanyDetailComponent.commentControlName)
-      ?.setValue(this.transportCompany.comment);
+    this.transportFormGroup = new FormGroup<TransportCompanyFormGroup>({
+      id: new FormControl({ value: this.transportCompany.id, disabled: true }),
+      number: new FormControl({ value: this.transportCompany.number, disabled: true }),
+      abbreviation: new FormControl({ value: this.transportCompany.abbreviation, disabled: true }),
+      description: new FormControl({ value: this.transportCompany.description, disabled: true }),
+      enterpriseId: new FormControl({ value: this.transportCompany.enterpriseId, disabled: true }),
+      businessRegisterName: new FormControl({
+        value: this.transportCompany.businessRegisterName,
+        disabled: true,
+      }),
+      businessRegisterNumber: new FormControl({
+        value: this.transportCompany.businessRegisterNumber,
+        disabled: true,
+      }),
+      comment: new FormControl({ value: this.transportCompany.comment, disabled: true }),
+    });
   }
 
   isAdmin(): boolean {
@@ -136,11 +139,6 @@ export class TransportCompanyDetailComponent implements OnInit {
           this.cancelEdit();
         }
       });
-  }
-
-  private cancelEdit(): void {
-    this.editMode = false;
-    this.form.reset();
   }
 
   getBusinessOrganisations(searchString: string): void {
@@ -206,6 +204,11 @@ export class TransportCompanyDetailComponent implements OnInit {
         )
       )
       .subscribe();
+  }
+
+  private cancelEdit(): void {
+    this.editMode = false;
+    this.form.reset();
   }
 
   private reloadRelations(): Observable<TransportCompanyBoRelation[]> {

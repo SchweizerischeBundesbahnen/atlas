@@ -2,22 +2,22 @@
   <ng-content></ng-content>
   <ng-select
     #ngSelect
+    (change)="changeTrigger.emit($event)"
+    [bindValue]="bindValueInp"
+    [formControlName]="controlName"
     [items]="items$ | async"
     [minTermLength]="2"
     [placeholder]="placeholderTextKey | translate"
     [typeahead]="searchTrigger"
     notFoundText="{{ 'COMMON.NODATAFOUND' | translate }}"
     typeToSearchText="{{ 'COMMON.TYPE_TO_SEARCH' | translate }}"
-    [formControlName]="controlName"
-    [bindValue]="bindValueInp"
-    (change)="changeTrigger.emit($event)"
   >
-    <ng-template ng-label-tmp let-item="item">
+    <ng-template let-item="item" ng-label-tmp>
       <ng-container
         *ngTemplateOutlet="labelOptionTemplates; context: { $implicit: item }"
       ></ng-container>
     </ng-template>
-    <ng-template ng-option-tmp let-item="item">
+    <ng-template let-item="item" ng-option-tmp>
       <ng-container
         *ngTemplateOutlet="labelOptionTemplates; context: { $implicit: item }"
       ></ng-container>

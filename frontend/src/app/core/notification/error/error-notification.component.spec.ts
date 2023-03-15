@@ -89,9 +89,9 @@ describe('Error Notification component', () => {
 
     //then
     const snackBarContainer =
-      fixture.nativeElement.offsetParent.querySelector('snack-bar-container');
+      fixture.nativeElement.offsetParent.querySelector('mat-snack-bar-container');
     expect(snackBarContainer).toBeDefined();
-    expect(snackBarContainer.textContent).toContain('TTFN.CONFLICT.NUMBER');
+    expect(snackBarContainer.textContent.trim()).toContain('TTFN.CONFLICT.NUMBER');
     expect(snackBarContainer.classList).toContain('error');
   });
 
@@ -101,9 +101,9 @@ describe('Error Notification component', () => {
 
     //then
     const snackBarContainer =
-      fixture.nativeElement.offsetParent.querySelector('snack-bar-container');
+      fixture.nativeElement.offsetParent.querySelector('mat-snack-bar-container');
     expect(snackBarContainer).toBeDefined();
-    expect(snackBarContainer.textContent).toContain('CODE_ERROR');
+    expect(snackBarContainer.textContent.trim()).toContain('CODE_ERROR');
     expect(snackBarContainer.classList).toContain('error');
   });
 
@@ -117,9 +117,9 @@ describe('Error Notification component', () => {
 
     //then
     const snackBarContainer =
-      fixture.nativeElement.offsetParent.querySelector('snack-bar-container');
+      fixture.nativeElement.offsetParent.querySelector('mat-snack-bar-container');
     expect(snackBarContainer).toBeDefined();
-    expect(snackBarContainer.textContent).toContain('GENERIC_ERROR');
+    expect(snackBarContainer.textContent.trim()).toContain('GENERIC_ERROR');
     expect(snackBarContainer.classList).toContain('error');
   });
 
@@ -145,9 +145,9 @@ describe('Error Notification component', () => {
 
     //then
     const snackBarContainer =
-      fixture.nativeElement.offsetParent.querySelector('snack-bar-container');
+      fixture.nativeElement.offsetParent.querySelector('mat-snack-bar-container');
     expect(snackBarContainer).toBeDefined();
-    expect(snackBarContainer.textContent).toContain('ERROR.WARNING.VERSIONING_NO_CHANGES');
+    expect(snackBarContainer.textContent.trim()).toContain('ERROR.WARNING.VERSIONING_NO_CHANGES');
     expect(snackBarContainer.classList).toContain('warning');
   });
 });

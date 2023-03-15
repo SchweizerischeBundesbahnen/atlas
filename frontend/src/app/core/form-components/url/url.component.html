@@ -1,14 +1,19 @@
 <div [formGroup]="formGroup" class="d-flex flex-column col-12 pe-12">
-  <mat-label class="font-bold-lg">{{ 'LIDI.ICON' | translate }} </mat-label>
-  <mat-label class="font-regular-sm">
-    {{ 'FORM.FOR_EXAMPLE' | translate }} {{ 'https://sbb.ch' }} |
-    {{ 'FORM.MAX_CHARS' | translate: { numberOfChars: 255 } }}
-  </mat-label>
-  <mat-form-field>
-    <input data-cy="icon" formControlName="icon" matInput />
-    <a [attr.href]="formGroup.value.icon" matSuffix target="_blank">
-      <link-icon></link-icon>
-    </a>
-    <mat-error fieldErrors></mat-error>
-  </mat-form-field>
+  <atlas-text-field
+    [fieldExamples]="[
+      { label: 'FORM.FOR_EXAMPLE', translate: true },
+      { label: 'https://sbb.ch', translate: false },
+      { label: ' |', translate: false },
+      { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '255' } }
+    ]"
+    [formGroup]="formGroup"
+    controlName="icon"
+    fieldLabel="LIDI.ICON"
+  >
+    <ng-template #customChildInputPostfixTemplate>
+      <a [attr.href]="formGroup.value.icon" matSuffix target="_blank">
+        <link-icon></link-icon>
+      </a>
+    </ng-template>
+  </atlas-text-field>
 </div>

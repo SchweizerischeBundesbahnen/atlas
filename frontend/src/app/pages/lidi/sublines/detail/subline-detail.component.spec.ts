@@ -8,7 +8,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AppTestingModule, authServiceMock } from '../../../../app.testing.module';
 import { InfoIconComponent } from '../../../../core/form-components/info-icon/info-icon.component';
-import { SearchSelectComponent } from '../../../../core/form-components/search-select/search-select.component';
 import {
   MockAppDetailWrapperComponent,
   MockBoSelectComponent,
@@ -17,6 +16,10 @@ import { MainlineSelectOptionPipe } from './mainline-select-option.pipe';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AuthService } from '../../../../core/auth/auth.service';
 import { LinkIconComponent } from '../../../../core/form-components/link-icon/link-icon.component';
+import { AtlasLabelFieldComponent } from '../../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import { AtlasFieldErrorComponent } from '../../../../core/form-components/atlas-field-error/atlas-field-error.component';
+import { TextFieldComponent } from '../../../../core/form-components/text-field/text-field.component';
+import { SearchSelectComponent } from '../../../../core/form-components/search-select/search-select.component';
 
 const sublineVersion: SublineVersion = {
   id: 1234,
@@ -102,9 +105,9 @@ describe('SublineDetailComponent for existing sublineVersion', () => {
     fixture.detectChanges();
 
     const snackBarContainer =
-      fixture.nativeElement.offsetParent.querySelector('snack-bar-container');
+      fixture.nativeElement.offsetParent.querySelector('mat-snack-bar-container');
     expect(snackBarContainer).toBeDefined();
-    expect(snackBarContainer.textContent).toBe('LIDI.SUBLINE.NOTIFICATION.EDIT_SUCCESS');
+    expect(snackBarContainer.textContent.trim()).toBe('LIDI.SUBLINE.NOTIFICATION.EDIT_SUCCESS');
     expect(snackBarContainer.classList).toContain('success');
     expect(router.navigate).toHaveBeenCalled();
   });
@@ -124,9 +127,9 @@ describe('SublineDetailComponent for existing sublineVersion', () => {
     fixture.detectChanges();
 
     const snackBarContainer =
-      fixture.nativeElement.offsetParent.querySelector('snack-bar-container');
+      fixture.nativeElement.offsetParent.querySelector('mat-snack-bar-container');
     expect(snackBarContainer).toBeDefined();
-    expect(snackBarContainer.textContent).toBe('LIDI.SUBLINE.NOTIFICATION.DELETE_SUCCESS');
+    expect(snackBarContainer.textContent.trim()).toBe('LIDI.SUBLINE.NOTIFICATION.DELETE_SUCCESS');
     expect(snackBarContainer.classList).toContain('success');
     expect(dialogRef.close).toHaveBeenCalled();
   });
@@ -159,9 +162,9 @@ describe('SublineDetailComponent for new sublineVersion', () => {
       fixture.detectChanges();
 
       const snackBarContainer =
-        fixture.nativeElement.offsetParent.querySelector('snack-bar-container');
+        fixture.nativeElement.offsetParent.querySelector('mat-snack-bar-container');
       expect(snackBarContainer).toBeDefined();
-      expect(snackBarContainer.textContent).toBe('LIDI.SUBLINE.NOTIFICATION.ADD_SUCCESS');
+      expect(snackBarContainer.textContent.trim()).toBe('LIDI.SUBLINE.NOTIFICATION.ADD_SUCCESS');
       expect(snackBarContainer.classList).toContain('success');
       expect(router.navigate).toHaveBeenCalled();
     });
@@ -189,6 +192,9 @@ function setupTestBed(
       LinkIconComponent,
       SearchSelectComponent,
       MainlineSelectOptionPipe,
+      AtlasLabelFieldComponent,
+      AtlasFieldErrorComponent,
+      TextFieldComponent,
     ],
     imports: [AppTestingModule],
     providers: [

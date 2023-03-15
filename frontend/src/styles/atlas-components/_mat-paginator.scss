@@ -1,0 +1,11 @@
+@use 'src/styles/variables' as variables;
+
+mat-paginator {
+  float: left;
+}
+
+//uses internal Angular Material design API!
+.mat-mdc-select-value {
+  color: variables.$accentColor;
+  font-size: 16px !important;
+}

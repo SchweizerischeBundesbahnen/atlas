@@ -14,6 +14,9 @@ import { DialogCloseComponent } from '../form-components/dialog-close/dialog-clo
 import { BoSelectionDisplayPipe } from '../form-components/bo-select/bo-selection-display.pipe';
 import { LinkIconComponent } from '../form-components/link-icon/link-icon.component';
 import { InfoLinkDirective } from '../form-components/info-icon/info-link.directive';
+import { TextFieldComponent } from '../form-components/text-field/text-field.component';
+import { AtlasFieldErrorComponent } from '../form-components/atlas-field-error/atlas-field-error.component';
+import { AtlasLabelFieldComponent } from '../form-components/atlas-label-field/atlas-label-field.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +32,9 @@ import { InfoLinkDirective } from '../form-components/info-icon/info-link.direct
     DialogCloseComponent,
     BoSelectionDisplayPipe,
     InfoLinkDirective,
+    TextFieldComponent,
+    AtlasFieldErrorComponent,
+    AtlasLabelFieldComponent,
   ],
   imports: [CommonModule, MaterialModule, TranslateModule],
   exports: [
@@ -43,6 +49,9 @@ import { InfoLinkDirective } from '../form-components/info-icon/info-link.direct
     DialogCloseComponent,
     LinkIconComponent,
     InfoLinkDirective,
+    TextFieldComponent,
+    AtlasFieldErrorComponent,
+    AtlasLabelFieldComponent,
   ],
 })
 export class FormModule {}
