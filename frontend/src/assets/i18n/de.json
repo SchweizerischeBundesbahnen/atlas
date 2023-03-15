@@ -509,5 +509,37 @@
       "NOT_IN_REVIEW": "Die Anhörung für dieses Objekt ist zur Zeit nicht gestartet.",
       "ALREADY_IN_REVIEW": "Für dieses Objekt wurde bereits eine Anhörung gestartet."
     }
+  },
+  "TTH": {
+    "OPEN": "{{canton}} Öffnen",
+    "CANTON": {
+      "CH": "Gesamtschweiz",
+      "AG": "Aargau",
+      "AI": "Appenzell Innerrhoden",
+      "AR": "Appenzell Ausserrhoden",
+      "BE": "Bern",
+      "BL": "Basel-Landschaft",
+      "BS": "Basel-Stadt",
+      "FR": "Freiburg",
+      "GE": "Genf",
+      "GL": "Glarus",
+      "GR": "Graubünden",
+      "JU": "Jura",
+      "LU": "Luzer",
+      "NE": "Neuenburg",
+      "NW": "Nidwalden",
+      "OW": "Obwalden",
+      "SG": "St. Gallen",
+      "SH": "Schaffausen",
+      "SO": "Solothurn",
+      "SZ": "Schwyz",
+      "TG": "Turgau",
+      "TI": "Tessin",
+      "UR": "Uri",
+      "VD": "Waadt",
+      "VS": "Wallis",
+      "ZG": "Zuch",
+      "ZH": "Zürich"
+    }
   }
 }
