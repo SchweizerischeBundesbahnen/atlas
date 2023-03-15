@@ -108,8 +108,8 @@ model/transportCompanyStatus.ts
 model/user.ts
 model/userAccountStatus.ts
 model/userDisplayName.ts
+model/userPermission.ts
 model/userPermissionCreateModel.ts
-model/userPermissionVersionModel.ts
 model/workflow.ts
 model/workflowProcessingStatus.ts
 model/workflowStart.ts
