@@ -5,7 +5,7 @@
   height: calc(100% - #{variables.$footerHeight});
   pointer-events: auto !important;
 
-  * {
+  .mat-mdc-dialog-surface {
     overflow: unset;
   }
 }
