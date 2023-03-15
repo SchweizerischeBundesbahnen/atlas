@@ -1,9 +1,9 @@
 <form-search-select
-  [items$]="userSearchResults$"
-  [formGroup]="form"
-  [controlName]="'userSearch'"
-  (searchTrigger)="searchUser($event)"
   (changeTrigger)="selectionChange.emit($event)"
+  (searchTrigger)="searchUser($event)"
+  [controlName]="'userSearch'"
+  [formGroup]="form"
+  [items$]="userSearchResults$"
 >
   <ng-template #labelOptionTemplates let-item>
     {{ item | userSelectFormat }}

@@ -38,10 +38,10 @@
           [selectedIndex]="selectedIndex"
           [tableColumns]="tableColumnDef"
         >
-          <div *ngIf="!readOnly" table-button-between class="mb-3 bo-select-wrapper">
+          <div *ngIf="!readOnly" class="mb-3 bo-select-wrapper" table-button-between>
             <bo-select
-              [formGroup]="businessOrganisationForm"
               [controlName]="boFormCtrlName"
+              [formGroup]="businessOrganisationForm"
             ></bo-select>
           </div>
         </app-relation>

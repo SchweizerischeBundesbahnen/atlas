@@ -11,46 +11,31 @@ mat-select {
 }
 
 .ng-select {
-  margin-top: -3px;
   min-height: $thin-border-height;
   padding-bottom: inherit;
-  border-color: variables.$primary-400;
-  border-style: solid;
-  border-width: thin;
+  outline: thin solid variables.$gray-400;
   border-radius: 5px;
 
   &:hover:not(.ng-select-disabled),
   &.ng-select-focused {
-    border-color: variables.$primary-400;
-
-    .ng-value {
-      margin-left: -2px;
-    }
+    outline: 1px solid variables.$primary-400;
 
     .ng-input input {
       padding-left: 2.8px !important;
     }
   }
 
-  &.ng-invalid.ng-touched {
-    border-color: variables.$warnColor;
+  &.ng-invalid.ng-touched,
+  &.ng-select-focused {
+    outline: 3px solid variables.$warnColor;
   }
 
   &:hover:not(.ng-select-disabled),
   &.ng-select-focused,
-  &.ng-invalid.ng-touched {
-    border-width: 3px;
+  &.ng-select-focused:not(.ng-invalid.ng-touched) {
+    outline: 3px solid variables.$primary-400;
+
     max-height: $thick-border-height;
-    margin-bottom: 2px;
-
-    &.ng-select-single .ng-select-container .ng-clear-wrapper {
-      bottom: 7px;
-    }
-
-    &.ng-select-single .ng-select-container .ng-arrow-wrapper {
-      bottom: 10px;
-      margin-right: -2px;
-    }
 
     .ng-select-container,
     .ng-value-container {
@@ -59,7 +44,7 @@ mat-select {
   }
 
   &.ng-select-disabled {
-    border-color: variables.$gray-400;
+    outline: 1px solid variables.$gray-400;
 
     .ng-select-container {
       .ng-arrow,
