@@ -11,7 +11,9 @@
   }}</mat-label>
   <mat-label class="font-regular-sm">{{ 'FORM.FOR_EXAMPLE' | translate }} u123456</mat-label>
 </div>
-<app-user-select [form]="userSearchForm" (selectionChange)="selectUser($event)"></app-user-select>
+<div class="pe-1 pb-1">
+  <app-user-select (selectionChange)="selectUser($event)" [form]="userSearchForm"></app-user-select>
+</div>
 <p *ngIf="userHasAlreadyPermissions" class="color-error">
   {{ 'USER_ADMIN.SELECTED_USER_HAS_ALREADY_PERMISSIONS' | translate }}
 </p>
@@ -34,18 +36,18 @@
 
 <footer class="footer fixed-bottom d-flex align-items-center justify-content-center">
   <button
-    class="atlas-primary-btn footer-btn"
     (click)="cancelCreation((userLoaded ?? false) && !userHasAlreadyPermissions)"
+    class="atlas-primary-btn footer-btn"
     data-cy="cancel"
   >
     {{ 'COMMON.CANCEL' | translate }}
   </button>
   <button
+    (click)="createUser()"
+    [disabled]="!userLoaded || userHasAlreadyPermissions || !saveEnabled"
     class="atlas-primary-btn footer-btn ms-3"
     data-cy="save"
     type="submit"
-    (click)="createUser()"
-    [disabled]="!userLoaded || userHasAlreadyPermissions || !saveEnabled"
   >
     {{ 'COMMON.SAVE' | translate }}
   </button>
