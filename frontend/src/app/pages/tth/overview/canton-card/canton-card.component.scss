@@ -1,0 +1,50 @@
+@use 'src/styles/variables' as variables;
+
+.flag {
+  width: 76px;
+  height: 93px;
+}
+
+.card {
+  width: 296px;
+  height: 143px;
+  border-radius: variables.$border-radius;
+  box-shadow: 0 4px 40px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.5),
+    4px 4px 4px rgba(0, 0, 0, 0.15), 0 4px 4px rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    box-shadow: 0 4px 40px rgba(33, 33, 33, 0.3), 0 1px 2px rgba(33, 33, 33, 0.3),
+      4px 4px 4px rgba(33, 33, 33, 0.3), 0 4px 4px rgba(33, 33, 33, 0.3);
+  }
+}
+
+.canton-content-text {
+  margin-right: auto;
+}
+
+.canton-content-img {
+  margin-left: auto;
+}
+
+a {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  bottom: 1rem;
+
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+}
+
+.card-content-box {
+  padding: 1.56rem;
+  height: 100%;
+}
+
+span {
+  position: relative;
+  line-height: 80% !important;
+}

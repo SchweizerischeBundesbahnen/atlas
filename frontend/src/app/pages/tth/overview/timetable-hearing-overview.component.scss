@@ -1,0 +1,14 @@
+@use 'src/styles/variables' as variables;
+
+.card-container {
+  display: flex;
+  flex-flow: row wrap;
+  column-gap: 1.875rem;
+  row-gap: 1.875rem;
+}
+
+@include variables.large-screen() {
+  .card-container {
+    margin-left: 237px;
+  }
+}
