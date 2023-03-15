@@ -12,7 +12,7 @@ import BodiDependentUtils from '../../support/util/bodi-dependent-utils';
  * RESULTAT: |----------------|______|______|-------------     NEUE VERSION EINGEFÜGT
  * Version:        1              3     4         2
  */
-describe('Versioning: scenario 3', () => {
+describe('Versioning: scenario 3', {testIsolation: false}, () => {
   const firstVersion = TtfnUtils.getFirstVersion();
   const secondVersion = TtfnUtils.getSecondVersion();
 

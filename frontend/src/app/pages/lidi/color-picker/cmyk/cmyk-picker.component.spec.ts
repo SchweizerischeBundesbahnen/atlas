@@ -5,6 +5,9 @@ import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { WithDefaultValueDirective } from '../../../../core/text-input/with-default-value.directive';
+import { AtlasFieldErrorComponent } from '../../../../core/form-components/atlas-field-error/atlas-field-error.component';
+import { AtlasLabelFieldComponent } from '../../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 describe('CmykPickerComponent', () => {
   let component: CmykPickerComponent;
@@ -13,7 +16,13 @@ describe('CmykPickerComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppTestingModule],
-      declarations: [CmykPickerComponent, WithDefaultValueDirective],
+      declarations: [
+        CmykPickerComponent,
+        WithDefaultValueDirective,
+        AtlasFieldErrorComponent,
+        AtlasLabelFieldComponent,
+      ],
+      providers: [{ provide: TranslatePipe }],
     }).compileComponents();
   });
 
@@ -51,7 +60,8 @@ describe('CmykPickerComponent', () => {
       .backgroundColor;
     expect(squareColor).toBe('transparent');
 
-    const errorMessage = fixture.debugElement.query(By.css('mat-error')).nativeElement.innerText;
+    const errorMessage = fixture.debugElement.query(By.css('app-atlas-field-error')).nativeElement
+      .innerText;
     expect(errorMessage).toBe('VALIDATION.CMYK_INVALID');
   });
 });

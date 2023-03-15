@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TableSearchComponent } from './table-search.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { By } from '@angular/platform-browser';
-import moment from 'moment/moment';
+import moment from 'moment';
 import { Status } from '../../../api';
 import { AppTestingModule } from '../../../app.testing.module';
 import { DateIconComponent } from '../../form-components/date-icon/date-icon.component';
@@ -33,7 +33,9 @@ describe('TableSearchComponent', () => {
 
   it('should change activeStatuses on selection changes', () => {
     spyOn(component.searchEvent, 'emit');
-    const statusSelectTrigger = fixture.debugElement.query(By.css('.mat-select-trigger'));
+    const statusSelectTrigger = fixture.debugElement.query(
+      By.css('mat-select[data-cy="table-search-status-input"] div')
+    );
     statusSelectTrigger.nativeElement.click();
     fixture.detectChanges();
 

@@ -5,6 +5,10 @@ import { AppTestingModule } from '../../../app.testing.module';
 import { FormControl, FormGroup } from '@angular/forms';
 import { LinkIconComponent } from '../link-icon/link-icon.component';
 import { InfoIconComponent } from '../info-icon/info-icon.component';
+import { TextFieldComponent } from '../text-field/text-field.component';
+import { AtlasLabelFieldComponent } from '../atlas-label-field/atlas-label-field.component';
+import { AtlasFieldErrorComponent } from '../atlas-field-error/atlas-field-error.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 describe('UrlComponent', () => {
   let component: UrlComponent;
@@ -12,8 +16,16 @@ describe('UrlComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UrlComponent, InfoIconComponent, LinkIconComponent],
+      declarations: [
+        UrlComponent,
+        InfoIconComponent,
+        LinkIconComponent,
+        TextFieldComponent,
+        AtlasLabelFieldComponent,
+        AtlasFieldErrorComponent,
+      ],
       imports: [AppTestingModule],
+      providers: [{ provide: TranslatePipe }],
     }).compileComponents();
   });
 

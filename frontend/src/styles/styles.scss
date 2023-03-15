@@ -1,15 +1,29 @@
-// app variables (color, size, etc.)
+// variables include
 @use 'variables';
-@use 'core/atlas-core';
 
-// Presentation framework
-@use '~bootstrap/scss/bootstrap';
-
-// Theme (based on Material)
+// theme include
 @use 'theme';
 
-// Vendors
-@use 'vendors/material';
+// /third-party include
+@use 'third-party/components';
 
-// App 3rd party components
-@use 'other-components/components';
+// /core includes
+@use 'core/atlas-core';
+@use 'core/color-classes';
+@use 'core/font-classes';
+@use 'core/html_body';
+
+// /atlas-components includes
+@use 'atlas-components/atlas-button';
+@use 'atlas-components/switch-version';
+@use 'atlas-components/atlas-snack-bar';
+@use 'atlas-components/mat-label';
+@use 'atlas-components/mat-paginator';
+@use 'atlas-components/atlas-search-multi-select';
+
+// /am-components includes
+
+@use 'am-components/mat-tab';
+@use 'am-components/mat-table';
+@use 'am-components/ng-select';
+@use 'am-components/mat-dialog';

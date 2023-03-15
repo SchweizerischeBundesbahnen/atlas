@@ -1,18 +1,43 @@
 @use 'src/styles/variables' as variables;
 
+a[mat-list-item] {
+  padding: 16px 22px 16px 37px;
+  height: initial;
+}
+
+a[mat-list-item]:focus::before {
+  opacity: 0;
+}
+
 .spacer {
   flex: variables.$flexSpaceSize;
 }
 
 .route-active {
-  color: variables.$navigationDisabled !important;
   background: variables.$white !important;
+
+  .link-text {
+    color: black;
+  }
 }
 
-.link-border {
+.list-item-wrapper {
   border-top: lightgray solid 1px;
+  background-color: variables.$gray-100;
+  max-width: 239px;
 }
 
-.link-border:last-child {
+.list-item-wrapper:last-child {
   border-bottom: lightgray solid 1px;
+}
+
+.link-text {
+  letter-spacing: initial;
+  white-space: initial;
+  color: variables.$primary-400;
+}
+
+.list-item-content-wrapper {
+  display: flex;
+  align-items: center;
 }

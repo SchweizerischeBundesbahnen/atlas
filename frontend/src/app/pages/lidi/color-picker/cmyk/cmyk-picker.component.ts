@@ -5,12 +5,20 @@ import { CMYK_COLOR_REGEX, ColorService } from '../color.service';
 @Component({
   selector: 'app-cmyk-picker [attributeName]',
   templateUrl: './cmyk-picker.component.html',
-  styleUrls: ['./cmyk-picker.component.scss', '../color-indicator.scss'],
+  styleUrls: [
+    '../color-picker.scss',
+    '../color-indicator.scss',
+    '../../../../core/form-components/text-field/text-field.component.scss',
+  ],
 })
 export class CmykPickerComponent {
   @Input() attributeName!: string;
   @Input() formGroup!: FormGroup;
   @Input() defaultColor!: string;
+  @Input() label!: string;
+  @Input() exampleLabel!: string;
+
+  customError = { errorKey: 'pattern', translationKey: 'VALIDATION.CMYK_INVALID' };
 
   constructor(private colorService: ColorService) {}
 

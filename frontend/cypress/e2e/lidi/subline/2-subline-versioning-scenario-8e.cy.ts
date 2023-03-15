@@ -11,7 +11,7 @@ import BodiDependentUtils from '../../../support/util/bodi-dependent-utils';
  *  RESULTAT: |______________________________|________|----------------|
  *  Version:             1                        2            3
  */
-describe('LiDi: Versioning Teillinie Scenario 4', () => {
+describe('LiDi: Versioning Teillinie Scenario 4', {testIsolation: false}, () => {
   const firstSublineVersion = LidiUtils.getFirstSublineVersion();
   const secondSublineVersion = LidiUtils.getSecondSublineVersion();
   const editedFirstSublineVersion = LidiUtils.getEditedFirstSublineVersion();

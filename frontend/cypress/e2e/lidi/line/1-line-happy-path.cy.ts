@@ -2,7 +2,7 @@ import LidiUtils from '../../../support/util/lidi-utils';
 import CommonUtils from '../../../support/util/common-utils';
 import BodiDependentUtils from '../../../support/util/bodi-dependent-utils';
 
-describe('Linie', () => {
+describe('Linie', {testIsolation: false}, () => {
   const line = LidiUtils.getFirstLineVersion();
 
   it('Step-1: Login on ATLAS', () => {

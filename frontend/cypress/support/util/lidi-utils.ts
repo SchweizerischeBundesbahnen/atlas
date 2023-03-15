@@ -1,6 +1,7 @@
 import CommonUtils from './common-utils';
 import { DataCy } from '../data-cy';
 import BodiDependentUtils from './bodi-dependent-utils';
+import AngularMaterialConstants from "./angular-material-constants";
 
 export default class LidiUtils {
   private static LIDI_LINES_PATH = '/line-directory/lines';
@@ -72,7 +73,7 @@ export default class LidiUtils {
     );
 
     cy.get('tbody').find('tr').should('have.length', 1).then(($el) => {
-      if (!$el.hasClass("mat-no-data-row")){
+      if (!$el.hasClass(AngularMaterialConstants.TABLE_NOW_DATA_ROW_CLASS)){
         $el.trigger('click');
         cy.get(DataCy.EDIT_ITEM).should('not.be.disabled');
         CommonUtils.deleteItem();
@@ -106,7 +107,7 @@ export default class LidiUtils {
     );
 
     cy.get('tbody').find('tr').should('have.length', 1).then(($el) => {
-      if (!$el.hasClass("mat-no-data-row")){
+      if (!$el.hasClass(AngularMaterialConstants.TABLE_NOW_DATA_ROW_CLASS)){
         $el.trigger('click');
         LidiUtils.assertContainsSublineVersion(sublineVersion);
         CommonUtils.deleteItem();
@@ -228,11 +229,11 @@ export default class LidiUtils {
     CommonUtils.assertItemValue(DataCy.SWISS_LINE_NUMBER, version.swissLineNumber);
     cy.get(DataCy.BUSINESS_ORGANISATION).should('contain.text', version.businessOrganisation);
     CommonUtils.assertItemText(
-      DataCy.TYPE + ' .mat-select-value-text > .mat-select-min-line',
+      DataCy.TYPE + AngularMaterialConstants.MAT_SELECT_TEXT_DEEP_SELECT,
       version.type
     );
     CommonUtils.assertItemText(
-      DataCy.PAYMENT_TYPE + ' .mat-select-value-text > .mat-select-min-line',
+      DataCy.PAYMENT_TYPE + AngularMaterialConstants.MAT_SELECT_TEXT_DEEP_SELECT,
       version.paymentType
     );
     CommonUtils.assertItemValue(
@@ -477,11 +478,11 @@ export default class LidiUtils {
     cy.get(DataCy.MAINLINE).should('contain.text', version.mainline);
     cy.get(DataCy.BUSINESS_ORGANISATION).should('contain.text', version.businessOrganisation);
     CommonUtils.assertItemText(
-      DataCy.TYPE + ' .mat-select-value-text > .mat-select-min-line',
+      DataCy.TYPE + AngularMaterialConstants.MAT_SELECT_TEXT_DEEP_SELECT,
       version.type
     );
     CommonUtils.assertItemText(
-      DataCy.PAYMENT_TYPE + ' .mat-select-value-text > .mat-select-min-line',
+      DataCy.PAYMENT_TYPE + AngularMaterialConstants.MAT_SELECT_TEXT_DEEP_SELECT,
       version.paymentType
     );
     CommonUtils.assertItemValue(DataCy.DESCRIPTION, version.description);

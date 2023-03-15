@@ -1,0 +1,66 @@
+@use 'src/styles/variables';
+
+input:focus {
+  outline: none;
+}
+
+input {
+  margin-top: 5px;
+
+  border-top-style: hidden;
+  border-left: 1px solid variables.$gray-400;
+  border-right: 1px solid variables.$gray-400;
+  border-bottom: 1px solid variables.$gray-400;
+
+  height: 32px;
+  width: 100%;
+  padding: 2px 5px;
+
+  &:hover:not(:disabled),
+  &:focus:not(:disabled) {
+    border-color: variables.$primary-300;
+    border-width: 3px;
+
+    padding: 2px 3px 0 3px;
+  }
+
+  &.ng-invalid.ng-touched,
+  &.ng-invalid.ng-dirty {
+    border-color: red;
+    border-width: 3px;
+
+    padding: 2px 3px 0 3px;
+  }
+}
+
+input[disabled] {
+  background: unset;
+}
+
+.error {
+  color: variables.$errorColor;
+}
+
+.text-field-wrapper {
+  position: relative;
+  padding-bottom: 1.25em;
+}
+
+.text-field-flex {
+  display: inline-flex;
+  align-items: baseline;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.mat-form-field {
+  display: inline-block;
+  position: relative;
+  text-align: left;
+}
+
+.field-input-container {
+  display: flex;
+  width: 100%;
+  padding-left: 0.4375em;
+}
