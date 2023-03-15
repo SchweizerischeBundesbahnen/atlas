@@ -10,12 +10,13 @@
  * Do not edit the class manually.
  */
 import { ApplicationType } from './applicationType';
+import { SwissCanton } from './swissCanton';
 import { ApplicationRole } from './applicationRole';
 
 /**
  * User permissions
  */
-export interface UserPermissionVersionModel {
+export interface UserPermission {
   /**
    * Object creation date
    */
@@ -38,4 +39,8 @@ export interface UserPermissionVersionModel {
    * Business Organisation - sboids
    */
   sboids: Array<string>;
+  /**
+   * Cantons the user has administrative rights on
+   */
+  swissCantons: Array<SwissCanton>;
 }
