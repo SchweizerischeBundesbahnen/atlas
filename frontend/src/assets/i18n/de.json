@@ -55,6 +55,7 @@
     "CREATE_VERSION": "Version hinzufügen",
     "ROLES": {
       "READER": "Reader",
+      "EXPLICIT_READER": "Explicit Reader",
       "SUPERVISOR": "Supervisor",
       "SUPER_USER": "Super User",
       "WRITER": "Writer",

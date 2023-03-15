@@ -53,7 +53,7 @@ describe('UserAdministrationCreateComponent', () => {
     notificationServiceSpy = jasmine.createSpyObj('NotificationService', ['success']);
     userPermissionManagerSpy = jasmine.createSpyObj<UserPermissionManager>(
       'UserPermissionManager',
-      ['setSbbUserId', 'clearSboidsIfNotWriter', 'getSbbUserId']
+      ['setSbbUserId', 'clearSboidsAndCantonsIfNotWriter', 'getSbbUserId']
     );
     boServiceSpy = jasmine.createSpyObj<BusinessOrganisationsService>(
       'BusinessOrganisationsService',
@@ -170,7 +170,7 @@ describe('UserAdministrationCreateComponent', () => {
     spyOn(router, 'navigate').and.resolveTo(true);
     component.createUser();
     expect(userPermissionManagerSpy.setSbbUserId).toHaveBeenCalledOnceWith('u236171');
-    expect(userPermissionManagerSpy.clearSboidsIfNotWriter).toHaveBeenCalledOnceWith();
+    expect(userPermissionManagerSpy.clearSboidsAndCantonsIfNotWriter).toHaveBeenCalledOnceWith();
     expect(userServiceSpy.createUserPermission).toHaveBeenCalledTimes(1);
     expect(router.navigate).toHaveBeenCalledTimes(1);
     tick();
