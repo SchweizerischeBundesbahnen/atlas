@@ -1,23 +1,25 @@
-<div class="dialog-close-panel">
-  <button mat-icon-button [disableRipple]="true" [mat-dialog-close]="false">
+<div class="dialog-close-panel dialog-close-icon-container">
+  <button [mat-dialog-close]="false" class="close-icon-btn">
     <em class="bi bi-x fs-2"></em>
   </button>
 </div>
-<div data-cy="dialog">
+<div class="dialog" data-cy="dialog">
   <h1 class="font-bold-4xl">{{ data.title | translate }}</h1>
-  <mat-dialog-content>{{ data.message | translate }}</mat-dialog-content>
+  <mat-dialog-content class="font-regular-base message">{{
+    data.message | translate
+  }}</mat-dialog-content>
   <mat-dialog-actions class="justify-content-end">
     <button
+      [mat-dialog-close]="false"
       class="atlas-primary-btn me-3"
       data-cy="dialog-cancel-button"
-      [mat-dialog-close]="false"
     >
       {{ data.cancelText ?? 'DIALOG.CANCEL' | translate }}
     </button>
     <button
+      [mat-dialog-close]="true"
       class="atlas-primary-btn primary-color-btn"
       data-cy="dialog-confirm-button"
-      [mat-dialog-close]="true"
     >
       {{ data.confirmText ?? 'DIALOG.OK' | translate }}
     </button>

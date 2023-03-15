@@ -4,6 +4,10 @@
   overflow: auto;
   height: calc(100% - #{variables.$footerHeight});
   pointer-events: auto !important;
+
+  .mat-mdc-dialog-surface {
+    overflow: unset;
+  }
 }
 
 .route-to-dialog-backdrop {
@@ -13,13 +17,16 @@
 }
 
 .route-to-dialog-panel {
-  overflow: unset;
   max-width: 100% !important;
 
-  .mat-dialog-container {
+  .mat-mdc-dialog-container {
     background: variables.$white;
     border-radius: variables.$border-radius;
     padding: 64px 80px 144px;
-    overflow: unset;
+    min-width: 1200px;
+
+    .mat-mdc-dialog-surface {
+      box-shadow: none;
+    }
   }
 }

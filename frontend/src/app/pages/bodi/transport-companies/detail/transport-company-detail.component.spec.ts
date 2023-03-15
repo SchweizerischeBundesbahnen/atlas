@@ -11,12 +11,16 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { AuthService } from '../../../../core/auth/auth.service';
 import { RelationComponent } from '../../../../core/components/relation/relation.component';
-import { SearchSelectComponent } from '../../../../core/form-components/search-select/search-select.component';
 import moment from 'moment';
 import { of } from 'rxjs';
 import { CommentComponent } from '../../../../core/form-components/comment/comment.component';
 import { Component } from '@angular/core';
 import { MockAtlasButtonComponent } from '../../../../app.testing.mocks';
+import { TextFieldComponent } from '../../../../core/form-components/text-field/text-field.component';
+import { AtlasLabelFieldComponent } from '../../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import { AtlasFieldErrorComponent } from '../../../../core/form-components/atlas-field-error/atlas-field-error.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { SearchSelectComponent } from '../../../../core/form-components/search-select/search-select.component';
 
 const transportCompany: TransportCompany = {
   id: 1234,
@@ -180,6 +184,9 @@ function setupTestBed(data: (TransportCompany | TransportCompanyBoRelation[])[])
       CommentComponent,
       MockDialogCloseComponent,
       MockAtlasButtonComponent,
+      TextFieldComponent,
+      AtlasLabelFieldComponent,
+      AtlasFieldErrorComponent,
     ],
     imports: [AppTestingModule],
     providers: [
@@ -195,6 +202,7 @@ function setupTestBed(data: (TransportCompany | TransportCompanyBoRelation[])[])
         provide: TransportCompanyRelationsService,
         useValue: transportCompanyRelationsServiceSpy,
       },
+      { provide: TranslatePipe },
     ],
   })
     .compileComponents()

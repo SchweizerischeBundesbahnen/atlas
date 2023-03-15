@@ -1,11 +1,11 @@
 .complete {
-  background-color: #008000c9;
+  background-color: #008000c9 !important;
 }
 
 .incomplete {
-  background-color: orange;
+  background-color: orange !important;
 }
 
-.text {
-  padding-left: 1rem;
+mat-chip-option {
+  pointer-events: none;
 }

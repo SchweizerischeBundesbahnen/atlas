@@ -4,23 +4,22 @@
   </h2>
 
   <div class="col-12 d-flex">
-    <div class="d-flex flex-column col-3 pe-5">
+    <div class="d-flex flex-column col-3 ps-1 pe-5">
       <h3 class="font-bold-lg">{{ 'USER_ADMIN.ROLE' | translate }}</h3>
-
-      <mat-form-field>
+      <div [class.disabled]="readOnly" class="multi-select-search">
         <mat-select
-          [disabled]="readOnly"
-          [value]="role"
           (selectionChange)="
             userPermissionManager.changePermissionRole(application, $event.value);
             businessOrganisationForm.reset()
           "
+          [disabled]="readOnly"
+          [value]="role"
         >
           <mat-option *ngFor="let option of availableOptions" [value]="option">{{
             'COMMON.ROLES.' + option | translate
           }}</mat-option>
         </mat-select>
-      </mat-form-field>
+      </div>
     </div>
 
     <div class="d-flex flex-column col-9 pe-3">
@@ -29,20 +28,20 @@
           {{ 'BODI.BUSINESS_ORGANISATION.BUSINESS_ORGANISATIONS' | translate }}
         </span>
         <app-relation
-          [records]="boListener$ | async"
-          [tableColumns]="tableColumnDef"
-          [selectedIndex]="selectedIndex"
-          [editable]="!readOnly"
-          [addBtnNameTranslationKey]="'USER_ADMIN.ADD_BUSINESS_ORGANISATION'"
-          [deleteBtnNameTranslationKey]="'USER_ADMIN.DELETE_BUSINESS_ORGANISATION'"
+          (deleteRelation)="remove()"
           (editModeChanged)="add()"
           (selectedIndexChanged)="selectedIndex = $event"
-          (deleteRelation)="remove()"
+          [addBtnNameTranslationKey]="'USER_ADMIN.ADD_BUSINESS_ORGANISATION'"
+          [deleteBtnNameTranslationKey]="'USER_ADMIN.DELETE_BUSINESS_ORGANISATION'"
+          [editable]="!readOnly"
+          [records]="boListener$ | async"
+          [selectedIndex]="selectedIndex"
+          [tableColumns]="tableColumnDef"
         >
-          <div *ngIf="!readOnly" table-button-between class="mb-3 bo-select-wrapper">
+          <div *ngIf="!readOnly" class="mb-3 bo-select-wrapper" table-button-between>
             <bo-select
-              [formGroup]="businessOrganisationForm"
               [controlName]="boFormCtrlName"
+              [formGroup]="businessOrganisationForm"
             ></bo-select>
           </div>
         </app-relation>

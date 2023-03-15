@@ -9,7 +9,7 @@ import { BaseDetailController } from '../../../core/components/base-detail/base-
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { catchError, Subject } from 'rxjs';
-import moment from 'moment/moment';
+import moment from 'moment';
 import { DateRangeValidator } from '../../../core/validation/date-range/date-range-validator';
 import { takeUntil } from 'rxjs/operators';
 import { DialogService } from '../../../core/components/dialog/dialog.service';

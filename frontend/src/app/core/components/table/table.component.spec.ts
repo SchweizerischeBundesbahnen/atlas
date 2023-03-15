@@ -7,8 +7,8 @@ import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.comp
 import { TableSearchComponent } from '../table-search/table-search.component';
 import { AppTestingModule } from '../../../app.testing.module';
 import { DateIconComponent } from '../../form-components/date-icon/date-icon.component';
-import { BusinessOrganisationSelectComponent } from '../../form-components/bo-select/business-organisation-select.component';
 import { SearchSelectComponent } from '../../form-components/search-select/search-select.component';
+import { BusinessOrganisationSelectComponent } from '../../form-components/bo-select/business-organisation-select.component';
 
 describe('TableComponent', () => {
   /*eslint-disable */
@@ -91,7 +91,7 @@ describe('TableComponent', () => {
     paginator.nativeNode.setAttribute('ng-reflect-page-size-oprions', [5, 10, 20]);
     fixture.detectChanges();
 
-    const matSelector = fixture.debugElement.queryAll(By.css('.mat-select-trigger'))[1];
+    const matSelector = fixture.debugElement.queryAll(By.css('.mat-mdc-select-trigger'))[1];
     matSelector.nativeElement.click();
     fixture.detectChanges();
 
