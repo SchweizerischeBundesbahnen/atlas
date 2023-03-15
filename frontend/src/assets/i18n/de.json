@@ -157,6 +157,12 @@
       "TITLE_HEADER": "Dienststellen",
       "DESCRIPTION": "Hier finden Sie alle Informationen zum Bearbeiten und neu Erstellen von Dienststellen."
     },
+    "TTH": {
+      "TITLE": "Fahrplananhörung Schwiez",
+      "TITLE_MENU": "Fahrplananhörung",
+      "DESCRIPTION": "Hier finden Sie alle Informationen zur Fahrplananhörung Schweiz.",
+      "PATH_TEXT": "Fahrplananhörung"
+    },
     "DETAILS": "Details"
   },
   "PAGINATOR": {
