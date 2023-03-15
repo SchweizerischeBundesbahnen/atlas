@@ -16,15 +16,15 @@ export interface ServicePointNumber {
    */
   number: number;
   /**
-   * Calculated value formed from the numberShort. Range: 0-9
+   * UicCountryCode
    */
-  checkDigit: number;
+  uicCountryCode: number;
   /**
    * NumberShort - 5 chars identifying number. Range: 1-99.999
    */
   numberShort: number;
   /**
-   * UicCountryCode
+   * Calculated value formed from the numberShort. Range: 0-9
    */
-  uicCountryCode: number;
+  checkDigit: number;
 }

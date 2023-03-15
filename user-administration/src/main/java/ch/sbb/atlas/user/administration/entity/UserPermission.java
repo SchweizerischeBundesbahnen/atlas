@@ -4,6 +4,7 @@ import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.entity.BaseEntity;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
+import jakarta.persistence.Convert;
 import java.util.Set;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.ElementCollection;
@@ -53,7 +54,8 @@ public class UserPermission extends BaseEntity {
   @CollectionTable(name = "business_organisation_user_permission")
   private Set<String> sboid;
 
-  @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
+  @ElementCollection(targetClass = SwissCanton.class, fetch = FetchType.EAGER)
+  @Convert(converter = SwissCantonConverter.class)
   @CollectionTable(name = "canton_user_permission")
   private Set<SwissCanton> swissCantons;
 

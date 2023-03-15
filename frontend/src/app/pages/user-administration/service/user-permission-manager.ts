@@ -3,8 +3,9 @@ import {
   ApplicationType,
   BusinessOrganisation,
   BusinessOrganisationsService,
+  SwissCanton,
+  UserPermission,
   UserPermissionCreateModel,
-  UserPermissionVersionModel,
 } from '../../../api';
 import { BehaviorSubject, firstValueFrom, Subject } from 'rxjs';
 import { Injectable } from '@angular/core';
@@ -18,16 +19,25 @@ export class UserPermissionManager {
         application: 'TTFN',
         role: 'READER',
         sboids: [],
+        swissCantons: [],
       },
       {
         application: 'LIDI',
         role: 'READER',
         sboids: [],
+        swissCantons: [],
       },
       {
         application: 'BODI',
         role: 'READER',
         sboids: [],
+        swissCantons: [],
+      },
+      {
+        application: 'TIMETABLE_HEARING',
+        role: 'READER',
+        sboids: [],
+        swissCantons: [],
       },
     ],
   };
@@ -38,6 +48,7 @@ export class UserPermissionManager {
     TTFN: [],
     LIDI: [],
     BODI: [],
+    TIMETABLE_HEARING: [],
   };
 
   readonly boOfApplicationsSubject$: BehaviorSubject<{
@@ -49,9 +60,25 @@ export class UserPermissionManager {
   private readonly availableApplicationRolesConfig: {
     [application in ApplicationType]: ApplicationRole[];
   } = {
-    TTFN: Object.values(ApplicationRole),
-    LIDI: Object.values(ApplicationRole),
+    TTFN: [
+      ApplicationRole.Reader,
+      ApplicationRole.Writer,
+      ApplicationRole.SuperUser,
+      ApplicationRole.Supervisor,
+    ],
+    LIDI: [
+      ApplicationRole.Reader,
+      ApplicationRole.Writer,
+      ApplicationRole.SuperUser,
+      ApplicationRole.Supervisor,
+    ],
     BODI: [ApplicationRole.Reader, ApplicationRole.SuperUser, ApplicationRole.Supervisor],
+    TIMETABLE_HEARING: [
+      ApplicationRole.Reader,
+      ApplicationRole.ExplicitReader,
+      ApplicationRole.Writer,
+      ApplicationRole.Supervisor,
+    ],
   };
 
   constructor(private readonly boService: BusinessOrganisationsService) {}
@@ -67,10 +94,11 @@ export class UserPermissionManager {
     return this.availableApplicationRolesConfig[application];
   }
 
-  clearSboidsIfNotWriter(): void {
+  clearSboidsAndCantonsIfNotWriter(): void {
     this.userPermission.permissions.forEach((permission) => {
       if (permission.role !== 'WRITER') {
         permission.sboids = [];
+        permission.swissCantons = [];
       }
     });
   }
@@ -88,7 +116,7 @@ export class UserPermissionManager {
     this.userPermission.sbbUserId = userId;
   }
 
-  setPermissions(permissions: UserPermissionVersionModel[]): void {
+  setPermissions(permissions: UserPermission[]): void {
     permissions.forEach((permission) => {
       const application = permission.application;
       const permissionIndex = this.getPermissionIndexFromApplication(application);
@@ -148,5 +176,10 @@ export class UserPermissionManager {
     return this.userPermission.permissions.findIndex(
       (permission) => permission.application === application
     );
+  }
+
+  updateSwissCanton(application: ApplicationType, cantons: SwissCanton[]) {
+    const permissionIndex = this.getPermissionIndexFromApplication(application);
+    this.userPermission.permissions[permissionIndex].swissCantons = cantons;
   }
 }
