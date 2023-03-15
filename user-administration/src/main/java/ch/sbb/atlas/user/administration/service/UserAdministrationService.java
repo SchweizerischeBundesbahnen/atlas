@@ -1,16 +1,15 @@
 package ch.sbb.atlas.user.administration.service;
 
-import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.api.user.administration.UserPermissionCreateModel;
-import ch.sbb.atlas.api.user.administration.UserPermissionModel;
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.user.administration.entity.UserPermission;
 import ch.sbb.atlas.user.administration.exception.UserPermissionConflictException;
 import ch.sbb.atlas.user.administration.mapper.UserPermissionCreateMapper;
+import ch.sbb.atlas.user.administration.mapper.UserPermissionMapper;
 import ch.sbb.atlas.user.administration.repository.UserPermissionRepository;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -50,18 +49,20 @@ public class UserAdministrationService {
 
   public void updateUser(UserPermissionCreateModel editedPermissions) {
     editedPermissions.getPermissions().forEach(editedPermission -> {
-      Optional<UserPermission> existingPermissions = getCurrentUserPermission(
-          editedPermissions.getSbbUserId(),
+      Optional<UserPermission> existingPermissions = getCurrentUserPermission(editedPermissions.getSbbUserId(),
           editedPermission.getApplication());
-      existingPermissions.ifPresent(updateExistingPermissions(editedPermission));
-    });
-  }
 
-  private Consumer<UserPermission> updateExistingPermissions(UserPermissionModel editedPermission) {
-    return userPermission -> {
-      userPermission.setRole(editedPermission.getRole());
-      userPermission.setSboid(new HashSet<>(editedPermission.getSboids()));
-    };
+      if (existingPermissions.isPresent()) {
+        UserPermission updateableUserPermission = existingPermissions.get();
+        updateableUserPermission.setRole(editedPermission.getRole());
+        updateableUserPermission.setSboid(new HashSet<>(editedPermission.getSboids()));
+        updateableUserPermission.setSwissCantons(new HashSet<>(editedPermission.getSwissCantons()));
+      } else {
+        UserPermission additionalUserPermission = UserPermissionMapper.toEntity(editedPermissions.getSbbUserId(),
+            editedPermission);
+        userPermissionRepository.save(additionalUserPermission);
+      }
+    });
   }
 
   Optional<UserPermission> getCurrentUserPermission(String sbbuid, ApplicationType applicationType) {

@@ -23,7 +23,7 @@
     </div>
 
     <div class="d-flex flex-column col-9 pe-3">
-      <ng-template [ngIf]="role === 'WRITER'">
+      <ng-template [ngIf]="application !== 'TIMETABLE_HEARING' && role === 'WRITER'">
         <span class="font-bold-lg">
           {{ 'BODI.BUSINESS_ORGANISATION.BUSINESS_ORGANISATIONS' | translate }}
         </span>
@@ -45,6 +45,24 @@
             ></bo-select>
           </div>
         </app-relation>
+      </ng-template>
+      <ng-template [ngIf]="application === 'TIMETABLE_HEARING' && role === 'WRITER'">
+        <span class="font-bold-lg">
+          {{ 'SWISS_CANTONS' | translate }}
+        </span>
+        <span class="fake-lable-space"></span>
+        <div class="multi-select-search">
+          <mat-select
+            (selectionChange)="cantonChange()"
+            [(value)]="activeCantons"
+            class="font-bold-base"
+            multiple
+          >
+            <mat-option *ngFor="let canton of SWISS_CANTONS" [value]="canton"
+              >{{ SWISS_CANTONS_PREFIX_LABEL + canton | translate }}
+            </mat-option>
+          </mat-select>
+        </div>
       </ng-template>
     </div>
   </div>
