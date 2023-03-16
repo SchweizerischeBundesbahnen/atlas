@@ -1,5 +1,6 @@
 package ch.sbb.atlas.user.administration.security;
 
+import ch.sbb.atlas.api.model.BusinessOrganisationAssociated;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionModel;

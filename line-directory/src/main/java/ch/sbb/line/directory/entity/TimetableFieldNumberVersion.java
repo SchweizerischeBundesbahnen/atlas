@@ -7,7 +7,7 @@ import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.versioning.model.Versionable;
 import ch.sbb.atlas.versioning.model.VersionableProperty.RelationType;
-import ch.sbb.atlas.user.administration.security.BusinessOrganisationAssociated;
+import ch.sbb.atlas.api.model.BusinessOrganisationAssociated;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

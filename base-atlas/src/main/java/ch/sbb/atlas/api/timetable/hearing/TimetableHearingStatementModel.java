@@ -3,6 +3,7 @@ package ch.sbb.atlas.api.timetable.hearing;
 import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.model.BaseVersionModel;
+import ch.sbb.atlas.api.model.CantonAssociated;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -34,13 +35,13 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @FieldNameConstants
 @Schema(name = "TimetableHearingStatement")
-public class TimetableHearingStatementModel extends BaseVersionModel {
+public class TimetableHearingStatementModel extends BaseVersionModel implements CantonAssociated {
 
   @Schema(description = "Technical identifier", example = "1", accessMode = AccessMode.READ_ONLY)
   private Long id;
 
-  @Min(2010)
-  @Max(2099)
+  @Min(TimetableHearingConstants.MIN_YEAR)
+  @Max(TimetableHearingConstants.MAX_YEAR)
   @Schema(description = "TimetableYear", example = "2024")
   private Long timetableYear;
 
@@ -53,6 +54,7 @@ public class TimetableHearingStatementModel extends BaseVersionModel {
   @Schema(description = "Timetable field number", example = "07.061", accessMode = AccessMode.WRITE_ONLY)
   private String timetableFieldNumber;
 
+  @NotNull
   @Schema(description = "Canton, the statement is for")
   private SwissCanton swissCanton;
 

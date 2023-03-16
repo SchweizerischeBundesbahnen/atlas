@@ -2,6 +2,7 @@ package ch.sbb.atlas.user.administration.security;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.api.model.BusinessOrganisationAssociated;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.Test;
