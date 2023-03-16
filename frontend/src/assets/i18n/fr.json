@@ -205,7 +205,8 @@
     "APPLICATION": {
       "LIDI": "Lignes et sous-lignes",
       "TTFN": "Numéros de champs d'horaires",
-      "BODI": "Organisations commerciales"
+      "BODI": "Organisations commerciales",
+      "TIMETABLE_HEARING": "Consultations sur les horaires"
     },
     "ACCOUNT_STATUS_TYPE": {
       "ACTIVE": "Actif",

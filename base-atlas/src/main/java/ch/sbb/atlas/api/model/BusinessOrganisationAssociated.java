@@ -1,4 +1,4 @@
-package ch.sbb.atlas.user.administration.security;
+package ch.sbb.atlas.api.model;
 
 import java.time.LocalDate;
 
