@@ -35,7 +35,6 @@ import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerWithAmazonS3ApiTest;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.line.directory.LineTestData;
-import ch.sbb.line.directory.configuration.AmazonConfig;
 import ch.sbb.line.directory.entity.LineVersionSnapshot;
 import ch.sbb.line.directory.repository.CoverageRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
@@ -48,7 +47,6 @@ import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -76,7 +74,6 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
   private LineVersionSnapshotRepository lineVersionSnapshotService;
 
   @Autowired
-  @Qualifier(AmazonConfig.EXPORT_FILES)
   private AmazonService amazonService;
 
   @AfterEach

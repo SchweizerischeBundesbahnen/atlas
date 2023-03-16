@@ -22,7 +22,6 @@ import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.model.controller.BaseControllerWithAmazonS3ApiTest;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.SublineTestData;
-import ch.sbb.line.directory.configuration.AmazonConfig;
 import ch.sbb.line.directory.repository.CoverageRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
@@ -31,7 +30,6 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -56,7 +54,6 @@ public class SublineControllerApiTest extends BaseControllerWithAmazonS3ApiTest 
   private SublineVersionExportService sublineVersionExportService;
 
   @Autowired
-  @Qualifier(AmazonConfig.EXPORT_FILES)
   private AmazonService amazonService;
 
   @AfterEach

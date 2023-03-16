@@ -7,6 +7,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
+import ch.sbb.atlas.amazon.service.AmazonBucket;
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.amazon.service.FileService;
 import java.io.File;
@@ -38,14 +39,14 @@ public class FileHelperServiceTest {
   void shouldNotFoundFileToDownload() {
     //given
     String today = LocalDate.now().toString().replaceAll("-", "");
-    when(amazonService.getS3ObjectKeysFromPrefix(eq("servicepoint_didok"), eq("PREFIX_" + today))).thenReturn(
+    when(amazonService.getS3ObjectKeysFromPrefix(eq(AmazonBucket.EXPORT), eq("servicepoint_didok"), eq("PREFIX_" + today))).thenReturn(
         Collections.emptyList());
 
     //when & then
     String exMessage =
         assertThrows(RuntimeException.class,
             () -> fileHelperService.downloadImportFileFromS3("PREFIX_")).getLocalizedMessage();
-    verify(amazonService).getS3ObjectKeysFromPrefix(eq("servicepoint_didok"), eq("PREFIX_" + today));
+    verify(amazonService).getS3ObjectKeysFromPrefix(eq(AmazonBucket.EXPORT), eq("servicepoint_didok"), eq("PREFIX_" + today));
     assertThat(exMessage).isEqualTo("[IMPORT]: File PREFIX_" + today + " not found on S3");
   }
 
@@ -53,14 +54,14 @@ public class FileHelperServiceTest {
   void shouldFindMoreThanOneFileToDownload() {
     //given
     String today = LocalDate.now().toString().replaceAll("-", "");
-    when(amazonService.getS3ObjectKeysFromPrefix(eq("servicepoint_didok"), eq("PREFIX_" + today)))
+    when(amazonService.getS3ObjectKeysFromPrefix(eq(AmazonBucket.EXPORT), eq("servicepoint_didok"), eq("PREFIX_" + today)))
         .thenReturn(List.of("file1", "file2"));
 
     //when & then
     String exMessage =
         assertThrows(RuntimeException.class,
             () -> fileHelperService.downloadImportFileFromS3("PREFIX_")).getLocalizedMessage();
-    verify(amazonService).getS3ObjectKeysFromPrefix(eq("servicepoint_didok"), eq("PREFIX_" + today));
+    verify(amazonService).getS3ObjectKeysFromPrefix(eq(AmazonBucket.EXPORT), eq("servicepoint_didok"), eq("PREFIX_" + today));
     assertThat(exMessage).isEqualTo("[IMPORT]: Found more than 1 file PREFIX_" + today + " to download on S3");
   }
 
@@ -68,15 +69,15 @@ public class FileHelperServiceTest {
   void shouldDownloadJustOneFile() throws IOException {
     //given
     String today = LocalDate.now().toString().replaceAll("-", "");
-    when(amazonService.getS3ObjectKeysFromPrefix(eq("servicepoint_didok"), eq("PREFIX_" + today))).thenReturn(List.of("file"));
-    when(amazonService.pullFile(eq("file"))).thenReturn(new File("file"));
+    when(amazonService.getS3ObjectKeysFromPrefix(eq(AmazonBucket.EXPORT), eq("servicepoint_didok"), eq("PREFIX_" + today))).thenReturn(List.of("file"));
+    when(amazonService.pullFile(eq(AmazonBucket.EXPORT), eq("file"))).thenReturn(new File("file"));
 
     //when
     File file = fileHelperService.downloadImportFileFromS3("PREFIX_");
 
     //then
-    verify(amazonService).getS3ObjectKeysFromPrefix(eq("servicepoint_didok"), eq("PREFIX_" + today));
-    verify(amazonService).pullFile(eq("file"));
+    verify(amazonService).getS3ObjectKeysFromPrefix(eq(AmazonBucket.EXPORT), eq("servicepoint_didok"), eq("PREFIX_" + today));
+    verify(amazonService).pullFile(eq(AmazonBucket.EXPORT), eq("file"));
     assertThat(file.getName()).isEqualTo("file");
   }
 }
