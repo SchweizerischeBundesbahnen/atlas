@@ -1,5 +1,6 @@
 package ch.sbb.atlas.amazon.service;
 
+import ch.sbb.atlas.amazon.config.AmazonConfigProps.AmazonBucketConfig;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
@@ -19,32 +20,38 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AmazonServiceImpl implements AmazonService {
 
-  private final AmazonS3 amazonS3;
+  private final List<AmazonBucketClient> amazonBucketClients;
   private final FileService fileService;
-  private final String bucketName;
 
   @Override
-  public URL putFile(File file, String dir) throws IOException {
+  public URL putFile(AmazonBucket bucket, File file, String dir) throws IOException {
     ObjectMetadata metadata = new ObjectMetadata();
     metadata.setContentLength(file.length());
-    return putFileToBucket(file, dir, metadata);
+    return putFileToBucket(bucket, file, dir, metadata);
+  }
+
+  private AmazonS3 getClient(AmazonBucket bucket) {
+    return amazonBucketClients.stream().filter(i -> i.getBucket() == bucket).findFirst().orElseThrow().getClient();
+  }
+  private AmazonBucketConfig getAmazonBucketConfig(AmazonBucket bucket) {
+    return amazonBucketClients.stream().filter(i -> i.getBucket() == bucket).findFirst().orElseThrow().getAmazonBucketConfig();
   }
 
   @Override
-  public URL putZipFile(File file, String dir) throws IOException {
+  public URL putZipFile(AmazonBucket bucket, File file, String dir) throws IOException {
     File zipFile = fileService.zipFile(file);
     ObjectMetadata metadata = new ObjectMetadata();
     metadata.setContentType("application/zip");
     metadata.setContentLength(zipFile.length());
-    URL url = putFileToBucket(zipFile, dir, metadata);
+    URL url = putFileToBucket(bucket, zipFile, dir, metadata);
     Files.deleteIfExists(file.toPath());
     Files.deleteIfExists(zipFile.toPath());
     return url;
   }
 
   @Override
-  public File pullFile(String filePath) throws IOException {
-    S3Object s3Object = amazonS3.getObject(bucketName, filePath);
+  public File pullFile(AmazonBucket bucket, String filePath) throws IOException {
+    S3Object s3Object = getClient(bucket).getObject(getAmazonBucketConfig(bucket).getBucketName(), filePath);
     String dir = fileService.getDir();
     File fileDownload = new File(dir + filePath.replaceAll("/", "_"));
     try (FileOutputStream fileOutputStream = new FileOutputStream(fileDownload);
@@ -55,25 +62,25 @@ public class AmazonServiceImpl implements AmazonService {
   }
 
   @Override
-  public void deleteFile(String filePath) {
-    amazonS3.deleteObject(bucketName, filePath);
+  public void deleteFile(AmazonBucket bucket, String filePath) {
+    getClient(bucket).deleteObject(getAmazonBucketConfig(bucket).getBucketName(), filePath);
   }
 
   @Override
-  public List<String> getS3ObjectKeysFromPrefix(String dirPath, String prefix) {
-    List<S3ObjectSummary> result = amazonS3.listObjectsV2(bucketName, getFilePathName(dirPath, prefix)).getObjectSummaries();
+  public List<String> getS3ObjectKeysFromPrefix(AmazonBucket bucket, String dirPath, String prefix) {
+    List<S3ObjectSummary> result = getClient(bucket).listObjectsV2(getAmazonBucketConfig(bucket).getBucketName(), getFilePathName(dirPath, prefix)).getObjectSummaries();
     return result.stream().map(S3ObjectSummary::getKey).toList();
   }
 
-  private URL putFileToBucket(File file, String dir, ObjectMetadata metadata) throws IOException {
+  private URL putFileToBucket(AmazonBucket bucket, File file, String dir, ObjectMetadata metadata) throws IOException {
     URL url;
     PutObjectRequest putObjectRequest;
     try (FileInputStream inputStream = new FileInputStream(file)) {
       String filePathName = getFilePathName(file, dir);
-      putObjectRequest = new PutObjectRequest(bucketName, filePathName, inputStream,
+      putObjectRequest = new PutObjectRequest(getAmazonBucketConfig(bucket).getBucketName(), filePathName, inputStream,
           metadata);
-      PutObjectResult putObjectResult = amazonS3.putObject(putObjectRequest);
-      url = amazonS3.getUrl(bucketName, filePathName);
+      PutObjectResult putObjectResult = getClient(bucket).putObject(putObjectRequest);
+      url = getClient(bucket).getUrl(getAmazonBucketConfig(bucket).getBucketName(), filePathName);
       return url;
     }
   }

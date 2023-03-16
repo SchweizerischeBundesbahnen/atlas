@@ -81,7 +81,7 @@ logging:
 amazon:
   region: "eu-central-1"
   bucketConfigs:
-    export-files:
+    export:
       accessKey: ${AMAZON_S3_ACCESS_KEY}
       secretKey: ${AMAZON_S3_SECRET_KEY}
       bucketName: "atlas-data-export-dev-dev"
