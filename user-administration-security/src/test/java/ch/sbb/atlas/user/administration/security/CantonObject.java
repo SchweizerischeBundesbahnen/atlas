@@ -1,5 +1,6 @@
 package ch.sbb.atlas.user.administration.security;
 
+import ch.sbb.atlas.api.model.CantonAssociated;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import java.time.LocalDate;
 import lombok.Builder;

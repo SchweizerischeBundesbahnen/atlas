@@ -205,7 +205,8 @@
     "APPLICATION": {
       "LIDI": "Linien- und Teillinien",
       "TTFN": "Fahrplanfeldnummern",
-      "BODI": "Geschäftsorganisationen"
+      "BODI": "Geschäftsorganisationen",
+      "TIMETABLE_HEARING": "Fahrplananhörungen"
     },
     "ACCOUNT_STATUS_TYPE": {
       "ACTIVE": "Aktiv",
