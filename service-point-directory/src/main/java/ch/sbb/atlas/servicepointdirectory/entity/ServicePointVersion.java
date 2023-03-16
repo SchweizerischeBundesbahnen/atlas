@@ -29,7 +29,7 @@ import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointWithoutTimet
 import ch.sbb.atlas.servicepointdirectory.enumeration.ServicePointStatus;
 import ch.sbb.atlas.servicepointdirectory.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
-import ch.sbb.atlas.user.administration.security.BusinessOrganisationAssociated;
+import ch.sbb.atlas.api.model.BusinessOrganisationAssociated;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;

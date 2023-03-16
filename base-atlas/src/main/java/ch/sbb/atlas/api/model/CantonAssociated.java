@@ -1,4 +1,4 @@
-package ch.sbb.atlas.user.administration.security;
+package ch.sbb.atlas.api.model;
 
 import ch.sbb.atlas.kafka.model.SwissCanton;
 

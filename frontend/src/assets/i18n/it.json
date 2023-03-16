@@ -205,7 +205,8 @@
     "APPLICATION": {
       "LIDI": "Linee e linee parziali",
       "TTFN": "Numeri di campo dell'orario",
-      "BODI": "Organizzazioni imprenditoriali"
+      "BODI": "Organizzazioni imprenditoriali",
+      "TIMETABLE_HEARING": "Audizione dell'orario"
     },
     "ACCOUNT_STATUS_TYPE": {
       "ACTIVE": "Attivo",
