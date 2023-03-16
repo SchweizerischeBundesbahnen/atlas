@@ -2,11 +2,12 @@ package ch.sbb.atlas.user.administration.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
-import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.api.user.administration.UserPermissionCreateModel;
 import ch.sbb.atlas.api.user.administration.UserPermissionModel;
+import ch.sbb.atlas.kafka.model.SwissCanton;
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
+import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.user.administration.entity.UserPermission;
 import ch.sbb.atlas.user.administration.repository.UserPermissionRepository;
 import java.util.List;
@@ -29,21 +30,18 @@ public class UserAdministrationServiceUpdateTest {
 
   @BeforeEach
   void setUp() {
-    userPermissionRepository.saveAll(List.of(UserPermission.builder()
+    UserPermission firstUserPermission = UserPermission.builder()
         .role(ApplicationRole.SUPERVISOR)
         .application(ApplicationType.TTFN)
         .sbbUserId(SBBUID)
-        .build(), UserPermission.builder()
-        .role(
-            ApplicationRole.WRITER)
-        .application(
-            ApplicationType.LIDI)
-        .sboid(Set.of(
-            "ch:1:sboid:1000000",
-            "ch:1:sboid:1000012"))
-        .sbbUserId(
-            SBBUID)
-        .build()));
+        .build();
+    UserPermission secondUserPermission = UserPermission.builder()
+        .role(ApplicationRole.WRITER)
+        .application(ApplicationType.LIDI)
+        .sboid(Set.of("ch:1:sboid:1000000", "ch:1:sboid:1000012"))
+        .sbbUserId(SBBUID)
+        .build();
+    userPermissionRepository.saveAll(List.of(firstUserPermission, secondUserPermission));
   }
 
   @AfterEach
@@ -58,10 +56,8 @@ public class UserAdministrationServiceUpdateTest {
         .sbbUserId(SBBUID)
         .permissions(List.of(
             UserPermissionModel.builder()
-                .application(
-                    ApplicationType.TTFN)
-                .role(
-                    ApplicationRole.SUPER_USER)
+                .application(ApplicationType.TTFN)
+                .role(ApplicationRole.SUPER_USER)
                 .build()))
         .build();
 
@@ -86,13 +82,9 @@ public class UserAdministrationServiceUpdateTest {
         .sbbUserId(SBBUID)
         .permissions(List.of(
             UserPermissionModel.builder()
-                .application(
-                    ApplicationType.TTFN)
-                .role(
-                    ApplicationRole.WRITER)
-                .sboids(
-                    List.of(
-                        "ch:1:sboid:10009"))
+                .application(ApplicationType.TTFN)
+                .role(ApplicationRole.WRITER)
+                .sboids(List.of("ch:1:sboid:10009"))
                 .build()))
         .build();
 
@@ -113,10 +105,8 @@ public class UserAdministrationServiceUpdateTest {
         .sbbUserId(SBBUID)
         .permissions(List.of(
             UserPermissionModel.builder()
-                .application(
-                    ApplicationType.LIDI)
-                .role(
-                    ApplicationRole.SUPER_USER)
+                .application(ApplicationType.LIDI)
+                .role(ApplicationRole.SUPER_USER)
                 .build()))
         .build();
 
@@ -141,10 +131,8 @@ public class UserAdministrationServiceUpdateTest {
         .sbbUserId(SBBUID)
         .permissions(List.of(
             UserPermissionModel.builder()
-                .application(
-                    ApplicationType.LIDI)
-                .role(
-                    ApplicationRole.READER)
+                .application(ApplicationType.LIDI)
+                .role(ApplicationRole.READER)
                 .build()))
         .build();
 
@@ -155,5 +143,36 @@ public class UserAdministrationServiceUpdateTest {
     UserPermission lidiPermissions = userAdministrationService.getCurrentUserPermission(SBBUID,
         ApplicationType.LIDI).orElseThrow();
     assertThat(lidiPermissions.getRole()).isEqualTo(ApplicationRole.READER);
+  }
+
+  @Test
+  void shouldAddAdditionalApplicationPermissionsOnEdit() {
+    // Given
+    UserPermissionCreateModel editedPermissions = UserPermissionCreateModel.builder()
+        .sbbUserId(SBBUID)
+        .permissions(List.of(
+            UserPermissionModel.builder()
+                .application(ApplicationType.LIDI)
+                .role(ApplicationRole.SUPER_USER)
+                .build(),
+            UserPermissionModel.builder()
+                .application(ApplicationType.TIMETABLE_HEARING)
+                .role(ApplicationRole.WRITER)
+                .swissCantons(List.of(SwissCanton.BERN, SwissCanton.LUCERNE))
+                .build()))
+        .build();
+
+    // When
+    userAdministrationService.updateUser(editedPermissions);
+
+    // Then
+    UserPermission lidiPermissions = userAdministrationService.getCurrentUserPermission(SBBUID,
+        ApplicationType.LIDI).orElseThrow();
+    assertThat(lidiPermissions.getRole()).isEqualTo(ApplicationRole.SUPER_USER);
+
+    UserPermission hearingPermissions = userAdministrationService.getCurrentUserPermission(SBBUID,
+        ApplicationType.TIMETABLE_HEARING).orElseThrow();
+    assertThat(hearingPermissions.getSboid()).isEmpty();
+    assertThat(hearingPermissions.getSwissCantons()).hasSize(2);
   }
 }
