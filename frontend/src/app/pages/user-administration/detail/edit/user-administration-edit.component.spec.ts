@@ -53,7 +53,12 @@ describe('UserAdministrationEditComponent', () => {
     ]);
     userPermissionManagerSpy = jasmine.createSpyObj(
       'UserPermissionManager',
-      ['setSbbUserId', 'setPermissions', 'clearSboidsIfNotWriter', 'emitBoFormResetEvent'],
+      [
+        'setSbbUserId',
+        'setPermissions',
+        'clearSboidsAndCantonsIfNotWriter',
+        'emitBoFormResetEvent',
+      ],
       {
         userPermission: {
           sbbUserId: 'u123456',
