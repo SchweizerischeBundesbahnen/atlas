@@ -56,7 +56,7 @@ public class ServicePointRequestParams {
   @Singular(ignoreNullCollections = true)
   private List<String> abbreviations = new ArrayList<>();
 
-  @Schema(description = "Swiss Bussines Organisation ID of the business organisation.")
+  @Schema(description = "Swiss Business Organisation ID of the business organisation.")
   @Singular(ignoreNullCollections = true)
   private List<String> businessOrganisationSboids = new ArrayList<>();
 
