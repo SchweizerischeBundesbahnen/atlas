@@ -14,7 +14,6 @@ import ch.sbb.atlas.api.lidi.TimetableFieldNumberVersionModel;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerWithAmazonS3ApiTest;
-import ch.sbb.line.directory.configuration.AmazonConfig;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.repository.TimetableFieldNumberVersionRepository;
 import ch.sbb.line.directory.service.export.TimetableFieldNumberVersionExportService;
@@ -26,7 +25,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
@@ -51,7 +49,6 @@ public class TimetableFieldNumberControllerApiTest extends BaseControllerWithAma
   private TimetableFieldNumberVersionExportService versionExportService;
 
   @Autowired
-  @Qualifier(AmazonConfig.EXPORT_FILES)
   private AmazonService amazonService;
 
   @BeforeEach

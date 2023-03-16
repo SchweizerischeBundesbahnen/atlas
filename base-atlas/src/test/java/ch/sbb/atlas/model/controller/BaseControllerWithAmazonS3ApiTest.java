@@ -1,5 +1,6 @@
 package ch.sbb.atlas.model.controller;
 
+import ch.sbb.atlas.amazon.service.AmazonBucket;
 import ch.sbb.atlas.amazon.service.AmazonService;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
@@ -15,7 +16,7 @@ public class BaseControllerWithAmazonS3ApiTest extends BaseControllerApiTest {
     responseContent.forEach(s -> {
       String escapedString = s.replace("\"", "").replace("[", "").replace("]", "");
       String filePathToRemove = escapedString.substring(escapedString.lastIndexOf("/"));
-      amazonService.deleteFile(dir + filePathToRemove);
+      amazonService.deleteFile(AmazonBucket.EXPORT, dir + filePathToRemove);
     });
 
   }

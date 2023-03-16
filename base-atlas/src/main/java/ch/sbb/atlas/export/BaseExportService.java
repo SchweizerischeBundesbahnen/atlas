@@ -1,5 +1,6 @@
 package ch.sbb.atlas.export;
 
+import ch.sbb.atlas.amazon.service.AmazonBucket;
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.AtlasApiConstants;
@@ -62,7 +63,7 @@ public abstract class BaseExportService<T extends BaseVersion> {
 
     URL putCsvFile(File csvFile) {
         try {
-            URL url = amazonService.putFile(csvFile, getDirectory());
+            URL url = amazonService.putFile(AmazonBucket.EXPORT, csvFile, getDirectory());
             log.info("Export - CSV File {} Successfully Put to the directory {}: {}", csvFile.getName(), getDirectory(), url);
             return url;
         } catch (IOException e) {
@@ -73,7 +74,7 @@ public abstract class BaseExportService<T extends BaseVersion> {
 
     URL putZipFile(File zipFile) {
         try {
-            URL url = amazonService.putZipFile(zipFile, getDirectory());
+            URL url = amazonService.putZipFile(AmazonBucket.EXPORT, zipFile, getDirectory());
             log.info("Export - ZIP File {} Successfully Put to the directory {}: {}", zipFile.getName(), getDirectory(), url);
             return url;
         } catch (IOException e) {
