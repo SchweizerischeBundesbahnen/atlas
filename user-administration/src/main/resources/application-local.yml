@@ -17,7 +17,7 @@ spring:
     name: user-administration
   jpa:
     open-in-view: false
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
         format_sql: true
