@@ -33,6 +33,46 @@ public final class ServicePointNumber {
   @JsonIgnore
   private final int value;
 
+  public static ServicePointNumber of(int number) {
+    return new ServicePointNumber(number);
+  }
+
+  public static ServicePointNumber ofNumberWithoutCheckDigit(int number) {
+    if (String.valueOf(number).length() == LENGTH - 1) {
+      return of(Country.from(number / SEVEN_DIGIT_SPLITTER), number % SEVEN_DIGIT_SPLITTER);
+    }
+    return of(number);
+  }
+
+  public static ServicePointNumber of(Country country, int servicePointId) {
+    String formattedId = String.format("%05d", servicePointId);
+    return ServicePointNumber.fromString(country.getUicCode() + formattedId + calculateCheckDigit(formattedId));
+  }
+
+  private static ServicePointNumber fromString(String number) {
+    return ServicePointNumber.of(Integer.parseInt(number));
+  }
+
+  private static int calculateCheckDigit(String servicePointId) {
+    int initialChecksum = 0;
+    for (int i = 0; i < servicePointId.length(); i++) {
+      int nthDigit = getNthDigit(servicePointId, i);
+      if (i % 2 == 0) {
+        nthDigit *= 2;
+      }
+      initialChecksum += calculateChecksum(nthDigit);
+    }
+    return (TEN - (initialChecksum % TEN)) % TEN;
+  }
+
+  private static int getNthDigit(String value, int n) {
+    return Integer.parseInt(value.substring(n, n + 1));
+  }
+
+  private static int calculateChecksum(int i) {
+    return i % TEN + (i > 0 ? calculateChecksum(i / TEN) : 0);
+  }
+
   @JsonIgnore
   @NotNull(message = "Given Country of ServicePointNumber could not be matched")
   public Country getCountry() {
@@ -41,7 +81,8 @@ public final class ServicePointNumber {
 
   @NotNull
   @JsonInclude
-  @Schema(description = "UicCountryCode", example = "85")
+  @Schema(description = "UicCountryCode, Indicates which country allocated the service point number and is to be interpreted "
+      + "organisationally, not territorially.", example = "85")
   public Integer getUicCountryCode() {
     if (getCountry() == null) {
       return null;
@@ -72,22 +113,6 @@ public final class ServicePointNumber {
     return getNumericPart(LENGTH - 1, LENGTH);
   }
 
-  public static ServicePointNumber of(int number) {
-    return new ServicePointNumber(number);
-  }
-
-  public static ServicePointNumber ofNumberWithoutCheckDigit(int number) {
-    if (String.valueOf(number).length() == LENGTH - 1) {
-      return of(Country.from(number / SEVEN_DIGIT_SPLITTER), number % SEVEN_DIGIT_SPLITTER);
-    }
-    return of(number);
-  }
-
-  public static ServicePointNumber of(Country country, int servicePointId) {
-    String formattedId = String.format("%05d", servicePointId);
-    return ServicePointNumber.fromString(country.getUicCode() + formattedId + calculateCheckDigit(formattedId));
-  }
-
   @AssertTrue
   boolean isEightDigitsLong() {
     return asString().length() == LENGTH;
@@ -104,30 +129,6 @@ public final class ServicePointNumber {
       log.debug("Could not parse getNumericPart of ServicePointNumber", e);
       return null;
     }
-  }
-
-  private static ServicePointNumber fromString(String number) {
-    return ServicePointNumber.of(Integer.parseInt(number));
-  }
-
-  private static int calculateCheckDigit(String servicePointId) {
-    int initialChecksum = 0;
-    for (int i = 0; i < servicePointId.length(); i++) {
-      int nthDigit = getNthDigit(servicePointId, i);
-      if (i % 2 == 0) {
-        nthDigit *= 2;
-      }
-      initialChecksum += calculateChecksum(nthDigit);
-    }
-    return (TEN - (initialChecksum % TEN)) % TEN;
-  }
-
-  private static int getNthDigit(String value, int n) {
-    return Integer.parseInt(value.substring(n, n + 1));
-  }
-
-  private static int calculateChecksum(int i) {
-    return i % TEN + (i > 0 ? calculateChecksum(i / TEN) : 0);
   }
 
 }

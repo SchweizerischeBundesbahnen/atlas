@@ -6,23 +6,23 @@ import jakarta.validation.constraints.NotNull;
 public interface CodeAndDesignations {
 
   @NotNull
-  @Schema(description = "Code", example = "Z")
+  @Schema(description = "Code, the code and the designations belongs to the Type above")
   String getCode();
 
   @NotNull
-  @Schema(description = "Designation in german", example = "Zug")
+  @Schema(description = "Designation in german")
   String getDesignationDe();
 
   @NotNull
-  @Schema(description = "Designation in french", example = "Train")
+  @Schema(description = "Designation in french")
   String getDesignationFr();
 
   @NotNull
-  @Schema(description = "Designation in italian", example = "Treno")
+  @Schema(description = "Designation in italian")
   String getDesignationIt();
 
   @NotNull
-  @Schema(description = "Designation in english", example = "Train")
+  @Schema(description = "Designation in english")
   String getDesignationEn();
 
 }
