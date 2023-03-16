@@ -21,11 +21,13 @@ describe('UserPermissionManager', () => {
         application: 'TTFN',
         role: 'WRITER',
         sboids: ['ch:1:sboid:writer'],
+        swissCantons: [],
       },
       {
         application: 'LIDI',
         role: 'SUPER_USER',
         sboids: ['ch:1:sboid:super_user'],
+        swissCantons: [],
       },
     ]);
     tick();
@@ -57,6 +59,7 @@ describe('UserPermissionManager', () => {
         application: 'TTFN',
         role: 'SUPER_USER',
         sboids: ['ch:1:sboid:test'],
+        swissCantons: [],
       },
     ]);
     tick();

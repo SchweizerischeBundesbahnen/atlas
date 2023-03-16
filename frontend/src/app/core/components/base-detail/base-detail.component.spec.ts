@@ -61,7 +61,12 @@ describe('BaseDetailComponent', () => {
       return true;
     },
     getApplicationUserPermission(applicationType: ApplicationType): UserPermission {
-      return { application: applicationType, role: ApplicationRole.Supervisor, sboids: [] };
+      return {
+        application: applicationType,
+        role: ApplicationRole.Supervisor,
+        sboids: [],
+        swissCantons: [],
+      };
     },
   };
 
