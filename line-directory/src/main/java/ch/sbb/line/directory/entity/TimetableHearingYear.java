@@ -1,5 +1,6 @@
 package ch.sbb.line.directory.entity;
 
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingConstants;
 import ch.sbb.atlas.model.entity.BaseEntity;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.HearingStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -33,8 +34,8 @@ import lombok.experimental.SuperBuilder;
 public class TimetableHearingYear extends BaseEntity {
 
   @Id
-  @Min(2010)
-  @Max(9999)
+  @Min(TimetableHearingConstants.MIN_YEAR)
+  @Max(TimetableHearingConstants.MAX_YEAR)
   private Long timetableYear;
 
   @NotNull
