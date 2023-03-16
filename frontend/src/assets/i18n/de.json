@@ -158,7 +158,7 @@
       "DESCRIPTION": "Hier finden Sie alle Informationen zum Bearbeiten und neu Erstellen von Dienststellen."
     },
     "TTH": {
-      "TITLE": "Fahrplananhörung Schwiez",
+      "TITLE": "Fahrplananhörung Schweiz",
       "TITLE_MENU": "Fahrplananhörung",
       "DESCRIPTION": "Hier finden Sie alle Informationen zur Fahrplananhörung Schweiz.",
       "PATH_TEXT": "Fahrplananhörung"
@@ -511,7 +511,7 @@
     }
   },
   "TTH": {
-    "OPEN": "{{canton}} Öffnen",
+    "OPEN": "{{canton}} öffnen",
     "CANTON": {
       "CH": "Gesamtschweiz",
       "AG": "Aargau",
@@ -525,7 +525,7 @@
       "GL": "Glarus",
       "GR": "Graubünden",
       "JU": "Jura",
-      "LU": "Luzer",
+      "LU": "Luzern",
       "NE": "Neuenburg",
       "NW": "Nidwalden",
       "OW": "Obwalden",
@@ -533,12 +533,12 @@
       "SH": "Schaffausen",
       "SO": "Solothurn",
       "SZ": "Schwyz",
-      "TG": "Turgau",
+      "TG": "Thurgau",
       "TI": "Tessin",
       "UR": "Uri",
       "VD": "Waadt",
       "VS": "Wallis",
-      "ZG": "Zuch",
+      "ZG": "Zug",
       "ZH": "Zürich"
     }
   }
