@@ -1,18 +1,11 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { TableColumn } from '../../../core/components/table/table-column';
-import {
-  ApplicationRole,
-  ApplicationType,
-  BusinessOrganisation,
-  LineType,
-  SwissCanton,
-} from '../../../api';
+import { ApplicationRole, ApplicationType, BusinessOrganisation, SwissCanton } from '../../../api';
 import { FormControl, FormGroup } from '@angular/forms';
 import { UserPermissionManager } from '../service/user-permission-manager';
 import { BusinessOrganisationLanguageService } from '../../../core/form-components/bo-select/business-organisation-language.service';
 import { Observable, of, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { statusChoice } from '../../../core/components/table-search/table-search';
 
 @Component({
   selector: 'app-user-administration-application-config',
@@ -61,7 +54,6 @@ export class UserAdministrationApplicationConfigComponent implements OnInit, OnD
   private readonly boFormResetEventSubscription: Subscription;
   SWISS_CANTONS = Object.values(SwissCanton);
   SWISS_CANTONS_PREFIX_LABEL = 'COMMON.CANTONS.';
-  activeCantons = [];
 
   constructor(
     private readonly boLanguageService: BusinessOrganisationLanguageService,

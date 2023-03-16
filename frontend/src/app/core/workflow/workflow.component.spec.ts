@@ -56,7 +56,12 @@ const authServiceMock: Partial<AuthService> = {
     return true;
   },
   getApplicationUserPermission(applicationType: ApplicationType): UserPermission {
-    return { application: applicationType, role: ApplicationRole.Supervisor, sboids: [] };
+    return {
+      application: applicationType,
+      role: ApplicationRole.Supervisor,
+      sboids: [],
+      swissCantons: [],
+    };
   },
 };
 const user: User = {
