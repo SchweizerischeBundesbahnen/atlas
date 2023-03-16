@@ -1,17 +1,17 @@
 package ch.sbb.atlas.servicepointdirectory.api;
 
-import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
+import ch.sbb.atlas.model.SwissCanton;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
-import ch.sbb.atlas.model.SwissCanton;
 import ch.sbb.atlas.servicepointdirectory.model.CoordinatePair;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
-import java.util.Map;
 import jakarta.validation.constraints.Size;
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -104,7 +104,7 @@ public class ServicePointGeolocationModel extends GeolocationModel {
   @Schema(name = "Canton")
   public static class Canton {
 
-    @Schema(description = "Canton number", example = "2")
+    @Schema(description = "Canton number, offical Number of FSO", example = "2")
     private Integer fsoNumber;
 
     @Schema(description = "Canton name", example = "Bern")
@@ -122,7 +122,7 @@ public class ServicePointGeolocationModel extends GeolocationModel {
   @Schema(name = "District")
   public static class DistrictModel {
 
-    @Schema(description = "SwissDistrictNumber the location is in", example = "242")
+    @Schema(description = "SwissDistrictNumber the location is in, based on FSO", example = "242")
     private Integer fsoNumber;
 
     @Schema(description = "SwissDistrictName the location is in", example = "Biel/Bienne")
@@ -139,7 +139,7 @@ public class ServicePointGeolocationModel extends GeolocationModel {
   @Schema(name = "LocalityMunicipality")
   public static class LocalityMunicipalityModel {
 
-    @Schema(description = "SwissMunicipalityNumber the location is in", example = "371")
+    @Schema(description = "SwissMunicipalityNumber the location is in, based on FSO", example = "371")
     private Integer fsoNumber;
 
     @Schema(description = "SwissMunicipalityName the location is in", example = "Biel/Bienne")
