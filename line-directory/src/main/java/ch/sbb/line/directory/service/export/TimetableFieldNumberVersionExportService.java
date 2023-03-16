@@ -8,7 +8,6 @@ import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.export.BaseExportService;
 import ch.sbb.atlas.export.ExportType;
 import ch.sbb.atlas.export.model.VersionCsvModel;
-import ch.sbb.line.directory.configuration.AmazonConfig;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.model.csv.TimetableFieldNumberVersionCsvModel;
 import ch.sbb.line.directory.repository.TimetableFieldNumberVersionRepository;
@@ -16,7 +15,6 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import java.io.File;
 import java.time.LocalDate;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -26,7 +24,7 @@ public class TimetableFieldNumberVersionExportService extends
     private final TimetableFieldNumberVersionRepository timetableFieldNumberVersionRepository;
 
     public TimetableFieldNumberVersionExportService(FileService fileService,
-        @Qualifier(AmazonConfig.EXPORT_FILES) AmazonService amazonService,
+        AmazonService amazonService,
         TimetableFieldNumberVersionRepository timetableFieldNumberVersionRepository) {
         super(fileService, amazonService);
         this.timetableFieldNumberVersionRepository = timetableFieldNumberVersionRepository;
