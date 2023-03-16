@@ -15,7 +15,7 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 @FieldNameConstants
-@Schema(name = "CodeAndDesignation, gives more detail to types", accessMode = AccessMode.READ_ONLY)
+@Schema(name = "CodeAndDesignation", description = "Gives more detail to types", accessMode = AccessMode.READ_ONLY)
 public class CodeAndDesignation {
 
   @NotNull

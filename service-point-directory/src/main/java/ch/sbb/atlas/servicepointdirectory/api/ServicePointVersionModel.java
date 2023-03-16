@@ -50,42 +50,41 @@ public class ServicePointVersionModel extends BaseVersionModel implements DatesV
   private ServicePointNumber number;
 
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
-  @Schema(description = "Unique code for locations that is used in customer information. By means of this ID, the connection "
-      + "between stops and bus / station stop area or boarding area can be established. The structure is described in the "
-      + "“Swiss Location ID” specification, chapter 4.2. The document is available here. https://transportdatamanagement"
-      + ".ch/standards/", example = "ch:1:sloid:18771")
+  @Schema(description = "Unique code for locations that is used in customer information. The structure is described in the "
+      + "“Swiss Location ID” specification, chapter 4.2. The document is available here. "
+      + "https://transportdatamanagement.ch/standards/", example = "ch:1:sloid:18771")
   private String sloid;
 
-  @Schema(description = "Long designation of a location Maximum length 50 characters. Used primarily in customer information. "
+  @Schema(description = "Long designation of a location. Used primarily in customer information. "
       + "Not all systems can process names of this length.", example = "Biel/Bienne Bözingenfeld/Champs-de-Boujean")
   @Size(max = AtlasFieldLengths.LENGTH_50)
   private String designationLong;
 
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_30)
-  @Schema(description = "Official designation of a location that must be used by all recipients. Maximum length 30 characters."
-      , example = "Biel/Bienne Bözingenfeld/Champ")
+  @Schema(description = "Official designation of a location that must be used by all recipients"
+      , example = "Biel/Bienne Bözingenfeld/Champ", maxLength = 30)
   private String designationOfficial;
 
   @Size(max = AtlasFieldLengths.LENGTH_6)
-  @Schema(description = "Location abbreviation. Mainly used by the railways. Maximum length is 6 characters, AN (alphanumeric)."
-      + " Abbreviations may not be used as a code for identifying locations.", example = "BIBD")
+  @Schema(description = "Location abbreviation. Mainly used by the railways. Abbreviations may not be used as a code for "
+      + "identifying locations.", example = "BIBD", maxLength = 6)
   private String abbreviation;
 
   @NotNull
-  @Schema(description = "Status, Code of status of the service point, useful for specific business tasks (filter).")
+  @Schema(description = "Status, Code of status of the service point, useful for specific business tasks.")
   private ServicePointStatus statusDidok3;
 
   @NotNull
   @Schema(accessMode = AccessMode.READ_ONLY)
   private CodeAndDesignation statusDidok3Information;
 
-  @Schema(description = "Indicates if this a operatingPoint")
+  @Schema(description = "Indicates if this a operatingPoint.")
   private boolean operatingPoint;
 
-  @Schema(description = "Indicates if this a operatingPoint including Timetables")
+  @Schema(description = "Indicates if this a operatingPoint including Timetables.")
   private boolean operatingPointWithTimetable;
 
-  @Schema(description = "Indicates if this a Service Point for freights")
+  @Schema(description = "Indicates if this a Service Point for freights.")
   private boolean freightServicePoint;
 
   @Size(max = AtlasFieldLengths.LENGTH_10)
@@ -99,30 +98,31 @@ public class ServicePointVersionModel extends BaseVersionModel implements DatesV
   @Schema(description = "ServicePoint Categories: Assignment of service points to defined business cases.")
   private List<Category> categories;
 
-  @Schema(accessMode = AccessMode.READ_ONLY, description = "Details to the categories")
+  @Schema(accessMode = AccessMode.READ_ONLY, description = "Details to the categories.")
   private List<CodeAndDesignation> categoriesInformation;
 
-  @Schema(description = "OperatingPointType, Specifies the detailed intended use of a operating point")
+  @Schema(description = "OperatingPointType, Specifies the detailed intended use of a operating point.")
   private OperatingPointType operatingPointType;
 
-  @Schema(accessMode = AccessMode.READ_ONLY, description = "Details to the operationPointType")
+  @Schema(accessMode = AccessMode.READ_ONLY, description = "Details to the operationPointType.")
   private CodeAndDesignation operatingPointTypeInformation;
 
+  @Deprecated
   @Schema(description = "OperatingPointWithoutTimetableType, Specifies the detailed intended use of a operating point without "
-      + "timetable (deprecated)")
+      + "timetable.")
   private OperatingPointWithoutTimetableType operatingPointWithoutTimetableType;
 
   @Schema(accessMode = AccessMode.READ_ONLY)
   private CodeAndDesignation operatingPointWithoutTimetableTypeInformation;
 
-  @Schema(description = "OperatingPointTechnicalTimetableType, All service points relevant for timetable planning and "
+  @Schema(description = "OperatingPointTechnicalTimetableType, all service points relevant for timetable planning and "
       + "publication. ")
   private OperatingPointTechnicalTimetableType operatingPointTechnicalTimetableType;
 
-  @Schema(accessMode = AccessMode.READ_ONLY, description = "Details to the OperatingPointTechnicalTimetableType")
+  @Schema(accessMode = AccessMode.READ_ONLY, description = "Details to the OperatingPointTechnicalTimetableType.")
   private CodeAndDesignation operatingPointTechnicalTimetableTypeInformation;
 
-  @Schema(description = "OperatingPointTrafficPointType, Specifies the detailed intended use of a traffic point")
+  @Schema(description = "OperatingPointTrafficPointType, Specifies the detailed intended use of a traffic point.")
   private OperatingPointTrafficPointType operatingPointTrafficPointType;
 
   @Schema(accessMode = AccessMode.READ_ONLY)
@@ -146,7 +146,7 @@ public class ServicePointVersionModel extends BaseVersionModel implements DatesV
   @Schema(description = "Type of the StopPoint, Indicates for which type of traffic (e.g. regular traffic) a stop was recorded. ")
   private StopPointType stopPointType;
 
-  @Schema(accessMode = AccessMode.READ_ONLY, description = "Details to the StopPointType")
+  @Schema(accessMode = AccessMode.READ_ONLY, description = "Details to the StopPointType.")
   private CodeAndDesignation stopPointTypeInformation;
 
   @Size(max = AtlasFieldLengths.LENGTH_1500)
