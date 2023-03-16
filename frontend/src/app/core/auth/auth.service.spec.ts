@@ -125,6 +125,7 @@ describe('AuthService', () => {
             application: ApplicationType.Bodi,
             role: ApplicationRole.SuperUser,
             sboids: [],
+            swissCantons: [],
           },
         ],
         false
@@ -138,6 +139,7 @@ describe('AuthService', () => {
             application: ApplicationType.Bodi,
             role: ApplicationRole.Supervisor,
             sboids: [],
+            swissCantons: [],
           },
         ],
         false
@@ -151,6 +153,7 @@ describe('AuthService', () => {
             application: ApplicationType.Bodi,
             role: ApplicationRole.Writer,
             sboids: [],
+            swissCantons: [],
           },
         ],
         false
@@ -164,6 +167,7 @@ describe('AuthService', () => {
             application: ApplicationType.Bodi,
             role: ApplicationRole.Reader,
             sboids: [],
+            swissCantons: [],
           },
         ],
         false
@@ -186,6 +190,7 @@ describe('AuthService', () => {
             application: ApplicationType.Lidi,
             role: ApplicationRole.SuperUser,
             sboids: [],
+            swissCantons: [],
           },
         ],
         false
@@ -199,6 +204,7 @@ describe('AuthService', () => {
             application: ApplicationType.Lidi,
             role: ApplicationRole.Supervisor,
             sboids: [],
+            swissCantons: [],
           },
         ],
         false
@@ -212,6 +218,7 @@ describe('AuthService', () => {
             application: ApplicationType.Lidi,
             role: ApplicationRole.Writer,
             sboids: [],
+            swissCantons: [],
           },
         ],
         false
@@ -225,6 +232,7 @@ describe('AuthService', () => {
             application: ApplicationType.Lidi,
             role: ApplicationRole.Reader,
             sboids: [],
+            swissCantons: [],
           },
         ],
         false
@@ -247,6 +255,7 @@ describe('AuthService', () => {
             application: ApplicationType.Ttfn,
             role: ApplicationRole.SuperUser,
             sboids: [],
+            swissCantons: [],
           },
         ],
         false
@@ -260,6 +269,7 @@ describe('AuthService', () => {
             application: ApplicationType.Ttfn,
             role: ApplicationRole.Supervisor,
             sboids: [],
+            swissCantons: [],
           },
         ],
         false
@@ -273,6 +283,7 @@ describe('AuthService', () => {
             application: ApplicationType.Ttfn,
             role: ApplicationRole.Writer,
             sboids: [],
+            swissCantons: [],
           },
         ],
         false
@@ -286,6 +297,7 @@ describe('AuthService', () => {
             application: ApplicationType.Ttfn,
             role: ApplicationRole.Reader,
             sboids: [],
+            swissCantons: [],
           },
         ],
         false
@@ -312,6 +324,7 @@ describe('AuthService', () => {
             application: ApplicationType.Lidi,
             role: ApplicationRole.Supervisor,
             sboids: [],
+            swissCantons: [],
           },
         ],
         false
@@ -326,6 +339,7 @@ describe('AuthService', () => {
             application: ApplicationType.Lidi,
             role: ApplicationRole.SuperUser,
             sboids: [],
+            swissCantons: [],
           },
         ],
         false
@@ -340,6 +354,7 @@ describe('AuthService', () => {
             application: ApplicationType.Lidi,
             role: ApplicationRole.Writer,
             sboids: [],
+            swissCantons: [],
           },
         ],
         false
@@ -354,6 +369,7 @@ describe('AuthService', () => {
             application: ApplicationType.Lidi,
             role: ApplicationRole.Writer,
             sboids: ['ch:1:slnid:1000004'],
+            swissCantons: [],
           },
         ],
         false

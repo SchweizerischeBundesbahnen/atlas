@@ -109,6 +109,7 @@ describe('UserService', () => {
             application: 'TTFN',
             role: 'WRITER',
             sboids: [],
+            swissCantons: [],
           },
         ],
       } as UserPermissionCreateModel)
@@ -130,6 +131,7 @@ describe('UserService', () => {
           application: 'TTFN',
           role: 'WRITER',
           sboids: [],
+          swissCantons: [],
         },
       ]),
     });
@@ -138,6 +140,7 @@ describe('UserService', () => {
         application: 'TTFN',
         role: 'WRITER',
         sboids: [],
+        swissCantons: [],
       },
     ]);
   });

@@ -30,6 +30,7 @@ describe('UserAdministrationApplicationConfigComponent', () => {
           TTFN: [],
           LIDI: [],
           BODI: [],
+          TIMETABLE_HEARING: [],
         }),
         boFormResetEvent$: of(),
       }
