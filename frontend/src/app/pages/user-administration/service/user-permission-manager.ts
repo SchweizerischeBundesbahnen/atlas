@@ -122,6 +122,7 @@ export class UserPermissionManager {
       const permissionIndex = this.getPermissionIndexFromApplication(application);
       this.userPermission.permissions[permissionIndex].role = permission.role;
       this.userPermission.permissions[permissionIndex].sboids = [];
+      this.userPermission.permissions[permissionIndex].swissCantons = permission.swissCantons;
       this.businessOrganisationsOfApplication[application] = [];
       this.boOfApplicationsSubject$.next(this.businessOrganisationsOfApplication);
       permission.sboids.forEach((sboid) => {
@@ -178,8 +179,8 @@ export class UserPermissionManager {
     );
   }
 
-  updateSwissCanton(application: ApplicationType, cantons: SwissCanton[]) {
+  getPermissionByApplication(application: ApplicationType) {
     const permissionIndex = this.getPermissionIndexFromApplication(application);
-    this.userPermission.permissions[permissionIndex].swissCantons = cantons;
+    return this.userPermission.permissions[permissionIndex];
   }
 }
