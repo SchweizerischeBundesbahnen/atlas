@@ -98,7 +98,7 @@ export class UserAdministrationApplicationConfigComponent implements OnInit, OnD
     this.selectedIndex = -1;
   }
 
-  cantonChange() {
-    this.userPermissionManager.updateSwissCanton(this.application, this.activeCantons);
+  permissionByApplication() {
+    return this.userPermissionManager.getPermissionByApplication(this.application);
   }
 }

@@ -51,10 +51,10 @@
           {{ 'SWISS_CANTONS' | translate }}
         </span>
         <span class="fake-lable-space"></span>
-        <div class="multi-select-search">
+        <div [class.disabled]="readOnly" class="multi-select-search">
           <mat-select
-            (selectionChange)="cantonChange()"
-            [(value)]="activeCantons"
+            [(value)]="permissionByApplication().swissCantons"
+            [disabled]="readOnly"
             class="font-bold-base"
             multiple
           >
