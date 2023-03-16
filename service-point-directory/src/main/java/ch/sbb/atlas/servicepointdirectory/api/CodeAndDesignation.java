@@ -15,27 +15,27 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 @FieldNameConstants
-@Schema(name = "CodeAndDesignation", accessMode = AccessMode.READ_ONLY)
+@Schema(name = "CodeAndDesignation", description = "Gives more detail to types", accessMode = AccessMode.READ_ONLY)
 public class CodeAndDesignation {
 
   @NotNull
-  @Schema(description = "Code", example = "Z")
+  @Schema(description = "Code")
   private String code;
 
   @NotNull
-  @Schema(description = "Designation in german", example = "Zug")
+  @Schema(description = "Designation in german")
   private String designationDe;
 
   @NotNull
-  @Schema(description = "Designation in french", example = "Train")
+  @Schema(description = "Designation in french")
   private String designationFr;
 
   @NotNull
-  @Schema(description = "Designation in italian", example = "Treno")
+  @Schema(description = "Designation in italian")
   private String designationIt;
 
   @NotNull
-  @Schema(description = "Designation in english", example = "Train")
+  @Schema(description = "Designation in english")
   private String designationEn;
 
   public static CodeAndDesignation fromEnum(CodeAndDesignations codeAndDesignations) {
