@@ -36,8 +36,7 @@ class CantonBasedUserAdministrationServiceTest {
     when(userPermissionHolder.isAdmin()).thenReturn(true);
 
     // When
-    boolean permissionsGranted = cantonBasedUserAdministrationService.isAtLeastExplicitReader(ApplicationType.TIMETABLE_HEARING,
-        CantonObject.createDummy());
+    boolean permissionsGranted = cantonBasedUserAdministrationService.isAtLeastExplicitReader(ApplicationType.TIMETABLE_HEARING);
 
     // Then
     assertThat(permissionsGranted).isTrue();
@@ -55,8 +54,7 @@ class CantonBasedUserAdministrationServiceTest {
         .build()));
 
     // When
-    boolean permissionsGranted = cantonBasedUserAdministrationService.isAtLeastExplicitReader(ApplicationType.TIMETABLE_HEARING,
-        CantonObject.createDummy());
+    boolean permissionsGranted = cantonBasedUserAdministrationService.isAtLeastExplicitReader(ApplicationType.TIMETABLE_HEARING);
 
     // Then
     assertThat(permissionsGranted).isFalse();
@@ -74,8 +72,7 @@ class CantonBasedUserAdministrationServiceTest {
         .build()));
 
     // When
-    boolean permissionsGranted = cantonBasedUserAdministrationService.isAtLeastExplicitReader(ApplicationType.TIMETABLE_HEARING,
-        CantonObject.createDummy());
+    boolean permissionsGranted = cantonBasedUserAdministrationService.isAtLeastExplicitReader(ApplicationType.TIMETABLE_HEARING);
 
     // Then
     assertThat(permissionsGranted).isTrue();
@@ -83,26 +80,28 @@ class CantonBasedUserAdministrationServiceTest {
 
   @Test
   void shouldAllowCreateToWriterWithCorrectCanton() {
+    CantonObject dummy = CantonObject.createDummy();
+
     // Given
     when(userPermissionHolder.getCurrentUser()).thenReturn(Optional.of(UserAdministrationModel.builder()
         .sbbUserId("e123456")
         .permissions(Set.of(UserAdministrationPermissionModel.builder()
             .application(ApplicationType.TIMETABLE_HEARING)
             .role(ApplicationRole.WRITER)
-            .swissCantons(Set.of(SwissCanton.BERN))
+            .swissCantons(Set.of(dummy.getSwissCanton()))
             .build()))
         .build()));
 
     // When
-    boolean permissionsGranted = cantonBasedUserAdministrationService.isAtLeastExplicitReader(ApplicationType.TIMETABLE_HEARING,
-        CantonObject.createDummy());
+    boolean permissionsGranted = cantonBasedUserAdministrationService.isAtLeastWriter(ApplicationType.TIMETABLE_HEARING,
+        dummy);
 
     // Then
     assertThat(permissionsGranted).isTrue();
   }
 
   @Test
-  void shouldNotAllowCreateToWriterWithCorrectCanton() {
+  void shouldNotAllowCreateToWriterWithFalseCanton() {
     // Given
     when(userPermissionHolder.getCurrentUser()).thenReturn(Optional.of(UserAdministrationModel.builder()
         .sbbUserId("e123456")
@@ -114,7 +113,7 @@ class CantonBasedUserAdministrationServiceTest {
         .build()));
 
     // When
-    boolean permissionsGranted = cantonBasedUserAdministrationService.isAtLeastExplicitReader(ApplicationType.TIMETABLE_HEARING,
+    boolean permissionsGranted = cantonBasedUserAdministrationService.isAtLeastWriter(ApplicationType.TIMETABLE_HEARING,
         CantonObject.createDummy());
 
     // Then
@@ -127,8 +126,7 @@ class CantonBasedUserAdministrationServiceTest {
     when(userPermissionHolder.getCurrentUser()).thenReturn(Optional.empty());
 
     // When
-    boolean permissionsGranted = cantonBasedUserAdministrationService.isAtLeastSupervisor(ApplicationType.TIMETABLE_HEARING,
-        CantonObject.createDummy());
+    boolean permissionsGranted = cantonBasedUserAdministrationService.isAtLeastSupervisor(ApplicationType.TIMETABLE_HEARING);
 
     // Then
     assertThat(permissionsGranted).isFalse();
@@ -146,8 +144,7 @@ class CantonBasedUserAdministrationServiceTest {
         .build()));
 
     // When
-    boolean permissionsGranted = cantonBasedUserAdministrationService.isAtLeastSupervisor(ApplicationType.TIMETABLE_HEARING,
-        CantonObject.createDummy());
+    boolean permissionsGranted = cantonBasedUserAdministrationService.isAtLeastSupervisor(ApplicationType.TIMETABLE_HEARING);
 
     // Then
     assertThat(permissionsGranted).isFalse();
@@ -166,8 +163,7 @@ class CantonBasedUserAdministrationServiceTest {
         .build()));
 
     // When
-    boolean permissionsGranted = cantonBasedUserAdministrationService.isAtLeastSupervisor(ApplicationType.TIMETABLE_HEARING,
-        CantonObject.createDummy());
+    boolean permissionsGranted = cantonBasedUserAdministrationService.isAtLeastSupervisor(ApplicationType.TIMETABLE_HEARING);
 
     // Then
     assertThat(permissionsGranted).isFalse();
@@ -186,8 +182,7 @@ class CantonBasedUserAdministrationServiceTest {
         .build()));
 
     // When
-    boolean permissionsGranted = cantonBasedUserAdministrationService.isAtLeastSupervisor(ApplicationType.TIMETABLE_HEARING,
-        CantonObject.createDummy());
+    boolean permissionsGranted = cantonBasedUserAdministrationService.isAtLeastSupervisor(ApplicationType.TIMETABLE_HEARING);
 
     // Then
     assertThat(permissionsGranted).isFalse();

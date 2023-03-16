@@ -55,6 +55,7 @@ public class TimetableHearingStatement extends BaseEntity {
 
   private String ttfnid;
 
+  @NotNull
   @Enumerated(EnumType.STRING)
   private SwissCanton swissCanton;
 
