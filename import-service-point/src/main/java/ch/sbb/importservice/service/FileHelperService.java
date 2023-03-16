@@ -1,5 +1,6 @@
 package ch.sbb.importservice.service;
 
+import ch.sbb.atlas.amazon.service.AmazonBucket;
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.importservice.exception.FileException;
@@ -65,12 +66,12 @@ public class FileHelperService {
 
   private File downloadImportFileWithPrefix(String csvImportFilePrefix) throws IOException {
     String csvImportFilePrefixToday = attachTodayDate(csvImportFilePrefix);
-    List<String> foundImportFileKeys = amazonService.getS3ObjectKeysFromPrefix(SERVICEPOINT_DIDOK_DIR_NAME,
+    List<String> foundImportFileKeys = amazonService.getS3ObjectKeysFromPrefix(AmazonBucket.EXPORT, SERVICEPOINT_DIDOK_DIR_NAME,
         csvImportFilePrefixToday);
     String fileKeyToDownload = handleImportFileKeysResult(foundImportFileKeys, csvImportFilePrefixToday);
     log.info("Found File with name: {}", fileKeyToDownload);
     log.info("Downloading {} ...", fileKeyToDownload);
-    File download = amazonService.pullFile(fileKeyToDownload);
+    File download = amazonService.pullFile(AmazonBucket.EXPORT, fileKeyToDownload);
     log.info("Downloaded file: " + download.getName() + ", size: " + download.length() + " bytes");
     return download;
   }
