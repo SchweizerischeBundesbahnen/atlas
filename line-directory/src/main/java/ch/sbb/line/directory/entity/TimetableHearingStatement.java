@@ -28,14 +28,14 @@ import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 @ToString
 @SuperBuilder
-@Entity(name = "timetable_hearing_statement")
+@NoArgsConstructor
+@AllArgsConstructor
 @FieldNameConstants
+@Entity(name = "timetable_hearing_statement")
 public class TimetableHearingStatement extends BaseEntity {
 
   private static final String VERSION_SEQ = "timetable_hearing_statement_seq";
