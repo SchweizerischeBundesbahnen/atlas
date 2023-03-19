@@ -1,9 +1,12 @@
 package ch.sbb.atlas.amazon.service;
 
+import ch.sbb.atlas.amazon.exception.FileException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.Set;
@@ -13,6 +16,7 @@ import java.util.zip.ZipOutputStream;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 public class FileServiceImpl implements FileService {
@@ -68,6 +72,19 @@ public class FileServiceImpl implements FileService {
     }
     Set<Boolean> deletionResults = Arrays.stream(filesInDir.get()).map(File::delete).collect(Collectors.toSet());
     return deletionResults.size() == 1 && deletionResults.contains(true);
+  }
+
+  @Override
+  public File getFileFromMultipart(MultipartFile multipartFile) {
+    String dir = getDir();
+    String originalFileName = multipartFile.getOriginalFilename();
+    File fileToImport = new File(dir + File.separator + originalFileName);
+    try (OutputStream os = new FileOutputStream(fileToImport)) {
+      os.write(multipartFile.getBytes());
+    } catch (IOException e) {
+      throw new FileException(e);
+    }
+    return fileToImport;
   }
 
 }
