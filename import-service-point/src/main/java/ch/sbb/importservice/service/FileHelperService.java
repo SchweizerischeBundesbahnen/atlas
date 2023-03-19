@@ -1,13 +1,11 @@
 package ch.sbb.importservice.service;
 
+import ch.sbb.atlas.amazon.exception.FileException;
 import ch.sbb.atlas.amazon.service.AmazonBucket;
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.amazon.service.FileService;
-import ch.sbb.importservice.exception.FileException;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.file.Files;
 import java.time.LocalDate;
 import java.util.List;
@@ -27,15 +25,7 @@ public class FileHelperService {
   private final FileService fileService;
 
   public File getFileFromMultipart(MultipartFile multipartFile) {
-    String dir = fileService.getDir();
-    String originalFileName = multipartFile.getOriginalFilename();
-    File fileToImport = new File(dir + File.separator + originalFileName);
-    try (OutputStream os = new FileOutputStream(fileToImport)) {
-      os.write(multipartFile.getBytes());
-    } catch (IOException e) {
-      throw new FileException(e);
-    }
-    return fileToImport;
+    return fileService.getFileFromMultipart(multipartFile);
   }
 
   public File downloadImportFileFromS3(String csvImportFilePrefix) {
