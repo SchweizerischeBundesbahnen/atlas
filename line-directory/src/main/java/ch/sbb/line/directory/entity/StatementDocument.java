@@ -18,14 +18,14 @@ import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 @ToString
 @SuperBuilder
-@Entity(name = "statement_document")
+@NoArgsConstructor
+@AllArgsConstructor
 @FieldNameConstants
+@Entity(name = "statement_document")
 public class StatementDocument {
 
   private static final String VERSION_SEQ = "statement_document_seq";
@@ -35,9 +35,9 @@ public class StatementDocument {
   @SequenceGenerator(name = VERSION_SEQ, sequenceName = VERSION_SEQ, allocationSize = 1, initialValue = 1000)
   private Long id;
 
+  @NotNull
   @ManyToOne
   @JoinColumn(name = "timetable_hearing_statement_id", referencedColumnName = "id")
-  @NotNull
   private TimetableHearingStatement statement;
 
   @NotNull
