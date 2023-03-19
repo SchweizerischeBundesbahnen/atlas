@@ -43,7 +43,7 @@ public interface TimetableHearingStatementApiV1 {
   TimetableHearingStatementModel getStatement(@PathVariable Long id);
 
   @ResponseStatus(HttpStatus.CREATED)
-  @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
   @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin"
       + ".ApplicationType).TIMETABLE_HEARING, #statement)")
   TimetableHearingStatementModel createStatement(

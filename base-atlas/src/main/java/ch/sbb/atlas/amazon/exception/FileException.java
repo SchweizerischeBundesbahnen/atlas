@@ -1,4 +1,4 @@
-package ch.sbb.importservice.exception;
+package ch.sbb.atlas.amazon.exception;
 
 public class FileException extends RuntimeException {
 
