@@ -46,7 +46,7 @@ public class UserAdministrationServiceUserPageTest {
 
   @Test
   void testWithoutAppTypesWithoutSboids() {
-    Page<String> userPage = userAdministrationService.getUserPage(Pageable.ofSize(20), null, null);
+    Page<String> userPage = userAdministrationService.getUserPage(Pageable.ofSize(20), null, null, null);
     Assertions.assertEquals(2, userPage.getTotalElements());
     Assertions.assertEquals(2, userPage.getContent().size());
     Assertions.assertTrue(userPage.getContent().containsAll(List.of("e654321", "u123456")));
@@ -55,7 +55,7 @@ public class UserAdministrationServiceUserPageTest {
   @Test
   void testWithAppTypesWithoutSboids() {
     Page<String> userPage = userAdministrationService.getUserPage(Pageable.ofSize(20), null,
-        new HashSet<>(List.of(ApplicationType.TTFN, ApplicationType.LIDI)));
+        new HashSet<>(List.of(ApplicationType.TTFN, ApplicationType.LIDI)), null);
     Assertions.assertEquals(2, userPage.getTotalElements());
     Assertions.assertEquals(2, userPage.getContent().size());
     Assertions.assertTrue(userPage.getContent().containsAll(List.of("e654321", "u123456")));
@@ -64,7 +64,7 @@ public class UserAdministrationServiceUserPageTest {
   @Test
   void testWithoutAppTypesWithSboids() {
     Page<String> userPage = userAdministrationService.getUserPage(Pageable.ofSize(20),
-        new HashSet<>(List.of("ch:1:sboid:100", "ch:1:sboid:101")), null);
+        new HashSet<>(List.of("ch:1:sboid:100", "ch:1:sboid:101")), null, null);
     Assertions.assertEquals(2, userPage.getTotalElements());
     Assertions.assertEquals(2, userPage.getContent().size());
     Assertions.assertTrue(userPage.getContent().containsAll(List.of("e654321", "u123456")));
@@ -74,13 +74,13 @@ public class UserAdministrationServiceUserPageTest {
   void testWithAppTypesWithSboids() {
     Page<String> userPage = userAdministrationService.getUserPage(Pageable.ofSize(20),
         new HashSet<>(List.of("ch:1:sboid:100", "ch:1:sboid:101")),
-        new HashSet<>(List.of(ApplicationType.TTFN, ApplicationType.LIDI)));
+        new HashSet<>(List.of(ApplicationType.TTFN, ApplicationType.LIDI)), null);
     Assertions.assertEquals(1, userPage.getTotalElements());
     Assertions.assertEquals(1, userPage.getContent().size());
     Assertions.assertTrue(userPage.getContent().contains("e654321"));
 
     userPage = userAdministrationService.getUserPage(Pageable.ofSize(20), new HashSet<>(List.of("ch:1:sboid:102")),
-        new HashSet<>(List.of(ApplicationType.TTFN)));
+        new HashSet<>(List.of(ApplicationType.TTFN)), null);
     Assertions.assertEquals(1, userPage.getTotalElements());
     Assertions.assertEquals(1, userPage.getContent().size());
     Assertions.assertTrue(userPage.getContent().contains("u123456"));
@@ -89,7 +89,7 @@ public class UserAdministrationServiceUserPageTest {
   @Test
   void testPaging() {
     Page<String> userPage = userAdministrationService.getUserPage(Pageable.ofSize(1), new HashSet<>(List.of("ch:1:sboid:100")),
-        new HashSet<>(List.of(ApplicationType.TTFN)));
+        new HashSet<>(List.of(ApplicationType.TTFN)), null);
     Assertions.assertEquals(2, userPage.getTotalElements());
     Assertions.assertEquals(1, userPage.getContent().size());
   }
