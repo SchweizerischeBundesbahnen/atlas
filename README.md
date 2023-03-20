@@ -74,6 +74,9 @@ Application MEGAID: `ADB3AE9A60E510ED`
 - **Developer Portal**:
   - **INT**: https://developer-int.sbb.ch/apis?text=atlas&all=
   - **PROD**: https://developer.sbb.ch/apis?text=atlas&all=
+- **API Management - 3scale**:
+  - **INT**: https://api-management.int.sbb-cloud.net
+  - **PROD**: https://api-management.prod.sbb-cloud.net
 - **Jenkins**: https://ci.sbb.ch/job/KI_ATLAS/job/atlas/job/master/ :warning: **deprecated**
 - **Jenkins-E2E**: https://ci.sbb.ch/job/KI_ATLAS_E2E/job/atlas/ :warning: **deprecated**
 
