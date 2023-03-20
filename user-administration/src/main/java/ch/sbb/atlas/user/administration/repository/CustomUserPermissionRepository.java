@@ -5,7 +5,6 @@ import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import java.util.Set;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.lang.NonNull;
 
 public interface CustomUserPermissionRepository {
 
