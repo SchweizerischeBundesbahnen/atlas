@@ -6,6 +6,7 @@ import { UserPermissionManager } from '../service/user-permission-manager';
 import { BusinessOrganisationLanguageService } from '../../../core/form-components/bo-select/business-organisation-language.service';
 import { Observable, of, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Cantons } from '../../tth/overview/canton/Cantons';
 
 @Component({
   selector: 'app-user-administration-application-config',
@@ -53,7 +54,7 @@ export class UserAdministrationApplicationConfigComponent implements OnInit, OnD
 
   private readonly boFormResetEventSubscription: Subscription;
   SWISS_CANTONS = Object.values(SwissCanton);
-  SWISS_CANTONS_PREFIX_LABEL = 'COMMON.CANTONS.';
+  SWISS_CANTONS_PREFIX_LABEL = 'TTH.CANTON.';
 
   constructor(
     private readonly boLanguageService: BusinessOrganisationLanguageService,
@@ -92,5 +93,9 @@ export class UserAdministrationApplicationConfigComponent implements OnInit, OnD
 
   permissionByApplication() {
     return this.userPermissionManager.getPermissionByApplication(this.application);
+  }
+
+  getCantonAbbreviation(canton: SwissCanton) {
+    return Cantons.fromSwissCanton(canton)?.short;
   }
 }
