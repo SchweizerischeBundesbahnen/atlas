@@ -1,6 +1,7 @@
 package ch.sbb.atlas.user.administration.controller;
 
 import ch.sbb.atlas.api.model.Container;
+import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.service.UserService;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.api.user.administration.UserAdministrationApiV1;
@@ -34,14 +35,14 @@ public class UserAdministrationController implements UserAdministrationApiV1 {
   private final GraphApiService graphApiService;
 
   @Override
-  public Container<UserModel> getUsers(Pageable pageable, Set<String> sboids,
+  public Container<UserModel> getUsers(Pageable pageable, Set<String> sboids, Set<SwissCanton> cantons,
       Set<ApplicationType> applicationTypes) {
     if (pageable.getPageSize() > GraphApiService.BATCH_REQUEST_LIMIT) {
       throw new LimitedPageSizeRequestException(pageable.getPageSize(),
           GraphApiService.BATCH_REQUEST_LIMIT);
     }
     Page<String> userPage = userAdministrationService.getUserPage(pageable, sboids,
-        applicationTypes);
+        applicationTypes, cantons);
     List<UserModel> userModels = graphApiService.resolveUsers(userPage.getContent());
     userModels.forEach(user -> user.setPermissions(getUserPermissionModels(user.getSbbUserId())));
     return Container.<UserModel>builder()
