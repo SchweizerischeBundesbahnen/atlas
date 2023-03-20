@@ -43,6 +43,7 @@
     "VALID_FROM": "Valido dal",
     "VALID_TO": "Valido fino al",
     "STATUS": "Stato",
+    "CANTONS": "Cantoni",
     "STATUS_TYPES": {
       "DRAFT": "Bozza",
       "VALIDATED": "Convalidato",

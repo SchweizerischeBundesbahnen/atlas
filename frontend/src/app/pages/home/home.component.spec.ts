@@ -46,6 +46,6 @@ describe('HomeComponent', () => {
 
   it('should create 4 cards', () => {
     const cards = fixture.debugElement.queryAll(By.css('.card'));
-    expect(cards.length).toBe(5);
+    expect(cards.length).toBe(4);
   });
 });
