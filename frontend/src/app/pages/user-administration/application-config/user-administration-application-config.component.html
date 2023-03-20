@@ -48,7 +48,7 @@
       </ng-template>
       <ng-template [ngIf]="application === 'TIMETABLE_HEARING' && role === 'WRITER'">
         <span class="font-bold-lg">
-          {{ 'SWISS_CANTONS' | translate }}
+          {{ 'COMMON.CANTONS' | translate }}
         </span>
         <span class="fake-lable-space"></span>
         <div [class.disabled]="readOnly" class="multi-select-search">
@@ -59,7 +59,7 @@
             multiple
           >
             <mat-option *ngFor="let canton of SWISS_CANTONS" [value]="canton"
-              >{{ SWISS_CANTONS_PREFIX_LABEL + canton | translate }}
+              >{{ SWISS_CANTONS_PREFIX_LABEL + getCantonAbbreviation(canton) | translate }}
             </mat-option>
           </mat-select>
         </div>

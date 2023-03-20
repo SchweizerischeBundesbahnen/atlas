@@ -12,8 +12,9 @@ import {
 } from '../../../core/components/route-to-dialog/route-to-dialog.service';
 import { Subscription } from 'rxjs';
 import { tableColumns } from './table-column-definition';
-import { ApplicationType } from '../../../api';
+import { ApplicationType, SwissCanton } from '../../../api';
 import { SearchType, SearchTypes } from './search-type';
+import { Cantons } from '../../tth/overview/canton/Cantons';
 
 @Component({
   selector: 'app-user-administration-overview',
@@ -30,6 +31,8 @@ export class UserAdministrationOverviewComponent implements OnInit, OnDestroy {
 
   selectedApplicationOptions: ApplicationType[] = [];
   readonly applicationOptions: ApplicationType[] = Object.values(ApplicationType);
+  readonly cantonOptions: SwissCanton[] = Object.values(SwissCanton);
+  selectedCantonOptions: SwissCanton[] = [];
 
   readonly userSearchCtrlName = 'userSearch';
   readonly userSearchForm: FormGroup = new FormGroup({
@@ -41,6 +44,8 @@ export class UserAdministrationOverviewComponent implements OnInit, OnDestroy {
   });
   readonly tableColumns = tableColumns;
   private readonly dialogClosedEventSubscription: Subscription;
+
+  SWISS_CANTONS_PREFIX_LABEL = 'TTH.CANTON.';
 
   constructor(
     private readonly userService: UserService,
@@ -149,5 +154,9 @@ export class UserAdministrationOverviewComponent implements OnInit, OnDestroy {
 
   selectedSearchChanged(): void {
     this.ngOnInit();
+  }
+
+  getCantonAbbreviation(canton: SwissCanton) {
+    return Cantons.fromSwissCanton(canton)?.short;
   }
 }
