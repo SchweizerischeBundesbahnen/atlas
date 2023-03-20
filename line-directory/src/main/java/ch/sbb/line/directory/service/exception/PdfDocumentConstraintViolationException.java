@@ -1,11 +1,26 @@
 package ch.sbb.line.directory.service.exception;
 
-public class PdfDocumentConstraintViolationException extends RuntimeException {
+import ch.sbb.atlas.api.model.ErrorResponse;
+import ch.sbb.atlas.model.exception.AtlasException;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 
-    public PdfDocumentConstraintViolationException(String message) { super(message);}
+@RequiredArgsConstructor
+@Getter
+public class PdfDocumentConstraintViolationException extends AtlasException {
 
-    public PdfDocumentConstraintViolationException(Exception exception) {
-        super(exception);
+    private static final String ERROR = "Upload PDFs error";
+
+    private final String message;
+
+    @Override
+    public ErrorResponse getErrorResponse() {
+        return ErrorResponse.builder()
+            .status(HttpStatus.BAD_REQUEST.value())
+            .message(message)
+            .error(ERROR)
+            .build()
+            ;
     }
-
 }
