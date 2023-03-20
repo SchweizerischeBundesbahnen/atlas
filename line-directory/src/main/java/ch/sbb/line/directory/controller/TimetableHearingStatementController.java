@@ -65,15 +65,17 @@ public class TimetableHearingStatementController implements TimetableHearingStat
     @Override
     public TimetableHearingStatementModel createStatement(TimetableHearingStatementModel statement, List<MultipartFile> documents) {
         TimetableHearingStatement statementToCreate = TimeTableHearingStatementMapper.toEntity(statement);
+        if (documents!=null && !documents.isEmpty()) {
+            List<File> files = documents.stream()
+                .map(fileService::getFileFromMultipart)
+                .toList();
 
-        List<File> files = documents.stream()
-            .map(fileService::getFileFromMultipart)
-            .toList();
-        validatePdfDocuments(files);
+            validatePdfDocuments(files);
 
-        timetableHearingPdfsUploadService.uploadPdfFile(files);
+            timetableHearingPdfsUploadService.uploadPdfFile(files);
 
-        addFilesToStatement(documents, statementToCreate);
+            addFilesToStatement(documents, statementToCreate);
+        }
 
         TimetableHearingStatement hearingStatement = timetableHearingStatementService.createHearingStatement(statementToCreate);
 
@@ -124,12 +126,14 @@ public class TimetableHearingStatementController implements TimetableHearingStat
     private void validatePdfDocuments(List<File> documents) {
         // check number of documents
         if (documents.size() > 3) {
-            throw new PdfDocumentConstraintViolationException("The number of received documents is: " + documents.size() + " which exceeds the number of allowed documents of 3.");
+            String exceptionMessage = "The number of received documents is: " + documents.size() + " which exceeds the number of allowed documents of 3.";
+            throw new PdfDocumentConstraintViolationException(exceptionMessage);
         }
         // check documents size
         long combinedDocumentsSize = documents.stream().map(File::length).mapToLong(Long::longValue).sum();
         if (combinedDocumentsSize > 20000000L) {
-            throw new PdfDocumentConstraintViolationException("The combined size of received documents in bytes is: " + combinedDocumentsSize + " which exceeds the maximum allowed size of 20MB.");
+            String exceptionMessage = "The combined size of received documents in bytes is: " + combinedDocumentsSize + " which exceeds the maximum allowed size of 20MB.";
+            throw new PdfDocumentConstraintViolationException(exceptionMessage);
         }
         // check if all documents are pdf
         List<String> documentFileNames = documents.stream()
