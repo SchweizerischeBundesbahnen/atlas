@@ -1,6 +1,7 @@
 package ch.sbb.atlas.user.administration.service;
 
 import ch.sbb.atlas.api.user.administration.UserPermissionCreateModel;
+import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.user.administration.entity.UserPermission;
 import ch.sbb.atlas.user.administration.exception.UserPermissionConflictException;
@@ -24,10 +25,11 @@ public class UserAdministrationService {
 
   private final UserPermissionRepository userPermissionRepository;
 
-  public Page<String> getUserPage(Pageable pageable, Set<String> sboids, Set<ApplicationType> applicationTypes) {
+  public Page<String> getUserPage(Pageable pageable, Set<String> sboids, Set<ApplicationType> applicationTypes,
+      Set<SwissCanton> swissCantons) {
     sboids = Optional.ofNullable(sboids).orElse(new HashSet<>());
     applicationTypes = Optional.ofNullable(applicationTypes).orElse(new HashSet<>());
-    return userPermissionRepository.getFilteredUsers(pageable, applicationTypes, sboids);
+    return userPermissionRepository.getFilteredUsers(pageable, applicationTypes, sboids, swissCantons);
   }
 
   public List<UserPermission> getUserPermissions(String sbbUserId) {

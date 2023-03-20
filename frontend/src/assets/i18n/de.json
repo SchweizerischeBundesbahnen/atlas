@@ -43,6 +43,7 @@
     "VALID_FROM": "Gültig von",
     "VALID_TO": "Gültig bis",
     "STATUS": "Status",
+    "CANTONS": "Kantone",
     "STATUS_TYPES": {
       "DRAFT": "Entwurf",
       "VALIDATED": "Validiert",
