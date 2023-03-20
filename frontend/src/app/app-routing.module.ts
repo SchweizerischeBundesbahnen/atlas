@@ -31,6 +31,12 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: Pages.TTH.path,
+    loadChildren: () => import('./pages/tth/tth.module').then((m) => m.TthModule),
+    data: { headerTitle: Pages.TTH.headerTitle },
+    canActivate: [AuthGuard],
+  },
+  {
     path: Pages.USER_ADMINISTRATION.path,
     loadChildren: () =>
       import('./pages/user-administration/user-administration.module').then(
