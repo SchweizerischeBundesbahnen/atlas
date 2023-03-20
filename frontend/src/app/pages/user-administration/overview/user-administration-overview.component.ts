@@ -140,6 +140,7 @@ export class UserAdministrationOverviewComponent implements OnInit, OnDestroy {
         pageIndex,
         this.tableComponent.paginator.pageSize,
         new Set<string>([selectedSboid]),
+        new Set<SwissCanton>(this.selectedCantonOptions),
         new Set<ApplicationType>(this.selectedApplicationOptions)
       )
       .pipe(
