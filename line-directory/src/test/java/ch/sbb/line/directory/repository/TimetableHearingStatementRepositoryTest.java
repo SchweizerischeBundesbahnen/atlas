@@ -83,6 +83,7 @@ public class TimetableHearingStatementRepositoryTest {
   void shouldCreateMinimalHearingStatement() {
     TimetableHearingStatement statement = TimetableHearingStatement.builder()
         .timetableYear(2023L)
+        .swissCanton(SwissCanton.BERN)
         .statementStatus(StatementStatus.RECEIVED)
         .statementSender(StatementSender.builder()
             .email("mike@thebike.com")
