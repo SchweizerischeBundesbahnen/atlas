@@ -157,6 +157,12 @@
       "TITLE_HEADER": "__Dienststellen__",
       "DESCRIPTION": "__Hier finden Sie alle Informationen zum Bearbeiten und neu Erstellen von Dienststellen.__"
     },
+    "TTH": {
+      "TITLE": "Consultation sur les horaires en Suisse",
+      "TITLE_MENU": "Consultation sur les horaires",
+      "DESCRIPTION": "Vous trouverez ici toutes les informations relatives à la consultation sur les horaires en Suisse.",
+      "PATH_TEXT": "Consultation sur les horaires"
+    },
     "DETAILS": "Précisions"
   },
   "PAGINATOR": {
@@ -502,6 +508,38 @@
     "ERROR": {
       "NOT_IN_REVIEW": "L'audience pour cet objet n'est pas lancée pour le moment.",
       "ALREADY_IN_REVIEW": "Une consultation a déjà été lancée pour cet objet."
+    }
+  },
+  "TTH": {
+    "OPEN": "{{canton}} ouvrir",
+    "CANTON": {
+      "CH": "Suisse entière",
+      "AG": "Argovie",
+      "AI": "Appenzell Rhodes-Intérieures",
+      "AR": "Appenzell Rhodes-Extérieures",
+      "BE": "Berne",
+      "BL": "Bâle-Campagne",
+      "BS": "Bâle-Ville",
+      "FR": "Fribourg",
+      "GE": "Genève",
+      "GL": "Glarus",
+      "GR": "Glaris",
+      "JU": "Jura",
+      "LU": "Lucerne",
+      "NE": "Neuchâtel",
+      "NW": "Nidwalden",
+      "OW": "Nidwald",
+      "SG": "Saint-Gall",
+      "SH": "Schaffhouse",
+      "SO": "Soleure",
+      "SZ": "Schwyz",
+      "TG": "Thurgovie",
+      "TI": "Tessin",
+      "UR": "Uri",
+      "VD": "Vaud",
+      "VS": "Valais",
+      "ZG": "Zoug",
+      "ZH": "Zurich"
     }
   }
 }
