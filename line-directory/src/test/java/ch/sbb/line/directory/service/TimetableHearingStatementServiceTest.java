@@ -3,6 +3,7 @@ package ch.sbb.line.directory.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
@@ -105,6 +106,7 @@ public class TimetableHearingStatementServiceTest {
   private TimetableHearingStatementBuilder<?, ?> buildStatement() {
     return TimetableHearingStatement.builder()
         .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .swissCanton(SwissCanton.BERN)
         .statementSender(StatementSender.builder()
             .email("mike@thebike.com")
             .build())
