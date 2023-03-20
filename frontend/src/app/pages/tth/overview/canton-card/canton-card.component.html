@@ -1,0 +1,14 @@
+<div class="d-flex flex-column justify-content-between card-content-box card">
+  <div class="d-flex flex-row">
+    <div class="canton-content-text">
+      <span class="font-bold-xl pb-4">{{ 'TTH.CANTON.' + canton.short | translate }}</span>
+      <div class="font-bold-base canton-text">
+        {{ 'TTH.OPEN' | translate : { canton: canton.short } }}
+        <i class="bi bi-arrow-right-short fs-3"></i>
+      </div>
+    </div>
+    <div class="canton-content-img ps-3">
+      <img alt="Canton Logo" class="flag" src="assets/images/cantons/{{ canton.short }}.svg" />
+    </div>
+  </div>
+</div>

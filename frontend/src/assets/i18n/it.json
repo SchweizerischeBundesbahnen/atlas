@@ -157,6 +157,12 @@
       "TITLE_HEADER": "__Dienststellen__",
       "DESCRIPTION": "__Hier finden Sie alle Informationen zum Bearbeiten und neu Erstellen von Dienststellen.__"
     },
+    "TTH": {
+      "TITLE": "Orario Audizione Svizzera",
+      "TITLE_MENU": "Orario Audizione",
+      "DESCRIPTION": "Qui potete trovare tutte le informazioni sull'orario dell'udienza in Svizzera.",
+      "PATH_TEXT": "Orario Audizione"
+    },
     "DETAILS": "Precisazioni"
   },
   "PAGINATOR": {
@@ -502,6 +508,38 @@
     "ERROR": {
       "NOT_IN_REVIEW": "L'udienza per questa proprietà non è ancora iniziata.",
       "ALREADY_IN_REVIEW": "Per questa proprietà è già stata avviata una consultazione."
+    }
+  },
+  "TTH": {
+    "OPEN": "{{canton}} aprire",
+    "CANTON": {
+      "CH": "Tutta la Svizzera",
+      "AG": "Argovia",
+      "AI": "Appenzello Interno",
+      "AR": "Appenzello Esterno",
+      "BE": "Berna",
+      "BL": "Basilea Campagna",
+      "BS": "Basilea Città",
+      "FR": "Friburgo",
+      "GE": "Ginevra",
+      "GL": "Glarona",
+      "GR": "Grigioni",
+      "JU": "Giura",
+      "LU": "Lucerna",
+      "NE": "Neuchâtel",
+      "NW": "Nidvaldo",
+      "OW": "Obvaldo",
+      "SG": "San Gallo",
+      "SH": "Sciaffusa",
+      "SO": "Soloturno",
+      "SZ": "Svitto",
+      "TG": "Turgovia",
+      "TI": "Ticino",
+      "UR": "Uri",
+      "VD": "Vaud",
+      "VS": "Vallese",
+      "ZG": "Zugo",
+      "ZH": "Zurigo"
     }
   }
 }
