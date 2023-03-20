@@ -138,6 +138,7 @@ class TimetableHearingStatementTest {
   private TimetableHearingStatementBuilder<?, ?> minimalStatement() {
     return TimetableHearingStatement.builder()
         .timetableYear(2023L)
+        .swissCanton(SwissCanton.BERN)
         .statementStatus(StatementStatus.RECEIVED)
         .statementSender(StatementSender.builder()
             .email("mike@thebike.com")
