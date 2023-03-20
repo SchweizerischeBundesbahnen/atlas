@@ -167,7 +167,13 @@ describe('UserAdministrationOverviewComponent', () => {
 
     component.filterChanged();
 
-    expect(userServiceMock.getUsers).toHaveBeenCalledOnceWith(0, 10, new Set([null]), new Set([]));
+    expect(userServiceMock.getUsers).toHaveBeenCalledOnceWith(
+      0,
+      10,
+      new Set([null]),
+      new Set([]),
+      new Set([])
+    );
     expect(component.userPageResult).toEqual({ totalCount: 1, users: [{ sbbUserId: 'u123456' }] });
     expect(component.tableIsLoading).toBeFalse();
     expect(component.tableComponent.paginator.pageIndex).toBe(0);

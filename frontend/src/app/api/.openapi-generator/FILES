@@ -46,7 +46,6 @@ model/containerTrafficPointElementVersion.ts
 model/containerTransportCompany.ts
 model/containerUser.ts
 model/coordinatePair.ts
-model/country.ts
 model/coverage.ts
 model/coverageType.ts
 model/displayInfo.ts
@@ -109,7 +108,7 @@ model/user.ts
 model/userAccountStatus.ts
 model/userDisplayName.ts
 model/userPermission.ts
-model/userPermissionCreateModel.ts
+model/userPermissionCreate.ts
 model/workflow.ts
 model/workflowProcessingStatus.ts
 model/workflowStart.ts
