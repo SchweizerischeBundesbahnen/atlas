@@ -75,6 +75,15 @@ export class Pages {
     description: 'PAGES.USER_ADMIN.DESCRIPTION',
   };
 
+  public static TTH: Page = {
+    title: 'PAGES.TTH.TITLE',
+    titleMenu: 'PAGES.TTH.TITLE_MENU',
+    headerTitle: 'PAGES.TTH.TITLE_MENU',
+    path: 'timetable-hearing',
+    pathText: 'PAGES.TTH.PATH_TEXT',
+    description: 'PAGES.TTH.DESCRIPTION',
+  };
+
   public static BUSINESS_ORGANISATIONS: Page = {
     title: 'PAGES.DETAILS',
     path: 'business-organisations',
@@ -111,6 +120,7 @@ export class Pages {
     Pages.LIDI,
     Pages.BODI,
     Pages.SERVICE_POINTS,
+    Pages.TTH,
   ];
   public static adminPages: Page[] = [Pages.USER_ADMINISTRATION];
   public static viewablePages: Page[] = this.pages;
