@@ -29,6 +29,7 @@ public class UserAdministrationService {
       Set<SwissCanton> swissCantons) {
     sboids = Optional.ofNullable(sboids).orElse(new HashSet<>());
     applicationTypes = Optional.ofNullable(applicationTypes).orElse(new HashSet<>());
+    swissCantons = Optional.ofNullable(swissCantons).orElse(new HashSet<>());
     return userPermissionRepository.getFilteredUsers(pageable, applicationTypes, sboids, swissCantons);
   }
 
