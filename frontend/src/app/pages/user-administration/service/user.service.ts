@@ -4,8 +4,9 @@ import {
   ApplicationType,
   UserAdministrationService,
   UserInformationService,
-  UserPermissionCreateModel,
+  UserPermissionCreate,
   UserPermission,
+  SwissCanton,
 } from '../../../api';
 import { map } from 'rxjs/operators';
 import { User } from '../../../api';
@@ -23,13 +24,16 @@ export class UserService {
     page: number,
     size: number,
     sboids: Set<string> | undefined = undefined,
+    cantons: Set<SwissCanton> | undefined = undefined,
     applicationTypes: Set<ApplicationType> | undefined = undefined
   ): Observable<{ users: User[]; totalCount: number }> {
-    return this.userAdministrationService.getUsers(sboids, applicationTypes, page, size).pipe(
-      map((value) => {
-        return { users: value.objects!, totalCount: value.totalCount! };
-      })
-    );
+    return this.userAdministrationService
+      .getUsers(sboids, cantons, applicationTypes, page, size)
+      .pipe(
+        map((value) => {
+          return { users: value.objects!, totalCount: value.totalCount! };
+        })
+      );
   }
 
   getUser(userId: string): Observable<User> {
@@ -52,11 +56,11 @@ export class UserService {
     return Array.from(user.permissions ?? []);
   }
 
-  createUserPermission(userPermission: UserPermissionCreateModel): Observable<User> {
+  createUserPermission(userPermission: UserPermissionCreate): Observable<User> {
     return this.userAdministrationService.createUserPermission(userPermission);
   }
 
-  updateUserPermission(userPermission: UserPermissionCreateModel): Observable<User> {
+  updateUserPermission(userPermission: UserPermissionCreate): Observable<User> {
     return this.userAdministrationService.updateUserPermissions(userPermission);
   }
 }
