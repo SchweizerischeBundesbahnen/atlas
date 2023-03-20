@@ -39,6 +39,9 @@ export class AuthService {
         if (this.hasRole(Role.AtlasAdmin)) {
           Pages.viewablePages = [...Pages.pages, ...Pages.adminPages];
         }
+        if (this.mayAccessTimetableHearing()) {
+          Pages.viewablePages.push(Pages.TTH);
+        }
         this.router
           .navigateByUrl(sessionStorage.getItem(this.REQUESTED_ROUTE_STORAGE_KEY) ?? '')
           .then();
@@ -207,6 +210,18 @@ export class AuthService {
   isAtLeastSupervisor(applicationType: ApplicationType) {
     const applicationUserPermission = this.getApplicationUserPermission(applicationType);
     return this.isAdmin || applicationUserPermission.role === ApplicationRole.Supervisor;
+  }
+
+  mayAccessTimetableHearing() {
+    const applicationUserPermission = this.getApplicationUserPermission(
+      ApplicationType.TimetableHearing
+    );
+    return (
+      this.isAdmin ||
+      [ApplicationRole.Supervisor, ApplicationRole.Writer, ApplicationRole.ExplicitReader].includes(
+        applicationUserPermission.role
+      )
+    );
   }
 
   hasRole(role: Role): boolean {
