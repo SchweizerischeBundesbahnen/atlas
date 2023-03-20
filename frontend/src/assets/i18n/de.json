@@ -157,6 +157,12 @@
       "TITLE_HEADER": "Dienststellen",
       "DESCRIPTION": "Hier finden Sie alle Informationen zum Bearbeiten und neu Erstellen von Dienststellen."
     },
+    "TTH": {
+      "TITLE": "Fahrplananhörung Schweiz",
+      "TITLE_MENU": "Fahrplananhörung",
+      "DESCRIPTION": "Hier finden Sie alle Informationen zur Fahrplananhörung Schweiz.",
+      "PATH_TEXT": "Fahrplananhörung"
+    },
     "DETAILS": "Details"
   },
   "PAGINATOR": {
@@ -502,6 +508,38 @@
     "ERROR": {
       "NOT_IN_REVIEW": "Die Anhörung für dieses Objekt ist zur Zeit nicht gestartet.",
       "ALREADY_IN_REVIEW": "Für dieses Objekt wurde bereits eine Anhörung gestartet."
+    }
+  },
+  "TTH": {
+    "OPEN": "{{canton}} öffnen",
+    "CANTON": {
+      "CH": "Gesamtschweiz",
+      "AG": "Aargau",
+      "AI": "Appenzell Innerrhoden",
+      "AR": "Appenzell Ausserrhoden",
+      "BE": "Bern",
+      "BL": "Basel-Landschaft",
+      "BS": "Basel-Stadt",
+      "FR": "Freiburg",
+      "GE": "Genf",
+      "GL": "Glarus",
+      "GR": "Graubünden",
+      "JU": "Jura",
+      "LU": "Luzern",
+      "NE": "Neuenburg",
+      "NW": "Nidwalden",
+      "OW": "Obwalden",
+      "SG": "St. Gallen",
+      "SH": "Schaffausen",
+      "SO": "Solothurn",
+      "SZ": "Schwyz",
+      "TG": "Thurgau",
+      "TI": "Tessin",
+      "UR": "Uri",
+      "VD": "Waadt",
+      "VS": "Wallis",
+      "ZG": "Zug",
+      "ZH": "Zürich"
     }
   }
 }
