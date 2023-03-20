@@ -3,6 +3,8 @@ package ch.sbb.line.directory.controller;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -25,9 +27,15 @@ import ch.sbb.line.directory.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.repository.TimetableHearingYearRepository;
 import ch.sbb.line.directory.service.TimetableFieldNumberService;
+import ch.sbb.line.directory.service.exception.PdfDocumentConstraintViolationException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,6 +46,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 public class TimetableHearingStatementControllerApiTest extends BaseControllerApiTest {
 
@@ -155,17 +164,40 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
         .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
         .build();
 
-    MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
-        MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
+    MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null, MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
 
     mvc.perform(multipart(HttpMethod.POST, "/v1/timetable-hearing/statements")
             .file(statementJson)
-            .file(new AtlasMockMultipartFile("documents", "doc1.pdf", MediaType.MULTIPART_FORM_DATA_VALUE, "Tolles PDF"))
-            .file(new AtlasMockMultipartFile("documents", "doc2.pdf", MediaType.MULTIPART_FORM_DATA_VALUE, "Noch ein tolles "
-                + "PDF")))
+            .file(new MockMultipartFile(multipartFiles().get(0).getName(), multipartFiles().get(0).getOriginalFilename(), multipartFiles().get(0).getContentType(), multipartFiles().get(0).getBytes()))
+            .file(new MockMultipartFile(multipartFiles().get(1).getName(), multipartFiles().get(1).getOriginalFilename(), multipartFiles().get(1).getContentType(), multipartFiles().get(1).getBytes())))
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
         .andExpect(jsonPath("$." + Fields.documents, hasSize(2)));
+  }
+
+  @Test
+  void shouldThrowExceptionWhenCreatingStatementWithFourDocuments() throws Exception {
+    TimetableHearingStatementModel statement = TimetableHearingStatementModel.builder()
+        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .statementSender(TimetableHearingStatementSenderModel.builder()
+            .email("fabienne.mueller@sbb.ch")
+            .build())
+        .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
+        .build();
+
+    MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null, MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
+
+    mvc.perform(multipart(HttpMethod.POST, "/v1/timetable-hearing/statements")
+            .file(statementJson)
+            .file(new MockMultipartFile(multipartFiles().get(0).getName(), multipartFiles().get(0).getOriginalFilename(), multipartFiles().get(0).getContentType(), multipartFiles().get(0).getBytes()))
+            .file(new MockMultipartFile(multipartFiles().get(1).getName(), multipartFiles().get(1).getOriginalFilename(), multipartFiles().get(1).getContentType(), multipartFiles().get(1).getBytes()))
+            .file(new MockMultipartFile(multipartFiles().get(2).getName(), multipartFiles().get(2).getOriginalFilename(), multipartFiles().get(2).getContentType(), multipartFiles().get(2).getBytes()))
+            .file(new MockMultipartFile(multipartFiles().get(3).getName(), multipartFiles().get(3).getOriginalFilename(), multipartFiles().get(3).getContentType(), multipartFiles().get(3).getBytes()))
+        )
+        .andDo(print())
+        .andExpect(status().isBadRequest())
+        .andExpect(result -> assertTrue(result.getResolvedException() instanceof PdfDocumentConstraintViolationException))
+        .andExpect(result -> assertEquals("The number of received documents is: 4 which exceeds the number of allowed documents of 3.", result.getResolvedException().getMessage()));
   }
 
   @Test
@@ -193,9 +225,8 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
 
     mvc.perform(multipart(HttpMethod.POST, "/v1/timetable-hearing/statements/external")
             .file(statementJson)
-            .file(new AtlasMockMultipartFile("documents", "doc1.pdf", MediaType.MULTIPART_FORM_DATA_VALUE, "Tolles PDF"))
-            .file(new AtlasMockMultipartFile("documents", "doc2.pdf", MediaType.MULTIPART_FORM_DATA_VALUE,
-                "Noch ein tolles PDF")))
+            .file(new MockMultipartFile(multipartFiles().get(0).getName(), multipartFiles().get(0).getOriginalFilename(), multipartFiles().get(0).getContentType(), multipartFiles().get(0).getBytes()))
+            .file(new MockMultipartFile(multipartFiles().get(1).getName(), multipartFiles().get(1).getOriginalFilename(), multipartFiles().get(1).getContentType(), multipartFiles().get(1).getBytes())))
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
         .andExpect(jsonPath("$." + Fields.documents, hasSize(2)))
@@ -245,7 +276,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
 
     mvc.perform(multipart(HttpMethod.PUT, "/v1/timetable-hearing/statements/" + statement.getId())
             .file(statementJson)
-            .file(new AtlasMockMultipartFile("documents", "doc1.pdf", MediaType.MULTIPART_FORM_DATA_VALUE, "Tolles PDF")))
+            .file(new MockMultipartFile(multipartFiles().get(2).getName(), multipartFiles().get(2).getOriginalFilename(), multipartFiles().get(2).getContentType(), multipartFiles().get(2).getBytes())))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
         .andExpect(jsonPath("$." + Fields.documents, hasSize(1)));
@@ -290,6 +321,26 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
     mvc.perform(get("/v1/timetable-hearing/statements?timetableHearingYear=2010"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.totalCount", is(0)));
+  }
+
+  private static MultipartFile getMultipartFile(String pathName) throws IOException {
+    File file1 = new File(pathName);
+    FileInputStream input = new FileInputStream(file1);
+    return new MockMultipartFile("documents",
+        file1.getName(), "application/pdf", IOUtils.toByteArray(input));
+  }
+
+  private static List<MultipartFile> multipartFiles() throws IOException {
+    List<MultipartFile> multipartFiles = new ArrayList<>();
+    MultipartFile multipartFile = getMultipartFile("src/test/resources/pdf/dummy.pdf");
+    MultipartFile multipartFile1 = getMultipartFile("src/test/resources/pdf/dummy1.pdf");
+    MultipartFile multipartFile2 = getMultipartFile("src/test/resources/pdf/dummy2.pdf");
+    MultipartFile multipartFile3 = getMultipartFile("src/test/resources/pdf/dummy3.pdf");
+    multipartFiles.add(multipartFile);
+    multipartFiles.add(multipartFile1);
+    multipartFiles.add(multipartFile2);
+    multipartFiles.add(multipartFile3);
+    return multipartFiles;
   }
 
 }
