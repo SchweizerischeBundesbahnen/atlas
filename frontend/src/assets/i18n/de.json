@@ -42,6 +42,8 @@
     "FILLED_AUTOMATICALLY": "Automatisch befüllt",
     "VALID_FROM": "Gültig von",
     "VALID_TO": "Gültig bis",
+    "EDIT_ON": "Geändert",
+    "EDIT_BY": "Durch",
     "STATUS": "Status",
     "CANTONS": "Kantone",
     "STATUS_TYPES": {
@@ -530,6 +532,11 @@
   },
   "TTH": {
     "OPEN": "{{canton}} öffnen",
+    "STATEMENT_STATUS": "Status",
+    "SWISS_CANTON": "Kanton",
+    "TRANSPORT_COMPANY": "Transportunternehmen",
+    "TTFNID": "Feld-Nr.",
+    "TIMETABLE_FIELD_NUMBER": "Fahrplanfeld",
     "CANTON": {
       "CH": "Gesamtschweiz",
       "AG": "Aargau",
