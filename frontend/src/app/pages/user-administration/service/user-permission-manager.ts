@@ -3,16 +3,15 @@ import {
   ApplicationType,
   BusinessOrganisation,
   BusinessOrganisationsService,
-  SwissCanton,
   UserPermission,
-  UserPermissionCreateModel,
+  UserPermissionCreate,
 } from '../../../api';
 import { BehaviorSubject, firstValueFrom, Subject } from 'rxjs';
 import { Injectable } from '@angular/core';
 
 @Injectable()
 export class UserPermissionManager {
-  readonly userPermission: UserPermissionCreateModel = {
+  readonly userPermission: UserPermissionCreate = {
     sbbUserId: '',
     permissions: [
       {
