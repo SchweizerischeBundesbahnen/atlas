@@ -19,7 +19,7 @@ public class TikaService {
      * @throws FileException if something with parsing the file went wrong
      */
     public Optional<String> checkForPdf(File file) {
-        String detectedMediaType = null;
+        String detectedMediaType;
         try {
             detectedMediaType = tika.detect(file);
         } catch (IOException e) {
