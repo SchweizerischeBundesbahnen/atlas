@@ -1,0 +1,24 @@
+<div class="ps-5 pt-5">
+  <div class="white-table-container-no-tabs mt-5">
+    <div class="d-flex flex-row mb-5">
+      <div class="ps-3">
+        <img alt="Canton Logo" src="assets/images/cantons/{{ cantonShort.toUpperCase() }}.svg" />
+      </div>
+      <div class="ps-5 table-heading font-bold-4xl color-gray-900 mb-5">
+        {{ 'PAGES.TTH.TITLE_MENU' | translate }} {{ foundTimetableHearingYear.timetableYear }}
+      </div>
+    </div>
+
+    <app-table
+      (editElementEvent)="editVersion($event)"
+      (getTableElementsEvent)="getOverview($event)"
+      [canEdit]="true"
+      [isLoading]="isLoading"
+      [tableColumns]="tableColumns"
+      [tableData]="timetableHearingStatements"
+      [totalCount]="totalCount$"
+      data-cy="ttfn"
+    ></app-table>
+    <router-outlet></router-outlet>
+  </div>
+</div>
