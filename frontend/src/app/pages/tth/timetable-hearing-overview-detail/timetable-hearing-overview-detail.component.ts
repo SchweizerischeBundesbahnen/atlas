@@ -6,6 +6,7 @@ import {
   TimetableHearingService,
   TimetableHearingStatement,
   TimetableHearingYear,
+  UserAdministrationService,
 } from '../../../api';
 import { Cantons } from '../overview/canton/Cantons';
 import { TableComponent } from '../../../core/components/table/table.component';
@@ -16,6 +17,7 @@ import { TableSettings } from '../../../core/components/table/table-settings';
 import { Pages } from '../../pages';
 import { Subscription } from 'rxjs';
 import moment from 'moment';
+import { TimeTableHearingStatementDisplay } from './time-table-hearing-statement-display';
 
 @Component({
   selector: 'app-timetable-hearing-overview-detail',
@@ -27,19 +29,16 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
   tableComponent!: TableComponent<TimetableHearingStatement>;
   isLoading = false;
   totalCount$ = 0;
-  timetableHearingStatements: TimetableHearingStatement[] = [];
+  timeTableHearingStatementDisplays: TimeTableHearingStatementDisplay[] = [];
 
-  tableColumns: TableColumn<TimetableHearingStatement>[] = [
+  tableColumns: TableColumn<TimeTableHearingStatementDisplay>[] = [
     { headerTitle: 'TTH.STATEMENT_STATUS', value: 'statementStatus' },
-    { headerTitle: 'TTH.SWISS_CANTON', value: 'swissCanton' },
+    { headerTitle: 'TTH.SWISS_CANTON', value: 'cantonDisplay' },
     { headerTitle: 'TTH.TRANSPORT_COMPANY', value: 'responsibleTransportCompanies' },
     { headerTitle: 'TTH.TTFNID', value: 'ttfnid' },
-    {
-      headerTitle: 'TTH.TIMETABLE_FIELD_NUMBER',
-      value: 'timetableFieldNumber',
-    },
+    { headerTitle: 'TTH.TIMETABLE_FIELD_NUMBER', value: 'timetableFieldNumber' },
     { headerTitle: 'COMMON.EDIT_ON', value: 'editionDate', formatAsDate: true },
-    { headerTitle: 'COMMON.EDIT_BY', value: 'editor' },
+    { headerTitle: 'COMMON.EDIT_BY', value: 'editorNameDisplay' },
   ];
   data!: ContainerTimetableHearingStatement;
   selectedCantonEnum = SwissCanton.Aargau;
@@ -54,7 +53,8 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
   constructor(
     private route: ActivatedRoute,
     private tableSettingsService: TableSettingsService,
-    private readonly timetableHearingService: TimetableHearingService
+    private readonly timetableHearingService: TimetableHearingService,
+    private readonly userAdministrationService: UserAdministrationService
   ) {}
 
   ngOnInit(): void {
@@ -89,7 +89,7 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
         [$paginationAndSearch.sort!, 'statementStatus,ASC']
       )
       .subscribe((container) => {
-        this.timetableHearingStatements = container.objects!;
+        this.mapToTimeTableHearingDisplay(container);
         this.totalCount$ = container.totalCount!;
         this.isLoading = false;
       });
@@ -99,6 +99,22 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
 
   ngOnDestroy() {
     this.getTimetableHearingStatementsSubscription.unsubscribe();
+  }
+
+  private mapToTimeTableHearingDisplay(container: ContainerTimetableHearingStatement) {
+    const timetableHearingStatements = container.objects!;
+    this.timeTableHearingStatementDisplays = timetableHearingStatements.map((ths) => {
+      return {
+        statementStatus: ths.statementStatus,
+        ttfnid: ths.ttfnid,
+        timetableFieldNumber: ths.timetableFieldNumber,
+        responsibleTransportCompanies: ths.responsibleTransportCompanies,
+        cantonDisplay: this.getCantonShort(ths.swissCanton),
+        userNameDisplay: ths.editor,
+        editionDate: ths.editionDate,
+        editorNameDisplay: this.getEditorDisplay(ths.editor),
+      };
+    });
   }
 
   private initSelectedEnumCanton() {
@@ -112,5 +128,16 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
     } else {
       throw new Error('No canton found with name: ' + this.cantonShort);
     }
+  }
+
+  private getCantonShort(swissCanton: SwissCanton | undefined) {
+    if (swissCanton) {
+      return Cantons.fromSwissCanton(swissCanton)?.short;
+    }
+    return swissCanton;
+  }
+
+  private getEditorDisplay(editor: string | undefined) {
+    return editor;
   }
 }
