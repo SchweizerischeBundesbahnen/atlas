@@ -44,7 +44,7 @@ export class Cantons {
       return c.short.toLowerCase() === canton?.toLowerCase();
     });
     if (!foundCanton) {
-      throw new Error('No canton found with name: ' + canton + '!');
+      return undefined;
     }
     return foundCanton!.enumCanton;
   }

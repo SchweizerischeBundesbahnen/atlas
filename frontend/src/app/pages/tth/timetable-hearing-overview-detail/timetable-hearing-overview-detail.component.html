@@ -1,6 +1,6 @@
-<div class="ps-5 pt-5">
-  <div class="white-table-container-no-tabs mt-5">
-    <div class="d-flex flex-row mb-5">
+<div *ngIf="!showEmptyComponent">
+  <div class="white-table-container-no-tabs">
+    <div class="d-flex flex-row">
       <div class="ps-3">
         <img
           alt="Canton Logo"
@@ -38,7 +38,7 @@
       [canEdit]="true"
       [isLoading]="isLoading"
       [tableColumns]="tableColumns"
-      [tableData]="timeTableHearingStatementDisplays"
+      [tableData]="timeTableHearingStatements"
       [totalCount]="totalCount$"
       data-cy="ttfn"
     ></app-table>
