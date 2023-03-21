@@ -531,6 +531,11 @@
     }
   },
   "TTH": {
+    "TAB": {
+      "ACTUAL": "Aktuelle Anhörung",
+      "PLANNED": "Geplante Anhörungen",
+      "ARCHIVED": "Archivierte Anhörungen"
+    },
     "OPEN": "{{canton}} öffnen",
     "STATEMENT_STATUS": "Status",
     "SWISS_CANTON": "Kanton",
