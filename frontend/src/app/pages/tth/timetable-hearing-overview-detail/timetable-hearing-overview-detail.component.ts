@@ -17,7 +17,7 @@ import { TableSettings } from '../../../core/components/table/table-settings';
 import { Pages } from '../../pages';
 import { Subscription } from 'rxjs';
 import moment from 'moment';
-import { TimeTableHearingStatementDisplay } from './time-table-hearing-statement-display';
+import { OverviewToTabService } from '../timetable-hearing-overview-tab/timetable-hearing-overview-tab/overview-to-tab.service';
 
 @Component({
   selector: 'app-timetable-hearing-overview-detail',
@@ -29,19 +29,20 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
   tableComponent!: TableComponent<TimetableHearingStatement>;
   isLoading = false;
   totalCount$ = 0;
-  timeTableHearingStatementDisplays: TimeTableHearingStatementDisplay[] = [];
+  timeTableHearingStatements: TimetableHearingStatement[] = [];
 
-  tableColumns: TableColumn<TimeTableHearingStatementDisplay>[] = [
+  tableColumns: TableColumn<TimetableHearingStatement>[] = [
     { headerTitle: 'TTH.STATEMENT_STATUS', value: 'statementStatus' },
-    { headerTitle: 'TTH.SWISS_CANTON', value: 'cantonDisplay' },
+    { headerTitle: 'TTH.SWISS_CANTON', value: 'swissCanton' },
     { headerTitle: 'TTH.TRANSPORT_COMPANY', value: 'responsibleTransportCompanies' },
     { headerTitle: 'TTH.TTFNID', value: 'ttfnid' },
     { headerTitle: 'TTH.TIMETABLE_FIELD_NUMBER', value: 'timetableFieldNumber' },
     { headerTitle: 'COMMON.EDIT_ON', value: 'editionDate', formatAsDate: true },
-    { headerTitle: 'COMMON.EDIT_BY', value: 'editorNameDisplay' },
+    { headerTitle: 'COMMON.EDIT_BY', value: 'editor' },
   ];
+  showEmptyComponent = true;
   data!: ContainerTimetableHearingStatement;
-  selectedCantonEnum = SwissCanton.Aargau;
+  selectedCantonEnum: SwissCanton | undefined;
   foundTimetableHearingYear: TimetableHearingYear = {
     timetableYear: 2000,
     hearingFrom: moment().toDate(),
@@ -49,16 +50,20 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
   };
   cantonShort!: string;
   private getTimetableHearingStatementsSubscription!: Subscription;
+  private changeCantonSubscription!: Subscription;
 
   constructor(
     private route: ActivatedRoute,
     private tableSettingsService: TableSettingsService,
     private readonly timetableHearingService: TimetableHearingService,
-    private readonly userAdministrationService: UserAdministrationService
+    private readonly userAdministrationService: UserAdministrationService,
+    private overviewToTabService: OverviewToTabService
   ) {}
 
   ngOnInit(): void {
-    this.data = this.route.snapshot.data;
+    this.overviewToTabService.cantonShort$.subscribe((res) => (this.cantonShort = res));
+    this.overviewToTabService.changeData(this.cantonShort);
+    this.showEmptyComponent = false;
     this.initSelectedEnumCanton();
     const actualYear = moment(new Date()).format('YYYY');
     this.timetableHearingService.getHearingYear(Number(actualYear)).subscribe((value) => {
@@ -89,7 +94,8 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
         [$paginationAndSearch.sort!, 'statementStatus,ASC']
       )
       .subscribe((container) => {
-        this.mapToTimeTableHearingDisplay(container);
+        this.timeTableHearingStatements = container.objects!;
+
         this.totalCount$ = container.totalCount!;
         this.isLoading = false;
       });
@@ -98,35 +104,23 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
   editVersion($event: any) {}
 
   ngOnDestroy() {
-    this.getTimetableHearingStatementsSubscription.unsubscribe();
-  }
-
-  private mapToTimeTableHearingDisplay(container: ContainerTimetableHearingStatement) {
-    const timetableHearingStatements = container.objects!;
-    this.timeTableHearingStatementDisplays = timetableHearingStatements.map((ths) => {
-      return {
-        statementStatus: ths.statementStatus,
-        ttfnid: ths.ttfnid,
-        timetableFieldNumber: ths.timetableFieldNumber,
-        responsibleTransportCompanies: ths.responsibleTransportCompanies,
-        cantonDisplay: this.getCantonShort(ths.swissCanton),
-        userNameDisplay: ths.editor,
-        editionDate: ths.editionDate,
-        editorNameDisplay: this.getEditorDisplay(ths.editor),
-      };
-    });
+    // this.getTimetableHearingStatementsSubscription.unsubscribe();
+    // this.changeCantonSubscription.unsubscribe();
   }
 
   private initSelectedEnumCanton() {
-    this.cantonShort = this.route.snapshot.params['canton'];
     if (!this.cantonShort) {
       throw new Error('No canton was provided!');
     }
-    const swissCantonEnum = Cantons.getSwissCantonEnum(this.cantonShort);
-    if (swissCantonEnum) {
-      this.selectedCantonEnum = swissCantonEnum;
+    if (this.cantonShort === Cantons.swiss.path) {
+      this.selectedCantonEnum = undefined;
     } else {
-      throw new Error('No canton found with name: ' + this.cantonShort);
+      const swissCantonEnum = Cantons.getSwissCantonEnum(this.cantonShort);
+      if (swissCantonEnum) {
+        this.selectedCantonEnum = swissCantonEnum;
+      } else {
+        throw new Error('No canton found with name: ' + this.cantonShort);
+      }
     }
   }
 
