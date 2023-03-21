@@ -17,7 +17,7 @@ import { TableSettings } from '../../../core/components/table/table-settings';
 import { Pages } from '../../pages';
 import { Subscription } from 'rxjs';
 import moment from 'moment';
-import { OverviewToTabService } from '../timetable-hearing-overview-tab/timetable-hearing-overview-tab/overview-to-tab.service';
+import { OverviewToTabService } from '../timetable-hearing-overview-tab/overview-to-tab.service';
 
 @Component({
   selector: 'app-timetable-hearing-overview-detail',
