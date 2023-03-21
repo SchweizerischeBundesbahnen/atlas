@@ -1,23 +1,15 @@
 package ch.sbb.atlas.user.administration.entity;
 
-import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
-import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.model.entity.BaseEntity;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.NotNull;
-import java.util.HashSet;
-import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,36 +17,33 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
 
-@Entity(name = "user_permission")
+@Entity(name = "beneficiary")
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldNameConstants
-public class UserPermission extends BaseEntity {
+public class Beneficiary extends BaseEntity {
 
-  private static final String ID_SEQ = "user_permission_seq";
+  private static final String ID_SEQ = "beneficiary_seq";
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = ID_SEQ)
   @SequenceGenerator(name = ID_SEQ, sequenceName = ID_SEQ, allocationSize = 1, initialValue = 1000)
   private Long id;
 
-  @NotNull
-  @Enumerated(EnumType.STRING)
-  private ApplicationRole role;
+  @OneToOne(mappedBy = "beneficiary")
+  private UserPermission userPermission;
 
   @NotNull
   @Enumerated(EnumType.STRING)
-  private ApplicationType application;
+  private BeneficiaryType type;
 
-  @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "beneficiary_id", referencedColumnName = "id")
-  private Beneficiary beneficiary;
+  @NotNull
+  private String identification;
 
-  @Builder.Default
-  @OneToMany(mappedBy = "userPermission", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-  private Set<PermissionRestriction> permissionRestrictions = new HashSet<>();
+  private String alias;
 
+  private String comment;
 }
