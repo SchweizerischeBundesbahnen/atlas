@@ -97,6 +97,28 @@ export class Pages {
     pathText: 'PAGES.TTH.PATH_TEXT',
     description: 'PAGES.TTH.DESCRIPTION',
   };
+
+  public static TTH_ACTUAL: Page = {
+    title: 'PAGES.DETAILS',
+    path: 'actual',
+    pathText: '',
+    description: '',
+  };
+
+  public static TTH_PLANNED: Page = {
+    title: 'PAGES.DETAILS',
+    path: 'planned',
+    pathText: '',
+    description: '',
+  };
+
+  public static TTH_ARCHIVED: Page = {
+    title: 'PAGES.DETAILS',
+    path: 'archived',
+    pathText: '',
+    description: '',
+  };
+
   public static TTH_OVERVIEW_DETAIL: Page = {
     title: 'PAGES.OVERVIEW_DETAILS',
     path: ':canton',

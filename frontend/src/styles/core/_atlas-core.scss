@@ -40,6 +40,12 @@ input[type='number'] {
     @extend .white-table-container;
     border-radius: 0 variables.$border-radius variables.$border-radius variables.$border-radius;
   }
+
+  &-no-padding {
+    @extend .white-table-container;
+    border-radius: 0 variables.$border-radius variables.$border-radius variables.$border-radius;
+    padding: 0;
+  }
 }
 
 .footer {
