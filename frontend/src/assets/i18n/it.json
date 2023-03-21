@@ -42,6 +42,8 @@
     "FILLED_AUTOMATICALLY": "Compilato automaticamente",
     "VALID_FROM": "Valido dal",
     "VALID_TO": "Valido fino al",
+    "EDIT_ON": "Modificato",
+    "EDIT_BY": "Da",
     "STATUS": "Stato",
     "CANTONS": "Cantoni",
     "STATUS_TYPES": {
@@ -530,6 +532,15 @@
   },
   "TTH": {
     "OPEN": "{{canton}} aprire",
+    "STATEMENT_STATUS": "Stato",
+    "SWISS_CANTON": "Cantone",
+    "TRANSPORT_COMPANY": "Azienda di trasporto",
+    "TTFNID": "Campo-n.",
+    "TIMETABLE_FIELD_NUMBER": "Quadro orario",
+    "OVERVIEW_TAB": {
+      "OVERVIEW_ACTUAL_SUBHEADING_PREFIX": "La procedura dell'orario svizzero dell'UFT per l'orario {{timeTableYear}} dura da",
+      "OVERVIEW_ACTUAL_SUBHEADING_POSTFIX": " {{hearingFrom}} fino a {{hearingTo}}."
+    },
     "CANTON": {
       "CH": "Tutta la Svizzera",
       "AG": "Argovia",
