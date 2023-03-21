@@ -3,11 +3,7 @@ import { SwissCanton } from '../../../../api';
 
 export class Cantons {
   public static cantons: Canton[] = [
-    {
-      short: 'AG',
-      enumCanton: SwissCanton.Aargau,
-      path: 'ag',
-    },
+    { short: 'AG', enumCanton: SwissCanton.Aargau, path: 'ag' },
     { short: 'AI', enumCanton: SwissCanton.AppenzellInnerrhoden, path: 'ai' },
     { short: 'AR', enumCanton: SwissCanton.AppenzellAusserrhoden, path: 'ar' },
     { short: 'BE', enumCanton: SwissCanton.Bern, path: 'be' },
@@ -54,6 +50,6 @@ export class Cantons {
   }
 
   public static fromSwissCanton(swissCanton: SwissCanton): Canton | undefined {
-    return this.cantons.find((canton) => canton.long === swissCanton);
+    return this.cantons.find((canton) => canton.enumCanton === swissCanton);
   }
 }
