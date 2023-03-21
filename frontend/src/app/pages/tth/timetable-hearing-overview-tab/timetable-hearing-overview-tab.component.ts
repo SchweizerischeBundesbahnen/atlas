@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Pages } from '../../../pages';
+import { Pages } from '../../pages';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TabService } from '../../../tab.service';
+import { TabService } from '../../tab.service';
 import { OverviewToTabService } from './overview-to-tab.service';
 
 @Component({
