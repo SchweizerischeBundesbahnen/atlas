@@ -2,10 +2,33 @@
   <div class="white-table-container-no-tabs mt-5">
     <div class="d-flex flex-row mb-5">
       <div class="ps-3">
-        <img alt="Canton Logo" src="assets/images/cantons/{{ cantonShort.toUpperCase() }}.svg" />
+        <img
+          alt="Canton Logo"
+          class="flag"
+          src="assets/images/cantons/{{ cantonShort.toUpperCase() }}.svg"
+        />
       </div>
-      <div class="ps-5 table-heading font-bold-4xl color-gray-900 mb-5">
-        {{ 'PAGES.TTH.TITLE_MENU' | translate }} {{ foundTimetableHearingYear.timetableYear }}
+      <div class="ps-4">
+        <div class="table-heading font-bold-4xl color-gray-900 mb-3">
+          {{ 'PAGES.TTH.TITLE_MENU' | translate }} {{ foundTimetableHearingYear.timetableYear }}
+        </div>
+        <div class="mb-5">
+          <span>{{
+            'TTH.OVERVIEW_TAB.OVERVIEW_ACTUAL_SUBHEADING_PREFIX'
+              | translate
+                : {
+                    timeTableYear: foundTimetableHearingYear.timetableYear
+                  }
+          }}</span>
+          <span class="font-bold-base">{{
+            'TTH.OVERVIEW_TAB.OVERVIEW_ACTUAL_SUBHEADING_POSTFIX'
+              | translate
+                : {
+                    hearingFrom: foundTimetableHearingYear.hearingFrom,
+                    hearingTo: foundTimetableHearingYear.hearingTo
+                  }
+          }}</span>
+        </div>
       </div>
     </div>
 
@@ -15,7 +38,7 @@
       [canEdit]="true"
       [isLoading]="isLoading"
       [tableColumns]="tableColumns"
-      [tableData]="timetableHearingStatements"
+      [tableData]="timeTableHearingStatementDisplays"
       [totalCount]="totalCount$"
       data-cy="ttfn"
     ></app-table>
