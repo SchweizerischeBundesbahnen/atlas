@@ -40,11 +40,7 @@ public class CsvService {
   private static final String CSV_DELIMITER = ";";
   private static final String EDITED_AT_COLUMN_NAME = "GEAENDERT_AM";
   private final FileHelperService fileHelperService;
-
   private final JobHelperService jobHelperService;
-
-//  @Value("${amazon.bucketName}")
-//  private String bucketName;
 
   public List<ServicePointCsvModelContainer> getActualServicePointCsvModelsFromS3() {
     log.info("Downloading file from Amazon S3 Bucket: {}");
