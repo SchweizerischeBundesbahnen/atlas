@@ -63,9 +63,6 @@ public class CustomUserPermissionRepositoryImpl implements CustomUserPermissionR
 
   private static Predicate getPermissionRestrictionPredicate(Set<String> permissionRestrictions, PermissionRestrictionType type,
       CriteriaBuilder criteriaBuilder, Root<UserPermission> root) {
-    if (type == null) {
-      return criteriaBuilder.and();
-    } else {
       List<Predicate> predicates = new ArrayList<>();
       for (String permissionRestriction : permissionRestrictions) {
         SetJoin<UserPermission, PermissionRestriction> permissionJoin = root.join(UserPermission_.permissionRestrictions);
@@ -73,7 +70,6 @@ public class CustomUserPermissionRepositoryImpl implements CustomUserPermissionR
         predicates.add(permissionJoin.get(PermissionRestriction_.restriction).in(permissionRestriction));
       }
       return criteriaBuilder.and(predicates.toArray(Predicate[]::new));
-    }
   }
 
 }
