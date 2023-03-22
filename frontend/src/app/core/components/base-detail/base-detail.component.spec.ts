@@ -64,8 +64,7 @@ describe('BaseDetailComponent', () => {
       return {
         application: applicationType,
         role: ApplicationRole.Supervisor,
-        sboids: [],
-        swissCantons: [],
+        permissionRestrictions: [],
       };
     },
   };

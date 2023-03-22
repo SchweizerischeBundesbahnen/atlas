@@ -171,7 +171,7 @@ describe('UserAdministrationOverviewComponent', () => {
       0,
       10,
       new Set([null]),
-      new Set([]),
+      'CANTON',
       new Set([])
     );
     expect(component.userPageResult).toEqual({ totalCount: 1, users: [{ sbbUserId: 'u123456' }] });

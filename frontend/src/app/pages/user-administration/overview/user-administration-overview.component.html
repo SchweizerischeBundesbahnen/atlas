@@ -52,16 +52,56 @@
         </ng-container>
 
         <ng-template #filterTemplate>
-          <div class="d-flex flex-row">
-            <bo-select
-              (boSelectionChanged)="filterChanged()"
-              [controlName]="boSearchCtrlName"
-              [formGroup]="boForm"
-              [formModus]="false"
-              class="col-4 pe-1"
-            ></bo-select>
+          <ng-container *ngIf="selectedSearch === 'FILTER'; else cantonFilterTemplate">
+            <div class="d-flex flex-row">
+              <bo-select
+                (boSelectionChanged)="filterChanged()"
+                [controlName]="boSearchCtrlName"
+                [formGroup]="boForm"
+                [formModus]="false"
+                class="col-6 pe-1"
+              ></bo-select>
 
-            <div class="d-flex flex-column col-4 ps-1">
+              <div class="d-flex flex-column col-6 ps-1">
+                <mat-label class="font-bold-lg">{{
+                  'USER_ADMIN.APPLICATIONS' | translate
+                }}</mat-label>
+                <div [class.disabled]="boForm.disabled" class="multi-select-search">
+                  <mat-select
+                    (selectionChange)="filterChanged()"
+                    [(ngModel)]="selectedApplicationOptions"
+                    multiple
+                  >
+                    <mat-option
+                      *ngFor="let application of applicationOptions"
+                      [value]="application"
+                      >{{ 'USER_ADMIN.APPLICATION.' + application | translate }}</mat-option
+                    >
+                  </mat-select>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </ng-template>
+
+        <ng-template #cantonFilterTemplate>
+          <div class="d-flex flex-row">
+            <div class="d-flex flex-column col-6 ps-1">
+              <mat-label class="font-bold-lg">{{ 'COMMON.CANTONS' | translate }}</mat-label>
+              <div [class.disabled]="boForm.disabled" class="multi-select-search">
+                <mat-select
+                  (selectionChange)="filterChanged()"
+                  [(ngModel)]="selectedCantonOptions"
+                  multiple
+                >
+                  <mat-option *ngFor="let canton of cantonOptions" [value]="canton">{{
+                    SWISS_CANTONS_PREFIX_LABEL + getCantonAbbreviation(canton) | translate
+                  }}</mat-option>
+                </mat-select>
+              </div>
+            </div>
+
+            <div class="d-flex flex-column col-6 ps-1">
               <mat-label class="font-bold-lg">{{
                 'USER_ADMIN.APPLICATIONS' | translate
               }}</mat-label>
@@ -76,21 +116,6 @@
                     [value]="application"
                     >{{ 'USER_ADMIN.APPLICATION.' + application | translate }}</mat-option
                   >
-                </mat-select>
-              </div>
-            </div>
-
-            <div class="d-flex flex-column col-4 ps-1">
-              <mat-label class="font-bold-lg">{{ 'COMMON.CANTONS' | translate }}</mat-label>
-              <div [class.disabled]="boForm.disabled" class="multi-select-search">
-                <mat-select
-                  (selectionChange)="filterChanged()"
-                  [(ngModel)]="selectedCantonOptions"
-                  multiple
-                >
-                  <mat-option *ngFor="let canton of cantonOptions" [value]="canton">{{
-                    SWISS_CANTONS_PREFIX_LABEL + getCantonAbbreviation(canton) | translate
-                  }}</mat-option>
                 </mat-select>
               </div>
             </div>

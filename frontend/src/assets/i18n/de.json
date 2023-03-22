@@ -191,6 +191,7 @@
   },
   "USER_ADMIN": {
     "SEARCH_FOR_FILTER": "Geschäftsorganisationen und Applikationen",
+    "SEARCH_FOR_FILTER_CANTON": "Kantone und Applikationen",
     "NEW": "Neuer Benutzer erfassen",
     "NEW_INFORMATION": "Angaben zum neuen Benutzer",
     "INFORMATION": "Angaben zum Benutzer",
