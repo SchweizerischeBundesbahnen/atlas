@@ -73,6 +73,7 @@ model/operatingPointType.ts
 model/operatingPointWithoutTimetableType.ts
 model/parameter.ts
 model/paymentType.ts
+model/permissionRestrictionObject.ts
 model/person.ts
 model/servicePointCsvModel.ts
 model/servicePointCsvModelContainer.ts

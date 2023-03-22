@@ -9,22 +9,20 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { SwissCanton } from './swissCanton';
 
-export interface ServicePointNumber {
-  /**
-   * DiDok-Number formerly known as UIC-Code, combination of uicCountryCode and numberShort. Size: 7
-   */
-  number: number;
-  /**
-   * Calculated value formed from the numberShort. Range: 0-9
-   */
-  checkDigit: number;
-  /**
-   * NumberShort - 5 chars identifying number. Range: 1-99.999
-   */
-  numberShort: number;
-  /**
-   * UicCountryCode, Indicates which country allocated the service point number and is to be interpreted organisationally, not territorially.
-   */
-  uicCountryCode: number;
+/**
+ * Permission Restrictions
+ */
+export interface PermissionRestrictionObject {
+  type?: PermissionRestrictionObject.TypeEnum;
+  value?: string | SwissCanton;
+  valueAsString?: string;
+}
+export namespace PermissionRestrictionObject {
+  export type TypeEnum = 'BUSINESS_ORGANISATION' | 'CANTON';
+  export const TypeEnum = {
+    BusinessOrganisation: 'BUSINESS_ORGANISATION' as TypeEnum,
+    Canton: 'CANTON' as TypeEnum,
+  };
 }
