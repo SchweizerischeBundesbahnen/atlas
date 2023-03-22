@@ -10,9 +10,6 @@
  * Do not edit the class manually.
  */
 
-/**
- * Cantons the user has administrative rights on
- */
 export type SwissCanton =
   | 'ZURICH'
   | 'BERN'

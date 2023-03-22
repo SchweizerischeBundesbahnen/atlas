@@ -48,6 +48,7 @@ export * from './operatingPointType';
 export * from './operatingPointWithoutTimetableType';
 export * from './parameter';
 export * from './paymentType';
+export * from './permissionRestrictionObject';
 export * from './person';
 export * from './servicePointCsvModel';
 export * from './servicePointCsvModelContainer';

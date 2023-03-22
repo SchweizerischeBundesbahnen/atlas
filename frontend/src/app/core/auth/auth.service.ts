@@ -118,9 +118,13 @@ export class AuthService {
 
     // Writer must be explicitely permitted to edit for a specific sboid
     if (sboid && ApplicationRole.Writer === applicationPermission.role!) {
-      return Array.from(applicationPermission.sboids!.values()).includes(sboid);
+      return AuthService.getSboidRestrictions(applicationPermission).includes(sboid);
     }
     return false;
+  }
+
+  public static getSboidRestrictions(userPermission: UserPermission): string[] {
+    return userPermission.permissionRestrictions!.map((restriction) => restriction.value!);
   }
 
   private static getRolesAllowedToCreate(applicationType: ApplicationType) {
@@ -158,8 +162,7 @@ export class AuthService {
     return {
       application: applicationType,
       role: ApplicationRole.Reader,
-      sboids: [],
-      swissCantons: [],
+      permissionRestrictions: [],
     };
   }
 
