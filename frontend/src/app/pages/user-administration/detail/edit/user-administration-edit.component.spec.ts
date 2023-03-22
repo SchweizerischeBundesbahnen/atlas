@@ -56,7 +56,7 @@ describe('UserAdministrationEditComponent', () => {
       [
         'setSbbUserId',
         'setPermissions',
-        'clearSboidsAndCantonsIfNotWriter',
+        'clearPermissionRestrictionsIfNotWriter',
         'emitBoFormResetEvent',
       ],
       {

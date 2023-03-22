@@ -24,8 +24,7 @@ export const authServiceMock: Partial<AuthService> = {
     return {
       application: applicationType,
       role: ApplicationRole.Supervisor,
-      sboids: [],
-      swissCantons: [],
+      permissionRestrictions: [],
     };
   },
   logout: () => Promise.resolve(true),
