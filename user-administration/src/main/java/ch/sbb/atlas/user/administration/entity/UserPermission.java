@@ -1,13 +1,12 @@
 package ch.sbb.atlas.user.administration.entity;
 
-import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.entity.BaseEntity;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
-import jakarta.persistence.Convert;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.OneToMany;
+import java.util.HashSet;
 import java.util.Set;
-import jakarta.persistence.CollectionTable;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -21,11 +20,13 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
 
 @Entity(name = "user_permission")
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -50,13 +51,8 @@ public class UserPermission extends BaseEntity {
   @NotEmpty
   private String sbbUserId;
 
-  @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
-  @CollectionTable(name = "business_organisation_user_permission")
-  private Set<String> sboid;
-
-  @ElementCollection(targetClass = SwissCanton.class, fetch = FetchType.EAGER)
-  @Convert(converter = SwissCantonConverter.class)
-  @CollectionTable(name = "canton_user_permission")
-  private Set<SwissCanton> swissCantons;
+  @Builder.Default
+  @OneToMany(mappedBy = "userPermission", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+  private Set<PermissionRestriction> permissionRestrictions = new HashSet<>();
 
 }
