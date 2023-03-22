@@ -41,13 +41,13 @@ public class UserPermissionCreateModel {
 
   @Schema(hidden = true)
   @JsonIgnore
-  @AssertTrue(message = "Sboids must be empty when not WRITER role or BODI ApplicationType")
+  @AssertTrue(message = "Restrictions must be empty when not WRITER role or BODI ApplicationType")
   boolean isSboidsEmptyWhenNotWriterOrBodi() {
     return permissions.stream().noneMatch(
         permission ->
             (permission.getRole() != ApplicationRole.WRITER
                 || permission.getApplication() == ApplicationType.BODI)
-                && permission.getSboids().size() > 0
+                && permission.getPermissionRestrictions().size() > 0
     );
   }
 

@@ -22,12 +22,12 @@ public class UserPermissionCreateModelTest {
         .sbbUserId("u123456")
         .permissions(List.of(
             UserPermissionModel.builder()
-                .sboids(List.of())
+                .permissionRestrictions(List.of())
                 .role(ApplicationRole.WRITER)
                 .application(ApplicationType.TTFN)
                 .build(),
             UserPermissionModel.builder()
-                .sboids(List.of())
+                .permissionRestrictions(List.of())
                 .role(ApplicationRole.WRITER)
                 .application(ApplicationType.TTFN)
                 .build()
@@ -49,7 +49,7 @@ public class UserPermissionCreateModelTest {
         .sbbUserId("u123456")
         .permissions(List.of(
             UserPermissionModel.builder()
-                .sboids(List.of("ch:1:sboid:test"))
+                .permissionRestrictions(List.of(new SboidPermissionRestrictionModel("ch:1:sboid:test")))
                 .role(ApplicationRole.SUPERVISOR)
                 .application(ApplicationType.TTFN)
                 .build()
@@ -71,7 +71,7 @@ public class UserPermissionCreateModelTest {
         .sbbUserId("u123456")
         .permissions(List.of(
             UserPermissionModel.builder()
-                .sboids(List.of("ch:1:sboid:test"))
+                .permissionRestrictions(List.of(new SboidPermissionRestrictionModel("ch:1:sboid:test")))
                 .role(ApplicationRole.WRITER)
                 .application(ApplicationType.BODI)
                 .build()
