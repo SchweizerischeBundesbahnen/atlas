@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -42,6 +43,7 @@ public interface TimetableHearingStatementApiV1 {
       + ".ApplicationType).TIMETABLE_HEARING)")
   TimetableHearingStatementModel getStatement(@PathVariable Long id);
 
+<<<<<<< HEAD
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
   @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin"
@@ -49,6 +51,16 @@ public interface TimetableHearingStatementApiV1 {
   TimetableHearingStatementModel createStatement(
       @RequestPart @Valid TimetableHearingStatementModel statement,
       @RequestPart(required = false) List<MultipartFile> documents);
+=======
+    @GetMapping(path = "{id}/documents/{filename}")
+    Resource getStatementDocument(@PathVariable Long id, @PathVariable String filename);
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    TimetableHearingStatementModel createStatement(
+        @RequestPart @Valid TimetableHearingStatementModel statement,
+        @RequestPart(required = false) List<MultipartFile> documents);
+>>>>>>> 4dad858ed (ATLAS-1120:Add some changes for update and add get documents)
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path = "external", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})

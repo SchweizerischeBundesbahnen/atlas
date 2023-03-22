@@ -2,6 +2,7 @@ package ch.sbb.line.directory.service.hearing;
 
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
+import ch.sbb.atlas.model.exception.NotFoundException.FileFoundException;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.line.directory.entity.StatementDocument;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
@@ -11,6 +12,7 @@ import ch.sbb.line.directory.repository.TimetableHearingYearRepository;
 import ch.sbb.line.directory.service.exception.PdfDocumentConstraintViolationException;
 import ch.sbb.line.directory.service.upload.TimetableHearingPdfsUploadService;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -48,12 +50,28 @@ public class TimetableHearingStatementService {
         return timetableHearingStatementRepository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
     }
 
+    public File getStatementDocument(Long id, String filename) {
+        TimetableHearingStatement statementById = getStatementById(id);
+        Optional<StatementDocument> statementDocument = getStatementDocument(filename, statementById);
+        if (statementDocument.isPresent()) {
+            return pdfsUploadAmazonService.downloadPdfFile(id.toString(), filename);
+        }
+        else throw new FileFoundException(filename);
+    }
+
+    private Optional<StatementDocument> getStatementDocument(String filename, TimetableHearingStatement statementById) {
+        Optional<StatementDocument> statementDocument = statementById.getDocuments().stream()
+            .filter(document -> document.getFileName().equals(filename))
+            .findFirst();
+        return statementDocument;
+    }
+
     public TimetableHearingStatement createHearingStatement(TimetableHearingStatement statementToCreate, List<MultipartFile> documents) {
         checkThatTimetableHearingYearExists(statementToCreate);
         statementToCreate.setStatementStatus(StatementStatus.RECEIVED);
 
         List<File> documentsInFileFormat = getFilesFromMultipartFiles(documents);
-        validateAllowedNumberOfDocs(documentsInFileFormat, Collections.emptySet());
+        validateAllowedNumberOfNewDocs(documentsInFileFormat, Collections.emptySet());
         validateAllowedSizeOfDocsSummary(documentsInFileFormat, Collections.emptyList());
         validateAllDocsArePdf(documentsInFileFormat);
 
@@ -83,19 +101,22 @@ public class TimetableHearingStatementService {
         TimetableHearingStatement existingTimetableHearingStatement, List<MultipartFile> newDocs) {
         checkThatTimetableHearingYearExists(updatingTimetableHearingStatement);
 
-        Set<StatementDocument> existingDocs = existingTimetableHearingStatement.getDocuments();
-        checkDocumentNamesOverlapping(newDocs, existingDocs);
-
         List<File> newDocsInFileFormat = getFilesFromMultipartFiles(newDocs);
-        validateAllowedNumberOfDocs(newDocsInFileFormat, existingDocs);
+
+        validateAllDocsArePdf(newDocsInFileFormat);
+        validateAllowedNumberOfNewDocs(newDocsInFileFormat, Collections.emptySet());
+
+        Set<StatementDocument> existingDocs = existingTimetableHearingStatement.getDocuments();
+        List<String> filesToDelete = checkTheNumberOfDeletingFiles(newDocsInFileFormat, existingDocs);
+        // delete file from amazon and delete statement from db
+        filesToDelete
+            .forEach(file -> pdfsUploadAmazonService.deletePdfFile(existingTimetableHearingStatement.getId().toString(), file));
 
         List<Long> existingDocsSizes = existingDocs.stream()
             .map(StatementDocument::getFileSize)
             .toList();
 
         validateAllowedSizeOfDocsSummary(newDocsInFileFormat, existingDocsSizes);
-
-        validateAllDocsArePdf(newDocsInFileFormat);
 
         TimetableHearingStatement updatedObject = updateObject(updatingTimetableHearingStatement, existingTimetableHearingStatement);
 
@@ -177,12 +198,47 @@ public class TimetableHearingStatementService {
         }
     }
 
-    private void validateAllowedNumberOfDocs(List<File> newDocs, Set<StatementDocument> existingDocs) {
+    private void validateAllowedNumberOfNewDocs(List<File> newDocs, Set<StatementDocument> existingDocs) {
         int allDocsNumber = newDocs.size() + existingDocs.size();
         if (allDocsNumber > Integer.parseInt(maxNumberPdfs)) {
             String exceptionMessage = "Overall number of documents is: " + allDocsNumber + " which exceeds the number of allowed documents of 3.";
             throw new PdfDocumentConstraintViolationException(exceptionMessage);
         }
+    }
+
+    private List<String> checkTheNumberOfDeletingFiles(List<File> newDocs, Set<StatementDocument> existingDocs) {
+        List<String> deletingFiles = new ArrayList<>();
+        int allDocsNumber = newDocs.size() + existingDocs.size();
+        if (allDocsNumber > Integer.parseInt(maxNumberPdfs)) {
+            if (existingDocs.size() == 1) {
+                deletingFiles.add(existingDocs.stream().toList().get(0).getFileName());
+                return deletingFiles;
+            } else if (existingDocs.size() == 2) {
+                if (newDocs.size() == 2) {
+                    deletingFiles.add(existingDocs.stream().toList().get(0).getFileName());
+                    return deletingFiles;
+                } else {
+                    deletingFiles.add(existingDocs.stream().toList().get(0).getFileName());
+                    deletingFiles.add(existingDocs.stream().toList().get(1).getFileName());
+                    return deletingFiles;
+                }
+            } else {
+                if (newDocs.size() == 1) {
+                    deletingFiles.add(existingDocs.stream().toList().get(0).getFileName());
+                    return deletingFiles;
+                } else if (newDocs.size() == 2) {
+                    deletingFiles.add(existingDocs.stream().toList().get(0).getFileName());
+                    deletingFiles.add(existingDocs.stream().toList().get(1).getFileName());
+                    return deletingFiles;
+                } else {
+                    deletingFiles.add(existingDocs.stream().toList().get(0).getFileName());
+                    deletingFiles.add(existingDocs.stream().toList().get(1).getFileName());
+                    deletingFiles.add(existingDocs.stream().toList().get(2).getFileName());
+                    return deletingFiles;
+                }
+            }
+        }
+        return Collections.emptyList();
     }
 
     private void addFilesToStatement(List<MultipartFile> documents, TimetableHearingStatement statement) {
