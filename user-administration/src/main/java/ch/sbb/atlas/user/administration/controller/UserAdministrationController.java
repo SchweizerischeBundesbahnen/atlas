@@ -1,17 +1,17 @@
 package ch.sbb.atlas.user.administration.controller;
 
 import ch.sbb.atlas.api.model.Container;
-import ch.sbb.atlas.api.user.administration.enumeration.PermissionRestrictionType;
-import ch.sbb.atlas.kafka.model.SwissCanton;
-import ch.sbb.atlas.service.UserService;
-import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.api.user.administration.UserAdministrationApiV1;
 import ch.sbb.atlas.api.user.administration.UserDisplayNameModel;
 import ch.sbb.atlas.api.user.administration.UserModel;
 import ch.sbb.atlas.api.user.administration.UserPermissionCreateModel;
 import ch.sbb.atlas.api.user.administration.UserPermissionModel;
+import ch.sbb.atlas.api.user.administration.enumeration.PermissionRestrictionType;
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
+import ch.sbb.atlas.service.UserService;
 import ch.sbb.atlas.user.administration.entity.UserPermission;
 import ch.sbb.atlas.user.administration.exception.LimitedPageSizeRequestException;
+import ch.sbb.atlas.user.administration.exception.RestrictionWithoutTypeException;
 import ch.sbb.atlas.user.administration.mapper.UserMapper;
 import ch.sbb.atlas.user.administration.mapper.UserPermissionMapper;
 import ch.sbb.atlas.user.administration.service.GraphApiService;
@@ -41,6 +41,9 @@ public class UserAdministrationController implements UserAdministrationApiV1 {
     if (pageable.getPageSize() > GraphApiService.BATCH_REQUEST_LIMIT) {
       throw new LimitedPageSizeRequestException(pageable.getPageSize(),
           GraphApiService.BATCH_REQUEST_LIMIT);
+    }
+    if (permissionRestrictions != null && !permissionRestrictions.isEmpty() && type == null) {
+      throw new RestrictionWithoutTypeException();
     }
     Page<String> userPage = userAdministrationService.getUserPage(pageable, permissionRestrictions,
         applicationTypes, type);

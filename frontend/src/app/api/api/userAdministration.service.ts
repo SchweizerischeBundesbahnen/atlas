@@ -26,7 +26,6 @@ import { Observable } from 'rxjs';
 import { ApplicationType } from '../model/models';
 import { ContainerUser } from '../model/models';
 import { ErrorResponse } from '../model/models';
-import { SwissCanton } from '../model/models';
 import { User } from '../model/models';
 import { UserDisplayName } from '../model/models';
 import { UserPermissionCreate } from '../model/models';
@@ -364,8 +363,8 @@ export class UserAdministrationService {
 
   /**
    * Retrieve Overview for all the managed Users
-   * @param sboids
-   * @param cantons
+   * @param permissionRestrictions
+   * @param type
    * @param applicationTypes
    * @param page Zero-based page index (0..N)
    * @param size The size of the page to be returned
@@ -374,8 +373,8 @@ export class UserAdministrationService {
    * @param reportProgress flag to report request and response progress.
    */
   public getUsers(
-    sboids?: Set<string>,
-    cantons?: Set<SwissCanton>,
+    permissionRestrictions?: Set<string>,
+    type?: 'BUSINESS_ORGANISATION' | 'CANTON',
     applicationTypes?: Set<ApplicationType>,
     page?: number,
     size?: number,
@@ -385,8 +384,8 @@ export class UserAdministrationService {
     options?: { httpHeaderAccept?: '*/*' }
   ): Observable<ContainerUser>;
   public getUsers(
-    sboids?: Set<string>,
-    cantons?: Set<SwissCanton>,
+    permissionRestrictions?: Set<string>,
+    type?: 'BUSINESS_ORGANISATION' | 'CANTON',
     applicationTypes?: Set<ApplicationType>,
     page?: number,
     size?: number,
@@ -396,8 +395,8 @@ export class UserAdministrationService {
     options?: { httpHeaderAccept?: '*/*' }
   ): Observable<HttpResponse<ContainerUser>>;
   public getUsers(
-    sboids?: Set<string>,
-    cantons?: Set<SwissCanton>,
+    permissionRestrictions?: Set<string>,
+    type?: 'BUSINESS_ORGANISATION' | 'CANTON',
     applicationTypes?: Set<ApplicationType>,
     page?: number,
     size?: number,
@@ -407,8 +406,8 @@ export class UserAdministrationService {
     options?: { httpHeaderAccept?: '*/*' }
   ): Observable<HttpEvent<ContainerUser>>;
   public getUsers(
-    sboids?: Set<string>,
-    cantons?: Set<SwissCanton>,
+    permissionRestrictions?: Set<string>,
+    type?: 'BUSINESS_ORGANISATION' | 'CANTON',
     applicationTypes?: Set<ApplicationType>,
     page?: number,
     size?: number,
@@ -418,15 +417,17 @@ export class UserAdministrationService {
     options?: { httpHeaderAccept?: '*/*' }
   ): Observable<any> {
     let queryParameters = new HttpParams({ encoder: this.encoder });
-    if (sboids) {
-      sboids.forEach((element) => {
-        queryParameters = this.addToHttpParams(queryParameters, <any>element, 'sboids');
+    if (permissionRestrictions) {
+      permissionRestrictions.forEach((element) => {
+        queryParameters = this.addToHttpParams(
+          queryParameters,
+          <any>element,
+          'permissionRestrictions'
+        );
       });
     }
-    if (cantons) {
-      cantons.forEach((element) => {
-        queryParameters = this.addToHttpParams(queryParameters, <any>element, 'cantons');
-      });
+    if (type !== undefined && type !== null) {
+      queryParameters = this.addToHttpParams(queryParameters, <any>type, 'type');
     }
     if (applicationTypes) {
       applicationTypes.forEach((element) => {

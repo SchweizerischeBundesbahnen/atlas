@@ -1,12 +1,20 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { TableColumn } from '../../../core/components/table/table-column';
-import { ApplicationRole, ApplicationType, BusinessOrganisation, SwissCanton } from '../../../api';
+import {
+  ApplicationRole,
+  ApplicationType,
+  BusinessOrganisation,
+  PermissionRestrictionObject,
+  SwissCanton,
+} from '../../../api';
 import { FormControl, FormGroup } from '@angular/forms';
 import { UserPermissionManager } from '../service/user-permission-manager';
 import { BusinessOrganisationLanguageService } from '../../../core/form-components/bo-select/business-organisation-language.service';
 import { Observable, of, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Cantons } from '../../tth/overview/canton/Cantons';
+import { MatSelectChange } from '@angular/material/select';
+import TypeEnum = PermissionRestrictionObject.TypeEnum;
 
 @Component({
   selector: 'app-user-administration-application-config',
@@ -55,6 +63,7 @@ export class UserAdministrationApplicationConfigComponent implements OnInit, OnD
   private readonly boFormResetEventSubscription: Subscription;
   SWISS_CANTONS = Object.values(SwissCanton);
   SWISS_CANTONS_PREFIX_LABEL = 'TTH.CANTON.';
+  cantonSelection: [SwissCanton] | undefined;
 
   constructor(
     private readonly boLanguageService: BusinessOrganisationLanguageService,
@@ -72,6 +81,9 @@ export class UserAdministrationApplicationConfigComponent implements OnInit, OnD
     this.boListener$ = this.userPermissionManager.boOfApplicationsSubject$.pipe(
       map((bosOfApplications) => bosOfApplications[this.application])
     );
+    this.cantonSelection = this.userPermissionManager.getRestrictionValues(
+      this.userPermissionManager.getPermissionByApplication(this.application)
+    ) as [SwissCanton];
   }
 
   ngOnDestroy() {
@@ -91,11 +103,20 @@ export class UserAdministrationApplicationConfigComponent implements OnInit, OnD
     this.selectedIndex = -1;
   }
 
-  permissionByApplication() {
-    return this.userPermissionManager.getPermissionByApplication(this.application);
-  }
-
   getCantonAbbreviation(canton: SwissCanton) {
     return Cantons.fromSwissCanton(canton)?.short;
+  }
+
+  cantonSelectionChanged($event: MatSelectChange) {
+    const values = $event.value as SwissCanton[];
+    const permissionRestriction = values.map(
+      (selection) =>
+        ({
+          value: selection,
+          type: TypeEnum.Canton,
+        } as PermissionRestrictionObject)
+    );
+    this.userPermissionManager.getPermissionByApplication(this.application).permissionRestrictions =
+      permissionRestriction;
   }
 }
