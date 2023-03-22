@@ -30,14 +30,9 @@ public class UserPermissionModel extends BaseVersionModel {
   @NotNull
   private ApplicationType application;
 
-  @Schema(description = "Business Organisation - sboids", type = "List", example = "[\"ch:1:sboid:100000\"]")
+  @Schema(description = "Permission Restrictions")
   @NotNull
   @Builder.Default
-  private List<@NotEmpty String> sboids = new ArrayList<>();
-
-  @Schema(description = "Cantons the user has administrative rights on", type = "List", example = "[\"BERN\"]")
-  @NotNull
-  @Builder.Default
-  private List<SwissCanton> swissCantons = new ArrayList<>();
+  private List<? extends PermissionRestrictionModel<?>> permissionRestrictions = new ArrayList<>();
 
 }
