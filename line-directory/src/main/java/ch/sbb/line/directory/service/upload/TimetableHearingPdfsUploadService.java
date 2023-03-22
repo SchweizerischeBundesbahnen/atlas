@@ -34,4 +34,13 @@ public class TimetableHearingPdfsUploadService {
         amazonService.deleteFile(AmazonBucket.HEARING_DOCUMENT, dirName + "/" +fileName);
     }
 
+    public File downloadPdfFile(String dirName, String fileName) {
+        try {
+            return amazonService.pullFile(AmazonBucket.HEARING_DOCUMENT, dirName + "/" +fileName);
+        } catch (IOException e) {
+            throw new PdfUploadException("Error downloading file: " + fileName + " to bucket: " + AmazonBucket.HEARING_DOCUMENT, e);
+        }
+
+    }
+
 }
