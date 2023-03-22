@@ -1,10 +1,13 @@
 package ch.sbb.atlas.user.administration.service;
 
-import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.api.user.administration.enumeration.PermissionRestrictionType;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
+import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.user.administration.entity.PermissionRestriction;
 import ch.sbb.atlas.user.administration.entity.UserPermission;
 import ch.sbb.atlas.user.administration.repository.UserPermissionRepository;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
@@ -23,19 +26,61 @@ public class UserAdministrationServiceUserPageTest {
 
   @BeforeEach
   void setUp() {
-    List<UserPermission> userPermissions = List.of(
-        UserPermission.builder().sbbUserId("u123456").application(ApplicationType.TTFN).role(ApplicationRole.WRITER)
-            .sboid(new HashSet<>(List.of("ch:1:sboid:100", "ch:1:sboid:101", "ch:1:sboid:102"))).build(),
+    List<UserPermission> userPermissions = new ArrayList<>();
 
-        UserPermission.builder().sbbUserId("u123456").application(ApplicationType.LIDI).role(ApplicationRole.SUPERVISOR).build(),
+    UserPermission userPermission = UserPermission.builder().sbbUserId("u123456").application(ApplicationType.TTFN)
+        .role(ApplicationRole.WRITER).build();
+    userPermission.setPermissionRestrictions(new HashSet<>(List.of(PermissionRestriction.builder()
+            .userPermission(userPermission)
+            .type(PermissionRestrictionType.BUSINESS_ORGANISATION)
+            .restriction("ch:1:sboid:100")
+            .build(),
+        PermissionRestriction.builder()
+            .userPermission(userPermission)
+            .type(PermissionRestrictionType.BUSINESS_ORGANISATION)
+            .restriction("ch:1:sboid:101")
+            .build(),
+        PermissionRestriction.builder()
+            .userPermission(userPermission)
+            .type(PermissionRestrictionType.BUSINESS_ORGANISATION)
+            .restriction("ch:1:sboid:102")
+            .build())));
+    userPermissions.add(userPermission);
 
-        UserPermission.builder().sbbUserId("e654321").application(ApplicationType.TTFN).role(ApplicationRole.WRITER)
-            .sboid(new HashSet<>(List.of("ch:1:sboid:100", "ch:1:sboid:101"))).build(),
+    userPermissions.add(
+        UserPermission.builder().sbbUserId("u123456").application(ApplicationType.LIDI).role(ApplicationRole.SUPERVISOR).build());
 
-        UserPermission.builder().sbbUserId("e654321").application(ApplicationType.LIDI).role(ApplicationRole.WRITER)
-            .sboid(new HashSet<>(List.of("ch:1:sboid:100", "ch:1:sboid:101"))).build(),
+    userPermission =
+        UserPermission.builder().sbbUserId("e654321").application(ApplicationType.TTFN).role(ApplicationRole.WRITER).build();
+    userPermission.setPermissionRestrictions(new HashSet<>(List.of(PermissionRestriction.builder()
+            .userPermission(userPermission)
+            .type(PermissionRestrictionType.BUSINESS_ORGANISATION)
+            .restriction("ch:1:sboid:100")
+            .build(),
+        PermissionRestriction.builder()
+            .userPermission(userPermission)
+            .type(PermissionRestrictionType.BUSINESS_ORGANISATION)
+            .restriction("ch:1:sboid:101")
+            .build())));
+    userPermissions.add(userPermission);
 
+    userPermission =
+        UserPermission.builder().sbbUserId("e654321").application(ApplicationType.LIDI).role(ApplicationRole.WRITER).build();
+    userPermission.setPermissionRestrictions(new HashSet<>(List.of(PermissionRestriction.builder()
+            .userPermission(userPermission)
+            .type(PermissionRestrictionType.BUSINESS_ORGANISATION)
+            .restriction("ch:1:sboid:100")
+            .build(),
+        PermissionRestriction.builder()
+            .userPermission(userPermission)
+            .type(PermissionRestrictionType.BUSINESS_ORGANISATION)
+            .restriction("ch:1:sboid:101")
+            .build())));
+    userPermissions.add(userPermission);
+
+    userPermissions.add(
         UserPermission.builder().sbbUserId("u111111").application(ApplicationType.LIDI).role(ApplicationRole.READER).build());
+
     userPermissionRepository.saveAll(userPermissions);
   }
 
@@ -64,7 +109,7 @@ public class UserAdministrationServiceUserPageTest {
   @Test
   void testWithoutAppTypesWithSboids() {
     Page<String> userPage = userAdministrationService.getUserPage(Pageable.ofSize(20),
-        new HashSet<>(List.of("ch:1:sboid:100", "ch:1:sboid:101")), null, null);
+        new HashSet<>(List.of("ch:1:sboid:100", "ch:1:sboid:101")), null, PermissionRestrictionType.BUSINESS_ORGANISATION);
     Assertions.assertEquals(2, userPage.getTotalElements());
     Assertions.assertEquals(2, userPage.getContent().size());
     Assertions.assertTrue(userPage.getContent().containsAll(List.of("e654321", "u123456")));
@@ -74,13 +119,13 @@ public class UserAdministrationServiceUserPageTest {
   void testWithAppTypesWithSboids() {
     Page<String> userPage = userAdministrationService.getUserPage(Pageable.ofSize(20),
         new HashSet<>(List.of("ch:1:sboid:100", "ch:1:sboid:101")),
-        new HashSet<>(List.of(ApplicationType.TTFN, ApplicationType.LIDI)), null);
+        new HashSet<>(List.of(ApplicationType.TTFN, ApplicationType.LIDI)), PermissionRestrictionType.BUSINESS_ORGANISATION);
     Assertions.assertEquals(1, userPage.getTotalElements());
     Assertions.assertEquals(1, userPage.getContent().size());
     Assertions.assertTrue(userPage.getContent().contains("e654321"));
 
     userPage = userAdministrationService.getUserPage(Pageable.ofSize(20), new HashSet<>(List.of("ch:1:sboid:102")),
-        new HashSet<>(List.of(ApplicationType.TTFN)), null);
+        new HashSet<>(List.of(ApplicationType.TTFN)), PermissionRestrictionType.BUSINESS_ORGANISATION);
     Assertions.assertEquals(1, userPage.getTotalElements());
     Assertions.assertEquals(1, userPage.getContent().size());
     Assertions.assertTrue(userPage.getContent().contains("u123456"));
@@ -89,7 +134,7 @@ public class UserAdministrationServiceUserPageTest {
   @Test
   void testPaging() {
     Page<String> userPage = userAdministrationService.getUserPage(Pageable.ofSize(1), new HashSet<>(List.of("ch:1:sboid:100")),
-        new HashSet<>(List.of(ApplicationType.TTFN)), null);
+        new HashSet<>(List.of(ApplicationType.TTFN)), PermissionRestrictionType.BUSINESS_ORGANISATION);
     Assertions.assertEquals(2, userPage.getTotalElements());
     Assertions.assertEquals(1, userPage.getContent().size());
   }
