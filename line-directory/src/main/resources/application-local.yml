@@ -15,8 +15,8 @@ spring:
         format_sql: true
   servlet:
     multipart:
-      max-file-size: 21MB
-      max-request-size: 21MB
+      max-file-size: 20MB
+      max-request-size: 20MB
   jmx:
     enabled: true
   security:
@@ -81,6 +81,7 @@ logging:
   level:
     root: INFO
     org.hibernate: ERROR
+    org.springframework.web: DEBUG
 amazon:
   region: "eu-central-1"
   bucketConfigs:
@@ -99,4 +100,7 @@ atlas:
   client:
     gateway:
       url: "http://localhost:8888"
+  timetablehearing:
+    max-number-pdfs: 3
+    max-size-pdfs: 20
 

@@ -69,3 +69,6 @@ atlas:
   client:
     gateway:
       url: "http://localhost:8888"
+  timetablehearing:
+    max-number-pdfs: 3
+    max-size-pdfs: 20
