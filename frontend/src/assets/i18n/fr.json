@@ -191,6 +191,7 @@
   },
   "USER_ADMIN": {
     "SEARCH_FOR_FILTER": "Organisations commerciales et Applications",
+    "SEARCH_FOR_FILTER_CANTON": "Cantons et Applications",
     "NEW": "Saisir un nouvel utilisateur",
     "NEW_INFORMATION": "Informations sur le nouvel utilisateur",
     "INFORMATION": "Données de l'utilisateur",
