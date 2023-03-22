@@ -13,7 +13,7 @@ CREATE SEQUENCE permission_restriction_seq START WITH 1000 INCREMENT BY 1;
 alter table permission_restriction
     add column type varchar(50);
 update permission_restriction
-set type = 'SBOID',
+set type = 'BUSINESS_ORGANISATION',
     id=nextval('permission_restriction_seq');
 alter table permission_restriction
     alter column type set not null;
