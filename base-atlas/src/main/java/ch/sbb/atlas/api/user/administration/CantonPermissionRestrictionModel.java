@@ -26,7 +26,7 @@ public class CantonPermissionRestrictionModel extends PermissionRestrictionModel
 
   @Override
   public String getValueAsString() {
-    return getValue().getName();
+    return getValue().name();
   }
 
   @Override

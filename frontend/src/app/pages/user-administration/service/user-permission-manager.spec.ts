@@ -31,7 +31,7 @@ describe('UserPermissionManager', () => {
       },
     ]);
     tick();
-    userPermissionManager.clearSboidsAndCantonsIfNotWriter();
+    userPermissionManager.clearPermissionRestrictionsIfNotWriter();
     expect(userPermissionManager.userPermission.permissions[0].sboids).toEqual([
       'ch:1:sboid:writer',
     ]);

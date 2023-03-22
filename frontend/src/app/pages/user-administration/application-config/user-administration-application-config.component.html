@@ -53,7 +53,8 @@
         <span class="fake-lable-space"></span>
         <div [class.disabled]="readOnly" class="multi-select-search">
           <mat-select
-            [(value)]="permissionByApplication().swissCantons"
+            (selectionChange)="cantonSelectionChanged($event)"
+            [(value)]="cantonSelection"
             [disabled]="readOnly"
             class="font-bold-base"
             multiple

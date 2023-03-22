@@ -10,7 +10,7 @@
  * Do not edit the class manually.
  */
 import { ApplicationType } from './applicationType';
-import { SwissCanton } from './swissCanton';
+import { PermissionRestrictionObject } from './permissionRestrictionObject';
 import { ApplicationRole } from './applicationRole';
 
 /**
@@ -36,11 +36,7 @@ export interface UserPermission {
   role: ApplicationRole;
   application: ApplicationType;
   /**
-   * Business Organisation - sboids
+   * Permission Restrictions
    */
-  sboids: Array<string>;
-  /**
-   * Cantons the user has administrative rights on
-   */
-  swissCantons: Array<SwissCanton>;
+  permissionRestrictions: Array<PermissionRestrictionObject>;
 }
