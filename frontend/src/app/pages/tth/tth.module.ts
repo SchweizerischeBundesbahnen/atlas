@@ -6,6 +6,7 @@ import { TimetableHearingOverviewComponent } from './overview/timetable-hearing-
 import { CantonCardComponent } from './overview/canton-card/canton-card.component';
 import { TimetableHearingOverviewDetailComponent } from './timetable-hearing-overview-detail/timetable-hearing-overview-detail.component';
 import { TimetableHearingOverviewTabComponent } from './timetable-hearing-overview-tab/timetable-hearing-overview-tab.component';
+import { TimetableHearingOverviewTabHeadingComponent } from './timetable-hearing-overview-tab/timetable-hearing-overview-tab-heading/timetable-hearing-overview-tab-heading.component';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,7 @@ import { TimetableHearingOverviewTabComponent } from './timetable-hearing-overvi
     CantonCardComponent,
     TimetableHearingOverviewDetailComponent,
     TimetableHearingOverviewTabComponent,
+    TimetableHearingOverviewTabHeadingComponent,
   ],
   imports: [CoreModule, TthRoutingModule, FormModule],
 })
