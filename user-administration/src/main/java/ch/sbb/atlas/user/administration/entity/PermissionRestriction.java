@@ -2,6 +2,8 @@ package ch.sbb.atlas.user.administration.entity;
 
 import ch.sbb.atlas.api.user.administration.enumeration.PermissionRestrictionType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -37,6 +39,7 @@ public class PermissionRestriction {
   private String restriction;
 
   @NotNull
+  @Enumerated(EnumType.STRING)
   private PermissionRestrictionType type;
 
   @ToString.Exclude
