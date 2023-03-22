@@ -2,7 +2,7 @@ package ch.sbb.atlas.user.administration.mapper;
 
 import ch.sbb.atlas.api.user.administration.UserPermissionModel;
 import ch.sbb.atlas.user.administration.entity.UserPermission;
-import java.util.HashSet;
+import java.util.stream.Collectors;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -12,8 +12,8 @@ public class UserPermissionMapper {
     return UserPermissionModel.builder()
         .role(userPermission.getRole())
         .application(userPermission.getApplication())
-        .sboids(userPermission.getSboid().stream().toList())
-        .swissCantons(userPermission.getSwissCantons().stream().toList())
+        .permissionRestrictions(
+            userPermission.getPermissionRestrictions().stream().map(PermissionRestrictionMapper::toModel).toList())
         .editor(userPermission.getEditor())
         .editionDate(userPermission.getEditionDate())
         .creator(userPermission.getCreator())
@@ -22,13 +22,16 @@ public class UserPermissionMapper {
   }
 
   public static UserPermission toEntity(String sbbUserId, UserPermissionModel userPermissionModel) {
-    return UserPermission.builder()
+    UserPermission userPermission = UserPermission.builder()
         .sbbUserId(sbbUserId)
         .role(userPermissionModel.getRole())
         .application(userPermissionModel.getApplication())
-        .sboid(new HashSet<>(userPermissionModel.getSboids()))
-        .swissCantons(new HashSet<>(userPermissionModel.getSwissCantons()))
         .build();
+    userPermission.setPermissionRestrictions(
+        userPermissionModel.getPermissionRestrictions().stream()
+            .map(restriction -> PermissionRestrictionMapper.toEntity(userPermission, restriction))
+            .collect(Collectors.toSet()));
+    return userPermission;
   }
 
 }
