@@ -140,8 +140,8 @@ export class UserAdministrationOverviewComponent implements OnInit, OnDestroy {
       .getUsers(
         pageIndex,
         this.tableComponent.paginator.pageSize,
-        new Set<string>([selectedSboid]),
-        TypeEnum.BusinessOrganisation,
+        new Set<string>([selectedSboid, ...this.selectedCantonOptions]),
+        this.selectedSearch === 'FILTER' ? TypeEnum.BusinessOrganisation : TypeEnum.Canton,
         new Set<ApplicationType>(this.selectedApplicationOptions)
       )
       .pipe(
