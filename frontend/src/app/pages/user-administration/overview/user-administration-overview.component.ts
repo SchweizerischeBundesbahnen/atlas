@@ -12,9 +12,10 @@ import {
 } from '../../../core/components/route-to-dialog/route-to-dialog.service';
 import { Subscription } from 'rxjs';
 import { tableColumns } from './table-column-definition';
-import { ApplicationType, SwissCanton } from '../../../api';
+import { ApplicationType, PermissionRestrictionObject, SwissCanton } from '../../../api';
 import { SearchType, SearchTypes } from './search-type';
 import { Cantons } from '../../tth/overview/canton/Cantons';
+import TypeEnum = PermissionRestrictionObject.TypeEnum;
 
 @Component({
   selector: 'app-user-administration-overview',
@@ -140,7 +141,7 @@ export class UserAdministrationOverviewComponent implements OnInit, OnDestroy {
         pageIndex,
         this.tableComponent.paginator.pageSize,
         new Set<string>([selectedSboid]),
-        new Set<SwissCanton>(this.selectedCantonOptions),
+        TypeEnum.BusinessOrganisation,
         new Set<ApplicationType>(this.selectedApplicationOptions)
       )
       .pipe(

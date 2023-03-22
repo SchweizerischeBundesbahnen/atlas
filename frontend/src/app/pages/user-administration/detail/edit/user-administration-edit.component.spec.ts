@@ -145,7 +145,9 @@ describe('UserAdministrationEditComponent', () => {
 
     component.saveEdits();
 
-    expect(userPermissionManagerSpy.clearSboidsAndCantonsIfNotWriter).toHaveBeenCalledOnceWith();
+    expect(
+      userPermissionManagerSpy.clearPermissionRestrictionsIfNotWriter
+    ).toHaveBeenCalledOnceWith();
     expect(userPermissionManagerSpy.emitBoFormResetEvent).toHaveBeenCalledOnceWith();
     expect(userServiceSpy.updateUserPermission).toHaveBeenCalledOnceWith({
       permissions: [],

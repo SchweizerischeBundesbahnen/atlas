@@ -2,14 +2,15 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   ApplicationType,
+  PermissionRestrictionObject,
+  User,
   UserAdministrationService,
   UserInformationService,
-  UserPermissionCreate,
   UserPermission,
-  SwissCanton,
+  UserPermissionCreate,
 } from '../../../api';
 import { map } from 'rxjs/operators';
-import { User } from '../../../api';
+import TypeEnum = PermissionRestrictionObject.TypeEnum;
 
 @Injectable({
   providedIn: 'root',
@@ -24,16 +25,14 @@ export class UserService {
     page: number,
     size: number,
     sboids: Set<string> | undefined = undefined,
-    cantons: Set<SwissCanton> | undefined = undefined,
+    type: TypeEnum | undefined = undefined,
     applicationTypes: Set<ApplicationType> | undefined = undefined
   ): Observable<{ users: User[]; totalCount: number }> {
-    return this.userAdministrationService
-      .getUsers(sboids, cantons, applicationTypes, page, size)
-      .pipe(
-        map((value) => {
-          return { users: value.objects!, totalCount: value.totalCount! };
-        })
-      );
+    return this.userAdministrationService.getUsers(sboids, type, applicationTypes, page, size).pipe(
+      map((value) => {
+        return { users: value.objects!, totalCount: value.totalCount! };
+      })
+    );
   }
 
   getUser(userId: string): Observable<User> {
