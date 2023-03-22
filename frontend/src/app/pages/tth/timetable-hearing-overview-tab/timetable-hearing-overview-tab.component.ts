@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Pages } from '../../pages';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TabService } from '../../tab.service';
-import { OverviewToTabService } from './overview-to-tab.service';
+import { OverviewToTabShareDataService } from './overview-to-tab-share-data.service';
+import { Cantons } from '../overview/canton/Cantons';
 
 @Component({
   templateUrl: './timetable-hearing-overview-tab.component.html',
@@ -23,16 +24,16 @@ export class TimetableHearingOverviewTabComponent implements OnInit {
     },
   ];
   activeTab = this.TABS[0];
-  cantonShort = 'ch';
+  cantonShort = Cantons.swiss.path;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private tabService: TabService,
-    private overviewToTabService: OverviewToTabService
+    private overviewToTabService: OverviewToTabShareDataService
   ) {}
 
-  navigateTo(tab: any) {
+  activateTab(tab: any) {
     this.cantonShort = this.route.snapshot.params['canton'];
     this.activeTab = tab;
     this.overviewToTabService.changeData(this.cantonShort);
