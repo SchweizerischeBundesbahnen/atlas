@@ -3,10 +3,10 @@ package ch.sbb.line.directory.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.line.directory.entity.StatementSender;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
 import ch.sbb.line.directory.entity.TimetableHearingStatement.TimetableHearingStatementBuilder;
@@ -80,11 +80,11 @@ public class TimetableHearingStatementServiceTest {
 
     TimetableHearingStatement statement = buildStatement().build();
 
-    TimetableHearingStatement hearingStatement = timetableHearingStatementService.createHearingStatement(statement);
-    hearingStatement.setStatementStatus(StatementStatus.JUNK);
+    TimetableHearingStatement updatingStatement = timetableHearingStatementService.createHearingStatement(statement);
+    updatingStatement.setStatementStatus(StatementStatus.JUNK);
 
     TimetableHearingStatement updatedStatement = timetableHearingStatementService.updateHearingStatement(
-        hearingStatement);
+        updatingStatement, statement);
 
     assertThat(updatedStatement).isNotNull();
     assertThat(updatedStatement.getStatementStatus()).isEqualTo(StatementStatus.JUNK);
@@ -96,10 +96,10 @@ public class TimetableHearingStatementServiceTest {
 
     TimetableHearingStatement statement = buildStatement().build();
 
-    TimetableHearingStatement hearingStatement = timetableHearingStatementService.createHearingStatement(statement);
-    hearingStatement.setTimetableYear(2020L);
+    TimetableHearingStatement updatingStatement = timetableHearingStatementService.createHearingStatement(statement);
+    updatingStatement.setTimetableYear(2020L);
 
-    assertThatThrownBy(() -> timetableHearingStatementService.updateHearingStatement(hearingStatement)).isInstanceOf(
+    assertThatThrownBy(() -> timetableHearingStatementService.updateHearingStatement(updatingStatement, statement)).isInstanceOf(
         IdNotFoundException.class);
   }
 

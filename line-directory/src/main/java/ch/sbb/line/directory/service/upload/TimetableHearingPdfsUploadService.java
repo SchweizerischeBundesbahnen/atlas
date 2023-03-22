@@ -17,17 +17,21 @@ public class TimetableHearingPdfsUploadService {
 
     private final AmazonService amazonService;
 
-    public List<URL> uploadPdfFile(List<File> files) {
+    public List<URL> uploadPdfFile(List<File> files, String dirName) {
         List<URL> urls = new ArrayList<>();
         files.forEach(file -> {
             try {
-                URL url = amazonService.putFile(AmazonBucket.HEARING_DOCUMENT, file, "timetablehearing");
+                URL url = amazonService.putFile(AmazonBucket.HEARING_DOCUMENT, file, dirName);
                 urls.add(url);
             } catch (IOException e) {
                 throw new PdfUploadException("Error uploading file: " + file.getName() + " to bucket: " + AmazonBucket.HEARING_DOCUMENT, e);
             }
         });
         return urls;
+    }
+
+    public void deletePdfFile(String dirName, String fileName) {
+        amazonService.deleteFile(AmazonBucket.HEARING_DOCUMENT, dirName + "/" +fileName);
     }
 
 }
