@@ -10,14 +10,13 @@ import {
 } from '../../../api';
 import { Cantons } from '../overview/canton/Cantons';
 import { TableComponent } from '../../../core/components/table/table.component';
-import { TableSettingsService } from '../../../core/components/table/table-settings.service';
 import { TableColumn } from '../../../core/components/table/table-column';
 import { DEFAULT_STATUS_SELECTION } from '../../../core/constants/status.choices';
 import { TableSettings } from '../../../core/components/table/table-settings';
 import { Pages } from '../../pages';
 import { Subscription } from 'rxjs';
 import moment from 'moment';
-import { OverviewToTabService } from '../timetable-hearing-overview-tab/overview-to-tab.service';
+import { OverviewToTabShareDataService } from '../timetable-hearing-overview-tab/overview-to-tab-share-data.service';
 
 @Component({
   selector: 'app-timetable-hearing-overview-detail',
@@ -27,6 +26,7 @@ import { OverviewToTabService } from '../timetable-hearing-overview-tab/overview
 export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestroy {
   @ViewChild(TableComponent, { static: true })
   tableComponent!: TableComponent<TimetableHearingStatement>;
+  hearingPlan = Pages.TTH_ACTUAL.path;
   isLoading = false;
   totalCount$ = 0;
   timeTableHearingStatements: TimetableHearingStatement[] = [];
@@ -40,7 +40,7 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
     { headerTitle: 'COMMON.EDIT_ON', value: 'editionDate', formatAsDate: true },
     { headerTitle: 'COMMON.EDIT_BY', value: 'editor' },
   ];
-  showEmptyComponent = true;
+  showEmptyTimeTableHearingComponent = true;
   data!: ContainerTimetableHearingStatement;
   selectedCantonEnum: SwissCanton | undefined;
   foundTimetableHearingYear: TimetableHearingYear = {
@@ -50,37 +50,40 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
   };
   cantonShort!: string;
   private getTimetableHearingStatementsSubscription!: Subscription;
-  private changeCantonSubscription!: Subscription;
 
   constructor(
     private route: ActivatedRoute,
-    private tableSettingsService: TableSettingsService,
     private readonly timetableHearingService: TimetableHearingService,
     private readonly userAdministrationService: UserAdministrationService,
-    private overviewToTabService: OverviewToTabService
+    private overviewToTabService: OverviewToTabShareDataService
   ) {}
 
   ngOnInit(): void {
     this.overviewToTabService.cantonShort$.subscribe((res) => (this.cantonShort = res));
     this.overviewToTabService.changeData(this.cantonShort);
-    this.showEmptyComponent = false;
+    if (this.route.snapshot.routeConfig && this.route.snapshot.routeConfig.path) {
+      this.hearingPlan = this.route.snapshot.routeConfig.path;
+      console.log(this.hearingPlan);
+    }
     this.initSelectedEnumCanton();
     const actualYear = moment(new Date()).format('YYYY');
-    this.timetableHearingService.getHearingYear(Number(actualYear)).subscribe((value) => {
-      if (value) {
-        this.foundTimetableHearingYear = value;
+    this.timetableHearingService.getHearingYear(Number(actualYear)).subscribe((thy) => {
+      if (thy) {
+        this.showEmptyTimeTableHearingComponent = false;
+        this.foundTimetableHearingYear = thy;
         this.getOverview({
           page: 0,
           size: 10,
           sort: 'statementStatus,ASC',
           statusChoices: DEFAULT_STATUS_SELECTION,
         });
+      } else {
+        this.showEmptyTimeTableHearingComponent = true;
       }
     });
   }
 
   getOverview($paginationAndSearch: TableSettings) {
-    this.tableSettingsService.storeTableSettings(Pages.TTFN.path, $paginationAndSearch);
     this.isLoading = true;
     this.getTimetableHearingStatementsSubscription = this.timetableHearingService
       .getStatements(
@@ -104,8 +107,7 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
   editVersion($event: any) {}
 
   ngOnDestroy() {
-    // this.getTimetableHearingStatementsSubscription.unsubscribe();
-    // this.changeCantonSubscription.unsubscribe();
+    this.getTimetableHearingStatementsSubscription.unsubscribe();
   }
 
   private initSelectedEnumCanton() {
@@ -122,16 +124,5 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
         throw new Error('No canton found with name: ' + this.cantonShort);
       }
     }
-  }
-
-  private getCantonShort(swissCanton: SwissCanton | undefined) {
-    if (swissCanton) {
-      return Cantons.fromSwissCanton(swissCanton)?.short;
-    }
-    return swissCanton;
-  }
-
-  private getEditorDisplay(editor: string | undefined) {
-    return editor;
   }
 }

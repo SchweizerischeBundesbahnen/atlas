@@ -531,6 +531,11 @@
     }
   },
   "TTH": {
+    "TAB": {
+      "ACTUAL": "Audizioni attuali",
+      "PLANNED": "Audizioni programmate",
+      "ARCHIVED": "Audizioni archiviate"
+    },
     "OPEN": "{{canton}} aprire",
     "STATEMENT_STATUS": "Stato",
     "SWISS_CANTON": "Cantone",
@@ -539,7 +544,9 @@
     "TIMETABLE_FIELD_NUMBER": "Quadro orario",
     "OVERVIEW_TAB": {
       "OVERVIEW_ACTUAL_SUBHEADING_PREFIX": "La procedura dell'orario svizzero dell'UFT per l'orario {{timeTableYear}} dura da",
-      "OVERVIEW_ACTUAL_SUBHEADING_POSTFIX": " {{hearingFrom}} fino a {{hearingTo}}."
+      "OVERVIEW_ACTUAL_SUBHEADING_POSTFIX": " {{hearingFrom}} fino a {{hearingTo}}.",
+      "OVERVIEW_PLANNED_SUBHEADING": "Qui troverete tutte le udienze programmate. Non è possibile inserire commenti prima dell'inizio di un anno di calendario.",
+      "OVERVIEW_ARCHIVED_SUBHEADING": "Qui troverete tutte le audizioni archiviate per l'anno d'orario."
     },
     "CANTON": {
       "CH": "Tutta la Svizzera",
