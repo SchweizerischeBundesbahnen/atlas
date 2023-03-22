@@ -1,7 +1,7 @@
 <div class="ps-5 pt-5">
   <nav [tabPanel]="tabPanelCanton" class="tabs" data-cy="tabs" mat-tab-nav-bar>
     <a
-      (click)="navigateTo(tab)"
+      (click)="activateTab(tab)"
       *ngFor="let tab of TABS"
       [active]="activeTab === tab"
       [routerLink]="tab.link"
