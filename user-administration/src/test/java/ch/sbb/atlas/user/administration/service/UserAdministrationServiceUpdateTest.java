@@ -2,12 +2,16 @@ package ch.sbb.atlas.user.administration.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.api.user.administration.CantonPermissionRestrictionModel;
+import ch.sbb.atlas.api.user.administration.SboidPermissionRestrictionModel;
 import ch.sbb.atlas.api.user.administration.UserPermissionCreateModel;
 import ch.sbb.atlas.api.user.administration.UserPermissionModel;
+import ch.sbb.atlas.api.user.administration.enumeration.PermissionRestrictionType;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.user.administration.entity.PermissionRestriction;
 import ch.sbb.atlas.user.administration.entity.UserPermission;
 import ch.sbb.atlas.user.administration.repository.UserPermissionRepository;
 import java.util.List;
@@ -38,9 +42,15 @@ public class UserAdministrationServiceUpdateTest {
     UserPermission secondUserPermission = UserPermission.builder()
         .role(ApplicationRole.WRITER)
         .application(ApplicationType.LIDI)
-        .sboid(Set.of("ch:1:sboid:1000000", "ch:1:sboid:1000012"))
         .sbbUserId(SBBUID)
         .build();
+    secondUserPermission.setPermissionRestrictions(Set.of(PermissionRestriction.builder()
+        .userPermission(secondUserPermission)
+        .type(PermissionRestrictionType.BUSINESS_ORGANISATION)
+        .restriction("ch:1:sboid:1000000").build(), PermissionRestriction.builder()
+        .userPermission(secondUserPermission)
+        .type(PermissionRestrictionType.BUSINESS_ORGANISATION)
+        .restriction("ch:1:sboid:1000012").build()));
     userPermissionRepository.saveAll(List.of(firstUserPermission, secondUserPermission));
   }
 
@@ -68,7 +78,7 @@ public class UserAdministrationServiceUpdateTest {
     UserPermission ttfnPermissions = userAdministrationService.getCurrentUserPermission(SBBUID,
         ApplicationType.TTFN).orElseThrow();
     assertThat(ttfnPermissions.getRole()).isEqualTo(ApplicationRole.SUPER_USER);
-    assertThat(ttfnPermissions.getSboid()).isEmpty();
+    assertThat(ttfnPermissions.getPermissionRestrictions()).isEmpty();
 
     UserPermission lidiPermissions = userAdministrationService.getCurrentUserPermission(SBBUID,
         ApplicationType.LIDI).orElseThrow();
@@ -84,7 +94,7 @@ public class UserAdministrationServiceUpdateTest {
             UserPermissionModel.builder()
                 .application(ApplicationType.TTFN)
                 .role(ApplicationRole.WRITER)
-                .sboids(List.of("ch:1:sboid:10009"))
+                .permissionRestrictions(List.of(new SboidPermissionRestrictionModel("ch:1:sboid:10009")))
                 .build()))
         .build();
 
@@ -95,7 +105,7 @@ public class UserAdministrationServiceUpdateTest {
     UserPermission ttfnPermissions = userAdministrationService.getCurrentUserPermission(SBBUID,
         ApplicationType.TTFN).orElseThrow();
     assertThat(ttfnPermissions.getRole()).isEqualTo(ApplicationRole.WRITER);
-    assertThat(ttfnPermissions.getSboid()).hasSize(1);
+    assertThat(ttfnPermissions.getPermissionRestrictions()).hasSize(1);
   }
 
   @Test
@@ -117,7 +127,7 @@ public class UserAdministrationServiceUpdateTest {
     UserPermission lidiPermissions = userAdministrationService.getCurrentUserPermission(SBBUID,
         ApplicationType.LIDI).orElseThrow();
     assertThat(lidiPermissions.getRole()).isEqualTo(ApplicationRole.SUPER_USER);
-    assertThat(lidiPermissions.getSboid()).isEmpty();
+    assertThat(lidiPermissions.getPermissionRestrictions()).isEmpty();
 
     UserPermission ttfnPermissions = userAdministrationService.getCurrentUserPermission(SBBUID,
         ApplicationType.TTFN).orElseThrow();
@@ -158,7 +168,8 @@ public class UserAdministrationServiceUpdateTest {
             UserPermissionModel.builder()
                 .application(ApplicationType.TIMETABLE_HEARING)
                 .role(ApplicationRole.WRITER)
-                .swissCantons(List.of(SwissCanton.BERN, SwissCanton.LUCERNE))
+                .permissionRestrictions(List.of(new CantonPermissionRestrictionModel(SwissCanton.BERN),
+                    new CantonPermissionRestrictionModel(SwissCanton.LUCERNE)))
                 .build()))
         .build();
 
@@ -172,7 +183,6 @@ public class UserAdministrationServiceUpdateTest {
 
     UserPermission hearingPermissions = userAdministrationService.getCurrentUserPermission(SBBUID,
         ApplicationType.TIMETABLE_HEARING).orElseThrow();
-    assertThat(hearingPermissions.getSboid()).isEmpty();
-    assertThat(hearingPermissions.getSwissCantons()).hasSize(2);
+    assertThat(hearingPermissions.getPermissionRestrictions()).hasSize(2);
   }
 }
