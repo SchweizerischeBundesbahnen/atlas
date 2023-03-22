@@ -12,9 +12,14 @@ import ch.sbb.line.directory.service.hearing.ResponsibleTransportCompaniesResolv
 import ch.sbb.line.directory.service.hearing.TimetableFieldNumberResolverService;
 import ch.sbb.line.directory.service.hearing.TimetableHearingStatementService;
 import ch.sbb.line.directory.service.hearing.TimetableHearingYearService;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
@@ -46,6 +51,16 @@ public class TimetableHearingStatementController implements TimetableHearingStat
     @Override
     public TimetableHearingStatementModel getStatement(Long id) {
         return TimeTableHearingStatementMapper.toModel(timetableHearingStatementService.getStatementById(id));
+    }
+
+    @Override
+    public Resource getStatementDocument(Long id, String filename) {
+        File file = timetableHearingStatementService.getStatementDocument(id, filename);
+        try {
+            return new InputStreamResource(new FileInputStream(file));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
