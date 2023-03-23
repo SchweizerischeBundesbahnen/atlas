@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   ContainerTimetableHearingStatement,
   HearingStatus,
@@ -18,6 +18,7 @@ import { Pages } from '../../pages';
 import { Subscription } from 'rxjs';
 import moment from 'moment';
 import { OverviewToTabShareDataService } from '../timetable-hearing-overview-tab/overview-to-tab-share-data.service';
+import { MatSelectChange } from '@angular/material/select';
 
 @Component({
   selector: 'app-timetable-hearing-overview-detail',
@@ -50,10 +51,13 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
     hearingTo: moment().toDate(),
   };
   cantonShort!: string;
+  CANTON_OPTIONS = Cantons.cantonsWithSwiss.map((value) => value.short);
+  dafaultCantonSelection = this.CANTON_OPTIONS[0];
   private getTimetableHearingStatementsSubscription!: Subscription;
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private readonly timetableHearingService: TimetableHearingService,
     private readonly userAdministrationService: UserAdministrationService,
     private overviewToTabService: OverviewToTabShareDataService
@@ -76,6 +80,7 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
 
   getOverview($paginationAndSearch: TableSettings) {
     this.selectedCantonEnum = this.getSelectedCanton();
+    this.dafaultCantonSelection = this.getCantonSelection();
     this.isLoading = true;
     this.getTimetableHearingStatementsSubscription = this.timetableHearingService
       .getStatements(
@@ -102,6 +107,24 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
     if (!this.showEmptyTimeTableHearingComponent) {
       this.getTimetableHearingStatementsSubscription.unsubscribe();
     }
+  }
+
+  changeSelectedCanton(canton: MatSelectChange) {
+    this.overviewToTabService.changeData(canton.value);
+    this.router
+      .navigate([Pages.TTH.path, canton.value.toLowerCase(), this.hearingStatus])
+      .then(() => {
+        this.dafaultCantonSelection = this.getCantonSelection();
+        this.ngOnInit();
+      });
+  }
+
+  private getCantonSelection() {
+    return this.CANTON_OPTIONS[
+      this.CANTON_OPTIONS.findIndex(
+        (value) => value.toLowerCase() === this.cantonShort.toLowerCase()
+      )
+    ];
   }
 
   private getSelectedHeraingStatus() {
@@ -157,7 +180,7 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
     if (!this.cantonShort) {
       throw new Error('No canton was provided!');
     }
-    if (this.cantonShort === Cantons.swiss.path) {
+    if (this.cantonShort.toLowerCase() === Cantons.swiss.path) {
       return undefined;
     } else {
       const swissCantonEnum = Cantons.getSwissCantonEnum(this.cantonShort);
