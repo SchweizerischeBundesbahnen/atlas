@@ -536,6 +536,9 @@
       "PLANNED": "Audition prévue",
       "ARCHIVED": "Audition archivée"
     },
+    "BUTTON": {
+      "DOWNLOAD_CSV": "Download [CSV]"
+    },
     "SELECT_CANTON": "Sélectionner le canton",
     "OPEN": "{{canton}} ouvrir",
     "STATEMENT_STATUS": "Statut",
