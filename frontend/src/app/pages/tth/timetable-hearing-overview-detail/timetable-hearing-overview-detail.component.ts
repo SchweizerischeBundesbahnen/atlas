@@ -119,6 +119,10 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
       });
   }
 
+  downloadCsv() {
+    console.log('Download CSV');
+  }
+
   private getCantonSelection() {
     return this.CANTON_OPTIONS[
       this.CANTON_OPTIONS.findIndex(

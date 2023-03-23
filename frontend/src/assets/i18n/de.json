@@ -536,6 +536,9 @@
       "PLANNED": "Geplante Anhörungen",
       "ARCHIVED": "Archivierte Anhörungen"
     },
+    "BUTTON": {
+      "DOWNLOAD_CSV": "Download [CSV]"
+    },
     "SELECT_CANTON": "Kanton auswählen",
     "OPEN": "{{canton}} öffnen",
     "STATEMENT_STATUS": "Status",
