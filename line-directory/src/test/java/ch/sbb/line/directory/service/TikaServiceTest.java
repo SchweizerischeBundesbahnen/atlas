@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.line.directory.service.exception.FileException;
 import ch.sbb.line.directory.service.hearing.TikaService;
 import java.io.File;
 import java.util.Optional;
@@ -45,7 +44,7 @@ public class TikaServiceTest {
     public void givenNoFile_whenCheckForPdf_thenException() {
         File file = new File("src/test/resources/pdf/nonexistingfile.txt");
 
-        assertThrows(FileException.class,() -> tikaService.checkForPdf(file).orElseThrow(() -> new FileException("Oops")));
+        assertThrows(IllegalStateException.class,() -> tikaService.checkForPdf(file).orElseThrow(() -> new IllegalStateException("Oops")));
     }
 
 }

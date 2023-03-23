@@ -3,6 +3,7 @@ package ch.sbb.importservice.service;
 import static ch.sbb.importservice.service.JobHelperService.MIN_LOCAL_DATE;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_SERVICE_POINT_CSV_JOB_NAME;
 
+import ch.sbb.atlas.amazon.service.AmazonBucket;
 import ch.sbb.atlas.imports.DidokCsvMapper;
 import ch.sbb.atlas.imports.servicepoint.BaseDidokCsvModel;
 import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointCsvModel;
@@ -43,7 +44,7 @@ public class CsvService {
   private final JobHelperService jobHelperService;
 
   public List<ServicePointCsvModelContainer> getActualServicePointCsvModelsFromS3() {
-    log.info("Downloading file from Amazon S3 Bucket: {}");
+    log.info("Downloading file from Amazon S3 Bucket: {}", AmazonBucket.EXPORT);
     File file = fileHelperService.downloadImportFileFromS3(DINSTELLE_FILE_PREFIX);
     LocalDate matchingDate = jobHelperService.getDateForImportFileToDownload(IMPORT_SERVICE_POINT_CSV_JOB_NAME);
     log.info("CSV File to import: {}", file.getName());
