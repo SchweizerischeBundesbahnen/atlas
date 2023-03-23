@@ -16,6 +16,7 @@ import ch.sbb.line.directory.repository.TimetableHearingYearRepository;
 import ch.sbb.line.directory.service.hearing.TimetableHearingStatementService;
 import ch.sbb.line.directory.service.hearing.TimetableHearingYearService;
 import java.time.LocalDate;
+import java.util.Collections;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +59,7 @@ public class TimetableHearingStatementServiceTest {
 
     TimetableHearingStatement statement = buildStatement().build();
 
-    TimetableHearingStatement hearingStatement = timetableHearingStatementService.createHearingStatement(statement);
+    TimetableHearingStatement hearingStatement = timetableHearingStatementService.createHearingStatement(statement, Collections.emptyList());
 
     assertThat(hearingStatement).isNotNull();
     assertThat(hearingStatement.getStatementStatus()).isEqualTo(StatementStatus.RECEIVED);
@@ -70,7 +71,7 @@ public class TimetableHearingStatementServiceTest {
         .timetableYear(2020L)
         .build();
 
-    assertThatThrownBy(() -> timetableHearingStatementService.createHearingStatement(statement)).isInstanceOf(
+    assertThatThrownBy(() -> timetableHearingStatementService.createHearingStatement(statement, Collections.emptyList())).isInstanceOf(
         IdNotFoundException.class);
   }
 
@@ -80,11 +81,11 @@ public class TimetableHearingStatementServiceTest {
 
     TimetableHearingStatement statement = buildStatement().build();
 
-    TimetableHearingStatement updatingStatement = timetableHearingStatementService.createHearingStatement(statement);
+    TimetableHearingStatement updatingStatement = timetableHearingStatementService.createHearingStatement(statement, Collections.emptyList());
     updatingStatement.setStatementStatus(StatementStatus.JUNK);
 
     TimetableHearingStatement updatedStatement = timetableHearingStatementService.updateHearingStatement(
-        updatingStatement, statement);
+        updatingStatement, statement, Collections.emptyList());
 
     assertThat(updatedStatement).isNotNull();
     assertThat(updatedStatement.getStatementStatus()).isEqualTo(StatementStatus.JUNK);
@@ -96,10 +97,10 @@ public class TimetableHearingStatementServiceTest {
 
     TimetableHearingStatement statement = buildStatement().build();
 
-    TimetableHearingStatement updatingStatement = timetableHearingStatementService.createHearingStatement(statement);
+    TimetableHearingStatement updatingStatement = timetableHearingStatementService.createHearingStatement(statement, Collections.emptyList());
     updatingStatement.setTimetableYear(2020L);
 
-    assertThatThrownBy(() -> timetableHearingStatementService.updateHearingStatement(updatingStatement, statement)).isInstanceOf(
+    assertThatThrownBy(() -> timetableHearingStatementService.updateHearingStatement(updatingStatement, statement, Collections.emptyList())).isInstanceOf(
         IdNotFoundException.class);
   }
 
