@@ -5,7 +5,7 @@ import { filter, tap } from 'rxjs/operators';
 import { TableSettings } from '../../../core/components/table/table-settings';
 import { TableComponent } from '../../../core/components/table/table.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { User } from '../../../api/model/user';
+import { User } from '../../../api';
 import {
   DetailDialogEvents,
   RouteToDialogService,
