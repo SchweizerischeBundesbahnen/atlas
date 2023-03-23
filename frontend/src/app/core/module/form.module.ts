@@ -17,6 +17,7 @@ import { InfoLinkDirective } from '../form-components/info-icon/info-link.direct
 import { TextFieldComponent } from '../form-components/text-field/text-field.component';
 import { AtlasFieldErrorComponent } from '../form-components/atlas-field-error/atlas-field-error.component';
 import { AtlasLabelFieldComponent } from '../form-components/atlas-label-field/atlas-label-field.component';
+import { DownloadIconComponent } from '../form-components/download-icon/download-icon.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { AtlasLabelFieldComponent } from '../form-components/atlas-label-field/a
     CommentComponent,
     UrlComponent,
     DateIconComponent,
+    DownloadIconComponent,
     InfoIconComponent,
     LinkIconComponent,
     SearchSelectComponent,
@@ -44,6 +46,7 @@ import { AtlasLabelFieldComponent } from '../form-components/atlas-label-field/a
     CommentComponent,
     UrlComponent,
     DateIconComponent,
+    DownloadIconComponent,
     InfoIconComponent,
     SearchSelectComponent,
     DialogCloseComponent,
