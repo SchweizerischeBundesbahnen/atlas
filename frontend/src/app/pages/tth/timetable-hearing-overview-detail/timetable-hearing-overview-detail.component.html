@@ -3,7 +3,7 @@
     <app-timetable-hearing-overview-tab-heading
       [cantonShort]="cantonShort"
       [foundTimetableHearingYear]="foundTimetableHearingYear"
-      [hearingPlan]="hearingPlan"
+      [hearingPlan]="hearingStatus"
     ></app-timetable-hearing-overview-tab-heading>
     <app-table
       (editElementEvent)="editVersion($event)"
@@ -17,4 +17,9 @@
     ></app-table>
     <router-outlet></router-outlet>
   </div>
+</div>
+<div *ngIf="showEmptyTimeTableHearingComponent">
+  <span
+    >No result found for <b>[{{ this.hearingStatus }} - {{ this.selectedCantonEnum }}]</b></span
+  >
 </div>

@@ -98,9 +98,9 @@ export class Pages {
     description: 'PAGES.TTH.DESCRIPTION',
   };
 
-  public static TTH_ACTUAL: Page = {
+  public static TTH_ACTIVE: Page = {
     title: 'PAGES.DETAILS',
-    path: 'actual',
+    path: 'active',
     pathText: '',
     description: '',
   };
