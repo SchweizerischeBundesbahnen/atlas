@@ -33,6 +33,15 @@ public interface TimetableHearingYearApiV1 {
       + ".ApplicationType).TIMETABLE_HEARING)")
   TimetableHearingYearModel getHearingYear(@PathVariable Long year);
 
+  @GetMapping("/active")
+  TimetableHearingYearModel getActiveHearingYear();
+
+  @GetMapping("/planned")
+  List<TimetableHearingYearModel> getPlannedHearingYears();
+
+  @GetMapping("/archived")
+  List<TimetableHearingYearModel> getArchivedHearingYears();
+  
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin"
