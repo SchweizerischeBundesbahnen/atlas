@@ -42,7 +42,7 @@ export class Cantons {
     if (!canton) {
       return undefined;
     }
-    let foundCanton = Cantons.cantonsWithSwiss.find((c) => {
+    const foundCanton = Cantons.cantonsWithSwiss.find((c) => {
       return c.short.toLowerCase() === canton?.toLowerCase();
     });
     if (!foundCanton) {
