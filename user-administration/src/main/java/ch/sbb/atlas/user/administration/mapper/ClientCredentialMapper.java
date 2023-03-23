@@ -1,6 +1,7 @@
 package ch.sbb.atlas.user.administration.mapper;
 
 import ch.sbb.atlas.api.user.administration.ClientCredentialModel;
+import ch.sbb.atlas.api.user.administration.ClientCredentialPermissionCreateModel;
 import ch.sbb.atlas.api.user.administration.PermissionModel;
 import ch.sbb.atlas.api.user.administration.PermissionRestrictionModel;
 import ch.sbb.atlas.user.administration.entity.ClientCredentialPermission;
@@ -42,6 +43,22 @@ public class ClientCredentialMapper {
       throw new IllegalStateException();
     }
     return clientCredentialModels.get(0);
+  }
+
+  public static ClientCredentialPermission toEntity(PermissionModel permissionModel,
+      ClientCredentialPermissionCreateModel editedPermissions) {
+    ClientCredentialPermission clientCredentialPermission = ClientCredentialPermission.builder()
+        .clientCredentialId(editedPermissions.getClientCredentialId())
+        .alias(editedPermissions.getAlias())
+        .comment(editedPermissions.getComment())
+        .role(permissionModel.getRole())
+        .application(permissionModel.getApplication())
+        .build();
+    clientCredentialPermission.setPermissionRestrictions(
+        permissionModel.getPermissionRestrictions().stream()
+            .map(restriction -> PermissionRestrictionMapper.toEntity(clientCredentialPermission, restriction))
+            .collect(Collectors.toSet()));
+    return clientCredentialPermission;
   }
 
 }
