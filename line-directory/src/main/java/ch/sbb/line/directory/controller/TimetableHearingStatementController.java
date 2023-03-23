@@ -14,7 +14,7 @@ import ch.sbb.line.directory.service.hearing.TimetableHearingStatementService;
 import ch.sbb.line.directory.service.hearing.TimetableHearingYearService;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -58,20 +58,21 @@ public class TimetableHearingStatementController implements TimetableHearingStat
         File file = timetableHearingStatementService.getStatementDocument(id, filename);
         try {
             return new InputStreamResource(new FileInputStream(file));
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public void deleteStatementDocument(Long id, String filename) {
+        timetableHearingStatementService.deleteDocument(id, filename);
     }
 
     @Override
     public TimetableHearingStatementModel createStatement(TimetableHearingStatementModel statement, List<MultipartFile> documents) {
         TimetableHearingStatement statementToCreate = TimeTableHearingStatementMapper.toEntity(statement);
         TimetableHearingStatement hearingStatement;
-        if (documents!=null && !documents.isEmpty()) {
-            hearingStatement = timetableHearingStatementService.createHearingStatement(statementToCreate, documents);
-        } else {
-            hearingStatement = timetableHearingStatementService.createHearingStatement(statementToCreate);
-        }
+        hearingStatement = timetableHearingStatementService.createHearingStatement(statementToCreate, documents);
         return TimeTableHearingStatementMapper.toModel(hearingStatement);
     }
 
@@ -100,11 +101,9 @@ public class TimetableHearingStatementController implements TimetableHearingStat
 
         TimetableHearingStatement timetableHearingStatementUpdate = TimeTableHearingStatementMapper.toEntity(statement);
 
-        if (documents!=null && !documents.isEmpty() && documents.get(0).getOriginalFilename()!="") {
-            hearingStatement = timetableHearingStatementService.updateHearingStatement(timetableHearingStatementUpdate, timetableHearingStatementService.getStatementById(id), documents);
-        } else {
-            hearingStatement = timetableHearingStatementService.updateHearingStatement(timetableHearingStatementUpdate, timetableHearingStatementService.getStatementById(id));
-        }
+        hearingStatement = timetableHearingStatementService.updateHearingStatement(timetableHearingStatementUpdate,
+            timetableHearingStatementService.getStatementById(id), documents);
+
         return TimeTableHearingStatementMapper.toModel(hearingStatement);
     }
 
