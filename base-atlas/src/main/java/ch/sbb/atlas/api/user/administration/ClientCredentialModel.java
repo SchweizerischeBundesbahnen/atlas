@@ -10,7 +10,7 @@ import lombok.experimental.FieldNameConstants;
 @Data
 @FieldNameConstants
 @Schema(name = "ClientCredential")
-public class ClientCredentialModel {
+public class ClientCredentialModel implements UserAdministrationEvent {
 
   @Schema(description = "Client Id", example = "18746f30-7978-48b5-b19b-0f871fb12e67")
   private String clientCredentialId;
@@ -24,4 +24,8 @@ public class ClientCredentialModel {
   @Schema(description = "User permissions")
   private Set<PermissionModel> permissions;
 
+  @Override
+  public String getUserId() {
+    return getClientCredentialId();
+  }
 }

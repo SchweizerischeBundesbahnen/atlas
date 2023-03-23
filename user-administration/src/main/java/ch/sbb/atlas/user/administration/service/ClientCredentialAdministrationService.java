@@ -1,9 +1,17 @@
 package ch.sbb.atlas.user.administration.service;
 
+import ch.sbb.atlas.api.user.administration.ClientCredentialPermissionCreateModel;
 import ch.sbb.atlas.user.administration.entity.ClientCredentialPermission;
+import ch.sbb.atlas.user.administration.entity.PermissionRestriction;
 import ch.sbb.atlas.user.administration.exception.UserPermissionConflictException;
+import ch.sbb.atlas.user.administration.mapper.ClientCredentialMapper;
+import ch.sbb.atlas.user.administration.mapper.ClientCredentialPermissionCreateMapper;
+import ch.sbb.atlas.user.administration.mapper.PermissionRestrictionMapper;
 import ch.sbb.atlas.user.administration.repository.ClientCredentialPermissionRepository;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,20 +33,34 @@ public class ClientCredentialAdministrationService {
     return clientCredentialPermissionRepository.findAllByClientCredentialId(clientId);
   }
 
-  public ClientCredentialPermission save(ClientCredentialPermission clientCredentialPermission) {
-    String clientCredentialId = clientCredentialPermission.getClientCredentialId();
+  public List<ClientCredentialPermission> create(ClientCredentialPermissionCreateModel createModel) {
+    String clientCredentialId = createModel.getClientCredentialId();
     if (clientCredentialPermissionRepository.existsByClientCredentialId(clientCredentialId)) {
       throw new UserPermissionConflictException(clientCredentialId);
     }
-    return clientCredentialPermissionRepository.save(clientCredentialPermission);
+    return clientCredentialPermissionRepository.saveAll(ClientCredentialPermissionCreateMapper.toEntityList(createModel));
   }
 
-  public void update(String clientCredentialId) {
-    List<ClientCredentialPermission> existingPermissions =
-        clientCredentialPermissionRepository.findAllByClientCredentialId(clientCredentialId);
+  public void update(String clientCredentialId, ClientCredentialPermissionCreateModel editedPermissions) {
+    List<ClientCredentialPermission> existingPermissions = getClientCredentialPermission(clientCredentialId);
 
-    existingPermissions.forEach(existingPermission -> {
+    editedPermissions.getPermissions().forEach(editedPermission -> {
+      Optional<ClientCredentialPermission> existingPermission =
+          existingPermissions.stream().filter(i -> i.getApplication() == editedPermission.getApplication()).findFirst();
 
+      if (existingPermission.isPresent()) {
+        ClientCredentialPermission updateablePermission = existingPermission.get();
+        updateablePermission.setRole(editedPermission.getRole());
+
+        updateablePermission.getPermissionRestrictions().clear();
+        Set<PermissionRestriction> permissionRestrictions = editedPermission.getPermissionRestrictions().stream().map(
+                restriction -> PermissionRestrictionMapper.toEntity(updateablePermission, restriction))
+            .collect(Collectors.toSet());
+        updateablePermission.getPermissionRestrictions().addAll(permissionRestrictions);
+      } else {
+        ClientCredentialPermission additionalPermission = ClientCredentialMapper.toEntity(editedPermission, editedPermissions);
+        clientCredentialPermissionRepository.save(additionalPermission);
+      }
     });
   }
 

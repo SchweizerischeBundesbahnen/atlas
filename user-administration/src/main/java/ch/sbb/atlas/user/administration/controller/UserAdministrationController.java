@@ -48,7 +48,7 @@ public class UserAdministrationController implements UserAdministrationApiV1 {
     Page<String> userPage = userAdministrationService.getUserPage(pageable, permissionRestrictions,
         applicationTypes, type);
     List<UserModel> userModels = graphApiService.resolveUsers(userPage.getContent());
-    userModels.forEach(user -> user.setPermissions(getUserPermissionModels(user.getSbbUserId())));
+    userModels.forEach(user -> user.setPermissions(getUserPermissionModels(user.getUserId())));
     return Container.<UserModel>builder()
         .totalCount(userPage.getTotalElements())
         .objects(userModels)
