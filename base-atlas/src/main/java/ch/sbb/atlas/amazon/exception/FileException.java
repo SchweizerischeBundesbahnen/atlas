@@ -10,4 +10,8 @@ public class FileException extends RuntimeException {
     super(exception);
   }
 
+  public FileException(String message, Throwable cause) {
+    super(message, cause);
+  }
+
 }
