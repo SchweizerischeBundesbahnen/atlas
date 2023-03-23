@@ -6,7 +6,9 @@ import ch.sbb.atlas.api.user.administration.ClientCredentialModel;
 import ch.sbb.atlas.api.user.administration.ClientCredentialPermissionCreateModel;
 import ch.sbb.atlas.user.administration.entity.ClientCredentialPermission;
 import ch.sbb.atlas.user.administration.mapper.ClientCredentialMapper;
+import ch.sbb.atlas.user.administration.mapper.KafkaModelMapper;
 import ch.sbb.atlas.user.administration.service.ClientCredentialAdministrationService;
+import ch.sbb.atlas.user.administration.service.UserPermissionDistributor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,12 +19,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class ClientCredentialAdministrationController implements ClientCredentialAdministrationApiV1 {
 
   private final ClientCredentialAdministrationService clientCredentialAdministrationService;
+  private final UserPermissionDistributor userPermissionDistributor;
 
   @Override
   public Container<ClientCredentialModel> getClientCredentials(Pageable pageable) {
     Page<ClientCredentialPermission> clientCredentialPermissions =
         clientCredentialAdministrationService.getClientCredentialPermissions(
-        pageable);
+            pageable);
     return Container.<ClientCredentialModel>builder()
         .totalCount(clientCredentialPermissions.getTotalElements())
         .objects(ClientCredentialMapper.toModel(clientCredentialPermissions.getContent()))
@@ -36,11 +39,17 @@ public class ClientCredentialAdministrationController implements ClientCredentia
 
   @Override
   public ClientCredentialModel createClientCredential(ClientCredentialPermissionCreateModel client) {
-    return null;
+    ClientCredentialModel clientCredentialModel = ClientCredentialMapper.toSingleModel(
+        clientCredentialAdministrationService.create(client));
+    userPermissionDistributor.pushUserPermissionToKafka(KafkaModelMapper.toKafkaModel(clientCredentialModel));
+    return clientCredentialModel;
   }
 
   @Override
   public ClientCredentialModel updateClientCredential(ClientCredentialPermissionCreateModel editedPermissions) {
-    return null;
+    clientCredentialAdministrationService.update(editedPermissions.getClientCredentialId(), editedPermissions);
+    ClientCredentialModel clientCredentialModel = getClientCredential(editedPermissions.getClientCredentialId());
+    userPermissionDistributor.pushUserPermissionToKafka(KafkaModelMapper.toKafkaModel(clientCredentialModel));
+    return clientCredentialModel;
   }
 }

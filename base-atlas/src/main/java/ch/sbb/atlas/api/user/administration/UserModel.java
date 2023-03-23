@@ -11,7 +11,7 @@ import lombok.experimental.FieldNameConstants;
 @Data
 @FieldNameConstants
 @Schema(name = "User")
-public class UserModel {
+public class UserModel implements UserAdministrationEvent {
 
   @Schema(description = "SBB User Id", example = "u111111")
   private String sbbUserId;
@@ -34,4 +34,8 @@ public class UserModel {
   @Schema(description = "User permissions")
   private Set<PermissionModel> permissions;
 
+  @Override
+  public String getUserId() {
+    return getSbbUserId();
+  }
 }
