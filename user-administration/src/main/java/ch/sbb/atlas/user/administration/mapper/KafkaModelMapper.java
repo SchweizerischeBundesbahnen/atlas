@@ -1,17 +1,19 @@
 package ch.sbb.atlas.user.administration.mapper;
 
 import ch.sbb.atlas.api.user.administration.PermissionRestrictionModel;
-import ch.sbb.atlas.api.user.administration.UserModel;
+import ch.sbb.atlas.api.user.administration.UserAdministrationEvent;
 import ch.sbb.atlas.api.user.administration.enumeration.PermissionRestrictionType;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationModel;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionModel;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.experimental.UtilityClass;
 
+@UtilityClass
 public class KafkaModelMapper {
 
-  public static UserAdministrationModel toKafkaModel(UserModel userModel) {
+  public static UserAdministrationModel toKafkaModel(UserAdministrationEvent userModel) {
     Set<UserAdministrationPermissionModel> permissionModels = userModel.getPermissions().stream()
         .map(
             permission -> UserAdministrationPermissionModel.builder()
@@ -28,7 +30,7 @@ public class KafkaModelMapper {
                 .build())
         .collect(Collectors.toSet());
     return UserAdministrationModel.builder()
-        .sbbUserId(userModel.getSbbUserId())
+        .sbbUserId(userModel.getUserId())
         .permissions(permissionModels)
         .build();
   }

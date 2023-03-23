@@ -4,7 +4,7 @@ import ch.sbb.atlas.api.user.administration.enumeration.PermissionRestrictionTyp
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.searching.specification.EnumSpecification;
-import ch.sbb.atlas.user.administration.entity.BasePermission;
+import ch.sbb.atlas.user.administration.entity.BasePermission_;
 import ch.sbb.atlas.user.administration.entity.PermissionRestriction;
 import ch.sbb.atlas.user.administration.entity.PermissionRestriction_;
 import ch.sbb.atlas.user.administration.entity.UserPermission;
@@ -34,21 +34,20 @@ public class CustomUserPermissionRepositoryImpl implements CustomUserPermissionR
   @Override
   public Page<String> getFilteredUsers(Pageable pageable, Set<ApplicationType> applicationTypes,
       Set<String> permissionRestrictions, PermissionRestrictionType type) {
-    EnumSpecification<BasePermission> applicationTypesSpec = new EnumSpecification<>(applicationTypes.stream().toList(),
-        UserPermission_.application);
-    EnumSpecification<BasePermission> applicationRoleSpec = new EnumSpecification<>(List.of(ApplicationRole.READER),
-        UserPermission_.role, true);
-    Specification<BasePermission> specification = applicationTypesSpec.and(applicationRoleSpec);
+    EnumSpecification<UserPermission> applicationTypesSpec = new EnumSpecification<>(applicationTypes.stream().toList(),
+        BasePermission_.application);
+    EnumSpecification<UserPermission> applicationRoleSpec = new EnumSpecification<>(List.of(ApplicationRole.READER),
+        BasePermission_.role, true);
+    Specification<UserPermission> specification = applicationTypesSpec.and(applicationRoleSpec);
 
     CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
     CriteriaQuery<String> query = criteriaBuilder.createQuery(String.class);
-    Root<BasePermission> baseRoot = query.from(BasePermission.class);
     Root<UserPermission> root = query.from(UserPermission.class);
 
     Predicate permissionRestrictionPredicate = getPermissionRestrictionPredicate(permissionRestrictions, type,
         criteriaBuilder, root);
 
-    Predicate restriction = specification.toPredicate(baseRoot, query, criteriaBuilder);
+    Predicate restriction = specification.toPredicate(root, query, criteriaBuilder);
     query.where(criteriaBuilder.and(restriction, permissionRestrictionPredicate));
     query.groupBy(root.get(UserPermission_.sbbUserId));
     Expression<Long> count = criteriaBuilder.count(root.get(UserPermission_.sbbUserId));
