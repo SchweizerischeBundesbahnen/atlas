@@ -13,7 +13,7 @@ export class TimetableHearingOverviewTabHeadingComponent {
   @Input() hearingPlan!: string;
 
   isHearingPlanActual() {
-    return this.hearingPlan === Pages.TTH_ACTUAL.path;
+    return this.hearingPlan === Pages.TTH_ACTIVE.path;
   }
 
   isHearingPlanPlanned() {

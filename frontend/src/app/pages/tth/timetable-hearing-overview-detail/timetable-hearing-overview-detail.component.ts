@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {
   ContainerTimetableHearingStatement,
+  HearingStatus,
   SwissCanton,
   TimetableHearingService,
   TimetableHearingStatement,
@@ -26,7 +27,7 @@ import { OverviewToTabShareDataService } from '../timetable-hearing-overview-tab
 export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestroy {
   @ViewChild(TableComponent, { static: true })
   tableComponent!: TableComponent<TimetableHearingStatement>;
-  hearingPlan = Pages.TTH_ACTUAL.path;
+  hearingStatus = Pages.TTH_ACTIVE.path;
   isLoading = false;
   totalCount$ = 0;
   timeTableHearingStatements: TimetableHearingStatement[] = [];
@@ -59,31 +60,22 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
   ) {}
 
   ngOnInit(): void {
-    this.overviewToTabService.cantonShort$.subscribe((res) => (this.cantonShort = res));
-    this.overviewToTabService.changeData(this.cantonShort);
-    if (this.route.snapshot.routeConfig && this.route.snapshot.routeConfig.path) {
-      this.hearingPlan = this.route.snapshot.routeConfig.path;
-      console.log(this.hearingPlan);
+    this.syncCantonShortSharedDate();
+
+    const selectedHearingStatus = this.getSelectedHeraingStatus();
+    if (selectedHearingStatus === HearingStatus.Active) {
+      this.initOverviewActiveTable();
     }
-    this.initSelectedEnumCanton();
-    const actualYear = moment(new Date()).format('YYYY');
-    this.timetableHearingService.getHearingYear(Number(actualYear)).subscribe((thy) => {
-      if (thy) {
-        this.showEmptyTimeTableHearingComponent = false;
-        this.foundTimetableHearingYear = thy;
-        this.getOverview({
-          page: 0,
-          size: 10,
-          sort: 'statementStatus,ASC',
-          statusChoices: DEFAULT_STATUS_SELECTION,
-        });
-      } else {
-        this.showEmptyTimeTableHearingComponent = true;
-      }
-    });
+    if (selectedHearingStatus === HearingStatus.Planned) {
+      this.initOverviewPlannedTable();
+    }
+    if (selectedHearingStatus === HearingStatus.Archived) {
+      this.initOverviewArchivedTable();
+    }
   }
 
   getOverview($paginationAndSearch: TableSettings) {
+    this.selectedCantonEnum = this.getSelectedCanton();
     this.isLoading = true;
     this.getTimetableHearingStatementsSubscription = this.timetableHearingService
       .getStatements(
@@ -107,19 +99,70 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
   editVersion($event: any) {}
 
   ngOnDestroy() {
-    this.getTimetableHearingStatementsSubscription.unsubscribe();
+    if (!this.showEmptyTimeTableHearingComponent) {
+      this.getTimetableHearingStatementsSubscription.unsubscribe();
+    }
   }
 
-  private initSelectedEnumCanton() {
+  private getSelectedHeraingStatus() {
+    if (this.route.snapshot.routeConfig && this.route.snapshot.routeConfig.path) {
+      this.hearingStatus = this.route.snapshot.routeConfig.path;
+    }
+    return Object.values(HearingStatus).find((hs) => hs.toLowerCase() === this.hearingStatus);
+  }
+
+  private syncCantonShortSharedDate() {
+    this.overviewToTabService.cantonShort$.subscribe((res) => (this.cantonShort = res));
+    this.overviewToTabService.changeData(this.cantonShort);
+  }
+
+  private initOverviewArchivedTable() {
+    this.timetableHearingService
+      .getArchivedHearingYears()
+      .subscribe((plannedTimetableHearingYears) => {
+        this.foundTimetableHearingYear = plannedTimetableHearingYears[0];
+        this.showEmptyTimeTableHearingComponent = false;
+        this.initOverviewTable();
+      });
+  }
+
+  private initOverviewPlannedTable() {
+    this.timetableHearingService
+      .getPlannedHearingYears()
+      .subscribe((plannedTimetableHearingYears) => {
+        this.foundTimetableHearingYear = plannedTimetableHearingYears[0];
+        this.showEmptyTimeTableHearingComponent = false;
+        this.initOverviewTable();
+      });
+  }
+
+  private initOverviewActiveTable() {
+    this.timetableHearingService.getActiveHearingYear().subscribe((timetableHearingYear) => {
+      this.showEmptyTimeTableHearingComponent = false;
+      this.foundTimetableHearingYear = timetableHearingYear;
+      this.initOverviewTable();
+    });
+  }
+
+  private initOverviewTable() {
+    this.getOverview({
+      page: 0,
+      size: 10,
+      sort: 'statementStatus,ASC',
+      statusChoices: DEFAULT_STATUS_SELECTION,
+    });
+  }
+
+  private getSelectedCanton(): SwissCanton | undefined {
     if (!this.cantonShort) {
       throw new Error('No canton was provided!');
     }
     if (this.cantonShort === Cantons.swiss.path) {
-      this.selectedCantonEnum = undefined;
+      return undefined;
     } else {
       const swissCantonEnum = Cantons.getSwissCantonEnum(this.cantonShort);
       if (swissCantonEnum) {
-        this.selectedCantonEnum = swissCantonEnum;
+        return swissCantonEnum;
       } else {
         throw new Error('No canton found with name: ' + this.cantonShort);
       }

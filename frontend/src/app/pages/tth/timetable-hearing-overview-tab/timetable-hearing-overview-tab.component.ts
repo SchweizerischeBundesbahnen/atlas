@@ -11,7 +11,7 @@ import { Cantons } from '../overview/canton/Cantons';
 export class TimetableHearingOverviewTabComponent implements OnInit {
   TABS = [
     {
-      link: Pages.TTH_ACTUAL.path,
+      link: Pages.TTH_ACTIVE.path,
       title: 'TTH.TAB.ACTUAL',
     },
     {
