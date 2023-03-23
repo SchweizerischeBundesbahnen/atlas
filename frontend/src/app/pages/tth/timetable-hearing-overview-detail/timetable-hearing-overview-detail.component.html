@@ -6,25 +6,42 @@
       [hearingPlan]="hearingStatus"
     ></app-timetable-hearing-overview-tab-heading>
 
-    <div class="d-flex flex-column col-3 pe-3 pb-3">
-      <mat-label class="font-bold-lg subtitle-margin"
-        >{{ 'TTH.SELECT_CANTON' | translate }}
-      </mat-label>
-      <span class="fake-lable-space"></span>
-      <div class="multi-select-search">
-        <mat-select
-          (selectionChange)="changeSelectedCanton($event)"
-          [(value)]="dafaultCantonSelection"
-          data-cy="type"
-          placeholder="{{ 'FORM.DROPDOWN_PLACEHOLDER' | translate }}"
+    <div class="d-flex flex-row col-12">
+      <div class="d-flex flex-column col-3 pe-3 pb-3">
+        <mat-label class="font-bold-lg subtitle-margin"
+          >{{ 'TTH.SELECT_CANTON' | translate }}
+        </mat-label>
+        <span class="fake-lable-space"></span>
+        <div class="multi-select-search">
+          <mat-select
+            (selectionChange)="changeSelectedCanton($event)"
+            [(value)]="dafaultCantonSelection"
+            data-cy="type"
+            placeholder="{{ 'FORM.DROPDOWN_PLACEHOLDER' | translate }}"
+          >
+            <mat-option *ngFor="let canton of CANTON_OPTIONS" [value]="canton">
+              {{ 'TTH.CANTON.' + canton | translate }}
+            </mat-option>
+          </mat-select>
+        </div>
+      </div>
+      <div *ngIf="hearingStatus !== 'planned'" class="d-flex flex-column col-3 pe-3 pb-3">
+        <span class="fake-lable-space"></span>
+        <span class="fake-lable-space"></span>
+        <atlas-button
+          (buttonClicked)="downloadCsv()"
+          applicationType="LIDI"
+          buttonDataCy="download-csv"
+          buttonText="TTH.BUTTON.DOWNLOAD_CSV"
+          buttonType="createCheckingPermission"
+          wrapperStyleClass="mb-5"
         >
-          <mat-option *ngFor="let canton of CANTON_OPTIONS" [value]="canton">
-            {{ 'TTH.CANTON.' + canton | translate }}
-          </mat-option>
-        </mat-select>
+          <ng-template #rightIcon>
+            <download-icon class="ps-2"></download-icon>
+          </ng-template>
+        </atlas-button>
       </div>
     </div>
-
     <app-table
       (editElementEvent)="editVersion($event)"
       (getTableElementsEvent)="getOverview($event)"
