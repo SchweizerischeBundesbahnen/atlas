@@ -536,6 +536,7 @@
       "PLANNED": "Audition prévue",
       "ARCHIVED": "Audition archivée"
     },
+    "SELECT_CANTON": "Sélectionner le canton",
     "OPEN": "{{canton}} ouvrir",
     "STATEMENT_STATUS": "Statut",
     "SWISS_CANTON": "Canton",
