@@ -4,7 +4,6 @@ import ch.sbb.atlas.amazon.config.AmazonConfigProps.AmazonBucketConfig;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.PutObjectResult;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
@@ -50,7 +49,7 @@ public class AmazonServiceImpl implements AmazonService {
   }
 
   @Override
-  public File pullFile(AmazonBucket bucket, String filePath) throws IOException {
+  public File pullFile(AmazonBucket bucket, String filePath) {
     S3Object s3Object = getClient(bucket).getObject(getAmazonBucketConfig(bucket).getBucketName(), filePath);
     String dir = fileService.getDir();
     File fileDownload = new File(dir + filePath.replaceAll("/", "_"));
@@ -58,6 +57,8 @@ public class AmazonServiceImpl implements AmazonService {
         S3ObjectInputStream s3InputStream = s3Object.getObjectContent()) {
       fileOutputStream.write(s3InputStream.readAllBytes());
       return fileDownload;
+    } catch (IOException e) {
+      throw new RuntimeException(e);
     }
   }
 
@@ -79,7 +80,7 @@ public class AmazonServiceImpl implements AmazonService {
       String filePathName = getFilePathName(file, dir);
       putObjectRequest = new PutObjectRequest(getAmazonBucketConfig(bucket).getBucketName(), filePathName, inputStream,
           metadata);
-      PutObjectResult putObjectResult = getClient(bucket).putObject(putObjectRequest);
+      getClient(bucket).putObject(putObjectRequest);
       url = getClient(bucket).getUrl(getAmazonBucketConfig(bucket).getBucketName(), filePathName);
       return url;
     }
