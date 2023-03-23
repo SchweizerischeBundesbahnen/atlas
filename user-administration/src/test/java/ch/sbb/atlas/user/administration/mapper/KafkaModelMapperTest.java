@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.api.user.administration.SboidPermissionRestrictionModel;
 import ch.sbb.atlas.api.user.administration.UserModel;
-import ch.sbb.atlas.api.user.administration.UserPermissionModel;
+import ch.sbb.atlas.api.user.administration.PermissionModel;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationModel;
@@ -14,17 +14,17 @@ import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 
-class UserMapperTest {
+class KafkaModelMapperTest {
 
   @Test
   void shouldMapToKafkaModelCorrectly() {
     // Given
     UserModel userModel = UserModel.builder().sbbUserId("e123456").lastName("Gandalf").firstName("The Gray")
         .mail("gandalf@sbb.ch").displayName("White Gandalf").accountStatus(UserAccountStatus.ACTIVE)
-        .permissions(Set.of(UserPermissionModel.builder().role(ApplicationRole.SUPERVISOR)
+        .permissions(Set.of(PermissionModel.builder().role(ApplicationRole.SUPERVISOR)
             .application(ApplicationType.TTFN).build())).build();
     // When
-    UserAdministrationModel userAdministrationModel = UserMapper.toKafkaModel(userModel);
+    UserAdministrationModel userAdministrationModel = KafkaModelMapper.toKafkaModel(userModel);
     // Then
     UserAdministrationModel expected = UserAdministrationModel.builder().sbbUserId("e123456")
         .permissions(Set.of(UserAdministrationPermissionModel.builder().application(ApplicationType.TTFN)
@@ -37,10 +37,10 @@ class UserMapperTest {
     // Given
     UserModel userModel = UserModel.builder().sbbUserId("e123456").lastName("Gandalf").firstName("The Gray")
         .mail("gandalf@sbb.ch").displayName("White Gandalf").accountStatus(UserAccountStatus.ACTIVE)
-        .permissions(Set.of(UserPermissionModel.builder().role(ApplicationRole.WRITER)
+        .permissions(Set.of(PermissionModel.builder().role(ApplicationRole.WRITER)
             .application(ApplicationType.TTFN).permissionRestrictions(List.of(new SboidPermissionRestrictionModel("beste sboid"))).build())).build();
     // When
-    UserAdministrationModel userAdministrationModel = UserMapper.toKafkaModel(userModel);
+    UserAdministrationModel userAdministrationModel = KafkaModelMapper.toKafkaModel(userModel);
     // Then
     UserAdministrationModel expected = UserAdministrationModel.builder().sbbUserId("e123456")
         .permissions(Set.of(UserAdministrationPermissionModel.builder().application(ApplicationType.TTFN)
