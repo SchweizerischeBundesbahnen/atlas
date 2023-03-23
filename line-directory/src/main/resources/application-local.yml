@@ -81,7 +81,6 @@ logging:
   level:
     root: INFO
     org.hibernate: ERROR
-    org.springframework.web: DEBUG
 amazon:
   region: "eu-central-1"
   bucketConfigs:
