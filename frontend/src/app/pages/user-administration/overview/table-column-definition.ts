@@ -1,5 +1,5 @@
 import { TableColumn } from '../../../core/components/table/table-column';
-import { User } from '../../../api/model/user';
+import { User } from '../../../api';
 
 export const tableColumns: TableColumn<User>[] = [
   {

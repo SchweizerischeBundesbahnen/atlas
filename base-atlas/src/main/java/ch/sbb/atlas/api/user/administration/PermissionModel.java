@@ -19,8 +19,8 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Schema(name = "UserPermission")
-public class UserPermissionModel extends BaseVersionModel {
+@Schema(name = "Permission")
+public class PermissionModel extends BaseVersionModel {
 
   @NotNull
   private ApplicationRole role;

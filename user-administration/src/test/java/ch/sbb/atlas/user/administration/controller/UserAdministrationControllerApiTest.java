@@ -13,7 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.atlas.api.user.administration.SboidPermissionRestrictionModel;
 import ch.sbb.atlas.api.user.administration.UserModel.Fields;
 import ch.sbb.atlas.api.user.administration.UserPermissionCreateModel;
-import ch.sbb.atlas.api.user.administration.UserPermissionModel;
+import ch.sbb.atlas.api.user.administration.PermissionModel;
 import ch.sbb.atlas.api.user.administration.enumeration.PermissionRestrictionType;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
@@ -113,13 +113,13 @@ public class UserAdministrationControllerApiTest extends BaseControllerApiTest {
 
   @Test
   void shouldCreateUserPermission() throws Exception {
-    UserPermissionModel userPermissionModelWriter = UserPermissionModel.builder()
+    PermissionModel permissionModelWriter = PermissionModel.builder()
         .role(ApplicationRole.WRITER)
         .application(
             ApplicationType.TTFN)
         .permissionRestrictions(List.of(new SboidPermissionRestrictionModel("ch:1:sboid:test")))
         .build();
-    UserPermissionModel userPermissionModelReader = UserPermissionModel.builder()
+    PermissionModel permissionModelReader = PermissionModel.builder()
         .role(ApplicationRole.READER)
         .application(
             ApplicationType.BODI)
@@ -129,7 +129,7 @@ public class UserAdministrationControllerApiTest extends BaseControllerApiTest {
         .builder()
         .sbbUserId("U236171")
         .permissions(List.of(
-            userPermissionModelWriter, userPermissionModelReader
+            permissionModelWriter, permissionModelReader
         ))
         .build();
 
@@ -165,7 +165,7 @@ public class UserAdministrationControllerApiTest extends BaseControllerApiTest {
         .builder()
         .sbbUserId("u236171")
         .permissions(List.of(
-            UserPermissionModel.builder()
+            PermissionModel.builder()
                 .role(ApplicationRole.WRITER)
                 .application(ApplicationType.TTFN)
                 .permissionRestrictions(List.of(new SboidPermissionRestrictionModel("ch:1:sboid:test")))
@@ -193,7 +193,7 @@ public class UserAdministrationControllerApiTest extends BaseControllerApiTest {
     UserPermissionCreateModel editedPermissions = UserPermissionCreateModel.builder()
         .sbbUserId("u236171")
         .permissions(List.of(
-            UserPermissionModel.builder()
+            PermissionModel.builder()
                 .application(
                     ApplicationType.TTFN)
                 .role(
