@@ -5,7 +5,7 @@ import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-tran
 import { By } from '@angular/platform-browser';
 import { Canton } from '../canton/Canton';
 
-const cantonAG: Canton = { short: 'AG' };
+const cantonAG: Canton = { short: 'AG', path: 'ag' };
 
 describe('CantonCardComponent', () => {
   let component: CantonCardComponent;

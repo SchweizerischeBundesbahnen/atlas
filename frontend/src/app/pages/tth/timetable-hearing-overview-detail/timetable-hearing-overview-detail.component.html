@@ -16,10 +16,17 @@
           <mat-select
             (selectionChange)="changeSelectedCanton($event)"
             [(value)]="dafaultCantonSelection"
-            data-cy="type"
+            data-cy="canton-type"
             placeholder="{{ 'FORM.DROPDOWN_PLACEHOLDER' | translate }}"
           >
             <mat-option *ngFor="let canton of CANTON_OPTIONS" [value]="canton">
+              <img
+                alt="canton-logo"
+                class="pe-1"
+                height="28"
+                src="assets/images/cantons/{{ canton.toUpperCase() }}.svg"
+                with="28"
+              />
               {{ 'TTH.CANTON.' + canton | translate }}
             </mat-option>
           </mat-select>
