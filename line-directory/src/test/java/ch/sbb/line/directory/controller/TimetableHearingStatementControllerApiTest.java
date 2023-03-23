@@ -10,6 +10,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -25,6 +26,7 @@ import ch.sbb.atlas.model.controller.AtlasMockMultipartFile;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
+import ch.sbb.line.directory.repository.TimetableHearingStatementRepository;
 import ch.sbb.line.directory.repository.TimetableHearingYearRepository;
 import ch.sbb.line.directory.service.TimetableFieldNumberService;
 import ch.sbb.line.directory.service.exception.PdfDocumentConstraintViolationException;
@@ -35,6 +37,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -67,6 +70,9 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
 
     @Autowired
     private TimetableHearingStatementController timetableHearingStatementController;
+
+    @Autowired
+    private TimetableHearingStatementRepository timetableHearingStatementRepository;
 
     @MockBean
     private TimetableFieldNumberService timetableFieldNumberService;
@@ -109,6 +115,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
     @AfterEach
     void tearDown() {
         timetableHearingYearRepository.deleteAll();
+        timetableHearingStatementRepository.deleteAll();
     }
 
     @Test
@@ -177,7 +184,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
     }
 
     @Test
-    void shouldThrowExceptionWhenCreatingStatementWithFourDocuments() throws Exception {
+    void shouldFailCreatingStatementWithFourDocuments() throws Exception {
         TimetableHearingStatementModel statement = TimetableHearingStatementModel.builder()
             .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
             .statementSender(TimetableHearingStatementSenderModel.builder()
@@ -198,7 +205,8 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
             .andDo(print())
             .andExpect(status().isBadRequest())
             .andExpect(result -> assertTrue(result.getResolvedException() instanceof PdfDocumentConstraintViolationException))
-            .andExpect(result -> assertEquals("Overall number of documents is: 4 which exceeds the number of allowed documents of 3.", result.getResolvedException().getMessage()));
+            .andExpect(
+                result -> assertEquals("Overall number of documents is: 4 which exceeds the number of allowed documents of 3.", Objects.requireNonNull(result.getResolvedException()).getMessage()));
     }
 
     @Test
@@ -307,9 +315,9 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
 
         mvc.perform(multipart(HttpMethod.PUT, "/v1/timetable-hearing/statements/" + statement.getId())
                 .file(statementJson)
-            .file(new MockMultipartFile(multipartFiles().get(0).getName(), multipartFiles().get(0).getOriginalFilename(), multipartFiles().get(0).getContentType(), multipartFiles().get(0).getBytes()))
-            .file(
-                new MockMultipartFile(multipartFiles().get(2).getName(), multipartFiles().get(2).getOriginalFilename(), multipartFiles().get(2).getContentType(), multipartFiles().get(2).getBytes())))
+                .file(new MockMultipartFile(multipartFiles().get(0).getName(), multipartFiles().get(0).getOriginalFilename(), multipartFiles().get(0).getContentType(), multipartFiles().get(0).getBytes()))
+                .file(
+                    new MockMultipartFile(multipartFiles().get(2).getName(), multipartFiles().get(2).getOriginalFilename(), multipartFiles().get(2).getContentType(), multipartFiles().get(2).getBytes())))
             .andDo(print())
             .andExpect(status().isOk())
             .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
@@ -356,6 +364,41 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
             .andExpect(jsonPath("$.totalCount", is(0)));
     }
 
+    @Test
+    void shouldGetStatementDocumentByDocumentId() throws Exception {
+        TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
+            TimetableHearingStatementModel.builder()
+                .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+                .statementSender(TimetableHearingStatementSenderModel.builder()
+                    .email("fabienne.mueller@sbb.ch")
+                    .build())
+                .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
+                .build(),
+            List.of(multipartFiles().get(0)));
+
+        mvc.perform(get("/v1/timetable-hearing/statements/" + statement.getId() + "/documents/" + multipartFiles().get(0).getOriginalFilename()))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.MULTIPART_FORM_DATA_VALUE));
+    }
+
+    @Test
+    void shouldGetStatementDocumentNotFoundWhenNoDocument() throws Exception {
+        TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
+            TimetableHearingStatementModel.builder()
+                .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+                .statementSender(TimetableHearingStatementSenderModel.builder()
+                    .email("fabienne.mueller@sbb.ch")
+                    .build())
+                .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
+                .build(),
+            Collections.emptyList());
+
+        mvc.perform(get("/v1/timetable-hearing/statements/" + statement.getId() + "/documents/" + "nonexistingfilename"))
+            .andDo(print())
+            .andExpect(status().isNotFound());
+    }
+
     private static MultipartFile getMultipartFile(String pathName) throws IOException {
         File file1 = new File(pathName);
         FileInputStream input = new FileInputStream(file1);
@@ -363,7 +406,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
             file1.getName(), "application/pdf", IOUtils.toByteArray(input));
     }
 
-    private static List<MultipartFile> multipartFiles() throws IOException {
+    private List<MultipartFile> multipartFiles() throws IOException {
         List<MultipartFile> multipartFiles = new ArrayList<>();
         MultipartFile multipartFile = getMultipartFile("src/test/resources/pdf/dummy.pdf");
         MultipartFile multipartFile1 = getMultipartFile("src/test/resources/pdf/dummy1.pdf");
