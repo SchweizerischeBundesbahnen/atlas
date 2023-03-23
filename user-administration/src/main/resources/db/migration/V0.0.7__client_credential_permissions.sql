@@ -1,32 +1,17 @@
-create table beneficiary
+create table client_credential_permission
 (
-    id             bigint primary key,
-    type           varchar(20) not null,
-    identification varchar(20) not null,
-    alias          varchar(20),
-    comment        timestamp
+    id                   bigint primary key,
+    role                 varchar(20)  not null,
+    application          varchar(20)  not null,
+    client_credential_id varchar(50)  not null,
+    alias                varchar(100) not null,
+    comment              varchar(100) not null,
+    constraint client_credential_application_unique unique (application, client_credential_id),
+    constraint alias_application_unique unique (application, alias)
 );
-CREATE SEQUENCE beneficiary_seq START WITH 1000 INCREMENT BY 1;
 
--- ADD Foreign Key
-alter table user_permission
-    add column beneficiary_id bigint;
-alter table user_permission
-    add foreign key (beneficiary_id) REFERENCES beneficiary (id);
+alter table permission_restriction
+    add column client_credential_permission_id bigint;
 
--- Migrate existing data
-INSERT into beneficiary (id, type, identification)
-select nextval('beneficiary_seq'), 'USER', sbb_user_id
-from (select distinct sbb_user_id from user_permission) as user_ids;
 
-UPDATE user_permission
-set beneficiary_id = beneficiary_ids.id
-from (select id, identification from beneficiary) as beneficiary_ids
-where sbb_user_id = beneficiary_ids.identification;
-
--- Cleanup
-alter table user_permission
-    alter column beneficiary_id set not null;
-
-alter table user_permission
-    drop column sbb_user_id;
+CREATE SEQUENCE client_credential_permission_seq START WITH 1000 INCREMENT BY 1;
