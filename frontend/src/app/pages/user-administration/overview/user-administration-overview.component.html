@@ -62,7 +62,7 @@
                 class="col-6 pe-1"
               ></bo-select>
 
-              <div class="d-flex flex-column col-6 ps-1">
+              <div class="d-flex flex-column col-6 ps-3">
                 <mat-label class="font-bold-lg">{{
                   'USER_ADMIN.APPLICATIONS' | translate
                 }}</mat-label>
@@ -73,7 +73,7 @@
                     multiple
                   >
                     <mat-option
-                      *ngFor="let application of applicationOptions"
+                      *ngFor="let application of applicationBoOptions"
                       [value]="application"
                       >{{ 'USER_ADMIN.APPLICATION.' + application | translate }}</mat-option
                     >
@@ -101,7 +101,7 @@
               </div>
             </div>
 
-            <div class="d-flex flex-column col-6 ps-1">
+            <div class="d-flex flex-column col-6 ps-3">
               <mat-label class="font-bold-lg">{{
                 'USER_ADMIN.APPLICATIONS' | translate
               }}</mat-label>
@@ -112,7 +112,7 @@
                   multiple
                 >
                   <mat-option
-                    *ngFor="let application of applicationOptions"
+                    *ngFor="let application of applicationCantonOptions"
                     [value]="application"
                     >{{ 'USER_ADMIN.APPLICATION.' + application | translate }}</mat-option
                   >
