@@ -31,7 +31,12 @@ export class UserAdministrationOverviewComponent implements OnInit, OnDestroy {
   readonly searchOptions = SearchTypes;
 
   selectedApplicationOptions: ApplicationType[] = [];
-  readonly applicationOptions: ApplicationType[] = Object.values(ApplicationType);
+  readonly applicationBoOptions: ApplicationType[] = [
+    ApplicationType.Ttfn,
+    ApplicationType.Lidi,
+    ApplicationType.Bodi,
+  ];
+  readonly applicationCantonOptions: ApplicationType[] = [ApplicationType.TimetableHearing];
   readonly cantonOptions: SwissCanton[] = Object.values(SwissCanton);
   selectedCantonOptions: SwissCanton[] = [];
 
