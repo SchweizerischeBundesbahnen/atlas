@@ -1,21 +1,14 @@
 package ch.sbb.atlas.user.administration.entity;
 
-import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
-import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
-import ch.sbb.atlas.model.entity.BaseEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotEmpty;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.AllArgsConstructor;
@@ -24,15 +17,16 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
+import lombok.experimental.SuperBuilder;
 
 @Entity(name = "user_permission")
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldNameConstants
-public class UserPermission extends BaseEntity {
+public class UserPermission extends BasePermission {
 
   private static final String ID_SEQ = "user_permission_seq";
 
@@ -41,17 +35,8 @@ public class UserPermission extends BaseEntity {
   @SequenceGenerator(name = ID_SEQ, sequenceName = ID_SEQ, allocationSize = 1, initialValue = 1000)
   private Long id;
 
-  @NotNull
-  @Enumerated(EnumType.STRING)
-  private ApplicationRole role;
-
-  @NotNull
-  @Enumerated(EnumType.STRING)
-  private ApplicationType application;
-
-  @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "beneficiary_id", referencedColumnName = "id")
-  private Beneficiary beneficiary;
+  @NotEmpty
+  private String sbbUserId;
 
   @Builder.Default
   @OneToMany(mappedBy = "userPermission", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)

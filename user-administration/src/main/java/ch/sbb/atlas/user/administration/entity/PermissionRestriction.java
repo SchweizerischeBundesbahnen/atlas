@@ -47,4 +47,10 @@ public class PermissionRestriction {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_permission_id")
   private UserPermission userPermission;
+
+  @ToString.Exclude
+  @EqualsAndHashCode.Exclude
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "client_credential_permission_id")
+  private ClientCredentialPermission clientCredentialPermission;
 }
