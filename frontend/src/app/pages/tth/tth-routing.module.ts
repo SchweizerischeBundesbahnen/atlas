@@ -15,7 +15,7 @@ const routes: Routes = [
     component: TimetableHearingOverviewTabComponent,
     children: [
       {
-        path: Pages.TTH_ACTUAL.path,
+        path: Pages.TTH_ACTIVE.path,
         component: TimetableHearingOverviewDetailComponent,
       },
       {
@@ -26,7 +26,7 @@ const routes: Routes = [
         path: Pages.TTH_ARCHIVED.path,
         component: TimetableHearingOverviewDetailComponent,
       },
-      { path: '**', redirectTo: Pages.TTH_ACTUAL.path },
+      { path: '**', redirectTo: Pages.TTH_ACTIVE.path },
     ],
   },
   { path: '**', redirectTo: Pages.TTH.path },

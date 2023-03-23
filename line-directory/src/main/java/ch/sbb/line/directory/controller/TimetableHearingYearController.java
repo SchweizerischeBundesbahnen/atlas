@@ -4,10 +4,10 @@ import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingYearApiV1;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingYearModel;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.HearingStatus;
-import ch.sbb.line.directory.service.hearing.TimetableHearingYearService;
 import ch.sbb.line.directory.entity.TimetableHearingYear;
 import ch.sbb.line.directory.mapper.TimeTableHearingYearMapper;
 import ch.sbb.line.directory.model.TimetableHearingYearSearchRestrictions;
+import ch.sbb.line.directory.service.hearing.TimetableHearingYearService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +38,21 @@ public class TimetableHearingYearController implements TimetableHearingYearApiV1
   @Override
   public TimetableHearingYearModel getHearingYear(Long year) {
     return TimeTableHearingYearMapper.toModel(timetableHearingYearService.getHearingYear(year));
+  }
+
+  @Override
+  public TimetableHearingYearModel getActiveHearingYear() {
+    return TimeTableHearingYearMapper.toModel(timetableHearingYearService.getActiveHearingYear());
+  }
+
+  @Override
+  public List<TimetableHearingYearModel> getPlannedHearingYears() {
+    return timetableHearingYearService.getPlannedHearingYear().stream().map(TimeTableHearingYearMapper::toModel).toList();
+  }
+
+  @Override
+  public List<TimetableHearingYearModel> getArchivedHearingYears() {
+    return timetableHearingYearService.getArchivedHearingYear().stream().map(TimeTableHearingYearMapper::toModel).toList();
   }
 
   @Override
