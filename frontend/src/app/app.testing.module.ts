@@ -21,7 +21,11 @@ export const authServiceMock: Partial<AuthService> = {
   isAdmin: true,
   getPermissions: () => [],
   getApplicationUserPermission: (applicationType) => {
-    return { application: applicationType, role: ApplicationRole.Supervisor, sboids: [] };
+    return {
+      application: applicationType,
+      role: ApplicationRole.Supervisor,
+      permissionRestrictions: [],
+    };
   },
   logout: () => Promise.resolve(true),
 };

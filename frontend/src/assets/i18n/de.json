@@ -43,6 +43,7 @@
     "VALID_FROM": "Gültig von",
     "VALID_TO": "Gültig bis",
     "STATUS": "Status",
+    "CANTONS": "Kantone",
     "STATUS_TYPES": {
       "DRAFT": "Entwurf",
       "VALIDATED": "Validiert",
@@ -55,6 +56,7 @@
     "CREATE_VERSION": "Version hinzufügen",
     "ROLES": {
       "READER": "Reader",
+      "EXPLICIT_READER": "Explicit Reader",
       "SUPERVISOR": "Supervisor",
       "SUPER_USER": "Super User",
       "WRITER": "Writer",
@@ -189,6 +191,7 @@
   },
   "USER_ADMIN": {
     "SEARCH_FOR_FILTER": "Geschäftsorganisationen und Applikationen",
+    "SEARCH_FOR_FILTER_CANTON": "Kantone und Applikationen",
     "NEW": "Neuer Benutzer erfassen",
     "NEW_INFORMATION": "Angaben zum neuen Benutzer",
     "INFORMATION": "Angaben zum Benutzer",
@@ -204,7 +207,8 @@
     "APPLICATION": {
       "LIDI": "Linien- und Teillinien",
       "TTFN": "Fahrplanfeldnummern",
-      "BODI": "Geschäftsorganisationen"
+      "BODI": "Geschäftsorganisationen",
+      "TIMETABLE_HEARING": "Fahrplananhörungen"
     },
     "ACCOUNT_STATUS_TYPE": {
       "ACTIVE": "Aktiv",

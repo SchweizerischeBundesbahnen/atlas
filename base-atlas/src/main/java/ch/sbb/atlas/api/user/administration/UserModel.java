@@ -32,6 +32,6 @@ public class UserModel {
   private UserAccountStatus accountStatus;
 
   @Schema(description = "User permissions")
-  private Set<UserPermissionVersionModel> permissions;
+  private Set<UserPermissionModel> permissions;
 
 }

@@ -1,6 +1,7 @@
 package ch.sbb.atlas.api.user.administration;
 
 import ch.sbb.atlas.api.model.Container;
+import ch.sbb.atlas.api.user.administration.enumeration.PermissionRestrictionType;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -27,7 +28,8 @@ public interface UserAdministrationApiV1 {
   @PageableAsQueryParam
   @Operation(description = "Retrieve Overview for all the managed Users")
   Container<UserModel> getUsers(@Parameter(hidden = true) Pageable pageable,
-      @RequestParam(required = false) Set<String> sboids,
+      @RequestParam(required = false) Set<String> permissionRestrictions,
+      @RequestParam(required = false) PermissionRestrictionType type,
       @RequestParam(required = false) Set<ApplicationType> applicationTypes);
 
   @GetMapping("{userId}")

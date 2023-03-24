@@ -3,7 +3,7 @@ package ch.sbb.line.directory.entity;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingConstants;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
-import ch.sbb.atlas.model.SwissCanton;
+import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.entity.BaseEntity;
 import ch.sbb.atlas.service.UserService;
 import jakarta.persistence.CascadeType;
@@ -55,6 +55,7 @@ public class TimetableHearingStatement extends BaseEntity {
 
   private String ttfnid;
 
+  @NotNull
   @Enumerated(EnumType.STRING)
   private SwissCanton swissCanton;
 

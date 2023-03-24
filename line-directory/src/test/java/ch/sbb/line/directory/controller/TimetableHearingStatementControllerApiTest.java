@@ -18,6 +18,7 @@ import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel.Fields;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementSenderModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingYearModel;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
+import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.controller.AtlasMockMultipartFile;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
@@ -105,6 +106,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
   void shouldCreateStatementWithoutDocuments() throws Exception {
     TimetableHearingStatementModel statement = TimetableHearingStatementModel.builder()
         .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .swissCanton(SwissCanton.BERN)
         .ttfnid("ch:1:ttfnid:12341241")
         .statementSender(TimetableHearingStatementSenderModel.builder()
             .email("fabienne.mueller@sbb.ch")
@@ -128,6 +130,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
   void shouldReportInvalidJsonInStatementWithoutDocuments() throws Exception {
     TimetableHearingStatementModel statement = TimetableHearingStatementModel.builder()
         .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .swissCanton(SwissCanton.BERN)
         .statementSender(TimetableHearingStatementSenderModel.builder()
             .build())
         .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
@@ -145,6 +148,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
   void shouldCreateStatementWithTwoDocuments() throws Exception {
     TimetableHearingStatementModel statement = TimetableHearingStatementModel.builder()
         .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .swissCanton(SwissCanton.BERN)
         .statementSender(TimetableHearingStatementSenderModel.builder()
             .email("fabienne.mueller@sbb.ch")
             .build())
@@ -203,6 +207,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
     TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
         TimetableHearingStatementModel.builder()
             .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+            .swissCanton(SwissCanton.BERN)
             .statementSender(TimetableHearingStatementSenderModel.builder()
                 .email("fabienne.mueller@sbb.ch")
                 .build())
@@ -227,6 +232,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
     TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
         TimetableHearingStatementModel.builder()
             .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+            .swissCanton(SwissCanton.BERN)
             .statementSender(TimetableHearingStatementSenderModel.builder()
                 .email("fabienne.mueller@sbb.ch")
                 .build())
@@ -250,6 +256,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
     TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
         TimetableHearingStatementModel.builder()
             .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+            .swissCanton(SwissCanton.BERN)
             .statementSender(TimetableHearingStatementSenderModel.builder()
                 .email("fabienne.mueller@sbb.ch")
                 .build())
@@ -268,6 +275,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
     TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
         TimetableHearingStatementModel.builder()
             .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+            .swissCanton(SwissCanton.BERN)
             .statementSender(TimetableHearingStatementSenderModel.builder()
                 .email("fabienne.mueller@sbb.ch")
                 .build())
