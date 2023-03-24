@@ -1,17 +1,20 @@
 package ch.sbb.atlas.user.administration.service;
 
-import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.api.user.administration.UserPermissionCreateModel;
-import ch.sbb.atlas.api.user.administration.UserPermissionVersionModel;
+import ch.sbb.atlas.api.user.administration.enumeration.PermissionRestrictionType;
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
+import ch.sbb.atlas.user.administration.entity.PermissionRestriction;
 import ch.sbb.atlas.user.administration.entity.UserPermission;
 import ch.sbb.atlas.user.administration.exception.UserPermissionConflictException;
+import ch.sbb.atlas.user.administration.mapper.PermissionRestrictionMapper;
 import ch.sbb.atlas.user.administration.mapper.UserPermissionCreateMapper;
+import ch.sbb.atlas.user.administration.mapper.UserPermissionMapper;
 import ch.sbb.atlas.user.administration.repository.UserPermissionRepository;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,10 +28,11 @@ public class UserAdministrationService {
 
   private final UserPermissionRepository userPermissionRepository;
 
-  public Page<String> getUserPage(Pageable pageable, Set<String> sboids, Set<ApplicationType> applicationTypes) {
-    sboids = Optional.ofNullable(sboids).orElse(new HashSet<>());
+  public Page<String> getUserPage(Pageable pageable, Set<String> permissionRestrictions, Set<ApplicationType> applicationTypes,
+      PermissionRestrictionType type) {
+    permissionRestrictions = Optional.ofNullable(permissionRestrictions).orElse(new HashSet<>());
     applicationTypes = Optional.ofNullable(applicationTypes).orElse(new HashSet<>());
-    return userPermissionRepository.getFilteredUsers(pageable, applicationTypes, sboids);
+    return userPermissionRepository.getFilteredUsers(pageable, applicationTypes, permissionRestrictions, type);
   }
 
   public List<UserPermission> getUserPermissions(String sbbUserId) {
@@ -50,18 +54,24 @@ public class UserAdministrationService {
 
   public void updateUser(UserPermissionCreateModel editedPermissions) {
     editedPermissions.getPermissions().forEach(editedPermission -> {
-      Optional<UserPermission> existingPermissions = getCurrentUserPermission(
-          editedPermissions.getSbbUserId(),
+      Optional<UserPermission> existingPermissions = getCurrentUserPermission(editedPermissions.getSbbUserId(),
           editedPermission.getApplication());
-      existingPermissions.ifPresent(updateExistingPermissions(editedPermission));
-    });
-  }
 
-  private Consumer<UserPermission> updateExistingPermissions(UserPermissionVersionModel editedPermission) {
-    return userPermission -> {
-      userPermission.setRole(editedPermission.getRole());
-      userPermission.setSboid(new HashSet<>(editedPermission.getSboids()));
-    };
+      if (existingPermissions.isPresent()) {
+        UserPermission updateableUserPermission = existingPermissions.get();
+        updateableUserPermission.setRole(editedPermission.getRole());
+
+        updateableUserPermission.getPermissionRestrictions().clear();
+        Set<PermissionRestriction> permissionRestrictions = editedPermission.getPermissionRestrictions().stream().map(
+                restriction -> PermissionRestrictionMapper.toEntity(updateableUserPermission, restriction))
+            .collect(Collectors.toSet());
+        updateableUserPermission.getPermissionRestrictions().addAll(permissionRestrictions);
+      } else {
+        UserPermission additionalUserPermission = UserPermissionMapper.toEntity(editedPermissions.getSbbUserId(),
+            editedPermission);
+        userPermissionRepository.save(additionalUserPermission);
+      }
+    });
   }
 
   Optional<UserPermission> getCurrentUserPermission(String sbbuid, ApplicationType applicationType) {

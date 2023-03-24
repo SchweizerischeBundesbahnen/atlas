@@ -51,7 +51,7 @@ public interface LineApiV1 {
   LineModel getLine(@PathVariable String slnid);
 
   @PostMapping("{slnid}/revoke")
-  @PreAuthorize("@userAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI)")
+  @PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI)")
   List<LineVersionModel> revokeLine(@PathVariable String slnid);
 
   @GetMapping("/covered")
@@ -90,7 +90,7 @@ public interface LineApiV1 {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200"),
   })
-  @PreAuthorize("@userAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI)")
+  @PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI)")
   void skipWorkflow(@PathVariable Long id);
 
   @GetMapping("line-coverage/{slnid}")

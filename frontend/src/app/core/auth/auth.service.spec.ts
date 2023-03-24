@@ -6,7 +6,13 @@ import { Subject } from 'rxjs';
 import { Role } from './role';
 import { Component } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ApplicationRole, ApplicationType, UserAdministrationService } from '../../api';
+import {
+  ApplicationRole,
+  ApplicationType,
+  PermissionRestrictionObject,
+  UserAdministrationService,
+} from '../../api';
+import TypeEnum = PermissionRestrictionObject.TypeEnum;
 
 function createOauthServiceSpy() {
   const oauthServiceSpy = jasmine.createSpyObj<OAuthService>('OAuthService', [
@@ -124,7 +130,7 @@ describe('AuthService', () => {
           {
             application: ApplicationType.Bodi,
             role: ApplicationRole.SuperUser,
-            sboids: [],
+            permissionRestrictions: [],
           },
         ],
         false
@@ -137,7 +143,7 @@ describe('AuthService', () => {
           {
             application: ApplicationType.Bodi,
             role: ApplicationRole.Supervisor,
-            sboids: [],
+            permissionRestrictions: [],
           },
         ],
         false
@@ -150,7 +156,7 @@ describe('AuthService', () => {
           {
             application: ApplicationType.Bodi,
             role: ApplicationRole.Writer,
-            sboids: [],
+            permissionRestrictions: [],
           },
         ],
         false
@@ -163,7 +169,7 @@ describe('AuthService', () => {
           {
             application: ApplicationType.Bodi,
             role: ApplicationRole.Reader,
-            sboids: [],
+            permissionRestrictions: [],
           },
         ],
         false
@@ -185,7 +191,7 @@ describe('AuthService', () => {
           {
             application: ApplicationType.Lidi,
             role: ApplicationRole.SuperUser,
-            sboids: [],
+            permissionRestrictions: [],
           },
         ],
         false
@@ -198,7 +204,7 @@ describe('AuthService', () => {
           {
             application: ApplicationType.Lidi,
             role: ApplicationRole.Supervisor,
-            sboids: [],
+            permissionRestrictions: [],
           },
         ],
         false
@@ -211,7 +217,7 @@ describe('AuthService', () => {
           {
             application: ApplicationType.Lidi,
             role: ApplicationRole.Writer,
-            sboids: [],
+            permissionRestrictions: [],
           },
         ],
         false
@@ -224,7 +230,7 @@ describe('AuthService', () => {
           {
             application: ApplicationType.Lidi,
             role: ApplicationRole.Reader,
-            sboids: [],
+            permissionRestrictions: [],
           },
         ],
         false
@@ -246,7 +252,7 @@ describe('AuthService', () => {
           {
             application: ApplicationType.Ttfn,
             role: ApplicationRole.SuperUser,
-            sboids: [],
+            permissionRestrictions: [],
           },
         ],
         false
@@ -259,7 +265,7 @@ describe('AuthService', () => {
           {
             application: ApplicationType.Ttfn,
             role: ApplicationRole.Supervisor,
-            sboids: [],
+            permissionRestrictions: [],
           },
         ],
         false
@@ -272,7 +278,7 @@ describe('AuthService', () => {
           {
             application: ApplicationType.Ttfn,
             role: ApplicationRole.Writer,
-            sboids: [],
+            permissionRestrictions: [],
           },
         ],
         false
@@ -285,7 +291,7 @@ describe('AuthService', () => {
           {
             application: ApplicationType.Ttfn,
             role: ApplicationRole.Reader,
-            sboids: [],
+            permissionRestrictions: [],
           },
         ],
         false
@@ -311,7 +317,7 @@ describe('AuthService', () => {
           {
             application: ApplicationType.Lidi,
             role: ApplicationRole.Supervisor,
-            sboids: [],
+            permissionRestrictions: [],
           },
         ],
         false
@@ -325,7 +331,7 @@ describe('AuthService', () => {
           {
             application: ApplicationType.Lidi,
             role: ApplicationRole.SuperUser,
-            sboids: [],
+            permissionRestrictions: [],
           },
         ],
         false
@@ -339,7 +345,7 @@ describe('AuthService', () => {
           {
             application: ApplicationType.Lidi,
             role: ApplicationRole.Writer,
-            sboids: [],
+            permissionRestrictions: [],
           },
         ],
         false
@@ -353,7 +359,9 @@ describe('AuthService', () => {
           {
             application: ApplicationType.Lidi,
             role: ApplicationRole.Writer,
-            sboids: ['ch:1:slnid:1000004'],
+            permissionRestrictions: [
+              { value: 'ch:1:slnid:1000004', type: TypeEnum.BusinessOrganisation },
+            ],
           },
         ],
         false

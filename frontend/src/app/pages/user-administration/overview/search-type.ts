@@ -3,7 +3,7 @@ interface Search {
   translationKey: string;
 }
 
-export type SearchType = 'USER' | 'FILTER';
+export type SearchType = 'USER' | 'FILTER' | 'FILTER_CANTON';
 
 export const SearchTypes: Search[] = [
   {
@@ -13,5 +13,9 @@ export const SearchTypes: Search[] = [
   {
     value: 'FILTER',
     translationKey: 'USER_ADMIN.SEARCH_FOR_FILTER',
+  },
+  {
+    value: 'FILTER_CANTON',
+    translationKey: 'USER_ADMIN.SEARCH_FOR_FILTER_CANTON',
   },
 ];

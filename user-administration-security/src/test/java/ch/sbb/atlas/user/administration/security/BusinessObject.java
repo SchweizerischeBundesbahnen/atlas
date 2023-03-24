@@ -1,5 +1,6 @@
 package ch.sbb.atlas.user.administration.security;
 
+import ch.sbb.atlas.api.model.BusinessOrganisationAssociated;
 import java.time.LocalDate;
 import lombok.Builder;
 import lombok.Data;
