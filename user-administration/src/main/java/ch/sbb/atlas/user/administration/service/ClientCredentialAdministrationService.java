@@ -1,6 +1,7 @@
 package ch.sbb.atlas.user.administration.service;
 
 import ch.sbb.atlas.api.user.administration.ClientCredentialPermissionCreateModel;
+import ch.sbb.atlas.api.user.administration.PermissionModel;
 import ch.sbb.atlas.user.administration.entity.ClientCredentialPermission;
 import ch.sbb.atlas.user.administration.entity.PermissionRestriction;
 import ch.sbb.atlas.user.administration.exception.UserPermissionConflictException;
@@ -49,19 +50,26 @@ public class ClientCredentialAdministrationService {
           existingPermissions.stream().filter(i -> i.getApplication() == editedPermission.getApplication()).findFirst();
 
       if (existingPermission.isPresent()) {
-        ClientCredentialPermission updateablePermission = existingPermission.get();
-        updateablePermission.setRole(editedPermission.getRole());
-
-        updateablePermission.getPermissionRestrictions().clear();
-        Set<PermissionRestriction> permissionRestrictions = editedPermission.getPermissionRestrictions().stream().map(
-                restriction -> PermissionRestrictionMapper.toEntity(updateablePermission, restriction))
-            .collect(Collectors.toSet());
-        updateablePermission.getPermissionRestrictions().addAll(permissionRestrictions);
+        updateExistingPermission(editedPermission, existingPermission.get());
       } else {
-        ClientCredentialPermission additionalPermission = ClientCredentialMapper.toEntity(editedPermission, editedPermissions);
-        clientCredentialPermissionRepository.save(additionalPermission);
+        createNewPermission(editedPermissions, editedPermission);
       }
     });
+  }
+
+  private void createNewPermission(ClientCredentialPermissionCreateModel editedPermissions, PermissionModel editedPermission) {
+    ClientCredentialPermission additionalPermission = ClientCredentialMapper.toEntity(editedPermission, editedPermissions);
+    clientCredentialPermissionRepository.save(additionalPermission);
+  }
+
+  private void updateExistingPermission(PermissionModel editedPermission, ClientCredentialPermission existingPermission) {
+    existingPermission.setRole(editedPermission.getRole());
+
+    existingPermission.getPermissionRestrictions().clear();
+    Set<PermissionRestriction> permissionRestrictions = editedPermission.getPermissionRestrictions().stream().map(
+            restriction -> PermissionRestrictionMapper.toEntity(existingPermission, restriction))
+        .collect(Collectors.toSet());
+    existingPermission.getPermissionRestrictions().addAll(permissionRestrictions);
   }
 
 }
