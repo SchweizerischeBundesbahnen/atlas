@@ -4,7 +4,7 @@ import { UserService } from './user.service';
 import {
   UserAdministrationService,
   UserInformationService,
-  UserPermissionCreateModel,
+  UserPermissionCreate,
 } from '../../../api';
 import { of } from 'rxjs';
 import { ContainerUser } from '../../../api';
@@ -108,10 +108,10 @@ describe('UserService', () => {
           {
             application: 'TTFN',
             role: 'WRITER',
-            sboids: [],
+            permissionRestrictions: [],
           },
         ],
-      } as UserPermissionCreateModel)
+      } as UserPermissionCreate)
     );
     const hasUserPermissions = service.hasUserPermissions('u123456');
     hasUserPermissions.subscribe((val) => {
@@ -129,7 +129,7 @@ describe('UserService', () => {
         {
           application: 'TTFN',
           role: 'WRITER',
-          sboids: [],
+          permissionRestrictions: [],
         },
       ]),
     });
@@ -137,7 +137,7 @@ describe('UserService', () => {
       {
         application: 'TTFN',
         role: 'WRITER',
-        sboids: [],
+        permissionRestrictions: [],
       },
     ]);
   });

@@ -1,19 +1,24 @@
 package ch.sbb.atlas.user.administration.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.startsWith;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.atlas.model.controller.BaseControllerApiTest;
-import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
-import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
+import ch.sbb.atlas.api.user.administration.SboidPermissionRestrictionModel;
 import ch.sbb.atlas.api.user.administration.UserModel.Fields;
 import ch.sbb.atlas.api.user.administration.UserPermissionCreateModel;
-import ch.sbb.atlas.api.user.administration.UserPermissionVersionModel;
+import ch.sbb.atlas.api.user.administration.UserPermissionModel;
+import ch.sbb.atlas.api.user.administration.enumeration.PermissionRestrictionType;
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
+import ch.sbb.atlas.model.controller.BaseControllerApiTest;
+import ch.sbb.atlas.user.administration.entity.PermissionRestriction;
 import ch.sbb.atlas.user.administration.entity.UserPermission;
 import ch.sbb.atlas.user.administration.repository.UserPermissionRepository;
 import java.util.HashSet;
@@ -108,18 +113,17 @@ public class UserAdministrationControllerApiTest extends BaseControllerApiTest {
 
   @Test
   void shouldCreateUserPermission() throws Exception {
-    UserPermissionVersionModel userPermissionModelWriter = UserPermissionVersionModel.builder()
+    UserPermissionModel userPermissionModelWriter = UserPermissionModel.builder()
         .role(ApplicationRole.WRITER)
         .application(
             ApplicationType.TTFN)
-        .sboids(List.of(
-            "ch:1:sboid:test"))
+        .permissionRestrictions(List.of(new SboidPermissionRestrictionModel("ch:1:sboid:test")))
         .build();
-    UserPermissionVersionModel userPermissionModelReader = UserPermissionVersionModel.builder()
+    UserPermissionModel userPermissionModelReader = UserPermissionModel.builder()
         .role(ApplicationRole.READER)
         .application(
             ApplicationType.BODI)
-        .sboids(List.of())
+        .permissionRestrictions(List.of())
         .build();
     UserPermissionCreateModel model = UserPermissionCreateModel
         .builder()
@@ -161,10 +165,10 @@ public class UserAdministrationControllerApiTest extends BaseControllerApiTest {
         .builder()
         .sbbUserId("u236171")
         .permissions(List.of(
-            UserPermissionVersionModel.builder()
+            UserPermissionModel.builder()
                 .role(ApplicationRole.WRITER)
                 .application(ApplicationType.TTFN)
-                .sboids(List.of("ch:1:sboid:test"))
+                .permissionRestrictions(List.of(new SboidPermissionRestrictionModel("ch:1:sboid:test")))
                 .build()
         ))
         .build();
@@ -189,14 +193,13 @@ public class UserAdministrationControllerApiTest extends BaseControllerApiTest {
     UserPermissionCreateModel editedPermissions = UserPermissionCreateModel.builder()
         .sbbUserId("u236171")
         .permissions(List.of(
-            UserPermissionVersionModel.builder()
+            UserPermissionModel.builder()
                 .application(
                     ApplicationType.TTFN)
                 .role(
                     ApplicationRole.WRITER)
-                .sboids(
-                    List.of(
-                        "ch:1:sboid:10009"))
+                .permissionRestrictions(
+                    List.of(new SboidPermissionRestrictionModel("ch:1:sboid:10009")))
                 .build()))
         .build();
 
@@ -216,12 +219,16 @@ public class UserAdministrationControllerApiTest extends BaseControllerApiTest {
         UserPermission.builder()
             .role(ApplicationRole.WRITER)
             .application(ApplicationType.TTFN)
-            .sboid(new HashSet<>(List.of("ch:1:sboid:1")))
+            .permissionRestrictions(
+                new HashSet<>(List.of(PermissionRestriction.builder().type(PermissionRestrictionType.BUSINESS_ORGANISATION)
+                    .restriction("ch:1:sboid:1").build())))
             .sbbUserId("u236171").build(),
         UserPermission.builder()
             .role(ApplicationRole.READER)
             .application(ApplicationType.LIDI)
-            .sboid(new HashSet<>(List.of("ch:1:sboid:1")))
+            .permissionRestrictions(
+                new HashSet<>(List.of(PermissionRestriction.builder().type(PermissionRestrictionType.BUSINESS_ORGANISATION)
+                    .restriction("ch:1:sboid:1").build())))
             .sbbUserId("u236171").build()
     ));
 
@@ -241,12 +248,16 @@ public class UserAdministrationControllerApiTest extends BaseControllerApiTest {
         UserPermission.builder()
             .role(ApplicationRole.WRITER)
             .application(ApplicationType.TTFN)
-            .sboid(new HashSet<>(List.of("ch:1:sboid:1")))
+            .permissionRestrictions(
+                new HashSet<>(List.of(PermissionRestriction.builder().type(PermissionRestrictionType.BUSINESS_ORGANISATION)
+                    .restriction("ch:1:sboid:1").build())))
             .sbbUserId("u654321").build(),
         UserPermission.builder()
             .role(ApplicationRole.WRITER)
             .application(ApplicationType.LIDI)
-            .sboid(new HashSet<>(List.of("ch:1:sboid:1")))
+            .permissionRestrictions(
+                new HashSet<>(List.of(PermissionRestriction.builder().type(PermissionRestrictionType.BUSINESS_ORGANISATION)
+                    .restriction("ch:1:sboid:1").build())))
             .sbbUserId("u654321").build(),
         UserPermission.builder()
             .role(ApplicationRole.SUPER_USER)
@@ -276,8 +287,8 @@ public class UserAdministrationControllerApiTest extends BaseControllerApiTest {
   @Test
   void getUserDisplayNameExisting() throws Exception {
     mvc.perform(get("/v1/users/u236171/displayname"))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.displayName").value(startsWith("Ammann Luca")));
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.displayName").value(startsWith("Ammann Luca")));
   }
 
   @Test

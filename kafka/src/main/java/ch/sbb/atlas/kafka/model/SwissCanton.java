@@ -1,4 +1,4 @@
-package ch.sbb.atlas.model;
+package ch.sbb.atlas.kafka.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Objects;

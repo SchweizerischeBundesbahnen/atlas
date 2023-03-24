@@ -1,10 +1,11 @@
 package ch.sbb.line.directory.validation;
 
 import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.user.administration.security.UpdateAffectedVersionLocator;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.model.VersioningAction;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
-import ch.sbb.atlas.user.administration.security.UserAdministrationService;
+import ch.sbb.atlas.user.administration.security.BusinessOrganisationBasedUserAdministrationService;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.exception.ForbiddenDueToInReviewException;
 import ch.sbb.line.directory.exception.LineInReviewValidationException;
@@ -19,7 +20,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class LineUpdateValidationService {
 
-  private final UserAdministrationService userAdministrationService;
+  private final BusinessOrganisationBasedUserAdministrationService businessOrganisationBasedUserAdministrationService;
 
   public void validateLineForUpdate(LineVersion currentVersion, LineVersion editedVersion, List<LineVersion> currentVersions) {
     onlySupervisorMayEditVersionInReview(editedVersion, currentVersions);
@@ -29,11 +30,11 @@ public class LineUpdateValidationService {
   }
 
   private void onlySupervisorMayEditVersionInReview(LineVersion editedVersion, List<LineVersion> currentVersions) {
-    List<LineVersion> updateAffectedCurrentVersions = UserAdministrationService.findUpdateAffectedCurrentVersions(editedVersion,
+    List<LineVersion> updateAffectedCurrentVersions = UpdateAffectedVersionLocator.findUpdateAffectedCurrentVersions(editedVersion,
         currentVersions);
     boolean inReviewVersionAffected = updateAffectedCurrentVersions.stream()
         .anyMatch(lineVersion -> lineVersion.getStatus() == Status.IN_REVIEW);
-    if (inReviewVersionAffected && !userAdministrationService.isAtLeastSupervisor(ApplicationType.LIDI)) {
+    if (inReviewVersionAffected && !businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(ApplicationType.LIDI)) {
       throw new ForbiddenDueToInReviewException();
     }
   }

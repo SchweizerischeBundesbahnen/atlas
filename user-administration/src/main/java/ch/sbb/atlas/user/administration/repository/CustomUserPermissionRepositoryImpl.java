@@ -1,21 +1,25 @@
 package ch.sbb.atlas.user.administration.repository;
 
+import ch.sbb.atlas.api.user.administration.enumeration.PermissionRestrictionType;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.searching.specification.EnumSpecification;
-import ch.sbb.atlas.searching.specification.IsMemberSpecification;
+import ch.sbb.atlas.user.administration.entity.PermissionRestriction;
+import ch.sbb.atlas.user.administration.entity.PermissionRestriction_;
 import ch.sbb.atlas.user.administration.entity.UserPermission;
 import ch.sbb.atlas.user.administration.entity.UserPermission_;
-import java.util.List;
-import java.util.Set;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Expression;
+import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.SetJoin;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -27,21 +31,23 @@ public class CustomUserPermissionRepositoryImpl implements CustomUserPermissionR
   private final EntityManager entityManager;
 
   @Override
-  public Page<String> getFilteredUsers(Pageable pageable, @NotNull Set<ApplicationType> applicationTypes,
-      @NotNull Set<String> sboids) {
+  public Page<String> getFilteredUsers(Pageable pageable, Set<ApplicationType> applicationTypes,
+      Set<String> permissionRestrictions, PermissionRestrictionType type) {
     EnumSpecification<UserPermission> applicationTypesSpec = new EnumSpecification<>(applicationTypes.stream().toList(),
         UserPermission_.application);
-    IsMemberSpecification<UserPermission, Set<String>, String> sboidsSpec = new IsMemberSpecification<>(sboids,
-        UserPermission_.sboid);
     EnumSpecification<UserPermission> applicationRoleSpec = new EnumSpecification<>(List.of(ApplicationRole.READER),
         UserPermission_.role, true);
-    Specification<UserPermission> specification = applicationTypesSpec.and(sboidsSpec).and(applicationRoleSpec);
+    Specification<UserPermission> specification = applicationTypesSpec.and(applicationRoleSpec);
 
     CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
     CriteriaQuery<String> query = criteriaBuilder.createQuery(String.class);
     Root<UserPermission> root = query.from(UserPermission.class);
 
-    query.where(specification.toPredicate(root, query, criteriaBuilder));
+    Predicate permissionRestrictionPredicate = getPermissionRestrictionPredicate(permissionRestrictions, type,
+        criteriaBuilder, root);
+
+    Predicate restriction = specification.toPredicate(root, query, criteriaBuilder);
+    query.where(criteriaBuilder.and(restriction, permissionRestrictionPredicate));
     query.groupBy(root.get(UserPermission_.sbbUserId));
     Expression<Long> count = criteriaBuilder.count(root.get(UserPermission_.sbbUserId));
     query.having(criteriaBuilder.greaterThanOrEqualTo(count, Long.valueOf(applicationTypes.size())));
@@ -53,6 +59,17 @@ public class CustomUserPermissionRepositoryImpl implements CustomUserPermissionR
     List<String> pagedElements = typedQuery.setFirstResult((int) pageable.getOffset()).setMaxResults(pageable.getPageSize())
         .getResultList();
     return new PageImpl<>(pagedElements, pageable, totalElements);
+  }
+
+  private static Predicate getPermissionRestrictionPredicate(Set<String> permissionRestrictions, PermissionRestrictionType type,
+      CriteriaBuilder criteriaBuilder, Root<UserPermission> root) {
+      List<Predicate> predicates = new ArrayList<>();
+      for (String permissionRestriction : permissionRestrictions) {
+        SetJoin<UserPermission, PermissionRestriction> permissionJoin = root.join(UserPermission_.permissionRestrictions);
+        predicates.add(criteriaBuilder.equal(permissionJoin.get(PermissionRestriction_.type), type));
+        predicates.add(permissionJoin.get(PermissionRestriction_.restriction).in(permissionRestriction));
+      }
+      return criteriaBuilder.and(predicates.toArray(Predicate[]::new));
   }
 
 }

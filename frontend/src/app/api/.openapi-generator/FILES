@@ -46,7 +46,6 @@ model/containerTrafficPointElementVersion.ts
 model/containerTransportCompany.ts
 model/containerUser.ts
 model/coordinatePair.ts
-model/country.ts
 model/coverage.ts
 model/coverageType.ts
 model/displayInfo.ts
@@ -74,6 +73,7 @@ model/operatingPointType.ts
 model/operatingPointWithoutTimetableType.ts
 model/parameter.ts
 model/paymentType.ts
+model/permissionRestrictionObject.ts
 model/person.ts
 model/servicePointCsvModel.ts
 model/servicePointCsvModelContainer.ts
@@ -108,8 +108,8 @@ model/transportCompanyStatus.ts
 model/user.ts
 model/userAccountStatus.ts
 model/userDisplayName.ts
-model/userPermissionCreateModel.ts
-model/userPermissionVersionModel.ts
+model/userPermission.ts
+model/userPermissionCreate.ts
 model/workflow.ts
 model/workflowProcessingStatus.ts
 model/workflowStart.ts
