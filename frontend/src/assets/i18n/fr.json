@@ -43,6 +43,7 @@
     "VALID_FROM": "Valable du",
     "VALID_TO": "Valable au",
     "STATUS": "Statut",
+    "CANTONS": "Cantons",
     "STATUS_TYPES": {
       "DRAFT": "Projet",
       "VALIDATED": "Validé",
@@ -55,6 +56,7 @@
     "CREATE_VERSION": "Ajouter la version",
     "ROLES": {
       "READER": "Reader",
+      "EXPLICIT_READER": "Explicit Reader",
       "SUPERVISOR": "Supervisor",
       "SUPER_USER": "Super User",
       "WRITER": "Writer",
@@ -189,6 +191,7 @@
   },
   "USER_ADMIN": {
     "SEARCH_FOR_FILTER": "Organisations commerciales et Applications",
+    "SEARCH_FOR_FILTER_CANTON": "Cantons et Applications",
     "NEW": "Saisir un nouvel utilisateur",
     "NEW_INFORMATION": "Informations sur le nouvel utilisateur",
     "INFORMATION": "Données de l'utilisateur",
@@ -204,7 +207,8 @@
     "APPLICATION": {
       "LIDI": "Lignes et sous-lignes",
       "TTFN": "Numéros de champs d'horaires",
-      "BODI": "Organisations commerciales"
+      "BODI": "Organisations commerciales",
+      "TIMETABLE_HEARING": "Consultations sur les horaires"
     },
     "ACCOUNT_STATUS_TYPE": {
       "ACTIVE": "Actif",

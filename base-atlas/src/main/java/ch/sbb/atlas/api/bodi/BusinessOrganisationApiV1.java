@@ -46,7 +46,7 @@ public interface BusinessOrganisationApiV1 {
       @PathVariable String sboid);
 
   @PostMapping("{sboid}/revoke")
-  @PreAuthorize("@userAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).BODI)")
+  @PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).BODI)")
   List<BusinessOrganisationVersionModel> revokeBusinessOrganisation(@PathVariable String sboid);
 
   @PostMapping("versions")
@@ -54,7 +54,7 @@ public interface BusinessOrganisationApiV1 {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201"),
   })
-  @PreAuthorize("@userAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).BODI)")
+  @PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).BODI)")
   BusinessOrganisationVersionModel createBusinessOrganisationVersion(
       @RequestBody @Valid BusinessOrganisationVersionModel newVersion);
 
@@ -63,7 +63,7 @@ public interface BusinessOrganisationApiV1 {
       @ApiResponse(responseCode = "200"),
   })
 
-  @PreAuthorize("@userAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).BODI)")
+  @PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).BODI)")
   List<BusinessOrganisationVersionModel> updateBusinessOrganisationVersion(
       @PathVariable Long id,
       @RequestBody @Valid BusinessOrganisationVersionModel newVersion);

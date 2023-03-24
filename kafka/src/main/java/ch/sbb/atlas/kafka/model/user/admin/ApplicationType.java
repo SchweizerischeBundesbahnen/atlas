@@ -10,4 +10,7 @@ public enum ApplicationType {
   TTFN,
   LIDI,
   BODI,
+  TIMETABLE_HEARING,
+
+  ;
 }

@@ -234,7 +234,7 @@ export abstract class BaseDetailController<TYPE extends Record> implements OnIni
     }
     const permission = this.authService.getApplicationUserPermission(this.getApplicationType());
     if (permission.role === ApplicationRole.Writer) {
-      return permission.sboids;
+      return AuthService.getSboidRestrictions(permission);
     }
     return [];
   }
@@ -345,7 +345,7 @@ export abstract class BaseDetailController<TYPE extends Record> implements OnIni
       !this.authService.isAdmin &&
       permission.role == ApplicationRole.Writer &&
       currentlySelectedBo &&
-      !permission.sboids.includes(currentlySelectedBo)
+      !AuthService.getSboidRestrictions(permission).includes(currentlySelectedBo)
     ) {
       return this.dialogService.confirm({
         title: 'DIALOG.CONFIRM_BO_TRANSFER_TITLE',

@@ -2,8 +2,9 @@ package ch.sbb.atlas.user.administration.mapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.api.user.administration.SboidPermissionRestrictionModel;
 import ch.sbb.atlas.api.user.administration.UserModel;
-import ch.sbb.atlas.api.user.administration.UserPermissionVersionModel;
+import ch.sbb.atlas.api.user.administration.UserPermissionModel;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationModel;
@@ -20,7 +21,7 @@ class UserMapperTest {
     // Given
     UserModel userModel = UserModel.builder().sbbUserId("e123456").lastName("Gandalf").firstName("The Gray")
         .mail("gandalf@sbb.ch").displayName("White Gandalf").accountStatus(UserAccountStatus.ACTIVE)
-        .permissions(Set.of(UserPermissionVersionModel.builder().role(ApplicationRole.SUPERVISOR)
+        .permissions(Set.of(UserPermissionModel.builder().role(ApplicationRole.SUPERVISOR)
             .application(ApplicationType.TTFN).build())).build();
     // When
     UserAdministrationModel userAdministrationModel = UserMapper.toKafkaModel(userModel);
@@ -36,8 +37,8 @@ class UserMapperTest {
     // Given
     UserModel userModel = UserModel.builder().sbbUserId("e123456").lastName("Gandalf").firstName("The Gray")
         .mail("gandalf@sbb.ch").displayName("White Gandalf").accountStatus(UserAccountStatus.ACTIVE)
-        .permissions(Set.of(UserPermissionVersionModel.builder().role(ApplicationRole.WRITER)
-            .application(ApplicationType.TTFN).sboids(List.of("beste sboid")).build())).build();
+        .permissions(Set.of(UserPermissionModel.builder().role(ApplicationRole.WRITER)
+            .application(ApplicationType.TTFN).permissionRestrictions(List.of(new SboidPermissionRestrictionModel("beste sboid"))).build())).build();
     // When
     UserAdministrationModel userAdministrationModel = UserMapper.toKafkaModel(userModel);
     // Then
