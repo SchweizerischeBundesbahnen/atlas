@@ -17,6 +17,10 @@ spring:
     name: user-administration
   jpa:
     open-in-view: false
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
   security:
     oauth2:
       resourceserver:

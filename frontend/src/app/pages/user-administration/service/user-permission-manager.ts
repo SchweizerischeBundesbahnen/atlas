@@ -3,31 +3,38 @@ import {
   ApplicationType,
   BusinessOrganisation,
   BusinessOrganisationsService,
-  UserPermissionCreateModel,
-  UserPermissionVersionModel,
+  PermissionRestrictionObject,
+  UserPermission,
+  UserPermissionCreate,
 } from '../../../api';
 import { BehaviorSubject, firstValueFrom, Subject } from 'rxjs';
 import { Injectable } from '@angular/core';
+import TypeEnum = PermissionRestrictionObject.TypeEnum;
 
 @Injectable()
 export class UserPermissionManager {
-  readonly userPermission: UserPermissionCreateModel = {
+  readonly userPermission: UserPermissionCreate = {
     sbbUserId: '',
     permissions: [
       {
         application: 'TTFN',
         role: 'READER',
-        sboids: [],
+        permissionRestrictions: [],
       },
       {
         application: 'LIDI',
         role: 'READER',
-        sboids: [],
+        permissionRestrictions: [],
       },
       {
         application: 'BODI',
         role: 'READER',
-        sboids: [],
+        permissionRestrictions: [],
+      },
+      {
+        application: 'TIMETABLE_HEARING',
+        role: 'READER',
+        permissionRestrictions: [],
       },
     ],
   };
@@ -38,6 +45,7 @@ export class UserPermissionManager {
     TTFN: [],
     LIDI: [],
     BODI: [],
+    TIMETABLE_HEARING: [],
   };
 
   readonly boOfApplicationsSubject$: BehaviorSubject<{
@@ -49,9 +57,25 @@ export class UserPermissionManager {
   private readonly availableApplicationRolesConfig: {
     [application in ApplicationType]: ApplicationRole[];
   } = {
-    TTFN: Object.values(ApplicationRole),
-    LIDI: Object.values(ApplicationRole),
-    BODI: [ApplicationRole.Reader, ApplicationRole.SuperUser, ApplicationRole.Supervisor],
+    TTFN: [
+      ApplicationRole.Reader,
+      ApplicationRole.Writer,
+      ApplicationRole.SuperUser,
+      ApplicationRole.Supervisor,
+    ],
+    LIDI: [
+      ApplicationRole.Reader,
+      ApplicationRole.Writer,
+      ApplicationRole.SuperUser,
+      ApplicationRole.Supervisor,
+    ],
+    BODI: [ApplicationRole.Reader, ApplicationRole.Supervisor],
+    TIMETABLE_HEARING: [
+      ApplicationRole.Reader,
+      ApplicationRole.ExplicitReader,
+      ApplicationRole.Writer,
+      ApplicationRole.Supervisor,
+    ],
   };
 
   constructor(private readonly boService: BusinessOrganisationsService) {}
@@ -67,10 +91,10 @@ export class UserPermissionManager {
     return this.availableApplicationRolesConfig[application];
   }
 
-  clearSboidsIfNotWriter(): void {
+  clearPermissionRestrictionsIfNotWriter(): void {
     this.userPermission.permissions.forEach((permission) => {
       if (permission.role !== 'WRITER') {
-        permission.sboids = [];
+        permission.permissionRestrictions = [];
       }
     });
   }
@@ -88,17 +112,27 @@ export class UserPermissionManager {
     this.userPermission.sbbUserId = userId;
   }
 
-  setPermissions(permissions: UserPermissionVersionModel[]): void {
+  setPermissions(permissions: UserPermission[]): void {
     permissions.forEach((permission) => {
       const application = permission.application;
       const permissionIndex = this.getPermissionIndexFromApplication(application);
       this.userPermission.permissions[permissionIndex].role = permission.role;
-      this.userPermission.permissions[permissionIndex].sboids = [];
+      this.userPermission.permissions[permissionIndex].permissionRestrictions = [];
       this.businessOrganisationsOfApplication[application] = [];
       this.boOfApplicationsSubject$.next(this.businessOrganisationsOfApplication);
-      permission.sboids.forEach((sboid) => {
-        this.addSboidToPermission(application, sboid);
-      });
+      permission.permissionRestrictions
+        .filter((restriction) => restriction.type === TypeEnum.BusinessOrganisation)
+        .forEach((sboid) => {
+          this.addSboidToPermission(application, sboid.value!);
+        });
+      permission.permissionRestrictions
+        .filter((restriction) => restriction.type === TypeEnum.Canton)
+        .forEach((canton) => {
+          this.userPermission.permissions[permissionIndex].permissionRestrictions.push({
+            value: canton.value,
+            type: TypeEnum.Canton,
+          });
+        });
     });
   }
 
@@ -110,9 +144,10 @@ export class UserPermissionManager {
   removeSboidFromPermission(application: ApplicationType, sboidIndex: number): void {
     const permissionIndex = this.getPermissionIndexFromApplication(application);
     const sboidToDelete = this.businessOrganisationsOfApplication[application][sboidIndex].sboid;
-    this.userPermission.permissions[permissionIndex].sboids = this.userPermission.permissions[
-      permissionIndex
-    ].sboids.filter((sboid) => sboid !== sboidToDelete);
+    this.userPermission.permissions[permissionIndex].permissionRestrictions =
+      this.userPermission.permissions[permissionIndex].permissionRestrictions.filter(
+        (sboid) => sboid.value !== sboidToDelete
+      );
     this.businessOrganisationsOfApplication[application] = this.businessOrganisationsOfApplication[
       application
     ].filter((_, index) => index !== sboidIndex);
@@ -120,7 +155,7 @@ export class UserPermissionManager {
   }
 
   addSboidToPermission(application: ApplicationType, sboid: string): void {
-    const permissionIndex = this.getPermissionIndexFromApplication(application);
+    const permission = this.getPermissionByApplication(application);
 
     firstValueFrom(
       this.boService.getAllBusinessOrganisations([sboid], undefined, undefined, undefined, 0, 1, [
@@ -131,11 +166,11 @@ export class UserPermissionManager {
         console.error('Could not resolve selected bo');
         return;
       }
-      if (this.userPermission.permissions[permissionIndex].sboids.includes(sboid)) {
+      if (this.getRestrictionValues(permission).includes(sboid)) {
         console.error('Already added');
         return;
       }
-      this.userPermission.permissions[permissionIndex].sboids.push(sboid);
+      permission.permissionRestrictions.push({ value: sboid, type: TypeEnum.BusinessOrganisation });
       this.businessOrganisationsOfApplication[application] = [
         ...this.businessOrganisationsOfApplication[application],
         result.objects[0],
@@ -148,5 +183,14 @@ export class UserPermissionManager {
     return this.userPermission.permissions.findIndex(
       (permission) => permission.application === application
     );
+  }
+
+  getPermissionByApplication(application: ApplicationType) {
+    const permissionIndex = this.getPermissionIndexFromApplication(application);
+    return this.userPermission.permissions[permissionIndex];
+  }
+
+  getRestrictionValues(userPermission: UserPermission) {
+    return userPermission.permissionRestrictions!.map((restriction) => restriction.value);
   }
 }

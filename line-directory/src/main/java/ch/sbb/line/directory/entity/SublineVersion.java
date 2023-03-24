@@ -8,7 +8,7 @@ import ch.sbb.atlas.model.entity.BusinessIdGeneration;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.versioning.model.Versionable;
-import ch.sbb.atlas.user.administration.security.BusinessOrganisationAssociated;
+import ch.sbb.atlas.api.model.BusinessOrganisationAssociated;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

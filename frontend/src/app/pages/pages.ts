@@ -120,7 +120,6 @@ export class Pages {
     Pages.LIDI,
     Pages.BODI,
     Pages.SERVICE_POINTS,
-    Pages.TTH,
   ];
   public static adminPages: Page[] = [Pages.USER_ADMINISTRATION];
   public static viewablePages: Page[] = this.pages;
