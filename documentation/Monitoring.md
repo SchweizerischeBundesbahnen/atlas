@@ -81,7 +81,7 @@ Here you can explore settings and resources of your cluster and namespace.
 ### Alerts
 
 Currently we set up an [alert](https://sbb-sbb.instana.io/#/config/team/alerting/alerts/yYqJcjocvPYUbHOO) to trigger on various
-events.
+events (Instana: Settings - Team Settings - Alerts).
 This alert is triggered if the desired replicas are set to 0, available replicas is less than desired or pods report a state of '
 not ready' for too long.
 

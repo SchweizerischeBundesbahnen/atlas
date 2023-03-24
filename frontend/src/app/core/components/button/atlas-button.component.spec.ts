@@ -3,7 +3,7 @@ import { AtlasButtonComponent } from './atlas-button.component';
 import { AppTestingModule } from '../../../app.testing.module';
 import { AuthService } from '../../auth/auth.service';
 import { Role } from '../../auth/role';
-import { ApplicationRole, ApplicationType, UserPermissionVersionModel } from '../../../api';
+import { ApplicationRole, ApplicationType, UserPermission } from '../../../api';
 import { AtlasButtonType } from './atlas-button.type';
 import { By } from '@angular/platform-browser';
 
@@ -45,8 +45,8 @@ const authServiceMock: Partial<AuthService> = {
   isAtLeastSupervisor(): boolean {
     return isAtLeastSupervisor;
   },
-  getApplicationUserPermission(applicationType: ApplicationType): UserPermissionVersionModel {
-    return { application: applicationType, role: role, sboids: [] };
+  getApplicationUserPermission(applicationType: ApplicationType): UserPermission {
+    return { application: applicationType, role: role, permissionRestrictions: [] };
   },
 };
 
