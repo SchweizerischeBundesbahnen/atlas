@@ -56,13 +56,13 @@ public class LineService {
     return lineVersionRepository.findById(id);
   }
 
-  @PreAuthorize("@userAdministrationService.hasUserPermissionsToCreate(#businessObject, T(ch.sbb.atlas.kafka.model.user.admin"
+  @PreAuthorize("@businessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#businessObject, T(ch.sbb.atlas.kafka.model.user.admin"
       + ".ApplicationType).LIDI)")
   public LineVersion create(LineVersion businessObject) {
     return save(businessObject);
   }
 
-  @PreAuthorize("@userAdministrationService.hasUserPermissionsToUpdate(#editedVersion, #currentVersions, T(ch.sbb.atlas.kafka"
+  @PreAuthorize("@businessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdate(#editedVersion, #currentVersions, T(ch.sbb.atlas.kafka"
       + ".model.user.admin.ApplicationType).LIDI)")
   public void update(LineVersion currentVersion, LineVersion editedVersion, List<LineVersion> currentVersions) {
     updateVersion(currentVersion, editedVersion);

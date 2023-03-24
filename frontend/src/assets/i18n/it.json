@@ -43,6 +43,7 @@
     "VALID_FROM": "Valido dal",
     "VALID_TO": "Valido fino al",
     "STATUS": "Stato",
+    "CANTONS": "Cantoni",
     "STATUS_TYPES": {
       "DRAFT": "Bozza",
       "VALIDATED": "Convalidato",
@@ -55,6 +56,7 @@
     "CREATE_VERSION": "Aggiungere versione",
     "ROLES": {
       "READER": "Reader",
+      "EXPLICIT_READER": "Explicit Reader",
       "SUPERVISOR": "Supervisor",
       "SUPER_USER": "Super User",
       "WRITER": "Writer",
@@ -189,6 +191,7 @@
   },
   "USER_ADMIN": {
     "SEARCH_FOR_FILTER": "Organizzazioni aziendali e Applicazioni",
+    "SEARCH_FOR_FILTER_CANTON": "Cantoni e applicazioni",
     "NEW": "Inserire nuovo utente",
     "NEW_INFORMATION": "Dettagli del nuovo utente",
     "INFORMATION": "Dettagli utente",
@@ -204,7 +207,8 @@
     "APPLICATION": {
       "LIDI": "Linee e linee parziali",
       "TTFN": "Numeri di campo dell'orario",
-      "BODI": "Organizzazioni imprenditoriali"
+      "BODI": "Organizzazioni imprenditoriali",
+      "TIMETABLE_HEARING": "Audizione dell'orario"
     },
     "ACCOUNT_STATUS_TYPE": {
       "ACTIVE": "Attivo",

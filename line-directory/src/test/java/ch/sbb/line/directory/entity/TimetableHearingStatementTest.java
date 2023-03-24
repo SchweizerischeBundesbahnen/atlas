@@ -3,7 +3,7 @@ package ch.sbb.line.directory.entity;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
-import ch.sbb.atlas.model.SwissCanton;
+import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.line.directory.entity.TimetableHearingStatement.TimetableHearingStatementBuilder;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
@@ -138,6 +138,7 @@ class TimetableHearingStatementTest {
   private TimetableHearingStatementBuilder<?, ?> minimalStatement() {
     return TimetableHearingStatement.builder()
         .timetableYear(2023L)
+        .swissCanton(SwissCanton.BERN)
         .statementStatus(StatementStatus.RECEIVED)
         .statementSender(StatementSender.builder()
             .email("mike@thebike.com")

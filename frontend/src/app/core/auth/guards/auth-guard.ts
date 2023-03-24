@@ -7,7 +7,7 @@ import {
   UrlTree,
 } from '@angular/router';
 import { Observable } from 'rxjs';
-import { AuthService } from './auth.service';
+import { AuthService } from '../auth.service';
 
 // Avoid configuring the guard for the root path as this might cause a race condition.
 @Injectable({

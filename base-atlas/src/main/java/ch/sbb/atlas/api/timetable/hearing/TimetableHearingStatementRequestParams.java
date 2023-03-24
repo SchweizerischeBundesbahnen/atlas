@@ -2,7 +2,7 @@
 package ch.sbb.atlas.api.timetable.hearing;
 
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
-import ch.sbb.atlas.model.SwissCanton;
+import ch.sbb.atlas.kafka.model.SwissCanton;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;

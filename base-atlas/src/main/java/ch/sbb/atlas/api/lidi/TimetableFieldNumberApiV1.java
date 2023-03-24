@@ -48,7 +48,7 @@ public interface TimetableFieldNumberApiV1 {
   List<TimetableFieldNumberVersionModel> getAllVersionsVersioned(@PathVariable String ttfnId);
 
   @PostMapping("/{ttfnId}/revoke")
-  @PreAuthorize("@userAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).TTFN)")
+  @PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).TTFN)")
   List<TimetableFieldNumberVersionModel> revokeTimetableFieldNumber(@PathVariable String ttfnId);
 
   @PostMapping("/versions/{id}")

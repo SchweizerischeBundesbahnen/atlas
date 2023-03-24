@@ -53,7 +53,12 @@ describe('UserAdministrationEditComponent', () => {
     ]);
     userPermissionManagerSpy = jasmine.createSpyObj(
       'UserPermissionManager',
-      ['setSbbUserId', 'setPermissions', 'clearSboidsIfNotWriter', 'emitBoFormResetEvent'],
+      [
+        'setSbbUserId',
+        'setPermissions',
+        'clearPermissionRestrictionsIfNotWriter',
+        'emitBoFormResetEvent',
+      ],
       {
         userPermission: {
           sbbUserId: 'u123456',
@@ -140,7 +145,9 @@ describe('UserAdministrationEditComponent', () => {
 
     component.saveEdits();
 
-    expect(userPermissionManagerSpy.clearSboidsIfNotWriter).toHaveBeenCalledOnceWith();
+    expect(
+      userPermissionManagerSpy.clearPermissionRestrictionsIfNotWriter
+    ).toHaveBeenCalledOnceWith();
     expect(userPermissionManagerSpy.emitBoFormResetEvent).toHaveBeenCalledOnceWith();
     expect(userServiceSpy.updateUserPermission).toHaveBeenCalledOnceWith({
       permissions: [],

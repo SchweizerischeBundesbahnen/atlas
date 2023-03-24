@@ -46,13 +46,13 @@ public class TimetableFieldNumberService {
     return versionRepository.findById(id);
   }
 
-  @PreAuthorize("@userAdministrationService.hasUserPermissionsToCreate(#businessObject, T(ch.sbb.atlas.kafka.model.user.admin"
+  @PreAuthorize("@businessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#businessObject, T(ch.sbb.atlas.kafka.model.user.admin"
       + ".ApplicationType).TTFN)")
   public TimetableFieldNumberVersion create(TimetableFieldNumberVersion businessObject) {
     return save(businessObject);
   }
 
-  @PreAuthorize("@userAdministrationService.hasUserPermissionsToUpdate(#editedVersion, #currentVersions, T(ch.sbb.atlas.kafka"
+  @PreAuthorize("@businessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdate(#editedVersion, #currentVersions, T(ch.sbb.atlas.kafka"
       + ".model.user.admin.ApplicationType).TTFN)")
   public void update(TimetableFieldNumberVersion currentVersion, TimetableFieldNumberVersion editedVersion,
       List<TimetableFieldNumberVersion> currentVersions) {
