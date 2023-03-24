@@ -39,7 +39,7 @@ public class WorkflowController implements WorkflowApiV1 {
   }
 
   @Override
-  @PreAuthorize("@userAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI)")
+  @PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).LIDI)")
   public WorkflowModel examinantCheck(Long id, ExaminantWorkflowCheckModel examinantWorkflowCheckModel) {
     log.info("Checking workflow");
     Workflow workflow = service.examinantCheck(id, examinantWorkflowCheckModel);

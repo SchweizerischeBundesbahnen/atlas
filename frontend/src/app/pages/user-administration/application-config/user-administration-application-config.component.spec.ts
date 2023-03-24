@@ -22,6 +22,8 @@ describe('UserAdministrationApplicationConfigComponent', () => {
         'addSboidToPermission',
         'removeSboidFromPermission',
         'getAvailableApplicationRolesOfApplication',
+        'getPermissionByApplication',
+        'getRestrictionValues',
       ],
       {
         boOfApplicationsSubject$: new BehaviorSubject<{
@@ -30,6 +32,7 @@ describe('UserAdministrationApplicationConfigComponent', () => {
           TTFN: [],
           LIDI: [],
           BODI: [],
+          TIMETABLE_HEARING: [],
         }),
         boFormResetEvent$: of(),
       }
