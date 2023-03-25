@@ -6,20 +6,25 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.model.exception.NotFoundException.FileNotFoundException;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.line.directory.entity.StatementSender;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
 import ch.sbb.line.directory.entity.TimetableHearingStatement.TimetableHearingStatementBuilder;
 import ch.sbb.line.directory.entity.TimetableHearingYear;
+import ch.sbb.line.directory.helper.PdfFiles;
 import ch.sbb.line.directory.repository.TimetableHearingStatementRepository;
 import ch.sbb.line.directory.repository.TimetableHearingYearRepository;
 import ch.sbb.line.directory.service.hearing.TimetableHearingStatementService;
 import ch.sbb.line.directory.service.hearing.TimetableHearingYearService;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.multipart.MultipartFile;
 
 @IntegrationTest
 public class TimetableHearingStatementServiceTest {
@@ -51,6 +56,67 @@ public class TimetableHearingStatementServiceTest {
   void tearDown() {
     timetableHearingStatementRepository.deleteAll();
     timetableHearingYearRepository.deleteAll();
+  }
+
+  @Test
+  void shouldGetHearingStatement() {
+    timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+
+    TimetableHearingStatement statement = buildStatement().build();
+    TimetableHearingStatement createdStatement = timetableHearingStatementService.createHearingStatement(statement, Collections.emptyList());
+
+    TimetableHearingStatement hearingStatement = timetableHearingStatementService.getStatementById(createdStatement.getId());
+
+    assertThat(hearingStatement).isNotNull();
+    assertThat(hearingStatement.getStatementStatus()).isEqualTo(StatementStatus.RECEIVED);
+    assertThat(hearingStatement.getStatement()).isEqualTo(createdStatement.getStatement());
+  }
+
+  @Test
+  void shouldNotGetHearingStatementIfIdIsNotValid() {
+    timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+
+    TimetableHearingStatement statement = buildStatement().build();
+    TimetableHearingStatement createdStatement = timetableHearingStatementService.createHearingStatement(statement, Collections.emptyList());
+
+    assertThatThrownBy(() -> timetableHearingStatementService.getStatementById(createdStatement.getId()+1)).isInstanceOf(
+        IdNotFoundException.class);
+  }
+
+//  @Test
+  void shouldDeleteDocumentFromHearingStatement() {
+    timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+
+    List<MultipartFile> documents = new ArrayList<>();
+    documents.add(PdfFiles.multipartFiles.get(0));
+    documents.add(PdfFiles.multipartFiles.get(1));
+    TimetableHearingStatement statement = buildStatement().build();
+
+    TimetableHearingStatement createdStatement = timetableHearingStatementService.createHearingStatement(statement, documents);
+
+    timetableHearingStatementService.deleteDocument(createdStatement.getId(), PdfFiles.multipartFiles.get(0).getOriginalFilename());
+  }
+
+  @Test
+  void shouldNotDeleteDocumentFromHearingStatementIfIdUnknown() {
+    timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+
+    TimetableHearingStatement statement = buildStatement().build();
+    TimetableHearingStatement createdStatement = timetableHearingStatementService.createHearingStatement(statement, Collections.emptyList());
+
+    assertThatThrownBy(() -> timetableHearingStatementService.deleteDocument(createdStatement.getId(), PdfFiles.multipartFiles.get(0).getOriginalFilename())).isInstanceOf(
+        FileNotFoundException.class);
+  }
+
+  @Test
+  void shouldNotGetHearingStatementIfIdIsNotValissd() {
+    timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+
+    TimetableHearingStatement statement = buildStatement().build();
+    TimetableHearingStatement createdStatement = timetableHearingStatementService.createHearingStatement(statement, Collections.emptyList());
+
+    assertThatThrownBy(() -> timetableHearingStatementService.getStatementById(createdStatement.getId()+1)).isInstanceOf(
+        IdNotFoundException.class);
   }
 
   @Test
