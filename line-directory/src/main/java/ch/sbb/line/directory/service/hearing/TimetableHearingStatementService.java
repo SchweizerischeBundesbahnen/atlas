@@ -2,7 +2,7 @@ package ch.sbb.line.directory.service.hearing;
 
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
-import ch.sbb.atlas.model.exception.NotFoundException.FileFoundException;
+import ch.sbb.atlas.model.exception.NotFoundException.FileNotFoundException;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.line.directory.entity.StatementDocument;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
@@ -50,7 +50,7 @@ public class TimetableHearingStatementService {
         if (statementDocument.isPresent()) {
             return pdfsUploadAmazonService.downloadPdfFile(id.toString(), filename);
         } else {
-            throw new FileFoundException(filename);
+            throw new FileNotFoundException(filename);
         }
     }
 
@@ -87,12 +87,18 @@ public class TimetableHearingStatementService {
 
             documentsValidationService.validateAllDocsArePdf(newFiles);
             Set<StatementDocument> existingFiles = existingTimetableHearingStatement.getDocuments();
-            documentsValidationService.validateMaxFiles(newFiles.size(), existingFiles.size());
-            List<Long> existingDocsSizes = existingFiles.stream()
-                .map(StatementDocument::getFileSize)
-                .toList();
-            documentsValidationService.validateMaxFilesSize(newFiles, existingDocsSizes);
-            documentsValidationService.checkOverlappingFileNames(newFiles, existingFiles);
+            if (existingFiles != null && !existingFiles.isEmpty()) {
+                documentsValidationService.validateMaxFiles(newFiles.size(), existingFiles.size());
+                List<Long> existingDocsSizes = existingFiles.stream()
+                    .map(StatementDocument::getFileSize)
+                    .toList();
+                documentsValidationService.validateMaxFilesSize(newFiles, existingDocsSizes);
+                documentsValidationService.checkOverlappingFileNames(newFiles, existingFiles);
+            } else {
+                documentsValidationService.validateMaxFiles(newFiles.size(), 0);
+                documentsValidationService.validateMaxFilesSize(newFiles, Collections.emptyList());
+                documentsValidationService.checkOverlappingFileNames(newFiles, Collections.emptySet());
+            }
 
             updatedObject = updateObject(updatingTimetableHearingStatement, existingTimetableHearingStatement);
             addFilesToStatement(documents, updatedObject);
@@ -111,7 +117,7 @@ public class TimetableHearingStatementService {
         if (statementDocument.isPresent()) {
             pdfsUploadAmazonService.deletePdfFile(id.toString(), filename);
         } else {
-            throw new FileFoundException(filename);
+            throw new FileNotFoundException(filename);
         }
     }
 
@@ -155,5 +161,18 @@ public class TimetableHearingStatementService {
                 .fileSize(multipartFile.getSize())
                 .build()));
         }
+    }
+
+    private void addFilesToStatement2(List<MultipartFile> documents, TimetableHearingStatement statement) {
+        List<StatementDocument> statementDocuments = new ArrayList<>();
+        if (documents != null) {
+            log.info("Statement {}, adding {} documents", statement.getId() == null ? "new" : statement.getId(), documents.size());
+            documents.forEach(multipartFile ->
+                statementDocuments.add
+                    (StatementDocument.builder().statement(statement).fileName(multipartFile.getOriginalFilename()).fileSize(multipartFile.getSize()).build())
+            );
+        }
+        Set targetSet = Set.copyOf(statementDocuments);
+        statement.setDocuments(targetSet);
     }
 }
