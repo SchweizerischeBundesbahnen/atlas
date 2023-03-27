@@ -66,7 +66,7 @@ public class TimetableHearingStatementController implements TimetableHearingStat
 
   @Override
   public void deleteStatementDocument(Long id, String filename) {
-    timetableHearingStatementService.deleteStatementDocument(id, filename);
+    timetableHearingStatementService.deleteStatementDocument(timetableHearingStatementService.getTimetableHearingStatementById(id), filename);
   }
 
   @Override

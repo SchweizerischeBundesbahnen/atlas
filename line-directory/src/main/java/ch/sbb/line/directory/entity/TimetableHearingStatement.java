@@ -1,6 +1,7 @@
 package ch.sbb.line.directory.entity;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.api.model.CantonAssociated;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingConstants;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.kafka.model.SwissCanton;
@@ -36,7 +37,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @FieldNameConstants
 @Entity(name = "timetable_hearing_statement")
-public class TimetableHearingStatement extends BaseEntity {
+public class TimetableHearingStatement extends BaseEntity implements CantonAssociated {
 
   private static final String VERSION_SEQ = "timetable_hearing_statement_seq";
 
