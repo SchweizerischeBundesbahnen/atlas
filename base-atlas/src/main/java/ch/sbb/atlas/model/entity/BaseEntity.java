@@ -49,14 +49,14 @@ public abstract class BaseEntity {
 
   @PrePersist
   public void onPrePersist() {
-    String sbbUid = UserService.getSbbUid();
+    String sbbUid = UserService.getUserIdentifier();
     setCreator(sbbUid);
     setEditor(sbbUid);
   }
 
   @PreUpdate
   public void onPreUpdate() {
-    setEditor(UserService.getSbbUid());
+    setEditor(UserService.getUserIdentifier());
   }
 
 }
