@@ -36,4 +36,5 @@ public class TimetableHearingPdfsAmazonService {
   public void deletePdfFile(String dirName, String fileName) {
     amazonService.deleteFile(AmazonBucket.HEARING_DOCUMENT, dirName + "/" + fileName);
   }
+
 }
