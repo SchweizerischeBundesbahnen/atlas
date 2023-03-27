@@ -6,6 +6,7 @@ import {
   SwissCanton,
   TimetableHearingService,
   TimetableHearingStatement,
+  TimetableHearingStatementResponsibleTransportCompany,
   TimetableHearingYear,
   UserAdministrationService,
 } from '../../../api';
@@ -35,8 +36,12 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
 
   tableColumns: TableColumn<TimetableHearingStatement>[] = [
     { headerTitle: 'TTH.STATEMENT_STATUS', value: 'statementStatus' },
-    { headerTitle: 'TTH.SWISS_CANTON', value: 'swissCanton' },
-    { headerTitle: 'TTH.TRANSPORT_COMPANY', value: 'responsibleTransportCompanies' },
+    { headerTitle: 'TTH.SWISS_CANTON', value: 'swissCanton', callback: this.mapToShortCanton },
+    {
+      headerTitle: 'TTH.TRANSPORT_COMPANY',
+      value: 'responsibleTransportCompanies',
+      callback: this.mapToCommaSeparatedValue,
+    },
     { headerTitle: 'TTH.TTFNID', value: 'ttfnid' },
     { headerTitle: 'TTH.TIMETABLE_FIELD_NUMBER', value: 'timetableFieldNumber' },
     { headerTitle: 'COMMON.EDIT_ON', value: 'editionDate', formatAsDate: true },
@@ -207,5 +212,18 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
         throw new Error('No canton found with name: ' + this.cantonShort);
       }
     }
+  }
+
+  private mapToCommaSeparatedValue(
+    responsibleTransportCompanies: Array<TimetableHearingStatementResponsibleTransportCompany>
+  ) {
+    return responsibleTransportCompanies
+      .map((value) => value.abbreviation)
+      .sort()
+      .join(', ');
+  }
+
+  private mapToShortCanton(canton: SwissCanton) {
+    return Cantons.fromSwissCanton(canton)?.short;
   }
 }
