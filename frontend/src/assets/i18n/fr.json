@@ -541,6 +541,7 @@
     },
     "SELECT_CANTON": "Sélectionner le canton",
     "SELECT_YEAR": "Sélectionner l'année",
+    "TABLE_RESULT_HEADING": "{{totalCount}} Stellungnahmen für Fahrplanjahr {{year}}",
     "OPEN": "{{canton}} ouvrir",
     "STATEMENT_STATUS": "Statut",
     "SWISS_CANTON": "Canton",
