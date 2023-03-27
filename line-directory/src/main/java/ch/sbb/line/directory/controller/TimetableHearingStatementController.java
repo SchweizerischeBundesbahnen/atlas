@@ -30,81 +30,73 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class TimetableHearingStatementController implements TimetableHearingStatementApiV1 {
 
-    private final TimetableHearingStatementService timetableHearingStatementService;
-    private final TimetableHearingYearService timetableHearingYearService;
-    private final TimetableFieldNumberResolverService timetableFieldNumberResolverService;
-    private final ResponsibleTransportCompaniesResolverService responsibleTransportCompaniesResolverService;
+  private final TimetableHearingStatementService timetableHearingStatementService;
+  private final TimetableHearingYearService timetableHearingYearService;
+  private final TimetableFieldNumberResolverService timetableFieldNumberResolverService;
+  private final ResponsibleTransportCompaniesResolverService responsibleTransportCompaniesResolverService;
 
-    @Override
-    public Container<TimetableHearingStatementModel> getStatements(Pageable pageable,
-        TimetableHearingStatementRequestParams statementRequestParams) {
-        Page<TimetableHearingStatement> hearingStatements = timetableHearingStatementService.getHearingStatements(
-            TimetableHearingStatementSearchRestrictions.builder()
-                .pageable(pageable)
-                .statementRequestParams(statementRequestParams).build());
-        return Container.<TimetableHearingStatementModel>builder()
-            .objects(hearingStatements.stream().map(TimeTableHearingStatementMapper::toModel).toList())
-            .totalCount(hearingStatements.getTotalElements())
-            .build();
+  @Override
+  public Container<TimetableHearingStatementModel> getStatements(Pageable pageable,
+    TimetableHearingStatementRequestParams statementRequestParams) {
+    Page<TimetableHearingStatement> hearingStatements = timetableHearingStatementService.getHearingStatements(
+      TimetableHearingStatementSearchRestrictions.builder()
+        .pageable(pageable)
+        .statementRequestParams(statementRequestParams).build());
+    return Container.<TimetableHearingStatementModel>builder()
+      .objects(hearingStatements.stream().map(TimeTableHearingStatementMapper::toModel).toList())
+      .totalCount(hearingStatements.getTotalElements())
+      .build();
+  }
+
+  @Override
+  public TimetableHearingStatementModel getStatement(Long id) {
+    return TimeTableHearingStatementMapper.toModel(timetableHearingStatementService.getTimetableHearingStatementById(id));
+  }
+
+  @Override
+  public Resource getStatementDocument(Long id, String filename) {
+    File file = timetableHearingStatementService.getStatementDocument(id, filename);
+    try {
+      return new InputStreamResource(new FileInputStream(file));
+    } catch (IOException e) {
+      throw new RuntimeException(e);
     }
+  }
 
-    @Override
-    public TimetableHearingStatementModel getStatement(Long id) {
-        return TimeTableHearingStatementMapper.toModel(timetableHearingStatementService.getStatementById(id));
-    }
+  @Override
+  public void deleteStatementDocument(Long id, String filename) {
+    timetableHearingStatementService.deleteDocument(id, filename);
+  }
 
-    @Override
-    public Resource getStatementDocument(Long id, String filename) {
-        File file = timetableHearingStatementService.getStatementDocument(id, filename);
-        try {
-            return new InputStreamResource(new FileInputStream(file));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+  @Override
+  public TimetableHearingStatementModel createStatement(TimetableHearingStatementModel statement, List<MultipartFile> documents) {
+    return timetableHearingStatementService.createHearingStatement(statement, documents);
+  }
 
-    @Override
-    public void deleteStatementDocument(Long id, String filename) {
-        timetableHearingStatementService.deleteDocument(id, filename);
-    }
+  @Override
+  public TimetableHearingStatementModel createStatementExternal(TimetableHearingStatementModel statement,
+    List<MultipartFile> documents) {
+    String resolvedTtfnid =
+      timetableFieldNumberResolverService.resolveTtfnid(statement.getTimetableFieldNumber());
+    statement.setTtfnid(resolvedTtfnid);
 
-    @Override
-    public TimetableHearingStatementModel createStatement(TimetableHearingStatementModel statement, List<MultipartFile> documents) {
-        TimetableHearingStatement statementToCreate = TimeTableHearingStatementMapper.toEntity(statement);
-        TimetableHearingStatement hearingStatement;
-        hearingStatement = timetableHearingStatementService.createHearingStatement(statementToCreate, documents);
-        return TimeTableHearingStatementMapper.toModel(hearingStatement);
-    }
+    List<TimetableHearingStatementResponsibleTransportCompanyModel> responsibleTransportCompanies =
+      responsibleTransportCompaniesResolverService.resolveResponsibleTransportCompanies(
+        resolvedTtfnid);
+    statement.setResponsibleTransportCompanies(responsibleTransportCompanies);
 
-    @Override
-    public TimetableHearingStatementModel createStatementExternal(TimetableHearingStatementModel statement,
-        List<MultipartFile> documents) {
-        String resolvedTtfnid =
-            timetableFieldNumberResolverService.resolveTtfnid(statement.getTimetableFieldNumber());
-        statement.setTtfnid(resolvedTtfnid);
+    Long activeHearingYear = timetableHearingYearService.getActiveHearingYear().getTimetableYear();
+    statement.setTimetableYear(activeHearingYear);
 
-        List<TimetableHearingStatementResponsibleTransportCompanyModel> responsibleTransportCompanies =
-            responsibleTransportCompaniesResolverService.resolveResponsibleTransportCompanies(
-                resolvedTtfnid);
-        statement.setResponsibleTransportCompanies(responsibleTransportCompanies);
+    return createStatement(statement, documents);
+  }
 
-        Long activeHearingYear = timetableHearingYearService.getActiveHearingYear().getTimetableYear();
-        statement.setTimetableYear(activeHearingYear);
+  @Override
+  public TimetableHearingStatementModel updateHearingStatement(Long id, TimetableHearingStatementModel statement, List<MultipartFile> documents) {
 
-        return createStatement(statement, documents);
-    }
+    statement.setId(id);
 
-    @Override
-    public TimetableHearingStatementModel updateHearingStatement(Long id, TimetableHearingStatementModel statement,
-        List<MultipartFile> documents) {
-        TimetableHearingStatement hearingStatement;
-
-        TimetableHearingStatement timetableHearingStatementUpdate = TimeTableHearingStatementMapper.toEntity(statement);
-
-        hearingStatement = timetableHearingStatementService.updateHearingStatement(timetableHearingStatementUpdate,
-            timetableHearingStatementService.getStatementById(id), documents);
-
-        return TimeTableHearingStatementMapper.toModel(hearingStatement);
-    }
-
+    TimetableHearingStatement hearingStatement = timetableHearingStatementService.updateHearingStatement(statement, documents);
+    return TimeTableHearingStatementMapper.toModel(hearingStatement);
+  }
 }

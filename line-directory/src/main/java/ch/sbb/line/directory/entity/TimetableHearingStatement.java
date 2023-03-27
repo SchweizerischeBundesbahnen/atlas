@@ -73,8 +73,9 @@ public class TimetableHearingStatement extends BaseEntity {
   @Size(max = AtlasFieldLengths.LENGTH_5000)
   private String statement;
 
+  @ToString.Exclude
   @Size(max = TimetableHearingConstants.MAX_DOCUMENTS)
-  @OneToMany(mappedBy = "statement", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "statement", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
   private Set<StatementDocument> documents;
 
   // FoT Justification field for comments
@@ -87,4 +88,27 @@ public class TimetableHearingStatement extends BaseEntity {
     setCreator(sbbUid);
     setEditor(sbbUid);
   }
+
+  public void removeDocument(String documentFilename) {
+    if (documentFilename != null) {
+      var optionalStatementDocument = documents.stream().filter(doc -> doc.getFileName().equals(documentFilename)).findFirst();
+      if (optionalStatementDocument.isPresent()) {
+        var statementDocument = optionalStatementDocument.get();
+        documents.remove(statementDocument);
+      }
+    }
+  }
+
+  public void addDocument(StatementDocument statementDocument) {
+    statementDocument.setStatement(this);
+    documents.add(statementDocument);
+  }
+
+  public boolean checkIfStatementDocumentExists(String documentFilename) {
+    if (documentFilename != null) {
+      return documents.stream().anyMatch(document -> documentFilename.equals(document.getFileName()));
+    }
+    return false;
+  }
+
 }

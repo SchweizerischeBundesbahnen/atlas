@@ -48,371 +48,350 @@ import org.springframework.mock.web.MockMultipartFile;
 
 public class TimetableHearingStatementControllerApiTest extends BaseControllerApiTest {
 
-    private static final long YEAR = 2022L;
-    private static final TimetableHearingYearModel TIMETABLE_HEARING_YEAR = TimetableHearingYearModel.builder()
-        .timetableYear(YEAR)
-        .hearingFrom(LocalDate.of(2021, 1, 1))
-        .hearingTo(LocalDate.of(2021, 2, 1))
-        .build();
-    public static final String TTFNID = "ch:1:ttfnid:123123123";
-    public static final String SBOID = "ch:1:sboid:123451";
+  private static final long YEAR = 2022L;
+  private static final TimetableHearingYearModel TIMETABLE_HEARING_YEAR = TimetableHearingYearModel.builder()
+    .timetableYear(YEAR)
+    .hearingFrom(LocalDate.of(2021, 1, 1))
+    .hearingTo(LocalDate.of(2021, 2, 1))
+    .build();
+  public static final String TTFNID = "ch:1:ttfnid:123123123";
+  public static final String SBOID = "ch:1:sboid:123451";
 
-    @Autowired
-    private TimetableHearingYearRepository timetableHearingYearRepository;
+  @Autowired
+  private TimetableHearingYearRepository timetableHearingYearRepository;
 
-    @Autowired
-    private TimetableHearingYearController timetableHearingYearController;
+  @Autowired
+  private TimetableHearingYearController timetableHearingYearController;
 
-    @Autowired
-    private TimetableHearingStatementController timetableHearingStatementController;
+  @Autowired
+  private TimetableHearingStatementController timetableHearingStatementController;
 
-    @Autowired
-    private TimetableHearingStatementRepository timetableHearingStatementRepository;
+  @Autowired
+  private TimetableHearingStatementRepository timetableHearingStatementRepository;
 
-    @MockBean
-    private TimetableFieldNumberService timetableFieldNumberService;
+  @MockBean
+  private TimetableFieldNumberService timetableFieldNumberService;
 
-    @MockBean
-    private TransportCompanyClient transportCompanyClient;
+  @MockBean
+  private TransportCompanyClient transportCompanyClient;
 
-    @BeforeEach
-    void setUp() {
-        timetableHearingYearController.createHearingYear(TIMETABLE_HEARING_YEAR);
+  @BeforeEach
+  void setUp() {
+    timetableHearingYearController.createHearingYear(TIMETABLE_HEARING_YEAR);
 
-        TimetableFieldNumber returnedTimetableFieldNumber = TimetableFieldNumber.builder()
-            .number("1.1")
-            .ttfnid(TTFNID)
-            .businessOrganisation(SBOID)
-            .validFrom(LocalDate.of(2000, 1, 1))
-            .validTo(LocalDate.of(9999, 12, 31))
-            .build();
-        when(timetableFieldNumberService.getVersionsSearched(any())).thenReturn(new PageImpl<>(List.of(returnedTimetableFieldNumber),
-            Pageable.unpaged(), 1L));
+    TimetableFieldNumber returnedTimetableFieldNumber = TimetableFieldNumber.builder()
+      .number("1.1")
+      .ttfnid(TTFNID)
+      .businessOrganisation(SBOID)
+      .validFrom(LocalDate.of(2000, 1, 1))
+      .validTo(LocalDate.of(9999, 12, 31))
+      .build();
+    when(timetableFieldNumberService.getVersionsSearched(any())).thenReturn(new PageImpl<>(List.of(returnedTimetableFieldNumber),
+      Pageable.unpaged(), 1L));
 
-        TimetableFieldNumberVersion returnedTimetableFieldNumberVersion = TimetableFieldNumberVersion.builder()
-            .number("1.1")
-            .ttfnid(TTFNID)
-            .businessOrganisation(SBOID)
-            .validFrom(LocalDate.of(2000, 1, 1))
-            .validTo(LocalDate.of(9999, 12, 31))
-            .build();
-        when(timetableFieldNumberService.getAllVersionsVersioned(TTFNID)).thenReturn(List.of(returnedTimetableFieldNumberVersion));
+    TimetableFieldNumberVersion returnedTimetableFieldNumberVersion = TimetableFieldNumberVersion.builder()
+      .number("1.1")
+      .ttfnid(TTFNID)
+      .businessOrganisation(SBOID)
+      .validFrom(LocalDate.of(2000, 1, 1))
+      .validTo(LocalDate.of(9999, 12, 31))
+      .build();
+    when(timetableFieldNumberService.getAllVersionsVersioned(TTFNID)).thenReturn(List.of(returnedTimetableFieldNumberVersion));
 
-        TransportCompanyModel transportCompanyModel = TransportCompanyModel.builder()
-            .id(1L)
-            .number("#0001")
-            .abbreviation("SBB")
-            .businessRegisterName("Schweizerische Bundesbahnen SBB")
-            .build();
-        when(transportCompanyClient.getTransportCompaniesBySboid(SBOID)).thenReturn(List.of(transportCompanyModel));
-    }
+    TransportCompanyModel transportCompanyModel = TransportCompanyModel.builder()
+      .id(1L)
+      .number("#0001")
+      .abbreviation("SBB")
+      .businessRegisterName("Schweizerische Bundesbahnen SBB")
+      .build();
+    when(transportCompanyClient.getTransportCompaniesBySboid(SBOID)).thenReturn(List.of(transportCompanyModel));
+  }
 
-    @AfterEach
-    void tearDown() {
-        timetableHearingYearRepository.deleteAll();
-        timetableHearingStatementRepository.deleteAll();
-    }
+  @AfterEach
+  void tearDown() {
+    timetableHearingYearRepository.deleteAll();
+    timetableHearingStatementRepository.deleteAll();
+  }
 
-    @Test
-    void shouldCreateStatementWithoutDocuments() throws Exception {
-        TimetableHearingStatementModel statement = TimetableHearingStatementModel.builder()
-            .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
-            .swissCanton(SwissCanton.BERN)
-            .ttfnid("ch:1:ttfnid:12341241")
-            .statementSender(TimetableHearingStatementSenderModel.builder()
-                .email("fabienne.mueller@sbb.ch")
-                .build())
-            .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
-            .build();
+  @Test
+  void shouldCreateStatementWithoutDocuments() throws Exception {
+    TimetableHearingStatementModel statement = TimetableHearingStatementModel.builder()
+      .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .swissCanton(SwissCanton.BERN)
+      .ttfnid("ch:1:ttfnid:12341241")
+      .statementSender(TimetableHearingStatementSenderModel.builder()
+        .email("fabienne.mueller@sbb.ch")
+        .build())
+      .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
+      .build();
 
-        MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
-            MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
+    MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
+      MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
 
-        mvc.perform(multipart(HttpMethod.POST, "/v1/timetable-hearing/statements")
-                .file(statementJson))
-            .andDo(print())
-            .andExpect(status().isCreated())
-            .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
-            .andExpect(jsonPath("$." + Fields.ttfnid, is("ch:1:ttfnid:12341241")))
-            .andExpect(jsonPath("$." + Fields.documents, hasSize(0)));
-    }
+    mvc.perform(multipart(HttpMethod.POST, "/v1/timetable-hearing/statements")
+        .file(statementJson))
+      .andDo(print())
+      .andExpect(status().isCreated())
+      .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
+      .andExpect(jsonPath("$." + Fields.ttfnid, is("ch:1:ttfnid:12341241")))
+      .andExpect(jsonPath("$." + Fields.documents, hasSize(0)));
+  }
 
-    @Test
-    void shouldReportInvalidJsonInStatementWithoutDocuments() throws Exception {
-        TimetableHearingStatementModel statement = TimetableHearingStatementModel.builder()
-            .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
-            .swissCanton(SwissCanton.BERN)
-            .statementSender(TimetableHearingStatementSenderModel.builder()
-                .build())
-            .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
-            .build();
+  @Test
+  void shouldReportInvalidJsonInStatementWithoutDocuments() throws Exception {
+    TimetableHearingStatementModel statement = TimetableHearingStatementModel.builder()
+      .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .swissCanton(SwissCanton.BERN)
+      .statementSender(TimetableHearingStatementSenderModel.builder()
+        .build())
+      .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
+      .build();
 
-        MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
-            MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
+    MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
+      MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
 
-        mvc.perform(multipart(HttpMethod.POST, "/v1/timetable-hearing/statements")
-                .file(statementJson))
-            .andExpect(status().isBadRequest());
-    }
+    mvc.perform(multipart(HttpMethod.POST, "/v1/timetable-hearing/statements")
+        .file(statementJson))
+      .andExpect(status().isBadRequest());
+  }
 
-    @Test
-    void shouldCreateStatementWithTwoDocuments() throws Exception {
-        TimetableHearingStatementModel statement = TimetableHearingStatementModel.builder()
-            .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
-            .swissCanton(SwissCanton.BERN)
-            .statementSender(TimetableHearingStatementSenderModel.builder()
-                .email("fabienne.mueller@sbb.ch")
-                .build())
-            .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
-            .build();
+  @Test
+  void shouldCreateStatementWithTwoDocuments() throws Exception {
+    TimetableHearingStatementModel statement = TimetableHearingStatementModel.builder()
+      .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .swissCanton(SwissCanton.BERN)
+      .statementSender(TimetableHearingStatementSenderModel.builder()
+        .email("fabienne.mueller@sbb.ch")
+        .build())
+      .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
+      .build();
 
-        MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null, MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
+    MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null, MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
 
-        mvc.perform(multipart(HttpMethod.POST, "/v1/timetable-hearing/statements")
-                .file(statementJson)
-                .file(new MockMultipartFile(multipartFiles.get(0).getName(), multipartFiles.get(0).getOriginalFilename(), multipartFiles.get(0).getContentType(), multipartFiles.get(0).getBytes()))
-                .file(
-                    new MockMultipartFile(multipartFiles.get(1).getName(), multipartFiles.get(1).getOriginalFilename(), multipartFiles.get(1).getContentType(), multipartFiles.get(1).getBytes())))
-            .andExpect(status().isCreated())
-            .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
-            .andExpect(jsonPath("$." + Fields.documents, hasSize(2)));
-    }
+    mvc.perform(multipart(HttpMethod.POST, "/v1/timetable-hearing/statements")
+        .file(statementJson)
+        .file(new MockMultipartFile(multipartFiles.get(0).getName(), multipartFiles.get(0).getOriginalFilename(), multipartFiles.get(0).getContentType(), multipartFiles.get(0).getBytes()))
+        .file(
+          new MockMultipartFile(multipartFiles.get(1).getName(), multipartFiles.get(1).getOriginalFilename(), multipartFiles.get(1).getContentType(), multipartFiles.get(1).getBytes())))
+      .andExpect(status().isCreated())
+      .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
+      .andExpect(jsonPath("$." + Fields.documents, hasSize(2)));
+  }
 
-    @Test
-    void shouldFailCreatingStatementWithFourDocuments() throws Exception {
-        TimetableHearingStatementModel statement = TimetableHearingStatementModel.builder()
-            .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
-            .statementSender(TimetableHearingStatementSenderModel.builder()
-                .email("fabienne.mueller@sbb.ch")
-                .build())
-            .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
-            .build();
+  @Test
+  void shouldFailCreatingStatementWithFourDocuments() throws Exception {
+    TimetableHearingStatementModel statement = TimetableHearingStatementModel.builder()
+      .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+      .statementSender(TimetableHearingStatementSenderModel.builder()
+        .email("fabienne.mueller@sbb.ch")
+        .build())
+      .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
+      .build();
 
-        MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null, MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
+    MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null, MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
 
-        mvc.perform(multipart(HttpMethod.POST, "/v1/timetable-hearing/statements")
-                .file(statementJson)
-                .file(new MockMultipartFile(multipartFiles.get(0).getName(), multipartFiles.get(0).getOriginalFilename(), multipartFiles.get(0).getContentType(), multipartFiles.get(0).getBytes()))
-                .file(new MockMultipartFile(multipartFiles.get(1).getName(), multipartFiles.get(1).getOriginalFilename(), multipartFiles.get(1).getContentType(), multipartFiles.get(1).getBytes()))
-                .file(new MockMultipartFile(multipartFiles.get(2).getName(), multipartFiles.get(2).getOriginalFilename(), multipartFiles.get(2).getContentType(), multipartFiles.get(2).getBytes()))
-                .file(new MockMultipartFile(multipartFiles.get(3).getName(), multipartFiles.get(3).getOriginalFilename(), multipartFiles.get(3).getContentType(), multipartFiles.get(3).getBytes()))
-            )
-            .andDo(print())
-            .andExpect(status().isBadRequest())
-            .andExpect(result -> assertTrue(result.getResolvedException() instanceof PdfDocumentConstraintViolationException))
-            .andExpect(
-                result -> assertEquals("Overall number of documents is: 4 which exceeds the number of allowed documents of 3.", Objects.requireNonNull(result.getResolvedException()).getMessage()));
-    }
+    mvc.perform(multipart(HttpMethod.POST, "/v1/timetable-hearing/statements")
+        .file(statementJson)
+        .file(new MockMultipartFile(multipartFiles.get(0).getName(), multipartFiles.get(0).getOriginalFilename(), multipartFiles.get(0).getContentType(), multipartFiles.get(0).getBytes()))
+        .file(new MockMultipartFile(multipartFiles.get(1).getName(), multipartFiles.get(1).getOriginalFilename(), multipartFiles.get(1).getContentType(), multipartFiles.get(1).getBytes()))
+        .file(new MockMultipartFile(multipartFiles.get(2).getName(), multipartFiles.get(2).getOriginalFilename(), multipartFiles.get(2).getContentType(), multipartFiles.get(2).getBytes()))
+        .file(new MockMultipartFile(multipartFiles.get(3).getName(), multipartFiles.get(3).getOriginalFilename(), multipartFiles.get(3).getContentType(), multipartFiles.get(3).getBytes()))
+      )
+      .andDo(print())
+      .andExpect(status().isBadRequest())
+      .andExpect(result -> assertTrue(result.getResolvedException() instanceof PdfDocumentConstraintViolationException))
+      .andExpect(
+        result -> assertEquals("Overall number of documents is: 4 which exceeds the number of allowed documents of 3.", Objects.requireNonNull(result.getResolvedException()).getMessage()));
+  }
 
-    @Test
-    void shouldCreateStatementExternalFromSkiWeb() throws Exception {
-        timetableHearingYearController.startHearingYear(YEAR);
-        String statement = """
-             {
-             	"statement": "I need some more busses please.",
-             	"statementSender": {
-             		"email": "maurer@post.ch",
-             		"firstName": "Fabienne",
-             		"lastName": "Maurer",
-             		"organisation": "Post AG",
-             		"street": "Bahnhofstrasse 12",
-             		"zip": 3000,
-             		"city": "Bern"
-             	},
-             	"timetableFieldNumber": "1.1",
-             	"swissCanton": "BERN",
-             	"stopPlace": "Bern, Wyleregg"
-             }
-            """;
-        MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
-            MediaType.APPLICATION_JSON_VALUE, statement);
+  @Test
+  void shouldCreateStatementExternalFromSkiWeb() throws Exception {
+    timetableHearingYearController.startHearingYear(YEAR);
+    String statement = """
+       {
+       	"statement": "I need some more busses please.",
+       	"statementSender": {
+       		"email": "maurer@post.ch",
+       		"firstName": "Fabienne",
+       		"lastName": "Maurer",
+       		"organisation": "Post AG",
+       		"street": "Bahnhofstrasse 12",
+       		"zip": 3000,
+       		"city": "Bern"
+       	},
+       	"timetableFieldNumber": "1.1",
+       	"swissCanton": "BERN",
+       	"stopPlace": "Bern, Wyleregg"
+       }
+      """;
+    MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
+      MediaType.APPLICATION_JSON_VALUE, statement);
 
-        mvc.perform(multipart(HttpMethod.POST, "/v1/timetable-hearing/statements/external")
-                .file(statementJson)
-                .file(new MockMultipartFile(multipartFiles.get(0).getName(), multipartFiles.get(0).getOriginalFilename(), multipartFiles.get(0).getContentType(), multipartFiles.get(0).getBytes()))
-                .file(
-                    new MockMultipartFile(multipartFiles.get(1).getName(), multipartFiles.get(1).getOriginalFilename(), multipartFiles.get(1).getContentType(), multipartFiles.get(1).getBytes())))
-            .andExpect(status().isCreated())
-            .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
-            .andExpect(jsonPath("$." + Fields.documents, hasSize(2)))
-            .andExpect(jsonPath("$." + Fields.documents + "[0].id", notNullValue()));
-    }
+    mvc.perform(multipart(HttpMethod.POST, "/v1/timetable-hearing/statements/external")
+        .file(statementJson)
+        .file(new MockMultipartFile(multipartFiles.get(0).getName(), multipartFiles.get(0).getOriginalFilename(), multipartFiles.get(0).getContentType(), multipartFiles.get(0).getBytes()))
+        .file(
+          new MockMultipartFile(multipartFiles.get(1).getName(), multipartFiles.get(1).getOriginalFilename(), multipartFiles.get(1).getContentType(), multipartFiles.get(1).getBytes())))
+      .andExpect(status().isCreated())
+      .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
+      .andExpect(jsonPath("$." + Fields.documents, hasSize(2)))
+      .andExpect(jsonPath("$." + Fields.documents + "[0].id", notNullValue()));
+  }
 
-    @Test
-    void shouldUpdateStatement() throws Exception {
-        TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
-            TimetableHearingStatementModel.builder()
-                .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
-                .swissCanton(SwissCanton.BERN)
-                .statementSender(TimetableHearingStatementSenderModel.builder()
-                    .email("fabienne.mueller@sbb.ch")
-                    .build())
-                .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
-                .build(),
-            Collections.emptyList());
+  @Test
+  void shouldUpdateStatement() throws Exception {
+    TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
+      TimetableHearingStatementModel.builder()
+        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+          .swissCanton(SwissCanton.BERN)
+        .statementSender(TimetableHearingStatementSenderModel.builder()
+          .email("fabienne.mueller@sbb.ch")
+          .build())
+        .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
+        .build(),
+      Collections.emptyList());
 
-        statement.setStatementStatus(StatementStatus.JUNK);
+    statement.setStatementStatus(StatementStatus.JUNK);
 
-        MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
-            MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
+    MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
+      MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
 
-        mvc.perform(multipart(HttpMethod.PUT, "/v1/timetable-hearing/statements/" + statement.getId())
-                .file(statementJson))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.JUNK.toString())))
-            .andExpect(jsonPath("$." + Fields.documents, hasSize(0)));
-    }
+    mvc.perform(multipart(HttpMethod.PUT, "/v1/timetable-hearing/statements/" + statement.getId())
+        .file(statementJson))
+      .andExpect(status().isOk())
+      .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.JUNK.toString())))
+      .andExpect(jsonPath("$." + Fields.documents, hasSize(0)));
+  }
 
-    @Test
-    void shouldAddDocumentsToExistingStatementWithoutDocuments() throws Exception {
-        TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
-            TimetableHearingStatementModel.builder()
-                .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
-                .swissCanton(SwissCanton.BERN)
-                .statementSender(TimetableHearingStatementSenderModel.builder()
-                    .email("fabienne.mueller@sbb.ch")
-                    .build())
-                .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
-                .build(),
-            Collections.emptyList());
+  @Test
+  void shouldAddDocumentsToExistingStatementWithoutDocuments() throws Exception {
+    TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
+      TimetableHearingStatementModel.builder()
+        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+          .swissCanton(SwissCanton.BERN)
+        .statementSender(TimetableHearingStatementSenderModel.builder()
+          .email("fabienne.mueller@sbb.ch")
+          .build())
+        .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
+        .build(),
+      Collections.emptyList());
 
-        MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
-            MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
+    MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
+      MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
 
-        mvc.perform(multipart(HttpMethod.PUT, "/v1/timetable-hearing/statements/" + statement.getId())
-                .file(statementJson)
-                .file(
-                    new MockMultipartFile(multipartFiles.get(2).getName(), multipartFiles.get(2).getOriginalFilename(), multipartFiles.get(2).getContentType(), multipartFiles.get(2).getBytes())))
-            .andDo(print())
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
-            .andExpect(jsonPath("$." + Fields.documents, hasSize(1)));
-    }
+    mvc.perform(multipart(HttpMethod.PUT, "/v1/timetable-hearing/statements/" + statement.getId())
+        .file(statementJson)
+        .file(
+          new MockMultipartFile(multipartFiles.get(2).getName(), multipartFiles.get(2).getOriginalFilename(), multipartFiles.get(2).getContentType(), multipartFiles.get(2).getBytes())))
+      .andDo(print())
+      .andExpect(status().isOk())
+      .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
+      .andExpect(jsonPath("$." + Fields.documents, hasSize(1)));
+  }
 
-    @Test
-    void shouldUpdateStatementWithDocumentsWithAdditionalDocuments() throws Exception {
+  @Test
+  void shouldUpdateStatementWithDocumentsWithAdditionalDocuments() throws Exception {
 
-        TimetableHearingStatementModel timetableHearingStatementModel = TimetableHearingStatementModel.builder()
-            .id(1000L)
-            .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
-            .swissCanton(SwissCanton.BERN)
-            .statementSender(TimetableHearingStatementSenderModel.builder()
-                .email("fabienne.mueller@sbb.ch")
-                .build())
-            .statement("Ich haette gerne mehrere Verbindungen am Abend.")
-            .build();
+    TimetableHearingStatementModel timetableHearingStatementModel = TimetableHearingStatementModel.builder()
+      .id(1000L)
+      .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .swissCanton(SwissCanton.BERN)
+      .statementSender(TimetableHearingStatementSenderModel.builder()
+        .email("fabienne.mueller@sbb.ch")
+        .build())
+      .statement("Ich haette gerne mehrere Verbindungen am Abend.")
+      .build();
 
-        TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
-            timetableHearingStatementModel,
-            List.of(multipartFiles.get(1)));
+    TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
+      timetableHearingStatementModel,
+      List.of(multipartFiles.get(1)));
 
-        MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
-            MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
+    MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
+      MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
 
-        mvc.perform(multipart(HttpMethod.PUT, "/v1/timetable-hearing/statements/" + statement.getId())
-                .file(statementJson)
-                .file(new MockMultipartFile(multipartFiles.get(0).getName(), multipartFiles.get(0).getOriginalFilename(), multipartFiles.get(0).getContentType(), multipartFiles.get(0).getBytes()))
-                .file(
-                    new MockMultipartFile(multipartFiles.get(2).getName(), multipartFiles.get(2).getOriginalFilename(), multipartFiles.get(2).getContentType(), multipartFiles.get(2).getBytes())))
-            .andDo(print())
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
-            .andExpect(jsonPath("$." + Fields.documents, hasSize(3)));
-    }
+    mvc.perform(multipart(HttpMethod.PUT, "/v1/timetable-hearing/statements/" + statement.getId())
+        .file(statementJson)
+        .file(new MockMultipartFile(multipartFiles.get(0).getName(), multipartFiles.get(0).getOriginalFilename(), multipartFiles.get(0).getContentType(), multipartFiles.get(0).getBytes()))
+        .file(
+          new MockMultipartFile(multipartFiles.get(2).getName(), multipartFiles.get(2).getOriginalFilename(), multipartFiles.get(2).getContentType(), multipartFiles.get(2).getBytes())))
+      .andDo(print())
+      .andExpect(status().isOk())
+      .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
+      .andExpect(jsonPath("$." + Fields.documents, hasSize(2)));
+  }
 
-    @Test
-    void shouldGetStatementById() throws Exception {
-        TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
-            TimetableHearingStatementModel.builder()
-                .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
-                .statementSender(TimetableHearingStatementSenderModel.builder()
-                    .email("fabienne.mueller@sbb.ch")
-                    .build())
-                .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
-                .build(),
-            Collections.emptyList());
+  @Test
+  void shouldGetStatementById() throws Exception {
+    TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
+      TimetableHearingStatementModel.builder()
+        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .statementSender(TimetableHearingStatementSenderModel.builder()
+          .email("fabienne.mueller@sbb.ch")
+          .build())
+        .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
+        .build(),
+      Collections.emptyList());
 
-        mvc.perform(get("/v1/timetable-hearing/statements/" + statement.getId()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
-            .andExpect(jsonPath("$." + Fields.documents, hasSize(0)));
-    }
+    mvc.perform(get("/v1/timetable-hearing/statements/" + statement.getId()))
+      .andExpect(status().isOk())
+      .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
+      .andExpect(jsonPath("$." + Fields.documents, hasSize(0)));
+  }
 
-    @Test
-    void shouldGetStatementByHearingYear() throws Exception {
-        TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
-            TimetableHearingStatementModel.builder()
-                .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
-                .swissCanton(SwissCanton.BERN)
-                .statementSender(TimetableHearingStatementSenderModel.builder()
-                    .email("fabienne.mueller@sbb.ch")
-                    .build())
-                .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
-                .build(),
-            Collections.emptyList());
+  @Test
+  void shouldGetStatementByHearingYear() throws Exception {
+    TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
+      TimetableHearingStatementModel.builder()
+        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+          .swissCanton(SwissCanton.BERN)
+        .statementSender(TimetableHearingStatementSenderModel.builder()
+          .email("fabienne.mueller@sbb.ch")
+          .build())
+        .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
+        .build(),
+      Collections.emptyList());
 
-        mvc.perform(get("/v1/timetable-hearing/statements?timetableHearingYear=" + statement.getTimetableYear()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.totalCount", is(1)));
+    mvc.perform(get("/v1/timetable-hearing/statements?timetableHearingYear=" + statement.getTimetableYear()))
+      .andExpect(status().isOk())
+      .andExpect(jsonPath("$.totalCount", is(1)));
 
-        mvc.perform(get("/v1/timetable-hearing/statements?timetableHearingYear=2010"))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.totalCount", is(0)));
-    }
+    mvc.perform(get("/v1/timetable-hearing/statements?timetableHearingYear=2010"))
+      .andExpect(status().isOk())
+      .andExpect(jsonPath("$.totalCount", is(0)));
+  }
 
-    @Test
-    void shouldGetStatementDocumentByDocumentId() throws Exception {
-        TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
-            TimetableHearingStatementModel.builder()
-                .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
-                .statementSender(TimetableHearingStatementSenderModel.builder()
-                    .email("fabienne.mueller@sbb.ch")
-                    .build())
-                .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
-                .build(),
-            List.of(multipartFiles.get(0)));
+  @Test
+  void shouldGetStatementDocumentByDocumentId() throws Exception {
+    TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
+      TimetableHearingStatementModel.builder()
+        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .statementSender(TimetableHearingStatementSenderModel.builder()
+          .email("fabienne.mueller@sbb.ch")
+          .build())
+        .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
+        .build(),
+      List.of(multipartFiles.get(0)));
 
-        mvc.perform(get("/v1/timetable-hearing/statements/" + statement.getId() + "/documents/" + multipartFiles.get(0).getOriginalFilename()))
-            .andDo(print())
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.MULTIPART_FORM_DATA_VALUE));
-    }
+    mvc.perform(get("/v1/timetable-hearing/statements/" + statement.getId() + "/documents/" + multipartFiles.get(0).getOriginalFilename()))
+      .andDo(print())
+      .andExpect(status().isOk())
+      .andExpect(content().contentType(MediaType.APPLICATION_PDF_VALUE));
+  }
 
-    @Test
-    void shouldGetStatementDocumentNotFoundWhenNoDocument() throws Exception {
-        TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
-            TimetableHearingStatementModel.builder()
-                .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
-                .statementSender(TimetableHearingStatementSenderModel.builder()
-                    .email("fabienne.mueller@sbb.ch")
-                    .build())
-                .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
-                .build(),
-            Collections.emptyList());
+  @Test
+  void shouldGetStatementDocumentNotFoundWhenNoDocument() throws Exception {
+    TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
+      TimetableHearingStatementModel.builder()
+        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .statementSender(TimetableHearingStatementSenderModel.builder()
+          .email("fabienne.mueller@sbb.ch")
+          .build())
+        .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
+        .build(),
+      Collections.emptyList());
 
-        mvc.perform(get("/v1/timetable-hearing/statements/" + statement.getId() + "/documents/" + "nonexistingfilename"))
-            .andDo(print())
-            .andExpect(status().isNotFound());
-    }
-
-//    private static MultipartFile getMultipartFile(String pathName) throws IOException {
-//        File file1 = new File(pathName);
-//        FileInputStream input = new FileInputStream(file1);
-//        return new MockMultipartFile("documents",
-//            file1.getName(), "application/pdf", IOUtils.toByteArray(input));
-//    }
-//
-//    public List<MultipartFile> multipartFiles throws IOException {
-//        List<MultipartFile> multipartFiles = new ArrayList<>();
-//        MultipartFile multipartFile = getMultipartFile("src/test/resources/pdf/dummy.pdf");
-//        MultipartFile multipartFile1 = getMultipartFile("src/test/resources/pdf/dummy1.pdf");
-//        MultipartFile multipartFile2 = getMultipartFile("src/test/resources/pdf/dummy2.pdf");
-//        MultipartFile multipartFile3 = getMultipartFile("src/test/resources/pdf/dummy3.pdf");
-//        multipartFiles.add(multipartFile);
-//        multipartFiles.add(multipartFile1);
-//        multipartFiles.add(multipartFile2);
-//        multipartFiles.add(multipartFile3);
-//        return multipartFiles;
-//    }
-
+    mvc.perform(get("/v1/timetable-hearing/statements/" + statement.getId() + "/documents/" + "nonexistingfilename"))
+      .andDo(print())
+      .andExpect(status().isNotFound());
+  }
 }
