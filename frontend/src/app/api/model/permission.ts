@@ -9,22 +9,35 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { ApplicationType } from './applicationType';
+import { CantonPermissionRestrictionModel } from './cantonPermissionRestrictionModel';
+import { ApplicationRole } from './applicationRole';
+import { SboidPermissionRestrictionModel } from './sboidPermissionRestrictionModel';
 
-export interface ServicePointNumber {
+/**
+ * User permissions
+ */
+export interface Permission {
   /**
-   * DiDok-Number formerly known as UIC-Code, combination of uicCountryCode and numberShort. Size: 7
+   * Object creation date
    */
-  number: number;
+  readonly creationDate?: string;
   /**
-   * UicCountryCode, Indicates which country allocated the service point number and is to be interpreted organisationally, not territorially.
+   * User creator
    */
-  uicCountryCode: number;
+  readonly creator?: string;
   /**
-   * NumberShort - 5 chars identifying number. Range: 1-99.999
+   * Last edition date
    */
-  numberShort: number;
+  readonly editionDate?: string;
   /**
-   * Calculated value formed from the numberShort. Range: 0-9
+   * User editor
    */
-  checkDigit: number;
+  readonly editor?: string;
+  role: ApplicationRole;
+  application: ApplicationType;
+  /**
+   * Permission Restrictions
+   */
+  permissionRestrictions: Array<CantonPermissionRestrictionModel | SboidPermissionRestrictionModel>;
 }
