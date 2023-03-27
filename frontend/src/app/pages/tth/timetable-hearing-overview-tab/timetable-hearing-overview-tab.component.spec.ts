@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TimetableHearingOverviewTabComponent } from './timetable-hearing-overview-tab.component';
+import { AppTestingModule } from '../../../app.testing.module';
 
 describe('TimetableHearingOverviewTabComponent', () => {
   let component: TimetableHearingOverviewTabComponent;
@@ -9,6 +10,7 @@ describe('TimetableHearingOverviewTabComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TimetableHearingOverviewTabComponent],
+      imports: [AppTestingModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TimetableHearingOverviewTabComponent);
