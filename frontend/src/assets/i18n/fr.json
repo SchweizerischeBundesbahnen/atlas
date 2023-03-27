@@ -540,6 +540,7 @@
       "DOWNLOAD_CSV": "Download [CSV]"
     },
     "SELECT_CANTON": "Sélectionner le canton",
+    "SELECT_YEAR": "Sélectionner l'année",
     "OPEN": "{{canton}} ouvrir",
     "STATEMENT_STATUS": "Statut",
     "SWISS_CANTON": "Canton",
