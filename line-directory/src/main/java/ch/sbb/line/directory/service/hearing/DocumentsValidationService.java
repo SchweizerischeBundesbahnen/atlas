@@ -1,7 +1,6 @@
 package ch.sbb.line.directory.service.hearing;
 
 import static ch.sbb.atlas.api.timetable.hearing.TimetableHearingConstants.MAX_DOCUMENTS;
-import static ch.sbb.atlas.api.timetable.hearing.TimetableHearingConstants.MAX_DOCUMENTS_SIZE;
 
 import ch.sbb.line.directory.service.exception.PdfDocumentConstraintViolationException;
 import java.io.File;
@@ -33,12 +32,12 @@ public class DocumentsValidationService {
     }
   }
 
-  public void validateMaxSizeOfFiles(List<File> files) {
+  public void validateMaxSizeOfFiles(List<File> files, int maxDocumentsSize) {
     long filesSize = files.stream()
       .map(File::length)
       .mapToLong(Long::longValue)
       .sum();
-    if (filesSize > MAX_DOCUMENTS_SIZE) {
+    if (filesSize > maxDocumentsSize) {
       String exceptionMessage = "The combined size of all documents in bytes is: " + filesSize + " which exceeds the maximum allowed size of 20MB.";
       throw new PdfDocumentConstraintViolationException(exceptionMessage);
     }
