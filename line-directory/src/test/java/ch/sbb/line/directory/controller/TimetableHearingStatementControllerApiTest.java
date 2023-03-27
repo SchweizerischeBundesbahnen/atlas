@@ -119,7 +119,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
   void shouldCreateStatementWithoutDocuments() throws Exception {
     TimetableHearingStatementModel statement = TimetableHearingStatementModel.builder()
       .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
-        .swissCanton(SwissCanton.BERN)
+      .swissCanton(SwissCanton.BERN)
       .ttfnid("ch:1:ttfnid:12341241")
       .statementSender(TimetableHearingStatementSenderModel.builder()
         .email("fabienne.mueller@sbb.ch")
@@ -143,7 +143,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
   void shouldReportInvalidJsonInStatementWithoutDocuments() throws Exception {
     TimetableHearingStatementModel statement = TimetableHearingStatementModel.builder()
       .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
-        .swissCanton(SwissCanton.BERN)
+      .swissCanton(SwissCanton.BERN)
       .statementSender(TimetableHearingStatementSenderModel.builder()
         .build())
       .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
@@ -161,7 +161,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
   void shouldCreateStatementWithTwoDocuments() throws Exception {
     TimetableHearingStatementModel statement = TimetableHearingStatementModel.builder()
       .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
-        .swissCanton(SwissCanton.BERN)
+      .swissCanton(SwissCanton.BERN)
       .statementSender(TimetableHearingStatementSenderModel.builder()
         .email("fabienne.mueller@sbb.ch")
         .build())
@@ -184,6 +184,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
   void shouldFailCreatingStatementWithFourDocuments() throws Exception {
     TimetableHearingStatementModel statement = TimetableHearingStatementModel.builder()
       .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+      .swissCanton(SwissCanton.BERN)
       .statementSender(TimetableHearingStatementSenderModel.builder()
         .email("fabienne.mueller@sbb.ch")
         .build())
@@ -244,7 +245,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
     TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
       TimetableHearingStatementModel.builder()
         .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
-          .swissCanton(SwissCanton.BERN)
+        .swissCanton(SwissCanton.BERN)
         .statementSender(TimetableHearingStatementSenderModel.builder()
           .email("fabienne.mueller@sbb.ch")
           .build())
@@ -269,7 +270,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
     TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
       TimetableHearingStatementModel.builder()
         .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
-          .swissCanton(SwissCanton.BERN)
+        .swissCanton(SwissCanton.BERN)
         .statementSender(TimetableHearingStatementSenderModel.builder()
           .email("fabienne.mueller@sbb.ch")
           .build())
@@ -296,7 +297,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
     TimetableHearingStatementModel timetableHearingStatementModel = TimetableHearingStatementModel.builder()
       .id(1000L)
       .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
-        .swissCanton(SwissCanton.BERN)
+      .swissCanton(SwissCanton.BERN)
       .statementSender(TimetableHearingStatementSenderModel.builder()
         .email("fabienne.mueller@sbb.ch")
         .build())
@@ -326,6 +327,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
     TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
       TimetableHearingStatementModel.builder()
         .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .swissCanton(SwissCanton.BERN)
         .statementSender(TimetableHearingStatementSenderModel.builder()
           .email("fabienne.mueller@sbb.ch")
           .build())
@@ -344,7 +346,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
     TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
       TimetableHearingStatementModel.builder()
         .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
-          .swissCanton(SwissCanton.BERN)
+        .swissCanton(SwissCanton.BERN)
         .statementSender(TimetableHearingStatementSenderModel.builder()
           .email("fabienne.mueller@sbb.ch")
           .build())
@@ -366,6 +368,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
     TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
       TimetableHearingStatementModel.builder()
         .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .swissCanton(SwissCanton.BERN)
         .statementSender(TimetableHearingStatementSenderModel.builder()
           .email("fabienne.mueller@sbb.ch")
           .build())
@@ -383,6 +386,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
     TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
       TimetableHearingStatementModel.builder()
         .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .swissCanton(SwissCanton.BERN)
         .statementSender(TimetableHearingStatementSenderModel.builder()
           .email("fabienne.mueller@sbb.ch")
           .build())
@@ -400,6 +404,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
     TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
       TimetableHearingStatementModel.builder()
         .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .swissCanton(SwissCanton.BERN)
         .statementSender(TimetableHearingStatementSenderModel.builder()
           .email("fabienne.mueller@sbb.ch")
           .build())
@@ -416,6 +421,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
     TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
       TimetableHearingStatementModel.builder()
         .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .swissCanton(SwissCanton.BERN)
         .statementSender(TimetableHearingStatementSenderModel.builder()
           .email("fabienne.mueller@sbb.ch")
           .build())
