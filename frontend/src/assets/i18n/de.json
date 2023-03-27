@@ -543,7 +543,7 @@
     "SELECT_YEAR": "Jahr auswählen",
     "TABLE_RESULT_HEADING": "{{totalCount}} Stellungnahmen für Fahrplanjahr {{year}}",
     "OPEN": "{{canton}} öffnen",
-    "STATEMENT_STATUS": "Status",
+    "STATEMENT_STATUS_HEADER": "Status",
     "SWISS_CANTON": "Kanton",
     "TRANSPORT_COMPANY": "Transportunternehmen",
     "TTFNID": "Feld-Nr.",
@@ -553,6 +553,15 @@
       "OVERVIEW_ACTUAL_SUBHEADING_POSTFIX": " {{hearingFrom}} bis zum {{hearingTo}}.",
       "OVERVIEW_PLANNED_SUBHEADING": "Hier finden Sie alle geplanten Fahrplananhörungen. Vor dem Start einies Fahrplanjahres können Sie keine Stellungnahmen erfassen.",
       "OVERVIEW_ARCHIVED_SUBHEADING": "Hier finden Sie alle archivierten Fahrplananhörungen nach Fahrplanjahren abgelegt."
+    },
+    "STATEMENT_STATUS": {
+      "RECEIVED": "eingetroffen",
+      "IN_REVIEW": "in Abklärung",
+      "ACCEPTED": "angenommen",
+      "REJECTED": "abgelehnt",
+      "MOVED": "verschoben",
+      "JUNK": "*Spam-Mail*",
+      "REVOKED": "Fehlerfassung"
     },
     "CANTON": {
       "CH": "Gesamtschweiz",
