@@ -46,7 +46,11 @@ export class TableComponent<DATATYPE> {
   constructor(private dateService: DateService, private translatePipe: TranslatePipe) {}
 
   getColumnValues(): string[] {
-    return this.tableColumns.map((i) => i.value as string);
+    const columns: string[] = [];
+    this.tableColumns.forEach((column) => {
+      columns.push(column.value as string);
+    });
+    return columns;
   }
 
   edit(row: DATATYPE) {
@@ -103,6 +107,9 @@ export class TableComponent<DATATYPE> {
     }
     if (column.translate?.withPrefix) {
       return value ? this.translatePipe.transform(column.translate.withPrefix + value) : null;
+    }
+    if (column.callback) {
+      return column.callback(value);
     }
     return value as string;
   }
