@@ -16,8 +16,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,15 +45,19 @@ public interface TimetableHearingStatementApiV1 {
   TimetableHearingStatementModel getStatement(@PathVariable Long id);
 
     @GetMapping(path = "{id}/documents/{filename}", produces = MediaType.APPLICATION_PDF_VALUE)
-    @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin"
-        + ".ApplicationType).TIMETABLE_HEARING, #statement)")
+    @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastExplicitReader(T(ch.sbb.atlas.kafka.model.user.admin"
+        + ".ApplicationType).TIMETABLE_HEARING)")
     Resource getStatementDocument(@PathVariable Long id, @PathVariable String filename);
 
   @DeleteMapping(path = "{id}/documents/{filename}")
+  @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin"
+      + ".ApplicationType).TIMETABLE_HEARING, #statement)")
   void deleteStatementDocument(@PathVariable Long id, @PathVariable String filename);
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
+  @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin"
+      + ".ApplicationType).TIMETABLE_HEARING, #statement)")
   TimetableHearingStatementModel createStatement(
     @RequestPart @Valid TimetableHearingStatementModel statement,
     @RequestPart(required = false) List<MultipartFile> documents);
