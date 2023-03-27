@@ -1,5 +1,7 @@
 package ch.sbb.line.directory.service.hearing;
 
+import static ch.sbb.atlas.api.timetable.hearing.TimetableHearingConstants.MAX_DOCUMENTS_SIZE;
+
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
@@ -64,7 +66,7 @@ public class TimetableHearingStatementService {
     if (!CollectionUtils.isEmpty(documents)) {
       files = getFilesFromMultipartFiles(documents);
       documentsValidationService.validateMaxNumberOfFiles(files.size());
-      documentsValidationService.validateMaxSizeOfFiles(files);
+      documentsValidationService.validateMaxSizeOfFiles(files, MAX_DOCUMENTS_SIZE);
       documentsValidationService.validateAllFilessArePdfs(files);
 
       addFilesToStatement(documents, statementToCreate);
@@ -86,7 +88,7 @@ public class TimetableHearingStatementService {
     if (documents != null && !documents.isEmpty()) {
       files = getFilesFromMultipartFiles(documents);
       documentsValidationService.validateMaxNumberOfFiles(files.size());
-      documentsValidationService.validateMaxSizeOfFiles(files);
+      documentsValidationService.validateMaxSizeOfFiles(files, MAX_DOCUMENTS_SIZE);
       documentsValidationService.validateAllFilessArePdfs(files);
 
       List<StatementDocument> statementDocumentsList = new ArrayList<>(timetableHearingStatementInDb.getDocuments());
@@ -118,12 +120,9 @@ public class TimetableHearingStatementService {
   }
 
   private List<File> getFilesFromMultipartFiles(List<MultipartFile> documents) {
-    if (documents != null) {
       return documents.stream()
         .map(fileService::getFileFromMultipart)
         .toList();
-    }
-    return List.of();
   }
 
   private TimetableHearingStatement updateObject(TimetableHearingStatementModel timetableHearingStatementModel,
