@@ -97,6 +97,29 @@ public class TimetableHearingStatementServiceTest {
   }
 
   @Test
+  void shouldThrowIllegalArgumentExceptionWhenDeletingDocument() {
+    timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+
+    assertThatThrownBy(() -> timetableHearingStatementService.deleteDocument(0L, PdfFiles.multipartFiles.get(0).getOriginalFilename())).isInstanceOf(
+      IllegalArgumentException.class);
+  }
+
+  @Test
+  void shouldThrowIllegalArgumentExceptionWhenDeletingEmptyStringDocumentName() {
+    timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+    TimetableHearingStatementModel timetableHearingStatementModel = buildTimetableHearingStatementModel();
+
+    List<MultipartFile> documents = new ArrayList<>();
+    documents.add(PdfFiles.multipartFiles.get(0));
+    documents.add(PdfFiles.multipartFiles.get(1));
+
+    TimetableHearingStatementModel createdStatement = timetableHearingStatementService.createHearingStatement(timetableHearingStatementModel, documents);
+
+    assertThatThrownBy(() -> timetableHearingStatementService.deleteDocument(createdStatement.getId(), "")).isInstanceOf(
+      IllegalArgumentException.class);
+  }
+
+  @Test
   void shouldNotDoAnythingIfDeleteUnknownDocument() {
     timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
     TimetableHearingStatementModel timetableHearingStatementModel = buildTimetableHearingStatementModel();
