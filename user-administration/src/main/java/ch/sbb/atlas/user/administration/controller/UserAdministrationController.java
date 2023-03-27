@@ -75,7 +75,7 @@ public class UserAdministrationController implements UserAdministrationApiV1 {
 
   @Override
   public UserModel getCurrentUser() {
-    return getUser(UserService.getSbbUid());
+    return getUser(UserService.getUserIdentifier());
   }
 
   @Override
