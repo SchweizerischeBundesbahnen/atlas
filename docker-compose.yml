@@ -132,3 +132,9 @@ services:
       KAFKA_DELETE_TOPIC_ENABLE: 'true'
       # atlas.mail will have 1 partition and 1 replicas
       KAFKA_CREATE_TOPICS: "atlas.mail:1:1,atlas.user.administration:1:1"
+
+  sonar:
+    image: sonarqube:9-community
+    ports:
+      - "9000:9000"
+    restart: unless-stopped
