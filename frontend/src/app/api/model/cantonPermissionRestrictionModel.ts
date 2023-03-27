@@ -9,34 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ApplicationType } from './applicationType';
 import { PermissionRestrictionObject } from './permissionRestrictionObject';
-import { ApplicationRole } from './applicationRole';
+import { PermissionRestrictionType } from './permissionRestrictionType';
 
-/**
- * User permissions
- */
-export interface UserPermission {
-  /**
-   * Object creation date
-   */
-  readonly creationDate?: string;
-  /**
-   * User creator
-   */
-  readonly creator?: string;
-  /**
-   * Last edition date
-   */
-  readonly editionDate?: string;
-  /**
-   * User editor
-   */
-  readonly editor?: string;
-  role: ApplicationRole;
-  application: ApplicationType;
-  /**
-   * Permission Restrictions
-   */
-  permissionRestrictions: Array<PermissionRestrictionObject>;
-}
+export interface CantonPermissionRestrictionModel extends PermissionRestrictionObject {}

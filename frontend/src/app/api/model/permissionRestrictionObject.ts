@@ -9,20 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { SwissCanton } from './swissCanton';
+import { PermissionRestrictionType } from './permissionRestrictionType';
 
 /**
  * Permission Restrictions
  */
 export interface PermissionRestrictionObject {
-  type?: PermissionRestrictionObject.TypeEnum;
-  value?: string | SwissCanton;
+  type?: PermissionRestrictionType;
   valueAsString?: string;
-}
-export namespace PermissionRestrictionObject {
-  export type TypeEnum = 'BUSINESS_ORGANISATION' | 'CANTON';
-  export const TypeEnum = {
-    BusinessOrganisation: 'BUSINESS_ORGANISATION' as TypeEnum,
-    Canton: 'CANTON' as TypeEnum,
-  };
 }

@@ -5,17 +5,15 @@ import { filter, tap } from 'rxjs/operators';
 import { TableSettings } from '../../../core/components/table/table-settings';
 import { TableComponent } from '../../../core/components/table/table.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { User } from '../../../api';
+import { ApplicationType, PermissionRestrictionType, SwissCanton, User } from '../../../api';
 import {
   DetailDialogEvents,
   RouteToDialogService,
 } from '../../../core/components/route-to-dialog/route-to-dialog.service';
 import { Subscription } from 'rxjs';
 import { tableColumns } from './table-column-definition';
-import { ApplicationType, PermissionRestrictionObject, SwissCanton } from '../../../api';
 import { SearchType, SearchTypes } from './search-type';
 import { Cantons } from '../../tth/overview/canton/Cantons';
-import TypeEnum = PermissionRestrictionObject.TypeEnum;
 
 @Component({
   selector: 'app-user-administration-overview',
@@ -146,7 +144,9 @@ export class UserAdministrationOverviewComponent implements OnInit, OnDestroy {
         pageIndex,
         this.tableComponent.paginator.pageSize,
         new Set<string>([selectedSboid, ...this.selectedCantonOptions]),
-        this.selectedSearch === 'FILTER' ? TypeEnum.BusinessOrganisation : TypeEnum.Canton,
+        this.selectedSearch === 'FILTER'
+          ? PermissionRestrictionType.BusinessOrganisation
+          : PermissionRestrictionType.Canton,
         new Set<ApplicationType>(this.selectedApplicationOptions)
       )
       .pipe(
