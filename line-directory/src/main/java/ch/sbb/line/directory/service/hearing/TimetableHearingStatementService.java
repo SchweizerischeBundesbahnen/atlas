@@ -103,7 +103,7 @@ public class TimetableHearingStatementService {
     return timetableHearingStatement;
   }
 
-  public void deleteDocument(Long timetableHearingStatementId, String documentFilename) {
+  public void deleteStatementDocument(Long timetableHearingStatementId, String documentFilename) {
     if (timetableHearingStatementId == 0 || !StringUtils.hasText(documentFilename)) {
       throw new IllegalArgumentException();
     }
