@@ -24,8 +24,11 @@ import { CustomHttpParameterCodec } from '../encoder';
 import { Observable } from 'rxjs';
 
 import { ApplicationType } from '../model/models';
+import { ClientCredential } from '../model/models';
+import { ContainerClientCredential } from '../model/models';
 import { ContainerUser } from '../model/models';
 import { ErrorResponse } from '../model/models';
+import { PermissionRestrictionType } from '../model/models';
 import { User } from '../model/models';
 import { UserDisplayName } from '../model/models';
 import { UserPermissionCreate } from '../model/models';
@@ -103,6 +106,80 @@ export class UserAdministrationService {
   }
 
   /**
+   * Register a client with given permissions
+   * @param userPermissionCreate
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public createClientCredential(
+    userPermissionCreate: UserPermissionCreate,
+    observe?: 'body',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: '*/*' }
+  ): Observable<ClientCredential>;
+  public createClientCredential(
+    userPermissionCreate: UserPermissionCreate,
+    observe?: 'response',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: '*/*' }
+  ): Observable<HttpResponse<ClientCredential>>;
+  public createClientCredential(
+    userPermissionCreate: UserPermissionCreate,
+    observe?: 'events',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: '*/*' }
+  ): Observable<HttpEvent<ClientCredential>>;
+  public createClientCredential(
+    userPermissionCreate: UserPermissionCreate,
+    observe: any = 'body',
+    reportProgress: boolean = false,
+    options?: { httpHeaderAccept?: '*/*' }
+  ): Observable<any> {
+    if (userPermissionCreate === null || userPermissionCreate === undefined) {
+      throw new Error(
+        'Required parameter userPermissionCreate was null or undefined when calling createClientCredential.'
+      );
+    }
+
+    let headers = this.defaultHeaders;
+
+    let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+    if (httpHeaderAcceptSelected === undefined) {
+      // to determine the Accept header
+      const httpHeaderAccepts: string[] = ['*/*'];
+      httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+    }
+    if (httpHeaderAcceptSelected !== undefined) {
+      headers = headers.set('Accept', httpHeaderAcceptSelected);
+    }
+
+    // to determine the Content-Type header
+    const consumes: string[] = ['application/json'];
+    const httpContentTypeSelected: string | undefined =
+      this.configuration.selectHeaderContentType(consumes);
+    if (httpContentTypeSelected !== undefined) {
+      headers = headers.set('Content-Type', httpContentTypeSelected);
+    }
+
+    let responseType_: 'text' | 'json' = 'json';
+    if (httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+      responseType_ = 'text';
+    }
+
+    return this.httpClient.post<ClientCredential>(
+      `${this.configuration.basePath}/user-administration/v1/client-credentials`,
+      userPermissionCreate,
+      {
+        responseType: <any>responseType_,
+        withCredentials: this.configuration.withCredentials,
+        headers: headers,
+        observe: observe,
+        reportProgress: reportProgress,
+      }
+    );
+  }
+
+  /**
    * Register a user with given permissions
    * @param userPermissionCreate
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -167,6 +244,156 @@ export class UserAdministrationService {
       `${this.configuration.basePath}/user-administration/v1/users`,
       userPermissionCreate,
       {
+        responseType: <any>responseType_,
+        withCredentials: this.configuration.withCredentials,
+        headers: headers,
+        observe: observe,
+        reportProgress: reportProgress,
+      }
+    );
+  }
+
+  /**
+   * Retrieve Information for a given clientId
+   * @param clientId
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public getClientCredential(
+    clientId: string,
+    observe?: 'body',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: '*/*' }
+  ): Observable<ClientCredential>;
+  public getClientCredential(
+    clientId: string,
+    observe?: 'response',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: '*/*' }
+  ): Observable<HttpResponse<ClientCredential>>;
+  public getClientCredential(
+    clientId: string,
+    observe?: 'events',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: '*/*' }
+  ): Observable<HttpEvent<ClientCredential>>;
+  public getClientCredential(
+    clientId: string,
+    observe: any = 'body',
+    reportProgress: boolean = false,
+    options?: { httpHeaderAccept?: '*/*' }
+  ): Observable<any> {
+    if (clientId === null || clientId === undefined) {
+      throw new Error(
+        'Required parameter clientId was null or undefined when calling getClientCredential.'
+      );
+    }
+
+    let headers = this.defaultHeaders;
+
+    let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+    if (httpHeaderAcceptSelected === undefined) {
+      // to determine the Accept header
+      const httpHeaderAccepts: string[] = ['*/*'];
+      httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+    }
+    if (httpHeaderAcceptSelected !== undefined) {
+      headers = headers.set('Accept', httpHeaderAcceptSelected);
+    }
+
+    let responseType_: 'text' | 'json' = 'json';
+    if (httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+      responseType_ = 'text';
+    }
+
+    return this.httpClient.get<ClientCredential>(
+      `${
+        this.configuration.basePath
+      }/user-administration/v1/client-credentials/${encodeURIComponent(String(clientId))}`,
+      {
+        responseType: <any>responseType_,
+        withCredentials: this.configuration.withCredentials,
+        headers: headers,
+        observe: observe,
+        reportProgress: reportProgress,
+      }
+    );
+  }
+
+  /**
+   * Retrieve Overview for all the managed Users
+   * @param page Zero-based page index (0..N)
+   * @param size The size of the page to be returned
+   * @param sort Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public getClientCredentials(
+    page?: number,
+    size?: number,
+    sort?: Array<string>,
+    observe?: 'body',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: '*/*' }
+  ): Observable<ContainerClientCredential>;
+  public getClientCredentials(
+    page?: number,
+    size?: number,
+    sort?: Array<string>,
+    observe?: 'response',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: '*/*' }
+  ): Observable<HttpResponse<ContainerClientCredential>>;
+  public getClientCredentials(
+    page?: number,
+    size?: number,
+    sort?: Array<string>,
+    observe?: 'events',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: '*/*' }
+  ): Observable<HttpEvent<ContainerClientCredential>>;
+  public getClientCredentials(
+    page?: number,
+    size?: number,
+    sort?: Array<string>,
+    observe: any = 'body',
+    reportProgress: boolean = false,
+    options?: { httpHeaderAccept?: '*/*' }
+  ): Observable<any> {
+    let queryParameters = new HttpParams({ encoder: this.encoder });
+    if (page !== undefined && page !== null) {
+      queryParameters = this.addToHttpParams(queryParameters, <any>page, 'page');
+    }
+    if (size !== undefined && size !== null) {
+      queryParameters = this.addToHttpParams(queryParameters, <any>size, 'size');
+    }
+    if (sort) {
+      sort.forEach((element) => {
+        queryParameters = this.addToHttpParams(queryParameters, <any>element, 'sort');
+      });
+    }
+
+    let headers = this.defaultHeaders;
+
+    let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+    if (httpHeaderAcceptSelected === undefined) {
+      // to determine the Accept header
+      const httpHeaderAccepts: string[] = ['*/*'];
+      httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+    }
+    if (httpHeaderAcceptSelected !== undefined) {
+      headers = headers.set('Accept', httpHeaderAcceptSelected);
+    }
+
+    let responseType_: 'text' | 'json' = 'json';
+    if (httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+      responseType_ = 'text';
+    }
+
+    return this.httpClient.get<ContainerClientCredential>(
+      `${this.configuration.basePath}/user-administration/v1/client-credentials`,
+      {
+        params: queryParameters,
         responseType: <any>responseType_,
         withCredentials: this.configuration.withCredentials,
         headers: headers,
@@ -374,7 +601,7 @@ export class UserAdministrationService {
    */
   public getUsers(
     permissionRestrictions?: Set<string>,
-    type?: 'BUSINESS_ORGANISATION' | 'CANTON',
+    type?: PermissionRestrictionType,
     applicationTypes?: Set<ApplicationType>,
     page?: number,
     size?: number,
@@ -385,7 +612,7 @@ export class UserAdministrationService {
   ): Observable<ContainerUser>;
   public getUsers(
     permissionRestrictions?: Set<string>,
-    type?: 'BUSINESS_ORGANISATION' | 'CANTON',
+    type?: PermissionRestrictionType,
     applicationTypes?: Set<ApplicationType>,
     page?: number,
     size?: number,
@@ -396,7 +623,7 @@ export class UserAdministrationService {
   ): Observable<HttpResponse<ContainerUser>>;
   public getUsers(
     permissionRestrictions?: Set<string>,
-    type?: 'BUSINESS_ORGANISATION' | 'CANTON',
+    type?: PermissionRestrictionType,
     applicationTypes?: Set<ApplicationType>,
     page?: number,
     size?: number,
@@ -407,7 +634,7 @@ export class UserAdministrationService {
   ): Observable<HttpEvent<ContainerUser>>;
   public getUsers(
     permissionRestrictions?: Set<string>,
-    type?: 'BUSINESS_ORGANISATION' | 'CANTON',
+    type?: PermissionRestrictionType,
     applicationTypes?: Set<ApplicationType>,
     page?: number,
     size?: number,
@@ -467,6 +694,80 @@ export class UserAdministrationService {
       `${this.configuration.basePath}/user-administration/v1/users`,
       {
         params: queryParameters,
+        responseType: <any>responseType_,
+        withCredentials: this.configuration.withCredentials,
+        headers: headers,
+        observe: observe,
+        reportProgress: reportProgress,
+      }
+    );
+  }
+
+  /**
+   * Update the user permissions of a user
+   * @param userPermissionCreate
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public updateClientCredential(
+    userPermissionCreate: UserPermissionCreate,
+    observe?: 'body',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: '*/*' }
+  ): Observable<ClientCredential>;
+  public updateClientCredential(
+    userPermissionCreate: UserPermissionCreate,
+    observe?: 'response',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: '*/*' }
+  ): Observable<HttpResponse<ClientCredential>>;
+  public updateClientCredential(
+    userPermissionCreate: UserPermissionCreate,
+    observe?: 'events',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: '*/*' }
+  ): Observable<HttpEvent<ClientCredential>>;
+  public updateClientCredential(
+    userPermissionCreate: UserPermissionCreate,
+    observe: any = 'body',
+    reportProgress: boolean = false,
+    options?: { httpHeaderAccept?: '*/*' }
+  ): Observable<any> {
+    if (userPermissionCreate === null || userPermissionCreate === undefined) {
+      throw new Error(
+        'Required parameter userPermissionCreate was null or undefined when calling updateClientCredential.'
+      );
+    }
+
+    let headers = this.defaultHeaders;
+
+    let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+    if (httpHeaderAcceptSelected === undefined) {
+      // to determine the Accept header
+      const httpHeaderAccepts: string[] = ['*/*'];
+      httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+    }
+    if (httpHeaderAcceptSelected !== undefined) {
+      headers = headers.set('Accept', httpHeaderAcceptSelected);
+    }
+
+    // to determine the Content-Type header
+    const consumes: string[] = ['application/json'];
+    const httpContentTypeSelected: string | undefined =
+      this.configuration.selectHeaderContentType(consumes);
+    if (httpContentTypeSelected !== undefined) {
+      headers = headers.set('Content-Type', httpContentTypeSelected);
+    }
+
+    let responseType_: 'text' | 'json' = 'json';
+    if (httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+      responseType_ = 'text';
+    }
+
+    return this.httpClient.put<ClientCredential>(
+      `${this.configuration.basePath}/user-administration/v1/client-credentials`,
+      userPermissionCreate,
+      {
         responseType: <any>responseType_,
         withCredentials: this.configuration.withCredentials,
         headers: headers,
