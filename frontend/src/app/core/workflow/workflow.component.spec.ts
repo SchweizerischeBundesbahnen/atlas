@@ -10,7 +10,7 @@ import {
   Status,
   User,
   UserAdministrationService,
-  UserPermission,
+  Permission,
   Workflow,
   WorkflowProcessingStatus,
   WorkflowService,
@@ -55,7 +55,7 @@ const authServiceMock: Partial<AuthService> = {
   isAtLeastSupervisor(): boolean {
     return true;
   },
-  getApplicationUserPermission(applicationType: ApplicationType): UserPermission {
+  getApplicationUserPermission(applicationType: ApplicationType): Permission {
     return {
       application: applicationType,
       role: ApplicationRole.Supervisor,

@@ -4,7 +4,9 @@ import {
   ApplicationRole,
   ApplicationType,
   BusinessOrganisation,
+  CantonPermissionRestrictionModel,
   PermissionRestrictionObject,
+  PermissionRestrictionType,
   SwissCanton,
 } from '../../../api';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -14,7 +16,6 @@ import { Observable, of, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Cantons } from '../../tth/overview/canton/Cantons';
 import { MatSelectChange } from '@angular/material/select';
-import TypeEnum = PermissionRestrictionObject.TypeEnum;
 
 @Component({
   selector: 'app-user-administration-application-config',
@@ -109,13 +110,10 @@ export class UserAdministrationApplicationConfigComponent implements OnInit, OnD
 
   cantonSelectionChanged($event: MatSelectChange) {
     const values = $event.value as SwissCanton[];
-    const permissionRestriction = values.map(
-      (selection) =>
-        ({
-          value: selection,
-          type: TypeEnum.Canton,
-        } as PermissionRestrictionObject)
-    );
+    const permissionRestriction = values.map((selection) => ({
+      valueAsString: selection,
+      type: PermissionRestrictionType.Canton,
+    }));
     this.userPermissionManager.getPermissionByApplication(this.application).permissionRestrictions =
       permissionRestriction;
   }
