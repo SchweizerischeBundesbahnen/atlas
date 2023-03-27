@@ -20,6 +20,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -102,12 +103,12 @@ public class TimetableHearingStatementService {
 
     return timetableHearingStatement;
   }
-
-  public void deleteStatementDocument(Long timetableHearingStatementId, String documentFilename) {
-    if (timetableHearingStatementId == 0 || !StringUtils.hasText(documentFilename)) {
+  @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin"
+    + ".ApplicationType).TIMETABLE_HEARING, #timetableHearingStatement)")
+  public void deleteStatementDocument(TimetableHearingStatement timetableHearingStatement, String documentFilename) {
+    if (timetableHearingStatement.getId()==null || !StringUtils.hasText(documentFilename)) {
       throw new IllegalArgumentException();
     }
-    var timetableHearingStatement = getTimetableHearingStatementById(timetableHearingStatementId);
     if (timetableHearingStatement.checkIfStatementDocumentExists(documentFilename)) {
       removeDocumentFromS3andDB(documentFilename, timetableHearingStatement);
     }
