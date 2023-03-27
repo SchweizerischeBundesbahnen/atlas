@@ -52,7 +52,7 @@ public abstract class BaseDidokImportEntity {
 
   @PrePersist
   public void onPrePersist() {
-    String sbbUid = UserService.getSbbUid();
+    String sbbUid = UserService.getUserIdentifier();
     setCreator(Optional.ofNullable(creator).orElse(sbbUid));
     setEditor(Optional.ofNullable(editor).orElse(sbbUid));
 
@@ -62,7 +62,7 @@ public abstract class BaseDidokImportEntity {
 
   @PreUpdate
   public void onPreUpdate() {
-    String sbbUid = UserService.getSbbUid();
+    String sbbUid = UserService.getUserIdentifier();
     setEditor(Optional.ofNullable(editor).orElse(sbbUid));
     setEditionDate(Optional.ofNullable(editionDate).orElse(LocalDateTime.now()));
   }
