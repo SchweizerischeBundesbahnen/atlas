@@ -543,7 +543,7 @@
     "SELECT_YEAR": "Sélectionner l'année",
     "TABLE_RESULT_HEADING": "{{totalCount}} Stellungnahmen für Fahrplanjahr {{year}}",
     "OPEN": "{{canton}} ouvrir",
-    "STATEMENT_STATUS": "Statut",
+    "STATEMENT_STATUS_HEADER": "Statut",
     "SWISS_CANTON": "Canton",
     "TRANSPORT_COMPANY": "Entreprise de transport",
     "TTFNID": "Cadre-nº.",
@@ -553,6 +553,15 @@
       "OVERVIEW_ACTUAL_SUBHEADING_POSTFIX": " {{hearingFrom}} jusqu'au {{hearingTo}}.",
       "OVERVIEW_PLANNED_SUBHEADING": "Vous trouverez ici toutes les consultations d'horaires prévues. Vous ne pouvez pas saisir d'avis avant le début d'une année d'horaire.",
       "OVERVIEW_ARCHIVED_SUBHEADING": "Vous trouverez ici toutes les consultations d'horaires archivées, classées par année d'horaire."
+    },
+    "STATEMENT_STATUS": {
+      "RECEIVED": "arriver",
+      "IN_REVIEW": "À l'étude",
+      "ACCEPTED": "acceptée",
+      "REJECTED": "rejeté",
+      "MOVED": "Retardé",
+      "JUNK": "*Spam-Mail*",
+      "REVOKED": "Saisie des erreurs"
     },
     "CANTON": {
       "CH": "Suisse entière",
