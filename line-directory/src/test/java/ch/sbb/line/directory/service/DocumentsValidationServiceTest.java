@@ -1,5 +1,6 @@
 package ch.sbb.line.directory.service;
 
+import static ch.sbb.atlas.api.timetable.hearing.TimetableHearingConstants.MAX_DOCUMENTS_SIZE;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -48,6 +49,14 @@ public class DocumentsValidationServiceTest {
 
   @Test
   public void givenListOfFilesValidateSizeOfFilesIsNotGreaterThanAllowed() {
-    assertDoesNotThrow(() -> documentsValidationService.validateMaxSizeOfFiles(files));
+    assertDoesNotThrow(() -> documentsValidationService.validateMaxSizeOfFiles(files, MAX_DOCUMENTS_SIZE));
   }
+
+  @Test
+  public void givenListOfFilesValidateSizeOfFilesGreaterThanAllowed() {
+    Executable executable = () -> documentsValidationService.validateMaxSizeOfFiles(files, 1);
+    Exception exception = assertThrows(PdfDocumentConstraintViolationException.class, executable);
+    assertEquals(exception.getMessage(), "The combined size of all documents in bytes is: 53100 which exceeds the maximum allowed size of 20MB.");
+  }
+
 }

@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -25,6 +26,7 @@ import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.controller.AtlasMockMultipartFile;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
+import ch.sbb.atlas.model.exception.NotFoundException.FileNotFoundException;
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.repository.TimetableHearingStatementRepository;
@@ -197,7 +199,6 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
         .file(new MockMultipartFile(multipartFiles.get(2).getName(), multipartFiles.get(2).getOriginalFilename(), multipartFiles.get(2).getContentType(), multipartFiles.get(2).getBytes()))
         .file(new MockMultipartFile(multipartFiles.get(3).getName(), multipartFiles.get(3).getOriginalFilename(), multipartFiles.get(3).getContentType(), multipartFiles.get(3).getBytes()))
       )
-      .andDo(print())
       .andExpect(status().isBadRequest())
       .andExpect(result -> assertTrue(result.getResolvedException() instanceof PdfDocumentConstraintViolationException))
       .andExpect(
@@ -373,9 +374,41 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
       List.of(multipartFiles.get(0)));
 
     mvc.perform(get("/v1/timetable-hearing/statements/" + statement.getId() + "/documents/" + multipartFiles.get(0).getOriginalFilename()))
-      .andDo(print())
       .andExpect(status().isOk())
       .andExpect(content().contentType(MediaType.APPLICATION_PDF_VALUE));
+  }
+
+  @Test
+  void shouldThrowExceptionOnGetStatementDocumentByDocumentId() throws Exception {
+    TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
+      TimetableHearingStatementModel.builder()
+        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .statementSender(TimetableHearingStatementSenderModel.builder()
+          .email("fabienne.mueller@sbb.ch")
+          .build())
+        .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
+        .build(),
+      List.of(multipartFiles.get(0)));
+
+    mvc.perform(get("/v1/timetable-hearing/statements/" + statement.getId() + "/documents/" + "nonexistingfilename"))
+      .andExpect(status().isNotFound())
+      .andExpect(result -> assertTrue(result.getResolvedException() instanceof FileNotFoundException));
+  }
+
+  @Test
+  void shouldDeleteStatementDocumentByDocumentId() throws Exception {
+    TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
+      TimetableHearingStatementModel.builder()
+        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .statementSender(TimetableHearingStatementSenderModel.builder()
+          .email("fabienne.mueller@sbb.ch")
+          .build())
+        .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
+        .build(),
+      List.of(multipartFiles.get(0)));
+
+    mvc.perform(delete("/v1/timetable-hearing/statements/" + statement.getId() + "/documents/" + multipartFiles.get(0).getOriginalFilename()))
+      .andExpect(status().isOk());
   }
 
   @Test
