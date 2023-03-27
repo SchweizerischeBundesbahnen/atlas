@@ -541,6 +541,7 @@
     },
     "SELECT_CANTON": "Selezionare il Cantone",
     "SELECT_YEAR": "Selezionare l'anno",
+    "TABLE_RESULT_HEADING": "{{totalCount}} dichiarazioni per l'orario {{year}}",
     "OPEN": "{{canton}} aprire",
     "STATEMENT_STATUS": "Stato",
     "SWISS_CANTON": "Cantone",
