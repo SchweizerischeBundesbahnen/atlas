@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {
   ContainerTimetableHearingStatement,
   HearingStatus,
+  StatementStatus,
   SwissCanton,
   TimetableHearingService,
   TimetableHearingStatement,
@@ -35,7 +36,18 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
   timeTableHearingStatements: TimetableHearingStatement[] = [];
 
   tableColumns: TableColumn<TimetableHearingStatement>[] = [
-    { headerTitle: 'TTH.STATEMENT_STATUS', value: 'statementStatus' },
+    {
+      headerTitle: 'TTH.STATEMENT_STATUS_HEADER',
+      value: 'statementStatus',
+      dropdown: {
+        options: Object.values(StatementStatus),
+        changeSelectionCallback: this.changeSelectedStatus,
+        selectedOption: '',
+        translate: {
+          withPrefix: 'TTH.STATEMENT_STATUS.',
+        },
+      },
+    },
     { headerTitle: 'TTH.SWISS_CANTON', value: 'swissCanton', callback: this.mapToShortCanton },
     {
       headerTitle: 'TTH.TRANSPORT_COMPANY',
@@ -225,5 +237,9 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
 
   private mapToShortCanton(canton: SwissCanton) {
     return Cantons.fromSwissCanton(canton)?.short;
+  }
+
+  private changeSelectedStatus(event: MatSelectChange) {
+    console.log(event.value);
   }
 }
