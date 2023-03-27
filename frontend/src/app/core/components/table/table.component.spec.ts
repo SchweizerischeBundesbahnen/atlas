@@ -10,12 +10,13 @@ import { DateIconComponent } from '../../form-components/date-icon/date-icon.com
 import { SearchSelectComponent } from '../../form-components/search-select/search-select.component';
 import { BusinessOrganisationSelectComponent } from '../../form-components/bo-select/business-organisation-select.component';
 import { MockAtlasFieldErrorComponent } from '../../../app.testing.mocks';
+import { StatementStatus } from '../../../api';
 
 export interface Obj {
   prop: string;
 }
 
-fdescribe('TableComponent', () => {
+describe('TableComponent', () => {
   /*eslint-disable */
   let component: TableComponent<any>;
   let fixture: ComponentFixture<TableComponent<any>>;
@@ -48,6 +49,10 @@ fdescribe('TableComponent', () => {
         .join(', ');
     }
 
+    function changeSelection() {
+      console.log('change me');
+    }
+
     component.tableColumns = [
       {
         headerTitle: 'TTFN.VALID_FROM',
@@ -67,6 +72,18 @@ fdescribe('TableComponent', () => {
         headerTitle: 'TTFN.RELATIONS',
         value: 'relations',
         callback: mapToCommaSeparated,
+      },
+      {
+        headerTitle: 'TTFN.STATUS',
+        value: 'status',
+        dropdown: {
+          options: Object.values(StatementStatus),
+          changeSelectionCallback: changeSelection,
+          translate: {
+            withPrefix: 'TTFN.',
+          },
+          selectedOption: StatementStatus.Accepted,
+        },
       },
     ];
     component.tableData = [
@@ -101,8 +118,17 @@ fdescribe('TableComponent', () => {
     const tableCells = fixture.debugElement.queryAll(By.css('td'));
     expect(tableCells).toBeDefined();
     expect(tableCells[3].nativeElement.innerText).toEqual('a, b, c');
-    expect(tableCells[7].nativeElement.innerText).toEqual('d, f, g');
-    expect(tableCells[11].nativeElement.innerText).toEqual('');
+    expect(tableCells[8].nativeElement.innerText).toEqual('d, f, g');
+    expect(tableCells[13].nativeElement.innerText).toEqual('');
+  });
+
+  it('should get dropdown', () => {
+    const tableCells = fixture.debugElement.queryAll(By.css('td .multi-select-search'));
+    expect(tableCells).toBeDefined();
+    expect(tableCells.length).toEqual(3);
+    tableCells.forEach((value) => {
+      expect(value.nativeElement.innerText).toEqual('FORM.DROPDOWN_PLACEHOLDER');
+    });
   });
 
   it('should render date nicely', () => {
@@ -133,7 +159,7 @@ fdescribe('TableComponent', () => {
     paginator.nativeNode.setAttribute('ng-reflect-page-size-oprions', [5, 10, 20]);
     fixture.detectChanges();
 
-    const matSelector = fixture.debugElement.queryAll(By.css('.mat-mdc-select-trigger'))[1];
+    const matSelector = fixture.debugElement.queryAll(By.css('.mat-mdc-select-trigger'))[4];
     matSelector.nativeElement.click();
     fixture.detectChanges();
 
