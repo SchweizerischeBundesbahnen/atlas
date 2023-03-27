@@ -10,7 +10,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -47,22 +46,5 @@ public class StatementDocument {
 
   @NotNull
   private Long fileSize;
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    StatementDocument that = (StatementDocument) o;
-    return Objects.equals(fileName, that.fileName) && Objects.equals(fileSize, that.fileSize);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(fileName, fileSize);
-  }
   
 }
