@@ -77,10 +77,11 @@
                 }
         }}</span>
       </div>
-      <div *ngIf="hearingStatus !== 'active'">
+      <div *ngIf="hearingStatus === 'planned'">
         <span
-          >{{ this.foundTimetableHearingYear.hearingFrom }} {{ 'COMMON.TO' | translate }}
-          {{ this.foundTimetableHearingYear.hearingTo }}</span
+          >{{ this.foundTimetableHearingYear.hearingFrom | displayDate }}
+          {{ 'COMMON.TO' | translate }}
+          {{ this.foundTimetableHearingYear.hearingTo | displayDate }}</span
         >
       </div>
     </div>
