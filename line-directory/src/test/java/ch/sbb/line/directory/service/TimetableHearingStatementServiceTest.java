@@ -3,14 +3,13 @@ package ch.sbb.line.directory.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementSenderModel;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.atlas.model.exception.NotFoundException.FileNotFoundException;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.line.directory.entity.StatementSender;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
-import ch.sbb.line.directory.entity.TimetableHearingStatement.TimetableHearingStatementBuilder;
 import ch.sbb.line.directory.entity.TimetableHearingYear;
 import ch.sbb.line.directory.helper.PdfFiles;
 import ch.sbb.line.directory.repository.TimetableHearingStatementRepository;
@@ -31,10 +30,10 @@ public class TimetableHearingStatementServiceTest {
 
   private static final long YEAR = 2023L;
   private static final TimetableHearingYear TIMETABLE_HEARING_YEAR = TimetableHearingYear.builder()
-      .timetableYear(YEAR)
-      .hearingFrom(LocalDate.of(2022, 1, 1))
-      .hearingTo(LocalDate.of(2022, 2, 1))
-      .build();
+    .timetableYear(YEAR)
+    .hearingFrom(LocalDate.of(2022, 1, 1))
+    .hearingTo(LocalDate.of(2022, 2, 1))
+    .build();
 
   private final TimetableHearingYearRepository timetableHearingYearRepository;
   private final TimetableHearingYearService timetableHearingYearService;
@@ -43,9 +42,9 @@ public class TimetableHearingStatementServiceTest {
 
   @Autowired
   public TimetableHearingStatementServiceTest(TimetableHearingYearRepository timetableHearingYearRepository,
-      TimetableHearingYearService timetableHearingYearService,
-      TimetableHearingStatementRepository timetableHearingStatementRepository,
-      TimetableHearingStatementService timetableHearingStatementService) {
+    TimetableHearingYearService timetableHearingYearService,
+    TimetableHearingStatementRepository timetableHearingStatementRepository,
+    TimetableHearingStatementService timetableHearingStatementService) {
     this.timetableHearingYearRepository = timetableHearingYearRepository;
     this.timetableHearingYearService = timetableHearingYearService;
     this.timetableHearingStatementRepository = timetableHearingStatementRepository;
@@ -62,10 +61,10 @@ public class TimetableHearingStatementServiceTest {
   void shouldGetHearingStatement() {
     timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
 
-    TimetableHearingStatement statement = buildStatement().build();
-    TimetableHearingStatement createdStatement = timetableHearingStatementService.createHearingStatement(statement, Collections.emptyList());
+    TimetableHearingStatementModel timetableHearingStatementModel = buildTimetableHearingStatementModel();
+    TimetableHearingStatementModel createdStatement = timetableHearingStatementService.createHearingStatement(timetableHearingStatementModel, Collections.emptyList());
 
-    TimetableHearingStatement hearingStatement = timetableHearingStatementService.getStatementById(createdStatement.getId());
+    TimetableHearingStatement hearingStatement = timetableHearingStatementService.getTimetableHearingStatementById(createdStatement.getId());
 
     assertThat(hearingStatement).isNotNull();
     assertThat(hearingStatement.getStatementStatus()).isEqualTo(StatementStatus.RECEIVED);
@@ -75,57 +74,55 @@ public class TimetableHearingStatementServiceTest {
   @Test
   void shouldNotGetHearingStatementIfIdIsNotValid() {
     timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+    TimetableHearingStatementModel timetableHearingStatementModel = buildTimetableHearingStatementModel();
 
-    TimetableHearingStatement statement = buildStatement().build();
-    TimetableHearingStatement createdStatement = timetableHearingStatementService.createHearingStatement(statement, Collections.emptyList());
+    TimetableHearingStatementModel createdStatement = timetableHearingStatementService.createHearingStatement(timetableHearingStatementModel, Collections.emptyList());
 
-    assertThatThrownBy(() -> timetableHearingStatementService.getStatementById(createdStatement.getId()+1)).isInstanceOf(
-        IdNotFoundException.class);
+    assertThatThrownBy(() -> timetableHearingStatementService.getTimetableHearingStatementById(createdStatement.getId() + 1)).isInstanceOf(
+      IdNotFoundException.class);
   }
 
-//  @Test
+  @Test
   void shouldDeleteDocumentFromHearingStatement() {
     timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+    TimetableHearingStatementModel timetableHearingStatementModel = buildTimetableHearingStatementModel();
 
     List<MultipartFile> documents = new ArrayList<>();
     documents.add(PdfFiles.multipartFiles.get(0));
     documents.add(PdfFiles.multipartFiles.get(1));
-    TimetableHearingStatement statement = buildStatement().build();
 
-    TimetableHearingStatement createdStatement = timetableHearingStatementService.createHearingStatement(statement, documents);
+    TimetableHearingStatementModel createdStatement = timetableHearingStatementService.createHearingStatement(timetableHearingStatementModel, documents);
 
     timetableHearingStatementService.deleteDocument(createdStatement.getId(), PdfFiles.multipartFiles.get(0).getOriginalFilename());
   }
 
   @Test
-  void shouldNotDeleteDocumentFromHearingStatementIfIdUnknown() {
+  void shouldNotDoAnythingIfDeleteUnknownDocument() {
     timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+    TimetableHearingStatementModel timetableHearingStatementModel = buildTimetableHearingStatementModel();
 
-    TimetableHearingStatement statement = buildStatement().build();
-    TimetableHearingStatement createdStatement = timetableHearingStatementService.createHearingStatement(statement, Collections.emptyList());
+    TimetableHearingStatementModel createdStatement = timetableHearingStatementService.createHearingStatement(timetableHearingStatementModel, Collections.emptyList());
 
-    assertThatThrownBy(() -> timetableHearingStatementService.deleteDocument(createdStatement.getId(), PdfFiles.multipartFiles.get(0).getOriginalFilename())).isInstanceOf(
-        FileNotFoundException.class);
+    timetableHearingStatementService.deleteDocument(createdStatement.getId(), PdfFiles.multipartFiles.get(0).getOriginalFilename());
   }
 
   @Test
   void shouldNotGetHearingStatementIfIdIsNotValissd() {
     timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+    TimetableHearingStatementModel timetableHearingStatementModel = buildTimetableHearingStatementModel();
 
-    TimetableHearingStatement statement = buildStatement().build();
-    TimetableHearingStatement createdStatement = timetableHearingStatementService.createHearingStatement(statement, Collections.emptyList());
+    TimetableHearingStatementModel createdStatement = timetableHearingStatementService.createHearingStatement(timetableHearingStatementModel, Collections.emptyList());
 
-    assertThatThrownBy(() -> timetableHearingStatementService.getStatementById(createdStatement.getId()+1)).isInstanceOf(
-        IdNotFoundException.class);
+    assertThatThrownBy(() -> timetableHearingStatementService.getTimetableHearingStatementById(createdStatement.getId() + 1)).isInstanceOf(
+      IdNotFoundException.class);
   }
 
   @Test
   void shouldCreateHearingStatement() {
     timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+    TimetableHearingStatementModel timetableHearingStatementModel = buildTimetableHearingStatementModel();
 
-    TimetableHearingStatement statement = buildStatement().build();
-
-    TimetableHearingStatement hearingStatement = timetableHearingStatementService.createHearingStatement(statement, Collections.emptyList());
+    TimetableHearingStatementModel hearingStatement = timetableHearingStatementService.createHearingStatement(timetableHearingStatementModel, Collections.emptyList());
 
     assertThat(hearingStatement).isNotNull();
     assertThat(hearingStatement.getStatementStatus()).isEqualTo(StatementStatus.RECEIVED);
@@ -133,25 +130,22 @@ public class TimetableHearingStatementServiceTest {
 
   @Test
   void shouldNotCreateHearingStatementIfYearIsUnknown() {
-    TimetableHearingStatement statement = buildStatement()
-        .timetableYear(2020L)
-        .build();
+    TimetableHearingStatementModel timetableHearingStatementModel = buildTimetableHearingStatementModel();
 
-    assertThatThrownBy(() -> timetableHearingStatementService.createHearingStatement(statement, Collections.emptyList())).isInstanceOf(
-        IdNotFoundException.class);
+    assertThatThrownBy(() -> timetableHearingStatementService.createHearingStatement(timetableHearingStatementModel, Collections.emptyList())).isInstanceOf(
+      IdNotFoundException.class);
   }
 
   @Test
   void shouldUpdateHearingStatement() {
     timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
 
-    TimetableHearingStatement statement = buildStatement().build();
+    TimetableHearingStatementModel timetableHearingStatementModel = buildTimetableHearingStatementModel();
 
-    TimetableHearingStatement updatingStatement = timetableHearingStatementService.createHearingStatement(statement, Collections.emptyList());
+    TimetableHearingStatementModel updatingStatement = timetableHearingStatementService.createHearingStatement(timetableHearingStatementModel, Collections.emptyList());
     updatingStatement.setStatementStatus(StatementStatus.JUNK);
 
-    TimetableHearingStatement updatedStatement = timetableHearingStatementService.updateHearingStatement(
-        updatingStatement, statement, Collections.emptyList());
+    TimetableHearingStatement updatedStatement = timetableHearingStatementService.updateHearingStatement(updatingStatement, Collections.emptyList());
 
     assertThat(updatedStatement).isNotNull();
     assertThat(updatedStatement.getStatementStatus()).isEqualTo(StatementStatus.JUNK);
@@ -160,24 +154,22 @@ public class TimetableHearingStatementServiceTest {
   @Test
   void shouldNotUpdateHearingStatementIfYearIsUnknown() {
     timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+    TimetableHearingStatementModel timetableHearingStatementModel1 = buildTimetableHearingStatementModel();
 
-    TimetableHearingStatement statement = buildStatement().build();
-
-    TimetableHearingStatement updatingStatement = timetableHearingStatementService.createHearingStatement(statement, Collections.emptyList());
+    TimetableHearingStatementModel updatingStatement = timetableHearingStatementService.createHearingStatement(timetableHearingStatementModel1, Collections.emptyList());
     updatingStatement.setTimetableYear(2020L);
 
-    assertThatThrownBy(() -> timetableHearingStatementService.updateHearingStatement(updatingStatement, statement, Collections.emptyList())).isInstanceOf(
-        IdNotFoundException.class);
+    assertThatThrownBy(() -> timetableHearingStatementService.updateHearingStatement(updatingStatement, Collections.emptyList())).isInstanceOf(IdNotFoundException.class);
   }
 
-  private TimetableHearingStatementBuilder<?, ?> buildStatement() {
-    return TimetableHearingStatement.builder()
-        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+  private static TimetableHearingStatementModel buildTimetableHearingStatementModel() {
+    return TimetableHearingStatementModel.builder()
+      .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
         .swissCanton(SwissCanton.BERN)
-        .statementSender(StatementSender.builder()
-            .email("mike@thebike.com")
-            .build())
-        .statement("Ich mag bitte mehr Bös fahren");
+      .statementSender(TimetableHearingStatementSenderModel.builder()
+        .email("fabienne.mueller@sbb.ch")
+        .build())
+      .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
+      .build();
   }
-
 }
