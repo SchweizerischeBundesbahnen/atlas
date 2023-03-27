@@ -1,5 +1,6 @@
 package ch.sbb.line.directory.controller;
 
+import ch.sbb.atlas.amazon.exception.FileException;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementApiV1;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
@@ -59,7 +60,7 @@ public class TimetableHearingStatementController implements TimetableHearingStat
     try {
       return new InputStreamResource(new FileInputStream(file));
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new FileException(e);
     }
   }
 
