@@ -53,6 +53,8 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
   cantonShort!: string;
   CANTON_OPTIONS = Cantons.cantonsWithSwiss.map((value) => value.short);
   dafaultCantonSelection = this.CANTON_OPTIONS[0];
+  YEAR_OPTIONS: number[] = [];
+  defaultYearSelection = this.YEAR_OPTIONS[0];
   private getTimetableHearingStatementsSubscription!: Subscription;
 
   constructor(
@@ -79,7 +81,7 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
   }
 
   getOverview($paginationAndSearch: TableSettings) {
-    this.selectedCantonEnum = this.getSelectedCanton();
+    this.selectedCantonEnum = this.getSelectedCantonFromNavigation();
     this.dafaultCantonSelection = this.getCantonSelection();
     this.isLoading = true;
     this.getTimetableHearingStatementsSubscription = this.timetableHearingService
@@ -119,6 +121,11 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
       });
   }
 
+  changeSelectedYear(year: MatSelectChange) {
+    this.foundTimetableHearingYear.timetableYear = year.value;
+    this.initOverviewTable();
+  }
+
   downloadCsv() {
     console.log('Download CSV');
   }
@@ -146,8 +153,10 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
   private initOverviewArchivedTable() {
     this.timetableHearingService
       .getArchivedHearingYears()
-      .subscribe((plannedTimetableHearingYears) => {
-        this.foundTimetableHearingYear = plannedTimetableHearingYears[0];
+      .subscribe((archivedTimetableHearingYears) => {
+        this.YEAR_OPTIONS = archivedTimetableHearingYears.map((value) => value.timetableYear);
+        this.defaultYearSelection = this.YEAR_OPTIONS[0];
+        this.foundTimetableHearingYear = archivedTimetableHearingYears[0];
         this.showEmptyTimeTableHearingComponent = false;
         this.initOverviewTable();
       });
@@ -157,6 +166,8 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
     this.timetableHearingService
       .getPlannedHearingYears()
       .subscribe((plannedTimetableHearingYears) => {
+        this.YEAR_OPTIONS = plannedTimetableHearingYears.map((value) => value.timetableYear);
+        this.defaultYearSelection = this.YEAR_OPTIONS[0];
         this.foundTimetableHearingYear = plannedTimetableHearingYears[0];
         this.showEmptyTimeTableHearingComponent = false;
         this.initOverviewTable();
@@ -180,7 +191,7 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
     });
   }
 
-  private getSelectedCanton(): SwissCanton | undefined {
+  private getSelectedCantonFromNavigation(): SwissCanton | undefined {
     if (!this.cantonShort) {
       throw new Error('No canton was provided!');
     }

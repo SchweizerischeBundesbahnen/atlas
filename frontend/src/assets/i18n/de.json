@@ -540,6 +540,8 @@
       "DOWNLOAD_CSV": "Download [CSV]"
     },
     "SELECT_CANTON": "Kanton auswählen",
+    "SELECT_YEAR": "Jahr auswählen",
+    "TABLE_RESULT_HEADING": "{{totalCount}} Stellungnahmen für Fahrplanjahr {{year}}",
     "OPEN": "{{canton}} öffnen",
     "STATEMENT_STATUS": "Status",
     "SWISS_CANTON": "Kanton",

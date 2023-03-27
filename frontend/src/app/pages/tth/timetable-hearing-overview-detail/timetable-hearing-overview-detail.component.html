@@ -7,7 +7,25 @@
     ></app-timetable-hearing-overview-tab-heading>
 
     <div class="d-flex flex-row col-12">
-      <div class="d-flex flex-column col-3 pe-3 pb-3">
+      <div *ngIf="hearingStatus !== 'active'" class="d-flex flex-column col-2 pe-3 pb-1">
+        <mat-label class="font-bold-lg subtitle-margin"
+          >{{ 'TTH.SELECT_YEAR' | translate }}
+        </mat-label>
+        <span class="fake-lable-space"></span>
+        <div class="multi-select-search">
+          <mat-select
+            (selectionChange)="changeSelectedYear($event)"
+            [(value)]="defaultYearSelection"
+            data-cy="canton-type"
+            placeholder="{{ 'FORM.DROPDOWN_PLACEHOLDER' | translate }}"
+          >
+            <mat-option *ngFor="let year of YEAR_OPTIONS" [value]="year">
+              {{ year }}
+            </mat-option>
+          </mat-select>
+        </div>
+      </div>
+      <div class="d-flex flex-column col-3 pe-3 pb-3 mb-5">
         <mat-label class="font-bold-lg subtitle-margin"
           >{{ 'TTH.SELECT_CANTON' | translate }}
         </mat-label>
@@ -32,7 +50,7 @@
           </mat-select>
         </div>
       </div>
-      <div *ngIf="hearingStatus !== 'planned'" class="d-flex flex-column col-3 pe-3 pb-3">
+      <div *ngIf="hearingStatus !== 'planned'" class="d-flex flex-column col-3">
         <span class="fake-lable-space"></span>
         <span class="fake-lable-space"></span>
         <atlas-button
@@ -41,7 +59,6 @@
           buttonDataCy="download-csv"
           buttonText="TTH.BUTTON.DOWNLOAD_CSV"
           buttonType="createCheckingPermission"
-          wrapperStyleClass="mb-5"
         >
           <ng-template #rightIcon>
             <download-icon class="ps-2"></download-icon>
@@ -49,6 +66,25 @@
         </atlas-button>
       </div>
     </div>
+    <div class="pb-3">
+      <div>
+        <span class="font-bold-lg">{{
+          'TTH.TABLE_RESULT_HEADING'
+            | translate
+              : {
+                  totalCount: totalCount$,
+                  year: foundTimetableHearingYear.timetableYear
+                }
+        }}</span>
+      </div>
+      <div *ngIf="hearingStatus !== 'active'">
+        <span
+          >{{ this.foundTimetableHearingYear.hearingFrom }} {{ 'COMMON.TO' | translate }}
+          {{ this.foundTimetableHearingYear.hearingTo }}</span
+        >
+      </div>
+    </div>
+
     <app-table
       (editElementEvent)="editVersion($event)"
       (getTableElementsEvent)="getOverview($event)"
@@ -63,7 +99,7 @@
   </div>
 </div>
 <div *ngIf="showEmptyTimeTableHearingComponent">
-  <span
-    >No result found for <b>[{{ this.hearingStatus }} - {{ this.selectedCantonEnum }}]</b></span
-  >
+  <span>
+    No result found for <b>[{{ this.hearingStatus }} - {{ this.selectedCantonEnum }}]</b>
+  </span>
 </div>
