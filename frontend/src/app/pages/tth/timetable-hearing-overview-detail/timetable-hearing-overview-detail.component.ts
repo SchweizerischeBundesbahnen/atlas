@@ -103,7 +103,9 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
       });
   }
 
-  editVersion($event: any) {}
+  editVersion($event: any) {
+    console.log($event);
+  }
 
   ngOnDestroy() {
     if (!this.showEmptyTimeTableHearingComponent) {
