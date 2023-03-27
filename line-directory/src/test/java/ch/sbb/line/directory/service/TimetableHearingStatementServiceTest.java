@@ -2,12 +2,15 @@ package ch.sbb.line.directory.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementSenderModel;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.model.exception.NotFoundException.FileNotFoundException;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
 import ch.sbb.line.directory.entity.TimetableHearingYear;
@@ -16,6 +19,7 @@ import ch.sbb.line.directory.repository.TimetableHearingStatementRepository;
 import ch.sbb.line.directory.repository.TimetableHearingYearRepository;
 import ch.sbb.line.directory.service.hearing.TimetableHearingStatementService;
 import ch.sbb.line.directory.service.hearing.TimetableHearingYearService;
+import java.io.File;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -83,6 +87,23 @@ public class TimetableHearingStatementServiceTest {
   }
 
   @Test
+  void shouldGetDocumentFromHearingStatement() {
+    timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+    TimetableHearingStatementModel timetableHearingStatementModel = buildTimetableHearingStatementModel();
+
+    List<MultipartFile> documents = new ArrayList<>();
+    documents.add(PdfFiles.multipartFiles.get(0));
+    documents.add(PdfFiles.multipartFiles.get(1));
+
+    TimetableHearingStatementModel createdStatement = timetableHearingStatementService.createHearingStatement(timetableHearingStatementModel, documents);
+
+    var originalFilename = PdfFiles.multipartFiles.get(0).getOriginalFilename();
+    File statementDocument = timetableHearingStatementService.getStatementDocument(createdStatement.getId(), originalFilename);
+    assertTrue(statementDocument.getName().contains("dummy.pdf"));
+    assertEquals(PdfFiles.multipartFiles.get(0).getSize(), statementDocument.length());
+  }
+
+  @Test
   void shouldDeleteDocumentFromHearingStatement() {
     timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
     TimetableHearingStatementModel timetableHearingStatementModel = buildTimetableHearingStatementModel();
@@ -93,14 +114,16 @@ public class TimetableHearingStatementServiceTest {
 
     TimetableHearingStatementModel createdStatement = timetableHearingStatementService.createHearingStatement(timetableHearingStatementModel, documents);
 
-    timetableHearingStatementService.deleteDocument(createdStatement.getId(), PdfFiles.multipartFiles.get(0).getOriginalFilename());
+    timetableHearingStatementService.deleteStatementDocument(createdStatement.getId(), PdfFiles.multipartFiles.get(0).getOriginalFilename());
+    assertThatThrownBy(() -> timetableHearingStatementService.getStatementDocument(createdStatement.getId(), PdfFiles.multipartFiles.get(0).getOriginalFilename())).isInstanceOf(
+      FileNotFoundException.class);
   }
 
   @Test
   void shouldThrowIllegalArgumentExceptionWhenDeletingDocument() {
     timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
 
-    assertThatThrownBy(() -> timetableHearingStatementService.deleteDocument(0L, PdfFiles.multipartFiles.get(0).getOriginalFilename())).isInstanceOf(
+    assertThatThrownBy(() -> timetableHearingStatementService.deleteStatementDocument(0L, PdfFiles.multipartFiles.get(0).getOriginalFilename())).isInstanceOf(
       IllegalArgumentException.class);
   }
 
@@ -115,7 +138,7 @@ public class TimetableHearingStatementServiceTest {
 
     TimetableHearingStatementModel createdStatement = timetableHearingStatementService.createHearingStatement(timetableHearingStatementModel, documents);
 
-    assertThatThrownBy(() -> timetableHearingStatementService.deleteDocument(createdStatement.getId(), "")).isInstanceOf(
+    assertThatThrownBy(() -> timetableHearingStatementService.deleteStatementDocument(createdStatement.getId(), "")).isInstanceOf(
       IllegalArgumentException.class);
   }
 
@@ -126,7 +149,7 @@ public class TimetableHearingStatementServiceTest {
 
     TimetableHearingStatementModel createdStatement = timetableHearingStatementService.createHearingStatement(timetableHearingStatementModel, Collections.emptyList());
 
-    timetableHearingStatementService.deleteDocument(createdStatement.getId(), PdfFiles.multipartFiles.get(0).getOriginalFilename());
+    timetableHearingStatementService.deleteStatementDocument(createdStatement.getId(), PdfFiles.multipartFiles.get(0).getOriginalFilename());
   }
 
   @Test
