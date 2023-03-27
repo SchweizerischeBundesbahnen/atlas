@@ -9,22 +9,9 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { ClientCredential } from './clientCredential';
 
-export interface ServicePointNumber {
-  /**
-   * DiDok-Number formerly known as UIC-Code, combination of uicCountryCode and numberShort. Size: 7
-   */
-  number: number;
-  /**
-   * UicCountryCode, Indicates which country allocated the service point number and is to be interpreted organisationally, not territorially.
-   */
-  uicCountryCode: number;
-  /**
-   * NumberShort - 5 chars identifying number. Range: 1-99.999
-   */
-  numberShort: number;
-  /**
-   * Calculated value formed from the numberShort. Range: 0-9
-   */
-  checkDigit: number;
+export interface ContainerClientCredential {
+  objects?: Array<ClientCredential>;
+  totalCount?: number;
 }
