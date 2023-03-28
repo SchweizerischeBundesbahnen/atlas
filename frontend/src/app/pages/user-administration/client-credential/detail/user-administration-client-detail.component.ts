@@ -4,9 +4,9 @@ import { ClientCredential } from '../../../../api';
 
 @Component({
   selector: 'app-client-credential-administration',
-  templateUrl: './client-credential-administration.component.html',
+  templateUrl: './user-administration-client-detail.component.html',
 })
-export class ClientCredentialAdministrationComponent implements OnInit {
+export class UserAdministrationClientDetailComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public dialogData: any) {}
 
   clientCredential: ClientCredential = {};
