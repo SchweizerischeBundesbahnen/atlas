@@ -8,19 +8,19 @@ import {
   TranslatePipe,
 } from '@ngx-translate/core';
 import { Component } from '@angular/core';
-import { MaterialModule } from '../../../../core/module/material.module';
+import { MaterialModule } from '../../../../../core/module/material.module';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatDialogRef } from '@angular/material/dialog';
 import { EditTitlePipe } from './edit-title.pipe';
 import SpyObj = jasmine.SpyObj;
-import { UserService } from '../../service/user.service';
-import { UserPermissionManager } from '../../service/user-permission-manager';
+import { UserService } from '../../../service/user.service';
+import { UserPermissionManager } from '../../../service/user-permission-manager';
 import { Observable, of } from 'rxjs';
-import { NotificationService } from '../../../../core/notification/notification.service';
-import { BusinessOrganisationsService } from '../../../../api';
-import { User } from '../../../../api';
-import { DialogService } from '../../../../core/components/dialog/dialog.service';
-import { MockUserDetailInfoComponent } from '../../../../app.testing.mocks';
+import { NotificationService } from '../../../../../core/notification/notification.service';
+import { BusinessOrganisationsService } from '../../../../../api';
+import { User } from '../../../../../api';
+import { DialogService } from '../../../../../core/components/dialog/dialog.service';
+import { MockUserDetailInfoComponent } from '../../../../../app.testing.mocks';
 
 @Component({
   selector: 'app-dialog-close',
