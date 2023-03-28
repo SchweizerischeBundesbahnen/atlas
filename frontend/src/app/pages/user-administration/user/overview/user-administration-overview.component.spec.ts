@@ -1,16 +1,17 @@
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
-import { UserAdministrationOverviewComponent } from './user-administration-overview.component';
-import { UserService } from '../service/user.service';
+import { UserService } from '../../service/user.service';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { Component, Input } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
-import { User } from '../../../api/model/user';
-import { MaterialModule } from '../../../core/module/material.module';
+import { User } from '../../../../api/model/user';
+import { MaterialModule } from '../../../../core/module/material.module';
 import { FormGroup, FormsModule } from '@angular/forms';
-import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
-import { AuthService } from '../../../core/auth/auth.service';
+import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
+import { AuthService } from '../../../../core/auth/auth.service';
+import { UserAdministrationOverviewComponent } from '../../overview/user-administration-overview.component';
+import { UserAdministrationUserOverviewComponent } from './user-administration-overview.component';
 
 @Component({
   selector: 'app-table',
@@ -48,9 +49,9 @@ class MockUserSelectComponent {
   @Input() form?: FormGroup;
 }
 
-describe('UserAdministrationOverviewComponent', () => {
-  let component: UserAdministrationOverviewComponent;
-  let fixture: ComponentFixture<UserAdministrationOverviewComponent>;
+describe('UserAdministrationUserOverviewComponent', () => {
+  let component: UserAdministrationUserOverviewComponent;
+  let fixture: ComponentFixture<UserAdministrationUserOverviewComponent>;
 
   let userServiceMock: UserServiceMock;
 
@@ -90,7 +91,7 @@ describe('UserAdministrationOverviewComponent', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(UserAdministrationOverviewComponent);
+    fixture = TestBed.createComponent(UserAdministrationUserOverviewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
