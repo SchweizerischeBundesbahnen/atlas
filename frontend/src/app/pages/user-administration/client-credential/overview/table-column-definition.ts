@@ -1,17 +1,17 @@
 import { TableColumn } from '../../../../core/components/table/table-column';
-import { ClientCredential, User } from '../../../../api';
+import { ClientCredential } from '../../../../api';
 
 export const tableColumns: TableColumn<ClientCredential>[] = [
   {
-    headerTitle: 'USER_ADMIN.LAST_NAME',
+    headerTitle: 'USER_ADMIN.CLIENT_CREDENTIAL.CLIENT_ID',
     value: 'clientCredentialId',
   },
   {
-    headerTitle: 'USER_ADMIN.FIRST_NAME',
+    headerTitle: 'USER_ADMIN.CLIENT_CREDENTIAL.ALIAS',
     value: 'alias',
   },
   {
-    headerTitle: 'USER_ADMIN.MAIL',
+    headerTitle: 'USER_ADMIN.CLIENT_CREDENTIAL.COMMENT',
     value: 'comment',
   },
 ];

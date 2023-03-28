@@ -12,9 +12,8 @@ import { Data } from './data';
 export class UserAdministrationReadOnlyDataComponent<T extends Data> {
   @Input() data!: T;
 
-  constructor(private readonly translatePipe: TranslatePipe) {}
-
-  readonly userModelConfig: ReadOnlyData<T>[][] = [
+  @Input()
+  userModelConfig: ReadOnlyData<T>[][] = [
     [
       { translationKey: 'USER_ADMIN.FIRST_NAME', value: 'firstName' },
       { translationKey: 'USER_ADMIN.LAST_NAME', value: 'lastName' },
@@ -38,4 +37,6 @@ export class UserAdministrationReadOnlyDataComponent<T extends Data> {
       { translationKey: 'USER_ADMIN.DISPLAY_NAME', value: 'displayName' },
     ],
   ];
+
+  constructor(private readonly translatePipe: TranslatePipe) {}
 }

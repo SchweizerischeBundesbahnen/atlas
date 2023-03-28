@@ -31,6 +31,10 @@ public class ClientCredentialMapper {
               .role(permission.getRole())
               .application(permission.getApplication())
               .permissionRestrictions(restrictions)
+              .creationDate(permission.getCreationDate())
+              .creator(permission.getCreator())
+              .editionDate(permission.getEditionDate())
+              .editor(permission.getEditor())
               .build()).collect(Collectors.toSet())
           )
           .build();
