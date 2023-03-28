@@ -93,15 +93,15 @@ public class TimetableHearingStatementServiceTest {
     TimetableHearingStatementModel timetableHearingStatementModel = buildTimetableHearingStatementModel();
 
     List<MultipartFile> documents = new ArrayList<>();
-    documents.add(PdfFiles.multipartFiles.get(0));
-    documents.add(PdfFiles.multipartFiles.get(1));
+    documents.add(PdfFiles.MULTIPART_FILES.get(0));
+    documents.add(PdfFiles.MULTIPART_FILES.get(1));
 
     TimetableHearingStatementModel createdStatement = timetableHearingStatementService.createHearingStatement(timetableHearingStatementModel, documents);
 
-    var originalFilename = PdfFiles.multipartFiles.get(0).getOriginalFilename();
+    String originalFilename = PdfFiles.MULTIPART_FILES.get(0).getOriginalFilename();
     File statementDocument = timetableHearingStatementService.getStatementDocument(createdStatement.getId(), originalFilename);
     assertTrue(statementDocument.getName().contains("dummy.pdf"));
-    assertEquals(PdfFiles.multipartFiles.get(0).getSize(), statementDocument.length());
+    assertEquals(PdfFiles.MULTIPART_FILES.get(0).getSize(), statementDocument.length());
   }
 
   @Test
@@ -112,8 +112,8 @@ public class TimetableHearingStatementServiceTest {
     TimetableHearingStatementModel createdStatement = timetableHearingStatementService.createHearingStatement(timetableHearingStatementModel, Collections.emptyList());
     TimetableHearingStatement createdStatementEntity = TimeTableHearingStatementMapper.toEntity(createdStatement);
 
-    timetableHearingStatementService.deleteStatementDocument(createdStatementEntity, PdfFiles.multipartFiles.get(0).getOriginalFilename());
-    assertThatThrownBy(() -> timetableHearingStatementService.getStatementDocument(createdStatement.getId(), PdfFiles.multipartFiles.get(0).getOriginalFilename())).isInstanceOf(
+    timetableHearingStatementService.deleteStatementDocument(createdStatementEntity, PdfFiles.MULTIPART_FILES.get(0).getOriginalFilename());
+    assertThatThrownBy(() -> timetableHearingStatementService.getStatementDocument(createdStatement.getId(), PdfFiles.MULTIPART_FILES.get(0).getOriginalFilename())).isInstanceOf(
       FileNotFoundException.class);
   }
 
@@ -121,7 +121,7 @@ public class TimetableHearingStatementServiceTest {
   void shouldThrowIllegalArgumentExceptionWhenDeletingDocument() {
     timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
 
-    assertThatThrownBy(() -> timetableHearingStatementService.deleteStatementDocument(new TimetableHearingStatement(), PdfFiles.multipartFiles.get(0).getOriginalFilename())).isInstanceOf(
+    assertThatThrownBy(() -> timetableHearingStatementService.deleteStatementDocument(new TimetableHearingStatement(), PdfFiles.MULTIPART_FILES.get(0).getOriginalFilename())).isInstanceOf(
       IllegalArgumentException.class);
   }
 
@@ -131,8 +131,8 @@ public class TimetableHearingStatementServiceTest {
     TimetableHearingStatementModel timetableHearingStatementModel = buildTimetableHearingStatementModel();
 
     List<MultipartFile> documents = new ArrayList<>();
-    documents.add(PdfFiles.multipartFiles.get(0));
-    documents.add(PdfFiles.multipartFiles.get(1));
+    documents.add(PdfFiles.MULTIPART_FILES.get(0));
+    documents.add(PdfFiles.MULTIPART_FILES.get(1));
 
     TimetableHearingStatementModel createdStatement = timetableHearingStatementService.createHearingStatement(timetableHearingStatementModel, documents);
     TimetableHearingStatement createdStatementEntity = TimeTableHearingStatementMapper.toEntity(createdStatement);
@@ -149,7 +149,7 @@ public class TimetableHearingStatementServiceTest {
     TimetableHearingStatementModel createdStatement = timetableHearingStatementService.createHearingStatement(timetableHearingStatementModel, Collections.emptyList());
     TimetableHearingStatement createdStatementEntity = TimeTableHearingStatementMapper.toEntity(createdStatement);
 
-    timetableHearingStatementService.deleteStatementDocument(createdStatementEntity, PdfFiles.multipartFiles.get(0).getOriginalFilename());
+    timetableHearingStatementService.deleteStatementDocument(createdStatementEntity, PdfFiles.MULTIPART_FILES.get(0).getOriginalFilename());
   }
 
   @Test
