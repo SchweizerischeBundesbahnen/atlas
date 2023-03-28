@@ -23,8 +23,8 @@ export class TransportCompaniesComponent implements OnInit, OnDestroy {
   readonly STATUS_TYPES: TransportCompanyStatus[] = Object.values(TransportCompanyStatus);
   activeStatusTypes: TransportCompanyStatus[] = [];
 
-  @ViewChild(TableComponent, { static: true })
-  tableComponent!: TableComponent<TransportCompany>;
+  // @ViewChild(TableComponent, { static: true })
+  // tableComponent!: TableComponent<TransportCompany>;
 
   tableColumns: TableColumn<TransportCompany>[] = [
     { headerTitle: 'BODI.TRANSPORT_COMPANIES.NUMBER', value: 'number' },
@@ -100,17 +100,17 @@ export class TransportCompaniesComponent implements OnInit, OnDestroy {
       .subscribe((container) => {
         this.transportCompanies = container.objects!;
         this.totalCount = container.totalCount!;
-        this.tableComponent.setTableSettings($paginationAndSearch);
+        // this.tableComponent.setTableSettings($paginationAndSearch); TODO: tableSettings
         this.activeStatusTypes = $paginationAndSearch.statusTypes;
         this.isLoading = false;
       });
   }
 
   onStatusSelectionChange(): void {
-    this.tableComponent.searchData({
-      ...this.tableComponent.tableSearchComponent.activeSearch,
-      statusTypes: this.activeStatusTypes,
-    });
+    // this.tableComponent.searchData({
+    //   //...this.tableComponent.tableSearchComponent.activeSearch,
+    //   statusTypes: this.activeStatusTypes,
+    // }); TODO: tableFilter
   }
 
   editVersion($event: TransportCompany) {

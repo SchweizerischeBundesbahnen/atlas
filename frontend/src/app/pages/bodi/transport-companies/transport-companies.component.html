@@ -6,19 +6,15 @@
   (editElementEvent)="editVersion($event)"
   (getTableElementsEvent)="getOverview($event)"
   [canEdit]="true"
-  [displayBusinessOrganisationSearch]="false"
-  [displayStatusSearch]="false"
-  [displayValidOnSearch]="false"
-  [isLoading]="isLoading"
   [tableColumns]="tableColumns"
   [tableData]="transportCompanies"
-  [tableSearchFieldTemplate]="transportCompanyTypeSelection"
   [totalCount]="totalCount"
   data-cy="bodi-transport-companies"
 >
 </app-table>
 <router-outlet></router-outlet>
 <ng-template #transportCompanyTypeSelection>
+  <!-- TODO: configureInTableFilter -->
   <div class="d-flex flex-column col-3 pe-3">
     <mat-label class="font-bold-lg">{{ 'BODI.TRANSPORT_COMPANIES.STATUS' | translate }}</mat-label>
     <div class="multi-select-search">

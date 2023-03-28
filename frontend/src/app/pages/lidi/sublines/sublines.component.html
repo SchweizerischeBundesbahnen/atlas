@@ -6,30 +6,11 @@
   (editElementEvent)="editVersion($event)"
   (getTableElementsEvent)="getOverview($event)"
   [canEdit]="true"
-  [isLoading]="isLoading"
   [tableColumns]="sublinesTableColumns"
   [tableData]="sublines"
-  [tableSearchFieldTemplate]="sublineTypeSelection"
   [totalCount]="totalCount$"
+  [tableFilterConfig]="tableFilterConfig"
   data-cy="lidi-sublines"
 >
 </app-table>
 <router-outlet></router-outlet>
-<ng-template #sublineTypeSelection>
-  <div class="d-flex flex-column col pe-3">
-    <mat-label class="font-bold-lg">{{ 'LIDI.SUBLINE_TYPE' | translate }}</mat-label>
-    <div class="multi-select-search">
-      <mat-select
-        (selectionChange)="onSublineTypeSelectionChange()"
-        [(value)]="activeSublineTypes"
-        class="color-primary-400"
-        data-cy="table-search-subline-type"
-        multiple
-      >
-        <mat-option *ngFor="let sublineType of SUBLINE_TYPES" [value]="sublineType">{{
-          'LIDI.SUBLINE.TYPES.' + sublineType | translate
-        }}</mat-option>
-      </mat-select>
-    </div>
-  </div>
-</ng-template>

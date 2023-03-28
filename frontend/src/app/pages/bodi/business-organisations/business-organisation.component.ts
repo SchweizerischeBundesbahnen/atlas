@@ -22,8 +22,8 @@ import { DEFAULT_STATUS_SELECTION } from '../../../core/constants/status.choices
   templateUrl: './business-organisation.component.html',
 })
 export class BusinessOrganisationComponent implements OnInit, OnDestroy {
-  @ViewChild(TableComponent, { static: true })
-  tableComponent!: TableComponent<BusinessOrganisation>;
+  // @ViewChild(TableComponent, { static: true })
+  // tableComponent!: TableComponent<BusinessOrganisation>;
 
   tableColumns: TableColumn<BusinessOrganisation>[] = this.getColumns();
 
@@ -85,7 +85,7 @@ export class BusinessOrganisationComponent implements OnInit, OnDestroy {
       .subscribe((container) => {
         this.businessOrganisations = container.objects!;
         this.totalCount$ = container.totalCount!;
-        this.tableComponent.setTableSettings($paginationAndSearch);
+        // this.tableComponent.setTableSettings($paginationAndSearch); TODO: tableSettings
         this.isLoading = false;
       });
   }
