@@ -25,7 +25,7 @@ import SpyObj = jasmine.SpyObj;
 })
 class MockDialogCloseComponent {}
 
-describe('UserAdministrationEditComponent', () => {
+describe('UserAdministrationClientEditComponent', () => {
   let component: UserAdministrationClientEditComponent;
   let fixture: ComponentFixture<UserAdministrationClientEditComponent>;
 

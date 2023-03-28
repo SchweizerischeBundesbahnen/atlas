@@ -227,6 +227,19 @@
     },
     "CONFLICT": {
       "SBBUSERID": "L'utente {{sbbUserId}} è già memorizzato."
+    },
+    "TABS": {
+      "USER": "Benutzer",
+      "CLIENTS": "Clients"
+    },
+    "CLIENT_CREDENTIAL": {
+      "NEW": "Neuen Client berechtigen",
+      "NEW_INFORMATION": "Angaben zum Client",
+      "INFORMATION": "Angaben zum Client",
+      "CLIENT_ID": "Client ID",
+      "ALIAS": "Alias",
+      "ALIAS_INFO": "Wird als Anzeigename im Frontend für z.B. \"geändert durch\" ersichtlich sein",
+      "COMMENT": "Zusätzlicher Kommentar zum Client"
     }
   },
   "TTFN": {

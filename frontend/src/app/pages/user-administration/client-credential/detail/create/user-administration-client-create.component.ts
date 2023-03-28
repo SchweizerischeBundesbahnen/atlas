@@ -15,10 +15,10 @@ import { AtlasFieldLengthValidator } from '../../../../../core/validation/field-
 
 @Component({
   selector: 'app-client-credential-administration-create',
-  templateUrl: './client-credential-administration-create.component.html',
+  templateUrl: './user-administration-client-create.component.html',
   viewProviders: [BusinessOrganisationsService, UserPermissionManager],
 })
-export class ClientCredentialAdministrationCreateComponent {
+export class UserAdministrationClientCreateComponent {
   saveEnabled = true;
 
   form = new FormGroup<ClientCredentialCreateFormGroup>({

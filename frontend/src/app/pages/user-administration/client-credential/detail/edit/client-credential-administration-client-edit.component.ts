@@ -7,7 +7,6 @@ import {
   ClientCredential,
   ClientCredentialPermissionCreate,
   Permission,
-  User,
 } from '../../../../../api';
 import { UserService } from '../../../service/user.service';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
