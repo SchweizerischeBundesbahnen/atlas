@@ -9,22 +9,23 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Permission } from './permission';
 
-export interface ServicePointNumber {
+export interface ClientCredentialPermissionCreate {
   /**
-   * DiDok-Number formerly known as UIC-Code, combination of uicCountryCode and numberShort. Size: 7
+   * User permissions
    */
-  number: number;
+  permissions: Array<Permission>;
   /**
-   * UicCountryCode, Indicates which country allocated the service point number and is to be interpreted organisationally, not territorially.
+   * Client Id
    */
-  uicCountryCode: number;
+  clientCredentialId: string;
   /**
-   * Calculated value formed from the numberShort. Range: 0-9
+   * Alias for the Client
    */
-  checkDigit: number;
+  alias: string;
   /**
-   * NumberShort - 5 chars identifying number. Range: 1-99.999
+   * Additional information about the client
    */
-  numberShort: number;
+  comment?: string;
 }

@@ -194,6 +194,7 @@
     "SEARCH_FOR_FILTER_CANTON": "Kantone und Applikationen",
     "NEW": "Neuer Benutzer erfassen",
     "NEW_INFORMATION": "Angaben zum neuen Benutzer",
+    "NEW_CLIENT_CREDENTIAL": "Neue Client Credentials berechtigen",
     "INFORMATION": "Angaben zum Benutzer",
     "NOT_FOUND": "Benutzer wurde nicht gefunden",
     "TABLE_HEADER": "Benutzer",
@@ -226,6 +227,18 @@
     },
     "CONFLICT": {
       "SBBUSERID": "Der Benutzer {{sbbUserId}} ist bereits hinterlegt."
+    },
+    "TABS": {
+      "USER": "Benutzer",
+      "CLIENTS": "Clients"
+    },
+    "CLIENT_CREDENTIAL": {
+      "NEW": "Neuen Client berechtigen",
+      "NEW_INFORMATION": "Angaben zum Client",
+      "CLIENT_ID": "Client ID",
+      "ALIAS": "Alias",
+      "ALIAS_INFO": "Wird als Anzeigename im Frontend für z.B. \"geändert durch\" ersichtlich sein",
+      "COMMENT": "Zusätzlicher Kommentar zum Client"
     }
   },
   "TTFN": {

@@ -1,5 +1,6 @@
 package ch.sbb.atlas.user.administration.entity;
 
+import ch.sbb.atlas.api.AtlasFieldLengths;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -8,7 +9,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.AllArgsConstructor;
@@ -35,11 +37,15 @@ public class ClientCredentialPermission extends BasePermission {
   @SequenceGenerator(name = ID_SEQ, sequenceName = ID_SEQ, allocationSize = 1, initialValue = 1000)
   private Long id;
 
-  @NotEmpty
+  @NotNull
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
   private String clientCredentialId;
 
+  @NotNull
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_100)
   private String alias;
 
+  @Size(max = AtlasFieldLengths.LENGTH_100)
   private String comment;
 
   @Builder.Default
