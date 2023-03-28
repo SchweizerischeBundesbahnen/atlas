@@ -235,6 +235,7 @@
     "CLIENT_CREDENTIAL": {
       "NEW": "Neuen Client berechtigen",
       "NEW_INFORMATION": "Angaben zum Client",
+      "INFORMATION": "Angaben zum Client",
       "CLIENT_ID": "Client ID",
       "ALIAS": "Alias",
       "ALIAS_INFO": "Wird als Anzeigename im Frontend für z.B. \"geändert durch\" ersichtlich sein",

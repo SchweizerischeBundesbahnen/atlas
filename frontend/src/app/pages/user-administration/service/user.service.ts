@@ -52,7 +52,7 @@ export class UserService {
     );
   }
 
-  getPermissionsFromUserModelAsArray(user: User): Permission[] {
+  getPermissionsFromUserModelAsArray(user: User | ClientCredential): Permission[] {
     return Array.from(user.permissions ?? []);
   }
 
@@ -72,5 +72,11 @@ export class UserService {
     permission: ClientCredentialPermissionCreate
   ): Observable<ClientCredential> {
     return this.userAdministrationService.createClientCredential(permission);
+  }
+
+  updateClientPermissions(
+    permissions: ClientCredentialPermissionCreate
+  ): Observable<ClientCredential> {
+    return this.userAdministrationService.updateClientCredential(permissions);
   }
 }
