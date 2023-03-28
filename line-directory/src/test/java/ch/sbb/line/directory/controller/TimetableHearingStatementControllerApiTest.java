@@ -1,6 +1,6 @@
 package ch.sbb.line.directory.controller;
 
-import static ch.sbb.line.directory.helper.PdfFiles.multipartFiles;
+import static ch.sbb.line.directory.helper.PdfFiles.MULTIPART_FILES;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
@@ -172,9 +172,9 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
 
     mvc.perform(multipart(HttpMethod.POST, "/v1/timetable-hearing/statements")
         .file(statementJson)
-        .file(new MockMultipartFile(multipartFiles.get(0).getName(), multipartFiles.get(0).getOriginalFilename(), multipartFiles.get(0).getContentType(), multipartFiles.get(0).getBytes()))
+        .file(new MockMultipartFile(MULTIPART_FILES.get(0).getName(), MULTIPART_FILES.get(0).getOriginalFilename(), MULTIPART_FILES.get(0).getContentType(), MULTIPART_FILES.get(0).getBytes()))
         .file(
-          new MockMultipartFile(multipartFiles.get(1).getName(), multipartFiles.get(1).getOriginalFilename(), multipartFiles.get(1).getContentType(), multipartFiles.get(1).getBytes())))
+          new MockMultipartFile(MULTIPART_FILES.get(1).getName(), MULTIPART_FILES.get(1).getOriginalFilename(), MULTIPART_FILES.get(1).getContentType(), MULTIPART_FILES.get(1).getBytes())))
       .andExpect(status().isCreated())
       .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
       .andExpect(jsonPath("$." + Fields.documents, hasSize(2)));
@@ -195,10 +195,10 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
 
     mvc.perform(multipart(HttpMethod.POST, "/v1/timetable-hearing/statements")
         .file(statementJson)
-        .file(new MockMultipartFile(multipartFiles.get(0).getName(), multipartFiles.get(0).getOriginalFilename(), multipartFiles.get(0).getContentType(), multipartFiles.get(0).getBytes()))
-        .file(new MockMultipartFile(multipartFiles.get(1).getName(), multipartFiles.get(1).getOriginalFilename(), multipartFiles.get(1).getContentType(), multipartFiles.get(1).getBytes()))
-        .file(new MockMultipartFile(multipartFiles.get(2).getName(), multipartFiles.get(2).getOriginalFilename(), multipartFiles.get(2).getContentType(), multipartFiles.get(2).getBytes()))
-        .file(new MockMultipartFile(multipartFiles.get(3).getName(), multipartFiles.get(3).getOriginalFilename(), multipartFiles.get(3).getContentType(), multipartFiles.get(3).getBytes()))
+        .file(new MockMultipartFile(MULTIPART_FILES.get(0).getName(), MULTIPART_FILES.get(0).getOriginalFilename(), MULTIPART_FILES.get(0).getContentType(), MULTIPART_FILES.get(0).getBytes()))
+        .file(new MockMultipartFile(MULTIPART_FILES.get(1).getName(), MULTIPART_FILES.get(1).getOriginalFilename(), MULTIPART_FILES.get(1).getContentType(), MULTIPART_FILES.get(1).getBytes()))
+        .file(new MockMultipartFile(MULTIPART_FILES.get(2).getName(), MULTIPART_FILES.get(2).getOriginalFilename(), MULTIPART_FILES.get(2).getContentType(), MULTIPART_FILES.get(2).getBytes()))
+        .file(new MockMultipartFile(MULTIPART_FILES.get(3).getName(), MULTIPART_FILES.get(3).getOriginalFilename(), MULTIPART_FILES.get(3).getContentType(), MULTIPART_FILES.get(3).getBytes()))
       )
       .andExpect(status().isBadRequest())
       .andExpect(result -> assertTrue(result.getResolvedException() instanceof PdfDocumentConstraintViolationException))
@@ -231,9 +231,9 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
 
     mvc.perform(multipart(HttpMethod.POST, "/v1/timetable-hearing/statements/external")
         .file(statementJson)
-        .file(new MockMultipartFile(multipartFiles.get(0).getName(), multipartFiles.get(0).getOriginalFilename(), multipartFiles.get(0).getContentType(), multipartFiles.get(0).getBytes()))
+        .file(new MockMultipartFile(MULTIPART_FILES.get(0).getName(), MULTIPART_FILES.get(0).getOriginalFilename(), MULTIPART_FILES.get(0).getContentType(), MULTIPART_FILES.get(0).getBytes()))
         .file(
-          new MockMultipartFile(multipartFiles.get(1).getName(), multipartFiles.get(1).getOriginalFilename(), multipartFiles.get(1).getContentType(), multipartFiles.get(1).getBytes())))
+          new MockMultipartFile(MULTIPART_FILES.get(1).getName(), MULTIPART_FILES.get(1).getOriginalFilename(), MULTIPART_FILES.get(1).getContentType(), MULTIPART_FILES.get(1).getBytes())))
       .andExpect(status().isCreated())
       .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
       .andExpect(jsonPath("$." + Fields.documents, hasSize(2)))
@@ -284,7 +284,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
     mvc.perform(multipart(HttpMethod.PUT, "/v1/timetable-hearing/statements/" + statement.getId())
         .file(statementJson)
         .file(
-          new MockMultipartFile(multipartFiles.get(2).getName(), multipartFiles.get(2).getOriginalFilename(), multipartFiles.get(2).getContentType(), multipartFiles.get(2).getBytes())))
+          new MockMultipartFile(MULTIPART_FILES.get(2).getName(), MULTIPART_FILES.get(2).getOriginalFilename(), MULTIPART_FILES.get(2).getContentType(), MULTIPART_FILES.get(2).getBytes())))
       .andDo(print())
       .andExpect(status().isOk())
       .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
@@ -306,16 +306,16 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
 
     TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
       timetableHearingStatementModel,
-      List.of(multipartFiles.get(1)));
+      List.of(MULTIPART_FILES.get(1)));
 
     MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
       MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
 
     mvc.perform(multipart(HttpMethod.PUT, "/v1/timetable-hearing/statements/" + statement.getId())
         .file(statementJson)
-        .file(new MockMultipartFile(multipartFiles.get(0).getName(), multipartFiles.get(0).getOriginalFilename(), multipartFiles.get(0).getContentType(), multipartFiles.get(0).getBytes()))
+        .file(new MockMultipartFile(MULTIPART_FILES.get(0).getName(), MULTIPART_FILES.get(0).getOriginalFilename(), MULTIPART_FILES.get(0).getContentType(), MULTIPART_FILES.get(0).getBytes()))
         .file(
-          new MockMultipartFile(multipartFiles.get(2).getName(), multipartFiles.get(2).getOriginalFilename(), multipartFiles.get(2).getContentType(), multipartFiles.get(2).getBytes())))
+          new MockMultipartFile(MULTIPART_FILES.get(2).getName(), MULTIPART_FILES.get(2).getOriginalFilename(), MULTIPART_FILES.get(2).getContentType(), MULTIPART_FILES.get(2).getBytes())))
       .andDo(print())
       .andExpect(status().isOk())
       .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
@@ -374,9 +374,9 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
           .build())
         .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
         .build(),
-      List.of(multipartFiles.get(0)));
+      List.of(MULTIPART_FILES.get(0)));
 
-    mvc.perform(get("/v1/timetable-hearing/statements/" + statement.getId() + "/documents/" + multipartFiles.get(0).getOriginalFilename()))
+    mvc.perform(get("/v1/timetable-hearing/statements/" + statement.getId() + "/documents/" + MULTIPART_FILES.get(0).getOriginalFilename()))
       .andExpect(status().isOk())
       .andExpect(content().contentType(MediaType.APPLICATION_PDF_VALUE));
   }
@@ -392,7 +392,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
           .build())
         .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
         .build(),
-      List.of(multipartFiles.get(0)));
+      List.of(MULTIPART_FILES.get(0)));
 
     mvc.perform(get("/v1/timetable-hearing/statements/" + statement.getId() + "/documents/" + "nonexistingfilename"))
       .andExpect(status().isNotFound())
@@ -410,9 +410,9 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
           .build())
         .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
         .build(),
-      List.of(multipartFiles.get(0)));
+      List.of(MULTIPART_FILES.get(0)));
 
-    mvc.perform(delete("/v1/timetable-hearing/statements/" + statement.getId() + "/documents/" + multipartFiles.get(0).getOriginalFilename()))
+    mvc.perform(delete("/v1/timetable-hearing/statements/" + statement.getId() + "/documents/" + MULTIPART_FILES.get(0).getOriginalFilename()))
       .andExpect(status().isOk());
   }
 

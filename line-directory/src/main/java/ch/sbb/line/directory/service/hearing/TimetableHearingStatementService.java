@@ -19,12 +19,12 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
@@ -37,7 +37,7 @@ public class TimetableHearingStatementService {
   private final TimetableHearingYearRepository timetableHearingYearRepository;
   private final FileService fileService;
   private final TimetableHearingPdfsAmazonService pdfsUploadAmazonService;
-  private final DocumentsValidationService documentsValidationService;
+  private final StatementDocumentFilesValidationService statementDocumentFilesValidationService;
 
   public Page<TimetableHearingStatement> getHearingStatements(TimetableHearingStatementSearchRestrictions searchRestrictions) {
     return timetableHearingStatementRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
@@ -49,7 +49,7 @@ public class TimetableHearingStatementService {
   }
 
   public File getStatementDocument(Long timetableHearingStatementId, String documentFilename) {
-    var timetableHearingStatement = getTimetableHearingStatementById(timetableHearingStatementId);
+    TimetableHearingStatement timetableHearingStatement = getTimetableHearingStatementById(timetableHearingStatementId);
     if (timetableHearingStatement.checkIfStatementDocumentExists(documentFilename)) {
       return pdfsUploadAmazonService.downloadPdfFile(timetableHearingStatementId.toString(), documentFilename);
     } else {
@@ -66,9 +66,7 @@ public class TimetableHearingStatementService {
 
     if (!CollectionUtils.isEmpty(documents)) {
       files = getFilesFromMultipartFiles(documents);
-      documentsValidationService.validateMaxNumberOfFiles(files.size());
-      documentsValidationService.validateMaxSizeOfFiles(files, MAX_DOCUMENTS_SIZE);
-      documentsValidationService.validateAllFilessArePdfs(files);
+      filesValidation(files);
 
       addFilesToStatement(documents, statementToCreate);
     }
@@ -83,14 +81,12 @@ public class TimetableHearingStatementService {
   public TimetableHearingStatement updateHearingStatement(TimetableHearingStatementModel timetableHearingStatementModel, List<MultipartFile> documents) {
     checkThatTimetableHearingYearExists(timetableHearingStatementModel.getTimetableYear());
 
-    var timetableHearingStatementInDb = timetableHearingStatementRepository.getReferenceById(timetableHearingStatementModel.getId());
+    TimetableHearingStatement timetableHearingStatementInDb = timetableHearingStatementRepository.getReferenceById(timetableHearingStatementModel.getId());
 
     List<File> files = new ArrayList<>();
     if (documents != null && !documents.isEmpty()) {
       files = getFilesFromMultipartFiles(documents);
-      documentsValidationService.validateMaxNumberOfFiles(files.size());
-      documentsValidationService.validateMaxSizeOfFiles(files, MAX_DOCUMENTS_SIZE);
-      documentsValidationService.validateAllFilessArePdfs(files);
+      filesValidation(files);
 
       List<StatementDocument> statementDocumentsList = new ArrayList<>(timetableHearingStatementInDb.getDocuments());
       statementDocumentsList.forEach(statementDocument -> removeDocumentFromS3andDB(statementDocument.getFileName(), timetableHearingStatementInDb));
@@ -103,10 +99,17 @@ public class TimetableHearingStatementService {
 
     return timetableHearingStatement;
   }
+
+  private void filesValidation(List<File> files) {
+    statementDocumentFilesValidationService.validateMaxNumberOfFiles(files.size());
+    statementDocumentFilesValidationService.validateMaxSizeOfFiles(files, MAX_DOCUMENTS_SIZE);
+    statementDocumentFilesValidationService.validateAllFilessArePdfs(files);
+  }
+
   @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin"
     + ".ApplicationType).TIMETABLE_HEARING, #timetableHearingStatement)")
   public void deleteStatementDocument(TimetableHearingStatement timetableHearingStatement, String documentFilename) {
-    if (timetableHearingStatement.getId()==null || !StringUtils.hasText(documentFilename)) {
+    if (timetableHearingStatement.getId()==null || StringUtils.isBlank(documentFilename)) {
       throw new IllegalArgumentException();
     }
     if (timetableHearingStatement.checkIfStatementDocumentExists(documentFilename)) {
