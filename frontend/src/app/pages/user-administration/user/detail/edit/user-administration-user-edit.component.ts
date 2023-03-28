@@ -11,10 +11,10 @@ import { CreationEditionRecord } from '../../../../../core/components/base-detai
 
 @Component({
   selector: 'app-user-administration-edit',
-  templateUrl: './user-administration-edit.component.html',
+  templateUrl: './user-administration-user-edit.component.html',
   viewProviders: [BusinessOrganisationsService, UserPermissionManager],
 })
-export class UserAdministrationEditComponent implements OnInit {
+export class UserAdministrationUserEditComponent implements OnInit {
   @Input() user?: User;
   editMode = false;
   saveEnabled = true;

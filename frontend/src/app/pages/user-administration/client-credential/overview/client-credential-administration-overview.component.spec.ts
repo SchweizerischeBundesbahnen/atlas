@@ -9,6 +9,8 @@ import { MaterialModule } from '../../../../core/module/material.module';
 import { FormGroup, FormsModule } from '@angular/forms';
 import { UserService } from '../../service/user.service';
 import { AuthService } from '../../../../core/auth/auth.service';
+import { UserAdministrationClientOverviewComponent } from './client-credential-administration-overview.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 @Component({
   selector: 'app-table',
@@ -46,9 +48,9 @@ class MockUserSelectComponent {
   @Input() form?: FormGroup;
 }
 
-describe('UserAdministrationOverviewComponent', () => {
-  let component: UserAdministrationOverviewComponent;
-  let fixture: ComponentFixture<UserAdministrationOverviewComponent>;
+describe('UserAdministrationClientOverviewComponent', () => {
+  let component: UserAdministrationClientOverviewComponent;
+  let fixture: ComponentFixture<UserAdministrationClientOverviewComponent>;
 
   let userServiceMock: UserServiceMock;
 
@@ -62,7 +64,7 @@ describe('UserAdministrationOverviewComponent', () => {
 
     await TestBed.configureTestingModule({
       declarations: [
-        UserAdministrationOverviewComponent,
+        UserAdministrationClientOverviewComponent,
         AtlasButtonComponent,
         MockTableComponent,
         MockFormSearchSelectComponent,
@@ -74,7 +76,7 @@ describe('UserAdministrationOverviewComponent', () => {
         }),
         RouterTestingModule,
         MaterialModule,
-        FormsModule,
+        HttpClientTestingModule,
       ],
       providers: [
         {
@@ -88,7 +90,7 @@ describe('UserAdministrationOverviewComponent', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(UserAdministrationOverviewComponent);
+    fixture = TestBed.createComponent(UserAdministrationClientOverviewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
