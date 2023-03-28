@@ -21,8 +21,8 @@ import { DEFAULT_STATUS_SELECTION } from '../../../core/constants/status.choices
   templateUrl: './timetable-field-number-overview.component.html',
 })
 export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy {
-  @ViewChild(TableComponent, { static: true })
-  tableComponent!: TableComponent<TimetableFieldNumber>;
+  // @ViewChild(TableComponent, { static: true })
+  // tableComponent!: TableComponent<TimetableFieldNumber>;
 
   tableColumns: TableColumn<TimetableFieldNumber>[] = [
     { headerTitle: 'TTFN.NUMBER', value: 'number' },
@@ -86,7 +86,7 @@ export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy 
       .subscribe((container) => {
         this.timetableFieldNumbers = container.objects!;
         this.totalCount$ = container.totalCount!;
-        this.tableComponent.setTableSettings($paginationAndSearch);
+        //this.tableComponent.setTableSettings($paginationAndSearch); // TODO: tableSettings
         this.isLoading = false;
       });
   }

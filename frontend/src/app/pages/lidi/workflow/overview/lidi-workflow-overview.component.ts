@@ -19,7 +19,7 @@ import { TableSettingsWorkflow } from '../../../../core/components/table/table-s
   templateUrl: './lidi-workflow-overview.component.html',
 })
 export class LidiWorkflowOverviewComponent implements OnInit, OnDestroy {
-  @ViewChild(TableComponent, { static: true }) tableComponent!: TableComponent<LineVersionSnapshot>;
+  // @ViewChild(TableComponent, { static: true }) tableComponent!: TableComponent<LineVersionSnapshot>;
 
   lineSnapshotsTableColumns: TableColumn<LineVersionSnapshot>[] = [
     { headerTitle: 'LIDI.LINE_VERSION_SNAPSHOT.TABLE.NUMBER', value: 'number' },
@@ -79,7 +79,7 @@ export class LidiWorkflowOverviewComponent implements OnInit, OnDestroy {
       .subscribe((lineVersionSnapshotContainer) => {
         this.lineVersionSnapshots = lineVersionSnapshotContainer.objects!;
         this.totalCount$ = lineVersionSnapshotContainer.totalCount!;
-        this.tableComponent.setTableSettings($paginationAndSearch);
+        // this.tableComponent.setTableSettings($paginationAndSearch); // TODO: tableSettings
         this.isLoading = false;
       });
   }

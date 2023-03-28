@@ -1,28 +1,30 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-
+import { Component, OnDestroy } from '@angular/core';
 import { TableColumn } from '../../../core/components/table/table-column';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { NotificationService } from '../../../core/notification/notification.service';
-import { Line, LinesService, LineType } from '../../../api';
-import { TableComponent } from '../../../core/components/table/table.component';
-import { TableSettings } from '../../../core/components/table/table-settings';
-import { TableSettingsService } from '../../../core/components/table/table-settings.service';
-import { Pages } from '../../pages';
+import { BusinessOrganisation, Line, LinesService, LineType, Status } from '../../../api';
 import { filter } from 'rxjs/operators';
 import {
   DetailDialogEvents,
   RouteToDialogService,
 } from '../../../core/components/route-to-dialog/route-to-dialog.service';
-import { DEFAULT_STATUS_SELECTION } from '../../../core/constants/status.choices';
+import {
+  FilterType,
+  TableFilterConfig,
+  TableFilterDateSelect,
+  TableFilterMultiSelect,
+  TableFilterSearchSelect,
+} from '../../../core/components/table-filter/table-filter-config';
+import { TableService } from '../../../core/components/table/table.service';
+import { TablePagination } from '../../../core/components/table/table-pagination';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-lidi-lines',
   templateUrl: './lines.component.html',
+  providers: [TableService],
 })
-export class LinesComponent implements OnInit, OnDestroy {
-  @ViewChild(TableComponent, { static: true }) tableComponent!: TableComponent<Line>;
-
+export class LinesComponent implements OnDestroy {
   linesTableColumns: TableColumn<Line>[] = [
     { headerTitle: 'LIDI.LINE.NUMBER', value: 'number' },
     { headerTitle: 'LIDI.LINE.DESCRIPTION', value: 'description' },
@@ -38,11 +40,39 @@ export class LinesComponent implements OnInit, OnDestroy {
     { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
   ];
 
-  readonly LINE_TYPES: LineType[] = Object.values(LineType);
-  activeLineTypes: LineType[] = [];
+  readonly tableFilterConfig: TableFilterConfig<LineType | Status | BusinessOrganisation>[] = [
+    {
+      filterType: FilterType.SEARCH_SELECT,
+      elementWidthCssClass: 'col-3',
+      activeSearch: {} as BusinessOrganisation,
+    },
+    {
+      filterType: FilterType.MULTI_SELECT,
+      elementWidthCssClass: 'col-3',
+      activeSearch: [],
+      labelTranslationKey: 'LIDI.TYPE',
+      typeTranslationKeyPrefix: 'LIDI.LINE.TYPES.',
+      selectOptions: Object.values(LineType),
+    },
+    {
+      filterType: FilterType.MULTI_SELECT,
+      elementWidthCssClass: 'col-3',
+      activeSearch: [],
+      labelTranslationKey: 'COMMON.STATUS',
+      typeTranslationKeyPrefix: 'COMMON.STATUS_TYPES.',
+      selectOptions: Object.values(Status),
+    },
+    {
+      filterType: FilterType.VALID_ON_SELECT,
+      elementWidthCssClass: 'col-3',
+      activeSearch: undefined,
+      formControl: new FormControl(),
+    },
+  ];
+
   lineVersions: Line[] = [];
   totalCount$ = 0;
-  isLoading = false;
+
   private lineVersionsSubscription!: Subscription;
   private routeSubscription!: Subscription;
 
@@ -50,56 +80,43 @@ export class LinesComponent implements OnInit, OnDestroy {
     private linesService: LinesService,
     private route: ActivatedRoute,
     private router: Router,
-    private notificationService: NotificationService,
-    private tableSettingsService: TableSettingsService,
-    private routeToDialogService: RouteToDialogService
+    private routeToDialogService: RouteToDialogService,
+    private readonly tableService: TableService
   ) {
     this.routeSubscription = this.routeToDialogService.detailDialogEvent
       .pipe(filter((e) => e === DetailDialogEvents.Closed))
-      .subscribe(() => this.ngOnInit());
+      .subscribe(() =>
+        this.getOverview({
+          page: this.tableService.pageIndex,
+          size: this.tableService.pageSize,
+          sort: this.tableService.sortString,
+          // filterConfig: this.tableFilterConfig,
+        })
+      );
   }
 
-  ngOnInit(): void {
-    const storedTableSettings = this.tableSettingsService.getTableSettings(Pages.LINES.path);
-    this.getOverview(
-      storedTableSettings || {
-        page: 0,
-        size: 10,
-        sort: 'number,ASC',
-        statusChoices: DEFAULT_STATUS_SELECTION,
-      }
-    );
-  }
-
-  getOverview($paginationAndSearch: TableSettings) {
-    this.tableSettingsService.storeTableSettings(Pages.LINES.path, $paginationAndSearch);
-    this.isLoading = true;
+  getOverview($paginationAndSearch: TablePagination) {
     this.lineVersionsSubscription = this.linesService
       .getLines(
         undefined,
-        $paginationAndSearch.searchCriteria,
-        $paginationAndSearch.statusChoices,
-        $paginationAndSearch.lineTypes,
-        $paginationAndSearch.boChoice,
-        $paginationAndSearch.validOn,
+        [],
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        // ($paginationAndSearch.filterConfig[2] as TableFilterMultiSelect<Status>)?.activeSearch,
+        // ($paginationAndSearch.filterConfig[1] as TableFilterMultiSelect<LineType>)?.activeSearch,
+        // ($paginationAndSearch.filterConfig[0] as TableFilterSearchSelect<BusinessOrganisation>)
+        //   ?.activeSearch?.sboid,
+        // ($paginationAndSearch.filterConfig[3] as TableFilterDateSelect)?.activeSearch,
         $paginationAndSearch.page,
         $paginationAndSearch.size,
-        [$paginationAndSearch.sort!, 'slnid,ASC']
+        [$paginationAndSearch.sort!, 'slnid,asc']
       )
       .subscribe((lineContainer) => {
         this.lineVersions = lineContainer.objects!;
         this.totalCount$ = lineContainer.totalCount!;
-        this.tableComponent.setTableSettings($paginationAndSearch);
-        this.activeLineTypes = $paginationAndSearch.lineTypes;
-        this.isLoading = false;
       });
-  }
-
-  onLineTypeSelectionChange(): void {
-    this.tableComponent.searchData({
-      ...this.tableComponent.tableSearchComponent.activeSearch,
-      lineTypes: this.activeLineTypes,
-    });
   }
 
   editVersion($event: Line) {
