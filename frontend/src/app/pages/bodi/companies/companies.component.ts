@@ -20,8 +20,8 @@ import {
   templateUrl: './companies.component.html',
 })
 export class CompaniesComponent implements OnInit, OnDestroy {
-  @ViewChild(TableComponent, { static: true })
-  tableComponent!: TableComponent<Company>;
+  // @ViewChild(TableComponent, { static: true })
+  // tableComponent!: TableComponent<Company>;
 
   tableColumns: TableColumn<Company>[] = [
     { headerTitle: 'BODI.COMPANIES.UIC_CODE', value: 'uicCode' },
@@ -80,7 +80,7 @@ export class CompaniesComponent implements OnInit, OnDestroy {
       .subscribe((container) => {
         this.companies = container.objects!;
         this.totalCount = container.totalCount!;
-        this.tableComponent.setTableSettings($paginationAndSearch);
+        // this.tableComponent.setTableSettings($paginationAndSearch); TODO: tableSettings
         this.isLoading = false;
       });
   }

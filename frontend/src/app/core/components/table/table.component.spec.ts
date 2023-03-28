@@ -4,7 +4,7 @@ import { TableComponent } from './table.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { By } from '@angular/platform-browser';
 import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.component';
-import { TableSearchComponent } from '../table-search/table-search.component';
+import { TableFilterComponent } from '../table-filter/table-filter.component';
 import { AppTestingModule } from '../../../app.testing.module';
 import { DateIconComponent } from '../../form-components/date-icon/date-icon.component';
 import { SearchSelectComponent } from '../../form-components/search-select/search-select.component';
@@ -27,7 +27,7 @@ describe('TableComponent', () => {
       declarations: [
         TableComponent,
         LoadingSpinnerComponent,
-        TableSearchComponent,
+        TableFilterComponent,
         BusinessOrganisationSelectComponent,
         SearchSelectComponent,
         DateIconComponent,

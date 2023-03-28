@@ -1,4 +1,4 @@
 import { TablePagination } from './table-pagination';
-import { TableSearchWorkflow } from '../table-search/table-search-workflow';
+import { TableFilterWorkflow } from '../table-filter/table-filter-workflow';
 
-export type TableSettingsWorkflow = TablePagination & TableSearchWorkflow;
+export type TableSettingsWorkflow = TablePagination & TableFilterWorkflow;
