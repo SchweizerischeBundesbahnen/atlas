@@ -75,6 +75,20 @@ export class Pages {
     description: 'PAGES.USER_ADMIN.DESCRIPTION',
   };
 
+  public static USERS: Page = {
+    title: 'PAGES.DETAILS',
+    path: 'users',
+    pathText: '',
+    description: '',
+  };
+
+  public static CLIENTS: Page = {
+    title: 'PAGES.DETAILS',
+    path: 'clients',
+    pathText: '',
+    description: '',
+  };
+
   public static TTH: Page = {
     title: 'PAGES.TTH.TITLE',
     titleMenu: 'PAGES.TTH.TITLE_MENU',

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ReadOnlyData } from './read-only-data';
-import { User } from '../../../api';
 import { TranslatePipe } from '@ngx-translate/core';
+import { Data } from './data';
 
 @Component({
   selector: 'app-user-administration-read-only-data',
@@ -9,12 +9,12 @@ import { TranslatePipe } from '@ngx-translate/core';
   styleUrls: ['user-administration-read-only-data.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UserAdministrationReadOnlyDataComponent {
-  @Input() data!: User;
+export class UserAdministrationReadOnlyDataComponent<T extends Data> {
+  @Input() data!: T;
 
   constructor(private readonly translatePipe: TranslatePipe) {}
 
-  readonly userModelConfig: ReadOnlyData<User>[][] = [
+  readonly userModelConfig: ReadOnlyData<T>[][] = [
     [
       { translationKey: 'USER_ADMIN.FIRST_NAME', value: 'firstName' },
       { translationKey: 'USER_ADMIN.LAST_NAME', value: 'lastName' },
