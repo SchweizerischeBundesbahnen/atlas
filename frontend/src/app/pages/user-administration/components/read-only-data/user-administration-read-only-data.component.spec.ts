@@ -9,8 +9,8 @@ import {
 } from '@ngx-translate/core';
 
 describe('UserAdministrationReadOnlyDataComponent', () => {
-  let component: UserAdministrationReadOnlyDataComponent;
-  let fixture: ComponentFixture<UserAdministrationReadOnlyDataComponent>;
+  let component: UserAdministrationReadOnlyDataComponent<any>;
+  let fixture: ComponentFixture<UserAdministrationReadOnlyDataComponent<any>>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
