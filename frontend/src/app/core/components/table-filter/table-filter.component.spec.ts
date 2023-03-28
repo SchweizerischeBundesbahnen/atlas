@@ -1,33 +1,28 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TableSearchComponent } from './table-search.component';
+import { TableFilterComponent } from './table-filter.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { By } from '@angular/platform-browser';
 import moment from 'moment';
 import { Status } from '../../../api';
 import { AppTestingModule } from '../../../app.testing.module';
 import { DateIconComponent } from '../../form-components/date-icon/date-icon.component';
-import { MockAtlasFieldErrorComponent, MockBoSelectComponent } from '../../../app.testing.mocks';
+import { MockBoSelectComponent } from '../../../app.testing.mocks';
 
 describe('TableSearchComponent', () => {
-  let component: TableSearchComponent;
-  let fixture: ComponentFixture<TableSearchComponent>;
+  let component: TableFilterComponent;
+  let fixture: ComponentFixture<TableFilterComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        TableSearchComponent,
-        DateIconComponent,
-        MockBoSelectComponent,
-        MockAtlasFieldErrorComponent,
-      ],
+      declarations: [TableFilterComponent, DateIconComponent, MockBoSelectComponent],
       imports: [AppTestingModule],
       providers: [TranslatePipe],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TableSearchComponent);
+    fixture = TestBed.createComponent(TableFilterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

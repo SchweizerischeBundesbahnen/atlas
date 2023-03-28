@@ -1,28 +1,32 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 
 import { TableColumn } from '../../../core/components/table/table-column';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { NotificationService } from '../../../core/notification/notification.service';
-import { Subline, SublinesService, SublineType } from '../../../api';
-import { TableComponent } from '../../../core/components/table/table.component';
-import { TableSettings } from '../../../core/components/table/table-settings';
-import { Pages } from '../../pages';
-import { TableSettingsService } from '../../../core/components/table/table-settings.service';
+import { BusinessOrganisation, Status, Subline, SublinesService, SublineType } from '../../../api';
 import {
   DetailDialogEvents,
   RouteToDialogService,
 } from '../../../core/components/route-to-dialog/route-to-dialog.service';
 import { filter } from 'rxjs/operators';
-import { DEFAULT_STATUS_SELECTION } from '../../../core/constants/status.choices';
+import {
+  FilterType,
+  getActiveSearch,
+  getActiveSearchDate,
+  TableFilterDateSelect,
+  TableFilterMultiSelect,
+  TableFilterSearchSelect,
+} from '../../../core/components/table-filter/table-filter-config';
+import { FormControl } from '@angular/forms';
+import { TableService } from '../../../core/components/table/table.service';
+import { TablePagination } from '../../../core/components/table/table-pagination';
 
 @Component({
   selector: 'app-lidi-sublines',
   templateUrl: './sublines.component.html',
+  providers: [TableService],
 })
-export class SublinesComponent implements OnInit, OnDestroy {
-  @ViewChild(TableComponent, { static: true }) tableComponent!: TableComponent<Subline>;
-
+export class SublinesComponent implements OnDestroy {
   sublinesTableColumns: TableColumn<Subline>[] = [
     { headerTitle: 'LIDI.SUBLINE.NUMBER', value: 'number' },
     { headerTitle: 'LIDI.SUBLINE.DESCRIPTION', value: 'description' },
@@ -43,11 +47,45 @@ export class SublinesComponent implements OnInit, OnDestroy {
     { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
   ];
 
-  readonly SUBLINE_TYPES: SublineType[] = Object.values(SublineType);
-  activeSublineTypes: SublineType[] = [];
+  // TODO: try with tuple for more type safety
+  readonly tableFilterConfig: [
+    TableFilterSearchSelect<BusinessOrganisation>,
+    TableFilterMultiSelect<SublineType>,
+    TableFilterMultiSelect<Status>,
+    TableFilterDateSelect
+  ] = [
+    {
+      filterType: FilterType.SEARCH_SELECT,
+      elementWidthCssClass: 'col-3',
+      activeSearch: {} as BusinessOrganisation,
+    },
+    {
+      filterType: FilterType.MULTI_SELECT,
+      elementWidthCssClass: 'col-3',
+      activeSearch: [],
+      labelTranslationKey: 'LIDI.SUBLINE_TYPE',
+      typeTranslationKeyPrefix: 'LIDI.SUBLINE.TYPES.',
+      selectOptions: Object.values(SublineType),
+    },
+    {
+      filterType: FilterType.MULTI_SELECT,
+      elementWidthCssClass: 'col-3',
+      activeSearch: [],
+      labelTranslationKey: 'COMMON.STATUS',
+      typeTranslationKeyPrefix: 'COMMON.STATUS_TYPES.',
+      selectOptions: Object.values(Status),
+    },
+    {
+      filterType: FilterType.VALID_ON_SELECT,
+      elementWidthCssClass: 'col-3',
+      activeSearch: undefined,
+      formControl: new FormControl(),
+    },
+  ];
+
   sublines: Subline[] = [];
   totalCount$ = 0;
-  isLoading = false;
+
   private sublineVersionsSubscription!: Subscription;
   private routeSubscription!: Subscription;
 
@@ -55,55 +93,38 @@ export class SublinesComponent implements OnInit, OnDestroy {
     private sublinesService: SublinesService,
     private route: ActivatedRoute,
     private router: Router,
-    private notificationService: NotificationService,
-    private tableSettingsService: TableSettingsService,
-    private routeToDialogService: RouteToDialogService
+    private routeToDialogService: RouteToDialogService,
+    private readonly tableService: TableService
   ) {
     this.routeSubscription = this.routeToDialogService.detailDialogEvent
       .pipe(filter((e) => e === DetailDialogEvents.Closed))
-      .subscribe(() => this.ngOnInit());
+      .subscribe(() =>
+        this.getOverview({
+          page: this.tableService.pageIndex,
+          size: this.tableService.pageSize,
+          sort: this.tableService.sortString,
+          // filterConfig: this.tableFilterConfig,
+        })
+      );
   }
 
-  ngOnInit(): void {
-    const storedTableSettings = this.tableSettingsService.getTableSettings(Pages.SUBLINES.path);
-    this.getOverview(
-      storedTableSettings || {
-        page: 0,
-        size: 10,
-        sort: 'number,ASC',
-        statusChoices: DEFAULT_STATUS_SELECTION,
-      }
-    );
-  }
-
-  getOverview($paginationAndSearch: TableSettings) {
-    this.tableSettingsService.storeTableSettings(Pages.SUBLINES.path, $paginationAndSearch);
-    this.isLoading = true;
+  getOverview($paginationAndSearch: TablePagination) {
     this.sublineVersionsSubscription = this.sublinesService
       .getSublines(
-        $paginationAndSearch.searchCriteria,
-        $paginationAndSearch.statusChoices,
-        $paginationAndSearch.sublineTypes,
-        $paginationAndSearch.boChoice,
-        $paginationAndSearch.validOn,
+        [],
+        getActiveSearch(this.tableFilterConfig[2]),
+        getActiveSearch(this.tableFilterConfig[1]),
+        getActiveSearch<BusinessOrganisation, BusinessOrganisation>(this.tableFilterConfig[0])
+          .sboid,
+        getActiveSearchDate(this.tableFilterConfig[3]),
         $paginationAndSearch.page,
         $paginationAndSearch.size,
-        [$paginationAndSearch.sort!, 'slnid,ASC']
+        [$paginationAndSearch.sort!, 'slnid,asc']
       )
       .subscribe((sublineContainer) => {
         this.sublines = sublineContainer.objects!;
         this.totalCount$ = sublineContainer.totalCount!;
-        this.tableComponent.setTableSettings($paginationAndSearch);
-        this.activeSublineTypes = $paginationAndSearch.sublineTypes;
-        this.isLoading = false;
       });
-  }
-
-  onSublineTypeSelectionChange(): void {
-    this.tableComponent.searchData({
-      ...this.tableComponent.tableSearchComponent.activeSearch,
-      sublineTypes: this.activeSublineTypes,
-    });
   }
 
   editVersion($event: Subline) {

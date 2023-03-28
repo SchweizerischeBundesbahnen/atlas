@@ -1,6 +1,6 @@
 <div class="overview-table pb-xl-5">
   <app-loading-spinner [isLoading]="isLoading"></app-loading-spinner>
-  <app-table-search
+  <!--<app-table-search
     (searchEvent)="searchData($event)"
     *ngIf="loadTableSearch"
     [additionalFieldTemplate]="tableSearchFieldTemplate"
@@ -10,17 +10,23 @@
     [searchStatusType]="searchStatusType"
     [searchTextColumnStyle]="searchTextColumnStyle"
   >
-  </app-table-search>
+  </app-table-search>-->
+  <app-table-filter
+    *ngIf="showTableFilter"
+    (searchEvent)="searchData()"
+    [filterConfigurations]="tableFilterConfig"
+  ></app-table-filter>
+
   <ng-content></ng-content>
   <table
     (matSortChange)="sortData($event)"
     [dataSource]="tableData"
-    [matSortActive]="sortingDisabled ? '' : tableColumns[0].value!"
+    [matSortActive]="sortActive"
     [matSortDisabled]="sortingDisabled"
     class="atlas-table"
     mat-table
     matSort
-    matSortDirection="asc"
+    [matSortDirection]="sortDirection"
   >
     <ng-container *ngFor="let column of tableColumns">
       <ng-container matColumnDef="{{ column.value }}">
@@ -87,7 +93,8 @@
     (page)="pageChanged($event)"
     [length]="totalCount"
     [pageSizeOptions]="pageSizeOptions"
-    [pageSize]="10"
+    [pageSize]="pageSize"
+    [pageIndex]="pageIndex"
     class="font-regular-base"
   >
   </mat-paginator>
