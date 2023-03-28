@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UserSelectComponent } from './user-select.component';
-import { UserService } from '../service/user.service';
+import { UserService } from '../../service/user.service';
 import { of } from 'rxjs';
 import { Component, Input } from '@angular/core';
 
