@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   ApplicationType,
+  ClientCredential,
+  ClientCredentialPermissionCreate,
   Permission,
   PermissionRestrictionType,
   User,
@@ -60,5 +62,15 @@ export class UserService {
 
   updateUserPermission(userPermission: UserPermissionCreate): Observable<User> {
     return this.userAdministrationService.updateUserPermissions(userPermission);
+  }
+
+  getClientCredential(clientId: string): Observable<ClientCredential> {
+    return this.userAdministrationService.getClientCredential(clientId);
+  }
+
+  createClientCredentialPermission(
+    permission: ClientCredentialPermissionCreate
+  ): Observable<ClientCredential> {
+    return this.userAdministrationService.createClientCredential(permission);
   }
 }
