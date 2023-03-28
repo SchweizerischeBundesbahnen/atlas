@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
-import { BusinessOrganisationsService } from '../../../../api';
-import { UserService } from '../../service/user.service';
-import { UserPermissionManager } from '../../service/user-permission-manager';
-import { NotificationService } from '../../../../core/notification/notification.service';
+import { BusinessOrganisationsService } from '../../../../../api';
+import { UserService } from '../../../service/user.service';
+import { UserPermissionManager } from '../../../service/user-permission-manager';
+import { NotificationService } from '../../../../../core/notification/notification.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Pages } from '../../../pages';
-import { DialogService } from '../../../../core/components/dialog/dialog.service';
+import { Pages } from '../../../../pages';
+import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { MatDialogRef } from '@angular/material/dialog';
-import { User } from '../../../../api';
+import { User } from '../../../../../api';
 import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
