@@ -16,6 +16,7 @@ import { ClientCredentialAdministrationComponent } from './client-credential/det
 import { ClientCredentialAdministrationCreateComponent } from './client-credential/detail/create/client-credential-administration-create.component';
 import { UserAdministrationUserOverviewComponent } from './user/overview/user-administration-overview.component';
 import { UserAdministrationClientsOverviewComponent } from './client-credential/overview/client-credential-administration-overview.component';
+import { UserAdministrationClientEditComponent } from './client-credential/detail/edit/client-credential-administration-client-edit.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { UserAdministrationClientsOverviewComponent } from './client-credential/
     ClientCredentialAdministrationComponent,
     ClientCredentialAdministrationCreateComponent,
     UserAdministrationClientsOverviewComponent,
+    UserAdministrationClientEditComponent,
   ],
   imports: [UserAdministrationRoutingModule, CoreModule, FormModule, FormsModule],
 })
