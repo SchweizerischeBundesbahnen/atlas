@@ -1,9 +1,9 @@
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { UserAdministrationCreateComponent } from './user-administration-create.component';
-import { UserService } from '../../service/user.service';
-import { BusinessOrganisationsService } from '../../../../api';
-import { NotificationService } from '../../../../core/notification/notification.service';
+import { UserService } from '../../../service/user.service';
+import { BusinessOrganisationsService } from '../../../../../api';
+import { NotificationService } from '../../../../../core/notification/notification.service';
 import {
   TranslateFakeLoader,
   TranslateLoader,
@@ -14,11 +14,11 @@ import { of } from 'rxjs';
 import { Router } from '@angular/router';
 import { Component, Input } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { User } from '../../../../api';
+import { User } from '../../../../../api';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MaterialModule } from '../../../../core/module/material.module';
+import { MaterialModule } from '../../../../../core/module/material.module';
 import { FormGroup } from '@angular/forms';
-import { UserPermissionManager } from '../../service/user-permission-manager';
+import { UserPermissionManager } from '../../../service/user-permission-manager';
 import SpyObj = jasmine.SpyObj;
 
 @Component({
