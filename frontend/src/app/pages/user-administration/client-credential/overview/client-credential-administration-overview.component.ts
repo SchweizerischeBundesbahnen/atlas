@@ -9,7 +9,7 @@ import { tableColumns } from './table-column-definition';
   selector: 'app-client-credential-administration-overview',
   templateUrl: './client-credential-administration-overview.component.html',
 })
-export class UserAdministrationClientsOverviewComponent implements OnInit, OnDestroy {
+export class UserAdministrationClientOverviewComponent implements OnInit, OnDestroy {
   isLoading = false;
   clientCredentials: ClientCredential[] = [];
   totalCount = 0;

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UserAdministrationEditComponent } from './user-administration-edit.component';
+import { UserAdministrationUserEditComponent } from './user-administration-user-edit.component';
 import {
   TranslateFakeLoader,
   TranslateLoader,
@@ -28,9 +28,9 @@ import { MockUserDetailInfoComponent } from '../../../../../app.testing.mocks';
 })
 class MockDialogCloseComponent {}
 
-describe('UserAdministrationEditComponent', () => {
-  let component: UserAdministrationEditComponent;
-  let fixture: ComponentFixture<UserAdministrationEditComponent>;
+describe('UserAdministrationUserEditComponent', () => {
+  let component: UserAdministrationUserEditComponent;
+  let fixture: ComponentFixture<UserAdministrationUserEditComponent>;
 
   const dialogMock = {
     closeCalled: false,
@@ -72,7 +72,7 @@ describe('UserAdministrationEditComponent', () => {
     ]);
     dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirmLeave']);
     dialogMock.closeCalled = false;
-    await TestBed.overrideComponent(UserAdministrationEditComponent, {
+    await TestBed.overrideComponent(UserAdministrationUserEditComponent, {
       set: {
         viewProviders: [
           {
@@ -88,7 +88,7 @@ describe('UserAdministrationEditComponent', () => {
     });
     await TestBed.configureTestingModule({
       declarations: [
-        UserAdministrationEditComponent,
+        UserAdministrationUserEditComponent,
         MockDialogCloseComponent,
         EditTitlePipe,
         MockUserDetailInfoComponent,
@@ -118,7 +118,7 @@ describe('UserAdministrationEditComponent', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(UserAdministrationEditComponent);
+    fixture = TestBed.createComponent(UserAdministrationUserEditComponent);
     component = fixture.componentInstance;
     component.user = {};
     userServiceSpy.getPermissionsFromUserModelAsArray.and.returnValue([]);
