@@ -12,10 +12,10 @@ import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-user-administration-create',
-  templateUrl: './user-administration-create.component.html',
+  templateUrl: './user-administration-user-create.component.html',
   viewProviders: [BusinessOrganisationsService, UserPermissionManager],
 })
-export class UserAdministrationCreateComponent {
+export class UserAdministrationUserCreateComponent {
   userLoaded?: User;
   userHasAlreadyPermissions = false;
   selectedUserHasNoUserId = false;
