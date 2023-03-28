@@ -1,0 +1,95 @@
+<div class="d-flex flex-wrap">
+  <div class="search-row">
+    <div class="d-flex flex-column col-6 pe-3 search-box">
+      <mat-label class="font-bold-lg">{{ 'COMMON.SEARCH.SEARCH_CRITERIA' | translate }}</mat-label>
+      <div class="search-main-field mb-4">
+        <mat-chip-grid #chipList data-cy="table-search-strings">
+          <mat-chip-row
+            (removed)="removeSearch(search)"
+            *ngFor="let search of searchStrings"
+            class="font-bold-sm"
+          >
+            {{ search }}
+            <button matChipRemove>
+              <i class="bi bi-x-circle-fill"></i>
+            </button>
+          </mat-chip-row>
+          <input
+            (matChipInputTokenEnd)="addSearch($event)"
+            [matChipInputFor]="chipList"
+            class="font-regular-base"
+            data-cy="table-search-chip-input"
+          />
+          <i class="bi bi-search"></i>
+        </mat-chip-grid>
+      </div>
+    </div>
+  </div>
+
+  <!--  TODO: specify with object(enums) sorting and number of elements -->
+  <div class="search-row">
+    <ng-container *ngFor="let filterConfig of filterConfigurations; let i = index">
+      <div
+        *ngIf="filterConfig | filterTypeGuard : isSearchSelect as searchSelect"
+        [class]="searchSelect.elementWidthCssClass"
+      >
+        <bo-select
+          (boSelectionChanged)="multiSelectSearchChanged($event, i)"
+          [formGroup]="boSearchForm"
+          [formModus]="false"
+          controlName="businessOrganisation"
+        >
+        </bo-select>
+      </div>
+
+      <div
+        *ngIf="filterConfig | filterTypeGuard : isMultiSelect as multiSelect"
+        [class]="multiSelect.elementWidthCssClass"
+      >
+        <mat-label class="font-bold-lg">{{
+          multiSelect.labelTranslationKey | translate
+        }}</mat-label>
+        <div class="multi-select-search">
+          <mat-select
+            (selectionChange)="multiSelectChanged($event, i)"
+            [value]="multiSelect.activeSearch"
+            class="font-bold-base"
+            data-cy="table-search-line-type"
+            multiple
+          >
+            <mat-option *ngFor="let option of multiSelect.selectOptions" [value]="option">{{
+              multiSelect.typeTranslationKeyPrefix + option | translate
+            }}</mat-option>
+          </mat-select>
+        </div>
+      </div>
+
+      <div
+        *ngIf="filterConfig | filterTypeGuard : isDateSelect as dateSelect"
+        [class]="dateSelect.elementWidthCssClass"
+      >
+        <mat-label class="font-bold-lg">{{ 'COMMON.SEARCH.VALIDITY' | translate }}</mat-label>
+        <div class="search-date-field">
+          <div class="container-date-field">
+            <input
+              (dateChange)="onDateChanged($event, i)"
+              [formControl]="dateSelect.formControl"
+              [matDatepicker]="picker"
+              [max]="MAX_DATE"
+              [min]="MIN_DATE"
+              data-cy="table-search-date-input"
+              matInput
+            />
+            <mat-datepicker-toggle [for]="picker" matSuffix>
+              <mat-icon matDatepickerToggleIcon>
+                <form-date-icon [enabled]="true"></form-date-icon>
+              </mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </div>
+        </div>
+        <app-atlas-field-error [control]="dateSelect.formControl"></app-atlas-field-error>
+      </div>
+    </ng-container>
+  </div>
+</div>
