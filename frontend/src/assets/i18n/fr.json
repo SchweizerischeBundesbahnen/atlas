@@ -194,6 +194,7 @@
     "SEARCH_FOR_FILTER_CANTON": "Cantons et Applications",
     "NEW": "Saisir un nouvel utilisateur",
     "NEW_INFORMATION": "Informations sur le nouvel utilisateur",
+    "NEW_CLIENT_CREDENTIAL": "Neue Client Credentials berechtigen",
     "INFORMATION": "Données de l'utilisateur",
     "NOT_FOUND": "L'utilisateur n'a pas été trouvé",
     "TABLE_HEADER": "Utilisateur",
