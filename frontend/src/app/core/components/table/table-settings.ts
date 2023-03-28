@@ -1,4 +1,4 @@
 import { TablePagination } from './table-pagination';
-import { BaseTableSearch } from '../table-search/base-table-search';
+import { BaseTableFilter } from '../table-filter/base-table-filter';
 
-export type TableSettings = TablePagination & BaseTableSearch;
+export type TableSettings = TablePagination & BaseTableFilter;
