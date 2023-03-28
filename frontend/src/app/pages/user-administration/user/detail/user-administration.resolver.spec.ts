@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { UserAdministrationResolver } from './user-administration.resolver';
 import SpyObj = jasmine.SpyObj;
-import { UserService } from '../service/user.service';
+import { UserService } from '../../service/user.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRouteSnapshot, ParamMap } from '@angular/router';
 import { firstValueFrom, of } from 'rxjs';
