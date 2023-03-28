@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.line.directory.helper.PdfFiles;
 import ch.sbb.line.directory.service.exception.PdfDocumentConstraintViolationException;
-import ch.sbb.line.directory.service.hearing.DocumentsValidationService;
+import ch.sbb.line.directory.service.hearing.StatementDocumentFilesValidationService;
 import ch.sbb.line.directory.service.hearing.TikaService;
 import java.io.File;
 import java.util.ArrayList;
@@ -20,8 +20,8 @@ import org.junit.jupiter.api.function.Executable;
 public class DocumentsValidationServiceTest {
 
   private final TikaService tikaService = new TikaService();
-  private final DocumentsValidationService documentsValidationService = new DocumentsValidationService(tikaService);
-  private final List<File> files = PdfFiles.files;
+  private final StatementDocumentFilesValidationService documentsValidationService = new StatementDocumentFilesValidationService(tikaService);
+  private final List<File> files = PdfFiles.FILES;
 
   @Test
   public void givenListOfFilesValidateTheyArePdf() {
