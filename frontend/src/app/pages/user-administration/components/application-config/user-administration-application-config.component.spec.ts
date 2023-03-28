@@ -2,12 +2,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UserAdministrationApplicationConfigComponent } from './user-administration-application-config.component';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { UserPermissionManager } from '../service/user-permission-manager';
-import { MaterialModule } from '../../../core/module/material.module';
+import { UserPermissionManager } from '../../service/user-permission-manager';
+import { MaterialModule } from '../../../../core/module/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import SpyObj = jasmine.SpyObj;
 import { BehaviorSubject, of } from 'rxjs';
-import { ApplicationType } from '../../../api';
+import { ApplicationType } from '../../../../api';
 
 describe('UserAdministrationApplicationConfigComponent', () => {
   let component: UserAdministrationApplicationConfigComponent;
