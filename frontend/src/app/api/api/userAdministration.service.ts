@@ -25,6 +25,7 @@ import { Observable } from 'rxjs';
 
 import { ApplicationType } from '../model/models';
 import { ClientCredential } from '../model/models';
+import { ClientCredentialPermissionCreate } from '../model/models';
 import { ContainerClientCredential } from '../model/models';
 import { ContainerUser } from '../model/models';
 import { ErrorResponse } from '../model/models';
@@ -107,37 +108,40 @@ export class UserAdministrationService {
 
   /**
    * Register a client with given permissions
-   * @param userPermissionCreate
+   * @param clientCredentialPermissionCreate
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
   public createClientCredential(
-    userPermissionCreate: UserPermissionCreate,
+    clientCredentialPermissionCreate: ClientCredentialPermissionCreate,
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' }
   ): Observable<ClientCredential>;
   public createClientCredential(
-    userPermissionCreate: UserPermissionCreate,
+    clientCredentialPermissionCreate: ClientCredentialPermissionCreate,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' }
   ): Observable<HttpResponse<ClientCredential>>;
   public createClientCredential(
-    userPermissionCreate: UserPermissionCreate,
+    clientCredentialPermissionCreate: ClientCredentialPermissionCreate,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' }
   ): Observable<HttpEvent<ClientCredential>>;
   public createClientCredential(
-    userPermissionCreate: UserPermissionCreate,
+    clientCredentialPermissionCreate: ClientCredentialPermissionCreate,
     observe: any = 'body',
     reportProgress: boolean = false,
     options?: { httpHeaderAccept?: '*/*' }
   ): Observable<any> {
-    if (userPermissionCreate === null || userPermissionCreate === undefined) {
+    if (
+      clientCredentialPermissionCreate === null ||
+      clientCredentialPermissionCreate === undefined
+    ) {
       throw new Error(
-        'Required parameter userPermissionCreate was null or undefined when calling createClientCredential.'
+        'Required parameter clientCredentialPermissionCreate was null or undefined when calling createClientCredential.'
       );
     }
 
@@ -168,7 +172,7 @@ export class UserAdministrationService {
 
     return this.httpClient.post<ClientCredential>(
       `${this.configuration.basePath}/user-administration/v1/client-credentials`,
-      userPermissionCreate,
+      clientCredentialPermissionCreate,
       {
         responseType: <any>responseType_,
         withCredentials: this.configuration.withCredentials,
@@ -705,37 +709,40 @@ export class UserAdministrationService {
 
   /**
    * Update the user permissions of a user
-   * @param userPermissionCreate
+   * @param clientCredentialPermissionCreate
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
   public updateClientCredential(
-    userPermissionCreate: UserPermissionCreate,
+    clientCredentialPermissionCreate: ClientCredentialPermissionCreate,
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' }
   ): Observable<ClientCredential>;
   public updateClientCredential(
-    userPermissionCreate: UserPermissionCreate,
+    clientCredentialPermissionCreate: ClientCredentialPermissionCreate,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' }
   ): Observable<HttpResponse<ClientCredential>>;
   public updateClientCredential(
-    userPermissionCreate: UserPermissionCreate,
+    clientCredentialPermissionCreate: ClientCredentialPermissionCreate,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' }
   ): Observable<HttpEvent<ClientCredential>>;
   public updateClientCredential(
-    userPermissionCreate: UserPermissionCreate,
+    clientCredentialPermissionCreate: ClientCredentialPermissionCreate,
     observe: any = 'body',
     reportProgress: boolean = false,
     options?: { httpHeaderAccept?: '*/*' }
   ): Observable<any> {
-    if (userPermissionCreate === null || userPermissionCreate === undefined) {
+    if (
+      clientCredentialPermissionCreate === null ||
+      clientCredentialPermissionCreate === undefined
+    ) {
       throw new Error(
-        'Required parameter userPermissionCreate was null or undefined when calling updateClientCredential.'
+        'Required parameter clientCredentialPermissionCreate was null or undefined when calling updateClientCredential.'
       );
     }
 
@@ -766,7 +773,7 @@ export class UserAdministrationService {
 
     return this.httpClient.put<ClientCredential>(
       `${this.configuration.basePath}/user-administration/v1/client-credentials`,
-      userPermissionCreate,
+      clientCredentialPermissionCreate,
       {
         responseType: <any>responseType_,
         withCredentials: this.configuration.withCredentials,

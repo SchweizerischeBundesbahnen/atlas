@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { User } from '../../../api';
+import { User } from '../../../../api';
 
 @Pipe({
   name: 'userSelectFormat',
