@@ -5,24 +5,22 @@ import static ch.sbb.atlas.api.timetable.hearing.TimetableHearingConstants.MAX_D
 import ch.sbb.line.directory.service.exception.PdfDocumentConstraintViolationException;
 import java.io.File;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DocumentsValidationService {
+public class StatementDocumentFilesValidationService {
 
   private final TikaService tikaService;
 
-  public DocumentsValidationService(TikaService tikaService) {
+  public StatementDocumentFilesValidationService(TikaService tikaService) {
     this.tikaService = tikaService;
   }
 
   public void validateAllFilessArePdfs(List<File> files) {
     List<String> documentFileNames = files.stream()
-      .map(tikaService::checkForPdf)
-      .filter(Optional::isPresent)
-      .map(Optional::get)
+      .filter(file -> !tikaService.isFilePdf(file))
+      .map(File::getName)
       .toList();
     if (!documentFileNames.isEmpty()) {
       String exceptionMessage = documentFileNames.stream()
