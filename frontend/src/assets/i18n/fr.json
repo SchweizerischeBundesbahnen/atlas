@@ -194,7 +194,7 @@
     "SEARCH_FOR_FILTER_CANTON": "Cantons et Applications",
     "NEW": "Saisir un nouvel utilisateur",
     "NEW_INFORMATION": "Informations sur le nouvel utilisateur",
-    "NEW_CLIENT_CREDENTIAL": "Neue Client Credentials berechtigen",
+    "NEW_CLIENT_CREDENTIAL": "Autoriser de nouveaux Credentials clients",
     "INFORMATION": "Données de l'utilisateur",
     "NOT_FOUND": "L'utilisateur n'a pas été trouvé",
     "TABLE_HEADER": "Utilisateur",
@@ -229,17 +229,17 @@
       "SBBUSERID": "L'utilisateur {{sbbUserId}} est déjà enregistré."
     },
     "TABS": {
-      "USER": "Benutzer",
+      "USER": "Utilisateur",
       "CLIENTS": "Clients"
     },
     "CLIENT_CREDENTIAL": {
-      "NEW": "Neuen Client berechtigen",
-      "NEW_INFORMATION": "Angaben zum Client",
-      "INFORMATION": "Angaben zum Client",
+      "NEW": "Autoriser un nouveau client",
+      "NEW_INFORMATION": "Informations sur le client",
+      "INFORMATION": "Informations sur le client",
       "CLIENT_ID": "Client ID",
       "ALIAS": "Alias",
-      "ALIAS_INFO": "Wird als Anzeigename im Frontend für z.B. \"geändert durch\" ersichtlich sein",
-      "COMMENT": "Zusätzlicher Kommentar zum Client"
+      "ALIAS_INFO": "Sera visible comme nom d'affichage dans le frontend pour, par exemple, \"modifié par\".",
+      "COMMENT": "Commentaire supplémentaire sur le client"
     }
   },
   "TTFN": {
