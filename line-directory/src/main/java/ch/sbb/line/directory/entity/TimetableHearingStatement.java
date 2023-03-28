@@ -20,6 +20,8 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -91,13 +93,8 @@ public class TimetableHearingStatement extends BaseEntity implements CantonAssoc
   }
 
   public void removeDocument(String documentFilename) {
-    if (documentFilename != null) {
-      var optionalStatementDocument = documents.stream().filter(doc -> doc.getFileName().equals(documentFilename)).findFirst();
-      if (optionalStatementDocument.isPresent()) {
-        var statementDocument = optionalStatementDocument.get();
-        documents.remove(statementDocument);
-      }
-    }
+    Optional<StatementDocument> optionalStatementDocument = documents.stream().filter(doc -> Objects.equals(documentFilename, doc.getFileName())).findFirst();
+    optionalStatementDocument.ifPresent(documents::remove);
   }
 
   public void addDocument(StatementDocument statementDocument) {
@@ -106,10 +103,7 @@ public class TimetableHearingStatement extends BaseEntity implements CantonAssoc
   }
 
   public boolean checkIfStatementDocumentExists(String documentFilename) {
-    if (documentFilename != null) {
-      return documents.stream().anyMatch(document -> documentFilename.equals(document.getFileName()));
-    }
-    return false;
+    return documents.stream().anyMatch(document -> Objects.equals(documentFilename, document.getFileName()));
   }
 
 }
