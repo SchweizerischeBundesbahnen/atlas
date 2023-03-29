@@ -19,8 +19,8 @@
         'TTH.OVERVIEW_TAB.OVERVIEW_ACTUAL_SUBHEADING_POSTFIX'
           | translate
             : {
-                hearingFrom: foundTimetableHearingYear.hearingFrom,
-                hearingTo: foundTimetableHearingYear.hearingTo
+                hearingFrom: foundTimetableHearingYear.hearingFrom | displayDate,
+                hearingTo: foundTimetableHearingYear.hearingTo | displayDate
               }
       }}</span>
     </div>

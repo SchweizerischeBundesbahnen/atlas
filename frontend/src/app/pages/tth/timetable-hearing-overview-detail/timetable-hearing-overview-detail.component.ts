@@ -7,7 +7,6 @@ import {
   SwissCanton,
   TimetableHearingService,
   TimetableHearingStatement,
-  TimetableHearingStatementResponsibleTransportCompany,
   TimetableHearingYear,
   UserAdministrationService,
 } from '../../../api';
@@ -51,8 +50,7 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
     { headerTitle: 'TTH.SWISS_CANTON', value: 'swissCanton', callback: this.mapToShortCanton },
     {
       headerTitle: 'TTH.TRANSPORT_COMPANY',
-      value: 'responsibleTransportCompanies',
-      callback: this.mapToCommaSeparatedValue,
+      value: 'responsibleTransportCompaniesDisplay',
     },
     { headerTitle: 'TTH.TTFNID', value: 'ttfnid' },
     { headerTitle: 'TTH.TIMETABLE_FIELD_NUMBER', value: 'timetableFieldNumber' },
@@ -206,11 +204,15 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
     this.timetableHearingService
       .getArchivedHearingYears()
       .subscribe((archivedTimetableHearingYears) => {
-        this.YEAR_OPTIONS = archivedTimetableHearingYears.map((value) => value.timetableYear);
-        this.defaultYearSelection = this.YEAR_OPTIONS[0];
-        this.foundTimetableHearingYear = archivedTimetableHearingYears[0];
-        this.showEmptyTimeTableHearingComponent = false;
-        this.initOverviewTable();
+        if (archivedTimetableHearingYears.length === 0) {
+          this.showEmptyTimeTableHearingComponent = true;
+        } else {
+          this.YEAR_OPTIONS = archivedTimetableHearingYears.map((value) => value.timetableYear);
+          this.defaultYearSelection = this.YEAR_OPTIONS[0];
+          this.foundTimetableHearingYear = archivedTimetableHearingYears[0];
+          this.showEmptyTimeTableHearingComponent = false;
+          this.initOverviewTable();
+        }
       });
   }
 
@@ -218,11 +220,15 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
     this.timetableHearingService
       .getPlannedHearingYears()
       .subscribe((plannedTimetableHearingYears) => {
-        this.YEAR_OPTIONS = plannedTimetableHearingYears.map((value) => value.timetableYear);
-        this.defaultYearSelection = this.YEAR_OPTIONS[0];
-        this.foundTimetableHearingYear = plannedTimetableHearingYears[0];
-        this.showEmptyTimeTableHearingComponent = false;
-        this.initOverviewTable();
+        if (plannedTimetableHearingYears.length === 0) {
+          this.showEmptyTimeTableHearingComponent = true;
+        } else {
+          this.YEAR_OPTIONS = plannedTimetableHearingYears.map((value) => value.timetableYear);
+          this.defaultYearSelection = this.YEAR_OPTIONS[0];
+          this.foundTimetableHearingYear = plannedTimetableHearingYears[0];
+          this.showEmptyTimeTableHearingComponent = false;
+          this.initOverviewTable();
+        }
       });
   }
 
@@ -257,15 +263,6 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
         throw new Error('No canton found with name: ' + this.cantonShort);
       }
     }
-  }
-
-  private mapToCommaSeparatedValue(
-    responsibleTransportCompanies: Array<TimetableHearingStatementResponsibleTransportCompany>
-  ) {
-    return responsibleTransportCompanies
-      .map((value) => value.abbreviation)
-      .sort()
-      .join(', ');
   }
 
   private mapToShortCanton(canton: SwissCanton) {
