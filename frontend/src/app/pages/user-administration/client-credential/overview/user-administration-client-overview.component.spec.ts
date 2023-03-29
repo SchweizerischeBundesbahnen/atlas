@@ -9,7 +9,7 @@ import { MaterialModule } from '../../../../core/module/material.module';
 import { FormGroup, FormsModule } from '@angular/forms';
 import { UserService } from '../../service/user.service';
 import { AuthService } from '../../../../core/auth/auth.service';
-import { UserAdministrationClientOverviewComponent } from './client-credential-administration-overview.component';
+import { UserAdministrationClientOverviewComponent } from './user-administration-client-overview.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 @Component({

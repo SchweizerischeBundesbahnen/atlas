@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UserAdministrationClientEditComponent } from './client-credential-administration-client-edit.component';
+import { UserAdministrationClientEditComponent } from './user-administration-client-edit.component';
 import {
   TranslateFakeLoader,
   TranslateLoader,

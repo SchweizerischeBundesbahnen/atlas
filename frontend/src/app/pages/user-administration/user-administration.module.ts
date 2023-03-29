@@ -15,8 +15,8 @@ import { FormsModule } from '@angular/forms';
 import { UserAdministrationClientDetailComponent } from './client-credential/detail/user-administration-client-detail.component';
 import { UserAdministrationClientCreateComponent } from './client-credential/detail/create/user-administration-client-create.component';
 import { UserAdministrationUserOverviewComponent } from './user/overview/user-administration-overview.component';
-import { UserAdministrationClientOverviewComponent } from './client-credential/overview/client-credential-administration-overview.component';
-import { UserAdministrationClientEditComponent } from './client-credential/detail/edit/client-credential-administration-client-edit.component';
+import { UserAdministrationClientOverviewComponent } from './client-credential/overview/user-administration-client-overview.component';
+import { UserAdministrationClientEditComponent } from './client-credential/detail/edit/user-administration-client-edit.component';
 
 @NgModule({
   declarations: [
