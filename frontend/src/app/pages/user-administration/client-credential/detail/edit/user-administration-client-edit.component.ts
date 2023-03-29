@@ -15,7 +15,7 @@ import { ReadOnlyData } from '../../../components/read-only-data/read-only-data'
 
 @Component({
   selector: 'app-client-credential-administration-edit',
-  templateUrl: './client-credential-administration-client-edit.component.html',
+  templateUrl: './user-administration-client-edit.component.html',
   viewProviders: [BusinessOrganisationsService, UserPermissionManager],
 })
 export class UserAdministrationClientEditComponent implements OnInit {

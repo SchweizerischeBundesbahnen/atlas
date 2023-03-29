@@ -8,7 +8,7 @@ import { Pages } from '../pages';
 import { UserAdministrationUserOverviewComponent } from './user/overview/user-administration-overview.component';
 import { UserAdministrationClientDetailComponent } from './client-credential/detail/user-administration-client-detail.component';
 import { ClientCredentialAdministrationResolver } from './client-credential/detail/client-credential-administration.resolver';
-import { UserAdministrationClientOverviewComponent } from './client-credential/overview/client-credential-administration-overview.component';
+import { UserAdministrationClientOverviewComponent } from './client-credential/overview/user-administration-client-overview.component';
 
 const routes: Routes = [
   {
