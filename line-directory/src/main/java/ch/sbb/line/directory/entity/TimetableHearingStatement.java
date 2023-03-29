@@ -67,6 +67,8 @@ public class TimetableHearingStatement extends BaseEntity implements CantonAssoc
   @OneToMany(mappedBy = "statement", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   private Set<ResponsibleTransportCompany> responsibleTransportCompanies;
 
+  private String responsibleTransportCompaniesDisplay;
+
   @Valid
   private StatementSender statementSender;
 
