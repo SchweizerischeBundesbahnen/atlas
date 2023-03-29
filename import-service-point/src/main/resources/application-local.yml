@@ -107,8 +107,3 @@ amazon:
       secretKey: ${AMAZON_S3_SECRET_KEY}
       bucketName: "atlas-data-export-dev-dev"
       objectExpirationDays: 30
-    hearing-documents:
-      accessKey: ${AMAZON_S3_HEARING_DOCS_ACCESS_KEY}
-      secretKey: ${AMAZON_S3_HEARING_DOCS_SECRET_KEY}
-      bucketName: "atlas-hearing-documents-dev-dev"
-      objectExpirationDays: 100000
