@@ -8,11 +8,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.api.model.ErrorResponse;
-import ch.sbb.atlas.model.controller.BaseControllerWithAmazonS3ApiTest;
+import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.api.lidi.LineVersionModel.Fields;
 import ch.sbb.atlas.api.lidi.TimetableFieldNumberVersionModel;
+import ch.sbb.atlas.api.model.ErrorResponse;
+import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.model.controller.BaseControllerWithAmazonS3ApiTest;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.repository.TimetableFieldNumberVersionRepository;
 import ch.sbb.line.directory.service.export.TimetableFieldNumberVersionExportService;
@@ -46,6 +47,9 @@ public class TimetableFieldNumberControllerApiTest extends BaseControllerWithAma
   private TimetableFieldNumberVersionRepository versionRepository;
   @Autowired
   private TimetableFieldNumberVersionExportService versionExportService;
+
+  @Autowired
+  private AmazonService amazonService;
 
   @BeforeEach
   void createDefaultVersion() {
@@ -222,7 +226,7 @@ public class TimetableFieldNumberControllerApiTest extends BaseControllerWithAma
     //when
     MvcResult mvcResult = mvc.perform(post("/v1/field-numbers/export-csv/full"))
         .andExpect(status().isOk()).andReturn();
-    deleteFileFromBucket(mvcResult, versionExportService.getDirectory());
+    deleteFileFromBucket(mvcResult, versionExportService.getDirectory(), amazonService);
   }
 
   @Test
@@ -230,7 +234,7 @@ public class TimetableFieldNumberControllerApiTest extends BaseControllerWithAma
     //when
     MvcResult mvcResult = mvc.perform(post("/v1/field-numbers/export-csv/actual"))
         .andExpect(status().isOk()).andReturn();
-    deleteFileFromBucket(mvcResult, versionExportService.getDirectory());
+    deleteFileFromBucket(mvcResult, versionExportService.getDirectory(), amazonService);
   }
 
   @Test
@@ -238,7 +242,7 @@ public class TimetableFieldNumberControllerApiTest extends BaseControllerWithAma
     //when
     MvcResult mvcResult = mvc.perform(post("/v1/field-numbers/export-csv/timetable-year-change"))
         .andExpect(status().isOk()).andReturn();
-    deleteFileFromBucket(mvcResult, versionExportService.getDirectory());
+    deleteFileFromBucket(mvcResult, versionExportService.getDirectory(), amazonService);
   }
 
   private MockHttpServletRequestBuilder createUpdateRequest(

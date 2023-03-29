@@ -72,7 +72,6 @@ spring:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       retries: 1
 
-
 kafka:
   atlas:
     user:
@@ -101,8 +100,10 @@ batch:
       chuck-size: 20
 
 amazon:
-  accessKey: ${AMAZON_S3_ACCESS_KEY}
-  secretKey: ${AMAZON_S3_SECRET_KEY}
   region: "eu-central-1"
-  bucketName: "atlas-data-export-dev-dev"
-  objectExpirationDays: 30
+  bucketConfigs:
+    export-files:
+      accessKey: ${AMAZON_S3_ACCESS_KEY}
+      secretKey: ${AMAZON_S3_SECRET_KEY}
+      bucketName: "atlas-data-export-dev-dev"
+      objectExpirationDays: 30
