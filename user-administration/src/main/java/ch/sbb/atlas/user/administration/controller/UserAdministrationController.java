@@ -14,6 +14,7 @@ import ch.sbb.atlas.user.administration.exception.LimitedPageSizeRequestExceptio
 import ch.sbb.atlas.user.administration.exception.RestrictionWithoutTypeException;
 import ch.sbb.atlas.user.administration.mapper.KafkaModelMapper;
 import ch.sbb.atlas.user.administration.mapper.UserPermissionMapper;
+import ch.sbb.atlas.user.administration.service.ClientCredentialAdministrationService;
 import ch.sbb.atlas.user.administration.service.GraphApiService;
 import ch.sbb.atlas.user.administration.service.UserAdministrationService;
 import ch.sbb.atlas.user.administration.service.UserPermissionDistributor;
@@ -31,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserAdministrationController implements UserAdministrationApiV1 {
 
   private final UserAdministrationService userAdministrationService;
+  private final ClientCredentialAdministrationService clientCredentialAdministrationService;
   private final UserPermissionDistributor userPermissionDistributor;
 
   private final GraphApiService graphApiService;
@@ -67,10 +69,22 @@ public class UserAdministrationController implements UserAdministrationApiV1 {
 
   @Override
   public UserDisplayNameModel getUserDisplayName(String userId) {
+    Optional<UserDisplayNameModel> clientCredentialAlias = getClientCredentialAlias(userId);
+    if (clientCredentialAlias.isPresent()) {
+      return clientCredentialAlias.get();
+    }
+
     UserModel userModel = graphApiService.resolveUsers(List.of(userId))
         .stream()
         .findFirst().orElseThrow(() -> new IllegalStateException("User is missing"));
     return UserDisplayNameModel.toModel(userModel);
+  }
+
+  private Optional<UserDisplayNameModel> getClientCredentialAlias(String clientId) {
+    return clientCredentialAdministrationService.getClientCredentialPermission(
+        clientId).stream().findFirst().map(permission -> UserDisplayNameModel.builder()
+        .displayName(permission.getAlias())
+        .build());
   }
 
   @Override
