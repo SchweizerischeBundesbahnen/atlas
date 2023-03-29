@@ -43,14 +43,14 @@
                 class="pe-1"
                 height="28"
                 src="assets/images/cantons/{{ canton.toUpperCase() }}.svg"
-                with="28"
+                width="28"
               />
               {{ 'TTH.CANTON.' + canton | translate }}
             </mat-option>
           </mat-select>
         </div>
       </div>
-      <div *ngIf="hearingStatus !== 'planned'" class="d-flex flex-column col-3">
+      <div *ngIf="showDownloadCsvButton" class="d-flex flex-column col-3">
         <span class="fake-lable-space"></span>
         <span class="fake-lable-space"></span>
         <atlas-button
@@ -65,6 +65,57 @@
           </ng-template>
         </atlas-button>
       </div>
+      <div *ngIf="showManageTimetableHearingButton" class="d-flex flex-column col-3 left-position">
+        <span class="fake-lable-space"></span>
+        <span class="fake-lable-space"></span>
+        <atlas-button
+          (buttonClicked)="manageTimetableHearing()"
+          applicationType="LIDI"
+          buttonDataCy="manageTimetableHearing"
+          buttonText="TTH.BUTTON.MANAGE_TIMETABLE_HEARING"
+          buttonType="createCheckingPermission"
+          wrapperStyleClass="text-align-end"
+        >
+        </atlas-button>
+      </div>
+      <div *ngIf="showAddNewStatementButton" class="d-flex flex-column col-3 left-position">
+        <span class="fake-lable-space"></span>
+        <span class="fake-lable-space"></span>
+        <atlas-button
+          (buttonClicked)="addNewStatement()"
+          applicationType="LIDI"
+          buttonDataCy="addNewStatement"
+          buttonText="TTH.BUTTON.ADD_NEW_STATEMENT"
+          buttonType="createCheckingPermission"
+          wrapperStyleClass="text-align-end"
+        >
+        </atlas-button>
+      </div>
+      <div *ngIf="showStartTimetableHearingButton" class="d-flex flex-column col-3">
+        <span class="fake-lable-space"></span>
+        <span class="fake-lable-space"></span>
+        <atlas-button
+          (buttonClicked)="startTimetableHearing()"
+          applicationType="LIDI"
+          buttonDataCy="startTimetableHearing"
+          buttonText="TTH.BUTTON.START_TIMETABLE_HEARING"
+          buttonType="createCheckingPermission"
+        >
+        </atlas-button>
+      </div>
+      <div *ngIf="showAddNewTimetableHearingButton" class="d-flex flex-column col-3 left-position">
+        <span class="fake-lable-space"></span>
+        <span class="fake-lable-space"></span>
+        <atlas-button
+          (buttonClicked)="addNewTimetableHearing()"
+          applicationType="LIDI"
+          buttonDataCy="addNewTimetableHearing"
+          buttonText="TTH.BUTTON.ADD_NEW_TIMETABLE_HEARING"
+          buttonType="createCheckingPermission"
+          wrapperStyleClass="text-align-end"
+        >
+        </atlas-button>
+      </div>
     </div>
     <div class="pb-3">
       <div>
@@ -77,7 +128,7 @@
                 }
         }}</span>
       </div>
-      <div *ngIf="hearingStatus === 'planned'">
+      <div *ngIf="showHearingDetail">
         <span
           >{{ this.foundTimetableHearingYear.hearingFrom | displayDate }}
           {{ 'COMMON.TO' | translate }}
