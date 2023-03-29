@@ -556,7 +556,10 @@
       "OVERVIEW_ACTUAL_SUBHEADING_PREFIX": "Das Fahrplanverfahren Schweiz des BAV für den Fahrplan {{timeTableYear}} dauert von",
       "OVERVIEW_ACTUAL_SUBHEADING_POSTFIX": " {{hearingFrom}} bis zum {{hearingTo}}.",
       "OVERVIEW_PLANNED_SUBHEADING": "Hier finden Sie alle geplanten Fahrplananhörungen. Vor dem Start einies Fahrplanjahres können Sie keine Stellungnahmen erfassen.",
-      "OVERVIEW_ARCHIVED_SUBHEADING": "Hier finden Sie alle archivierten Fahrplananhörungen nach Fahrplanjahren abgelegt."
+      "OVERVIEW_ARCHIVED_SUBHEADING": "Hier finden Sie alle archivierten Fahrplananhörungen nach Fahrplanjahren abgelegt.",
+      "OVERVIEW_ACTUAL_NOT_FOUND_SUBHEADING_PREFIX": "Das Fahrplanjahr ist noch nicht eröffnet. Sie finden bereits vorhandene Stellungnahmen unter dem Reiter «Geplante Anhörungen». Das Fahrplanverfahren Schweiz des BAV für den Fahrplan {{timeTableYear}} wird von ",
+      "OVERVIEW_PLANNED_NOT_FOUND": "Derzeit sind keine Anhörungen geplant.",
+      "OVERVIEW_ARCHIVED_NOT_FOUND": "Es sind derzeit keine archivierten Anhörungen verfügbar."
     },
     "STATEMENT_STATUS": {
       "RECEIVED": "eingetroffen",
