@@ -11,9 +11,11 @@
  */
 import { ServicePointCsvModel } from './servicePointCsvModel';
 
-export interface ServicePointCsvModelContainer {
-  didokCode?: number;
-  hasMergedVersionNotVirtualWithoutGeolocation?: boolean;
-  servicePointCsvModelList?: Array<ServicePointCsvModel>;
-  hasJustBezeichnungDiffMerged?: boolean;
+
+export interface ServicePointCsvModelContainer { 
+    didokCode?: number;
+    hasMergedVersionNotVirtualWithoutGeolocation?: boolean;
+    servicePointCsvModelList?: Array<ServicePointCsvModel>;
+    hasJustBezeichnungDiffMerged?: boolean;
 }
+

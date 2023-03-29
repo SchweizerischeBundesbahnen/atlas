@@ -10,13 +10,15 @@
  * Do not edit the class manually.
  */
 
+
 /**
  * User account status
  */
 export type UserAccountStatus = 'ACTIVE' | 'INACTIVE' | 'DELETED';
 
 export const UserAccountStatus = {
-  Active: 'ACTIVE' as UserAccountStatus,
-  Inactive: 'INACTIVE' as UserAccountStatus,
-  Deleted: 'DELETED' as UserAccountStatus,
+    Active: 'ACTIVE' as UserAccountStatus,
+    Inactive: 'INACTIVE' as UserAccountStatus,
+    Deleted: 'DELETED' as UserAccountStatus
 };
+

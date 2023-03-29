@@ -12,31 +12,34 @@
 import { Client } from './client';
 import { WorkflowStatus } from './workflowStatus';
 
-export interface WorkflowStart {
-  /**
-   * Business Object Id: the generated DB id
-   */
-  businessObjectId: number;
-  /**
-   * Swiss Id: the SwissLineNumber used to map Atlas object to the Workflow
-   */
-  swissId?: string;
-  /**
-   * Workflow Type
-   */
-  workflowType: WorkflowStart.WorkflowTypeEnum;
-  description?: string;
-  workflowStatus?: WorkflowStatus;
-  /**
-   * Comment accompanying the start of the workflow
-   */
-  workflowComment?: string;
-  client: Client;
+
+export interface WorkflowStart { 
+    /**
+     * Business Object Id: the generated DB id
+     */
+    businessObjectId: number;
+    /**
+     * Swiss Id: the SwissLineNumber used to map Atlas object to the Workflow
+     */
+    swissId?: string;
+    /**
+     * Workflow Type
+     */
+    workflowType: WorkflowStart.WorkflowTypeEnum;
+    description?: string;
+    workflowStatus?: WorkflowStatus;
+    /**
+     * Comment accompanying the start of the workflow
+     */
+    workflowComment?: string;
+    client: Client;
 }
 export namespace WorkflowStart {
-  export type WorkflowTypeEnum = 'LINE' | 'SUBLINE';
-  export const WorkflowTypeEnum = {
-    Line: 'LINE' as WorkflowTypeEnum,
-    Subline: 'SUBLINE' as WorkflowTypeEnum,
-  };
+    export type WorkflowTypeEnum = 'LINE' | 'SUBLINE';
+    export const WorkflowTypeEnum = {
+        Line: 'LINE' as WorkflowTypeEnum,
+        Subline: 'SUBLINE' as WorkflowTypeEnum
+    };
 }
+
+

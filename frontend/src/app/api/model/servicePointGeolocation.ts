@@ -13,18 +13,20 @@ import { CoordinatePair } from './coordinatePair';
 import { SpatialReference } from './spatialReference';
 import { SwissLocation } from './swissLocation';
 
-export interface ServicePointGeolocation {
-  spatialReference: SpatialReference;
-  lv95: CoordinatePair;
-  wgs84: CoordinatePair;
-  wgs84web: CoordinatePair;
-  /**
-   * Height of the coordinate point
-   */
-  height?: number;
-  swissLocation?: SwissLocation;
-  /**
-   * ISO 2 abbreviation of the country, based on coordinates
-   */
-  readonly isoCountryCode?: string;
+
+export interface ServicePointGeolocation { 
+    spatialReference: SpatialReference;
+    lv95: CoordinatePair;
+    wgs84: CoordinatePair;
+    wgs84web: CoordinatePair;
+    /**
+     * Height of the coordinate point
+     */
+    height?: number;
+    swissLocation?: SwissLocation;
+    /**
+     * ISO 2 abbreviation of the country, based on coordinates
+     */
+    readonly isoCountryCode?: string;
 }
+

@@ -11,7 +11,9 @@
  */
 import { TrafficPointElementVersion } from './trafficPointElementVersion';
 
-export interface ContainerTrafficPointElementVersion {
-  objects?: Array<TrafficPointElementVersion>;
-  totalCount?: number;
+
+export interface ContainerTrafficPointElementVersion { 
+    objects?: Array<TrafficPointElementVersion>;
+    totalCount?: number;
 }
+

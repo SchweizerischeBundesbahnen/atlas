@@ -14,100 +14,102 @@ import { LineVersionWorkflow } from './lineVersionWorkflow';
 import { PaymentType } from './paymentType';
 import { LineType } from './lineType';
 
-export interface LineVersion {
-  /**
-   * Object creation date
-   */
-  readonly creationDate?: string;
-  /**
-   * User creator
-   */
-  readonly creator?: string;
-  /**
-   * Last edition date
-   */
-  readonly editionDate?: string;
-  /**
-   * User editor
-   */
-  readonly editor?: string;
-  /**
-   * Technical identifier
-   */
-  readonly id?: number;
-  /**
-   * SwissLineNumber
-   */
-  swissLineNumber: string;
-  status?: Status;
-  lineType: LineType;
-  /**
-   * SLNID
-   */
-  readonly slnid?: string;
-  paymentType: PaymentType;
-  /**
-   * Number
-   */
-  number?: string;
-  /**
-   * AlternativeName
-   */
-  alternativeName?: string;
-  /**
-   * CombinationName
-   */
-  combinationName?: string;
-  /**
-   * LongName
-   */
-  longName?: string;
-  /**
-   * Color of the font in RGB
-   */
-  colorFontRgb: string;
-  /**
-   * Color of the background in RGB
-   */
-  colorBackRgb: string;
-  /**
-   * Color of the font in CMYK
-   */
-  colorFontCmyk: string;
-  /**
-   * Color of the background in CMYK
-   */
-  colorBackCmyk: string;
-  /**
-   * Icon
-   */
-  icon?: string;
-  /**
-   * Description
-   */
-  description?: string;
-  /**
-   * Valid from
-   */
-  validFrom: Date;
-  /**
-   * Valid to
-   */
-  validTo: Date;
-  /**
-   * BusinessOrganisation SBOID
-   */
-  businessOrganisation: string;
-  /**
-   * Comment
-   */
-  comment?: string;
-  /**
-   * Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)
-   */
-  etagVersion?: number;
-  /**
-   * Workflows related to the line version
-   */
-  readonly lineVersionWorkflows?: Set<LineVersionWorkflow>;
+
+export interface LineVersion { 
+    /**
+     * Object creation date
+     */
+    readonly creationDate?: string;
+    /**
+     * User creator
+     */
+    readonly creator?: string;
+    /**
+     * Last edition date
+     */
+    readonly editionDate?: string;
+    /**
+     * User editor
+     */
+    readonly editor?: string;
+    /**
+     * Technical identifier
+     */
+    readonly id?: number;
+    /**
+     * SwissLineNumber
+     */
+    swissLineNumber: string;
+    status?: Status;
+    lineType: LineType;
+    /**
+     * SLNID
+     */
+    readonly slnid?: string;
+    paymentType: PaymentType;
+    /**
+     * Number
+     */
+    number?: string;
+    /**
+     * AlternativeName
+     */
+    alternativeName?: string;
+    /**
+     * CombinationName
+     */
+    combinationName?: string;
+    /**
+     * LongName
+     */
+    longName?: string;
+    /**
+     * Color of the font in RGB
+     */
+    colorFontRgb: string;
+    /**
+     * Color of the background in RGB
+     */
+    colorBackRgb: string;
+    /**
+     * Color of the font in CMYK
+     */
+    colorFontCmyk: string;
+    /**
+     * Color of the background in CMYK
+     */
+    colorBackCmyk: string;
+    /**
+     * Icon
+     */
+    icon?: string;
+    /**
+     * Description
+     */
+    description?: string;
+    /**
+     * Valid from
+     */
+    validFrom: Date;
+    /**
+     * Valid to
+     */
+    validTo: Date;
+    /**
+     * BusinessOrganisation SBOID
+     */
+    businessOrganisation: string;
+    /**
+     * Comment
+     */
+    comment?: string;
+    /**
+     * Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)
+     */
+    etagVersion?: number;
+    /**
+     * Workflows related to the line version
+     */
+    readonly lineVersionWorkflows?: Set<LineVersionWorkflow>;
 }
+

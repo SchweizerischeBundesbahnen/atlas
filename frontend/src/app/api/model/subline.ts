@@ -12,39 +12,41 @@
 import { Status } from './status';
 import { SublineType } from './sublineType';
 
-export interface Subline {
-  /**
-   * SwissSublineNumber
-   */
-  swissSublineNumber: string;
-  /**
-   * SwissLineNumber
-   */
-  swissLineNumber?: string;
-  /**
-   * Number
-   */
-  number?: string;
-  status?: Status;
-  sublineType: SublineType;
-  /**
-   * SLNID
-   */
-  readonly slnid?: string;
-  /**
-   * Description
-   */
-  description?: string;
-  /**
-   * Valid from
-   */
-  validFrom: Date;
-  /**
-   * Valid to
-   */
-  validTo: Date;
-  /**
-   * BusinessOrganisation SBOID
-   */
-  businessOrganisation: string;
+
+export interface Subline { 
+    /**
+     * SwissSublineNumber
+     */
+    swissSublineNumber: string;
+    /**
+     * SwissLineNumber
+     */
+    swissLineNumber?: string;
+    /**
+     * Number
+     */
+    number?: string;
+    status?: Status;
+    sublineType: SublineType;
+    /**
+     * SLNID
+     */
+    readonly slnid?: string;
+    /**
+     * Description
+     */
+    description?: string;
+    /**
+     * Valid from
+     */
+    validFrom: Date;
+    /**
+     * Valid to
+     */
+    validTo: Date;
+    /**
+     * BusinessOrganisation SBOID
+     */
+    businessOrganisation: string;
 }
+

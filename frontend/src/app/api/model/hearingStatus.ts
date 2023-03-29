@@ -10,10 +10,12 @@
  * Do not edit the class manually.
  */
 
+
 export type HearingStatus = 'PLANNED' | 'ACTIVE' | 'ARCHIVED';
 
 export const HearingStatus = {
-  Planned: 'PLANNED' as HearingStatus,
-  Active: 'ACTIVE' as HearingStatus,
-  Archived: 'ARCHIVED' as HearingStatus,
+    Planned: 'PLANNED' as HearingStatus,
+    Active: 'ACTIVE' as HearingStatus,
+    Archived: 'ARCHIVED' as HearingStatus
 };
+
