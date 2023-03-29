@@ -537,7 +537,11 @@
       "ARCHIVED": "Audizioni archiviate"
     },
     "BUTTON": {
-      "DOWNLOAD_CSV": "Download [CSV]"
+      "DOWNLOAD_CSV": "Download [CSV]",
+      "MANAGE_TIMETABLE_HEARING": "Amministrare le audizioni",
+      "ADD_NEW_STATEMENT": "Aggiungere nuovo parare",
+      "ADD_NEW_TIMETABLE_HEARING": "Creare una nuova audizione",
+      "START_TIMETABLE_HEARING": "Avviare questa audizione"
     },
     "SELECT_CANTON": "Selezionare il Cantone",
     "SELECT_YEAR": "Selezionare l'anno",
