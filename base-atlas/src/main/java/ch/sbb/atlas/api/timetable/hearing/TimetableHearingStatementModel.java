@@ -65,6 +65,9 @@ public class TimetableHearingStatementModel extends BaseVersionModel implements 
 
   private List<TimetableHearingStatementResponsibleTransportCompanyModel> responsibleTransportCompanies;
 
+  @Schema(description = "Comma separetd Transport Companies abbreviation", example = "BLS,SBB", accessMode = AccessMode.READ_ONLY)
+  private String responsibleTransportCompaniesDisplay;
+
   @NotNull
   @Valid
   private TimetableHearingStatementSenderModel statementSender;
