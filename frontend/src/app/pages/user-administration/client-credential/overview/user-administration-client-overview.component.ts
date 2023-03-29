@@ -7,7 +7,7 @@ import { tableColumns } from './table-column-definition';
 
 @Component({
   selector: 'app-client-credential-administration-overview',
-  templateUrl: './client-credential-administration-overview.component.html',
+  templateUrl: './user-administration-client-overview.component.html',
 })
 export class UserAdministrationClientOverviewComponent implements OnInit, OnDestroy {
   isLoading = false;
