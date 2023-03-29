@@ -49,5 +49,13 @@ public abstract class NotFoundException extends AtlasException {
       super(ID, String.valueOf(value));
     }
   }
+  public static class FileNotFoundException extends NotFoundException {
+
+    private static final String FILE_NAME = "filename";
+
+    public FileNotFoundException(String value) {
+      super(FILE_NAME, value);
+    }
+  }
 
 }

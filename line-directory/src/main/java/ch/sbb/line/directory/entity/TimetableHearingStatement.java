@@ -1,6 +1,7 @@
 package ch.sbb.line.directory.entity;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.api.model.CantonAssociated;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingConstants;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.kafka.model.SwissCanton;
@@ -19,6 +20,8 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,15 +31,15 @@ import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 @ToString
 @SuperBuilder
-@Entity(name = "timetable_hearing_statement")
+@NoArgsConstructor
+@AllArgsConstructor
 @FieldNameConstants
-public class TimetableHearingStatement extends BaseEntity {
+@Entity(name = "timetable_hearing_statement")
+public class TimetableHearingStatement extends BaseEntity implements CantonAssociated {
 
   private static final String VERSION_SEQ = "timetable_hearing_statement_seq";
 
@@ -73,8 +76,9 @@ public class TimetableHearingStatement extends BaseEntity {
   @Size(max = AtlasFieldLengths.LENGTH_5000)
   private String statement;
 
+  @ToString.Exclude
   @Size(max = TimetableHearingConstants.MAX_DOCUMENTS)
-  @OneToMany(mappedBy = "statement", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "statement", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
   private Set<StatementDocument> documents;
 
   // FoT Justification field for comments
@@ -87,4 +91,19 @@ public class TimetableHearingStatement extends BaseEntity {
     setCreator(sbbUid);
     setEditor(sbbUid);
   }
+
+  public void removeDocument(String documentFilename) {
+    Optional<StatementDocument> optionalStatementDocument = documents.stream().filter(doc -> Objects.equals(documentFilename, doc.getFileName())).findFirst();
+    optionalStatementDocument.ifPresent(documents::remove);
+  }
+
+  public void addDocument(StatementDocument statementDocument) {
+    statementDocument.setStatement(this);
+    documents.add(statementDocument);
+  }
+
+  public boolean checkIfStatementDocumentExists(String documentFilename) {
+    return documents.stream().anyMatch(document -> Objects.equals(documentFilename, document.getFileName()));
+  }
+
 }
