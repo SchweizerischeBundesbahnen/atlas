@@ -1,26 +1,32 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { TableComponent } from '../../../../core/components/table/table.component';
-import { LinesService, LineVersionSnapshot } from '../../../../api';
+import { Component, OnDestroy } from '@angular/core';
+import { LinesService, LineVersionSnapshot, WorkflowStatus } from '../../../../api';
 import { TableColumn } from '../../../../core/components/table/table-column';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NotificationService } from '../../../../core/notification/notification.service';
-import { TableSettingsService } from '../../../../core/components/table/table-settings.service';
 import {
   DetailDialogEvents,
   RouteToDialogService,
 } from '../../../../core/components/route-to-dialog/route-to-dialog.service';
 import { filter } from 'rxjs/operators';
-import { DEFAULT_WORKFLOW_STATUS_SELECTION } from '../../../../core/constants/workflow-status.choices';
-import { TableSettingsWorkflow } from '../../../../core/components/table/table-settings-workflow';
+import { TableService } from '../../../../core/components/table/table.service';
+import {
+  FilterType,
+  getActiveSearch,
+  getActiveSearchDate,
+  getActiveSearchForChip,
+  TableFilterChip,
+  TableFilterDateSelect,
+  TableFilterMultiSelect,
+} from '../../../../core/components/table-filter/table-filter-config';
+import { FormControl } from '@angular/forms';
+import { TablePagination } from '../../../../core/components/table/table-pagination';
 
 @Component({
   selector: 'app-lidi-workflow-overview',
   templateUrl: './lidi-workflow-overview.component.html',
+  providers: [TableService],
 })
-export class LidiWorkflowOverviewComponent implements OnInit, OnDestroy {
-  // @ViewChild(TableComponent, { static: true }) tableComponent!: TableComponent<LineVersionSnapshot>;
-
+export class LidiWorkflowOverviewComponent implements OnDestroy {
   lineSnapshotsTableColumns: TableColumn<LineVersionSnapshot>[] = [
     { headerTitle: 'LIDI.LINE_VERSION_SNAPSHOT.TABLE.NUMBER', value: 'number' },
     { headerTitle: 'LIDI.LINE_VERSION_SNAPSHOT.TABLE.DESCRIPTION', value: 'description' },
@@ -34,9 +40,37 @@ export class LidiWorkflowOverviewComponent implements OnInit, OnDestroy {
     { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
   ];
 
+  readonly tableFilterConfig: [
+    [TableFilterChip],
+    [TableFilterMultiSelect<WorkflowStatus>, TableFilterDateSelect]
+  ] = [
+    [
+      {
+        filterType: FilterType.CHIP_SEARCH,
+        elementWidthCssClass: 'col-6',
+        activeSearch: [],
+      },
+    ],
+    [
+      {
+        filterType: FilterType.MULTI_SELECT,
+        elementWidthCssClass: 'col-3',
+        activeSearch: [WorkflowStatus.Added, WorkflowStatus.Approved, WorkflowStatus.Rejected],
+        labelTranslationKey: 'COMMON.STATUS',
+        typeTranslationKeyPrefix: 'WORKFLOW.STATUS.',
+        selectOptions: [WorkflowStatus.Added, WorkflowStatus.Approved, WorkflowStatus.Rejected],
+      },
+      {
+        filterType: FilterType.VALID_ON_SELECT,
+        elementWidthCssClass: 'col-3',
+        activeSearch: undefined,
+        formControl: new FormControl(),
+      },
+    ],
+  ];
+
   lineVersionSnapshots: LineVersionSnapshot[] = [];
   totalCount$ = 0;
-  isLoading = false;
   private routeSubscription!: Subscription;
   private lineVersionSnapshotsSubscription!: Subscription;
 
@@ -44,43 +78,38 @@ export class LidiWorkflowOverviewComponent implements OnInit, OnDestroy {
     private linesService: LinesService,
     private route: ActivatedRoute,
     private router: Router,
-    private notificationService: NotificationService,
-    private tableSettingsService: TableSettingsService,
-    private routeToDialogService: RouteToDialogService
+    private routeToDialogService: RouteToDialogService,
+    private readonly tableService: TableService
   ) {
+    const slnidFromQueryParam: string | undefined = this.route.snapshot.queryParams.slnid;
+    if (slnidFromQueryParam) {
+      this.tableFilterConfig[0][0].activeSearch.push(slnidFromQueryParam);
+    }
+
     this.routeSubscription = this.routeToDialogService.detailDialogEvent
       .pipe(filter((e) => e === DetailDialogEvents.Closed))
-      .subscribe(() => this.ngOnInit());
+      .subscribe(() => {
+        this.getOverview({
+          page: this.tableService.pageIndex,
+          size: this.tableService.pageSize,
+          sort: this.tableService.sortString,
+        });
+      });
   }
 
-  ngOnInit(): void {
-    const searchCriteria: string[] = [];
-    this.getSearchCriteriaFromQueryParams(searchCriteria);
-    this.getOverview({
-      page: 0,
-      size: 10,
-      sort: 'number,ASC',
-      statusChoices: DEFAULT_WORKFLOW_STATUS_SELECTION,
-      searchCriteria: searchCriteria,
-    });
-  }
-
-  getOverview($paginationAndSearch: TableSettingsWorkflow) {
-    this.isLoading = true;
+  getOverview($paginationAndSearch: TablePagination) {
     this.lineVersionSnapshotsSubscription = this.linesService
       .getLineVersionSnapshot(
-        $paginationAndSearch.searchCriteria,
-        $paginationAndSearch.validOn,
-        $paginationAndSearch.statusChoices,
+        getActiveSearchForChip(this.tableFilterConfig[0][0]),
+        getActiveSearchDate(this.tableFilterConfig[1][1]),
+        getActiveSearch(this.tableFilterConfig[1][0]),
         $paginationAndSearch.page,
         $paginationAndSearch.size,
-        [$paginationAndSearch.sort!, 'number,ASC']
+        [$paginationAndSearch.sort!, 'number,asc']
       )
       .subscribe((lineVersionSnapshotContainer) => {
         this.lineVersionSnapshots = lineVersionSnapshotContainer.objects!;
         this.totalCount$ = lineVersionSnapshotContainer.totalCount!;
-        // this.tableComponent.setTableSettings($paginationAndSearch); // TODO: tableSettings
-        this.isLoading = false;
       });
   }
 
@@ -95,12 +124,5 @@ export class LidiWorkflowOverviewComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.lineVersionSnapshotsSubscription.unsubscribe();
     this.routeSubscription.unsubscribe();
-  }
-
-  private getSearchCriteriaFromQueryParams(searchCriteria: string[]) {
-    const slnid = this.route.snapshot.queryParams.slnid;
-    if (slnid) {
-      searchCriteria.push(slnid);
-    }
   }
 }

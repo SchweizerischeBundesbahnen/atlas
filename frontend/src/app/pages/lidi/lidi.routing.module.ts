@@ -51,17 +51,19 @@ const routes: Routes = [
       {
         path: Pages.WORKFLOWS.path,
         component: LidiWorkflowOverviewComponent,
-      },
-      {
-        path: Pages.WORKFLOWS.path + '/:id',
-        component: RouteToDialogComponent,
-        data: {
-          component: LineVersionSnapshotDetailComponent,
-        },
-        resolve: {
-          lineVersionSnapshot: LineVersionSnapshotResolver,
-        },
-        runGuardsAndResolvers: 'always',
+        children: [
+          {
+            path: ':id',
+            component: RouteToDialogComponent,
+            data: {
+              component: LineVersionSnapshotDetailComponent,
+            },
+            resolve: {
+              lineVersionSnapshot: LineVersionSnapshotResolver,
+            },
+            runGuardsAndResolvers: 'always',
+          },
+        ],
       },
       { path: '**', redirectTo: Pages.LINES.path },
     ],
