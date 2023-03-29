@@ -11,17 +11,11 @@
  */
 /* tslint:disable:no-unused-variable member-ordering */
 
-import { Inject, Injectable, Optional } from '@angular/core';
-import {
-  HttpClient,
-  HttpHeaders,
-  HttpParams,
-  HttpResponse,
-  HttpEvent,
-  HttpParameterCodec,
-} from '@angular/common/http';
-import { CustomHttpParameterCodec } from '../encoder';
-import { Observable } from 'rxjs';
+import { Inject, Injectable, Optional }                      from '@angular/core';
+import { HttpClient, HttpHeaders, HttpParams,
+         HttpResponse, HttpEvent, HttpParameterCodec }       from '@angular/common/http';
+import { CustomHttpParameterCodec }                          from '../encoder';
+import { Observable }                                        from 'rxjs';
 
 import { ContainerServicePointVersion } from '../model/models';
 import { ErrorResponse } from '../model/models';
@@ -29,571 +23,376 @@ import { ServicePointImportReRequest } from '../model/models';
 import { ServicePointItemImportResult } from '../model/models';
 import { ServicePointVersion } from '../model/models';
 
-import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
-import { Configuration } from '../configuration';
+import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
+import { Configuration }                                     from '../configuration';
+
+
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class ServicePointsService {
-  protected basePath = 'http://localhost';
-  public defaultHeaders = new HttpHeaders();
-  public configuration = new Configuration();
-  public encoder: HttpParameterCodec;
 
-  constructor(
-    protected httpClient: HttpClient,
-    @Optional() @Inject(BASE_PATH) basePath: string,
-    @Optional() configuration: Configuration
-  ) {
-    if (configuration) {
-      this.configuration = configuration;
-    }
-    if (typeof this.configuration.basePath !== 'string') {
-      if (typeof basePath !== 'string') {
-        basePath = this.basePath;
-      }
-      this.configuration.basePath = basePath;
-    }
-    this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
-  }
+    protected basePath = 'http://localhost';
+    public defaultHeaders = new HttpHeaders();
+    public configuration = new Configuration();
+    public encoder: HttpParameterCodec;
 
-  private addToHttpParams(httpParams: HttpParams, value: any, key?: string): HttpParams {
-    if (typeof value === 'object' && value instanceof Date === false) {
-      httpParams = this.addToHttpParamsRecursive(httpParams, value);
-    } else {
-      httpParams = this.addToHttpParamsRecursive(httpParams, value, key);
-    }
-    return httpParams;
-  }
-
-  private addToHttpParamsRecursive(httpParams: HttpParams, value?: any, key?: string): HttpParams {
-    if (value == null) {
-      return httpParams;
-    }
-
-    if (typeof value === 'object') {
-      if (Array.isArray(value)) {
-        (value as any[]).forEach(
-          (elem) => (httpParams = this.addToHttpParamsRecursive(httpParams, elem, key))
-        );
-      } else if (value instanceof Date) {
-        if (key != null) {
-          httpParams = httpParams.append(key, (value as Date).toISOString().substr(0, 10));
-        } else {
-          throw Error('key may not be null if value is Date');
+    constructor(protected httpClient: HttpClient, @Optional()@Inject(BASE_PATH) basePath: string, @Optional() configuration: Configuration) {
+        if (configuration) {
+            this.configuration = configuration;
         }
-      } else {
-        Object.keys(value).forEach(
-          (k) =>
-            (httpParams = this.addToHttpParamsRecursive(
-              httpParams,
-              value[k],
-              key != null ? `${key}.${k}` : k
-            ))
+        if (typeof this.configuration.basePath !== 'string') {
+            if (typeof basePath !== 'string') {
+                basePath = this.basePath;
+            }
+            this.configuration.basePath = basePath;
+        }
+        this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
+    }
+
+
+    private addToHttpParams(httpParams: HttpParams, value: any, key?: string): HttpParams {
+        if (typeof value === "object" && value instanceof Date === false) {
+            httpParams = this.addToHttpParamsRecursive(httpParams, value);
+        } else {
+            httpParams = this.addToHttpParamsRecursive(httpParams, value, key);
+        }
+        return httpParams;
+    }
+
+    private addToHttpParamsRecursive(httpParams: HttpParams, value?: any, key?: string): HttpParams {
+        if (value == null) {
+            return httpParams;
+        }
+
+        if (typeof value === "object") {
+            if (Array.isArray(value)) {
+                (value as any[]).forEach( elem => httpParams = this.addToHttpParamsRecursive(httpParams, elem, key));
+            } else if (value instanceof Date) {
+                if (key != null) {
+                    httpParams = httpParams.append(key,
+                        (value as Date).toISOString().substr(0, 10));
+                } else {
+                   throw Error("key may not be null if value is Date");
+                }
+            } else {
+                Object.keys(value).forEach( k => httpParams = this.addToHttpParamsRecursive(
+                    httpParams, value[k], key != null ? `${key}.${k}` : k));
+            }
+        } else if (key != null) {
+            httpParams = httpParams.append(key, value);
+        } else {
+            throw Error("key may not be null if value is not object or array");
+        }
+        return httpParams;
+    }
+
+    /**
+     * @param servicePointNumber 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getServicePoint(servicePointNumber: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<Array<ServicePointVersion>>;
+    public getServicePoint(servicePointNumber: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<Array<ServicePointVersion>>>;
+    public getServicePoint(servicePointNumber: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<Array<ServicePointVersion>>>;
+    public getServicePoint(servicePointNumber: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (servicePointNumber === null || servicePointNumber === undefined) {
+            throw new Error('Required parameter servicePointNumber was null or undefined when calling getServicePoint.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                '*/*'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        let responseType_: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType_ = 'text';
+        }
+
+        return this.httpClient.get<Array<ServicePointVersion>>(`${this.configuration.basePath}/service-point-directory/v1/service-points/${encodeURIComponent(String(servicePointNumber))}`,
+            {
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
         );
-      }
-    } else if (key != null) {
-      httpParams = httpParams.append(key, value);
-    } else {
-      throw Error('key may not be null if value is not object or array');
-    }
-    return httpParams;
-  }
-
-  /**
-   * @param servicePointNumber
-   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-   * @param reportProgress flag to report request and response progress.
-   */
-  public getServicePoint(
-    servicePointNumber: number,
-    observe?: 'body',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<Array<ServicePointVersion>>;
-  public getServicePoint(
-    servicePointNumber: number,
-    observe?: 'response',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<HttpResponse<Array<ServicePointVersion>>>;
-  public getServicePoint(
-    servicePointNumber: number,
-    observe?: 'events',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<HttpEvent<Array<ServicePointVersion>>>;
-  public getServicePoint(
-    servicePointNumber: number,
-    observe: any = 'body',
-    reportProgress: boolean = false,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<any> {
-    if (servicePointNumber === null || servicePointNumber === undefined) {
-      throw new Error(
-        'Required parameter servicePointNumber was null or undefined when calling getServicePoint.'
-      );
     }
 
-    let headers = this.defaultHeaders;
+    /**
+     * @param id 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getServicePointVersion(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ServicePointVersion>;
+    public getServicePointVersion(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ServicePointVersion>>;
+    public getServicePointVersion(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ServicePointVersion>>;
+    public getServicePointVersion(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling getServicePointVersion.');
+        }
 
-    let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-    if (httpHeaderAcceptSelected === undefined) {
-      // to determine the Accept header
-      const httpHeaderAccepts: string[] = ['*/*'];
-      httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-    }
-    if (httpHeaderAcceptSelected !== undefined) {
-      headers = headers.set('Accept', httpHeaderAcceptSelected);
-    }
+        let headers = this.defaultHeaders;
 
-    let responseType_: 'text' | 'json' = 'json';
-    if (httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-      responseType_ = 'text';
-    }
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                '*/*'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
 
-    return this.httpClient.get<Array<ServicePointVersion>>(
-      `${
-        this.configuration.basePath
-      }/service-point-directory/v1/service-points/${encodeURIComponent(
-        String(servicePointNumber)
-      )}`,
-      {
-        responseType: <any>responseType_,
-        withCredentials: this.configuration.withCredentials,
-        headers: headers,
-        observe: observe,
-        reportProgress: reportProgress,
-      }
-    );
-  }
 
-  /**
-   * @param id
-   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-   * @param reportProgress flag to report request and response progress.
-   */
-  public getServicePointVersion(
-    id: number,
-    observe?: 'body',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<ServicePointVersion>;
-  public getServicePointVersion(
-    id: number,
-    observe?: 'response',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<HttpResponse<ServicePointVersion>>;
-  public getServicePointVersion(
-    id: number,
-    observe?: 'events',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<HttpEvent<ServicePointVersion>>;
-  public getServicePointVersion(
-    id: number,
-    observe: any = 'body',
-    reportProgress: boolean = false,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<any> {
-    if (id === null || id === undefined) {
-      throw new Error(
-        'Required parameter id was null or undefined when calling getServicePointVersion.'
-      );
+        let responseType_: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType_ = 'text';
+        }
+
+        return this.httpClient.get<ServicePointVersion>(`${this.configuration.basePath}/service-point-directory/v1/service-points/versions/${encodeURIComponent(String(id))}`,
+            {
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
     }
 
-    let headers = this.defaultHeaders;
+    /**
+     * @param sloids Unique key for service points which is used in the customer information.
+     * @param numbers DiDok-Number formerly known as UIC-Code, combination of uicCountryCode and numberShort.
+     * @param uicCountryCodes List of UIC Country codes.
+     * @param isoCountryCodes List of ISO Country codes.
+     * @param numbersShort Number of a service point which is provided by DiDok for Switzerland. It is part of the unique key for service points.
+     * @param abbreviations Abbreviation of the service point.
+     * @param businessOrganisationSboids Swiss Business Organisation ID of the business organisation.
+     * @param countries Country allocated the service point number and is to be interpreted organisationally, not territorially.
+     * @param operatingPointTechnicalTimetableTypes All service points relevant for timetable planning.
+     * @param categories Assignment of service points to defined business cases.
+     * @param operatingPointTypes Detailed intended use of a operating point.
+     * @param stopPointTypes Indicates for which type of traffic (e.g. regular traffic) a stop was recorded.
+     * @param meansOfTransport Filter on the meanOfTransport.
+     * @param statusRestrictions Filter on the Status of a servicePoint.
+     * @param operatingPoint Filter on operation Points only.
+     * @param withTimetable Filter on operation Points with Timetables only.
+     * @param validOn ValidOn. Date format: yyyy-MM-dd
+     * @param fromDate [fromDate] &gt;&#x3D; validFrom. Date format: yyyy-MM-dd
+     * @param toDate [toDate] &lt;&#x3D; validTo. Date format: yyyy-MM-dd
+     * @param createdAfter CreatedAfter&gt;&#x3D;creationDate. DateTime format: yyyy-MM-dd HH:mm:ss
+     * @param modifiedAfter ModifiedAfter&gt;&#x3D;editionDate. DateTime format: yyyy-MM-dd HH:mm:ss
+     * @param page Zero-based page index (0..N)
+     * @param size The size of the page to be returned
+     * @param sort Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getServicePoints(sloids?: string, numbers?: string, uicCountryCodes?: string, isoCountryCodes?: string, numbersShort?: string, abbreviations?: string, businessOrganisationSboids?: string, countries?: string, operatingPointTechnicalTimetableTypes?: string, categories?: string, operatingPointTypes?: string, stopPointTypes?: string, meansOfTransport?: string, statusRestrictions?: string, operatingPoint?: string, withTimetable?: string, validOn?: string, fromDate?: string, toDate?: string, createdAfter?: string, modifiedAfter?: string, page?: number, size?: number, sort?: Array<string>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ContainerServicePointVersion>;
+    public getServicePoints(sloids?: string, numbers?: string, uicCountryCodes?: string, isoCountryCodes?: string, numbersShort?: string, abbreviations?: string, businessOrganisationSboids?: string, countries?: string, operatingPointTechnicalTimetableTypes?: string, categories?: string, operatingPointTypes?: string, stopPointTypes?: string, meansOfTransport?: string, statusRestrictions?: string, operatingPoint?: string, withTimetable?: string, validOn?: string, fromDate?: string, toDate?: string, createdAfter?: string, modifiedAfter?: string, page?: number, size?: number, sort?: Array<string>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ContainerServicePointVersion>>;
+    public getServicePoints(sloids?: string, numbers?: string, uicCountryCodes?: string, isoCountryCodes?: string, numbersShort?: string, abbreviations?: string, businessOrganisationSboids?: string, countries?: string, operatingPointTechnicalTimetableTypes?: string, categories?: string, operatingPointTypes?: string, stopPointTypes?: string, meansOfTransport?: string, statusRestrictions?: string, operatingPoint?: string, withTimetable?: string, validOn?: string, fromDate?: string, toDate?: string, createdAfter?: string, modifiedAfter?: string, page?: number, size?: number, sort?: Array<string>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ContainerServicePointVersion>>;
+    public getServicePoints(sloids?: string, numbers?: string, uicCountryCodes?: string, isoCountryCodes?: string, numbersShort?: string, abbreviations?: string, businessOrganisationSboids?: string, countries?: string, operatingPointTechnicalTimetableTypes?: string, categories?: string, operatingPointTypes?: string, stopPointTypes?: string, meansOfTransport?: string, statusRestrictions?: string, operatingPoint?: string, withTimetable?: string, validOn?: string, fromDate?: string, toDate?: string, createdAfter?: string, modifiedAfter?: string, page?: number, size?: number, sort?: Array<string>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
 
-    let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-    if (httpHeaderAcceptSelected === undefined) {
-      // to determine the Accept header
-      const httpHeaderAccepts: string[] = ['*/*'];
-      httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-    }
-    if (httpHeaderAcceptSelected !== undefined) {
-      headers = headers.set('Accept', httpHeaderAcceptSelected);
-    }
+        let queryParameters = new HttpParams({encoder: this.encoder});
+        if (sloids !== undefined && sloids !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>sloids, 'sloids');
+        }
+        if (numbers !== undefined && numbers !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>numbers, 'numbers');
+        }
+        if (uicCountryCodes !== undefined && uicCountryCodes !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>uicCountryCodes, 'uicCountryCodes');
+        }
+        if (isoCountryCodes !== undefined && isoCountryCodes !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>isoCountryCodes, 'isoCountryCodes');
+        }
+        if (numbersShort !== undefined && numbersShort !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>numbersShort, 'numbersShort');
+        }
+        if (abbreviations !== undefined && abbreviations !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>abbreviations, 'abbreviations');
+        }
+        if (businessOrganisationSboids !== undefined && businessOrganisationSboids !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>businessOrganisationSboids, 'businessOrganisationSboids');
+        }
+        if (countries !== undefined && countries !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>countries, 'countries');
+        }
+        if (operatingPointTechnicalTimetableTypes !== undefined && operatingPointTechnicalTimetableTypes !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>operatingPointTechnicalTimetableTypes, 'operatingPointTechnicalTimetableTypes');
+        }
+        if (categories !== undefined && categories !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>categories, 'categories');
+        }
+        if (operatingPointTypes !== undefined && operatingPointTypes !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>operatingPointTypes, 'operatingPointTypes');
+        }
+        if (stopPointTypes !== undefined && stopPointTypes !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>stopPointTypes, 'stopPointTypes');
+        }
+        if (meansOfTransport !== undefined && meansOfTransport !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>meansOfTransport, 'meansOfTransport');
+        }
+        if (statusRestrictions !== undefined && statusRestrictions !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>statusRestrictions, 'statusRestrictions');
+        }
+        if (operatingPoint !== undefined && operatingPoint !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>operatingPoint, 'operatingPoint');
+        }
+        if (withTimetable !== undefined && withTimetable !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>withTimetable, 'withTimetable');
+        }
+        if (validOn !== undefined && validOn !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>validOn, 'validOn');
+        }
+        if (fromDate !== undefined && fromDate !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>fromDate, 'fromDate');
+        }
+        if (toDate !== undefined && toDate !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>toDate, 'toDate');
+        }
+        if (createdAfter !== undefined && createdAfter !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>createdAfter, 'createdAfter');
+        }
+        if (modifiedAfter !== undefined && modifiedAfter !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>modifiedAfter, 'modifiedAfter');
+        }
+        if (page !== undefined && page !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>page, 'page');
+        }
+        if (size !== undefined && size !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>size, 'size');
+        }
+        if (sort) {
+            sort.forEach((element) => {
+                queryParameters = this.addToHttpParams(queryParameters,
+                  <any>element, 'sort');
+            })
+        }
 
-    let responseType_: 'text' | 'json' = 'json';
-    if (httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-      responseType_ = 'text';
-    }
+        let headers = this.defaultHeaders;
 
-    return this.httpClient.get<ServicePointVersion>(
-      `${
-        this.configuration.basePath
-      }/service-point-directory/v1/service-points/versions/${encodeURIComponent(String(id))}`,
-      {
-        responseType: <any>responseType_,
-        withCredentials: this.configuration.withCredentials,
-        headers: headers,
-        observe: observe,
-        reportProgress: reportProgress,
-      }
-    );
-  }
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                '*/*'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
 
-  /**
-   * @param sloids Unique key for service points which is used in the customer information.
-   * @param numbers DiDok-Number formerly known as UIC-Code, combination of uicCountryCode and numberShort.
-   * @param uicCountryCodes List of UIC Country codes.
-   * @param isoCountryCodes List of ISO Country codes.
-   * @param numbersShort Number of a service point which is provided by DiDok for Switzerland. It is part of the unique key for service points.
-   * @param abbreviations Abbreviation of the service point.
-   * @param businessOrganisationSboids Swiss Business Organisation ID of the business organisation.
-   * @param countries Country allocated the service point number and is to be interpreted organisationally, not territorially.
-   * @param operatingPointTechnicalTimetableTypes All service points relevant for timetable planning.
-   * @param categories Assignment of service points to defined business cases.
-   * @param operatingPointTypes Detailed intended use of a operating point.
-   * @param stopPointTypes Indicates for which type of traffic (e.g. regular traffic) a stop was recorded.
-   * @param meansOfTransport Filter on the meanOfTransport.
-   * @param statusRestrictions Filter on the Status of a servicePoint.
-   * @param operatingPoint Filter on operation Points only.
-   * @param withTimetable Filter on operation Points with Timetables only.
-   * @param validOn ValidOn. Date format: yyyy-MM-dd
-   * @param fromDate [fromDate] &gt;&#x3D; validFrom. Date format: yyyy-MM-dd
-   * @param toDate [toDate] &lt;&#x3D; validTo. Date format: yyyy-MM-dd
-   * @param createdAfter CreatedAfter&gt;&#x3D;creationDate. DateTime format: yyyy-MM-dd HH:mm:ss
-   * @param modifiedAfter ModifiedAfter&gt;&#x3D;editionDate. DateTime format: yyyy-MM-dd HH:mm:ss
-   * @param page Zero-based page index (0..N)
-   * @param size The size of the page to be returned
-   * @param sort Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
-   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-   * @param reportProgress flag to report request and response progress.
-   */
-  public getServicePoints(
-    sloids?: string,
-    numbers?: string,
-    uicCountryCodes?: string,
-    isoCountryCodes?: string,
-    numbersShort?: string,
-    abbreviations?: string,
-    businessOrganisationSboids?: string,
-    countries?: string,
-    operatingPointTechnicalTimetableTypes?: string,
-    categories?: string,
-    operatingPointTypes?: string,
-    stopPointTypes?: string,
-    meansOfTransport?: string,
-    statusRestrictions?: string,
-    operatingPoint?: string,
-    withTimetable?: string,
-    validOn?: string,
-    fromDate?: string,
-    toDate?: string,
-    createdAfter?: string,
-    modifiedAfter?: string,
-    page?: number,
-    size?: number,
-    sort?: Array<string>,
-    observe?: 'body',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<ContainerServicePointVersion>;
-  public getServicePoints(
-    sloids?: string,
-    numbers?: string,
-    uicCountryCodes?: string,
-    isoCountryCodes?: string,
-    numbersShort?: string,
-    abbreviations?: string,
-    businessOrganisationSboids?: string,
-    countries?: string,
-    operatingPointTechnicalTimetableTypes?: string,
-    categories?: string,
-    operatingPointTypes?: string,
-    stopPointTypes?: string,
-    meansOfTransport?: string,
-    statusRestrictions?: string,
-    operatingPoint?: string,
-    withTimetable?: string,
-    validOn?: string,
-    fromDate?: string,
-    toDate?: string,
-    createdAfter?: string,
-    modifiedAfter?: string,
-    page?: number,
-    size?: number,
-    sort?: Array<string>,
-    observe?: 'response',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<HttpResponse<ContainerServicePointVersion>>;
-  public getServicePoints(
-    sloids?: string,
-    numbers?: string,
-    uicCountryCodes?: string,
-    isoCountryCodes?: string,
-    numbersShort?: string,
-    abbreviations?: string,
-    businessOrganisationSboids?: string,
-    countries?: string,
-    operatingPointTechnicalTimetableTypes?: string,
-    categories?: string,
-    operatingPointTypes?: string,
-    stopPointTypes?: string,
-    meansOfTransport?: string,
-    statusRestrictions?: string,
-    operatingPoint?: string,
-    withTimetable?: string,
-    validOn?: string,
-    fromDate?: string,
-    toDate?: string,
-    createdAfter?: string,
-    modifiedAfter?: string,
-    page?: number,
-    size?: number,
-    sort?: Array<string>,
-    observe?: 'events',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<HttpEvent<ContainerServicePointVersion>>;
-  public getServicePoints(
-    sloids?: string,
-    numbers?: string,
-    uicCountryCodes?: string,
-    isoCountryCodes?: string,
-    numbersShort?: string,
-    abbreviations?: string,
-    businessOrganisationSboids?: string,
-    countries?: string,
-    operatingPointTechnicalTimetableTypes?: string,
-    categories?: string,
-    operatingPointTypes?: string,
-    stopPointTypes?: string,
-    meansOfTransport?: string,
-    statusRestrictions?: string,
-    operatingPoint?: string,
-    withTimetable?: string,
-    validOn?: string,
-    fromDate?: string,
-    toDate?: string,
-    createdAfter?: string,
-    modifiedAfter?: string,
-    page?: number,
-    size?: number,
-    sort?: Array<string>,
-    observe: any = 'body',
-    reportProgress: boolean = false,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<any> {
-    let queryParameters = new HttpParams({ encoder: this.encoder });
-    if (sloids !== undefined && sloids !== null) {
-      queryParameters = this.addToHttpParams(queryParameters, <any>sloids, 'sloids');
-    }
-    if (numbers !== undefined && numbers !== null) {
-      queryParameters = this.addToHttpParams(queryParameters, <any>numbers, 'numbers');
-    }
-    if (uicCountryCodes !== undefined && uicCountryCodes !== null) {
-      queryParameters = this.addToHttpParams(
-        queryParameters,
-        <any>uicCountryCodes,
-        'uicCountryCodes'
-      );
-    }
-    if (isoCountryCodes !== undefined && isoCountryCodes !== null) {
-      queryParameters = this.addToHttpParams(
-        queryParameters,
-        <any>isoCountryCodes,
-        'isoCountryCodes'
-      );
-    }
-    if (numbersShort !== undefined && numbersShort !== null) {
-      queryParameters = this.addToHttpParams(queryParameters, <any>numbersShort, 'numbersShort');
-    }
-    if (abbreviations !== undefined && abbreviations !== null) {
-      queryParameters = this.addToHttpParams(queryParameters, <any>abbreviations, 'abbreviations');
-    }
-    if (businessOrganisationSboids !== undefined && businessOrganisationSboids !== null) {
-      queryParameters = this.addToHttpParams(
-        queryParameters,
-        <any>businessOrganisationSboids,
-        'businessOrganisationSboids'
-      );
-    }
-    if (countries !== undefined && countries !== null) {
-      queryParameters = this.addToHttpParams(queryParameters, <any>countries, 'countries');
-    }
-    if (
-      operatingPointTechnicalTimetableTypes !== undefined &&
-      operatingPointTechnicalTimetableTypes !== null
-    ) {
-      queryParameters = this.addToHttpParams(
-        queryParameters,
-        <any>operatingPointTechnicalTimetableTypes,
-        'operatingPointTechnicalTimetableTypes'
-      );
-    }
-    if (categories !== undefined && categories !== null) {
-      queryParameters = this.addToHttpParams(queryParameters, <any>categories, 'categories');
-    }
-    if (operatingPointTypes !== undefined && operatingPointTypes !== null) {
-      queryParameters = this.addToHttpParams(
-        queryParameters,
-        <any>operatingPointTypes,
-        'operatingPointTypes'
-      );
-    }
-    if (stopPointTypes !== undefined && stopPointTypes !== null) {
-      queryParameters = this.addToHttpParams(
-        queryParameters,
-        <any>stopPointTypes,
-        'stopPointTypes'
-      );
-    }
-    if (meansOfTransport !== undefined && meansOfTransport !== null) {
-      queryParameters = this.addToHttpParams(
-        queryParameters,
-        <any>meansOfTransport,
-        'meansOfTransport'
-      );
-    }
-    if (statusRestrictions !== undefined && statusRestrictions !== null) {
-      queryParameters = this.addToHttpParams(
-        queryParameters,
-        <any>statusRestrictions,
-        'statusRestrictions'
-      );
-    }
-    if (operatingPoint !== undefined && operatingPoint !== null) {
-      queryParameters = this.addToHttpParams(
-        queryParameters,
-        <any>operatingPoint,
-        'operatingPoint'
-      );
-    }
-    if (withTimetable !== undefined && withTimetable !== null) {
-      queryParameters = this.addToHttpParams(queryParameters, <any>withTimetable, 'withTimetable');
-    }
-    if (validOn !== undefined && validOn !== null) {
-      queryParameters = this.addToHttpParams(queryParameters, <any>validOn, 'validOn');
-    }
-    if (fromDate !== undefined && fromDate !== null) {
-      queryParameters = this.addToHttpParams(queryParameters, <any>fromDate, 'fromDate');
-    }
-    if (toDate !== undefined && toDate !== null) {
-      queryParameters = this.addToHttpParams(queryParameters, <any>toDate, 'toDate');
-    }
-    if (createdAfter !== undefined && createdAfter !== null) {
-      queryParameters = this.addToHttpParams(queryParameters, <any>createdAfter, 'createdAfter');
-    }
-    if (modifiedAfter !== undefined && modifiedAfter !== null) {
-      queryParameters = this.addToHttpParams(queryParameters, <any>modifiedAfter, 'modifiedAfter');
-    }
-    if (page !== undefined && page !== null) {
-      queryParameters = this.addToHttpParams(queryParameters, <any>page, 'page');
-    }
-    if (size !== undefined && size !== null) {
-      queryParameters = this.addToHttpParams(queryParameters, <any>size, 'size');
-    }
-    if (sort) {
-      sort.forEach((element) => {
-        queryParameters = this.addToHttpParams(queryParameters, <any>element, 'sort');
-      });
+
+        let responseType_: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType_ = 'text';
+        }
+
+        return this.httpClient.get<ContainerServicePointVersion>(`${this.configuration.basePath}/service-point-directory/v1/service-points`,
+            {
+                params: queryParameters,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
     }
 
-    let headers = this.defaultHeaders;
+    /**
+     * @param servicePointImportReRequest 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public importServicePoints(servicePointImportReRequest: ServicePointImportReRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<Array<ServicePointItemImportResult>>;
+    public importServicePoints(servicePointImportReRequest: ServicePointImportReRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<Array<ServicePointItemImportResult>>>;
+    public importServicePoints(servicePointImportReRequest: ServicePointImportReRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<Array<ServicePointItemImportResult>>>;
+    public importServicePoints(servicePointImportReRequest: ServicePointImportReRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (servicePointImportReRequest === null || servicePointImportReRequest === undefined) {
+            throw new Error('Required parameter servicePointImportReRequest was null or undefined when calling importServicePoints.');
+        }
 
-    let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-    if (httpHeaderAcceptSelected === undefined) {
-      // to determine the Accept header
-      const httpHeaderAccepts: string[] = ['*/*'];
-      httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-    }
-    if (httpHeaderAcceptSelected !== undefined) {
-      headers = headers.set('Accept', httpHeaderAcceptSelected);
-    }
+        let headers = this.defaultHeaders;
 
-    let responseType_: 'text' | 'json' = 'json';
-    if (httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-      responseType_ = 'text';
-    }
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                '*/*'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
 
-    return this.httpClient.get<ContainerServicePointVersion>(
-      `${this.configuration.basePath}/service-point-directory/v1/service-points`,
-      {
-        params: queryParameters,
-        responseType: <any>responseType_,
-        withCredentials: this.configuration.withCredentials,
-        headers: headers,
-        observe: observe,
-        reportProgress: reportProgress,
-      }
-    );
-  }
 
-  /**
-   * @param servicePointImportReRequest
-   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-   * @param reportProgress flag to report request and response progress.
-   */
-  public importServicePoints(
-    servicePointImportReRequest: ServicePointImportReRequest,
-    observe?: 'body',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<Array<ServicePointItemImportResult>>;
-  public importServicePoints(
-    servicePointImportReRequest: ServicePointImportReRequest,
-    observe?: 'response',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<HttpResponse<Array<ServicePointItemImportResult>>>;
-  public importServicePoints(
-    servicePointImportReRequest: ServicePointImportReRequest,
-    observe?: 'events',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<HttpEvent<Array<ServicePointItemImportResult>>>;
-  public importServicePoints(
-    servicePointImportReRequest: ServicePointImportReRequest,
-    observe: any = 'body',
-    reportProgress: boolean = false,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<any> {
-    if (servicePointImportReRequest === null || servicePointImportReRequest === undefined) {
-      throw new Error(
-        'Required parameter servicePointImportReRequest was null or undefined when calling importServicePoints.'
-      );
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType_: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType_ = 'text';
+        }
+
+        return this.httpClient.post<Array<ServicePointItemImportResult>>(`${this.configuration.basePath}/service-point-directory/v1/service-points/import`,
+            servicePointImportReRequest,
+            {
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
     }
 
-    let headers = this.defaultHeaders;
-
-    let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-    if (httpHeaderAcceptSelected === undefined) {
-      // to determine the Accept header
-      const httpHeaderAccepts: string[] = ['*/*'];
-      httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-    }
-    if (httpHeaderAcceptSelected !== undefined) {
-      headers = headers.set('Accept', httpHeaderAcceptSelected);
-    }
-
-    // to determine the Content-Type header
-    const consumes: string[] = ['application/json'];
-    const httpContentTypeSelected: string | undefined =
-      this.configuration.selectHeaderContentType(consumes);
-    if (httpContentTypeSelected !== undefined) {
-      headers = headers.set('Content-Type', httpContentTypeSelected);
-    }
-
-    let responseType_: 'text' | 'json' = 'json';
-    if (httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-      responseType_ = 'text';
-    }
-
-    return this.httpClient.post<Array<ServicePointItemImportResult>>(
-      `${this.configuration.basePath}/service-point-directory/v1/service-points/import`,
-      servicePointImportReRequest,
-      {
-        responseType: <any>responseType_,
-        withCredentials: this.configuration.withCredentials,
-        headers: headers,
-        observe: observe,
-        reportProgress: reportProgress,
-      }
-    );
-  }
 }

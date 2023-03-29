@@ -11,41 +11,41 @@
  */
 import { CoverageType } from './coverageType';
 
-export interface Coverage {
-  /**
-   * SLNID
-   */
-  readonly slnid?: string;
-  /**
-   * ModelType
-   */
-  modelType?: Coverage.ModelTypeEnum;
-  /**
-   * Valid from
-   */
-  validFrom?: Date;
-  /**
-   * Valid to
-   */
-  validTo?: Date;
-  coverageType?: CoverageType;
-  /**
-   * ValidationErrorType
-   */
-  validationErrorType?: Coverage.ValidationErrorTypeEnum;
+
+export interface Coverage { 
+    /**
+     * SLNID
+     */
+    readonly slnid?: string;
+    /**
+     * ModelType
+     */
+    modelType?: Coverage.ModelTypeEnum;
+    /**
+     * Valid from
+     */
+    validFrom?: Date;
+    /**
+     * Valid to
+     */
+    validTo?: Date;
+    coverageType?: CoverageType;
+    /**
+     * ValidationErrorType
+     */
+    validationErrorType?: Coverage.ValidationErrorTypeEnum;
 }
 export namespace Coverage {
-  export type ModelTypeEnum = 'LINE' | 'SUBLINE';
-  export const ModelTypeEnum = {
-    Line: 'LINE' as ModelTypeEnum,
-    Subline: 'SUBLINE' as ModelTypeEnum,
-  };
-  export type ValidationErrorTypeEnum =
-    | 'LINE_RANGE_SMALLER_THEN_SUBLINE_RANGE'
-    | 'SUBLINE_RANGE_OUTSIDE';
-  export const ValidationErrorTypeEnum = {
-    LineRangeSmallerThenSublineRange:
-      'LINE_RANGE_SMALLER_THEN_SUBLINE_RANGE' as ValidationErrorTypeEnum,
-    SublineRangeOutside: 'SUBLINE_RANGE_OUTSIDE' as ValidationErrorTypeEnum,
-  };
+    export type ModelTypeEnum = 'LINE' | 'SUBLINE';
+    export const ModelTypeEnum = {
+        Line: 'LINE' as ModelTypeEnum,
+        Subline: 'SUBLINE' as ModelTypeEnum
+    };
+    export type ValidationErrorTypeEnum = 'LINE_RANGE_SMALLER_THEN_SUBLINE_RANGE' | 'SUBLINE_RANGE_OUTSIDE';
+    export const ValidationErrorTypeEnum = {
+        LineRangeSmallerThenSublineRange: 'LINE_RANGE_SMALLER_THEN_SUBLINE_RANGE' as ValidationErrorTypeEnum,
+        SublineRangeOutside: 'SUBLINE_RANGE_OUTSIDE' as ValidationErrorTypeEnum
+    };
 }
+
+

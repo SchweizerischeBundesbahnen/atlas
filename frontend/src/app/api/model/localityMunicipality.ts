@@ -10,17 +10,19 @@
  * Do not edit the class manually.
  */
 
-export interface LocalityMunicipality {
-  /**
-   * SwissMunicipalityNumber the location is in, based on FSO
-   */
-  fsoNumber?: number;
-  /**
-   * SwissMunicipalityName the location is in
-   */
-  municipalityName?: string;
-  /**
-   * SwissLocalityName the location is in
-   */
-  localityName?: string;
+
+export interface LocalityMunicipality { 
+    /**
+     * SwissMunicipalityNumber the location is in, based on FSO
+     */
+    fsoNumber?: number;
+    /**
+     * SwissMunicipalityName the location is in
+     */
+    municipalityName?: string;
+    /**
+     * SwissLocalityName the location is in
+     */
+    localityName?: string;
 }
+

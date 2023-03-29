@@ -11,62 +11,64 @@
  */
 import { Status } from './status';
 
-export interface TimetableFieldNumberVersion {
-  /**
-   * Object creation date
-   */
-  readonly creationDate?: string;
-  /**
-   * User creator
-   */
-  readonly creator?: string;
-  /**
-   * Last edition date
-   */
-  readonly editionDate?: string;
-  /**
-   * User editor
-   */
-  readonly editor?: string;
-  /**
-   * Technical identifier
-   */
-  id?: number;
-  /**
-   * Timetable field number identifier
-   */
-  readonly ttfnid?: string;
-  /**
-   * Description
-   */
-  description?: string;
-  /**
-   * Number
-   */
-  number: string;
-  /**
-   * Timetable field number
-   */
-  swissTimetableFieldNumber: string;
-  status?: Status;
-  /**
-   * Date - valid from
-   */
-  validFrom: Date;
-  /**
-   * Date - valid to
-   */
-  validTo: Date;
-  /**
-   * BusinessOrganisation SBOID
-   */
-  businessOrganisation: string;
-  /**
-   * Additional comment
-   */
-  comment?: string;
-  /**
-   * Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)
-   */
-  etagVersion?: number;
+
+export interface TimetableFieldNumberVersion { 
+    /**
+     * Object creation date
+     */
+    readonly creationDate?: string;
+    /**
+     * User creator
+     */
+    readonly creator?: string;
+    /**
+     * Last edition date
+     */
+    readonly editionDate?: string;
+    /**
+     * User editor
+     */
+    readonly editor?: string;
+    /**
+     * Technical identifier
+     */
+    id?: number;
+    /**
+     * Timetable field number identifier
+     */
+    readonly ttfnid?: string;
+    /**
+     * Description
+     */
+    description?: string;
+    /**
+     * Number
+     */
+    number: string;
+    /**
+     * Timetable field number
+     */
+    swissTimetableFieldNumber: string;
+    status?: Status;
+    /**
+     * Date - valid from
+     */
+    validFrom: Date;
+    /**
+     * Date - valid to
+     */
+    validTo: Date;
+    /**
+     * BusinessOrganisation SBOID
+     */
+    businessOrganisation: string;
+    /**
+     * Additional comment
+     */
+    comment?: string;
+    /**
+     * Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)
+     */
+    etagVersion?: number;
 }
+

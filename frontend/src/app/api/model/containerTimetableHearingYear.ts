@@ -11,7 +11,9 @@
  */
 import { TimetableHearingYear } from './timetableHearingYear';
 
-export interface ContainerTimetableHearingYear {
-  objects?: Array<TimetableHearingYear>;
-  totalCount?: number;
+
+export interface ContainerTimetableHearingYear { 
+    objects?: Array<TimetableHearingYear>;
+    totalCount?: number;
 }
+

@@ -13,62 +13,64 @@ import { ServicePointNumber } from './servicePointNumber';
 import { Geolocation } from './geolocation';
 import { TrafficPointElementType } from './trafficPointElementType';
 
-export interface TrafficPointElementVersion {
-  /**
-   * Object creation date
-   */
-  readonly creationDate?: string;
-  /**
-   * User creator
-   */
-  readonly creator?: string;
-  /**
-   * Last edition date
-   */
-  readonly editionDate?: string;
-  /**
-   * User editor
-   */
-  readonly editor?: string;
-  /**
-   * Technical identifier
-   */
-  readonly id?: number;
-  /**
-   * Designation used in the customer information systems.
-   */
-  designation?: string;
-  /**
-   * Designation used in (operational) timetable planning.
-   */
-  designationOperational?: string;
-  /**
-   * Length of the TrafficPointElement
-   */
-  length?: number;
-  /**
-   * Height of BoardingArea at the TrafficPointElement
-   */
-  boardingAreaHeight?: number;
-  /**
-   * Compass Direction at the TrafficPointElement
-   */
-  compassDirection?: number;
-  trafficPointElementType?: TrafficPointElementType;
-  servicePointNumber: ServicePointNumber;
-  /**
-   * Unique code for traffic point element (TPE) that is used in customer information. By means of this ID, the connection between stops and bus / station stop area or boarding area can be established.  The structure is described in the “Swiss Location ID” specification, chapter 4.2. The document is available here.  https://transportdatamanagement.ch/standards/
-   */
-  sloid: string;
-  /**
-   * Hierarchical assignment of the TPE which is to be processed to another TPE. It is a 1:1 relationship. As key, the SLOID is used.
-   */
-  parentSloid?: string;
-  trafficPointElementGeolocation?: Geolocation;
-  validFrom: Date;
-  validTo: Date;
-  /**
-   * TrafficPointElementVersion has a Geolocation
-   */
-  hasGeolocation?: boolean;
+
+export interface TrafficPointElementVersion { 
+    /**
+     * Object creation date
+     */
+    readonly creationDate?: string;
+    /**
+     * User creator
+     */
+    readonly creator?: string;
+    /**
+     * Last edition date
+     */
+    readonly editionDate?: string;
+    /**
+     * User editor
+     */
+    readonly editor?: string;
+    /**
+     * Technical identifier
+     */
+    readonly id?: number;
+    /**
+     * Designation used in the customer information systems.
+     */
+    designation?: string;
+    /**
+     * Designation used in (operational) timetable planning.
+     */
+    designationOperational?: string;
+    /**
+     * Length of the TrafficPointElement
+     */
+    length?: number;
+    /**
+     * Height of BoardingArea at the TrafficPointElement
+     */
+    boardingAreaHeight?: number;
+    /**
+     * Compass Direction at the TrafficPointElement
+     */
+    compassDirection?: number;
+    trafficPointElementType?: TrafficPointElementType;
+    servicePointNumber: ServicePointNumber;
+    /**
+     * Unique code for traffic point element (TPE) that is used in customer information. By means of this ID, the connection between stops and bus / station stop area or boarding area can be established.  The structure is described in the “Swiss Location ID” specification, chapter 4.2. The document is available here.  https://transportdatamanagement.ch/standards/
+     */
+    sloid: string;
+    /**
+     * Hierarchical assignment of the TPE which is to be processed to another TPE. It is a 1:1 relationship. As key, the SLOID is used.
+     */
+    parentSloid?: string;
+    trafficPointElementGeolocation?: Geolocation;
+    validFrom: Date;
+    validTo: Date;
+    /**
+     * TrafficPointElementVersion has a Geolocation
+     */
+    hasGeolocation?: boolean;
 }
+

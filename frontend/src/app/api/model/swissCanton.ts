@@ -10,62 +10,38 @@
  * Do not edit the class manually.
  */
 
+
 /**
  * SwissCanton the location is in
  */
-export type SwissCanton =
-  | 'ZURICH'
-  | 'BERN'
-  | 'LUCERNE'
-  | 'URI'
-  | 'SCHWYZ'
-  | 'OBWALDEN'
-  | 'NIDWALDEN'
-  | 'GLARUS'
-  | 'ZUG'
-  | 'FRIBOURG'
-  | 'SOLOTHURN'
-  | 'BASEL_CITY'
-  | 'BASEL_COUNTRY'
-  | 'SCHAFFHAUSEN'
-  | 'APPENZELL_AUSSERRHODEN'
-  | 'APPENZELL_INNERRHODEN'
-  | 'ST_GALLEN'
-  | 'GRAUBUNDEN'
-  | 'AARGAU'
-  | 'THURGAU'
-  | 'TICINO'
-  | 'VAUD'
-  | 'VALAIS'
-  | 'NEUCHATEL'
-  | 'GENEVE'
-  | 'JURA';
+export type SwissCanton = 'ZURICH' | 'BERN' | 'LUCERNE' | 'URI' | 'SCHWYZ' | 'OBWALDEN' | 'NIDWALDEN' | 'GLARUS' | 'ZUG' | 'FRIBOURG' | 'SOLOTHURN' | 'BASEL_CITY' | 'BASEL_COUNTRY' | 'SCHAFFHAUSEN' | 'APPENZELL_AUSSERRHODEN' | 'APPENZELL_INNERRHODEN' | 'ST_GALLEN' | 'GRAUBUNDEN' | 'AARGAU' | 'THURGAU' | 'TICINO' | 'VAUD' | 'VALAIS' | 'NEUCHATEL' | 'GENEVE' | 'JURA';
 
 export const SwissCanton = {
-  Zurich: 'ZURICH' as SwissCanton,
-  Bern: 'BERN' as SwissCanton,
-  Lucerne: 'LUCERNE' as SwissCanton,
-  Uri: 'URI' as SwissCanton,
-  Schwyz: 'SCHWYZ' as SwissCanton,
-  Obwalden: 'OBWALDEN' as SwissCanton,
-  Nidwalden: 'NIDWALDEN' as SwissCanton,
-  Glarus: 'GLARUS' as SwissCanton,
-  Zug: 'ZUG' as SwissCanton,
-  Fribourg: 'FRIBOURG' as SwissCanton,
-  Solothurn: 'SOLOTHURN' as SwissCanton,
-  BaselCity: 'BASEL_CITY' as SwissCanton,
-  BaselCountry: 'BASEL_COUNTRY' as SwissCanton,
-  Schaffhausen: 'SCHAFFHAUSEN' as SwissCanton,
-  AppenzellAusserrhoden: 'APPENZELL_AUSSERRHODEN' as SwissCanton,
-  AppenzellInnerrhoden: 'APPENZELL_INNERRHODEN' as SwissCanton,
-  StGallen: 'ST_GALLEN' as SwissCanton,
-  Graubunden: 'GRAUBUNDEN' as SwissCanton,
-  Aargau: 'AARGAU' as SwissCanton,
-  Thurgau: 'THURGAU' as SwissCanton,
-  Ticino: 'TICINO' as SwissCanton,
-  Vaud: 'VAUD' as SwissCanton,
-  Valais: 'VALAIS' as SwissCanton,
-  Neuchatel: 'NEUCHATEL' as SwissCanton,
-  Geneve: 'GENEVE' as SwissCanton,
-  Jura: 'JURA' as SwissCanton,
+    Zurich: 'ZURICH' as SwissCanton,
+    Bern: 'BERN' as SwissCanton,
+    Lucerne: 'LUCERNE' as SwissCanton,
+    Uri: 'URI' as SwissCanton,
+    Schwyz: 'SCHWYZ' as SwissCanton,
+    Obwalden: 'OBWALDEN' as SwissCanton,
+    Nidwalden: 'NIDWALDEN' as SwissCanton,
+    Glarus: 'GLARUS' as SwissCanton,
+    Zug: 'ZUG' as SwissCanton,
+    Fribourg: 'FRIBOURG' as SwissCanton,
+    Solothurn: 'SOLOTHURN' as SwissCanton,
+    BaselCity: 'BASEL_CITY' as SwissCanton,
+    BaselCountry: 'BASEL_COUNTRY' as SwissCanton,
+    Schaffhausen: 'SCHAFFHAUSEN' as SwissCanton,
+    AppenzellAusserrhoden: 'APPENZELL_AUSSERRHODEN' as SwissCanton,
+    AppenzellInnerrhoden: 'APPENZELL_INNERRHODEN' as SwissCanton,
+    StGallen: 'ST_GALLEN' as SwissCanton,
+    Graubunden: 'GRAUBUNDEN' as SwissCanton,
+    Aargau: 'AARGAU' as SwissCanton,
+    Thurgau: 'THURGAU' as SwissCanton,
+    Ticino: 'TICINO' as SwissCanton,
+    Vaud: 'VAUD' as SwissCanton,
+    Valais: 'VALAIS' as SwissCanton,
+    Neuchatel: 'NEUCHATEL' as SwissCanton,
+    Geneve: 'GENEVE' as SwissCanton,
+    Jura: 'JURA' as SwissCanton
 };
+

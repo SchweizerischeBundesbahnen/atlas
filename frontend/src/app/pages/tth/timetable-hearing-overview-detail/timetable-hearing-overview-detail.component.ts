@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 import {
   ContainerTimetableHearingStatement,
   HearingStatus,
@@ -10,16 +10,16 @@ import {
   TimetableHearingYear,
   UserAdministrationService,
 } from '../../../api';
-import { Cantons } from '../overview/canton/Cantons';
-import { TableComponent } from '../../../core/components/table/table.component';
-import { TableColumn } from '../../../core/components/table/table-column';
-import { DEFAULT_STATUS_SELECTION } from '../../../core/constants/status.choices';
-import { TableSettings } from '../../../core/components/table/table-settings';
-import { Pages } from '../../pages';
-import { Subscription } from 'rxjs';
+import {Cantons} from '../overview/canton/Cantons';
+import {TableComponent} from '../../../core/components/table/table.component';
+import {TableColumn} from '../../../core/components/table/table-column';
+import {DEFAULT_STATUS_SELECTION} from '../../../core/constants/status.choices';
+import {TableSettings} from '../../../core/components/table/table-settings';
+import {Pages} from '../../pages';
+import {Subscription} from 'rxjs';
 import moment from 'moment';
-import { OverviewToTabShareDataService } from '../timetable-hearing-overview-tab/overview-to-tab-share-data.service';
-import { MatSelectChange } from '@angular/material/select';
+import {OverviewToTabShareDataService} from '../timetable-hearing-overview-tab/overview-to-tab-share-data.service';
+import {MatSelectChange} from '@angular/material/select';
 
 @Component({
   selector: 'app-timetable-hearing-overview-detail',
@@ -27,7 +27,7 @@ import { MatSelectChange } from '@angular/material/select';
   styleUrls: ['./timetable-hearing-overview-detail.component.scss'],
 })
 export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestroy {
-  @ViewChild(TableComponent, { static: true })
+  @ViewChild(TableComponent, {static: true})
   tableComponent!: TableComponent<TimetableHearingStatement>;
   hearingStatus = Pages.TTH_ACTIVE.path;
   isLoading = false;
@@ -47,15 +47,15 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
         },
       },
     },
-    { headerTitle: 'TTH.SWISS_CANTON', value: 'swissCanton', callback: this.mapToShortCanton },
+    {headerTitle: 'TTH.SWISS_CANTON', value: 'swissCanton', callback: this.mapToShortCanton},
     {
       headerTitle: 'TTH.TRANSPORT_COMPANY',
       value: 'responsibleTransportCompaniesDisplay',
     },
-    { headerTitle: 'TTH.TTFNID', value: 'ttfnid' },
-    { headerTitle: 'TTH.TIMETABLE_FIELD_NUMBER', value: 'timetableFieldNumber' },
-    { headerTitle: 'COMMON.EDIT_ON', value: 'editionDate', formatAsDate: true },
-    { headerTitle: 'COMMON.EDIT_BY', value: 'editor' },
+    {headerTitle: 'TTH.TTFNID', value: 'ttfnid'},
+    {headerTitle: 'TTH.TIMETABLE_FIELD_NUMBER', value: 'timetableFieldNumber'},
+    {headerTitle: 'COMMON.EDIT_ON', value: 'editionDate', formatAsDate: true},
+    {headerTitle: 'COMMON.EDIT_BY', value: 'editor'},
   ];
   showEmptyTimeTableHearingComponent = true;
   data!: ContainerTimetableHearingStatement;
@@ -84,7 +84,8 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
     private readonly timetableHearingService: TimetableHearingService,
     private readonly userAdministrationService: UserAdministrationService,
     private overviewToTabService: OverviewToTabShareDataService
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.syncCantonShortSharedDate();
@@ -185,7 +186,7 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
       this.CANTON_OPTIONS.findIndex(
         (value) => value.toLowerCase() === this.cantonShort.toLowerCase()
       )
-    ];
+      ];
   }
 
   private getSelectedHeraingStatus() {
@@ -202,42 +203,54 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
 
   private initOverviewArchivedTable() {
     this.timetableHearingService
-      .getArchivedHearingYears()
+      .getHearingYears([HearingStatus.Archived])
       .subscribe((archivedTimetableHearingYears) => {
-        if (archivedTimetableHearingYears.length === 0) {
-          this.showEmptyTimeTableHearingComponent = true;
-        } else {
-          this.YEAR_OPTIONS = archivedTimetableHearingYears.map((value) => value.timetableYear);
-          this.defaultYearSelection = this.YEAR_OPTIONS[0];
-          this.foundTimetableHearingYear = archivedTimetableHearingYears[0];
-          this.showEmptyTimeTableHearingComponent = false;
-          this.initOverviewTable();
+        if (archivedTimetableHearingYears.objects) {
+          if (archivedTimetableHearingYears.objects.length === 0) {
+            this.showEmptyTimeTableHearingComponent = true;
+          } else if (archivedTimetableHearingYears.objects && archivedTimetableHearingYears.objects.length >= 1) {
+            this.YEAR_OPTIONS = archivedTimetableHearingYears.objects.map((value) => value.timetableYear).sort().reverse();
+            this.defaultYearSelection = this.YEAR_OPTIONS[0];
+            this.foundTimetableHearingYear = archivedTimetableHearingYears.objects[0];
+            this.showEmptyTimeTableHearingComponent = false;
+            this.initOverviewTable();
+          }
         }
       });
   }
 
   private initOverviewPlannedTable() {
     this.timetableHearingService
-      .getPlannedHearingYears()
+      .getHearingYears([HearingStatus.Planned])
       .subscribe((plannedTimetableHearingYears) => {
-        if (plannedTimetableHearingYears.length === 0) {
-          this.showEmptyTimeTableHearingComponent = true;
-        } else {
-          this.YEAR_OPTIONS = plannedTimetableHearingYears.map((value) => value.timetableYear);
-          this.defaultYearSelection = this.YEAR_OPTIONS[0];
-          this.foundTimetableHearingYear = plannedTimetableHearingYears[0];
-          this.showEmptyTimeTableHearingComponent = false;
-          this.initOverviewTable();
+        if (plannedTimetableHearingYears.objects) {
+          if (plannedTimetableHearingYears.objects.length === 0) {
+            this.showEmptyTimeTableHearingComponent = true;
+          } else if (plannedTimetableHearingYears.objects.length >= 1) {
+            this.YEAR_OPTIONS = plannedTimetableHearingYears.objects.map((value) => value.timetableYear).sort();
+            this.defaultYearSelection = this.YEAR_OPTIONS[0];
+            this.foundTimetableHearingYear = plannedTimetableHearingYears.objects[0];
+            this.showEmptyTimeTableHearingComponent = false;
+            this.initOverviewTable();
+          }
         }
       });
   }
 
   private initOverviewActiveTable() {
-    this.timetableHearingService.getActiveHearingYear().subscribe((timetableHearingYear) => {
-      this.showEmptyTimeTableHearingComponent = false;
-      this.foundTimetableHearingYear = timetableHearingYear;
-      this.initOverviewTable();
-    });
+    this.timetableHearingService
+      .getHearingYears([HearingStatus.Active])
+      .subscribe((timetableHearingYears) => {
+        if (timetableHearingYears.objects) {
+          if (timetableHearingYears.objects.length === 0) {
+            this.showEmptyTimeTableHearingComponent = true;
+          } else if (timetableHearingYears.objects.length >= 1) {
+            this.showEmptyTimeTableHearingComponent = false;
+            this.foundTimetableHearingYear = timetableHearingYears.objects[0];
+            this.initOverviewTable();
+          }
+        }
+      });
   }
 
   private initOverviewTable() {

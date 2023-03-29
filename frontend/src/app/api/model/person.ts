@@ -10,28 +10,30 @@
  * Do not edit the class manually.
  */
 
+
 /**
  * Examinant
  */
-export interface Person {
-  /**
-   * Firstname
-   */
-  firstName?: string;
-  /**
-   * Second
-   */
-  lastName?: string;
-  /**
-   * Person Function
-   */
-  personFunction?: string;
-  /**
-   * Object creation date
-   */
-  readonly creationDate?: string;
-  /**
-   * Last edition date
-   */
-  readonly editionDate?: string;
+export interface Person { 
+    /**
+     * Firstname
+     */
+    firstName?: string;
+    /**
+     * Second
+     */
+    lastName?: string;
+    /**
+     * Person Function
+     */
+    personFunction?: string;
+    /**
+     * Object creation date
+     */
+    readonly creationDate?: string;
+    /**
+     * Last edition date
+     */
+    readonly editionDate?: string;
 }
+
