@@ -10,13 +10,15 @@
  * Do not edit the class manually.
  */
 
+
 /**
  * Subline Type
  */
 export type SublineType = 'TECHNICAL' | 'COMPENSATION' | 'CONCESSION';
 
 export const SublineType = {
-  Technical: 'TECHNICAL' as SublineType,
-  Compensation: 'COMPENSATION' as SublineType,
-  Concession: 'CONCESSION' as SublineType,
+    Technical: 'TECHNICAL' as SublineType,
+    Compensation: 'COMPENSATION' as SublineType,
+    Concession: 'CONCESSION' as SublineType
 };
+

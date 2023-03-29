@@ -11,16 +11,18 @@
  */
 import { Parameter } from './parameter';
 
+
 /**
  * DisplayInfo for messages
  */
-export interface DisplayInfo {
-  /**
-   * Errorcode for UI
-   */
-  code: string;
-  /**
-   * Parameters for messages
-   */
-  parameters: Array<Parameter>;
+export interface DisplayInfo { 
+    /**
+     * Errorcode for UI
+     */
+    code: string;
+    /**
+     * Parameters for messages
+     */
+    parameters: Array<Parameter>;
 }
+

@@ -10,11 +10,13 @@
  * Do not edit the class manually.
  */
 
+
 /**
  * OperatingPointTrafficPointType, Specifies the detailed intended use of a traffic point.
  */
 export type OperatingPointTrafficPointType = 'TARIFF_POINT';
 
 export const OperatingPointTrafficPointType = {
-  TariffPoint: 'TARIFF_POINT' as OperatingPointTrafficPointType,
+    TariffPoint: 'TARIFF_POINT' as OperatingPointTrafficPointType
 };
+

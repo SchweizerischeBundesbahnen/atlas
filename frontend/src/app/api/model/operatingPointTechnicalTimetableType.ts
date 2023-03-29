@@ -10,49 +10,31 @@
  * Do not edit the class manually.
  */
 
+
 /**
- * OperatingPointTechnicalTimetableType, all service points relevant for timetable planning and publication.
+ * OperatingPointTechnicalTimetableType, all service points relevant for timetable planning and publication. 
  */
-export type OperatingPointTechnicalTimetableType =
-  | 'STOP_POINT'
-  | 'PROPERTY_LINE'
-  | 'INVESTMENT_LOCATIONS_OPERATING_POINT'
-  | 'COUNTRY_BORDER'
-  | 'UNKNOWN'
-  | 'OPERATING_POINT_BUS'
-  | 'TURNING_LOOP'
-  | 'ASSIGNED_OPERATING_POINT'
-  | 'BLOCKING_POINT'
-  | 'END_OF_TRACK'
-  | 'LANE_SEPARATION'
-  | 'INTERSECTION'
-  | 'CONNECTING_POINT'
-  | 'LANE_CHANGE'
-  | 'BRANCH'
-  | 'SERVICE_STATION'
-  | 'ERROR_PROFILE'
-  | 'EX_STOP_POINT'
-  | 'ROUTE_SPEED_CHANGE';
+export type OperatingPointTechnicalTimetableType = 'STOP_POINT' | 'PROPERTY_LINE' | 'INVESTMENT_LOCATIONS_OPERATING_POINT' | 'COUNTRY_BORDER' | 'UNKNOWN' | 'OPERATING_POINT_BUS' | 'TURNING_LOOP' | 'ASSIGNED_OPERATING_POINT' | 'BLOCKING_POINT' | 'END_OF_TRACK' | 'LANE_SEPARATION' | 'INTERSECTION' | 'CONNECTING_POINT' | 'LANE_CHANGE' | 'BRANCH' | 'SERVICE_STATION' | 'ERROR_PROFILE' | 'EX_STOP_POINT' | 'ROUTE_SPEED_CHANGE';
 
 export const OperatingPointTechnicalTimetableType = {
-  StopPoint: 'STOP_POINT' as OperatingPointTechnicalTimetableType,
-  PropertyLine: 'PROPERTY_LINE' as OperatingPointTechnicalTimetableType,
-  InvestmentLocationsOperatingPoint:
-    'INVESTMENT_LOCATIONS_OPERATING_POINT' as OperatingPointTechnicalTimetableType,
-  CountryBorder: 'COUNTRY_BORDER' as OperatingPointTechnicalTimetableType,
-  Unknown: 'UNKNOWN' as OperatingPointTechnicalTimetableType,
-  OperatingPointBus: 'OPERATING_POINT_BUS' as OperatingPointTechnicalTimetableType,
-  TurningLoop: 'TURNING_LOOP' as OperatingPointTechnicalTimetableType,
-  AssignedOperatingPoint: 'ASSIGNED_OPERATING_POINT' as OperatingPointTechnicalTimetableType,
-  BlockingPoint: 'BLOCKING_POINT' as OperatingPointTechnicalTimetableType,
-  EndOfTrack: 'END_OF_TRACK' as OperatingPointTechnicalTimetableType,
-  LaneSeparation: 'LANE_SEPARATION' as OperatingPointTechnicalTimetableType,
-  Intersection: 'INTERSECTION' as OperatingPointTechnicalTimetableType,
-  ConnectingPoint: 'CONNECTING_POINT' as OperatingPointTechnicalTimetableType,
-  LaneChange: 'LANE_CHANGE' as OperatingPointTechnicalTimetableType,
-  Branch: 'BRANCH' as OperatingPointTechnicalTimetableType,
-  ServiceStation: 'SERVICE_STATION' as OperatingPointTechnicalTimetableType,
-  ErrorProfile: 'ERROR_PROFILE' as OperatingPointTechnicalTimetableType,
-  ExStopPoint: 'EX_STOP_POINT' as OperatingPointTechnicalTimetableType,
-  RouteSpeedChange: 'ROUTE_SPEED_CHANGE' as OperatingPointTechnicalTimetableType,
+    StopPoint: 'STOP_POINT' as OperatingPointTechnicalTimetableType,
+    PropertyLine: 'PROPERTY_LINE' as OperatingPointTechnicalTimetableType,
+    InvestmentLocationsOperatingPoint: 'INVESTMENT_LOCATIONS_OPERATING_POINT' as OperatingPointTechnicalTimetableType,
+    CountryBorder: 'COUNTRY_BORDER' as OperatingPointTechnicalTimetableType,
+    Unknown: 'UNKNOWN' as OperatingPointTechnicalTimetableType,
+    OperatingPointBus: 'OPERATING_POINT_BUS' as OperatingPointTechnicalTimetableType,
+    TurningLoop: 'TURNING_LOOP' as OperatingPointTechnicalTimetableType,
+    AssignedOperatingPoint: 'ASSIGNED_OPERATING_POINT' as OperatingPointTechnicalTimetableType,
+    BlockingPoint: 'BLOCKING_POINT' as OperatingPointTechnicalTimetableType,
+    EndOfTrack: 'END_OF_TRACK' as OperatingPointTechnicalTimetableType,
+    LaneSeparation: 'LANE_SEPARATION' as OperatingPointTechnicalTimetableType,
+    Intersection: 'INTERSECTION' as OperatingPointTechnicalTimetableType,
+    ConnectingPoint: 'CONNECTING_POINT' as OperatingPointTechnicalTimetableType,
+    LaneChange: 'LANE_CHANGE' as OperatingPointTechnicalTimetableType,
+    Branch: 'BRANCH' as OperatingPointTechnicalTimetableType,
+    ServiceStation: 'SERVICE_STATION' as OperatingPointTechnicalTimetableType,
+    ErrorProfile: 'ERROR_PROFILE' as OperatingPointTechnicalTimetableType,
+    ExStopPoint: 'EX_STOP_POINT' as OperatingPointTechnicalTimetableType,
+    RouteSpeedChange: 'ROUTE_SPEED_CHANGE' as OperatingPointTechnicalTimetableType
 };
+

@@ -10,9 +10,11 @@
  * Do not edit the class manually.
  */
 
+
 export type TrafficPointElementType = 'BOARDING_PLATFORM' | 'BOARDING_AREA';
 
 export const TrafficPointElementType = {
-  Platform: 'BOARDING_PLATFORM' as TrafficPointElementType,
-  Area: 'BOARDING_AREA' as TrafficPointElementType,
+    Platform: 'BOARDING_PLATFORM' as TrafficPointElementType,
+    Area: 'BOARDING_AREA' as TrafficPointElementType
 };
+
