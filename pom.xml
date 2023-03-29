@@ -28,6 +28,7 @@
       <flyway-db.version>9.14.0</flyway-db.version>
       <swagger-core.version>2.2.8</swagger-core.version>
       <hibernate.jpa-modelgen.version>6.1.7.Final</hibernate.jpa-modelgen.version>
+      <tika-core.version>2.7.0</tika-core.version>
 
       <!-- REST Doc -->
       <asciidoctor-plugin.version>2.2.2</asciidoctor-plugin.version>
@@ -136,6 +137,11 @@
             <version>${spring-auto-rest-docs-core.version}</version>
             <scope>test</scope>
          </dependency>
+         <dependency>
+            <groupId>org.apache.tika</groupId>
+            <artifactId>tika-core</artifactId>
+            <version>${tika-core.version}</version>
+         </dependency>
       </dependencies>
    </dependencyManagement>
    <build>
@@ -237,6 +243,16 @@
                </executions>
                <groupId>org.apache.maven.plugins</groupId>
                <version>${maven-source-plugin.version}</version>
+            </plugin>
+            <plugin>
+               <groupId>org.apache.maven.plugins</groupId>
+               <artifactId>maven-resources-plugin</artifactId>
+               <configuration>
+                  <propertiesEncoding>UTF-8</propertiesEncoding>
+                  <nonFilteredFileExtensions>
+                     <nonFilteredFileExtension>pdf</nonFilteredFileExtension>
+                  </nonFilteredFileExtensions>
+               </configuration>
             </plugin>
          </plugins>
       </pluginManagement>
