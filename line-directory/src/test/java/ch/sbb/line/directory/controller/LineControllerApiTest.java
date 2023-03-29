@@ -21,6 +21,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.api.lidi.LineVersionModel;
 import ch.sbb.atlas.api.lidi.LineVersionModel.Fields;
 import ch.sbb.atlas.api.lidi.LineVersionSnapshotModel;
@@ -29,8 +30,8 @@ import ch.sbb.atlas.api.lidi.enumaration.CoverageType;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
 import ch.sbb.atlas.api.lidi.enumaration.SublineType;
-import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.api.model.ErrorResponse;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerWithAmazonS3ApiTest;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.line.directory.LineTestData;
@@ -72,6 +73,9 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
   @Autowired
   private LineVersionSnapshotRepository lineVersionSnapshotService;
 
+  @Autowired
+  private AmazonService amazonService;
+
   @AfterEach
   public void tearDown() {
     sublineVersionRepository.deleteAll();
@@ -111,7 +115,7 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
     //when
     MvcResult mvcResult = mvc.perform(post("/v1/lines/export-csv/full"))
         .andExpect(status().isOk()).andReturn();
-    deleteFileFromBucket(mvcResult, lineVersionExportService.getDirectory());
+    deleteFileFromBucket(mvcResult, lineVersionExportService.getDirectory(), amazonService);
   }
 
   @Test
@@ -133,7 +137,7 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
     //when
     MvcResult mvcResult = mvc.perform(post("/v1/lines/export-csv/actual"))
         .andExpect(status().isOk()).andReturn();
-    deleteFileFromBucket(mvcResult, lineVersionExportService.getDirectory());
+    deleteFileFromBucket(mvcResult, lineVersionExportService.getDirectory(), amazonService);
   }
 
   @Test
@@ -155,7 +159,7 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
     //when
     MvcResult mvcResult = mvc.perform(post("/v1/lines/export-csv/timetable-year-change"))
         .andExpect(status().isOk()).andReturn();
-    deleteFileFromBucket(mvcResult, lineVersionExportService.getDirectory());
+    deleteFileFromBucket(mvcResult, lineVersionExportService.getDirectory(), amazonService);
   }
 
   @Test
