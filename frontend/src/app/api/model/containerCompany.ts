@@ -11,7 +11,9 @@
  */
 import { Company } from './company';
 
-export interface ContainerCompany {
-  objects?: Array<Company>;
-  totalCount?: number;
+
+export interface ContainerCompany { 
+    objects?: Array<Company>;
+    totalCount?: number;
 }
+

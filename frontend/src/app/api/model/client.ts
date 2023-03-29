@@ -10,32 +10,34 @@
  * Do not edit the class manually.
  */
 
+
 /**
  * Client
  */
-export interface Client {
-  /**
-   * Firstname
-   */
-  firstName?: string;
-  /**
-   * Second
-   */
-  lastName?: string;
-  /**
-   * Person Function
-   */
-  personFunction?: string;
-  /**
-   * Object creation date
-   */
-  readonly creationDate?: string;
-  /**
-   * Last edition date
-   */
-  readonly editionDate?: string;
-  /**
-   * mail
-   */
-  mail: string;
+export interface Client { 
+    /**
+     * Firstname
+     */
+    firstName?: string;
+    /**
+     * Second
+     */
+    lastName?: string;
+    /**
+     * Person Function
+     */
+    personFunction?: string;
+    /**
+     * Object creation date
+     */
+    readonly creationDate?: string;
+    /**
+     * Last edition date
+     */
+    readonly editionDate?: string;
+    /**
+     * mail
+     */
+    mail: string;
 }
+

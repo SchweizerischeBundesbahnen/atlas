@@ -11,7 +11,9 @@
  */
 import { Line } from './line';
 
-export interface ContainerLine {
-  objects?: Array<Line>;
-  totalCount?: number;
+
+export interface ContainerLine { 
+    objects?: Array<Line>;
+    totalCount?: number;
 }
+

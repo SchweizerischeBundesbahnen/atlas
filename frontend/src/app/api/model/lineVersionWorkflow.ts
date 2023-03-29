@@ -11,13 +11,15 @@
  */
 import { WorkflowProcessingStatus } from './workflowProcessingStatus';
 
+
 /**
  * Workflows related to the line version
  */
-export interface LineVersionWorkflow {
-  /**
-   * Workflow Id
-   */
-  readonly workflowId?: number;
-  workflowProcessingStatus?: WorkflowProcessingStatus;
+export interface LineVersionWorkflow { 
+    /**
+     * Workflow Id
+     */
+    readonly workflowId?: number;
+    workflowProcessingStatus?: WorkflowProcessingStatus;
 }
+

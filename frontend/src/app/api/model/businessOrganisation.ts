@@ -12,69 +12,71 @@
 import { Status } from './status';
 import { BusinessType } from './businessType';
 
+
 /**
  * Business Organisation
  */
-export interface BusinessOrganisation {
-  /**
-   * Swiss Business Organisation ID (SBOID)
-   */
-  readonly sboid?: string;
-  /**
-   * Swiss Administration ID (SAID)
-   */
-  readonly said?: string;
-  /**
-   * Description German
-   */
-  descriptionDe: string;
-  /**
-   * Description French
-   */
-  descriptionFr: string;
-  /**
-   * Description Italian
-   */
-  descriptionIt: string;
-  /**
-   * Description English
-   */
-  descriptionEn: string;
-  /**
-   * Abbreviation German
-   */
-  abbreviationDe: string;
-  /**
-   * Abbreviation French
-   */
-  abbreviationFr: string;
-  /**
-   * Abbreviation Italian
-   */
-  abbreviationIt: string;
-  /**
-   * Abbreviation English
-   */
-  abbreviationEn: string;
-  /**
-   * Organisation Number
-   */
-  organisationNumber?: number;
-  /**
-   * Enterprise E-Mail address
-   */
-  contactEnterpriseEmail?: string;
-  status?: Status;
-  /**
-   * Business Types
-   */
-  businessTypes?: Set<BusinessType>;
-  /**
-   * Valid from
-   */
-  validFrom: Date;
-  /**
-   * Valid to
-   */
-  validTo: Date;
+export interface BusinessOrganisation { 
+    /**
+     * Swiss Business Organisation ID (SBOID)
+     */
+    readonly sboid?: string;
+    /**
+     * Swiss Administration ID (SAID)
+     */
+    readonly said?: string;
+    /**
+     * Description German
+     */
+    descriptionDe: string;
+    /**
+     * Description French
+     */
+    descriptionFr: string;
+    /**
+     * Description Italian
+     */
+    descriptionIt: string;
+    /**
+     * Description English
+     */
+    descriptionEn: string;
+    /**
+     * Abbreviation German
+     */
+    abbreviationDe: string;
+    /**
+     * Abbreviation French
+     */
+    abbreviationFr: string;
+    /**
+     * Abbreviation Italian
+     */
+    abbreviationIt: string;
+    /**
+     * Abbreviation English
+     */
+    abbreviationEn: string;
+    /**
+     * Organisation Number
+     */
+    organisationNumber?: number;
+    /**
+     * Enterprise E-Mail address
+     */
+    contactEnterpriseEmail?: string;
+    status?: Status;
+    /**
+     * Business Types
+     */
+    businessTypes?: Set<BusinessType>;
+    /**
+     * Valid from
+     */
+    validFrom: Date;
+    /**
+     * Valid to
+     */
+    validTo: Date;
 }
+

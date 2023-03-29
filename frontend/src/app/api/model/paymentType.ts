@@ -10,22 +10,18 @@
  * Do not edit the class manually.
  */
 
+
 /**
  * PaymentType
  */
-export type PaymentType =
-  | 'INTERNATIONAL'
-  | 'REGIONAL'
-  | 'REGIONALWITHOUT'
-  | 'LOCAL'
-  | 'OTHER'
-  | 'NONE';
+export type PaymentType = 'INTERNATIONAL' | 'REGIONAL' | 'REGIONALWITHOUT' | 'LOCAL' | 'OTHER' | 'NONE';
 
 export const PaymentType = {
-  International: 'INTERNATIONAL' as PaymentType,
-  Regional: 'REGIONAL' as PaymentType,
-  Regionalwithout: 'REGIONALWITHOUT' as PaymentType,
-  Local: 'LOCAL' as PaymentType,
-  Other: 'OTHER' as PaymentType,
-  None: 'NONE' as PaymentType,
+    International: 'INTERNATIONAL' as PaymentType,
+    Regional: 'REGIONAL' as PaymentType,
+    Regionalwithout: 'REGIONALWITHOUT' as PaymentType,
+    Local: 'LOCAL' as PaymentType,
+    Other: 'OTHER' as PaymentType,
+    None: 'NONE' as PaymentType
 };
+

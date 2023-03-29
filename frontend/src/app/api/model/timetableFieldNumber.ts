@@ -11,34 +11,36 @@
  */
 import { Status } from './status';
 
-export interface TimetableFieldNumber {
-  /**
-   * Timetable field number
-   */
-  swissTimetableFieldNumber: string;
-  /**
-   * Number
-   */
-  number: string;
-  /**
-   * Timetable field number identifier
-   */
-  ttfnid?: string;
-  /**
-   * Description
-   */
-  description?: string;
-  status: Status;
-  /**
-   * BusinessOrganisation SBOID
-   */
-  businessOrganisation: string;
-  /**
-   * Date - valid from
-   */
-  validFrom: Date;
-  /**
-   * Date - valid to
-   */
-  validTo: Date;
+
+export interface TimetableFieldNumber { 
+    /**
+     * Timetable field number
+     */
+    swissTimetableFieldNumber: string;
+    /**
+     * Number
+     */
+    number: string;
+    /**
+     * Timetable field number identifier
+     */
+    ttfnid?: string;
+    /**
+     * Description
+     */
+    description?: string;
+    status: Status;
+    /**
+     * BusinessOrganisation SBOID
+     */
+    businessOrganisation: string;
+    /**
+     * Date - valid from
+     */
+    validFrom: Date;
+    /**
+     * Date - valid to
+     */
+    validTo: Date;
 }
+

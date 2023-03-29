@@ -10,26 +10,20 @@
  * Do not edit the class manually.
  */
 
+
 /**
  * Status, Code of status of the service point, useful for specific business tasks.
  */
-export type ServicePointStatus =
-  | 'TO_BE_REQUESTED'
-  | 'REQUESTED'
-  | 'PLANNED'
-  | 'IN_OPERATION'
-  | 'TERMINATED'
-  | 'IN_POST_OPERATIONAL_PHASE'
-  | 'HISTORICAL'
-  | 'UNKNOWN';
+export type ServicePointStatus = 'TO_BE_REQUESTED' | 'REQUESTED' | 'PLANNED' | 'IN_OPERATION' | 'TERMINATED' | 'IN_POST_OPERATIONAL_PHASE' | 'HISTORICAL' | 'UNKNOWN';
 
 export const ServicePointStatus = {
-  ToBeRequested: 'TO_BE_REQUESTED' as ServicePointStatus,
-  Requested: 'REQUESTED' as ServicePointStatus,
-  Planned: 'PLANNED' as ServicePointStatus,
-  InOperation: 'IN_OPERATION' as ServicePointStatus,
-  Terminated: 'TERMINATED' as ServicePointStatus,
-  InPostOperationalPhase: 'IN_POST_OPERATIONAL_PHASE' as ServicePointStatus,
-  Historical: 'HISTORICAL' as ServicePointStatus,
-  Unknown: 'UNKNOWN' as ServicePointStatus,
+    ToBeRequested: 'TO_BE_REQUESTED' as ServicePointStatus,
+    Requested: 'REQUESTED' as ServicePointStatus,
+    Planned: 'PLANNED' as ServicePointStatus,
+    InOperation: 'IN_OPERATION' as ServicePointStatus,
+    Terminated: 'TERMINATED' as ServicePointStatus,
+    InPostOperationalPhase: 'IN_POST_OPERATIONAL_PHASE' as ServicePointStatus,
+    Historical: 'HISTORICAL' as ServicePointStatus,
+    Unknown: 'UNKNOWN' as ServicePointStatus
 };
+

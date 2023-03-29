@@ -10,13 +10,15 @@
  * Do not edit the class manually.
  */
 
+
 /**
  * LineType
  */
 export type LineType = 'ORDERLY' | 'TEMPORARY' | 'OPERATIONAL';
 
 export const LineType = {
-  Orderly: 'ORDERLY' as LineType,
-  Temporary: 'TEMPORARY' as LineType,
-  Operational: 'OPERATIONAL' as LineType,
+    Orderly: 'ORDERLY' as LineType,
+    Temporary: 'TEMPORARY' as LineType,
+    Operational: 'OPERATIONAL' as LineType
 };
+

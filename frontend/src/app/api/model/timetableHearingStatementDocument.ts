@@ -10,20 +10,22 @@
  * Do not edit the class manually.
  */
 
+
 /**
  * List of uploaded documents
  */
-export interface TimetableHearingStatementDocument {
-  /**
-   * Technical identifier
-   */
-  readonly id?: number;
-  /**
-   * FileName of uploaded document
-   */
-  readonly fileName: string;
-  /**
-   * Content length
-   */
-  readonly fileSize: number;
+export interface TimetableHearingStatementDocument { 
+    /**
+     * Technical identifier
+     */
+    readonly id?: number;
+    /**
+     * FileName of uploaded document
+     */
+    readonly fileName: string;
+    /**
+     * Content length
+     */
+    readonly fileSize: number;
 }
+

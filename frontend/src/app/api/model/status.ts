@@ -10,15 +10,17 @@
  * Do not edit the class manually.
  */
 
+
 /**
  * Status
  */
 export type Status = 'DRAFT' | 'VALIDATED' | 'IN_REVIEW' | 'WITHDRAWN' | 'REVOKED';
 
 export const Status = {
-  Draft: 'DRAFT' as Status,
-  Validated: 'VALIDATED' as Status,
-  InReview: 'IN_REVIEW' as Status,
-  Withdrawn: 'WITHDRAWN' as Status,
-  Revoked: 'REVOKED' as Status,
+    Draft: 'DRAFT' as Status,
+    Validated: 'VALIDATED' as Status,
+    InReview: 'IN_REVIEW' as Status,
+    Withdrawn: 'WITHDRAWN' as Status,
+    Revoked: 'REVOKED' as Status
 };
+

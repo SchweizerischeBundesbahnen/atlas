@@ -14,101 +14,103 @@ import { PaymentType } from './paymentType';
 import { LineType } from './lineType';
 import { WorkflowStatus } from './workflowStatus';
 
-export interface LineVersionSnapshot {
-  /**
-   * Object creation date
-   */
-  readonly creationDate?: string;
-  /**
-   * User creator
-   */
-  readonly creator?: string;
-  /**
-   * Last edition date
-   */
-  readonly editionDate?: string;
-  /**
-   * User editor
-   */
-  readonly editor?: string;
-  /**
-   * Technical identifier
-   */
-  readonly id?: number;
-  /**
-   * Workflow Technical identifier
-   */
-  readonly workflowId: number;
-  workflowStatus: WorkflowStatus;
-  /**
-   * Parent Object identifier
-   */
-  readonly parentObjectId: number;
-  status?: Status;
-  lineType: LineType;
-  /**
-   * SLNID
-   */
-  readonly slnid?: string;
-  paymentType: PaymentType;
-  /**
-   * Number
-   */
-  readonly number?: string;
-  /**
-   * AlternativeName
-   */
-  readonly alternativeName?: string;
-  /**
-   * CombinationName
-   */
-  readonly combinationName?: string;
-  /**
-   * LongName
-   */
-  readonly longName?: string;
-  /**
-   * Color of the font in RGB
-   */
-  readonly colorFontRgb: string;
-  /**
-   * Color of the background in RGB
-   */
-  readonly colorBackRgb: string;
-  /**
-   * Color of the font in CMYK
-   */
-  readonly colorFontCmyk: string;
-  /**
-   * Color of the background in CMYK
-   */
-  readonly colorBackCmyk: string;
-  /**
-   * Icon
-   */
-  readonly icon?: string;
-  /**
-   * Description
-   */
-  readonly description?: string;
-  /**
-   * Valid from
-   */
-  readonly validFrom: Date;
-  /**
-   * Valid to
-   */
-  readonly validTo: Date;
-  /**
-   * BusinessOrganisation SBOID
-   */
-  readonly businessOrganisation: string;
-  /**
-   * Comment
-   */
-  readonly comment?: string;
-  /**
-   * Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)
-   */
-  readonly etagVersion?: number;
+
+export interface LineVersionSnapshot { 
+    /**
+     * Object creation date
+     */
+    readonly creationDate?: string;
+    /**
+     * User creator
+     */
+    readonly creator?: string;
+    /**
+     * Last edition date
+     */
+    readonly editionDate?: string;
+    /**
+     * User editor
+     */
+    readonly editor?: string;
+    /**
+     * Technical identifier
+     */
+    readonly id?: number;
+    /**
+     * Workflow Technical identifier
+     */
+    readonly workflowId: number;
+    workflowStatus: WorkflowStatus;
+    /**
+     * Parent Object identifier
+     */
+    readonly parentObjectId: number;
+    status?: Status;
+    lineType: LineType;
+    /**
+     * SLNID
+     */
+    readonly slnid?: string;
+    paymentType: PaymentType;
+    /**
+     * Number
+     */
+    readonly number?: string;
+    /**
+     * AlternativeName
+     */
+    readonly alternativeName?: string;
+    /**
+     * CombinationName
+     */
+    readonly combinationName?: string;
+    /**
+     * LongName
+     */
+    readonly longName?: string;
+    /**
+     * Color of the font in RGB
+     */
+    readonly colorFontRgb: string;
+    /**
+     * Color of the background in RGB
+     */
+    readonly colorBackRgb: string;
+    /**
+     * Color of the font in CMYK
+     */
+    readonly colorFontCmyk: string;
+    /**
+     * Color of the background in CMYK
+     */
+    readonly colorBackCmyk: string;
+    /**
+     * Icon
+     */
+    readonly icon?: string;
+    /**
+     * Description
+     */
+    readonly description?: string;
+    /**
+     * Valid from
+     */
+    readonly validFrom: Date;
+    /**
+     * Valid to
+     */
+    readonly validTo: Date;
+    /**
+     * BusinessOrganisation SBOID
+     */
+    readonly businessOrganisation: string;
+    /**
+     * Comment
+     */
+    readonly comment?: string;
+    /**
+     * Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)
+     */
+    readonly etagVersion?: number;
 }
+

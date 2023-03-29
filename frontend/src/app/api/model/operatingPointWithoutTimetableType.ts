@@ -10,11 +10,13 @@
  * Do not edit the class manually.
  */
 
+
 /**
  * OperatingPointWithoutTimetableType, Specifies the detailed intended use of a operating point without timetable.
  */
 export type OperatingPointWithoutTimetableType = 'ROUTE_SPEED_CHANGE';
 
 export const OperatingPointWithoutTimetableType = {
-  RouteSpeedChange: 'ROUTE_SPEED_CHANGE' as OperatingPointWithoutTimetableType,
+    RouteSpeedChange: 'ROUTE_SPEED_CHANGE' as OperatingPointWithoutTimetableType
 };
+

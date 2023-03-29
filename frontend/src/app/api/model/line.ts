@@ -12,35 +12,37 @@
 import { Status } from './status';
 import { LineType } from './lineType';
 
-export interface Line {
-  /**
-   * SwissLineNumber
-   */
-  swissLineNumber: string;
-  status?: Status;
-  lineType: LineType;
-  /**
-   * SLNID
-   */
-  readonly slnid?: string;
-  /**
-   * Number
-   */
-  number?: string;
-  /**
-   * Description
-   */
-  description?: string;
-  /**
-   * Valid from
-   */
-  validFrom: Date;
-  /**
-   * Valid to
-   */
-  validTo: Date;
-  /**
-   * BusinessOrganisation SBOID
-   */
-  businessOrganisation: string;
+
+export interface Line { 
+    /**
+     * SwissLineNumber
+     */
+    swissLineNumber: string;
+    status?: Status;
+    lineType: LineType;
+    /**
+     * SLNID
+     */
+    readonly slnid?: string;
+    /**
+     * Number
+     */
+    number?: string;
+    /**
+     * Description
+     */
+    description?: string;
+    /**
+     * Valid from
+     */
+    validFrom: Date;
+    /**
+     * Valid to
+     */
+    validTo: Date;
+    /**
+     * BusinessOrganisation SBOID
+     */
+    businessOrganisation: string;
 }
+

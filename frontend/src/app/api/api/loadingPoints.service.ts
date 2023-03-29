@@ -11,335 +11,243 @@
  */
 /* tslint:disable:no-unused-variable member-ordering */
 
-import { Inject, Injectable, Optional } from '@angular/core';
-import {
-  HttpClient,
-  HttpHeaders,
-  HttpParams,
-  HttpResponse,
-  HttpEvent,
-  HttpParameterCodec,
-} from '@angular/common/http';
-import { CustomHttpParameterCodec } from '../encoder';
-import { Observable } from 'rxjs';
+import { Inject, Injectable, Optional }                      from '@angular/core';
+import { HttpClient, HttpHeaders, HttpParams,
+         HttpResponse, HttpEvent, HttpParameterCodec }       from '@angular/common/http';
+import { CustomHttpParameterCodec }                          from '../encoder';
+import { Observable }                                        from 'rxjs';
 
 import { ContainerLoadingPointVersion } from '../model/models';
 import { ErrorResponse } from '../model/models';
 import { LoadingPointVersion } from '../model/models';
 
-import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
-import { Configuration } from '../configuration';
+import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
+import { Configuration }                                     from '../configuration';
+
+
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class LoadingPointsService {
-  protected basePath = 'http://localhost';
-  public defaultHeaders = new HttpHeaders();
-  public configuration = new Configuration();
-  public encoder: HttpParameterCodec;
 
-  constructor(
-    protected httpClient: HttpClient,
-    @Optional() @Inject(BASE_PATH) basePath: string,
-    @Optional() configuration: Configuration
-  ) {
-    if (configuration) {
-      this.configuration = configuration;
-    }
-    if (typeof this.configuration.basePath !== 'string') {
-      if (typeof basePath !== 'string') {
-        basePath = this.basePath;
-      }
-      this.configuration.basePath = basePath;
-    }
-    this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
-  }
+    protected basePath = 'http://localhost';
+    public defaultHeaders = new HttpHeaders();
+    public configuration = new Configuration();
+    public encoder: HttpParameterCodec;
 
-  private addToHttpParams(httpParams: HttpParams, value: any, key?: string): HttpParams {
-    if (typeof value === 'object' && value instanceof Date === false) {
-      httpParams = this.addToHttpParamsRecursive(httpParams, value);
-    } else {
-      httpParams = this.addToHttpParamsRecursive(httpParams, value, key);
-    }
-    return httpParams;
-  }
-
-  private addToHttpParamsRecursive(httpParams: HttpParams, value?: any, key?: string): HttpParams {
-    if (value == null) {
-      return httpParams;
-    }
-
-    if (typeof value === 'object') {
-      if (Array.isArray(value)) {
-        (value as any[]).forEach(
-          (elem) => (httpParams = this.addToHttpParamsRecursive(httpParams, elem, key))
-        );
-      } else if (value instanceof Date) {
-        if (key != null) {
-          httpParams = httpParams.append(key, (value as Date).toISOString().substr(0, 10));
-        } else {
-          throw Error('key may not be null if value is Date');
+    constructor(protected httpClient: HttpClient, @Optional()@Inject(BASE_PATH) basePath: string, @Optional() configuration: Configuration) {
+        if (configuration) {
+            this.configuration = configuration;
         }
-      } else {
-        Object.keys(value).forEach(
-          (k) =>
-            (httpParams = this.addToHttpParamsRecursive(
-              httpParams,
-              value[k],
-              key != null ? `${key}.${k}` : k
-            ))
+        if (typeof this.configuration.basePath !== 'string') {
+            if (typeof basePath !== 'string') {
+                basePath = this.basePath;
+            }
+            this.configuration.basePath = basePath;
+        }
+        this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
+    }
+
+
+    private addToHttpParams(httpParams: HttpParams, value: any, key?: string): HttpParams {
+        if (typeof value === "object" && value instanceof Date === false) {
+            httpParams = this.addToHttpParamsRecursive(httpParams, value);
+        } else {
+            httpParams = this.addToHttpParamsRecursive(httpParams, value, key);
+        }
+        return httpParams;
+    }
+
+    private addToHttpParamsRecursive(httpParams: HttpParams, value?: any, key?: string): HttpParams {
+        if (value == null) {
+            return httpParams;
+        }
+
+        if (typeof value === "object") {
+            if (Array.isArray(value)) {
+                (value as any[]).forEach( elem => httpParams = this.addToHttpParamsRecursive(httpParams, elem, key));
+            } else if (value instanceof Date) {
+                if (key != null) {
+                    httpParams = httpParams.append(key,
+                        (value as Date).toISOString().substr(0, 10));
+                } else {
+                   throw Error("key may not be null if value is Date");
+                }
+            } else {
+                Object.keys(value).forEach( k => httpParams = this.addToHttpParamsRecursive(
+                    httpParams, value[k], key != null ? `${key}.${k}` : k));
+            }
+        } else if (key != null) {
+            httpParams = httpParams.append(key, value);
+        } else {
+            throw Error("key may not be null if value is not object or array");
+        }
+        return httpParams;
+    }
+
+    /**
+     * @param servicePointNumber 
+     * @param loadingPointNumber 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getLoadingPoint(servicePointNumber: number, loadingPointNumber: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<Array<LoadingPointVersion>>;
+    public getLoadingPoint(servicePointNumber: number, loadingPointNumber: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<Array<LoadingPointVersion>>>;
+    public getLoadingPoint(servicePointNumber: number, loadingPointNumber: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<Array<LoadingPointVersion>>>;
+    public getLoadingPoint(servicePointNumber: number, loadingPointNumber: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (servicePointNumber === null || servicePointNumber === undefined) {
+            throw new Error('Required parameter servicePointNumber was null or undefined when calling getLoadingPoint.');
+        }
+        if (loadingPointNumber === null || loadingPointNumber === undefined) {
+            throw new Error('Required parameter loadingPointNumber was null or undefined when calling getLoadingPoint.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                '*/*'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        let responseType_: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType_ = 'text';
+        }
+
+        return this.httpClient.get<Array<LoadingPointVersion>>(`${this.configuration.basePath}/service-point-directory/v1/loading-points/${encodeURIComponent(String(servicePointNumber))}/${encodeURIComponent(String(loadingPointNumber))}`,
+            {
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
         );
-      }
-    } else if (key != null) {
-      httpParams = httpParams.append(key, value);
-    } else {
-      throw Error('key may not be null if value is not object or array');
-    }
-    return httpParams;
-  }
-
-  /**
-   * @param servicePointNumber
-   * @param loadingPointNumber
-   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-   * @param reportProgress flag to report request and response progress.
-   */
-  public getLoadingPoint(
-    servicePointNumber: number,
-    loadingPointNumber: number,
-    observe?: 'body',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<Array<LoadingPointVersion>>;
-  public getLoadingPoint(
-    servicePointNumber: number,
-    loadingPointNumber: number,
-    observe?: 'response',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<HttpResponse<Array<LoadingPointVersion>>>;
-  public getLoadingPoint(
-    servicePointNumber: number,
-    loadingPointNumber: number,
-    observe?: 'events',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<HttpEvent<Array<LoadingPointVersion>>>;
-  public getLoadingPoint(
-    servicePointNumber: number,
-    loadingPointNumber: number,
-    observe: any = 'body',
-    reportProgress: boolean = false,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<any> {
-    if (servicePointNumber === null || servicePointNumber === undefined) {
-      throw new Error(
-        'Required parameter servicePointNumber was null or undefined when calling getLoadingPoint.'
-      );
-    }
-    if (loadingPointNumber === null || loadingPointNumber === undefined) {
-      throw new Error(
-        'Required parameter loadingPointNumber was null or undefined when calling getLoadingPoint.'
-      );
     }
 
-    let headers = this.defaultHeaders;
+    /**
+     * @param id 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getLoadingPointVersion(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<LoadingPointVersion>;
+    public getLoadingPointVersion(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<LoadingPointVersion>>;
+    public getLoadingPointVersion(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<LoadingPointVersion>>;
+    public getLoadingPointVersion(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling getLoadingPointVersion.');
+        }
 
-    let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-    if (httpHeaderAcceptSelected === undefined) {
-      // to determine the Accept header
-      const httpHeaderAccepts: string[] = ['*/*'];
-      httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-    }
-    if (httpHeaderAcceptSelected !== undefined) {
-      headers = headers.set('Accept', httpHeaderAcceptSelected);
-    }
+        let headers = this.defaultHeaders;
 
-    let responseType_: 'text' | 'json' = 'json';
-    if (httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-      responseType_ = 'text';
-    }
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                '*/*'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
 
-    return this.httpClient.get<Array<LoadingPointVersion>>(
-      `${
-        this.configuration.basePath
-      }/service-point-directory/v1/loading-points/${encodeURIComponent(
-        String(servicePointNumber)
-      )}/${encodeURIComponent(String(loadingPointNumber))}`,
-      {
-        responseType: <any>responseType_,
-        withCredentials: this.configuration.withCredentials,
-        headers: headers,
-        observe: observe,
-        reportProgress: reportProgress,
-      }
-    );
-  }
 
-  /**
-   * @param id
-   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-   * @param reportProgress flag to report request and response progress.
-   */
-  public getLoadingPointVersion(
-    id: number,
-    observe?: 'body',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<LoadingPointVersion>;
-  public getLoadingPointVersion(
-    id: number,
-    observe?: 'response',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<HttpResponse<LoadingPointVersion>>;
-  public getLoadingPointVersion(
-    id: number,
-    observe?: 'events',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<HttpEvent<LoadingPointVersion>>;
-  public getLoadingPointVersion(
-    id: number,
-    observe: any = 'body',
-    reportProgress: boolean = false,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<any> {
-    if (id === null || id === undefined) {
-      throw new Error(
-        'Required parameter id was null or undefined when calling getLoadingPointVersion.'
-      );
+        let responseType_: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType_ = 'text';
+        }
+
+        return this.httpClient.get<LoadingPointVersion>(`${this.configuration.basePath}/service-point-directory/v1/loading-points/versions/${encodeURIComponent(String(id))}`,
+            {
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
     }
 
-    let headers = this.defaultHeaders;
+    /**
+     * @param searchCriteria 
+     * @param validOn 
+     * @param page Zero-based page index (0..N)
+     * @param size The size of the page to be returned
+     * @param sort Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getLoadingPoints(searchCriteria?: Array<string>, validOn?: Date, page?: number, size?: number, sort?: Array<string>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ContainerLoadingPointVersion>;
+    public getLoadingPoints(searchCriteria?: Array<string>, validOn?: Date, page?: number, size?: number, sort?: Array<string>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ContainerLoadingPointVersion>>;
+    public getLoadingPoints(searchCriteria?: Array<string>, validOn?: Date, page?: number, size?: number, sort?: Array<string>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ContainerLoadingPointVersion>>;
+    public getLoadingPoints(searchCriteria?: Array<string>, validOn?: Date, page?: number, size?: number, sort?: Array<string>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
 
-    let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-    if (httpHeaderAcceptSelected === undefined) {
-      // to determine the Accept header
-      const httpHeaderAccepts: string[] = ['*/*'];
-      httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-    }
-    if (httpHeaderAcceptSelected !== undefined) {
-      headers = headers.set('Accept', httpHeaderAcceptSelected);
-    }
+        let queryParameters = new HttpParams({encoder: this.encoder});
+        if (searchCriteria) {
+            searchCriteria.forEach((element) => {
+                queryParameters = this.addToHttpParams(queryParameters,
+                  <any>element, 'searchCriteria');
+            })
+        }
+        if (validOn !== undefined && validOn !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>validOn, 'validOn');
+        }
+        if (page !== undefined && page !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>page, 'page');
+        }
+        if (size !== undefined && size !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>size, 'size');
+        }
+        if (sort) {
+            sort.forEach((element) => {
+                queryParameters = this.addToHttpParams(queryParameters,
+                  <any>element, 'sort');
+            })
+        }
 
-    let responseType_: 'text' | 'json' = 'json';
-    if (httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-      responseType_ = 'text';
-    }
+        let headers = this.defaultHeaders;
 
-    return this.httpClient.get<LoadingPointVersion>(
-      `${
-        this.configuration.basePath
-      }/service-point-directory/v1/loading-points/versions/${encodeURIComponent(String(id))}`,
-      {
-        responseType: <any>responseType_,
-        withCredentials: this.configuration.withCredentials,
-        headers: headers,
-        observe: observe,
-        reportProgress: reportProgress,
-      }
-    );
-  }
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                '*/*'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
 
-  /**
-   * @param searchCriteria
-   * @param validOn
-   * @param page Zero-based page index (0..N)
-   * @param size The size of the page to be returned
-   * @param sort Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
-   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-   * @param reportProgress flag to report request and response progress.
-   */
-  public getLoadingPoints(
-    searchCriteria?: Array<string>,
-    validOn?: Date,
-    page?: number,
-    size?: number,
-    sort?: Array<string>,
-    observe?: 'body',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<ContainerLoadingPointVersion>;
-  public getLoadingPoints(
-    searchCriteria?: Array<string>,
-    validOn?: Date,
-    page?: number,
-    size?: number,
-    sort?: Array<string>,
-    observe?: 'response',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<HttpResponse<ContainerLoadingPointVersion>>;
-  public getLoadingPoints(
-    searchCriteria?: Array<string>,
-    validOn?: Date,
-    page?: number,
-    size?: number,
-    sort?: Array<string>,
-    observe?: 'events',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<HttpEvent<ContainerLoadingPointVersion>>;
-  public getLoadingPoints(
-    searchCriteria?: Array<string>,
-    validOn?: Date,
-    page?: number,
-    size?: number,
-    sort?: Array<string>,
-    observe: any = 'body',
-    reportProgress: boolean = false,
-    options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<any> {
-    let queryParameters = new HttpParams({ encoder: this.encoder });
-    if (searchCriteria) {
-      searchCriteria.forEach((element) => {
-        queryParameters = this.addToHttpParams(queryParameters, <any>element, 'searchCriteria');
-      });
-    }
-    if (validOn !== undefined && validOn !== null) {
-      queryParameters = this.addToHttpParams(queryParameters, <any>validOn, 'validOn');
-    }
-    if (page !== undefined && page !== null) {
-      queryParameters = this.addToHttpParams(queryParameters, <any>page, 'page');
-    }
-    if (size !== undefined && size !== null) {
-      queryParameters = this.addToHttpParams(queryParameters, <any>size, 'size');
-    }
-    if (sort) {
-      sort.forEach((element) => {
-        queryParameters = this.addToHttpParams(queryParameters, <any>element, 'sort');
-      });
+
+        let responseType_: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType_ = 'text';
+        }
+
+        return this.httpClient.get<ContainerLoadingPointVersion>(`${this.configuration.basePath}/service-point-directory/v1/loading-points`,
+            {
+                params: queryParameters,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
     }
 
-    let headers = this.defaultHeaders;
-
-    let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-    if (httpHeaderAcceptSelected === undefined) {
-      // to determine the Accept header
-      const httpHeaderAccepts: string[] = ['*/*'];
-      httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-    }
-    if (httpHeaderAcceptSelected !== undefined) {
-      headers = headers.set('Accept', httpHeaderAcceptSelected);
-    }
-
-    let responseType_: 'text' | 'json' = 'json';
-    if (httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-      responseType_ = 'text';
-    }
-
-    return this.httpClient.get<ContainerLoadingPointVersion>(
-      `${this.configuration.basePath}/service-point-directory/v1/loading-points`,
-      {
-        params: queryParameters,
-        responseType: <any>responseType_,
-        withCredentials: this.configuration.withCredentials,
-        headers: headers,
-        observe: observe,
-        reportProgress: reportProgress,
-      }
-    );
-  }
 }
