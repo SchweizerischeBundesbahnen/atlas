@@ -1,15 +1,15 @@
-<div *ngIf="!showEmptyTimeTableHearingComponent">
-  <div class="white-table-container-no-tabs">
-    <app-timetable-hearing-overview-tab-heading
-      [cantonShort]="cantonShort"
-      [foundTimetableHearingYear]="foundTimetableHearingYear"
-      [hearingPlan]="hearingStatus"
-    ></app-timetable-hearing-overview-tab-heading>
-
+<div class="white-table-container-no-tabs">
+  <app-timetable-hearing-overview-tab-heading
+    [cantonShort]="cantonShort"
+    [foundTimetableHearingYear]="foundTimetableHearingYear"
+    [hearingStatus]="hearingStatus"
+    [noActiveTimetableHearingYearFound]="noTimetableHearingYearFound"
+  ></app-timetable-hearing-overview-tab-heading>
+  <div *ngIf="!noTimetableHearingYearFound">
     <div class="d-flex flex-row col-12">
       <div *ngIf="hearingStatus !== 'active'" class="d-flex flex-column col-2 pe-3 pb-1">
         <mat-label class="font-bold-lg subtitle-margin"
-          >{{ 'TTH.SELECT_YEAR' | translate }}
+        >{{ 'TTH.SELECT_YEAR' | translate }}
         </mat-label>
         <span class="fake-lable-space"></span>
         <div class="multi-select-search">
@@ -27,7 +27,7 @@
       </div>
       <div class="d-flex flex-column col-3 pe-3 pb-3 mb-5">
         <mat-label class="font-bold-lg subtitle-margin"
-          >{{ 'TTH.SELECT_CANTON' | translate }}
+        >{{ 'TTH.SELECT_CANTON' | translate }}
         </mat-label>
         <span class="fake-lable-space"></span>
         <div class="multi-select-search">
@@ -122,15 +122,15 @@
         <span class="font-bold-lg">{{
           'TTH.TABLE_RESULT_HEADING'
             | translate
-              : {
-                  totalCount: totalCount$,
-                  year: foundTimetableHearingYear.timetableYear
-                }
-        }}</span>
+            : {
+              totalCount: totalCount$,
+              year: foundTimetableHearingYear.timetableYear
+            }
+          }}</span>
       </div>
       <div *ngIf="showHearingDetail">
         <span
-          >{{ this.foundTimetableHearingYear.hearingFrom | displayDate }}
+        >{{ this.foundTimetableHearingYear.hearingFrom | displayDate }}
           {{ 'COMMON.TO' | translate }}
           {{ this.foundTimetableHearingYear.hearingTo | displayDate }}</span
         >
@@ -149,9 +149,4 @@
     ></app-table>
     <router-outlet></router-outlet>
   </div>
-</div>
-<div *ngIf="showEmptyTimeTableHearingComponent">
-  <span>
-    No result found for <b>[{{ this.hearingStatus }} - {{ this.selectedCantonEnum }}]</b>
-  </span>
 </div>

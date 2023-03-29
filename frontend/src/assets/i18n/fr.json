@@ -556,7 +556,10 @@
       "OVERVIEW_ACTUAL_SUBHEADING_PREFIX": "La procédure d'établissement de l'horaire suisse de l'OFT pour l'horaire {{timeTableYear}} dure de",
       "OVERVIEW_ACTUAL_SUBHEADING_POSTFIX": " {{hearingFrom}} jusqu'au {{hearingTo}}.",
       "OVERVIEW_PLANNED_SUBHEADING": "Vous trouverez ici toutes les consultations d'horaires prévues. Vous ne pouvez pas saisir d'avis avant le début d'une année d'horaire.",
-      "OVERVIEW_ARCHIVED_SUBHEADING": "Vous trouverez ici toutes les consultations d'horaires archivées, classées par année d'horaire."
+      "OVERVIEW_ARCHIVED_SUBHEADING": "Vous trouverez ici toutes les consultations d'horaires archivées, classées par année d'horaire.",
+      "OVERVIEW_ACTUAL_NOT_FOUND_SUBHEADING_PREFIX": "Das Fahrplanjahr ist noch nicht eröffnet. Sie finden bereits vorhandene Stellungnahmen unter dem Reiter «Geplante Anhörungen». Das Fahrplanverfahren Schweiz des BAV für den Fahrplan {{timeTableYear}} wird von ",
+      "OVERVIEW_PLANNED_NOT_FOUND": "Derzeit sind keine Anhörungen geplant.",
+      "OVERVIEW_ARCHIVED_NOT_FOUND": "Es sind derzeit keine archivierten Anhörungen verfügbar."
     },
     "STATEMENT_STATUS": {
       "RECEIVED": "arriver",

@@ -57,7 +57,7 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
     {headerTitle: 'COMMON.EDIT_ON', value: 'editionDate', formatAsDate: true},
     {headerTitle: 'COMMON.EDIT_BY', value: 'editor'},
   ];
-  showEmptyTimeTableHearingComponent = true;
+  noTimetableHearingYearFound = false;
   data!: ContainerTimetableHearingStatement;
   selectedCantonEnum: SwissCanton | undefined;
   foundTimetableHearingYear: TimetableHearingYear = {
@@ -137,7 +137,7 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
   }
 
   ngOnDestroy() {
-    if (!this.showEmptyTimeTableHearingComponent) {
+    if (!this.noTimetableHearingYearFound) {
       this.getTimetableHearingStatementsSubscription.unsubscribe();
     }
   }
@@ -207,12 +207,11 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
       .subscribe((archivedTimetableHearingYears) => {
         if (archivedTimetableHearingYears.objects) {
           if (archivedTimetableHearingYears.objects.length === 0) {
-            this.showEmptyTimeTableHearingComponent = true;
+            this.noTimetableHearingYearFound = true;
           } else if (archivedTimetableHearingYears.objects && archivedTimetableHearingYears.objects.length >= 1) {
             this.YEAR_OPTIONS = archivedTimetableHearingYears.objects.map((value) => value.timetableYear).sort().reverse();
             this.defaultYearSelection = this.YEAR_OPTIONS[0];
             this.foundTimetableHearingYear = archivedTimetableHearingYears.objects[0];
-            this.showEmptyTimeTableHearingComponent = false;
             this.initOverviewTable();
           }
         }
@@ -225,12 +224,11 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
       .subscribe((plannedTimetableHearingYears) => {
         if (plannedTimetableHearingYears.objects) {
           if (plannedTimetableHearingYears.objects.length === 0) {
-            this.showEmptyTimeTableHearingComponent = true;
+            this.noTimetableHearingYearFound = true;
           } else if (plannedTimetableHearingYears.objects.length >= 1) {
             this.YEAR_OPTIONS = plannedTimetableHearingYears.objects.map((value) => value.timetableYear).sort();
             this.defaultYearSelection = this.YEAR_OPTIONS[0];
             this.foundTimetableHearingYear = plannedTimetableHearingYears.objects[0];
-            this.showEmptyTimeTableHearingComponent = false;
             this.initOverviewTable();
           }
         }
@@ -243,14 +241,27 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
       .subscribe((timetableHearingYears) => {
         if (timetableHearingYears.objects) {
           if (timetableHearingYears.objects.length === 0) {
-            this.showEmptyTimeTableHearingComponent = true;
+            this.noTimetableHearingYearFound = true;
+            this.getPlannedTimetableYearWhenNoActiveFound();
           } else if (timetableHearingYears.objects.length >= 1) {
-            this.showEmptyTimeTableHearingComponent = false;
             this.foundTimetableHearingYear = timetableHearingYears.objects[0];
             this.initOverviewTable();
           }
         }
       });
+  }
+
+  private getPlannedTimetableYearWhenNoActiveFound() {
+    this.timetableHearingService
+      .getHearingYears([HearingStatus.Planned])
+      .subscribe((plannedTimetableHearingYears) => {
+        if (plannedTimetableHearingYears.objects && plannedTimetableHearingYears.objects.length >= 1) {
+          plannedTimetableHearingYears.objects.sort((n1, n2) => n1.timetableYear - n2.timetableYear)
+          this.foundTimetableHearingYear = plannedTimetableHearingYears.objects[0];
+        } else {
+          this.noTimetableHearingYearFound = true;
+        }
+      })
   }
 
   private initOverviewTable() {
