@@ -11,7 +11,9 @@
  */
 import { BusinessOrganisation } from './businessOrganisation';
 
-export interface ContainerBusinessOrganisation {
-  objects?: Array<BusinessOrganisation>;
-  totalCount?: number;
+
+export interface ContainerBusinessOrganisation { 
+    objects?: Array<BusinessOrganisation>;
+    totalCount?: number;
 }
+

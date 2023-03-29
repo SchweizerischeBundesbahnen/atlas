@@ -41,21 +41,6 @@ public class TimetableHearingYearController implements TimetableHearingYearApiV1
   }
 
   @Override
-  public TimetableHearingYearModel getActiveHearingYear() {
-    return TimeTableHearingYearMapper.toModel(timetableHearingYearService.getActiveHearingYear());
-  }
-
-  @Override
-  public List<TimetableHearingYearModel> getPlannedHearingYears() {
-    return timetableHearingYearService.getPlannedHearingYear().stream().map(TimeTableHearingYearMapper::toModel).toList();
-  }
-
-  @Override
-  public List<TimetableHearingYearModel> getArchivedHearingYears() {
-    return timetableHearingYearService.getArchivedHearingYear().stream().map(TimeTableHearingYearMapper::toModel).toList();
-  }
-
-  @Override
   public TimetableHearingYearModel createHearingYear(TimetableHearingYearModel hearingYearModel) {
     TimetableHearingYear newHearing = timetableHearingYearService.createTimetableHearing(
         TimeTableHearingYearMapper.toEntity(hearingYearModel));

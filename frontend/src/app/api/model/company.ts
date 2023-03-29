@@ -10,37 +10,39 @@
  * Do not edit the class manually.
  */
 
-export interface Company {
-  /**
-   * Company UIC Code
-   */
-  uicCode?: number;
-  /**
-   * Company Name
-   */
-  name?: string;
-  /**
-   * Company URL
-   */
-  url?: string;
-  /**
-   * Validity Start Date
-   */
-  startValidity?: Date;
-  /**
-   * Validity End Date
-   */
-  endValidity?: Date;
-  /**
-   * Company short name
-   */
-  shortName?: string;
-  /**
-   * Free text
-   */
-  freeText?: string;
-  /**
-   * Country Code (ISO)
-   */
-  countryCodeIso?: string;
+
+export interface Company { 
+    /**
+     * Company UIC Code
+     */
+    uicCode?: number;
+    /**
+     * Company Name
+     */
+    name?: string;
+    /**
+     * Company URL
+     */
+    url?: string;
+    /**
+     * Validity Start Date
+     */
+    startValidity?: Date;
+    /**
+     * Validity End Date
+     */
+    endValidity?: Date;
+    /**
+     * Company short name
+     */
+    shortName?: string;
+    /**
+     * Free text
+     */
+    freeText?: string;
+    /**
+     * Country Code (ISO)
+     */
+    countryCodeIso?: string;
 }
+

@@ -11,7 +11,9 @@
  */
 import { LoadingPointVersion } from './loadingPointVersion';
 
-export interface ContainerLoadingPointVersion {
-  objects?: Array<LoadingPointVersion>;
-  totalCount?: number;
+
+export interface ContainerLoadingPointVersion { 
+    objects?: Array<LoadingPointVersion>;
+    totalCount?: number;
 }
+

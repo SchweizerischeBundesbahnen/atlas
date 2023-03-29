@@ -11,17 +11,19 @@
  */
 import { DisplayInfo } from './displayInfo';
 
+
 /**
  * List of error details
  */
-export interface ErrorDetail {
-  /**
-   * Errormessage in english for API purposes
-   */
-  message: string;
-  /**
-   * Field on which to display the error
-   */
-  field: string;
-  displayInfo: DisplayInfo;
+export interface ErrorDetail { 
+    /**
+     * Errormessage in english for API purposes
+     */
+    message: string;
+    /**
+     * Field on which to display the error
+     */
+    field: string;
+    displayInfo: DisplayInfo;
 }
+

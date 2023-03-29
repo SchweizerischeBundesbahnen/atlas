@@ -11,6 +11,8 @@
  */
 import { ServicePointCsvModelContainer } from './servicePointCsvModelContainer';
 
-export interface ServicePointImportReRequest {
-  List_of_ServicePointsContainer_to_import: Array<ServicePointCsvModelContainer>;
+
+export interface ServicePointImportReRequest { 
+    List_of_ServicePointsContainer_to_import: Array<ServicePointCsvModelContainer>;
 }
+

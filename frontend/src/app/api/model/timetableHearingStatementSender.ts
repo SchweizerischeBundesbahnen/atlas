@@ -10,33 +10,35 @@
  * Do not edit the class manually.
  */
 
-export interface TimetableHearingStatementSender {
-  /**
-   * First Name
-   */
-  firstName?: string;
-  /**
-   * Last Name
-   */
-  lastName?: string;
-  /**
-   * Organisation
-   */
-  organisation?: string;
-  /**
-   * Street
-   */
-  street?: string;
-  /**
-   * ZIP Code
-   */
-  zip?: number;
-  /**
-   * City
-   */
-  city?: string;
-  /**
-   * E-Mail address
-   */
-  email: string;
+
+export interface TimetableHearingStatementSender { 
+    /**
+     * First Name
+     */
+    firstName?: string;
+    /**
+     * Last Name
+     */
+    lastName?: string;
+    /**
+     * Organisation
+     */
+    organisation?: string;
+    /**
+     * Street
+     */
+    street?: string;
+    /**
+     * ZIP Code
+     */
+    zip?: number;
+    /**
+     * City
+     */
+    city?: string;
+    /**
+     * E-Mail address
+     */
+    email: string;
 }
+

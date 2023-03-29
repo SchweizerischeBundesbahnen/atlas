@@ -11,14 +11,16 @@
  */
 import { Person } from './person';
 
-export interface ExaminantWorkflowCheck {
-  /**
-   * Workflow was acceptable to the BAV
-   */
-  accepted?: boolean;
-  /**
-   * Comment from the BAV for the workflow progress
-   */
-  checkComment?: string;
-  examinant: Person;
+
+export interface ExaminantWorkflowCheck { 
+    /**
+     * Workflow was acceptable to the BAV
+     */
+    accepted?: boolean;
+    /**
+     * Comment from the BAV for the workflow progress
+     */
+    checkComment?: string;
+    examinant: Person;
 }
+

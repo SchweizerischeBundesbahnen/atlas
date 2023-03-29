@@ -11,7 +11,9 @@
  */
 import { TimetableHearingStatement } from './timetableHearingStatement';
 
-export interface ContainerTimetableHearingStatement {
-  objects?: Array<TimetableHearingStatement>;
-  totalCount?: number;
+
+export interface ContainerTimetableHearingStatement { 
+    objects?: Array<TimetableHearingStatement>;
+    totalCount?: number;
 }
+

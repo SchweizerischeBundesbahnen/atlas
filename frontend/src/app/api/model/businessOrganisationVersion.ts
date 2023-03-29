@@ -12,90 +12,92 @@
 import { Status } from './status';
 import { BusinessType } from './businessType';
 
-export interface BusinessOrganisationVersion {
-  /**
-   * Object creation date
-   */
-  readonly creationDate?: string;
-  /**
-   * User creator
-   */
-  readonly creator?: string;
-  /**
-   * Last edition date
-   */
-  readonly editionDate?: string;
-  /**
-   * User editor
-   */
-  readonly editor?: string;
-  /**
-   * Technical identifier
-   */
-  readonly id?: number;
-  /**
-   * Swiss Business Organisation ID (SBOID)
-   */
-  readonly sboid?: string;
-  /**
-   * Swiss Administration ID (SAID)
-   */
-  readonly said?: string;
-  /**
-   * Description German
-   */
-  descriptionDe: string;
-  /**
-   * Description French
-   */
-  descriptionFr: string;
-  /**
-   * Description Italian
-   */
-  descriptionIt: string;
-  /**
-   * Description English
-   */
-  descriptionEn: string;
-  /**
-   * Abbreviation German
-   */
-  abbreviationDe: string;
-  /**
-   * Abbreviation French
-   */
-  abbreviationFr: string;
-  /**
-   * Abbreviation Italian
-   */
-  abbreviationIt: string;
-  /**
-   * Abbreviation English
-   */
-  abbreviationEn: string;
-  /**
-   * Organisation Number
-   */
-  organisationNumber: number;
-  /**
-   * Enterprise E-Mail address
-   */
-  contactEnterpriseEmail?: string;
-  status?: Status;
-  /**
-   * Business Types
-   */
-  businessTypes?: Set<BusinessType>;
-  /**
-   * Valid from
-   */
-  validFrom: Date;
-  /**
-   * Valid to
-   */
-  validTo: Date;
-  /**
-   * Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)
-   */
-  readonly etagVersion?: number;
+
+export interface BusinessOrganisationVersion { 
+    /**
+     * Object creation date
+     */
+    readonly creationDate?: string;
+    /**
+     * User creator
+     */
+    readonly creator?: string;
+    /**
+     * Last edition date
+     */
+    readonly editionDate?: string;
+    /**
+     * User editor
+     */
+    readonly editor?: string;
+    /**
+     * Technical identifier
+     */
+    readonly id?: number;
+    /**
+     * Swiss Business Organisation ID (SBOID)
+     */
+    readonly sboid?: string;
+    /**
+     * Swiss Administration ID (SAID)
+     */
+    readonly said?: string;
+    /**
+     * Description German
+     */
+    descriptionDe: string;
+    /**
+     * Description French
+     */
+    descriptionFr: string;
+    /**
+     * Description Italian
+     */
+    descriptionIt: string;
+    /**
+     * Description English
+     */
+    descriptionEn: string;
+    /**
+     * Abbreviation German
+     */
+    abbreviationDe: string;
+    /**
+     * Abbreviation French
+     */
+    abbreviationFr: string;
+    /**
+     * Abbreviation Italian
+     */
+    abbreviationIt: string;
+    /**
+     * Abbreviation English
+     */
+    abbreviationEn: string;
+    /**
+     * Organisation Number
+     */
+    organisationNumber: number;
+    /**
+     * Enterprise E-Mail address
+     */
+    contactEnterpriseEmail?: string;
+    status?: Status;
+    /**
+     * Business Types
+     */
+    businessTypes?: Set<BusinessType>;
+    /**
+     * Valid from
+     */
+    validFrom: Date;
+    /**
+     * Valid to
+     */
+    validTo: Date;
+    /**
+     * Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)
+     */
+    readonly etagVersion?: number;
 }
+

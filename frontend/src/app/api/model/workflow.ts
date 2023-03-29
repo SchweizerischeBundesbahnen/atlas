@@ -13,42 +13,45 @@ import { Client } from './client';
 import { Person } from './person';
 import { WorkflowStatus } from './workflowStatus';
 
-export interface Workflow {
-  /**
-   * Workflow ID
-   */
-  readonly id: number;
-  /**
-   * Business Object Id: the generated DB id
-   */
-  businessObjectId: number;
-  /**
-   * Swiss Id: the SwissLineNumber used to map Atlas object to the Workflow
-   */
-  swissId: string;
-  /**
-   * Workflow Type
-   */
-  workflowType: Workflow.WorkflowTypeEnum;
-  description: string;
-  workflowStatus?: WorkflowStatus;
-  workflowComment?: string;
-  checkComment?: string;
-  client?: Client;
-  examinant?: Person;
-  /**
-   * Object creation date
-   */
-  readonly creationDate?: string;
-  /**
-   * Last edition date
-   */
-  readonly editionDate?: string;
+
+export interface Workflow { 
+    /**
+     * Workflow ID
+     */
+    readonly id: number;
+    /**
+     * Business Object Id: the generated DB id
+     */
+    businessObjectId: number;
+    /**
+     * Swiss Id: the SwissLineNumber used to map Atlas object to the Workflow
+     */
+    swissId: string;
+    /**
+     * Workflow Type
+     */
+    workflowType: Workflow.WorkflowTypeEnum;
+    description: string;
+    workflowStatus?: WorkflowStatus;
+    workflowComment?: string;
+    checkComment?: string;
+    client?: Client;
+    examinant?: Person;
+    /**
+     * Object creation date
+     */
+    readonly creationDate?: string;
+    /**
+     * Last edition date
+     */
+    readonly editionDate?: string;
 }
 export namespace Workflow {
-  export type WorkflowTypeEnum = 'LINE' | 'SUBLINE';
-  export const WorkflowTypeEnum = {
-    Line: 'LINE' as WorkflowTypeEnum,
-    Subline: 'SUBLINE' as WorkflowTypeEnum,
-  };
+    export type WorkflowTypeEnum = 'LINE' | 'SUBLINE';
+    export const WorkflowTypeEnum = {
+        Line: 'LINE' as WorkflowTypeEnum,
+        Subline: 'SUBLINE' as WorkflowTypeEnum
+    };
 }
+
+

@@ -11,7 +11,9 @@
  */
 import { User } from './user';
 
-export interface ContainerUser {
-  objects?: Array<User>;
-  totalCount?: number;
+
+export interface ContainerUser { 
+    objects?: Array<User>;
+    totalCount?: number;
 }
+

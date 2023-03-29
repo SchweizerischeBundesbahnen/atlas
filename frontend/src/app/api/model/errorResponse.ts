@@ -11,21 +11,23 @@
  */
 import { ErrorDetail } from './errorDetail';
 
-export interface ErrorResponse {
-  /**
-   * HTTP Status Code
-   */
-  status?: number;
-  /**
-   * Summary of error
-   */
-  message?: string;
-  /**
-   * Error
-   */
-  error?: string | null;
-  /**
-   * List of error details
-   */
-  details?: Set<ErrorDetail> | null;
+
+export interface ErrorResponse { 
+    /**
+     * HTTP Status Code
+     */
+    status?: number;
+    /**
+     * Summary of error
+     */
+    message?: string;
+    /**
+     * Error
+     */
+    error?: string | null;
+    /**
+     * List of error details
+     */
+    details?: Set<ErrorDetail> | null;
 }
+

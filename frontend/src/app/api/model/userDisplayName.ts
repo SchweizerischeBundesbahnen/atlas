@@ -10,9 +10,11 @@
  * Do not edit the class manually.
  */
 
-export interface UserDisplayName {
-  /**
-   * User display name (azure)
-   */
-  displayName?: string;
+
+export interface UserDisplayName { 
+    /**
+     * User display name (azure)
+     */
+    displayName?: string;
 }
+

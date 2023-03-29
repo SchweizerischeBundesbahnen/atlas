@@ -10,24 +10,19 @@
  * Do not edit the class manually.
  */
 
+
 /**
  * Workflow Status
  */
-export type WorkflowStatus =
-  | 'ADDED'
-  | 'STARTED'
-  | 'REVISION'
-  | 'HEARING'
-  | 'APPROVED'
-  | 'REJECTED'
-  | 'REVOKED';
+export type WorkflowStatus = 'ADDED' | 'STARTED' | 'REVISION' | 'HEARING' | 'APPROVED' | 'REJECTED' | 'REVOKED';
 
 export const WorkflowStatus = {
-  Added: 'ADDED' as WorkflowStatus,
-  Started: 'STARTED' as WorkflowStatus,
-  Revision: 'REVISION' as WorkflowStatus,
-  Hearing: 'HEARING' as WorkflowStatus,
-  Approved: 'APPROVED' as WorkflowStatus,
-  Rejected: 'REJECTED' as WorkflowStatus,
-  Revoked: 'REVOKED' as WorkflowStatus,
+    Added: 'ADDED' as WorkflowStatus,
+    Started: 'STARTED' as WorkflowStatus,
+    Revision: 'REVISION' as WorkflowStatus,
+    Hearing: 'HEARING' as WorkflowStatus,
+    Approved: 'APPROVED' as WorkflowStatus,
+    Rejected: 'REJECTED' as WorkflowStatus,
+    Revoked: 'REVOKED' as WorkflowStatus
 };
+
