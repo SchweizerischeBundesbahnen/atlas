@@ -53,3 +53,7 @@ include::{snippets}/user-administration-controller-api-test/should-create-user-p
 == Get Users filtered with applicationTypes and sboids
 
 include::{snippets}/user-administration-controller-api-test/get-users-with-sboids-and-application-types-found/auto-section.adoc[]
+
+== Get Clients
+
+include::{snippets}/client-credential-administration-controller-api-test/should-get-client/auto-section.adoc[]
