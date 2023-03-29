@@ -10,7 +10,10 @@ import {
 } from '../../../core/components/route-to-dialog/route-to-dialog.service';
 import {
   FilterType,
-  TableFilterConfig,
+  getActiveSearch,
+  getActiveSearchDate,
+  getActiveSearchForChip,
+  TableFilterChip,
   TableFilterDateSelect,
   TableFilterMultiSelect,
   TableFilterSearchSelect,
@@ -40,34 +43,51 @@ export class LinesComponent implements OnDestroy {
     { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
   ];
 
-  readonly tableFilterConfig: TableFilterConfig<LineType | Status | BusinessOrganisation>[] = [
-    {
-      filterType: FilterType.SEARCH_SELECT,
-      elementWidthCssClass: 'col-3',
-      activeSearch: {} as BusinessOrganisation,
-    },
-    {
-      filterType: FilterType.MULTI_SELECT,
-      elementWidthCssClass: 'col-3',
-      activeSearch: [],
-      labelTranslationKey: 'LIDI.TYPE',
-      typeTranslationKeyPrefix: 'LIDI.LINE.TYPES.',
-      selectOptions: Object.values(LineType),
-    },
-    {
-      filterType: FilterType.MULTI_SELECT,
-      elementWidthCssClass: 'col-3',
-      activeSearch: [],
-      labelTranslationKey: 'COMMON.STATUS',
-      typeTranslationKeyPrefix: 'COMMON.STATUS_TYPES.',
-      selectOptions: Object.values(Status),
-    },
-    {
-      filterType: FilterType.VALID_ON_SELECT,
-      elementWidthCssClass: 'col-3',
-      activeSearch: undefined,
-      formControl: new FormControl(),
-    },
+  readonly tableFilterConfig: [
+    [TableFilterChip],
+    [
+      TableFilterSearchSelect<BusinessOrganisation>,
+      TableFilterMultiSelect<LineType>,
+      TableFilterMultiSelect<Status>,
+      TableFilterDateSelect
+    ]
+  ] = [
+    [
+      {
+        filterType: FilterType.CHIP_SEARCH,
+        elementWidthCssClass: 'col-6',
+        activeSearch: [],
+      },
+    ],
+    [
+      {
+        filterType: FilterType.SEARCH_SELECT,
+        elementWidthCssClass: 'col-3',
+        activeSearch: {} as BusinessOrganisation,
+      },
+      {
+        filterType: FilterType.MULTI_SELECT,
+        elementWidthCssClass: 'col-3',
+        activeSearch: [],
+        labelTranslationKey: 'LIDI.TYPE',
+        typeTranslationKeyPrefix: 'LIDI.LINE.TYPES.',
+        selectOptions: Object.values(LineType),
+      },
+      {
+        filterType: FilterType.MULTI_SELECT,
+        elementWidthCssClass: 'col-3',
+        activeSearch: [Status.Draft, Status.Validated, Status.InReview, Status.Withdrawn],
+        labelTranslationKey: 'COMMON.STATUS',
+        typeTranslationKeyPrefix: 'COMMON.STATUS_TYPES.',
+        selectOptions: Object.values(Status),
+      },
+      {
+        filterType: FilterType.VALID_ON_SELECT,
+        elementWidthCssClass: 'col-3',
+        activeSearch: undefined,
+        formControl: new FormControl(),
+      },
+    ],
   ];
 
   lineVersions: Line[] = [];
@@ -90,7 +110,6 @@ export class LinesComponent implements OnDestroy {
           page: this.tableService.pageIndex,
           size: this.tableService.pageSize,
           sort: this.tableService.sortString,
-          // filterConfig: this.tableFilterConfig,
         })
       );
   }
@@ -99,16 +118,12 @@ export class LinesComponent implements OnDestroy {
     this.lineVersionsSubscription = this.linesService
       .getLines(
         undefined,
-        [],
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        // ($paginationAndSearch.filterConfig[2] as TableFilterMultiSelect<Status>)?.activeSearch,
-        // ($paginationAndSearch.filterConfig[1] as TableFilterMultiSelect<LineType>)?.activeSearch,
-        // ($paginationAndSearch.filterConfig[0] as TableFilterSearchSelect<BusinessOrganisation>)
-        //   ?.activeSearch?.sboid,
-        // ($paginationAndSearch.filterConfig[3] as TableFilterDateSelect)?.activeSearch,
+        getActiveSearchForChip(this.tableFilterConfig[0][0]),
+        getActiveSearch(this.tableFilterConfig[1][2]),
+        getActiveSearch(this.tableFilterConfig[1][1]),
+        getActiveSearch<BusinessOrganisation, BusinessOrganisation>(this.tableFilterConfig[1][0])
+          .sboid,
+        getActiveSearchDate(this.tableFilterConfig[1][3]),
         $paginationAndSearch.page,
         $paginationAndSearch.size,
         [$paginationAndSearch.sort!, 'slnid,asc']

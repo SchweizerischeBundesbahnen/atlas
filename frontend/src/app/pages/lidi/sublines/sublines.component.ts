@@ -13,6 +13,8 @@ import {
   FilterType,
   getActiveSearch,
   getActiveSearchDate,
+  getActiveSearchForChip,
+  TableFilterChip,
   TableFilterDateSelect,
   TableFilterMultiSelect,
   TableFilterSearchSelect,
@@ -47,40 +49,51 @@ export class SublinesComponent implements OnDestroy {
     { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
   ];
 
-  // TODO: try with tuple for more type safety
   readonly tableFilterConfig: [
-    TableFilterSearchSelect<BusinessOrganisation>,
-    TableFilterMultiSelect<SublineType>,
-    TableFilterMultiSelect<Status>,
-    TableFilterDateSelect
+    [TableFilterChip],
+    [
+      TableFilterSearchSelect<BusinessOrganisation>,
+      TableFilterMultiSelect<SublineType>,
+      TableFilterMultiSelect<Status>,
+      TableFilterDateSelect
+    ]
   ] = [
-    {
-      filterType: FilterType.SEARCH_SELECT,
-      elementWidthCssClass: 'col-3',
-      activeSearch: {} as BusinessOrganisation,
-    },
-    {
-      filterType: FilterType.MULTI_SELECT,
-      elementWidthCssClass: 'col-3',
-      activeSearch: [],
-      labelTranslationKey: 'LIDI.SUBLINE_TYPE',
-      typeTranslationKeyPrefix: 'LIDI.SUBLINE.TYPES.',
-      selectOptions: Object.values(SublineType),
-    },
-    {
-      filterType: FilterType.MULTI_SELECT,
-      elementWidthCssClass: 'col-3',
-      activeSearch: [],
-      labelTranslationKey: 'COMMON.STATUS',
-      typeTranslationKeyPrefix: 'COMMON.STATUS_TYPES.',
-      selectOptions: Object.values(Status),
-    },
-    {
-      filterType: FilterType.VALID_ON_SELECT,
-      elementWidthCssClass: 'col-3',
-      activeSearch: undefined,
-      formControl: new FormControl(),
-    },
+    [
+      {
+        filterType: FilterType.CHIP_SEARCH,
+        elementWidthCssClass: 'col-6',
+        activeSearch: [],
+      },
+    ],
+    [
+      {
+        filterType: FilterType.SEARCH_SELECT,
+        elementWidthCssClass: 'col-3',
+        activeSearch: {} as BusinessOrganisation,
+      },
+      {
+        filterType: FilterType.MULTI_SELECT,
+        elementWidthCssClass: 'col-3',
+        activeSearch: [],
+        labelTranslationKey: 'LIDI.SUBLINE_TYPE',
+        typeTranslationKeyPrefix: 'LIDI.SUBLINE.TYPES.',
+        selectOptions: Object.values(SublineType),
+      },
+      {
+        filterType: FilterType.MULTI_SELECT,
+        elementWidthCssClass: 'col-3',
+        activeSearch: [Status.Draft, Status.Validated, Status.InReview, Status.Withdrawn],
+        labelTranslationKey: 'COMMON.STATUS',
+        typeTranslationKeyPrefix: 'COMMON.STATUS_TYPES.',
+        selectOptions: Object.values(Status),
+      },
+      {
+        filterType: FilterType.VALID_ON_SELECT,
+        elementWidthCssClass: 'col-3',
+        activeSearch: undefined,
+        formControl: new FormControl(),
+      },
+    ],
   ];
 
   sublines: Subline[] = [];
@@ -103,7 +116,6 @@ export class SublinesComponent implements OnDestroy {
           page: this.tableService.pageIndex,
           size: this.tableService.pageSize,
           sort: this.tableService.sortString,
-          // filterConfig: this.tableFilterConfig,
         })
       );
   }
@@ -111,12 +123,12 @@ export class SublinesComponent implements OnDestroy {
   getOverview($paginationAndSearch: TablePagination) {
     this.sublineVersionsSubscription = this.sublinesService
       .getSublines(
-        [],
-        getActiveSearch(this.tableFilterConfig[2]),
-        getActiveSearch(this.tableFilterConfig[1]),
-        getActiveSearch<BusinessOrganisation, BusinessOrganisation>(this.tableFilterConfig[0])
+        getActiveSearchForChip(this.tableFilterConfig[0][0]),
+        getActiveSearch(this.tableFilterConfig[1][2]),
+        getActiveSearch(this.tableFilterConfig[1][1]),
+        getActiveSearch<BusinessOrganisation, BusinessOrganisation>(this.tableFilterConfig[1][0])
           .sboid,
-        getActiveSearchDate(this.tableFilterConfig[3]),
+        getActiveSearchDate(this.tableFilterConfig[1][3]),
         $paginationAndSearch.page,
         $paginationAndSearch.size,
         [$paginationAndSearch.sort!, 'slnid,asc']
