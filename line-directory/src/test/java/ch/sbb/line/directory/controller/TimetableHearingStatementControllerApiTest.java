@@ -131,8 +131,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
       MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
 
     mvc.perform(multipart(HttpMethod.POST, "/v1/timetable-hearing/statements")
-        .file(statementJson))
-      .andDo(print())
+            .file(statementJson))
       .andExpect(status().isCreated())
       .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
       .andExpect(jsonPath("$." + Fields.ttfnid, is("ch:1:ttfnid:12341241")))

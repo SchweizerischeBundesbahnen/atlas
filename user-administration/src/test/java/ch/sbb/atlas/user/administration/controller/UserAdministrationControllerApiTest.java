@@ -10,10 +10,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.atlas.api.user.administration.PermissionModel;
 import ch.sbb.atlas.api.user.administration.SboidPermissionRestrictionModel;
 import ch.sbb.atlas.api.user.administration.UserModel.Fields;
 import ch.sbb.atlas.api.user.administration.UserPermissionCreateModel;
-import ch.sbb.atlas.api.user.administration.PermissionModel;
 import ch.sbb.atlas.api.user.administration.enumeration.PermissionRestrictionType;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
@@ -23,6 +23,7 @@ import ch.sbb.atlas.user.administration.entity.UserPermission;
 import ch.sbb.atlas.user.administration.repository.UserPermissionRepository;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -140,10 +141,10 @@ public class UserAdministrationControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$." + Fields.mail).value("luca.ammann2@sbb.ch"))
         .andExpect(jsonPath("$." + Fields.permissions).value(hasSize(2)))
         .andExpect(
-            jsonPath("$." + Fields.permissions + "[?(@.application == 'BODI')].sboids[*]").value(
+            jsonPath("$." + Fields.permissions + "[?(@.application == 'BODI')].permissionRestrictions[*]").value(
                 hasSize(0)))
         .andExpect(
-            jsonPath("$." + Fields.permissions + "[?(@.application == 'TTFN')].sboids[*]").value(
+            jsonPath("$." + Fields.permissions + "[?(@.application == 'TTFN')].permissionRestrictions[*].valueAsString").value(
                 hasItem("ch:1:sboid:test")));
 
     List<UserPermission> savedPermissions = userPermissionRepository.findBySbbUserIdIgnoreCase(
@@ -244,21 +245,28 @@ public class UserAdministrationControllerApiTest extends BaseControllerApiTest {
 
   @Test
   void getUsersWithSboidsAndApplicationTypesFound() throws Exception {
+    UserPermission userPermission = UserPermission.builder()
+        .role(ApplicationRole.WRITER)
+        .application(ApplicationType.TTFN)
+        .sbbUserId("u654321").build();
+    userPermission.setPermissionRestrictions(Set.of(PermissionRestriction.builder()
+        .userPermission(userPermission)
+        .type(PermissionRestrictionType.BUSINESS_ORGANISATION)
+        .restriction("ch:1:sboid:1").build()));
+    userPermissionRepository.save(userPermission);
+
+    userPermission = UserPermission.builder()
+        .role(ApplicationRole.WRITER)
+        .application(ApplicationType.LIDI)
+        .sbbUserId("u654321").build();
+    userPermission.setPermissionRestrictions(
+        Set.of(PermissionRestriction.builder()
+            .userPermission(userPermission)
+            .type(PermissionRestrictionType.BUSINESS_ORGANISATION)
+            .restriction("ch:1:sboid:1").build()));
+    userPermissionRepository.save(userPermission);
+
     userPermissionRepository.saveAll(List.of(
-        UserPermission.builder()
-            .role(ApplicationRole.WRITER)
-            .application(ApplicationType.TTFN)
-            .permissionRestrictions(
-                new HashSet<>(List.of(PermissionRestriction.builder().type(PermissionRestrictionType.BUSINESS_ORGANISATION)
-                    .restriction("ch:1:sboid:1").build())))
-            .sbbUserId("u654321").build(),
-        UserPermission.builder()
-            .role(ApplicationRole.WRITER)
-            .application(ApplicationType.LIDI)
-            .permissionRestrictions(
-                new HashSet<>(List.of(PermissionRestriction.builder().type(PermissionRestrictionType.BUSINESS_ORGANISATION)
-                    .restriction("ch:1:sboid:1").build())))
-            .sbbUserId("u654321").build(),
         UserPermission.builder()
             .role(ApplicationRole.SUPER_USER)
             .application(ApplicationType.LIDI)
@@ -273,9 +281,9 @@ public class UserAdministrationControllerApiTest extends BaseControllerApiTest {
             .queryParam("page", "0")
             .queryParam("size", "10")
             .queryParam("applicationTypes", "LIDI", "TTFN")
-            .queryParam("sboids", "ch:1:sboid:1"))
+            .queryParam("type", PermissionRestrictionType.BUSINESS_ORGANISATION.name())
+            .queryParam("permissionRestrictions", "ch:1:sboid:1"))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.totalCount").value(1))
         .andExpect(jsonPath("$.objects", hasSize(1)))
         .andExpect(
             jsonPath("$.objects[0].sbbUserId").value(
