@@ -12,21 +12,12 @@ import {
 } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { Router } from '@angular/router';
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MaterialModule } from '../../../../../core/module/material.module';
-import { FormGroup } from '@angular/forms';
 import { UserPermissionManager } from '../../../service/user-permission-manager';
 import SpyObj = jasmine.SpyObj;
-
-@Component({
-  selector: 'app-user-select',
-  template: '',
-})
-class MockUserSelectComponent {
-  @Input() form?: FormGroup;
-}
 
 @Component({
   selector: 'app-dialog-close',
@@ -44,18 +35,14 @@ describe('UserAdministrationClientCreateComponent', () => {
   let boServiceSpy: SpyObj<BusinessOrganisationsService>;
 
   beforeEach(async () => {
-    userServiceSpy = jasmine.createSpyObj('UserService', [
-      'getUser',
-      'getPermissionsFromUserModelAsArray',
-      'createClientCredentialPermission',
-    ]);
+    userServiceSpy = jasmine.createSpyObj('UserService', ['createClientCredentialPermission']);
     notificationServiceSpy = jasmine.createSpyObj('NotificationService', ['success']);
     userPermissionManagerSpy = jasmine.createSpyObj<UserPermissionManager>(
       'UserPermissionManager',
-      ['setSbbUserId', 'clearPermissionRestrictionsIfNotWriter', 'getSbbUserId'],
+      ['clearPermissionRestrictionsIfNotWriter'],
       {
         userPermission: {
-          sbbUserId: 'u123456',
+          sbbUserId: '',
           permissions: [],
         },
       }
@@ -75,11 +62,7 @@ describe('UserAdministrationClientCreateComponent', () => {
       },
     });
     await TestBed.configureTestingModule({
-      declarations: [
-        UserAdministrationClientCreateComponent,
-        MockUserSelectComponent,
-        MockDialogCloseComponent,
-      ],
+      declarations: [UserAdministrationClientCreateComponent, MockDialogCloseComponent],
       imports: [
         RouterTestingModule,
         MaterialModule,
