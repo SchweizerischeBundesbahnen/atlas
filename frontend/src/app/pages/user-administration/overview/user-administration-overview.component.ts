@@ -6,7 +6,6 @@ import { TabService } from '../../tab.service';
 @Component({
   selector: 'app-user-administration-overview',
   templateUrl: './user-administration-overview.component.html',
-  styleUrls: ['./user-administration-overview.component.scss'],
 })
 export class UserAdministrationOverviewComponent implements OnInit {
   TABS = [
