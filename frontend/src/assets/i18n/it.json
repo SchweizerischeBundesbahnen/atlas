@@ -556,7 +556,10 @@
       "OVERVIEW_ACTUAL_SUBHEADING_PREFIX": "La procedura dell'orario svizzero dell'UFT per l'orario {{timeTableYear}} dura da",
       "OVERVIEW_ACTUAL_SUBHEADING_POSTFIX": " {{hearingFrom}} fino a {{hearingTo}}.",
       "OVERVIEW_PLANNED_SUBHEADING": "Qui troverete tutte le udienze programmate. Non è possibile inserire commenti prima dell'inizio di un anno di calendario.",
-      "OVERVIEW_ARCHIVED_SUBHEADING": "Qui troverete tutte le audizioni archiviate per l'anno d'orario."
+      "OVERVIEW_ARCHIVED_SUBHEADING": "Qui troverete tutte le audizioni archiviate per l'anno d'orario.",
+      "OVERVIEW_ACTUAL_NOT_FOUND_SUBHEADING_PREFIX": "Das Fahrplanjahr ist noch nicht eröffnet. Sie finden bereits vorhandene Stellungnahmen unter dem Reiter «Geplante Anhörungen». Das Fahrplanverfahren Schweiz des BAV für den Fahrplan {{timeTableYear}} wird von ",
+      "OVERVIEW_PLANNED_NOT_FOUND": "Derzeit sind keine Anhörungen geplant.",
+      "OVERVIEW_ARCHIVED_NOT_FOUND": "Es sind derzeit keine archivierten Anhörungen verfügbar."
     },
     "STATEMENT_STATUS": {
       "RECEIVED": "arrivato",
