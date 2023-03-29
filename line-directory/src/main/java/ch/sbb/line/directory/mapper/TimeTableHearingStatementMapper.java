@@ -1,7 +1,11 @@
 package ch.sbb.line.directory.mapper;
 
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
+import ch.sbb.line.directory.entity.ResponsibleTransportCompany;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 import lombok.experimental.UtilityClass;
 
@@ -26,6 +30,7 @@ public class TimeTableHearingStatementMapper {
         statementModel.getResponsibleTransportCompanies().stream()
             .map(transportCompany -> ResponsibleTransportCompanyMapper.toEntity(transportCompany, timetableHearingStatement))
             .collect(Collectors.toSet()));
+    timetableHearingStatement.setResponsibleTransportCompaniesDisplay(transformToCommaSeparated(timetableHearingStatement));
     return timetableHearingStatement;
   }
 
@@ -37,8 +42,8 @@ public class TimeTableHearingStatementMapper {
         .ttfnid(statement.getTtfnid())
         .swissCanton(statement.getSwissCanton())
         .stopPlace(statement.getStopPlace())
-        .responsibleTransportCompanies(
-            statement.getResponsibleTransportCompanies().stream().map(ResponsibleTransportCompanyMapper::toModel).toList())
+        .responsibleTransportCompanies(getResponsibleTransportCompanies(statement))
+        .responsibleTransportCompaniesDisplay(statement.getResponsibleTransportCompaniesDisplay())
         .statementSender(StatementSenderMapper.toModel(statement.getStatementSender()))
         .statement(statement.getStatement())
         .documents(statement.getDocuments().stream().map(StatementDocumentMapper::toModel).toList())
@@ -49,6 +54,17 @@ public class TimeTableHearingStatementMapper {
         .editor(statement.getEditor())
         .etagVersion(statement.getVersion())
         .build();
+  }
+
+  private static String transformToCommaSeparated(TimetableHearingStatement statement) {
+    List<String> sorted = statement.getResponsibleTransportCompanies().stream().sorted(Comparator.comparing(
+        ResponsibleTransportCompany::getAbbreviation)).map(ResponsibleTransportCompany::getAbbreviation).toList();
+    return String.join(", ", sorted);
+  }
+
+  private static List<TimetableHearingStatementResponsibleTransportCompanyModel> getResponsibleTransportCompanies(
+      TimetableHearingStatement statement) {
+    return statement.getResponsibleTransportCompanies().stream().map(ResponsibleTransportCompanyMapper::toModel).toList();
   }
 
 }
