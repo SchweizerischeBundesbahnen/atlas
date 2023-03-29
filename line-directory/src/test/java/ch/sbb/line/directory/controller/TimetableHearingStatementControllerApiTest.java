@@ -56,8 +56,8 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
     .hearingFrom(LocalDate.of(2021, 1, 1))
     .hearingTo(LocalDate.of(2021, 2, 1))
     .build();
-  public static final String TTFNID = "ch:1:ttfnid:123123123";
-  public static final String SBOID = "ch:1:sboid:123451";
+  private static final String TTFNID = "ch:1:ttfnid:123123123";
+  private static final String SBOID = "ch:1:sboid:123451";
 
   @Autowired
   private TimetableHearingYearRepository timetableHearingYearRepository;

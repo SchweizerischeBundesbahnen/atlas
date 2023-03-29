@@ -18,8 +18,10 @@ import ch.sbb.atlas.api.user.administration.enumeration.PermissionRestrictionTyp
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
+import ch.sbb.atlas.user.administration.entity.ClientCredentialPermission;
 import ch.sbb.atlas.user.administration.entity.PermissionRestriction;
 import ch.sbb.atlas.user.administration.entity.UserPermission;
+import ch.sbb.atlas.user.administration.repository.ClientCredentialPermissionRepository;
 import ch.sbb.atlas.user.administration.repository.UserPermissionRepository;
 import java.util.HashSet;
 import java.util.List;
@@ -36,9 +38,13 @@ public class UserAdministrationControllerApiTest extends BaseControllerApiTest {
   @Autowired
   private UserPermissionRepository userPermissionRepository;
 
+  @Autowired
+  private ClientCredentialPermissionRepository clientCredentialPermissionRepository;
+
   @AfterEach
   void cleanup() {
     userPermissionRepository.deleteAll();
+    clientCredentialPermissionRepository.deleteAll();
   }
 
   @Test
@@ -304,6 +310,28 @@ public class UserAdministrationControllerApiTest extends BaseControllerApiTest {
     mvc.perform(get("/v1/users/ATLAS_SYSTEM_USER/displayname"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.displayName").doesNotExist());
+  }
+
+  @Test
+  void getUserDisplayNameForExistingClient() throws Exception {
+    // given
+    ClientCredentialPermission clientCredentialPermission = ClientCredentialPermission.builder()
+        .role(ApplicationRole.WRITER)
+        .application(ApplicationType.TTFN)
+        .clientCredentialId("client-id")
+        .alias("ALIAS")
+        .build();
+    clientCredentialPermission.setPermissionRestrictions(Set.of(PermissionRestriction.builder()
+        .clientCredentialPermission(clientCredentialPermission)
+        .type(PermissionRestrictionType.BUSINESS_ORGANISATION)
+        .restriction("ch:1:sboid:123123")
+        .build()));
+    clientCredentialPermissionRepository.save(clientCredentialPermission);
+
+    // when
+    mvc.perform(get("/v1/users/client-id/displayname"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.displayName").value("ALIAS"));
   }
 
 }
