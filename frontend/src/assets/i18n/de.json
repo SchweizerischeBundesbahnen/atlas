@@ -537,7 +537,11 @@
       "ARCHIVED": "Archivierte Anhörungen"
     },
     "BUTTON": {
-      "DOWNLOAD_CSV": "Download [CSV]"
+      "DOWNLOAD_CSV": "Download [CSV]",
+      "MANAGE_TIMETABLE_HEARING": "Steuerung Fahrplananhörung",
+      "ADD_NEW_STATEMENT": "Neue Stellungnahme erfassen",
+      "ADD_NEW_TIMETABLE_HEARING": "Neue Fahrplananhörung anlegen",
+      "START_TIMETABLE_HEARING": "Dieses Fahrplanjahr starten"
     },
     "SELECT_CANTON": "Kanton auswählen",
     "SELECT_YEAR": "Jahr auswählen",

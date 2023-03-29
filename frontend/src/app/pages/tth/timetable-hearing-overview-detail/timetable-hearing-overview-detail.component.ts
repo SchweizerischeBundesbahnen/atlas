@@ -72,6 +72,12 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
   dafaultCantonSelection = this.CANTON_OPTIONS[0];
   YEAR_OPTIONS: number[] = [];
   defaultYearSelection = this.YEAR_OPTIONS[0];
+  showDownloadCsvButton = false;
+  showManageTimetableHearingButton = false;
+  showAddNewStatementButton = false;
+  showAddNewTimetableHearingButton = false;
+  showStartTimetableHearingButton = false;
+  showHearingDetail = false;
   private getTimetableHearingStatementsSubscription!: Subscription;
 
   constructor(
@@ -87,12 +93,19 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
 
     const selectedHearingStatus = this.getSelectedHeraingStatus();
     if (selectedHearingStatus === HearingStatus.Active) {
+      this.showManageTimetableHearingButton = this.isSwissCanton();
+      this.showAddNewStatementButton = !this.isSwissCanton();
+      this.showDownloadCsvButton = true;
       this.initOverviewActiveTable();
     }
     if (selectedHearingStatus === HearingStatus.Planned) {
       this.initOverviewPlannedTable();
+      this.showAddNewTimetableHearingButton = true;
+      this.showStartTimetableHearingButton = true;
+      this.showHearingDetail = true;
     }
     if (selectedHearingStatus === HearingStatus.Archived) {
+      this.showDownloadCsvButton = true;
       this.initOverviewArchivedTable();
     }
   }
@@ -147,6 +160,26 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
 
   downloadCsv() {
     console.log('Download CSV');
+  }
+
+  manageTimetableHearing() {
+    console.log('manageTimetableHearing');
+  }
+
+  addNewStatement() {
+    console.log('ADD_NEW_STATEMENT');
+  }
+
+  addNewTimetableHearing() {
+    console.log('addNewTimetableHearing');
+  }
+
+  startTimetableHearing() {
+    console.log('showStartTimetableHearing');
+  }
+
+  private isSwissCanton() {
+    return this.cantonShort.toLowerCase() === Cantons.swiss.short.toLowerCase();
   }
 
   private getCantonSelection() {
