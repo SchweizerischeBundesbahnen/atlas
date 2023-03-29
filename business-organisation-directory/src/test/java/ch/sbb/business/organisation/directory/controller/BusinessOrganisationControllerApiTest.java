@@ -1,28 +1,44 @@
 package ch.sbb.business.organisation.directory.controller;
 
+import static ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel.Fields.abbreviationDe;
+import static ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel.Fields.abbreviationEn;
+import static ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel.Fields.abbreviationFr;
+import static ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel.Fields.abbreviationIt;
+import static ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel.Fields.businessTypes;
+import static ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel.Fields.contactEnterpriseEmail;
+import static ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel.Fields.descriptionDe;
+import static ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel.Fields.descriptionEn;
+import static ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel.Fields.descriptionFr;
+import static ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel.Fields.descriptionIt;
+import static ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel.Fields.organisationNumber;
+import static ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel.Fields.validFrom;
+import static ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel.Fields.validTo;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel;
+import ch.sbb.atlas.api.bodi.enumeration.BusinessType;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerWithAmazonS3ApiTest;
 import ch.sbb.business.organisation.directory.BusinessOrganisationData;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
-import ch.sbb.atlas.api.bodi.enumeration.BusinessType;
 import ch.sbb.business.organisation.directory.repository.BusinessOrganisationVersionRepository;
 import ch.sbb.business.organisation.directory.service.export.BusinessOrganisationVersionExportService;
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.HashSet;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MvcResult;
-
-import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.HashSet;
-
-import static org.hamcrest.Matchers.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel.Fields.*;
 
 public class BusinessOrganisationControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
 
@@ -51,6 +67,9 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerWithAma
 
   @Autowired
   private BusinessOrganisationVersionExportService exportService;
+
+  @Autowired
+  private AmazonService amazonService;
 
   @BeforeEach
   void createDefaultVersion() {
@@ -446,7 +465,7 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerWithAma
     //when
     MvcResult mvcResult = mvc.perform(post("/v1/business-organisations/export-csv/full"))
         .andExpect(status().isOk()).andReturn();
-    deleteFileFromBucket(mvcResult, exportService.getDirectory());
+    deleteFileFromBucket(mvcResult, exportService.getDirectory(), amazonService);
   }
 
   @Test
@@ -461,7 +480,7 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerWithAma
     //when
     MvcResult mvcResult = mvc.perform(post("/v1/business-organisations/export-csv/actual"))
         .andExpect(status().isOk()).andReturn();
-    deleteFileFromBucket(mvcResult, exportService.getDirectory());
+    deleteFileFromBucket(mvcResult, exportService.getDirectory(), amazonService);
   }
 
   @Test
@@ -476,7 +495,7 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerWithAma
     //when
     MvcResult mvcResult = mvc.perform(post("/v1/business-organisations/export-csv/timetable-year-change"))
         .andExpect(status().isOk()).andReturn();
-    deleteFileFromBucket(mvcResult, exportService.getDirectory());
+    deleteFileFromBucket(mvcResult, exportService.getDirectory(), amazonService);
   }
 
   @Test
