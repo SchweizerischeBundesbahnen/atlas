@@ -3,6 +3,7 @@ package ch.sbb.importservice.service;
 import static ch.sbb.importservice.service.JobHelperService.MIN_LOCAL_DATE;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_SERVICE_POINT_CSV_JOB_NAME;
 
+import ch.sbb.atlas.amazon.service.AmazonBucket;
 import ch.sbb.atlas.imports.DidokCsvMapper;
 import ch.sbb.atlas.imports.servicepoint.BaseDidokCsvModel;
 import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointCsvModel;
@@ -26,7 +27,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -41,14 +41,10 @@ public class CsvService {
   private static final String CSV_DELIMITER = ";";
   private static final String EDITED_AT_COLUMN_NAME = "GEAENDERT_AM";
   private final FileHelperService fileHelperService;
-
   private final JobHelperService jobHelperService;
 
-  @Value("${amazon.bucketName}")
-  private String bucketName;
-
   public List<ServicePointCsvModelContainer> getActualServicePointCsvModelsFromS3() {
-    log.info("Downloading file from Amazon S3 Bucket: {}", bucketName);
+    log.info("Downloading file from Amazon S3 Bucket: {}", AmazonBucket.EXPORT);
     File file = fileHelperService.downloadImportFileFromS3(DINSTELLE_FILE_PREFIX);
     LocalDate matchingDate = jobHelperService.getDateForImportFileToDownload(IMPORT_SERVICE_POINT_CSV_JOB_NAME);
     log.info("CSV File to import: {}", file.getName());
