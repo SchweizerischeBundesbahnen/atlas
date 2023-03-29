@@ -10,21 +10,23 @@
  * Do not edit the class manually.
  */
 
-export interface TransportCompanyRelation {
-  /**
-   * Transport Company Id
-   */
-  transportCompanyId: number;
-  /**
-   * Swiss Business Organisation ID (SBOID)
-   */
-  sboid: string;
-  /**
-   * Valid From
-   */
-  validFrom: Date;
-  /**
-   * Valid To
-   */
-  validTo: Date;
+
+export interface TransportCompanyRelation { 
+    /**
+     * Transport Company Id
+     */
+    transportCompanyId: number;
+    /**
+     * Swiss Business Organisation ID (SBOID)
+     */
+    sboid: string;
+    /**
+     * Valid From
+     */
+    validFrom: Date;
+    /**
+     * Valid To
+     */
+    validTo: Date;
 }
+

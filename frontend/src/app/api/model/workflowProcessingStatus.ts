@@ -10,12 +10,14 @@
  * Do not edit the class manually.
  */
 
+
 /**
  * WorkflowProcessingStatus
  */
 export type WorkflowProcessingStatus = 'EVALUATED' | 'IN_PROGRESS';
 
 export const WorkflowProcessingStatus = {
-  Evaluated: 'EVALUATED' as WorkflowProcessingStatus,
-  InProgress: 'IN_PROGRESS' as WorkflowProcessingStatus,
+    Evaluated: 'EVALUATED' as WorkflowProcessingStatus,
+    InProgress: 'IN_PROGRESS' as WorkflowProcessingStatus
 };
+

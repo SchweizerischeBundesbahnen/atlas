@@ -12,13 +12,15 @@
 import { CoordinatePair } from './coordinatePair';
 import { SpatialReference } from './spatialReference';
 
-export interface Geolocation {
-  spatialReference: SpatialReference;
-  lv95: CoordinatePair;
-  wgs84: CoordinatePair;
-  wgs84web: CoordinatePair;
-  /**
-   * Height of the coordinate point
-   */
-  height?: number;
+
+export interface Geolocation { 
+    spatialReference: SpatialReference;
+    lv95: CoordinatePair;
+    wgs84: CoordinatePair;
+    wgs84web: CoordinatePair;
+    /**
+     * Height of the coordinate point
+     */
+    height?: number;
 }
+

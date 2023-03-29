@@ -11,46 +11,48 @@
  */
 import { TransportCompanyStatus } from './transportCompanyStatus';
 
-export interface TransportCompany {
-  /**
-   * Identifier
-   */
-  id?: number;
-  /**
-   * Number
-   */
-  number?: string;
-  /**
-   * Abbreviation
-   */
-  abbreviation?: string;
-  /**
-   * Description
-   */
-  description?: string;
-  /**
-   * Business Register Name
-   */
-  businessRegisterName?: string;
-  transportCompanyStatus?: TransportCompanyStatus;
-  /**
-   * Business Register Number
-   */
-  businessRegisterNumber?: string;
-  /**
-   * Enterprise ID
-   */
-  enterpriseId?: string;
-  /**
-   * RICS Code
-   */
-  ricsCode?: string;
-  /**
-   * Business Organisation Numbers
-   */
-  businessOrganisationNumbers?: string;
-  /**
-   * Comment
-   */
-  comment?: string;
+
+export interface TransportCompany { 
+    /**
+     * Identifier
+     */
+    id?: number;
+    /**
+     * Number
+     */
+    number?: string;
+    /**
+     * Abbreviation
+     */
+    abbreviation?: string;
+    /**
+     * Description
+     */
+    description?: string;
+    /**
+     * Business Register Name
+     */
+    businessRegisterName?: string;
+    transportCompanyStatus?: TransportCompanyStatus;
+    /**
+     * Business Register Number
+     */
+    businessRegisterNumber?: string;
+    /**
+     * Enterprise ID
+     */
+    enterpriseId?: string;
+    /**
+     * RICS Code
+     */
+    ricsCode?: string;
+    /**
+     * Business Organisation Numbers
+     */
+    businessOrganisationNumbers?: string;
+    /**
+     * Comment
+     */
+    comment?: string;
 }
+

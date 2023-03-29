@@ -13,68 +13,70 @@ import { Status } from './status';
 import { PaymentType } from './paymentType';
 import { SublineType } from './sublineType';
 
-export interface SublineVersion {
-  /**
-   * Object creation date
-   */
-  readonly creationDate?: string;
-  /**
-   * User creator
-   */
-  readonly creator?: string;
-  /**
-   * Last edition date
-   */
-  readonly editionDate?: string;
-  /**
-   * User editor
-   */
-  readonly editor?: string;
-  /**
-   * Technical identifier
-   */
-  readonly id?: number;
-  /**
-   * SwissSublineNumber
-   */
-  swissSublineNumber: string;
-  /**
-   * SLNID of main line
-   */
-  mainlineSlnid: string;
-  status?: Status;
-  sublineType: SublineType;
-  /**
-   * SLNID
-   */
-  readonly slnid?: string;
-  /**
-   * Description
-   */
-  description?: string;
-  /**
-   * Number
-   */
-  number?: string;
-  /**
-   * LongName
-   */
-  longName?: string;
-  paymentType: PaymentType;
-  /**
-   * Valid from
-   */
-  validFrom: Date;
-  /**
-   * Valid to
-   */
-  validTo: Date;
-  /**
-   * BusinessOrganisation SBOID
-   */
-  businessOrganisation: string;
-  /**
-   * Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)
-   */
-  etagVersion?: number;
+
+export interface SublineVersion { 
+    /**
+     * Object creation date
+     */
+    readonly creationDate?: string;
+    /**
+     * User creator
+     */
+    readonly creator?: string;
+    /**
+     * Last edition date
+     */
+    readonly editionDate?: string;
+    /**
+     * User editor
+     */
+    readonly editor?: string;
+    /**
+     * Technical identifier
+     */
+    readonly id?: number;
+    /**
+     * SwissSublineNumber
+     */
+    swissSublineNumber: string;
+    /**
+     * SLNID of main line
+     */
+    mainlineSlnid: string;
+    status?: Status;
+    sublineType: SublineType;
+    /**
+     * SLNID
+     */
+    readonly slnid?: string;
+    /**
+     * Description
+     */
+    description?: string;
+    /**
+     * Number
+     */
+    number?: string;
+    /**
+     * LongName
+     */
+    longName?: string;
+    paymentType: PaymentType;
+    /**
+     * Valid from
+     */
+    validFrom: Date;
+    /**
+     * Valid to
+     */
+    validTo: Date;
+    /**
+     * BusinessOrganisation SBOID
+     */
+    businessOrganisation: string;
+    /**
+     * Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)
+     */
+    etagVersion?: number;
 }
+

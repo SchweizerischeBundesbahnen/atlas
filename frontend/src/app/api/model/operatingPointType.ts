@@ -10,13 +10,15 @@
  * Do not edit the class manually.
  */
 
+
 /**
  * OperatingPointType, Specifies the detailed intended use of a operating point.
  */
 export type OperatingPointType = 'INVENTORY_POINT' | 'SYSTEM_OPERATING_POINT' | 'RAILNET_POINT';
 
 export const OperatingPointType = {
-  InventoryPoint: 'INVENTORY_POINT' as OperatingPointType,
-  SystemOperatingPoint: 'SYSTEM_OPERATING_POINT' as OperatingPointType,
-  RailnetPoint: 'RAILNET_POINT' as OperatingPointType,
+    InventoryPoint: 'INVENTORY_POINT' as OperatingPointType,
+    SystemOperatingPoint: 'SYSTEM_OPERATING_POINT' as OperatingPointType,
+    RailnetPoint: 'RAILNET_POINT' as OperatingPointType
 };
+

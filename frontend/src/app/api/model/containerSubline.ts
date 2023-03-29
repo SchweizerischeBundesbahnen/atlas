@@ -11,7 +11,9 @@
  */
 import { Subline } from './subline';
 
-export interface ContainerSubline {
-  objects?: Array<Subline>;
-  totalCount?: number;
+
+export interface ContainerSubline { 
+    objects?: Array<Subline>;
+    totalCount?: number;
 }
+

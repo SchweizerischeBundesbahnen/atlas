@@ -10,17 +10,19 @@
  * Do not edit the class manually.
  */
 
-export interface Canton {
-  /**
-   * Canton number, offical Number of FSO
-   */
-  fsoNumber?: number;
-  /**
-   * Canton name
-   */
-  name?: string;
-  /**
-   * Canton abbreviation
-   */
-  abbreviation?: string;
+
+export interface Canton { 
+    /**
+     * Canton number, offical Number of FSO
+     */
+    fsoNumber?: number;
+    /**
+     * Canton name
+     */
+    name?: string;
+    /**
+     * Canton abbreviation
+     */
+    abbreviation?: string;
 }
+
