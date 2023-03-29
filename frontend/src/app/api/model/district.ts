@@ -10,13 +10,15 @@
  * Do not edit the class manually.
  */
 
-export interface District {
-  /**
-   * SwissDistrictNumber the location is in, based on FSO
-   */
-  fsoNumber?: number;
-  /**
-   * SwissDistrictName the location is in
-   */
-  districtName?: string;
+
+export interface District { 
+    /**
+     * SwissDistrictNumber the location is in, based on FSO
+     */
+    fsoNumber?: number;
+    /**
+     * SwissDistrictName the location is in
+     */
+    districtName?: string;
 }
+

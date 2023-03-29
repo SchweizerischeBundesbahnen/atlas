@@ -10,9 +10,11 @@
  * Do not edit the class manually.
  */
 
+
 export type ItemImportResponseStatus = 'SUCCESS' | 'FAILED';
 
 export const ItemImportResponseStatus = {
-  Success: 'SUCCESS' as ItemImportResponseStatus,
-  Failed: 'FAILED' as ItemImportResponseStatus,
+    Success: 'SUCCESS' as ItemImportResponseStatus,
+    Failed: 'FAILED' as ItemImportResponseStatus
 };
+

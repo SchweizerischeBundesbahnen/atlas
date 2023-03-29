@@ -10,13 +10,15 @@
  * Do not edit the class manually.
  */
 
-export interface CoordinatePair {
-  /**
-   * North longitude
-   */
-  north: number;
-  /**
-   * Eastern longitude
-   */
-  east: number;
+
+export interface CoordinatePair { 
+    /**
+     * North longitude
+     */
+    north: number;
+    /**
+     * Eastern longitude
+     */
+    east: number;
 }
+

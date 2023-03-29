@@ -10,6 +10,8 @@
  * Do not edit the class manually.
  */
 
-export interface InlineObject3 {
-  file: Blob;
+
+export interface InlineObject3 { 
+    file: Blob;
 }
+

@@ -11,7 +11,9 @@
  */
 import { ServicePointVersion } from './servicePointVersion';
 
-export interface ContainerServicePointVersion {
-  objects?: Array<ServicePointVersion>;
-  totalCount?: number;
+
+export interface ContainerServicePointVersion { 
+    objects?: Array<ServicePointVersion>;
+    totalCount?: number;
 }
+

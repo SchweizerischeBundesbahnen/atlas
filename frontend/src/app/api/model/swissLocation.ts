@@ -14,9 +14,11 @@ import { LocalityMunicipality } from './localityMunicipality';
 import { Canton } from './canton';
 import { District } from './district';
 
-export interface SwissLocation {
-  canton?: SwissCanton;
-  cantonInformation?: Canton;
-  district?: District;
-  localityMunicipality?: LocalityMunicipality;
+
+export interface SwissLocation { 
+    canton?: SwissCanton;
+    cantonInformation?: Canton;
+    district?: District;
+    localityMunicipality?: LocalityMunicipality;
 }
+

@@ -11,18 +11,20 @@
  */
 import { BusinessOrganisation } from './businessOrganisation';
 
-export interface TransportCompanyBoRelation {
-  /**
-   * Transport Company Relation Id
-   */
-  id?: number;
-  businessOrganisation?: BusinessOrganisation;
-  /**
-   * Valid From
-   */
-  validFrom?: Date;
-  /**
-   * Valid To
-   */
-  validTo?: Date;
+
+export interface TransportCompanyBoRelation { 
+    /**
+     * Transport Company Relation Id
+     */
+    id?: number;
+    businessOrganisation?: BusinessOrganisation;
+    /**
+     * Valid From
+     */
+    validFrom?: Date;
+    /**
+     * Valid To
+     */
+    validTo?: Date;
 }
+
