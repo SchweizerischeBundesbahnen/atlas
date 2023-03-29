@@ -1,6 +1,6 @@
-import { Component, Input } from '@angular/core';
-import { TimetableHearingYear } from '../../../../api';
-import { Pages } from '../../../pages';
+import {Component, Input} from '@angular/core';
+import {TimetableHearingYear} from '../../../../api';
+import {Pages} from '../../../pages';
 
 @Component({
   selector: 'app-timetable-hearing-overview-tab-heading',
@@ -10,17 +10,18 @@ import { Pages } from '../../../pages';
 export class TimetableHearingOverviewTabHeadingComponent {
   @Input() cantonShort!: string;
   @Input() foundTimetableHearingYear!: TimetableHearingYear;
-  @Input() hearingPlan!: string;
+  @Input() hearingStatus!: string;
+  @Input() noActiveTimetableHearingYearFound!: boolean;
 
   isHearingPlanActual() {
-    return this.hearingPlan === Pages.TTH_ACTIVE.path;
+    return this.hearingStatus === Pages.TTH_ACTIVE.path;
   }
 
   isHearingPlanPlanned() {
-    return this.hearingPlan === Pages.TTH_PLANNED.path;
+    return this.hearingStatus === Pages.TTH_PLANNED.path;
   }
 
   isHearingPlanArchived() {
-    return this.hearingPlan === Pages.TTH_ARCHIVED.path;
+    return this.hearingStatus === Pages.TTH_ARCHIVED.path;
   }
 }
