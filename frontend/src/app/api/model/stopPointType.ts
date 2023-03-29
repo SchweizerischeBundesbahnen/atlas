@@ -10,22 +10,18 @@
  * Do not edit the class manually.
  */
 
+
 /**
- * Type of the StopPoint, Indicates for which type of traffic (e.g. regular traffic) a stop was recorded.
+ * Type of the StopPoint, Indicates for which type of traffic (e.g. regular traffic) a stop was recorded. 
  */
-export type StopPointType =
-  | 'ORDERLY'
-  | 'ON_REQUEST'
-  | 'ZONE_ON_REQUEST'
-  | 'TEMPORARY'
-  | 'OUT_OF_ORDER'
-  | 'UNKNOWN';
+export type StopPointType = 'ORDERLY' | 'ON_REQUEST' | 'ZONE_ON_REQUEST' | 'TEMPORARY' | 'OUT_OF_ORDER' | 'UNKNOWN';
 
 export const StopPointType = {
-  Orderly: 'ORDERLY' as StopPointType,
-  OnRequest: 'ON_REQUEST' as StopPointType,
-  ZoneOnRequest: 'ZONE_ON_REQUEST' as StopPointType,
-  Temporary: 'TEMPORARY' as StopPointType,
-  OutOfOrder: 'OUT_OF_ORDER' as StopPointType,
-  Unknown: 'UNKNOWN' as StopPointType,
+    Orderly: 'ORDERLY' as StopPointType,
+    OnRequest: 'ON_REQUEST' as StopPointType,
+    ZoneOnRequest: 'ZONE_ON_REQUEST' as StopPointType,
+    Temporary: 'TEMPORARY' as StopPointType,
+    OutOfOrder: 'OUT_OF_ORDER' as StopPointType,
+    Unknown: 'UNKNOWN' as StopPointType
 };
+

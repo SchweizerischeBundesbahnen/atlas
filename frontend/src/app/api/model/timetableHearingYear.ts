@@ -11,50 +11,52 @@
  */
 import { HearingStatus } from './hearingStatus';
 
-export interface TimetableHearingYear {
-  /**
-   * Object creation date
-   */
-  readonly creationDate?: string;
-  /**
-   * User creator
-   */
-  readonly creator?: string;
-  /**
-   * Last edition date
-   */
-  readonly editionDate?: string;
-  /**
-   * User editor
-   */
-  readonly editor?: string;
-  /**
-   * TimetableYear
-   */
-  timetableYear: number;
-  hearingStatus?: HearingStatus;
-  /**
-   * Hearing held from
-   */
-  hearingFrom: Date;
-  /**
-   * Hearing held to
-   */
-  hearingTo: Date;
-  /**
-   * New statements accepted from SKI
-   */
-  statementCreatableExternal?: boolean;
-  /**
-   * New statements accepted from Atlas
-   */
-  statementCreatableInternal?: boolean;
-  /**
-   * Updates on statements accepted
-   */
-  statementEditable?: boolean;
-  /**
-   * Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)
-   */
-  etagVersion?: number;
+
+export interface TimetableHearingYear { 
+    /**
+     * Object creation date
+     */
+    readonly creationDate?: string;
+    /**
+     * User creator
+     */
+    readonly creator?: string;
+    /**
+     * Last edition date
+     */
+    readonly editionDate?: string;
+    /**
+     * User editor
+     */
+    readonly editor?: string;
+    /**
+     * TimetableYear
+     */
+    timetableYear: number;
+    hearingStatus?: HearingStatus;
+    /**
+     * Hearing held from
+     */
+    hearingFrom: Date;
+    /**
+     * Hearing held to
+     */
+    hearingTo: Date;
+    /**
+     * New statements accepted from SKI
+     */
+    statementCreatableExternal?: boolean;
+    /**
+     * New statements accepted from Atlas
+     */
+    statementCreatableInternal?: boolean;
+    /**
+     * Updates on statements accepted
+     */
+    statementEditable?: boolean;
+    /**
+     * Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)
+     */
+    etagVersion?: number;
 }
+

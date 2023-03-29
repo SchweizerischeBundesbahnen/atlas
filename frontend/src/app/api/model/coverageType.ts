@@ -10,12 +10,14 @@
  * Do not edit the class manually.
  */
 
+
 /**
  * CoverageType
  */
 export type CoverageType = 'COMPLETE' | 'INCOMPLETE';
 
 export const CoverageType = {
-  Complete: 'COMPLETE' as CoverageType,
-  Incomplete: 'INCOMPLETE' as CoverageType,
+    Complete: 'COMPLETE' as CoverageType,
+    Incomplete: 'INCOMPLETE' as CoverageType
 };
+

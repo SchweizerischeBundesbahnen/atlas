@@ -11,10 +11,12 @@
  */
 import { ItemImportResponseStatus } from './itemImportResponseStatus';
 
-export interface ServicePointItemImportResult {
-  itemNumber?: number;
-  validFrom?: Date;
-  validTo?: Date;
-  status?: ItemImportResponseStatus;
-  message?: string;
+
+export interface ServicePointItemImportResult { 
+    itemNumber?: number;
+    validFrom?: Date;
+    validTo?: Date;
+    status?: ItemImportResponseStatus;
+    message?: string;
 }
+

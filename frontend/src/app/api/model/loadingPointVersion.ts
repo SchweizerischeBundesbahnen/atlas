@@ -12,49 +12,51 @@
 import { ServicePointNumber } from './servicePointNumber';
 import { Geolocation } from './geolocation';
 
-export interface LoadingPointVersion {
-  /**
-   * Object creation date
-   */
-  readonly creationDate?: string;
-  /**
-   * User creator
-   */
-  readonly creator?: string;
-  /**
-   * Last edition date
-   */
-  readonly editionDate?: string;
-  /**
-   * User editor
-   */
-  readonly editor?: string;
-  /**
-   * Technical identifier
-   */
-  readonly id?: number;
-  /**
-   * Loading Point Number
-   */
-  number: number;
-  /**
-   * Designation
-   */
-  designation: string;
-  /**
-   * Designation Long
-   */
-  designationLong?: string;
-  /**
-   * Is a connectionPoint
-   */
-  connectionPoint?: boolean;
-  servicePointNumber: ServicePointNumber;
-  loadingPointGeolocation?: Geolocation;
-  validFrom: Date;
-  validTo: Date;
-  /**
-   * LoadingPoint has a Geolocation
-   */
-  hasGeolocation?: boolean;
+
+export interface LoadingPointVersion { 
+    /**
+     * Object creation date
+     */
+    readonly creationDate?: string;
+    /**
+     * User creator
+     */
+    readonly creator?: string;
+    /**
+     * Last edition date
+     */
+    readonly editionDate?: string;
+    /**
+     * User editor
+     */
+    readonly editor?: string;
+    /**
+     * Technical identifier
+     */
+    readonly id?: number;
+    /**
+     * Loading Point Number
+     */
+    number: number;
+    /**
+     * Designation
+     */
+    designation: string;
+    /**
+     * Designation Long
+     */
+    designationLong?: string;
+    /**
+     * Is a connectionPoint
+     */
+    connectionPoint?: boolean;
+    servicePointNumber: ServicePointNumber;
+    loadingPointGeolocation?: Geolocation;
+    validFrom: Date;
+    validTo: Date;
+    /**
+     * LoadingPoint has a Geolocation
+     */
+    hasGeolocation?: boolean;
 }
+

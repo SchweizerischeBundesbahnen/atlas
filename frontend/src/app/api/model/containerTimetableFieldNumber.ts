@@ -11,7 +11,9 @@
  */
 import { TimetableFieldNumber } from './timetableFieldNumber';
 
-export interface ContainerTimetableFieldNumber {
-  objects?: Array<TimetableFieldNumber>;
-  totalCount?: number;
+
+export interface ContainerTimetableFieldNumber { 
+    objects?: Array<TimetableFieldNumber>;
+    totalCount?: number;
 }
+

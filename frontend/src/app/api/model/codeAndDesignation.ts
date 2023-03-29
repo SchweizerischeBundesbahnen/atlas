@@ -10,28 +10,30 @@
  * Do not edit the class manually.
  */
 
+
 /**
  * Gives more detail to types
  */
-export interface CodeAndDesignation {
-  /**
-   * Code
-   */
-  code: string;
-  /**
-   * Designation in german
-   */
-  designationDe: string;
-  /**
-   * Designation in french
-   */
-  designationFr: string;
-  /**
-   * Designation in italian
-   */
-  designationIt: string;
-  /**
-   * Designation in english
-   */
-  designationEn: string;
+export interface CodeAndDesignation { 
+    /**
+     * Code
+     */
+    code: string;
+    /**
+     * Designation in german
+     */
+    designationDe: string;
+    /**
+     * Designation in french
+     */
+    designationFr: string;
+    /**
+     * Designation in italian
+     */
+    designationIt: string;
+    /**
+     * Designation in english
+     */
+    designationEn: string;
 }
+

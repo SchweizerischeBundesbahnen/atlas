@@ -10,24 +10,19 @@
  * Do not edit the class manually.
  */
 
+
 /**
  * Current status
  */
-export type StatementStatus =
-  | 'RECEIVED'
-  | 'IN_REVIEW'
-  | 'ACCEPTED'
-  | 'REJECTED'
-  | 'MOVED'
-  | 'JUNK'
-  | 'REVOKED';
+export type StatementStatus = 'RECEIVED' | 'IN_REVIEW' | 'ACCEPTED' | 'REJECTED' | 'MOVED' | 'JUNK' | 'REVOKED';
 
 export const StatementStatus = {
-  Received: 'RECEIVED' as StatementStatus,
-  InReview: 'IN_REVIEW' as StatementStatus,
-  Accepted: 'ACCEPTED' as StatementStatus,
-  Rejected: 'REJECTED' as StatementStatus,
-  Moved: 'MOVED' as StatementStatus,
-  Junk: 'JUNK' as StatementStatus,
-  Revoked: 'REVOKED' as StatementStatus,
+    Received: 'RECEIVED' as StatementStatus,
+    InReview: 'IN_REVIEW' as StatementStatus,
+    Accepted: 'ACCEPTED' as StatementStatus,
+    Rejected: 'REJECTED' as StatementStatus,
+    Moved: 'MOVED' as StatementStatus,
+    Junk: 'JUNK' as StatementStatus,
+    Revoked: 'REVOKED' as StatementStatus
 };
+

@@ -10,42 +10,28 @@
  * Do not edit the class manually.
  */
 
+
 /**
  * Business Types
  */
-export type BusinessType =
-  | 'STREET'
-  | 'STREET_WITHOUT_TRAFFIC'
-  | 'RAILROAD'
-  | 'RAILROAD_UIC'
-  | 'TRAIN_WITHOUT_TRAFFIC'
-  | 'SHIP'
-  | 'SHIP_WITHOUT_TRAFFIC'
-  | 'AIR'
-  | 'LEISURE_ACTIVITIES'
-  | 'TARIFF_ASSOCIATION'
-  | 'FAIR'
-  | 'TRAVEL_AGENCY_ORGANISATION'
-  | 'CUSTOMER_INFORMATION'
-  | 'SUBSIDIARY'
-  | 'INTERNAL_BILLING_PURPOSES'
-  | 'UNKNOWN';
+export type BusinessType = 'STREET' | 'STREET_WITHOUT_TRAFFIC' | 'RAILROAD' | 'RAILROAD_UIC' | 'TRAIN_WITHOUT_TRAFFIC' | 'SHIP' | 'SHIP_WITHOUT_TRAFFIC' | 'AIR' | 'LEISURE_ACTIVITIES' | 'TARIFF_ASSOCIATION' | 'FAIR' | 'TRAVEL_AGENCY_ORGANISATION' | 'CUSTOMER_INFORMATION' | 'SUBSIDIARY' | 'INTERNAL_BILLING_PURPOSES' | 'UNKNOWN';
 
 export const BusinessType = {
-  Street: 'STREET' as BusinessType,
-  StreetWithoutTraffic: 'STREET_WITHOUT_TRAFFIC' as BusinessType,
-  Railroad: 'RAILROAD' as BusinessType,
-  RailroadUic: 'RAILROAD_UIC' as BusinessType,
-  TrainWithoutTraffic: 'TRAIN_WITHOUT_TRAFFIC' as BusinessType,
-  Ship: 'SHIP' as BusinessType,
-  ShipWithoutTraffic: 'SHIP_WITHOUT_TRAFFIC' as BusinessType,
-  Air: 'AIR' as BusinessType,
-  LeisureActivities: 'LEISURE_ACTIVITIES' as BusinessType,
-  TariffAssociation: 'TARIFF_ASSOCIATION' as BusinessType,
-  Fair: 'FAIR' as BusinessType,
-  TravelAgencyOrganisation: 'TRAVEL_AGENCY_ORGANISATION' as BusinessType,
-  CustomerInformation: 'CUSTOMER_INFORMATION' as BusinessType,
-  Subsidiary: 'SUBSIDIARY' as BusinessType,
-  InternalBillingPurposes: 'INTERNAL_BILLING_PURPOSES' as BusinessType,
-  Unknown: 'UNKNOWN' as BusinessType,
+    Street: 'STREET' as BusinessType,
+    StreetWithoutTraffic: 'STREET_WITHOUT_TRAFFIC' as BusinessType,
+    Railroad: 'RAILROAD' as BusinessType,
+    RailroadUic: 'RAILROAD_UIC' as BusinessType,
+    TrainWithoutTraffic: 'TRAIN_WITHOUT_TRAFFIC' as BusinessType,
+    Ship: 'SHIP' as BusinessType,
+    ShipWithoutTraffic: 'SHIP_WITHOUT_TRAFFIC' as BusinessType,
+    Air: 'AIR' as BusinessType,
+    LeisureActivities: 'LEISURE_ACTIVITIES' as BusinessType,
+    TariffAssociation: 'TARIFF_ASSOCIATION' as BusinessType,
+    Fair: 'FAIR' as BusinessType,
+    TravelAgencyOrganisation: 'TRAVEL_AGENCY_ORGANISATION' as BusinessType,
+    CustomerInformation: 'CUSTOMER_INFORMATION' as BusinessType,
+    Subsidiary: 'SUBSIDIARY' as BusinessType,
+    InternalBillingPurposes: 'INTERNAL_BILLING_PURPOSES' as BusinessType,
+    Unknown: 'UNKNOWN' as BusinessType
 };
+

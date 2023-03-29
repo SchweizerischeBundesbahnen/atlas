@@ -10,25 +10,27 @@
  * Do not edit the class manually.
  */
 
-export interface TimetableHearingStatementResponsibleTransportCompany {
-  /**
-   * Technical identifier
-   */
-  readonly id?: number;
-  /**
-   * Technical identifier of referred TransportCompany
-   */
-  transportCompanyId: number;
-  /**
-   * TransportCompany number
-   */
-  number?: string;
-  /**
-   * TransportCompany abbreviation
-   */
-  abbreviation?: string;
-  /**
-   * TransportCompany business register name
-   */
-  businessRegisterName?: string;
+
+export interface TimetableHearingStatementResponsibleTransportCompany { 
+    /**
+     * Technical identifier
+     */
+    readonly id?: number;
+    /**
+     * Technical identifier of referred TransportCompany
+     */
+    transportCompanyId: number;
+    /**
+     * TransportCompany number
+     */
+    number?: string;
+    /**
+     * TransportCompany abbreviation
+     */
+    abbreviation?: string;
+    /**
+     * TransportCompany business register name
+     */
+    businessRegisterName?: string;
 }
+

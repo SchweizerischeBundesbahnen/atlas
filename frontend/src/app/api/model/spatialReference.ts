@@ -10,11 +10,13 @@
  * Do not edit the class manually.
  */
 
+
 export type SpatialReference = 'WGS84WEB' | 'LV95' | 'LV03' | 'WGS84';
 
 export const SpatialReference = {
-  Wgs84Web: 'WGS84WEB' as SpatialReference,
-  Lv95: 'LV95' as SpatialReference,
-  Lv03: 'LV03' as SpatialReference,
-  Wgs84: 'WGS84' as SpatialReference,
+    Wgs84Web: 'WGS84WEB' as SpatialReference,
+    Lv95: 'LV95' as SpatialReference,
+    Lv03: 'LV03' as SpatialReference,
+    Wgs84: 'WGS84' as SpatialReference
 };
+
