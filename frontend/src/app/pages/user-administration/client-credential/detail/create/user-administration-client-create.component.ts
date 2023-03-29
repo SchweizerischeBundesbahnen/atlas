@@ -62,9 +62,12 @@ export class UserAdministrationClientCreateComponent {
     this.userService.createClientCredentialPermission(permission).subscribe({
       next: () => {
         this.router
-          .navigate([Pages.USER_ADMINISTRATION.path, this.userPermissionManager.getSbbUserId()], {
-            relativeTo: this.route,
-          })
+          .navigate(
+            [Pages.USER_ADMINISTRATION.path, Pages.CLIENTS.path, permission.clientCredentialId],
+            {
+              relativeTo: this.route,
+            }
+          )
           .then(() => this.notificationService.success('USER_ADMIN.NOTIFICATIONS.ADD_SUCCESS'));
       },
       error: () => (this.saveEnabled = true),
