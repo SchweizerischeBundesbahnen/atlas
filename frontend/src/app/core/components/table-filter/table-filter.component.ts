@@ -6,6 +6,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import moment from 'moment';
 import {
   FilterType,
+  TableFilterChip,
   TableFilterConfig,
   TableFilterDateSelect,
   TableFilterMultiSelect,
@@ -29,7 +30,7 @@ export class TableFilterComponent<TFilterConfig> {
 
   // @Input() searchStatusType: SearchStatusType = 'DEFAULT_STATUS';
 
-  @Input() filterConfigurations: TableFilterConfig<TFilterConfig>[] = [];
+  @Input() filterConfigurations: TableFilterConfig<TFilterConfig>[][] = [];
 
   @Output() searchEvent: EventEmitter<void> = new EventEmitter();
 
@@ -58,6 +59,10 @@ export class TableFilterComponent<TFilterConfig> {
   ): filterType is TableFilterMultiSelect<TFilterConfig> =>
     filterType.filterType === FilterType.MULTI_SELECT;
 
+  isChipSearch: TypeGuard<TableFilterConfig<TFilterConfig>, TableFilterChip> = (
+    filterType: TableFilterConfig<TFilterConfig>
+  ): filterType is TableFilterChip => filterType.filterType === FilterType.CHIP_SEARCH;
+
   boSearchForm = new FormGroup<BusinessOrganisationSearch>({
     businessOrganisation: new FormControl(),
   });
@@ -66,58 +71,67 @@ export class TableFilterComponent<TFilterConfig> {
   // readonly LINE_TYPES: LineType[] = Object.values(LineType);
 
   // STATUS_TYPES_PREFIX_LABEL = 'COMMON.STATUS_TYPES.';
-  searchStrings: string[] = [];
+  // searchStrings: string[] = [];
   // searchDate?: Date;
   // activeStatuses: statusChoice = [];
 
   MIN_DATE = MIN_DATE;
   MAX_DATE = MAX_DATE;
 
-  addSearch(event: MatChipInputEvent): void {
+  addSearch(event: MatChipInputEvent, rowIndex: number, filterIndex: number): void {
     const value = (event.value || '').trim();
-    if (this.searchStrings.indexOf(value) !== -1) {
+    const activeSearchStrings: string[] = (
+      this.filterConfigurations[rowIndex][filterIndex] as TableFilterChip
+    ).activeSearch;
+    if (activeSearchStrings.indexOf(value) !== -1) {
       event.chipInput!.clear();
       return;
     }
     if (value) {
-      this.searchStrings.push(value);
+      activeSearchStrings.push(value);
     }
     // Clear the input value
     event.chipInput!.clear();
     this.emitSearch();
   }
 
-  removeSearch(search: string): void {
-    const index = this.searchStrings.indexOf(search);
+  removeSearch(search: string, rowIndex: number, filterIndex: number): void {
+    const activeSearchStrings: string[] = (
+      this.filterConfigurations[rowIndex][filterIndex] as TableFilterChip
+    ).activeSearch;
+    const index = activeSearchStrings.indexOf(search);
     if (index >= 0) {
-      this.searchStrings.splice(index, 1);
+      activeSearchStrings.splice(index, 1);
     }
     this.emitSearch();
   }
 
-  onDateChanged(event: MatDatepickerInputEvent<Date>, filterIndex: number): void {
-    if ((this.filterConfigurations[filterIndex] as TableFilterDateSelect).formControl.invalid)
+  onDateChanged(event: MatDatepickerInputEvent<Date>, rowIndex: number, filterIndex: number): void {
+    if (
+      (this.filterConfigurations[rowIndex][filterIndex] as TableFilterDateSelect).formControl
+        .invalid
+    )
       return;
 
-    (this.filterConfigurations[filterIndex] as TableFilterDateSelect).activeSearch = event.value
-      ? moment(event.value).toDate()
-      : undefined;
+    (this.filterConfigurations[rowIndex][filterIndex] as TableFilterDateSelect).activeSearch =
+      event.value ? moment(event.value).toDate() : undefined;
 
     //this.searchDate = event.value ? moment(event.value).toDate() : undefined;
     this.emitSearch();
   }
 
-  multiSelectChanged(changeEvent: MatSelectChange, filterIndex: number) {
-    (this.filterConfigurations[filterIndex] as TableFilterMultiSelect<TFilterConfig>).activeSearch =
-      changeEvent.value as TFilterConfig[];
+  multiSelectChanged(changeEvent: MatSelectChange, rowIndex: number, filterIndex: number) {
+    (
+      this.filterConfigurations[rowIndex][filterIndex] as TableFilterMultiSelect<TFilterConfig>
+    ).activeSearch = changeEvent.value as TFilterConfig[];
 
     //this.boSearchForm.patchValue($event, { emitEvent: false });
     this.emitSearch();
   }
 
-  multiSelectSearchChanged(changeEvent: unknown, filterIndex: number) {
+  multiSelectSearchChanged(changeEvent: unknown, rowIndex: number, filterIndex: number) {
     (
-      this.filterConfigurations[filterIndex] as TableFilterSearchSelect<TFilterConfig>
+      this.filterConfigurations[rowIndex][filterIndex] as TableFilterSearchSelect<TFilterConfig>
     ).activeSearch = changeEvent as TFilterConfig;
     this.emitSearch();
   }
