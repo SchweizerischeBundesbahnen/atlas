@@ -55,6 +55,10 @@ export interface TimetableHearingStatement {
    */
   stopPlace?: string;
   responsibleTransportCompanies?: Array<TimetableHearingStatementResponsibleTransportCompany>;
+  /**
+   * Comma separetd Transport Companies abbreviation
+   */
+  readonly responsibleTransportCompaniesDisplay?: string;
   statementSender: TimetableHearingStatementSender;
   /**
    * Statement of citizen
