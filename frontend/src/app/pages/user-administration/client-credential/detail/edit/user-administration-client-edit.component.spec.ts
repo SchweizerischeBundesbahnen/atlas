@@ -7,7 +7,7 @@ import {
   TranslateModule,
   TranslatePipe,
 } from '@ngx-translate/core';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MaterialModule } from '../../../../../core/module/material.module';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -18,12 +18,23 @@ import { BusinessOrganisationsService } from '../../../../../api';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { MockUserDetailInfoComponent } from '../../../../../app.testing.mocks';
 import SpyObj = jasmine.SpyObj;
+import { Data } from '../../../components/read-only-data/data';
+import { ReadOnlyData } from '../../../components/read-only-data/read-only-data';
 
 @Component({
   selector: 'app-dialog-close',
   template: '',
 })
 class MockDialogCloseComponent {}
+
+@Component({
+  selector: 'app-user-administration-read-only-data',
+  template: '',
+})
+export class MockUserAdministrationReadOnlyDataComponent<T extends Data> {
+  @Input() data!: T;
+  @Input() userModelConfig!: ReadOnlyData<T>[][];
+}
 
 describe('UserAdministrationClientEditComponent', () => {
   let component: UserAdministrationClientEditComponent;
@@ -88,6 +99,7 @@ describe('UserAdministrationClientEditComponent', () => {
         UserAdministrationClientEditComponent,
         MockDialogCloseComponent,
         MockUserDetailInfoComponent,
+        MockUserAdministrationReadOnlyDataComponent,
       ],
       imports: [
         TranslateModule.forRoot({
