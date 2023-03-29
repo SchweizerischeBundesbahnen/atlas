@@ -23,7 +23,7 @@ export class TableComponent<DATATYPE> implements OnInit {
     return this._tableData;
   }
 
-  @Input() tableFilterConfig: TableFilterConfig<unknown>[] = [];
+  @Input() tableFilterConfig: TableFilterConfig<unknown>[][] = [];
   @Input() tableColumns!: TableColumn<DATATYPE>[];
   @Input() canEdit = true;
   @Input() totalCount!: number;

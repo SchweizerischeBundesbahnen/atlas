@@ -1,40 +1,44 @@
 <div class="d-flex flex-wrap">
-  <div class="search-row">
-    <div class="d-flex flex-column col-6 pe-3 search-box">
-      <mat-label class="font-bold-lg">{{ 'COMMON.SEARCH.SEARCH_CRITERIA' | translate }}</mat-label>
-      <div class="search-main-field mb-4">
-        <mat-chip-grid #chipList data-cy="table-search-strings">
-          <mat-chip-row
-            (removed)="removeSearch(search)"
-            *ngFor="let search of searchStrings"
-            class="font-bold-sm"
-          >
-            {{ search }}
-            <button matChipRemove>
-              <i class="bi bi-x-circle-fill"></i>
-            </button>
-          </mat-chip-row>
-          <input
-            (matChipInputTokenEnd)="addSearch($event)"
-            [matChipInputFor]="chipList"
-            class="font-regular-base"
-            data-cy="table-search-chip-input"
-          />
-          <i class="bi bi-search"></i>
-        </mat-chip-grid>
+  <div *ngFor="let row of filterConfigurations; let rowIndex = index" class="search-row">
+    <ng-container *ngFor="let filterConfig of row; let filterConfigIndex = index">
+      <!--      search field -->
+      <div
+        *ngIf="filterConfig | filterTypeGuard : isChipSearch as chipSearch"
+        [class]="chipSearch.elementWidthCssClass"
+        class="d-flex flex-column search-box"
+      >
+        <mat-label class="font-bold-lg">{{
+          'COMMON.SEARCH.SEARCH_CRITERIA' | translate
+        }}</mat-label>
+        <div class="search-main-field mb-4">
+          <mat-chip-grid #chipList data-cy="table-search-strings">
+            <mat-chip-row
+              *ngFor="let search of chipSearch.activeSearch"
+              (removed)="removeSearch(search, rowIndex, filterConfigIndex)"
+              class="font-bold-sm"
+            >
+              {{ search }}
+              <button matChipRemove>
+                <i class="bi bi-x-circle-fill"></i>
+              </button>
+            </mat-chip-row>
+            <input
+              (matChipInputTokenEnd)="addSearch($event, rowIndex, filterConfigIndex)"
+              [matChipInputFor]="chipList"
+              class="font-regular-base"
+              data-cy="table-search-chip-input"
+            />
+            <i class="bi bi-search"></i>
+          </mat-chip-grid>
+        </div>
       </div>
-    </div>
-  </div>
 
-  <!--  TODO: specify with object(enums) sorting and number of elements -->
-  <div class="search-row">
-    <ng-container *ngFor="let filterConfig of filterConfigurations; let i = index">
       <div
         *ngIf="filterConfig | filterTypeGuard : isSearchSelect as searchSelect"
         [class]="searchSelect.elementWidthCssClass"
       >
         <bo-select
-          (boSelectionChanged)="multiSelectSearchChanged($event, i)"
+          (boSelectionChanged)="multiSelectSearchChanged($event, rowIndex, filterConfigIndex)"
           [formGroup]="boSearchForm"
           [formModus]="false"
           controlName="businessOrganisation"
@@ -51,7 +55,7 @@
         }}</mat-label>
         <div class="multi-select-search">
           <mat-select
-            (selectionChange)="multiSelectChanged($event, i)"
+            (selectionChange)="multiSelectChanged($event, rowIndex, filterConfigIndex)"
             [value]="multiSelect.activeSearch"
             class="font-bold-base"
             data-cy="table-search-line-type"
@@ -72,7 +76,7 @@
         <div class="search-date-field">
           <div class="container-date-field">
             <input
-              (dateChange)="onDateChanged($event, i)"
+              (dateChange)="onDateChanged($event, rowIndex, filterConfigIndex)"
               [formControl]="dateSelect.formControl"
               [matDatepicker]="picker"
               [max]="MAX_DATE"
