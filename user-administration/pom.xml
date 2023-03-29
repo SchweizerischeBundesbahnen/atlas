@@ -61,6 +61,21 @@
          <scope>test</scope>
       </dependency>
       <dependency>
+         <artifactId>junit-jupiter-engine</artifactId>
+         <groupId>org.junit.jupiter</groupId>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
+         <artifactId>spring-restdocs-mockmvc</artifactId>
+         <groupId>org.springframework.restdocs</groupId>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
+         <artifactId>spring-auto-restdocs-core</artifactId>
+         <groupId>capital.scalable</groupId>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
          <groupId>org.postgresql</groupId>
          <artifactId>postgresql</artifactId>
          <scope>runtime</scope>
@@ -100,12 +115,6 @@
          <groupId>org.springframework.kafka</groupId>
          <artifactId>spring-kafka-test</artifactId>
          <scope>test</scope>
-         <exclusions>
-            <exclusion>
-               <groupId>*</groupId>
-               <artifactId>*</artifactId>
-            </exclusion>
-         </exclusions>
       </dependency>
       <dependency>
          <artifactId>h2</artifactId>
