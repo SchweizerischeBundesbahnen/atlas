@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 import ch.sbb.atlas.api.user.administration.enumeration.PermissionRestrictionType;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.user.administration.exception.RestrictionWithoutTypeException;
+import ch.sbb.atlas.user.administration.service.ClientCredentialAdministrationService;
 import ch.sbb.atlas.user.administration.service.GraphApiService;
 import ch.sbb.atlas.user.administration.service.UserAdministrationService;
 import ch.sbb.atlas.user.administration.service.UserPermissionDistributor;
@@ -26,6 +27,9 @@ class UserAdministrationControllerTest {
   private UserAdministrationService userAdministrationService;
 
   @Mock
+  private ClientCredentialAdministrationService clientCredentialAdministrationService;
+
+  @Mock
   private UserPermissionDistributor userPermissionDistributor;
 
   @Mock
@@ -36,7 +40,8 @@ class UserAdministrationControllerTest {
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    userAdministrationController = new UserAdministrationController(userAdministrationService, userPermissionDistributor,
+    userAdministrationController = new UserAdministrationController(userAdministrationService,
+        clientCredentialAdministrationService, userPermissionDistributor,
         graphApiService);
 
     when(userAdministrationService.getUserPage(any(), any(), any(), any())).thenReturn(Page.empty());

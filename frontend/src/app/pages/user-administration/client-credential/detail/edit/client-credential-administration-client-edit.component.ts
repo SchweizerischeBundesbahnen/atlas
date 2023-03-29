@@ -56,7 +56,6 @@ export class UserAdministrationClientEditComponent implements OnInit {
       ...this.client,
       ...managedPermissions,
     } as ClientCredentialPermissionCreate;
-    console.log(permissions);
     this.userService.updateClientPermissions(permissions).subscribe({
       next: (client: ClientCredential) => {
         this.client = client;
