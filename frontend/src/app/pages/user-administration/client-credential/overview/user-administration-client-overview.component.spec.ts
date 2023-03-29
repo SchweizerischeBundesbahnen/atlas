@@ -1,16 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, Input } from '@angular/core';
-import { UserAdministrationOverviewComponent } from '../../overview/user-administration-overview.component';
-import { of } from 'rxjs';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MaterialModule } from '../../../../core/module/material.module';
-import { FormGroup, FormsModule } from '@angular/forms';
-import { UserService } from '../../service/user.service';
-import { AuthService } from '../../../../core/auth/auth.service';
 import { UserAdministrationClientOverviewComponent } from './user-administration-client-overview.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ContainerClientCredential, UserAdministrationService } from '../../../../api';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-table',
@@ -29,46 +26,30 @@ class MockTableComponent {
   @Input() sortingDisabled = false;
 }
 
-@Component({
-  selector: 'form-search-select',
-  template: '',
-})
-class MockFormSearchSelectComponent {
-  @Input() items$ = of([]);
-  @Input() formGroup = null;
-  @Input() controlName = '';
-  @Input() getSelectOption = null;
-}
-
-@Component({
-  selector: 'app-user-select',
-  template: '<p>app-user-select</p>',
-})
-class MockUserSelectComponent {
-  @Input() form?: FormGroup;
-}
+const clientContainer: ContainerClientCredential = {
+  objects: [
+    {
+      clientCredentialId: '134123-123123',
+      alias: 'öV-info.ch',
+    },
+  ],
+  totalCount: 1,
+};
 
 describe('UserAdministrationClientOverviewComponent', () => {
   let component: UserAdministrationClientOverviewComponent;
   let fixture: ComponentFixture<UserAdministrationClientOverviewComponent>;
 
-  let userServiceMock: UserServiceMock;
-
-  class UserServiceMock {
-    getUsers: any = jasmine.createSpy().and.returnValue(of({ users: [], totalCount: 0 }));
-    hasUserPermissions: any = undefined;
-  }
-
+  const userAdministrationService = jasmine.createSpyObj('userAdministrationService', [
+    'getClientCredentials',
+  ]);
+  userAdministrationService.getClientCredentials.and.returnValue(of(clientContainer));
   beforeEach(async () => {
-    userServiceMock = new UserServiceMock();
-
     await TestBed.configureTestingModule({
       declarations: [
         UserAdministrationClientOverviewComponent,
         AtlasButtonComponent,
         MockTableComponent,
-        MockFormSearchSelectComponent,
-        MockUserSelectComponent,
       ],
       imports: [
         TranslateModule.forRoot({
@@ -78,16 +59,7 @@ describe('UserAdministrationClientOverviewComponent', () => {
         MaterialModule,
         HttpClientTestingModule,
       ],
-      providers: [
-        {
-          provide: UserService,
-          useValue: userServiceMock,
-        },
-        {
-          provide: AuthService,
-          useValue: jasmine.createSpyObj<AuthService>('AuthService', ['hasPermissionsToCreate']),
-        },
-      ],
+      providers: [{ provide: UserAdministrationService, useValue: userAdministrationService }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(UserAdministrationClientOverviewComponent);
@@ -97,5 +69,9 @@ describe('UserAdministrationClientOverviewComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+    expect(userAdministrationService.getClientCredentials).toHaveBeenCalled();
+
+    expect(component.clientCredentials.length).toBe(1);
+    expect(component.totalCount).toBe(1);
   });
 });

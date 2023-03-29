@@ -1,74 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UserAdministrationOverviewComponent } from './user-administration-overview.component';
-import { UserService } from '../service/user.service';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { of } from 'rxjs';
-import { Component, Input } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MaterialModule } from '../../../core/module/material.module';
-import { FormGroup, FormsModule } from '@angular/forms';
-import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
-import { AuthService } from '../../../core/auth/auth.service';
-
-@Component({
-  selector: 'app-table',
-  template: '<p>Mock Table Component</p>',
-})
-class MockTableComponent {
-  @Input() loadTableSearch = false;
-  @Input() isLoading = false;
-  @Input() tableData = [];
-  @Input() tableColumns = [];
-  @Input() displayStatusSearch = false;
-  @Input() displayValidOnSearch = false;
-  @Input() searchTextColumnStyle = '';
-  @Input() pageSizeOptions = [];
-  @Input() totalCount = 0;
-  @Input() sortingDisabled = false;
-}
-
-@Component({
-  selector: 'form-search-select',
-  template: '',
-})
-class MockFormSearchSelectComponent {
-  @Input() items$ = of([]);
-  @Input() formGroup = null;
-  @Input() controlName = '';
-  @Input() getSelectOption = null;
-}
-
-@Component({
-  selector: 'app-user-select',
-  template: '<p>app-user-select</p>',
-})
-class MockUserSelectComponent {
-  @Input() form?: FormGroup;
-}
+import { FormsModule } from '@angular/forms';
+import { MockAtlasButtonComponent } from '../../../app.testing.mocks';
 
 describe('UserAdministrationOverviewComponent', () => {
   let component: UserAdministrationOverviewComponent;
   let fixture: ComponentFixture<UserAdministrationOverviewComponent>;
 
-  let userServiceMock: UserServiceMock;
-
-  class UserServiceMock {
-    getUsers: any = jasmine.createSpy().and.returnValue(of({ users: [], totalCount: 0 }));
-    hasUserPermissions: any = undefined;
-  }
-
   beforeEach(async () => {
-    userServiceMock = new UserServiceMock();
-
     await TestBed.configureTestingModule({
-      declarations: [
-        UserAdministrationOverviewComponent,
-        AtlasButtonComponent,
-        MockTableComponent,
-        MockFormSearchSelectComponent,
-        MockUserSelectComponent,
-      ],
+      declarations: [UserAdministrationOverviewComponent, MockAtlasButtonComponent],
       imports: [
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
@@ -76,16 +21,6 @@ describe('UserAdministrationOverviewComponent', () => {
         RouterTestingModule,
         MaterialModule,
         FormsModule,
-      ],
-      providers: [
-        {
-          provide: UserService,
-          useValue: userServiceMock,
-        },
-        {
-          provide: AuthService,
-          useValue: jasmine.createSpyObj<AuthService>('AuthService', ['hasPermissionsToCreate']),
-        },
       ],
     }).compileComponents();
 
@@ -96,5 +31,6 @@ describe('UserAdministrationOverviewComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+    expect(component.TABS.length).toBe(2);
   });
 });

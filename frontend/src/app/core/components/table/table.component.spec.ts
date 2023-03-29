@@ -9,6 +9,7 @@ import { AppTestingModule } from '../../../app.testing.module';
 import { DateIconComponent } from '../../form-components/date-icon/date-icon.component';
 import { SearchSelectComponent } from '../../form-components/search-select/search-select.component';
 import { BusinessOrganisationSelectComponent } from '../../form-components/bo-select/business-organisation-select.component';
+import { MockAtlasFieldErrorComponent } from '../../../app.testing.mocks';
 
 describe('TableComponent', () => {
   /*eslint-disable */
@@ -25,6 +26,7 @@ describe('TableComponent', () => {
         BusinessOrganisationSelectComponent,
         SearchSelectComponent,
         DateIconComponent,
+        MockAtlasFieldErrorComponent,
       ],
       imports: [AppTestingModule],
       providers: [TranslatePipe],
