@@ -26,27 +26,25 @@ class TimetableFieldNumberServiceTest {
   @Mock
   private VersionableService versionableService;
 
-
   private TimetableFieldNumberService timetableFieldNumberService;
 
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
     timetableFieldNumberService = new TimetableFieldNumberService(versionRepository,
-        timetableFieldNumberRepository, versionableService);
+      timetableFieldNumberRepository, versionableService);
   }
-
 
   @Test
   public void shouldThrowStaleExceptionOnDifferentVersion() {
     //given
-    TimetableFieldNumberVersionBuilder<?, ?> version = TimetableFieldNumberVersion.builder()
-                                                                                  .ttfnid("ttfnid");
+    TimetableFieldNumberVersionBuilder<?, ?> version = TimetableFieldNumberVersion.builder().ttfnid("ttfnid");
 
     Executable executable = () -> timetableFieldNumberService.updateVersion(
-        version.version(1).build(), version.version(0).build());
+      version.version(1).build(), version.version(0).build());
     assertThrows(StaleObjectStateException.class, executable);
     //then
     verify(versionRepository).incrementVersion("ttfnid");
   }
+
 }

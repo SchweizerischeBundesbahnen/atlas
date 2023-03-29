@@ -9,10 +9,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.atlas.api.model.ErrorResponse;
-import ch.sbb.atlas.model.controller.BaseControllerWithAmazonS3ApiTest;
-import ch.sbb.line.directory.LineTestData;
-import ch.sbb.line.directory.SublineTestData;
+import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.api.lidi.LineVersionModel;
 import ch.sbb.atlas.api.lidi.LineVersionModel.Fields;
 import ch.sbb.atlas.api.lidi.SublineVersionModel;
@@ -21,6 +18,10 @@ import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.api.lidi.enumaration.ModelType;
 import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
 import ch.sbb.atlas.api.lidi.enumaration.SublineType;
+import ch.sbb.atlas.api.model.ErrorResponse;
+import ch.sbb.atlas.model.controller.BaseControllerWithAmazonS3ApiTest;
+import ch.sbb.line.directory.LineTestData;
+import ch.sbb.line.directory.SublineTestData;
 import ch.sbb.line.directory.repository.CoverageRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
@@ -51,6 +52,9 @@ public class SublineControllerApiTest extends BaseControllerWithAmazonS3ApiTest 
 
   @Autowired
   private SublineVersionExportService sublineVersionExportService;
+
+  @Autowired
+  private AmazonService amazonService;
 
   @AfterEach
   public void tearDown() {
@@ -481,7 +485,7 @@ public class SublineControllerApiTest extends BaseControllerWithAmazonS3ApiTest 
     //when
     MvcResult mvcResult = mvc.perform(post("/v1/sublines/export-csv/full"))
         .andExpect(status().isOk()).andReturn();
-    deleteFileFromBucket(mvcResult, sublineVersionExportService.getDirectory());
+    deleteFileFromBucket(mvcResult, sublineVersionExportService.getDirectory(), amazonService);
   }
 
   @Test
@@ -511,7 +515,7 @@ public class SublineControllerApiTest extends BaseControllerWithAmazonS3ApiTest 
     //when
     MvcResult mvcResult = mvc.perform(post("/v1/sublines/export-csv/actual"))
         .andExpect(status().isOk()).andReturn();
-    deleteFileFromBucket(mvcResult, sublineVersionExportService.getDirectory());
+    deleteFileFromBucket(mvcResult, sublineVersionExportService.getDirectory(),amazonService);
   }
 
   @Test
@@ -541,7 +545,7 @@ public class SublineControllerApiTest extends BaseControllerWithAmazonS3ApiTest 
     //when
     MvcResult mvcResult = mvc.perform(post("/v1/sublines/export-csv/timetable-year-change"))
         .andExpect(status().isOk()).andReturn();
-    deleteFileFromBucket(mvcResult, sublineVersionExportService.getDirectory());
+    deleteFileFromBucket(mvcResult, sublineVersionExportService.getDirectory(), amazonService);
   }
 
   @Test
