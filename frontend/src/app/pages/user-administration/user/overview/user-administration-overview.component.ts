@@ -1,9 +1,7 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { UserService } from '../../service/user.service';
 import { filter, tap } from 'rxjs/operators';
-import { TableSettings } from '../../../../core/components/table/table-settings';
-import { TableComponent } from '../../../../core/components/table/table.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApplicationType, PermissionRestrictionType, SwissCanton, User } from '../../../../api';
 import { Subscription } from 'rxjs';
@@ -14,17 +12,17 @@ import {
   RouteToDialogService,
 } from '../../../../core/components/route-to-dialog/route-to-dialog.service';
 import { Cantons } from '../../../tth/overview/canton/Cantons';
+import { TableService } from '../../../../core/components/table/table.service';
+import { TablePagination } from '../../../../core/components/table/table-pagination';
 
 @Component({
   selector: 'app-user-administration-overview',
   templateUrl: './user-administration-overview.component.html',
   styleUrls: ['./user-administration-overview.component.scss'],
+  providers: [TableService],
 })
-export class UserAdministrationUserOverviewComponent implements OnInit, OnDestroy {
-  @ViewChild(TableComponent) tableComponent!: TableComponent<User>;
+export class UserAdministrationUserOverviewComponent implements OnDestroy {
   userPageResult: { users: User[]; totalCount: number } = { users: [], totalCount: 0 };
-  tableIsLoading = false;
-
   selectedSearch: SearchType = 'USER';
   readonly searchOptions = SearchTypes;
 
@@ -55,7 +53,8 @@ export class UserAdministrationUserOverviewComponent implements OnInit, OnDestro
     private readonly userService: UserService,
     private readonly router: Router,
     private readonly route: ActivatedRoute,
-    private readonly routeToDialogService: RouteToDialogService
+    private readonly routeToDialogService: RouteToDialogService,
+    private readonly tableService: TableService
   ) {
     this.dialogClosedEventSubscription = this.routeToDialogService.detailDialogEvent
       .pipe(filter((e) => e === DetailDialogEvents.Closed))
@@ -66,15 +65,11 @@ export class UserAdministrationUserOverviewComponent implements OnInit, OnDestro
     if (this.selectedSearch === 'USER') {
       this.checkIfUserExists(
         this.userSearchForm.get(this.userSearchCtrlName)?.value,
-        this.tableComponent.paginator.pageIndex
+        this.tableService.pageIndex
       );
     } else {
-      this.filterChanged(this.tableComponent.paginator.pageIndex);
+      this.filterChanged(this.tableService.pageIndex);
     }
-  }
-
-  ngOnInit(): void {
-    this.loadUsers({ page: 0, size: 10 });
   }
 
   ngOnDestroy() {
@@ -89,19 +84,17 @@ export class UserAdministrationUserOverviewComponent implements OnInit, OnDestro
       .then();
   }
 
-  loadUsers(tableSettings: TableSettings): void {
-    this.tableIsLoading = true;
+  loadUsers(pagination: TablePagination): void {
     this.userSearchForm.reset();
     this.boForm.reset();
     this.selectedApplicationOptions = [];
     this.userService
-      .getUsers(tableSettings.page, tableSettings.size)
+      .getUsers(pagination.page, pagination.size)
       .pipe(
         tap((result) => {
           this.userPageResult = result;
-          this.tableComponent.paginator.pageIndex = tableSettings.page;
-          this.tableComponent.paginator.pageSize = tableSettings.size;
-          this.tableIsLoading = false;
+          this.tableService.pageIndex = pagination.page;
+          this.tableService.pageSize = pagination.size;
         })
       )
       .subscribe();
@@ -109,10 +102,10 @@ export class UserAdministrationUserOverviewComponent implements OnInit, OnDestro
 
   checkIfUserExists(selectedUser: User, pageIndex = 0): void {
     if (!selectedUser) {
-      this.loadUsers({ page: pageIndex, size: this.tableComponent.paginator.pageSize });
+      this.loadUsers({ page: pageIndex, size: this.tableService.pageSize });
     } else if (!selectedUser.sbbUserId) {
       this.userPageResult = { users: [], totalCount: 0 };
-      this.tableComponent.paginator.pageIndex = 0;
+      this.tableService.pageIndex = 0;
     } else {
       this.userService
         .hasUserPermissions(selectedUser.sbbUserId)
@@ -123,26 +116,19 @@ export class UserAdministrationUserOverviewComponent implements OnInit, OnDestro
             } else {
               this.userPageResult = { users: [], totalCount: 0 };
             }
-            this.tableComponent.paginator.pageIndex = 0;
+            this.tableService.pageIndex = 0;
           })
         )
         .subscribe();
     }
   }
 
-  routeToCreate(): Promise<boolean> {
-    return this.router.navigate(['add'], {
-      relativeTo: this.route,
-    });
-  }
-
   filterChanged(pageIndex = 0): void {
-    this.tableIsLoading = true;
     const selectedSboid = this.boForm.get(this.boSearchCtrlName)?.value;
     this.userService
       .getUsers(
         pageIndex,
-        this.tableComponent.paginator.pageSize,
+        this.tableService.pageSize,
         new Set<string>([selectedSboid, ...this.selectedCantonOptions]),
         this.selectedSearch === 'FILTER'
           ? PermissionRestrictionType.BusinessOrganisation
@@ -152,24 +138,17 @@ export class UserAdministrationUserOverviewComponent implements OnInit, OnDestro
       .pipe(
         tap((result) => {
           this.userPageResult = result;
-          this.tableComponent.paginator.pageIndex = pageIndex;
-          this.tableIsLoading = false;
+          this.tableService.pageIndex = pageIndex;
         })
       )
       .subscribe();
   }
 
   selectedSearchChanged(): void {
-    this.ngOnInit();
+    this.loadUsers({ page: 0, size: 10 });
   }
 
   getCantonAbbreviation(canton: SwissCanton) {
     return Cantons.fromSwissCanton(canton)?.short;
-  }
-
-  routeToCreateClientCredential() {
-    return this.router.navigate(['clients', 'add'], {
-      relativeTo: this.route,
-    });
   }
 }

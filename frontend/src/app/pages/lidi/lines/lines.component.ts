@@ -93,8 +93,8 @@ export class LinesComponent implements OnDestroy {
   lineVersions: Line[] = [];
   totalCount$ = 0;
 
-  private lineVersionsSubscription!: Subscription;
-  private routeSubscription!: Subscription;
+  private lineVersionsSubscription?: Subscription;
+  private routeSubscription: Subscription;
 
   constructor(
     private linesService: LinesService,
@@ -114,7 +114,7 @@ export class LinesComponent implements OnDestroy {
       );
   }
 
-  getOverview($paginationAndSearch: TablePagination) {
+  getOverview(pagination: TablePagination) {
     this.lineVersionsSubscription = this.linesService
       .getLines(
         undefined,
@@ -124,9 +124,9 @@ export class LinesComponent implements OnDestroy {
         getActiveSearch<BusinessOrganisation, BusinessOrganisation>(this.tableFilterConfig[1][0])
           .sboid,
         getActiveSearchDate(this.tableFilterConfig[1][3]),
-        $paginationAndSearch.page,
-        $paginationAndSearch.size,
-        [$paginationAndSearch.sort!, 'slnid,asc']
+        pagination.page,
+        pagination.size,
+        [pagination.sort!, 'slnid,asc']
       )
       .subscribe((lineContainer) => {
         this.lineVersions = lineContainer.objects!;
@@ -143,7 +143,7 @@ export class LinesComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
-    this.lineVersionsSubscription.unsubscribe();
+    this.lineVersionsSubscription?.unsubscribe();
     this.routeSubscription.unsubscribe();
   }
 }
