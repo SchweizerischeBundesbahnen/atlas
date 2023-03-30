@@ -1,0 +1,51 @@
+<app-dialog-close (clicked)="cancelCreation()"></app-dialog-close>
+
+<h1 class="font-bold-4xl mb-5">{{ 'USER_ADMIN.CLIENT_CREDENTIAL.NEW' | translate }}</h1>
+<h2 class="font-bold-xl mb-2">{{ 'USER_ADMIN.CLIENT_CREDENTIAL.NEW_INFORMATION' | translate }}</h2>
+
+<div class="col-12 d-flex">
+  <div class="d-flex flex-column col-6 pe-3">
+    <atlas-text-field
+      [formGroup]="form"
+      controlName="clientCredentialId"
+      fieldLabel="USER_ADMIN.CLIENT_CREDENTIAL.CLIENT_ID"
+    >
+    </atlas-text-field>
+  </div>
+  <div class="d-flex flex-column col-6 pe-3">
+    <atlas-text-field
+      [formGroup]="form"
+      controlName="alias"
+      fieldLabel="USER_ADMIN.CLIENT_CREDENTIAL.ALIAS"
+      infoIconTitle="USER_ADMIN.CLIENT_CREDENTIAL.ALIAS_INFO"
+    >
+    </atlas-text-field>
+  </div>
+</div>
+<div class="col-12 d-flex">
+  <div class="d-flex flex-column col-12 pe-3">
+    <atlas-text-field
+      [formGroup]="form"
+      controlName="comment"
+      fieldLabel="USER_ADMIN.CLIENT_CREDENTIAL.COMMENT"
+    >
+    </atlas-text-field>
+  </div>
+</div>
+
+<h1 class="font-bold-4xl mt-5">{{ 'USER_ADMIN.APPLICATIONS' | translate }}</h1>
+<div *ngFor="let permission of userPermissionManager.userPermission.permissions">
+  <app-user-administration-application-config
+    [application]="permission.application"
+    [role]="permission.role"
+  ></app-user-administration-application-config>
+</div>
+
+<footer class="footer fixed-bottom d-flex align-items-center justify-content-center">
+  <button (click)="cancelCreation()" class="atlas-primary-btn footer-btn" data-cy="cancel">
+    {{ 'COMMON.CANCEL' | translate }}
+  </button>
+  <button (click)="create()" class="atlas-primary-btn footer-btn ms-3" data-cy="save" type="submit">
+    {{ 'COMMON.SAVE' | translate }}
+  </button>
+</footer>

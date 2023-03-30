@@ -66,7 +66,6 @@ export class RgbPickerComponent implements OnInit, OnChanges {
   closeColorPickerDialog($event: KeyboardEvent) {
     if ($event.key === Keys.TAB) {
       if (this.colorPickerDirective) {
-        console.log(this.colorPickerDirective);
         this.colorPickerDirective.closeDialog();
       }
     }
