@@ -546,6 +546,8 @@
     "SELECT_CANTON": "Kanton auswählen",
     "SELECT_YEAR": "Jahr auswählen",
     "TABLE_RESULT_HEADING": "{{totalCount}} Stellungnahmen für Fahrplanjahr {{year}}",
+    "TABLE_RESULT_ACTUAL_HEARING_HEADING_PREFIX": "{{totalCount}} Stellungnahmen ",
+    "WHOLE_SWISS": "gesamte Schweiz",
     "OPEN": "{{canton}} öffnen",
     "STATEMENT_STATUS_HEADER": "Status",
     "SWISS_CANTON": "Kanton",
