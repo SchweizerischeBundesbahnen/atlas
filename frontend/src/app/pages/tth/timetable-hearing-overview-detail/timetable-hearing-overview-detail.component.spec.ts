@@ -18,6 +18,7 @@ describe('TimetableHearingOverviewDetailComponent', () => {
 
     fixture = TestBed.createComponent(TimetableHearingOverviewDetailComponent);
     component = fixture.componentInstance;
+    fixture.componentInstance.noTimetableHearingYearFound = true;
     fixture.detectChanges();
   });
 
