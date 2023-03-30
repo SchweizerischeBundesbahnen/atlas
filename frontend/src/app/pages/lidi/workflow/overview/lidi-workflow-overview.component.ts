@@ -71,8 +71,9 @@ export class LidiWorkflowOverviewComponent implements OnDestroy {
 
   lineVersionSnapshots: LineVersionSnapshot[] = [];
   totalCount$ = 0;
-  private routeSubscription!: Subscription;
-  private lineVersionSnapshotsSubscription!: Subscription;
+
+  private lineVersionSnapshotsSubscription?: Subscription;
+  private routeSubscription: Subscription;
 
   constructor(
     private linesService: LinesService,
@@ -97,15 +98,15 @@ export class LidiWorkflowOverviewComponent implements OnDestroy {
       });
   }
 
-  getOverview($paginationAndSearch: TablePagination) {
+  getOverview(pagination: TablePagination) {
     this.lineVersionSnapshotsSubscription = this.linesService
       .getLineVersionSnapshot(
         getActiveSearchForChip(this.tableFilterConfig[0][0]),
         getActiveSearchDate(this.tableFilterConfig[1][1]),
         getActiveSearch(this.tableFilterConfig[1][0]),
-        $paginationAndSearch.page,
-        $paginationAndSearch.size,
-        [$paginationAndSearch.sort!, 'number,asc']
+        pagination.page,
+        pagination.size,
+        [pagination.sort!, 'number,asc']
       )
       .subscribe((lineVersionSnapshotContainer) => {
         this.lineVersionSnapshots = lineVersionSnapshotContainer.objects!;
@@ -122,7 +123,7 @@ export class LidiWorkflowOverviewComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
-    this.lineVersionSnapshotsSubscription.unsubscribe();
+    this.lineVersionSnapshotsSubscription?.unsubscribe();
     this.routeSubscription.unsubscribe();
   }
 }

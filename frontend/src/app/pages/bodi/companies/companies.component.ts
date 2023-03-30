@@ -1,28 +1,27 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-
+import { Component, OnDestroy } from '@angular/core';
 import { TableColumn } from '../../../core/components/table/table-column';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { NotificationService } from '../../../core/notification/notification.service';
 import { CompaniesService, Company } from '../../../api';
-import { TableComponent } from '../../../core/components/table/table.component';
-import { TableSettings } from '../../../core/components/table/table-settings';
-import { TableSettingsService } from '../../../core/components/table/table-settings.service';
-import { Pages } from '../../pages';
 import { filter } from 'rxjs/operators';
 import {
   DetailDialogEvents,
   RouteToDialogService,
 } from '../../../core/components/route-to-dialog/route-to-dialog.service';
+import { TableService } from '../../../core/components/table/table.service';
+import { TablePagination } from '../../../core/components/table/table-pagination';
+import {
+  FilterType,
+  getActiveSearchForChip,
+  TableFilterChip,
+} from '../../../core/components/table-filter/table-filter-config';
 
 @Component({
   selector: 'app-bodi-companies',
   templateUrl: './companies.component.html',
+  providers: [TableService],
 })
-export class CompaniesComponent implements OnInit, OnDestroy {
-  // @ViewChild(TableComponent, { static: true })
-  // tableComponent!: TableComponent<Company>;
-
+export class CompaniesComponent implements OnDestroy {
   tableColumns: TableColumn<Company>[] = [
     { headerTitle: 'BODI.COMPANIES.UIC_CODE', value: 'uicCode' },
     {
@@ -37,51 +36,51 @@ export class CompaniesComponent implements OnInit, OnDestroy {
     { headerTitle: 'BODI.COMPANIES.URL', value: 'url' },
   ];
 
+  readonly tableFilterConfig: [[TableFilterChip]] = [
+    [
+      {
+        filterType: FilterType.CHIP_SEARCH,
+        elementWidthCssClass: 'col-6',
+        activeSearch: [],
+      },
+    ],
+  ];
+
   companies: Company[] = [];
   totalCount = 0;
-  isLoading = false;
-  private companiesSubscription!: Subscription;
-  private routeSubscription!: Subscription;
+
+  private companiesSubscription?: Subscription;
+  private routeSubscription: Subscription;
 
   constructor(
     private companiesService: CompaniesService,
     private route: ActivatedRoute,
     private router: Router,
-    private notificationService: NotificationService,
-    private tableSettingsService: TableSettingsService,
-    private routeToDialogService: RouteToDialogService
+    private routeToDialogService: RouteToDialogService,
+    private readonly tableService: TableService
   ) {
     this.routeSubscription = this.routeToDialogService.detailDialogEvent
       .pipe(filter((e) => e === DetailDialogEvents.Closed))
-      .subscribe(() => this.ngOnInit());
+      .subscribe(() => {
+        this.getOverview({
+          page: this.tableService.pageIndex,
+          size: this.tableService.pageSize,
+          sort: this.tableService.sortString,
+        });
+      });
   }
 
-  ngOnInit(): void {
-    const storedTableSettings = this.tableSettingsService.getTableSettings(Pages.COMPANIES.path);
-    this.getOverview(
-      storedTableSettings || {
-        page: 0,
-        size: 10,
-        sort: this.getDefaultSort(),
-      }
-    );
-  }
-
-  getOverview($paginationAndSearch: TableSettings) {
-    this.tableSettingsService.storeTableSettings(Pages.COMPANIES.path, $paginationAndSearch);
-    this.isLoading = true;
+  getOverview(pagination: TablePagination) {
     this.companiesSubscription = this.companiesService
       .getCompanies(
-        $paginationAndSearch.searchCriteria,
-        $paginationAndSearch.page,
-        $paginationAndSearch.size,
-        [$paginationAndSearch.sort!, this.getDefaultSort()]
+        getActiveSearchForChip(this.tableFilterConfig[0][0]),
+        pagination.page,
+        pagination.size,
+        [pagination.sort!, 'uicCode,asc']
       )
       .subscribe((container) => {
         this.companies = container.objects!;
         this.totalCount = container.totalCount!;
-        // this.tableComponent.setTableSettings($paginationAndSearch); TODO: tableSettings
-        this.isLoading = false;
       });
   }
 
@@ -94,11 +93,7 @@ export class CompaniesComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.companiesSubscription.unsubscribe();
+    this.companiesSubscription?.unsubscribe();
     this.routeSubscription.unsubscribe();
-  }
-
-  getDefaultSort() {
-    return 'uicCode,ASC';
   }
 }

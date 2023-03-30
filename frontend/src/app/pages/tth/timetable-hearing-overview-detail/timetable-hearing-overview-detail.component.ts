@@ -7,28 +7,26 @@ import {
   TimetableHearingService,
   TimetableHearingStatement,
   TimetableHearingYear,
-  UserAdministrationService,
 } from '../../../api';
 import { Cantons } from '../overview/canton/Cantons';
 import { TableColumn } from '../../../core/components/table/table-column';
-import { DEFAULT_STATUS_SELECTION } from '../../../core/constants/status.choices';
-import { TableSettings } from '../../../core/components/table/table-settings';
 import { Pages } from '../../pages';
 import { Subject, takeUntil } from 'rxjs';
 import moment from 'moment';
 import { OverviewToTabShareDataService } from '../timetable-hearing-overview-tab/overview-to-tab-share-data.service';
 import { MatSelectChange } from '@angular/material/select';
+import { TablePagination } from '../../../core/components/table/table-pagination';
+import { TableService } from '../../../core/components/table/table.service';
 import { TthUtils } from '../tth-utils';
 
 @Component({
   selector: 'app-timetable-hearing-overview-detail',
   templateUrl: './timetable-hearing-overview-detail.component.html',
   styleUrls: ['./timetable-hearing-overview-detail.component.scss'],
+  providers: [TableService],
 })
 export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestroy {
   timeTableHearingStatements: TimetableHearingStatement[] = [];
-
-  isLoading = false;
   totalCount$ = 0;
   tableColumns: TableColumn<TimetableHearingStatement>[] = [];
 
@@ -98,26 +96,24 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
     }
   }
 
-  getOverview($paginationAndSearch: TableSettings) {
+  getOverview(pagination: TableSettings) {
     const selectedCantonEnum = this.getSelectedCantonToBeSearchFromNavigation();
     this.dafaultDropdownCantonSelection = this.initDefatulDropdownCantonSelection();
-    this.isLoading = true;
     this.timetableHearingService
       .getStatements(
         this.foundTimetableHearingYear.timetableYear,
         selectedCantonEnum,
-        $paginationAndSearch.searchCriteria,
-        $paginationAndSearch.statusRestrictions,
-        $paginationAndSearch.ttfid,
-        $paginationAndSearch.page,
-        $paginationAndSearch.size,
-        [$paginationAndSearch.sort!, 'statementStatus,ASC']
+        undefined, // TODO: set with tableFilter
+        undefined,
+        undefined,
+        pagination.page,
+        pagination.size,
+        [pagination.sort!, 'statementStatus,ASC']
       )
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((container) => {
         this.timeTableHearingStatements = container.objects!;
         this.totalCount$ = container.totalCount!;
-        this.isLoading = false;
       });
   }
 
@@ -301,7 +297,7 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
     this.getOverview({
       page: 0,
       size: 10,
-      sort: 'statementStatus,ASC',
+      sort: 'statementStatus,asc',
       statusChoices: DEFAULT_STATUS_SELECTION,
     });
   }

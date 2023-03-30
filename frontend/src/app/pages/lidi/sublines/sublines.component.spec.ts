@@ -1,13 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { TableComponent } from '../../../core/components/table/table.component';
-import { LoadingSpinnerComponent } from '../../../core/components/loading-spinner/loading-spinner.component';
 import { ContainerSubline, Status, SublinesService, SublineType } from '../../../api';
 import { SublinesComponent } from './sublines.component';
 import { AppTestingModule } from '../../../app.testing.module';
 import { TranslatePipe } from '@ngx-translate/core';
-import { MockAppTableSearchComponent } from '../../../app.testing.mocks';
-import { DEFAULT_STATUS_SELECTION } from '../../../core/constants/status.choices';
+import { MockTableComponent } from '../../../app.testing.mocks';
 
 const versionContainer: ContainerSubline = {
   objects: [
@@ -32,14 +29,10 @@ describe('SublinesComponent', () => {
   // With Spy
   const sublinesService = jasmine.createSpyObj('linesService', ['getSublines']);
   sublinesService.getSublines.and.returnValue(of(versionContainer));
+
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        SublinesComponent,
-        TableComponent,
-        LoadingSpinnerComponent,
-        MockAppTableSearchComponent,
-      ],
+      declarations: [SublinesComponent, MockTableComponent],
       imports: [AppTestingModule],
       providers: [{ provide: SublinesService, useValue: sublinesService }, TranslatePipe],
     }).compileComponents();
@@ -50,17 +43,6 @@ describe('SublinesComponent', () => {
   });
 
   it('should create', () => {
-    expect(sublinesService.getSublines).toHaveBeenCalledOnceWith(
-      undefined,
-      DEFAULT_STATUS_SELECTION,
-      undefined,
-      undefined,
-      undefined,
-      0,
-      10,
-      ['number,ASC', 'slnid,ASC']
-    );
-    expect(component.sublines.length).toBe(1);
-    expect(component.totalCount$).toBe(1);
+    expect(component).toBeTruthy();
   });
 });

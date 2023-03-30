@@ -11,7 +11,7 @@
           'COMMON.SEARCH.SEARCH_CRITERIA' | translate
         }}</mat-label>
         <div class="search-main-field mb-4">
-          <mat-chip-grid #chipList data-cy="table-search-strings">
+          <mat-chip-grid #chipList>
             <mat-chip-row
               *ngFor="let search of chipSearch.activeSearch"
               (removed)="removeSearch(search, rowIndex, filterConfigIndex)"
@@ -26,7 +26,7 @@
               (matChipInputTokenEnd)="addSearch($event, rowIndex, filterConfigIndex)"
               [matChipInputFor]="chipList"
               class="font-regular-base"
-              data-cy="table-search-chip-input"
+              attr.data-cy="table-filter-chip-search-{{ rowIndex }}-{{ filterConfigIndex }}"
             />
             <i class="bi bi-search"></i>
           </mat-chip-grid>
@@ -58,7 +58,7 @@
             (selectionChange)="multiSelectChanged($event, rowIndex, filterConfigIndex)"
             [value]="multiSelect.activeSearch"
             class="font-bold-base"
-            data-cy="table-search-line-type"
+            attr.data-cy="table-filter-multi-select-{{ rowIndex }}-{{ filterConfigIndex }}"
             multiple
           >
             <mat-option *ngFor="let option of multiSelect.selectOptions" [value]="option">{{
@@ -81,7 +81,7 @@
               [matDatepicker]="picker"
               [max]="MAX_DATE"
               [min]="MIN_DATE"
-              data-cy="table-search-date-input"
+              attr.data-cy="table-filter-date-select-{{ rowIndex }}-{{ filterConfigIndex }}"
               matInput
             />
             <mat-datepicker-toggle [for]="picker" matSuffix>

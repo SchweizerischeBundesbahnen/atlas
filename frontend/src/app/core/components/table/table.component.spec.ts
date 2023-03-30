@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { TableComponent } from './table.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { By } from '@angular/platform-browser';
@@ -7,8 +6,8 @@ import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.comp
 import { TableFilterComponent } from '../table-filter/table-filter.component';
 import { AppTestingModule } from '../../../app.testing.module';
 import { DateIconComponent } from '../../form-components/date-icon/date-icon.component';
-import { SearchSelectComponent } from '../../form-components/search-select/search-select.component';
 import { BusinessOrganisationSelectComponent } from '../../form-components/bo-select/business-organisation-select.component';
+import { TableService } from './table.service';
 import { MockAtlasFieldErrorComponent } from '../../../app.testing.mocks';
 import { StatementStatus } from '../../../api';
 
@@ -25,16 +24,14 @@ describe('TableComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
-        TableComponent,
         LoadingSpinnerComponent,
         TableFilterComponent,
         BusinessOrganisationSelectComponent,
-        SearchSelectComponent,
         DateIconComponent,
         MockAtlasFieldErrorComponent,
       ],
       imports: [AppTestingModule],
-      providers: [TranslatePipe],
+      providers: [TranslatePipe, TableService],
     }).compileComponents();
   });
 
@@ -156,14 +153,14 @@ describe('TableComponent', () => {
     spyOn(component.getTableElementsEvent, 'emit');
 
     const paginator = fixture.debugElement.query(By.css('mat-paginator'));
-    paginator.nativeNode.setAttribute('ng-reflect-page-size-oprions', [5, 10, 20]);
+    paginator.nativeNode.setAttribute('ng-reflect-page-size-options', [5, 10, 20]);
     fixture.detectChanges();
 
-    const matSelector = fixture.debugElement.queryAll(By.css('.mat-mdc-select-trigger'))[4];
+    const matSelector = paginator.query(By.css('.mat-mdc-select-trigger'));
     matSelector.nativeElement.click();
     fixture.detectChanges();
 
-    const matOption = fixture.debugElement.query(By.css('mat-option'));
+    const matOption = paginator.query(By.css('mat-option'));
     matOption.nativeElement.click();
     fixture.detectChanges();
 
@@ -172,10 +169,7 @@ describe('TableComponent', () => {
       Object({
         page: 0,
         size: 5,
-        sort: 'validFrom,ASC',
-        searchCriteria: [],
-        validOn: undefined,
-        statusChoices: [],
+        sort: 'validFrom,asc',
       })
     );
   });
@@ -192,10 +186,7 @@ describe('TableComponent', () => {
       Object({
         page: 0,
         size: 10,
-        sort: 'validFrom,DESC',
-        searchCriteria: [],
-        validOn: undefined,
-        statusChoices: [],
+        sort: 'validFrom,desc',
       })
     );
   });
