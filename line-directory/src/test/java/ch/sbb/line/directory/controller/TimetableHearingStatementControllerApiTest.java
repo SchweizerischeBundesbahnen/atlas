@@ -56,8 +56,8 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
     .hearingFrom(LocalDate.of(2021, 1, 1))
     .hearingTo(LocalDate.of(2021, 2, 1))
     .build();
-  public static final String TTFNID = "ch:1:ttfnid:123123123";
-  public static final String SBOID = "ch:1:sboid:123451";
+  private static final String TTFNID = "ch:1:ttfnid:123123123";
+  private static final String SBOID = "ch:1:sboid:123451";
 
   @Autowired
   private TimetableHearingYearRepository timetableHearingYearRepository;
@@ -131,8 +131,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
       MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
 
     mvc.perform(multipart(HttpMethod.POST, "/v1/timetable-hearing/statements")
-        .file(statementJson))
-      .andDo(print())
+            .file(statementJson))
       .andExpect(status().isCreated())
       .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
       .andExpect(jsonPath("$." + Fields.ttfnid, is("ch:1:ttfnid:12341241")))
