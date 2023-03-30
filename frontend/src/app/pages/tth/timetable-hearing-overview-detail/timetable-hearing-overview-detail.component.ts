@@ -209,7 +209,8 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
           if (archivedTimetableHearingYears.objects.length === 0) {
             this.noTimetableHearingYearFound = true;
           } else if (archivedTimetableHearingYears.objects && archivedTimetableHearingYears.objects.length >= 1) {
-            this.YEAR_OPTIONS = archivedTimetableHearingYears.objects.map((value) => value.timetableYear).sort().reverse();
+            archivedTimetableHearingYears.objects.sort((n1, n2) => n1.timetableYear - n2.timetableYear).reverse();
+            this.YEAR_OPTIONS = archivedTimetableHearingYears.objects.map((value) => value.timetableYear);
             this.defaultYearSelection = this.YEAR_OPTIONS[0];
             this.foundTimetableHearingYear = archivedTimetableHearingYears.objects[0];
             this.initOverviewTable();
@@ -226,7 +227,8 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
           if (plannedTimetableHearingYears.objects.length === 0) {
             this.noTimetableHearingYearFound = true;
           } else if (plannedTimetableHearingYears.objects.length >= 1) {
-            this.YEAR_OPTIONS = plannedTimetableHearingYears.objects.map((value) => value.timetableYear).sort();
+            plannedTimetableHearingYears.objects.sort((n1, n2) => n1.timetableYear - n2.timetableYear)
+            this.YEAR_OPTIONS = plannedTimetableHearingYears.objects.map((value) => value.timetableYear);
             this.defaultYearSelection = this.YEAR_OPTIONS[0];
             this.foundTimetableHearingYear = plannedTimetableHearingYears.objects[0];
             this.initOverviewTable();
