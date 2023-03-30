@@ -2,15 +2,16 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   ApplicationType,
-  PermissionRestrictionObject,
+  ClientCredential,
+  ClientCredentialPermissionCreate,
+  Permission,
+  PermissionRestrictionType,
   User,
   UserAdministrationService,
   UserInformationService,
-  UserPermission,
   UserPermissionCreate,
 } from '../../../api';
 import { map } from 'rxjs/operators';
-import TypeEnum = PermissionRestrictionObject.TypeEnum;
 
 @Injectable({
   providedIn: 'root',
@@ -25,7 +26,7 @@ export class UserService {
     page: number,
     size: number,
     sboids: Set<string> | undefined = undefined,
-    type: TypeEnum | undefined = undefined,
+    type: PermissionRestrictionType | undefined = undefined,
     applicationTypes: Set<ApplicationType> | undefined = undefined
   ): Observable<{ users: User[]; totalCount: number }> {
     return this.userAdministrationService.getUsers(sboids, type, applicationTypes, page, size).pipe(
@@ -51,7 +52,7 @@ export class UserService {
     );
   }
 
-  getPermissionsFromUserModelAsArray(user: User): UserPermission[] {
+  getPermissionsFromUserModelAsArray(user: User | ClientCredential): Permission[] {
     return Array.from(user.permissions ?? []);
   }
 
@@ -61,5 +62,21 @@ export class UserService {
 
   updateUserPermission(userPermission: UserPermissionCreate): Observable<User> {
     return this.userAdministrationService.updateUserPermissions(userPermission);
+  }
+
+  getClientCredential(clientId: string): Observable<ClientCredential> {
+    return this.userAdministrationService.getClientCredential(clientId);
+  }
+
+  createClientCredentialPermission(
+    permission: ClientCredentialPermissionCreate
+  ): Observable<ClientCredential> {
+    return this.userAdministrationService.createClientCredential(permission);
+  }
+
+  updateClientPermissions(
+    permissions: ClientCredentialPermissionCreate
+  ): Observable<ClientCredential> {
+    return this.userAdministrationService.updateClientCredential(permissions);
   }
 }

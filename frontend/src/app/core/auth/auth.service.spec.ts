@@ -9,10 +9,9 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {
   ApplicationRole,
   ApplicationType,
-  PermissionRestrictionObject,
+  PermissionRestrictionType,
   UserAdministrationService,
 } from '../../api';
-import TypeEnum = PermissionRestrictionObject.TypeEnum;
 
 function createOauthServiceSpy() {
   const oauthServiceSpy = jasmine.createSpyObj<OAuthService>('OAuthService', [
@@ -360,7 +359,10 @@ describe('AuthService', () => {
             application: ApplicationType.Lidi,
             role: ApplicationRole.Writer,
             permissionRestrictions: [
-              { value: 'ch:1:slnid:1000004', type: TypeEnum.BusinessOrganisation },
+              {
+                valueAsString: 'ch:1:slnid:1000004',
+                type: PermissionRestrictionType.BusinessOrganisation,
+              },
             ],
           },
         ],

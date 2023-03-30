@@ -6,7 +6,6 @@ import ch.sbb.atlas.api.timetable.hearing.TimetableHearingConstants;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.entity.BaseEntity;
-import ch.sbb.atlas.service.UserService;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -84,13 +83,6 @@ public class TimetableHearingStatement extends BaseEntity implements CantonAssoc
   // FoT Justification field for comments
   @Size(max = AtlasFieldLengths.LENGTH_5000)
   private String justification;
-
-  @Override
-  public void onPrePersist() {
-    String sbbUid = UserService.isClientCredentialAuthentication() ? "SKI" : UserService.getSbbUid();
-    setCreator(sbbUid);
-    setEditor(sbbUid);
-  }
 
   public void removeDocument(String documentFilename) {
     Optional<StatementDocument> optionalStatementDocument = documents.stream().filter(doc -> Objects.equals(documentFilename, doc.getFileName())).findFirst();
