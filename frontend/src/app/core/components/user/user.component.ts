@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../auth/auth.service';
 import { User } from './user';
-import { UserPermission } from '../../../api';
+import { Permission } from '../../../api';
 
 @Component({
   selector: 'app-user',
@@ -13,7 +13,7 @@ export class UserComponent implements OnInit {
   userName: string | undefined;
   isAuthenticated = false;
   roles: string[] | undefined;
-  permissions: UserPermission[] | undefined;
+  permissions: Permission[] | undefined;
 
   protected authenticated: boolean | undefined;
 

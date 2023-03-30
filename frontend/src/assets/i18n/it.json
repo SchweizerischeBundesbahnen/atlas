@@ -194,6 +194,7 @@
     "SEARCH_FOR_FILTER_CANTON": "Cantoni e applicazioni",
     "NEW": "Inserire nuovo utente",
     "NEW_INFORMATION": "Dettagli del nuovo utente",
+    "NEW_CLIENT_CREDENTIAL": "Autorizzare le credenziali dei nuovi clienti",
     "INFORMATION": "Dettagli utente",
     "NOT_FOUND": "L'utente non è stato trovato",
     "TABLE_HEADER": "Utente",
@@ -226,6 +227,19 @@
     },
     "CONFLICT": {
       "SBBUSERID": "L'utente {{sbbUserId}} è già memorizzato."
+    },
+    "TABS": {
+      "USER": "Utenti",
+      "CLIENTS": "Clients"
+    },
+    "CLIENT_CREDENTIAL": {
+      "NEW": "Autorizzare un nuovo cliente",
+      "NEW_INFORMATION": "Dettagli del cliente",
+      "INFORMATION": "Dettagli del cliente",
+      "CLIENT_ID": "Client ID",
+      "ALIAS": "Alias",
+      "ALIAS_INFO": "Sarà visibile come nome di visualizzazione nel frontend, ad esempio \"modificato da\".",
+      "COMMENT": "Ulteriori commenti sul cliente"
     }
   },
   "TTFN": {
