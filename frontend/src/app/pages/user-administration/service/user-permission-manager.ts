@@ -3,13 +3,12 @@ import {
   ApplicationType,
   BusinessOrganisation,
   BusinessOrganisationsService,
-  PermissionRestrictionObject,
-  UserPermission,
+  Permission,
+  PermissionRestrictionType,
   UserPermissionCreate,
 } from '../../../api';
 import { BehaviorSubject, firstValueFrom, Subject } from 'rxjs';
 import { Injectable } from '@angular/core';
-import TypeEnum = PermissionRestrictionObject.TypeEnum;
 
 @Injectable()
 export class UserPermissionManager {
@@ -112,7 +111,7 @@ export class UserPermissionManager {
     this.userPermission.sbbUserId = userId;
   }
 
-  setPermissions(permissions: UserPermission[]): void {
+  setPermissions(permissions: Permission[]): void {
     permissions.forEach((permission) => {
       const application = permission.application;
       const permissionIndex = this.getPermissionIndexFromApplication(application);
@@ -121,16 +120,18 @@ export class UserPermissionManager {
       this.businessOrganisationsOfApplication[application] = [];
       this.boOfApplicationsSubject$.next(this.businessOrganisationsOfApplication);
       permission.permissionRestrictions
-        .filter((restriction) => restriction.type === TypeEnum.BusinessOrganisation)
+        .filter(
+          (restriction) => restriction.type === PermissionRestrictionType.BusinessOrganisation
+        )
         .forEach((sboid) => {
-          this.addSboidToPermission(application, sboid.value!);
+          this.addSboidToPermission(application, sboid.valueAsString!);
         });
       permission.permissionRestrictions
-        .filter((restriction) => restriction.type === TypeEnum.Canton)
+        .filter((restriction) => restriction.type === PermissionRestrictionType.Canton)
         .forEach((canton) => {
           this.userPermission.permissions[permissionIndex].permissionRestrictions.push({
-            value: canton.value,
-            type: TypeEnum.Canton,
+            valueAsString: canton.valueAsString,
+            type: PermissionRestrictionType.Canton,
           });
         });
     });
@@ -146,7 +147,7 @@ export class UserPermissionManager {
     const sboidToDelete = this.businessOrganisationsOfApplication[application][sboidIndex].sboid;
     this.userPermission.permissions[permissionIndex].permissionRestrictions =
       this.userPermission.permissions[permissionIndex].permissionRestrictions.filter(
-        (sboid) => sboid.value !== sboidToDelete
+        (sboid) => sboid.valueAsString !== sboidToDelete
       );
     this.businessOrganisationsOfApplication[application] = this.businessOrganisationsOfApplication[
       application
@@ -170,7 +171,10 @@ export class UserPermissionManager {
         console.error('Already added');
         return;
       }
-      permission.permissionRestrictions.push({ value: sboid, type: TypeEnum.BusinessOrganisation });
+      permission.permissionRestrictions.push({
+        valueAsString: sboid,
+        type: PermissionRestrictionType.BusinessOrganisation,
+      });
       this.businessOrganisationsOfApplication[application] = [
         ...this.businessOrganisationsOfApplication[application],
         result.objects[0],
@@ -190,7 +194,7 @@ export class UserPermissionManager {
     return this.userPermission.permissions[permissionIndex];
   }
 
-  getRestrictionValues(userPermission: UserPermission) {
-    return userPermission.permissionRestrictions!.map((restriction) => restriction.value);
+  getRestrictionValues(userPermission: Permission) {
+    return userPermission.permissionRestrictions!.map((restriction) => restriction.valueAsString);
   }
 }
