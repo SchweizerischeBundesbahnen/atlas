@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Sort, SortDirection } from '@angular/material/sort';
 import { PageEvent } from '@angular/material/paginator';
 import { TableColumn } from './table-column';
@@ -27,23 +27,12 @@ export class TableComponent<DATATYPE> implements OnInit {
   @Input() tableColumns!: TableColumn<DATATYPE>[];
   @Input() canEdit = true;
   @Input() totalCount!: number;
-  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-  // @Input() tableSearchFieldTemplate!: TemplateRef<any>;
   @Input() pageSizeOptions: number[] = [5, 10, 25, 100];
   @Input() sortingDisabled = false;
+  @Input() showTableFilter = true;
 
   @Output() editElementEvent = new EventEmitter<DATATYPE>();
   @Output() getTableElementsEvent = new EventEmitter<TablePagination>();
-
-  // @ViewChild(MatSort, { static: true }) sort!: MatSort;
-  // @ViewChild(MatPaginator, { static: true }) private paginator!: MatPaginator;
-
-  // @Input() searchTextColumnStyle = 'col-4';
-  // @Input() displayStatusSearch = true;
-  // @Input() displayValidOnSearch = true;
-  // @Input() displayBusinessOrganisationSearch = true;
-  @Input() showTableFilter = true;
-  // @Input() searchStatusType: SearchStatusType = 'DEFAULT_STATUS';
 
   isLoading = false;
   SHOW_TOOLTIP_LENGTH = 20;
@@ -62,7 +51,6 @@ export class TableComponent<DATATYPE> implements OnInit {
       page: this.pageIndex,
       size: this.pageSize,
       sort: this.sortString,
-      // filterConfig: this.tableFilterConfig,
     });
   }
 
@@ -102,7 +90,6 @@ export class TableComponent<DATATYPE> implements OnInit {
       page: this.pageIndex,
       size: this.pageSize,
       sort: this.sortString,
-      // filterConfig: this.tableFilterConfig,
     });
   }
 
@@ -118,7 +105,6 @@ export class TableComponent<DATATYPE> implements OnInit {
       page: this.pageIndex,
       size: this.pageSize,
       sort: this.sortString,
-      // filterConfig: this.tableFilterConfig,
     });
   }
 
@@ -131,7 +117,6 @@ export class TableComponent<DATATYPE> implements OnInit {
       page: this.pageIndex,
       size: this.pageSize,
       sort: this.sortString,
-      // filterConfig: search,
     });
   }
 
@@ -161,8 +146,8 @@ export class TableComponent<DATATYPE> implements OnInit {
     return forText.length <= this.SHOW_TOOLTIP_LENGTH;
   }
 
-  private getElementsSearched(tableSettings: TablePagination) {
+  private getElementsSearched(pagination: TablePagination) {
     this.isLoading = true;
-    this.getTableElementsEvent.emit(tableSettings);
+    this.getTableElementsEvent.emit(pagination);
   }
 }

@@ -9,26 +9,8 @@
   [tableColumns]="tableColumns"
   [tableData]="transportCompanies"
   [totalCount]="totalCount"
+  [tableFilterConfig]="tableFilterConfig"
   data-cy="bodi-transport-companies"
 >
 </app-table>
 <router-outlet></router-outlet>
-<ng-template #transportCompanyTypeSelection>
-  <!-- TODO: configureInTableFilter -->
-  <div class="d-flex flex-column col-3 pe-3">
-    <mat-label class="font-bold-lg">{{ 'BODI.TRANSPORT_COMPANIES.STATUS' | translate }}</mat-label>
-    <div class="multi-select-search">
-      <mat-select
-        (selectionChange)="onStatusSelectionChange()"
-        [(value)]="activeStatusTypes"
-        class="color-primary-400"
-        data-cy="table-search-status"
-        multiple
-      >
-        <mat-option *ngFor="let status of STATUS_TYPES" [value]="status">{{
-          'BODI.TRANSPORT_COMPANIES.TRANSPORT_COMPANY_STATUS.' + status | translate
-        }}</mat-option>
-      </mat-select>
-    </div>
-  </div>
-</ng-template>

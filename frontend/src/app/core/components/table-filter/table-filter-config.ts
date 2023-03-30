@@ -41,6 +41,30 @@ export type TableFilterChip = {
   activeSearch: string[];
 };
 
+export function isDateSelect<TFilterConfig>(
+  filterType: TableFilterConfig<TFilterConfig>
+): filterType is TableFilterDateSelect {
+  return filterType.filterType === FilterType.VALID_ON_SELECT;
+}
+
+export function isSearchSelect<TFilterConfig>(
+  filterType: TableFilterConfig<TFilterConfig>
+): filterType is TableFilterSearchSelect<TFilterConfig> {
+  return filterType.filterType === FilterType.SEARCH_SELECT;
+}
+
+export function isMultiSelect<TFilterConfig>(
+  filterType: TableFilterConfig<TFilterConfig>
+): filterType is TableFilterMultiSelect<TFilterConfig> {
+  return filterType.filterType === FilterType.MULTI_SELECT;
+}
+
+export function isChipSearch<TFilterConfig>(
+  filterType: TableFilterConfig<TFilterConfig>
+): filterType is TableFilterChip {
+  return filterType.filterType === FilterType.CHIP_SEARCH;
+}
+
 export function getActiveSearch<
   ExpectedType extends TFilterConfig | TFilterConfig[] | undefined,
   TFilterConfig
