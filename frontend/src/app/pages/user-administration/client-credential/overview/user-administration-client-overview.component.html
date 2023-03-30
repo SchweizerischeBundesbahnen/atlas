@@ -1,0 +1,16 @@
+<app-table
+  (editElementEvent)="edit($event)"
+  (getTableElementsEvent)="getOverview($event)"
+  [displayStatusSearch]="false"
+  [displayValidOnSearch]="false"
+  [isLoading]="isLoading"
+  [loadTableSearch]="false"
+  [pageSizeOptions]="[5, 10, 20]"
+  [searchTextColumnStyle]="'col-12'"
+  [sortingDisabled]="true"
+  [tableColumns]="tableColumns"
+  [tableData]="clientCredentials"
+  [totalCount]="totalCount"
+>
+</app-table>
+<router-outlet></router-outlet>

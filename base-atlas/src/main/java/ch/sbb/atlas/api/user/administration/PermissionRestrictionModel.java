@@ -1,7 +1,6 @@
 package ch.sbb.atlas.api.user.administration;
 
 import ch.sbb.atlas.api.user.administration.enumeration.PermissionRestrictionType;
-import ch.sbb.atlas.kafka.model.SwissCanton;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
@@ -29,10 +28,9 @@ public abstract class PermissionRestrictionModel<T> {
 
   protected final PermissionRestrictionType type;
 
-  @Schema(oneOf = {String.class, SwissCanton.class} )
+  @JsonIgnore
   public abstract T getValue();
 
-  @JsonIgnore
   public abstract String getValueAsString();
 
   public abstract void setValueAsString(String value);
