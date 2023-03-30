@@ -59,6 +59,9 @@ model/errorResponse.ts
 model/examinantWorkflowCheck.ts
 model/geolocation.ts
 model/hearingStatus.ts
+model/inlineObject.ts
+model/inlineObject1.ts
+model/inlineObject2.ts
 model/inlineObject3.ts
 model/inlineObject4.ts
 model/itemImportResponseStatus.ts
