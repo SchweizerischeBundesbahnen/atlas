@@ -99,8 +99,8 @@ export class SublinesComponent implements OnDestroy {
   sublines: Subline[] = [];
   totalCount$ = 0;
 
-  private sublineVersionsSubscription!: Subscription;
-  private routeSubscription!: Subscription;
+  private sublineVersionsSubscription?: Subscription;
+  private routeSubscription: Subscription;
 
   constructor(
     private sublinesService: SublinesService,
@@ -120,7 +120,7 @@ export class SublinesComponent implements OnDestroy {
       );
   }
 
-  getOverview($paginationAndSearch: TablePagination) {
+  getOverview(pagination: TablePagination) {
     this.sublineVersionsSubscription = this.sublinesService
       .getSublines(
         getActiveSearchForChip(this.tableFilterConfig[0][0]),
@@ -129,9 +129,9 @@ export class SublinesComponent implements OnDestroy {
         getActiveSearch<BusinessOrganisation, BusinessOrganisation>(this.tableFilterConfig[1][0])
           .sboid,
         getActiveSearchDate(this.tableFilterConfig[1][3]),
-        $paginationAndSearch.page,
-        $paginationAndSearch.size,
-        [$paginationAndSearch.sort!, 'slnid,asc']
+        pagination.page,
+        pagination.size,
+        [pagination.sort!, 'slnid,asc']
       )
       .subscribe((sublineContainer) => {
         this.sublines = sublineContainer.objects!;
@@ -148,7 +148,7 @@ export class SublinesComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
-    this.sublineVersionsSubscription.unsubscribe();
+    this.sublineVersionsSubscription?.unsubscribe();
     this.routeSubscription.unsubscribe();
   }
 }
