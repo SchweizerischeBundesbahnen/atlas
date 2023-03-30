@@ -1,0 +1,9 @@
+<ng-container *ngIf="clientCredential.clientCredentialId; else create">
+  <app-client-credential-administration-edit
+    [client]="clientCredential"
+  ></app-client-credential-administration-edit>
+</ng-container>
+
+<ng-template #create>
+  <app-client-credential-administration-create></app-client-credential-administration-create>
+</ng-template>

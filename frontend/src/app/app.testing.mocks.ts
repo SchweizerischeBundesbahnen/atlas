@@ -1,7 +1,8 @@
 import { Component, Input, NgModule, TemplateRef } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { ApplicationType } from './api';
 import { AtlasButtonType } from './core/components/button/atlas-button.type';
+import { AtlasFieldCustomError } from './core/form-components/atlas-field-error/atlas-field-custom-error';
 
 @Component({
   selector: 'app-table-search',
@@ -62,6 +63,17 @@ export class MockUserDetailInfoComponent {
   @Input() record: any;
 }
 
+@Component({
+  selector: 'app-atlas-field-error',
+  template: '',
+})
+export class MockAtlasFieldErrorComponent {
+  @Input() controlName!: string;
+  @Input() form: FormGroup = new FormGroup({});
+  @Input() control!: FormControl;
+  @Input() customError!: AtlasFieldCustomError;
+}
+
 // Module only to declare mock components in Angular. Do not import. Declare the mocks in tests yourself
 @NgModule({
   declarations: [
@@ -70,6 +82,7 @@ export class MockUserDetailInfoComponent {
     MockAppTableSearchComponent,
     MockAtlasButtonComponent,
     MockUserDetailInfoComponent,
+    MockAtlasFieldErrorComponent,
   ],
   exports: [MockBoSelectComponent],
 })
