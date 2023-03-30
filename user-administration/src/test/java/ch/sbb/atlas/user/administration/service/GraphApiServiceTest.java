@@ -75,13 +75,13 @@ public class GraphApiServiceTest {
 
     verify(userCollectionRequestMock, times(3)).get();
     assertThat(result).hasSize(3);
-    assertThat(result.get(0).getSbbUserId()).isEqualTo("u236171");
+    assertThat(result.get(0).getUserId()).isEqualTo("u236171");
     assertThat(result.get(0).getAccountStatus()).isEqualTo(UserAccountStatus.ACTIVE);
 
-    assertThat(result.get(1).getSbbUserId()).isEqualTo("u123456");
+    assertThat(result.get(1).getUserId()).isEqualTo("u123456");
     assertThat(result.get(1).getAccountStatus()).isEqualTo(UserAccountStatus.INACTIVE);
 
-    assertThat(result.get(2).getSbbUserId()).isEqualTo("u654321");
+    assertThat(result.get(2).getUserId()).isEqualTo("u654321");
     assertThat(result.get(2).getAccountStatus()).isEqualTo(UserAccountStatus.INACTIVE);
   }
 
@@ -113,7 +113,7 @@ public class GraphApiServiceTest {
     List<UserModel> userResult = graphApiService.resolveUsers(userIds);
 
     assertThat(userResult).hasSize(18);
-    assertThat(userResult.get(0).getSbbUserId()).isEqualTo("u236171");
+    assertThat(userResult.get(0).getUserId()).isEqualTo("u236171");
     assertThat(userResult.get(0).getAccountStatus()).isEqualTo(UserAccountStatus.ACTIVE);
 
     doReturn(null).when(graphApiBatchRequestService).getDeserializedBody(any(), any(), anyString());
@@ -121,7 +121,7 @@ public class GraphApiServiceTest {
     userResult = graphApiService.resolveUsers(userIds);
 
     assertThat(userResult).hasSize(18);
-    assertThat(userResult.get(0).getSbbUserId()).isEqualTo("u12340");
+    assertThat(userResult.get(0).getUserId()).isEqualTo("u12340");
     assertThat(userResult.get(0).getAccountStatus()).isEqualTo(UserAccountStatus.DELETED);
   }
 

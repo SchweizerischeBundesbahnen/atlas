@@ -7,7 +7,7 @@ import moment from 'moment';
 import { Status } from '../../../api';
 import { AppTestingModule } from '../../../app.testing.module';
 import { DateIconComponent } from '../../form-components/date-icon/date-icon.component';
-import { MockBoSelectComponent } from '../../../app.testing.mocks';
+import { MockAtlasFieldErrorComponent, MockBoSelectComponent } from '../../../app.testing.mocks';
 
 describe('TableSearchComponent', () => {
   let component: TableSearchComponent;
@@ -15,7 +15,12 @@ describe('TableSearchComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TableSearchComponent, DateIconComponent, MockBoSelectComponent],
+      declarations: [
+        TableSearchComponent,
+        DateIconComponent,
+        MockBoSelectComponent,
+        MockAtlasFieldErrorComponent,
+      ],
       imports: [AppTestingModule],
       providers: [TranslatePipe],
     }).compileComponents();
