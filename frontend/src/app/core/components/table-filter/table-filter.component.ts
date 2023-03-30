@@ -5,7 +5,10 @@ import { MAX_DATE, MIN_DATE } from '../../date/date.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import moment from 'moment';
 import {
-  FilterType,
+  isChipSearch,
+  isDateSelect,
+  isMultiSelect,
+  isSearchSelect,
   TableFilterChip,
   TableFilterConfig,
   TableFilterDateSelect,
@@ -21,59 +24,28 @@ import { TypeGuard } from './filter-type-guard.pipe';
   styleUrls: ['./table-filter.component.scss'],
 })
 export class TableFilterComponent<TFilterConfig> {
-  /*@Input() additionalFieldTemplate!: TemplateRef<any>;
-  @Input() displayStatus = true;
-  @Input() displayValidOn = true;
-  @Input() displayBusinessOrganisationSearch = true;
-  @Input() searchTextColumnStyle = 'col-4';
-  */
-
-  // @Input() searchStatusType: SearchStatusType = 'DEFAULT_STATUS';
-
   @Input() filterConfigurations: TableFilterConfig<TFilterConfig>[][] = [];
-
   @Output() searchEvent: EventEmitter<void> = new EventEmitter();
 
-  // @ViewChild('validOnInput') validOnInput!: ElementRef;
-
-  /*@ViewChild(BusinessOrganisationSelectComponent)
-  businessOrganisationSelectComponent!: BusinessOrganisationSelectComponent;*/
-
-  isDateSelect: TypeGuard<TableFilterConfig<TFilterConfig>, TableFilterDateSelect> = (
-    filterType: TableFilterConfig<TFilterConfig>
-  ): filterType is TableFilterDateSelect => filterType.filterType === FilterType.VALID_ON_SELECT;
-
-  isSearchSelect: TypeGuard<
+  readonly isDateSelect: TypeGuard<TableFilterConfig<TFilterConfig>, TableFilterDateSelect> =
+    isDateSelect;
+  readonly isSearchSelect: TypeGuard<
     TableFilterConfig<TFilterConfig>,
     TableFilterSearchSelect<TFilterConfig>
-  > = (
-    filterType: TableFilterConfig<TFilterConfig>
-  ): filterType is TableFilterSearchSelect<TFilterConfig> =>
-    filterType.filterType === FilterType.SEARCH_SELECT;
-
-  isMultiSelect: TypeGuard<
+  > = isSearchSelect;
+  readonly isMultiSelect: TypeGuard<
     TableFilterConfig<TFilterConfig>,
     TableFilterMultiSelect<TFilterConfig>
-  > = (
-    filterType: TableFilterConfig<TFilterConfig>
-  ): filterType is TableFilterMultiSelect<TFilterConfig> =>
-    filterType.filterType === FilterType.MULTI_SELECT;
+  > = isMultiSelect;
+  readonly isChipSearch: TypeGuard<TableFilterConfig<TFilterConfig>, TableFilterChip> =
+    isChipSearch;
 
-  isChipSearch: TypeGuard<TableFilterConfig<TFilterConfig>, TableFilterChip> = (
-    filterType: TableFilterConfig<TFilterConfig>
-  ): filterType is TableFilterChip => filterType.filterType === FilterType.CHIP_SEARCH;
-
-  boSearchForm = new FormGroup<BusinessOrganisationSearch>({
+  // TODO: remove when generic searchSelect is implemented
+  boSearchForm = new FormGroup<{
+    businessOrganisation: FormControl<string | undefined>;
+  }>({
     businessOrganisation: new FormControl(),
   });
-
-  // STATUS_OPTIONS: Array<Status | WorkflowStatus> = Object.values(Status);
-  // readonly LINE_TYPES: LineType[] = Object.values(LineType);
-
-  // STATUS_TYPES_PREFIX_LABEL = 'COMMON.STATUS_TYPES.';
-  // searchStrings: string[] = [];
-  // searchDate?: Date;
-  // activeStatuses: statusChoice = [];
 
   MIN_DATE = MIN_DATE;
   MAX_DATE = MAX_DATE;
@@ -110,13 +82,13 @@ export class TableFilterComponent<TFilterConfig> {
     if (
       (this.filterConfigurations[rowIndex][filterIndex] as TableFilterDateSelect).formControl
         .invalid
-    )
+    ) {
       return;
+    }
 
     (this.filterConfigurations[rowIndex][filterIndex] as TableFilterDateSelect).activeSearch =
       event.value ? moment(event.value).toDate() : undefined;
 
-    //this.searchDate = event.value ? moment(event.value).toDate() : undefined;
     this.emitSearch();
   }
 
@@ -125,7 +97,6 @@ export class TableFilterComponent<TFilterConfig> {
       this.filterConfigurations[rowIndex][filterIndex] as TableFilterMultiSelect<TFilterConfig>
     ).activeSearch = changeEvent.value as TFilterConfig[];
 
-    //this.boSearchForm.patchValue($event, { emitEvent: false });
     this.emitSearch();
   }
 
@@ -136,29 +107,7 @@ export class TableFilterComponent<TFilterConfig> {
     this.emitSearch();
   }
 
-  // TODO: check
-  // ngOnInit(): void {
-  //   if (this.searchStatusType === 'WORKFLOW_STATUS') {
-  //     this.STATUS_OPTIONS = Object.values(WorkflowStatus).filter(
-  //       (value) =>
-  //         value === WorkflowStatus.Added ||
-  //         value === WorkflowStatus.Approved ||
-  //         value === WorkflowStatus.Rejected
-  //     );
-  //     this.STATUS_TYPES_PREFIX_LABEL = 'WORKFLOW.STATUS.';
-  //   }
-  // }
-
   private emitSearch(): void {
-    // this.activeSearch.searchCriteria = this.searchStrings;
-    // this.activeSearch.validOn = this.searchDate;
-    // this.activeSearch.statusChoices = this.activeStatuses;
-    // this.activeSearch.boChoice = this.boSearchForm.get('businessOrganisation')?.value;
-    // TODO: searchFieldWithGridStyling
     this.searchEvent.emit();
   }
-}
-
-interface BusinessOrganisationSearch {
-  businessOrganisation: FormControl<string | undefined>;
 }

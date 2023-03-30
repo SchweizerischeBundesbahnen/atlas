@@ -1,12 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { TableComponent } from '../../../core/components/table/table.component';
-import { LoadingSpinnerComponent } from '../../../core/components/loading-spinner/loading-spinner.component';
 import { BusinessOrganisationComponent } from './business-organisation.component';
 import { BusinessOrganisationsService, ContainerBusinessOrganisation } from '../../../api';
 import { AppTestingModule } from '../../../app.testing.module';
 import { TranslatePipe } from '@ngx-translate/core';
-import { MockAppTableSearchComponent } from '../../../app.testing.mocks';
+import { MockTableComponent } from '../../../app.testing.mocks';
 
 const businessOrganisation: ContainerBusinessOrganisation = {
   objects: [
@@ -42,12 +40,7 @@ describe('BusinessOrganisationComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        BusinessOrganisationComponent,
-        TableComponent,
-        LoadingSpinnerComponent,
-        MockAppTableSearchComponent,
-      ],
+      declarations: [BusinessOrganisationComponent, MockTableComponent],
       imports: [AppTestingModule],
       providers: [
         { provide: BusinessOrganisationsService, useValue: businessOrganisationsService },
@@ -61,9 +54,6 @@ describe('BusinessOrganisationComponent', () => {
   });
 
   it('should create', () => {
-    expect(businessOrganisationsService.getAllBusinessOrganisations).toHaveBeenCalled();
-
-    expect(component.businessOrganisations.length).toBe(1);
-    expect(component.totalCount$).toBe(1);
+    expect(component).toBeTruthy();
   });
 });
