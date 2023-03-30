@@ -5,7 +5,7 @@
    <parent>
       <groupId>ch.sbb.atlas</groupId>
       <artifactId>atlas</artifactId>
-      <version>1.202.0</version>
+      <version>1.203.0</version>
       <relativePath>../pom.xml</relativePath>
    </parent>
    <modelVersion>4.0.0</modelVersion>
@@ -61,6 +61,21 @@
          <scope>test</scope>
       </dependency>
       <dependency>
+         <artifactId>junit-jupiter-engine</artifactId>
+         <groupId>org.junit.jupiter</groupId>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
+         <artifactId>spring-restdocs-mockmvc</artifactId>
+         <groupId>org.springframework.restdocs</groupId>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
+         <artifactId>spring-auto-restdocs-core</artifactId>
+         <groupId>capital.scalable</groupId>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
          <groupId>org.postgresql</groupId>
          <artifactId>postgresql</artifactId>
          <scope>runtime</scope>
@@ -76,12 +91,12 @@
       <dependency>
          <artifactId>base-atlas</artifactId>
          <groupId>ch.sbb.atlas</groupId>
-         <version>1.202.0</version>
+         <version>1.203.0</version>
       </dependency>
       <dependency>
          <artifactId>kafka</artifactId>
          <groupId>ch.sbb.atlas</groupId>
-         <version>1.202.0</version>
+         <version>1.203.0</version>
       </dependency>
       <dependency>
          <artifactId>base-atlas</artifactId>
@@ -89,7 +104,7 @@
          <groupId>ch.sbb.atlas</groupId>
          <scope>test</scope>
          <type>test-jar</type>
-         <version>1.202.0</version>
+         <version>1.203.0</version>
       </dependency>
       <dependency>
          <artifactId>spring-security-test</artifactId>
@@ -100,12 +115,6 @@
          <groupId>org.springframework.kafka</groupId>
          <artifactId>spring-kafka-test</artifactId>
          <scope>test</scope>
-         <exclusions>
-            <exclusion>
-               <groupId>*</groupId>
-               <artifactId>*</artifactId>
-            </exclusion>
-         </exclusions>
       </dependency>
       <dependency>
          <artifactId>h2</artifactId>

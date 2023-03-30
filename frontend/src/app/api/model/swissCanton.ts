@@ -10,6 +10,9 @@
  * Do not edit the class manually.
  */
 
+/**
+ * SwissCanton the location is in
+ */
 export type SwissCanton =
   | 'ZURICH'
   | 'BERN'
