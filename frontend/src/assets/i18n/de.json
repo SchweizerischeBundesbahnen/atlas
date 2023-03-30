@@ -543,6 +543,16 @@
       "ADD_NEW_TIMETABLE_HEARING": "Neue Fahrplananhörung anlegen",
       "START_TIMETABLE_HEARING": "Dieses Fahrplanjahr starten"
     },
+    "DROPDOWN": {
+      "COLLECTING_ACTION": {
+        "PLACEHOLDER": "Sammelaktionen",
+        "OPTION": {
+          "STATUS_CHANGE": "Status ändern",
+          "CANTON_DELIVERY": "Kantonsübergabe",
+          "DELETE": "Löschen"
+        }
+      }
+    },
     "SELECT_CANTON": "Kanton auswählen",
     "SELECT_YEAR": "Jahr auswählen",
     "TABLE_RESULT_HEADING": "{{totalCount}} Stellungnahmen für Fahrplanjahr {{year}}",

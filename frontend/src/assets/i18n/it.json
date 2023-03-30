@@ -543,9 +543,21 @@
       "ADD_NEW_TIMETABLE_HEARING": "Creare una nuova audizione",
       "START_TIMETABLE_HEARING": "Avviare questa audizione"
     },
+    "DROPDOWN": {
+      "COLLECTING_ACTION": {
+        "PLACEHOLDER": "Raccolta di azioni",
+        "OPTION": {
+          "STATUS_CHANGE": "Modificare lo stato",
+          "CANTON_DELIVERY": "Passaggio di consegle cantonale",
+          "DELETE": "Eliminare"
+        }
+      }
+    },
     "SELECT_CANTON": "Selezionare il Cantone",
     "SELECT_YEAR": "Selezionare l'anno",
     "TABLE_RESULT_HEADING": "{{totalCount}} dichiarazioni per l'orario {{year}}",
+    "TABLE_RESULT_ACTUAL_HEARING_HEADING_PREFIX": "{{totalCount}} Stellungnahmen ",
+    "WHOLE_SWISS": "gesamte Schweiz",
     "OPEN": "{{canton}} aprire",
     "STATEMENT_STATUS_HEADER": "Stato",
     "SWISS_CANTON": "Cantone",

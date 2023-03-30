@@ -543,9 +543,21 @@
       "ADD_NEW_TIMETABLE_HEARING": "Créer une nouvelle consultation sur les horaires",
       "START_TIMETABLE_HEARING": "Lancer cette année d'horaire"
     },
+    "DROPDOWN": {
+      "COLLECTING_ACTION": {
+        "PLACEHOLDER": "Actions de collecte",
+        "OPTION": {
+          "STATUS_CHANGE": "Modifier statut",
+          "CANTON_DELIVERY": "Transfert de canton",
+          "DELETE": "Effacer"
+        }
+      }
+    },
     "SELECT_CANTON": "Sélectionner le canton",
     "SELECT_YEAR": "Sélectionner l'année",
     "TABLE_RESULT_HEADING": "{{totalCount}} Stellungnahmen für Fahrplanjahr {{year}}",
+    "TABLE_RESULT_ACTUAL_HEARING_HEADING_PREFIX": "{{totalCount}} Stellungnahmen ",
+    "WHOLE_SWISS": "gesamte Schweiz",
     "OPEN": "{{canton}} ouvrir",
     "STATEMENT_STATUS_HEADER": "Statut",
     "SWISS_CANTON": "Canton",
