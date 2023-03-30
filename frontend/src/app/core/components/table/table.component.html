@@ -1,16 +1,6 @@
 <div class="overview-table pb-xl-5">
   <app-loading-spinner [isLoading]="isLoading"></app-loading-spinner>
-  <!--<app-table-search
-    (searchEvent)="searchData($event)"
-    *ngIf="loadTableSearch"
-    [additionalFieldTemplate]="tableSearchFieldTemplate"
-    [displayBusinessOrganisationSearch]="displayBusinessOrganisationSearch"
-    [displayStatus]="displayStatusSearch"
-    [displayValidOn]="displayValidOnSearch"
-    [searchStatusType]="searchStatusType"
-    [searchTextColumnStyle]="searchTextColumnStyle"
-  >
-  </app-table-search>-->
+
   <app-table-filter
     *ngIf="showTableFilter"
     (searchEvent)="searchData()"
@@ -18,6 +8,7 @@
   ></app-table-filter>
 
   <ng-content></ng-content>
+
   <table
     (matSortChange)="sortData($event)"
     [dataSource]="tableData"

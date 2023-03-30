@@ -21,41 +21,47 @@ const routes: Routes = [
       {
         path: Pages.BUSINESS_ORGANISATIONS.path,
         component: BusinessOrganisationComponent,
-      },
-      {
-        path: Pages.BUSINESS_ORGANISATIONS.path + '/:id',
-        component: RouteToDialogComponent,
-        data: { component: BusinessOrganisationDetailComponent },
-        resolve: {
-          businessOrganisationDetail: BusinessOrganisationDetailResolver,
-        },
-        runGuardsAndResolvers: 'always',
+        children: [
+          {
+            path: ':id',
+            component: RouteToDialogComponent,
+            data: { component: BusinessOrganisationDetailComponent },
+            resolve: {
+              businessOrganisationDetail: BusinessOrganisationDetailResolver,
+            },
+            runGuardsAndResolvers: 'always',
+          },
+        ],
       },
       {
         path: Pages.TRANSPORT_COMPANIES.path,
         component: TransportCompaniesComponent,
-      },
-      {
-        path: Pages.TRANSPORT_COMPANIES.path + '/:id',
-        component: RouteToDialogComponent,
-        data: { component: TransportCompanyDetailComponent },
-        resolve: {
-          transportCompanyDetail: TransportCompanyDetailResolver,
-        },
-        runGuardsAndResolvers: 'always',
+        children: [
+          {
+            path: ':id',
+            component: RouteToDialogComponent,
+            data: { component: TransportCompanyDetailComponent },
+            resolve: {
+              transportCompanyDetail: TransportCompanyDetailResolver,
+            },
+            runGuardsAndResolvers: 'always',
+          },
+        ],
       },
       {
         path: Pages.COMPANIES.path,
         component: CompaniesComponent,
-      },
-      {
-        path: Pages.COMPANIES.path + '/:id',
-        component: RouteToDialogComponent,
-        data: { component: CompanyDetailComponent },
-        resolve: {
-          companyDetail: CompanyDetailResolver,
-        },
-        runGuardsAndResolvers: 'always',
+        children: [
+          {
+            path: ':id',
+            component: RouteToDialogComponent,
+            data: { component: CompanyDetailComponent },
+            resolve: {
+              companyDetail: CompanyDetailResolver,
+            },
+            runGuardsAndResolvers: 'always',
+          },
+        ],
       },
       { path: '**', redirectTo: Pages.BUSINESS_ORGANISATIONS.path },
     ],
