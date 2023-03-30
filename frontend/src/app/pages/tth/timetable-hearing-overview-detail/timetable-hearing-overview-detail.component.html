@@ -117,40 +117,64 @@
         </atlas-button>
       </div>
     </div>
-    <div class="pb-3">
-      <div>
-        <span
-          *ngIf="hearingStatus === 'active' && cantonShort.toUpperCase() === 'CH'"
-          class="font-bold-lg"
-        >
-          {{
-            'TTH.TABLE_RESULT_ACTUAL_HEARING_HEADING_PREFIX'
-              | translate : { totalCount: totalCount$ }
-          }}
-          {{ 'TTH.WHOLE_SWISS' | translate }}
-        </span>
-        <span
-          *ngIf="hearingStatus === 'active' && cantonShort.toUpperCase() !== 'CH'"
-          class="font-bold-lg"
-        >
-          {{
-            'TTH.TABLE_RESULT_ACTUAL_HEARING_HEADING_PREFIX'
-              | translate : { totalCount: totalCount$ }
-          }}
-          {{ 'TTH.SWISS_CANTON' | translate }}
-          {{ 'TTH.CANTON.' + cantonShort.toUpperCase() | translate }}
-        </span>
-        <span *ngIf="hearingStatus !== 'active'" class="font-bold-lg">{{
-          'TTH.TABLE_RESULT_HEADING'
-            | translate : { totalCount: totalCount$, year: foundTimetableHearingYear.timetableYear }
-        }}</span>
+    <div class="d-flex flex-row col-12 mb-3">
+      <div class="d-flex flex-column col-6">
+        <div>
+          <span
+            *ngIf="hearingStatus === 'active' && cantonShort.toUpperCase() === 'CH'"
+            class="font-bold-lg"
+          >
+            {{
+              'TTH.TABLE_RESULT_ACTUAL_HEARING_HEADING_PREFIX'
+                | translate : { totalCount: totalCount$ }
+            }}
+            {{ 'TTH.WHOLE_SWISS' | translate }}
+          </span>
+          <span
+            *ngIf="hearingStatus === 'active' && cantonShort.toUpperCase() !== 'CH'"
+            class="font-bold-lg"
+          >
+            {{
+              'TTH.TABLE_RESULT_ACTUAL_HEARING_HEADING_PREFIX'
+                | translate : { totalCount: totalCount$ }
+            }}
+            {{ 'TTH.SWISS_CANTON' | translate }}
+            {{ 'TTH.CANTON.' + cantonShort.toUpperCase() | translate }}
+          </span>
+          <span *ngIf="hearingStatus !== 'active'" class="font-bold-lg">{{
+            'TTH.TABLE_RESULT_HEADING'
+              | translate
+                : { totalCount: totalCount$, year: foundTimetableHearingYear.timetableYear }
+          }}</span>
+        </div>
+        <div *ngIf="showHearingDetail">
+          <span
+            >{{ this.foundTimetableHearingYear.hearingFrom | displayDate }}
+            {{ 'COMMON.TO' | translate }}
+            {{ this.foundTimetableHearingYear.hearingTo | displayDate }}</span
+          >
+        </div>
       </div>
-      <div *ngIf="showHearingDetail">
-        <span
-          >{{ this.foundTimetableHearingYear.hearingFrom | displayDate }}
-          {{ 'COMMON.TO' | translate }}
-          {{ this.foundTimetableHearingYear.hearingTo | displayDate }}</span
-        >
+      <div *ngIf="hearingStatus === 'active'" class="d-flex flex-column col-3 left-position">
+        <div class="multi-select-search">
+          <mat-select
+            (selectionChange)="collectingActions($event)"
+            data-cy="collect-action-type"
+            placeholder="{{ 'TTH.DROPDOWN.COLLECTING_ACTION.PLACEHOLDER' | translate }}"
+          >
+            <mat-option *ngFor="let action of COLLECTING_ACTION_OPTIONS" [value]="action">
+              <img
+                alt="action"
+                height="20"
+                src="assets/images/collecting_action/{{ action.toUpperCase() }}.svg"
+                width="20"
+              />
+              <span class="ps-2">
+                {{ 'TTH.DROPDOWN.COLLECTING_ACTION.OPTION.' + action | translate }}
+              </span>
+            </mat-option>
+          </mat-select>
+        </div>
       </div>
     </div>
 
