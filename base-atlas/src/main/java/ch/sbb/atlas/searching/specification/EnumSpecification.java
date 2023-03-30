@@ -15,18 +15,18 @@ public class EnumSpecification<T> implements Specification<T> {
   private static final long serialVersionUID = 1;
 
   private final List<?> enumRestrictions;
-  private final SingularAttribute<T, ?> enumAttribute;
+  private final SingularAttribute<?, ?> enumAttribute;
   private final Boolean notIn;
 
-  public EnumSpecification(Enum<?> enumRestriction, SingularAttribute<T, ?> enumAttribute) {
+  public EnumSpecification(Enum<?> enumRestriction, SingularAttribute<?, ?> enumAttribute) {
     this(enumRestriction == null ? Collections.emptyList() : Collections.singletonList(enumRestriction), enumAttribute, false);
   }
 
-  public EnumSpecification(List<?> enumRestrictions, SingularAttribute<T, ?> enumAttribute) {
+  public EnumSpecification(List<?> enumRestrictions, SingularAttribute<?, ?> enumAttribute) {
     this(enumRestrictions, enumAttribute, false);
   }
 
-  public EnumSpecification(List<?> enumRestrictions, SingularAttribute<T, ?> enumAttribute, Boolean notIn) {
+  public EnumSpecification(List<?> enumRestrictions, SingularAttribute<?, ?> enumAttribute, Boolean notIn) {
     this.enumRestrictions = Objects.requireNonNull(enumRestrictions);
     this.enumAttribute = enumAttribute;
     this.notIn = notIn;
@@ -38,6 +38,7 @@ public class EnumSpecification<T> implements Specification<T> {
     if (enumRestrictions.isEmpty()) {
       return criteriaBuilder.and();
     }
-    return notIn ? root.get(enumAttribute).in(enumRestrictions).not() : root.get(enumAttribute).in(enumRestrictions);
+    return notIn ? root.get(enumAttribute.getName()).in(enumRestrictions).not() :
+        root.get(enumAttribute.getName()).in(enumRestrictions);
   }
 }

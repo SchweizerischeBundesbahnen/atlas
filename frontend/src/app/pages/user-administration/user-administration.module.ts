@@ -3,25 +3,38 @@ import { UserAdministrationOverviewComponent } from './overview/user-administrat
 import { UserAdministrationRoutingModule } from './user-administration-routing.module';
 import { CoreModule } from '../../core/module/core.module';
 import { FormModule } from '../../core/module/form.module';
-import { UserAdministrationEditComponent } from './detail/edit/user-administration-edit.component';
-import { UserAdministrationCreateComponent } from './detail/create/user-administration-create.component';
-import { UserAdministrationApplicationConfigComponent } from './application-config/user-administration-application-config.component';
-import { UserSelectComponent } from './user-select/user-select.component';
-import { UserAdministrationReadOnlyDataComponent } from './read-only-data/user-administration-read-only-data.component';
-import { UserAdministrationComponent } from './detail/user-administration/user-administration.component';
-import { EditTitlePipe } from './detail/edit/edit-title.pipe';
-import { UserSelectFormatPipe } from './user-select/user-select-format.pipe';
+import { UserAdministrationUserEditComponent } from './user/detail/edit/user-administration-user-edit.component';
+import { UserAdministrationUserCreateComponent } from './user/detail/create/user-administration-user-create.component';
+import { UserAdministrationApplicationConfigComponent } from './components/application-config/user-administration-application-config.component';
+import { UserSelectComponent } from './user/user-select/user-select.component';
+import { UserAdministrationReadOnlyDataComponent } from './components/read-only-data/user-administration-read-only-data.component';
+import { UserAdministrationUserDetailComponent } from './user/detail/user-administration/user-administration-user-detail.component';
+import { EditTitlePipe } from './user/detail/edit/edit-title.pipe';
+import { UserSelectFormatPipe } from './user/user-select/user-select-format.pipe';
 import { FormsModule } from '@angular/forms';
+import { UserAdministrationClientDetailComponent } from './client-credential/detail/user-administration-client-detail.component';
+import { UserAdministrationClientCreateComponent } from './client-credential/detail/create/user-administration-client-create.component';
+import { UserAdministrationUserOverviewComponent } from './user/overview/user-administration-overview.component';
+import { UserAdministrationClientOverviewComponent } from './client-credential/overview/user-administration-client-overview.component';
+import { UserAdministrationClientEditComponent } from './client-credential/detail/edit/user-administration-client-edit.component';
 
 @NgModule({
   declarations: [
     UserAdministrationOverviewComponent,
-    UserAdministrationEditComponent,
-    UserAdministrationCreateComponent,
+
+    UserAdministrationUserOverviewComponent,
+    UserAdministrationUserDetailComponent,
+    UserAdministrationUserEditComponent,
+    UserAdministrationUserCreateComponent,
+
+    UserAdministrationClientOverviewComponent,
+    UserAdministrationClientDetailComponent,
+    UserAdministrationClientCreateComponent,
+    UserAdministrationClientEditComponent,
+
     UserAdministrationApplicationConfigComponent,
     UserSelectComponent,
     UserAdministrationReadOnlyDataComponent,
-    UserAdministrationComponent,
     EditTitlePipe,
     UserSelectFormatPipe,
   ],

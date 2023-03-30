@@ -6,12 +6,7 @@ import { User } from '../components/user/user';
 import { Pages } from '../../pages/pages';
 import jwtDecode from 'jwt-decode';
 import { Role } from './role';
-import {
-  ApplicationRole,
-  ApplicationType,
-  UserAdministrationService,
-  UserPermission,
-} from '../../api';
+import { ApplicationRole, ApplicationType, UserAdministrationService, Permission } from '../../api';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +15,7 @@ export class AuthService {
   readonly eventUserComponentNotification: EventEmitter<User> = new EventEmitter<User>();
   private readonly REQUESTED_ROUTE_STORAGE_KEY = 'requested_route';
 
-  private permissions: UserPermission[] = [];
+  private permissions: Permission[] = [];
 
   constructor(
     private oauthService: OAuthService,
@@ -81,7 +76,7 @@ export class AuthService {
   // Determines if we show the create button
   static hasPermissionsToCreateWithPermissions(
     applicationType: ApplicationType,
-    permissions: UserPermission[],
+    permissions: Permission[],
     isAdmin: boolean
   ): boolean {
     if (isAdmin) {
@@ -100,7 +95,7 @@ export class AuthService {
   static hasPermissionsToWriteWithPermissions(
     applicationType: ApplicationType,
     sboid: string | undefined,
-    permissions: UserPermission[],
+    permissions: Permission[],
     isAdmin: boolean
   ): boolean {
     if (isAdmin) {
@@ -123,8 +118,8 @@ export class AuthService {
     return false;
   }
 
-  public static getSboidRestrictions(userPermission: UserPermission): string[] {
-    return userPermission.permissionRestrictions!.map((restriction) => restriction.value!);
+  public static getSboidRestrictions(userPermission: Permission): string[] {
+    return userPermission.permissionRestrictions!.map((restriction) => restriction.valueAsString!);
   }
 
   private static getRolesAllowedToCreate(applicationType: ApplicationType) {
@@ -150,9 +145,9 @@ export class AuthService {
   }
 
   private static getApplicationPermission(
-    permissions: UserPermission[],
+    permissions: Permission[],
     applicationType: ApplicationType
-  ): UserPermission {
+  ): Permission {
     const applicationPermissions = permissions.filter(
       (permission) => permission.application === applicationType
     );

@@ -16,7 +16,7 @@ public class UserPermissionHolder {
   private final Map<String, UserAdministrationModel> userPermissions = new HashMap<>();
 
   public Optional<UserAdministrationModel> getCurrentUser() {
-    return Optional.ofNullable(userPermissions.get(UserService.getSbbUid()));
+    return Optional.ofNullable(userPermissions.get(UserService.getUserIdentifier()));
   }
 
   public void putUserPermissions(String sbbuid, UserAdministrationModel userAdministrationModel) {
@@ -25,7 +25,7 @@ public class UserPermissionHolder {
   }
 
   public String getCurrentUserSbbUid() {
-    return UserService.getSbbUid();
+    return UserService.getUserIdentifier();
   }
 
   public boolean isAdmin() {
