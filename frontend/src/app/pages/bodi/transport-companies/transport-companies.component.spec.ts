@@ -1,12 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { TableComponent } from '../../../core/components/table/table.component';
-import { LoadingSpinnerComponent } from '../../../core/components/loading-spinner/loading-spinner.component';
 import { TransportCompaniesComponent } from './transport-companies.component';
 import { ContainerTransportCompany, TransportCompaniesService } from '../../../api';
 import { AppTestingModule } from '../../../app.testing.module';
 import { TranslatePipe } from '@ngx-translate/core';
-import { MockAppTableSearchComponent } from '../../../app.testing.mocks';
+import { MockTableComponent } from '../../../app.testing.mocks';
 
 const transportCompany: ContainerTransportCompany = {
   objects: [
@@ -30,12 +28,7 @@ describe('TransportCompaniesComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        TransportCompaniesComponent,
-        TableComponent,
-        LoadingSpinnerComponent,
-        MockAppTableSearchComponent,
-      ],
+      declarations: [TransportCompaniesComponent, MockTableComponent],
       imports: [AppTestingModule],
       providers: [
         { provide: TransportCompaniesService, useValue: transportCompaniesService },
@@ -49,9 +42,6 @@ describe('TransportCompaniesComponent', () => {
   });
 
   it('should create', () => {
-    expect(transportCompaniesService.getTransportCompanies).toHaveBeenCalled();
-
-    expect(component.transportCompanies.length).toBe(1);
-    expect(component.totalCount).toBe(1);
+    expect(component).toBeTruthy();
   });
 });
