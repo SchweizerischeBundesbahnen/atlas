@@ -28,11 +28,15 @@ model/businessOrganisation.ts
 model/businessOrganisationVersion.ts
 model/businessType.ts
 model/canton.ts
+model/cantonPermissionRestrictionModel.ts
 model/category.ts
 model/client.ts
+model/clientCredential.ts
+model/clientCredentialPermissionCreate.ts
 model/codeAndDesignation.ts
 model/company.ts
 model/containerBusinessOrganisation.ts
+model/containerClientCredential.ts
 model/containerCompany.ts
 model/containerLine.ts
 model/containerLineVersionSnapshot.ts
@@ -73,8 +77,11 @@ model/operatingPointType.ts
 model/operatingPointWithoutTimetableType.ts
 model/parameter.ts
 model/paymentType.ts
+model/permission.ts
 model/permissionRestrictionObject.ts
+model/permissionRestrictionType.ts
 model/person.ts
+model/sboidPermissionRestrictionModel.ts
 model/servicePointCsvModel.ts
 model/servicePointCsvModelContainer.ts
 model/servicePointGeolocation.ts
@@ -108,7 +115,6 @@ model/transportCompanyStatus.ts
 model/user.ts
 model/userAccountStatus.ts
 model/userDisplayName.ts
-model/userPermission.ts
 model/userPermissionCreate.ts
 model/workflow.ts
 model/workflowProcessingStatus.ts
