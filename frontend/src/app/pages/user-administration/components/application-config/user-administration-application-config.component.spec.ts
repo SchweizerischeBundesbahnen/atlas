@@ -1,0 +1,87 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { UserAdministrationApplicationConfigComponent } from './user-administration-application-config.component';
+import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { UserPermissionManager } from '../../service/user-permission-manager';
+import { MaterialModule } from '../../../../core/module/material.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import SpyObj = jasmine.SpyObj;
+import { BehaviorSubject, of } from 'rxjs';
+import { ApplicationType } from '../../../../api';
+
+describe('UserAdministrationApplicationConfigComponent', () => {
+  let component: UserAdministrationApplicationConfigComponent;
+  let fixture: ComponentFixture<UserAdministrationApplicationConfigComponent>;
+
+  let userPermissionManagerSpy: SpyObj<UserPermissionManager>;
+
+  beforeEach(async () => {
+    userPermissionManagerSpy = jasmine.createSpyObj(
+      'UserPermissionManager',
+      [
+        'addSboidToPermission',
+        'removeSboidFromPermission',
+        'getAvailableApplicationRolesOfApplication',
+        'getPermissionByApplication',
+        'getRestrictionValues',
+      ],
+      {
+        boOfApplicationsSubject$: new BehaviorSubject<{
+          [application in ApplicationType]: unknown[];
+        }>({
+          TTFN: [],
+          LIDI: [],
+          BODI: [],
+          TIMETABLE_HEARING: [],
+        }),
+        boFormResetEvent$: of(),
+      }
+    );
+    await TestBed.configureTestingModule({
+      declarations: [UserAdministrationApplicationConfigComponent],
+      imports: [
+        TranslateModule.forRoot({
+          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+        }),
+        MaterialModule,
+        BrowserAnimationsModule,
+      ],
+      providers: [
+        {
+          provide: UserPermissionManager,
+          useValue: userPermissionManagerSpy,
+        },
+      ],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(UserAdministrationApplicationConfigComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+    expect(component.selectedIndex).toBe(-1);
+    expect(component.businessOrganisationForm).toBeDefined();
+    expect(component.tableColumnDef).toBeDefined();
+  });
+
+  it('test addBusinessOrganisation', () => {
+    component.add();
+    expect(userPermissionManagerSpy.addSboidToPermission).not.toHaveBeenCalled();
+
+    component.businessOrganisationForm.get(component.boFormCtrlName)?.setValue('test');
+    component.application = 'TTFN';
+    component.add();
+    expect(userPermissionManagerSpy.addSboidToPermission).toHaveBeenCalledOnceWith('TTFN', 'test');
+    expect(component.businessOrganisationForm.get(component.boFormCtrlName)?.value).toBe(null);
+  });
+
+  it('test removeBusinessOrganisation', () => {
+    component.application = 'LIDI';
+    component.selectedIndex = 0;
+    component.remove();
+    expect(userPermissionManagerSpy.removeSboidFromPermission).toHaveBeenCalledOnceWith('LIDI', 0);
+    expect(component.selectedIndex).toBe(-1);
+  });
+});

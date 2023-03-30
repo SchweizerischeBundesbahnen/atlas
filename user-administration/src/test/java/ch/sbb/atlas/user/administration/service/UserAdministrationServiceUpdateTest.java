@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ch.sbb.atlas.api.user.administration.CantonPermissionRestrictionModel;
 import ch.sbb.atlas.api.user.administration.SboidPermissionRestrictionModel;
 import ch.sbb.atlas.api.user.administration.UserPermissionCreateModel;
-import ch.sbb.atlas.api.user.administration.UserPermissionModel;
+import ch.sbb.atlas.api.user.administration.PermissionModel;
 import ch.sbb.atlas.api.user.administration.enumeration.PermissionRestrictionType;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
@@ -65,7 +65,7 @@ public class UserAdministrationServiceUpdateTest {
     UserPermissionCreateModel editedPermissions = UserPermissionCreateModel.builder()
         .sbbUserId(SBBUID)
         .permissions(List.of(
-            UserPermissionModel.builder()
+            PermissionModel.builder()
                 .application(ApplicationType.TTFN)
                 .role(ApplicationRole.SUPER_USER)
                 .build()))
@@ -91,7 +91,7 @@ public class UserAdministrationServiceUpdateTest {
     UserPermissionCreateModel editedPermissions = UserPermissionCreateModel.builder()
         .sbbUserId(SBBUID)
         .permissions(List.of(
-            UserPermissionModel.builder()
+            PermissionModel.builder()
                 .application(ApplicationType.TTFN)
                 .role(ApplicationRole.WRITER)
                 .permissionRestrictions(List.of(new SboidPermissionRestrictionModel("ch:1:sboid:10009")))
@@ -114,7 +114,7 @@ public class UserAdministrationServiceUpdateTest {
     UserPermissionCreateModel editedPermissions = UserPermissionCreateModel.builder()
         .sbbUserId(SBBUID)
         .permissions(List.of(
-            UserPermissionModel.builder()
+            PermissionModel.builder()
                 .application(ApplicationType.LIDI)
                 .role(ApplicationRole.SUPER_USER)
                 .build()))
@@ -140,7 +140,7 @@ public class UserAdministrationServiceUpdateTest {
     UserPermissionCreateModel editedPermissions = UserPermissionCreateModel.builder()
         .sbbUserId(SBBUID)
         .permissions(List.of(
-            UserPermissionModel.builder()
+            PermissionModel.builder()
                 .application(ApplicationType.LIDI)
                 .role(ApplicationRole.READER)
                 .build()))
@@ -161,11 +161,11 @@ public class UserAdministrationServiceUpdateTest {
     UserPermissionCreateModel editedPermissions = UserPermissionCreateModel.builder()
         .sbbUserId(SBBUID)
         .permissions(List.of(
-            UserPermissionModel.builder()
+            PermissionModel.builder()
                 .application(ApplicationType.LIDI)
                 .role(ApplicationRole.SUPER_USER)
                 .build(),
-            UserPermissionModel.builder()
+            PermissionModel.builder()
                 .application(ApplicationType.TIMETABLE_HEARING)
                 .role(ApplicationRole.WRITER)
                 .permissionRestrictions(List.of(new CantonPermissionRestrictionModel(SwissCanton.BERN),
