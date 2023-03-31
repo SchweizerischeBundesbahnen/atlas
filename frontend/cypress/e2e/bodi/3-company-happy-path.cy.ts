@@ -2,7 +2,7 @@ import BodiUtils from '../../support/util/bodi-utils';
 import CommonUtils from '../../support/util/common-utils';
 import { DataCy } from '../../support/data-cy';
 
-describe('Company', {testIsolation: false}, () => {
+describe('Company', { testIsolation: false }, () => {
   it('Step-1: ATLAS Login', () => {
     cy.atlasLogin();
   });
@@ -30,7 +30,7 @@ describe('Company', {testIsolation: false}, () => {
   it('Step-5: search and open first TU', () => {
     CommonUtils.typeSearchInput(
       '/business-organisation-directory/v1/companies?**',
-      DataCy.TABLE_SEARCH_CHIP_INPUT,
+      DataCy.TABLE_FILTER_CHIP_INPUT,
       'SBB-Passengers'
     );
     cy.get('table tbody')
@@ -42,5 +42,4 @@ describe('Company', {testIsolation: false}, () => {
         tdElement.trigger('click');
       });
   });
-
 });

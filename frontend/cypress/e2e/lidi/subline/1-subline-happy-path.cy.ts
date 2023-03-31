@@ -3,7 +3,7 @@ import CommonUtils from '../../../support/util/common-utils';
 import { DataCy } from '../../../support/data-cy';
 import BodiDependentUtils from '../../../support/util/bodi-dependent-utils';
 
-describe('Teillinie', {testIsolation: false}, () => {
+describe('Teillinie', { testIsolation: false }, () => {
   const sublineVersion = LidiUtils.getFirstSublineVersion();
   let mainline: any;
 
@@ -69,29 +69,29 @@ describe('Teillinie', {testIsolation: false}, () => {
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
-      DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_SEARCH_CHIP_INPUT,
+      DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_FILTER_CHIP_INPUT,
       sublineVersion.swissSublineNumber
     );
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
-      DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_SEARCH_CHIP_INPUT,
+      DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_FILTER_CHIP_INPUT,
       sublineVersion.slnid
     );
 
     CommonUtils.selectItemFromDropdownSearchItem(
-      DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_SEARCH_STATUS_INPUT,
+      DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_FILTER_MULTI_SELECT(1, 2),
       'Aktiv'
     );
 
     CommonUtils.selectItemFromDropdownSearchItem(
-      DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_SEARCH_SUBLINE_TYPE,
+      DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_FILTER_MULTI_SELECT(1, 1),
       sublineVersion.type
     );
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
-      DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_SEARCH_DATE_INPUT,
+      DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_FILTER_DATE_INPUT(1, 3),
       sublineVersion.validTo
     );
     // Check that the table contains 1 result

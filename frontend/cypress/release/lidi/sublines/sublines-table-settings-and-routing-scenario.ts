@@ -22,13 +22,15 @@ describe('Sublines: TableSettings and Routing', () => {
   }
 
   function assertAllTableFiltersAreFilled() {
-    cy.get(DataCy.TABLE_SEARCH_STRINGS).contains(minimalSubline1.swissSublineNumber);
-    CommonUtils.assertItemsFromDropdownAreChecked(DataCy.TABLE_SEARCH_STATUS_INPUT, [statusValidiert]);
-
-    CommonUtils.assertItemsFromDropdownAreChecked(DataCy.TABLE_SEARCH_SUBLINE_TYPE, [
-      minimalSubline1.type
+    cy.get(DataCy.TABLE_FILTER_CHIP_INPUT).contains(minimalSubline1.swissSublineNumber);
+    CommonUtils.assertItemsFromDropdownAreChecked(DataCy.TABLE_FILTER_MULTI_SELECT(1, 2), [
+      statusValidiert,
     ]);
-    CommonUtils.assertDatePickerIs(DataCy.TABLE_SEARCH_DATE_INPUT, commonValidDate);
+
+    CommonUtils.assertItemsFromDropdownAreChecked(DataCy.TABLE_FILTER_MULTI_SELECT(1, 1), [
+      minimalSubline1.type,
+    ]);
+    CommonUtils.assertDatePickerIs(DataCy.TABLE_FILTER_DATE_INPUT(1, 3), commonValidDate);
 
     // Check that the table contains 1 result
     CommonUtils.assertNumberOfTableRows(DataCy.LIDI_SUBLINES, 1);
@@ -67,19 +69,22 @@ describe('Sublines: TableSettings and Routing', () => {
   it('Step-6: Look for subline 1', () => {
     CommonUtils.typeSearchInput(
       sublineDirectoryUrlPathToIntercept,
-      DataCy.TABLE_SEARCH_CHIP_INPUT,
+      DataCy.TABLE_FILTER_CHIP_INPUT,
       minimalSubline1.swissSublineNumber
     );
 
-    CommonUtils.chooseOneValueFromMultiselect(DataCy.TABLE_SEARCH_STATUS_INPUT, statusValidiert);
+    CommonUtils.chooseOneValueFromMultiselect(
+      DataCy.TABLE_FILTER_MULTI_SELECT(1, 2),
+      statusValidiert
+    );
     CommonUtils.selectItemFromDropdownSearchItem(
-      DataCy.TABLE_SEARCH_SUBLINE_TYPE,
+      DataCy.TABLE_FILTER_MULTI_SELECT(1, 1),
       minimalSubline1.type
     );
 
     CommonUtils.typeSearchInput(
       sublineDirectoryUrlPathToIntercept,
-      DataCy.TABLE_SEARCH_DATE_INPUT,
+      DataCy.TABLE_FILTER_DATE_INPUT(1, 3),
       commonValidDate
     );
 
@@ -128,7 +133,7 @@ describe('Sublines: TableSettings and Routing', () => {
     // Find other created item to clean up
     CommonUtils.typeSearchInput(
       sublineDirectoryUrlPathToIntercept,
-      DataCy.TABLE_SEARCH_CHIP_INPUT,
+      DataCy.TABLE_FILTER_CHIP_INPUT,
       minimalSubline2.swissSublineNumber
     );
 
@@ -138,7 +143,7 @@ describe('Sublines: TableSettings and Routing', () => {
     deleteFirstFoundSublineInTable();
 
     // Search still present after delete
-    cy.get(DataCy.TABLE_SEARCH_STRINGS).contains(minimalSubline2.swissSublineNumber);
+    cy.get(DataCy.TABLE_FILTER_CHIP_INPUT).contains(minimalSubline2.swissSublineNumber);
     // No more items found
     CommonUtils.assertNoItemsInTable(DataCy.LIDI_SUBLINES);
   });

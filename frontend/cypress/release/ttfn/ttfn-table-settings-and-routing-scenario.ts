@@ -11,9 +11,11 @@ describe('TTFN: TableSettings and Routing', () => {
   const statusValidiert = 'Validiert';
 
   function assertAllTableFiltersAreFilled() {
-    cy.get(DataCy.TABLE_SEARCH_STRINGS).contains(ttfnBernThun.swissTimetableFieldNumber);
-    CommonUtils.assertItemsFromDropdownAreChecked(DataCy.TABLE_SEARCH_STATUS_INPUT, [statusValidiert]);
-    CommonUtils.assertDatePickerIs(DataCy.TABLE_SEARCH_DATE_INPUT, firstJune2000);
+    cy.get(DataCy.TABLE_FILTER_CHIP_INPUT).contains(ttfnBernThun.swissTimetableFieldNumber);
+    CommonUtils.assertItemsFromDropdownAreChecked(DataCy.TABLE_FILTER_MULTI_SELECT(1, 1), [
+      statusValidiert,
+    ]);
+    CommonUtils.assertDatePickerIs(DataCy.TABLE_FILTER_DATE_INPUT(1, 2), firstJune2000);
     CommonUtils.assertNumberOfTableRows(DataCy.TTFN, 1);
   }
 
@@ -46,17 +48,20 @@ describe('TTFN: TableSettings and Routing', () => {
   it('Step-5: Look for TTFN Bern - Thun', () => {
     CommonUtils.typeSearchInput(
       '/line-directory/v1/field-numbers?**',
-      DataCy.TABLE_SEARCH_CHIP_INPUT,
+      DataCy.TABLE_FILTER_CHIP_INPUT,
       ttfnBernThun.swissTimetableFieldNumber
     );
 
     CommonUtils.typeSearchInput(
       '/line-directory/v1/field-numbers?**',
-      DataCy.TABLE_SEARCH_DATE_INPUT,
+      DataCy.TABLE_FILTER_DATE_INPUT(1, 2),
       firstJune2000
     );
 
-    CommonUtils.chooseOneValueFromMultiselect(DataCy.TABLE_SEARCH_STATUS_INPUT, statusValidiert);
+    CommonUtils.chooseOneValueFromMultiselect(
+      DataCy.TABLE_FILTER_MULTI_SELECT(1, 1),
+      statusValidiert
+    );
 
     // Check that the table contains 1 result
     CommonUtils.assertNumberOfTableRows(DataCy.TTFN, 1);
@@ -109,7 +114,7 @@ describe('TTFN: TableSettings and Routing', () => {
     // Find other created item to clean up
     CommonUtils.typeSearchInput(
       '/line-directory/v1/field-numbers?**',
-      DataCy.TABLE_SEARCH_CHIP_INPUT,
+      DataCy.TABLE_FILTER_CHIP_INPUT,
       churGrenze.swissTimetableFieldNumber
     );
 
@@ -122,7 +127,7 @@ describe('TTFN: TableSettings and Routing', () => {
     cy.url().should('eq', Cypress.config().baseUrl + '/timetable-field-number');
 
     // Search still present after delete
-    cy.get(DataCy.TABLE_SEARCH_STRINGS).contains(churGrenze.swissTimetableFieldNumber);
+    cy.get(DataCy.TABLE_FILTER_CHIP_INPUT).contains(churGrenze.swissTimetableFieldNumber);
     // No more items found
     CommonUtils.assertNoItemsInTable(DataCy.TTFN);
   });

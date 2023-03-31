@@ -21,13 +21,15 @@ describe('Lines: TableSettings and Routing', () => {
   }
 
   function assertAllTableFiltersAreFilled() {
-    cy.get(DataCy.TABLE_SEARCH_STRINGS).contains(minimalLine1.swissLineNumber);
-    CommonUtils.assertItemsFromDropdownAreChecked(DataCy.TABLE_SEARCH_STATUS_INPUT, [statusValidiert]);
-
-    CommonUtils.assertItemsFromDropdownAreChecked(DataCy.TABLE_SEARCH_LINE_TYPE, [
-      minimalLine1.type
+    cy.get(DataCy.TABLE_FILTER_CHIP_INPUT).contains(minimalLine1.swissLineNumber);
+    CommonUtils.assertItemsFromDropdownAreChecked(DataCy.TABLE_FILTER_MULTI_SELECT(1, 2), [
+      statusValidiert,
     ]);
-    CommonUtils.assertDatePickerIs(DataCy.TABLE_SEARCH_DATE_INPUT, firstValidDate);
+
+    CommonUtils.assertItemsFromDropdownAreChecked(DataCy.TABLE_FILTER_MULTI_SELECT(1, 1), [
+      minimalLine1.type,
+    ]);
+    CommonUtils.assertDatePickerIs(DataCy.TABLE_FILTER_DATE_INPUT(1, 3), firstValidDate);
 
     // Check that the table contains 1 result
     CommonUtils.assertNumberOfTableRows(DataCy.LIDI_LINES, 1);
@@ -62,16 +64,22 @@ describe('Lines: TableSettings and Routing', () => {
   it('Step-5: Look for line minimal1', () => {
     CommonUtils.typeSearchInput(
       lineDirectoryUrlPathToIntercept,
-      DataCy.TABLE_SEARCH_CHIP_INPUT,
+      DataCy.TABLE_FILTER_CHIP_INPUT,
       minimalLine1.swissLineNumber
     );
 
-    CommonUtils.chooseOneValueFromMultiselect(DataCy.TABLE_SEARCH_STATUS_INPUT, statusValidiert);
-    CommonUtils.selectItemFromDropdownSearchItem(DataCy.TABLE_SEARCH_LINE_TYPE, minimalLine1.type);
+    CommonUtils.chooseOneValueFromMultiselect(
+      DataCy.TABLE_FILTER_MULTI_SELECT(1, 2),
+      statusValidiert
+    );
+    CommonUtils.selectItemFromDropdownSearchItem(
+      DataCy.TABLE_FILTER_MULTI_SELECT(1, 1),
+      minimalLine1.type
+    );
 
     CommonUtils.typeSearchInput(
       lineDirectoryUrlPathToIntercept,
-      DataCy.TABLE_SEARCH_DATE_INPUT,
+      DataCy.TABLE_FILTER_DATE_INPUT(1, 3),
       firstValidDate
     );
 
@@ -120,7 +128,7 @@ describe('Lines: TableSettings and Routing', () => {
     // Find other created item to clean up
     CommonUtils.typeSearchInput(
       lineDirectoryUrlPathToIntercept,
-      DataCy.TABLE_SEARCH_CHIP_INPUT,
+      DataCy.TABLE_FILTER_CHIP_INPUT,
       minimalLine2.swissLineNumber
     );
 
@@ -130,7 +138,7 @@ describe('Lines: TableSettings and Routing', () => {
     deleteFirstFoundLineInTable();
 
     // Search still present after delete
-    cy.get(DataCy.TABLE_SEARCH_STRINGS).contains(minimalLine2.swissLineNumber);
+    cy.get(DataCy.TABLE_FILTER_CHIP_INPUT).contains(minimalLine2.swissLineNumber);
     // No more items found
     CommonUtils.assertNoItemsInTable(DataCy.LIDI_LINES);
   });

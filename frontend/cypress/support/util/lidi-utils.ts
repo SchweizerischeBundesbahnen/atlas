@@ -1,7 +1,7 @@
 import CommonUtils from './common-utils';
 import { DataCy } from '../data-cy';
 import BodiDependentUtils from './bodi-dependent-utils';
-import AngularMaterialConstants from "./angular-material-constants";
+import AngularMaterialConstants from './angular-material-constants';
 
 export default class LidiUtils {
   private static LIDI_LINES_PATH = '/line-directory/lines';
@@ -47,72 +47,78 @@ export default class LidiUtils {
       .then((slnid) => (element.slnid = slnid ? slnid.toString() : ''));
   }
 
-  static checkIfLineAlreadyExists(line: any){
+  static checkIfLineAlreadyExists(line: any) {
     const pathToIntercept = '/line-directory/v1/lines?**';
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
-      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_SEARCH_CHIP_INPUT,
+      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_FILTER_CHIP_INPUT,
       line.swissLineNumber
     );
 
     CommonUtils.selectItemFromDropdownSearchItem(
-      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_SEARCH_STATUS_INPUT,
+      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_FILTER_MULTI_SELECT(1, 2),
       'Aktiv'
     );
 
     CommonUtils.selectItemFromDropdownSearchItem(
-      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_SEARCH_LINE_TYPE,
+      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_FILTER_MULTI_SELECT(1, 1),
       line.type
     );
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
-      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_SEARCH_DATE_INPUT,
+      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_FILTER_DATE_INPUT(1, 3),
       line.validTo
     );
 
-    cy.get('tbody').find('tr').should('have.length', 1).then(($el) => {
-      if (!$el.hasClass(AngularMaterialConstants.TABLE_NOW_DATA_ROW_CLASS)){
-        $el.trigger('click');
-        cy.get(DataCy.EDIT_ITEM).should('not.be.disabled');
-        CommonUtils.deleteItem();
-      }
-    });
+    cy.get('tbody')
+      .find('tr')
+      .should('have.length', 1)
+      .then(($el) => {
+        if (!$el.hasClass(AngularMaterialConstants.TABLE_NOW_DATA_ROW_CLASS)) {
+          $el.trigger('click');
+          cy.get(DataCy.EDIT_ITEM).should('not.be.disabled');
+          CommonUtils.deleteItem();
+        }
+      });
   }
 
-  static checkIfSublineAlreadyExists(sublineVersion: any){
+  static checkIfSublineAlreadyExists(sublineVersion: any) {
     const pathToIntercept = '/line-directory/v1/sublines?**';
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
-      DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_SEARCH_CHIP_INPUT,
+      DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_FILTER_CHIP_INPUT,
       sublineVersion.swissSublineNumber
     );
 
     CommonUtils.selectItemFromDropdownSearchItem(
-      DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_SEARCH_STATUS_INPUT,
+      DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_FILTER_MULTI_SELECT(1, 2),
       'Aktiv'
     );
 
     CommonUtils.selectItemFromDropdownSearchItem(
-      DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_SEARCH_SUBLINE_TYPE,
+      DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_FILTER_MULTI_SELECT(1, 1),
       sublineVersion.type
     );
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
-      DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_SEARCH_DATE_INPUT,
+      DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_FILTER_DATE_INPUT(1, 3),
       sublineVersion.validTo
     );
 
-    cy.get('tbody').find('tr').should('have.length', 1).then(($el) => {
-      if (!$el.hasClass(AngularMaterialConstants.TABLE_NOW_DATA_ROW_CLASS)){
-        $el.trigger('click');
-        LidiUtils.assertContainsSublineVersion(sublineVersion);
-        CommonUtils.deleteItem();
-      }
-    });
+    cy.get('tbody')
+      .find('tr')
+      .should('have.length', 1)
+      .then(($el) => {
+        if (!$el.hasClass(AngularMaterialConstants.TABLE_NOW_DATA_ROW_CLASS)) {
+          $el.trigger('click');
+          LidiUtils.assertContainsSublineVersion(sublineVersion);
+          CommonUtils.deleteItem();
+        }
+      });
   }
 
   static clickOnAddNewLineVersion() {
@@ -157,7 +163,10 @@ export default class LidiUtils {
     CommonUtils.getClearType(DataCy.VALID_TO, version.validTo, true);
     CommonUtils.getClearType(DataCy.SWISS_LINE_NUMBER, version.swissLineNumber, true);
 
-    CommonUtils.typeAndSelectItemFromDropDown(DataCy.BUSINESS_ORGANISATION + ' ' + 'input', version.businessOrganisation);
+    CommonUtils.typeAndSelectItemFromDropDown(
+      DataCy.BUSINESS_ORGANISATION + ' ' + 'input',
+      version.businessOrganisation
+    );
 
     CommonUtils.selectItemFromDropDown(DataCy.TYPE, version.type);
     CommonUtils.selectItemFromDropDown(DataCy.PAYMENT_TYPE, version.paymentType);
@@ -191,29 +200,29 @@ export default class LidiUtils {
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
-      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_SEARCH_CHIP_INPUT,
+      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_FILTER_CHIP_INPUT,
       line.swissLineNumber
     );
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
-      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_SEARCH_CHIP_INPUT,
+      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_FILTER_CHIP_INPUT,
       line.slnid
     );
 
     CommonUtils.selectItemFromDropdownSearchItem(
-      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_SEARCH_STATUS_INPUT,
+      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_FILTER_MULTI_SELECT(1, 2),
       'Aktiv'
     );
 
     CommonUtils.selectItemFromDropdownSearchItem(
-      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_SEARCH_LINE_TYPE,
+      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_FILTER_MULTI_SELECT(1, 1),
       line.type
     );
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
-      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_SEARCH_DATE_INPUT,
+      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_FILTER_DATE_INPUT(1, 3),
       line.validTo
     );
     // Check that the table contains 1 result
@@ -439,7 +448,10 @@ export default class LidiUtils {
       CommonUtils.typeAndSelectItemFromDropDown(DataCy.MAINLINE + ' ' + 'input', version.mainline);
     }
 
-    CommonUtils.typeAndSelectItemFromDropDown(DataCy.BUSINESS_ORGANISATION + ' ' + 'input', version.businessOrganisation);
+    CommonUtils.typeAndSelectItemFromDropDown(
+      DataCy.BUSINESS_ORGANISATION + ' ' + 'input',
+      version.businessOrganisation
+    );
 
     CommonUtils.selectItemFromDropDown(DataCy.TYPE, version.type);
     CommonUtils.selectItemFromDropDown(DataCy.PAYMENT_TYPE, version.paymentType);
@@ -454,13 +466,13 @@ export default class LidiUtils {
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
-      DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_SEARCH_CHIP_INPUT,
+      DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_FILTER_CHIP_INPUT,
       subline.swissSublineNumber
     );
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
-      DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_SEARCH_CHIP_INPUT,
+      DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_FILTER_CHIP_INPUT,
       subline.slnid
     );
 

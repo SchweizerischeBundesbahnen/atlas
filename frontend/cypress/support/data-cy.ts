@@ -42,12 +42,11 @@ export class DataCy {
   static COLOR_FONT_CMYK = '[data-cy=colorFontCmyk]';
   static CMYK_PICKER_INPUT = '[data-cy=cmyk-picker-input]';
   static COLOR_BACK_CMYK = '[data-cy=colorBackCmyk]';
-  static TABLE_SEARCH_CHIP_INPUT = '[data-cy=table-search-chip-input]';
-  static TABLE_SEARCH_STRINGS = '[data-cy=table-search-strings]';
-  static TABLE_SEARCH_STATUS_INPUT = '[data-cy=table-search-status-input]';
-  static TABLE_SEARCH_LINE_TYPE = '[data-cy=table-search-line-type]';
-  static TABLE_SEARCH_DATE_INPUT = '[data-cy=table-search-date-input]';
-  static TABLE_SEARCH_SUBLINE_TYPE = '[data-cy=table-search-subline-type]';
+  static TABLE_FILTER_CHIP_INPUT = '[data-cy|="table-filter-chip-search"]';
+  static TABLE_FILTER_MULTI_SELECT = (rowIndex: number, columnIndex: number) =>
+    `[data-cy=table-filter-multi-select-${rowIndex}-${columnIndex}]`;
+  static TABLE_FILTER_DATE_INPUT = (rowIndex: number, columnIndex: number) =>
+    `[data-cy=table-filter-date-select-${rowIndex}-${columnIndex}]`;
   static TTFN = '[data-cy=ttfn]';
   static SIDEMENU_START = '[data-cy=sidemenu-start]';
   static SIDEMENU_TTFN = '[data-cy=sidemenu-timetable-field-number]';
@@ -63,7 +62,6 @@ export class DataCy {
   static ABBREVIATION_EN = '[data-cy=abbreviationEn]';
   static BUSINESS_TYPES = '[data-cy=businessTypes]';
   static CONTACT_ENTERPRISE_EMAIL = '[data-cy=contactEnterpriseEmail]';
-  static BUSINESS_ORGANISATION_SEARCH_SELECT = '[data-cy=bo-search-select]';
   static TC_ADD_RELATION_BTN = '[data-cy=add-relation-btn]';
   static TC_DELETE_RELATION_BTN = '[data-cy=delete-relation-btn]';
 }

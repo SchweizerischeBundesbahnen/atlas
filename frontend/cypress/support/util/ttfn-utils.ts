@@ -1,16 +1,16 @@
 import CommonUtils from './common-utils';
 import { DataCy } from '../data-cy';
 import BodiDependentUtils from './bodi-dependent-utils';
-import AngularMaterialConstants from "./angular-material-constants";
+import AngularMaterialConstants from './angular-material-constants';
 
 export default class TtfnUtils {
   static navigateToTimetableFieldNumber() {
     CommonUtils.navigateToHomeViaHomeLogo();
     cy.intercept('GET', '/line-directory/v1/field-numbers?**').as('getFieldnumbers');
     cy.get('#timetable-field-number')
-    .should('be.visible')
-    .should(($el) => expect(Cypress.dom.isFocusable($el)).to.be.true)
-    .click();
+      .should('be.visible')
+      .should(($el) => expect(Cypress.dom.isFocusable($el)).to.be.true)
+      .click();
     cy.wait('@getFieldnumbers').then((interception) => {
       cy.wrap(interception.response?.statusCode).should('eq', 200);
       cy.url().should('contain', '/timetable-field-number');
@@ -34,40 +34,44 @@ export default class TtfnUtils {
     cy.get(DataCy.DELETE_ITEM).should('not.exist');
   }
 
-  static checkIfTtfnAlreadyExists(ttfn: any){
+  static checkIfTtfnAlreadyExists(ttfn: any) {
     const pathToIntercept = '/line-directory/v1/field-numbers?**';
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
-      DataCy.TABLE_SEARCH_CHIP_INPUT,
+      DataCy.TABLE_FILTER_CHIP_INPUT,
       ttfn.swissTimetableFieldNumber
     );
 
-    CommonUtils.selectItemFromDropdownSearchItem(DataCy.TABLE_SEARCH_STATUS_INPUT, 'Aktiv');
+    CommonUtils.selectItemFromDropdownSearchItem(DataCy.TABLE_FILTER_MULTI_SELECT(1, 1), 'Aktiv');
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
-      DataCy.TABLE_SEARCH_DATE_INPUT,
+      DataCy.TABLE_FILTER_DATE_INPUT(1, 2),
       ttfn.validTo
     );
 
-    cy.get('tbody').find('tr').should('have.length', 1).then(($el) => {
-      if (!$el.hasClass(AngularMaterialConstants.TABLE_NOW_DATA_ROW_CLASS)){
-        $el.trigger('click');
-        CommonUtils.deleteItem();
-      }
-    });
+    cy.get('tbody')
+      .find('tr')
+      .should('have.length', 1)
+      .then(($el) => {
+        if (!$el.hasClass(AngularMaterialConstants.TABLE_NOW_DATA_ROW_CLASS)) {
+          $el.trigger('click');
+          CommonUtils.deleteItem();
+        }
+      });
   }
 
   static fillVersionForm(version: any) {
     // workaround for disabled input field error with (https://github.com/cypress-io/cypress/issues/5830)
     CommonUtils.getClearType(DataCy.VALID_FROM, version.validFrom, true);
     CommonUtils.getClearType(DataCy.VALID_TO, version.validTo, true);
-    cy.get(DataCy.SWISS_TIMETABLE_FIELD_NUMBER)
-      .clear()
-      .type(version.swissTimetableFieldNumber);
+    cy.get(DataCy.SWISS_TIMETABLE_FIELD_NUMBER).clear().type(version.swissTimetableFieldNumber);
 
-    CommonUtils.typeAndSelectItemFromDropDown(DataCy.BUSINESS_ORGANISATION + ' ' + 'input', version.businessOrganisation);
+    CommonUtils.typeAndSelectItemFromDropDown(
+      DataCy.BUSINESS_ORGANISATION + ' ' + 'input',
+      version.businessOrganisation
+    );
 
     cy.get(DataCy.NUMBER).clear().type(version.number);
     cy.get(DataCy.DESCRIPTION).clear().type(version.description);
@@ -92,8 +96,7 @@ export default class TtfnUtils {
       validTo: '31.12.2000',
       businessOrganisation: BodiDependentUtils.BO_DESCRIPTION,
       number: '1.1',
-      description:
-        'First Version',
+      description: 'First Version',
       comment: 'This is a comment',
     };
   }
@@ -105,8 +108,7 @@ export default class TtfnUtils {
       validTo: '31.12.2002',
       businessOrganisation: BodiDependentUtils.BO_DESCRIPTION,
       number: '1.2',
-      description:
-        'Second Version',
+      description: 'Second Version',
       comment: 'A new comment',
     };
   }
