@@ -1,14 +1,19 @@
 <ng-container *ngIf="processedRecord | async as record">
-  <div>
-    <span>{{
-      'DETAIL_USER_EDITION.CREATION_DATE' | translate: { creationDate: record.creationDate }
-    }}</span>
-    <span>{{ 'DETAIL_USER_EDITION.CREATOR' | translate: { creator: record.creator } }}</span>
-  </div>
-  <div>
-    <span>{{
-      'DETAIL_USER_EDITION.LATEST_EDITION_DATE' | translate: { editionDate: record.editionDate }
-    }}</span>
-    <span>{{ 'DETAIL_USER_EDITION.LATEST_EDITOR' | translate: { editor: record.editor } }}</span>
-  </div>
+  <ng-template [ngIf]="!short">
+    <div>
+      <span>{{
+        'DETAIL_USER_EDITION.CREATION_DATE' | translate : { creationDate: record.creationDate }
+      }}</span>
+      <span>{{ 'DETAIL_USER_EDITION.CREATOR' | translate : { creator: record.creator } }}</span>
+    </div>
+    <div>
+      <span>{{
+        'DETAIL_USER_EDITION.LATEST_EDITION_DATE' | translate : { editionDate: record.editionDate }
+      }}</span>
+      <span>{{ 'DETAIL_USER_EDITION.LATEST_EDITOR' | translate : { editor: record.editor } }}</span>
+    </div>
+  </ng-template>
+  <ng-template [ngIf]="short">
+    <span>{{ record.editionDateWithoutTime }} | {{ record.editor }}</span>
+  </ng-template>
 </ng-container>
