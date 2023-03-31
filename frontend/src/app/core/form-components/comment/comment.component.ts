@@ -12,4 +12,5 @@ export class CommentComponent {
   @Input() displayLabel = true;
   @Input() required = false;
   @Input() label = 'FORM.COMMENT';
+  @Input() controlName = 'comment';
 }
