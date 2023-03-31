@@ -18,6 +18,7 @@ import { TextFieldComponent } from '../form-components/text-field/text-field.com
 import { AtlasFieldErrorComponent } from '../form-components/atlas-field-error/atlas-field-error.component';
 import { AtlasLabelFieldComponent } from '../form-components/atlas-label-field/atlas-label-field.component';
 import { DownloadIconComponent } from '../form-components/download-icon/download-icon.component';
+import { UploadIconComponent } from '../form-components/upload-icon/upload-icon.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { DownloadIconComponent } from '../form-components/download-icon/download
     UrlComponent,
     DateIconComponent,
     DownloadIconComponent,
+    UploadIconComponent,
     InfoIconComponent,
     LinkIconComponent,
     SearchSelectComponent,
@@ -47,6 +49,7 @@ import { DownloadIconComponent } from '../form-components/download-icon/download
     UrlComponent,
     DateIconComponent,
     DownloadIconComponent,
+    UploadIconComponent,
     InfoIconComponent,
     SearchSelectComponent,
     DialogCloseComponent,
