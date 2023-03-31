@@ -119,6 +119,7 @@
                   arg: { key: 'numberOfChars', value: '50' }
                 }
               ]"
+              [required]="true"
               [formGroup]="form.controls.statementSender"
               controlName="email"
               fieldLabel="TTH.STATEMENT.E_MAIL"
@@ -132,6 +133,7 @@
             <form-comment
               [displayInfoIcon]="false"
               [formGroup]="form"
+              [required]="true"
               controlName="statement"
               label="TTH.STATEMENT.STATEMENT"
             >
