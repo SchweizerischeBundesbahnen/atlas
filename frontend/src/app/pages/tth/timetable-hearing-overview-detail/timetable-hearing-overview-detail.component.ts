@@ -135,8 +135,10 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
     this.navigateTo(this.cantonShort.toLowerCase(), selectedYear.value);
   }
 
-  editVersion($event: any) {
-    console.log($event);
+  editStatement(statement: TimetableHearingStatement) {
+    this.router
+      .navigate([Pages.TTH.path, this.cantonShort, Pages.TTH_ACTIVE.path, statement.id])
+      .then();
   }
 
   downloadCsv() {
@@ -148,7 +150,7 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
   }
 
   addNewStatement() {
-    console.log('ADD_NEW_STATEMENT');
+    this.router.navigate([Pages.TTH.path, this.cantonShort, Pages.TTH_ACTIVE.path, 'add']).then();
   }
 
   addNewTimetableHearing() {
