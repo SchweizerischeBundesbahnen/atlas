@@ -57,11 +57,10 @@ input[type='number'] {
   background-color: white;
 
   padding: 56px 56px calc(#{variables.$footerHeight} + 56px) 56px;
-  margin-right: 56px;
 
   border-radius: variables.$border-radius;
 
-  height: calc(100%);
+  min-height: calc(100vh - #{variables.$footerHeight} - #{variables.$headerHeight});
   width: calc(100vw - 350px);
 }
 
