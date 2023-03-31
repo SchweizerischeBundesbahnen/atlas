@@ -610,6 +610,10 @@
       "VS": "Wallis",
       "ZG": "Zug",
       "ZH": "Zürich"
+    },
+    "STATEMENT": {
+      "NEW": "Neue Stellungnahme erfassen",
+      "STATEMENT": "Stellungnahme"
     }
   }
 }
