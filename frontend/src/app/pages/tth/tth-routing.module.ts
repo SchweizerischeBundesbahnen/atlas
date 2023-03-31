@@ -12,6 +12,18 @@ const routes: Routes = [
     component: TimetableHearingOverviewComponent,
   },
   {
+    path:
+      Pages.TTH_OVERVIEW_DETAIL.path +
+      '/' +
+      Pages.TTH_ACTIVE.path +
+      '/' +
+      Pages.TTH_STATEMENT_DETAILS.path,
+    component: StatementDetailComponent,
+    resolve: {
+      statement: StatementDetailResolver,
+    },
+  },
+  {
     path: Pages.TTH_OVERVIEW_DETAIL.path,
     component: TimetableHearingOverviewTabComponent,
     children: [
