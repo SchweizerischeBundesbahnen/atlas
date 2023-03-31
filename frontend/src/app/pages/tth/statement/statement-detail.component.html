@@ -1,50 +1,189 @@
 <div class="ps-5 pt-5 pb-5">
   <div class="detail-page-container">
-    <h1 class="font-bold-4xl mb-5">
-      {{ (statement ? 'TTH.STATEMENT.STATEMENT' : 'TTH.STATEMENT.NEW') | translate }}
-    </h1>
+    <ng-container [formGroup]="form">
+      <h1 class="font-bold-4xl">
+        {{ (statement ? 'TTH.STATEMENT.STATEMENT' : 'TTH.STATEMENT.NEW') | translate }}
+      </h1>
 
-    <app-user-detail-info
-      *ngIf="statement"
-      [record]="statement!"
-      [short]="true"
-    ></app-user-detail-info>
+      <app-user-detail-info
+        *ngIf="statement"
+        [record]="statement!"
+        [short]="true"
+      ></app-user-detail-info>
 
-    Jahr placeholder
+      <div class="d-flex flex-row col-12 mb-5 mt-5">
+        <div class="d-flex flex-column col-4 pe-5">
+          <mat-label class="font-bold-lg subtitle-margin">
+            {{ 'TTH.SELECT_YEAR' | translate }}
+          </mat-label>
+          <span class="fake-lable-space"></span>
+          <div class="multi-select-search">
+            <mat-select
+              formControlName="timetableYear"
+              data-cy="canton-type"
+              placeholder="{{ 'FORM.DROPDOWN_PLACEHOLDER' | translate }}"
+            >
+              <mat-option *ngFor="let year of YEAR_OPTIONS" [value]="year">
+                {{ year }}
+              </mat-option>
+            </mat-select>
+          </div>
+        </div>
+        <div class="d-flex flex-column col-4">
+          <mat-label class="font-bold-lg subtitle-margin"
+            >{{ 'TTH.SELECT_CANTON' | translate }}
+          </mat-label>
+          <span class="fake-lable-space"></span>
+          <div class="multi-select-search">
+            <mat-select
+              formControlName="swissCanton"
+              data-cy="canton-type"
+              placeholder="{{ 'FORM.DROPDOWN_PLACEHOLDER' | translate }}"
+            >
+              <mat-option *ngFor="let canton of CANTON_OPTIONS" [value]="canton.enumCanton">
+                <img
+                  alt="canton-logo"
+                  class="pe-1"
+                  height="28"
+                  src="assets/images/cantons/{{ canton.short.toUpperCase() }}.svg"
+                  width="28"
+                />
+                {{ 'TTH.CANTON.' + canton.short | translate }}
+              </mat-option>
+            </mat-select>
+          </div>
+        </div>
+      </div>
 
-    <br />
-    statement:
-    {{ statement | json }}
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    long shit
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    long shit
+      <h1 class="font-bold-2xl mb-5">
+        {{ 'TTH.STATEMENT.ROUTE' | translate }}
+      </h1>
+
+      <div class="d-flex flex-row col-12 mb-5">
+        <div class="d-flex flex-column col-12">
+          <atlas-text-field
+            [fieldExamples]="[
+              { label: 'FORM.FOR_EXAMPLE', translate: true },
+              { label: 'Wiesenbach', translate: false },
+              { label: ' |', translate: false },
+              {
+                label: 'FORM.MAX_CHARS',
+                translate: true,
+                arg: { key: 'numberOfChars', value: '50' }
+              }
+            ]"
+            [formGroup]="form"
+            controlName="stopPlace"
+            fieldLabel="TTH.STATEMENT.STOP_POINT"
+            infoIconTitle="TTH.STATEMENT.STOP_POINT_INFO"
+          >
+          </atlas-text-field>
+        </div>
+      </div>
+
+      <h1 class="font-bold-2xl mb-5">
+        {{ 'TTH.STATEMENT.STATEMENT' | translate }}
+      </h1>
+
+      <div class="d-flex flex-row col-12 mb-5">
+        <div class="d-flex flex-column col-6 pe-3">
+          <atlas-text-field
+            [formGroup]="form.controls.statementSender"
+            controlName="firstName"
+            fieldLabel="TTH.STATEMENT.FIST_NAME"
+          >
+          </atlas-text-field>
+        </div>
+        <div class="d-flex flex-column col-6">
+          <atlas-text-field
+            [formGroup]="form.controls.statementSender"
+            controlName="lastName"
+            fieldLabel="TTH.STATEMENT.LAST_NAME"
+          >
+          </atlas-text-field>
+        </div>
+      </div>
+
+      <div class="d-flex flex-row col-12 mb-5">
+        <div class="d-flex flex-column col-12">
+          <atlas-text-field
+            [fieldExamples]="[
+              { label: 'TTH.STATEMENT.E_MAIL_TEXT', translate: true },
+              { label: ' |', translate: false },
+              {
+                label: 'FORM.MAX_CHARS',
+                translate: true,
+                arg: { key: 'numberOfChars', value: '50' }
+              }
+            ]"
+            [formGroup]="form.controls.statementSender"
+            controlName="email"
+            fieldLabel="TTH.STATEMENT.E_MAIL"
+          >
+          </atlas-text-field>
+        </div>
+      </div>
+
+      <div class="d-flex flex-row col-12 mb-5">
+        <div class="d-flex flex-column col-12">
+          <form-comment
+            [displayInfoIcon]="false"
+            [formGroup]="form"
+            controlName="statement"
+            label="TTH.STATEMENT.STATEMENT"
+          >
+          </form-comment>
+        </div>
+      </div>
+
+      <div class="font-regular-sm mb-2">{{ 'TTH.STATEMENT.ATTATCHMENT_INFO' | translate }}</div>
+      <atlas-button
+        applicationType="LIDI"
+        buttonDataCy="addPDF"
+        buttonText="TTH.STATEMENT.ATTATCHMENT_BUTTON"
+        buttonType="createCheckingPermission"
+        wrapperStyleClass="mb-5"
+      >
+      </atlas-button>
+
+      <h1 class="font-bold-2xl mb-5">
+        {{ 'TTH.STATEMENT.STATUS_JUSTIFICATION' | translate }}
+      </h1>
+
+      <div class="d-flex flex-row col-12 mb-5">
+        <div class="d-flex flex-column col-12">
+          <mat-label class="font-bold-lg subtitle-margin"
+            >{{ 'TTH.STATEMENT.STATUS' | translate }}
+          </mat-label>
+          <span class="fake-lable-space"></span>
+          <div class="multi-select-search">
+            <mat-select
+              formControlName="statementStatus"
+              data-cy="status"
+              placeholder="{{ 'FORM.DROPDOWN_PLACEHOLDER' | translate }}"
+            >
+              <mat-option *ngFor="let status of STATUS_OPTIONS" [value]="status">
+                {{ 'TTH.STATEMENT_STATUS.' + status | translate }}
+              </mat-option>
+            </mat-select>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex flex-row col-12 mb-5">
+        <div class="d-flex flex-column col-12">
+          <form-comment
+            [displayInfoIcon]="false"
+            [formGroup]="form"
+            controlName="justification"
+            label="TTH.STATEMENT.JUSTIFICATION"
+          >
+          </form-comment>
+        </div>
+      </div>
+
+      {{ form.value | json }}
+    </ng-container>
   </div>
 </div>
 
