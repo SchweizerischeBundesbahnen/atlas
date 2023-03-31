@@ -1,28 +1,20 @@
 <div class="ps-5 pt-5 pb-5">
-  <div class="white-table-container-no-tabs">
-    this is the detial
+  <div class="detail-page-container">
+    <h1 class="font-bold-4xl mb-5">
+      {{ (statement ? 'TTH.STATEMENT.STATEMENT' : 'TTH.STATEMENT.NEW') | translate }}
+    </h1>
+
+    <app-user-detail-info
+      *ngIf="statement"
+      [record]="statement!"
+      [short]="true"
+    ></app-user-detail-info>
+
+    Jahr placeholder
 
     <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
+    statement:
+    {{ statement | json }}
     <br />
     <br />
     <br />
@@ -39,9 +31,25 @@
     <br />
     <br />
     long shit
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    long shit
   </div>
+</div>
 
-  <div class="footer fixed-bottom d-flex align-items-center justify-content-center">
+<div class="page-footer">
+  <div class="page-footer-actions align-items-center justify-content-center d-flex">
     <atlas-button
       [mat-dialog-close]="true"
       buttonDataCy="back-to-overview"
