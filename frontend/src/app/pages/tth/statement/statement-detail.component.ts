@@ -73,8 +73,8 @@ export class StatementDetailComponent implements OnInit {
     return new FormGroup<StatementDetailFormGroup>({
       timetableYear: new FormControl(statement?.timetableYear, [Validators.required]),
       statementStatus: new FormControl(statement?.statementStatus, [Validators.required]),
-      ttfnid: new FormControl(statement?.ttfnid, [Validators.required]),
-      swissCanton: new FormControl(statement?.swissCanton, [Validators.required]),
+      ttfnid: new FormControl(statement?.ttfnid),
+      swissCanton: new FormControl(statement?.swissCanton),
       stopPlace: new FormControl(statement?.stopPlace, [
         AtlasFieldLengthValidator.length_50,
         WhitespaceValidator.blankOrEmptySpaceSurrounding,
@@ -96,6 +96,7 @@ export class StatementDetailComponent implements OnInit {
         ]),
       }),
       statement: new FormControl(statement?.statement, [
+        Validators.required,
         AtlasFieldLengthValidator.comments,
         WhitespaceValidator.blankOrEmptySpaceSurrounding,
         AtlasCharsetsValidator.iso88591,
