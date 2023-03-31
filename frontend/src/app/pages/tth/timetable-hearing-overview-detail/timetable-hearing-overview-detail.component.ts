@@ -2,6 +2,7 @@ import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {
   ContainerTimetableHearingStatement,
+  ContainerTimetableHearingYear,
   HearingStatus,
   StatementStatus,
   SwissCanton,
@@ -112,6 +113,7 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
 
   getOverview($paginationAndSearch: TableSettings) {
     this.selectedCantonEnum = this.getSelectedCantonFromNavigation();
+    //TODO: clear variables
     this.dafaultCantonSelection = this.getCantonSelection();
     this.isLoading = true;
     this.getTimetableHearingStatementsSubscription = this.timetableHearingService
@@ -146,16 +148,24 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
   changeSelectedCanton(canton: MatSelectChange) {
     this.overviewToTabService.changeData(canton.value);
     this.router
-      .navigate([Pages.TTH.path, canton.value.toLowerCase(), this.hearingStatus])
+      .navigate([Pages.TTH.path, canton.value.toLowerCase(), this.hearingStatus],
+        {queryParams: {year: this.foundTimetableHearingYear.timetableYear}})
       .then(() => {
         this.dafaultCantonSelection = this.getCantonSelection();
         this.ngOnInit();
       });
   }
 
-  changeSelectedYear(year: MatSelectChange) {
-    this.foundTimetableHearingYear.timetableYear = year.value;
-    this.initOverviewTable();
+  changeSelectedYear(selectChange: MatSelectChange) {
+    this.foundTimetableHearingYear.timetableYear = selectChange.value;
+    this.router
+      .navigate([Pages.TTH.path, this.cantonShort.toLowerCase(), this.hearingStatus],
+        {
+          queryParams: {year: selectChange.value}
+        })
+      .then(() => {
+        this.ngOnInit();
+      });
   }
 
   downloadCsv() {
@@ -190,8 +200,7 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
     return this.CANTON_OPTIONS[
       this.CANTON_OPTIONS.findIndex(
         (value) => value.toLowerCase() === this.cantonShort.toLowerCase()
-      )
-      ];
+      )];
   }
 
   private getSelectedHeraingStatus() {
@@ -210,33 +219,24 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
   private checkIfCantonExists() {
     const swissCantonEnum = Cantons.getSwissCantonEnum(this.cantonShort);
     if (!swissCantonEnum) {
-      this.overviewToTabService.changeData(Cantons.swiss.path);
-      this.router
-        .navigate([Pages.TTH.path, Cantons.swiss.path, this.hearingStatus])
-        .then(() => {
-        });
+      this.noTimetableHearingYearFound = true;
+      this.router.navigate([Pages.TTH.path]).then(() => {
+      });
     }
   }
 
   private initOverviewArchivedTable() {
     this.timetableHearingService
       .getHearingYears([HearingStatus.Archived])
-      .subscribe((archivedTimetableHearingYears) => {
-        if (archivedTimetableHearingYears.objects) {
-          if (archivedTimetableHearingYears.objects.length === 0) {
+      .subscribe((timetableHearingYearContainer) => {
+        if (timetableHearingYearContainer.objects) {
+          if (timetableHearingYearContainer.objects.length === 0) {
             this.noTimetableHearingYearFound = true;
-          } else if (
-            archivedTimetableHearingYears.objects &&
-            archivedTimetableHearingYears.objects.length >= 1
-          ) {
-            archivedTimetableHearingYears.objects
+          } else if (timetableHearingYearContainer.objects.length >= 1) {
+            timetableHearingYearContainer.objects
               .sort((n1, n2) => n1.timetableYear - n2.timetableYear)
               .reverse();
-            this.YEAR_OPTIONS = archivedTimetableHearingYears.objects.map(
-              (value) => value.timetableYear
-            );
-            this.defaultYearSelection = this.YEAR_OPTIONS[0];
-            this.foundTimetableHearingYear = archivedTimetableHearingYears.objects[0];
+            this.setFoundHearingYear(timetableHearingYearContainer);
             this.initOverviewTable();
           }
         }
@@ -244,25 +244,44 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
   }
 
   private initOverviewPlannedTable() {
+
     this.timetableHearingService
       .getHearingYears([HearingStatus.Planned])
-      .subscribe((plannedTimetableHearingYears) => {
-        if (plannedTimetableHearingYears.objects) {
-          if (plannedTimetableHearingYears.objects.length === 0) {
+      .subscribe((timetableHearingYearContainer) => {
+        //TODO: extract me with sort/reverse
+        if (timetableHearingYearContainer.objects) {
+          if (timetableHearingYearContainer.objects.length === 0) {
             this.noTimetableHearingYearFound = true;
-          } else if (plannedTimetableHearingYears.objects.length >= 1) {
-            plannedTimetableHearingYears.objects.sort(
-              (n1, n2) => n1.timetableYear - n2.timetableYear
-            );
-            this.YEAR_OPTIONS = plannedTimetableHearingYears.objects.map(
-              (value) => value.timetableYear
-            );
-            this.defaultYearSelection = this.YEAR_OPTIONS[0];
-            this.foundTimetableHearingYear = plannedTimetableHearingYears.objects[0];
+          } else if (timetableHearingYearContainer.objects.length >= 1) {
+            timetableHearingYearContainer.objects.sort((n1, n2) => n1.timetableYear - n2.timetableYear);
+            this.setFoundHearingYear(timetableHearingYearContainer);
             this.initOverviewTable();
           }
         }
       });
+  }
+
+  private setFoundHearingYear(timetableHearingYearContainer: ContainerTimetableHearingYear) {
+    if (timetableHearingYearContainer.objects) {
+      this.YEAR_OPTIONS = timetableHearingYearContainer.objects.map(
+        (value) => value.timetableYear
+      );
+      const paramYear = this.route.snapshot.queryParams.year;
+      if (paramYear) {
+        this.defaultYearSelection = this.YEAR_OPTIONS[this.YEAR_OPTIONS.findIndex(value => value === Number(paramYear))];
+        const hearingYear = timetableHearingYearContainer.objects.find(value => value.timetableYear === Number(paramYear));
+        //TODO: if the given year in the route does not exist change the queryParams with th default one
+        if (hearingYear) {
+          this.foundTimetableHearingYear = hearingYear;
+        } else {
+          this.defaultYearSelection = this.YEAR_OPTIONS[0];
+          this.foundTimetableHearingYear = timetableHearingYearContainer.objects[0];
+        }
+      } else {
+        this.defaultYearSelection = this.YEAR_OPTIONS[0];
+        this.foundTimetableHearingYear = timetableHearingYearContainer.objects[0];
+      }
+    }
   }
 
   private initOverviewActiveTable() {
