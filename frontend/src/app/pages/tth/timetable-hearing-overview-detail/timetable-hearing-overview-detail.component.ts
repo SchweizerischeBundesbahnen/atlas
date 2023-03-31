@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 import {
   ContainerTimetableHearingStatement,
   HearingStatus,
@@ -10,16 +10,16 @@ import {
   TimetableHearingYear,
   UserAdministrationService,
 } from '../../../api';
-import { Cantons } from '../overview/canton/Cantons';
-import { TableComponent } from '../../../core/components/table/table.component';
-import { TableColumn } from '../../../core/components/table/table-column';
-import { DEFAULT_STATUS_SELECTION } from '../../../core/constants/status.choices';
-import { TableSettings } from '../../../core/components/table/table-settings';
-import { Pages } from '../../pages';
-import { Subscription } from 'rxjs';
+import {Cantons} from '../overview/canton/Cantons';
+import {TableComponent} from '../../../core/components/table/table.component';
+import {TableColumn} from '../../../core/components/table/table-column';
+import {DEFAULT_STATUS_SELECTION} from '../../../core/constants/status.choices';
+import {TableSettings} from '../../../core/components/table/table-settings';
+import {Pages} from '../../pages';
+import {Subscription} from 'rxjs';
 import moment from 'moment';
-import { OverviewToTabShareDataService } from '../timetable-hearing-overview-tab/overview-to-tab-share-data.service';
-import { MatSelectChange } from '@angular/material/select';
+import {OverviewToTabShareDataService} from '../timetable-hearing-overview-tab/overview-to-tab-share-data.service';
+import {MatSelectChange} from '@angular/material/select';
 
 @Component({
   selector: 'app-timetable-hearing-overview-detail',
@@ -27,7 +27,7 @@ import { MatSelectChange } from '@angular/material/select';
   styleUrls: ['./timetable-hearing-overview-detail.component.scss'],
 })
 export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestroy {
-  @ViewChild(TableComponent, { static: true })
+  @ViewChild(TableComponent, {static: true})
   tableComponent!: TableComponent<TimetableHearingStatement>;
   hearingStatus = Pages.TTH_ACTIVE.path;
   isLoading = false;
@@ -47,15 +47,15 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
         },
       },
     },
-    { headerTitle: 'TTH.SWISS_CANTON', value: 'swissCanton', callback: this.mapToShortCanton },
+    {headerTitle: 'TTH.SWISS_CANTON', value: 'swissCanton', callback: this.mapToShortCanton},
     {
       headerTitle: 'TTH.TRANSPORT_COMPANY',
       value: 'responsibleTransportCompaniesDisplay',
     },
-    { headerTitle: 'TTH.TTFNID', value: 'ttfnid' },
-    { headerTitle: 'TTH.TIMETABLE_FIELD_NUMBER', value: 'timetableFieldNumber' },
-    { headerTitle: 'COMMON.EDIT_ON', value: 'editionDate', formatAsDate: true },
-    { headerTitle: 'COMMON.EDIT_BY', value: 'editor' },
+    {headerTitle: 'TTH.TTFNID', value: 'ttfnid'},
+    {headerTitle: 'TTH.TIMETABLE_FIELD_NUMBER', value: 'timetableFieldNumber'},
+    {headerTitle: 'COMMON.EDIT_ON', value: 'editionDate', formatAsDate: true},
+    {headerTitle: 'COMMON.EDIT_BY', value: 'editor'},
   ];
   noTimetableHearingYearFound = false;
   data!: ContainerTimetableHearingStatement;
@@ -85,7 +85,8 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
     private readonly timetableHearingService: TimetableHearingService,
     private readonly userAdministrationService: UserAdministrationService,
     private overviewToTabService: OverviewToTabShareDataService
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.syncCantonShortSharedDate();
@@ -190,7 +191,7 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
       this.CANTON_OPTIONS.findIndex(
         (value) => value.toLowerCase() === this.cantonShort.toLowerCase()
       )
-    ];
+      ];
   }
 
   private getSelectedHeraingStatus() {
@@ -203,6 +204,18 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
   private syncCantonShortSharedDate() {
     this.overviewToTabService.cantonShort$.subscribe((res) => (this.cantonShort = res));
     this.overviewToTabService.changeData(this.cantonShort);
+    this.checkIfCantonExists();
+  }
+
+  private checkIfCantonExists() {
+    const swissCantonEnum = Cantons.getSwissCantonEnum(this.cantonShort);
+    if (!swissCantonEnum) {
+      this.overviewToTabService.changeData(Cantons.swiss.path);
+      this.router
+        .navigate([Pages.TTH.path, Cantons.swiss.path, this.hearingStatus])
+        .then(() => {
+        });
+    }
   }
 
   private initOverviewArchivedTable() {
