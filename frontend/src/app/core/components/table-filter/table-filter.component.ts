@@ -104,6 +104,7 @@ export class TableFilterComponent<TFilterConfig> {
     (
       this.filterConfigurations[rowIndex][filterIndex] as TableFilterSearchSelect<TFilterConfig>
     ).activeSearch = changeEvent as TFilterConfig;
+
     this.emitSearch();
   }
 
