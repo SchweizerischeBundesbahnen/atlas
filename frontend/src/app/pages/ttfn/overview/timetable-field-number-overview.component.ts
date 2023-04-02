@@ -115,8 +115,9 @@ export class TimetableFieldNumberOverviewComponent implements OnDestroy {
       .getOverview(
         getActiveSearchForChip(this.tableFilterConfig[0][0]),
         undefined,
-        getActiveSearch<BusinessOrganisation, BusinessOrganisation>(this.tableFilterConfig[1][0])
-          .sboid,
+        getActiveSearch<BusinessOrganisation | undefined, BusinessOrganisation>(
+          this.tableFilterConfig[1][0]
+        )?.sboid,
         getActiveSearchDate(this.tableFilterConfig[1][2]),
         getActiveSearch(this.tableFilterConfig[1][1]),
         pagination.page,
