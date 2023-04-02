@@ -121,8 +121,9 @@ export class LinesComponent implements OnDestroy {
         getActiveSearchForChip(this.tableFilterConfig[0][0]),
         getActiveSearch(this.tableFilterConfig[1][2]),
         getActiveSearch(this.tableFilterConfig[1][1]),
-        getActiveSearch<BusinessOrganisation, BusinessOrganisation>(this.tableFilterConfig[1][0])
-          .sboid,
+        getActiveSearch<BusinessOrganisation | undefined, BusinessOrganisation>(
+          this.tableFilterConfig[1][0]
+        )?.sboid,
         getActiveSearchDate(this.tableFilterConfig[1][3]),
         pagination.page,
         pagination.size,
