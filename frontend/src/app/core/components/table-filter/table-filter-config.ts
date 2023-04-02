@@ -16,7 +16,7 @@ export type TableFilterConfig<TFilterConfig> =
 export type TableFilterSearchSelect<T> = {
   filterType: FilterType.SEARCH_SELECT;
   elementWidthCssClass: string;
-  activeSearch: T;
+  activeSearch: T | undefined;
 };
 
 export type TableFilterMultiSelect<T> = {
