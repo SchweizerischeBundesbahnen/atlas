@@ -614,6 +614,7 @@
     "STATEMENT": {
       "NEW": "Neue Stellungnahme erfassen",
       "STATEMENT": "Stellungnahme",
+      "STATEMENT_INFO": "Nennen Sie die Verbindungen (z.B. die Verbindung mit Abfahrt 12:35 Uhr) zu welcher die Rückmeldung erfolgt.",
       "ROUTE": "Strecke",
       "STOP_POINT": "Haltestelle",
       "STOP_POINT_INFO": "Beschreibung der referenzierten Haltestelle",
@@ -625,6 +626,10 @@
       "JUSTIFICATION": "Begründung",
       "ATTATCHMENT_INFO": "Sie können die Stellungnahme mit PDF-Anhang einreichen.",
       "ATTATCHMENT_BUTTON": "PDF anhängen",
+      "ORGANISATION": "Organisation/Vereinigung",
+      "ZIP": "PLZ",
+      "CITY": "Ort/Stadt",
+      "STREET": "Strasse",
       "STATUS": "Status"
     }
   }
