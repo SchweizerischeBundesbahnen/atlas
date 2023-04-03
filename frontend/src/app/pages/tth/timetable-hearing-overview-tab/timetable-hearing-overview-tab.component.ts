@@ -4,12 +4,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TabService } from '../../tab.service';
 import { OverviewToTabShareDataService } from './overview-to-tab-share-data.service';
 import { Cantons } from '../overview/canton/Cantons';
+import { Tab } from './tab';
 
 @Component({
   templateUrl: './timetable-hearing-overview-tab.component.html',
 })
 export class TimetableHearingOverviewTabComponent implements OnInit {
-  TABS = [
+  TABS: Tab[] = [
     {
       link: Pages.TTH_ACTIVE.path,
       title: 'TTH.TAB.ACTUAL',
@@ -33,7 +34,7 @@ export class TimetableHearingOverviewTabComponent implements OnInit {
     private overviewToTabService: OverviewToTabShareDataService
   ) {}
 
-  activateTab(tab: any) {
+  clickOnTab(tab: Tab) {
     this.cantonShort = this.route.snapshot.params['canton'];
     this.activeTab = tab;
     this.overviewToTabService.changeData(this.cantonShort);
