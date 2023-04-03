@@ -21,10 +21,12 @@ import { DownloadIconComponent } from '../form-components/download-icon/download
 import { UploadIconComponent } from '../form-components/upload-icon/upload-icon.component';
 import { TimetableFieldNumberSelectComponent } from '../form-components/ttfn-select/timetable-field-number-select.component';
 import { TimetableFieldNumberSelectOptionPipe } from '../form-components/ttfn-select/ttfn-select-option.pipe';
+import { TransportCompanySelectComponent } from '../form-components/tu-select/transport-company-select.component';
 
 @NgModule({
   declarations: [
     BusinessOrganisationSelectComponent,
+    TransportCompanySelectComponent,
     TimetableFieldNumberSelectComponent,
     DateRangeComponent,
     FieldErrorComponent,
@@ -48,6 +50,7 @@ import { TimetableFieldNumberSelectOptionPipe } from '../form-components/ttfn-se
   exports: [
     BusinessOrganisationSelectComponent,
     TimetableFieldNumberSelectComponent,
+    TransportCompanySelectComponent,
     DateRangeComponent,
     FieldErrorComponent,
     CommentComponent,
