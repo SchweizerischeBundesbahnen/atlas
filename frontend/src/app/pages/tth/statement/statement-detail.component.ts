@@ -1,26 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import {
   HearingStatus,
-  LineVersion,
   StatementStatus,
-  SwissCanton,
   TimetableHearingService,
   TimetableHearingStatement,
 } from '../../../api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
-import { MatSelectChange } from '@angular/material/select';
 import { Cantons } from '../overview/canton/Cantons';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { LineDetailFormGroup } from '../../lidi/lines/detail/line-detail-form-group';
 import { AtlasCharsetsValidator } from '../../../core/validation/charsets/atlas-charsets-validator';
 import { AtlasFieldLengthValidator } from '../../../core/validation/field-lengths/atlas-field-length-validator';
 import { WhitespaceValidator } from '../../../core/validation/whitespace/whitespace-validator';
-import moment from 'moment/moment';
-import { DateRangeValidator } from '../../../core/validation/date-range/date-range-validator';
 import { StatementDetailFormGroup, StatementSenderFormGroup } from './statement-detail-form-group';
 import { Canton } from '../overview/canton/Canton';
-import { Statement } from '@angular/compiler';
+import { takeUntil } from 'rxjs/operators';
+import { catchError, EMPTY, Subject } from 'rxjs';
+import { NotificationService } from '../../../core/notification/notification.service';
+import { ValidationService } from '../../../core/validation/validation.service';
 
 @Component({
   selector: 'app-statement-detail',
@@ -33,23 +30,27 @@ export class StatementDetailComponent implements OnInit {
   STATUS_OPTIONS: StatementStatus[] = [];
 
   statement: TimetableHearingStatement | undefined;
+  isNew!: boolean;
 
   form!: FormGroup<StatementDetailFormGroup>;
+  private ngUnsubscribe = new Subject<void>();
 
   constructor(
-    private activatedRoute: ActivatedRoute,
     private router: Router,
+    private route: ActivatedRoute,
     private dialogService: DialogService,
-    private timetableHearingService: TimetableHearingService
+    private timetableHearingService: TimetableHearingService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit() {
-    this.statement = this.activatedRoute.snapshot.data.statement;
+    this.statement = this.route.snapshot.data.statement;
+    this.isNew = !this.statement;
 
     this.form = this.getFormGroup(this.statement);
     this.initYearOptions();
     this.initCantonOptions();
-    this.initStatusOptions(this.statement);
+    this.initStatusOptions();
   }
 
   private initYearOptions() {
@@ -127,11 +128,59 @@ export class StatementDetailComponent implements OnInit {
     });
   }
 
-  private initStatusOptions(statement: TimetableHearingStatement | undefined) {
+  private initStatusOptions() {
     this.STATUS_OPTIONS = Object.values(StatementStatus);
-    if (!statement) {
+    if (this.isNew) {
       this.form.controls.statementStatus.setValue(StatementStatus.Received);
       this.form.controls.statementStatus.disable();
     }
+  }
+
+  save() {
+    ValidationService.validateForm(this.form);
+    if (this.form.valid) {
+      this.form.disable();
+      const hearingStatement = this.form.value as TimetableHearingStatement;
+      if (this.isNew) {
+        this.createStatement(hearingStatement);
+      } else {
+        this.updateStatement(hearingStatement);
+      }
+    }
+  }
+
+  private createStatement(statement: TimetableHearingStatement) {
+    this.timetableHearingService
+      .createStatement(statement, undefined)
+      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
+      .subscribe((statement) => {
+        this.notificationService.success('TTH.STATEMENT.NOTIFICATION.ADD_SUCCESS');
+        this.navigateToStatementDetail(statement);
+      });
+  }
+
+  private updateStatement(statement: TimetableHearingStatement) {
+    this.timetableHearingService
+      .updateHearingStatement(statement.id!, statement, undefined)
+      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
+      .subscribe((statement) => {
+        this.notificationService.success('TTH.STATEMENT.NOTIFICATION.EDIT_SUCCESS');
+        this.navigateToStatementDetail(statement);
+      });
+  }
+
+  private navigateToStatementDetail(statement: TimetableHearingStatement) {
+    this.router
+      .navigate(['..', statement.id], {
+        relativeTo: this.route,
+      })
+      .then(() => this.ngOnInit());
+  }
+
+  private handleError() {
+    return () => {
+      this.form.enable();
+      return EMPTY;
+    };
   }
 }
