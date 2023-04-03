@@ -8,9 +8,10 @@ import { FormGroup } from '@angular/forms';
 })
 export class CommentComponent {
   @Input() formGroup!: FormGroup;
-  @Input() displayInfoIcon = true;
   @Input() displayLabel = true;
   @Input() required = false;
   @Input() label = 'FORM.COMMENT';
   @Input() controlName = 'comment';
+  @Input() maxChars = '1500';
+  @Input() info!: string;
 }
