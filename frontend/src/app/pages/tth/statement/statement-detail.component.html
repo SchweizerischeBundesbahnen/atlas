@@ -56,6 +56,12 @@
           </div>
         </div>
 
+        <div class="d-flex flex-row col-12 mb-4 mt-5">
+          <div class="d-flex flex-column col-6 pe-5">
+            <ttfn-select [formGroup]="form" controlName="ttfnid" data-cy="ttfnid"></ttfn-select>
+          </div>
+        </div>
+
         <h1 class="font-bold-2xl pt-5">
           {{ 'TTH.STATEMENT.ROUTE' | translate }}
           <atlas-spacer [divider]="true" height="40px"></atlas-spacer>
@@ -244,6 +250,7 @@
     >
     </atlas-button>
     <atlas-button
+      [footerEdit]="true"
       buttonDataCy="cancel"
       buttonText="COMMON.CANCEL"
       buttonType="footerEdit"
@@ -251,6 +258,8 @@
     >
     </atlas-button>
     <atlas-button
+      (click)="save()"
+      [footerEdit]="true"
       [submitButton]="true"
       buttonDataCy="save-item"
       buttonText="COMMON.SAVE"
