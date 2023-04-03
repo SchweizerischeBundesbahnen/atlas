@@ -13,7 +13,7 @@ export class TimetableHearingOverviewTabHeadingComponent {
   @Input() hearingStatus!: HearingStatus;
   @Input() noActiveTimetableHearingYearFound!: boolean;
 
-  get isHearingStatusActual() {
+  get isHearingStatusActive() {
     return this.hearingStatus.toLowerCase() === Pages.TTH_ACTIVE.path;
   }
 
