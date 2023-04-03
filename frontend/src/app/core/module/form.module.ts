@@ -19,10 +19,13 @@ import { AtlasFieldErrorComponent } from '../form-components/atlas-field-error/a
 import { AtlasLabelFieldComponent } from '../form-components/atlas-label-field/atlas-label-field.component';
 import { DownloadIconComponent } from '../form-components/download-icon/download-icon.component';
 import { UploadIconComponent } from '../form-components/upload-icon/upload-icon.component';
+import { TimetableFieldNumberSelectComponent } from '../form-components/ttfn-select/timetable-field-number-select.component';
+import { TimetableFieldNumberSelectOptionPipe } from '../form-components/ttfn-select/ttfn-select-option.pipe';
 
 @NgModule({
   declarations: [
     BusinessOrganisationSelectComponent,
+    TimetableFieldNumberSelectComponent,
     DateRangeComponent,
     FieldErrorComponent,
     CommentComponent,
@@ -35,6 +38,7 @@ import { UploadIconComponent } from '../form-components/upload-icon/upload-icon.
     SearchSelectComponent,
     DialogCloseComponent,
     BoSelectionDisplayPipe,
+    TimetableFieldNumberSelectOptionPipe,
     InfoLinkDirective,
     TextFieldComponent,
     AtlasFieldErrorComponent,
@@ -43,6 +47,7 @@ import { UploadIconComponent } from '../form-components/upload-icon/upload-icon.
   imports: [CommonModule, MaterialModule, TranslateModule],
   exports: [
     BusinessOrganisationSelectComponent,
+    TimetableFieldNumberSelectComponent,
     DateRangeComponent,
     FieldErrorComponent,
     CommentComponent,
