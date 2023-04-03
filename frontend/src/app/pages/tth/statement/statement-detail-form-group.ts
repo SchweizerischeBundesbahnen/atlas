@@ -1,10 +1,17 @@
 import { FormControl, FormGroup } from '@angular/forms';
-import { StatementStatus, SwissCanton } from '../../../api';
+import {
+  StatementStatus,
+  SwissCanton,
+  TimetableHearingStatementResponsibleTransportCompany,
+} from '../../../api';
 
 export interface StatementDetailFormGroup {
   timetableYear: FormControl<number | null | undefined>;
   statementStatus: FormControl<StatementStatus | null | undefined>;
   ttfnid: FormControl<string | null | undefined>;
+  responsibleTransportCompanies: FormControl<
+    Array<TimetableHearingStatementResponsibleTransportCompany> | null | undefined
+  >;
   swissCanton: FormControl<SwissCanton | null | undefined>;
   stopPlace: FormControl<string | null | undefined>;
   statement: FormControl<string | null | undefined>;
