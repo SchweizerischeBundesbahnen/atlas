@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
-  ContainerTimetableHearingStatement,
   ContainerTimetableHearingYear,
   HearingStatus,
   StatementStatus,
@@ -30,36 +29,17 @@ import { MatSelectChange } from '@angular/material/select';
 export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestroy {
   @ViewChild(TableComponent, { static: true })
   tableComponent!: TableComponent<TimetableHearingStatement>;
+
   hearingStatus = Pages.TTH_ACTIVE.path;
+
   isLoading = false;
   totalCount$ = 0;
   timeTableHearingStatements: TimetableHearingStatement[] = [];
 
-  tableColumns: TableColumn<TimetableHearingStatement>[] = [
-    {
-      headerTitle: 'TTH.STATEMENT_STATUS_HEADER',
-      value: 'statementStatus',
-      dropdown: {
-        options: Object.values(StatementStatus),
-        changeSelectionCallback: this.changeSelectedStatus,
-        selectedOption: '',
-        translate: {
-          withPrefix: 'TTH.STATEMENT_STATUS.',
-        },
-      },
-    },
-    { headerTitle: 'TTH.SWISS_CANTON', value: 'swissCanton', callback: this.mapToShortCanton },
-    {
-      headerTitle: 'TTH.TRANSPORT_COMPANY',
-      value: 'responsibleTransportCompaniesDisplay',
-    },
-    { headerTitle: 'TTH.TTFNID', value: 'ttfnid' },
-    { headerTitle: 'TTH.TIMETABLE_FIELD_NUMBER', value: 'timetableFieldNumber' },
-    { headerTitle: 'COMMON.EDIT_ON', value: 'editionDate', formatAsDate: true },
-    { headerTitle: 'COMMON.EDIT_BY', value: 'editor' },
-  ];
+  tableColumns: TableColumn<TimetableHearingStatement>[] = [];
+
   noTimetableHearingYearFound = false;
-  data!: ContainerTimetableHearingStatement;
+
   selectedCantonEnum: SwissCanton | undefined;
   foundTimetableHearingYear: TimetableHearingYear = {
     timetableYear: 2000,
@@ -68,16 +48,20 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
   };
   cantonShort!: string;
   CANTON_OPTIONS = Cantons.cantonsWithSwiss.map((value) => value.short);
-  COLLECTING_ACTION_OPTIONS = ['STATUS_CHANGE', 'CANTON_DELIVERY', 'DELETE'];
   dafaultCantonSelection = this.CANTON_OPTIONS[0];
+
+  COLLECTING_ACTION_OPTIONS = ['STATUS_CHANGE', 'CANTON_DELIVERY', 'DELETE'];
+
   YEAR_OPTIONS: number[] = [];
   defaultYearSelection = this.YEAR_OPTIONS[0];
+
   showDownloadCsvButton = false;
   showManageTimetableHearingButton = false;
   showAddNewStatementButton = false;
   showAddNewTimetableHearingButton = false;
   showStartTimetableHearingButton = false;
   showHearingDetail = false;
+
   private getTimetableHearingStatementsSubscription!: Subscription;
 
   constructor(
@@ -93,18 +77,21 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
 
     const selectedHearingStatus = this.getSelectedHeraingStatus();
     if (selectedHearingStatus === HearingStatus.Active) {
+      this.tableColumns = this.getActiveTableColumns();
       this.showManageTimetableHearingButton = this.isSwissCanton();
       this.showAddNewStatementButton = !this.isSwissCanton();
       this.showDownloadCsvButton = true;
       this.initOverviewActiveTable();
     }
     if (selectedHearingStatus === HearingStatus.Planned) {
+      this.tableColumns = this.getPlannedTableColumns();
       this.initOverviewPlannedTable();
       this.showAddNewTimetableHearingButton = true;
       this.showStartTimetableHearingButton = true;
       this.showHearingDetail = true;
     }
     if (selectedHearingStatus === HearingStatus.Archived) {
+      this.tableColumns = this.getArchivedTableColumns();
       this.showDownloadCsvButton = true;
       this.initOverviewArchivedTable();
     }
@@ -134,20 +121,16 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
       });
   }
 
-  editVersion($event: any) {
-    console.log($event);
-  }
-
   ngOnDestroy() {
     if (!this.noTimetableHearingYearFound) {
       this.getTimetableHearingStatementsSubscription.unsubscribe();
     }
   }
 
-  changeSelectedCanton(canton: MatSelectChange) {
-    this.overviewToTabService.changeData(canton.value);
+  changeSelectedCanton(selectCanton: MatSelectChange) {
+    this.overviewToTabService.changeData(selectCanton.value);
     this.router
-      .navigate([Pages.TTH.path, canton.value.toLowerCase(), this.hearingStatus], {
+      .navigate([Pages.TTH.path, selectCanton.value.toLowerCase(), this.hearingStatus], {
         queryParams: { year: this.foundTimetableHearingYear.timetableYear },
       })
       .then(() => {
@@ -156,15 +139,19 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
       });
   }
 
-  changeSelectedYear(selectChange: MatSelectChange) {
-    this.foundTimetableHearingYear.timetableYear = selectChange.value;
+  changeSelectedYear(selectYear: MatSelectChange) {
+    this.foundTimetableHearingYear.timetableYear = selectYear.value;
     this.router
       .navigate([Pages.TTH.path, this.cantonShort.toLowerCase(), this.hearingStatus], {
-        queryParams: { year: selectChange.value },
+        queryParams: { year: selectYear.value },
       })
       .then(() => {
         this.ngOnInit();
       });
+  }
+
+  editVersion($event: any) {
+    console.log($event);
   }
 
   downloadCsv() {
@@ -352,5 +339,54 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
 
   private changeSelectedStatus(event: MatSelectChange) {
     console.log(event.value);
+  }
+
+  private getActiveTableColumns(): TableColumn<TimetableHearingStatement>[] {
+    return [
+      {
+        headerTitle: 'TTH.STATEMENT_STATUS_HEADER',
+        value: 'statementStatus',
+        dropdown: {
+          options: Object.values(StatementStatus),
+          changeSelectionCallback: this.changeSelectedStatus,
+          selectedOption: '',
+          translate: {
+            withPrefix: 'TTH.STATEMENT_STATUS.',
+          },
+        },
+      },
+      { headerTitle: 'TTH.SWISS_CANTON', value: 'swissCanton', callback: this.mapToShortCanton },
+      {
+        headerTitle: 'TTH.TRANSPORT_COMPANY',
+        value: 'responsibleTransportCompaniesDisplay',
+      },
+      { headerTitle: 'TTH.TTFNID', value: 'ttfnid' },
+      { headerTitle: 'TTH.TIMETABLE_FIELD_NUMBER', value: 'timetableFieldNumber' },
+      { headerTitle: 'COMMON.EDIT_ON', value: 'editionDate', formatAsDate: true },
+      { headerTitle: 'COMMON.EDIT_BY', value: 'editor' },
+    ];
+  }
+
+  private getPlannedTableColumns(): TableColumn<TimetableHearingStatement>[] {
+    return this.getActiveTableColumns().filter((col) => {
+      return (
+        col.value === 'swissCanton' ||
+        col.value === 'responsibleTransportCompaniesDisplay' ||
+        col.value === 'ttfnid' ||
+        col.value === 'timetableFieldNumber'
+      );
+    });
+  }
+
+  private getArchivedTableColumns(): TableColumn<TimetableHearingStatement>[] {
+    return this.getActiveTableColumns().filter((col) => {
+      return (
+        col.value === 'swissCanton' ||
+        col.value === 'responsibleTransportCompaniesDisplay' ||
+        col.value === 'ttfnid' ||
+        col.value === 'timetableFieldNumber' ||
+        col.value === 'editor'
+      );
+    });
   }
 }
