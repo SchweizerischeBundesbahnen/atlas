@@ -89,6 +89,23 @@ export class StatementDetailComponent implements OnInit {
           AtlasFieldLengthValidator.length_100,
           AtlasCharsetsValidator.iso88591,
         ]),
+        organisation: new FormControl(statement?.statementSender.organisation, [
+          AtlasFieldLengthValidator.length_100,
+          AtlasCharsetsValidator.iso88591,
+        ]),
+        zip: new FormControl(statement?.statementSender.zip, [
+          AtlasCharsetsValidator.numeric,
+          Validators.min(1000),
+          Validators.max(99999),
+        ]),
+        city: new FormControl(statement?.statementSender.city, [
+          AtlasFieldLengthValidator.length_50,
+          AtlasCharsetsValidator.iso88591,
+        ]),
+        street: new FormControl(statement?.statementSender.street, [
+          AtlasFieldLengthValidator.length_100,
+          AtlasCharsetsValidator.iso88591,
+        ]),
         email: new FormControl(statement?.statementSender.email, [
           Validators.required,
           AtlasFieldLengthValidator.length_100,
@@ -97,12 +114,12 @@ export class StatementDetailComponent implements OnInit {
       }),
       statement: new FormControl(statement?.statement, [
         Validators.required,
-        AtlasFieldLengthValidator.comments,
+        AtlasFieldLengthValidator.statement,
         WhitespaceValidator.blankOrEmptySpaceSurrounding,
         AtlasCharsetsValidator.iso88591,
       ]),
       justification: new FormControl(statement?.justification, [
-        AtlasFieldLengthValidator.comments,
+        AtlasFieldLengthValidator.statement,
         WhitespaceValidator.blankOrEmptySpaceSurrounding,
         AtlasCharsetsValidator.iso88591,
       ]),
