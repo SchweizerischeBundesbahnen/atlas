@@ -22,6 +22,7 @@ import { TthChangeStatusDialogService } from './tth-change-status-dialog/service
 import { ColumnDropDownEvent } from '../../../core/components/table/column-drop-down-event';
 import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
 import { TthTableService } from '../tth-table.service';
+import { TthDialogService } from '../../../core/components/tthdialog/tthdialog.service';
 
 @Component({
   selector: 'app-timetable-hearing-overview-detail',
@@ -170,6 +171,25 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
 
   addNewTimetableHearing() {
     console.log('addNewTimetableHearing');
+    const dialogRef = this.tthDialogService.confirm({
+      title: 'TTH.DIALOG.NEW_PLAN_TIMETABLE',
+      column: '',
+    });
+
+    //open dialog
+
+    //https://material.angular.io/components/dialog/examples
+
+    //openDialog(): void {
+    //     const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
+    //       data: {name: this.name, animal: this.animal},
+    //     });
+    //
+    //     dialogRef.afterClosed().subscribe(result => {
+    //       console.log('The dialog was closed');
+    //       this.animal = result;
+    //     });
+    //   }
   }
 
   startTimetableHearing() {
