@@ -16,5 +16,9 @@ export interface StatementDetailFormGroup {
 export interface StatementSenderFormGroup {
   firstName: FormControl<string | null | undefined>;
   lastName: FormControl<string | null | undefined>;
+  organisation: FormControl<string | null | undefined>;
+  zip: FormControl<number | null | undefined>;
+  city: FormControl<string | null | undefined>;
+  street: FormControl<string | null | undefined>;
   email: FormControl<string | null | undefined>;
 }
