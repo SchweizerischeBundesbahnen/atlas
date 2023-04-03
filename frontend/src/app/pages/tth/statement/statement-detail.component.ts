@@ -15,7 +15,7 @@ import { WhitespaceValidator } from '../../../core/validation/whitespace/whitesp
 import { StatementDetailFormGroup, StatementSenderFormGroup } from './statement-detail-form-group';
 import { Canton } from '../overview/canton/Canton';
 import { takeUntil } from 'rxjs/operators';
-import { catchError, EMPTY, Subject } from 'rxjs';
+import { catchError, EMPTY, Observable, of, Subject } from 'rxjs';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { ValidationService } from '../../../core/validation/validation.service';
 
@@ -47,7 +47,7 @@ export class StatementDetailComponent implements OnInit {
     this.statement = this.route.snapshot.data.statement;
     this.isNew = !this.statement;
 
-    this.form = this.getFormGroup(this.statement);
+    this.initForm();
     this.initYearOptions();
     this.initCantonOptions();
     this.initStatusOptions();
@@ -65,9 +65,105 @@ export class StatementDetailComponent implements OnInit {
       });
   }
 
-  initCantonOptions() {
+  private initCantonOptions() {
     // TODO: get only cantons available for writer
     this.CANTON_OPTIONS = Cantons.cantons;
+  }
+
+  private initForm() {
+    this.form = this.getFormGroup(this.statement);
+    if (!this.isNew) {
+      this.form.disable();
+    }
+  }
+
+  private initStatusOptions() {
+    this.STATUS_OPTIONS = Object.values(StatementStatus);
+    if (this.isNew) {
+      this.form.controls.statementStatus.setValue(StatementStatus.Received);
+      this.form.controls.statementStatus.disable();
+    }
+  }
+
+  save() {
+    ValidationService.validateForm(this.form);
+    if (this.form.valid) {
+      this.form.disable();
+      const hearingStatement = this.form.value as TimetableHearingStatement;
+      if (this.isNew) {
+        this.createStatement(hearingStatement);
+      } else {
+        this.updateStatement(hearingStatement);
+      }
+    }
+  }
+
+  private createStatement(statement: TimetableHearingStatement) {
+    this.timetableHearingService
+      .createStatement(statement, undefined)
+      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
+      .subscribe((statement) => {
+        this.notificationService.success('TTH.STATEMENT.NOTIFICATION.ADD_SUCCESS');
+        this.navigateToStatementDetail(statement);
+      });
+  }
+
+  private updateStatement(statement: TimetableHearingStatement) {
+    this.timetableHearingService
+      .updateHearingStatement(statement.id!, statement, undefined)
+      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
+      .subscribe((statement) => {
+        this.notificationService.success('TTH.STATEMENT.NOTIFICATION.EDIT_SUCCESS');
+        this.navigateToStatementDetail(statement);
+      });
+  }
+
+  private navigateToStatementDetail(statement: TimetableHearingStatement) {
+    this.router
+      .navigate(['..', statement.id], { relativeTo: this.route })
+      .then(() => this.ngOnInit());
+  }
+
+  private handleError() {
+    return () => {
+      this.form.enable();
+      return EMPTY;
+    };
+  }
+
+  toggleEdit() {
+    if (this.form.enabled) {
+      this.showConfirmationDialog();
+    } else {
+      this.form.enable();
+    }
+  }
+
+  private showConfirmationDialog() {
+    this.confirmLeave().subscribe((confirmed) => {
+      if (confirmed) {
+        if (this.isNew) {
+          this.backToOverview();
+        } else {
+          this.form.disable();
+          this.ngOnInit();
+        }
+      }
+    });
+  }
+
+  private confirmLeave(): Observable<boolean> {
+    if (this.form.dirty) {
+      return this.dialogService.confirm({
+        title: 'DIALOG.DISCARD_CHANGES_TITLE',
+        message: 'DIALOG.LEAVE_SITE',
+      });
+    }
+    return of(true);
+  }
+
+  backToOverview() {
+    this.router.navigate(['..'], { relativeTo: this.route }).then();
   }
 
   getFormGroup(statement: TimetableHearingStatement | undefined): FormGroup {
@@ -127,61 +223,5 @@ export class StatementDetailComponent implements OnInit {
       ]),
       etagVersion: new FormControl(statement?.etagVersion),
     });
-  }
-
-  private initStatusOptions() {
-    this.STATUS_OPTIONS = Object.values(StatementStatus);
-    if (this.isNew) {
-      this.form.controls.statementStatus.setValue(StatementStatus.Received);
-      this.form.controls.statementStatus.disable();
-    }
-  }
-
-  save() {
-    ValidationService.validateForm(this.form);
-    if (this.form.valid) {
-      this.form.disable();
-      const hearingStatement = this.form.value as TimetableHearingStatement;
-      if (this.isNew) {
-        this.createStatement(hearingStatement);
-      } else {
-        this.updateStatement(hearingStatement);
-      }
-    }
-  }
-
-  private createStatement(statement: TimetableHearingStatement) {
-    this.timetableHearingService
-      .createStatement(statement, undefined)
-      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
-      .subscribe((statement) => {
-        this.notificationService.success('TTH.STATEMENT.NOTIFICATION.ADD_SUCCESS');
-        this.navigateToStatementDetail(statement);
-      });
-  }
-
-  private updateStatement(statement: TimetableHearingStatement) {
-    this.timetableHearingService
-      .updateHearingStatement(statement.id!, statement, undefined)
-      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
-      .subscribe((statement) => {
-        this.notificationService.success('TTH.STATEMENT.NOTIFICATION.EDIT_SUCCESS');
-        this.navigateToStatementDetail(statement);
-      });
-  }
-
-  private navigateToStatementDetail(statement: TimetableHearingStatement) {
-    this.router
-      .navigate(['..', statement.id], {
-        relativeTo: this.route,
-      })
-      .then(() => this.ngOnInit());
-  }
-
-  private handleError() {
-    return () => {
-      this.form.enable();
-      return EMPTY;
-    };
   }
 }

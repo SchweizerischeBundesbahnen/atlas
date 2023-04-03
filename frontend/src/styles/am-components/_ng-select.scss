@@ -26,3 +26,14 @@ $height: 32px;
     box-shadow: 0 0 0 1px variables.$primary-400;
   }
 }
+
+.ng-select.ng-invalid.ng-touched .ng-select-container,
+.ng-select.ng-invalid.ng-touched.ng-select-opened > .ng-select-container,
+.ng-select.ng-invalid.ng-touched.ng-select-focused:not(.ng-select-opened) > .ng-select-container {
+  border-color: variables.$warnColor;
+  box-shadow: inherit;
+
+  &:hover {
+    box-shadow: 0 0 0 1px variables.$warnColor;
+  }
+}
