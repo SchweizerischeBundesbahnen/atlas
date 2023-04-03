@@ -13,9 +13,9 @@ describe('TimetableHearingOverviewTabHeadingComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TimetableHearingOverviewTabHeadingComponent],
+      declarations: [TimetableHearingOverviewTabHeadingComponent, DisplayDatePipe],
       imports: [AppTestingModule],
-      providers: [{ provide: TranslatePipe }, { provide: DisplayDatePipe }],
+      providers: [{ provide: TranslatePipe }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TimetableHearingOverviewTabHeadingComponent);
@@ -32,5 +32,38 @@ describe('TimetableHearingOverviewTabHeadingComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should return when hearingStatus is Active', () => {
+    //given
+    fixture.componentInstance.hearingStatus = HearingStatus.Active;
+
+    //when
+    fixture.detectChanges();
+
+    //then
+    expect(component.isHearingStatusActive).toBeTruthy();
+  });
+
+  it('should return when hearingStatus is Planned', () => {
+    //given
+    fixture.componentInstance.hearingStatus = HearingStatus.Planned;
+
+    //when
+    fixture.detectChanges();
+
+    //then
+    expect(component.isHearingStatusPlanned).toBeTruthy();
+  });
+
+  it('should return when hearingStatus is Archived', () => {
+    //given
+    fixture.componentInstance.hearingStatus = HearingStatus.Archived;
+
+    //when
+    fixture.detectChanges();
+
+    //then
+    expect(component.isHearingStatusArchived).toBeTruthy();
   });
 });
