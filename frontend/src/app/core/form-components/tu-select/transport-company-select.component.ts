@@ -19,7 +19,7 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./transport-company-select.component.scss'],
 })
 export class TransportCompanySelectComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() valueExtraction = 'id';
+  @Input() valueExtraction = '';
   @Input() controlName!: string;
   @Input() formModus = true;
   @Input() formGroup!: FormGroup;
