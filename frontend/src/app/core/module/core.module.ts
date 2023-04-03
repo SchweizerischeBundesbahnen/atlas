@@ -34,6 +34,7 @@ import { DisplayDatePipe } from '../pipe/display-date.pipe';
 import { AtlasSpacerComponent } from '../components/spacer/atlas-spacer.component';
 import { DetailFooterComponent } from '../components/detail-footer/detail-footer.component';
 import { DetailPageContainerComponent } from '../components/detail-page-container/detail-page-container.component';
+import { TthDialogComponent } from '../components/tthdialog/tthdialog.component';
 
 const coreComponents = [
   WorkflowFormComponent,
@@ -47,6 +48,7 @@ const coreComponents = [
   AtlasSpacerComponent,
   SwitchVersionComponent,
   DialogComponent,
+  TthDialogComponent,
   HeaderComponent,
   LanguageSwitcherComponent,
   LoadingSpinnerComponent,
