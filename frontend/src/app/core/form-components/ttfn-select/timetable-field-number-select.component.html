@@ -1,0 +1,22 @@
+<form-search-select
+  (changeTrigger)="ttfnSelectionChanged.emit($event)"
+  (searchTrigger)="searchTimetableFieldNumber($event)"
+  [bindValueInp]="valueExtraction"
+  [controlName]="controlName"
+  [formGroup]="formGroup"
+  [items$]="timetableFieldNumbers"
+>
+  <div class="d-flex flex-column">
+    <mat-label class="font-bold-lg">{{ 'TTFN.TTFN' | translate }}</mat-label>
+    <mat-label *ngIf="formModus" class="font-regular-sm">
+      {{ 'TTFN.SWISS_TIMETABLE_FIELD_NUMBER' | translate }} -
+      {{ 'TTFN.NUMBER' | translate }}
+    </mat-label>
+  </div>
+  <div
+    [ngClass]="formModus ? 'form-mode-label-form-field-space' : 'search-mode-space-between'"
+  ></div>
+  <ng-template #labelOptionTemplates let-item>
+    {{ item | ttfnSelectDisplay }}
+  </ng-template>
+</form-search-select>

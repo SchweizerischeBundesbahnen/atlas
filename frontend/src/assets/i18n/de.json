@@ -630,7 +630,11 @@
       "ZIP": "PLZ",
       "CITY": "Ort/Stadt",
       "STREET": "Strasse",
-      "STATUS": "Status"
+      "STATUS": "Status",
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Neue Stellungnahme erfolgreich gespeichert.",
+        "EDIT_SUCCESS": "Die Stellungnahme wurde erfolgreich gespeichert."
+      }
     }
   }
 }
