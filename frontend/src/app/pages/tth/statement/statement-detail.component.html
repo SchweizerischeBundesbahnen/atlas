@@ -110,6 +110,44 @@
         <div class="d-flex flex-row col-12 mb-4">
           <div class="d-flex flex-column col-12">
             <atlas-text-field
+              [formGroup]="form.controls.statementSender"
+              controlName="organisation"
+              fieldLabel="TTH.STATEMENT.ORGANISATION"
+            >
+            </atlas-text-field>
+          </div>
+        </div>
+
+        <div class="d-flex flex-row col-12 mb-4">
+          <div class="d-flex flex-column col-2 pe-3">
+            <atlas-text-field
+              [formGroup]="form.controls.statementSender"
+              controlName="zip"
+              fieldLabel="TTH.STATEMENT.ZIP"
+            >
+            </atlas-text-field>
+          </div>
+          <div class="d-flex flex-column col-5 pe-3">
+            <atlas-text-field
+              [formGroup]="form.controls.statementSender"
+              controlName="city"
+              fieldLabel="TTH.STATEMENT.CITY"
+            >
+            </atlas-text-field>
+          </div>
+          <div class="d-flex flex-column col-5">
+            <atlas-text-field
+              [formGroup]="form.controls.statementSender"
+              controlName="street"
+              fieldLabel="TTH.STATEMENT.STREET"
+            >
+            </atlas-text-field>
+          </div>
+        </div>
+
+        <div class="d-flex flex-row col-12 mb-4">
+          <div class="d-flex flex-column col-12">
+            <atlas-text-field
               [fieldExamples]="[
                 { label: 'TTH.STATEMENT.E_MAIL_TEXT', translate: true },
                 { label: ' |', translate: false },
@@ -131,11 +169,12 @@
         <div class="d-flex flex-row col-12 mb-4">
           <div class="d-flex flex-column col-12">
             <form-comment
-              [displayInfoIcon]="false"
               [formGroup]="form"
               [required]="true"
               controlName="statement"
               label="TTH.STATEMENT.STATEMENT"
+              maxChars="5000"
+              info="TTH.STATEMENT.STATEMENT_INFO"
             >
             </form-comment>
           </div>
@@ -182,10 +221,10 @@
         <div class="d-flex flex-row col-12 mb-5">
           <div class="d-flex flex-column col-12">
             <form-comment
-              [displayInfoIcon]="false"
               [formGroup]="form"
               controlName="justification"
               label="TTH.STATEMENT.JUSTIFICATION"
+              maxChars="5000"
             >
             </form-comment>
           </div>
