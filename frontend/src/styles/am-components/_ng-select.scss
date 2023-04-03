@@ -1,102 +1,28 @@
 @use 'src/styles/variables' as variables;
-@use 'node_modules/@ng-select/ng-select/themes/material.theme.css';
+@use 'node_modules/@ng-select/ng-select/themes/default.theme.css';
 
-$thin-border-height: 32px;
-$thick-border-height: 28px;
+$height: 32px;
 
-mat-select {
-  &.mat-select-disabled .mat-select-value {
-    color: variables.$black;
+// Size Config
+.ng-select.ng-select-single,
+.ng-select.ng-select-multiple {
+  height: $height;
+  margin-top: -2px;
+
+  .ng-select-container {
+    min-height: $height;
+    border-radius: variables.$border-radius-small;
   }
 }
 
-.ng-select {
-  min-height: $thin-border-height;
-  padding-bottom: inherit;
-  outline: thin solid variables.$gray-400;
-  border-radius: 5px;
+// Color Config
+.ng-select .ng-select-container,
+.ng-select.ng-select-opened > .ng-select-container,
+.ng-select.ng-select-focused:not(.ng-select-opened) > .ng-select-container {
+  border-color: variables.$primary-400;
+  box-shadow: inherit;
 
-  &:hover:not(.ng-select-disabled),
-  &.ng-select-focused {
-    outline: 1px solid variables.$primary-400;
-
-    .ng-input input {
-      padding-left: 2.8px !important;
-    }
-  }
-
-  &.ng-invalid.ng-touched,
-  &.ng-select-focused {
-    outline: 3px solid variables.$warnColor;
-  }
-
-  &:hover:not(.ng-select-disabled),
-  &.ng-select-focused,
-  &.ng-select-focused:not(.ng-invalid.ng-touched) {
-    outline: 3px solid variables.$primary-400;
-
-    max-height: $thick-border-height;
-
-    .ng-select-container,
-    .ng-value-container {
-      max-height: $thick-border-height;
-    }
-  }
-
-  &.ng-select-disabled {
-    outline: 1px solid variables.$gray-400;
-
-    .ng-select-container {
-      .ng-arrow,
-      .ng-clear {
-        color: variables.$gray-400 !important;
-      }
-
-      .ng-value-container .ng-value {
-        color: inherit;
-      }
-    }
-  }
-
-  input {
-    cursor: initial !important;
-    padding-left: 4.8px !important;
-  }
-
-  &.ng-select-single .ng-select-container .ng-clear-wrapper {
-    bottom: 5px;
-  }
-
-  &.ng-select-single .ng-select-container .ng-arrow-wrapper {
-    bottom: 8px;
-  }
-
-  .ng-select-container {
-    min-height: 32px;
-
-    &:after {
-      border-bottom: unset;
-    }
-
-    .ng-arrow-wrapper {
-      width: 36px;
-    }
-
-    .ng-arrow,
-    .ng-clear {
-      color: variables.$primary-400 !important;
-    }
-
-    .ng-value-container {
-      height: $thin-border-height;
-      padding-left: 5px;
-      align-items: center;
-      border-radius: 5px;
-      border-top: 0;
-    }
-  }
-
-  ng-dropdown-panel {
-    top: 35px !important;
+  &:hover {
+    box-shadow: 0 0 0 1px variables.$primary-400;
   }
 }
