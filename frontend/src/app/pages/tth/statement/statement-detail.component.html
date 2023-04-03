@@ -1,7 +1,6 @@
 <div class="ps-5 pt-5 pb-5">
   <div class="detail-page-container">
     <div class="statement-form">
-      {{ form.value | json }}}
       <ng-container [formGroup]="form">
         <h1 class="font-bold-4xl">
           {{ (statement ? 'TTH.STATEMENT.STATEMENT' : 'TTH.STATEMENT.NEW') | translate }}
@@ -251,27 +250,38 @@
 <div class="page-footer">
   <div class="page-footer-actions align-items-center justify-content-center d-flex">
     <atlas-button
-      [mat-dialog-close]="true"
+      (click)="backToOverview()"
+      [footerEdit]="form.enabled"
       buttonDataCy="back-to-overview"
       buttonText="COMMON.BACK_TO_OVERVIEW"
-      buttonType="footerNonEdit"
+      buttonType="whiteFooterNonEdit"
+      wrapperStyleClass="me-3"
     >
     </atlas-button>
     <atlas-button
-      [footerEdit]="true"
+      (click)="toggleEdit()"
+      [footerEdit]="form.enabled"
+      buttonDataCy="edit"
+      buttonText="COMMON.EDIT"
+      buttonType="whiteFooterNonEdit"
+    >
+    </atlas-button>
+    <atlas-button
+      (click)="toggleEdit()"
+      [footerEdit]="form.enabled"
       buttonDataCy="cancel"
       buttonText="COMMON.CANCEL"
-      buttonType="footerEdit"
+      buttonType="whiteFooterEdit"
       wrapperStyleClass="me-3"
     >
     </atlas-button>
     <atlas-button
       (click)="save()"
-      [footerEdit]="true"
+      [footerEdit]="form.enabled"
       [submitButton]="true"
       buttonDataCy="save-item"
       buttonText="COMMON.SAVE"
-      buttonType="footerEdit"
+      buttonType="whiteFooterEdit"
     >
     </atlas-button>
   </div>
