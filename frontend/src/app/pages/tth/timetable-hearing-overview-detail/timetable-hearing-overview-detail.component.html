@@ -7,19 +7,19 @@
   ></app-timetable-hearing-overview-tab-heading>
   <div *ngIf="!noTimetableHearingYearFound">
     <div class="d-flex flex-row col-12">
-      <div *ngIf="hearingStatus !== 'active'" class="d-flex flex-column col-2 pe-3 pb-1">
+      <div *ngIf="!isHearingYearActive" class="d-flex flex-column col-2 pe-3 pb-1">
         <mat-label class="font-bold-lg subtitle-margin"
           >{{ 'TTH.SELECT_YEAR' | translate }}
         </mat-label>
         <span class="fake-lable-space"></span>
         <div class="multi-select-search">
           <mat-select
-            (selectionChange)="changeSelectedYear($event)"
+            (selectionChange)="changeSelectedYearFromDropdown($event)"
             [(value)]="defaultYearSelection"
             data-cy="canton-type"
             placeholder="{{ 'FORM.DROPDOWN_PLACEHOLDER' | translate }}"
           >
-            <mat-option *ngFor="let year of YEAR_OPTIONS" [value]="year">
+            <mat-option *ngFor="let year of YEAR_DRODOWN_OPTIONS" [value]="year">
               {{ year }}
             </mat-option>
           </mat-select>
@@ -32,12 +32,12 @@
         <span class="fake-lable-space"></span>
         <div class="multi-select-search">
           <mat-select
-            (selectionChange)="changeSelectedCanton($event)"
-            [(value)]="dafaultCantonSelection"
+            (selectionChange)="changeSelectedCantonFromDropdown($event)"
+            [(value)]="dafaultDropdownCantonSelection"
             data-cy="canton-type"
             placeholder="{{ 'FORM.DROPDOWN_PLACEHOLDER' | translate }}"
           >
-            <mat-option *ngFor="let canton of CANTON_OPTIONS" [value]="canton">
+            <mat-option *ngFor="let canton of CANTON_DROPDOWN_OPTIONS" [value]="canton">
               <img
                 alt="canton-logo"
                 class="pe-1"
@@ -120,20 +120,14 @@
     <div class="d-flex flex-row col-12 mb-3">
       <div class="d-flex flex-column col-6">
         <div>
-          <span
-            *ngIf="hearingStatus === 'active' && cantonShort.toUpperCase() === 'CH'"
-            class="font-bold-lg"
-          >
+          <span *ngIf="isHearingYearActive && isSwissCanton" class="font-bold-lg">
             {{
               'TTH.TABLE_RESULT_ACTUAL_HEARING_HEADING_PREFIX'
                 | translate : { totalCount: totalCount$ }
             }}
             {{ 'TTH.WHOLE_SWISS' | translate }}
           </span>
-          <span
-            *ngIf="hearingStatus === 'active' && cantonShort.toUpperCase() !== 'CH'"
-            class="font-bold-lg"
-          >
+          <span *ngIf="isHearingYearActive && !isSwissCanton" class="font-bold-lg">
             {{
               'TTH.TABLE_RESULT_ACTUAL_HEARING_HEADING_PREFIX'
                 | translate : { totalCount: totalCount$ }
@@ -141,7 +135,7 @@
             {{ 'TTH.SWISS_CANTON' | translate }}
             {{ 'TTH.CANTON.' + cantonShort.toUpperCase() | translate }}
           </span>
-          <span *ngIf="hearingStatus !== 'active'" class="font-bold-lg">{{
+          <span *ngIf="!isHearingYearActive" class="font-bold-lg">{{
             'TTH.TABLE_RESULT_HEADING'
               | translate
                 : { totalCount: totalCount$, year: foundTimetableHearingYear.timetableYear }
@@ -155,14 +149,14 @@
           >
         </div>
       </div>
-      <div *ngIf="hearingStatus === 'active'" class="d-flex flex-column col-3 left-position">
+      <div *ngIf="isHearingYearActive" class="d-flex flex-column col-3 left-position">
         <div class="multi-select-search">
           <mat-select
             (selectionChange)="collectingActions($event)"
             data-cy="collect-action-type"
             placeholder="{{ 'TTH.DROPDOWN.COLLECTING_ACTION.PLACEHOLDER' | translate }}"
           >
-            <mat-option *ngFor="let action of COLLECTING_ACTION_OPTIONS" [value]="action">
+            <mat-option *ngFor="let action of COLLECTING_ACTION_DROWPDOWN_OPTIONS" [value]="action">
               <img
                 alt="action"
                 height="20"
