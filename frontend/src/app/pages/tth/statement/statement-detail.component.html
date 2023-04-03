@@ -1,6 +1,7 @@
 <div class="ps-5 pt-5 pb-5">
   <div class="detail-page-container">
     <div class="statement-form">
+      {{ form.value | json }}}
       <ng-container [formGroup]="form">
         <h1 class="font-bold-4xl">
           {{ (statement ? 'TTH.STATEMENT.STATEMENT' : 'TTH.STATEMENT.NEW') | translate }}
@@ -13,7 +14,7 @@
         ></app-user-detail-info>
 
         <div class="d-flex flex-row col-12 mb-4 mt-5">
-          <div class="d-flex flex-column col-6 pe-5">
+          <div class="d-flex flex-column col-6 pe-3">
             <mat-label class="font-bold-lg subtitle-margin">
               {{ 'TTH.SELECT_YEAR' | translate }}
             </mat-label>
@@ -57,8 +58,15 @@
         </div>
 
         <div class="d-flex flex-row col-12 mb-4 mt-5">
-          <div class="d-flex flex-column col-6 pe-5">
+          <div class="d-flex flex-column col-6 pe-3">
             <ttfn-select [formGroup]="form" controlName="ttfnid" data-cy="ttfnid"></ttfn-select>
+          </div>
+          <div class="d-flex flex-column col-6">
+            <tu-select
+              [formGroup]="form"
+              controlName="responsibleTransportCompanies"
+              data-cy="responsibleTransportCompanies"
+            ></tu-select>
           </div>
         </div>
 
