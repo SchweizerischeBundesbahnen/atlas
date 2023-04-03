@@ -1,0 +1,54 @@
+<ng-container [formGroup]="form">
+  <div class="dialog-close-panel dialog-close-icon-container">
+    <button [mat-dialog-close]="false" class="close-icon-btn">
+      <em class="bi bi-x fs-2"></em>
+    </button>
+  </div>
+  <div class="dialog" data-cy="dialog">
+    <h1 class="font-bold-4xl">{{ data.title | translate }}</h1>
+
+    <div class="d-flex flex-column col-6 pe-3">
+      <app-atlas-label-field
+        [fieldExamples]="[{ label: 'TTH.DIALOG.PLAN_DROPDOWN_DESCRIPTION', translate: true }]"
+        [formGroup]="form"
+        controlName="swissLineNumber"
+        fieldLabel="TTH.DIALOG.PLAN_DROPDOWN_TITLE"
+        infoIconTitle="LIDI.LINE.NUMBER_INFO"
+      >
+      </app-atlas-label-field>
+    </div>
+
+    <div class="multi-select-search">
+      <mat-select
+        [(value)]="defaultYearSelection"
+        data-cy="canton-type"
+        placeholder="{{ 'FORM.DROPDOWN_PLACEHOLDER' | translate }}"
+      >
+        <mat-option *ngFor="let year of YEAR_OPTIONS" [value]="year">
+          {{ year }}
+        </mat-option>
+      </mat-select>
+    </div>
+
+    <div class="w-50">
+      <form-date-range [formGroup]="form"></form-date-range>
+    </div>
+
+    <mat-dialog-actions class="justify-content-end">
+      <button
+        [mat-dialog-close]="false"
+        class="atlas-primary-btn me-3"
+        data-cy="dialog-cancel-button"
+      >
+        {{ data.cancelText ?? 'DIALOG.CANCEL' | translate }}
+      </button>
+      <button
+        [mat-dialog-close]="true"
+        class="atlas-primary-btn primary-color-btn"
+        data-cy="dialog-confirm-button"
+      >
+        {{ data.confirmText ?? 'DIALOG.OK' | translate }}
+      </button>
+    </mat-dialog-actions>
+  </div>
+</ng-container>

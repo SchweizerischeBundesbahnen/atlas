@@ -1,0 +1,33 @@
+@use 'src/styles/variables' as variables;
+
+:host {
+  display: block;
+}
+
+.dialog {
+  padding: 0 128px 48px 128px;
+}
+
+.dialog-close-icon-container {
+  display: flex;
+  justify-content: end;
+}
+
+.close-icon-btn {
+  border: unset;
+  background-color: unset;
+  padding: 5px 5px 0 0;
+
+  em {
+    color: variables.$primary-400;
+  }
+}
+
+mat-dialog-actions {
+  padding-top: 80px;
+}
+
+.message {
+  color: variables.$black;
+  padding-left: unset;
+}
