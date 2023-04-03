@@ -75,6 +75,7 @@ export class StatementDetailComponent implements OnInit {
       timetableYear: new FormControl(statement?.timetableYear, [Validators.required]),
       statementStatus: new FormControl(statement?.statementStatus, [Validators.required]),
       ttfnid: new FormControl(statement?.ttfnid),
+      responsibleTransportCompanies: new FormControl(statement?.responsibleTransportCompanies),
       swissCanton: new FormControl(statement?.swissCanton),
       stopPlace: new FormControl(statement?.stopPlace, [
         AtlasFieldLengthValidator.length_50,

@@ -19,6 +19,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class SearchSelectComponent<TYPE> {
   @Input() items$: Observable<TYPE[]> = of([]);
+  @Input() multiple = false;
   @Input() placeholderTextKey = '';
   @Input() controlName!: string;
   @Input() formGroup!: FormGroup;
@@ -34,4 +35,6 @@ export class SearchSelectComponent<TYPE> {
   isDropdownOpen(): boolean {
     return this.ngSelect?.isOpen ?? false;
   }
+
+  protected readonly Input = Input;
 }
