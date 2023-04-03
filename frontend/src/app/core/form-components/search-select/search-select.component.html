@@ -2,6 +2,7 @@
   <ng-content></ng-content>
   <ng-select
     #ngSelect
+    appearance="outline"
     [multiple]="multiple"
     (change)="changeTrigger.emit($event)"
     [bindValue]="bindValueInp"
