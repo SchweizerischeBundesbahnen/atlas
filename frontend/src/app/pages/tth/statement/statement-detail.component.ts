@@ -112,7 +112,7 @@ export class StatementDetailComponent implements OnInit {
       if (this.isNew) {
         this.createStatement(hearingStatement);
       } else {
-        this.updateStatement(hearingStatement);
+        this.updateStatement(this.statement!.id!, hearingStatement);
       }
     }
   }
@@ -127,9 +127,9 @@ export class StatementDetailComponent implements OnInit {
       });
   }
 
-  private updateStatement(statement: TimetableHearingStatement) {
+  private updateStatement(id: number, statement: TimetableHearingStatement) {
     this.timetableHearingService
-      .updateHearingStatement(statement.id!, statement, undefined)
+      .updateHearingStatement(id, statement, undefined)
       .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
       .subscribe((statement) => {
         this.notificationService.success('TTH.STATEMENT.NOTIFICATION.EDIT_SUCCESS');

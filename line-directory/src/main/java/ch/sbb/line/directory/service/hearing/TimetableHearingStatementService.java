@@ -4,11 +4,14 @@ import static ch.sbb.atlas.api.timetable.hearing.TimetableHearingConstants.MAX_D
 
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.model.exception.NotFoundException.FileNotFoundException;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
+import ch.sbb.line.directory.entity.ResponsibleTransportCompany;
 import ch.sbb.line.directory.entity.StatementDocument;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
+import ch.sbb.line.directory.mapper.ResponsibleTransportCompanyMapper;
 import ch.sbb.line.directory.mapper.StatementSenderMapper;
 import ch.sbb.line.directory.mapper.TimeTableHearingStatementMapper;
 import ch.sbb.line.directory.model.TimetableHearingStatementSearchRestrictions;
@@ -16,7 +19,10 @@ import ch.sbb.line.directory.repository.TimetableHearingStatementRepository;
 import ch.sbb.line.directory.repository.TimetableHearingYearRepository;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -130,16 +136,41 @@ public class TimetableHearingStatementService {
   }
 
   private TimetableHearingStatement updateObject(TimetableHearingStatementModel timetableHearingStatementModel,
-    TimetableHearingStatement timetableHearingStatement) {
-    timetableHearingStatement.setTimetableYear(timetableHearingStatementModel.getTimetableYear());
-    timetableHearingStatement.setStatementStatus(timetableHearingStatementModel.getStatementStatus());
-    timetableHearingStatement.setTtfnid(timetableHearingStatementModel.getTtfnid());
-    timetableHearingStatement.setSwissCanton(timetableHearingStatementModel.getSwissCanton());
-    timetableHearingStatement.setStopPlace(timetableHearingStatementModel.getStopPlace());
-    timetableHearingStatement.setStatement(timetableHearingStatementModel.getStatement());
-    timetableHearingStatement.setJustification(timetableHearingStatementModel.getJustification());
-    timetableHearingStatement.setStatementSender(StatementSenderMapper.toEntity(timetableHearingStatementModel.getStatementSender()));
-    return timetableHearingStatement;
+    TimetableHearingStatement timetableHearingStatementInDb) {
+    timetableHearingStatementInDb.setTimetableYear(timetableHearingStatementModel.getTimetableYear());
+    timetableHearingStatementInDb.setStatementStatus(timetableHearingStatementModel.getStatementStatus());
+    timetableHearingStatementInDb.setTtfnid(timetableHearingStatementModel.getTtfnid());
+    timetableHearingStatementInDb.setSwissCanton(timetableHearingStatementModel.getSwissCanton());
+    timetableHearingStatementInDb.setStopPlace(timetableHearingStatementModel.getStopPlace());
+    timetableHearingStatementInDb.setStatement(timetableHearingStatementModel.getStatement());
+    timetableHearingStatementInDb.setJustification(timetableHearingStatementModel.getJustification());
+    timetableHearingStatementInDb.setStatementSender(StatementSenderMapper.toEntity(timetableHearingStatementModel.getStatementSender()));
+
+    updateResponsibleTransportCompanies(timetableHearingStatementModel, timetableHearingStatementInDb);
+
+    return timetableHearingStatementInDb;
+  }
+
+  private static void updateResponsibleTransportCompanies(TimetableHearingStatementModel timetableHearingStatementModel,
+      TimetableHearingStatement timetableHearingStatementInDb) {
+    Set<Long> desiredTransportCompanies = timetableHearingStatementModel.getResponsibleTransportCompanies().stream().map(
+        TimetableHearingStatementResponsibleTransportCompanyModel::getId).collect(Collectors.toSet());
+    Set<Long> currentTransportCompanies = timetableHearingStatementInDb.getResponsibleTransportCompanies().stream()
+        .map(ResponsibleTransportCompany::getTransportCompanyId).collect(Collectors.toSet());
+
+    Set<ResponsibleTransportCompany> transportCompaniesToRemove = new HashSet<>();
+    timetableHearingStatementInDb.getResponsibleTransportCompanies().forEach(responsibleTransportCompany -> {
+      if (!desiredTransportCompanies.contains(responsibleTransportCompany.getTransportCompanyId())) {
+        transportCompaniesToRemove.add(responsibleTransportCompany);
+      }
+    });
+    timetableHearingStatementInDb.getResponsibleTransportCompanies().removeAll(transportCompaniesToRemove);
+    timetableHearingStatementModel.getResponsibleTransportCompanies().forEach(responsibleTransportCompany ->{
+      if (!currentTransportCompanies.contains(responsibleTransportCompany.getId())) {
+        timetableHearingStatementInDb.getResponsibleTransportCompanies()
+            .add(ResponsibleTransportCompanyMapper.toEntity(responsibleTransportCompany, timetableHearingStatementInDb));
+      }
+    });
   }
 
   private void checkThatTimetableHearingYearExists(Long timetableYear) {
