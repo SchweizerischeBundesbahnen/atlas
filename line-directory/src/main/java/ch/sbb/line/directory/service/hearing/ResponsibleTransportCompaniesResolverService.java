@@ -24,7 +24,7 @@ public class ResponsibleTransportCompaniesResolverService {
   private final TimetableFieldNumberService timetableFieldNumberService;
   private final TransportCompanyClient transportCompanyClient;
 
-  public List<TimetableHearingStatementResponsibleTransportCompanyModel> resolveResponsibleTransportCompanies(String ttfnid) {
+  public List<TransportCompanyModel> getResponsibleTransportCompanies(String ttfnid) {
     if (ttfnid != null) {
       String sboid = resolveBusinessOrganisationSboid(ttfnid);
       return resolveTransportCompanies(sboid);
@@ -32,12 +32,15 @@ public class ResponsibleTransportCompaniesResolverService {
     return Collections.emptyList();
   }
 
-  private List<TimetableHearingStatementResponsibleTransportCompanyModel> resolveTransportCompanies(String sboid) {
+  public List<TimetableHearingStatementResponsibleTransportCompanyModel> resolveResponsibleTransportCompanies(String ttfnid) {
+    return getResponsibleTransportCompanies(ttfnid).stream()
+        .map(ResponsibleTransportCompanyMapper::toResponsibleTransportCompany)
+        .toList();
+  }
+
+  private List<TransportCompanyModel> resolveTransportCompanies(String sboid) {
     if (sboid != null) {
-      List<TransportCompanyModel> transportCompaniesBySboid = transportCompanyClient.getTransportCompaniesBySboid(sboid);
-      return transportCompaniesBySboid.stream()
-          .map(ResponsibleTransportCompanyMapper::toResponsibleTransportCompany)
-          .toList();
+      return transportCompanyClient.getTransportCompaniesBySboid(sboid);
     }
     return Collections.emptyList();
   }
