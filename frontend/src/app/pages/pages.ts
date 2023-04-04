@@ -98,6 +98,34 @@ export class Pages {
     description: 'PAGES.TTH.DESCRIPTION',
   };
 
+  public static TTH_ACTIVE: Page = {
+    title: 'PAGES.DETAILS',
+    path: 'active',
+    pathText: '',
+    description: '',
+  };
+
+  public static TTH_PLANNED: Page = {
+    title: 'PAGES.DETAILS',
+    path: 'planned',
+    pathText: '',
+    description: '',
+  };
+
+  public static TTH_ARCHIVED: Page = {
+    title: 'PAGES.DETAILS',
+    path: 'archived',
+    pathText: '',
+    description: '',
+  };
+
+  public static TTH_OVERVIEW_DETAIL: Page = {
+    title: 'PAGES.OVERVIEW_DETAILS',
+    path: ':canton',
+    pathText: '',
+    description: '',
+  };
+
   public static BUSINESS_ORGANISATIONS: Page = {
     title: 'PAGES.DETAILS',
     path: 'business-organisations',
