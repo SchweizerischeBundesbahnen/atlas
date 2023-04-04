@@ -16,9 +16,10 @@ $height: 32px;
 }
 
 // Color Config
-.ng-select .ng-select-container,
-.ng-select.ng-select-opened > .ng-select-container,
-.ng-select.ng-select-focused:not(.ng-select-opened) > .ng-select-container {
+.ng-select:not(.ng-select-disabled) .ng-select-container,
+.ng-select:not(.ng-select-disabled).ng-select-opened > .ng-select-container,
+.ng-select:not(.ng-select-disabled).ng-select-focused:not(.ng-select-opened)
+  > .ng-select-container {
   border-color: variables.$primary-400;
   box-shadow: inherit;
 
