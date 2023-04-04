@@ -7,7 +7,6 @@ import ch.sbb.line.directory.exception.HearingCurrentlyActiveException;
 import ch.sbb.line.directory.exception.NoHearingCurrentlyActiveException;
 import ch.sbb.line.directory.model.TimetableHearingYearSearchRestrictions;
 import ch.sbb.line.directory.repository.TimetableHearingYearRepository;
-import java.util.List;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,22 +33,6 @@ public class TimetableHearingYearService {
             .build();
     return timetableHearingYearRepository.findAll(searchRestrictions.getSpecification()).stream().findFirst()
         .orElseThrow(NoHearingCurrentlyActiveException::new);
-  }
-
-  public List<TimetableHearingYear> getPlannedHearingYear() {
-    return getTimetableHearingYears(HearingStatus.PLANNED);
-  }
-
-  public List<TimetableHearingYear> getArchivedHearingYear() {
-    return getTimetableHearingYears(HearingStatus.ARCHIVED);
-  }
-
-  private List<TimetableHearingYear> getTimetableHearingYears(HearingStatus hearingStatus) {
-    TimetableHearingYearSearchRestrictions searchRestrictions =
-        TimetableHearingYearSearchRestrictions.builder().
-            statusRestrictions(Set.of(hearingStatus))
-            .build();
-    return timetableHearingYearRepository.findAll(searchRestrictions.getSpecification());
   }
 
   public TimetableHearingYear getHearingYear(Long year) {
