@@ -164,6 +164,17 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
     console.log(action);
   }
 
+  setFoundHearingYear(timetableHearingYears: TimetableHearingYear[]) {
+    this.YEAR_DRODOWN_OPTIONS = timetableHearingYears.map((value) => value.timetableYear);
+    const paramYear = this.route.snapshot.queryParams.year;
+    if (paramYear) {
+      this.setFoundHearingYearWhenQueryParamIsProvided(timetableHearingYears, Number(paramYear));
+    } else {
+      this.defaultYearSelection = this.YEAR_DRODOWN_OPTIONS[0];
+      this.foundTimetableHearingYear = timetableHearingYears[0];
+    }
+  }
+
   private navigateTo(canton: string, timetableYear: number) {
     this.router
       .navigate([Pages.TTH.path, canton.toLowerCase(), this.hearingStatus.toLowerCase()], {
@@ -221,17 +232,6 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
           }
         }
       });
-  }
-
-  private setFoundHearingYear(timetableHearingYears: TimetableHearingYear[]) {
-    this.YEAR_DRODOWN_OPTIONS = timetableHearingYears.map((value) => value.timetableYear);
-    const paramYear = this.route.snapshot.queryParams.year;
-    if (paramYear) {
-      this.setFoundHearingYearWhenQueryParamIsProvided(timetableHearingYears, Number(paramYear));
-    } else {
-      this.defaultYearSelection = this.YEAR_DRODOWN_OPTIONS[0];
-      this.foundTimetableHearingYear = timetableHearingYears[0];
-    }
   }
 
   private setFoundHearingYearWhenQueryParamIsProvided(
