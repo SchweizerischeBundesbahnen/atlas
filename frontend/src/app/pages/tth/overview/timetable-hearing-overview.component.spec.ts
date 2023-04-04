@@ -5,6 +5,7 @@ import { By } from '@angular/platform-browser';
 import { CantonCardComponent } from './canton-card/canton-card.component';
 import { TthModule } from '../tth.module';
 import { TranslateModule } from '@ngx-translate/core';
+import { AppTestingModule } from '../../../app.testing.module';
 
 describe('TimetableHearingOverviewComponent', () => {
   let component: TimetableHearingOverviewComponent;
@@ -13,7 +14,7 @@ describe('TimetableHearingOverviewComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TimetableHearingOverviewComponent, CantonCardComponent],
-      imports: [TthModule, TranslateModule.forRoot()],
+      imports: [AppTestingModule, TthModule, TranslateModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TimetableHearingOverviewComponent);
