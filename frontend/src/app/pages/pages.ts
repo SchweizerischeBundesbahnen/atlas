@@ -126,6 +126,13 @@ export class Pages {
     description: '',
   };
 
+  public static TTH_STATEMENT_DETAILS: Page = {
+    title: 'PAGES.DETAILS',
+    path: ':id',
+    pathText: '',
+    description: '',
+  };
+
   public static BUSINESS_ORGANISATIONS: Page = {
     title: 'PAGES.DETAILS',
     path: 'business-organisations',
