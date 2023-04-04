@@ -107,7 +107,7 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
         undefined,
         pagination.page,
         pagination.size,
-        [pagination.sort!, 'statementStatus,ASC']
+        [pagination.sort!, 'statementStatus,asc']
       )
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((container) => {
