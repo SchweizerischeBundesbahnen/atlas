@@ -24,6 +24,7 @@ const routes: Routes = [
     resolve: {
       statement: StatementDetailResolver,
     },
+    runGuardsAndResolvers: 'always',
   },
   {
     path: Pages.TTH_OVERVIEW_DETAIL.path,
