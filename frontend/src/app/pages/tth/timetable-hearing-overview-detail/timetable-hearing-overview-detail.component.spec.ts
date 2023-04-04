@@ -4,14 +4,92 @@ import { TimetableHearingOverviewDetailComponent } from './timetable-hearing-ove
 import { AppTestingModule } from '../../../app.testing.module';
 import { TranslatePipe } from '@ngx-translate/core';
 import { DisplayDatePipe } from '../../../core/pipe/display-date.pipe';
-import { HearingStatus } from '../../../api';
-import { ActivatedRoute } from '@angular/router';
+import {
+  ContainerTimetableHearingStatement,
+  ContainerTimetableHearingYear,
+  HearingStatus,
+  TimetableHearingService,
+  TimetableHearingStatement,
+  TimetableHearingYear,
+} from '../../../api';
+import { ActivatedRoute, Router } from '@angular/router';
+import { of } from 'rxjs';
+import moment from 'moment';
+import { Pages } from '../../pages';
+
+const mockTimetableHearingService = jasmine.createSpyObj('timetableHearingService', [
+  'getHearingYears',
+  'getStatements',
+]);
+
+let router: Router;
+
+const hearingYear2000: TimetableHearingYear = {
+  timetableYear: 2000,
+  hearingFrom: moment().toDate(),
+  hearingTo: moment().toDate(),
+};
+const hearingYear2001: TimetableHearingYear = {
+  timetableYear: 2001,
+  hearingFrom: moment().toDate(),
+  hearingTo: moment().toDate(),
+};
+
+const hearingContainer: ContainerTimetableHearingYear = {
+  objects: [hearingYear2000, hearingYear2001],
+  totalCount: 2,
+};
+
+const timetabelHearingStatement: TimetableHearingStatement = {
+  timetableYear: 2001,
+  statementStatus: 'REVOKED',
+  ttfnid: 'ch:1:ttfnid:1000008',
+  timetableFieldNumber: 'ch:1:ttfnid:1000008',
+  swissCanton: 'BASEL_COUNTRY',
+  responsibleTransportCompanies: [
+    {
+      id: 1000,
+      transportCompanyId: 1,
+      number: '#0001',
+      abbreviation: 'SBB',
+      businessRegisterName: 'Schweizerische Bundesbahnen SBB',
+    },
+    {
+      id: 1001,
+      transportCompanyId: 2,
+      number: '#0001',
+      abbreviation: 'Post Auto',
+      businessRegisterName: 'Post Auto',
+    },
+    {
+      id: 1002,
+      transportCompanyId: 3,
+      number: '#0001',
+      abbreviation: 'BLS',
+      businessRegisterName: 'BLS',
+    },
+  ],
+  statementSender: { email: 'a@b.c' },
+  statement: 'Ich hätte gerne mehrere Verbindungen am Abend.',
+  documents: [],
+};
+const containerTimetableHearingStatement: ContainerTimetableHearingStatement = {
+  objects: [timetabelHearingStatement, timetabelHearingStatement],
+  totalCount: 2,
+};
 
 async function baseTestConfiguration() {
+  mockTimetableHearingService.getHearingYears.and.returnValue(of(hearingContainer));
+  mockTimetableHearingService.getStatements.and.returnValue(of(containerTimetableHearingStatement));
+
   await TestBed.configureTestingModule({
     declarations: [TimetableHearingOverviewDetailComponent],
     imports: [AppTestingModule],
-    providers: [{ provide: TranslatePipe }, { provide: DisplayDatePipe }],
+    providers: [
+      { provide: TimetableHearingService, useValue: mockTimetableHearingService },
+      { provide: TranslatePipe },
+      { provide: DisplayDatePipe },
+    ],
   }).compileComponents();
 
   return TestBed.createComponent(TimetableHearingOverviewDetailComponent);
@@ -22,10 +100,11 @@ describe('TimetableHearingOverviewDetailComponent', () => {
   let route: ActivatedRoute;
   let fixture: ComponentFixture<TimetableHearingOverviewDetailComponent>;
 
-  describe('HearingStatus Active', async () => {
+  describe('Tab Active', async () => {
     beforeEach(async () => {
       fixture = await baseTestConfiguration();
       route = TestBed.inject(ActivatedRoute);
+      router = TestBed.inject(Router);
       route.snapshot.data = { hearingStatus: HearingStatus.Active };
       component = fixture.componentInstance;
       fixture.detectChanges();
@@ -85,9 +164,61 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       expect(component.tableColumns[5].value).toEqual('editionDate');
       expect(component.tableColumns[6].value).toEqual('editor');
     });
+
+    it('should get statements table', async () => {
+      //when
+      component.cantonShort = 'ch';
+      fixture.detectChanges();
+      //then
+      expect(component.timeTableHearingStatements).toEqual([
+        timetabelHearingStatement,
+        timetabelHearingStatement,
+      ]);
+      expect(component.totalCount$).toEqual(2);
+      expect(component.noTimetableHearingYearFound).toBeFalsy();
+      expect(component.dafaultDropdownCantonSelection).toBe('CH');
+    });
+
+    it('should set FoundHearingYear from queryParam if exists', () => {
+      //given
+      const routerNavigateSpy = spyOn(router, 'navigate');
+      //when
+      component.setFoundHearingYear([hearingYear2000, hearingYear2001]);
+      //then
+      expect(component.foundTimetableHearingYear).toBe(hearingYear2000);
+      expect(component.defaultYearSelection).toBe(hearingYear2000.timetableYear);
+      expect(routerNavigateSpy).not.toHaveBeenCalled();
+    });
+
+    it('should not set FoundHearingYear from queryParam if does not exists', () => {
+      //given
+      const routerNavigateSpy = spyOn(router, 'navigate').and.returnValue(
+        new Promise((resolve) => {
+          resolve(true);
+        })
+      );
+      route.snapshot.queryParams = { year: 2002 };
+      //when
+      component.setFoundHearingYear([hearingYear2000, hearingYear2001]);
+      //then
+      expect(component.foundTimetableHearingYear).toBe(hearingYear2000);
+      expect(component.defaultYearSelection).toBe(hearingYear2000.timetableYear);
+      expect(routerNavigateSpy).toHaveBeenCalledWith([
+        Pages.TTH.path,
+        'ch',
+        HearingStatus.Active.toLowerCase(),
+      ]);
+    });
   });
 
-  describe('HearingStatus Planned', async () => {
+  describe('Tab Planned', async () => {
+    const hearingYear: TimetableHearingYear = {
+      timetableYear: 2000,
+      hearingFrom: moment().toDate(),
+      hearingTo: moment().toDate(),
+    };
+    const hearingYears: TimetableHearingYear[] = [hearingYear, hearingYear];
+    mockTimetableHearingService.getHearingYears.and.returnValue(of(hearingYears));
     beforeEach(async () => {
       fixture = await baseTestConfiguration();
       route = TestBed.inject(ActivatedRoute);
@@ -124,7 +255,14 @@ describe('TimetableHearingOverviewDetailComponent', () => {
     });
   });
 
-  describe('HearingStatus Archived', async () => {
+  describe('Tab Archived', async () => {
+    const hearingYear: TimetableHearingYear = {
+      timetableYear: 2000,
+      hearingFrom: moment().toDate(),
+      hearingTo: moment().toDate(),
+    };
+    const hearingYears: TimetableHearingYear[] = [hearingYear, hearingYear];
+    mockTimetableHearingService.getHearingYears.and.returnValue(of(hearingYears));
     beforeEach(async () => {
       fixture = await baseTestConfiguration();
       route = TestBed.inject(ActivatedRoute);
