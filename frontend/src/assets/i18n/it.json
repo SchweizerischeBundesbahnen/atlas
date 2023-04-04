@@ -564,6 +564,15 @@
         }
       }
     },
+    "DIALOG": {
+      "NEW_PLAN_TIMETABLE": "Creare un nuovo calendario udienza",
+      "PLAN_DROPDOWN_TITLE": "Orario",
+      "PLAN_DROPDOWN_DESCRIPTION": "Seleziona anno",
+      "DATUM_FROM": "Audizione di",
+      "DATUM_FROM_EXAMPLE": "p.e. 31.12.2023.",
+      "DATUM_UNTIL": "Sentire fino a",
+      "DATUM_UNTIL_EXAMPLE": "p.e. 31.12.2023."
+    },
     "SELECT_CANTON": "Selezionare il Cantone",
     "SELECT_YEAR": "Selezionare l'anno",
     "TABLE_RESULT_HEADING": "{{totalCount}} dichiarazioni per l'orario {{year}}",
