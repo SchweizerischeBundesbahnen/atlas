@@ -35,6 +35,4 @@ export class SearchSelectComponent<TYPE> {
   isDropdownOpen(): boolean {
     return this.ngSelect?.isOpen ?? false;
   }
-
-  protected readonly Input = Input;
 }
