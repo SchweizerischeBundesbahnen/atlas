@@ -5,6 +5,8 @@ import { TimetableHearingOverviewComponent } from './overview/timetable-hearing-
 import { TimetableHearingOverviewTabComponent } from './timetable-hearing-overview-tab/timetable-hearing-overview-tab.component';
 import { TimetableHearingOverviewDetailComponent } from './timetable-hearing-overview-detail/timetable-hearing-overview-detail.component';
 import { HearingStatus } from '../../api';
+import { StatementDetailComponent } from './statement/statement-detail.component';
+import { StatementDetailResolver } from './statement/statement-detail.resolver';
 
 const routes: Routes = [
   {
