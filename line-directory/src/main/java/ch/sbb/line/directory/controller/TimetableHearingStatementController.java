@@ -1,6 +1,7 @@
 package ch.sbb.line.directory.controller;
 
 import ch.sbb.atlas.amazon.exception.FileException;
+import ch.sbb.atlas.api.bodi.TransportCompanyModel;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementApiV1;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
@@ -98,5 +99,10 @@ public class TimetableHearingStatementController implements TimetableHearingStat
 
     TimetableHearingStatement hearingStatement = timetableHearingStatementService.updateHearingStatement(statement, documents);
     return TimeTableHearingStatementMapper.toModel(hearingStatement);
+  }
+
+  @Override
+  public List<TransportCompanyModel> getResponsibleTransportCompanies(String ttfnid) {
+    return responsibleTransportCompaniesResolverService.getResponsibleTransportCompanies(ttfnid);
   }
 }
