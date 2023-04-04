@@ -11,8 +11,7 @@ public class ResponsibleTransportCompanyMapper {
 
   public static TimetableHearingStatementResponsibleTransportCompanyModel toModel(ResponsibleTransportCompany transportCompany) {
     return TimetableHearingStatementResponsibleTransportCompanyModel.builder()
-        .id(transportCompany.getId())
-        .transportCompanyId(transportCompany.getTransportCompanyId())
+        .id(transportCompany.getTransportCompanyId())
         .number(transportCompany.getNumber())
         .abbreviation(transportCompany.getAbbreviation())
         .businessRegisterName(transportCompany.getBusinessRegisterName())
@@ -24,7 +23,7 @@ public class ResponsibleTransportCompanyMapper {
       TimetableHearingStatement statement) {
     return ResponsibleTransportCompany.builder()
         .statement(statement)
-        .transportCompanyId(transportCompanyModel.getTransportCompanyId())
+        .transportCompanyId(transportCompanyModel.getId())
         .number(transportCompanyModel.getNumber())
         .abbreviation(transportCompanyModel.getAbbreviation())
         .businessRegisterName(transportCompanyModel.getBusinessRegisterName())
@@ -34,7 +33,7 @@ public class ResponsibleTransportCompanyMapper {
   public static TimetableHearingStatementResponsibleTransportCompanyModel toResponsibleTransportCompany(
       TransportCompanyModel transportCompanyModel) {
     return TimetableHearingStatementResponsibleTransportCompanyModel.builder()
-        .transportCompanyId(transportCompanyModel.getId())
+        .id(transportCompanyModel.getId())
         .number(transportCompanyModel.getNumber())
         .abbreviation(transportCompanyModel.getAbbreviation())
         .businessRegisterName(transportCompanyModel.getBusinessRegisterName())
