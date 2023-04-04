@@ -31,6 +31,7 @@ import {TthUtils} from '../tth-utils';
 import {TablePagination} from '../../../core/components/table/table-pagination';
 import {addElementsToArrayWhenNotUndefined} from '../../../core/util/arrays';
 import {TthTableService} from '../tth-table.service';
+import { TthDialogService } from '../../../core/components/tthdialog/tthdialog.service';
 
 @Component({
   selector: 'app-timetable-hearing-overview-detail',
@@ -78,6 +79,8 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     private readonly overviewToTabService: OverviewToTabShareDataService,
     private readonly tthStatusChangeDialog: TthChangeStatusDialogService,
     private readonly tthTableService: TthTableService
+    private readonly tthUtils: TthUtils,
+    private readonly tthDialogService: TthDialogService
   ) {}
 
   get isHearingYearActive(): boolean {
