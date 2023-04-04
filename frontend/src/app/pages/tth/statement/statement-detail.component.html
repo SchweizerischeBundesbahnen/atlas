@@ -248,43 +248,42 @@
   </div>
 </div>
 
-<div class="page-footer">
-  <div class="page-footer-actions align-items-center justify-content-center d-flex">
-    <atlas-button
-      (click)="backToOverview()"
-      [footerEdit]="form.enabled"
-      buttonDataCy="back-to-overview"
-      buttonText="COMMON.BACK_TO_OVERVIEW"
-      buttonType="whiteFooterNonEdit"
-      wrapperStyleClass="me-3"
-    >
-    </atlas-button>
-    <atlas-button
-      *ngIf="CANTON_OPTIONS.length > 0"
-      (click)="toggleEdit()"
-      [footerEdit]="form.enabled"
-      buttonDataCy="edit"
-      buttonText="COMMON.EDIT"
-      buttonType="whiteFooterNonEdit"
-    >
-    </atlas-button>
-    <atlas-button
-      (click)="toggleEdit()"
-      [footerEdit]="form.enabled"
-      buttonDataCy="cancel"
-      buttonText="COMMON.CANCEL"
-      buttonType="whiteFooterEdit"
-      wrapperStyleClass="me-3"
-    >
-    </atlas-button>
-    <atlas-button
-      (click)="save()"
-      [footerEdit]="form.enabled"
-      [submitButton]="true"
-      buttonDataCy="save-item"
-      buttonText="COMMON.SAVE"
-      buttonType="whiteFooterEdit"
-    >
-    </atlas-button>
-  </div>
-</div>
+<atlas-detail-footer>
+  <atlas-button
+    (click)="backToOverview()"
+    [footerEdit]="form.enabled"
+    buttonDataCy="back-to-overview"
+    buttonText="COMMON.BACK_TO_OVERVIEW"
+    buttonType="whiteFooterNonEdit"
+    wrapperStyleClass="me-3"
+  >
+  </atlas-button>
+  <atlas-button
+    *ngIf="CANTON_OPTIONS.length > 0"
+    (click)="toggleEdit()"
+    [footerEdit]="form.enabled"
+    buttonDataCy="edit"
+    buttonText="COMMON.EDIT"
+    buttonType="whiteFooterNonEdit"
+  >
+  </atlas-button>
+  <atlas-button
+    (click)="toggleEdit()"
+    [footerEdit]="form.enabled"
+    buttonDataCy="cancel"
+    buttonText="COMMON.CANCEL"
+    buttonType="whiteFooterEdit"
+    wrapperStyleClass="me-3"
+  >
+  </atlas-button>
+  <atlas-button
+    (click)="save()"
+    [footerEdit]="form.enabled"
+    [submitButton]="true"
+    [disabled]="form.untouched"
+    buttonDataCy="save-item"
+    buttonText="COMMON.SAVE"
+    buttonType="whiteFooterEdit"
+  >
+  </atlas-button>
+</atlas-detail-footer>
