@@ -14,7 +14,7 @@ import { TableColumn } from '../../../core/components/table/table-column';
 import { DEFAULT_STATUS_SELECTION } from '../../../core/constants/status.choices';
 import { TableSettings } from '../../../core/components/table/table-settings';
 import { Pages } from '../../pages';
-import { Subscription } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import moment from 'moment';
 import { OverviewToTabShareDataService } from '../timetable-hearing-overview-tab/overview-to-tab-share-data.service';
 import { MatSelectChange } from '@angular/material/select';
@@ -55,8 +55,7 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
   showStartTimetableHearingButton = false;
   showHearingDetail = false;
 
-  private getTimetableHearingStatementsSubscription!: Subscription;
-  private getHearingYearsSubscription!: Subscription;
+  private ngUnsubscribe = new Subject<void>();
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -103,7 +102,7 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
     const selectedCantonEnum = this.getSelectedCantonToBeSearchFromNavigation();
     this.dafaultDropdownCantonSelection = this.initDefatulDropdownCantonSelection();
     this.isLoading = true;
-    this.getTimetableHearingStatementsSubscription = this.timetableHearingService
+    this.timetableHearingService
       .getStatements(
         this.foundTimetableHearingYear.timetableYear,
         selectedCantonEnum,
@@ -114,6 +113,7 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
         $paginationAndSearch.size,
         [$paginationAndSearch.sort!, 'statementStatus,ASC']
       )
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((container) => {
         this.timeTableHearingStatements = container.objects!;
         this.totalCount$ = container.totalCount!;
@@ -122,8 +122,7 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
   }
 
   ngOnDestroy() {
-    this.getTimetableHearingStatementsSubscription?.unsubscribe();
-    this.getHearingYearsSubscription?.unsubscribe();
+    this.ngUnsubscribe.unsubscribe();
   }
 
   changeSelectedCantonFromDropdown(selectedCanton: MatSelectChange) {
@@ -216,8 +215,9 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
   }
 
   private getTimetableHearingYear(hearingStatus: HearingStatus, sortReverse: boolean) {
-    this.getHearingYearsSubscription = this.timetableHearingService
+    this.timetableHearingService
       .getHearingYears([hearingStatus])
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((timetableHearingYearContainer) => {
         if (timetableHearingYearContainer.objects) {
           if (timetableHearingYearContainer.objects.length === 0) {
@@ -261,8 +261,9 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
   }
 
   private initOverviewActiveTable() {
-    this.getHearingYearsSubscription = this.timetableHearingService
+    this.timetableHearingService
       .getHearingYears([HearingStatus.Active])
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((timetableHearingYears) => {
         if (timetableHearingYears.objects) {
           if (timetableHearingYears.objects.length === 0) {
@@ -277,8 +278,9 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
   }
 
   private getPlannedTimetableYearWhenNoActiveFound() {
-    this.getHearingYearsSubscription = this.timetableHearingService
+    this.timetableHearingService
       .getHearingYears([HearingStatus.Planned])
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((timetableHearingYearContainer) => {
         if (
           timetableHearingYearContainer.objects &&
