@@ -150,7 +150,11 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
   }
 
   addNewStatement() {
-    this.router.navigate([Pages.TTH.path, this.cantonShort, Pages.TTH_ACTIVE.path, 'add']).then();
+    this.router
+      .navigate([Pages.TTH.path, this.cantonShort, Pages.TTH_ACTIVE.path, 'add'], {
+        state: { data: this.cantonShort },
+      })
+      .then();
   }
 
   addNewTimetableHearing() {
