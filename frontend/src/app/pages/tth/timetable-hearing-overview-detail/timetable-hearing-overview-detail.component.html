@@ -3,11 +3,15 @@
     [cantonShort]="cantonShort"
     [foundTimetableHearingYear]="foundTimetableHearingYear"
     [hearingStatus]="hearingStatus"
-    [noActiveTimetableHearingYearFound]="noTimetableHearingYearFound"
+    [noPlannedTimetableHearingYearFound]="noPlannedTimetableHearingYearFound"
+    [noTimetableHearingYearFound]="noTimetableHearingYearFound"
   ></app-timetable-hearing-overview-tab-heading>
-  <div *ngIf="!noTimetableHearingYearFound">
+  <div>
     <div class="d-flex flex-row col-12">
-      <div *ngIf="!isHearingYearActive" class="d-flex flex-column col-2 pe-3 pb-1">
+      <div
+        *ngIf="!isHearingYearActive && !noTimetableHearingYearFound"
+        class="d-flex flex-column col-2 pe-3 pb-1"
+      >
         <mat-label class="font-bold-lg subtitle-margin"
           >{{ 'TTH.SELECT_YEAR' | translate }}
         </mat-label>
@@ -50,7 +54,10 @@
           </mat-select>
         </div>
       </div>
-      <div *ngIf="showDownloadCsvButton" class="d-flex flex-column col-3">
+      <div
+        *ngIf="showDownloadCsvButton && !noTimetableHearingYearFound"
+        class="d-flex flex-column col-3"
+      >
         <span class="fake-lable-space"></span>
         <span class="fake-lable-space"></span>
         <atlas-button
@@ -65,7 +72,10 @@
           </ng-template>
         </atlas-button>
       </div>
-      <div *ngIf="showManageTimetableHearingButton" class="d-flex flex-column col-3 left-position">
+      <div
+        *ngIf="showManageTimetableHearingButton && !noTimetableHearingYearFound"
+        class="d-flex flex-column col-3 left-position"
+      >
         <span class="fake-lable-space"></span>
         <span class="fake-lable-space"></span>
         <atlas-button
@@ -78,7 +88,10 @@
         >
         </atlas-button>
       </div>
-      <div *ngIf="showAddNewStatementButton" class="d-flex flex-column col-3 left-position">
+      <div
+        *ngIf="showAddNewStatementButton && !noTimetableHearingYearFound"
+        class="d-flex flex-column col-3 left-position"
+      >
         <span class="fake-lable-space"></span>
         <span class="fake-lable-space"></span>
         <atlas-button
@@ -91,7 +104,10 @@
         >
         </atlas-button>
       </div>
-      <div *ngIf="showStartTimetableHearingButton" class="d-flex flex-column col-3">
+      <div
+        *ngIf="showStartTimetableHearingButton && !noTimetableHearingYearFound"
+        class="d-flex flex-column col-3"
+      >
         <span class="fake-lable-space"></span>
         <span class="fake-lable-space"></span>
         <atlas-button
@@ -117,7 +133,7 @@
         </atlas-button>
       </div>
     </div>
-    <div class="d-flex flex-row col-12 mb-3">
+    <div *ngIf="!noTimetableHearingYearFound" class="d-flex flex-row col-12 mb-3">
       <div class="d-flex flex-column col-6">
         <div>
           <span *ngIf="isHearingYearActive && isSwissCanton" class="font-bold-lg">
@@ -175,6 +191,7 @@
     <app-table
       (editElementEvent)="editVersion($event)"
       (getTableElementsEvent)="getOverview($event)"
+      *ngIf="!noTimetableHearingYearFound"
       [canEdit]="true"
       [isLoading]="isLoading"
       [tableColumns]="tableColumns"
