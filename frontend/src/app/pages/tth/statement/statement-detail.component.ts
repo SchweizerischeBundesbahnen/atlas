@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {
+  ApplicationRole,
+  ApplicationType,
   HearingStatus,
   StatementStatus,
+  SwissCanton,
   TimetableHearingService,
   TimetableHearingStatement,
 } from '../../../api';
@@ -18,6 +21,7 @@ import { takeUntil } from 'rxjs/operators';
 import { catchError, EMPTY, Observable, of, Subject } from 'rxjs';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { ValidationService } from '../../../core/validation/validation.service';
+import { AuthService } from '../../../core/auth/auth.service';
 
 @Component({
   selector: 'app-statement-detail',
@@ -40,7 +44,8 @@ export class StatementDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private dialogService: DialogService,
     private timetableHearingService: TimetableHearingService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
@@ -66,8 +71,22 @@ export class StatementDetailComponent implements OnInit {
   }
 
   private initCantonOptions() {
-    // TODO: get only cantons available for writer
-    this.CANTON_OPTIONS = Cantons.cantons;
+    const tthPermissions = this.authService.getApplicationUserPermission(
+      ApplicationType.TimetableHearing
+    );
+    if (tthPermissions.role === ApplicationRole.Supervisor || this.authService.isAdmin) {
+      this.CANTON_OPTIONS = Cantons.cantons;
+    } else if (tthPermissions.role === ApplicationRole.Writer) {
+      this.CANTON_OPTIONS = tthPermissions.permissionRestrictions
+        .map((restriction) => Cantons.fromSwissCanton(restriction.valueAsString as SwissCanton))
+        .filter((element) => element !== undefined)
+        .map((e) => e!);
+    }
+
+    const defaultCanton = Cantons.getSwissCantonEnum(this.route.snapshot.params.canton);
+    if (this.CANTON_OPTIONS.includes(Cantons.fromSwissCanton(defaultCanton)!)) {
+      this.form.controls.swissCanton.setValue(defaultCanton);
+    }
   }
 
   private initForm() {
@@ -172,7 +191,7 @@ export class StatementDetailComponent implements OnInit {
       statementStatus: new FormControl(statement?.statementStatus, [Validators.required]),
       ttfnid: new FormControl(statement?.ttfnid),
       responsibleTransportCompanies: new FormControl(statement?.responsibleTransportCompanies),
-      swissCanton: new FormControl(statement?.swissCanton),
+      swissCanton: new FormControl(statement?.swissCanton, [Validators.required]),
       stopPlace: new FormControl(statement?.stopPlace, [
         AtlasFieldLengthValidator.length_50,
         WhitespaceValidator.blankOrEmptySpaceSurrounding,
