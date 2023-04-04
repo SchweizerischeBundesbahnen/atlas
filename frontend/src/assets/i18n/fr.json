@@ -564,6 +564,15 @@
         }
       }
     },
+    "DIALOG": {
+      "NEW_PLAN_TIMETABLE": "Créer un nouvel horaire d'audience",
+      "PLAN_DROPDOWN_TITLE": "Calendrier",
+      "PLAN_DROPDOWN_DESCRIPTION": "Sélectionner l'année",
+      "DATUM_FROM": "Audition de",
+      "DATUM_FROM_EXAMPLE": "p.ex. 31.12.2023.",
+      "DATUM_UNTIL": "Audience jusqu'à",
+      "DATUM_UNTIL_EXAMPLE": "p.ex. 31.12.2023."
+    },
     "SELECT_CANTON": "Sélectionner le canton",
     "SELECT_YEAR": "Sélectionner l'année",
     "TABLE_RESULT_HEADING": "{{totalCount}} Prises de position pour l'année d'horaire {{year}}",
