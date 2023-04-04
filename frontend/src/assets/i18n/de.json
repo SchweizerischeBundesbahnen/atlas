@@ -42,6 +42,8 @@
     "FILLED_AUTOMATICALLY": "Automatisch befüllt",
     "VALID_FROM": "Gültig von",
     "VALID_TO": "Gültig bis",
+    "EDIT_ON": "Geändert",
+    "EDIT_BY": "Durch",
     "STATUS": "Status",
     "CANTONS": "Kantone",
     "STATUS_TYPES": {
@@ -529,7 +531,57 @@
     }
   },
   "TTH": {
+    "TAB": {
+      "ACTUAL": "Aktuelle Anhörung",
+      "PLANNED": "Geplante Anhörungen",
+      "ARCHIVED": "Archivierte Anhörungen"
+    },
+    "BUTTON": {
+      "DOWNLOAD_CSV": "Download [CSV]",
+      "MANAGE_TIMETABLE_HEARING": "Steuerung Fahrplananhörung",
+      "ADD_NEW_STATEMENT": "Neue Stellungnahme erfassen",
+      "ADD_NEW_TIMETABLE_HEARING": "Neue Fahrplananhörung anlegen",
+      "START_TIMETABLE_HEARING": "Dieses Fahrplanjahr starten"
+    },
+    "DROPDOWN": {
+      "COLLECTING_ACTION": {
+        "PLACEHOLDER": "Sammelaktionen",
+        "OPTION": {
+          "STATUS_CHANGE": "Status ändern",
+          "CANTON_DELIVERY": "Kantonsübergabe",
+          "DELETE": "Löschen"
+        }
+      }
+    },
+    "SELECT_CANTON": "Kanton auswählen",
+    "SELECT_YEAR": "Jahr auswählen",
+    "TABLE_RESULT_HEADING": "{{totalCount}} Stellungnahmen für Fahrplanjahr {{year}}",
+    "TABLE_RESULT_ACTUAL_HEARING_HEADING_PREFIX": "{{totalCount}} Stellungnahmen ",
+    "WHOLE_SWISS": "gesamte Schweiz",
     "OPEN": "{{canton}} öffnen",
+    "STATEMENT_STATUS_HEADER": "Status",
+    "SWISS_CANTON": "Kanton",
+    "TRANSPORT_COMPANY": "Transportunternehmen",
+    "TTFNID": "Feld-Nr.",
+    "TIMETABLE_FIELD_NUMBER": "Fahrplanfeld",
+    "OVERVIEW_TAB": {
+      "OVERVIEW_ACTUAL_SUBHEADING_PREFIX": "Das Fahrplanverfahren Schweiz des BAV für den Fahrplan {{timeTableYear}} dauert von",
+      "OVERVIEW_ACTUAL_SUBHEADING_POSTFIX": " {{hearingFrom}} bis zum {{hearingTo}}.",
+      "OVERVIEW_PLANNED_SUBHEADING": "Hier finden Sie alle geplanten Fahrplananhörungen. Vor dem Start eines Fahrplanjahres können Sie keine Stellungnahmen erfassen.",
+      "OVERVIEW_ARCHIVED_SUBHEADING": "Hier finden Sie alle archivierten Fahrplananhörungen nach Fahrplanjahren abgelegt.",
+      "OVERVIEW_ACTUAL_NOT_FOUND_SUBHEADING_PREFIX": "Das Fahrplanjahr ist noch nicht eröffnet. Sie finden bereits vorhandene Stellungnahmen unter dem Reiter «Geplante Anhörungen». Das Fahrplanverfahren Schweiz des BAV für den Fahrplan {{timeTableYear}} wird von ",
+      "OVERVIEW_PLANNED_NOT_FOUND": "Derzeit sind keine Anhörungen geplant.",
+      "OVERVIEW_ARCHIVED_NOT_FOUND": "Es sind derzeit keine archivierten Anhörungen verfügbar."
+    },
+    "STATEMENT_STATUS": {
+      "RECEIVED": "eingetroffen",
+      "IN_REVIEW": "in Abklärung",
+      "ACCEPTED": "angenommen",
+      "REJECTED": "abgelehnt",
+      "MOVED": "verschoben",
+      "JUNK": "*Spam-Mail*",
+      "REVOKED": "Fehlerfassung"
+    },
     "CANTON": {
       "CH": "Gesamtschweiz",
       "AG": "Aargau",
@@ -548,7 +600,7 @@
       "NW": "Nidwalden",
       "OW": "Obwalden",
       "SG": "St. Gallen",
-      "SH": "Schaffausen",
+      "SH": "Schaffhausen",
       "SO": "Solothurn",
       "SZ": "Schwyz",
       "TG": "Thurgau",

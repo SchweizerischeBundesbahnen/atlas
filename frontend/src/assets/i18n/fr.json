@@ -42,6 +42,8 @@
     "FILLED_AUTOMATICALLY": "Remplissage automatique",
     "VALID_FROM": "Valable du",
     "VALID_TO": "Valable au",
+    "EDIT_ON": "Modifiée",
+    "EDIT_BY": "à travers",
     "STATUS": "Statut",
     "CANTONS": "Cantons",
     "STATUS_TYPES": {
@@ -529,7 +531,57 @@
     }
   },
   "TTH": {
+    "TAB": {
+      "ACTUAL": "Audition actuelle",
+      "PLANNED": "Audition prévue",
+      "ARCHIVED": "Audition archivée"
+    },
+    "BUTTON": {
+      "DOWNLOAD_CSV": "Download [CSV]",
+      "MANAGE_TIMETABLE_HEARING": "Contrôle de la consultation de l'horaire",
+      "ADD_NEW_STATEMENT": "Saisir un nouvel avis",
+      "ADD_NEW_TIMETABLE_HEARING": "Créer une nouvelle consultation sur les horaires",
+      "START_TIMETABLE_HEARING": "Lancer cette année d'horaire"
+    },
+    "DROPDOWN": {
+      "COLLECTING_ACTION": {
+        "PLACEHOLDER": "Actions de collecte",
+        "OPTION": {
+          "STATUS_CHANGE": "Modifier statut",
+          "CANTON_DELIVERY": "Transfert de canton",
+          "DELETE": "Effacer"
+        }
+      }
+    },
+    "SELECT_CANTON": "Sélectionner le canton",
+    "SELECT_YEAR": "Sélectionner l'année",
+    "TABLE_RESULT_HEADING": "{{totalCount}} Stellungnahmen für Fahrplanjahr {{year}}",
+    "TABLE_RESULT_ACTUAL_HEARING_HEADING_PREFIX": "{{totalCount}} Stellungnahmen ",
+    "WHOLE_SWISS": "gesamte Schweiz",
     "OPEN": "{{canton}} ouvrir",
+    "STATEMENT_STATUS_HEADER": "Statut",
+    "SWISS_CANTON": "Canton",
+    "TRANSPORT_COMPANY": "Entreprise de transport",
+    "TTFNID": "Cadre-nº.",
+    "TIMETABLE_FIELD_NUMBER": "Cadre horaire",
+    "OVERVIEW_TAB": {
+      "OVERVIEW_ACTUAL_SUBHEADING_PREFIX": "La procédure d'établissement de l'horaire suisse de l'OFT pour l'horaire {{timeTableYear}} dure de",
+      "OVERVIEW_ACTUAL_SUBHEADING_POSTFIX": " {{hearingFrom}} jusqu'au {{hearingTo}}.",
+      "OVERVIEW_PLANNED_SUBHEADING": "Vous trouverez ici toutes les consultations d'horaires prévues. Vous ne pouvez pas saisir d'avis avant le début d'une année d'horaire.",
+      "OVERVIEW_ARCHIVED_SUBHEADING": "Vous trouverez ici toutes les consultations d'horaires archivées, classées par année d'horaire.",
+      "OVERVIEW_ACTUAL_NOT_FOUND_SUBHEADING_PREFIX": "Das Fahrplanjahr ist noch nicht eröffnet. Sie finden bereits vorhandene Stellungnahmen unter dem Reiter «Geplante Anhörungen». Das Fahrplanverfahren Schweiz des BAV für den Fahrplan {{timeTableYear}} wird von ",
+      "OVERVIEW_PLANNED_NOT_FOUND": "Derzeit sind keine Anhörungen geplant.",
+      "OVERVIEW_ARCHIVED_NOT_FOUND": "Es sind derzeit keine archivierten Anhörungen verfügbar."
+    },
+    "STATEMENT_STATUS": {
+      "RECEIVED": "arriver",
+      "IN_REVIEW": "À l'étude",
+      "ACCEPTED": "acceptée",
+      "REJECTED": "rejeté",
+      "MOVED": "Retardé",
+      "JUNK": "*Spam-Mail*",
+      "REVOKED": "Saisie des erreurs"
+    },
     "CANTON": {
       "CH": "Suisse entière",
       "AG": "Argovie",
@@ -540,17 +592,17 @@
       "BS": "Bâle-Ville",
       "FR": "Fribourg",
       "GE": "Genève",
-      "GL": "Glarus",
-      "GR": "Glaris",
+      "GL": "Glaris",
+      "GR": "Grisons",
       "JU": "Jura",
       "LU": "Lucerne",
       "NE": "Neuchâtel",
-      "NW": "Nidwalden",
-      "OW": "Nidwald",
+      "NW": "Nidwald",
+      "OW": "Obwald",
       "SG": "Saint-Gall",
       "SH": "Schaffhouse",
       "SO": "Soleure",
-      "SZ": "Schwyz",
+      "SZ": "Schwytz",
       "TG": "Thurgovie",
       "TI": "Tessin",
       "UR": "Uri",
