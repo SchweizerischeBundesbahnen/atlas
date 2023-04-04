@@ -5,7 +5,7 @@ import { DateService } from '../date/date.service';
   name: 'displayDate',
 })
 export class DisplayDatePipe implements PipeTransform {
-  transform(value: Date): unknown {
+  transform(value: Date): string {
     return DateService.getDateFormatted(value);
   }
 }
