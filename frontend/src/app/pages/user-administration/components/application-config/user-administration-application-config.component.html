@@ -56,7 +56,7 @@
             (selectionChange)="cantonSelectionChanged($event)"
             [(value)]="cantonSelection"
             [disabled]="readOnly"
-            class="font-bold-base"
+            class="color-primary-400"
             multiple
           >
             <mat-option *ngFor="let canton of SWISS_CANTONS" [value]="canton"

@@ -42,6 +42,8 @@
     "FILLED_AUTOMATICALLY": "Compilato automaticamente",
     "VALID_FROM": "Valido dal",
     "VALID_TO": "Valido fino al",
+    "EDIT_ON": "Modificato",
+    "EDIT_BY": "Da",
     "STATUS": "Stato",
     "CANTONS": "Cantoni",
     "STATUS_TYPES": {
@@ -529,7 +531,57 @@
     }
   },
   "TTH": {
+    "TAB": {
+      "ACTUAL": "Audizioni attuali",
+      "PLANNED": "Audizioni programmate",
+      "ARCHIVED": "Audizioni archiviate"
+    },
+    "BUTTON": {
+      "DOWNLOAD_CSV": "Download [CSV]",
+      "MANAGE_TIMETABLE_HEARING": "Amministrare le audizioni",
+      "ADD_NEW_STATEMENT": "Aggiungere nuovo parare",
+      "ADD_NEW_TIMETABLE_HEARING": "Creare una nuova audizione",
+      "START_TIMETABLE_HEARING": "Avviare questa audizione"
+    },
+    "DROPDOWN": {
+      "COLLECTING_ACTION": {
+        "PLACEHOLDER": "Raccolta di azioni",
+        "OPTION": {
+          "STATUS_CHANGE": "Modificare lo stato",
+          "CANTON_DELIVERY": "Passaggio di consegle cantonale",
+          "DELETE": "Eliminare"
+        }
+      }
+    },
+    "SELECT_CANTON": "Selezionare il Cantone",
+    "SELECT_YEAR": "Selezionare l'anno",
+    "TABLE_RESULT_HEADING": "{{totalCount}} dichiarazioni per l'orario {{year}}",
+    "TABLE_RESULT_ACTUAL_HEARING_HEADING_PREFIX": "{{totalCount}} Stellungnahmen ",
+    "WHOLE_SWISS": "gesamte Schweiz",
     "OPEN": "{{canton}} aprire",
+    "STATEMENT_STATUS_HEADER": "Stato",
+    "SWISS_CANTON": "Cantone",
+    "TRANSPORT_COMPANY": "Azienda di trasporto",
+    "TTFNID": "Campo-n.",
+    "TIMETABLE_FIELD_NUMBER": "Quadro orario",
+    "OVERVIEW_TAB": {
+      "OVERVIEW_ACTUAL_SUBHEADING_PREFIX": "La procedura dell'orario svizzero dell'UFT per l'orario {{timeTableYear}} dura da",
+      "OVERVIEW_ACTUAL_SUBHEADING_POSTFIX": " {{hearingFrom}} fino a {{hearingTo}}.",
+      "OVERVIEW_PLANNED_SUBHEADING": "Qui troverete tutte le udienze programmate. Non è possibile inserire commenti prima dell'inizio di un anno di calendario.",
+      "OVERVIEW_ARCHIVED_SUBHEADING": "Qui troverete tutte le audizioni archiviate per l'anno d'orario.",
+      "OVERVIEW_ACTUAL_NOT_FOUND_SUBHEADING_PREFIX": "Das Fahrplanjahr ist noch nicht eröffnet. Sie finden bereits vorhandene Stellungnahmen unter dem Reiter «Geplante Anhörungen». Das Fahrplanverfahren Schweiz des BAV für den Fahrplan {{timeTableYear}} wird von ",
+      "OVERVIEW_PLANNED_NOT_FOUND": "Derzeit sind keine Anhörungen geplant.",
+      "OVERVIEW_ARCHIVED_NOT_FOUND": "Es sind derzeit keine archivierten Anhörungen verfügbar."
+    },
+    "STATEMENT_STATUS": {
+      "RECEIVED": "arrivato",
+      "IN_REVIEW": "in esame",
+      "ACCEPTED": "accetato",
+      "REJECTED": "rifiutato",
+      "MOVED": "spostato",
+      "JUNK": "*Spam-Mail*",
+      "REVOKED": "Revocato"
+    },
     "CANTON": {
       "CH": "Tutta la Svizzera",
       "AG": "Argovia",
@@ -549,7 +601,7 @@
       "OW": "Obvaldo",
       "SG": "San Gallo",
       "SH": "Sciaffusa",
-      "SO": "Soloturno",
+      "SO": "Soletta",
       "SZ": "Svitto",
       "TG": "Turgovia",
       "TI": "Ticino",

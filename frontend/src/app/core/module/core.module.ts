@@ -29,6 +29,7 @@ import { AtlasButtonComponent } from '../components/button/atlas-button.componen
 import { WorkflowComponent } from '../workflow/workflow.component';
 import { WorkflowFormComponent } from '../workflow/workflow-form/workflow-form.component';
 import { WorkflowCheckFormComponent } from '../workflow/workflow-check-form/workflow-check-form.component';
+import { DisplayDatePipe } from '../pipe/display-date.pipe';
 
 const coreComponents = [
   WorkflowFormComponent,
@@ -53,6 +54,7 @@ const coreComponents = [
   CoverageComponent,
   RouteToDialogComponent,
   RelationComponent,
+  DisplayDatePipe,
 ];
 
 @NgModule({

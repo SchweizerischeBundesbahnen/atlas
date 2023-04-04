@@ -104,6 +104,9 @@ export class TableComponent<DATATYPE> {
     if (column.translate?.withPrefix) {
       return value ? this.translatePipe.transform(column.translate.withPrefix + value) : null;
     }
+    if (column.callback) {
+      return column.callback(value);
+    }
     return value as string;
   }
 
