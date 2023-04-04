@@ -34,8 +34,9 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
 
   hearingStatus = HearingStatus.Active;
   noTimetableHearingYearFound = false;
+  noPlannedTimetableHearingYearFound = false;
   foundTimetableHearingYear: TimetableHearingYear = {
-    timetableYear: 2000,
+    timetableYear: moment().toDate().getFullYear() + 1,
     hearingFrom: moment().toDate(),
     hearingTo: moment().toDate(),
   };
@@ -293,6 +294,7 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
           this.foundTimetableHearingYear = timetableHearingYears[0];
         } else {
           this.noTimetableHearingYearFound = true;
+          this.noPlannedTimetableHearingYearFound = true;
         }
       });
   }
