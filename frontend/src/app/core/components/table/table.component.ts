@@ -46,11 +46,7 @@ export class TableComponent<DATATYPE> {
   constructor(private dateService: DateService, private translatePipe: TranslatePipe) {}
 
   getColumnValues(): string[] {
-    const columns: string[] = [];
-    this.tableColumns.forEach((column) => {
-      columns.push(column.value as string);
-    });
-    return columns;
+    return this.tableColumns.map((i) => i.value as string);
   }
 
   edit(row: DATATYPE) {
