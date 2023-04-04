@@ -2,7 +2,7 @@
 
 .page-footer {
   height: calc(#{variables.$footerHeight} + 56px);
-  width: calc(100vw - 350px);
+  width: variables.$detailPageWidth;
   background-color: variables.$background;
 
   position: fixed;

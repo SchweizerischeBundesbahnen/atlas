@@ -53,17 +53,6 @@ input[type='number'] {
   background-color: variables.$primary-500;
 }
 
-.detail-page-container {
-  background-color: white;
-
-  padding: 56px 56px calc(#{variables.$footerHeight} + 56px) 56px;
-
-  border-radius: variables.$border-radius;
-
-  min-height: calc(100vh - #{variables.$footerHeight} - #{variables.$headerHeight});
-  width: calc(100vw - 350px);
-}
-
 .text-align-end {
   text-align: end;
 }
