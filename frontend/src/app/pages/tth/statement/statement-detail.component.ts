@@ -56,6 +56,7 @@ export class StatementDetailComponent implements OnInit {
     this.initYearOptions();
     this.initCantonOptions();
     this.initStatusOptions();
+    this.initResponsibleTransportCompanyPrefill();
   }
 
   private initYearOptions() {
@@ -102,6 +103,18 @@ export class StatementDetailComponent implements OnInit {
       this.form.controls.statementStatus.setValue(StatementStatus.Received);
       this.form.controls.statementStatus.disable();
     }
+  }
+
+  private initResponsibleTransportCompanyPrefill() {
+    this.form.controls.ttfnid.valueChanges.subscribe((ttfnid) => {
+      if (ttfnid) {
+        this.timetableHearingService
+          .getResponsibleTransportCompanies(ttfnid)
+          .subscribe((result) => {
+            this.form.controls.responsibleTransportCompanies.setValue(result);
+          });
+      }
+    });
   }
 
   save() {
