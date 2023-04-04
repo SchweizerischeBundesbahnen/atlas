@@ -22,15 +22,15 @@ export class TthDialogService {
     return this.confirmTthDialog.afterClosed().pipe(map((value) => (value ? value : false)));
   }
 
-  closeConfirmTthDialog(): void {
-    this.confirmTthDialog?.close();
-    this.confirmTthDialog = undefined;
-  }
-
-  confirmLeave(): Observable<boolean> {
-    return this.confirm({
-      title: 'DIALOG.DISCARD_CHANGES_TITLE',
-      column: '',
-    });
-  }
+  // closeConfirmTthDialog(): void {
+  //   this.confirmTthDialog?.close();
+  //   this.confirmTthDialog = undefined;
+  // }
+  //
+  // confirmLeave(): Observable<boolean> {
+  //   return this.confirm({
+  //     title: 'DIALOG.DISCARD_CHANGES_TITLE',
+  //     column: '',
+  //   });
+  // }
 }

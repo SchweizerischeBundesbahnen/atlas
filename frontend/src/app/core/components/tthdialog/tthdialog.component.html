@@ -11,7 +11,7 @@
       <app-atlas-label-field
         [fieldExamples]="[{ label: 'TTH.DIALOG.PLAN_DROPDOWN_DESCRIPTION', translate: true }]"
         [formGroup]="form"
-        controlName="swissLineNumber"
+        controlName="timetableYear"
         fieldLabel="TTH.DIALOG.PLAN_DROPDOWN_TITLE"
         infoIconTitle="LIDI.LINE.NUMBER_INFO"
       >
@@ -20,7 +20,7 @@
 
     <div class="multi-select-search">
       <mat-select
-        [(value)]="defaultYearSelection"
+        formControlName="timetableYear"
         data-cy="canton-type"
         placeholder="{{ 'FORM.DROPDOWN_PLACEHOLDER' | translate }}"
       >
@@ -30,7 +30,7 @@
       </mat-select>
     </div>
 
-    <div class="w-50">
+    <div>
       <form-date-range [formGroup]="form"></form-date-range>
     </div>
 
@@ -43,6 +43,7 @@
         {{ data.cancelText ?? 'DIALOG.CANCEL' | translate }}
       </button>
       <button
+        (click)="createTth()"
         [mat-dialog-close]="true"
         class="atlas-primary-btn primary-color-btn"
         data-cy="dialog-confirm-button"
