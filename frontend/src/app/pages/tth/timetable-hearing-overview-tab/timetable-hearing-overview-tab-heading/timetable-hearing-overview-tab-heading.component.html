@@ -10,7 +10,12 @@
     <div class="table-heading font-bold-4xl color-gray-900 mb-3">
       {{ 'PAGES.TTH.TITLE_MENU' | translate }} {{ foundTimetableHearingYear.timetableYear }}
     </div>
-    <div *ngIf="!noActiveTimetableHearingYearFound">
+    <div *ngIf="noPlannedTimetableHearingYearFound" class="mb-5">
+      <span>{{
+        'TTH.OVERVIEW_TAB.OVERVIEW_ACTUAL_NO_PLANNED_HEARING_YEAR_FOUND' | translate
+      }}</span>
+    </div>
+    <div *ngIf="!noTimetableHearingYearFound">
       <div class="mb-5">
         <span>{{
           'TTH.OVERVIEW_TAB.OVERVIEW_ACTUAL_SUBHEADING_PREFIX'
@@ -26,7 +31,7 @@
         }}</span>
       </div>
     </div>
-    <div *ngIf="noActiveTimetableHearingYearFound">
+    <div *ngIf="noTimetableHearingYearFound && !noPlannedTimetableHearingYearFound">
       <div class="mb-5">
         <span>{{
           'TTH.OVERVIEW_TAB.OVERVIEW_ACTUAL_NOT_FOUND_SUBHEADING_PREFIX'
@@ -50,10 +55,7 @@
     <div class="mb-5">
       <span>{{ 'TTH.OVERVIEW_TAB.OVERVIEW_PLANNED_SUBHEADING' | translate }}</span>
     </div>
-    <div
-      *ngIf="noActiveTimetableHearingYearFound"
-      class="table-heading font-bold-xl color-gray-900 mb-3"
-    >
+    <div *ngIf="noTimetableHearingYearFound" class="table-heading font-bold-lg color-gray-900 mb-3">
       <span>{{ 'TTH.OVERVIEW_TAB.OVERVIEW_PLANNED_NOT_FOUND' | translate }}</span>
     </div>
   </div>
@@ -65,10 +67,7 @@
       <span>{{ 'TTH.OVERVIEW_TAB.OVERVIEW_ARCHIVED_SUBHEADING' | translate }}</span>
     </div>
 
-    <div
-      *ngIf="noActiveTimetableHearingYearFound"
-      class="table-heading font-bold-xl color-gray-900 mb-3"
-    >
+    <div *ngIf="noTimetableHearingYearFound" class="table-heading font-bold-lg color-gray-900 mb-3">
       <span>{{ 'TTH.OVERVIEW_TAB.OVERVIEW_ARCHIVED_NOT_FOUND' | translate }}</span>
     </div>
   </div>
