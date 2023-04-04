@@ -65,8 +65,9 @@ $navigationPaddingLeftDefault: 37px;
 $navigationPaddingLeftLarge: 60px;
 $headerHeight: 121px;
 $footerHeight: 8rem;
-/* OTHER */
+$detailPageWidth: calc(100vw - 350px);
 
+/* OTHER */
 $border-radius: 28px;
 $border-radius-small: 5px;
 $border-color: rgba(0, 0, 0, 0.12);
