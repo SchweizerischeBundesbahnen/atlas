@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 import {
   HearingStatus,
   StatementStatus,
@@ -8,10 +8,10 @@ import {
   TimetableHearingStatement,
   TimetableHearingYear,
 } from '../../../api';
-import { Cantons } from '../overview/canton/Cantons';
-import { TableColumn } from '../../../core/components/table/table-column';
-import { Pages } from '../../pages';
-import { Subject, takeUntil } from 'rxjs';
+import {Cantons} from '../overview/canton/Cantons';
+import {TableColumn} from '../../../core/components/table/table-column';
+import {Pages} from '../../pages';
+import {Subject, takeUntil} from 'rxjs';
 import moment from 'moment';
 import { OverviewToTabShareDataService } from '../overview-tab/service/overview-to-tab-share-data.service';
 import { MatSelectChange } from '@angular/material/select';
@@ -23,6 +23,14 @@ import { ColumnDropDownEvent } from '../../../core/components/table/column-drop-
 import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
 import { TthTableService } from '../tth-table.service';
 import { TthDialogService } from '../../../core/components/tthdialog/tthdialog.service';
+import {
+  OverviewToTabShareDataService
+} from '../timetable-hearing-overview-tab/overview-to-tab-share-data.service';
+import {MatSelectChange} from '@angular/material/select';
+import {TthUtils} from '../tth-utils';
+import {TablePagination} from '../../../core/components/table/table-pagination';
+import {addElementsToArrayWhenNotUndefined} from '../../../core/util/arrays';
+import {TthTableService} from '../tth-table.service';
 
 @Component({
   selector: 'app-timetable-hearing-overview-detail',
