@@ -7,7 +7,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SearchSelectComponent } from '../search-select/search-select.component';
 import { MaterialModule } from '../../module/material.module';
 
-describe('TimetableFieldNumberSelectComponent', () => {
+describe('TransportCompanySelectComponent', () => {
   let component: TransportCompanySelectComponent;
   let fixture: ComponentFixture<TransportCompanySelectComponent>;
 
