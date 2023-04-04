@@ -570,7 +570,8 @@
       "OVERVIEW_PLANNED_SUBHEADING": "Vous trouverez ici toutes les consultations d'horaires prévues. Vous ne pouvez pas saisir d'avis avant le début d'une année d'horaire.",
       "OVERVIEW_ARCHIVED_SUBHEADING": "Vous trouverez ici toutes les consultations d'horaires archivées, classées par année d'horaire.",
       "OVERVIEW_ACTUAL_NOT_FOUND_SUBHEADING_PREFIX": "Das Fahrplanjahr ist noch nicht eröffnet. Sie finden bereits vorhandene Stellungnahmen unter dem Reiter «Geplante Anhörungen». Das Fahrplanverfahren Schweiz des BAV für den Fahrplan {{timeTableYear}} wird von ",
-      "OVERVIEW_PLANNED_NOT_FOUND": "Derzeit sind keine Anhörungen geplant.",
+      "OVERVIEW_PLANNED_NOT_FOUND": "Actuellement, aucune audition prévue n'est enregistrée.",
+      "OVERVIEW_ACTUAL_NO_PLANNED_HEARING_YEAR_FOUND": "Actuellement, aucune audition n'est active.",
       "OVERVIEW_ARCHIVED_NOT_FOUND": "Es sind derzeit keine archivierten Anhörungen verfügbar."
     },
     "STATEMENT_STATUS": {
