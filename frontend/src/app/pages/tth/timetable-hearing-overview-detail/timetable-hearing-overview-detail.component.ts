@@ -15,9 +15,9 @@ import { Subject, takeUntil } from 'rxjs';
 import moment from 'moment';
 import { OverviewToTabShareDataService } from '../timetable-hearing-overview-tab/overview-to-tab-share-data.service';
 import { MatSelectChange } from '@angular/material/select';
-import { TablePagination } from '../../../core/components/table/table-pagination';
 import { TableService } from '../../../core/components/table/table.service';
 import { TthUtils } from '../tth-utils';
+import { TablePagination } from '../../../core/components/table/table-pagination';
 
 @Component({
   selector: 'app-timetable-hearing-overview-detail',
@@ -59,7 +59,6 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly timetableHearingService: TimetableHearingService,
-    private readonly userAdministrationService: UserAdministrationService,
     private readonly overviewToTabService: OverviewToTabShareDataService,
     private readonly tthUtils: TthUtils
   ) {}
@@ -74,6 +73,7 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
 
   ngOnInit(): void {
     this.syncCantonShortSharedDate();
+    this.dafaultDropdownCantonSelection = this.initDefatulDropdownCantonSelection();
     this.hearingStatus = this.route.snapshot.data.hearingStatus;
     if (this.tthUtils.isHearingStatusActive(this.hearingStatus)) {
       this.tableColumns = this.getActiveTableColumns();
@@ -96,9 +96,8 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
     }
   }
 
-  getOverview(pagination: TableSettings) {
+  getOverview(pagination: TablePagination) {
     const selectedCantonEnum = this.getSelectedCantonToBeSearchFromNavigation();
-    this.dafaultDropdownCantonSelection = this.initDefatulDropdownCantonSelection();
     this.timetableHearingService
       .getStatements(
         this.foundTimetableHearingYear.timetableYear,
@@ -118,7 +117,7 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
   }
 
   ngOnDestroy() {
-    this.ngUnsubscribe.unsubscribe();
+    this.ngUnsubscribe.complete();
   }
 
   changeSelectedCantonFromDropdown(selectedCanton: MatSelectChange) {
@@ -298,7 +297,6 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
       page: 0,
       size: 10,
       sort: 'statementStatus,asc',
-      statusChoices: DEFAULT_STATUS_SELECTION,
     });
   }
 
