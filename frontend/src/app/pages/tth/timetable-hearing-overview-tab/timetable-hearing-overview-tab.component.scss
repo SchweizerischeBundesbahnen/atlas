@@ -1,0 +1,6 @@
+@use 'src/styles/variables' as variables;
+
+.tab-container {
+  background-color: white !important;
+  border-radius: 0 variables.$border-radius variables.$border-radius variables.$border-radius;
+}
