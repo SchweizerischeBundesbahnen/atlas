@@ -1,12 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, convertToParamMap } from '@angular/router';
-import { TimetableHearingService, TimetableHearingStatement } from '../../../api';
+import { SwissCanton, TimetableHearingService, TimetableHearingStatement } from '../../../api';
 import { StatementDetailResolver } from './statement-detail.resolver';
 import { of } from 'rxjs';
 import { AppTestingModule } from '../../../app.testing.module';
 
 const statement: TimetableHearingStatement = {
   id: 1234,
+  swissCanton: SwissCanton.Aargau,
   statement: 'Mehr Busse bitte',
   statementSender: {
     email: 'luca@yb.ch',

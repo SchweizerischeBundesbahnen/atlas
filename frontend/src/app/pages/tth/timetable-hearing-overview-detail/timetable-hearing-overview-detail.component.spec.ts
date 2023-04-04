@@ -49,21 +49,18 @@ const timetabelHearingStatement: TimetableHearingStatement = {
   responsibleTransportCompanies: [
     {
       id: 1000,
-      transportCompanyId: 1,
       number: '#0001',
       abbreviation: 'SBB',
       businessRegisterName: 'Schweizerische Bundesbahnen SBB',
     },
     {
       id: 1001,
-      transportCompanyId: 2,
       number: '#0001',
       abbreviation: 'Post Auto',
       businessRegisterName: 'Post Auto',
     },
     {
       id: 1002,
-      transportCompanyId: 3,
       number: '#0001',
       abbreviation: 'BLS',
       businessRegisterName: 'BLS',
