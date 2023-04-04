@@ -1,0 +1,20 @@
+<div class="ps-5 pt-5">
+  <nav [tabPanel]="tabPanelCanton" class="tabs" data-cy="tabs" mat-tab-nav-bar>
+    <a
+      (click)="clickOnTab(tab)"
+      *ngFor="let tab of TABS"
+      [active]="activeTab === tab"
+      [routerLink]="tab.link"
+      class="font-bold-xl"
+      mat-tab-link
+    >
+      {{ tab.title | translate }}
+    </a>
+  </nav>
+
+  <div class="white-table-container-no-padding">
+    <mat-tab-nav-panel #tabPanelCanton>
+      <router-outlet></router-outlet>
+    </mat-tab-nav-panel>
+  </div>
+</div>

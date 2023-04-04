@@ -17,15 +17,16 @@
     [dataSource]="tableData"
     [matSortActive]="sortingDisabled ? '' : tableColumns[0].value!"
     [matSortDisabled]="sortingDisabled"
+    class="atlas-table"
     mat-table
     matSort
     matSortDirection="asc"
-    class="atlas-table"
   >
     <ng-container *ngFor="let column of tableColumns">
       <ng-container matColumnDef="{{ column.value }}">
         <th
           *matHeaderCellDef
+          [ngClass]="column.dropdown ? 'col-2' : ''"
           class="font-bold-base color-primary-400 translated-paragraph bordered-cell"
           mat-header-cell
           mat-sort-header
@@ -33,14 +34,38 @@
         >
           {{ column.headerTitle | translate }}
         </th>
-        <td
-          *matCellDef="let value"
-          [title]="showTitle(column, value[column.value])"
-          class="table-cell bordered-cell"
-          mat-cell
-        >
-          {{ format(column, value[column.value]) }}
-        </td>
+        <div *ngIf="!column.dropdown">
+          <td
+            *matCellDef="let value"
+            [title]="showTitle(column, value[column.value])"
+            class="table-cell bordered-cell"
+            mat-cell
+          >
+            {{ format(column, value[column.value]) }}
+          </td>
+        </div>
+        <div *ngIf="column.dropdown">
+          <td
+            *matCellDef="let value"
+            [title]="showTitle(column, value[column.value])"
+            class="table-cell bordered-cell"
+            mat-cell
+          >
+            <div class="multi-select-search">
+              <mat-select
+                (click)="$event.stopPropagation()"
+                (selectionChange)="column.dropdown.changeSelectionCallback($event)"
+                [(value)]="value[column.value]"
+                data-cy="table-option-type"
+                placeholder="{{ 'FORM.DROPDOWN_PLACEHOLDER' | translate }}"
+              >
+                <mat-option *ngFor="let option of column.dropdown.options" [value]="option">
+                  {{ column.dropdown.translate.withPrefix + option | translate }}
+                </mat-option>
+              </mat-select>
+            </div>
+          </td>
+        </div>
       </ng-container>
     </ng-container>
 
@@ -48,8 +73,8 @@
     <tr
       (click)="edit(row)"
       *matRowDef="let row; columns: getColumnValues()"
-      mat-row
       class="atlas-table-row"
+      mat-row
     ></tr>
 
     <!-- Row shown when there is no matching data. -->
