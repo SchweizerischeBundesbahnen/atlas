@@ -31,12 +31,14 @@ import { WorkflowFormComponent } from '../workflow/workflow-form/workflow-form.c
 import { WorkflowCheckFormComponent } from '../workflow/workflow-check-form/workflow-check-form.component';
 import { DisplayDatePipe } from '../pipe/display-date.pipe';
 import { AtlasSpacerComponent } from '../components/spacer/atlas-spacer.component';
+import { DetailFooterComponent } from '../components/detail-footer/detail-footer.component';
 
 const coreComponents = [
   WorkflowFormComponent,
   WorkflowCheckFormComponent,
   WorkflowComponent,
   BaseDetailComponent,
+  DetailFooterComponent,
   UserDetailInfoComponent,
   AtlasButtonComponent,
   AtlasSpacerComponent,
