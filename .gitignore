@@ -120,3 +120,4 @@ frontend/.npmrc
 .idea/sonarlint/
 .idea/sqldialects.xml
 
+/line-directory/export/

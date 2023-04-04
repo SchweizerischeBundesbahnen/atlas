@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, ContentChild, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
 import { ApplicationType } from '../../../api';
 import { AuthService } from '../../auth/auth.service';
 import { AtlasButtonType } from './atlas-button.type';
@@ -22,6 +22,7 @@ export class AtlasButtonComponent {
   @Input() buttonText!: string;
 
   @Output() buttonClicked = new EventEmitter<void>();
+  @ContentChild('rightIcon') rightIcon!: TemplateRef<any>;
 
   constructor(private authService: AuthService) {}
 
