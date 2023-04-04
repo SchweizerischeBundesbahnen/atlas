@@ -11,7 +11,8 @@ export class TimetableHearingOverviewTabHeadingComponent {
   @Input() cantonShort!: string;
   @Input() foundTimetableHearingYear!: TimetableHearingYear;
   @Input() hearingStatus!: HearingStatus;
-  @Input() noActiveTimetableHearingYearFound!: boolean;
+  @Input() noTimetableHearingYearFound!: boolean;
+  @Input() noPlannedTimetableHearingYearFound!: boolean;
 
   get isHearingStatusActive() {
     return this.hearingStatus.toLowerCase() === Pages.TTH_ACTIVE.path;
