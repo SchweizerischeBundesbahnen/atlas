@@ -67,7 +67,9 @@ export class StatementDetailComponent implements OnInit {
           ?.map((year) => year.timetableYear)
           .sort((n1, n2) => n1 - n2);
         this.YEAR_OPTIONS = years!;
-        this.form.controls.timetableYear.setValue(this.YEAR_OPTIONS[0]);
+        if (this.isNew) {
+          this.form.controls.timetableYear.setValue(this.YEAR_OPTIONS[0]);
+        }
       });
   }
 
