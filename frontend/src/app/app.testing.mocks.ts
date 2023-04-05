@@ -1,21 +1,11 @@
-import { Component, Input, NgModule, TemplateRef } from '@angular/core';
+import { Component, EventEmitter, Input, NgModule, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ApplicationType } from './api';
 import { AtlasButtonType } from './core/components/button/atlas-button.type';
+import { TableFilterConfig } from './core/components/table-filter/table-filter-config';
+import { TableColumn } from './core/components/table/table-column';
+import { TablePagination } from './core/components/table/table-pagination';
 import { AtlasFieldCustomError } from './core/form-components/atlas-field-error/atlas-field-custom-error';
-
-@Component({
-  selector: 'app-table-search',
-  template: '<p>Mock Table Search Component</p>',
-})
-export class MockAppTableSearchComponent {
-  @Input() additionalFieldTemplate!: TemplateRef<any>;
-  @Input() displayStatus = true;
-  @Input() displayValidOn = true;
-  @Input() displayBusinessOrganisationSearch = true;
-  @Input() searchTextColumnStyle = 'col-4';
-  @Input() searchStatusType = 'default';
-}
 
 @Component({
   selector: 'app-detail-wrapper [controller][headingNew]',
@@ -36,6 +26,24 @@ export class MockBoSelectComponent {
   @Input() formModus = true;
   @Input() formGroup!: FormGroup;
   @Input() sboidsRestrictions: string[] = [];
+}
+
+@Component({
+  selector: 'app-table',
+  template: '<p>Mock Table Component</p>',
+})
+export class MockTableComponent<DATATYPE> {
+  @Input() tableData: DATATYPE[] = [];
+  @Input() tableFilterConfig: TableFilterConfig<unknown>[][] = [];
+  @Input() tableColumns!: TableColumn<DATATYPE>[];
+  @Input() canEdit = true;
+  @Input() totalCount!: number;
+  @Input() pageSizeOptions: number[] = [5, 10, 25, 100];
+  @Input() sortingDisabled = false;
+  @Input() showTableFilter = true;
+
+  @Output() editElementEvent = new EventEmitter<DATATYPE>();
+  @Output() getTableElementsEvent = new EventEmitter<TablePagination>();
 }
 
 @Component({
@@ -78,12 +86,12 @@ export class MockAtlasFieldErrorComponent {
 @NgModule({
   declarations: [
     MockAppDetailWrapperComponent,
+    MockTableComponent,
     MockBoSelectComponent,
-    MockAppTableSearchComponent,
     MockAtlasButtonComponent,
     MockUserDetailInfoComponent,
     MockAtlasFieldErrorComponent,
   ],
-  exports: [MockBoSelectComponent, MockAtlasButtonComponent],
+  exports: [MockBoSelectComponent, MockAtlasButtonComponent, MockTableComponent],
 })
 export class AppMockComponents {}

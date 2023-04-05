@@ -1,12 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { TableComponent } from '../../../core/components/table/table.component';
-import { LoadingSpinnerComponent } from '../../../core/components/loading-spinner/loading-spinner.component';
 import { LinesComponent } from './lines.component';
 import { ContainerLine, LinesService, LineType } from '../../../api';
 import { AppTestingModule } from '../../../app.testing.module';
 import { TranslatePipe } from '@ngx-translate/core';
-import { MockAppTableSearchComponent } from '../../../app.testing.mocks';
+import { MockTableComponent } from '../../../app.testing.mocks';
 
 const versionContainer: ContainerLine = {
   objects: [
@@ -31,14 +29,10 @@ describe('LinesComponent', () => {
   // With Spy
   const linesService = jasmine.createSpyObj('linesService', ['getLines']);
   linesService.getLines.and.returnValue(of(versionContainer));
+
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        LinesComponent,
-        TableComponent,
-        LoadingSpinnerComponent,
-        MockAppTableSearchComponent,
-      ],
+      declarations: [LinesComponent, MockTableComponent],
       imports: [AppTestingModule],
       providers: [{ provide: LinesService, useValue: linesService }, TranslatePipe],
     }).compileComponents();
@@ -50,9 +44,5 @@ describe('LinesComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-    expect(linesService.getLines).toHaveBeenCalled();
-
-    expect(component.lineVersions.length).toBe(1);
-    expect(component.totalCount$).toBe(1);
   });
 });

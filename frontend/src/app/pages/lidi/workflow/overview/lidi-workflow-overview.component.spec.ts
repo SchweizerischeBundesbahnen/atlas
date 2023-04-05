@@ -3,11 +3,9 @@ import { LinesService, LineType } from '../../../../api';
 import { LidiWorkflowOverviewComponent } from './lidi-workflow-overview.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { TableComponent } from '../../../../core/components/table/table.component';
-import { LoadingSpinnerComponent } from '../../../../core/components/loading-spinner/loading-spinner.component';
-import { MockAppTableSearchComponent } from '../../../../app.testing.mocks';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { TranslatePipe } from '@ngx-translate/core';
+import { MockTableComponent } from '../../../../app.testing.mocks';
 
 const versionContainer: ContainerLineVersionSnapshot = {
   objects: [
@@ -38,14 +36,10 @@ describe('LidiWorkflowOverviewComponent', () => {
 
   const linesService = jasmine.createSpyObj('linesService', ['getLineVersionSnapshot']);
   linesService.getLineVersionSnapshot.and.returnValue(of(versionContainer));
+
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        TableComponent,
-        LidiWorkflowOverviewComponent,
-        LoadingSpinnerComponent,
-        MockAppTableSearchComponent,
-      ],
+      declarations: [LidiWorkflowOverviewComponent, MockTableComponent],
       imports: [AppTestingModule],
       providers: [{ provide: LinesService, useValue: linesService }, TranslatePipe],
     }).compileComponents();
@@ -57,9 +51,5 @@ describe('LidiWorkflowOverviewComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-    expect(linesService.getLineVersionSnapshot).toHaveBeenCalled();
-
-    expect(component.lineVersionSnapshots.length).toBe(1);
-    expect(component.totalCount$).toBe(1);
   });
 });

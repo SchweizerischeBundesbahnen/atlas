@@ -1,29 +1,39 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-
+import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { TableColumn } from '../../../core/components/table/table-column';
-import { TimetableFieldNumber, TimetableFieldNumbersService } from '../../../api';
-import { NotificationService } from '../../../core/notification/notification.service';
-import { TableSettings } from '../../../core/components/table/table-settings';
-import { TableSettingsService } from '../../../core/components/table/table-settings.service';
-import { Pages } from '../../pages';
+import {
+  BusinessOrganisation,
+  Status,
+  TimetableFieldNumber,
+  TimetableFieldNumbersService,
+} from '../../../api';
 import {
   DetailDialogEvents,
   RouteToDialogService,
 } from '../../../core/components/route-to-dialog/route-to-dialog.service';
 import { filter } from 'rxjs/operators';
-import { TableComponent } from '../../../core/components/table/table.component';
+import { TableService } from '../../../core/components/table/table.service';
+import { TablePagination } from '../../../core/components/table/table-pagination';
+import {
+  FilterType,
+  getActiveSearch,
+  getActiveSearchDate,
+  getActiveSearchForChip,
+  TableFilterChip,
+  TableFilterDateSelect,
+  TableFilterMultiSelect,
+  TableFilterSearchSelect,
+} from '../../../core/components/table-filter/table-filter-config';
+import { FormControl } from '@angular/forms';
 import { DEFAULT_STATUS_SELECTION } from '../../../core/constants/status.choices';
 
 @Component({
   selector: 'app-timetable-field-number-overview',
   templateUrl: './timetable-field-number-overview.component.html',
+  providers: [TableService],
 })
-export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy {
-  @ViewChild(TableComponent, { static: true })
-  tableComponent!: TableComponent<TimetableFieldNumber>;
-
+export class TimetableFieldNumberOverviewComponent implements OnDestroy {
   tableColumns: TableColumn<TimetableFieldNumber>[] = [
     { headerTitle: 'TTFN.NUMBER', value: 'number' },
     { headerTitle: 'TTFN.DESCRIPTION', value: 'description' },
@@ -38,56 +48,85 @@ export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy 
     { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
   ];
 
+  readonly tableFilterConfig: [
+    [TableFilterChip],
+    [
+      TableFilterSearchSelect<BusinessOrganisation>,
+      TableFilterMultiSelect<Status>,
+      TableFilterDateSelect
+    ]
+  ] = [
+    [
+      {
+        filterType: FilterType.CHIP_SEARCH,
+        elementWidthCssClass: 'col-6',
+        activeSearch: [],
+      },
+    ],
+    [
+      {
+        filterType: FilterType.SEARCH_SELECT,
+        elementWidthCssClass: 'col-3',
+        activeSearch: {} as BusinessOrganisation,
+      },
+      {
+        filterType: FilterType.MULTI_SELECT,
+        elementWidthCssClass: 'col-3',
+        activeSearch: DEFAULT_STATUS_SELECTION,
+        labelTranslationKey: 'COMMON.STATUS',
+        typeTranslationKeyPrefix: 'COMMON.STATUS_TYPES.',
+        selectOptions: Object.values(Status),
+      },
+      {
+        filterType: FilterType.VALID_ON_SELECT,
+        elementWidthCssClass: 'col-3',
+        activeSearch: undefined,
+        formControl: new FormControl(),
+      },
+    ],
+  ];
+
   timetableFieldNumbers: TimetableFieldNumber[] = [];
   totalCount$ = 0;
-  isLoading = false;
-  private getVersionsSubscription!: Subscription;
-  private routeSubscription!: Subscription;
+
+  private getVersionsSubscription?: Subscription;
+  private routeSubscription: Subscription;
 
   constructor(
     private timetableFieldNumbersService: TimetableFieldNumbersService,
     private route: ActivatedRoute,
     private router: Router,
-    private notificationService: NotificationService,
-    private tableSettingsService: TableSettingsService,
-    private routeToDialogService: RouteToDialogService
+    private routeToDialogService: RouteToDialogService,
+    private readonly tableService: TableService
   ) {
     this.routeSubscription = this.routeToDialogService.detailDialogEvent
       .pipe(filter((e) => e === DetailDialogEvents.Closed))
-      .subscribe(() => this.ngOnInit());
+      .subscribe(() => {
+        this.getOverview({
+          page: this.tableService.pageIndex,
+          size: this.tableService.pageSize,
+          sort: this.tableService.sortString,
+        });
+      });
   }
 
-  ngOnInit(): void {
-    const storedTableSettings = this.tableSettingsService.getTableSettings(Pages.TTFN.path);
-    this.getOverview(
-      storedTableSettings || {
-        page: 0,
-        size: 10,
-        sort: 'number,ASC',
-        statusChoices: DEFAULT_STATUS_SELECTION,
-      }
-    );
-  }
-
-  getOverview($paginationAndSearch: TableSettings) {
-    this.tableSettingsService.storeTableSettings(Pages.TTFN.path, $paginationAndSearch);
-    this.isLoading = true;
+  getOverview(pagination: TablePagination) {
     this.getVersionsSubscription = this.timetableFieldNumbersService
       .getOverview(
-        $paginationAndSearch.searchCriteria,
+        getActiveSearchForChip(this.tableFilterConfig[0][0]),
         undefined,
-        $paginationAndSearch.boChoice,
-        $paginationAndSearch.validOn,
-        $paginationAndSearch.statusChoices,
-        $paginationAndSearch.page,
-        $paginationAndSearch.size,
-        [$paginationAndSearch.sort!, 'ttfnid,ASC']
+        getActiveSearch<BusinessOrganisation | undefined, BusinessOrganisation>(
+          this.tableFilterConfig[1][0]
+        )?.sboid,
+        getActiveSearchDate(this.tableFilterConfig[1][2]),
+        getActiveSearch(this.tableFilterConfig[1][1]),
+        pagination.page,
+        pagination.size,
+        [pagination.sort!, 'ttfnid,asc']
       )
       .subscribe((container) => {
         this.timetableFieldNumbers = container.objects!;
         this.totalCount$ = container.totalCount!;
-        this.tableComponent.setTableSettings($paginationAndSearch);
-        this.isLoading = false;
       });
   }
 
@@ -108,7 +147,7 @@ export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy 
   }
 
   ngOnDestroy() {
-    this.getVersionsSubscription.unsubscribe();
+    this.getVersionsSubscription?.unsubscribe();
     this.routeSubscription.unsubscribe();
   }
 }

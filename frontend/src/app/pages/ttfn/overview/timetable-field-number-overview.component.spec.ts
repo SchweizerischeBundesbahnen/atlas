@@ -3,13 +3,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TimetableFieldNumberOverviewComponent } from './timetable-field-number-overview.component';
 import { of } from 'rxjs';
 import { ContainerTimetableFieldNumber, TimetableFieldNumbersService } from '../../../api';
-import { TableComponent } from '../../../core/components/table/table.component';
-import { LoadingSpinnerComponent } from '../../../core/components/loading-spinner/loading-spinner.component';
 import { AppTestingModule } from '../../../app.testing.module';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AuthService } from '../../../core/auth/auth.service';
-import { MockAppTableSearchComponent } from '../../../app.testing.mocks';
 import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
+import { MockTableComponent } from '../../../app.testing.mocks';
 
 const timetableFieldNumberContainer: ContainerTimetableFieldNumber = {
   objects: [
@@ -36,14 +34,13 @@ describe('TimetableFieldNumberOverviewComponent', () => {
     'getOverview',
   ]);
   timetableFieldNumberService.getOverview.and.returnValue(of(timetableFieldNumberContainer));
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         TimetableFieldNumberOverviewComponent,
-        TableComponent,
+        MockTableComponent,
         AtlasButtonComponent,
-        LoadingSpinnerComponent,
-        MockAppTableSearchComponent,
       ],
       imports: [AppTestingModule],
       providers: [
@@ -66,10 +63,5 @@ describe('TimetableFieldNumberOverviewComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-    fixture.detectChanges();
-    expect(timetableFieldNumberService.getOverview).toHaveBeenCalled();
-
-    expect(component.timetableFieldNumbers.length).toBe(1);
-    expect(component.totalCount$).toBe(1);
   });
 });

@@ -1,12 +1,8 @@
 <app-table
   (editElementEvent)="openUser($event)"
   (getTableElementsEvent)="reloadTableWithCurrentSettings()"
-  [displayStatusSearch]="false"
-  [displayValidOnSearch]="false"
-  [isLoading]="tableIsLoading"
-  [loadTableSearch]="false"
+  [showTableFilter]="false"
   [pageSizeOptions]="[5, 10, 20]"
-  [searchTextColumnStyle]="'col-12'"
   [sortingDisabled]="true"
   [tableColumns]="tableColumns"
   [tableData]="userPageResult.users"

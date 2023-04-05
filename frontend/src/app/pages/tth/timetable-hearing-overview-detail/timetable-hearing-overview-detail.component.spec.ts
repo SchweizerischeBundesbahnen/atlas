@@ -16,6 +16,19 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 import moment from 'moment';
 import { Pages } from '../../pages';
+import { Component, Input } from '@angular/core';
+import { MockAtlasButtonComponent, MockTableComponent } from '../../../app.testing.mocks';
+
+@Component({
+  selector: 'app-timetable-hearing-overview-tab-heading',
+  template: '<p>MockAppTthOverviewTabHeadingComponent</p>',
+})
+class MockAppTthOverviewTabHeadingComponent {
+  @Input() cantonShort!: string;
+  @Input() foundTimetableHearingYear!: TimetableHearingYear;
+  @Input() hearingStatus!: HearingStatus;
+  @Input() noActiveTimetableHearingYearFound!: boolean;
+}
 
 const mockTimetableHearingService = jasmine.createSpyObj('timetableHearingService', [
   'getHearingYears',
@@ -80,7 +93,12 @@ async function baseTestConfiguration() {
   mockTimetableHearingService.getStatements.and.returnValue(of(containerTimetableHearingStatement));
 
   await TestBed.configureTestingModule({
-    declarations: [TimetableHearingOverviewDetailComponent],
+    declarations: [
+      TimetableHearingOverviewDetailComponent,
+      MockAppTthOverviewTabHeadingComponent,
+      MockTableComponent,
+      MockAtlasButtonComponent,
+    ],
     imports: [AppTestingModule],
     providers: [
       { provide: TimetableHearingService, useValue: mockTimetableHearingService },
