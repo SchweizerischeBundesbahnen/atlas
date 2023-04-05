@@ -63,8 +63,8 @@ public class ResponsibleTransportCompaniesResolverService {
     LocalDate beginningOfNextTimetableYear = FutureTimetableHelper.getActualTimetableYearChangeDate(LocalDate.now());
 
     return timetableFieldNumberVersions.stream().filter(
-            version -> version.getValidFrom().isBefore(beginningOfNextTimetableYear) && version.getValidTo()
-                .isAfter(beginningOfNextTimetableYear))
+            version -> !version.getValidFrom().isAfter(beginningOfNextTimetableYear) &&
+                !version.getValidTo().isBefore(beginningOfNextTimetableYear))
         .findFirst()
         .orElseThrow(() -> new IllegalStateException("There is no version valid at " + beginningOfNextTimetableYear.format(
             DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN_CH))));
