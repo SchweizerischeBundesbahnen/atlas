@@ -18,21 +18,29 @@ import { TextFieldComponent } from '../form-components/text-field/text-field.com
 import { AtlasFieldErrorComponent } from '../form-components/atlas-field-error/atlas-field-error.component';
 import { AtlasLabelFieldComponent } from '../form-components/atlas-label-field/atlas-label-field.component';
 import { DownloadIconComponent } from '../form-components/download-icon/download-icon.component';
+import { UploadIconComponent } from '../form-components/upload-icon/upload-icon.component';
+import { TimetableFieldNumberSelectComponent } from '../form-components/ttfn-select/timetable-field-number-select.component';
+import { TimetableFieldNumberSelectOptionPipe } from '../form-components/ttfn-select/ttfn-select-option.pipe';
+import { TransportCompanySelectComponent } from '../form-components/tu-select/transport-company-select.component';
 
 @NgModule({
   declarations: [
     BusinessOrganisationSelectComponent,
+    TransportCompanySelectComponent,
+    TimetableFieldNumberSelectComponent,
     DateRangeComponent,
     FieldErrorComponent,
     CommentComponent,
     UrlComponent,
     DateIconComponent,
     DownloadIconComponent,
+    UploadIconComponent,
     InfoIconComponent,
     LinkIconComponent,
     SearchSelectComponent,
     DialogCloseComponent,
     BoSelectionDisplayPipe,
+    TimetableFieldNumberSelectOptionPipe,
     InfoLinkDirective,
     TextFieldComponent,
     AtlasFieldErrorComponent,
@@ -41,12 +49,15 @@ import { DownloadIconComponent } from '../form-components/download-icon/download
   imports: [CommonModule, MaterialModule, TranslateModule],
   exports: [
     BusinessOrganisationSelectComponent,
+    TimetableFieldNumberSelectComponent,
+    TransportCompanySelectComponent,
     DateRangeComponent,
     FieldErrorComponent,
     CommentComponent,
     UrlComponent,
     DateIconComponent,
     DownloadIconComponent,
+    UploadIconComponent,
     InfoIconComponent,
     SearchSelectComponent,
     DialogCloseComponent,
