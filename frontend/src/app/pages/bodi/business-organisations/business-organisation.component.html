@@ -7,10 +7,9 @@
   [totalCount]="totalCount$"
   [tableColumns]="tableColumns"
   [canEdit]="true"
-  [isLoading]="isLoading"
   (editElementEvent)="editVersion($event)"
   (getTableElementsEvent)="getOverview($event)"
-  [displayBusinessOrganisationSearch]="false"
+  [tableFilterConfig]="tableFilterConfig"
   data-cy="bodi-business-organisation"
 >
 </app-table>

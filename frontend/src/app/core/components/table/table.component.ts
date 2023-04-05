@@ -1,49 +1,78 @@
-import { Component, EventEmitter, Input, Output, TemplateRef, ViewChild } from '@angular/core';
-import { MatSort, Sort, SortDirection } from '@angular/material/sort';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Sort, SortDirection } from '@angular/material/sort';
+import { PageEvent } from '@angular/material/paginator';
 import { TableColumn } from './table-column';
 import { DateService } from '../../date/date.service';
 import { TranslatePipe } from '@ngx-translate/core';
-import { TableSearchComponent } from '../table-search/table-search.component';
-import { TableSearch } from '../table-search/table-search';
-import { TableSettings } from './table-settings';
-import { SearchStatusType } from '../table-search/base-table-search';
+import { TableFilterConfig } from '../table-filter/table-filter-config';
+import { TableService } from './table.service';
+import { TablePagination } from './table-pagination';
 
 @Component({
   selector: 'app-table [tableData][tableColumns][editElementEvent]',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss'],
 })
-export class TableComponent<DATATYPE> {
+export class TableComponent<DATATYPE> implements OnInit {
+  @Input()
+  set tableData(data: DATATYPE[]) {
+    this._tableData = data;
+    this.isLoading = false;
+  }
+  get tableData(): DATATYPE[] {
+    return this._tableData;
+  }
+
+  @Input() tableFilterConfig: TableFilterConfig<unknown>[][] = [];
   @Input() tableColumns!: TableColumn<DATATYPE>[];
-  @Input() tableData!: DATATYPE[];
   @Input() canEdit = true;
-  @Input() isLoading = false;
   @Input() totalCount!: number;
-  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-  @Input() tableSearchFieldTemplate!: TemplateRef<any>;
   @Input() pageSizeOptions: number[] = [5, 10, 25, 100];
   @Input() sortingDisabled = false;
+  @Input() showTableFilter = true;
 
   @Output() editElementEvent = new EventEmitter<DATATYPE>();
-  @Output() getTableElementsEvent = new EventEmitter<TableSettings>();
+  @Output() getTableElementsEvent = new EventEmitter<TablePagination>();
 
-  @ViewChild(MatSort, { static: true }) sort!: MatSort;
-  @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
-
-  @ViewChild(TableSearchComponent) tableSearchComponent!: TableSearchComponent;
-  @Input() searchTextColumnStyle = 'col-4';
-  @Input() displayStatusSearch = true;
-  @Input() displayValidOnSearch = true;
-  @Input() displayBusinessOrganisationSearch = true;
-  @Input() loadTableSearch = true;
-  @Input() searchStatusType: SearchStatusType = 'DEFAULT_STATUS';
-
-  loading = true;
-
+  isLoading = false;
   SHOW_TOOLTIP_LENGTH = 20;
 
-  constructor(private dateService: DateService, private translatePipe: TranslatePipe) {}
+  private _tableData: DATATYPE[] = [];
+
+  constructor(
+    private dateService: DateService,
+    private translatePipe: TranslatePipe,
+    private readonly tableService: TableService
+  ) {}
+
+  ngOnInit() {
+    this.tableService.sortActive = this.sortingDisabled ? '' : this.tableColumns[0].value!;
+    this.getElementsSearched({
+      page: this.pageIndex,
+      size: this.pageSize,
+      sort: this.sortString,
+    });
+  }
+
+  get pageSize(): number {
+    return this.tableService.pageSize;
+  }
+
+  get pageIndex(): number {
+    return this.tableService.pageIndex;
+  }
+
+  get sortActive(): string {
+    return this.tableService.sortActive;
+  }
+
+  get sortDirection(): SortDirection {
+    return this.tableService.sortDirection;
+  }
+
+  get sortString(): string | undefined {
+    return this.tableService.sortString;
+  }
 
   getColumnValues(): string[] {
     return this.tableColumns.map((i) => i.value as string);
@@ -54,41 +83,41 @@ export class TableComponent<DATATYPE> {
   }
 
   pageChanged(pageEvent: PageEvent) {
-    this.loading = true;
-    const pageIndex = pageEvent.pageIndex;
-    const pageSize = pageEvent.pageSize;
+    this.tableService.pageSize = pageEvent.pageSize;
+    this.tableService.pageIndex = pageEvent.pageIndex;
+
     this.getElementsSearched({
-      ...this.tableSearchComponent?.activeSearch,
-      page: pageIndex,
-      size: pageSize,
-      sort: `${this.sort.active},${this.sort.direction.toUpperCase()}`,
+      page: this.pageIndex,
+      size: this.pageSize,
+      sort: this.sortString,
     });
   }
 
   sortData(sort: Sort) {
-    if (this.paginator.pageIndex !== 0) {
-      this.paginator.firstPage();
-    } else {
-      this.getElementsSearched({
-        ...this.tableSearchComponent.activeSearch,
-        page: 0,
-        size: this.paginator.pageSize,
-        sort: `${sort.active},${sort.direction.toUpperCase()}`,
-      });
+    this.tableService.sortActive = sort.active;
+    this.tableService.sortDirection = sort.direction;
+
+    if (this.pageIndex !== 0) {
+      this.tableService.pageIndex = 0;
     }
+
+    this.getElementsSearched({
+      page: this.pageIndex,
+      size: this.pageSize,
+      sort: this.sortString,
+    });
   }
 
-  searchData(search: TableSearch): void {
-    if (this.paginator.pageIndex !== 0) {
-      this.paginator.firstPage();
-    } else {
-      this.getElementsSearched({
-        page: 0,
-        size: this.paginator.pageSize,
-        sort: `${this.sort.active},${this.sort.direction.toUpperCase()}`,
-        ...search,
-      });
+  searchData(): void {
+    if (this.pageIndex !== 0) {
+      this.tableService.pageIndex = 0;
     }
+
+    this.getElementsSearched({
+      page: this.pageIndex,
+      size: this.pageSize,
+      sort: this.sortString,
+    });
   }
 
   showTitle(column: TableColumn<DATATYPE>, value: string | Date): string {
@@ -117,32 +146,8 @@ export class TableComponent<DATATYPE> {
     return forText.length <= this.SHOW_TOOLTIP_LENGTH;
   }
 
-  setTableSettings(tableSettings: TableSettings) {
-    this.paginator.pageIndex = tableSettings.page;
-    this.paginator.pageSize = tableSettings.size;
-
-    if (tableSettings.sort) {
-      const sorting = tableSettings.sort.split(',');
-      this.sort.active = sorting[0];
-      this.sort.direction = sorting[1].toLowerCase() as SortDirection;
-      this.sort._stateChanges.next();
-    }
-
-    this.tableSearchComponent.searchStrings = tableSettings.searchCriteria || [];
-
-    this.tableSearchComponent.activeStatuses = tableSettings.statusChoices || [];
-    this.tableSearchComponent.restoreBusinessOrganisation(tableSettings.boChoice);
-
-    this.tableSearchComponent.searchDate = tableSettings.validOn;
-    this.tableSearchComponent.dateControl.setValue(tableSettings.validOn);
-
-    this.tableSearchComponent.activeSearch = tableSettings;
-  }
-
-  private getElementsSearched(tableSettings: TableSettings) {
-    if (this.tableSearchComponent) {
-      this.tableSearchComponent.activeSearch = tableSettings;
-    }
-    this.getTableElementsEvent.emit(tableSettings);
+  private getElementsSearched(pagination: TablePagination) {
+    this.isLoading = true;
+    this.getTableElementsEvent.emit(pagination);
   }
 }

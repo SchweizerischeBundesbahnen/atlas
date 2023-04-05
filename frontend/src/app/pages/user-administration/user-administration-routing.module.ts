@@ -18,28 +18,32 @@ const routes: Routes = [
       {
         path: Pages.USERS.path,
         component: UserAdministrationUserOverviewComponent,
-      },
-      {
-        path: Pages.USERS.path + '/:sbbUserId',
-        component: RouteToDialogComponent,
-        data: { component: UserAdministrationUserDetailComponent },
-        resolve: {
-          user: UserAdministrationResolver,
-        },
-        runGuardsAndResolvers: 'always',
+        children: [
+          {
+            path: ':sbbUserId',
+            component: RouteToDialogComponent,
+            data: { component: UserAdministrationUserDetailComponent },
+            resolve: {
+              user: UserAdministrationResolver,
+            },
+            runGuardsAndResolvers: 'always',
+          },
+        ],
       },
       {
         path: Pages.CLIENTS.path,
         component: UserAdministrationClientOverviewComponent,
-      },
-      {
-        path: Pages.CLIENTS.path + '/:clientId',
-        component: RouteToDialogComponent,
-        data: { component: UserAdministrationClientDetailComponent },
-        resolve: {
-          clientCredential: ClientCredentialAdministrationResolver,
-        },
-        runGuardsAndResolvers: 'always',
+        children: [
+          {
+            path: ':clientId',
+            component: RouteToDialogComponent,
+            data: { component: UserAdministrationClientDetailComponent },
+            resolve: {
+              clientCredential: ClientCredentialAdministrationResolver,
+            },
+            runGuardsAndResolvers: 'always',
+          },
+        ],
       },
       { path: '**', redirectTo: Pages.USERS.path },
     ],
