@@ -9,6 +9,7 @@ import { AtlasCharsetsValidator } from '../../validation/charsets/atlas-charsets
 import { DateRangeValidator } from '../../validation/date-range/date-range-validator';
 import { ValidationService } from '../../validation/validation.service';
 import { TimetablehearingFormGroup } from './tthformgroup';
+import { DialogService } from '../dialog/dialog.service';
 
 @Component({
   selector: 'app-tthdialog',
@@ -30,9 +31,9 @@ export class TthDialogComponent implements OnInit {
   );
   YEAR_OPTIONS: number[] = [];
   defaultYearSelection = this.YEAR_OPTIONS[0];
-
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: TthDialogData,
+    private readonly dialogService: DialogService,
     private readonly timetableHearingService: TimetableHearingService
   ) {}
 
@@ -53,12 +54,20 @@ export class TthDialogComponent implements OnInit {
       });
   }
 
+  openStandardDialog() {
+    console.log('openStandardDialog');
+    this.dialogService.confirm({
+      title: 'Sind Sie sicher',
+      message: '',
+    });
+  }
+
   private getActiveYear(timetableHearingYears: Array<TimetableHearingYear>): number {
     const timetableHearingYear = timetableHearingYears.find(function (thy) {
       return thy.hearingStatus === HearingStatus.Active;
     });
     if (timetableHearingYear === undefined) {
-      return 0;
+      return new Date().getFullYear();
     }
     return timetableHearingYear.timetableYear;
   }

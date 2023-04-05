@@ -11,6 +11,9 @@ export class DateRangeComponent {
   @Input() formGroup!: FormGroup;
   @Input() fieldLabelFrom = '';
   @Input() fieldLabelTo = '';
+  @Input() infoIconTitleFrom = '';
+  @Input() infoIconTitleTo = '';
+  @Input() required = true;
 
   MIN_DATE = MIN_DATE;
   MAX_DATE = MAX_DATE;
