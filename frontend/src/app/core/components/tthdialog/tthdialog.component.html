@@ -13,7 +13,7 @@
         [formGroup]="form"
         controlName="timetableYear"
         fieldLabel="TTH.DIALOG.PLAN_DROPDOWN_TITLE"
-        infoIconTitle="LIDI.LINE.NUMBER_INFO"
+        infoIconTitle="TTH.DIALOG.PLAN_INFO"
       >
       </app-atlas-label-field>
     </div>
@@ -23,6 +23,7 @@
         formControlName="timetableYear"
         data-cy="canton-type"
         placeholder="{{ 'FORM.DROPDOWN_PLACEHOLDER' | translate }}"
+        [(value)]="defaultYearSelection"
       >
         <mat-option *ngFor="let year of YEAR_OPTIONS" [value]="year">
           {{ year }}
@@ -32,8 +33,11 @@
 
     <div>
       <form-date-range
+        [infoIconTitleFrom]="'TTH.DIALOG.DATUM_FROM_INFO'"
+        [infoIconTitleTo]="'TTH.DIALOG.DATUM_TO_INFO'"
+        [required]="false"
         [fieldLabelFrom]="'TTH.DIALOG.DATUM_FROM'"
-        [fieldLabelTo]="'TTH.DIALOG.DATUM_UNTIL'"
+        [fieldLabelTo]="'TTH.DIALOG.DATUM_TO'"
         [formGroup]="form"
         class="col-6"
       ></form-date-range>
@@ -41,6 +45,7 @@
 
     <mat-dialog-actions class="justify-content-end">
       <button
+        (click)="openStandardDialog()"
         [mat-dialog-close]="false"
         class="atlas-primary-btn me-3"
         data-cy="dialog-cancel-button"
@@ -53,7 +58,7 @@
         class="atlas-primary-btn primary-color-btn"
         data-cy="dialog-confirm-button"
       >
-        {{ data.confirmText ?? 'DIALOG.OK' | translate }}
+        {{ data.confirmText ?? 'TTH.DIALOG.SAVE' | translate }}
       </button>
     </mat-dialog-actions>
   </div>
