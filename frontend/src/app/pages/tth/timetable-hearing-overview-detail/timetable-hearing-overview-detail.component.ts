@@ -127,8 +127,9 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
   }
 
   changeSelectedCantonFromDropdown(selectedCanton: MatSelectChange) {
-    this.overviewToTabService.changeData(selectedCanton.value);
-    this.navigateTo(selectedCanton.value, this.foundTimetableHearingYear.timetableYear);
+    const canton = selectedCanton.value.toLowerCase();
+    this.overviewToTabService.changeData(canton);
+    this.navigateTo(canton, this.foundTimetableHearingYear.timetableYear);
   }
 
   changeSelectedYearFromDropdown(selectedYear: MatSelectChange) {
@@ -136,8 +137,10 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
     this.navigateTo(this.cantonShort.toLowerCase(), selectedYear.value);
   }
 
-  editVersion($event: any) {
-    console.log($event);
+  editStatement(statement: TimetableHearingStatement) {
+    this.router
+      .navigate([Pages.TTH.path, this.cantonShort, Pages.TTH_ACTIVE.path, statement.id])
+      .then();
   }
 
   downloadCsv() {
@@ -149,7 +152,11 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
   }
 
   addNewStatement() {
-    console.log('ADD_NEW_STATEMENT');
+    this.router
+      .navigate([Pages.TTH.path, this.cantonShort, Pages.TTH_ACTIVE.path, 'add'], {
+        state: { data: this.cantonShort },
+      })
+      .then();
   }
 
   addNewTimetableHearing() {

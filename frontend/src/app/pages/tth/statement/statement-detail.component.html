@@ -1,0 +1,287 @@
+<atlas-detail-page-container>
+  <div class="statement-form">
+    <ng-container [formGroup]="form">
+      <h1 class="font-bold-4xl">
+        {{ (statement ? 'TTH.STATEMENT.STATEMENT' : 'TTH.STATEMENT.NEW') | translate }}
+      </h1>
+
+      <app-user-detail-info
+        *ngIf="statement"
+        [record]="statement!"
+        [short]="true"
+      ></app-user-detail-info>
+
+      <div class="d-flex flex-row col-12 mb-4 mt-5">
+        <div class="d-flex flex-column col-6 pe-3">
+          <mat-label class="font-bold-lg subtitle-margin">
+            {{ 'TTH.SELECT_YEAR' | translate }}
+          </mat-label>
+          <span class="fake-lable-space"></span>
+          <div class="multi-select-search">
+            <mat-select
+              formControlName="timetableYear"
+              data-cy="canton-type"
+              placeholder="{{ 'FORM.DROPDOWN_PLACEHOLDER' | translate }}"
+            >
+              <mat-option *ngFor="let year of YEAR_OPTIONS" [value]="year">
+                {{ year }}
+              </mat-option>
+            </mat-select>
+          </div>
+        </div>
+        <div class="d-flex flex-column col-6">
+          <mat-label class="font-bold-lg subtitle-margin required-indicator"
+            >{{ 'TTH.SELECT_CANTON' | translate }}
+          </mat-label>
+          <span class="fake-lable-space"></span>
+          <div class="multi-select-search">
+            <mat-select
+              formControlName="swissCanton"
+              data-cy="canton-type"
+              placeholder="{{ 'FORM.DROPDOWN_PLACEHOLDER' | translate }}"
+            >
+              <mat-option *ngFor="let canton of CANTON_OPTIONS" [value]="canton.enumCanton">
+                <img
+                  alt="canton-logo"
+                  class="pe-1"
+                  height="28"
+                  src="assets/images/cantons/{{ canton.short.toUpperCase() }}.svg"
+                  width="28"
+                />
+                {{ 'TTH.CANTON.' + canton.short | translate }}
+              </mat-option>
+            </mat-select>
+          </div>
+          <app-atlas-field-error [form]="form" controlName="swissCanton"></app-atlas-field-error>
+        </div>
+      </div>
+
+      <div class="d-flex flex-row col-12 mb-4 mt-5">
+        <div class="d-flex flex-column col-6 pe-3">
+          <ttfn-select [formGroup]="form" controlName="ttfnid" data-cy="ttfnid"></ttfn-select>
+        </div>
+        <div class="d-flex flex-column col-6">
+          <tu-select
+            [formGroup]="form"
+            controlName="responsibleTransportCompanies"
+            data-cy="responsibleTransportCompanies"
+          ></tu-select>
+        </div>
+      </div>
+
+      <h1 class="font-bold-2xl pt-5">
+        {{ 'TTH.STATEMENT.ROUTE' | translate }}
+        <atlas-spacer [divider]="true" height="40px"></atlas-spacer>
+      </h1>
+
+      <div class="d-flex flex-row col-12 mb-4">
+        <div class="d-flex flex-column col-12">
+          <atlas-text-field
+            [fieldExamples]="[
+              { label: 'FORM.FOR_EXAMPLE', translate: true },
+              { label: 'Wiesenbach', translate: false },
+              { label: ' |', translate: false },
+              {
+                label: 'FORM.MAX_CHARS',
+                translate: true,
+                arg: { key: 'numberOfChars', value: '50' }
+              }
+            ]"
+            [formGroup]="form"
+            controlName="stopPlace"
+            fieldLabel="TTH.STATEMENT.STOP_POINT"
+            infoIconTitle="TTH.STATEMENT.STOP_POINT_INFO"
+          >
+          </atlas-text-field>
+        </div>
+      </div>
+
+      <h1 class="font-bold-2xl pt-5">
+        {{ 'TTH.STATEMENT.STATEMENT' | translate }}
+        <atlas-spacer [divider]="true" height="40px"></atlas-spacer>
+      </h1>
+
+      <div class="d-flex flex-row col-12 mb-4">
+        <div class="d-flex flex-column col-6 pe-3">
+          <atlas-text-field
+            [formGroup]="form.controls.statementSender"
+            controlName="firstName"
+            fieldLabel="TTH.STATEMENT.FIST_NAME"
+          >
+          </atlas-text-field>
+        </div>
+        <div class="d-flex flex-column col-6">
+          <atlas-text-field
+            [formGroup]="form.controls.statementSender"
+            controlName="lastName"
+            fieldLabel="TTH.STATEMENT.LAST_NAME"
+          >
+          </atlas-text-field>
+        </div>
+      </div>
+
+      <div class="d-flex flex-row col-12 mb-4">
+        <div class="d-flex flex-column col-12">
+          <atlas-text-field
+            [formGroup]="form.controls.statementSender"
+            controlName="organisation"
+            fieldLabel="TTH.STATEMENT.ORGANISATION"
+          >
+          </atlas-text-field>
+        </div>
+      </div>
+
+      <div class="d-flex flex-row col-12 mb-4">
+        <div class="d-flex flex-column col-2 pe-3">
+          <atlas-text-field
+            [formGroup]="form.controls.statementSender"
+            controlName="zip"
+            fieldLabel="TTH.STATEMENT.ZIP"
+          >
+          </atlas-text-field>
+        </div>
+        <div class="d-flex flex-column col-5 pe-3">
+          <atlas-text-field
+            [formGroup]="form.controls.statementSender"
+            controlName="city"
+            fieldLabel="TTH.STATEMENT.CITY"
+          >
+          </atlas-text-field>
+        </div>
+        <div class="d-flex flex-column col-5">
+          <atlas-text-field
+            [formGroup]="form.controls.statementSender"
+            controlName="street"
+            fieldLabel="TTH.STATEMENT.STREET"
+          >
+          </atlas-text-field>
+        </div>
+      </div>
+
+      <div class="d-flex flex-row col-12 mb-4">
+        <div class="d-flex flex-column col-12">
+          <atlas-text-field
+            [fieldExamples]="[
+              { label: 'TTH.STATEMENT.E_MAIL_TEXT', translate: true },
+              { label: ' |', translate: false },
+              {
+                label: 'FORM.MAX_CHARS',
+                translate: true,
+                arg: { key: 'numberOfChars', value: '50' }
+              }
+            ]"
+            [required]="true"
+            [formGroup]="form.controls.statementSender"
+            controlName="email"
+            fieldLabel="TTH.STATEMENT.E_MAIL"
+          >
+          </atlas-text-field>
+        </div>
+      </div>
+
+      <div class="d-flex flex-row col-12 mb-4">
+        <div class="d-flex flex-column col-12">
+          <form-comment
+            [formGroup]="form"
+            [required]="true"
+            controlName="statement"
+            label="TTH.STATEMENT.STATEMENT"
+            maxChars="5000"
+            info="TTH.STATEMENT.STATEMENT_INFO"
+          >
+          </form-comment>
+        </div>
+      </div>
+
+      <div class="font-regular-sm mb-2">{{ 'TTH.STATEMENT.ATTACHMENT_INFO' | translate }}</div>
+      <atlas-button
+        applicationType="LIDI"
+        buttonDataCy="addPDF"
+        buttonText="TTH.STATEMENT.ATTACHMENT_BUTTON"
+        buttonType="createCheckingPermission"
+        wrapperStyleClass="mb-4"
+      >
+        <ng-template #rightIcon>
+          <upload-icon class="ps-2"></upload-icon>
+        </ng-template>
+      </atlas-button>
+
+      <h1 class="font-bold-2xl pt-5">
+        {{ 'TTH.STATEMENT.STATUS_JUSTIFICATION' | translate }}
+        <atlas-spacer [divider]="true" height="40px"></atlas-spacer>
+      </h1>
+
+      <div class="d-flex flex-row col-12 mb-5">
+        <div class="d-flex flex-column col-6">
+          <mat-label class="font-bold-lg subtitle-margin"
+            >{{ 'TTH.STATEMENT.STATUS' | translate }}
+          </mat-label>
+          <span class="fake-lable-space"></span>
+          <div class="multi-select-search">
+            <mat-select
+              formControlName="statementStatus"
+              data-cy="status"
+              placeholder="{{ 'FORM.DROPDOWN_PLACEHOLDER' | translate }}"
+            >
+              <mat-option *ngFor="let status of STATUS_OPTIONS" [value]="status">
+                {{ 'TTH.STATEMENT_STATUS.' + status | translate }}
+              </mat-option>
+            </mat-select>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex flex-row col-12 mb-5">
+        <div class="d-flex flex-column col-12">
+          <form-comment
+            [formGroup]="form"
+            controlName="justification"
+            label="TTH.STATEMENT.JUSTIFICATION"
+            maxChars="5000"
+          >
+          </form-comment>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</atlas-detail-page-container>
+
+<atlas-detail-footer>
+  <atlas-button
+    (click)="backToOverview()"
+    [footerEdit]="form.enabled"
+    buttonDataCy="back-to-overview"
+    buttonText="COMMON.BACK_TO_OVERVIEW"
+    buttonType="whiteFooterNonEdit"
+    wrapperStyleClass="me-3"
+  >
+  </atlas-button>
+  <atlas-button
+    *ngIf="CANTON_OPTIONS.length > 0"
+    (click)="toggleEdit()"
+    [footerEdit]="form.enabled"
+    buttonDataCy="edit"
+    buttonText="COMMON.EDIT"
+    buttonType="whiteFooterNonEdit"
+  >
+  </atlas-button>
+  <atlas-button
+    (click)="toggleEdit()"
+    [footerEdit]="form.enabled"
+    buttonDataCy="cancel"
+    buttonText="COMMON.CANCEL"
+    buttonType="whiteFooterEdit"
+    wrapperStyleClass="me-3"
+  >
+  </atlas-button>
+  <atlas-button
+    (click)="save()"
+    [footerEdit]="form.enabled"
+    [submitButton]="true"
+    [disabled]="form.untouched"
+    buttonDataCy="save-item"
+    buttonText="COMMON.SAVE"
+    buttonType="whiteFooterEdit"
+  >
+  </atlas-button>
+</atlas-detail-footer>

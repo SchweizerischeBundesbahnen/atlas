@@ -1,0 +1,22 @@
+@use 'src/styles/variables' as variables;
+
+.page-footer {
+  height: calc(#{variables.$footerHeight} + 56px);
+  width: variables.$detailPageWidth;
+  background-color: variables.$background;
+
+  position: fixed;
+  bottom: 0;
+  left: 232px;
+
+  margin-left: 56px;
+
+  .page-footer-actions {
+    height: variables.$footerHeight;
+    background-color: white;
+
+    box-shadow: 0px -4px 10px -4px rgba(0, 0, 0, 0.1);
+    border-bottom-left-radius: variables.$border-radius;
+    border-bottom-right-radius: variables.$border-radius;
+  }
+}
