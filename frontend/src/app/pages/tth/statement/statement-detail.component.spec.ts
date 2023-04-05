@@ -74,6 +74,7 @@ describe('StatementDetailComponent for existing statement', () => {
 
   it('should be created', () => {
     expect(component).toBeTruthy();
+    expect(component.isNew).toBeFalse();
   });
 
   it('should load existing Statement form successfully', () => {
@@ -86,7 +87,10 @@ describe('StatementDetailComponent for new statement', () => {
     const mockRoute = {
       snapshot: {
         data: {
-          statement: 'add',
+          statement: undefined,
+        },
+        params: {
+          canton: 'be',
         },
       },
     };
@@ -100,6 +104,7 @@ describe('StatementDetailComponent for new statement', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+    expect(component.isNew).toBeTrue();
   });
 
   describe('create new statement', () => {
@@ -128,7 +133,7 @@ describe('StatementDetailComponent for new statement', () => {
 });
 
 function setupTestBed(activatedRoute: {
-  snapshot: { data: { statement: string | TimetableHearingStatement } };
+  snapshot: { data: { statement: undefined | TimetableHearingStatement } };
 }) {
   mockTimetableHearingService.getHearingYears.and.returnValue(of(years));
 
