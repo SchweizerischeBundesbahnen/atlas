@@ -110,7 +110,9 @@ public class TimetableHearingYearServiceTest {
     TimetableHearingYear timetableHearing = timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
     timetableHearing.setStatementCreatableExternal(false);
 
-    TimetableHearingYear updatedHearing = timetableHearingYearService.updateTimetableHearingSettings(timetableHearing);
+    TimetableHearingYear updatedHearing = timetableHearingYearService.updateTimetableHearingSettings(
+        timetableHearing.getTimetableYear(),
+        timetableHearing);
     assertThat(updatedHearing.isStatementCreatableExternal()).isFalse();
   }
 

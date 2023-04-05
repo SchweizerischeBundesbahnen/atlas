@@ -57,8 +57,12 @@ public class TimetableHearingYearService {
     return timetableHearingYearRepository.save(timetableHearingYear);
   }
 
-  public TimetableHearingYear updateTimetableHearingSettings(TimetableHearingYear timetableHearingYear) {
-    return timetableHearingYearRepository.save(timetableHearingYear);
+  public TimetableHearingYear updateTimetableHearingSettings(Long year, TimetableHearingYear timetableHearingYear) {
+    TimetableHearingYear hearingYear = getHearingYear(year);
+    hearingYear.setStatementEditable(timetableHearingYear.isStatementEditable());
+    hearingYear.setStatementCreatableInternal(timetableHearingYear.isStatementCreatableInternal());
+    hearingYear.setStatementCreatableExternal(timetableHearingYear.isStatementCreatableExternal());
+    return hearingYear;
   }
 
   public TimetableHearingYear closeTimetableHearing(TimetableHearingYear timetableHearingYear) {
@@ -69,8 +73,14 @@ public class TimetableHearingYearService {
   }
 
   private void mayTransitionToHearingStatus(TimetableHearingYear timetableHearingYear, HearingStatus hearingStatus) {
-    if (hearingStatus == HearingStatus.ACTIVE && timetableHearingYearRepository.hearingActive()) {
-      throw new HearingCurrentlyActiveException();
+    if (hearingStatus == HearingStatus.ACTIVE) {
+      if (timetableHearingYearRepository.hearingActive()) {
+        throw new HearingCurrentlyActiveException();
+      }
+      if (timetableHearingYear.getHearingStatus() != HearingStatus.PLANNED) {
+        throw new IllegalStateException(
+            "May not transition from " + timetableHearingYear.getHearingStatus() + " to " + HearingStatus.PLANNED);
+      }
     }
     if (hearingStatus == HearingStatus.ARCHIVED && timetableHearingYear.getHearingStatus() != HearingStatus.ACTIVE) {
       throw new IllegalStateException("Cannot close hearing, since it is not active");
