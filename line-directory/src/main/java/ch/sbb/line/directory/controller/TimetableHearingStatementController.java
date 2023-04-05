@@ -17,6 +17,7 @@ import ch.sbb.line.directory.service.hearing.TimetableHearingYearService;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -59,8 +60,8 @@ public class TimetableHearingStatementController implements TimetableHearingStat
   @Override
   public Resource getStatementDocument(Long id, String filename) {
     File file = timetableHearingStatementService.getStatementDocument(id, filename);
-    try {
-      return new InputStreamResource(new FileInputStream(file));
+    try (InputStream inputStream = new FileInputStream(file)){
+      return new InputStreamResource(inputStream);
     } catch (IOException e) {
       throw new FileException(e);
     }
