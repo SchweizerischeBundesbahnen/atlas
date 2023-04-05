@@ -18,9 +18,9 @@
       [totalCount]="totalCount$"
       [tableColumns]="tableColumns"
       [canEdit]="true"
-      [isLoading]="isLoading"
       (editElementEvent)="editVersion($event)"
       (getTableElementsEvent)="getOverview($event)"
+      [tableFilterConfig]="tableFilterConfig"
     ></app-table>
     <router-outlet></router-outlet>
   </div>
