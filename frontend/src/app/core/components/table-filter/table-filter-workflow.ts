@@ -1,7 +1,7 @@
-import { BaseTableSearch } from './base-table-search';
+import { BaseTableFilter } from './base-table-filter';
 import { WorkflowStatus } from '../../../api';
 
-export interface TableSearchWorkflow extends BaseTableSearch {
+export interface TableFilterWorkflow extends BaseTableFilter {
   statusChoices?: statusChoice;
 }
 

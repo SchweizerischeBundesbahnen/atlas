@@ -17,7 +17,7 @@ import { environment } from '../../../environments/environment';
 import { EmptyToNullDirective } from '../text-input/empty-to-null';
 import { TrimInputDirective } from '../text-input/trim-input';
 import { SwitchVersionComponent } from '../components/switch-version/switch-version.component';
-import { TableSearchComponent } from '../components/table-search/table-search.component';
+import { TableFilterComponent } from '../components/table-filter/table-filter.component';
 import { ErrorNotificationComponent } from '../notification/error/error-notification.component';
 import { WithDefaultValueDirective } from '../text-input/with-default-value.directive';
 import { CoverageComponent } from '../components/coverage/coverage.component';
@@ -29,6 +29,7 @@ import { AtlasButtonComponent } from '../components/button/atlas-button.componen
 import { WorkflowComponent } from '../workflow/workflow.component';
 import { WorkflowFormComponent } from '../workflow/workflow-form/workflow-form.component';
 import { WorkflowCheckFormComponent } from '../workflow/workflow-check-form/workflow-check-form.component';
+import { FilterTypeGuardPipe } from '../components/table-filter/filter-type-guard.pipe';
 import { DisplayDatePipe } from '../pipe/display-date.pipe';
 import { AtlasSpacerComponent } from '../components/spacer/atlas-spacer.component';
 import { DetailFooterComponent } from '../components/detail-footer/detail-footer.component';
@@ -55,12 +56,13 @@ const coreComponents = [
   EmptyToNullDirective,
   TrimInputDirective,
   WithDefaultValueDirective,
-  TableSearchComponent,
+  TableFilterComponent,
   ErrorNotificationComponent,
   CoverageComponent,
   RouteToDialogComponent,
   RelationComponent,
   DisplayDatePipe,
+  FilterTypeGuardPipe
 ];
 
 @NgModule({
