@@ -1,6 +1,7 @@
 package ch.sbb.line.directory.service.hearing;
 
 import static ch.sbb.atlas.api.timetable.hearing.TimetableHearingConstants.MAX_DOCUMENTS_SIZE;
+import static ch.sbb.line.directory.mapper.TimeTableHearingStatementMapper.transformToCommaSeparated;
 
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
@@ -147,6 +148,7 @@ public class TimetableHearingStatementService {
     timetableHearingStatementInDb.setStatementSender(StatementSenderMapper.toEntity(timetableHearingStatementModel.getStatementSender()));
 
     updateResponsibleTransportCompanies(timetableHearingStatementModel, timetableHearingStatementInDb);
+    timetableHearingStatementInDb.setResponsibleTransportCompaniesDisplay(transformToCommaSeparated(timetableHearingStatementInDb));
 
     return timetableHearingStatementInDb;
   }
