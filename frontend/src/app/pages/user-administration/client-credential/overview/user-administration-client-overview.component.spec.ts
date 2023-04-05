@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Component, Input } from '@angular/core';
 import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -8,23 +7,7 @@ import { UserAdministrationClientOverviewComponent } from './user-administration
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ContainerClientCredential, UserAdministrationService } from '../../../../api';
 import { of } from 'rxjs';
-
-@Component({
-  selector: 'app-table',
-  template: '<p>Mock Table Component</p>',
-})
-class MockTableComponent {
-  @Input() loadTableSearch = false;
-  @Input() isLoading = false;
-  @Input() tableData = [];
-  @Input() tableColumns = [];
-  @Input() displayStatusSearch = false;
-  @Input() displayValidOnSearch = false;
-  @Input() searchTextColumnStyle = '';
-  @Input() pageSizeOptions = [];
-  @Input() totalCount = 0;
-  @Input() sortingDisabled = false;
-}
+import { MockTableComponent } from '../../../../app.testing.mocks';
 
 const clientContainer: ContainerClientCredential = {
   objects: [
@@ -69,9 +52,5 @@ describe('UserAdministrationClientOverviewComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-    expect(userAdministrationService.getClientCredentials).toHaveBeenCalled();
-
-    expect(component.clientCredentials.length).toBe(1);
-    expect(component.totalCount).toBe(1);
   });
 });

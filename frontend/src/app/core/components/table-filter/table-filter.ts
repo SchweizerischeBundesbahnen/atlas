@@ -1,7 +1,7 @@
 import { Status } from '../../../api';
-import { BaseTableSearch } from './base-table-search';
+import { BaseTableFilter } from './base-table-filter';
 
-export interface TableSearch extends BaseTableSearch {
+export interface TableFilter extends BaseTableFilter {
   statusChoices?: statusChoice;
 }
 

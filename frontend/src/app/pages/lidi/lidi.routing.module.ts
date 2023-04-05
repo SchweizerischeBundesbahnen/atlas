@@ -21,43 +21,49 @@ const routes: Routes = [
       {
         path: Pages.LINES.path,
         component: LinesComponent,
-      },
-      {
-        path: Pages.LINES.path + '/:id',
-        component: RouteToDialogComponent,
-        data: { component: LineDetailComponent },
-        resolve: {
-          lineDetail: LineDetailResolver,
-        },
-        runGuardsAndResolvers: 'always',
+        children: [
+          {
+            path: ':id',
+            component: RouteToDialogComponent,
+            data: { component: LineDetailComponent },
+            resolve: {
+              lineDetail: LineDetailResolver,
+            },
+            runGuardsAndResolvers: 'always',
+          },
+        ],
       },
       {
         path: Pages.SUBLINES.path,
         component: SublinesComponent,
-      },
-      {
-        path: Pages.SUBLINES.path + '/:id',
-        component: RouteToDialogComponent,
-        data: { component: SublineDetailComponent },
-        resolve: {
-          sublineDetail: SublineDetailResolver,
-        },
-        runGuardsAndResolvers: 'always',
+        children: [
+          {
+            path: ':id',
+            component: RouteToDialogComponent,
+            data: { component: SublineDetailComponent },
+            resolve: {
+              sublineDetail: SublineDetailResolver,
+            },
+            runGuardsAndResolvers: 'always',
+          },
+        ],
       },
       {
         path: Pages.WORKFLOWS.path,
         component: LidiWorkflowOverviewComponent,
-      },
-      {
-        path: Pages.WORKFLOWS.path + '/:id',
-        component: RouteToDialogComponent,
-        data: {
-          component: LineVersionSnapshotDetailComponent,
-        },
-        resolve: {
-          lineVersionSnapshot: LineVersionSnapshotResolver,
-        },
-        runGuardsAndResolvers: 'always',
+        children: [
+          {
+            path: ':id',
+            component: RouteToDialogComponent,
+            data: {
+              component: LineVersionSnapshotDetailComponent,
+            },
+            resolve: {
+              lineVersionSnapshot: LineVersionSnapshotResolver,
+            },
+            runGuardsAndResolvers: 'always',
+          },
+        ],
       },
       { path: '**', redirectTo: Pages.LINES.path },
     ],

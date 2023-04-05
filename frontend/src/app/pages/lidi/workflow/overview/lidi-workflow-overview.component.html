@@ -6,12 +6,10 @@
   (editElementEvent)="navigateToDetails($event)"
   (getTableElementsEvent)="getOverview($event)"
   [canEdit]="true"
-  [displayBusinessOrganisationSearch]="false"
-  [isLoading]="isLoading"
-  [searchStatusType]="'WORKFLOW_STATUS'"
   [tableColumns]="lineSnapshotsTableColumns"
   [tableData]="lineVersionSnapshots"
   [totalCount]="totalCount$"
+  [tableFilterConfig]="tableFilterConfig"
   data-cy="lidi-workflow-lines"
 >
 </app-table>
