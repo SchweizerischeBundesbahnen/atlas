@@ -24,16 +24,16 @@ public class ResponsibleTransportCompaniesResolverService {
   private final TimetableFieldNumberService timetableFieldNumberService;
   private final TransportCompanyClient transportCompanyClient;
 
-  public List<TransportCompanyModel> getResponsibleTransportCompanies(String ttfnid) {
+  public List<TransportCompanyModel> getResponsibleTransportCompanies(String ttfnid, LocalDate validOn) {
     if (ttfnid != null) {
-      String sboid = resolveBusinessOrganisationSboid(ttfnid);
+      String sboid = resolveBusinessOrganisationSboid(ttfnid, validOn);
       return resolveTransportCompanies(sboid);
     }
     return Collections.emptyList();
   }
 
   public List<TimetableHearingStatementResponsibleTransportCompanyModel> resolveResponsibleTransportCompanies(String ttfnid) {
-    return getResponsibleTransportCompanies(ttfnid).stream()
+    return getResponsibleTransportCompanies(ttfnid, LocalDate.now()).stream()
         .map(ResponsibleTransportCompanyMapper::toResponsibleTransportCompany)
         .toList();
   }
@@ -45,26 +45,25 @@ public class ResponsibleTransportCompaniesResolverService {
     return Collections.emptyList();
   }
 
-  private String resolveBusinessOrganisationSboid(String ttfnid) {
+  private String resolveBusinessOrganisationSboid(String ttfnid, LocalDate validOn) {
     if (ttfnid != null) {
       List<TimetableFieldNumberVersion> timetableFieldNumberVersions =
           timetableFieldNumberService.getAllVersionsVersioned(ttfnid);
 
-      TimetableFieldNumberVersion versionValidOnNextTimetableYear = getVersionValidOnNextTimetableYear(
-          timetableFieldNumberVersions);
+      TimetableFieldNumberVersion versionValidOnNextTimetableYear = getVersionValidOn(timetableFieldNumberVersions, validOn);
 
       return versionValidOnNextTimetableYear.getBusinessOrganisation();
     }
     return null;
   }
 
-  private static TimetableFieldNumberVersion getVersionValidOnNextTimetableYear(
-      List<TimetableFieldNumberVersion> timetableFieldNumberVersions) {
-    LocalDate beginningOfNextTimetableYear = FutureTimetableHelper.getActualTimetableYearChangeDate(LocalDate.now());
+  private static TimetableFieldNumberVersion getVersionValidOn(List<TimetableFieldNumberVersion> timetableFieldNumberVersions,
+      LocalDate validOn) {
+    LocalDate beginningOfNextTimetableYear = FutureTimetableHelper.getActualTimetableYearChangeDate(validOn);
 
     return timetableFieldNumberVersions.stream().filter(
-            version -> version.getValidFrom().isBefore(beginningOfNextTimetableYear) && version.getValidTo()
-                .isAfter(beginningOfNextTimetableYear))
+            version -> !version.getValidFrom().isAfter(beginningOfNextTimetableYear) &&
+                !version.getValidTo().isBefore(beginningOfNextTimetableYear))
         .findFirst()
         .orElseThrow(() -> new IllegalStateException("There is no version valid at " + beginningOfNextTimetableYear.format(
             DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN_CH))));
