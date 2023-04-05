@@ -64,7 +64,7 @@ public class TimetableHearingStatement extends BaseEntity implements CantonAssoc
   @Size(max = AtlasFieldLengths.LENGTH_50)
   private String stopPlace;
 
-  @OneToMany(mappedBy = "statement", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "statement", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
   private Set<ResponsibleTransportCompany> responsibleTransportCompanies;
 
   private String responsibleTransportCompaniesDisplay;

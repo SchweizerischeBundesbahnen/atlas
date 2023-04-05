@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { UserAdministrationService } from '../../../../api';
 import moment from 'moment';
-import { DATE_TIME_FORMAT } from '../../../date/date.service';
+import { DATE_PATTERN, DATE_TIME_FORMAT } from '../../../date/date.service';
 import { catchError, forkJoin, Observable, of } from 'rxjs';
 import { CreationEditionRecord } from './creation-edition-record';
 import { map } from 'rxjs/operators';
@@ -13,6 +13,8 @@ import { map } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserDetailInfoComponent {
+  @Input() short = false;
+
   private _record$: Observable<CreationEditionRecord | undefined> = of(undefined);
 
   constructor(private readonly userAdministrationService: UserAdministrationService) {}
@@ -43,6 +45,7 @@ export class UserDetailInfoComponent {
     return forkJoin(displayNames$).pipe(
       map(([editor, creator]) => ({
         editionDate: this.formatDateTime(record.editionDate),
+        editionDateWithoutTime: this.formatDate(record.editionDate),
         creationDate: this.formatDateTime(record.creationDate),
         editor,
         creator,
@@ -53,5 +56,9 @@ export class UserDetailInfoComponent {
 
   private formatDateTime(dateTime: string | undefined) {
     return moment(dateTime).format(DATE_TIME_FORMAT);
+  }
+
+  private formatDate(dateTime: string | undefined) {
+    return moment(dateTime).format(DATE_PATTERN);
   }
 }
