@@ -7,6 +7,7 @@ import {
   SwissCanton,
   TimetableHearingService,
   TimetableHearingStatement,
+  TimetableYearChangeService,
 } from '../../../api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
@@ -32,6 +33,7 @@ export class StatementDetailComponent implements OnInit {
   YEAR_OPTIONS: number[] = [];
   CANTON_OPTIONS: Canton[] = [];
   STATUS_OPTIONS: StatementStatus[] = [];
+  ttfnValidOn: Date | undefined = undefined;
 
   statement: TimetableHearingStatement | undefined;
   isNew!: boolean;
@@ -45,7 +47,8 @@ export class StatementDetailComponent implements OnInit {
     private dialogService: DialogService,
     private timetableHearingService: TimetableHearingService,
     private notificationService: NotificationService,
-    private authService: AuthService
+    private authService: AuthService,
+    private timetableYearChangeService: TimetableYearChangeService
   ) {}
 
   ngOnInit() {
@@ -54,6 +57,7 @@ export class StatementDetailComponent implements OnInit {
 
     this.initForm();
     this.initYearOptions();
+    this.initTtfnValidOnHandler();
     this.initCantonOptions();
     this.initStatusOptions();
     this.initResponsibleTransportCompanyPrefill();
@@ -107,11 +111,21 @@ export class StatementDetailComponent implements OnInit {
     }
   }
 
+  private initTtfnValidOnHandler() {
+    this.form.controls.timetableYear.valueChanges.subscribe((year) => {
+      if (year) {
+        this.timetableYearChangeService.getTimetableYearChange(year - 1).subscribe((result) => {
+          this.ttfnValidOn = result;
+        });
+      }
+    });
+  }
+
   private initResponsibleTransportCompanyPrefill() {
     this.form.controls.ttfnid.valueChanges.subscribe((ttfnid) => {
       if (ttfnid) {
         this.timetableHearingService
-          .getResponsibleTransportCompanies(ttfnid)
+          .getResponsibleTransportCompanies(ttfnid, this.form.value.timetableYear! - 1)
           .subscribe((result) => {
             this.form.controls.responsibleTransportCompanies.setValue(result);
           });
@@ -213,32 +227,32 @@ export class StatementDetailComponent implements OnInit {
         AtlasCharsetsValidator.iso88591,
       ]),
       statementSender: new FormGroup<StatementSenderFormGroup>({
-        firstName: new FormControl(statement?.statementSender.firstName, [
+        firstName: new FormControl(statement?.statementSender?.firstName, [
           AtlasFieldLengthValidator.length_100,
           AtlasCharsetsValidator.iso88591,
         ]),
-        lastName: new FormControl(statement?.statementSender.lastName, [
+        lastName: new FormControl(statement?.statementSender?.lastName, [
           AtlasFieldLengthValidator.length_100,
           AtlasCharsetsValidator.iso88591,
         ]),
-        organisation: new FormControl(statement?.statementSender.organisation, [
+        organisation: new FormControl(statement?.statementSender?.organisation, [
           AtlasFieldLengthValidator.length_100,
           AtlasCharsetsValidator.iso88591,
         ]),
-        zip: new FormControl(statement?.statementSender.zip, [
+        zip: new FormControl(statement?.statementSender?.zip, [
           AtlasCharsetsValidator.numeric,
           Validators.min(1000),
           Validators.max(99999),
         ]),
-        city: new FormControl(statement?.statementSender.city, [
+        city: new FormControl(statement?.statementSender?.city, [
           AtlasFieldLengthValidator.length_50,
           AtlasCharsetsValidator.iso88591,
         ]),
-        street: new FormControl(statement?.statementSender.street, [
+        street: new FormControl(statement?.statementSender?.street, [
           AtlasFieldLengthValidator.length_100,
           AtlasCharsetsValidator.iso88591,
         ]),
-        email: new FormControl(statement?.statementSender.email, [
+        email: new FormControl(statement?.statementSender?.email, [
           Validators.required,
           AtlasFieldLengthValidator.length_100,
           AtlasCharsetsValidator.email,
