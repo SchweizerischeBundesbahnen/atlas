@@ -80,6 +80,6 @@ public interface TimetableHearingStatementApiV1 {
     @RequestPart(required = false) List<MultipartFile> documents
   );
 
-  @GetMapping(path = "responsible-transport-companies/{ttfnid}")
-  List<TransportCompanyModel> getResponsibleTransportCompanies(@PathVariable String ttfnid);
+  @GetMapping(path = "responsible-transport-companies/{ttfnid}/{year}")
+  List<TransportCompanyModel> getResponsibleTransportCompanies(@PathVariable String ttfnid, @PathVariable Long year);
 }
