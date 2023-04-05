@@ -10,7 +10,6 @@ public class TimeTableHearingYearMapper {
   public static TimetableHearingYear toEntity(TimetableHearingYearModel hearingYearModel) {
     return TimetableHearingYear.builder()
         .timetableYear(hearingYearModel.getTimetableYear())
-        .hearingStatus(hearingYearModel.getHearingStatus())
         .hearingFrom(hearingYearModel.getHearingFrom())
         .hearingTo(hearingYearModel.getHearingTo())
         .statementCreatableExternal(hearingYearModel.isStatementCreatableExternal())
