@@ -17,6 +17,7 @@ import ch.sbb.line.directory.service.hearing.TimetableHearingYearService;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,15 +40,15 @@ public class TimetableHearingStatementController implements TimetableHearingStat
 
   @Override
   public Container<TimetableHearingStatementModel> getStatements(Pageable pageable,
-    TimetableHearingStatementRequestParams statementRequestParams) {
+      TimetableHearingStatementRequestParams statementRequestParams) {
     Page<TimetableHearingStatement> hearingStatements = timetableHearingStatementService.getHearingStatements(
-      TimetableHearingStatementSearchRestrictions.builder()
-        .pageable(pageable)
-        .statementRequestParams(statementRequestParams).build());
+        TimetableHearingStatementSearchRestrictions.builder()
+            .pageable(pageable)
+            .statementRequestParams(statementRequestParams).build());
     return Container.<TimetableHearingStatementModel>builder()
-      .objects(hearingStatements.stream().map(TimeTableHearingStatementMapper::toModel).toList())
-      .totalCount(hearingStatements.getTotalElements())
-      .build();
+        .objects(hearingStatements.stream().map(TimeTableHearingStatementMapper::toModel).toList())
+        .totalCount(hearingStatements.getTotalElements())
+        .build();
   }
 
   @Override
@@ -67,7 +68,8 @@ public class TimetableHearingStatementController implements TimetableHearingStat
 
   @Override
   public void deleteStatementDocument(Long id, String filename) {
-    timetableHearingStatementService.deleteStatementDocument(timetableHearingStatementService.getTimetableHearingStatementById(id), filename);
+    timetableHearingStatementService.deleteStatementDocument(
+        timetableHearingStatementService.getTimetableHearingStatementById(id), filename);
   }
 
   @Override
@@ -77,14 +79,14 @@ public class TimetableHearingStatementController implements TimetableHearingStat
 
   @Override
   public TimetableHearingStatementModel createStatementExternal(TimetableHearingStatementModel statement,
-    List<MultipartFile> documents) {
+      List<MultipartFile> documents) {
     String resolvedTtfnid =
-      timetableFieldNumberResolverService.resolveTtfnid(statement.getTimetableFieldNumber());
+        timetableFieldNumberResolverService.resolveTtfnid(statement.getTimetableFieldNumber());
     statement.setTtfnid(resolvedTtfnid);
 
     List<TimetableHearingStatementResponsibleTransportCompanyModel> responsibleTransportCompanies =
-      responsibleTransportCompaniesResolverService.resolveResponsibleTransportCompanies(
-        resolvedTtfnid);
+        responsibleTransportCompaniesResolverService.resolveResponsibleTransportCompanies(
+            resolvedTtfnid);
     statement.setResponsibleTransportCompanies(responsibleTransportCompanies);
 
     Long activeHearingYear = timetableHearingYearService.getActiveHearingYear().getTimetableYear();
@@ -94,7 +96,8 @@ public class TimetableHearingStatementController implements TimetableHearingStat
   }
 
   @Override
-  public TimetableHearingStatementModel updateHearingStatement(Long id, TimetableHearingStatementModel statement, List<MultipartFile> documents) {
+  public TimetableHearingStatementModel updateHearingStatement(Long id, TimetableHearingStatementModel statement,
+      List<MultipartFile> documents) {
     statement.setId(id);
 
     TimetableHearingStatement hearingStatement = timetableHearingStatementService.updateHearingStatement(statement, documents);
@@ -102,7 +105,8 @@ public class TimetableHearingStatementController implements TimetableHearingStat
   }
 
   @Override
-  public List<TransportCompanyModel> getResponsibleTransportCompanies(String ttfnid) {
-    return responsibleTransportCompaniesResolverService.getResponsibleTransportCompanies(ttfnid);
+  public List<TransportCompanyModel> getResponsibleTransportCompanies(String ttfnid, Long year) {
+    LocalDate validOn = LocalDate.of(year.intValue(), 1, 1);
+    return responsibleTransportCompaniesResolverService.getResponsibleTransportCompanies(ttfnid, validOn);
   }
 }
