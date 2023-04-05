@@ -575,7 +575,8 @@
       "DATUM_TO": "Anhörung bis",
       "DATUM_TO_INFO": "Fahrplananhörung bis",
       "DATUM_UNTIL_EXAMPLE": "z.B. 31.12.2023.",
-      "SAVE": "Speichern"
+      "SAVE": "Speichern",
+      "NOTIFICATION_SUCCESS": "Fahrplananhörung erfolgreich gespeichert"
     },
     "SELECT_CANTON": "Kanton auswählen",
     "SELECT_YEAR": "Jahr auswählen",

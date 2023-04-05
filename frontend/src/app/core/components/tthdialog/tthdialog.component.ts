@@ -9,7 +9,7 @@ import { AtlasCharsetsValidator } from '../../validation/charsets/atlas-charsets
 import { DateRangeValidator } from '../../validation/date-range/date-range-validator';
 import { ValidationService } from '../../validation/validation.service';
 import { TimetablehearingFormGroup } from './tthformgroup';
-import { DialogService } from '../dialog/dialog.service';
+import { NotificationService } from '../../notification/notification.service';
 
 @Component({
   selector: 'app-tthdialog',
@@ -33,8 +33,8 @@ export class TthDialogComponent implements OnInit {
   defaultYearSelection = this.YEAR_OPTIONS[0];
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: TthDialogData,
-    private readonly dialogService: DialogService,
-    private readonly timetableHearingService: TimetableHearingService
+    private readonly timetableHearingService: TimetableHearingService,
+    protected notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -52,14 +52,6 @@ export class TthDialogComponent implements OnInit {
           this.defaultYearSelection = this.YEAR_OPTIONS[0];
         }
       });
-  }
-
-  openStandardDialog() {
-    console.log('openStandardDialog');
-    this.dialogService.confirm({
-      title: 'Sind Sie sicher',
-      message: '',
-    });
   }
 
   private getActiveYear(timetableHearingYears: Array<TimetableHearingYear>): number {
@@ -113,7 +105,7 @@ export class TthDialogComponent implements OnInit {
     return years.length > 0;
   }
 
-  createTth() {
+  createNewTimetableHearingYear() {
     const timetableHearingYear: TimetableHearingYear = {
       timetableYear: Number(this.form.controls['timetableYear'].value),
       hearingFrom: this.form.controls['validFrom'].value?.toDate()
@@ -126,6 +118,7 @@ export class TthDialogComponent implements OnInit {
     ValidationService.validateForm(this.form);
     if (this.form.valid) {
       this.timetableHearingService.createHearingYear(timetableHearingYear).subscribe((res) => {
+        this.notificationService.success('TTH.DIALOG.NOTIFICATION_SUCCESS');
         console.log(res);
       });
     }
