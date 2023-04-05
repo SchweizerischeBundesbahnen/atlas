@@ -1,4 +1,4 @@
-export interface BaseTableSearch {
+export interface BaseTableFilter {
   searchCriteria?: string[];
   validOn?: Date;
 

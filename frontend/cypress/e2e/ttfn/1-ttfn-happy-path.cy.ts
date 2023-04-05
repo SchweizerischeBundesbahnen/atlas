@@ -3,7 +3,7 @@ import CommonUtils from '../../support/util/common-utils';
 import { DataCy } from '../../support/data-cy';
 import BodiDependentUtils from '../../support/util/bodi-dependent-utils';
 
-describe('Fahrplanfeldnummer', {testIsolation: false}, () => {
+describe('Fahrplanfeldnummer', { testIsolation: false }, () => {
   const firstVersion = TtfnUtils.getFirstVersion();
 
   it('Step-1: Login on ATLAS', () => {
@@ -57,21 +57,21 @@ describe('Fahrplanfeldnummer', {testIsolation: false}, () => {
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
-      DataCy.TABLE_SEARCH_CHIP_INPUT,
+      DataCy.TABLE_FILTER_CHIP_INPUT,
       firstVersion.swissTimetableFieldNumber
     );
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
-      DataCy.TABLE_SEARCH_CHIP_INPUT,
+      DataCy.TABLE_FILTER_CHIP_INPUT,
       firstVersion.ttfnid
     );
 
-    CommonUtils.selectItemFromDropdownSearchItem(DataCy.TABLE_SEARCH_STATUS_INPUT, 'Aktiv');
+    CommonUtils.selectItemFromDropdownSearchItem(DataCy.TABLE_FILTER_MULTI_SELECT(1, 1), 'Aktiv');
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
-      DataCy.TABLE_SEARCH_DATE_INPUT,
+      DataCy.TABLE_FILTER_DATE_INPUT(1, 2),
       firstVersion.validTo
     );
 

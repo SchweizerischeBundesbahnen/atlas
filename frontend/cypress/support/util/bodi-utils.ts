@@ -1,11 +1,12 @@
 import CommonUtils from './common-utils';
 import { DataCy } from '../data-cy';
-import AngularMaterialConstants from "./angular-material-constants";
+import AngularMaterialConstants from './angular-material-constants';
 
 export default class BodiUtils {
-
-  private static BUSINESS_ORGANISATION_PATH_NO_LEADING_SLASH = 'business-organisation-directory/business-organisations';
-  private static BUSINESS_ORGANISATION_PATH = '/' + BodiUtils.BUSINESS_ORGANISATION_PATH_NO_LEADING_SLASH;
+  private static BUSINESS_ORGANISATION_PATH_NO_LEADING_SLASH =
+    'business-organisation-directory/business-organisations';
+  private static BUSINESS_ORGANISATION_PATH =
+    '/' + BodiUtils.BUSINESS_ORGANISATION_PATH_NO_LEADING_SLASH;
 
   static navigateToBusinessOrganisation() {
     CommonUtils.navigateToHomeViaHomeLogo();
@@ -55,29 +56,29 @@ export default class BodiUtils {
     CommonUtils.selectItemFromDropdownSearchItem(DataCy.BUSINESS_TYPES, version.businessTypes[2]);
   }
 
-  static searchBusinessOrganisation(businessOrganisation: any){
+  static searchBusinessOrganisation(businessOrganisation: any) {
     const pathToIntercept = '/business-organisation-directory/v1/business-organisations?**';
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
-      DataCy.BODI_BUSINESS_ORGANISATION + ' ' + DataCy.TABLE_SEARCH_CHIP_INPUT,
+      DataCy.BODI_BUSINESS_ORGANISATION + ' ' + DataCy.TABLE_FILTER_CHIP_INPUT,
       businessOrganisation.organisationNumber
     );
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
-      DataCy.BODI_BUSINESS_ORGANISATION + ' ' + DataCy.TABLE_SEARCH_CHIP_INPUT,
+      DataCy.BODI_BUSINESS_ORGANISATION + ' ' + DataCy.TABLE_FILTER_CHIP_INPUT,
       businessOrganisation.descriptionDe
     );
 
     CommonUtils.selectItemFromDropdownSearchItem(
-      DataCy.BODI_BUSINESS_ORGANISATION + ' ' + DataCy.TABLE_SEARCH_STATUS_INPUT,
+      DataCy.BODI_BUSINESS_ORGANISATION + ' ' + DataCy.TABLE_FILTER_MULTI_SELECT(1, 0),
       'Aktiv'
     );
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
-      DataCy.BODI_BUSINESS_ORGANISATION + ' ' + DataCy.TABLE_SEARCH_DATE_INPUT,
+      DataCy.BODI_BUSINESS_ORGANISATION + ' ' + DataCy.TABLE_FILTER_DATE_INPUT(1, 1),
       businessOrganisation.validTo
     );
   }
@@ -147,15 +148,18 @@ export default class BodiUtils {
     };
   }
 
-  static checkIfBoAlreadyExists(businessOrganisation: any){
+  static checkIfBoAlreadyExists(businessOrganisation: any) {
     this.searchBusinessOrganisation(businessOrganisation);
-    cy.get('tbody').find('tr').should('have.length', 1).then(($el) => {
-      if (!$el.hasClass(AngularMaterialConstants.TABLE_NOW_DATA_ROW_CLASS)){
-        $el.trigger('click');
-        BodiUtils.assertContainsBusinessOrganisationVersion(businessOrganisation);
-        CommonUtils.deleteItem();
-      }
-    });
+    cy.get('tbody')
+      .find('tr')
+      .should('have.length', 1)
+      .then(($el) => {
+        if (!$el.hasClass(AngularMaterialConstants.TABLE_NOW_DATA_ROW_CLASS)) {
+          $el.trigger('click');
+          BodiUtils.assertContainsBusinessOrganisationVersion(businessOrganisation);
+          CommonUtils.deleteItem();
+        }
+      });
   }
 
   static switchTabToBusinessOrganisations() {
@@ -189,11 +193,13 @@ export default class BodiUtils {
   }
 
   private static interceptBusinessOrganisations(visitSelector: string) {
-    cy.intercept('GET', '/business-organisation-directory/v1/business-organisations?**').as('getBusinessOrganisations');
+    cy.intercept('GET', '/business-organisation-directory/v1/business-organisations?**').as(
+      'getBusinessOrganisations'
+    );
     cy.get(visitSelector)
-    .should('be.visible')
-    .should(($el) => expect(Cypress.dom.isFocusable($el)).to.be.true)
-    .click();
+      .should('be.visible')
+      .should(($el) => expect(Cypress.dom.isFocusable($el)).to.be.true)
+      .click();
     cy.wait('@getBusinessOrganisations').then((interception) => {
       cy.wrap(interception.response?.statusCode).should('eq', 200);
       cy.url().should('contain', '/business-organisation-directory/business-organisations');

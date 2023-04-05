@@ -6,30 +6,11 @@
   (editElementEvent)="editVersion($event)"
   (getTableElementsEvent)="getOverview($event)"
   [canEdit]="true"
-  [isLoading]="isLoading"
   [tableColumns]="linesTableColumns"
   [tableData]="lineVersions"
-  [tableSearchFieldTemplate]="lineTypeSelection"
   [totalCount]="totalCount$"
+  [tableFilterConfig]="tableFilterConfig"
   data-cy="lidi-lines"
 >
 </app-table>
 <router-outlet></router-outlet>
-<ng-template #lineTypeSelection>
-  <div class="d-flex flex-column col-3 pe-3">
-    <mat-label class="font-bold-lg">{{ 'LIDI.TYPE' | translate }}</mat-label>
-    <div class="multi-select-search">
-      <mat-select
-        (selectionChange)="onLineTypeSelectionChange()"
-        [(value)]="activeLineTypes"
-        class="color-primary-400"
-        data-cy="table-search-line-type"
-        multiple
-      >
-        <mat-option *ngFor="let lineType of LINE_TYPES" [value]="lineType">{{
-          'LIDI.LINE.TYPES.' + lineType | translate
-        }}</mat-option>
-      </mat-select>
-    </div>
-  </div>
-</ng-template>

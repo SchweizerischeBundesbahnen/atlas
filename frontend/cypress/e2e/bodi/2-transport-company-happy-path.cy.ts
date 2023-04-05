@@ -3,8 +3,7 @@ import CommonUtils from '../../support/util/common-utils';
 import { DataCy } from '../../support/data-cy';
 import BodiDependentUtils from '../../support/util/bodi-dependent-utils';
 
-describe('Transport Company', {testIsolation: false}, () => {
-
+describe('Transport Company', { testIsolation: false }, () => {
   it('Step-1: ATLAS Login', () => {
     cy.atlasLogin();
   });
@@ -38,7 +37,7 @@ describe('Transport Company', {testIsolation: false}, () => {
   it('Step-6: search and open first TU', () => {
     CommonUtils.typeSearchInput(
       '/business-organisation-directory/v1/transport-companies?**',
-      DataCy.TABLE_SEARCH_CHIP_INPUT,
+      DataCy.TABLE_FILTER_CHIP_INPUT,
       'Bern'
     );
     cy.wait(500);
@@ -58,7 +57,10 @@ describe('Transport Company', {testIsolation: false}, () => {
     cy.get('app-relation').scrollIntoView();
     cy.get(DataCy.TC_ADD_RELATION_BTN).click();
 
-    CommonUtils.typeAndSelectItemFromDropDown(`${DataCy.BUSINESS_ORGANISATION} input`, BodiDependentUtils.BO_DESCRIPTION);
+    CommonUtils.typeAndSelectItemFromDropDown(
+      `${DataCy.BUSINESS_ORGANISATION} input`,
+      BodiDependentUtils.BO_DESCRIPTION
+    );
     CommonUtils.getClearType(DataCy.VALID_FROM, '01.01.2020', true);
     CommonUtils.getClearType(DataCy.VALID_TO, '01.01.2021', true);
     BodiUtils.interceptGetTransportCompanyRelations(DataCy.SAVE_ITEM);
@@ -74,5 +76,4 @@ describe('Transport Company', {testIsolation: false}, () => {
   it('Dependent BusinessOrganisation Cleanup Step', () => {
     BodiDependentUtils.deleteDependentBusinessOrganisation();
   });
-
 });
