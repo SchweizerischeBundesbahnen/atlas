@@ -167,7 +167,7 @@ export class StatementDetailComponent implements OnInit {
     if (this.form.enabled) {
       this.showConfirmationDialog();
     } else {
-      this.form.enable();
+      this.form.enable({ emitEvent: false });
     }
   }
 
@@ -177,7 +177,7 @@ export class StatementDetailComponent implements OnInit {
         if (this.isNew) {
           this.backToOverview();
         } else {
-          this.form.disable();
+          this.form.disable({ emitEvent: false });
           this.ngOnInit();
         }
       }
