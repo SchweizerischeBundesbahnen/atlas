@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { UserAdministrationOverviewComponent } from './user-administration-overview.component';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { RouterTestingModule } from '@angular/router/testing';
