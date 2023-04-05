@@ -23,6 +23,7 @@ export class TimetableFieldNumberSelectComponent implements OnInit, OnDestroy, O
   @Input() controlName!: string;
   @Input() formModus = true;
   @Input() formGroup!: FormGroup;
+  @Input() validOn: Date | undefined = undefined;
 
   @Output() selectedTimetableFieldNumberChanged = new EventEmitter();
   @Output() ttfnSelectionChanged = new EventEmitter<TimetableFieldNumber>();
@@ -62,7 +63,7 @@ export class TimetableFieldNumberSelectComponent implements OnInit, OnDestroy, O
           [searchString],
           undefined,
           undefined,
-          undefined,
+          this.validOn,
           undefined,
           undefined,
           undefined,
