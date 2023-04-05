@@ -9,6 +9,8 @@ import { FormGroup } from '@angular/forms';
 })
 export class DateRangeComponent {
   @Input() formGroup!: FormGroup;
+  @Input() fieldLabelFrom = '';
+  @Input() fieldLabelTo = '';
 
   MIN_DATE = MIN_DATE;
   MAX_DATE = MAX_DATE;
