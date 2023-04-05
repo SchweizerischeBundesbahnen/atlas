@@ -37,10 +37,10 @@ export class TthDialogComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.initOverviewPlannedTable();
+    this.initOverviewOfferedYears();
   }
 
-  private initOverviewPlannedTable() {
+  private initOverviewOfferedYears() {
     this.timetableHearingService
       .getHearingYears([HearingStatus.Active, HearingStatus.Planned])
       .subscribe((timetableHearingYears) => {
