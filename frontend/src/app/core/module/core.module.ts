@@ -30,14 +30,20 @@ import { WorkflowComponent } from '../workflow/workflow.component';
 import { WorkflowFormComponent } from '../workflow/workflow-form/workflow-form.component';
 import { WorkflowCheckFormComponent } from '../workflow/workflow-check-form/workflow-check-form.component';
 import { DisplayDatePipe } from '../pipe/display-date.pipe';
+import { AtlasSpacerComponent } from '../components/spacer/atlas-spacer.component';
+import { DetailFooterComponent } from '../components/detail-footer/detail-footer.component';
+import { DetailPageContainerComponent } from '../components/detail-page-container/detail-page-container.component';
 
 const coreComponents = [
   WorkflowFormComponent,
   WorkflowCheckFormComponent,
   WorkflowComponent,
   BaseDetailComponent,
+  DetailPageContainerComponent,
+  DetailFooterComponent,
   UserDetailInfoComponent,
   AtlasButtonComponent,
+  AtlasSpacerComponent,
   SwitchVersionComponent,
   DialogComponent,
   HeaderComponent,

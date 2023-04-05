@@ -611,6 +611,31 @@
       "VS": "Vallese",
       "ZG": "Zugo",
       "ZH": "Zurigo"
+    },
+    "STATEMENT": {
+      "NEW": "Nuovo parare",
+      "STATEMENT": "Parare",
+      "STATEMENT_INFO": "Nominare le connessioni (ad es. la connessione con la partenza 12:35) a cui si fa riferimento.",
+      "ROUTE": "Percorso",
+      "STOP_POINT": "Fermata",
+      "STOP_POINT_INFO": "Descrizione della fermata di riferimento",
+      "STATUS_JUSTIFICATION": "Stato e motivazioni",
+      "FIST_NAME": "Nome",
+      "LAST_NAME": "Cognome",
+      "E_MAIL": "E-Mail",
+      "E_MAIL_TEXT": "Se non è disponibile un'e-mail, è sufficiente una voce fittizia, ad esempio xxx@xxx.ch.",
+      "JUSTIFICATION": "Giustificazione",
+      "ATTACHMENT_INFO": "È possibile inviare la dichiarazione con un allegato PDF.",
+      "ATTACHMENT_BUTTON": "Allegare un PDF",
+      "ORGANISATION": "Organizzazione/associazione",
+      "ZIP": "CAP",
+      "CITY": "Luogo/Città",
+      "STREET": "Via",
+      "STATUS": "Stato",
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Il parare nuovo è stato salvato con successo.",
+        "EDIT_SUCCESS": "Il parare è stato salvato con successo."
+      }
     }
   }
 }
