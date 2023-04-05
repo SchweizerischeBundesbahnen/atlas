@@ -566,12 +566,16 @@
     },
     "DIALOG": {
       "NEW_PLAN_TIMETABLE": "Créer un nouvel horaire d'audience",
+      "PLAN_INFO": "Calendrier consultation année",
       "PLAN_DROPDOWN_TITLE": "Calendrier",
       "PLAN_DROPDOWN_DESCRIPTION": "Sélectionner l'année",
       "DATUM_FROM": "Audition de",
+      "DATUM_FROM_INFO": "Calendrier audience de",
       "DATUM_FROM_EXAMPLE": "p.ex. 31.12.2023.",
-      "DATUM_UNTIL": "Audience jusqu'à",
-      "DATUM_UNTIL_EXAMPLE": "p.ex. 31.12.2023."
+      "DATUM_TO": "Audience jusqu'à",
+      "DATUM_TO_INFO": "Calendrier audience jusqu'au",
+      "DATUM_UNTIL_EXAMPLE": "p.ex. 31.12.2023.",
+      "SAVE": "Sauvegarder"
     },
     "SELECT_CANTON": "Sélectionner le canton",
     "SELECT_YEAR": "Sélectionner l'année",
