@@ -126,8 +126,9 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
   }
 
   changeSelectedCantonFromDropdown(selectedCanton: MatSelectChange) {
-    this.overviewToTabService.changeData(selectedCanton.value);
-    this.navigateTo(selectedCanton.value, this.foundTimetableHearingYear.timetableYear);
+    const canton = selectedCanton.value.toLowerCase();
+    this.overviewToTabService.changeData(canton);
+    this.navigateTo(canton, this.foundTimetableHearingYear.timetableYear);
   }
 
   changeSelectedYearFromDropdown(selectedYear: MatSelectChange) {
