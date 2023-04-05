@@ -611,6 +611,31 @@
       "VS": "Valais",
       "ZG": "Zoug",
       "ZH": "Zurich"
+    },
+    "STATEMENT": {
+      "NEW": "Saisir un nouvel avis",
+      "STATEMENT": "Prise de position",
+      "STATEMENT_INFO": "Indiquez les liaisons (par ex. la liaison avec départ à 12h35) pour lesquelles la confirmation a lieu.",
+      "ROUTE": "Parcours",
+      "STOP_POINT": "Arrêt",
+      "STOP_POINT_INFO": "Description de l'arrêt référencé",
+      "STATUS_JUSTIFICATION": "Statut et justification",
+      "FIST_NAME": "Prénom",
+      "LAST_NAME": "Nom de famille",
+      "E_MAIL": "Courrier électronique",
+      "E_MAIL_TEXT": "Si aucun e-mail n'est disponible, une entrée fictive, par exemple xxx@xxx.ch, suffit.",
+      "JUSTIFICATION": "Justification",
+      "ATTACHMENT_INFO": "Vous pouvez envoyer votre avis avec une annexe PDF.",
+      "ATTACHMENT_BUTTON": "Joindre un PDF",
+      "ORGANISATION": "Organisation/Association",
+      "ZIP": "Code Postal",
+      "CITY": "Lieu/ville",
+      "STREET": "Rue",
+      "STATUS": "Statut",
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Nouvel avis enregistré avec succès.",
+        "EDIT_SUCCESS": "L'avis a été enregistré avec succès."
+      }
     }
   }
 }

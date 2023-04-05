@@ -42,10 +42,18 @@ export class AtlasButtonComponent {
     if (this.buttonType === AtlasButtonType.DELETE) {
       return this.mayDelete();
     }
-    if (this.buttonType === AtlasButtonType.FOOTER_NON_EDIT) {
+    if (
+      [AtlasButtonType.FOOTER_NON_EDIT, AtlasButtonType.WHITE_FOOTER_NON_EDIT].includes(
+        this.buttonType
+      )
+    ) {
       return !this.footerEdit;
     }
-    if (this.buttonType === AtlasButtonType.FOOTER_EDIT_MODE) {
+    if (
+      [AtlasButtonType.FOOTER_EDIT_MODE, AtlasButtonType.WHITE_FOOTER_EDIT_MODE].includes(
+        this.buttonType
+      )
+    ) {
       return this.footerEdit;
     }
     return true;

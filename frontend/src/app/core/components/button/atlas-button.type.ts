@@ -9,6 +9,8 @@ export const AtlasButtonType = {
   DELETE: 'delete' as AtlasButtonType,
   CLOSE_ICON: 'closeIcon' as AtlasButtonType,
   DEFAULT_PRIMARY: 'defaultPrimary' as AtlasButtonType,
+  WHITE_FOOTER_NON_EDIT: 'whiteFooterNonEdit' as AtlasButtonType,
+  WHITE_FOOTER_EDIT_MODE: 'whiteFooterEdit' as AtlasButtonType,
 };
 
 export type AtlasButtonType =
@@ -16,6 +18,8 @@ export type AtlasButtonType =
   | 'create'
   | 'footerNonEdit'
   | 'footerEdit'
+  | 'whiteFooterNonEdit'
+  | 'whiteFooterEdit'
   | 'edit'
   | 'revoke'
   | 'skipworkflow'
