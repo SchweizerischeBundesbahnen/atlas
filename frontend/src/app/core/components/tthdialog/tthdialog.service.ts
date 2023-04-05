@@ -18,6 +18,8 @@ export class TthDialogService {
       data: tthDialogData,
       panelClass: 'atlas-dialog-panel',
       backdropClass: 'atlas-dialog-backdrop',
+      disableClose: true,
+      autoFocus: true,
     });
     return this.confirmTthDialog.afterClosed().pipe(map((value) => (value ? value : false)));
   }
