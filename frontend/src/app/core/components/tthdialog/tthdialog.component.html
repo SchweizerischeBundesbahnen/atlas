@@ -31,7 +31,12 @@
     </div>
 
     <div>
-      <form-date-range [formGroup]="form"></form-date-range>
+      <form-date-range
+        [fieldLabelFrom]="'TTH.DIALOG.DATUM_FROM'"
+        [fieldLabelTo]="'TTH.DIALOG.DATUM_UNTIL'"
+        [formGroup]="form"
+        class="col-6"
+      ></form-date-range>
     </div>
 
     <mat-dialog-actions class="justify-content-end">
