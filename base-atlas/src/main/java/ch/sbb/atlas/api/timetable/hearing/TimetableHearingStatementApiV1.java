@@ -1,5 +1,6 @@
 package ch.sbb.atlas.api.timetable.hearing;
 
+import ch.sbb.atlas.api.bodi.TransportCompanyModel;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel.Fields;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -79,4 +80,6 @@ public interface TimetableHearingStatementApiV1 {
     @RequestPart(required = false) List<MultipartFile> documents
   );
 
+  @GetMapping(path = "responsible-transport-companies/{ttfnid}")
+  List<TransportCompanyModel> getResponsibleTransportCompanies(@PathVariable String ttfnid);
 }

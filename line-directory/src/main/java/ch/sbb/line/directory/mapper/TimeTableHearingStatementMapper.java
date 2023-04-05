@@ -56,7 +56,7 @@ public class TimeTableHearingStatementMapper {
         .build();
   }
 
-  private static String transformToCommaSeparated(TimetableHearingStatement statement) {
+  public static String transformToCommaSeparated(TimetableHearingStatement statement) {
     List<String> sorted = statement.getResponsibleTransportCompanies().stream().sorted(Comparator.comparing(
         ResponsibleTransportCompany::getAbbreviation)).map(ResponsibleTransportCompany::getAbbreviation).toList();
     return String.join(", ", sorted);
