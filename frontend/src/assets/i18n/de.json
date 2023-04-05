@@ -566,12 +566,16 @@
     },
     "DIALOG": {
       "NEW_PLAN_TIMETABLE": "Neue Fahrplananhörung anlegen",
+      "PLAN_INFO": "Fahrplananhörung Jahr",
       "PLAN_DROPDOWN_TITLE": "Fahrplan",
       "PLAN_DROPDOWN_DESCRIPTION": "Jahr auswählen",
       "DATUM_FROM": "Anhörung von",
+      "DATUM_FROM_INFO": "Fahrplananhörung von",
       "DATUM_FROM_EXAMPLE": "z.B. 31.12.2023.",
-      "DATUM_UNTIL": "Anhörung bis",
-      "DATUM_UNTIL_EXAMPLE": "z.B. 31.12.2023."
+      "DATUM_TO": "Anhörung bis",
+      "DATUM_TO_INFO": "Fahrplananhörung bis",
+      "DATUM_UNTIL_EXAMPLE": "z.B. 31.12.2023.",
+      "SAVE": "Speichern"
     },
     "SELECT_CANTON": "Kanton auswählen",
     "SELECT_YEAR": "Jahr auswählen",
