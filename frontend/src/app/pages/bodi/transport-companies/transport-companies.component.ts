@@ -1,31 +1,30 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 
 import { TableColumn } from '../../../core/components/table/table-column';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { NotificationService } from '../../../core/notification/notification.service';
 import { TransportCompaniesService, TransportCompany, TransportCompanyStatus } from '../../../api';
-import { TableComponent } from '../../../core/components/table/table.component';
-import { TableSettings } from '../../../core/components/table/table-settings';
-import { TableSettingsService } from '../../../core/components/table/table-settings.service';
-import { Pages } from '../../pages';
 import { filter } from 'rxjs/operators';
 import {
   DetailDialogEvents,
   RouteToDialogService,
 } from '../../../core/components/route-to-dialog/route-to-dialog.service';
+import {
+  FilterType,
+  getActiveSearch,
+  getActiveSearchForChip,
+  TableFilterChip,
+  TableFilterMultiSelect,
+} from '../../../core/components/table-filter/table-filter-config';
+import { TablePagination } from '../../../core/components/table/table-pagination';
+import { TableService } from '../../../core/components/table/table.service';
 
 @Component({
   selector: 'app-bodi-transport-companies',
   templateUrl: './transport-companies.component.html',
+  providers: [TableService],
 })
-export class TransportCompaniesComponent implements OnInit, OnDestroy {
-  readonly STATUS_TYPES: TransportCompanyStatus[] = Object.values(TransportCompanyStatus);
-  activeStatusTypes: TransportCompanyStatus[] = [];
-
-  @ViewChild(TableComponent, { static: true })
-  tableComponent!: TableComponent<TransportCompany>;
-
+export class TransportCompaniesComponent implements OnDestroy {
   tableColumns: TableColumn<TransportCompany>[] = [
     { headerTitle: 'BODI.TRANSPORT_COMPANIES.NUMBER', value: 'number' },
     {
@@ -45,72 +44,71 @@ export class TransportCompaniesComponent implements OnInit, OnDestroy {
     },
   ];
 
-  transportCompanies: TransportCompany[] = [];
-  totalCount = 0;
-  isLoading = false;
-  private transportCompaniesSubscription!: Subscription;
-  private routeSubscription!: Subscription;
-
-  constructor(
-    private transportCompaniesService: TransportCompaniesService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private notificationService: NotificationService,
-    private tableSettingsService: TableSettingsService,
-    private routeToDialogService: RouteToDialogService
-  ) {
-    this.routeSubscription = this.routeToDialogService.detailDialogEvent
-      .pipe(filter((e) => e === DetailDialogEvents.Closed))
-      .subscribe(() => this.ngOnInit());
-  }
-
-  ngOnInit(): void {
-    const storedTableSettings = this.tableSettingsService.getTableSettings(
-      Pages.TRANSPORT_COMPANIES.path
-    );
-    this.getOverview(
-      storedTableSettings || {
-        page: 0,
-        size: 10,
-        sort: this.getDefaultSort(),
-        statusTypes: [
+  readonly tableFilterConfig: [
+    [TableFilterChip],
+    [TableFilterMultiSelect<TransportCompanyStatus>]
+  ] = [
+    [
+      {
+        filterType: FilterType.CHIP_SEARCH,
+        elementWidthCssClass: 'col-6',
+        activeSearch: [],
+      },
+    ],
+    [
+      {
+        filterType: FilterType.MULTI_SELECT,
+        elementWidthCssClass: 'col-3',
+        activeSearch: [
           TransportCompanyStatus.Current,
           TransportCompanyStatus.OperatingPart,
           TransportCompanyStatus.Operator,
           TransportCompanyStatus.Supervision,
         ],
-      }
-    );
+        labelTranslationKey: 'BODI.TRANSPORT_COMPANIES.STATUS',
+        typeTranslationKeyPrefix: 'BODI.TRANSPORT_COMPANIES.TRANSPORT_COMPANY_STATUS.',
+        selectOptions: Object.values(TransportCompanyStatus),
+      },
+    ],
+  ];
+
+  transportCompanies: TransportCompany[] = [];
+  totalCount = 0;
+
+  private transportCompaniesSubscription?: Subscription;
+  private routeSubscription: Subscription;
+
+  constructor(
+    private transportCompaniesService: TransportCompaniesService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private routeToDialogService: RouteToDialogService,
+    private readonly tableService: TableService
+  ) {
+    this.routeSubscription = this.routeToDialogService.detailDialogEvent
+      .pipe(filter((e) => e === DetailDialogEvents.Closed))
+      .subscribe(() => {
+        this.getOverview({
+          page: this.tableService.pageIndex,
+          size: this.tableService.pageSize,
+          sort: this.tableService.sortString,
+        });
+      });
   }
 
-  getOverview($paginationAndSearch: TableSettings) {
-    this.tableSettingsService.storeTableSettings(
-      Pages.TRANSPORT_COMPANIES.path,
-      $paginationAndSearch
-    );
-    this.isLoading = true;
+  getOverview(pagination: TablePagination) {
     this.transportCompaniesSubscription = this.transportCompaniesService
       .getTransportCompanies(
-        $paginationAndSearch.searchCriteria,
-        $paginationAndSearch.statusTypes,
-        $paginationAndSearch.page,
-        $paginationAndSearch.size,
-        [$paginationAndSearch.sort!, this.getDefaultSort()]
+        getActiveSearchForChip(this.tableFilterConfig[0][0]),
+        getActiveSearch(this.tableFilterConfig[1][0]),
+        pagination.page,
+        pagination.size,
+        [pagination.sort!, 'number,asc']
       )
       .subscribe((container) => {
         this.transportCompanies = container.objects!;
         this.totalCount = container.totalCount!;
-        this.tableComponent.setTableSettings($paginationAndSearch);
-        this.activeStatusTypes = $paginationAndSearch.statusTypes;
-        this.isLoading = false;
       });
-  }
-
-  onStatusSelectionChange(): void {
-    this.tableComponent.searchData({
-      ...this.tableComponent.tableSearchComponent.activeSearch,
-      statusTypes: this.activeStatusTypes,
-    });
   }
 
   editVersion($event: TransportCompany) {
@@ -122,11 +120,7 @@ export class TransportCompaniesComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.transportCompaniesSubscription.unsubscribe();
+    this.transportCompaniesSubscription?.unsubscribe();
     this.routeSubscription.unsubscribe();
-  }
-
-  getDefaultSort() {
-    return 'number,ASC';
   }
 }

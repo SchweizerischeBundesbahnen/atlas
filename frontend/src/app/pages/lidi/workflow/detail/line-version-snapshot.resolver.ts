@@ -13,7 +13,7 @@ export class LineVersionSnapshotResolver implements Resolve<LineVersionSnapshot 
     return this.linesService.getLineVersionSnapshotById(Number(idParameter)).pipe(
       catchError(() =>
         this.router
-          .navigate([Pages.LIDI.path], {
+          .navigate([Pages.LIDI.path, Pages.WORKFLOWS.path], {
             state: { notDismissSnackBar: true },
           })
           .then(() => [])
