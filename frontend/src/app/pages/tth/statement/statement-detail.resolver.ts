@@ -18,9 +18,16 @@ export class StatementDetailResolver implements Resolve<TimetableHearingStatemen
       : this.timetableHearingService.getStatement(parseInt(idParameter)).pipe(
           catchError(() => {
             this.router
-              .navigate([Pages.TTFN.path], {
-                state: { notDismissSnackBar: true },
-              })
+              .navigate(
+                [
+                  Pages.TTH.path,
+                  route.paramMap.get('canton')?.toLowerCase(),
+                  Pages.TTH_ACTIVE.path,
+                ],
+                {
+                  state: { notDismissSnackBar: true },
+                }
+              )
               .then();
             return of(undefined);
           })
