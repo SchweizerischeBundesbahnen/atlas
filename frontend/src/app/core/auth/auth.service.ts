@@ -34,9 +34,6 @@ export class AuthService {
         if (this.hasRole(Role.AtlasAdmin)) {
           Pages.viewablePages = [...Pages.pages, ...Pages.adminPages];
         }
-        if (this.mayAccessTimetableHearing()) {
-          Pages.viewablePages.push(Pages.TTH);
-        }
         this.router
           .navigateByUrl(sessionStorage.getItem(this.REQUESTED_ROUTE_STORAGE_KEY) ?? '')
           .then();
@@ -177,6 +174,10 @@ export class AuthService {
     this.userAdministrationService.getCurrentUser().subscribe((response) => {
       this.permissions = response.permissions ? Array.from(response.permissions) : [];
       this.eventUserComponentNotification.emit(this.claims);
+
+      if (this.mayAccessTimetableHearing()) {
+        Pages.viewablePages.push(Pages.TTH);
+      }
     });
   }
 
