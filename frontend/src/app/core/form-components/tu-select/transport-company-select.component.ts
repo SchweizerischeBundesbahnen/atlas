@@ -28,7 +28,7 @@ export class TransportCompanySelectComponent implements OnInit, OnDestroy, OnCha
   @Output() ttfnSelectionChanged = new EventEmitter<TransportCompany>();
 
   transportCompanies: Observable<TransportCompany[]> = of([]);
-  private formSubscription!: Subscription;
+  private formSubscription?: Subscription;
 
   constructor(private transportCompaniesService: TransportCompaniesService) {}
 
@@ -64,6 +64,6 @@ export class TransportCompanySelectComponent implements OnInit, OnDestroy, OnCha
   }
 
   ngOnDestroy() {
-    this.formSubscription.unsubscribe();
+    this.formSubscription?.unsubscribe();
   }
 }

@@ -18,6 +18,8 @@ import moment from 'moment';
 import { Pages } from '../../pages';
 import { Component, Input } from '@angular/core';
 import { MockAtlasButtonComponent, MockTableComponent } from '../../../app.testing.mocks';
+import { TableService } from '../../../core/components/table/table.service';
+import { TthTableService } from '../tth-table.service';
 
 @Component({
   selector: 'app-timetable-hearing-overview-tab-heading',
@@ -105,6 +107,13 @@ async function baseTestConfiguration() {
       { provide: TimetableHearingService, useValue: mockTimetableHearingService },
       { provide: TranslatePipe },
       { provide: DisplayDatePipe },
+      {
+        provide: TableService,
+        useValue: jasmine.createSpyObj<TthTableService>(
+          [],
+          ['pageIndex', 'pageSize', 'sortString']
+        ),
+      },
     ],
   }).compileComponents();
 
