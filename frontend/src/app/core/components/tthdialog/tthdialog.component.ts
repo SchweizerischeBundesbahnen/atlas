@@ -78,8 +78,8 @@ export class TthDialogComponent implements OnInit {
     }
   }
 
-  private getActiveYear(timetableHearingYears: Array<TimetableHearingYear>): number {
-    const timetableHearingYear = timetableHearingYears.find(function (thy) {
+  getActiveYear(timetableHearingYears: Array<TimetableHearingYear>): number {
+    const timetableHearingYear = timetableHearingYears.find((thy) => {
       return thy.hearingStatus === HearingStatus.Active;
     });
     if (timetableHearingYear === undefined) {
@@ -88,9 +88,7 @@ export class TthDialogComponent implements OnInit {
     return timetableHearingYear.timetableYear;
   }
 
-  private getPlannedYears(
-    timetableHearingYears: Array<TimetableHearingYear>
-  ): Array<TimetableHearingYear> {
+  getPlannedYears(timetableHearingYears: Array<TimetableHearingYear>): Array<TimetableHearingYear> {
     const plannedYears: TimetableHearingYear[] = [];
     for (const i in timetableHearingYears) {
       if (HearingStatus.Planned === timetableHearingYears[i].hearingStatus) {
@@ -100,7 +98,7 @@ export class TthDialogComponent implements OnInit {
     return plannedYears;
   }
 
-  private calculateProposedYears(
+  calculateProposedYears(
     activeYear: number,
     timetableHearingYears: Array<TimetableHearingYear>
   ): Array<number> {
@@ -116,13 +114,13 @@ export class TthDialogComponent implements OnInit {
     return proposedYears;
   }
 
-  private isYearAlreadyPlanned(
-    activeYear: number,
+  isYearAlreadyPlanned(
+    proposedYear: number,
     timetableHearingYears: Array<TimetableHearingYear>
   ): boolean {
     const years: TimetableHearingYear[] = [];
     for (const i in timetableHearingYears) {
-      if (activeYear === timetableHearingYears[i].timetableYear) {
+      if (proposedYear === timetableHearingYears[i].timetableYear) {
         years.push(timetableHearingYears[i]);
       }
     }
