@@ -15,6 +15,7 @@ import {
   getActiveSearchForChip,
   TableFilterChip,
 } from '../../../core/components/table-filter/table-filter-config';
+import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
 
 @Component({
   selector: 'app-bodi-companies',
@@ -76,7 +77,7 @@ export class CompaniesComponent implements OnDestroy {
         getActiveSearchForChip(this.tableFilterConfig[0][0]),
         pagination.page,
         pagination.size,
-        [pagination.sort!, 'uicCode,asc']
+        addElementsToArrayWhenNotUndefined(pagination.sort, 'uicCode,asc')
       )
       .subscribe((container) => {
         this.companies = container.objects!;
