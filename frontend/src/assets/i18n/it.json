@@ -556,7 +556,7 @@
     "SELECT_CANTON": "Selezionare il Cantone",
     "SELECT_YEAR": "Selezionare l'anno",
     "TABLE_RESULT_HEADING": "{{totalCount}} dichiarazioni per l'orario {{year}}",
-    "TABLE_RESULT_ACTUAL_HEARING_HEADING_PREFIX": "{{totalCount}} Stellungnahmen ",
+    "TABLE_RESULT_ACTUAL_HEARING_HEADING_PREFIX": "{{totalCount}} dichiarazioni per l'orario ",
     "WHOLE_SWISS": "gesamte Schweiz",
     "OPEN": "{{canton}} aprire",
     "STATEMENT_STATUS_HEADER": "Stato",
@@ -572,7 +572,7 @@
       "OVERVIEW_ACTUAL_NOT_FOUND_SUBHEADING_PREFIX": "Das Fahrplanjahr ist noch nicht eröffnet. Sie finden bereits vorhandene Stellungnahmen unter dem Reiter «Geplante Anhörungen». Das Fahrplanverfahren Schweiz des BAV für den Fahrplan {{timeTableYear}} wird von ",
       "OVERVIEW_PLANNED_NOT_FOUND": "Al momento non sono state registrate udienze programmate.",
       "OVERVIEW_ACTUAL_NO_PLANNED_HEARING_YEAR_FOUND": "Al momento non ci sono audizioni attive.",
-      "OVERVIEW_ARCHIVED_NOT_FOUND": "Es sind derzeit keine archivierten Anhörungen verfügbar."
+      "OVERVIEW_ARCHIVED_NOT_FOUND": "Al momento non sono disponibili udienze archiviate."
     },
     "STATEMENT_STATUS": {
       "RECEIVED": "arrivato",
