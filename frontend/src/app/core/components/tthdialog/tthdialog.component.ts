@@ -46,7 +46,7 @@ export class TthDialogComponent implements OnInit {
     this.initOverviewOfferedYears();
   }
 
-  private initOverviewOfferedYears() {
+  initOverviewOfferedYears() {
     this.timetableHearingService
       .getHearingYears([HearingStatus.Active, HearingStatus.Planned])
       .subscribe((timetableHearingYears) => {
