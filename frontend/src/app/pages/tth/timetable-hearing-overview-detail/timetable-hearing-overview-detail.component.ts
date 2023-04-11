@@ -18,6 +18,7 @@ import { MatSelectChange } from '@angular/material/select';
 import { TableService } from '../../../core/components/table/table.service';
 import { TthUtils } from '../tth-utils';
 import { TablePagination } from '../../../core/components/table/table-pagination';
+import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
 
 @Component({
   selector: 'app-timetable-hearing-overview-detail',
@@ -112,7 +113,7 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
         undefined,
         pagination.page,
         pagination.size,
-        [pagination.sort!, this.sorting]
+        addElementsToArrayWhenNotUndefined(pagination.sort, this.sorting)
       )
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((container) => {
