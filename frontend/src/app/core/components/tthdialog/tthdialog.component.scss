@@ -5,12 +5,12 @@
 }
 
 .dialog {
-  padding: 0 128px 48px 128px;
+  padding: 0 64px 24px 64px;
 }
 
 .dialog-close-icon-container {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
 }
 
 .close-icon-btn {
