@@ -8,10 +8,20 @@ import { HearingStatus } from '../../api';
 import { StatementDetailComponent } from './statement/statement-detail.component';
 import { StatementDetailResolver } from './statement/statement-detail.resolver';
 
+const statementDetailPath = `${Pages.TTH_OVERVIEW_DETAIL.path}/${Pages.TTH_ACTIVE.path}/:id`;
+
 const routes: Routes = [
   {
     path: '',
     component: TimetableHearingOverviewComponent,
+  },
+  {
+    path: statementDetailPath,
+    component: StatementDetailComponent,
+    resolve: {
+      statement: StatementDetailResolver,
+    },
+    runGuardsAndResolvers: 'always',
   },
   {
     path: Pages.TTH_OVERVIEW_DETAIL.path,
@@ -23,16 +33,6 @@ const routes: Routes = [
         data: {
           hearingStatus: HearingStatus.Active,
         },
-        children: [
-          {
-            path: Pages.TTH_STATEMENT_DETAILS.path,
-            component: StatementDetailComponent,
-            resolve: {
-              statement: StatementDetailResolver,
-            },
-            runGuardsAndResolvers: 'always',
-          },
-        ],
       },
       {
         path: Pages.TTH_PLANNED.path,
