@@ -15,8 +15,11 @@ import { Subject, takeUntil } from 'rxjs';
 import moment from 'moment';
 import { OverviewToTabShareDataService } from '../timetable-hearing-overview-tab/overview-to-tab-share-data.service';
 import { MatSelectChange } from '@angular/material/select';
+import { TableService } from '../../../core/components/table/table.service';
 import { TthUtils } from '../tth-utils';
 import { TablePagination } from '../../../core/components/table/table-pagination';
+import { TthChangeStatusDialogService } from './tth-change-status-dialog/tth-change-status-dialog.service';
+import { ColumnDropDownEvent } from '../../../core/components/table/column-drop-down-event';
 import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
 import { TthTableService } from '../tth-table.service';
 
@@ -24,6 +27,7 @@ import { TthTableService } from '../tth-table.service';
   selector: 'app-timetable-hearing-overview-detail',
   templateUrl: './timetable-hearing-overview-detail.component.html',
   styleUrls: ['./timetable-hearing-overview-detail.component.scss'],
+  providers: [TableService],
 })
 export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestroy {
   timeTableHearingStatements: TimetableHearingStatement[] = [];
@@ -64,6 +68,7 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
     private readonly timetableHearingService: TimetableHearingService,
     private readonly overviewToTabService: OverviewToTabShareDataService,
     private readonly tthUtils: TthUtils,
+    private readonly tthStatusChangeDialog: TthChangeStatusDialogService,
     private readonly tthTableService: TthTableService
   ) {}
 
@@ -185,6 +190,15 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
       this.defaultYearSelection = this.YEAR_DRODOWN_OPTIONS[0];
       this.foundTimetableHearingYear = timetableHearingYears[0];
     }
+  }
+
+  changeSelectedStatus(changedStatus: ColumnDropDownEvent) {
+    console.log(changedStatus.value);
+    this.tthStatusChangeDialog.onClick(changedStatus).subscribe((result) => {
+      if (result) {
+        this.ngOnInit();
+      }
+    });
   }
 
   private navigateTo(canton: string, timetableYear: number) {
@@ -330,10 +344,6 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
 
   private mapToShortCanton(canton: SwissCanton) {
     return Cantons.fromSwissCanton(canton)?.short;
-  }
-
-  private changeSelectedStatus(event: MatSelectChange) {
-    console.log(event.value);
   }
 
   private getActiveTableColumns(): TableColumn<TimetableHearingStatement>[] {
