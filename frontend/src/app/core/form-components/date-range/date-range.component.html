@@ -3,10 +3,10 @@
     <app-atlas-label-field
       [fieldExamples]="[
         { label: 'FORM.FOR_EXAMPLE', translate: true },
-        { label: EXAMPLE_DATE_FROM, translate: false }
+        { label: setDatumExamples ? labelFromExample : EXAMPLE_DATE_FROM, translate: false }
       ]"
       [required]="required"
-      [fieldLabel]="fieldLabelFrom"
+      [fieldLabel]="labelFrom"
       [infoIconTitle]="infoIconTitleFrom"
     ></app-atlas-label-field>
     <div class="text-field-flex">
@@ -31,11 +31,11 @@
     <app-atlas-label-field
       [fieldExamples]="[
         { label: 'FORM.FOR_EXAMPLE', translate: true },
-        { label: EXAMPLE_DATE_TO, translate: false }
+        { label: setDatumExamples ? labelUntilExample : EXAMPLE_DATE_TO, translate: false }
       ]"
       [required]="required"
-      [fieldLabel]="fieldLabelTo"
-      [infoIconTitle]="infoIconTitleTo"
+      [fieldLabel]="labelUntil"
+      [infoIconTitle]="infoIconTitleUntil"
     ></app-atlas-label-field>
     <div class="text-field-flex">
       <input
