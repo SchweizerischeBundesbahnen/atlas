@@ -1,4 +1,4 @@
-<ng-container [formGroup]="form">
+<div [formGroup]="form">
   <div class="dialog-close-panel dialog-close-icon-container">
     <button [mat-dialog-close]="false" class="close-icon-btn">
       <em class="bi bi-x fs-2"></em>
@@ -44,16 +44,11 @@
     </div>
 
     <mat-dialog-actions class="justify-content-end">
-      <button
-        [mat-dialog-close]="false"
-        class="atlas-primary-btn me-3"
-        data-cy="dialog-cancel-button"
-      >
+      <button (click)="closeDialog()" class="atlas-primary-btn me-3" data-cy="dialog-cancel-button">
         {{ data.cancelText ?? 'DIALOG.CANCEL' | translate }}
       </button>
       <button
         (click)="createNewTimetableHearingYear()"
-        [mat-dialog-close]="true"
         class="atlas-primary-btn primary-color-btn"
         data-cy="dialog-confirm-button"
       >
@@ -61,4 +56,4 @@
       </button>
     </mat-dialog-actions>
   </div>
-</ng-container>
+</div>
