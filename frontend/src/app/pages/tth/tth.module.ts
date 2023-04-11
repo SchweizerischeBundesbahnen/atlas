@@ -8,6 +8,7 @@ import { TimetableHearingOverviewDetailComponent } from './timetable-hearing-ove
 import { TimetableHearingOverviewTabComponent } from './timetable-hearing-overview-tab/timetable-hearing-overview-tab.component';
 import { TimetableHearingOverviewTabHeadingComponent } from './timetable-hearing-overview-tab/timetable-hearing-overview-tab-heading/timetable-hearing-overview-tab-heading.component';
 import { StatementDetailComponent } from './statement/statement-detail.component';
+import { TthChangeStatusDialogComponent } from './timetable-hearing-overview-detail/tth-change-status-dialog/tth-change-status-dialog.component';
 import { TthTableService } from './tth-table.service';
 import { TableService } from '../../core/components/table/table.service';
 
@@ -19,6 +20,7 @@ import { TableService } from '../../core/components/table/table.service';
     TimetableHearingOverviewTabComponent,
     TimetableHearingOverviewTabHeadingComponent,
     StatementDetailComponent,
+    TthChangeStatusDialogComponent,
   ],
   imports: [CoreModule, TthRoutingModule, FormModule],
   providers: [

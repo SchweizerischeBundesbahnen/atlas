@@ -189,6 +189,7 @@
     </div>
 
     <app-table
+      (changeDropdownEvent)="changeSelectedStatus($event)"
       *ngIf="!noTimetableHearingYearFound"
       (editElementEvent)="editStatement($event)"
       (tableChanged)="getOverview($event)"
@@ -198,5 +199,6 @@
       [totalCount]="totalCount$"
       data-cy="ttfn"
     ></app-table>
+    <router-outlet></router-outlet>
   </div>
 </div>
