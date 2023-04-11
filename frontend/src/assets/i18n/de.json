@@ -531,6 +531,11 @@
     }
   },
   "TTH": {
+    "DIALOG": {
+      "STATUS_CHANGE": "Status ändern",
+      "COMMENT_LABEL": "Kommentar dazu (optional)",
+      "BACK": "Zurück"
+    },
     "TAB": {
       "ACTUAL": "Aktuelle Anhörung",
       "PLANNED": "Geplante Anhörungen",
