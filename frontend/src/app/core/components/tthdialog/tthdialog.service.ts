@@ -23,4 +23,9 @@ export class TthDialogService {
     });
     return this.confirmTthDialog.afterClosed().pipe(map((value) => (value ? value : false)));
   }
+
+  closeConfirmDialog(): void {
+    this.confirmTthDialog?.close();
+    this.confirmTthDialog = undefined;
+  }
 }
