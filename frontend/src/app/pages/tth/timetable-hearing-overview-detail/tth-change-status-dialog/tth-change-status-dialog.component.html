@@ -1,0 +1,28 @@
+<div class="dialog-close-panel dialog-close-icon-container">
+  <button [mat-dialog-close]="false" class="close-icon-btn">
+    <em class="bi bi-x fs-2"></em>
+  </button>
+</div>
+<div class="dialog" data-cy="dialog">
+  <h1 class="font-bold-4xl">{{ data.title | translate }}</h1>
+  <mat-dialog-content class="font-regular-base message">{{ data.ths }}</mat-dialog-content>
+  <div class="pt-2 pb-5" style="min-width: 30rem">
+    <form-comment
+      [controlName]="'justification'"
+      [formGroup]="tthChangeStatusFormGroup"
+      [label]="'TTH.DIALOG.COMMENT_LABEL'"
+    ></form-comment>
+  </div>
+  <mat-dialog-actions class="justify-content-end">
+    <button (click)="closeDialog()" class="atlas-primary-btn me-3" data-cy="dialog-cancel-button">
+      {{ data.cancelText ?? 'DIALOG.CANCEL' | translate }}
+    </button>
+    <button
+      (click)="onClick()"
+      class="atlas-primary-btn primary-color-btn"
+      data-cy="dialog-confirm-button"
+    >
+      {{ data.confirmText ?? 'DIALOG.OK' | translate }}
+    </button>
+  </mat-dialog-actions>
+</div>
