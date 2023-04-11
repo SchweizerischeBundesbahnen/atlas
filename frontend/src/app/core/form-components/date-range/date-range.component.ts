@@ -9,11 +9,14 @@ import { FormGroup } from '@angular/forms';
 })
 export class DateRangeComponent {
   @Input() formGroup!: FormGroup;
-  @Input() fieldLabelFrom = '';
-  @Input() fieldLabelTo = '';
+  @Input() labelFrom = '';
+  @Input() labelFromExample = '';
+  @Input() labelUntil = '';
+  @Input() labelUntilExample = '';
   @Input() infoIconTitleFrom = '';
-  @Input() infoIconTitleTo = '';
+  @Input() infoIconTitleUntil = '';
   @Input() required = true;
+  @Input() setDatumExamples = false;
 
   MIN_DATE = MIN_DATE;
   MAX_DATE = MAX_DATE;

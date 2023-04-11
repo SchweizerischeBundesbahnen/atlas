@@ -33,11 +33,14 @@
 
     <div>
       <form-date-range
-        [infoIconTitleFrom]="'TTH.DIALOG.DATUM_FROM_INFO'"
-        [infoIconTitleTo]="'TTH.DIALOG.DATUM_TO_INFO'"
+        [infoIconTitleFrom]="'TTH.DIALOG.HEARING_FROM_INFO'"
+        [infoIconTitleUntil]="'TTH.DIALOG.HEARING_UNTIL_INFO'"
         [required]="false"
-        [fieldLabelFrom]="'TTH.DIALOG.DATUM_FROM'"
-        [fieldLabelTo]="'TTH.DIALOG.DATUM_TO'"
+        [setDatumExamples]="true"
+        [labelFromExample]="'TTH.DIALOG.HEARING_FROM_EXAMPLE'"
+        [labelFrom]="'TTH.DIALOG.HEARING_FROM'"
+        [labelUntilExample]="'TTH.DIALOG.HEARING_UNTIL_EXAMPLE'"
+        [labelUntil]="'TTH.DIALOG.HEARING_UNTIL'"
         [formGroup]="form"
         class="col-6"
       ></form-date-range>
