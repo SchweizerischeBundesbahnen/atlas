@@ -10,6 +10,9 @@ import { DateRangeValidator } from '../../validation/date-range/date-range-valid
 import { ValidationService } from '../../validation/validation.service';
 import { TimetablehearingFormGroup } from './tthformgroup';
 import { NotificationService } from '../../notification/notification.service';
+import { DialogService } from '../dialog/dialog.service';
+import { TthDialogService } from './tthdialog.service';
+import { Moment } from 'moment';
 
 @Component({
   selector: 'app-tthdialog',
@@ -24,8 +27,8 @@ export class TthDialogComponent implements OnInit {
         AtlasFieldLengthValidator.length_50,
         AtlasCharsetsValidator.sid4pt,
       ]),
-      validFrom: new FormControl(moment(), [Validators.required]),
-      validTo: new FormControl(moment(), [Validators.required]),
+      validFrom: new FormControl<Moment | null>(null, [Validators.required]),
+      validTo: new FormControl<Moment | null>(null, [Validators.required]),
     },
     [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
   );
@@ -34,7 +37,9 @@ export class TthDialogComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: TthDialogData,
     private readonly timetableHearingService: TimetableHearingService,
-    protected notificationService: NotificationService
+    protected notificationService: NotificationService,
+    private readonly dialogService: DialogService,
+    private readonly tthDialogService: TthDialogService
   ) {}
 
   ngOnInit(): void {
@@ -52,6 +57,25 @@ export class TthDialogComponent implements OnInit {
           this.defaultYearSelection = this.YEAR_OPTIONS[0];
         }
       });
+  }
+
+  createNewTimetableHearingYear() {
+    const timetableHearingYear: TimetableHearingYear = {
+      timetableYear: Number(this.form.controls['timetableYear'].value),
+      hearingFrom: this.form.controls['validFrom'].value?.toDate()
+        ? this.form.controls['validFrom'].value?.toDate()
+        : moment().toDate(),
+      hearingTo: this.form.controls['validTo'].value?.toDate()
+        ? this.form.controls['validTo'].value?.toDate()
+        : moment().toDate(),
+    };
+    ValidationService.validateForm(this.form);
+    if (this.form.valid) {
+      this.timetableHearingService.createHearingYear(timetableHearingYear).subscribe((res) => {
+        this.notificationService.success('TTH.DIALOG.NOTIFICATION_SUCCESS');
+        console.log(res);
+      });
+    }
   }
 
   private getActiveYear(timetableHearingYears: Array<TimetableHearingYear>): number {
@@ -105,22 +129,11 @@ export class TthDialogComponent implements OnInit {
     return years.length > 0;
   }
 
-  createNewTimetableHearingYear() {
-    const timetableHearingYear: TimetableHearingYear = {
-      timetableYear: Number(this.form.controls['timetableYear'].value),
-      hearingFrom: this.form.controls['validFrom'].value?.toDate()
-        ? this.form.controls['validFrom'].value?.toDate()
-        : moment().toDate(),
-      hearingTo: this.form.controls['validTo'].value?.toDate()
-        ? this.form.controls['validTo'].value?.toDate()
-        : moment().toDate(),
-    };
-    ValidationService.validateForm(this.form);
-    if (this.form.valid) {
-      this.timetableHearingService.createHearingYear(timetableHearingYear).subscribe((res) => {
-        this.notificationService.success('TTH.DIALOG.NOTIFICATION_SUCCESS');
-        console.log(res);
-      });
-    }
+  closeDialog() {
+    this.dialogService.confirmLeave().subscribe((confirm) => {
+      if (confirm) {
+        this.tthDialogService.closeConfirmDialog();
+      }
+    });
   }
 }
