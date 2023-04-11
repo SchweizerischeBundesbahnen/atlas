@@ -6,6 +6,14 @@ import { TthDialogComponent } from './tthdialog.component';
 import { TimetableHearingYear } from '../../../api';
 import moment from 'moment/moment';
 
+// const mockTimetableHearingService = jasmine.createSpyObj(
+//   'timetableHearingService',
+//   ['getHearingYears']
+//   // {
+//   //   statusChoices: [ 'ACTIVE', 'PLANNED' ]
+//   //   }
+// );
+
 describe('TthDialogComponent', () => {
   let tthDialogComponent: TthDialogComponent;
   let fixture: ComponentFixture<TthDialogComponent>;
@@ -44,12 +52,15 @@ describe('TthDialogComponent', () => {
   }
 
   beforeEach(async () => {
+    // mockTimetableHearingService.getHearingYears.and.returnValue(of(getTimetableHearingYears));
+    // mockTimetableHearingService.getHearingYears.withArgs('statusChoices').and.returnValue(of(getTimetableHearingYears));
     await TestBed.configureTestingModule({
       declarations: [TthDialogComponent],
       imports: [AppTestingModule],
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: { title: 'Title' } },
         { provide: MatDialogRef, useValue: {} },
+        // { provide: TimetableHearingService, useValue: mockTimetableHearingService },
       ],
     }).compileComponents();
   });
@@ -83,6 +94,19 @@ describe('TthDialogComponent', () => {
     const timetableHearingYears: TimetableHearingYear[] = getTimetableHearingYears();
     expect(tthDialogComponent.getActiveYear(timetableHearingYears)).toEqual(getCurrentYear());
   });
+
+  // it('new test', () => {
+  //   const currentYear = getCurrentYear();
+  //   tthDialogComponent.initOverviewOfferedYears();
+  //   expect(tthDialogComponent.YEAR_OPTIONS).toEqual([
+  //     currentYear + 4,
+  //     currentYear + 5,
+  //     currentYear + 6,
+  //     currentYear + 7,
+  //     currentYear + 8,
+  //   ]);
+  //   expect(tthDialogComponent.defaultYearSelection).toEqual(currentYear+4)
+  // });
 
   it('should get planned years', () => {
     const timetableHearingYears: TimetableHearingYear[] = getTimetableHearingYears();
