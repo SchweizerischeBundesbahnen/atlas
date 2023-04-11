@@ -32,7 +32,8 @@ export class TableComponent<DATATYPE> implements OnInit {
   @Input() showTableFilter = true;
 
   @Output() editElementEvent = new EventEmitter<DATATYPE>();
-  @Output() getTableElementsEvent = new EventEmitter<TablePagination>();
+  @Output() tableChanged = new EventEmitter<TablePagination>();
+  @Output() tableInitialized: EventEmitter<TablePagination> = new EventEmitter<TablePagination>();
 
   isLoading = false;
   SHOW_TOOLTIP_LENGTH = 20;
@@ -47,7 +48,7 @@ export class TableComponent<DATATYPE> implements OnInit {
 
   ngOnInit() {
     this.tableService.sortActive = this.sortingDisabled ? '' : this.tableColumns[0].value!;
-    this.getElementsSearched({
+    this.tableInitialized.emit({
       page: this.pageIndex,
       size: this.pageSize,
       sort: this.sortString,
@@ -86,11 +87,7 @@ export class TableComponent<DATATYPE> implements OnInit {
     this.tableService.pageSize = pageEvent.pageSize;
     this.tableService.pageIndex = pageEvent.pageIndex;
 
-    this.getElementsSearched({
-      page: this.pageIndex,
-      size: this.pageSize,
-      sort: this.sortString,
-    });
+    this.emitTableChangedEvent();
   }
 
   sortData(sort: Sort) {
@@ -101,11 +98,7 @@ export class TableComponent<DATATYPE> implements OnInit {
       this.tableService.pageIndex = 0;
     }
 
-    this.getElementsSearched({
-      page: this.pageIndex,
-      size: this.pageSize,
-      sort: this.sortString,
-    });
+    this.emitTableChangedEvent();
   }
 
   searchData(): void {
@@ -113,11 +106,7 @@ export class TableComponent<DATATYPE> implements OnInit {
       this.tableService.pageIndex = 0;
     }
 
-    this.getElementsSearched({
-      page: this.pageIndex,
-      size: this.pageSize,
-      sort: this.sortString,
-    });
+    this.emitTableChangedEvent();
   }
 
   showTitle(column: TableColumn<DATATYPE>, value: string | Date): string {
@@ -146,8 +135,12 @@ export class TableComponent<DATATYPE> implements OnInit {
     return forText.length <= this.SHOW_TOOLTIP_LENGTH;
   }
 
-  private getElementsSearched(pagination: TablePagination) {
+  private emitTableChangedEvent(): void {
     this.isLoading = true;
-    this.getTableElementsEvent.emit(pagination);
+    this.tableChanged.emit({
+      page: this.pageIndex,
+      size: this.pageSize,
+      sort: this.sortString,
+    });
   }
 }
