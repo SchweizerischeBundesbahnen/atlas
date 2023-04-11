@@ -47,7 +47,15 @@ export class TableComponent<DATATYPE> implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.tableService.sortActive = this.sortingDisabled ? '' : this.tableColumns[0].value!;
+    // set default sorting
+    if (this.sortingDisabled) {
+      this.tableService.sortActive = '';
+    } else {
+      if (this.tableService.sortActive.length === 0) {
+        this.tableService.sortActive = this.tableColumns[0].value!;
+      }
+    }
+
     this.tableInitialized.emit({
       page: this.pageIndex,
       size: this.pageSize,
