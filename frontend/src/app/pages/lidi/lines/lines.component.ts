@@ -21,6 +21,7 @@ import {
 import { TableService } from '../../../core/components/table/table.service';
 import { TablePagination } from '../../../core/components/table/table-pagination';
 import { FormControl } from '@angular/forms';
+import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
 
 @Component({
   selector: 'app-lidi-lines',
@@ -127,7 +128,7 @@ export class LinesComponent implements OnDestroy {
         getActiveSearchDate(this.tableFilterConfig[1][3]),
         pagination.page,
         pagination.size,
-        [pagination.sort!, 'slnid,asc']
+        addElementsToArrayWhenNotUndefined(pagination.sort, 'slnid,asc')
       )
       .subscribe((lineContainer) => {
         this.lineVersions = lineContainer.objects!;
