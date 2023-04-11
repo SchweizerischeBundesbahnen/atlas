@@ -15,16 +15,15 @@ import { Subject, takeUntil } from 'rxjs';
 import moment from 'moment';
 import { OverviewToTabShareDataService } from '../timetable-hearing-overview-tab/overview-to-tab-share-data.service';
 import { MatSelectChange } from '@angular/material/select';
-import { TableService } from '../../../core/components/table/table.service';
 import { TthUtils } from '../tth-utils';
 import { TablePagination } from '../../../core/components/table/table-pagination';
 import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
+import { TableService } from '../../../core/components/table/table.service';
 
 @Component({
   selector: 'app-timetable-hearing-overview-detail',
   templateUrl: './timetable-hearing-overview-detail.component.html',
   styleUrls: ['./timetable-hearing-overview-detail.component.scss'],
-  providers: [TableService],
 })
 export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestroy {
   timeTableHearingStatements: TimetableHearingStatement[] = [];
@@ -64,7 +63,8 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
     private readonly router: Router,
     private readonly timetableHearingService: TimetableHearingService,
     private readonly overviewToTabService: OverviewToTabShareDataService,
-    private readonly tthUtils: TthUtils
+    private readonly tthUtils: TthUtils,
+    private readonly tableService: TableService
   ) {}
 
   get isHearingYearActive(): boolean {
@@ -139,7 +139,9 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
 
   editStatement(statement: TimetableHearingStatement) {
     this.router
-      .navigate([Pages.TTH.path, this.cantonShort, Pages.TTH_ACTIVE.path, statement.id])
+      .navigate([Pages.TTH_ACTIVE.path, statement.id], {
+        relativeTo: this.route.parent,
+      })
       .then();
   }
 
@@ -308,9 +310,9 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
 
   private initOverviewTable() {
     this.getOverview({
-      page: 0,
-      size: 10,
-      sort: this.sorting,
+      page: this.tableService.pageIndex,
+      size: this.tableService.pageSize,
+      sort: this.tableService.sortString,
     });
   }
 
