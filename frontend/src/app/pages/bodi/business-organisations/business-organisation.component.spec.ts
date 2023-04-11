@@ -1,10 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { BusinessOrganisationComponent } from './business-organisation.component';
 import { BusinessOrganisationsService, ContainerBusinessOrganisation } from '../../../api';
 import { AppTestingModule } from '../../../app.testing.module';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MockTableComponent } from '../../../app.testing.mocks';
+import { DEFAULT_STATUS_SELECTION } from '../../../core/constants/status.choices';
+import Spy = jasmine.Spy;
 
 const businessOrganisation: ContainerBusinessOrganisation = {
   objects: [
@@ -30,20 +32,25 @@ describe('BusinessOrganisationComponent', () => {
   let component: BusinessOrganisationComponent;
   let fixture: ComponentFixture<BusinessOrganisationComponent>;
 
-  // With Spy
-  const businessOrganisationsService = jasmine.createSpyObj('businessOrganisationsService', [
-    'getAllBusinessOrganisations',
-  ]);
-  businessOrganisationsService.getAllBusinessOrganisations.and.returnValue(
-    of(businessOrganisation)
-  );
+  let businessOrganisationsServiceSpy: jasmine.SpyObj<BusinessOrganisationsService>;
 
   beforeEach(() => {
+    businessOrganisationsServiceSpy = jasmine.createSpyObj<BusinessOrganisationsService>(
+      'BusinessOrganisationsServiceSpy',
+      ['getAllBusinessOrganisations']
+    );
+
+    (
+      businessOrganisationsServiceSpy.getAllBusinessOrganisations as Spy<
+        () => Observable<ContainerBusinessOrganisation>
+      >
+    ).and.returnValue(of(businessOrganisation));
+
     TestBed.configureTestingModule({
       declarations: [BusinessOrganisationComponent, MockTableComponent],
       imports: [AppTestingModule],
       providers: [
-        { provide: BusinessOrganisationsService, useValue: businessOrganisationsService },
+        { provide: BusinessOrganisationsService, useValue: businessOrganisationsServiceSpy },
         TranslatePipe,
       ],
     }).compileComponents();
@@ -55,5 +62,26 @@ describe('BusinessOrganisationComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should getOverview', () => {
+    component.getOverview({
+      page: 0,
+      size: 10,
+    });
+
+    expect(businessOrganisationsServiceSpy.getAllBusinessOrganisations).toHaveBeenCalledOnceWith(
+      [],
+      undefined,
+      undefined,
+      DEFAULT_STATUS_SELECTION,
+      0,
+      10,
+      ['descriptionDe,asc']
+    );
+
+    expect(component.totalCount$).toEqual(1);
+    expect(component.businessOrganisations.length).toEqual(1);
+    expect(component.businessOrganisations[0].sboid).toEqual('sboid');
   });
 });
