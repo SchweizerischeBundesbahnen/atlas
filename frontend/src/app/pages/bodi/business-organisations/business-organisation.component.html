@@ -7,9 +7,10 @@
   [totalCount]="totalCount$"
   [tableColumns]="tableColumns"
   [canEdit]="true"
-  (editElementEvent)="editVersion($event)"
-  (getTableElementsEvent)="getOverview($event)"
   [tableFilterConfig]="tableFilterConfig"
+  (editElementEvent)="editVersion($event)"
+  (tableChanged)="getOverview($event)"
+  (tableInitialized)="getOverview($event)"
   data-cy="bodi-business-organisation"
 >
 </app-table>
