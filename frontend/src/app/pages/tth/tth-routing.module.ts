@@ -14,19 +14,6 @@ const routes: Routes = [
     component: TimetableHearingOverviewComponent,
   },
   {
-    path:
-      Pages.TTH_OVERVIEW_DETAIL.path +
-      '/' +
-      Pages.TTH_ACTIVE.path +
-      '/' +
-      Pages.TTH_STATEMENT_DETAILS.path,
-    component: StatementDetailComponent,
-    resolve: {
-      statement: StatementDetailResolver,
-    },
-    runGuardsAndResolvers: 'always',
-  },
-  {
     path: Pages.TTH_OVERVIEW_DETAIL.path,
     component: TimetableHearingOverviewTabComponent,
     children: [
@@ -36,6 +23,16 @@ const routes: Routes = [
         data: {
           hearingStatus: HearingStatus.Active,
         },
+        children: [
+          {
+            path: Pages.TTH_STATEMENT_DETAILS.path,
+            component: StatementDetailComponent,
+            resolve: {
+              statement: StatementDetailResolver,
+            },
+            runGuardsAndResolvers: 'always',
+          },
+        ],
       },
       {
         path: Pages.TTH_PLANNED.path,
