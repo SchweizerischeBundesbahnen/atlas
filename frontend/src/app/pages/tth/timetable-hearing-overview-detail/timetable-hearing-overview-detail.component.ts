@@ -54,6 +54,8 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
   showStartTimetableHearingButton = false;
   showHearingDetail = false;
 
+  sorting = 'statementStatus,asc';
+
   private ngUnsubscribe = new Subject<void>();
 
   constructor(
@@ -84,6 +86,7 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
       this.initOverviewActiveTable();
     }
     if (this.tthUtils.isHearingStatusPlanned(this.hearingStatus)) {
+      this.sorting = 'swissCanton,asc';
       this.tableColumns = this.getPlannedTableColumns();
       this.showAddNewTimetableHearingButton = true;
       this.showStartTimetableHearingButton = true;
@@ -91,6 +94,7 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
       this.initOverviewPlannedTable();
     }
     if (this.tthUtils.isHearingStatusArchived(this.hearingStatus)) {
+      this.sorting = 'swissCanton,asc';
       this.tableColumns = this.getArchivedTableColumns();
       this.showDownloadCsvButton = true;
       this.initOverviewArchivedTable();
@@ -108,7 +112,7 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
         undefined,
         pagination.page,
         pagination.size,
-        [pagination.sort!, 'statementStatus,asc']
+        [pagination.sort!, this.sorting]
       )
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((container) => {
@@ -305,7 +309,7 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
     this.getOverview({
       page: 0,
       size: 10,
-      sort: 'statementStatus,asc',
+      sort: this.sorting,
     });
   }
 
