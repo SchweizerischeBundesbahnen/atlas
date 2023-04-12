@@ -40,6 +40,8 @@ import {
 import { TthChangeCantonDialogService } from './tth-change-canton-dialog/service/tth-change-canton-dialog.service';
 import { FileDownloadService } from '../../../core/components/file-upload/file/file-download.service';
 import { AuthService } from '../../../core/auth/auth.service';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogManageTthComponent } from '../dialog-manage-tth/dialog-manage-tth.component';
 
 @Component({
   selector: 'app-timetable-hearing-overview-detail',
@@ -101,7 +103,8 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     private readonly tthTableService: TthTableService,
     private readonly newTimetableHearingYearDialogService: NewTimetableHearingYearDialogService,
     private readonly translateService: TranslateService,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private readonly matDialog: MatDialog
   ) {}
 
   get isHearingYearActive(): boolean {
@@ -220,7 +223,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
   }
 
   manageTimetableHearing() {
-    console.log('manageTimetableHearing');
+    this.matDialog.open(DialogManageTthComponent);
   }
 
   addNewStatement() {
