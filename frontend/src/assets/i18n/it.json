@@ -531,6 +531,12 @@
     }
   },
   "TTH": {
+    "DIALOG": {
+      "STATUS_CHANGE": "Modificare lo stato",
+      "COMMENT_LABEL": "Commento (facoltativo)",
+      "BACK": "Indietro",
+      "STATUS_CHANGE_MESSAGE": "Modifica la dichiarazioni per l'orario selezionata."
+    },
     "TAB": {
       "ACTUAL": "Audizioni attuali",
       "PLANNED": "Audizioni programmate",
