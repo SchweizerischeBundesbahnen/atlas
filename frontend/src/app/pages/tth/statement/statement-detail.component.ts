@@ -33,6 +33,8 @@ import { TthUtils } from '../util/tth-utils';
 export class StatementDetailComponent implements OnInit {
   YEAR_OPTIONS: number[] = [];
   CANTON_OPTIONS: Canton[] = [];
+  readonly extractEnumCanton = (option: Canton) => option.enumCanton;
+  readonly extractShort = (option: Canton) => option.short;
   STATUS_OPTIONS: StatementStatus[] = [];
   ttfnValidOn: Date | undefined = undefined;
 
