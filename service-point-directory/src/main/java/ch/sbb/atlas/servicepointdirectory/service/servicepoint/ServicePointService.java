@@ -23,7 +23,7 @@ public class ServicePointService {
   private final VersionableService versionableService;
 
   public Page<ServicePointVersion> findAll(ServicePointSearchRestrictions servicePointSearchRestrictions) {
-    return servicePointVersionRepository.findAll(servicePointSearchRestrictions.getSpecification(),
+    return servicePointVersionRepository.loadByIdsFindBySpecification(servicePointSearchRestrictions.getSpecification(),
         servicePointSearchRestrictions.getPageable());
   }
 
