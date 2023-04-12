@@ -73,6 +73,7 @@ export class TthDialogComponent implements OnInit {
     if (this.form.valid) {
       this.timetableHearingService.createHearingYear(timetableHearingYear).subscribe((res) => {
         this.notificationService.success('TTH.DIALOG.NOTIFICATION_SUCCESS');
+        this.tthDialogService.closeConfirmDialog();
         console.log(res);
       });
     }
