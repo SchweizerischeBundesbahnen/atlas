@@ -7,6 +7,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { TableFilterConfig } from '../table-filter/table-filter-config';
 import { TableService } from './table.service';
 import { TablePagination } from './table-pagination';
+import { isEmpty } from '../../util/strings';
 
 @Component({
   selector: 'app-table [tableData][tableColumns][editElementEvent]',
@@ -50,10 +51,8 @@ export class TableComponent<DATATYPE> implements OnInit {
     // set default sorting
     if (this.sortingDisabled) {
       this.tableService.sortActive = '';
-    } else {
-      if (this.tableService.sortActive.length === 0) {
-        this.tableService.sortActive = this.tableColumns[0].value!;
-      }
+    } else if (isEmpty(this.sortActive)) {
+      this.tableService.sortActive = this.tableColumns[0].value!;
     }
 
     this.tableInitialized.emit({
