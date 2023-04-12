@@ -1,0 +1,33 @@
+.slide-track {
+  width: 50px;
+  border-radius: 10px;
+  height: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.slide-track-off {
+  @extend .slide-track;
+  background-color: red;
+}
+
+.slide-track-on {
+  @extend .slide-track;
+  background-color: green;
+
+  .slide-toggle {
+    transform: translateX(25px);
+  }
+}
+
+.slide-btn {
+  border: unset;
+  background-color: yellow;
+}
+
+.slide-toggle {
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+  background-color: gray;
+}
