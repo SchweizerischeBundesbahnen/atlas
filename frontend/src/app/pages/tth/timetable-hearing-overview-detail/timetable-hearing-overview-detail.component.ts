@@ -193,7 +193,6 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
   }
 
   changeSelectedStatus(changedStatus: ColumnDropDownEvent) {
-    console.log(changedStatus.value);
     this.tthStatusChangeDialog.onClick(changedStatus).subscribe((result) => {
       if (result) {
         this.ngOnInit();

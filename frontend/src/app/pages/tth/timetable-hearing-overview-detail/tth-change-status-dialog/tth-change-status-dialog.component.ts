@@ -17,7 +17,7 @@ import { DialogService } from 'src/app/core/components/dialog/dialog.service';
 export class TthChangeStatusDialogComponent {
   tthChangeStatusFormGroup = new FormGroup({
     justification: new FormControl(this.data.ths.justification, [
-      AtlasFieldLengthValidator.comments,
+      AtlasFieldLengthValidator.statement,
       WhitespaceValidator.blankOrEmptySpaceSurrounding,
       AtlasCharsetsValidator.iso88591,
     ]),
@@ -32,7 +32,6 @@ export class TthChangeStatusDialogComponent {
   ) {}
 
   onClick(): void {
-    console.log('asdasdas');
     if (this.tthChangeStatusFormGroup.valid) {
       if (this.tthChangeStatusFormGroup.controls['justification'].value) {
         this.data.ths.justification = this.tthChangeStatusFormGroup.controls['justification'].value;
