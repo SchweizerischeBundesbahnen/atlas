@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { StatusChangeData } from './status-change-data';
+import { StatusChangeData } from './model/status-change-data';
 import { TimetableHearingService } from '../../../../api';
 import { FormControl, FormGroup } from '@angular/forms';
 import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
@@ -39,7 +39,7 @@ export class TthChangeStatusDialogComponent {
         this.data.ths.justification = this.tthChangeStatusFormGroup.controls['justification'].value;
       }
       this.timetableHearingService
-        .updateHearingStatement(this.data.id, this.data.ths)
+        .updateHearingStatement(this.data.ths.id!, this.data.ths)
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe(() => {
           this.notificationService.success('WORKFLOW.NOTIFICATION.START.SUCCESS');
