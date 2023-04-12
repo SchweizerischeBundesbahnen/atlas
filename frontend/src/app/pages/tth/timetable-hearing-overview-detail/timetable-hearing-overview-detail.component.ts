@@ -18,7 +18,7 @@ import { MatSelectChange } from '@angular/material/select';
 import { TthUtils } from '../tth-utils';
 import { TablePagination } from '../../../core/components/table/table-pagination';
 import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
-import { TableService } from '../../../core/components/table/table.service';
+import { TthTableService } from '../tth-table.service';
 
 @Component({
   selector: 'app-timetable-hearing-overview-detail',
@@ -64,7 +64,7 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
     private readonly timetableHearingService: TimetableHearingService,
     private readonly overviewToTabService: OverviewToTabShareDataService,
     private readonly tthUtils: TthUtils,
-    private readonly tableService: TableService
+    private readonly tthTableService: TthTableService
   ) {}
 
   get isHearingYearActive(): boolean {
@@ -80,6 +80,7 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
     this.dafaultDropdownCantonSelection = this.initDefatulDropdownCantonSelection();
     this.hearingStatus = this.route.snapshot.data.hearingStatus;
     if (this.tthUtils.isHearingStatusActive(this.hearingStatus)) {
+      this.tthTableService.activeTabPage = Pages.TTH_ACTIVE;
       this.tableColumns = this.getActiveTableColumns();
       this.showManageTimetableHearingButton = this.isSwissCanton;
       this.showAddNewStatementButton = !this.isSwissCanton;
@@ -87,6 +88,7 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
       this.initOverviewActiveTable();
     }
     if (this.tthUtils.isHearingStatusPlanned(this.hearingStatus)) {
+      this.tthTableService.activeTabPage = Pages.TTH_PLANNED;
       this.sorting = 'swissCanton,asc';
       this.tableColumns = this.getPlannedTableColumns();
       this.showAddNewTimetableHearingButton = true;
@@ -95,6 +97,7 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
       this.initOverviewPlannedTable();
     }
     if (this.tthUtils.isHearingStatusArchived(this.hearingStatus)) {
+      this.tthTableService.activeTabPage = Pages.TTH_ARCHIVED;
       this.sorting = 'swissCanton,asc';
       this.tableColumns = this.getArchivedTableColumns();
       this.showDownloadCsvButton = true;
@@ -310,9 +313,9 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
 
   private initOverviewTable() {
     this.getOverview({
-      page: this.tableService.pageIndex,
-      size: this.tableService.pageSize,
-      sort: this.tableService.sortString,
+      page: this.tthTableService.pageIndex,
+      size: this.tthTableService.pageSize,
+      sort: this.tthTableService.sortString,
     });
   }
 
