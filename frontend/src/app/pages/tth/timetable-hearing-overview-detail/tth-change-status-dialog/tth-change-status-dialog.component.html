@@ -4,13 +4,19 @@
   </button>
 </div>
 <div class="dialog" data-cy="dialog">
-  <h1 class="font-bold-4xl">{{ data.title | translate }}</h1>
-  <mat-dialog-content class="font-regular-base message">{{ data.ths }}</mat-dialog-content>
-  <div class="pt-2 pb-5" style="min-width: 30rem">
+  <div class="mb-5">
+    <span class="font-bold-4xl">{{ data.title | translate }}</span>
+    <div class="mb-2">
+      <br />
+    </div>
+    <span class="font-regular-lg message">{{ data.message | translate }}</span>
+  </div>
+  <div class="pt-2 pb-5 justification">
     <form-comment
       [controlName]="'justification'"
       [formGroup]="tthChangeStatusFormGroup"
       [label]="'TTH.DIALOG.COMMENT_LABEL'"
+      maxChars="5000"
     ></form-comment>
   </div>
   <mat-dialog-actions class="justify-content-end">
