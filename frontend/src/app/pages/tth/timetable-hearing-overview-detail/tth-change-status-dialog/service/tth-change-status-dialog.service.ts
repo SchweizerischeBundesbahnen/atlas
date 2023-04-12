@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { TthChangeStatusDialogComponent } from './tth-change-status-dialog.component';
-import { ColumnDropDownEvent } from '../../../../core/components/table/column-drop-down-event';
+import { TthChangeStatusDialogComponent } from '../tth-change-status-dialog.component';
+import { ColumnDropDownEvent } from '../../../../../core/components/table/column-drop-down-event';
 
 @Injectable({
   providedIn: 'root',
