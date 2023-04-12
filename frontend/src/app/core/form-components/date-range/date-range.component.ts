@@ -16,7 +16,7 @@ export class DateRangeComponent {
   @Input() infoIconTitleFrom = '';
   @Input() infoIconTitleUntil = '';
   @Input() required = true;
-  @Input() setDatumExamples = false;
+  @Input() setDateExamples = false;
 
   MIN_DATE = MIN_DATE;
   MAX_DATE = MAX_DATE;

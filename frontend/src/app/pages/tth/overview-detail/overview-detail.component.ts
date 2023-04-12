@@ -181,7 +181,6 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
   }
 
   addNewTimetableHearing() {
-    console.log('addNewTimetableHearing');
     this.tthDialogService.confirm({
       title: 'TTH.DIALOG.NEW_PLAN_TIMETABLE',
     });
