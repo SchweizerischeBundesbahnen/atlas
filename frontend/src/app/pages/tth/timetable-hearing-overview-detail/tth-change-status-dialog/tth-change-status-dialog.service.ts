@@ -29,9 +29,4 @@ export class TthChangeStatusDialogService {
 
     return this.changeStatusDialog.afterClosed().pipe(map((value) => (value ? value : true)));
   }
-
-  closeConfirmDialog(): void {
-    this.changeStatusDialog?.close();
-    this.changeStatusDialog = undefined;
-  }
 }
