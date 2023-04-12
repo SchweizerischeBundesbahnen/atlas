@@ -17,7 +17,7 @@ export class TthChangeStatusDialogService {
     this.changeStatusDialog = this.dialog.open(TthChangeStatusDialogComponent, {
       data: {
         title: 'TTH.DIALOG.STATUS_CHANGE',
-        message: 'TODO',
+        message: 'TTH.DIALOG.STATUS_CHANGE_MESSAGE',
         cancelText: 'TTH.DIALOG.BACK',
         confirmText: 'TTH.DIALOG.STATUS_CHANGE',
         id: changedStatus.value.id,
