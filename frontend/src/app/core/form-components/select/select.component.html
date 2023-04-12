@@ -1,0 +1,29 @@
+<form [formGroup]="formGroup" class="atlas-select">
+  <mat-label
+    *ngIf="label"
+    class="font-bold-lg subtitle-margin"
+    [ngClass]="required ? 'required-indicator' : ''"
+  >
+    {{ label | translate }}
+  </mat-label>
+  <div *ngIf="additionalLabelspace" class="fake-lable-space"></div>
+  <div class="multi-select-search">
+    <mat-select
+      [formControlName]="controlName"
+      [attr.data-cy]="dataCy"
+      placeholder="{{ 'FORM.DROPDOWN_PLACEHOLDER' | translate }}"
+    >
+      <mat-option *ngFor="let option of options" [value]="valueExtractor(option)">
+        <ng-container
+          *ngTemplateOutlet="matOptionPrefix; context: getAsObject(option)"
+        ></ng-container>
+        <ng-template [ngIf]="optionTranslateLabelPrefix" [ngIfElse]="rawOption">
+          {{ optionTranslateLabelPrefix + displayExtractor(option) | translate }}
+        </ng-template>
+        <ng-template #rawOption>
+          {{ displayExtractor(option) }}
+        </ng-template>
+      </mat-option>
+    </mat-select>
+  </div>
+</form>
