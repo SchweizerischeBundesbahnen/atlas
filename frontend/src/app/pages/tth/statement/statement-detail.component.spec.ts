@@ -21,6 +21,8 @@ import { AtlasSpacerComponent } from '../../../core/components/spacer/atlas-spac
 import { DetailFooterComponent } from '../../../core/components/detail-footer/detail-footer.component';
 import { DetailPageContainerComponent } from '../../../core/components/detail-page-container/detail-page-container.component';
 import { MockAtlasButtonComponent } from '../../../app.testing.mocks';
+import { Component, Input } from '@angular/core';
+import { CreationEditionRecord } from '../../../core/components/base-detail/user-edit-info/creation-edition-record';
 
 const existingStatement: TimetableHearingStatement = {
   id: 1,
@@ -51,6 +53,15 @@ const mockTimetableHearingService = jasmine.createSpyObj('timetableHearingServic
   'createStatement',
   'updateHearingStatement',
 ]);
+
+@Component({
+  selector: 'app-user-detail-info',
+  template: '<p>MockUserDetailInfoComponent</p>',
+})
+class MockUserDetailInfoComponent {
+  @Input() short = false;
+  @Input() record?: CreationEditionRecord;
+}
 
 describe('StatementDetailComponent for existing statement', () => {
   beforeEach(() => {
@@ -148,6 +159,7 @@ function setupTestBed(activatedRoute: {
       CommentComponent,
       LinkIconComponent,
       MockAtlasButtonComponent,
+      MockUserDetailInfoComponent,
     ],
     imports: [AppTestingModule, FormModule],
     providers: [
