@@ -8,7 +8,7 @@ const tthDialogData = {
   title: 'Question',
 };
 
-fdescribe('TthDialogService', () => {
+describe('TthDialogService', () => {
   let tthDialogService: TthDialogService;
 
   const tthDialogSpy = jasmine.createSpyObj('tthDialog', ['open']);
