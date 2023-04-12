@@ -4,12 +4,15 @@ import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion.Fields;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import java.util.List;
+import java.util.function.Function;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -19,9 +22,20 @@ public interface ServicePointVersionRepository extends JpaRepository<ServicePoin
   @EntityGraph(attributePaths = {Fields.servicePointGeolocation, Fields.categories, Fields.meansOfTransport})
   List<ServicePointVersion> findAllByNumberOrderByValidFrom(ServicePointNumber number);
 
-  @Override
-  Page<ServicePointVersion> findAll(Specification specification, Pageable pageable);
-
   boolean existsByNumber(ServicePointNumber servicePointNumber);
 
+  @Override
+  @EntityGraph(attributePaths = {Fields.servicePointGeolocation, Fields.categories, Fields.meansOfTransport})
+  List<ServicePointVersion> findAllById(Iterable<Long> ids);
+
+  default Page<ServicePointVersion> loadByIdsFindBySpecification(Specification<ServicePointVersion> specification,
+      Pageable pageable) {
+    Function<FetchableFluentQuery<ServicePointVersion>, Page<IdProjection>> idProjection =
+        i -> i.project("id").as(IdProjection.class)
+            .page(pageable);
+    Page<IdProjection> pagedIds = findBy(specification, idProjection);
+
+    List<ServicePointVersion> loadedObjectsById = findAllById(pagedIds.getContent().stream().map(IdProjection::getId).toList());
+    return new PageImpl<>(loadedObjectsById, pagedIds.getPageable(), pagedIds.getTotalElements());
+  }
 }
