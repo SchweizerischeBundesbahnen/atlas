@@ -1,0 +1,30 @@
+<!-- with slides -->
+<ng-template [ngIf]="true">
+  <h2>{{ 'title' | translate }}</h2>
+
+  <div class="p-5">
+    <span>{{ 'one' | translate }}</span>
+    <!--    <slider></slider>-->
+    <button type="button" class="slide-btn" (click)="firstBtnOn = !firstBtnOn">
+      <div [class]="firstBtnOn ? 'slide-track-on' : 'slide-track-off'">
+        <div class="slide-toggle"></div>
+      </div>
+    </button>
+  </div>
+
+  <div>
+    <span>{{ 'two' | translate }}</span>
+    <!--    <slider></slider>-->
+  </div>
+
+  <div>
+    <span>{{ 'three' | translate }}</span>
+    <!--    <slider></slider>-->
+  </div>
+
+  <!--  <atlas-button>{{ 'save and close' | translate }}</atlas-button>-->
+  <!--  <atlas-button>{{ 'close hearing year' | translate }}</atlas-button>-->
+</ng-template>
+
+<!-- with confirm text -->
+<ng-template> </ng-template>

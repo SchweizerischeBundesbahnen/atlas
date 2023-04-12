@@ -37,7 +37,8 @@ export class AtlasButtonComponent {
     }
     if (
       this.buttonType === AtlasButtonType.REVOKE ||
-      this.buttonType === AtlasButtonType.SKIP_WORKFLOW
+      this.buttonType === AtlasButtonType.SKIP_WORKFLOW ||
+      this.buttonType === AtlasButtonType.MANAGE_TIMETABLE_HEARING
     ) {
       return this.isAtLeastSupervisor();
     }
@@ -108,6 +109,7 @@ export class AtlasButtonComponent {
         AtlasButtonType.CREATE,
         AtlasButtonType.CREATE_CHECKING_PERMISSION,
         AtlasButtonType.CANTON_WRITE_PERMISSION,
+        AtlasButtonType.MANAGE_TIMETABLE_HEARING,
       ].includes(this.buttonType)
     ) {
       return 'atlas-raised-button mat-mdc-raised-button';
