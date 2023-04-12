@@ -8,6 +8,7 @@ import { WhitespaceValidator } from '../../../../core/validation/whitespace/whit
 import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { DialogService } from 'src/app/core/components/dialog/dialog.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-tth-change-status-dialog',
@@ -22,6 +23,7 @@ export class TthChangeStatusDialogComponent {
       AtlasCharsetsValidator.iso88591,
     ]),
   });
+  private ngUnsubscribe = new Subject<void>();
 
   constructor(
     public dialogRef: MatDialogRef<TthChangeStatusDialogComponent>,
@@ -38,7 +40,8 @@ export class TthChangeStatusDialogComponent {
       }
       this.timetableHearingService
         .updateHearingStatement(this.data.id, this.data.ths)
-        .subscribe((r) => {
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe(() => {
           this.notificationService.success('WORKFLOW.NOTIFICATION.START.SUCCESS');
           this.dialogRef.close();
         });
