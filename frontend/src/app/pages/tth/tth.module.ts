@@ -23,8 +23,12 @@ import { TableService } from '../../core/components/table/table.service';
   imports: [CoreModule, TthRoutingModule, FormModule],
   providers: [
     {
-      provide: TableService,
+      provide: TthTableService,
       useClass: TthTableService,
+    },
+    {
+      provide: TableService,
+      useExisting: TthTableService,
     },
   ],
 })
