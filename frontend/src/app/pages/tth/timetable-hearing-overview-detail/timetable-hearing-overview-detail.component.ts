@@ -18,7 +18,7 @@ import { MatSelectChange } from '@angular/material/select';
 import { TableService } from '../../../core/components/table/table.service';
 import { TthUtils } from '../tth-utils';
 import { TablePagination } from '../../../core/components/table/table-pagination';
-import { TthChangeStatusDialogService } from './tth-change-status-dialog/tth-change-status-dialog.service';
+import { TthChangeStatusDialogService } from './tth-change-status-dialog/service/tth-change-status-dialog.service';
 import { ColumnDropDownEvent } from '../../../core/components/table/column-drop-down-event';
 import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
 import { TthTableService } from '../tth-table.service';
