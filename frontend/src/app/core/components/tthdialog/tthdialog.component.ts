@@ -13,6 +13,7 @@ import { NotificationService } from '../../notification/notification.service';
 import { DialogService } from '../dialog/dialog.service';
 import { TthDialogService } from './tthdialog.service';
 import { Moment } from 'moment';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-tthdialog',
@@ -34,6 +35,7 @@ export class TthDialogComponent implements OnInit {
   );
   YEAR_OPTIONS: number[] = [];
   defaultYearSelection = this.YEAR_OPTIONS[0];
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: TthDialogData,
     private readonly timetableHearingService: TimetableHearingService,
@@ -49,6 +51,7 @@ export class TthDialogComponent implements OnInit {
   initOverviewOfferedYears() {
     this.timetableHearingService
       .getHearingYears([HearingStatus.Active, HearingStatus.Planned])
+      .pipe(take(1))
       .subscribe((timetableHearingYears) => {
         if (timetableHearingYears.objects) {
           const activeYear = this.getActiveYear(timetableHearingYears.objects);
@@ -60,21 +63,18 @@ export class TthDialogComponent implements OnInit {
   }
 
   createNewTimetableHearingYear() {
+    const hearingFromDate = this.form.controls['validFrom'].value?.toDate();
+    const hearingToDate = this.form.controls['validTo'].value?.toDate();
     const timetableHearingYear: TimetableHearingYear = {
       timetableYear: Number(this.form.controls['timetableYear'].value),
-      hearingFrom: this.form.controls['validFrom'].value?.toDate()
-        ? this.form.controls['validFrom'].value?.toDate()
-        : moment().toDate(),
-      hearingTo: this.form.controls['validTo'].value?.toDate()
-        ? this.form.controls['validTo'].value?.toDate()
-        : moment().toDate(),
+      hearingFrom: hearingFromDate ? hearingFromDate : moment().toDate(),
+      hearingTo: hearingToDate ? hearingToDate : moment().toDate(),
     };
     ValidationService.validateForm(this.form);
     if (this.form.valid) {
-      this.timetableHearingService.createHearingYear(timetableHearingYear).subscribe((res) => {
+      this.timetableHearingService.createHearingYear(timetableHearingYear).subscribe(() => {
         this.notificationService.success('TTH.DIALOG.NOTIFICATION_SUCCESS');
         this.tthDialogService.closeConfirmDialog();
-        console.log(res);
       });
     }
   }
@@ -83,7 +83,7 @@ export class TthDialogComponent implements OnInit {
     const timetableHearingYear = timetableHearingYears.find((thy) => {
       return thy.hearingStatus === HearingStatus.Active;
     });
-    if (timetableHearingYear === undefined) {
+    if (!timetableHearingYear) {
       return new Date().getFullYear();
     }
     return timetableHearingYear.timetableYear;
@@ -119,13 +119,7 @@ export class TthDialogComponent implements OnInit {
     proposedYear: number,
     timetableHearingYears: Array<TimetableHearingYear>
   ): boolean {
-    const years: TimetableHearingYear[] = [];
-    for (const i in timetableHearingYears) {
-      if (proposedYear === timetableHearingYears[i].timetableYear) {
-        years.push(timetableHearingYears[i]);
-      }
-    }
-    return years.length > 0;
+    return timetableHearingYears.filter((year) => year.timetableYear === proposedYear).length > 0;
   }
 
   closeDialog() {
