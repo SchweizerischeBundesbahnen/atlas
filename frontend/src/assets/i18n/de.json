@@ -534,7 +534,8 @@
     "DIALOG": {
       "STATUS_CHANGE": "Status ändern",
       "COMMENT_LABEL": "Kommentar dazu (optional)",
-      "BACK": "Zurück"
+      "BACK": "Zurück",
+      "STATUS_CHANGE_MESSAGE": "Sie ändern die ausgewählte Stellungnahme."
     },
     "TAB": {
       "ACTUAL": "Aktuelle Anhörung",
