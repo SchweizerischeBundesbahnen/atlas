@@ -54,7 +54,7 @@ describe('TthDialogComponent', () => {
   };
 
   function getCurrentYear() {
-    return new Date().getFullYear();
+    return new Date().getUTCFullYear();
   }
 
   beforeEach(async () => {
