@@ -3,8 +3,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { TthChangeStatusDialogService } from './tth-change-status-dialog.service';
-import { ColumnDropDownEvent } from '../../../../core/components/table/column-drop-down-event';
-import { SwissCanton, TimetableHearingStatement } from '../../../../api';
+import { ColumnDropDownEvent } from '../../../../../core/components/table/column-drop-down-event';
+import { SwissCanton, TimetableHearingStatement } from '../../../../../api';
 
 const statement: TimetableHearingStatement = {
   id: 1,
