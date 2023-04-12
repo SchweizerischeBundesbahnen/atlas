@@ -10,22 +10,24 @@ export class TthTableService extends TableService implements OnDestroy {
   private readonly tabRouteRegex: RegExp = new RegExp(
     `(${Pages.TTH_ACTIVE.path}|${Pages.TTH_PLANNED.path}|${Pages.TTH_ARCHIVED.path})`
   );
-  private oldTabPath: string | null = null;
+  private oldTabPath: string | null;
   private navigationEndSubscription: Subscription;
 
   constructor(private readonly router: Router) {
     super();
+    this.oldTabPath = this.getTabPathFromRegexMatches(this.router.url.match(this.tabRouteRegex));
     this.navigationEndSubscription = this.router.events
       .pipe(
         filter((routerEvent): routerEvent is NavigationEnd => routerEvent instanceof NavigationEnd)
       )
       .subscribe((navigationEnd) => {
-        // compare newTabPath to oldTabPath => reset table settings or nothing
-        const matches: RegExpMatchArray | null = navigationEnd.url.match(this.tabRouteRegex);
-        const newTabPath: string | null = this.getTabPathFromRegexMatch(matches);
-        // reset or nothing
+        // compare newTabPath to oldTabPath: if different => reset table settings
+        const matches: RegExpMatchArray | null = navigationEnd.urlAfterRedirects.match(
+          this.tabRouteRegex
+        );
+        const newTabPath: string | null = this.getTabPathFromRegexMatches(matches);
         if (this.oldTabPath !== newTabPath) {
-          this.reset();
+          this.resetTableSettings();
           this.oldTabPath = newTabPath;
         }
       });
@@ -35,17 +37,14 @@ export class TthTableService extends TableService implements OnDestroy {
     this.navigationEndSubscription.unsubscribe();
   }
 
-  private reset(): void {
+  private resetTableSettings(): void {
     this.pageSize = 10;
     this.pageIndex = 0;
     this.sortActive = '';
     this.sortDirection = 'asc';
   }
 
-  private getTabPathFromRegexMatch(matches: RegExpMatchArray | null): string | null {
-    if (!matches) {
-      return null;
-    }
-    return matches['0'];
+  private getTabPathFromRegexMatches(matches: RegExpMatchArray | null): string | null {
+    return matches ? matches['0'] : null;
   }
 }
