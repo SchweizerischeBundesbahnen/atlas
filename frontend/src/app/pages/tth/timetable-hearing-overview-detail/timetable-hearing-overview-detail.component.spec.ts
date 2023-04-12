@@ -108,10 +108,10 @@ async function baseTestConfiguration() {
       { provide: TranslatePipe },
       { provide: DisplayDatePipe },
       {
-        provide: TableService,
+        provide: TthTableService,
         useValue: jasmine.createSpyObj<TthTableService>(
           [],
-          ['pageIndex', 'pageSize', 'sortString']
+          ['pageIndex', 'pageSize', 'sortString', 'activeTabPage']
         ),
       },
     ],
