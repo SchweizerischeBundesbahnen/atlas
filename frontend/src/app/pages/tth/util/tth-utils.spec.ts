@@ -1,4 +1,3 @@
-import { TestBed } from '@angular/core/testing';
 import { TthUtils } from './tth-utils';
 import { HearingStatus, TimetableHearingYear } from '../../../api';
 import moment from 'moment';
@@ -6,32 +5,23 @@ import moment from 'moment';
 describe('TthUtils', () => {
   let util: TthUtils;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    util = TestBed.inject(TthUtils);
-  });
-
-  it('should be created', () => {
-    expect(util).toBeTruthy();
-  });
-
   it('should return true when HearingStatus is ACTIVE', () => {
     //when
-    const result = util.isHearingStatusActive(HearingStatus.Active);
+    const result = TthUtils.isHearingStatusActive(HearingStatus.Active);
     //then
     expect(result).toBeTruthy();
   });
 
   it('should return true when HearingStatus is PLANNED', () => {
     //when
-    const result = util.isHearingStatusPlanned(HearingStatus.Planned);
+    const result = TthUtils.isHearingStatusPlanned(HearingStatus.Planned);
     //then
     expect(result).toBeTruthy();
   });
 
   it('should return true when HearingStatus is ARCHIVED', () => {
     //when
-    const result = util.isHearingStatusArchived(HearingStatus.Archived);
+    const result = TthUtils.isHearingStatusArchived(HearingStatus.Archived);
     //then
     expect(result).toBeTruthy();
   });
@@ -56,7 +46,7 @@ describe('TthUtils', () => {
       },
     ];
     //when
-    const result = util.sortByTimetableHearingYear(timetableHearingYear, false);
+    const result = TthUtils.sortByTimetableHearingYear(timetableHearingYear, false);
     //then
     expect(result[0].timetableYear).toBe(2002);
     expect(result[1].timetableYear).toBe(2004);
@@ -83,7 +73,7 @@ describe('TthUtils', () => {
       },
     ];
     //when
-    const result = util.sortByTimetableHearingYear(timetableHearingYear, true);
+    const result = TthUtils.sortByTimetableHearingYear(timetableHearingYear, true);
     //then
     expect(result[2].timetableYear).toBe(2002);
     expect(result[1].timetableYear).toBe(2004);
