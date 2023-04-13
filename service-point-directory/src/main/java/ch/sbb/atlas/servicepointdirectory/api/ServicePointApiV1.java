@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.api;
 
+import ch.sbb.atlas.configuration.Role;
 import ch.sbb.atlas.imports.servicepoint.model.ServicePointImportReqModel;
 import ch.sbb.atlas.imports.servicepoint.model.ServicePointItemImportResult;
 import ch.sbb.atlas.api.model.Container;
@@ -12,6 +13,7 @@ import org.springdoc.core.annotations.ParameterObject;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,6 +35,7 @@ public interface ServicePointApiV1 {
   @GetMapping("versions/{id}")
   ServicePointVersionModel getServicePointVersion(@PathVariable Long id);
 
+  @Secured(Role.ROLE_PREFIX + Role.ATLAS_ADMIN)
   @PostMapping("import")
   List<ServicePointItemImportResult> importServicePoints(@RequestBody @Valid ServicePointImportReqModel servicePoints);
 
