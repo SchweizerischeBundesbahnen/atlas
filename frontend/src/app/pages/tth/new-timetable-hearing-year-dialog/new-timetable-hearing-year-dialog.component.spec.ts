@@ -15,7 +15,7 @@ const mockTimetableHearingService = jasmine.createSpyObj('timetableHearingServic
   'getHearingYears',
 ]);
 
-describe('TimetableHearingDialogComponent', () => {
+describe('NewTimetableHearingYearDialogComponent', () => {
   let newTimetableHearingYearDialogComponent: NewTimetableHearingYearDialogComponent;
   let fixture: ComponentFixture<NewTimetableHearingYearDialogComponent>;
 
