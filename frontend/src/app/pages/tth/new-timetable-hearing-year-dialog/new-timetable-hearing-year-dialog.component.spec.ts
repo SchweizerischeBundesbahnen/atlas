@@ -80,7 +80,7 @@ describe('NewTimetableHearingYearDialogComponent', () => {
     expect(newTimetableHearingYearDialogComponent).toBeTruthy();
 
     const title = fixture.debugElement.query(By.css('h1'));
-    expect(title.nativeElement.innerText).toBe('Title');
+    expect(title.nativeElement.innerText).toBe('TTH.NEW_YEAR.DIALOG.NEW_PLAN_TIMETABLE');
 
     const dropdownLabel = fixture.debugElement.query(By.css('app-atlas-label-field'));
     expect(dropdownLabel.nativeElement).toBeTruthy();
