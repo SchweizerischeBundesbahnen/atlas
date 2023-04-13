@@ -564,19 +564,21 @@
         }
       }
     },
-    "DIALOG": {
-      "NEW_PLAN_TIMETABLE": "Creare un nuovo calendario udienza",
-      "PLAN_INFO": "Calendario consultazioni anno",
-      "PLAN_DROPDOWN_TITLE": "Orario",
-      "PLAN_DROPDOWN_DESCRIPTION": "Seleziona anno",
-      "HEARING_FROM": "Audizione di",
-      "HEARING_FROM_INFO": "Calendario udienza di",
-      "HEARING_FROM_EXAMPLE": "01.01.2023.",
-      "HEARING_UNTIL": "Sentire fino a",
-      "HEARING_UNTIL_INFO": "Orario udienza fino al",
-      "HEARING_UNTIL_EXAMPLE": "31.12.2023.",
-      "SAVE": "Salvare",
-      "NOTIFICATION_SUCCESS": "Consultazione orario salvata con successo"
+    "NEW_YEAR": {
+      "DIALOG": {
+        "NEW_PLAN_TIMETABLE": "Creare un nuovo calendario udienza",
+        "PLAN_INFO": "Calendario consultazioni anno",
+        "PLAN_DROPDOWN_TITLE": "Orario",
+        "PLAN_DROPDOWN_DESCRIPTION": "Seleziona anno",
+        "HEARING_FROM": "Audizione di",
+        "HEARING_FROM_INFO": "Calendario udienza di",
+        "HEARING_FROM_EXAMPLE": "01.01.2023.",
+        "HEARING_UNTIL": "Sentire fino a",
+        "HEARING_UNTIL_INFO": "Orario udienza fino al",
+        "HEARING_UNTIL_EXAMPLE": "31.12.2023.",
+        "SAVE": "Salvare",
+        "NOTIFICATION_SUCCESS": "Consultazione orario salvata con successo"
+      }
     },
     "SELECT_CANTON": "Selezionare il Cantone",
     "SELECT_YEAR": "Selezionare l'anno",
