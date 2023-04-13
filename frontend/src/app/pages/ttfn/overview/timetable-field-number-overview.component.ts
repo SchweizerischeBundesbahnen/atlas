@@ -27,6 +27,7 @@ import {
 } from '../../../core/components/table-filter/table-filter-config';
 import { FormControl } from '@angular/forms';
 import { DEFAULT_STATUS_SELECTION } from '../../../core/constants/status.choices';
+import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
 
 @Component({
   selector: 'app-timetable-field-number-overview',
@@ -122,7 +123,7 @@ export class TimetableFieldNumberOverviewComponent implements OnDestroy {
         getActiveSearch(this.tableFilterConfig[1][1]),
         pagination.page,
         pagination.size,
-        [pagination.sort!, 'ttfnid,asc']
+        addElementsToArrayWhenNotUndefined(pagination.sort, 'ttfnid,asc')
       )
       .subscribe((container) => {
         this.timetableFieldNumbers = container.objects!;

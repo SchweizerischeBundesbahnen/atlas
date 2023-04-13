@@ -8,6 +8,8 @@ import { TimetableHearingOverviewDetailComponent } from './timetable-hearing-ove
 import { TimetableHearingOverviewTabComponent } from './timetable-hearing-overview-tab/timetable-hearing-overview-tab.component';
 import { TimetableHearingOverviewTabHeadingComponent } from './timetable-hearing-overview-tab/timetable-hearing-overview-tab-heading/timetable-hearing-overview-tab-heading.component';
 import { StatementDetailComponent } from './statement/statement-detail.component';
+import { TthTableService } from './tth-table.service';
+import { TableService } from '../../core/components/table/table.service';
 
 @NgModule({
   declarations: [
@@ -19,5 +21,15 @@ import { StatementDetailComponent } from './statement/statement-detail.component
     StatementDetailComponent,
   ],
   imports: [CoreModule, TthRoutingModule, FormModule],
+  providers: [
+    {
+      provide: TthTableService,
+      useClass: TthTableService,
+    },
+    {
+      provide: TableService,
+      useExisting: TthTableService,
+    },
+  ],
 })
 export class TthModule {}

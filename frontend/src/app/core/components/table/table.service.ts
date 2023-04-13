@@ -45,4 +45,11 @@ export class TableService {
       return `${this._sortActive},${this._sortDirection}`;
     }
   }
+
+  protected resetTableSettings(): void {
+    this._pageSize = 10;
+    this._pageIndex = 0;
+    this._sortActive = '';
+    this._sortDirection = 'asc';
+  }
 }
