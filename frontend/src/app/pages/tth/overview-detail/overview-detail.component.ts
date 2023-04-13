@@ -67,13 +67,12 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     private readonly router: Router,
     private readonly timetableHearingService: TimetableHearingService,
     private readonly overviewToTabService: OverviewToTabShareDataService,
-    private readonly tthUtils: TthUtils,
     private readonly tthStatusChangeDialog: TthChangeStatusDialogService,
     private readonly tthTableService: TthTableService
   ) {}
 
   get isHearingYearActive(): boolean {
-    return this.tthUtils.isHearingStatusActive(this.hearingStatus);
+    return TthUtils.isHearingStatusActive(this.hearingStatus);
   }
 
   get isSwissCanton(): boolean {
@@ -84,7 +83,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     this.syncCantonShortSharedDate();
     this.dafaultDropdownCantonSelection = this.initDefatulDropdownCantonSelection();
     this.hearingStatus = this.route.snapshot.data.hearingStatus;
-    if (this.tthUtils.isHearingStatusActive(this.hearingStatus)) {
+    if (TthUtils.isHearingStatusActive(this.hearingStatus)) {
       this.tthTableService.activeTabPage = Pages.TTH_ACTIVE;
       this.tableColumns = this.getActiveTableColumns();
       this.showManageTimetableHearingButton = this.isSwissCanton;
@@ -92,7 +91,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
       this.showDownloadCsvButton = true;
       this.initOverviewActiveTable();
     }
-    if (this.tthUtils.isHearingStatusPlanned(this.hearingStatus)) {
+    if (TthUtils.isHearingStatusPlanned(this.hearingStatus)) {
       this.tthTableService.activeTabPage = Pages.TTH_PLANNED;
       this.sorting = 'swissCanton,asc';
       this.tableColumns = this.getPlannedTableColumns();
@@ -101,7 +100,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
       this.showHearingDetail = true;
       this.initOverviewPlannedTable();
     }
-    if (this.tthUtils.isHearingStatusArchived(this.hearingStatus)) {
+    if (TthUtils.isHearingStatusArchived(this.hearingStatus)) {
       this.tthTableService.activeTabPage = Pages.TTH_ARCHIVED;
       this.sorting = 'swissCanton,asc';
       this.tableColumns = this.getArchivedTableColumns();
@@ -147,7 +146,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
 
   editStatement(statement: TimetableHearingStatement) {
     this.router
-      .navigate([Pages.TTH_ACTIVE.path, statement.id], {
+      .navigate([this.hearingStatus.toLowerCase(), statement.id], {
         relativeTo: this.route.parent,
       })
       .then();
@@ -249,7 +248,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
           if (timetableHearingYearContainer.objects.length === 0) {
             this.noTimetableHearingYearFound = true;
           } else if (timetableHearingYearContainer.objects.length >= 1) {
-            const timetableHearingYears = this.tthUtils.sortByTimetableHearingYear(
+            const timetableHearingYears = TthUtils.sortByTimetableHearingYear(
               timetableHearingYearContainer.objects,
               sortReverse
             );
@@ -312,7 +311,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
           timetableHearingYearContainer.objects &&
           timetableHearingYearContainer.objects?.length >= 1
         ) {
-          const timetableHearingYears = this.tthUtils.sortByTimetableHearingYear(
+          const timetableHearingYears = TthUtils.sortByTimetableHearingYear(
             timetableHearingYearContainer.objects,
             false
           );

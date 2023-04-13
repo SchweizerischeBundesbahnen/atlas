@@ -8,7 +8,9 @@ import { HearingStatus } from '../../api';
 import { StatementDetailComponent } from './statement/statement-detail.component';
 import { StatementDetailResolver } from './statement/statement-detail.resolver';
 
-const statementDetailPath = `${Pages.TTH_OVERVIEW_DETAIL.path}/${Pages.TTH_ACTIVE.path}/${Pages.TTH_STATEMENT_DETAILS.path}`;
+const statementActiveDetailPath = `${Pages.TTH_OVERVIEW_DETAIL.path}/${Pages.TTH_ACTIVE.path}/${Pages.TTH_STATEMENT_DETAILS.path}`;
+const statementPlannedDetailPath = `${Pages.TTH_OVERVIEW_DETAIL.path}/${Pages.TTH_PLANNED.path}/${Pages.TTH_STATEMENT_DETAILS.path}`;
+const statementArchivedDetailPath = `${Pages.TTH_OVERVIEW_DETAIL.path}/${Pages.TTH_ARCHIVED.path}/${Pages.TTH_STATEMENT_DETAILS.path}`;
 
 const routes: Routes = [
   {
@@ -16,10 +18,35 @@ const routes: Routes = [
     component: TimetableHearingOverviewComponent,
   },
   {
-    path: statementDetailPath,
+    path: statementActiveDetailPath,
     component: StatementDetailComponent,
     resolve: {
       statement: StatementDetailResolver,
+    },
+    data: {
+      hearingStatus: HearingStatus.Active,
+    },
+    runGuardsAndResolvers: 'always',
+  },
+  {
+    path: statementPlannedDetailPath,
+    component: StatementDetailComponent,
+    resolve: {
+      statement: StatementDetailResolver,
+    },
+    data: {
+      hearingStatus: HearingStatus.Planned,
+    },
+    runGuardsAndResolvers: 'always',
+  },
+  {
+    path: statementArchivedDetailPath,
+    component: StatementDetailComponent,
+    resolve: {
+      statement: StatementDetailResolver,
+    },
+    data: {
+      hearingStatus: HearingStatus.Archived,
     },
     runGuardsAndResolvers: 'always',
   },

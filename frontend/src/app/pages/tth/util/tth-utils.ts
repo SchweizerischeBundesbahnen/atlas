@@ -1,23 +1,19 @@
-import { Injectable } from '@angular/core';
 import { HearingStatus, TimetableHearingYear } from '../../../api';
 
-@Injectable({
-  providedIn: 'root',
-})
 export class TthUtils {
-  isHearingStatusActive(hearingStatus: HearingStatus): boolean {
+  static isHearingStatusActive(hearingStatus: HearingStatus): boolean {
     return hearingStatus === HearingStatus.Active;
   }
 
-  isHearingStatusPlanned(hearingStatus: HearingStatus): boolean {
+  static isHearingStatusPlanned(hearingStatus: HearingStatus): boolean {
     return hearingStatus === HearingStatus.Planned;
   }
 
-  isHearingStatusArchived(hearingStatus: HearingStatus): boolean {
+  static isHearingStatusArchived(hearingStatus: HearingStatus): boolean {
     return hearingStatus === HearingStatus.Archived;
   }
 
-  sortByTimetableHearingYear(
+  static sortByTimetableHearingYear(
     timetableHearingYears: TimetableHearingYear[],
     reverse: boolean
   ): TimetableHearingYear[] {
