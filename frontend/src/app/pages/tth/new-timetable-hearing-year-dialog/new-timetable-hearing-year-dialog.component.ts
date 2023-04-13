@@ -2,7 +2,6 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NewTimetableHearingYearDialogData } from './model/new-timetable-hearing-year-dialog.data';
 import { HearingStatus, TimetableHearingService, TimetableHearingYear } from '../../../api';
-import moment from 'moment/moment';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AtlasFieldLengthValidator } from '../../../core/validation/field-lengths/atlas-field-length-validator';
 import { AtlasCharsetsValidator } from '../../../core/validation/charsets/atlas-charsets-validator';
@@ -20,17 +19,17 @@ import { takeUntil } from 'rxjs/operators';
   templateUrl: './new-timetable-hearing-year-dialog.component.html',
 })
 export class NewTimetableHearingYearDialogComponent implements OnInit {
-  form: FormGroup<NewTimetableHearingYearFormGroup> = new FormGroup(
+  form: FormGroup = new FormGroup<NewTimetableHearingYearFormGroup>(
     {
       timetableYear: new FormControl(2000, [
         Validators.required,
         AtlasFieldLengthValidator.length_50,
         AtlasCharsetsValidator.sid4pt,
       ]),
-      validFrom: new FormControl<Moment | null>(null, [Validators.required]),
-      validTo: new FormControl<Moment | null>(null, [Validators.required]),
+      hearingFrom: new FormControl<Moment | null>(null, [Validators.required]),
+      hearingTo: new FormControl<Moment | null>(null, [Validators.required]),
     },
-    [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
+    [DateRangeValidator.fromGreaterThenTo('hearingFrom', 'hearingTo')]
   );
   YEAR_OPTIONS: number[] = [];
   defaultYearSelection = this.YEAR_OPTIONS[0];
@@ -64,15 +63,9 @@ export class NewTimetableHearingYearDialogComponent implements OnInit {
   }
 
   createNewTimetableHearingYear() {
-    const hearingFromDate = this.form.controls['validFrom'].value?.toDate();
-    const hearingToDate = this.form.controls['validTo'].value?.toDate();
-    const timetableHearingYear: TimetableHearingYear = {
-      timetableYear: Number(this.form.controls['timetableYear'].value),
-      hearingFrom: hearingFromDate ?? moment().toDate(),
-      hearingTo: hearingToDate ?? moment().toDate(),
-    };
     ValidationService.validateForm(this.form);
     if (this.form.valid) {
+      const timetableHearingYear = this.form.value as TimetableHearingYear;
       this.timetableHearingService
         .createHearingYear(timetableHearingYear)
         .pipe(takeUntil(this.ngUnsubscribe))
