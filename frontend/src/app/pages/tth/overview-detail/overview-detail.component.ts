@@ -32,10 +32,7 @@ import {
 import {MatSelectChange} from '@angular/material/select';
 import {TthUtils} from '../tth-utils';
 import {TablePagination} from '../../../core/components/table/table-pagination';
-import {
-  TimetableHearingDialogService
-} from '../timetable-hearing-dialog/timetable-hearing-dialog.service';
-
+import { NewTimetableHearingYearDialogService } from '../new-timetable-hearing-year-dialog/service/new-timetable-hearing-year-dialog.service';
 
 @Component({
   selector: 'app-timetable-hearing-overview-detail',
@@ -81,11 +78,11 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     private readonly router: Router,
     private readonly timetableHearingService: TimetableHearingService,
     private readonly overviewToTabService: OverviewToTabShareDataService,
-    private readonly timetableHearingDialogService: TimetableHearingDialogService,
     private readonly tthStatusChangeDialog: TthChangeStatusDialogService,
     private readonly tthTableService: TthTableService,
     private readonly tthUtils: TthUtils,
-    private readonly tthDialogService: TthDialogService
+    private readonly tthDialogService: TthDialogService,
+    private readonly timetableHearingDialogService: NewTimetableHearingYearDialogService
   ) {}
 
   get isHearingYearActive(): boolean {
