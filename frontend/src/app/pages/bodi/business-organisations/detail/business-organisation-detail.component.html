@@ -162,24 +162,16 @@
 
     <div class="col-12 d-flex mt-3 ps-1 pe-3">
       <div class="d-flex flex-column col-12">
-        <div class="info-icon-position">
-          <mat-label class="font-bold-lg subtitle-margin"
-            >{{ 'BODI.BUSINESS_ORGANISATION.BUSINESS_TYPE' | translate }}
-          </mat-label>
-        </div>
-        <div [class.disabled]="form.disabled" class="multi-select-search">
-          <mat-select
-            data-cy="businessTypes"
-            formControlName="businessTypes"
-            multiple
-            placeholder="{{ 'FORM.DROPDOWN_PLACEHOLDER' | translate }}"
-          >
-            <mat-option *ngFor="let type of BUSINESS_TYPES" [value]="type">
-              {{ 'BODI.BUSINESS_ORGANISATION.BUSINESS_TYPES.' + type | translate }}
-            </mat-option>
-          </mat-select>
-          <app-atlas-field-error [form]="form" controlName="businessTypes"></app-atlas-field-error>
-        </div>
+        <atlas-select
+          [formGroup]="form"
+          controlName="businessTypes"
+          dataCy="businessTypes"
+          label="BODI.BUSINESS_ORGANISATION.BUSINESS_TYPE"
+          optionTranslateLabelPrefix="BODI.BUSINESS_ORGANISATION.BUSINESS_TYPES."
+          [options]="BUSINESS_TYPES"
+          [multiple]="true"
+        >
+        </atlas-select>
       </div>
     </div>
     <span class="font-bold-2xl">{{ 'FORM.SUPPLEMENTARY_INFORMATION' | translate }}</span>
