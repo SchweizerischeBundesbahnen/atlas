@@ -1,5 +1,4 @@
 import { Component, OnDestroy } from '@angular/core';
-
 import { TableColumn } from '../../../core/components/table/table-column';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -18,6 +17,7 @@ import {
 } from '../../../core/components/table-filter/table-filter-config';
 import { TablePagination } from '../../../core/components/table/table-pagination';
 import { TableService } from '../../../core/components/table/table.service';
+import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
 
 @Component({
   selector: 'app-bodi-transport-companies',
@@ -103,7 +103,7 @@ export class TransportCompaniesComponent implements OnDestroy {
         getActiveSearch(this.tableFilterConfig[1][0]),
         pagination.page,
         pagination.size,
-        [pagination.sort!, 'number,asc']
+        addElementsToArrayWhenNotUndefined(pagination.sort, 'number,asc')
       )
       .subscribe((container) => {
         this.transportCompanies = container.objects!;
