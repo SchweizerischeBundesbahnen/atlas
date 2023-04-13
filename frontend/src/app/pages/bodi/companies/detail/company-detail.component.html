@@ -9,11 +9,11 @@
     {{ 'BODI.COMPANIES.BASIC_DATA' | translate }}
   </h2>
 
-  <form [formGroup]="companyFormGroup">
+  <form [formGroup]="form">
     <div class="col-12 d-flex">
       <div class="d-flex flex-column col-6 pe-3">
         <atlas-text-field
-          [formGroup]="companyFormGroup"
+          [formGroup]="form"
           controlName="uicCode"
           data-cy="uicCode"
           fieldLabel="BODI.COMPANIES.UIC_CODE"
@@ -22,7 +22,7 @@
 
       <div class="d-flex flex-column col-6 pe-3">
         <atlas-text-field
-          [formGroup]="companyFormGroup"
+          [formGroup]="form"
           controlName="countryCodeIso"
           data-cy="countryCodeIso"
           fieldLabel="BODI.COMPANIES.COUNTRY_CODE"
@@ -33,7 +33,7 @@
     <div class="col-12 d-flex">
       <div class="d-flex flex-column col-12 pe-3">
         <atlas-text-field
-          [formGroup]="companyFormGroup"
+          [formGroup]="form"
           controlName="shortName"
           data-cy="shortName"
           fieldLabel="BODI.COMPANIES.SHORT_NAME"
@@ -44,7 +44,7 @@
     <div class="col-12 d-flex">
       <div class="d-flex flex-column col-12 pe-3">
         <atlas-text-field
-          [formGroup]="companyFormGroup"
+          [formGroup]="form"
           controlName="name"
           data-cy="name"
           fieldLabel="BODI.COMPANIES.NAME"
@@ -54,24 +54,28 @@
 
     <div class="col-12 d-flex">
       <div class="d-flex flex-column col-12 pe-3">
-        <atlas-text-field controlName="url" data-cy="url" fieldLabel="BODI.COMPANIES.URL">
+        <atlas-text-field
+          [formGroup]="form"
+          controlName="url"
+          data-cy="url"
+          fieldLabel="BODI.COMPANIES.URL"
+        >
           <ng-template #customChildInputPostfixTemplate>
-            <a [attr.href]="prependHttp(companyFormGroup.value.url)" target="_blank">
+            <a [attr.href]="prependHttp(form.value.url)" target="_blank">
               <link-icon></link-icon>
             </a>
           </ng-template>
         </atlas-text-field>
       </div>
     </div>
-
-    <div class="footer fixed-bottom d-flex align-items-center justify-content-center">
-      <atlas-button
-        [mat-dialog-close]="true"
-        buttonDataCy="back-to-overview"
-        buttonText="COMMON.BACK_TO_OVERVIEW"
-        buttonType="footerNonEdit"
-      >
-      </atlas-button>
-    </div>
   </form>
+</div>
+<div class="footer fixed-bottom d-flex align-items-center justify-content-center">
+  <atlas-button
+    [mat-dialog-close]="true"
+    buttonDataCy="back-to-overview"
+    buttonText="COMMON.BACK_TO_OVERVIEW"
+    buttonType="footerNonEdit"
+  >
+  </atlas-button>
 </div>
