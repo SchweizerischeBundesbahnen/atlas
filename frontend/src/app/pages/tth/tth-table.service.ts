@@ -12,11 +12,4 @@ export class TthTableService extends TableService {
       this._activeTabPage = page;
     }
   }
-
-  private resetTableSettings(): void {
-    this.pageSize = 10;
-    this.pageIndex = 0;
-    this.sortActive = '';
-    this.sortDirection = 'asc';
-  }
 }
