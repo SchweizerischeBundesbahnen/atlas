@@ -20,6 +20,7 @@ import {
 } from '../../../../core/components/table-filter/table-filter-config';
 import { FormControl } from '@angular/forms';
 import { TablePagination } from '../../../../core/components/table/table-pagination';
+import { addElementsToArrayWhenNotUndefined } from '../../../../core/util/arrays';
 
 @Component({
   selector: 'app-lidi-workflow-overview',
@@ -106,7 +107,7 @@ export class LidiWorkflowOverviewComponent implements OnDestroy {
         getActiveSearch(this.tableFilterConfig[1][0]),
         pagination.page,
         pagination.size,
-        [pagination.sort!, 'number,asc']
+        addElementsToArrayWhenNotUndefined(pagination.sort, 'number,asc')
       )
       .subscribe((lineVersionSnapshotContainer) => {
         this.lineVersionSnapshots = lineVersionSnapshotContainer.objects!;
