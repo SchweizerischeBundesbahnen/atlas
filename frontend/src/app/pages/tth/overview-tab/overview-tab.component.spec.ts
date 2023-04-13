@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TimetableHearingOverviewTabComponent } from './timetable-hearing-overview-tab.component';
+import { OverviewTabComponent } from './overview-tab.component';
 import { AppTestingModule } from '../../../app.testing.module';
 
 describe('TimetableHearingOverviewTabComponent', () => {
-  let component: TimetableHearingOverviewTabComponent;
-  let fixture: ComponentFixture<TimetableHearingOverviewTabComponent>;
+  let component: OverviewTabComponent;
+  let fixture: ComponentFixture<OverviewTabComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TimetableHearingOverviewTabComponent],
+      declarations: [OverviewTabComponent],
       imports: [AppTestingModule],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(TimetableHearingOverviewTabComponent);
+    fixture = TestBed.createComponent(OverviewTabComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
