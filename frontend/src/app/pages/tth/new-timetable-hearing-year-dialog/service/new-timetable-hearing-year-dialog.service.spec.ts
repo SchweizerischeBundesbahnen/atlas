@@ -25,7 +25,7 @@ describe('NewTimetableHearingYearDialogService', () => {
     timetableHearingDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
     newTimetableHearingYearDialogService
-      .confirm(timetableHearingDialogData)
+      .openDialog(timetableHearingDialogData)
       .subscribe((result) => expect(result).toBeTrue());
 
     expect(timetableHearingDialogSpy.open).toHaveBeenCalled();
@@ -35,7 +35,7 @@ describe('NewTimetableHearingYearDialogService', () => {
     timetableHearingDialogSpy.open.and.returnValue({ afterClosed: () => of(false) });
 
     newTimetableHearingYearDialogService
-      .confirm(timetableHearingDialogData)
+      .openDialog(timetableHearingDialogData)
       .subscribe((result) => expect(result).toBeFalse());
 
     expect(timetableHearingDialogSpy.open).toHaveBeenCalled();
