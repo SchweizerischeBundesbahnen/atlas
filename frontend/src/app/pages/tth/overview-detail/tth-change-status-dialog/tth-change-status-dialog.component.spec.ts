@@ -69,7 +69,7 @@ describe('TthChangeStatusDialogComponent', () => {
     //then
     expect(dialogRefSpy.close).toHaveBeenCalled();
     expect(notificationServiceSpy.success).toHaveBeenCalledWith(
-      'WORKFLOW.NOTIFICATION.START.SUCCESS'
+      'TTH.NOTIFICATION.STATUS_CHANGE.SUCCESS'
     );
   });
 
