@@ -19,6 +19,24 @@ export class SelectComponent<TYPE> implements OnInit {
   @Input() optionTranslateLabelPrefix: string | undefined;
   @Input() additionalLabelspace = true;
   @Input() required = false;
+
+  private _disabled = false;
+  @Input()
+  set disabled(value: boolean) {
+    this._disabled = value;
+    if (this._isDummyForm) {
+      if (this.disabled) {
+        this.formGroup.disable();
+      } else {
+        this.formGroup.enable();
+      }
+    }
+  }
+
+  get disabled(): boolean {
+    return this._disabled;
+  }
+
   @Input() multiple = false;
   @Input() dataCy!: string;
 
@@ -33,6 +51,8 @@ export class SelectComponent<TYPE> implements OnInit {
   @Input() initialValue: any;
 
   @Output() selectChanged = new EventEmitter();
+
+  private _isDummyForm = false;
 
   ngOnInit(): void {
     if (!this.formGroup) {
@@ -64,5 +84,10 @@ export class SelectComponent<TYPE> implements OnInit {
       dummy: new FormControl(),
     });
     this.controlName = 'dummy';
+
+    this._isDummyForm = true;
+    if (this.disabled) {
+      this.formGroup.disable();
+    }
   }
 }
