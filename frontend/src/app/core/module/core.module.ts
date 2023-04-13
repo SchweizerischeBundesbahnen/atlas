@@ -34,6 +34,7 @@ import { DisplayDatePipe } from '../pipe/display-date.pipe';
 import { AtlasSpacerComponent } from '../components/spacer/atlas-spacer.component';
 import { DetailFooterComponent } from '../components/detail-footer/detail-footer.component';
 import { DetailPageContainerComponent } from '../components/detail-page-container/detail-page-container.component';
+import { SelectComponent } from '../form-components/select/select.component';
 
 const coreComponents = [
   WorkflowFormComponent,
@@ -63,6 +64,7 @@ const coreComponents = [
   RelationComponent,
   DisplayDatePipe,
   FilterTypeGuardPipe,
+  SelectComponent,
 ];
 
 @NgModule({
