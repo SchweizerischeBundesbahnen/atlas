@@ -48,19 +48,14 @@
             class="table-cell bordered-cell"
             mat-cell
           >
-            <div class="multi-select-search">
-              <mat-select
-                (click)="$event.stopPropagation()"
-                (selectionChange)="changeDropdownEvent.emit({$event,value})"
-                [(value)]="value[column.value]"
-                data-cy="table-option-type"
-                placeholder="{{ 'FORM.DROPDOWN_PLACEHOLDER' | translate }}"
-              >
-                <mat-option *ngFor="let option of column.dropdown.options" [value]="option">
-                  {{ column.dropdown.translate.withPrefix + option | translate }}
-                </mat-option>
-              </mat-select>
-            </div>
+            <atlas-select
+              (click)="$event.stopPropagation()"
+              (selectChanged)="changeDropdownEvent.emit({$event,value})"
+              [initialValue]="value[column.value]"
+              [additionalLabelspace]="false"
+              [options]="column.dropdown.options"
+              [optionTranslateLabelPrefix]="column.dropdown.translate.withPrefix"
+            ></atlas-select>
           </td>
         </div>
       </ng-container>

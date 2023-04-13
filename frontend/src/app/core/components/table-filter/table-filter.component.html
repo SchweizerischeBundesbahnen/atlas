@@ -50,22 +50,16 @@
         *ngIf="filterConfig | filterTypeGuard : isMultiSelect as multiSelect"
         [class]="multiSelect.elementWidthCssClass"
       >
-        <mat-label class="font-bold-lg">{{
-          multiSelect.labelTranslationKey | translate
-        }}</mat-label>
-        <div class="multi-select-search">
-          <mat-select
-            (selectionChange)="multiSelectChanged($event, rowIndex, filterConfigIndex)"
-            [value]="multiSelect.activeSearch"
-            class="color-primary-400"
-            attr.data-cy="table-filter-multi-select-{{ rowIndex }}-{{ filterConfigIndex }}"
-            multiple
-          >
-            <mat-option *ngFor="let option of multiSelect.selectOptions" [value]="option">{{
-              multiSelect.typeTranslationKeyPrefix + option | translate
-            }}</mat-option>
-          </mat-select>
-        </div>
+        <atlas-select
+          (selectChanged)="multiSelectChanged($event, rowIndex, filterConfigIndex)"
+          [initialValue]="multiSelect.activeSearch"
+          dataCy="table-filter-multi-select-{{ rowIndex }}-{{ filterConfigIndex }}"
+          [label]="multiSelect.labelTranslationKey"
+          [additionalLabelspace]="false"
+          [options]="multiSelect.selectOptions"
+          [optionTranslateLabelPrefix]="multiSelect.typeTranslationKeyPrefix"
+          [multiple]="true"
+        ></atlas-select>
       </div>
 
       <div
@@ -73,6 +67,7 @@
         [class]="dateSelect.elementWidthCssClass"
       >
         <mat-label class="font-bold-lg">{{ 'COMMON.SEARCH.VALIDITY' | translate }}</mat-label>
+        <atlas-spacer height="3px"></atlas-spacer>
         <div class="search-date-field">
           <div class="container-date-field">
             <input

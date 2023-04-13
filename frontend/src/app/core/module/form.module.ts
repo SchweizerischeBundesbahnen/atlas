@@ -22,7 +22,6 @@ import { UploadIconComponent } from '../form-components/upload-icon/upload-icon.
 import { TimetableFieldNumberSelectComponent } from '../form-components/ttfn-select/timetable-field-number-select.component';
 import { TimetableFieldNumberSelectOptionPipe } from '../form-components/ttfn-select/ttfn-select-option.pipe';
 import { TransportCompanySelectComponent } from '../form-components/tu-select/transport-company-select.component';
-import { SelectComponent } from '../form-components/select/select.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +38,6 @@ import { SelectComponent } from '../form-components/select/select.component';
     InfoIconComponent,
     LinkIconComponent,
     SearchSelectComponent,
-    SelectComponent,
     DialogCloseComponent,
     BoSelectionDisplayPipe,
     TimetableFieldNumberSelectOptionPipe,
@@ -62,7 +60,6 @@ import { SelectComponent } from '../form-components/select/select.component';
     UploadIconComponent,
     InfoIconComponent,
     SearchSelectComponent,
-    SelectComponent,
     DialogCloseComponent,
     LinkIconComponent,
     InfoLinkDirective,
