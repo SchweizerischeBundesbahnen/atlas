@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TimetableHearingOverviewTabHeadingComponent } from './timetable-hearing-overview-tab-heading.component';
+import { OverviewTabHeadingComponent } from './overview-tab-heading.component';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { HearingStatus } from '../../../../api';
 import moment from 'moment';
@@ -8,17 +8,17 @@ import { DisplayDatePipe } from '../../../../core/pipe/display-date.pipe';
 import { TranslatePipe } from '@ngx-translate/core';
 
 describe('TimetableHearingOverviewTabHeadingComponent', () => {
-  let component: TimetableHearingOverviewTabHeadingComponent;
-  let fixture: ComponentFixture<TimetableHearingOverviewTabHeadingComponent>;
+  let component: OverviewTabHeadingComponent;
+  let fixture: ComponentFixture<OverviewTabHeadingComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TimetableHearingOverviewTabHeadingComponent, DisplayDatePipe],
+      declarations: [OverviewTabHeadingComponent, DisplayDatePipe],
       imports: [AppTestingModule],
       providers: [{ provide: TranslatePipe }],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(TimetableHearingOverviewTabHeadingComponent);
+    fixture = TestBed.createComponent(OverviewTabHeadingComponent);
     component = fixture.componentInstance;
     fixture.componentInstance.cantonShort = 'BE';
     fixture.componentInstance.hearingStatus = HearingStatus.Active;

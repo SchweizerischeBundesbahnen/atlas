@@ -2,8 +2,8 @@
   <app-loading-spinner [isLoading]="isLoading"></app-loading-spinner>
 
   <app-table-filter
-    *ngIf="showTableFilter"
     (searchEvent)="searchData()"
+    *ngIf="showTableFilter"
     [filterConfigurations]="tableFilterConfig"
   ></app-table-filter>
 
@@ -13,11 +13,11 @@
     (matSortChange)="sortData($event)"
     [dataSource]="tableData"
     [matSortActive]="sortActive"
+    [matSortDirection]="sortDirection"
     [matSortDisabled]="sortingDisabled"
     class="atlas-table"
     mat-table
     matSort
-    [matSortDirection]="sortDirection"
   >
     <ng-container *ngFor="let column of tableColumns">
       <ng-container matColumnDef="{{ column.value }}">
@@ -51,7 +51,7 @@
             <div class="multi-select-search">
               <mat-select
                 (click)="$event.stopPropagation()"
-                (selectionChange)="column.dropdown.changeSelectionCallback($event)"
+                (selectionChange)="changeDropdownEvent.emit({$event,value})"
                 [(value)]="value[column.value]"
                 data-cy="table-option-type"
                 placeholder="{{ 'FORM.DROPDOWN_PLACEHOLDER' | translate }}"
@@ -83,9 +83,9 @@
   <mat-paginator
     (page)="pageChanged($event)"
     [length]="totalCount"
+    [pageIndex]="pageIndex"
     [pageSizeOptions]="pageSizeOptions"
     [pageSize]="pageSize"
-    [pageIndex]="pageIndex"
     class="font-regular-base"
   >
   </mat-paginator>

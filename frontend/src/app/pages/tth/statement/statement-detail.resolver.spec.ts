@@ -1,6 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, convertToParamMap } from '@angular/router';
-import { SwissCanton, TimetableHearingService, TimetableHearingStatement } from '../../../api';
+import {
+  HearingStatus,
+  SwissCanton,
+  TimetableHearingService,
+  TimetableHearingStatement,
+} from '../../../api';
 import { StatementDetailResolver } from './statement-detail.resolver';
 import { of } from 'rxjs';
 import { AppTestingModule } from '../../../app.testing.module';
@@ -38,8 +43,10 @@ describe('StatementDetailResolver', () => {
   });
 
   it('should get statement from service', () => {
-    const mockRoute = { paramMap: convertToParamMap({ id: '1234' }) } as ActivatedRouteSnapshot;
-
+    const mockRoute = {
+      paramMap: convertToParamMap({ id: '1234' }),
+    } as ActivatedRouteSnapshot;
+    mockRoute.data = { hearingStatus: HearingStatus.Archived };
     const statement = resolver.resolve(mockRoute);
 
     statement.subscribe((statement) => {
