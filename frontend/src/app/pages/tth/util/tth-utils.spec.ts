@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { TthUtils } from './tth-utils';
-import { HearingStatus, TimetableHearingYear } from '../../api';
+import { HearingStatus, TimetableHearingYear } from '../../../api';
 import moment from 'moment';
 
 describe('TthUtils', () => {

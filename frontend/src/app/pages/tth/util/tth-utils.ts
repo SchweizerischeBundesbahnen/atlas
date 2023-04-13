@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HearingStatus, TimetableHearingYear } from '../../api';
+import { HearingStatus, TimetableHearingYear } from '../../../api';
 
 @Injectable({
   providedIn: 'root',
