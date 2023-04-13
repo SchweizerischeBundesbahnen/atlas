@@ -180,7 +180,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
 
   addNewTimetableHearing() {
     this.newTimetableHearingYearDialogService.confirm({
-      title: 'TTH.DIALOG.NEW_PLAN_TIMETABLE',
+      title: 'TTH.NEW_YEAR.DIALOG.NEW_PLAN_TIMETABLE',
     });
   }
 
