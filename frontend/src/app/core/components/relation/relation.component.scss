@@ -1,23 +1,8 @@
 @use 'src/styles/variables';
 
 .selected-row {
-  td {
-    border-bottom: 3px solid variables.$primary-300;
-    border-top: 3px solid variables.$primary-300;
-    padding-bottom: 8px !important;
-    padding-top: 7px !important;
-
-    &:first-child {
-      border-left: 3px solid variables.$primary-300;
-      border-radius: 5px 0 0 5px;
-      padding-left: 8px !important;
-    }
-
-    &:last-child {
-      border-right: 3px solid variables.$primary-300;
-      border-radius: 0 5px 5px 0;
-    }
-  }
+  outline: 3px solid variables.$primary-300;
+  border-radius: 5px;
 }
 
 table.admin tr.mat-mdc-row,
