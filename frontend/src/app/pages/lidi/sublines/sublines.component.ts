@@ -1,5 +1,4 @@
 import { Component, OnDestroy } from '@angular/core';
-
 import { TableColumn } from '../../../core/components/table/table-column';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -22,6 +21,7 @@ import {
 import { FormControl } from '@angular/forms';
 import { TableService } from '../../../core/components/table/table.service';
 import { TablePagination } from '../../../core/components/table/table-pagination';
+import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
 
 @Component({
   selector: 'app-lidi-sublines',
@@ -132,7 +132,7 @@ export class SublinesComponent implements OnDestroy {
         getActiveSearchDate(this.tableFilterConfig[1][3]),
         pagination.page,
         pagination.size,
-        [pagination.sort!, 'slnid,asc']
+        addElementsToArrayWhenNotUndefined(pagination.sort, 'slnid,asc')
       )
       .subscribe((sublineContainer) => {
         this.sublines = sublineContainer.objects!;

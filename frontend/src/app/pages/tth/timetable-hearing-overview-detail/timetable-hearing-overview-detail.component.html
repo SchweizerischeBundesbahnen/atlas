@@ -189,15 +189,14 @@
     </div>
 
     <app-table
-      (editElementEvent)="editStatement($event)"
-      (getTableElementsEvent)="getOverview($event)"
       *ngIf="!noTimetableHearingYearFound"
+      (editElementEvent)="editStatement($event)"
+      (tableChanged)="getOverview($event)"
       [canEdit]="true"
       [tableColumns]="tableColumns"
       [tableData]="timeTableHearingStatements"
       [totalCount]="totalCount$"
       data-cy="ttfn"
     ></app-table>
-    <router-outlet></router-outlet>
   </div>
 </div>
