@@ -1,5 +1,6 @@
 import {
   ContainerTimetableHearingYear,
+  HearingStatus,
   SwissCanton,
   TimetableHearingService,
   TimetableHearingStatement,
@@ -23,6 +24,7 @@ import { DetailPageContainerComponent } from '../../../core/components/detail-pa
 import { MockAtlasButtonComponent } from '../../../app.testing.mocks';
 import { Component, Input } from '@angular/core';
 import { CreationEditionRecord } from '../../../core/components/base-detail/user-edit-info/creation-edition-record';
+import { By } from '@angular/platform-browser';
 
 const existingStatement: TimetableHearingStatement = {
   id: 1,
@@ -90,6 +92,51 @@ describe('StatementDetailComponent for existing statement', () => {
 
   it('should load existing Statement form successfully', () => {
     expect(component.form.controls.statement.value).toBe(existingStatement.statement);
+  });
+
+  it('should not enable form when hearingStatus is Archived', () => {
+    component.hearingStatus = HearingStatus.Archived;
+
+    expect(component.form.enabled).toBeFalsy();
+  });
+
+  it('should not enable form when hearingStatus is Archived and clicking on toggleEdit', () => {
+    //given
+    component.hearingStatus = HearingStatus.Archived;
+
+    //when
+    component.toggleEdit();
+
+    //then
+    expect(component.form.enabled).toBeFalsy();
+  });
+
+  it('should not show edit button when HearingStatus is Archived', () => {
+    //given
+    component.hearingStatus = HearingStatus.Archived;
+    //when
+    fixture.detectChanges();
+    //then
+    const buttons = fixture.debugElement.queryAll(By.css('atlas-button'));
+    expect(buttons.length).toBe(4);
+    const buttonsText = buttons.map(
+      (button) => button.nativeElement.attributes['buttontext'].value
+    );
+    expect(buttonsText).not.toContain('COMMON.EDIT');
+  });
+
+  it('should show edit button when HearingStatus is not Archived', () => {
+    //given
+    component.hearingStatus = HearingStatus.Active;
+    //when
+    fixture.detectChanges();
+    //then
+    const buttons = fixture.debugElement.queryAll(By.css('atlas-button'));
+    expect(buttons.length).toBe(5);
+    const buttonsText = buttons.map(
+      (button) => button.nativeElement.attributes['buttontext'].value
+    );
+    expect(buttonsText).toContain('COMMON.EDIT');
   });
 });
 

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TimetableHearingOverviewDetailComponent } from './timetable-hearing-overview-detail.component';
+import { OverviewDetailComponent } from './overview-detail.component';
 import { AppTestingModule } from '../../../app.testing.module';
 import { TranslatePipe } from '@ngx-translate/core';
 import { DisplayDatePipe } from '../../../core/pipe/display-date.pipe';
@@ -29,6 +29,7 @@ class MockAppTthOverviewTabHeadingComponent {
   @Input() cantonShort!: string;
   @Input() foundTimetableHearingYear!: TimetableHearingYear;
   @Input() hearingStatus!: HearingStatus;
+  @Input() noActiveTimetableHearingYearFound!: boolean;
   @Input() noTimetableHearingYearFound!: boolean;
   @Input() noPlannedTimetableHearingYearFound!: boolean;
 }
@@ -97,7 +98,7 @@ async function baseTestConfiguration() {
 
   await TestBed.configureTestingModule({
     declarations: [
-      TimetableHearingOverviewDetailComponent,
+      OverviewDetailComponent,
       MockAppTthOverviewTabHeadingComponent,
       MockTableComponent,
       MockAtlasButtonComponent,
@@ -117,15 +118,15 @@ async function baseTestConfiguration() {
     ],
   }).compileComponents();
 
-  return TestBed.createComponent(TimetableHearingOverviewDetailComponent);
+  return TestBed.createComponent(OverviewDetailComponent);
 }
 
 describe('TimetableHearingOverviewDetailComponent', () => {
-  let component: TimetableHearingOverviewDetailComponent;
+  let component: OverviewDetailComponent;
   let route: ActivatedRoute;
-  let fixture: ComponentFixture<TimetableHearingOverviewDetailComponent>;
+  let fixture: ComponentFixture<OverviewDetailComponent>;
 
-  describe('Tab Active', async () => {
+  describe('HearingOverviewTab Active', async () => {
     beforeEach(async () => {
       fixture = await baseTestConfiguration();
       route = TestBed.inject(ActivatedRoute);
@@ -236,7 +237,7 @@ describe('TimetableHearingOverviewDetailComponent', () => {
     });
   });
 
-  describe('Tab Planned', async () => {
+  describe('HearingOverviewTab Planned', async () => {
     const hearingYear: TimetableHearingYear = {
       timetableYear: 2000,
       hearingFrom: moment().toDate(),
@@ -280,7 +281,7 @@ describe('TimetableHearingOverviewDetailComponent', () => {
     });
   });
 
-  describe('Tab Archived', async () => {
+  describe('HearingOverviewTab Archived', async () => {
     const hearingYear: TimetableHearingYear = {
       timetableYear: 2000,
       hearingFrom: moment().toDate(),

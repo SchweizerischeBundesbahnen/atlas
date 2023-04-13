@@ -531,6 +531,17 @@
     }
   },
   "TTH": {
+    "NOTIFICATION": {
+      "STATUS_CHANGE": {
+        "SUCCESS": "Lo stato è stato modificato con successo"
+      }
+    },
+    "DIALOG": {
+      "STATUS_CHANGE": "Modificare lo stato",
+      "COMMENT_LABEL": "Commento",
+      "BACK": "Indietro",
+      "STATUS_CHANGE_MESSAGE": "Modifica la dichiarazioni per l'orario selezionata."
+    },
     "TAB": {
       "ACTUAL": "Audizioni attuali",
       "PLANNED": "Audizioni programmate",
