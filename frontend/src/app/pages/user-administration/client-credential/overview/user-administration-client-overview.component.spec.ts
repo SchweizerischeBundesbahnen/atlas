@@ -6,8 +6,10 @@ import { MaterialModule } from '../../../../core/module/material.module';
 import { UserAdministrationClientOverviewComponent } from './user-administration-client-overview.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ContainerClientCredential, UserAdministrationService } from '../../../../api';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { MockTableComponent } from '../../../../app.testing.mocks';
+import SpyObj = jasmine.SpyObj;
+import Spy = jasmine.Spy;
 
 const clientContainer: ContainerClientCredential = {
   objects: [
@@ -23,11 +25,19 @@ describe('UserAdministrationClientOverviewComponent', () => {
   let component: UserAdministrationClientOverviewComponent;
   let fixture: ComponentFixture<UserAdministrationClientOverviewComponent>;
 
-  const userAdministrationService = jasmine.createSpyObj('userAdministrationService', [
-    'getClientCredentials',
-  ]);
-  userAdministrationService.getClientCredentials.and.returnValue(of(clientContainer));
+  let userAdministrationServiceSpy: SpyObj<UserAdministrationService>;
+
   beforeEach(async () => {
+    userAdministrationServiceSpy = jasmine.createSpyObj<UserAdministrationService>(
+      'UserAdministrationServiceSpy',
+      ['getClientCredentials']
+    );
+    (
+      userAdministrationServiceSpy.getClientCredentials as Spy<
+        () => Observable<ContainerClientCredential>
+      >
+    ).and.returnValue(of(clientContainer));
+
     await TestBed.configureTestingModule({
       declarations: [
         UserAdministrationClientOverviewComponent,
@@ -42,7 +52,7 @@ describe('UserAdministrationClientOverviewComponent', () => {
         MaterialModule,
         HttpClientTestingModule,
       ],
-      providers: [{ provide: UserAdministrationService, useValue: userAdministrationService }],
+      providers: [{ provide: UserAdministrationService, useValue: userAdministrationServiceSpy }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(UserAdministrationClientOverviewComponent);
@@ -52,5 +62,20 @@ describe('UserAdministrationClientOverviewComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should getOverview', () => {
+    component.getOverview({
+      page: 0,
+      size: 10,
+    });
+
+    expect(userAdministrationServiceSpy.getClientCredentials).toHaveBeenCalledOnceWith(0, 10, [
+      'clientCredentialId,asc',
+    ]);
+
+    expect(component.clientCredentials.length).toEqual(1);
+    expect(component.clientCredentials[0].alias).toEqual('öV-info.ch');
+    expect(component.totalCount).toEqual(1);
   });
 });

@@ -29,7 +29,7 @@ export class TimetableFieldNumberSelectComponent implements OnInit, OnDestroy, O
   @Output() ttfnSelectionChanged = new EventEmitter<TimetableFieldNumber>();
 
   timetableFieldNumbers: Observable<TimetableFieldNumber[]> = of([]);
-  private formSubscription!: Subscription;
+  private formSubscription?: Subscription;
 
   constructor(private timetableFieldNumbersService: TimetableFieldNumbersService) {}
 
@@ -74,6 +74,6 @@ export class TimetableFieldNumberSelectComponent implements OnInit, OnDestroy, O
   }
 
   ngOnDestroy() {
-    this.formSubscription.unsubscribe();
+    this.formSubscription?.unsubscribe();
   }
 }

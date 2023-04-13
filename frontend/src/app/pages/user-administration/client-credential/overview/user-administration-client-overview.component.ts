@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { tableColumns } from './table-column-definition';
 import { TablePagination } from '../../../../core/components/table/table-pagination';
 import { TableService } from '../../../../core/components/table/table.service';
+import { addElementsToArrayWhenNotUndefined } from '../../../../core/util/arrays';
 
 @Component({
   selector: 'app-client-credential-administration-overview',
@@ -27,10 +28,11 @@ export class UserAdministrationClientOverviewComponent implements OnDestroy {
 
   getOverview(pagination: TablePagination) {
     this.credentialsSubscription = this.userAdministrationService
-      .getClientCredentials(pagination.page, pagination.size, [
-        pagination.sort!,
-        'clientCredentialId,asc',
-      ])
+      .getClientCredentials(
+        pagination.page,
+        pagination.size,
+        addElementsToArrayWhenNotUndefined(pagination.sort, 'clientCredentialId,asc')
+      )
       .subscribe((clientContainer) => {
         this.clientCredentials = clientContainer.objects!;
         this.totalCount = clientContainer.totalCount!;

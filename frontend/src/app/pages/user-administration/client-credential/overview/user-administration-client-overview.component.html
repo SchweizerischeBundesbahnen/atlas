@@ -1,6 +1,7 @@
 <app-table
   (editElementEvent)="edit($event)"
-  (getTableElementsEvent)="getOverview($event)"
+  (tableChanged)="getOverview($event)"
+  (tableInitialized)="getOverview($event)"
   [pageSizeOptions]="[5, 10, 20]"
   [sortingDisabled]="true"
   [tableColumns]="tableColumns"

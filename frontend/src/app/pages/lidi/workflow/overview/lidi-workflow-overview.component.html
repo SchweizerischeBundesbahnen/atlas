@@ -4,7 +4,8 @@
 
 <app-table
   (editElementEvent)="navigateToDetails($event)"
-  (getTableElementsEvent)="getOverview($event)"
+  (tableChanged)="getOverview($event)"
+  (tableInitialized)="getOverview($event)"
   [canEdit]="true"
   [tableColumns]="lineSnapshotsTableColumns"
   [tableData]="lineVersionSnapshots"
