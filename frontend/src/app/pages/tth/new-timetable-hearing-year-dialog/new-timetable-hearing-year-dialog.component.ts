@@ -18,7 +18,6 @@ import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-tthdialog',
   templateUrl: './new-timetable-hearing-year-dialog.component.html',
-  styleUrls: ['new-timetable-hearing-year-dialog.component.scss'],
 })
 export class NewTimetableHearingYearDialogComponent implements OnInit {
   form: FormGroup<NewTimetableHearingYearFormGroup> = new FormGroup(
