@@ -13,6 +13,7 @@ export class StatementDetailResolver implements Resolve<TimetableHearingStatemen
 
   resolve(route: ActivatedRouteSnapshot): Observable<TimetableHearingStatement | undefined> {
     const idParameter = route.paramMap.get('id') || '0';
+    const hearingStatus = route.data['hearingStatus'];
     return idParameter === 'add'
       ? of(undefined)
       : this.timetableHearingService.getStatement(parseInt(idParameter)).pipe(
@@ -22,7 +23,7 @@ export class StatementDetailResolver implements Resolve<TimetableHearingStatemen
                 [
                   Pages.TTH.path,
                   route.paramMap.get('canton')?.toLowerCase(),
-                  Pages.TTH_ACTIVE.path,
+                  hearingStatus.toLowerCase(),
                 ],
                 {
                   state: { notDismissSnackBar: true },
