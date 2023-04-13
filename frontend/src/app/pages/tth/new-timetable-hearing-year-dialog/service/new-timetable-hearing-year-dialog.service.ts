@@ -9,30 +9,26 @@ import { NewTimetableHearingYearDialogData } from '../model/new-timetable-hearin
   providedIn: 'root',
 })
 export class NewTimetableHearingYearDialogService {
-  private confirmNewTimetableHearingYearDialog?: MatDialogRef<NewTimetableHearingYearDialogComponent>;
+  private dialogRef?: MatDialogRef<NewTimetableHearingYearDialogComponent>;
 
   constructor(private newTimetableHearingYearDialog: MatDialog) {}
 
-  confirm(
+  openDialog(
     newTimetableHearingYearDialogData: NewTimetableHearingYearDialogData
   ): Observable<boolean> {
-    this.confirmNewTimetableHearingYearDialog = this.newTimetableHearingYearDialog.open(
+    this.dialogRef = this.newTimetableHearingYearDialog.open(
       NewTimetableHearingYearDialogComponent,
       {
         data: newTimetableHearingYearDialogData,
         panelClass: 'atlas-dialog-panel',
         backdropClass: 'atlas-dialog-backdrop',
-        disableClose: true,
-        autoFocus: true,
       }
     );
-    return this.confirmNewTimetableHearingYearDialog
-      .afterClosed()
-      .pipe(map((value) => (value ? value : false)));
+    return this.dialogRef.afterClosed().pipe(map((value) => (value ? value : false)));
   }
 
   closeConfirmDialog(): void {
-    this.confirmNewTimetableHearingYearDialog?.close();
-    this.confirmNewTimetableHearingYearDialog = undefined;
+    this.dialogRef?.close();
+    this.dialogRef = undefined;
   }
 }
