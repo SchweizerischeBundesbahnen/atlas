@@ -1,17 +1,16 @@
-<form [formGroup]="formGroup" class="atlas-select">
-  <mat-label
-    *ngIf="label"
-    class="font-bold-lg subtitle-margin"
-    [ngClass]="required ? 'required-indicator' : ''"
-  >
+<div [formGroup]="formGroup" class="atlas-select">
+  <mat-label *ngIf="label" class="font-bold-lg" [ngClass]="required ? 'required-indicator' : ''">
     {{ label | translate }}
   </mat-label>
-  <div *ngIf="additionalLabelspace" class="fake-lable-space"></div>
+  <atlas-spacer *ngIf="label" height="3px"></atlas-spacer>
+  <atlas-spacer *ngIf="additionalLabelspace" height="30px"></atlas-spacer>
   <div class="multi-select-search">
     <mat-select
+      (selectionChange)="selectChanged.emit($event)"
       [formControlName]="controlName"
       [attr.data-cy]="dataCy"
       placeholder="{{ 'FORM.DROPDOWN_PLACEHOLDER' | translate }}"
+      [multiple]="multiple"
     >
       <mat-option *ngFor="let option of options" [value]="valueExtractor(option)">
         <ng-container
@@ -26,4 +25,9 @@
       </mat-option>
     </mat-select>
   </div>
-</form>
+  <app-atlas-field-error
+    *ngIf="formGroup"
+    [form]="formGroup"
+    [controlName]="controlName!"
+  ></app-atlas-field-error>
+</div>

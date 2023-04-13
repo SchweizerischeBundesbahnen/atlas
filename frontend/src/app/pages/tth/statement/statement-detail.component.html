@@ -18,6 +18,7 @@
             controlName="timetableYear"
             dataCy="timetableYear"
             label="TTH.SELECT_YEAR"
+            [additionalLabelspace]="false"
             [options]="YEAR_OPTIONS"
             [required]="true"
           >
@@ -29,6 +30,7 @@
             controlName="swissCanton"
             dataCy="swissCanton"
             label="TTH.SELECT_CANTON"
+            [additionalLabelspace]="false"
             [options]="CANTON_OPTIONS"
             [valueExtractor]="extractEnumCanton"
             [displayExtractor]="extractShort"
@@ -45,7 +47,6 @@
               />
             </ng-template>
           </atlas-select>
-          <app-atlas-field-error [form]="form" controlName="swissCanton"></app-atlas-field-error>
         </div>
       </div>
 
@@ -211,21 +212,17 @@
 
       <div class="d-flex flex-row col-12 mb-5">
         <div class="d-flex flex-column col-6">
-          <mat-label class="font-bold-lg subtitle-margin"
-            >{{ 'TTH.STATEMENT.STATUS' | translate }}
-          </mat-label>
-          <span class="fake-lable-space"></span>
-          <div class="multi-select-search">
-            <mat-select
-              data-cy="status"
-              formControlName="statementStatus"
-              placeholder="{{ 'FORM.DROPDOWN_PLACEHOLDER' | translate }}"
-            >
-              <mat-option *ngFor="let status of STATUS_OPTIONS" [value]="status">
-                {{ 'TTH.STATEMENT_STATUS.' + status | translate }}
-              </mat-option>
-            </mat-select>
-          </div>
+          <atlas-select
+            [formGroup]="form"
+            controlName="statementStatus"
+            dataCy="statementStatus"
+            label="TTH.STATEMENT.STATUS"
+            [additionalLabelspace]="false"
+            optionTranslateLabelPrefix="TTH.STATEMENT_STATUS."
+            [options]="STATUS_OPTIONS"
+            [required]="true"
+          >
+          </atlas-select>
         </div>
       </div>
 
