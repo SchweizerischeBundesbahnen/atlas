@@ -1,27 +1,27 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { TthDialogData } from './tthdialog.data';
+import { TimetableHearingDialogData } from './timetable-hearing-dialog.data';
 import { HearingStatus, TimetableHearingService, TimetableHearingYear } from '../../../api';
 import moment from 'moment/moment';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AtlasFieldLengthValidator } from '../../validation/field-lengths/atlas-field-length-validator';
-import { AtlasCharsetsValidator } from '../../validation/charsets/atlas-charsets-validator';
-import { DateRangeValidator } from '../../validation/date-range/date-range-validator';
-import { ValidationService } from '../../validation/validation.service';
-import { TimetablehearingFormGroup } from './tthformgroup';
-import { NotificationService } from '../../notification/notification.service';
-import { DialogService } from '../dialog/dialog.service';
-import { TthDialogService } from './tthdialog.service';
+import { AtlasFieldLengthValidator } from '../../../core/validation/field-lengths/atlas-field-length-validator';
+import { AtlasCharsetsValidator } from '../../../core/validation/charsets/atlas-charsets-validator';
+import { DateRangeValidator } from '../../../core/validation/date-range/date-range-validator';
+import { ValidationService } from '../../../core/validation/validation.service';
+import { TimetableHearingFormGroup } from './timetable-hearing-form-group';
+import { NotificationService } from '../../../core/notification/notification.service';
+import { DialogService } from '../../../core/components/dialog/dialog.service';
+import { TimetableHearingDialogService } from './timetable-hearing-dialog.service';
 import { Moment } from 'moment';
 import { take } from 'rxjs';
 
 @Component({
   selector: 'app-tthdialog',
-  templateUrl: './tthdialog.component.html',
-  styleUrls: ['tthdialog.component.scss'],
+  templateUrl: './timetable-hearing-dialog.component.html',
+  styleUrls: ['timetable-hearing-dialog.component.scss'],
 })
-export class TthDialogComponent implements OnInit {
-  form: FormGroup<TimetablehearingFormGroup> = new FormGroup(
+export class TimetableHearingDialogComponent implements OnInit {
+  form: FormGroup<TimetableHearingFormGroup> = new FormGroup(
     {
       timetableYear: new FormControl(2000, [
         Validators.required,
@@ -37,11 +37,11 @@ export class TthDialogComponent implements OnInit {
   defaultYearSelection = this.YEAR_OPTIONS[0];
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: TthDialogData,
+    @Inject(MAT_DIALOG_DATA) public data: TimetableHearingDialogData,
     private readonly timetableHearingService: TimetableHearingService,
     protected notificationService: NotificationService,
     private readonly dialogService: DialogService,
-    private readonly tthDialogService: TthDialogService
+    private readonly timetableHearingDialogService: TimetableHearingDialogService
   ) {}
 
   ngOnInit(): void {
@@ -67,14 +67,14 @@ export class TthDialogComponent implements OnInit {
     const hearingToDate = this.form.controls['validTo'].value?.toDate();
     const timetableHearingYear: TimetableHearingYear = {
       timetableYear: Number(this.form.controls['timetableYear'].value),
-      hearingFrom: hearingFromDate ? hearingFromDate : moment().toDate(),
-      hearingTo: hearingToDate ? hearingToDate : moment().toDate(),
+      hearingFrom: hearingFromDate ?? moment().toDate(),
+      hearingTo: hearingToDate ?? moment().toDate(),
     };
     ValidationService.validateForm(this.form);
     if (this.form.valid) {
       this.timetableHearingService.createHearingYear(timetableHearingYear).subscribe(() => {
         this.notificationService.success('TTH.DIALOG.NOTIFICATION_SUCCESS');
-        this.tthDialogService.closeConfirmDialog();
+        this.timetableHearingDialogService.closeConfirmDialog();
       });
     }
   }
@@ -125,7 +125,7 @@ export class TthDialogComponent implements OnInit {
   closeDialog() {
     this.dialogService.confirmLeave().subscribe((confirm) => {
       if (confirm) {
-        this.tthDialogService.closeConfirmDialog();
+        this.timetableHearingDialogService.closeConfirmDialog();
       }
     });
   }
