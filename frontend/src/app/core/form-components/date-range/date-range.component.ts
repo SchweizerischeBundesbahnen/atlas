@@ -9,9 +9,9 @@ import { FormGroup } from '@angular/forms';
 })
 export class DateRangeComponent {
   @Input() formGroup!: FormGroup;
-  @Input() labelFrom = '';
+  @Input() labelFrom = 'COMMON.VALID_FROM';
   @Input() labelFromExample = '';
-  @Input() labelUntil = '';
+  @Input() labelUntil = 'COMMON.VALID_TO';
   @Input() labelUntilExample = '';
   @Input() infoIconTitleFrom = '';
   @Input() infoIconTitleUntil = '';
