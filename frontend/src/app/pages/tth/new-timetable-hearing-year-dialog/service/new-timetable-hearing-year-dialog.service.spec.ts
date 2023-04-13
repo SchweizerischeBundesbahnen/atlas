@@ -4,9 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { of } from 'rxjs';
 import { NewTimetableHearingYearDialogService } from './new-timetable-hearing-year-dialog.service';
 
-const timetableHearingDialogData = {
-  title: 'Question',
-};
+const timetableHearingDialogData = {};
 
 describe('NewTimetableHearingYearDialogService', () => {
   let newTimetableHearingYearDialogService: NewTimetableHearingYearDialogService;
