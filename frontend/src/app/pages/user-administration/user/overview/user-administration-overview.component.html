@@ -1,6 +1,7 @@
 <app-table
   (editElementEvent)="openUser($event)"
-  (getTableElementsEvent)="reloadTableWithCurrentSettings()"
+  (tableChanged)="reloadTableWithCurrentSettings()"
+  (tableInitialized)="reloadTableWithCurrentSettings()"
   [showTableFilter]="false"
   [pageSizeOptions]="[5, 10, 20]"
   [sortingDisabled]="true"
