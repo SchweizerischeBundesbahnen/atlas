@@ -13,7 +13,8 @@ import { NotificationService } from '../../../core/notification/notification.ser
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import { NewTimetableHearingYearDialogService } from './service/new-timetable-hearing-year-dialog.service';
 import { Moment } from 'moment';
-import { take } from 'rxjs';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-tthdialog',
@@ -36,6 +37,8 @@ export class NewTimetableHearingYearDialogComponent implements OnInit {
   YEAR_OPTIONS: number[] = [];
   defaultYearSelection = this.YEAR_OPTIONS[0];
 
+  private readonly ngUnsubscribe = new Subject<void>();
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: NewTimetableHearingYearDialogData,
     private readonly timetableHearingService: TimetableHearingService,
@@ -51,7 +54,7 @@ export class NewTimetableHearingYearDialogComponent implements OnInit {
   initOverviewOfferedYears() {
     this.timetableHearingService
       .getHearingYears([HearingStatus.Active, HearingStatus.Planned])
-      .pipe(take(1))
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((timetableHearingYears) => {
         if (timetableHearingYears.objects) {
           const activeYear = this.getActiveYear(timetableHearingYears.objects);
@@ -72,10 +75,13 @@ export class NewTimetableHearingYearDialogComponent implements OnInit {
     };
     ValidationService.validateForm(this.form);
     if (this.form.valid) {
-      this.timetableHearingService.createHearingYear(timetableHearingYear).subscribe(() => {
-        this.notificationService.success('TTH.NEW_YEAR.DIALOG.NOTIFICATION_SUCCESS');
-        this.newTimetableHearingYearDialogService.closeConfirmDialog();
-      });
+      this.timetableHearingService
+        .createHearingYear(timetableHearingYear)
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe(() => {
+          this.notificationService.success('TTH.NEW_YEAR.DIALOG.NOTIFICATION_SUCCESS');
+          this.newTimetableHearingYearDialogService.closeConfirmDialog();
+        });
     }
   }
 
