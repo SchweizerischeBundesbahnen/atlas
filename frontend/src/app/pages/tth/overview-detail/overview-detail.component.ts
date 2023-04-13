@@ -179,7 +179,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
   }
 
   addNewTimetableHearing() {
-    this.newTimetableHearingYearDialogService.openDialog({});
+    this.newTimetableHearingYearDialogService.openDialog();
   }
 
   startTimetableHearing() {
