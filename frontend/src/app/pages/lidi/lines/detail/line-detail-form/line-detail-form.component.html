@@ -110,41 +110,29 @@
     </div>
 
     <div class="d-flex flex-column col-3 pe-3">
-      <mat-label class="font-bold-lg required-indicator subtitle-margin"
-        >{{ 'LIDI.TYPE' | translate }}
-      </mat-label>
-      <span class="fake-lable-space"></span>
-      <div [class.disabled]="form.disabled" class="multi-select-search">
-        <mat-select
-          data-cy="type"
-          formControlName="lineType"
-          placeholder="{{ 'FORM.DROPDOWN_PLACEHOLDER' | translate }}"
-        >
-          <mat-option *ngFor="let type of TYPE_OPTIONS" [value]="type">
-            {{ 'LIDI.LINE.TYPES.' + type | translate }}
-          </mat-option>
-        </mat-select>
-      </div>
-      <app-atlas-field-error [form]="form" controlName="lineType"></app-atlas-field-error>
+      <atlas-select
+        [formGroup]="form"
+        controlName="lineType"
+        dataCy="type"
+        label="LIDI.TYPE"
+        optionTranslateLabelPrefix="LIDI.LINE.TYPES."
+        [options]="TYPE_OPTIONS"
+        [required]="true"
+      >
+      </atlas-select>
     </div>
 
     <div class="d-flex flex-column col-3 space-right">
-      <mat-label class="font-bold-lg required-indicator subtitle-margin"
-        >{{ 'LIDI.PAYMENT.TYPE' | translate }}
-      </mat-label>
-      <span class="fake-lable-space"></span>
-      <div [class.disabled]="form.disabled" class="multi-select-search">
-        <mat-select
-          data-cy="paymentType"
-          formControlName="paymentType"
-          placeholder="{{ 'FORM.DROPDOWN_PLACEHOLDER' | translate }}"
-        >
-          <mat-option *ngFor="let type of PAYMENT_TYPE_OPTIONS" [value]="type">
-            {{ 'LIDI.PAYMENT.' + type | translate }}
-          </mat-option>
-        </mat-select>
-      </div>
-      <app-atlas-field-error [form]="form" controlName="paymentType"></app-atlas-field-error>
+      <atlas-select
+        [formGroup]="form"
+        controlName="paymentType"
+        dataCy="paymentType"
+        label="LIDI.PAYMENT.TYPE"
+        optionTranslateLabelPrefix="LIDI.PAYMENT."
+        [options]="PAYMENT_TYPE_OPTIONS"
+        [required]="true"
+      >
+      </atlas-select>
     </div>
   </div>
 
