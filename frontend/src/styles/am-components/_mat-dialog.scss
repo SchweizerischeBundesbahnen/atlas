@@ -1,3 +1,5 @@
+@use 'src/styles/variables' as variables;
+
 .atlas-dialog-backdrop {
   background: rgba(0, 0, 0, 0.5);
 }
@@ -13,4 +15,32 @@
 
 .dialog-close-panel button span {
   visibility: hidden !important;
+}
+
+.close-icon-btn {
+  border: unset;
+  background-color: unset;
+  padding: 5px 5px 0 0;
+
+  em {
+    color: variables.$primary-400;
+  }
+}
+
+.dialog-close-icon-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.dialog {
+  padding: 0 64px 24px 64px;
+}
+
+mat-dialog-actions {
+  padding-top: 80px;
+}
+
+.message {
+  color: variables.$black;
+  padding-left: unset;
 }
