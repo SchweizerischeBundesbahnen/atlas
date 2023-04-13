@@ -43,7 +43,7 @@ export class TthChangeStatusDialogComponent {
         .updateHearingStatement(this.data.ths.id!, this.data.ths)
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe(() => {
-          this.notificationService.success('WORKFLOW.NOTIFICATION.START.SUCCESS');
+          this.notificationService.success('TTH.NOTIFICATION.STATUS_CHANGE.SUCCESS');
           this.dialogRef.close();
         });
     }
