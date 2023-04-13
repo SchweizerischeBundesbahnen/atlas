@@ -157,11 +157,7 @@
 
     <span class="font-bold-2xl">{{ 'FORM.KEY_DATA' | translate }}</span>
     <div class="w-50">
-      <form-date-range
-        labelFrom="COMMON.VALID_FROM"
-        labelUntil="COMMON.VALID_TO"
-        [formGroup]="form"
-      ></form-date-range>
+      <form-date-range [formGroup]="form"></form-date-range>
     </div>
 
     <div class="col-12 d-flex mt-3 ps-1 pe-3">
