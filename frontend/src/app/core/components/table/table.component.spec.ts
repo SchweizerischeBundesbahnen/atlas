@@ -150,7 +150,7 @@ describe('TableComponent', () => {
   });
 
   it('should click on show 5 element', () => {
-    spyOn(component.getTableElementsEvent, 'emit');
+    spyOn(component.tableChanged, 'emit');
 
     const paginator = fixture.debugElement.query(By.css('mat-paginator'));
     paginator.nativeNode.setAttribute('ng-reflect-page-size-options', [5, 10, 20]);
@@ -165,7 +165,7 @@ describe('TableComponent', () => {
     fixture.detectChanges();
 
     expect(matSelector).toBeDefined();
-    expect(component.getTableElementsEvent.emit).toHaveBeenCalledWith(
+    expect(component.tableChanged.emit).toHaveBeenCalledWith(
       Object({
         page: 0,
         size: 5,
@@ -175,14 +175,14 @@ describe('TableComponent', () => {
   });
 
   it('should click on sort name', () => {
-    spyOn(component.getTableElementsEvent, 'emit');
+    spyOn(component.tableChanged, 'emit');
 
     const buttonSortHeaderName = fixture.debugElement.query(By.css('.mat-sort-header-container'));
     buttonSortHeaderName.nativeElement.click();
     fixture.detectChanges();
 
     expect(buttonSortHeaderName).toBeDefined();
-    expect(component.getTableElementsEvent.emit).toHaveBeenCalledWith(
+    expect(component.tableChanged.emit).toHaveBeenCalledWith(
       Object({
         page: 0,
         size: 10,
