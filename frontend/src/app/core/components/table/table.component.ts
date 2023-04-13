@@ -7,6 +7,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { TableFilterConfig } from '../table-filter/table-filter-config';
 import { TableService } from './table.service';
 import { TablePagination } from './table-pagination';
+import { ColumnDropDownEvent } from './column-drop-down-event';
 import { isEmpty } from '../../util/strings';
 
 @Component({
@@ -31,11 +32,10 @@ export class TableComponent<DATATYPE> implements OnInit {
   @Input() pageSizeOptions: number[] = [5, 10, 25, 100];
   @Input() sortingDisabled = false;
   @Input() showTableFilter = true;
-
   @Output() editElementEvent = new EventEmitter<DATATYPE>();
   @Output() tableChanged = new EventEmitter<TablePagination>();
   @Output() tableInitialized: EventEmitter<TablePagination> = new EventEmitter<TablePagination>();
-
+  @Output() changeDropdownEvent = new EventEmitter<ColumnDropDownEvent>();
   isLoading = false;
   SHOW_TOOLTIP_LENGTH = 20;
 

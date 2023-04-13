@@ -19,8 +19,8 @@
           <span class="fake-lable-space"></span>
           <div class="multi-select-search">
             <mat-select
-              formControlName="timetableYear"
               data-cy="canton-type"
+              formControlName="timetableYear"
               placeholder="{{ 'FORM.DROPDOWN_PLACEHOLDER' | translate }}"
             >
               <mat-option *ngFor="let year of YEAR_OPTIONS" [value]="year">
@@ -36,8 +36,8 @@
           <span class="fake-lable-space"></span>
           <div class="multi-select-search">
             <mat-select
-              formControlName="swissCanton"
               data-cy="canton-type"
+              formControlName="swissCanton"
               placeholder="{{ 'FORM.DROPDOWN_PLACEHOLDER' | translate }}"
             >
               <mat-option *ngFor="let canton of CANTON_OPTIONS" [value]="canton.enumCanton">
@@ -59,8 +59,8 @@
       <div class="d-flex flex-row col-12 mb-4 mt-5">
         <div class="d-flex flex-column col-6 pe-3">
           <ttfn-select
-            [validOn]="ttfnValidOn"
             [formGroup]="form"
+            [validOn]="ttfnValidOn"
             controlName="ttfnid"
             data-cy="ttfnid"
           ></ttfn-select>
@@ -175,8 +175,8 @@
                 arg: { key: 'numberOfChars', value: '100' }
               }
             ]"
-            [required]="true"
             [formGroup]="form.controls.statementSender"
+            [required]="true"
             controlName="email"
             fieldLabel="TTH.STATEMENT.E_MAIL"
           >
@@ -190,9 +190,9 @@
             [formGroup]="form"
             [required]="true"
             controlName="statement"
+            info="TTH.STATEMENT.STATEMENT_INFO"
             label="TTH.STATEMENT.STATEMENT"
             maxChars="5000"
-            info="TTH.STATEMENT.STATEMENT_INFO"
           >
           </form-comment>
         </div>
@@ -224,8 +224,8 @@
           <span class="fake-lable-space"></span>
           <div class="multi-select-search">
             <mat-select
-              formControlName="statementStatus"
               data-cy="status"
+              formControlName="statementStatus"
               placeholder="{{ 'FORM.DROPDOWN_PLACEHOLDER' | translate }}"
             >
               <mat-option *ngFor="let status of STATUS_OPTIONS" [value]="status">
@@ -262,8 +262,8 @@
   >
   </atlas-button>
   <atlas-button
-    *ngIf="CANTON_OPTIONS.length > 0"
     (click)="toggleEdit()"
+    *ngIf="CANTON_OPTIONS.length > 0 && !isHearingStatusArchived"
     [footerEdit]="form.enabled"
     buttonDataCy="edit"
     buttonText="COMMON.EDIT"
@@ -281,9 +281,9 @@
   </atlas-button>
   <atlas-button
     (click)="save()"
+    [disabled]="form.untouched"
     [footerEdit]="form.enabled"
     [submitButton]="true"
-    [disabled]="form.untouched"
     buttonDataCy="save-item"
     buttonText="COMMON.SAVE"
     buttonType="whiteFooterEdit"
