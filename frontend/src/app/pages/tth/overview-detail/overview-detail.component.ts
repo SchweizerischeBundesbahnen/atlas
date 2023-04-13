@@ -13,19 +13,23 @@ import { TableColumn } from '../../../core/components/table/table-column';
 import { Pages } from '../../pages';
 import { Subject, takeUntil } from 'rxjs';
 import moment from 'moment';
-import { OverviewToTabShareDataService } from '../timetable-hearing-overview-tab/overview-to-tab-share-data.service';
+import { OverviewToTabShareDataService } from '../overview-tab/service/overview-to-tab-share-data.service';
 import { MatSelectChange } from '@angular/material/select';
-import { TthUtils } from '../tth-utils';
+import { TableService } from '../../../core/components/table/table.service';
+import { TthUtils } from '../util/tth-utils';
 import { TablePagination } from '../../../core/components/table/table-pagination';
+import { TthChangeStatusDialogService } from './tth-change-status-dialog/service/tth-change-status-dialog.service';
+import { ColumnDropDownEvent } from '../../../core/components/table/column-drop-down-event';
 import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
 import { TthTableService } from '../tth-table.service';
 
 @Component({
   selector: 'app-timetable-hearing-overview-detail',
-  templateUrl: './timetable-hearing-overview-detail.component.html',
-  styleUrls: ['./timetable-hearing-overview-detail.component.scss'],
+  templateUrl: './overview-detail.component.html',
+  styleUrls: ['./overview-detail.component.scss'],
+  providers: [TableService],
 })
-export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestroy {
+export class OverviewDetailComponent implements OnInit, OnDestroy {
   timeTableHearingStatements: TimetableHearingStatement[] = [];
   totalCount$ = 0;
   tableColumns: TableColumn<TimetableHearingStatement>[] = [];
@@ -63,12 +67,12 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
     private readonly router: Router,
     private readonly timetableHearingService: TimetableHearingService,
     private readonly overviewToTabService: OverviewToTabShareDataService,
-    private readonly tthUtils: TthUtils,
+    private readonly tthStatusChangeDialog: TthChangeStatusDialogService,
     private readonly tthTableService: TthTableService
   ) {}
 
   get isHearingYearActive(): boolean {
-    return this.tthUtils.isHearingStatusActive(this.hearingStatus);
+    return TthUtils.isHearingStatusActive(this.hearingStatus);
   }
 
   get isSwissCanton(): boolean {
@@ -79,7 +83,7 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
     this.syncCantonShortSharedDate();
     this.dafaultDropdownCantonSelection = this.initDefatulDropdownCantonSelection();
     this.hearingStatus = this.route.snapshot.data.hearingStatus;
-    if (this.tthUtils.isHearingStatusActive(this.hearingStatus)) {
+    if (TthUtils.isHearingStatusActive(this.hearingStatus)) {
       this.tthTableService.activeTabPage = Pages.TTH_ACTIVE;
       this.tableColumns = this.getActiveTableColumns();
       this.showManageTimetableHearingButton = this.isSwissCanton;
@@ -87,7 +91,7 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
       this.showDownloadCsvButton = true;
       this.initOverviewActiveTable();
     }
-    if (this.tthUtils.isHearingStatusPlanned(this.hearingStatus)) {
+    if (TthUtils.isHearingStatusPlanned(this.hearingStatus)) {
       this.tthTableService.activeTabPage = Pages.TTH_PLANNED;
       this.sorting = 'swissCanton,asc';
       this.tableColumns = this.getPlannedTableColumns();
@@ -96,7 +100,7 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
       this.showHearingDetail = true;
       this.initOverviewPlannedTable();
     }
-    if (this.tthUtils.isHearingStatusArchived(this.hearingStatus)) {
+    if (TthUtils.isHearingStatusArchived(this.hearingStatus)) {
       this.tthTableService.activeTabPage = Pages.TTH_ARCHIVED;
       this.sorting = 'swissCanton,asc';
       this.tableColumns = this.getArchivedTableColumns();
@@ -142,7 +146,7 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
 
   editStatement(statement: TimetableHearingStatement) {
     this.router
-      .navigate([Pages.TTH_ACTIVE.path, statement.id], {
+      .navigate([this.hearingStatus.toLowerCase(), statement.id], {
         relativeTo: this.route.parent,
       })
       .then();
@@ -185,6 +189,14 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
       this.defaultYearSelection = this.YEAR_DRODOWN_OPTIONS[0];
       this.foundTimetableHearingYear = timetableHearingYears[0];
     }
+  }
+
+  changeSelectedStatus(changedStatus: ColumnDropDownEvent) {
+    this.tthStatusChangeDialog.onClick(changedStatus).subscribe((result) => {
+      if (result) {
+        this.ngOnInit();
+      }
+    });
   }
 
   private navigateTo(canton: string, timetableYear: number) {
@@ -236,7 +248,7 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
           if (timetableHearingYearContainer.objects.length === 0) {
             this.noTimetableHearingYearFound = true;
           } else if (timetableHearingYearContainer.objects.length >= 1) {
-            const timetableHearingYears = this.tthUtils.sortByTimetableHearingYear(
+            const timetableHearingYears = TthUtils.sortByTimetableHearingYear(
               timetableHearingYearContainer.objects,
               sortReverse
             );
@@ -299,7 +311,7 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
           timetableHearingYearContainer.objects &&
           timetableHearingYearContainer.objects?.length >= 1
         ) {
-          const timetableHearingYears = this.tthUtils.sortByTimetableHearingYear(
+          const timetableHearingYears = TthUtils.sortByTimetableHearingYear(
             timetableHearingYearContainer.objects,
             false
           );
@@ -330,10 +342,6 @@ export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestro
 
   private mapToShortCanton(canton: SwissCanton) {
     return Cantons.fromSwissCanton(canton)?.short;
-  }
-
-  private changeSelectedStatus(event: MatSelectChange) {
-    console.log(event.value);
   }
 
   private getActiveTableColumns(): TableColumn<TimetableHearingStatement>[] {
