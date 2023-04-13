@@ -1,5 +1,13 @@
-import { Component, ContentChild, Input, OnInit, TemplateRef } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import {
+  Component,
+  ContentChild,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  TemplateRef,
+} from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'atlas-select',
@@ -11,9 +19,10 @@ export class SelectComponent<TYPE> implements OnInit {
   @Input() optionTranslateLabelPrefix: string | undefined;
   @Input() additionalLabelspace = true;
   @Input() required = false;
+  @Input() multiple = false;
   @Input() dataCy!: string;
 
-  @Input() controlName!: string;
+  @Input() controlName: string | null = null;
   @Input() formGroup!: FormGroup;
 
   @Input() options: TYPE[] = [];
@@ -21,8 +30,17 @@ export class SelectComponent<TYPE> implements OnInit {
 
   @ContentChild('matOptionPrefix') matOptionPrefix!: TemplateRef<any>;
 
+  @Input() initialValue: any;
+
+  @Output() selectChanged = new EventEmitter();
+
   ngOnInit(): void {
-    console.log(this.controlName);
+    if (!this.formGroup) {
+      this.initDummyForm();
+    }
+    if (this.initialValue) {
+      this.formGroup.get(this.controlName!)?.setValue(this.initialValue);
+    }
   }
 
   @Input()
@@ -39,5 +57,12 @@ export class SelectComponent<TYPE> implements OnInit {
     return {
       option: option,
     };
+  }
+
+  private initDummyForm() {
+    this.formGroup = new FormGroup<any>({
+      dummy: new FormControl(),
+    });
+    this.controlName = 'dummy';
   }
 }
