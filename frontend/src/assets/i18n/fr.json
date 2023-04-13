@@ -531,9 +531,14 @@
     }
   },
   "TTH": {
+    "NOTIFICATION": {
+      "STATUS_CHANGE": {
+        "SUCCESS": "Le statut a été modifié avec succès."
+      }
+    },
     "DIALOG": {
       "STATUS_CHANGE": "Modifier statut",
-      "COMMENT_LABEL": "Commentaire à ce sujet (facultatif)",
+      "COMMENT_LABEL": "Commentaire à ce sujet",
       "BACK": "De retour",
       "STATUS_CHANGE_MESSAGE": "Vous modifiez l'avis sélectionné."
     },
