@@ -13,6 +13,9 @@ import {TableColumn} from '../../../core/components/table/table-column';
 import {Pages} from '../../pages';
 import {Subject, takeUntil} from 'rxjs';
 import moment from 'moment';
+
+import {addElementsToArrayWhenNotUndefined} from '../../../core/util/arrays';
+import {TthTableService} from '../tth-table.service';
 import { OverviewToTabShareDataService } from '../overview-tab/service/overview-to-tab-share-data.service';
 import { MatSelectChange } from '@angular/material/select';
 import { TableService } from '../../../core/components/table/table.service';
@@ -29,9 +32,10 @@ import {
 import {MatSelectChange} from '@angular/material/select';
 import {TthUtils} from '../tth-utils';
 import {TablePagination} from '../../../core/components/table/table-pagination';
-import {addElementsToArrayWhenNotUndefined} from '../../../core/util/arrays';
-import {TthTableService} from '../tth-table.service';
-import { TthDialogService } from '../../../core/components/tthdialog/tthdialog.service';
+import {
+  TimetableHearingDialogService
+} from '../timetable-hearing-dialog/timetable-hearing-dialog.service';
+
 
 @Component({
   selector: 'app-timetable-hearing-overview-detail',
@@ -77,8 +81,9 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     private readonly router: Router,
     private readonly timetableHearingService: TimetableHearingService,
     private readonly overviewToTabService: OverviewToTabShareDataService,
+    private readonly timetableHearingDialogService: TimetableHearingDialogService,
     private readonly tthStatusChangeDialog: TthChangeStatusDialogService,
-    private readonly tthTableService: TthTableService
+    private readonly tthTableService: TthTableService,
     private readonly tthUtils: TthUtils,
     private readonly tthDialogService: TthDialogService
   ) {}
@@ -181,7 +186,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
   }
 
   addNewTimetableHearing() {
-    this.tthDialogService.confirm({
+    this.timetableHearingDialogService.confirm({
       title: 'TTH.DIALOG.NEW_PLAN_TIMETABLE',
     });
   }
