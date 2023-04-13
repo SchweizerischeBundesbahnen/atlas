@@ -1,3 +1,34 @@
-.fs-75p {
-  font-size: 75%;
+@use 'src/styles/variables' as variables;
+
+.atlas-mat-select-wrapper {
+  border-radius: variables.$border-radius-small;
+
+  height: 34px;
+  padding: 5px 10px;
+
+  // Enabled Style
+  &:not(.mat-mdc-select-disabled),
+  &.ng-valid {
+    outline: 1px solid variables.$primary-400;
+
+    &:focus-within,
+    &:hover {
+      box-shadow: 0 0 0 2px variables.$primary-400;
+    }
+  }
+
+  // Disabled Style
+  &.mat-mdc-select-disabled {
+    outline: 1px solid variables.$gray-400;
+  }
+
+  // Invalid Style
+  &.ng-invalid.ng-touched {
+    outline: 1px solid variables.$warnColor;
+
+    &:focus-within,
+    &:hover {
+      box-shadow: 0 0 0 2px variables.$warnColor;
+    }
+  }
 }

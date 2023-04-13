@@ -160,13 +160,14 @@
       <form-date-range [formGroup]="form"></form-date-range>
     </div>
 
-    <div class="col-12 d-flex mt-3 ps-1 pe-3">
+    <div class="col-12 d-flex mt-3 mb-4">
       <div class="d-flex flex-column col-12">
         <atlas-select
           [formGroup]="form"
           controlName="businessTypes"
           dataCy="businessTypes"
           label="BODI.BUSINESS_ORGANISATION.BUSINESS_TYPE"
+          [additionalLabelspace]="false"
           optionTranslateLabelPrefix="BODI.BUSINESS_ORGANISATION.BUSINESS_TYPES."
           [options]="BUSINESS_TYPES"
           [multiple]="true"
