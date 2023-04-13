@@ -23,6 +23,7 @@ import { catchError, EMPTY, Observable, of, Subject } from 'rxjs';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { ValidationService } from '../../../core/validation/validation.service';
 import { AuthService } from '../../../core/auth/auth.service';
+import { TthUtils } from '../util/tth-utils';
 
 @Component({
   selector: 'app-statement-detail',
@@ -36,8 +37,8 @@ export class StatementDetailComponent implements OnInit {
   ttfnValidOn: Date | undefined = undefined;
 
   statement: TimetableHearingStatement | undefined;
+  hearingStatus!: HearingStatus;
   isNew!: boolean;
-
   form!: FormGroup<StatementDetailFormGroup>;
   private ngUnsubscribe = new Subject<void>();
 
@@ -51,8 +52,13 @@ export class StatementDetailComponent implements OnInit {
     private timetableYearChangeService: TimetableYearChangeService
   ) {}
 
+  get isHearingStatusArchived() {
+    return TthUtils.isHearingStatusArchived(this.hearingStatus);
+  }
+
   ngOnInit() {
     this.statement = this.route.snapshot.data.statement;
+    this.hearingStatus = this.route.snapshot.data.hearingStatus;
     this.isNew = !this.statement;
 
     this.initForm();
@@ -61,76 +67,6 @@ export class StatementDetailComponent implements OnInit {
     this.initCantonOptions();
     this.initStatusOptions();
     this.initResponsibleTransportCompanyPrefill();
-  }
-
-  private initYearOptions() {
-    this.timetableHearingService
-      .getHearingYears([HearingStatus.Active, HearingStatus.Planned])
-      .subscribe((yearContainer) => {
-        const years = yearContainer.objects
-          ?.map((year) => year.timetableYear)
-          .sort((n1, n2) => n1 - n2);
-        this.YEAR_OPTIONS = years!;
-        if (this.isNew) {
-          this.form.controls.timetableYear.setValue(this.YEAR_OPTIONS[0]);
-        }
-      });
-  }
-
-  private initCantonOptions() {
-    const tthPermissions = this.authService.getApplicationUserPermission(
-      ApplicationType.TimetableHearing
-    );
-    if (tthPermissions.role === ApplicationRole.Supervisor || this.authService.isAdmin) {
-      this.CANTON_OPTIONS = Cantons.cantons;
-    } else if (tthPermissions.role === ApplicationRole.Writer) {
-      this.CANTON_OPTIONS = tthPermissions.permissionRestrictions
-        .map((restriction) => Cantons.fromSwissCanton(restriction.valueAsString as SwissCanton))
-        .filter((element) => element !== undefined)
-        .map((e) => e!);
-    }
-
-    const defaultCanton = Cantons.getSwissCantonEnum(this.route.snapshot.params.canton);
-    if (this.CANTON_OPTIONS.includes(Cantons.fromSwissCanton(defaultCanton)!)) {
-      this.form.controls.swissCanton.setValue(defaultCanton);
-    }
-  }
-
-  private initForm() {
-    this.form = this.getFormGroup(this.statement);
-    if (!this.isNew) {
-      this.form.disable();
-    }
-  }
-
-  private initStatusOptions() {
-    this.STATUS_OPTIONS = Object.values(StatementStatus);
-    if (this.isNew) {
-      this.form.controls.statementStatus.setValue(StatementStatus.Received);
-      this.form.controls.statementStatus.disable();
-    }
-  }
-
-  private initTtfnValidOnHandler() {
-    this.form.controls.timetableYear.valueChanges.subscribe((year) => {
-      if (year) {
-        this.timetableYearChangeService.getTimetableYearChange(year - 1).subscribe((result) => {
-          this.ttfnValidOn = result;
-        });
-      }
-    });
-  }
-
-  private initResponsibleTransportCompanyPrefill() {
-    this.form.controls.ttfnid.valueChanges.subscribe((ttfnid) => {
-      if (ttfnid) {
-        this.timetableHearingService
-          .getResponsibleTransportCompanies(ttfnid, this.form.value.timetableYear! - 1)
-          .subscribe((result) => {
-            this.form.controls.responsibleTransportCompanies.setValue(result);
-          });
-      }
-    });
   }
 
   save() {
@@ -146,68 +82,12 @@ export class StatementDetailComponent implements OnInit {
     }
   }
 
-  private createStatement(statement: TimetableHearingStatement) {
-    this.timetableHearingService
-      .createStatement(statement, undefined)
-      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
-      .subscribe((statement) => {
-        this.notificationService.success('TTH.STATEMENT.NOTIFICATION.ADD_SUCCESS');
-        this.navigateToStatementDetail(statement);
-      });
-  }
-
-  private updateStatement(id: number, statement: TimetableHearingStatement) {
-    this.timetableHearingService
-      .updateHearingStatement(id, statement, undefined)
-      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
-      .subscribe((statement) => {
-        this.notificationService.success('TTH.STATEMENT.NOTIFICATION.EDIT_SUCCESS');
-        this.navigateToStatementDetail(statement);
-      });
-  }
-
-  private navigateToStatementDetail(statement: TimetableHearingStatement) {
-    this.router
-      .navigate(['..', statement.id], { relativeTo: this.route })
-      .then(() => this.ngOnInit());
-  }
-
-  private handleError() {
-    return () => {
-      this.form.enable();
-      return EMPTY;
-    };
-  }
-
   toggleEdit() {
     if (this.form.enabled) {
       this.showConfirmationDialog();
-    } else {
+    } else if (!this.isHearingStatusArchived) {
       this.form.enable({ emitEvent: false });
     }
-  }
-
-  private showConfirmationDialog() {
-    this.confirmLeave().subscribe((confirmed) => {
-      if (confirmed) {
-        if (this.isNew) {
-          this.backToOverview();
-        } else {
-          this.form.disable({ emitEvent: false });
-          this.ngOnInit();
-        }
-      }
-    });
-  }
-
-  private confirmLeave(): Observable<boolean> {
-    if (this.form.dirty) {
-      return this.dialogService.confirm({
-        title: 'DIALOG.DISCARD_CHANGES_TITLE',
-        message: 'DIALOG.LEAVE_SITE',
-      });
-    }
-    return of(true);
   }
 
   backToOverview() {
@@ -271,5 +151,131 @@ export class StatementDetailComponent implements OnInit {
       ]),
       etagVersion: new FormControl(statement?.etagVersion),
     });
+  }
+
+  private initYearOptions() {
+    this.timetableHearingService
+      .getHearingYears([HearingStatus.Active, HearingStatus.Planned])
+      .subscribe((yearContainer) => {
+        const years = yearContainer.objects
+          ?.map((year) => year.timetableYear)
+          .sort((n1, n2) => n1 - n2);
+        this.YEAR_OPTIONS = years!;
+        if (this.isNew) {
+          this.form.controls.timetableYear.setValue(this.YEAR_OPTIONS[0]);
+        }
+      });
+  }
+
+  private initCantonOptions() {
+    const tthPermissions = this.authService.getApplicationUserPermission(
+      ApplicationType.TimetableHearing
+    );
+    if (tthPermissions.role === ApplicationRole.Supervisor || this.authService.isAdmin) {
+      this.CANTON_OPTIONS = Cantons.cantons;
+    } else if (tthPermissions.role === ApplicationRole.Writer) {
+      this.CANTON_OPTIONS = tthPermissions.permissionRestrictions
+        .map((restriction) => Cantons.fromSwissCanton(restriction.valueAsString as SwissCanton))
+        .filter((element) => element !== undefined)
+        .map((e) => e!);
+    }
+
+    const defaultCanton = Cantons.getSwissCantonEnum(this.route.snapshot.params.canton);
+    if (this.CANTON_OPTIONS.includes(Cantons.fromSwissCanton(defaultCanton)!)) {
+      this.form.controls.swissCanton.setValue(defaultCanton);
+    }
+  }
+
+  private initForm() {
+    this.form = this.getFormGroup(this.statement);
+    if (!this.isNew || this.isHearingStatusArchived) {
+      this.form.disable();
+    }
+  }
+
+  private initStatusOptions() {
+    this.STATUS_OPTIONS = Object.values(StatementStatus);
+    if (this.isNew) {
+      this.form.controls.statementStatus.setValue(StatementStatus.Received);
+      this.form.controls.statementStatus.disable();
+    }
+  }
+
+  private initTtfnValidOnHandler() {
+    this.form.controls.timetableYear.valueChanges.subscribe((year) => {
+      if (year) {
+        this.timetableYearChangeService.getTimetableYearChange(year - 1).subscribe((result) => {
+          this.ttfnValidOn = result;
+        });
+      }
+    });
+  }
+
+  private initResponsibleTransportCompanyPrefill() {
+    this.form.controls.ttfnid.valueChanges.subscribe((ttfnid) => {
+      if (ttfnid) {
+        this.timetableHearingService
+          .getResponsibleTransportCompanies(ttfnid, this.form.value.timetableYear! - 1)
+          .subscribe((result) => {
+            this.form.controls.responsibleTransportCompanies.setValue(result);
+          });
+      }
+    });
+  }
+
+  private createStatement(statement: TimetableHearingStatement) {
+    this.timetableHearingService
+      .createStatement(statement, undefined)
+      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
+      .subscribe((statement) => {
+        this.notificationService.success('TTH.STATEMENT.NOTIFICATION.ADD_SUCCESS');
+        this.navigateToStatementDetail(statement);
+      });
+  }
+
+  private updateStatement(id: number, statement: TimetableHearingStatement) {
+    this.timetableHearingService
+      .updateHearingStatement(id, statement, undefined)
+      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
+      .subscribe((statement) => {
+        this.notificationService.success('TTH.STATEMENT.NOTIFICATION.EDIT_SUCCESS');
+        this.navigateToStatementDetail(statement);
+      });
+  }
+
+  private navigateToStatementDetail(statement: TimetableHearingStatement) {
+    this.router
+      .navigate(['..', statement.id], { relativeTo: this.route })
+      .then(() => this.ngOnInit());
+  }
+
+  private handleError() {
+    return () => {
+      this.form.enable();
+      return EMPTY;
+    };
+  }
+
+  private showConfirmationDialog() {
+    this.confirmLeave().subscribe((confirmed) => {
+      if (confirmed) {
+        if (this.isNew) {
+          this.backToOverview();
+        } else {
+          this.form.disable({ emitEvent: false });
+          this.ngOnInit();
+        }
+      }
+    });
+  }
+
+  private confirmLeave(): Observable<boolean> {
+    if (this.form.dirty) {
+      return this.dialogService.confirm({
+        title: 'DIALOG.DISCARD_CHANGES_TITLE',
+        message: 'DIALOG.LEAVE_SITE',
+      });
+    }
+    return of(true);
   }
 }
