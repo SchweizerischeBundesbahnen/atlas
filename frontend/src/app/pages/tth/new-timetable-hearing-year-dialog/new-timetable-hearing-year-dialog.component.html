@@ -20,7 +20,11 @@
     </div>
 
     <div class="multi-select-search">
-      <mat-select formControlName="timetableYear" [(value)]="defaultYearSelection">
+      <mat-select
+        data-cy="timetableYear"
+        formControlName="timetableYear"
+        [(value)]="defaultYearSelection"
+      >
         <mat-option *ngFor="let year of YEAR_OPTIONS" [value]="year">
           {{ year }}
         </mat-option>
@@ -29,6 +33,8 @@
 
     <div>
       <form-date-range
+        controlNameFrom="hearingFrom"
+        controlNameTo="hearingTo"
         infoIconTitleFrom="TTH.NEW_YEAR.DIALOG.HEARING_FROM_INFO"
         infoIconTitleUntil="TTH.NEW_YEAR.DIALOG.HEARING_UNTIL_INFO"
         [required]="false"
