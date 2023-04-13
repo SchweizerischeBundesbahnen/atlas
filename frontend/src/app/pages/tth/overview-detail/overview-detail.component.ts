@@ -16,23 +16,20 @@ import moment from 'moment';
 
 import {addElementsToArrayWhenNotUndefined} from '../../../core/util/arrays';
 import {TthTableService} from '../tth-table.service';
-import { OverviewToTabShareDataService } from '../overview-tab/service/overview-to-tab-share-data.service';
-import { MatSelectChange } from '@angular/material/select';
-import { TableService } from '../../../core/components/table/table.service';
-import { TthUtils } from '../util/tth-utils';
-import { TablePagination } from '../../../core/components/table/table-pagination';
-import { TthChangeStatusDialogService } from './tth-change-status-dialog/service/tth-change-status-dialog.service';
-import { ColumnDropDownEvent } from '../../../core/components/table/column-drop-down-event';
-import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
-import { TthTableService } from '../tth-table.service';
-import { TthDialogService } from '../../../core/components/tthdialog/tthdialog.service';
 import {
   OverviewToTabShareDataService
-} from '../timetable-hearing-overview-tab/overview-to-tab-share-data.service';
+} from '../overview-tab/service/overview-to-tab-share-data.service';
 import {MatSelectChange} from '@angular/material/select';
-import {TthUtils} from '../tth-utils';
+import {TableService} from '../../../core/components/table/table.service';
+import {TthUtils} from '../util/tth-utils';
 import {TablePagination} from '../../../core/components/table/table-pagination';
-import { NewTimetableHearingYearDialogService } from '../new-timetable-hearing-year-dialog/service/new-timetable-hearing-year-dialog.service';
+import {
+  TthChangeStatusDialogService
+} from './tth-change-status-dialog/service/tth-change-status-dialog.service';
+import {ColumnDropDownEvent} from '../../../core/components/table/column-drop-down-event';
+import {
+  NewTimetableHearingYearDialogService
+} from '../new-timetable-hearing-year-dialog/service/new-timetable-hearing-year-dialog.service';
 
 @Component({
   selector: 'app-timetable-hearing-overview-detail',
@@ -81,8 +78,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     private readonly tthStatusChangeDialog: TthChangeStatusDialogService,
     private readonly tthTableService: TthTableService,
     private readonly tthUtils: TthUtils,
-    private readonly tthDialogService: TthDialogService,
-    private readonly timetableHearingDialogService: NewTimetableHearingYearDialogService
+    private readonly newTimetableHearingYearDialogService: NewTimetableHearingYearDialogService
   ) {}
 
   get isHearingYearActive(): boolean {
@@ -183,7 +179,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
   }
 
   addNewTimetableHearing() {
-    this.timetableHearingDialogService.confirm({
+    this.newTimetableHearingYearDialogService.confirm({
       title: 'TTH.DIALOG.NEW_PLAN_TIMETABLE',
     });
   }
