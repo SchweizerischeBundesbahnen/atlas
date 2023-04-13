@@ -9,6 +9,7 @@ import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atl
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { DialogService } from 'src/app/core/components/dialog/dialog.service';
 import { Subject, takeUntil } from 'rxjs';
+import { TthChangeStatusFormGroup } from './model/tth-change-status-form-group';
 
 @Component({
   selector: 'app-tth-change-status-dialog',
@@ -16,7 +17,7 @@ import { Subject, takeUntil } from 'rxjs';
   styleUrls: ['./tth-change-status-dialog.component.scss'],
 })
 export class TthChangeStatusDialogComponent {
-  tthChangeStatusFormGroup = new FormGroup({
+  tthChangeStatusFormGroup = new FormGroup<TthChangeStatusFormGroup>({
     justification: new FormControl(this.data.ths.justification, [
       AtlasFieldLengthValidator.statement,
       WhitespaceValidator.blankOrEmptySpaceSurrounding,
