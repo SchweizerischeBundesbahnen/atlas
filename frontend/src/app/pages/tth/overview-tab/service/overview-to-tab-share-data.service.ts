@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Cantons } from '../overview/canton/Cantons';
+import { Cantons } from '../../overview/canton/Cantons';
 
 @Injectable({
   providedIn: 'root',

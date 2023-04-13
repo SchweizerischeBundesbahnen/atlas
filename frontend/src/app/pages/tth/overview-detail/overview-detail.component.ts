@@ -13,10 +13,10 @@ import { TableColumn } from '../../../core/components/table/table-column';
 import { Pages } from '../../pages';
 import { Subject, takeUntil } from 'rxjs';
 import moment from 'moment';
-import { OverviewToTabShareDataService } from '../timetable-hearing-overview-tab/overview-to-tab-share-data.service';
+import { OverviewToTabShareDataService } from '../overview-tab/service/overview-to-tab-share-data.service';
 import { MatSelectChange } from '@angular/material/select';
 import { TableService } from '../../../core/components/table/table.service';
-import { TthUtils } from '../tth-utils';
+import { TthUtils } from '../util/tth-utils';
 import { TablePagination } from '../../../core/components/table/table-pagination';
 import { TthChangeStatusDialogService } from './tth-change-status-dialog/service/tth-change-status-dialog.service';
 import { ColumnDropDownEvent } from '../../../core/components/table/column-drop-down-event';
@@ -25,11 +25,11 @@ import { TthTableService } from '../tth-table.service';
 
 @Component({
   selector: 'app-timetable-hearing-overview-detail',
-  templateUrl: './timetable-hearing-overview-detail.component.html',
-  styleUrls: ['./timetable-hearing-overview-detail.component.scss'],
+  templateUrl: './overview-detail.component.html',
+  styleUrls: ['./overview-detail.component.scss'],
   providers: [TableService],
 })
-export class TimetableHearingOverviewDetailComponent implements OnInit, OnDestroy {
+export class OverviewDetailComponent implements OnInit, OnDestroy {
   timeTableHearingStatements: TimetableHearingStatement[] = [];
   totalCount$ = 0;
   tableColumns: TableColumn<TimetableHearingStatement>[] = [];
