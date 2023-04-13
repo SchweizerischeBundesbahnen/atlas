@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppTestingModule } from '../../../app.testing.module';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { By } from '@angular/platform-browser';
-import { TimetableHearingDialogComponent } from './timetable-hearing-dialog.component';
+import { NewTimetableHearingYearDialogComponent } from './new-timetable-hearing-year-dialog.component';
 import {
   ContainerTimetableHearingYear,
   TimetableHearingService,
@@ -16,8 +16,8 @@ const mockTimetableHearingService = jasmine.createSpyObj('timetableHearingServic
 ]);
 
 describe('TimetableHearingDialogComponent', () => {
-  let timetableHearingDialogComponent: TimetableHearingDialogComponent;
-  let fixture: ComponentFixture<TimetableHearingDialogComponent>;
+  let newTimetableHearingYearDialogComponent: NewTimetableHearingYearDialogComponent;
+  let fixture: ComponentFixture<NewTimetableHearingYearDialogComponent>;
 
   const getTimetableHearingYears = function (): TimetableHearingYear[] {
     const currentYear = getCurrentYear();
@@ -60,7 +60,7 @@ describe('TimetableHearingDialogComponent', () => {
   beforeEach(async () => {
     mockTimetableHearingService.getHearingYears.and.returnValue(of(hearingContainer));
     await TestBed.configureTestingModule({
-      declarations: [TimetableHearingDialogComponent],
+      declarations: [NewTimetableHearingYearDialogComponent],
       imports: [AppTestingModule],
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: { title: 'Title' } },
@@ -71,13 +71,13 @@ describe('TimetableHearingDialogComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TimetableHearingDialogComponent);
-    timetableHearingDialogComponent = fixture.componentInstance;
+    fixture = TestBed.createComponent(NewTimetableHearingYearDialogComponent);
+    newTimetableHearingYearDialogComponent = fixture.componentInstance;
     fixture.detectChanges();
   });
 
   it('should create dialog with title, dropdown, formDateRange and matDialogActions', () => {
-    expect(timetableHearingDialogComponent).toBeTruthy();
+    expect(newTimetableHearingYearDialogComponent).toBeTruthy();
 
     const title = fixture.debugElement.query(By.css('h1'));
     expect(title.nativeElement.innerText).toBe('Title');
@@ -97,27 +97,27 @@ describe('TimetableHearingDialogComponent', () => {
 
   it('should get year options and default year selection', () => {
     const currentYear = getCurrentYear();
-    timetableHearingDialogComponent.initOverviewOfferedYears();
-    expect(timetableHearingDialogComponent.YEAR_OPTIONS).toEqual([
+    newTimetableHearingYearDialogComponent.initOverviewOfferedYears();
+    expect(newTimetableHearingYearDialogComponent.YEAR_OPTIONS).toEqual([
       currentYear + 4,
       currentYear + 5,
       currentYear + 6,
       currentYear + 7,
       currentYear + 8,
     ]);
-    expect(timetableHearingDialogComponent.defaultYearSelection).toEqual(currentYear + 4);
+    expect(newTimetableHearingYearDialogComponent.defaultYearSelection).toEqual(currentYear + 4);
   });
 
   it('should get active year', () => {
     const timetableHearingYears: TimetableHearingYear[] = getTimetableHearingYears();
-    expect(timetableHearingDialogComponent.getActiveYear(timetableHearingYears)).toEqual(
+    expect(newTimetableHearingYearDialogComponent.getActiveYear(timetableHearingYears)).toEqual(
       getCurrentYear()
     );
   });
 
   it('should get planned years', () => {
     const timetableHearingYears: TimetableHearingYear[] = getTimetableHearingYears();
-    expect(timetableHearingDialogComponent.getPlannedYears(timetableHearingYears)).toEqual([
+    expect(newTimetableHearingYearDialogComponent.getPlannedYears(timetableHearingYears)).toEqual([
       timetableHearingYears[1],
       timetableHearingYears[2],
       timetableHearingYears[3],
@@ -127,7 +127,7 @@ describe('TimetableHearingDialogComponent', () => {
   it('should check if year is already planned', () => {
     const timetableHearingYears: TimetableHearingYear[] = getTimetableHearingYears();
     expect(
-      timetableHearingDialogComponent.isYearAlreadyPlanned(
+      newTimetableHearingYearDialogComponent.isYearAlreadyPlanned(
         getCurrentYear() + 1,
         timetableHearingYears
       )
@@ -137,7 +137,7 @@ describe('TimetableHearingDialogComponent', () => {
   it('should check if year is not already planned', () => {
     const timetableHearingYears: TimetableHearingYear[] = getTimetableHearingYears();
     expect(
-      timetableHearingDialogComponent.isYearAlreadyPlanned(
+      newTimetableHearingYearDialogComponent.isYearAlreadyPlanned(
         getCurrentYear() + 4,
         timetableHearingYears
       )
@@ -148,7 +148,10 @@ describe('TimetableHearingDialogComponent', () => {
     const currentYear = getCurrentYear();
     const timetableHearingYears: TimetableHearingYear[] = getTimetableHearingYears();
     expect(
-      timetableHearingDialogComponent.calculateProposedYears(currentYear, timetableHearingYears)
+      newTimetableHearingYearDialogComponent.calculateProposedYears(
+        currentYear,
+        timetableHearingYears
+      )
     ).toEqual([
       currentYear + 4,
       currentYear + 5,
