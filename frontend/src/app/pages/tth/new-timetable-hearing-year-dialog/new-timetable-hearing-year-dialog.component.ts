@@ -73,7 +73,7 @@ export class NewTimetableHearingYearDialogComponent implements OnInit {
     ValidationService.validateForm(this.form);
     if (this.form.valid) {
       this.timetableHearingService.createHearingYear(timetableHearingYear).subscribe(() => {
-        this.notificationService.success('TTH.DIALOG.NOTIFICATION_SUCCESS');
+        this.notificationService.success('TTH.NEW_YEAR.DIALOG.NOTIFICATION_SUCCESS');
         this.newTimetableHearingYearDialogService.closeConfirmDialog();
       });
     }
