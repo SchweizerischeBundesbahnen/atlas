@@ -13,7 +13,6 @@
           { label: 'TTH.NEW_YEAR.DIALOG.PLAN_DROPDOWN_DESCRIPTION', translate: true }
         ]"
         [formGroup]="form"
-        controlName="timetableYear"
         fieldLabel="TTH.NEW_YEAR.DIALOG.PLAN_DROPDOWN_TITLE"
         infoIconTitle="TTH.NEW_YEAR.DIALOG.PLAN_INFO"
       >
@@ -21,12 +20,7 @@
     </div>
 
     <div class="multi-select-search">
-      <mat-select
-        formControlName="timetableYear"
-        data-cy="canton-type"
-        placeholder="{{ 'FORM.DROPDOWN_PLACEHOLDER' | translate }}"
-        [(value)]="defaultYearSelection"
-      >
+      <mat-select formControlName="timetableYear" [(value)]="defaultYearSelection">
         <mat-option *ngFor="let year of YEAR_OPTIONS" [value]="year">
           {{ year }}
         </mat-option>
