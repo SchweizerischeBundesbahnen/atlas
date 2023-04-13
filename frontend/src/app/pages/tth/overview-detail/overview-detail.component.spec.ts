@@ -29,6 +29,7 @@ class MockAppTthOverviewTabHeadingComponent {
   @Input() cantonShort!: string;
   @Input() foundTimetableHearingYear!: TimetableHearingYear;
   @Input() hearingStatus!: HearingStatus;
+  @Input() noActiveTimetableHearingYearFound!: boolean;
   @Input() noTimetableHearingYearFound!: boolean;
   @Input() noPlannedTimetableHearingYearFound!: boolean;
 }
