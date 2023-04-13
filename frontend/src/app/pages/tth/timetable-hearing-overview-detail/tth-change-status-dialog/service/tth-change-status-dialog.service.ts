@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { TthChangeStatusDialogComponent } from '../tth-change-status-dialog.component';
 import { ColumnDropDownEvent } from '../../../../../core/components/table/column-drop-down-event';
+import { StatusChangeData } from '../model/status-change-data';
 
 @Injectable({
   providedIn: 'root',
@@ -14,15 +15,15 @@ export class TthChangeStatusDialogService {
   constructor(private dialog: MatDialog) {}
 
   onClick(changedStatus: ColumnDropDownEvent): Observable<boolean> {
+    const statusChangeData: StatusChangeData = {
+      title: 'TTH.DIALOG.STATUS_CHANGE',
+      message: 'TTH.DIALOG.STATUS_CHANGE_MESSAGE',
+      cancelText: 'TTH.DIALOG.BACK',
+      confirmText: 'TTH.DIALOG.STATUS_CHANGE',
+      ths: changedStatus.value,
+    };
     this.changeStatusDialog = this.dialog.open(TthChangeStatusDialogComponent, {
-      data: {
-        title: 'TTH.DIALOG.STATUS_CHANGE',
-        message: 'TTH.DIALOG.STATUS_CHANGE_MESSAGE',
-        cancelText: 'TTH.DIALOG.BACK',
-        confirmText: 'TTH.DIALOG.STATUS_CHANGE',
-        id: changedStatus.value.id,
-        ths: changedStatus.value,
-      },
+      data: statusChangeData,
       panelClass: 'atlas-dialog-panel',
       backdropClass: 'atlas-dialog-backdrop',
     });
