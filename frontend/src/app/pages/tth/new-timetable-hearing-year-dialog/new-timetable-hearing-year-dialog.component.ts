@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NewTimetableHearingYearDialogData } from './model/new-timetable-hearing-year-dialog.data';
 import { HearingStatus, TimetableHearingService, TimetableHearingYear } from '../../../api';
 import moment from 'moment/moment';
@@ -11,7 +11,6 @@ import { ValidationService } from '../../../core/validation/validation.service';
 import { NewTimetableHearingYearFormGroup } from './model/new-timetable-hearing-year-form-group';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
-import { NewTimetableHearingYearDialogService } from './service/new-timetable-hearing-year-dialog.service';
 import { Moment } from 'moment';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -40,11 +39,11 @@ export class NewTimetableHearingYearDialogComponent implements OnInit {
   private readonly ngUnsubscribe = new Subject<void>();
 
   constructor(
+    private dialogRef: MatDialogRef<NewTimetableHearingYearDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: NewTimetableHearingYearDialogData,
     private readonly timetableHearingService: TimetableHearingService,
     protected notificationService: NotificationService,
-    private readonly dialogService: DialogService,
-    private readonly newTimetableHearingYearDialogService: NewTimetableHearingYearDialogService
+    private readonly dialogService: DialogService
   ) {}
 
   ngOnInit(): void {
@@ -80,7 +79,7 @@ export class NewTimetableHearingYearDialogComponent implements OnInit {
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe(() => {
           this.notificationService.success('TTH.NEW_YEAR.DIALOG.NOTIFICATION_SUCCESS');
-          this.newTimetableHearingYearDialogService.closeConfirmDialog();
+          this.dialogRef.close();
         });
     }
   }
@@ -131,7 +130,7 @@ export class NewTimetableHearingYearDialogComponent implements OnInit {
   closeDialog() {
     this.dialogService.confirmLeave().subscribe((confirm) => {
       if (confirm) {
-        this.newTimetableHearingYearDialogService.closeConfirmDialog();
+        this.dialogRef.close();
       }
     });
   }

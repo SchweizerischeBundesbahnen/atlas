@@ -4,8 +4,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { of } from 'rxjs';
 import { NewTimetableHearingYearDialogService } from './new-timetable-hearing-year-dialog.service';
 
-const timetableHearingDialogData = {};
-
 describe('NewTimetableHearingYearDialogService', () => {
   let newTimetableHearingYearDialogService: NewTimetableHearingYearDialogService;
 
@@ -23,7 +21,7 @@ describe('NewTimetableHearingYearDialogService', () => {
     timetableHearingDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
     newTimetableHearingYearDialogService
-      .openDialog(timetableHearingDialogData)
+      .openDialog()
       .subscribe((result) => expect(result).toBeTrue());
 
     expect(timetableHearingDialogSpy.open).toHaveBeenCalled();
@@ -33,7 +31,7 @@ describe('NewTimetableHearingYearDialogService', () => {
     timetableHearingDialogSpy.open.and.returnValue({ afterClosed: () => of(false) });
 
     newTimetableHearingYearDialogService
-      .openDialog(timetableHearingDialogData)
+      .openDialog()
       .subscribe((result) => expect(result).toBeFalse());
 
     expect(timetableHearingDialogSpy.open).toHaveBeenCalled();
