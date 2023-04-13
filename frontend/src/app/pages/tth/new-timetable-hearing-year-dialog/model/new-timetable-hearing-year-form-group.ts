@@ -1,6 +1,8 @@
 import { FormControl } from '@angular/forms';
-import { BaseDetailFormGroup } from '../../../../core/components/base-detail/base-detail-form-group';
+import { Moment } from 'moment/moment';
 
-export interface NewTimetableHearingYearFormGroup extends BaseDetailFormGroup {
+export interface NewTimetableHearingYearFormGroup {
   timetableYear: FormControl<number | null>;
+  hearingFrom: FormControl<Moment | null>;
+  hearingTo: FormControl<Moment | null>;
 }
