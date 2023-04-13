@@ -1,8 +1,6 @@
 import { FormControl } from '@angular/forms';
-import { Moment } from 'moment';
+import { BaseDetailFormGroup } from '../../../../core/components/base-detail/base-detail-form-group';
 
-export interface NewTimetableHearingYearFormGroup {
+export interface NewTimetableHearingYearFormGroup extends BaseDetailFormGroup {
   timetableYear: FormControl<number | null>;
-  validFrom: FormControl<Moment | null>;
-  validTo: FormControl<Moment | null>;
 }
