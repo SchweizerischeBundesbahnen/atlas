@@ -41,20 +41,16 @@
           ></bo-select>
 
           <div class="d-flex flex-column col-6 ps-3">
-            <mat-label class="font-bold-lg">{{ 'USER_ADMIN.APPLICATIONS' | translate }}</mat-label>
-            <div [class.disabled]="boForm.disabled" class="multi-select-search">
-              <mat-select
-                (selectionChange)="filterChanged()"
-                [(ngModel)]="selectedApplicationOptions"
-                multiple
-              >
-                <mat-option
-                  *ngFor="let application of applicationBoOptions"
-                  [value]="application"
-                  >{{ 'USER_ADMIN.APPLICATION.' + application | translate }}</mat-option
-                >
-              </mat-select>
-            </div>
+            <atlas-select
+              (selectChanged)="applicationChanged($event); filterChanged()"
+              [initialValue]="selectedApplicationOptions"
+              label="USER_ADMIN.APPLICATIONS"
+              [additionalLabelspace]="false"
+              optionTranslateLabelPrefix="USER_ADMIN.APPLICATION."
+              [options]="applicationBoOptions"
+              [multiple]="true"
+            >
+            </atlas-select>
           </div>
         </div>
       </ng-container>
@@ -63,35 +59,30 @@
     <ng-template #cantonFilterTemplate>
       <div class="d-flex flex-row">
         <div class="d-flex flex-column col-6 ps-1">
-          <mat-label class="font-bold-lg">{{ 'COMMON.CANTONS' | translate }}</mat-label>
-          <div [class.disabled]="boForm.disabled" class="multi-select-search">
-            <mat-select
-              (selectionChange)="filterChanged()"
-              [(ngModel)]="selectedCantonOptions"
-              multiple
-            >
-              <mat-option *ngFor="let canton of cantonOptions" [value]="canton">{{
-                SWISS_CANTONS_PREFIX_LABEL + getCantonAbbreviation(canton) | translate
-              }}</mat-option>
-            </mat-select>
-          </div>
+          <atlas-select
+            (selectChanged)="cantonChanged($event); filterChanged()"
+            [initialValue]="selectedCantonOptions"
+            label="COMMON.CANTONS"
+            [additionalLabelspace]="false"
+            [optionTranslateLabelPrefix]="SWISS_CANTONS_PREFIX_LABEL"
+            [options]="cantonOptions"
+            [multiple]="true"
+            [displayExtractor]="getCantonAbbreviation"
+          >
+          </atlas-select>
         </div>
 
         <div class="d-flex flex-column col-6 ps-3">
-          <mat-label class="font-bold-lg">{{ 'USER_ADMIN.APPLICATIONS' | translate }}</mat-label>
-          <div [class.disabled]="boForm.disabled" class="multi-select-search">
-            <mat-select
-              (selectionChange)="filterChanged()"
-              [(ngModel)]="selectedApplicationOptions"
-              multiple
-            >
-              <mat-option
-                *ngFor="let application of applicationCantonOptions"
-                [value]="application"
-                >{{ 'USER_ADMIN.APPLICATION.' + application | translate }}</mat-option
-              >
-            </mat-select>
-          </div>
+          <atlas-select
+            (selectChanged)="applicationChanged($event); filterChanged()"
+            [initialValue]="selectedApplicationOptions"
+            label="USER_ADMIN.APPLICATIONS"
+            [additionalLabelspace]="false"
+            optionTranslateLabelPrefix="USER_ADMIN.APPLICATION."
+            [options]="applicationCantonOptions"
+            [multiple]="true"
+          >
+          </atlas-select>
         </div>
       </div>
     </ng-template>
