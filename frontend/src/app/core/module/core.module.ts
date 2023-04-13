@@ -34,7 +34,6 @@ import { DisplayDatePipe } from '../pipe/display-date.pipe';
 import { AtlasSpacerComponent } from '../components/spacer/atlas-spacer.component';
 import { DetailFooterComponent } from '../components/detail-footer/detail-footer.component';
 import { DetailPageContainerComponent } from '../components/detail-page-container/detail-page-container.component';
-import { TimetableHearingDialogComponent } from '../../pages/tth/timetable-hearing-dialog/timetable-hearing-dialog.component';
 
 const coreComponents = [
   WorkflowFormComponent,
@@ -48,7 +47,6 @@ const coreComponents = [
   AtlasSpacerComponent,
   SwitchVersionComponent,
   DialogComponent,
-  TimetableHearingDialogComponent,
   HeaderComponent,
   LanguageSwitcherComponent,
   LoadingSpinnerComponent,
