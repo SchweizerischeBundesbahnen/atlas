@@ -11,7 +11,7 @@ import { CompanyFormGroup } from './company-form-group';
 export class CompanyDetailComponent implements OnInit {
   company!: Company;
 
-  companyFormGroup!: FormGroup<CompanyFormGroup>;
+  form!: FormGroup<CompanyFormGroup>;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public dialogData: any,
@@ -21,7 +21,7 @@ export class CompanyDetailComponent implements OnInit {
   ngOnInit() {
     this.company = this.dialogData.companyDetail;
     if (this.company) {
-      this.companyFormGroup = new FormGroup<CompanyFormGroup>({
+      this.form = new FormGroup<CompanyFormGroup>({
         uicCode: new FormControl({ value: this.company.uicCode, disabled: true }),
         countryCodeIso: new FormControl({ value: this.company.countryCodeIso, disabled: true }),
         shortName: new FormControl({ value: this.company.shortName, disabled: true }),
