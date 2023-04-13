@@ -531,9 +531,14 @@
     }
   },
   "TTH": {
+    "NOTIFICATION": {
+      "STATUS_CHANGE": {
+        "SUCCESS": "Der Status wurde erfolgreich geändert."
+      }
+    },
     "DIALOG": {
       "STATUS_CHANGE": "Status ändern",
-      "COMMENT_LABEL": "Kommentar dazu (optional)",
+      "COMMENT_LABEL": "Kommentar dazu",
       "BACK": "Zurück",
       "STATUS_CHANGE_MESSAGE": "Sie ändern die ausgewählte Stellungnahme."
     },
