@@ -1,5 +1,5 @@
 <div [formGroup]="formGroup" class="atlas-select">
-  <mat-label *ngIf="label" class="font-bold-lg" [ngClass]="required ? 'required-indicator' : ''">
+  <mat-label *ngIf="label" class="font-bold-lg" [ngClass]="{ 'required-indicator': required }">
     {{ label | translate }}
   </mat-label>
   <atlas-spacer *ngIf="label" height="3px"></atlas-spacer>
