@@ -119,6 +119,9 @@ export class AtlasButtonComponent {
     ) {
       return 'atlas-primary-btn footer-btn';
     }
+    if (this.buttonType === AtlasButtonType.CONFIRM) {
+      return 'atlas-primary-btn primary-color-btn';
+    }
     return 'atlas-primary-btn';
   }
 }
