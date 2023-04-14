@@ -20,6 +20,17 @@ export class SelectComponent<TYPE> implements OnInit, OnChanges {
   @Input() label: string | undefined;
   @Input() placeHolderLabel = 'FORM.DROPDOWN_PLACEHOLDER';
   @Input() optionTranslateLabelPrefix: string | undefined;
+
+  @Input()
+  valueExtractor(option: TYPE): any {
+    return option;
+  }
+
+  @Input()
+  displayExtractor(option: TYPE): any {
+    return option;
+  }
+
   @Input() additionalLabelspace = true;
   @Input() required = false;
 
@@ -41,17 +52,16 @@ export class SelectComponent<TYPE> implements OnInit, OnChanges {
   }
 
   @Input() multiple = false;
+
   @Input() dataCy!: string;
 
   @Input() controlName: string | null = null;
   @Input() formGroup!: FormGroup;
 
   @Input() options: TYPE[] = [];
-  @Input() optionValue: any;
+  @Input() value: any;
 
   @ContentChild('matOptionPrefix') matOptionPrefix!: TemplateRef<any>;
-
-  @Input() value: any;
 
   @Output() selectChanged = new EventEmitter();
 
@@ -70,16 +80,6 @@ export class SelectComponent<TYPE> implements OnInit, OnChanges {
     if (changes.value) {
       this.formGroup?.get(this.controlName!)?.setValue(changes.value.currentValue);
     }
-  }
-
-  @Input()
-  valueExtractor(option: TYPE): any {
-    return option;
-  }
-
-  @Input()
-  displayExtractor(option: TYPE): any {
-    return option;
   }
 
   getAsObject(option: TYPE): object {
