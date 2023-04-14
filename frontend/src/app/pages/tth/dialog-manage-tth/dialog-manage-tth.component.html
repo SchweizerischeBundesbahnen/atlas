@@ -1,30 +1,68 @@
 <!-- with slides -->
-<ng-template [ngIf]="true">
-  <h2>{{ 'title' | translate }}</h2>
+<ng-template [ngIf]="showManageView" [ngIfElse]="closeTimetableHearingView">
+  <div class="dialog-container p-3">
+    <h2>{{ 'TTH.MANAGE_TIMETABLE_HEARING.POPUP_TITLE' | translate }}</h2>
 
-  <div class="p-5">
-    <span>{{ 'one' | translate }}</span>
-    <!--    <slider></slider>-->
-    <button type="button" class="slide-btn" (click)="firstBtnOn = !firstBtnOn">
-      <div [class]="firstBtnOn ? 'slide-track-on' : 'slide-track-off'">
-        <div class="slide-toggle"></div>
-      </div>
-    </button>
+    <div class="slide-toggle-row-wrapper pb-3">
+      <span>{{ 'TTH.MANAGE_TIMETABLE_HEARING.CREATE_STATEMENT_EXTERNAL' | translate }}</span>
+      <atlas-slide-toggle
+        [toggle]="getFormCtrlValueOf(statementCreatableExternalCtrlName)"
+        (toggleChange)="setFormCtrlValueOf(statementCreatableExternalCtrlName, $event)"
+      ></atlas-slide-toggle>
+    </div>
+
+    <div class="slide-toggle-row-wrapper">
+      <span>{{ 'TTH.MANAGE_TIMETABLE_HEARING.CREATE_STATEMENT_INTERNAL' | translate }}</span>
+      <atlas-slide-toggle
+        [toggle]="getFormCtrlValueOf(statementCreatableInternalCtrlName)"
+        (toggleChange)="setFormCtrlValueOf(statementCreatableInternalCtrlName, $event)"
+      ></atlas-slide-toggle>
+    </div>
+
+    <div class="slide-toggle-row-wrapper pt-3">
+      <span>{{ 'TTH.MANAGE_TIMETABLE_HEARING.EDIT_STATEMENT' | translate }}</span>
+      <atlas-slide-toggle
+        [toggle]="getFormCtrlValueOf(statementEditableCtrlName)"
+        (toggleChange)="setFormCtrlValueOf(statementEditableCtrlName, $event)"
+      ></atlas-slide-toggle>
+    </div>
+
+    <div class="action-btn-wrapper pt-5">
+      <atlas-button buttonType="cancel" buttonText="COMMON.CANCEL"></atlas-button>
+      <atlas-button
+        buttonType="confirm"
+        buttonText="TTH.BUTTON.CLOSE_TIMETABLE_HEARING"
+        (buttonClicked)="handleManageViewCloseTthClick()"
+      ></atlas-button>
+    </div>
   </div>
-
-  <div>
-    <span>{{ 'two' | translate }}</span>
-    <!--    <slider></slider>-->
-  </div>
-
-  <div>
-    <span>{{ 'three' | translate }}</span>
-    <!--    <slider></slider>-->
-  </div>
-
-  <!--  <atlas-button>{{ 'save and close' | translate }}</atlas-button>-->
-  <!--  <atlas-button>{{ 'close hearing year' | translate }}</atlas-button>-->
 </ng-template>
 
 <!-- with confirm text -->
-<ng-template> </ng-template>
+<ng-template #closeTimetableHearingView>
+  <div class="dialog-container p-3">
+    <h2>{{ 'TTH.CLOSE_TIMETABLE_HEARING.POPUP_TITLE' | translate }}</h2>
+
+    <span>{{ 'TTH.CLOSE_TIMETABLE_HEARING.CONFIRMATION_MESSAGE' | translate }}</span>
+
+    <ul class="pt-3 pb-3">
+      <li>
+        {{ 'TTH.CLOSE_TIMETABLE_HEARING.MOVEMENTS_TO_ARCHIVED' | translate }}
+      </li>
+      <li>
+        {{ 'TTH.CLOSE_TIMETABLE_HEARING.MOVEMENTS_TO_NEXT_YEAR' | translate }}
+      </li>
+      <li>
+        {{ 'TTH.CLOSE_TIMETABLE_HEARING.MOVEMENTS_TO_DELETED' | translate }}
+      </li>
+    </ul>
+
+    <div class="action-btn-wrapper">
+      <atlas-button buttonType="cancel" buttonText="COMMON.CANCEL"></atlas-button>
+      <atlas-button
+        buttonType="confirm"
+        buttonText="TTH.BUTTON.CLOSE_TIMETABLE_HEARING"
+      ></atlas-button>
+    </div>
+  </div>
+</ng-template>

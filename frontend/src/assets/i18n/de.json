@@ -571,7 +571,8 @@
       "ADD_NEW_STATEMENT": "Neue Stellungnahme erfassen",
       "ADD_NEW_TIMETABLE_HEARING": "Neue Fahrplananhörung anlegen",
       "START_TIMETABLE_HEARING": "Dieses Fahrplanjahr starten",
-      "CANCEL_COLLECTING_ACTION": "Sammelaktion beenden"
+      "CANCEL_COLLECTING_ACTION": "Sammelaktion beenden",
+      "CLOSE_TIMETABLE_HEARING": "Fahrplanjahr schliessen"
     },
     "DROPDOWN": {
       "COLLECTING_STATUS_CHANGE_ACTION": {
@@ -701,6 +702,19 @@
         "CANCEL": "Zurück",
         "CONFIRM": "Kanton ändern"
       }
+    },
+    "CLOSE_TIMETABLE_HEARING": {
+      "POPUP_TITLE": "Fahrplanjahr schliessen",
+      "CONFIRMATION_MESSAGE": "Möchten Sie das Fahrplanjahr abschliessen? Diese Aktion kann nicht rückgängig gemacht werden. Beim Schliessen des Fahrplanjahrs werden die Stellungnahmen verschoben:",
+      "MOVEMENTS_TO_ARCHIVED": "\"Angenommen\", \"abgelehnt\" oder \"Fehlerfassung\" → Archiv",
+      "MOVEMENTS_TO_NEXT_YEAR": "\"Eingetroffen\", \"in Abklärung\" oder \"verschoben\" → darauffolgendes Fahrplanjahr",
+      "MOVEMENTS_TO_DELETED": "\"Spam-Mail\" → unwiderruflich gelöscht"
+    },
+    "MANAGE_TIMETABLE_HEARING": {
+      "POPUP_TITLE": "Steuerung Fahrplananhörung",
+      "CREATE_STATEMENT_EXTERNAL": "Erfassung Stellungnahme via API",
+      "CREATE_STATEMENT_INTERNAL": "Erfassung Stellungnahme in atlas",
+      "EDIT_STATEMENT": "Bearbeitung Stellungnahme in atlas"
     }
   }
 }
