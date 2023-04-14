@@ -10,6 +10,7 @@ import { BusinessOrganisationSelectComponent } from '../../form-components/bo-se
 import { TableService } from './table.service';
 import { MockAtlasFieldErrorComponent } from '../../../app.testing.mocks';
 import { StatementStatus } from '../../../api';
+import { SelectComponent } from '../../form-components/select/select.component';
 
 export interface Obj {
   prop: string;
@@ -28,6 +29,7 @@ describe('TableComponent', () => {
         TableFilterComponent,
         BusinessOrganisationSelectComponent,
         DateIconComponent,
+        SelectComponent,
         MockAtlasFieldErrorComponent,
       ],
       imports: [AppTestingModule],
@@ -120,7 +122,7 @@ describe('TableComponent', () => {
   });
 
   it('should get dropdown', () => {
-    const tableCells = fixture.debugElement.queryAll(By.css('td .multi-select-search'));
+    const tableCells = fixture.debugElement.queryAll(By.css('td .atlas-select'));
     expect(tableCells).toBeDefined();
     expect(tableCells.length).toEqual(3);
     tableCells.forEach((value) => {
