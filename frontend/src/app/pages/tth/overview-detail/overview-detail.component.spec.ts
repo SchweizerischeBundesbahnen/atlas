@@ -17,8 +17,14 @@ import { of } from 'rxjs';
 import moment from 'moment';
 import { Pages } from '../../pages';
 import { Component, Input } from '@angular/core';
-import { MockAtlasButtonComponent, MockTableComponent } from '../../../app.testing.mocks';
+import {
+  MockAtlasButtonComponent,
+  MockAtlasFieldErrorComponent,
+  MockTableComponent,
+} from '../../../app.testing.mocks';
 import { TthTableService } from '../tth-table.service';
+import { SelectComponent } from '../../../core/form-components/select/select.component';
+import { AtlasSpacerComponent } from '../../../core/components/spacer/atlas-spacer.component';
 
 @Component({
   selector: 'app-timetable-hearing-overview-tab-heading',
@@ -98,6 +104,9 @@ async function baseTestConfiguration() {
   await TestBed.configureTestingModule({
     declarations: [
       OverviewDetailComponent,
+      SelectComponent,
+      MockAtlasFieldErrorComponent,
+      AtlasSpacerComponent,
       MockAppTthOverviewTabHeadingComponent,
       MockTableComponent,
       MockAtlasButtonComponent,
