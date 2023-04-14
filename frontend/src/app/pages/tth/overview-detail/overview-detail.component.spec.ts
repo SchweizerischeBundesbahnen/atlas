@@ -201,7 +201,7 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       ]);
       expect(component.totalCount$).toEqual(2);
       expect(component.noTimetableHearingYearFound).toBeFalsy();
-      expect(component.dafaultDropdownCantonSelection).toBe('CH');
+      expect(component.defaultDropdownCantonSelection).toBe('CH');
     });
 
     it('should set FoundHearingYear from queryParam if exists', () => {
@@ -211,7 +211,7 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       component.setFoundHearingYear([hearingYear2000, hearingYear2001]);
       //then
       expect(component.foundTimetableHearingYear).toBe(hearingYear2000);
-      expect(component.defaultYearSelection).toBe(hearingYear2000.timetableYear);
+      expect(component.yearSelection).toBe(hearingYear2000.timetableYear);
       expect(routerNavigateSpy).not.toHaveBeenCalled();
     });
 
@@ -227,7 +227,7 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       component.setFoundHearingYear([hearingYear2000, hearingYear2001]);
       //then
       expect(component.foundTimetableHearingYear).toBe(hearingYear2000);
-      expect(component.defaultYearSelection).toBe(hearingYear2000.timetableYear);
+      expect(component.yearSelection).toBe(hearingYear2000.timetableYear);
       expect(routerNavigateSpy).toHaveBeenCalledWith([
         Pages.TTH.path,
         'ch',
