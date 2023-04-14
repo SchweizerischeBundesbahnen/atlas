@@ -571,6 +571,7 @@
       "ADD_NEW_STATEMENT": "Saisir un nouvel avis",
       "ADD_NEW_TIMETABLE_HEARING": "Créer une nouvelle consultation sur les horaires",
       "START_TIMETABLE_HEARING": "Lancer cette année d'horaire",
+      "CLOSE_TIMETABLE_HEARING": "__fr__Fahrplanjahr schliessen",
       "CANCEL_COLLECTING_ACTION": "Terminer la collecte"
     },
     "DROPDOWN": {

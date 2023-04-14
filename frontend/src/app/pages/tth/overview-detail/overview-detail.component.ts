@@ -223,7 +223,11 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
   }
 
   manageTimetableHearing() {
-    this.matDialog.open(DialogManageTthComponent);
+    console.log('manageTimetableHearing');
+
+    this.matDialog.open(DialogManageTthComponent, {
+      data: this.foundTimetableHearingYear.timetableYear,
+    });
   }
 
   addNewStatement() {
