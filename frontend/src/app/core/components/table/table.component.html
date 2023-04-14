@@ -51,7 +51,7 @@
             <atlas-select
               (click)="$event.stopPropagation()"
               (selectChanged)="changeDropdownEvent.emit({$event,value})"
-              [initialValue]="value[column.value]"
+              [value]="value[column.value]"
               [additionalLabelspace]="false"
               [options]="column.dropdown.options"
               [optionTranslateLabelPrefix]="column.dropdown.translate.withPrefix"

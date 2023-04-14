@@ -9,7 +9,7 @@
     (selectionChange)="selectChanged.emit($event)"
     [formControlName]="controlName"
     [attr.data-cy]="dataCy"
-    placeholder="{{ 'FORM.DROPDOWN_PLACEHOLDER' | translate }}"
+    placeholder="{{ placeHolderLabel | translate }}"
     [multiple]="multiple"
   >
     <mat-option *ngFor="let option of options" [value]="valueExtractor(option)">

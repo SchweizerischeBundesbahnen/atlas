@@ -3,8 +3,10 @@ import {
   ContentChild,
   EventEmitter,
   Input,
+  OnChanges,
   OnInit,
   Output,
+  SimpleChanges,
   TemplateRef,
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -14,8 +16,9 @@ import { FormControl, FormGroup } from '@angular/forms';
   templateUrl: './select.component.html',
   styleUrls: ['./select.component.scss'],
 })
-export class SelectComponent<TYPE> implements OnInit {
+export class SelectComponent<TYPE> implements OnInit, OnChanges {
   @Input() label: string | undefined;
+  @Input() placeHolderLabel = 'FORM.DROPDOWN_PLACEHOLDER';
   @Input() optionTranslateLabelPrefix: string | undefined;
   @Input() additionalLabelspace = true;
   @Input() required = false;
@@ -48,7 +51,7 @@ export class SelectComponent<TYPE> implements OnInit {
 
   @ContentChild('matOptionPrefix') matOptionPrefix!: TemplateRef<any>;
 
-  @Input() initialValue: any;
+  @Input() value: any;
 
   @Output() selectChanged = new EventEmitter();
 
@@ -58,8 +61,14 @@ export class SelectComponent<TYPE> implements OnInit {
     if (!this.formGroup) {
       this.initDummyForm();
     }
-    if (this.initialValue) {
-      this.formGroup.get(this.controlName!)?.setValue(this.initialValue);
+    if (this.value) {
+      this.formGroup.get(this.controlName!)?.setValue(this.value);
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.value) {
+      this.formGroup?.get(this.controlName!)?.setValue(changes.value.currentValue);
     }
   }
 
