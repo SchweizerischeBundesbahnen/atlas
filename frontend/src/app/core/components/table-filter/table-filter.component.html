@@ -52,7 +52,7 @@
       >
         <atlas-select
           (selectChanged)="multiSelectChanged($event, rowIndex, filterConfigIndex)"
-          [initialValue]="multiSelect.activeSearch"
+          [value]="multiSelect.activeSearch"
           dataCy="table-filter-multi-select-{{ rowIndex }}-{{ filterConfigIndex }}"
           [label]="multiSelect.labelTranslationKey"
           [additionalLabelspace]="false"

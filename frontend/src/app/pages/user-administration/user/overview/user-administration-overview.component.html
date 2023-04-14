@@ -43,7 +43,7 @@
           <div class="d-flex flex-column col-6 ps-3">
             <atlas-select
               (selectChanged)="applicationChanged($event); filterChanged()"
-              [initialValue]="selectedApplicationOptions"
+              [value]="selectedApplicationOptions"
               label="USER_ADMIN.APPLICATIONS"
               [additionalLabelspace]="false"
               optionTranslateLabelPrefix="USER_ADMIN.APPLICATION."
@@ -61,7 +61,7 @@
         <div class="d-flex flex-column col-6 ps-1">
           <atlas-select
             (selectChanged)="cantonChanged($event); filterChanged()"
-            [initialValue]="selectedCantonOptions"
+            [value]="selectedCantonOptions"
             label="COMMON.CANTONS"
             [additionalLabelspace]="false"
             [optionTranslateLabelPrefix]="SWISS_CANTONS_PREFIX_LABEL"
@@ -75,7 +75,7 @@
         <div class="d-flex flex-column col-6 ps-3">
           <atlas-select
             (selectChanged)="applicationChanged($event); filterChanged()"
-            [initialValue]="selectedApplicationOptions"
+            [value]="selectedApplicationOptions"
             label="USER_ADMIN.APPLICATIONS"
             [additionalLabelspace]="false"
             optionTranslateLabelPrefix="USER_ADMIN.APPLICATION."
