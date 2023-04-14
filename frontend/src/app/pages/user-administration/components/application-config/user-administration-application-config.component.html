@@ -10,7 +10,7 @@
           userPermissionManager.changePermissionRole(application, $event.value);
           businessOrganisationForm.reset()
         "
-        [initialValue]="role"
+        [value]="role"
         label="USER_ADMIN.ROLE"
         [additionalLabelspace]="false"
         optionTranslateLabelPrefix="COMMON.ROLES."
@@ -47,7 +47,7 @@
       <ng-template [ngIf]="application === 'TIMETABLE_HEARING' && role === 'WRITER'">
         <atlas-select
           (selectChanged)="cantonSelectionChanged($event)"
-          [initialValue]="cantonSelection"
+          [value]="cantonSelection"
           label="COMMON.CANTONS"
           [additionalLabelspace]="false"
           [optionTranslateLabelPrefix]="SWISS_CANTONS_PREFIX_LABEL"
