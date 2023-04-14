@@ -5,7 +5,7 @@ import { By } from '@angular/platform-browser';
 import moment from 'moment';
 import { AppTestingModule } from '../../../app.testing.module';
 import { DateIconComponent } from '../../form-components/date-icon/date-icon.component';
-import { MockBoSelectComponent } from '../../../app.testing.mocks';
+import { MockAtlasFieldErrorComponent, MockBoSelectComponent } from '../../../app.testing.mocks';
 import {
   FilterType,
   TableFilterChip,
@@ -14,15 +14,8 @@ import {
 } from './table-filter-config';
 import { FormControl } from '@angular/forms';
 import { FilterTypeGuardPipe } from './filter-type-guard.pipe';
-import { Component, Input } from '@angular/core';
-
-@Component({
-  selector: 'app-atlas-field-error',
-  template: '<p>MockAtlasFieldError</p>',
-})
-class MockAtlasFieldErrorComponent {
-  @Input() control: FormControl = new FormControl();
-}
+import { SelectComponent } from '../../form-components/select/select.component';
+import { AtlasSpacerComponent } from '../spacer/atlas-spacer.component';
 
 describe('TableFilterComponent', () => {
   let component: TableFilterComponent<unknown>;
@@ -34,6 +27,8 @@ describe('TableFilterComponent', () => {
         TableFilterComponent,
         DateIconComponent,
         MockBoSelectComponent,
+        SelectComponent,
+        AtlasSpacerComponent,
         FilterTypeGuardPipe,
         MockAtlasFieldErrorComponent,
       ],
