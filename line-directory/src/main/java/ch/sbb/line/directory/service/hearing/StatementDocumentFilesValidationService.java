@@ -2,7 +2,7 @@ package ch.sbb.line.directory.service.hearing;
 
 import static ch.sbb.atlas.api.timetable.hearing.TimetableHearingConstants.MAX_DOCUMENTS;
 
-import ch.sbb.line.directory.service.exception.PdfDocumentConstraintViolationException;
+import ch.sbb.line.directory.exception.PdfDocumentConstraintViolationException;
 import java.io.File;
 import java.util.List;
 import java.util.stream.Collectors;
