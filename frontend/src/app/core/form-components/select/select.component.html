@@ -1,0 +1,32 @@
+<div [formGroup]="formGroup" class="atlas-select">
+  <mat-label *ngIf="label" class="font-bold-lg" [ngClass]="{ 'required-indicator': required }">
+    {{ label | translate }}
+  </mat-label>
+  <atlas-spacer *ngIf="label" height="3px"></atlas-spacer>
+  <atlas-spacer *ngIf="additionalLabelspace" height="30px"></atlas-spacer>
+  <mat-select
+    class="atlas-select-dropdown"
+    (selectionChange)="selectChanged.emit($event)"
+    [formControlName]="controlName"
+    [attr.data-cy]="dataCy"
+    placeholder="{{ placeHolderLabel | translate }}"
+    [multiple]="multiple"
+  >
+    <mat-option *ngFor="let option of options" [value]="valueExtractor(option)">
+      <ng-container
+        *ngTemplateOutlet="matOptionPrefix; context: getAsObject(option)"
+      ></ng-container>
+      <ng-template [ngIf]="optionTranslateLabelPrefix" [ngIfElse]="rawOption">
+        {{ optionTranslateLabelPrefix + displayExtractor(option) | translate }}
+      </ng-template>
+      <ng-template #rawOption>
+        {{ displayExtractor(option) }}
+      </ng-template>
+    </mat-option>
+  </mat-select>
+  <app-atlas-field-error
+    *ngIf="formGroup"
+    [form]="formGroup"
+    [controlName]="controlName!"
+  ></app-atlas-field-error>
+</div>

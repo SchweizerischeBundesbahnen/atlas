@@ -10,6 +10,14 @@ import {
 } from '../../../api';
 import moment from 'moment/moment';
 import { of } from 'rxjs';
+import { SelectComponent } from '../../../core/form-components/select/select.component';
+import { MockAtlasFieldErrorComponent } from '../../../app.testing.mocks';
+import { AtlasSpacerComponent } from '../../../core/components/spacer/atlas-spacer.component';
+import { DateRangeComponent } from '../../../core/form-components/date-range/date-range.component';
+import { AtlasLabelFieldComponent } from '../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import { DateIconComponent } from '../../../core/form-components/date-icon/date-icon.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { InfoIconComponent } from '../../../core/form-components/info-icon/info-icon.component';
 
 const mockTimetableHearingService = jasmine.createSpyObj('timetableHearingService', [
   'getHearingYears',
@@ -60,12 +68,22 @@ describe('NewTimetableHearingYearDialogComponent', () => {
   beforeEach(async () => {
     mockTimetableHearingService.getHearingYears.and.returnValue(of(hearingContainer));
     await TestBed.configureTestingModule({
-      declarations: [NewTimetableHearingYearDialogComponent],
+      declarations: [
+        NewTimetableHearingYearDialogComponent,
+        DateRangeComponent,
+        DateIconComponent,
+        AtlasLabelFieldComponent,
+        InfoIconComponent,
+        SelectComponent,
+        AtlasSpacerComponent,
+        MockAtlasFieldErrorComponent,
+      ],
       imports: [AppTestingModule],
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: { title: 'Title' } },
         { provide: MatDialogRef, useValue: {} },
         { provide: TimetableHearingService, useValue: mockTimetableHearingService },
+        TranslatePipe,
       ],
     }).compileComponents();
   });
