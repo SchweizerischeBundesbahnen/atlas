@@ -3,6 +3,7 @@ package ch.sbb.line.directory.repository;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -40,5 +41,11 @@ public interface TimetableFieldNumberVersionRepository extends
       + " ORDER BY tv.ttfnid, tv.validFrom ASC")
   List<TimetableFieldNumberVersion> getActualTimeTableNumberVersions(
       @Param("actualDate") LocalDate actualDate);
+
+  @Query("SELECT tv FROM timetable_field_number_version as tv"
+      + " WHERE  :validAt >= tv.validFrom AND :validAt <= tv.validTo"
+      + " AND tv.ttfnid in :ttfnids"
+      + " ORDER BY tv.ttfnid, tv.validFrom ASC")
+  List<TimetableFieldNumberVersion> getVersionsValidAt(Set<String> ttfnids, LocalDate validAt);
 
 }
