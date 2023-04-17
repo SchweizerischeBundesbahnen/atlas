@@ -19,17 +19,14 @@
       </app-atlas-label-field>
     </div>
 
-    <div class="multi-select-search">
-      <mat-select
-        data-cy="timetableYear"
-        formControlName="timetableYear"
-        [(value)]="defaultYearSelection"
-      >
-        <mat-option *ngFor="let year of YEAR_OPTIONS" [value]="year">
-          {{ year }}
-        </mat-option>
-      </mat-select>
-    </div>
+    <atlas-select
+      dataCy="timetableYear"
+      [formGroup]="form"
+      controlName="timetableYear"
+      [value]="defaultYearSelection"
+      [options]="YEAR_OPTIONS"
+    >
+    </atlas-select>
 
     <div>
       <form-date-range
