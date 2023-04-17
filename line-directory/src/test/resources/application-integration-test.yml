@@ -10,11 +10,11 @@ spring:
       path: /h2-console
   main:
     banner-mode: OFF
-  #  jpa:
-  #    show-sql: true
-  #    properties:
-  #      hibernate:
-  #        format_sql: true
+  jpa:
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
   security:
     oauth2:
       resourceserver:
