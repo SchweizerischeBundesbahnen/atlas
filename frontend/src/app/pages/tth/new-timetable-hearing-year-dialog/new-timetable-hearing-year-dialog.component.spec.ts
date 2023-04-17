@@ -27,8 +27,9 @@ describe('NewTimetableHearingYearDialogComponent', () => {
   let newTimetableHearingYearDialogComponent: NewTimetableHearingYearDialogComponent;
   let fixture: ComponentFixture<NewTimetableHearingYearDialogComponent>;
 
+  const currentYear = getCurrentYear();
+
   const getTimetableHearingYears = function (): TimetableHearingYear[] {
-    const currentYear = getCurrentYear();
     const currentTTHY: TimetableHearingYear = {
       timetableYear: currentYear,
       hearingStatus: 'ACTIVE',
@@ -114,7 +115,6 @@ describe('NewTimetableHearingYearDialogComponent', () => {
   });
 
   it('should get year options and default year selection', () => {
-    const currentYear = getCurrentYear();
     newTimetableHearingYearDialogComponent.initOverviewOfferedYears();
     expect(newTimetableHearingYearDialogComponent.YEAR_OPTIONS).toEqual([
       currentYear + 4,
@@ -129,7 +129,7 @@ describe('NewTimetableHearingYearDialogComponent', () => {
   it('should get active year', () => {
     const timetableHearingYears: TimetableHearingYear[] = getTimetableHearingYears();
     expect(newTimetableHearingYearDialogComponent.getActiveYear(timetableHearingYears)).toEqual(
-      getCurrentYear()
+      currentYear
     );
   });
 
@@ -146,7 +146,7 @@ describe('NewTimetableHearingYearDialogComponent', () => {
     const timetableHearingYears: TimetableHearingYear[] = getTimetableHearingYears();
     expect(
       newTimetableHearingYearDialogComponent.isYearAlreadyPlanned(
-        getCurrentYear() + 1,
+        currentYear + 1,
         timetableHearingYears
       )
     ).toBeTrue();
@@ -156,14 +156,13 @@ describe('NewTimetableHearingYearDialogComponent', () => {
     const timetableHearingYears: TimetableHearingYear[] = getTimetableHearingYears();
     expect(
       newTimetableHearingYearDialogComponent.isYearAlreadyPlanned(
-        getCurrentYear() + 4,
+        currentYear + 4,
         timetableHearingYears
       )
     ).toBeFalse();
   });
 
   it('should calculate proposed years', () => {
-    const currentYear = getCurrentYear();
     const timetableHearingYears: TimetableHearingYear[] = getTimetableHearingYears();
     expect(
       newTimetableHearingYearDialogComponent.calculateProposedYears(
