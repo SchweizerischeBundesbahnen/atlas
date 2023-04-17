@@ -22,6 +22,7 @@ import { TthChangeStatusDialogService } from './tth-change-status-dialog/service
 import { ColumnDropDownEvent } from '../../../core/components/table/column-drop-down-event';
 import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
 import { TthTableService } from '../tth-table.service';
+import { NewTimetableHearingYearDialogService } from '../new-timetable-hearing-year-dialog/service/new-timetable-hearing-year-dialog.service';
 
 @Component({
   selector: 'app-timetable-hearing-overview-detail',
@@ -68,7 +69,8 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     private readonly timetableHearingService: TimetableHearingService,
     private readonly overviewToTabService: OverviewToTabShareDataService,
     private readonly tthStatusChangeDialog: TthChangeStatusDialogService,
-    private readonly tthTableService: TthTableService
+    private readonly tthTableService: TthTableService,
+    private readonly newTimetableHearingYearDialogService: NewTimetableHearingYearDialogService
   ) {}
 
   get isHearingYearActive(): boolean {
@@ -169,7 +171,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
   }
 
   addNewTimetableHearing() {
-    console.log('addNewTimetableHearing');
+    this.newTimetableHearingYearDialogService.openDialog();
   }
 
   startTimetableHearing() {
