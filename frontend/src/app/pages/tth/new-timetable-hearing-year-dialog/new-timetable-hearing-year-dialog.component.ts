@@ -71,7 +71,7 @@ export class NewTimetableHearingYearDialogComponent implements OnInit {
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe(() => {
           this.notificationService.success('TTH.NEW_YEAR.DIALOG.NOTIFICATION_SUCCESS');
-          this.dialogRef.close();
+          this.dialogRef.close(true);
         });
     }
   }
