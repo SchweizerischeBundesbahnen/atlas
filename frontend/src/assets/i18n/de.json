@@ -534,7 +534,8 @@
     "NOTIFICATION": {
       "STATUS_CHANGE": {
         "SUCCESS": "Der Status wurde erfolgreich geändert."
-      }
+      },
+      "NO_VERSION_VALID_AT": "Es gibt keine gültige Version von {{swissId}} am {{validAt}}. Bitte überprüfen Sie die Gültigkeit der Fahrplanfeldnummer."
     },
     "DIALOG": {
       "STATUS_CHANGE": "Status ändern",
