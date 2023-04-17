@@ -104,9 +104,7 @@ export class UserAdministrationApplicationConfigComponent implements OnInit, OnD
     this.selectedIndex = -1;
   }
 
-  getCantonAbbreviation(canton: SwissCanton) {
-    return Cantons.fromSwissCanton(canton)?.short;
-  }
+  readonly getCantonAbbreviation = (canton: SwissCanton) => Cantons.fromSwissCanton(canton)?.short;
 
   cantonSelectionChanged($event: MatSelectChange) {
     const values = $event.value as SwissCanton[];

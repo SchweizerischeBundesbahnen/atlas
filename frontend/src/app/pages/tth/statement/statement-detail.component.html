@@ -13,46 +13,40 @@
 
       <div class="d-flex flex-row col-12 mb-4 mt-5">
         <div class="d-flex flex-column col-6 pe-3">
-          <mat-label class="font-bold-lg subtitle-margin">
-            {{ 'TTH.SELECT_YEAR' | translate }}
-          </mat-label>
-          <span class="fake-lable-space"></span>
-          <div class="multi-select-search">
-            <mat-select
-              data-cy="canton-type"
-              formControlName="timetableYear"
-              placeholder="{{ 'FORM.DROPDOWN_PLACEHOLDER' | translate }}"
-            >
-              <mat-option *ngFor="let year of YEAR_OPTIONS" [value]="year">
-                {{ year }}
-              </mat-option>
-            </mat-select>
-          </div>
+          <atlas-select
+            [formGroup]="form"
+            controlName="timetableYear"
+            dataCy="timetableYear"
+            label="TTH.SELECT_YEAR"
+            [additionalLabelspace]="false"
+            [options]="YEAR_OPTIONS"
+            [required]="true"
+          >
+          </atlas-select>
         </div>
         <div class="d-flex flex-column col-6">
-          <mat-label class="font-bold-lg subtitle-margin required-indicator"
-            >{{ 'TTH.SELECT_CANTON' | translate }}
-          </mat-label>
-          <span class="fake-lable-space"></span>
-          <div class="multi-select-search">
-            <mat-select
-              data-cy="canton-type"
-              formControlName="swissCanton"
-              placeholder="{{ 'FORM.DROPDOWN_PLACEHOLDER' | translate }}"
-            >
-              <mat-option *ngFor="let canton of CANTON_OPTIONS" [value]="canton.enumCanton">
-                <img
-                  alt="canton-logo"
-                  class="pe-1"
-                  height="28"
-                  src="assets/images/cantons/{{ canton.short.toUpperCase() }}.svg"
-                  width="28"
-                />
-                {{ 'TTH.CANTON.' + canton.short | translate }}
-              </mat-option>
-            </mat-select>
-          </div>
-          <app-atlas-field-error [form]="form" controlName="swissCanton"></app-atlas-field-error>
+          <atlas-select
+            [formGroup]="form"
+            controlName="swissCanton"
+            dataCy="swissCanton"
+            label="TTH.SELECT_CANTON"
+            [additionalLabelspace]="false"
+            [options]="CANTON_OPTIONS"
+            [valueExtractor]="extractEnumCanton"
+            [displayExtractor]="extractShort"
+            optionTranslateLabelPrefix="TTH.CANTON."
+            [required]="true"
+          >
+            <ng-template #matOptionPrefix let-canton="option">
+              <img
+                alt="canton-logo"
+                class="pe-1"
+                height="28"
+                src="assets/images/cantons/{{ canton.short.toUpperCase() }}.svg"
+                width="28"
+              />
+            </ng-template>
+          </atlas-select>
         </div>
       </div>
 
@@ -218,21 +212,17 @@
 
       <div class="d-flex flex-row col-12 mb-5">
         <div class="d-flex flex-column col-6">
-          <mat-label class="font-bold-lg subtitle-margin"
-            >{{ 'TTH.STATEMENT.STATUS' | translate }}
-          </mat-label>
-          <span class="fake-lable-space"></span>
-          <div class="multi-select-search">
-            <mat-select
-              data-cy="status"
-              formControlName="statementStatus"
-              placeholder="{{ 'FORM.DROPDOWN_PLACEHOLDER' | translate }}"
-            >
-              <mat-option *ngFor="let status of STATUS_OPTIONS" [value]="status">
-                {{ 'TTH.STATEMENT_STATUS.' + status | translate }}
-              </mat-option>
-            </mat-select>
-          </div>
+          <atlas-select
+            [formGroup]="form"
+            controlName="statementStatus"
+            dataCy="statementStatus"
+            label="TTH.STATEMENT.STATUS"
+            [additionalLabelspace]="false"
+            optionTranslateLabelPrefix="TTH.STATEMENT_STATUS."
+            [options]="STATUS_OPTIONS"
+            [required]="true"
+          >
+          </atlas-select>
         </div>
       </div>
 
