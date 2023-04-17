@@ -1,5 +1,5 @@
 import CommonUtils from './common-utils';
-import { DataCy } from '../data-cy';
+import {DataCy} from '../data-cy';
 import AngularMaterialConstants from './angular-material-constants';
 
 export default class BodiUtils {
@@ -196,6 +196,7 @@ export default class BodiUtils {
     cy.intercept('GET', '/business-organisation-directory/v1/business-organisations?**').as(
       'getBusinessOrganisations'
     );
+    cy.get(visitSelector).scrollIntoView();
     cy.get(visitSelector)
       .should('be.visible')
       .should(($el) => expect(Cypress.dom.isFocusable($el)).to.be.true)
