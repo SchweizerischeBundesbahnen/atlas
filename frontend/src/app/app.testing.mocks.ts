@@ -29,6 +29,28 @@ export class MockBoSelectComponent {
 }
 
 @Component({
+  selector: 'atlas-select',
+  template: '<p>Mock Select Component</p>',
+})
+export class MockSelectComponent {
+  @Input() label: string | undefined;
+  @Input() placeHolderLabel = 'FORM.DROPDOWN_PLACEHOLDER';
+  @Input() optionTranslateLabelPrefix: string | undefined;
+  @Input() additionalLabelspace = true;
+  @Input() required = false;
+  @Input() multiple = false;
+  @Input() dataCy!: string;
+  @Input() controlName: string | null = null;
+  @Input() formGroup!: FormGroup;
+  @Input() options = [];
+  @Input() value: any;
+  @Input() valueExtractor: any;
+  @Input() displayExtractor: any;
+  @Input() disabled = false;
+  @Output() selectChanged = new EventEmitter();
+}
+
+@Component({
   selector: 'app-table',
   template: '<p>Mock Table Component</p>',
 })
@@ -88,10 +110,16 @@ export class MockAtlasFieldErrorComponent {
     MockAppDetailWrapperComponent,
     MockTableComponent,
     MockBoSelectComponent,
+    MockSelectComponent,
     MockAtlasButtonComponent,
     MockUserDetailInfoComponent,
     MockAtlasFieldErrorComponent,
   ],
-  exports: [MockBoSelectComponent, MockAtlasButtonComponent, MockTableComponent],
+  exports: [
+    MockBoSelectComponent,
+    MockAtlasButtonComponent,
+    MockTableComponent,
+    MockSelectComponent,
+  ],
 })
 export class AppMockComponents {}

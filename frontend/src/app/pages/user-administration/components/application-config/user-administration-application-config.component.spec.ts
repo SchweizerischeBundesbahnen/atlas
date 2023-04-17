@@ -8,6 +8,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import SpyObj = jasmine.SpyObj;
 import { BehaviorSubject, of } from 'rxjs';
 import { ApplicationType } from '../../../../api';
+import { SelectComponent } from '../../../../core/form-components/select/select.component';
+import { AtlasSpacerComponent } from '../../../../core/components/spacer/atlas-spacer.component';
+import { MockAtlasFieldErrorComponent } from '../../../../app.testing.mocks';
 
 describe('UserAdministrationApplicationConfigComponent', () => {
   let component: UserAdministrationApplicationConfigComponent;
@@ -38,7 +41,12 @@ describe('UserAdministrationApplicationConfigComponent', () => {
       }
     );
     await TestBed.configureTestingModule({
-      declarations: [UserAdministrationApplicationConfigComponent],
+      declarations: [
+        UserAdministrationApplicationConfigComponent,
+        SelectComponent,
+        AtlasSpacerComponent,
+        MockAtlasFieldErrorComponent,
+      ],
       imports: [
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },

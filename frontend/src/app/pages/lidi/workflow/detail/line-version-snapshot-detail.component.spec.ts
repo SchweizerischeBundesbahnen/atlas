@@ -29,6 +29,8 @@ import { AtlasFieldErrorComponent } from '../../../../core/form-components/atlas
 import { TranslatePipe } from '@ngx-translate/core';
 import { TextFieldComponent } from '../../../../core/form-components/text-field/text-field.component';
 import { InfoLinkDirective } from '../../../../core/form-components/info-icon/info-link.directive';
+import { SelectComponent } from '../../../../core/form-components/select/select.component';
+import { AtlasSpacerComponent } from '../../../../core/components/spacer/atlas-spacer.component';
 
 const lineVersionSnapsot: LineVersionSnapshot = {
   id: 1234,
@@ -126,6 +128,8 @@ function setupTestBed(
       AtlasLabelFieldComponent,
       AtlasFieldErrorComponent,
       TextFieldComponent,
+      SelectComponent,
+      AtlasSpacerComponent,
       InfoIconComponent,
       LinkIconComponent,
       InfoLinkDirective,

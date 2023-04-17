@@ -44,11 +44,11 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     hearingTo: moment().toDate(),
   };
   YEAR_DRODOWN_OPTIONS: number[] = [];
-  defaultYearSelection = this.YEAR_DRODOWN_OPTIONS[0];
+  yearSelection = this.YEAR_DRODOWN_OPTIONS[0];
 
   cantonShort!: string;
   CANTON_DROPDOWN_OPTIONS = Cantons.cantonsWithSwiss.map((value) => value.short);
-  dafaultDropdownCantonSelection = this.CANTON_DROPDOWN_OPTIONS[0];
+  defaultDropdownCantonSelection = this.CANTON_DROPDOWN_OPTIONS[0];
 
   COLLECTING_ACTION_DROWPDOWN_OPTIONS = ['STATUS_CHANGE', 'CANTON_DELIVERY', 'DELETE'];
 
@@ -83,7 +83,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.syncCantonShortSharedDate();
-    this.dafaultDropdownCantonSelection = this.initDefatulDropdownCantonSelection();
+    this.defaultDropdownCantonSelection = this.initDefatulDropdownCantonSelection();
     this.hearingStatus = this.route.snapshot.data.hearingStatus;
     if (TthUtils.isHearingStatusActive(this.hearingStatus)) {
       this.tthTableService.activeTabPage = Pages.TTH_ACTIVE;
@@ -188,7 +188,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     if (paramYear) {
       this.setFoundHearingYearWhenQueryParamIsProvided(timetableHearingYears, Number(paramYear));
     } else {
-      this.defaultYearSelection = this.YEAR_DRODOWN_OPTIONS[0];
+      this.setYearSelection(this.YEAR_DRODOWN_OPTIONS[0]);
       this.foundTimetableHearingYear = timetableHearingYears[0];
     }
   }
@@ -270,12 +270,13 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     );
     if (matchedHearingYear) {
       this.foundTimetableHearingYear = matchedHearingYear;
-      this.defaultYearSelection =
+      this.setYearSelection(
         this.YEAR_DRODOWN_OPTIONS[
           this.YEAR_DRODOWN_OPTIONS.findIndex((value) => value === matchedHearingYear.timetableYear)
-        ];
+        ]
+      );
     } else {
-      this.defaultYearSelection = this.YEAR_DRODOWN_OPTIONS[0];
+      this.setYearSelection(this.YEAR_DRODOWN_OPTIONS[0]);
       this.foundTimetableHearingYear = timetableHearingYears[0];
       this.router
         .navigate([
@@ -285,6 +286,10 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
         ])
         .then();
     }
+  }
+
+  private setYearSelection(year: number) {
+    this.yearSelection = year;
   }
 
   private initOverviewActiveTable() {
