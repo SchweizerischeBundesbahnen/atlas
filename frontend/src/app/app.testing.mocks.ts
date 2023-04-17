@@ -115,6 +115,11 @@ export class MockAtlasFieldErrorComponent {
     MockUserDetailInfoComponent,
     MockAtlasFieldErrorComponent,
   ],
-  exports: [MockBoSelectComponent, MockAtlasButtonComponent, MockTableComponent],
+  exports: [
+    MockBoSelectComponent,
+    MockAtlasButtonComponent,
+    MockTableComponent,
+    MockSelectComponent,
+  ],
 })
 export class AppMockComponents {}
