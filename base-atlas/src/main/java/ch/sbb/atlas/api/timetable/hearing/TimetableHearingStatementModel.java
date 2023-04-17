@@ -51,8 +51,11 @@ public class TimetableHearingStatementModel extends BaseVersionModel implements 
   @Schema(description = "TimetableFieldNumberId regarding the statement", example = "ch:1:ttfnid:123234")
   private String ttfnid;
 
-  @Schema(description = "Timetable field number", example = "07.061", accessMode = AccessMode.WRITE_ONLY)
+  @Schema(description = "Timetable field number", example = "100; 80.099; 2700")
   private String timetableFieldNumber;
+
+  @Schema(description = "Timetable field number description", example = "Fribourg/Freiburg - Bern - Thun (S-Bahn Bern, Linien S1, S2)")
+  private String timetableFieldDescription;
 
   @NotNull
   @Schema(description = "Canton, the statement is for")

@@ -110,4 +110,19 @@ public class FutureTimetableHelperTest {
     assertThat(result).isEqualTo(futureTimetableDate2021);
   }
 
+  @Test
+  public void shouldGetFirstDayOfTimetableYear2025() {
+    //when
+    LocalDate result = FutureTimetableHelper.getFirstDayOfTimetableYear(2025L);
+    //then
+    assertThat(result).isEqualTo(LocalDate.of(2024,12,15));
+  }
+
+  @Test
+  public void shouldGetFirstDayOfTimetableYear2023() {
+    //when
+    LocalDate result = FutureTimetableHelper.getFirstDayOfTimetableYear(2023L);
+    //then
+    assertThat(result).isEqualTo(LocalDate.of(2022,12,11));
+  }
 }

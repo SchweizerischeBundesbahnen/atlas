@@ -45,8 +45,10 @@ public class TimetableHearingStatementController implements TimetableHearingStat
         TimetableHearingStatementSearchRestrictions.builder()
             .pageable(pageable)
             .statementRequestParams(statementRequestParams).build());
+    List<TimetableHearingStatementModel> enrichedModels = timetableFieldNumberResolverService.resolveAdditionalVersionInfo(
+        hearingStatements.stream().map(TimeTableHearingStatementMapper::toModel).toList());
     return Container.<TimetableHearingStatementModel>builder()
-        .objects(hearingStatements.stream().map(TimeTableHearingStatementMapper::toModel).toList())
+        .objects(enrichedModels)
         .totalCount(hearingStatements.getTotalElements())
         .build();
   }
