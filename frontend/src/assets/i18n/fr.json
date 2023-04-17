@@ -564,6 +564,22 @@
         }
       }
     },
+    "NEW_YEAR": {
+      "DIALOG": {
+        "NEW_PLAN_TIMETABLE": "Créer un nouvel horaire d'audience",
+        "PLAN_INFO": "Calendrier consultation année",
+        "PLAN_DROPDOWN_TITLE": "Calendrier",
+        "PLAN_DROPDOWN_DESCRIPTION": "Sélectionner l'année",
+        "HEARING_FROM": "Audition de",
+        "HEARING_FROM_INFO": "Calendrier audience de",
+        "HEARING_FROM_EXAMPLE": "01.01.2023.",
+        "HEARING_UNTIL": "Audience jusqu'à",
+        "HEARING_UNTIL_INFO": "Calendrier audience jusqu'au",
+        "HEARING_UNTIL_EXAMPLE": "31.12.2023.",
+        "SAVE": "Sauvegarder",
+        "NOTIFICATION_SUCCESS": "Consultation des horaires enregistrée avec succès"
+      }
+    },
     "SELECT_CANTON": "Sélectionner le canton",
     "SELECT_YEAR": "Sélectionner l'année",
     "TABLE_RESULT_HEADING": "{{totalCount}} Prises de position pour l'année d'horaire {{year}}",
