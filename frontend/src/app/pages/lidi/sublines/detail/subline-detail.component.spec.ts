@@ -20,6 +20,8 @@ import { AtlasLabelFieldComponent } from '../../../../core/form-components/atlas
 import { AtlasFieldErrorComponent } from '../../../../core/form-components/atlas-field-error/atlas-field-error.component';
 import { TextFieldComponent } from '../../../../core/form-components/text-field/text-field.component';
 import { SearchSelectComponent } from '../../../../core/form-components/search-select/search-select.component';
+import { SelectComponent } from '../../../../core/form-components/select/select.component';
+import { AtlasSpacerComponent } from '../../../../core/components/spacer/atlas-spacer.component';
 
 const sublineVersion: SublineVersion = {
   id: 1234,
@@ -195,6 +197,8 @@ function setupTestBed(
       AtlasLabelFieldComponent,
       AtlasFieldErrorComponent,
       TextFieldComponent,
+      SelectComponent,
+      AtlasSpacerComponent,
     ],
     imports: [AppTestingModule],
     providers: [

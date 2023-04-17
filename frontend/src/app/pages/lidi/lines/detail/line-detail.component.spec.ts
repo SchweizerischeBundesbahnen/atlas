@@ -17,7 +17,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AppTestingModule, authServiceMock } from '../../../../app.testing.module';
 import { ErrorNotificationComponent } from '../../../../core/notification/error/error-notification.component';
 import { InfoIconComponent } from '../../../../core/form-components/info-icon/info-icon.component';
-import { MockAppDetailWrapperComponent } from '../../../../app.testing.mocks';
+import { MockAppDetailWrapperComponent, MockSelectComponent } from '../../../../app.testing.mocks';
 import { AuthService } from '../../../../core/auth/auth.service';
 import { LineDetailFormComponent } from './line-detail-form/line-detail-form.component';
 import { CommentComponent } from '../../../../core/form-components/comment/comment.component';
@@ -278,6 +278,7 @@ function setupTestBed(linesService: LinesService, data: { lineDetail: string | L
     declarations: [
       LineDetailComponent,
       LineDetailFormComponent,
+      MockSelectComponent,
       MockAppDetailWrapperComponent,
       ErrorNotificationComponent,
       InfoIconComponent,
