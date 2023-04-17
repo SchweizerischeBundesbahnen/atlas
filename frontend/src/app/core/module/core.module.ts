@@ -62,7 +62,7 @@ const coreComponents = [
   RouteToDialogComponent,
   RelationComponent,
   DisplayDatePipe,
-  FilterTypeGuardPipe
+  FilterTypeGuardPipe,
 ];
 
 @NgModule({
