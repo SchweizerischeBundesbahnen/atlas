@@ -14,6 +14,7 @@ import {
 import { Cantons } from '../../../tth/overview/canton/Cantons';
 import { TableService } from '../../../../core/components/table/table.service';
 import { TablePagination } from '../../../../core/components/table/table-pagination';
+import { MatSelectChange } from '@angular/material/select';
 
 @Component({
   selector: 'app-user-administration-overview',
@@ -148,7 +149,13 @@ export class UserAdministrationUserOverviewComponent implements OnDestroy {
     this.loadUsers({ page: 0, size: 10 });
   }
 
-  getCantonAbbreviation(canton: SwissCanton) {
-    return Cantons.fromSwissCanton(canton)?.short;
+  readonly getCantonAbbreviation = (canton: SwissCanton) => Cantons.fromSwissCanton(canton)?.short;
+
+  applicationChanged($event: MatSelectChange) {
+    this.selectedApplicationOptions = $event.value;
+  }
+
+  cantonChanged($event: MatSelectChange) {
+    this.selectedCantonOptions = $event.value;
   }
 }
