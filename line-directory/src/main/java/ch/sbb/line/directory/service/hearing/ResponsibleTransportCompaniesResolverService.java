@@ -1,15 +1,14 @@
 package ch.sbb.line.directory.service.hearing;
 
 import ch.sbb.atlas.amazon.helper.FutureTimetableHelper;
-import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.bodi.TransportCompanyModel;
 import ch.sbb.atlas.api.client.bodi.TransportCompanyClient;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
+import ch.sbb.line.directory.exception.NoValidVersionAtDateException;
 import ch.sbb.line.directory.mapper.ResponsibleTransportCompanyMapper;
 import ch.sbb.line.directory.service.TimetableFieldNumberService;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -65,8 +64,8 @@ public class ResponsibleTransportCompaniesResolverService {
             version -> !version.getValidFrom().isAfter(beginningOfNextTimetableYear) &&
                 !version.getValidTo().isBefore(beginningOfNextTimetableYear))
         .findFirst()
-        .orElseThrow(() -> new IllegalStateException("There is no version valid at " + beginningOfNextTimetableYear.format(
-            DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN_CH))));
+        .orElseThrow(() -> new NoValidVersionAtDateException(beginningOfNextTimetableYear,
+            timetableFieldNumberVersions.get(0).getTtfnid()));
   }
 
 }
