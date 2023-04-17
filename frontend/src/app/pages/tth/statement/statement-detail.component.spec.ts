@@ -21,7 +21,7 @@ import { StatementDetailComponent } from './statement-detail.component';
 import { AtlasSpacerComponent } from '../../../core/components/spacer/atlas-spacer.component';
 import { DetailFooterComponent } from '../../../core/components/detail-footer/detail-footer.component';
 import { DetailPageContainerComponent } from '../../../core/components/detail-page-container/detail-page-container.component';
-import { MockAtlasButtonComponent } from '../../../app.testing.mocks';
+import { MockAtlasButtonComponent, MockSelectComponent } from '../../../app.testing.mocks';
 import { Component, Input } from '@angular/core';
 import { CreationEditionRecord } from '../../../core/components/base-detail/user-edit-info/creation-edition-record';
 import { By } from '@angular/platform-browser';
@@ -206,6 +206,7 @@ function setupTestBed(activatedRoute: {
       CommentComponent,
       LinkIconComponent,
       MockAtlasButtonComponent,
+      MockSelectComponent,
       MockUserDetailInfoComponent,
     ],
     imports: [AppTestingModule, FormModule],

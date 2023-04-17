@@ -12,54 +12,40 @@
         *ngIf="!isHearingYearActive && !noTimetableHearingYearFound"
         class="d-flex flex-column col-2 pe-3 pb-1"
       >
-        <mat-label class="font-bold-lg subtitle-margin"
-          >{{ 'TTH.SELECT_YEAR' | translate }}
-        </mat-label>
-        <span class="fake-lable-space"></span>
-        <div class="multi-select-search">
-          <mat-select
-            (selectionChange)="changeSelectedYearFromDropdown($event)"
-            [(value)]="defaultYearSelection"
-            data-cy="canton-type"
-            placeholder="{{ 'FORM.DROPDOWN_PLACEHOLDER' | translate }}"
-          >
-            <mat-option *ngFor="let year of YEAR_DRODOWN_OPTIONS" [value]="year">
-              {{ year }}
-            </mat-option>
-          </mat-select>
-        </div>
+        <atlas-select
+          (selectChanged)="changeSelectedYearFromDropdown($event)"
+          [value]="yearSelection"
+          label="TTH.SELECT_YEAR"
+          [additionalLabelspace]="false"
+          [options]="YEAR_DRODOWN_OPTIONS"
+        >
+        </atlas-select>
       </div>
       <div class="d-flex flex-column col-3 pe-3 pb-3 mb-5">
-        <mat-label class="font-bold-lg subtitle-margin"
-          >{{ 'TTH.SELECT_CANTON' | translate }}
-        </mat-label>
-        <span class="fake-lable-space"></span>
-        <div class="multi-select-search">
-          <mat-select
-            (selectionChange)="changeSelectedCantonFromDropdown($event)"
-            [(value)]="dafaultDropdownCantonSelection"
-            data-cy="canton-type"
-            placeholder="{{ 'FORM.DROPDOWN_PLACEHOLDER' | translate }}"
-          >
-            <mat-option *ngFor="let canton of CANTON_DROPDOWN_OPTIONS" [value]="canton">
-              <img
-                alt="canton-logo"
-                class="pe-1"
-                height="28"
-                src="assets/images/cantons/{{ canton.toUpperCase() }}.svg"
-                width="28"
-              />
-              {{ 'TTH.CANTON.' + canton | translate }}
-            </mat-option>
-          </mat-select>
-        </div>
+        <atlas-select
+          (selectChanged)="changeSelectedCantonFromDropdown($event)"
+          [value]="defaultDropdownCantonSelection"
+          label="TTH.SELECT_CANTON"
+          [additionalLabelspace]="false"
+          [options]="CANTON_DROPDOWN_OPTIONS"
+          optionTranslateLabelPrefix="TTH.CANTON."
+        >
+          <ng-template #matOptionPrefix let-canton="option">
+            <img
+              alt="canton-logo"
+              class="pe-1"
+              height="28"
+              src="assets/images/cantons/{{ canton }}.svg"
+              width="28"
+            />
+          </ng-template>
+        </atlas-select>
       </div>
       <div
         *ngIf="showDownloadCsvButton && !noTimetableHearingYearFound"
         class="d-flex flex-column col-3"
       >
-        <span class="fake-lable-space"></span>
-        <span class="fake-lable-space"></span>
+        <atlas-spacer height="15px"></atlas-spacer>
         <atlas-button
           (buttonClicked)="downloadCsv()"
           applicationType="LIDI"
@@ -76,8 +62,7 @@
         *ngIf="showManageTimetableHearingButton && !noTimetableHearingYearFound"
         class="d-flex flex-column col-3 left-position"
       >
-        <span class="fake-lable-space"></span>
-        <span class="fake-lable-space"></span>
+        <atlas-spacer height="15px"></atlas-spacer>
         <atlas-button
           (buttonClicked)="manageTimetableHearing()"
           applicationType="LIDI"
@@ -92,8 +77,7 @@
         *ngIf="showAddNewStatementButton && !noTimetableHearingYearFound"
         class="d-flex flex-column col-3 left-position"
       >
-        <span class="fake-lable-space"></span>
-        <span class="fake-lable-space"></span>
+        <atlas-spacer height="15px"></atlas-spacer>
         <atlas-button
           (buttonClicked)="addNewStatement()"
           applicationType="LIDI"
@@ -108,8 +92,7 @@
         *ngIf="showStartTimetableHearingButton && !noTimetableHearingYearFound"
         class="d-flex flex-column col-3"
       >
-        <span class="fake-lable-space"></span>
-        <span class="fake-lable-space"></span>
+        <atlas-spacer height="15px"></atlas-spacer>
         <atlas-button
           (buttonClicked)="startTimetableHearing()"
           applicationType="LIDI"
@@ -120,8 +103,7 @@
         </atlas-button>
       </div>
       <div *ngIf="showAddNewTimetableHearingButton" class="d-flex flex-column col-3 left-position">
-        <span class="fake-lable-space"></span>
-        <span class="fake-lable-space"></span>
+        <atlas-spacer height="15px"></atlas-spacer>
         <atlas-button
           (buttonClicked)="addNewTimetableHearing()"
           applicationType="LIDI"
@@ -166,25 +148,24 @@
         </div>
       </div>
       <div *ngIf="isHearingYearActive" class="d-flex flex-column col-3 left-position">
-        <div class="multi-select-search">
-          <mat-select
-            (selectionChange)="collectingActions($event)"
-            data-cy="collect-action-type"
-            placeholder="{{ 'TTH.DROPDOWN.COLLECTING_ACTION.PLACEHOLDER' | translate }}"
-          >
-            <mat-option *ngFor="let action of COLLECTING_ACTION_DROWPDOWN_OPTIONS" [value]="action">
-              <img
-                alt="action"
-                height="20"
-                src="assets/images/collecting_action/{{ action.toUpperCase() }}.svg"
-                width="20"
-              />
-              <span class="ps-2">
-                {{ 'TTH.DROPDOWN.COLLECTING_ACTION.OPTION.' + action | translate }}
-              </span>
-            </mat-option>
-          </mat-select>
-        </div>
+        <atlas-select
+          (selectChanged)="collectingActions($event)"
+          dataCy="collect-action-type"
+          [additionalLabelspace]="false"
+          [options]="COLLECTING_ACTION_DROWPDOWN_OPTIONS"
+          placeHolderLabel="TTH.DROPDOWN.COLLECTING_ACTION.PLACEHOLDER"
+          optionTranslateLabelPrefix="TTH.DROPDOWN.COLLECTING_ACTION.OPTION."
+        >
+          <ng-template #matOptionPrefix let-action="option">
+            <img
+              alt="{{ action }}"
+              class="pe-2"
+              height="20"
+              src="assets/images/collecting_action/{{ action.toUpperCase() }}.svg"
+              width="20"
+            />
+          </ng-template>
+        </atlas-select>
       </div>
     </div>
 
