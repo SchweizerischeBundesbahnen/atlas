@@ -32,7 +32,7 @@ import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.repository.TimetableHearingStatementRepository;
 import ch.sbb.line.directory.repository.TimetableHearingYearRepository;
 import ch.sbb.line.directory.service.TimetableFieldNumberService;
-import ch.sbb.line.directory.service.exception.PdfDocumentConstraintViolationException;
+import ch.sbb.line.directory.exception.PdfDocumentConstraintViolationException;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
