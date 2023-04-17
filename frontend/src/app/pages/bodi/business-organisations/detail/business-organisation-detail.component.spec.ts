@@ -9,7 +9,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AppTestingModule, authServiceMock } from '../../../../app.testing.module';
 import { ErrorNotificationComponent } from '../../../../core/notification/error/error-notification.component';
 import { InfoIconComponent } from '../../../../core/form-components/info-icon/info-icon.component';
-import { MockAppDetailWrapperComponent } from '../../../../app.testing.mocks';
+import { MockAppDetailWrapperComponent, MockSelectComponent } from '../../../../app.testing.mocks';
 import { AuthService } from '../../../../core/auth/auth.service';
 import { FormModule } from '../../../../core/module/form.module';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -196,6 +196,7 @@ function setupTestBed(
     declarations: [
       BusinessOrganisationDetailComponent,
       MockAppDetailWrapperComponent,
+      MockSelectComponent,
       ErrorNotificationComponent,
       InfoIconComponent,
     ],
