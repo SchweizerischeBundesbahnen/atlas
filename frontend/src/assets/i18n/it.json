@@ -534,7 +534,8 @@
     "NOTIFICATION": {
       "STATUS_CHANGE": {
         "SUCCESS": "Lo stato è stato modificato con successo"
-      }
+      },
+      "NO_VERSION_VALID_AT": "Non esiste una versione valida di {{swissId}} su {{validAt}}. Verificare la validità del numero del campo orario."
     },
     "DIALOG": {
       "STATUS_CHANGE": "Modificare lo stato",

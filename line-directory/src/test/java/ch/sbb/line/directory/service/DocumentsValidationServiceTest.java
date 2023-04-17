@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.line.directory.helper.PdfFiles;
-import ch.sbb.line.directory.service.exception.PdfDocumentConstraintViolationException;
+import ch.sbb.line.directory.exception.PdfDocumentConstraintViolationException;
 import ch.sbb.line.directory.service.hearing.StatementDocumentFilesValidationService;
 import ch.sbb.line.directory.service.hearing.TikaService;
 import java.io.File;
