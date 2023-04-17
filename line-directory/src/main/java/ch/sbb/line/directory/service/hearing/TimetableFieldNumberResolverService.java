@@ -1,11 +1,16 @@
 package ch.sbb.line.directory.service.hearing;
 
 import ch.sbb.atlas.amazon.helper.FutureTimetableHelper;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
+import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.model.search.TimetableFieldNumberSearchRestrictions;
 import ch.sbb.line.directory.service.TimetableFieldNumberService;
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -39,6 +44,33 @@ public class TimetableFieldNumberResolverService {
       }
     }
     return null;
+  }
+
+  public List<TimetableHearingStatementModel> resolveAdditionalVersionInfo(List<TimetableHearingStatementModel> statements) {
+    if (statements.isEmpty()) {
+      return Collections.emptyList();
+    }
+    LocalDate validAtDateForYear = getFirstDayOfTimetableYear(statements);
+
+    List<TimetableFieldNumberVersion> versions = timetableFieldNumberService.getVersionsValidAt(
+        statements.stream().map(TimetableHearingStatementModel::getTtfnid).collect(
+            Collectors.toSet()), validAtDateForYear);
+
+    statements.forEach(statement -> {
+      TimetableFieldNumberVersion resolvedVersion = versions.stream().filter(i -> i.getTtfnid().equals(statement.getTtfnid()))
+          .findFirst().orElseThrow();
+      statement.setTimetableFieldNumber(resolvedVersion.getNumber());
+      statement.setTimetableFieldDescription(resolvedVersion.getDescription());
+    });
+
+    return statements;
+  }
+
+  private static LocalDate getFirstDayOfTimetableYear(List<TimetableHearingStatementModel> statements) {
+    if (statements.stream().map(TimetableHearingStatementModel::getTimetableYear).distinct().count() != 1) {
+      throw new IllegalArgumentException("Statements should be from the same year for this");
+    }
+    return FutureTimetableHelper.getFirstDayOfTimetableYear(statements.get(0).getTimetableYear());
   }
 
 }

@@ -35,4 +35,7 @@ public class FutureTimetableHelper {
         .plusDays(1);
   }
 
+  public static LocalDate getFirstDayOfTimetableYear(Long year) {
+    return getActualTimetableYearChangeDate(LocalDate.of(year.intValue() - 1, 1, 1));
+  }
 }
