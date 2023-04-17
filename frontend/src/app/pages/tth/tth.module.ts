@@ -11,6 +11,7 @@ import { StatementDetailComponent } from './statement/statement-detail.component
 import { TthChangeStatusDialogComponent } from './overview-detail/tth-change-status-dialog/tth-change-status-dialog.component';
 import { TthTableService } from './tth-table.service';
 import { TableService } from '../../core/components/table/table.service';
+import { NewTimetableHearingYearDialogComponent } from './new-timetable-hearing-year-dialog/new-timetable-hearing-year-dialog.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { TableService } from '../../core/components/table/table.service';
     OverviewTabHeadingComponent,
     StatementDetailComponent,
     TthChangeStatusDialogComponent,
+    NewTimetableHearingYearDialogComponent,
   ],
   imports: [CoreModule, TthRoutingModule, FormModule],
   providers: [
