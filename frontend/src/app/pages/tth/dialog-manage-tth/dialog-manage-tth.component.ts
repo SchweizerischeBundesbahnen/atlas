@@ -1,8 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { TimetableHearingService, TimetableHearingYear } from '../../../api';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { take } from 'rxjs';
 import { FormControl, FormGroup } from '@angular/forms';
+import { NotificationService } from '../../../core/notification/notification.service';
 
 @Component({
   selector: 'dialog-manage-tth',
@@ -31,7 +32,9 @@ export class DialogManageTthComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private readonly matDialogData: number,
-    private readonly tthService: TimetableHearingService
+    private readonly tthService: TimetableHearingService,
+    private readonly notificationService: NotificationService,
+    private readonly dialogRef: MatDialogRef<DialogManageTthComponent, boolean>
   ) {
     this.year = matDialogData;
   }
@@ -50,13 +53,73 @@ export class DialogManageTthComponent implements OnInit {
             statementEditable: !!year.statementEditable,
           });
         },
-        error: (err) => console.error(err), // TODO: error handling
+        error: (err) => {
+          // close dialog and error notification
+          this.dialogRef.close();
+          this.notificationService.error(err);
+        },
       });
   }
 
-  handleManageViewCloseTthClick(): void {
+  handleSaveAndCloseClick(): void {
+    if (!this.timetableHearingYear) {
+      throw 'TimetableHearingYear should be defined here';
+    }
+    // send request, show notification and close dialog
+    // todo: mby show confirmation dialog before save and close
+
+    // update object
+    this.timetableHearingYear.statementCreatableExternal =
+      this.manageTthFormGroup.value[this.statementCreatableExternalCtrlName];
+    this.timetableHearingYear.statementCreatableInternal =
+      this.manageTthFormGroup.value[this.statementCreatableInternalCtrlName];
+    this.timetableHearingYear.statementEditable =
+      this.manageTthFormGroup.value[this.statementEditableCtrlName];
+
+    this.tthService
+      .updateTimetableHearingSettings(this.year, this.timetableHearingYear)
+      .pipe(take(1))
+      .subscribe({
+        next: () => {
+          this.dialogRef.close();
+          this.notificationService.success('test'); // todo
+        },
+        error: (err) => {
+          this.dialogRef.close();
+          this.notificationService.error(err);
+        },
+      });
+  }
+
+  handleManageViewTthCloseClick(): void {
+    // confirmation dialog => send update year request, on success => notification and step over,
+    // on error notification and close dialog // todo: ask for specification
+
     console.log(this.manageTthFormGroup);
     this._showManageView = false;
+  }
+
+  handleCancelClick(): void {
+    this._showManageView = true;
+  }
+
+  handleCloseViewTthCloseClick(): void {
+    // send close request, on success => close dialog and success notificiation
+    // on error => close dialog and error notification
+
+    this.tthService
+      .closeTimetableHearing(this.year)
+      .pipe(take(1))
+      .subscribe({
+        next: () => {
+          this.dialogRef.close(true);
+          this.notificationService.success('worked'); // todo
+        },
+        error: (err) => {
+          this.dialogRef.close();
+          this.notificationService.error(err);
+        },
+      });
   }
 
   getFormCtrlValueOf(ctrlName: string): boolean {
@@ -67,6 +130,6 @@ export class DialogManageTthComponent implements OnInit {
     this.manageTthFormGroup.patchValue({
       [ctrlName]: value,
     });
-    this.manageTthFormGroup.markAsTouched();
+    this.manageTthFormGroup.controls[ctrlName].markAsDirty();
   }
 }
