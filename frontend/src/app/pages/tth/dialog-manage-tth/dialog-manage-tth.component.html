@@ -28,11 +28,15 @@
     </div>
 
     <div class="action-btn-wrapper pt-5">
-      <atlas-button buttonType="cancel" buttonText="COMMON.CANCEL"></atlas-button>
+      <atlas-button
+        buttonType="confirm"
+        buttonText="COMMON.SAVE_AND_CLOSE"
+        (buttonClicked)="handleSaveAndCloseClick()"
+      ></atlas-button>
       <atlas-button
         buttonType="confirm"
         buttonText="TTH.BUTTON.CLOSE_TIMETABLE_HEARING"
-        (buttonClicked)="handleManageViewCloseTthClick()"
+        (buttonClicked)="handleManageViewTthCloseClick()"
       ></atlas-button>
     </div>
   </div>
@@ -58,10 +62,15 @@
     </ul>
 
     <div class="action-btn-wrapper">
-      <atlas-button buttonType="cancel" buttonText="COMMON.CANCEL"></atlas-button>
+      <atlas-button
+        buttonType="cancel"
+        buttonText="COMMON.CANCEL"
+        (buttonClicked)="handleCancelClick()"
+      ></atlas-button>
       <atlas-button
         buttonType="confirm"
         buttonText="TTH.BUTTON.CLOSE_TIMETABLE_HEARING"
+        (buttonClicked)="handleCloseViewTthCloseClick()"
       ></atlas-button>
     </div>
   </div>
