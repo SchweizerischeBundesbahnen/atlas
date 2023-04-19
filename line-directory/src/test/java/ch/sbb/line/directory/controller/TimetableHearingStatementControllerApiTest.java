@@ -1,6 +1,7 @@
 package ch.sbb.line.directory.controller;
 
 import static ch.sbb.line.directory.helper.PdfFiles.MULTIPART_FILES;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
@@ -23,16 +24,18 @@ import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel.Fields;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementSenderModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingYearModel;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
+import ch.sbb.atlas.export.ExportWriter;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.controller.AtlasMockMultipartFile;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.model.exception.NotFoundException.FileNotFoundException;
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
+import ch.sbb.line.directory.exception.PdfDocumentConstraintViolationException;
 import ch.sbb.line.directory.repository.TimetableHearingStatementRepository;
 import ch.sbb.line.directory.repository.TimetableHearingYearRepository;
 import ch.sbb.line.directory.service.TimetableFieldNumberService;
-import ch.sbb.line.directory.exception.PdfDocumentConstraintViolationException;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -47,6 +50,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.web.servlet.MvcResult;
 
 public class TimetableHearingStatementControllerApiTest extends BaseControllerApiTest {
 
@@ -431,5 +435,34 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
     mvc.perform(get("/v1/timetable-hearing/statements/" + statement.getId() + "/documents/" + "nonexistingfilename"))
       .andDo(print())
       .andExpect(status().isNotFound());
+  }
+
+  @Test
+  void shouldGetStatementsAsCsv() throws Exception {
+    // Given
+    String expectedCsvHeader = """
+        Kanton;"Feld-Nr.";Fahrplanfeldbezeichnung;Haltestelle;"Abkürzung Transportunternehmung";"Name Transportunternehmung";Stellungnahme;Anhang;Begründung;Vorname;Nachname;Organisation;Strasse;"PLZ/Ort";"E-Mail";Bearbeiter;"Zuletzt bearbeitet";Fahrplanjahr
+        """;
+
+    TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
+        TimetableHearingStatementModel.builder()
+            .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+            .swissCanton(SwissCanton.BERN)
+            .statementSender(TimetableHearingStatementSenderModel.builder()
+                .email("fabienne.mueller@sbb.ch")
+                .build())
+            .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
+            .build(),
+        Collections.emptyList());
+
+    // When
+    MvcResult mvcResult = mvc.perform(get("/v1/timetable-hearing/statements/csv"))
+        .andExpect(status().isOk())
+        .andReturn();
+
+    // Then
+    String response = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
+    assertThat(response).startsWith(ExportWriter.UTF_8_BYTE_ORDER_MARK + expectedCsvHeader);
+    assertThat(response).contains(statement.getStatement());
   }
 }
