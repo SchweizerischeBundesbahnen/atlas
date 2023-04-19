@@ -17,6 +17,7 @@ export interface StatementDetailFormGroup {
   statement: FormControl<string | null | undefined>;
   statementSender: FormGroup<StatementSenderFormGroup>;
   justification: FormControl<string | null | undefined>;
+  comment: FormControl<string | null | undefined>;
   etagVersion: FormControl<number | null | undefined>;
 }
 
