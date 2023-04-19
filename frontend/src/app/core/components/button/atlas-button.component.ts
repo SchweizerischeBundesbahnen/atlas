@@ -1,9 +1,10 @@
 import { Component, ContentChild, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
-import { ApplicationType } from '../../../api';
+import { ApplicationRole, ApplicationType } from '../../../api';
 import { AuthService } from '../../auth/auth.service';
 import { AtlasButtonType } from './atlas-button.type';
 import { NON_PROD_STAGES } from '../../constants/stages';
 import { environment } from '../../../../environments/environment';
+import { Cantons } from '../../../pages/tth/overview/canton/Cantons';
 
 @Component({
   selector: 'atlas-button[buttonType]',
@@ -12,6 +13,7 @@ import { environment } from '../../../../environments/environment';
 export class AtlasButtonComponent {
   @Input() applicationType!: ApplicationType;
   @Input() businessOrganisation!: string;
+  @Input() canton!: string;
   @Input() disabled!: boolean;
 
   @Input() wrapperStyleClass!: string;
@@ -41,6 +43,9 @@ export class AtlasButtonComponent {
     }
     if (this.buttonType === AtlasButtonType.DELETE) {
       return this.mayDelete();
+    }
+    if (this.buttonType === AtlasButtonType.CANTON_CSV_DOWNLOAD) {
+      return this.mayDownloadCantonCsv();
     }
     if (
       [AtlasButtonType.FOOTER_NON_EDIT, AtlasButtonType.WHITE_FOOTER_NON_EDIT].includes(
@@ -87,12 +92,32 @@ export class AtlasButtonComponent {
     return this.authService.isAdmin && NON_PROD_STAGES.includes(environment.label);
   }
 
+  mayDownloadCantonCsv() {
+    const applicationUserPermission = this.authService.getApplicationUserPermission(
+      ApplicationType.TimetableHearing
+    );
+    if (this.authService.isAdmin || applicationUserPermission.role === ApplicationRole.Supervisor) {
+      return true;
+    }
+    if (applicationUserPermission.role === ApplicationRole.Writer) {
+      const allowedSwissCantons = applicationUserPermission.permissionRestrictions.map(
+        (restriction) => restriction.valueAsString
+      );
+      return allowedSwissCantons.includes(Cantons.getSwissCantonEnum(this.canton));
+    }
+    return false;
+  }
+
   getButtonStyleClass() {
     if (this.buttonType === AtlasButtonType.DEFAULT_PRIMARY) {
       return 'atlas-primary-btn';
     }
     if (
-      [AtlasButtonType.CREATE, AtlasButtonType.CREATE_CHECKING_PERMISSION].includes(this.buttonType)
+      [
+        AtlasButtonType.CREATE,
+        AtlasButtonType.CREATE_CHECKING_PERMISSION,
+        AtlasButtonType.CANTON_CSV_DOWNLOAD,
+      ].includes(this.buttonType)
     ) {
       return 'atlas-raised-button mat-mdc-raised-button';
     }
