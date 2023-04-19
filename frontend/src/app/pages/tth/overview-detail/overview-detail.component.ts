@@ -23,6 +23,7 @@ import { ColumnDropDownEvent } from '../../../core/components/table/column-drop-
 import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
 import { TthTableService } from '../tth-table.service';
 import { NewTimetableHearingYearDialogService } from '../new-timetable-hearing-year-dialog/service/new-timetable-hearing-year-dialog.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-timetable-hearing-overview-detail',
@@ -70,7 +71,8 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     private readonly overviewToTabService: OverviewToTabShareDataService,
     private readonly tthStatusChangeDialog: TthChangeStatusDialogService,
     private readonly tthTableService: TthTableService,
-    private readonly newTimetableHearingYearDialogService: NewTimetableHearingYearDialogService
+    private readonly newTimetableHearingYearDialogService: NewTimetableHearingYearDialogService,
+    private readonly translateService: TranslateService
   ) {}
 
   get isHearingYearActive(): boolean {
@@ -156,7 +158,10 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
 
   downloadCsv() {
     this.timetableHearingService
-      .getStatementsAsCsv(this.foundTimetableHearingYear.timetableYear)
+      .getStatementsAsCsv(
+        this.translateService.currentLang,
+        this.foundTimetableHearingYear.timetableYear
+      )
       .subscribe((response) => {
         const a = document.createElement('a');
         a.download = 'statements.csv';
@@ -397,8 +402,8 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
       return (
         col.value === 'swissCanton' ||
         col.value === 'responsibleTransportCompaniesDisplay' ||
-        col.value === 'ttfnid' ||
-        col.value === 'timetableFieldNumber'
+        col.value === 'timetableFieldNumber' ||
+        col.value === 'timetableFieldDescription'
       );
     });
   }
@@ -408,8 +413,8 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
       return (
         col.value === 'swissCanton' ||
         col.value === 'responsibleTransportCompaniesDisplay' ||
-        col.value === 'ttfnid' ||
         col.value === 'timetableFieldNumber' ||
+        col.value === 'timetableFieldDescription' ||
         col.value === 'editor'
       );
     });

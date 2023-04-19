@@ -75,6 +75,7 @@ export class MockTableComponent<DATATYPE> {
 export class MockAtlasButtonComponent {
   @Input() applicationType!: ApplicationType;
   @Input() businessOrganisation!: string;
+  @Input() canton!: string;
   @Input() disabled!: boolean;
 
   @Input() wrapperStyleClass!: string;
