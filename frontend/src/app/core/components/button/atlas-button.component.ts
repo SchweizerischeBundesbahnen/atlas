@@ -22,6 +22,7 @@ export class AtlasButtonComponent {
   @Input() footerEdit = false;
   @Input() submitButton!: boolean;
   @Input() buttonText!: string;
+  @Input() buttonStyleClass: string | undefined;
 
   @Output() buttonClicked = new EventEmitter<void>();
   @ContentChild('rightIcon') rightIcon!: TemplateRef<any>;
@@ -93,12 +94,12 @@ export class AtlasButtonComponent {
   }
 
   hasWritePermissionsForCanton() {
-    if (!this.canton) {
-      throw new Error('Canton button needs canton');
+    if (!this.canton || !this.applicationType) {
+      throw new Error('Canton button needs canton and applicationtype');
     }
 
     const applicationUserPermission = this.authService.getApplicationUserPermission(
-      ApplicationType.TimetableHearing
+      this.applicationType
     );
     if (this.authService.isAdmin || applicationUserPermission.role === ApplicationRole.Supervisor) {
       return true;
@@ -113,6 +114,9 @@ export class AtlasButtonComponent {
   }
 
   getButtonStyleClass() {
+    if (this.buttonStyleClass) {
+      return this.buttonStyleClass;
+    }
     if (this.buttonType === AtlasButtonType.DEFAULT_PRIMARY) {
       return 'atlas-primary-btn';
     }

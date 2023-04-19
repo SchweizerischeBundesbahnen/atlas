@@ -280,4 +280,8 @@ export class StatementDetailComponent implements OnInit {
     }
     return of(true);
   }
+
+  get cantonShort() {
+    return Cantons.fromSwissCanton(this.form.value.swissCanton!)!.short;
+  }
 }
