@@ -8,18 +8,13 @@ import ch.sbb.atlas.export.exception.ExportException;
 import ch.sbb.atlas.export.model.VersionCsvModel;
 import ch.sbb.atlas.model.entity.BaseVersion;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.databind.SequenceWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -32,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public abstract class BaseExportService<T extends BaseVersion> {
 
-    private static final char UTF_8_BYTE_ORDER_MARK = '\uFEFF';
+    static final char UTF_8_BYTE_ORDER_MARK = '\uFEFF';
 
     private final FileService fileService;
     private final AmazonService amazonService;
@@ -90,16 +85,7 @@ public abstract class BaseExportService<T extends BaseVersion> {
         List<? extends VersionCsvModel> versionCsvModels = convertToCsvModel(versions);
 
         ObjectWriter objectWriter = getObjectWriter();
-        try (BufferedWriter bufferedWriter = new BufferedWriter(
-            new OutputStreamWriter(new FileOutputStream(csvFile), StandardCharsets.UTF_8));
-            SequenceWriter sequenceWriter = objectWriter.writeValues(bufferedWriter)) {
-            bufferedWriter.write(UTF_8_BYTE_ORDER_MARK);
-            sequenceWriter.writeAll(versionCsvModels);
-            return csvFile;
-        } catch (IOException e) {
-            log.error(e.getMessage());
-            throw new ExportException(csvFile, e);
-        }
+        return ExportWriter.writeToFile(csvFile, versionCsvModels, objectWriter);
     }
 
     protected abstract ObjectWriter getObjectWriter();
