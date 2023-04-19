@@ -5,6 +5,7 @@ import static java.util.stream.Collectors.toList;
 import ch.sbb.atlas.amazon.helper.FutureTimetableHelper;
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.export.AtlasCsvMapper;
 import ch.sbb.atlas.export.BaseExportService;
 import ch.sbb.atlas.export.ExportType;
 import ch.sbb.atlas.export.model.VersionCsvModel;
