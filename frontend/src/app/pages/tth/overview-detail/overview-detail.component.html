@@ -51,7 +51,8 @@
           applicationType="TIMETABLE_HEARING"
           buttonDataCy="download-csv"
           buttonText="TTH.BUTTON.DOWNLOAD_CSV"
-          buttonType="createCheckingPermission"
+          buttonType="cantonCsvDownload"
+          [canton]="cantonShort"
         >
           <ng-template #rightIcon>
             <download-icon class="ps-2"></download-icon>
