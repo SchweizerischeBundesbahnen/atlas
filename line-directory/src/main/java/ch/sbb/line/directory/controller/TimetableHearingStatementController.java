@@ -1,15 +1,18 @@
 package ch.sbb.line.directory.controller;
 
 import ch.sbb.atlas.amazon.exception.FileException;
+import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.bodi.TransportCompanyModel;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementApiV1;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementRequestParams;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
+import ch.sbb.atlas.export.ExportWriter;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
 import ch.sbb.line.directory.mapper.TimeTableHearingStatementMapper;
 import ch.sbb.line.directory.model.TimetableHearingStatementSearchRestrictions;
+import ch.sbb.line.directory.model.csv.TimetableHearingStatementCsvModel;
 import ch.sbb.line.directory.service.hearing.ResponsibleTransportCompaniesResolverService;
 import ch.sbb.line.directory.service.hearing.TimetableFieldNumberResolverService;
 import ch.sbb.line.directory.service.hearing.TimetableHearingStatementService;
@@ -37,6 +40,7 @@ public class TimetableHearingStatementController implements TimetableHearingStat
   private final TimetableHearingYearService timetableHearingYearService;
   private final TimetableFieldNumberResolverService timetableFieldNumberResolverService;
   private final ResponsibleTransportCompaniesResolverService responsibleTransportCompaniesResolverService;
+  private final FileService fileService;
 
   @Override
   public Container<TimetableHearingStatementModel> getStatements(Pageable pageable,
@@ -51,6 +55,22 @@ public class TimetableHearingStatementController implements TimetableHearingStat
         .objects(enrichedModels)
         .totalCount(hearingStatements.getTotalElements())
         .build();
+  }
+
+  @Override
+  public Resource getStatementsAsCsv(TimetableHearingStatementRequestParams statementRequestParams) {
+    Container<TimetableHearingStatementModel> statements = getStatements(Pageable.unpaged(), statementRequestParams);
+    List<TimetableHearingStatementCsvModel> csvData = statements.getObjects().stream()
+        .map(TimetableHearingStatementCsvModel::fromModel).toList();
+
+    File csvFile = ExportWriter.writeToFile(fileService.getDir() + "statements", csvData,
+        TimetableHearingStatementCsvModel.class);
+
+    try {
+      return new InputStreamResource(new FileInputStream(csvFile));
+    } catch (IOException e) {
+      throw new FileException(e);
+    }
   }
 
   @Override
