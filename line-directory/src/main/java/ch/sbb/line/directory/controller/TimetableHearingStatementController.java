@@ -8,7 +8,9 @@ import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementApiV1;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementRequestParams;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
+import ch.sbb.atlas.export.AtlasCsvMapper;
 import ch.sbb.atlas.export.ExportWriter;
+import ch.sbb.atlas.export.LocalizedPropertyNamingStrategy;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
 import ch.sbb.line.directory.mapper.TimeTableHearingStatementMapper;
 import ch.sbb.line.directory.model.TimetableHearingStatementSearchRestrictions;
@@ -22,8 +24,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.MessageSource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
@@ -43,6 +48,7 @@ public class TimetableHearingStatementController implements TimetableHearingStat
   private final TimetableFieldNumberResolverService timetableFieldNumberResolverService;
   private final ResponsibleTransportCompaniesResolverService responsibleTransportCompaniesResolverService;
   private final FileService fileService;
+  private final MessageSource timetableHearingStatementCsvTranslations;
 
   @Override
   public Container<TimetableHearingStatementModel> getStatements(Pageable pageable,
@@ -60,9 +66,12 @@ public class TimetableHearingStatementController implements TimetableHearingStat
   }
 
   @Override
-  public Resource getStatementsAsCsv(TimetableHearingStatementRequestParams statementRequestParams) {
+  public Resource getStatementsAsCsv(String language, TimetableHearingStatementRequestParams statementRequestParams) {
     if (statementRequestParams.getTimetableHearingYear() == null) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "timetableHearingYear is mandatory here");
+    }
+    if (!Set.of("de", "fr","it").contains(language)) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Language must be either de,fr,it");
     }
 
     Container<TimetableHearingStatementModel> statements = getStatements(Pageable.unpaged(), statementRequestParams);
@@ -70,7 +79,8 @@ public class TimetableHearingStatementController implements TimetableHearingStat
         .map(TimetableHearingStatementCsvModel::fromModel).toList();
 
     File csvFile = ExportWriter.writeToFile(fileService.getDir() + "statements", csvData,
-        TimetableHearingStatementCsvModel.class);
+        new AtlasCsvMapper(TimetableHearingStatementCsvModel.class,
+            new LocalizedPropertyNamingStrategy(timetableHearingStatementCsvTranslations, new Locale(language))).getObjectWriter());
 
     try {
       return new InputStreamResource(new FileInputStream(csvFile));

@@ -1,7 +1,6 @@
 package ch.sbb.atlas.export;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
-import ch.sbb.atlas.export.BaseExportService.AtlasCsvMapper;
 import ch.sbb.atlas.export.exception.ExportException;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SequenceWriter;
@@ -21,11 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 public class ExportWriter {
 
   public static final char UTF_8_BYTE_ORDER_MARK = '\uFEFF';
-
-  public <T> File writeToFile(String pathname, Iterable<T> csvData, Class<T> clazz) {
-    ObjectWriter objectWriter = new AtlasCsvMapper(clazz).getObjectWriter();
-    return writeToFile(pathname, csvData, objectWriter);
-  }
 
   public File writeToFile(String pathname, Iterable<?> csvData, ObjectWriter objectWriter) {
     String currentDateTime = LocalDateTime.now()
