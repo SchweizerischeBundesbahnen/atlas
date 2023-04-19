@@ -124,7 +124,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
         undefined,
         pagination.page,
         pagination.size,
-        addElementsToArrayWhenNotUndefined(pagination.sort, this.sorting)
+        addElementsToArrayWhenNotUndefined(pagination.sort, this.sorting, 'ttfnid,ASC')
       )
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((container) => {
