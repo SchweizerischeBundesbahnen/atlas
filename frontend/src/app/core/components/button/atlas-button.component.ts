@@ -44,8 +44,8 @@ export class AtlasButtonComponent {
     if (this.buttonType === AtlasButtonType.DELETE) {
       return this.mayDelete();
     }
-    if (this.buttonType === AtlasButtonType.CANTON_CSV_DOWNLOAD) {
-      return this.mayDownloadCantonCsv();
+    if (this.buttonType === AtlasButtonType.CANTON_WRITE_PERMISSION) {
+      return this.hasWritePermissionsForCanton();
     }
     if (
       [AtlasButtonType.FOOTER_NON_EDIT, AtlasButtonType.WHITE_FOOTER_NON_EDIT].includes(
@@ -92,7 +92,11 @@ export class AtlasButtonComponent {
     return this.authService.isAdmin && NON_PROD_STAGES.includes(environment.label);
   }
 
-  mayDownloadCantonCsv() {
+  hasWritePermissionsForCanton() {
+    if (!this.canton) {
+      throw new Error('Canton button needs canton');
+    }
+
     const applicationUserPermission = this.authService.getApplicationUserPermission(
       ApplicationType.TimetableHearing
     );
@@ -116,7 +120,7 @@ export class AtlasButtonComponent {
       [
         AtlasButtonType.CREATE,
         AtlasButtonType.CREATE_CHECKING_PERMISSION,
-        AtlasButtonType.CANTON_CSV_DOWNLOAD,
+        AtlasButtonType.CANTON_WRITE_PERMISSION,
       ].includes(this.buttonType)
     ) {
       return 'atlas-raised-button mat-mdc-raised-button';
