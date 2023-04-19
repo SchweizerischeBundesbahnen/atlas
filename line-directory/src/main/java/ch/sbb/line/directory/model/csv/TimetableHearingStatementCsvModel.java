@@ -50,9 +50,10 @@ public class TimetableHearingStatementCsvModel implements VersionCsvModel {
         .timetableFieldNumberDescription(timetableHearingStatementModel.getTimetableFieldDescription())
         .stopPlace(timetableHearingStatementModel.getStopPlace())
         .transportCompanyAbbreviations(timetableHearingStatementModel.getResponsibleTransportCompanies().stream().map(
-            TimetableHearingStatementResponsibleTransportCompanyModel::getAbbreviation).collect(Collectors.joining(",")))
+            TimetableHearingStatementResponsibleTransportCompanyModel::getAbbreviation).sorted().collect(Collectors.joining(",")))
         .transportCompanyDescriptions(timetableHearingStatementModel.getResponsibleTransportCompanies().stream().map(
-            TimetableHearingStatementResponsibleTransportCompanyModel::getBusinessRegisterName).collect(Collectors.joining(",")))
+            TimetableHearingStatementResponsibleTransportCompanyModel::getBusinessRegisterName).sorted().collect(Collectors.joining(
+                ",")))
         .statement(timetableHearingStatementModel.getStatement())
         .documentsPresent(!timetableHearingStatementModel.getDocuments().isEmpty())
         .justification(timetableHearingStatementModel.getJustification())

@@ -1029,6 +1029,7 @@ export class TimetableHearingService {
   }
 
   /**
+   * @param language
    * @param timetableHearingYear
    * @param canton
    * @param searchCriterias
@@ -1038,6 +1039,7 @@ export class TimetableHearingService {
    * @param reportProgress flag to report request and response progress.
    */
   public getStatementsAsCsv(
+    language: string,
     timetableHearingYear?: number,
     canton?: SwissCanton,
     searchCriterias?: Array<string>,
@@ -1048,6 +1050,7 @@ export class TimetableHearingService {
     options?: { httpHeaderAccept?: '*/*' | 'application/octet-stream' }
   ): Observable<Blob>;
   public getStatementsAsCsv(
+    language: string,
     timetableHearingYear?: number,
     canton?: SwissCanton,
     searchCriterias?: Array<string>,
@@ -1058,6 +1061,7 @@ export class TimetableHearingService {
     options?: { httpHeaderAccept?: '*/*' | 'application/octet-stream' }
   ): Observable<HttpResponse<Blob>>;
   public getStatementsAsCsv(
+    language: string,
     timetableHearingYear?: number,
     canton?: SwissCanton,
     searchCriterias?: Array<string>,
@@ -1068,6 +1072,7 @@ export class TimetableHearingService {
     options?: { httpHeaderAccept?: '*/*' | 'application/octet-stream' }
   ): Observable<HttpEvent<Blob>>;
   public getStatementsAsCsv(
+    language: string,
     timetableHearingYear?: number,
     canton?: SwissCanton,
     searchCriterias?: Array<string>,
@@ -1077,6 +1082,12 @@ export class TimetableHearingService {
     reportProgress: boolean = false,
     options?: { httpHeaderAccept?: '*/*' | 'application/octet-stream' }
   ): Observable<any> {
+    if (language === null || language === undefined) {
+      throw new Error(
+        'Required parameter language was null or undefined when calling getStatementsAsCsv.'
+      );
+    }
+
     let queryParameters = new HttpParams({ encoder: this.encoder });
     if (timetableHearingYear !== undefined && timetableHearingYear !== null) {
       queryParameters = this.addToHttpParams(
@@ -1115,7 +1126,9 @@ export class TimetableHearingService {
     }
 
     return this.httpClient.get(
-      `${this.configuration.basePath}/line-directory/v1/timetable-hearing/statements/csv`,
+      `${
+        this.configuration.basePath
+      }/line-directory/v1/timetable-hearing/statements/csv/${encodeURIComponent(String(language))}`,
       {
         params: queryParameters,
         responseType: 'blob',
