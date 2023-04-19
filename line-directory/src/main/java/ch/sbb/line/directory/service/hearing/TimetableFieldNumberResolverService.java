@@ -59,12 +59,14 @@ public class TimetableFieldNumberResolverService {
     statements.stream()
         .filter(statement -> statement.getTtfnid() != null)
         .forEach(statement -> {
-          TimetableFieldNumberVersion resolvedVersion = versions.stream()
+          Optional<TimetableFieldNumberVersion> resolvedVersion = versions.stream()
               .filter(i -> i.getTtfnid().equals(statement.getTtfnid()))
-              .findFirst().orElseThrow(() -> new IllegalArgumentException(statement.getTtfnid()));
+              .findFirst();
 
-          statement.setTimetableFieldNumber(resolvedVersion.getNumber());
-          statement.setTimetableFieldDescription(resolvedVersion.getDescription());
+          resolvedVersion.ifPresent(version -> {
+            statement.setTimetableFieldNumber(version.getNumber());
+            statement.setTimetableFieldDescription(version.getDescription());
+          });
         });
 
     return statements;
