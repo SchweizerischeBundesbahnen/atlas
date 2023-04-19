@@ -11,6 +11,7 @@ export const AtlasButtonType = {
   DEFAULT_PRIMARY: 'defaultPrimary' as AtlasButtonType,
   WHITE_FOOTER_NON_EDIT: 'whiteFooterNonEdit' as AtlasButtonType,
   WHITE_FOOTER_EDIT_MODE: 'whiteFooterEdit' as AtlasButtonType,
+  CANTON_CSV_DOWNLOAD: 'cantonCsvDownload' as AtlasButtonType,
 };
 
 export type AtlasButtonType =
@@ -24,4 +25,5 @@ export type AtlasButtonType =
   | 'revoke'
   | 'skipworkflow'
   | 'delete'
-  | 'defaultPrimary';
+  | 'defaultPrimary'
+  | 'cantonCsvDownload';
