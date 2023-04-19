@@ -11,16 +11,13 @@
         [short]="true"
       ></app-user-detail-info>
 
-      <div class="d-flex flex-row col-12 mb-5">
+      <div *ngIf="statement && statement.comment" class="d-flex flex-row col-12 mb-5">
         <div class="d-flex flex-column col-12">
-          <form-comment
-            [formGroup]="form"
-            controlName="comment"
-            label="TTH.STATEMENT.COMMENT"
-            maxChars="280"
-            [isTextAreaTransparent]="true"
-          >
-          </form-comment>
+          <br />
+          <span class="font-bold-lg">
+            {{ (statement ? 'TTH.STATEMENT.COMMENT' : '') | translate }}
+          </span>
+          <span>{{ statement ? statement.comment : '' }}</span>
         </div>
       </div>
 
