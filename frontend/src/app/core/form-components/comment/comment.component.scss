@@ -14,6 +14,13 @@ textarea:focus {
   outline: none;
 }
 
+#transparenttextarea {
+  border: none;
+  background-color: transparent;
+  resize: none;
+  outline: none;
+}
+
 textarea {
   margin-top: 5px;
 
