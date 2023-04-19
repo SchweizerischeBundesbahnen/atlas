@@ -10,10 +10,17 @@
     infoIconTitle="{{ info }}"
   ></app-atlas-label-field>
   <textarea
+    *ngIf="!isTextAreaTransparent"
     [attr.data-cy]="controlName"
     formControlName="{{ controlName }}"
     matInput
     rows="7"
+  ></textarea>
+  <textarea
+    id="transparenttextarea"
+    *ngIf="isTextAreaTransparent"
+    [attr.data-cy]="controlName"
+    formControlName="{{ controlName }}"
   ></textarea>
   <app-atlas-field-error [form]="formGroup" controlName="{{ controlName }}"></app-atlas-field-error>
 </div>

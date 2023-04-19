@@ -151,6 +151,11 @@ export class StatementDetailComponent implements OnInit {
         WhitespaceValidator.blankOrEmptySpaceSurrounding,
         AtlasCharsetsValidator.iso88591,
       ]),
+      comment: new FormControl(statement?.comment, [
+        AtlasFieldLengthValidator.statement,
+        WhitespaceValidator.blankOrEmptySpaceSurrounding,
+        AtlasCharsetsValidator.iso88591,
+      ]),
       etagVersion: new FormControl(statement?.etagVersion),
     });
   }
