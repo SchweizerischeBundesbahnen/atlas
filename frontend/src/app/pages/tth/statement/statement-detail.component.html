@@ -11,6 +11,19 @@
         [short]="true"
       ></app-user-detail-info>
 
+      <div class="d-flex flex-row col-12 mb-5">
+        <div class="d-flex flex-column col-12">
+          <form-comment
+            [formGroup]="form"
+            controlName="comment"
+            label="TTH.STATEMENT.COMMENT"
+            maxChars="280"
+            [isTextAreaTransparent]="true"
+          >
+          </form-comment>
+        </div>
+      </div>
+
       <div class="d-flex flex-row col-12 mb-4 mt-5">
         <div class="d-flex flex-column col-6 pe-3">
           <atlas-select
@@ -105,7 +118,7 @@
           <atlas-text-field
             [formGroup]="form.controls.statementSender"
             controlName="firstName"
-            fieldLabel="TTH.STATEMENT.FIST_NAME"
+            fieldLabel="TTH.STATEMENT.FIRST_NAME"
           >
           </atlas-text-field>
         </div>
