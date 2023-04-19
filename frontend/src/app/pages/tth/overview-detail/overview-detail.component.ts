@@ -155,7 +155,14 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
   }
 
   downloadCsv() {
-    console.log('Download CSV');
+    this.timetableHearingService
+      .getStatementsAsCsv(this.foundTimetableHearingYear.timetableYear)
+      .subscribe((response) => {
+        const a = document.createElement('a');
+        a.download = 'statements.csv';
+        a.href = URL.createObjectURL(response);
+        a.click();
+      });
   }
 
   manageTimetableHearing() {
@@ -374,8 +381,12 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
         headerTitle: 'TTH.TRANSPORT_COMPANY',
         value: 'responsibleTransportCompaniesDisplay',
       },
-      { headerTitle: 'TTH.TTFNID', value: 'ttfnid' },
-      { headerTitle: 'TTH.TIMETABLE_FIELD_NUMBER', value: 'timetableFieldNumber' },
+      { headerTitle: 'TTH.TIMETABLE_FIELD_NUMBER', value: 'timetableFieldNumber', disabled: true },
+      {
+        headerTitle: 'TTH.TIMETABLE_FIELD_NUMBER_DESCRIPTION',
+        value: 'timetableFieldDescription',
+        disabled: true,
+      },
       { headerTitle: 'COMMON.EDIT_ON', value: 'editionDate', formatAsDate: true },
       { headerTitle: 'COMMON.EDIT_BY', value: 'editor' },
     ];

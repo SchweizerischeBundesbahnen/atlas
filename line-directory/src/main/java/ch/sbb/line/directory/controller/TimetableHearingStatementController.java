@@ -28,8 +28,10 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 @Slf4j
 @RestController
@@ -59,6 +61,10 @@ public class TimetableHearingStatementController implements TimetableHearingStat
 
   @Override
   public Resource getStatementsAsCsv(TimetableHearingStatementRequestParams statementRequestParams) {
+    if (statementRequestParams.getTimetableHearingYear() == null) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "timetableHearingYear is mandatory here");
+    }
+
     Container<TimetableHearingStatementModel> statements = getStatements(Pageable.unpaged(), statementRequestParams);
     List<TimetableHearingStatementCsvModel> csvData = statements.getObjects().stream()
         .map(TimetableHearingStatementCsvModel::fromModel).toList();
