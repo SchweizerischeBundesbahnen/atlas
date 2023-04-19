@@ -16,15 +16,15 @@ export interface ServicePointNumber {
    */
   number: number;
   /**
-   * NumberShort - 5 chars identifying number. Range: 1-99.999
+   * UicCountryCode, Indicates which country allocated the service point number and is to be interpreted organisationally, not territorially.
    */
-  numberShort: number;
+  uicCountryCode: number;
   /**
    * Calculated value formed from the numberShort. Range: 0-9
    */
   checkDigit: number;
   /**
-   * UicCountryCode, Indicates which country allocated the service point number and is to be interpreted organisationally, not territorially.
+   * NumberShort - 5 chars identifying number. Range: 1-99.999
    */
-  uicCountryCode: number;
+  numberShort: number;
 }
