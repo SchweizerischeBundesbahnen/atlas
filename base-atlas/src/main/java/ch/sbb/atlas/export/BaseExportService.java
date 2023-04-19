@@ -27,8 +27,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public abstract class BaseExportService<T extends BaseVersion> {
 
-    static final char UTF_8_BYTE_ORDER_MARK = '\uFEFF';
-
     private final FileService fileService;
     private final AmazonService amazonService;
 
