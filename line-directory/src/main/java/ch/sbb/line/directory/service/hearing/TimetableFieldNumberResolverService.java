@@ -56,12 +56,16 @@ public class TimetableFieldNumberResolverService {
         statements.stream().map(TimetableHearingStatementModel::getTtfnid).collect(
             Collectors.toSet()), validAtDateForYear);
 
-    statements.forEach(statement -> {
-      TimetableFieldNumberVersion resolvedVersion = versions.stream().filter(i -> i.getTtfnid().equals(statement.getTtfnid()))
-          .findFirst().orElseThrow();
-      statement.setTimetableFieldNumber(resolvedVersion.getNumber());
-      statement.setTimetableFieldDescription(resolvedVersion.getDescription());
-    });
+    statements.stream()
+        .filter(statement -> statement.getTtfnid() != null)
+        .forEach(statement -> {
+          TimetableFieldNumberVersion resolvedVersion = versions.stream()
+              .filter(i -> i.getTtfnid().equals(statement.getTtfnid()))
+              .findFirst().orElseThrow(() -> new IllegalArgumentException(statement.getTtfnid()));
+
+          statement.setTimetableFieldNumber(resolvedVersion.getNumber());
+          statement.setTimetableFieldDescription(resolvedVersion.getDescription());
+        });
 
     return statements;
   }
