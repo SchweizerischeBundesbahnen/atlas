@@ -68,6 +68,8 @@ public class TimetableHearingYearService {
   public TimetableHearingYear closeTimetableHearing(TimetableHearingYear timetableHearingYear) {
     mayTransitionToHearingStatus(timetableHearingYear, HearingStatus.ARCHIVED);
 
+    // TODO: make Tth close transitions
+
     timetableHearingYear.setHearingStatus(HearingStatus.ARCHIVED);
     return timetableHearingYearRepository.save(timetableHearingYear);
   }
