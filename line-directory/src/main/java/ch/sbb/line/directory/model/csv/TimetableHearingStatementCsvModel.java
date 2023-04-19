@@ -5,6 +5,7 @@ import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTr
 import ch.sbb.atlas.export.model.VersionCsvModel;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
@@ -17,6 +18,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
+@JsonPropertyOrder({"cantonAbbreviation", "timetableFieldNumber", "timetableFieldNumberDescription", "stopPlace",
+    "transportCompanyAbbreviations", "transportCompanyDescriptions", "statement", "documentsPresent", "justification",
+    "firstName", "lastName", "organisation",
+    "street", "zip", "email", "editor", "editionDate", "timetableHearingYear"})
 public class TimetableHearingStatementCsvModel implements VersionCsvModel {
 
   @JsonProperty("Kanton")
@@ -29,7 +34,7 @@ public class TimetableHearingStatementCsvModel implements VersionCsvModel {
   private String timetableFieldNumberDescription;
 
   @JsonProperty("Haltestelle")
-  private String stopPoint;
+  private String stopPlace;
 
   @JsonProperty("Abkürzung Transportunternehmung")
   private String transportCompanyAbbreviations;
@@ -79,7 +84,7 @@ public class TimetableHearingStatementCsvModel implements VersionCsvModel {
             timetableHearingStatementModel.getSwissCanton().getAbbreviation())
         .timetableFieldNumber(timetableHearingStatementModel.getTimetableFieldNumber())
         .timetableFieldNumberDescription(timetableHearingStatementModel.getTimetableFieldDescription())
-        .stopPoint(timetableHearingStatementModel.getStopPlace())
+        .stopPlace(timetableHearingStatementModel.getStopPlace())
         .transportCompanyAbbreviations(timetableHearingStatementModel.getResponsibleTransportCompanies().stream().map(
             TimetableHearingStatementResponsibleTransportCompanyModel::getAbbreviation).collect(Collectors.joining(",")))
         .transportCompanyDescriptions(timetableHearingStatementModel.getResponsibleTransportCompanies().stream().map(
