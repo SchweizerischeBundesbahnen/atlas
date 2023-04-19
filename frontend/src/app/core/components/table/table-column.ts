@@ -1,6 +1,7 @@
 export interface TableColumn<TYPE> {
   headerTitle: string;
   value?: keyof TYPE & string;
+  disabled?: boolean;
   dropdown?: ColumnDropDown;
   callback?: (...args: any[]) => any;
   valuePath?: string;
