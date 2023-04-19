@@ -20,6 +20,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ExportWriter {
 
+  public static final char UTF_8_BYTE_ORDER_MARK = '\uFEFF';
+
   public <T> File writeToFile(String pathname, Iterable<T> csvData, Class<T> clazz) {
     ObjectWriter objectWriter = new AtlasCsvMapper(clazz).getObjectWriter();
     return writeToFile(pathname, csvData, objectWriter);
@@ -37,7 +39,7 @@ public class ExportWriter {
     try (BufferedWriter bufferedWriter = new BufferedWriter(
         new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8));
         SequenceWriter sequenceWriter = objectWriter.writeValues(bufferedWriter)) {
-      bufferedWriter.write(BaseExportService.UTF_8_BYTE_ORDER_MARK);
+      bufferedWriter.write(UTF_8_BYTE_ORDER_MARK);
       sequenceWriter.writeAll(csvData);
       return file;
     } catch (IOException e) {

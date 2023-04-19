@@ -4,6 +4,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.line.directory.service.hearing.ResponsibleTransportCompaniesResolverService;
 import ch.sbb.line.directory.service.hearing.TimetableFieldNumberResolverService;
 import ch.sbb.line.directory.service.hearing.TimetableHearingStatementService;
@@ -25,6 +26,8 @@ public class TimetableHearingStatementControllerTest {
   private TimetableFieldNumberResolverService timetableFieldNumberResolverService;
   @Mock
   private ResponsibleTransportCompaniesResolverService responsibleTransportCompaniesResolverService;
+  @Mock
+  private FileService fileService;
 
   private TimetableHearingStatementController timetableHearingStatementController;
 
@@ -32,7 +35,7 @@ public class TimetableHearingStatementControllerTest {
   void setUp() {
     MockitoAnnotations.openMocks(this);
     timetableHearingStatementController = new TimetableHearingStatementController(timetableHearingStatementService,
-        timetableHearingYearService, timetableFieldNumberResolverService, responsibleTransportCompaniesResolverService);
+        timetableHearingYearService, timetableFieldNumberResolverService, responsibleTransportCompaniesResolverService, fileService);
   }
 
   @Test
