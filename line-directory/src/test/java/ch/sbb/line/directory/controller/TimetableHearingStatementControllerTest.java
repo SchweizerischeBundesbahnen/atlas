@@ -15,6 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.context.MessageSource;
 
 public class TimetableHearingStatementControllerTest {
 
@@ -28,6 +29,8 @@ public class TimetableHearingStatementControllerTest {
   private ResponsibleTransportCompaniesResolverService responsibleTransportCompaniesResolverService;
   @Mock
   private FileService fileService;
+  @Mock
+  private MessageSource timetableHearingStatementCsvTranslations;
 
   private TimetableHearingStatementController timetableHearingStatementController;
 
@@ -35,7 +38,8 @@ public class TimetableHearingStatementControllerTest {
   void setUp() {
     MockitoAnnotations.openMocks(this);
     timetableHearingStatementController = new TimetableHearingStatementController(timetableHearingStatementService,
-        timetableHearingYearService, timetableFieldNumberResolverService, responsibleTransportCompaniesResolverService, fileService);
+        timetableHearingYearService, timetableFieldNumberResolverService, responsibleTransportCompaniesResolverService,
+        fileService, timetableHearingStatementCsvTranslations);
   }
 
   @Test
