@@ -4,9 +4,14 @@
   align-items: center;
 }
 
-.action-btn-wrapper {
+.two-action-btn-wrapper {
   display: flex;
   justify-content: space-between;
+}
+
+.one-action-btn-wrapper-right {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .dialog-container {
