@@ -78,7 +78,7 @@ public abstract class BaseExportService<T extends BaseVersion> {
         List<? extends VersionCsvModel> versionCsvModels = convertToCsvModel(versions);
 
         ObjectWriter objectWriter = getObjectWriter();
-        return ExportWriter.writeToFile(csvFile, versionCsvModels, objectWriter);
+        return CsvExportWriter.writeToFile(csvFile, versionCsvModels, objectWriter);
     }
 
     protected abstract ObjectWriter getObjectWriter();
