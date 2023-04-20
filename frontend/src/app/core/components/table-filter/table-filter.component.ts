@@ -41,10 +41,10 @@ export class TableFilterComponent<TFilterConfig> {
     isChipSearch;
 
   // TODO: remove when generic searchSelect is implemented
-  boSearchForm = new FormGroup<{
-    businessOrganisation: FormControl<string | undefined>;
-  }>({
+  searchForm = new FormGroup<any>({
     businessOrganisation: new FormControl(),
+    ttfnid: new FormControl(),
+    transportCompany: new FormControl(),
   });
 
   MIN_DATE = MIN_DATE;

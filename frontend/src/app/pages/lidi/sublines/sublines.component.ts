@@ -17,6 +17,7 @@ import {
   TableFilterDateSelect,
   TableFilterMultiSelect,
   TableFilterSearchSelect,
+  TableFilterSearchType,
 } from '../../../core/components/table-filter/table-filter-config';
 import { FormControl } from '@angular/forms';
 import { TableService } from '../../../core/components/table/table.service';
@@ -70,6 +71,7 @@ export class SublinesComponent implements OnDestroy {
         filterType: FilterType.SEARCH_SELECT,
         elementWidthCssClass: 'col-3',
         activeSearch: {} as BusinessOrganisation,
+        searchType: TableFilterSearchType.BUSINESS_ORGANISATION,
       },
       {
         filterType: FilterType.MULTI_SELECT,
