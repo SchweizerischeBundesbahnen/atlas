@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @UtilityClass
 @Slf4j
-public class ExportWriter {
+public class CsvExportWriter {
 
   public static final char UTF_8_BYTE_ORDER_MARK = '\uFEFF';
 
