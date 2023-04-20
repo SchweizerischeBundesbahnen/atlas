@@ -39,6 +39,7 @@ export class DialogManageTthComponent implements OnInit {
     this.year = matDialogData;
   }
 
+  // todo: loading view
   ngOnInit() {
     console.log(this.year);
     this.tthService
@@ -59,6 +60,10 @@ export class DialogManageTthComponent implements OnInit {
           this.notificationService.error(err);
         },
       });
+  }
+
+  handleManageViewCancelClick(): void {
+    this.dialogRef.close();
   }
 
   handleSaveAndCloseClick(): void {
@@ -82,7 +87,7 @@ export class DialogManageTthComponent implements OnInit {
       .subscribe({
         next: () => {
           this.dialogRef.close();
-          this.notificationService.success('test'); // todo
+          this.notificationService.success('worked'); // todo
         },
         error: (err) => {
           this.dialogRef.close();
@@ -99,7 +104,7 @@ export class DialogManageTthComponent implements OnInit {
     this._showManageView = false;
   }
 
-  handleCancelClick(): void {
+  handleCloseViewCancelClick(): void {
     this._showManageView = true;
   }
 
