@@ -27,7 +27,9 @@ public class TimetableHearingStatementSearchRestrictions {
     return new LongSpecification<>(TimetableHearingStatement_.timetableYear, statementRequestParams.getTimetableHearingYear())
         .and(new EnumSpecification<>(statementRequestParams.getCanton(), TimetableHearingStatement_.swissCanton))
         .and(new SearchCriteriaSpecification<>(statementRequestParams.getSearchCriterias(),
-            List.of(Fields.statement, Fields.justification)));
+            List.of(Fields.statement, Fields.justification, Fields.stopPlace,
+                "statementSender.firstName", "statementSender.lastName",
+                "statementSender.organisation")));
   }
 
 }
