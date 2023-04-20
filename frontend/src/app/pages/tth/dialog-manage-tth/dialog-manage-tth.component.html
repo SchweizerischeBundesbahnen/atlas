@@ -27,16 +27,24 @@
       ></atlas-slide-toggle>
     </div>
 
-    <div class="action-btn-wrapper pt-5">
-      <atlas-button
-        buttonType="confirm"
-        buttonText="COMMON.SAVE_AND_CLOSE"
-        (buttonClicked)="handleSaveAndCloseClick()"
-      ></atlas-button>
+    <div class="one-action-btn-wrapper-right pt-5">
       <atlas-button
         buttonType="confirm"
         buttonText="TTH.BUTTON.CLOSE_TIMETABLE_HEARING"
         (buttonClicked)="handleManageViewTthCloseClick()"
+      ></atlas-button>
+    </div>
+
+    <div class="two-action-btn-wrapper pt-5">
+      <atlas-button
+        buttonType="cancel"
+        buttonText="COMMON.CANCEL"
+        (buttonClicked)="handleManageViewCancelClick()"
+      ></atlas-button>
+      <atlas-button
+        buttonType="confirm"
+        buttonText="COMMON.SAVE_AND_CLOSE"
+        (buttonClicked)="handleSaveAndCloseClick()"
       ></atlas-button>
     </div>
   </div>
@@ -61,11 +69,11 @@
       </li>
     </ul>
 
-    <div class="action-btn-wrapper">
+    <div class="two-action-btn-wrapper">
       <atlas-button
         buttonType="cancel"
         buttonText="COMMON.CANCEL"
-        (buttonClicked)="handleCancelClick()"
+        (buttonClicked)="handleCloseViewCancelClick()"
       ></atlas-button>
       <atlas-button
         buttonType="confirm"
