@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementRequestParams;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementSenderModel;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.kafka.model.SwissCanton;
@@ -16,6 +17,7 @@ import ch.sbb.line.directory.entity.TimetableHearingStatement;
 import ch.sbb.line.directory.entity.TimetableHearingYear;
 import ch.sbb.line.directory.helper.PdfFiles;
 import ch.sbb.line.directory.mapper.TimeTableHearingStatementMapper;
+import ch.sbb.line.directory.model.TimetableHearingStatementSearchRestrictions;
 import ch.sbb.line.directory.repository.TimetableHearingStatementRepository;
 import ch.sbb.line.directory.repository.TimetableHearingYearRepository;
 import ch.sbb.line.directory.service.hearing.TimetableHearingStatementService;
@@ -28,6 +30,8 @@ import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 @IntegrationTest
@@ -200,12 +204,40 @@ public class TimetableHearingStatementServiceTest {
   @Test
   void shouldNotUpdateHearingStatementIfYearIsUnknown() {
     timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
-    TimetableHearingStatementModel timetableHearingStatementModel1 = buildTimetableHearingStatementModel();
+    TimetableHearingStatementModel timetableHearingStatementModel = buildTimetableHearingStatementModel();
 
-    TimetableHearingStatementModel updatingStatement = timetableHearingStatementService.createHearingStatement(timetableHearingStatementModel1, Collections.emptyList());
+    TimetableHearingStatementModel updatingStatement = timetableHearingStatementService.createHearingStatement(timetableHearingStatementModel, Collections.emptyList());
     updatingStatement.setTimetableYear(2020L);
 
     assertThatThrownBy(() -> timetableHearingStatementService.updateHearingStatement(updatingStatement, Collections.emptyList())).isInstanceOf(IdNotFoundException.class);
+  }
+
+  @Test
+  void shouldFindStatementBySearchCriteria() {
+    timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+    TimetableHearingStatementModel timetableHearingStatementModel = TimetableHearingStatementModel.builder()
+        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .swissCanton(SwissCanton.BERN)
+        .statementSender(TimetableHearingStatementSenderModel.builder()
+            .firstName("Luca")
+            .email("fabienne.mueller@sbb.ch")
+            .build())
+        .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
+        .build();
+    timetableHearingStatementService.createHearingStatement(timetableHearingStatementModel, Collections.emptyList());
+
+    TimetableHearingStatementSearchRestrictions searchRestrictions = TimetableHearingStatementSearchRestrictions.builder()
+        .statementRequestParams(TimetableHearingStatementRequestParams.builder()
+            .searchCriterias(List.of("gerne", "Luca"))
+            .canton(SwissCanton.BERN)
+            .timetableHearingYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+            .build())
+        .pageable(Pageable.unpaged())
+        .build();
+
+    Page<TimetableHearingStatement> hearingStatements = timetableHearingStatementService.getHearingStatements(searchRestrictions);
+
+    assertThat(hearingStatements.getTotalElements()).isEqualTo(1);
   }
 
   private static TimetableHearingStatementModel buildTimetableHearingStatementModel() {

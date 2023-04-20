@@ -24,6 +24,7 @@ import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
 import { TthTableService } from '../tth-table.service';
 import { NewTimetableHearingYearDialogService } from '../new-timetable-hearing-year-dialog/service/new-timetable-hearing-year-dialog.service';
 import { TranslateService } from '@ngx-translate/core';
+import { tableFilterConfig } from './table-filter-config';
 
 @Component({
   selector: 'app-timetable-hearing-overview-detail',
@@ -32,6 +33,8 @@ import { TranslateService } from '@ngx-translate/core';
   providers: [TableService],
 })
 export class OverviewDetailComponent implements OnInit, OnDestroy {
+  readonly TABLE_FILTER_CONFIG = tableFilterConfig;
+
   timeTableHearingStatements: TimetableHearingStatement[] = [];
   totalCount$ = 0;
   tableColumns: TableColumn<TimetableHearingStatement>[] = [];
@@ -419,4 +422,6 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
       );
     });
   }
+
+  protected readonly tableFilterConfig = tableFilterConfig;
 }
