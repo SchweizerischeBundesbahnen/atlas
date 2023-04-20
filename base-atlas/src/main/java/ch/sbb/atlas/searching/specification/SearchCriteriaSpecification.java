@@ -27,7 +27,7 @@ public class SearchCriteriaSpecification<T> implements Specification<T> {
       CriteriaBuilder criteriaBuilder) {
     return criteriaBuilder.and(searchCriteria.stream().map(searchString -> criteriaBuilder.or(
         searchPaths.stream()
-            .map(path -> StringPredicates.likeIgnoreCase(criteriaBuilder, root.get(path).as(String.class),
+            .map(path -> StringPredicates.likeIgnoreCase(criteriaBuilder, NestedPath.get(root, path).as(String.class),
                 searchString))
             .toArray(Predicate[]::new))
     ).toArray(Predicate[]::new));
