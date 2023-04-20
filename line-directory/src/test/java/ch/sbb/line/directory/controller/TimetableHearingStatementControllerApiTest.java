@@ -24,7 +24,7 @@ import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel.Fields;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementSenderModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingYearModel;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
-import ch.sbb.atlas.export.ExportWriter;
+import ch.sbb.atlas.export.CsvExportWriter;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.controller.AtlasMockMultipartFile;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
@@ -479,7 +479,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
 
     // Then
     String response = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-    assertThat(response).startsWith(ExportWriter.UTF_8_BYTE_ORDER_MARK + expectedCsvHeader);
+    assertThat(response).startsWith(CsvExportWriter.UTF_8_BYTE_ORDER_MARK + expectedCsvHeader);
     assertThat(response).contains(statement.getStatement());
   }
 }
