@@ -9,7 +9,7 @@ import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementRequestParams;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
 import ch.sbb.atlas.export.AtlasCsvMapper;
-import ch.sbb.atlas.export.ExportWriter;
+import ch.sbb.atlas.export.CsvExportWriter;
 import ch.sbb.atlas.export.LocalizedPropertyNamingStrategy;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
 import ch.sbb.line.directory.mapper.TimeTableHearingStatementMapper;
@@ -78,7 +78,7 @@ public class TimetableHearingStatementController implements TimetableHearingStat
     List<TimetableHearingStatementCsvModel> csvData = statements.getObjects().stream()
         .map(TimetableHearingStatementCsvModel::fromModel).toList();
 
-    File csvFile = ExportWriter.writeToFile(fileService.getDir() + "statements", csvData,
+    File csvFile = CsvExportWriter.writeToFile(fileService.getDir() + "statements", csvData,
         new AtlasCsvMapper(TimetableHearingStatementCsvModel.class,
             new LocalizedPropertyNamingStrategy(timetableHearingStatementCsvTranslations, new Locale(language))).getObjectWriter());
 
