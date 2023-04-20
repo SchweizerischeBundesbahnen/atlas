@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementRequestParams;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementSenderModel;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.kafka.model.SwissCanton;
@@ -238,6 +239,91 @@ public class TimetableHearingStatementServiceTest {
     Page<TimetableHearingStatement> hearingStatements = timetableHearingStatementService.getHearingStatements(searchRestrictions);
 
     assertThat(hearingStatements.getTotalElements()).isEqualTo(1);
+  }
+
+  @Test
+  void shouldFindStatementByTtfnid() {
+    timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+    TimetableHearingStatementModel timetableHearingStatementModel = TimetableHearingStatementModel.builder()
+        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .swissCanton(SwissCanton.BERN)
+        .ttfnid("ch:1:ttfnid:2341234")
+        .statementSender(TimetableHearingStatementSenderModel.builder()
+            .email("fabienne.mueller@sbb.ch")
+            .build())
+        .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
+        .build();
+    timetableHearingStatementService.createHearingStatement(timetableHearingStatementModel, Collections.emptyList());
+
+    TimetableHearingStatementSearchRestrictions searchRestrictions = TimetableHearingStatementSearchRestrictions.builder()
+        .statementRequestParams(TimetableHearingStatementRequestParams.builder()
+            .ttfnid("ch:1:ttfnid:2341234")
+            .build())
+        .pageable(Pageable.unpaged())
+        .build();
+
+    Page<TimetableHearingStatement> hearingStatements = timetableHearingStatementService.getHearingStatements(searchRestrictions);
+
+    assertThat(hearingStatements.getTotalElements()).isEqualTo(1);
+
+    // Negative Test
+    searchRestrictions = TimetableHearingStatementSearchRestrictions.builder()
+        .statementRequestParams(TimetableHearingStatementRequestParams.builder()
+            .ttfnid("other bs")
+            .build())
+        .pageable(Pageable.unpaged())
+        .build();
+
+    hearingStatements = timetableHearingStatementService.getHearingStatements(searchRestrictions);
+
+    assertThat(hearingStatements.getTotalElements()).isZero();
+  }
+
+  @Test
+  void shouldFindStatementByTransportCompany() {
+    timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+    TimetableHearingStatementModel timetableHearingStatementModel = TimetableHearingStatementModel.builder()
+        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .swissCanton(SwissCanton.BERN)
+        .responsibleTransportCompanies(List.of(TimetableHearingStatementResponsibleTransportCompanyModel.builder()
+                .id(4L)
+                .abbreviation("SBB")
+                .businessRegisterName("Schweizerische Bundesbahnen")
+            .build(),
+            TimetableHearingStatementResponsibleTransportCompanyModel.builder()
+                .id(5L)
+                .abbreviation("BLS")
+                .businessRegisterName("Basel Land Stationen ? :D")
+                .build()))
+        .statementSender(TimetableHearingStatementSenderModel.builder()
+            .firstName("Luca")
+            .email("fabienne.mueller@sbb.ch")
+            .build())
+        .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
+        .build();
+    timetableHearingStatementService.createHearingStatement(timetableHearingStatementModel, Collections.emptyList());
+
+    TimetableHearingStatementSearchRestrictions searchRestrictions = TimetableHearingStatementSearchRestrictions.builder()
+        .statementRequestParams(TimetableHearingStatementRequestParams.builder()
+            .transportCompanies(List.of(4L, 5L))
+            .build())
+        .pageable(Pageable.unpaged())
+        .build();
+
+    Page<TimetableHearingStatement> hearingStatements = timetableHearingStatementService.getHearingStatements(searchRestrictions);
+
+    assertThat(hearingStatements.getTotalElements()).isEqualTo(1);
+
+    //Negative Test
+    searchRestrictions = TimetableHearingStatementSearchRestrictions.builder()
+        .statementRequestParams(TimetableHearingStatementRequestParams.builder()
+            .transportCompanies(List.of(3L))
+            .build())
+        .pageable(Pageable.unpaged())
+        .build();
+
+    hearingStatements = timetableHearingStatementService.getHearingStatements(searchRestrictions);
+    assertThat(hearingStatements.getTotalElements()).isZero();
   }
 
   private static TimetableHearingStatementModel buildTimetableHearingStatementModel() {
