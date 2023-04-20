@@ -4,9 +4,11 @@ import {
   HearingStatus,
   StatementStatus,
   SwissCanton,
+  TimetableFieldNumber,
   TimetableHearingService,
   TimetableHearingStatement,
   TimetableHearingYear,
+  TransportCompany,
 } from '../../../api';
 import { Cantons } from '../overview/canton/Cantons';
 import { TableColumn } from '../../../core/components/table/table-column';
@@ -25,6 +27,11 @@ import { TthTableService } from '../tth-table.service';
 import { NewTimetableHearingYearDialogService } from '../new-timetable-hearing-year-dialog/service/new-timetable-hearing-year-dialog.service';
 import { TranslateService } from '@ngx-translate/core';
 import { tableFilterConfig } from './table-filter-config';
+import {
+  getActiveMultiSearch,
+  getActiveSearch,
+  getActiveSearchForChip,
+} from '../../../core/components/table-filter/table-filter-config';
 
 @Component({
   selector: 'app-timetable-hearing-overview-detail',
@@ -122,9 +129,14 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
       .getStatements(
         this.foundTimetableHearingYear.timetableYear,
         selectedCantonEnum,
-        undefined, // TODO: set with tableFilter
-        undefined,
-        undefined,
+        getActiveSearchForChip(this.tableFilterConfig[0][0]),
+        getActiveSearch(this.tableFilterConfig[1][0]),
+        getActiveSearch<TimetableFieldNumber | undefined, TimetableFieldNumber>(
+          this.tableFilterConfig[1][2]
+        )?.ttfnid,
+        Array.from(getActiveMultiSearch<TransportCompany>(this.tableFilterConfig[1][1])).map(
+          (transportCompany) => transportCompany.id!
+        ),
         pagination.page,
         pagination.size,
         addElementsToArrayWhenNotUndefined(pagination.sort, this.sorting, 'ttfnid,ASC')
@@ -163,7 +175,16 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     this.timetableHearingService
       .getStatementsAsCsv(
         this.translateService.currentLang,
-        this.foundTimetableHearingYear.timetableYear
+        this.foundTimetableHearingYear.timetableYear,
+        this.getSelectedCantonToBeSearchFromNavigation(),
+        getActiveSearchForChip(this.tableFilterConfig[0][0]),
+        getActiveSearch(this.tableFilterConfig[1][0]),
+        getActiveSearch<TimetableFieldNumber | undefined, TimetableFieldNumber>(
+          this.tableFilterConfig[1][2]
+        )?.ttfnid,
+        Array.from(getActiveMultiSearch<TransportCompany>(this.tableFilterConfig[1][1])).map(
+          (transportCompany) => transportCompany.id!
+        )
       )
       .subscribe((response) => {
         const a = document.createElement('a');
