@@ -47,6 +47,7 @@ public class TimetableHearingStatementService {
   private final StatementDocumentFilesValidationService statementDocumentFilesValidationService;
 
   public Page<TimetableHearingStatement> getHearingStatements(TimetableHearingStatementSearchRestrictions searchRestrictions) {
+    log.info("Loading statements using {}", searchRestrictions);
     return timetableHearingStatementRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
   }
 
