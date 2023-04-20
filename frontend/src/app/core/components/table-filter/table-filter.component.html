@@ -38,12 +38,30 @@
         [class]="searchSelect.elementWidthCssClass"
       >
         <bo-select
+          *ngIf="searchSelect.searchType === 'BUSINESS_ORGANISATION'"
           (boSelectionChanged)="multiSelectSearchChanged($event, rowIndex, filterConfigIndex)"
-          [formGroup]="boSearchForm"
+          [formGroup]="searchForm"
           [formModus]="false"
           controlName="businessOrganisation"
         >
         </bo-select>
+        <ttfn-select
+          *ngIf="searchSelect.searchType === 'TIMETABLE_FIELD_NUMBER'"
+          (ttfnSelectionChanged)="multiSelectSearchChanged($event, rowIndex, filterConfigIndex)"
+          [formGroup]="searchForm"
+          [formModus]="false"
+          controlName="ttfnid"
+        >
+        </ttfn-select>
+
+        <tu-select
+          *ngIf="searchSelect.searchType === 'TRANSPORT_COMPANY'"
+          (ttfnSelectionChanged)="multiSelectSearchChanged($event, rowIndex, filterConfigIndex)"
+          [formGroup]="searchForm"
+          [formModus]="false"
+          controlName="transportCompany"
+        >
+        </tu-select>
       </div>
 
       <div
