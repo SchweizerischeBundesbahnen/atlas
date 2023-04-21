@@ -253,8 +253,7 @@
   </atlas-button>
   <atlas-button
     (click)="toggleEdit()"
-    *ngIf="!isHearingStatusArchived"
-    [footerEdit]="form.enabled"
+    *ngIf="!isHearingStatusArchived && !form.enabled"
     applicationType="TIMETABLE_HEARING"
     [canton]="cantonShort"
     buttonDataCy="edit"
