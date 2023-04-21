@@ -4,7 +4,6 @@ import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
 import ch.sbb.line.directory.entity.ResponsibleTransportCompany;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.experimental.UtilityClass;
@@ -57,8 +56,11 @@ public class TimeTableHearingStatementMapper {
   }
 
   public static String transformToCommaSeparated(TimetableHearingStatement statement) {
-    List<String> sorted = statement.getResponsibleTransportCompanies().stream().sorted(Comparator.comparing(
-        ResponsibleTransportCompany::getAbbreviation)).map(ResponsibleTransportCompany::getAbbreviation).toList();
+    List<String> sorted = statement.getResponsibleTransportCompanies()
+        .stream()
+        .map(ResponsibleTransportCompany::getAbbreviation)
+        .sorted()
+        .toList();
     return String.join(", ", sorted);
   }
 
