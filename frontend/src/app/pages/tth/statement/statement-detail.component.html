@@ -273,7 +273,7 @@
   </atlas-button>
   <atlas-button
     (click)="save()"
-    [disabled]="form.untouched"
+    [disabled]="!form.dirty"
     [footerEdit]="form.enabled"
     [submitButton]="true"
     buttonDataCy="save-item"
