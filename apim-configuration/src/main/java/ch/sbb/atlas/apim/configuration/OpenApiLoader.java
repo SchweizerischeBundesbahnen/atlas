@@ -1,5 +1,6 @@
 package ch.sbb.atlas.apim.configuration;
 
+import ch.sbb.atlas.apim.configuration.StagePublishingConfiguration.StageConfig;
 import io.swagger.v3.core.util.Yaml;
 import io.swagger.v3.oas.models.OpenAPI;
 import java.io.File;
@@ -8,16 +9,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -25,22 +22,14 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class OpenApiLoader {
 
-  private final ProductionConfiguration productiveApiConfiguration;
-
-  public Map<String, OpenAPI> loadAllApis() {
-    return loadOpenApis(false);
-  }
-
-  public Map<String, OpenAPI> loadProductiveApisOnly() {
-    return loadOpenApis(true);
-  }
-  private Map<String, OpenAPI> loadOpenApis(boolean includeProductiveApisOnly) {
+  public Map<String, OpenAPI> loadOpenApis(StageConfig stageConfig) {
     Map<String, OpenAPI> result = new HashMap<>();
-    Path sourcePath = Paths.get("src/main/resources/apis");
+    Path sourcePath = SpecFilePath.getBasePath().resolve("apis");
     log.info("From Source Path {}", sourcePath.toAbsolutePath());
+
     try (Stream<Path> pathStream = Files.walk(sourcePath)) {
       List<File> apiSpecs = pathStream.filter(Files::isRegularFile)
-              .map(Path::toFile).toList();
+          .map(Path::toFile).toList();
       log.info("Found {} OpenAPI specs", apiSpecs.size());
       if (apiSpecs.isEmpty()) {
         throw new IllegalStateException("No OpenAPI specs found!");
@@ -49,8 +38,7 @@ public class OpenApiLoader {
         InputStream inputStream = new FileInputStream(apiSpec);
         OpenAPI openAPI = Yaml.mapper().readValue(inputStream, OpenAPI.class);
         String apiServiceName = apiSpec.getParentFile().getName();
-        if (!includeProductiveApisOnly || productiveApiConfiguration.getApis()
-                                                                    .contains(apiServiceName)) {
+        if (stageConfig.getApis().contains(apiServiceName)) {
           log.info("Loaded OpenAPI spec for {}", apiServiceName);
           result.put(apiServiceName, openAPI);
         }
@@ -60,4 +48,5 @@ public class OpenApiLoader {
     }
     return result;
   }
+
 }

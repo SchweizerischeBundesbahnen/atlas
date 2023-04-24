@@ -1,5 +1,6 @@
 package ch.sbb.atlas.apim.configuration;
 
+import ch.sbb.atlas.apim.configuration.StagePublishingConfiguration.StageConfig;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Paths;
@@ -16,8 +17,8 @@ public class OpenApiMerger {
 
     private static final String NEWLINE = "<br/>";
     private final String version;
-    private final OpenApiExportConfig openApiExportConfig;
-    private final ProductionConfiguration productiveApiConfiguration;
+    private final String stage;
+    private final StageConfig stageConfig;
 
     public OpenAPI getCombinedApi(Map<String, OpenAPI> openApis) {
         return createAtlasApi(openApis).components(combineComponents(openApis))
@@ -33,7 +34,7 @@ public class OpenApiMerger {
                 .append(NEWLINE);
         description.append("<ul>");
         apis.forEach((application, api) -> {
-            String restDocLocation = "https://" + application + "." + openApiExportConfig.getStage() + ".app.sbb.ch/static/rest-api.html";
+            String restDocLocation = "https://" + application + "." + stage + ".app.sbb.ch/static/rest-api.html";
             description
                     .append("<li>")
                     .append(application)
@@ -61,7 +62,7 @@ public class OpenApiMerger {
         Components components = new Components();
         for (OpenAPI openAPI : apis.values()) {
             openAPI.getComponents().getSchemas().entrySet().stream()
-                .filter(entry -> openApiExportConfig != OpenApiExportConfig.PROD || isNotExcluded(entry.getKey()))
+                .filter(entry -> stageConfig.isNotExcluded(entry.getKey()))
                 .forEach(entry -> components.addSchemas(entry.getKey(), entry.getValue()));
         }
         return components;
@@ -73,16 +74,11 @@ public class OpenApiMerger {
             openAPI.getValue()
                     .getPaths()
                     .forEach((path, value) -> {
-                        if (openApiExportConfig != OpenApiExportConfig.PROD || isNotExcluded(path)) {
+                        if (stageConfig.isNotExcluded(path)) {
                             paths.addPathItem("/" + openAPI.getKey() + path, value);
                         }
                     });
         }
         return paths;
     }
-
-    private boolean isNotExcluded(String key) {
-        return productiveApiConfiguration.getExcludePatterns().stream().noneMatch(key::contains);
-    }
-
 }
