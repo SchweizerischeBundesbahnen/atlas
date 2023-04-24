@@ -139,7 +139,7 @@ export class TimetableFieldNumberDetailComponent
           AtlasCharsetsValidator.iso88591,
         ]),
         comment: new FormControl(version.comment, [
-          AtlasFieldLengthValidator.comments,
+          AtlasFieldLengthValidator.length_280,
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           AtlasCharsetsValidator.iso88591,
         ]),
