@@ -24,6 +24,7 @@ import { NotificationService } from '../../../core/notification/notification.ser
 import { ValidationService } from '../../../core/validation/validation.service';
 import { AuthService } from '../../../core/auth/auth.service';
 import { TthUtils } from '../util/tth-utils';
+import { StatementDialogService } from './statement-dialog/statement.dialog.service';
 
 @Component({
   selector: 'app-statement-detail',
@@ -51,7 +52,8 @@ export class StatementDetailComponent implements OnInit {
     private timetableHearingService: TimetableHearingService,
     private notificationService: NotificationService,
     private authService: AuthService,
-    private timetableYearChangeService: TimetableYearChangeService
+    private timetableYearChangeService: TimetableYearChangeService,
+    private readonly statementDialogService: StatementDialogService
   ) {}
 
   get isHearingStatusArchived() {
@@ -152,7 +154,7 @@ export class StatementDetailComponent implements OnInit {
         AtlasCharsetsValidator.iso88591,
       ]),
       comment: new FormControl(statement?.comment, [
-        AtlasFieldLengthValidator.statement,
+        AtlasFieldLengthValidator.length_280,
         WhitespaceValidator.blankOrEmptySpaceSurrounding,
         AtlasCharsetsValidator.iso88591,
       ]),
@@ -288,5 +290,10 @@ export class StatementDetailComponent implements OnInit {
 
   get cantonShort() {
     return Cantons.fromSwissCanton(this.form.value.swissCanton!)!.short;
+  }
+
+  cantonSelectionChanged() {
+    this.statementDialogService.openDialog(this.form);
+    console.log('SANJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
   }
 }

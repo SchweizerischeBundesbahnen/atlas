@@ -664,6 +664,13 @@
       "NOTIFICATION": {
         "ADD_SUCCESS": "Nouvel avis enregistré avec succès.",
         "EDIT_SUCCESS": "L'avis a été enregistré avec succès."
+      },
+      "DIALOG": {
+        "TITLE": "Changer de statut",
+        "TEXT": "Vous modifiez les instructions sélectionnées.",
+        "COMMENT_LABEL": "Commentez-le (facultatif)",
+        "CANCEL": "Retour",
+        "CONFIRM": "Changer de statut"
       }
     }
   }
