@@ -12,7 +12,6 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -183,6 +182,8 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
                     MULTIPART_FILES.get(1).getContentType(), MULTIPART_FILES.get(1).getBytes())))
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
+        .andExpect(jsonPath("$.creationDate", notNullValue()))
+        .andExpect(jsonPath("$.editionDate", notNullValue()))
         .andExpect(jsonPath("$." + Fields.documents, hasSize(2)));
   }
 
@@ -300,8 +301,6 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
             .file(
                 new MockMultipartFile(MULTIPART_FILES.get(2).getName(), MULTIPART_FILES.get(2).getOriginalFilename(),
                     MULTIPART_FILES.get(2).getContentType(), MULTIPART_FILES.get(2).getBytes())))
-        .andDo(print())
-        .andExpect(status().isOk())
         .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
         .andExpect(jsonPath("$." + Fields.documents, hasSize(1)));
   }
@@ -333,7 +332,6 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
             .file(
                 new MockMultipartFile(MULTIPART_FILES.get(2).getName(), MULTIPART_FILES.get(2).getOriginalFilename(),
                     MULTIPART_FILES.get(2).getContentType(), MULTIPART_FILES.get(2).getBytes())))
-        .andDo(print())
         .andExpect(status().isOk())
         .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
         .andExpect(jsonPath("$." + Fields.documents, hasSize(2)));
@@ -449,7 +447,6 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
         Collections.emptyList());
 
     mvc.perform(get("/v1/timetable-hearing/statements/" + statement.getId() + "/documents/" + "nonexistingfilename"))
-        .andDo(print())
         .andExpect(status().isNotFound());
   }
 
