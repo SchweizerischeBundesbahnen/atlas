@@ -664,6 +664,13 @@
       "NOTIFICATION": {
         "ADD_SUCCESS": "Neue Stellungnahme erfolgreich gespeichert.",
         "EDIT_SUCCESS": "Die Stellungnahme wurde erfolgreich gespeichert."
+      },
+      "DIALOG": {
+        "TITLE": "Status ändern",
+        "TEXT": "Sie ändern ausgewählte Stellungnahmen.",
+        "COMMENT_LABEL": "Kommentar dazu (optional)",
+        "CANCEL": "Zurück",
+        "CONFIRM": "Status ändern"
       }
     }
   }

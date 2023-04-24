@@ -26,6 +26,16 @@ button.footer-btn {
   }
 }
 
+.atlas-no-border-btn {
+  padding: 0;
+  border: none;
+  background: none;
+  color: variables.$primary-500;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 125%;
+}
+
 .atlas-primary-btn {
   padding: 1rem 1.875rem;
   border: 2px solid variables.$primary-500;
