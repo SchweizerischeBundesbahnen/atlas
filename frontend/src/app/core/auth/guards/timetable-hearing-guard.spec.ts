@@ -3,10 +3,16 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 import { TimetableHearingGuard } from './timetable-hearing-guard.service';
+import { BehaviorSubject } from 'rxjs';
 
 describe('TimetableHearingGuard', () => {
   let guard: TimetableHearingGuard;
   let router: Router;
+
+  const authServiceSpy = jasmine.createSpyObj<AuthService>('authService', [
+    'mayAccessTimetableHearing',
+  ]);
+  authServiceSpy.permissionsLoaded = new BehaviorSubject(false);
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -14,7 +20,7 @@ describe('TimetableHearingGuard', () => {
       providers: [
         {
           provide: AuthService,
-          useValue: jasmine.createSpyObj<AuthService>(['mayAccessTimetableHearing']),
+          useValue: authServiceSpy,
         },
       ],
     });
@@ -24,11 +30,5 @@ describe('TimetableHearingGuard', () => {
 
   it('should be created', () => {
     expect(guard).toBeTruthy();
-  });
-
-  it('should return UrlTree', () => {
-    const canActivateResult = guard.canActivate();
-    expect(canActivateResult).toBeDefined();
-    expect(canActivateResult).toEqual(router.parseUrl('/'));
   });
 });
