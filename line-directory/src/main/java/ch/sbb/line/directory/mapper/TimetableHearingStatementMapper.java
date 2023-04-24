@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class TimeTableHearingStatementMapper {
+public class TimetableHearingStatementMapper {
 
   public static TimetableHearingStatement toEntity(TimetableHearingStatementModel statementModel) {
     TimetableHearingStatement timetableHearingStatement = TimetableHearingStatement.builder()
