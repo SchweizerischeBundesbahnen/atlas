@@ -33,9 +33,10 @@ public class ApimConfigurationGeneratorApplication implements CommandLineRunner 
   }
 
   private void exportApi(String version, String stage, StageConfig stageConfig) {
+    log.info("Loading APIs for {} successfully ...", stage);
     Map<String, OpenAPI> openApis = openApiLoader.loadOpenApis(stageConfig);
 
-    log.info("Loaded successfully ...");
+    log.info("Loaded APIs for {} successfully ...", stage);
     OpenAPI combinedApi = new OpenApiMerger(version, stage, stageConfig).getCombinedApi(openApis);
     log.info("Combined successfully ...");
     OpenApiYamlExporter.export(combinedApi, stageConfig.getExportDirectory());
