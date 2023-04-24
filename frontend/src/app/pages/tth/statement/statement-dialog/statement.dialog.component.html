@@ -1,0 +1,40 @@
+<div class="dialog-close-panel dialog-close-icon-container">
+  <button [mat-dialog-close]="false" class="close-icon-btn">
+    <em class="bi bi-x fs-2"></em>
+  </button>
+</div>
+<div class="dialog" data-cy="dialog">
+  <h1 class="font-bold-4xl">{{ 'TTH.STATEMENT.DIALOG.TITLE' | translate }}</h1>
+  <div>{{ 'TTH.STATEMENT.DIALOG.TEXT' | translate }}</div>
+
+  <br />
+  <div class="d-flex flex-row col-12 mb-5">
+    <div class="d-flex flex-column col-12">
+      <form-comment
+        [formGroup]="data"
+        controlName="comment"
+        label="TTH.STATEMENT.DIALOG.COMMENT_LABEL"
+        maxChars="280"
+      >
+      </form-comment>
+      {{ data.value | json }}
+    </div>
+  </div>
+
+  <mat-dialog-actions class="justify-content-end">
+    <button
+      [mat-dialog-close]="false"
+      class="atlas-no-border-btn me-3"
+      data-cy="dialog-cancel-button"
+    >
+      {{ 'TTH.STATEMENT.DIALOG.CANCEL' | translate }}
+    </button>
+    <button
+      (click)="addCommentToStatement()"
+      class="atlas-primary-btn me-3"
+      data-cy="dialog-confirm-button"
+    >
+      {{ 'TTH.STATEMENT.DIALOG.CONFIRM' | translate }}
+    </button>
+  </mat-dialog-actions>
+</div>
