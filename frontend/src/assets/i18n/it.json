@@ -664,6 +664,13 @@
       "NOTIFICATION": {
         "ADD_SUCCESS": "Il parare nuovo è stato salvato con successo.",
         "EDIT_SUCCESS": "Il parare è stato salvato con successo."
+      },
+      "DIALOG": {
+        "TITLE": "Cambiare stato",
+        "TEXT": "Si modificano le istruzioni selezionate.",
+        "COMMENT_LABEL": "Commenta (facoltativo)",
+        "CANCEL": "Ritorno",
+        "CONFIRM": "Cambiare stato"
       }
     }
   }
