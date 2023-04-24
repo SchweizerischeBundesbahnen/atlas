@@ -100,6 +100,7 @@ export class StatementDetailComponent implements OnInit {
 
   getFormGroup(statement: TimetableHearingStatement | undefined): FormGroup {
     return new FormGroup<StatementDetailFormGroup>({
+      id: new FormControl(statement?.id),
       timetableYear: new FormControl(statement?.timetableYear, [Validators.required]),
       statementStatus: new FormControl(statement?.statementStatus, [Validators.required]),
       ttfnid: new FormControl(statement?.ttfnid),
@@ -293,7 +294,11 @@ export class StatementDetailComponent implements OnInit {
   }
 
   cantonSelectionChanged() {
-    this.statementDialogService.openDialog(this.form);
-    console.log('SANJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+    this.statementDialogService.openDialog(this.form).subscribe((result) => {
+      if (result) {
+        const hearingStatement = this.form.value as TimetableHearingStatement;
+        this.navigateToStatementDetail(hearingStatement);
+      }
+    });
   }
 }

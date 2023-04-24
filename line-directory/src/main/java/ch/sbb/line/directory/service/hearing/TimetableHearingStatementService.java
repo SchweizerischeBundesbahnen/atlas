@@ -146,6 +146,7 @@ public class TimetableHearingStatementService {
     timetableHearingStatementInDb.setStopPlace(timetableHearingStatementModel.getStopPlace());
     timetableHearingStatementInDb.setStatement(timetableHearingStatementModel.getStatement());
     timetableHearingStatementInDb.setJustification(timetableHearingStatementModel.getJustification());
+    timetableHearingStatementInDb.setComment(timetableHearingStatementModel.getComment());
     timetableHearingStatementInDb.setStatementSender(StatementSenderMapper.toEntity(timetableHearingStatementModel.getStatementSender()));
 
     updateResponsibleTransportCompanies(timetableHearingStatementModel, timetableHearingStatementInDb);
