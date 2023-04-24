@@ -33,7 +33,7 @@ public class ApimConfigurationGeneratorApplication implements CommandLineRunner 
   }
 
   private void exportApi(String version, String stage, StageConfig stageConfig) {
-    log.info("Loading APIs for {} successfully ...", stage);
+    log.info("Loading APIs for {} ...", stage);
     Map<String, OpenAPI> openApis = openApiLoader.loadOpenApis(stageConfig);
 
     log.info("Loaded APIs for {} successfully ...", stage);
