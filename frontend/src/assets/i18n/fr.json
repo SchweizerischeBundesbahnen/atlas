@@ -565,9 +565,13 @@
       "MANAGE_TIMETABLE_HEARING": "Contrôle de la consultation de l'horaire",
       "ADD_NEW_STATEMENT": "Saisir un nouvel avis",
       "ADD_NEW_TIMETABLE_HEARING": "Créer une nouvelle consultation sur les horaires",
-      "START_TIMETABLE_HEARING": "Lancer cette année d'horaire"
+      "START_TIMETABLE_HEARING": "Lancer cette année d'horaire",
+      "CANCEL_COLLECTING_ACTION": "Terminer la collecte"
     },
     "DROPDOWN": {
+      "COLLECTING_STATUS_CHANGE_ACTION": {
+        "PLACEHOLDER": "Modifier l'état de la sélection"
+      },
       "COLLECTING_ACTION": {
         "PLACEHOLDER": "Actions de collecte",
         "OPTION": {
