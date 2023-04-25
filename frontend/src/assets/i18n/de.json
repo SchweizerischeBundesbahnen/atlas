@@ -668,7 +668,7 @@
       "DIALOG": {
         "TITLE": "Kanton ändern",
         "TEXT": "Sie ändern die Kantonszuordnung der ausgewählten Stellungnahme. Mit der Übertragung verlieren Sie die Editierrechte für diese Stellungnahme.",
-        "COMMENT_LABEL": "Kommentar dazu (optional)",
+        "COMMENT_LABEL": "Kommentar dazu",
         "CANCEL": "Zurück",
         "CONFIRM": "Kanton ändern"
       }

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { StatementDialogComponent } from '../statement.dialog.component';
 import { FormGroup } from '@angular/forms';
+import { StatementDetailFormGroup } from '../../statement-detail-form-group';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +14,7 @@ export class StatementDialogService {
 
   constructor(private statementDialog: MatDialog) {}
 
-  openDialog(form: FormGroup): Observable<boolean> {
+  openDialog(form: FormGroup<StatementDetailFormGroup>): Observable<boolean> {
     this.dialogRef = this.statementDialog.open(StatementDialogComponent, {
       data: form,
       panelClass: 'atlas-dialog-panel',
