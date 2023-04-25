@@ -1,5 +1,5 @@
 <div class="dialog-close-panel dialog-close-icon-container">
-  <button [mat-dialog-close]="false" class="close-icon-btn">
+  <button (click)="backToEditMode()" class="close-icon-btn">
     <em class="bi bi-x fs-2"></em>
   </button>
 </div>
@@ -17,14 +17,14 @@
         maxChars="280"
       >
       </form-comment>
-      {{ data.value | json }}
+      <!--      {{ data.value | json }}-->
     </div>
   </div>
 
   <mat-dialog-actions class="justify-content-end">
     <button
-      [mat-dialog-close]="false"
-      class="atlas-no-border-btn me-3"
+      (click)="backToEditMode()"
+      class="atlas-primary-btn me-3"
       data-cy="dialog-cancel-button"
     >
       {{ 'TTH.STATEMENT.DIALOG.CANCEL' | translate }}
