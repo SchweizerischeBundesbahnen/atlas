@@ -7,6 +7,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.api.client.user.administration.UserAdministrationClient;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementRequestParams;
 import ch.sbb.line.directory.service.hearing.ResponsibleTransportCompaniesResolverService;
 import ch.sbb.line.directory.service.hearing.TimetableFieldNumberResolverService;
@@ -35,6 +36,8 @@ public class TimetableHearingStatementControllerTest {
   private FileService fileService;
   @Mock
   private MessageSource timetableHearingStatementCsvTranslations;
+  @Mock
+  private UserAdministrationClient userAdministrationClient;
 
   private TimetableHearingStatementController timetableHearingStatementController;
 
@@ -43,7 +46,7 @@ public class TimetableHearingStatementControllerTest {
     MockitoAnnotations.openMocks(this);
     timetableHearingStatementController = new TimetableHearingStatementController(timetableHearingStatementService,
         timetableHearingYearService, timetableFieldNumberResolverService, responsibleTransportCompaniesResolverService,
-        fileService, timetableHearingStatementCsvTranslations);
+        fileService, timetableHearingStatementCsvTranslations, userAdministrationClient);
   }
 
   @Test
