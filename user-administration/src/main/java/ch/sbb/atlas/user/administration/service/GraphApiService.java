@@ -2,6 +2,7 @@ package ch.sbb.atlas.user.administration.service;
 
 import ch.sbb.atlas.api.user.administration.UserModel;
 import ch.sbb.atlas.api.user.administration.enumeration.UserAccountStatus;
+import ch.sbb.atlas.model.AtlasListUtil;
 import ch.sbb.atlas.user.administration.mapper.UserMapper;
 import com.microsoft.graph.content.BatchRequestContent;
 import com.microsoft.graph.content.BatchResponseContent;
@@ -29,7 +30,9 @@ public class GraphApiService {
   private final GraphServiceClient<Request> graphClient;
   private final IGraphApiBatchRequestService graphApiBatchRequestService;
 
-  private static final String USER_MODEL_SELECTED_PROPERTIES = "onPremisesSamAccountName,surname,givenName,mail,accountEnabled,displayName";
+  private static final String USER_MODEL_SELECTED_PROPERTIES = """
+      onPremisesSamAccountName,surname,givenName,mail,accountEnabled,displayName
+      """;
   private static final String FILTER_PREFIX = "$filter";
   private static final String SEARCH_PREFIX = "$search";
   private static final String FILTER_EQ_QUERY = "%s eq '%s'";
@@ -43,49 +46,48 @@ public class GraphApiService {
   // returns first 10 elements found by displayName + first 10 elements found by mail (distinct)
   public List<UserModel> searchUsers(String searchQuery) {
     // by displayName contains
-    final UserCollectionPage usersByDisplayName = getUserSearchRequest(
-        buildSearchQueryOption(DISPLAY_NAME_PROP, searchQuery)).top(SEARCH_QUERY_LIMIT).get();
+    UserCollectionPage usersByDisplayName =
+        getUserSearchRequest(buildSearchQueryOption(DISPLAY_NAME_PROP, searchQuery)).top(SEARCH_QUERY_LIMIT).get();
     // by mail startswith
-    final UserCollectionPage usersByMail = getUserSearchRequest(
-        buildSearchQueryOption(MAIL_PROP, searchQuery)).top(SEARCH_QUERY_LIMIT).get();
+    UserCollectionPage usersByMail =
+        getUserSearchRequest(buildSearchQueryOption(MAIL_PROP, searchQuery)).top(SEARCH_QUERY_LIMIT).get();
     // by userId startswith
-    final UserCollectionPage usersByUserId = getUserSearchRequest(
-        buildSearchQueryOption(SBB_USER_ID_PROP, searchQuery)).top(SEARCH_QUERY_LIMIT).get();
+    UserCollectionPage usersByUserId =
+        getUserSearchRequest(buildSearchQueryOption(SBB_USER_ID_PROP, searchQuery)).top(SEARCH_QUERY_LIMIT).get();
 
-    final List<UserModel> userResult = getUserModelsFromUserCollectionPages(
-        usersByDisplayName, usersByMail, usersByUserId);
+    List<UserModel> userResult = getUserModelsFromUserCollectionPages(usersByDisplayName, usersByMail, usersByUserId);
     return userResult.stream().distinct().toList();
   }
 
   public List<UserModel> resolveUsers(@NonNull List<String> userIds) {
-    if (userIds.isEmpty()) {
-      return List.of();
-    }
-    if (userIds.size() > BATCH_REQUEST_LIMIT) {
-      throw new IllegalArgumentException("Max length of userIds is " + BATCH_REQUEST_LIMIT);
-    }
-    final List<String> requestIds = new ArrayList<>();
-    final BatchRequestContent batchRequestContent = new BatchRequestContent();
+    List<UserModel> result = new ArrayList<>();
+    AtlasListUtil.getPartitionedSublists(userIds, BATCH_REQUEST_LIMIT)
+        .forEach(sublist -> result.addAll(resolveUsersBatch(sublist)));
+    return result;
+  }
+
+  private List<UserModel> resolveUsersBatch(List<String> userIds) {
+    List<String> requestIds = new ArrayList<>();
+    BatchRequestContent batchRequestContent = new BatchRequestContent();
     userIds.forEach(
         userId -> requestIds.add(graphApiBatchRequestService.addBatchRequest(batchRequestContent,
             getUserSearchRequest(buildFilterQueryOption(SBB_USER_ID_PROP, userId)).count(true)
         )));
     BatchResponseContent batchResponseContent = graphApiBatchRequestService.sendBatchRequest(
         batchRequestContent);
-    final List<UserModel> result = new ArrayList<>();
+
+    List<UserModel> result = new ArrayList<>();
     for (int i = 0; i < requestIds.size(); i++) {
-      final UserCollectionResponse deserializedBody = graphApiBatchRequestService.getDeserializedBody(
+      UserCollectionResponse deserializedBody = graphApiBatchRequestService.getDeserializedBody(
           batchResponseContent,
           UserCollectionResponse.class, requestIds.get(i));
-      if (deserializedBody == null || deserializedBody.value == null
-          || deserializedBody.value.size() != 1) {
-        result.add(
-            UserModel.builder()
-                     .sbbUserId(userIds.get(i))
-                     .accountStatus(UserAccountStatus.DELETED)
-                     .build());
+      if (deserializedBody == null || deserializedBody.value == null || deserializedBody.value.size() != 1) {
+        result.add(UserModel.builder()
+            .sbbUserId(userIds.get(i))
+            .accountStatus(UserAccountStatus.DELETED)
+            .build());
       } else {
-        final User user = deserializedBody.value.get(0);
+        User user = deserializedBody.value.get(0);
         result.add(UserMapper.userToModel(user));
       }
     }
@@ -93,19 +95,17 @@ public class GraphApiService {
   }
 
   private QueryOption buildSearchQueryOption(String searchProperty, String searchQuery) {
-    return new QueryOption(SEARCH_PREFIX,
-        SEARCH_QUERY.formatted(searchProperty, searchQuery));
+    return new QueryOption(SEARCH_PREFIX, SEARCH_QUERY.formatted(searchProperty, searchQuery));
   }
 
   private QueryOption buildFilterQueryOption(String filterProperty, String filterQuery) {
-    return new QueryOption(FILTER_PREFIX,
-        FILTER_EQ_QUERY.formatted(filterProperty, filterQuery));
+    return new QueryOption(FILTER_PREFIX, FILTER_EQ_QUERY.formatted(filterProperty, filterQuery));
   }
 
   private UserCollectionRequest getDefaultUserCollectionRequest(LinkedList<Option> requestOptions) {
     return graphClient.users()
-                      .buildRequest(requestOptions)
-                      .select(USER_MODEL_SELECTED_PROPERTIES);
+        .buildRequest(requestOptions)
+        .select(USER_MODEL_SELECTED_PROPERTIES);
   }
 
   private LinkedList<Option> getRequestOptionsWithConsistencyLevel(Option... options) {
@@ -116,18 +116,14 @@ public class GraphApiService {
   }
 
   private UserCollectionRequest getUserSearchRequest(QueryOption... queryOptions) {
-    return
-        getDefaultUserCollectionRequest(
-            getRequestOptionsWithConsistencyLevel(
-                queryOptions
-            ));
+    return getDefaultUserCollectionRequest(getRequestOptionsWithConsistencyLevel(queryOptions));
   }
 
   private List<UserModel> getUserModelsFromUserCollectionPages(
       UserCollectionPage... userCollectionPages) {
     return Arrays.stream(userCollectionPages)
-                 .flatMap(page -> page.getCurrentPage().stream().map(UserMapper::userToModel))
-                 .toList();
+        .flatMap(page -> page.getCurrentPage().stream().map(UserMapper::userToModel))
+        .toList();
   }
 
 }

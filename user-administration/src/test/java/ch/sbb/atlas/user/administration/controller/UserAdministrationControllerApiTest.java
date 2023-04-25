@@ -306,6 +306,15 @@ public class UserAdministrationControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldGetUserDisplayInformation() throws Exception {
+    mvc.perform(get("/v1/users/display-info?userIds=u236171"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(1)))
+        .andExpect(jsonPath("$[0].sbbUserId").value("u236171"))
+        .andExpect(jsonPath("$[0].displayName").value(startsWith("Ammann Luca")));
+  }
+
+  @Test
   void getUserDisplayNameNotExisting() throws Exception {
     mvc.perform(get("/v1/users/ATLAS_SYSTEM_USER/displayname"))
         .andExpect(status().isOk())
