@@ -24,7 +24,7 @@ import { NotificationService } from '../../../core/notification/notification.ser
 import { ValidationService } from '../../../core/validation/validation.service';
 import { AuthService } from '../../../core/auth/auth.service';
 import { TthUtils } from '../util/tth-utils';
-import { StatementDialogService } from './statement-dialog/statement.dialog.service';
+import { StatementDialogService } from './statement-dialog/service/statement.dialog.service';
 
 @Component({
   selector: 'app-statement-detail',
@@ -298,6 +298,15 @@ export class StatementDetailComponent implements OnInit {
       if (result) {
         const hearingStatement = this.form.value as TimetableHearingStatement;
         this.navigateToStatementDetail(hearingStatement);
+      } else {
+        // this.initCantonOptions();
+        this.form.controls.comment.setValue(this.statement?.comment);
+        this.form.controls.swissCanton.setValue(this.statement?.swissCanton);
+        console.log(this.statement);
+        console.log(this.statement?.swissCanton);
+
+        // this.ngOnInit();
+        // this.toggleEdit();
       }
     });
   }
