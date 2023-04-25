@@ -92,7 +92,7 @@ public class TimetableHearingStatementRepositoryTest {
   }
 
   @Test
-  void shouldThrowExceptionWhenCommentIsBiggerThan280Characters() {
+  void shouldThrowExceptionWhenCommentLengthIsGreaterThan280Characters() {
     TimetableHearingStatement statement = getMinimalTimetableHearingStatement();
     statement.setComment("Sie ändern die Kantonszuordnung der ausgewählten Stellungnahme. Mit der Übertragung verlieren Sie die Editierrechte für diese Stellungnahme. Sie ändern die Kantonszuordnung der ausgewählten Stellungnahme. Mit der Übertragung verlieren Sie die Editierrechte für diese Stellungnahme.");
 
@@ -101,7 +101,7 @@ public class TimetableHearingStatementRepositoryTest {
   }
 
   @Test
-  void shouldThrowExceptionWhenStopPlaceIsBiggerThan50Characters() {
+  void shouldThrowExceptionWhenStopPlaceLengthIsGreaterThan50Characters() {
     TimetableHearingStatement statement = getMinimalTimetableHearingStatement();
     statement.setStopPlace("Sie ändern die Kantonszuordnung der ausgewählten Stellungnahme.");
 
