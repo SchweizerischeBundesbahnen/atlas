@@ -299,14 +299,8 @@ export class StatementDetailComponent implements OnInit {
         const hearingStatement = this.form.value as TimetableHearingStatement;
         this.navigateToStatementDetail(hearingStatement);
       } else {
-        // this.initCantonOptions();
         this.form.controls.comment.setValue(this.statement?.comment);
         this.form.controls.swissCanton.setValue(this.statement?.swissCanton);
-        console.log(this.statement);
-        console.log(this.statement?.swissCanton);
-
-        // this.ngOnInit();
-        // this.toggleEdit();
       }
     });
   }
