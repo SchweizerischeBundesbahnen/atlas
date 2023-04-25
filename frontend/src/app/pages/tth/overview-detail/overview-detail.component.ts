@@ -25,6 +25,7 @@ import { ColumnDropDownEvent } from '../../../core/components/table/column-drop-
 import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
 import { TthTableService } from '../tth-table.service';
 import { NewTimetableHearingYearDialogService } from '../new-timetable-hearing-year-dialog/service/new-timetable-hearing-year-dialog.service';
+import { SelectionModel } from '@angular/cdk/collections';
 import { TranslateService } from '@ngx-translate/core';
 import { OverviewDetailTableFilterConfig } from './overview-detail-table-filter-config';
 import {
@@ -62,6 +63,8 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
   CANTON_DROPDOWN_OPTIONS = Cantons.cantonsWithSwiss.map((value) => value.short);
   defaultDropdownCantonSelection = this.CANTON_DROPDOWN_OPTIONS[0];
 
+  STATUS_OPTIONS = Object.values(StatementStatus);
+
   COLLECTING_ACTION_DROWPDOWN_OPTIONS = ['STATUS_CHANGE', 'CANTON_DELIVERY', 'DELETE'];
 
   showDownloadCsvButton = false;
@@ -71,8 +74,12 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
   showStartTimetableHearingButton = false;
   showHearingDetail = false;
 
-  sorting = 'statementStatus,asc';
+  showCollectingActionButton = true;
+  statusChangeCollectingActionsEnabled = false;
 
+  selectedItems: TimetableHearingStatement[] = [];
+
+  sorting = 'statementStatus,asc';
   private ngUnsubscribe = new Subject<void>();
 
   constructor(
@@ -101,6 +108,17 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     if (TthUtils.isHearingStatusActive(this.hearingStatus)) {
       this.tthTableService.activeTabPage = Pages.TTH_ACTIVE;
       this.tableColumns = this.getActiveTableColumns();
+      if (this.statusChangeCollectingActionsEnabled) {
+        this.tableColumns = this.getActiveTableColumns();
+        this.tableColumns.unshift({
+          headerTitle: '',
+          value: 'id',
+          checkbox: {
+            changeSelectionCallback: this.collectingStatusChangeAction,
+          },
+        });
+      }
+
       this.showManageTimetableHearingButton = this.isSwissCanton;
       this.showAddNewStatementButton = !this.isSwissCanton;
       this.showDownloadCsvButton = true;
@@ -215,7 +233,11 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
   }
 
   collectingActions(action: MatSelectChange) {
-    console.log(action);
+    if (action.value === 'STATUS_CHANGE') {
+      this.statusChangeCollectingActionsEnabled = true;
+      this.showCollectingActionButton = false;
+      this.ngOnInit();
+    }
   }
 
   setFoundHearingYear(timetableHearingYears: TimetableHearingYear[]) {
@@ -235,6 +257,21 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
         this.ngOnInit();
       }
     });
+  }
+
+  cancelCollectiongAction() {
+    this.showCollectingActionButton = true;
+    this.statusChangeCollectingActionsEnabled = false;
+    this.ngOnInit();
+  }
+
+  collectingStatusChangeAction($event: any) {
+    console.log($event);
+    console.log(this.selectedItems);
+  }
+
+  checkedBoxEvent($event: SelectionModel<TimetableHearingStatement>) {
+    this.selectedItems = $event.selected;
   }
 
   private navigateTo(canton: string, timetableYear: number) {
@@ -393,7 +430,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
         headerTitle: 'TTH.STATEMENT_STATUS_HEADER',
         value: 'statementStatus',
         dropdown: {
-          options: Object.values(StatementStatus),
+          options: this.STATUS_OPTIONS,
           changeSelectionCallback: this.changeSelectedStatus,
           selectedOption: '',
           translate: {

@@ -30,9 +30,18 @@
           [disabled]="column.disabled"
           scope="col"
         >
-          {{ column.headerTitle | translate }}
+          <div *ngIf="!column.checkbox">
+            {{ column.headerTitle | translate }}
+          </div>
+          <div *ngIf="column.checkbox">
+            <mat-checkbox
+              (change)="$event ? toggleAll() : null"
+              (click)="$event.stopPropagation()"
+              [checked]="checkBoxSelection.hasValue() && isAllSelected()"
+            ></mat-checkbox>
+          </div>
         </th>
-        <div *ngIf="!column.dropdown">
+        <div *ngIf="!column.checkbox && !column.dropdown">
           <td
             *matCellDef="let value"
             [title]="showTitle(column, value[column.value])"
@@ -42,7 +51,7 @@
             {{ format(column, value[column.value]) }}
           </td>
         </div>
-        <div *ngIf="column.dropdown">
+        <div *ngIf="column.dropdown && !column.checkbox">
           <td
             *matCellDef="let value"
             [title]="showTitle(column, value[column.value])"
@@ -52,11 +61,24 @@
             <atlas-select
               (click)="$event.stopPropagation()"
               (selectChanged)="changeDropdownEvent.emit({$event,value})"
-              [value]="value[column.value]"
               [additionalLabelspace]="false"
-              [options]="column.dropdown.options"
               [optionTranslateLabelPrefix]="column.dropdown.translate.withPrefix"
+              [options]="column.dropdown.options"
+              [value]="value[column.value]"
             ></atlas-select>
+          </td>
+        </div>
+        <div *ngIf="column.checkbox && !column.dropdown">
+          <td
+            (click)="$event.stopPropagation()"
+            *matCellDef="let row"
+            class="table-cell bordered-cell"
+            mat-cell
+          >
+            <mat-checkbox
+              (change)="toggleCheckBox($event, row)"
+              [checked]="checkBoxSelection.isSelected(row)"
+            ></mat-checkbox>
           </td>
         </div>
       </ng-container>
