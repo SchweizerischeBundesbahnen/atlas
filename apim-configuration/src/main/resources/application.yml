@@ -1,8 +1,38 @@
-production:
-  apis:
-    - line-directory
-    - business-organisation-directory
-    - user-administration
-  excludePatterns:
-    - timetable-hearing
-    - TimetableHearing
+publishing:
+  stages:
+    local:
+      exportDirectory: local
+      apis:
+        - business-organisation-directory
+        - import-service-point
+        - line-directory
+        - service-point-directory
+        - user-administration
+        - workflow
+    dev:
+      exportDirectory: api-dev
+      apis:
+        - line-directory
+        - business-organisation-directory
+        - service-point-directory
+    test:
+      exportDirectory: api-test
+      apis:
+        - line-directory
+        - business-organisation-directory
+        - service-point-directory
+    int:
+      exportDirectory: api-int
+      apis:
+        - line-directory
+        - business-organisation-directory
+        - service-point-directory
+    prod:
+      exportDirectory: api-prod
+      apis:
+        - line-directory
+        - business-organisation-directory
+        - service-point-directory
+      excludePatterns:
+        - timetable-hearing
+        - TimetableHearing

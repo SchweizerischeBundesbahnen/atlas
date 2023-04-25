@@ -2,10 +2,10 @@ package ch.sbb.atlas.apim.configuration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.apim.configuration.StagePublishingConfiguration.StageConfig;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.OpenAPI;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
@@ -37,9 +37,8 @@ public class OpenApiMergerTest {
     OpenAPI expected = getOpenApiFromResource(combinedApi);
 
     // When
-    ProductionConfiguration productiveApiConfiguration = new ProductionConfiguration();
-    productiveApiConfiguration.setExcludePatterns(Collections.emptyList());
-    OpenAPI combinedApi = new OpenApiMerger(null, OpenApiExportConfig.DEV, productiveApiConfiguration).getCombinedApi(openApis);
+    StageConfig stageConfig = new StageConfig();
+    OpenAPI combinedApi = new OpenApiMerger(null, "dev", stageConfig).getCombinedApi(openApis);
 
     // Then
     assertThat(combinedApi).isEqualTo(expected);
