@@ -668,7 +668,7 @@
       "DIALOG": {
         "TITLE": "Cambia cantone",
         "TEXT": "Si modifica l'attribuzione cantonale dell'estratto conto selezionato. Con la trasmissione perdi i diritti di modifica per questa dichiarazione.",
-        "COMMENT_LABEL": "Commenta (facoltativo)",
+        "COMMENT_LABEL": "Commenta",
         "CANCEL": "Ritorno",
         "CONFIRM": "Cambia cantone"
       }

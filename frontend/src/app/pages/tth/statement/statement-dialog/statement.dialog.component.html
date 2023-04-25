@@ -23,19 +23,21 @@
   </div>
 
   <mat-dialog-actions class="justify-content-end">
-    <button
-      (click)="goBackToStatementDetailEditMode()"
-      class="atlas-primary-btn me-3"
-      data-cy="dialog-cancel-button"
+    <atlas-button
+      (buttonClicked)="goBackToStatementDetailEditMode()"
+      buttonDataCy="dialog-cancel-button"
+      buttonText="{{ 'TTH.STATEMENT.DIALOG.CANCEL' | translate }}"
+      buttonType="whiteFooterNonEdit"
+      wrapperStyleClass="me-3"
     >
-      {{ 'TTH.STATEMENT.DIALOG.CANCEL' | translate }}
-    </button>
-    <button
-      (click)="changeCantonAndAddComment()"
-      class="atlas-primary-btn me-3"
-      data-cy="dialog-confirm-button"
+    </atlas-button>
+    <atlas-button
+      (buttonClicked)="changeCantonAndAddComment()"
+      buttonDataCy="dialog-confirm-button"
+      buttonText="{{ 'TTH.STATEMENT.DIALOG.CONFIRM' | translate }}"
+      buttonType="whiteFooterNonEdit"
+      wrapperStyleClass="me-3"
     >
-      {{ 'TTH.STATEMENT.DIALOG.CONFIRM' | translate }}
-    </button>
+    </atlas-button>
   </mat-dialog-actions>
 </div>
