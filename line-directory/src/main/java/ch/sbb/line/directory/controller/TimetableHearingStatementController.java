@@ -3,11 +3,13 @@ package ch.sbb.line.directory.controller;
 import ch.sbb.atlas.amazon.exception.FileException;
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.bodi.TransportCompanyModel;
+import ch.sbb.atlas.api.client.user.administration.UserAdministrationClient;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementApiV1;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementRequestParams;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
+import ch.sbb.atlas.api.user.administration.UserDisplayNameModel;
 import ch.sbb.atlas.export.AtlasCsvMapper;
 import ch.sbb.atlas.export.CsvExportWriter;
 import ch.sbb.atlas.export.LocalizedPropertyNamingStrategy;
@@ -23,9 +25,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
@@ -49,6 +53,7 @@ public class TimetableHearingStatementController implements TimetableHearingStat
   private final ResponsibleTransportCompaniesResolverService responsibleTransportCompaniesResolverService;
   private final FileService fileService;
   private final MessageSource timetableHearingStatementCsvTranslations;
+  private final UserAdministrationClient userAdministrationClient;
 
   @Override
   public Container<TimetableHearingStatementModel> getStatements(Pageable pageable,
@@ -77,6 +82,14 @@ public class TimetableHearingStatementController implements TimetableHearingStat
     Container<TimetableHearingStatementModel> statements = getStatements(Pageable.unpaged(), statementRequestParams);
     List<TimetableHearingStatementCsvModel> csvData = statements.getObjects().stream()
         .map(TimetableHearingStatementCsvModel::fromModel).toList();
+
+    Set<String> exportedEditors = csvData.stream().map(TimetableHearingStatementCsvModel::getEditor).collect(Collectors.toSet());
+    List<UserDisplayNameModel> resolvedUserInformation = userAdministrationClient.getUserInformation(
+        new ArrayList<>(exportedEditors));
+
+    csvData.forEach(csvLine -> resolvedUserInformation.stream()
+        .filter(i -> i.getSbbUserId().equals(csvLine.getEditor())).findFirst()
+        .ifPresent(userInfo -> csvLine.setEditor(userInfo.getDisplayName())));
 
     File csvFile = CsvExportWriter.writeToFile(fileService.getDir() + "statements", csvData,
         new AtlasCsvMapper(TimetableHearingStatementCsvModel.class,
