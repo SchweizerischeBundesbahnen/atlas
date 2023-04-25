@@ -3,6 +3,7 @@ export interface TableColumn<TYPE> {
   value?: keyof TYPE & string;
   disabled?: boolean;
   dropdown?: ColumnDropDown;
+  checkbox?: ColumnCheckbox;
   callback?: (...args: any[]) => any;
   valuePath?: string;
   columnDef?: string;
@@ -20,4 +21,8 @@ export interface ColumnDropDown {
   translate: {
     withPrefix: string;
   };
+}
+
+export interface ColumnCheckbox {
+  changeSelectionCallback: (...args: any[]) => any;
 }
