@@ -30,7 +30,7 @@ const form = new FormGroup({
   comment: new FormControl('Changing canton.'),
 });
 
-fdescribe('StatementDialogComponent', () => {
+describe('StatementDialogComponent', () => {
   let component: StatementDialogComponent;
   let fixture: ComponentFixture<StatementDialogComponent>;
 
