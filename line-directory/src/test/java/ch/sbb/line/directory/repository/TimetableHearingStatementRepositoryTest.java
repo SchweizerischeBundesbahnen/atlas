@@ -1,6 +1,7 @@
 package ch.sbb.line.directory.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.kafka.model.SwissCanton;
@@ -13,6 +14,7 @@ import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.TransactionSystemException;
 
 @IntegrationTest
 public class TimetableHearingStatementRepositoryTest {
@@ -46,6 +48,7 @@ public class TimetableHearingStatementRepositoryTest {
             .city("Algund")
             .email("mike@thebike.com")
             .build())
+        .comment("Sie ändern die Kantonszuordnung der ausgewählten Stellungnahme. Mit der Übertragung verlieren Sie die Editierrechte für diese Stellungnahme.")
         .statement("Ich mag bitte mehr Bös fahren")
         .justification("Weil ich mag")
         .build();
@@ -81,6 +84,32 @@ public class TimetableHearingStatementRepositoryTest {
 
   @Test
   void shouldCreateMinimalHearingStatement() {
+    TimetableHearingStatement statement = getMinimalTimetableHearingStatement();
+
+    TimetableHearingStatement savedStatement = timetableHearingStatementRepository.save(statement);
+
+    assertThat(savedStatement.getId()).isNotNull();
+  }
+
+  @Test
+  void shouldThrowExceptionWhenCommentIsBiggerThan280Characters() {
+    TimetableHearingStatement statement = getMinimalTimetableHearingStatement();
+    statement.setComment("Sie ändern die Kantonszuordnung der ausgewählten Stellungnahme. Mit der Übertragung verlieren Sie die Editierrechte für diese Stellungnahme. Sie ändern die Kantonszuordnung der ausgewählten Stellungnahme. Mit der Übertragung verlieren Sie die Editierrechte für diese Stellungnahme.");
+
+    assertThrows(TransactionSystemException.class,
+        () -> timetableHearingStatementRepository.save(statement));
+  }
+
+  @Test
+  void shouldThrowExceptionWhenStopPlaceIsBiggerThan50Characters() {
+    TimetableHearingStatement statement = getMinimalTimetableHearingStatement();
+    statement.setStopPlace("Sie ändern die Kantonszuordnung der ausgewählten Stellungnahme.");
+
+    assertThrows(TransactionSystemException.class,
+        () -> timetableHearingStatementRepository.save(statement));
+  }
+
+  private static TimetableHearingStatement getMinimalTimetableHearingStatement() {
     TimetableHearingStatement statement = TimetableHearingStatement.builder()
         .timetableYear(2023L)
         .swissCanton(SwissCanton.BERN)
@@ -90,9 +119,6 @@ public class TimetableHearingStatementRepositoryTest {
             .build())
         .statement("Ich mag bitte mehr Bös fahren")
         .build();
-
-    TimetableHearingStatement savedStatement = timetableHearingStatementRepository.save(statement);
-
-    assertThat(savedStatement.getId()).isNotNull();
+    return statement;
   }
 }
