@@ -1,11 +1,14 @@
 <div class="dialog-close-panel dialog-close-icon-container">
-  <button (click)="backToEditMode()" class="close-icon-btn">
+  <button (click)="goBackToStatementDetailEditMode()" class="close-icon-btn">
     <em class="bi bi-x fs-2"></em>
   </button>
 </div>
 <div class="dialog" data-cy="dialog">
   <h1 class="font-bold-4xl">{{ 'TTH.STATEMENT.DIALOG.TITLE' | translate }}</h1>
-  <div>{{ 'TTH.STATEMENT.DIALOG.TEXT' | translate }}</div>
+  <div>
+    <span> {{ 'TTH.STATEMENT.DIALOG.TEXT' | translate }}</span
+    >>
+  </div>
 
   <br />
   <div class="d-flex flex-row col-12 mb-5">
@@ -17,20 +20,19 @@
         maxChars="280"
       >
       </form-comment>
-      <!--      {{ data.value | json }}-->
     </div>
   </div>
 
   <mat-dialog-actions class="justify-content-end">
     <button
-      (click)="backToEditMode()"
+      (click)="goBackToStatementDetailEditMode()"
       class="atlas-primary-btn me-3"
       data-cy="dialog-cancel-button"
     >
       {{ 'TTH.STATEMENT.DIALOG.CANCEL' | translate }}
     </button>
     <button
-      (click)="addCommentToStatement()"
+      (click)="changeCantonAndAddComment()"
       class="atlas-primary-btn me-3"
       data-cy="dialog-confirm-button"
     >
