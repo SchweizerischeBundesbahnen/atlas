@@ -28,6 +28,7 @@ public class TimetableHearingStatementSearchRestrictions {
   public Specification<TimetableHearingStatement> getSpecification() {
     return new LongSpecification<>(TimetableHearingStatement_.timetableYear, statementRequestParams.getTimetableHearingYear())
         .and(new EnumSpecification<>(statementRequestParams.getCanton(), TimetableHearingStatement_.swissCanton))
+        .and(new EnumSpecification<>(statementRequestParams.getStatusRestrictions(), TimetableHearingStatement_.statementStatus))
         .and(new SingleStringSpecification<>(Optional.ofNullable(statementRequestParams.getTtfnid()), Fields.ttfnid))
         .and(new ResponsibleTransportCompanySpecification(statementRequestParams.getTransportCompanies()))
         .and(new SearchCriteriaSpecification<>(statementRequestParams.getSearchCriterias(),
