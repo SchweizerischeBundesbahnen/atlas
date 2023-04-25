@@ -2,22 +2,14 @@ import { TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { SwissCanton, TimetableHearingStatement } from '../../../../../api';
+import { SwissCanton } from '../../../../../api';
 import { StatementDialogService } from './statement.dialog.service';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 
-const statement: TimetableHearingStatement = {
-  id: 1,
-  swissCanton: SwissCanton.Bern,
-  statement: 'I would like to change timetable for Bus number 333.',
-  justification: 'Current timetable is not good.',
-  comment: 'I am changing statement canton.',
-  statementSender: {
-    email: 'atlas@sbb.ch',
-  },
-};
-
-const form: FormGroup = statement as unknown as FormGroup;
+const form = new FormGroup({
+  swissCanton: new FormControl(SwissCanton.Bern),
+  comment: new FormControl('Changing canton.'),
+});
 
 describe('StatementDialogService', () => {
   let service: StatementDialogService;

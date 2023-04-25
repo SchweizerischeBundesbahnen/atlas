@@ -16,14 +16,14 @@ export class StatementDialogComponent {
 
   constructor(
     public dialogRef: MatDialogRef<StatementDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: FormGroup<StatementDetailFormGroup>,
+    @Inject(MAT_DIALOG_DATA) public form: FormGroup<StatementDetailFormGroup>,
     private readonly timetableHearingService: TimetableHearingService,
     private readonly notificationService: NotificationService
   ) {}
 
   changeCantonAndAddComment() {
-    const hearingStatement = this.data.value as TimetableHearingStatement;
-    this.updateStatement(this.data.value!.id!, hearingStatement);
+    const hearingStatement = this.form.value as TimetableHearingStatement;
+    this.updateStatement(this.form.value!.id!, hearingStatement);
     this.dialogRef.close(true);
   }
 
