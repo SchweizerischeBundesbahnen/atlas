@@ -5,10 +5,32 @@ import { of } from 'rxjs';
 import { SwissCanton } from '../../../../../api';
 import { StatementDialogService } from './statement.dialog.service';
 import { FormControl, FormGroup } from '@angular/forms';
+import {
+  StatementDetailFormGroup,
+  StatementSenderFormGroup,
+} from '../../statement-detail-form-group';
 
-const form = new FormGroup({
+const form = new FormGroup<StatementDetailFormGroup>({
+  id: new FormControl(),
+  timetableYear: new FormControl(),
+  statementStatus: new FormControl(),
+  ttfnid: new FormControl(),
+  responsibleTransportCompanies: new FormControl(),
   swissCanton: new FormControl(SwissCanton.Bern),
-  comment: new FormControl('Changing canton.'),
+  statementSender: new FormGroup<StatementSenderFormGroup>({
+    firstName: new FormControl(),
+    lastName: new FormControl(),
+    organisation: new FormControl(),
+    zip: new FormControl(),
+    city: new FormControl(),
+    street: new FormControl(),
+    email: new FormControl(),
+  }),
+  stopPlace: new FormControl(),
+  statement: new FormControl(),
+  justification: new FormControl(),
+  comment: new FormControl(),
+  etagVersion: new FormControl(),
 });
 
 describe('StatementDialogService', () => {
