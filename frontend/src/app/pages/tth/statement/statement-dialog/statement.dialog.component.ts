@@ -23,7 +23,8 @@ export class StatementDialogComponent {
 
   addCommentToStatement() {
     const hearingStatement = this.data.value as TimetableHearingStatement;
-    this.updateStatement(this.data!.value!.id!, hearingStatement);
+    console.log(this.data.value.swissCanton);
+    this.updateStatement(this.data.value!.id!, hearingStatement);
     this.dialogRef.close(true);
   }
 
@@ -34,5 +35,9 @@ export class StatementDialogComponent {
       .subscribe(() => {
         this.notificationService.success('TTH.STATEMENT.NOTIFICATION.EDIT_SUCCESS');
       });
+  }
+
+  backToEditMode() {
+    this.dialogRef.close(false);
   }
 }
