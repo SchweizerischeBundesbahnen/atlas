@@ -666,11 +666,11 @@
         "EDIT_SUCCESS": "L'avis a été enregistré avec succès."
       },
       "DIALOG": {
-        "TITLE": "Changer de statut",
-        "TEXT": "Vous modifiez les instructions sélectionnées.",
+        "TITLE": "Changer de canton",
+        "TEXT": "Vous modifiez l'affectation cantonale de l'instruction sélectionnée. Avec la transmission, vous perdez les droits d'édition de cette déclaration.",
         "COMMENT_LABEL": "Commentez-le (facultatif)",
         "CANCEL": "Retour",
-        "CONFIRM": "Changer de statut"
+        "CONFIRM": "Changer de canton"
       }
     }
   }

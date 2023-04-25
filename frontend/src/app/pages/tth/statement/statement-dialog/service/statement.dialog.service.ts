@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { StatementDialogComponent } from './statement.dialog.component';
+import { StatementDialogComponent } from '../statement.dialog.component';
 import { FormGroup } from '@angular/forms';
 
 @Injectable({
