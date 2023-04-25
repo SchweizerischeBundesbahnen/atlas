@@ -14,20 +14,20 @@
       >
         <atlas-select
           (selectChanged)="changeSelectedYearFromDropdown($event)"
-          [value]="yearSelection"
-          label="TTH.SELECT_YEAR"
           [additionalLabelspace]="false"
           [options]="YEAR_DRODOWN_OPTIONS"
+          [value]="yearSelection"
+          label="TTH.SELECT_YEAR"
         >
         </atlas-select>
       </div>
       <div class="d-flex flex-column col-3 pe-3 pb-3 mb-5">
         <atlas-select
           (selectChanged)="changeSelectedCantonFromDropdown($event)"
-          [value]="defaultDropdownCantonSelection"
-          label="TTH.SELECT_CANTON"
           [additionalLabelspace]="false"
           [options]="CANTON_DROPDOWN_OPTIONS"
+          [value]="defaultDropdownCantonSelection"
+          label="TTH.SELECT_CANTON"
           optionTranslateLabelPrefix="TTH.CANTON."
         >
           <ng-template #matOptionPrefix let-canton="option">
@@ -148,33 +148,64 @@
           >
         </div>
       </div>
-      <div *ngIf="isHearingYearActive" class="d-flex flex-column col-3 left-position">
+      <div
+        *ngIf="isHearingYearActive && !statusChangeCollectingActionsEnabled"
+        class="d-flex flex-column col-2 left-position"
+      >
         <atlas-select
           (selectChanged)="collectingActions($event)"
-          dataCy="collect-action-type"
+          *ngIf="showCollectingActionButton"
           [additionalLabelspace]="false"
           [options]="COLLECTING_ACTION_DROWPDOWN_OPTIONS"
-          placeHolderLabel="TTH.DROPDOWN.COLLECTING_ACTION.PLACEHOLDER"
+          dataCy="collect-action-type"
           optionTranslateLabelPrefix="TTH.DROPDOWN.COLLECTING_ACTION.OPTION."
+          placeHolderLabel="TTH.DROPDOWN.COLLECTING_ACTION.PLACEHOLDER"
         >
           <ng-template #matOptionPrefix let-action="option">
             <img
               alt="{{ action }}"
               class="pe-2"
-              height="20"
+              height="24"
               src="assets/images/collecting_action/{{ action.toUpperCase() }}.svg"
-              width="20"
+              width="24"
             />
           </ng-template>
         </atlas-select>
+      </div>
+      <div *ngIf="statusChangeCollectingActionsEnabled" class="d-flex flex-row col-5 left-position">
+        <div class="d-flex flex-column col-6">
+          <atlas-button
+            (buttonClicked)="cancelCollectiongAction()"
+            applicationType="LIDI"
+            buttonDataCy="cancel-collecting-action"
+            buttonText="TTH.BUTTON.CANCEL_COLLECTING_ACTION"
+            buttonType="defaultPrimary"
+          >
+            <ng-template #rightIcon>
+              <i class="bi bi-x-lg"></i>
+            </ng-template>
+          </atlas-button>
+        </div>
+        <div class="d-flex flex-column col-6 mt-2">
+          <atlas-select
+            (selectChanged)="collectingStatusChangeAction($event)"
+            [additionalLabelspace]="false"
+            [options]="STATUS_OPTIONS"
+            dataCy="collect-status-change-action-type"
+            optionTranslateLabelPrefix="TTH.STATEMENT_STATUS."
+            placeHolderLabel="TTH.DROPDOWN.COLLECTING_STATUS_CHANGE_ACTION.PLACEHOLDER"
+          >
+          </atlas-select>
+        </div>
       </div>
     </div>
 
     <app-table
       (changeDropdownEvent)="changeSelectedStatus($event)"
-      *ngIf="!noTimetableHearingYearFound"
+      (checkedBoxEvent)="checkedBoxEvent($event)"
       (editElementEvent)="editStatement($event)"
       (tableChanged)="getOverview($event)"
+      *ngIf="!noTimetableHearingYearFound"
       [canEdit]="true"
       [tableColumns]="tableColumns"
       [tableData]="timeTableHearingStatements"
