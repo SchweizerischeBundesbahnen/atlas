@@ -8,6 +8,8 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -18,6 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.sbb.atlas.api.bodi.TransportCompanyModel;
 import ch.sbb.atlas.api.client.bodi.TransportCompanyClient;
+import ch.sbb.atlas.api.client.user.administration.UserAdministrationClient;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel.Fields;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementSenderModel;
@@ -79,6 +82,9 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
 
   @MockBean
   private TransportCompanyClient transportCompanyClient;
+
+  @MockBean
+  private UserAdministrationClient userAdministrationClient;
 
   @BeforeEach
   void setUp() {
@@ -478,5 +484,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
     String response = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
     assertThat(response).startsWith(CsvExportWriter.UTF_8_BYTE_ORDER_MARK + expectedCsvHeader);
     assertThat(response).contains(statement.getStatement());
+
+    verify(userAdministrationClient, times(1)).getUserInformation(any());
   }
 }
