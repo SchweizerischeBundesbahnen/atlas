@@ -1,0 +1,21 @@
+@use 'src/styles/variables' as variables;
+
+.file-upload-container {
+  border: 1px dashed variables.$gray-400;
+  border-radius: variables.$border-radius-small;
+
+  padding: 2rem;
+
+  &:hover {
+    cursor: pointer;
+    background: variables.$primary-50;
+  }
+
+  .file-upload-description {
+    padding-bottom: 15px;
+  }
+
+  .errors {
+    color: variables.$warnColor;
+  }
+}
