@@ -6,11 +6,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.atlas.amazon.service.FileService;
-import ch.sbb.atlas.api.client.user.administration.UserAdministrationClient;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementRequestParams;
 import ch.sbb.line.directory.service.hearing.ResponsibleTransportCompaniesResolverService;
 import ch.sbb.line.directory.service.hearing.TimetableFieldNumberResolverService;
+import ch.sbb.line.directory.service.hearing.TimetableHearingStatementExportService;
 import ch.sbb.line.directory.service.hearing.TimetableHearingStatementService;
 import ch.sbb.line.directory.service.hearing.TimetableHearingYearService;
 import java.time.LocalDate;
@@ -19,7 +18,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.context.MessageSource;
 import org.springframework.web.server.ResponseStatusException;
 
 public class TimetableHearingStatementControllerTest {
@@ -33,11 +31,7 @@ public class TimetableHearingStatementControllerTest {
   @Mock
   private ResponsibleTransportCompaniesResolverService responsibleTransportCompaniesResolverService;
   @Mock
-  private FileService fileService;
-  @Mock
-  private MessageSource timetableHearingStatementCsvTranslations;
-  @Mock
-  private UserAdministrationClient userAdministrationClient;
+  private TimetableHearingStatementExportService timetableHearingStatementExportService;
 
   private TimetableHearingStatementController timetableHearingStatementController;
 
@@ -46,7 +40,7 @@ public class TimetableHearingStatementControllerTest {
     MockitoAnnotations.openMocks(this);
     timetableHearingStatementController = new TimetableHearingStatementController(timetableHearingStatementService,
         timetableHearingYearService, timetableFieldNumberResolverService, responsibleTransportCompaniesResolverService,
-        fileService, timetableHearingStatementCsvTranslations, userAdministrationClient);
+        timetableHearingStatementExportService);
   }
 
   @Test

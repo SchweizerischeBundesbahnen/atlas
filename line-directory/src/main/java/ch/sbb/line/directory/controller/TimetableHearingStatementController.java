@@ -1,38 +1,29 @@
 package ch.sbb.line.directory.controller;
 
 import ch.sbb.atlas.amazon.exception.FileException;
-import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.bodi.TransportCompanyModel;
-import ch.sbb.atlas.api.client.user.administration.UserAdministrationClient;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementApiV1;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementRequestParams;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
-import ch.sbb.atlas.api.user.administration.UserDisplayNameModel;
-import ch.sbb.atlas.export.AtlasCsvMapper;
-import ch.sbb.atlas.export.CsvExportWriter;
-import ch.sbb.atlas.export.LocalizedPropertyNamingStrategy;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
 import ch.sbb.line.directory.mapper.TimetableHearingStatementMapper;
 import ch.sbb.line.directory.model.TimetableHearingStatementSearchRestrictions;
-import ch.sbb.line.directory.model.csv.TimetableHearingStatementCsvModel;
 import ch.sbb.line.directory.service.hearing.ResponsibleTransportCompaniesResolverService;
 import ch.sbb.line.directory.service.hearing.TimetableFieldNumberResolverService;
+import ch.sbb.line.directory.service.hearing.TimetableHearingStatementExportService;
 import ch.sbb.line.directory.service.hearing.TimetableHearingStatementService;
 import ch.sbb.line.directory.service.hearing.TimetableHearingYearService;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.MessageSource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
@@ -51,9 +42,7 @@ public class TimetableHearingStatementController implements TimetableHearingStat
   private final TimetableHearingYearService timetableHearingYearService;
   private final TimetableFieldNumberResolverService timetableFieldNumberResolverService;
   private final ResponsibleTransportCompaniesResolverService responsibleTransportCompaniesResolverService;
-  private final FileService fileService;
-  private final MessageSource timetableHearingStatementCsvTranslations;
-  private final UserAdministrationClient userAdministrationClient;
+  private final TimetableHearingStatementExportService timetableHearingStatementExportService;
 
   @Override
   public Container<TimetableHearingStatementModel> getStatements(Pageable pageable,
@@ -75,25 +64,12 @@ public class TimetableHearingStatementController implements TimetableHearingStat
     if (statementRequestParams.getTimetableHearingYear() == null) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "timetableHearingYear is mandatory here");
     }
-    if (!Set.of("de", "fr","it").contains(language)) {
+    if (!Set.of("de", "fr", "it").contains(language)) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Language must be either de,fr,it");
     }
 
     Container<TimetableHearingStatementModel> statements = getStatements(Pageable.unpaged(), statementRequestParams);
-    List<TimetableHearingStatementCsvModel> csvData = statements.getObjects().stream()
-        .map(TimetableHearingStatementCsvModel::fromModel).toList();
-
-    Set<String> exportedEditors = csvData.stream().map(TimetableHearingStatementCsvModel::getEditor).collect(Collectors.toSet());
-    List<UserDisplayNameModel> resolvedUserInformation = userAdministrationClient.getUserInformation(
-        new ArrayList<>(exportedEditors));
-
-    csvData.forEach(csvLine -> resolvedUserInformation.stream()
-        .filter(i -> i.getSbbUserId().equals(csvLine.getEditor())).findFirst()
-        .ifPresent(userInfo -> csvLine.setEditor(userInfo.getDisplayName())));
-
-    File csvFile = CsvExportWriter.writeToFile(fileService.getDir() + "statements", csvData,
-        new AtlasCsvMapper(TimetableHearingStatementCsvModel.class,
-            new LocalizedPropertyNamingStrategy(timetableHearingStatementCsvTranslations, new Locale(language))).getObjectWriter());
+    File csvFile = timetableHearingStatementExportService.getStatementsAsCsv(statements.getObjects(), new Locale(language));
 
     try {
       return new InputStreamResource(new FileInputStream(csvFile));
