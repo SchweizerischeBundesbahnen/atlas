@@ -35,9 +35,9 @@
           </div>
           <div *ngIf="column.checkbox">
             <mat-checkbox
-              (change)="$event ? toggleAll() : null"
+              (change)="toggleAll()"
               (click)="$event.stopPropagation()"
-              [checked]="checkBoxSelection.hasValue() && isAllSelected()"
+              [checked]="isAllSelected()"
             ></mat-checkbox>
           </div>
         </th>

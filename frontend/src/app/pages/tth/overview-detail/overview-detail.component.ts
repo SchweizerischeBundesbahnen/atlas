@@ -65,7 +65,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
 
   STATUS_OPTIONS = Object.values(StatementStatus);
 
-  COLLECTING_ACTION_DROWPDOWN_OPTIONS = ['STATUS_CHANGE', 'CANTON_DELIVERY', 'DELETE'];
+  COLLECTING_ACTION_DROWPDOWN_OPTIONS = ['STATUS_CHANGE', 'CANTON_DELIVERY'];
 
   showDownloadCsvButton = false;
   showManageTimetableHearingButton = false;
@@ -252,11 +252,13 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
   }
 
   changeSelectedStatus(changedStatus: ColumnDropDownEvent) {
-    this.tthStatusChangeDialog.onClick(changedStatus).subscribe((result) => {
-      if (result) {
-        this.ngOnInit();
-      }
-    });
+    this.tthStatusChangeDialog
+      .onClick(changedStatus.$event.value, [changedStatus.value], changedStatus.value.justification)
+      .subscribe((result) => {
+        if (result) {
+          this.ngOnInit();
+        }
+      });
   }
 
   cancelCollectiongAction() {
@@ -265,9 +267,20 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     this.ngOnInit();
   }
 
-  collectingStatusChangeAction($event: any) {
-    console.log($event);
+  collectingStatusChangeAction(changedStatus: ColumnDropDownEvent) {
+    console.log(changedStatus);
     console.log(this.selectedItems);
+    if (this.selectedItems.length > 0) {
+      this.tthStatusChangeDialog
+        .onClick(changedStatus.value, this.selectedItems, undefined)
+        .subscribe((result) => {
+          if (result) {
+            this.statusChangeCollectingActionsEnabled = false;
+            this.showCollectingActionButton = true;
+            this.ngOnInit();
+          }
+        });
+    }
   }
 
   checkedBoxEvent($event: SelectionModel<TimetableHearingStatement>) {

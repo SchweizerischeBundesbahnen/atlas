@@ -10,6 +10,7 @@ import ch.sbb.line.directory.entity.ResponsibleTransportCompany;
 import ch.sbb.line.directory.entity.StatementDocument;
 import ch.sbb.line.directory.entity.StatementSender;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
+import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -120,5 +121,32 @@ public class TimetableHearingStatementRepositoryTest {
         .statement("Ich mag bitte mehr Bös fahren")
         .build();
     return statement;
+  }
+
+  @Test
+  void shouldUpdateHearingStatementStatus() {
+    //given
+    TimetableHearingStatement statement = TimetableHearingStatement.builder()
+        .timetableYear(2023L)
+        .swissCanton(SwissCanton.BERN)
+        .statementStatus(StatementStatus.RECEIVED)
+        .statementSender(StatementSender.builder()
+            .email("mike@thebike.com")
+            .build())
+        .statement("Ich mag bitte mehr Bös fahren")
+        .build();
+    timetableHearingStatementRepository.saveAndFlush(statement);
+    //when
+
+    timetableHearingStatementRepository.updateHearingStatementStatusWithJustification(
+        statement.getId(), StatementStatus.ACCEPTED, "Napoli ist besser als YB");
+
+    //then
+    Optional<TimetableHearingStatement> result = timetableHearingStatementRepository.findById(statement.getId());
+    assertThat(result).isNotNull();
+    assertThat(result.isPresent()).isTrue();
+    assertThat(result.get().getStatementStatus()).isEqualTo(StatementStatus.ACCEPTED);
+    assertThat(result.get().getJustification()).isEqualTo("Napoli ist besser als YB");
+
   }
 }

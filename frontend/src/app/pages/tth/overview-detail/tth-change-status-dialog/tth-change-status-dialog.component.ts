@@ -18,7 +18,7 @@ import { TthChangeStatusFormGroup } from './model/tth-change-status-form-group';
 })
 export class TthChangeStatusDialogComponent {
   tthChangeStatusFormGroup = new FormGroup<TthChangeStatusFormGroup>({
-    justification: new FormControl(this.data.ths.justification, [
+    justification: new FormControl(this.data.justification, [
       AtlasFieldLengthValidator.statement,
       WhitespaceValidator.blankOrEmptySpaceSurrounding,
       AtlasCharsetsValidator.iso88591,
@@ -35,12 +35,16 @@ export class TthChangeStatusDialogComponent {
   ) {}
 
   onClick(): void {
+    let justification: string | undefined;
     if (this.tthChangeStatusFormGroup.valid) {
       if (this.tthChangeStatusFormGroup.controls['justification'].value) {
-        this.data.ths.justification = this.tthChangeStatusFormGroup.controls['justification'].value;
+        justification = this.tthChangeStatusFormGroup.controls['justification'].value;
       }
       this.timetableHearingService
-        .updateHearingStatement(this.data.ths.id!, this.data.ths)
+        .updateHearingStatementStatus(this.data.statementStatus, {
+          ids: this.data.tths.map((value) => Number(value.id)),
+          justification: justification,
+        })
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe(() => {
           this.notificationService.success('TTH.NOTIFICATION.STATUS_CHANGE.SUCCESS');
