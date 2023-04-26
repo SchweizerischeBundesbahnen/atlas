@@ -1,6 +1,6 @@
 package ch.sbb.line.directory.service.hearing;
 
-import ch.sbb.atlas.amazon.helper.FutureTimetableHelper;
+import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
