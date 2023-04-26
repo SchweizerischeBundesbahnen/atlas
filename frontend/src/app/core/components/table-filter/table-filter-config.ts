@@ -13,10 +13,21 @@ export type TableFilterConfig<TFilterConfig> =
   | TableFilterDateSelect
   | TableFilterChip;
 
+export const TableFilterSearchType = {
+  BUSINESS_ORGANISATION: 'BUSINESS_ORGANISATION' as TableFilterSearchType,
+  TIMETABLE_FIELD_NUMBER: 'TIMETABLE_FIELD_NUMBER' as TableFilterSearchType,
+  TRANSPORT_COMPANY: 'TRANSPORT_COMPANY' as TableFilterSearchType,
+};
+export type TableFilterSearchType =
+  | 'BUSINESS_ORGANISATION'
+  | 'TIMETABLE_FIELD_NUMBER'
+  | 'TRANSPORT_COMPANY';
+
 export type TableFilterSearchSelect<T> = {
   filterType: FilterType.SEARCH_SELECT;
   elementWidthCssClass: string;
   activeSearch: T | undefined;
+  searchType: TableFilterSearchType;
 };
 
 export type TableFilterMultiSelect<T> = {
@@ -72,6 +83,15 @@ export function getActiveSearch<
   filterType: TableFilterMultiSelect<TFilterConfig> | TableFilterSearchSelect<TFilterConfig>
 ): ExpectedType {
   return filterType.activeSearch as ExpectedType;
+}
+
+export function getActiveMultiSearch<TFilterConfig>(
+  filterType: TableFilterMultiSelect<TFilterConfig> | TableFilterSearchSelect<TFilterConfig>
+): Array<TFilterConfig> {
+  if (!filterType.activeSearch) {
+    return [];
+  }
+  return filterType.activeSearch as Array<TFilterConfig>;
 }
 
 export function getActiveSearchDate(filterType: TableFilterDateSelect): Date | undefined {
