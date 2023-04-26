@@ -7,6 +7,7 @@ import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementApiV1;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementRequestParams;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
+import ch.sbb.atlas.model.exception.BadRequestException;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
 import ch.sbb.line.directory.mapper.TimetableHearingStatementMapper;
 import ch.sbb.line.directory.model.TimetableHearingStatementSearchRestrictions;
@@ -28,10 +29,8 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.ResponseStatusException;
 
 @Slf4j
 @RestController
@@ -62,10 +61,10 @@ public class TimetableHearingStatementController implements TimetableHearingStat
   @Override
   public Resource getStatementsAsCsv(String language, TimetableHearingStatementRequestParams statementRequestParams) {
     if (statementRequestParams.getTimetableHearingYear() == null) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "timetableHearingYear is mandatory here");
+      throw new BadRequestException("timetableHearingYear is mandatory here");
     }
     if (!Set.of("de", "fr", "it").contains(language)) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Language must be either de,fr,it");
+      throw new BadRequestException("Language must be either de,fr,it");
     }
 
     Container<TimetableHearingStatementModel> statements = getStatements(Pageable.unpaged(), statementRequestParams);
