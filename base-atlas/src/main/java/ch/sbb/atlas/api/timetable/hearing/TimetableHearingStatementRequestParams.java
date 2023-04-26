@@ -11,12 +11,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.Singular;
+import lombok.ToString;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 public class TimetableHearingStatementRequestParams {
 
   private Long timetableHearingYear;
@@ -30,4 +32,7 @@ public class TimetableHearingStatementRequestParams {
   private List<StatementStatus> statusRestrictions = new ArrayList<>();
 
   private String ttfnid;
+
+  @Singular(ignoreNullCollections = true)
+  private List<Long> transportCompanies = new ArrayList<>();
 }

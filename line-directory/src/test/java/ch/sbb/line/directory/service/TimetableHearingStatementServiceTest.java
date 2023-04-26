@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementRequestParams;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementSenderModel;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.kafka.model.SwissCanton;
@@ -15,7 +17,8 @@ import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
 import ch.sbb.line.directory.entity.TimetableHearingYear;
 import ch.sbb.line.directory.helper.PdfFiles;
-import ch.sbb.line.directory.mapper.TimeTableHearingStatementMapper;
+import ch.sbb.line.directory.mapper.TimetableHearingStatementMapper;
+import ch.sbb.line.directory.model.TimetableHearingStatementSearchRestrictions;
 import ch.sbb.line.directory.repository.TimetableHearingStatementRepository;
 import ch.sbb.line.directory.repository.TimetableHearingYearRepository;
 import ch.sbb.line.directory.service.hearing.TimetableHearingStatementService;
@@ -28,6 +31,8 @@ import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 @IntegrationTest
@@ -110,7 +115,7 @@ public class TimetableHearingStatementServiceTest {
     TimetableHearingStatementModel timetableHearingStatementModel = buildTimetableHearingStatementModel();
 
     TimetableHearingStatementModel createdStatement = timetableHearingStatementService.createHearingStatement(timetableHearingStatementModel, Collections.emptyList());
-    TimetableHearingStatement createdStatementEntity = TimeTableHearingStatementMapper.toEntity(createdStatement);
+    TimetableHearingStatement createdStatementEntity = TimetableHearingStatementMapper.toEntity(createdStatement);
 
     timetableHearingStatementService.deleteStatementDocument(createdStatementEntity, PdfFiles.MULTIPART_FILES.get(0).getOriginalFilename());
     assertThatThrownBy(() -> timetableHearingStatementService.getStatementDocument(createdStatement.getId(), PdfFiles.MULTIPART_FILES.get(0).getOriginalFilename())).isInstanceOf(
@@ -135,7 +140,7 @@ public class TimetableHearingStatementServiceTest {
     documents.add(PdfFiles.MULTIPART_FILES.get(1));
 
     TimetableHearingStatementModel createdStatement = timetableHearingStatementService.createHearingStatement(timetableHearingStatementModel, documents);
-    TimetableHearingStatement createdStatementEntity = TimeTableHearingStatementMapper.toEntity(createdStatement);
+    TimetableHearingStatement createdStatementEntity = TimetableHearingStatementMapper.toEntity(createdStatement);
 
     assertThatThrownBy(() -> timetableHearingStatementService.deleteStatementDocument(createdStatementEntity, "")).isInstanceOf(
       IllegalArgumentException.class);
@@ -147,7 +152,7 @@ public class TimetableHearingStatementServiceTest {
     TimetableHearingStatementModel timetableHearingStatementModel = buildTimetableHearingStatementModel();
 
     TimetableHearingStatementModel createdStatement = timetableHearingStatementService.createHearingStatement(timetableHearingStatementModel, Collections.emptyList());
-    TimetableHearingStatement createdStatementEntity = TimeTableHearingStatementMapper.toEntity(createdStatement);
+    TimetableHearingStatement createdStatementEntity = TimetableHearingStatementMapper.toEntity(createdStatement);
 
     timetableHearingStatementService.deleteStatementDocument(createdStatementEntity, PdfFiles.MULTIPART_FILES.get(0).getOriginalFilename());
   }
@@ -200,12 +205,163 @@ public class TimetableHearingStatementServiceTest {
   @Test
   void shouldNotUpdateHearingStatementIfYearIsUnknown() {
     timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
-    TimetableHearingStatementModel timetableHearingStatementModel1 = buildTimetableHearingStatementModel();
+    TimetableHearingStatementModel timetableHearingStatementModel = buildTimetableHearingStatementModel();
 
-    TimetableHearingStatementModel updatingStatement = timetableHearingStatementService.createHearingStatement(timetableHearingStatementModel1, Collections.emptyList());
+    TimetableHearingStatementModel updatingStatement = timetableHearingStatementService.createHearingStatement(timetableHearingStatementModel, Collections.emptyList());
     updatingStatement.setTimetableYear(2020L);
 
     assertThatThrownBy(() -> timetableHearingStatementService.updateHearingStatement(updatingStatement, Collections.emptyList())).isInstanceOf(IdNotFoundException.class);
+  }
+
+  @Test
+  void shouldFindStatementBySearchCriteria() {
+    timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+    TimetableHearingStatementModel timetableHearingStatementModel = TimetableHearingStatementModel.builder()
+        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .swissCanton(SwissCanton.BERN)
+        .statementSender(TimetableHearingStatementSenderModel.builder()
+            .firstName("Luca")
+            .email("fabienne.mueller@sbb.ch")
+            .build())
+        .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
+        .build();
+    timetableHearingStatementService.createHearingStatement(timetableHearingStatementModel, Collections.emptyList());
+
+    TimetableHearingStatementSearchRestrictions searchRestrictions = TimetableHearingStatementSearchRestrictions.builder()
+        .statementRequestParams(TimetableHearingStatementRequestParams.builder()
+            .searchCriterias(List.of("gerne", "Luca"))
+            .canton(SwissCanton.BERN)
+            .timetableHearingYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+            .build())
+        .pageable(Pageable.unpaged())
+        .build();
+
+    Page<TimetableHearingStatement> hearingStatements = timetableHearingStatementService.getHearingStatements(searchRestrictions);
+
+    assertThat(hearingStatements.getTotalElements()).isEqualTo(1);
+  }
+
+  @Test
+  void shouldFindStatementByTtfnid() {
+    timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+    TimetableHearingStatementModel timetableHearingStatementModel = TimetableHearingStatementModel.builder()
+        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .swissCanton(SwissCanton.BERN)
+        .ttfnid("ch:1:ttfnid:2341234")
+        .statementSender(TimetableHearingStatementSenderModel.builder()
+            .email("fabienne.mueller@sbb.ch")
+            .build())
+        .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
+        .build();
+    timetableHearingStatementService.createHearingStatement(timetableHearingStatementModel, Collections.emptyList());
+
+    TimetableHearingStatementSearchRestrictions searchRestrictions = TimetableHearingStatementSearchRestrictions.builder()
+        .statementRequestParams(TimetableHearingStatementRequestParams.builder()
+            .ttfnid("ch:1:ttfnid:2341234")
+            .build())
+        .pageable(Pageable.unpaged())
+        .build();
+
+    Page<TimetableHearingStatement> hearingStatements = timetableHearingStatementService.getHearingStatements(searchRestrictions);
+
+    assertThat(hearingStatements.getTotalElements()).isEqualTo(1);
+
+    // Negative Test
+    searchRestrictions = TimetableHearingStatementSearchRestrictions.builder()
+        .statementRequestParams(TimetableHearingStatementRequestParams.builder()
+            .ttfnid("other bs")
+            .build())
+        .pageable(Pageable.unpaged())
+        .build();
+
+    hearingStatements = timetableHearingStatementService.getHearingStatements(searchRestrictions);
+
+    assertThat(hearingStatements.getTotalElements()).isZero();
+  }
+
+  @Test
+  void shouldFindStatementByStatus() {
+    timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+    TimetableHearingStatementModel timetableHearingStatementModel = TimetableHearingStatementModel.builder()
+        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .swissCanton(SwissCanton.BERN)
+        .ttfnid("ch:1:ttfnid:2341234")
+        .statementSender(TimetableHearingStatementSenderModel.builder()
+            .email("fabienne.mueller@sbb.ch")
+            .build())
+        .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
+        .build();
+    timetableHearingStatementService.createHearingStatement(timetableHearingStatementModel, Collections.emptyList());
+
+    TimetableHearingStatementSearchRestrictions searchRestrictions = TimetableHearingStatementSearchRestrictions.builder()
+        .statementRequestParams(TimetableHearingStatementRequestParams.builder()
+            .statusRestrictions(List.of(StatementStatus.RECEIVED))
+            .build())
+        .pageable(Pageable.unpaged())
+        .build();
+
+    Page<TimetableHearingStatement> hearingStatements = timetableHearingStatementService.getHearingStatements(searchRestrictions);
+
+    assertThat(hearingStatements.getTotalElements()).isEqualTo(1);
+
+    // Negative Test
+    searchRestrictions = TimetableHearingStatementSearchRestrictions.builder()
+        .statementRequestParams(TimetableHearingStatementRequestParams.builder()
+            .statusRestrictions(List.of(StatementStatus.JUNK))
+            .build())
+        .pageable(Pageable.unpaged())
+        .build();
+
+    hearingStatements = timetableHearingStatementService.getHearingStatements(searchRestrictions);
+
+    assertThat(hearingStatements.getTotalElements()).isZero();
+  }
+
+  @Test
+  void shouldFindStatementByTransportCompany() {
+    timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+    TimetableHearingStatementModel timetableHearingStatementModel = TimetableHearingStatementModel.builder()
+        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .swissCanton(SwissCanton.BERN)
+        .responsibleTransportCompanies(List.of(TimetableHearingStatementResponsibleTransportCompanyModel.builder()
+                .id(4L)
+                .abbreviation("SBB")
+                .businessRegisterName("Schweizerische Bundesbahnen")
+            .build(),
+            TimetableHearingStatementResponsibleTransportCompanyModel.builder()
+                .id(5L)
+                .abbreviation("BLS")
+                .businessRegisterName("Basel Land Stationen ? :D")
+                .build()))
+        .statementSender(TimetableHearingStatementSenderModel.builder()
+            .firstName("Luca")
+            .email("fabienne.mueller@sbb.ch")
+            .build())
+        .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
+        .build();
+    timetableHearingStatementService.createHearingStatement(timetableHearingStatementModel, Collections.emptyList());
+
+    TimetableHearingStatementSearchRestrictions searchRestrictions = TimetableHearingStatementSearchRestrictions.builder()
+        .statementRequestParams(TimetableHearingStatementRequestParams.builder()
+            .transportCompanies(List.of(4L, 5L))
+            .build())
+        .pageable(Pageable.unpaged())
+        .build();
+
+    Page<TimetableHearingStatement> hearingStatements = timetableHearingStatementService.getHearingStatements(searchRestrictions);
+
+    assertThat(hearingStatements.getTotalElements()).isEqualTo(1);
+
+    //Negative Test
+    searchRestrictions = TimetableHearingStatementSearchRestrictions.builder()
+        .statementRequestParams(TimetableHearingStatementRequestParams.builder()
+            .transportCompanies(List.of(3L))
+            .build())
+        .pageable(Pageable.unpaged())
+        .build();
+
+    hearingStatements = timetableHearingStatementService.getHearingStatements(searchRestrictions);
+    assertThat(hearingStatements.getTotalElements()).isZero();
   }
 
   private static TimetableHearingStatementModel buildTimetableHearingStatementModel() {
