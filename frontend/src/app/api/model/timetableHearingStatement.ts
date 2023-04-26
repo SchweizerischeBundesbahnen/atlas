@@ -77,6 +77,10 @@ export interface TimetableHearingStatement {
    */
   justification?: string;
   /**
+   * Statement comment
+   */
+  comment?: string;
+  /**
    * Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)
    */
   etagVersion?: number;
