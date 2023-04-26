@@ -65,8 +65,8 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
   private static final String TTFNID = "ch:1:ttfnid:123123123";
   private static final String SBOID = "ch:1:sboid:123451";
 
-  @Autowired
-  private TimetableHearingYearRepository timetableHearingYearRepository;
+    @Autowired
+    private TimetableHearingYearRepository timetableHearingYearRepository;
 
   @Autowired
   private TimetableHearingYearController timetableHearingYearController;
@@ -157,8 +157,8 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
         .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
         .build();
 
-    MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
-        MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
+        MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
+            MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
 
     mvc.perform(multipart(HttpMethod.POST, "/v1/timetable-hearing/statements")
             .file(statementJson))
