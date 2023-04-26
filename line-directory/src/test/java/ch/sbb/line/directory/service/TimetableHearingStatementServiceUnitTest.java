@@ -1,0 +1,62 @@
+package ch.sbb.line.directory.service;
+
+import static org.mockito.Mockito.verify;
+
+import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
+import ch.sbb.line.directory.repository.TimetableHearingStatementRepository;
+import ch.sbb.line.directory.repository.TimetableHearingYearRepository;
+import ch.sbb.line.directory.service.hearing.StatementDocumentFilesValidationService;
+import ch.sbb.line.directory.service.hearing.TimetableHearingPdfsAmazonService;
+import ch.sbb.line.directory.service.hearing.TimetableHearingStatementService;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+public class TimetableHearingStatementServiceUnitTest {
+
+  private TimetableHearingStatementService timetableHearingStatementService;
+  private AutoCloseable closeable;
+
+  @Mock
+  private TimetableHearingStatementRepository timetableHearingStatementRepositoryMock;
+
+  @Mock
+  private TimetableHearingYearRepository timetableHearingYearRepositoryMock;
+
+  @Mock
+  private FileService fileServiceMock;
+
+  @Mock
+  private TimetableHearingPdfsAmazonService timetableHearingPdfsAmazonServiceMock;
+
+  @Mock
+  private StatementDocumentFilesValidationService statementDocumentFilesValidationServiceMock;
+
+  @BeforeEach
+  void setUp() {
+    closeable = MockitoAnnotations.openMocks(this);
+    timetableHearingStatementService = new TimetableHearingStatementService(
+        timetableHearingStatementRepositoryMock,
+        timetableHearingYearRepositoryMock,
+        fileServiceMock,
+        timetableHearingPdfsAmazonServiceMock,
+        statementDocumentFilesValidationServiceMock
+    );
+  }
+
+  @AfterEach
+  void cleanUp() throws Exception {
+    closeable.close();
+  }
+
+  @Test
+  void shouldCallRepositoryOnDeleteSpamMailFromYear() {
+    Long year = 2022L;
+    timetableHearingStatementService.deleteSpamMailFromYear(year);
+    verify(timetableHearingStatementRepositoryMock).deleteByStatementStatusAndTimetableYear(StatementStatus.JUNK, year);
+  }
+
+}

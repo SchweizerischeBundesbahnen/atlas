@@ -15,6 +15,7 @@ import { NewTimetableHearingYearDialogComponent } from './new-timetable-hearing-
 import { StatementDialogComponent } from './statement/statement-dialog/statement.dialog.component';
 import { BaseChangeDialogComponent } from './overview-detail/base-change-dialog/base-change-dialog.component';
 import { TthChangeCantonDialogComponent } from './overview-detail/tth-change-canton-dialog/tth-change-canton-dialog.component';
+import { TthChangeStatusDialogComponent } from './overview-detail/tth-change-status-dialog/tth-change-status-dialog.component';
 
 @NgModule({
   declarations: [
