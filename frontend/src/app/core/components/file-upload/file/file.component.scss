@@ -1,0 +1,17 @@
+@use 'src/styles/variables' as variables;
+
+.file-container {
+  background-color: variables.$primary-200;
+  border-radius: variables.$border-radius-small;
+
+  cursor: default;
+
+  .bi-trash {
+    margin-left: auto;
+
+    &:hover {
+      color: white;
+      cursor: pointer;
+    }
+  }
+}
