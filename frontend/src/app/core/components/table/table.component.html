@@ -27,6 +27,7 @@
           class="font-bold-base color-primary-400 translated-paragraph bordered-cell"
           mat-header-cell
           mat-sort-header
+          [disabled]="column.disabled"
           scope="col"
         >
           {{ column.headerTitle | translate }}
