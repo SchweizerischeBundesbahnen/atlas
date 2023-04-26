@@ -9,8 +9,10 @@ import ch.sbb.line.directory.exception.TimetableFieldNumberConflictException;
 import ch.sbb.line.directory.model.search.TimetableFieldNumberSearchRestrictions;
 import ch.sbb.line.directory.repository.TimetableFieldNumberRepository;
 import ch.sbb.line.directory.repository.TimetableFieldNumberVersionRepository;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.StaleObjectStateException;
@@ -72,6 +74,10 @@ public class TimetableFieldNumberService {
       TimetableFieldNumberSearchRestrictions searchRestrictions) {
     return timetableFieldNumberRepository.findAll(searchRestrictions.getSpecification(),
         searchRestrictions.getPageable());
+  }
+
+  public List<TimetableFieldNumberVersion> getVersionsValidAt(Set<String> ttfids, LocalDate validAt) {
+    return versionRepository.getVersionsValidAt(ttfids, validAt);
   }
 
   public void deleteById(Long id) {

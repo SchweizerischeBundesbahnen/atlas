@@ -4,9 +4,11 @@ import {
   HearingStatus,
   StatementStatus,
   SwissCanton,
+  TimetableFieldNumber,
   TimetableHearingService,
   TimetableHearingStatement,
   TimetableHearingYear,
+  TransportCompany,
 } from '../../../api';
 import { Cantons } from '../overview/canton/Cantons';
 import { TableColumn } from '../../../core/components/table/table-column';
@@ -23,6 +25,13 @@ import { ColumnDropDownEvent } from '../../../core/components/table/column-drop-
 import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
 import { TthTableService } from '../tth-table.service';
 import { NewTimetableHearingYearDialogService } from '../new-timetable-hearing-year-dialog/service/new-timetable-hearing-year-dialog.service';
+import { TranslateService } from '@ngx-translate/core';
+import { OverviewDetailTableFilterConfig } from './overview-detail-table-filter-config';
+import {
+  getActiveMultiSearch,
+  getActiveSearch,
+  getActiveSearchForChip,
+} from '../../../core/components/table-filter/table-filter-config';
 
 @Component({
   selector: 'app-timetable-hearing-overview-detail',
@@ -31,6 +40,8 @@ import { NewTimetableHearingYearDialogService } from '../new-timetable-hearing-y
   providers: [TableService],
 })
 export class OverviewDetailComponent implements OnInit, OnDestroy {
+  readonly TABLE_FILTER_CONFIG = OverviewDetailTableFilterConfig;
+
   timeTableHearingStatements: TimetableHearingStatement[] = [];
   totalCount$ = 0;
   tableColumns: TableColumn<TimetableHearingStatement>[] = [];
@@ -70,7 +81,8 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     private readonly overviewToTabService: OverviewToTabShareDataService,
     private readonly tthStatusChangeDialog: TthChangeStatusDialogService,
     private readonly tthTableService: TthTableService,
-    private readonly newTimetableHearingYearDialogService: NewTimetableHearingYearDialogService
+    private readonly newTimetableHearingYearDialogService: NewTimetableHearingYearDialogService,
+    private readonly translateService: TranslateService
   ) {}
 
   get isHearingYearActive(): boolean {
@@ -117,12 +129,17 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
       .getStatements(
         this.foundTimetableHearingYear.timetableYear,
         selectedCantonEnum,
-        undefined, // TODO: set with tableFilter
-        undefined,
-        undefined,
+        getActiveSearchForChip(this.tableFilterConfig[0][0]),
+        getActiveSearch(this.tableFilterConfig[1][0]),
+        getActiveSearch<TimetableFieldNumber | undefined, TimetableFieldNumber>(
+          this.tableFilterConfig[1][2]
+        )?.ttfnid,
+        Array.from(getActiveMultiSearch<TransportCompany>(this.tableFilterConfig[1][1])).map(
+          (transportCompany) => transportCompany.id!
+        ),
         pagination.page,
         pagination.size,
-        addElementsToArrayWhenNotUndefined(pagination.sort, this.sorting)
+        addElementsToArrayWhenNotUndefined(pagination.sort, this.sorting, 'ttfnid,ASC')
       )
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((container) => {
@@ -155,7 +172,26 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
   }
 
   downloadCsv() {
-    console.log('Download CSV');
+    this.timetableHearingService
+      .getStatementsAsCsv(
+        this.translateService.currentLang,
+        this.foundTimetableHearingYear.timetableYear,
+        this.getSelectedCantonToBeSearchFromNavigation(),
+        getActiveSearchForChip(this.tableFilterConfig[0][0]),
+        getActiveSearch(this.tableFilterConfig[1][0]),
+        getActiveSearch<TimetableFieldNumber | undefined, TimetableFieldNumber>(
+          this.tableFilterConfig[1][2]
+        )?.ttfnid,
+        Array.from(getActiveMultiSearch<TransportCompany>(this.tableFilterConfig[1][1])).map(
+          (transportCompany) => transportCompany.id!
+        )
+      )
+      .subscribe((response) => {
+        const a = document.createElement('a');
+        a.download = 'statements.csv';
+        a.href = URL.createObjectURL(response);
+        a.click();
+      });
   }
 
   manageTimetableHearing() {
@@ -374,8 +410,12 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
         headerTitle: 'TTH.TRANSPORT_COMPANY',
         value: 'responsibleTransportCompaniesDisplay',
       },
-      { headerTitle: 'TTH.TTFNID', value: 'ttfnid' },
-      { headerTitle: 'TTH.TIMETABLE_FIELD_NUMBER', value: 'timetableFieldNumber' },
+      { headerTitle: 'TTH.TIMETABLE_FIELD_NUMBER', value: 'timetableFieldNumber', disabled: true },
+      {
+        headerTitle: 'TTH.TIMETABLE_FIELD_NUMBER_DESCRIPTION',
+        value: 'timetableFieldDescription',
+        disabled: true,
+      },
       { headerTitle: 'COMMON.EDIT_ON', value: 'editionDate', formatAsDate: true },
       { headerTitle: 'COMMON.EDIT_BY', value: 'editor' },
     ];
@@ -386,8 +426,8 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
       return (
         col.value === 'swissCanton' ||
         col.value === 'responsibleTransportCompaniesDisplay' ||
-        col.value === 'ttfnid' ||
-        col.value === 'timetableFieldNumber'
+        col.value === 'timetableFieldNumber' ||
+        col.value === 'timetableFieldDescription'
       );
     });
   }
@@ -397,10 +437,12 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
       return (
         col.value === 'swissCanton' ||
         col.value === 'responsibleTransportCompaniesDisplay' ||
-        col.value === 'ttfnid' ||
         col.value === 'timetableFieldNumber' ||
+        col.value === 'timetableFieldDescription' ||
         col.value === 'editor'
       );
     });
   }
+
+  protected readonly tableFilterConfig = OverviewDetailTableFilterConfig;
 }
