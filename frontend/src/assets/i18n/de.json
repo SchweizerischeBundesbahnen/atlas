@@ -71,6 +71,17 @@
     },
     "NOTIFICATION": {
       "OPTIMISTIC_LOCK_ERROR": "Das Objekt wurde entweder bereits gelöscht oder in der Zwischenzeit bearbeitet. Bitte laden Sie die Seite neu, indem Sie die Taste F5 drücken."
+    },
+    "FILEUPLOAD": {
+      "DROPZONE": "Datei auf diese Fläche ziehen",
+      "OR": "oder",
+      "SELECT_FILES": "Dateien auswählen",
+      "ERROR": {
+        "TEXT_START": "konnte auf Grund",
+        "TYPE": "des Dateityps",
+        "SIZE": "der Grösse",
+        "TEXT_END": "nicht hinzugefügt werden."
+      }
     }
   },
   "DETAIL_USER_EDITION": {
