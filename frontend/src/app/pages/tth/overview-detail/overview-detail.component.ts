@@ -42,7 +42,6 @@ import { FileDownloadService } from '../../../core/components/file-upload/file/f
 import { AuthService } from '../../../core/auth/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogManageTthComponent } from '../dialog-manage-tth/dialog-manage-tth.component';
-import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-timetable-hearing-overview-detail',

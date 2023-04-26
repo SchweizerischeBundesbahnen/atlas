@@ -19,7 +19,7 @@ import { WhitespaceValidator } from '../../../core/validation/whitespace/whitesp
 import { StatementDetailFormGroup, StatementSenderFormGroup } from './statement-detail-form-group';
 import { Canton } from '../overview/canton/Canton';
 import { takeUntil } from 'rxjs/operators';
-import { catchError, EMPTY, Observable, of, Subject } from 'rxjs';
+import { catchError, EMPTY, Observable, of, Subject, take } from 'rxjs';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { ValidationService } from '../../../core/validation/validation.service';
 import { AuthService } from '../../../core/auth/auth.service';
@@ -70,6 +70,11 @@ export class StatementDetailComponent implements OnInit {
     this.hearingStatus = this.route.snapshot.data.hearingStatus;
     this.isNew = !this.statement;
     this.uploadedFiles = [];
+
+    if (this.hearingStatus === HearingStatus.Active) {
+      // TODO: disable edit btn when editable of active year false
+      this.timetableHearingService.getHearingYear().pipe(take(1)).subscribe({});
+    }
 
     this.initForm();
     this.initYearOptions();

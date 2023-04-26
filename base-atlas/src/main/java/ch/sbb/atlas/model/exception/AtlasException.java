@@ -1,6 +1,5 @@
 package ch.sbb.atlas.model.exception;
 
-
 import ch.sbb.atlas.api.model.ErrorResponse;
 
 public abstract class AtlasException extends RuntimeException {
