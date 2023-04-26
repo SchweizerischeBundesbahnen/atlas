@@ -7,7 +7,7 @@ import {
 } from '../../../core/components/table-filter/table-filter-config';
 import { StatementStatus, TimetableFieldNumber, TransportCompany } from '../../../api';
 
-export const tableFilterConfig: [
+export const OverviewDetailTableFilterConfig: [
   [TableFilterChip],
   [
     TableFilterMultiSelect<StatementStatus>,
