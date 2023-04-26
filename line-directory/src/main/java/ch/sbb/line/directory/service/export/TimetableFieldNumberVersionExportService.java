@@ -2,7 +2,7 @@ package ch.sbb.line.directory.service.export;
 
 import static java.util.stream.Collectors.toList;
 
-import ch.sbb.atlas.amazon.helper.FutureTimetableHelper;
+import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.export.AtlasCsvMapper;

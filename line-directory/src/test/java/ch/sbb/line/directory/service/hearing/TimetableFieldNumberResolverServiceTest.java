@@ -5,7 +5,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.atlas.amazon.helper.FutureTimetableHelper;
+import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementSenderModel;
 import ch.sbb.atlas.kafka.model.SwissCanton;
