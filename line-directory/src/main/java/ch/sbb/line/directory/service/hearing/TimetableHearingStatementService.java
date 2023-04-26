@@ -55,7 +55,7 @@ public class TimetableHearingStatementService {
 
   public TimetableHearingStatement getTimetableHearingStatementById(Long id) {
     return timetableHearingStatementRepository.findById(id)
-        .orElseThrow(() -> new IdNotFoundException(id));
+      .orElseThrow(() -> new IdNotFoundException(id));
   }
 
   public File getStatementDocument(Long timetableHearingStatementId, String documentFilename) {
@@ -67,8 +67,7 @@ public class TimetableHearingStatementService {
     }
   }
 
-  public TimetableHearingStatementModel createHearingStatement(TimetableHearingStatementModel statement,
-      List<MultipartFile> documents) {
+  public TimetableHearingStatementModel createHearingStatement(TimetableHearingStatementModel statement, List<MultipartFile> documents) {
     TimetableHearingStatement statementToCreate = TimetableHearingStatementMapper.toEntity(statement);
     checkThatTimetableHearingYearExists(statementToCreate.getTimetableYear());
     statementToCreate.setStatementStatus(StatementStatus.RECEIVED);
@@ -145,13 +144,13 @@ public class TimetableHearingStatementService {
   }
 
   private List<File> getFilesFromMultipartFiles(List<MultipartFile> documents) {
-    return documents.stream()
+      return documents.stream()
         .map(fileService::getFileFromMultipart)
         .toList();
   }
 
   private TimetableHearingStatement updateObject(TimetableHearingStatementModel timetableHearingStatementModel,
-      TimetableHearingStatement timetableHearingStatementInDb) {
+    TimetableHearingStatement timetableHearingStatementInDb) {
     timetableHearingStatementInDb.setTimetableYear(timetableHearingStatementModel.getTimetableYear());
     timetableHearingStatementInDb.setStatementStatus(timetableHearingStatementModel.getStatementStatus());
     timetableHearingStatementInDb.setTtfnid(timetableHearingStatementModel.getTtfnid());
@@ -202,9 +201,25 @@ public class TimetableHearingStatementService {
     if (documents != null) {
       log.info("Statement {}, adding {} documents", statement.getId() == null ? "new" : statement.getId(), documents.size());
       documents.forEach(multipartFile -> statement.addDocument(StatementDocument.builder()
-          .fileName(multipartFile.getOriginalFilename())
-          .fileSize(multipartFile.getSize())
-          .build()));
+        .fileName(multipartFile.getOriginalFilename())
+        .fileSize(multipartFile.getSize())
+        .build()));
+    }
+  }
+
+  public List<TimetableHearingStatement> getTimetableHearingStatementsByIds(List<Long> ids) {
+    return timetableHearingStatementRepository.findAllById(ids);
+  }
+
+  @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin"
+      + ".ApplicationType).TIMETABLE_HEARING, #statement)")
+  public void updateHearindStatementStatus(TimetableHearingStatement statement, StatementStatus statementStatus,
+      String justification) {
+    if (justification != null) {
+      timetableHearingStatementRepository.updateHearingStatementStatusWithJustification(statement.getId(), statementStatus,
+          justification);
+    } else {
+      timetableHearingStatementRepository.updateHearingStatementStatus(statement.getId(), statementStatus);
     }
   }
 

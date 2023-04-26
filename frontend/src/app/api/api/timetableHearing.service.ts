@@ -32,6 +32,7 @@ import { SwissCanton } from '../model/models';
 import { TimetableHearingStatement } from '../model/models';
 import { TimetableHearingYear } from '../model/models';
 import { TransportCompany } from '../model/models';
+import { UpdateHearingStatementStatus } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
 import { Configuration } from '../configuration';
@@ -1337,6 +1338,93 @@ export class TimetableHearingService {
         this.configuration.basePath
       }/line-directory/v1/timetable-hearing/statements/${encodeURIComponent(String(id))}`,
       convertFormParamsToString ? formParams.toString() : formParams,
+      {
+        responseType: <any>responseType_,
+        withCredentials: this.configuration.withCredentials,
+        headers: headers,
+        observe: observe,
+        reportProgress: reportProgress,
+      }
+    );
+  }
+
+  /**
+   * @param statementStatus
+   * @param updateHearingStatementStatus
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public updateHearingStatementStatus(
+    statementStatus: StatementStatus,
+    updateHearingStatementStatus: UpdateHearingStatementStatus,
+    observe?: 'body',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: '*/*' }
+  ): Observable<any>;
+  public updateHearingStatementStatus(
+    statementStatus: StatementStatus,
+    updateHearingStatementStatus: UpdateHearingStatementStatus,
+    observe?: 'response',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: '*/*' }
+  ): Observable<HttpResponse<any>>;
+  public updateHearingStatementStatus(
+    statementStatus: StatementStatus,
+    updateHearingStatementStatus: UpdateHearingStatementStatus,
+    observe?: 'events',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: '*/*' }
+  ): Observable<HttpEvent<any>>;
+  public updateHearingStatementStatus(
+    statementStatus: StatementStatus,
+    updateHearingStatementStatus: UpdateHearingStatementStatus,
+    observe: any = 'body',
+    reportProgress: boolean = false,
+    options?: { httpHeaderAccept?: '*/*' }
+  ): Observable<any> {
+    if (statementStatus === null || statementStatus === undefined) {
+      throw new Error(
+        'Required parameter statementStatus was null or undefined when calling updateHearingStatementStatus.'
+      );
+    }
+    if (updateHearingStatementStatus === null || updateHearingStatementStatus === undefined) {
+      throw new Error(
+        'Required parameter updateHearingStatementStatus was null or undefined when calling updateHearingStatementStatus.'
+      );
+    }
+
+    let headers = this.defaultHeaders;
+
+    let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+    if (httpHeaderAcceptSelected === undefined) {
+      // to determine the Accept header
+      const httpHeaderAccepts: string[] = ['*/*'];
+      httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+    }
+    if (httpHeaderAcceptSelected !== undefined) {
+      headers = headers.set('Accept', httpHeaderAcceptSelected);
+    }
+
+    // to determine the Content-Type header
+    const consumes: string[] = ['application/json'];
+    const httpContentTypeSelected: string | undefined =
+      this.configuration.selectHeaderContentType(consumes);
+    if (httpContentTypeSelected !== undefined) {
+      headers = headers.set('Content-Type', httpContentTypeSelected);
+    }
+
+    let responseType_: 'text' | 'json' = 'json';
+    if (httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+      responseType_ = 'text';
+    }
+
+    return this.httpClient.put<any>(
+      `${
+        this.configuration.basePath
+      }/line-directory/v1/timetable-hearing/statements/update-statement-status/${encodeURIComponent(
+        String(statementStatus)
+      )}`,
+      updateHearingStatementStatus,
       {
         responseType: <any>responseType_,
         withCredentials: this.configuration.withCredentials,
