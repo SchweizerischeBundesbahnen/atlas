@@ -14,6 +14,7 @@ import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.model.exception.NotFoundException.FileNotFoundException;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
+import ch.sbb.line.directory.entity.StatementSender;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
 import ch.sbb.line.directory.entity.TimetableHearingYear;
 import ch.sbb.line.directory.helper.PdfFiles;
@@ -114,20 +115,24 @@ public class TimetableHearingStatementServiceTest {
     timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
     TimetableHearingStatementModel timetableHearingStatementModel = buildTimetableHearingStatementModel();
 
-    TimetableHearingStatementModel createdStatement = timetableHearingStatementService.createHearingStatement(timetableHearingStatementModel, Collections.emptyList());
+    TimetableHearingStatementModel createdStatement = timetableHearingStatementService.createHearingStatement(
+        timetableHearingStatementModel, Collections.emptyList());
     TimetableHearingStatement createdStatementEntity = TimetableHearingStatementMapper.toEntity(createdStatement);
 
-    timetableHearingStatementService.deleteStatementDocument(createdStatementEntity, PdfFiles.MULTIPART_FILES.get(0).getOriginalFilename());
-    assertThatThrownBy(() -> timetableHearingStatementService.getStatementDocument(createdStatement.getId(), PdfFiles.MULTIPART_FILES.get(0).getOriginalFilename())).isInstanceOf(
-      FileNotFoundException.class);
+    timetableHearingStatementService.deleteStatementDocument(createdStatementEntity,
+        PdfFiles.MULTIPART_FILES.get(0).getOriginalFilename());
+    assertThatThrownBy(() -> timetableHearingStatementService.getStatementDocument(createdStatement.getId(),
+        PdfFiles.MULTIPART_FILES.get(0).getOriginalFilename())).isInstanceOf(
+        FileNotFoundException.class);
   }
 
   @Test
   void shouldThrowIllegalArgumentExceptionWhenDeletingDocument() {
     timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
 
-    assertThatThrownBy(() -> timetableHearingStatementService.deleteStatementDocument(new TimetableHearingStatement(), PdfFiles.MULTIPART_FILES.get(0).getOriginalFilename())).isInstanceOf(
-      IllegalArgumentException.class);
+    assertThatThrownBy(() -> timetableHearingStatementService.deleteStatementDocument(new TimetableHearingStatement(),
+        PdfFiles.MULTIPART_FILES.get(0).getOriginalFilename())).isInstanceOf(
+        IllegalArgumentException.class);
   }
 
   @Test
@@ -139,7 +144,8 @@ public class TimetableHearingStatementServiceTest {
     documents.add(PdfFiles.MULTIPART_FILES.get(0));
     documents.add(PdfFiles.MULTIPART_FILES.get(1));
 
-    TimetableHearingStatementModel createdStatement = timetableHearingStatementService.createHearingStatement(timetableHearingStatementModel, documents);
+    TimetableHearingStatementModel createdStatement = timetableHearingStatementService.createHearingStatement(
+        timetableHearingStatementModel, documents);
     TimetableHearingStatement createdStatementEntity = TimetableHearingStatementMapper.toEntity(createdStatement);
 
     assertThatThrownBy(() -> timetableHearingStatementService.deleteStatementDocument(createdStatementEntity, "")).isInstanceOf(
@@ -151,7 +157,8 @@ public class TimetableHearingStatementServiceTest {
     timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
     TimetableHearingStatementModel timetableHearingStatementModel = buildTimetableHearingStatementModel();
 
-    TimetableHearingStatementModel createdStatement = timetableHearingStatementService.createHearingStatement(timetableHearingStatementModel, Collections.emptyList());
+    TimetableHearingStatementModel createdStatement = timetableHearingStatementService.createHearingStatement(
+        timetableHearingStatementModel, Collections.emptyList());
     TimetableHearingStatement createdStatementEntity = TimetableHearingStatementMapper.toEntity(createdStatement);
 
     timetableHearingStatementService.deleteStatementDocument(createdStatementEntity, PdfFiles.MULTIPART_FILES.get(0).getOriginalFilename());
@@ -207,7 +214,8 @@ public class TimetableHearingStatementServiceTest {
     timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
     TimetableHearingStatementModel timetableHearingStatementModel = buildTimetableHearingStatementModel();
 
-    TimetableHearingStatementModel updatingStatement = timetableHearingStatementService.createHearingStatement(timetableHearingStatementModel, Collections.emptyList());
+    TimetableHearingStatementModel updatingStatement = timetableHearingStatementService.createHearingStatement(
+        timetableHearingStatementModel, Collections.emptyList());
     updatingStatement.setTimetableYear(2020L);
 
     assertThatThrownBy(() -> timetableHearingStatementService.updateHearingStatement(updatingStatement, Collections.emptyList())).isInstanceOf(IdNotFoundException.class);
@@ -364,14 +372,37 @@ public class TimetableHearingStatementServiceTest {
     assertThat(hearingStatements.getTotalElements()).isZero();
   }
 
+
+  @Test
+  public void shouldUpdateHearindStatementStatus() {
+    //given
+    TimetableHearingStatement statement1 = TimetableHearingStatement.builder()
+        .timetableYear(2023L)
+        .swissCanton(SwissCanton.BERN)
+        .statementStatus(StatementStatus.RECEIVED)
+        .statementSender(StatementSender.builder()
+            .email("mike@thebike.com")
+            .build())
+        .statement("Ich mag bitte mehr Bös fahren")
+        .build();
+    timetableHearingStatementRepository.saveAndFlush(statement1);
+
+    //when
+    timetableHearingStatementService.updateHearindStatementStatus(statement1, StatementStatus.JUNK,
+        "Napoli ist stärker al YB!");
+    //then
+
+  }
+
   private static TimetableHearingStatementModel buildTimetableHearingStatementModel() {
     return TimetableHearingStatementModel.builder()
-      .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
-      .swissCanton(SwissCanton.BERN)
-      .statementSender(TimetableHearingStatementSenderModel.builder()
-        .email("fabienne.mueller@sbb.ch")
-        .build())
-      .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
-      .build();
+        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .swissCanton(SwissCanton.BERN)
+        .statementSender(TimetableHearingStatementSenderModel.builder()
+            .email("fabienne.mueller@sbb.ch")
+            .build())
+        .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
+        .build();
   }
+
 }
