@@ -590,8 +590,8 @@
     "STATEMENT_STATUS_HEADER": "Status",
     "SWISS_CANTON": "Kanton",
     "TRANSPORT_COMPANY": "Transportunternehmen",
-    "TTFNID": "Feld-Nr.",
-    "TIMETABLE_FIELD_NUMBER": "Fahrplanfeld",
+    "TIMETABLE_FIELD_NUMBER": "Feld-Nr.",
+    "TIMETABLE_FIELD_NUMBER_DESCRIPTION": "Fahrplanfeld",
     "OVERVIEW_TAB": {
       "OVERVIEW_ACTUAL_SUBHEADING_PREFIX": "Das Fahrplanverfahren Schweiz des BAV für den Fahrplan {{timeTableYear}} dauert von",
       "OVERVIEW_ACTUAL_SUBHEADING_POSTFIX": " {{hearingFrom}} bis zum {{hearingTo}}.",

@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -404,6 +405,17 @@ public class TimetableFieldNumberServiceSearchTest {
     assertThat(searchResult.get(1)).usingRecursiveComparison().isEqualTo(versionList.get(4));
     assertThat(searchResult.get(2)).usingRecursiveComparison().isEqualTo(versionList.get(2));
     assertThat(searchResult.get(3)).usingRecursiveComparison().isEqualTo(versionList.get(3));
+  }
+
+  @Test
+  void searchVersionsWithValidAtAndTtfnids() {
+    // Given initial dataset
+    // When
+    List<TimetableFieldNumberVersion> result =
+        timetableFieldNumberService.getVersionsValidAt(Set.of(versionList.get(0).getTtfnid()), SEARCH_DATE);
+    // Then
+    assertThat(result).hasSize(1);
+    assertThat(result.get(0).getTtfnid()).isEqualTo(versionList.get(0).getTtfnid());
   }
 
   @AfterEach

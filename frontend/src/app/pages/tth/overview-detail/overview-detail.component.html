@@ -48,10 +48,11 @@
         <atlas-spacer height="15px"></atlas-spacer>
         <atlas-button
           (buttonClicked)="downloadCsv()"
-          applicationType="LIDI"
+          applicationType="TIMETABLE_HEARING"
           buttonDataCy="download-csv"
           buttonText="TTH.BUTTON.DOWNLOAD_CSV"
-          buttonType="createCheckingPermission"
+          buttonType="cantonWritePermission"
+          [canton]="cantonShort"
         >
           <ng-template #rightIcon>
             <download-icon class="ps-2"></download-icon>
@@ -178,6 +179,7 @@
       [tableColumns]="tableColumns"
       [tableData]="timeTableHearingStatements"
       [totalCount]="totalCount$"
+      [tableFilterConfig]="TABLE_FILTER_CONFIG"
       data-cy="ttfn"
     ></app-table>
     <router-outlet></router-outlet>

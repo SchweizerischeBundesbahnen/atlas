@@ -7,11 +7,13 @@ import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementApiV1;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementRequestParams;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
+import ch.sbb.atlas.model.exception.BadRequestException;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
-import ch.sbb.line.directory.mapper.TimeTableHearingStatementMapper;
+import ch.sbb.line.directory.mapper.TimetableHearingStatementMapper;
 import ch.sbb.line.directory.model.TimetableHearingStatementSearchRestrictions;
 import ch.sbb.line.directory.service.hearing.ResponsibleTransportCompaniesResolverService;
 import ch.sbb.line.directory.service.hearing.TimetableFieldNumberResolverService;
+import ch.sbb.line.directory.service.hearing.TimetableHearingStatementExportService;
 import ch.sbb.line.directory.service.hearing.TimetableHearingStatementService;
 import ch.sbb.line.directory.service.hearing.TimetableHearingYearService;
 import java.io.File;
@@ -19,6 +21,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.InputStreamResource;
@@ -37,6 +41,7 @@ public class TimetableHearingStatementController implements TimetableHearingStat
   private final TimetableHearingYearService timetableHearingYearService;
   private final TimetableFieldNumberResolverService timetableFieldNumberResolverService;
   private final ResponsibleTransportCompaniesResolverService responsibleTransportCompaniesResolverService;
+  private final TimetableHearingStatementExportService timetableHearingStatementExportService;
 
   @Override
   public Container<TimetableHearingStatementModel> getStatements(Pageable pageable,
@@ -45,15 +50,36 @@ public class TimetableHearingStatementController implements TimetableHearingStat
         TimetableHearingStatementSearchRestrictions.builder()
             .pageable(pageable)
             .statementRequestParams(statementRequestParams).build());
+    List<TimetableHearingStatementModel> enrichedModels = timetableFieldNumberResolverService.resolveAdditionalVersionInfo(
+        hearingStatements.stream().map(TimetableHearingStatementMapper::toModel).toList());
     return Container.<TimetableHearingStatementModel>builder()
-        .objects(hearingStatements.stream().map(TimeTableHearingStatementMapper::toModel).toList())
+        .objects(enrichedModels)
         .totalCount(hearingStatements.getTotalElements())
         .build();
   }
 
   @Override
+  public Resource getStatementsAsCsv(String language, TimetableHearingStatementRequestParams statementRequestParams) {
+    if (statementRequestParams.getTimetableHearingYear() == null) {
+      throw new BadRequestException("timetableHearingYear is mandatory here");
+    }
+    if (!Set.of("de", "fr", "it").contains(language)) {
+      throw new BadRequestException("Language must be either de,fr,it");
+    }
+
+    Container<TimetableHearingStatementModel> statements = getStatements(Pageable.unpaged(), statementRequestParams);
+    File csvFile = timetableHearingStatementExportService.getStatementsAsCsv(statements.getObjects(), new Locale(language));
+
+    try {
+      return new InputStreamResource(new FileInputStream(csvFile));
+    } catch (IOException e) {
+      throw new FileException(e);
+    }
+  }
+
+  @Override
   public TimetableHearingStatementModel getStatement(Long id) {
-    return TimeTableHearingStatementMapper.toModel(timetableHearingStatementService.getTimetableHearingStatementById(id));
+    return TimetableHearingStatementMapper.toModel(timetableHearingStatementService.getTimetableHearingStatementById(id));
   }
 
   @Override
@@ -101,7 +127,7 @@ public class TimetableHearingStatementController implements TimetableHearingStat
     statement.setId(id);
 
     TimetableHearingStatement hearingStatement = timetableHearingStatementService.updateHearingStatement(statement, documents);
-    return TimeTableHearingStatementMapper.toModel(hearingStatement);
+    return TimetableHearingStatementMapper.toModel(hearingStatement);
   }
 
   @Override

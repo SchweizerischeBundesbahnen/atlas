@@ -193,8 +193,8 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       expect(component.tableColumns[0].value).toEqual('statementStatus');
       expect(component.tableColumns[1].value).toEqual('swissCanton');
       expect(component.tableColumns[2].value).toEqual('responsibleTransportCompaniesDisplay');
-      expect(component.tableColumns[3].value).toEqual('ttfnid');
-      expect(component.tableColumns[4].value).toEqual('timetableFieldNumber');
+      expect(component.tableColumns[3].value).toEqual('timetableFieldNumber');
+      expect(component.tableColumns[4].value).toEqual('timetableFieldDescription');
       expect(component.tableColumns[5].value).toEqual('editionDate');
       expect(component.tableColumns[6].value).toEqual('editor');
     });
@@ -284,8 +284,8 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       expect(component.tableColumns.length).toEqual(4);
       expect(component.tableColumns[0].value).toEqual('swissCanton');
       expect(component.tableColumns[1].value).toEqual('responsibleTransportCompaniesDisplay');
-      expect(component.tableColumns[2].value).toEqual('ttfnid');
-      expect(component.tableColumns[3].value).toEqual('timetableFieldNumber');
+      expect(component.tableColumns[2].value).toEqual('timetableFieldNumber');
+      expect(component.tableColumns[3].value).toEqual('timetableFieldDescription');
     });
   });
 
@@ -329,8 +329,8 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       expect(component.tableColumns.length).toEqual(5);
       expect(component.tableColumns[0].value).toEqual('swissCanton');
       expect(component.tableColumns[1].value).toEqual('responsibleTransportCompaniesDisplay');
-      expect(component.tableColumns[2].value).toEqual('ttfnid');
-      expect(component.tableColumns[3].value).toEqual('timetableFieldNumber');
+      expect(component.tableColumns[2].value).toEqual('timetableFieldNumber');
+      expect(component.tableColumns[3].value).toEqual('timetableFieldDescription');
       expect(component.tableColumns[4].value).toEqual('editor');
     });
   });

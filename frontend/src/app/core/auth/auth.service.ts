@@ -6,7 +6,8 @@ import { User } from '../components/user/user';
 import { Pages } from '../../pages/pages';
 import jwtDecode from 'jwt-decode';
 import { Role } from './role';
-import { ApplicationRole, ApplicationType, UserAdministrationService, Permission } from '../../api';
+import { ApplicationRole, ApplicationType, Permission, UserAdministrationService } from '../../api';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -16,6 +17,7 @@ export class AuthService {
   private readonly REQUESTED_ROUTE_STORAGE_KEY = 'requested_route';
 
   private permissions: Permission[] = [];
+  permissionsLoaded = new BehaviorSubject(false);
 
   constructor(
     private oauthService: OAuthService,
@@ -178,6 +180,7 @@ export class AuthService {
       if (this.mayAccessTimetableHearing()) {
         Pages.viewablePages.push(Pages.TTH);
       }
+      this.permissionsLoaded.next(true);
     });
   }
 
