@@ -115,6 +115,7 @@ model/transportCompany.ts
 model/transportCompanyBoRelation.ts
 model/transportCompanyRelation.ts
 model/transportCompanyStatus.ts
+model/updateHearingStatementStatus.ts
 model/user.ts
 model/userAccountStatus.ts
 model/userDisplayName.ts
