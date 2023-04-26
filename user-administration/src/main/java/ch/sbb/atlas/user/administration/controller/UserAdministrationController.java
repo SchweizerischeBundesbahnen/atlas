@@ -18,6 +18,7 @@ import ch.sbb.atlas.user.administration.service.ClientCredentialAdministrationSe
 import ch.sbb.atlas.user.administration.service.GraphApiService;
 import ch.sbb.atlas.user.administration.service.UserAdministrationService;
 import ch.sbb.atlas.user.administration.service.UserPermissionDistributor;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -80,9 +81,24 @@ public class UserAdministrationController implements UserAdministrationApiV1 {
     return UserDisplayNameModel.toModel(userModel);
   }
 
+  public List<UserDisplayNameModel> getUserInformation(List<String> userIds) {
+    List<UserDisplayNameModel> result = new ArrayList<>();
+
+    // Add all ClientCredential Display Informations
+    userIds.forEach(userId -> getClientCredentialAlias(userId).ifPresent(result::add));
+
+    // Add all User Information
+    List<String> userIdList = userIds.stream().filter(userId -> result.stream()
+        .noneMatch(i -> i.getSbbUserId().equals(userId))).toList();
+    result.addAll(graphApiService.resolveUsers(userIdList).stream().map(UserDisplayNameModel::toModel).toList());
+
+    return result;
+  }
+
   private Optional<UserDisplayNameModel> getClientCredentialAlias(String clientId) {
     return clientCredentialAdministrationService.getClientCredentialPermission(
         clientId).stream().findFirst().map(permission -> UserDisplayNameModel.builder()
+        .sbbUserId(clientId)
         .displayName(permission.getAlias())
         .build());
   }
