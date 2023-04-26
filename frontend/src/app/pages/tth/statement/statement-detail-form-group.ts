@@ -6,6 +6,7 @@ import {
 } from '../../../api';
 
 export interface StatementDetailFormGroup {
+  id: FormControl<number | null | undefined>;
   timetableYear: FormControl<number | null | undefined>;
   statementStatus: FormControl<StatementStatus | null | undefined>;
   ttfnid: FormControl<string | null | undefined>;
@@ -17,6 +18,7 @@ export interface StatementDetailFormGroup {
   statement: FormControl<string | null | undefined>;
   statementSender: FormGroup<StatementSenderFormGroup>;
   justification: FormControl<string | null | undefined>;
+  comment: FormControl<string | null | undefined>;
   etagVersion: FormControl<number | null | undefined>;
 }
 

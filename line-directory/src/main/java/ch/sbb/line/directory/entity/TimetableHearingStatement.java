@@ -86,6 +86,9 @@ public class TimetableHearingStatement extends BaseEntity implements CantonAssoc
   @Size(max = AtlasFieldLengths.LENGTH_5000)
   private String justification;
 
+  @Size(max = AtlasFieldLengths.LENGTH_280)
+  private String comment;
+
   public void removeDocument(String documentFilename) {
     Optional<StatementDocument> optionalStatementDocument = documents.stream().filter(doc -> Objects.equals(documentFilename, doc.getFileName())).findFirst();
     optionalStatementDocument.ifPresent(documents::remove);
