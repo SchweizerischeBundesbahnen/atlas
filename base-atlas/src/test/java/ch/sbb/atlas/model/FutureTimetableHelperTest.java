@@ -1,4 +1,4 @@
-package ch.sbb.atlas.amazon.helper;
+package ch.sbb.atlas.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
