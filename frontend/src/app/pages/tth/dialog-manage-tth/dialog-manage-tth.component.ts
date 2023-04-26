@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, TemplateRef, ViewChild, ViewChildren } from '@angular/core';
 import { TimetableHearingService, TimetableHearingYear } from '../../../api';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { take } from 'rxjs';
@@ -15,11 +15,13 @@ export class DialogManageTthComponent implements OnInit {
   readonly statementCreatableInternalCtrlName = 'statementCreatableInternal';
   readonly statementEditableCtrlName = 'statementEditable';
 
-  private _showManageView = true;
+  @ViewChild('loadingView', { static: true }) loadingView!: TemplateRef<this>;
+  @ViewChild('manageView', { static: true }) manageView!: TemplateRef<this>;
+  @ViewChild('closeTimetableHearingView', { static: true })
+  closeTimetableHearingView!: TemplateRef<this>;
 
-  get showManageView(): boolean {
-    return this._showManageView;
-  }
+  currentView: TemplateRef<this> | null = null;
+  actionButtonsDisabled = false;
 
   private readonly year: number;
   private readonly timetableHearingYear?: TimetableHearingYear;
@@ -39,9 +41,8 @@ export class DialogManageTthComponent implements OnInit {
     this.year = matDialogData;
   }
 
-  // todo: loading view
   ngOnInit() {
-    console.log(this.year);
+    this.currentView = this.loadingView;
     this.tthService
       .getHearingYear(this.year)
       .pipe(take(1))
@@ -53,9 +54,9 @@ export class DialogManageTthComponent implements OnInit {
             statementCreatableInternal: !!year.statementCreatableInternal,
             statementEditable: !!year.statementEditable,
           });
+          this.currentView = this.manageView;
         },
         error: (err) => {
-          // close dialog and error notification
           this.dialogRef.close();
           this.notificationService.error(err);
         },
@@ -70,10 +71,9 @@ export class DialogManageTthComponent implements OnInit {
     if (!this.timetableHearingYear) {
       throw 'TimetableHearingYear should be defined here';
     }
-    // send request, show notification and close dialog
-    // todo: mby show confirmation dialog before save and close
 
-    // update object
+    this.actionButtonsDisabled = true;
+
     this.timetableHearingYear.statementCreatableExternal =
       this.manageTthFormGroup.value[this.statementCreatableExternalCtrlName];
     this.timetableHearingYear.statementCreatableInternal =
@@ -97,21 +97,15 @@ export class DialogManageTthComponent implements OnInit {
   }
 
   handleManageViewTthCloseClick(): void {
-    // confirmation dialog => send update year request, on success => notification and step over,
-    // on error notification and close dialog // todo: ask for specification
-
-    console.log(this.manageTthFormGroup);
-    this._showManageView = false;
+    this.currentView = this.closeTimetableHearingView;
   }
 
   handleCloseViewCancelClick(): void {
-    this._showManageView = true;
+    this.currentView = this.manageView;
   }
 
   handleCloseViewTthCloseClick(): void {
-    // send close request, on success => close dialog and success notificiation
-    // on error => close dialog and error notification
-
+    this.actionButtonsDisabled = true;
     this.tthService
       .closeTimetableHearing(this.year)
       .pipe(take(1))
