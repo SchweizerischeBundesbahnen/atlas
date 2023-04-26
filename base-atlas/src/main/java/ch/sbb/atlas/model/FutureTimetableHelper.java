@@ -1,4 +1,4 @@
-package ch.sbb.atlas.amazon.helper;
+package ch.sbb.atlas.model;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;

@@ -1,6 +1,6 @@
 package ch.sbb.line.directory.service.hearing;
 
-import ch.sbb.atlas.amazon.helper.FutureTimetableHelper;
+import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.api.bodi.TransportCompanyModel;
 import ch.sbb.atlas.api.client.bodi.TransportCompanyClient;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
