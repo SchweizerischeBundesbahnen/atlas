@@ -1,0 +1,43 @@
+<div class="dialog-close-panel dialog-close-icon-container">
+  <button (click)="goBackToStatementDetailEditMode()" class="close-icon-btn">
+    <em class="bi bi-x fs-2"></em>
+  </button>
+</div>
+<div class="dialog" data-cy="dialog">
+  <h1 class="font-bold-4xl">{{ 'TTH.STATEMENT.DIALOG.TITLE' | translate }}</h1>
+  <div>
+    <span> {{ 'TTH.STATEMENT.DIALOG.TEXT' | translate }}</span>
+  </div>
+
+  <br />
+  <div class="d-flex flex-row col-12 mb-5">
+    <div class="d-flex flex-column col-12">
+      <form-comment
+        [formGroup]="form"
+        controlName="comment"
+        label="TTH.STATEMENT.DIALOG.COMMENT_LABEL"
+        maxChars="280"
+      >
+      </form-comment>
+    </div>
+  </div>
+
+  <mat-dialog-actions class="justify-content-end">
+    <atlas-button
+      (buttonClicked)="goBackToStatementDetailEditMode()"
+      buttonDataCy="dialog-cancel-button"
+      buttonText="{{ 'TTH.STATEMENT.DIALOG.CANCEL' | translate }}"
+      buttonType="whiteFooterNonEdit"
+      wrapperStyleClass="me-3"
+    >
+    </atlas-button>
+    <atlas-button
+      (buttonClicked)="changeCantonAndAddComment()"
+      buttonDataCy="dialog-confirm-button"
+      buttonText="{{ 'TTH.STATEMENT.DIALOG.CONFIRM' | translate }}"
+      buttonType="whiteFooterNonEdit"
+      wrapperStyleClass="me-3"
+    >
+    </atlas-button>
+  </mat-dialog-actions>
+</div>
