@@ -40,6 +40,12 @@ public interface TimetableHearingStatementApiV1 {
     @Parameter(hidden = true) @PageableDefault(sort = {Fields.timetableYear, Fields.id}) Pageable pageable,
     @ParameterObject TimetableHearingStatementRequestParams statementRequestParams);
 
+  @GetMapping(path = "csv/{language}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+  @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastExplicitReader(T(ch.sbb.atlas.kafka.model.user.admin"
+      + ".ApplicationType).TIMETABLE_HEARING)")
+  Resource getStatementsAsCsv(@PathVariable String language,
+      @ParameterObject TimetableHearingStatementRequestParams statementRequestParams);
+
   @GetMapping(path = "{id}")
   @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastExplicitReader(T(ch.sbb.atlas.kafka.model.user.admin"
     + ".ApplicationType).TIMETABLE_HEARING)")

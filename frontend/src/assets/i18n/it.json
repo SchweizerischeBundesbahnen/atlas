@@ -590,8 +590,8 @@
     "STATEMENT_STATUS_HEADER": "Stato",
     "SWISS_CANTON": "Cantone",
     "TRANSPORT_COMPANY": "Azienda di trasporto",
-    "TTFNID": "Campo-n.",
-    "TIMETABLE_FIELD_NUMBER": "Quadro orario",
+    "TIMETABLE_FIELD_NUMBER": "Numero del quadro d’orario",
+    "TIMETABLE_FIELD_NUMBER_DESCRIPTION": "Quadro orario",
     "OVERVIEW_TAB": {
       "OVERVIEW_ACTUAL_SUBHEADING_PREFIX": "La procedura dell'orario svizzero dell'UFT per l'orario {{timeTableYear}} dura da",
       "OVERVIEW_ACTUAL_SUBHEADING_POSTFIX": " {{hearingFrom}} fino a {{hearingTo}}.",

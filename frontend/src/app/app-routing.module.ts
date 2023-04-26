@@ -4,7 +4,10 @@ import { HomeComponent } from './pages/home/home.component';
 import { Pages } from './pages/pages';
 import { AuthGuard } from './core/auth/guards/auth-guard';
 import { AdminGuard } from './core/auth/guards/admin.guard';
-import { TimetableHearingGuard } from './core/auth/guards/timetable-hearing-guard.service';
+import {
+  canActivateTimetableHearing,
+  TimetableHearingGuard,
+} from './core/auth/guards/timetable-hearing-guard.service';
 
 const routes: Routes = [
   {
@@ -35,7 +38,7 @@ const routes: Routes = [
     path: Pages.TTH.path,
     loadChildren: () => import('./pages/tth/tth.module').then((m) => m.TthModule),
     data: { headerTitle: Pages.TTH.headerTitle },
-    canActivate: [TimetableHearingGuard],
+    canActivate: [canActivateTimetableHearing],
   },
   {
     path: Pages.USER_ADMINISTRATION.path,
