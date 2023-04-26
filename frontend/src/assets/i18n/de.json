@@ -648,11 +648,12 @@
       "STOP_POINT": "Haltestelle",
       "STOP_POINT_INFO": "Beschreibung der referenzierten Haltestelle",
       "STATUS_JUSTIFICATION": "Status und Begründung",
-      "FIST_NAME": "Vorname",
+      "FIRST_NAME": "Vorname",
       "LAST_NAME": "Nachname",
       "E_MAIL": "E-Mail",
       "E_MAIL_TEXT": "Falls keine E-Mail vorhanden ist, reicht eine fiktive Eingabe z.B. xxx@xxx.ch",
       "JUSTIFICATION": "Begründung",
+      "COMMENT": "Kommentar zur Kantonsübergabe",
       "ATTACHMENT_INFO": "Sie können die Stellungnahme mit PDF-Anhang einreichen.",
       "ATTACHMENT_BUTTON": "PDF anhängen",
       "ORGANISATION": "Organisation/Vereinigung",
@@ -663,6 +664,13 @@
       "NOTIFICATION": {
         "ADD_SUCCESS": "Neue Stellungnahme erfolgreich gespeichert.",
         "EDIT_SUCCESS": "Die Stellungnahme wurde erfolgreich gespeichert."
+      },
+      "DIALOG": {
+        "TITLE": "Kanton ändern",
+        "TEXT": "Sie ändern die Kantonszuordnung der ausgewählten Stellungnahme. Mit der Übertragung verlieren Sie die Editierrechte für diese Stellungnahme.",
+        "COMMENT_LABEL": "Kommentar dazu",
+        "CANCEL": "Zurück",
+        "CONFIRM": "Kanton ändern"
       }
     }
   }

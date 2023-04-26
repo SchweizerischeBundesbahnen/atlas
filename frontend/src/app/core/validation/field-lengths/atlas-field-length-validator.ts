@@ -21,6 +21,10 @@ export class AtlasFieldLengthValidator {
     return AtlasFieldLengthValidator.maxLength(255, control);
   }
 
+  static length_280(control: AbstractControl): ValidationErrors | null {
+    return AtlasFieldLengthValidator.maxLength(280, control);
+  }
+
   static comments(control: AbstractControl): ValidationErrors | null {
     return AtlasFieldLengthValidator.maxLength(1500, control);
   }

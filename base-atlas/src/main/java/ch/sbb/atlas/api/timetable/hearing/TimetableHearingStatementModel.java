@@ -91,6 +91,10 @@ public class TimetableHearingStatementModel extends BaseVersionModel implements 
   @Schema(description = "Statement of Federal office of transport", example = "We can absolutely do that.")
   private String justification;
 
+  @Size(max = AtlasFieldLengths.LENGTH_280)
+  @Schema(description = "Statement comment", example = "I am changing my statement from the canton Geneva to the canton Bern.")
+  private String comment;
+
   @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)", example = "5")
   private Integer etagVersion;
 
