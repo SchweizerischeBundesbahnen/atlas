@@ -149,8 +149,7 @@ export class TableComponent<DATATYPE> implements OnInit {
 
   isAllSelected() {
     const numSelected = this.checkBoxSelection.selected.length;
-    const numRows = this.pageSize;
-    return numSelected === numRows;
+    return numSelected === this.pageSize || numSelected === this.totalCount;
   }
 
   toggleAll() {

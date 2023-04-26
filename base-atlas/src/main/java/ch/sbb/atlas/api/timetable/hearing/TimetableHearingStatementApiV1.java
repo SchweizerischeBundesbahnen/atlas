@@ -3,6 +3,8 @@ package ch.sbb.atlas.api.timetable.hearing;
 import ch.sbb.atlas.api.bodi.TransportCompanyModel;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel.Fields;
+import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
+import ch.sbb.atlas.api.timetable.hearing.model.UpdateHearingStatementStatusModel;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Encoding;
@@ -32,13 +34,20 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("v1/timetable-hearing/statements")
 public interface TimetableHearingStatementApiV1 {
 
+  @ResponseStatus(HttpStatus.OK)
+  @PutMapping(path = "/update-statement-status/{statementStatus}")
+  void updateHearingStatementStatus(
+      @org.springframework.web.bind.annotation.RequestBody UpdateHearingStatementStatusModel updateHearingStatementStatus,
+      @PathVariable StatementStatus statementStatus
+  );
+
   @GetMapping
   @PageableAsQueryParam
   @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastExplicitReader(T(ch.sbb.atlas.kafka.model.user.admin"
-    + ".ApplicationType).TIMETABLE_HEARING)")
+      + ".ApplicationType).TIMETABLE_HEARING)")
   Container<TimetableHearingStatementModel> getStatements(
-    @Parameter(hidden = true) @PageableDefault(sort = {Fields.timetableYear, Fields.id}) Pageable pageable,
-    @ParameterObject TimetableHearingStatementRequestParams statementRequestParams);
+      @Parameter(hidden = true) @PageableDefault(sort = {Fields.timetableYear, Fields.id}) Pageable pageable,
+      @ParameterObject TimetableHearingStatementRequestParams statementRequestParams);
 
   @GetMapping(path = "csv/{language}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
   @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastExplicitReader(T(ch.sbb.atlas.kafka.model.user.admin"
@@ -48,12 +57,12 @@ public interface TimetableHearingStatementApiV1 {
 
   @GetMapping(path = "{id}")
   @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastExplicitReader(T(ch.sbb.atlas.kafka.model.user.admin"
-    + ".ApplicationType).TIMETABLE_HEARING)")
+      + ".ApplicationType).TIMETABLE_HEARING)")
   TimetableHearingStatementModel getStatement(@PathVariable Long id);
 
   @GetMapping(path = "{id}/documents/{filename}", produces = MediaType.APPLICATION_PDF_VALUE)
   @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastExplicitReader(T(ch.sbb.atlas.kafka.model.user.admin"
-    + ".ApplicationType).TIMETABLE_HEARING)")
+      + ".ApplicationType).TIMETABLE_HEARING)")
   Resource getStatementDocument(@PathVariable Long id, @PathVariable String filename);
 
   @DeleteMapping(path = "{id}/documents/{filename}")
@@ -62,28 +71,28 @@ public interface TimetableHearingStatementApiV1 {
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
   @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin"
-    + ".ApplicationType).TIMETABLE_HEARING, #statement)")
+      + ".ApplicationType).TIMETABLE_HEARING, #statement)")
   TimetableHearingStatementModel createStatement(
-    @RequestPart @Valid TimetableHearingStatementModel statement,
-    @RequestPart(required = false) List<MultipartFile> documents);
+      @RequestPart @Valid TimetableHearingStatementModel statement,
+      @RequestPart(required = false) List<MultipartFile> documents);
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping(path = "external", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
   @RequestBody(content = @Content(encoding = @Encoding(name = "statement", contentType = MediaType.APPLICATION_JSON_VALUE)))
   @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin"
-    + ".ApplicationType).TIMETABLE_HEARING, #statement)")
+      + ".ApplicationType).TIMETABLE_HEARING, #statement)")
   TimetableHearingStatementModel createStatementExternal(
-    @RequestPart @Valid TimetableHearingStatementModel statement,
-    @RequestPart(required = false) List<MultipartFile> documents);
+      @RequestPart @Valid TimetableHearingStatementModel statement,
+      @RequestPart(required = false) List<MultipartFile> documents);
 
   @ResponseStatus(HttpStatus.OK)
   @PutMapping(path = "{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
   @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin"
-    + ".ApplicationType).TIMETABLE_HEARING, #statement)")
+      + ".ApplicationType).TIMETABLE_HEARING, #statement)")
   TimetableHearingStatementModel updateHearingStatement(
-    @PathVariable Long id,
-    @RequestPart @Valid TimetableHearingStatementModel statement,
-    @RequestPart(required = false) List<MultipartFile> documents
+      @PathVariable Long id,
+      @RequestPart @Valid TimetableHearingStatementModel statement,
+      @RequestPart(required = false) List<MultipartFile> documents
   );
 
   @GetMapping(path = "responsible-transport-companies/{ttfnid}/{year}")
