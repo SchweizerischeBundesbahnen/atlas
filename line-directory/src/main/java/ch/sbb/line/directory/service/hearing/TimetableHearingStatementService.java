@@ -120,6 +120,25 @@ public class TimetableHearingStatementService {
     return timetableHearingStatement;
   }
 
+  public void deleteSpamMailFromYear(Long timetableHearingYear) {
+    timetableHearingStatementRepository.deleteByStatementStatusAndTimetableYear(StatementStatus.JUNK, timetableHearingYear);
+  }
+
+  public void moveClosedStatementsToNextYearWithStatusUpdates(Long timetableHearingYear) {
+    List<TimetableHearingStatement> statements = timetableHearingStatementRepository.findAllByStatementStatusInAndTimetableYear(
+        List.of(StatementStatus.RECEIVED, StatementStatus.IN_REVIEW, StatementStatus.MOVED),
+        timetableHearingYear
+    );
+    final Long nextYear = timetableHearingYear + 1;
+    statements.forEach(statement -> {
+      if (statement.getStatementStatus() == StatementStatus.MOVED) {
+        statement.setStatementStatus(StatementStatus.RECEIVED);
+      }
+      statement.setTimetableYear(nextYear);
+    });
+    timetableHearingStatementRepository.saveAll(statements);
+  }
+
   private void filesValidation(List<File> files, Set<StatementDocument> alreadySavedDocuments) {
     statementDocumentFilesValidationService.validateMaxNumberOfFiles(files.size() + alreadySavedDocuments.size());
     statementDocumentFilesValidationService.validateNoFileNameDuplicate(files, alreadySavedDocuments);

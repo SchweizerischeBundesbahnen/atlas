@@ -108,26 +108,22 @@ public class TimetableHearingStatementController implements TimetableHearingStat
 
   @Override
   public TimetableHearingStatementModel createStatement(TimetableHearingStatementModel statement, List<MultipartFile> documents) {
-    // TODO: test - check if internal allowed
     TimetableHearingYear hearingYear = timetableHearingYearService.getHearingYear(statement.getTimetableYear());
     if (!hearingYear.isStatementCreatableInternal()) {
       throw new ForbiddenDueToHearingYearSettings(hearingYear.getTimetableYear(),
           TimetableHearingYear_.STATEMENT_CREATABLE_INTERNAL);
     }
-
     return timetableHearingStatementService.createHearingStatement(statement, documents);
   }
 
   @Override
   public TimetableHearingStatementModel createStatementExternal(TimetableHearingStatementModel statement,
       List<MultipartFile> documents) {
-    // TODO: test - check if clientCredential auth
     Jwt accessToken = UserService.getAccessToken();
     if (!UserService.isClientCredentialAuthentication(accessToken)) {
       throw new NoClientCredentialAuthUsed();
     }
 
-    // TODO: test - check if external allowed
     TimetableHearingYear activeHearingYear = timetableHearingYearService.getActiveHearingYear();
     statement.setTimetableYear(activeHearingYear.getTimetableYear());
 

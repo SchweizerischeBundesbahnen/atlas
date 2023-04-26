@@ -39,13 +39,24 @@ public @interface WithMockJwtAuthentication {
 
     public static Jwt createJwt(String sbbuid) {
       return Jwt.withTokenValue("token")
-                .header("header", "value")
-                .claim("sbbuid", sbbuid)
-                .claim("roles", List.of("atlas-admin"))
-                .audience(Collections.singletonList("87e6e634-6ba1-4e7a-869d-3348b4c3eafc"))
-                .issuer(
-                    "https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0")
-                .build();
+          .header("header", "value")
+          .claim("sbbuid", sbbuid)
+          .claim("roles", List.of("atlas-admin"))
+          .audience(Collections.singletonList("87e6e634-6ba1-4e7a-869d-3348b4c3eafc"))
+          .issuer(
+              "https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0")
+          .build();
+    }
+
+    public static Jwt createJwtWithoutSbbUid() {
+      return Jwt.withTokenValue("token")
+          .header("header", "value")
+          .claim("azp", "test-client")
+          .claim("roles", List.of("atlas-admin"))
+          .audience(Collections.singletonList("87e6e634-6ba1-4e7a-869d-3348b4c3eafc"))
+          .issuer(
+              "https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0")
+          .build();
     }
   }
 }

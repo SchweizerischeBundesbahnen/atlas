@@ -2,16 +2,25 @@ package ch.sbb.line.directory.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementSenderModel;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.HearingStatus;
+import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
+import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.line.directory.entity.TimetableHearingStatement;
 import ch.sbb.line.directory.entity.TimetableHearingYear;
 import ch.sbb.line.directory.exception.HearingCurrentlyActiveException;
+import ch.sbb.line.directory.mapper.TimeTableHearingStatementMapper;
 import ch.sbb.line.directory.model.TimetableHearingYearSearchRestrictions;
+import ch.sbb.line.directory.repository.TimetableHearingStatementRepository;
 import ch.sbb.line.directory.repository.TimetableHearingYearRepository;
 import ch.sbb.line.directory.service.hearing.TimetableHearingYearService;
 import java.time.LocalDate;
 import java.util.Set;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,12 +39,15 @@ public class TimetableHearingYearServiceTest {
 
   private final TimetableHearingYearRepository timetableHearingYearRepository;
   private final TimetableHearingYearService timetableHearingYearService;
+  private final TimetableHearingStatementRepository timetableHearingStatementRepository;
 
   @Autowired
   public TimetableHearingYearServiceTest(TimetableHearingYearRepository timetableHearingYearRepository,
-      TimetableHearingYearService timetableHearingYearService) {
+      TimetableHearingYearService timetableHearingYearService,
+      TimetableHearingStatementRepository timetableHearingStatementRepository) {
     this.timetableHearingYearRepository = timetableHearingYearRepository;
     this.timetableHearingYearService = timetableHearingYearService;
+    this.timetableHearingStatementRepository = timetableHearingStatementRepository;
   }
 
   @AfterEach
@@ -127,5 +139,47 @@ public class TimetableHearingYearServiceTest {
 
     TimetableHearingYear closed = timetableHearingYearService.closeTimetableHearing(startedTimetableHearing);
     assertThat(closed.getHearingStatus()).isEqualTo(HearingStatus.ARCHIVED);
+  }
+
+  @Test
+  void shouldCloseTimetableHearingWithCorrectStatementAndYearUpdates() {
+    // given
+    TimetableHearingYear timetableHearing = timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+    TimetableHearingYear startedTimetableHearing = timetableHearingYearService.startTimetableHearing(timetableHearing);
+
+    TimetableHearingStatementModel statementModel;
+    // Junk Statement
+    statementModel = buildTimetableHearingStatementModel();
+    statementModel.setStatementStatus(StatementStatus.JUNK);
+    timetableHearingStatementRepository.save(TimeTableHearingStatementMapper.toEntity(statementModel));
+
+    // Statement to move to next year and to update status
+    statementModel = buildTimetableHearingStatementModel();
+    statementModel.setStatementStatus(StatementStatus.MOVED);
+    timetableHearingStatementRepository.save(TimeTableHearingStatementMapper.toEntity(statementModel));
+
+    // when
+    TimetableHearingYear closed = timetableHearingYearService.closeTimetableHearing(startedTimetableHearing);
+
+    // then
+    assertThat(closed.getHearingStatus()).isEqualTo(HearingStatus.ARCHIVED);
+    assertThat(closed.isStatementCreatableInternal()).isFalse();
+    assertThat(closed.isStatementCreatableExternal()).isFalse();
+    assertThat(closed.isStatementEditable()).isFalse();
+
+    Stream<TimetableHearingStatement> resultStream = timetableHearingStatementRepository.findAll().stream();
+    assertTrue(resultStream.noneMatch(resultStatement ->
+        resultStatement.getStatementStatus() == StatementStatus.JUNK || resultStatement.getTimetableYear() == YEAR));
+  }
+
+  private static TimetableHearingStatementModel buildTimetableHearingStatementModel() {
+    return TimetableHearingStatementModel.builder()
+        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .swissCanton(SwissCanton.BERN)
+        .statementSender(TimetableHearingStatementSenderModel.builder()
+            .email("fabienne.mueller@sbb.ch")
+            .build())
+        .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
+        .build();
   }
 }
