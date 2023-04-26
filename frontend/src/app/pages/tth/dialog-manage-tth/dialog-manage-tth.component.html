@@ -1,5 +1,14 @@
+<ng-container *ngTemplateOutlet="currentView"></ng-container>
+
+<ng-template #loadingView>
+  <div class="dialog-container p-3">
+    <h2>{{ 'TTH.MANAGE_TIMETABLE_HEARING.POPUP_TITLE' | translate }}</h2>
+    <span>Loading...</span>
+  </div>
+</ng-template>
+
 <!-- with slides -->
-<ng-template [ngIf]="showManageView" [ngIfElse]="closeTimetableHearingView">
+<ng-template #manageView>
   <div class="dialog-container p-3">
     <h2>{{ 'TTH.MANAGE_TIMETABLE_HEARING.POPUP_TITLE' | translate }}</h2>
 
@@ -30,8 +39,9 @@
     <div class="one-action-btn-wrapper-right pt-5">
       <atlas-button
         buttonType="confirm"
-        buttonText="TTH.BUTTON.CLOSE_TIMETABLE_HEARING"
-        (buttonClicked)="handleManageViewTthCloseClick()"
+        buttonText="COMMON.SAVE_AND_CLOSE"
+        (buttonClicked)="handleSaveAndCloseClick()"
+        [disabled]="actionButtonsDisabled"
       ></atlas-button>
     </div>
 
@@ -40,11 +50,13 @@
         buttonType="cancel"
         buttonText="COMMON.CANCEL"
         (buttonClicked)="handleManageViewCancelClick()"
+        [disabled]="actionButtonsDisabled"
       ></atlas-button>
       <atlas-button
         buttonType="confirm"
-        buttonText="COMMON.SAVE_AND_CLOSE"
-        (buttonClicked)="handleSaveAndCloseClick()"
+        buttonText="TTH.BUTTON.CLOSE_TIMETABLE_HEARING"
+        (buttonClicked)="handleManageViewTthCloseClick()"
+        [disabled]="actionButtonsDisabled"
       ></atlas-button>
     </div>
   </div>
@@ -74,11 +86,13 @@
         buttonType="cancel"
         buttonText="COMMON.CANCEL"
         (buttonClicked)="handleCloseViewCancelClick()"
+        [disabled]="actionButtonsDisabled"
       ></atlas-button>
       <atlas-button
         buttonType="confirm"
         buttonText="TTH.BUTTON.CLOSE_TIMETABLE_HEARING"
         (buttonClicked)="handleCloseViewTthCloseClick()"
+        [disabled]="actionButtonsDisabled"
       ></atlas-button>
     </div>
   </div>
