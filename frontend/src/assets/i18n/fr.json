@@ -648,11 +648,12 @@
       "STOP_POINT": "Arrêt",
       "STOP_POINT_INFO": "Description de l'arrêt référencé",
       "STATUS_JUSTIFICATION": "Statut et justification",
-      "FIST_NAME": "Prénom",
+      "FIRST_NAME": "Prénom",
       "LAST_NAME": "Nom de famille",
       "E_MAIL": "Courrier électronique",
       "E_MAIL_TEXT": "Si aucun e-mail n'est disponible, une entrée fictive, par exemple xxx@xxx.ch, suffit.",
       "JUSTIFICATION": "Justification",
+      "COMMENT": "Commentaire sur la cession de canton",
       "ATTACHMENT_INFO": "Vous pouvez envoyer votre avis avec une annexe PDF.",
       "ATTACHMENT_BUTTON": "Joindre un PDF",
       "ORGANISATION": "Organisation/Association",
@@ -663,6 +664,13 @@
       "NOTIFICATION": {
         "ADD_SUCCESS": "Nouvel avis enregistré avec succès.",
         "EDIT_SUCCESS": "L'avis a été enregistré avec succès."
+      },
+      "DIALOG": {
+        "TITLE": "Changer de canton",
+        "TEXT": "Vous modifiez l'affectation cantonale de l'instruction sélectionnée. Avec la transmission, vous perdez les droits d'édition de cette déclaration.",
+        "COMMENT_LABEL": "Commentez-le",
+        "CANCEL": "Retour",
+        "CONFIRM": "Changer de canton"
       }
     }
   }

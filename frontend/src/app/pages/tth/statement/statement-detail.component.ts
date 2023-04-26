@@ -24,6 +24,7 @@ import { NotificationService } from '../../../core/notification/notification.ser
 import { ValidationService } from '../../../core/validation/validation.service';
 import { AuthService } from '../../../core/auth/auth.service';
 import { TthUtils } from '../util/tth-utils';
+import { StatementDialogService } from './statement-dialog/service/statement.dialog.service';
 
 @Component({
   selector: 'app-statement-detail',
@@ -51,7 +52,8 @@ export class StatementDetailComponent implements OnInit {
     private timetableHearingService: TimetableHearingService,
     private notificationService: NotificationService,
     private authService: AuthService,
-    private timetableYearChangeService: TimetableYearChangeService
+    private timetableYearChangeService: TimetableYearChangeService,
+    private readonly statementDialogService: StatementDialogService
   ) {}
 
   get isHearingStatusArchived() {
@@ -98,6 +100,7 @@ export class StatementDetailComponent implements OnInit {
 
   getFormGroup(statement: TimetableHearingStatement | undefined): FormGroup {
     return new FormGroup<StatementDetailFormGroup>({
+      id: new FormControl(statement?.id),
       timetableYear: new FormControl(statement?.timetableYear, [Validators.required]),
       statementStatus: new FormControl(statement?.statementStatus, [Validators.required]),
       ttfnid: new FormControl(statement?.ttfnid),
@@ -148,6 +151,11 @@ export class StatementDetailComponent implements OnInit {
       ]),
       justification: new FormControl(statement?.justification, [
         AtlasFieldLengthValidator.statement,
+        WhitespaceValidator.blankOrEmptySpaceSurrounding,
+        AtlasCharsetsValidator.iso88591,
+      ]),
+      comment: new FormControl(statement?.comment, [
+        AtlasFieldLengthValidator.length_280,
         WhitespaceValidator.blankOrEmptySpaceSurrounding,
         AtlasCharsetsValidator.iso88591,
       ]),
@@ -283,5 +291,17 @@ export class StatementDetailComponent implements OnInit {
 
   get cantonShort() {
     return Cantons.fromSwissCanton(this.form.value.swissCanton!)!.short;
+  }
+
+  cantonSelectionChanged() {
+    this.statementDialogService.openDialog(this.form).subscribe((result) => {
+      if (result) {
+        const hearingStatement = this.form.value as TimetableHearingStatement;
+        this.navigateToStatementDetail(hearingStatement);
+      } else {
+        this.form.controls.comment.setValue(this.statement?.comment);
+        this.form.controls.swissCanton.setValue(this.statement?.swissCanton);
+      }
+    });
   }
 }
