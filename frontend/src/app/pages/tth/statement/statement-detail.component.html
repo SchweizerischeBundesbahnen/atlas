@@ -11,6 +11,16 @@
         [short]="true"
       ></app-user-detail-info>
 
+      <div *ngIf="statement && statement.comment" class="d-flex flex-row col-12 mb-5">
+        <div class="d-flex flex-column col-12">
+          <br />
+          <span class="font-bold-lg">
+            {{ 'TTH.STATEMENT.COMMENT' | translate }}
+          </span>
+          <span>{{ statement.comment }}</span>
+        </div>
+      </div>
+
       <div class="d-flex flex-row col-12 mb-4 mt-5">
         <div class="d-flex flex-column col-6 pe-3">
           <atlas-select
@@ -26,6 +36,7 @@
         </div>
         <div class="d-flex flex-column col-6">
           <atlas-select
+            (selectChanged)="cantonSelectionChanged()"
             [formGroup]="form"
             controlName="swissCanton"
             dataCy="swissCanton"
@@ -105,7 +116,7 @@
           <atlas-text-field
             [formGroup]="form.controls.statementSender"
             controlName="firstName"
-            fieldLabel="TTH.STATEMENT.FIST_NAME"
+            fieldLabel="TTH.STATEMENT.FIRST_NAME"
           >
           </atlas-text-field>
         </div>

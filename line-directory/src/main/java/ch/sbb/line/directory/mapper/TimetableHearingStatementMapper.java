@@ -23,6 +23,7 @@ public class TimetableHearingStatementMapper {
         .statement(statementModel.getStatement())
         .documents(statementModel.getDocuments().stream().map(StatementDocumentMapper::toEntity).collect(Collectors.toSet()))
         .justification(statementModel.getJustification())
+        .comment(statementModel.getComment())
         .version(statementModel.getEtagVersion())
         .build();
     timetableHearingStatement.setResponsibleTransportCompanies(
@@ -47,6 +48,7 @@ public class TimetableHearingStatementMapper {
         .statement(statement.getStatement())
         .documents(statement.getDocuments().stream().map(StatementDocumentMapper::toModel).toList())
         .justification(statement.getJustification())
+        .comment(statement.getComment())
         .creationDate(statement.getCreationDate())
         .creator(statement.getCreator())
         .editionDate(statement.getEditionDate())
