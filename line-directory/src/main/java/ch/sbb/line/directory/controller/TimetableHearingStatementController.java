@@ -7,6 +7,8 @@ import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementApiV1;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementRequestParams;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
+import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
+import ch.sbb.atlas.api.timetable.hearing.model.UpdateHearingStatementStatusModel;
 import ch.sbb.atlas.model.exception.BadRequestException;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
 import ch.sbb.line.directory.mapper.TimetableHearingStatementMapper;
@@ -128,6 +130,17 @@ public class TimetableHearingStatementController implements TimetableHearingStat
 
     TimetableHearingStatement hearingStatement = timetableHearingStatementService.updateHearingStatement(statement, documents);
     return TimetableHearingStatementMapper.toModel(hearingStatement);
+  }
+
+  @Override
+  public void updateHearingStatementStatus(UpdateHearingStatementStatusModel updateHearingStatementStatus,
+      StatementStatus statementStatus) {
+    List<TimetableHearingStatement> timetableHearingStatements =
+        timetableHearingStatementService.getTimetableHearingStatementsByIds(
+            updateHearingStatementStatus.getIds());
+    timetableHearingStatements.forEach(
+        timetableHearingStatement -> timetableHearingStatementService.updateHearindStatementStatus(timetableHearingStatement,
+            statementStatus, updateHearingStatementStatus.getJustification()));
   }
 
   @Override
