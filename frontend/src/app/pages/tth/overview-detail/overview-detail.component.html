@@ -78,7 +78,11 @@
         </atlas-button>
       </div>
       <div
-        *ngIf="showAddNewStatementButton && !noTimetableHearingYearFound"
+        *ngIf="
+          showAddNewStatementButton &&
+          !noTimetableHearingYearFound &&
+          foundTimetableHearingYear.statementCreatableInternal
+        "
         class="d-flex flex-column col-3 left-position"
       >
         <atlas-spacer height="15px"></atlas-spacer>

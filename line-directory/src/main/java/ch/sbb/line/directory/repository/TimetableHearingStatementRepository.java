@@ -3,6 +3,8 @@ package ch.sbb.line.directory.repository;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
+import java.util.Collection;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
@@ -37,5 +39,11 @@ public interface TimetableHearingStatementRepository extends JpaRepository<Timet
   @Modifying(clearAutomatically = true)
   @Query("update timetable_hearing_statement set swissCanton= :swissCanton where id = :id")
   void updateHearingCanton(@Param("id") Long id, @Param("swissCanton") SwissCanton swissCanton);
+
+  @Transactional
+  void deleteByStatementStatusAndTimetableYear(StatementStatus statementStatus, Long year);
+
+  List<TimetableHearingStatement> findAllByStatementStatusInAndTimetableYear(Collection<StatementStatus> statementStatuses,
+      Long year);
 
 }
