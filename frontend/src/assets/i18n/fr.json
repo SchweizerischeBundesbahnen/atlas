@@ -553,7 +553,8 @@
       "STATUS_CHANGE": "Modifier statut",
       "COMMENT_LABEL": "Commentaire à ce sujet",
       "BACK": "De retour",
-      "STATUS_CHANGE_MESSAGE": "Vous modifiez l'avis sélectionné."
+      "STATUS_CHANGE_MESSAGE": "Vous modifiez l'avis sélectionné.",
+      "MULTIPLE_STATUS_CHANGE_MESSAGE": "Vous modifiez {{tthsLength}} l'avis sélectionné."
     },
     "TAB": {
       "ACTUAL": "Audition actuelle",

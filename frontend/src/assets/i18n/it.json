@@ -553,7 +553,8 @@
       "STATUS_CHANGE": "Modificare lo stato",
       "COMMENT_LABEL": "Commento",
       "BACK": "Indietro",
-      "STATUS_CHANGE_MESSAGE": "Modifica la dichiarazioni per l'orario selezionata."
+      "STATUS_CHANGE_MESSAGE": "Modifica la dichiarazioni per l'orario selezionata.",
+      "MULTIPLE_STATUS_CHANGE_MESSAGE": "Modifica le {{tthsLength}} audizione selezionate"
     },
     "TAB": {
       "ACTUAL": "Audizioni attuali",
