@@ -12,7 +12,7 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import { Cantons } from '../overview/canton/Cantons';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AtlasCharsetsValidator } from '../../../core/validation/charsets/atlas-charsets-validator';
 import { AtlasFieldLengthValidator } from '../../../core/validation/field-lengths/atlas-field-length-validator';
 import { WhitespaceValidator } from '../../../core/validation/whitespace/whitespace-validator';
@@ -162,6 +162,9 @@ export class StatementDetailComponent implements OnInit {
         WhitespaceValidator.blankOrEmptySpaceSurrounding,
         AtlasCharsetsValidator.iso88591,
       ]),
+      documents: new FormArray(
+        statement?.documents?.map((document) => new FormControl(document)) ?? []
+      ),
       etagVersion: new FormControl(statement?.etagVersion),
     });
   }
@@ -310,5 +313,12 @@ export class StatementDetailComponent implements OnInit {
 
   saveButtonDisabled() {
     return !(this.form.dirty || this.uploadedFiles.length > 0);
+  }
+
+  removeDocument(file: { name: string }) {
+    const documents = this.form.value.documents as { name: string; size: number }[];
+    const indexOfFile = documents.findIndex((document) => document.name === file.name);
+    this.form.controls.documents.removeAt(indexOfFile);
+    this.form.markAsDirty();
   }
 }
