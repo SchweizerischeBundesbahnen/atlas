@@ -164,7 +164,10 @@
           </div>
         </div>
         <div
-          *ngIf="isHearingYearActive && !statusChangeCollectingActionsEnabled"
+          *ngIf="
+            isHearingYearActive &&
+            !statusChangeCollectingActionsEnabled && !cantonDeliveryCollectingActionsEnabled
+          "
           class="d-flex flex-column col-2 left-position"
         >
           <atlas-select
@@ -188,7 +191,7 @@
           </atlas-select>
         </div>
         <div
-          *ngIf="statusChangeCollectingActionsEnabled"
+          *ngIf="statusChangeCollectingActionsEnabled || cantonDeliveryCollectingActionsEnabled"
           class="d-flex flex-row col-5 left-position"
         >
           <div class="d-flex flex-column col-6">
@@ -204,7 +207,7 @@
               </ng-template>
             </atlas-button>
           </div>
-          <div class="d-flex flex-column col-6 mt-2">
+          <div *ngIf="statusChangeCollectingActionsEnabled" class="d-flex flex-column col-6 mt-2">
             <atlas-select
               (selectChanged)="collectingStatusChangeAction($event)"
               [additionalLabelspace]="false"
@@ -214,6 +217,26 @@
               optionTranslateLabelPrefix="TTH.STATEMENT_STATUS."
               placeHolderLabel="TTH.DROPDOWN.COLLECTING_STATUS_CHANGE_ACTION.PLACEHOLDER"
             >
+            </atlas-select>
+          </div>
+          <div *ngIf="cantonDeliveryCollectingActionsEnabled" class="d-flex flex-column col-6 mt-2">
+            <atlas-select
+              (selectChanged)="collectingCantonDeliveryAction($event)"
+              [additionalLabelspace]="false"
+              [disabled]="selectedItems.length === 0"
+              [options]="CANTON_DROPDOWN_OPTIONS"
+              optionTranslateLabelPrefix="TTH.CANTON."
+              placeHolderLabel="TTH.DROPDOWN.COLLECTING_STATUS_CANTON_DELIVERY_CHANGE_ACTION.PLACEHOLDER"
+            >
+              <ng-template #matOptionPrefix let-canton="option">
+                <img
+                  alt="canton-logo"
+                  class="pe-1"
+                  height="28"
+                  src="assets/images/cantons/{{ canton }}.svg"
+                  width="28"
+                />
+              </ng-template>
             </atlas-select>
           </div>
         </div>
