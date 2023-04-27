@@ -29,6 +29,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -391,7 +392,9 @@ public class TimetableHearingStatementServiceTest {
     timetableHearingStatementService.updateHearindStatementStatus(statement1, StatementStatus.JUNK,
         "Napoli ist stärker al YB!");
     //then
-
+    Optional<TimetableHearingStatement> result = timetableHearingStatementRepository.findById(statement1.getId());
+    assertThat(result.isPresent()).isTrue();
+    assertThat(result.get().getStatementStatus()).isEqualTo(StatementStatus.JUNK);
   }
 
   private static TimetableHearingStatementModel buildTimetableHearingStatementModel() {
