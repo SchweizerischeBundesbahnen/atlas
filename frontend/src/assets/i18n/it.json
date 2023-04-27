@@ -71,6 +71,16 @@
     },
     "NOTIFICATION": {
       "OPTIMISTIC_LOCK_ERROR": "L’oggetto è già stato cancellato o nel frattempo è stato modificato. Ricaricare la pagina premendo il tasto F5."
+    },
+    "FILEUPLOAD": {
+      "DROPZONE": "Trascinare il file su questa superficie",
+      "OR": "o",
+      "SELECT_FILES": "Selezionare i file",
+      "ERROR": {
+        "FILE_SIZE": "Non è stato possibile aggiungere {{filename}}. Il limite di {{maxsize}} è stato superato.",
+        "TYPE": "Non è stato possibile aggiungere {{filename}}. Il tipo di file non è supportato.",
+        "FILE_COUNT": "È consentito un massimo di file {{maxFileCount}}."
+      }
     }
   },
   "DETAIL_USER_EDITION": {
@@ -654,7 +664,7 @@
       "E_MAIL_TEXT": "Se non è disponibile un'e-mail, è sufficiente una voce fittizia, ad esempio xxx@xxx.ch.",
       "JUSTIFICATION": "Giustificazione",
       "COMMENT": "Commento sul passaggio di consegne cantonale",
-      "ATTACHMENT_INFO": "È possibile inviare la dichiarazione con un allegato PDF.",
+      "ATTACHMENT_INFO": "È possibile inviare la dichiarazione con un allegato PDF. Sono possibili 3 PDF fino a 20 MB.",
       "ATTACHMENT_BUTTON": "Allegare un PDF",
       "ORGANISATION": "Organizzazione/associazione",
       "ZIP": "CAP",
