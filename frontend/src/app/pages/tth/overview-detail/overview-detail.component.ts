@@ -74,9 +74,9 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
 
   showCollectingActionButton = true;
   statusChangeCollectingActionsEnabled = false;
+  cantonDeliveryCollectingActionsEnabled = false;
 
   selectedItems: TimetableHearingStatement[] = [];
-
   sorting = 'statementStatus,asc';
   selectedCheckBox = new SelectionModel<TimetableHearingStatement>(true, []);
   protected readonly tableFilterConfig = OverviewDetailTableFilterConfig;
@@ -108,7 +108,11 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     if (TthUtils.isHearingStatusActive(this.hearingStatus)) {
       this.tthTableService.activeTabPage = Pages.TTH_ACTIVE;
       this.tableColumns = this.getActiveTableColumns();
-      if (this.statusChangeCollectingActionsEnabled) {
+
+      if (
+        this.statusChangeCollectingActionsEnabled ||
+        this.cantonDeliveryCollectingActionsEnabled
+      ) {
         this.tableColumns = this.getActiveTableColumns();
         this.tableColumns.unshift({
           headerTitle: '',
@@ -118,6 +122,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
           },
         });
       }
+
       this.showManageTimetableHearingButton = this.isSwissCanton;
       this.showAddNewStatementButton = !this.isSwissCanton;
       this.showDownloadCsvButton = true;
@@ -238,6 +243,11 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
       this.showCollectingActionButton = false;
       this.ngOnInit();
     }
+    if (action.value === 'CANTON_DELIVERY') {
+      this.cantonDeliveryCollectingActionsEnabled = true;
+      this.showCollectingActionButton = false;
+      this.ngOnInit();
+    }
   }
 
   setFoundHearingYear(timetableHearingYears: TimetableHearingYear[]) {
@@ -269,6 +279,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
   cancelCollectiongAction() {
     this.showCollectingActionButton = true;
     this.statusChangeCollectingActionsEnabled = false;
+    this.cantonDeliveryCollectingActionsEnabled = false;
     this.selectedCheckBox = new SelectionModel<TimetableHearingStatement>(true, []);
     this.ngOnInit();
   }
@@ -285,6 +296,13 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
             this.ngOnInit();
           }
         });
+    }
+  }
+
+  collectingCantonDeliveryAction($event: any) {
+    if (this.selectedItems.length > 0) {
+      console.log($event);
+      console.log(this.selectedItems);
     }
   }
 

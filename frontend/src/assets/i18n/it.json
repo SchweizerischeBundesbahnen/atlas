@@ -573,6 +573,9 @@
       "COLLECTING_STATUS_CHANGE_ACTION": {
         "PLACEHOLDER": "Modificare lo stato della selezione"
       },
+      "COLLECTING_STATUS_CANTON_DELIVERY_CHANGE_ACTION": {
+        "PLACEHOLDER": "Cambiare il cantone di selezione"
+      },
       "COLLECTING_ACTION": {
         "PLACEHOLDER": "Raccolta di azioni",
         "OPTION": {
