@@ -190,6 +190,7 @@
           <atlas-select
             (selectChanged)="collectingStatusChangeAction($event)"
             [additionalLabelspace]="false"
+            [disabled]="selectedItems.length === 0"
             [options]="STATUS_OPTIONS"
             dataCy="collect-status-change-action-type"
             optionTranslateLabelPrefix="TTH.STATEMENT_STATUS."
