@@ -1,11 +1,11 @@
 <div class="file-container d-flex flex-row col-12 p-2 m-1" (click)="$event.stopPropagation()">
   <div class="d-flex flex-column col-8">
-    <div>{{ file.name }}</div>
+    <div class="text-truncate" [title]="file.name">{{ file.name }}</div>
   </div>
   <div class="d-flex flex-column col-3">
     <div class="text-align-end">{{ file.size | fileSize }}</div>
   </div>
   <div class="d-flex flex-column col-1">
-    <i class="bi bi-trash" (click)="onDelete()"></i>
+    <i class="bi bi-trash" (click)="onDelete(); $event.stopPropagation()"></i>
   </div>
 </div>
