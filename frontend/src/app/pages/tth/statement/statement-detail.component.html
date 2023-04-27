@@ -203,21 +203,16 @@
         </div>
       </div>
 
-      <div class="font-regular-sm mb-2">{{ 'TTH.STATEMENT.ATTACHMENT_INFO' | translate }}</div>
-      <atlas-file-upload></atlas-file-upload>
-
-      OLD:
-      <atlas-button
-        applicationType="LIDI"
-        buttonDataCy="addPDF"
-        buttonText="TTH.STATEMENT.ATTACHMENT_BUTTON"
-        buttonType="createCheckingPermission"
-        wrapperStyleClass="mb-4"
-      >
-        <ng-template #rightIcon>
-          <upload-icon class="ps-2"></upload-icon>
-        </ng-template>
-      </atlas-button>
+      <ng-container *ngIf="form.enabled">
+        <div class="font-regular-sm mb-2">{{ 'TTH.STATEMENT.ATTACHMENT_INFO' | translate }}</div>
+        <atlas-file-upload
+          [(uploadedFiles)]="uploadedFiles"
+          acceptedFileExtension=".pdf"
+          acceptedFileType="application/pdf"
+          [maxFileSize]="20 * 1024 * 1024"
+          [maxFileCount]="3"
+        ></atlas-file-upload>
+      </ng-container>
 
       <h1 class="font-bold-2xl pt-5">
         {{ 'TTH.STATEMENT.STATUS_JUSTIFICATION' | translate }}
@@ -287,7 +282,7 @@
   </atlas-button>
   <atlas-button
     (click)="save()"
-    [disabled]="!form.dirty"
+    [disabled]="saveButtonDisabled()"
     [footerEdit]="form.enabled"
     [submitButton]="true"
     buttonDataCy="save-item"

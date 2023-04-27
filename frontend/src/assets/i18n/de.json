@@ -664,7 +664,7 @@
       "E_MAIL_TEXT": "Falls keine E-Mail vorhanden ist, reicht eine fiktive Eingabe z.B. xxx@xxx.ch",
       "JUSTIFICATION": "Begründung",
       "COMMENT": "Kommentar zur Kantonsübergabe",
-      "ATTACHMENT_INFO": "Sie können die Stellungnahme mit PDF-Anhang einreichen.",
+      "ATTACHMENT_INFO": "Sie können die Stellungnahme mit PDF-Anhang einreichen. Es sind 3 PDFs bis zu 20 MB möglich.",
       "ATTACHMENT_BUTTON": "PDF anhängen",
       "ORGANISATION": "Organisation/Vereinigung",
       "ZIP": "PLZ",
