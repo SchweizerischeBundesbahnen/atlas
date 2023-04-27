@@ -68,6 +68,10 @@ export class FileUploadComponent {
       this.addFileError(file, 'COMMON.FILEUPLOAD.ERROR.FILE_COUNT');
       return false;
     }
+    if (this.uploadedFiles.filter((i) => i.name === file.name).length > 0) {
+      this.addFileError(file, 'COMMON.FILEUPLOAD.ERROR.ALREADY_ADDED');
+      return false;
+    }
     return true;
   }
 
@@ -90,7 +94,7 @@ export class FileUploadComponent {
     this.errorFiles = [];
   }
 
-  fileDeleted(file: File) {
+  fileDeleted(file: { name: string }) {
     this.uploadedFiles = this.uploadedFiles.filter((item) => item.name !== file.name);
     this.clearErrors();
     this.uploadedFilesChange.emit(this.uploadedFiles);

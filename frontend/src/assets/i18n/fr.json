@@ -79,7 +79,8 @@
       "ERROR": {
         "FILE_SIZE": "{{filename}} n'a pas pu être ajouté. La limite de {{maxsize}} a été dépassée.",
         "TYPE": "{{filename}} n'a pas pu être ajouté. Le type de fichier n'est pas pris en charge.",
-        "FILE_COUNT": "Un maximum de {{maxFileCount}} fichiers est autorisé."
+        "FILE_COUNT": "Un maximum de {{maxFileCount}} fichiers est autorisé.",
+        "ALREADY_ADDED": "Le fichier {{filename}} a déjà été ajouté."
       }
     }
   },

@@ -340,7 +340,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
                     MULTIPART_FILES.get(2).getContentType(), MULTIPART_FILES.get(2).getBytes())))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
-        .andExpect(jsonPath("$." + Fields.documents, hasSize(2)));
+        .andExpect(jsonPath("$." + Fields.documents, hasSize(3)));
   }
 
   @Test
