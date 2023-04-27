@@ -9,8 +9,11 @@
     <div class="mb-2">
       <br />
     </div>
-    <span class="font-regular-lg message">{{
-      data.message | translate : { actualStatus: data.statementStatus }
+    <span *ngIf="data.type === 'SINGLE'" class="font-regular-lg message">{{
+      data.message | translate
+    }}</span>
+    <span *ngIf="data.type === 'MULTIPLE'" class="font-regular-lg message">{{
+      data.message | translate : { tthsLength: data.tths.length }
     }}</span>
   </div>
   <div class="pt-2 pb-5 justification">

@@ -79,6 +79,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
 
   sorting = 'statementStatus,asc';
   selectedCheckBox = new SelectionModel<TimetableHearingStatement>(true, []);
+  protected readonly tableFilterConfig = OverviewDetailTableFilterConfig;
   private ngUnsubscribe = new Subject<void>();
 
   constructor(
@@ -252,7 +253,12 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
 
   changeSelectedStatus(changedStatus: ColumnDropDownEvent) {
     this.tthStatusChangeDialog
-      .onClick(changedStatus.$event.value, [changedStatus.value], changedStatus.value.justification)
+      .onClick(
+        changedStatus.$event.value,
+        [changedStatus.value],
+        changedStatus.value.justification,
+        'SINGLE'
+      )
       .subscribe((result) => {
         if (result) {
           this.ngOnInit();
@@ -270,7 +276,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
   collectingStatusChangeAction(changedStatus: ColumnDropDownEvent) {
     if (this.selectedItems.length > 0) {
       this.tthStatusChangeDialog
-        .onClick(changedStatus.value, this.selectedItems, undefined)
+        .onClick(changedStatus.value, this.selectedItems, undefined, 'MULTIPLE')
         .subscribe((result) => {
           if (result) {
             this.statusChangeCollectingActionsEnabled = false;
@@ -488,6 +494,4 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
       );
     });
   }
-
-  protected readonly tableFilterConfig = OverviewDetailTableFilterConfig;
 }
