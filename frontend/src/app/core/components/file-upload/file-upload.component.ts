@@ -1,5 +1,5 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
-import { FileError, FileErrorType } from './fileError';
+import { FileUploadError } from './file-upload-error';
 
 @Component({
   selector: 'atlas-file-upload',
@@ -9,15 +9,16 @@ import { FileError, FileErrorType } from './fileError';
 export class FileUploadComponent {
   @Input() acceptedFileExtension = '.pdf';
   @Input() acceptedFileType = 'application/pdf';
-  @Input() maxFileSize = 20_000_000;
+  @Input() maxFileSize = 20 * 1024 * 1024;
+  @Input() maxFileCount = 3;
 
   files: File[] = [];
 
-  errorFiles: FileError[] = [];
+  errorFiles: FileUploadError[] = [];
 
   @ViewChild('fileInput') fileInputRef!: ElementRef;
 
-  onFileDropped(fileList: FileList) {
+  onFilesDropped(fileList: FileList) {
     this.addFileListToFile(fileList);
   }
 
@@ -33,27 +34,62 @@ export class FileUploadComponent {
     }
   }
 
-  // TODO: check all file sizes combined
   addFileListToFile(fileList: FileList) {
+    this.clearErrors();
     for (let i = 0; i < fileList.length; i++) {
       if (fileList.item(i)) {
         const item = fileList.item(i)!;
-        if (item.type === this.acceptedFileType) {
-          if (item.size < this.maxFileSize) {
-            this.files.push(item);
-          } else {
-            this.errorFiles.push({
-              errorType: FileErrorType.SIZE,
-              file: item,
-            });
-          }
-        } else {
-          this.errorFiles.push({
-            errorType: FileErrorType.TYPE,
-            file: item,
-          });
+        if (this.validateFile(item)) {
+          this.files.push(item);
         }
       }
     }
+  }
+
+  get combinedFileSize() {
+    return this.files.map((file) => file.size).reduce((sum, current) => sum + current, 0);
+  }
+
+  private validateFile(file: File) {
+    if (file.type !== this.acceptedFileType) {
+      this.addFileError(file, 'COMMON.FILEUPLOAD.ERROR.TYPE');
+      return false;
+    }
+    if (this.combinedFileSize + file.size > this.maxFileSize) {
+      this.addFileError(file, 'COMMON.FILEUPLOAD.ERROR.FILE_SIZE');
+      return false;
+    }
+    if (this.files.length >= this.maxFileCount) {
+      if (this.fileCountErrorAlreadyAdded()) {
+        return false;
+      }
+      this.addFileError(file, 'COMMON.FILEUPLOAD.ERROR.FILE_COUNT');
+      return false;
+    }
+    return true;
+  }
+
+  private fileCountErrorAlreadyAdded() {
+    return (
+      this.errorFiles.filter((error) => error.errorMessage === 'COMMON.FILEUPLOAD.ERROR.FILE_COUNT')
+        .length > 0
+    );
+  }
+
+  private addFileError(file: File, errorMessage: string) {
+    this.errorFiles.push({
+      errorMessage: errorMessage,
+      file: file,
+      maxFileCount: this.maxFileCount,
+    });
+  }
+
+  private clearErrors() {
+    this.errorFiles = [];
+  }
+
+  fileDeleted(file: File) {
+    this.files = this.files.filter((item) => item.name !== file.name);
+    this.clearErrors();
   }
 }

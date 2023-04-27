@@ -77,10 +77,9 @@
       "OR": "oder",
       "SELECT_FILES": "Dateien auswählen",
       "ERROR": {
-        "TEXT_START": "konnte auf Grund",
-        "TYPE": "des Dateityps",
-        "SIZE": "der Grösse",
-        "TEXT_END": "nicht hinzugefügt werden."
+        "FILE_SIZE": "{{filename}} konnte nicht hinzugefügt werden. Die Grenze von {{maxsize}} wurde überschritten.",
+        "TYPE": "{{filename}} konnte nicht hinzugefügt werden. Der Dateityp wird nicht unterstützt.",
+        "FILE_COUNT": "Es sind maximal {{maxFileCount}} Dateien erlaubt."
       }
     }
   },
