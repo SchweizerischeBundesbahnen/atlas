@@ -71,6 +71,16 @@
     },
     "NOTIFICATION": {
       "OPTIMISTIC_LOCK_ERROR": "Soit l’objet a déjà été supprimé, soit il a été traité entre-temps. Veuillez recharger la page en appuyant sur la touche F5."
+    },
+    "FILEUPLOAD": {
+      "DROPZONE": "Faire glisser le fichier sur cette surface",
+      "OR": "ou",
+      "SELECT_FILES": "Sélectionner des fichiers",
+      "ERROR": {
+        "FILE_SIZE": "{{filename}} n'a pas pu être ajouté. La limite de {{maxsize}} a été dépassée.",
+        "TYPE": "{{filename}} n'a pas pu être ajouté. Le type de fichier n'est pas pris en charge.",
+        "FILE_COUNT": "Un maximum de {{maxFileCount}} fichiers est autorisé."
+      }
     }
   },
   "DETAIL_USER_EDITION": {
@@ -654,7 +664,7 @@
       "E_MAIL_TEXT": "Si aucun e-mail n'est disponible, une entrée fictive, par exemple xxx@xxx.ch, suffit.",
       "JUSTIFICATION": "Justification",
       "COMMENT": "Commentaire sur la cession de canton",
-      "ATTACHMENT_INFO": "Vous pouvez envoyer votre avis avec une annexe PDF.",
+      "ATTACHMENT_INFO": "Vous pouvez envoyer votre avis avec une annexe PDF. Il est possible de créer 3 PDF jusqu'à 20 Mo.",
       "ATTACHMENT_BUTTON": "Joindre un PDF",
       "ORGANISATION": "Organisation/Association",
       "ZIP": "Code Postal",
