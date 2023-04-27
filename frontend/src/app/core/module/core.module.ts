@@ -36,9 +36,9 @@ import { DetailFooterComponent } from '../components/detail-footer/detail-footer
 import { DetailPageContainerComponent } from '../components/detail-page-container/detail-page-container.component';
 import { SelectComponent } from '../form-components/select/select.component';
 import { FileUploadComponent } from '../components/file-upload/file-upload.component';
-import { DragAndDropDirective } from '../components/file-upload/drag-and-drop/drag-and-drop.directive';
 import { FileComponent } from '../components/file-upload/file/file.component';
-import { FileSizePipe } from '../components/file-upload/file/file-size.pipe';
+import { FileSizePipe } from '../components/file-upload/file-size/file-size.pipe';
+import { FileDropDirective } from '../components/file-upload/file-drop/file-drop.directive';
 
 const coreComponents = [
   WorkflowFormComponent,
@@ -52,7 +52,7 @@ const coreComponents = [
   AtlasSpacerComponent,
   SwitchVersionComponent,
   FileUploadComponent,
-  DragAndDropDirective,
+  FileDropDirective,
   FileComponent,
   FileSizePipe,
   DialogComponent,
