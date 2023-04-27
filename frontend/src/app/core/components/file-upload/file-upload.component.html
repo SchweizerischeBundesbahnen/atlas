@@ -23,7 +23,7 @@
     style="display: none"
     (change)="onFileInputChanged($event)"
   />
-  <ng-container *ngFor="let file of files">
+  <ng-container *ngFor="let file of uploadedFiles">
     <atlas-file
       [file]="file"
       [ngStyle]="{ width: '100%' }"
