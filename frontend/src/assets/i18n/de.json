@@ -553,7 +553,8 @@
       "STATUS_CHANGE": "Status ändern",
       "COMMENT_LABEL": "Kommentar dazu",
       "BACK": "Zurück",
-      "STATUS_CHANGE_MESSAGE": "Sie ändern die ausgewählte Stellungnahme."
+      "STATUS_CHANGE_MESSAGE": "Sie ändern die ausgewählte Stellungnahme.",
+      "MULTIPLE_STATUS_CHANGE_MESSAGE": "Sie ändern {{tthsLength}} ausgewählte Stellungnahme."
     },
     "TAB": {
       "ACTUAL": "Aktuelle Anhörung",
