@@ -15,7 +15,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { By } from '@angular/platform-browser';
 
 const mockTimetableHearingService = jasmine.createSpyObj('timetableHearingService', [
-  'updateHearingStatement',
+  'updateHearingStatementStatus',
 ]);
 const dialogServiceSpy = jasmine.createSpyObj(DialogService, { confirmLeave: of({}) });
 const dialogRefSpy = jasmine.createSpyObj(['close']);
@@ -35,14 +35,20 @@ describe('TthChangeStatusDialogComponent', () => {
   let fixture: ComponentFixture<TthChangeStatusDialogComponent>;
 
   beforeEach(async () => {
-    mockTimetableHearingService.updateHearingStatement.and.returnValue(of(statement));
+    mockTimetableHearingService.updateHearingStatementStatus.and.returnValue(of(statement));
     await TestBed.configureTestingModule({
       declarations: [TthChangeStatusDialogComponent, CommentComponent, ErrorNotificationComponent],
       imports: [AppTestingModule, FormModule],
       providers: [
         {
           provide: MAT_DIALOG_DATA,
-          useValue: { title: 'Title', message: 'message', ths: statement, id: 1 },
+          useValue: {
+            title: 'Title',
+            message: 'message',
+            tths: [statement],
+            justification: 'Forza Napoli',
+            id: 1,
+          },
         },
         { provide: MatSnackBarRef, useValue: {} },
         { provide: MAT_SNACK_BAR_DATA, useValue: {} },
@@ -103,7 +109,7 @@ describe('TthChangeStatusDialogComponent', () => {
 
     const justification = fixture.debugElement.query(By.css('form-comment'));
     const justificationValue = justification.nativeNode.querySelector('textarea').value;
-    expect(justificationValue).toBe(statement.justification);
+    expect(justificationValue).toBe('Forza Napoli');
 
     const cancelButton = fixture.debugElement.query(By.css('mat-dialog-actions button.me-3'));
     expect(cancelButton.nativeElement.innerText).toBe('DIALOG.CANCEL');
