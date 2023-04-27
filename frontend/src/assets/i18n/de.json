@@ -79,7 +79,8 @@
       "ERROR": {
         "FILE_SIZE": "{{filename}} konnte nicht hinzugefügt werden. Die Grenze von {{maxsize}} wurde überschritten.",
         "TYPE": "{{filename}} konnte nicht hinzugefügt werden. Der Dateityp wird nicht unterstützt.",
-        "FILE_COUNT": "Es sind maximal {{maxFileCount}} Dateien erlaubt."
+        "FILE_COUNT": "Es sind maximal {{maxFileCount}} Dateien erlaubt.",
+        "ALREADY_ADDED": "Die Datei {{filename}} wurde bereits hinzugefügt."
       }
     }
   },
