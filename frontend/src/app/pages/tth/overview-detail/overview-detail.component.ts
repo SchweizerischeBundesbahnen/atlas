@@ -17,7 +17,6 @@ import { Subject, takeUntil } from 'rxjs';
 import moment from 'moment';
 import { OverviewToTabShareDataService } from '../overview-tab/service/overview-to-tab-share-data.service';
 import { MatSelectChange } from '@angular/material/select';
-import { TableService } from '../../../core/components/table/table.service';
 import { TthUtils } from '../util/tth-utils';
 import { TablePagination } from '../../../core/components/table/table-pagination';
 import { TthChangeStatusDialogService } from './tth-change-status-dialog/service/tth-change-status-dialog.service';
@@ -39,7 +38,6 @@ import { FileDownloadService } from '../../../core/components/file-upload/file/f
   selector: 'app-timetable-hearing-overview-detail',
   templateUrl: './overview-detail.component.html',
   styleUrls: ['./overview-detail.component.scss'],
-  providers: [TableService],
 })
 export class OverviewDetailComponent implements OnInit, OnDestroy {
   readonly TABLE_FILTER_CONFIG = OverviewDetailTableFilterConfig;
@@ -80,6 +78,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
   selectedItems: TimetableHearingStatement[] = [];
 
   sorting = 'statementStatus,asc';
+  selectedCheckBox = new SelectionModel<TimetableHearingStatement>(true, []);
   private ngUnsubscribe = new Subject<void>();
 
   constructor(
@@ -118,7 +117,6 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
           },
         });
       }
-
       this.showManageTimetableHearingButton = this.isSwissCanton;
       this.showAddNewStatementButton = !this.isSwissCanton;
       this.showDownloadCsvButton = true;
@@ -233,6 +231,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
   }
 
   collectingActions(action: MatSelectChange) {
+    console.log('page-sitze: ' + this.tthTableService.pageSize);
     if (action.value === 'STATUS_CHANGE') {
       this.statusChangeCollectingActionsEnabled = true;
       this.showCollectingActionButton = false;
@@ -264,12 +263,11 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
   cancelCollectiongAction() {
     this.showCollectingActionButton = true;
     this.statusChangeCollectingActionsEnabled = false;
+    this.selectedCheckBox = new SelectionModel<TimetableHearingStatement>(true, []);
     this.ngOnInit();
   }
 
   collectingStatusChangeAction(changedStatus: ColumnDropDownEvent) {
-    console.log(changedStatus);
-    console.log(this.selectedItems);
     if (this.selectedItems.length > 0) {
       this.tthStatusChangeDialog
         .onClick(changedStatus.value, this.selectedItems, undefined)
@@ -277,6 +275,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
           if (result) {
             this.statusChangeCollectingActionsEnabled = false;
             this.showCollectingActionButton = true;
+            this.selectedCheckBox = new SelectionModel<TimetableHearingStatement>(true, []);
             this.ngOnInit();
           }
         });
