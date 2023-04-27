@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { FileUploadError } from './file-upload-error';
 
 @Component({
@@ -7,12 +7,13 @@ import { FileUploadError } from './file-upload-error';
   styleUrls: ['./file-upload.component.scss'],
 })
 export class FileUploadComponent {
-  @Input() acceptedFileExtension = '.pdf';
-  @Input() acceptedFileType = 'application/pdf';
-  @Input() maxFileSize = 20 * 1024 * 1024;
-  @Input() maxFileCount = 3;
+  @Input() acceptedFileExtension!: string;
+  @Input() acceptedFileType!: string;
+  @Input() maxFileSize!: number;
+  @Input() maxFileCount!: number;
 
-  files: File[] = [];
+  @Input() uploadedFiles: File[] = [];
+  @Output() uploadedFilesChange = new EventEmitter<File[]>();
 
   errorFiles: FileUploadError[] = [];
 
@@ -40,14 +41,15 @@ export class FileUploadComponent {
       if (fileList.item(i)) {
         const item = fileList.item(i)!;
         if (this.validateFile(item)) {
-          this.files.push(item);
+          this.uploadedFiles.push(item);
+          this.uploadedFilesChange.emit(this.uploadedFiles);
         }
       }
     }
   }
 
   get combinedFileSize() {
-    return this.files.map((file) => file.size).reduce((sum, current) => sum + current, 0);
+    return this.uploadedFiles.map((file) => file.size).reduce((sum, current) => sum + current, 0);
   }
 
   private validateFile(file: File) {
@@ -59,7 +61,7 @@ export class FileUploadComponent {
       this.addFileError(file, 'COMMON.FILEUPLOAD.ERROR.FILE_SIZE');
       return false;
     }
-    if (this.files.length >= this.maxFileCount) {
+    if (this.uploadedFiles.length >= this.maxFileCount) {
       if (this.fileCountErrorAlreadyAdded()) {
         return false;
       }
@@ -89,7 +91,8 @@ export class FileUploadComponent {
   }
 
   fileDeleted(file: File) {
-    this.files = this.files.filter((item) => item.name !== file.name);
+    this.uploadedFiles = this.uploadedFiles.filter((item) => item.name !== file.name);
     this.clearErrors();
+    this.uploadedFilesChange.emit(this.uploadedFiles);
   }
 }

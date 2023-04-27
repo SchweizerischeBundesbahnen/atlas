@@ -45,6 +45,8 @@ export class StatementDetailComponent implements OnInit {
   form!: FormGroup<StatementDetailFormGroup>;
   private ngUnsubscribe = new Subject<void>();
 
+  uploadedFiles: File[] = [];
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -64,6 +66,7 @@ export class StatementDetailComponent implements OnInit {
     this.statement = this.route.snapshot.data.statement;
     this.hearingStatus = this.route.snapshot.data.hearingStatus;
     this.isNew = !this.statement;
+    this.uploadedFiles = [];
 
     this.initForm();
     this.initYearOptions();
@@ -235,7 +238,7 @@ export class StatementDetailComponent implements OnInit {
 
   private createStatement(statement: TimetableHearingStatement) {
     this.timetableHearingService
-      .createStatement(statement, undefined)
+      .createStatement(statement, this.uploadedFiles)
       .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
       .subscribe((statement) => {
         this.notificationService.success('TTH.STATEMENT.NOTIFICATION.ADD_SUCCESS');
@@ -245,7 +248,7 @@ export class StatementDetailComponent implements OnInit {
 
   private updateStatement(id: number, statement: TimetableHearingStatement) {
     this.timetableHearingService
-      .updateHearingStatement(id, statement, undefined)
+      .updateHearingStatement(id, statement, this.uploadedFiles)
       .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
       .subscribe((statement) => {
         this.notificationService.success('TTH.STATEMENT.NOTIFICATION.EDIT_SUCCESS');
@@ -303,5 +306,9 @@ export class StatementDetailComponent implements OnInit {
         this.form.controls.swissCanton.setValue(this.statement?.swissCanton);
       }
     });
+  }
+
+  saveButtonDisabled() {
+    return !(this.form.dirty || this.uploadedFiles.length > 0);
   }
 }
