@@ -148,7 +148,6 @@ export class TableComponent<DATATYPE> implements OnInit {
 
   isAllSelected() {
     const numSelected = this.checkBoxSelection.selected.length;
-    console.log('numSelected: ' + numSelected);
     return numSelected === this.pageSize || numSelected === this.totalCount;
   }
 
