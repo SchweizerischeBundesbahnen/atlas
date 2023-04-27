@@ -210,8 +210,16 @@
           acceptedFileExtension=".pdf"
           acceptedFileType="application/pdf"
           [maxFileSize]="20 * 1024 * 1024"
-          [maxFileCount]="3"
+          [maxFileCount]="3 - form.value.documents.length"
         ></atlas-file-upload>
+      </ng-container>
+
+      <ng-container *ngFor="let document of form.value.documents">
+        <atlas-file
+          [disabled]="this.form.disabled"
+          [file]="{ name: document.fileName, size: document.fileSize }"
+          (fileDeleted)="removeDocument($event)"
+        ></atlas-file>
       </ng-container>
 
       <h1 class="font-bold-2xl pt-5">
