@@ -207,6 +207,7 @@
       (tableChanged)="getOverview($event)"
       *ngIf="!noTimetableHearingYearFound"
       [canEdit]="true"
+      [checkBoxSelection]="selectedCheckBox"
       [tableColumns]="tableColumns"
       [tableData]="timeTableHearingStatements"
       [totalCount]="totalCount$"

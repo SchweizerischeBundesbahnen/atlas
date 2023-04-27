@@ -18,6 +18,7 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
   styleUrls: ['./table.component.scss'],
 })
 export class TableComponent<DATATYPE> implements OnInit {
+  @Input() checkBoxSelection = new SelectionModel<DATATYPE>(true, []);
   @Input() tableFilterConfig: TableFilterConfig<unknown>[][] = [];
   @Input() tableColumns!: TableColumn<DATATYPE>[];
   @Input() canEdit = true;
@@ -32,8 +33,6 @@ export class TableComponent<DATATYPE> implements OnInit {
   @Output() checkedBoxEvent = new EventEmitter<SelectionModel<DATATYPE>>();
   isLoading = false;
   SHOW_TOOLTIP_LENGTH = 20;
-
-  checkBoxSelection = new SelectionModel<DATATYPE>(true, []);
 
   constructor(
     private dateService: DateService,
@@ -149,6 +148,7 @@ export class TableComponent<DATATYPE> implements OnInit {
 
   isAllSelected() {
     const numSelected = this.checkBoxSelection.selected.length;
+    console.log('numSelected: ' + numSelected);
     return numSelected === this.pageSize || numSelected === this.totalCount;
   }
 
@@ -162,6 +162,10 @@ export class TableComponent<DATATYPE> implements OnInit {
   toggleCheckBox($event: MatCheckboxChange, row: DATATYPE) {
     $event ? this.checkBoxSelection.toggle(row) : null;
     this.checkedBoxEvent.emit(this.checkBoxSelection);
+  }
+
+  resetSelectedCheckBox() {
+    this.checkBoxSelection.clear();
   }
 
   private emitTableChangedEvent(): void {
