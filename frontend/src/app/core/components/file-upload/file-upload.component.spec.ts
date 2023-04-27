@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FileUploadComponent } from './file-upload.component';
 import { AppTestingModule } from '../../../app.testing.module';
+import { MockAtlasButtonComponent } from '../../../app.testing.mocks';
 
 describe('FileUploadComponent', () => {
   let component: FileUploadComponent;
@@ -9,7 +10,7 @@ describe('FileUploadComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FileUploadComponent],
+      declarations: [FileUploadComponent, MockAtlasButtonComponent],
       imports: [AppTestingModule],
     }).compileComponents();
   });
