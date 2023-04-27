@@ -47,6 +47,7 @@ describe('TthChangeStatusDialogComponent', () => {
             message: 'message',
             tths: [statement],
             justification: 'Forza Napoli',
+            type: 'SINGLE',
             id: 1,
           },
         },
