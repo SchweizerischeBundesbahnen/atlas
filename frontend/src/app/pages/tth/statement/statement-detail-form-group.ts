@@ -1,4 +1,4 @@
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import {
   StatementStatus,
   SwissCanton,
@@ -19,6 +19,7 @@ export interface StatementDetailFormGroup {
   statementSender: FormGroup<StatementSenderFormGroup>;
   justification: FormControl<string | null | undefined>;
   comment: FormControl<string | null | undefined>;
+  documents: FormArray;
   etagVersion: FormControl<number | null | undefined>;
 }
 
