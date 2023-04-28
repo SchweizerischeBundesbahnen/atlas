@@ -4,7 +4,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { SwissCanton } from '../../../../../api';
 import { StatementDialogService } from './statement.dialog.service';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import {
   StatementDetailFormGroup,
   StatementSenderFormGroup,
@@ -30,6 +30,7 @@ const form = new FormGroup<StatementDetailFormGroup>({
   statement: new FormControl(),
   justification: new FormControl(),
   comment: new FormControl(),
+  documents: new FormArray<any>([]),
   etagVersion: new FormControl(),
 });
 
