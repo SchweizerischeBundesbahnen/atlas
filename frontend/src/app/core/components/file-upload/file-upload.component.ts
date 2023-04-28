@@ -13,6 +13,7 @@ export class FileUploadComponent {
   @Input() maxFileCount!: number;
 
   @Input() uploadedFiles: File[] = [];
+  @Input() alreadySavedFileNames: string[] = [];
   @Output() uploadedFilesChange = new EventEmitter<File[]>();
 
   errorFiles: FileUploadError[] = [];
@@ -70,6 +71,10 @@ export class FileUploadComponent {
     }
     if (this.uploadedFiles.filter((i) => i.name === file.name).length > 0) {
       this.addFileError(file, 'COMMON.FILEUPLOAD.ERROR.ALREADY_ADDED');
+      return false;
+    }
+    if (this.alreadySavedFileNames.filter((i) => i === file.name).length > 0) {
+      this.addFileError(file, 'COMMON.FILEUPLOAD.ERROR.ALREADY_SAVED');
       return false;
     }
     return true;

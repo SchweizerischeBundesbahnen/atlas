@@ -315,10 +315,26 @@ export class StatementDetailComponent implements OnInit {
     return !(this.form.dirty || this.uploadedFiles.length > 0);
   }
 
-  removeDocument(file: { name: string }) {
-    const documents = this.form.value.documents as { name: string; size: number }[];
-    const indexOfFile = documents.findIndex((document) => document.name === file.name);
+  get alreadySavedDocuments() {
+    const documents = this.form.value.documents as { fileName: string }[];
+    return documents.map((doc) => doc.fileName);
+  }
+
+  removeDocument(fileName: string) {
+    const documents = this.form.value.documents as { fileName: string }[];
+    const indexOfFile = documents.findIndex((document) => document.fileName === fileName);
     this.form.controls.documents.removeAt(indexOfFile);
     this.form.markAsDirty();
+  }
+
+  downloadFile(fileName: string) {
+    this.timetableHearingService
+      .getStatementDocument(this.statement!.id!, fileName)
+      .subscribe((response) => {
+        const a = document.createElement('a');
+        a.download = fileName;
+        a.href = URL.createObjectURL(response);
+        a.click();
+      });
   }
 }
