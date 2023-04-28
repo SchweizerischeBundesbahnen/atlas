@@ -13,7 +13,7 @@ import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
 import ch.sbb.line.directory.entity.TimetableHearingYear;
 import ch.sbb.line.directory.exception.HearingCurrentlyActiveException;
-import ch.sbb.line.directory.mapper.TimeTableHearingStatementMapper;
+import ch.sbb.line.directory.mapper.TimetableHearingStatementMapper;
 import ch.sbb.line.directory.model.TimetableHearingYearSearchRestrictions;
 import ch.sbb.line.directory.repository.TimetableHearingStatementRepository;
 import ch.sbb.line.directory.repository.TimetableHearingYearRepository;
@@ -151,12 +151,12 @@ public class TimetableHearingYearServiceTest {
     // Junk Statement
     statementModel = buildTimetableHearingStatementModel();
     statementModel.setStatementStatus(StatementStatus.JUNK);
-    timetableHearingStatementRepository.save(TimeTableHearingStatementMapper.toEntity(statementModel));
+    timetableHearingStatementRepository.save(TimetableHearingStatementMapper.toEntity(statementModel));
 
     // Statement to move to next year and to update status
     statementModel = buildTimetableHearingStatementModel();
     statementModel.setStatementStatus(StatementStatus.MOVED);
-    timetableHearingStatementRepository.save(TimeTableHearingStatementMapper.toEntity(statementModel));
+    timetableHearingStatementRepository.save(TimetableHearingStatementMapper.toEntity(statementModel));
 
     // when
     TimetableHearingYear closed = timetableHearingYearService.closeTimetableHearing(startedTimetableHearing);
