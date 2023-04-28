@@ -69,12 +69,10 @@ public class TimetableHearingYearService {
   public TimetableHearingYear closeTimetableHearing(TimetableHearingYear timetableHearingYear) {
     mayTransitionToHearingStatus(timetableHearingYear, HearingStatus.ARCHIVED);
 
-    // TODO: test - make Tth close transitions (check for rollback with update and delete query)
     timetableHearingStatementService.deleteSpamMailFromYear(timetableHearingYear.getTimetableYear());
 
     timetableHearingStatementService.moveClosedStatementsToNextYearWithStatusUpdates(timetableHearingYear.getTimetableYear());
 
-    // TODO: test - mby set year settings all to false
     timetableHearingYear.setStatementCreatableInternal(false);
     timetableHearingYear.setStatementCreatableExternal(false);
     timetableHearingYear.setStatementEditable(false);
