@@ -7,25 +7,25 @@ export class FileDropDirective {
   @HostBinding('class.fileover') fileOver!: boolean;
   @Output() filesDropped = new EventEmitter<FileList>();
 
-  @HostListener('dragover', ['$event']) onDragOver(evt: DragEvent) {
-    evt.preventDefault();
-    evt.stopPropagation();
+  @HostListener('dragover', ['$event']) onDragOver(dragEvent: DragEvent) {
+    dragEvent.preventDefault();
+    dragEvent.stopPropagation();
     this.fileOver = true;
   }
 
   @HostListener('dragleave', ['$event'])
-  public onDragLeave(evt: DragEvent) {
-    evt.preventDefault();
-    evt.stopPropagation();
+  public onDragLeave(dragEvent: DragEvent) {
+    dragEvent.preventDefault();
+    dragEvent.stopPropagation();
     this.fileOver = false;
   }
 
   @HostListener('drop', ['$event'])
-  public ondrop(evt: DragEvent) {
-    evt.preventDefault();
-    evt.stopPropagation();
+  public onDrop(dragEvent: DragEvent) {
+    dragEvent.preventDefault();
+    dragEvent.stopPropagation();
     this.fileOver = false;
-    const files = evt.dataTransfer!.files;
+    const files = dragEvent.dataTransfer!.files;
     if (files.length > 0) {
       this.filesDropped.emit(files);
     }
