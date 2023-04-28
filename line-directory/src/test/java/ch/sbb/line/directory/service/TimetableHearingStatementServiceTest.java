@@ -257,27 +257,27 @@ public class TimetableHearingStatementServiceTest {
     statement = buildTimetableHearingStatementModel();
     statement.setStatementStatus(StatementStatus.RECEIVED);
     statement.setTimetableYear(YEAR - 1);
-    Long statement1Id = timetableHearingStatementRepository.save(TimeTableHearingStatementMapper.toEntity(statement)).getId();
+    Long statement1Id = timetableHearingStatementRepository.save(TimetableHearingStatementMapper.toEntity(statement)).getId();
 
     // Statement 2
     statement = buildTimetableHearingStatementModel();
     statement.setStatementStatus(StatementStatus.IN_REVIEW);
-    Long statement2Id = timetableHearingStatementRepository.save(TimeTableHearingStatementMapper.toEntity(statement)).getId();
+    Long statement2Id = timetableHearingStatementRepository.save(TimetableHearingStatementMapper.toEntity(statement)).getId();
 
     // Statement 3
     statement = buildTimetableHearingStatementModel();
     statement.setStatementStatus(StatementStatus.RECEIVED);
-    Long statement3Id = timetableHearingStatementRepository.save(TimeTableHearingStatementMapper.toEntity(statement)).getId();
+    Long statement3Id = timetableHearingStatementRepository.save(TimetableHearingStatementMapper.toEntity(statement)).getId();
 
     // Statement 4
     statement = buildTimetableHearingStatementModel();
     statement.setStatementStatus(StatementStatus.JUNK);
-    Long statement4Id = timetableHearingStatementRepository.save(TimeTableHearingStatementMapper.toEntity(statement)).getId();
+    Long statement4Id = timetableHearingStatementRepository.save(TimetableHearingStatementMapper.toEntity(statement)).getId();
 
     // Statement 5
     statement = buildTimetableHearingStatementModel();
     statement.setStatementStatus(StatementStatus.MOVED);
-    Long statement5Id = timetableHearingStatementRepository.save(TimeTableHearingStatementMapper.toEntity(statement)).getId();
+    Long statement5Id = timetableHearingStatementRepository.save(TimetableHearingStatementMapper.toEntity(statement)).getId();
 
     // when
     timetableHearingStatementService.moveClosedStatementsToNextYearWithStatusUpdates(YEAR);
