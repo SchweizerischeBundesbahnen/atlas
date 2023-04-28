@@ -16,6 +16,7 @@
   "COMMON": {
     "BACK_TO_OVERVIEW": "Torna al sommario",
     "SAVE": "Salva",
+    "SAVE_AND_CLOSE": "Salvare e chiudere",
     "ADD": "Aggiungi",
     "EDIT": "Modifica",
     "REVOKE": "Revocare",
@@ -572,7 +573,7 @@
       "ADD_NEW_TIMETABLE_HEARING": "Creare una nuova audizione",
       "START_TIMETABLE_HEARING": "Avviare questa audizione",
       "CANCEL_COLLECTING_ACTION": "Terminare la campagna di raccolta",
-      "CLOSE_TIMETABLE_HEARING": "__it__Fahrplanjahr schliessen"
+      "CLOSE_TIMETABLE_HEARING": "Chiusura dell'anno di calendario"
     },
     "DROPDOWN": {
       "COLLECTING_STATUS_CHANGE_ACTION": {
@@ -702,6 +703,20 @@
         "CANCEL": "Ritorno",
         "CONFIRM": "Cambia cantone"
       }
+    },
+    "CLOSE_TIMETABLE_HEARING": {
+      "POPUP_TITLE": "Chiusura dell'anno di calendario",
+      "CONFIRMATION_MESSAGE": "Volete terminare l'anno di calendario? L'operazione non può essere annullata.  Quando l'anno solare si chiude, i pareri vengono rimandati:",
+      "MOVEMENTS_TO_ARCHIVED": "\"accetato\", \"rifiutato\" o \"Revocato\" → archivio",
+      "MOVEMENTS_TO_NEXT_YEAR": "\"arrivato\", \"in esame\" o \"spostato\" → anno di calendario successivo",
+      "MOVEMENTS_TO_DELETED": "\"Spam-Mail\" → definitivamente cancellati",
+      "SUCCESSFUL_CLOSE_NOTIFICATION": "Anno di calendario chiuso con successo"
+    },
+    "MANAGE_TIMETABLE_HEARING": {
+      "POPUP_TITLE": "Controllo dell'orario dell'udito",
+      "CREATE_STATEMENT_EXTERNAL": "Acquisizione di dichiarazioni tramite API",
+      "CREATE_STATEMENT_INTERNAL": "Dichiarazione di registrazione in atlas",
+      "EDIT_STATEMENT": "Modifica del parere in atlas"
     }
   }
 }

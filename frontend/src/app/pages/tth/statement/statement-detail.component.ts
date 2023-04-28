@@ -18,8 +18,8 @@ import { AtlasFieldLengthValidator } from '../../../core/validation/field-length
 import { WhitespaceValidator } from '../../../core/validation/whitespace/whitespace-validator';
 import { StatementDetailFormGroup, StatementSenderFormGroup } from './statement-detail-form-group';
 import { Canton } from '../overview/canton/Canton';
-import { takeUntil } from 'rxjs/operators';
-import { catchError, EMPTY, Observable, of, Subject, take } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
+import { catchError, EMPTY, Observable, of, Subject } from 'rxjs';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { ValidationService } from '../../../core/validation/validation.service';
 import { AuthService } from '../../../core/auth/auth.service';
@@ -45,6 +45,8 @@ export class StatementDetailComponent implements OnInit {
   hearingStatus!: HearingStatus;
   isNew!: boolean;
   form!: FormGroup<StatementDetailFormGroup>;
+  isStatementEditable: Observable<boolean | undefined> = of(false);
+
   private ngUnsubscribe = new Subject<void>();
 
   uploadedFiles: File[] = [];
@@ -72,8 +74,17 @@ export class StatementDetailComponent implements OnInit {
     this.uploadedFiles = [];
 
     if (this.hearingStatus === HearingStatus.Active) {
-      // TODO: disable edit btn when editable of active year false
-      this.timetableHearingService.getHearingYear().pipe(take(1)).subscribe({});
+      this.isStatementEditable = this.timetableHearingService
+        .getHearingYears([HearingStatus.Active])
+        .pipe(
+          map((tthYearContainer) => {
+            const containerObjects = tthYearContainer.objects ?? [];
+            if (containerObjects.length > 0) {
+              return containerObjects[0].statementEditable;
+            }
+            return false;
+          })
+        );
     }
 
     this.initForm();
