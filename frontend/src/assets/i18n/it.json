@@ -667,7 +667,7 @@
       "JUSTIFICATION": "Giustificazione",
       "COMMENT": "Commento sul passaggio di consegne cantonale",
       "ATTACHMENT_INFO": "È possibile inviare la dichiarazione con un allegato PDF. Sono possibili 3 PDF fino a 20 MB.",
-      "ATTACHMENT_BUTTON": "Allegare un PDF",
+      "ATTACHMENTS": "Allegati esistenti",
       "ORGANISATION": "Organizzazione/associazione",
       "ZIP": "CAP",
       "CITY": "Luogo/Città",
