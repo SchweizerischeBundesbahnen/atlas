@@ -30,7 +30,7 @@ public class ForbiddenDueToHearingYearSettings extends AtlasException {
     return List.of(Detail.builder()
         .message("The timetable hearing year settings of: " + hearingYear + " are disabling this operation.")
         .field(settingField)
-        .displayInfo(builder().code("").build()) // TODO: define
+        .displayInfo(builder().code("TTH.NOTIFICATION.OPERATION_NOT_ALLOWED_DUE_TO_TTH_YEAR_SETTINGS").build())
         .build());
   }
 
