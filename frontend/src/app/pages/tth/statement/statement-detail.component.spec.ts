@@ -32,7 +32,7 @@ import { FileComponent } from '../../../core/components/file-upload/file/file.co
 const existingStatement: TimetableHearingStatement = {
   id: 1,
   swissCanton: SwissCanton.Bern,
-  statement: 'Luca is am yb match gsi',
+  statement: 'Luca isch am yb match gsi',
   statementSender: {
     email: 'luca@yb.ch',
   },
@@ -113,6 +113,41 @@ describe('StatementDetailComponent for existing statement', () => {
     //then
     expect(component.form.enabled).toBeFalsy();
   });
+});
+
+describe('test editButton', () => {
+  const timetableYearWithStatementEditableTrue: ContainerTimetableHearingYear = {
+    objects: [
+      {
+        ...years.objects![0],
+        statementEditable: true,
+      },
+    ],
+  };
+
+  beforeEach(() => {
+    const mockRoute = {
+      snapshot: {
+        data: {
+          statement: existingStatement,
+          hearingStatus: HearingStatus.Active,
+        },
+        params: {
+          canton: 'be',
+        },
+      },
+    };
+    setupTestBed(mockRoute);
+
+    mockTimetableHearingService.getHearingYears.and.returnValue(
+      of(timetableYearWithStatementEditableTrue)
+    );
+
+    fixture = TestBed.createComponent(StatementDetailComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+    router = TestBed.inject(Router);
+  });
 
   it('should not show edit button when HearingStatus is Archived', () => {
     //given
@@ -128,12 +163,7 @@ describe('StatementDetailComponent for existing statement', () => {
     expect(buttonsText).not.toContain('COMMON.EDIT');
   });
 
-  it('should show edit button when HearingStatus is not Archived', () => {
-    //given
-    component.hearingStatus = HearingStatus.Active;
-    //when
-    fixture.detectChanges();
-    //then
+  it('should show edit button when HearingStatus is not Archived and statement is editable', () => {
     const buttons = fixture.debugElement.queryAll(By.css('atlas-button'));
     expect(buttons.length).toBe(5);
     const buttonsText = buttons.map(
