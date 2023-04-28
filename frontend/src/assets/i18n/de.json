@@ -551,7 +551,8 @@
       "CANTON_CHANGE": {
         "SUCCESS": "Der Kanton wurde erfolgreich geändert."
       },
-      "NO_VERSION_VALID_AT": "Es gibt keine gültige Version von {{swissId}} am {{validAt}}. Bitte überprüfen Sie die Gültigkeit der Fahrplanfeldnummer."
+      "NO_VERSION_VALID_AT": "Es gibt keine gültige Version von {{swissId}} am {{validAt}}. Bitte überprüfen Sie die Gültigkeit der Fahrplanfeldnummer.",
+      "OPERATION_NOT_ALLOWED_DUE_TO_TTH_YEAR_SETTINGS": "Diese Operation ist durch die Konfiguration des Fahrplanjahres nicht möglich."
     },
     "DIALOG": {
       "STATUS_CHANGE": "Status ändern",
