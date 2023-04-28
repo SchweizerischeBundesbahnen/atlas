@@ -21,6 +21,7 @@ import ch.sbb.line.directory.repository.TimetableHearingStatementRepository;
 import ch.sbb.line.directory.repository.TimetableHearingYearRepository;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -76,7 +77,7 @@ public class TimetableHearingStatementService {
 
     if (!CollectionUtils.isEmpty(documents)) {
       files = getFilesFromMultipartFiles(documents);
-      filesValidation(files, 0);
+      filesValidation(files, Collections.emptySet());
 
       addFilesToStatement(documents, statementToCreate);
     }
@@ -107,7 +108,7 @@ public class TimetableHearingStatementService {
     List<File> files = new ArrayList<>();
     if (documents != null && !documents.isEmpty()) {
       files = getFilesFromMultipartFiles(documents);
-      filesValidation(files, timetableHearingStatementInDb.getDocuments().size());
+      filesValidation(files, timetableHearingStatementInDb.getDocuments());
     }
 
     TimetableHearingStatement updatedObject = updateObject(timetableHearingStatementModel, timetableHearingStatementInDb);
@@ -119,8 +120,9 @@ public class TimetableHearingStatementService {
     return timetableHearingStatement;
   }
 
-  private void filesValidation(List<File> files, int numberOfFilesInDb) {
-    statementDocumentFilesValidationService.validateMaxNumberOfFiles(files.size() + numberOfFilesInDb);
+  private void filesValidation(List<File> files, Set<StatementDocument> alreadySavedDocuments) {
+    statementDocumentFilesValidationService.validateMaxNumberOfFiles(files.size() + alreadySavedDocuments.size());
+    statementDocumentFilesValidationService.validateNoFileNameDuplicate(files, alreadySavedDocuments);
     statementDocumentFilesValidationService.validateMaxSizeOfFiles(files, MAX_DOCUMENTS_SIZE);
     statementDocumentFilesValidationService.validateAllFilessArePdfs(files);
   }
