@@ -2,9 +2,11 @@ package ch.sbb.line.directory.service.hearing;
 
 import static ch.sbb.atlas.api.timetable.hearing.TimetableHearingConstants.MAX_DOCUMENTS;
 
+import ch.sbb.line.directory.entity.StatementDocument;
 import ch.sbb.line.directory.exception.PdfDocumentConstraintViolationException;
 import java.io.File;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
@@ -48,4 +50,10 @@ public class StatementDocumentFilesValidationService {
     }
   }
 
+  public void validateNoFileNameDuplicate(List<File> files, Set<StatementDocument> alreadySavedDocuments) {
+    Set<String> savedFileNames = alreadySavedDocuments.stream().map(StatementDocument::getFileName).collect(Collectors.toSet());
+    if (files.stream().map(File::getName).anyMatch(savedFileNames::contains)) {
+      throw new PdfDocumentConstraintViolationException("FileName must be unique");
+    }
+  }
 }
