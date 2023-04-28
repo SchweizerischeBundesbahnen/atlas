@@ -667,7 +667,7 @@
       "JUSTIFICATION": "Justification",
       "COMMENT": "Commentaire sur la cession de canton",
       "ATTACHMENT_INFO": "Vous pouvez envoyer votre avis avec une annexe PDF. Il est possible de créer 3 PDF jusqu'à 20 Mo.",
-      "ATTACHMENT_BUTTON": "Joindre un PDF",
+      "ATTACHMENTS": "Pièces jointes actuelles",
       "ORGANISATION": "Organisation/Association",
       "ZIP": "Code Postal",
       "CITY": "Lieu/ville",
