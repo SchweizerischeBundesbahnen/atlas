@@ -300,6 +300,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
 
   @Test
   void shouldThrowForbiddenExceptionWhenStatementCreatableExternalIsFalse() throws Exception {
+    // For Client-Credential Auth
     SecurityContext context = SecurityContextHolder.getContext();
     Authentication authentication = new JwtAuthenticationToken(createJwtWithoutSbbUid(),
         AuthorityUtils.createAuthorityList("ROLE_atlas-admin"));
@@ -341,7 +342,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
 
   @Test
   void shouldCreateStatementExternalFromSkiWeb() throws Exception {
-    // TODO: refactor
+    // For Client-Credential Auth
     SecurityContext context = SecurityContextHolder.getContext();
     Authentication authentication = new JwtAuthenticationToken(createJwtWithoutSbbUid(),
         AuthorityUtils.createAuthorityList("ROLE_atlas-admin"));

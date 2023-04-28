@@ -551,7 +551,8 @@
       "CANTON_CHANGE": {
         "SUCCESS": "Le canton a été modifié avec succès."
       },
-      "NO_VERSION_VALID_AT": "Il n'y a pas de version valide de {{swissId}} au {{validAt}}. Veuillez vérifier la validité du numéro de champ d'horaire."
+      "NO_VERSION_VALID_AT": "Il n'y a pas de version valide de {{swissId}} au {{validAt}}. Veuillez vérifier la validité du numéro de champ d'horaire.",
+      "OPERATION_NOT_ALLOWED_DUE_TO_TTH_YEAR_SETTINGS": "Cette opération n'est pas possible en raison de la configuration de l'année de l'horaire."
     },
     "DIALOG": {
       "STATUS_CHANGE": "Modifier statut",
