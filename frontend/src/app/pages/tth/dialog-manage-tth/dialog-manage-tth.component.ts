@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, TemplateRef, ViewChild, ViewChildren } from '@angular/core';
+import { Component, Inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { TimetableHearingService, TimetableHearingYear } from '../../../api';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { take } from 'rxjs';
@@ -24,7 +24,7 @@ export class DialogManageTthComponent implements OnInit {
   actionButtonsDisabled = false;
 
   private readonly year: number;
-  private readonly timetableHearingYear?: TimetableHearingYear;
+  private timetableHearingYear?: TimetableHearingYear;
 
   private readonly manageTthFormGroup: FormGroup = new FormGroup({
     [this.statementCreatableExternalCtrlName]: new FormControl<boolean>(false),
@@ -48,7 +48,7 @@ export class DialogManageTthComponent implements OnInit {
       .pipe(take(1))
       .subscribe({
         next: (year) => {
-          (this.timetableHearingYear as TimetableHearingYear | undefined) = year;
+          this.timetableHearingYear = year;
           this.manageTthFormGroup.setValue({
             statementCreatableExternal: !!year.statementCreatableExternal,
             statementCreatableInternal: !!year.statementCreatableInternal,
@@ -87,7 +87,7 @@ export class DialogManageTthComponent implements OnInit {
       .subscribe({
         next: () => {
           this.dialogRef.close();
-          this.notificationService.success('worked'); // todo
+          this.notificationService.success('USER_ADMIN.NOTIFICATIONS.EDIT_SUCCESS');
         },
         error: (err) => {
           this.dialogRef.close();
@@ -112,7 +112,9 @@ export class DialogManageTthComponent implements OnInit {
       .subscribe({
         next: () => {
           this.dialogRef.close(true);
-          this.notificationService.success('worked'); // todo
+          this.notificationService.success(
+            'TTH.CLOSE_TIMETABLE_HEARING.SUCCESSFUL_CLOSE_NOTIFICATION'
+          );
         },
         error: (err) => {
           this.dialogRef.close();
