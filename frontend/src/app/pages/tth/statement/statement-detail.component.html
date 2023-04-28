@@ -203,6 +203,19 @@
         </div>
       </div>
 
+      <div *ngIf="form.value.documents.length > 0" class="mb-3">
+        <app-atlas-label-field fieldLabel="TTH.STATEMENT.ATTACHMENTS"></app-atlas-label-field>
+        <ng-container *ngFor="let document of form.value.documents">
+          <atlas-file
+            [deleteEnabled]="this.form.enabled"
+            [file]="{ name: document.fileName, size: document.fileSize }"
+            (fileDeleted)="removeDocument($event.name)"
+            [downloadEnabled]="true"
+            (downloadFile)="downloadFile($event.name)"
+          ></atlas-file>
+        </ng-container>
+      </div>
+
       <ng-container *ngIf="form.enabled">
         <div class="font-regular-sm mb-2">{{ 'TTH.STATEMENT.ATTACHMENT_INFO' | translate }}</div>
         <atlas-file-upload
@@ -213,16 +226,6 @@
           [maxFileCount]="3 - form.value.documents.length"
           [alreadySavedFileNames]="alreadySavedDocuments"
         ></atlas-file-upload>
-      </ng-container>
-
-      <ng-container *ngFor="let document of form.value.documents">
-        <atlas-file
-          [deleteEnabled]="this.form.enabled"
-          [file]="{ name: document.fileName, size: document.fileSize }"
-          (fileDeleted)="removeDocument($event.name)"
-          [downloadEnabled]="true"
-          (downloadFile)="downloadFile($event.name)"
-        ></atlas-file>
       </ng-container>
 
       <h1 class="font-bold-2xl pt-5">
