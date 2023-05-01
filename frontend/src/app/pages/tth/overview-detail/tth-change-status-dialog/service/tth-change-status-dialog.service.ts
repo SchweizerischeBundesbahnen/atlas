@@ -39,6 +39,6 @@ export class TthChangeStatusDialogService {
       backdropClass: 'atlas-dialog-backdrop',
     });
 
-    return this.changeStatusDialog.afterClosed().pipe(map((value) => (value ? value : true)));
+    return this.changeStatusDialog.afterClosed().pipe(map((value) => value));
   }
 }
