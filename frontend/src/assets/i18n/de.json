@@ -71,6 +71,18 @@
     },
     "NOTIFICATION": {
       "OPTIMISTIC_LOCK_ERROR": "Das Objekt wurde entweder bereits gelöscht oder in der Zwischenzeit bearbeitet. Bitte laden Sie die Seite neu, indem Sie die Taste F5 drücken."
+    },
+    "FILEUPLOAD": {
+      "DROPZONE": "Datei auf diese Fläche ziehen",
+      "OR": "oder",
+      "SELECT_FILES": "Dateien auswählen",
+      "ERROR": {
+        "FILE_SIZE": "{{filename}} konnte nicht hinzugefügt werden. Die Grenze von {{maxsize}} wurde überschritten.",
+        "TYPE": "{{filename}} konnte nicht hinzugefügt werden. Der Dateityp wird nicht unterstützt.",
+        "FILE_COUNT": "Es sind maximal {{maxFileCount}} Dateien erlaubt.",
+        "ALREADY_SAVED": "Die Datei {{filename}} wurde bereits hochgeladen und gespeichert.",
+        "ALREADY_ADDED": "Die Datei {{filename}} wurde bereits hinzugefügt."
+      }
     }
   },
   "DETAIL_USER_EDITION": {
@@ -654,8 +666,8 @@
       "E_MAIL_TEXT": "Falls keine E-Mail vorhanden ist, reicht eine fiktive Eingabe z.B. xxx@xxx.ch",
       "JUSTIFICATION": "Begründung",
       "COMMENT": "Kommentar zur Kantonsübergabe",
-      "ATTACHMENT_INFO": "Sie können die Stellungnahme mit PDF-Anhang einreichen.",
-      "ATTACHMENT_BUTTON": "PDF anhängen",
+      "ATTACHMENT_INFO": "Sie können die Stellungnahme mit PDF-Anhang einreichen. Es sind 3 PDFs bis zu 20 MB möglich.",
+      "ATTACHMENTS": "Bestehende Anhänge",
       "ORGANISATION": "Organisation/Vereinigung",
       "ZIP": "PLZ",
       "CITY": "Ort/Stadt",
