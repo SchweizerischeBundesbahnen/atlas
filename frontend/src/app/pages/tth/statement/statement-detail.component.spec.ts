@@ -25,6 +25,9 @@ import { MockAtlasButtonComponent, MockSelectComponent } from '../../../app.test
 import { Component, Input } from '@angular/core';
 import { CreationEditionRecord } from '../../../core/components/base-detail/user-edit-info/creation-edition-record';
 import { By } from '@angular/platform-browser';
+import { FileUploadComponent } from '../../../core/components/file-upload/file-upload.component';
+import { FileSizePipe } from '../../../core/components/file-upload/file-size/file-size.pipe';
+import { FileComponent } from '../../../core/components/file-upload/file/file.component';
 
 const existingStatement: TimetableHearingStatement = {
   id: 1,
@@ -118,7 +121,7 @@ describe('StatementDetailComponent for existing statement', () => {
     fixture.detectChanges();
     //then
     const buttons = fixture.debugElement.queryAll(By.css('atlas-button'));
-    expect(buttons.length).toBe(4);
+    expect(buttons.length).toBe(3);
     const buttonsText = buttons.map(
       (button) => button.nativeElement.attributes['buttontext'].value
     );
@@ -132,7 +135,7 @@ describe('StatementDetailComponent for existing statement', () => {
     fixture.detectChanges();
     //then
     const buttons = fixture.debugElement.queryAll(By.css('atlas-button'));
-    expect(buttons.length).toBe(5);
+    expect(buttons.length).toBe(4);
     const buttonsText = buttons.map(
       (button) => button.nativeElement.attributes['buttontext'].value
     );
@@ -208,6 +211,9 @@ function setupTestBed(activatedRoute: {
       MockAtlasButtonComponent,
       MockSelectComponent,
       MockUserDetailInfoComponent,
+      FileUploadComponent,
+      FileSizePipe,
+      FileComponent,
     ],
     imports: [AppTestingModule, FormModule],
     providers: [
