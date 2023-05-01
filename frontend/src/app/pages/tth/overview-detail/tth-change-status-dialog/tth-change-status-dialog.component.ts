@@ -17,7 +17,7 @@ import { TthChangeStatusFormGroup } from './model/tth-change-status-form-group';
   styleUrls: ['./tth-change-status-dialog.component.scss'],
 })
 export class TthChangeStatusDialogComponent {
-  tthChangeStatusFormGroup = new FormGroup<TthChangeStatusFormGroup>({
+  formGroup = new FormGroup<TthChangeStatusFormGroup>({
     justification: new FormControl(this.data.justification, [
       AtlasFieldLengthValidator.statement,
       WhitespaceValidator.blankOrEmptySpaceSurrounding,
@@ -36,9 +36,9 @@ export class TthChangeStatusDialogComponent {
 
   onClick(): void {
     let justification: string | undefined;
-    if (this.tthChangeStatusFormGroup.valid) {
-      if (this.tthChangeStatusFormGroup.controls['justification'].value) {
-        justification = this.tthChangeStatusFormGroup.controls['justification'].value;
+    if (this.formGroup.valid) {
+      if (this.formGroup.controls['justification'].value) {
+        justification = this.formGroup.controls['justification'].value;
       }
       this.timetableHearingService
         .updateHearingStatementStatus(this.data.statementStatus, {
@@ -54,7 +54,7 @@ export class TthChangeStatusDialogComponent {
   }
 
   closeDialog() {
-    if (this.tthChangeStatusFormGroup.dirty) {
+    if (this.formGroup.dirty) {
       this.dialogService.confirmLeave().subscribe((confirm) => {
         if (confirm) {
           this.dialogRef.close();

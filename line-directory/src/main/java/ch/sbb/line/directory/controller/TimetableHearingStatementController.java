@@ -8,7 +8,9 @@ import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementRequestParams;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
+import ch.sbb.atlas.api.timetable.hearing.model.UpdateHearingCantonModel;
 import ch.sbb.atlas.api.timetable.hearing.model.UpdateHearingStatementStatusModel;
+import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.exception.BadRequestException;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
 import ch.sbb.line.directory.mapper.TimetableHearingStatementMapper;
@@ -139,8 +141,17 @@ public class TimetableHearingStatementController implements TimetableHearingStat
         timetableHearingStatementService.getTimetableHearingStatementsByIds(
             updateHearingStatementStatus.getIds());
     timetableHearingStatements.forEach(
-        timetableHearingStatement -> timetableHearingStatementService.updateHearindStatementStatus(timetableHearingStatement,
+        timetableHearingStatement -> timetableHearingStatementService.updateHearingStatementStatus(timetableHearingStatement,
             statementStatus, updateHearingStatementStatus.getJustification()));
+  }
+
+  @Override
+  public void updateHearingCanton(UpdateHearingCantonModel updateHearingCantonModel, SwissCanton swissCanton) {
+    List<TimetableHearingStatement> timetableHearingStatements =
+        timetableHearingStatementService.getTimetableHearingStatementsByIds(updateHearingCantonModel.getIds());
+    timetableHearingStatements.forEach(
+        timetableHearingStatement -> timetableHearingStatementService.updateHearingCanton(timetableHearingStatement,
+            swissCanton));
   }
 
   @Override
