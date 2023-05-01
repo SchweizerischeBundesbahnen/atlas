@@ -32,6 +32,7 @@ import {
   getActiveSearch,
   getActiveSearchForChip,
 } from '../../../core/components/table-filter/table-filter-config';
+import { TthChangeCantonDialogService } from './tth-change-canton-dialog/service/tth-change-canton-dialog.service';
 import { FileDownloadService } from '../../../core/components/file-upload/file/file-download.service';
 
 @Component({
@@ -59,6 +60,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
 
   cantonShort!: string;
   CANTON_DROPDOWN_OPTIONS = Cantons.cantonsWithSwiss.map((value) => value.short);
+  CANTON_DROPDOWN_OPTIONS_WITHOUT_SWISS = Cantons.cantons.map((value) => value.short);
   defaultDropdownCantonSelection = this.CANTON_DROPDOWN_OPTIONS[0];
 
   STATUS_OPTIONS = Object.values(StatementStatus);
@@ -88,6 +90,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     private readonly timetableHearingService: TimetableHearingService,
     private readonly overviewToTabService: OverviewToTabShareDataService,
     private readonly tthStatusChangeDialog: TthChangeStatusDialogService,
+    private readonly tthChangeCantonDialogService: TthChangeCantonDialogService,
     private readonly tthTableService: TthTableService,
     private readonly newTimetableHearingYearDialogService: NewTimetableHearingYearDialogService,
     private readonly translateService: TranslateService
@@ -116,6 +119,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
         this.tableColumns = this.getActiveTableColumns();
         this.tableColumns.unshift({
           headerTitle: '',
+          disabled: true,
           value: 'id',
           checkbox: {
             changeSelectionCallback: this.collectingStatusChangeAction,
@@ -299,10 +303,18 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  collectingCantonDeliveryAction($event: any) {
+  collectingCantonDeliveryAction($event: MatSelectChange) {
     if (this.selectedItems.length > 0) {
-      console.log($event);
-      console.log(this.selectedItems);
+      this.tthChangeCantonDialogService
+        .onClick(Cantons.getSwissCantonEnum($event.value)!, this.selectedItems)
+        .subscribe((result) => {
+          if (result) {
+            this.cantonDeliveryCollectingActionsEnabled = false;
+            this.showCollectingActionButton = true;
+            this.selectedCheckBox = new SelectionModel<TimetableHearingStatement>(true, []);
+            this.ngOnInit();
+          }
+        });
     }
   }
 

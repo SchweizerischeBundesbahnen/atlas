@@ -166,7 +166,8 @@
         <div
           *ngIf="
             isHearingYearActive &&
-            !statusChangeCollectingActionsEnabled && !cantonDeliveryCollectingActionsEnabled
+            !statusChangeCollectingActionsEnabled &&
+            !cantonDeliveryCollectingActionsEnabled
           "
           class="d-flex flex-column col-2 left-position"
         >
@@ -174,6 +175,7 @@
             (selectChanged)="collectingActions($event)"
             *ngIf="showCollectingActionButton"
             [additionalLabelspace]="false"
+            [disabled]="totalCount$ === 0"
             [options]="COLLECTING_ACTION_DROWPDOWN_OPTIONS"
             dataCy="collect-action-type"
             optionTranslateLabelPrefix="TTH.DROPDOWN.COLLECTING_ACTION.OPTION."
@@ -224,7 +226,7 @@
               (selectChanged)="collectingCantonDeliveryAction($event)"
               [additionalLabelspace]="false"
               [disabled]="selectedItems.length === 0"
-              [options]="CANTON_DROPDOWN_OPTIONS"
+              [options]="CANTON_DROPDOWN_OPTIONS_WITHOUT_SWISS"
               optionTranslateLabelPrefix="TTH.CANTON."
               placeHolderLabel="TTH.DROPDOWN.COLLECTING_STATUS_CANTON_DELIVERY_CHANGE_ACTION.PLACEHOLDER"
             >
