@@ -286,6 +286,10 @@ include::{snippets}/timetable-hearing-statement-controller-api-test/should-updat
 
 include::{snippets}/timetable-hearing-statement-controller-api-test/should-update-statement-with-documents-with-additional-documents/auto-section.adoc[]
 
-== Update Hearing Statement adding documents - Successfully
+== Update Hearing Statement Status - Successfully
 
 include::{snippets}/timetable-hearing-statement-controller-api-test/should-update-hearing-statement-status/auto-section.adoc[]
+
+== Update Hearing Statement Swiss Canton - Successfully
+
+include::{snippets}/timetable-hearing-statement-controller-api-test/should-update-hearing-canton/auto-section.adoc[]

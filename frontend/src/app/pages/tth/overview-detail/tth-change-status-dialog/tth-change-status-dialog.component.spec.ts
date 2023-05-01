@@ -82,7 +82,7 @@ describe('TthChangeStatusDialogComponent', () => {
 
   it('should close dialog when form is dirty', () => {
     //given
-    component.tthChangeStatusFormGroup.markAsDirty();
+    component.formGroup.markAsDirty();
     //when
     component.closeDialog();
     //then
