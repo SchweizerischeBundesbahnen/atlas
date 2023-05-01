@@ -32,6 +32,7 @@ import { SwissCanton } from '../model/models';
 import { TimetableHearingStatement } from '../model/models';
 import { TimetableHearingYear } from '../model/models';
 import { TransportCompany } from '../model/models';
+import { UpdateHearingCanton } from '../model/models';
 import { UpdateHearingStatementStatus } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
@@ -1218,6 +1219,93 @@ export class TimetableHearingService {
         this.configuration.basePath
       }/line-directory/v1/timetable-hearing/years/${encodeURIComponent(String(year))}/start`,
       null,
+      {
+        responseType: <any>responseType_,
+        withCredentials: this.configuration.withCredentials,
+        headers: headers,
+        observe: observe,
+        reportProgress: reportProgress,
+      }
+    );
+  }
+
+  /**
+   * @param swissCanton
+   * @param updateHearingCanton
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public updateHearingCanton(
+    swissCanton: SwissCanton,
+    updateHearingCanton: UpdateHearingCanton,
+    observe?: 'body',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: '*/*' }
+  ): Observable<any>;
+  public updateHearingCanton(
+    swissCanton: SwissCanton,
+    updateHearingCanton: UpdateHearingCanton,
+    observe?: 'response',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: '*/*' }
+  ): Observable<HttpResponse<any>>;
+  public updateHearingCanton(
+    swissCanton: SwissCanton,
+    updateHearingCanton: UpdateHearingCanton,
+    observe?: 'events',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: '*/*' }
+  ): Observable<HttpEvent<any>>;
+  public updateHearingCanton(
+    swissCanton: SwissCanton,
+    updateHearingCanton: UpdateHearingCanton,
+    observe: any = 'body',
+    reportProgress: boolean = false,
+    options?: { httpHeaderAccept?: '*/*' }
+  ): Observable<any> {
+    if (swissCanton === null || swissCanton === undefined) {
+      throw new Error(
+        'Required parameter swissCanton was null or undefined when calling updateHearingCanton.'
+      );
+    }
+    if (updateHearingCanton === null || updateHearingCanton === undefined) {
+      throw new Error(
+        'Required parameter updateHearingCanton was null or undefined when calling updateHearingCanton.'
+      );
+    }
+
+    let headers = this.defaultHeaders;
+
+    let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+    if (httpHeaderAcceptSelected === undefined) {
+      // to determine the Accept header
+      const httpHeaderAccepts: string[] = ['*/*'];
+      httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+    }
+    if (httpHeaderAcceptSelected !== undefined) {
+      headers = headers.set('Accept', httpHeaderAcceptSelected);
+    }
+
+    // to determine the Content-Type header
+    const consumes: string[] = ['application/json'];
+    const httpContentTypeSelected: string | undefined =
+      this.configuration.selectHeaderContentType(consumes);
+    if (httpContentTypeSelected !== undefined) {
+      headers = headers.set('Content-Type', httpContentTypeSelected);
+    }
+
+    let responseType_: 'text' | 'json' = 'json';
+    if (httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+      responseType_ = 'text';
+    }
+
+    return this.httpClient.put<any>(
+      `${
+        this.configuration.basePath
+      }/line-directory/v1/timetable-hearing/statements/update-canton/${encodeURIComponent(
+        String(swissCanton)
+      )}`,
+      updateHearingCanton,
       {
         responseType: <any>responseType_,
         withCredentials: this.configuration.withCredentials,

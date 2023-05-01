@@ -90,6 +90,7 @@ export * from './transportCompany';
 export * from './transportCompanyBoRelation';
 export * from './transportCompanyRelation';
 export * from './transportCompanyStatus';
+export * from './updateHearingCanton';
 export * from './updateHearingStatementStatus';
 export * from './user';
 export * from './userAccountStatus';

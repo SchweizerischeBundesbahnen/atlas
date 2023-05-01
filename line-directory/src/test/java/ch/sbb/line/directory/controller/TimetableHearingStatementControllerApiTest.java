@@ -27,6 +27,7 @@ import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel.Fields;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementSenderModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingYearModel;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
+import ch.sbb.atlas.api.timetable.hearing.model.UpdateHearingCantonModel;
 import ch.sbb.atlas.api.timetable.hearing.model.UpdateHearingStatementStatusModel;
 import ch.sbb.atlas.export.CsvExportWriter;
 import ch.sbb.atlas.kafka.model.SwissCanton;
@@ -322,6 +323,40 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
     mvc.perform(put("/v1/timetable-hearing/statements/update-statement-status/" + StatementStatus.ACCEPTED)
             .contentType(contentType)
             .content(mapper.writeValueAsString(updateHearingStatementStatusModel)))
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  void shouldUpdateHearingCanton() throws Exception {
+    //given
+    TimetableHearingStatement statement1 = TimetableHearingStatement.builder()
+        .timetableYear(2023L)
+        .swissCanton(SwissCanton.BERN)
+        .statementStatus(StatementStatus.RECEIVED)
+        .statementSender(StatementSender.builder()
+            .email("mike@thebike.com")
+            .build())
+        .statement("Ich mag bitte mehr Bös fahren")
+        .build();
+    TimetableHearingStatement statement2 = TimetableHearingStatement.builder()
+        .timetableYear(2024L)
+        .swissCanton(SwissCanton.AARGAU)
+        .statementStatus(StatementStatus.JUNK)
+        .statementSender(StatementSender.builder()
+            .email("mike@thebike.com")
+            .build())
+        .statement("Ich mag bitte mehr Bös fahren")
+        .build();
+    timetableHearingStatementRepository.saveAndFlush(statement1);
+    timetableHearingStatementRepository.saveAndFlush(statement2);
+    List<Long> ids = Stream.of(statement1, statement2).map(TimetableHearingStatement::getId).toList();
+    UpdateHearingCantonModel updateHearingCantonModel = UpdateHearingCantonModel.builder().comment("Forza Napoli").ids(ids)
+        .build();
+
+    //when
+    mvc.perform(put("/v1/timetable-hearing/statements/update-canton/" + SwissCanton.JURA)
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(updateHearingCantonModel)))
         .andExpect(status().isOk());
   }
 
