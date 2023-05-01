@@ -340,7 +340,38 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
                     MULTIPART_FILES.get(2).getContentType(), MULTIPART_FILES.get(2).getBytes())))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
-        .andExpect(jsonPath("$." + Fields.documents, hasSize(2)));
+        .andExpect(jsonPath("$." + Fields.documents, hasSize(3)));
+  }
+
+  @Test
+  void shouldUpdateStatementWithDocumentsWithAdditionalDocumentAndRemoveExisting() throws Exception {
+    TimetableHearingStatementModel timetableHearingStatementModel = TimetableHearingStatementModel.builder()
+        .id(1000L)
+        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .swissCanton(SwissCanton.BERN)
+        .statementSender(TimetableHearingStatementSenderModel.builder()
+            .email("fabienne.mueller@sbb.ch")
+            .build())
+        .statement("Ich haette gerne mehrere Verbindungen am Abend.")
+        .build();
+
+    TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
+        timetableHearingStatementModel,
+        List.of(MULTIPART_FILES.get(1)));
+
+    statement.setDocuments(Collections.emptyList());
+    MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
+        MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
+
+    mvc.perform(multipart(HttpMethod.PUT, "/v1/timetable-hearing/statements/" + statement.getId())
+            .file(statementJson)
+            .file(
+                new MockMultipartFile(MULTIPART_FILES.get(2).getName(), MULTIPART_FILES.get(2).getOriginalFilename(),
+                    MULTIPART_FILES.get(2).getContentType(), MULTIPART_FILES.get(2).getBytes())))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
+        .andExpect(jsonPath("$." + Fields.documents, hasSize(1)))
+        .andExpect(jsonPath("$." + Fields.documents + "[0].fileName", is(MULTIPART_FILES.get(2).getOriginalFilename())));
   }
 
   @Test

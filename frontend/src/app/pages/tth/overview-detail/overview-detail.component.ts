@@ -32,6 +32,7 @@ import {
   getActiveSearch,
   getActiveSearchForChip,
 } from '../../../core/components/table-filter/table-filter-config';
+import { FileDownloadService } from '../../../core/components/file-upload/file/file-download.service';
 
 @Component({
   selector: 'app-timetable-hearing-overview-detail',
@@ -186,12 +187,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
           (transportCompany) => transportCompany.id!
         )
       )
-      .subscribe((response) => {
-        const a = document.createElement('a');
-        a.download = 'statements.csv';
-        a.href = URL.createObjectURL(response);
-        a.click();
-      });
+      .subscribe((response) => FileDownloadService.downloadFile('statements.csv', response));
   }
 
   manageTimetableHearing() {

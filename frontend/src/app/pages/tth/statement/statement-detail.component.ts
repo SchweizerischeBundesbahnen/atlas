@@ -12,7 +12,7 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import { Cantons } from '../overview/canton/Cantons';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AtlasCharsetsValidator } from '../../../core/validation/charsets/atlas-charsets-validator';
 import { AtlasFieldLengthValidator } from '../../../core/validation/field-lengths/atlas-field-length-validator';
 import { WhitespaceValidator } from '../../../core/validation/whitespace/whitespace-validator';
@@ -25,6 +25,7 @@ import { ValidationService } from '../../../core/validation/validation.service';
 import { AuthService } from '../../../core/auth/auth.service';
 import { TthUtils } from '../util/tth-utils';
 import { StatementDialogService } from './statement-dialog/service/statement.dialog.service';
+import { FileDownloadService } from '../../../core/components/file-upload/file/file-download.service';
 
 @Component({
   selector: 'app-statement-detail',
@@ -45,6 +46,8 @@ export class StatementDetailComponent implements OnInit {
   form!: FormGroup<StatementDetailFormGroup>;
   private ngUnsubscribe = new Subject<void>();
 
+  uploadedFiles: File[] = [];
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -64,6 +67,7 @@ export class StatementDetailComponent implements OnInit {
     this.statement = this.route.snapshot.data.statement;
     this.hearingStatus = this.route.snapshot.data.hearingStatus;
     this.isNew = !this.statement;
+    this.uploadedFiles = [];
 
     this.initForm();
     this.initYearOptions();
@@ -159,6 +163,9 @@ export class StatementDetailComponent implements OnInit {
         WhitespaceValidator.blankOrEmptySpaceSurrounding,
         AtlasCharsetsValidator.iso88591,
       ]),
+      documents: new FormArray(
+        statement?.documents?.map((document) => new FormControl(document)) ?? []
+      ),
       etagVersion: new FormControl(statement?.etagVersion),
     });
   }
@@ -235,7 +242,7 @@ export class StatementDetailComponent implements OnInit {
 
   private createStatement(statement: TimetableHearingStatement) {
     this.timetableHearingService
-      .createStatement(statement, undefined)
+      .createStatement(statement, this.uploadedFiles)
       .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
       .subscribe((statement) => {
         this.notificationService.success('TTH.STATEMENT.NOTIFICATION.ADD_SUCCESS');
@@ -245,7 +252,7 @@ export class StatementDetailComponent implements OnInit {
 
   private updateStatement(id: number, statement: TimetableHearingStatement) {
     this.timetableHearingService
-      .updateHearingStatement(id, statement, undefined)
+      .updateHearingStatement(id, statement, this.uploadedFiles)
       .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
       .subscribe((statement) => {
         this.notificationService.success('TTH.STATEMENT.NOTIFICATION.EDIT_SUCCESS');
@@ -303,5 +310,27 @@ export class StatementDetailComponent implements OnInit {
         this.form.controls.swissCanton.setValue(this.statement?.swissCanton);
       }
     });
+  }
+
+  saveButtonDisabled() {
+    return !(this.form.dirty || this.uploadedFiles.length > 0);
+  }
+
+  get alreadySavedDocuments() {
+    const documents = this.form.value.documents as { fileName: string }[];
+    return documents.map((doc) => doc.fileName);
+  }
+
+  removeDocument(fileName: string) {
+    const documents = this.form.value.documents as { fileName: string }[];
+    const indexOfFile = documents.findIndex((document) => document.fileName === fileName);
+    this.form.controls.documents.removeAt(indexOfFile);
+    this.form.markAsDirty();
+  }
+
+  downloadFile(fileName: string) {
+    this.timetableHearingService
+      .getStatementDocument(this.statement!.id!, fileName)
+      .subscribe((response) => FileDownloadService.downloadFile(fileName, response));
   }
 }
