@@ -1,0 +1,48 @@
+<div
+  class="file-upload-container d-flex flex-column align-items-center"
+  atlas-file-drop
+  (filesDropped)="onFilesDropped($event)"
+  (click)="selectFilesFromSystem()"
+>
+  <div class="file-upload-description">{{ 'COMMON.FILEUPLOAD.DROPZONE' | translate }}</div>
+  <div class="file-upload-description">{{ 'COMMON.FILEUPLOAD.OR' | translate }}</div>
+  <atlas-button
+    buttonText="COMMON.FILEUPLOAD.SELECT_FILES"
+    buttonType="create"
+    wrapperStyleClass="mb-3"
+  >
+    <ng-template #rightIcon>
+      <upload-icon class="ps-2"></upload-icon>
+    </ng-template>
+  </atlas-button>
+  <input
+    #fileInput
+    type="file"
+    [accept]="acceptedFileType"
+    multiple
+    style="display: none"
+    (change)="onFileInputChanged($event)"
+  />
+  <ng-container *ngFor="let file of uploadedFiles">
+    <atlas-file
+      [file]="file"
+      [ngStyle]="{ width: '100%' }"
+      [deleteEnabled]="true"
+      (fileDeleted)="fileDeleted($event)"
+    ></atlas-file>
+  </ng-container>
+
+  <div *ngIf="errorFiles" class="errors">
+    <div *ngFor="let errorFile of errorFiles">
+      {{
+        errorFile.errorMessage
+          | translate
+            : {
+                filename: errorFile.file.name,
+                maxFileCount: errorFile.maxFileCount,
+                maxsize: maxFileSize | fileSize
+              }
+      }}
+    </div>
+  </div>
+</div>

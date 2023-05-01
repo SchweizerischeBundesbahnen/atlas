@@ -9,6 +9,7 @@ import { StatementDialogComponent } from './statement.dialog.component';
 import { FormModule } from '../../../../core/module/form.module';
 import { FormControl, FormGroup } from '@angular/forms';
 import { NotificationService } from '../../../../core/notification/notification.service';
+import { MockAtlasButtonComponent } from '../../../../app.testing.mocks';
 
 const mockTimetableHearingService = jasmine.createSpyObj('timetableHearingService', [
   'updateHearingStatement',
@@ -38,7 +39,7 @@ describe('StatementDialogComponent', () => {
     mockTimetableHearingService.updateHearingStatement.and.returnValue(of(statement));
 
     await TestBed.configureTestingModule({
-      declarations: [StatementDialogComponent],
+      declarations: [StatementDialogComponent, MockAtlasButtonComponent],
       imports: [AppTestingModule, FormModule],
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: form },
