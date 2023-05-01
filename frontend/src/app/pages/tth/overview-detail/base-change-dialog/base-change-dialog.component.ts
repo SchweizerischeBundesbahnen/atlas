@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { StatusChangeData } from '../tth-change-status-dialog/model/status-change-data';
@@ -11,14 +11,14 @@ import { DialogService } from '../../../../core/components/dialog/dialog.service
   templateUrl: './base-change-dialog.component.html',
   styleUrls: ['./base-change-dialog.component.scss'],
 })
-export class BaseChangeDialogComponent implements OnInit {
+export class BaseChangeDialogComponent {
   @Input() formGroup!: FormGroup;
   @Input() controlName!: string;
-  @Input() maxChars = '5000';
+  @Input() maxChars!: string;
   @Output() changeEvent = new EventEmitter();
+  @Input() dialogRef!: MatDialogRef<any>;
 
   constructor(
-    public dialogRef: MatDialogRef<BaseChangeDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: StatusChangeData,
     private readonly notificationService: NotificationService,
     private readonly timetableHearingService: TimetableHearingService,
@@ -29,13 +29,11 @@ export class BaseChangeDialogComponent implements OnInit {
     if (this.formGroup.dirty) {
       this.dialogService.confirmLeave().subscribe((confirm) => {
         if (confirm) {
-          this.dialogRef.close();
+          this.dialogRef.close(false);
         }
       });
     } else {
-      this.dialogRef.close();
+      this.dialogRef.close(false);
     }
   }
-
-  ngOnInit(): void {}
 }
