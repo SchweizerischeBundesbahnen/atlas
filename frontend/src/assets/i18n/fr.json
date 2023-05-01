@@ -547,10 +547,14 @@
       "STATUS_CHANGE": {
         "SUCCESS": "Le statut a été modifié avec succès."
       },
+      "CANTON_CHANGE": {
+        "SUCCESS": "Le canton a été modifié avec succès."
+      },
       "NO_VERSION_VALID_AT": "Il n'y a pas de version valide de {{swissId}} au {{validAt}}. Veuillez vérifier la validité du numéro de champ d'horaire."
     },
     "DIALOG": {
       "STATUS_CHANGE": "Modifier statut",
+      "CANTON_CHANGE": "Modifier canton",
       "COMMENT_LABEL": "Commentaire à ce sujet",
       "BACK": "De retour",
       "STATUS_CHANGE_MESSAGE": "Vous modifiez l'avis sélectionné.",
