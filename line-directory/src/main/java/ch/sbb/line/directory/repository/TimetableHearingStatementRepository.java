@@ -29,6 +29,12 @@ public interface TimetableHearingStatementRepository extends JpaRepository<Timet
 
   @Transactional
   @Modifying(clearAutomatically = true)
+  @Query("update timetable_hearing_statement set swissCanton= :swissCanton, comment= :comment where id = :id")
+  void updateHearingCantonWithComment(@Param("id") Long id, @Param("swissCanton") SwissCanton swissCanton,
+      @Param("comment") String comment);
+
+  @Transactional
+  @Modifying(clearAutomatically = true)
   @Query("update timetable_hearing_statement set swissCanton= :swissCanton where id = :id")
   void updateHearingCanton(@Param("id") Long id, @Param("swissCanton") SwissCanton swissCanton);
 

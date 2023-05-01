@@ -225,7 +225,11 @@ public class TimetableHearingStatementService {
 
   @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin"
       + ".ApplicationType).TIMETABLE_HEARING, #statement)")
-  public void updateHearingCanton(TimetableHearingStatement statement, SwissCanton swissCanton) {
-    timetableHearingStatementRepository.updateHearingCanton(statement.getId(), swissCanton);
+  public void updateHearingCanton(TimetableHearingStatement statement, SwissCanton swissCanton, String comment) {
+    if (comment != null) {
+      timetableHearingStatementRepository.updateHearingCantonWithComment(statement.getId(), swissCanton, comment);
+    } else {
+      timetableHearingStatementRepository.updateHearingCanton(statement.getId(), swissCanton);
+    }
   }
 }
