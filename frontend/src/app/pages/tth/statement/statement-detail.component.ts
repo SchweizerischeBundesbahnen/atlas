@@ -25,6 +25,7 @@ import { ValidationService } from '../../../core/validation/validation.service';
 import { AuthService } from '../../../core/auth/auth.service';
 import { TthUtils } from '../util/tth-utils';
 import { StatementDialogService } from './statement-dialog/service/statement.dialog.service';
+import { FileDownloadService } from '../../../core/components/file-upload/file/file-download.service';
 
 @Component({
   selector: 'app-statement-detail',
@@ -330,11 +331,6 @@ export class StatementDetailComponent implements OnInit {
   downloadFile(fileName: string) {
     this.timetableHearingService
       .getStatementDocument(this.statement!.id!, fileName)
-      .subscribe((response) => {
-        const a = document.createElement('a');
-        a.download = fileName;
-        a.href = URL.createObjectURL(response);
-        a.click();
-      });
+      .subscribe((response) => FileDownloadService.downloadFile(fileName, response));
   }
 }
