@@ -14,7 +14,6 @@ import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-tth-change-canton-dialog',
   templateUrl: './tth-change-canton-dialog.component.html',
-  styleUrls: ['./tth-change-canton-dialog.component.scss'],
 })
 export class TthChangeCantonDialogComponent {
   formGroup = new FormGroup<TthChangeCantonFormGroup>({
@@ -48,7 +47,7 @@ export class TthChangeCantonDialogComponent {
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe(() => {
           this.notificationService.success('TTH.NOTIFICATION.CANTON_CHANGE.SUCCESS');
-          this.dialogRef.close();
+          this.dialogRef.close(true);
         });
     }
   }
