@@ -79,7 +79,7 @@
       "ERROR": {
         "FILE_SIZE": "Non è stato possibile aggiungere {{filename}}. Il limite di {{maxsize}} è stato superato.",
         "TYPE": "Non è stato possibile aggiungere {{filename}}. Il tipo di file non è supportato.",
-        "FILE_COUNT": "È consentito un massimo di file {{maxFileCount}}.",
+        "FILE_COUNT": "È consentito un massimo di {{maxFileCount}} file.",
         "ALREADY_SAVED": "Il file {{filename}} è già stato caricato e salvato.",
         "ALREADY_ADDED": "Il file {{filename}} è già stato aggiunto."
       }
