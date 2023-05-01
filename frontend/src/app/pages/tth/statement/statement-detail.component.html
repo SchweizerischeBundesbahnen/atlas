@@ -228,22 +228,24 @@
         ></atlas-file-upload>
       </ng-container>
 
-      <h1 class="font-bold-2xl pt-5">
-        {{ 'TTH.STATEMENT.CLARIFICATION' | translate }}
-        <atlas-spacer [divider]="true" height="30px"></atlas-spacer>
-      </h1>
+      <ng-container *ngIf="form.disabled">
+        <h1 class="font-bold-2xl pt-5">
+          {{ 'TTH.STATEMENT.CLARIFICATION' | translate }}
+          <atlas-spacer [divider]="true" height="30px"></atlas-spacer>
+        </h1>
 
-      <div class="mb-3 font-regular-sm">{{ 'TTH.STATEMENT.CLARIFICATION_INFO' | translate }}</div>
-      <atlas-button
-        (click)="openAsMail()"
-        buttonDataCy="open-in-mail"
-        buttonText="TTH.STATEMENT.CLARIFICATION_MAIL"
-        buttonType="create"
-      >
-        <ng-template #rightIcon>
-          <i class="ps-2 bi bi-envelope"></i>
-        </ng-template>
-      </atlas-button>
+        <div class="mb-3 font-regular-sm">{{ 'TTH.STATEMENT.CLARIFICATION_INFO' | translate }}</div>
+        <atlas-button
+          (click)="openAsMail()"
+          buttonDataCy="open-in-mail"
+          buttonText="TTH.STATEMENT.CLARIFICATION_MAIL"
+          buttonType="create"
+        >
+          <ng-template #rightIcon>
+            <i class="ps-2 bi bi-envelope"></i>
+          </ng-template>
+        </atlas-button>
+      </ng-container>
 
       <h1 class="font-bold-2xl pt-5">
         {{ 'TTH.STATEMENT.STATUS_JUSTIFICATION' | translate }}
