@@ -20,11 +20,11 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @SuperBuilder
 @FieldNameConstants
-@Schema(name = "UpdateHearingStatementStatus")
-public class UpdateHearingStatementStatusModel extends BaseUpdateHearingModel {
+@Schema(name = "UpdateHearingCanton")
+public class UpdateHearingCantonModel extends BaseUpdateHearingModel {
 
-  @Size(max = AtlasFieldLengths.LENGTH_5000)
+  @Size(max = AtlasFieldLengths.LENGTH_280)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
-  @Schema(description = "Statement of Federal office of transport", example = "We can absolutely do that.")
-  private String justification;
+  @Schema(description = "Statement comment", example = "I am changing my statement from the canton Geneva to the canton Bern.")
+  private String comment;
 }

@@ -4,7 +4,9 @@ import ch.sbb.atlas.api.bodi.TransportCompanyModel;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel.Fields;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
+import ch.sbb.atlas.api.timetable.hearing.model.UpdateHearingCantonModel;
 import ch.sbb.atlas.api.timetable.hearing.model.UpdateHearingStatementStatusModel;
+import ch.sbb.atlas.kafka.model.SwissCanton;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Encoding;
@@ -40,6 +42,12 @@ public interface TimetableHearingStatementApiV1 {
       @org.springframework.web.bind.annotation.RequestBody UpdateHearingStatementStatusModel updateHearingStatementStatus,
       @PathVariable StatementStatus statementStatus
   );
+
+  @ResponseStatus(HttpStatus.OK)
+  @PutMapping(path = "/update-canton/{swissCanton}")
+  void updateHearingCanton(
+      @org.springframework.web.bind.annotation.RequestBody UpdateHearingCantonModel updateHearingCantonModel,
+      @PathVariable SwissCanton swissCanton);
 
   @GetMapping
   @PageableAsQueryParam
