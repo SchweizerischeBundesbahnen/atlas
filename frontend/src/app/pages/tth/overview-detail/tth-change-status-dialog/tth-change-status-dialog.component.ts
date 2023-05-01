@@ -13,7 +13,6 @@ import { TthChangeStatusFormGroup } from './model/tth-change-status-form-group';
 @Component({
   selector: 'app-tth-change-status-dialog',
   templateUrl: './tth-change-status-dialog.component.html',
-  styleUrls: ['./tth-change-status-dialog.component.scss'],
 })
 export class TthChangeStatusDialogComponent {
   formGroup = new FormGroup<TthChangeStatusFormGroup>({
@@ -46,7 +45,7 @@ export class TthChangeStatusDialogComponent {
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe(() => {
           this.notificationService.success('TTH.NOTIFICATION.STATUS_CHANGE.SUCCESS');
-          this.dialogRef.close();
+          this.dialogRef.close(true);
         });
     }
   }
