@@ -241,7 +241,6 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
   }
 
   collectingActions(action: MatSelectChange) {
-    console.log('page-sitze: ' + this.tthTableService.pageSize);
     if (action.value === 'STATUS_CHANGE') {
       this.statusChangeCollectingActionsEnabled = true;
       this.showCollectingActionButton = false;
@@ -293,6 +292,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
       this.tthStatusChangeDialog
         .onClick(changedStatus.value, this.selectedItems, undefined, 'MULTIPLE')
         .subscribe((result) => {
+          console.log(result);
           if (result) {
             this.statusChangeCollectingActionsEnabled = false;
             this.showCollectingActionButton = true;
