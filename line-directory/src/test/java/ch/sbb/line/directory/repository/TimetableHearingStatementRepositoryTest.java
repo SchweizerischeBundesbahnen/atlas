@@ -182,6 +182,35 @@ public class TimetableHearingStatementRepositoryTest {
   }
 
   @Test
+  void shouldUpdateHearingCantonWithComment() {
+    //given
+    TimetableHearingStatement statement = TimetableHearingStatement.builder()
+        .timetableYear(2023L)
+        .swissCanton(SwissCanton.BERN)
+        .statementStatus(StatementStatus.RECEIVED)
+        .statementSender(StatementSender.builder()
+            .email("mike@thebike.com")
+            .build())
+        .statement("Ich mag bitte mehr Bös fahren")
+        .justification("Forza Napoli")
+        .comment("Just a comment")
+        .build();
+    timetableHearingStatementRepository.saveAndFlush(statement);
+
+    //when
+    timetableHearingStatementRepository.updateHearingCantonWithComment(statement.getId(), SwissCanton.AARGAU, "Not just a "
+        + "comment");
+
+    //then
+    Optional<TimetableHearingStatement> result = timetableHearingStatementRepository.findById(statement.getId());
+    assertThat(result).isNotNull();
+    assertThat(result.isPresent()).isTrue();
+    assertThat(result.get().getStatementStatus()).isEqualTo(StatementStatus.RECEIVED);
+    assertThat(result.get().getSwissCanton()).isEqualTo(SwissCanton.AARGAU);
+    assertThat(result.get().getComment()).isEqualTo("Not just a comment");
+  }
+
+  @Test
   void shouldUpdateHearingCanton() {
     //given
     TimetableHearingStatement statement = TimetableHearingStatement.builder()
@@ -193,6 +222,7 @@ public class TimetableHearingStatementRepositoryTest {
             .build())
         .statement("Ich mag bitte mehr Bös fahren")
         .justification("Forza Napoli")
+        .comment("Just a comment")
         .build();
     timetableHearingStatementRepository.saveAndFlush(statement);
 
@@ -205,5 +235,6 @@ public class TimetableHearingStatementRepositoryTest {
     assertThat(result.isPresent()).isTrue();
     assertThat(result.get().getStatementStatus()).isEqualTo(StatementStatus.RECEIVED);
     assertThat(result.get().getSwissCanton()).isEqualTo(SwissCanton.AARGAU);
+    assertThat(result.get().getComment()).isEqualTo("Just a comment");
   }
 }
