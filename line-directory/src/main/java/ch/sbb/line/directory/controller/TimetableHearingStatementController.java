@@ -151,7 +151,7 @@ public class TimetableHearingStatementController implements TimetableHearingStat
         timetableHearingStatementService.getTimetableHearingStatementsByIds(updateHearingCantonModel.getIds());
     timetableHearingStatements.forEach(
         timetableHearingStatement -> timetableHearingStatementService.updateHearingCanton(timetableHearingStatement,
-            swissCanton));
+            swissCanton, updateHearingCantonModel.getComment()));
   }
 
   @Override

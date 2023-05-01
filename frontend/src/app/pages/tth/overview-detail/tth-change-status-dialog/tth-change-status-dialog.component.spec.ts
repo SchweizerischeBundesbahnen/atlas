@@ -80,44 +80,12 @@ describe('TthChangeStatusDialogComponent', () => {
     );
   });
 
-  it('should close dialog when form is dirty', () => {
-    //given
-    component.formGroup.markAsDirty();
-    //when
-    component.closeDialog();
-    //then
-    expect(dialogServiceSpy.confirmLeave).toHaveBeenCalled();
-
-    expect(dialogRefSpy.close).toHaveBeenCalledWith();
-  });
-
-  it('should close dialog when form is not dirty', () => {
-    //when
-    component.closeDialog();
-    //then
-
-    expect(dialogRefSpy.close).toHaveBeenCalledWith();
-  });
-
   it('should render tth change status dialog', () => {
     component.onClick();
 
-    const title = fixture.debugElement.query(By.css('div.dialog > div.mb-5 > span.font-bold-4xl'));
-    expect(title.nativeElement.innerText).toBe('Title');
-
-    const content = fixture.debugElement.query(By.css('div.dialog > div > span.message'));
-    expect(content.nativeElement.innerText).toBe('message');
-
-    const justification = fixture.debugElement.query(By.css('form-comment'));
-    const justificationValue = justification.nativeNode.querySelector('textarea').value;
-    expect(justificationValue).toBe('Forza Napoli');
-
-    const cancelButton = fixture.debugElement.query(By.css('mat-dialog-actions button.me-3'));
-    expect(cancelButton.nativeElement.innerText).toBe('DIALOG.CANCEL');
-
-    const confirmButton = fixture.debugElement.query(
-      By.css('mat-dialog-actions button.primary-color-btn')
-    );
-    expect(confirmButton.nativeElement.innerText).toBe('DIALOG.OK');
+    const baseDialog = fixture.debugElement.query(By.css('app-base-change-dialog'));
+    expect(baseDialog).not.toBeNull();
+    expect(baseDialog.attributes['controlName']).toBe('justification');
+    expect(baseDialog.attributes['maxChars']).toBe('5000');
   });
 });
