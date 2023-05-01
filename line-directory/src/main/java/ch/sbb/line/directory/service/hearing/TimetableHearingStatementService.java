@@ -4,6 +4,7 @@ import static ch.sbb.atlas.api.timetable.hearing.TimetableHearingConstants.MAX_D
 import static ch.sbb.line.directory.mapper.TimetableHearingStatementMapper.transformToCommaSeparated;
 
 import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementDocumentModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
@@ -20,6 +21,7 @@ import ch.sbb.line.directory.repository.TimetableHearingStatementRepository;
 import ch.sbb.line.directory.repository.TimetableHearingYearRepository;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -53,7 +55,7 @@ public class TimetableHearingStatementService {
 
   public TimetableHearingStatement getTimetableHearingStatementById(Long id) {
     return timetableHearingStatementRepository.findById(id)
-      .orElseThrow(() -> new IdNotFoundException(id));
+        .orElseThrow(() -> new IdNotFoundException(id));
   }
 
   public File getStatementDocument(Long timetableHearingStatementId, String documentFilename) {
@@ -65,7 +67,8 @@ public class TimetableHearingStatementService {
     }
   }
 
-  public TimetableHearingStatementModel createHearingStatement(TimetableHearingStatementModel statement, List<MultipartFile> documents) {
+  public TimetableHearingStatementModel createHearingStatement(TimetableHearingStatementModel statement,
+      List<MultipartFile> documents) {
     TimetableHearingStatement statementToCreate = TimetableHearingStatementMapper.toEntity(statement);
     checkThatTimetableHearingYearExists(statementToCreate.getTimetableYear());
     statementToCreate.setStatementStatus(StatementStatus.RECEIVED);
@@ -74,7 +77,7 @@ public class TimetableHearingStatementService {
 
     if (!CollectionUtils.isEmpty(documents)) {
       files = getFilesFromMultipartFiles(documents);
-      filesValidation(files);
+      filesValidation(files, Collections.emptySet());
 
       addFilesToStatement(documents, statementToCreate);
     }
@@ -86,19 +89,28 @@ public class TimetableHearingStatementService {
     return TimetableHearingStatementMapper.toModel(timetableHearingStatement);
   }
 
-  public TimetableHearingStatement updateHearingStatement(TimetableHearingStatementModel timetableHearingStatementModel, List<MultipartFile> documents) {
+  public TimetableHearingStatement updateHearingStatement(TimetableHearingStatementModel timetableHearingStatementModel,
+      List<MultipartFile> documents) {
     checkThatTimetableHearingYearExists(timetableHearingStatementModel.getTimetableYear());
 
-    TimetableHearingStatement timetableHearingStatementInDb = timetableHearingStatementRepository.getReferenceById(timetableHearingStatementModel.getId());
+    TimetableHearingStatement timetableHearingStatementInDb = timetableHearingStatementRepository.getReferenceById(
+        timetableHearingStatementModel.getId());
+
+    Set<String> fileNamesToKeep = timetableHearingStatementModel.getDocuments().stream()
+        .map(TimetableHearingStatementDocumentModel::getFileName).collect(Collectors.toSet());
+    List<StatementDocument> documentsToDelete = timetableHearingStatementInDb.getDocuments().stream()
+        .filter(document -> !fileNamesToKeep.contains(document.getFileName())).toList();
+    documentsToDelete.forEach(document -> {
+      timetableHearingStatementInDb.removeDocument(document.getFileName());
+      pdfsUploadAmazonService.deletePdfFile(timetableHearingStatementModel.getId().toString(), document.getFileName());
+    });
 
     List<File> files = new ArrayList<>();
     if (documents != null && !documents.isEmpty()) {
       files = getFilesFromMultipartFiles(documents);
-      filesValidation(files);
-
-      List<StatementDocument> statementDocumentsList = new ArrayList<>(timetableHearingStatementInDb.getDocuments());
-      statementDocumentsList.forEach(statementDocument -> removeDocumentFromS3andDB(statementDocument.getFileName(), timetableHearingStatementInDb));
+      filesValidation(files, timetableHearingStatementInDb.getDocuments());
     }
+
     TimetableHearingStatement updatedObject = updateObject(timetableHearingStatementModel, timetableHearingStatementInDb);
     addFilesToStatement(documents, updatedObject);
 
@@ -108,16 +120,17 @@ public class TimetableHearingStatementService {
     return timetableHearingStatement;
   }
 
-  private void filesValidation(List<File> files) {
-    statementDocumentFilesValidationService.validateMaxNumberOfFiles(files.size());
+  private void filesValidation(List<File> files, Set<StatementDocument> alreadySavedDocuments) {
+    statementDocumentFilesValidationService.validateMaxNumberOfFiles(files.size() + alreadySavedDocuments.size());
+    statementDocumentFilesValidationService.validateNoFileNameDuplicate(files, alreadySavedDocuments);
     statementDocumentFilesValidationService.validateMaxSizeOfFiles(files, MAX_DOCUMENTS_SIZE);
     statementDocumentFilesValidationService.validateAllFilessArePdfs(files);
   }
 
   @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin"
-    + ".ApplicationType).TIMETABLE_HEARING, #timetableHearingStatement)")
+      + ".ApplicationType).TIMETABLE_HEARING, #timetableHearingStatement)")
   public void deleteStatementDocument(TimetableHearingStatement timetableHearingStatement, String documentFilename) {
-    if (timetableHearingStatement.getId()==null || StringUtils.isBlank(documentFilename)) {
+    if (timetableHearingStatement.getId() == null || StringUtils.isBlank(documentFilename)) {
       throw new IllegalArgumentException();
     }
     if (timetableHearingStatement.checkIfStatementDocumentExists(documentFilename)) {
@@ -132,13 +145,13 @@ public class TimetableHearingStatementService {
   }
 
   private List<File> getFilesFromMultipartFiles(List<MultipartFile> documents) {
-      return documents.stream()
+    return documents.stream()
         .map(fileService::getFileFromMultipart)
         .toList();
   }
 
   private TimetableHearingStatement updateObject(TimetableHearingStatementModel timetableHearingStatementModel,
-    TimetableHearingStatement timetableHearingStatementInDb) {
+      TimetableHearingStatement timetableHearingStatementInDb) {
     timetableHearingStatementInDb.setTimetableYear(timetableHearingStatementModel.getTimetableYear());
     timetableHearingStatementInDb.setStatementStatus(timetableHearingStatementModel.getStatementStatus());
     timetableHearingStatementInDb.setTtfnid(timetableHearingStatementModel.getTtfnid());
@@ -147,10 +160,12 @@ public class TimetableHearingStatementService {
     timetableHearingStatementInDb.setStatement(timetableHearingStatementModel.getStatement());
     timetableHearingStatementInDb.setJustification(timetableHearingStatementModel.getJustification());
     timetableHearingStatementInDb.setComment(timetableHearingStatementModel.getComment());
-    timetableHearingStatementInDb.setStatementSender(StatementSenderMapper.toEntity(timetableHearingStatementModel.getStatementSender()));
+    timetableHearingStatementInDb.setStatementSender(
+        StatementSenderMapper.toEntity(timetableHearingStatementModel.getStatementSender()));
 
     updateResponsibleTransportCompanies(timetableHearingStatementModel, timetableHearingStatementInDb);
-    timetableHearingStatementInDb.setResponsibleTransportCompaniesDisplay(transformToCommaSeparated(timetableHearingStatementInDb));
+    timetableHearingStatementInDb.setResponsibleTransportCompaniesDisplay(
+        transformToCommaSeparated(timetableHearingStatementInDb));
 
     return timetableHearingStatementInDb;
   }
@@ -169,7 +184,7 @@ public class TimetableHearingStatementService {
       }
     });
     timetableHearingStatementInDb.getResponsibleTransportCompanies().removeAll(transportCompaniesToRemove);
-    timetableHearingStatementModel.getResponsibleTransportCompanies().forEach(responsibleTransportCompany ->{
+    timetableHearingStatementModel.getResponsibleTransportCompanies().forEach(responsibleTransportCompany -> {
       if (!currentTransportCompanies.contains(responsibleTransportCompany.getId())) {
         timetableHearingStatementInDb.getResponsibleTransportCompanies()
             .add(ResponsibleTransportCompanyMapper.toEntity(responsibleTransportCompany, timetableHearingStatementInDb));
@@ -187,12 +202,10 @@ public class TimetableHearingStatementService {
     if (documents != null) {
       log.info("Statement {}, adding {} documents", statement.getId() == null ? "new" : statement.getId(), documents.size());
       documents.forEach(multipartFile -> statement.addDocument(StatementDocument.builder()
-        .fileName(multipartFile.getOriginalFilename())
-        .fileSize(multipartFile.getSize())
-        .build()));
+          .fileName(multipartFile.getOriginalFilename())
+          .fileSize(multipartFile.getSize())
+          .build()));
     }
   }
-
-
 
 }
