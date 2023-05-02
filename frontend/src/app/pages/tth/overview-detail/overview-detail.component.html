@@ -165,6 +165,7 @@
         </div>
         <div
           *ngIf="
+            isCollectingActionEnabled &&
             isHearingYearActive &&
             !statusChangeCollectingActionsEnabled &&
             !cantonDeliveryCollectingActionsEnabled

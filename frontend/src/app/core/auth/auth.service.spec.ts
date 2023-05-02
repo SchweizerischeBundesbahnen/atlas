@@ -9,6 +9,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {
   ApplicationRole,
   ApplicationType,
+  CantonPermissionRestrictionModel,
   PermissionRestrictionType,
   UserAdministrationService,
 } from '../../api';
@@ -367,6 +368,54 @@ describe('AuthService', () => {
           },
         ],
         false
+      );
+      expect(result).toBeTrue();
+    });
+  });
+
+  describe('Permission for edit TTH Canton', () => {
+    it('should be able to edit Canton if user is for canton enabled', () => {
+      const cantonRestriction: CantonPermissionRestrictionModel[] = [];
+      cantonRestriction.push({ type: 'CANTON', valueAsString: 'BERN' });
+      const result = AuthService.hasPermissionToWriteOnCanton(
+        ApplicationType.TimetableHearing,
+        'be',
+        [
+          {
+            application: ApplicationType.TimetableHearing,
+            role: ApplicationRole.Writer,
+            permissionRestrictions: cantonRestriction,
+          },
+        ],
+        false
+      );
+      expect(result).toBeTrue();
+    });
+
+    it('should not be able to edit Canton if user is not for canton enabled', () => {
+      const cantonRestriction: CantonPermissionRestrictionModel[] = [];
+      cantonRestriction.push({ type: 'CANTON', valueAsString: 'BERN' });
+      const result = AuthService.hasPermissionToWriteOnCanton(
+        ApplicationType.TimetableHearing,
+        'zh',
+        [
+          {
+            application: ApplicationType.TimetableHearing,
+            role: ApplicationRole.Writer,
+            permissionRestrictions: cantonRestriction,
+          },
+        ],
+        false
+      );
+      expect(result).toBeFalsy();
+    });
+
+    it('should be able to edit Canton if user is admin', () => {
+      const result = AuthService.hasPermissionToWriteOnCanton(
+        ApplicationType.TimetableHearing,
+        'be',
+        [],
+        true
       );
       expect(result).toBeTrue();
     });

@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
+  ApplicationType,
   HearingStatus,
   StatementStatus,
   SwissCanton,
@@ -34,6 +35,7 @@ import {
 } from '../../../core/components/table-filter/table-filter-config';
 import { TthChangeCantonDialogService } from './tth-change-canton-dialog/service/tth-change-canton-dialog.service';
 import { FileDownloadService } from '../../../core/components/file-upload/file/file-download.service';
+import { AuthService } from '../../../core/auth/auth.service';
 
 @Component({
   selector: 'app-timetable-hearing-overview-detail',
@@ -93,7 +95,8 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     private readonly tthChangeCantonDialogService: TthChangeCantonDialogService,
     private readonly tthTableService: TthTableService,
     private readonly newTimetableHearingYearDialogService: NewTimetableHearingYearDialogService,
-    private readonly translateService: TranslateService
+    private readonly translateService: TranslateService,
+    private readonly authService: AuthService
   ) {}
 
   get isHearingYearActive(): boolean {
@@ -102,6 +105,13 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
 
   get isSwissCanton(): boolean {
     return this.cantonShort.toLowerCase() === Cantons.swiss.short.toLowerCase();
+  }
+
+  get isCollectingActionEnabled(): boolean {
+    return this.authService.hasWritePermissionsToForCanton(
+      ApplicationType.TimetableHearing,
+      this.cantonShort.toLowerCase()
+    );
   }
 
   ngOnInit(): void {
@@ -292,7 +302,6 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
       this.tthStatusChangeDialog
         .onClick(changedStatus.value, this.selectedItems, undefined, 'MULTIPLE')
         .subscribe((result) => {
-          console.log(result);
           if (result) {
             this.statusChangeCollectingActionsEnabled = false;
             this.showCollectingActionButton = true;
