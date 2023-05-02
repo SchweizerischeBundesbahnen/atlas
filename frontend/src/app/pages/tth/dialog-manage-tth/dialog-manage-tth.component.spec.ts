@@ -105,7 +105,7 @@ describe('DialogManageTthComponent', () => {
     } as TimetableHearingYear);
     expect(matDialogRefSpy.close).toHaveBeenCalledOnceWith();
     expect(notificationServiceSpy.success).toHaveBeenCalledOnceWith(
-      'USER_ADMIN.NOTIFICATIONS.EDIT_SUCCESS'
+      'TTH.MANAGE_TIMETABLE_HEARING.SUCCESSFUL_SAVE_NOTIFICATION'
     );
   });
 

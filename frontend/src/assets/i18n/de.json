@@ -14,6 +14,7 @@
     "CORRELATION_ID": "Bei anhaltenden Problemen wenden Sie sich mit folgender Identifikationsnummer an die Fachstelle Atlas: {{correlationId}}"
   },
   "COMMON": {
+    "LOADING": "Wird geladen...",
     "BACK_TO_OVERVIEW": "Zurück zur Übersicht",
     "SAVE": "Speichern",
     "SAVE_AND_CLOSE": "Speichern & Schliessen",
@@ -717,7 +718,8 @@
       "POPUP_TITLE": "Steuerung Fahrplananhörung",
       "CREATE_STATEMENT_EXTERNAL": "Erfassung Stellungnahme via API",
       "CREATE_STATEMENT_INTERNAL": "Erfassung Stellungnahme in atlas",
-      "EDIT_STATEMENT": "Bearbeitung Stellungnahme in atlas"
+      "EDIT_STATEMENT": "Bearbeitung Stellungnahme in atlas",
+      "SUCCESSFUL_SAVE_NOTIFICATION": "Einstellungen erfolgreich gespeichert"
     }
   }
 }

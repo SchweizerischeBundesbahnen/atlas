@@ -14,6 +14,7 @@
     "CORRELATION_ID": "Se i problemi persistono, contattare il reparto Atlas con il seguente numero di identificazione: {{correlationId}}"
   },
   "COMMON": {
+    "LOADING": "Caricamento...",
     "BACK_TO_OVERVIEW": "Torna al sommario",
     "SAVE": "Salva",
     "SAVE_AND_CLOSE": "Salvare e chiudere",
@@ -717,7 +718,8 @@
       "POPUP_TITLE": "Controllo dell'orario dell'udito",
       "CREATE_STATEMENT_EXTERNAL": "Acquisizione di dichiarazioni tramite API",
       "CREATE_STATEMENT_INTERNAL": "Dichiarazione di registrazione in atlas",
-      "EDIT_STATEMENT": "Modifica del parere in atlas"
+      "EDIT_STATEMENT": "Modifica del parere in atlas",
+      "SUCCESSFUL_SAVE_NOTIFICATION": "Impostazioni salvate con successo"
     }
   }
 }

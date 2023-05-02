@@ -2,7 +2,6 @@ import { Component, Inject, OnInit, TemplateRef, ViewChild } from '@angular/core
 import { TimetableHearingService, TimetableHearingYear } from '../../../api';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { take } from 'rxjs';
-import { FormControl, FormGroup } from '@angular/forms';
 import { NotificationService } from '../../../core/notification/notification.service';
 
 @Component({
@@ -11,26 +10,20 @@ import { NotificationService } from '../../../core/notification/notification.ser
   styleUrls: ['./dialog-manage-tth.component.scss'],
 })
 export class DialogManageTthComponent implements OnInit {
-  readonly statementCreatableExternalCtrlName = 'statementCreatableExternal';
-  readonly statementCreatableInternalCtrlName = 'statementCreatableInternal';
-  readonly statementEditableCtrlName = 'statementEditable';
-
   @ViewChild('loadingView', { static: true }) loadingView!: TemplateRef<this>;
   @ViewChild('manageView', { static: true }) manageView!: TemplateRef<this>;
   @ViewChild('closeTimetableHearingView', { static: true })
   closeTimetableHearingView!: TemplateRef<this>;
 
+  statementCreatableExternalSliderValue = false;
+  statementCreatableInternalSliderValue = false;
+  statementEditableSliderValue = false;
+
+  timetableHearingYear?: TimetableHearingYear;
   currentView: TemplateRef<this> | null = null;
   actionButtonsDisabled = false;
 
   private readonly year: number;
-  private timetableHearingYear?: TimetableHearingYear;
-
-  private readonly manageTthFormGroup: FormGroup = new FormGroup({
-    [this.statementCreatableExternalCtrlName]: new FormControl<boolean>(false),
-    [this.statementCreatableInternalCtrlName]: new FormControl<boolean>(false),
-    [this.statementEditableCtrlName]: new FormControl<boolean>(false),
-  });
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private readonly matDialogData: number,
@@ -49,11 +42,15 @@ export class DialogManageTthComponent implements OnInit {
       .subscribe({
         next: (year) => {
           this.timetableHearingYear = year;
-          this.manageTthFormGroup.setValue({
-            statementCreatableExternal: !!year.statementCreatableExternal,
-            statementCreatableInternal: !!year.statementCreatableInternal,
-            statementEditable: !!year.statementEditable,
-          });
+          [
+            this.statementCreatableExternalSliderValue,
+            this.statementCreatableInternalSliderValue,
+            this.statementEditableSliderValue,
+          ] = [
+            !!year.statementCreatableExternal,
+            !!year.statementCreatableInternal,
+            !!year.statementEditable,
+          ];
           this.currentView = this.manageView;
         },
         error: (err) => {
@@ -74,12 +71,15 @@ export class DialogManageTthComponent implements OnInit {
 
     this.actionButtonsDisabled = true;
 
-    this.timetableHearingYear.statementCreatableExternal =
-      this.manageTthFormGroup.value[this.statementCreatableExternalCtrlName];
-    this.timetableHearingYear.statementCreatableInternal =
-      this.manageTthFormGroup.value[this.statementCreatableInternalCtrlName];
-    this.timetableHearingYear.statementEditable =
-      this.manageTthFormGroup.value[this.statementEditableCtrlName];
+    [
+      this.timetableHearingYear.statementCreatableExternal,
+      this.timetableHearingYear.statementCreatableInternal,
+      this.timetableHearingYear.statementEditable,
+    ] = [
+      this.statementCreatableExternalSliderValue,
+      this.statementCreatableInternalSliderValue,
+      this.statementEditableSliderValue,
+    ];
 
     this.tthService
       .updateTimetableHearingSettings(this.year, this.timetableHearingYear)
@@ -87,7 +87,9 @@ export class DialogManageTthComponent implements OnInit {
       .subscribe({
         next: () => {
           this.dialogRef.close();
-          this.notificationService.success('USER_ADMIN.NOTIFICATIONS.EDIT_SUCCESS');
+          this.notificationService.success(
+            'TTH.MANAGE_TIMETABLE_HEARING.SUCCESSFUL_SAVE_NOTIFICATION'
+          );
         },
         error: (err) => {
           this.dialogRef.close();
@@ -121,16 +123,5 @@ export class DialogManageTthComponent implements OnInit {
           this.notificationService.error(err);
         },
       });
-  }
-
-  getFormCtrlValueOf(ctrlName: string): boolean {
-    return this.manageTthFormGroup.value[ctrlName];
-  }
-
-  setFormCtrlValueOf(ctrlName: string, value: boolean): void {
-    this.manageTthFormGroup.patchValue({
-      [ctrlName]: value,
-    });
-    this.manageTthFormGroup.controls[ctrlName].markAsDirty();
   }
 }

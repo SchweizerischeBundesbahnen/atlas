@@ -3,7 +3,7 @@
 <ng-template #loadingView>
   <div class="dialog-container p-3">
     <h2>{{ 'TTH.MANAGE_TIMETABLE_HEARING.POPUP_TITLE' | translate }}</h2>
-    <span>Loading...</span>
+    <span>{{ 'COMMON.LOADING' | translate }}</span>
   </div>
 </ng-template>
 
@@ -14,26 +14,17 @@
 
     <div class="slide-toggle-row-wrapper pb-3">
       <span>{{ 'TTH.MANAGE_TIMETABLE_HEARING.CREATE_STATEMENT_EXTERNAL' | translate }}</span>
-      <atlas-slide-toggle
-        [toggle]="getFormCtrlValueOf(statementCreatableExternalCtrlName)"
-        (toggleChange)="setFormCtrlValueOf(statementCreatableExternalCtrlName, $event)"
-      ></atlas-slide-toggle>
+      <atlas-slide-toggle [(toggle)]="statementCreatableExternalSliderValue"></atlas-slide-toggle>
     </div>
 
     <div class="slide-toggle-row-wrapper">
       <span>{{ 'TTH.MANAGE_TIMETABLE_HEARING.CREATE_STATEMENT_INTERNAL' | translate }}</span>
-      <atlas-slide-toggle
-        [toggle]="getFormCtrlValueOf(statementCreatableInternalCtrlName)"
-        (toggleChange)="setFormCtrlValueOf(statementCreatableInternalCtrlName, $event)"
-      ></atlas-slide-toggle>
+      <atlas-slide-toggle [(toggle)]="statementCreatableInternalSliderValue"></atlas-slide-toggle>
     </div>
 
     <div class="slide-toggle-row-wrapper pt-3">
       <span>{{ 'TTH.MANAGE_TIMETABLE_HEARING.EDIT_STATEMENT' | translate }}</span>
-      <atlas-slide-toggle
-        [toggle]="getFormCtrlValueOf(statementEditableCtrlName)"
-        (toggleChange)="setFormCtrlValueOf(statementEditableCtrlName, $event)"
-      ></atlas-slide-toggle>
+      <atlas-slide-toggle [(toggle)]="statementEditableSliderValue"></atlas-slide-toggle>
     </div>
 
     <div class="one-action-btn-wrapper-right pt-5">
