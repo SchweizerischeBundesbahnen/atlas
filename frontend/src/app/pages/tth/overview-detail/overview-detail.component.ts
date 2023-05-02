@@ -83,6 +83,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
   selectedItems: TimetableHearingStatement[] = [];
   sorting = 'statementStatus,asc';
   selectedCheckBox = new SelectionModel<TimetableHearingStatement>(true, []);
+  isCheckBoxModeActive = false;
   protected readonly tableFilterConfig = OverviewDetailTableFilterConfig;
   private ngUnsubscribe = new Subject<void>();
 
@@ -121,13 +122,14 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     if (TthUtils.isHearingStatusActive(this.hearingStatus)) {
       this.tthTableService.activeTabPage = Pages.TTH_ACTIVE;
       this.tableColumns = this.getActiveTableColumns();
-      this.enhanceTableWithCheckbox();
+      this.enableCheckboxViewMode();
       this.showManageTimetableHearingButton = this.isSwissCanton;
       this.showAddNewStatementButton = !this.isSwissCanton;
       this.showDownloadCsvButton = true;
       this.initOverviewActiveTable();
     }
     if (TthUtils.isHearingStatusPlanned(this.hearingStatus)) {
+      this.removeCheckBoxViewMode();
       this.tthTableService.activeTabPage = Pages.TTH_PLANNED;
       this.sorting = 'swissCanton,asc';
       this.tableColumns = this.getPlannedTableColumns();
@@ -137,6 +139,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
       this.initOverviewPlannedTable();
     }
     if (TthUtils.isHearingStatusArchived(this.hearingStatus)) {
+      this.removeCheckBoxViewMode();
       this.tthTableService.activeTabPage = Pages.TTH_ARCHIVED;
       this.sorting = 'swissCanton,asc';
       this.tableColumns = this.getArchivedTableColumns();
@@ -175,7 +178,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
   }
 
   changeSelectedCantonFromDropdown(selectedCanton: MatSelectChange) {
-    this.resetCheckBox();
+    this.removeCheckBoxViewMode();
     const canton = selectedCanton.value.toLowerCase();
     this.overviewToTabService.changeData(canton);
     this.navigateTo(canton, this.foundTimetableHearingYear.timetableYear);
@@ -276,7 +279,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
   }
 
   cancelCollectiongAction() {
-    this.resetCheckBox();
+    this.removeCheckBoxViewMode();
     this.ngOnInit();
   }
 
@@ -289,6 +292,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
             this.statusChangeCollectingActionsEnabled = false;
             this.showCollectingActionButton = true;
             this.selectedCheckBox = new SelectionModel<TimetableHearingStatement>(true, []);
+            this.removeCheckBoxViewMode();
             this.ngOnInit();
           }
         });
@@ -304,6 +308,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
             this.cantonDeliveryCollectingActionsEnabled = false;
             this.showCollectingActionButton = true;
             this.selectedCheckBox = new SelectionModel<TimetableHearingStatement>(true, []);
+            this.removeCheckBoxViewMode();
             this.ngOnInit();
           }
         });
@@ -314,15 +319,27 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     this.selectedItems = $event.selected;
   }
 
-  private resetCheckBox() {
+  private removeCheckBoxViewMode() {
+    this.isCheckBoxModeActive = false;
     this.showCollectingActionButton = true;
     this.statusChangeCollectingActionsEnabled = false;
     this.cantonDeliveryCollectingActionsEnabled = false;
     this.selectedCheckBox = new SelectionModel<TimetableHearingStatement>(true, []);
+
+    this.enableFilters();
   }
 
-  private enhanceTableWithCheckbox() {
-    if (this.statusChangeCollectingActionsEnabled || this.cantonDeliveryCollectingActionsEnabled) {
+  private enableFilters() {
+    this.tableFilterConfig[0][0].disabled = false;
+    this.tableFilterConfig[1][0].disabled = false;
+    this.tableFilterConfig[1][1].disabled = false;
+    this.tableFilterConfig[1][2].disabled = false;
+  }
+
+  private enableCheckboxViewMode() {
+    this.isCheckBoxModeActive =
+      this.statusChangeCollectingActionsEnabled || this.cantonDeliveryCollectingActionsEnabled;
+    if (this.isCheckBoxModeActive) {
       this.tableColumns = this.getActiveTableColumns();
       this.tableColumns.unshift({
         headerTitle: '',
@@ -332,7 +349,26 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
           changeSelectionCallback: this.collectingStatusChangeAction,
         },
       });
+      this.tableColumns.forEach((value) => (value.disabled = true));
+      this.disableChangeStatementStatusSelect();
+      this.disableFilters();
     }
+  }
+
+  private disableChangeStatementStatusSelect() {
+    let statementStatusTableColumn = this.tableColumns.filter(
+      (value) => value.value === 'statementStatus'
+    )[0];
+    if (statementStatusTableColumn.dropdown) {
+      statementStatusTableColumn.dropdown.disabled = true;
+    }
+  }
+
+  private disableFilters() {
+    this.tableFilterConfig[0][0].disabled = true;
+    this.tableFilterConfig[1][0].disabled = true;
+    this.tableFilterConfig[1][1].disabled = true;
+    this.tableFilterConfig[1][2].disabled = true;
   }
 
   private navigateTo(canton: string, timetableYear: number) {
@@ -491,6 +527,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
         headerTitle: 'TTH.STATEMENT_STATUS_HEADER',
         value: 'statementStatus',
         dropdown: {
+          disabled: false,
           options: this.STATUS_OPTIONS,
           changeSelectionCallback: this.changeSelectedStatus,
           selectedOption: '',
