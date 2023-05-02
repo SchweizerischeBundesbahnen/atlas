@@ -40,8 +40,8 @@ import ch.sbb.line.directory.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
 import ch.sbb.line.directory.exception.PdfDocumentConstraintViolationException;
-import ch.sbb.line.directory.exception.ForbiddenDueToHearingYearSettings;
-import ch.sbb.line.directory.exception.NoClientCredentialAuthUsed;
+import ch.sbb.line.directory.exception.ForbiddenDueToHearingYearSettingsException;
+import ch.sbb.line.directory.exception.NoClientCredentialAuthUsedException;
 import ch.sbb.line.directory.repository.TimetableHearingStatementRepository;
 import ch.sbb.line.directory.repository.TimetableHearingYearRepository;
 import ch.sbb.line.directory.service.TimetableFieldNumberService;
@@ -261,9 +261,10 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
     mvc.perform(multipart(HttpMethod.POST, "/v1/timetable-hearing/statements")
             .file(statementJson))
         .andExpect(status().isForbidden())
-        .andExpect(result -> assertTrue(result.getResolvedException() instanceof ForbiddenDueToHearingYearSettings))
+        .andExpect(result -> assertTrue(result.getResolvedException() instanceof ForbiddenDueToHearingYearSettingsException))
         .andExpect(result -> assertEquals("Operation not allowed",
-            ((ForbiddenDueToHearingYearSettings) Objects.requireNonNull(result.getResolvedException())).getErrorResponse()
+            ((ForbiddenDueToHearingYearSettingsException) Objects.requireNonNull(
+                result.getResolvedException())).getErrorResponse()
                 .getMessage()));
   }
 
@@ -292,9 +293,9 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
     mvc.perform(multipart(HttpMethod.POST, "/v1/timetable-hearing/statements/external")
             .file(statementJson))
         .andExpect(status().isBadRequest())
-        .andExpect(result -> assertTrue(result.getResolvedException() instanceof NoClientCredentialAuthUsed))
+        .andExpect(result -> assertTrue(result.getResolvedException() instanceof NoClientCredentialAuthUsedException))
         .andExpect(result -> assertEquals("Bad authentication used",
-            ((NoClientCredentialAuthUsed) Objects.requireNonNull(result.getResolvedException())).getErrorResponse()
+            ((NoClientCredentialAuthUsedException) Objects.requireNonNull(result.getResolvedException())).getErrorResponse()
                 .getMessage()));
   }
 
@@ -334,9 +335,10 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
     mvc.perform(multipart(HttpMethod.POST, "/v1/timetable-hearing/statements/external")
             .file(statementJson))
         .andExpect(status().isForbidden())
-        .andExpect(result -> assertTrue(result.getResolvedException() instanceof ForbiddenDueToHearingYearSettings))
+        .andExpect(result -> assertTrue(result.getResolvedException() instanceof ForbiddenDueToHearingYearSettingsException))
         .andExpect(result -> assertEquals("Operation not allowed",
-            ((ForbiddenDueToHearingYearSettings) Objects.requireNonNull(result.getResolvedException())).getErrorResponse()
+            ((ForbiddenDueToHearingYearSettingsException) Objects.requireNonNull(
+                result.getResolvedException())).getErrorResponse()
                 .getMessage()));
   }
 
@@ -476,6 +478,38 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
             .contentType(contentType)
             .content(mapper.writeValueAsString(updateHearingCantonModel)))
         .andExpect(status().isOk());
+  }
+
+  @Test
+  void shouldThrowForbiddenExceptionWhenStatementUpdatableIsFalse() throws Exception {
+    TimetableHearingYearModel hearingYear = timetableHearingYearController.getHearingYear(YEAR);
+    hearingYear.setStatementEditable(false);
+    timetableHearingYearController.updateTimetableHearingSettings(YEAR, hearingYear);
+
+    TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
+        TimetableHearingStatementModel.builder()
+            .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+            .swissCanton(SwissCanton.BERN)
+            .statementSender(TimetableHearingStatementSenderModel.builder()
+                .email("fabienne.mueller@sbb.ch")
+                .build())
+            .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
+            .build(),
+        Collections.emptyList());
+
+    statement.setStatementStatus(StatementStatus.JUNK);
+
+    MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
+        MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
+
+    mvc.perform(multipart(HttpMethod.PUT, "/v1/timetable-hearing/statements/" + statement.getId())
+            .file(statementJson))
+        .andExpect(status().isForbidden())
+        .andExpect(result -> assertTrue(result.getResolvedException() instanceof ForbiddenDueToHearingYearSettingsException))
+        .andExpect(result -> assertEquals("Operation not allowed",
+            ((ForbiddenDueToHearingYearSettingsException) Objects.requireNonNull(
+                result.getResolvedException())).getErrorResponse()
+                .getMessage()));
   }
 
   @Test
