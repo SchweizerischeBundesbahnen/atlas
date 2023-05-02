@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Pages } from '../../pages';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { TabService } from '../../tab.service';
+import { filter } from 'rxjs/operators';
 
 @Component({
   templateUrl: './lidi-overview.component.html',
@@ -27,7 +28,17 @@ export class LidiOverviewComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private tabService: TabService
-  ) {}
+  ) {
+    router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .forEach(() => {
+        const currentTabIndex = this.tabService.getCurrentTabIndex(this.router.url, this.TABS);
+        if (currentTabIndex >= 0) {
+          this.activeTab = this.TABS[currentTabIndex];
+        }
+      })
+      .then();
+  }
 
   newLine() {
     this.router
