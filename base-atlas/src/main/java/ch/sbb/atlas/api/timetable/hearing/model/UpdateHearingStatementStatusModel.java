@@ -2,6 +2,7 @@ package ch.sbb.atlas.api.timetable.hearing.model;
 
 import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -22,6 +23,9 @@ import lombok.experimental.SuperBuilder;
 @FieldNameConstants
 @Schema(name = "UpdateHearingStatementStatus")
 public class UpdateHearingStatementStatusModel extends BaseUpdateHearingModel {
+
+  @Schema(description = "Current status")
+  private StatementStatus statementStatus;
 
   @Size(max = AtlasFieldLengths.LENGTH_5000)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
