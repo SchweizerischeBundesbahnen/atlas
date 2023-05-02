@@ -20,6 +20,7 @@ export const OverviewDetailTableFilterConfig: [
       filterType: FilterType.CHIP_SEARCH,
       elementWidthCssClass: 'col-6',
       activeSearch: [],
+      disabled: false,
     },
   ],
   [
@@ -30,18 +31,21 @@ export const OverviewDetailTableFilterConfig: [
       labelTranslationKey: 'COMMON.STATUS',
       typeTranslationKeyPrefix: 'TTH.STATEMENT_STATUS.',
       selectOptions: Object.values(StatementStatus),
+      disabled: false,
     },
     {
       filterType: FilterType.SEARCH_SELECT,
       elementWidthCssClass: 'col-3',
       activeSearch: {} as TransportCompany,
       searchType: TableFilterSearchType.TRANSPORT_COMPANY,
+      disabled: false,
     },
     {
       filterType: FilterType.SEARCH_SELECT,
       elementWidthCssClass: 'col-3',
       activeSearch: {} as TimetableFieldNumber,
       searchType: TableFilterSearchType.TIMETABLE_FIELD_NUMBER,
+      disabled: false,
     },
   ],
 ];
