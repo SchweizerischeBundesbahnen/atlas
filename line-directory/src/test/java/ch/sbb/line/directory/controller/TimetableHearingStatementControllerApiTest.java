@@ -317,10 +317,11 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
     timetableHearingStatementRepository.saveAndFlush(statement2);
     List<Long> ids = Stream.of(statement1, statement2).map(TimetableHearingStatement::getId).toList();
     UpdateHearingStatementStatusModel updateHearingStatementStatusModel =
-        UpdateHearingStatementStatusModel.builder().ids(ids).justification("Forza Napoli").build();
+        UpdateHearingStatementStatusModel.builder().ids(ids).justification("Forza Napoli")
+            .statementStatus(StatementStatus.ACCEPTED).build();
 
     //when
-    mvc.perform(put("/v1/timetable-hearing/statements/update-statement-status/" + StatementStatus.ACCEPTED)
+    mvc.perform(put("/v1/timetable-hearing/statements/update-statement-status")
             .contentType(contentType)
             .content(mapper.writeValueAsString(updateHearingStatementStatusModel)))
         .andExpect(status().isOk());
@@ -350,11 +351,12 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
     timetableHearingStatementRepository.saveAndFlush(statement1);
     timetableHearingStatementRepository.saveAndFlush(statement2);
     List<Long> ids = Stream.of(statement1, statement2).map(TimetableHearingStatement::getId).toList();
-    UpdateHearingCantonModel updateHearingCantonModel = UpdateHearingCantonModel.builder().comment("Forza Napoli").ids(ids)
-        .build();
+    UpdateHearingCantonModel updateHearingCantonModel =
+        UpdateHearingCantonModel.builder().comment("Forza Napoli").ids(ids).swissCanton(SwissCanton.JURA)
+            .build();
 
     //when
-    mvc.perform(put("/v1/timetable-hearing/statements/update-canton/" + SwissCanton.JURA)
+    mvc.perform(put("/v1/timetable-hearing/statements/update-canton")
             .contentType(contentType)
             .content(mapper.writeValueAsString(updateHearingCantonModel)))
         .andExpect(status().isOk());
