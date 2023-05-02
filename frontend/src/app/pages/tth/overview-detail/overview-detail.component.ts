@@ -232,7 +232,6 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
       .pipe(take(1))
       .subscribe({
         next: (needsInit) => {
-          console.log(needsInit);
           if (needsInit) {
             this.ngOnInit();
           }
