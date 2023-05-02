@@ -14,6 +14,7 @@
     "CORRELATION_ID": "Si les problèmes persistent, contactez le service Atlas avec le numéro d'identification suivant: {{correlationId}}"
   },
   "COMMON": {
+    "LOADING": "Chargement...",
     "BACK_TO_OVERVIEW": "Retour au sommaire",
     "SAVE": "Sauvegarder",
     "SAVE_AND_CLOSE": "Enregistrer & fermer",
@@ -717,7 +718,8 @@
       "POPUP_TITLE": "Contrôle de la consultation de l'horaire",
       "CREATE_STATEMENT_EXTERNAL": "Saisie de l'avis via API",
       "CREATE_STATEMENT_INTERNAL": "Saisie de l'avis dans atlas",
-      "EDIT_STATEMENT": "Traitement de l'avis dans atlas"
+      "EDIT_STATEMENT": "Traitement de l'avis dans atlas",
+      "SUCCESSFUL_SAVE_NOTIFICATION": "Paramètres enregistrés avec succès"
     }
   }
 }
