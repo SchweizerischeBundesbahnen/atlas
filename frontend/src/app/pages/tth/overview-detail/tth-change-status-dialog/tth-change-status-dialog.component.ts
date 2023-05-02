@@ -38,9 +38,10 @@ export class TthChangeStatusDialogComponent {
         justification = this.formGroup.controls['justification'].value;
       }
       this.timetableHearingService
-        .updateHearingStatementStatus(this.data.statementStatus, {
+        .updateHearingStatementStatus({
           ids: this.data.tths.map((value) => Number(value.id)),
           justification: justification,
+          statementStatus: this.data.statementStatus,
         })
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe(() => {

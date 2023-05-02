@@ -13,6 +13,7 @@ import { ErrorNotificationComponent } from '../../../../core/notification/error/
 import { FormModule } from '../../../../core/module/form.module';
 import { TranslatePipe } from '@ngx-translate/core';
 import { By } from '@angular/platform-browser';
+import { BaseChangeDialogComponent } from '../base-change-dialog/base-change-dialog.component';
 
 const mockTimetableHearingService = jasmine.createSpyObj('timetableHearingService', [
   'updateHearingStatementStatus',
@@ -37,7 +38,12 @@ describe('TthChangeStatusDialogComponent', () => {
   beforeEach(async () => {
     mockTimetableHearingService.updateHearingStatementStatus.and.returnValue(of(statement));
     await TestBed.configureTestingModule({
-      declarations: [TthChangeStatusDialogComponent, CommentComponent, ErrorNotificationComponent],
+      declarations: [
+        TthChangeStatusDialogComponent,
+        BaseChangeDialogComponent,
+        CommentComponent,
+        ErrorNotificationComponent,
+      ],
       imports: [AppTestingModule, FormModule],
       providers: [
         {
