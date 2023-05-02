@@ -40,9 +40,10 @@ export class TthChangeCantonDialogComponent {
         comment = this.formGroup.controls['comment'].value;
       }
       this.timetableHearingService
-        .updateHearingCanton(this.data.swissCanton, {
+        .updateHearingCanton({
           ids: this.data.tths.map((value) => Number(value.id)),
           comment: comment,
+          swissCanton: this.data.swissCanton,
         })
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe(() => {
