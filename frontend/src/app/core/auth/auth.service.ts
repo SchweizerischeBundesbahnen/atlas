@@ -8,16 +8,16 @@ import jwtDecode from 'jwt-decode';
 import { Role } from './role';
 import { ApplicationRole, ApplicationType, Permission, UserAdministrationService } from '../../api';
 import { BehaviorSubject } from 'rxjs';
+import { Cantons } from '../../pages/tth/overview/canton/Cantons';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   readonly eventUserComponentNotification: EventEmitter<User> = new EventEmitter<User>();
-  private readonly REQUESTED_ROUTE_STORAGE_KEY = 'requested_route';
-
-  private permissions: Permission[] = [];
   permissionsLoaded = new BehaviorSubject(false);
+  private readonly REQUESTED_ROUTE_STORAGE_KEY = 'requested_route';
+  private permissions: Permission[] = [];
 
   constructor(
     private oauthService: OAuthService,
@@ -88,6 +88,32 @@ export class AuthService {
     return AuthService.getRolesAllowedToCreate(applicationType).includes(
       applicationPermission.role!
     );
+  }
+
+  static hasPermissionToWriteOnCanton(
+    applicationType: ApplicationType,
+    canton: string | undefined,
+    permissions: Permission[],
+    isAdmin: boolean
+  ): boolean {
+    if (!canton || !applicationType) {
+      throw new Error('Canton button needs canton and applicationtype');
+    }
+
+    const applicationUserPermission = AuthService.getApplicationPermission(
+      permissions,
+      applicationType
+    );
+    if (isAdmin || applicationUserPermission.role === ApplicationRole.Supervisor) {
+      return true;
+    }
+    if (applicationUserPermission.role === ApplicationRole.Writer) {
+      const allowedSwissCantons = applicationUserPermission.permissionRestrictions.map(
+        (restriction) => restriction.valueAsString
+      );
+      return allowedSwissCantons.includes(Cantons.getSwissCantonEnum(canton));
+    }
+    return false;
   }
 
   // Determines if we show the edit button
@@ -200,6 +226,18 @@ export class AuthService {
     return AuthService.hasPermissionsToWriteWithPermissions(
       applicationType,
       sboid,
+      this.permissions,
+      this.isAdmin
+    );
+  }
+
+  hasWritePermissionsToForCanton(
+    applicationType: ApplicationType,
+    canton: string | undefined
+  ): boolean {
+    return AuthService.hasPermissionToWriteOnCanton(
+      applicationType,
+      canton,
       this.permissions,
       this.isAdmin
     );

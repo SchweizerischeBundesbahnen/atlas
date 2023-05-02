@@ -25,6 +25,7 @@ import {
 import { TthTableService } from '../tth-table.service';
 import { SelectComponent } from '../../../core/form-components/select/select.component';
 import { AtlasSpacerComponent } from '../../../core/components/spacer/atlas-spacer.component';
+import { AuthService } from '../../../core/auth/auth.service';
 
 @Component({
   selector: 'app-timetable-hearing-overview-tab-heading',
@@ -97,6 +98,15 @@ const containerTimetableHearingStatement: ContainerTimetableHearingStatement = {
   totalCount: 2,
 };
 
+const authServiceMock: Partial<AuthService> = {
+  get isAdmin(): boolean {
+    return true;
+  },
+  hasWritePermissionsToForCanton(): boolean {
+    return true;
+  },
+};
+
 async function baseTestConfiguration() {
   mockTimetableHearingService.getHearingYears.and.returnValue(of(hearingContainer));
   mockTimetableHearingService.getStatements.and.returnValue(of(containerTimetableHearingStatement));
@@ -116,6 +126,7 @@ async function baseTestConfiguration() {
       { provide: TimetableHearingService, useValue: mockTimetableHearingService },
       { provide: TranslatePipe },
       { provide: DisplayDatePipe },
+      { provide: AuthService, useValue: authServiceMock },
       {
         provide: TthTableService,
         useValue: jasmine.createSpyObj<TthTableService>(
