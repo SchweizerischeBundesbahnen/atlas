@@ -26,8 +26,8 @@ const statement: TimetableHearingStatement = {
   },
 };
 
-const dialogServiceSpy = jasmine.createSpyObj(DialogService, { confirmLeave: of({}) });
-const dialogRefSpy = jasmine.createSpyObj(['close']);
+const dialogServiceSpy = jasmine.createSpyObj(DialogService, { confirmLeave: of(true) });
+const dialogRefSpy = jasmine.createSpyObj('dialogRef', ['close']);
 describe('BaseChangeDialogComponent', () => {
   let component: BaseChangeDialogComponent;
   let fixture: ComponentFixture<BaseChangeDialogComponent>;
@@ -37,6 +37,10 @@ describe('BaseChangeDialogComponent', () => {
       declarations: [BaseChangeDialogComponent],
       imports: [AppTestingModule, FormModule],
       providers: [
+        { provide: MatSnackBarRef, useValue: {} },
+        { provide: MAT_SNACK_BAR_DATA, useValue: {} },
+        { provide: DialogService, useValue: dialogServiceSpy },
+        { provide: MatDialogRef, useValue: dialogRefSpy },
         {
           provide: MAT_DIALOG_DATA,
           useValue: {
@@ -48,9 +52,6 @@ describe('BaseChangeDialogComponent', () => {
             id: 1,
           },
         },
-        { provide: MatSnackBarRef, useValue: {} },
-        { provide: MAT_SNACK_BAR_DATA, useValue: {} },
-        { provide: MatDialogRef, useValue: dialogRefSpy },
         { provide: TranslatePipe },
       ],
     }).compileComponents();
@@ -58,6 +59,7 @@ describe('BaseChangeDialogComponent', () => {
     fixture = TestBed.createComponent(BaseChangeDialogComponent);
     component = fixture.componentInstance;
     component.controlName = 'justification';
+    component.dialogRef = dialogRefSpy;
     component.formGroup = new FormGroup<TthChangeStatusFormGroup>({
       justification: new FormControl('', [
         AtlasFieldLengthValidator.statement,
@@ -76,7 +78,15 @@ describe('BaseChangeDialogComponent', () => {
     //when
     component.closeDialog();
     //then
+    expect(dialogRefSpy.close).toHaveBeenCalled();
+  });
 
+  it('should close dialog when form is dirty', () => {
+    //when
+    component.formGroup.markAsDirty();
+    component.closeDialog();
+    //then
+    expect(dialogServiceSpy.confirmLeave).toHaveBeenCalled();
     expect(dialogRefSpy.close).toHaveBeenCalled();
   });
 
