@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 @RequiredArgsConstructor
-public class ForbiddenDueToHearingYearSettings extends AtlasException {
+public class ForbiddenDueToHearingYearSettingsException extends AtlasException {
 
   private final Long hearingYear;
   private final String settingField;
