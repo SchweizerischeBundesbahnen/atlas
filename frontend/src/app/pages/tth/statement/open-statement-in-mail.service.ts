@@ -37,12 +37,19 @@ export class OpenStatementInMailService {
     }
   }
 
-  private openStatementInMailClient(
+  openStatementInMailClient(
     statement: TimetableHearingStatement,
     resolvedTtfn: TimetableFieldNumber | undefined
   ) {
     const a = document.createElement('a');
+    a.href = this.buildMailToLink(statement, resolvedTtfn);
+    a.click();
+  }
 
+  buildMailToLink(
+    statement: TimetableHearingStatement,
+    resolvedTtfn: TimetableFieldNumber | undefined
+  ) {
     const statementInfo = this.buildStatementInfo(statement);
     const stopPointInfo = this.buildStopPointInfo(statement);
     const ttfnInfo = this.buildTtfnInfo(resolvedTtfn);
@@ -50,9 +57,7 @@ export class OpenStatementInMailService {
     const subject = this.buildSubject(ttfnInfo);
     const body = `${ttfnInfo}${stopPointInfo}${statementInfo}`;
 
-    const rawLink = `mailto:?${subject}body=${body}`;
-    a.href = encodeURI(rawLink);
-    a.click();
+    return encodeURI(`mailto:?${subject}body=${body}`);
   }
 
   private buildStatementInfo(statement: TimetableHearingStatement) {
@@ -65,17 +70,14 @@ export class OpenStatementInMailService {
   }
 
   private buildTtfnInfo(resolvedTtfn: TimetableFieldNumber | undefined) {
+    const ttfnLabel = this.translatePipe.transform('TTH.STATEMENT.TTFN');
     return resolvedTtfn
-      ? this.translatePipe.transform('TTH.STATEMENT.TTFN', {
-          number: resolvedTtfn.number,
-          description: resolvedTtfn.description,
-        }) + '\r\r'
+      ? `${ttfnLabel}: ${resolvedTtfn.number} ${resolvedTtfn.description}\r\r`
       : '';
   }
 
   private buildSubject(ttfnInfo: string | undefined) {
-    return ttfnInfo
-      ? 'subject=' + this.translatePipe.transform('TTH.STATEMENT.REQUEST') + ttfnInfo + '&'
-      : '';
+    const requestLabel = this.translatePipe.transform('TTH.STATEMENT.REQUEST');
+    return ttfnInfo ? `subject=${requestLabel} ${ttfnInfo}&` : '';
   }
 }
