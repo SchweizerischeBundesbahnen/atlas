@@ -4,7 +4,7 @@ import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.model.exception.AtlasException;
 import org.springframework.http.HttpStatus;
 
-public class NoClientCredentialAuthUsed extends AtlasException {
+public class NoClientCredentialAuthUsedException extends AtlasException {
 
   @Override
   public ErrorResponse getErrorResponse() {
