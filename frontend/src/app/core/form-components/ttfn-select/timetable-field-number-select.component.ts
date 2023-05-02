@@ -24,6 +24,7 @@ export class TimetableFieldNumberSelectComponent implements OnInit, OnDestroy, O
   @Input() formModus = true;
   @Input() formGroup!: FormGroup;
   @Input() validOn: Date | undefined = undefined;
+  @Input() disabled!: boolean;
 
   @Output() selectedTimetableFieldNumberChanged = new EventEmitter();
   @Output() ttfnSelectionChanged = new EventEmitter<TimetableFieldNumber>();
