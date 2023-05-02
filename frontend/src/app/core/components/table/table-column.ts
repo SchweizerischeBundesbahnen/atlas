@@ -16,6 +16,7 @@ export interface TableColumn<TYPE> {
 
 export interface ColumnDropDown {
   options: string[];
+  disabled: boolean;
   changeSelectionCallback: (...args: any[]) => any;
   selectedOption: string;
   translate: {

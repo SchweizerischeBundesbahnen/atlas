@@ -10,11 +10,11 @@
         <mat-label class="font-bold-lg">{{
           'COMMON.SEARCH.SEARCH_CRITERIA' | translate
         }}</mat-label>
-        <div class="search-main-field mb-4">
-          <mat-chip-grid #chipList>
+        <div [ngClass]="chipSearch.disabled! ? 'disabled' : ''" class="search-main-field mb-4">
+          <mat-chip-grid #chipList [disabled]="chipSearch.disabled">
             <mat-chip-row
-              *ngFor="let search of chipSearch.activeSearch"
               (removed)="removeSearch(search, rowIndex, filterConfigIndex)"
+              *ngFor="let search of chipSearch.activeSearch"
               class="font-bold-sm"
             >
               {{ search }}
@@ -25,8 +25,8 @@
             <input
               (matChipInputTokenEnd)="addSearch($event, rowIndex, filterConfigIndex)"
               [matChipInputFor]="chipList"
-              class="font-regular-base"
               attr.data-cy="table-filter-chip-search-{{ rowIndex }}-{{ filterConfigIndex }}"
+              class="font-regular-base"
             />
             <i class="bi bi-search"></i>
           </mat-chip-grid>
@@ -38,16 +38,17 @@
         [class]="searchSelect.elementWidthCssClass"
       >
         <bo-select
-          *ngIf="searchSelect.searchType === 'BUSINESS_ORGANISATION'"
           (boSelectionChanged)="multiSelectSearchChanged($event, rowIndex, filterConfigIndex)"
+          *ngIf="searchSelect.searchType === 'BUSINESS_ORGANISATION'"
           [formGroup]="searchForm"
           [formModus]="false"
           controlName="businessOrganisation"
         >
         </bo-select>
         <ttfn-select
-          *ngIf="searchSelect.searchType === 'TIMETABLE_FIELD_NUMBER'"
           (ttfnSelectionChanged)="multiSelectSearchChanged($event, rowIndex, filterConfigIndex)"
+          *ngIf="searchSelect.searchType === 'TIMETABLE_FIELD_NUMBER'"
+          [disabled]="searchSelect.disabled!"
           [formGroup]="searchForm"
           [formModus]="false"
           controlName="ttfnid"
@@ -55,8 +56,9 @@
         </ttfn-select>
 
         <tu-select
-          *ngIf="searchSelect.searchType === 'TRANSPORT_COMPANY'"
           (ttfnSelectionChanged)="multiSelectSearchChanged($event, rowIndex, filterConfigIndex)"
+          *ngIf="searchSelect.searchType === 'TRANSPORT_COMPANY'"
+          [disabled]="searchSelect.disabled!"
           [formGroup]="searchForm"
           [formModus]="false"
           controlName="transportCompany"
@@ -70,13 +72,14 @@
       >
         <atlas-select
           (selectChanged)="multiSelectChanged($event, rowIndex, filterConfigIndex)"
+          [additionalLabelspace]="false"
+          [disabled]="multiSelect.disabled!"
+          [label]="multiSelect.labelTranslationKey"
+          [multiple]="true"
+          [optionTranslateLabelPrefix]="multiSelect.typeTranslationKeyPrefix"
+          [options]="multiSelect.selectOptions"
           [value]="multiSelect.activeSearch"
           dataCy="table-filter-multi-select-{{ rowIndex }}-{{ filterConfigIndex }}"
-          [label]="multiSelect.labelTranslationKey"
-          [additionalLabelspace]="false"
-          [options]="multiSelect.selectOptions"
-          [optionTranslateLabelPrefix]="multiSelect.typeTranslationKeyPrefix"
-          [multiple]="true"
         ></atlas-select>
       </div>
 
