@@ -2,15 +2,16 @@
   <ng-content></ng-content>
   <ng-select
     #ngSelect
-    appearance="outline"
-    [multiple]="multiple"
     (change)="changeTrigger.emit($event)"
     [bindValue]="bindValueInp"
     [formControlName]="controlName"
     [items]="items$ | async"
     [minTermLength]="2"
+    [multiple]="multiple"
     [placeholder]="placeholderTextKey | translate"
+    [readonly]="disabled"
     [typeahead]="searchTrigger"
+    appearance="outline"
     notFoundText="{{ 'COMMON.NODATAFOUND' | translate }}"
     typeToSearchText="{{ 'COMMON.TYPE_TO_SEARCH' | translate }}"
   >
