@@ -26,6 +26,7 @@ import { AuthService } from '../../../core/auth/auth.service';
 import { TthUtils } from '../util/tth-utils';
 import { StatementDialogService } from './statement-dialog/service/statement.dialog.service';
 import { FileDownloadService } from '../../../core/components/file-upload/file/file-download.service';
+import { OpenStatementInMailService } from './open-statement-in-mail.service';
 
 @Component({
   selector: 'app-statement-detail',
@@ -56,7 +57,8 @@ export class StatementDetailComponent implements OnInit {
     private notificationService: NotificationService,
     private authService: AuthService,
     private timetableYearChangeService: TimetableYearChangeService,
-    private readonly statementDialogService: StatementDialogService
+    private readonly statementDialogService: StatementDialogService,
+    private readonly openStatementInMailService: OpenStatementInMailService
   ) {}
 
   get isHearingStatusArchived() {
@@ -332,5 +334,9 @@ export class StatementDetailComponent implements OnInit {
     this.timetableHearingService
       .getStatementDocument(this.statement!.id!, fileName)
       .subscribe((response) => FileDownloadService.downloadFile(fileName, response));
+  }
+
+  openAsMail() {
+    this.openStatementInMailService.openAsMail(this.statement!, this.ttfnValidOn);
   }
 }
