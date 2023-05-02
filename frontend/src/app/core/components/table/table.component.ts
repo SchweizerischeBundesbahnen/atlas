@@ -163,10 +163,6 @@ export class TableComponent<DATATYPE> implements OnInit {
     this.checkedBoxEvent.emit(this.checkBoxSelection);
   }
 
-  resetSelectedCheckBox() {
-    this.checkBoxSelection.clear();
-  }
-
   private emitTableChangedEvent(): void {
     this.isLoading = true;
     this.tableChanged.emit({

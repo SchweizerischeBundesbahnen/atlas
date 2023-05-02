@@ -2,6 +2,7 @@ package ch.sbb.atlas.api.timetable.hearing.model;
 
 import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.kafka.model.SwissCanton;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -22,6 +23,9 @@ import lombok.experimental.SuperBuilder;
 @FieldNameConstants
 @Schema(name = "UpdateHearingCanton")
 public class UpdateHearingCantonModel extends BaseUpdateHearingModel {
+
+  @Schema(description = "Canton, the statement is for")
+  private SwissCanton swissCanton;
 
   @Size(max = AtlasFieldLengths.LENGTH_280)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)

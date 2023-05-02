@@ -121,22 +121,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     if (TthUtils.isHearingStatusActive(this.hearingStatus)) {
       this.tthTableService.activeTabPage = Pages.TTH_ACTIVE;
       this.tableColumns = this.getActiveTableColumns();
-
-      if (
-        this.statusChangeCollectingActionsEnabled ||
-        this.cantonDeliveryCollectingActionsEnabled
-      ) {
-        this.tableColumns = this.getActiveTableColumns();
-        this.tableColumns.unshift({
-          headerTitle: '',
-          disabled: true,
-          value: 'id',
-          checkbox: {
-            changeSelectionCallback: this.collectingStatusChangeAction,
-          },
-        });
-      }
-
+      this.enhanceTableWithCheckbox();
       this.showManageTimetableHearingButton = this.isSwissCanton;
       this.showAddNewStatementButton = !this.isSwissCanton;
       this.showDownloadCsvButton = true;
@@ -329,6 +314,20 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
 
   checkedBoxEvent($event: SelectionModel<TimetableHearingStatement>) {
     this.selectedItems = $event.selected;
+  }
+
+  private enhanceTableWithCheckbox() {
+    if (this.statusChangeCollectingActionsEnabled || this.cantonDeliveryCollectingActionsEnabled) {
+      this.tableColumns = this.getActiveTableColumns();
+      this.tableColumns.unshift({
+        headerTitle: '',
+        disabled: true,
+        value: 'id',
+        checkbox: {
+          changeSelectionCallback: this.collectingStatusChangeAction,
+        },
+      });
+    }
   }
 
   private navigateTo(canton: string, timetableYear: number) {
