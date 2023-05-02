@@ -175,6 +175,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
   }
 
   changeSelectedCantonFromDropdown(selectedCanton: MatSelectChange) {
+    this.resetCheckBox();
     const canton = selectedCanton.value.toLowerCase();
     this.overviewToTabService.changeData(canton);
     this.navigateTo(canton, this.foundTimetableHearingYear.timetableYear);
@@ -275,10 +276,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
   }
 
   cancelCollectiongAction() {
-    this.showCollectingActionButton = true;
-    this.statusChangeCollectingActionsEnabled = false;
-    this.cantonDeliveryCollectingActionsEnabled = false;
-    this.selectedCheckBox = new SelectionModel<TimetableHearingStatement>(true, []);
+    this.resetCheckBox();
     this.ngOnInit();
   }
 
@@ -314,6 +312,13 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
 
   checkedBoxEvent($event: SelectionModel<TimetableHearingStatement>) {
     this.selectedItems = $event.selected;
+  }
+
+  private resetCheckBox() {
+    this.showCollectingActionButton = true;
+    this.statusChangeCollectingActionsEnabled = false;
+    this.cantonDeliveryCollectingActionsEnabled = false;
+    this.selectedCheckBox = new SelectionModel<TimetableHearingStatement>(true, []);
   }
 
   private enhanceTableWithCheckbox() {
