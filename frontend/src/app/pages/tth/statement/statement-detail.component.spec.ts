@@ -121,7 +121,7 @@ describe('StatementDetailComponent for existing statement', () => {
     fixture.detectChanges();
     //then
     const buttons = fixture.debugElement.queryAll(By.css('atlas-button'));
-    expect(buttons.length).toBe(3);
+    expect(buttons.length).toBe(4);
     const buttonsText = buttons.map(
       (button) => button.nativeElement.attributes['buttontext'].value
     );
@@ -135,7 +135,7 @@ describe('StatementDetailComponent for existing statement', () => {
     fixture.detectChanges();
     //then
     const buttons = fixture.debugElement.queryAll(By.css('atlas-button'));
-    expect(buttons.length).toBe(4);
+    expect(buttons.length).toBe(5);
     const buttonsText = buttons.map(
       (button) => button.nativeElement.attributes['buttontext'].value
     );
