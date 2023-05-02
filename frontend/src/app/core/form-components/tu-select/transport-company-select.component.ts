@@ -23,6 +23,7 @@ export class TransportCompanySelectComponent implements OnInit, OnDestroy, OnCha
   @Input() controlName!: string;
   @Input() formModus = true;
   @Input() formGroup!: FormGroup;
+  @Input() disabled!: boolean;
 
   @Output() selectedTransportCompanyChanged = new EventEmitter();
   @Output() ttfnSelectionChanged = new EventEmitter<TransportCompany>();

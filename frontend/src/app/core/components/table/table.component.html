@@ -23,11 +23,11 @@
       <ng-container matColumnDef="{{ column.value }}">
         <th
           *matHeaderCellDef
+          [disabled]="column.disabled"
           [ngClass]="column.dropdown ? 'col-2' : ''"
           class="font-bold-base color-primary-400 translated-paragraph bordered-cell"
           mat-header-cell
           mat-sort-header
-          [disabled]="column.disabled"
           scope="col"
         >
           <div *ngIf="!column.checkbox">
@@ -62,6 +62,7 @@
               (click)="$event.stopPropagation()"
               (selectChanged)="changeDropdownEvent.emit({$event,value})"
               [additionalLabelspace]="false"
+              [disabled]="column.dropdown.disabled"
               [optionTranslateLabelPrefix]="column.dropdown.translate.withPrefix"
               [options]="column.dropdown.options"
               [value]="value[column.value]"
