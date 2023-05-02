@@ -3,10 +3,8 @@ package ch.sbb.atlas.api.timetable.hearing;
 import ch.sbb.atlas.api.bodi.TransportCompanyModel;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel.Fields;
-import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.api.timetable.hearing.model.UpdateHearingCantonModel;
 import ch.sbb.atlas.api.timetable.hearing.model.UpdateHearingStatementStatusModel;
-import ch.sbb.atlas.kafka.model.SwissCanton;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Encoding;
@@ -37,17 +35,14 @@ import org.springframework.web.multipart.MultipartFile;
 public interface TimetableHearingStatementApiV1 {
 
   @ResponseStatus(HttpStatus.OK)
-  @PutMapping(path = "/update-statement-status/{statementStatus}")
+  @PutMapping(path = "/update-statement-status")
   void updateHearingStatementStatus(
-      @org.springframework.web.bind.annotation.RequestBody UpdateHearingStatementStatusModel updateHearingStatementStatus,
-      @PathVariable StatementStatus statementStatus
-  );
+      @org.springframework.web.bind.annotation.RequestBody UpdateHearingStatementStatusModel updateHearingStatementStatus);
 
   @ResponseStatus(HttpStatus.OK)
-  @PutMapping(path = "/update-canton/{swissCanton}")
+  @PutMapping(path = "/update-canton")
   void updateHearingCanton(
-      @org.springframework.web.bind.annotation.RequestBody UpdateHearingCantonModel updateHearingCantonModel,
-      @PathVariable SwissCanton swissCanton);
+      @org.springframework.web.bind.annotation.RequestBody UpdateHearingCantonModel updateHearingCantonModel);
 
   @GetMapping
   @PageableAsQueryParam
