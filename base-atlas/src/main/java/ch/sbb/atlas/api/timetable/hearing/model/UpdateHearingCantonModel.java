@@ -4,6 +4,7 @@ import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -24,6 +25,7 @@ import lombok.experimental.SuperBuilder;
 @Schema(name = "UpdateHearingCanton")
 public class UpdateHearingCantonModel extends BaseUpdateHearingModel {
 
+  @NotNull
   @Schema(description = "Canton, the statement is for")
   private SwissCanton swissCanton;
 
