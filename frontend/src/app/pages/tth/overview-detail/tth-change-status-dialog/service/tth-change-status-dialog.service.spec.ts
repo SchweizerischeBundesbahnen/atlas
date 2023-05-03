@@ -3,8 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { TthChangeStatusDialogService } from './tth-change-status-dialog.service';
-import { ColumnDropDownEvent } from '../../../../../core/components/table/column-drop-down-event';
-import { SwissCanton, TimetableHearingStatement } from '../../../../../api';
+import { StatementStatus, SwissCanton, TimetableHearingStatement } from '../../../../../api';
 
 const statement: TimetableHearingStatement = {
   id: 1,
@@ -14,13 +13,6 @@ const statement: TimetableHearingStatement = {
   statementSender: {
     email: 'luca@yb.ch',
   },
-};
-
-const changedStatus: ColumnDropDownEvent = {
-  $event: {
-    value: statement,
-  },
-  value: statement,
 };
 
 describe('TthChangeStatusDialogService', () => {
@@ -39,7 +31,9 @@ describe('TthChangeStatusDialogService', () => {
   it('should open confirmation dialog', () => {
     dialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
-    service.onClick(changedStatus).subscribe((result) => expect(result).toBeTrue());
+    service
+      .onClick(StatementStatus.Accepted, [], undefined, 'SINGLE')
+      .subscribe((result) => expect(result).toBeTrue());
 
     expect(dialogSpy.open).toHaveBeenCalled();
   });

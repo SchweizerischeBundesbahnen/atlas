@@ -547,13 +547,18 @@
       "STATUS_CHANGE": {
         "SUCCESS": "Le statut a été modifié avec succès."
       },
+      "CANTON_CHANGE": {
+        "SUCCESS": "Le canton a été modifié avec succès."
+      },
       "NO_VERSION_VALID_AT": "Il n'y a pas de version valide de {{swissId}} au {{validAt}}. Veuillez vérifier la validité du numéro de champ d'horaire."
     },
     "DIALOG": {
       "STATUS_CHANGE": "Modifier statut",
+      "CANTON_CHANGE": "Modifier canton",
       "COMMENT_LABEL": "Commentaire à ce sujet",
       "BACK": "De retour",
-      "STATUS_CHANGE_MESSAGE": "Vous modifiez l'avis sélectionné."
+      "STATUS_CHANGE_MESSAGE": "Vous modifiez l'avis sélectionné.",
+      "MULTIPLE_STATUS_CHANGE_MESSAGE": "Vous modifiez {{tthsLength}} l'avis sélectionné."
     },
     "TAB": {
       "ACTUAL": "Audition actuelle",
@@ -565,9 +570,16 @@
       "MANAGE_TIMETABLE_HEARING": "Contrôle de la consultation de l'horaire",
       "ADD_NEW_STATEMENT": "Saisir un nouvel avis",
       "ADD_NEW_TIMETABLE_HEARING": "Créer une nouvelle consultation sur les horaires",
-      "START_TIMETABLE_HEARING": "Lancer cette année d'horaire"
+      "START_TIMETABLE_HEARING": "Lancer cette année d'horaire",
+      "CANCEL_COLLECTING_ACTION": "Terminer la collecte"
     },
     "DROPDOWN": {
+      "COLLECTING_STATUS_CHANGE_ACTION": {
+        "PLACEHOLDER": "Modifier l'état de la sélection"
+      },
+      "COLLECTING_STATUS_CANTON_DELIVERY_CHANGE_ACTION": {
+        "PLACEHOLDER": "Modifier le canton de sélection"
+      },
       "COLLECTING_ACTION": {
         "PLACEHOLDER": "Actions de collecte",
         "OPTION": {

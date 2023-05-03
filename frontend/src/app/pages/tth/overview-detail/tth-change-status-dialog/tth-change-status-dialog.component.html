@@ -1,36 +1,7 @@
-<div class="dialog-close-panel dialog-close-icon-container">
-  <button [mat-dialog-close]="false" class="close-icon-btn">
-    <em class="bi bi-x fs-2"></em>
-  </button>
-</div>
-<div class="dialog" data-cy="dialog">
-  <div class="mb-5">
-    <span class="font-bold-4xl">{{ data.title | translate }}</span>
-    <div class="mb-2">
-      <br />
-    </div>
-    <span class="font-regular-lg message">{{
-      data.message | translate : { actualStatus: data.ths.statementStatus }
-    }}</span>
-  </div>
-  <div class="pt-2 pb-5 justification">
-    <form-comment
-      [formGroup]="tthChangeStatusFormGroup"
-      controlName="justification"
-      label="TTH.DIALOG.COMMENT_LABEL"
-      maxChars="5000"
-    ></form-comment>
-  </div>
-  <mat-dialog-actions class="justify-content-end">
-    <button (click)="closeDialog()" class="atlas-primary-btn me-3" data-cy="dialog-cancel-button">
-      {{ data.cancelText ?? 'DIALOG.CANCEL' | translate }}
-    </button>
-    <button
-      (click)="onClick()"
-      class="atlas-primary-btn primary-color-btn"
-      data-cy="dialog-confirm-button"
-    >
-      {{ data.confirmText ?? 'DIALOG.OK' | translate }}
-    </button>
-  </mat-dialog-actions>
-</div>
+<app-base-change-dialog
+  (changeEvent)="onClick()"
+  [dialogRef]="dialogRef"
+  [formGroup]="formGroup"
+  controlName="justification"
+  maxChars="5000"
+></app-base-change-dialog>
