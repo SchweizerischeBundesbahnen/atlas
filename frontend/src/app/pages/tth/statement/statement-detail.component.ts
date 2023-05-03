@@ -198,10 +198,11 @@ export class StatementDetailComponent implements OnInit {
         .filter((element) => element !== undefined)
         .map((e) => e!);
     }
-
-    const defaultCanton = Cantons.getSwissCantonEnum(this.route.snapshot.params.canton);
-    if (this.CANTON_OPTIONS.includes(Cantons.fromSwissCanton(defaultCanton)!)) {
-      this.form.controls.swissCanton.setValue(defaultCanton);
+    if (this.isNew) {
+      const defaultCanton = Cantons.getSwissCantonEnum(this.route.snapshot.params.canton);
+      if (this.CANTON_OPTIONS.includes(Cantons.fromSwissCanton(defaultCanton)!)) {
+        this.form.controls.swissCanton.setValue(defaultCanton);
+      }
     }
   }
 
