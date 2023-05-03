@@ -176,10 +176,10 @@
       "DESCRIPTION": "__Hier finden Sie alle Informationen zum Bearbeiten und neu Erstellen von Dienststellen.__"
     },
     "TTH": {
-      "TITLE": "Consultation sur les horaires en Suisse",
-      "TITLE_MENU": "Consultation sur les horaires",
-      "DESCRIPTION": "Vous trouverez ici toutes les informations relatives à la consultation sur les horaires en Suisse.",
-      "PATH_TEXT": "Consultation sur les horaires"
+      "TITLE": "Consultation le projet d'horaire en Suisse",
+      "TITLE_MENU": "Consultation le projet d'horaire",
+      "DESCRIPTION": "Vous trouverez ici toutes les informations relatives à la consultation le projet d'horaire en Suisse.",
+      "PATH_TEXT": "Consultation le projet d'horaire"
     },
     "DETAILS": "Précisions"
   },
@@ -576,7 +576,7 @@
     "BUTTON": {
       "DOWNLOAD_CSV": "Download [CSV]",
       "MANAGE_TIMETABLE_HEARING": "Contrôle de la consultation de l'horaire",
-      "ADD_NEW_STATEMENT": "Saisir un nouvel avis",
+      "ADD_NEW_STATEMENT": "Saisir une nouvelle prise de position",
       "ADD_NEW_TIMETABLE_HEARING": "Créer une nouvelle consultation sur les horaires",
       "START_TIMETABLE_HEARING": "Lancer cette année d'horaire",
       "CANCEL_COLLECTING_ACTION": "Terminer la collecte",
@@ -628,19 +628,19 @@
     "OVERVIEW_TAB": {
       "OVERVIEW_ACTUAL_SUBHEADING_PREFIX": "La procédure d'établissement de l'horaire suisse de l'OFT pour l'horaire {{timeTableYear}} dure de",
       "OVERVIEW_ACTUAL_SUBHEADING_POSTFIX": " {{hearingFrom}} jusqu'au {{hearingTo}}.",
-      "OVERVIEW_PLANNED_SUBHEADING": "Vous trouverez ici toutes les consultations d'horaires prévues. Vous ne pouvez pas saisir d'avis avant le début d'une année d'horaire.",
+      "OVERVIEW_PLANNED_SUBHEADING": "Vous trouverez ici toutes les consultations d'horaires prévues. Vous ne pouvez pas saisir de prises de position avant le début d'une année d'horaire.",
       "OVERVIEW_ARCHIVED_SUBHEADING": "Vous trouverez ici toutes les consultations d'horaires archivées, classées par année d'horaire.",
-      "OVERVIEW_ACTUAL_NOT_FOUND_SUBHEADING_PREFIX": "Das Fahrplanjahr ist noch nicht eröffnet. Sie finden bereits vorhandene Stellungnahmen unter dem Reiter «Geplante Anhörungen». Das Fahrplanverfahren Schweiz des BAV für den Fahrplan {{timeTableYear}} wird von ",
+      "OVERVIEW_ACTUAL_NOT_FOUND_SUBHEADING_PREFIX": "L'année d'horaire n'est pas encore ouverte. Vous trouverez les avis déjà existants sous l'onglet \"Auditions prévues\". La procédure d'établissement de l'horaire suisse de l'OFT pour l'horaire {{timeTableYear}} est effectuée par ",
       "OVERVIEW_PLANNED_NOT_FOUND": "Actuellement, aucune audition prévue n'est enregistrée.",
       "OVERVIEW_ACTUAL_NO_PLANNED_HEARING_YEAR_FOUND": "Actuellement, aucune audition n'est active.",
-      "OVERVIEW_ARCHIVED_NOT_FOUND": "Es sind derzeit keine archivierten Anhörungen verfügbar."
+      "OVERVIEW_ARCHIVED_NOT_FOUND": "Aucune audition archivée n'est actuellement disponible."
     },
     "STATEMENT_STATUS": {
-      "RECEIVED": "arriver",
-      "IN_REVIEW": "À l'étude",
+      "RECEIVED": "réceptionnée",
+      "IN_REVIEW": "en cours de traitement",
       "ACCEPTED": "acceptée",
-      "REJECTED": "rejeté",
-      "MOVED": "Retardé",
+      "REJECTED": "rejetée",
+      "MOVED": "reporté",
       "JUNK": "*Spam-Mail*",
       "REVOKED": "Saisie des erreurs"
     },
@@ -688,7 +688,7 @@
       "TTFN": "Champ de l'horaire",
       "FIRST_NAME": "Prénom",
       "LAST_NAME": "Nom de famille",
-      "E_MAIL": "Courrier électronique",
+      "E_MAIL": "E-Mail",
       "E_MAIL_TEXT": "Si aucun e-mail n'est disponible, une entrée fictive, par exemple xxx@xxx.ch, suffit.",
       "JUSTIFICATION": "Justification",
       "COMMENT": "Commentaire sur la cession de canton",
