@@ -1,10 +1,9 @@
 import { Component, ContentChild, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
-import { ApplicationRole, ApplicationType } from '../../../api';
+import { ApplicationType } from '../../../api';
 import { AuthService } from '../../auth/auth.service';
 import { AtlasButtonType } from './atlas-button.type';
 import { NON_PROD_STAGES } from '../../constants/stages';
 import { environment } from '../../../../environments/environment';
-import { Cantons } from '../../../pages/tth/overview/canton/Cantons';
 
 @Component({
   selector: 'atlas-button[buttonType]',
@@ -94,23 +93,7 @@ export class AtlasButtonComponent {
   }
 
   hasWritePermissionsForCanton() {
-    if (!this.canton || !this.applicationType) {
-      throw new Error('Canton button needs canton and applicationtype');
-    }
-
-    const applicationUserPermission = this.authService.getApplicationUserPermission(
-      this.applicationType
-    );
-    if (this.authService.isAdmin || applicationUserPermission.role === ApplicationRole.Supervisor) {
-      return true;
-    }
-    if (applicationUserPermission.role === ApplicationRole.Writer) {
-      const allowedSwissCantons = applicationUserPermission.permissionRestrictions.map(
-        (restriction) => restriction.valueAsString
-      );
-      return allowedSwissCantons.includes(Cantons.getSwissCantonEnum(this.canton));
-    }
-    return false;
+    return this.authService.hasWritePermissionsToForCanton(this.applicationType, this.canton);
   }
 
   getButtonStyleClass() {

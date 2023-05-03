@@ -28,6 +28,7 @@ export type TableFilterSearchSelect<T> = {
   elementWidthCssClass: string;
   activeSearch: T | undefined;
   searchType: TableFilterSearchType;
+  disabled?: boolean;
 };
 
 export type TableFilterMultiSelect<T> = {
@@ -37,6 +38,7 @@ export type TableFilterMultiSelect<T> = {
   typeTranslationKeyPrefix: string;
   labelTranslationKey: string;
   selectOptions: T[];
+  disabled?: boolean;
 };
 
 export type TableFilterDateSelect = {
@@ -50,6 +52,7 @@ export type TableFilterChip = {
   filterType: FilterType.CHIP_SEARCH;
   elementWidthCssClass: string;
   activeSearch: string[];
+  disabled?: boolean;
 };
 
 export function isDateSelect<TFilterConfig>(
