@@ -209,9 +209,7 @@ export class StatementDetailComponent implements OnInit {
     if (tthPermissions.role === ApplicationRole.Supervisor || this.authService.isAdmin) {
       this.CANTON_OPTIONS = Cantons.cantons;
     } else if (tthPermissions.role === ApplicationRole.Writer) {
-      // tthPermissions.permissionRestrictions.sort((n1,n2) => (n1.valueAsString! > n2.valueAsString! ? -1 : 1 ));
       this.CANTON_OPTIONS = tthPermissions.permissionRestrictions
-        // .sort((n1,n2) => (n1.valueAsString! > n2.valueAsString! ? -1 : 1 )).reverse()
         .map((restriction) => Cantons.fromSwissCanton(restriction.valueAsString as SwissCanton))
         .filter((element) => element !== undefined)
         .map((e) => e!)
