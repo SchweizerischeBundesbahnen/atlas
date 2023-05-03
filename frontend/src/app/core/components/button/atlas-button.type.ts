@@ -6,6 +6,7 @@ export const AtlasButtonType = {
   EDIT: 'edit' as AtlasButtonType,
   REVOKE: 'revoke' as AtlasButtonType,
   SKIP_WORKFLOW: 'skipworkflow' as AtlasButtonType,
+  SUPERVISOR_BUTTON: 'supervisorButton' as AtlasButtonType,
   DELETE: 'delete' as AtlasButtonType,
   CLOSE_ICON: 'closeIcon' as AtlasButtonType,
   DEFAULT_PRIMARY: 'defaultPrimary' as AtlasButtonType,
@@ -27,6 +28,7 @@ export type AtlasButtonType =
   | 'edit'
   | 'revoke'
   | 'skipworkflow'
+  | 'supervisorButton'
   | 'delete'
   | 'defaultPrimary'
   | 'cantonWritePermission'
