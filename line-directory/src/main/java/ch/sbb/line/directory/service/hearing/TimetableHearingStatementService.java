@@ -123,7 +123,7 @@ public class TimetableHearingStatementService {
   private void filesValidation(List<File> files, Set<StatementDocument> alreadySavedDocuments) {
     statementDocumentFilesValidationService.validateMaxNumberOfFiles(files.size() + alreadySavedDocuments.size());
     statementDocumentFilesValidationService.validateNoFileNameDuplicate(files, alreadySavedDocuments);
-    statementDocumentFilesValidationService.validateMaxSizeOfFiles(files, MAX_DOCUMENTS_SIZE);
+    statementDocumentFilesValidationService.validateMaxSizeOfFiles(files, alreadySavedDocuments, MAX_DOCUMENTS_SIZE);
     statementDocumentFilesValidationService.validateAllFilessArePdfs(files);
   }
 
