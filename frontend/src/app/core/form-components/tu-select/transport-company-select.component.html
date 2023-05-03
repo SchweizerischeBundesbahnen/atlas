@@ -21,6 +21,8 @@
     [ngClass]="formModus ? 'form-mode-label-form-field-space' : 'search-mode-space-between'"
   ></div>
   <ng-template #labelOptionTemplates let-item>
-    {{ item.abbreviation }} - {{ item.businessRegisterName }}
+    <div class="text-truncate" [title]="item.abbreviation + '-' + item.businessRegisterName">
+      {{ item.abbreviation }} - {{ item.businessRegisterName }}
+    </div>
   </ng-template>
 </form-search-select>
