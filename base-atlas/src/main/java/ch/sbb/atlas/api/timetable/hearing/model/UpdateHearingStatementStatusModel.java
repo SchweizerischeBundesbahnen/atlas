@@ -4,6 +4,7 @@ import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -24,6 +25,7 @@ import lombok.experimental.SuperBuilder;
 @Schema(name = "UpdateHearingStatementStatus")
 public class UpdateHearingStatementStatusModel extends BaseUpdateHearingModel {
 
+  @NotNull
   @Schema(description = "Current status")
   private StatementStatus statementStatus;
 
