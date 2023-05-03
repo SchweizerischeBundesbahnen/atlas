@@ -563,6 +563,11 @@
       "STATUS_CHANGE_MESSAGE": "Modifica la dichiarazioni per l'orario selezionata.",
       "MULTIPLE_STATUS_CHANGE_MESSAGE": "Modifica le {{tthsLength}} audizione selezionate"
     },
+    "START_HEARING_DIALOG": {
+      "TITLE": "Iniziare l'audizione?",
+      "TEXT": "State per iniziare l'audizione. Questa azione non può essere annullata.",
+      "CONFIRM": "Inizia"
+    },
     "TAB": {
       "ACTUAL": "Audizioni attuali",
       "PLANNED": "Audizioni programmate",

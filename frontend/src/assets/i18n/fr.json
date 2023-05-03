@@ -563,6 +563,11 @@
       "STATUS_CHANGE_MESSAGE": "Vous modifiez l'avis sélectionné.",
       "MULTIPLE_STATUS_CHANGE_MESSAGE": "Vous modifiez {{tthsLength}} l'avis sélectionné."
     },
+    "START_HEARING_DIALOG": {
+      "TITLE": "Démarrer l'année de l'horaire?",
+      "TEXT": "Vous êtes sur le point de commencer l'année de l'horaire. Cette action ne peut pas être annulée.",
+      "CONFIRM": "Commencer"
+    },
     "TAB": {
       "ACTUAL": "Audition actuelle",
       "PLANNED": "Audition prévue",
