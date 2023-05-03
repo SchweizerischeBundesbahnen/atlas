@@ -321,15 +321,17 @@ export class StatementDetailComponent implements OnInit {
   }
 
   cantonSelectionChanged() {
-    this.statementDialogService.openDialog(this.form).subscribe((result) => {
-      if (result) {
-        const hearingStatement = this.form.value as TimetableHearingStatement;
-        this.navigateToStatementDetail(hearingStatement);
-      } else {
-        this.form.controls.comment.setValue(this.statement?.comment);
-        this.form.controls.swissCanton.setValue(this.statement?.swissCanton);
-      }
-    });
+    if (!this.isNew) {
+      this.statementDialogService.openDialog(this.form).subscribe((result) => {
+        if (result) {
+          const hearingStatement = this.form.value as TimetableHearingStatement;
+          this.navigateToStatementDetail(hearingStatement);
+        } else {
+          this.form.controls.comment.setValue(this.statement?.comment);
+          this.form.controls.swissCanton.setValue(this.statement?.swissCanton);
+        }
+      });
+    }
   }
 
   saveButtonDisabled() {
