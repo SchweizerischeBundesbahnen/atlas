@@ -16,7 +16,7 @@ export interface UpdateHearingCanton {
    * List of Statements id
    */
   ids: Array<number>;
-  swissCanton?: SwissCanton;
+  swissCanton: SwissCanton;
   /**
    * Statement comment
    */
