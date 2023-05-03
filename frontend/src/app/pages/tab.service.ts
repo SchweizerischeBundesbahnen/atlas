@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
@@ -7,7 +7,7 @@ export class TabService {
   getCurrentTabIndex(url: string, tab: Array<Tab>): number {
     let currentTabPath = '';
     if (url.includes('?')) {
-      currentTabPath = url.substring((url.lastIndexOf('/') + 1), url.indexOf('?'));
+      currentTabPath = url.substring(url.lastIndexOf('/') + 1, url.indexOf('?'));
     } else {
       currentTabPath = url.slice(url.lastIndexOf('/') + 1);
     }

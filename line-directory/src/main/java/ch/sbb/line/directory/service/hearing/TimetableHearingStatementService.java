@@ -8,6 +8,7 @@ import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementDocumentModel
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
+import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.exception.NotFoundException.FileNotFoundException;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.line.directory.entity.ResponsibleTransportCompany;
@@ -55,7 +56,7 @@ public class TimetableHearingStatementService {
 
   public TimetableHearingStatement getTimetableHearingStatementById(Long id) {
     return timetableHearingStatementRepository.findById(id)
-        .orElseThrow(() -> new IdNotFoundException(id));
+      .orElseThrow(() -> new IdNotFoundException(id));
   }
 
   public File getStatementDocument(Long timetableHearingStatementId, String documentFilename) {
@@ -89,8 +90,7 @@ public class TimetableHearingStatementService {
     return TimetableHearingStatementMapper.toModel(timetableHearingStatement);
   }
 
-  public TimetableHearingStatement updateHearingStatement(TimetableHearingStatementModel timetableHearingStatementModel,
-      List<MultipartFile> documents) {
+  public TimetableHearingStatement updateHearingStatement(TimetableHearingStatementModel timetableHearingStatementModel, List<MultipartFile> documents) {
     checkThatTimetableHearingYearExists(timetableHearingStatementModel.getTimetableYear());
 
     TimetableHearingStatement timetableHearingStatementInDb = timetableHearingStatementRepository.getReferenceById(
@@ -145,13 +145,13 @@ public class TimetableHearingStatementService {
   }
 
   private List<File> getFilesFromMultipartFiles(List<MultipartFile> documents) {
-    return documents.stream()
+      return documents.stream()
         .map(fileService::getFileFromMultipart)
         .toList();
   }
 
   private TimetableHearingStatement updateObject(TimetableHearingStatementModel timetableHearingStatementModel,
-      TimetableHearingStatement timetableHearingStatementInDb) {
+    TimetableHearingStatement timetableHearingStatementInDb) {
     timetableHearingStatementInDb.setTimetableYear(timetableHearingStatementModel.getTimetableYear());
     timetableHearingStatementInDb.setStatementStatus(timetableHearingStatementModel.getStatementStatus());
     timetableHearingStatementInDb.setTtfnid(timetableHearingStatementModel.getTtfnid());
@@ -164,8 +164,7 @@ public class TimetableHearingStatementService {
         StatementSenderMapper.toEntity(timetableHearingStatementModel.getStatementSender()));
 
     updateResponsibleTransportCompanies(timetableHearingStatementModel, timetableHearingStatementInDb);
-    timetableHearingStatementInDb.setResponsibleTransportCompaniesDisplay(
-        transformToCommaSeparated(timetableHearingStatementInDb));
+    timetableHearingStatementInDb.setResponsibleTransportCompaniesDisplay(transformToCommaSeparated(timetableHearingStatementInDb));
 
     return timetableHearingStatementInDb;
   }
@@ -202,10 +201,35 @@ public class TimetableHearingStatementService {
     if (documents != null) {
       log.info("Statement {}, adding {} documents", statement.getId() == null ? "new" : statement.getId(), documents.size());
       documents.forEach(multipartFile -> statement.addDocument(StatementDocument.builder()
-          .fileName(multipartFile.getOriginalFilename())
-          .fileSize(multipartFile.getSize())
-          .build()));
+        .fileName(multipartFile.getOriginalFilename())
+        .fileSize(multipartFile.getSize())
+        .build()));
     }
   }
 
+  public List<TimetableHearingStatement> getTimetableHearingStatementsByIds(List<Long> ids) {
+    return timetableHearingStatementRepository.findAllById(ids);
+  }
+
+  @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin"
+      + ".ApplicationType).TIMETABLE_HEARING, #statement)")
+  public void updateHearingStatementStatus(TimetableHearingStatement statement, StatementStatus statementStatus,
+      String justification) {
+    if (justification != null) {
+      timetableHearingStatementRepository.updateHearingStatementStatusWithJustification(statement.getId(), statementStatus,
+          justification);
+    } else {
+      timetableHearingStatementRepository.updateHearingStatementStatus(statement.getId(), statementStatus);
+    }
+  }
+
+  @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin"
+      + ".ApplicationType).TIMETABLE_HEARING, #statement)")
+  public void updateHearingCanton(TimetableHearingStatement statement, SwissCanton swissCanton, String comment) {
+    if (comment != null) {
+      timetableHearingStatementRepository.updateHearingCantonWithComment(statement.getId(), swissCanton, comment);
+    } else {
+      timetableHearingStatementRepository.updateHearingCanton(statement.getId(), swissCanton);
+    }
+  }
 }
