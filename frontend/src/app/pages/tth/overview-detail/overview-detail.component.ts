@@ -42,6 +42,7 @@ import { FileDownloadService } from '../../../core/components/file-upload/file/f
 import { AuthService } from '../../../core/auth/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogManageTthComponent } from '../dialog-manage-tth/dialog-manage-tth.component';
+import { DialogService } from '../../../core/components/dialog/dialog.service';
 
 @Component({
   selector: 'app-timetable-hearing-overview-detail',
@@ -104,7 +105,8 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     private readonly newTimetableHearingYearDialogService: NewTimetableHearingYearDialogService,
     private readonly translateService: TranslateService,
     private readonly authService: AuthService,
-    private readonly matDialog: MatDialog
+    private readonly matDialog: MatDialog,
+    private readonly dialogService: DialogService,
   ) {}
 
   get isHearingYearActive(): boolean {
@@ -141,9 +143,9 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
       this.sorting = 'swissCanton,asc';
       this.tableColumns = this.getPlannedTableColumns();
       this.showAddNewTimetableHearingButton = true;
-      this.showStartTimetableHearingButton = true;
       this.showHearingDetail = true;
       this.initOverviewPlannedTable();
+      this.initShowStartTimetableHearingButton();
     }
     if (TthUtils.isHearingStatusArchived(this.hearingStatus)) {
       this.removeCheckBoxViewMode();
@@ -256,7 +258,19 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
   }
 
   startTimetableHearing() {
-    console.log('showStartTimetableHearing');
+    this.dialogService
+      .confirm({
+        title: 'TTH.START_HEARING_DIALOG.TITLE',
+        message: 'TTH.START_HEARING_DIALOG.TEXT',
+        confirmText: 'TTH.START_HEARING_DIALOG.CONFIRM',
+      })
+      .subscribe((confirmed) => {
+        if (confirmed) {
+          this.timetableHearingService.startHearingYear(this.yearSelection).subscribe(() => {
+            this.router.navigate(['..', 'active'], { relativeTo: this.route }).then();
+          });
+        }
+      });
   }
 
   collectingActions(action: MatSelectChange) {
@@ -581,5 +595,17 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
         col.value === 'editor'
       );
     });
+  }
+
+  private initShowStartTimetableHearingButton() {
+    this.showStartTimetableHearingButton = true;
+    this.timetableHearingService
+      .getHearingYears([HearingStatus.Active])
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((timetableHearingYearContainer) => {
+        if (timetableHearingYearContainer.totalCount! > 0) {
+          this.showStartTimetableHearingButton = false;
+        }
+      });
   }
 }
