@@ -32,13 +32,18 @@ public class StatementDocumentFilesValidationService {
     }
   }
 
-  public void validateMaxSizeOfFiles(List<File> files, int maxDocumentsSize) {
-    long filesSize = files.stream()
+  public void validateMaxSizeOfFiles(List<File> files, Set<StatementDocument> alreadySavedDocuments, int maxDocumentsSize) {
+    long sizeOfNewFiles = files.stream()
       .map(File::length)
       .mapToLong(Long::longValue)
       .sum();
-    if (filesSize > maxDocumentsSize) {
-      String exceptionMessage = "The combined size of all documents in bytes is: " + filesSize + " which exceeds the maximum allowed size of 20MB.";
+    long sizeOfExistingFiles = alreadySavedDocuments.stream()
+        .map(StatementDocument::getFileSize)
+        .mapToLong(Long::longValue)
+        .sum();
+    long overallSizeOfFiles = sizeOfNewFiles + sizeOfExistingFiles;
+    if (overallSizeOfFiles > maxDocumentsSize) {
+      String exceptionMessage = "The combined size of all documents in bytes is: " + overallSizeOfFiles + " which exceeds the maximum allowed size of 20MB.";
       throw new PdfDocumentConstraintViolationException(exceptionMessage);
     }
   }
