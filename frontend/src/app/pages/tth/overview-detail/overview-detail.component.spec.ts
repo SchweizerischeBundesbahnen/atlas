@@ -25,6 +25,7 @@ import {
 import { TthTableService } from '../tth-table.service';
 import { SelectComponent } from '../../../core/form-components/select/select.component';
 import { AtlasSpacerComponent } from '../../../core/components/spacer/atlas-spacer.component';
+import { AuthService } from '../../../core/auth/auth.service';
 
 @Component({
   selector: 'app-timetable-hearing-overview-tab-heading',
@@ -97,6 +98,15 @@ const containerTimetableHearingStatement: ContainerTimetableHearingStatement = {
   totalCount: 2,
 };
 
+const authServiceMock: Partial<AuthService> = {
+  get isAdmin(): boolean {
+    return true;
+  },
+  hasWritePermissionsToForCanton(): boolean {
+    return true;
+  },
+};
+
 async function baseTestConfiguration() {
   mockTimetableHearingService.getHearingYears.and.returnValue(of(hearingContainer));
   mockTimetableHearingService.getStatements.and.returnValue(of(containerTimetableHearingStatement));
@@ -116,6 +126,7 @@ async function baseTestConfiguration() {
       { provide: TimetableHearingService, useValue: mockTimetableHearingService },
       { provide: TranslatePipe },
       { provide: DisplayDatePipe },
+      { provide: AuthService, useValue: authServiceMock },
       {
         provide: TthTableService,
         useValue: jasmine.createSpyObj<TthTableService>(
@@ -242,6 +253,34 @@ describe('TimetableHearingOverviewDetailComponent', () => {
         'ch',
         HearingStatus.Active.toLowerCase(),
       ]);
+    });
+  });
+
+  describe('HearingOverviewTab Active with checkbox', async () => {
+    beforeEach(async () => {
+      fixture = await baseTestConfiguration();
+      route = TestBed.inject(ActivatedRoute);
+      router = TestBed.inject(Router);
+      route.snapshot.data = { hearingStatus: HearingStatus.Active };
+      component = fixture.componentInstance;
+      component.cantonDeliveryCollectingActionsEnabled = true;
+      component.statusChangeCollectingActionsEnabled = true;
+      fixture.detectChanges();
+    });
+
+    it('should display active table columns timetableHearing with checkbox', () => {
+      //when
+      fixture.detectChanges();
+      //then
+      expect(component.tableColumns.length).toEqual(8);
+      expect(component.tableColumns[0].value).toEqual('id');
+      expect(component.tableColumns[1].value).toEqual('statementStatus');
+      expect(component.tableColumns[2].value).toEqual('swissCanton');
+      expect(component.tableColumns[3].value).toEqual('responsibleTransportCompaniesDisplay');
+      expect(component.tableColumns[4].value).toEqual('timetableFieldNumber');
+      expect(component.tableColumns[5].value).toEqual('timetableFieldDescription');
+      expect(component.tableColumns[6].value).toEqual('editionDate');
+      expect(component.tableColumns[7].value).toEqual('editor');
     });
   });
 

@@ -547,13 +547,18 @@
       "STATUS_CHANGE": {
         "SUCCESS": "Der Status wurde erfolgreich geändert."
       },
+      "CANTON_CHANGE": {
+        "SUCCESS": "Der Kanton wurde erfolgreich geändert."
+      },
       "NO_VERSION_VALID_AT": "Es gibt keine gültige Version von {{swissId}} am {{validAt}}. Bitte überprüfen Sie die Gültigkeit der Fahrplanfeldnummer."
     },
     "DIALOG": {
       "STATUS_CHANGE": "Status ändern",
+      "CANTON_CHANGE": "Kanton ändern",
       "COMMENT_LABEL": "Kommentar dazu",
       "BACK": "Zurück",
-      "STATUS_CHANGE_MESSAGE": "Sie ändern die ausgewählte Stellungnahme."
+      "STATUS_CHANGE_MESSAGE": "Sie ändern die ausgewählte Stellungnahme.",
+      "MULTIPLE_STATUS_CHANGE_MESSAGE": "Sie ändern {{tthsLength}} ausgewählte Stellungnahme."
     },
     "TAB": {
       "ACTUAL": "Aktuelle Anhörung",
@@ -565,9 +570,16 @@
       "MANAGE_TIMETABLE_HEARING": "Steuerung Fahrplananhörung",
       "ADD_NEW_STATEMENT": "Neue Stellungnahme erfassen",
       "ADD_NEW_TIMETABLE_HEARING": "Neue Fahrplananhörung anlegen",
-      "START_TIMETABLE_HEARING": "Dieses Fahrplanjahr starten"
+      "START_TIMETABLE_HEARING": "Dieses Fahrplanjahr starten",
+      "CANCEL_COLLECTING_ACTION": "Sammelaktion beenden"
     },
     "DROPDOWN": {
+      "COLLECTING_STATUS_CHANGE_ACTION": {
+        "PLACEHOLDER": "Status der Auswahl ändern"
+      },
+      "COLLECTING_STATUS_CANTON_DELIVERY_CHANGE_ACTION": {
+        "PLACEHOLDER": "Kanton der Auswahl ändern"
+      },
       "COLLECTING_ACTION": {
         "PLACEHOLDER": "Sammelaktionen",
         "OPTION": {

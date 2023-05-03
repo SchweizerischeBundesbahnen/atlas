@@ -25,6 +25,7 @@ export class SearchSelectComponent<TYPE> {
   @Input() formGroup!: FormGroup;
   @Input() bindValueInp = '';
   @Input() pipe?: TranslatePipe;
+  @Input() disabled!: boolean;
 
   @Output() searchTrigger = new EventEmitter<string>();
   @Output() changeTrigger = new EventEmitter<TYPE>();

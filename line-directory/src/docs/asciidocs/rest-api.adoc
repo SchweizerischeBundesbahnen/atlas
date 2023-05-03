@@ -230,7 +230,6 @@ include::{snippets}/timetable-year-change-controller-api-test/should-return-erro
 
 include::{snippets}/timetable-year-change-controller-api-test/should-return-error-when-next-future-time-tables-is-zero/auto-section.adoc[]
 
-
 = Timetable Hearing - Year
 
 == Create Hearing Year - Successfully
@@ -285,4 +284,12 @@ include::{snippets}/timetable-hearing-statement-controller-api-test/should-updat
 
 == Update Hearing Statement adding documents - Successfully
 
-include::{snippets}/timetable-hearing-statement-controller-api-test/should-update-statement-with-additional-documents/auto-section.adoc[]
+include::{snippets}/timetable-hearing-statement-controller-api-test/should-update-statement-with-documents-with-additional-documents/auto-section.adoc[]
+
+== Update Hearing Statement Status - Successfully
+
+include::{snippets}/timetable-hearing-statement-controller-api-test/should-update-hearing-statement-status/auto-section.adoc[]
+
+== Update Hearing Statement Swiss Canton - Successfully
+
+include::{snippets}/timetable-hearing-statement-controller-api-test/should-update-hearing-canton/auto-section.adoc[]

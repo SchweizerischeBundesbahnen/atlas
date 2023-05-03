@@ -1,11 +1,12 @@
 import { Component, EventEmitter, Input, NgModule, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { ApplicationType } from './api';
+import { ApplicationType, TimetableHearingStatement } from './api';
 import { AtlasButtonType } from './core/components/button/atlas-button.type';
 import { TableFilterConfig } from './core/components/table-filter/table-filter-config';
 import { TableColumn } from './core/components/table/table-column';
 import { TablePagination } from './core/components/table/table-pagination';
 import { AtlasFieldCustomError } from './core/form-components/atlas-field-error/atlas-field-custom-error';
+import { SelectionModel } from '@angular/cdk/collections';
 
 @Component({
   selector: 'app-detail-wrapper [controller][headingNew]',
@@ -64,6 +65,7 @@ export class MockTableComponent<DATATYPE> {
   @Input() sortingDisabled = false;
   @Input() showTableFilter = true;
 
+  @Input() checkBoxSelection = new SelectionModel<TimetableHearingStatement>(true, []);
   @Output() editElementEvent = new EventEmitter<DATATYPE>();
   @Output() getTableElementsEvent = new EventEmitter<TablePagination>();
 }
