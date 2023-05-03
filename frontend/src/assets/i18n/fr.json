@@ -171,9 +171,9 @@
       "DESCRIPTION": "Vous trouverez ici toutes les informations sur les utilisateurs autorisés et pourrez les gérer."
     },
     "SERVICE_POINTS": {
-      "TITLE": "__Dienststellen verwalten__",
-      "TITLE_HEADER": "__Dienststellen__",
-      "DESCRIPTION": "__Hier finden Sie alle Informationen zum Bearbeiten und neu Erstellen von Dienststellen.__"
+      "TITLE": "Gérer les services",
+      "TITLE_HEADER": "Services",
+      "DESCRIPTION": "Vous trouverez ici toutes les informations nécessaires pour modifier et créer de nouveaux services."
     },
     "TTH": {
       "TITLE": "Consultation sur le projet d'horaire en Suisse",
