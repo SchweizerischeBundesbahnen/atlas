@@ -7,18 +7,16 @@ import { AtlasFieldLengthValidator } from '../../../../core/validation/field-len
 import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
 import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
 import { NotificationService } from '../../../../core/notification/notification.service';
-import { DialogService } from 'src/app/core/components/dialog/dialog.service';
 import { Subject, takeUntil } from 'rxjs';
 import { TthChangeStatusFormGroup } from './model/tth-change-status-form-group';
 
 @Component({
   selector: 'app-tth-change-status-dialog',
   templateUrl: './tth-change-status-dialog.component.html',
-  styleUrls: ['./tth-change-status-dialog.component.scss'],
 })
 export class TthChangeStatusDialogComponent {
-  tthChangeStatusFormGroup = new FormGroup<TthChangeStatusFormGroup>({
-    justification: new FormControl(this.data.ths.justification, [
+  formGroup = new FormGroup<TthChangeStatusFormGroup>({
+    justification: new FormControl(this.data.justification, [
       AtlasFieldLengthValidator.statement,
       WhitespaceValidator.blankOrEmptySpaceSurrounding,
       AtlasCharsetsValidator.iso88591,
@@ -30,34 +28,26 @@ export class TthChangeStatusDialogComponent {
     public dialogRef: MatDialogRef<TthChangeStatusDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: StatusChangeData,
     private readonly notificationService: NotificationService,
-    private readonly timetableHearingService: TimetableHearingService,
-    private readonly dialogService: DialogService
+    private readonly timetableHearingService: TimetableHearingService
   ) {}
 
   onClick(): void {
-    if (this.tthChangeStatusFormGroup.valid) {
-      if (this.tthChangeStatusFormGroup.controls['justification'].value) {
-        this.data.ths.justification = this.tthChangeStatusFormGroup.controls['justification'].value;
+    let justification: string | undefined;
+    if (this.formGroup.valid) {
+      if (this.formGroup.controls['justification'].value) {
+        justification = this.formGroup.controls['justification'].value;
       }
       this.timetableHearingService
-        .updateHearingStatement(this.data.ths.id!, this.data.ths)
+        .updateHearingStatementStatus({
+          ids: this.data.tths.map((value) => Number(value.id)),
+          justification: justification,
+          statementStatus: this.data.statementStatus,
+        })
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe(() => {
           this.notificationService.success('TTH.NOTIFICATION.STATUS_CHANGE.SUCCESS');
-          this.dialogRef.close();
+          this.dialogRef.close(true);
         });
-    }
-  }
-
-  closeDialog() {
-    if (this.tthChangeStatusFormGroup.dirty) {
-      this.dialogService.confirmLeave().subscribe((confirm) => {
-        if (confirm) {
-          this.dialogRef.close();
-        }
-      });
-    } else {
-      this.dialogRef.close();
     }
   }
 }

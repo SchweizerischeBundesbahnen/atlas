@@ -10,6 +10,7 @@ import ch.sbb.line.directory.entity.ResponsibleTransportCompany;
 import ch.sbb.line.directory.entity.StatementDocument;
 import ch.sbb.line.directory.entity.StatementSender;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
+import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -24,6 +25,19 @@ public class TimetableHearingStatementRepositoryTest {
   @Autowired
   public TimetableHearingStatementRepositoryTest(TimetableHearingStatementRepository timetableHearingStatementRepository) {
     this.timetableHearingStatementRepository = timetableHearingStatementRepository;
+  }
+
+  private static TimetableHearingStatement getMinimalTimetableHearingStatement() {
+    TimetableHearingStatement statement = TimetableHearingStatement.builder()
+        .timetableYear(2023L)
+        .swissCanton(SwissCanton.BERN)
+        .statementStatus(StatementStatus.RECEIVED)
+        .statementSender(StatementSender.builder()
+            .email("mike@thebike.com")
+            .build())
+        .statement("Ich mag bitte mehr Bös fahren")
+        .build();
+    return statement;
   }
 
   @AfterEach
@@ -48,7 +62,9 @@ public class TimetableHearingStatementRepositoryTest {
             .city("Algund")
             .email("mike@thebike.com")
             .build())
-        .comment("Sie ändern die Kantonszuordnung der ausgewählten Stellungnahme. Mit der Übertragung verlieren Sie die Editierrechte für diese Stellungnahme.")
+        .comment(
+            "Sie ändern die Kantonszuordnung der ausgewählten Stellungnahme. Mit der Übertragung verlieren Sie die "
+                + "Editierrechte für diese Stellungnahme.")
         .statement("Ich mag bitte mehr Bös fahren")
         .justification("Weil ich mag")
         .build();
@@ -94,7 +110,10 @@ public class TimetableHearingStatementRepositoryTest {
   @Test
   void shouldThrowExceptionWhenCommentLengthIsGreaterThan280Characters() {
     TimetableHearingStatement statement = getMinimalTimetableHearingStatement();
-    statement.setComment("Sie ändern die Kantonszuordnung der ausgewählten Stellungnahme. Mit der Übertragung verlieren Sie die Editierrechte für diese Stellungnahme. Sie ändern die Kantonszuordnung der ausgewählten Stellungnahme. Mit der Übertragung verlieren Sie die Editierrechte für diese Stellungnahme.");
+    statement.setComment(
+        "Sie ändern die Kantonszuordnung der ausgewählten Stellungnahme. Mit der Übertragung verlieren Sie die Editierrechte "
+            + "für diese Stellungnahme. Sie ändern die Kantonszuordnung der ausgewählten Stellungnahme. Mit der Übertragung "
+            + "verlieren Sie die Editierrechte für diese Stellungnahme.");
 
     assertThrows(TransactionSystemException.class,
         () -> timetableHearingStatementRepository.save(statement));
@@ -109,7 +128,9 @@ public class TimetableHearingStatementRepositoryTest {
         () -> timetableHearingStatementRepository.save(statement));
   }
 
-  private static TimetableHearingStatement getMinimalTimetableHearingStatement() {
+  @Test
+  void shouldUpdateHearingStatementStatusWithJustification() {
+    //given
     TimetableHearingStatement statement = TimetableHearingStatement.builder()
         .timetableYear(2023L)
         .swissCanton(SwissCanton.BERN)
@@ -118,7 +139,102 @@ public class TimetableHearingStatementRepositoryTest {
             .email("mike@thebike.com")
             .build())
         .statement("Ich mag bitte mehr Bös fahren")
+        .justification("Hopp YB")
         .build();
-    return statement;
+    timetableHearingStatementRepository.saveAndFlush(statement);
+
+    //when
+    timetableHearingStatementRepository.updateHearingStatementStatusWithJustification(
+        statement.getId(), StatementStatus.ACCEPTED, "Napoli ist besser als YB");
+
+    //then
+    Optional<TimetableHearingStatement> result = timetableHearingStatementRepository.findById(statement.getId());
+    assertThat(result).isNotNull();
+    assertThat(result.isPresent()).isTrue();
+    assertThat(result.get().getStatementStatus()).isEqualTo(StatementStatus.ACCEPTED);
+    assertThat(result.get().getJustification()).isEqualTo("Napoli ist besser als YB");
+  }
+
+  @Test
+  void shouldUpdateHearingStatementStatus() {
+    //given
+    TimetableHearingStatement statement = TimetableHearingStatement.builder()
+        .timetableYear(2023L)
+        .swissCanton(SwissCanton.BERN)
+        .statementStatus(StatementStatus.RECEIVED)
+        .statementSender(StatementSender.builder()
+            .email("mike@thebike.com")
+            .build())
+        .statement("Ich mag bitte mehr Bös fahren")
+        .justification("Forza Napoli")
+        .build();
+    timetableHearingStatementRepository.saveAndFlush(statement);
+
+    //when
+    timetableHearingStatementRepository.updateHearingStatementStatus(statement.getId(), StatementStatus.ACCEPTED);
+
+    //then
+    Optional<TimetableHearingStatement> result = timetableHearingStatementRepository.findById(statement.getId());
+    assertThat(result).isNotNull();
+    assertThat(result.isPresent()).isTrue();
+    assertThat(result.get().getStatementStatus()).isEqualTo(StatementStatus.ACCEPTED);
+    assertThat(result.get().getJustification()).isEqualTo("Forza Napoli");
+  }
+
+  @Test
+  void shouldUpdateHearingCantonWithComment() {
+    //given
+    TimetableHearingStatement statement = TimetableHearingStatement.builder()
+        .timetableYear(2023L)
+        .swissCanton(SwissCanton.BERN)
+        .statementStatus(StatementStatus.RECEIVED)
+        .statementSender(StatementSender.builder()
+            .email("mike@thebike.com")
+            .build())
+        .statement("Ich mag bitte mehr Bös fahren")
+        .justification("Forza Napoli")
+        .comment("Just a comment")
+        .build();
+    timetableHearingStatementRepository.saveAndFlush(statement);
+
+    //when
+    timetableHearingStatementRepository.updateHearingCantonWithComment(statement.getId(), SwissCanton.AARGAU, "Not just a "
+        + "comment");
+
+    //then
+    Optional<TimetableHearingStatement> result = timetableHearingStatementRepository.findById(statement.getId());
+    assertThat(result).isNotNull();
+    assertThat(result.isPresent()).isTrue();
+    assertThat(result.get().getStatementStatus()).isEqualTo(StatementStatus.RECEIVED);
+    assertThat(result.get().getSwissCanton()).isEqualTo(SwissCanton.AARGAU);
+    assertThat(result.get().getComment()).isEqualTo("Not just a comment");
+  }
+
+  @Test
+  void shouldUpdateHearingCanton() {
+    //given
+    TimetableHearingStatement statement = TimetableHearingStatement.builder()
+        .timetableYear(2023L)
+        .swissCanton(SwissCanton.BERN)
+        .statementStatus(StatementStatus.RECEIVED)
+        .statementSender(StatementSender.builder()
+            .email("mike@thebike.com")
+            .build())
+        .statement("Ich mag bitte mehr Bös fahren")
+        .justification("Forza Napoli")
+        .comment("Just a comment")
+        .build();
+    timetableHearingStatementRepository.saveAndFlush(statement);
+
+    //when
+    timetableHearingStatementRepository.updateHearingCanton(statement.getId(), SwissCanton.AARGAU);
+
+    //then
+    Optional<TimetableHearingStatement> result = timetableHearingStatementRepository.findById(statement.getId());
+    assertThat(result).isNotNull();
+    assertThat(result.isPresent()).isTrue();
+    assertThat(result.get().getStatementStatus()).isEqualTo(StatementStatus.RECEIVED);
+    assertThat(result.get().getSwissCanton()).isEqualTo(SwissCanton.AARGAU);
+    assertThat(result.get().getComment()).isEqualTo("Just a comment");
   }
 }

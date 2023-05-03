@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
+  ApplicationType,
   HearingStatus,
   StatementStatus,
   SwissCanton,
@@ -17,7 +18,6 @@ import { Subject, takeUntil } from 'rxjs';
 import moment from 'moment';
 import { OverviewToTabShareDataService } from '../overview-tab/service/overview-to-tab-share-data.service';
 import { MatSelectChange } from '@angular/material/select';
-import { TableService } from '../../../core/components/table/table.service';
 import { TthUtils } from '../util/tth-utils';
 import { TablePagination } from '../../../core/components/table/table-pagination';
 import { TthChangeStatusDialogService } from './tth-change-status-dialog/service/tth-change-status-dialog.service';
@@ -25,20 +25,26 @@ import { ColumnDropDownEvent } from '../../../core/components/table/column-drop-
 import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
 import { TthTableService } from '../tth-table.service';
 import { NewTimetableHearingYearDialogService } from '../new-timetable-hearing-year-dialog/service/new-timetable-hearing-year-dialog.service';
+import { SelectionModel } from '@angular/cdk/collections';
 import { TranslateService } from '@ngx-translate/core';
-import { OverviewDetailTableFilterConfig } from './overview-detail-table-filter-config';
+import {
+  disableFilters,
+  enableFilters,
+  OverviewDetailTableFilterConfig,
+} from './overview-detail-table-filter-config';
 import {
   getActiveMultiSearch,
   getActiveSearch,
   getActiveSearchForChip,
 } from '../../../core/components/table-filter/table-filter-config';
+import { TthChangeCantonDialogService } from './tth-change-canton-dialog/service/tth-change-canton-dialog.service';
 import { FileDownloadService } from '../../../core/components/file-upload/file/file-download.service';
+import { AuthService } from '../../../core/auth/auth.service';
 
 @Component({
   selector: 'app-timetable-hearing-overview-detail',
   templateUrl: './overview-detail.component.html',
   styleUrls: ['./overview-detail.component.scss'],
-  providers: [TableService],
 })
 export class OverviewDetailComponent implements OnInit, OnDestroy {
   readonly TABLE_FILTER_CONFIG = OverviewDetailTableFilterConfig;
@@ -60,9 +66,12 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
 
   cantonShort!: string;
   CANTON_DROPDOWN_OPTIONS = Cantons.cantonsWithSwiss.map((value) => value.short);
+  CANTON_DROPDOWN_OPTIONS_WITHOUT_SWISS = Cantons.cantons.map((value) => value.short);
   defaultDropdownCantonSelection = this.CANTON_DROPDOWN_OPTIONS[0];
 
-  COLLECTING_ACTION_DROWPDOWN_OPTIONS = ['STATUS_CHANGE', 'CANTON_DELIVERY', 'DELETE'];
+  STATUS_OPTIONS = Object.values(StatementStatus);
+
+  COLLECTING_ACTION_DROWPDOWN_OPTIONS = ['STATUS_CHANGE', 'CANTON_DELIVERY'];
 
   showDownloadCsvButton = false;
   showManageTimetableHearingButton = false;
@@ -71,8 +80,15 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
   showStartTimetableHearingButton = false;
   showHearingDetail = false;
 
-  sorting = 'statementStatus,asc';
+  showCollectingActionButton = true;
+  statusChangeCollectingActionsEnabled = false;
+  cantonDeliveryCollectingActionsEnabled = false;
 
+  selectedItems: TimetableHearingStatement[] = [];
+  sorting = 'statementStatus,asc';
+  selectedCheckBox = new SelectionModel<TimetableHearingStatement>(true, []);
+  isCheckBoxModeActive = false;
+  protected readonly tableFilterConfig = OverviewDetailTableFilterConfig;
   private ngUnsubscribe = new Subject<void>();
 
   constructor(
@@ -81,9 +97,11 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     private readonly timetableHearingService: TimetableHearingService,
     private readonly overviewToTabService: OverviewToTabShareDataService,
     private readonly tthStatusChangeDialog: TthChangeStatusDialogService,
+    private readonly tthChangeCantonDialogService: TthChangeCantonDialogService,
     private readonly tthTableService: TthTableService,
     private readonly newTimetableHearingYearDialogService: NewTimetableHearingYearDialogService,
-    private readonly translateService: TranslateService
+    private readonly translateService: TranslateService,
+    private readonly authService: AuthService
   ) {}
 
   get isHearingYearActive(): boolean {
@@ -94,6 +112,13 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     return this.cantonShort.toLowerCase() === Cantons.swiss.short.toLowerCase();
   }
 
+  get isCollectingActionEnabled(): boolean {
+    return this.authService.hasWritePermissionsToForCanton(
+      ApplicationType.TimetableHearing,
+      this.cantonShort.toLowerCase()
+    );
+  }
+
   ngOnInit(): void {
     this.syncCantonShortSharedDate();
     this.defaultDropdownCantonSelection = this.initDefatulDropdownCantonSelection();
@@ -101,12 +126,14 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     if (TthUtils.isHearingStatusActive(this.hearingStatus)) {
       this.tthTableService.activeTabPage = Pages.TTH_ACTIVE;
       this.tableColumns = this.getActiveTableColumns();
+      this.enableCheckboxViewMode();
       this.showManageTimetableHearingButton = this.isSwissCanton;
       this.showAddNewStatementButton = !this.isSwissCanton;
       this.showDownloadCsvButton = true;
       this.initOverviewActiveTable();
     }
     if (TthUtils.isHearingStatusPlanned(this.hearingStatus)) {
+      this.removeCheckBoxViewMode();
       this.tthTableService.activeTabPage = Pages.TTH_PLANNED;
       this.sorting = 'swissCanton,asc';
       this.tableColumns = this.getPlannedTableColumns();
@@ -116,6 +143,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
       this.initOverviewPlannedTable();
     }
     if (TthUtils.isHearingStatusArchived(this.hearingStatus)) {
+      this.removeCheckBoxViewMode();
       this.tthTableService.activeTabPage = Pages.TTH_ARCHIVED;
       this.sorting = 'swissCanton,asc';
       this.tableColumns = this.getArchivedTableColumns();
@@ -154,6 +182,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
   }
 
   changeSelectedCantonFromDropdown(selectedCanton: MatSelectChange) {
+    this.removeCheckBoxViewMode();
     const canton = selectedCanton.value.toLowerCase();
     this.overviewToTabService.changeData(canton);
     this.navigateTo(canton, this.foundTimetableHearingYear.timetableYear);
@@ -215,7 +244,16 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
   }
 
   collectingActions(action: MatSelectChange) {
-    console.log(action);
+    if (action.value === 'STATUS_CHANGE') {
+      this.statusChangeCollectingActionsEnabled = true;
+      this.showCollectingActionButton = false;
+      this.ngOnInit();
+    }
+    if (action.value === 'CANTON_DELIVERY') {
+      this.cantonDeliveryCollectingActionsEnabled = true;
+      this.showCollectingActionButton = false;
+      this.ngOnInit();
+    }
   }
 
   setFoundHearingYear(timetableHearingYears: TimetableHearingYear[]) {
@@ -230,11 +268,99 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
   }
 
   changeSelectedStatus(changedStatus: ColumnDropDownEvent) {
-    this.tthStatusChangeDialog.onClick(changedStatus).subscribe((result) => {
-      if (result) {
-        this.ngOnInit();
-      }
-    });
+    this.tthStatusChangeDialog
+      .onClick(
+        changedStatus.$event.value,
+        [changedStatus.value],
+        changedStatus.value.justification,
+        'SINGLE'
+      )
+      .subscribe((result) => {
+        if (result) {
+          this.ngOnInit();
+        }
+      });
+  }
+
+  cancelCollectiongAction() {
+    this.removeCheckBoxViewMode();
+    this.ngOnInit();
+  }
+
+  collectingStatusChangeAction(changedStatus: ColumnDropDownEvent) {
+    if (this.selectedItems.length > 0) {
+      this.tthStatusChangeDialog
+        .onClick(changedStatus.value, this.selectedItems, undefined, 'MULTIPLE')
+        .subscribe((result) => {
+          if (result) {
+            this.statusChangeCollectingActionsEnabled = false;
+            this.showCollectingActionButton = true;
+            this.selectedCheckBox = new SelectionModel<TimetableHearingStatement>(true, []);
+            this.removeCheckBoxViewMode();
+            this.ngOnInit();
+          }
+        });
+    }
+  }
+
+  collectingCantonDeliveryAction($event: MatSelectChange) {
+    if (this.selectedItems.length > 0) {
+      this.tthChangeCantonDialogService
+        .onClick(Cantons.getSwissCantonEnum($event.value)!, this.selectedItems)
+        .subscribe((result) => {
+          if (result) {
+            this.cantonDeliveryCollectingActionsEnabled = false;
+            this.showCollectingActionButton = true;
+            this.selectedCheckBox = new SelectionModel<TimetableHearingStatement>(true, []);
+            this.removeCheckBoxViewMode();
+            this.ngOnInit();
+          }
+        });
+    }
+  }
+
+  checkedBoxEvent($event: SelectionModel<TimetableHearingStatement>) {
+    this.selectedItems = $event.selected;
+  }
+
+  private removeCheckBoxViewMode() {
+    this.isCheckBoxModeActive = false;
+    this.showCollectingActionButton = true;
+    this.statusChangeCollectingActionsEnabled = false;
+    this.cantonDeliveryCollectingActionsEnabled = false;
+    this.selectedCheckBox = new SelectionModel<TimetableHearingStatement>(true, []);
+
+    enableFilters(this.tableFilterConfig);
+  }
+
+  private enableCheckboxViewMode() {
+    this.isCheckBoxModeActive =
+      this.statusChangeCollectingActionsEnabled || this.cantonDeliveryCollectingActionsEnabled;
+    if (this.isCheckBoxModeActive) {
+      this.tableColumns = this.getActiveTableColumns();
+      this.tableColumns.unshift({
+        headerTitle: '',
+        disabled: true,
+        value: 'id',
+        checkbox: {
+          changeSelectionCallback: this.collectingStatusChangeAction,
+        },
+      });
+      this.tableColumns.forEach((value) => (value.disabled = true));
+      this.disableChangeStatementStatusSelect();
+      disableFilters(this.tableFilterConfig);
+    } else {
+      this.removeCheckBoxViewMode();
+    }
+  }
+
+  private disableChangeStatementStatusSelect() {
+    const statementStatusTableColumn = this.tableColumns.filter(
+      (value) => value.value === 'statementStatus'
+    )[0];
+    if (statementStatusTableColumn.dropdown) {
+      statementStatusTableColumn.dropdown.disabled = true;
+    }
   }
 
   private navigateTo(canton: string, timetableYear: number) {
@@ -393,7 +519,8 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
         headerTitle: 'TTH.STATEMENT_STATUS_HEADER',
         value: 'statementStatus',
         dropdown: {
-          options: Object.values(StatementStatus),
+          disabled: false,
+          options: this.STATUS_OPTIONS,
           changeSelectionCallback: this.changeSelectedStatus,
           selectedOption: '',
           translate: {
@@ -439,6 +566,4 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
       );
     });
   }
-
-  protected readonly tableFilterConfig = OverviewDetailTableFilterConfig;
 }
