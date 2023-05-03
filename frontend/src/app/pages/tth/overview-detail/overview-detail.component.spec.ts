@@ -310,7 +310,7 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       fixture.detectChanges();
       //then
       expect(component.showAddNewTimetableHearingButton).toBeTruthy();
-      expect(component.showStartTimetableHearingButton).toBeTruthy();
+      expect(component.showStartTimetableHearingButton).toBeFalsy();
       expect(component.showHearingDetail).toBeTruthy();
       expect(component.showAddNewStatementButton).toBeFalsy();
       expect(component.showDownloadCsvButton).toBeFalsy();
