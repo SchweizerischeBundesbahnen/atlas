@@ -14,6 +14,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -26,13 +27,17 @@ import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel.Fields;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementSenderModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingYearModel;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
+import ch.sbb.atlas.api.timetable.hearing.model.UpdateHearingCantonModel;
+import ch.sbb.atlas.api.timetable.hearing.model.UpdateHearingStatementStatusModel;
 import ch.sbb.atlas.export.CsvExportWriter;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.controller.AtlasMockMultipartFile;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.model.exception.NotFoundException.FileNotFoundException;
+import ch.sbb.line.directory.entity.StatementSender;
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
+import ch.sbb.line.directory.entity.TimetableHearingStatement;
 import ch.sbb.line.directory.exception.PdfDocumentConstraintViolationException;
 import ch.sbb.line.directory.repository.TimetableHearingStatementRepository;
 import ch.sbb.line.directory.repository.TimetableHearingYearRepository;
@@ -42,6 +47,7 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -65,8 +71,8 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
   private static final String TTFNID = "ch:1:ttfnid:123123123";
   private static final String SBOID = "ch:1:sboid:123451";
 
-    @Autowired
-    private TimetableHearingYearRepository timetableHearingYearRepository;
+  @Autowired
+  private TimetableHearingYearRepository timetableHearingYearRepository;
 
   @Autowired
   private TimetableHearingYearController timetableHearingYearController;
@@ -157,8 +163,8 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
         .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
         .build();
 
-        MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
-            MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
+    MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
+        MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
 
     mvc.perform(multipart(HttpMethod.POST, "/v1/timetable-hearing/statements")
             .file(statementJson))
@@ -287,6 +293,76 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
   }
 
   @Test
+  void shouldUpdateHearingStatementStatus() throws Exception {
+    //given
+    TimetableHearingStatement statement1 = TimetableHearingStatement.builder()
+        .timetableYear(2023L)
+        .swissCanton(SwissCanton.BERN)
+        .statementStatus(StatementStatus.RECEIVED)
+        .statementSender(StatementSender.builder()
+            .email("mike@thebike.com")
+            .build())
+        .statement("Ich mag bitte mehr Bös fahren")
+        .build();
+    TimetableHearingStatement statement2 = TimetableHearingStatement.builder()
+        .timetableYear(2024L)
+        .swissCanton(SwissCanton.BERN)
+        .statementStatus(StatementStatus.JUNK)
+        .statementSender(StatementSender.builder()
+            .email("mike@thebike.com")
+            .build())
+        .statement("Ich mag bitte mehr Bös fahren")
+        .build();
+    timetableHearingStatementRepository.saveAndFlush(statement1);
+    timetableHearingStatementRepository.saveAndFlush(statement2);
+    List<Long> ids = Stream.of(statement1, statement2).map(TimetableHearingStatement::getId).toList();
+    UpdateHearingStatementStatusModel updateHearingStatementStatusModel =
+        UpdateHearingStatementStatusModel.builder().ids(ids).justification("Forza Napoli")
+            .statementStatus(StatementStatus.ACCEPTED).build();
+
+    //when
+    mvc.perform(put("/v1/timetable-hearing/statements/update-statement-status")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(updateHearingStatementStatusModel)))
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  void shouldUpdateHearingCanton() throws Exception {
+    //given
+    TimetableHearingStatement statement1 = TimetableHearingStatement.builder()
+        .timetableYear(2023L)
+        .swissCanton(SwissCanton.BERN)
+        .statementStatus(StatementStatus.RECEIVED)
+        .statementSender(StatementSender.builder()
+            .email("mike@thebike.com")
+            .build())
+        .statement("Ich mag bitte mehr Bös fahren")
+        .build();
+    TimetableHearingStatement statement2 = TimetableHearingStatement.builder()
+        .timetableYear(2024L)
+        .swissCanton(SwissCanton.AARGAU)
+        .statementStatus(StatementStatus.JUNK)
+        .statementSender(StatementSender.builder()
+            .email("mike@thebike.com")
+            .build())
+        .statement("Ich mag bitte mehr Bös fahren")
+        .build();
+    timetableHearingStatementRepository.saveAndFlush(statement1);
+    timetableHearingStatementRepository.saveAndFlush(statement2);
+    List<Long> ids = Stream.of(statement1, statement2).map(TimetableHearingStatement::getId).toList();
+    UpdateHearingCantonModel updateHearingCantonModel =
+        UpdateHearingCantonModel.builder().comment("Forza Napoli").ids(ids).swissCanton(SwissCanton.JURA)
+            .build();
+
+    //when
+    mvc.perform(put("/v1/timetable-hearing/statements/update-canton")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(updateHearingCantonModel)))
+        .andExpect(status().isOk());
+  }
+
+  @Test
   void shouldAddDocumentsToExistingStatementWithoutDocuments() throws Exception {
     TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
         TimetableHearingStatementModel.builder()
@@ -307,6 +383,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
             .file(
                 new MockMultipartFile(MULTIPART_FILES.get(2).getName(), MULTIPART_FILES.get(2).getOriginalFilename(),
                     MULTIPART_FILES.get(2).getContentType(), MULTIPART_FILES.get(2).getBytes())))
+
         .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
         .andExpect(jsonPath("$." + Fields.documents, hasSize(1)));
   }
@@ -338,6 +415,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
             .file(
                 new MockMultipartFile(MULTIPART_FILES.get(2).getName(), MULTIPART_FILES.get(2).getOriginalFilename(),
                     MULTIPART_FILES.get(2).getContentType(), MULTIPART_FILES.get(2).getBytes())))
+
         .andExpect(status().isOk())
         .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
         .andExpect(jsonPath("$." + Fields.documents, hasSize(3)));

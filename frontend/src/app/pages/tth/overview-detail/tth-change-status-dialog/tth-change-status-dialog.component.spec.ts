@@ -13,9 +13,10 @@ import { ErrorNotificationComponent } from '../../../../core/notification/error/
 import { FormModule } from '../../../../core/module/form.module';
 import { TranslatePipe } from '@ngx-translate/core';
 import { By } from '@angular/platform-browser';
+import { BaseChangeDialogComponent } from '../base-change-dialog/base-change-dialog.component';
 
 const mockTimetableHearingService = jasmine.createSpyObj('timetableHearingService', [
-  'updateHearingStatement',
+  'updateHearingStatementStatus',
 ]);
 const dialogServiceSpy = jasmine.createSpyObj(DialogService, { confirmLeave: of({}) });
 const dialogRefSpy = jasmine.createSpyObj(['close']);
@@ -35,14 +36,26 @@ describe('TthChangeStatusDialogComponent', () => {
   let fixture: ComponentFixture<TthChangeStatusDialogComponent>;
 
   beforeEach(async () => {
-    mockTimetableHearingService.updateHearingStatement.and.returnValue(of(statement));
+    mockTimetableHearingService.updateHearingStatementStatus.and.returnValue(of(statement));
     await TestBed.configureTestingModule({
-      declarations: [TthChangeStatusDialogComponent, CommentComponent, ErrorNotificationComponent],
+      declarations: [
+        TthChangeStatusDialogComponent,
+        BaseChangeDialogComponent,
+        CommentComponent,
+        ErrorNotificationComponent,
+      ],
       imports: [AppTestingModule, FormModule],
       providers: [
         {
           provide: MAT_DIALOG_DATA,
-          useValue: { title: 'Title', message: 'message', ths: statement, id: 1 },
+          useValue: {
+            title: 'Title',
+            message: 'message',
+            tths: [statement],
+            justification: 'Forza Napoli',
+            type: 'SINGLE',
+            id: 1,
+          },
         },
         { provide: MatSnackBarRef, useValue: {} },
         { provide: MAT_SNACK_BAR_DATA, useValue: {} },
@@ -73,44 +86,12 @@ describe('TthChangeStatusDialogComponent', () => {
     );
   });
 
-  it('should close dialog when form is dirty', () => {
-    //given
-    component.tthChangeStatusFormGroup.markAsDirty();
-    //when
-    component.closeDialog();
-    //then
-    expect(dialogServiceSpy.confirmLeave).toHaveBeenCalled();
-
-    expect(dialogRefSpy.close).toHaveBeenCalledWith();
-  });
-
-  it('should close dialog when form is not dirty', () => {
-    //when
-    component.closeDialog();
-    //then
-
-    expect(dialogRefSpy.close).toHaveBeenCalledWith();
-  });
-
   it('should render tth change status dialog', () => {
     component.onClick();
 
-    const title = fixture.debugElement.query(By.css('div.dialog > div.mb-5 > span.font-bold-4xl'));
-    expect(title.nativeElement.innerText).toBe('Title');
-
-    const content = fixture.debugElement.query(By.css('div.dialog > div > span.message'));
-    expect(content.nativeElement.innerText).toBe('message');
-
-    const justification = fixture.debugElement.query(By.css('form-comment'));
-    const justificationValue = justification.nativeNode.querySelector('textarea').value;
-    expect(justificationValue).toBe(statement.justification);
-
-    const cancelButton = fixture.debugElement.query(By.css('mat-dialog-actions button.me-3'));
-    expect(cancelButton.nativeElement.innerText).toBe('DIALOG.CANCEL');
-
-    const confirmButton = fixture.debugElement.query(
-      By.css('mat-dialog-actions button.primary-color-btn')
-    );
-    expect(confirmButton.nativeElement.innerText).toBe('DIALOG.OK');
+    const baseDialog = fixture.debugElement.query(By.css('app-base-change-dialog'));
+    expect(baseDialog).not.toBeNull();
+    expect(baseDialog.attributes['controlName']).toBe('justification');
+    expect(baseDialog.attributes['maxChars']).toBe('5000');
   });
 });

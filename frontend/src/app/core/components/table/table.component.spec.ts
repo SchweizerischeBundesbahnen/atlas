@@ -76,6 +76,7 @@ describe('TableComponent', () => {
         headerTitle: 'TTFN.STATUS',
         value: 'status',
         dropdown: {
+          disabled: false,
           options: Object.values(StatementStatus),
           changeSelectionCallback: changeSelection,
           translate: {
