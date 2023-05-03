@@ -16,7 +16,7 @@ export interface UpdateHearingStatementStatus {
    * List of Statements id
    */
   ids: Array<number>;
-  statementStatus?: StatementStatus;
+  statementStatus: StatementStatus;
   /**
    * Statement of Federal office of transport
    */
