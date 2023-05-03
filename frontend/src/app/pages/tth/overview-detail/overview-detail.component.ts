@@ -27,7 +27,11 @@ import { TthTableService } from '../tth-table.service';
 import { NewTimetableHearingYearDialogService } from '../new-timetable-hearing-year-dialog/service/new-timetable-hearing-year-dialog.service';
 import { SelectionModel } from '@angular/cdk/collections';
 import { TranslateService } from '@ngx-translate/core';
-import { OverviewDetailTableFilterConfig } from './overview-detail-table-filter-config';
+import {
+  disableFilters,
+  enableFilters,
+  OverviewDetailTableFilterConfig,
+} from './overview-detail-table-filter-config';
 import {
   getActiveMultiSearch,
   getActiveSearch,
@@ -326,14 +330,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     this.cantonDeliveryCollectingActionsEnabled = false;
     this.selectedCheckBox = new SelectionModel<TimetableHearingStatement>(true, []);
 
-    this.enableFilters();
-  }
-
-  private enableFilters() {
-    this.tableFilterConfig[0][0].disabled = false;
-    this.tableFilterConfig[1][0].disabled = false;
-    this.tableFilterConfig[1][1].disabled = false;
-    this.tableFilterConfig[1][2].disabled = false;
+    enableFilters(this.tableFilterConfig);
   }
 
   private enableCheckboxViewMode() {
@@ -351,24 +348,19 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
       });
       this.tableColumns.forEach((value) => (value.disabled = true));
       this.disableChangeStatementStatusSelect();
-      this.disableFilters();
+      disableFilters(this.tableFilterConfig);
+    } else {
+      this.removeCheckBoxViewMode();
     }
   }
 
   private disableChangeStatementStatusSelect() {
-    let statementStatusTableColumn = this.tableColumns.filter(
+    const statementStatusTableColumn = this.tableColumns.filter(
       (value) => value.value === 'statementStatus'
     )[0];
     if (statementStatusTableColumn.dropdown) {
       statementStatusTableColumn.dropdown.disabled = true;
     }
-  }
-
-  private disableFilters() {
-    this.tableFilterConfig[0][0].disabled = true;
-    this.tableFilterConfig[1][0].disabled = true;
-    this.tableFilterConfig[1][1].disabled = true;
-    this.tableFilterConfig[1][2].disabled = true;
   }
 
   private navigateTo(canton: string, timetableYear: number) {
