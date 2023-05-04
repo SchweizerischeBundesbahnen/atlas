@@ -34,6 +34,7 @@ export interface ColumnCheckbox {
 
 export interface Button {
   label?: string;
+  title?: string;
   icon?: string;
   clickCallback: (...args: any[]) => any;
   applicationType: ApplicationType;
