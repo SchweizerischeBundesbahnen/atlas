@@ -43,6 +43,7 @@ import { AuthService } from '../../../core/auth/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogManageTthComponent } from '../dialog-manage-tth/dialog-manage-tth.component';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
+import { StatementShareService } from './statement-share-service';
 
 @Component({
   selector: 'app-timetable-hearing-overview-detail',
@@ -101,12 +102,13 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     private readonly overviewToTabService: OverviewToTabShareDataService,
     private readonly tthStatusChangeDialog: TthChangeStatusDialogService,
     private readonly tthChangeCantonDialogService: TthChangeCantonDialogService,
+    private readonly dialogService: DialogService,
     private readonly tthTableService: TthTableService,
     private readonly newTimetableHearingYearDialogService: NewTimetableHearingYearDialogService,
     private readonly translateService: TranslateService,
     private readonly authService: AuthService,
-    private readonly matDialog: MatDialog,
-    private readonly dialogService: DialogService
+    private readonly statementShareService: StatementShareService,
+    private readonly matDialog: MatDialog
   ) {}
 
   get isHearingYearActive(): boolean {
@@ -355,6 +357,30 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     this.selectedItems = $event.selected;
   }
 
+  duplicate($event: TimetableHearingStatement) {
+    this.dialogService
+      .confirm({
+        title: 'TTH.DUPLICATE.DIALOG.TITLE',
+        message: 'TTH.DUPLICATE.DIALOG.MESSAGE',
+        cancelText: 'TTH.DUPLICATE.DIALOG.CANCEL',
+        confirmText: 'TTH.DUPLICATE.DIALOG.CONFIRM',
+      })
+      .subscribe((confirmed) => {
+        if (confirmed) {
+          this.duplicateStatement($event);
+        }
+      });
+  }
+
+  duplicateStatement(statement: TimetableHearingStatement) {
+    this.statementShareService.statement = statement;
+    this.router
+      .navigate([this.hearingStatus.toLowerCase(), 'add'], {
+        relativeTo: this.route.parent,
+      })
+      .then();
+  }
+
   private removeCheckBoxViewMode() {
     this.isCheckBoxModeActive = false;
     this.showCollectingActionButton = true;
@@ -380,6 +406,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
       });
       this.tableColumns.forEach((value) => (value.disabled = true));
       this.disableChangeStatementStatusSelect();
+      this.disableDuplicateButtonAction();
       disableFilters(this.tableFilterConfig);
     } else {
       this.removeCheckBoxViewMode();
@@ -392,6 +419,15 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     )[0];
     if (statementStatusTableColumn.dropdown) {
       statementStatusTableColumn.dropdown.disabled = true;
+    }
+  }
+
+  private disableDuplicateButtonAction() {
+    const duplicateButtonAction = this.tableColumns.filter(
+      (value) => value.value === 'etagVersion'
+    )[0];
+    if (duplicateButtonAction.button) {
+      duplicateButtonAction.button.disabled = true;
     }
   }
 
@@ -573,6 +609,20 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
       },
       { headerTitle: 'COMMON.EDIT_ON', value: 'editionDate', formatAsDate: true },
       { headerTitle: 'COMMON.EDIT_BY', value: 'editor' },
+      {
+        headerTitle: '',
+        value: 'etagVersion',
+        disabled: true,
+        button: {
+          icon: 'bi bi-files',
+          clickCallback: this.duplicate,
+          applicationType: 'TIMETABLE_HEARING',
+          buttonDataCy: 'duplicate-hearing',
+          label: 'TTH.BUTTON.DUPLICATE',
+          buttonType: 'defaultPrimary',
+          disabled: false,
+        },
+      },
     ];
   }
 
