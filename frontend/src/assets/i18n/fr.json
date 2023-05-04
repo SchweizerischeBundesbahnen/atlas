@@ -556,6 +556,14 @@
       "NO_VERSION_VALID_AT": "Il n'y a pas de version valide de {{swissId}} au {{validAt}}. Veuillez vérifier la validité du numéro de champ d'horaire.",
       "OPERATION_NOT_ALLOWED_DUE_TO_TTH_YEAR_SETTINGS": "Cette opération n'est pas possible en raison de la configuration de l'année de l'horaire."
     },
+    "DUPLICATE": {
+      "DIALOG": {
+        "TITLE": "Créer un duplicata",
+        "MESSAGE": "Vous voulez vraiment dupliquer cette prise de position ?",
+        "CONFIRM": "Créer un duplicata",
+        "CANCEL": "Rompre"
+      }
+    },
     "DIALOG": {
       "STATUS_CHANGE": "Modifier statut",
       "CANTON_CHANGE": "Modifier canton",
@@ -575,6 +583,7 @@
       "ARCHIVED": "Auditions archivées"
     },
     "BUTTON": {
+      "DUPLICATE": "Dupliquer",
       "DOWNLOAD_CSV": "Télécharger [CSV]",
       "MANAGE_TIMETABLE_HEARING": "Contrôle de la consultation de l'horaire",
       "ADD_NEW_STATEMENT": "Saisir une nouvelle prise de position",
