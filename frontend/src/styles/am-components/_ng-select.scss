@@ -12,6 +12,13 @@ $height: 32px;
   .ng-select-container {
     min-height: $height;
     border-radius: variables.$border-radius-small;
+
+    .ng-value-container {
+      overflow: hidden;
+      .ng-value {
+        width: 100%;
+      }
+    }
   }
 }
 
@@ -37,4 +44,10 @@ $height: 32px;
   &:hover {
     box-shadow: 0 0 0 1px variables.$warnColor;
   }
+}
+
+// Position of Dropdown
+.ng-dropdown-panel.ng-select-bottom {
+  top: unset;
+  margin-top: unset;
 }

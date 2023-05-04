@@ -36,9 +36,12 @@ export class AtlasButtonComponent {
       return this.mayEdit();
     }
     if (
-      this.buttonType === AtlasButtonType.REVOKE ||
-      this.buttonType === AtlasButtonType.SKIP_WORKFLOW ||
-      this.buttonType === AtlasButtonType.MANAGE_TIMETABLE_HEARING
+      [
+        AtlasButtonType.REVOKE,
+        AtlasButtonType.SKIP_WORKFLOW,
+        AtlasButtonType.SUPERVISOR_BUTTON,
+        AtlasButtonType.MANAGE_TIMETABLE_HEARING,
+      ].includes(this.buttonType)
     ) {
       return this.isAtLeastSupervisor();
     }

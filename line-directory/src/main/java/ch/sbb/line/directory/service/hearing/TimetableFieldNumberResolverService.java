@@ -27,7 +27,7 @@ public class TimetableFieldNumberResolverService {
   public String resolveTtfnid(String timetableFieldNumber) {
     if (timetableFieldNumber != null) {
       LocalDate beginningOfNextTimetableYear = FutureTimetableHelper.getActualTimetableYearChangeDate(LocalDate.now());
-      log.info("Resolving timetableFieldNumber={} at {} to ttfnid", timetableFieldNumber, beginningOfNextTimetableYear);
+      log.info("Resolving timetableFieldNumber=[{}] at {} to ttfnid", timetableFieldNumber, beginningOfNextTimetableYear);
 
       Page<TimetableFieldNumber> timetableFieldNumbers = timetableFieldNumberService.getVersionsSearched(
           TimetableFieldNumberSearchRestrictions.builder()
@@ -41,8 +41,12 @@ public class TimetableFieldNumberResolverService {
         log.info("Resolved timetableFieldNumber={} at {} to ttfnid {}", timetableFieldNumber, beginningOfNextTimetableYear,
             ttfnid);
         return ttfnid;
+      } else {
+        log.info("Could not resolve timetableFieldNumber={}, page was timetableFieldNumbers={}", timetableFieldNumber,
+            timetableFieldNumbers);
       }
     }
+    log.info("No timetableFieldNumber given.");
     return null;
   }
 
