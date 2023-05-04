@@ -17,6 +17,7 @@ export class NewTimetableHearingYearDialogService {
       NewTimetableHearingYearDialogComponent,
       {
         data: {},
+        disableClose: true,
         panelClass: 'atlas-dialog-panel',
         backdropClass: 'atlas-dialog-backdrop',
       }
