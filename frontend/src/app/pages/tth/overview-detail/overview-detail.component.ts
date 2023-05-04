@@ -260,6 +260,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
   addNewTimetableHearing() {
     this.newTimetableHearingYearDialogService.openDialog().subscribe((result) => {
       if (result) {
+        this.noTimetableHearingYearFound = false;
         this.ngOnInit();
       }
     });

@@ -54,13 +54,18 @@ export class NewTimetableHearingYearDialogComponent implements OnInit {
 
   initOverviewOfferedYears() {
     this.timetableHearingService
-      .getHearingYears([HearingStatus.Active, HearingStatus.Planned])
+      .getHearingYears([HearingStatus.Active, HearingStatus.Planned, HearingStatus.Archived])
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((timetableHearingYears) => {
-        if (timetableHearingYears.objects) {
-          const activeYear = this.getActiveYear(timetableHearingYears.objects);
-          const plannedYears = this.getPlannedYears(timetableHearingYears.objects);
-          this.YEAR_OPTIONS = this.calculateProposedYears(activeYear, plannedYears);
+        const sortedTimetableHearingYears = timetableHearingYears.objects!.sort(
+          (n1, n2) => n1.timetableYear - n2.timetableYear
+        );
+        if (sortedTimetableHearingYears) {
+          const activeYear = this.getActiveYear(sortedTimetableHearingYears);
+          const plannedAndArchivedYears = this.getAllPlanedAndArchivedYears(
+            sortedTimetableHearingYears
+          );
+          this.YEAR_OPTIONS = this.calculateProposedYears(activeYear, plannedAndArchivedYears);
           this.defaultYearSelection = this.YEAR_OPTIONS[0];
         }
       });
@@ -90,25 +95,30 @@ export class NewTimetableHearingYearDialogComponent implements OnInit {
     return timetableHearingYear.timetableYear;
   }
 
-  getPlannedYears(timetableHearingYears: Array<TimetableHearingYear>): Array<TimetableHearingYear> {
-    const plannedYears: TimetableHearingYear[] = [];
+  getAllPlanedAndArchivedYears(
+    timetableHearingYears: Array<TimetableHearingYear>
+  ): Array<TimetableHearingYear> {
+    const plannedAndArchivedYears: TimetableHearingYear[] = [];
     for (const i in timetableHearingYears) {
-      if (HearingStatus.Planned === timetableHearingYears[i].hearingStatus) {
-        plannedYears.push(timetableHearingYears[i]);
+      if (
+        HearingStatus.Planned === timetableHearingYears[i].hearingStatus ||
+        HearingStatus.Archived === timetableHearingYears[i].hearingStatus
+      ) {
+        plannedAndArchivedYears.push(timetableHearingYears[i]);
       }
     }
-    return plannedYears;
+    return plannedAndArchivedYears;
   }
 
   calculateProposedYears(
     activeYear: number,
-    timetableHearingYears: Array<TimetableHearingYear>
+    plannedAndArchivedHearingYears: Array<TimetableHearingYear>
   ): Array<number> {
     const proposedYears: number[] = [];
     let counter = 1;
     while (proposedYears.length < 5) {
       const proposedYear = activeYear + counter;
-      if (!this.isYearAlreadyPlanned(proposedYear, timetableHearingYears)) {
+      if (!this.isYearAlreadyPlannedOrArchived(proposedYear, plannedAndArchivedHearingYears)) {
         proposedYears.push(proposedYear);
       }
       counter++;
@@ -116,7 +126,7 @@ export class NewTimetableHearingYearDialogComponent implements OnInit {
     return proposedYears;
   }
 
-  isYearAlreadyPlanned(
+  isYearAlreadyPlannedOrArchived(
     proposedYear: number,
     timetableHearingYears: Array<TimetableHearingYear>
   ): boolean {
