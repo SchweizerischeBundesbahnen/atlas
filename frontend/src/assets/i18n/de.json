@@ -563,6 +563,11 @@
       "STATUS_CHANGE_MESSAGE": "Sie ändern die ausgewählte Stellungnahme.",
       "MULTIPLE_STATUS_CHANGE_MESSAGE": "Sie ändern {{tthsLength}} ausgewählte Stellungnahme."
     },
+    "START_HEARING_DIALOG": {
+      "TITLE": "Fahrplanjahr starten?",
+      "TEXT": "Sie sind im Begriff das Fahrplanjahr zu starten. Diese Aktion kann nicht Rückgängig gemacht werden.",
+      "CONFIRM": "Starten"
+    },
     "TAB": {
       "ACTUAL": "Aktuelle Anhörung",
       "PLANNED": "Geplante Anhörungen",
