@@ -14,8 +14,10 @@
     "CORRELATION_ID": "Si les problèmes persistent, contactez le service Atlas avec le numéro d'identification suivant: {{correlationId}}"
   },
   "COMMON": {
+    "LOADING": "Chargement...",
     "BACK_TO_OVERVIEW": "Retour au sommaire",
     "SAVE": "Sauvegarder",
+    "SAVE_AND_CLOSE": "Enregistrer & fermer",
     "ADD": "Ajouter",
     "EDIT": "Modifier",
     "REVOKE": "Saisie des erreurs",
@@ -550,7 +552,8 @@
       "CANTON_CHANGE": {
         "SUCCESS": "Le canton a été modifié avec succès."
       },
-      "NO_VERSION_VALID_AT": "Il n'y a pas de version valide de {{swissId}} au {{validAt}}. Veuillez vérifier la validité du numéro de champ d'horaire."
+      "NO_VERSION_VALID_AT": "Il n'y a pas de version valide de {{swissId}} au {{validAt}}. Veuillez vérifier la validité du numéro de champ d'horaire.",
+      "OPERATION_NOT_ALLOWED_DUE_TO_TTH_YEAR_SETTINGS": "Cette opération n'est pas possible en raison de la configuration de l'année de l'horaire."
     },
     "DIALOG": {
       "STATUS_CHANGE": "Modifier statut",
@@ -571,7 +574,8 @@
       "ADD_NEW_STATEMENT": "Saisir un nouvel avis",
       "ADD_NEW_TIMETABLE_HEARING": "Créer une nouvelle consultation sur les horaires",
       "START_TIMETABLE_HEARING": "Lancer cette année d'horaire",
-      "CANCEL_COLLECTING_ACTION": "Terminer la collecte"
+      "CANCEL_COLLECTING_ACTION": "Terminer la collecte",
+      "CLOSE_TIMETABLE_HEARING": "Clôture de l'année horaire"
     },
     "DROPDOWN": {
       "COLLECTING_STATUS_CHANGE_ACTION": {
@@ -701,6 +705,21 @@
         "CANCEL": "Retour",
         "CONFIRM": "Changer de canton"
       }
+    },
+    "CLOSE_TIMETABLE_HEARING": {
+      "POPUP_TITLE": "Clôture de l'année horaire",
+      "CONFIRMATION_MESSAGE": "Vous souhaitez fermer l'année horaire ? Cette action ne peut pas être annulée. Lors de la clôture de l'année d'horaire, les prises de position sont déplacées:",
+      "MOVEMENTS_TO_ARCHIVED": "\"acceptée\", \"rejeté\" ou \"Saisie des erreurs\" → archives",
+      "MOVEMENTS_TO_NEXT_YEAR": "\"arriver\", \"À l'étude\" ou \"Retardé\" → l'année d'horaire suivante",
+      "MOVEMENTS_TO_DELETED": "\"Spam-Mail\" → irrévocablement supprimé",
+      "SUCCESSFUL_CLOSE_NOTIFICATION": "Année d'horaire clôturée avec succès"
+    },
+    "MANAGE_TIMETABLE_HEARING": {
+      "POPUP_TITLE": "Contrôle de la consultation de l'horaire",
+      "CREATE_STATEMENT_EXTERNAL": "Saisie de l'avis via API",
+      "CREATE_STATEMENT_INTERNAL": "Saisie de l'avis dans atlas",
+      "EDIT_STATEMENT": "Traitement de l'avis dans atlas",
+      "SUCCESSFUL_SAVE_NOTIFICATION": "Paramètres enregistrés avec succès"
     }
   }
 }

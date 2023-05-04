@@ -1,5 +1,6 @@
 package ch.sbb.line.directory.controller;
 
+import static ch.sbb.atlas.model.controller.WithMockJwtAuthentication.MockJwtAuthenticationFactory.createJwtWithoutSbbUid;
 import static ch.sbb.line.directory.helper.PdfFiles.MULTIPART_FILES;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
@@ -39,6 +40,8 @@ import ch.sbb.line.directory.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
 import ch.sbb.line.directory.exception.PdfDocumentConstraintViolationException;
+import ch.sbb.line.directory.exception.ForbiddenDueToHearingYearSettingsException;
+import ch.sbb.line.directory.exception.NoClientCredentialAuthUsedException;
 import ch.sbb.line.directory.repository.TimetableHearingStatementRepository;
 import ch.sbb.line.directory.repository.TimetableHearingYearRepository;
 import ch.sbb.line.directory.service.TimetableFieldNumberService;
@@ -59,6 +62,11 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 
 public class TimetableHearingStatementControllerApiTest extends BaseControllerApiTest {
 
@@ -232,7 +240,117 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
   }
 
   @Test
+  void shouldThrowForbiddenExceptionWhenStatementCreatableInternalIsFalse() throws Exception {
+    TimetableHearingStatementModel statement = TimetableHearingStatementModel.builder()
+        .timetableYear(YEAR)
+        .swissCanton(SwissCanton.BERN)
+        .ttfnid("ch:1:ttfnid:12341241")
+        .statementSender(TimetableHearingStatementSenderModel.builder()
+            .email("fabienne.mueller@sbb.ch")
+            .build())
+        .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
+        .build();
+
+    MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
+        MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
+
+    TimetableHearingYearModel hearingYearModel = timetableHearingYearController.startHearingYear(YEAR);
+    hearingYearModel.setStatementCreatableInternal(false);
+    timetableHearingYearController.updateTimetableHearingSettings(YEAR, hearingYearModel);
+
+    mvc.perform(multipart(HttpMethod.POST, "/v1/timetable-hearing/statements")
+            .file(statementJson))
+        .andExpect(status().isForbidden())
+        .andExpect(result -> assertTrue(result.getResolvedException() instanceof ForbiddenDueToHearingYearSettingsException))
+        .andExpect(result -> assertEquals("Operation not allowed",
+            ((ForbiddenDueToHearingYearSettingsException) Objects.requireNonNull(
+                result.getResolvedException())).getErrorResponse()
+                .getMessage()));
+  }
+
+  @Test
+  void shouldThrowExceptionWhenNotClientCredentialsAuthUsedForExternalEndpoint() throws Exception {
+    String statement = """
+         {
+         	"statement": "I need some more busses please.",
+         	"statementSender": {
+         		"email": "maurer@post.ch",
+         		"firstName": "Fabienne",
+         		"lastName": "Maurer",
+         		"organisation": "Post AG",
+         		"street": "Bahnhofstrasse 12",
+         		"zip": 3000,
+         		"city": "Bern"
+         	},
+         	"timetableFieldNumber": "1.1",
+         	"swissCanton": "BERN",
+         	"stopPlace": "Bern, Wyleregg"
+         }
+        """;
+    MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
+        MediaType.APPLICATION_JSON_VALUE, statement);
+
+    mvc.perform(multipart(HttpMethod.POST, "/v1/timetable-hearing/statements/external")
+            .file(statementJson))
+        .andExpect(status().isBadRequest())
+        .andExpect(result -> assertTrue(result.getResolvedException() instanceof NoClientCredentialAuthUsedException))
+        .andExpect(result -> assertEquals("Bad authentication used",
+            ((NoClientCredentialAuthUsedException) Objects.requireNonNull(result.getResolvedException())).getErrorResponse()
+                .getMessage()));
+  }
+
+  @Test
+  void shouldThrowForbiddenExceptionWhenStatementCreatableExternalIsFalse() throws Exception {
+    // For Client-Credential Auth
+    SecurityContext context = SecurityContextHolder.getContext();
+    Authentication authentication = new JwtAuthenticationToken(createJwtWithoutSbbUid(),
+        AuthorityUtils.createAuthorityList("ROLE_atlas-admin"));
+    authentication.setAuthenticated(true);
+    context.setAuthentication(authentication);
+
+    TimetableHearingYearModel hearingYearModel = timetableHearingYearController.startHearingYear(YEAR);
+    hearingYearModel.setStatementCreatableExternal(false);
+    timetableHearingYearController.updateTimetableHearingSettings(YEAR, hearingYearModel);
+
+    String statement = """
+         {
+         	"statement": "I need some more busses please.",
+         	"statementSender": {
+         		"email": "maurer@post.ch",
+         		"firstName": "Fabienne",
+         		"lastName": "Maurer",
+         		"organisation": "Post AG",
+         		"street": "Bahnhofstrasse 12",
+         		"zip": 3000,
+         		"city": "Bern"
+         	},
+         	"timetableFieldNumber": "1.1",
+         	"swissCanton": "BERN",
+         	"stopPlace": "Bern, Wyleregg"
+         }
+        """;
+    MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
+        MediaType.APPLICATION_JSON_VALUE, statement);
+
+    mvc.perform(multipart(HttpMethod.POST, "/v1/timetable-hearing/statements/external")
+            .file(statementJson))
+        .andExpect(status().isForbidden())
+        .andExpect(result -> assertTrue(result.getResolvedException() instanceof ForbiddenDueToHearingYearSettingsException))
+        .andExpect(result -> assertEquals("Operation not allowed",
+            ((ForbiddenDueToHearingYearSettingsException) Objects.requireNonNull(
+                result.getResolvedException())).getErrorResponse()
+                .getMessage()));
+  }
+
+  @Test
   void shouldCreateStatementExternalFromSkiWeb() throws Exception {
+    // For Client-Credential Auth
+    SecurityContext context = SecurityContextHolder.getContext();
+    Authentication authentication = new JwtAuthenticationToken(createJwtWithoutSbbUid(),
+        AuthorityUtils.createAuthorityList("ROLE_atlas-admin"));
+    authentication.setAuthenticated(true);
+    context.setAuthentication(authentication);
+
     timetableHearingYearController.startHearingYear(YEAR);
     String statement = """
          {
@@ -360,6 +478,38 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
             .contentType(contentType)
             .content(mapper.writeValueAsString(updateHearingCantonModel)))
         .andExpect(status().isOk());
+  }
+
+  @Test
+  void shouldThrowForbiddenExceptionWhenStatementUpdatableIsFalse() throws Exception {
+    TimetableHearingYearModel hearingYear = timetableHearingYearController.getHearingYear(YEAR);
+    hearingYear.setStatementEditable(false);
+    timetableHearingYearController.updateTimetableHearingSettings(YEAR, hearingYear);
+
+    TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
+        TimetableHearingStatementModel.builder()
+            .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+            .swissCanton(SwissCanton.BERN)
+            .statementSender(TimetableHearingStatementSenderModel.builder()
+                .email("fabienne.mueller@sbb.ch")
+                .build())
+            .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
+            .build(),
+        Collections.emptyList());
+
+    statement.setStatementStatus(StatementStatus.JUNK);
+
+    MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
+        MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
+
+    mvc.perform(multipart(HttpMethod.PUT, "/v1/timetable-hearing/statements/" + statement.getId())
+            .file(statementJson))
+        .andExpect(status().isForbidden())
+        .andExpect(result -> assertTrue(result.getResolvedException() instanceof ForbiddenDueToHearingYearSettingsException))
+        .andExpect(result -> assertEquals("Operation not allowed",
+            ((ForbiddenDueToHearingYearSettingsException) Objects.requireNonNull(
+                result.getResolvedException())).getErrorResponse()
+                .getMessage()));
   }
 
   @Test

@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class TimetableHearingYearService {
 
   private final TimetableHearingYearRepository timetableHearingYearRepository;
+  private final TimetableHearingStatementService timetableHearingStatementService;
 
   public Page<TimetableHearingYear> getHearingYears(TimetableHearingYearSearchRestrictions searchRestrictions) {
     return timetableHearingYearRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
@@ -67,6 +68,14 @@ public class TimetableHearingYearService {
 
   public TimetableHearingYear closeTimetableHearing(TimetableHearingYear timetableHearingYear) {
     mayTransitionToHearingStatus(timetableHearingYear, HearingStatus.ARCHIVED);
+
+    timetableHearingStatementService.deleteSpamMailFromYear(timetableHearingYear.getTimetableYear());
+
+    timetableHearingStatementService.moveClosedStatementsToNextYearWithStatusUpdates(timetableHearingYear.getTimetableYear());
+
+    timetableHearingYear.setStatementCreatableInternal(false);
+    timetableHearingYear.setStatementCreatableExternal(false);
+    timetableHearingYear.setStatementEditable(false);
 
     timetableHearingYear.setHearingStatus(HearingStatus.ARCHIVED);
     return timetableHearingYearRepository.save(timetableHearingYear);
