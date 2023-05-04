@@ -14,8 +14,10 @@
     "CORRELATION_ID": "Se i problemi persistono, contattare il reparto Atlas con il seguente numero di identificazione: {{correlationId}}"
   },
   "COMMON": {
+    "LOADING": "Caricamento...",
     "BACK_TO_OVERVIEW": "Torna al sommario",
     "SAVE": "Salva",
+    "SAVE_AND_CLOSE": "Salvare e chiudere",
     "ADD": "Aggiungi",
     "EDIT": "Modifica",
     "REVOKE": "Revocare",
@@ -550,7 +552,8 @@
       "CANTON_CHANGE": {
         "SUCCESS": "Il cantone è stato modificato con successo."
       },
-      "NO_VERSION_VALID_AT": "Non esiste una versione valida di {{swissId}} su {{validAt}}. Verificare la validità del numero del campo orario."
+      "NO_VERSION_VALID_AT": "Non esiste una versione valida di {{swissId}} su {{validAt}}. Verificare la validità del numero del campo orario.",
+      "OPERATION_NOT_ALLOWED_DUE_TO_TTH_YEAR_SETTINGS": "Questa operazione non è possibile a causa della configurazione dell'anno orario."
     },
     "DIALOG": {
       "STATUS_CHANGE": "Modificare lo stato",
@@ -571,7 +574,8 @@
       "ADD_NEW_STATEMENT": "Aggiungere nuovo parare",
       "ADD_NEW_TIMETABLE_HEARING": "Creare una nuova audizione",
       "START_TIMETABLE_HEARING": "Avviare questa audizione",
-      "CANCEL_COLLECTING_ACTION": "Terminare la campagna di raccolta"
+      "CANCEL_COLLECTING_ACTION": "Terminare la campagna di raccolta",
+      "CLOSE_TIMETABLE_HEARING": "Chiusura dell'anno di calendario"
     },
     "DROPDOWN": {
       "COLLECTING_STATUS_CHANGE_ACTION": {
@@ -701,6 +705,21 @@
         "CANCEL": "Ritorno",
         "CONFIRM": "Cambia cantone"
       }
+    },
+    "CLOSE_TIMETABLE_HEARING": {
+      "POPUP_TITLE": "Chiusura dell'anno di calendario",
+      "CONFIRMATION_MESSAGE": "Volete terminare l'anno di calendario? L'operazione non può essere annullata.  Quando l'anno solare si chiude, i pareri vengono rimandati:",
+      "MOVEMENTS_TO_ARCHIVED": "\"accetato\", \"rifiutato\" o \"Revocato\" → archivio",
+      "MOVEMENTS_TO_NEXT_YEAR": "\"arrivato\", \"in esame\" o \"spostato\" → anno di calendario successivo",
+      "MOVEMENTS_TO_DELETED": "\"Spam-Mail\" → definitivamente cancellati",
+      "SUCCESSFUL_CLOSE_NOTIFICATION": "Anno di calendario chiuso con successo"
+    },
+    "MANAGE_TIMETABLE_HEARING": {
+      "POPUP_TITLE": "Controllo dell'orario dell'udito",
+      "CREATE_STATEMENT_EXTERNAL": "Acquisizione di dichiarazioni tramite API",
+      "CREATE_STATEMENT_INTERNAL": "Dichiarazione di registrazione in atlas",
+      "EDIT_STATEMENT": "Modifica del parere in atlas",
+      "SUCCESSFUL_SAVE_NOTIFICATION": "Impostazioni salvate con successo"
     }
   }
 }
