@@ -28,6 +28,7 @@ import { By } from '@angular/platform-browser';
 import { FileUploadComponent } from '../../../core/components/file-upload/file-upload.component';
 import { FileSizePipe } from '../../../core/components/file-upload/file-size/file-size.pipe';
 import { FileComponent } from '../../../core/components/file-upload/file/file.component';
+import { LoadingSpinnerComponent } from '../../../core/components/loading-spinner/loading-spinner.component';
 
 const existingStatement: TimetableHearingStatement = {
   id: 1,
@@ -230,6 +231,7 @@ function setupTestBed(activatedRoute: {
 
   TestBed.configureTestingModule({
     declarations: [
+      LoadingSpinnerComponent,
       StatementDetailComponent,
       ErrorNotificationComponent,
       AtlasSpacerComponent,

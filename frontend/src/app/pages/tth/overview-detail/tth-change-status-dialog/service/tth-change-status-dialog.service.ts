@@ -35,6 +35,7 @@ export class TthChangeStatusDialogService {
     };
     this.changeStatusDialog = this.dialog.open(TthChangeStatusDialogComponent, {
       data: statusChangeData,
+      disableClose: true,
       panelClass: 'atlas-dialog-panel',
       backdropClass: 'atlas-dialog-backdrop',
     });
