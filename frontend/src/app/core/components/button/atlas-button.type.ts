@@ -10,6 +10,7 @@ export const AtlasButtonType = {
   DELETE: 'delete' as AtlasButtonType,
   CLOSE_ICON: 'closeIcon' as AtlasButtonType,
   DEFAULT_PRIMARY: 'defaultPrimary' as AtlasButtonType,
+  ICON: 'icon' as AtlasButtonType,
   WHITE_FOOTER_NON_EDIT: 'whiteFooterNonEdit' as AtlasButtonType,
   WHITE_FOOTER_EDIT_MODE: 'whiteFooterEdit' as AtlasButtonType,
   CANTON_WRITE_PERMISSION: 'cantonWritePermission' as AtlasButtonType,
@@ -31,6 +32,7 @@ export type AtlasButtonType =
   | 'supervisorButton'
   | 'delete'
   | 'defaultPrimary'
+  | 'icon'
   | 'cantonWritePermission'
   | 'manageTimetableHearing'
   | 'cancel'
