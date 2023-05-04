@@ -234,21 +234,20 @@ public class TimetableHearingStatementService {
       + ".ApplicationType).TIMETABLE_HEARING, #statement)")
   public void updateHearingStatementStatus(TimetableHearingStatement statement, StatementStatus statementStatus,
       String justification) {
+    statement.setStatementStatus(statementStatus);
     if (justification != null) {
-      timetableHearingStatementRepository.updateHearingStatementStatusWithJustification(statement.getId(), statementStatus,
-          justification);
-    } else {
-      timetableHearingStatementRepository.updateHearingStatementStatus(statement.getId(), statementStatus);
+      statement.setJustification(justification);
     }
+    timetableHearingStatementRepository.save(statement);
   }
 
   @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin"
       + ".ApplicationType).TIMETABLE_HEARING, #statement)")
   public void updateHearingCanton(TimetableHearingStatement statement, SwissCanton swissCanton, String comment) {
+    statement.setSwissCanton(swissCanton);
     if (comment != null) {
-      timetableHearingStatementRepository.updateHearingCantonWithComment(statement.getId(), swissCanton, comment);
-    } else {
-      timetableHearingStatementRepository.updateHearingCanton(statement.getId(), swissCanton);
+      statement.setComment(comment);
     }
+    timetableHearingStatementRepository.save(statement);
   }
 }
