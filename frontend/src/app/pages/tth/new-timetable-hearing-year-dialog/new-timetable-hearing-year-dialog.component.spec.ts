@@ -140,7 +140,7 @@ describe('NewTimetableHearingYearDialogComponent', () => {
     ).toEqual([timetableHearingYears[1], timetableHearingYears[2], timetableHearingYears[3]]);
   });
 
-  it('should check if year is already planned', () => {
+  it('should validate that the year is planned or archived', () => {
     const timetableHearingYears: TimetableHearingYear[] = getTimetableHearingYears();
     expect(
       newTimetableHearingYearDialogComponent.isYearAlreadyPlannedOrArchived(
@@ -150,7 +150,7 @@ describe('NewTimetableHearingYearDialogComponent', () => {
     ).toBeTrue();
   });
 
-  it('should check if year is not already planned', () => {
+  it('should validate that the year is neither planned nor archived', () => {
     const timetableHearingYears: TimetableHearingYear[] = getTimetableHearingYears();
     expect(
       newTimetableHearingYearDialogComponent.isYearAlreadyPlannedOrArchived(
