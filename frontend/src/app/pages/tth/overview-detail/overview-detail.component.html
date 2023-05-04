@@ -88,10 +88,12 @@
         <atlas-spacer height="15px"></atlas-spacer>
         <atlas-button
           (buttonClicked)="addNewStatement()"
+          [canton]="cantonShort"
+          [disabled]="isCheckBoxModeActive"
           applicationType="TIMETABLE_HEARING"
           buttonDataCy="addNewStatement"
           buttonText="TTH.BUTTON.ADD_NEW_STATEMENT"
-          buttonType="createCheckingPermission"
+          buttonType="cantonWritePermission"
           wrapperStyleClass="text-align-end"
         >
         </atlas-button>
