@@ -1,0 +1,47 @@
+@use 'src/styles/variables';
+
+:host {
+  height: 15px;
+}
+
+.slide-track {
+  width: 40px;
+  border-radius: 10px;
+  height: 15px;
+  display: flex;
+  align-items: center;
+
+  transition: background-color 0.2s;
+
+  .slide-toggle {
+    transition: transform 0.2s;
+  }
+}
+
+.slide-track-off {
+  @extend .slide-track;
+  background-color: variables.$errorColor;
+}
+
+.slide-track-on {
+  @extend .slide-track;
+  background-color: variables.$successColor;
+
+  .slide-toggle {
+    transform: translateX(20px);
+  }
+}
+
+.slide-btn {
+  border: unset;
+  padding: unset;
+  background-color: unset;
+}
+
+.slide-toggle {
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  background-color: variables.$white;
+  border: 1px solid variables.$gray-500;
+}

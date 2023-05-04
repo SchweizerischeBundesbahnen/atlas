@@ -56,7 +56,8 @@ public class TimetableHearingYearController implements TimetableHearingYearApiV1
 
   @Override
   public TimetableHearingYearModel updateTimetableHearingSettings(Long year, TimetableHearingYearModel hearingYearModel) {
-    TimetableHearingYear updatedHearing = timetableHearingYearService.updateTimetableHearingSettings(year,        TimeTableHearingYearMapper.toEntity(hearingYearModel));
+    TimetableHearingYear updatedHearing = timetableHearingYearService.updateTimetableHearingSettings(year,
+        TimeTableHearingYearMapper.toEntity(hearingYearModel));
     return TimeTableHearingYearMapper.toModel(updatedHearing);
   }
 
