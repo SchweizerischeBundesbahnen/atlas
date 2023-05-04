@@ -229,6 +229,8 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
       .open<DialogManageTthComponent, number, boolean>(DialogManageTthComponent, {
         data: this.foundTimetableHearingYear.timetableYear,
         disableClose: true,
+        panelClass: 'atlas-dialog-panel',
+        backdropClass: 'atlas-dialog-backdrop',
       })
       .afterClosed()
       .pipe(take(1))
