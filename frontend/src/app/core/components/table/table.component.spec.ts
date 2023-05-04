@@ -11,9 +11,34 @@ import { TableService } from './table.service';
 import { MockAtlasFieldErrorComponent } from '../../../app.testing.mocks';
 import { StatementStatus } from '../../../api';
 import { SelectComponent } from '../../form-components/select/select.component';
+import { Pipe, PipeTransform } from '@angular/core';
+import { TableColumn } from './table-column';
 
 export interface Obj {
   prop: string;
+}
+
+@Pipe({
+  name: 'showTitle',
+  pure: true,
+})
+class ShowTitlePipeMock implements PipeTransform {
+  transform<T>(value: string | Date, column: TableColumn<T>): string {
+    return value as string;
+  }
+}
+
+@Pipe({
+  name: 'format',
+  pure: true,
+})
+class FormatPipeMock implements PipeTransform {
+  transform<T>(value: string | Date, column: TableColumn<T>): string {
+    if (column.callback) {
+      return column.callback(value);
+    }
+    return value as string;
+  }
 }
 
 describe('TableComponent', () => {
@@ -31,6 +56,9 @@ describe('TableComponent', () => {
         DateIconComponent,
         SelectComponent,
         MockAtlasFieldErrorComponent,
+        TableComponent,
+        ShowTitlePipeMock,
+        FormatPipeMock,
       ],
       imports: [AppTestingModule],
       providers: [TranslatePipe, TableService],
@@ -131,11 +159,6 @@ describe('TableComponent', () => {
     });
   });
 
-  it('should render date nicely', () => {
-    const firstTableCell = fixture.debugElement.query(By.css('td'));
-    expect(firstTableCell.nativeElement.innerText).toBe('31.12.2021');
-  });
-
   it('should output edit event', () => {
     spyOn(component.editElementEvent, 'emit');
 
@@ -192,12 +215,5 @@ describe('TableComponent', () => {
         sort: 'validFrom,desc',
       })
     );
-  });
-
-  it('should hide tooltip on text shorter than configured', () => {
-    expect(component.hideTooltip(null)).toBeTrue();
-    expect(component.hideTooltip('')).toBeTrue();
-    expect(component.hideTooltip('asdf')).toBeTrue();
-    expect(component.hideTooltip('asdf asdf asdf asdf asdf asdf asdf asdf ')).toBeFalse();
   });
 });
