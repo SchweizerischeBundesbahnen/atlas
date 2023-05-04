@@ -704,11 +704,11 @@
         "EDIT_SUCCESS": "Die Stellungnahme wurde erfolgreich gespeichert."
       },
       "DIALOG": {
-        "TITLE": "Kanton ändern",
-        "TEXT": "Sie ändern die Kantonszuordnung der ausgewählten Stellungnahme. Mit der Übertragung verlieren Sie die Editierrechte für diese Stellungnahme.",
-        "COMMENT_LABEL": "Kommentar dazu",
+        "TITLE": "Kanton editieren",
+        "TEXT": "Sie editieren den verantwortlichen Kanton dieser Stellungnahme. Nach der Kantonsübergabe können Sie diese Stellungnahme nicht mehr editieren.",
+        "COMMENT_LABEL": "Kommentar zur Kantonsübergabe",
         "CANCEL": "Zurück",
-        "CONFIRM": "Kanton ändern"
+        "CONFIRM": "Kanton editieren"
       }
     },
     "CLOSE_TIMETABLE_HEARING": {
