@@ -64,7 +64,9 @@
   <!-- with confirm text -->
   <ng-template #closeTimetableHearingView>
     <div class="dialog-container p-3">
-      <h2>{{ 'TTH.CLOSE_TIMETABLE_HEARING.POPUP_TITLE' | translate }}</h2>
+      <div class="font-bold-4xl mb-5">
+        {{ 'TTH.CLOSE_TIMETABLE_HEARING.POPUP_TITLE' | translate }}
+      </div>
 
       <span>{{ 'TTH.CLOSE_TIMETABLE_HEARING.CONFIRMATION_MESSAGE' | translate }}</span>
 
@@ -80,7 +82,7 @@
         </li>
       </ul>
 
-      <div class="two-action-btn-wrapper">
+      <div class="two-action-btn-wrapper pt-3">
         <atlas-button
           buttonType="cancel"
           buttonText="COMMON.CANCEL"
