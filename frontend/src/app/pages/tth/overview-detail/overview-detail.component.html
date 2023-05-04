@@ -21,7 +21,7 @@
         >
         </atlas-select>
       </div>
-      <div class="d-flex flex-column col-3 pe-3 pb-2 mb-2">
+      <div *ngIf="!noTimetableHearingYearFound" class="d-flex flex-column col-3 pe-3 pb-2 mb-2">
         <atlas-select
           (selectChanged)="changeSelectedCantonFromDropdown($event)"
           [additionalLabelspace]="false"
@@ -88,7 +88,7 @@
         <atlas-spacer height="15px"></atlas-spacer>
         <atlas-button
           (buttonClicked)="addNewStatement()"
-          applicationType="LIDI"
+          applicationType="TIMETABLE_HEARING"
           buttonDataCy="addNewStatement"
           buttonText="TTH.BUTTON.ADD_NEW_STATEMENT"
           buttonType="createCheckingPermission"
@@ -103,10 +103,11 @@
         <atlas-spacer height="15px"></atlas-spacer>
         <atlas-button
           (buttonClicked)="startTimetableHearing()"
-          applicationType="LIDI"
+          applicationType="TIMETABLE_HEARING"
           buttonDataCy="startTimetableHearing"
           buttonText="TTH.BUTTON.START_TIMETABLE_HEARING"
-          buttonType="createCheckingPermission"
+          buttonType="supervisorButton"
+          buttonStyleClass="atlas-raised-button mat-mdc-raised-button"
         >
         </atlas-button>
       </div>
@@ -114,10 +115,10 @@
         <atlas-spacer height="15px"></atlas-spacer>
         <atlas-button
           (buttonClicked)="addNewTimetableHearing()"
-          applicationType="LIDI"
+          applicationType="TIMETABLE_HEARING"
           buttonDataCy="addNewTimetableHearing"
           buttonText="TTH.BUTTON.ADD_NEW_TIMETABLE_HEARING"
-          buttonType="createCheckingPermission"
+          buttonType="supervisorButton"
           wrapperStyleClass="text-align-end"
         >
         </atlas-button>

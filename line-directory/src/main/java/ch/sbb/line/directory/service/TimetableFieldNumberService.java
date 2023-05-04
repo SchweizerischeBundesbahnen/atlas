@@ -72,6 +72,7 @@ public class TimetableFieldNumberService {
 
   public Page<TimetableFieldNumber> getVersionsSearched(
       TimetableFieldNumberSearchRestrictions searchRestrictions) {
+    log.info("Loading TimetableFieldNumbers with searchRestrictions={}", searchRestrictions);
     return timetableFieldNumberRepository.findAll(searchRestrictions.getSpecification(),
         searchRestrictions.getPageable());
   }

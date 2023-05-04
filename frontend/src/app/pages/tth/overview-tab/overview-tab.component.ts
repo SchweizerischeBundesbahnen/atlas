@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Pages } from '../../pages';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { TabService } from '../../tab.service';
 import { OverviewToTabShareDataService } from './service/overview-to-tab-share-data.service';
 import { Cantons } from '../overview/canton/Cantons';
 import { HearingOverviewTab } from './model/hearing-overview-tab';
+import { filter } from 'rxjs/operators';
 
 @Component({
   templateUrl: './overview-tab.component.html',
@@ -32,7 +33,17 @@ export class OverviewTabComponent implements OnInit {
     private router: Router,
     private tabService: TabService,
     private overviewToTabService: OverviewToTabShareDataService
-  ) {}
+  ) {
+    router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .forEach(() => {
+        const currentTabIndex = this.tabService.getCurrentTabIndex(this.router.url, this.TABS);
+        if (currentTabIndex >= 0) {
+          this.activeTab = this.TABS[currentTabIndex];
+        }
+      })
+      .then();
+  }
 
   clickOnTab(tab: HearingOverviewTab) {
     this.cantonShort = this.route.snapshot.params['canton'];
