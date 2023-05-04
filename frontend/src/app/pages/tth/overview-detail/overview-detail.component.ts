@@ -106,7 +106,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     private readonly translateService: TranslateService,
     private readonly authService: AuthService,
     private readonly matDialog: MatDialog,
-    private readonly dialogService: DialogService,
+    private readonly dialogService: DialogService
   ) {}
 
   get isHearingYearActive(): boolean {
@@ -312,7 +312,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
       });
   }
 
-  cancelCollectiongAction() {
+  cancelCollectingAction() {
     this.removeCheckBoxViewMode();
     this.ngOnInit();
   }
