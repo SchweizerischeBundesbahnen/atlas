@@ -212,7 +212,8 @@ export class StatementDetailComponent implements OnInit {
       this.CANTON_OPTIONS = tthPermissions.permissionRestrictions
         .map((restriction) => Cantons.fromSwissCanton(restriction.valueAsString as SwissCanton))
         .filter((element) => element !== undefined)
-        .map((e) => e!);
+        .map((e) => e!)
+        .sort((n1, n2) => (n1.enumCanton! > n2.enumCanton! ? 1 : -1));
     }
     if (this.isNew) {
       const defaultCanton = Cantons.getSwissCantonEnum(this.route.snapshot.params.canton);
