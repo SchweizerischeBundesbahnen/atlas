@@ -45,7 +45,7 @@
     "VALID_FROM": "Valable du",
     "VALID_TO": "Valable au",
     "EDIT_ON": "Modifiée",
-    "EDIT_BY": "à travers",
+    "EDIT_BY": "Par",
     "STATUS": "Statut",
     "CANTONS": "Cantons",
     "STATUS_TYPES": {
@@ -171,15 +171,15 @@
       "DESCRIPTION": "Vous trouverez ici toutes les informations sur les utilisateurs autorisés et pourrez les gérer."
     },
     "SERVICE_POINTS": {
-      "TITLE": "__Dienststellen verwalten__",
-      "TITLE_HEADER": "__Dienststellen__",
-      "DESCRIPTION": "__Hier finden Sie alle Informationen zum Bearbeiten und neu Erstellen von Dienststellen.__"
+      "TITLE": "Gérer les services",
+      "TITLE_HEADER": "Services",
+      "DESCRIPTION": "Vous trouverez ici toutes les informations nécessaires pour modifier et créer de nouveaux services."
     },
     "TTH": {
-      "TITLE": "Consultation sur les horaires en Suisse",
-      "TITLE_MENU": "Consultation sur les horaires",
-      "DESCRIPTION": "Vous trouverez ici toutes les informations relatives à la consultation sur les horaires en Suisse.",
-      "PATH_TEXT": "Consultation sur les horaires"
+      "TITLE": "Consultation sur le projet d'horaire en Suisse",
+      "TITLE_MENU": "Consultation sur le projet d'horaire",
+      "DESCRIPTION": "Vous trouverez ici toutes les informations relatives à la consultation sur le projet d'horaire en Suisse.",
+      "PATH_TEXT": "Consultation sur le projet d'horaire"
     },
     "DETAILS": "Précisions"
   },
@@ -563,15 +563,20 @@
       "STATUS_CHANGE_MESSAGE": "Vous modifiez l'avis sélectionné.",
       "MULTIPLE_STATUS_CHANGE_MESSAGE": "Vous modifiez {{tthsLength}} l'avis sélectionné."
     },
+    "START_HEARING_DIALOG": {
+      "TITLE": "Démarrer l'année de l'horaire?",
+      "TEXT": "Vous êtes sur le point de commencer l'année de l'horaire. Cette action ne peut pas être annulée.",
+      "CONFIRM": "Commencer"
+    },
     "TAB": {
       "ACTUAL": "Audition actuelle",
-      "PLANNED": "Audition prévue",
-      "ARCHIVED": "Audition archivée"
+      "PLANNED": "Auditions prévues",
+      "ARCHIVED": "Auditions archivées"
     },
     "BUTTON": {
-      "DOWNLOAD_CSV": "Download [CSV]",
+      "DOWNLOAD_CSV": "Télécharger [CSV]",
       "MANAGE_TIMETABLE_HEARING": "Contrôle de la consultation de l'horaire",
-      "ADD_NEW_STATEMENT": "Saisir un nouvel avis",
+      "ADD_NEW_STATEMENT": "Saisir une nouvelle prise de position",
       "ADD_NEW_TIMETABLE_HEARING": "Créer une nouvelle consultation sur les horaires",
       "START_TIMETABLE_HEARING": "Lancer cette année d'horaire",
       "CANCEL_COLLECTING_ACTION": "Terminer la collecte",
@@ -609,7 +614,7 @@
         "NOTIFICATION_SUCCESS": "Consultation des horaires enregistrée avec succès"
       }
     },
-    "SELECT_CANTON": "Sélectionner le canton",
+    "SELECT_CANTON": "Sélectionner un canton",
     "SELECT_YEAR": "Sélectionner l'année",
     "TABLE_RESULT_HEADING": "{{totalCount}} Prises de position pour l'année d'horaire {{year}}",
     "TABLE_RESULT_ACTUAL_HEARING_HEADING_PREFIX": "{{totalCount}} Prises de position ",
@@ -623,19 +628,19 @@
     "OVERVIEW_TAB": {
       "OVERVIEW_ACTUAL_SUBHEADING_PREFIX": "La procédure d'établissement de l'horaire suisse de l'OFT pour l'horaire {{timeTableYear}} dure de",
       "OVERVIEW_ACTUAL_SUBHEADING_POSTFIX": " {{hearingFrom}} jusqu'au {{hearingTo}}.",
-      "OVERVIEW_PLANNED_SUBHEADING": "Vous trouverez ici toutes les consultations d'horaires prévues. Vous ne pouvez pas saisir d'avis avant le début d'une année d'horaire.",
+      "OVERVIEW_PLANNED_SUBHEADING": "Vous trouverez ici toutes les consultations d'horaires prévues. Vous ne pouvez pas saisir de prises de position avant le début d'une année d'horaire.",
       "OVERVIEW_ARCHIVED_SUBHEADING": "Vous trouverez ici toutes les consultations d'horaires archivées, classées par année d'horaire.",
-      "OVERVIEW_ACTUAL_NOT_FOUND_SUBHEADING_PREFIX": "Das Fahrplanjahr ist noch nicht eröffnet. Sie finden bereits vorhandene Stellungnahmen unter dem Reiter «Geplante Anhörungen». Das Fahrplanverfahren Schweiz des BAV für den Fahrplan {{timeTableYear}} wird von ",
+      "OVERVIEW_ACTUAL_NOT_FOUND_SUBHEADING_PREFIX": "L'année d'horaire n'est pas encore ouverte. Vous trouverez les avis déjà existants sous l'onglet \"Auditions prévues\". La procédure d'établissement de l'horaire suisse de l'OFT pour l'horaire {{timeTableYear}} est effectuée par ",
       "OVERVIEW_PLANNED_NOT_FOUND": "Actuellement, aucune audition prévue n'est enregistrée.",
       "OVERVIEW_ACTUAL_NO_PLANNED_HEARING_YEAR_FOUND": "Actuellement, aucune audition n'est active.",
-      "OVERVIEW_ARCHIVED_NOT_FOUND": "Es sind derzeit keine archivierten Anhörungen verfügbar."
+      "OVERVIEW_ARCHIVED_NOT_FOUND": "Aucune audition archivée n'est actuellement disponible."
     },
     "STATEMENT_STATUS": {
-      "RECEIVED": "arriver",
-      "IN_REVIEW": "À l'étude",
-      "ACCEPTED": "acceptée",
-      "REJECTED": "rejeté",
-      "MOVED": "Retardé",
+      "RECEIVED": "Réceptionnée",
+      "IN_REVIEW": "En cours de traitement",
+      "ACCEPTED": "Acceptée",
+      "REJECTED": "Rejetée",
+      "MOVED": "Reportée",
       "JUNK": "*Spam-Mail*",
       "REVOKED": "Saisie des erreurs"
     },
@@ -671,7 +676,7 @@
     "STATEMENT": {
       "NEW": "Saisir un nouvel avis",
       "STATEMENT": "Prise de position",
-      "STATEMENT_INFO": "Indiquez les liaisons (par ex. la liaison avec départ à 12h35) pour lesquelles la confirmation a lieu.",
+      "STATEMENT_INFO": "Indiquez les liaisons (par ex. la liaison avec départ à 12h35) pour lesquelles la prise de position a lieu.",
       "ROUTE": "Parcours",
       "STOP_POINT": "Arrêt",
       "STOP_POINT_INFO": "Description de l'arrêt référencé",
@@ -683,7 +688,7 @@
       "TTFN": "Champ de l'horaire",
       "FIRST_NAME": "Prénom",
       "LAST_NAME": "Nom de famille",
-      "E_MAIL": "Courrier électronique",
+      "E_MAIL": "E-Mail",
       "E_MAIL_TEXT": "Si aucun e-mail n'est disponible, une entrée fictive, par exemple xxx@xxx.ch, suffit.",
       "JUSTIFICATION": "Justification",
       "COMMENT": "Commentaire sur la cession de canton",
