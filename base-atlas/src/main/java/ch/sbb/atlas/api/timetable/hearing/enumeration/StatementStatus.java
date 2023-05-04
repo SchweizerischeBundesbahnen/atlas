@@ -7,6 +7,8 @@ public enum StatementStatus {
   RECEIVED,
   IN_REVIEW,
   ACCEPTED,
+  PARTLY_IMPLEMENTED,
+  NOTED,
   REJECTED,
   MOVED,
   JUNK,
