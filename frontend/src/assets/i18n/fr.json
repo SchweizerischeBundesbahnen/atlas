@@ -704,11 +704,11 @@
         "EDIT_SUCCESS": "L'avis a été enregistré avec succès."
       },
       "DIALOG": {
-        "TITLE": "Changer de canton",
-        "TEXT": "Vous modifiez l'affectation cantonale de l'instruction sélectionnée. Avec la transmission, vous perdez les droits d'édition de cette déclaration.",
-        "COMMENT_LABEL": "Commentez-le",
+        "TITLE": "Modifier le canton",
+        "TEXT": "Vous modifiez le canton responsable de cette déclaration. Vous ne pouvez plus modifier ce relevé après sa remise au canton.",
+        "COMMENT_LABEL": "Commentaire sur la cession de canton",
         "CANCEL": "Retour",
-        "CONFIRM": "Changer de canton"
+        "CONFIRM": "Modifier le canton"
       }
     },
     "CLOSE_TIMETABLE_HEARING": {
