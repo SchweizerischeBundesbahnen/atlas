@@ -129,6 +129,7 @@
     </div>
 
     <app-table
+      (buttonClickEvent)="duplicate($event)"
       (changeDropdownEvent)="changeSelectedStatus($event)"
       (checkedBoxEvent)="checkedBoxEvent($event)"
       (editElementEvent)="editStatement($event)"

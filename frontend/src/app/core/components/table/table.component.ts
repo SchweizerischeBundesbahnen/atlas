@@ -30,6 +30,7 @@ export class TableComponent<DATATYPE> implements OnInit {
   @Output() tableChanged = new EventEmitter<TablePagination>();
   @Output() tableInitialized: EventEmitter<TablePagination> = new EventEmitter<TablePagination>();
   @Output() changeDropdownEvent = new EventEmitter<ColumnDropDownEvent>();
+  @Output() buttonClickEvent = new EventEmitter<any>();
   @Output() checkedBoxEvent = new EventEmitter<SelectionModel<DATATYPE>>();
   isLoading = false;
   SHOW_TOOLTIP_LENGTH = 20;
