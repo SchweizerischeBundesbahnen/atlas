@@ -704,11 +704,11 @@
         "EDIT_SUCCESS": "Il parare è stato salvato con successo."
       },
       "DIALOG": {
-        "TITLE": "Cambia cantone",
-        "TEXT": "Si modifica l'attribuzione cantonale dell'estratto conto selezionato. Con la trasmissione perdi i diritti di modifica per questa dichiarazione.",
-        "COMMENT_LABEL": "Commenta",
+        "TITLE": "Modifica Cantone",
+        "TEXT": "Si modifica il cantone responsabile di questa dichiarazione. Non è più possibile modificare questa dichiarazione dopo che è stata consegnata al Cantone.",
+        "COMMENT_LABEL": "Commento sul passaggio di consegne cantonale",
         "CANCEL": "Ritorno",
-        "CONFIRM": "Cambia cantone"
+        "CONFIRM": "Modifica Cantone"
       }
     },
     "CLOSE_TIMETABLE_HEARING": {
