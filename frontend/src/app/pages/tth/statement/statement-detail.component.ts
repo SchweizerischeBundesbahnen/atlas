@@ -103,14 +103,12 @@ export class StatementDetailComponent implements OnInit {
         this.navigateToStatementDetail(hearingStatement);
       } else {
         this.form.controls.comment.setValue(this.statement?.comment);
-        this.form.controls.swissCanton.setValue(this.statement?.swissCanton);
       }
     });
   }
 
   save() {
     if (!this.isNew && this.initialCanton != this.form.value.swissCanton) {
-      console.log(this.form.value.swissCanton);
       this.cantonSelectionChanged();
     } else {
       ValidationService.validateForm(this.form);
