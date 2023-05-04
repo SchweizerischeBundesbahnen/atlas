@@ -133,6 +133,10 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     if (TthUtils.isHearingStatusActive(this.hearingStatus)) {
       this.tthTableService.activeTabPage = Pages.TTH_ACTIVE;
       this.tableColumns = this.getActiveTableColumns();
+      if (!this.isCollectingActionEnabled) {
+        this.tableColumns = this.tableColumns.filter((value) => value.value !== 'etagVersion');
+        this.disableChangeStatementStatusSelect();
+      }
       this.enableCheckboxViewMode();
       this.showManageTimetableHearingButton = this.isSwissCanton;
       this.showAddNewStatementButton = !this.isSwissCanton;
