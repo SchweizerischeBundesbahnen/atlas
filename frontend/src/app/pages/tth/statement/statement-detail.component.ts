@@ -18,7 +18,7 @@ import { AtlasFieldLengthValidator } from '../../../core/validation/field-length
 import { WhitespaceValidator } from '../../../core/validation/whitespace/whitespace-validator';
 import { StatementDetailFormGroup, StatementSenderFormGroup } from './statement-detail-form-group';
 import { Canton } from '../overview/canton/Canton';
-import { takeUntil } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
 import { catchError, EMPTY, Observable, of, Subject } from 'rxjs';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { ValidationService } from '../../../core/validation/validation.service';
@@ -45,6 +45,8 @@ export class StatementDetailComponent implements OnInit {
   hearingStatus!: HearingStatus;
   isNew!: boolean;
   form!: FormGroup<StatementDetailFormGroup>;
+  isStatementEditable: Observable<boolean | undefined> = of(false);
+
   private ngUnsubscribe = new Subject<void>();
 
   uploadedFiles: File[] = [];
@@ -70,6 +72,20 @@ export class StatementDetailComponent implements OnInit {
     this.hearingStatus = this.route.snapshot.data.hearingStatus;
     this.isNew = !this.statement;
     this.uploadedFiles = [];
+
+    if (this.hearingStatus === HearingStatus.Active) {
+      this.isStatementEditable = this.timetableHearingService
+        .getHearingYears([HearingStatus.Active])
+        .pipe(
+          map((tthYearContainer) => {
+            const containerObjects = tthYearContainer.objects ?? [];
+            if (containerObjects.length > 0) {
+              return containerObjects[0].statementEditable;
+            }
+            return false;
+          })
+        );
+    }
 
     this.initForm();
     this.initYearOptions();

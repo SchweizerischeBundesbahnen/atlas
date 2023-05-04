@@ -2,6 +2,7 @@ package ch.sbb.line.directory.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.kafka.model.SwissCanton;
@@ -10,6 +11,8 @@ import ch.sbb.line.directory.entity.ResponsibleTransportCompany;
 import ch.sbb.line.directory.entity.StatementDocument;
 import ch.sbb.line.directory.entity.StatementSender;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
@@ -237,4 +240,99 @@ public class TimetableHearingStatementRepositoryTest {
     assertThat(result.get().getSwissCanton()).isEqualTo(SwissCanton.AARGAU);
     assertThat(result.get().getComment()).isEqualTo("Just a comment");
   }
+
+  @Test
+  void shouldDeleteOnlyByStatusAndYear() {
+    TimetableHearingStatement statement = TimetableHearingStatement.builder()
+        .timetableYear(2023L)
+        .swissCanton(SwissCanton.BERN)
+        .statementStatus(StatementStatus.RECEIVED)
+        .statementSender(StatementSender.builder()
+            .email("mike@thebike.com")
+            .build())
+        .statement("Ich mag bitte mehr Bös fahren")
+        .build();
+
+    TimetableHearingStatement statement2 = TimetableHearingStatement.builder()
+        .timetableYear(2022L)
+        .swissCanton(SwissCanton.BERN)
+        .statementStatus(StatementStatus.RECEIVED)
+        .statementSender(StatementSender.builder()
+            .email("mike@thebike.com")
+            .build())
+        .statement("Ich mag bitte mehr Bös fahren")
+        .build();
+
+    TimetableHearingStatement statement3 = TimetableHearingStatement.builder()
+        .timetableYear(2023L)
+        .swissCanton(SwissCanton.BERN)
+        .statementStatus(StatementStatus.JUNK)
+        .statementSender(StatementSender.builder()
+            .email("mike@thebike.com")
+            .build())
+        .statement("Ich mag bitte mehr Bös fahren")
+        .build();
+
+    timetableHearingStatementRepository.save(statement);
+    timetableHearingStatementRepository.save(statement2);
+    timetableHearingStatementRepository.save(statement3);
+
+    timetableHearingStatementRepository.deleteByStatementStatusAndTimetableYear(StatementStatus.RECEIVED, 2023L);
+
+    List<TimetableHearingStatement> result = timetableHearingStatementRepository.findAll();
+    assertThat(result).hasSize(2);
+
+    List<TimetableHearingStatement> filterDeletedStatements = result.stream().filter(
+            resultStatement -> resultStatement.getTimetableYear() == 2023L
+                && resultStatement.getStatementStatus() == StatementStatus.RECEIVED)
+        .toList();
+
+    assertThat(filterDeletedStatements).hasSize(0);
+  }
+
+  @Test
+  void shouldFindAllByStatementStatusInAndTimetableYear() {
+    TimetableHearingStatement statement = TimetableHearingStatement.builder()
+        .timetableYear(2023L)
+        .swissCanton(SwissCanton.BERN)
+        .statementStatus(StatementStatus.RECEIVED)
+        .statementSender(StatementSender.builder()
+            .email("mike@thebike.com")
+            .build())
+        .statement("Ich mag bitte mehr Bös fahren")
+        .build();
+
+    TimetableHearingStatement statement2 = TimetableHearingStatement.builder()
+        .timetableYear(2022L)
+        .swissCanton(SwissCanton.BERN)
+        .statementStatus(StatementStatus.JUNK)
+        .statementSender(StatementSender.builder()
+            .email("mike@thebike.com")
+            .build())
+        .statement("Ich mag bitte mehr Bös fahren")
+        .build();
+
+    TimetableHearingStatement statement3 = TimetableHearingStatement.builder()
+        .timetableYear(2023L)
+        .swissCanton(SwissCanton.BERN)
+        .statementStatus(StatementStatus.JUNK)
+        .statementSender(StatementSender.builder()
+            .email("mike@thebike.com")
+            .build())
+        .statement("Ich mag bitte mehr Bös fahren")
+        .build();
+
+    timetableHearingStatementRepository.save(statement);
+    timetableHearingStatementRepository.save(statement2);
+    timetableHearingStatementRepository.save(statement3);
+
+    List<TimetableHearingStatement> result = timetableHearingStatementRepository.findAllByStatementStatusInAndTimetableYear(
+        List.of(StatementStatus.RECEIVED,
+            StatementStatus.JUNK), 2023L);
+
+    assertThat(result).hasSize(2);
+    assertTrue(result.stream().noneMatch(resultStatement -> Objects.equals(resultStatement.getTimetableYear(),
+        statement2.getTimetableYear())));
+  }
+
 }
