@@ -716,7 +716,7 @@
     "CLOSE_TIMETABLE_HEARING": {
       "POPUP_TITLE": "Fahrplanjahr schliessen",
       "CONFIRMATION_MESSAGE": "Möchten Sie das Fahrplanjahr abschliessen? Diese Aktion kann nicht rückgängig gemacht werden. Beim Schliessen des Fahrplanjahrs werden die Stellungnahmen verschoben:",
-      "MOVEMENTS_TO_ARCHIVED": "\"Angenommen\", \"abgelehnt\" oder \"Fehlerfassung\" → Archiv",
+      "MOVEMENTS_TO_ARCHIVED": "\"Angenommen\", \"abgelehnt\", \"zur Kenntnisnahme\", \"teilweise umgesetzt\" oder \"Fehlerfassung\" → Archiv",
       "MOVEMENTS_TO_NEXT_YEAR": "\"Eingetroffen\", \"in Abklärung\" oder \"verschoben\" → darauffolgendes Fahrplanjahr",
       "MOVEMENTS_TO_DELETED": "\"Spam-Mail\" → unwiderruflich gelöscht",
       "SUCCESSFUL_CLOSE_NOTIFICATION": "Fahrplanjahr erfolgreich geschlossen"
