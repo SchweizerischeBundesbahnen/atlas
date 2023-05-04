@@ -4,10 +4,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { Pages } from './pages/pages';
 import { AuthGuard } from './core/auth/guards/auth-guard';
 import { AdminGuard } from './core/auth/guards/admin.guard';
-import {
-  canActivateTimetableHearing,
-  TimetableHearingGuard,
-} from './core/auth/guards/timetable-hearing-guard.service';
+import { canActivateTimetableHearing } from './core/auth/guards/timetable-hearing-guard.service';
 
 const routes: Routes = [
   {
