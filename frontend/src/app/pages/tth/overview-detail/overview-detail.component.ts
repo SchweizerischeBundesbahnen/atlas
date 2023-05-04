@@ -10,11 +10,12 @@ import {
   TimetableHearingStatement,
   TimetableHearingYear,
   TransportCompany,
+  UserAdministrationService,
 } from '../../../api';
 import { Cantons } from '../overview/canton/Cantons';
 import { TableColumn } from '../../../core/components/table/table-column';
 import { Pages } from '../../pages';
-import { Subject, take, takeUntil } from 'rxjs';
+import { Observable, Subject, take, takeUntil } from 'rxjs';
 import moment from 'moment';
 import { OverviewToTabShareDataService } from '../overview-tab/service/overview-to-tab-share-data.service';
 import { MatSelectChange } from '@angular/material/select';
@@ -44,6 +45,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogManageTthComponent } from '../dialog-manage-tth/dialog-manage-tth.component';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import { StatementShareService } from './statement-share-service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-timetable-hearing-overview-detail',
@@ -108,7 +110,8 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     private readonly translateService: TranslateService,
     private readonly authService: AuthService,
     private readonly statementShareService: StatementShareService,
-    private readonly matDialog: MatDialog
+    private readonly matDialog: MatDialog,
+    private readonly userAdministrationService: UserAdministrationService
   ) {}
 
   get isHearingYearActive(): boolean {
@@ -612,7 +615,16 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
         disabled: true,
       },
       { headerTitle: 'COMMON.EDIT_ON', value: 'editionDate', formatAsDate: true },
-      { headerTitle: 'COMMON.EDIT_BY', value: 'editor' },
+      {
+        headerTitle: 'COMMON.EDIT_BY',
+        value: 'editor',
+        getTitle: (value: string): Observable<string> => {
+          return this.userAdministrationService.getUserDisplayName(value).pipe(
+            take(1),
+            map((userDisplayName) => userDisplayName.displayName ?? '')
+          );
+        },
+      },
       {
         headerTitle: '',
         value: 'etagVersion',

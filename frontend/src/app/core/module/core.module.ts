@@ -39,6 +39,9 @@ import { FileUploadComponent } from '../components/file-upload/file-upload.compo
 import { FileComponent } from '../components/file-upload/file/file.component';
 import { FileSizePipe } from '../components/file-upload/file-size/file-size.pipe';
 import { FileDropDirective } from '../components/file-upload/file-drop/file-drop.directive';
+import { ShowTitlePipe } from '../components/table/show-title.pipe';
+import { MouseOverTitleDirective } from '../components/table/mouse-over-title.directive';
+import { FormatPipe } from '../components/table/format.pipe';
 
 const coreComponents = [
   WorkflowFormComponent,
@@ -76,7 +79,7 @@ const coreComponents = [
 ];
 
 @NgModule({
-  declarations: coreComponents,
+  declarations: [...coreComponents, ShowTitlePipe, MouseOverTitleDirective, FormatPipe],
   imports: [
     CommonModule,
     MaterialModule,
@@ -96,6 +99,6 @@ const coreComponents = [
     }),
   ],
   exports: [...coreComponents, CommonModule, MaterialModule, TranslateModule],
-  providers: [TranslatePipe],
+  providers: [TranslatePipe, FormatPipe],
 })
 export class CoreModule {}
