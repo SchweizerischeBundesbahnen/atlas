@@ -17,6 +17,7 @@ export class StatementDialogService {
   openDialog(form: FormGroup<StatementDetailFormGroup>): Observable<boolean> {
     this.dialogRef = this.statementDialog.open(StatementDialogComponent, {
       data: form,
+      disableClose: true,
       panelClass: 'atlas-dialog-panel',
       backdropClass: 'atlas-dialog-backdrop',
     });
