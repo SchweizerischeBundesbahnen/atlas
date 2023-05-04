@@ -5,8 +5,9 @@
     [disabled]="disabled"
     [type]="submitButton ? 'submit' : 'button'"
     attr.data-cy="{{ buttonDataCy }}"
+    title="{{ title | translate }}"
   >
     {{ buttonText | translate }}
-    <ng-container #rightIcon *ngTemplateOutlet="rightIcon"> </ng-container>
+    <ng-container #rightIcon *ngTemplateOutlet="rightIcon"></ng-container>
   </button>
 </div>
