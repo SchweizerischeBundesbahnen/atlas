@@ -640,6 +640,8 @@
       "IN_REVIEW": "En cours de traitement",
       "ACCEPTED": "Acceptée",
       "REJECTED": "Rejetée",
+      "NOTED": "Prise de connaissance",
+      "PARTLY_IMPLEMENTED": "partiellement acceptée",
       "MOVED": "Reportée",
       "JUNK": "*Spam-Mail*",
       "REVOKED": "Saisie des erreurs"
