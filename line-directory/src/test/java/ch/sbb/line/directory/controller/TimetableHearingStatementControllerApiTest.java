@@ -719,7 +719,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
   void shouldGetStatementsAsCsv() throws Exception {
     // Given
     String expectedCsvHeader = """
-        Kanton;"Feld-Nr.";Fahrplanfeldbezeichnung;Haltestelle;"Abkürzung Transportunternehmung";"Name Transportunternehmung";Stellungnahme;Anhang;Begründung;Vorname;Nachname;Organisation;Strasse;"PLZ/Ort";"E-Mail";Bearbeiter;"Zuletzt bearbeitet";Fahrplanjahr
+        Kanton;"Fahrplanfeld-Nr.";Fahrplanfeldbezeichnung;Haltestelle;"Abkürzung Transportunternehmung";"Name Transportunternehmung";Stellungnahme;Anhang;Begründung;Vorname;Nachname;Organisation;Strasse;"PLZ/Ort";"E-Mail";Bearbeiter;"Zuletzt bearbeitet";Fahrplanjahr
         """;
 
     TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
