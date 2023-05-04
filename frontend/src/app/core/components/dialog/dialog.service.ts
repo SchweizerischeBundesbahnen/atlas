@@ -16,6 +16,7 @@ export class DialogService {
   confirm(dialogData: DialogData): Observable<boolean> {
     this.confirmDialog = this.dialog.open(DialogComponent, {
       data: dialogData,
+      disableClose: true,
       panelClass: 'atlas-dialog-panel',
       backdropClass: 'atlas-dialog-backdrop',
     });

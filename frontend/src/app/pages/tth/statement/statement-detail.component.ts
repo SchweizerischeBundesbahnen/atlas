@@ -242,17 +242,19 @@ export class StatementDetailComponent implements OnInit {
     id: number,
     documents: Array<TimetableHearingStatementDocument> | undefined
   ) {
-    this.isLoading = true;
-    for (let i = 0; i < documents!.length!; i++) {
-      this.timetableHearingService
-        .getStatementDocument(id, documents![i].fileName)
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((response) => {
-          this.uploadedFiles.push(new File([response], documents![i].fileName));
-          if (i === documents!.length! - 1) {
-            this.isLoading = false;
-          }
-        });
+    if (documents!.length > 0) {
+      this.isLoading = true;
+      for (let i = 0; i < documents!.length!; i++) {
+        this.timetableHearingService
+          .getStatementDocument(id, documents![i].fileName)
+          .pipe(takeUntil(this.ngUnsubscribe))
+          .subscribe((response) => {
+            this.uploadedFiles.push(new File([response], documents![i].fileName));
+            if (i === documents!.length! - 1) {
+              this.isLoading = false;
+            }
+          });
+      }
     }
   }
 
