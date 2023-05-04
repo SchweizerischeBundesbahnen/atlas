@@ -14,8 +14,10 @@
     "CORRELATION_ID": "Bei anhaltenden Problemen wenden Sie sich mit folgender Identifikationsnummer an die Fachstelle Atlas: {{correlationId}}"
   },
   "COMMON": {
+    "LOADING": "Wird geladen...",
     "BACK_TO_OVERVIEW": "Zurück zur Übersicht",
     "SAVE": "Speichern",
+    "SAVE_AND_CLOSE": "Speichern & Schliessen",
     "ADD": "Hinzufügen",
     "EDIT": "Editieren",
     "REVOKE": "Fehlerfassung",
@@ -550,7 +552,8 @@
       "CANTON_CHANGE": {
         "SUCCESS": "Der Kanton wurde erfolgreich geändert."
       },
-      "NO_VERSION_VALID_AT": "Es gibt keine gültige Version von {{swissId}} am {{validAt}}. Bitte überprüfen Sie die Gültigkeit der Fahrplanfeldnummer."
+      "NO_VERSION_VALID_AT": "Es gibt keine gültige Version von {{swissId}} am {{validAt}}. Bitte überprüfen Sie die Gültigkeit der Fahrplanfeldnummer.",
+      "OPERATION_NOT_ALLOWED_DUE_TO_TTH_YEAR_SETTINGS": "Diese Operation ist durch die Konfiguration des Fahrplanjahres nicht möglich."
     },
     "DIALOG": {
       "STATUS_CHANGE": "Status ändern",
@@ -571,7 +574,8 @@
       "ADD_NEW_STATEMENT": "Neue Stellungnahme erfassen",
       "ADD_NEW_TIMETABLE_HEARING": "Neue Fahrplananhörung anlegen",
       "START_TIMETABLE_HEARING": "Dieses Fahrplanjahr starten",
-      "CANCEL_COLLECTING_ACTION": "Sammelaktion beenden"
+      "CANCEL_COLLECTING_ACTION": "Sammelaktion beenden",
+      "CLOSE_TIMETABLE_HEARING": "Fahrplanjahr schliessen"
     },
     "DROPDOWN": {
       "COLLECTING_STATUS_CHANGE_ACTION": {
@@ -701,6 +705,21 @@
         "CANCEL": "Zurück",
         "CONFIRM": "Kanton ändern"
       }
+    },
+    "CLOSE_TIMETABLE_HEARING": {
+      "POPUP_TITLE": "Fahrplanjahr schliessen",
+      "CONFIRMATION_MESSAGE": "Möchten Sie das Fahrplanjahr abschliessen? Diese Aktion kann nicht rückgängig gemacht werden. Beim Schliessen des Fahrplanjahrs werden die Stellungnahmen verschoben:",
+      "MOVEMENTS_TO_ARCHIVED": "\"Angenommen\", \"abgelehnt\" oder \"Fehlerfassung\" → Archiv",
+      "MOVEMENTS_TO_NEXT_YEAR": "\"Eingetroffen\", \"in Abklärung\" oder \"verschoben\" → darauffolgendes Fahrplanjahr",
+      "MOVEMENTS_TO_DELETED": "\"Spam-Mail\" → unwiderruflich gelöscht",
+      "SUCCESSFUL_CLOSE_NOTIFICATION": "Fahrplanjahr erfolgreich geschlossen"
+    },
+    "MANAGE_TIMETABLE_HEARING": {
+      "POPUP_TITLE": "Steuerung Fahrplananhörung",
+      "CREATE_STATEMENT_EXTERNAL": "Erfassung Stellungnahme via API",
+      "CREATE_STATEMENT_INTERNAL": "Erfassung Stellungnahme in atlas",
+      "EDIT_STATEMENT": "Bearbeitung Stellungnahme in atlas",
+      "SUCCESSFUL_SAVE_NOTIFICATION": "Einstellungen erfolgreich gespeichert"
     }
   }
 }

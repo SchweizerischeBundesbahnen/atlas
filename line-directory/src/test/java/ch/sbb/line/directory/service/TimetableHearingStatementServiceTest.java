@@ -248,6 +248,66 @@ public class TimetableHearingStatementServiceTest {
   }
 
   @Test
+  void shouldMoveClosedStatementsToNextYearWithStatusUpdateFromMovedToReceived() {
+    // given
+    timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+
+    TimetableHearingStatementModel statement;
+    // Statement 1
+    statement = buildTimetableHearingStatementModel();
+    statement.setStatementStatus(StatementStatus.RECEIVED);
+    statement.setTimetableYear(YEAR - 1);
+    Long statement1Id = timetableHearingStatementRepository.save(TimetableHearingStatementMapper.toEntity(statement)).getId();
+
+    // Statement 2
+    statement = buildTimetableHearingStatementModel();
+    statement.setStatementStatus(StatementStatus.IN_REVIEW);
+    Long statement2Id = timetableHearingStatementRepository.save(TimetableHearingStatementMapper.toEntity(statement)).getId();
+
+    // Statement 3
+    statement = buildTimetableHearingStatementModel();
+    statement.setStatementStatus(StatementStatus.RECEIVED);
+    Long statement3Id = timetableHearingStatementRepository.save(TimetableHearingStatementMapper.toEntity(statement)).getId();
+
+    // Statement 4
+    statement = buildTimetableHearingStatementModel();
+    statement.setStatementStatus(StatementStatus.JUNK);
+    Long statement4Id = timetableHearingStatementRepository.save(TimetableHearingStatementMapper.toEntity(statement)).getId();
+
+    // Statement 5
+    statement = buildTimetableHearingStatementModel();
+    statement.setStatementStatus(StatementStatus.MOVED);
+    Long statement5Id = timetableHearingStatementRepository.save(TimetableHearingStatementMapper.toEntity(statement)).getId();
+
+    // when
+    timetableHearingStatementService.moveClosedStatementsToNextYearWithStatusUpdates(YEAR);
+
+    // then
+    assertThat(timetableHearingStatementRepository.findAll()).hasSize(5);
+
+    assertThat(timetableHearingStatementRepository.findById(statement1Id).get().getStatementStatus()).isEqualTo(
+        StatementStatus.RECEIVED);
+    assertThat(timetableHearingStatementRepository.findById(statement1Id).get().getTimetableYear()).isEqualTo(YEAR - 1);
+
+    assertThat(timetableHearingStatementRepository.findById(statement2Id).get().getStatementStatus()).isEqualTo(
+        StatementStatus.IN_REVIEW);
+    assertThat(timetableHearingStatementRepository.findById(statement2Id).get().getTimetableYear()).isEqualTo(YEAR + 1);
+
+    assertThat(timetableHearingStatementRepository.findById(statement3Id).get().getStatementStatus()).isEqualTo(
+        StatementStatus.RECEIVED);
+    assertThat(timetableHearingStatementRepository.findById(statement3Id).get().getTimetableYear()).isEqualTo(YEAR + 1);
+
+    assertThat(timetableHearingStatementRepository.findById(statement4Id).get().getStatementStatus()).isEqualTo(
+        StatementStatus.JUNK);
+    assertThat(timetableHearingStatementRepository.findById(statement4Id).get().getTimetableYear()).isEqualTo(YEAR);
+
+    assertThat(timetableHearingStatementRepository.findById(statement5Id).get().getStatementStatus()).isEqualTo(
+        StatementStatus.RECEIVED);
+    assertThat(timetableHearingStatementRepository.findById(statement5Id).get().getTimetableYear()).isEqualTo(YEAR + 1);
+
+  }
+
+  @Test
   void shouldFindStatementBySearchCriteria() {
     timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
     TimetableHearingStatementModel timetableHearingStatementModel = TimetableHearingStatementModel.builder()
@@ -399,7 +459,7 @@ public class TimetableHearingStatementServiceTest {
   }
 
   @Test
-  public void shouldUpdateHearindStatementStatus() {
+  public void shouldUpdateHearingStatementStatus() {
     //given
     TimetableHearingStatement statement1 = TimetableHearingStatement.builder()
         .timetableYear(2023L)
