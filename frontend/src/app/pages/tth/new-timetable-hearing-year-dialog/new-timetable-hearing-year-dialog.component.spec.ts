@@ -133,19 +133,17 @@ describe('NewTimetableHearingYearDialogComponent', () => {
     );
   });
 
-  it('should get planned years', () => {
+  it('should get all planned and archived years', () => {
     const timetableHearingYears: TimetableHearingYear[] = getTimetableHearingYears();
-    expect(newTimetableHearingYearDialogComponent.getPlannedYears(timetableHearingYears)).toEqual([
-      timetableHearingYears[1],
-      timetableHearingYears[2],
-      timetableHearingYears[3],
-    ]);
+    expect(
+      newTimetableHearingYearDialogComponent.getAllPlanedAndArchivedYears(timetableHearingYears)
+    ).toEqual([timetableHearingYears[1], timetableHearingYears[2], timetableHearingYears[3]]);
   });
 
   it('should check if year is already planned', () => {
     const timetableHearingYears: TimetableHearingYear[] = getTimetableHearingYears();
     expect(
-      newTimetableHearingYearDialogComponent.isYearAlreadyPlanned(
+      newTimetableHearingYearDialogComponent.isYearAlreadyPlannedOrArchived(
         currentYear + 1,
         timetableHearingYears
       )
@@ -155,7 +153,7 @@ describe('NewTimetableHearingYearDialogComponent', () => {
   it('should check if year is not already planned', () => {
     const timetableHearingYears: TimetableHearingYear[] = getTimetableHearingYears();
     expect(
-      newTimetableHearingYearDialogComponent.isYearAlreadyPlanned(
+      newTimetableHearingYearDialogComponent.isYearAlreadyPlannedOrArchived(
         currentYear + 4,
         timetableHearingYears
       )
