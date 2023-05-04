@@ -61,7 +61,7 @@
       </div>
 
       <div class="d-flex flex-row col-12 mb-4 mt-5">
-        <div class="d-flex flex-column col-6 pe-3">
+        <div class="d-flex flex-column col-12">
           <ttfn-select
             [formGroup]="form"
             [validOn]="ttfnValidOn"
@@ -69,7 +69,10 @@
             data-cy="ttfnid"
           ></ttfn-select>
         </div>
-        <div class="d-flex flex-column col-6">
+      </div>
+
+      <div class="d-flex flex-row col-12 mb-4 mt-5">
+        <div class="d-flex flex-column col-12">
           <tu-select
             [formGroup]="form"
             controlName="responsibleTransportCompanies"
