@@ -1,9 +1,13 @@
+import { ApplicationType } from '../../../api';
+import { AtlasButtonType } from '../button/atlas-button.type';
+
 export interface TableColumn<TYPE> {
   headerTitle: string;
   value?: keyof TYPE & string;
   disabled?: boolean;
   dropdown?: ColumnDropDown;
   checkbox?: ColumnCheckbox;
+  button?: Button;
   callback?: (...args: any[]) => any;
   valuePath?: string;
   columnDef?: string;
@@ -26,4 +30,14 @@ export interface ColumnDropDown {
 
 export interface ColumnCheckbox {
   changeSelectionCallback: (...args: any[]) => any;
+}
+
+export interface Button {
+  label?: string;
+  icon?: string;
+  clickCallback: (...args: any[]) => any;
+  applicationType: ApplicationType;
+  buttonDataCy: string;
+  buttonType: AtlasButtonType;
+  disabled: boolean;
 }

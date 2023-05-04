@@ -7,6 +7,7 @@ import {
   SwissCanton,
   TimetableHearingService,
   TimetableHearingStatement,
+  TimetableHearingStatementDocument,
   TimetableYearChangeService,
 } from '../../../api';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -27,6 +28,7 @@ import { TthUtils } from '../util/tth-utils';
 import { StatementDialogService } from './statement-dialog/service/statement.dialog.service';
 import { FileDownloadService } from '../../../core/components/file-upload/file/file-download.service';
 import { OpenStatementInMailService } from './open-statement-in-mail.service';
+import { StatementShareService } from '../overview-detail/statement-share-service';
 
 @Component({
   selector: 'app-statement-detail',
@@ -40,7 +42,6 @@ export class StatementDetailComponent implements OnInit {
   readonly extractShort = (option: Canton) => option.short;
   STATUS_OPTIONS: StatementStatus[] = [];
   ttfnValidOn: Date | undefined = undefined;
-
   statement: TimetableHearingStatement | undefined;
   initialValueForCanton: SwissCanton | null | undefined;
   hearingStatus!: HearingStatus;
@@ -51,6 +52,8 @@ export class StatementDetailComponent implements OnInit {
   private ngUnsubscribe = new Subject<void>();
 
   uploadedFiles: File[] = [];
+  downloadedLocalFiles: File[] = [];
+  isLoading = false;
 
   constructor(
     private router: Router,
@@ -61,11 +64,21 @@ export class StatementDetailComponent implements OnInit {
     private authService: AuthService,
     private timetableYearChangeService: TimetableYearChangeService,
     private readonly statementDialogService: StatementDialogService,
-    private readonly openStatementInMailService: OpenStatementInMailService
+    private readonly openStatementInMailService: OpenStatementInMailService,
+    private readonly statementShareService: StatementShareService
   ) {}
 
   get isHearingStatusArchived() {
     return TthUtils.isHearingStatusArchived(this.hearingStatus);
+  }
+
+  get cantonShort() {
+    return Cantons.fromSwissCanton(this.form.value.swissCanton!)!.short;
+  }
+
+  get alreadySavedDocuments() {
+    const documents = this.form.value.documents as { fileName: string }[];
+    return documents.map((doc) => doc.fileName);
   }
 
   ngOnInit() {
@@ -204,6 +217,44 @@ export class StatementDetailComponent implements OnInit {
     });
   }
 
+  saveButtonDisabled() {
+    return !(this.form.dirty || this.uploadedFiles.length > 0);
+  }
+
+  removeDocument(fileName: string) {
+    const documents = this.form.value.documents as { fileName: string }[];
+    const indexOfFile = documents.findIndex((document) => document.fileName === fileName);
+    this.form.controls.documents.removeAt(indexOfFile);
+    this.form.markAsDirty();
+  }
+
+  downloadFile(fileName: string) {
+    this.timetableHearingService
+      .getStatementDocument(this.statement!.id!, fileName)
+      .subscribe((response) => FileDownloadService.downloadFile(fileName, response));
+  }
+
+  openAsMail() {
+    this.openStatementInMailService.openAsMail(this.statement!, this.ttfnValidOn);
+  }
+
+  private downloadLocalFile(
+    id: number,
+    documents: Array<TimetableHearingStatementDocument> | undefined
+  ) {
+    this.isLoading = true;
+    for (let i = 0; i < documents?.length!; i++) {
+      this.timetableHearingService
+        .getStatementDocument(id, documents![i].fileName)
+        .subscribe((response) => {
+          this.uploadedFiles.push(new File([response], documents![i].fileName));
+          if (i === documents?.length! - 1) {
+            this.isLoading = false;
+          }
+        });
+    }
+  }
+
   private initYearOptions() {
     this.timetableHearingService
       .getHearingYears([HearingStatus.Active, HearingStatus.Planned])
@@ -247,12 +298,36 @@ export class StatementDetailComponent implements OnInit {
   }
 
   private initForm() {
+    this.duplicateStatement();
     this.form = this.getFormGroup(this.statement);
     if (!this.isNew) {
       this.initialValueForCanton = this.form.value.swissCanton;
     }
     if (!this.isNew || this.isHearingStatusArchived) {
       this.form.disable();
+    }
+  }
+
+  private duplicateStatement() {
+    if (this.statementShareService.statement) {
+      const localStatement = this.statementShareService.statement;
+      const duplicationStatement: TimetableHearingStatement = {
+        timetableYear: localStatement.timetableYear,
+        statementStatus: StatementStatus.Received,
+        ttfnid: localStatement.ttfnid,
+        timetableFieldNumber: localStatement.timetableFieldNumber,
+        timetableFieldDescription: localStatement.timetableFieldDescription,
+        swissCanton: localStatement.swissCanton,
+        stopPlace: localStatement.stopPlace,
+        responsibleTransportCompanies: localStatement.responsibleTransportCompanies,
+        statementSender: localStatement.statementSender,
+        statement: localStatement.statement,
+        justification: localStatement.justification,
+        comment: localStatement.comment,
+      };
+      this.statement = duplicationStatement;
+      this.downloadLocalFile(this.statementShareService!.statement!.id!, localStatement.documents);
+      this.statementShareService.statement = undefined;
     }
   }
 
@@ -287,20 +362,24 @@ export class StatementDetailComponent implements OnInit {
   }
 
   private createStatement(statement: TimetableHearingStatement) {
+    this.isLoading = true;
     this.timetableHearingService
       .createStatement(statement, this.uploadedFiles)
       .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
       .subscribe((statement) => {
+        this.isLoading = false;
         this.notificationService.success('TTH.STATEMENT.NOTIFICATION.ADD_SUCCESS');
         this.navigateToStatementDetail(statement);
       });
   }
 
   private updateStatement(id: number, statement: TimetableHearingStatement) {
+    this.isLoading = true;
     this.timetableHearingService
       .updateHearingStatement(id, statement, this.uploadedFiles)
       .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
       .subscribe((statement) => {
+        this.isLoading = false;
         this.notificationService.success('TTH.STATEMENT.NOTIFICATION.EDIT_SUCCESS');
         this.navigateToStatementDetail(statement);
       });
@@ -342,33 +421,4 @@ export class StatementDetailComponent implements OnInit {
     return of(true);
   }
 
-  get cantonShort() {
-    return Cantons.fromSwissCanton(this.form.value.swissCanton!)!.short;
-  }
-
-  saveButtonDisabled() {
-    return !(this.form.dirty || this.uploadedFiles.length > 0);
-  }
-
-  get alreadySavedDocuments() {
-    const documents = this.form.value.documents as { fileName: string }[];
-    return documents.map((doc) => doc.fileName);
-  }
-
-  removeDocument(fileName: string) {
-    const documents = this.form.value.documents as { fileName: string }[];
-    const indexOfFile = documents.findIndex((document) => document.fileName === fileName);
-    this.form.controls.documents.removeAt(indexOfFile);
-    this.form.markAsDirty();
-  }
-
-  downloadFile(fileName: string) {
-    this.timetableHearingService
-      .getStatementDocument(this.statement!.id!, fileName)
-      .subscribe((response) => FileDownloadService.downloadFile(fileName, response));
-  }
-
-  openAsMail() {
-    this.openStatementInMailService.openAsMail(this.statement!, this.ttfnValidOn);
-  }
 }

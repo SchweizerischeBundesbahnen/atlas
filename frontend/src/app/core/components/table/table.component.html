@@ -41,7 +41,7 @@
             ></mat-checkbox>
           </div>
         </th>
-        <div *ngIf="!column.checkbox && !column.dropdown">
+        <div *ngIf="!column.checkbox && !column.dropdown && !column.button">
           <td
             *matCellDef="let value"
             [title]="showTitle(column, value[column.value])"
@@ -51,7 +51,7 @@
             {{ format(column, value[column.value]) }}
           </td>
         </div>
-        <div *ngIf="column.dropdown && !column.checkbox">
+        <div *ngIf="column.dropdown && !column.checkbox && !column.button">
           <td
             *matCellDef="let value"
             [title]="showTitle(column, value[column.value])"
@@ -69,7 +69,7 @@
             ></atlas-select>
           </td>
         </div>
-        <div *ngIf="column.checkbox && !column.dropdown">
+        <div *ngIf="column.checkbox && !column.dropdown && !column.button">
           <td
             (click)="$event.stopPropagation()"
             *matCellDef="let row"
@@ -80,6 +80,28 @@
               (change)="toggleCheckBox($event, row)"
               [checked]="checkBoxSelection.isSelected(row)"
             ></mat-checkbox>
+          </td>
+        </div>
+        <div *ngIf="column.button && !column.checkbox && !column.dropdown">
+          <td
+            (click)="$event.stopPropagation()"
+            *matCellDef="let row"
+            class="table-cell bordered-cell"
+            mat-cell
+          >
+            <atlas-button
+              (buttonClicked)="buttonClickEvent.emit(row)"
+              [applicationType]="column.button.applicationType"
+              [buttonType]="column.button.buttonType"
+              [disabled]="column.button.disabled"
+              buttonDataCy="{{ column.button.buttonType }}"
+              buttonText="{{ column.button.label }}"
+              wrapperStyleClass="text-align-center"
+            >
+              <ng-template #rightIcon>
+                <i class=" {{ column.button.icon }} "></i>
+              </ng-template>
+            </atlas-button>
           </td>
         </div>
       </ng-container>
