@@ -42,6 +42,7 @@ export class StatementDetailComponent implements OnInit {
   ttfnValidOn: Date | undefined = undefined;
 
   statement: TimetableHearingStatement | undefined;
+  initialValueForCanton: SwissCanton | null | undefined;
   hearingStatus!: HearingStatus;
   isNew!: boolean;
   form!: FormGroup<StatementDetailFormGroup>;
@@ -95,15 +96,30 @@ export class StatementDetailComponent implements OnInit {
     this.initResponsibleTransportCompanyPrefill();
   }
 
-  save() {
-    ValidationService.validateForm(this.form);
-    if (this.form.valid) {
-      this.form.disable();
-      const hearingStatement = this.form.value as TimetableHearingStatement;
-      if (this.isNew) {
-        this.createStatement(hearingStatement);
+  cantonSelectionChanged() {
+    this.statementDialogService.openDialog(this.form).subscribe((result) => {
+      if (result) {
+        const hearingStatement = this.form.value as TimetableHearingStatement;
+        this.navigateToStatementDetail(hearingStatement);
       } else {
-        this.updateStatement(this.statement!.id!, hearingStatement);
+        this.form.controls.comment.setValue(this.statement?.comment);
+      }
+    });
+  }
+
+  save() {
+    if (!this.isNew && this.initialValueForCanton != this.form.value.swissCanton) {
+      this.cantonSelectionChanged();
+    } else {
+      ValidationService.validateForm(this.form);
+      if (this.form.valid) {
+        this.form.disable();
+        const hearingStatement = this.form.value as TimetableHearingStatement;
+        if (this.isNew) {
+          this.createStatement(hearingStatement);
+        } else {
+          this.updateStatement(this.statement!.id!, hearingStatement);
+        }
       }
     }
   }
@@ -225,6 +241,9 @@ export class StatementDetailComponent implements OnInit {
 
   private initForm() {
     this.form = this.getFormGroup(this.statement);
+    if (!this.isNew) {
+      this.initialValueForCanton = this.form.value.swissCanton;
+    }
     if (!this.isNew || this.isHearingStatusArchived) {
       this.form.disable();
     }
@@ -318,20 +337,6 @@ export class StatementDetailComponent implements OnInit {
 
   get cantonShort() {
     return Cantons.fromSwissCanton(this.form.value.swissCanton!)!.short;
-  }
-
-  cantonSelectionChanged() {
-    if (!this.isNew) {
-      this.statementDialogService.openDialog(this.form).subscribe((result) => {
-        if (result) {
-          const hearingStatement = this.form.value as TimetableHearingStatement;
-          this.navigateToStatementDetail(hearingStatement);
-        } else {
-          this.form.controls.comment.setValue(this.statement?.comment);
-          this.form.controls.swissCanton.setValue(this.statement?.swissCanton);
-        }
-      });
-    }
   }
 
   saveButtonDisabled() {
