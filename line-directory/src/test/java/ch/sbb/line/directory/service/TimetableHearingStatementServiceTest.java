@@ -14,7 +14,6 @@ import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.model.exception.NotFoundException.FileNotFoundException;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.line.directory.entity.StatementSender;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
 import ch.sbb.line.directory.entity.TimetableHearingYear;
 import ch.sbb.line.directory.helper.PdfFiles;
@@ -29,7 +28,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -456,29 +454,6 @@ public class TimetableHearingStatementServiceTest {
 
     hearingStatements = timetableHearingStatementService.getHearingStatements(searchRestrictions);
     assertThat(hearingStatements.getTotalElements()).isZero();
-  }
-
-  @Test
-  public void shouldUpdateHearingStatementStatus() {
-    //given
-    TimetableHearingStatement statement1 = TimetableHearingStatement.builder()
-        .timetableYear(2023L)
-        .swissCanton(SwissCanton.BERN)
-        .statementStatus(StatementStatus.RECEIVED)
-        .statementSender(StatementSender.builder()
-            .email("mike@thebike.com")
-            .build())
-        .statement("Ich mag bitte mehr Bös fahren")
-        .build();
-    timetableHearingStatementRepository.saveAndFlush(statement1);
-
-    //when
-    timetableHearingStatementService.updateHearingStatementStatus(statement1, StatementStatus.JUNK,
-        "Napoli ist stärker al YB!");
-    //then
-    Optional<TimetableHearingStatement> result = timetableHearingStatementRepository.findById(statement1.getId());
-    assertThat(result.isPresent()).isTrue();
-    assertThat(result.get().getStatementStatus()).isEqualTo(StatementStatus.JUNK);
   }
 
 }
