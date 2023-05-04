@@ -200,7 +200,7 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       //when
       fixture.detectChanges();
       //then
-      expect(component.tableColumns.length).toEqual(7);
+      expect(component.tableColumns.length).toEqual(8);
       expect(component.tableColumns[0].value).toEqual('statementStatus');
       expect(component.tableColumns[1].value).toEqual('swissCanton');
       expect(component.tableColumns[2].value).toEqual('responsibleTransportCompaniesDisplay');
@@ -208,6 +208,7 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       expect(component.tableColumns[4].value).toEqual('timetableFieldDescription');
       expect(component.tableColumns[5].value).toEqual('editionDate');
       expect(component.tableColumns[6].value).toEqual('editor');
+      expect(component.tableColumns[7].value).toEqual('etagVersion');
     });
 
     it('should get statements table', async () => {
@@ -272,7 +273,7 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       //when
       fixture.detectChanges();
       //then
-      expect(component.tableColumns.length).toEqual(8);
+      expect(component.tableColumns.length).toEqual(9);
       expect(component.tableColumns[0].value).toEqual('id');
       expect(component.tableColumns[1].value).toEqual('statementStatus');
       expect(component.tableColumns[2].value).toEqual('swissCanton');
@@ -281,6 +282,7 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       expect(component.tableColumns[5].value).toEqual('timetableFieldDescription');
       expect(component.tableColumns[6].value).toEqual('editionDate');
       expect(component.tableColumns[7].value).toEqual('editor');
+      expect(component.tableColumns[8].value).toEqual('etagVersion');
     });
   });
 
