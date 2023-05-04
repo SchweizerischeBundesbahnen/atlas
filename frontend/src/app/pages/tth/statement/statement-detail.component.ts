@@ -42,7 +42,7 @@ export class StatementDetailComponent implements OnInit {
   ttfnValidOn: Date | undefined = undefined;
 
   statement: TimetableHearingStatement | undefined;
-  initialCanton: SwissCanton | null | undefined;
+  initialValueForCanton: SwissCanton | null | undefined;
   hearingStatus!: HearingStatus;
   isNew!: boolean;
   form!: FormGroup<StatementDetailFormGroup>;
@@ -108,7 +108,7 @@ export class StatementDetailComponent implements OnInit {
   }
 
   save() {
-    if (!this.isNew && this.initialCanton != this.form.value.swissCanton) {
+    if (!this.isNew && this.initialValueForCanton != this.form.value.swissCanton) {
       this.cantonSelectionChanged();
     } else {
       ValidationService.validateForm(this.form);
@@ -242,7 +242,7 @@ export class StatementDetailComponent implements OnInit {
   private initForm() {
     this.form = this.getFormGroup(this.statement);
     if (!this.isNew) {
-      this.initialCanton = this.form.value.swissCanton;
+      this.initialValueForCanton = this.form.value.swissCanton;
     }
     if (!this.isNew || this.isHearingStatusArchived) {
       this.form.disable();
