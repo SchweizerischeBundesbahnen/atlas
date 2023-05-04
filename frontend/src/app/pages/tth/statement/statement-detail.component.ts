@@ -243,12 +243,13 @@ export class StatementDetailComponent implements OnInit {
     documents: Array<TimetableHearingStatementDocument> | undefined
   ) {
     this.isLoading = true;
-    for (let i = 0; i < documents?.length!; i++) {
+    for (let i = 0; i < documents!.length!; i++) {
       this.timetableHearingService
         .getStatementDocument(id, documents![i].fileName)
+        .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((response) => {
           this.uploadedFiles.push(new File([response], documents![i].fileName));
-          if (i === documents?.length! - 1) {
+          if (i === documents!.length! - 1) {
             this.isLoading = false;
           }
         });
@@ -310,24 +311,10 @@ export class StatementDetailComponent implements OnInit {
 
   private duplicateStatement() {
     if (this.statementShareService.statement) {
-      const localStatement = this.statementShareService.statement;
-      const duplicationStatement: TimetableHearingStatement = {
-        timetableYear: localStatement.timetableYear,
-        statementStatus: StatementStatus.Received,
-        ttfnid: localStatement.ttfnid,
-        timetableFieldNumber: localStatement.timetableFieldNumber,
-        timetableFieldDescription: localStatement.timetableFieldDescription,
-        swissCanton: localStatement.swissCanton,
-        stopPlace: localStatement.stopPlace,
-        responsibleTransportCompanies: localStatement.responsibleTransportCompanies,
-        statementSender: localStatement.statementSender,
-        statement: localStatement.statement,
-        justification: localStatement.justification,
-        comment: localStatement.comment,
-      };
-      this.statement = duplicationStatement;
-      this.downloadLocalFile(this.statementShareService!.statement!.id!, localStatement.documents);
-      this.statementShareService.statement = undefined;
+      const localCopyStatement = this.statementShareService.statement;
+      this.statement = this.statementShareService.getCloneStatement();
+      this.downloadLocalFile(localCopyStatement.id!, localCopyStatement.documents);
+      this.statementShareService.clearCachedStatement();
     }
   }
 
