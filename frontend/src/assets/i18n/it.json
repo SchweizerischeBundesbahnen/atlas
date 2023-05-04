@@ -171,9 +171,9 @@
       "DESCRIPTION": "Qui troverete tutte le informazioni sugli utenti autorizzati e potrete gestirli."
     },
     "SERVICE_POINTS": {
-      "TITLE": "__Dienststellen verwalten__",
-      "TITLE_HEADER": "__Dienststellen__",
-      "DESCRIPTION": "__Hier finden Sie alle Informationen zum Bearbeiten und neu Erstellen von Dienststellen.__"
+      "TITLE": "Gestire i servizi",
+      "TITLE_HEADER": "Servizi",
+      "DESCRIPTION": "Qui si trovano tutte le informazioni necessarie per modificare e creare nuovi reparti."
     },
     "TTH": {
       "TITLE": "Orario Audizione Svizzera",
@@ -563,6 +563,11 @@
       "STATUS_CHANGE_MESSAGE": "Modifica la dichiarazioni per l'orario selezionata.",
       "MULTIPLE_STATUS_CHANGE_MESSAGE": "Modifica le {{tthsLength}} audizione selezionate"
     },
+    "START_HEARING_DIALOG": {
+      "TITLE": "Iniziare l'audizione?",
+      "TEXT": "State per iniziare l'audizione. Questa azione non può essere annullata.",
+      "CONFIRM": "Inizia"
+    },
     "TAB": {
       "ACTUAL": "Audizioni attuali",
       "PLANNED": "Audizioni programmate",
@@ -625,7 +630,7 @@
       "OVERVIEW_ACTUAL_SUBHEADING_POSTFIX": " {{hearingFrom}} fino a {{hearingTo}}.",
       "OVERVIEW_PLANNED_SUBHEADING": "Qui troverete tutte le udienze programmate. Non è possibile inserire commenti prima dell'inizio di un anno di calendario.",
       "OVERVIEW_ARCHIVED_SUBHEADING": "Qui troverete tutte le audizioni archiviate per l'anno d'orario.",
-      "OVERVIEW_ACTUAL_NOT_FOUND_SUBHEADING_PREFIX": "Das Fahrplanjahr ist noch nicht eröffnet. Sie finden bereits vorhandene Stellungnahmen unter dem Reiter «Geplante Anhörungen». Das Fahrplanverfahren Schweiz des BAV für den Fahrplan {{timeTableYear}} wird von ",
+      "OVERVIEW_ACTUAL_NOT_FOUND_SUBHEADING_PREFIX": "L'anno solare non si è ancora aperto. Le dichiarazioni già esistenti si trovano nella scheda \"Udienze programmate\". La procedura Orario Svizzera del BAV per l'orario {{timeTableYear}} è utilizzata da",
       "OVERVIEW_PLANNED_NOT_FOUND": "Al momento non sono state registrate udienze programmate.",
       "OVERVIEW_ACTUAL_NO_PLANNED_HEARING_YEAR_FOUND": "Al momento non ci sono audizioni attive.",
       "OVERVIEW_ARCHIVED_NOT_FOUND": "Al momento non sono disponibili udienze archiviate."
