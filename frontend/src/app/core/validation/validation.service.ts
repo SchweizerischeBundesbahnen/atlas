@@ -20,6 +20,7 @@ export class ValidationService {
             allowedChars: controlErrors[keyError]['allowedCharacters'],
             max: controlErrors[keyError]['max'],
             min: controlErrors[keyError]['min'],
+            number: controlErrors[keyError]['number'],
           },
         });
       });
