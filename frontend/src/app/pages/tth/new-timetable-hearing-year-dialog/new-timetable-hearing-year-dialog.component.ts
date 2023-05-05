@@ -13,6 +13,7 @@ import { DialogService } from '../../../core/components/dialog/dialog.service';
 import { Moment } from 'moment';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { NewHearingYearValidator } from './new-hearing-year-validator';
 
 @Component({
   selector: 'app-tthdialog',
@@ -29,7 +30,10 @@ export class NewTimetableHearingYearDialogComponent implements OnInit {
       hearingFrom: new FormControl<Moment | null>(null, [Validators.required]),
       hearingTo: new FormControl<Moment | null>(null, [Validators.required]),
     },
-    [DateRangeValidator.fromGreaterThenTo('hearingFrom', 'hearingTo')]
+    [
+      DateRangeValidator.fromGreaterThenTo('hearingFrom', 'hearingTo'),
+      NewHearingYearValidator.fromAndToOneYearBefore('timetableYear', 'hearingFrom', 'hearingTo'),
+    ]
   );
   YEAR_OPTIONS: number[] = [];
   defaultYearSelection = this.YEAR_OPTIONS[0];

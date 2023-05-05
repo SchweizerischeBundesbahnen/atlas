@@ -1,12 +1,12 @@
 @use 'src/styles/variables' as variables;
 @use 'node_modules/@ng-select/ng-select/themes/default.theme.css';
 
-$height: 32px;
+$height: 36px;
 
 // Size Config
 .ng-select.ng-select-single,
 .ng-select.ng-select-multiple {
-  height: $height;
+  min-height: $height;
   margin-top: -2px;
 
   .ng-select-container {
