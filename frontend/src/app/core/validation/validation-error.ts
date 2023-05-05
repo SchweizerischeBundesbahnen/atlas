@@ -12,4 +12,5 @@ export interface TranslationParameter {
   allowedChars?: string;
   max?: string;
   min?: string;
+  number?: string;
 }
