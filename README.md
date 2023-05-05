@@ -51,7 +51,6 @@ It's applications share the following architectural goal:
 
 Application MEGAID: `ADB3AE9A60E510ED`
 
-
 ## Links
 
 - **Tekton**: https://tekton-control-panel-atlas-tekton.sbb-cloud.net/projects/KI_ATLAS/repositories/atlas
