@@ -46,7 +46,7 @@ export class StatementDetailComponent implements OnInit {
   hearingStatus!: HearingStatus;
   isNew!: boolean;
   form!: FormGroup<StatementDetailFormGroup>;
-  isStatementEditable: Observable<boolean | undefined> = of(false);
+  isStatementEditable: Observable<boolean | undefined> = of(true);
 
   private ngUnsubscribe = new Subject<void>();
 
@@ -208,9 +208,14 @@ export class StatementDetailComponent implements OnInit {
     this.timetableHearingService
       .getHearingYears([HearingStatus.Active, HearingStatus.Planned])
       .subscribe((yearContainer) => {
-        const years = yearContainer.objects
-          ?.map((year) => year.timetableYear)
-          .sort((n1, n2) => n1 - n2);
+        let years = yearContainer.objects!.map((year) => year.timetableYear);
+        if (!this.isNew) {
+          const savedYear = this.form.controls.timetableYear.value!;
+          if (years.indexOf(savedYear) === -1) {
+            years.push(savedYear);
+          }
+        }
+        years = years.sort((n1, n2) => n1 - n2);
         this.YEAR_OPTIONS = years!;
         if (this.isNew) {
           this.form.controls.timetableYear.setValue(this.YEAR_OPTIONS[0]);
@@ -219,23 +224,25 @@ export class StatementDetailComponent implements OnInit {
   }
 
   private initCantonOptions() {
-    const tthPermissions = this.authService.getApplicationUserPermission(
-      ApplicationType.TimetableHearing
-    );
-    if (tthPermissions.role === ApplicationRole.Supervisor || this.authService.isAdmin) {
-      this.CANTON_OPTIONS = Cantons.cantons;
-    } else if (tthPermissions.role === ApplicationRole.Writer) {
-      this.CANTON_OPTIONS = tthPermissions.permissionRestrictions
-        .map((restriction) => Cantons.fromSwissCanton(restriction.valueAsString as SwissCanton))
-        .filter((element) => element !== undefined)
-        .map((e) => e!)
-        .sort((n1, n2) => (n1.enumCanton! > n2.enumCanton! ? 1 : -1));
-    }
     if (this.isNew) {
+      const tthPermissions = this.authService.getApplicationUserPermission(
+        ApplicationType.TimetableHearing
+      );
+      if (tthPermissions.role === ApplicationRole.Supervisor || this.authService.isAdmin) {
+        this.CANTON_OPTIONS = Cantons.cantons;
+      } else if (tthPermissions.role === ApplicationRole.Writer) {
+        this.CANTON_OPTIONS = tthPermissions.permissionRestrictions
+          .map((restriction) => Cantons.fromSwissCanton(restriction.valueAsString as SwissCanton))
+          .filter((element) => element !== undefined)
+          .map((e) => e!)
+          .sort((n1, n2) => (n1.enumCanton! > n2.enumCanton! ? 1 : -1));
+      }
       const defaultCanton = Cantons.getSwissCantonEnum(this.route.snapshot.params.canton);
       if (this.CANTON_OPTIONS.includes(Cantons.fromSwissCanton(defaultCanton)!)) {
         this.form.controls.swissCanton.setValue(defaultCanton);
       }
+    } else {
+      this.CANTON_OPTIONS = Cantons.cantons;
     }
   }
 
