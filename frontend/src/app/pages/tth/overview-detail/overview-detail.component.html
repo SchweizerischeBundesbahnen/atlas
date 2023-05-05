@@ -88,10 +88,12 @@
         <atlas-spacer height="15px"></atlas-spacer>
         <atlas-button
           (buttonClicked)="addNewStatement()"
+          [canton]="cantonShort"
+          [disabled]="isCheckBoxModeActive"
           applicationType="TIMETABLE_HEARING"
           buttonDataCy="addNewStatement"
           buttonText="TTH.BUTTON.ADD_NEW_STATEMENT"
-          buttonType="createCheckingPermission"
+          buttonType="cantonWritePermission"
           wrapperStyleClass="text-align-end"
         >
         </atlas-button>
@@ -118,6 +120,7 @@
           applicationType="TIMETABLE_HEARING"
           buttonDataCy="addNewTimetableHearing"
           buttonText="TTH.BUTTON.ADD_NEW_TIMETABLE_HEARING"
+          buttonStyleClass="atlas-raised-button mat-mdc-raised-button"
           buttonType="supervisorButton"
           wrapperStyleClass="text-align-end"
         >
@@ -207,7 +210,7 @@
         >
           <div class="d-flex flex-column col-6">
             <atlas-button
-              (buttonClicked)="cancelCollectiongAction()"
+              (buttonClicked)="cancelCollectingAction()"
               applicationType="LIDI"
               buttonDataCy="cancel-collecting-action"
               buttonText="TTH.BUTTON.CANCEL_COLLECTING_ACTION"

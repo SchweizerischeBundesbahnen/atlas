@@ -198,6 +198,7 @@
     "MATDATEPICKERMAX": "La date doit être inférieure ou égale à {{date}}.",
     "MATDATEPICKERPARSE": "Le format de date n’est pas valable. (Format valide: JJ.MM.AAAA)",
     "DATE_RANGE_ERROR": "La date «Valide du» ne doit pas être postérieure à la date «Valide au»: {{date}}",
+    "ONE_YEAR_BEFORE": "La période d'audition doit être l'année {{number}}.",
     "PATTERN": "Format non valide. Caractères autorisés: {{allowedChars}}",
     "WHITESPACES": "Ne peut pas commencer ou se terminer par un espace.",
     "COLOR_INVALID": "Couleur attendue au format #FFFFFF",
@@ -640,6 +641,8 @@
       "IN_REVIEW": "En cours de traitement",
       "ACCEPTED": "Acceptée",
       "REJECTED": "Rejetée",
+      "NOTED": "Prise de connaissance",
+      "PARTLY_IMPLEMENTED": "partiellement acceptée",
       "MOVED": "Reportée",
       "JUNK": "*Spam-Mail*",
       "REVOKED": "Saisie des erreurs"
@@ -714,7 +717,7 @@
     "CLOSE_TIMETABLE_HEARING": {
       "POPUP_TITLE": "Clôture de l'année horaire",
       "CONFIRMATION_MESSAGE": "Vous souhaitez fermer l'année horaire ? Cette action ne peut pas être annulée. Lors de la clôture de l'année d'horaire, les prises de position sont déplacées:",
-      "MOVEMENTS_TO_ARCHIVED": "\"acceptée\", \"rejeté\" ou \"Saisie des erreurs\" → archives",
+      "MOVEMENTS_TO_ARCHIVED": "\"acceptée\", \"rejeté\", \"prise de connaissance\", \"partiellement acceptée\" ou \"Saisie des erreurs\" → archives",
       "MOVEMENTS_TO_NEXT_YEAR": "\"arriver\", \"À l'étude\" ou \"Retardé\" → l'année d'horaire suivante",
       "MOVEMENTS_TO_DELETED": "\"Spam-Mail\" → irrévocablement supprimé",
       "SUCCESSFUL_CLOSE_NOTIFICATION": "Année d'horaire clôturée avec succès"
