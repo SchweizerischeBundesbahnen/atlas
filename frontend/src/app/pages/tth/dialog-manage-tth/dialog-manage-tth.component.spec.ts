@@ -8,6 +8,7 @@ import { of } from 'rxjs';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { MockAtlasButtonComponent } from '../../../app.testing.mocks';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { AppTestingModule } from '../../../app.testing.module';
 
 @Component({
   selector: 'atlas-slide-toggle',
@@ -73,6 +74,7 @@ describe('DialogManageTthComponent', () => {
         },
       ],
       imports: [
+        AppTestingModule,
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
