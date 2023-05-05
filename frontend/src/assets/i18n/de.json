@@ -198,6 +198,7 @@
     "MATDATEPICKERMAX": "Das Datum muss kleiner als oder gleich dem {{date}} sein.",
     "MATDATEPICKERPARSE": "Das Datumsformat ist ungültig. (Gültige Format: TT.MM.YYYY)",
     "DATE_RANGE_ERROR": "Das Gültig-von Datum darf nicht grösser als das Gültig-bis Datum sein: {{date}}",
+    "ONE_YEAR_BEFORE": "Der Anhörungszeitraum muss im Jahr {{number}} sein.",
     "PATTERN": "Ungültiges Format. Erlaubte Zeichen sind: {{allowedChars}}",
     "WHITESPACES": "Darf nicht mit einem Leerzeichen starten oder enden.",
     "COLOR_INVALID": "Farbe im Format #FFFFFF erwartet",
