@@ -198,6 +198,7 @@
     "MATDATEPICKERMAX": "La data deve essere antecedente o uguale al {{date}}.",
     "MATDATEPICKERPARSE": "Formato data non valido. (Formato valido: GG.MM.AAAA)",
     "DATE_RANGE_ERROR": "La data Valido dal non può essere posteriore alla data Valido fino al: {{date}}",
+    "ONE_YEAR_BEFORE": "Il periodo di audizione deve essere nell'anno {{number}}.",
     "PATTERN": "Formato non valido. I caratteri permessi sono: {{allowedChars}}",
     "WHITESPACES": "Non può iniziare o terminare con uno spazio.",
     "COLOR_INVALID": "Colore previsto nel formato #FFFFFF",
