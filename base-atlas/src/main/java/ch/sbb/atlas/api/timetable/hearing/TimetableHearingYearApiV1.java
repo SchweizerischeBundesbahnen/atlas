@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
+import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public interface TimetableHearingYearApiV1 {
 
   @GetMapping
+  @PageableAsQueryParam
   @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastExplicitReader(T(ch.sbb.atlas.kafka.model.user.admin"
       + ".ApplicationType).TIMETABLE_HEARING)")
   Container<TimetableHearingYearModel> getHearingYears(@Parameter(hidden = true) Pageable pageable,
