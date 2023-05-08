@@ -3,11 +3,7 @@ import { AppTestingModule } from '../../../app.testing.module';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { By } from '@angular/platform-browser';
 import { NewTimetableHearingYearDialogComponent } from './new-timetable-hearing-year-dialog.component';
-import {
-  ContainerTimetableHearingYear,
-  TimetableHearingService,
-  TimetableHearingYear,
-} from '../../../api';
+import { TimetableHearingService, TimetableHearingYear } from '../../../api';
 import moment from 'moment/moment';
 import { of } from 'rxjs';
 import { SelectComponent } from '../../../core/form-components/select/select.component';
@@ -57,17 +53,12 @@ describe('NewTimetableHearingYearDialogComponent', () => {
     return [currentTTHY, nextTTHY, tthyIn2Years, tthIn3Years];
   };
 
-  const hearingContainer: ContainerTimetableHearingYear = {
-    objects: getTimetableHearingYears(),
-    totalCount: 4,
-  };
-
   function getCurrentYear() {
     return new Date().getUTCFullYear();
   }
 
   beforeEach(async () => {
-    mockTimetableHearingService.getHearingYears.and.returnValue(of(hearingContainer));
+    mockTimetableHearingService.getHearingYears.and.returnValue(of(getTimetableHearingYears()));
     await TestBed.configureTestingModule({
       declarations: [
         NewTimetableHearingYearDialogComponent,
