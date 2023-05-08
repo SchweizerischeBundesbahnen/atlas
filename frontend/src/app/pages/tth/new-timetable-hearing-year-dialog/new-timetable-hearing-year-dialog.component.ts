@@ -59,7 +59,7 @@ export class NewTimetableHearingYearDialogComponent implements OnInit {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((timetableHearingYears) => {
         const sortedTimetableHearingYears = TthUtils.sortByTimetableHearingYear(
-          timetableHearingYears.objects!,
+          timetableHearingYears,
           false
         );
         if (sortedTimetableHearingYears) {

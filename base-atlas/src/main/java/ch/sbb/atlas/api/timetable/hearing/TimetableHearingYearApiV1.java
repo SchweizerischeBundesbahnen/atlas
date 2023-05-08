@@ -1,6 +1,5 @@
 package ch.sbb.atlas.api.timetable.hearing;
 
-import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.HearingStatus;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,7 +23,7 @@ public interface TimetableHearingYearApiV1 {
   @GetMapping
   @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastExplicitReader(T(ch.sbb.atlas.kafka.model.user.admin"
       + ".ApplicationType).TIMETABLE_HEARING)")
-  Container<TimetableHearingYearModel> getHearingYears(
+  List<TimetableHearingYearModel> getHearingYears(
       @Parameter @RequestParam(required = false) List<HearingStatus> statusChoices);
 
   @GetMapping("{year}")
