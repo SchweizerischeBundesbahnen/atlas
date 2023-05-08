@@ -47,6 +47,26 @@ button.footer-btn {
   }
 }
 
+.atlas-icon-btn {
+  border: none;
+  background-color: unset;
+  color: variables.$primary-500;
+  font-weight: 600;
+  font-size: 24px;
+
+  &:disabled {
+    color: variables.$gray-400;
+    border-color: variables.$gray-400;
+  }
+}
+
+.icon-enabled {
+  &:hover:not(:disabled) {
+    color: variables.$primary-600;
+    -webkit-text-stroke: 1px;
+  }
+}
+
 .primary-color-btn {
   background-color: variables.$primary-500;
   color: variables.$white;
