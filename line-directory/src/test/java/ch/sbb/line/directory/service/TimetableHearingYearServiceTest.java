@@ -13,6 +13,7 @@ import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
 import ch.sbb.line.directory.entity.TimetableHearingYear;
 import ch.sbb.line.directory.exception.HearingCurrentlyActiveException;
+import ch.sbb.line.directory.exception.NoHearingCurrentlyActiveException;
 import ch.sbb.line.directory.mapper.TimetableHearingStatementMapper;
 import ch.sbb.line.directory.model.TimetableHearingYearSearchRestrictions;
 import ch.sbb.line.directory.repository.TimetableHearingStatementRepository;
@@ -50,6 +51,17 @@ public class TimetableHearingYearServiceTest {
     this.timetableHearingStatementRepository = timetableHearingStatementRepository;
   }
 
+  private static TimetableHearingStatementModel buildTimetableHearingStatementModel() {
+    return TimetableHearingStatementModel.builder()
+        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .swissCanton(SwissCanton.BERN)
+        .statementSender(TimetableHearingStatementSenderModel.builder()
+            .email("fabienne.mueller@sbb.ch")
+            .build())
+        .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
+        .build();
+  }
+
   @AfterEach
   void tearDown() {
     timetableHearingYearRepository.deleteAll();
@@ -71,6 +83,13 @@ public class TimetableHearingYearServiceTest {
 
     TimetableHearingYear hearingYear = timetableHearingYearService.getHearingYear(YEAR);
     assertThat(hearingYear).isNotNull();
+  }
+
+  @Test
+  void shouldNotGetHearingYear() {
+
+    assertThatThrownBy(timetableHearingYearService::getActiveHearingYear).isInstanceOf(
+        NoHearingCurrentlyActiveException.class);
   }
 
   @Test
@@ -170,16 +189,5 @@ public class TimetableHearingYearServiceTest {
     Stream<TimetableHearingStatement> resultStream = timetableHearingStatementRepository.findAll().stream();
     assertTrue(resultStream.noneMatch(resultStatement ->
         resultStatement.getStatementStatus() == StatementStatus.JUNK || resultStatement.getTimetableYear() == YEAR));
-  }
-
-  private static TimetableHearingStatementModel buildTimetableHearingStatementModel() {
-    return TimetableHearingStatementModel.builder()
-        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
-        .swissCanton(SwissCanton.BERN)
-        .statementSender(TimetableHearingStatementSenderModel.builder()
-            .email("fabienne.mueller@sbb.ch")
-            .build())
-        .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
-        .build();
   }
 }
