@@ -21,7 +21,6 @@ export * from './containerServicePointVersion';
 export * from './containerSubline';
 export * from './containerTimetableFieldNumber';
 export * from './containerTimetableHearingStatement';
-export * from './containerTimetableHearingYear';
 export * from './containerTrafficPointElementVersion';
 export * from './containerTransportCompany';
 export * from './containerUser';

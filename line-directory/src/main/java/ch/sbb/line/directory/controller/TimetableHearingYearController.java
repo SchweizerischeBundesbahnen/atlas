@@ -1,6 +1,5 @@
 package ch.sbb.line.directory.controller;
 
-import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingYearApiV1;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingYearModel;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.HearingStatus;
@@ -21,15 +20,14 @@ public class TimetableHearingYearController implements TimetableHearingYearApiV1
   private final TimetableHearingYearService timetableHearingYearService;
 
   @Override
-  public Container<TimetableHearingYearModel> getHearingYears(List<HearingStatus> statusChoices) {
+  public List<TimetableHearingYearModel> getHearingYears(List<HearingStatus> statusChoices) {
     List<TimetableHearingYear> hearingYears = timetableHearingYearService.getHearingYears(
         TimetableHearingYearSearchRestrictions.builder()
             .statusRestrictions(statusChoices)
             .build());
-    return Container.<TimetableHearingYearModel>builder()
-        .objects(hearingYears.stream().map(TimeTableHearingYearMapper::toModel).toList())
-        .totalCount(hearingYears.size())
-        .build();
+    return hearingYears.stream()
+        .map(TimeTableHearingYearMapper::toModel)
+        .toList();
   }
 
   @Override
