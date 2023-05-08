@@ -561,7 +561,7 @@
       "CANTON_CHANGE": "Modifier canton",
       "COMMENT_LABEL": "Commentaire à ce sujet",
       "BACK": "De retour",
-      "STATUS_CHANGE_MESSAGE": "Vous modifiez l'avis sélectionné.",
+      "STATUS_CHANGE_MESSAGE": "Vous modifiez la prise de position sélectionnée.",
       "MULTIPLE_STATUS_CHANGE_MESSAGE": "Vous modifiez {{tthsLength}} l'avis sélectionné."
     },
     "START_HEARING_DIALOG": {
@@ -619,7 +619,7 @@
     "SELECT_YEAR": "Sélectionner l'année",
     "TABLE_RESULT_HEADING": "{{totalCount}} Prises de position pour l'année d'horaire {{year}}",
     "TABLE_RESULT_ACTUAL_HEARING_HEADING_PREFIX": "{{totalCount}} Prises de position ",
-    "WHOLE_SWISS": "Pour toute la Suisse",
+    "WHOLE_SWISS": "pour toute la Suisse",
     "OPEN": "{{canton}} ouvrir",
     "STATEMENT_STATUS_HEADER": "Statut",
     "SWISS_CANTON": "Canton",
@@ -642,7 +642,7 @@
       "ACCEPTED": "Acceptée",
       "REJECTED": "Rejetée",
       "NOTED": "Prise de connaissance",
-      "PARTLY_IMPLEMENTED": "partiellement acceptée",
+      "PARTLY_IMPLEMENTED": "Partiellement acceptée",
       "MOVED": "Reportée",
       "JUNK": "*Spam-Mail*",
       "REVOKED": "Saisie des erreurs"
@@ -667,7 +667,7 @@
       "SG": "Saint-Gall",
       "SH": "Schaffhouse",
       "SO": "Soleure",
-      "SZ": "Schwytz",
+      "SZ": "Schwyz",
       "TG": "Thurgovie",
       "TI": "Tessin",
       "UR": "Uri",
@@ -685,8 +685,8 @@
       "STOP_POINT_INFO": "Description de l'arrêt référencé",
       "STATUS_JUSTIFICATION": "Statut et justification",
       "CLARIFICATION": "Clarifier la prise de position",
-      "CLARIFICATION_INFO": "Les données de cet avis seront reprises dans votre e-mail.",
-      "CLARIFICATION_MAIL": "Envoyer un courriel",
+      "CLARIFICATION_INFO": "Les données de cette prise de position seront reprises dans votre e-mail.",
+      "CLARIFICATION_MAIL": "Ouvrir un e-mail",
       "REQUEST": "Demande de prise de position",
       "TTFN": "Champ de l'horaire",
       "FIRST_NAME": "Prénom",
@@ -695,7 +695,7 @@
       "E_MAIL_TEXT": "Si aucun e-mail n'est disponible, une entrée fictive, par exemple xxx@xxx.ch, suffit.",
       "JUSTIFICATION": "Justification",
       "COMMENT": "Commentaire sur la cession de canton",
-      "ATTACHMENT_INFO": "Vous pouvez envoyer votre avis avec une annexe PDF. Il est possible de créer 3 PDF jusqu'à 20 Mo.",
+      "ATTACHMENT_INFO": "Vous pouvez envoyer votre prise de position avec une annexe PDF. Il est possible d'envoyer 3 PDF jusqu'à 20 MB.",
       "ATTACHMENTS": "Pièces jointes actuelles",
       "ORGANISATION": "Organisation/Association",
       "ZIP": "Code Postal",
@@ -704,7 +704,7 @@
       "STATUS": "Statut",
       "NOTIFICATION": {
         "ADD_SUCCESS": "Nouvel avis enregistré avec succès.",
-        "EDIT_SUCCESS": "L'avis a été enregistré avec succès."
+        "EDIT_SUCCESS": "La prise de position a été enregistrée avec succès."
       },
       "DIALOG": {
         "TITLE": "Modifier le canton",
