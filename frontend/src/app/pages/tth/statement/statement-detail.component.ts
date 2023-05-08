@@ -38,8 +38,6 @@ import { StatementShareService } from '../overview-detail/statement-share-servic
 export class StatementDetailComponent implements OnInit {
   YEAR_OPTIONS: number[] = [];
   CANTON_OPTIONS: Canton[] = [];
-  readonly extractEnumCanton = (option: Canton) => option.enumCanton;
-  readonly extractShort = (option: Canton) => option.short;
   STATUS_OPTIONS: StatementStatus[] = [];
   ttfnValidOn: Date | undefined = undefined;
   statement: TimetableHearingStatement | undefined;
@@ -48,12 +46,10 @@ export class StatementDetailComponent implements OnInit {
   isNew!: boolean;
   form!: FormGroup<StatementDetailFormGroup>;
   isStatementEditable: Observable<boolean | undefined> = of(true);
+  uploadedFiles: File[] = [];
+  isLoading = false;
 
   private ngUnsubscribe = new Subject<void>();
-
-  uploadedFiles: File[] = [];
-  downloadedLocalFiles: File[] = [];
-  isLoading = false;
 
   constructor(
     private router: Router,
@@ -80,6 +76,10 @@ export class StatementDetailComponent implements OnInit {
     const documents = this.form.value.documents as { fileName: string }[];
     return documents.map((doc) => doc.fileName);
   }
+
+  readonly extractEnumCanton = (option: Canton) => option.enumCanton;
+
+  readonly extractShort = (option: Canton) => option.short;
 
   ngOnInit() {
     this.statement = this.route.snapshot.data.statement;
@@ -409,5 +409,4 @@ export class StatementDetailComponent implements OnInit {
     }
     return of(true);
   }
-
 }
