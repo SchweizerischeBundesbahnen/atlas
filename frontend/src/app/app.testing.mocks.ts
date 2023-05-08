@@ -64,6 +64,7 @@ export class MockTableComponent<DATATYPE> {
   @Input() pageSizeOptions: number[] = [5, 10, 25, 100];
   @Input() sortingDisabled = false;
   @Input() showTableFilter = true;
+  @Input() checkBoxModeEnabled = false;
 
   @Input() checkBoxSelection = new SelectionModel<TimetableHearingStatement>(true, []);
   @Output() editElementEvent = new EventEmitter<DATATYPE>();
