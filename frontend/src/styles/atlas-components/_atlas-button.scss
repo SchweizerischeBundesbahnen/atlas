@@ -54,19 +54,16 @@ button.footer-btn {
   font-weight: 600;
   font-size: 24px;
 
-  &:hover:not(:disabled) {
-    //background-color: variables.$gray-500;
-  }
-
   &:disabled {
     color: variables.$gray-400;
     border-color: variables.$gray-400;
   }
+}
 
-  i {
-    &:hover:not(:disabled) {
-      color: variables.$primary-600;
-    }
+.icon-enabled {
+  &:hover:not(:disabled) {
+    color: variables.$primary-600;
+    -webkit-text-stroke: 1px;
   }
 }
 
