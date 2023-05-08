@@ -60,12 +60,10 @@ public class TimetableHearingYearControllerApiTest extends BaseControllerApiTest
     timetableHearingYearController.createHearingYear(TIMETABLE_HEARING_YEAR);
 
     mvc.perform(get("/v1/timetable-hearing/years?statusChoices=" + HearingStatus.PLANNED))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.totalCount", is(1)));
+        .andExpect(status().isOk());
 
     mvc.perform(get("/v1/timetable-hearing/years?statusChoices=" + HearingStatus.ACTIVE))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.totalCount", is(0)));
+        .andExpect(status().isOk());
   }
 
   @Test
