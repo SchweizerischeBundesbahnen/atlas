@@ -16,10 +16,10 @@
 
         <div *ngIf="statement && statement.comment" class="d-flex flex-row col-12 mb-5">
           <div class="d-flex flex-column col-12">
-            <br/>
+            <br />
             <span class="font-bold-lg">
-            {{ 'TTH.STATEMENT.COMMENT' | translate }}
-          </span>
+              {{ 'TTH.STATEMENT.COMMENT' | translate }}
+            </span>
             <span>{{ statement.comment }}</span>
           </div>
         </div>
@@ -27,29 +27,28 @@
         <div class="d-flex flex-row col-12 mb-4 mt-5">
           <div class="d-flex flex-column col-6 pe-3">
             <atlas-select
+              [additionalLabelspace]="false"
               [formGroup]="form"
+              [options]="YEAR_OPTIONS"
+              [required]="true"
               controlName="timetableYear"
               dataCy="timetableYear"
               label="TTH.SELECT_YEAR"
-              [additionalLabelspace]="false"
-              [options]="YEAR_OPTIONS"
-              [required]="true"
             >
             </atlas-select>
           </div>
           <div class="d-flex flex-column col-6">
             <atlas-select
-              (selectChanged)="cantonSelectionChanged()"
+              [additionalLabelspace]="false"
+              [displayExtractor]="extractShort"
               [formGroup]="form"
+              [options]="CANTON_OPTIONS"
+              [required]="true"
+              [valueExtractor]="extractEnumCanton"
               controlName="swissCanton"
               dataCy="swissCanton"
               label="TTH.SELECT_CANTON"
-              [additionalLabelspace]="false"
-              [options]="CANTON_OPTIONS"
-              [valueExtractor]="extractEnumCanton"
-              [displayExtractor]="extractShort"
               optionTranslateLabelPrefix="TTH.CANTON."
-              [required]="true"
             >
               <ng-template #matOptionPrefix let-canton="option">
                 <img
@@ -94,15 +93,15 @@
           <div class="d-flex flex-column col-12">
             <atlas-text-field
               [fieldExamples]="[
-              { label: 'FORM.FOR_EXAMPLE', translate: true },
-              { label: 'Wiesenbach', translate: false },
-              { label: ' |', translate: false },
-              {
-                label: 'FORM.MAX_CHARS',
-                translate: true,
-                arg: { key: 'numberOfChars', value: '50' }
-              }
-            ]"
+                { label: 'FORM.FOR_EXAMPLE', translate: true },
+                { label: 'Wiesenbach', translate: false },
+                { label: ' |', translate: false },
+                {
+                  label: 'FORM.MAX_CHARS',
+                  translate: true,
+                  arg: { key: 'numberOfChars', value: '50' }
+                }
+              ]"
               [formGroup]="form"
               controlName="stopPlace"
               fieldLabel="TTH.STATEMENT.STOP_POINT"
@@ -178,14 +177,14 @@
           <div class="d-flex flex-column col-12">
             <atlas-text-field
               [fieldExamples]="[
-              { label: 'TTH.STATEMENT.E_MAIL_TEXT', translate: true },
-              { label: ' |', translate: false },
-              {
-                label: 'FORM.MAX_CHARS',
-                translate: true,
-                arg: { key: 'numberOfChars', value: '100' }
-              }
-            ]"
+                { label: 'TTH.STATEMENT.E_MAIL_TEXT', translate: true },
+                { label: ' |', translate: false },
+                {
+                  label: 'FORM.MAX_CHARS',
+                  translate: true,
+                  arg: { key: 'numberOfChars', value: '100' }
+                }
+              ]"
               [formGroup]="form.controls.statementSender"
               [required]="true"
               controlName="email"
@@ -213,11 +212,11 @@
           <app-atlas-label-field fieldLabel="TTH.STATEMENT.ATTACHMENTS"></app-atlas-label-field>
           <ng-container *ngFor="let document of form.value.documents">
             <atlas-file
-              [deleteEnabled]="this.form.enabled"
-              [file]="{ name: document.fileName, size: document.fileSize }"
-              (fileDeleted)="removeDocument($event.name)"
-              [downloadEnabled]="true"
               (downloadFile)="downloadFile($event.name)"
+              (fileDeleted)="removeDocument($event.name)"
+              [deleteEnabled]="this.form.enabled"
+              [downloadEnabled]="true"
+              [file]="{ name: document.fileName, size: document.fileSize }"
             ></atlas-file>
           </ng-container>
         </div>
@@ -226,11 +225,11 @@
           <div class="font-regular-sm mb-2">{{ 'TTH.STATEMENT.ATTACHMENT_INFO' | translate }}</div>
           <atlas-file-upload
             [(uploadedFiles)]="uploadedFiles"
+            [alreadySavedFileNames]="alreadySavedDocuments"
+            [maxFileCount]="3 - form.value.documents.length"
+            [maxFileSize]="20 * 1024 * 1024"
             acceptedFileExtension=".pdf"
             acceptedFileType="application/pdf"
-            [maxFileSize]="20 * 1024 * 1024"
-            [maxFileCount]="3 - form.value.documents.length"
-            [alreadySavedFileNames]="alreadySavedDocuments"
           ></atlas-file-upload>
         </ng-container>
 
@@ -240,7 +239,9 @@
             <atlas-spacer [divider]="true" height="30px"></atlas-spacer>
           </h1>
 
-          <div class="mb-3 font-regular-sm">{{ 'TTH.STATEMENT.CLARIFICATION_INFO' | translate }}</div>
+          <div class="mb-3 font-regular-sm">
+            {{ 'TTH.STATEMENT.CLARIFICATION_INFO' | translate }}
+          </div>
           <atlas-button
             (click)="openAsMail()"
             buttonDataCy="open-in-mail"
@@ -302,12 +303,12 @@
     <atlas-button
       (click)="toggleEdit()"
       *ngIf="!isHearingStatusArchived && !form.enabled && (isStatementEditable | async) === true"
-      applicationType="TIMETABLE_HEARING"
       [canton]="cantonShort"
+      applicationType="TIMETABLE_HEARING"
       buttonDataCy="edit"
+      buttonStyleClass="atlas-primary-btn"
       buttonText="COMMON.EDIT"
       buttonType="cantonWritePermission"
-      buttonStyleClass="atlas-primary-btn"
     >
     </atlas-button>
     <atlas-button
