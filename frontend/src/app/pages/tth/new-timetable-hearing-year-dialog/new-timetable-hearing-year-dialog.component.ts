@@ -14,6 +14,7 @@ import { Moment } from 'moment';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NewHearingYearValidator } from './new-hearing-year-validator';
+import { TthUtils } from '../util/tth-utils';
 
 @Component({
   selector: 'app-tthdialog',
@@ -57,8 +58,9 @@ export class NewTimetableHearingYearDialogComponent implements OnInit {
       .getHearingYears([HearingStatus.Active, HearingStatus.Planned, HearingStatus.Archived])
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((timetableHearingYears) => {
-        const sortedTimetableHearingYears = timetableHearingYears.objects!.sort(
-          (n1, n2) => n1.timetableYear - n2.timetableYear
+        const sortedTimetableHearingYears = TthUtils.sortByTimetableHearingYear(
+          timetableHearingYears.objects!,
+          false
         );
         if (sortedTimetableHearingYears) {
           const activeYear = this.getActiveYear(sortedTimetableHearingYears);
