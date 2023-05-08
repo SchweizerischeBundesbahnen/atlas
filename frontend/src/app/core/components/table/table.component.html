@@ -95,11 +95,14 @@
               [buttonType]="column.button.buttonType"
               [disabled]="column.button.disabled"
               buttonDataCy="{{ column.button.buttonType }}"
-              title="{{ column.button.title }}"
+              title="{{ !column.button.disabled ? column.button.title : '' }}"
               wrapperStyleClass="text-align-center"
             >
               <ng-template #rightIcon>
-                <i class=" {{ column.button.icon }} "></i>
+                <i
+                  [ngClass]="!column.button.disabled ? 'icon-enabled' : ''"
+                  class=" {{ column.button.icon }}"
+                ></i>
               </ng-template>
             </atlas-button>
           </td>
