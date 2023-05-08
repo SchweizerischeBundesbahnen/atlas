@@ -19,6 +19,7 @@ import ch.sbb.atlas.user.administration.service.GraphApiService;
 import ch.sbb.atlas.user.administration.service.UserAdministrationService;
 import ch.sbb.atlas.user.administration.service.UserPermissionDistributor;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -82,6 +83,9 @@ public class UserAdministrationController implements UserAdministrationApiV1 {
   }
 
   public List<UserDisplayNameModel> getUserInformation(List<String> userIds) {
+    if (userIds == null || userIds.isEmpty()) {
+      return Collections.emptyList();
+    }
     List<UserDisplayNameModel> result = new ArrayList<>();
 
     // Add all ClientCredential Display Informations
