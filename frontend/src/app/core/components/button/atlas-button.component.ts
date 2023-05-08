@@ -21,6 +21,7 @@ export class AtlasButtonComponent {
   @Input() footerEdit = false;
   @Input() submitButton!: boolean;
   @Input() buttonText!: string;
+  @Input() title!: string;
   @Input() buttonStyleClass: string | undefined;
 
   @Output() buttonClicked = new EventEmitter<void>();
@@ -106,6 +107,9 @@ export class AtlasButtonComponent {
     }
     if (this.buttonType === AtlasButtonType.DEFAULT_PRIMARY) {
       return 'atlas-primary-btn';
+    }
+    if (this.buttonType === AtlasButtonType.ICON) {
+      return 'atlas-icon-btn';
     }
     if (
       [
