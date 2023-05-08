@@ -621,44 +621,29 @@ export class TimetableHearingService {
 
   /**
    * @param statusChoices
-   * @param page Zero-based page index (0..N)
-   * @param size The size of the page to be returned
-   * @param sort Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
   public getHearingYears(
     statusChoices?: Array<HearingStatus>,
-    page?: number,
-    size?: number,
-    sort?: Array<string>,
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' }
   ): Observable<ContainerTimetableHearingYear>;
   public getHearingYears(
     statusChoices?: Array<HearingStatus>,
-    page?: number,
-    size?: number,
-    sort?: Array<string>,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' }
   ): Observable<HttpResponse<ContainerTimetableHearingYear>>;
   public getHearingYears(
     statusChoices?: Array<HearingStatus>,
-    page?: number,
-    size?: number,
-    sort?: Array<string>,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' }
   ): Observable<HttpEvent<ContainerTimetableHearingYear>>;
   public getHearingYears(
     statusChoices?: Array<HearingStatus>,
-    page?: number,
-    size?: number,
-    sort?: Array<string>,
     observe: any = 'body',
     reportProgress: boolean = false,
     options?: { httpHeaderAccept?: '*/*' }
@@ -667,17 +652,6 @@ export class TimetableHearingService {
     if (statusChoices) {
       statusChoices.forEach((element) => {
         queryParameters = this.addToHttpParams(queryParameters, <any>element, 'statusChoices');
-      });
-    }
-    if (page !== undefined && page !== null) {
-      queryParameters = this.addToHttpParams(queryParameters, <any>page, 'page');
-    }
-    if (size !== undefined && size !== null) {
-      queryParameters = this.addToHttpParams(queryParameters, <any>size, 'size');
-    }
-    if (sort) {
-      sort.forEach((element) => {
-        queryParameters = this.addToHttpParams(queryParameters, <any>element, 'sort');
       });
     }
 
