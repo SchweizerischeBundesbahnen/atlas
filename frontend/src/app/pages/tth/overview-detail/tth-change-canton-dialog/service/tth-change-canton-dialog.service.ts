@@ -25,6 +25,7 @@ export class TthChangeCantonDialogService {
     };
     this.changeStatusDialog = this.dialog.open(TthChangeCantonDialogComponent, {
       data: changeCantonData,
+      disableClose: true,
       panelClass: 'atlas-dialog-panel',
       backdropClass: 'atlas-dialog-backdrop',
     });
