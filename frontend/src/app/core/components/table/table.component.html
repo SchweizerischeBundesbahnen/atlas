@@ -59,7 +59,7 @@
             mat-cell
           >
             <atlas-select
-              (click)="$event.stopPropagation()"
+              (click)="stopPropagation($event)"
               (selectChanged)="changeDropdownEvent.emit({$event,value})"
               [additionalLabelspace]="false"
               [disabled]="column.dropdown.disabled"
@@ -71,7 +71,7 @@
         </div>
         <div *ngIf="column.checkbox && !column.dropdown && !column.button">
           <td
-            (click)="$event.stopPropagation()"
+            (click)="stopPropagation($event)"
             *matCellDef="let row"
             class="table-cell bordered-cell"
             mat-cell
@@ -84,7 +84,7 @@
         </div>
         <div *ngIf="column.button && !column.checkbox && !column.dropdown">
           <td
-            (click)="$event.stopPropagation()"
+            (click)="stopPropagation($event)"
             *matCellDef="let row"
             class="table-cell bordered-cell"
             mat-cell

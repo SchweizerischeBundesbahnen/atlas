@@ -26,6 +26,7 @@ export class TableComponent<DATATYPE> implements OnInit {
   @Input() pageSizeOptions: number[] = [5, 10, 25, 100];
   @Input() sortingDisabled = false;
   @Input() showTableFilter = true;
+  @Input() checkBoxModeEnabled = false;
   @Output() editElementEvent = new EventEmitter<DATATYPE>();
   @Output() tableChanged = new EventEmitter<TablePagination>();
   @Output() tableInitialized: EventEmitter<TablePagination> = new EventEmitter<TablePagination>();
@@ -92,7 +93,12 @@ export class TableComponent<DATATYPE> implements OnInit {
   }
 
   edit(row: DATATYPE) {
-    this.editElementEvent.emit(row);
+    if (this.checkBoxModeEnabled) {
+      this.checkBoxSelection.toggle(row);
+      this.checkedBoxEvent.emit(this.checkBoxSelection);
+    } else {
+      this.editElementEvent.emit(row);
+    }
   }
 
   pageChanged(pageEvent: PageEvent) {
@@ -162,6 +168,12 @@ export class TableComponent<DATATYPE> implements OnInit {
   toggleCheckBox($event: MatCheckboxChange, row: DATATYPE) {
     $event ? this.checkBoxSelection.toggle(row) : null;
     this.checkedBoxEvent.emit(this.checkBoxSelection);
+  }
+
+  stopPropagation($event: any) {
+    if (!this.checkBoxModeEnabled) {
+      $event.stopPropagation();
+    }
   }
 
   private emitTableChangedEvent(): void {
