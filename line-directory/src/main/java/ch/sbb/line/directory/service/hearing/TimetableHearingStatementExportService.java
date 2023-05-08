@@ -35,12 +35,13 @@ public class TimetableHearingStatementExportService {
         .toList();
 
     Set<String> exportedEditors = csvData.stream().map(TimetableHearingStatementCsvModel::getEditor).collect(Collectors.toSet());
-    List<UserDisplayNameModel> resolvedUserInformation = userAdministrationClient.getUserInformation(
-        new ArrayList<>(exportedEditors));
-
-    csvData.forEach(csvLine -> resolvedUserInformation.stream()
-        .filter(i -> i.getSbbUserId().equals(csvLine.getEditor())).findFirst()
-        .ifPresent(userInfo -> csvLine.setEditor(userInfo.getDisplayName())));
+    if (!exportedEditors.isEmpty()) {
+      List<UserDisplayNameModel> resolvedUserInformation = userAdministrationClient.getUserInformation(
+          new ArrayList<>(exportedEditors));
+      csvData.forEach(csvLine -> resolvedUserInformation.stream()
+          .filter(i -> i.getSbbUserId().equals(csvLine.getEditor())).findFirst()
+          .ifPresent(userInfo -> csvLine.setEditor(userInfo.getDisplayName())));
+    }
 
     return CsvExportWriter.writeToFile(fileService.getDir() + "statements", csvData,
         new AtlasCsvMapper(TimetableHearingStatementCsvModel.class,
