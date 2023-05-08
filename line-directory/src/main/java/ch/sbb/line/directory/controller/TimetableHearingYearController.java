@@ -11,8 +11,6 @@ import ch.sbb.line.directory.service.hearing.TimetableHearingYearService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -23,15 +21,14 @@ public class TimetableHearingYearController implements TimetableHearingYearApiV1
   private final TimetableHearingYearService timetableHearingYearService;
 
   @Override
-  public Container<TimetableHearingYearModel> getHearingYears(Pageable pageable, List<HearingStatus> statusChoices) {
-    Page<TimetableHearingYear> hearingYears = timetableHearingYearService.getHearingYears(
+  public Container<TimetableHearingYearModel> getHearingYears(List<HearingStatus> statusChoices) {
+    List<TimetableHearingYear> hearingYears = timetableHearingYearService.getHearingYears(
         TimetableHearingYearSearchRestrictions.builder()
-            .pageable(pageable)
             .statusRestrictions(statusChoices)
             .build());
     return Container.<TimetableHearingYearModel>builder()
         .objects(hearingYears.stream().map(TimeTableHearingYearMapper::toModel).toList())
-        .totalCount(hearingYears.getTotalElements())
+        .totalCount(hearingYears.size())
         .build();
   }
 

@@ -7,10 +7,10 @@ import ch.sbb.line.directory.exception.HearingCurrentlyActiveException;
 import ch.sbb.line.directory.exception.NoHearingCurrentlyActiveException;
 import ch.sbb.line.directory.model.TimetableHearingYearSearchRestrictions;
 import ch.sbb.line.directory.repository.TimetableHearingYearRepository;
+import java.util.List;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,8 +23,8 @@ public class TimetableHearingYearService {
   private final TimetableHearingYearRepository timetableHearingYearRepository;
   private final TimetableHearingStatementService timetableHearingStatementService;
 
-  public Page<TimetableHearingYear> getHearingYears(TimetableHearingYearSearchRestrictions searchRestrictions) {
-    return timetableHearingYearRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
+  public List<TimetableHearingYear> getHearingYears(TimetableHearingYearSearchRestrictions searchRestrictions) {
+    return timetableHearingYearRepository.findAll(searchRestrictions.getSpecification());
   }
 
   public TimetableHearingYear getActiveHearingYear() {
