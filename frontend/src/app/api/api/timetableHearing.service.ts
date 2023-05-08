@@ -24,7 +24,6 @@ import { CustomHttpParameterCodec } from '../encoder';
 import { Observable } from 'rxjs';
 
 import { ContainerTimetableHearingStatement } from '../model/models';
-import { ContainerTimetableHearingYear } from '../model/models';
 import { ErrorResponse } from '../model/models';
 import { HearingStatus } from '../model/models';
 import { StatementStatus } from '../model/models';
@@ -629,19 +628,19 @@ export class TimetableHearingService {
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<ContainerTimetableHearingYear>;
+  ): Observable<Array<TimetableHearingYear>>;
   public getHearingYears(
     statusChoices?: Array<HearingStatus>,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<HttpResponse<ContainerTimetableHearingYear>>;
+  ): Observable<HttpResponse<Array<TimetableHearingYear>>>;
   public getHearingYears(
     statusChoices?: Array<HearingStatus>,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' }
-  ): Observable<HttpEvent<ContainerTimetableHearingYear>>;
+  ): Observable<HttpEvent<Array<TimetableHearingYear>>>;
   public getHearingYears(
     statusChoices?: Array<HearingStatus>,
     observe: any = 'body',
@@ -672,7 +671,7 @@ export class TimetableHearingService {
       responseType_ = 'text';
     }
 
-    return this.httpClient.get<ContainerTimetableHearingYear>(
+    return this.httpClient.get<Array<TimetableHearingYear>>(
       `${this.configuration.basePath}/line-directory/v1/timetable-hearing/years`,
       {
         params: queryParameters,
