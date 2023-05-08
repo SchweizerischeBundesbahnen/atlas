@@ -98,16 +98,11 @@ export class NewTimetableHearingYearDialogComponent implements OnInit {
   getAllPlanedAndArchivedYears(
     timetableHearingYears: Array<TimetableHearingYear>
   ): Array<TimetableHearingYear> {
-    const plannedAndArchivedYears: TimetableHearingYear[] = [];
-    for (const i in timetableHearingYears) {
-      if (
-        HearingStatus.Planned === timetableHearingYears[i].hearingStatus ||
-        HearingStatus.Archived === timetableHearingYears[i].hearingStatus
-      ) {
-        plannedAndArchivedYears.push(timetableHearingYears[i]);
-      }
-    }
-    return plannedAndArchivedYears;
+    return timetableHearingYears.filter(
+      (year) =>
+        year.hearingStatus === HearingStatus.Planned ||
+        year.hearingStatus === HearingStatus.Archived
+    );
   }
 
   calculateProposedYears(
