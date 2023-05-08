@@ -19,6 +19,8 @@ export class DataCy {
   static LIDI_SUBLINES = '[data-cy=lidi-sublines]';
   static VALID_FROM = '[data-cy=validFrom]';
   static VALID_TO = '[data-cy=validTo]';
+  static HEARING_FROM = '[data-cy=hearingFrom]';
+  static HEARING_TO = '[data-cy=hearingTo]';
   static SWISS_LINE_NUMBER = '[data-cy=swissLineNumber]';
   static BUSINESS_ORGANISATION = '[data-cy=businessOrganisation]';
   static TYPE = '[data-cy=type]';
@@ -43,10 +45,6 @@ export class DataCy {
   static CMYK_PICKER_INPUT = '[data-cy=cmyk-picker-input]';
   static COLOR_BACK_CMYK = '[data-cy=colorBackCmyk]';
   static TABLE_FILTER_CHIP_INPUT = '[data-cy|="table-filter-chip-search"]';
-  static TABLE_FILTER_MULTI_SELECT = (rowIndex: number, columnIndex: number) =>
-    `[data-cy=table-filter-multi-select-${rowIndex}-${columnIndex}]`;
-  static TABLE_FILTER_DATE_INPUT = (rowIndex: number, columnIndex: number) =>
-    `[data-cy=table-filter-date-select-${rowIndex}-${columnIndex}]`;
   static TTFN = '[data-cy=ttfn]';
   static SIDEMENU_START = '[data-cy=sidemenu-start]';
   static SIDEMENU_TTFN = '[data-cy=sidemenu-timetable-field-number]';
@@ -64,4 +62,13 @@ export class DataCy {
   static CONTACT_ENTERPRISE_EMAIL = '[data-cy=contactEnterpriseEmail]';
   static TC_ADD_RELATION_BTN = '[data-cy=add-relation-btn]';
   static TC_DELETE_RELATION_BTN = '[data-cy=delete-relation-btn]';
+  static TTH_SWISS_CANTON_CARD = '[data-cy=swiss-canton-card]';
+  static ADD_NEW_TIMETABLE_HEARING_BUTTON = '[data-cy=addNewTimetableHearing]';
+  static ADD_NEW_TIMETABLE_HEARING_SELECT_YEAR_DROPDOWN = '[data-cy=timetableYear]';
+
+  static TABLE_FILTER_MULTI_SELECT = (rowIndex: number, columnIndex: number) =>
+    `[data-cy=table-filter-multi-select-${rowIndex}-${columnIndex}]`;
+
+  static TABLE_FILTER_DATE_INPUT = (rowIndex: number, columnIndex: number) =>
+    `[data-cy=table-filter-date-select-${rowIndex}-${columnIndex}]`;
 }

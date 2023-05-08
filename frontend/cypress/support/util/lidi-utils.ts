@@ -1,11 +1,12 @@
 import CommonUtils from './common-utils';
-import { DataCy } from '../data-cy';
+import {DataCy} from '../data-cy';
 import BodiDependentUtils from './bodi-dependent-utils';
 import AngularMaterialConstants from './angular-material-constants';
 
 export default class LidiUtils {
   private static LIDI_LINES_PATH = '/line-directory/lines';
   private static LIDI_SUBLINES_PATH = '/line-directory/sublines';
+  private static TTH_CH_PLANNED_PATH = '/timetable-hearing/ch/';
 
   private static MAINLINE_SWISS_LINE_NUMBER = 'b0.IC2-E2E';
 
@@ -24,12 +25,34 @@ export default class LidiUtils {
     this.changeLiDiTabToSublines();
   }
 
+  static navigateToTimetableHearing() {
+    CommonUtils.navigateToHomeViaHomeLogo();
+    cy.get('#timetable-hearing').click();
+  }
+
   static changeLiDiTabToSublines() {
     cy.intercept('GET', '/line-directory/v1/sublines?**').as('getSublines');
     cy.get('a[href="' + LidiUtils.LIDI_SUBLINES_PATH + '"]').click();
     cy.wait('@getSublines').then((interception) => {
       cy.wrap(interception.response?.statusCode).should('eq', 200);
       cy.url().should('contain', LidiUtils.LIDI_SUBLINES_PATH);
+    });
+  }
+
+  static changeLiDiTabToTTHPlanned() {
+    cy.intercept('GET', '/line-directory/v1/timetable-hearing/years?statusChoices=PLANNED').as('getChPlanned');
+    cy.get('a[href="' + LidiUtils.TTH_CH_PLANNED_PATH + '"]').click();
+    cy.wait('@getChPlanned').then((interception) => {
+      cy.wrap(interception.response?.statusCode).should('eq', 200);
+      // cy.url().should('contain', LidiUtils.LIDI_SUBLINES_PATH);
+    });
+  }
+
+  static changeLiDiTabToTTH(hearingStatus: string) {
+    cy.intercept('GET', '/line-directory/v1/timetable-hearing/years?statusChoices=' + hearingStatus).as('getRequest');
+    cy.get('a[href="' + LidiUtils.TTH_CH_PLANNED_PATH + hearingStatus.toLowerCase() + '"]').click();
+    cy.wait('@getRequest').then((interception) => {
+      cy.wrap(interception.response?.statusCode).should('eq', 200);
     });
   }
 
@@ -228,7 +251,7 @@ export default class LidiUtils {
     // Check that the table contains 1 result
     cy.get(DataCy.LIDI_LINES + ' table tbody tr').should('have.length', 1);
     // Click on the item
-    cy.contains('td', line.swissLineNumber).parents('tr').click({ force: true });
+    cy.contains('td', line.swissLineNumber).parents('tr').click({force: true});
     this.assertContainsLineVersion(line);
   }
 
@@ -311,7 +334,7 @@ export default class LidiUtils {
       longName:
         'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
       icon: 'https://en.wikipedia.org/wiki/File:Icon_train.svg',
-      comment: 'Kommentar',
+      comment: 'Kommentar'
     };
   }
 
@@ -334,7 +357,7 @@ export default class LidiUtils {
       combinationName: '',
       longName: '',
       icon: '',
-      comment: '',
+      comment: ''
     };
   }
 
@@ -357,7 +380,7 @@ export default class LidiUtils {
       combinationName: '',
       longName: '',
       icon: '',
-      comment: '',
+      comment: ''
     };
   }
 
@@ -381,7 +404,7 @@ export default class LidiUtils {
       longName:
         'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
       icon: 'https://en.wikipedia.org/wiki/File:Icon_train.svg',
-      comment: 'Kommentar',
+      comment: 'Kommentar'
     };
   }
 
@@ -404,7 +427,7 @@ export default class LidiUtils {
       longName:
         'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
       icon: 'https://en.wikipedia.org/wiki/File:Icon_train.svg',
-      comment: 'Kommentar-1',
+      comment: 'Kommentar-1'
     };
   }
 
@@ -427,7 +450,7 @@ export default class LidiUtils {
       longName:
         'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
       icon: 'https://en.wikipedia.org/wiki/File:Icon_train.svg',
-      comment: 'Kommentar-2',
+      comment: 'Kommentar-2'
     };
   }
 
@@ -435,7 +458,7 @@ export default class LidiUtils {
     return {
       validFrom: '01.06.2000',
       validTo: '01.06.2002',
-      alternativeName: 'IC2 alt edit',
+      alternativeName: 'IC2 alt edit'
     };
   }
 
@@ -443,7 +466,7 @@ export default class LidiUtils {
     // workaround for disabled input field error with (https://github.com/cypress-io/cypress/issues/5830)
     CommonUtils.getClearType(DataCy.VALID_FROM, version.validFrom, true);
     CommonUtils.getClearType(DataCy.VALID_TO, version.validTo, true);
-    cy.get(DataCy.SWISS_SUBLINE_NUMBER).clear().type(version.swissSublineNumber, { force: true });
+    cy.get(DataCy.SWISS_SUBLINE_NUMBER).clear().type(version.swissSublineNumber, {force: true});
     if (!skipMainline) {
       CommonUtils.typeAndSelectItemFromDropDown(DataCy.MAINLINE + ' ' + 'input', version.mainline);
     }
@@ -455,7 +478,7 @@ export default class LidiUtils {
 
     CommonUtils.selectItemFromDropDown(DataCy.TYPE, version.type);
     CommonUtils.selectItemFromDropDown(DataCy.PAYMENT_TYPE, version.paymentType);
-    cy.get(DataCy.DESCRIPTION).clear().type(version.description, { force: true });
+    cy.get(DataCy.DESCRIPTION).clear().type(version.description, {force: true});
     cy.get(DataCy.NUMBER).clear().type(version.number);
     cy.get(DataCy.LONG_NAME).clear().type(version.longName);
     cy.get(DataCy.SAVE_ITEM).should('not.be.disabled');
@@ -479,7 +502,7 @@ export default class LidiUtils {
     // Check that the table contains 1 result
     cy.get(DataCy.LIDI_SUBLINES + ' table tbody tr').should('have.length', 1);
     // Click on the item
-    cy.contains('td', subline.swissSublineNumber).parents('tr').click({ force: true });
+    cy.contains('td', subline.swissSublineNumber).parents('tr').click({force: true});
     this.assertContainsSublineVersion(subline);
   }
 
@@ -517,7 +540,7 @@ export default class LidiUtils {
       description: 'Lorem Ipus Linie',
       number: 'IC2',
       longName:
-        'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
+        'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z'
     };
   }
 
@@ -533,7 +556,7 @@ export default class LidiUtils {
       description: 'Lorem Ipus Linie',
       number: 'IC2-update',
       longName:
-        'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
+        'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z'
     };
   }
 
@@ -543,7 +566,7 @@ export default class LidiUtils {
       validTo: '01.06.2002',
       number: 'IC2-Edit',
       longName:
-        'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z - Edit',
+        'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z - Edit'
     };
   }
 
@@ -559,7 +582,7 @@ export default class LidiUtils {
       validTo: '01.01.2000',
       businessOrganisation: BodiDependentUtils.BO_DESCRIPTION,
       type: 'Kompensation',
-      paymentType: 'Regional',
+      paymentType: 'Regional'
     };
   }
 
@@ -575,7 +598,7 @@ export default class LidiUtils {
       validTo: '31.12.2099',
       businessOrganisation: BodiDependentUtils.BO_DESCRIPTION,
       type: 'Konzession',
-      paymentType: 'Lokal',
+      paymentType: 'Lokal'
     };
   }
 
