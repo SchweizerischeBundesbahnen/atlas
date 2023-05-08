@@ -41,7 +41,7 @@
             ></mat-checkbox>
           </div>
         </th>
-        <div *ngIf="!column.checkbox && !column.dropdown">
+        <div *ngIf="!column.checkbox && !column.dropdown && !column.button">
           <td
             *matCellDef="let value"
             [title]="showTitle(column, value[column.value])"
@@ -51,7 +51,7 @@
             {{ format(column, value[column.value]) }}
           </td>
         </div>
-        <div *ngIf="column.dropdown && !column.checkbox">
+        <div *ngIf="column.dropdown">
           <td
             *matCellDef="let value"
             [title]="showTitle(column, value[column.value])"
@@ -59,7 +59,7 @@
             mat-cell
           >
             <atlas-select
-              (click)="$event.stopPropagation()"
+              (click)="stopPropagation($event)"
               (selectChanged)="changeDropdownEvent.emit({$event,value})"
               [additionalLabelspace]="false"
               [disabled]="column.dropdown.disabled"
@@ -69,9 +69,9 @@
             ></atlas-select>
           </td>
         </div>
-        <div *ngIf="column.checkbox && !column.dropdown">
+        <div *ngIf="column.checkbox">
           <td
-            (click)="$event.stopPropagation()"
+            (click)="stopPropagation($event)"
             *matCellDef="let row"
             class="table-cell bordered-cell"
             mat-cell
@@ -80,6 +80,31 @@
               (change)="toggleCheckBox($event, row)"
               [checked]="checkBoxSelection.isSelected(row)"
             ></mat-checkbox>
+          </td>
+        </div>
+        <div *ngIf="column.button">
+          <td
+            (click)="stopPropagation($event)"
+            *matCellDef="let row"
+            class="table-cell bordered-cell"
+            mat-cell
+          >
+            <atlas-button
+              (buttonClicked)="buttonClickEvent.emit(row)"
+              [applicationType]="column.button.applicationType"
+              [buttonType]="column.button.buttonType"
+              [disabled]="column.button.disabled"
+              buttonDataCy="{{ column.button.buttonType }}"
+              title="{{ !column.button.disabled ? column.button.title : '' }}"
+              wrapperStyleClass="text-align-center"
+            >
+              <ng-template #rightIcon>
+                <i
+                  [ngClass]="!column.button.disabled ? 'icon-enabled' : ''"
+                  class=" {{ column.button.icon }}"
+                ></i>
+              </ng-template>
+            </atlas-button>
           </td>
         </div>
       </ng-container>
