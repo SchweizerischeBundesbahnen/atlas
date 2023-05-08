@@ -481,12 +481,12 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
       .getHearingYears([hearingStatus])
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((timetableHearingYearContainer) => {
-        if (timetableHearingYearContainer.objects) {
-          if (timetableHearingYearContainer.objects.length === 0) {
+        if (timetableHearingYearContainer) {
+          if (timetableHearingYearContainer.length === 0) {
             this.noTimetableHearingYearFound = true;
-          } else if (timetableHearingYearContainer.objects.length >= 1) {
+          } else if (timetableHearingYearContainer.length >= 1) {
             const timetableHearingYears = TthUtils.sortByTimetableHearingYear(
-              timetableHearingYearContainer.objects,
+              timetableHearingYearContainer,
               sortReverse
             );
             this.setFoundHearingYear(timetableHearingYears);
@@ -532,12 +532,12 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
       .getHearingYears([HearingStatus.Active])
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((timetableHearingYears) => {
-        if (timetableHearingYears.objects) {
-          if (timetableHearingYears.objects.length === 0) {
+        if (timetableHearingYears) {
+          if (timetableHearingYears.length === 0) {
             this.noTimetableHearingYearFound = true;
             this.getPlannedTimetableYearWhenNoActiveFound();
-          } else if (timetableHearingYears.objects.length >= 1) {
-            this.foundTimetableHearingYear = timetableHearingYears.objects[0];
+          } else if (timetableHearingYears.length >= 1) {
+            this.foundTimetableHearingYear = timetableHearingYears[0];
             this.initOverviewTable();
           }
         }
@@ -549,12 +549,9 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
       .getHearingYears([HearingStatus.Planned])
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((timetableHearingYearContainer) => {
-        if (
-          timetableHearingYearContainer.objects &&
-          timetableHearingYearContainer.objects?.length >= 1
-        ) {
+        if (timetableHearingYearContainer && timetableHearingYearContainer?.length >= 1) {
           const timetableHearingYears = TthUtils.sortByTimetableHearingYear(
-            timetableHearingYearContainer.objects,
+            timetableHearingYearContainer,
             false
           );
           this.foundTimetableHearingYear = timetableHearingYears[0];
@@ -660,7 +657,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
       .getHearingYears([HearingStatus.Active])
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((timetableHearingYearContainer) => {
-        if (timetableHearingYearContainer.totalCount! > 0) {
+        if (timetableHearingYearContainer.length > 0) {
           this.showStartTimetableHearingButton = false;
         }
       });

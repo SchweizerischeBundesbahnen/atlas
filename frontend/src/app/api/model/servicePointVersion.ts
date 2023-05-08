@@ -119,17 +119,14 @@ export interface ServicePointVersion {
   validFrom: Date;
   validTo: Date;
   /**
-   * ServicePoint has a Geolocation
+   * ServicePoint is StopPoint
    */
-  hasGeolocation?: boolean;
+  stopPoint?: boolean;
   /**
    * ServicePoint is FareStop
    */
   fareStop?: boolean;
-  /**
-   * ServicePoint is StopPoint
-   */
-  stopPoint?: boolean;
+  validFreightServicePoint?: boolean;
   /**
    * ServicePoint is TrafficPoint
    */
@@ -140,8 +137,11 @@ export interface ServicePointVersion {
   borderPoint?: boolean;
   validType?: boolean;
   /**
+   * ServicePoint has a Geolocation
+   */
+  hasGeolocation?: boolean;
+  /**
    * ServicePoint is OperatingPointKilometer
    */
   operatingPointKilometer?: boolean;
-  validFreightServicePoint?: boolean;
 }
