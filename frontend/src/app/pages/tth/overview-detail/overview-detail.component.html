@@ -107,9 +107,9 @@
           (buttonClicked)="startTimetableHearing()"
           applicationType="TIMETABLE_HEARING"
           buttonDataCy="startTimetableHearing"
+          buttonStyleClass="atlas-raised-button mat-mdc-raised-button"
           buttonText="TTH.BUTTON.START_TIMETABLE_HEARING"
           buttonType="supervisorButton"
-          buttonStyleClass="atlas-raised-button mat-mdc-raised-button"
         >
         </atlas-button>
       </div>
@@ -119,8 +119,8 @@
           (buttonClicked)="addNewTimetableHearing()"
           applicationType="TIMETABLE_HEARING"
           buttonDataCy="addNewTimetableHearing"
-          buttonText="TTH.BUTTON.ADD_NEW_TIMETABLE_HEARING"
           buttonStyleClass="atlas-raised-button mat-mdc-raised-button"
+          buttonText="TTH.BUTTON.ADD_NEW_TIMETABLE_HEARING"
           buttonType="supervisorButton"
           wrapperStyleClass="text-align-end"
         >
@@ -129,12 +129,14 @@
     </div>
 
     <app-table
+      (buttonClickEvent)="duplicate($event)"
       (changeDropdownEvent)="changeSelectedStatus($event)"
       (checkedBoxEvent)="checkedBoxEvent($event)"
       (editElementEvent)="editStatement($event)"
       (tableChanged)="getOverview($event)"
       *ngIf="!noTimetableHearingYearFound"
       [canEdit]="true"
+      [checkBoxModeEnabled]="isCheckBoxModeActive"
       [checkBoxSelection]="selectedCheckBox"
       [tableColumns]="tableColumns"
       [tableData]="timeTableHearingStatements"

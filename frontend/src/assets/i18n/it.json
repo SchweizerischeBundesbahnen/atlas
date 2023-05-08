@@ -556,6 +556,14 @@
       "NO_VERSION_VALID_AT": "Non esiste una versione valida di {{swissId}} su {{validAt}}. Verificare la validità del numero del campo orario.",
       "OPERATION_NOT_ALLOWED_DUE_TO_TTH_YEAR_SETTINGS": "Questa operazione non è possibile a causa della configurazione dell'anno orario."
     },
+    "DUPLICATE": {
+      "DIALOG": {
+        "TITLE": "Creare un duplicato",
+        "MESSAGE": "Vuole davvero duplicare questa udienza?",
+        "CONFIRM": "Creare un duplicato",
+        "CANCEL": "Cancellare"
+      }
+    },
     "DIALOG": {
       "STATUS_CHANGE": "Modificare lo stato",
       "CANTON_CHANGE": "Modificare il cantone",
@@ -575,6 +583,7 @@
       "ARCHIVED": "Audizioni archiviate"
     },
     "BUTTON": {
+      "DUPLICATE": "Duplicare",
       "DOWNLOAD_CSV": "Download [CSV]",
       "MANAGE_TIMETABLE_HEARING": "Amministrare le audizioni",
       "ADD_NEW_STATEMENT": "Aggiungere nuovo parare",
