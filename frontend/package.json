@@ -25,7 +25,7 @@
     "type": "git",
     "url": "git+https://code.sbb.ch/scm/ki_atlas/atlas-frontend.git"
   },
-  "version": "1.234.0",
+  "version": "1.235.0",
   "files": [
     "dist/*"
   ],
