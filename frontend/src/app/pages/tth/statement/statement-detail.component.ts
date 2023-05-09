@@ -91,10 +91,10 @@ export class StatementDetailComponent implements OnInit {
       this.isStatementEditable = this.timetableHearingService
         .getHearingYears([HearingStatus.Active])
         .pipe(
-          map((tthYearContainer) => {
-            const containerObjects = tthYearContainer ?? [];
-            if (containerObjects.length > 0) {
-              return containerObjects[0].statementEditable;
+          map((timetableHearingYears) => {
+            const foundTimetableHearingYears = timetableHearingYears ?? [];
+            if (foundTimetableHearingYears.length > 0) {
+              return foundTimetableHearingYears[0].statementEditable;
             }
             return false;
           })
@@ -261,8 +261,8 @@ export class StatementDetailComponent implements OnInit {
   private initYearOptions() {
     this.timetableHearingService
       .getHearingYears([HearingStatus.Active, HearingStatus.Planned])
-      .subscribe((yearContainer) => {
-        let years = yearContainer.map((year) => year.timetableYear);
+      .subscribe((timetableHearingYears) => {
+        let years = timetableHearingYears.map((year) => year.timetableYear);
         if (!this.isNew) {
           const savedYear = this.form.controls.timetableYear.value!;
           if (years.indexOf(savedYear) === -1) {
