@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { TableColumn } from './table-column';
-import { DateService } from '../../date/date.service';
+import { TableColumn } from '../table-column';
+import { DateService } from '../../../date/date.service';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Pipe({
