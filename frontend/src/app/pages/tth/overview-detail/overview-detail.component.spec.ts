@@ -6,7 +6,6 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { DisplayDatePipe } from '../../../core/pipe/display-date.pipe';
 import {
   ContainerTimetableHearingStatement,
-  ContainerTimetableHearingYear,
   HearingStatus,
   TimetableHearingService,
   TimetableHearingStatement,
@@ -58,11 +57,6 @@ const hearingYear2001: TimetableHearingYear = {
   hearingTo: moment().toDate(),
 };
 
-const hearingContainer: ContainerTimetableHearingYear = {
-  objects: [hearingYear2000, hearingYear2001],
-  totalCount: 2,
-};
-
 const timetabelHearingStatement: TimetableHearingStatement = {
   timetableYear: 2001,
   statementStatus: 'REVOKED',
@@ -108,7 +102,9 @@ const authServiceMock: Partial<AuthService> = {
 };
 
 async function baseTestConfiguration() {
-  mockTimetableHearingService.getHearingYears.and.returnValue(of(hearingContainer));
+  mockTimetableHearingService.getHearingYears.and.returnValue(
+    of([hearingYear2000, hearingYear2001])
+  );
   mockTimetableHearingService.getStatements.and.returnValue(of(containerTimetableHearingStatement));
 
   await TestBed.configureTestingModule({

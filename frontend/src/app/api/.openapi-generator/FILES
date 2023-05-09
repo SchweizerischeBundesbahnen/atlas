@@ -45,7 +45,6 @@ model/containerServicePointVersion.ts
 model/containerSubline.ts
 model/containerTimetableFieldNumber.ts
 model/containerTimetableHearingStatement.ts
-model/containerTimetableHearingYear.ts
 model/containerTrafficPointElementVersion.ts
 model/containerTransportCompany.ts
 model/containerUser.ts
