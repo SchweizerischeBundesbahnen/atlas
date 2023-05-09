@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { TableColumn } from './table-column';
+import { TableColumn } from '../table-column';
 import { FormatPipe } from './format.pipe';
 
 @Pipe({

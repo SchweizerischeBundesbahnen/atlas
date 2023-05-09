@@ -621,7 +621,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
         getTitle: (value: string): Observable<string> => {
           return this.userAdministrationService.getUserDisplayName(value).pipe(
             take(1),
-            map((userDisplayName) => userDisplayName.displayName ?? '')
+            map((userDisplayName) => userDisplayName.displayName ?? value)
           );
         },
       },
