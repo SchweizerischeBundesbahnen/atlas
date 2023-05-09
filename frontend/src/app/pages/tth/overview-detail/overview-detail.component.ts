@@ -260,6 +260,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
   addNewTimetableHearing() {
     this.newTimetableHearingYearDialogService.openDialog().subscribe((result) => {
       if (result) {
+        this.noTimetableHearingYearFound = false;
         this.ngOnInit();
       }
     });
@@ -479,18 +480,16 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     this.timetableHearingService
       .getHearingYears([hearingStatus])
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((timetableHearingYearContainer) => {
-        if (timetableHearingYearContainer.objects) {
-          if (timetableHearingYearContainer.objects.length === 0) {
-            this.noTimetableHearingYearFound = true;
-          } else if (timetableHearingYearContainer.objects.length >= 1) {
-            const timetableHearingYears = TthUtils.sortByTimetableHearingYear(
-              timetableHearingYearContainer.objects,
-              sortReverse
-            );
-            this.setFoundHearingYear(timetableHearingYears);
-            this.initOverviewTable();
-          }
+      .subscribe((timetableHearingYears) => {
+        if (timetableHearingYears.length === 0) {
+          this.noTimetableHearingYearFound = true;
+        } else if (timetableHearingYears.length >= 1) {
+          const foundTimetableHearingYears = TthUtils.sortByTimetableHearingYear(
+            timetableHearingYears,
+            sortReverse
+          );
+          this.setFoundHearingYear(foundTimetableHearingYears);
+          this.initOverviewTable();
         }
       });
   }
@@ -531,12 +530,12 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
       .getHearingYears([HearingStatus.Active])
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((timetableHearingYears) => {
-        if (timetableHearingYears.objects) {
-          if (timetableHearingYears.objects.length === 0) {
+        if (timetableHearingYears) {
+          if (timetableHearingYears.length === 0) {
             this.noTimetableHearingYearFound = true;
             this.getPlannedTimetableYearWhenNoActiveFound();
-          } else if (timetableHearingYears.objects.length >= 1) {
-            this.foundTimetableHearingYear = timetableHearingYears.objects[0];
+          } else if (timetableHearingYears.length >= 1) {
+            this.foundTimetableHearingYear = timetableHearingYears[0];
             this.initOverviewTable();
           }
         }
@@ -547,16 +546,13 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     this.timetableHearingService
       .getHearingYears([HearingStatus.Planned])
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((timetableHearingYearContainer) => {
-        if (
-          timetableHearingYearContainer.objects &&
-          timetableHearingYearContainer.objects?.length >= 1
-        ) {
-          const timetableHearingYears = TthUtils.sortByTimetableHearingYear(
-            timetableHearingYearContainer.objects,
+      .subscribe((timetableHearingYears) => {
+        if (timetableHearingYears && timetableHearingYears?.length >= 1) {
+          const foundTimetableHearingYears = TthUtils.sortByTimetableHearingYear(
+            timetableHearingYears,
             false
           );
-          this.foundTimetableHearingYear = timetableHearingYears[0];
+          this.foundTimetableHearingYear = foundTimetableHearingYears[0];
         } else {
           this.noTimetableHearingYearFound = true;
           this.noPlannedTimetableHearingYearFound = true;
@@ -658,8 +654,8 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     this.timetableHearingService
       .getHearingYears([HearingStatus.Active])
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((timetableHearingYearContainer) => {
-        if (timetableHearingYearContainer.totalCount! > 0) {
+      .subscribe((timetableHearingYears) => {
+        if (timetableHearingYears.length > 0) {
           this.showStartTimetableHearingButton = false;
         }
       });

@@ -1,5 +1,6 @@
 package ch.sbb.line.directory.controller;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -61,11 +62,11 @@ public class TimetableHearingYearControllerApiTest extends BaseControllerApiTest
 
     mvc.perform(get("/v1/timetable-hearing/years?statusChoices=" + HearingStatus.PLANNED))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.totalCount", is(1)));
+        .andExpect(jsonPath("$", hasSize(1)));
 
     mvc.perform(get("/v1/timetable-hearing/years?statusChoices=" + HearingStatus.ACTIVE))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.totalCount", is(0)));
+        .andExpect(jsonPath("$", hasSize(0)));
   }
 
   @Test

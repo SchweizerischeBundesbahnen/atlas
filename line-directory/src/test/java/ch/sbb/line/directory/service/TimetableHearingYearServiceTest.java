@@ -20,13 +20,12 @@ import ch.sbb.line.directory.repository.TimetableHearingStatementRepository;
 import ch.sbb.line.directory.repository.TimetableHearingYearRepository;
 import ch.sbb.line.directory.service.hearing.TimetableHearingYearService;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 @IntegrationTest
 public class TimetableHearingYearServiceTest {
@@ -96,19 +95,17 @@ public class TimetableHearingYearServiceTest {
   void shouldGetHearingYearByStaus() {
     timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
 
-    Page<TimetableHearingYear> hearingYears =
+    List<TimetableHearingYear> hearingYears =
         timetableHearingYearService.getHearingYears(TimetableHearingYearSearchRestrictions.builder()
-            .pageable(Pageable.unpaged())
             .statusRestrictions(Set.of(HearingStatus.PLANNED))
             .build());
-    assertThat(hearingYears.getTotalElements()).isEqualTo(1);
+    assertThat(hearingYears.size()).isEqualTo(1);
 
     hearingYears =
         timetableHearingYearService.getHearingYears(TimetableHearingYearSearchRestrictions.builder()
-            .pageable(Pageable.unpaged())
             .statusRestrictions(Set.of(HearingStatus.ACTIVE))
             .build());
-    assertThat(hearingYears.getTotalElements()).isZero();
+    assertThat(hearingYears.size()).isZero();
   }
 
   @Test
