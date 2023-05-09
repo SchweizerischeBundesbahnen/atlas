@@ -1,7 +1,7 @@
 import { ShowTitlePipe } from './show-title.pipe';
 import { FormatPipe } from './format.pipe';
 import SpyObj = jasmine.SpyObj;
-import { TableColumn } from './table-column';
+import { TableColumn } from '../table-column';
 
 describe('ShowTitlePipe', () => {
   let formatPipe: SpyObj<FormatPipe>;
