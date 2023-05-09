@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit } from '@angular/core';
 import {
   ApplicationRole,
   ApplicationType,
@@ -35,7 +35,7 @@ import { StatementShareService } from '../overview-detail/statement-share-servic
   templateUrl: './statement-detail.component.html',
   styleUrls: ['./statement-detail.component.scss'],
 })
-export class StatementDetailComponent implements OnInit {
+export class StatementDetailComponent implements OnInit, AfterViewInit {
   YEAR_OPTIONS: number[] = [];
   CANTON_OPTIONS: Canton[] = [];
   STATUS_OPTIONS: StatementStatus[] = [];
@@ -61,7 +61,8 @@ export class StatementDetailComponent implements OnInit {
     private timetableYearChangeService: TimetableYearChangeService,
     private readonly statementDialogService: StatementDialogService,
     private readonly openStatementInMailService: OpenStatementInMailService,
-    private readonly statementShareService: StatementShareService
+    private readonly statementShareService: StatementShareService,
+    private readonly elementRef: ElementRef<HTMLElement>
   ) {}
 
   get isHearingStatusArchived() {
@@ -80,6 +81,11 @@ export class StatementDetailComponent implements OnInit {
   readonly extractEnumCanton = (option: Canton) => option.enumCanton;
 
   readonly extractShort = (option: Canton) => option.short;
+
+  ngAfterViewInit() {
+    const scrollbarElement = this.elementRef.nativeElement.closest('#scrollbar-content-container');
+    scrollbarElement?.scroll(0, 0);
+  }
 
   ngOnInit() {
     this.statement = this.route.snapshot.data.statement;

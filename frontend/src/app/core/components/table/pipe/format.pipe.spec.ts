@@ -1,7 +1,7 @@
 import { FormatPipe } from './format.pipe';
 import SpyObj = jasmine.SpyObj;
 import { TranslatePipe } from '@ngx-translate/core';
-import { TableColumn } from './table-column';
+import { TableColumn } from '../table-column';
 
 describe('FormatPipe', () => {
   let translatePipeMock: SpyObj<TranslatePipe>;
