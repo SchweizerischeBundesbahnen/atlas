@@ -1,9 +1,9 @@
 import {
-  ContainerTimetableHearingYear,
   HearingStatus,
   SwissCanton,
   TimetableHearingService,
   TimetableHearingStatement,
+  TimetableHearingYear,
 } from '../../../api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
@@ -39,15 +39,13 @@ const existingStatement: TimetableHearingStatement = {
   },
 };
 
-const years: ContainerTimetableHearingYear = {
-  objects: [
-    {
-      timetableYear: 2024,
-      hearingFrom: new Date('2023-05-1'),
-      hearingTo: new Date('2023-05-31'),
-    },
-  ],
-};
+const years: TimetableHearingYear[] = [
+  {
+    timetableYear: 2024,
+    hearingFrom: new Date('2023-05-1'),
+    hearingTo: new Date('2023-05-31'),
+  },
+];
 
 let component: StatementDetailComponent;
 let fixture: ComponentFixture<StatementDetailComponent>;
@@ -117,15 +115,6 @@ describe('StatementDetailComponent for existing statement', () => {
 });
 
 describe('test editButton', () => {
-  const timetableYearWithStatementEditableTrue: ContainerTimetableHearingYear = {
-    objects: [
-      {
-        ...years.objects![0],
-        statementEditable: true,
-      },
-    ],
-  };
-
   beforeEach(() => {
     const mockRoute = {
       snapshot: {
@@ -141,7 +130,12 @@ describe('test editButton', () => {
     setupTestBed(mockRoute);
 
     mockTimetableHearingService.getHearingYears.and.returnValue(
-      of(timetableYearWithStatementEditableTrue)
+      of([
+        {
+          ...years[0],
+          statementEditable: true,
+        },
+      ])
     );
 
     fixture = TestBed.createComponent(StatementDetailComponent);
