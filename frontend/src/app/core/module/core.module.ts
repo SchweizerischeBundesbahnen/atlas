@@ -39,9 +39,9 @@ import { FileUploadComponent } from '../components/file-upload/file-upload.compo
 import { FileComponent } from '../components/file-upload/file/file.component';
 import { FileSizePipe } from '../components/file-upload/file-size/file-size.pipe';
 import { FileDropDirective } from '../components/file-upload/file-drop/file-drop.directive';
-import { ShowTitlePipe } from '../components/table/show-title.pipe';
-import { MouseOverTitleDirective } from '../components/table/mouse-over-title.directive';
-import { FormatPipe } from '../components/table/format.pipe';
+import { ShowTitlePipe } from '../components/table/pipe/show-title.pipe';
+import { MouseOverTitleDirective } from '../components/table/directive/mouse-over-title.directive';
+import { FormatPipe } from '../components/table/pipe/format.pipe';
 
 const coreComponents = [
   WorkflowFormComponent,
