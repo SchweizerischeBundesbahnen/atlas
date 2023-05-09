@@ -1,7 +1,7 @@
 import LidiUtils from "../../../support/util/lidi-utils";
 import {DataCy} from "../../../support/data-cy";
 import CommonUtils from "../../../support/util/common-utils";
-import BodiDependentUtils from "../../../support/util/bodi-dependent-utils";
+import AngularMaterialConstants from "../../../support/util/angular-material-constants";
 
 describe('Timetable Hearing', {testIsolation: false}, () => {
 
@@ -11,13 +11,21 @@ describe('Timetable Hearing', {testIsolation: false}, () => {
     cy.atlasLogin();
   });
 
-  it('Dependent BusinessOrganisation Preparation Step', () => {
-    BodiDependentUtils.createDependentBusinessOrganisation();
-  });
-
   it('Step-2: Navigate to Fahrplananhörung', () => {
     LidiUtils.navigateToTimetableHearing();
   });
+
+  // it('Step-2 Check: Navigate to Aktuelle Anhörungen and close it if exists', () => {
+  //   cy.get(DataCy.TTH_SWISS_CANTON_CARD).click();
+  //   cy.get(DataCy.SELECT_TTH_CANTON_DROPDOWN).then((el) => {
+  //     if (el.length) {
+  //       CommonUtils.selectItemFromDropDown(DataCy.SELECT_TTH_CANTON_DROPDOWN, ' Gesamtschweiz');
+  //       cy.get(DataCy.TTH_MANAGE_TIMETABLE_HEARING).click();
+  //       cy.get(DataCy.TTH_CLOSE_TTH_YEAR).click();
+  //       cy.get(DataCy.TTH_CLOSE_TTH_TIMETABLE_HEARING).click();
+  //     }
+  //   })
+  // });
 
   it('Step-3: Navigate to Geplante Anhörungen', () => {
     cy.get(DataCy.TTH_SWISS_CANTON_CARD).click();
@@ -27,7 +35,7 @@ describe('Timetable Hearing', {testIsolation: false}, () => {
   it('Step-4: Fahrplanjahr anlegen', () => {
     cy.get(DataCy.ADD_NEW_TIMETABLE_HEARING_BUTTON).click();
     CommonUtils.selectFirstItemFromDropDown(DataCy.ADD_NEW_TIMETABLE_HEARING_SELECT_YEAR_DROPDOWN);
-    cy.get("[data-cy=timetableYear] .mat-mdc-select-value-text > .mat-mdc-select-min-line").then((elem) => {
+    cy.get(DataCy.ADD_NEW_TIMETABLE_HEARING_SELECT_YEAR_DROPDOWN + AngularMaterialConstants.MAT_SELECT_TEXT_DEEP_SELECT).then((elem) => {
       selectedHearingYear = Number(elem.text());
       const validFrom = '01.01.' + (Number(elem.text()) - 1);
       const validTo = '31.12.' + (Number(elem.text()) - 1);
@@ -39,8 +47,7 @@ describe('Timetable Hearing', {testIsolation: false}, () => {
   });
 
   it('Step-5: Fahrplanjahr Starten', () => {
-    LidiUtils.changeLiDiTabToTTH('ACTIVE');
-    LidiUtils.changeLiDiTabToTTH('PLANNED');
+    CommonUtils.selectItemFromDropDown(DataCy.TTH_SELECT_YEAR, String(selectedHearingYear));
     cy.get(DataCy.START_TIMETABLE_HEARING_YEAR_BUTTON).click().then(() => {
       cy.get(DataCy.DIALOG_CONFIRM_BUTTON).click();
     })
@@ -51,7 +58,7 @@ describe('Timetable Hearing', {testIsolation: false}, () => {
     CommonUtils.selectItemFromDropDown(DataCy.SELECT_TTH_CANTON_DROPDOWN, ' Tessin');
     cy.get(DataCy.NEW_STATEMENT_BUTTON).click();
     cy.get('.detail-page-container').scrollIntoView({offset: {top: 0, left: 0}});
-    cy.get('.detail-page-container').scrollIntoView({offset: {top: 150, left: 0}});
+    CommonUtils.selectItemFromDropDown(DataCy.TTH_SELECT_YEAR, String(selectedHearingYear));
     CommonUtils.getClearType(DataCy.STATEMENT_STOP_PLACE, 'Wiesenbach')
     CommonUtils.getClearType(DataCy.STATEMENT_FIRTS_NAME, 'Khvicha')
     CommonUtils.getClearType(DataCy.STATEMENT_LAST_NAME, 'Kvaratskhelia')
@@ -90,8 +97,10 @@ describe('Timetable Hearing', {testIsolation: false}, () => {
     cy.get(DataCy.TTH_CLOSE_TTH_TIMETABLE_HEARING).click();
   });
 
-  it('Dependent BusinessOrganisation Cleanup Step', () => {
-    console.log(selectedHearingYear);
-    BodiDependentUtils.deleteDependentBusinessOrganisation();
+  it('Step-9: Archivierte Anhörungn kontrollieren', () => {
+    LidiUtils.changeLiDiTabToTTH('ARCHIVED');
+    CommonUtils.selectItemFromDropDown(DataCy.TTH_SELECT_YEAR, String(selectedHearingYear));
+    CommonUtils.assertNumberOfTableRows(DataCy.TTH_TABLE, 1);
   });
+
 });

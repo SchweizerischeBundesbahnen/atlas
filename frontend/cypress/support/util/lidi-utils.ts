@@ -39,15 +39,6 @@ export default class LidiUtils {
     });
   }
 
-  static changeLiDiTabToTTHPlanned() {
-    cy.intercept('GET', '/line-directory/v1/timetable-hearing/years?statusChoices=PLANNED').as('getChPlanned');
-    cy.get('a[href="' + LidiUtils.TTH_CH_PLANNED_PATH + '"]').click();
-    cy.wait('@getChPlanned').then((interception) => {
-      cy.wrap(interception.response?.statusCode).should('eq', 200);
-      // cy.url().should('contain', LidiUtils.LIDI_SUBLINES_PATH);
-    });
-  }
-
   static changeLiDiTabToTTH(hearingStatus: string) {
     cy.intercept('GET', '/line-directory/v1/timetable-hearing/years?statusChoices=' + hearingStatus).as('getRequest');
     cy.get('a[href="' + LidiUtils.TTH_CH_PLANNED_PATH + hearingStatus.toLowerCase() + '"]').click();
