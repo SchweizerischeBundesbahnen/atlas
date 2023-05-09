@@ -480,18 +480,16 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     this.timetableHearingService
       .getHearingYears([hearingStatus])
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((timetableHearingYearContainer) => {
-        if (timetableHearingYearContainer) {
-          if (timetableHearingYearContainer.length === 0) {
-            this.noTimetableHearingYearFound = true;
-          } else if (timetableHearingYearContainer.length >= 1) {
-            const timetableHearingYears = TthUtils.sortByTimetableHearingYear(
-              timetableHearingYearContainer,
-              sortReverse
-            );
-            this.setFoundHearingYear(timetableHearingYears);
-            this.initOverviewTable();
-          }
+      .subscribe((timetableHearingYears) => {
+        if (timetableHearingYears.length === 0) {
+          this.noTimetableHearingYearFound = true;
+        } else if (timetableHearingYears.length >= 1) {
+          const foundTimetableHearingYears = TthUtils.sortByTimetableHearingYear(
+            timetableHearingYears,
+            sortReverse
+          );
+          this.setFoundHearingYear(foundTimetableHearingYears);
+          this.initOverviewTable();
         }
       });
   }
@@ -548,13 +546,13 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     this.timetableHearingService
       .getHearingYears([HearingStatus.Planned])
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((timetableHearingYearContainer) => {
-        if (timetableHearingYearContainer && timetableHearingYearContainer?.length >= 1) {
-          const timetableHearingYears = TthUtils.sortByTimetableHearingYear(
-            timetableHearingYearContainer,
+      .subscribe((timetableHearingYears) => {
+        if (timetableHearingYears && timetableHearingYears?.length >= 1) {
+          const foundTimetableHearingYears = TthUtils.sortByTimetableHearingYear(
+            timetableHearingYears,
             false
           );
-          this.foundTimetableHearingYear = timetableHearingYears[0];
+          this.foundTimetableHearingYear = foundTimetableHearingYears[0];
         } else {
           this.noTimetableHearingYearFound = true;
           this.noPlannedTimetableHearingYearFound = true;
@@ -656,8 +654,8 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     this.timetableHearingService
       .getHearingYears([HearingStatus.Active])
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((timetableHearingYearContainer) => {
-        if (timetableHearingYearContainer.length > 0) {
+      .subscribe((timetableHearingYears) => {
+        if (timetableHearingYears.length > 0) {
           this.showStartTimetableHearingButton = false;
         }
       });
