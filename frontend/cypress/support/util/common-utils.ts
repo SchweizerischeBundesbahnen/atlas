@@ -179,6 +179,7 @@ export default class CommonUtils {
   static chooseMatOptionByText(value: string | undefined) {
     cy.get('mat-option > span').then((options) => {
       for (const option of options) {
+        console.log(option.innerText)
         if (value) {
           if (option.innerText === value) {
             option.click(); // this is jquery click() not cypress click()

@@ -65,6 +65,28 @@ export class DataCy {
   static TTH_SWISS_CANTON_CARD = '[data-cy=swiss-canton-card]';
   static ADD_NEW_TIMETABLE_HEARING_BUTTON = '[data-cy=addNewTimetableHearing]';
   static ADD_NEW_TIMETABLE_HEARING_SELECT_YEAR_DROPDOWN = '[data-cy=timetableYear]';
+  static START_TIMETABLE_HEARING_YEAR_BUTTON = '[data-cy=startTimetableHearing]';
+  static SELECT_TTH_CANTON_DROPDOWN = '[data-cy=selectTthCanton]';
+  static SELECT_TTH_YEAR_DROPDOWN = '[data-cy=selectTthYear]';
+  static NEW_STATEMENT_BUTTON = '[data-cy=addNewStatement]';
+  static STATEMENT_STOP_PLACE = '[data-cy=stopPlace]';
+  static STATEMENT_FIRTS_NAME = '[data-cy=firstName]';
+  static STATEMENT_LAST_NAME = '[data-cy=lastName]';
+  static STATEMENT_ORGANISATION = '[data-cy=organisation]';
+  static STATEMENT_ZIP = '[data-cy=zip]';
+  static STATEMENT_CITY = '[data-cy=city]';
+  static STATEMENT_STREET = '[data-cy=street]';
+  static STATEMENT_EMAIL = '[data-cy=email]';
+  static STATEMENT_STATEMENT = '[data-cy=statement]';
+  static STATEMENT_JUSTIFICATION = '[data-cy=justification]';
+  static TTH_TABLE = '[data-cy=tthTable]';
+  static EDIT_BUTTON = '[data-cy=edit]';
+  static TTH_COLLECT_ACTION_TYPE = '[data-cy=collect-action-type]';
+  static TTH_TABLE_CHECKBOX_ALL = '[data-cy=tableCheckboxAll]';
+  static TTH_MANAGE_TIMETABLE_HEARING = '[data-cy=manageTimetableHearing]';
+  static TTH_CLOSE_TTH_YEAR = '[data-cy=closeTthYearButton]';
+  static TTH_CLOSE_TTH_TIMETABLE_HEARING = '[data-cy=closeTthTimetableHearingButton]';
+  static COLLECT_STATUS_CHANGE_ACTION_TYPE = '[data-cy=collect-status-change-action-type]';
 
   static TABLE_FILTER_MULTI_SELECT = (rowIndex: number, columnIndex: number) =>
     `[data-cy=table-filter-multi-select-${rowIndex}-${columnIndex}]`;
