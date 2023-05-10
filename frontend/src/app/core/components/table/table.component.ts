@@ -34,13 +34,8 @@ export class TableComponent<DATATYPE> implements OnInit {
   @Output() buttonClickEvent = new EventEmitter<any>();
   @Output() checkedBoxEvent = new EventEmitter<SelectionModel<DATATYPE>>();
   isLoading = false;
-  SHOW_TOOLTIP_LENGTH = 20;
 
-  constructor(
-    private dateService: DateService,
-    private translatePipe: TranslatePipe,
-    private readonly tableService: TableService
-  ) {}
+  constructor(private readonly tableService: TableService) {}
 
   private _tableData: DATATYPE[] = [];
 
@@ -125,32 +120,6 @@ export class TableComponent<DATATYPE> implements OnInit {
     }
 
     this.emitTableChangedEvent();
-  }
-
-  showTitle(column: TableColumn<DATATYPE>, value: string | Date): string {
-    const content = this.format(column, value);
-    const hideTooltip = this.hideTooltip(content);
-    return !hideTooltip ? content : '';
-  }
-
-  format(column: TableColumn<DATATYPE>, value: string | Date): string {
-    if (column.formatAsDate) {
-      return DateService.getDateFormatted(value as Date);
-    }
-    if (column.translate?.withPrefix) {
-      return value ? this.translatePipe.transform(column.translate.withPrefix + value) : null;
-    }
-    if (column.callback) {
-      return column.callback(value);
-    }
-    return value as string;
-  }
-
-  hideTooltip(forText: string | null) {
-    if (!forText) {
-      return true;
-    }
-    return forText.length <= this.SHOW_TOOLTIP_LENGTH;
   }
 
   isAllSelected() {
