@@ -2,6 +2,7 @@ package ch.sbb.line.directory.model.csv;
 
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
+import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.export.model.VersionCsvModel;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -18,29 +19,30 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonPropertyOrder({"cantonAbbreviation", "timetableFieldNumber", "timetableFieldNumberDescription", "stopPlace",
-    "transportCompanyAbbreviations", "transportCompanyDescriptions", "statement", "documentsPresent", "justification",
+    "transportCompanyAbbreviations", "transportCompanyDescriptions", "statement", "documentsPresent", "status", "justification",
     "firstName", "lastName", "organisation",
     "street", "zip", "email", "editor", "editionDate", "timetableHearingYear"})
 public class TimetableHearingStatementCsvModel implements VersionCsvModel {
 
-  private String cantonAbbreviation;
-  private String timetableFieldNumber;
-  private String timetableFieldNumberDescription;
-  private String stopPlace;
-  private String transportCompanyAbbreviations;
-  private String transportCompanyDescriptions;
-  private String statement;
+  private String cantonAbbreviation;//ok
+  private String timetableFieldNumber;//ok
+  private String timetableFieldNumberDescription;//ok
+  private String stopPlace;//ok
+  private String transportCompanyAbbreviations;//ok
+  private String transportCompanyDescriptions;//ok
+  private String statement;//ok
   private Boolean documentsPresent;
-  private String justification;
-  private String firstName;
-  private String lastName;
-  private String organisation;
-  private String street;
-  private Integer zip;
-  private String email;
-  private String editor;
-  private LocalDateTime editionDate;
-  private Long timetableHearingYear;
+  private StatementStatus status;
+  private String justification;//ok
+  private String firstName;//ok
+  private String lastName;//ok
+  private String organisation;//ok
+  private String street;//ok
+  private Integer zip;//ok
+  private String email;//ok
+  private String editor;//ok
+  private LocalDateTime editionDate;//ok
+  private Long timetableHearingYear; //ok
 
   public static TimetableHearingStatementCsvModel fromModel(TimetableHearingStatementModel timetableHearingStatementModel) {
     return TimetableHearingStatementCsvModel.builder()
@@ -56,6 +58,7 @@ public class TimetableHearingStatementCsvModel implements VersionCsvModel {
                 ",")))
         .statement(timetableHearingStatementModel.getStatement())
         .documentsPresent(!timetableHearingStatementModel.getDocuments().isEmpty())
+        .status(timetableHearingStatementModel.getStatementStatus())
         .justification(timetableHearingStatementModel.getJustification())
         .firstName(timetableHearingStatementModel.getStatementSender().getFirstName())
         .lastName(timetableHearingStatementModel.getStatementSender().getLastName())
