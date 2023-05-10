@@ -66,7 +66,7 @@ public class TimetableHearingStatementCsvModel implements VersionCsvModel {
         .lastName(timetableHearingStatementModel.getStatementSender().getLastName())
         .organisation(timetableHearingStatementModel.getStatementSender().getOrganisation())
         .street(timetableHearingStatementModel.getStatementSender().getStreet())
-        .zip(setzipAndCity(timetableHearingStatementModel.getStatementSender().getZip(), timetableHearingStatementModel.getStatementSender().getCity()))
+        .zip(setZipAndCity(timetableHearingStatementModel.getStatementSender().getZip(), timetableHearingStatementModel.getStatementSender().getCity()))
         .email(timetableHearingStatementModel.getStatementSender().getEmail())
         .editor(timetableHearingStatementModel.getEditor())
         .editionDate(timetableHearingStatementModel.getEditionDate())
@@ -74,7 +74,7 @@ public class TimetableHearingStatementCsvModel implements VersionCsvModel {
         .build();
   }
 
-  private static String setzipAndCity(Integer zip, String city) {
+  public static String setZipAndCity(Integer zip, String city) {
     if(zip == null) {
       return Objects.requireNonNullElse(city, "");
     } else if(city == null || city.isEmpty()) {
