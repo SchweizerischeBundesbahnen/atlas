@@ -1,5 +1,6 @@
 import { ApplicationType } from '../../../api';
 import { AtlasButtonType } from '../button/atlas-button.type';
+import { Observable } from 'rxjs';
 
 export interface TableColumn<TYPE> {
   headerTitle: string;
@@ -16,6 +17,7 @@ export interface TableColumn<TYPE> {
     withPrefix?: string;
     withKey?: string;
   };
+  getTitle?: (value: string) => Observable<string>;
 }
 
 export interface ColumnDropDown {
