@@ -23,7 +23,7 @@
       <ng-container matColumnDef="{{ column.value }}">
         <th
           *matHeaderCellDef
-          [disabled]="column.disabled"
+          [disabled]="!!column.disabled"
           [ngClass]="column.dropdown ? 'col-2' : ''"
           class="font-bold-base color-primary-400 translated-paragraph bordered-cell"
           mat-header-cell
@@ -41,23 +41,32 @@
             ></mat-checkbox>
           </div>
         </th>
-        <div *ngIf="!column.checkbox && !column.dropdown && !column.button">
-          <td
-            *matCellDef="let value"
-            [title]="showTitle(column, value[column.value])"
-            class="table-cell bordered-cell"
-            mat-cell
-          >
-            {{ format(column, value[column.value]) }}
-          </td>
+        <div *ngIf="!column.checkbox && !column.dropdown && !column.button" [ngSwitch]="!!column.getTitle">
+          <ng-template [ngSwitchCase]="true">
+            <td
+              *matCellDef="let value"
+              [mouseOverTitle]="column.getTitle!"
+              [mouseOverTitleValue]="value[column.value]"
+              class="table-cell bordered-cell"
+              mat-cell
+            >
+              {{ value[column.value] | format : column }}
+            </td>
+          </ng-template>
+
+          <ng-template [ngSwitchCase]="false">
+            <td
+              *matCellDef="let value"
+              [title]="value[column.value] | showTitle : column"
+              class="table-cell bordered-cell"
+              mat-cell
+            >
+              {{ value[column.value] | format : column }}
+            </td>
+          </ng-template>
         </div>
         <div *ngIf="column.dropdown">
-          <td
-            *matCellDef="let value"
-            [title]="showTitle(column, value[column.value])"
-            class="table-cell bordered-cell"
-            mat-cell
-          >
+          <td *matCellDef="let value" class="table-cell bordered-cell" mat-cell>
             <atlas-select
               (click)="stopPropagation($event)"
               (selectChanged)="changeDropdownEvent.emit({$event,value})"
