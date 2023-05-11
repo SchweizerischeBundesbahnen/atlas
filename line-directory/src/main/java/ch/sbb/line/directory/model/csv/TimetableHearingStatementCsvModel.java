@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @JsonPropertyOrder({"cantonAbbreviation", "timetableFieldNumber", "timetableFieldNumberDescription", "stopPlace",
     "transportCompanyAbbreviations", "transportCompanyDescriptions", "statement", "documentsPresent", "status", "justification",
     "firstName", "lastName", "organisation",
-    "street", "zip", "email", "editor", "editionDate", "timetableHearingYear"})
+    "street", "zipAndCity", "email", "editor", "editionDate", "timetableHearingYear"})
 public class TimetableHearingStatementCsvModel implements VersionCsvModel {
 
   private String cantonAbbreviation;
@@ -39,7 +39,7 @@ public class TimetableHearingStatementCsvModel implements VersionCsvModel {
   private String lastName;
   private String organisation;
   private String street;
-  private String zip;
+  private String zipAndCity;
   private String email;
   private String editor;
   private LocalDateTime editionDate;
@@ -66,7 +66,7 @@ public class TimetableHearingStatementCsvModel implements VersionCsvModel {
         .lastName(timetableHearingStatementModel.getStatementSender().getLastName())
         .organisation(timetableHearingStatementModel.getStatementSender().getOrganisation())
         .street(timetableHearingStatementModel.getStatementSender().getStreet())
-        .zip(setZipAndCity(timetableHearingStatementModel.getStatementSender().getZip(), timetableHearingStatementModel.getStatementSender().getCity()))
+        .zipAndCity(getZipAndCity(timetableHearingStatementModel.getStatementSender().getZip(), timetableHearingStatementModel.getStatementSender().getCity()))
         .email(timetableHearingStatementModel.getStatementSender().getEmail())
         .editor(timetableHearingStatementModel.getEditor())
         .editionDate(timetableHearingStatementModel.getEditionDate())
@@ -74,7 +74,7 @@ public class TimetableHearingStatementCsvModel implements VersionCsvModel {
         .build();
   }
 
-  public static String setZipAndCity(Integer zip, String city) {
+  public static String getZipAndCity(Integer zip, String city) {
     if(zip == null) {
       return Objects.requireNonNullElse(city, "");
     } else if(city == null || city.isEmpty()) {
