@@ -33,7 +33,7 @@ public enum SwissCanton {
   THURGAU(20, "Thurgau", "TG"),
   TICINO(21, "Ticino", "TI"),
   VAUD(22, "Vaud", "VD"),
-  VALAIS(23, "Valais", "vs"),
+  VALAIS(23, "Valais", "VS"),
   NEUCHATEL(24, "Neuchâtel", "NE"),
   GENEVE(25, "Genève", "GE"),
   JURA(26, "Jura", "JU"),
