@@ -39,9 +39,9 @@ import ch.sbb.line.directory.entity.StatementSender;
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
-import ch.sbb.line.directory.exception.PdfDocumentConstraintViolationException;
 import ch.sbb.line.directory.exception.ForbiddenDueToHearingYearSettingsException;
 import ch.sbb.line.directory.exception.NoClientCredentialAuthUsedException;
+import ch.sbb.line.directory.exception.PdfDocumentConstraintViolationException;
 import ch.sbb.line.directory.repository.TimetableHearingStatementRepository;
 import ch.sbb.line.directory.repository.TimetableHearingYearRepository;
 import ch.sbb.line.directory.service.TimetableFieldNumberService;
@@ -61,12 +61,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
+import org.springframework.test.web.servlet.MvcResult;
 
 public class TimetableHearingStatementControllerApiTest extends BaseControllerApiTest {
 
@@ -719,7 +719,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
   void shouldGetStatementsAsCsv() throws Exception {
     // Given
     String expectedCsvHeader = """
-        Kanton;"Fahrplanfeld-Nr.";Fahrplanfeldbezeichnung;Haltestelle;"Abkürzung Transportunternehmung";"Name Transportunternehmung";Stellungnahme;Anhang;Begründung;Vorname;Nachname;Organisation;Strasse;"PLZ/Ort";"E-Mail";Bearbeiter;"Zuletzt bearbeitet";Fahrplanjahr
+        Kanton;"Fahrplanfeld-Nr.";Fahrplanfeldbezeichnung;Haltestelle;"Abkürzung Transportunternehmung";"Name Transportunternehmung";Stellungnahme;Anhang;Status;Begründung;Vorname;Nachname;Organisation;Strasse;"PLZ/Ort";"E-Mail";Bearbeiter;"Zuletzt bearbeitet";Fahrplanjahr
         """;
 
     TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
