@@ -28,11 +28,7 @@ import { TthTableService } from '../tth-table.service';
 import { NewTimetableHearingYearDialogService } from '../new-timetable-hearing-year-dialog/service/new-timetable-hearing-year-dialog.service';
 import { SelectionModel } from '@angular/cdk/collections';
 import { TranslateService } from '@ngx-translate/core';
-import {
-  disableFilters,
-  enableFilters,
-  OverviewDetailTableFilterConfig,
-} from './overview-detail-table-filter-config';
+import { disableFilters, enableFilters } from './overview-detail-table-filter-config';
 import {
   getActiveMultiSearch,
   getActiveSearch,
@@ -53,8 +49,6 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./overview-detail.component.scss'],
 })
 export class OverviewDetailComponent implements OnInit, OnDestroy {
-  readonly TABLE_FILTER_CONFIG = OverviewDetailTableFilterConfig;
-
   timeTableHearingStatements: TimetableHearingStatement[] = [];
   totalCount$ = 0;
   tableColumns: TableColumn<TimetableHearingStatement>[] = [];
@@ -94,7 +88,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
   sorting = 'statementStatus,asc';
   selectedCheckBox = new SelectionModel<TimetableHearingStatement>(true, []);
   isCheckBoxModeActive = false;
-  protected readonly tableFilterConfig = OverviewDetailTableFilterConfig;
+  tableFilterConfig = this.tthTableService.overviewDetailFilterConfig;
   private ngUnsubscribe = new Subject<void>();
 
   constructor(
@@ -135,6 +129,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     this.hearingStatus = this.route.snapshot.data.hearingStatus;
     if (TthUtils.isHearingStatusActive(this.hearingStatus)) {
       this.tthTableService.activeTabPage = Pages.TTH_ACTIVE;
+      this.tableFilterConfig = this.tthTableService.overviewDetailFilterConfig;
       this.tableColumns = this.getActiveTableColumns();
       if (!this.isCollectingActionEnabled) {
         this.tableColumns = this.tableColumns.filter((value) => value.value !== 'etagVersion');
@@ -149,6 +144,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     if (TthUtils.isHearingStatusPlanned(this.hearingStatus)) {
       this.removeCheckBoxViewMode();
       this.tthTableService.activeTabPage = Pages.TTH_PLANNED;
+      this.tableFilterConfig = this.tthTableService.overviewDetailFilterConfig;
       this.sorting = 'swissCanton,asc';
       this.tableColumns = this.getPlannedTableColumns();
       this.showAddNewTimetableHearingButton = true;
@@ -159,6 +155,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     if (TthUtils.isHearingStatusArchived(this.hearingStatus)) {
       this.removeCheckBoxViewMode();
       this.tthTableService.activeTabPage = Pages.TTH_ARCHIVED;
+      this.tableFilterConfig = this.tthTableService.overviewDetailFilterConfig;
       this.sorting = 'swissCanton,asc';
       this.tableColumns = this.getArchivedTableColumns();
       this.showDownloadCsvButton = true;
