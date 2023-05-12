@@ -11,7 +11,7 @@
           'COMMON.SEARCH.SEARCH_CRITERIA' | translate
         }}</mat-label>
         <div [ngClass]="chipSearch.disabled! ? 'disabled' : ''" class="search-main-field mb-4">
-          <mat-chip-grid #chipList [disabled]="chipSearch.disabled">
+          <mat-chip-grid #chipList [disabled]="!!chipSearch.disabled">
             <mat-chip-row
               (removed)="removeSearch(search, rowIndex, filterConfigIndex)"
               *ngFor="let search of chipSearch.activeSearch"
