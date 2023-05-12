@@ -52,6 +52,21 @@ export const OverviewDetailTableFilterConfig: OverviewDetailTableFilterConfigTyp
   ],
 ];
 
+export function copyOverviewDetailFilterConfig(): OverviewDetailTableFilterConfigType {
+  return [
+    [
+      {
+        ...OverviewDetailTableFilterConfig[0][0],
+      },
+    ],
+    [
+      { ...OverviewDetailTableFilterConfig[1][0] },
+      { ...OverviewDetailTableFilterConfig[1][1] },
+      { ...OverviewDetailTableFilterConfig[1][2] },
+    ],
+  ];
+}
+
 export function disableFilters(tableFilterConfig: OverviewDetailTableFilterConfigType) {
   tableFilterConfig[0][0].disabled = true;
   tableFilterConfig[1][0].disabled = true;
