@@ -121,6 +121,46 @@ class CantonBasedUserAdministrationServiceTest {
   }
 
   @Test
+  void shouldAllowTimetableHearingStatementUpdateToAnyCantonEvenWithoutWriteRights() {
+    // Given
+    when(userPermissionHolder.getCurrentUser()).thenReturn(Optional.of(UserAdministrationModel.builder()
+        .sbbUserId("e123456")
+        .permissions(Set.of(UserAdministrationPermissionModel.builder()
+            .application(ApplicationType.TIMETABLE_HEARING)
+            .role(ApplicationRole.WRITER)
+            .swissCantons(Set.of(SwissCanton.SCHWYZ))
+            .build()))
+        .build()));
+
+    // When
+    boolean permissionsGranted = cantonBasedUserAdministrationService.isStatementCantonUpdate(ApplicationType.TIMETABLE_HEARING,
+        CantonObject.createDummy());
+
+    // Then
+    assertThat(permissionsGranted).isTrue();
+  }
+
+  @Test
+  void shouldNotAllowTimetableHearingStatementUpdateIfApplicationTypeNotTimetableHearing() {
+    // Given
+    when(userPermissionHolder.getCurrentUser()).thenReturn(Optional.of(UserAdministrationModel.builder()
+        .sbbUserId("e123456")
+        .permissions(Set.of(UserAdministrationPermissionModel.builder()
+            .application(ApplicationType.TIMETABLE_HEARING)
+            .role(ApplicationRole.WRITER)
+            .swissCantons(Set.of(SwissCanton.SCHWYZ))
+            .build()))
+        .build()));
+
+    // When
+    boolean permissionsGranted = cantonBasedUserAdministrationService.isStatementCantonUpdate(ApplicationType.LIDI,
+        CantonObject.createDummy());
+
+    // Then
+    assertThat(permissionsGranted).isFalse();
+  }
+
+  @Test
   void shouldNotAllowNoRoleDoSupervisorStuff() {
     // Given
     when(userPermissionHolder.getCurrentUser()).thenReturn(Optional.empty());
