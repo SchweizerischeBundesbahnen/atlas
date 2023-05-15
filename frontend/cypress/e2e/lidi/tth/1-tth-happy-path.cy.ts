@@ -1,7 +1,7 @@
-import LidiUtils from "../../../support/util/lidi-utils";
-import {DataCy} from "../../../support/data-cy";
+import {DataCy} from "cypress/support/data-cy";
 import CommonUtils from "../../../support/util/common-utils";
 import AngularMaterialConstants from "../../../support/util/angular-material-constants";
+import TthUtils from "../../../support/util/tth-utils";
 
 describe('Timetable Hearing', {testIsolation: false}, () => {
 
@@ -12,27 +12,19 @@ describe('Timetable Hearing', {testIsolation: false}, () => {
   });
 
   it('Step-2: Navigate to Fahrplananhörung', () => {
-    LidiUtils.navigateToTimetableHearing();
+    TthUtils.navigateToTimetableHearing();
   });
 
-  // it('Step-2 Check: Navigate to Aktuelle Anhörungen and close it if exists', () => {
-  //   cy.get(DataCy.TTH_SWISS_CANTON_CARD).click();
-  //   cy.get(DataCy.SELECT_TTH_CANTON_DROPDOWN).then((el) => {
-  //     if (el.length) {
-  //       CommonUtils.selectItemFromDropDown(DataCy.SELECT_TTH_CANTON_DROPDOWN, ' Gesamtschweiz');
-  //       cy.get(DataCy.TTH_MANAGE_TIMETABLE_HEARING).click();
-  //       cy.get(DataCy.TTH_CLOSE_TTH_YEAR).click();
-  //       cy.get(DataCy.TTH_CLOSE_TTH_TIMETABLE_HEARING).click();
-  //     }
-  //   })
-  // });
-
-  it('Step-3: Navigate to Geplante Anhörungen', () => {
+  it('Step-3 Check: Navigate to Aktuelle Anhörungen and close it if exists', () => {
     cy.get(DataCy.TTH_SWISS_CANTON_CARD).click();
-    LidiUtils.changeLiDiTabToTTH('PLANNED');
+    TthUtils.archiveHearingIfAlreadyActive();
   });
 
-  it('Step-4: Fahrplanjahr anlegen', () => {
+  it('Step-4: Navigate to Geplante Anhörungen', () => {
+    TthUtils.changeLiDiTabToTTH('PLANNED');
+  });
+
+  it('Step-5: Fahrplanjahr anlegen', () => {
     cy.get(DataCy.ADD_NEW_TIMETABLE_HEARING_BUTTON).click();
     CommonUtils.selectFirstItemFromDropDown(DataCy.ADD_NEW_TIMETABLE_HEARING_SELECT_YEAR_DROPDOWN);
     cy.get(DataCy.ADD_NEW_TIMETABLE_HEARING_SELECT_YEAR_DROPDOWN + AngularMaterialConstants.MAT_SELECT_TEXT_DEEP_SELECT).then((elem) => {
@@ -46,18 +38,17 @@ describe('Timetable Hearing', {testIsolation: false}, () => {
 
   });
 
-  it('Step-5: Fahrplanjahr Starten', () => {
+  it('Step-6: Fahrplanjahr Starten', () => {
     CommonUtils.selectItemFromDropDown(DataCy.TTH_SELECT_YEAR, String(selectedHearingYear));
     cy.get(DataCy.START_TIMETABLE_HEARING_YEAR_BUTTON).click().then(() => {
       cy.get(DataCy.DIALOG_CONFIRM_BUTTON).click();
     })
   });
 
-  it('Step-6: Stellungnahmen erfassen', () => {
-    LidiUtils.changeLiDiTabToTTH('ACTIVE');
+  it('Step-7: Stellungnahmen erfassen', () => {
+    TthUtils.changeLiDiTabToTTH('ACTIVE');
     CommonUtils.selectItemFromDropDown(DataCy.SELECT_TTH_CANTON_DROPDOWN, ' Tessin');
     cy.get(DataCy.NEW_STATEMENT_BUTTON).click();
-    cy.get('.detail-page-container').scrollIntoView({offset: {top: 0, left: 0}});
     CommonUtils.selectItemFromDropDown(DataCy.TTH_SELECT_YEAR, String(selectedHearingYear));
     CommonUtils.getClearType(DataCy.STATEMENT_STOP_PLACE, 'Wiesenbach')
     CommonUtils.getClearType(DataCy.STATEMENT_FIRTS_NAME, 'Khvicha')
@@ -74,7 +65,7 @@ describe('Timetable Hearing', {testIsolation: false}, () => {
 
   });
 
-  it('Step-7: Stellungnahmen editieren', () => {
+  it('Step-8: Stellungnahmen editieren', () => {
     CommonUtils.clickFirstRowInTable(DataCy.TTH_TABLE);
     cy.get(DataCy.EDIT_BUTTON).click();
     CommonUtils.getClearType(DataCy.STATEMENT_ORGANISATION, 'SSC Calcio Napoli')
@@ -82,7 +73,7 @@ describe('Timetable Hearing', {testIsolation: false}, () => {
     cy.get(DataCy.BACK_TO_OVERVIEW).click();
   });
 
-  it('Step-8: Sammelaktion -> Status ändern -> angenommen', () => {
+  it('Step-9: Sammelaktion -> Status ändern -> angenommen', () => {
     CommonUtils.selectFirstItemFromDropDown(DataCy.TTH_COLLECT_ACTION_TYPE);
     cy.get(DataCy.TTH_TABLE_CHECKBOX_ALL).click();
     CommonUtils.selectItemFromDropDown(DataCy.COLLECT_STATUS_CHANGE_ACTION_TYPE, 'angenommen');
@@ -90,15 +81,15 @@ describe('Timetable Hearing', {testIsolation: false}, () => {
     cy.get(DataCy.DIALOG_CONFIRM_BUTTON).click();
   });
 
-  it('Step-8: Fahrplanjahr schliessen', () => {
+  it('Step-10: Fahrplanjahr schliessen', () => {
     CommonUtils.selectItemFromDropDown(DataCy.SELECT_TTH_CANTON_DROPDOWN, ' Gesamtschweiz');
     cy.get(DataCy.TTH_MANAGE_TIMETABLE_HEARING).click();
     cy.get(DataCy.TTH_CLOSE_TTH_YEAR).click();
     cy.get(DataCy.TTH_CLOSE_TTH_TIMETABLE_HEARING).click();
   });
 
-  it('Step-9: Archivierte Anhörungn kontrollieren', () => {
-    LidiUtils.changeLiDiTabToTTH('ARCHIVED');
+  it('Step-11: Archivierte Anhörungn kontrollieren', () => {
+    TthUtils.changeLiDiTabToTTH('ARCHIVED');
     CommonUtils.selectItemFromDropDown(DataCy.TTH_SELECT_YEAR, String(selectedHearingYear));
     CommonUtils.assertNumberOfTableRows(DataCy.TTH_TABLE, 1);
   });

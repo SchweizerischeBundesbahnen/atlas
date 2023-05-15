@@ -6,7 +6,6 @@ import AngularMaterialConstants from './angular-material-constants';
 export default class LidiUtils {
   private static LIDI_LINES_PATH = '/line-directory/lines';
   private static LIDI_SUBLINES_PATH = '/line-directory/sublines';
-  private static TTH_CH_PLANNED_PATH = '/timetable-hearing/ch/';
 
   private static MAINLINE_SWISS_LINE_NUMBER = 'b0.IC2-E2E';
 
@@ -25,25 +24,12 @@ export default class LidiUtils {
     this.changeLiDiTabToSublines();
   }
 
-  static navigateToTimetableHearing() {
-    CommonUtils.navigateToHomeViaHomeLogo();
-    cy.get('#timetable-hearing').click();
-  }
-
   static changeLiDiTabToSublines() {
     cy.intercept('GET', '/line-directory/v1/sublines?**').as('getSublines');
     cy.get('a[href="' + LidiUtils.LIDI_SUBLINES_PATH + '"]').click();
     cy.wait('@getSublines').then((interception) => {
       cy.wrap(interception.response?.statusCode).should('eq', 200);
       cy.url().should('contain', LidiUtils.LIDI_SUBLINES_PATH);
-    });
-  }
-
-  static changeLiDiTabToTTH(hearingStatus: string) {
-    cy.intercept('GET', '/line-directory/v1/timetable-hearing/years?statusChoices=' + hearingStatus).as('getRequest');
-    cy.get('a[href="' + LidiUtils.TTH_CH_PLANNED_PATH + hearingStatus.toLowerCase() + '"]').click();
-    cy.wait('@getRequest').then((interception) => {
-      cy.wrap(interception.response?.statusCode).should('eq', 200);
     });
   }
 
