@@ -24,6 +24,15 @@ public class CantonBasedUserAdministrationService extends BaseUserAdministration
     return isAtLeast(ApplicationRole.WRITER, applicationType, businessObject.getSwissCanton());
   }
 
+  public boolean isStatementCantonUpdate(ApplicationType applicationType, CantonAssociated businessObject) {
+    if (applicationType.equals(ApplicationType.TIMETABLE_HEARING)) {
+      log.info("User {}, with role WRITER is moving statement to canton {} and this action is always allowed.", getCurrentUserSbbUid(), businessObject.getSwissCanton());
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   public boolean isAtLeastSupervisor(ApplicationType applicationType) {
     return isAtLeast(ApplicationRole.SUPERVISOR, applicationType, null);
   }
@@ -32,10 +41,6 @@ public class CantonBasedUserAdministrationService extends BaseUserAdministration
     log.info("Checking if user {} is at least {} for canton {}", getCurrentUserSbbUid(), applicationRole, swissCanton);
     if (isAdmin()) {
       log.info("User {} is admin", getCurrentUserSbbUid());
-      return true;
-    }
-    if (applicationRole.equals(ApplicationRole.WRITER)) {
-      log.info("User {}, with role WRITER is moving statement to another canton and this action is always allowed.", getCurrentUserSbbUid());
       return true;
     }
     ApplicationRole cantonBasedUserPermissions = getCantonBasedUserPermissions(applicationType, swissCanton);
