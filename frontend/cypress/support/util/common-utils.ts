@@ -1,4 +1,4 @@
-import { DataCy } from '../data-cy';
+import {DataCy} from '../data-cy';
 
 export default class CommonUtils {
   static fromDetailBackToTtfnOverview() {
@@ -31,7 +31,7 @@ export default class CommonUtils {
   }
 
   static clickFirstRowInTable(selector: string) {
-    cy.get(selector + ' table tbody tr').click({ force: true });
+    cy.get(selector + ' table tbody tr').click({force: true});
   }
 
   static assertNumberOfTableRows(selector: string, numberOfRows: number) {
@@ -44,7 +44,7 @@ export default class CommonUtils {
   }
 
   static navigateToHomeViaHomeLogo() {
-    cy.get(DataCy.ATLAS_LOGO_HOME_LINK).click({ force: true });
+    cy.get(DataCy.ATLAS_LOGO_HOME_LINK).click({force: true});
     cy.url().should('eq', Cypress.config().baseUrl + '/');
   }
 
@@ -170,11 +170,22 @@ export default class CommonUtils {
     CommonUtils.chooseMatOptionByText(value);
   }
 
-  static chooseMatOptionByText(value: string) {
+  static selectFirstItemFromDropDown(selector: string) {
+    cy.get(selector).first().click();
+    // simulate click event on the drop down item (mat-option)
+    CommonUtils.chooseMatOptionByText(undefined);
+  }
+
+  static chooseMatOptionByText(value: string | undefined) {
     cy.get('mat-option > span').then((options) => {
       for (const option of options) {
-        if (option.innerText === value) {
-          option.click(); // this is jquery click() not cypress click()
+        console.log(option.innerText)
+        if (value) {
+          if (option.innerText === value) {
+            option.click(); // this is jquery click() not cypress click()
+          }
+        } else {
+          option.click();
         }
       }
     });
@@ -206,7 +217,7 @@ export default class CommonUtils {
       .then((e) => {
         // Workaround so that no exception is thrown when textToType="" (meaning an empty string)
         if (textToType) {
-          cy.wrap(e).type(textToType, { delay: 0, force: force });
+          cy.wrap(e).type(textToType, {delay: 0, force: force});
         }
       });
   }
@@ -269,20 +280,20 @@ export default class CommonUtils {
   static typeAndSelectItemFromDropDown(selector: string, value: string) {
     cy.intercept('GET', '*' + value + '*').as('searchIntercept');
     cy.get(selector)
-    .should('have.value', '')
-    .should(($el) => {
-      expect(Cypress.dom.isFocusable($el)).to.be.true;
-    })
-    .should('be.enabled')
-    .type(value, { delay: 0, force: true })
-    .wait('@searchIntercept')
-    .wait(100);
+      .should('have.value', '')
+      .should(($el) => {
+        expect(Cypress.dom.isFocusable($el)).to.be.true;
+      })
+      .should('be.enabled')
+      .type(value, {delay: 0, force: true})
+      .wait('@searchIntercept')
+      .wait(100);
     cy.get(selector).type('{enter}');
   }
 
   static visit(itemToDeleteUrl: string) {
     CommonUtils.unregisterServiceWorker();
-    cy.visit({ url: itemToDeleteUrl, method: 'GET' });
+    cy.visit({url: itemToDeleteUrl, method: 'GET'});
   }
 
   private static clickCancelOnDetailView(overviewPath: string) {
