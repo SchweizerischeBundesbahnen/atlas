@@ -34,8 +34,12 @@ public class CantonBasedUserAdministrationService extends BaseUserAdministration
       log.info("User {} is admin", getCurrentUserSbbUid());
       return true;
     }
+    if (applicationRole.equals(ApplicationRole.WRITER)) {
+      log.info("User {}, with role WRITER is moving statement to another canton and this action is always allowed.", getCurrentUserSbbUid());
+      return true;
+    }
     ApplicationRole cantonBasedUserPermissions = getCantonBasedUserPermissions(applicationType, swissCanton);
-    boolean hasRequiredRank = applicationRole.getRank() >= cantonBasedUserPermissions.getRank();
+    boolean hasRequiredRank = applicationRole.getRank() <= cantonBasedUserPermissions.getRank();
     log.info("User {} has permissions: {}", getCurrentUserSbbUid(), hasRequiredRank);
     return hasRequiredRank;
   }
