@@ -41,12 +41,15 @@
             ></mat-checkbox>
           </div>
         </th>
-        <div *ngIf="!column.checkbox && !column.dropdown && !column.button" [ngSwitch]="!!column.getTitle">
+        <div
+          *ngIf="!column.checkbox && !column.dropdown && !column.button"
+          [ngSwitch]="!!column.getTitle"
+        >
           <ng-template [ngSwitchCase]="true">
             <td
               *matCellDef="let value"
-              [mouseOverTitle]="column.getTitle!"
               [mouseOverTitleValue]="value[column.value]"
+              [mouseOverTitle]="column.getTitle!"
               class="table-cell bordered-cell"
               mat-cell
             >
@@ -79,14 +82,10 @@
           </td>
         </div>
         <div *ngIf="column.checkbox">
-          <td
-            (click)="stopPropagation($event)"
-            *matCellDef="let row"
-            class="table-cell bordered-cell"
-            mat-cell
-          >
+          <td *matCellDef="let row" class="table-cell bordered-cell" mat-cell>
             <mat-checkbox
               (change)="toggleCheckBox($event, row)"
+              (click)="$event.stopPropagation()"
               [checked]="checkBoxSelection.isSelected(row)"
             ></mat-checkbox>
           </td>
