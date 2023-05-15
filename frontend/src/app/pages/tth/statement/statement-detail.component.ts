@@ -48,6 +48,7 @@ export class StatementDetailComponent implements OnInit, AfterViewInit {
   isStatementEditable: Observable<boolean | undefined> = of(true);
   uploadedFiles: File[] = [];
   isLoading = false;
+  isDuplicating = false;
 
   private ngUnsubscribe = new Subject<void>();
 
@@ -309,6 +310,9 @@ export class StatementDetailComponent implements OnInit, AfterViewInit {
   private initForm() {
     this.duplicateStatement();
     this.form = this.getFormGroup(this.statement);
+    if (this.isDuplicating) {
+      this.form.markAsDirty();
+    }
     if (!this.isNew) {
       this.initialValueForCanton = this.form.value.swissCanton;
     }
@@ -319,6 +323,7 @@ export class StatementDetailComponent implements OnInit, AfterViewInit {
 
   private duplicateStatement() {
     if (this.statementShareService.statement) {
+      this.isDuplicating = true;
       const localCopyStatement = this.statementShareService.statement;
       this.statement = this.statementShareService.getCloneStatement();
       this.downloadLocalFile(localCopyStatement.id!, localCopyStatement.documents);
