@@ -4,6 +4,7 @@
       (click)="clickOnTab(tab)"
       *ngFor="let tab of TABS"
       [active]="activeTab === tab"
+      [attr.data-cy]="'tth-tab-' + tab.link"
       [routerLink]="tab.link"
       class="font-bold-xl"
       mat-tab-link

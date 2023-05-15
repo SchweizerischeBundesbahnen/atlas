@@ -7,7 +7,7 @@
     "docker": "sh ./prepare-docker.sh",
     "publish-frontend": "sh ./npm_publish.sh",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test --no-watch --browsers=ChromeHeadlessNoSandbox",
+    "test": "ng test --no-watch --browsers=ChromeHeadlessNoSandbox --code-coverage",
     "test-debug": "ng test --watch true --browsers=Chrome",
     "lint": "ng lint",
     "prepare": "cd .. && husky install frontend/.husky",
