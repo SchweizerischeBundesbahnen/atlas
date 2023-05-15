@@ -37,25 +37,26 @@
 
       <div class="one-action-btn-wrapper-right mt-3 pt-5">
         <atlas-button
-          buttonType="confirm"
-          buttonText="COMMON.SAVE_AND_CLOSE"
           (buttonClicked)="handleSaveAndCloseClick()"
           [disabled]="actionButtonsDisabled"
+          buttonText="COMMON.SAVE_AND_CLOSE"
+          buttonType="confirm"
         ></atlas-button>
       </div>
 
       <div class="two-action-btn-wrapper mt-3 pt-5">
         <atlas-button
-          buttonType="cancel"
-          buttonText="COMMON.CANCEL"
           (buttonClicked)="handleManageViewCancelClick()"
           [disabled]="actionButtonsDisabled"
+          buttonText="COMMON.CANCEL"
+          buttonType="cancel"
         ></atlas-button>
         <atlas-button
-          buttonType="confirm"
-          buttonText="TTH.BUTTON.CLOSE_TIMETABLE_HEARING"
           (buttonClicked)="handleManageViewTthCloseClick()"
           [disabled]="actionButtonsDisabled"
+          buttonDataCy="closeTthYearButton"
+          buttonText="TTH.BUTTON.CLOSE_TIMETABLE_HEARING"
+          buttonType="confirm"
         ></atlas-button>
       </div>
     </div>
@@ -84,16 +85,17 @@
 
       <div class="two-action-btn-wrapper pt-3">
         <atlas-button
-          buttonType="cancel"
-          buttonText="COMMON.CANCEL"
           (buttonClicked)="handleCloseViewCancelClick()"
           [disabled]="actionButtonsDisabled"
+          buttonText="COMMON.CANCEL"
+          buttonType="cancel"
         ></atlas-button>
         <atlas-button
-          buttonType="confirm"
-          buttonText="TTH.BUTTON.CLOSE_TIMETABLE_HEARING"
           (buttonClicked)="handleCloseViewTthCloseClick()"
           [disabled]="actionButtonsDisabled"
+          buttonDataCy="closeTthTimetableHearingButton"
+          buttonText="TTH.BUTTON.CLOSE_TIMETABLE_HEARING"
+          buttonType="confirm"
         ></atlas-button>
       </div>
     </div>

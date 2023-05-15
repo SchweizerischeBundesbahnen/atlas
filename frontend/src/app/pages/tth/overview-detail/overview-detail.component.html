@@ -17,6 +17,7 @@
           [additionalLabelspace]="false"
           [options]="YEAR_DRODOWN_OPTIONS"
           [value]="yearSelection"
+          dataCy="selecTthYear"
           label="TTH.SELECT_YEAR"
         >
         </atlas-select>
@@ -28,6 +29,7 @@
           [disabled]="isCheckBoxModeActive"
           [options]="CANTON_DROPDOWN_OPTIONS"
           [value]="defaultDropdownCantonSelection"
+          dataCy="selectTthCanton"
           label="TTH.SELECT_CANTON"
           optionTranslateLabelPrefix="TTH.CANTON."
         >
@@ -142,7 +144,7 @@
       [tableData]="timeTableHearingStatements"
       [tableFilterConfig]="TABLE_FILTER_CONFIG"
       [totalCount]="totalCount$"
-      data-cy="ttfn"
+      data-cy="tthTable"
     >
       <div *ngIf="!noTimetableHearingYearFound" class="d-flex flex-row col-12 mb-3 mt-5">
         <div class="d-flex flex-column col-6 pt-2">
