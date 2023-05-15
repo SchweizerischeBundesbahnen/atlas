@@ -318,9 +318,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
         'SINGLE'
       )
       .subscribe((result) => {
-        if (result) {
-          this.ngOnInit();
-        }
+        this.ngOnInit();
       });
   }
 
