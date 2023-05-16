@@ -90,8 +90,6 @@ public interface TimetableHearingStatementApiV1 {
 
   @ResponseStatus(HttpStatus.OK)
   @PutMapping(path = "{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
-  @PreAuthorize("@cantonBasedUserAdministrationService.isStatementCantonUpdate(T(ch.sbb.atlas.kafka.model.user.admin"
-      + ".ApplicationType).TIMETABLE_HEARING, #statement)")
   TimetableHearingStatementModel updateHearingStatement(
       @PathVariable Long id,
       @RequestPart @Valid TimetableHearingStatementModel statement,
