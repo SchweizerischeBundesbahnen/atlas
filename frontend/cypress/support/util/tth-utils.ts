@@ -6,7 +6,7 @@ export default class TthUtils {
   private static TTH_CH_PLANNED_PATH = '/timetable-hearing/ch/';
 
   static archiveHearingIfAlreadyActive() {
-    TthUtils.changeLiDiTabToTTH('ACTIVE');
+    TthUtils.changeTabToTTH('ACTIVE');
     cy.window().then((win) => {
       const cantonDropdown = win.document.querySelector(DataCy.SELECT_TTH_CANTON_DROPDOWN)
       if (cantonDropdown) {
@@ -42,7 +42,7 @@ export default class TthUtils {
     cy.get('#timetable-hearing').click();
   }
 
-  static changeLiDiTabToTTH(hearingStatus: string) {
+  static changeTabToTTH(hearingStatus: string) {
     cy.intercept('GET', '/line-directory/v1/timetable-hearing/years?statusChoices=' + hearingStatus).as('getRequest');
     cy.get('a[href="' + TthUtils.TTH_CH_PLANNED_PATH + hearingStatus.toLowerCase() + '"]').click();
     cy.wait('@getRequest').then((interception) => {

@@ -1,7 +1,7 @@
-import TthUtils from "../../../support/util/tth-utils";
-import {DataCy} from "../../../support/data-cy";
-import CommonUtils from "../../../support/util/common-utils";
-import AngularMaterialConstants from "../../../support/util/angular-material-constants";
+import TthUtils from "../../support/util/tth-utils";
+import {DataCy} from "../../support/data-cy";
+import CommonUtils from "../../support/util/common-utils";
+import AngularMaterialConstants from "../../support/util/angular-material-constants";
 
 describe('Timetable Hearing', {testIsolation: false}, () => {
 
@@ -17,12 +17,12 @@ describe('Timetable Hearing', {testIsolation: false}, () => {
 
   it('Step-3 Check: Navigate to Aktuelle Anhörungen and close it if exists', () => {
     cy.get(DataCy.TTH_SWISS_CANTON_CARD).click();
-    TthUtils.changeLiDiTabToTTH('PLANNED');
+    TthUtils.changeTabToTTH('PLANNED');
     TthUtils.archiveHearingIfAlreadyActive();
   });
 
   it('Step-4: Navigate to Geplante Anhörungen', () => {
-    TthUtils.changeLiDiTabToTTH('PLANNED');
+    TthUtils.changeTabToTTH('PLANNED');
   });
 
   it('Step-5: Fahrplanjahr anlegen', () => {
@@ -47,7 +47,8 @@ describe('Timetable Hearing', {testIsolation: false}, () => {
   });
 
   it('Step-7: Stellungnahmen erfassen', () => {
-    TthUtils.changeLiDiTabToTTH('ACTIVE');
+    TthUtils.changeTabToTTH('ACTIVE');
+    cy.reload();
     CommonUtils.selectItemFromDropDown(DataCy.SELECT_TTH_CANTON_DROPDOWN, ' Tessin');
     cy.get(DataCy.NEW_STATEMENT_BUTTON).click();
     CommonUtils.selectItemFromDropDown(DataCy.TTH_SELECT_YEAR, String(selectedHearingYear));
@@ -86,7 +87,8 @@ describe('Timetable Hearing', {testIsolation: false}, () => {
   });
 
   it('Step-10: Fahrplanjahr schliessen', () => {
-    cy.get(DataCy.SELECT_TTH_CANTON_DROPDOWN).should('be.visible')
+    cy.reload();
+    cy.get(DataCy.SELECT_TTH_CANTON_DROPDOWN).should('be.visible');
     CommonUtils.selectItemFromDropDown(DataCy.SELECT_TTH_CANTON_DROPDOWN, ' Gesamtschweiz');
     cy.get(DataCy.TTH_MANAGE_TIMETABLE_HEARING).click();
     cy.get(DataCy.TTH_CLOSE_TTH_YEAR).click();
@@ -94,7 +96,7 @@ describe('Timetable Hearing', {testIsolation: false}, () => {
   });
 
   it('Step-11: Archivierte Anhörungn kontrollieren', () => {
-    TthUtils.changeLiDiTabToTTH('ARCHIVED');
+    TthUtils.changeTabToTTH('ARCHIVED');
     CommonUtils.selectItemFromDropDown(DataCy.TTH_SELECT_YEAR, String(selectedHearingYear));
     CommonUtils.assertNumberOfTableRows(DataCy.TTH_TABLE, 1);
   });
