@@ -1,4 +1,4 @@
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 
 export enum FilterType {
   SEARCH_SELECT,
@@ -18,6 +18,7 @@ export const TableFilterSearchType = {
   TIMETABLE_FIELD_NUMBER: 'TIMETABLE_FIELD_NUMBER' as TableFilterSearchType,
   TRANSPORT_COMPANY: 'TRANSPORT_COMPANY' as TableFilterSearchType,
 };
+
 export type TableFilterSearchType =
   | 'BUSINESS_ORGANISATION'
   | 'TIMETABLE_FIELD_NUMBER'
@@ -29,6 +30,7 @@ export type TableFilterSearchSelect<T> = {
   activeSearch: T | undefined;
   searchType: TableFilterSearchType;
   disabled?: boolean;
+  formGroup?: FormGroup<{ [formControlName: string]: FormControl<T | undefined> }>;
 };
 
 export type TableFilterMultiSelect<T> = {
