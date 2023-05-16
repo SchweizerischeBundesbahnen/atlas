@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -92,8 +91,8 @@ public class TimetableHearingStatementService {
   }
 
   @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin"
-      + ".ApplicationType).TIMETABLE_HEARING, #existingTimetableHearingStatement)")
-  public TimetableHearingStatement updateHearingStatement(TimetableHearingStatement existingTimetableHearingStatement, TimetableHearingStatementModel timetableHearingStatementModel, List<MultipartFile> documents) {
+      + ".ApplicationType).TIMETABLE_HEARING, #existingStatement)")
+  public TimetableHearingStatement updateHearingStatement(TimetableHearingStatement existingStatement, TimetableHearingStatementModel timetableHearingStatementModel, List<MultipartFile> documents) {
     checkThatTimetableHearingYearExists(timetableHearingStatementModel.getTimetableYear());
 
     TimetableHearingStatement timetableHearingStatementInDb = timetableHearingStatementRepository.getReferenceById(
@@ -233,8 +232,8 @@ public class TimetableHearingStatementService {
     return timetableHearingStatementRepository.findAllById(ids);
   }
 
-  public Optional<TimetableHearingStatement> getTimetableHearingStatementsById(Long id) {
-    return timetableHearingStatementRepository.findById(id);
+  public TimetableHearingStatement getTimetableHearingStatementsById(Long id) {
+    return timetableHearingStatementRepository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
   }
 
   @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin"
