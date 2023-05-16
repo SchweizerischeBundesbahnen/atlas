@@ -90,7 +90,9 @@ public class TimetableHearingStatementService {
     return TimetableHearingStatementMapper.toModel(timetableHearingStatement);
   }
 
-  public TimetableHearingStatement updateHearingStatement(TimetableHearingStatementModel timetableHearingStatementModel, List<MultipartFile> documents) {
+  @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin"
+      + ".ApplicationType).TIMETABLE_HEARING, #existingStatement)")
+  public TimetableHearingStatement updateHearingStatement(TimetableHearingStatement existingStatement, TimetableHearingStatementModel timetableHearingStatementModel, List<MultipartFile> documents) {
     checkThatTimetableHearingYearExists(timetableHearingStatementModel.getTimetableYear());
 
     TimetableHearingStatement timetableHearingStatementInDb = timetableHearingStatementRepository.getReferenceById(
@@ -228,6 +230,10 @@ public class TimetableHearingStatementService {
 
   public List<TimetableHearingStatement> getTimetableHearingStatementsByIds(List<Long> ids) {
     return timetableHearingStatementRepository.findAllById(ids);
+  }
+
+  public TimetableHearingStatement getTimetableHearingStatementsById(Long id) {
+    return timetableHearingStatementRepository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
   }
 
   @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin"
