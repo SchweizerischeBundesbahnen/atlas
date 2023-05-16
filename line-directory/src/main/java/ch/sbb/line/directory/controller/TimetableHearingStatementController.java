@@ -9,8 +9,9 @@ import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementRequestParams
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
 import ch.sbb.atlas.api.timetable.hearing.model.UpdateHearingCantonModel;
 import ch.sbb.atlas.api.timetable.hearing.model.UpdateHearingStatementStatusModel;
-import ch.sbb.atlas.service.UserService;
 import ch.sbb.atlas.model.exception.BadRequestException;
+import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
+import ch.sbb.atlas.service.UserService;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
 import ch.sbb.line.directory.entity.TimetableHearingYear;
 import ch.sbb.line.directory.entity.TimetableHearingYear_;
@@ -153,9 +154,9 @@ public class TimetableHearingStatementController implements TimetableHearingStat
           hearingYear.getTimetableYear(),
           TimetableHearingYear_.STATEMENT_EDITABLE);
     }
-
+    TimetableHearingStatement existingTimetableHearingStatement = timetableHearingStatementService.getTimetableHearingStatementsById(id).orElseThrow(() -> new IdNotFoundException(id));
     statement.setId(id);
-    TimetableHearingStatement hearingStatement = timetableHearingStatementService.updateHearingStatement(statement, documents);
+    TimetableHearingStatement hearingStatement = timetableHearingStatementService.updateHearingStatement(existingTimetableHearingStatement, statement, documents);
     return TimetableHearingStatementMapper.toModel(hearingStatement);
   }
 

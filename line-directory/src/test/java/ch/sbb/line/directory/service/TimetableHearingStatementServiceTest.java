@@ -224,7 +224,7 @@ public class TimetableHearingStatementServiceTest {
         timetableHearingStatementModel, Collections.emptyList());
     updatingStatement.setStatementStatus(StatementStatus.JUNK);
 
-    TimetableHearingStatement updatedStatement = timetableHearingStatementService.updateHearingStatement(updatingStatement,
+    TimetableHearingStatement updatedStatement = timetableHearingStatementService.updateHearingStatement(null, updatingStatement,
         Collections.emptyList());
 
     assertThat(updatedStatement).isNotNull();
@@ -241,7 +241,7 @@ public class TimetableHearingStatementServiceTest {
     updatingStatement.setTimetableYear(2020L);
 
     assertThatThrownBy(
-        () -> timetableHearingStatementService.updateHearingStatement(updatingStatement, Collections.emptyList())).isInstanceOf(
+        () -> timetableHearingStatementService.updateHearingStatement(null, updatingStatement, Collections.emptyList())).isInstanceOf(
         IdNotFoundException.class);
   }
 
