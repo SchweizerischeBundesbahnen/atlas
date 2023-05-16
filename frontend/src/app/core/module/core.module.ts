@@ -42,6 +42,7 @@ import { FileDropDirective } from '../components/file-upload/file-drop/file-drop
 import { ShowTitlePipe } from '../components/table/pipe/show-title.pipe';
 import { MouseOverTitleDirective } from '../components/table/directive/mouse-over-title.directive';
 import { FormatPipe } from '../components/table/pipe/format.pipe';
+import { InstanceOfPipe } from '../components/table-filter/instance-of.pipe';
 
 const coreComponents = [
   WorkflowFormComponent,
@@ -79,7 +80,13 @@ const coreComponents = [
 ];
 
 @NgModule({
-  declarations: [...coreComponents, ShowTitlePipe, MouseOverTitleDirective, FormatPipe],
+  declarations: [
+    ...coreComponents,
+    ShowTitlePipe,
+    MouseOverTitleDirective,
+    FormatPipe,
+    InstanceOfPipe,
+  ],
   imports: [
     CommonModule,
     MaterialModule,
