@@ -18,7 +18,6 @@ describe('Timetable Hearing', {testIsolation: false}, () => {
   it('Step-3 Check: Navigate to Aktuelle Anhörungen and close it if exists', () => {
     cy.get(DataCy.TTH_SWISS_CANTON_CARD).click();
     TthUtils.changeLiDiTabToTTH('PLANNED');
-
     TthUtils.archiveHearingIfAlreadyActive();
   });
 
@@ -37,7 +36,6 @@ describe('Timetable Hearing', {testIsolation: false}, () => {
       CommonUtils.getClearType(DataCy.HEARING_TO, validTo, true);
     })
     cy.get(DataCy.DIALOG_CONFIRM_BUTTON).click();
-
   });
 
   it('Step-6: Fahrplanjahr Starten', () => {
@@ -88,6 +86,7 @@ describe('Timetable Hearing', {testIsolation: false}, () => {
   });
 
   it('Step-10: Fahrplanjahr schliessen', () => {
+    cy.get(DataCy.SELECT_TTH_CANTON_DROPDOWN).should('be.visible')
     CommonUtils.selectItemFromDropDown(DataCy.SELECT_TTH_CANTON_DROPDOWN, ' Gesamtschweiz');
     cy.get(DataCy.TTH_MANAGE_TIMETABLE_HEARING).click();
     cy.get(DataCy.TTH_CLOSE_TTH_YEAR).click();

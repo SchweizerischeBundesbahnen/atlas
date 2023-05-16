@@ -10,7 +10,7 @@ export default class TthUtils {
     cy.window().then((win) => {
       const cantonDropdown = win.document.querySelector(DataCy.SELECT_TTH_CANTON_DROPDOWN)
       if (cantonDropdown) {
-        // TthUtils.collectingActionStatusChangeToAccepted();
+        TthUtils.collectingActionStatusChangeToAccepted();
         CommonUtils.selectItemFromDropDown(DataCy.SELECT_TTH_CANTON_DROPDOWN, ' Gesamtschweiz');
         cy.get(DataCy.TTH_MANAGE_TIMETABLE_HEARING).click();
         cy.get(DataCy.TTH_CLOSE_TTH_YEAR).click();
