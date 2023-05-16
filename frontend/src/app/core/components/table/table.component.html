@@ -135,6 +135,7 @@
 
   <mat-paginator
     (page)="pageChanged($event)"
+    [disabled]="checkBoxModeEnabled"
     [length]="totalCount"
     [pageIndex]="pageIndex"
     [pageSizeOptions]="pageSizeOptions"
