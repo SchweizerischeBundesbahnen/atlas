@@ -390,7 +390,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     this.statusChangeCollectingActionsEnabled = false;
     this.cantonDeliveryCollectingActionsEnabled = false;
     this.selectedCheckBox = new SelectionModel<TimetableHearingStatement>(true, []);
-
+    this.selectedItems = [];
     enableFilters(this.tableFilterConfig);
   }
 
