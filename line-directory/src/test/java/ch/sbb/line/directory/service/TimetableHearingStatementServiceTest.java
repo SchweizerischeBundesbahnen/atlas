@@ -219,12 +219,13 @@ public class TimetableHearingStatementServiceTest {
     timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
 
     TimetableHearingStatementModel timetableHearingStatementModel = buildTimetableHearingStatementModel();
+    TimetableHearingStatement timetableHearingStatement= TimetableHearingStatementMapper.toEntity(timetableHearingStatementModel);
 
     TimetableHearingStatementModel updatingStatement = timetableHearingStatementService.createHearingStatement(
         timetableHearingStatementModel, Collections.emptyList());
     updatingStatement.setStatementStatus(StatementStatus.JUNK);
 
-    TimetableHearingStatement updatedStatement = timetableHearingStatementService.updateHearingStatement(null, updatingStatement,
+    TimetableHearingStatement updatedStatement = timetableHearingStatementService.updateHearingStatement(timetableHearingStatement, updatingStatement,
         Collections.emptyList());
 
     assertThat(updatedStatement).isNotNull();
@@ -235,13 +236,14 @@ public class TimetableHearingStatementServiceTest {
   void shouldNotUpdateHearingStatementIfYearIsUnknown() {
     timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
     TimetableHearingStatementModel timetableHearingStatementModel = buildTimetableHearingStatementModel();
+    TimetableHearingStatement timetableHearingStatement= TimetableHearingStatementMapper.toEntity(timetableHearingStatementModel);
 
     TimetableHearingStatementModel updatingStatement = timetableHearingStatementService.createHearingStatement(
         timetableHearingStatementModel, Collections.emptyList());
     updatingStatement.setTimetableYear(2020L);
 
     assertThatThrownBy(
-        () -> timetableHearingStatementService.updateHearingStatement(null, updatingStatement, Collections.emptyList())).isInstanceOf(
+        () -> timetableHearingStatementService.updateHearingStatement(timetableHearingStatement, updatingStatement, Collections.emptyList())).isInstanceOf(
         IdNotFoundException.class);
   }
 
