@@ -15,20 +15,17 @@ import {
 import { filter } from 'rxjs/operators';
 import { TableService } from '../../../core/components/table/table.service';
 import { TablePagination } from '../../../core/components/table/table-pagination';
-import {
-  FilterType,
-  getActiveSearch,
-  getActiveSearchDate,
-  getActiveSearchForChip,
-  TableFilterChip,
-  TableFilterDateSelect,
-  TableFilterMultiSelect,
-  TableFilterSearchSelect,
-  TableFilterSearchType,
-} from '../../../core/components/table-filter/table-filter-config';
-import { FormControl } from '@angular/forms';
+import { TableFilterSearchType } from '../../../core/components/table-filter/table-filter-config';
+import { FormControl, FormGroup } from '@angular/forms';
 import { DEFAULT_STATUS_SELECTION } from '../../../core/constants/status.choices';
 import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
+import {
+  TableFilterChipClass,
+  TableFilterConfigClass,
+  TableFilterDateSelectClass,
+  TableFilterMultiSelectClass,
+  TableFilterSearchSelectClass,
+} from '../../../core/components/table-filter/table-filter-config-class';
 
 @Component({
   selector: 'app-timetable-field-number-overview',
@@ -50,42 +47,31 @@ export class TimetableFieldNumberOverviewComponent implements OnDestroy {
     { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
   ];
 
-  readonly tableFilterConfig: [
-    [TableFilterChip],
+  private readonly tableFilterConfigIntern = {
+    chipSearch: new TableFilterChipClass('col-6'),
+    searchSelect: new TableFilterSearchSelectClass<BusinessOrganisation>(
+      TableFilterSearchType.BUSINESS_ORGANISATION,
+      'col-3',
+      new FormGroup({
+        businessOrganisation: new FormControl(),
+      })
+    ),
+    multiSelectStatus: new TableFilterMultiSelectClass(
+      'COMMON.STATUS_TYPES.',
+      'COMMON.STATUS',
+      Object.values(Status),
+      'col-3',
+      DEFAULT_STATUS_SELECTION
+    ),
+    dateSelect: new TableFilterDateSelectClass('col-3'),
+  };
+
+  tableFilterConfig: TableFilterConfigClass<unknown>[][] = [
+    [this.tableFilterConfigIntern.chipSearch],
     [
-      TableFilterSearchSelect<BusinessOrganisation>,
-      TableFilterMultiSelect<Status>,
-      TableFilterDateSelect
-    ]
-  ] = [
-    [
-      {
-        filterType: FilterType.CHIP_SEARCH,
-        elementWidthCssClass: 'col-6',
-        activeSearch: [],
-      },
-    ],
-    [
-      {
-        filterType: FilterType.SEARCH_SELECT,
-        elementWidthCssClass: 'col-3',
-        activeSearch: {} as BusinessOrganisation,
-        searchType: TableFilterSearchType.BUSINESS_ORGANISATION,
-      },
-      {
-        filterType: FilterType.MULTI_SELECT,
-        elementWidthCssClass: 'col-3',
-        activeSearch: DEFAULT_STATUS_SELECTION,
-        labelTranslationKey: 'COMMON.STATUS',
-        typeTranslationKeyPrefix: 'COMMON.STATUS_TYPES.',
-        selectOptions: Object.values(Status),
-      },
-      {
-        filterType: FilterType.VALID_ON_SELECT,
-        elementWidthCssClass: 'col-3',
-        activeSearch: undefined,
-        formControl: new FormControl(),
-      },
+      this.tableFilterConfigIntern.searchSelect,
+      this.tableFilterConfigIntern.multiSelectStatus,
+      this.tableFilterConfigIntern.dateSelect,
     ],
   ];
 
@@ -116,13 +102,11 @@ export class TimetableFieldNumberOverviewComponent implements OnDestroy {
   getOverview(pagination: TablePagination) {
     this.getVersionsSubscription = this.timetableFieldNumbersService
       .getOverview(
-        getActiveSearchForChip(this.tableFilterConfig[0][0]),
+        this.tableFilterConfigIntern.chipSearch.getActiveSearch(),
         undefined,
-        getActiveSearch<BusinessOrganisation | undefined, BusinessOrganisation>(
-          this.tableFilterConfig[1][0]
-        )?.sboid,
-        getActiveSearchDate(this.tableFilterConfig[1][2]),
-        getActiveSearch(this.tableFilterConfig[1][1]),
+        this.tableFilterConfigIntern.searchSelect.getActiveSearch()?.sboid,
+        this.tableFilterConfigIntern.dateSelect.getActiveSearch(),
+        this.tableFilterConfigIntern.multiSelectStatus.getActiveSearch(),
         pagination.page,
         pagination.size,
         addElementsToArrayWhenNotUndefined(pagination.sort, 'ttfnid,asc')
