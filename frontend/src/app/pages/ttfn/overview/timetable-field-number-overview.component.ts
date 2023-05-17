@@ -15,7 +15,6 @@ import {
 import { filter } from 'rxjs/operators';
 import { TableService } from '../../../core/components/table/table.service';
 import { TablePagination } from '../../../core/components/table/table-pagination';
-import { TableFilterSearchType } from '../../../core/components/table-filter/table-filter-config';
 import { FormControl, FormGroup } from '@angular/forms';
 import { DEFAULT_STATUS_SELECTION } from '../../../core/constants/status.choices';
 import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
@@ -25,6 +24,7 @@ import {
   TableFilterDateSelectClass,
   TableFilterMultiSelectClass,
   TableFilterSearchSelectClass,
+  TableFilterSearchType,
 } from '../../../core/components/table-filter/table-filter-config-class';
 
 @Component({
