@@ -1,7 +1,7 @@
-import {DataCy} from "cypress/support/data-cy";
-import CommonUtils from "../../../support/util/common-utils";
-import AngularMaterialConstants from "../../../support/util/angular-material-constants";
-import TthUtils from "../../../support/util/tth-utils";
+import TthUtils from "../../support/util/tth-utils";
+import {DataCy} from "../../support/data-cy";
+import CommonUtils from "../../support/util/common-utils";
+import AngularMaterialConstants from "../../support/util/angular-material-constants";
 
 describe('Timetable Hearing', {testIsolation: false}, () => {
 
@@ -17,11 +17,12 @@ describe('Timetable Hearing', {testIsolation: false}, () => {
 
   it('Step-3 Check: Navigate to Aktuelle Anhörungen and close it if exists', () => {
     cy.get(DataCy.TTH_SWISS_CANTON_CARD).click();
+    TthUtils.changeTabToTTH('PLANNED');
     TthUtils.archiveHearingIfAlreadyActive();
   });
 
   it('Step-4: Navigate to Geplante Anhörungen', () => {
-    TthUtils.changeLiDiTabToTTH('PLANNED');
+    TthUtils.changeTabToTTH('PLANNED');
   });
 
   it('Step-5: Fahrplanjahr anlegen', () => {
@@ -35,10 +36,10 @@ describe('Timetable Hearing', {testIsolation: false}, () => {
       CommonUtils.getClearType(DataCy.HEARING_TO, validTo, true);
     })
     cy.get(DataCy.DIALOG_CONFIRM_BUTTON).click();
-
   });
 
   it('Step-6: Fahrplanjahr Starten', () => {
+    cy.get(DataCy.TTH_SELECT_YEAR).should('be.visible');
     CommonUtils.selectItemFromDropDown(DataCy.TTH_SELECT_YEAR, String(selectedHearingYear));
     cy.get(DataCy.START_TIMETABLE_HEARING_YEAR_BUTTON).click().then(() => {
       cy.get(DataCy.DIALOG_CONFIRM_BUTTON).click();
@@ -46,7 +47,8 @@ describe('Timetable Hearing', {testIsolation: false}, () => {
   });
 
   it('Step-7: Stellungnahmen erfassen', () => {
-    TthUtils.changeLiDiTabToTTH('ACTIVE');
+    TthUtils.changeTabToTTH('ACTIVE');
+    cy.reload();
     CommonUtils.selectItemFromDropDown(DataCy.SELECT_TTH_CANTON_DROPDOWN, ' Tessin');
     cy.get(DataCy.NEW_STATEMENT_BUTTON).click();
     CommonUtils.selectItemFromDropDown(DataCy.TTH_SELECT_YEAR, String(selectedHearingYear));
@@ -61,11 +63,14 @@ describe('Timetable Hearing', {testIsolation: false}, () => {
     CommonUtils.getClearType(DataCy.STATEMENT_STATEMENT, 'Forza Napoli')
     CommonUtils.getClearType(DataCy.STATEMENT_JUSTIFICATION, 'Campioni in Italia')
     cy.get(DataCy.SAVE_ITEM).click();
-    cy.get(DataCy.BACK_TO_OVERVIEW).click();
-
   });
 
   it('Step-8: Stellungnahmen editieren', () => {
+    const getStatementsPath = "line-directory/v1/timetable-hearing/statements*";
+    cy.intercept('GET', getStatementsPath).as('getStatementsPath');
+    cy.get(DataCy.BACK_TO_OVERVIEW).click();
+    cy.wait('@getStatementsPath').its('response.statusCode').should('eq', 200);
+
     CommonUtils.clickFirstRowInTable(DataCy.TTH_TABLE);
     cy.get(DataCy.EDIT_BUTTON).click();
     CommonUtils.getClearType(DataCy.STATEMENT_ORGANISATION, 'SSC Calcio Napoli')
@@ -82,6 +87,8 @@ describe('Timetable Hearing', {testIsolation: false}, () => {
   });
 
   it('Step-10: Fahrplanjahr schliessen', () => {
+    cy.reload();
+    cy.get(DataCy.SELECT_TTH_CANTON_DROPDOWN).should('be.visible');
     CommonUtils.selectItemFromDropDown(DataCy.SELECT_TTH_CANTON_DROPDOWN, ' Gesamtschweiz');
     cy.get(DataCy.TTH_MANAGE_TIMETABLE_HEARING).click();
     cy.get(DataCy.TTH_CLOSE_TTH_YEAR).click();
@@ -89,7 +96,7 @@ describe('Timetable Hearing', {testIsolation: false}, () => {
   });
 
   it('Step-11: Archivierte Anhörungn kontrollieren', () => {
-    TthUtils.changeLiDiTabToTTH('ARCHIVED');
+    TthUtils.changeTabToTTH('ARCHIVED');
     CommonUtils.selectItemFromDropDown(DataCy.TTH_SELECT_YEAR, String(selectedHearingYear));
     CommonUtils.assertNumberOfTableRows(DataCy.TTH_TABLE, 1);
   });

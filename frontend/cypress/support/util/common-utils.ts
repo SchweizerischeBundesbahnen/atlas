@@ -165,21 +165,25 @@ export default class CommonUtils {
   }
 
   static selectItemFromDropDown(selector: string, value: string) {
-    cy.get(selector).first().click();
-    // simulate click event on the drop down item (mat-option)
-    CommonUtils.chooseMatOptionByText(value);
+    cy.get(selector).should('be.visible').first().click().then(() => {
+      // simulate click event on the drop down item (mat-option)
+      CommonUtils.chooseMatOptionByText(value);
+    })
   }
 
   static selectFirstItemFromDropDown(selector: string) {
-    cy.get(selector).first().click();
-    // simulate click event on the drop down item (mat-option)
-    CommonUtils.chooseMatOptionByText(undefined);
+    cy.get(selector).should('be.visible');
+    cy.get(selector).first().click().then((el) => {
+      console.log('I need time to be stable:' + el)
+      // simulate click event on the drop down item (mat-option)
+      CommonUtils.chooseMatOptionByText(undefined);
+    })
   }
 
   static chooseMatOptionByText(value: string | undefined) {
-    cy.get('mat-option > span').then((options) => {
+    cy.get('mat-option > span').should('be.visible').then((options) => {
+      console.log("I need time to be stable:" + options);
       for (const option of options) {
-        console.log(option.innerText)
         if (value) {
           if (option.innerText === value) {
             option.click(); // this is jquery click() not cypress click()
