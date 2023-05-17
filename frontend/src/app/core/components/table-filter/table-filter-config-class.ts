@@ -1,7 +1,17 @@
 import { FormControl, FormGroup } from '@angular/forms';
-import { TableFilterSearchType } from './table-filter-config';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { Moment } from 'moment/moment';
+
+export const TableFilterSearchType = {
+  BUSINESS_ORGANISATION: 'BUSINESS_ORGANISATION' as TableFilterSearchType,
+  TIMETABLE_FIELD_NUMBER: 'TIMETABLE_FIELD_NUMBER' as TableFilterSearchType,
+  TRANSPORT_COMPANY: 'TRANSPORT_COMPANY' as TableFilterSearchType,
+};
+
+export type TableFilterSearchType =
+  | 'BUSINESS_ORGANISATION'
+  | 'TIMETABLE_FIELD_NUMBER'
+  | 'TRANSPORT_COMPANY';
 
 export abstract class TableFilterConfigClass<T> {
   elementWidthCssClass: string;
@@ -32,6 +42,7 @@ export class TableFilterSearchSelectClass<T> extends TableFilterConfigClass<T | 
   }
 
   setActiveSearch(value: T | undefined): void {
+    console.log(value);
     this.activeSearch = value;
   }
 
@@ -108,6 +119,7 @@ export class TableFilterChipClass extends TableFilterConfigClass<string[]> {
   }
 
   addSearchFromChipInputEvent(event: MatChipInputEvent): void {
+    console.log(event);
     const value = (event.value || '').trim();
     if (this.activeSearch.indexOf(value) !== -1) {
       event.chipInput!.clear();

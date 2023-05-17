@@ -10,12 +10,11 @@ import {
 } from '../../../core/components/route-to-dialog/route-to-dialog.service';
 import { TableService } from '../../../core/components/table/table.service';
 import { TablePagination } from '../../../core/components/table/table-pagination';
-import {
-  FilterType,
-  getActiveSearchForChip,
-  TableFilterChip,
-} from '../../../core/components/table-filter/table-filter-config';
 import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
+import {
+  TableFilterChipClass,
+  TableFilterConfigClass,
+} from '../../../core/components/table-filter/table-filter-config-class';
 
 @Component({
   selector: 'app-bodi-companies',
@@ -37,14 +36,12 @@ export class CompaniesComponent implements OnDestroy {
     { headerTitle: 'BODI.COMPANIES.URL', value: 'url' },
   ];
 
-  readonly tableFilterConfig: [[TableFilterChip]] = [
-    [
-      {
-        filterType: FilterType.CHIP_SEARCH,
-        elementWidthCssClass: 'col-6',
-        activeSearch: [],
-      },
-    ],
+  private readonly tableFilterConfigIntern = {
+    chipSearch: new TableFilterChipClass('col-6'),
+  };
+
+  readonly tableFilterConfig: TableFilterConfigClass<unknown>[][] = [
+    [this.tableFilterConfigIntern.chipSearch],
   ];
 
   companies: Company[] = [];
@@ -74,7 +71,7 @@ export class CompaniesComponent implements OnDestroy {
   getOverview(pagination: TablePagination) {
     this.companiesSubscription = this.companiesService
       .getCompanies(
-        getActiveSearchForChip(this.tableFilterConfig[0][0]),
+        this.tableFilterConfigIntern.chipSearch.getActiveSearch(),
         pagination.page,
         pagination.size,
         addElementsToArrayWhenNotUndefined(pagination.sort, 'uicCode,asc')

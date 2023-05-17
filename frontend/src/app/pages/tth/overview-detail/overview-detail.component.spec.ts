@@ -25,7 +25,6 @@ import { TthTableService } from '../tth-table.service';
 import { SelectComponent } from '../../../core/form-components/select/select.component';
 import { AtlasSpacerComponent } from '../../../core/components/spacer/atlas-spacer.component';
 import { AuthService } from '../../../core/auth/auth.service';
-import { OverviewDetailTableFilterConfig } from './overview-detail-table-filter-config';
 
 @Component({
   selector: 'app-timetable-hearing-overview-tab-heading',
@@ -113,7 +112,6 @@ async function baseTestConfiguration() {
     pageSize: undefined,
     sortString: undefined,
     activeTabPage: undefined,
-    overviewDetailFilterConfig: OverviewDetailTableFilterConfig,
   });
 
   await TestBed.configureTestingModule({
