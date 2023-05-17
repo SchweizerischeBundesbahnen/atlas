@@ -8,7 +8,6 @@ import {
   RouteToDialogService,
 } from '../../../core/components/route-to-dialog/route-to-dialog.service';
 import { filter } from 'rxjs/operators';
-import { TableFilterSearchType } from '../../../core/components/table-filter/table-filter-config';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TableService } from '../../../core/components/table/table.service';
 import { TablePagination } from '../../../core/components/table/table-pagination';
@@ -19,6 +18,7 @@ import {
   TableFilterDateSelectClass,
   TableFilterMultiSelectClass,
   TableFilterSearchSelectClass,
+  TableFilterSearchType,
 } from '../../../core/components/table-filter/table-filter-config-class';
 
 @Component({
