@@ -131,19 +131,19 @@
     </div>
 
     <app-table
+      *ngIf="!noTimetableHearingYearFound"
       (buttonClickEvent)="duplicate($event)"
       (changeDropdownEvent)="changeSelectedStatus($event)"
       (checkedBoxEvent)="checkedBoxEvent($event)"
       (editElementEvent)="editStatement($event)"
       (tableChanged)="getOverview($event)"
-      *ngIf="!noTimetableHearingYearFound"
       [canEdit]="true"
       [checkBoxModeEnabled]="isCheckBoxModeActive"
       [checkBoxSelection]="selectedCheckBox"
       [tableColumns]="tableColumns"
       [tableData]="timeTableHearingStatements"
-      [tableFilterConfig]="tableFilterConfig"
       [totalCount]="totalCount$"
+      [tableFilterConfig]="(tableFilterConfig$ | async)!"
       data-cy="tthTable"
     >
       <div *ngIf="!noTimetableHearingYearFound" class="d-flex flex-row col-12 mb-3 mt-5">

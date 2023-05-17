@@ -12,18 +12,14 @@ import {
 import { BusinessOrganisationLanguageService } from '../../../core/form-components/bo-select/business-organisation-language.service';
 import { TableService } from '../../../core/components/table/table.service';
 import { TablePagination } from '../../../core/components/table/table-pagination';
-import {
-  FilterType,
-  getActiveSearch,
-  getActiveSearchDate,
-  getActiveSearchForChip,
-  TableFilterChip,
-  TableFilterDateSelect,
-  TableFilterMultiSelect,
-} from '../../../core/components/table-filter/table-filter-config';
-import { FormControl } from '@angular/forms';
 import { DEFAULT_STATUS_SELECTION } from '../../../core/constants/status.choices';
 import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
+import {
+  TableFilterChipClass,
+  TableFilterConfigClass,
+  TableFilterDateSelectClass,
+  TableFilterMultiSelectClass,
+} from '../../../core/components/table-filter/table-filter-config-class';
 
 @Component({
   selector: 'app-bodi-business-organisations',
@@ -33,33 +29,21 @@ import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
 export class BusinessOrganisationComponent implements OnDestroy {
   tableColumns: TableColumn<BusinessOrganisation>[] = this.getColumns();
 
-  readonly tableFilterConfig: [
-    [TableFilterChip],
-    [TableFilterMultiSelect<Status>, TableFilterDateSelect]
-  ] = [
-    [
-      {
-        filterType: FilterType.CHIP_SEARCH,
-        elementWidthCssClass: 'col-6',
-        activeSearch: [],
-      },
-    ],
-    [
-      {
-        filterType: FilterType.MULTI_SELECT,
-        elementWidthCssClass: 'col-3',
-        activeSearch: DEFAULT_STATUS_SELECTION,
-        labelTranslationKey: 'COMMON.STATUS',
-        typeTranslationKeyPrefix: 'COMMON.STATUS_TYPES.',
-        selectOptions: Object.values(Status),
-      },
-      {
-        filterType: FilterType.VALID_ON_SELECT,
-        elementWidthCssClass: 'col-3',
-        activeSearch: undefined,
-        formControl: new FormControl(),
-      },
-    ],
+  private readonly tableFilterConfigIntern = {
+    chipSearch: new TableFilterChipClass('col-6'),
+    multiSelectStatus: new TableFilterMultiSelectClass(
+      'COMMON.STATUS_TYPES.',
+      'COMMON.STATUS',
+      Object.values(Status),
+      'col-3',
+      DEFAULT_STATUS_SELECTION
+    ),
+    dateSelect: new TableFilterDateSelectClass('col-3'),
+  };
+
+  readonly tableFilterConfig: TableFilterConfigClass<unknown>[][] = [
+    [this.tableFilterConfigIntern.chipSearch],
+    [this.tableFilterConfigIntern.multiSelectStatus, this.tableFilterConfigIntern.dateSelect],
   ];
 
   businessOrganisations: BusinessOrganisation[] = [];
@@ -95,10 +79,10 @@ export class BusinessOrganisationComponent implements OnDestroy {
   getOverview(pagination: TablePagination) {
     this.businessOrganisationsSubscription = this.businessOrganisationsService
       .getAllBusinessOrganisations(
-        getActiveSearchForChip(this.tableFilterConfig[0][0]),
+        this.tableFilterConfigIntern.chipSearch.getActiveSearch(),
         undefined,
-        getActiveSearchDate(this.tableFilterConfig[1][1]),
-        getActiveSearch(this.tableFilterConfig[1][0]),
+        this.tableFilterConfigIntern.dateSelect.getActiveSearch(),
+        this.tableFilterConfigIntern.multiSelectStatus.getActiveSearch(),
         pagination.page,
         pagination.size,
         addElementsToArrayWhenNotUndefined(pagination.sort, this.getDefaultSort())

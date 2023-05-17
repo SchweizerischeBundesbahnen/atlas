@@ -8,7 +8,6 @@ import {
   DetailDialogEvents,
   RouteToDialogService,
 } from '../../../core/components/route-to-dialog/route-to-dialog.service';
-import { TableFilterSearchType } from '../../../core/components/table-filter/table-filter-config';
 import { TableService } from '../../../core/components/table/table.service';
 import { TablePagination } from '../../../core/components/table/table-pagination';
 import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
@@ -18,6 +17,7 @@ import {
   TableFilterDateSelectClass,
   TableFilterMultiSelectClass,
   TableFilterSearchSelectClass,
+  TableFilterSearchType,
 } from '../../../core/components/table-filter/table-filter-config-class';
 import { FormControl, FormGroup } from '@angular/forms';
 
