@@ -29,6 +29,7 @@ import { StatementDialogService } from './statement-dialog/service/statement.dia
 import { FileDownloadService } from '../../../core/components/file-upload/file/file-download.service';
 import { OpenStatementInMailService } from './open-statement-in-mail.service';
 import { StatementShareService } from '../overview-detail/statement-share-service';
+import { Pages } from '../../pages';
 
 @Component({
   selector: 'app-statement-detail',
@@ -153,7 +154,16 @@ export class StatementDetailComponent implements OnInit, AfterViewInit {
   }
 
   backToOverview() {
-    this.router.navigate(['..'], { relativeTo: this.route }).then();
+    this.router
+      .navigate(
+        [Pages.TTH.path, this.cantonShort.toLowerCase(), this.hearingStatus.toLowerCase()],
+        {
+          queryParams: {
+            year: this.statement?.timetableYear,
+          },
+        }
+      )
+      .then();
   }
 
   getFormGroup(statement: TimetableHearingStatement | undefined): FormGroup {
