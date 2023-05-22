@@ -16,6 +16,7 @@ describe('Timetable Hearing', {testIsolation: false}, () => {
   });
 
   it('Step-3 Check: Navigate to Aktuelle Anhörungen and close it if exists', () => {
+    cy.wait(2000);
     cy.get(DataCy.TTH_SWISS_CANTON_CARD).click();
     TthUtils.changeTabToTTH('PLANNED');
     TthUtils.archiveHearingIfAlreadyActive();
@@ -27,6 +28,7 @@ describe('Timetable Hearing', {testIsolation: false}, () => {
 
   it('Step-5: Fahrplanjahr anlegen', () => {
     cy.get(DataCy.ADD_NEW_TIMETABLE_HEARING_BUTTON).click();
+    cy.wait(2000);
     CommonUtils.selectFirstItemFromDropDown(DataCy.ADD_NEW_TIMETABLE_HEARING_SELECT_YEAR_DROPDOWN);
     cy.get(DataCy.ADD_NEW_TIMETABLE_HEARING_SELECT_YEAR_DROPDOWN + AngularMaterialConstants.MAT_SELECT_TEXT_DEEP_SELECT).then((elem) => {
       selectedHearingYear = Number(elem.text());
@@ -39,7 +41,7 @@ describe('Timetable Hearing', {testIsolation: false}, () => {
   });
 
   it('Step-6: Fahrplanjahr Starten', () => {
-    cy.get(DataCy.TTH_SELECT_YEAR).should('be.visible');
+    cy.get(DataCy.TTH_SELECT_YEAR).wait(1000).should('be.visible');
     CommonUtils.selectItemFromDropDown(DataCy.TTH_SELECT_YEAR, String(selectedHearingYear));
     cy.get(DataCy.START_TIMETABLE_HEARING_YEAR_BUTTON).click().then(() => {
       cy.get(DataCy.DIALOG_CONFIRM_BUTTON).click();
@@ -47,8 +49,7 @@ describe('Timetable Hearing', {testIsolation: false}, () => {
   });
 
   it('Step-7: Stellungnahmen erfassen', () => {
-    TthUtils.changeTabToTTH('ACTIVE');
-    cy.reload();
+    CommonUtils.visit('timetable-hearing/ch/active');
     CommonUtils.selectItemFromDropDown(DataCy.SELECT_TTH_CANTON_DROPDOWN, ' Tessin');
     cy.get(DataCy.NEW_STATEMENT_BUTTON).click();
     CommonUtils.selectItemFromDropDown(DataCy.TTH_SELECT_YEAR, String(selectedHearingYear));
@@ -87,9 +88,7 @@ describe('Timetable Hearing', {testIsolation: false}, () => {
   });
 
   it('Step-10: Fahrplanjahr schliessen', () => {
-    cy.reload();
-    cy.get(DataCy.SELECT_TTH_CANTON_DROPDOWN).should('be.visible');
-    CommonUtils.selectItemFromDropDown(DataCy.SELECT_TTH_CANTON_DROPDOWN, ' Gesamtschweiz');
+    CommonUtils.visit('timetable-hearing/ch/active');
     cy.get(DataCy.TTH_MANAGE_TIMETABLE_HEARING).click();
     cy.get(DataCy.TTH_CLOSE_TTH_YEAR).click();
     cy.get(DataCy.TTH_CLOSE_TTH_TIMETABLE_HEARING).click();
