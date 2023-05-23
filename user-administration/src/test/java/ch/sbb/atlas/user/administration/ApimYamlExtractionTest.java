@@ -36,6 +36,7 @@ public class ApimYamlExtractionTest {
             "src/main/resources/apis/", appName, "spec.yaml");
 
         Path parentDir = specYamlFile.getParent();
+        assertThat(parentDir).isNotNull();
         if (!Files.exists(parentDir)) {
             Files.createDirectories(parentDir);
         }
