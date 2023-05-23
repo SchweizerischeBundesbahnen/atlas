@@ -4,8 +4,6 @@ import {
   ApplicationRole,
   ApplicationType,
   BusinessOrganisation,
-  CantonPermissionRestrictionModel,
-  PermissionRestrictionObject,
   PermissionRestrictionType,
   SwissCanton,
 } from '../../../../api';
