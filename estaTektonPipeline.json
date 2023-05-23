@@ -156,6 +156,12 @@
   "stages": [
     {
       "stageName": "dev",
+      "argoCD": {
+        "waitUntilHealthy": true,
+        "argoCdAppName": "applications.argoproj.io/app-name=atlas-dev",
+        "argoCdAppSyncFlags": "-l",
+        "autoSync": true
+      },
       "helm": {
         "sourceRepository": "https://code.sbb.ch/scm/ki_atlas/atlas-argocd.git",
         "chartFilePath": "./clusters/aws01t/atlas-dev/values.yaml",
@@ -166,12 +172,6 @@
     },
     {
       "stageName": "test",
-      "argoCD": {
-        "waitUntilHealthy": true,
-        "argoCdAppName": "applications.argoproj.io/app-name=atlas-test",
-        "argoCdAppSyncFlags": "-l",
-        "autoSync": true
-      },
       "helm": {
         "sourceRepository": "https://code.sbb.ch/scm/ki_atlas/atlas-argocd.git",
         "chartFilePath": "./clusters/aws01t/atlas-test/values.yaml",
