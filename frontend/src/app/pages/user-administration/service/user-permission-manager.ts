@@ -195,6 +195,6 @@ export class UserPermissionManager {
   }
 
   getRestrictionValues(userPermission: Permission) {
-    return userPermission.permissionRestrictions!.map((restriction) => restriction.valueAsString);
+    return userPermission.permissionRestrictions.map((restriction) => restriction.valueAsString);
   }
 }
