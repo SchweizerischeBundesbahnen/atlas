@@ -67,7 +67,7 @@ export class TransportCompanySelectComponent implements OnInit, OnDestroy, OnCha
         .getTransportCompanies([searchString], undefined, undefined, undefined, ['number,ASC'])
         .pipe(
           map((value) => {
-            let transportCompaniesNotDuplicated: TransportCompany[] = [];
+            const transportCompaniesNotDuplicated: TransportCompany[] = [];
             value.objects?.forEach((val) => {
               if (!this.alreadySelectdTransportCompany.map((tc) => tc.id).includes(val.id)) {
                 transportCompaniesNotDuplicated.push(val);
