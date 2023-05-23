@@ -135,7 +135,9 @@ export class TableComponent<DATATYPE> implements OnInit {
   }
 
   toggleCheckBox($event: MatCheckboxChange, row: DATATYPE) {
-    $event ? this.checkBoxSelection.toggle(row) : null;
+    if ($event) {
+      this.checkBoxSelection.toggle(row);
+    }
     this.checkedBoxEvent.emit(this.checkBoxSelection);
   }
 

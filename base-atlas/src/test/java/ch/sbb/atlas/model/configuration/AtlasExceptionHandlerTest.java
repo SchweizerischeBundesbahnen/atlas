@@ -42,6 +42,7 @@ public class AtlasExceptionHandlerTest {
     assertThat(errorResponseResponseEntity.getBody().getDetails().first().getMessage()).isEqualTo(
         "Value null rejected due to defaultMessage");
     assertThat(errorResponseResponseEntity.getBody()).isNotNull();
+    assertThat(errorResponseResponseEntity.getBody().getDetails()).isNotNull();
     assertThat(errorResponseResponseEntity.getBody()
                                           .getDetails()
                                           .first()
