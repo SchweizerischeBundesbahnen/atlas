@@ -22,8 +22,8 @@ public class AtlasAnnotationProcessorTest {
       atlasAnnotationProcessor.getVersionableProperties(null);
       //then
     }).isInstanceOf(AtlasVersionableException.class)
-      .hasMessageContaining(
-          "Can't versioning a null object.");
+        .hasMessageContaining(
+            "Can't versioning a null object.");
 
   }
 
@@ -35,10 +35,6 @@ public class AtlasAnnotationProcessorTest {
 
       @AtlasVersionableProperty
       private String property;
-
-      public String getProperty() {
-        return property;
-      }
 
       public void setProperty(String property) {
         this.property = property;
@@ -53,8 +49,8 @@ public class AtlasAnnotationProcessorTest {
       atlasAnnotationProcessor.getVersionableProperties(nonVersionable);
       //then
     }).isInstanceOf(AtlasVersionableException.class)
-      .hasMessageContaining(
-          "The class NonVersionable must implement the interface Versionable. Please check the documentation.");
+        .hasMessageContaining(
+            "The class NonVersionable must implement the interface Versionable. Please check the documentation.");
 
   }
 
@@ -66,10 +62,6 @@ public class AtlasAnnotationProcessorTest {
       @AtlasVersionableProperty
       private String property;
 
-      public String getProperty() {
-        return property;
-      }
-
       @Override
       public LocalDate getValidFrom() {
         return null;
@@ -78,8 +70,6 @@ public class AtlasAnnotationProcessorTest {
       @Override
       public LocalDate getValidTo() {
         return null;
-      }      public void setProperty(String property) {
-        this.property = property;
       }
 
       @Override
@@ -87,19 +77,19 @@ public class AtlasAnnotationProcessorTest {
         return null;
       }
 
-
+      public void setProperty(String property) {
+        this.property = property;
+      }
 
       @Override
       public void setValidFrom(LocalDate validFrom) {
 
       }
 
-
       @Override
       public void setValidTo(LocalDate validTo) {
 
       }
-
 
       @Override
       public void setId(Long id) {
@@ -115,8 +105,8 @@ public class AtlasAnnotationProcessorTest {
       atlasAnnotationProcessor.getVersionableProperties(nonVersionable);
       //then
     }).isInstanceOf(AtlasVersionableException.class)
-      .hasMessageContaining(
-          "The class NonVersionable is not annotated with @AtlasVersionable. Please check the documentation.");
+        .hasMessageContaining(
+            "The class NonVersionable is not annotated with @AtlasVersionable. Please check the documentation.");
 
   }
 
@@ -128,10 +118,6 @@ public class AtlasAnnotationProcessorTest {
 
       private String property;
 
-      public String getProperty() {
-        return property;
-      }
-
       @Override
       public LocalDate getValidFrom() {
         return null;
@@ -140,8 +126,6 @@ public class AtlasAnnotationProcessorTest {
       @Override
       public LocalDate getValidTo() {
         return null;
-      }      public void setProperty(String property) {
-        this.property = property;
       }
 
       @Override
@@ -149,19 +133,19 @@ public class AtlasAnnotationProcessorTest {
         return null;
       }
 
-
+      public void setProperty(String property) {
+        this.property = property;
+      }
 
       @Override
       public void setValidFrom(LocalDate validFrom) {
 
       }
 
-
       @Override
       public void setValidTo(LocalDate validTo) {
 
       }
-
 
       @Override
       public void setId(Long id) {
@@ -177,8 +161,9 @@ public class AtlasAnnotationProcessorTest {
       atlasAnnotationProcessor.getVersionableProperties(nonVersionable);
       //then
     }).isInstanceOf(AtlasVersionableException.class)
-      .hasMessageContaining(
-          "To versioning an Object you have to mark some properties with @AtlasVersionableProperty. Please check the documentation.");
+        .hasMessageContaining(
+            "To versioning an Object you have to mark some properties with @AtlasVersionableProperty. Please check the "
+                + "documentation.");
 
   }
 
@@ -191,10 +176,6 @@ public class AtlasAnnotationProcessorTest {
       @AtlasVersionableProperty
       private String property;
 
-      public String getProperty() {
-        return property;
-      }
-
       @Override
       public LocalDate getValidFrom() {
         return null;
@@ -203,8 +184,6 @@ public class AtlasAnnotationProcessorTest {
       @Override
       public LocalDate getValidTo() {
         return null;
-      }      public void setProperty(String property) {
-        this.property = property;
       }
 
       @Override
@@ -212,19 +191,19 @@ public class AtlasAnnotationProcessorTest {
         return null;
       }
 
-
+      public void setProperty(String property) {
+        this.property = property;
+      }
 
       @Override
       public void setValidFrom(LocalDate validFrom) {
 
       }
 
-
       @Override
       public void setValidTo(LocalDate validTo) {
 
       }
-
 
       @Override
       public void setId(Long id) {
@@ -257,10 +236,6 @@ public class AtlasAnnotationProcessorTest {
       @AtlasVersionableProperty
       private String additionalProperty;
 
-      public String getAdditionalProperty() {
-        return additionalProperty;
-      }
-
       public void setAdditionalProperty(String additionalProperty) {
         this.additionalProperty = additionalProperty;
       }
@@ -272,10 +247,6 @@ public class AtlasAnnotationProcessorTest {
       @AtlasVersionableProperty
       private String property;
 
-      public String getProperty() {
-        return property;
-      }
-
       @Override
       public LocalDate getValidFrom() {
         return null;
@@ -284,8 +255,6 @@ public class AtlasAnnotationProcessorTest {
       @Override
       public LocalDate getValidTo() {
         return null;
-      }      public void setProperty(String property) {
-        this.property = property;
       }
 
       @Override
@@ -293,19 +262,19 @@ public class AtlasAnnotationProcessorTest {
         return null;
       }
 
-
+      public void setProperty(String property) {
+        this.property = property;
+      }
 
       @Override
       public void setValidFrom(LocalDate validFrom) {
 
       }
 
-
       @Override
       public void setValidTo(LocalDate validTo) {
 
       }
-
 
       @Override
       public void setId(Long id) {
@@ -332,6 +301,5 @@ public class AtlasAnnotationProcessorTest {
     assertThat(additionalProperty).isNotNull();
     assertThat(additionalProperty.getFieldName()).isEqualTo("additionalProperty");
   }
-
 
 }
