@@ -12,10 +12,10 @@ import { TablePagination } from '../../../core/components/table/table-pagination
 import { TableService } from '../../../core/components/table/table.service';
 import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
 import {
-  TableFilterChipClass,
-  TableFilterConfigClass,
-  TableFilterMultiSelectClass,
-} from '../../../core/components/table-filter/table-filter-config-class';
+  TableFilterChip,
+  TableFilterConfig,
+  TableFilterMultiSelect,
+} from '../../../core/components/table-filter/table-filter-config';
 
 @Component({
   selector: 'app-bodi-transport-companies',
@@ -43,8 +43,8 @@ export class TransportCompaniesComponent implements OnDestroy {
   ];
 
   private readonly tableFilterConfigIntern = {
-    chipSearch: new TableFilterChipClass('col-6'),
-    multiSelectTransportCompanyStatus: new TableFilterMultiSelectClass(
+    chipSearch: new TableFilterChip('col-6'),
+    multiSelectTransportCompanyStatus: new TableFilterMultiSelect(
       'BODI.TRANSPORT_COMPANIES.TRANSPORT_COMPANY_STATUS.',
       'BODI.TRANSPORT_COMPANIES.STATUS',
       Object.values(TransportCompanyStatus),
@@ -58,7 +58,7 @@ export class TransportCompaniesComponent implements OnDestroy {
     ),
   };
 
-  readonly tableFilterConfig: TableFilterConfigClass<unknown>[][] = [
+  readonly tableFilterConfig: TableFilterConfig<unknown>[][] = [
     [this.tableFilterConfigIntern.chipSearch],
     [this.tableFilterConfigIntern.multiSelectTransportCompanyStatus],
   ];
