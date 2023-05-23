@@ -75,11 +75,12 @@ npm install
 2. Paste the json from the [credentials site](https://confluence.sbb.ch/pages/viewpage.action?pageId=1881802050). This is excluded
    from git, so the credentials are not commited.
 3. run cypress:
-  1. with the console for debugging: `npm run cypress:open` or `cypress open`
-  2. as headless test: `npm run cypress:run` or `cypress run`
+1. with the console for debugging: `npm run cypress:open` or `cypress open`
+2. as headless test: `npm run cypress:run` or `cypress run`
 
 ##### Release-Tests (Used by Tester)
 
+:warning: **Not longer mantained by the tester! marked as to for deletion** :warning:
 E2E Release-Tests are not automatically executed within the standard pipeline.
 They are located in the cypress/release folder.
 To run the Release-Tests separately, you can choose the "release" option in the E2ETests-choice on this page
