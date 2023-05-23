@@ -26,7 +26,7 @@ export class TransportCompanySelectComponent implements OnInit, OnDestroy, OnCha
   @Input() disabled!: boolean;
 
   @Output() selectedTransportCompanyChanged = new EventEmitter();
-  @Output() ttfnSelectionChanged = new EventEmitter<TransportCompany>();
+  @Output() tuSelectionChanged = new EventEmitter<TransportCompany>();
 
   transportCompanies: Observable<TransportCompany[]> = of([]);
   alreadySelectdTransportCompany: TransportCompany[] = [];

@@ -19,13 +19,13 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { DEFAULT_STATUS_SELECTION } from '../../../core/constants/status.choices';
 import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
 import {
-  TableFilterChipClass,
-  TableFilterConfigClass,
-  TableFilterDateSelectClass,
-  TableFilterMultiSelectClass,
-  TableFilterSearchSelectClass,
+  TableFilterChip,
+  TableFilterConfig,
+  TableFilterDateSelect,
+  TableFilterMultiSelect,
+  TableFilterSearchSelect,
   TableFilterSearchType,
-} from '../../../core/components/table-filter/table-filter-config-class';
+} from '../../../core/components/table-filter/table-filter-config';
 
 @Component({
   selector: 'app-timetable-field-number-overview',
@@ -48,25 +48,25 @@ export class TimetableFieldNumberOverviewComponent implements OnDestroy {
   ];
 
   private readonly tableFilterConfigIntern = {
-    chipSearch: new TableFilterChipClass('col-6'),
-    searchSelect: new TableFilterSearchSelectClass<BusinessOrganisation>(
+    chipSearch: new TableFilterChip('col-6'),
+    searchSelect: new TableFilterSearchSelect<BusinessOrganisation>(
       TableFilterSearchType.BUSINESS_ORGANISATION,
       'col-3',
       new FormGroup({
         businessOrganisation: new FormControl(),
       })
     ),
-    multiSelectStatus: new TableFilterMultiSelectClass(
+    multiSelectStatus: new TableFilterMultiSelect(
       'COMMON.STATUS_TYPES.',
       'COMMON.STATUS',
       Object.values(Status),
       'col-3',
       DEFAULT_STATUS_SELECTION
     ),
-    dateSelect: new TableFilterDateSelectClass('col-3'),
+    dateSelect: new TableFilterDateSelect('col-3'),
   };
 
-  tableFilterConfig: TableFilterConfigClass<unknown>[][] = [
+  tableFilterConfig: TableFilterConfig<unknown>[][] = [
     [this.tableFilterConfigIntern.chipSearch],
     [
       this.tableFilterConfigIntern.searchSelect,

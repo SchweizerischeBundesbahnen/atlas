@@ -29,7 +29,6 @@ import { AtlasButtonComponent } from '../components/button/atlas-button.componen
 import { WorkflowComponent } from '../workflow/workflow.component';
 import { WorkflowFormComponent } from '../workflow/workflow-form/workflow-form.component';
 import { WorkflowCheckFormComponent } from '../workflow/workflow-check-form/workflow-check-form.component';
-import { FilterTypeGuardPipe } from '../components/table-filter/filter-type-guard.pipe';
 import { DisplayDatePipe } from '../pipe/display-date.pipe';
 import { AtlasSpacerComponent } from '../components/spacer/atlas-spacer.component';
 import { DetailFooterComponent } from '../components/detail-footer/detail-footer.component';
@@ -75,7 +74,6 @@ const coreComponents = [
   RouteToDialogComponent,
   RelationComponent,
   DisplayDatePipe,
-  FilterTypeGuardPipe,
   SelectComponent,
 ];
 

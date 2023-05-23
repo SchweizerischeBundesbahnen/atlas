@@ -15,11 +15,11 @@ import { TablePagination } from '../../../core/components/table/table-pagination
 import { DEFAULT_STATUS_SELECTION } from '../../../core/constants/status.choices';
 import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
 import {
-  TableFilterChipClass,
-  TableFilterConfigClass,
-  TableFilterDateSelectClass,
-  TableFilterMultiSelectClass,
-} from '../../../core/components/table-filter/table-filter-config-class';
+  TableFilterChip,
+  TableFilterConfig,
+  TableFilterDateSelect,
+  TableFilterMultiSelect,
+} from '../../../core/components/table-filter/table-filter-config';
 
 @Component({
   selector: 'app-bodi-business-organisations',
@@ -30,18 +30,18 @@ export class BusinessOrganisationComponent implements OnDestroy {
   tableColumns: TableColumn<BusinessOrganisation>[] = this.getColumns();
 
   private readonly tableFilterConfigIntern = {
-    chipSearch: new TableFilterChipClass('col-6'),
-    multiSelectStatus: new TableFilterMultiSelectClass(
+    chipSearch: new TableFilterChip('col-6'),
+    multiSelectStatus: new TableFilterMultiSelect(
       'COMMON.STATUS_TYPES.',
       'COMMON.STATUS',
       Object.values(Status),
       'col-3',
       DEFAULT_STATUS_SELECTION
     ),
-    dateSelect: new TableFilterDateSelectClass('col-3'),
+    dateSelect: new TableFilterDateSelect('col-3'),
   };
 
-  readonly tableFilterConfig: TableFilterConfigClass<unknown>[][] = [
+  readonly tableFilterConfig: TableFilterConfig<unknown>[][] = [
     [this.tableFilterConfigIntern.chipSearch],
     [this.tableFilterConfigIntern.multiSelectStatus, this.tableFilterConfigIntern.dateSelect],
   ];
