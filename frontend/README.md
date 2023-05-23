@@ -80,7 +80,7 @@ npm install
 
 ##### Release-Tests (Used by Tester)
 
-:warning: **Not longer mantained by the tester! marked as to for deletion** :warning:
+:warning: **Not longer mantained by the tester! marked as for deletion** :warning:
 E2E Release-Tests are not automatically executed within the standard pipeline.
 They are located in the cypress/release folder.
 To run the Release-Tests separately, you can choose the "release" option in the E2ETests-choice on this page
