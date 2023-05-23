@@ -156,7 +156,11 @@ export class StatementDetailComponent implements OnInit, AfterViewInit {
   backToOverview() {
     this.router
       .navigate(
-        [Pages.TTH.path, this.cantonShort.toLowerCase(), this.hearingStatus.toLowerCase()],
+        [
+          Pages.TTH.path,
+          this.route.snapshot.params.canton.toLowerCase(),
+          this.hearingStatus.toLowerCase(),
+        ],
         {
           queryParams: {
             year: this.statement?.timetableYear,

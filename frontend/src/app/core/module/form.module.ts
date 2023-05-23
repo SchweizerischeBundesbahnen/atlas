@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { DateRangeComponent } from '../form-components/date-range/date-range.component';
 import { MaterialModule } from './material.module';
 import { TranslateModule } from '@ngx-translate/core';
-import { FieldErrorComponent } from '../form-components/field-error/field-error.component';
 import { CommentComponent } from '../form-components/comment/comment.component';
 import { UrlComponent } from '../form-components/url/url.component';
 import { DateIconComponent } from '../form-components/date-icon/date-icon.component';
@@ -30,7 +29,6 @@ import { AtlasSlideToggleComponent } from '../form-components/atlas-slide-toggle
     TransportCompanySelectComponent,
     TimetableFieldNumberSelectComponent,
     DateRangeComponent,
-    FieldErrorComponent,
     CommentComponent,
     UrlComponent,
     DateIconComponent,
@@ -54,7 +52,6 @@ import { AtlasSlideToggleComponent } from '../form-components/atlas-slide-toggle
     TimetableFieldNumberSelectComponent,
     TransportCompanySelectComponent,
     DateRangeComponent,
-    FieldErrorComponent,
     CommentComponent,
     UrlComponent,
     DateIconComponent,
