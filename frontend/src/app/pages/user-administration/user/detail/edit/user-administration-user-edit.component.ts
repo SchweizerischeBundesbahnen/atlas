@@ -8,6 +8,7 @@ import { UserService } from '../../../service/user.service';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { User } from '../../../../../api';
 import { CreationEditionRecord } from '../../../../../core/components/base-detail/user-edit-info/creation-edition-record';
+import moment from 'moment';
 
 @Component({
   selector: 'app-user-administration-edit',
@@ -83,11 +84,25 @@ export class UserAdministrationUserEditComponent implements OnInit {
       this.user!
     );
     if (permissionsFromUserModelAsArray.length > 0) {
+      const firstCreated = permissionsFromUserModelAsArray.reduce((previousValue, currentValue) => {
+        return moment(new Date(previousValue.creationDate!)).isBefore(
+          moment(new Date(currentValue.creationDate!))
+        )
+          ? previousValue
+          : currentValue;
+      });
+      const lastEdited = permissionsFromUserModelAsArray.reduce((previousValue, currentValue) => {
+        return moment(new Date(previousValue.editionDate!)).isAfter(
+          moment(new Date(currentValue.editionDate!))
+        )
+          ? previousValue
+          : currentValue;
+      });
       this.userRecord = {
-        editor: permissionsFromUserModelAsArray[0].editor,
-        editionDate: permissionsFromUserModelAsArray[0].editionDate,
-        creator: permissionsFromUserModelAsArray[0].creator,
-        creationDate: permissionsFromUserModelAsArray[0].creationDate,
+        editor: lastEdited.editor,
+        editionDate: lastEdited.editionDate,
+        creator: firstCreated.creator,
+        creationDate: firstCreated.creationDate,
       };
     }
   }
