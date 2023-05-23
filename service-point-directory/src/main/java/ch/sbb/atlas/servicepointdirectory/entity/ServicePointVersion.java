@@ -25,7 +25,6 @@ import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointTechnicalTimetableType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointTrafficPointType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointType;
-import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointWithoutTimetableType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.ServicePointStatus;
 import ch.sbb.atlas.servicepointdirectory.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
@@ -143,10 +142,6 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
 
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
-  private OperatingPointWithoutTimetableType operatingPointWithoutTimetableType;
-
-  @Enumerated(EnumType.STRING)
-  @AtlasVersionableProperty
   private OperatingPointTechnicalTimetableType operatingPointTechnicalTimetableType;
 
   @Enumerated(EnumType.STRING)
@@ -257,11 +252,10 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
     return getCountry() == getNumber().getCountry();
   }
 
-  @AssertTrue(message = "At most one of OperatingPointWithoutTimetableType, OperatingPointTechnicalTimetableType, "
+  @AssertTrue(message = "At most one of OperatingPointTechnicalTimetableType, "
       + "OperatingPointTrafficPointType may be set")
   public boolean isValidType() {
     long mutualTypes = Stream.of(
-        getOperatingPointWithoutTimetableType() != null,
         getOperatingPointTechnicalTimetableType() != null,
         getOperatingPointTrafficPointType() != null)
         .filter(i -> i)
