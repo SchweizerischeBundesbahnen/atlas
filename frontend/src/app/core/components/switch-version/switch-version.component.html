@@ -1,22 +1,23 @@
 <h3 class="font-bold-lg">{{ 'VERSION_TABLE.TITLE' | translate }}</h3>
 <table
+  [dataSource]="records"
+  aria-describedby="version-table"
+  class="atlas-table"
+  data-cy="version-switch"
   mat-table
   multiTemplateDataRows
-  [dataSource]="records"
-  data-cy="version-switch"
-  class="atlas-table"
 >
   <ng-container *ngFor="let column of tableColumns" matColumnDef="{{ column.value }}">
     <th
-      scope="col"
-      mat-header-cell
       *matHeaderCellDef
       class="font-bold-base color-primary-400 bordered-cell"
+      mat-header-cell
+      scope="col"
     >
       {{ column.headerTitle | translate }}
     </th>
     <ng-container *matCellDef="let value">
-      <td mat-cell *ngIf="!value.placeholder" class="bordered-cell">
+      <td *ngIf="!value.placeholder" class="bordered-cell" mat-cell>
         {{ format(value[column.value!], column) }}
       </td>
     </ng-container>
@@ -30,17 +31,17 @@
     </td>
   </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="columnValues"></tr>
+  <tr *matHeaderRowDef="columnValues" mat-header-row></tr>
   <tr
+    (click)="setCurrentRecord(row)"
+    *matRowDef="let row; columns: columnValues"
     [ngClass]="isCurrentRecord(row) ? 'selected-row' : ''"
     mat-row
-    *matRowDef="let row; columns: columnValues"
-    (click)="setCurrentRecord(row)"
   ></tr>
   <tr
     *matRowDef="let row; columns: ['placeholder-row']"
-    mat-row
-    class="placeholder-row"
     [ngClass]="hasGapToNextRecord(row) ? '' : 'no-display'"
+    class="placeholder-row"
+    mat-row
   ></tr>
 </table>
