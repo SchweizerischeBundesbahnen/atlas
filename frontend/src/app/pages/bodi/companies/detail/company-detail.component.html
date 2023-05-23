@@ -61,7 +61,7 @@
           fieldLabel="BODI.COMPANIES.URL"
         >
           <ng-template #customChildInputPostfixTemplate>
-            <a [attr.href]="prependHttp(form.value.url)" target="_blank">
+            <a [attr.href]="prependHttp(form.value.url)" target="_blank" rel="noopener">
               <link-icon></link-icon>
             </a>
           </ng-template>
