@@ -7,7 +7,7 @@ import {
   TranslateModule,
   TranslatePipe,
 } from '@ngx-translate/core';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MaterialModule } from '../../../../../core/module/material.module';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -17,16 +17,27 @@ import { UserService } from '../../../service/user.service';
 import { UserPermissionManager } from '../../../service/user-permission-manager';
 import { Observable, of } from 'rxjs';
 import { NotificationService } from '../../../../../core/notification/notification.service';
-import { BusinessOrganisationsService } from '../../../../../api';
+import { ApplicationRole, ApplicationType, BusinessOrganisationsService } from '../../../../../api';
 import { User } from '../../../../../api';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { MockUserDetailInfoComponent } from '../../../../../app.testing.mocks';
+import { Data } from '../../../components/read-only-data/data';
+import { ReadOnlyData } from '../../../components/read-only-data/read-only-data';
 
 @Component({
   selector: 'app-dialog-close',
   template: '',
 })
 class MockDialogCloseComponent {}
+
+@Component({
+  selector: 'app-user-administration-read-only-data',
+  template: '',
+})
+export class MockUserAdministrationReadOnlyDataComponent<T extends Data> {
+  @Input() data!: T;
+  @Input() userModelConfig!: ReadOnlyData<T>[][];
+}
 
 describe('UserAdministrationUserEditComponent', () => {
   let component: UserAdministrationUserEditComponent;
@@ -90,6 +101,7 @@ describe('UserAdministrationUserEditComponent', () => {
       declarations: [
         UserAdministrationUserEditComponent,
         MockDialogCloseComponent,
+        MockUserAdministrationReadOnlyDataComponent,
         EditTitlePipe,
         MockUserDetailInfoComponent,
       ],
@@ -190,5 +202,39 @@ describe('UserAdministrationUserEditComponent', () => {
     component.cancelEdit();
     expect(component.editMode).toBeTrue();
     expect(userPermissionManagerSpy.setPermissions).not.toHaveBeenCalled();
+  });
+
+  it('shows first creation and last edition', () => {
+    userServiceSpy.getPermissionsFromUserModelAsArray.and.returnValue([
+      {
+        creationDate: '2020-01-01',
+        creator: 'me',
+        editionDate: '2020-01-05',
+        editor: 'sumotherdude',
+        role: ApplicationRole.Supervisor,
+        application: ApplicationType.Lidi,
+        permissionRestrictions: [],
+      },
+      {
+        creationDate: '2020-01-02',
+        creator: 'me',
+        editionDate: '2020-01-06',
+        editor: 'sumotherdude',
+        role: ApplicationRole.Supervisor,
+        application: ApplicationType.Ttfn,
+        permissionRestrictions: [],
+      },
+    ]);
+    component.editMode = true;
+    component.user = { sbbUserId: 'yb56789' };
+
+    fixture.detectChanges();
+    component.ngOnInit();
+
+    expect(component.userRecord).toBeTruthy();
+    expect(component.userRecord!.creationDate).toBe('2020-01-01');
+    expect(component.userRecord!.creator).toBe('me');
+    expect(component.userRecord!.editionDate).toBe('2020-01-06');
+    expect(component.userRecord!.editor).toBe('sumotherdude');
   });
 });
