@@ -29,6 +29,7 @@ export class TransportCompanySelectComponent implements OnInit, OnDestroy, OnCha
   @Output() ttfnSelectionChanged = new EventEmitter<TransportCompany>();
 
   transportCompanies: Observable<TransportCompany[]> = of([]);
+  alreadySelectdTransportCompany: TransportCompany[] = [];
   private formSubscription?: Subscription;
 
   constructor(private transportCompaniesService: TransportCompaniesService) {}
@@ -48,7 +49,9 @@ export class TransportCompanySelectComponent implements OnInit, OnDestroy, OnCha
 
   init() {
     const tuControl = this.formGroup.get(this.controlName)!;
+    this.alreadySelectdTransportCompany = tuControl.value;
     this.formSubscription = tuControl.valueChanges.subscribe((change) => {
+      this.alreadySelectdTransportCompany = change;
       this.selectedTransportCompanyChanged.emit(change);
       this.searchTransportCompany(change);
     });
@@ -60,7 +63,17 @@ export class TransportCompanySelectComponent implements OnInit, OnDestroy, OnCha
     if (searchString) {
       this.transportCompanies = this.transportCompaniesService
         .getTransportCompanies([searchString], undefined, undefined, undefined, ['number,ASC'])
-        .pipe(map((value) => value.objects ?? []));
+        .pipe(
+          map((value) => {
+            let transportCompaniesNotDuplicated: TransportCompany[] = [];
+            value.objects?.forEach((val) => {
+              if (!this.alreadySelectdTransportCompany.map((tc) => tc.id).includes(val.id)) {
+                transportCompaniesNotDuplicated.push(val);
+              }
+            });
+            return transportCompaniesNotDuplicated ?? [];
+          })
+        );
     }
   }
 
