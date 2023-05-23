@@ -25,7 +25,7 @@ See [ESTA Documentation](https://confluence.sbb.ch/display/CLEW/ESTA-Web).
 
 ### Node.js
 
-This project requires Node.js Version **16.13.2**. It has to be a LTS version.
+This project requires Node.js Version **16.15.0**. It has to be a LTS version.
 
 Use Node Version Manager to easily switch the NodeJS version between your angular projects.
 
