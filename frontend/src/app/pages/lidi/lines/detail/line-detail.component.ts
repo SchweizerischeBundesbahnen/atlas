@@ -5,7 +5,6 @@ import {
   LineType,
   LineVersion,
   LineVersionWorkflow,
-  PaymentType,
   Status,
 } from '../../../../api';
 import { BaseDetailController } from '../../../../core/components/base-detail/base-detail-controller';
@@ -34,8 +33,6 @@ export class LineDetailComponent
   extends BaseDetailController<LineVersion>
   implements OnInit, OnDestroy
 {
-  TYPE_OPTIONS = Object.values(LineType);
-  PAYMENT_TYPE_OPTIONS = Object.values(PaymentType);
   isShowLineSnapshotHistory = false;
   private ngUnsubscribe = new Subject<void>();
 
@@ -108,15 +105,10 @@ export class LineDetailComponent
   showSnapshotHistoryLink(): boolean {
     const lineVersionWorkflows: LineVersionWorkflow[] = [];
     this.record.lineVersionWorkflows?.forEach((lvw) => lineVersionWorkflows.push(lvw));
-    if (lineVersionWorkflows.length > 0) {
-      return true;
-    } else if (
-      this.record.lineType === LineType.Orderly &&
-      this.record.status === Status.Validated
-    ) {
-      return true;
-    }
-    return false;
+    return (
+      lineVersionWorkflows.length > 0 ||
+      (this.record.lineType === LineType.Orderly && this.record.status === Status.Validated)
+    );
   }
 
   updateRecord(): void {
