@@ -49,7 +49,9 @@ export class TransportCompanySelectComponent implements OnInit, OnDestroy, OnCha
 
   init() {
     const tuControl = this.formGroup.get(this.controlName)!;
-    this.alreadySelectdTransportCompany = tuControl.value;
+    this.alreadySelectdTransportCompany = Array.isArray(tuControl.value)
+      ? tuControl.value
+      : [tuControl.value];
     this.formSubscription = tuControl.valueChanges.subscribe((change) => {
       this.alreadySelectdTransportCompany = change;
       this.selectedTransportCompanyChanged.emit(change);
