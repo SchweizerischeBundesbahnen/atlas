@@ -12,7 +12,7 @@
         <div [ngClass]="chipSearch.disabled ? 'disabled' : ''" class="search-main-field mb-4">
           <mat-chip-grid #chipList [disabled]="!!chipSearch.disabled">
             <mat-chip-row
-              *ngFor="let search of chipSearch.getActiveSearch()"
+              *ngFor="let search of chipSearch.activeSearch"
               (removed)="chipSearch.removeSearch(search); emitSearch()"
               class="font-bold-sm"
             >
@@ -55,7 +55,7 @@
         </ttfn-select>
         <tu-select
           *ngIf="searchSelect.searchType === 'TRANSPORT_COMPANY'"
-          (ttfnSelectionChanged)="searchSelect.setActiveSearch($event); emitSearch()"
+          (tuSelectionChanged)="searchSelect.setActiveSearch($event); emitSearch()"
           [disabled]="searchSelect.disabled!"
           [formGroup]="searchSelect.formGroup!"
           [formModus]="false"
@@ -76,7 +76,7 @@
           [multiple]="true"
           [optionTranslateLabelPrefix]="multiSelect.typeTranslationKeyPrefix"
           [options]="multiSelect.selectOptions"
-          [value]="multiSelect.getActiveSearch()"
+          [value]="multiSelect.activeSearch"
           dataCy="table-filter-multi-select-{{ rowIndex }}-{{ filterConfigIndex }}"
         ></atlas-select>
       </div>
@@ -90,7 +90,7 @@
         <div class="search-date-field">
           <div class="container-date-field">
             <input
-              (dateChange)="dateSelect.setActiveSearch($event.value); emitSearch()"
+              (dateChange)="handleDateChange(dateSelect, $event.value)"
               [formControl]="dateSelect.formControl"
               [matDatepicker]="picker"
               [max]="MAX_DATE"

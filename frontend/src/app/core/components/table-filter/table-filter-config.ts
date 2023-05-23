@@ -13,7 +13,7 @@ export type TableFilterSearchType =
   | 'TIMETABLE_FIELD_NUMBER'
   | 'TRANSPORT_COMPANY';
 
-export abstract class TableFilterConfigClass<T> {
+export abstract class TableFilterConfig<T> {
   elementWidthCssClass: string;
 
   constructor(elementWidthCssClass: string) {
@@ -24,7 +24,7 @@ export abstract class TableFilterConfigClass<T> {
   abstract getActiveSearch(): T;
 }
 
-export class TableFilterSearchSelectClass<T> extends TableFilterConfigClass<T | undefined> {
+export class TableFilterSearchSelect<T> extends TableFilterConfig<T | undefined> {
   searchType: TableFilterSearchType;
   disabled?: boolean;
   formGroup?: FormGroup;
@@ -42,7 +42,6 @@ export class TableFilterSearchSelectClass<T> extends TableFilterConfigClass<T | 
   }
 
   setActiveSearch(value: T | undefined): void {
-    console.log(value);
     this.activeSearch = value;
   }
 
@@ -51,13 +50,13 @@ export class TableFilterSearchSelectClass<T> extends TableFilterConfigClass<T | 
   }
 }
 
-export class TableFilterMultiSelectClass<T> extends TableFilterConfigClass<T[]> {
+export class TableFilterMultiSelect<T> extends TableFilterConfig<T[]> {
   typeTranslationKeyPrefix: string;
   labelTranslationKey: string;
   selectOptions: T[];
   disabled?: boolean;
 
-  protected activeSearch: T[];
+  activeSearch: T[];
 
   constructor(
     typeTranslationKeyPrefix: string,
@@ -82,7 +81,7 @@ export class TableFilterMultiSelectClass<T> extends TableFilterConfigClass<T[]> 
   }
 }
 
-export class TableFilterDateSelectClass extends TableFilterConfigClass<Date | undefined> {
+export class TableFilterDateSelect extends TableFilterConfig<Date | undefined> {
   formControl: FormControl<Date | null>;
 
   protected activeSearch: Date | undefined;
@@ -94,9 +93,6 @@ export class TableFilterDateSelectClass extends TableFilterConfigClass<Date | un
   }
 
   setActiveSearch(value: Moment | null): void {
-    if (this.formControl.invalid) {
-      return;
-    }
     this.activeSearch = value?.toDate();
   }
 
@@ -105,10 +101,10 @@ export class TableFilterDateSelectClass extends TableFilterConfigClass<Date | un
   }
 }
 
-export class TableFilterChipClass extends TableFilterConfigClass<string[]> {
+export class TableFilterChip extends TableFilterConfig<string[]> {
   disabled?: boolean;
 
-  protected activeSearch: string[] = [];
+  activeSearch: string[] = [];
 
   getActiveSearch(): string[] {
     return this.activeSearch;
@@ -119,7 +115,6 @@ export class TableFilterChipClass extends TableFilterConfigClass<string[]> {
   }
 
   addSearchFromChipInputEvent(event: MatChipInputEvent): void {
-    console.log(event);
     const value = (event.value || '').trim();
     if (this.activeSearch.indexOf(value) !== -1) {
       event.chipInput!.clear();
