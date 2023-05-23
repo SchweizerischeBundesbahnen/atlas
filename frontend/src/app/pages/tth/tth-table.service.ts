@@ -2,21 +2,21 @@ import { Injectable } from '@angular/core';
 import { TableService } from '../../core/components/table/table.service';
 import { Page } from '../../core/model/page';
 import {
-  TableFilterChipClass,
-  TableFilterConfigClass,
-  TableFilterMultiSelectClass,
-  TableFilterSearchSelectClass,
+  TableFilterChip,
+  TableFilterConfig,
+  TableFilterMultiSelect,
+  TableFilterSearchSelect,
   TableFilterSearchType,
-} from '../../core/components/table-filter/table-filter-config-class';
+} from '../../core/components/table-filter/table-filter-config';
 import { StatementStatus, TimetableFieldNumber, TransportCompany } from '../../api';
 import { BehaviorSubject } from 'rxjs';
 import { FormControl, FormGroup } from '@angular/forms';
 
 interface OverviewDetailFilterConfigInternal {
-  chipSearch: TableFilterChipClass;
-  multiSelectStatementStatus: TableFilterMultiSelectClass<StatementStatus>;
-  searchSelectTU: TableFilterSearchSelectClass<TransportCompany[]>;
-  searchSelectTTFN: TableFilterSearchSelectClass<TimetableFieldNumber>;
+  chipSearch: TableFilterChip;
+  multiSelectStatementStatus: TableFilterMultiSelect<StatementStatus>;
+  searchSelectTU: TableFilterSearchSelect<TransportCompany[]>;
+  searchSelectTTFN: TableFilterSearchSelect<TimetableFieldNumber>;
 }
 
 @Injectable()
@@ -24,9 +24,8 @@ export class TthTableService extends TableService {
   private _activeTabPage?: Page;
   private _overviewDetailFilterConfigInternal: OverviewDetailFilterConfigInternal =
     this.createTableFilterConfigInternal();
-  private readonly _overviewDetailFilterConfig$: BehaviorSubject<
-    TableFilterConfigClass<unknown>[][]
-  > = new BehaviorSubject(this.getTableFilterConfig());
+  private readonly _overviewDetailFilterConfig$: BehaviorSubject<TableFilterConfig<unknown>[][]> =
+    new BehaviorSubject(this.getTableFilterConfig());
 
   get overviewDetailFilterConfigInternal() {
     return this._overviewDetailFilterConfigInternal;
@@ -47,22 +46,22 @@ export class TthTableService extends TableService {
 
   private createTableFilterConfigInternal(): OverviewDetailFilterConfigInternal {
     return {
-      chipSearch: new TableFilterChipClass('col-6'),
-      multiSelectStatementStatus: new TableFilterMultiSelectClass(
+      chipSearch: new TableFilterChip('col-6'),
+      multiSelectStatementStatus: new TableFilterMultiSelect(
         'TTH.STATEMENT_STATUS.',
         'COMMON.STATUS',
         Object.values(StatementStatus),
         'col-3',
         []
       ),
-      searchSelectTU: new TableFilterSearchSelectClass<TransportCompany[]>(
+      searchSelectTU: new TableFilterSearchSelect<TransportCompany[]>(
         TableFilterSearchType.TRANSPORT_COMPANY,
         'col-3',
         new FormGroup({
           transportCompany: new FormControl(),
         })
       ),
-      searchSelectTTFN: new TableFilterSearchSelectClass<TimetableFieldNumber>(
+      searchSelectTTFN: new TableFilterSearchSelect<TimetableFieldNumber>(
         TableFilterSearchType.TIMETABLE_FIELD_NUMBER,
         'col-3',
         new FormGroup({
@@ -72,7 +71,7 @@ export class TthTableService extends TableService {
     };
   }
 
-  private getTableFilterConfig(): TableFilterConfigClass<unknown>[][] {
+  private getTableFilterConfig(): TableFilterConfig<unknown>[][] {
     return [
       [this._overviewDetailFilterConfigInternal.chipSearch],
       [

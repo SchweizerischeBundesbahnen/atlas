@@ -12,13 +12,13 @@ import { TableService } from '../../../core/components/table/table.service';
 import { TablePagination } from '../../../core/components/table/table-pagination';
 import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
 import {
-  TableFilterChipClass,
-  TableFilterConfigClass,
-  TableFilterDateSelectClass,
-  TableFilterMultiSelectClass,
-  TableFilterSearchSelectClass,
+  TableFilterChip,
+  TableFilterConfig,
+  TableFilterDateSelect,
+  TableFilterMultiSelect,
+  TableFilterSearchSelect,
   TableFilterSearchType,
-} from '../../../core/components/table-filter/table-filter-config-class';
+} from '../../../core/components/table-filter/table-filter-config';
 import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
@@ -43,31 +43,31 @@ export class LinesComponent implements OnDestroy {
   ];
 
   private readonly tableFilterConfigIntern = {
-    chipSearch: new TableFilterChipClass('col-6'),
-    searchSelect: new TableFilterSearchSelectClass<BusinessOrganisation>(
+    chipSearch: new TableFilterChip('col-6'),
+    searchSelect: new TableFilterSearchSelect<BusinessOrganisation>(
       TableFilterSearchType.BUSINESS_ORGANISATION,
       'col-3',
       new FormGroup({
         businessOrganisation: new FormControl(),
       })
     ),
-    multiSelectLineType: new TableFilterMultiSelectClass(
+    multiSelectLineType: new TableFilterMultiSelect(
       'LIDI.LINE.TYPES.',
       'LIDI.TYPE',
       Object.values(LineType),
       'col-3'
     ),
-    multiSelectStatus: new TableFilterMultiSelectClass(
+    multiSelectStatus: new TableFilterMultiSelect(
       'COMMON.STATUS_TYPES.',
       'COMMON.STATUS',
       Object.values(Status),
       'col-3',
       [Status.Draft, Status.Validated, Status.InReview, Status.Withdrawn]
     ),
-    dateSelect: new TableFilterDateSelectClass('col-3'),
+    dateSelect: new TableFilterDateSelect('col-3'),
   };
 
-  tableFilterConfig: TableFilterConfigClass<unknown>[][] = [
+  tableFilterConfig: TableFilterConfig<unknown>[][] = [
     [this.tableFilterConfigIntern.chipSearch],
     [
       this.tableFilterConfigIntern.searchSelect,
