@@ -3,6 +3,7 @@ import { SearchSelectComponent } from './search-select.component';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { NgSelectComponent, NgSelectModule } from '@ng-select/ng-select';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { AtlasFieldErrorComponent } from '../atlas-field-error/atlas-field-error.component';
 
 describe('SearchSelectComponent', () => {
   let component: SearchSelectComponent<any>;
@@ -10,7 +11,7 @@ describe('SearchSelectComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SearchSelectComponent],
+      declarations: [SearchSelectComponent, AtlasFieldErrorComponent],
       imports: [
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },

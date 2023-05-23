@@ -27,10 +27,5 @@
     </ng-template>
   </ng-select>
 
-  <mat-error
-    *ngIf="formGroup.get(controlName)?.errors?.required && formGroup.get(controlName)?.touched"
-    class="fs-75p"
-  >
-    {{ 'VALIDATION.REQUIRED' | translate }}
-  </mat-error>
+  <app-atlas-field-error [form]="formGroup" controlName="{{ controlName }}"></app-atlas-field-error>
 </div>
