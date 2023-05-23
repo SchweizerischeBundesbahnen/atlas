@@ -31,9 +31,6 @@ public class ServicePointVersionMapper {
         .categoriesInformation(getCategoriesSorted(servicePointVersion).stream().map(CodeAndDesignation::fromEnum).toList())
         .operatingPointType(servicePointVersion.getOperatingPointType())
         .operatingPointTypeInformation(CodeAndDesignation.fromEnum(servicePointVersion.getOperatingPointType()))
-        .operatingPointWithoutTimetableType(servicePointVersion.getOperatingPointWithoutTimetableType())
-        .operatingPointWithoutTimetableTypeInformation(
-            CodeAndDesignation.fromEnum(servicePointVersion.getOperatingPointWithoutTimetableType()))
         .operatingPointTechnicalTimetableType(servicePointVersion.getOperatingPointTechnicalTimetableType())
         .operatingPointTechnicalTimetableTypeInformation(
             CodeAndDesignation.fromEnum(servicePointVersion.getOperatingPointTechnicalTimetableType()))
