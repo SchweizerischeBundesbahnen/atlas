@@ -13,6 +13,8 @@ import { StatementStatus } from '../../../api';
 import { SelectComponent } from '../../form-components/select/select.component';
 import { Pipe, PipeTransform } from '@angular/core';
 import { TableColumn } from './table-column';
+import { MatCheckboxChange } from '@angular/material/checkbox';
+import { SelectionModel } from '@angular/cdk/collections';
 
 export interface Obj {
   prop: string;
@@ -215,5 +217,13 @@ describe('TableComponent', () => {
         sort: 'validFrom,desc',
       })
     );
+  });
+
+  it('should emit selection change on checkbox click', () => {
+    spyOn(component.checkedBoxEvent, 'emit');
+
+    component.toggleCheckBox(new MatCheckboxChange(), { prop: 'row' });
+
+    expect(component.checkedBoxEvent.emit).toHaveBeenCalled();
   });
 });
