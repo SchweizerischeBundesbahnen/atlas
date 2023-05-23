@@ -13,7 +13,6 @@ import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointTechnicalTimetableType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointTrafficPointType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointType;
-import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointWithoutTimetableType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.ServicePointStatus;
 import ch.sbb.atlas.servicepointdirectory.enumeration.StopPointType;
 import ch.sbb.atlas.kafka.model.SwissCanton;
@@ -251,7 +250,6 @@ public class ServicePointCsvToEntityMapperTest {
         .meansOfTransport(Collections.emptySet())
         .operatingPoint(true)
         .operatingPointWithTimetable(false)
-        .operatingPointWithoutTimetableType(OperatingPointWithoutTimetableType.ROUTE_SPEED_CHANGE)
         .creationDate(LocalDateTime.of(LocalDate.of(2021, 12, 13), LocalTime.of(15, 21, 36)))
         .creator("u150522")
         .editionDate(LocalDateTime.of(LocalDate.of(2021, 12, 13), LocalTime.of(15, 21, 55)))

@@ -10,7 +10,6 @@ import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointTechnicalTimetableType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointTrafficPointType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointType;
-import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointWithoutTimetableType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.ServicePointStatus;
 import ch.sbb.atlas.servicepointdirectory.enumeration.StopPointType;
 import ch.sbb.atlas.kafka.model.SwissCanton;
@@ -100,7 +99,6 @@ public class ServicePointCsvToEntityMapper implements
         .meansOfTransport(meansOfTransport)
         .stopPointType(StopPointType.from(servicePointCsvModel.getHTypId()))
         .operatingPointType(OperatingPointType.from(servicePointCsvModel.getBpBetriebspunktArtId()))
-        .operatingPointWithoutTimetableType(OperatingPointWithoutTimetableType.from(servicePointCsvModel.getBpofBetriebspunktArtId()))
         .operatingPointTechnicalTimetableType(OperatingPointTechnicalTimetableType.from(servicePointCsvModel.getBptfBetriebspunktArtId()))
         .operatingPointTrafficPointType(OperatingPointTrafficPointType.from(servicePointCsvModel.getBpvbBetriebspunktArtId()))
         .freightServicePoint(servicePointCsvModel.getIsBedienpunkt())
