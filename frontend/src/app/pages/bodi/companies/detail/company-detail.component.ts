@@ -39,6 +39,6 @@ export class CompanyDetailComponent implements OnInit {
     if (trimmedUrl.startsWith('http')) {
       return trimmedUrl;
     }
-    return 'http://' + trimmedUrl;
+    return 'https://' + trimmedUrl;
   }
 }
