@@ -7,12 +7,15 @@ import { DisplayDatePipe } from '../../../core/pipe/display-date.pipe';
 import {
   ContainerTimetableHearingStatement,
   HearingStatus,
+  StatementStatus,
+  TimetableFieldNumber,
   TimetableHearingService,
   TimetableHearingStatement,
   TimetableHearingYear,
+  TransportCompany,
 } from '../../../api';
 import { ActivatedRoute, Router } from '@angular/router';
-import { of } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import moment from 'moment';
 import { Pages } from '../../pages';
 import { Component, Input } from '@angular/core';
@@ -25,6 +28,13 @@ import { TthTableService } from '../tth-table.service';
 import { SelectComponent } from '../../../core/form-components/select/select.component';
 import { AtlasSpacerComponent } from '../../../core/components/spacer/atlas-spacer.component';
 import { AuthService } from '../../../core/auth/auth.service';
+import {
+  TableFilterChip,
+  TableFilterMultiSelect,
+  TableFilterSearchSelect,
+  TableFilterSearchType,
+} from '../../../core/components/table-filter/table-filter-config';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-timetable-hearing-overview-tab-heading',
@@ -57,7 +67,7 @@ const hearingYear2001: TimetableHearingYear = {
   hearingTo: moment().toDate(),
 };
 
-const timetabelHearingStatement: TimetableHearingStatement = {
+const timetableHearingStatement: TimetableHearingStatement = {
   timetableYear: 2001,
   statementStatus: 'REVOKED',
   ttfnid: 'ch:1:ttfnid:1000008',
@@ -88,7 +98,7 @@ const timetabelHearingStatement: TimetableHearingStatement = {
   documents: [],
 };
 const containerTimetableHearingStatement: ContainerTimetableHearingStatement = {
-  objects: [timetabelHearingStatement, timetabelHearingStatement],
+  objects: [timetableHearingStatement, timetableHearingStatement],
   totalCount: 2,
 };
 
@@ -107,11 +117,36 @@ async function baseTestConfiguration() {
   );
   mockTimetableHearingService.getStatements.and.returnValue(of(containerTimetableHearingStatement));
 
-  const tthTableServiceSpy = jasmine.createSpyObj([], {
+  const tthTableServiceSpy = jasmine.createSpyObj(['enableFilters', 'disableFilters'], {
     pageIndex: undefined,
     pageSize: undefined,
     sortString: undefined,
     activeTabPage: undefined,
+    overviewDetailFilterConfig: new BehaviorSubject([]),
+    overviewDetailFilterConfigInternal: {
+      chipSearch: new TableFilterChip('col-6'),
+      multiSelectStatementStatus: new TableFilterMultiSelect(
+        'TTH.STATEMENT_STATUS.',
+        'COMMON.STATUS',
+        Object.values(StatementStatus),
+        'col-3',
+        []
+      ),
+      searchSelectTU: new TableFilterSearchSelect<TransportCompany[]>(
+        TableFilterSearchType.TRANSPORT_COMPANY,
+        'col-3',
+        new FormGroup({
+          transportCompany: new FormControl(),
+        })
+      ),
+      searchSelectTTFN: new TableFilterSearchSelect<TimetableFieldNumber>(
+        TableFilterSearchType.TIMETABLE_FIELD_NUMBER,
+        'col-3',
+        new FormGroup({
+          ttfnid: new FormControl(),
+        })
+      ),
+    },
   });
 
   await TestBed.configureTestingModule({
@@ -217,8 +252,8 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       fixture.detectChanges();
       //then
       expect(component.timeTableHearingStatements).toEqual([
-        timetabelHearingStatement,
-        timetabelHearingStatement,
+        timetableHearingStatement,
+        timetableHearingStatement,
       ]);
       expect(component.totalCount$).toEqual(2);
       expect(component.noTimetableHearingYearFound).toBeFalsy();

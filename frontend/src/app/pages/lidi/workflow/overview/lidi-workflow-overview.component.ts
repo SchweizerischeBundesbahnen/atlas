@@ -12,11 +12,11 @@ import { TableService } from '../../../../core/components/table/table.service';
 import { TablePagination } from '../../../../core/components/table/table-pagination';
 import { addElementsToArrayWhenNotUndefined } from '../../../../core/util/arrays';
 import {
-  TableFilterChipClass,
-  TableFilterConfigClass,
-  TableFilterDateSelectClass,
-  TableFilterMultiSelectClass,
-} from '../../../../core/components/table-filter/table-filter-config-class';
+  TableFilterChip,
+  TableFilterConfig,
+  TableFilterDateSelect,
+  TableFilterMultiSelect,
+} from '../../../../core/components/table-filter/table-filter-config';
 
 @Component({
   selector: 'app-lidi-workflow-overview',
@@ -38,18 +38,18 @@ export class LidiWorkflowOverviewComponent implements OnDestroy {
   ];
 
   private readonly tableFilterConfigIntern = {
-    chipSearch: new TableFilterChipClass('col-6'),
-    multiSelectWorkflowStatus: new TableFilterMultiSelectClass(
+    chipSearch: new TableFilterChip('col-6'),
+    multiSelectWorkflowStatus: new TableFilterMultiSelect(
       'WORKFLOW.STATUS.',
       'COMMON.STATUS',
       [WorkflowStatus.Added, WorkflowStatus.Approved, WorkflowStatus.Rejected],
       'col-3',
       [WorkflowStatus.Added, WorkflowStatus.Approved, WorkflowStatus.Rejected]
     ),
-    dateSelect: new TableFilterDateSelectClass('col-3'),
+    dateSelect: new TableFilterDateSelect('col-3'),
   };
 
-  tableFilterConfig: TableFilterConfigClass<unknown>[][] = [
+  tableFilterConfig: TableFilterConfig<unknown>[][] = [
     [this.tableFilterConfigIntern.chipSearch],
     [
       this.tableFilterConfigIntern.multiSelectWorkflowStatus,
