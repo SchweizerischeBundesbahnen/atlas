@@ -17,9 +17,10 @@ export class TthUtils {
     timetableHearingYears: TimetableHearingYear[],
     reverse: boolean
   ): TimetableHearingYear[] {
+    timetableHearingYears.sort((n1, n2) => n1.timetableYear - n2.timetableYear);
     if (reverse) {
-      return timetableHearingYears.sort((n1, n2) => n1.timetableYear - n2.timetableYear).reverse();
+      timetableHearingYears.reverse();
     }
-    return timetableHearingYears.sort((n1, n2) => n1.timetableYear - n2.timetableYear);
+    return timetableHearingYears;
   }
 }
