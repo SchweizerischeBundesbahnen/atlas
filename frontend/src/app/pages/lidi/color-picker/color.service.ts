@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-export const RGB_HEX_COLOR_REGEX = /^#([a-fA-F0-9]{6})$/i;
+export const RGB_HEX_COLOR_REGEX = /^#([A-F0-9]{6})$/i;
 export const CMYK_COLOR_REGEX = /^(([0-9][0-9]?|100),){3}([0-9][0-9]?|100)$/i;
 
 @Injectable({ providedIn: 'root' })
