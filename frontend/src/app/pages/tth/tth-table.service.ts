@@ -58,7 +58,7 @@ export class TthTableService extends TableService {
         TableFilterSearchType.TRANSPORT_COMPANY,
         'col-3',
         new FormGroup({
-          transportCompany: new FormControl(),
+          transportCompany: new FormControl([]),
         })
       ),
       searchSelectTTFN: new TableFilterSearchSelect<TimetableFieldNumber>(
