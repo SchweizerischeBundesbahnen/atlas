@@ -2,8 +2,6 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Sort, SortDirection } from '@angular/material/sort';
 import { PageEvent } from '@angular/material/paginator';
 import { TableColumn } from './table-column';
-import { DateService } from '../../date/date.service';
-import { TranslatePipe } from '@ngx-translate/core';
 import { TableFilterConfig } from '../table-filter/table-filter-config';
 import { TableService } from './table.service';
 import { TablePagination } from './table-pagination';
@@ -135,7 +133,9 @@ export class TableComponent<DATATYPE> implements OnInit {
   }
 
   toggleCheckBox($event: MatCheckboxChange, row: DATATYPE) {
-    $event ? this.checkBoxSelection.toggle(row) : null;
+    if ($event) {
+      this.checkBoxSelection.toggle(row);
+    }
     this.checkedBoxEvent.emit(this.checkBoxSelection);
   }
 
