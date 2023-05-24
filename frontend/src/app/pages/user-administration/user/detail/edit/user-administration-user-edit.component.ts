@@ -2,11 +2,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { MatDialogRef } from '@angular/material/dialog';
 import { UserPermissionManager } from '../../../service/user-permission-manager';
-import { BusinessOrganisationsService } from '../../../../../api';
+import { BusinessOrganisationsService, User } from '../../../../../api';
 import { TranslatePipe } from '@ngx-translate/core';
 import { UserService } from '../../../service/user.service';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
-import { User } from '../../../../../api';
 import { CreationEditionRecord } from '../../../../../core/components/base-detail/user-edit-info/creation-edition-record';
 import moment from 'moment';
 
