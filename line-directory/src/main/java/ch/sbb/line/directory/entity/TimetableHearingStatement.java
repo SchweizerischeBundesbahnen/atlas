@@ -61,7 +61,7 @@ public class TimetableHearingStatement extends BaseEntity implements CantonAssoc
   @Enumerated(EnumType.STRING)
   private SwissCanton swissCanton;
 
-  @Size(max = AtlasFieldLengths.LENGTH_50)
+  @Size(max = AtlasFieldLengths.LENGTH_255)
   private String stopPlace;
 
   @OneToMany(mappedBy = "statement", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
