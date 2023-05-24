@@ -61,7 +61,7 @@ public class TimetableHearingStatementModel extends BaseVersionModel implements 
   @Schema(description = "Canton, the statement is for")
   private SwissCanton swissCanton;
 
-  @Size(max = AtlasFieldLengths.LENGTH_50)
+  @Size(max = AtlasFieldLengths.LENGTH_255)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   @Schema(description = "StopPlace information for the statement", example = "Bern, Wyleregg")
   private String stopPlace;
@@ -78,7 +78,6 @@ public class TimetableHearingStatementModel extends BaseVersionModel implements 
 
   @NotNull
   @Size(max = AtlasFieldLengths.LENGTH_5000)
-  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   @Schema(description = "Statement of citizen", example = "I need some more busses please.")
   private String statement;
 
