@@ -121,9 +121,17 @@ public class TimetableHearingStatementRepositoryTest {
   }
 
   @Test
-  void shouldThrowExceptionWhenStopPlaceLengthIsGreaterThan50Characters() {
+  void shouldThrowExceptionWhenStopPlaceLengthIsGreaterThan255Characters() {
     TimetableHearingStatement statement = getMinimalTimetableHearingStatement();
-    statement.setStopPlace("Sie ändern die Kantonszuordnung der ausgewählten Stellungnahme.");
+    String stopPlace = """
+        Ich möchte da drüben bitte auch abfahren. Weisst du?
+        Ich möchte da drüben bitte auch abfahren. Weisst du?
+        Ich möchte da drüben bitte auch abfahren. Weisst du?
+        Ich möchte da drüben bitte auch abfahren. Weisst du?
+        Ich möchte da drüben bitte auch abfahren. Weisst du?
+        Ich möchte da drüben bitte auch abfahren. Weisst du?
+        """;
+    statement.setStopPlace(stopPlace);
 
     assertThrows(TransactionSystemException.class,
         () -> timetableHearingStatementRepository.save(statement));
