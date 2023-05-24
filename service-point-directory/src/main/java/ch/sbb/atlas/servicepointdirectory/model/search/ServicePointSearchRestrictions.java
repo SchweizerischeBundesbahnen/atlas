@@ -80,7 +80,7 @@ public class ServicePointSearchRestrictions extends SearchRestrictions<ServicePo
         .and(specificationBuilder().booleanSpecification(ServicePointVersion_.operatingPointWithTimetable,
             servicePointRequestParams.getWithTimetable()))
         .and(new EnumByConversionSpecification<>(servicePointRequestParams.getUicCountryCodes(), Country::from, ServicePointVersion_.country))
-        .and(new EnumByConversionServicePointGeolocationSpecification<>(servicePointRequestParams.getIsoCountryCodes(), Country::filterCountriesWithSpecifiedIsoCode, ServicePointVersion_.servicePointGeolocation,
+        .and(new EnumByConversionServicePointGeolocationSpecification<>(servicePointRequestParams.getIsoCountryCodes(), Country::fromIsoCode, ServicePointVersion_.servicePointGeolocation,
             ServicePointGeolocation_.country))
         .and(new ValidOrEditionTimerangeSpecification(
             servicePointRequestParams.getFromDate(),
