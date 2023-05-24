@@ -33,18 +33,18 @@ public class AtlasExceptionHandlerTest {
 
     // Then
     assertThat(errorResponseResponseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
-    assertThat(errorResponseResponseEntity.getBody()).isNotNull();
-    assertThat(errorResponseResponseEntity.getBody().getStatus()).isEqualTo(
+    ErrorResponse responseBody = errorResponseResponseEntity.getBody();
+    assertThat(responseBody).isNotNull();
+    assertThat(responseBody.getStatus()).isEqualTo(
         HttpStatus.BAD_REQUEST.value());
-    assertThat(errorResponseResponseEntity.getBody().getMessage()).isEqualTo(
+    assertThat(responseBody.getMessage()).isEqualTo(
         "Constraint for requestbody was violated");
-    assertThat(errorResponseResponseEntity.getBody().getDetails()).size().isEqualTo(1);
-    assertThat(errorResponseResponseEntity.getBody().getDetails().first().getMessage()).isEqualTo(
+    assertThat(responseBody.getDetails()).size().isEqualTo(1);
+    assertThat(responseBody.getDetails().first().getMessage()).isEqualTo(
         "Value null rejected due to defaultMessage");
-    assertThat(errorResponseResponseEntity.getBody()
-                                          .getDetails()
-                                          .first()
-                                          .getDisplayInfo()
-                                          .getCode()).isEqualTo("ERROR.CONSTRAINT");
+    assertThat(responseBody.getDetails()
+        .first()
+        .getDisplayInfo()
+        .getCode()).isEqualTo("ERROR.CONSTRAINT");
   }
 }

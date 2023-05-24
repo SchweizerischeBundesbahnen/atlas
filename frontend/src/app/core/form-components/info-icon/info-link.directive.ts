@@ -18,7 +18,7 @@ export class InfoLinkDirective {
     try {
       this.translateService.get(this.infoLinkTranslationKey).subscribe((link) => {
         if (link === this.infoLinkTranslationKey) {
-          throw 'Could not evaluate translationKey correctly';
+          throw new Error('Could not evaluate translationKey correctly');
         }
         window.open(link, '_blank');
       });

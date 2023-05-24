@@ -4,7 +4,7 @@ import { StatementStatus, TimetableHearingStatement } from '../../../../../api';
 export interface StatusChangeData extends DialogData {
   tths: TimetableHearingStatement[];
   statementStatus: StatementStatus;
-  justification?: string | undefined;
+  justification: string | undefined;
   type: StatusChangeDataType;
 }
 
