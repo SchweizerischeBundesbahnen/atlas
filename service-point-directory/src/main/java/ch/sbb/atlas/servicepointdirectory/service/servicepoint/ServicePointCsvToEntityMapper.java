@@ -64,7 +64,7 @@ public class ServicePointCsvToEntityMapper implements
         .east(servicePointCsvModel.getOriginalEast())
         .north(servicePointCsvModel.getOriginalNorth())
         .height(servicePointCsvModel.getHeight())
-        .country(Country.from(servicePointCsvModel.getLaendercode()))
+        .country(Country.fromIsoCode(servicePointCsvModel.getIsoCountryCode()))
         .swissCanton(SwissCanton.fromCantonNumber(servicePointCsvModel.getKantonsNum()))
         .swissDistrictName(servicePointCsvModel.getBezirksName())
         .swissDistrictNumber(servicePointCsvModel.getBezirksNum())
