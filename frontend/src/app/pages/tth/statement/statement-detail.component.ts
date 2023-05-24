@@ -179,7 +179,7 @@ export class StatementDetailComponent implements OnInit, AfterViewInit {
       responsibleTransportCompanies: new FormControl(statement?.responsibleTransportCompanies),
       swissCanton: new FormControl(statement?.swissCanton, [Validators.required]),
       stopPlace: new FormControl(statement?.stopPlace, [
-        AtlasFieldLengthValidator.length_50,
+        AtlasFieldLengthValidator.length_255,
         WhitespaceValidator.blankOrEmptySpaceSurrounding,
         AtlasCharsetsValidator.iso88591,
       ]),
