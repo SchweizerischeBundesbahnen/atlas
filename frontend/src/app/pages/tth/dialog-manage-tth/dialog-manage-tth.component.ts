@@ -66,7 +66,7 @@ export class DialogManageTthComponent implements OnInit {
 
   handleSaveAndCloseClick(): void {
     if (!this.timetableHearingYear) {
-      throw 'TimetableHearingYear should be defined here';
+      throw new Error('TimetableHearingYear should be defined here');
     }
 
     this.actionButtonsDisabled = true;
