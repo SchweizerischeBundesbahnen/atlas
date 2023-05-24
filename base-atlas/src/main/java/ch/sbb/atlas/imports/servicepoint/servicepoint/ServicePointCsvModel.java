@@ -27,6 +27,9 @@ public class ServicePointCsvModel extends BaseDidokCsvModel {
   @JsonProperty("LAENDERCODE")
   private Integer laendercode;
 
+  @JsonProperty("LAND_ISO2_GEO")
+  private String isoCountryCode;
+
   @JsonProperty("DIDOK_CODE")
   private Integer didokCode;
 
