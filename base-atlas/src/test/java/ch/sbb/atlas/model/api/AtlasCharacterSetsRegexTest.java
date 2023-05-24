@@ -75,6 +75,7 @@ public class AtlasCharacterSetsRegexTest {
 
     assertThat(pattern.matcher("test@here.com").matches()).isTrue();
     assertThat(pattern.matcher("beste.dude@sbb.ch").matches()).isTrue();
+    assertThat(pattern.matcher("Beste.dude@sbb.ch").matches()).isTrue();
     assertThat(pattern.matcher(StringUtils.EMPTY).matches()).isTrue();
 
     assertThat(pattern.matcher("@me").matches()).isFalse();
