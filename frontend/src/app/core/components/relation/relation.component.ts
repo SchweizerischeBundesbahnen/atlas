@@ -72,7 +72,7 @@ export class RelationComponent<RECORD_TYPE> {
     const valuePathToSort = this.getValuePathFromColumnName(sort.active);
     const nestedPath = valuePathToSort.split('.');
 
-    this._records = this._records.sort((a, b) => {
+    this._records.sort((a, b) => {
       let i = 0;
       while (i < nestedPath.length) {
         a = (a as any)[nestedPath[i]];
