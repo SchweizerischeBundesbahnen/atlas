@@ -52,6 +52,7 @@ describe('Atlas Charsets Validator', () => {
 
     expect(email(new FormControl('this@here.com'))).toBeNull();
     expect(email(new FormControl('test@sbb.ch'))).toBeNull();
+    expect(email(new FormControl('Dude@sbb.ch'))).toBeNull();
 
     expect(email(new FormControl('a@'))).toBeDefined();
     expect(email(new FormControl('@sbb.ch'))).toBeDefined();
