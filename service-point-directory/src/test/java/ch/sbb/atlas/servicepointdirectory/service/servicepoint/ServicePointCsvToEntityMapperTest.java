@@ -470,7 +470,7 @@ public class ServicePointCsvToEntityMapperTest {
         .east(2604525D)
         .north(1259900D)
         .height(370D)
-        .country(Country.SWITZERLAND)
+        .country(Country.FRANCE)
         .creationDate(LocalDateTime.of(LocalDate.of(2017, 11, 9), LocalTime.of(11, 53, 5)))
         .creator("GSU_DIDOK")
         .editionDate(LocalDateTime.of(LocalDate.of(2019, 5, 20), LocalTime.of(15, 3, 58)))
@@ -551,7 +551,7 @@ public class ServicePointCsvToEntityMapperTest {
         .east(2677131D)
         .north(1275660D)
         .height(554D)
-        .country(Country.SWITZERLAND)
+        .country(Country.GERMANY)
         .creationDate(LocalDateTime.of(LocalDate.of(2017, 11, 9), LocalTime.of(11, 53, 5)))
         .creator("GSU_DIDOK")
         .editionDate(LocalDateTime.of(LocalDate.of(2020, 8, 13), LocalTime.of(14, 20, 18)))
@@ -1046,5 +1046,69 @@ public class ServicePointCsvToEntityMapperTest {
         .usingRecursiveComparison()
         .ignoringFields("servicePointGeolocation")
         .isEqualTo(expectedServicePoint);
+  }
+
+  @Test
+  void shouldMapIsoCountryCodeInLocationAndServicePointVersionCorrectly() throws IOException {
+    // given
+    String csvLine = csvHeader + """
+        18815;85;CH;18815;85188151;2011-12-16;2099-12-31;3;Bad Säckingen;;;1;1;1;0;1;0;0;;;;;;;;DE;{60306863-70fc-4358-8ded-45aec9c9d575};100325;{dbfa2582-6079-4c0f-8cc2-e0c086e9bb5b};2017-11-09 11:53:05;2018-12-05 17:26:34;;;;;;;;;;;0;0;;;;;;;0;;;;;;;;;;;;;;;;;;;;;;~Z~;~Zug~;~Train~;~Treno~;~Zug~;2011-12-13;2099-12-31;;368;DB/Süd;DB/Süd;DB/Süd;DB/Süd;DB REGIO Süddeutschland;DB REGIO Süddeutschland;DB REGIO Süddeutschland;DB REGIO Süddeutschland;;;;;;;884960.642013159;6033402.53033373;280;ch:1:sloid:18815;638470;267445;2638470;1267445;7.94973670565;47.55659507702;884960.64201;6033402.53033;0;;;;;;;;;;;;;;;;;;;;;DB;;#0054;Deutsche Bahn AG;;GSU_DIDOK;GSU_DIDOK;LV95
+        """;
+
+    MappingIterator<ServicePointCsvModel> mappingIterator = DidokCsvMapper.CSV_MAPPER.readerFor(
+        ServicePointCsvModel.class).with(DidokCsvMapper.CSV_SCHEMA).readValues(csvLine);
+    ServicePointCsvModel servicePointCsvModel = mappingIterator.next();
+
+    // when
+    ServicePointVersion servicePointVersion = servicePointCsvToEntityMapper.apply(
+        servicePointCsvModel);
+
+    // then
+    ServicePointVersion expectedServicePoint = ServicePointVersion
+        .builder()
+        .number(ServicePointNumber.of(85188151))
+        .sloid("ch:1:sloid:18815")
+        .numberShort(18815)
+        .country(Country.SWITZERLAND)
+        .designationLong(null)
+        .designationOfficial("Bad Säckingen")
+        .abbreviation(null)
+        .statusDidok3(ServicePointStatus.IN_OPERATION)
+        .businessOrganisation("ch:1:sboid:100325")
+        .status(Status.VALIDATED)
+        .validFrom(LocalDate.of(2011, 12, 16))
+        .validTo(LocalDate.of(2099, 12, 31))
+        .categories(new HashSet<>())
+        .meansOfTransport(Set.of(MeanOfTransport.TRAIN))
+        .operatingPoint(true)
+        .operatingPointWithTimetable(true)
+        .creationDate(LocalDateTime.of(LocalDate.of(2017, 11, 9), LocalTime.of(11, 53, 5)))
+        .creator("GSU_DIDOK")
+        .editionDate(LocalDateTime.of(LocalDate.of(2018, 12, 5), LocalTime.of(17, 26, 34)))
+        .editor("GSU_DIDOK")
+        .build();
+
+    assertThat(servicePointVersion)
+        .usingRecursiveComparison()
+        .ignoringFields("servicePointGeolocation")
+        .isEqualTo(expectedServicePoint);
+
+    ServicePointGeolocation expectedServicePointGeolocation = ServicePointGeolocation
+        .builder()
+        .spatialReference(SpatialReference.LV95)
+        .east(2638470.0)
+        .north(1267445.0)
+        .height(280.0)
+        .country(Country.GERMANY)
+        .creationDate(LocalDateTime.of(LocalDate.of(2017, 11, 9), LocalTime.of(11, 53, 5)))
+        .creator("GSU_DIDOK")
+        .editionDate(LocalDateTime.of(LocalDate.of(2018, 12, 5), LocalTime.of(17, 26, 34)))
+        .editor("GSU_DIDOK")
+        .build();
+
+    assertThat(servicePointVersion
+        .getServicePointGeolocation())
+        .usingRecursiveComparison()
+        .ignoringFields("servicePointVersion").isEqualTo(expectedServicePointGeolocation);
   }
 }
