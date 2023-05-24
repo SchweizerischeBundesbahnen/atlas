@@ -1,5 +1,15 @@
 package ch.sbb.workflow.controller;
 
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import ch.sbb.atlas.api.client.line.workflow.LineWorkflowClient;
 import ch.sbb.atlas.api.workflow.ClientPersonModel;
 import ch.sbb.atlas.api.workflow.ExaminantWorkflowCheckModel;
 import ch.sbb.atlas.api.workflow.PersonModel;
@@ -10,7 +20,6 @@ import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.atlas.workflow.model.WorkflowType;
 import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.Workflow;
-import ch.sbb.atlas.api.client.line.workflow.LineWorkflowClient;
 import ch.sbb.workflow.workflow.WorkflowRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,18 +28,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 @EmbeddedKafka(topics = {"atlas.mail"})
 public class WorkflowControllerTest extends BaseControllerApiTest {
 
+  public static final String MAIL_ADDRESS = "marek@hamsik.com";
   @Autowired
   private WorkflowController controller;
 
@@ -56,7 +57,7 @@ public class WorkflowControllerTest extends BaseControllerApiTest {
         .firstName("Marek")
         .lastName("Hamsik")
         .personFunction("Centrocampista")
-        .mail("a@b.c").build();
+        .mail(MAIL_ADDRESS).build();
     WorkflowStartModel workflowModel = WorkflowStartModel.builder()
         .client(person)
         .swissId("CH123456")
@@ -79,7 +80,7 @@ public class WorkflowControllerTest extends BaseControllerApiTest {
         .firstName("Marek")
         .lastName("Hamsik")
         .function("Centrocampista")
-        .mail("a@b.c").build();
+        .mail(MAIL_ADDRESS).build();
     Workflow workflow = Workflow.builder()
         .client(person)
         .examinant(person)
@@ -107,7 +108,7 @@ public class WorkflowControllerTest extends BaseControllerApiTest {
         .firstName("Marek")
         .lastName("Hamsik")
         .personFunction("Centrocampista")
-        .mail("a@b.c").build();
+        .mail(MAIL_ADDRESS).build();
     WorkflowModel workflowModel = WorkflowModel.builder()
         .client(person)
         .examinant(person)
@@ -134,7 +135,7 @@ public class WorkflowControllerTest extends BaseControllerApiTest {
         .firstName("Marek")
         .lastName("Hamsik")
         .personFunction("Centrocampista")
-        .mail("a@b.c").build();
+        .mail(MAIL_ADDRESS).build();
     WorkflowModel workflowModel = WorkflowModel.builder()
         .client(person)
         .examinant(person)
@@ -168,7 +169,7 @@ public class WorkflowControllerTest extends BaseControllerApiTest {
         .firstName("\uD83D\uDE00\uD83D\uDE01\uD83D")
         .lastName("Hamsik")
         .personFunction("Centrocampista")
-        .mail("a@b.c").build();
+        .mail(MAIL_ADDRESS).build();
     WorkflowModel workflowModel = WorkflowModel.builder()
         .client(person)
         .workflowType(WorkflowType.LINE)
@@ -204,7 +205,7 @@ public class WorkflowControllerTest extends BaseControllerApiTest {
             .firstName("Marek")
             .lastName("Hamsik")
             .personFunction("Centrocampista")
-            .mail("a@b.c").build();
+            .mail(MAIL_ADDRESS).build();
     WorkflowModel workflowModel = WorkflowModel.builder()
             .client(person)
             .workflowType(WorkflowType.LINE)
@@ -240,7 +241,7 @@ public class WorkflowControllerTest extends BaseControllerApiTest {
             .firstName("Marek")
             .lastName("Hamsik")
             .personFunction("Centrocampista")
-            .mail("a@b.c")
+            .mail(MAIL_ADDRESS)
             .build();
     WorkflowStartModel workflowModel = WorkflowStartModel.builder()
             .client(client)
