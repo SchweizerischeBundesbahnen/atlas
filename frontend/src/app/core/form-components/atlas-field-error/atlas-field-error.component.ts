@@ -24,7 +24,7 @@ export class AtlasFieldErrorComponent {
       const validationErrors = this.getValidationErrors();
       if (validationErrors) {
         if ((validationErrors['required'] && formField?.touched) || !validationErrors['required']) {
-          return this.validationService.getValidation(validationErrors || null);
+          return this.validationService.getValidation(validationErrors);
         }
       }
     }
