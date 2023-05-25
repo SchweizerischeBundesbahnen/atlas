@@ -5,8 +5,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
 import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
+import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointTechnicalTimetableType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointTrafficPointType;
-import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointWithoutTimetableType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.ServicePointStatus;
 import ch.sbb.atlas.servicepointdirectory.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
@@ -137,7 +137,7 @@ class ServicePointVersionTest {
         .status(Status.VALIDATED)
         .meansOfTransport(Set.of(MeanOfTransport.BUS))
         .stopPointType(StopPointType.ORDERLY)
-        .operatingPointWithoutTimetableType(OperatingPointWithoutTimetableType.ROUTE_SPEED_CHANGE)
+        .operatingPointTechnicalTimetableType(OperatingPointTechnicalTimetableType.ROUTE_SPEED_CHANGE)
         .operatingPointTrafficPointType(OperatingPointTrafficPointType.TARIFF_POINT)
         .validFrom(LocalDate.of(2020, 1, 1))
         .validTo(LocalDate.of(2020, 12, 31))
