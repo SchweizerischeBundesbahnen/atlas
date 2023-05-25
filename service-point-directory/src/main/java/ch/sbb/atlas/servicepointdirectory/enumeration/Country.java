@@ -110,7 +110,7 @@ public enum Country {
         .orElse(null);
   }
 
-  public static Country filterCountriesWithSpecifiedIsoCode(String isoCode) {
+  public static Country fromIsoCode(String isoCode) {
     return Arrays.stream(Country.values()).filter(country -> Objects.equals(country.getIsoCode(), isoCode)).findFirst()
         .orElse(null);
   }
