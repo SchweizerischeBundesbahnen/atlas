@@ -77,6 +77,11 @@ describe('Timetable Hearing', { testIsolation: false }, () => {
     cy.wait('@getStatementsPath').its('response.statusCode').should('eq', 200);
     cy.wait(2000);
 
+    cy.get(DataCy.TTH_TABLE + ' table tbody tr td').should(
+      'not.contain',
+      'Es wurden keine Daten gefunden.'
+    );
+
     CommonUtils.clickFirstRowInTable(DataCy.TTH_TABLE);
     cy.get(DataCy.EDIT_BUTTON).click();
     CommonUtils.getClearType(DataCy.STATEMENT_ORGANISATION, 'SSC Calcio Napoli');
