@@ -3,11 +3,13 @@ package ch.sbb.atlas.servicepointdirectory.repository;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion.Fields;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -24,18 +26,17 @@ public interface ServicePointVersionRepository extends JpaRepository<ServicePoin
 
   boolean existsByNumber(ServicePointNumber servicePointNumber);
 
-  @Override
   @EntityGraph(attributePaths = {Fields.servicePointGeolocation, Fields.categories, Fields.meansOfTransport})
-  List<ServicePointVersion> findAllById(Iterable<Long> ids);
+  List<ServicePointVersion> findAllByIdIn(Collection<Long> ids, Sort sort);
 
   default Page<ServicePointVersion> loadByIdsFindBySpecification(Specification<ServicePointVersion> specification,
       Pageable pageable) {
     Function<FetchableFluentQuery<ServicePointVersion>, Page<IdProjection>> idProjection =
-        i -> i.project("id").as(IdProjection.class)
-            .page(pageable);
+        i -> i.project("id").as(IdProjection.class).sortBy(pageable.getSort()).page(pageable);
     Page<IdProjection> pagedIds = findBy(specification, idProjection);
 
-    List<ServicePointVersion> loadedObjectsById = findAllById(pagedIds.getContent().stream().map(IdProjection::getId).toList());
+    List<Long> idList = pagedIds.getContent().stream().map(IdProjection::getId).toList();
+    List<ServicePointVersion> loadedObjectsById = findAllByIdIn(idList, pageable.getSort());
     return new PageImpl<>(loadedObjectsById, pagedIds.getPageable(), pagedIds.getTotalElements());
   }
 }
