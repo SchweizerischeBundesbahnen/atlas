@@ -12,7 +12,6 @@ import lombok.experimental.Accessors;
 @RequiredArgsConstructor
 public enum OperatingPointTechnicalTimetableType implements CodeAndDesignations {
 
-  STOP_POINT(51, true, "Haltestelle", "Arrêt", "Fermata", "Haltestelle", "haltestelle,verkehrspunkt", null, null, null, null),
   PROPERTY_LINE(43, true, "Eigentumsgrenze", "Limite de propriété", "Confine di proprietà", "Eigentumsgrenze",
       "technischerfahrplan",
       "EGr", "lpr", "cpr", null),
