@@ -45,7 +45,11 @@
           [fieldExamples]="[
             { label: 'FORM.FOR_EXAMPLE', translate: true },
             { label: 'Bern Bahnhof - Eigerplatz - Weissenbühl |', translate: false },
-            { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '50' } }
+            {
+              label: 'FORM.MAX_CHARS',
+              translate: true,
+              arg: { key: 'numberOfChars', value: '255' }
+            }
           ]"
           [formGroup]="form"
           controlName="description"
