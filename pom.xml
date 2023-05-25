@@ -7,7 +7,7 @@
       <artifactId>spring-boot-starter-parent</artifactId>
       <groupId>org.springframework.boot</groupId>
       <relativePath/>
-      <version>3.0.6</version>
+      <version>3.1.0</version>
    </parent>
    <groupId>ch.sbb.atlas</groupId>
    <artifactId>atlas</artifactId>
@@ -24,14 +24,13 @@
 
       <!-- Spring -->
       <spring-cloud.version>2022.0.2</spring-cloud.version>
+      <spring-openapi-ui.version>2.1.0</spring-openapi-ui.version>
 
-      <flyway-db.version>9.14.0</flyway-db.version>
       <swagger-core.version>2.2.8</swagger-core.version>
-      <hibernate.jpa-modelgen.version>6.1.7.Final</hibernate.jpa-modelgen.version>
       <tika-core.version>2.7.0</tika-core.version>
 
       <!-- REST Doc -->
-      <asciidoctor-plugin.version>2.2.2</asciidoctor-plugin.version>
+      <asciidoctor-plugin.version>2.2.3</asciidoctor-plugin.version>
       <spring-restdocs-mockmvc.version>3.0.0</spring-restdocs-mockmvc.version>
       <spring-auto-rest-docs-core.version>2.0.11</spring-auto-rest-docs-core.version>
 
@@ -76,22 +75,22 @@
          <dependency>
             <artifactId>hibernate-jpamodelgen</artifactId>
             <groupId>org.hibernate.orm</groupId>
-            <version>${hibernate.jpa-modelgen.version}</version>
+            <version>${hibernate.version}</version>
          </dependency>
          <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>2.0.2</version>
+            <version>${spring-openapi-ui.version}</version>
          </dependency>
          <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-common</artifactId>
-            <version>2.0.2</version>
+            <version>${spring-openapi-ui.version}</version>
          </dependency>
          <dependency>
             <artifactId>flyway-core</artifactId>
             <groupId>org.flywaydb</groupId>
-            <version>${flyway-db.version}</version>
+            <version>${flyway.version}</version>
          </dependency>
          <dependency>
             <groupId>org.locationtech.proj4j</groupId>
@@ -122,7 +121,7 @@
          <dependency>
             <artifactId>aws-java-sdk-s3</artifactId>
             <groupId>com.amazonaws</groupId>
-            <version>1.12.430</version>
+            <version>1.12.472</version>
          </dependency>
 
          <dependency>
@@ -226,7 +225,7 @@
                      <path>
                         <groupId>org.hibernate.orm</groupId>
                         <artifactId>hibernate-jpamodelgen</artifactId>
-                        <version>${hibernate.jpa-modelgen.version}</version>
+                        <version>${hibernate.version}</version>
                      </path>
                   </annotationProcessorPaths>
                </configuration>
