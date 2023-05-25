@@ -60,7 +60,7 @@ describe('Timetable Hearing', {testIsolation: false}, () => {
     CommonUtils.getClearType(DataCy.STATEMENT_ZIP, '8400')
     CommonUtils.getClearType(DataCy.STATEMENT_CITY, 'Napoli')
     CommonUtils.getClearType(DataCy.STATEMENT_STREET, 'San Paolo')
-    CommonUtils.getClearType(DataCy.STATEMENT_EMAIL, 'k@k.sscnapoli')
+    CommonUtils.getClearType(DataCy.STATEMENT_EMAIL, 'k@k.it')
     CommonUtils.getClearType(DataCy.STATEMENT_STATEMENT, 'Forza Napoli')
     CommonUtils.getClearType(DataCy.STATEMENT_JUSTIFICATION, 'Campioni in Italia')
     cy.get(DataCy.SAVE_ITEM).click();
