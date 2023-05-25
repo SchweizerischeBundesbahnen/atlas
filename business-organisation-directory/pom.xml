@@ -66,6 +66,7 @@
       <dependency>
          <artifactId>httpclient</artifactId>
          <groupId>org.apache.httpcomponents</groupId>
+         <version>4.5.14</version>
       </dependency>
       <dependency>
          <artifactId>saaj-impl</artifactId>
