@@ -9,7 +9,6 @@ import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointTechnicalTimetableType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointTrafficPointType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointType;
-import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointWithoutTimetableType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.ServicePointStatus;
 import ch.sbb.atlas.servicepointdirectory.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
@@ -106,11 +105,6 @@ public class ServicePointVersionModel extends BaseVersionModel implements DatesV
 
   @Schema(accessMode = AccessMode.READ_ONLY, description = "Details to the operationPointType.")
   private CodeAndDesignation operatingPointTypeInformation;
-
-  @Deprecated
-  @Schema(description = "OperatingPointWithoutTimetableType, Specifies the detailed intended use of a operating point without "
-      + "timetable.")
-  private OperatingPointWithoutTimetableType operatingPointWithoutTimetableType;
 
   @Schema(accessMode = AccessMode.READ_ONLY)
   private CodeAndDesignation operatingPointWithoutTimetableTypeInformation;
@@ -233,7 +227,6 @@ public class ServicePointVersionModel extends BaseVersionModel implements DatesV
       + "OperatingPointTrafficPointType may be set")
   public boolean isValidType() {
     long mutualTypes = Stream.of(
-            getOperatingPointWithoutTimetableType() != null,
             getOperatingPointTechnicalTimetableType() != null,
             getOperatingPointTrafficPointType() != null)
         .filter(i -> i)
