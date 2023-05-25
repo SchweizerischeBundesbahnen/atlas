@@ -32,7 +32,7 @@
       <dependency>
          <artifactId>hibernate-jpamodelgen</artifactId>
          <groupId>org.hibernate.orm</groupId>
-         <version>${hibernate.jpa-modelgen.version}</version>
+         <version>${hibernate.version}</version>
       </dependency>
       <!-- For correlation id-->
       <dependency>
