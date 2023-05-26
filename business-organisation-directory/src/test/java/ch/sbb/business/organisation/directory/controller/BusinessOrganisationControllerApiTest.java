@@ -110,7 +110,7 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerWithAma
   }
 
   @Test
-  public void shouldGetBusinessOrganisationVersions() throws Exception {
+  public void shouldGetBusinessOrganisationVersionsBySboid() throws Exception {
     //given
     BusinessOrganisationVersionModel model = BusinessOrganisationVersionModel
         .builder()
@@ -503,5 +503,14 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerWithAma
     mvc.perform(post("/v1/business-organisations/versions").contentType(contentType)
                     .content(mapper.writeValueAsString("{}")))
             .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  public void shouldGetBusinessOrganisationVersions() throws Exception {
+    //when and then
+    mvc.perform(get("/v1/business-organisations/versions"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.totalCount").value(1))
+        .andExpect(jsonPath("$.objects[0].sboid").value(version.getSboid()));
   }
 }
