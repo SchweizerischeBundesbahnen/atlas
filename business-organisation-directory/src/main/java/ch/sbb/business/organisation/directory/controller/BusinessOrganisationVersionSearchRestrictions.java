@@ -1,7 +1,6 @@
 package ch.sbb.business.organisation.directory.controller;
 
 import ch.sbb.atlas.api.bodi.BusinessOrganisationVersionRequestParams;
-import ch.sbb.atlas.model.entity.BaseVersion;
 import ch.sbb.atlas.searching.SpecificationBuilder;
 import ch.sbb.atlas.searching.specification.EnumSpecification;
 import ch.sbb.atlas.searching.specification.ValidOrEditionTimerangeSpecification;
@@ -46,7 +45,7 @@ public class BusinessOrganisationVersionSearchRestrictions {
     return specificationBuilder().searchCriteriaSpecification(businessOrganisationVersionRequestParams.getSearchCriteria())
         .and(specificationBuilder().validOnSpecification(
                 Optional.ofNullable(businessOrganisationVersionRequestParams.getValidOn()))
-            .and(new EnumSpecification<>(businessOrganisationVersionRequestParams.getStatusChoices(), BaseVersion.Fields.status))
+            .and(new EnumSpecification<>(businessOrganisationVersionRequestParams.getStatusChoices(), "status"))
             .and(specificationBuilder().stringInSpecification(businessOrganisationVersionRequestParams.getInSboids(),
                 BusinessOrganisationVersion_.sboid))
             .and(new ValidOrEditionTimerangeSpecification<>(
