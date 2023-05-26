@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
 
 @NoArgsConstructor
@@ -17,6 +18,7 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @ToString
 @SuperBuilder
+@FieldNameConstants
 @MappedSuperclass
 public abstract class BaseVersion extends BaseEntity implements DatesValidator {
 
