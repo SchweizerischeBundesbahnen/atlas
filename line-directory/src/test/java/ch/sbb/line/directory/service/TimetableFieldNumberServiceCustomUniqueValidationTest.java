@@ -18,7 +18,8 @@ public class TimetableFieldNumberServiceCustomUniqueValidationTest {
 
   private final TimetableFieldNumberService timetableFieldNumberService;
   private final TimetableFieldNumberVersionRepository versionRepository;
-  private final TimetableFieldNumberVersion version = TimetableFieldNumberVersion.builder().ttfnid("ch:1:ttfnid:100000")
+
+  private TimetableFieldNumberVersion version = TimetableFieldNumberVersion.builder().ttfnid("ch:1:ttfnid:100000")
                                                                                  .description("FPFN Description")
                                                                                  .number("10.100")
                                                                                  .status(Status.VALIDATED)
@@ -38,7 +39,7 @@ public class TimetableFieldNumberServiceCustomUniqueValidationTest {
 
   @BeforeEach
   void createDefaultVersion() {
-    versionRepository.save(version);
+    version = versionRepository.save(version);
   }
 
   @Test
@@ -135,6 +136,27 @@ public class TimetableFieldNumberServiceCustomUniqueValidationTest {
     Executable saveExecutable = () -> timetableFieldNumberService.save(version);
     // Then
     Assertions.assertThrows(TimetableFieldNumberConflictException.class, saveExecutable);
+  }
+
+  @Test
+  void shouldNotThrowConflictExceptionWhenExistingVersionGotRevoked() {
+    // Given
+    version.setStatus(Status.REVOKED);
+
+    TimetableFieldNumberVersion version = TimetableFieldNumberVersion.builder()
+        .ttfnid("ch:1:ttfnid:100000")
+        .description("FPFN Description")
+        .number("10.100")
+        .status(Status.VALIDATED)
+        .swissTimetableFieldNumber("b0.100")
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 12, 31))
+        .businessOrganisation("sbb")
+        .build();
+    // When
+    Executable saveExecutable = () -> timetableFieldNumberService.save(version);
+    // Then
+    Assertions.assertDoesNotThrow(saveExecutable);
   }
 
   @AfterEach
