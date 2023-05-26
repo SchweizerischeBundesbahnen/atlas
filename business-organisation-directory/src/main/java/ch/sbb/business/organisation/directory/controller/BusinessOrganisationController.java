@@ -4,6 +4,7 @@ package ch.sbb.business.organisation.directory.controller;
 import ch.sbb.atlas.api.bodi.BusinessOrganisationApiV1;
 import ch.sbb.atlas.api.bodi.BusinessOrganisationModel;
 import ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel;
+import ch.sbb.atlas.api.bodi.BusinessOrganisationVersionRequestParams;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisation;
@@ -54,6 +55,22 @@ public class BusinessOrganisationController implements BusinessOrganisationApiV1
     return Container.<BusinessOrganisationModel>builder()
         .objects(versions)
         .totalCount(businessOrganisationPage.getTotalElements())
+        .build();
+  }
+
+  @Override
+  public Container<BusinessOrganisationVersionModel> getBusinessOrganisationVersions(Pageable pageable,
+      BusinessOrganisationVersionRequestParams businessOrganisationVersionRequestParams) {
+    log.info("Load BusinessOrganisationVersions using pageable={}, params={}", pageable,
+        businessOrganisationVersionRequestParams);
+    Page<BusinessOrganisationVersion> businessOrganisationVersions = service.getBusinessOrganisationVersions(
+        BusinessOrganisationVersionSearchRestrictions.builder()
+            .pageable(pageable)
+            .businessOrganisationVersionRequestParams(businessOrganisationVersionRequestParams)
+            .build());
+    return Container.<BusinessOrganisationVersionModel>builder()
+        .objects(businessOrganisationVersions.getContent().stream().map(BusinessOrganisationVersionMapper::toModel).toList())
+        .totalCount(businessOrganisationVersions.getTotalElements())
         .build();
   }
 
