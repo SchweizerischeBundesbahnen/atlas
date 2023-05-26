@@ -1,9 +1,9 @@
 package ch.sbb.line.directory.repository;
 
+import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.entity.LineVersion;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -17,10 +17,9 @@ public interface LineVersionRepository extends JpaRepository<LineVersion, Long> 
     return findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndSwissLineNumberIgnoreCase(
         lineVersion.getValidFrom(), lineVersion.getValidTo(),
         lineVersion.getSwissLineNumber()).stream()
-        .filter(
-            i -> !i.getSlnid().equals(lineVersion.getSlnid()))
-        .collect(
-            Collectors.toList());
+        .filter(i -> !i.getSlnid().equals(lineVersion.getSlnid()))
+        .filter(i -> i.getStatus() != Status.REVOKED)
+        .toList();
   }
 
   List<LineVersion> findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndSwissLineNumberIgnoreCase(

@@ -2,6 +2,7 @@ package ch.sbb.line.directory.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.model.controller.WithMockJwtAuthentication;
 import ch.sbb.line.directory.LineTestData;
@@ -167,6 +168,19 @@ public class LineVersionRepositoryTest {
     assertThat(lineVersionRepository.findSwissLineNumberOverlaps(entity).isEmpty()).isTrue();
 
     // Then
+  }
+
+  @Test
+  void shouldAllowRevokedSwissNumberOnOverlapBetween() {
+    // Given
+    lineVersionRepository.save(LineTestData.lineVersionBuilder()
+        .validFrom(LocalDate.of(2019, 1, 1))
+        .validTo(LocalDate.of(2099, 12, 31))
+        .swissLineNumber("SWISSLineNUMBER")
+        .status(Status.REVOKED)
+        .build());
+    // When & then
+    assertThat(lineVersionRepository.findSwissLineNumberOverlaps(LINE_VERSION)).isEmpty();
   }
 
   @Test
