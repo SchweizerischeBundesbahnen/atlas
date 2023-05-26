@@ -3,13 +3,17 @@
 <!-- toc -->
 
 - [Service Point Directory in ATLAS](#service-point-directory-in-atlas)
+- [Service Point geographic data in ATLAS](#service-point-geographic-data-in-atlas)
+  * [How?](#how)
+    + [Important DEV-notice](#important-dev-notice)
 - [Links](#links)
-    * [Localhost](#localhost)
-    * [Development](#development)
-    * [Test](#test)
-    * [Integration](#integration)
-    * [Production](#production)
+  * [Localhost](#localhost)
+  * [Development](#development)
+  * [Test](#test)
+  * [Integration](#integration)
+  * [Production](#production)
 - [Legacy Documentation - DB Schema - Didok](#legacy-documentation---db-schema---didok)
+- [Full clean import of service points](#full-clean-import-of-service-points)
 
 <!-- tocstop -->
 
@@ -129,3 +133,30 @@ Maps, OpenStreetMap, etc.
   plan: https://sbb.sharepoint.com/:x:/s/didok-atlas/ERrMJki5bFtMqGjShTeKSOQBkUqI2hq4cPixMOXZHqUucg?e=etg8dr
 - ServicePoint Category
   Tree: https://confluence.sbb.ch/display/ADIDOK/Big+Picture#BigPicture-Kategorienbaum
+
+## Full clean import of service points
+
+To do a full import of service points from csv we need to delete all the existing data from the service-point db:
+```sql
+delete from service_point_version;
+
+-- faster delete without fk constraint
+alter table service_point_version drop constraint fk_service_point_geolocation_id;
+delete from service_point_version_geolocation;
+alter table service_point_version add constraint fk_service_point_geolocation_id
+    FOREIGN KEY (service_point_geolocation_id)
+    REFERENCES service_point_version_geolocation (id);
+
+delete from service_point_version_categories;
+delete from service_point_version_means_of_transport;
+```
+
+Further we need to clear the import-service-point db:
+```sql
+DELETE FROM BATCH_STEP_EXECUTION_CONTEXT;
+DELETE FROM BATCH_STEP_EXECUTION;
+DELETE FROM BATCH_JOB_EXECUTION_PARAMS;
+DELETE FROM batch_job_execution_context;
+DELETE FROM BATCH_JOB_EXECUTION;
+DELETE FROM BATCH_JOB_INSTANCE;
+```
