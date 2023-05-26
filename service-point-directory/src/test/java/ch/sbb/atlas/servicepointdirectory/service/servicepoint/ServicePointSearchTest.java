@@ -20,7 +20,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 @IntegrationTest
 public class ServicePointSearchTest {
@@ -423,4 +425,64 @@ public class ServicePointSearchTest {
     assertThat(servicePointVersions.getContent().get(0).getDesignationOfficial()).isEqualTo("Flüh Grenze");
   }
 
+  @Test
+  void shouldSortById() {
+    // Given
+    ServicePointVersion countryBorder = servicePointVersionRepository.save(
+        ServicePointTestData.createServicePointVersionWithCountryBorder());
+    assertThat(servicePointVersion.getId()).isLessThan(countryBorder.getId());
+
+    // When
+    Page<ServicePointVersion> servicePointVersions =
+        servicePointService.findAll(
+            ServicePointSearchRestrictions.builder()
+                .servicePointRequestParams(ServicePointRequestParams.builder().build())
+                .pageable(PageRequest.of(0, 20,
+                    Sort.by("id"))).build());
+    // Then
+    assertThat(servicePointVersions.getTotalElements()).isEqualTo(2);
+    assertThat(servicePointVersions.getContent().get(0).getId()).isEqualTo(servicePointVersion.getId());
+    assertThat(servicePointVersions.getContent().get(1).getId()).isEqualTo(countryBorder.getId());
+
+    servicePointVersions =
+        servicePointService.findAll(ServicePointSearchRestrictions.builder()
+            .servicePointRequestParams(ServicePointRequestParams.builder().build())
+            .pageable(PageRequest.of(0, 20, Sort.by("id").descending()))
+            .build());
+    // Then
+    assertThat(servicePointVersions.getTotalElements()).isEqualTo(2);
+    assertThat(servicePointVersions.getContent().get(0).getId()).isEqualTo(countryBorder.getId());
+    assertThat(servicePointVersions.getContent().get(1).getId()).isEqualTo(servicePointVersion.getId());
+  }
+
+  @Test
+  void shouldSortByNumber() {
+    // Given
+    ServicePointVersion countryBorder = servicePointVersionRepository.save(
+        ServicePointTestData.createServicePointVersionWithCountryBorder());
+
+    assertThat(servicePointVersion.getNumber().getValue()).isGreaterThan(countryBorder.getNumber().getValue());
+
+    // When
+    Page<ServicePointVersion> servicePointVersions =
+        servicePointService.findAll(
+            ServicePointSearchRestrictions.builder()
+                .servicePointRequestParams(ServicePointRequestParams.builder().build())
+                .pageable(PageRequest.of(0, 20,
+                    Sort.by("number"))).build());
+    // Then
+    assertThat(servicePointVersions.getTotalElements()).isEqualTo(2);
+    assertThat(servicePointVersions.getContent().get(0).getId()).isEqualTo(countryBorder.getId());
+    assertThat(servicePointVersions.getContent().get(1).getId()).isEqualTo(servicePointVersion.getId());
+
+    servicePointVersions =
+        servicePointService.findAll(ServicePointSearchRestrictions.builder()
+            .servicePointRequestParams(ServicePointRequestParams.builder().build())
+            .pageable(PageRequest.of(0, 20, Sort.by("number").descending()))
+            .build());
+    // Then
+    assertThat(servicePointVersions.getTotalElements()).isEqualTo(2);
+    assertThat(servicePointVersions.getContent().get(0).getId()).isEqualTo(servicePointVersion.getId());
+    assertThat(servicePointVersions.getContent().get(1).getId()).isEqualTo(countryBorder.getId());
+  }
 }
