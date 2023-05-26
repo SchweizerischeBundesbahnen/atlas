@@ -6,7 +6,7 @@ import { TableColumn } from './core/components/table/table-column';
 import { TablePagination } from './core/components/table/table-pagination';
 import { AtlasFieldCustomError } from './core/form-components/atlas-field-error/atlas-field-custom-error';
 import { SelectionModel } from '@angular/cdk/collections';
-import { TableFilterConfig } from './core/components/table-filter/table-filter-config';
+import { TableFilter } from './core/components/table-filter/config/table-filter';
 
 @Component({
   selector: 'app-detail-wrapper [controller][headingNew]',
@@ -57,7 +57,7 @@ export class MockSelectComponent {
 })
 export class MockTableComponent<DATATYPE> {
   @Input() tableData: DATATYPE[] = [];
-  @Input() tableFilterConfig: TableFilterConfig<unknown>[][] = [];
+  @Input() tableFilterConfig: TableFilter<unknown>[][] = [];
   @Input() tableColumns!: TableColumn<DATATYPE>[];
   @Input() canEdit = true;
   @Input() totalCount!: number;

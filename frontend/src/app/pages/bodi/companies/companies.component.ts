@@ -11,10 +11,8 @@ import {
 import { TableService } from '../../../core/components/table/table.service';
 import { TablePagination } from '../../../core/components/table/table-pagination';
 import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
-import {
-  TableFilterChip,
-  TableFilterConfig,
-} from '../../../core/components/table-filter/table-filter-config';
+import { TableFilterChip } from '../../../core/components/table-filter/config/table-filter-chip';
+import { TableFilter } from '../../../core/components/table-filter/config/table-filter';
 
 @Component({
   selector: 'app-bodi-companies',
@@ -40,7 +38,7 @@ export class CompaniesComponent implements OnDestroy {
     chipSearch: new TableFilterChip('col-6'),
   };
 
-  readonly tableFilterConfig: TableFilterConfig<unknown>[][] = [
+  readonly tableFilterConfig: TableFilter<unknown>[][] = [
     [this.tableFilterConfigIntern.chipSearch],
   ];
 
