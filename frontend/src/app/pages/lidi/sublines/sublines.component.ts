@@ -12,14 +12,12 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { TableService } from '../../../core/components/table/table.service';
 import { TablePagination } from '../../../core/components/table/table-pagination';
 import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
-import {
-  TableFilterChip,
-  TableFilterConfig,
-  TableFilterDateSelect,
-  TableFilterMultiSelect,
-  TableFilterSearchSelect,
-  TableFilterSearchType,
-} from '../../../core/components/table-filter/table-filter-config';
+import { TableFilterChip } from '../../../core/components/table-filter/config/table-filter-chip';
+import { TableFilterSearchSelect } from '../../../core/components/table-filter/config/table-filter-search-select';
+import { TableFilterSearchType } from '../../../core/components/table-filter/config/table-filter-search-type';
+import { TableFilterMultiSelect } from '../../../core/components/table-filter/config/table-filter-multiselect';
+import { TableFilter } from '../../../core/components/table-filter/config/table-filter';
+import { TableFilterDateSelect } from '../../../core/components/table-filter/config/table-filter-date-select';
 
 @Component({
   selector: 'app-lidi-sublines',
@@ -72,7 +70,7 @@ export class SublinesComponent implements OnDestroy {
     dateSelect: new TableFilterDateSelect('col-3'),
   };
 
-  tableFilterConfig: TableFilterConfig<unknown>[][] = [
+  tableFilterConfig: TableFilter<unknown>[][] = [
     [this.tableFilterConfigIntern.chipSearch],
     [
       this.tableFilterConfigIntern.searchSelect,
