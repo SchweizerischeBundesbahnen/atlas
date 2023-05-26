@@ -28,13 +28,11 @@ import { TthTableService } from '../tth-table.service';
 import { SelectComponent } from '../../../core/form-components/select/select.component';
 import { AtlasSpacerComponent } from '../../../core/components/spacer/atlas-spacer.component';
 import { AuthService } from '../../../core/auth/auth.service';
-import {
-  TableFilterChip,
-  TableFilterMultiSelect,
-  TableFilterSearchSelect,
-  TableFilterSearchType,
-} from '../../../core/components/table-filter/table-filter-config';
 import { FormControl, FormGroup } from '@angular/forms';
+import { TableFilterChip } from '../../../core/components/table-filter/config/table-filter-chip';
+import { TableFilterMultiSelect } from '../../../core/components/table-filter/config/table-filter-multiselect';
+import { TableFilterSearchSelect } from '../../../core/components/table-filter/config/table-filter-search-select';
+import { TableFilterSearchType } from '../../../core/components/table-filter/config/table-filter-search-type';
 
 @Component({
   selector: 'app-timetable-hearing-overview-tab-heading',
