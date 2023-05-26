@@ -9,7 +9,7 @@ import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointTechnicalTim
 import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.Parameter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -31,86 +31,86 @@ import org.springframework.format.annotation.DateTimeFormat;
 @ToString
 public class ServicePointRequestParams {
 
-  @Schema(description = "Unique key for service points which is used in the customer information.")
+  @Parameter(description = "Unique key for service points which is used in the customer information.")
   @Singular(ignoreNullCollections = true)
   private List<String> sloids = new ArrayList<>();
 
-  @Schema(description = "DiDok-Number formerly known as UIC-Code, combination of uicCountryCode and numberShort.")
+  @Parameter(description = "DiDok-Number formerly known as UIC-Code, combination of uicCountryCode and numberShort.")
   @Singular(ignoreNullCollections = true)
   private List<Integer> numbers = new ArrayList<>();
 
-  @Schema(description = "List of UIC Country codes.", example = "85", defaultValue = "85")
+  @Parameter(description = "List of UIC Country codes.", example = "85")
   @Singular(ignoreNullCollections = true)
   private List<Integer> uicCountryCodes = new ArrayList<>();
 
-  @Schema(description = "List of ISO Country codes.", example = "CH")
+  @Parameter(description = "List of ISO Country codes.", example = "CH")
   @Singular(ignoreNullCollections = true)
   private List<String> isoCountryCodes = new ArrayList<>();
 
-  @Schema(description = "Number of a service point which is provided by DiDok for Switzerland. It is part of the unique key for"
+  @Parameter(description = "Number of a service point which is provided by DiDok for Switzerland. It is part of the unique key for"
       + " service points.")
   @Singular(value = "numberShort", ignoreNullCollections = true)
   private List<Integer> numbersShort = new ArrayList<>();
 
-  @Schema(description = "Abbreviation of the service point.")
+  @Parameter(description = "Abbreviation of the service point.")
   @Singular(ignoreNullCollections = true)
   private List<String> abbreviations = new ArrayList<>();
 
-  @Schema(description = "Swiss Business Organisation ID of the business organisation.")
+  @Parameter(description = "Swiss Business Organisation ID of the business organisation.")
   @Singular(ignoreNullCollections = true)
   private List<String> businessOrganisationSboids = new ArrayList<>();
 
-  @Schema(description = "Country allocated the service point number and is to be interpreted organisationally, not "
+  @Parameter(description = "Country allocated the service point number and is to be interpreted organisationally, not "
       + "territorially.")
   @Singular(ignoreNullCollections = true)
   private List<Country> countries = new ArrayList<>();
 
-  @Schema(description = "All service points relevant for timetable planning.")
+  @Parameter(description = "All service points relevant for timetable planning.")
   @Singular(ignoreNullCollections = true)
   private List<OperatingPointTechnicalTimetableType> operatingPointTechnicalTimetableTypes = new ArrayList<>();
 
-  @Schema(description = "Assignment of service points to defined business cases.")
+  @Parameter(description = "Assignment of service points to defined business cases.")
   @Singular(ignoreNullCollections = true)
   private List<Category> categories = new ArrayList<>();
 
-  @Schema(description = "Detailed intended use of a operating point.")
+  @Parameter(description = "Detailed intended use of a operating point.")
   @Singular(ignoreNullCollections = true)
   private List<OperatingPointType> operatingPointTypes = new ArrayList<>();
 
-  @Schema(description = "Indicates for which type of traffic (e.g. regular traffic) a stop was recorded.")
+  @Parameter(description = "Indicates for which type of traffic (e.g. regular traffic) a stop was recorded.")
   @Singular(ignoreNullCollections = true)
   private List<StopPointType> stopPointTypes = new ArrayList<>();
 
-  @Schema(description = "Filter on the meanOfTransport.")
+  @Parameter(description = "Filter on the meanOfTransport.")
   @Singular(value = "meanOfTransport", ignoreNullCollections = true)
   private List<MeanOfTransport> meansOfTransport = new ArrayList<>();
 
-  @Schema(description = "Filter on the Status of a servicePoint.")
+  @Parameter(description = "Filter on the Status of a servicePoint.")
   @Singular(ignoreNullCollections = true)
   private List<Status> statusRestrictions = new ArrayList<>();
 
-  @Schema(description = "Filter on operation Points only.")
+  @Parameter(description = "Filter on operation Points only.")
   private Boolean operatingPoint;
 
-  @Schema(description = "Filter on operation Points with Timetables only.")
+  @Parameter(description = "Filter on operation Points with Timetables only.")
   private Boolean withTimetable;
 
-  @Schema(description = "ValidOn. Date format: " + AtlasApiConstants.DATE_FORMAT_PATTERN)
+  @Parameter(description = "ValidOn. Date format: " + AtlasApiConstants.DATE_FORMAT_PATTERN)
   @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN)
   private LocalDate validOn;
 
-  @Schema(description = "[fromDate] >= validFrom. Date format: " + AtlasApiConstants.DATE_FORMAT_PATTERN)
+  @Parameter(description = "[fromDate] >= validFrom. Date format: " + AtlasApiConstants.DATE_FORMAT_PATTERN)
   @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN)
   private LocalDate fromDate;
 
-  @Schema(description = "[toDate] <= validTo. Date format: " + AtlasApiConstants.DATE_FORMAT_PATTERN)
+  @Parameter(description = "[toDate] <= validTo. Date format: " + AtlasApiConstants.DATE_FORMAT_PATTERN)
   @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN)
   private LocalDate toDate;
 
-  @Schema(description = "CreatedAfter>=creationDate. DateTime format: " + AtlasApiConstants.DATE_TIME_FORMAT_PATTERN)
+  @Parameter(description = "CreatedAfter>=creationDate. DateTime format: " + AtlasApiConstants.DATE_TIME_FORMAT_PATTERN)
   @DateTimeFormat(pattern = AtlasApiConstants.DATE_TIME_FORMAT_PATTERN)
   private LocalDateTime createdAfter;
-  @Schema(description = "ModifiedAfter>=editionDate. DateTime format: " + AtlasApiConstants.DATE_TIME_FORMAT_PATTERN)
+  @Parameter(description = "ModifiedAfter>=editionDate. DateTime format: " + AtlasApiConstants.DATE_TIME_FORMAT_PATTERN)
   @DateTimeFormat(pattern = AtlasApiConstants.DATE_TIME_FORMAT_PATTERN)
   private LocalDateTime modifiedAfter;
 
