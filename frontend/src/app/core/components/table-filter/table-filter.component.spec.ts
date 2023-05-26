@@ -11,13 +11,6 @@ import moment from 'moment';
 import { DateIconComponent } from '../../form-components/date-icon/date-icon.component';
 import { MockAtlasFieldErrorComponent } from '../../../app.testing.mocks';
 import { AtlasSpacerComponent } from '../spacer/atlas-spacer.component';
-import {
-  TableFilterChip,
-  TableFilterDateSelect,
-  TableFilterMultiSelect,
-  TableFilterSearchSelect,
-  TableFilterSearchType,
-} from './table-filter-config';
 import { InstanceOfPipe } from './instance-of.pipe';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
@@ -30,6 +23,11 @@ import { Moment } from 'moment/moment';
 import { BusinessOrganisation, TimetableFieldNumber, TransportCompany } from '../../../api';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatLabel } from '@angular/material/form-field';
+import { TableFilterMultiSelect } from './config/table-filter-multiselect';
+import { TableFilterDateSelect } from './config/table-filter-date-select';
+import { TableFilterChip } from './config/table-filter-chip';
+import { TableFilterSearchSelect } from './config/table-filter-search-select';
+import { TableFilterSearchType } from './config/table-filter-search-type';
 
 @Component({
   selector: 'input [matChipInputFor]',

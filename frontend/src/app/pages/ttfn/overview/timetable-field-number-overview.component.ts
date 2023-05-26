@@ -18,14 +18,12 @@ import { TablePagination } from '../../../core/components/table/table-pagination
 import { FormControl, FormGroup } from '@angular/forms';
 import { DEFAULT_STATUS_SELECTION } from '../../../core/constants/status.choices';
 import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
-import {
-  TableFilterChip,
-  TableFilterConfig,
-  TableFilterDateSelect,
-  TableFilterMultiSelect,
-  TableFilterSearchSelect,
-  TableFilterSearchType,
-} from '../../../core/components/table-filter/table-filter-config';
+import { TableFilterChip } from '../../../core/components/table-filter/config/table-filter-chip';
+import { TableFilterSearchSelect } from '../../../core/components/table-filter/config/table-filter-search-select';
+import { TableFilterSearchType } from '../../../core/components/table-filter/config/table-filter-search-type';
+import { TableFilterMultiSelect } from '../../../core/components/table-filter/config/table-filter-multiselect';
+import { TableFilterDateSelect } from '../../../core/components/table-filter/config/table-filter-date-select';
+import { TableFilter } from '../../../core/components/table-filter/config/table-filter';
 
 @Component({
   selector: 'app-timetable-field-number-overview',
@@ -66,7 +64,7 @@ export class TimetableFieldNumberOverviewComponent implements OnDestroy {
     dateSelect: new TableFilterDateSelect('col-3'),
   };
 
-  tableFilterConfig: TableFilterConfig<unknown>[][] = [
+  tableFilterConfig: TableFilter<unknown>[][] = [
     [this.tableFilterConfigIntern.chipSearch],
     [
       this.tableFilterConfigIntern.searchSelect,
