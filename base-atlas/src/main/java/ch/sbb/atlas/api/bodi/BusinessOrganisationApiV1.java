@@ -13,6 +13,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -40,6 +41,12 @@ public interface BusinessOrganisationApiV1 {
       @Parameter @RequestParam(required = false) List<String> inSboids,
       @Parameter @RequestParam(required = false) @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN) Optional<LocalDate> validOn,
       @Parameter @RequestParam(required = false) List<Status> statusChoices);
+
+  @GetMapping("versions")
+  @PageableAsQueryParam
+  Container<BusinessOrganisationVersionModel> getBusinessOrganisationVersions(
+      @Parameter(hidden = true) Pageable pageable,
+      @ParameterObject BusinessOrganisationVersionRequestParams businessOrganisationVersionRequestParams);
 
   @GetMapping("versions/{sboid}")
   List<BusinessOrganisationVersionModel> getBusinessOrganisationVersions(
