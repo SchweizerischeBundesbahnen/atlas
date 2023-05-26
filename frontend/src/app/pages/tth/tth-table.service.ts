@@ -1,16 +1,14 @@
 import { Injectable } from '@angular/core';
 import { TableService } from '../../core/components/table/table.service';
 import { Page } from '../../core/model/page';
-import {
-  TableFilterChip,
-  TableFilterConfig,
-  TableFilterMultiSelect,
-  TableFilterSearchSelect,
-  TableFilterSearchType,
-} from '../../core/components/table-filter/table-filter-config';
 import { StatementStatus, TimetableFieldNumber, TransportCompany } from '../../api';
 import { BehaviorSubject } from 'rxjs';
 import { FormControl, FormGroup } from '@angular/forms';
+import { TableFilter } from '../../core/components/table-filter/config/table-filter';
+import { TableFilterMultiSelect } from '../../core/components/table-filter/config/table-filter-multiselect';
+import { TableFilterSearchSelect } from '../../core/components/table-filter/config/table-filter-search-select';
+import { TableFilterChip } from '../../core/components/table-filter/config/table-filter-chip';
+import { TableFilterSearchType } from '../../core/components/table-filter/config/table-filter-search-type';
 
 interface OverviewDetailFilterConfigInternal {
   chipSearch: TableFilterChip;
@@ -24,7 +22,7 @@ export class TthTableService extends TableService {
   private _activeTabPage?: Page;
   private _overviewDetailFilterConfigInternal: OverviewDetailFilterConfigInternal =
     this.createTableFilterConfigInternal();
-  private readonly _overviewDetailFilterConfig$: BehaviorSubject<TableFilterConfig<unknown>[][]> =
+  private readonly _overviewDetailFilterConfig$: BehaviorSubject<TableFilter<unknown>[][]> =
     new BehaviorSubject(this.getTableFilterConfig());
 
   get overviewDetailFilterConfigInternal() {
@@ -71,7 +69,7 @@ export class TthTableService extends TableService {
     };
   }
 
-  private getTableFilterConfig(): TableFilterConfig<unknown>[][] {
+  private getTableFilterConfig(): TableFilter<unknown>[][] {
     return [
       [this._overviewDetailFilterConfigInternal.chipSearch],
       [
