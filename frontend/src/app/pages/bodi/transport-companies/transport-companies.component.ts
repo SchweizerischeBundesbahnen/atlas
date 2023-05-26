@@ -11,11 +11,9 @@ import {
 import { TablePagination } from '../../../core/components/table/table-pagination';
 import { TableService } from '../../../core/components/table/table.service';
 import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
-import {
-  TableFilterChip,
-  TableFilterConfig,
-  TableFilterMultiSelect,
-} from '../../../core/components/table-filter/table-filter-config';
+import { TableFilterChip } from '../../../core/components/table-filter/config/table-filter-chip';
+import { TableFilterMultiSelect } from '../../../core/components/table-filter/config/table-filter-multiselect';
+import { TableFilter } from '../../../core/components/table-filter/config/table-filter';
 
 @Component({
   selector: 'app-bodi-transport-companies',
@@ -58,7 +56,7 @@ export class TransportCompaniesComponent implements OnDestroy {
     ),
   };
 
-  readonly tableFilterConfig: TableFilterConfig<unknown>[][] = [
+  readonly tableFilterConfig: TableFilter<unknown>[][] = [
     [this.tableFilterConfigIntern.chipSearch],
     [this.tableFilterConfigIntern.multiSelectTransportCompanyStatus],
   ];
