@@ -8,7 +8,7 @@ import { ColumnDropDownEvent } from './column-drop-down-event';
 import { isEmpty } from '../../util/strings';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatCheckboxChange } from '@angular/material/checkbox';
-import { TableFilterConfig } from '../table-filter/table-filter-config';
+import { TableFilter } from '../table-filter/config/table-filter';
 
 @Component({
   selector: 'app-table [tableData][tableColumns][editElementEvent]',
@@ -17,7 +17,7 @@ import { TableFilterConfig } from '../table-filter/table-filter-config';
 })
 export class TableComponent<DATATYPE> implements OnInit {
   @Input() checkBoxSelection = new SelectionModel<DATATYPE>(true, []);
-  @Input() tableFilterConfig: TableFilterConfig<unknown>[][] = [];
+  @Input() tableFilterConfig: TableFilter<unknown>[][] = [];
   @Input() tableColumns!: TableColumn<DATATYPE>[];
   @Input() canEdit = true;
   @Input() totalCount!: number;

@@ -14,12 +14,10 @@ import { TableService } from '../../../core/components/table/table.service';
 import { TablePagination } from '../../../core/components/table/table-pagination';
 import { DEFAULT_STATUS_SELECTION } from '../../../core/constants/status.choices';
 import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
-import {
-  TableFilterChip,
-  TableFilterConfig,
-  TableFilterDateSelect,
-  TableFilterMultiSelect,
-} from '../../../core/components/table-filter/table-filter-config';
+import { TableFilterChip } from '../../../core/components/table-filter/config/table-filter-chip';
+import { TableFilterMultiSelect } from '../../../core/components/table-filter/config/table-filter-multiselect';
+import { TableFilterDateSelect } from '../../../core/components/table-filter/config/table-filter-date-select';
+import { TableFilter } from '../../../core/components/table-filter/config/table-filter';
 
 @Component({
   selector: 'app-bodi-business-organisations',
@@ -41,7 +39,7 @@ export class BusinessOrganisationComponent implements OnDestroy {
     dateSelect: new TableFilterDateSelect('col-3'),
   };
 
-  readonly tableFilterConfig: TableFilterConfig<unknown>[][] = [
+  readonly tableFilterConfig: TableFilter<unknown>[][] = [
     [this.tableFilterConfigIntern.chipSearch],
     [this.tableFilterConfigIntern.multiSelectStatus, this.tableFilterConfigIntern.dateSelect],
   ];

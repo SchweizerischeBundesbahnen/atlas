@@ -6,6 +6,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SearchSelectComponent } from '../search-select/search-select.component';
 import { MaterialModule } from '../../module/material.module';
+import { AtlasFieldErrorComponent } from '../atlas-field-error/atlas-field-error.component';
 
 describe('TransportCompanySelectComponent', () => {
   let component: TransportCompanySelectComponent;
@@ -13,7 +14,11 @@ describe('TransportCompanySelectComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TransportCompanySelectComponent, SearchSelectComponent],
+      declarations: [
+        TransportCompanySelectComponent,
+        SearchSelectComponent,
+        AtlasFieldErrorComponent,
+      ],
       imports: [
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
