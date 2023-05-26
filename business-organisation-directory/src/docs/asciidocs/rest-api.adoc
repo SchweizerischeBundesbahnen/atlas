@@ -46,9 +46,13 @@ include::{snippets}/business-organisation-controller-api-test/should-create-busi
 
 include::{snippets}/business-organisation-controller-api-test/should-get-all-business-organisation-versions/auto-section.adoc[]
 
-== Get Business Organisation Directories Versions- Successfully
+== Get Business Organisation Directories Versions - Successfully
 
 include::{snippets}/business-organisation-controller-api-test/should-get-business-organisation-versions/auto-section.adoc[]
+
+== Get Business Organisation Directories Versions By SBOID - Successfully
+
+include::{snippets}/business-organisation-controller-api-test/should-get-business-organisation-versions-by-sboid/auto-section.adoc[]
 
 == Get Business Organisation Directories Versions- Unsuccessfully
 
