@@ -219,7 +219,6 @@ export class StatementDetailComponent implements OnInit, AfterViewInit {
         Validators.required,
         AtlasFieldLengthValidator.statement,
         WhitespaceValidator.blankOrEmptySpaceSurrounding,
-        AtlasCharsetsValidator.iso88591,
       ]),
       justification: new FormControl(statement?.justification, [
         AtlasFieldLengthValidator.statement,
