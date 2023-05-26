@@ -75,7 +75,6 @@ describe('Timetable Hearing', { testIsolation: false }, () => {
     cy.intercept('GET', getStatementsPath).as('getStatementsPath');
     cy.get(DataCy.BACK_TO_OVERVIEW).click();
     cy.wait('@getStatementsPath').its('response.statusCode').should('eq', 200);
-    cy.wait(2000);
 
     cy.get(DataCy.TTH_TABLE + ' table tbody tr td').should(
       'not.contain',
