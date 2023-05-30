@@ -5,7 +5,6 @@ import { TimetableHearingService } from '../../../../api';
 import { FormControl, FormGroup } from '@angular/forms';
 import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
 import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
-import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { Subject, takeUntil } from 'rxjs';
 import { TthChangeStatusFormGroup } from './model/tth-change-status-form-group';
@@ -19,7 +18,6 @@ export class TthChangeStatusDialogComponent {
     justification: new FormControl(this.data.justification, [
       AtlasFieldLengthValidator.statement,
       WhitespaceValidator.blankOrEmptySpaceSurrounding,
-      AtlasCharsetsValidator.iso88591,
     ]),
   });
   private ngUnsubscribe = new Subject<void>();
