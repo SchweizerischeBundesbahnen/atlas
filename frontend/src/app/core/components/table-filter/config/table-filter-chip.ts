@@ -16,14 +16,14 @@ export class TableFilterChip extends TableFilter<string[]> {
   addSearchFromChipInputEvent(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
     if (this.activeSearch.indexOf(value) !== -1) {
-      event.chipInput!.clear();
+      event.chipInput.clear();
       return;
     }
     if (value) {
       this.activeSearch.push(value);
     }
     // Clear the input value
-    event.chipInput!.clear();
+    event.chipInput.clear();
   }
 
   removeSearch(search: string): void {
