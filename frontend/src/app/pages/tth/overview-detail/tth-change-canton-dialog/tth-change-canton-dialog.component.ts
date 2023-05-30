@@ -2,7 +2,6 @@ import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
 import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
-import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
 import { Subject } from 'rxjs';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NotificationService } from '../../../../core/notification/notification.service';
@@ -20,7 +19,6 @@ export class TthChangeCantonDialogComponent {
     comment: new FormControl('', [
       AtlasFieldLengthValidator.length_280,
       WhitespaceValidator.blankOrEmptySpaceSurrounding,
-      AtlasCharsetsValidator.iso88591,
     ]),
   });
 
