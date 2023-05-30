@@ -18,10 +18,9 @@
 
   <nav [tabPanel]="tabPanel" class="tabs" data-cy="tabs" mat-tab-nav-bar>
     <a
-      (click)="activeTab = tab"
       *ngFor="let tab of TABS"
-      [active]="activeTab === tab"
       [routerLink]="tab.link"
+      routerLinkActive="active-tab"
       class="font-bold-xl"
       mat-tab-link
     >
