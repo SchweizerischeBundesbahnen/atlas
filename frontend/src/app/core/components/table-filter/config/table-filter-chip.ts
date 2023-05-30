@@ -3,7 +3,6 @@ import { TableFilter } from './table-filter';
 
 export class TableFilterChip extends TableFilter<string[]> {
   disabled?: boolean;
-
   activeSearch: string[] = [];
 
   getActiveSearch(): string[] {

@@ -5,7 +5,6 @@ export class TableFilterMultiSelect<T> extends TableFilter<T[]> {
   labelTranslationKey: string;
   selectOptions: T[];
   disabled?: boolean;
-
   activeSearch: T[];
 
   constructor(
