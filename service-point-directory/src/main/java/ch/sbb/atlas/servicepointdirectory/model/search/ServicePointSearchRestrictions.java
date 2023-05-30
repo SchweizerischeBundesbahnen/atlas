@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.model.search;
 
+import ch.sbb.atlas.searching.specification.ValidOrEditionTimerangeSpecification;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.searching.SearchRestrictions;
 import ch.sbb.atlas.searching.SpecificationBuilder;
@@ -82,7 +83,7 @@ public class ServicePointSearchRestrictions extends SearchRestrictions<ServicePo
         .and(new EnumByConversionSpecification<>(servicePointRequestParams.getUicCountryCodes(), Country::from, ServicePointVersion_.country))
         .and(new EnumByConversionServicePointGeolocationSpecification<>(servicePointRequestParams.getIsoCountryCodes(), Country::fromIsoCode, ServicePointVersion_.servicePointGeolocation,
             ServicePointGeolocation_.country))
-        .and(new ValidOrEditionTimerangeSpecification(
+        .and(new ValidOrEditionTimerangeSpecification<>(
             servicePointRequestParams.getFromDate(),
             servicePointRequestParams.getToDate(),
             servicePointRequestParams.getCreatedAfter(),
