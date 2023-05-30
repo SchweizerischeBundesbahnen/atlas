@@ -1,13 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Pages } from '../../pages';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { TabService } from '../../tab.service';
-import { filter } from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   templateUrl: './lidi-overview.component.html',
 })
-export class LidiOverviewComponent implements OnInit {
+export class LidiOverviewComponent {
   TABS = [
     {
       link: Pages.LINES.path,
@@ -22,23 +20,8 @@ export class LidiOverviewComponent implements OnInit {
       title: 'LIDI.LINE_VERSION_SNAPSHOT.TAB_HEADER',
     },
   ];
-  activeTab = this.TABS[0];
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private tabService: TabService
-  ) {
-    router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
-      .forEach(() => {
-        const currentTabIndex = this.tabService.getCurrentTabIndex(this.router.url, this.TABS);
-        if (currentTabIndex >= 0) {
-          this.activeTab = this.TABS[currentTabIndex];
-        }
-      })
-      .then();
-  }
+  constructor(private route: ActivatedRoute, private router: Router) {}
 
   newLine() {
     this.router
@@ -54,12 +37,5 @@ export class LidiOverviewComponent implements OnInit {
         relativeTo: this.route,
       })
       .then();
-  }
-
-  ngOnInit(): void {
-    if (this.router.url) {
-      const currentTabIndex = this.tabService.getCurrentTabIndex(this.router.url, this.TABS);
-      this.activeTab = this.TABS[currentTabIndex];
-    }
   }
 }
