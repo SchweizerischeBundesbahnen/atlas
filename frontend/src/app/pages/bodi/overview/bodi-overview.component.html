@@ -15,8 +15,7 @@
       class="font-bold-xl"
       *ngFor="let tab of TABS"
       [routerLink]="tab.link"
-      (click)="activeTab = tab"
-      [active]="activeTab === tab"
+      routerLinkActive="active-tab"
     >
       {{ tab.title | translate }}
     </a>
