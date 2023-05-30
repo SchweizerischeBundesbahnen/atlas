@@ -27,22 +27,18 @@ import lombok.experimental.SuperBuilder;
 public class TimetableHearingStatementSenderModel {
 
   @Schema(description = "First Name", example = "Fabienne")
-  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   @Size(max = AtlasFieldLengths.LENGTH_100)
   private String firstName;
 
   @Schema(description = "Last Name", example = "Maurer")
-  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   @Size(max = AtlasFieldLengths.LENGTH_100)
   private String lastName;
 
   @Schema(description = "Organisation", example = "Post AG")
-  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   @Size(max = AtlasFieldLengths.LENGTH_100)
   private String organisation;
 
   @Schema(description = "Street", example = "Bahnhofstrasse 12")
-  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   @Size(max = AtlasFieldLengths.LENGTH_100)
   private String street;
 
@@ -52,7 +48,6 @@ public class TimetableHearingStatementSenderModel {
   private Integer zip;
 
   @Schema(description = "City", example = "Bern")
-  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   @Size(max = AtlasFieldLengths.LENGTH_50)
   private String city;
 
