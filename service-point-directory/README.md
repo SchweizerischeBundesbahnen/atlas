@@ -134,6 +134,7 @@ Maps, OpenStreetMap, etc.
 - ServicePoint Category
   Tree: https://confluence.sbb.ch/display/ADIDOK/Big+Picture#BigPicture-Kategorienbaum
 
+
 ## Full clean import of service points
 
 To do a full import of service points from csv we need to delete all the existing data from the service-point db:
