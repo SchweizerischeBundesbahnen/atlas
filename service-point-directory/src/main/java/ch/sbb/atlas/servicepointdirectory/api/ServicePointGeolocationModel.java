@@ -75,7 +75,7 @@ public class ServicePointGeolocationModel extends GeolocationModel {
   @Schema(description = "ISO 2 abbreviation of the country, based on coordinates", example = "CH", accessMode =
       AccessMode.READ_ONLY)
   public String getIsoCountryCode() {
-    return getCountry().getIsoCode();
+    return getCountry() == null ? null : getCountry().getIsoCode();
   }
 
   @AllArgsConstructor
