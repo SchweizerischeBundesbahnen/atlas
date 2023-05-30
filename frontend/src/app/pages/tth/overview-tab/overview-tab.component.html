@@ -1,11 +1,11 @@
 <div class="ps-5 pt-5">
   <nav [tabPanel]="tabPanelCanton" class="tabs" data-cy="tabs" mat-tab-nav-bar>
     <a
-      (click)="clickOnTab(tab)"
+      (click)="clickOnTab()"
       *ngFor="let tab of TABS"
-      [active]="activeTab === tab"
       [attr.data-cy]="'tth-tab-' + tab.link"
       [routerLink]="tab.link"
+      routerLinkActive="active-tab"
       class="font-bold-xl"
       mat-tab-link
     >

@@ -1,13 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Pages } from '../../pages';
-import { TabService } from '../../tab.service';
 
 @Component({
   selector: 'app-user-administration-overview',
   templateUrl: './user-administration-overview.component.html',
 })
-export class UserAdministrationOverviewComponent implements OnInit {
+export class UserAdministrationOverviewComponent {
   TABS = [
     {
       link: Pages.USERS.path,
@@ -18,20 +17,8 @@ export class UserAdministrationOverviewComponent implements OnInit {
       title: 'USER_ADMIN.TABS.CLIENTS',
     },
   ];
-  activeTab = this.TABS[0];
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private tabService: TabService
-  ) {}
-
-  ngOnInit(): void {
-    if (this.router.url) {
-      const currentTabIndex = this.tabService.getCurrentTabIndex(this.router.url, this.TABS);
-      this.activeTab = this.TABS[currentTabIndex];
-    }
-  }
+  constructor(private route: ActivatedRoute, private router: Router) {}
 
   newUser(): Promise<boolean> {
     return this.router.navigate([Pages.USERS.path, 'add'], {
