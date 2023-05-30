@@ -31,20 +31,6 @@ import { TableFilter } from '../../../core/components/table-filter/config/table-
   providers: [TableService],
 })
 export class TimetableFieldNumberOverviewComponent implements OnDestroy {
-  tableColumns: TableColumn<TimetableFieldNumber>[] = [
-    { headerTitle: 'TTFN.NUMBER', value: 'number' },
-    { headerTitle: 'TTFN.DESCRIPTION', value: 'description' },
-    { headerTitle: 'TTFN.SWISS_TIMETABLE_FIELD_NUMBER', value: 'swissTimetableFieldNumber' },
-    { headerTitle: 'TTFN.TTFNID', value: 'ttfnid' },
-    {
-      headerTitle: 'COMMON.STATUS',
-      value: 'status',
-      translate: { withPrefix: 'COMMON.STATUS_TYPES.' },
-    },
-    { headerTitle: 'COMMON.VALID_FROM', value: 'validFrom', formatAsDate: true },
-    { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
-  ];
-
   private readonly tableFilterConfigIntern = {
     chipSearch: new TableFilterChip('col-6'),
     searchSelect: new TableFilterSearchSelect<BusinessOrganisation>(
@@ -64,6 +50,9 @@ export class TimetableFieldNumberOverviewComponent implements OnDestroy {
     dateSelect: new TableFilterDateSelect('col-3'),
   };
 
+  private getVersionsSubscription?: Subscription;
+  private routeSubscription: Subscription;
+
   tableFilterConfig: TableFilter<unknown>[][] = [
     [this.tableFilterConfigIntern.chipSearch],
     [
@@ -73,11 +62,22 @@ export class TimetableFieldNumberOverviewComponent implements OnDestroy {
     ],
   ];
 
+  tableColumns: TableColumn<TimetableFieldNumber>[] = [
+    { headerTitle: 'TTFN.NUMBER', value: 'number' },
+    { headerTitle: 'TTFN.DESCRIPTION', value: 'description' },
+    { headerTitle: 'TTFN.SWISS_TIMETABLE_FIELD_NUMBER', value: 'swissTimetableFieldNumber' },
+    { headerTitle: 'TTFN.TTFNID', value: 'ttfnid' },
+    {
+      headerTitle: 'COMMON.STATUS',
+      value: 'status',
+      translate: { withPrefix: 'COMMON.STATUS_TYPES.' },
+    },
+    { headerTitle: 'COMMON.VALID_FROM', value: 'validFrom', formatAsDate: true },
+    { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
+  ];
+
   timetableFieldNumbers: TimetableFieldNumber[] = [];
   totalCount$ = 0;
-
-  private getVersionsSubscription?: Subscription;
-  private routeSubscription: Subscription;
 
   constructor(
     private timetableFieldNumbersService: TimetableFieldNumbersService,
