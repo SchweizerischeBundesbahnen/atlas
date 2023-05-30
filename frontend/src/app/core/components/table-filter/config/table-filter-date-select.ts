@@ -3,9 +3,8 @@ import { Moment } from 'moment';
 import { TableFilter } from './table-filter';
 
 export class TableFilterDateSelect extends TableFilter<Date | undefined> {
-  formControl: FormControl<Date | null>;
-
   protected activeSearch: Date | undefined;
+  formControl: FormControl<Date | null>;
 
   constructor(elementWidthCssClass: string);
   constructor(elementWidthCssClass: string, formControl?: FormControl<Date | null>) {
