@@ -107,10 +107,11 @@ public class ServicePointRequestParams {
   @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN)
   private LocalDate toDate;
 
-  @Parameter(description = "CreatedAfter>=creationDate. DateTime format: " + AtlasApiConstants.DATE_TIME_FORMAT_PATTERN)
+  @Parameter(description = "creationDate >= [createdAfter]. DateTime format: " + AtlasApiConstants.DATE_TIME_FORMAT_PATTERN)
   @DateTimeFormat(pattern = AtlasApiConstants.DATE_TIME_FORMAT_PATTERN)
   private LocalDateTime createdAfter;
-  @Parameter(description = "ModifiedAfter>=editionDate. DateTime format: " + AtlasApiConstants.DATE_TIME_FORMAT_PATTERN)
+
+  @Parameter(description = "editionDate >= [modifiedAfter]. DateTime format: " + AtlasApiConstants.DATE_TIME_FORMAT_PATTERN)
   @DateTimeFormat(pattern = AtlasApiConstants.DATE_TIME_FORMAT_PATTERN)
   private LocalDateTime modifiedAfter;
 
