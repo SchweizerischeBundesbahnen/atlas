@@ -11,7 +11,7 @@ nav[mat-tab-nav-bar].tabs {
     overflow: hidden;
     color: variables.$primary-400;
 
-    &.mdc-tab--active {
+    &.active-tab {
       background-color: white;
       color: variables.$gray-900;
     }
@@ -32,8 +32,4 @@ nav[mat-tab-nav-bar].tabs {
       display: none;
     }
   }
-}
-
-.asd {
-  background-color: #4471c7;
 }
