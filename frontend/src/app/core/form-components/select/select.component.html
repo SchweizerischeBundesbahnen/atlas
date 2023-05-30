@@ -11,6 +11,7 @@
     [attr.data-cy]="dataCy"
     placeholder="{{ placeHolderLabel | translate }}"
     [multiple]="multiple"
+    [hideSingleSelectionIndicator]="true"
   >
     <mat-option *ngFor="let option of options" [value]="valueExtractor(option)">
       <ng-container
