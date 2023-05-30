@@ -25,21 +25,6 @@ import { TableFilterDateSelect } from '../../../core/components/table-filter/con
   providers: [TableService],
 })
 export class LinesComponent implements OnDestroy {
-  linesTableColumns: TableColumn<Line>[] = [
-    { headerTitle: 'LIDI.LINE.NUMBER', value: 'number' },
-    { headerTitle: 'LIDI.LINE.DESCRIPTION', value: 'description' },
-    { headerTitle: 'LIDI.SWISS_LINE_NUMBER', value: 'swissLineNumber' },
-    { headerTitle: 'LIDI.TYPE', value: 'lineType', translate: { withPrefix: 'LIDI.LINE.TYPES.' } },
-    { headerTitle: 'LIDI.SLNID', value: 'slnid' },
-    {
-      headerTitle: 'COMMON.STATUS',
-      value: 'status',
-      translate: { withPrefix: 'COMMON.STATUS_TYPES.' },
-    },
-    { headerTitle: 'COMMON.VALID_FROM', value: 'validFrom', formatAsDate: true },
-    { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
-  ];
-
   private readonly tableFilterConfigIntern = {
     chipSearch: new TableFilterChip('col-6'),
     searchSelect: new TableFilterSearchSelect<BusinessOrganisation>(
@@ -65,6 +50,24 @@ export class LinesComponent implements OnDestroy {
     dateSelect: new TableFilterDateSelect('col-3'),
   };
 
+  private lineVersionsSubscription?: Subscription;
+  private routeSubscription: Subscription;
+
+  linesTableColumns: TableColumn<Line>[] = [
+    { headerTitle: 'LIDI.LINE.NUMBER', value: 'number' },
+    { headerTitle: 'LIDI.LINE.DESCRIPTION', value: 'description' },
+    { headerTitle: 'LIDI.SWISS_LINE_NUMBER', value: 'swissLineNumber' },
+    { headerTitle: 'LIDI.TYPE', value: 'lineType', translate: { withPrefix: 'LIDI.LINE.TYPES.' } },
+    { headerTitle: 'LIDI.SLNID', value: 'slnid' },
+    {
+      headerTitle: 'COMMON.STATUS',
+      value: 'status',
+      translate: { withPrefix: 'COMMON.STATUS_TYPES.' },
+    },
+    { headerTitle: 'COMMON.VALID_FROM', value: 'validFrom', formatAsDate: true },
+    { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
+  ];
+
   tableFilterConfig: TableFilter<unknown>[][] = [
     [this.tableFilterConfigIntern.chipSearch],
     [
@@ -77,9 +80,6 @@ export class LinesComponent implements OnDestroy {
 
   lineVersions: Line[] = [];
   totalCount$ = 0;
-
-  private lineVersionsSubscription?: Subscription;
-  private routeSubscription: Subscription;
 
   constructor(
     private linesService: LinesService,

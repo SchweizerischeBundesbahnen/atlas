@@ -25,26 +25,6 @@ import { TableFilterDateSelect } from '../../../core/components/table-filter/con
   providers: [TableService],
 })
 export class SublinesComponent implements OnDestroy {
-  sublinesTableColumns: TableColumn<Subline>[] = [
-    { headerTitle: 'LIDI.SUBLINE.NUMBER', value: 'number' },
-    { headerTitle: 'LIDI.SUBLINE.DESCRIPTION', value: 'description' },
-    { headerTitle: 'LIDI.SWISS_SUBLINE_NUMBER', value: 'swissSublineNumber' },
-    { headerTitle: 'LIDI.SUBLINE.OVERVIEW_MAINLINE', value: 'swissLineNumber' },
-    {
-      headerTitle: 'LIDI.SUBLINE_TYPE',
-      value: 'sublineType',
-      translate: { withPrefix: 'LIDI.SUBLINE.TYPES.' },
-    },
-    { headerTitle: 'LIDI.SLNID', value: 'slnid' },
-    {
-      headerTitle: 'COMMON.STATUS',
-      value: 'status',
-      translate: { withPrefix: 'COMMON.STATUS_TYPES.' },
-    },
-    { headerTitle: 'COMMON.VALID_FROM', value: 'validFrom', formatAsDate: true },
-    { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
-  ];
-
   private readonly tableFilterConfigIntern = {
     chipSearch: new TableFilterChip('col-6'),
     searchSelect: new TableFilterSearchSelect<BusinessOrganisation>(
@@ -70,6 +50,29 @@ export class SublinesComponent implements OnDestroy {
     dateSelect: new TableFilterDateSelect('col-3'),
   };
 
+  private sublineVersionsSubscription?: Subscription;
+  private routeSubscription: Subscription;
+
+  sublinesTableColumns: TableColumn<Subline>[] = [
+    { headerTitle: 'LIDI.SUBLINE.NUMBER', value: 'number' },
+    { headerTitle: 'LIDI.SUBLINE.DESCRIPTION', value: 'description' },
+    { headerTitle: 'LIDI.SWISS_SUBLINE_NUMBER', value: 'swissSublineNumber' },
+    { headerTitle: 'LIDI.SUBLINE.OVERVIEW_MAINLINE', value: 'swissLineNumber' },
+    {
+      headerTitle: 'LIDI.SUBLINE_TYPE',
+      value: 'sublineType',
+      translate: { withPrefix: 'LIDI.SUBLINE.TYPES.' },
+    },
+    { headerTitle: 'LIDI.SLNID', value: 'slnid' },
+    {
+      headerTitle: 'COMMON.STATUS',
+      value: 'status',
+      translate: { withPrefix: 'COMMON.STATUS_TYPES.' },
+    },
+    { headerTitle: 'COMMON.VALID_FROM', value: 'validFrom', formatAsDate: true },
+    { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
+  ];
+
   tableFilterConfig: TableFilter<unknown>[][] = [
     [this.tableFilterConfigIntern.chipSearch],
     [
@@ -82,9 +85,6 @@ export class SublinesComponent implements OnDestroy {
 
   sublines: Subline[] = [];
   totalCount$ = 0;
-
-  private sublineVersionsSubscription?: Subscription;
-  private routeSubscription: Subscription;
 
   constructor(
     private sublinesService: SublinesService,
