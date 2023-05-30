@@ -1,9 +1,9 @@
 package ch.sbb.line.directory.repository;
 
+import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.entity.SublineVersion;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -17,11 +17,9 @@ public interface SublineVersionRepository extends JpaRepository<SublineVersion, 
     return findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndSwissSublineNumberIgnoreCase(
         sublineVersion.getValidFrom(), sublineVersion.getValidTo(),
         sublineVersion.getSwissSublineNumber()).stream()
-                                               .filter(
-                                                   i -> !i.getSlnid()
-                                                          .equals(sublineVersion.getSlnid()))
-                                               .collect(
-                                                   Collectors.toList());
+        .filter(i -> !i.getSlnid().equals(sublineVersion.getSlnid()))
+        .filter(i -> i.getStatus() != Status.REVOKED)
+        .toList();
   }
 
   List<SublineVersion> findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndSwissSublineNumberIgnoreCase(

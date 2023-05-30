@@ -5,6 +5,7 @@ import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.business.organisation.directory.controller.BusinessOrganisationSearchRestrictions;
+import ch.sbb.business.organisation.directory.controller.BusinessOrganisationVersionSearchRestrictions;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisation;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
 import ch.sbb.business.organisation.directory.repository.BusinessOrganisationRepository;
@@ -34,6 +35,11 @@ public class BusinessOrganisationService {
 
   public BusinessOrganisation findBusinessOrganisationBySboid(String sboid) {
     return repository.findBySboid(sboid);
+  }
+
+  public Page<BusinessOrganisationVersion> getBusinessOrganisationVersions(
+      BusinessOrganisationVersionSearchRestrictions searchRestrictions) {
+    return versionRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
   }
 
   public BusinessOrganisationVersion save(BusinessOrganisationVersion version) {
