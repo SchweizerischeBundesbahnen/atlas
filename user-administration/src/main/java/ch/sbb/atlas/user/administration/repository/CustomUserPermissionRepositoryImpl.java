@@ -4,6 +4,7 @@ import ch.sbb.atlas.api.user.administration.enumeration.PermissionRestrictionTyp
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.searching.specification.EnumSpecification;
+import ch.sbb.atlas.user.administration.entity.BasePermission;
 import ch.sbb.atlas.user.administration.entity.BasePermission_;
 import ch.sbb.atlas.user.administration.entity.PermissionRestriction;
 import ch.sbb.atlas.user.administration.entity.PermissionRestriction_;
@@ -37,7 +38,7 @@ public class CustomUserPermissionRepositoryImpl implements CustomUserPermissionR
     EnumSpecification<UserPermission> applicationTypesSpec = new EnumSpecification<>(applicationTypes.stream().toList(),
         BasePermission_.application);
     EnumSpecification<UserPermission> applicationRoleSpec = new EnumSpecification<>(List.of(ApplicationRole.READER),
-        BasePermission_.role, true);
+        BasePermission.Fields.role, true);
     Specification<UserPermission> specification = applicationTypesSpec.and(applicationRoleSpec);
 
     CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
