@@ -181,20 +181,16 @@ export class StatementDetailComponent implements OnInit, AfterViewInit {
       stopPlace: new FormControl(statement?.stopPlace, [
         AtlasFieldLengthValidator.length_255,
         WhitespaceValidator.blankOrEmptySpaceSurrounding,
-        AtlasCharsetsValidator.iso88591,
       ]),
       statementSender: new FormGroup<StatementSenderFormGroup>({
         firstName: new FormControl(statement?.statementSender?.firstName, [
           AtlasFieldLengthValidator.length_100,
-          AtlasCharsetsValidator.iso88591,
         ]),
         lastName: new FormControl(statement?.statementSender?.lastName, [
           AtlasFieldLengthValidator.length_100,
-          AtlasCharsetsValidator.iso88591,
         ]),
         organisation: new FormControl(statement?.statementSender?.organisation, [
           AtlasFieldLengthValidator.length_100,
-          AtlasCharsetsValidator.iso88591,
         ]),
         zip: new FormControl(statement?.statementSender?.zip, [
           AtlasCharsetsValidator.numeric,
@@ -203,11 +199,9 @@ export class StatementDetailComponent implements OnInit, AfterViewInit {
         ]),
         city: new FormControl(statement?.statementSender?.city, [
           AtlasFieldLengthValidator.length_50,
-          AtlasCharsetsValidator.iso88591,
         ]),
         street: new FormControl(statement?.statementSender?.street, [
           AtlasFieldLengthValidator.length_100,
-          AtlasCharsetsValidator.iso88591,
         ]),
         email: new FormControl(statement?.statementSender?.email, [
           Validators.required,
@@ -223,12 +217,10 @@ export class StatementDetailComponent implements OnInit, AfterViewInit {
       justification: new FormControl(statement?.justification, [
         AtlasFieldLengthValidator.statement,
         WhitespaceValidator.blankOrEmptySpaceSurrounding,
-        AtlasCharsetsValidator.iso88591,
       ]),
       comment: new FormControl(statement?.comment, [
         AtlasFieldLengthValidator.length_280,
         WhitespaceValidator.blankOrEmptySpaceSurrounding,
-        AtlasCharsetsValidator.iso88591,
       ]),
       documents: new FormArray(
         statement?.documents?.map((document) => new FormControl(document)) ?? []

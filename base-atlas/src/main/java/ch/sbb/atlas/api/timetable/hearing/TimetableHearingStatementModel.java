@@ -1,6 +1,5 @@
 package ch.sbb.atlas.api.timetable.hearing;
 
-import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.model.BaseVersionModel;
 import ch.sbb.atlas.api.model.CantonAssociated;
@@ -12,7 +11,6 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +60,6 @@ public class TimetableHearingStatementModel extends BaseVersionModel implements 
   private SwissCanton swissCanton;
 
   @Size(max = AtlasFieldLengths.LENGTH_255)
-  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   @Schema(description = "StopPlace information for the statement", example = "Bern, Wyleregg")
   private String stopPlace;
 
@@ -86,7 +83,6 @@ public class TimetableHearingStatementModel extends BaseVersionModel implements 
   private List<TimetableHearingStatementDocumentModel> documents;
 
   @Size(max = AtlasFieldLengths.LENGTH_5000)
-  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   @Schema(description = "Statement of Federal office of transport", example = "We can absolutely do that.")
   private String justification;
 

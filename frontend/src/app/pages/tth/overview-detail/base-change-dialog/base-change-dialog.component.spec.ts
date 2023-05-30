@@ -64,7 +64,6 @@ describe('BaseChangeDialogComponent', () => {
       justification: new FormControl('', [
         AtlasFieldLengthValidator.statement,
         WhitespaceValidator.blankOrEmptySpaceSurrounding,
-        AtlasCharsetsValidator.iso88591,
       ]),
     });
     fixture.detectChanges();
