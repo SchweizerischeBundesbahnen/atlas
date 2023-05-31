@@ -2,7 +2,7 @@ package ch.sbb.importservice.integration;
 
 import static ch.sbb.importservice.controller.ImportServicePointBatchControllerApiV1.IMPORT_LOADING_POINT_CSV_JOB;
 import static ch.sbb.importservice.controller.ImportServicePointBatchControllerApiV1.IMPORT_SERVICE_POINT_CSV_JOB;
-import static ch.sbb.importservice.service.CsvService.DINSTELLE_FILE_PREFIX;
+import static ch.sbb.importservice.service.CsvService.DIENSTELLEN_FILE_PREFIX;
 import static ch.sbb.importservice.service.JobHelperService.MIN_LOCAL_DATE;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_BATCH_PARAMETER;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_TYPE_PARAMETER;
@@ -123,7 +123,7 @@ public class ImportServicePointIntegrationTest {
   public void shouldExecuteImportServicePointJobFromGivenFile() throws Exception {
     // given
     File file = new File(this.getClass().getClassLoader().getResource("DIENSTSTELLEN_V3_IMPORT.csv").getFile());
-    when(fileHelperService.downloadImportFileFromS3(DINSTELLE_FILE_PREFIX)).thenReturn(file);
+    when(fileHelperService.downloadImportFileFromS3(DIENSTELLEN_FILE_PREFIX)).thenReturn(file);
     List<ServicePointCsvModelContainer> servicePointCsvModelContainers = ServicePointTestData.getServicePointCsvModelContainers();
 
     List<ServicePointItemImportResult> servicePointItemImportResults = ServicePointTestData.getServicePointItemImportResults(
