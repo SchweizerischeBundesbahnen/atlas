@@ -15,20 +15,15 @@ import {
 import { filter } from 'rxjs/operators';
 import { TableService } from '../../../core/components/table/table.service';
 import { TablePagination } from '../../../core/components/table/table-pagination';
-import {
-  FilterType,
-  getActiveSearch,
-  getActiveSearchDate,
-  getActiveSearchForChip,
-  TableFilterChip,
-  TableFilterDateSelect,
-  TableFilterMultiSelect,
-  TableFilterSearchSelect,
-  TableFilterSearchType,
-} from '../../../core/components/table-filter/table-filter-config';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { DEFAULT_STATUS_SELECTION } from '../../../core/constants/status.choices';
 import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
+import { TableFilterChip } from '../../../core/components/table-filter/config/table-filter-chip';
+import { TableFilterSearchSelect } from '../../../core/components/table-filter/config/table-filter-search-select';
+import { TableFilterSearchType } from '../../../core/components/table-filter/config/table-filter-search-type';
+import { TableFilterMultiSelect } from '../../../core/components/table-filter/config/table-filter-multiselect';
+import { TableFilterDateSelect } from '../../../core/components/table-filter/config/table-filter-date-select';
+import { TableFilter } from '../../../core/components/table-filter/config/table-filter';
 
 @Component({
   selector: 'app-timetable-field-number-overview',
@@ -36,6 +31,37 @@ import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
   providers: [TableService],
 })
 export class TimetableFieldNumberOverviewComponent implements OnDestroy {
+  private readonly tableFilterConfigIntern = {
+    chipSearch: new TableFilterChip('col-6'),
+    searchSelect: new TableFilterSearchSelect<BusinessOrganisation>(
+      TableFilterSearchType.BUSINESS_ORGANISATION,
+      'col-3',
+      new FormGroup({
+        businessOrganisation: new FormControl(),
+      })
+    ),
+    multiSelectStatus: new TableFilterMultiSelect(
+      'COMMON.STATUS_TYPES.',
+      'COMMON.STATUS',
+      Object.values(Status),
+      'col-3',
+      DEFAULT_STATUS_SELECTION
+    ),
+    dateSelect: new TableFilterDateSelect('col-3'),
+  };
+
+  private getVersionsSubscription?: Subscription;
+  private routeSubscription: Subscription;
+
+  tableFilterConfig: TableFilter<unknown>[][] = [
+    [this.tableFilterConfigIntern.chipSearch],
+    [
+      this.tableFilterConfigIntern.searchSelect,
+      this.tableFilterConfigIntern.multiSelectStatus,
+      this.tableFilterConfigIntern.dateSelect,
+    ],
+  ];
+
   tableColumns: TableColumn<TimetableFieldNumber>[] = [
     { headerTitle: 'TTFN.NUMBER', value: 'number' },
     { headerTitle: 'TTFN.DESCRIPTION', value: 'description' },
@@ -50,50 +76,8 @@ export class TimetableFieldNumberOverviewComponent implements OnDestroy {
     { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
   ];
 
-  readonly tableFilterConfig: [
-    [TableFilterChip],
-    [
-      TableFilterSearchSelect<BusinessOrganisation>,
-      TableFilterMultiSelect<Status>,
-      TableFilterDateSelect
-    ]
-  ] = [
-    [
-      {
-        filterType: FilterType.CHIP_SEARCH,
-        elementWidthCssClass: 'col-6',
-        activeSearch: [],
-      },
-    ],
-    [
-      {
-        filterType: FilterType.SEARCH_SELECT,
-        elementWidthCssClass: 'col-3',
-        activeSearch: {} as BusinessOrganisation,
-        searchType: TableFilterSearchType.BUSINESS_ORGANISATION,
-      },
-      {
-        filterType: FilterType.MULTI_SELECT,
-        elementWidthCssClass: 'col-3',
-        activeSearch: DEFAULT_STATUS_SELECTION,
-        labelTranslationKey: 'COMMON.STATUS',
-        typeTranslationKeyPrefix: 'COMMON.STATUS_TYPES.',
-        selectOptions: Object.values(Status),
-      },
-      {
-        filterType: FilterType.VALID_ON_SELECT,
-        elementWidthCssClass: 'col-3',
-        activeSearch: undefined,
-        formControl: new FormControl(),
-      },
-    ],
-  ];
-
   timetableFieldNumbers: TimetableFieldNumber[] = [];
   totalCount$ = 0;
-
-  private getVersionsSubscription?: Subscription;
-  private routeSubscription: Subscription;
 
   constructor(
     private timetableFieldNumbersService: TimetableFieldNumbersService,
@@ -116,13 +100,11 @@ export class TimetableFieldNumberOverviewComponent implements OnDestroy {
   getOverview(pagination: TablePagination) {
     this.getVersionsSubscription = this.timetableFieldNumbersService
       .getOverview(
-        getActiveSearchForChip(this.tableFilterConfig[0][0]),
+        this.tableFilterConfigIntern.chipSearch.getActiveSearch(),
         undefined,
-        getActiveSearch<BusinessOrganisation | undefined, BusinessOrganisation>(
-          this.tableFilterConfig[1][0]
-        )?.sboid,
-        getActiveSearchDate(this.tableFilterConfig[1][2]),
-        getActiveSearch(this.tableFilterConfig[1][1]),
+        this.tableFilterConfigIntern.searchSelect.getActiveSearch()?.sboid,
+        this.tableFilterConfigIntern.dateSelect.getActiveSearch(),
+        this.tableFilterConfigIntern.multiSelectStatus.getActiveSearch(),
         pagination.page,
         pagination.size,
         addElementsToArrayWhenNotUndefined(pagination.sort, 'ttfnid,asc')

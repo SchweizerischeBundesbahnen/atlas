@@ -29,7 +29,6 @@ import { AtlasButtonComponent } from '../components/button/atlas-button.componen
 import { WorkflowComponent } from '../workflow/workflow.component';
 import { WorkflowFormComponent } from '../workflow/workflow-form/workflow-form.component';
 import { WorkflowCheckFormComponent } from '../workflow/workflow-check-form/workflow-check-form.component';
-import { FilterTypeGuardPipe } from '../components/table-filter/filter-type-guard.pipe';
 import { DisplayDatePipe } from '../pipe/display-date.pipe';
 import { AtlasSpacerComponent } from '../components/spacer/atlas-spacer.component';
 import { DetailFooterComponent } from '../components/detail-footer/detail-footer.component';
@@ -42,6 +41,7 @@ import { FileDropDirective } from '../components/file-upload/file-drop/file-drop
 import { ShowTitlePipe } from '../components/table/pipe/show-title.pipe';
 import { MouseOverTitleDirective } from '../components/table/directive/mouse-over-title.directive';
 import { FormatPipe } from '../components/table/pipe/format.pipe';
+import { InstanceOfPipe } from '../components/table-filter/instance-of.pipe';
 
 const coreComponents = [
   WorkflowFormComponent,
@@ -74,12 +74,17 @@ const coreComponents = [
   RouteToDialogComponent,
   RelationComponent,
   DisplayDatePipe,
-  FilterTypeGuardPipe,
   SelectComponent,
 ];
 
 @NgModule({
-  declarations: [...coreComponents, ShowTitlePipe, MouseOverTitleDirective, FormatPipe],
+  declarations: [
+    ...coreComponents,
+    ShowTitlePipe,
+    MouseOverTitleDirective,
+    FormatPipe,
+    InstanceOfPipe,
+  ],
   imports: [
     CommonModule,
     MaterialModule,
