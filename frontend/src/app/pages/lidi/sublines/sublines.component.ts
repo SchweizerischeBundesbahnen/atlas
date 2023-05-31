@@ -8,21 +8,16 @@ import {
   RouteToDialogService,
 } from '../../../core/components/route-to-dialog/route-to-dialog.service';
 import { filter } from 'rxjs/operators';
-import {
-  FilterType,
-  getActiveSearch,
-  getActiveSearchDate,
-  getActiveSearchForChip,
-  TableFilterChip,
-  TableFilterDateSelect,
-  TableFilterMultiSelect,
-  TableFilterSearchSelect,
-  TableFilterSearchType,
-} from '../../../core/components/table-filter/table-filter-config';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { TableService } from '../../../core/components/table/table.service';
 import { TablePagination } from '../../../core/components/table/table-pagination';
 import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
+import { TableFilterChip } from '../../../core/components/table-filter/config/table-filter-chip';
+import { TableFilterSearchSelect } from '../../../core/components/table-filter/config/table-filter-search-select';
+import { TableFilterSearchType } from '../../../core/components/table-filter/config/table-filter-search-type';
+import { TableFilterMultiSelect } from '../../../core/components/table-filter/config/table-filter-multiselect';
+import { TableFilter } from '../../../core/components/table-filter/config/table-filter';
+import { TableFilterDateSelect } from '../../../core/components/table-filter/config/table-filter-date-select';
 
 @Component({
   selector: 'app-lidi-sublines',
@@ -30,6 +25,34 @@ import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
   providers: [TableService],
 })
 export class SublinesComponent implements OnDestroy {
+  private readonly tableFilterConfigIntern = {
+    chipSearch: new TableFilterChip('col-6'),
+    searchSelect: new TableFilterSearchSelect<BusinessOrganisation>(
+      TableFilterSearchType.BUSINESS_ORGANISATION,
+      'col-3',
+      new FormGroup({
+        businessOrganisation: new FormControl(),
+      })
+    ),
+    multiSelectSublineType: new TableFilterMultiSelect(
+      'LIDI.SUBLINE.TYPES.',
+      'LIDI.SUBLINE_TYPE',
+      Object.values(SublineType),
+      'col-3'
+    ),
+    multiSelectStatus: new TableFilterMultiSelect(
+      'COMMON.STATUS_TYPES.',
+      'COMMON.STATUS',
+      Object.values(Status),
+      'col-3',
+      [Status.Draft, Status.Validated, Status.InReview, Status.Withdrawn]
+    ),
+    dateSelect: new TableFilterDateSelect('col-3'),
+  };
+
+  private sublineVersionsSubscription?: Subscription;
+  private routeSubscription: Subscription;
+
   sublinesTableColumns: TableColumn<Subline>[] = [
     { headerTitle: 'LIDI.SUBLINE.NUMBER', value: 'number' },
     { headerTitle: 'LIDI.SUBLINE.DESCRIPTION', value: 'description' },
@@ -50,59 +73,18 @@ export class SublinesComponent implements OnDestroy {
     { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
   ];
 
-  readonly tableFilterConfig: [
-    [TableFilterChip],
+  tableFilterConfig: TableFilter<unknown>[][] = [
+    [this.tableFilterConfigIntern.chipSearch],
     [
-      TableFilterSearchSelect<BusinessOrganisation>,
-      TableFilterMultiSelect<SublineType>,
-      TableFilterMultiSelect<Status>,
-      TableFilterDateSelect
-    ]
-  ] = [
-    [
-      {
-        filterType: FilterType.CHIP_SEARCH,
-        elementWidthCssClass: 'col-6',
-        activeSearch: [],
-      },
-    ],
-    [
-      {
-        filterType: FilterType.SEARCH_SELECT,
-        elementWidthCssClass: 'col-3',
-        activeSearch: {} as BusinessOrganisation,
-        searchType: TableFilterSearchType.BUSINESS_ORGANISATION,
-      },
-      {
-        filterType: FilterType.MULTI_SELECT,
-        elementWidthCssClass: 'col-3',
-        activeSearch: [],
-        labelTranslationKey: 'LIDI.SUBLINE_TYPE',
-        typeTranslationKeyPrefix: 'LIDI.SUBLINE.TYPES.',
-        selectOptions: Object.values(SublineType),
-      },
-      {
-        filterType: FilterType.MULTI_SELECT,
-        elementWidthCssClass: 'col-3',
-        activeSearch: [Status.Draft, Status.Validated, Status.InReview, Status.Withdrawn],
-        labelTranslationKey: 'COMMON.STATUS',
-        typeTranslationKeyPrefix: 'COMMON.STATUS_TYPES.',
-        selectOptions: Object.values(Status),
-      },
-      {
-        filterType: FilterType.VALID_ON_SELECT,
-        elementWidthCssClass: 'col-3',
-        activeSearch: undefined,
-        formControl: new FormControl(),
-      },
+      this.tableFilterConfigIntern.searchSelect,
+      this.tableFilterConfigIntern.multiSelectSublineType,
+      this.tableFilterConfigIntern.multiSelectStatus,
+      this.tableFilterConfigIntern.dateSelect,
     ],
   ];
 
   sublines: Subline[] = [];
   totalCount$ = 0;
-
-  private sublineVersionsSubscription?: Subscription;
-  private routeSubscription: Subscription;
 
   constructor(
     private sublinesService: SublinesService,
@@ -125,13 +107,11 @@ export class SublinesComponent implements OnDestroy {
   getOverview(pagination: TablePagination) {
     this.sublineVersionsSubscription = this.sublinesService
       .getSublines(
-        getActiveSearchForChip(this.tableFilterConfig[0][0]),
-        getActiveSearch(this.tableFilterConfig[1][2]),
-        getActiveSearch(this.tableFilterConfig[1][1]),
-        getActiveSearch<BusinessOrganisation | undefined, BusinessOrganisation>(
-          this.tableFilterConfig[1][0]
-        )?.sboid,
-        getActiveSearchDate(this.tableFilterConfig[1][3]),
+        this.tableFilterConfigIntern.chipSearch.getActiveSearch(),
+        this.tableFilterConfigIntern.multiSelectStatus.getActiveSearch(),
+        this.tableFilterConfigIntern.multiSelectSublineType.getActiveSearch(),
+        this.tableFilterConfigIntern.searchSelect.getActiveSearch()?.sboid,
+        this.tableFilterConfigIntern.dateSelect.getActiveSearch(),
         pagination.page,
         pagination.size,
         addElementsToArrayWhenNotUndefined(pagination.sort, 'slnid,asc')
