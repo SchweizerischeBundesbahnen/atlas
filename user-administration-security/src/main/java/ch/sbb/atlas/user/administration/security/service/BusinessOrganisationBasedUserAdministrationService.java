@@ -1,9 +1,10 @@
-package ch.sbb.atlas.user.administration.security;
+package ch.sbb.atlas.user.administration.security.service;
 
 import ch.sbb.atlas.api.model.BusinessOrganisationAssociated;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionModel;
+import ch.sbb.atlas.user.administration.security.UserPermissionHolder;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

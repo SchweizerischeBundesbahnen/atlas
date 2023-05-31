@@ -21,7 +21,7 @@ public class UserPermissionDistributor extends BaseProducer<UserAdministrationMo
   }
 
   public void pushUserPermissionToKafka(UserAdministrationModel userAdministrationModel) {
-    String kafkaKey = userAdministrationModel.getSbbUserId();
+    String kafkaKey = userAdministrationModel.getUserId();
     produceEvent(userAdministrationModel, kafkaKey);
   }
 
