@@ -2,17 +2,18 @@ package ch.sbb.atlas.servicepointdirectory.api;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.model.BaseVersionModel;
-import ch.sbb.atlas.validation.DatesValidator;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.enumeration.TrafficPointElementType;
+import ch.sbb.atlas.servicepointdirectory.mapper.GeolocationMapper;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
+import ch.sbb.atlas.validation.DatesValidator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
-import java.time.LocalDate;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -68,7 +69,7 @@ public class TrafficPointElementVersionModel extends BaseVersionModel implements
       + "As key, the SLOID is used.", example = "ch:1:sloid:16161:1")
   private String parentSloid;
 
-  private GeolocationModel trafficPointElementGeolocation;
+  private GeolocationBaseModel trafficPointElementGeolocation;
 
   @JsonInclude
   @Schema(description = "TrafficPointElementVersion has a Geolocation")
@@ -96,7 +97,7 @@ public class TrafficPointElementVersionModel extends BaseVersionModel implements
         .parentSloid(trafficPointElementVersion.getParentSloid())
         .validFrom(trafficPointElementVersion.getValidFrom())
         .validTo(trafficPointElementVersion.getValidTo())
-        .trafficPointElementGeolocation(GeolocationModel.fromEntity(trafficPointElementVersion.getTrafficPointElementGeolocation()))
+        .trafficPointElementGeolocation(GeolocationMapper.toModel(trafficPointElementVersion.getTrafficPointElementGeolocation()))
         .creationDate(trafficPointElementVersion.getCreationDate())
         .creator(trafficPointElementVersion.getCreator())
         .editionDate(trafficPointElementVersion.getEditionDate())

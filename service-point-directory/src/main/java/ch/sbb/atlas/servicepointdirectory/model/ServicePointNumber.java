@@ -4,7 +4,6 @@ import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -81,17 +80,6 @@ public final class ServicePointNumber {
 
   @NotNull
   @JsonInclude
-  @Schema(description = "UicCountryCode, Indicates which country allocated the service point number and is to be interpreted "
-      + "organisationally, not territorially.", example = "85")
-  public Integer getUicCountryCode() {
-    if (getCountry() == null) {
-      return null;
-    }
-    return getCountry().getUicCode();
-  }
-
-  @NotNull
-  @JsonInclude
   @Schema(description = "DiDok-Number formerly known as UIC-Code, combination of uicCountryCode and numberShort. Size: 7",
       example = "8518771")
   public Integer getNumber() {
@@ -111,11 +99,6 @@ public final class ServicePointNumber {
   @Schema(description = "Calculated value formed from the numberShort. Range: 0-9", example = "6")
   public Integer getCheckDigit() {
     return getNumericPart(LENGTH - 1, LENGTH);
-  }
-
-  @AssertTrue
-  boolean isEightDigitsLong() {
-    return asString().length() == LENGTH;
   }
 
   public String asString() {
