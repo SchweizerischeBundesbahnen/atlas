@@ -15,7 +15,7 @@
         <atlas-select
           (selectChanged)="changeSelectedYearFromDropdown($event)"
           [additionalLabelspace]="false"
-          [options]="YEAR_DRODOWN_OPTIONS"
+          [options]="YEAR_DROPDOWN_OPTIONS"
           [value]="yearSelection"
           dataCy="selecTthYear"
           label="TTH.SELECT_YEAR"
@@ -192,7 +192,7 @@
             *ngIf="showCollectingActionButton"
             [additionalLabelspace]="false"
             [disabled]="totalCount$ === 0"
-            [options]="COLLECTING_ACTION_DROWPDOWN_OPTIONS"
+            [options]="COLLECTING_ACTION_DROPDOWN_OPTIONS"
             dataCy="collect-action-type"
             optionTranslateLabelPrefix="TTH.DROPDOWN.COLLECTING_ACTION.OPTION."
             placeHolderLabel="TTH.DROPDOWN.COLLECTING_ACTION.PLACEHOLDER"
