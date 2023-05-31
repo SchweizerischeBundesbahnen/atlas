@@ -53,8 +53,8 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     hearingFrom: moment().toDate(),
     hearingTo: moment().toDate(),
   };
-  YEAR_DRODOWN_OPTIONS: number[] = [];
-  yearSelection = this.YEAR_DRODOWN_OPTIONS[0];
+  YEAR_DROPDOWN_OPTIONS: number[] = [];
+  yearSelection = this.YEAR_DROPDOWN_OPTIONS[0];
 
   cantonShort!: string;
   CANTON_DROPDOWN_OPTIONS = Cantons.cantonsWithSwiss.map((value) => value.short);
@@ -63,7 +63,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
 
   STATUS_OPTIONS = Object.values(StatementStatus);
 
-  COLLECTING_ACTION_DROWPDOWN_OPTIONS = ['STATUS_CHANGE', 'CANTON_DELIVERY'];
+  COLLECTING_ACTION_DROPDOWN_OPTIONS = ['STATUS_CHANGE', 'CANTON_DELIVERY'];
 
   showDownloadCsvButton = false;
   showManageTimetableHearingButton = false;
@@ -118,7 +118,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.syncCantonShortSharedDate();
-    this.defaultDropdownCantonSelection = this.initDefatulDropdownCantonSelection();
+    this.defaultDropdownCantonSelection = this.initDefaultDropdownCantonSelection();
     this.hearingStatus = this.route.snapshot.data.hearingStatus;
     if (TthUtils.isHearingStatusActive(this.hearingStatus)) {
       this.tthTableService.activeTabPage = Pages.TTH_ACTIVE;
@@ -286,12 +286,12 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
   }
 
   setFoundHearingYear(timetableHearingYears: TimetableHearingYear[]) {
-    this.YEAR_DRODOWN_OPTIONS = timetableHearingYears.map((value) => value.timetableYear);
+    this.YEAR_DROPDOWN_OPTIONS = timetableHearingYears.map((value) => value.timetableYear);
     const paramYear = this.route.snapshot.queryParams.year;
     if (paramYear) {
       this.setFoundHearingYearWhenQueryParamIsProvided(timetableHearingYears, Number(paramYear));
     } else {
-      this.setYearSelection(this.YEAR_DRODOWN_OPTIONS[0]);
+      this.setYearSelection(this.YEAR_DROPDOWN_OPTIONS[0]);
       this.foundTimetableHearingYear = timetableHearingYears[0];
     }
   }
@@ -434,7 +434,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
       });
   }
 
-  private initDefatulDropdownCantonSelection() {
+  private initDefaultDropdownCantonSelection() {
     return this.CANTON_DROPDOWN_OPTIONS[
       this.CANTON_DROPDOWN_OPTIONS.findIndex(
         (value) => value.toLowerCase() === this.cantonShort.toLowerCase()
@@ -492,12 +492,14 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     if (matchedHearingYear) {
       this.foundTimetableHearingYear = matchedHearingYear;
       this.setYearSelection(
-        this.YEAR_DRODOWN_OPTIONS[
-          this.YEAR_DRODOWN_OPTIONS.findIndex((value) => value === matchedHearingYear.timetableYear)
+        this.YEAR_DROPDOWN_OPTIONS[
+          this.YEAR_DROPDOWN_OPTIONS.findIndex(
+            (value) => value === matchedHearingYear.timetableYear
+          )
         ]
       );
     } else {
-      this.setYearSelection(this.YEAR_DRODOWN_OPTIONS[0]);
+      this.setYearSelection(this.YEAR_DROPDOWN_OPTIONS[0]);
       this.foundTimetableHearingYear = timetableHearingYears[0];
       this.router
         .navigate([
