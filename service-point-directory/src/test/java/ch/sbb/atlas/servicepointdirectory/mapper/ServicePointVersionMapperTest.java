@@ -53,7 +53,7 @@ class ServicePointVersionMapperTest {
         .build();
 
     // When
-    ServicePointVersionModel servicePointVersionModel = ServicePointVersionMapper.fromEntity(servicePointVersion);
+    ServicePointVersionModel servicePointVersionModel = ServicePointVersionMapper.toModel(servicePointVersion);
 
     ServicePointVersionModel expected = ServicePointVersionModel
         .builder()
