@@ -4,8 +4,10 @@ import ch.sbb.atlas.api.model.BusinessOrganisationAssociated;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionModel;
+import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionRestrictionModel;
 import ch.sbb.atlas.user.administration.security.UserPermissionHolder;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +25,7 @@ public class BusinessOrganisationBasedUserAdministrationService extends BaseUser
         getCurrentUserSbbUid(),
         businessObject.getBusinessOrganisation());
     boolean permissionsToCreate = hasUserPermissions(applicationType,
-        permissions -> permissions.getSboids()
+        permissions -> permissions.getRestrictions().stream().map(UserAdministrationPermissionRestrictionModel::getValue).collect(Collectors.toSet())
             .contains(businessObject.getBusinessOrganisation()));
     log.info("User {} has permissions: {}", getCurrentUserSbbUid(),
         permissionsToCreate);
@@ -38,7 +40,7 @@ public class BusinessOrganisationBasedUserAdministrationService extends BaseUser
         getCurrentUserSbbUid(),
         editedBusinessObject);
     boolean permissionsToUpdate = hasUserPermissions(applicationType,
-        permissions -> permissions.getSboids()
+        permissions -> permissions.getRestrictions().stream().map(UserAdministrationPermissionRestrictionModel::getValue).collect(Collectors.toSet())
             .containsAll(UpdateAffectedVersionLocator.findUpdateAffectedCurrentVersions(
                     editedBusinessObject,
                     currentBusinessObjects).stream()
