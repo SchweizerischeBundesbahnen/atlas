@@ -22,8 +22,8 @@ CREATE TABLE permission_restriction
     id                 bigint primary key,
     restriction        VARCHAR(32) not null,
     type               VARCHAR(50) not null,
-    user_permission_id bigint
-        constraint fk_user_permission_id references user_permission
+    permission_id bigint
+        constraint fk_user_permission_id references permission
 );
 
 CREATE SEQUENCE permission_restriction_seq START WITH 1000 INCREMENT BY 1;
