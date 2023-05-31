@@ -4,11 +4,11 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 
-import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
+import ch.sbb.atlas.versioning.service.VersionableService;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +48,7 @@ public class ServicePointServiceTest {
     ServicePointNumber servicePointNumber = ServicePointNumber.of(123);
 
     // when
-    servicePointService.findServicePoint(servicePointNumber);
+    servicePointService.findAllServicePointVersions(servicePointNumber);
 
     // then
     verify(servicePointVersionRepositoryMock).findAllByNumberOrderByValidFrom(eq(servicePointNumber));
