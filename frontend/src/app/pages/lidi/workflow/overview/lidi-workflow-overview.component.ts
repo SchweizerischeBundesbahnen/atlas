@@ -9,18 +9,12 @@ import {
 } from '../../../../core/components/route-to-dialog/route-to-dialog.service';
 import { filter } from 'rxjs/operators';
 import { TableService } from '../../../../core/components/table/table.service';
-import {
-  FilterType,
-  getActiveSearch,
-  getActiveSearchDate,
-  getActiveSearchForChip,
-  TableFilterChip,
-  TableFilterDateSelect,
-  TableFilterMultiSelect,
-} from '../../../../core/components/table-filter/table-filter-config';
-import { FormControl } from '@angular/forms';
 import { TablePagination } from '../../../../core/components/table/table-pagination';
 import { addElementsToArrayWhenNotUndefined } from '../../../../core/util/arrays';
+import { TableFilterChip } from '../../../../core/components/table-filter/config/table-filter-chip';
+import { TableFilterMultiSelect } from '../../../../core/components/table-filter/config/table-filter-multiselect';
+import { TableFilterDateSelect } from '../../../../core/components/table-filter/config/table-filter-date-select';
+import { TableFilter } from '../../../../core/components/table-filter/config/table-filter';
 
 @Component({
   selector: 'app-lidi-workflow-overview',
@@ -41,32 +35,23 @@ export class LidiWorkflowOverviewComponent implements OnDestroy {
     { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
   ];
 
-  readonly tableFilterConfig: [
-    [TableFilterChip],
-    [TableFilterMultiSelect<WorkflowStatus>, TableFilterDateSelect]
-  ] = [
+  private readonly tableFilterConfigIntern = {
+    chipSearch: new TableFilterChip('col-6'),
+    multiSelectWorkflowStatus: new TableFilterMultiSelect(
+      'WORKFLOW.STATUS.',
+      'COMMON.STATUS',
+      [WorkflowStatus.Added, WorkflowStatus.Approved, WorkflowStatus.Rejected],
+      'col-3',
+      [WorkflowStatus.Added, WorkflowStatus.Approved, WorkflowStatus.Rejected]
+    ),
+    dateSelect: new TableFilterDateSelect('col-3'),
+  };
+
+  tableFilterConfig: TableFilter<unknown>[][] = [
+    [this.tableFilterConfigIntern.chipSearch],
     [
-      {
-        filterType: FilterType.CHIP_SEARCH,
-        elementWidthCssClass: 'col-6',
-        activeSearch: [],
-      },
-    ],
-    [
-      {
-        filterType: FilterType.MULTI_SELECT,
-        elementWidthCssClass: 'col-3',
-        activeSearch: [WorkflowStatus.Added, WorkflowStatus.Approved, WorkflowStatus.Rejected],
-        labelTranslationKey: 'COMMON.STATUS',
-        typeTranslationKeyPrefix: 'WORKFLOW.STATUS.',
-        selectOptions: [WorkflowStatus.Added, WorkflowStatus.Approved, WorkflowStatus.Rejected],
-      },
-      {
-        filterType: FilterType.VALID_ON_SELECT,
-        elementWidthCssClass: 'col-3',
-        activeSearch: undefined,
-        formControl: new FormControl(),
-      },
+      this.tableFilterConfigIntern.multiSelectWorkflowStatus,
+      this.tableFilterConfigIntern.dateSelect,
     ],
   ];
 
@@ -85,7 +70,7 @@ export class LidiWorkflowOverviewComponent implements OnDestroy {
   ) {
     const slnidFromQueryParam: string | undefined = this.route.snapshot.queryParams.slnid;
     if (slnidFromQueryParam) {
-      this.tableFilterConfig[0][0].activeSearch.push(slnidFromQueryParam);
+      this.tableFilterConfigIntern.chipSearch.addSearchFromString(slnidFromQueryParam);
     }
 
     this.routeSubscription = this.routeToDialogService.detailDialogEvent
@@ -102,9 +87,9 @@ export class LidiWorkflowOverviewComponent implements OnDestroy {
   getOverview(pagination: TablePagination) {
     this.lineVersionSnapshotsSubscription = this.linesService
       .getLineVersionSnapshot(
-        getActiveSearchForChip(this.tableFilterConfig[0][0]),
-        getActiveSearchDate(this.tableFilterConfig[1][1]),
-        getActiveSearch(this.tableFilterConfig[1][0]),
+        this.tableFilterConfigIntern.chipSearch.getActiveSearch(),
+        this.tableFilterConfigIntern.dateSelect.getActiveSearch(),
+        this.tableFilterConfigIntern.multiSelectWorkflowStatus.getActiveSearch(),
         pagination.page,
         pagination.size,
         addElementsToArrayWhenNotUndefined(pagination.sort, 'number,asc')

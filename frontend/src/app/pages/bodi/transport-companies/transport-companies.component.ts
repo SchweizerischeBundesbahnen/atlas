@@ -8,16 +8,12 @@ import {
   DetailDialogEvents,
   RouteToDialogService,
 } from '../../../core/components/route-to-dialog/route-to-dialog.service';
-import {
-  FilterType,
-  getActiveSearch,
-  getActiveSearchForChip,
-  TableFilterChip,
-  TableFilterMultiSelect,
-} from '../../../core/components/table-filter/table-filter-config';
 import { TablePagination } from '../../../core/components/table/table-pagination';
 import { TableService } from '../../../core/components/table/table.service';
 import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
+import { TableFilterChip } from '../../../core/components/table-filter/config/table-filter-chip';
+import { TableFilterMultiSelect } from '../../../core/components/table-filter/config/table-filter-multiselect';
+import { TableFilter } from '../../../core/components/table-filter/config/table-filter';
 
 @Component({
   selector: 'app-bodi-transport-companies',
@@ -44,32 +40,25 @@ export class TransportCompaniesComponent implements OnDestroy {
     },
   ];
 
-  readonly tableFilterConfig: [
-    [TableFilterChip],
-    [TableFilterMultiSelect<TransportCompanyStatus>]
-  ] = [
-    [
-      {
-        filterType: FilterType.CHIP_SEARCH,
-        elementWidthCssClass: 'col-6',
-        activeSearch: [],
-      },
-    ],
-    [
-      {
-        filterType: FilterType.MULTI_SELECT,
-        elementWidthCssClass: 'col-3',
-        activeSearch: [
-          TransportCompanyStatus.Current,
-          TransportCompanyStatus.OperatingPart,
-          TransportCompanyStatus.Operator,
-          TransportCompanyStatus.Supervision,
-        ],
-        labelTranslationKey: 'BODI.TRANSPORT_COMPANIES.STATUS',
-        typeTranslationKeyPrefix: 'BODI.TRANSPORT_COMPANIES.TRANSPORT_COMPANY_STATUS.',
-        selectOptions: Object.values(TransportCompanyStatus),
-      },
-    ],
+  private readonly tableFilterConfigIntern = {
+    chipSearch: new TableFilterChip('col-6'),
+    multiSelectTransportCompanyStatus: new TableFilterMultiSelect(
+      'BODI.TRANSPORT_COMPANIES.TRANSPORT_COMPANY_STATUS.',
+      'BODI.TRANSPORT_COMPANIES.STATUS',
+      Object.values(TransportCompanyStatus),
+      'col-3',
+      [
+        TransportCompanyStatus.Current,
+        TransportCompanyStatus.OperatingPart,
+        TransportCompanyStatus.Operator,
+        TransportCompanyStatus.Supervision,
+      ]
+    ),
+  };
+
+  readonly tableFilterConfig: TableFilter<unknown>[][] = [
+    [this.tableFilterConfigIntern.chipSearch],
+    [this.tableFilterConfigIntern.multiSelectTransportCompanyStatus],
   ];
 
   transportCompanies: TransportCompany[] = [];
@@ -99,8 +88,8 @@ export class TransportCompaniesComponent implements OnDestroy {
   getOverview(pagination: TablePagination) {
     this.transportCompaniesSubscription = this.transportCompaniesService
       .getTransportCompanies(
-        getActiveSearchForChip(this.tableFilterConfig[0][0]),
-        getActiveSearch(this.tableFilterConfig[1][0]),
+        this.tableFilterConfigIntern.chipSearch.getActiveSearch(),
+        this.tableFilterConfigIntern.multiSelectTransportCompanyStatus.getActiveSearch(),
         pagination.page,
         pagination.size,
         addElementsToArrayWhenNotUndefined(pagination.sort, 'number,asc')
