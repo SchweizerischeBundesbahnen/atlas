@@ -1,6 +1,6 @@
 package ch.sbb.importservice.service;
 
-import static ch.sbb.importservice.service.CsvService.DINSTELLE_FILE_PREFIX;
+import static ch.sbb.importservice.service.CsvService.DIENSTELLEN_FILE_PREFIX;
 import static ch.sbb.importservice.service.CsvService.LADESTELLEN_FILE_PREFIX;
 import static ch.sbb.importservice.service.JobHelperService.MIN_LOCAL_DATE;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_SERVICE_POINT_CSV_JOB_NAME;
@@ -40,7 +40,7 @@ public class CsvServiceTest {
     //given
     LocalDate date = LocalDate.of(2022, 2, 21);
     File csvFile = new File(this.getClass().getClassLoader().getResource("DIENSTSTELLEN_V3_IMPORT.csv").getFile());
-    when(fileHelperService.downloadImportFileFromS3(DINSTELLE_FILE_PREFIX)).thenReturn(csvFile);
+    when(fileHelperService.downloadImportFileFromS3(DIENSTELLEN_FILE_PREFIX)).thenReturn(csvFile);
     doCallRealMethod().when(jobHelperService).isDateMatchedBetweenTodayAndMatchingDate(date, date);
     when(jobHelperService.getDateForImportFileToDownload(IMPORT_SERVICE_POINT_CSV_JOB_NAME)).thenReturn(date);
     //when

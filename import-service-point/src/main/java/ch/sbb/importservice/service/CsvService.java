@@ -9,6 +9,7 @@ import ch.sbb.atlas.imports.servicepoint.BaseDidokCsvModel;
 import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
+import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointElementCsvModel;
 import ch.sbb.importservice.exception.CsvException;
 import com.fasterxml.jackson.databind.MappingIterator;
 import java.io.BufferedReader;
@@ -34,8 +35,9 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class CsvService {
 
-  public static final String DINSTELLE_FILE_PREFIX = "DIDOK3_DIENSTSTELLEN_ALL_V_3_";
+  public static final String DIENSTELLEN_FILE_PREFIX = "DIDOK3_DIENSTSTELLEN_ALL_V_3_";
   public static final String LADESTELLEN_FILE_PREFIX = "DIDOK3_LADESTELLEN_";
+  public static final String VERKEHRSPUNKTELEMENTE_FILE_PREFIX = "DIDOK3_VERKEHRSPUNKTELEMENTE_ALL_V_1_";
   private static final String CSV_DATE_TIME_FORMATTING = "yyyy-MM-dd HH:mm:ss";
   private static final String HASHTAG = "#";
   private static final String CSV_DELIMITER = ";";
@@ -45,7 +47,7 @@ public class CsvService {
 
   public List<ServicePointCsvModelContainer> getActualServicePointCsvModelsFromS3() {
     log.info("Downloading file from Amazon S3 Bucket: {}", AmazonBucket.EXPORT);
-    File file = fileHelperService.downloadImportFileFromS3(DINSTELLE_FILE_PREFIX);
+    File file = fileHelperService.downloadImportFileFromS3(DIENSTELLEN_FILE_PREFIX);
     LocalDate matchingDate = jobHelperService.getDateForImportFileToDownload(IMPORT_SERVICE_POINT_CSV_JOB_NAME);
     log.info("CSV File to import: {}", file.getName());
     List<ServicePointCsvModel> servicePointCsvModels = getCsvModelsToUpdate(file, matchingDate, ServicePointCsvModel.class);
@@ -94,6 +96,22 @@ public class CsvService {
         LoadingPointCsvModel.class);
     log.info("Found {} Loading Points to send to ServicePointDirectory", loadingPointCsvModels.size());
     return loadingPointCsvModels;
+  }
+
+  // TODO: use dynamic date and not fixed min_local_date
+  public List<TrafficPointElementCsvModel> getActualTrafficPointCsvModels(File file) {
+    List<TrafficPointElementCsvModel> trafficPointCsvModels = getCsvModelsToUpdate(file, MIN_LOCAL_DATE,
+        TrafficPointElementCsvModel.class);
+    log.info("Found {} Traffic Points to send to ServicePointDirectory", trafficPointCsvModels.size());
+    return trafficPointCsvModels;
+  }
+
+  public List<TrafficPointElementCsvModel> getActualTrafficPointCsvModelsFromS3() {
+    File importFile = fileHelperService.downloadImportFileFromS3(VERKEHRSPUNKTELEMENTE_FILE_PREFIX);
+    List<TrafficPointElementCsvModel> trafficPointElementCsvModels = getCsvModelsToUpdate(importFile, MIN_LOCAL_DATE,
+        TrafficPointElementCsvModel.class);
+    log.info("Found {} Traffic Points to send to ServicePointDirectory", trafficPointElementCsvModels.size());
+    return trafficPointElementCsvModels;
   }
 
   public <T> List<T> getCsvModelsToUpdate(File importFile, LocalDate matchingDate, Class<T> type) {
