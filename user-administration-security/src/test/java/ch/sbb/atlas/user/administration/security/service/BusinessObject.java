@@ -1,4 +1,4 @@
-package ch.sbb.atlas.user.administration.security;
+package ch.sbb.atlas.user.administration.security.service;
 
 import ch.sbb.atlas.api.model.BusinessOrganisationAssociated;
 import java.time.LocalDate;
