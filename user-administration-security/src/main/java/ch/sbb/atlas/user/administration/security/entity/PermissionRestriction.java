@@ -45,6 +45,6 @@ public class PermissionRestriction {
   @ToString.Exclude
   @EqualsAndHashCode.Exclude
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "client_credential_permission_id")
-  private Permission clientCredentialPermission;
+  @JoinColumn(name = "permission_id")
+  private Permission permission;
 }
