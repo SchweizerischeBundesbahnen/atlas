@@ -58,15 +58,14 @@ public class ServicePointVersionMapper {
   }
 
   public static ServicePointVersion toEntity(ServicePointVersionModel servicePointVersionModel) {
-    ServicePointNumber servicePointNumber = ServicePointNumber.of(servicePointVersionModel.getEightDigitsNumber());
-    servicePointVersionModel.getServicePointGeolocation().setCountry(servicePointNumber.getCountry());
+    ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(servicePointVersionModel.getCountryCodeAndServicePointId());
+    ServicePointNumber operatingPointKilometerMasterNumber = ServicePointNumber.ofNumberWithoutCheckDigit(servicePointVersionModel.getOperatingPointKilometerMasterNumber());
       return ServicePointVersion.builder()
           .id(servicePointVersionModel.getId())
           .number(servicePointNumber)
           .sloid(servicePointVersionModel.getSloid())
           .numberShort(servicePointNumber.getNumberShort())
           .country(servicePointNumber.getCountry())
-//          .country(servicePointVersionModel.getServicePointGeolocation().getCountry())
           .designationLong(servicePointVersionModel.getDesignationLong())
           .designationOfficial(servicePointVersionModel.getDesignationOfficial())
           .abbreviation(servicePointVersionModel.getAbbreviation())
@@ -76,7 +75,7 @@ public class ServicePointVersionMapper {
           .operatingPointType(servicePointVersionModel.getOperatingPointType())
           .stopPointType(servicePointVersionModel.getStopPointType())
           .status(servicePointVersionModel.getStatus())
-          .operatingPointKilometerMaster(servicePointVersionModel.getOperatingPointKilometerMaster())
+          .operatingPointKilometerMaster(operatingPointKilometerMasterNumber)
           .operatingPointRouteNetwork(servicePointVersionModel.isOperatingPointRouteNetwork())
           .comment(servicePointVersionModel.getFotComment())
           .validFrom(servicePointVersionModel.getValidFrom())
