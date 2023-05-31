@@ -26,10 +26,10 @@ export class TransportCompanySelectComponent implements OnInit, OnDestroy, OnCha
   @Input() disabled!: boolean;
 
   @Output() selectedTransportCompanyChanged = new EventEmitter();
-  @Output() ttfnSelectionChanged = new EventEmitter<TransportCompany>();
+  @Output() tuSelectionChanged = new EventEmitter<TransportCompany>();
 
   transportCompanies: Observable<TransportCompany[]> = of([]);
-  alreadySelectdTransportCompany: TransportCompany[] = [];
+  alreadySelectedTransportCompany: TransportCompany[] = [];
   private formSubscription?: Subscription;
 
   constructor(private transportCompaniesService: TransportCompaniesService) {}
@@ -49,11 +49,9 @@ export class TransportCompanySelectComponent implements OnInit, OnDestroy, OnCha
 
   init() {
     const tuControl = this.formGroup.get(this.controlName)!;
-    this.alreadySelectdTransportCompany = Array.isArray(tuControl.value)
-      ? tuControl.value
-      : [tuControl.value];
+    this.alreadySelectedTransportCompany = tuControl.value;
     this.formSubscription = tuControl.valueChanges.subscribe((change) => {
-      this.alreadySelectdTransportCompany = change;
+      this.alreadySelectedTransportCompany = change;
       this.selectedTransportCompanyChanged.emit(change);
       this.searchTransportCompany(change);
     });
@@ -69,7 +67,7 @@ export class TransportCompanySelectComponent implements OnInit, OnDestroy, OnCha
           map((value) => {
             const transportCompaniesNotDuplicated: TransportCompany[] = [];
             value.objects?.forEach((val) => {
-              if (!this.alreadySelectdTransportCompany.map((tc) => tc.id).includes(val.id)) {
+              if (!this.alreadySelectedTransportCompany.map((tc) => tc.id).includes(val.id)) {
                 transportCompaniesNotDuplicated.push(val);
               }
             });
