@@ -40,7 +40,7 @@ public class ServicePointController implements ServicePointApiV1 {
         .build();
     Page<ServicePointVersion> servicePointVersions = servicePointService.findAll(searchRestrictions);
     return Container.<ServicePointVersionModel>builder()
-        .objects(servicePointVersions.stream().map(ServicePointVersionMapper::fromEntity).toList())
+        .objects(servicePointVersions.stream().map(ServicePointVersionMapper::toModel).toList())
         .totalCount(servicePointVersions.getTotalElements())
         .build();
   }
@@ -50,7 +50,7 @@ public class ServicePointController implements ServicePointApiV1 {
     ServicePointNumber number = ServicePointNumber.of(servicePointNumber);
     List<ServicePointVersionModel> servicePointVersions = servicePointService.findServicePoint(
             number).stream()
-        .map(ServicePointVersionMapper::fromEntity).toList();
+        .map(ServicePointVersionMapper::toModel).toList();
     if (servicePointVersions.isEmpty()) {
       throw new ServicePointNumberNotFoundException(number);
     }
@@ -59,13 +59,18 @@ public class ServicePointController implements ServicePointApiV1 {
 
   @Override
   public ServicePointVersionModel getServicePointVersion(Long id) {
-    return servicePointService.findById(id).map(ServicePointVersionMapper::fromEntity)
+    return servicePointService.findById(id).map(ServicePointVersionMapper::toModel)
         .orElseThrow(() -> new IdNotFoundException(id));
   }
 
   @Override
   public List<ServicePointItemImportResult> importServicePoints(ServicePointImportReqModel servicePointImportReqModel) {
     return servicePointImportService.importServicePoints(servicePointImportReqModel.getServicePointCsvModelContainers());
+  }
+
+  @Override
+  public ServicePointVersionModel createServicePoint(ServicePointVersionModel servicePointVersionModel) {
+    return ServicePointVersionMapper.toModel(servicePointService.save(ServicePointVersionMapper.toEntity(servicePointVersionModel)));
   }
 
 }
