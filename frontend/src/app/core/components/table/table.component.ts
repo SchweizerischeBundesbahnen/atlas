@@ -2,13 +2,13 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Sort, SortDirection } from '@angular/material/sort';
 import { PageEvent } from '@angular/material/paginator';
 import { TableColumn } from './table-column';
-import { TableFilterConfig } from '../table-filter/table-filter-config';
 import { TableService } from './table.service';
 import { TablePagination } from './table-pagination';
 import { ColumnDropDownEvent } from './column-drop-down-event';
 import { isEmpty } from '../../util/strings';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { TableFilter } from '../table-filter/config/table-filter';
 
 @Component({
   selector: 'app-table [tableData][tableColumns][editElementEvent]',
@@ -17,7 +17,7 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 })
 export class TableComponent<DATATYPE> implements OnInit {
   @Input() checkBoxSelection = new SelectionModel<DATATYPE>(true, []);
-  @Input() tableFilterConfig: TableFilterConfig<unknown>[][] = [];
+  @Input() tableFilterConfig: TableFilter<unknown>[][] = [];
   @Input() tableColumns!: TableColumn<DATATYPE>[];
   @Input() canEdit = true;
   @Input() totalCount!: number;
