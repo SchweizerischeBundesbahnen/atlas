@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
 
-@Entity(name = "user_permission")
+@Entity(name = "permission")
 @Data
 @EqualsAndHashCode
 @SuperBuilder
@@ -52,6 +52,6 @@ public class Permission {
   private ApplicationType application;
 
   @Builder.Default
-  @OneToMany(mappedBy = "userPermission", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy = "permission", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
   private Set<PermissionRestriction> permissionRestrictions = new HashSet<>();
 }
