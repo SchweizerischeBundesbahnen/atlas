@@ -45,8 +45,8 @@ public class UserAdministrationLoader {
         .identifier(userId)
         .role(permissionToUpdate.getRole())
         .application(permissionToUpdate.getApplication())
-        .permissionRestrictions(mapPermissionRestrictionsToEntity(permissionToUpdate))
         .build();
+    additionalPermission.setPermissionRestrictions(mapPermissionRestrictionsToEntity(permissionToUpdate, additionalPermission));
     permissionRepository.save(additionalPermission);
   }
 
@@ -55,15 +55,16 @@ public class UserAdministrationLoader {
     updateableUserPermission.setRole(permissionToUpdate.getRole());
 
     updateableUserPermission.getPermissionRestrictions().clear();
-    updateableUserPermission.getPermissionRestrictions().addAll(mapPermissionRestrictionsToEntity(permissionToUpdate));
+    updateableUserPermission.getPermissionRestrictions().addAll(mapPermissionRestrictionsToEntity(permissionToUpdate, updateableUserPermission));
   }
 
   private static Set<PermissionRestriction> mapPermissionRestrictionsToEntity(
-      UserAdministrationPermissionModel permissionToUpdate) {
+      UserAdministrationPermissionModel permissionToUpdate, Permission permission) {
     return permissionToUpdate.getRestrictions().stream().map(
             restriction -> PermissionRestriction.builder()
                 .restriction(restriction.getValue())
                 .type(restriction.getRestrictionType())
+                .permission(permission)
                 .build())
         .collect(Collectors.toSet());
   }
