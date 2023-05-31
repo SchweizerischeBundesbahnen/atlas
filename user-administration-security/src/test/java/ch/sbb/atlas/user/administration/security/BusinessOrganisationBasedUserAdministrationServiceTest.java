@@ -4,6 +4,7 @@ import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationModel;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionModel;
+import ch.sbb.atlas.user.administration.security.service.BusinessOrganisationBasedUserAdministrationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
