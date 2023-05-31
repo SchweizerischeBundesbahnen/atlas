@@ -16,6 +16,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
@@ -41,7 +43,11 @@ public class ServicePointVersionModel extends BaseVersionModel implements DatesV
   @Schema(description = "Technical identifier", accessMode = AccessMode.READ_ONLY, example = "1")
   private Long id;
 
-  private Integer eightDigitsNumber;
+  @Min(value = 1000000, message = "Minimum value for number.")
+  @Max(value = 9999999, message = "Maximum value for number.")
+  @Schema(description = "Seven digits number. First two digits represent Country Code. "
+      + "Last 5 digits represent service point ID.", example = "8034505", maxLength = 7)
+  private Integer countryCodeAndServicePointId;
 
   @NotNull
   @Valid
@@ -120,6 +126,12 @@ public class ServicePointVersionModel extends BaseVersionModel implements DatesV
 
   @Schema(description = "ServicePoint is OperatingPointRouteNetwork", example = "false")
   private boolean operatingPointRouteNetwork;
+
+  @Min(value = 1000000, message = "Minimum value for number.")
+  @Max(value = 9999999, message = "Maximum value for number.")
+  @Schema(description = "Reference to a operatingPointRouteNetwork. OperatingPointKilometer are always related to a "
+      + "operatingPointRouteNetwork")
+  private Integer operatingPointKilometerMasterNumber;
 
   @Valid
   @Schema(description = "Reference to a operatingPointRouteNetwork. OperatingPointKilometer are always related to a "
