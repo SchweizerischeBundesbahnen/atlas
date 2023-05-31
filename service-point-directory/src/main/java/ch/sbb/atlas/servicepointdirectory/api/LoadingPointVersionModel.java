@@ -2,16 +2,17 @@ package ch.sbb.atlas.servicepointdirectory.api;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.model.BaseVersionModel;
-import ch.sbb.atlas.validation.DatesValidator;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
+import ch.sbb.atlas.servicepointdirectory.mapper.GeolocationMapper;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
+import ch.sbb.atlas.validation.DatesValidator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
-import java.time.LocalDate;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -51,7 +52,7 @@ public class LoadingPointVersionModel extends BaseVersionModel implements DatesV
   @Valid
   private ServicePointNumber servicePointNumber;
 
-  private GeolocationModel loadingPointGeolocation;
+  private GeolocationBaseModel loadingPointGeolocation;
 
   @JsonInclude
   @Schema(description = "LoadingPoint has a Geolocation")
@@ -75,7 +76,7 @@ public class LoadingPointVersionModel extends BaseVersionModel implements DatesV
         .servicePointNumber(loadingPointVersion.getServicePointNumber())
         .validFrom(loadingPointVersion.getValidFrom())
         .validTo(loadingPointVersion.getValidTo())
-        .loadingPointGeolocation(GeolocationModel.fromEntity(loadingPointVersion.getLoadingPointGeolocation()))
+        .loadingPointGeolocation(GeolocationMapper.toModel(loadingPointVersion.getLoadingPointGeolocation()))
         .creationDate(loadingPointVersion.getCreationDate())
         .creator(loadingPointVersion.getCreator())
         .editionDate(loadingPointVersion.getEditionDate())
