@@ -19,6 +19,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -45,5 +46,12 @@ public interface ServicePointApiV1 {
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
   ServicePointVersionModel createServicePoint(@RequestBody ServicePointVersionModel servicePointVersionModel);
+
+  @ResponseStatus(HttpStatus.OK)
+  @PutMapping(path = "{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+  List<ServicePointVersionModel> updateServicePoint(
+      @PathVariable Long id,
+      @RequestBody ServicePointVersionModel servicePointVersionModel
+  );
 
 }

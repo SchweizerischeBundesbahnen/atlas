@@ -48,7 +48,7 @@ public class ServicePointController implements ServicePointApiV1 {
   @Override
   public List<ServicePointVersionModel> getServicePoint(Integer servicePointNumber) {
     ServicePointNumber number = ServicePointNumber.of(servicePointNumber);
-    List<ServicePointVersionModel> servicePointVersions = servicePointService.findServicePoint(
+    List<ServicePointVersionModel> servicePointVersions = servicePointService.findAllServicePointVersions(
             number).stream()
         .map(ServicePointVersionMapper::toModel).toList();
     if (servicePointVersions.isEmpty()) {
@@ -71,6 +71,18 @@ public class ServicePointController implements ServicePointApiV1 {
   @Override
   public ServicePointVersionModel createServicePoint(ServicePointVersionModel servicePointVersionModel) {
     return ServicePointVersionMapper.toModel(servicePointService.save(ServicePointVersionMapper.toEntity(servicePointVersionModel)));
+  }
+
+  @Override
+  public List<ServicePointVersionModel> updateServicePoint(Long id, ServicePointVersionModel servicePointVersionModel) {
+    ServicePointVersion servicePointVersionToUpdate = servicePointService.findById(id)
+            .orElseThrow(() -> new IdNotFoundException(id));
+    servicePointVersionModel.setId(id);
+    servicePointService.updateServicePointVersion(ServicePointVersionMapper.toEntity(servicePointVersionModel));
+    return servicePointService.findAllServicePointVersions(servicePointVersionToUpdate.getNumber())
+        .stream()
+        .map(ServicePointVersionMapper::toModel)
+        .toList();
   }
 
 }
