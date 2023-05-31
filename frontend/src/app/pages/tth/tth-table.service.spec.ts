@@ -12,30 +12,36 @@ describe('TthTableService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should enableFilters and disableFilters', () => {
+  it('should enableFilters', () => {
+    service.overviewDetailFilterConfigInternal.chipSearch.disabled = true;
+    service.overviewDetailFilterConfigInternal.multiSelectStatementStatus.disabled = true;
+    service.overviewDetailFilterConfigInternal.searchSelectTU.disabled = true;
+    service.overviewDetailFilterConfigInternal.searchSelectTTFN.disabled = true;
+
     service.enableFilters();
+
     expect(service.overviewDetailFilterConfigInternal.chipSearch.disabled).toBeFalse();
     expect(
       service.overviewDetailFilterConfigInternal.multiSelectStatementStatus.disabled
     ).toBeFalse();
     expect(service.overviewDetailFilterConfigInternal.searchSelectTU.disabled).toBeFalse();
     expect(service.overviewDetailFilterConfigInternal.searchSelectTTFN.disabled).toBeFalse();
+  });
+
+  it('should disableFilters', () => {
+    service.overviewDetailFilterConfigInternal.chipSearch.disabled = false;
+    service.overviewDetailFilterConfigInternal.multiSelectStatementStatus.disabled = false;
+    service.overviewDetailFilterConfigInternal.searchSelectTU.disabled = false;
+    service.overviewDetailFilterConfigInternal.searchSelectTTFN.disabled = false;
 
     service.disableFilters();
+
     expect(service.overviewDetailFilterConfigInternal.chipSearch.disabled).toBeTrue();
     expect(
       service.overviewDetailFilterConfigInternal.multiSelectStatementStatus.disabled
     ).toBeTrue();
     expect(service.overviewDetailFilterConfigInternal.searchSelectTU.disabled).toBeTrue();
     expect(service.overviewDetailFilterConfigInternal.searchSelectTTFN.disabled).toBeTrue();
-
-    service.enableFilters();
-    expect(service.overviewDetailFilterConfigInternal.chipSearch.disabled).toBeFalse();
-    expect(
-      service.overviewDetailFilterConfigInternal.multiSelectStatementStatus.disabled
-    ).toBeFalse();
-    expect(service.overviewDetailFilterConfigInternal.searchSelectTU.disabled).toBeFalse();
-    expect(service.overviewDetailFilterConfigInternal.searchSelectTTFN.disabled).toBeFalse();
   });
 
   it('should reset tableSettings on set activeTabPage', () => {
