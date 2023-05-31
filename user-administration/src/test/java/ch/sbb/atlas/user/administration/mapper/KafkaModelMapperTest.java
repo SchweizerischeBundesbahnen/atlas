@@ -7,9 +7,11 @@ import ch.sbb.atlas.api.user.administration.UserModel;
 import ch.sbb.atlas.api.user.administration.PermissionModel;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
+import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationModel;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionModel;
 import ch.sbb.atlas.api.user.administration.enumeration.UserAccountStatus;
+import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionRestrictionModel;
 import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
@@ -26,7 +28,7 @@ class KafkaModelMapperTest {
     // When
     UserAdministrationModel userAdministrationModel = KafkaModelMapper.toKafkaModel(userModel);
     // Then
-    UserAdministrationModel expected = UserAdministrationModel.builder().sbbUserId("e123456")
+    UserAdministrationModel expected = UserAdministrationModel.builder().userId("e123456")
         .permissions(Set.of(UserAdministrationPermissionModel.builder().application(ApplicationType.TTFN)
             .role(ApplicationRole.SUPERVISOR).build())).build();
     assertThat(userAdministrationModel).isEqualTo(expected);
@@ -42,9 +44,11 @@ class KafkaModelMapperTest {
     // When
     UserAdministrationModel userAdministrationModel = KafkaModelMapper.toKafkaModel(userModel);
     // Then
-    UserAdministrationModel expected = UserAdministrationModel.builder().sbbUserId("e123456")
+    UserAdministrationModel expected = UserAdministrationModel.builder().userId("e123456")
         .permissions(Set.of(UserAdministrationPermissionModel.builder().application(ApplicationType.TTFN)
-            .role(ApplicationRole.WRITER).sboids(Set.of("beste sboid")).build())).build();
+            .role(ApplicationRole.WRITER).restrictions(Set.of(UserAdministrationPermissionRestrictionModel.builder().value(
+                "beste sboid").restrictionType(PermissionRestrictionType.BUSINESS_ORGANISATION).build()
+              )).build())).build();
     assertThat(userAdministrationModel).isEqualTo(expected);
   }
 }
