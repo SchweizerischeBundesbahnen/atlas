@@ -89,6 +89,10 @@ describe('Timetable Hearing', { testIsolation: false }, () => {
   });
 
   it('Step-9: Sammelaktion -> Status ändern -> angenommen', () => {
+    cy.get(DataCy.TTH_TABLE + ' table tbody tr td').should(
+      'not.contain',
+      'Es wurden keine Daten gefunden.'
+    );
     CommonUtils.selectFirstItemFromDropDown(DataCy.TTH_COLLECT_ACTION_TYPE);
     cy.get(DataCy.TTH_TABLE_CHECKBOX_ALL).click();
     CommonUtils.selectItemFromDropDown(DataCy.COLLECT_STATUS_CHANGE_ACTION_TYPE, 'angenommen');
