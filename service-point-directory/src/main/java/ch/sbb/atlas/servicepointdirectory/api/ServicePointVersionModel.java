@@ -4,6 +4,7 @@ import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.model.BaseVersionModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Category;
+import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
 import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointTechnicalTimetableType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointTrafficPointType;
@@ -16,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -23,6 +25,7 @@ import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -206,6 +209,40 @@ public class ServicePointVersionModel extends BaseVersionModel implements DatesV
   @Schema(description = "ServicePoint is TrafficPoint")
   public boolean isTrafficPoint() {
     return isStopPoint() || isFreightServicePoint() || isFareStop();
+  }
+
+  @JsonInclude
+  @Schema(description = "ServicePoint is BorderPoint", example = "false")
+  public boolean isBorderPoint() {
+    return operatingPointTechnicalTimetableType == OperatingPointTechnicalTimetableType.COUNTRY_BORDER;
+  }
+
+  @JsonInclude
+  @Schema(description = "ServicePoint is OperatingPointKilometer")
+  public boolean isOperatingPointKilometer() {
+    return operatingPointKilometerMaster != null;
+  }
+
+  @AssertTrue(message = "StopPointType only allowed for StopPoint")
+  boolean isValidStopPointWithType() {
+    return isStopPoint() || stopPointType == null;
+  }
+
+  @AssertTrue(message = "FreightServicePoint in CH needs sortCodeOfDestinationStation")
+  public boolean isValidFreightServicePoint() {
+    return !(getNumber().getCountry() == Country.SWITZERLAND && freightServicePoint && !getValidFrom().isBefore(LocalDate.now()))
+        || StringUtils.isNotBlank(sortCodeOfDestinationStation);
+  }
+
+  @AssertTrue(message = "At most one of OperatingPointWithoutTimetableType, OperatingPointTechnicalTimetableType, "
+      + "OperatingPointTrafficPointType may be set")
+  public boolean isValidType() {
+    long mutualTypes = Stream.of(
+            getOperatingPointTechnicalTimetableType() != null,
+            getOperatingPointTrafficPointType() != null)
+        .filter(i -> i)
+        .count();
+    return mutualTypes <= 1;
   }
 
   public List<MeanOfTransport> getMeansOfTransport() {
