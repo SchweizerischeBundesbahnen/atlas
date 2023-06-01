@@ -44,12 +44,14 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Stream;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -57,6 +59,7 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
+import org.apache.commons.lang3.StringUtils;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -231,6 +234,33 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
   @ToString.Include
   public boolean isOperatingPointKilometer() {
     return operatingPointKilometerMaster != null;
+  }
+
+  @AssertTrue(message = "StopPointType only allowed for StopPoint")
+  boolean isValidStopPointWithType() {
+    return isStopPoint() || stopPointType == null;
+  }
+
+  @AssertTrue(message = "FreightServicePoint in CH needs sortCodeOfDestinationStation")
+  public boolean isValidFreightServicePoint() {
+    return !(country == Country.SWITZERLAND && freightServicePoint && !getValidFrom().isBefore(LocalDate.now()))
+        || StringUtils.isNotBlank(sortCodeOfDestinationStation);
+  }
+
+  @AssertTrue(message = "Country needs to be the same as in ServicePointNumber")
+  public boolean isValidCountry() {
+    return getCountry() == getNumber().getCountry();
+  }
+
+  @AssertTrue(message = "At most one of OperatingPointTechnicalTimetableType, "
+      + "OperatingPointTrafficPointType may be set")
+  public boolean isValidType() {
+    long mutualTypes = Stream.of(
+            getOperatingPointTechnicalTimetableType() != null,
+            getOperatingPointTrafficPointType() != null)
+        .filter(i -> i)
+        .count();
+    return mutualTypes <= 1;
   }
 
   public Set<MeanOfTransport> getMeansOfTransport() {
