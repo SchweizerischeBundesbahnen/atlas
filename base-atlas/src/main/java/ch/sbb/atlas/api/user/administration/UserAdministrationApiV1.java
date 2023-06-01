@@ -57,4 +57,8 @@ public interface UserAdministrationApiV1 {
   @Operation(description = "Update the user permissions of a user")
   UserModel updateUserPermissions(@RequestBody @Valid UserPermissionCreateModel editedPermissions);
 
+  @PostMapping(BASE_PATH + "/sync-permissions")
+  @Operation(description = "Write all user permission to kafka again for redistribution")
+  void syncPermissions();
+
 }
