@@ -35,6 +35,10 @@ public class UserAdministrationService {
     return userPermissionRepository.getFilteredUsers(pageable, applicationTypes, permissionRestrictions, type);
   }
 
+  public List<String> getAllUserIds() {
+    return userPermissionRepository.findAll().stream().map(UserPermission::getSbbUserId).distinct().toList();
+  }
+
   public List<UserPermission> getUserPermissions(String sbbUserId) {
     return userPermissionRepository.findBySbbUserIdIgnoreCase(sbbUserId);
   }
