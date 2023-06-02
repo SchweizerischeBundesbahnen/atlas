@@ -39,6 +39,17 @@
       <groupId>org.springframework.security</groupId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>ch.sbb.atlas</groupId>
+      <artifactId>base-atlas</artifactId>
+      <version>1.267.0</version>
+      <type>test-jar</type>
+    </dependency>
+    <dependency>
+      <artifactId>h2</artifactId>
+      <groupId>com.h2database</groupId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
