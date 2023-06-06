@@ -6,6 +6,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.context.ActiveProfiles;
 
 @Target({ElementType.TYPE})
@@ -14,6 +15,7 @@ import org.springframework.test.context.ActiveProfiles;
 @SpringBootTest
 @WithMockJwtAuthentication
 @ActiveProfiles("integration-test")
+@EmbeddedKafka
 public @interface IntegrationTest {
 
 }
