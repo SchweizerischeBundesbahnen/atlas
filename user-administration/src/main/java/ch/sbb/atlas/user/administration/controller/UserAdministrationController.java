@@ -6,12 +6,13 @@ import ch.sbb.atlas.api.user.administration.UserAdministrationApiV1;
 import ch.sbb.atlas.api.user.administration.UserDisplayNameModel;
 import ch.sbb.atlas.api.user.administration.UserModel;
 import ch.sbb.atlas.api.user.administration.UserPermissionCreateModel;
-import ch.sbb.atlas.api.user.administration.enumeration.PermissionRestrictionType;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
+import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
 import ch.sbb.atlas.service.UserService;
 import ch.sbb.atlas.user.administration.entity.UserPermission;
 import ch.sbb.atlas.user.administration.exception.LimitedPageSizeRequestException;
 import ch.sbb.atlas.user.administration.exception.RestrictionWithoutTypeException;
+import ch.sbb.atlas.user.administration.mapper.ClientCredentialMapper;
 import ch.sbb.atlas.user.administration.mapper.KafkaModelMapper;
 import ch.sbb.atlas.user.administration.mapper.UserPermissionMapper;
 import ch.sbb.atlas.user.administration.service.ClientCredentialAdministrationService;
@@ -25,10 +26,12 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class UserAdministrationController implements UserAdministrationApiV1 {
@@ -134,6 +137,21 @@ public class UserAdministrationController implements UserAdministrationApiV1 {
     UserModel userModel = getUser(editedPermissions.getSbbUserId());
     userPermissionDistributor.pushUserPermissionToKafka(KafkaModelMapper.toKafkaModel(userModel));
     return userModel;
+  }
+
+  @Override
+  public void syncPermissions() {
+    log.info("Starting to sync each permission to kafka topic");
+    ClientCredentialMapper.toModel(clientCredentialAdministrationService.getClientCredentialPermissions(Pageable.unpaged())
+            .getContent())
+        .forEach(clientCredentialPermission -> userPermissionDistributor.pushUserPermissionToKafka(
+            KafkaModelMapper.toKafkaModel(clientCredentialPermission)));
+    log.info("ClientCredentials were synched to kafka");
+
+    List<String> allUserIds = userAdministrationService.getAllUserIds();
+    allUserIds.forEach(user -> userPermissionDistributor.pushUserPermissionToKafka(KafkaModelMapper.toKafkaModel(getUser(user))));
+    log.info("Users were synched to kafka");
+    log.info("Sync completed. Goodbye.");
   }
 
 }
