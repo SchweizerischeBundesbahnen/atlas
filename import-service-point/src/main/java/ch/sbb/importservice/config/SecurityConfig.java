@@ -3,8 +3,8 @@ package ch.sbb.importservice.config;
 import static org.springframework.security.config.Customizer.withDefaults;
 import static org.springframework.security.oauth2.jwt.JwtClaimNames.AUD;
 
-import ch.sbb.atlas.configuration.handler.AtlasAccessDeniedHandler;
 import ch.sbb.atlas.configuration.Role;
+import ch.sbb.atlas.configuration.handler.AtlasAccessDeniedHandler;
 import ch.sbb.atlas.user.administration.security.UserAdministrationConfig;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,9 +48,7 @@ public class SecurityConfig {
         .cors(withDefaults())
 
         // for details about stateless authentication see e.g. https://golb.hplar.ch/2019/05/stateless.html
-        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-
-        .and()
+        .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
         // @see <a href="https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#jc-authorize-requests">Authorize
         // Requests</a>
@@ -71,16 +69,12 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.DELETE, "/**").hasRole(Role.ATLAS_ADMIN)
                 .anyRequest().authenticated()
         )
-        .exceptionHandling()
-        .accessDeniedHandler(accessDeniedHandler)
-        .and()
+        .exceptionHandling(exceptionHandling -> exceptionHandling.accessDeniedHandler(accessDeniedHandler))
 
         // @see <a href="https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#oauth2resourceserver">OAuth
         // 2.0 Resource Server</a>
-        .oauth2ResourceServer()
-        .jwt()
-        .jwtAuthenticationConverter(jwtAuthenticationConverter())
-        .and().and().oauth2Login();
+        .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())))
+        .oauth2Login(withDefaults());
     return http.build();
   }
 
