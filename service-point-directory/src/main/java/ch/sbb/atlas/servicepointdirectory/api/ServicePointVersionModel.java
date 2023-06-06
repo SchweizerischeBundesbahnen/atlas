@@ -46,13 +46,12 @@ public class ServicePointVersionModel extends BaseVersionModel implements DatesV
   @Schema(description = "Technical identifier", accessMode = AccessMode.READ_ONLY, example = "1")
   private Long id;
 
-  @Min(value = 1000000, message = "Minimum value for number.")
-  @Max(value = 9999999, message = "Maximum value for number.")
   @Schema(description = "Seven digits number. First two digits represent Country Code. "
-      + "Last 5 digits represent service point ID.", example = "8034505", maxLength = 7)
+      + "Last 5 digits represent service point ID.", example = "8034505")
+  @Min(1000000)
+  @Max(9999999)
   private Integer countryCodeAndServicePointId;
 
-  @NotNull
   @Valid
   private ServicePointNumber number;
 
