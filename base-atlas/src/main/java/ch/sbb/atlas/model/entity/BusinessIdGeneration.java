@@ -4,26 +4,30 @@ import ch.sbb.atlas.model.entity.BusinessIdGeneration.BusinessIdValueGeneration;
 import java.io.Serial;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.reflect.Member;
+import java.util.EnumSet;
 import org.hibernate.annotations.ValueGenerationType;
-import org.hibernate.tuple.AnnotationValueGeneration;
-import org.hibernate.tuple.GenerationTiming;
-import org.hibernate.tuple.ValueGenerator;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
+import org.hibernate.generator.AnnotationBasedGenerator;
+import org.hibernate.generator.BeforeExecutionGenerator;
+import org.hibernate.generator.EventType;
+import org.hibernate.generator.GeneratorCreationContext;
 
 @ValueGenerationType(generatedBy = BusinessIdValueGeneration.class)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface BusinessIdGeneration {
 
-  Class<? extends ValueGenerator<?>> valueGenerator();
+  Class<? extends BeforeExecutionGenerator> valueGenerator();
 
-  class BusinessIdValueGeneration implements AnnotationValueGeneration<BusinessIdGeneration> {
+  class BusinessIdValueGeneration implements AnnotationBasedGenerator<BusinessIdGeneration>, BeforeExecutionGenerator {
 
     @Serial
     private static final long serialVersionUID = 1;
 
-    protected ValueGenerator<?> valueGenerator;
+    protected BeforeExecutionGenerator valueGenerator;
 
     @Override
-    public void initialize(BusinessIdGeneration annotation, Class<?> propertyType) {
+    public void initialize(BusinessIdGeneration annotation, Member member, GeneratorCreationContext context) {
       try {
         valueGenerator = annotation.valueGenerator().getDeclaredConstructor().newInstance();
       } catch (Exception e) {
@@ -31,22 +35,14 @@ public @interface BusinessIdGeneration {
       }
     }
 
-    public GenerationTiming getGenerationTiming() {
-      return GenerationTiming.INSERT;
-    }
-
-    public ValueGenerator<?> getValueGenerator() {
-      return valueGenerator;
+    @Override
+    public Object generate(SharedSessionContractImplementor session, Object owner, Object currentValue, EventType eventType) {
+      return valueGenerator.generate(session, owner, currentValue, eventType);
     }
 
     @Override
-    public boolean referenceColumnInSql() {
-      return false;
-    }
-
-    @Override
-    public String getDatabaseGeneratedReferencedColumnValue() {
-      return null;
+    public EnumSet<EventType> getEventTypes() {
+      return valueGenerator.getEventTypes();
     }
   }
 
