@@ -99,6 +99,11 @@
       </dependency>
 
       <dependency>
+         <groupId>org.springframework.kafka</groupId>
+         <artifactId>spring-kafka-test</artifactId>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
          <artifactId>assertj-core</artifactId>
          <groupId>org.assertj</groupId>
          <scope>test</scope>
