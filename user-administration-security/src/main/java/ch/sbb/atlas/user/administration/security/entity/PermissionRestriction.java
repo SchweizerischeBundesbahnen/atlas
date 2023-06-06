@@ -1,4 +1,4 @@
-package ch.sbb.atlas.user.administration.entity;
+package ch.sbb.atlas.user.administration.security.entity;
 
 import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
 import jakarta.persistence.Entity;
@@ -45,12 +45,6 @@ public class PermissionRestriction {
   @ToString.Exclude
   @EqualsAndHashCode.Exclude
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_permission_id")
-  private UserPermission userPermission;
-
-  @ToString.Exclude
-  @EqualsAndHashCode.Exclude
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "client_credential_permission_id")
-  private ClientCredentialPermission clientCredentialPermission;
+  @JoinColumn(name = "permission_id")
+  private Permission permission;
 }
