@@ -45,13 +45,13 @@ public interface ServicePointApiV1 {
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-  ServicePointVersionModel createServicePoint(@RequestBody ServicePointVersionModel servicePointVersionModel);
+  ServicePointVersionModel createServicePoint(@RequestBody @Valid ServicePointVersionModel servicePointVersionModel);
 
   @ResponseStatus(HttpStatus.OK)
   @PutMapping(path = "{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
   List<ServicePointVersionModel> updateServicePoint(
       @PathVariable Long id,
-      @RequestBody ServicePointVersionModel servicePointVersionModel
+      @RequestBody @Valid ServicePointVersionModel servicePointVersionModel
   );
 
 }
