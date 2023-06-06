@@ -1,7 +1,7 @@
 package ch.sbb.atlas.user.administration.service;
 
 import ch.sbb.atlas.api.user.administration.UserPermissionCreateModel;
-import ch.sbb.atlas.api.user.administration.enumeration.PermissionRestrictionType;
+import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.user.administration.entity.PermissionRestriction;
 import ch.sbb.atlas.user.administration.entity.UserPermission;
@@ -33,6 +33,10 @@ public class UserAdministrationService {
     permissionRestrictions = Optional.ofNullable(permissionRestrictions).orElse(new HashSet<>());
     applicationTypes = Optional.ofNullable(applicationTypes).orElse(new HashSet<>());
     return userPermissionRepository.getFilteredUsers(pageable, applicationTypes, permissionRestrictions, type);
+  }
+
+  public List<String> getAllUserIds() {
+    return userPermissionRepository.findAll().stream().map(UserPermission::getSbbUserId).distinct().toList();
   }
 
   public List<UserPermission> getUserPermissions(String sbbUserId) {
