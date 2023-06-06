@@ -42,6 +42,8 @@ spring:
             client-secret: ${SCHEDULING_CLIENT_SECRET}
             scope:
               - api://87e6e634-6ba1-4e7a-869d-3348b4c3eafc/.default
+  kafka:
+    bootstrap-servers: .bootstrap-servers=${spring.embedded.kafka.brokers}
 
 auth:
   audience:
@@ -49,7 +51,7 @@ auth:
 
 logging:
   level:
-    root: INFO
+    root: ERROR
     org:
       hibernate: ERROR
       jboss: ERROR
