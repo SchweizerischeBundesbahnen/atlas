@@ -1,6 +1,6 @@
 package ch.sbb.atlas.user.administration.repository;
 
-import ch.sbb.atlas.api.user.administration.enumeration.PermissionRestrictionType;
+import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import java.util.Set;
 import org.springframework.data.domain.Page;

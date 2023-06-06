@@ -1,6 +1,6 @@
 package ch.sbb.atlas.api.user.administration;
 
-import ch.sbb.atlas.api.user.administration.enumeration.PermissionRestrictionType;
+import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
