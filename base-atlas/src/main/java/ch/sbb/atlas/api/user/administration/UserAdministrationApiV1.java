@@ -1,7 +1,7 @@
 package ch.sbb.atlas.api.user.administration;
 
 import ch.sbb.atlas.api.model.Container;
-import ch.sbb.atlas.api.user.administration.enumeration.PermissionRestrictionType;
+import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -56,5 +56,9 @@ public interface UserAdministrationApiV1 {
   @PutMapping(BASE_PATH)
   @Operation(description = "Update the user permissions of a user")
   UserModel updateUserPermissions(@RequestBody @Valid UserPermissionCreateModel editedPermissions);
+
+  @PostMapping(BASE_PATH + "/sync-permissions")
+  @Operation(description = "Write all user permission to kafka again for redistribution")
+  void syncPermissions();
 
 }

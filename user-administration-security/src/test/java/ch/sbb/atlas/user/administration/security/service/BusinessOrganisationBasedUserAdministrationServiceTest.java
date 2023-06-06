@@ -1,21 +1,22 @@
-package ch.sbb.atlas.user.administration.security;
+package ch.sbb.atlas.user.administration.security.service;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationModel;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionModel;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-
+import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionRestrictionModel;
+import ch.sbb.atlas.user.administration.security.UserPermissionHolder;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 class BusinessOrganisationBasedUserAdministrationServiceTest {
 
@@ -49,7 +50,7 @@ class BusinessOrganisationBasedUserAdministrationServiceTest {
     void shouldAllowCreateToSupervisor() {
         // Given
         when(userPermissionHolder.getCurrentUser()).thenReturn(Optional.of(UserAdministrationModel.builder()
-                .sbbUserId("e123456")
+                .userId("e123456")
                 .permissions(Set.of(
                         UserAdministrationPermissionModel.builder()
                                 .application(
@@ -71,7 +72,7 @@ class BusinessOrganisationBasedUserAdministrationServiceTest {
     void shouldAllowCreateToSuperUser() {
         // Given
         when(userPermissionHolder.getCurrentUser()).thenReturn(Optional.of(UserAdministrationModel.builder()
-                .sbbUserId("e123456")
+                .userId("e123456")
                 .permissions(Set.of(
                         UserAdministrationPermissionModel.builder()
                                 .application(
@@ -93,7 +94,7 @@ class BusinessOrganisationBasedUserAdministrationServiceTest {
     void shouldNotAllowCreateToWriterWithNoSboids() {
         // Given
         when(userPermissionHolder.getCurrentUser()).thenReturn(Optional.of(UserAdministrationModel.builder()
-                .sbbUserId("e123456")
+                .userId("e123456")
                 .permissions(Set.of(
                         UserAdministrationPermissionModel.builder()
                                 .application(
@@ -115,18 +116,16 @@ class BusinessOrganisationBasedUserAdministrationServiceTest {
     void shouldAllowCreateToWriterCorrectSboids() {
         // Given
         when(userPermissionHolder.getCurrentUser()).thenReturn(Optional.of(UserAdministrationModel.builder()
-                .sbbUserId("e123456")
-                .permissions(Set.of(
-                        UserAdministrationPermissionModel.builder()
-                                .application(
-                                        ApplicationType.LIDI)
-                                .role(
-                                        ApplicationRole.WRITER)
-                                .sboids(
-                                        Set.of(
-                                                "sboid"))
-                                .build()))
-                .build()));
+            .userId("e123456")
+            .permissions(Set.of(
+                UserAdministrationPermissionModel.builder()
+                    .application(ApplicationType.LIDI)
+                    .role(ApplicationRole.WRITER)
+                    .restrictions(Set.of(UserAdministrationPermissionRestrictionModel.builder()
+                        .value("sboid")
+                        .build()))
+                    .build()))
+            .build()));
 
         // When
         boolean permissionsToCreate = businessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(
@@ -155,7 +154,7 @@ class BusinessOrganisationBasedUserAdministrationServiceTest {
     void shouldAllowUpdateToSupervisor() {
         // Given
         when(userPermissionHolder.getCurrentUser()).thenReturn(Optional.of(UserAdministrationModel.builder()
-                .sbbUserId("e123456")
+                .userId("e123456")
                 .permissions(Set.of(
                         UserAdministrationPermissionModel.builder()
                                 .application(
@@ -179,7 +178,7 @@ class BusinessOrganisationBasedUserAdministrationServiceTest {
     void shouldAllowUpdateToSuperUser() {
         // Given
         when(userPermissionHolder.getCurrentUser()).thenReturn(Optional.of(UserAdministrationModel.builder()
-                .sbbUserId("e123456")
+                .userId("e123456")
                 .permissions(Set.of(
                         UserAdministrationPermissionModel.builder()
                                 .application(
@@ -203,7 +202,7 @@ class BusinessOrganisationBasedUserAdministrationServiceTest {
     void shouldNotAllowUpdateToWriterWithoutSboids() {
         // Given
         when(userPermissionHolder.getCurrentUser()).thenReturn(Optional.of(UserAdministrationModel.builder()
-                .sbbUserId("e123456")
+                .userId("e123456")
                 .permissions(Set.of(
                         UserAdministrationPermissionModel.builder()
                                 .application(
@@ -227,18 +226,16 @@ class BusinessOrganisationBasedUserAdministrationServiceTest {
     void shouldAllowUpdateToWriterWithSboid() {
         // Given
         when(userPermissionHolder.getCurrentUser()).thenReturn(Optional.of(UserAdministrationModel.builder()
-                .sbbUserId("e123456")
-                .permissions(Set.of(
-                        UserAdministrationPermissionModel.builder()
-                                .application(
-                                        ApplicationType.LIDI)
-                                .role(
-                                        ApplicationRole.WRITER)
-                                .sboids(
-                                        Set.of(
-                                                "sboid"))
-                                .build()))
-                .build()));
+            .userId("e123456")
+            .permissions(Set.of(
+                UserAdministrationPermissionModel.builder()
+                    .application(ApplicationType.LIDI)
+                    .role(ApplicationRole.WRITER)
+                    .restrictions(Set.of(UserAdministrationPermissionRestrictionModel.builder()
+                        .value("sboid")
+                        .build()
+                    )).build()))
+            .build()));
 
         // When
         boolean permissionsToUpdate = businessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdate(
@@ -254,18 +251,16 @@ class BusinessOrganisationBasedUserAdministrationServiceTest {
     void shouldNotAllowUpdateToWriterWithOnlyOneOfTwoRequired() {
         // Given
         when(userPermissionHolder.getCurrentUser()).thenReturn(Optional.of(UserAdministrationModel.builder()
-                .sbbUserId("e123456")
-                .permissions(Set.of(
-                        UserAdministrationPermissionModel.builder()
-                                .application(
-                                        ApplicationType.LIDI)
-                                .role(
-                                        ApplicationRole.WRITER)
-                                .sboids(
-                                        Set.of(
-                                                "sboid1"))
-                                .build()))
-                .build()));
+            .userId("e123456")
+            .permissions(Set.of(
+                UserAdministrationPermissionModel.builder()
+                    .application(ApplicationType.LIDI)
+                    .role(ApplicationRole.WRITER)
+                    .restrictions(Set.of(UserAdministrationPermissionRestrictionModel.builder()
+                        .value("sboid1")
+                        .build()))
+                    .build()))
+            .build()));
 
         // When
         boolean permissionsToUpdate = businessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdate(
@@ -289,19 +284,18 @@ class BusinessOrganisationBasedUserAdministrationServiceTest {
     void shouldAllowUpdateToWriterWithTwoRequiredSboids() {
         // Given
         when(userPermissionHolder.getCurrentUser()).thenReturn(Optional.of(UserAdministrationModel.builder()
-                .sbbUserId("e123456")
-                .permissions(Set.of(
-                        UserAdministrationPermissionModel.builder()
-                                .application(
-                                        ApplicationType.LIDI)
-                                .role(
-                                        ApplicationRole.WRITER)
-                                .sboids(
-                                        Set.of(
-                                                "sboid1",
-                                                "sboid2"))
-                                .build()))
-                .build()));
+            .userId("e123456")
+            .permissions(Set.of(
+                UserAdministrationPermissionModel.builder()
+                    .application(ApplicationType.LIDI)
+                    .role(ApplicationRole.WRITER)
+                    .restrictions(Set.of(UserAdministrationPermissionRestrictionModel.builder()
+                        .value("sboid1")
+                        .build(), UserAdministrationPermissionRestrictionModel.builder()
+                        .value("sboid2")
+                        .build()
+                    )).build()))
+            .build()));
 
         // When
         boolean permissionsToUpdate = businessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdate(
@@ -325,18 +319,16 @@ class BusinessOrganisationBasedUserAdministrationServiceTest {
     void shouldAllowUpdateToWriterHandingOverObjectToOtherBusinessOrganisation() {
         // Given
         when(userPermissionHolder.getCurrentUser()).thenReturn(Optional.of(UserAdministrationModel.builder()
-                .sbbUserId("e123456")
-                .permissions(Set.of(
-                        UserAdministrationPermissionModel.builder()
-                                .application(
-                                        ApplicationType.LIDI)
-                                .role(
-                                        ApplicationRole.WRITER)
-                                .sboids(
-                                        Set.of(
-                                                "sboid1"))
-                                .build()))
-                .build()));
+            .userId("e123456")
+            .permissions(Set.of(
+                UserAdministrationPermissionModel.builder()
+                    .application(ApplicationType.LIDI)
+                    .role(ApplicationRole.WRITER)
+                    .restrictions(Set.of(UserAdministrationPermissionRestrictionModel.builder()
+                        .value("sboid1")
+                        .build()))
+                    .build()))
+            .build()));
 
         // When
         boolean permissionsToUpdate = businessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdate(
@@ -368,7 +360,7 @@ class BusinessOrganisationBasedUserAdministrationServiceTest {
     void shouldReturnAtLeastSupervisorForSupervisor() {
         // Given
         when(userPermissionHolder.getCurrentUser()).thenReturn(Optional.of(UserAdministrationModel.builder()
-                .sbbUserId("e123456")
+                .userId("e123456")
                 .permissions(Set.of(
                         UserAdministrationPermissionModel.builder()
                                 .application(
@@ -389,7 +381,7 @@ class BusinessOrganisationBasedUserAdministrationServiceTest {
     void shouldReturnNoAccessForSuperuser() {
         // Given
         when(userPermissionHolder.getCurrentUser()).thenReturn(Optional.of(UserAdministrationModel.builder()
-                .sbbUserId("e123456")
+                .userId("e123456")
                 .permissions(Set.of(
                         UserAdministrationPermissionModel.builder()
                                 .application(
@@ -410,7 +402,7 @@ class BusinessOrganisationBasedUserAdministrationServiceTest {
     void shouldReturnNoAccessForWriter() {
         // Given
         when(userPermissionHolder.getCurrentUser()).thenReturn(Optional.of(UserAdministrationModel.builder()
-                .sbbUserId("e123456")
+                .userId("e123456")
                 .permissions(Set.of(
                         UserAdministrationPermissionModel.builder()
                                 .application(
@@ -431,7 +423,7 @@ class BusinessOrganisationBasedUserAdministrationServiceTest {
     void shouldReturnNoAccessForReader() {
         // Given
         when(userPermissionHolder.getCurrentUser()).thenReturn(Optional.of(UserAdministrationModel.builder()
-                .sbbUserId("e123456")
+                .userId("e123456")
                 .permissions(Set.of(
                         UserAdministrationPermissionModel.builder()
                                 .application(
