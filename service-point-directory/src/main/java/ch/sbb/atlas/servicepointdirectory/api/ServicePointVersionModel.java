@@ -106,9 +106,6 @@ public class ServicePointVersionModel extends BaseVersionModel implements DatesV
   @Schema(accessMode = AccessMode.READ_ONLY, description = "Details to the operationPointType.")
   private CodeAndDesignation operatingPointTypeInformation;
 
-  @Schema(accessMode = AccessMode.READ_ONLY)
-  private CodeAndDesignation operatingPointWithoutTimetableTypeInformation;
-
   @Schema(description = "OperatingPointTechnicalTimetableType, all service points relevant for timetable planning and "
       + "publication. ")
   private OperatingPointTechnicalTimetableType operatingPointTechnicalTimetableType;
