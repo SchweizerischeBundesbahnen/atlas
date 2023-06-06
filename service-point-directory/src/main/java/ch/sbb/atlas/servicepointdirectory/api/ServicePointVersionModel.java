@@ -230,7 +230,10 @@ public class ServicePointVersionModel extends BaseVersionModel implements DatesV
 
   @AssertTrue(message = "FreightServicePoint in CH needs sortCodeOfDestinationStation")
   public boolean isValidFreightServicePoint() {
-    return !(getNumber().getCountry() == Country.SWITZERLAND && freightServicePoint && !getValidFrom().isBefore(LocalDate.now()))
+    if (getNumber() != null) {
+      return !(getNumber().getCountry() == Country.SWITZERLAND && freightServicePoint && !getValidFrom().isBefore(LocalDate.now()))
+          || StringUtils.isNotBlank(sortCodeOfDestinationStation);
+    } else return !(freightServicePoint && !getValidFrom().isBefore(LocalDate.now()))
         || StringUtils.isNotBlank(sortCodeOfDestinationStation);
   }
 
