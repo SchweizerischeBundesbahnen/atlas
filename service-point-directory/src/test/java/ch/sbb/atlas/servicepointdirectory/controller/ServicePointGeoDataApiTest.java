@@ -51,4 +51,5 @@ public class ServicePointGeoDataApiTest extends BaseControllerApiTest {
     assertThat(result.getResponse().getContentType()).isEqualTo(ServicePointGeoDataApiV1.MEDIA_TYPE_PROTOBUF);
     assertThat(result.getResponse().getContentAsString()).contains("service-points", "number");
   }
+
 }
