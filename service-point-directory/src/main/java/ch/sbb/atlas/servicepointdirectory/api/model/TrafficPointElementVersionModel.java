@@ -1,4 +1,4 @@
-package ch.sbb.atlas.servicepointdirectory.api;
+package ch.sbb.atlas.servicepointdirectory.api.model;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.model.BaseVersionModel;

@@ -1,8 +1,8 @@
 package ch.sbb.atlas.servicepointdirectory.mapper;
 
-import ch.sbb.atlas.servicepointdirectory.api.CodeAndDesignation;
-import ch.sbb.atlas.servicepointdirectory.api.CreateServicePointVersionModel;
-import ch.sbb.atlas.servicepointdirectory.api.ReadServicePointVersionModel;
+import ch.sbb.atlas.servicepointdirectory.api.model.CodeAndDesignation;
+import ch.sbb.atlas.servicepointdirectory.api.model.CreateServicePointVersionModel;
+import ch.sbb.atlas.servicepointdirectory.api.model.ReadServicePointVersionModel;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Category;
 import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
@@ -59,7 +59,7 @@ public class ServicePointVersionMapper {
   }
 
   public static ServicePointVersion toEntity(CreateServicePointVersionModel servicePointVersionModel) {
-    ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(servicePointVersionModel.getCountryCodeAndServicePointId());
+    ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(servicePointVersionModel.getNumber());
     ServicePointNumber operatingPointKilometerMasterNumber = ServicePointNumber.ofNumberWithoutCheckDigit(servicePointVersionModel.getOperatingPointKilometerMasterNumber());
     return ServicePointVersion.builder()
         .id(servicePointVersionModel.getId())
