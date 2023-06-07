@@ -1,7 +1,8 @@
 package ch.sbb.atlas.servicepointdirectory.mapper;
 
 import ch.sbb.atlas.servicepointdirectory.api.CodeAndDesignation;
-import ch.sbb.atlas.servicepointdirectory.api.ServicePointVersionModel;
+import ch.sbb.atlas.servicepointdirectory.api.CreateServicePointVersionModel;
+import ch.sbb.atlas.servicepointdirectory.api.ReadServicePointVersionModel;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Category;
 import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
@@ -13,8 +14,8 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class ServicePointVersionMapper {
 
-  public static ServicePointVersionModel toModel(ServicePointVersion servicePointVersion) {
-    return ServicePointVersionModel.builder()
+  public static ReadServicePointVersionModel toModel(ServicePointVersion servicePointVersion) {
+    return ReadServicePointVersionModel.builder()
         .id(servicePointVersion.getId())
         .number(servicePointVersion.getNumber())
         .sloid(servicePointVersion.getSloid())
@@ -57,38 +58,38 @@ public class ServicePointVersionMapper {
         .build();
   }
 
-  public static ServicePointVersion toEntity(ServicePointVersionModel servicePointVersionModel) {
+  public static ServicePointVersion toEntity(CreateServicePointVersionModel servicePointVersionModel) {
     ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(servicePointVersionModel.getCountryCodeAndServicePointId());
     ServicePointNumber operatingPointKilometerMasterNumber = ServicePointNumber.ofNumberWithoutCheckDigit(servicePointVersionModel.getOperatingPointKilometerMasterNumber());
-      return ServicePointVersion.builder()
-          .id(servicePointVersionModel.getId())
-          .number(servicePointNumber)
-          .sloid(servicePointVersionModel.getSloid())
-          .numberShort(servicePointNumber.getNumberShort())
-          .country(servicePointNumber.getCountry())
-          .designationLong(servicePointVersionModel.getDesignationLong())
-          .designationOfficial(servicePointVersionModel.getDesignationOfficial())
-          .abbreviation(servicePointVersionModel.getAbbreviation())
-          .statusDidok3(servicePointVersionModel.getStatusDidok3())
-          .sortCodeOfDestinationStation(servicePointVersionModel.getSortCodeOfDestinationStation())
-          .businessOrganisation(servicePointVersionModel.getBusinessOrganisation())
-          .operatingPointType(servicePointVersionModel.getOperatingPointType())
-          .stopPointType(servicePointVersionModel.getStopPointType())
-          .status(servicePointVersionModel.getStatus())
-          .operatingPointKilometerMaster(operatingPointKilometerMasterNumber)
-          .operatingPointRouteNetwork(servicePointVersionModel.isOperatingPointRouteNetwork())
-          .comment(servicePointVersionModel.getFotComment())
-          .validFrom(servicePointVersionModel.getValidFrom())
-          .validTo(servicePointVersionModel.getValidTo())
-          .freightServicePoint(servicePointVersionModel.isFreightServicePoint())
-          .operatingPoint(servicePointVersionModel.isOperatingPoint())
-          .operatingPointWithTimetable(servicePointVersionModel.isOperatingPointWithTimetable())
-          .operatingPointTechnicalTimetableType(servicePointVersionModel.getOperatingPointTechnicalTimetableType())
-          .operatingPointTrafficPointType(servicePointVersionModel.getOperatingPointTrafficPointType())
-          .categories(Set.copyOf(servicePointVersionModel.getCategories()))
-          .meansOfTransport(Set.copyOf(servicePointVersionModel.getMeansOfTransport()))
-          .servicePointGeolocation(ServicePointGeolocationMapper.toEntity(servicePointVersionModel.getServicePointGeolocation()))
-          .build();
+    return ServicePointVersion.builder()
+        .id(servicePointVersionModel.getId())
+        .number(servicePointNumber)
+        .sloid(servicePointVersionModel.getSloid())
+        .numberShort(servicePointNumber.getNumberShort())
+        .country(servicePointNumber.getCountry())
+        .designationLong(servicePointVersionModel.getDesignationLong())
+        .designationOfficial(servicePointVersionModel.getDesignationOfficial())
+        .abbreviation(servicePointVersionModel.getAbbreviation())
+        .statusDidok3(servicePointVersionModel.getStatusDidok3())
+        .sortCodeOfDestinationStation(servicePointVersionModel.getSortCodeOfDestinationStation())
+        .businessOrganisation(servicePointVersionModel.getBusinessOrganisation())
+        .operatingPointType(servicePointVersionModel.getOperatingPointType())
+        .stopPointType(servicePointVersionModel.getStopPointType())
+        .status(servicePointVersionModel.getStatus())
+        .operatingPointKilometerMaster(operatingPointKilometerMasterNumber)
+        .operatingPointRouteNetwork(servicePointVersionModel.isOperatingPointRouteNetwork())
+        .comment(servicePointVersionModel.getFotComment())
+        .validFrom(servicePointVersionModel.getValidFrom())
+        .validTo(servicePointVersionModel.getValidTo())
+        .freightServicePoint(servicePointVersionModel.isFreightServicePoint())
+        .operatingPoint(servicePointVersionModel.isOperatingPoint())
+        .operatingPointWithTimetable(servicePointVersionModel.isOperatingPointWithTimetable())
+        .operatingPointTechnicalTimetableType(servicePointVersionModel.getOperatingPointTechnicalTimetableType())
+        .operatingPointTrafficPointType(servicePointVersionModel.getOperatingPointTrafficPointType())
+        .categories(Set.copyOf(servicePointVersionModel.getCategories()))
+        .meansOfTransport(Set.copyOf(servicePointVersionModel.getMeansOfTransport()))
+        .servicePointGeolocation(ServicePointGeolocationMapper.toEntity(servicePointVersionModel.getServicePointGeolocation()))
+        .build();
   }
 
   private static List<MeanOfTransport> getMeansOfTransportSorted(ServicePointVersion servicePointVersion) {
