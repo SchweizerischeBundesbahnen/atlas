@@ -28,6 +28,12 @@ public class CreateServicePointVersionModel extends ServicePointVersionModel {
     @Max(9999999)
     private Integer number;
 
+    @Min(value = 1000000, message = "Minimum value for number.")
+    @Max(value = 9999999, message = "Maximum value for number.")
+    @Schema(description = "Reference to a operatingPointRouteNetwork. OperatingPointKilometer are always related to a "
+        + "operatingPointRouteNetwork")
+    private Integer operatingPointKilometerMasterNumber;
+
     @AssertTrue(message = "FreightServicePoint in CH needs sortCodeOfDestinationStation")
     public boolean isValidFreightServicePoint() {
         return !(super.isFreightServicePoint() && !getValidFrom().isBefore(LocalDate.now()))
