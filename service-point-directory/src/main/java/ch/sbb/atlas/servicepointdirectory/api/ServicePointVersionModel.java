@@ -232,8 +232,10 @@ public class ServicePointVersionModel extends BaseVersionModel implements DatesV
     if (getNumber() != null) {
       return !(getNumber().getCountry() == Country.SWITZERLAND && freightServicePoint && !getValidFrom().isBefore(LocalDate.now()))
           || StringUtils.isNotBlank(sortCodeOfDestinationStation);
-    } else return !(freightServicePoint && !getValidFrom().isBefore(LocalDate.now()))
-        || StringUtils.isNotBlank(sortCodeOfDestinationStation);
+    } else {
+      return !(freightServicePoint && !getValidFrom().isBefore(LocalDate.now()))
+          || StringUtils.isNotBlank(sortCodeOfDestinationStation);
+    }
   }
 
   @AssertTrue(message = "At most one of OperatingPointWithoutTimetableType, OperatingPointTechnicalTimetableType, "
