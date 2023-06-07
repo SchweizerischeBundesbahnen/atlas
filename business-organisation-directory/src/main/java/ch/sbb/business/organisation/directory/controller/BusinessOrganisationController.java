@@ -9,7 +9,7 @@ import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisation;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
-import ch.sbb.business.organisation.directory.exception.SboidNotFoundException;
+import ch.sbb.atlas.business.organisation.exception.SboidNotFoundException;
 import ch.sbb.business.organisation.directory.mapper.BusinessOrganisationMapper;
 import ch.sbb.business.organisation.directory.mapper.BusinessOrganisationVersionMapper;
 import ch.sbb.business.organisation.directory.service.BusinessOrganisationService;
