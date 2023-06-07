@@ -45,8 +45,7 @@ public class ServicePointController implements ServicePointApiV1 {
         .build();
   }
 
-  @Override
-  public List<ServicePointVersionModel> getServicePoint(Integer servicePointNumber) {
+  public List<ServicePointVersionModel> getServicePointVersions(Integer servicePointNumber) {
     ServicePointNumber number = ServicePointNumber.of(servicePointNumber);
     List<ServicePointVersionModel> servicePointVersions = servicePointService.findAllServicePointVersions(
             number).stream()
