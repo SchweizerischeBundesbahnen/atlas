@@ -2,6 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.api;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.model.Container;
+import ch.sbb.atlas.servicepointdirectory.api.model.TrafficPointElementVersionModel;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion.Fields;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
