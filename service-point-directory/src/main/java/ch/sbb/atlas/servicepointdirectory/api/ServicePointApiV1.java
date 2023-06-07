@@ -29,14 +29,14 @@ public interface ServicePointApiV1 {
 
   @GetMapping
   @PageableAsQueryParam
-  Container<ServicePointVersionModel> getServicePoints(@Parameter(hidden = true) @PageableDefault(sort = {Fields.number,
+  Container<ReadServicePointVersionModel> getServicePoints(@Parameter(hidden = true) @PageableDefault(sort = {Fields.number,
       Fields.validFrom}) Pageable pageable, @ParameterObject ServicePointRequestParams servicePointRequestParams);
 
   @GetMapping("{servicePointNumber}")
-  List<ServicePointVersionModel> getServicePointVersions(@PathVariable Integer servicePointNumber);
+  List<ReadServicePointVersionModel> getServicePointVersions(@PathVariable Integer servicePointNumber);
 
   @GetMapping("versions/{id}")
-  ServicePointVersionModel getServicePointVersion(@PathVariable Long id);
+  ReadServicePointVersionModel getServicePointVersion(@PathVariable Long id);
 
   @Secured(Role.ROLE_PREFIX + Role.ATLAS_ADMIN)
   @PostMapping("import")
@@ -44,13 +44,13 @@ public interface ServicePointApiV1 {
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping()
-  ServicePointVersionModel createServicePoint(@RequestBody @Valid ServicePointVersionModel servicePointVersionModel);
+  ReadServicePointVersionModel createServicePoint(@RequestBody @Valid CreateServicePointVersionModel servicePointVersionModel);
 
   @ResponseStatus(HttpStatus.OK)
   @PutMapping(path = "{id}")
-  List<ServicePointVersionModel> updateServicePoint(
+  List<ReadServicePointVersionModel> updateServicePoint(
       @PathVariable Long id,
-      @RequestBody @Valid ServicePointVersionModel servicePointVersionModel
+      @RequestBody @Valid CreateServicePointVersionModel servicePointVersionModel
   );
 
 }
