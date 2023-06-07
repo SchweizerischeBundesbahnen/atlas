@@ -1,10 +1,9 @@
-package ch.sbb.atlas.servicepointdirectory.api;
+package ch.sbb.atlas.servicepointdirectory.api.model;
 
-import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
-import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,15 +19,18 @@ import org.apache.commons.lang3.StringUtils;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @FieldNameConstants
-@Schema(name = "ReadServicePointVersion")
-public class ReadServicePointVersionModel extends ServicePointVersionModel {
+@Schema(name = "CreateServicePointVersion")
+public class CreateServicePointVersionModel extends ServicePointVersionModel {
 
-    @Valid
-    private ServicePointNumber number;
+    @Schema(description = "Seven digits number. First two digits represent Country Code. "
+        + "Last 5 digits represent service point ID.", example = "8034505")
+    @Min(1000000)
+    @Max(9999999)
+    private Integer number;
 
     @AssertTrue(message = "FreightServicePoint in CH needs sortCodeOfDestinationStation")
     public boolean isValidFreightServicePoint() {
-        return !(getNumber().getCountry() == Country.SWITZERLAND && super.isFreightServicePoint() && !getValidFrom().isBefore(LocalDate.now()))
+        return !(super.isFreightServicePoint() && !getValidFrom().isBefore(LocalDate.now()))
             || StringUtils.isNotBlank(super.getSortCodeOfDestinationStation());
     }
 

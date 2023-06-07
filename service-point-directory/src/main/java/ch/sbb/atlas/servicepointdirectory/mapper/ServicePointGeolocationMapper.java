@@ -3,11 +3,11 @@ package ch.sbb.atlas.servicepointdirectory.mapper;
 import static ch.sbb.atlas.servicepointdirectory.mapper.GeolocationMapper.getTransformedCoordinates;
 
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
-import ch.sbb.atlas.servicepointdirectory.api.ServicePointGeolocationModel;
-import ch.sbb.atlas.servicepointdirectory.api.ServicePointGeolocationModel.Canton;
-import ch.sbb.atlas.servicepointdirectory.api.ServicePointGeolocationModel.DistrictModel;
-import ch.sbb.atlas.servicepointdirectory.api.ServicePointGeolocationModel.LocalityMunicipalityModel;
-import ch.sbb.atlas.servicepointdirectory.api.ServicePointGeolocationModel.SwissLocation;
+import ch.sbb.atlas.servicepointdirectory.api.model.ServicePointGeolocationModel;
+import ch.sbb.atlas.servicepointdirectory.api.model.ServicePointGeolocationModel.Canton;
+import ch.sbb.atlas.servicepointdirectory.api.model.ServicePointGeolocationModel.DistrictModel;
+import ch.sbb.atlas.servicepointdirectory.api.model.ServicePointGeolocationModel.LocalityMunicipalityModel;
+import ch.sbb.atlas.servicepointdirectory.api.model.ServicePointGeolocationModel.SwissLocation;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.model.CoordinatePair;
 import java.util.Map;
