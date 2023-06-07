@@ -1,5 +1,6 @@
 package ch.sbb.line.directory.service;
 
+import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -29,6 +30,7 @@ public class TimetableFieldNumberService {
 
   private final TimetableFieldNumberVersionRepository versionRepository;
   private final TimetableFieldNumberRepository timetableFieldNumberRepository;
+  private final SharedBusinessOrganisationService sharedBusinessOrganisationService;
   private final VersionableService versionableService;
 
   public List<TimetableFieldNumberVersion> getAllVersionsVersioned(String ttfnId) {
@@ -67,6 +69,7 @@ public class TimetableFieldNumberService {
     if (!overlappingVersions.isEmpty()) {
       throw new TimetableFieldNumberConflictException(newVersion, overlappingVersions);
     }
+    sharedBusinessOrganisationService.validateSboidExists(newVersion.getBusinessOrganisation());
     return versionRepository.saveAndFlush(newVersion);
   }
 
