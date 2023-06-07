@@ -16,8 +16,9 @@ import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
+import ch.sbb.atlas.servicepointdirectory.api.CreateServicePointVersionModel;
+import ch.sbb.atlas.servicepointdirectory.api.ReadServicePointVersionModel;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointVersionModel;
-import ch.sbb.atlas.servicepointdirectory.api.ServicePointVersionModel.Fields;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointGeolocationMapper;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
@@ -61,12 +62,12 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldGetServicePoint() throws Exception {
     mvc.perform(get("/v1/service-points/85890087")).andExpect(status().isOk())
-        .andExpect(jsonPath("$[0]." + Fields.id, is(servicePointVersion.getId().intValue())))
+        .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.id, is(servicePointVersion.getId().intValue())))
         .andExpect(jsonPath("$[0].number.number", is(8589008)))
-        .andExpect(jsonPath("$[0]." + Fields.designationOfficial, is("Bern, Wyleregg")))
+        .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.designationOfficial, is("Bern, Wyleregg")))
         .andExpect(jsonPath("$[0].meansOfTransportInformation[0].code", is("B")))
         .andExpect(jsonPath("$[0].meansOfTransportInformation[0].designationDe", is("Bus")))
-        .andExpect(jsonPath("$[0]." + Fields.operatingPointRouteNetwork, is(false)))
+        .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.operatingPointRouteNetwork, is(false)))
 
         // IS_BETRIEBSPUNKT
         .andExpect(jsonPath("$[0].operatingPoint", is(true)))
@@ -93,7 +94,7 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldGetServicePointVersions() throws Exception {
     mvc.perform(get("/v1/service-points")).andExpect(status().isOk())
-        .andExpect(jsonPath("$.objects[0]." + Fields.id, is(servicePointVersion.getId().intValue())))
+        .andExpect(jsonPath("$.objects[0]." + ServicePointVersionModel.Fields.id, is(servicePointVersion.getId().intValue())))
         .andExpect(jsonPath("$.totalCount", is(1)));
   }
 
@@ -212,44 +213,44 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
             .contentType(contentType)
             .content(mapper.writeValueAsString(ServicePointTestData.getAargauServicePointVersionModel())))
         .andExpect(status().isCreated())
-        .andExpect(jsonPath("$." + Fields.id, is(servicePointVersion.getId().intValue()+1)))
+        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.id, is(servicePointVersion.getId().intValue()+1)))
         .andExpect(jsonPath("$.number.number", is(8034510)))
         .andExpect(jsonPath("$.number.numberShort", is(34510)))
         .andExpect(jsonPath("$.number.checkDigit", is(8)))
-        .andExpect(jsonPath("$." + Fields.designationOfficial, is("Aargau Strasse")))
-        .andExpect(jsonPath("$." + Fields.sloid, is("ch:1:sloid:18771")))
-        .andExpect(jsonPath("$." + Fields.designationLong, is("designation long 1")))
-        .andExpect(jsonPath("$." + Fields.abbreviation, is("3")))
-        .andExpect(jsonPath("$." + Fields.statusDidok3, is("IN_OPERATION")))
+        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.designationOfficial, is("Aargau Strasse")))
+        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.sloid, is("ch:1:sloid:18771")))
+        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.designationLong, is("designation long 1")))
+        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.abbreviation, is("3")))
+        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.statusDidok3, is("IN_OPERATION")))
         .andExpect(jsonPath("$.statusDidok3Information.code", is("3")))
         .andExpect(jsonPath("$.statusDidok3Information.designationDe", is("In Betrieb")))
         .andExpect(jsonPath("$.statusDidok3Information.designationFr", is("En fonctionnement")))
         .andExpect(jsonPath("$.statusDidok3Information.designationIt", is("In funzione")))
         .andExpect(jsonPath("$.statusDidok3Information.designationEn", is("In operation")))
-        .andExpect(jsonPath("$." + Fields.operatingPoint, is(true)))
-        .andExpect(jsonPath("$." + Fields.operatingPointWithTimetable, is(false)))
-        .andExpect(jsonPath("$." + Fields.freightServicePoint, is(true)))
-        .andExpect(jsonPath("$." + Fields.sortCodeOfDestinationStation, is("39136")))
-        .andExpect(jsonPath("$." + Fields.businessOrganisation, is("ch:1:sboid:100871")))
+        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.operatingPoint, is(true)))
+        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.operatingPointWithTimetable, is(false)))
+        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.freightServicePoint, is(true)))
+        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.sortCodeOfDestinationStation, is("39136")))
+        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.businessOrganisation, is("ch:1:sboid:100871")))
         .andExpect(jsonPath("$.categories[0]", is("POINT_OF_SALE")))
         .andExpect(jsonPath("$.categoriesInformation[0].code", is("6")))
         .andExpect(jsonPath("$.categoriesInformation[0].designationDe", is("Verkaufsstelle")))
         .andExpect(jsonPath("$.categoriesInformation[0].designationFr", is("Point de vente")))
         .andExpect(jsonPath("$.categoriesInformation[0].designationIt", is("Punto vendita")))
         .andExpect(jsonPath("$.categoriesInformation[0].designationEn", is("Point of sale")))
-        .andExpect(jsonPath("$." + Fields.operatingPointType, is("INVENTORY_POINT")))
+        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.operatingPointType, is("INVENTORY_POINT")))
         .andExpect(jsonPath("$.operatingPointTypeInformation.code", is("30")))
         .andExpect(jsonPath("$.operatingPointTypeInformation.designationDe", is("Inventarpunkt")))
         .andExpect(jsonPath("$.operatingPointTypeInformation.designationFr", is("Point d'inventaire")))
         .andExpect(jsonPath("$.operatingPointTypeInformation.designationIt", is("punto di inventario")))
         .andExpect(jsonPath("$.operatingPointTypeInformation.designationEn", is("Inventory point")))
-        .andExpect(jsonPath("$." + Fields.operatingPointTechnicalTimetableType, is("ASSIGNED_OPERATING_POINT")))
+        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.operatingPointTechnicalTimetableType, is("ASSIGNED_OPERATING_POINT")))
         .andExpect(jsonPath("$.operatingPointTechnicalTimetableTypeInformation.code", is("16")))
         .andExpect(jsonPath("$.operatingPointTechnicalTimetableTypeInformation.designationDe", is("Zugeordneter Betriebspunkt")))
         .andExpect(jsonPath("$.operatingPointTechnicalTimetableTypeInformation.designationFr", is("Point d’exploitation associé")))
         .andExpect(jsonPath("$.operatingPointTechnicalTimetableTypeInformation.designationIt", is("Punto d’esercizio associato")))
         .andExpect(jsonPath("$.operatingPointTechnicalTimetableTypeInformation.designationEn", is("Assigned operating point")))
-        .andExpect(jsonPath("$." + Fields.operatingPointRouteNetwork, is(false)))
+        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.operatingPointRouteNetwork, is(false)))
         .andExpect(jsonPath("$.operatingPointKilometerMaster.number", is(8034511)))
         .andExpect(jsonPath("$.operatingPointKilometerMaster.numberShort", is(34511)))
         .andExpect(jsonPath("$.operatingPointKilometerMaster.checkDigit", is(6)))
@@ -259,13 +260,13 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.meansOfTransportInformation[0].designationFr", is("Train")))
         .andExpect(jsonPath("$.meansOfTransportInformation[0].designationIt", is("Treno")))
         .andExpect(jsonPath("$.meansOfTransportInformation[0].designationEn", is("Train")))
-        .andExpect(jsonPath("$." + Fields.stopPointType, is("ON_REQUEST")))
+        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.stopPointType, is("ON_REQUEST")))
         .andExpect(jsonPath("$.stopPointTypeInformation.code", is("20")))
         .andExpect(jsonPath("$.stopPointTypeInformation.designationDe", is("Bedarfshaltestelle")))
         .andExpect(jsonPath("$.stopPointTypeInformation.designationFr", is("Arrêt sur demande")))
         .andExpect(jsonPath("$.stopPointTypeInformation.designationIt", is("Fermata facoltativa")))
         .andExpect(jsonPath("$.stopPointTypeInformation.designationEn", is("Request stop")))
-        .andExpect(jsonPath("$." + Fields.fotComment, is("Bahnersatz")))
+        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.fotComment, is("Bahnersatz")))
         .andExpect(jsonPath("$.servicePointGeolocation.swissLocation.cantonInformation.fsoNumber", is(2)))
         .andExpect(jsonPath("$.servicePointGeolocation.spatialReference", is(LV95.toString())))
         .andExpect(jsonPath("$.servicePointGeolocation.lv95.north", is(5935705.395163289)))
@@ -282,9 +283,9 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.servicePointGeolocation.swissLocation.localityMunicipality.municipalityName", is("Bern")))
         .andExpect(jsonPath("$.servicePointGeolocation.swissLocation.localityMunicipality.localityName", is("Bern")))
 
-        .andExpect(jsonPath("$." + Fields.status, is("VALIDATED")))
-        .andExpect(jsonPath("$." + Fields.validFrom, is("2010-12-11")))
-        .andExpect(jsonPath("$." + Fields.validTo, is("2019-08-10")))
+        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.status, is("VALIDATED")))
+        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.validFrom, is("2010-12-11")))
+        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.validTo, is("2019-08-10")))
         .andExpect(jsonPath("$.operatingPointKilometer", is(true)))
         .andExpect(jsonPath("$.validFreightServicePoint", is(true)))
         .andExpect(jsonPath("$.stopPoint", is(true)))
@@ -298,10 +299,10 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
 
   @Test
   public void shouldUpdateServicePointAndCreateMultipleVersions() throws Exception {
-    ServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(ServicePointTestData.getAargauServicePointVersionModel());
+    ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(ServicePointTestData.getAargauServicePointVersionModel());
     Long id = servicePointVersionModel.getId();
 
-    ServicePointVersionModel newServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
+    CreateServicePointVersionModel newServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
     newServicePointVersionModel.setServicePointGeolocation(ServicePointGeolocationMapper.toModel(ServicePointTestData.getAargauServicePointGeolocation()));
     newServicePointVersionModel.setValidFrom(LocalDate.of(2011, 12, 11));
     newServicePointVersionModel.setValidTo(LocalDate.of(2012, 12, 11));
@@ -311,8 +312,8 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
             .content(mapper.writeValueAsString(newServicePointVersionModel)))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(3)))
-        .andExpect(jsonPath("$[0]." + Fields.validFrom, is("2010-12-11")))
-        .andExpect(jsonPath("$[0]." + Fields.validTo, is("2011-12-10")))
+        .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validFrom, is("2010-12-11")))
+        .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2011-12-10")))
         .andExpect(jsonPath("$[0].servicePointGeolocation.swissLocation.cantonInformation.fsoNumber", is(2)))
         .andExpect(jsonPath("$[0].servicePointGeolocation.spatialReference", is(LV95.toString())))
         .andExpect(jsonPath("$[0].servicePointGeolocation.lv95.north", is(5935705.395163289)))
@@ -328,8 +329,8 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[0].servicePointGeolocation.swissLocation.district.districtName", is("Bern-Mittelland")))
         .andExpect(jsonPath("$[0].servicePointGeolocation.swissLocation.localityMunicipality.municipalityName", is("Bern")))
         .andExpect(jsonPath("$[0].servicePointGeolocation.swissLocation.localityMunicipality.localityName", is("Bern")))
-        .andExpect(jsonPath("$[1]." + Fields.validFrom, is("2011-12-11")))
-        .andExpect(jsonPath("$[1]." + Fields.validTo, is("2012-12-11")))
+        .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validFrom, is("2011-12-11")))
+        .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2012-12-11")))
         .andExpect(jsonPath("$[1].servicePointGeolocation.swissLocation.cantonInformation.fsoNumber", is(19)))
         .andExpect(jsonPath("$[1].servicePointGeolocation.spatialReference", is(LV95.toString())))
         .andExpect(jsonPath("$[1].servicePointGeolocation.lv95.north", is(6362085.000118345)))
@@ -345,8 +346,8 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[1].servicePointGeolocation.swissLocation.district.districtName", is("Rheinfelden")))
         .andExpect(jsonPath("$[1].servicePointGeolocation.swissLocation.localityMunicipality.municipalityName", is("Hellikon")))
         .andExpect(jsonPath("$[1].servicePointGeolocation.swissLocation.localityMunicipality.localityName", is("Hellikon")))
-        .andExpect(jsonPath("$[2]." + Fields.validFrom, is("2012-12-12")))
-        .andExpect(jsonPath("$[2]." + Fields.validTo, is("2019-08-10")))
+        .andExpect(jsonPath("$[2]." + ServicePointVersionModel.Fields.validFrom, is("2012-12-12")))
+        .andExpect(jsonPath("$[2]." + ServicePointVersionModel.Fields.validTo, is("2019-08-10")))
         .andExpect(jsonPath("$[2].servicePointGeolocation.swissLocation.cantonInformation.fsoNumber", is(2)))
         .andExpect(jsonPath("$[2].servicePointGeolocation.spatialReference", is(LV95.toString())))
         .andExpect(jsonPath("$[2].servicePointGeolocation.lv95.north", is(5935705.395163289)))
@@ -366,10 +367,10 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
 
   @Test
   public void shouldUpdateServicePointAndNotCreateMultipleVersions() throws Exception {
-    ServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(ServicePointTestData.getAargauServicePointVersionModel());
+    ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(ServicePointTestData.getAargauServicePointVersionModel());
     Long id = servicePointVersionModel.getId();
 
-    ServicePointVersionModel newServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
+    CreateServicePointVersionModel newServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
     newServicePointVersionModel.setServicePointGeolocation(ServicePointGeolocationMapper.toModel(ServicePointTestData.getAargauServicePointGeolocation()));
 
     mvc.perform(MockMvcRequestBuilders.put("/v1/service-points/" + id)
