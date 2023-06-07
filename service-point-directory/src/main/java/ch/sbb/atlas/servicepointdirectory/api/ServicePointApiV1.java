@@ -14,7 +14,6 @@ import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,7 +33,7 @@ public interface ServicePointApiV1 {
       Fields.validFrom}) Pageable pageable, @ParameterObject ServicePointRequestParams servicePointRequestParams);
 
   @GetMapping("{servicePointNumber}")
-  List<ServicePointVersionModel> getServicePoint(@PathVariable Integer servicePointNumber);
+  List<ServicePointVersionModel> getServicePointVersions(@PathVariable Integer servicePointNumber);
 
   @GetMapping("versions/{id}")
   ServicePointVersionModel getServicePointVersion(@PathVariable Long id);
@@ -44,11 +43,11 @@ public interface ServicePointApiV1 {
   List<ServicePointItemImportResult> importServicePoints(@RequestBody @Valid ServicePointImportReqModel servicePoints);
 
   @ResponseStatus(HttpStatus.CREATED)
-  @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping()
   ServicePointVersionModel createServicePoint(@RequestBody @Valid ServicePointVersionModel servicePointVersionModel);
 
   @ResponseStatus(HttpStatus.OK)
-  @PutMapping(path = "{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+  @PutMapping(path = "{id}")
   List<ServicePointVersionModel> updateServicePoint(
       @PathVariable Long id,
       @RequestBody @Valid ServicePointVersionModel servicePointVersionModel
