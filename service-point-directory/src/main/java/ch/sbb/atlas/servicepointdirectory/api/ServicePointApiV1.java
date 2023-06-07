@@ -4,6 +4,8 @@ import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.configuration.Role;
 import ch.sbb.atlas.imports.servicepoint.model.ServicePointImportReqModel;
 import ch.sbb.atlas.imports.servicepoint.model.ServicePointItemImportResult;
+import ch.sbb.atlas.servicepointdirectory.api.model.CreateServicePointVersionModel;
+import ch.sbb.atlas.servicepointdirectory.api.model.ReadServicePointVersionModel;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion.Fields;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;

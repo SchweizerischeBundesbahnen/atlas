@@ -3,8 +3,8 @@ package ch.sbb.atlas.servicepointdirectory;
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.servicepointdirectory.api.CodeAndDesignation;
-import ch.sbb.atlas.servicepointdirectory.api.CreateServicePointVersionModel;
+import ch.sbb.atlas.servicepointdirectory.api.model.CodeAndDesignation;
+import ch.sbb.atlas.servicepointdirectory.api.model.CreateServicePointVersionModel;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Category;
@@ -251,7 +251,7 @@ public class ServicePointTestData {
 
   public static CreateServicePointVersionModel getAargauServicePointVersionModel() {
     return CreateServicePointVersionModel.builder()
-        .countryCodeAndServicePointId(8034510)
+        .number(8034510)
         .sloid("ch:1:sloid:18771")
         .designationLong("designation long 1")
         .designationOfficial("Aargau Strasse")
