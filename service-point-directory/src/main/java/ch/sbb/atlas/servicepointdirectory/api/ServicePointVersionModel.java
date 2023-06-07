@@ -4,7 +4,6 @@ import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.model.BaseVersionModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Category;
-import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
 import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointTechnicalTimetableType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointTrafficPointType;
@@ -34,26 +33,16 @@ import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
 import org.apache.commons.lang3.StringUtils;
 
+@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @FieldNameConstants
-@Schema(name = "ServicePointVersion")
-public class ServicePointVersionModel extends BaseVersionModel implements DatesValidator {
+public abstract class ServicePointVersionModel extends BaseVersionModel implements DatesValidator {
 
   @Schema(description = "Technical identifier", accessMode = AccessMode.READ_ONLY, example = "1")
   private Long id;
-
-  @Schema(description = "Seven digits number. First two digits represent Country Code. "
-      + "Last 5 digits represent service point ID.", example = "8034505")
-  @Min(1000000)
-  @Max(9999999)
-  private Integer countryCodeAndServicePointId;
-
-  @Valid
-  private ServicePointNumber number;
 
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
   @Schema(description = "Unique code for locations that is used in customer information. The structure is described in the "
@@ -225,17 +214,6 @@ public class ServicePointVersionModel extends BaseVersionModel implements DatesV
   @AssertTrue(message = "StopPointType only allowed for StopPoint")
   boolean isValidStopPointWithType() {
     return isStopPoint() || stopPointType == null;
-  }
-
-  @AssertTrue(message = "FreightServicePoint in CH needs sortCodeOfDestinationStation")
-  public boolean isValidFreightServicePoint() {
-    if (getNumber() != null) {
-      return !(getNumber().getCountry() == Country.SWITZERLAND && freightServicePoint && !getValidFrom().isBefore(LocalDate.now()))
-          || StringUtils.isNotBlank(sortCodeOfDestinationStation);
-    } else {
-      return !(freightServicePoint && !getValidFrom().isBefore(LocalDate.now()))
-          || StringUtils.isNotBlank(sortCodeOfDestinationStation);
-    }
   }
 
   @AssertTrue(message = "At most one of OperatingPointWithoutTimetableType, OperatingPointTechnicalTimetableType, "
