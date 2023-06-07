@@ -39,14 +39,14 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
 
   private final ServicePointVersionRepository repository;
 
-  @Autowired
-  private ServicePointController servicePointController;
+  private final ServicePointController servicePointController;
 
   private ServicePointVersion servicePointVersion;
 
   @Autowired
-  public ServicePointControllerApiTest(ServicePointVersionRepository repository) {
+  public ServicePointControllerApiTest(ServicePointVersionRepository repository, ServicePointController servicePointController) {
     this.repository = repository;
+    this.servicePointController = servicePointController;
   }
 
   @BeforeEach
