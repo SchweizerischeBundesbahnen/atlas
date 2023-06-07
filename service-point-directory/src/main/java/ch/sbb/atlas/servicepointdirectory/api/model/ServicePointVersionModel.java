@@ -17,8 +17,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.AssertTrue;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
@@ -117,12 +115,6 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
 
   @Schema(description = "ServicePoint is OperatingPointRouteNetwork", example = "false")
   private boolean operatingPointRouteNetwork;
-
-  @Min(value = 1000000, message = "Minimum value for number.")
-  @Max(value = 9999999, message = "Maximum value for number.")
-  @Schema(description = "Reference to a operatingPointRouteNetwork. OperatingPointKilometer are always related to a "
-      + "operatingPointRouteNetwork")
-  private Integer operatingPointKilometerMasterNumber;
 
   @Valid
   @Schema(description = "Reference to a operatingPointRouteNetwork. OperatingPointKilometer are always related to a "
