@@ -1,6 +1,6 @@
 package ch.sbb.atlas.searching;
 
-import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.kafka.model.Status;
 import jakarta.persistence.metamodel.SingularAttribute;
 import java.time.LocalDate;
 import java.util.List;
