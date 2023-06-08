@@ -19,6 +19,7 @@ import ch.sbb.atlas.api.lidi.enumaration.ModelType;
 import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
 import ch.sbb.atlas.api.lidi.enumaration.SublineType;
 import ch.sbb.atlas.api.model.ErrorResponse;
+import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.model.controller.BaseControllerWithAmazonS3ApiTest;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.SublineTestData;
@@ -30,10 +31,14 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MvcResult;
 
 public class SublineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
+
+  @MockBean
+  private SharedBusinessOrganisationService sharedBusinessOrganisationService;
 
   @Autowired
   private LineController lineController;
