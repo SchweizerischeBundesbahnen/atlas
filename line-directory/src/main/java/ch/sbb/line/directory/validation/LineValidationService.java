@@ -1,5 +1,6 @@
 package ch.sbb.line.directory.validation;
 
+import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.line.directory.exception.LineConflictException;
@@ -25,9 +26,11 @@ public class LineValidationService {
 
   private final LineVersionRepository lineVersionRepository;
   private final CoverageValidationService coverageValidationService;
+  private final SharedBusinessOrganisationService sharedBusinessOrganisationService;
 
   public void validateLinePreconditionBusinessRule(LineVersion lineVersion) {
     validateLineConflict(lineVersion);
+    sharedBusinessOrganisationService.validateSboidExists(lineVersion.getBusinessOrganisation());
   }
 
   public void validateLineAfterVersioningBusinessRule(LineVersion lineVersion) {

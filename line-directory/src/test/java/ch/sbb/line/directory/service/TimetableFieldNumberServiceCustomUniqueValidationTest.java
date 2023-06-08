@@ -1,5 +1,6 @@
 package ch.sbb.line.directory.service;
 
+import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.kafka.model.Status;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
@@ -12,9 +13,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 @IntegrationTest
 public class TimetableFieldNumberServiceCustomUniqueValidationTest {
+
+  @MockBean
+  private SharedBusinessOrganisationService sharedBusinessOrganisationService;
 
   private final TimetableFieldNumberService timetableFieldNumberService;
   private final TimetableFieldNumberVersionRepository versionRepository;
