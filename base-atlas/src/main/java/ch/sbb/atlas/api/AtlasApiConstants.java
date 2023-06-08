@@ -9,4 +9,7 @@ public class AtlasApiConstants {
   public static final String DATE_TIME_FORMAT_PATTERN = "yyyy-MM-dd HH:mm:ss";
   public static final String DATE_TIME_FOR_FILE_FORMAT_PATTERN = "yyyy-MM-dd_HH-mm-ss";
   public static final String DATE_FORMAT_PATTERN_CH = "dd.MM.yyyy";
+  public static final Integer MIN_SEVEN_DIGITS_NUMBER = 1000000;
+  public static final Integer MAX_SEVEN_DIGITS_NUMBER = 9999999;
+  
 }
