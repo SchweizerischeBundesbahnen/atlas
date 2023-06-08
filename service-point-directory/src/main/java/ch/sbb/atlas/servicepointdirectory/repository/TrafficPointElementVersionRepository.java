@@ -11,4 +11,6 @@ public interface TrafficPointElementVersionRepository extends
     JpaRepository<TrafficPointElementVersion, Long>, JpaSpecificationExecutor<TrafficPointElementVersion> {
 
   List<TrafficPointElementVersion> findAllBySloidOrderByValidFrom(String sloid);
+
+  boolean existsBySloid(String sloid);
 }

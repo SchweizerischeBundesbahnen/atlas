@@ -1,7 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
-import ch.sbb.atlas.imports.servicepoint.model.ServicePointItemImportResult;
-import ch.sbb.atlas.imports.servicepoint.model.ServicePointItemImportResult.ServicePointItemImportResultBuilder;
+import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointItemImportResult;
+import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointItemImportResult.ServicePointItemImportResultBuilder;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
