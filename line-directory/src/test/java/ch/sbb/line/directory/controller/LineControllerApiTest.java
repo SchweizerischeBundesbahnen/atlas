@@ -31,6 +31,7 @@ import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
 import ch.sbb.atlas.api.lidi.enumaration.SublineType;
 import ch.sbb.atlas.api.model.ErrorResponse;
+import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.kafka.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerWithAmazonS3ApiTest;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
@@ -47,10 +48,14 @@ import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MvcResult;
 
 public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
+
+  @MockBean
+  private SharedBusinessOrganisationService sharedBusinessOrganisationService;
 
   @Autowired
   private LineController lineController;

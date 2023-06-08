@@ -9,11 +9,15 @@ import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
 @Transactional
 public abstract class BaseTimetableFieldNumberServiceTest {
+
+  @MockBean
+  private TimetableFieldNumberValidationService timetableFieldNumberValidationService;
 
   protected static final String TTFNID = "ch:1:ttfnid:100000";
   protected TimetableFieldNumberVersionRepository versionRepository;
