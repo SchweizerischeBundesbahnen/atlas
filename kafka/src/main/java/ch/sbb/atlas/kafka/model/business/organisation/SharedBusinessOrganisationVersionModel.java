@@ -1,10 +1,6 @@
-package ch.sbb.atlas.business.organisation.entity;
+package ch.sbb.atlas.kafka.model.business.organisation;
 
 import ch.sbb.atlas.kafka.model.Status;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
@@ -13,7 +9,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.experimental.FieldNameConstants;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,11 +16,8 @@ import lombok.experimental.FieldNameConstants;
 @Setter
 @ToString
 @Builder
-@FieldNameConstants
-@Entity(name = "shared_business_organisation_version")
-public class SharedBusinessOrganisationVersion {
+public class SharedBusinessOrganisationVersionModel {
 
-  @Id
   private Long id;
 
   @NotNull
@@ -59,7 +51,6 @@ public class SharedBusinessOrganisationVersion {
   private Integer organisationNumber;
 
   @NotNull
-  @Enumerated(EnumType.STRING)
   private Status status;
 
   @NotNull
