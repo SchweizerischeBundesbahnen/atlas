@@ -47,6 +47,7 @@
     "sanja.dedijer@sbb.ch",
     "antonio.romano@sbb.ch",
     "luca.ammann2@sbb.ch",
+    "daniel.djukic2@sbb.ch",
     "niko.biljesko@sbb.ch",
     "vital.scholl@sbb.ch"
   ],
@@ -119,7 +120,7 @@
       "limits": [
         {
           "period": "minute",
-          "value": 5,
+          "value": 10,
           "metric_system_name": "read_item"
         },
         {
@@ -140,36 +141,34 @@
       ]
     },
     {
-      "name": "Admin",
-      "description": "Plan providing admin rights to clients",
-      "system_name": "admin",
-      "approval_required": false,
+      "name": "Unlimited Read",
+      "description": "Plan providing unlimited read rights to clients",
+      "system_name": "unlimited_read",
+      "approval_required": true,
       "limits": [
         {
-          "period": "minute",
-          "value": 500,
           "metric_system_name": "read_item"
         },
         {
-          "period": "day",
-          "value": 500,
+          "period": "eternity",
+          "value": 0,
           "metric_system_name": "create_item"
         },
         {
-          "period": "hour",
-          "value": 500,
+          "period": "eternity",
+          "value": 0,
           "metric_system_name": "update_item"
         },
         {
-          "period": "week",
-          "value": 500,
+          "period": "eternity",
+          "value": 0,
           "metric_system_name": "delete_item"
         }
       ]
     },
     {
-      "name": "Unlimited",
-      "system_name": "unlimited",
+      "name": "Unlimited Read & Write",
+      "system_name": "unlimited_read_and_write",
       "approval_required": true
     }
   ]
