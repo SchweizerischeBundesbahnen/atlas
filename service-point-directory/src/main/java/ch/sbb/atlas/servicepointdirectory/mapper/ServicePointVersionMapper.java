@@ -58,37 +58,37 @@ public class ServicePointVersionMapper {
         .build();
   }
 
-  public static ServicePointVersion toEntity(CreateServicePointVersionModel servicePointVersionModel) {
-    ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(servicePointVersionModel.getNumber());
-    ServicePointNumber operatingPointKilometerMasterNumber = ServicePointNumber.ofNumberWithoutCheckDigit(servicePointVersionModel.getOperatingPointKilometerMasterNumber());
+  public static ServicePointVersion toEntity(CreateServicePointVersionModel createServicePointVersionModel) {
+    ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(createServicePointVersionModel.getNumberWithoutCheckDigit());
+    ServicePointNumber operatingPointKilometerMasterNumber = ServicePointNumber.ofNumberWithoutCheckDigit(createServicePointVersionModel.getOperatingPointKilometerMasterNumber());
     return ServicePointVersion.builder()
-        .id(servicePointVersionModel.getId())
+        .id(createServicePointVersionModel.getId())
         .number(servicePointNumber)
-        .sloid(servicePointVersionModel.getSloid())
+        .sloid(createServicePointVersionModel.getSloid())
         .numberShort(servicePointNumber.getNumberShort())
         .country(servicePointNumber.getCountry())
-        .designationLong(servicePointVersionModel.getDesignationLong())
-        .designationOfficial(servicePointVersionModel.getDesignationOfficial())
-        .abbreviation(servicePointVersionModel.getAbbreviation())
-        .statusDidok3(servicePointVersionModel.getStatusDidok3())
-        .sortCodeOfDestinationStation(servicePointVersionModel.getSortCodeOfDestinationStation())
-        .businessOrganisation(servicePointVersionModel.getBusinessOrganisation())
-        .operatingPointType(servicePointVersionModel.getOperatingPointType())
-        .stopPointType(servicePointVersionModel.getStopPointType())
-        .status(servicePointVersionModel.getStatus())
+        .designationLong(createServicePointVersionModel.getDesignationLong())
+        .designationOfficial(createServicePointVersionModel.getDesignationOfficial())
+        .abbreviation(createServicePointVersionModel.getAbbreviation())
+        .statusDidok3(createServicePointVersionModel.getStatusDidok3())
+        .sortCodeOfDestinationStation(createServicePointVersionModel.getSortCodeOfDestinationStation())
+        .businessOrganisation(createServicePointVersionModel.getBusinessOrganisation())
+        .operatingPointType(createServicePointVersionModel.getOperatingPointType())
+        .stopPointType(createServicePointVersionModel.getStopPointType())
+        .status(createServicePointVersionModel.getStatus())
         .operatingPointKilometerMaster(operatingPointKilometerMasterNumber)
-        .operatingPointRouteNetwork(servicePointVersionModel.isOperatingPointRouteNetwork())
-        .comment(servicePointVersionModel.getFotComment())
-        .validFrom(servicePointVersionModel.getValidFrom())
-        .validTo(servicePointVersionModel.getValidTo())
-        .freightServicePoint(servicePointVersionModel.isFreightServicePoint())
-        .operatingPoint(servicePointVersionModel.isOperatingPoint())
-        .operatingPointWithTimetable(servicePointVersionModel.isOperatingPointWithTimetable())
-        .operatingPointTechnicalTimetableType(servicePointVersionModel.getOperatingPointTechnicalTimetableType())
-        .operatingPointTrafficPointType(servicePointVersionModel.getOperatingPointTrafficPointType())
-        .categories(Set.copyOf(servicePointVersionModel.getCategories()))
-        .meansOfTransport(Set.copyOf(servicePointVersionModel.getMeansOfTransport()))
-        .servicePointGeolocation(ServicePointGeolocationMapper.toEntity(servicePointVersionModel.getServicePointGeolocation()))
+        .operatingPointRouteNetwork(createServicePointVersionModel.isOperatingPointRouteNetwork())
+        .comment(createServicePointVersionModel.getFotComment())
+        .validFrom(createServicePointVersionModel.getValidFrom())
+        .validTo(createServicePointVersionModel.getValidTo())
+        .freightServicePoint(createServicePointVersionModel.isFreightServicePoint())
+        .operatingPoint(createServicePointVersionModel.isOperatingPoint())
+        .operatingPointWithTimetable(createServicePointVersionModel.isOperatingPointWithTimetable())
+        .operatingPointTechnicalTimetableType(createServicePointVersionModel.getOperatingPointTechnicalTimetableType())
+        .operatingPointTrafficPointType(createServicePointVersionModel.getOperatingPointTrafficPointType())
+        .categories(Set.copyOf(createServicePointVersionModel.getCategories()))
+        .meansOfTransport(Set.copyOf(createServicePointVersionModel.getMeansOfTransport()))
+        .servicePointGeolocation(ServicePointGeolocationMapper.toEntity(createServicePointVersionModel.getServicePointGeolocation()))
         .build();
   }
 
