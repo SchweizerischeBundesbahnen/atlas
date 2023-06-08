@@ -4,7 +4,7 @@ import static ch.sbb.line.directory.converter.CmykColorConverter.fromCmykString;
 import static ch.sbb.line.directory.converter.RgbColorConverter.fromHex;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.kafka.model.Status;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.line.directory.entity.LineVersionSnapshot;

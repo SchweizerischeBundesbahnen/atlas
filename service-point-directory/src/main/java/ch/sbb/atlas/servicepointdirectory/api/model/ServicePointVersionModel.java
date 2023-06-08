@@ -2,7 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.api.model;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.model.BaseVersionModel;
-import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.kafka.model.Status;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Category;
 import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointTechnicalTimetableType;
