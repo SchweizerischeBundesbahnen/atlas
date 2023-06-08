@@ -31,7 +31,6 @@ public class JobCompletionListener implements JobExecutionListener {
     StepExecution stepExecution = jobExecution.getStepExecutions().stream().findFirst().get();
     if (ExitStatus.COMPLETED.equals(jobExecution.getExitStatus())) {
       sendSuccessfullyNotification(stepExecution);
-      clearDBFromSuccessImportedItem(stepExecution);
     }
     if (ExitStatus.FAILED.equals(jobExecution.getExitStatus())) {
       sendUnsuccessffulyNotification(stepExecution);
@@ -52,11 +51,6 @@ public class JobCompletionListener implements JobExecutionListener {
     MailNotification mailNotification = mailNotificationService.buildMailSuccessNotification(jobName, exportedFiles,
         stepExecution);
     mailProducerService.produceMailNotification(mailNotification);
-  }
-
-  private void clearDBFromSuccessImportedItem(StepExecution stepExecution) {
-    log.info("Deleating item processed from execution: {} ", stepExecution);
-    //TODO
   }
 
   private String getJobName(StepExecution stepExecution) {
