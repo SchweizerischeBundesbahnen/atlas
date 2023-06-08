@@ -2,6 +2,7 @@ package ch.sbb.line.directory.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.kafka.model.Status;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.line.directory.LineTestData;
@@ -14,11 +15,15 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
 @Transactional
 public class LineServiceVersioningTest {
+
+  @MockBean
+  private SharedBusinessOrganisationService sharedBusinessOrganisationService;
 
   private static final String DESCRIPTION = LineTestData.lineVersion().getDescription();
 
