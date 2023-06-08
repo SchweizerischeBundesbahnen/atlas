@@ -1,6 +1,6 @@
 package ch.sbb.line.directory.service;
 
-import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.kafka.model.Status;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import java.util.ArrayList;

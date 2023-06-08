@@ -3,7 +3,7 @@ package ch.sbb.line.directory.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.kafka.model.Status;
 import ch.sbb.atlas.versioning.exception.DateValidationException;
 import ch.sbb.line.directory.entity.TimetableFieldLineRelation;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
