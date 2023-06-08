@@ -1,5 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.api.model;
 
+import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
+import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Max;
@@ -36,7 +38,8 @@ public class CreateServicePointVersionModel extends ServicePointVersionModel {
 
     @AssertTrue(message = "FreightServicePoint in CH needs sortCodeOfDestinationStation")
     public boolean isValidFreightServicePoint() {
-        return !(super.isFreightServicePoint() && !getValidFrom().isBefore(LocalDate.now()))
+        ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(numberWithoutCheckDigit);
+        return !(servicePointNumber.getCountry() == Country.SWITZERLAND && super.isFreightServicePoint() && !getValidFrom().isBefore(LocalDate.now()))
             || StringUtils.isNotBlank(super.getSortCodeOfDestinationStation());
     }
 
