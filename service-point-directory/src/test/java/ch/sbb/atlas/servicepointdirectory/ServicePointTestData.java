@@ -251,7 +251,7 @@ public class ServicePointTestData {
 
   public static CreateServicePointVersionModel getAargauServicePointVersionModel() {
     return CreateServicePointVersionModel.builder()
-        .number(8034510)
+        .numberWithoutCheckDigit(8034510)
         .sloid("ch:1:sloid:18771")
         .designationLong("designation long 1")
         .designationOfficial("Aargau Strasse")
