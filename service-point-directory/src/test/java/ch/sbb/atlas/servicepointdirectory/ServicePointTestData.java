@@ -1,8 +1,8 @@
 package ch.sbb.atlas.servicepointdirectory;
 
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
+import ch.sbb.atlas.kafka.model.Status;
 import ch.sbb.atlas.kafka.model.SwissCanton;
-import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepointdirectory.api.model.CodeAndDesignation;
 import ch.sbb.atlas.servicepointdirectory.api.model.CreateServicePointVersionModel;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
