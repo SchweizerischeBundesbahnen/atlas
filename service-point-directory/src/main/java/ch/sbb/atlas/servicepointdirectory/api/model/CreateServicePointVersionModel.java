@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.api.model;
 
+import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -26,12 +27,12 @@ public class CreateServicePointVersionModel extends ServicePointVersionModel {
 
     @Schema(description = "Seven digits number. First two digits represent Country Code. "
         + "Last 5 digits represent service point ID.", example = "8034505")
-    @Min(1000000)
-    @Max(9999999)
+    @Min(AtlasApiConstants.MIN_SEVEN_DIGITS_NUMBER)
+    @Max(AtlasApiConstants.MAX_SEVEN_DIGITS_NUMBER)
     private Integer numberWithoutCheckDigit;
 
-    @Min(value = 1000000, message = "Minimum value for number.")
-    @Max(value = 9999999, message = "Maximum value for number.")
+    @Min(value = AtlasApiConstants.MIN_SEVEN_DIGITS_NUMBER, message = "Minimum value for number.")
+    @Max(value = AtlasApiConstants.MAX_SEVEN_DIGITS_NUMBER, message = "Maximum value for number.")
     @Schema(description = "Reference to a operatingPointRouteNetwork. OperatingPointKilometer are always related to a "
         + "operatingPointRouteNetwork")
     private Integer operatingPointKilometerMasterNumber;
