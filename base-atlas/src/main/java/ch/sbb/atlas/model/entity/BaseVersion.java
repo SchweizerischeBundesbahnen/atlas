@@ -1,6 +1,6 @@
 package ch.sbb.atlas.model.entity;
 
-import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.kafka.model.Status;
 import ch.sbb.atlas.validation.DatesValidator;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

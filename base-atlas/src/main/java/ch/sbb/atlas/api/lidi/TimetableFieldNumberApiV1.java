@@ -3,7 +3,7 @@ package ch.sbb.atlas.api.lidi;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.model.ErrorResponse;
-import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.kafka.model.Status;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
