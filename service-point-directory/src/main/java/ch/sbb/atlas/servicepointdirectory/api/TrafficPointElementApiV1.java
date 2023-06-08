@@ -3,9 +3,13 @@ package ch.sbb.atlas.servicepointdirectory.api;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.TrafficPointElementVersionModel;
+import ch.sbb.atlas.configuration.Role;
+import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointImportRequestModel;
+import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointItemImportResult;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion.Fields;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -13,8 +17,11 @@ import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -34,5 +41,10 @@ public interface TrafficPointElementApiV1 {
 
   @GetMapping("versions/{id}")
   TrafficPointElementVersionModel getTrafficPointElementVersion(@PathVariable Long id);
+
+  @Secured(Role.ROLE_PREFIX + Role.ATLAS_ADMIN)
+  @PostMapping("import")
+  List<TrafficPointItemImportResult> importTrafficPoints(
+      @RequestBody @Valid TrafficPointImportRequestModel trafficPointImportRequestModel);
 
 }
