@@ -15,6 +15,19 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+atlas:
+  client:
+    gateway:
+      url: http://localhost:8888
+
+kafka:
+  atlas:
+    business:
+      organisation:
+        topic: atlas.business.organisation
+        groupId: atlas.kafka.lidi.business.organisation.groupId
+
 logging:
   level:
     root: ERROR
@@ -30,8 +43,3 @@ logging:
           test: error
         test: error
         web: error
-
-atlas:
-  client:
-    gateway:
-      url: http://localhost:8888
