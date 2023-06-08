@@ -5,6 +5,7 @@ import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_TYPE_
 import static ch.sbb.importservice.utils.JobDescriptionConstants.FULL_PATH_FILENAME_JOB_PARAMETER;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_LOADING_POINT_CSV_JOB_NAME;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_SERVICE_POINT_CSV_JOB_NAME;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_TRAFFIC_POINT_CSV_JOB_NAME;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.START_AT_JOB_PARAMETER;
 
 import ch.sbb.atlas.batch.exception.JobExecutionException;
@@ -134,10 +135,10 @@ public class ImportServicePointBatchControllerApiV1 {
     try {
       JobExecution execution = jobLauncher.run(importTrafficPointCsvJob, jobParameters);
       log.info("Job executed with status: {}", execution.getExitStatus().getExitCode());
-      return ResponseEntity.ok().body(execution);
+      return ResponseEntity.ok().body(execution.toString());
     } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException |
              JobParametersInvalidException e) {
-      throw new JobExecutionException(IMPORT_SERVICE_POINT_CSV_JOB_NAME, e);
+      throw new JobExecutionException(IMPORT_TRAFFIC_POINT_CSV_JOB_NAME, e);
     } finally {
       file.delete();
     }
