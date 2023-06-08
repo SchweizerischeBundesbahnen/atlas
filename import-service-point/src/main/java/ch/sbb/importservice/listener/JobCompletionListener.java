@@ -59,7 +59,7 @@ public class JobCompletionListener implements JobExecutionListener {
   }
 
   private void clearDBFromSuccessImportedItem(StepExecution stepExecution) {
-    log.info("Deleating item processed from execution: {} ", stepExecution);
+    log.info("Deleting item processed from execution: {} ", stepExecution);
     importProcessedItemRepository.deleteAllByStepExecutionIdAndResponseStatus(stepExecution.getId(),
         ItemImportResponseStatus.SUCCESS);
   }

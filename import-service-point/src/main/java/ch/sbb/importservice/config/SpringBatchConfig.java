@@ -6,6 +6,7 @@ import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_TRAFFIC_
 
 import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
+import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointCsvModelContainer;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointElementCsvModel;
 import ch.sbb.importservice.listener.JobCompletionListener;
 import ch.sbb.importservice.listener.StepTracerListener;
@@ -91,17 +92,18 @@ public class SpringBatchConfig {
 
   @StepScope
   @Bean
-  public ThreadSafeListItemReader<TrafficPointElementCsvModel> trafficPointListItemReader(
+  public ThreadSafeListItemReader<TrafficPointCsvModelContainer> trafficPointListItemReader(
       @Value("#{jobParameters[fullPathFileName]}") String pathToFile) {
-    List<TrafficPointElementCsvModel> actualTrafficPointCsvModelsFromS3;
+    List<TrafficPointElementCsvModel> actualTrafficPointCsvModels;
     if (pathToFile != null) {
       File file = new File(pathToFile);
-      actualTrafficPointCsvModelsFromS3 = csvService.getActualTrafficPointCsvModels(file);
+      actualTrafficPointCsvModels = csvService.getActualTrafficPointCsvModels(file);
     } else {
-      actualTrafficPointCsvModelsFromS3 = csvService.getActualTrafficPointCsvModelsFromS3();
+      actualTrafficPointCsvModels = csvService.getActualTrafficPointCsvModelsFromS3();
     }
-
-    return new ThreadSafeListItemReader<>(Collections.synchronizedList(actualTrafficPointCsvModelsFromS3));
+    List<TrafficPointCsvModelContainer> trafficPointCsvModelContainers = csvService.mapToTrafficPointCsvModelContainers(
+        actualTrafficPointCsvModels);
+    return new ThreadSafeListItemReader<>(Collections.synchronizedList(trafficPointCsvModelContainers));
   }
 
   @Bean
@@ -134,15 +136,16 @@ public class SpringBatchConfig {
   }
 
   @Bean
-  public Step parseTrafficPointCsvStep(ThreadSafeListItemReader<TrafficPointElementCsvModel> trafficPointListItemReader) {
+  public Step parseTrafficPointCsvStep(ThreadSafeListItemReader<TrafficPointCsvModelContainer> trafficPointListItemReader) {
     String stepName = "parseTrafficPointCsvStep";
     return new StepBuilder(stepName, jobRepository)
-        .<TrafficPointElementCsvModel, TrafficPointElementCsvModel>chunk(CHUNK_SIZE, transactionManager)
+        .<TrafficPointCsvModelContainer, TrafficPointCsvModelContainer>chunk(CHUNK_SIZE, transactionManager)
         .reader(trafficPointListItemReader)
         .writer(trafficPointApiWriter)
         .faultTolerant()
         .backOffPolicy(StepUtils.getBackOffPolicy(stepName))
         .retryPolicy(StepUtils.getRetryPolicy(stepName))
+        .listener(stepTracerListener)
         .taskExecutor(asyncTaskExecutor())
         .build();
   }
@@ -168,7 +171,7 @@ public class SpringBatchConfig {
   }
 
   @Bean
-  public Job importTrafficPointCsvJob(ThreadSafeListItemReader<TrafficPointElementCsvModel> trafficPointListItemReader) {
+  public Job importTrafficPointCsvJob(ThreadSafeListItemReader<TrafficPointCsvModelContainer> trafficPointListItemReader) {
     return new JobBuilder(IMPORT_TRAFFIC_POINT_CSV_JOB_NAME, jobRepository)
         .listener(jobCompletionListener)
         .incrementer(new RunIdIncrementer())
