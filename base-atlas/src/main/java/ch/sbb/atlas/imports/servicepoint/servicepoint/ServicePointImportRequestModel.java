@@ -1,4 +1,4 @@
-package ch.sbb.atlas.imports.servicepoint.model;
+package ch.sbb.atlas.imports.servicepoint.servicepoint;
 
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -12,8 +12,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Schema(name = "ServicePointImportReRequest")
-public class ServicePointImportReqModel {
+@Schema(name = "ServicePointImportRequest")
+public class ServicePointImportRequestModel {
 
   @Schema(name = "List of ServicePointsContainer to import")
   @NotNull

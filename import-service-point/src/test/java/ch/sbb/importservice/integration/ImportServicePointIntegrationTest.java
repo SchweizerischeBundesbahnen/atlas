@@ -19,7 +19,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointCsvModel;
-import ch.sbb.atlas.imports.servicepoint.model.ServicePointItemImportResult;
+import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
 import ch.sbb.atlas.model.controller.IntegrationTest;
