@@ -26,7 +26,7 @@ public class CreateServicePointVersionModel extends ServicePointVersionModel {
         + "Last 5 digits represent service point ID.", example = "8034505")
     @Min(1000000)
     @Max(9999999)
-    private Integer number;
+    private Integer numberWithoutCheckDigit;
 
     @Min(value = 1000000, message = "Minimum value for number.")
     @Max(value = 9999999, message = "Maximum value for number.")
