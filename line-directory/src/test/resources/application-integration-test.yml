@@ -66,6 +66,10 @@ kafka:
       administration:
         topic: atlas.user.administration
         groupId: atlas.kafka.lidi.user.administration.groupId
+    business:
+      organisation:
+        topic: atlas.business.organisation
+        groupId: atlas.kafka.bodi.business.organisation.groupId
 
 atlas:
   client:
