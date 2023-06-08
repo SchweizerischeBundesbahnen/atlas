@@ -9,6 +9,8 @@ import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
 import ch.sbb.exportservice.processor.ServicePointVersionProcessor;
 import ch.sbb.exportservice.repository.PointRepository;
+import ch.sbb.exportservice.tasklet.FileDeletingTasklet;
+import ch.sbb.exportservice.tasklet.FileUploadTasklet;
 import ch.sbb.exportservice.utils.StepUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -157,7 +159,33 @@ public class SpringBatchConfig {
         .listener(jobCompletionListener)
         .incrementer(new RunIdIncrementer())
         .flow(parseServicePointCsvStep())
+        .next(uploadFilesStep())
+        .next(deleteFilesStep())
         .end()
+        .build();
+  }
+
+  @Bean
+  public FileUploadTasklet fileUploadTasklet() {
+    return new FileUploadTasklet();
+  }
+
+  @Bean
+  public FileDeletingTasklet fileDeletingTasklet() {
+    return new FileDeletingTasklet();
+  }
+
+  @Bean
+  public Step uploadFilesStep() {
+    return new StepBuilder("uploadFiles", jobRepository)
+        .tasklet(fileUploadTasklet(), transactionManager)
+        .build();
+  }
+
+  @Bean
+  public Step deleteFilesStep() {
+    return new StepBuilder("deleteFiles", jobRepository)
+        .tasklet(fileDeletingTasklet(), transactionManager)
         .build();
   }
 
