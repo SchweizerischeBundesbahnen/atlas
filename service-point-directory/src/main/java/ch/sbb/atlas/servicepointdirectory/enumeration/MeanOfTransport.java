@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 public enum MeanOfTransport implements CodeAndDesignations {
 
   TRAIN(0, "Z", "Zug", "Zug", "Train", "Train", "Treno"),
-  BUS(1, "B", "Bus", "Bus", "Bus", "Coach", "Bus"),
+  BUS(1, "B", "Bus", "Bus", "Bus", "Bus", "Bus"),
   TRAM(2, "T", "Tram", "Tram", "Tram", "Tram", "Tram"),
   BOAT(3, "S", "Schiff", "Schiff", "Bateau", "Boat", "Nave"),
   CABLE_CAR(4, "L", "Kabinenbahn", "Kabinenbahn", "Télécabine", "Cable Car", "Cabinovia"),
