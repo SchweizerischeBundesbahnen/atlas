@@ -143,7 +143,7 @@
     {
       "name": "Unlimited Read",
       "description": "Plan providing unlimited read rights to clients",
-      "system_name": "unlimited read",
+      "system_name": "unlimited_read",
       "approval_required": true,
       "limits": [
         {
@@ -168,7 +168,7 @@
     },
     {
       "name": "Unlimited Read & Write",
-      "system_name": "unlimited read & write",
+      "system_name": "unlimited_read_and_write",
       "approval_required": true
     }
   ]
