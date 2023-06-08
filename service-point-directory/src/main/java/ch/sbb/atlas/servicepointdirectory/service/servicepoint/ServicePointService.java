@@ -27,7 +27,7 @@ public class ServicePointService {
         servicePointSearchRestrictions.getPageable());
   }
 
-  public List<ServicePointVersion> findServicePoint(ServicePointNumber servicePointNumber) {
+  public List<ServicePointVersion> findAllServicePointVersions(ServicePointNumber servicePointNumber) {
     return servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber);
   }
 
@@ -48,7 +48,7 @@ public class ServicePointService {
   }
 
   public void updateServicePointVersion(ServicePointVersion edited) {
-    List<ServicePointVersion> dbVersions = findServicePoint(edited.getNumber());
+    List<ServicePointVersion> dbVersions = findAllServicePointVersions(edited.getNumber());
     ServicePointVersion current = getCurrentServicePointVersion(dbVersions, edited);
     List<VersionedObject> versionedObjects = versionableService.versioningObjectsWithDeleteByNullProperties(current, edited,
         dbVersions);
