@@ -2,6 +2,7 @@ package ch.sbb.atlas.user.administration.security;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.business.organisation.SharedBusinessOrganisationConfig;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
@@ -15,9 +16,13 @@ import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 @IntegrationTest
 class UserAdministrationLoaderTest {
+
+  @MockBean
+  private SharedBusinessOrganisationConfig sharedBusinessOrganisationConfig;
 
   private final PermissionRepository permissionRepository;
   private final UserAdministrationLoader userAdministrationLoader;
