@@ -147,9 +147,6 @@
       "approval_required": true,
       "limits": [
         {
-          "metric_system_name": "read_item"
-        },
-        {
           "period": "eternity",
           "value": 0,
           "metric_system_name": "create_item"
