@@ -1,7 +1,9 @@
 package ch.sbb.importservice.service;
 
-import ch.sbb.atlas.imports.servicepoint.model.ServicePointImportReqModel;
-import ch.sbb.atlas.imports.servicepoint.model.ServicePointItemImportResult;
+import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointImportRequestModel;
+import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointItemImportResult;
+import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointImportRequestModel;
+import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointItemImportResult;
 import ch.sbb.importservice.client.SePoDiClient;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -15,8 +17,11 @@ public class SePoDiClientService {
 
   private final SePoDiClient sePoDiClient;
 
-  public List<ServicePointItemImportResult> postServicePoints(ServicePointImportReqModel servicePointImportReqModel) {
-    return sePoDiClient.postServicePointsImport(servicePointImportReqModel);
+  public List<ServicePointItemImportResult> postServicePoints(ServicePointImportRequestModel servicePointImportRequestModel) {
+    return sePoDiClient.postServicePointsImport(servicePointImportRequestModel);
   }
 
+  public List<TrafficPointItemImportResult> postTrafficPoints(TrafficPointImportRequestModel trafficPointImportRequestModel) {
+    return sePoDiClient.postTrafficPointsImport(trafficPointImportRequestModel);
+  }
 }
