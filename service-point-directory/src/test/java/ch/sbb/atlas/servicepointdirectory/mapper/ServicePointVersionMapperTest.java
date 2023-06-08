@@ -3,8 +3,8 @@ package ch.sbb.atlas.servicepointdirectory.mapper;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.servicepointdirectory.api.CodeAndDesignation;
-import ch.sbb.atlas.servicepointdirectory.api.ServicePointVersionModel;
+import ch.sbb.atlas.servicepointdirectory.api.model.CodeAndDesignation;
+import ch.sbb.atlas.servicepointdirectory.api.model.ReadServicePointVersionModel;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Category;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
@@ -53,9 +53,9 @@ class ServicePointVersionMapperTest {
         .build();
 
     // When
-    ServicePointVersionModel servicePointVersionModel = ServicePointVersionMapper.fromEntity(servicePointVersion);
+    ReadServicePointVersionModel servicePointVersionModel = ServicePointVersionMapper.toModel(servicePointVersion);
 
-    ServicePointVersionModel expected = ServicePointVersionModel
+    ReadServicePointVersionModel expected = ReadServicePointVersionModel
         .builder()
         .number(ServicePointNumber.of(85000307))
         .sloid("ch:1:sloid:30")
