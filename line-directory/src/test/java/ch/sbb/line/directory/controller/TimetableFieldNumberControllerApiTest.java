@@ -16,6 +16,7 @@ import ch.sbb.atlas.kafka.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerWithAmazonS3ApiTest;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.repository.TimetableFieldNumberVersionRepository;
+import ch.sbb.line.directory.service.TimetableFieldNumberValidationService;
 import ch.sbb.line.directory.service.export.TimetableFieldNumberVersionExportService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -25,12 +26,16 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 public class TimetableFieldNumberControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
+
+  @MockBean
+  private TimetableFieldNumberValidationService timetableFieldNumberValidationService;
 
   private final TimetableFieldNumberVersion version =
       TimetableFieldNumberVersion.builder()
