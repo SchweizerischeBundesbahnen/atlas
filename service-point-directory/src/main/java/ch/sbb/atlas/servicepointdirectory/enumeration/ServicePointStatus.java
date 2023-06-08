@@ -19,7 +19,7 @@ public enum ServicePointStatus implements CodeAndDesignations {
   IN_POST_OPERATIONAL_PHASE(5, "Post operationale Phase", "En phase post-opératoire", "In fase post-operativa",
       "In post-operational phase"),
   HISTORICAL(6, "Historisch", "Historique", "Storico", "Historical"),
-  UNKNOWN(7, "Unbekannt", "Inconnu", "Sconosciuto", "unknown");
+  UNKNOWN(7, "Unbekannt", "Inconnu", "Sconosciuto", "Unknown");
 
   private final Integer id;
   private final String designationDe;
