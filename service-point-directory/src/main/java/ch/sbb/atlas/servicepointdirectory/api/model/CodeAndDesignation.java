@@ -1,4 +1,4 @@
-package ch.sbb.atlas.servicepointdirectory.api;
+package ch.sbb.atlas.servicepointdirectory.api.model;
 
 import ch.sbb.atlas.servicepointdirectory.enumeration.CodeAndDesignations;
 import io.swagger.v3.oas.annotations.media.Schema;
