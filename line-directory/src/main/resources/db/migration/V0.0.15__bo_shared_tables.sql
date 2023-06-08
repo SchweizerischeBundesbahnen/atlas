@@ -1,7 +1,7 @@
 -- Business Organisation Version
 -- Shared via Kafka to this service
 
-create table business_organisation_version
+create table shared_business_organisation_version
 (
     id                       bigint           primary key,
     sboid                    varchar(32)      not null,

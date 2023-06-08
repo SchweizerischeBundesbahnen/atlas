@@ -1,6 +1,6 @@
 package ch.sbb.line.directory.controller;
 
-import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.kafka.model.Status;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.api.lidi.TimetableFieldNumberApiV1;

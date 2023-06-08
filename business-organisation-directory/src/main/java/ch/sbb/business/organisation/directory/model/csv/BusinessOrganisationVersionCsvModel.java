@@ -2,7 +2,7 @@ package ch.sbb.business.organisation.directory.model.csv;
 
 import ch.sbb.atlas.api.bodi.SboidToSaidConverter;
 import ch.sbb.atlas.export.model.VersionCsvModel;
-import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.kafka.model.Status;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
 import ch.sbb.atlas.api.bodi.enumeration.BusinessType;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

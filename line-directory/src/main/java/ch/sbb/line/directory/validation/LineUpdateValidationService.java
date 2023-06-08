@@ -1,6 +1,6 @@
 package ch.sbb.line.directory.validation;
 
-import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.kafka.model.Status;
 import ch.sbb.atlas.user.administration.security.service.UpdateAffectedVersionLocator;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.model.VersioningAction;

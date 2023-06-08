@@ -1,6 +1,6 @@
 package ch.sbb.atlas.workflow.service;
 
-import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.kafka.model.Status;
 import ch.sbb.atlas.model.entity.BaseVersion;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.workflow.model.AtlasVersionSnapshotable;
