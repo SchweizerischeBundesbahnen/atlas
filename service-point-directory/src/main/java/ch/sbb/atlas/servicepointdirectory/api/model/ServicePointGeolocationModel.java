@@ -1,17 +1,13 @@
-package ch.sbb.atlas.servicepointdirectory.api;
+package ch.sbb.atlas.servicepointdirectory.api.model;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
-import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
-import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
-import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
 import ch.sbb.atlas.kafka.model.SwissCanton;
-import ch.sbb.atlas.servicepointdirectory.model.CoordinatePair;
+import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.constraints.Size;
-import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -26,50 +22,11 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldNameConstants
 @Schema(name = "ServicePointGeolocation")
-public class ServicePointGeolocationModel extends GeolocationModel {
+public class ServicePointGeolocationModel extends GeolocationBaseModel {
 
   @JsonIgnore
   private Country country;
   private SwissLocation swissLocation;
-
-  public static ServicePointGeolocationModel fromEntity(ServicePointGeolocation servicePointGeolocation) {
-    if (servicePointGeolocation == null) {
-      return null;
-    }
-    Map<SpatialReference, CoordinatePair> coordinates = getTransformedCoordinates(servicePointGeolocation);
-    return ServicePointGeolocationModel.builder()
-        .country(servicePointGeolocation.getCountry())
-        .swissLocation(SwissLocation.builder()
-            .canton(servicePointGeolocation.getSwissCanton())
-            .cantonInformation(getCanton(servicePointGeolocation))
-            .district(DistrictModel.builder()
-                .fsoNumber(servicePointGeolocation.getSwissDistrictNumber())
-                .districtName(servicePointGeolocation.getSwissDistrictName())
-                .build())
-            .localityMunicipality(LocalityMunicipalityModel.builder()
-                .fsoNumber(servicePointGeolocation.getSwissMunicipalityNumber())
-                .municipalityName(servicePointGeolocation.getSwissMunicipalityName())
-                .localityName(servicePointGeolocation.getSwissLocalityName())
-                .build())
-            .build())
-        .spatialReference(servicePointGeolocation.getSpatialReference())
-        .lv95(coordinates.get(SpatialReference.LV95))
-        .wgs84(coordinates.get(SpatialReference.WGS84))
-        .wgs84web(coordinates.get(SpatialReference.WGS84WEB))
-        .height(servicePointGeolocation.getHeight())
-        .build();
-  }
-
-  private static Canton getCanton(ServicePointGeolocation servicePointGeolocation) {
-    if (servicePointGeolocation.getSwissCanton() == null) {
-      return null;
-    }
-    return Canton.builder()
-        .abbreviation(servicePointGeolocation.getSwissCanton().getAbbreviation())
-        .fsoNumber(servicePointGeolocation.getSwissCanton().getNumber())
-        .name(servicePointGeolocation.getSwissCanton().getName())
-        .build();
-  }
 
   @JsonInclude
   @Schema(description = "ISO 2 abbreviation of the country, based on coordinates", example = "CH", accessMode =

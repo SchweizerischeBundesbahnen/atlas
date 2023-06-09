@@ -1,6 +1,6 @@
 package ch.sbb.atlas.api.user.administration;
 
-import ch.sbb.atlas.api.user.administration.enumeration.PermissionRestrictionType;
+import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;

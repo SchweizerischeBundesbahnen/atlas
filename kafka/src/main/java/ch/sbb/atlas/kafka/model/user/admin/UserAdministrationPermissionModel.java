@@ -1,15 +1,13 @@
 package ch.sbb.atlas.kafka.model.user.admin;
 
-import ch.sbb.atlas.kafka.model.SwissCanton;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * Gets serialized to kafka with class and package-name. Do care.
@@ -28,9 +26,6 @@ public class UserAdministrationPermissionModel implements Serializable {
   private ApplicationType application;
 
   @Builder.Default
-  private Set<String> sboids = new HashSet<>();
-
-  @Builder.Default
-  private Set<SwissCanton> swissCantons = new HashSet<>();
+  private Set<UserAdministrationPermissionRestrictionModel> restrictions = new HashSet<>();
 
 }

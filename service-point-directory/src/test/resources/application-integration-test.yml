@@ -8,11 +8,6 @@ spring:
     console:
       enabled: true
       path: /h2-console
-  #  datasource:
-  #    url: jdbc:postgresql://localhost:5439/service-point-directory?currentSchema=service-point-directory
-  #    username: user
-  #    password: pwd
-  #    driver-class-name: org.postgresql.Driver
   jpa:
     open-in-view: false
     show-sql: false
@@ -29,6 +24,8 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0
+  kafka:
+    bootstrap-servers: .bootstrap-servers=${spring.embedded.kafka.brokers}
 
 auth:
   audience:
@@ -36,7 +33,7 @@ auth:
 
 logging:
   level:
-    root: INFO
+    root: ERROR
     org:
       hibernate: ERROR
       jboss: ERROR
