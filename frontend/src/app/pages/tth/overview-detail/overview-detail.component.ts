@@ -34,6 +34,7 @@ import { DialogManageTthComponent } from '../dialog-manage-tth/dialog-manage-tth
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import { StatementShareService } from './statement-share-service';
 import { map } from 'rxjs/operators';
+import { NotificationService } from 'src/app/core/notification/notification.service';
 
 @Component({
   selector: 'app-timetable-hearing-overview-detail',
@@ -76,6 +77,9 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
   statusChangeCollectingActionsEnabled = false;
   cantonDeliveryCollectingActionsEnabled = false;
 
+  isTableColumnsInitialized = false;
+
+  statementEditable = false;
   selectedItems: TimetableHearingStatement[] = [];
   sorting = 'statementStatus,asc';
   selectedCheckBox = new SelectionModel<TimetableHearingStatement>(true, []);
@@ -89,7 +93,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     private readonly router: Router,
     private readonly timetableHearingService: TimetableHearingService,
     private readonly overviewToTabService: OverviewToTabShareDataService,
-    private readonly tthStatusChangeDialog: TthChangeStatusDialogService,
+    private readonly tthStatusChangeDialogService: TthChangeStatusDialogService,
     private readonly tthChangeCantonDialogService: TthChangeCantonDialogService,
     private readonly dialogService: DialogService,
     private readonly tthTableService: TthTableService,
@@ -98,7 +102,8 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     private readonly authService: AuthService,
     private readonly statementShareService: StatementShareService,
     private readonly matDialog: MatDialog,
-    private readonly userAdministrationService: UserAdministrationService
+    private readonly userAdministrationService: UserAdministrationService,
+    private readonly notificationService: NotificationService
   ) {}
 
   get isHearingYearActive(): boolean {
@@ -297,12 +302,13 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
   }
 
   changeSelectedStatus(changedStatus: ColumnDropDownEvent) {
-    this.tthStatusChangeDialog
+    this.tthStatusChangeDialogService
       .onClick(
         changedStatus.$event.value,
         [changedStatus.value],
         changedStatus.value.justification,
-        'SINGLE'
+        'SINGLE',
+        this.foundTimetableHearingYear.timetableYear
       )
       .subscribe(() => {
         this.ngOnInit();
@@ -316,8 +322,14 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
 
   collectingStatusChangeAction(changedStatus: ColumnDropDownEvent) {
     if (this.selectedItems.length > 0) {
-      this.tthStatusChangeDialog
-        .onClick(changedStatus.value, this.selectedItems, undefined, 'MULTIPLE')
+      this.tthStatusChangeDialogService
+        .onClick(
+          changedStatus.value,
+          this.selectedItems,
+          undefined,
+          'MULTIPLE',
+          this.foundTimetableHearingYear.timetableYear
+        )
         .subscribe((result) => {
           if (result) {
             this.statusChangeCollectingActionsEnabled = false;
@@ -526,6 +538,12 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
             this.getPlannedTimetableYearWhenNoActiveFound();
           } else if (timetableHearingYears.length >= 1) {
             this.foundTimetableHearingYear = timetableHearingYears[0];
+            this.getHearingYear(this.foundTimetableHearingYear.timetableYear)
+              .pipe(takeUntil(this.ngUnsubscribe))
+              .subscribe(() => {
+                this.tableColumns = this.getActiveTableColumns();
+                this.isTableColumnsInitialized = true;
+              });
             this.initOverviewTable();
           }
         }
@@ -577,7 +595,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
         headerTitle: 'TTH.STATEMENT_STATUS_HEADER',
         value: 'statementStatus',
         dropdown: {
-          disabled: false,
+          disabled: this.statementEditable,
           options: this.STATUS_OPTIONS,
           changeSelectionCallback: this.changeSelectedStatus,
           selectedOption: '',
@@ -658,5 +676,24 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
           this.showStartTimetableHearingButton = false;
         }
       });
+  }
+
+  getHearingYear(timetableYear: number): Observable<void> {
+    return new Observable<void>((observer) => {
+      this.timetableHearingService
+        .getHearingYear(timetableYear)
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe({
+          next: (year) => {
+            this.statementEditable = year.statementEditable ? false : true;
+            observer.next();
+            observer.complete();
+          },
+          error: (err) => {
+            this.notificationService.error(err);
+            observer.error(err);
+          },
+        });
+    });
   }
 }
