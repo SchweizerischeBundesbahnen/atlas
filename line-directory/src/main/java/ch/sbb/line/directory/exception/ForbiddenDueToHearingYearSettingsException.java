@@ -33,5 +33,4 @@ public class ForbiddenDueToHearingYearSettingsException extends AtlasException {
         .displayInfo(builder().code("TTH.NOTIFICATION.OPERATION_NOT_ALLOWED_DUE_TO_TTH_YEAR_SETTINGS").build())
         .build());
   }
-
 }

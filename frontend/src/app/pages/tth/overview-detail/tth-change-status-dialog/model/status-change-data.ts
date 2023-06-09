@@ -6,6 +6,7 @@ export interface StatusChangeData extends DialogData {
   statementStatus: StatementStatus;
   justification: string | undefined;
   type: StatusChangeDataType;
+  timeTableYear: number;
 }
 
 export type StatusChangeDataType = 'SINGLE' | 'MULTIPLE';
