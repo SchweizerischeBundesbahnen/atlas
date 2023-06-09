@@ -32,7 +32,7 @@ describe('TthChangeStatusDialogService', () => {
     dialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
     service
-      .onClick(StatementStatus.Accepted, [], undefined, 'SINGLE')
+      .onClick(StatementStatus.Accepted, [], undefined, 'SINGLE', 2026)
       .subscribe((result) => expect(result).toBeTrue());
 
     expect(dialogSpy.open).toHaveBeenCalled();
