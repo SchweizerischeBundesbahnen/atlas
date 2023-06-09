@@ -1,0 +1,44 @@
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:db;DB_CLOSE_DELAY=-1
+    username: sa
+    password: sa
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  main:
+    banner-mode: OFF
+  jpa:
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+logging:
+  level:
+    root: ERROR
+    org:
+      hibernate: ERROR
+      jboss: ERROR
+      springframework:
+        core: fatal
+        beans: fatal
+        context: fatal
+        transaction: error
+        boot:
+          test: error
+        test: error
+        web: error
+
+atlas:
+  client:
+    gateway:
+      url: http://localhost:8888
+
+kafka:
+  atlas:
+    user:
+      administration:
+        topic: atlas.user.administration
+        groupId: atlas.kafka.user.administration.groupId

@@ -12,11 +12,11 @@ import lombok.experimental.Accessors;
 @RequiredArgsConstructor
 public enum OperatingPointType implements CodeAndDesignations {
 
-  INVENTORY_POINT(30, false, "Inventarpunkt", "Point d'inventaire", "punto di inventario", "Inventarpunkt", "betriebspunkt", null,
+  INVENTORY_POINT(30, false, "Inventarpunkt", "Point d'inventaire", "punto di inventario", "Inventory point", "betriebspunkt", null,
       null, null, null),
   SYSTEM_OPERATING_POINT(40, false, "System Betriebspunkt", "Point d’exploitation système", "Punto d’esercizio sistema",
-      "System Betriebspunkt", "betriebspunkt", null, null, null, null),
-  RAILNET_POINT(31, false, "BP Netze", "Point de réseau", "Punto di rete", "BP Netze", "betriebspunkt", null, null, null, null),
+      "System operating point", "betriebspunkt", null, null, null, null),
+  RAILNET_POINT(31, false, "BP Netze", "Point de réseau", "Punto di rete", "Network point", "betriebspunkt", null, null, null, null),
 
   ;
 
