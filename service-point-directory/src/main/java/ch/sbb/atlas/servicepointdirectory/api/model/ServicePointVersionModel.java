@@ -1,10 +1,9 @@
-package ch.sbb.atlas.servicepointdirectory.api;
+package ch.sbb.atlas.servicepointdirectory.api.model;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.model.BaseVersionModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepointdirectory.enumeration.Category;
-import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
 import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointTechnicalTimetableType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointTrafficPointType;
@@ -32,21 +31,16 @@ import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
 import org.apache.commons.lang3.StringUtils;
 
+@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @FieldNameConstants
-@Schema(name = "ServicePointVersion")
-public class ServicePointVersionModel extends BaseVersionModel implements DatesValidator {
+public abstract class ServicePointVersionModel extends BaseVersionModel implements DatesValidator {
 
   @Schema(description = "Technical identifier", accessMode = AccessMode.READ_ONLY, example = "1")
   private Long id;
-
-  @NotNull
-  @Valid
-  private ServicePointNumber number;
 
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
   @Schema(description = "Unique code for locations that is used in customer information. The structure is described in the "
@@ -105,9 +99,6 @@ public class ServicePointVersionModel extends BaseVersionModel implements DatesV
 
   @Schema(accessMode = AccessMode.READ_ONLY, description = "Details to the operationPointType.")
   private CodeAndDesignation operatingPointTypeInformation;
-
-  @Schema(accessMode = AccessMode.READ_ONLY)
-  private CodeAndDesignation operatingPointWithoutTimetableTypeInformation;
 
   @Schema(description = "OperatingPointTechnicalTimetableType, all service points relevant for timetable planning and "
       + "publication. ")
@@ -215,12 +206,6 @@ public class ServicePointVersionModel extends BaseVersionModel implements DatesV
   @AssertTrue(message = "StopPointType only allowed for StopPoint")
   boolean isValidStopPointWithType() {
     return isStopPoint() || stopPointType == null;
-  }
-
-  @AssertTrue(message = "FreightServicePoint in CH needs sortCodeOfDestinationStation")
-  public boolean isValidFreightServicePoint() {
-    return !(getNumber().getCountry() == Country.SWITZERLAND && freightServicePoint && !getValidFrom().isBefore(LocalDate.now()))
-        || StringUtils.isNotBlank(sortCodeOfDestinationStation);
   }
 
   @AssertTrue(message = "At most one of OperatingPointWithoutTimetableType, OperatingPointTechnicalTimetableType, "

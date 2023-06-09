@@ -1,10 +1,13 @@
-package ch.sbb.atlas.user.administration.security;
+package ch.sbb.atlas.user.administration.security.service;
 
 import ch.sbb.atlas.api.model.CantonAssociated;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionModel;
+import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionRestrictionModel;
+import ch.sbb.atlas.user.administration.security.UserPermissionHolder;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +46,8 @@ public class CantonBasedUserAdministrationService extends BaseUserAdministration
   private ApplicationRole getCantonBasedUserPermissions(ApplicationType applicationType, SwissCanton swissCanton) {
     UserAdministrationPermissionModel userPermissionsForApplication = getUserPermissionsForApplication(applicationType);
     if (userPermissionsForApplication.getRole() == ApplicationRole.WRITER) {
-      if (swissCanton != null && userPermissionsForApplication.getSwissCantons().contains(swissCanton)) {
+      if (swissCanton != null && userPermissionsForApplication.getRestrictions().stream().map(
+          UserAdministrationPermissionRestrictionModel::getValue).collect(Collectors.toSet()).contains(swissCanton.name())) {
         return ApplicationRole.WRITER;
       } else {
         return ApplicationRole.EXPLICIT_READER;
