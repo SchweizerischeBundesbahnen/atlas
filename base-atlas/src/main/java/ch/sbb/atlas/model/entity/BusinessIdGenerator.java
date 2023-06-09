@@ -2,11 +2,13 @@ package ch.sbb.atlas.model.entity;
 
 import jakarta.persistence.FlushModeType;
 import java.lang.reflect.Field;
+import java.util.EnumSet;
 import java.util.Optional;
-import org.hibernate.Session;
-import org.hibernate.tuple.ValueGenerator;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
+import org.hibernate.generator.BeforeExecutionGenerator;
+import org.hibernate.generator.EventType;
 
-public abstract class BusinessIdGenerator implements ValueGenerator<String> {
+public abstract class BusinessIdGenerator implements BeforeExecutionGenerator {
 
   private final String dbSequence;
   private final String businessIdPrefix;
@@ -19,7 +21,16 @@ public abstract class BusinessIdGenerator implements ValueGenerator<String> {
   }
 
   @Override
-  public String generateValue(Session session, Object entity) {
+  public Object generate(SharedSessionContractImplementor session, Object owner, Object currentValue, EventType eventType) {
+    return generateValue(session, owner);
+  }
+
+  @Override
+  public EnumSet<EventType> getEventTypes() {
+    return EnumSet.of(EventType.INSERT);
+  }
+
+  public String generateValue(SharedSessionContractImplementor session, Object entity) {
     Optional<String> presetSlnid = getPresetSlnid(entity);
     if (presetSlnid.isPresent()) {
       return presetSlnid.get();

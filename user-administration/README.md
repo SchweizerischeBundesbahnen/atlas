@@ -16,6 +16,7 @@ This project uses [Semantic Versioning](https://semver.org/).
 This project stores roles and BusinessOrganisation responsibilities of our users.
 In our database we only store SBBUIDs.
 
+
 We use Microsoft Graph API to retrieve additional account information for each SBBUIDS. This way we
 may retrieve the current mail address, name and account status on the fly, as they are subject to
 change.

@@ -7,7 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
-import ch.sbb.atlas.servicepointdirectory.api.TrafficPointElementVersionModel.Fields;
+import ch.sbb.atlas.servicepointdirectory.api.model.TrafficPointElementVersionModel.Fields;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
 import ch.sbb.atlas.servicepointdirectory.enumeration.TrafficPointElementType;

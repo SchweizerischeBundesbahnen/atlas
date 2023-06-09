@@ -20,4 +20,6 @@ public class AtlasFieldLengths {
   public static final int LENGTH_500 = 500;
   public static final int LENGTH_1500 = 1500;
   public static final int LENGTH_5000 = 5000;
+  public static final long MIN_SEVEN_DIGITS_NUMBER = 1000000;
+  public static final long MAX_SEVEN_DIGITS_NUMBER = 9999999;
 }
