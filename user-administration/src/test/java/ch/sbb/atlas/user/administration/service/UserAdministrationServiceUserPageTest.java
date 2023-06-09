@@ -1,6 +1,8 @@
 package ch.sbb.atlas.user.administration.service;
 
-import ch.sbb.atlas.api.user.administration.enumeration.PermissionRestrictionType;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.model.controller.IntegrationTest;
@@ -137,6 +139,12 @@ public class UserAdministrationServiceUserPageTest {
         new HashSet<>(List.of(ApplicationType.TTFN)), PermissionRestrictionType.BUSINESS_ORGANISATION);
     Assertions.assertEquals(2, userPage.getTotalElements());
     Assertions.assertEquals(1, userPage.getContent().size());
+  }
+
+  @Test
+  void shouldGetAllUserIds() {
+    List<String> userIds = userAdministrationService.getAllUserIds();
+    assertThat(userIds).hasSize(3).containsExactlyInAnyOrder("u123456", "e654321", "u111111");
   }
 
 }

@@ -1,11 +1,11 @@
 package ch.sbb.line.directory.validation;
 
 import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.user.administration.security.UpdateAffectedVersionLocator;
+import ch.sbb.atlas.user.administration.security.service.UpdateAffectedVersionLocator;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.model.VersioningAction;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
-import ch.sbb.atlas.user.administration.security.BusinessOrganisationBasedUserAdministrationService;
+import ch.sbb.atlas.user.administration.security.service.BusinessOrganisationBasedUserAdministrationService;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.exception.ForbiddenDueToInReviewException;
 import ch.sbb.line.directory.exception.LineInReviewValidationException;

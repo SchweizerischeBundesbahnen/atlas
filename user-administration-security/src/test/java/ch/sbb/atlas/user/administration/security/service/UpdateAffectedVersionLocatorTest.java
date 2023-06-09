@@ -1,4 +1,4 @@
-package ch.sbb.atlas.user.administration.security;
+package ch.sbb.atlas.user.administration.security.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 class UpdateAffectedVersionLocatorTest {
 
   @Test
-  void shouldWorkOnOneExcactMatch() {
+  void shouldWorkOnOneExactMatch() {
     List<BusinessOrganisationAssociated> affectedVersions = UpdateAffectedVersionLocator.findUpdateAffectedCurrentVersions(
         BusinessObject.createDummy().build(),
         List.of(BusinessObject.createDummy().anotherValue("previousValue").build()));
@@ -18,7 +18,7 @@ class UpdateAffectedVersionLocatorTest {
   }
 
   @Test
-  void shouldWorkOnOneExcactMatchWithMultiple() {
+  void shouldWorkOnOneExactMatchWithMultiple() {
     List<BusinessOrganisationAssociated> affectedVersions = UpdateAffectedVersionLocator.findUpdateAffectedCurrentVersions(
         BusinessObject.createDummy().build(),
         List.of(BusinessObject.createDummy().anotherValue("same").build(),
