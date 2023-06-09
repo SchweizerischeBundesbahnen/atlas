@@ -22,7 +22,7 @@ public class UserAdministrationModel implements Serializable, AtlasEvent {
   @Serial
   private static final long serialVersionUID = 1;
 
-  private String sbbUserId;
+  private String userId;
 
   @Builder.Default
   private Set<UserAdministrationPermissionModel> permissions = new HashSet<>();
