@@ -98,14 +98,13 @@ describe('DialogManageTthComponent', () => {
     tthServiceSpy.updateTimetableHearingSettings.and.stub().and.returnValue(of({}));
 
     component.handleSaveAndCloseClick();
-
     expect(component.actionButtonsDisabled).toBeTrue();
     expect(tthServiceSpy.updateTimetableHearingSettings).toHaveBeenCalledOnceWith(2020, {
       statementEditable: true,
       statementCreatableInternal: false,
       statementCreatableExternal: true,
     } as TimetableHearingYear);
-    expect(matDialogRefSpy.close).toHaveBeenCalledOnceWith();
+    expect(matDialogRefSpy.close).toHaveBeenCalledOnceWith(true);
     expect(notificationServiceSpy.success).toHaveBeenCalledOnceWith(
       'TTH.MANAGE_TIMETABLE_HEARING.SUCCESSFUL_SAVE_NOTIFICATION'
     );
