@@ -12,7 +12,7 @@ import lombok.experimental.Accessors;
 @RequiredArgsConstructor
 public enum OperatingPointTrafficPointType implements CodeAndDesignations {
 
-  TARIFF_POINT(50, true, "Tarifpunkt", "Point tarifaire", "Punto tariffale", "Tarifpunkt", "verkehrspunkt,tarifstelle", null,
+  TARIFF_POINT(50, true, "Tarifpunkt", "Point tarifaire", "Punto tariffale", "Tariff point", "verkehrspunkt,tarifstelle", null,
       null,
       null, null),
 
