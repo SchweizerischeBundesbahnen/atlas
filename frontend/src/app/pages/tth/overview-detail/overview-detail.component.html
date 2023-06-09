@@ -131,7 +131,7 @@
     </div>
 
     <app-table
-      *ngIf="!noTimetableHearingYearFound"
+      *ngIf="!noTimetableHearingYearFound && isTableColumnsInitialized"
       (buttonClickEvent)="duplicate($event)"
       (changeDropdownEvent)="changeSelectedStatus($event)"
       (checkedBoxEvent)="checkedBoxEvent($event)"
@@ -191,7 +191,7 @@
             (selectChanged)="collectingActions($event)"
             *ngIf="showCollectingActionButton"
             [additionalLabelspace]="false"
-            [disabled]="totalCount$ === 0"
+            [disabled]="totalCount$ === 0 || statementEditable"
             [options]="COLLECTING_ACTION_DROPDOWN_OPTIONS"
             dataCy="collect-action-type"
             optionTranslateLabelPrefix="TTH.DROPDOWN.COLLECTING_ACTION.OPTION."
