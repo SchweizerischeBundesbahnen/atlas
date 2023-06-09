@@ -7,13 +7,9 @@ import static ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePoint
 import static ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation.Fields.swissMunicipalityName;
 import static ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation.Fields.swissMunicipalityNumber;
 
-import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.api.AtlasFieldLengths;
-import ch.sbb.atlas.validation.DatesValidator;
-import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
-import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
-import ch.sbb.atlas.versioning.model.Versionable;
-import ch.sbb.atlas.versioning.model.VersionableProperty.RelationType;
+import ch.sbb.atlas.api.model.BusinessOrganisationAssociated;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepointdirectory.converter.CategoryConverter;
 import ch.sbb.atlas.servicepointdirectory.converter.MeanOfTransportConverter;
 import ch.sbb.atlas.servicepointdirectory.converter.ServicePointNumberConverter;
@@ -28,11 +24,11 @@ import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointType;
 import ch.sbb.atlas.servicepointdirectory.enumeration.ServicePointStatus;
 import ch.sbb.atlas.servicepointdirectory.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
-import ch.sbb.atlas.api.model.BusinessOrganisationAssociated;
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Stream;
+import ch.sbb.atlas.validation.DatesValidator;
+import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
+import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
+import ch.sbb.atlas.versioning.model.Versionable;
+import ch.sbb.atlas.versioning.model.VersionableProperty.RelationType;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
@@ -52,6 +48,10 @@ import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Stream;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -91,11 +91,6 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
   private String sloid;
 
   @NotNull
-  @Enumerated(EnumType.STRING)
-  @AtlasVersionableProperty
-  private Status status;
-
-  @NotNull
   @AtlasVersionableProperty
   private Integer numberShort;
 
@@ -131,25 +126,38 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
   @AtlasVersionableProperty
   private String businessOrganisation;
 
-  @AtlasVersionableProperty
-  @ElementCollection(targetClass = Category.class, fetch = FetchType.EAGER)
-  @Convert(converter = CategoryConverter.class)
-  private Set<Category> categories;
-
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private OperatingPointType operatingPointType;
 
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
-  private OperatingPointTechnicalTimetableType operatingPointTechnicalTimetableType;
+  private StopPointType stopPointType;
 
+  @NotNull
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
-  private OperatingPointTrafficPointType operatingPointTrafficPointType;
+  private Status status;
+
+  @AtlasVersionableProperty
+  @Convert(converter = ServicePointNumberConverter.class)
+  @Valid
+  private ServicePointNumber operatingPointKilometerMaster;
 
   @AtlasVersionableProperty
   private boolean operatingPointRouteNetwork;
+
+  @Size(max = AtlasFieldLengths.LENGTH_1500)
+  @AtlasVersionableProperty
+  private String comment;
+
+  @NotNull
+  @Column(columnDefinition = "DATE")
+  private LocalDate validFrom;
+
+  @NotNull
+  @Column(columnDefinition = "DATE")
+  private LocalDate validTo;
 
   @AtlasVersionableProperty
   private boolean freightServicePoint;
@@ -160,23 +168,23 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
   @AtlasVersionableProperty
   private boolean operatingPointWithTimetable;
 
+  @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
-  @Convert(converter = ServicePointNumberConverter.class)
-  @Valid
-  private ServicePointNumber operatingPointKilometerMaster;
+  private OperatingPointTechnicalTimetableType operatingPointTechnicalTimetableType;
+
+  @Enumerated(EnumType.STRING)
+  @AtlasVersionableProperty
+  private OperatingPointTrafficPointType operatingPointTrafficPointType;
+
+  @AtlasVersionableProperty
+  @ElementCollection(targetClass = Category.class, fetch = FetchType.EAGER)
+  @Convert(converter = CategoryConverter.class)
+  private Set<Category> categories;
 
   @AtlasVersionableProperty
   @ElementCollection(targetClass = MeanOfTransport.class, fetch = FetchType.EAGER)
   @Convert(converter = MeanOfTransportConverter.class)
   private Set<MeanOfTransport> meansOfTransport;
-
-  @Enumerated(EnumType.STRING)
-  @AtlasVersionableProperty
-  private StopPointType stopPointType;
-
-  @Size(max = AtlasFieldLengths.LENGTH_1500)
-  @AtlasVersionableProperty
-  private String comment;
 
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "service_point_geolocation_id", referencedColumnName = "id")
@@ -198,14 +206,6 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
       BaseDidokImportEntity.Fields.editionDate
   })
   private ServicePointGeolocation servicePointGeolocation;
-
-  @NotNull
-  @Column(columnDefinition = "DATE")
-  private LocalDate validFrom;
-
-  @NotNull
-  @Column(columnDefinition = "DATE")
-  private LocalDate validTo;
 
   public boolean hasGeolocation() {
     return servicePointGeolocation != null;
@@ -256,8 +256,8 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
       + "OperatingPointTrafficPointType may be set")
   public boolean isValidType() {
     long mutualTypes = Stream.of(
-        getOperatingPointTechnicalTimetableType() != null,
-        getOperatingPointTrafficPointType() != null)
+            getOperatingPointTechnicalTimetableType() != null,
+            getOperatingPointTrafficPointType() != null)
         .filter(i -> i)
         .count();
     return mutualTypes <= 1;
