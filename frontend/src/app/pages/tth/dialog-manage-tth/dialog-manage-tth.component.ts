@@ -54,7 +54,7 @@ export class DialogManageTthComponent implements OnInit {
           this.currentView = this.manageView;
         },
         error: (err) => {
-          this.dialogRef.close();
+          this.dialogRef.close(true);
           this.notificationService.error(err);
         },
       });
@@ -86,7 +86,7 @@ export class DialogManageTthComponent implements OnInit {
       .pipe(take(1))
       .subscribe({
         next: () => {
-          this.dialogRef.close();
+          this.dialogRef.close(true);
           this.notificationService.success(
             'TTH.MANAGE_TIMETABLE_HEARING.SUCCESSFUL_SAVE_NOTIFICATION'
           );

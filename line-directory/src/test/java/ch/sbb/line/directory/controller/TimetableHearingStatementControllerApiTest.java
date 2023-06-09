@@ -27,6 +27,7 @@ import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel.Fields;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementSenderModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingYearModel;
+import ch.sbb.atlas.api.timetable.hearing.enumeration.HearingStatus;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.api.timetable.hearing.model.UpdateHearingCantonModel;
 import ch.sbb.atlas.api.timetable.hearing.model.UpdateHearingStatementStatusModel;
@@ -45,8 +46,10 @@ import ch.sbb.line.directory.exception.PdfDocumentConstraintViolationException;
 import ch.sbb.line.directory.repository.TimetableHearingStatementRepository;
 import ch.sbb.line.directory.repository.TimetableHearingYearRepository;
 import ch.sbb.line.directory.service.TimetableFieldNumberService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
+import java.time.Year;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -71,6 +74,8 @@ import org.springframework.test.web.servlet.MvcResult;
 public class TimetableHearingStatementControllerApiTest extends BaseControllerApiTest {
 
   private static final long YEAR = 2022L;
+  private static final long YEAR_ACTIVE = 2056L;
+  private static final long YEAR_STATEMENT_EDITABLE_DISABLED = 2076L;
   private static final TimetableHearingYearModel TIMETABLE_HEARING_YEAR = TimetableHearingYearModel.builder()
       .timetableYear(YEAR)
       .hearingFrom(LocalDate.of(2021, 1, 1))
@@ -412,9 +417,11 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
 
   @Test
   void shouldUpdateHearingStatementStatus() throws Exception {
+    timetableHearingYearController.startHearingYear(TIMETABLE_HEARING_YEAR.getTimetableYear());
+
     //given
     TimetableHearingStatement statement1 = TimetableHearingStatement.builder()
-        .timetableYear(2023L)
+        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
         .swissCanton(SwissCanton.BERN)
         .statementStatus(StatementStatus.RECEIVED)
         .statementSender(StatementSender.builder()
@@ -423,7 +430,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
         .statement("Ich mag bitte mehr Bös fahren")
         .build();
     TimetableHearingStatement statement2 = TimetableHearingStatement.builder()
-        .timetableYear(2024L)
+        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
         .swissCanton(SwissCanton.BERN)
         .statementStatus(StatementStatus.JUNK)
         .statementSender(StatementSender.builder()
@@ -436,13 +443,127 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
     List<Long> ids = Stream.of(statement1, statement2).map(TimetableHearingStatement::getId).toList();
     UpdateHearingStatementStatusModel updateHearingStatementStatusModel =
         UpdateHearingStatementStatusModel.builder().ids(ids).justification("Forza Napoli")
-            .statementStatus(StatementStatus.ACCEPTED).build();
+            .statementStatus(StatementStatus.ACCEPTED).timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear()).build();
 
     //when
     mvc.perform(put("/v1/timetable-hearing/statements/update-statement-status")
             .contentType(contentType)
             .content(mapper.writeValueAsString(updateHearingStatementStatusModel)))
         .andExpect(status().isOk());
+  }
+
+  @Test
+  void shouldThrowForbiddenExceptionWhenTimeTableYearOfStatementNotEqualAsHearingYear() throws Exception {
+    timetableHearingYearController.startHearingYear(TIMETABLE_HEARING_YEAR.getTimetableYear());
+
+    //given
+    TimetableHearingStatement statement1 = TimetableHearingStatement.builder()
+        .timetableYear(2055L)
+        .swissCanton(SwissCanton.BERN)
+        .statementStatus(StatementStatus.IN_REVIEW)
+        .statementSender(StatementSender.builder()
+            .email("mike@thebike.com")
+            .build())
+        .statement("Ich mag bitte mehr Bös fahren")
+        .build();
+
+    TimetableHearingStatement statement2 = TimetableHearingStatement.builder()
+        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .swissCanton(SwissCanton.BERN)
+        .statementStatus(StatementStatus.JUNK)
+        .statementSender(StatementSender.builder()
+            .email("mike@thebike.com")
+            .build())
+        .statement("Ich mag bitte mehr Bös fahren")
+        .build();
+
+    timetableHearingStatementRepository.saveAndFlush(statement1);
+    timetableHearingStatementRepository.saveAndFlush(statement2);
+    List<Long> ids = Stream.of(statement1, statement2).map(TimetableHearingStatement::getId).toList();
+    UpdateHearingStatementStatusModel updateHearingStatementStatusModel =
+        UpdateHearingStatementStatusModel.builder().ids(ids).justification("Forza Napoli")
+            .statementStatus(StatementStatus.ACCEPTED).timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear()).build();
+
+    //when
+    mvc.perform(put("/v1/timetable-hearing/statements/update-statement-status")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(updateHearingStatementStatusModel)))
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
+  void shouldThrowForbiddenWhenHearingYearIsNotActive() throws Exception{
+    //given
+    TimetableHearingStatement statement1 = TimetableHearingStatement.builder()
+        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .swissCanton(SwissCanton.BERN)
+        .statementStatus(StatementStatus.IN_REVIEW)
+        .statementSender(StatementSender.builder()
+            .email("mike@thebike.com")
+            .build())
+        .statement("Ich mag bitte mehr Bös fahren")
+        .build();
+
+    TimetableHearingStatement statement2 = TimetableHearingStatement.builder()
+        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .swissCanton(SwissCanton.BERN)
+        .statementStatus(StatementStatus.JUNK)
+        .statementSender(StatementSender.builder()
+            .email("mike@thebike.com")
+            .build())
+        .statement("Ich mag bitte mehr Bös fahren")
+        .build();
+
+    timetableHearingStatementRepository.saveAndFlush(statement1);
+    timetableHearingStatementRepository.saveAndFlush(statement2);
+    List<Long> ids = Stream.of(statement1, statement2).map(TimetableHearingStatement::getId).toList();
+    UpdateHearingStatementStatusModel updateHearingStatementStatusModel =
+        UpdateHearingStatementStatusModel.builder().ids(ids).justification("Forza Napoli")
+            .statementStatus(StatementStatus.ACCEPTED).timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear()).build();
+    //when
+    mvc.perform(put("/v1/timetable-hearing/statements/update-statement-status")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(updateHearingStatementStatusModel)))
+        .andExpect(status().isForbidden());
+  }
+  @Test
+  void shouldThrowForbiddenWhenHearingYearStatementEditableIsDisabled() throws Exception{
+    timetableHearingYearController.startHearingYear(YEAR);
+    timetableHearingYearController.updateTimetableHearingSettings(YEAR,
+        TimetableHearingYearModel.builder()
+            .statementEditable(false).build());
+    //given
+    TimetableHearingStatement statement1 = TimetableHearingStatement.builder()
+        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .swissCanton(SwissCanton.BERN)
+        .statementStatus(StatementStatus.IN_REVIEW)
+        .statementSender(StatementSender.builder()
+            .email("mike@thebike.com")
+            .build())
+        .statement("Ich mag bitte mehr Bös fahren")
+        .build();
+
+    TimetableHearingStatement statement2 = TimetableHearingStatement.builder()
+        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .swissCanton(SwissCanton.BERN)
+        .statementStatus(StatementStatus.JUNK)
+        .statementSender(StatementSender.builder()
+            .email("mike@thebike.com")
+            .build())
+        .statement("Ich mag bitte mehr Bös fahren")
+        .build();
+
+    timetableHearingStatementRepository.saveAndFlush(statement1);
+    timetableHearingStatementRepository.saveAndFlush(statement2);
+    List<Long> ids = Stream.of(statement1, statement2).map(TimetableHearingStatement::getId).toList();
+    UpdateHearingStatementStatusModel updateHearingStatementStatusModel =
+        UpdateHearingStatementStatusModel.builder().ids(ids).justification("Forza Napoli")
+            .statementStatus(StatementStatus.ACCEPTED).timetableYear(2022L).build();
+    //when
+    mvc.perform(put("/v1/timetable-hearing/statements/update-statement-status")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(updateHearingStatementStatusModel)))
+        .andExpect(status().isForbidden());
   }
 
   @Test

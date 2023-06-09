@@ -7,6 +7,7 @@ import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementApiV1;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementRequestParams;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
+import ch.sbb.atlas.api.timetable.hearing.enumeration.HearingStatus;
 import ch.sbb.atlas.api.timetable.hearing.model.UpdateHearingCantonModel;
 import ch.sbb.atlas.api.timetable.hearing.model.UpdateHearingStatementStatusModel;
 import ch.sbb.atlas.model.exception.BadRequestException;
@@ -15,6 +16,7 @@ import ch.sbb.line.directory.entity.TimetableHearingStatement;
 import ch.sbb.line.directory.entity.TimetableHearingYear;
 import ch.sbb.line.directory.entity.TimetableHearingYear_;
 import ch.sbb.line.directory.exception.ForbiddenDueToHearingYearSettingsException;
+import ch.sbb.line.directory.exception.ForbiddenDueWrongStatementTimeTableYearException;
 import ch.sbb.line.directory.exception.NoClientCredentialAuthUsedException;
 import ch.sbb.line.directory.mapper.TimetableHearingStatementMapper;
 import ch.sbb.line.directory.model.TimetableHearingStatementSearchRestrictions;
@@ -27,6 +29,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -161,6 +164,30 @@ public class TimetableHearingStatementController implements TimetableHearingStat
 
   @Override
   public void updateHearingStatementStatus(UpdateHearingStatementStatusModel updateHearingStatementStatus) {
+    TimetableHearingYear hearingYear = timetableHearingYearService.getHearingYear(updateHearingStatementStatus.getTimetableYear());
+    List<Long> wrongStatementTimetableYears = new ArrayList<>();
+
+    if(!hearingYear.isStatementEditable() || hearingYear.getHearingStatus() != HearingStatus.ACTIVE){
+      throw new ForbiddenDueToHearingYearSettingsException(
+          hearingYear.getTimetableYear(),
+          TimetableHearingYear_.STATEMENT_EDITABLE);
+    }
+
+    for (long id : updateHearingStatementStatus.getIds()){
+      TimetableHearingStatement existingStatement = timetableHearingStatementService.getTimetableHearingStatementsById(id);
+
+      if (existingStatement.getTimetableYear().longValue() != hearingYear.getTimetableYear().longValue()){
+        wrongStatementTimetableYears.add(id);
+      }
+    }
+
+    if (wrongStatementTimetableYears.size() >= 1){
+      throw new ForbiddenDueWrongStatementTimeTableYearException(
+          wrongStatementTimetableYears,
+          hearingYear.getTimetableYear(),
+          TimetableHearingYear_.TIMETABLE_YEAR);
+    }
+
     List<TimetableHearingStatement> timetableHearingStatements =
         timetableHearingStatementService.getTimetableHearingStatementsByIds(
             updateHearingStatementStatus.getIds());
