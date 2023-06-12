@@ -14,6 +14,7 @@ import org.springframework.batch.item.ItemProcessor;
 public class ServicePointVersionProcessor implements ItemProcessor<ServicePointVersion, ServicePointVersionCsvModel> {
 
   private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+  private static final DateTimeFormatter LOCAL_DATE_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy mm:ss");
 
   @Override
   public ServicePointVersionCsvModel process(ServicePointVersion version) {
@@ -21,7 +22,7 @@ public class ServicePointVersionProcessor implements ItemProcessor<ServicePointV
     builder.numberShort(version.getNumber().getNumberShort());
     builder.uicCountryCode(version.getCountry().getUicCode());
     builder.sloid(version.getSloid());
-    builder.number(version.getNumber().getNumber());
+    builder.number(version.getNumber().getValue());
     builder.checkDigit(version.getNumber().getCheckDigit());
     builder.validFrom(DATE_FORMATTER.format(version.getValidFrom()));
     builder.validTo(DATE_FORMATTER.format(version.getValidTo()));
@@ -62,6 +63,11 @@ public class ServicePointVersionProcessor implements ItemProcessor<ServicePointV
     builder.sortCodeOfDestinationStation(version.getSortCodeOfDestinationStation());
     builder.sboid(version.getBusinessOrganisation());
     builder.fotComment(version.getComment());
+    //TODO: add geolocation
+
+    builder.creationDate(LOCAL_DATE_FORMATTER.format(version.getCreationDate()));
+    builder.editionDate(LOCAL_DATE_FORMATTER.format(version.getEditionDate()));
+    builder.statusDidok3(version.getStatusDidok3().name());
     return builder.build();
   }
 
