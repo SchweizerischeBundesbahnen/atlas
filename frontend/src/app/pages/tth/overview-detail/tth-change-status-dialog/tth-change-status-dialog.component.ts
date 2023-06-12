@@ -40,7 +40,6 @@ export class TthChangeStatusDialogComponent {
           ids: this.data.tths.map((value) => Number(value.id)),
           justification: justification,
           statementStatus: this.data.statementStatus,
-          timetableYear: this.data.timeTableYear,
         })
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe(() => {
