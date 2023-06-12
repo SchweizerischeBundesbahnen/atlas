@@ -75,7 +75,7 @@ spring:
       retries: 1
   jpa:
     open-in-view: false
-    show-sql: false
+    show-sql: true
     hibernate:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
