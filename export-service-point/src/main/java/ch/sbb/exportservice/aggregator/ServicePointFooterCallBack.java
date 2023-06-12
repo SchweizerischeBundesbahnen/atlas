@@ -14,12 +14,12 @@ public class ServicePointFooterCallBack implements FlatFileHeaderCallback, FlatF
   @Override
   public void writeHeader(Writer writer) throws IOException {
     this.jsonWriter = new JsonWriter(writer);
-    jsonWriter.beginObject().name(JSON_ROOT_NODE).beginArray();
+    jsonWriter.beginArray();
   }
 
   @Override
   public void writeFooter(Writer writer) throws IOException {
-    jsonWriter.endArray().endObject();
+    jsonWriter.endArray();
     jsonWriter.close();
   }
 
