@@ -1,6 +1,4 @@
-package ch.sbb.atlas.business.organisation.exception;
-
-import ch.sbb.atlas.model.exception.NotFoundException;
+package ch.sbb.atlas.model.exception;
 
 public class SboidNotFoundException extends NotFoundException {
 
