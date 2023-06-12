@@ -8,12 +8,14 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.experimental.FieldNameConstants;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
 @Builder
+@FieldNameConstants
 @EqualsAndHashCode
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ServicePointVersionCsvModel {
@@ -170,5 +172,17 @@ public class ServicePointVersionCsvModel {
 
   @JsonProperty("wgs84WebNorth")
   private Double wgs84WebNorth;
+
+  @JsonProperty("height")
+  private Double height;
+
+  @JsonProperty("creationDate")
+  private String creationDate;
+
+  @JsonProperty("editionDate")
+  private String editionDate;
+
+  @JsonProperty("statusDidok3")
+  private String statusDidok3;
 
 }

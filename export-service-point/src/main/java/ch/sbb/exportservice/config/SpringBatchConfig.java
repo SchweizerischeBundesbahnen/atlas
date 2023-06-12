@@ -1,18 +1,25 @@
 package ch.sbb.exportservice.config;
 
+import static ch.sbb.exportservice.model.ServicePointVersionCsvModel.Fields.numberShort;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_SERVICE_POINT_CSV_JOB_NAME;
 
-import ch.sbb.exportservice.aggregator.ServicePointFooterCallBack;
-import ch.sbb.exportservice.aggregator.ServicePointJsonItemAggregator;
+import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.exportservice.entity.ServicePointVersion;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
 import ch.sbb.exportservice.model.ServicePointVersionCsvModel;
+import ch.sbb.exportservice.model.ServicePointVersionCsvModel.Fields;
 import ch.sbb.exportservice.processor.ServicePointVersionProcessor;
 import ch.sbb.exportservice.repository.PointRepository;
 import ch.sbb.exportservice.tasklet.FileDeletingTasklet;
 import ch.sbb.exportservice.tasklet.FileUploadTasklet;
 import ch.sbb.exportservice.utils.StepUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +38,8 @@ import org.springframework.batch.item.data.RepositoryItemReader;
 import org.springframework.batch.item.file.FlatFileItemWriter;
 import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
 import org.springframework.batch.item.file.transform.DelimitedLineAggregator;
+import org.springframework.batch.item.json.JacksonJsonObjectMarshaller;
+import org.springframework.batch.item.json.JsonFileItemWriter;
 import org.springframework.batch.item.support.CompositeItemWriter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -47,9 +56,25 @@ import org.springframework.transaction.PlatformTransactionManager;
 @Slf4j
 public class SpringBatchConfig {
 
+  static final String[] CSV_HEADER = new String[]{numberShort, Fields.uicCountryCode,
+      Fields.sloid, Fields.number, Fields.checkDigit, Fields.validFrom, Fields.validTo, Fields.designationOfficial,
+      Fields.designationLong, Fields.abbreviation, Fields.operatingPoint, Fields.operatingPointWithTimetable, Fields.stopPoint,
+      Fields.stopPointTypeCode, Fields.freightServicePoint, Fields.trafficPoint,
+      Fields.borderPoint, Fields.hasGeolocation, Fields.isoCoutryCode, Fields.cantonAbbreviation,
+      Fields.districtName, Fields.districtFsoName, Fields.municipalityName, Fields.fsoNumber,
+      Fields.localityName, Fields.operatingPointTypeCode, Fields.operatingPointTechnicalTimetableTypeCode,
+      Fields.meansOfTransportCode, Fields.categoriesCode, Fields.operatingPointTrafficPointTypeCode,
+      Fields.operatingPointRouteNetwork, Fields.operatingPointKilometer, Fields.operatingPointKilometerMasterNumber,
+      Fields.sortCodeOfDestinationStation, Fields.sboid, Fields.businessOrganisationOrganisationNumber,
+      Fields.businessOrganisationAbbreviationDe, Fields.businessOrganisationAbbreviationFr,
+      Fields.businessOrganisationAbbreviationIt, Fields.businessOrganisationAbbreviationEn,
+      Fields.businessOrganisationDescriptionDe, Fields.businessOrganisationDescriptionFr,
+      Fields.businessOrganisationDescriptionIt, Fields.businessOrganisationDescriptionEn, Fields.fotComment, Fields.lv95East,
+      Fields.lv95North, Fields.wgs84East, Fields.wgs84North, Fields.wgs84WebEast, Fields.wgs84WebNorth,
+      Fields.height, Fields.creationDate, Fields.editionDate, Fields.statusDidok3
+  };
   private static final int CHUNK_SIZE = 20;
   private static final int THREAD_EXECUTION_SIZE = 64;
-
   private final JobRepository jobRepository;
 
   private final PlatformTransactionManager transactionManager;
@@ -58,6 +83,8 @@ public class SpringBatchConfig {
   private final StepTracerListener stepTracerListener;
 
   private final PointRepository pointRepository;
+
+  private final FileService fileService;
 
   @StepScope
   @Bean
@@ -75,61 +102,50 @@ public class SpringBatchConfig {
   public CompositeItemWriter<ServicePointVersionCsvModel> compositeItemWriter() {
     List<ItemWriter> writers = new ArrayList<>();
     writers.add(csvWriter());
-    writers.add(jsonWriter());
-
+    writers.add(jsonFileItemWriter());
     CompositeItemWriter itemWriter = new CompositeItemWriter();
-
     itemWriter.setDelegates(writers);
-
     return itemWriter;
   }
 
   @Bean
-  public ItemWriter<ServicePointVersionCsvModel> jsonWriter() {
-    FlatFileItemWriter<ServicePointVersionCsvModel> writer = new FlatFileItemWriter<>();
-    writer.setLineSeparator(System.getProperty("line.separator"));
-
-    //Setting header and footer.
-    ServicePointFooterCallBack headerFooterCallback = new ServicePointFooterCallBack();
-    writer.setHeaderCallback(headerFooterCallback);
-    writer.setFooterCallback(headerFooterCallback);
-
-    writer.setLineAggregator(new ServicePointJsonItemAggregator<>());
-
-    writer.setResource(new FileSystemResource(".export/outputData.json"));
-    //    writer.setEncoding(utf8);
-    writer.setShouldDeleteIfExists(true);
-
+  public JsonFileItemWriter<ServicePointVersionCsvModel> jsonFileItemWriter() {
+    JacksonJsonObjectMarshaller<ServicePointVersionCsvModel> jacksonJsonObjectMarshaller = new JacksonJsonObjectMarshaller<>();
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.registerModule(new JavaTimeModule());
+    jacksonJsonObjectMarshaller.setObjectMapper(objectMapper);
+    FileSystemResource fileSystemResource = new FileSystemResource(createFileNamePath("json"));
+    JsonFileItemWriter<ServicePointVersionCsvModel> writer = new JsonFileItemWriter<>(
+        fileSystemResource,
+        jacksonJsonObjectMarshaller);
+    writer.setEncoding(StandardCharsets.ISO_8859_1.name());
     return writer;
+  }
+
+  private String createFileNamePath(String fileType) {
+    String dir = fileService.getDir();
+    String actualDate = LocalDate.now()
+        .format(DateTimeFormatter.ofPattern(
+            AtlasApiConstants.DATE_FORMAT_PATTERN));
+    return dir + "service-point-" + actualDate + "." + fileType;
   }
 
   @Bean
   public FlatFileItemWriter<ServicePointVersion> csvWriter() {
-    WritableResource outputResource = new FileSystemResource(".export/outputData.csv");
-    String[] headers = new String[]{"numberShort", "uicCountryCode", "sloid", "number", "checkDigit"};
+    WritableResource outputResource = new FileSystemResource(createFileNamePath("csv"));
     FlatFileItemWriter<ServicePointVersion> writer = new FlatFileItemWriter<>();
     writer.setResource(outputResource);
     writer.setAppendAllowed(true);
     writer.setLineAggregator(new DelimitedLineAggregator<>() {
       {
         setDelimiter(";");
-        setFieldExtractor(new BeanWrapperFieldExtractor<>() {
-          {
-            setNames(new String[]{"numberShort", "uicCountryCode", "sloid", "number", "checkDigit"});
-          }
-        });
+        setFieldExtractor(new BeanWrapperFieldExtractor<>() {{
+          setNames(CSV_HEADER);
+        }});
       }
     });
-    writer.setHeaderCallback(writer1 -> {
-      for (int i = 0; i < headers.length; i++) {
-        if (i != headers.length - 1) {
-          writer1.append(headers[i] + ";");
-        } else {
-          writer1.append(headers[i]);
-        }
-      }
-    });
-
+    writer.setHeaderCallback(new CsvFlatFileHeaderCallback());
+    writer.setEncoding(StandardCharsets.ISO_8859_1.name());
     return writer;
   }
 
