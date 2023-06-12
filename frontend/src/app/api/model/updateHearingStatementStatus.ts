@@ -21,5 +21,4 @@ export interface UpdateHearingStatementStatus {
    * Statement of Federal office of transport
    */
   justification?: string;
-  timetableYear: number;
 }
