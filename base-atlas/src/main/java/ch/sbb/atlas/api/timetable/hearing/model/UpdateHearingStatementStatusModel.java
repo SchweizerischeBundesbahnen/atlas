@@ -34,6 +34,4 @@ public class UpdateHearingStatementStatusModel extends BaseUpdateHearingModel {
   @Schema(description = "Statement of Federal office of transport", example = "We can absolutely do that.")
   private String justification;
 
-  @NotNull
-  private long timetableYear;
 }

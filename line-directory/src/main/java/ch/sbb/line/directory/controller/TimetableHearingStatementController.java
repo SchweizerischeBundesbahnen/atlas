@@ -25,11 +25,11 @@ import ch.sbb.line.directory.service.hearing.TimetableFieldNumberResolverService
 import ch.sbb.line.directory.service.hearing.TimetableHearingStatementExportService;
 import ch.sbb.line.directory.service.hearing.TimetableHearingStatementService;
 import ch.sbb.line.directory.service.hearing.TimetableHearingYearService;
+import com.amazonaws.services.kms.model.NotFoundException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -164,8 +164,26 @@ public class TimetableHearingStatementController implements TimetableHearingStat
 
   @Override
   public void updateHearingStatementStatus(UpdateHearingStatementStatusModel updateHearingStatementStatus) {
-    TimetableHearingYear hearingYear = timetableHearingYearService.getHearingYear(updateHearingStatementStatus.getTimetableYear());
-    List<Long> wrongStatementTimetableYears = new ArrayList<>();
+
+    if(updateHearingStatementStatus.getIds().isEmpty()){
+     throw new NotFoundException("ID's are empty");
+    }
+
+    List<TimetableHearingStatement> timetableHearingStatements =
+        timetableHearingStatementService.getTimetableHearingStatementsByIds(
+            updateHearingStatementStatus.getIds());
+
+    long firstStatementTimetableYear = timetableHearingStatements.stream().findFirst().get().getTimetableYear();
+
+    TimetableHearingYear hearingYear = timetableHearingYearService.getHearingYear(firstStatementTimetableYear);
+
+    boolean hasMoreThanOneTimetableYear = timetableHearingStatements.stream().map(TimetableHearingStatement::getTimetableYear).distinct().count() > 1;
+
+    if(hasMoreThanOneTimetableYear){
+      throw new ForbiddenDueWrongStatementTimeTableYearException(
+                    firstStatementTimetableYear,
+                    TimetableHearingYear_.TIMETABLE_YEAR);
+    }
 
     if(!hearingYear.isStatementEditable() || hearingYear.getHearingStatus() != HearingStatus.ACTIVE){
       throw new ForbiddenDueToHearingYearSettingsException(
@@ -173,24 +191,6 @@ public class TimetableHearingStatementController implements TimetableHearingStat
           TimetableHearingYear_.STATEMENT_EDITABLE);
     }
 
-    for (long id : updateHearingStatementStatus.getIds()){
-      TimetableHearingStatement existingStatement = timetableHearingStatementService.getTimetableHearingStatementsById(id);
-
-      if (existingStatement.getTimetableYear().longValue() != hearingYear.getTimetableYear().longValue()){
-        wrongStatementTimetableYears.add(id);
-      }
-    }
-
-    if (wrongStatementTimetableYears.size() >= 1){
-      throw new ForbiddenDueWrongStatementTimeTableYearException(
-          wrongStatementTimetableYears,
-          hearingYear.getTimetableYear(),
-          TimetableHearingYear_.TIMETABLE_YEAR);
-    }
-
-    List<TimetableHearingStatement> timetableHearingStatements =
-        timetableHearingStatementService.getTimetableHearingStatementsByIds(
-            updateHearingStatementStatus.getIds());
     timetableHearingStatements.forEach(
         timetableHearingStatement -> timetableHearingStatementService.updateHearingStatementStatus(
             timetableHearingStatement,
