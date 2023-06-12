@@ -1,6 +1,7 @@
 package ch.sbb.exportservice.tasklet;
 
 import ch.sbb.atlas.amazon.exception.FileException;
+import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.exportservice.service.ExportServicePointDirectory;
 import ch.sbb.exportservice.service.FileExportService;
 import java.io.File;
@@ -24,11 +25,14 @@ import org.springframework.core.io.Resource;
 public class FileUploadTasklet implements Tasklet {
 
   @Autowired
+  private FileService fileService;
+  @Autowired
   private FileExportService fileExportService;
 
   @Override
   public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) {
-    Resource fileSystemResource = new FileSystemResource(".export/");
+
+    Resource fileSystemResource = new FileSystemResource(fileService.getDir());
     log.info("Res: {}", fileSystemResource);
     try (Stream<Path> walk = Files.walk(Paths.get(fileSystemResource.getFile().getPath()))) {
       List<File> files = walk.filter(Files::isRegularFile).map(Path::toFile).collect(Collectors.toList());
