@@ -11,12 +11,14 @@ import ch.sbb.exportservice.listener.StepTracerListener;
 import ch.sbb.exportservice.model.ServicePointVersionCsvModel;
 import ch.sbb.exportservice.model.ServicePointVersionCsvModel.Fields;
 import ch.sbb.exportservice.processor.ServicePointVersionProcessor;
+import ch.sbb.exportservice.reader.ServicePointVersionReader;
 import ch.sbb.exportservice.repository.PointRepository;
 import ch.sbb.exportservice.tasklet.FileDeletingTasklet;
 import ch.sbb.exportservice.tasklet.FileUploadTasklet;
 import ch.sbb.exportservice.utils.StepUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import jakarta.persistence.EntityManagerFactory;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -35,6 +37,7 @@ import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.data.RepositoryItemReader;
+import org.springframework.batch.item.database.JpaPagingItemReader;
 import org.springframework.batch.item.file.FlatFileItemWriter;
 import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
 import org.springframework.batch.item.file.transform.DelimitedLineAggregator;
@@ -73,7 +76,7 @@ public class SpringBatchConfig {
       Fields.lv95North, Fields.wgs84East, Fields.wgs84North, Fields.wgs84WebEast, Fields.wgs84WebNorth,
       Fields.height, Fields.creationDate, Fields.editionDate, Fields.statusDidok3
   };
-  private static final int CHUNK_SIZE = 20;
+  private static final int CHUNK_SIZE = 200;
   private static final int THREAD_EXECUTION_SIZE = 64;
   private final JobRepository jobRepository;
 
@@ -86,6 +89,9 @@ public class SpringBatchConfig {
 
   private final FileService fileService;
 
+  private final ServicePointVersionReader servicePointVersionReader;
+  private final EntityManagerFactory entityManagerFactory;
+
   @StepScope
   @Bean
   public RepositoryItemReader<ServicePointVersion> servicePointItemReader() {
@@ -95,14 +101,29 @@ public class SpringBatchConfig {
     final HashMap<String, Direction> sorts = new HashMap<>();
     sorts.put("id", Sort.Direction.ASC);
     repositoryItemReader.setSort(sorts);
+    repositoryItemReader.setPageSize(200);
     return repositoryItemReader;
+  }
+
+  @StepScope
+  @Bean
+  public JpaPagingItemReader<ServicePointVersion> reader() {
+    JpaPagingItemReader<ServicePointVersion> reader = new JpaPagingItemReader<>();
+    reader.setEntityManagerFactory(this.entityManagerFactory);
+    reader.setSaveState(false);
+    reader.setQueryString("select spv from service_point_version spv"
+        + " left join fetch spv.categories spvc"
+        + " left join fetch spv.servicePointGeolocation spvg"
+        + " left join fetch spv.meansOfTransport spvmot");
+    reader.setPageSize(1000);
+    return reader;
   }
 
   @Bean
   public CompositeItemWriter<ServicePointVersionCsvModel> compositeItemWriter() {
     List<ItemWriter> writers = new ArrayList<>();
     writers.add(csvWriter());
-    writers.add(jsonFileItemWriter());
+    //    writers.add(jsonFileItemWriter());
     CompositeItemWriter itemWriter = new CompositeItemWriter();
     itemWriter.setDelegates(writers);
     return itemWriter;
@@ -159,7 +180,7 @@ public class SpringBatchConfig {
     String stepName = "parseServicePointCsvStep";
     return new StepBuilder(stepName, jobRepository)
         .<ServicePointVersion, ServicePointVersionCsvModel>chunk(CHUNK_SIZE, transactionManager)
-        .reader(servicePointItemReader())
+        .reader(servicePointVersionReader)
         .processor(servicePointVersionProcessor())
         .writer(compositeItemWriter())
         .faultTolerant()
