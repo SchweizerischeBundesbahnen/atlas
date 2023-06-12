@@ -1,0 +1,19 @@
+package ch.sbb.atlas.transport.company;
+
+import ch.sbb.atlas.transport.company.repository.SharedTransportCompanyRepository;
+import ch.sbb.atlas.transport.company.service.SharedTransportCompanyConsumer;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+@ComponentScan
+public class SharedTransportCompanyConfig {
+
+  @Bean
+  public SharedTransportCompanyConsumer sharedTransportCompanyConsumer(
+      SharedTransportCompanyRepository sharedTransportCompanyRepository) {
+    return new SharedTransportCompanyConsumer(sharedTransportCompanyRepository);
+  }
+
+}
