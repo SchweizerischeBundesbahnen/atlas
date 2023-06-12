@@ -3,14 +3,9 @@ package ch.sbb.exportservice.service;
 import ch.sbb.atlas.amazon.exception.FileException;
 import ch.sbb.atlas.amazon.service.AmazonBucket;
 import ch.sbb.atlas.amazon.service.AmazonService;
-import ch.sbb.atlas.amazon.service.FileService;
-import ch.sbb.atlas.api.AtlasApiConstants;
-import ch.sbb.atlas.export.ExportType;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +16,6 @@ import org.springframework.stereotype.Service;
 public class FileExportService {
 
   private static final String EXPORT_DIR = "service_point";
-  private final FileService fileService;
   private final AmazonService amazonService;
 
   public List<URL> exportFiles(List<File> files, ExportServicePointDirectory directory) {
@@ -38,11 +32,4 @@ public class FileExportService {
     return urls;
   }
 
-  protected File createFile(ExportType exportType, String fileName) {
-    String dir = fileService.getDir();
-    String actualDate = LocalDate.now()
-        .format(DateTimeFormatter.ofPattern(
-            AtlasApiConstants.DATE_FORMAT_PATTERN));
-    return new File(dir + exportType.getFilePrefix() + fileName + actualDate + ".csv");
-  }
 }
