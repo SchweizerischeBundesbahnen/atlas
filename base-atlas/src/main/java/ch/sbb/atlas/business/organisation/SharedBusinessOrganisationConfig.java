@@ -2,6 +2,7 @@ package ch.sbb.atlas.business.organisation;
 
 import ch.sbb.atlas.business.organisation.repository.SharedBusinessOrganisationVersionRepository;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationConsumer;
+import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +15,12 @@ public class SharedBusinessOrganisationConfig {
   public SharedBusinessOrganisationConsumer sharedBusinessOrganisationConsumer(
       SharedBusinessOrganisationVersionRepository sharedBusinessOrganisationVersionRepository) {
     return new SharedBusinessOrganisationConsumer(sharedBusinessOrganisationVersionRepository);
+  }
+
+  @Bean
+  public SharedBusinessOrganisationService sharedBusinessOrganisationService(
+      SharedBusinessOrganisationVersionRepository sharedBusinessOrganisationVersionRepository) {
+    return new SharedBusinessOrganisationService(sharedBusinessOrganisationVersionRepository);
   }
 
 }

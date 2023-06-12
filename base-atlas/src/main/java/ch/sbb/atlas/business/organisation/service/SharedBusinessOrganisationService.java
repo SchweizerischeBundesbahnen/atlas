@@ -1,11 +1,9 @@
 package ch.sbb.atlas.business.organisation.service;
 
-import ch.sbb.atlas.business.organisation.exception.SboidNotFoundException;
+import ch.sbb.atlas.model.exception.SboidNotFoundException;
 import ch.sbb.atlas.business.organisation.repository.SharedBusinessOrganisationVersionRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-@Service
 @RequiredArgsConstructor
 public class SharedBusinessOrganisationService {
 
