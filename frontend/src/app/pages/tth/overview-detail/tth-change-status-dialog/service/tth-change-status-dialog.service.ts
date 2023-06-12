@@ -18,8 +18,7 @@ export class TthChangeStatusDialogService {
     changedStatus: StatementStatus,
     tths: TimetableHearingStatement[],
     justification: string | undefined,
-    statusChangeDataType: StatusChangeDataType,
-    foundTimetableHearingYear: number
+    statusChangeDataType: StatusChangeDataType
   ): Observable<boolean> {
     const statusChangeData: StatusChangeData = {
       title: 'TTH.DIALOG.STATUS_CHANGE',
@@ -33,7 +32,6 @@ export class TthChangeStatusDialogService {
       statementStatus: changedStatus,
       justification: justification,
       type: statusChangeDataType,
-      timeTableYear: foundTimetableHearingYear,
     };
     this.changeStatusDialog = this.dialog.open(TthChangeStatusDialogComponent, {
       data: statusChangeData,

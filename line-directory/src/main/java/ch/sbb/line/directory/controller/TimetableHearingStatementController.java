@@ -25,7 +25,6 @@ import ch.sbb.line.directory.service.hearing.TimetableFieldNumberResolverService
 import ch.sbb.line.directory.service.hearing.TimetableHearingStatementExportService;
 import ch.sbb.line.directory.service.hearing.TimetableHearingStatementService;
 import ch.sbb.line.directory.service.hearing.TimetableHearingYearService;
-import com.amazonaws.services.kms.model.NotFoundException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -166,7 +165,7 @@ public class TimetableHearingStatementController implements TimetableHearingStat
   public void updateHearingStatementStatus(UpdateHearingStatementStatusModel updateHearingStatementStatus) {
 
     if(updateHearingStatementStatus.getIds().isEmpty()){
-     throw new NotFoundException("ID's are empty");
+     return;
     }
 
     List<TimetableHearingStatement> timetableHearingStatements =
