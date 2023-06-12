@@ -63,7 +63,7 @@ public class BusinessOrganisationService {
       BusinessOrganisationVersion currentVersion, BusinessOrganisationVersion editedVersion) {
     versionRepository.incrementVersion(currentVersion.getSboid());
     if (editedVersion.getVersion() != null && !currentVersion.getVersion()
-                                                             .equals(editedVersion.getVersion())) {
+        .equals(editedVersion.getVersion())) {
       throw new StaleObjectStateException(BusinessOrganisationVersion.class.getSimpleName(),
           "version");
     }
@@ -94,5 +94,9 @@ public class BusinessOrganisationService {
       businessOrganisationDistributor.saveToDistributedServices(version);
     });
     return versions;
+  }
+
+  public void syncAllBusinessOrganisations() {
+    versionRepository.findAll().forEach(businessOrganisationDistributor::saveToDistributedServices);
   }
 }
