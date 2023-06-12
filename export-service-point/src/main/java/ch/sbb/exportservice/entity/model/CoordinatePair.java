@@ -1,4 +1,4 @@
-package ch.sbb.atlas.servicepointdirectory.model;
+package ch.sbb.exportservice.entity.model;
 
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
