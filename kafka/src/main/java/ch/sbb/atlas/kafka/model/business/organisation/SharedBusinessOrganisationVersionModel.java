@@ -18,6 +18,7 @@ import lombok.ToString;
 @Builder
 public class SharedBusinessOrganisationVersionModel {
 
+  @NotNull
   private Long id;
 
   @NotNull
