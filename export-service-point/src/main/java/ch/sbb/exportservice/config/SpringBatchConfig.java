@@ -7,6 +7,7 @@ import ch.sbb.exportservice.aggregator.ServicePointJsonItemAggregator;
 import ch.sbb.exportservice.entity.ServicePointVersion;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
+import ch.sbb.exportservice.model.ServicePointVersionCsvModel;
 import ch.sbb.exportservice.processor.ServicePointVersionProcessor;
 import ch.sbb.exportservice.repository.PointRepository;
 import ch.sbb.exportservice.tasklet.FileDeletingTasklet;
@@ -71,7 +72,7 @@ public class SpringBatchConfig {
   }
 
   @Bean
-  public CompositeItemWriter<ServicePointVersion> compositeItemWriter() {
+  public CompositeItemWriter<ServicePointVersionCsvModel> compositeItemWriter() {
     List<ItemWriter> writers = new ArrayList<>();
     writers.add(csvWriter());
     writers.add(jsonWriter());
@@ -84,8 +85,8 @@ public class SpringBatchConfig {
   }
 
   @Bean
-  public ItemWriter<ServicePointVersion> jsonWriter() {
-    FlatFileItemWriter<ServicePointVersion> writer = new FlatFileItemWriter<>();
+  public ItemWriter<ServicePointVersionCsvModel> jsonWriter() {
+    FlatFileItemWriter<ServicePointVersionCsvModel> writer = new FlatFileItemWriter<>();
     writer.setLineSeparator(System.getProperty("line.separator"));
 
     //Setting header and footer.
@@ -105,7 +106,7 @@ public class SpringBatchConfig {
   @Bean
   public FlatFileItemWriter<ServicePointVersion> csvWriter() {
     WritableResource outputResource = new FileSystemResource(".export/outputData.csv");
-    String[] headers = new String[]{"id"};
+    String[] headers = new String[]{"numberShort", "uicCountryCode", "sloid", "number", "checkDigit"};
     FlatFileItemWriter<ServicePointVersion> writer = new FlatFileItemWriter<>();
     writer.setResource(outputResource);
     writer.setAppendAllowed(true);
@@ -114,7 +115,7 @@ public class SpringBatchConfig {
         setDelimiter(";");
         setFieldExtractor(new BeanWrapperFieldExtractor<>() {
           {
-            setNames(new String[]{"id"});
+            setNames(new String[]{"numberShort", "uicCountryCode", "sloid", "number", "checkDigit"});
           }
         });
       }
@@ -141,7 +142,7 @@ public class SpringBatchConfig {
   public Step parseServicePointCsvStep() {
     String stepName = "parseServicePointCsvStep";
     return new StepBuilder(stepName, jobRepository)
-        .<ServicePointVersion, ServicePointVersion>chunk(CHUNK_SIZE, transactionManager)
+        .<ServicePointVersion, ServicePointVersionCsvModel>chunk(CHUNK_SIZE, transactionManager)
         .reader(servicePointItemReader())
         .processor(servicePointVersionProcessor())
         .writer(compositeItemWriter())

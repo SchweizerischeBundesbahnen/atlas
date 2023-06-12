@@ -1,8 +1,8 @@
 package ch.sbb.atlas.servicepointdirectory.geodata.mapper;
 
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
+import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeoData;
-import ch.sbb.atlas.servicepointdirectory.model.CoordinatePair;
 import ch.sbb.atlas.servicepointdirectory.transformer.CoordinateTransformer;
 import java.util.Collection;
 import java.util.List;
@@ -20,6 +20,11 @@ public class ServicePointGeoDataMapper {
   private final GeometryFactory geometryFactory = new GeometryFactory();
 
   private final CoordinateTransformer coordinateTransformer;
+
+  private static Map<String, Object> getProperties(ServicePointGeoData geolocation) {
+    return Map.of("id", geolocation.getId(),
+        "number", geolocation.getNumber());
+  }
 
   public List<Point> mapToWgs84WebGeometry(Collection<ServicePointGeoData> geolocations) {
     return geolocations.stream().map(this::mapGeoDataToWgs84WebGeometry).toList();
@@ -51,10 +56,5 @@ public class ServicePointGeoDataMapper {
     point.setSRID(SpatialReference.WGS84WEB.getWellKnownId());
     point.setUserData(properties);
     return point;
-  }
-
-  private static Map<String, Object> getProperties(ServicePointGeoData geolocation) {
-    return Map.of("id", geolocation.getId(),
-        "number", geolocation.getNumber());
   }
 }
