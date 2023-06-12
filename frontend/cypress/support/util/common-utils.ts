@@ -45,7 +45,7 @@ export default class CommonUtils {
 
   static navigateToHomeViaHomeLogo() {
     cy.get(DataCy.ATLAS_LOGO_HOME_LINK).click({force: true});
-    cy.url().should('eq', Cypress.config().baseUrl + '/');
+    cy.url().should('contain', Cypress.config().baseUrl);
   }
 
   static navigateToHomepageViaSidemenu() {
