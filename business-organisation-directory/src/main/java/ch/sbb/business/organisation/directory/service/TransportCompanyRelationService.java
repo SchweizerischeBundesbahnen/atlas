@@ -2,7 +2,7 @@ package ch.sbb.business.organisation.directory.service;
 
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.business.organisation.directory.entity.TransportCompanyRelation;
-import ch.sbb.atlas.business.organisation.exception.SboidNotFoundException;
+import ch.sbb.atlas.model.exception.SboidNotFoundException;
 import ch.sbb.business.organisation.directory.exception.TransportCompanyNotFoundException;
 import ch.sbb.business.organisation.directory.exception.TransportCompanyRelationConflictException;
 import ch.sbb.business.organisation.directory.repository.TransportCompanyRelationRepository;
