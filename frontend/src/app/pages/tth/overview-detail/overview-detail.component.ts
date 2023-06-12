@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, DestroyRef, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   ApplicationType,
@@ -13,7 +13,7 @@ import {
 import { Cantons } from '../overview/canton/Cantons';
 import { TableColumn } from '../../../core/components/table/table-column';
 import { Pages } from '../../pages';
-import { Observable, Subject, take, takeUntil } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import moment from 'moment';
 import { OverviewToTabShareDataService } from '../overview-tab/service/overview-to-tab-share-data.service';
 import { MatSelectChange } from '@angular/material/select';
@@ -34,14 +34,14 @@ import { DialogManageTthComponent } from '../dialog-manage-tth/dialog-manage-tth
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import { StatementShareService } from './statement-share-service';
 import { map } from 'rxjs/operators';
-import { NotificationService } from 'src/app/core/notification/notification.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-timetable-hearing-overview-detail',
   templateUrl: './overview-detail.component.html',
   styleUrls: ['./overview-detail.component.scss'],
 })
-export class OverviewDetailComponent implements OnInit, OnDestroy {
+export class OverviewDetailComponent implements OnInit {
   timeTableHearingStatements: TimetableHearingStatement[] = [];
   totalCount$ = 0;
   tableColumns: TableColumn<TimetableHearingStatement>[] = [];
@@ -84,7 +84,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
   sorting = 'statementStatus,asc';
   selectedCheckBox = new SelectionModel<TimetableHearingStatement>(true, []);
   isCheckBoxModeActive = false;
-  private ngUnsubscribe = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   readonly tableFilterConfig$ = this.tthTableService.overviewDetailFilterConfig.asObservable();
 
@@ -102,8 +102,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     private readonly authService: AuthService,
     private readonly statementShareService: StatementShareService,
     private readonly matDialog: MatDialog,
-    private readonly userAdministrationService: UserAdministrationService,
-    private readonly notificationService: NotificationService
+    private readonly userAdministrationService: UserAdministrationService
   ) {}
 
   get isHearingYearActive(): boolean {
@@ -176,15 +175,11 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
         pagination.size,
         addElementsToArrayWhenNotUndefined(pagination.sort, this.sorting, 'ttfnid,ASC')
       )
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((container) => {
         this.timeTableHearingStatements = container.objects!;
         this.totalCount$ = container.totalCount!;
       });
-  }
-
-  ngOnDestroy() {
-    this.ngUnsubscribe.complete();
   }
 
   changeSelectedCantonFromDropdown(selectedCanton: MatSelectChange) {
@@ -479,7 +474,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
   private getTimetableHearingYear(hearingStatus: HearingStatus, sortReverse: boolean) {
     this.timetableHearingService
       .getHearingYears([hearingStatus])
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((timetableHearingYears) => {
         if (timetableHearingYears.length === 0) {
           this.noTimetableHearingYearFound = true;
@@ -530,7 +525,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
   private initOverviewActiveTable() {
     this.timetableHearingService
       .getHearingYears([HearingStatus.Active])
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((timetableHearingYears) => {
         if (timetableHearingYears) {
           if (timetableHearingYears.length === 0) {
@@ -539,7 +534,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
           } else if (timetableHearingYears.length >= 1) {
             this.foundTimetableHearingYear = timetableHearingYears[0];
             this.getHearingYear(this.foundTimetableHearingYear.timetableYear)
-              .pipe(takeUntil(this.ngUnsubscribe))
+              .pipe(takeUntilDestroyed(this.destroyRef))
               .subscribe(() => {
                 this.tableColumns = this.getActiveTableColumns();
                 this.isTableColumnsInitialized = true;
@@ -553,7 +548,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
   private getPlannedTimetableYearWhenNoActiveFound() {
     this.timetableHearingService
       .getHearingYears([HearingStatus.Planned])
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((timetableHearingYears) => {
         if (timetableHearingYears && timetableHearingYears?.length >= 1) {
           const foundTimetableHearingYears = TthUtils.sortByTimetableHearingYear(
@@ -670,7 +665,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     this.showStartTimetableHearingButton = true;
     this.timetableHearingService
       .getHearingYears([HearingStatus.Active])
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((timetableHearingYears) => {
         if (timetableHearingYears.length > 0) {
           this.showStartTimetableHearingButton = false;
@@ -682,16 +677,12 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     return new Observable<void>((observer) => {
       this.timetableHearingService
         .getHearingYear(timetableYear)
-        .pipe(takeUntil(this.ngUnsubscribe))
+        .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe({
           next: (year) => {
             this.statementEditable = year.statementEditable ? false : true;
             observer.next();
             observer.complete();
-          },
-          error: (err) => {
-            this.notificationService.error(err);
-            observer.error(err);
           },
         });
     });
