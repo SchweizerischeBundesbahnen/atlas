@@ -26,7 +26,11 @@ kafka:
     business:
       organisation:
         topic: atlas.business.organisation
-        groupId: atlas.kafka.lidi.business.organisation.groupId
+        groupId: atlas.kafka.base.business.organisation.groupId
+    transport:
+      company:
+        topic: atlas.transport.company
+        groupId: atlas.kafka.base.transport.company.groupId
 
 logging:
   level:
