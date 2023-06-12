@@ -29,7 +29,7 @@ public class BusinessOrganisationDistributor extends BaseProducer<SharedBusiness
     pushToKafka(toModel(entity), UpdateAction.DELETE);
   }
 
-  public SharedBusinessOrganisationVersionModel toModel(BusinessOrganisationVersion entity) {
+  private SharedBusinessOrganisationVersionModel toModel(BusinessOrganisationVersion entity) {
     return SharedBusinessOrganisationVersionModel.builder()
         .id(entity.getId())
         .sboid(entity.getSboid())
@@ -48,7 +48,7 @@ public class BusinessOrganisationDistributor extends BaseProducer<SharedBusiness
         .build();
   }
 
-  public void pushToKafka(SharedBusinessOrganisationVersionModel model, UpdateAction action) {
+  private void pushToKafka(SharedBusinessOrganisationVersionModel model, UpdateAction action) {
     pushToKafka(SharedBusinessOrganisationUpdate.builder().model(model).action(action).build());
   }
 
