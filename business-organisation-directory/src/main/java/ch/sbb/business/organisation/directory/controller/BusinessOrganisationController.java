@@ -143,4 +143,9 @@ public class BusinessOrganisationController implements BusinessOrganisationApiV1
     return exportService.exportFutureTimetableVersions();
   }
 
+  @Override
+  public void syncBusinessOrganisations() {
+    service.syncAllBusinessOrganisations();
+  }
+
 }
