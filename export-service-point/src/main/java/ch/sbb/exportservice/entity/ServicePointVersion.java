@@ -136,6 +136,7 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
   @ElementCollection(targetClass = Category.class, fetch = FetchType.EAGER)
   @Convert(converter = CategoryConverter.class)
   private Set<Category> categories;
+  private String categoriesPipeList;
 
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty @Column(name = "operating_point_type")
@@ -180,6 +181,8 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
   @Convert(converter = MeanOfTransportConverter.class)
   @Column(name = "means_of_transport")
   private Set<MeanOfTransport> meansOfTransport;
+
+  private String meansOfTransportPipeList;
 
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
