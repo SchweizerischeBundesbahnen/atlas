@@ -302,8 +302,7 @@ export class OverviewDetailComponent implements OnInit {
         changedStatus.$event.value,
         [changedStatus.value],
         changedStatus.value.justification,
-        'SINGLE',
-        this.foundTimetableHearingYear.timetableYear
+        'SINGLE'
       )
       .subscribe(() => {
         this.ngOnInit();
@@ -318,13 +317,7 @@ export class OverviewDetailComponent implements OnInit {
   collectingStatusChangeAction(changedStatus: ColumnDropDownEvent) {
     if (this.selectedItems.length > 0) {
       this.tthStatusChangeDialogService
-        .onClick(
-          changedStatus.value,
-          this.selectedItems,
-          undefined,
-          'MULTIPLE',
-          this.foundTimetableHearingYear.timetableYear
-        )
+        .onClick(changedStatus.value, this.selectedItems, undefined, 'MULTIPLE')
         .subscribe((result) => {
           if (result) {
             this.statusChangeCollectingActionsEnabled = false;
@@ -533,12 +526,7 @@ export class OverviewDetailComponent implements OnInit {
             this.getPlannedTimetableYearWhenNoActiveFound();
           } else if (timetableHearingYears.length >= 1) {
             this.foundTimetableHearingYear = timetableHearingYears[0];
-            this.getHearingYear(this.foundTimetableHearingYear.timetableYear)
-              .pipe(takeUntilDestroyed(this.destroyRef))
-              .subscribe(() => {
-                this.tableColumns = this.getActiveTableColumns();
-                this.isTableColumnsInitialized = true;
-              });
+            this.getHearingYear(this.foundTimetableHearingYear.timetableYear);
             this.initOverviewTable();
           }
         }
@@ -673,18 +661,14 @@ export class OverviewDetailComponent implements OnInit {
       });
   }
 
-  getHearingYear(timetableYear: number): Observable<void> {
-    return new Observable<void>((observer) => {
-      this.timetableHearingService
-        .getHearingYear(timetableYear)
-        .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe({
-          next: (year) => {
-            this.statementEditable = year.statementEditable ? false : true;
-            observer.next();
-            observer.complete();
-          },
-        });
-    });
+  getHearingYear(timetableYear: number): void {
+    this.timetableHearingService
+      .getHearingYear(timetableYear)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((year) => {
+        this.statementEditable = !year.statementEditable;
+        this.tableColumns = this.getActiveTableColumns();
+        this.isTableColumnsInitialized = true;
+      });
   }
 }
