@@ -1,10 +1,11 @@
-package ch.sbb.atlas.servicepointdirectory.entity.geolocation;
+package ch.sbb.exportservice.entity.geolocation;
 
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
-import ch.sbb.atlas.servicepoint.CoordinatePair;
-import ch.sbb.atlas.servicepointdirectory.entity.BaseDidokImportEntity;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
+import ch.sbb.exportservice.entity.BaseDidokImportEntity;
+import ch.sbb.exportservice.entity.model.CoordinatePair;
+import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.MappedSuperclass;
@@ -31,6 +32,7 @@ public abstract class GeolocationBaseEntity extends BaseDidokImportEntity {
   @NotNull
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
+  @Column(name = "spatial_reference")
   private SpatialReference spatialReference;
 
   @AtlasVersionableProperty
