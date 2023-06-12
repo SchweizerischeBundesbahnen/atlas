@@ -1,7 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.transformer;
 
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
-import ch.sbb.atlas.servicepointdirectory.model.CoordinatePair;
+import ch.sbb.atlas.servicepoint.CoordinatePair;
 import jakarta.validation.Valid;
 import java.util.EnumMap;
 import java.util.Map;
@@ -25,9 +25,9 @@ public class CoordinateTransformer {
   public CoordinateTransformer() {
     final CRSFactory crsFactory = new CRSFactory();
     Stream.of(SpatialReference.values())
-          .forEach(spatialReference -> referenceSystemMap
-              .put(spatialReference,
-                  crsFactory.createFromName("epsg:" + spatialReference.getWellKnownId())));
+        .forEach(spatialReference -> referenceSystemMap
+            .put(spatialReference,
+                crsFactory.createFromName("epsg:" + spatialReference.getWellKnownId())));
   }
 
   /**

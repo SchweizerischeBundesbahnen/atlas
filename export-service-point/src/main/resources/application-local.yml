@@ -74,9 +74,12 @@ spring:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       retries: 1
   jpa:
-    properties:
-      hibernate:
-        default_schema: service-point-directory
+    open-in-view: false
+    show-sql: false
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
 
 kafka:
   atlas:
