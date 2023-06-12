@@ -191,7 +191,7 @@
             (selectChanged)="collectingActions($event)"
             *ngIf="showCollectingActionButton"
             [additionalLabelspace]="false"
-            [disabled]="totalCount$ === 0 || statementEditable"
+            [disabled]="totalCount$ === 0 || !statementEditable"
             [options]="COLLECTING_ACTION_DROPDOWN_OPTIONS"
             dataCy="collect-action-type"
             optionTranslateLabelPrefix="TTH.DROPDOWN.COLLECTING_ACTION.OPTION."
