@@ -31,6 +31,8 @@ class TransportCompanyServiceTest {
   @Mock
   private TransportCompanyClient transportCompanyClient;
   @Mock
+  private TransportCompanyDistributor transportCompanyDistributor;
+  @Mock
   private MailClient mailClient;
 
   private TransportCompanyService transportCompanyService;
@@ -39,7 +41,7 @@ class TransportCompanyServiceTest {
   void setUp() {
     MockitoAnnotations.openMocks(this);
     transportCompanyService = new TransportCompanyService(transportCompanyClient,
-        transportCompanyRepository, mailClient);
+        transportCompanyRepository, transportCompanyDistributor, mailClient);
   }
 
   @Test
