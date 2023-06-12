@@ -74,8 +74,6 @@ import org.springframework.test.web.servlet.MvcResult;
 public class TimetableHearingStatementControllerApiTest extends BaseControllerApiTest {
 
   private static final long YEAR = 2022L;
-  private static final long YEAR_ACTIVE = 2056L;
-  private static final long YEAR_STATEMENT_EDITABLE_DISABLED = 2076L;
   private static final TimetableHearingYearModel TIMETABLE_HEARING_YEAR = TimetableHearingYearModel.builder()
       .timetableYear(YEAR)
       .hearingFrom(LocalDate.of(2021, 1, 1))
@@ -443,7 +441,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
     List<Long> ids = Stream.of(statement1, statement2).map(TimetableHearingStatement::getId).toList();
     UpdateHearingStatementStatusModel updateHearingStatementStatusModel =
         UpdateHearingStatementStatusModel.builder().ids(ids).justification("Forza Napoli")
-            .statementStatus(StatementStatus.ACCEPTED).timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear()).build();
+            .statementStatus(StatementStatus.ACCEPTED).build();
 
     //when
     mvc.perform(put("/v1/timetable-hearing/statements/update-statement-status")
@@ -458,7 +456,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
 
     //given
     TimetableHearingStatement statement1 = TimetableHearingStatement.builder()
-        .timetableYear(2055L)
+        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
         .swissCanton(SwissCanton.BERN)
         .statementStatus(StatementStatus.IN_REVIEW)
         .statementSender(StatementSender.builder()
@@ -468,7 +466,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
         .build();
 
     TimetableHearingStatement statement2 = TimetableHearingStatement.builder()
-        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .timetableYear(2055L)
         .swissCanton(SwissCanton.BERN)
         .statementStatus(StatementStatus.JUNK)
         .statementSender(StatementSender.builder()
@@ -482,7 +480,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
     List<Long> ids = Stream.of(statement1, statement2).map(TimetableHearingStatement::getId).toList();
     UpdateHearingStatementStatusModel updateHearingStatementStatusModel =
         UpdateHearingStatementStatusModel.builder().ids(ids).justification("Forza Napoli")
-            .statementStatus(StatementStatus.ACCEPTED).timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear()).build();
+            .statementStatus(StatementStatus.ACCEPTED).build();
 
     //when
     mvc.perform(put("/v1/timetable-hearing/statements/update-statement-status")
@@ -519,7 +517,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
     List<Long> ids = Stream.of(statement1, statement2).map(TimetableHearingStatement::getId).toList();
     UpdateHearingStatementStatusModel updateHearingStatementStatusModel =
         UpdateHearingStatementStatusModel.builder().ids(ids).justification("Forza Napoli")
-            .statementStatus(StatementStatus.ACCEPTED).timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear()).build();
+            .statementStatus(StatementStatus.ACCEPTED).build();
     //when
     mvc.perform(put("/v1/timetable-hearing/statements/update-statement-status")
             .contentType(contentType)
@@ -558,7 +556,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
     List<Long> ids = Stream.of(statement1, statement2).map(TimetableHearingStatement::getId).toList();
     UpdateHearingStatementStatusModel updateHearingStatementStatusModel =
         UpdateHearingStatementStatusModel.builder().ids(ids).justification("Forza Napoli")
-            .statementStatus(StatementStatus.ACCEPTED).timetableYear(2022L).build();
+            .statementStatus(StatementStatus.ACCEPTED).build();
     //when
     mvc.perform(put("/v1/timetable-hearing/statements/update-statement-status")
             .contentType(contentType)

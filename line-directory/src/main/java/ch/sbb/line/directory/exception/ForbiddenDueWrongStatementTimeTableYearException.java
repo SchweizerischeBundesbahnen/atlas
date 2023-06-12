@@ -13,7 +13,6 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public class ForbiddenDueWrongStatementTimeTableYearException extends AtlasException {
 
-    private final List<Long> statementIds;
     private final Long hearingYear;
     private final String settingField;
 
@@ -22,14 +21,14 @@ public class ForbiddenDueWrongStatementTimeTableYearException extends AtlasExcep
         return ErrorResponse.builder()
             .status(HttpStatus.FORBIDDEN.value())
             .message("Operation not allowed")
-            .error("The TimeTableYear of the following Statement ID's: " + statementIds + " are not equal as the HearingYear: " + hearingYear + ".")
+            .error("The TimetableYear of the first statement: " + hearingYear + " is not equal to the TimetableYears of the remaining statements.")
             .details(new TreeSet<>(getErrorDetails()))
             .build();
     }
 
     private List<Detail> getErrorDetails() {
         return List.of(Detail.builder()
-            .message("The TimeTableYear of the following Statement ID's: " + statementIds + " are not equal as the HearingYear: " + hearingYear + ".")
+            .message("The TimetableYear of the first statement: " + hearingYear + " is not equal to the TimetableYears of the remaining statements.")
             .field(settingField)
             .displayInfo(builder().code("TTH.NOTIFICATION.OPERATION_NOT_ALLOWED_DUE_TO_TTH_YEAR_SETTINGS").build())
             .build());
