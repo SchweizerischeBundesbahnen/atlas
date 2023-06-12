@@ -526,7 +526,9 @@ export class OverviewDetailComponent implements OnInit {
             this.getPlannedTimetableYearWhenNoActiveFound();
           } else if (timetableHearingYears.length >= 1) {
             this.foundTimetableHearingYear = timetableHearingYears[0];
-            this.getHearingYear(this.foundTimetableHearingYear.timetableYear);
+            this.statementEditable = this.foundTimetableHearingYear.statementEditable!;
+            this.tableColumns = this.getActiveTableColumns();
+            this.isTableColumnsInitialized = true;
             this.initOverviewTable();
           }
         }
@@ -578,7 +580,7 @@ export class OverviewDetailComponent implements OnInit {
         headerTitle: 'TTH.STATEMENT_STATUS_HEADER',
         value: 'statementStatus',
         dropdown: {
-          disabled: this.statementEditable,
+          disabled: !this.statementEditable,
           options: this.STATUS_OPTIONS,
           changeSelectionCallback: this.changeSelectedStatus,
           selectedOption: '',
@@ -658,17 +660,6 @@ export class OverviewDetailComponent implements OnInit {
         if (timetableHearingYears.length > 0) {
           this.showStartTimetableHearingButton = false;
         }
-      });
-  }
-
-  getHearingYear(timetableYear: number): void {
-    this.timetableHearingService
-      .getHearingYear(timetableYear)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((year) => {
-        this.statementEditable = !year.statementEditable;
-        this.tableColumns = this.getActiveTableColumns();
-        this.isTableColumnsInitialized = true;
       });
   }
 }
