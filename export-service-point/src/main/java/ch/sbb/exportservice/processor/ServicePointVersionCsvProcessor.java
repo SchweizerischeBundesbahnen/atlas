@@ -1,5 +1,6 @@
 package ch.sbb.exportservice.processor;
 
+import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationModel;
 import ch.sbb.exportservice.entity.ServicePointVersion;
 import ch.sbb.exportservice.model.ServicePointVersionCsvModel;
 import ch.sbb.exportservice.model.ServicePointVersionCsvModel.ServicePointVersionCsvModelBuilder;
@@ -8,7 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemProcessor;
 
 @Slf4j
-public class ServicePointVersionCsvProcessor implements ItemProcessor<ServicePointVersion, ServicePointVersionCsvModel> {
+public class ServicePointVersionCsvProcessor extends BaseProcessor implements
+    ItemProcessor<ServicePointVersion, ServicePointVersionCsvModel> {
 
   private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
   private static final DateTimeFormatter LOCAL_DATE_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy mm:ss");
@@ -43,6 +45,15 @@ public class ServicePointVersionCsvProcessor implements ItemProcessor<ServicePoi
       builder.municipalityName(version.getServicePointGeolocation().getSwissMunicipalityName());
       builder.fsoNumber(version.getServicePointGeolocation().getSwissMunicipalityNumber());
       builder.localityName(version.getServicePointGeolocation().getSwissLocalityName());
+      
+      ServicePointGeolocationModel geolocationModel = fromEntity(version.getServicePointGeolocation());
+      builder.height(geolocationModel.getHeight());
+      builder.lv95East(geolocationModel.getLv95().getEast());
+      builder.lv95North(geolocationModel.getLv95().getNorth());
+      builder.wgs84East(geolocationModel.getWgs84().getEast());
+      builder.wgs84North(geolocationModel.getWgs84().getNorth());
+      builder.wgs84WebEast(geolocationModel.getWgs84web().getEast());
+      builder.wgs84WebNorth(geolocationModel.getWgs84web().getNorth());
     }
     builder.operatingPointTypeCode(version.getOperatingPointType() != null ?
         version.getOperatingPointType().getCode() : null);
@@ -59,6 +70,7 @@ public class ServicePointVersionCsvProcessor implements ItemProcessor<ServicePoi
     builder.sortCodeOfDestinationStation(version.getSortCodeOfDestinationStation());
     builder.sboid(version.getBusinessOrganisation());
     builder.fotComment(version.getComment());
+
     //    //TODO: add geolocation
     //
     builder.creationDate(LOCAL_DATE_FORMATTER.format(version.getCreationDate()));
