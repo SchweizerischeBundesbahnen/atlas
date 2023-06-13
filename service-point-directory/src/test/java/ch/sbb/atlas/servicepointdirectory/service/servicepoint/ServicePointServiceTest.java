@@ -29,12 +29,15 @@ public class ServicePointServiceTest {
   @Mock
   private VersionableService versionableServiceMock;
 
+  @Mock
+  private ServicePointValidationService servicePointValidationService;
+
   private AutoCloseable mocks;
 
   @BeforeEach
   void initMocksAndService() {
     mocks = MockitoAnnotations.openMocks(this);
-    servicePointService = new ServicePointService(servicePointVersionRepositoryMock, versionableServiceMock);
+    servicePointService = new ServicePointService(servicePointVersionRepositoryMock, versionableServiceMock, servicePointValidationService);
   }
 
   @AfterEach
