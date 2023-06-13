@@ -6,6 +6,7 @@ import ch.sbb.atlas.kafka.model.business.organisation.UpdateAction;
 import ch.sbb.atlas.kafka.producer.BaseProducer;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ public class BusinessOrganisationDistributor extends BaseProducer<SharedBusiness
 
   @Value("${kafka.atlas.business.organisation.topic}")
   @Getter
+  @Setter
   private String topic;
 
   public BusinessOrganisationDistributor(KafkaTemplate<String, Object> kafkaTemplate) {
