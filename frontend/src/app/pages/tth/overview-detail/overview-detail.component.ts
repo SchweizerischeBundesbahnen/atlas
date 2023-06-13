@@ -529,6 +529,7 @@ export class OverviewDetailComponent implements OnInit {
             this.statementEditable = this.foundTimetableHearingYear.statementEditable!;
             this.tableColumns = this.getActiveTableColumns();
             this.isTableColumnsInitialized = true;
+            this.enableCheckboxViewMode();
             this.initOverviewTable();
           }
         }
