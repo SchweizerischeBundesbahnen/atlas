@@ -4,6 +4,7 @@ import ch.sbb.atlas.kafka.model.transport.company.SharedTransportCompanyModel;
 import ch.sbb.atlas.kafka.producer.BaseProducer;
 import ch.sbb.business.organisation.directory.entity.TransportCompany;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ public class TransportCompanyDistributor extends BaseProducer<SharedTransportCom
 
   @Value("${kafka.atlas.transport.company.topic}")
   @Getter
+  @Setter
   private String topic;
 
   public TransportCompanyDistributor(KafkaTemplate<String, Object> kafkaTemplate) {
