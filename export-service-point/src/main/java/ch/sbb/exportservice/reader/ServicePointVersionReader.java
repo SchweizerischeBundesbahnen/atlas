@@ -1,17 +1,20 @@
 package ch.sbb.exportservice.reader;
 
+import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.kafka.model.SwissCanton;
+import ch.sbb.atlas.servicepoint.Country;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.atlas.servicepoint.enumeration.Category;
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
+import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
+import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
+import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
+import ch.sbb.atlas.servicepoint.enumeration.ServicePointStatus;
+import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.exportservice.entity.ServicePointVersion;
-import ch.sbb.exportservice.entity.enumeration.Category;
-import ch.sbb.exportservice.entity.enumeration.Country;
-import ch.sbb.exportservice.entity.enumeration.MeanOfTransport;
-import ch.sbb.exportservice.entity.enumeration.OperatingPointTechnicalTimetableType;
-import ch.sbb.exportservice.entity.enumeration.OperatingPointTrafficPointType;
-import ch.sbb.exportservice.entity.enumeration.OperatingPointType;
-import ch.sbb.exportservice.entity.enumeration.ServicePointStatus;
-import ch.sbb.exportservice.entity.enumeration.StopPointType;
+import ch.sbb.exportservice.entity.ServicePointVersion.ServicePointVersionBuilder;
 import ch.sbb.exportservice.entity.geolocation.ServicePointGeolocation;
-import ch.sbb.exportservice.entity.model.ServicePointNumber;
+import ch.sbb.exportservice.entity.geolocation.ServicePointGeolocation.ServicePointGeolocationBuilder;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -20,6 +23,7 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.sql.DataSource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.database.JdbcCursorItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +32,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class ServicePointVersionReader extends JdbcCursorItemReader<ServicePointVersion> implements
     ItemReader<ServicePointVersion> {
 
@@ -44,7 +49,7 @@ public class ServicePointVersionReader extends JdbcCursorItemReader<ServicePoint
         + "LEFT JOIN service_point_version_geolocation spvg on spv.service_point_geolocation_id = spvg.id "
         + "group by spv.id,spvg.id"
     );
-    setFetchSize(100);
+    setFetchSize(10000);
     setRowMapper(new ServicePointVersionRowMapper());
   }
 
@@ -52,68 +57,89 @@ public class ServicePointVersionReader extends JdbcCursorItemReader<ServicePoint
 
     @Override
     public ServicePointVersion mapRow(ResultSet rs, int rowNum) throws SQLException {
-      ServicePointVersion servicePointVersion = new ServicePointVersion();
-      servicePointVersion.setId(rs.getLong("id"));
-      servicePointVersion.setNumber(ServicePointNumber.of(rs.getInt("number")));
-      servicePointVersion.setCountry(Country.valueOf(rs.getString("country")));
-      servicePointVersion.setSloid(rs.getString("sloid"));
-      servicePointVersion.setValidFrom(rs.getObject("valid_from", LocalDate.class));
-      servicePointVersion.setValidTo(rs.getObject("valid_to", LocalDate.class));
-      servicePointVersion.setDesignationOfficial(rs.getString("designation_official"));
-      servicePointVersion.setDesignationLong(rs.getString("designation_long"));
-      servicePointVersion.setAbbreviation(rs.getString("abbreviation"));
-      servicePointVersion.setOperatingPoint(rs.getBoolean("operating_point"));
-      servicePointVersion.setOperatingPointWithTimetable(rs.getBoolean("operating_point_with_timetable"));
+      ServicePointVersionBuilder<?, ?> servicePointVersionBuilder = ServicePointVersion.builder();
+      servicePointVersionBuilder.id(rs.getLong("id"));
+      servicePointVersionBuilder.number(ServicePointNumber.of(rs.getInt("number")));
+      servicePointVersionBuilder.country(Country.valueOf(rs.getString("country")));
+      servicePointVersionBuilder.sloid(rs.getString("sloid"));
+      servicePointVersionBuilder.validFrom(rs.getObject("valid_from", LocalDate.class));
+      servicePointVersionBuilder.validTo(rs.getObject("valid_to", LocalDate.class));
+      servicePointVersionBuilder.designationOfficial(rs.getString("designation_official"));
+      servicePointVersionBuilder.designationLong(rs.getString("designation_long"));
+      servicePointVersionBuilder.abbreviation(rs.getString("abbreviation"));
+      servicePointVersionBuilder.operatingPoint(rs.getBoolean("operating_point"));
+      servicePointVersionBuilder.operatingPointWithTimetable(rs.getBoolean("operating_point_with_timetable"));
       if (rs.getString("stop_point_type") != null) {
-        servicePointVersion.setStopPointType(StopPointType.valueOf(rs.getString("stop_point_type")));
+        servicePointVersionBuilder.stopPointType(StopPointType.valueOf(rs.getString("stop_point_type")));
       }
-      servicePointVersion.setFreightServicePoint(rs.getBoolean("freight_service_point"));
+      servicePointVersionBuilder.freightServicePoint(rs.getBoolean("freight_service_point"));
 
-      ServicePointGeolocation servicePointGeolocation = new ServicePointGeolocation();
-      servicePointGeolocation.setCountry(Country.valueOf(rs.getString("country")));
-      if (rs.getString("swiss_canton") != null) {
-        servicePointGeolocation.setSwissCanton(SwissCanton.valueOf(rs.getString("swiss_canton")));
-      }
-      servicePointGeolocation.setSwissDistrictName(rs.getString("swiss_district_name"));
-      servicePointGeolocation.setSwissDistrictNumber(rs.getInt("swiss_district_number"));
-      servicePointGeolocation.setSwissMunicipalityNumber(rs.getInt("swiss_municipality_number"));
-      servicePointGeolocation.setSwissMunicipalityName(rs.getString("swiss_municipality_name"));
-      servicePointGeolocation.setSwissLocalityName(rs.getString("swiss_locality_name"));
-      servicePointVersion.setServicePointGeolocation(servicePointGeolocation);
+      getServicePointGeolocation(rs, servicePointVersionBuilder);
+
       if (rs.getString("operating_point_type") != null) {
-        servicePointVersion.setOperatingPointType(OperatingPointType.valueOf(rs.getString("operating_point_type")));
+        servicePointVersionBuilder.operatingPointType(OperatingPointType.valueOf(rs.getString("operating_point_type")));
       }
       if (rs.getString("operating_point_technical_timetable_type") != null) {
-        servicePointVersion.setOperatingPointTechnicalTimetableType(
+        servicePointVersionBuilder.operatingPointTechnicalTimetableType(
             OperatingPointTechnicalTimetableType.valueOf(rs.getString("operating_point_technical_timetable_type")));
       }
       if (rs.getString("list_of_transports") != null) {
         String listOfMeansOfTransports = rs.getString("list_of_transports");
         Set<MeanOfTransport> collectedMeansOfTransport = Arrays.stream(listOfMeansOfTransports.split("\\|")).map(
             MeanOfTransport::valueOf).collect(Collectors.toSet());
-        servicePointVersion.setMeansOfTransportPipeList(rs.getString("list_of_transports"));
-        servicePointVersion.setMeansOfTransport(collectedMeansOfTransport);
+        servicePointVersionBuilder.meansOfTransportPipeList(rs.getString("list_of_transports"));
+        servicePointVersionBuilder.meansOfTransport(collectedMeansOfTransport);
       }
       if (rs.getString("list_of_categories") != null) {
         String listOfCategories = rs.getString("list_of_categories");
-        servicePointVersion.setCategoriesPipeList(listOfCategories);
+        servicePointVersionBuilder.categoriesPipeList(listOfCategories);
         Set<Category> collectedCategories = Arrays.stream(listOfCategories.split("\\|")).map(Category::valueOf)
             .collect(Collectors.toSet());
-        servicePointVersion.setCategories(collectedCategories);
+        servicePointVersionBuilder.categories(collectedCategories);
       }
       if (rs.getString("operating_point_traffic_point_type") != null) {
-        servicePointVersion.setOperatingPointTrafficPointType(OperatingPointTrafficPointType.valueOf(rs.getString(
+        servicePointVersionBuilder.operatingPointTrafficPointType(OperatingPointTrafficPointType.valueOf(rs.getString(
             "operating_point_traffic_point_type")));
       }
-      servicePointVersion.setOperatingPointRouteNetwork(rs.getBoolean("operating_point_route_network"));
-      servicePointVersion.setOperatingPointKilometerMaster(ServicePointNumber.of(rs.getInt("operating_point_kilometer_master")));
-      servicePointVersion.setSortCodeOfDestinationStation(rs.getString("sort_code_of_destination_station"));
-      servicePointVersion.setBusinessOrganisation(rs.getString("business_organisation"));
-      servicePointVersion.setComment(rs.getString("comment"));
-      servicePointVersion.setCreationDate(rs.getObject("creation_date", LocalDateTime.class));
-      servicePointVersion.setEditionDate(rs.getObject("edition_date", LocalDateTime.class));
-      servicePointVersion.setStatusDidok3(ServicePointStatus.valueOf(rs.getString("status_didok3")));
-      return servicePointVersion;
+      servicePointVersionBuilder.operatingPointRouteNetwork(rs.getBoolean("operating_point_route_network"));
+      servicePointVersionBuilder.operatingPointKilometerMaster(
+          ServicePointNumber.of(rs.getInt("operating_point_kilometer_master")));
+      servicePointVersionBuilder.sortCodeOfDestinationStation(rs.getString("sort_code_of_destination_station"));
+      servicePointVersionBuilder.businessOrganisation(rs.getString("business_organisation"));
+      servicePointVersionBuilder.comment(rs.getString("comment"));
+      servicePointVersionBuilder.creationDate(rs.getObject("creation_date", LocalDateTime.class));
+      servicePointVersionBuilder.editionDate(rs.getObject("edition_date", LocalDateTime.class));
+      servicePointVersionBuilder.statusDidok3(ServicePointStatus.valueOf(rs.getString("status_didok3")));
+      servicePointVersionBuilder.creator(rs.getString("creator"));
+      servicePointVersionBuilder.editor(rs.getString("editor"));
+      return servicePointVersionBuilder.build();
+    }
+
+    private void getServicePointGeolocation(ResultSet rs, ServicePointVersionBuilder<?, ?> servicePointVersionBuilder)
+        throws SQLException {
+      ServicePointGeolocationBuilder<?, ?> servicePointGeolocationBuilder = ServicePointGeolocation.builder();
+      servicePointGeolocationBuilder.east(rs.getDouble("east"));
+      servicePointGeolocationBuilder.north(rs.getDouble("north"));
+      servicePointGeolocationBuilder.height(rs.getDouble("height"));
+
+      if (rs.getString("spatial_reference") != null) {
+        SpatialReference spatialReference = SpatialReference.valueOf(rs.getString("spatial_reference"));
+        servicePointGeolocationBuilder.spatialReference(spatialReference);
+      }
+
+      servicePointGeolocationBuilder.country(Country.valueOf(rs.getString("country")));
+      if (rs.getString("swiss_canton") != null) {
+        servicePointGeolocationBuilder.swissCanton(SwissCanton.valueOf(rs.getString("swiss_canton")));
+      }
+      servicePointGeolocationBuilder.swissDistrictName(rs.getString("swiss_district_name"));
+      servicePointGeolocationBuilder.swissDistrictNumber(rs.getInt("swiss_district_number"));
+      servicePointGeolocationBuilder.swissMunicipalityNumber(rs.getInt("swiss_municipality_number"));
+      servicePointGeolocationBuilder.swissMunicipalityName(rs.getString("swiss_municipality_name"));
+      servicePointGeolocationBuilder.swissLocalityName(rs.getString("swiss_locality_name"));
+      ServicePointGeolocation servicePointGeolocation = servicePointGeolocationBuilder.build();
+      if (servicePointGeolocation.getSpatialReference() != null) {
+        servicePointVersionBuilder.servicePointGeolocation(servicePointGeolocation);
+      }
     }
   }
 }

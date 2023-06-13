@@ -1,7 +1,7 @@
 package ch.sbb.exportservice.entity.geolocation;
 
 import ch.sbb.atlas.kafka.model.SwissCanton;
-import ch.sbb.exportservice.entity.enumeration.Country;
+import ch.sbb.atlas.servicepoint.Country;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

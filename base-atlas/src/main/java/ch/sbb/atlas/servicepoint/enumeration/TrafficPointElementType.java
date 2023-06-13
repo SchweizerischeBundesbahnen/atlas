@@ -1,4 +1,4 @@
-package ch.sbb.atlas.servicepointdirectory.enumeration;
+package ch.sbb.atlas.servicepoint.enumeration;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.stream.Stream;
