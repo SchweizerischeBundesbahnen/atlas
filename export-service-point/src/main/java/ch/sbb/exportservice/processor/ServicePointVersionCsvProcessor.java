@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemProcessor;
 
 @Slf4j
-public class ServicePointVersionProcessor implements ItemProcessor<ServicePointVersion, ServicePointVersionCsvModel> {
+public class ServicePointVersionCsvProcessor implements ItemProcessor<ServicePointVersion, ServicePointVersionCsvModel> {
 
   private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
   private static final DateTimeFormatter LOCAL_DATE_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy mm:ss");
