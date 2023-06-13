@@ -36,6 +36,8 @@ import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.controller.AtlasMockMultipartFile;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.model.exception.NotFoundException.FileNotFoundException;
+import ch.sbb.atlas.transport.company.entity.SharedTransportCompany;
+import ch.sbb.atlas.transport.company.service.SharedTransportCompanyService;
 import ch.sbb.line.directory.entity.StatementSender;
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
@@ -53,6 +55,7 @@ import java.time.Year;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -103,6 +106,9 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
   @MockBean
   private UserAdministrationClient userAdministrationClient;
 
+  @MockBean
+  private SharedTransportCompanyService sharedTransportCompanyService;
+
   @BeforeEach
   void setUp() {
     timetableHearingYearController.createHearingYear(TIMETABLE_HEARING_YEAR);
@@ -133,6 +139,13 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
         .businessRegisterName("Schweizerische Bundesbahnen SBB")
         .build();
     when(transportCompanyClient.getTransportCompaniesBySboid(SBOID)).thenReturn(List.of(transportCompanyModel));
+
+    when(sharedTransportCompanyService.findById(1L)).thenReturn(Optional.of(SharedTransportCompany.builder()
+        .id(1L)
+        .number("#0001")
+        .abbreviation("SBB")
+        .businessRegisterName("Schweizerische Bundesbahnen SBB")
+        .build()));
   }
 
   @AfterEach

@@ -1,0 +1,8 @@
+alter table timetable_hearing_statement_responsible_transport_companies drop column number;
+alter table timetable_hearing_statement_responsible_transport_companies drop column abbreviation;
+alter table timetable_hearing_statement_responsible_transport_companies drop column business_register_name;
+
+alter table timetable_hearing_statement_responsible_transport_companies drop column id;
+
+alter table timetable_hearing_statement_responsible_transport_companies
+    add FOREIGN KEY (transport_company_id) references shared_transport_company;

@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.line.directory.entity.ResponsibleTransportCompany;
+import ch.sbb.atlas.transport.company.entity.SharedTransportCompany;
 import ch.sbb.line.directory.entity.StatementDocument;
 import ch.sbb.line.directory.entity.StatementSender;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
@@ -84,9 +84,8 @@ public class TimetableHearingStatementRepositoryTest {
             .fileName("doc3")
             .fileSize(3454L)
             .build()));
-    statement.setResponsibleTransportCompanies(Set.of(ResponsibleTransportCompany.builder()
-        .statement(statement)
-        .transportCompanyId(1L)
+    statement.setResponsibleTransportCompanies(Set.of(SharedTransportCompany.builder()
+        .id(1L)
         .number("#0001")
         .abbreviation("SBB")
         .businessRegisterName("Schweizerische Bundesbahnen")
