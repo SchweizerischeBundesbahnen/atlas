@@ -3,39 +3,32 @@ package ch.sbb.exportservice.entity;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.model.BusinessOrganisationAssociated;
 import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.servicepoint.Country;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.atlas.servicepoint.enumeration.Category;
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
+import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
+import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
+import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
+import ch.sbb.atlas.servicepoint.enumeration.ServicePointStatus;
+import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.atlas.validation.DatesValidator;
-import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.versioning.model.Versionable;
-import ch.sbb.atlas.versioning.model.VersionableProperty.RelationType;
 import ch.sbb.exportservice.entity.converter.CategoryConverter;
 import ch.sbb.exportservice.entity.converter.MeanOfTransportConverter;
 import ch.sbb.exportservice.entity.converter.ServicePointNumberConverter;
-import ch.sbb.exportservice.entity.enumeration.Category;
-import ch.sbb.exportservice.entity.enumeration.Country;
-import ch.sbb.exportservice.entity.enumeration.MeanOfTransport;
-import ch.sbb.exportservice.entity.enumeration.OperatingPointTechnicalTimetableType;
-import ch.sbb.exportservice.entity.enumeration.OperatingPointTrafficPointType;
-import ch.sbb.exportservice.entity.enumeration.OperatingPointType;
-import ch.sbb.exportservice.entity.enumeration.ServicePointStatus;
-import ch.sbb.exportservice.entity.enumeration.StopPointType;
-import ch.sbb.exportservice.entity.geolocation.GeolocationBaseEntity;
 import ch.sbb.exportservice.entity.geolocation.ServicePointGeolocation;
-import ch.sbb.exportservice.entity.model.ServicePointNumber;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.AssertTrue;
@@ -63,8 +56,6 @@ import org.apache.commons.lang3.StringUtils;
 @ToString
 @SuperBuilder
 @FieldNameConstants
-@Entity(name = "service_point_version")
-@AtlasVersionable
 public class ServicePointVersion extends BaseDidokImportEntity implements Versionable,
     BusinessOrganisationAssociated, DatesValidator {
 
@@ -194,25 +185,6 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
   @Column(name = "comment")
   private String comment;
 
-  @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "service_point_geolocation_id", referencedColumnName = "id")
-  @AtlasVersionableProperty(relationType = RelationType.ONE_TO_ONE, relationsFields = {
-      ServicePointGeolocation.Fields.country,
-      ServicePointGeolocation.Fields.swissCanton,
-      ServicePointGeolocation.Fields.swissDistrictNumber,
-      ServicePointGeolocation.Fields.swissDistrictName,
-      ServicePointGeolocation.Fields.swissMunicipalityNumber,
-      ServicePointGeolocation.Fields.swissMunicipalityName,
-      ServicePointGeolocation.Fields.swissLocalityName,
-      GeolocationBaseEntity.Fields.east,
-      GeolocationBaseEntity.Fields.north,
-      GeolocationBaseEntity.Fields.spatialReference,
-      GeolocationBaseEntity.Fields.height,
-      BaseDidokImportEntity.Fields.creator,
-      BaseDidokImportEntity.Fields.editor,
-      BaseDidokImportEntity.Fields.creationDate,
-      BaseDidokImportEntity.Fields.editionDate
-  })
   private ServicePointGeolocation servicePointGeolocation;
 
   @NotNull

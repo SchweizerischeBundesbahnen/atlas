@@ -1,7 +1,6 @@
 package ch.sbb.exportservice.controller;
 
 import ch.sbb.exportservice.exception.JobExecutionException;
-import ch.sbb.exportservice.repository.ServicePointRepository;
 import ch.sbb.exportservice.utils.JobDescriptionConstants;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -33,22 +32,22 @@ import org.springframework.web.bind.annotation.RestController;
 public class ExportServicePointBatchControllerApiV1 {
 
   public static final String EXPORT_SERVICE_POINT_CSV_JOB = "exportServicePointCsvJob";
+  public static final String EXPORT_SERVICE_POINT_JSON_JOB = "exportServicePointJsonJob";
   private final JobLauncher jobLauncher;
 
   @Qualifier(EXPORT_SERVICE_POINT_CSV_JOB)
   private final Job exportServicePointCsvJob;
 
-  private final ServicePointRepository servicePointRepository;
+  @Qualifier(EXPORT_SERVICE_POINT_JSON_JOB)
+  private final Job exportServicePointJsonJob;
 
-  @PostMapping("service-point-batch")
+  @PostMapping("service-point-batch-csv")
   @ResponseStatus(HttpStatus.OK)
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200"),
   })
   @Async
-  public void startServicePointImportBatch() {
-    int count = servicePointRepository.count();
-    log.info("count: " + count);
+  public void startExportServicePointCsvBatch() {
     JobParameters jobParameters = new JobParametersBuilder()
         .addString(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, JobDescriptionConstants.EXECUTION_BATCH_PARAMETER)
         .addLong(JobDescriptionConstants.START_AT_JOB_PARAMETER, System.currentTimeMillis()).toJobParameters();
@@ -58,6 +57,25 @@ public class ExportServicePointBatchControllerApiV1 {
     } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException |
              JobParametersInvalidException e) {
       throw new JobExecutionException(JobDescriptionConstants.EXPORT_SERVICE_POINT_CSV_JOB_NAME, e);
+    }
+  }
+
+  @PostMapping("service-point-batch-json")
+  @ResponseStatus(HttpStatus.OK)
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200"),
+  })
+  @Async
+  public void startExportServicePointJsonBatch() {
+    JobParameters jobParameters = new JobParametersBuilder()
+        .addString(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, JobDescriptionConstants.EXECUTION_BATCH_PARAMETER)
+        .addLong(JobDescriptionConstants.START_AT_JOB_PARAMETER, System.currentTimeMillis()).toJobParameters();
+    try {
+      JobExecution execution = jobLauncher.run(exportServicePointJsonJob, jobParameters);
+      log.info("Job executed with status: {}", execution.getExitStatus().getExitCode());
+    } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException |
+             JobParametersInvalidException e) {
+      throw new JobExecutionException(JobDescriptionConstants.EXPORT_SERVICE_POINT_JSON_JOB_NAME, e);
     }
   }
 

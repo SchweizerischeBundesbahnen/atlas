@@ -1,10 +1,10 @@
 package ch.sbb.exportservice.entity.geolocation;
 
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
+import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.exportservice.entity.BaseDidokImportEntity;
-import ch.sbb.exportservice.entity.model.CoordinatePair;
 import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

@@ -2,10 +2,10 @@ package ch.sbb.atlas.servicepointdirectory.api.model;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.model.BaseVersionModel;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
-import ch.sbb.atlas.servicepointdirectory.enumeration.TrafficPointElementType;
 import ch.sbb.atlas.servicepointdirectory.mapper.GeolocationMapper;
-import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import ch.sbb.atlas.validation.DatesValidator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -70,13 +70,6 @@ public class TrafficPointElementVersionModel extends BaseVersionModel implements
   private String parentSloid;
 
   private GeolocationBaseModel trafficPointElementGeolocation;
-
-  @JsonInclude
-  @Schema(description = "TrafficPointElementVersion has a Geolocation")
-  public boolean isHasGeolocation() {
-    return trafficPointElementGeolocation != null;
-  }
-
   @NotNull
   private LocalDate validFrom;
 
@@ -103,6 +96,12 @@ public class TrafficPointElementVersionModel extends BaseVersionModel implements
         .editionDate(trafficPointElementVersion.getEditionDate())
         .editor(trafficPointElementVersion.getEditor())
         .build();
+  }
+
+  @JsonInclude
+  @Schema(description = "TrafficPointElementVersion has a Geolocation")
+  public boolean isHasGeolocation() {
+    return trafficPointElementGeolocation != null;
   }
 
 }

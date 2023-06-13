@@ -2,53 +2,48 @@ package ch.sbb.exportservice.config;
 
 import static ch.sbb.exportservice.model.ServicePointVersionCsvModel.Fields.numberShort;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_SERVICE_POINT_CSV_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_SERVICE_POINT_JSON_JOB_NAME;
 
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.AtlasApiConstants;
+:import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.exportservice.entity.ServicePointVersion;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
 import ch.sbb.exportservice.model.ServicePointVersionCsvModel;
 import ch.sbb.exportservice.model.ServicePointVersionCsvModel.Fields;
 import ch.sbb.exportservice.processor.ServicePointVersionCsvProcessor;
+import ch.sbb.exportservice.processor.ServicePointVersionJsonProcessor;
 import ch.sbb.exportservice.reader.ServicePointVersionReader;
-import ch.sbb.exportservice.repository.PointRepository;
 import ch.sbb.exportservice.tasklet.FileDeletingTasklet;
 import ch.sbb.exportservice.tasklet.FileUploadTasklet;
 import ch.sbb.exportservice.utils.StepUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.concurrent.ThreadPoolExecutor;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
-import org.springframework.batch.item.ItemWriter;
-import org.springframework.batch.item.data.RepositoryItemReader;
 import org.springframework.batch.item.file.FlatFileItemWriter;
 import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
 import org.springframework.batch.item.file.transform.DelimitedLineAggregator;
 import org.springframework.batch.item.json.JacksonJsonObjectMarshaller;
 import org.springframework.batch.item.json.JsonFileItemWriter;
-import org.springframework.batch.item.support.CompositeItemWriter;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.WritableResource;
 import org.springframework.core.task.TaskExecutor;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.transaction.PlatformTransactionManager;
 
@@ -83,42 +78,18 @@ public class SpringBatchConfig {
   private final JobCompletionListener jobCompletionListener;
   private final StepTracerListener stepTracerListener;
 
-  private final PointRepository pointRepository;
-
   private final FileService fileService;
   private final ServicePointVersionReader servicePointVersionReader;
 
-  @StepScope
   @Bean
-  public RepositoryItemReader<ServicePointVersion> servicePointItemReader() {
-    RepositoryItemReader<ServicePointVersion> repositoryItemReader = new RepositoryItemReader<>();
-    repositoryItemReader.setRepository(pointRepository);
-    repositoryItemReader.setMethodName("findAll");
-    final HashMap<String, Direction> sorts = new HashMap<>();
-    sorts.put("id", Sort.Direction.ASC);
-    repositoryItemReader.setSort(sorts);
-    repositoryItemReader.setPageSize(200);
-    return repositoryItemReader;
-  }
-
-  @Bean
-  public CompositeItemWriter<ServicePointVersionCsvModel> compositeItemWriter() {
-    List<ItemWriter> writers = new ArrayList<>();
-    //    writers.add(csvWriter());
-    writers.add(jsonFileItemWriter());
-    CompositeItemWriter itemWriter = new CompositeItemWriter();
-    itemWriter.setDelegates(writers);
-    return itemWriter;
-  }
-
-  @Bean
-  public JsonFileItemWriter<ServicePointVersionCsvModel> jsonFileItemWriter() {
-    JacksonJsonObjectMarshaller<ServicePointVersionCsvModel> jacksonJsonObjectMarshaller = new JacksonJsonObjectMarshaller<>();
+  public JsonFileItemWriter<ServicePointVersionModel> jsonFileItemWriter() {
+    JacksonJsonObjectMarshaller<ServicePointVersionModel> jacksonJsonObjectMarshaller = new JacksonJsonObjectMarshaller<>();
     ObjectMapper objectMapper = new ObjectMapper();
     objectMapper.registerModule(new JavaTimeModule());
+    objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
     jacksonJsonObjectMarshaller.setObjectMapper(objectMapper);
     FileSystemResource fileSystemResource = new FileSystemResource(createFileNamePath("json"));
-    JsonFileItemWriter<ServicePointVersionCsvModel> writer = new JsonFileItemWriter<>(
+    JsonFileItemWriter<ServicePointVersionModel> writer = new JsonFileItemWriter<>(
         fileSystemResource,
         jacksonJsonObjectMarshaller);
     writer.setEncoding(StandardCharsets.ISO_8859_1.name());
@@ -134,9 +105,9 @@ public class SpringBatchConfig {
   }
 
   @Bean
-  public FlatFileItemWriter<ServicePointVersion> csvWriter() {
+  public FlatFileItemWriter<ServicePointVersionCsvModel> csvWriter() {
     WritableResource outputResource = new FileSystemResource(createFileNamePath("csv"));
-    FlatFileItemWriter<ServicePointVersion> writer = new FlatFileItemWriter<>();
+    FlatFileItemWriter<ServicePointVersionCsvModel> writer = new FlatFileItemWriter<>();
     writer.setResource(outputResource);
     writer.setAppendAllowed(true);
     writer.setLineAggregator(new DelimitedLineAggregator<>() {
@@ -158,13 +129,18 @@ public class SpringBatchConfig {
   }
 
   @Bean
+  public ServicePointVersionJsonProcessor servicePointVersionJsonProcessor() {
+    return new ServicePointVersionJsonProcessor();
+  }
+
+  @Bean
   public Step exportServicePointCsvStep() {
     String stepName = "exportServicePointCsvStep";
     return new StepBuilder(stepName, jobRepository)
         .<ServicePointVersion, ServicePointVersionCsvModel>chunk(CHUNK_SIZE, transactionManager)
         .reader(servicePointVersionReader)
         .processor(servicePointVersionCsvProcessor())
-        .writer(compositeItemWriter())
+        .writer(csvWriter())
         .faultTolerant()
         .backOffPolicy(StepUtils.getBackOffPolicy(stepName))
         .retryPolicy(StepUtils.getRetryPolicy(stepName))
@@ -176,10 +152,10 @@ public class SpringBatchConfig {
   public Step exportServicePointJsonStep() {
     String stepName = "exportServicePointJsonStep";
     return new StepBuilder(stepName, jobRepository)
-        .<ServicePointVersion, ServicePointVersionCsvModel>chunk(CHUNK_SIZE, transactionManager)
+        .<ServicePointVersion, ServicePointVersionModel>chunk(CHUNK_SIZE, transactionManager)
         .reader(servicePointVersionReader)
-        .processor(servicePointVersionCsvProcessor())
-        .writer(compositeItemWriter())
+        .processor(servicePointVersionJsonProcessor())
+        .writer(jsonFileItemWriter())
         .faultTolerant()
         .backOffPolicy(StepUtils.getBackOffPolicy(stepName))
         .retryPolicy(StepUtils.getRetryPolicy(stepName))
@@ -188,8 +164,22 @@ public class SpringBatchConfig {
   }
 
   @Bean
+  @Qualifier(EXPORT_SERVICE_POINT_CSV_JOB_NAME)
   public Job exportServicePointCsvJob() {
     return new JobBuilder(EXPORT_SERVICE_POINT_CSV_JOB_NAME, jobRepository)
+        .listener(jobCompletionListener)
+        .incrementer(new RunIdIncrementer())
+        .flow(exportServicePointCsvStep())
+        .next(uploadFilesStep())
+        .next(deleteFilesStep())
+        .end()
+        .build();
+  }
+
+  @Bean
+  @Qualifier(EXPORT_SERVICE_POINT_JSON_JOB_NAME)
+  public Job exportServicePointJsonJob() {
+    return new JobBuilder(EXPORT_SERVICE_POINT_JSON_JOB_NAME, jobRepository)
         .listener(jobCompletionListener)
         .incrementer(new RunIdIncrementer())
         .flow(exportServicePointJsonStep())
