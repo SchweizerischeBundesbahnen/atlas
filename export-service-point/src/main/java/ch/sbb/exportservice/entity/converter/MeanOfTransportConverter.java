@@ -1,6 +1,6 @@
 package ch.sbb.exportservice.entity.converter;
 
-import ch.sbb.exportservice.entity.enumeration.MeanOfTransport;
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 

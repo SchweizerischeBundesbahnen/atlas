@@ -2,7 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.api.model;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.kafka.model.SwissCanton;
-import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
+import ch.sbb.atlas.servicepoint.Country;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;

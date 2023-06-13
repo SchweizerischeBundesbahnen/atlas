@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.enumeration;
 
+import ch.sbb.atlas.servicepoint.enumeration.CodeAndDesignations;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Arrays;
 import java.util.Objects;
