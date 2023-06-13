@@ -62,7 +62,6 @@
     "default_oauth_flow": "authorizationCode",
     "oauth_flows": [
       "authorizationCode",
-      "implicit",
       "clientCredentials"
     ]
   },
