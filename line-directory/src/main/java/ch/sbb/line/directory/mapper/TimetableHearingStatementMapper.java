@@ -2,16 +2,20 @@ package ch.sbb.line.directory.mapper;
 
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
-import ch.sbb.line.directory.entity.ResponsibleTransportCompany;
+import ch.sbb.atlas.transport.company.entity.SharedTransportCompany;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
 import java.util.List;
 import java.util.stream.Collectors;
-import lombok.experimental.UtilityClass;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
-@UtilityClass
+@Component
+@RequiredArgsConstructor
 public class TimetableHearingStatementMapper {
 
-  public static TimetableHearingStatement toEntity(TimetableHearingStatementModel statementModel) {
+  private final ResponsibleTransportCompanyMapper responsibleTransportCompanyMapper;
+
+  public TimetableHearingStatement toEntity(TimetableHearingStatementModel statementModel) {
     TimetableHearingStatement timetableHearingStatement = TimetableHearingStatement.builder()
         .id(statementModel.getId())
         .statementStatus(statementModel.getStatementStatus())
@@ -28,7 +32,7 @@ public class TimetableHearingStatementMapper {
         .build();
     timetableHearingStatement.setResponsibleTransportCompanies(
         statementModel.getResponsibleTransportCompanies().stream()
-            .map(transportCompany -> ResponsibleTransportCompanyMapper.toEntity(transportCompany, timetableHearingStatement))
+            .map(responsibleTransportCompanyMapper::toEntity)
             .collect(Collectors.toSet()));
     timetableHearingStatement.setResponsibleTransportCompaniesDisplay(transformToCommaSeparated(timetableHearingStatement));
     return timetableHearingStatement;
@@ -60,7 +64,7 @@ public class TimetableHearingStatementMapper {
   public static String transformToCommaSeparated(TimetableHearingStatement statement) {
     List<String> sorted = statement.getResponsibleTransportCompanies()
         .stream()
-        .map(ResponsibleTransportCompany::getAbbreviation)
+        .map(SharedTransportCompany::getAbbreviation)
         .sorted()
         .toList();
     return String.join(", ", sorted);

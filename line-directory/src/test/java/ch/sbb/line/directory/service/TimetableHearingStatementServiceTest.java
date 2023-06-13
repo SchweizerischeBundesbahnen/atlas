@@ -14,6 +14,8 @@ import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.model.exception.NotFoundException.FileNotFoundException;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
+import ch.sbb.atlas.transport.company.entity.SharedTransportCompany;
+import ch.sbb.atlas.transport.company.repository.SharedTransportCompanyRepository;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
 import ch.sbb.line.directory.entity.TimetableHearingYear;
 import ch.sbb.line.directory.helper.PdfFiles;
@@ -49,16 +51,22 @@ public class TimetableHearingStatementServiceTest {
   private final TimetableHearingYearService timetableHearingYearService;
   private final TimetableHearingStatementRepository timetableHearingStatementRepository;
   private final TimetableHearingStatementService timetableHearingStatementService;
+  private final TimetableHearingStatementMapper timetableHearingStatementMapper;
+  private final SharedTransportCompanyRepository sharedTransportCompanyRepository;
 
   @Autowired
   public TimetableHearingStatementServiceTest(TimetableHearingYearRepository timetableHearingYearRepository,
       TimetableHearingYearService timetableHearingYearService,
       TimetableHearingStatementRepository timetableHearingStatementRepository,
-      TimetableHearingStatementService timetableHearingStatementService) {
+      TimetableHearingStatementService timetableHearingStatementService,
+      TimetableHearingStatementMapper timetableHearingStatementMapper,
+      SharedTransportCompanyRepository sharedTransportCompanyRepository) {
     this.timetableHearingYearRepository = timetableHearingYearRepository;
     this.timetableHearingYearService = timetableHearingYearService;
     this.timetableHearingStatementRepository = timetableHearingStatementRepository;
     this.timetableHearingStatementService = timetableHearingStatementService;
+    this.timetableHearingStatementMapper = timetableHearingStatementMapper;
+    this.sharedTransportCompanyRepository = sharedTransportCompanyRepository;
   }
 
   private static TimetableHearingStatementModel buildTimetableHearingStatementModel() {
@@ -132,7 +140,7 @@ public class TimetableHearingStatementServiceTest {
 
     TimetableHearingStatementModel createdStatement = timetableHearingStatementService.createHearingStatement(
         timetableHearingStatementModel, Collections.emptyList());
-    TimetableHearingStatement createdStatementEntity = TimetableHearingStatementMapper.toEntity(createdStatement);
+    TimetableHearingStatement createdStatementEntity = timetableHearingStatementMapper.toEntity(createdStatement);
 
     timetableHearingStatementService.deleteStatementDocument(createdStatementEntity,
         PdfFiles.MULTIPART_FILES.get(0).getOriginalFilename());
@@ -161,7 +169,7 @@ public class TimetableHearingStatementServiceTest {
 
     TimetableHearingStatementModel createdStatement = timetableHearingStatementService.createHearingStatement(
         timetableHearingStatementModel, documents);
-    TimetableHearingStatement createdStatementEntity = TimetableHearingStatementMapper.toEntity(createdStatement);
+    TimetableHearingStatement createdStatementEntity = timetableHearingStatementMapper.toEntity(createdStatement);
 
     assertThatThrownBy(() -> timetableHearingStatementService.deleteStatementDocument(createdStatementEntity, "")).isInstanceOf(
         IllegalArgumentException.class);
@@ -174,7 +182,7 @@ public class TimetableHearingStatementServiceTest {
 
     TimetableHearingStatementModel createdStatement = timetableHearingStatementService.createHearingStatement(
         timetableHearingStatementModel, Collections.emptyList());
-    TimetableHearingStatement createdStatementEntity = TimetableHearingStatementMapper.toEntity(createdStatement);
+    TimetableHearingStatement createdStatementEntity = timetableHearingStatementMapper.toEntity(createdStatement);
 
     timetableHearingStatementService.deleteStatementDocument(createdStatementEntity,
         PdfFiles.MULTIPART_FILES.get(0).getOriginalFilename());
@@ -219,7 +227,7 @@ public class TimetableHearingStatementServiceTest {
     timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
 
     TimetableHearingStatementModel timetableHearingStatementModel = buildTimetableHearingStatementModel();
-    TimetableHearingStatement timetableHearingStatement= TimetableHearingStatementMapper.toEntity(timetableHearingStatementModel);
+    TimetableHearingStatement timetableHearingStatement= timetableHearingStatementMapper.toEntity(timetableHearingStatementModel);
 
     TimetableHearingStatementModel updatingStatement = timetableHearingStatementService.createHearingStatement(
         timetableHearingStatementModel, Collections.emptyList());
@@ -236,7 +244,7 @@ public class TimetableHearingStatementServiceTest {
   void shouldNotUpdateHearingStatementIfYearIsUnknown() {
     timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
     TimetableHearingStatementModel timetableHearingStatementModel = buildTimetableHearingStatementModel();
-    TimetableHearingStatement timetableHearingStatement= TimetableHearingStatementMapper.toEntity(timetableHearingStatementModel);
+    TimetableHearingStatement timetableHearingStatement= timetableHearingStatementMapper.toEntity(timetableHearingStatementModel);
 
     TimetableHearingStatementModel updatingStatement = timetableHearingStatementService.createHearingStatement(
         timetableHearingStatementModel, Collections.emptyList());
@@ -257,27 +265,27 @@ public class TimetableHearingStatementServiceTest {
     statement = buildTimetableHearingStatementModel();
     statement.setStatementStatus(StatementStatus.RECEIVED);
     statement.setTimetableYear(YEAR - 1);
-    Long statement1Id = timetableHearingStatementRepository.save(TimetableHearingStatementMapper.toEntity(statement)).getId();
+    Long statement1Id = timetableHearingStatementRepository.save(timetableHearingStatementMapper.toEntity(statement)).getId();
 
     // Statement 2
     statement = buildTimetableHearingStatementModel();
     statement.setStatementStatus(StatementStatus.IN_REVIEW);
-    Long statement2Id = timetableHearingStatementRepository.save(TimetableHearingStatementMapper.toEntity(statement)).getId();
+    Long statement2Id = timetableHearingStatementRepository.save(timetableHearingStatementMapper.toEntity(statement)).getId();
 
     // Statement 3
     statement = buildTimetableHearingStatementModel();
     statement.setStatementStatus(StatementStatus.RECEIVED);
-    Long statement3Id = timetableHearingStatementRepository.save(TimetableHearingStatementMapper.toEntity(statement)).getId();
+    Long statement3Id = timetableHearingStatementRepository.save(timetableHearingStatementMapper.toEntity(statement)).getId();
 
     // Statement 4
     statement = buildTimetableHearingStatementModel();
     statement.setStatementStatus(StatementStatus.JUNK);
-    Long statement4Id = timetableHearingStatementRepository.save(TimetableHearingStatementMapper.toEntity(statement)).getId();
+    Long statement4Id = timetableHearingStatementRepository.save(timetableHearingStatementMapper.toEntity(statement)).getId();
 
     // Statement 5
     statement = buildTimetableHearingStatementModel();
     statement.setStatementStatus(StatementStatus.MOVED);
-    Long statement5Id = timetableHearingStatementRepository.save(TimetableHearingStatementMapper.toEntity(statement)).getId();
+    Long statement5Id = timetableHearingStatementRepository.save(timetableHearingStatementMapper.toEntity(statement)).getId();
 
     // when
     timetableHearingStatementService.moveClosedStatementsToNextYearWithStatusUpdates(YEAR);
@@ -413,6 +421,14 @@ public class TimetableHearingStatementServiceTest {
 
   @Test
   void shouldFindStatementByTransportCompany() {
+    sharedTransportCompanyRepository.save(SharedTransportCompany.builder()
+        .id(4L)
+        .abbreviation("SBB")
+        .businessRegisterName("Schweizerische Bundesbahnen").build());
+    sharedTransportCompanyRepository.save(SharedTransportCompany.builder()
+        .id(5L)
+        .abbreviation("BLS")
+        .businessRegisterName("Basel Land Stationen ? :D").build());
     timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
     TimetableHearingStatementModel timetableHearingStatementModel = TimetableHearingStatementModel.builder()
         .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
