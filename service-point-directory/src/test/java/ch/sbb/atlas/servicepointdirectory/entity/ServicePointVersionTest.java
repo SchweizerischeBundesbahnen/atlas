@@ -3,18 +3,18 @@ package ch.sbb.atlas.servicepointdirectory.entity;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
-import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
-import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointTechnicalTimetableType;
-import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointTrafficPointType;
-import ch.sbb.atlas.servicepointdirectory.enumeration.ServicePointStatus;
-import ch.sbb.atlas.servicepointdirectory.enumeration.StopPointType;
-import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
-import java.time.LocalDate;
-import java.util.Set;
+import ch.sbb.atlas.servicepoint.Country;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
+import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
+import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
+import ch.sbb.atlas.servicepoint.enumeration.ServicePointStatus;
+import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
+import java.time.LocalDate;
+import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 class ServicePointVersionTest {

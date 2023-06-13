@@ -1,6 +1,5 @@
-package ch.sbb.exportservice.entity.model;
+package ch.sbb.atlas.servicepoint;
 
-import ch.sbb.exportservice.entity.enumeration.Country;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;

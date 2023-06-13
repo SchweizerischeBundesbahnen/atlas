@@ -1,8 +1,12 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
+
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
-import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import org.hibernate.StaleObjectStateException;
@@ -16,10 +20,6 @@ import org.mockito.MockitoAnnotations;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.verify;
 
 public class ServicePointServiceTest {
 

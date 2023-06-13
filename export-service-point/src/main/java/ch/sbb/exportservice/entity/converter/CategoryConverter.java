@@ -1,6 +1,6 @@
 package ch.sbb.exportservice.entity.converter;
 
-import ch.sbb.exportservice.entity.enumeration.Category;
+import ch.sbb.atlas.servicepoint.enumeration.Category;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 
