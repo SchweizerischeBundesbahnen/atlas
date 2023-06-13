@@ -32,11 +32,11 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class ExportServicePointBatchControllerApiV1 {
 
-  public static final String EXPORT_SERVICE_POINT_CSV_JOB = "importServicePointCsvJob";
+  public static final String EXPORT_SERVICE_POINT_CSV_JOB = "exportServicePointCsvJob";
   private final JobLauncher jobLauncher;
 
   @Qualifier(EXPORT_SERVICE_POINT_CSV_JOB)
-  private final Job importServicePointCsvJob;
+  private final Job exportServicePointCsvJob;
 
   private final ServicePointRepository servicePointRepository;
 
@@ -53,7 +53,7 @@ public class ExportServicePointBatchControllerApiV1 {
         .addString(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, JobDescriptionConstants.EXECUTION_BATCH_PARAMETER)
         .addLong(JobDescriptionConstants.START_AT_JOB_PARAMETER, System.currentTimeMillis()).toJobParameters();
     try {
-      JobExecution execution = jobLauncher.run(importServicePointCsvJob, jobParameters);
+      JobExecution execution = jobLauncher.run(exportServicePointCsvJob, jobParameters);
       log.info("Job executed with status: {}", execution.getExitStatus().getExitCode());
     } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException |
              JobParametersInvalidException e) {

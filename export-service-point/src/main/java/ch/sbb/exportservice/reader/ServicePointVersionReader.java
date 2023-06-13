@@ -35,13 +35,6 @@ public class ServicePointVersionReader extends JdbcCursorItemReader<ServicePoint
   @Qualifier("servicePointDataSource")
   DataSource dataSource) {
     setDataSource(dataSource);
-    //    setSql("SELECT * FROM service_point_version spv "
-    //        + "LEFT JOIN service_point_version_categories spvc on spv.id = spvc.service_point_version_id and spvc.categories
-    //        is null "
-    //        + "LEFT JOIN service_point_version_geolocation spvg on spv.service_point_geolocation_id = spvg.id "
-    //        + "LEFT JOIN service_point_version_means_of_transport spvmot on spv.id = spvmot.service_point_version_id and spvmot"
-    //        + ".means_of_transport is null"
-    //    );
     setSql("SELECT spv.id, string_agg(spvmot.means_of_transport, '|') as list_of_transports, string_agg(spvc.categories, '|') "
         + "as list_of_categories, spv.*, spvg.* "
         + "FROM service_point_version spv "
