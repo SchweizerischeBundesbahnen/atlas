@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, DestroyRef, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   ApplicationType,
@@ -13,7 +13,7 @@ import {
 import { Cantons } from '../overview/canton/Cantons';
 import { TableColumn } from '../../../core/components/table/table-column';
 import { Pages } from '../../pages';
-import { Observable, Subject, take, takeUntil } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import moment from 'moment';
 import { OverviewToTabShareDataService } from '../overview-tab/service/overview-to-tab-share-data.service';
 import { MatSelectChange } from '@angular/material/select';
@@ -34,13 +34,14 @@ import { DialogManageTthComponent } from '../dialog-manage-tth/dialog-manage-tth
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import { StatementShareService } from './statement-share-service';
 import { map } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-timetable-hearing-overview-detail',
   templateUrl: './overview-detail.component.html',
   styleUrls: ['./overview-detail.component.scss'],
 })
-export class OverviewDetailComponent implements OnInit, OnDestroy {
+export class OverviewDetailComponent implements OnInit {
   timeTableHearingStatements: TimetableHearingStatement[] = [];
   totalCount$ = 0;
   tableColumns: TableColumn<TimetableHearingStatement>[] = [];
@@ -76,11 +77,14 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
   statusChangeCollectingActionsEnabled = false;
   cantonDeliveryCollectingActionsEnabled = false;
 
+  isTableColumnsInitialized = false;
+
+  statementEditable = false;
   selectedItems: TimetableHearingStatement[] = [];
   sorting = 'statementStatus,asc';
   selectedCheckBox = new SelectionModel<TimetableHearingStatement>(true, []);
   isCheckBoxModeActive = false;
-  private ngUnsubscribe = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   readonly tableFilterConfig$ = this.tthTableService.overviewDetailFilterConfig.asObservable();
 
@@ -89,7 +93,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     private readonly router: Router,
     private readonly timetableHearingService: TimetableHearingService,
     private readonly overviewToTabService: OverviewToTabShareDataService,
-    private readonly tthStatusChangeDialog: TthChangeStatusDialogService,
+    private readonly tthStatusChangeDialogService: TthChangeStatusDialogService,
     private readonly tthChangeCantonDialogService: TthChangeCantonDialogService,
     private readonly dialogService: DialogService,
     private readonly tthTableService: TthTableService,
@@ -171,15 +175,11 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
         pagination.size,
         addElementsToArrayWhenNotUndefined(pagination.sort, this.sorting, 'ttfnid,ASC')
       )
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((container) => {
         this.timeTableHearingStatements = container.objects!;
         this.totalCount$ = container.totalCount!;
       });
-  }
-
-  ngOnDestroy() {
-    this.ngUnsubscribe.complete();
   }
 
   changeSelectedCantonFromDropdown(selectedCanton: MatSelectChange) {
@@ -297,7 +297,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
   }
 
   changeSelectedStatus(changedStatus: ColumnDropDownEvent) {
-    this.tthStatusChangeDialog
+    this.tthStatusChangeDialogService
       .onClick(
         changedStatus.$event.value,
         [changedStatus.value],
@@ -316,7 +316,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
 
   collectingStatusChangeAction(changedStatus: ColumnDropDownEvent) {
     if (this.selectedItems.length > 0) {
-      this.tthStatusChangeDialog
+      this.tthStatusChangeDialogService
         .onClick(changedStatus.value, this.selectedItems, undefined, 'MULTIPLE')
         .subscribe((result) => {
           if (result) {
@@ -467,7 +467,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
   private getTimetableHearingYear(hearingStatus: HearingStatus, sortReverse: boolean) {
     this.timetableHearingService
       .getHearingYears([hearingStatus])
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((timetableHearingYears) => {
         if (timetableHearingYears.length === 0) {
           this.noTimetableHearingYearFound = true;
@@ -518,7 +518,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
   private initOverviewActiveTable() {
     this.timetableHearingService
       .getHearingYears([HearingStatus.Active])
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((timetableHearingYears) => {
         if (timetableHearingYears) {
           if (timetableHearingYears.length === 0) {
@@ -526,6 +526,10 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
             this.getPlannedTimetableYearWhenNoActiveFound();
           } else if (timetableHearingYears.length >= 1) {
             this.foundTimetableHearingYear = timetableHearingYears[0];
+            this.statementEditable = this.foundTimetableHearingYear.statementEditable!;
+            this.tableColumns = this.getActiveTableColumns();
+            this.isTableColumnsInitialized = true;
+            this.enableCheckboxViewMode();
             this.initOverviewTable();
           }
         }
@@ -535,7 +539,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
   private getPlannedTimetableYearWhenNoActiveFound() {
     this.timetableHearingService
       .getHearingYears([HearingStatus.Planned])
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((timetableHearingYears) => {
         if (timetableHearingYears && timetableHearingYears?.length >= 1) {
           const foundTimetableHearingYears = TthUtils.sortByTimetableHearingYear(
@@ -577,7 +581,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
         headerTitle: 'TTH.STATEMENT_STATUS_HEADER',
         value: 'statementStatus',
         dropdown: {
-          disabled: false,
+          disabled: !this.statementEditable,
           options: this.STATUS_OPTIONS,
           changeSelectionCallback: this.changeSelectedStatus,
           selectedOption: '',
@@ -652,7 +656,7 @@ export class OverviewDetailComponent implements OnInit, OnDestroy {
     this.showStartTimetableHearingButton = true;
     this.timetableHearingService
       .getHearingYears([HearingStatus.Active])
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((timetableHearingYears) => {
         if (timetableHearingYears.length > 0) {
           this.showStartTimetableHearingButton = false;
