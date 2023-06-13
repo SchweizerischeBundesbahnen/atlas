@@ -1,6 +1,6 @@
 package ch.sbb.line.directory.model;
 
-import ch.sbb.line.directory.entity.ResponsibleTransportCompany_;
+import ch.sbb.atlas.transport.company.entity.SharedTransportCompany_;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
 import ch.sbb.line.directory.entity.TimetableHearingStatement_;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -31,7 +31,7 @@ public class ResponsibleTransportCompanySpecification implements Specification<T
     for (Long searchParam : transportCompanyIds) {
       predicates.add(
           criteriaBuilder.equal(root.join(TimetableHearingStatement_.responsibleTransportCompanies)
-              .get(ResponsibleTransportCompany_.transportCompanyId), searchParam));
+              .get(SharedTransportCompany_.id), searchParam));
     }
 
     return criteriaBuilder.and(predicates.toArray(Predicate[]::new));
