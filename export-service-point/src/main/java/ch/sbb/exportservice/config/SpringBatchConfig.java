@@ -10,7 +10,7 @@ import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
 import ch.sbb.exportservice.model.ServicePointVersionCsvModel;
 import ch.sbb.exportservice.model.ServicePointVersionCsvModel.Fields;
-import ch.sbb.exportservice.processor.ServicePointVersionProcessor;
+import ch.sbb.exportservice.processor.ServicePointVersionCsvProcessor;
 import ch.sbb.exportservice.reader.ServicePointVersionReader;
 import ch.sbb.exportservice.repository.PointRepository;
 import ch.sbb.exportservice.tasklet.FileDeletingTasklet;
@@ -18,7 +18,6 @@ import ch.sbb.exportservice.tasklet.FileUploadTasklet;
 import ch.sbb.exportservice.utils.StepUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import jakarta.persistence.EntityManagerFactory;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -37,7 +36,6 @@ import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.data.RepositoryItemReader;
-import org.springframework.batch.item.database.JpaPagingItemReader;
 import org.springframework.batch.item.file.FlatFileItemWriter;
 import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
 import org.springframework.batch.item.file.transform.DelimitedLineAggregator;
@@ -88,9 +86,7 @@ public class SpringBatchConfig {
   private final PointRepository pointRepository;
 
   private final FileService fileService;
-
   private final ServicePointVersionReader servicePointVersionReader;
-  private final EntityManagerFactory entityManagerFactory;
 
   @StepScope
   @Bean
@@ -105,25 +101,11 @@ public class SpringBatchConfig {
     return repositoryItemReader;
   }
 
-  @StepScope
-  @Bean
-  public JpaPagingItemReader<ServicePointVersion> reader() {
-    JpaPagingItemReader<ServicePointVersion> reader = new JpaPagingItemReader<>();
-    reader.setEntityManagerFactory(this.entityManagerFactory);
-    reader.setSaveState(false);
-    reader.setQueryString("select spv from service_point_version spv"
-        + " left join fetch spv.categories spvc"
-        + " left join fetch spv.servicePointGeolocation spvg"
-        + " left join fetch spv.meansOfTransport spvmot");
-    reader.setPageSize(1000);
-    return reader;
-  }
-
   @Bean
   public CompositeItemWriter<ServicePointVersionCsvModel> compositeItemWriter() {
     List<ItemWriter> writers = new ArrayList<>();
-    writers.add(csvWriter());
-    //    writers.add(jsonFileItemWriter());
+    //    writers.add(csvWriter());
+    writers.add(jsonFileItemWriter());
     CompositeItemWriter itemWriter = new CompositeItemWriter();
     itemWriter.setDelegates(writers);
     return itemWriter;
@@ -171,32 +153,46 @@ public class SpringBatchConfig {
   }
 
   @Bean
-  public ServicePointVersionProcessor servicePointVersionProcessor() {
-    return new ServicePointVersionProcessor();
+  public ServicePointVersionCsvProcessor servicePointVersionCsvProcessor() {
+    return new ServicePointVersionCsvProcessor();
   }
 
   @Bean
-  public Step parseServicePointCsvStep() {
-    String stepName = "parseServicePointCsvStep";
+  public Step exportServicePointCsvStep() {
+    String stepName = "exportServicePointCsvStep";
     return new StepBuilder(stepName, jobRepository)
         .<ServicePointVersion, ServicePointVersionCsvModel>chunk(CHUNK_SIZE, transactionManager)
         .reader(servicePointVersionReader)
-        .processor(servicePointVersionProcessor())
+        .processor(servicePointVersionCsvProcessor())
         .writer(compositeItemWriter())
         .faultTolerant()
         .backOffPolicy(StepUtils.getBackOffPolicy(stepName))
         .retryPolicy(StepUtils.getRetryPolicy(stepName))
         .listener(stepTracerListener)
-        //        .taskExecutor(asyncTaskExecutor())
         .build();
   }
 
   @Bean
-  public Job importServicePointCsvJob() {
+  public Step exportServicePointJsonStep() {
+    String stepName = "exportServicePointJsonStep";
+    return new StepBuilder(stepName, jobRepository)
+        .<ServicePointVersion, ServicePointVersionCsvModel>chunk(CHUNK_SIZE, transactionManager)
+        .reader(servicePointVersionReader)
+        .processor(servicePointVersionCsvProcessor())
+        .writer(compositeItemWriter())
+        .faultTolerant()
+        .backOffPolicy(StepUtils.getBackOffPolicy(stepName))
+        .retryPolicy(StepUtils.getRetryPolicy(stepName))
+        .listener(stepTracerListener)
+        .build();
+  }
+
+  @Bean
+  public Job exportServicePointCsvJob() {
     return new JobBuilder(EXPORT_SERVICE_POINT_CSV_JOB_NAME, jobRepository)
         .listener(jobCompletionListener)
         .incrementer(new RunIdIncrementer())
-        .flow(parseServicePointCsvStep())
+        .flow(exportServicePointJsonStep())
         .next(uploadFilesStep())
         .next(deleteFilesStep())
         .end()
