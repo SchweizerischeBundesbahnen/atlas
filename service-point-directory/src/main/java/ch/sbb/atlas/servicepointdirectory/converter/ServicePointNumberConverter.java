@@ -1,6 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.converter;
 
-import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 

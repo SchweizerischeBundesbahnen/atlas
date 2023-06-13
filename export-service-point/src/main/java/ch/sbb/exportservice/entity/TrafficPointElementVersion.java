@@ -1,14 +1,14 @@
 package ch.sbb.exportservice.entity;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
 import ch.sbb.atlas.validation.DatesValidator;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.versioning.model.Versionable;
 import ch.sbb.exportservice.entity.converter.ServicePointNumberConverter;
-import ch.sbb.exportservice.entity.enumeration.TrafficPointElementType;
 import ch.sbb.exportservice.entity.geolocation.TrafficPointElementGeolocation;
-import ch.sbb.exportservice.entity.model.ServicePointNumber;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;

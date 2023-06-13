@@ -1,4 +1,4 @@
-package ch.sbb.exportservice.entity.enumeration;
+package ch.sbb.atlas.servicepoint;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Arrays;
