@@ -1,6 +1,6 @@
 package ch.sbb.exportservice.entity.converter;
 
-import ch.sbb.exportservice.entity.model.ServicePointNumber;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 

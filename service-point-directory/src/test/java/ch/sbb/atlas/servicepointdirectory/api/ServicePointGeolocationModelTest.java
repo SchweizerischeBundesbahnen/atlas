@@ -3,7 +3,7 @@ package ch.sbb.atlas.servicepointdirectory.api;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.servicepointdirectory.api.model.ServicePointGeolocationModel;
-import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
+import ch.sbb.atlas.servicepoint.Country;
 import org.junit.jupiter.api.Test;
 
 class ServicePointGeolocationModelTest {

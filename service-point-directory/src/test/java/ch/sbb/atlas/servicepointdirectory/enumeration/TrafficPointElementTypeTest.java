@@ -1,12 +1,12 @@
 package ch.sbb.atlas.servicepointdirectory.enumeration;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.fail;
 
+import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
 import java.util.HashSet;
 import java.util.Set;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 class TrafficPointElementTypeTest {
 

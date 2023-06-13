@@ -2,9 +2,9 @@ package ch.sbb.atlas.servicepointdirectory.api.model;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.model.BaseVersionModel;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
 import ch.sbb.atlas.servicepointdirectory.mapper.GeolocationMapper;
-import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import ch.sbb.atlas.validation.DatesValidator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -53,13 +53,6 @@ public class LoadingPointVersionModel extends BaseVersionModel implements DatesV
   private ServicePointNumber servicePointNumber;
 
   private GeolocationBaseModel loadingPointGeolocation;
-
-  @JsonInclude
-  @Schema(description = "LoadingPoint has a Geolocation")
-  public boolean isHasGeolocation() {
-    return loadingPointGeolocation != null;
-  }
-
   @NotNull
   private LocalDate validFrom;
 
@@ -82,6 +75,12 @@ public class LoadingPointVersionModel extends BaseVersionModel implements DatesV
         .editionDate(loadingPointVersion.getEditionDate())
         .editor(loadingPointVersion.getEditor())
         .build();
+  }
+
+  @JsonInclude
+  @Schema(description = "LoadingPoint has a Geolocation")
+  public boolean isHasGeolocation() {
+    return loadingPointGeolocation != null;
   }
 
 }

@@ -2,9 +2,9 @@ package ch.sbb.exportservice.entity.geolocation;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.kafka.model.SwissCanton;
+import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
-import ch.sbb.exportservice.entity.enumeration.Country;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
