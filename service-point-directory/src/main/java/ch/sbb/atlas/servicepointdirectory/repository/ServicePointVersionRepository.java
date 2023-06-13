@@ -1,8 +1,11 @@
 package ch.sbb.atlas.servicepointdirectory.repository;
 
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion.Fields;
-import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
+import java.util.Collection;
+import java.util.List;
+import java.util.function.Function;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -17,9 +20,6 @@ import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuer
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.function.Function;
 
 @Repository
 public interface ServicePointVersionRepository extends JpaRepository<ServicePointVersion, Long>,

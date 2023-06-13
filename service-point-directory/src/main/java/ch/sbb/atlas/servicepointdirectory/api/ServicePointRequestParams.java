@@ -2,13 +2,13 @@ package ch.sbb.atlas.servicepointdirectory.api;
 
 import ch.sbb.atlas.api.model.VersionedObjectDateRequestParams;
 import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.servicepointdirectory.enumeration.Category;
-import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
-import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
-import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointTechnicalTimetableType;
-import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointType;
-import ch.sbb.atlas.servicepointdirectory.enumeration.StopPointType;
-import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
+import ch.sbb.atlas.servicepoint.Country;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.atlas.servicepoint.enumeration.Category;
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
+import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
+import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
+import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import io.swagger.v3.oas.annotations.Parameter;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,8 +44,9 @@ public class ServicePointRequestParams extends VersionedObjectDateRequestParams 
   @Singular(ignoreNullCollections = true)
   private List<String> isoCountryCodes = new ArrayList<>();
 
-  @Parameter(description = "Number of a service point which is provided by DiDok for Switzerland. It is part of the unique key for"
-      + " service points.")
+  @Parameter(description =
+      "Number of a service point which is provided by DiDok for Switzerland. It is part of the unique key for"
+          + " service points.")
   @Singular(value = "numberShort", ignoreNullCollections = true)
   private List<Integer> numbersShort = new ArrayList<>();
 

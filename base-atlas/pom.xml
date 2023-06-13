@@ -52,7 +52,19 @@
          <groupId>io.github.openfeign</groupId>
          <artifactId>feign-micrometer</artifactId>
       </dependency>
-
+<!-- Service Point and ExportService TODO: exculde from other Porjects     -->
+      <dependency>
+         <groupId>org.locationtech.proj4j</groupId>
+         <artifactId>proj4j</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.locationtech.proj4j</groupId>
+         <artifactId>proj4j-epsg</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.locationtech.jts</groupId>
+         <artifactId>jts-core</artifactId>
+      </dependency>
       <dependency>
          <artifactId>spring-boot-starter-web</artifactId>
          <groupId>org.springframework.boot</groupId>
