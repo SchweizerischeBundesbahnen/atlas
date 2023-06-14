@@ -35,6 +35,11 @@ export class UserPermissionManager {
         role: 'READER',
         permissionRestrictions: [],
       },
+      {
+        application: 'SEPODI',
+        role: 'READER',
+        permissionRestrictions: [],
+      },
     ],
   };
 
@@ -45,6 +50,7 @@ export class UserPermissionManager {
     LIDI: [],
     BODI: [],
     TIMETABLE_HEARING: [],
+    SEPODI: [],
   };
 
   readonly boOfApplicationsSubject$: BehaviorSubject<{
@@ -73,6 +79,12 @@ export class UserPermissionManager {
       ApplicationRole.Reader,
       ApplicationRole.ExplicitReader,
       ApplicationRole.Writer,
+      ApplicationRole.Supervisor,
+    ],
+    SEPODI: [
+      ApplicationRole.Reader,
+      ApplicationRole.Writer,
+      ApplicationRole.SuperUser,
       ApplicationRole.Supervisor,
     ],
   };
