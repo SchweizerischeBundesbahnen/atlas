@@ -88,7 +88,7 @@ public class SpringBatchConfig {
     objectMapper.registerModule(new JavaTimeModule());
     objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
     jacksonJsonObjectMarshaller.setObjectMapper(objectMapper);
-    FileSystemResource fileSystemResource = new FileSystemResource(createFileNamePath("json"));
+    FileSystemResource fileSystemResource = new FileSystemResource(createFileNamePath("json.gzip"));
     JsonFileItemWriter<ServicePointVersionModel> writer = new JsonFileItemWriter<>(
         fileSystemResource,
         jacksonJsonObjectMarshaller);
