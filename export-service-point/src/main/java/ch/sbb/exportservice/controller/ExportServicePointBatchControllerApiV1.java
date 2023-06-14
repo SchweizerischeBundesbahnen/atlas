@@ -19,6 +19,7 @@ import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -41,15 +42,16 @@ public class ExportServicePointBatchControllerApiV1 {
   @Qualifier(EXPORT_SERVICE_POINT_JSON_JOB)
   private final Job exportServicePointJsonJob;
 
-  @PostMapping("service-point-batch-csv")
+  @PostMapping("service-point-batch-csv/{exportType}")
   @ResponseStatus(HttpStatus.OK)
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200"),
   })
   @Async
-  public void startExportServicePointCsvBatch() {
+  public void startExportServicePointCsvBatch(@PathVariable String exportType) {
     JobParameters jobParameters = new JobParametersBuilder()
         .addString(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, JobDescriptionConstants.EXECUTION_BATCH_PARAMETER)
+        .addString("exportType", exportType)
         .addLong(JobDescriptionConstants.START_AT_JOB_PARAMETER, System.currentTimeMillis()).toJobParameters();
     try {
       JobExecution execution = jobLauncher.run(exportServicePointCsvJob, jobParameters);

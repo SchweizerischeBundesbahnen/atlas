@@ -26,31 +26,39 @@ import javax.sql.DataSource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.database.JdbcCursorItemReader;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Component;
 
-@Component
 @Slf4j
-public class ServicePointVersionReader extends JdbcCursorItemReader<ServicePointVersion> implements
+public abstract class BaseServicePointVersionReader extends JdbcCursorItemReader<ServicePointVersion> implements
     ItemReader<ServicePointVersion> {
 
-  public ServicePointVersionReader(@Autowired
-  @Qualifier("servicePointDataSource")
-  DataSource dataSource) {
+  private static final String SELECT_AND_JOIN_STATEMENT =
+      "SELECT spv.id, string_agg(spvmot.means_of_transport, '|') as list_of_transports, string_agg(spvc.categories, '|') "
+          + "as list_of_categories, spv.*, spvg.* "
+          + "FROM service_point_version spv "
+          + "LEFT JOIN service_point_version_means_of_transport spvmot "
+          + "on spv.id = spvmot.service_point_version_id "
+          + "LEFT JOIN service_point_version_categories spvc on spv.id = spvc.service_point_version_id "
+          + "LEFT JOIN service_point_version_geolocation spvg on spv.service_point_geolocation_id = spvg.id ";
+  private static final String GROUP_BY_STATEMENT = "group by spv.id,spvg.id";
+
+  public BaseServicePointVersionReader(DataSource dataSource) {
     setDataSource(dataSource);
-    setSql("SELECT spv.id, string_agg(spvmot.means_of_transport, '|') as list_of_transports, string_agg(spvc.categories, '|') "
-        + "as list_of_categories, spv.*, spvg.* "
-        + "FROM service_point_version spv "
-        + "LEFT JOIN service_point_version_means_of_transport spvmot "
-        + "on spv.id = spvmot.service_point_version_id "
-        + "LEFT JOIN service_point_version_categories spvc on spv.id = spvc.service_point_version_id "
-        + "LEFT JOIN service_point_version_geolocation spvg on spv.service_point_geolocation_id = spvg.id "
-        + "group by spv.id,spvg.id"
-    );
+    setSql(sqlQuery());
     setFetchSize(10000);
     setRowMapper(new ServicePointVersionRowMapper());
+  }
+
+  protected abstract String sqlWhereClause();
+
+  private String sqlQuery() {
+    StringBuilder sqlQueryBuilder = new StringBuilder();
+    sqlQueryBuilder.append(SELECT_AND_JOIN_STATEMENT);
+    if (sqlWhereClause() != null) {
+      sqlQueryBuilder.append(sqlWhereClause());
+    }
+    sqlQueryBuilder.append(GROUP_BY_STATEMENT);
+    return sqlQueryBuilder.toString();
   }
 
   public static class ServicePointVersionRowMapper implements RowMapper<ServicePointVersion> {
