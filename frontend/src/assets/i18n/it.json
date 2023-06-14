@@ -48,6 +48,7 @@
     "EDIT_BY": "Da",
     "STATUS": "Stato",
     "CANTONS": "Cantoni",
+    "COUNTRIES": "Paesi",
     "STATUS_TYPES": {
       "DRAFT": "Bozza",
       "VALIDATED": "Convalidato",
@@ -226,7 +227,8 @@
       "LIDI": "Linee e linee parziali",
       "TTFN": "Numeri di campo dell'orario",
       "BODI": "Organizzazioni imprenditoriali",
-      "TIMETABLE_HEARING": "Audizione dell'orario"
+      "TIMETABLE_HEARING": "Audizione dell'orario",
+      "SEPODI": "Dipartimenti"
     },
     "ACCOUNT_STATUS_TYPE": {
       "ACTIVE": "Attivo",
@@ -686,6 +688,18 @@
       "VS": "Vallese",
       "ZG": "Zugo",
       "ZH": "Zurigo"
+    },
+    "COUNTRY": {
+      "AZ": "Azerbaigian",
+      "BE": "Belgio",
+      "BY": "Bielorussia",
+      "BA": "Bosnia ed Erzegovina",
+      "BA": "Bosnia ed Erzegovina",
+      "BA": "Bosnia ed Erzegovina",
+      "BG": "Bulgaria",
+      "CA": "Canada",
+      "CN": "Cina",
+      "KP": "Corea del Nord"
     },
     "STATEMENT": {
       "NEW": "Nuovo parare",
