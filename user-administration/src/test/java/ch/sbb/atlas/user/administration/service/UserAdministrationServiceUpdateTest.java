@@ -3,13 +3,15 @@ package ch.sbb.atlas.user.administration.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.api.user.administration.CantonPermissionRestrictionModel;
+import ch.sbb.atlas.api.user.administration.CountryPermissionRestrictionModel;
+import ch.sbb.atlas.api.user.administration.PermissionModel;
 import ch.sbb.atlas.api.user.administration.SboidPermissionRestrictionModel;
 import ch.sbb.atlas.api.user.administration.UserPermissionCreateModel;
-import ch.sbb.atlas.api.user.administration.PermissionModel;
-import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
+import ch.sbb.atlas.api.user.administration.enumeration.Country;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
+import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.user.administration.entity.PermissionRestriction;
 import ch.sbb.atlas.user.administration.entity.UserPermission;
@@ -170,7 +172,14 @@ public class UserAdministrationServiceUpdateTest {
                 .role(ApplicationRole.WRITER)
                 .permissionRestrictions(List.of(new CantonPermissionRestrictionModel(SwissCanton.BERN),
                     new CantonPermissionRestrictionModel(SwissCanton.LUCERNE)))
-                .build()))
+                .build(),
+            PermissionModel.builder()
+                .application(ApplicationType.SEPODI)
+                .role(ApplicationRole.WRITER)
+                .permissionRestrictions(List.of(new CountryPermissionRestrictionModel(Country.AFGHANISTAN),
+                    new CountryPermissionRestrictionModel(Country.SWITZERLAND)))
+                .build()
+        ))
         .build();
 
     // When
@@ -184,5 +193,9 @@ public class UserAdministrationServiceUpdateTest {
     UserPermission hearingPermissions = userAdministrationService.getCurrentUserPermission(SBBUID,
         ApplicationType.TIMETABLE_HEARING).orElseThrow();
     assertThat(hearingPermissions.getPermissionRestrictions()).hasSize(2);
+
+    UserPermission sepodiPermissions = userAdministrationService.getCurrentUserPermission(SBBUID,
+        ApplicationType.SEPODI).orElseThrow();
+    assertThat(sepodiPermissions.getPermissionRestrictions()).hasSize(2);
   }
 }
