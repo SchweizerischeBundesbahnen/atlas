@@ -1,6 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.entity;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.servicepointdirectory.entity.geolocation.GeolocationBaseEntity;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
 import ch.sbb.atlas.servicepointdirectory.converter.ServicePointNumberConverter;
@@ -9,6 +10,8 @@ import ch.sbb.atlas.validation.DatesValidator;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.versioning.model.Versionable;
+import ch.sbb.atlas.versioning.model.VersionableProperty.RelationType;
+import java.time.LocalDate;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
@@ -22,7 +25,6 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -87,10 +89,22 @@ public class TrafficPointElementVersion extends BaseDidokImportEntity implements
 
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "traffic_point_geolocation_id", referencedColumnName = "id")
+  @AtlasVersionableProperty(relationType = RelationType.ONE_TO_ONE, relationsFields = {
+      GeolocationBaseEntity.Fields.east,
+      GeolocationBaseEntity.Fields.north,
+      GeolocationBaseEntity.Fields.spatialReference,
+      GeolocationBaseEntity.Fields.height,
+      BaseDidokImportEntity.Fields.creationDate,
+      BaseDidokImportEntity.Fields.editionDate,
+      BaseDidokImportEntity.Fields.creator,
+      BaseDidokImportEntity.Fields.editor,
+  })
   private TrafficPointElementGeolocation trafficPointElementGeolocation;
+
   @NotNull
   @Column(columnDefinition = "DATE")
   private LocalDate validFrom;
+
   @NotNull
   @Column(columnDefinition = "DATE")
   private LocalDate validTo;
