@@ -48,6 +48,7 @@
     "EDIT_BY": "Par",
     "STATUS": "Statut",
     "CANTONS": "Cantons",
+    "COUNTRIES": "Des pays",
     "STATUS_TYPES": {
       "DRAFT": "Projet",
       "VALIDATED": "Validé",
@@ -226,7 +227,8 @@
       "LIDI": "Lignes et sous-lignes",
       "TTFN": "Numéros de champs d'horaires",
       "BODI": "Organisations commerciales",
-      "TIMETABLE_HEARING": "Consultations sur les horaires"
+      "TIMETABLE_HEARING": "Consultations sur les horaires",
+      "SEPODI": "Départements"
     },
     "ACCOUNT_STATUS_TYPE": {
       "ACTIVE": "Actif",
@@ -686,6 +688,18 @@
       "VS": "Valais",
       "ZG": "Zoug",
       "ZH": "Zurich"
+    },
+    "COUNTRY": {
+      "AZ": "Azerbaïdjan",
+      "BE": "Belgique",
+      "BY": "Bélarus",
+      "BA": "Bosnien und Herzegowinas, serbische Republik",
+      "BA": "Bosnie-Herzégovine",
+      "BA": "Bosnien und Herzegowinas, kroatisch-moslemische Föderation",
+      "BG": "Bulgarie",
+      "CA": "Canada",
+      "CN": "Chine",
+      "KP": "Corée, République populaire démocratique de"
     },
     "STATEMENT": {
       "NEW": "Saisir un nouvel avis",
