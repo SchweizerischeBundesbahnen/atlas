@@ -13,6 +13,7 @@ import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointCsvModelContainer;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointElementCsvModel;
+import ch.sbb.atlas.versioning.date.DateHelper;
 import ch.sbb.importservice.exception.CsvException;
 import com.fasterxml.jackson.databind.MappingIterator;
 import java.io.BufferedReader;
@@ -130,6 +131,20 @@ public class CsvService {
 
     List<TrafficPointCsvModelContainer> trafficPointCsvModelContainers = new ArrayList<>();
     trafficPointsGroupedBySloid.forEach((sloid, trafficPointCsvModelGroup) -> {
+      trafficPointCsvModelGroup.sort(Comparator.comparing(BaseDidokCsvModel::getValidFrom));
+      for (int csvModelIndex = 0; csvModelIndex + 1 <= trafficPointCsvModelGroup.size() - 1; ) {
+        TrafficPointElementCsvModel current = trafficPointCsvModelGroup.get(csvModelIndex);
+        TrafficPointElementCsvModel next = trafficPointCsvModelGroup.get(csvModelIndex + 1);
+
+        // merge if dates are sequential and current equals next with excluded properties
+        if (DateHelper.areDatesSequential(current.getValidTo(), next.getValidFrom()) && current.equals(next)) {
+          trafficPointCsvModelGroup.remove(current);
+          next.setValidFrom(current.getValidFrom());
+        } else {
+          csvModelIndex++;
+        }
+      }
+
       TrafficPointCsvModelContainer trafficPointCsvModelContainer = TrafficPointCsvModelContainer.builder()
           .sloid(sloid)
           .trafficPointCsvModelList(trafficPointCsvModelGroup)
