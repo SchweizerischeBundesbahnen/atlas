@@ -139,7 +139,7 @@ public class SpringBatchConfig {
   public Step parseTrafficPointCsvStep(ThreadSafeListItemReader<TrafficPointCsvModelContainer> trafficPointListItemReader) {
     String stepName = "parseTrafficPointCsvStep";
     return new StepBuilder(stepName, jobRepository)
-        .<TrafficPointCsvModelContainer, TrafficPointCsvModelContainer>chunk(CHUNK_SIZE, transactionManager)
+        .<TrafficPointCsvModelContainer, TrafficPointCsvModelContainer>chunk(50, transactionManager)
         .reader(trafficPointListItemReader)
         .writer(trafficPointApiWriter)
         .faultTolerant()
