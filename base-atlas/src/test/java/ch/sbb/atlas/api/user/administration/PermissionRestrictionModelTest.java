@@ -38,4 +38,16 @@ class PermissionRestrictionModelTest {
     assertThat(permissionRestrictionModel.getType()).isEqualTo(PermissionRestrictionType.CANTON);
     assertThat(permissionRestrictionModel).isInstanceOf(CantonPermissionRestrictionModel.class);
   }
+
+  @Test
+  void shouldDeserializeCountryPermissionRestriction() throws JsonProcessingException {
+    String jsonValue = """
+        {"valueAsString":"MACEDONIA","type":"COUNTRY"}
+        """;
+    PermissionRestrictionModel<?> permissionRestrictionModel = objectMapper.readValue(jsonValue,
+        PermissionRestrictionModel.class);
+
+    assertThat(permissionRestrictionModel.getType()).isEqualTo(PermissionRestrictionType.COUNTRY);
+    assertThat(permissionRestrictionModel).isInstanceOf(CountryPermissionRestrictionModel.class);
+  }
 }
