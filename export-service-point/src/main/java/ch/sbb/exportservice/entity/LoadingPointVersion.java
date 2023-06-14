@@ -1,11 +1,10 @@
 package ch.sbb.exportservice.entity;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
 import ch.sbb.atlas.validation.DatesValidator;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.model.Versionable;
-import ch.sbb.exportservice.entity.geolocation.TrafficPointElementGeolocation;
+import ch.sbb.exportservice.entity.geolocation.LoadingPointGeolocation;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,33 +22,26 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldNameConstants
 @AtlasVersionable
-public class TrafficPointElementVersion extends BaseDidokImportEntity implements Versionable, DatesValidator {
+public class LoadingPointVersion extends BaseDidokImportEntity implements Versionable, DatesValidator {
 
   private Long id;
 
+  private Integer number;
+
   private String designation;
 
-  private String designationOperational;
+  private String designationLong;
 
-  private Double length;
-
-  private Double boardingAreaHeight;
-
-  private Double compassDirection;
-
-  private TrafficPointElementType trafficPointElementType;
+  private boolean connectionPoint;
 
   private ServicePointNumber servicePointNumber;
-  private String sloid;
 
-  private String parentSloid;
-
-  private TrafficPointElementGeolocation trafficPointElementGeolocation;
+  private LoadingPointGeolocation loadingPointGeolocation;
   private LocalDate validFrom;
   private LocalDate validTo;
 
   public boolean hasGeolocation() {
-    return trafficPointElementGeolocation != null;
+    return loadingPointGeolocation != null;
   }
 
 }
