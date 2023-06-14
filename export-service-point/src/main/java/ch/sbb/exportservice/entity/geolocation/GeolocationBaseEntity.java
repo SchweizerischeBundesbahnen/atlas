@@ -3,13 +3,9 @@ package ch.sbb.exportservice.entity.geolocation;
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
-import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.exportservice.entity.BaseDidokImportEntity;
 import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.MappedSuperclass;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,21 +25,13 @@ import lombok.experimental.SuperBuilder;
 @AtlasVersionable
 public abstract class GeolocationBaseEntity extends BaseDidokImportEntity {
 
-  @NotNull
-  @Enumerated(EnumType.STRING)
-  @AtlasVersionableProperty
   @Column(name = "spatial_reference")
   private SpatialReference spatialReference;
 
-  @AtlasVersionableProperty
-  @NotNull
   private Double east;
 
-  @AtlasVersionableProperty
-  @NotNull
   private Double north;
 
-  @AtlasVersionableProperty
   private Double height;
 
   public CoordinatePair asCoordinatePair() {
