@@ -4,6 +4,7 @@ import {
   ApplicationRole,
   ApplicationType,
   BusinessOrganisation,
+  Country,
   PermissionRestrictionType,
   SwissCanton,
 } from '../../../../api';
@@ -14,6 +15,7 @@ import { Observable, of, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Cantons } from '../../../tth/overview/canton/Cantons';
 import { MatSelectChange } from '@angular/material/select';
+import { Countries } from '../../../sepodi/overview/country/Countries';
 
 @Component({
   selector: 'app-user-administration-application-config',
@@ -61,8 +63,11 @@ export class UserAdministrationApplicationConfigComponent implements OnInit, OnD
 
   private readonly boFormResetEventSubscription: Subscription;
   SWISS_CANTONS = Object.values(SwissCanton);
+  COUNTRIES = Object.values(Country);
   SWISS_CANTONS_PREFIX_LABEL = 'TTH.CANTON.';
+  SWISS_COUNTRIES_PREFIX_LABEL = 'TTH.COUNTRY.';
   cantonSelection: [SwissCanton] | undefined;
+  countrySelection: [Country] | undefined;
 
   constructor(
     private readonly boLanguageService: BusinessOrganisationLanguageService,
@@ -104,11 +109,23 @@ export class UserAdministrationApplicationConfigComponent implements OnInit, OnD
 
   readonly getCantonAbbreviation = (canton: SwissCanton) => Cantons.fromSwissCanton(canton)?.short;
 
+  readonly getCountryAbbreviation = (country: Country) => Countries.fromCountry(country)?.short;
+
   cantonSelectionChanged($event: MatSelectChange) {
     const values = $event.value as SwissCanton[];
     const permissionRestriction = values.map((selection) => ({
       valueAsString: selection,
       type: PermissionRestrictionType.Canton,
+    }));
+    this.userPermissionManager.getPermissionByApplication(this.application).permissionRestrictions =
+      permissionRestriction;
+  }
+
+  countrySelectionChanged($event: MatSelectChange) {
+    const values = $event.value as Country[];
+    const permissionRestriction = values.map((selection) => ({
+      valueAsString: selection,
+      type: PermissionRestrictionType.Country,
     }));
     this.userPermissionManager.getPermissionByApplication(this.application).permissionRestrictions =
       permissionRestriction;

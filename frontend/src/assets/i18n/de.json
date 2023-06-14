@@ -48,6 +48,7 @@
     "EDIT_BY": "Durch",
     "STATUS": "Status",
     "CANTONS": "Kantone",
+    "COUNTRIES": "Länder",
     "STATUS_TYPES": {
       "DRAFT": "Entwurf",
       "VALIDATED": "Validiert",
@@ -226,7 +227,8 @@
       "LIDI": "Linien- und Teillinien",
       "TTFN": "Fahrplanfeldnummern",
       "BODI": "Geschäftsorganisationen",
-      "TIMETABLE_HEARING": "Fahrplananhörungen"
+      "TIMETABLE_HEARING": "Fahrplananhörungen",
+      "SEPODI": "Dienststellen"
     },
     "ACCOUNT_STATUS_TYPE": {
       "ACTIVE": "Aktiv",
@@ -686,6 +688,18 @@
       "VS": "Wallis",
       "ZG": "Zug",
       "ZH": "Zürich"
+    },
+    "COUNTRY": {
+      "AZ": "Aserbaidschan",
+      "BE": "Belgien",
+      "BY": "Weißrussland",
+      "BA": "Bosnien und Herzegowinas",
+      "BA": "Bosnien und Herzegowina",
+      "BA": "Bosnien und Herzegowinas",
+      "BG": "Bulgarien",
+      "CA": "Kanada",
+      "CN": "China",
+      "KP": "Koreas Demokratische Volksrepublik"
     },
     "STATEMENT": {
       "NEW": "Neue Stellungnahme erfassen",
