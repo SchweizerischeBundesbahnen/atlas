@@ -23,7 +23,7 @@ public class FileExportService {
     String pathDirectory = EXPORT_DIR + "/" + directory.getSubDir();
     files.forEach(file -> {
       try {
-        urls.add(amazonService.putFile(AmazonBucket.EXPORT, file, pathDirectory));
+        urls.add(amazonService.putGzipFile(AmazonBucket.EXPORT, file, pathDirectory));
       } catch (IOException e) {
         throw new FileException("Error uploading file: " + file.getName() + " to bucket: " + AmazonBucket.EXPORT, e);
 
