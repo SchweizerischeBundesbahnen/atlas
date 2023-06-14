@@ -11,6 +11,8 @@ public interface AmazonService {
 
   URL putZipFile(AmazonBucket bucket, File file, String dir) throws IOException;
 
+  URL putGzipFile(AmazonBucket bucket, File file, String dir) throws IOException;
+
   File pullFile(AmazonBucket bucket, String filePath) throws IOException;
 
   void deleteFile(AmazonBucket bucket, String filePath);
