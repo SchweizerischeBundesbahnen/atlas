@@ -1,4 +1,4 @@
-package ch.sbb.exportservice.service;
+package ch.sbb.exportservice.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
