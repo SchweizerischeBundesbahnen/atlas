@@ -1,6 +1,7 @@
 package ch.sbb.exportservice.controller;
 
 import ch.sbb.exportservice.exception.JobExecutionException;
+import ch.sbb.exportservice.model.ServicePointExportType;
 import ch.sbb.exportservice.utils.JobDescriptionConstants;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -48,10 +49,10 @@ public class ExportServicePointBatchControllerApiV1 {
       @ApiResponse(responseCode = "200"),
   })
   @Async
-  public void startExportServicePointCsvBatch(@PathVariable String exportType) {
+  public void startExportServicePointCsvBatch(@PathVariable ServicePointExportType exportType) {
     JobParameters jobParameters = new JobParametersBuilder()
         .addString(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, JobDescriptionConstants.EXECUTION_BATCH_PARAMETER)
-        .addString("exportType", exportType)
+        .addString("exportType", exportType.toString())
         .addLong(JobDescriptionConstants.START_AT_JOB_PARAMETER, System.currentTimeMillis()).toJobParameters();
     try {
       JobExecution execution = jobLauncher.run(exportServicePointCsvJob, jobParameters);
@@ -62,15 +63,16 @@ public class ExportServicePointBatchControllerApiV1 {
     }
   }
 
-  @PostMapping("service-point-batch-json")
+  @PostMapping("service-point-batch-json/{exportType}")
   @ResponseStatus(HttpStatus.OK)
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200"),
   })
   @Async
-  public void startExportServicePointJsonBatch() {
+  public void startExportServicePointJsonBatch(@PathVariable ServicePointExportType exportType) {
     JobParameters jobParameters = new JobParametersBuilder()
         .addString(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, JobDescriptionConstants.EXECUTION_BATCH_PARAMETER)
+        .addString("exportType", exportType.toString())
         .addLong(JobDescriptionConstants.START_AT_JOB_PARAMETER, System.currentTimeMillis()).toJobParameters();
     try {
       JobExecution execution = jobLauncher.run(exportServicePointJsonJob, jobParameters);
