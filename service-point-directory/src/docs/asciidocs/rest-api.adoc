@@ -54,6 +54,14 @@ include::{snippets}/service-point-controller-api-test/should-get-service-point-v
 
 include::{snippets}/service-point-controller-api-test/should-fail-on-invalid-service-point-number/auto-section.adoc[]
 
+== Create ServicePoint
+
+include::{snippets}/service-point-controller-api-test/should-create-service-point/auto-section.adoc[]
+
+== Update ServicePoint by ID
+
+include::{snippets}/service-point-controller-api-test/should-update-service-point-and-create-multiple-versions/auto-section.adoc[]
+
 
 = Traffic Point Elements
 
