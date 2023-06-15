@@ -37,14 +37,16 @@ public class SqlQueryUtil {
   private static final String WORLD_ONLY_ACTUAL_WHERE_STATEMENT = "WHERE now() between spv.valid_from and spv.valid_to ";
 
   public String getSqlQuery(ServicePointExportType exportType) {
-    log.warn("exportType: {}", exportType);
+    log.info("ExportType: {}", exportType);
     StringBuilder sqlQueryBuilder = new StringBuilder();
     sqlQueryBuilder.append(SELECT_AND_JOIN_STATEMENT);
     if (getSqlWhereClause(exportType) != null) {
       sqlQueryBuilder.append(getSqlWhereClause(exportType));
     }
     sqlQueryBuilder.append(GROUP_BY_STATEMENT);
-    return sqlQueryBuilder.toString();
+    String sqlQuery = sqlQueryBuilder.toString();
+    log.info("Execution SQL query: {}", sqlQuery);
+    return sqlQuery;
   }
 
   private String getSqlWhereClause(ServicePointExportType exportType) {
