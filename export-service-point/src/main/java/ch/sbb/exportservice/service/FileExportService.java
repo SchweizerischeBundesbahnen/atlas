@@ -25,7 +25,7 @@ public class FileExportService {
   private final FileService fileService;
 
   public URL exportFile(File file, ServicePointExportType exportType) {
-    String pathDirectory = S3_BUCKER_SERVICE_POINT_EXPORT_DIR + File.separator + exportType.getDir();
+    String pathDirectory = S3_BUCKER_SERVICE_POINT_EXPORT_DIR + "/" + exportType.getDir();
     try {
       return amazonService.putFile(AmazonBucket.EXPORT, file, pathDirectory);
     } catch (IOException e) {
@@ -38,7 +38,7 @@ public class FileExportService {
     String actualDate = LocalDate.now()
         .format(DateTimeFormatter.ofPattern(
             AtlasApiConstants.DATE_FORMAT_PATTERN));
-    return dir + exportType.getFileTypePrefix() + "-service-point-" + actualDate
+    return dir + exportType.getDir() + "-" + exportType.getFileTypePrefix() + "-service-point-" + actualDate
         + exportFileType.getExtention();
   }
 
