@@ -4,12 +4,10 @@ import static ch.sbb.exportservice.model.ServicePointVersionCsvModel.Fields.numb
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_SERVICE_POINT_CSV_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_SERVICE_POINT_JSON_JOB_NAME;
 
-import ch.sbb.atlas.amazon.service.FileService;
-import ch.sbb.atlas.api.AtlasApiConstants;
-:import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.exportservice.entity.ServicePointVersion;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
+import ch.sbb.exportservice.model.ExportFileType;
 import ch.sbb.exportservice.model.ServicePointExportType;
 import ch.sbb.exportservice.model.ServicePointVersionCsvModel;
 import ch.sbb.exportservice.model.ServicePointVersionCsvModel.Fields;
@@ -17,22 +15,22 @@ import ch.sbb.exportservice.processor.ServicePointVersionCsvProcessor;
 import ch.sbb.exportservice.processor.ServicePointVersionJsonProcessor;
 import ch.sbb.exportservice.reader.BaseServicePointVersionReader.ServicePointVersionRowMapper;
 import ch.sbb.exportservice.reader.SqlQueryUtil;
-import ch.sbb.exportservice.tasklet.FileDeletingTasklet;
-import ch.sbb.exportservice.tasklet.FileUploadTasklet;
+import ch.sbb.exportservice.service.FileExportService;
+import ch.sbb.exportservice.tasklet.FileCsvDeletingTasklet;
+import ch.sbb.exportservice.tasklet.FileJsonDeletingTasklet;
+import ch.sbb.exportservice.tasklet.UploadCsvFileTasklet;
+import ch.sbb.exportservice.tasklet.UploadJsonFileTasklet;
 import ch.sbb.exportservice.utils.StepUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.concurrent.ThreadPoolExecutor;
 import javax.sql.DataSource;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.configuration.annotation.JobScope;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
@@ -87,13 +85,12 @@ public class SpringBatchConfig {
   private final JobCompletionListener jobCompletionListener;
   private final StepTracerListener stepTracerListener;
 
-  private final FileService fileService;
+  private final FileExportService fileExportService;
 
   @Bean
   @StepScope
   public JdbcCursorItemReader<ServicePointVersion> reader(@Autowired @Qualifier("servicePointDataSource") DataSource dataSource
       , @Value("#{jobParameters[exportType]}") ServicePointExportType exportType) {
-    log.info("cazzo:{}", exportType);
     JdbcCursorItemReader<ServicePointVersion> itemReader = new JdbcCursorItemReader<>();
     itemReader.setDataSource(dataSource);
     itemReader.setSql(SqlQueryUtil.getSqlQuery(exportType));
@@ -103,13 +100,17 @@ public class SpringBatchConfig {
   }
 
   @Bean
-  public JsonFileItemWriter<ServicePointVersionModel> jsonFileItemWriter() {
+  @StepScope
+  public JsonFileItemWriter<ServicePointVersionModel> jsonFileItemWriter(
+      @Value("#{jobParameters[exportType]}") ServicePointExportType exportType) {
     JacksonJsonObjectMarshaller<ServicePointVersionModel> jacksonJsonObjectMarshaller = new JacksonJsonObjectMarshaller<>();
     ObjectMapper objectMapper = new ObjectMapper();
     objectMapper.registerModule(new JavaTimeModule());
     objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
     jacksonJsonObjectMarshaller.setObjectMapper(objectMapper);
-    FileSystemResource fileSystemResource = new FileSystemResource(createFileNamePath("json"));
+    FileSystemResource fileSystemResource =
+        new FileSystemResource(fileExportService.createFileNamePath(ExportFileType.JSON_EXTENSION,
+            exportType));
     JsonFileItemWriter<ServicePointVersionModel> writer = new JsonFileItemWriter<>(
         fileSystemResource,
         jacksonJsonObjectMarshaller);
@@ -117,19 +118,13 @@ public class SpringBatchConfig {
     return writer;
   }
 
-  private String createFileNamePath(String fileType) {
-    String dir = fileService.getDir();
-    String actualDate = LocalDate.now()
-        .format(DateTimeFormatter.ofPattern(
-            AtlasApiConstants.DATE_FORMAT_PATTERN));
-    return dir + "service-point-" + actualDate + "." + fileType;
-  }
-
   @Bean
   @StepScope
-  public FlatFileItemWriter<ServicePointVersionCsvModel> csvWriter(@Value("#{jobParameters[exportType]}") String exportType) {
+  public FlatFileItemWriter<ServicePointVersionCsvModel> csvWriter(
+      @Value("#{jobParameters[exportType]}") ServicePointExportType exportType) {
     log.warn("FlatFileItemWriter:{}", exportType);
-    WritableResource outputResource = new FileSystemResource(createFileNamePath("csv"));
+    WritableResource outputResource = new FileSystemResource(fileExportService.createFileNamePath(ExportFileType.CSV_EXTENSION,
+        exportType));
     FlatFileItemWriter<ServicePointVersionCsvModel> writer = new FlatFileItemWriter<>();
     writer.setResource(outputResource);
     writer.setAppendAllowed(true);
@@ -178,7 +173,7 @@ public class SpringBatchConfig {
         .<ServicePointVersion, ServicePointVersionModel>chunk(CHUNK_SIZE, transactionManager)
         .reader(itemReader)
         .processor(servicePointVersionJsonProcessor())
-        .writer(jsonFileItemWriter())
+        .writer(jsonFileItemWriter(null))
         .faultTolerant()
         .backOffPolicy(StepUtils.getBackOffPolicy(stepName))
         .retryPolicy(StepUtils.getRetryPolicy(stepName))
@@ -193,49 +188,75 @@ public class SpringBatchConfig {
         .listener(jobCompletionListener)
         .incrementer(new RunIdIncrementer())
         .flow(exportServicePointCsvStep(itemReader))
-        .next(uploadFilesStep())
-        .next(deleteFilesStep())
+        .next(uploadCsvFileStep())
+        .next(deleteCsvFileStep())
         .end()
         .build();
   }
 
   @Bean
   @Qualifier(EXPORT_SERVICE_POINT_JSON_JOB_NAME)
-  @JobScope
-  public Job exportServicePointJsonJob(ItemReader<ServicePointVersion> itemReader,
-      @Value("#{jobParameters[exportType]}") String exportType) {
-    log.warn("------------------>: {}", exportType);
+  public Job exportServicePointJsonJob(ItemReader<ServicePointVersion> itemReader) {
     return new JobBuilder(EXPORT_SERVICE_POINT_JSON_JOB_NAME, jobRepository)
         .listener(jobCompletionListener)
         .incrementer(new RunIdIncrementer())
         .flow(exportServicePointJsonStep(itemReader))
-        .next(uploadFilesStep())
-        .next(deleteFilesStep())
+        .next(uploadJsonFileStep())
+        .next(deleteJsonFileStep())
         .end()
         .build();
   }
 
   @Bean
-  public FileUploadTasklet fileUploadTasklet() {
-    return new FileUploadTasklet();
+  @StepScope
+  public UploadCsvFileTasklet uploadCsvFileTasklet(@Value("#{jobParameters[exportType]}") ServicePointExportType exportType) {
+    return new UploadCsvFileTasklet(exportType);
   }
 
   @Bean
-  public FileDeletingTasklet fileDeletingTasklet() {
-    return new FileDeletingTasklet();
+  @StepScope
+  public UploadJsonFileTasklet uploadJsonFileTasklet(@Value("#{jobParameters[exportType]}") ServicePointExportType exportType) {
+    return new UploadJsonFileTasklet(exportType);
   }
 
   @Bean
-  public Step uploadFilesStep() {
-    return new StepBuilder("uploadFiles", jobRepository)
-        .tasklet(fileUploadTasklet(), transactionManager)
+  @StepScope
+  public FileJsonDeletingTasklet fileJsonDeletingTasklet(
+      @Value("#{jobParameters[exportType]}") ServicePointExportType exportType) {
+    return new FileJsonDeletingTasklet(exportType);
+  }
+
+  @Bean
+  @StepScope
+  public FileCsvDeletingTasklet fileCsvDeletingTasklet(@Value("#{jobParameters[exportType]}") ServicePointExportType exportType) {
+    return new FileCsvDeletingTasklet(exportType);
+  }
+
+  @Bean
+  public Step uploadCsvFileStep() {
+    return new StepBuilder("uploadCsvFile", jobRepository)
+        .tasklet(uploadCsvFileTasklet(null), transactionManager)
         .build();
   }
 
   @Bean
-  public Step deleteFilesStep() {
-    return new StepBuilder("deleteFiles", jobRepository)
-        .tasklet(fileDeletingTasklet(), transactionManager)
+  public Step uploadJsonFileStep() {
+    return new StepBuilder("uploadJsonFile", jobRepository)
+        .tasklet(uploadJsonFileTasklet(null), transactionManager)
+        .build();
+  }
+
+  @Bean
+  public Step deleteCsvFileStep() {
+    return new StepBuilder("deleteCsvFiles", jobRepository)
+        .tasklet(fileCsvDeletingTasklet(null), transactionManager)
+        .build();
+  }
+
+  @Bean
+  public Step deleteJsonFileStep() {
+    return new StepBuilder("deleteJsonFiles", jobRepository)
+        .tasklet(fileJsonDeletingTasklet(null), transactionManager)
         .build();
   }
 

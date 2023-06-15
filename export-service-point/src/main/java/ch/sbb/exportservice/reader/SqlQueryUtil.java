@@ -29,11 +29,12 @@ public class SqlQueryUtil {
 
   private static final String SWISS_ONLY_FUTURE_TIMETABLE_WHERE_STATEMENT = "WHERE spv.country "
       + "IN('SWITZERLAND','GERMANY_BUS','AUSTRIA_BUS','ITALY_BUS','FRANCE_BUS') "
-      + "AND spv.valid_from >= '" + FutureTimetableHelper.getActualTimetableYearChangeDate(LocalDate.now()).format(
-      DateTimeFormatter.ofPattern(
-          AtlasApiConstants.DATE_FORMAT_PATTERN)) + "' ";
-  private static final String WORLD_ONLY_ACTUAL_WHERE_STATEMENT = "WHERE spv.country "
-      + "AND now() between spv.valid_from and spv.valid_to ";
+      + "AND '" + FutureTimetableHelper.getActualTimetableYearChangeDate(LocalDate.now()).format(
+      DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN)) + "' between spv.valid_from and spv.valid_to ";
+  private static final String WORLD_ONLY_FUTURE_TIMETABLE_WHERE_STATEMENT = "WHERE "
+      + "'" + FutureTimetableHelper.getActualTimetableYearChangeDate(LocalDate.now()).format(
+      DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN)) + "' between spv.valid_from and spv.valid_to ";
+  private static final String WORLD_ONLY_ACTUAL_WHERE_STATEMENT = "WHERE now() between spv.valid_from and spv.valid_to ";
 
   public String getSqlQuery(ServicePointExportType exportType) {
     log.warn("exportType: {}", exportType);
@@ -47,20 +48,14 @@ public class SqlQueryUtil {
   }
 
   private String getSqlWhereClause(ServicePointExportType exportType) {
-    if (exportType.equals(ServicePointExportType.SWISS_ONLY_FULL)) {
-      return SWISS_ONLY_FULL_WHERE_STATEMENT;
-    }
-    if (exportType.equals(ServicePointExportType.SWISS_ONLY_ACTUAL)) {
-      return SWISS_ONLY_ACTUAL_WHERE_STATEMENT;
-    }
-    if (exportType.equals(ServicePointExportType.SWISS_ONLY_TIMETABLE_FUTURE)) {
-      return SWISS_ONLY_FUTURE_TIMETABLE_WHERE_STATEMENT;
-    }
-    if (exportType.equals(ServicePointExportType.WORLD_ONLY_ACTUAL)) {
-      return WORLD_ONLY_ACTUAL_WHERE_STATEMENT;
-    }
-
-    return null;
+    return switch (exportType) {
+      case SWISS_ONLY_FULL -> SWISS_ONLY_FULL_WHERE_STATEMENT;
+      case SWISS_ONLY_ACTUAL -> SWISS_ONLY_ACTUAL_WHERE_STATEMENT;
+      case SWISS_ONLY_TIMETABLE_FUTURE -> SWISS_ONLY_FUTURE_TIMETABLE_WHERE_STATEMENT;
+      case WORLD_ONLY_ACTUAL -> WORLD_ONLY_ACTUAL_WHERE_STATEMENT;
+      case WORLD_ONLY_TIMETABLE_FUTURE -> WORLD_ONLY_FUTURE_TIMETABLE_WHERE_STATEMENT;
+      case WORLD_FULL -> null;
+    };
   }
 
 }
