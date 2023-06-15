@@ -12,8 +12,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,27 +19,13 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class FileExportService {
 
-  private static final String EXPORT_DIR = "service_point";
+  private static final String S3_BUCKER_SERVICE_POINT_EXPORT_DIR = "service_point";
   private final AmazonService amazonService;
 
   private final FileService fileService;
 
-  public List<URL> exportFiles(List<File> files, ServicePointExportType exportType) {
-    List<URL> urls = new ArrayList<>();
-    String pathDirectory = EXPORT_DIR + "/" + exportType.getDir();
-    files.forEach(file -> {
-      try {
-        urls.add(amazonService.putFile(AmazonBucket.EXPORT, file, pathDirectory));
-      } catch (IOException e) {
-        throw new FileException("Error uploading file: " + file.getName() + " to bucket: " + AmazonBucket.EXPORT, e);
-
-      }
-    });
-    return urls;
-  }
-
   public URL exportFile(File file, ServicePointExportType exportType) {
-    String pathDirectory = EXPORT_DIR + "/" + exportType.getDir();
+    String pathDirectory = S3_BUCKER_SERVICE_POINT_EXPORT_DIR + File.separator + exportType.getDir();
     try {
       return amazonService.putFile(AmazonBucket.EXPORT, file, pathDirectory);
     } catch (IOException e) {

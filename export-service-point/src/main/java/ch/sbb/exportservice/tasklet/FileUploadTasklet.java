@@ -1,6 +1,5 @@
 package ch.sbb.exportservice.tasklet;
 
-import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.exportservice.model.ExportFileType;
 import ch.sbb.exportservice.model.ServicePointExportType;
 import ch.sbb.exportservice.service.FileExportService;
@@ -12,14 +11,10 @@ import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
 
 @Slf4j
 public abstract class FileUploadTasklet implements Tasklet {
 
-  @Autowired
-  private FileService fileService;
   @Autowired
   private FileExportService fileExportService;
   private ServicePointExportType exportType;
@@ -32,12 +27,11 @@ public abstract class FileUploadTasklet implements Tasklet {
 
   @Override
   public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) {
-    log.warn("FileUploadTasklet: {}", this.exportType.getDir());
     String fileNamePath = fileExportService.createFileNamePath(getExportFileType(), exportType);
-    Resource fileSystemResource = new FileSystemResource(fileService.getDir());
-    log.info("Res: {}", fileSystemResource);
     File file = Paths.get(fileNamePath).toFile();
+    log.info("File {} uploading...", fileNamePath);
     fileExportService.exportFile(file, exportType);
+    log.info("File {} uploaded!", fileNamePath);
     return RepeatStatus.FINISHED;
   }
 }
