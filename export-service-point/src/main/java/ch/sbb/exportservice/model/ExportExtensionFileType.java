@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum ExportFileType {
+public enum ExportExtensionFileType {
 
   CSV_EXTENSION(".csv"),
   JSON_EXTENSION(".json");
