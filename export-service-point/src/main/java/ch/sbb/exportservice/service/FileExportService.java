@@ -3,9 +3,15 @@ package ch.sbb.exportservice.service;
 import ch.sbb.atlas.amazon.exception.FileException;
 import ch.sbb.atlas.amazon.service.AmazonBucket;
 import ch.sbb.atlas.amazon.service.AmazonService;
+import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.api.AtlasApiConstants;
+import ch.sbb.exportservice.model.ExportFileType;
+import ch.sbb.exportservice.model.ServicePointExportType;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -18,9 +24,11 @@ public class FileExportService {
   private static final String EXPORT_DIR = "service_point";
   private final AmazonService amazonService;
 
-  public List<URL> exportFiles(List<File> files, ExportServicePointDirectory directory) {
+  private final FileService fileService;
+
+  public List<URL> exportFiles(List<File> files, ServicePointExportType exportType) {
     List<URL> urls = new ArrayList<>();
-    String pathDirectory = EXPORT_DIR + "/" + directory.getSubDir();
+    String pathDirectory = EXPORT_DIR + "/" + exportType.getDir();
     files.forEach(file -> {
       try {
         urls.add(amazonService.putFile(AmazonBucket.EXPORT, file, pathDirectory));
@@ -30,6 +38,24 @@ public class FileExportService {
       }
     });
     return urls;
+  }
+
+  public URL exportFile(File file, ServicePointExportType exportType) {
+    String pathDirectory = EXPORT_DIR + "/" + exportType.getDir();
+    try {
+      return amazonService.putFile(AmazonBucket.EXPORT, file, pathDirectory);
+    } catch (IOException e) {
+      throw new FileException("Error uploading file: " + file.getName() + " to bucket: " + AmazonBucket.EXPORT, e);
+    }
+  }
+
+  public String createFileNamePath(ExportFileType exportFileType, ServicePointExportType exportType) {
+    String dir = fileService.getDir();
+    String actualDate = LocalDate.now()
+        .format(DateTimeFormatter.ofPattern(
+            AtlasApiConstants.DATE_FORMAT_PATTERN));
+    return dir + exportType.getFileTypePrefix() + "-service-point-" + actualDate
+        + exportFileType.getExtention();
   }
 
 }
