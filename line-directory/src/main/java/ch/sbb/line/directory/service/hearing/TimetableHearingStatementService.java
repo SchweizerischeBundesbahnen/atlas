@@ -70,6 +70,7 @@ public class TimetableHearingStatementService {
 
   public TimetableHearingStatementModel createHearingStatement(TimetableHearingStatementModel statement,
       List<MultipartFile> documents) {
+    log.info("Starting createHearingStatement");
     TimetableHearingStatement statementToCreate = TimetableHearingStatementMapper.toEntity(statement);
     checkThatTimetableHearingYearExists(statementToCreate.getTimetableYear());
     statementToCreate.setStatementStatus(StatementStatus.RECEIVED);
@@ -142,10 +143,14 @@ public class TimetableHearingStatementService {
   }
 
   private void filesValidation(List<File> files, Set<StatementDocument> alreadySavedDocuments) {
+    log.info("Starting files validation for files {}", files.stream().map(File::getName).toList());
     statementDocumentFilesValidationService.validateMaxNumberOfFiles(files.size() + alreadySavedDocuments.size());
     statementDocumentFilesValidationService.validateNoFileNameDuplicate(files, alreadySavedDocuments);
     statementDocumentFilesValidationService.validateMaxSizeOfFiles(files, alreadySavedDocuments, MAX_DOCUMENTS_SIZE);
+
+    log.info("Starting PDF filetype validation.");
     statementDocumentFilesValidationService.validateAllFilessArePdfs(files);
+    log.info("Concluded files validation.");
   }
 
   @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin"
