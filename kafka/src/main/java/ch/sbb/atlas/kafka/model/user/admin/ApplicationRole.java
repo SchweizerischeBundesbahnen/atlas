@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum ApplicationRole {
+
   READER(1),
   EXPLICIT_READER(2),
   WRITER(3),
