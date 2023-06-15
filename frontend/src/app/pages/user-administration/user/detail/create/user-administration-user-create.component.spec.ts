@@ -2,7 +2,7 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 
 import { UserAdministrationUserCreateComponent } from './user-administration-user-create.component';
 import { UserService } from '../../../service/user.service';
-import { BusinessOrganisationsService } from '../../../../../api';
+import { BusinessOrganisationsService, User } from '../../../../../api';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import {
   TranslateFakeLoader,
@@ -14,7 +14,6 @@ import { of } from 'rxjs';
 import { Router } from '@angular/router';
 import { Component, Input } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { User } from '../../../../../api';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MaterialModule } from '../../../../../core/module/material.module';
 import { FormGroup } from '@angular/forms';
@@ -53,7 +52,7 @@ describe('UserAdministrationUserCreateComponent', () => {
     notificationServiceSpy = jasmine.createSpyObj('NotificationService', ['success']);
     userPermissionManagerSpy = jasmine.createSpyObj<UserPermissionManager>(
       'UserPermissionManager',
-      ['setSbbUserId', 'clearPermissionRestrictionsIfNotWriter', 'getSbbUserId']
+      ['setSbbUserId', 'clearPermissionRestrictionsIfNotWriterAndNotSepodi', 'getSbbUserId']
     );
     boServiceSpy = jasmine.createSpyObj<BusinessOrganisationsService>(
       'BusinessOrganisationsService',
@@ -171,7 +170,7 @@ describe('UserAdministrationUserCreateComponent', () => {
     component.createUser();
     expect(userPermissionManagerSpy.setSbbUserId).toHaveBeenCalledOnceWith('u236171');
     expect(
-      userPermissionManagerSpy.clearPermissionRestrictionsIfNotWriter
+      userPermissionManagerSpy.clearPermissionRestrictionsIfNotWriterAndNotSepodi
     ).toHaveBeenCalledOnceWith();
     expect(userServiceSpy.createUserPermission).toHaveBeenCalledTimes(1);
     expect(router.navigate).toHaveBeenCalledTimes(1);
