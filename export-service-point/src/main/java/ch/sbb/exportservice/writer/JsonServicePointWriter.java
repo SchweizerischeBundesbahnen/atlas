@@ -1,7 +1,7 @@
 package ch.sbb.exportservice.writer;
 
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
-import ch.sbb.exportservice.model.ExportFileType;
+import ch.sbb.exportservice.model.ExportExtensionFileType;
 import ch.sbb.exportservice.model.ServicePointExportType;
 import ch.sbb.exportservice.service.FileExportService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,7 +27,7 @@ public class JsonServicePointWriter {
     objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
     jacksonJsonObjectMarshaller.setObjectMapper(objectMapper);
     FileSystemResource fileSystemResource =
-        new FileSystemResource(fileExportService.createFileNamePath(ExportFileType.JSON_EXTENSION,
+        new FileSystemResource(fileExportService.createFileNamePath(ExportExtensionFileType.JSON_EXTENSION,
             exportType));
     JsonFileItemWriter<ServicePointVersionModel> writer = new JsonFileItemWriter<>(
         fileSystemResource,
