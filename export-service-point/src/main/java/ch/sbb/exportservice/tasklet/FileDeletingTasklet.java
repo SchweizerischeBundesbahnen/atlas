@@ -27,7 +27,9 @@ public abstract class FileDeletingTasklet implements Tasklet {
   @Override
   public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) {
     String fileNamePath = fileExportService.createFileNamePath(getExportFileType(), exportType);
+    log.info("File {} deleting...", fileNamePath);
     Paths.get(fileNamePath).toFile().delete();
+    log.info("File {} deleted!", fileNamePath);
     return RepeatStatus.FINISHED;
   }
 }
