@@ -5,6 +5,7 @@ import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
+import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationModel;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionModel;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionRestrictionModel;
@@ -72,15 +73,15 @@ class BusinessOrganisationBasedUserAdministrationServiceTest {
     void shouldAllowCreateToSuperUser() {
         // Given
         when(userPermissionHolder.getCurrentUser()).thenReturn(Optional.of(UserAdministrationModel.builder()
-                .userId("e123456")
-                .permissions(Set.of(
-                        UserAdministrationPermissionModel.builder()
-                                .application(
-                                        ApplicationType.LIDI)
-                                .role(
-                                        ApplicationRole.SUPER_USER)
-                                .build()))
-                .build()));
+            .userId("e123456")
+            .permissions(Set.of(
+                UserAdministrationPermissionModel.builder()
+                    .application(
+                        ApplicationType.LIDI)
+                    .role(
+                        ApplicationRole.SUPER_USER)
+                    .build()))
+            .build()));
 
         // When
         boolean permissionsToCreate = businessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(
@@ -123,6 +124,7 @@ class BusinessOrganisationBasedUserAdministrationServiceTest {
                     .role(ApplicationRole.WRITER)
                     .restrictions(Set.of(UserAdministrationPermissionRestrictionModel.builder()
                         .value("sboid")
+                        .restrictionType(PermissionRestrictionType.BUSINESS_ORGANISATION)
                         .build()))
                     .build()))
             .build()));
@@ -154,15 +156,13 @@ class BusinessOrganisationBasedUserAdministrationServiceTest {
     void shouldAllowUpdateToSupervisor() {
         // Given
         when(userPermissionHolder.getCurrentUser()).thenReturn(Optional.of(UserAdministrationModel.builder()
-                .userId("e123456")
-                .permissions(Set.of(
-                        UserAdministrationPermissionModel.builder()
-                                .application(
-                                        ApplicationType.LIDI)
-                                .role(
-                                        ApplicationRole.SUPERVISOR)
-                                .build()))
-                .build()));
+            .userId("e123456")
+            .permissions(Set.of(
+                UserAdministrationPermissionModel.builder()
+                    .application(ApplicationType.LIDI)
+                    .role(ApplicationRole.SUPERVISOR)
+                    .build()))
+            .build()));
 
         // When
         boolean permissionsToUpdate = businessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdate(
@@ -178,15 +178,13 @@ class BusinessOrganisationBasedUserAdministrationServiceTest {
     void shouldAllowUpdateToSuperUser() {
         // Given
         when(userPermissionHolder.getCurrentUser()).thenReturn(Optional.of(UserAdministrationModel.builder()
-                .userId("e123456")
-                .permissions(Set.of(
-                        UserAdministrationPermissionModel.builder()
-                                .application(
-                                        ApplicationType.LIDI)
-                                .role(
-                                        ApplicationRole.SUPER_USER)
-                                .build()))
-                .build()));
+            .userId("e123456")
+            .permissions(Set.of(
+                UserAdministrationPermissionModel.builder()
+                    .application(ApplicationType.LIDI)
+                    .role(ApplicationRole.SUPER_USER)
+                    .build()))
+            .build()));
 
         // When
         boolean permissionsToUpdate = businessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdate(
@@ -233,6 +231,7 @@ class BusinessOrganisationBasedUserAdministrationServiceTest {
                     .role(ApplicationRole.WRITER)
                     .restrictions(Set.of(UserAdministrationPermissionRestrictionModel.builder()
                         .value("sboid")
+                        .restrictionType(PermissionRestrictionType.BUSINESS_ORGANISATION)
                         .build()
                     )).build()))
             .build()));
@@ -291,8 +290,10 @@ class BusinessOrganisationBasedUserAdministrationServiceTest {
                     .role(ApplicationRole.WRITER)
                     .restrictions(Set.of(UserAdministrationPermissionRestrictionModel.builder()
                         .value("sboid1")
+                        .restrictionType(PermissionRestrictionType.BUSINESS_ORGANISATION)
                         .build(), UserAdministrationPermissionRestrictionModel.builder()
                         .value("sboid2")
+                        .restrictionType(PermissionRestrictionType.BUSINESS_ORGANISATION)
                         .build()
                     )).build()))
             .build()));
