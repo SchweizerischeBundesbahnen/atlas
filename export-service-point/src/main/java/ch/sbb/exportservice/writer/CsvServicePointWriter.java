@@ -3,7 +3,7 @@ package ch.sbb.exportservice.writer;
 import static ch.sbb.exportservice.model.ServicePointVersionCsvModel.Fields.numberShort;
 
 import ch.sbb.exportservice.config.CsvFlatFileHeaderCallback;
-import ch.sbb.exportservice.model.ExportFileType;
+import ch.sbb.exportservice.model.ExportExtensionFileType;
 import ch.sbb.exportservice.model.ServicePointExportType;
 import ch.sbb.exportservice.model.ServicePointVersionCsvModel;
 import ch.sbb.exportservice.model.ServicePointVersionCsvModel.Fields;
@@ -41,8 +41,9 @@ public class CsvServicePointWriter {
   private FileExportService fileExportService;
 
   public FlatFileItemWriter<ServicePointVersionCsvModel> csvWriter(ServicePointExportType exportType) {
-    WritableResource outputResource = new FileSystemResource(fileExportService.createFileNamePath(ExportFileType.CSV_EXTENSION,
-        exportType));
+    WritableResource outputResource = new FileSystemResource(
+        fileExportService.createFileNamePath(ExportExtensionFileType.CSV_EXTENSION,
+            exportType));
     FlatFileItemWriter<ServicePointVersionCsvModel> writer = new FlatFileItemWriter<>();
     writer.setResource(outputResource);
     writer.setAppendAllowed(true);

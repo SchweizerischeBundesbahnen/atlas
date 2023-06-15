@@ -1,6 +1,6 @@
 package ch.sbb.exportservice.tasklet;
 
-import ch.sbb.exportservice.model.ExportFileType;
+import ch.sbb.exportservice.model.ExportExtensionFileType;
 import ch.sbb.exportservice.model.ServicePointExportType;
 import ch.sbb.exportservice.service.FileExportService;
 import java.io.File;
@@ -23,14 +23,14 @@ public abstract class FileUploadTasklet implements Tasklet {
     this.exportType = exportType;
   }
 
-  protected abstract ExportFileType getExportFileType();
+  protected abstract ExportExtensionFileType getExportExtensionFileType();
 
   @Override
   public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) {
-    String fileNamePath = fileExportService.createFileNamePath(getExportFileType(), exportType);
+    String fileNamePath = fileExportService.createFileNamePath(getExportExtensionFileType(), exportType);
     File file = Paths.get(fileNamePath).toFile();
     log.info("File {} uploading...", fileNamePath);
-    fileExportService.exportFile(file, exportType);
+    fileExportService.exportFile(file, exportType, getExportExtensionFileType());
     log.info("File {} uploaded!", fileNamePath);
     return RepeatStatus.FINISHED;
   }
