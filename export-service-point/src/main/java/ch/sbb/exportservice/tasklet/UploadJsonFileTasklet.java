@@ -1,6 +1,6 @@
 package ch.sbb.exportservice.tasklet;
 
-import ch.sbb.exportservice.model.ExportFileType;
+import ch.sbb.exportservice.model.ExportExtensionFileType;
 import ch.sbb.exportservice.model.ServicePointExportType;
 
 public class UploadJsonFileTasklet extends FileUploadTasklet {
@@ -10,7 +10,7 @@ public class UploadJsonFileTasklet extends FileUploadTasklet {
   }
 
   @Override
-  protected ExportFileType getExportFileType() {
-    return ExportFileType.JSON_EXTENSION;
+  protected ExportExtensionFileType getExportExtensionFileType() {
+    return ExportExtensionFileType.JSON_EXTENSION;
   }
 }
