@@ -1,6 +1,6 @@
 package ch.sbb.exportservice.tasklet;
 
-import ch.sbb.exportservice.model.ExportFileType;
+import ch.sbb.exportservice.model.ExportExtensionFileType;
 import ch.sbb.exportservice.model.ServicePointExportType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.step.tasklet.Tasklet;
@@ -13,8 +13,8 @@ public class FileJsonDeletingTasklet extends FileDeletingTasklet implements Task
   }
 
   @Override
-  protected ExportFileType getExportFileType() {
-    return ExportFileType.JSON_EXTENSION;
+  protected ExportExtensionFileType getExportFileType() {
+    return ExportExtensionFileType.JSON_EXTENSION;
   }
 
 }

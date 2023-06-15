@@ -1,6 +1,6 @@
 package ch.sbb.exportservice.tasklet;
 
-import ch.sbb.exportservice.model.ExportFileType;
+import ch.sbb.exportservice.model.ExportExtensionFileType;
 import ch.sbb.exportservice.model.ServicePointExportType;
 import ch.sbb.exportservice.service.FileExportService;
 import java.nio.file.Paths;
@@ -22,7 +22,7 @@ public abstract class FileDeletingTasklet implements Tasklet {
     this.exportType = exportType;
   }
 
-  protected abstract ExportFileType getExportFileType();
+  protected abstract ExportExtensionFileType getExportFileType();
 
   @Override
   public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) {
