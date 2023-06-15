@@ -28,7 +28,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ThreadPoolExecutor;
 import javax.sql.DataSource;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepScope;
@@ -56,7 +55,6 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
 @AllArgsConstructor
-@Slf4j
 public class SpringBatchConfig {
 
   static final String[] CSV_HEADER = new String[]{numberShort, Fields.uicCountryCode,
@@ -122,7 +120,6 @@ public class SpringBatchConfig {
   @StepScope
   public FlatFileItemWriter<ServicePointVersionCsvModel> csvWriter(
       @Value("#{jobParameters[exportType]}") ServicePointExportType exportType) {
-    log.warn("FlatFileItemWriter:{}", exportType);
     WritableResource outputResource = new FileSystemResource(fileExportService.createFileNamePath(ExportFileType.CSV_EXTENSION,
         exportType));
     FlatFileItemWriter<ServicePointVersionCsvModel> writer = new FlatFileItemWriter<>();
