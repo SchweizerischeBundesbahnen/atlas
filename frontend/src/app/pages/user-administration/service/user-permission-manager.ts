@@ -102,9 +102,9 @@ export class UserPermissionManager {
     return this.availableApplicationRolesConfig[application];
   }
 
-  clearPermissionRestrictionsIfNotWriter(): void {
+  clearPermissionRestrictionsIfNotWriterAndNotSepodi(): void {
     this.userPermission.permissions.forEach((permission) => {
-      if (permission.role !== 'WRITER') {
+      if (permission.application != 'SEPODI' && permission.role !== 'WRITER') {
         permission.permissionRestrictions = [];
       }
     });
@@ -144,6 +144,14 @@ export class UserPermissionManager {
           this.userPermission.permissions[permissionIndex].permissionRestrictions.push({
             valueAsString: canton.valueAsString,
             type: PermissionRestrictionType.Canton,
+          });
+        });
+      permission.permissionRestrictions
+        .filter((restriction) => restriction.type === PermissionRestrictionType.Country)
+        .forEach((country) => {
+          this.userPermission.permissions[permissionIndex].permissionRestrictions.push({
+            valueAsString: country.valueAsString,
+            type: PermissionRestrictionType.Country,
           });
         });
     });

@@ -88,6 +88,9 @@ export class UserAdministrationApplicationConfigComponent implements OnInit, OnD
     this.cantonSelection = this.userPermissionManager.getRestrictionValues(
       this.userPermissionManager.getPermissionByApplication(this.application)
     ) as [SwissCanton];
+    this.countrySelection = this.userPermissionManager.getRestrictionValues(
+      this.userPermissionManager.getPermissionByApplication(this.application)
+    ) as [Country];
   }
 
   ngOnDestroy() {

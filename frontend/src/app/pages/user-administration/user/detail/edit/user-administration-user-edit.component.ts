@@ -47,7 +47,7 @@ export class UserAdministrationUserEditComponent implements OnInit {
   saveEdits(): void {
     this.saveEnabled = false;
     this.userPermissionManager.emitBoFormResetEvent();
-    this.userPermissionManager.clearPermissionRestrictionsIfNotWriter();
+    this.userPermissionManager.clearPermissionRestrictionsIfNotWriterAndNotSepodi();
     this.userService.updateUserPermission(this.userPermissionManager.userPermission).subscribe({
       next: (user: User) => {
         this.user = user;
