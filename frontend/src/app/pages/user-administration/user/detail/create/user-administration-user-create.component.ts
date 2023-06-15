@@ -53,7 +53,7 @@ export class UserAdministrationUserCreateComponent {
   createUser(): void {
     this.saveEnabled = false;
     this.userPermissionManager.setSbbUserId(this.userLoaded!.sbbUserId!);
-    this.userPermissionManager.clearPermissionRestrictionsIfNotWriter();
+    this.userPermissionManager.clearPermissionRestrictionsIfNotWriterAndNotSepodi();
     this.userService.createUserPermission(this.userPermissionManager.userPermission).subscribe({
       next: () => {
         this.router
