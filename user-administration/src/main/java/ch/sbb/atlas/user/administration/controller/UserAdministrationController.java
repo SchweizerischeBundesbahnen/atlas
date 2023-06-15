@@ -85,6 +85,7 @@ public class UserAdministrationController implements UserAdministrationApiV1 {
     return UserDisplayNameModel.toModel(userModel);
   }
 
+  @Override
   public List<UserDisplayNameModel> getUserInformation(List<String> userIds) {
     if (userIds == null || userIds.isEmpty()) {
       return Collections.emptyList();
