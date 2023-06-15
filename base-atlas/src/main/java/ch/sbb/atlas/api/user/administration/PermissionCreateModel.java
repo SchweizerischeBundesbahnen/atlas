@@ -41,8 +41,9 @@ public abstract class PermissionCreateModel {
   boolean isSboidsEmptyWhenNotWriterOrBodi() {
     return permissions.stream().noneMatch(
         permission ->
-            (permission.getRole() != ApplicationRole.WRITER
+            ((permission.getRole() != ApplicationRole.WRITER
                 || permission.getApplication() == ApplicationType.BODI)
+                && (permission.getApplication() != ApplicationType.SEPODI))
                 && permission.getPermissionRestrictions().size() > 0
     );
   }
