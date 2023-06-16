@@ -32,6 +32,7 @@ export class TransportCompanyDetailComponent implements OnInit {
   selectedTransportCompanyRelationIndex = -1;
   editMode = false;
   totalCountOfFoundBusinessOrganisations = 0;
+  isUpdateRelationSelected = false;
   readonly pageSizeForBusinessOrganisationSearch = 100;
   readonly transportCompanyRelationTableColumns: TableColumn<TransportCompanyBoRelation>[] = [
     {
@@ -99,6 +100,8 @@ export class TransportCompanyDetailComponent implements OnInit {
   };
 
   ngOnInit() {
+    console.log('drin');
+
     this.transportCompany = this.dialogData.transportCompanyDetail[0];
     this.transportCompanyRelations = this.dialogData.transportCompanyDetail[1];
     this.transportFormGroup = new FormGroup<TransportCompanyFormGroup>({
@@ -123,6 +126,7 @@ export class TransportCompanyDetailComponent implements OnInit {
     return this.authService.hasPermissionsToCreate(ApplicationType.Bodi);
   }
 
+  //TODO: isUpdateRelationSelected wieder auf false setzen, falls abgebrochen wird.
   leaveEditMode(): void {
     if (!this.form.dirty) {
       this.cancelEdit();
@@ -160,11 +164,16 @@ export class TransportCompanyDetailComponent implements OnInit {
       );
   }
 
+  //TODO: ist globale methode um zu speichern
+  //Methode so umbauen dass man auch normal updaten kann
+  //Methode evtl. zu "save" umbenennen
   createRelation(): void {
     this.form.markAllAsTouched();
     if (this.form.invalid) return;
 
-    this.transportCompanyRelationsService
+    //TODO: Add condition to check if create or update
+
+    /*     this.transportCompanyRelationsService
       .createTransportCompanyRelation({
         transportCompanyId: this.transportCompany.id!,
         sboid: this.form.value.businessOrganisation!.sboid!,
@@ -185,7 +194,48 @@ export class TransportCompanyDetailComponent implements OnInit {
           )
         )
       )
+      .subscribe(); */
+
+    //TODO: Wad für ein objekt gib ich mit?
+    //Brauchts Company id
+
+    this.transportCompanyRelationsService
+      .updateTransportCompanyRelation(
+        //ID von relation
+        {
+          id: 1000,
+          validFrom: moment(this.form.value.validFrom).toDate(),
+          validTo: moment(this.form.value.validFrom).toDate(),
+        }
+      )
+      .pipe(
+        switchMap(() => {
+          return this.reloadRelations().pipe(
+            tap(() => {
+              this.editMode = false;
+              this.form.reset();
+            })
+          );
+        })
+      )
       .subscribe();
+  }
+
+  updateRelation() {
+    this.transportCompanyRelationsService
+      .getTransportCompanyRelations(this.selectedTransportCompanyRelationIndex + 1)
+      .subscribe((item) => {
+        console.log(item);
+        item.map((item) => {
+          this.form.setValue({
+            businessOrganisation: item.businessOrganisation!,
+            validFrom: moment(item.validFrom),
+            validTo: moment(item.validTo),
+          });
+        });
+        this.isUpdateRelationSelected = true;
+        console.log('form ', this.form);
+      });
   }
 
   deleteRelation(): void {
