@@ -31,6 +31,7 @@ export class RelationComponent<RECORD_TYPE> {
   @Input() deleteBtnNameTranslationKey = 'RELATION.DELETE';
 
   @Output() deleteRelation = new EventEmitter<void>();
+  @Output() updateRelation = new EventEmitter<void>();
   @Output() editModeChanged = new EventEmitter<void>();
   @Output() selectedIndexChanged = new EventEmitter<number>();
 
@@ -64,6 +65,9 @@ export class RelationComponent<RECORD_TYPE> {
 
   selectRecord(record: RECORD_TYPE): void {
     if (this.editable) {
+      console.log('test');
+      console.log('index of ', this._records.indexOf(record));
+
       this.selectedIndexChanged.emit(this._records.indexOf(record));
     }
   }
@@ -89,6 +93,12 @@ export class RelationComponent<RECORD_TYPE> {
     });
 
     this.table.renderRows();
+  }
+
+  editRelation() {
+    console.log('log ', this.selectedIndex);
+    this.updateRelation.emit();
+    this.editModeChanged.emit();
   }
 
   private getValuePathFromColumnName(column: string): string {
