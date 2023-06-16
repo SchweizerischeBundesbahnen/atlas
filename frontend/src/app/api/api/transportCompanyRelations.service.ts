@@ -23,11 +23,10 @@ import {
 import { CustomHttpParameterCodec } from '../encoder';
 import { Observable } from 'rxjs';
 
-import { ErrorResponse } from '../model/models';
 import { TransportCompanyBoRelation } from '../model/models';
 import { TransportCompanyRelation } from '../model/models';
 
-import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
+import { BASE_PATH } from '../variables';
 import { Configuration } from '../configuration';
 
 @Injectable({
@@ -160,6 +159,90 @@ export class TransportCompanyRelationsService {
     }
 
     return this.httpClient.post<TransportCompanyBoRelation>(
+      `${this.configuration.basePath}/business-organisation-directory/v1/transport-company-relations`,
+      transportCompanyRelation,
+      {
+        responseType: <any>responseType_,
+        withCredentials: this.configuration.withCredentials,
+        headers: headers,
+        observe: observe,
+        reportProgress: reportProgress,
+      }
+    );
+  }
+
+  public updateTransportCompanyRelation(
+    transportCompanyRelation: {
+      id: number;
+      validFrom: Date;
+      validTo: Date;
+    },
+    observe?: 'body',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: '*/*' }
+  ): Observable<any>;
+  public updateTransportCompanyRelation(
+    transportCompanyRelation: {
+      id: number;
+      validFrom: Date;
+      validTo: Date;
+    },
+    observe?: 'response',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: '*/*' }
+  ): Observable<HttpResponse<any>>;
+  public updateTransportCompanyRelation(
+    transportCompanyRelation: {
+      id: number;
+      validFrom: Date;
+      validTo: Date;
+    },
+    observe?: 'events',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: '*/*' }
+  ): Observable<HttpEvent<any>>;
+  public updateTransportCompanyRelation(
+    transportCompanyRelation: {
+      id: number;
+      validFrom: Date;
+      validTo: Date;
+    },
+    observe: any = 'body',
+    reportProgress: boolean = false,
+    options?: { httpHeaderAccept?: '*/*' }
+  ): Observable<any> {
+    /*     if (relationId === null || relationId === undefined) {
+      throw new Error(
+        'Required parameter relationId was null or undefined when calling deleteTransportCompanyRelation.'
+      );
+    }
+ */
+    let headers = this.defaultHeaders;
+
+    let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+    if (httpHeaderAcceptSelected === undefined) {
+      // to determine the Accept header
+      const httpHeaderAccepts: string[] = ['*/*'];
+      httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+    }
+    if (httpHeaderAcceptSelected !== undefined) {
+      headers = headers.set('Accept', httpHeaderAcceptSelected);
+    }
+
+    // to determine the Content-Type header
+    const consumes: string[] = ['application/json'];
+    const httpContentTypeSelected: string | undefined =
+      this.configuration.selectHeaderContentType(consumes);
+    if (httpContentTypeSelected !== undefined) {
+      headers = headers.set('Content-Type', httpContentTypeSelected);
+    }
+
+    let responseType_: 'text' | 'json' = 'json';
+    if (httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+      responseType_ = 'text';
+    }
+
+    return this.httpClient.put<TransportCompanyRelation>(
       `${this.configuration.basePath}/business-organisation-directory/v1/transport-company-relations`,
       transportCompanyRelation,
       {
