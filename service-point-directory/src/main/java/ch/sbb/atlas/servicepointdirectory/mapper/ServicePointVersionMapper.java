@@ -56,6 +56,7 @@ public class ServicePointVersionMapper {
         .creator(servicePointVersion.getCreator())
         .editionDate(servicePointVersion.getEditionDate())
         .editor(servicePointVersion.getEditor())
+        .etagVersion(servicePointVersion.getVersion())
         .build();
   }
 
@@ -91,8 +92,8 @@ public class ServicePointVersionMapper {
         .operatingPointTrafficPointType(createServicePointVersionModel.getOperatingPointTrafficPointType())
         .categories(Set.copyOf(createServicePointVersionModel.getCategories()))
         .meansOfTransport(Set.copyOf(createServicePointVersionModel.getMeansOfTransport()))
-        .servicePointGeolocation(
-            ServicePointGeolocationMapper.toEntity(createServicePointVersionModel.getServicePointGeolocation()))
+        .servicePointGeolocation(ServicePointGeolocationMapper.toEntity(createServicePointVersionModel.getServicePointGeolocation()))
+        .version(createServicePointVersionModel.getEtagVersion())
         .build();
   }
 
