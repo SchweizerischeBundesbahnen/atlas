@@ -48,4 +48,8 @@ public interface ServicePointVersionRepository extends JpaRepository<ServicePoin
     List<ServicePointVersion> loadedObjectsById = findAllByIdIn(idList, pageable.getSort());
     return new PageImpl<>(loadedObjectsById, pagedIds.getPageable(), pagedIds.getTotalElements());
   }
+
+  @Modifying(clearAutomatically = true)
+  @Query("update service_point_version v set v.version = (v.version + 1) where v.number = :number")
+  void incrementVersion(ServicePointNumber number);
 }
