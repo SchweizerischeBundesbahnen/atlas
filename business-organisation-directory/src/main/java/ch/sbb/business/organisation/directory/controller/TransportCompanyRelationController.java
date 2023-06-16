@@ -4,6 +4,7 @@ package ch.sbb.business.organisation.directory.controller;
 import ch.sbb.atlas.api.bodi.TransportCompanyBoRelationModel;
 import ch.sbb.atlas.api.bodi.TransportCompanyRelationApiV1;
 import ch.sbb.atlas.api.bodi.TransportCompanyRelationModel;
+import ch.sbb.atlas.api.bodi.UpdateTransportCompanyRelationModel;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisation;
 import ch.sbb.business.organisation.directory.entity.TransportCompany;
 import ch.sbb.business.organisation.directory.entity.TransportCompanyRelation;
@@ -75,4 +76,15 @@ public class TransportCompanyRelationController implements TransportCompanyRelat
     transportCompanyRelationService.deleteById(relationId);
   }
 
+  @Override
+  public TransportCompanyBoRelationModel updateTransportCompanyRelation(TransportCompanyRelationModel model) {
+
+    TransportCompanyRelation relationEntity = TransportCompanyRelationMapper.toEntity(model,
+        transportCompanyService.findById(model.getTransportCompanyId())
+            .orElseThrow(() -> new TransportCompanyNotFoundException(
+                model.getTransportCompanyId())));
+
+    transportCompanyService.updateTransportCompanyRelation(relationEntity);
+  return null;
+  }
 }
