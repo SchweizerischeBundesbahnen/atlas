@@ -77,14 +77,10 @@ public class TransportCompanyRelationController implements TransportCompanyRelat
   }
 
   @Override
-  public TransportCompanyBoRelationModel updateTransportCompanyRelation(TransportCompanyRelationModel model) {
+  public void updateTransportCompanyRelation(UpdateTransportCompanyRelationModel model) {
 
-    TransportCompanyRelation relationEntity = TransportCompanyRelationMapper.toEntity(model,
-        transportCompanyService.findById(model.getTransportCompanyId())
-            .orElseThrow(() -> new TransportCompanyNotFoundException(
-                model.getTransportCompanyId())));
+    TransportCompanyRelation relationEntity = transportCompanyRelationService.findById(model.getId());
 
-    transportCompanyService.updateTransportCompanyRelation(relationEntity);
-  return null;
+    transportCompanyService.updateTransportCompanyRelation(relationEntity, model.getValidFrom(), model.getValidTo());
   }
 }

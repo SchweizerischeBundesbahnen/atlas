@@ -17,6 +17,7 @@ import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import feign.Response.Body;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -137,7 +138,11 @@ public class TransportCompanyService {
     return transportCompanyRepository.findAllWithSboid(sboid);
   }
 
-  public void updateTransportCompanyRelation(TransportCompanyRelation transportCompanyRelation){
+  public void updateTransportCompanyRelation(TransportCompanyRelation transportCompanyRelation, LocalDate validFrom, LocalDate validTo){
+
+    //TODO: If only one value changes, it should be possible
+    transportCompanyRelation.setValidFrom(validFrom);
+    transportCompanyRelation.setValidTo(validTo);
     transportCompanyRelationRepository.save(transportCompanyRelation);
   }
 }
