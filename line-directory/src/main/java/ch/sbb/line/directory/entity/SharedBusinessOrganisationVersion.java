@@ -1,4 +1,4 @@
-package ch.sbb.atlas.business.organisation.entity;
+package ch.sbb.line.directory.entity;
 
 import ch.sbb.atlas.model.Status;
 import jakarta.persistence.Entity;

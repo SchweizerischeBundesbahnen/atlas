@@ -1,4 +1,4 @@
-package ch.sbb.atlas.transport.company.entity;
+package ch.sbb.line.directory.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

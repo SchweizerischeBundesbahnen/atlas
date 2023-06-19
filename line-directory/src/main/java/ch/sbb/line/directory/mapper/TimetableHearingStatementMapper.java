@@ -2,7 +2,7 @@ package ch.sbb.line.directory.mapper;
 
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
-import ch.sbb.atlas.transport.company.entity.SharedTransportCompany;
+import ch.sbb.line.directory.entity.SharedTransportCompany;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
 import java.util.List;
 import java.util.stream.Collectors;
