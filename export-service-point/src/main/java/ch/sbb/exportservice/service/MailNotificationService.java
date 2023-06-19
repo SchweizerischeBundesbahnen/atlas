@@ -27,33 +27,9 @@ public class MailNotificationService {
     return MailNotification.builder()
         .to(schedulingNotificationAddresses)
         .subject("Job [" + jobName + "] execution failed")
-        .mailType(MailType.IMPORT_SERVICE_POINT_ERROR_NOTIFICATION)
+        .mailType(MailType.EXPORT_SERVICE_POINT_ERROR_NOTIFICATION)
         .templateProperties(buildErrorMailContent(jobName, stepExecution))
         .build();
-  }
-
-  public MailNotification buildMailSuccessNotification(String jobName, List<String> exportedFiles,
-      StepExecution stepExecution) {
-    return MailNotification.builder()
-        .to(schedulingNotificationAddresses)
-        .subject("Job [" + jobName + "] execution successfully")
-        .mailType(MailType.IMPORT_SERVICE_POINT_SUCCESS_NOTIFICATION)
-        .templateProperties(buildSuccessMailContent(jobName, exportedFiles, stepExecution))
-        .build();
-  }
-
-  private List<Map<String, Object>> buildSuccessMailContent(String jobName, List<String> exportedFiles,
-      StepExecution stepExecution) {
-    String stepExecutionInformation = getStepExecutionInformation(stepExecution);
-
-    List<Map<String, Object>> mailProperties = new ArrayList<>();
-    Map<String, Object> mailContentProperty = new HashMap<>();
-    mailContentProperty.put("jobName", jobName);
-    mailContentProperty.put("stepExecutionInformation", stepExecutionInformation);
-    mailContentProperty.put("correlationId", getCurrentSpan(stepExecution));
-    mailContentProperty.put("exportedFilesSize", exportedFiles.size());
-    mailProperties.add(mailContentProperty);
-    return mailProperties;
   }
 
   private List<Map<String, Object>> buildErrorMailContent(String jobName, StepExecution stepExecution) {
@@ -84,7 +60,7 @@ public class MailNotificationService {
     StringBuilder errorBuilder = new StringBuilder();
     List<Throwable> failureExceptions = stepExecution.getFailureExceptions();
     failureExceptions.forEach(
-        throwable -> errorBuilder.append(throwable.getCause().getLocalizedMessage()));
+        throwable -> errorBuilder.append(throwable.getMessage()));
     return errorBuilder.toString();
   }
 
@@ -96,7 +72,7 @@ public class MailNotificationService {
   }
 
   String getCurrentSpan(StepExecution stepExecution) {
-    return stepExecution.getExecutionContext().getString("traceId");
+    return stepExecution.getExecutionContext().getString("traceId", "TraceId not found!");
   }
 
   private String getStepExecutionInformation(StepExecution stepExecution) {
