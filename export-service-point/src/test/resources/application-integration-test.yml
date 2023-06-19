@@ -85,7 +85,7 @@ atlas:
 
 mail:
   receiver:
-    import-service-point: TechSupport-ATLAS@sbb.ch
+    export-service-point: TechSupport-ATLAS@sbb.ch
 
 amazon:
   region: "eu-central-1"
