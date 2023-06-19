@@ -11,10 +11,10 @@ import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTr
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementSenderModel;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.kafka.model.SwissCanton;
+import ch.sbb.atlas.kafka.model.transport.company.SharedTransportCompanyModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.model.exception.NotFoundException.FileNotFoundException;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.atlas.transport.company.entity.SharedTransportCompany;
 import ch.sbb.atlas.transport.company.repository.TransportCompanySharingDataAccessor;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
 import ch.sbb.line.directory.entity.TimetableHearingYear;
@@ -421,11 +421,11 @@ public class TimetableHearingStatementServiceTest {
 
   @Test
   void shouldFindStatementByTransportCompany() {
-    transportCompanySharingDataAccessor.save(SharedTransportCompany.builder()
+    transportCompanySharingDataAccessor.save(SharedTransportCompanyModel.builder()
         .id(4L)
         .abbreviation("SBB")
         .businessRegisterName("Schweizerische Bundesbahnen").build());
-    transportCompanySharingDataAccessor.save(SharedTransportCompany.builder()
+    transportCompanySharingDataAccessor.save(SharedTransportCompanyModel.builder()
         .id(5L)
         .abbreviation("BLS")
         .businessRegisterName("Basel Land Stationen ? :D").build());

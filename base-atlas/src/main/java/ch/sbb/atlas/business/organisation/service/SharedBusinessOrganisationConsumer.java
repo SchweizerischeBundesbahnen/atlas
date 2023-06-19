@@ -4,12 +4,10 @@ import ch.sbb.atlas.business.organisation.repository.BusinessOrganisationVersion
 import ch.sbb.atlas.kafka.model.business.organisation.SharedBusinessOrganisationUpdate;
 import ch.sbb.atlas.kafka.model.business.organisation.UpdateAction;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
-@Slf4j
 @Transactional
 public class SharedBusinessOrganisationConsumer {
 

@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.kafka.model.SwissCanton;
-import ch.sbb.atlas.transport.company.entity.SharedTransportCompany;
 import ch.sbb.line.directory.entity.TimetableHearingStatement.TimetableHearingStatementBuilder;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
