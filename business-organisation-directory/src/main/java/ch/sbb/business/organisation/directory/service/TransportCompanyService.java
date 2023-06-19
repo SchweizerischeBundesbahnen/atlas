@@ -138,11 +138,4 @@ public class TransportCompanyService {
     return transportCompanyRepository.findAllWithSboid(sboid);
   }
 
-  public void updateTransportCompanyRelation(TransportCompanyRelation transportCompanyRelation, LocalDate validFrom, LocalDate validTo){
-
-    //TODO: If only one value changes, it should be possible
-    transportCompanyRelation.setValidFrom(validFrom);
-    transportCompanyRelation.setValidTo(validTo);
-    transportCompanyRelationRepository.save(transportCompanyRelation);
-  }
 }
