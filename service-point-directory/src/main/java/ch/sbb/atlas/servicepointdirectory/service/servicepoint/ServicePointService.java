@@ -52,7 +52,7 @@ public class ServicePointService {
   public void updateServicePointVersion(ServicePointVersion edited) {
     List<ServicePointVersion> dbVersions = findAllServicePointVersions(edited.getNumber());
     ServicePointVersion current = getCurrentServicePointVersion(dbVersions, edited);
-    List<VersionedObject> versionedObjects = versionableService.versioningObjectsWithDeleteByNullProperties(current, edited,
+    List<VersionedObject> versionedObjects = versionableService.versioningObjects(current, edited,
         dbVersions);
     versionableService.applyVersioning(ServicePointVersion.class, versionedObjects, this::save, this::deleteById);
   }
