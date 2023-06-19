@@ -1,10 +1,9 @@
 package ch.sbb.atlas.business.organisation.service;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 
-import ch.sbb.atlas.business.organisation.repository.SharedBusinessOrganisationVersionRepository;
+import ch.sbb.atlas.business.organisation.repository.BusinessOrganisationVersionSharingDataAccessor;
 import ch.sbb.atlas.kafka.model.business.organisation.SharedBusinessOrganisationUpdate;
 import ch.sbb.atlas.kafka.model.business.organisation.SharedBusinessOrganisationVersionModel;
 import ch.sbb.atlas.kafka.model.business.organisation.UpdateAction;
@@ -16,14 +15,14 @@ import org.mockito.MockitoAnnotations;
 class SharedBusinessOrganisationConsumerTest {
 
   @Mock
-  private SharedBusinessOrganisationVersionRepository sharedBusinessOrganisationVersionRepository;
+  private BusinessOrganisationVersionSharingDataAccessor businessOrganisationVersionSharingDataAccessor;
 
   private SharedBusinessOrganisationConsumer sharedBusinessOrganisationConsumer;
 
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    sharedBusinessOrganisationConsumer = new SharedBusinessOrganisationConsumer(sharedBusinessOrganisationVersionRepository);
+    sharedBusinessOrganisationConsumer = new SharedBusinessOrganisationConsumer(businessOrganisationVersionSharingDataAccessor);
   }
 
   @Test
@@ -41,7 +40,7 @@ class SharedBusinessOrganisationConsumerTest {
     sharedBusinessOrganisationConsumer.readBusinessOrganisationsFromKafka(modelUpdate);
 
     // then
-    verify(sharedBusinessOrganisationVersionRepository).save(any());
+    verify(businessOrganisationVersionSharingDataAccessor).save(any());
   }
 
   @Test
@@ -59,6 +58,6 @@ class SharedBusinessOrganisationConsumerTest {
     sharedBusinessOrganisationConsumer.readBusinessOrganisationsFromKafka(modelUpdate);
 
     // then
-    verify(sharedBusinessOrganisationVersionRepository).deleteById(1L);
+    verify(businessOrganisationVersionSharingDataAccessor).deleteById(1L);
   }
 }
