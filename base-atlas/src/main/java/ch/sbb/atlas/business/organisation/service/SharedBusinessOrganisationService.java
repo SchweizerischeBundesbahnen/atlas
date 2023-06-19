@@ -1,13 +1,13 @@
 package ch.sbb.atlas.business.organisation.service;
 
+import ch.sbb.atlas.business.organisation.repository.BusinessOrganisationVersionSharingDataAccessor;
 import ch.sbb.atlas.model.exception.SboidNotFoundException;
-import ch.sbb.atlas.business.organisation.repository.SharedBusinessOrganisationVersionRepository;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class SharedBusinessOrganisationService {
 
-  private final SharedBusinessOrganisationVersionRepository sharedBusinessOrganisationVersionRepository;
+  private final BusinessOrganisationVersionSharingDataAccessor businessOrganisationVersionSharingDataAccessor;
 
   public void validateSboidExists(String sboid) {
     if (!existsBySboid(sboid)) {
@@ -16,6 +16,6 @@ public class SharedBusinessOrganisationService {
   }
 
   public boolean existsBySboid(String sboid) {
-    return sharedBusinessOrganisationVersionRepository.existsBySboid(sboid);
+    return businessOrganisationVersionSharingDataAccessor.existsBySboid(sboid);
   }
 }

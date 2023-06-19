@@ -1,16 +1,16 @@
 package ch.sbb.atlas.transport.company.service;
 
-import ch.sbb.atlas.transport.company.entity.SharedTransportCompany;
-import ch.sbb.atlas.transport.company.repository.SharedTransportCompanyRepository;
+import ch.sbb.atlas.kafka.model.transport.company.SharedTransportCompanyModel;
+import ch.sbb.atlas.transport.company.repository.TransportCompanySharingDataAccessor;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class SharedTransportCompanyService {
 
-  private final SharedTransportCompanyRepository sharedTransportCompanyRepository;
+  private final TransportCompanySharingDataAccessor transportCompanySharingDataAccessor;
 
-  public Optional<SharedTransportCompany> findById(Long id) {
-    return sharedTransportCompanyRepository.findById(id);
+  public Optional<SharedTransportCompanyModel> findById(Long id) {
+    return transportCompanySharingDataAccessor.findTransportCompanyById(id);
   }
 }
