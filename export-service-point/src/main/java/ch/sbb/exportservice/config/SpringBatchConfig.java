@@ -44,8 +44,6 @@ import org.springframework.transaction.PlatformTransactionManager;
 public class SpringBatchConfig {
 
   private static final int CHUNK_SIZE = 200;
-  private static final int THREAD_EXECUTION_SIZE = 64;
-
   private final JobRepository jobRepository;
 
   private final PlatformTransactionManager transactionManager;
