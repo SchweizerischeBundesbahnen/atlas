@@ -16,16 +16,6 @@ public class TransportCompanyRelationMapper {
         .validFrom(model.getValidFrom())
         .validTo(model.getValidTo()).build();
   }
-
-  public static TransportCompanyRelation toUpdateEntity(UpdateTransportCompanyRelationModel model, TransportCompany transportCompany) {
-    return TransportCompanyRelation.builder()
-        .id(model.getId())
-        .sboid(model.getSboid())
-        .transportCompany(transportCompany)
-        .validFrom(model.getValidFrom())
-        .validTo(model.getValidTo()).build();
-  }
-
   public static TransportCompanyRelationModel toModel(TransportCompanyRelation entity) {
     return TransportCompanyRelationModel.builder()
         .transportCompanyId(entity.getTransportCompany().getId())
