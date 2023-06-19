@@ -1,5 +1,6 @@
 package ch.sbb.atlas.amazon.service;
 
+import com.amazonaws.services.s3.model.S3Object;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -14,6 +15,8 @@ public interface AmazonService {
   URL putGzipFile(AmazonBucket bucket, File file, String dir) throws IOException;
 
   File pullFile(AmazonBucket bucket, String filePath) throws IOException;
+
+  S3Object pullS3Object(AmazonBucket bucket, String filePath);
 
   void deleteFile(AmazonBucket bucket, String filePath);
 

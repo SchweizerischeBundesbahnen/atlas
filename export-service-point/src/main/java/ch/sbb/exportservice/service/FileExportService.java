@@ -7,13 +7,22 @@ import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.exportservice.model.ExportExtensionFileType;
 import ch.sbb.exportservice.model.ServicePointExportType;
+import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.S3ObjectInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.zip.GZIPInputStream;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +32,63 @@ public class FileExportService {
   private final AmazonService amazonService;
 
   private final FileService fileService;
+
+  public StreamingResponseBody streamingFile(ServicePointExportType servicePointExportType) {
+    String fileToDownload = getJsonFileToDownload(servicePointExportType);
+    S3Object s3Object = amazonService.pullS3Object(AmazonBucket.EXPORT, fileToDownload);
+    S3ObjectInputStream inputStream = s3Object.getObjectContent();
+    return outputStream -> {
+      int len;
+      byte[] data = new byte[4096];
+      while ((len = inputStream.read(data, 0, data.length)) != -1) {
+        outputStream.write(data, 0, len);
+      }
+      inputStream.close();
+    };
+  }
+
+  public StreamingResponseBody streamingJsonFile(ServicePointExportType servicePointExportType) {
+    String fileToDownload = getJsonFileToDownload(servicePointExportType);
+    try {
+      //TODO: return HTTP 404 Not Found when file not found
+      File file = amazonService.pullFile(AmazonBucket.EXPORT, fileToDownload);
+      byte[] bytes = decompressGzipToBytes(file.toPath());
+      InputStream inputStream = new ByteArrayInputStream(bytes);
+      return outputStream -> {
+        int len;
+        byte[] data = new byte[4096];
+        while ((len = inputStream.read(data, 0, data.length)) != -1) {
+          outputStream.write(data, 0, len);
+        }
+        inputStream.close();
+        file.delete();
+      };
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  private String getJsonFileToDownload(ServicePointExportType servicePointExportType) {
+    return S3_BUCKER_SERVICE_POINT_EXPORT_DIR
+        + "/"
+        + servicePointExportType.getDir()
+        + "/"
+        + getBaseFileName(servicePointExportType)
+        + ".json.gzip";
+  }
+
+  byte[] decompressGzipToBytes(Path source) throws IOException {
+    ByteArrayOutputStream output = new ByteArrayOutputStream();
+    try (GZIPInputStream gis = new GZIPInputStream(
+        new FileInputStream(source.toFile()))) {
+      byte[] buffer = new byte[1024];
+      int len;
+      while ((len = gis.read(buffer)) > 0) {
+        output.write(buffer, 0, len);
+      }
+    }
+    return output.toByteArray();
+  }
 
   public URL exportFile(File file, ServicePointExportType exportType, ExportExtensionFileType exportExtensionFileType) {
     String pathDirectory = S3_BUCKER_SERVICE_POINT_EXPORT_DIR + "/" + exportType.getDir();
@@ -42,11 +108,15 @@ public class FileExportService {
 
   public String createFileNamePath(ExportExtensionFileType exportExtensionFileType, ServicePointExportType exportType) {
     String dir = fileService.getDir();
+    String baseFileName = getBaseFileName(exportType);
+    return dir + baseFileName + exportExtensionFileType.getExtention();
+  }
+
+  private String getBaseFileName(ServicePointExportType exportType) {
     String actualDate = LocalDate.now()
         .format(DateTimeFormatter.ofPattern(
             AtlasApiConstants.DATE_FORMAT_PATTERN));
-    return dir + exportType.getDir() + "-" + exportType.getFileTypePrefix() + "-service-point-" + actualDate
-        + exportExtensionFileType.getExtention();
+    return exportType.getDir() + "-" + exportType.getFileTypePrefix() + "-service-point-" + actualDate;
   }
 
 }
