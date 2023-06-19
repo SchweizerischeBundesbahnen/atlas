@@ -1,6 +1,5 @@
 package ch.sbb.atlas.kafka.model.business.organisation;
 
-import ch.sbb.atlas.kafka.model.Status;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
@@ -52,7 +51,7 @@ public class SharedBusinessOrganisationVersionModel {
   private Integer organisationNumber;
 
   @NotNull
-  private Status status;
+  private String status;
 
   @NotNull
   private LocalDate validFrom;
