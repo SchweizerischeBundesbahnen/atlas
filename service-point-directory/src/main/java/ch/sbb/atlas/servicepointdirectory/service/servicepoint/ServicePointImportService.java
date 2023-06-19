@@ -91,7 +91,7 @@ public class ServicePointImportService {
   }
 
   public void updateServicePointVersionForImportService(ServicePointVersion edited) {
-    List<ServicePointVersion> dbVersions = servicePointService.findAllServicePointVersions(edited.getNumber());
+    List<ServicePointVersion> dbVersions = servicePointService.findAllByNumberOrderByValidFrom(edited.getNumber());
     ServicePointVersion current = servicePointService.getCurrentServicePointVersion(dbVersions, edited);
     List<VersionedObject> versionedObjects = versionableService.versioningObjectsForServicePointImportFromCsv(current, edited,
         dbVersions);
