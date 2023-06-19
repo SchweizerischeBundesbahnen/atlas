@@ -101,7 +101,6 @@
       [titleTranslationKey]="'BODI.TRANSPORT_COMPANIES.BO_RELATION_TITLE'"
     >
       <form *ngIf="editMode" class="col-12 d-flex">
-        <!-- TODO: Add condition - if update then disable dropdown -->
         <bo-select
           [formGroup]="form"
           [disabled]="isUpdateRelationSelected"
