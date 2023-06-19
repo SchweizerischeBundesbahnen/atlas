@@ -177,6 +177,7 @@ public class SpringBatchConfig {
   public Step uploadCsvFileStep() {
     return new StepBuilder("uploadCsvFile", jobRepository)
         .tasklet(uploadCsvFileTasklet(null), transactionManager)
+        .listener(stepTracerListener)
         .build();
   }
 
@@ -184,6 +185,7 @@ public class SpringBatchConfig {
   public Step uploadJsonFileStep() {
     return new StepBuilder("uploadJsonFile", jobRepository)
         .tasklet(uploadJsonFileTasklet(null), transactionManager)
+        .listener(stepTracerListener)
         .build();
   }
 
@@ -191,6 +193,7 @@ public class SpringBatchConfig {
   public Step deleteCsvFileStep() {
     return new StepBuilder("deleteCsvFiles", jobRepository)
         .tasklet(fileCsvDeletingTasklet(null), transactionManager)
+        .listener(stepTracerListener)
         .build();
   }
 
@@ -198,6 +201,7 @@ public class SpringBatchConfig {
   public Step deleteJsonFileStep() {
     return new StepBuilder("deleteJsonFiles", jobRepository)
         .tasklet(fileJsonDeletingTasklet(null), transactionManager)
+        .listener(stepTracerListener)
         .build();
   }
 
