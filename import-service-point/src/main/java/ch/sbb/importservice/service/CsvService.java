@@ -43,7 +43,6 @@ public class CsvService {
   public static final String DIENSTELLEN_FILE_PREFIX = "DIDOK3_DIENSTSTELLEN_ALL_V_3_";
   public static final String LADESTELLEN_FILE_PREFIX = "DIDOK3_LADESTELLEN_";
   public static final String VERKEHRSPUNKTELEMENTE_FILE_PREFIX = "DIDOK3_VERKEHRSPUNKTELEMENTE_ALL_V_1_";
-  private static final String CSV_DATE_TIME_FORMATTING = "yyyy-MM-dd HH:mm:ss";
   private static final String HASHTAG = "#";
   private static final String CSV_DELIMITER = ";";
   private static final String EDITED_AT_COLUMN_NAME = "GEAENDERT_AM";
@@ -132,13 +131,13 @@ public class CsvService {
     List<TrafficPointCsvModelContainer> trafficPointCsvModelContainers = new ArrayList<>();
     trafficPointsGroupedBySloid.forEach((sloid, trafficPointCsvModelGroup) -> {
       trafficPointCsvModelGroup.sort(Comparator.comparing(BaseDidokCsvModel::getValidFrom));
-      for (int csvModelIndex = 0; csvModelIndex + 1 <= trafficPointCsvModelGroup.size() - 1; ) {
+      for (int csvModelIndex = 0; csvModelIndex + 1 < trafficPointCsvModelGroup.size(); ) {
         TrafficPointElementCsvModel current = trafficPointCsvModelGroup.get(csvModelIndex);
         TrafficPointElementCsvModel next = trafficPointCsvModelGroup.get(csvModelIndex + 1);
 
         // merge if dates are sequential and current equals next with excluded properties
         if (DateHelper.areDatesSequential(current.getValidTo(), next.getValidFrom()) && current.equals(next)) {
-          trafficPointCsvModelGroup.remove(current);
+          trafficPointCsvModelGroup.remove(csvModelIndex);
           next.setValidFrom(current.getValidFrom());
         } else {
           csvModelIndex++;
