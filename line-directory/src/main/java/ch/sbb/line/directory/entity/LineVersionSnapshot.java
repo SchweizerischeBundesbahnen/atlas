@@ -1,6 +1,6 @@
 package ch.sbb.line.directory.entity;
 
-import ch.sbb.atlas.kafka.model.Status;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.workflow.model.BaseVersionSnapshot;
 import ch.sbb.line.directory.converter.CmykColorConverter;

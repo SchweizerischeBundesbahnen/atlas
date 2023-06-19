@@ -1,6 +1,6 @@
 package ch.sbb.atlas.workflow.model;
 
-import ch.sbb.atlas.kafka.model.Status;
+import ch.sbb.atlas.model.Status;
 
 public interface AtlasVersionSnapshotable {
 

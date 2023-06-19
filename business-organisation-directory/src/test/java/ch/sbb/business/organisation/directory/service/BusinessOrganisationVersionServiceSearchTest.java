@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.api.bodi.BusinessOrganisationVersionRequestParams;
 import ch.sbb.atlas.api.bodi.enumeration.BusinessType;
-import ch.sbb.atlas.kafka.model.Status;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.business.organisation.directory.controller.BusinessOrganisationVersionSearchRestrictions;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;

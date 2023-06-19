@@ -1,7 +1,7 @@
 package ch.sbb.line.directory;
 
 import ch.sbb.atlas.api.lidi.SublineVersionModel.SublineVersionModelBuilder;
-import ch.sbb.atlas.kafka.model.Status;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.api.lidi.SublineVersionModel;
 import ch.sbb.line.directory.entity.Subline;
 import ch.sbb.line.directory.entity.Subline.SublineBuilder;

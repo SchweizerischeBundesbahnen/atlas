@@ -5,7 +5,7 @@ import ch.sbb.atlas.api.bodi.BusinessOrganisationApiV1;
 import ch.sbb.atlas.api.bodi.BusinessOrganisationModel;
 import ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel;
 import ch.sbb.atlas.api.bodi.BusinessOrganisationVersionRequestParams;
-import ch.sbb.atlas.kafka.model.Status;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisation;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
