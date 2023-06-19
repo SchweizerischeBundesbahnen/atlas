@@ -1,7 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.model;
 
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
-import ch.sbb.atlas.kafka.model.Status;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeoData;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;

@@ -1,7 +1,7 @@
 package ch.sbb.line.directory.service;
 
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
-import ch.sbb.atlas.kafka.model.Status;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.exception.TimetableFieldNumberConflictException;
 import ch.sbb.line.directory.repository.TimetableFieldNumberVersionRepository;
