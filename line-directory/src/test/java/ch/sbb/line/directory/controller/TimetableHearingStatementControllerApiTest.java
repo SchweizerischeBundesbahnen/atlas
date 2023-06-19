@@ -27,7 +27,6 @@ import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel.Fields;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementSenderModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingYearModel;
-import ch.sbb.atlas.api.timetable.hearing.enumeration.HearingStatus;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.api.timetable.hearing.model.UpdateHearingCantonModel;
 import ch.sbb.atlas.api.timetable.hearing.model.UpdateHearingStatementStatusModel;
@@ -36,8 +35,7 @@ import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.controller.AtlasMockMultipartFile;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.model.exception.NotFoundException.FileNotFoundException;
-import ch.sbb.atlas.transport.company.entity.SharedTransportCompany;
-import ch.sbb.atlas.transport.company.service.SharedTransportCompanyService;
+import ch.sbb.line.directory.entity.SharedTransportCompany;
 import ch.sbb.line.directory.entity.StatementSender;
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
@@ -45,13 +43,12 @@ import ch.sbb.line.directory.entity.TimetableHearingStatement;
 import ch.sbb.line.directory.exception.ForbiddenDueToHearingYearSettingsException;
 import ch.sbb.line.directory.exception.NoClientCredentialAuthUsedException;
 import ch.sbb.line.directory.exception.PdfDocumentConstraintViolationException;
+import ch.sbb.line.directory.repository.SharedTransportCompanyRepository;
 import ch.sbb.line.directory.repository.TimetableHearingStatementRepository;
 import ch.sbb.line.directory.repository.TimetableHearingYearRepository;
 import ch.sbb.line.directory.service.TimetableFieldNumberService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
-import java.time.Year;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -107,7 +104,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
   private UserAdministrationClient userAdministrationClient;
 
   @MockBean
-  private SharedTransportCompanyService sharedTransportCompanyService;
+  private SharedTransportCompanyRepository sharedTransportCompanyRepository;
 
   @BeforeEach
   void setUp() {
@@ -140,7 +137,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
         .build();
     when(transportCompanyClient.getTransportCompaniesBySboid(SBOID)).thenReturn(List.of(transportCompanyModel));
 
-    when(sharedTransportCompanyService.findById(1L)).thenReturn(Optional.of(SharedTransportCompany.builder()
+    when(sharedTransportCompanyRepository.findById(1L)).thenReturn(Optional.of(SharedTransportCompany.builder()
         .id(1L)
         .number("#0001")
         .abbreviation("SBB")

@@ -2,7 +2,6 @@ package ch.sbb.line.directory.mapper;
 
 import ch.sbb.atlas.api.bodi.TransportCompanyModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
-import ch.sbb.atlas.transport.company.service.SharedTransportCompanyService;
 import ch.sbb.line.directory.entity.SharedTransportCompany;
 import ch.sbb.line.directory.repository.SharedTransportCompanyRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +11,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ResponsibleTransportCompanyMapper {
 
-  private final SharedTransportCompanyService sharedTransportCompanyService;
+  private final SharedTransportCompanyRepository sharedTransportCompanyRepository;
 
   public static TimetableHearingStatementResponsibleTransportCompanyModel toModel(SharedTransportCompany transportCompany) {
     return TimetableHearingStatementResponsibleTransportCompanyModel.builder()
@@ -24,8 +23,7 @@ public class ResponsibleTransportCompanyMapper {
   }
 
   public SharedTransportCompany toEntity(TimetableHearingStatementResponsibleTransportCompanyModel transportCompanyModel) {
-    return SharedTransportCompanyRepository.toEntity(
-        sharedTransportCompanyService.findById(transportCompanyModel.getId()).orElseThrow());
+    return sharedTransportCompanyRepository.findById(transportCompanyModel.getId()).orElseThrow();
   }
 
   public static TimetableHearingStatementResponsibleTransportCompanyModel toResponsibleTransportCompany(
