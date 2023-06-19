@@ -4,7 +4,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 
 import ch.sbb.atlas.kafka.model.transport.company.SharedTransportCompanyModel;
-import ch.sbb.atlas.transport.company.repository.SharedTransportCompanyRepository;
+import ch.sbb.atlas.transport.company.repository.TransportCompanySharingDataAccessor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -13,14 +13,14 @@ import org.mockito.MockitoAnnotations;
 class SharedTransportCompanyConsumerTest {
 
   @Mock
-  private SharedTransportCompanyRepository sharedTransportCompanyRepository;
+  private TransportCompanySharingDataAccessor transportCompanySharingDataAccessor;
 
   private SharedTransportCompanyConsumer sharedTransportCompanyConsumer;
 
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    sharedTransportCompanyConsumer = new SharedTransportCompanyConsumer(sharedTransportCompanyRepository);
+    sharedTransportCompanyConsumer = new SharedTransportCompanyConsumer(transportCompanySharingDataAccessor);
   }
 
   @Test
@@ -35,6 +35,6 @@ class SharedTransportCompanyConsumerTest {
     sharedTransportCompanyConsumer.readTransportCompanyFromKafka(transportCompany);
 
     // then
-    verify(sharedTransportCompanyRepository).save(any());
+    verify(transportCompanySharingDataAccessor).save(any());
   }
 }

@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.atlas.business.organisation.repository.SharedBusinessOrganisationVersionRepository;
+import ch.sbb.atlas.business.organisation.repository.BusinessOrganisationVersionSharingDataAccessor;
 import ch.sbb.atlas.model.exception.SboidNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,19 +15,19 @@ import org.mockito.MockitoAnnotations;
 class SharedBusinessOrganisationServiceTest {
 
   @Mock
-  private SharedBusinessOrganisationVersionRepository sharedBusinessOrganisationVersionRepository;
+  private BusinessOrganisationVersionSharingDataAccessor businessOrganisationVersionSharingDataAccessor;
 
   private SharedBusinessOrganisationService sharedBusinessOrganisationService;
 
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    sharedBusinessOrganisationService = new SharedBusinessOrganisationService(sharedBusinessOrganisationVersionRepository);
+    sharedBusinessOrganisationService = new SharedBusinessOrganisationService(businessOrganisationVersionSharingDataAccessor);
   }
 
   @Test
   void shouldThrowNotFoundExceptionOnSboidValidation() {
-    when(sharedBusinessOrganisationVersionRepository.existsBySboid(any())).thenReturn(false);
+    when(businessOrganisationVersionSharingDataAccessor.existsBySboid(any())).thenReturn(false);
 
     assertThrows(SboidNotFoundException.class,
         () -> sharedBusinessOrganisationService.validateSboidExists("ch:1:sboid:12344422"));
@@ -35,7 +35,7 @@ class SharedBusinessOrganisationServiceTest {
 
   @Test
   void shouldNotThrowOnSboidExistingValidation() {
-    when(sharedBusinessOrganisationVersionRepository.existsBySboid(any())).thenReturn(true);
+    when(businessOrganisationVersionSharingDataAccessor.existsBySboid(any())).thenReturn(true);
 
     assertDoesNotThrow(() -> sharedBusinessOrganisationService.validateSboidExists("ch:1:sboid:12344422"));
   }
