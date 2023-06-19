@@ -242,7 +242,7 @@ export class TransportCompanyRelationsService {
     }
 
     return this.httpClient.put<TransportCompanyRelation>(
-      `${this.configuration.basePath}/business-organisation-directory/v1/transport-company-relations/update`,
+      `${this.configuration.basePath}/business-organisation-directory/v1/transport-company-relations`,
       transportCompanyRelation,
       {
         responseType: <any>responseType_,

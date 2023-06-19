@@ -163,57 +163,40 @@ export class TransportCompanyDetailComponent implements OnInit {
       );
   }
 
-  //TODO: ist globale methode um zu speichern
-  //Methode so umbauen dass man auch normal updaten kann
-  //Methode evtl. zu "save" umbenennen
   save(): void {
     this.form.markAllAsTouched();
     if (this.form.invalid) return;
 
-    if (!this.isUpdateRelationSelected) {
-      console.log('create');
+    const validFrom = moment(this.form.value.validFrom).toDate();
+    const validTo = moment(this.form.value.validTo).toDate();
 
-      this.transportCompanyRelationsService
-        .createTransportCompanyRelation({
+    const save = this.isUpdateRelationSelected
+      ? this.transportCompanyRelationsService.updateTransportCompanyRelation({
+          id: this.relationId,
+          validFrom,
+          validTo,
+        })
+      : this.transportCompanyRelationsService.createTransportCompanyRelation({
           transportCompanyId: this.transportCompany.id!,
           sboid: this.form.value.businessOrganisation!.sboid!,
-          validFrom: moment(this.form.value.validFrom).toDate(),
-          validTo: moment(this.form.value.validTo).toDate(),
+          validFrom,
+          validTo,
+        });
+
+    save
+      .pipe(
+        switchMap(() => this.reloadRelations()),
+        tap(() => {
+          this.editMode = false;
+          this.form.reset();
+          const successMsg = this.isUpdateRelationSelected
+            ? 'RELATION.UPDATE_SUCCESS_MSG'
+            : 'RELATION.ADD_SUCCESS_MSG';
+          this.notificationService.success(successMsg);
         })
-        .pipe(
-          switchMap((savedRelation) =>
-            this.reloadRelations().pipe(
-              tap(() => {
-                this.editMode = false;
-                this.form.reset();
-                this.selectedTransportCompanyRelationIndex =
-                  this.transportCompanyRelations.findIndex((item) => item.id === savedRelation.id);
-                this.notificationService.success('RELATION.ADD_SUCCESS_MSG');
-              })
-            )
-          )
-        )
-        .subscribe();
-    } else {
-      this.transportCompanyRelationsService
-        .updateTransportCompanyRelation({
-          id: this.relationId,
-          validFrom: moment(this.form.value.validFrom).toDate(),
-          validTo: moment(this.form.value.validTo).toDate(),
-        })
-        .pipe(
-          switchMap(() => {
-            return this.reloadRelations().pipe(
-              tap(() => {
-                this.editMode = false;
-                this.form.reset();
-                this.notificationService.success('RELATION.UPDATE_SUCCESS_MSG');
-              })
-            );
-          })
-        )
-        .subscribe();
-    }
+      )
+      .subscribe();
+
     this.isUpdateRelationSelected = false;
   }
 
