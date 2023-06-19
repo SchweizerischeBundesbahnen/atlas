@@ -1,26 +1,31 @@
 package ch.sbb.atlas.business.organisation;
 
-import ch.sbb.atlas.business.organisation.repository.SharedBusinessOrganisationVersionRepository;
+import ch.sbb.atlas.business.organisation.repository.BusinessOrganisationVersionSharingDataAccessor;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationConsumer;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ComponentScan
 public class SharedBusinessOrganisationConfig {
 
-  @Bean
-  public SharedBusinessOrganisationConsumer sharedBusinessOrganisationConsumer(
-      SharedBusinessOrganisationVersionRepository sharedBusinessOrganisationVersionRepository) {
-    return new SharedBusinessOrganisationConsumer(sharedBusinessOrganisationVersionRepository);
+  private final BusinessOrganisationVersionSharingDataAccessor businessOrganisationVersionSharingDataAccessor;
+
+  @Autowired
+  public SharedBusinessOrganisationConfig(
+      BusinessOrganisationVersionSharingDataAccessor businessOrganisationVersionSharingDataAccessor) {
+    this.businessOrganisationVersionSharingDataAccessor = businessOrganisationVersionSharingDataAccessor;
   }
 
   @Bean
-  public SharedBusinessOrganisationService sharedBusinessOrganisationService(
-      SharedBusinessOrganisationVersionRepository sharedBusinessOrganisationVersionRepository) {
-    return new SharedBusinessOrganisationService(sharedBusinessOrganisationVersionRepository);
+  public SharedBusinessOrganisationConsumer sharedBusinessOrganisationConsumer() {
+    return new SharedBusinessOrganisationConsumer(businessOrganisationVersionSharingDataAccessor);
+  }
+
+  @Bean
+  public SharedBusinessOrganisationService sharedBusinessOrganisationService() {
+    return new SharedBusinessOrganisationService(businessOrganisationVersionSharingDataAccessor);
   }
 
 }

@@ -1,6 +1,6 @@
 package ch.sbb.line.directory.model;
 
-import ch.sbb.atlas.transport.company.entity.SharedTransportCompany_;
+import ch.sbb.line.directory.entity.SharedTransportCompany_;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
 import ch.sbb.line.directory.entity.TimetableHearingStatement_;
 import jakarta.persistence.criteria.CriteriaBuilder;
