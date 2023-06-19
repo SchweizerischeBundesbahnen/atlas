@@ -7,7 +7,7 @@ import static ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePoint
 import static ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation.Fields.swissMunicipalityName;
 import static ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation.Fields.swissMunicipalityNumber;
 
-import ch.sbb.atlas.kafka.model.Status;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.model.BusinessOrganisationAssociated;
 import ch.sbb.atlas.servicepointdirectory.converter.CategoryConverter;

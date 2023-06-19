@@ -3,7 +3,7 @@ package ch.sbb.business.organisation.directory.service;
 import static java.util.List.of;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.kafka.model.Status;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.business.organisation.directory.controller.BusinessOrganisationSearchRestrictions;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisation;
