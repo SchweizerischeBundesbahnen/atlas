@@ -15,7 +15,7 @@ import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.model.exception.NotFoundException.FileNotFoundException;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.transport.company.entity.SharedTransportCompany;
-import ch.sbb.atlas.transport.company.repository.SharedTransportCompanyRepository;
+import ch.sbb.atlas.transport.company.repository.TransportCompanySharingDataAccessor;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
 import ch.sbb.line.directory.entity.TimetableHearingYear;
 import ch.sbb.line.directory.helper.PdfFiles;
@@ -52,7 +52,7 @@ public class TimetableHearingStatementServiceTest {
   private final TimetableHearingStatementRepository timetableHearingStatementRepository;
   private final TimetableHearingStatementService timetableHearingStatementService;
   private final TimetableHearingStatementMapper timetableHearingStatementMapper;
-  private final SharedTransportCompanyRepository sharedTransportCompanyRepository;
+  private final TransportCompanySharingDataAccessor transportCompanySharingDataAccessor;
 
   @Autowired
   public TimetableHearingStatementServiceTest(TimetableHearingYearRepository timetableHearingYearRepository,
@@ -60,13 +60,13 @@ public class TimetableHearingStatementServiceTest {
       TimetableHearingStatementRepository timetableHearingStatementRepository,
       TimetableHearingStatementService timetableHearingStatementService,
       TimetableHearingStatementMapper timetableHearingStatementMapper,
-      SharedTransportCompanyRepository sharedTransportCompanyRepository) {
+      TransportCompanySharingDataAccessor transportCompanySharingDataAccessor) {
     this.timetableHearingYearRepository = timetableHearingYearRepository;
     this.timetableHearingYearService = timetableHearingYearService;
     this.timetableHearingStatementRepository = timetableHearingStatementRepository;
     this.timetableHearingStatementService = timetableHearingStatementService;
     this.timetableHearingStatementMapper = timetableHearingStatementMapper;
-    this.sharedTransportCompanyRepository = sharedTransportCompanyRepository;
+    this.transportCompanySharingDataAccessor = transportCompanySharingDataAccessor;
   }
 
   private static TimetableHearingStatementModel buildTimetableHearingStatementModel() {
@@ -421,11 +421,11 @@ public class TimetableHearingStatementServiceTest {
 
   @Test
   void shouldFindStatementByTransportCompany() {
-    sharedTransportCompanyRepository.save(SharedTransportCompany.builder()
+    transportCompanySharingDataAccessor.save(SharedTransportCompany.builder()
         .id(4L)
         .abbreviation("SBB")
         .businessRegisterName("Schweizerische Bundesbahnen").build());
-    sharedTransportCompanyRepository.save(SharedTransportCompany.builder()
+    transportCompanySharingDataAccessor.save(SharedTransportCompany.builder()
         .id(5L)
         .abbreviation("BLS")
         .businessRegisterName("Basel Land Stationen ? :D").build());
