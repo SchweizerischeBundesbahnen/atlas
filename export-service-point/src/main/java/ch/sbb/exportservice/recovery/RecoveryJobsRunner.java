@@ -1,6 +1,7 @@
 package ch.sbb.exportservice.recovery;
 
 import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.exportservice.exception.JobExecutionException;
 import ch.sbb.exportservice.service.ExportJobService;
 import ch.sbb.exportservice.utils.JobDescriptionConstants;
 import java.time.LocalDate;
@@ -65,7 +66,7 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
       try {
         totalJobExecutionCount += jobExplorer.getJobInstanceCount(job);
       } catch (NoSuchJobException e) {
-        throw new RuntimeException(e);
+        throw new JobExecutionException(job, e);
       }
     }
     return totalJobExecutionCount <= 0;
