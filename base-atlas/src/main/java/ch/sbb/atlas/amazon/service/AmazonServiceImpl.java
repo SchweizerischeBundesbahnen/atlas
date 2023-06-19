@@ -88,6 +88,11 @@ public class AmazonServiceImpl implements AmazonService {
   }
 
   @Override
+  public S3Object pullS3Object(AmazonBucket bucket, String filePath) {
+    return getClient(bucket).getObject(getAmazonBucketConfig(bucket).getBucketName(), filePath);
+  }
+
+  @Override
   public void deleteFile(AmazonBucket bucket, String filePath) {
     getClient(bucket).deleteObject(getAmazonBucketConfig(bucket).getBucketName(), filePath);
   }
