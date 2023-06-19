@@ -2,7 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.mapper;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-import ch.sbb.atlas.kafka.model.Status;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepointdirectory.api.model.CodeAndDesignation;
 import ch.sbb.atlas.servicepointdirectory.api.model.ReadServicePointVersionModel;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
