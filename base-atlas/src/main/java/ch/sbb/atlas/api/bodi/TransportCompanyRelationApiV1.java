@@ -30,8 +30,8 @@ public interface TransportCompanyRelationApiV1 {
   @ResponseStatus(HttpStatus.NO_CONTENT)
   void deleteTransportCompanyRelation(@PathVariable Long relationId);
 
-  @PutMapping("")
+  @PutMapping("/update")
   @ResponseStatus(HttpStatus.OK)
-  @PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).BODI)")
-  TransportCompanyBoRelationModel updateTransportCompanyRelation(TransportCompanyRelationModel model);
+  //@PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).BODI)")
+  void updateTransportCompanyRelation(@RequestBody UpdateTransportCompanyRelationModel model);
 }

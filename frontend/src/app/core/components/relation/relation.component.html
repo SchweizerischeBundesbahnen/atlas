@@ -54,11 +54,11 @@
   </button>
   <button
     (click)="editRelation()"
-    [disabled]="selectedIndex === -1"
+    [disabled]="editMode || !isRelationSelected"
     class="atlas-primary-btn me-2"
     data-cy="add-relation-btn"
   >
-    Bearbeiten
+    {{ updateBtnNameTranslationKey | translate }}
   </button>
   <button
     (click)="deleteRelation.emit()"
