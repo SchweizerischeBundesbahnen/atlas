@@ -29,7 +29,6 @@ available [here](https://code.sbb.ch/projects/KI_ATLAS/repos/atlas-backend/brows
 
 This project uses [Semantic Versioning](https://semver.org/).
 
-
 ## Links
 
 ### Localhost
