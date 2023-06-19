@@ -14,7 +14,10 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -25,6 +28,10 @@ public interface ServicePointVersionRepository extends JpaRepository<ServicePoin
   List<ServicePointVersion> findAllByNumberOrderByValidFrom(ServicePointNumber number);
 
   boolean existsByNumber(ServicePointNumber servicePointNumber);
+
+  @Modifying(clearAutomatically = true)
+  @Query("update service_point_version v set v.version = (v.version + 1) where v.number = :number")
+  void incrementVersion(@Param("number") ServicePointNumber number);
 
   @EntityGraph(attributePaths = {Fields.servicePointGeolocation, Fields.categories, Fields.meansOfTransport})
   List<ServicePointVersion> findAllByIdIn(Collection<Long> ids, Sort sort);
