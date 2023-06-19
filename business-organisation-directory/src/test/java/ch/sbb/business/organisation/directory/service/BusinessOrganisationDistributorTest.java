@@ -6,6 +6,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.kafka.model.business.organisation.SharedBusinessOrganisationUpdate;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -42,7 +43,10 @@ class BusinessOrganisationDistributorTest {
 
   @Test
   void shouldSendKafkaEvent() {
-    BusinessOrganisationVersion businessOrganisationVersion = BusinessOrganisationVersion.builder().build();
+    BusinessOrganisationVersion businessOrganisationVersion = BusinessOrganisationVersion.builder()
+        .id(123L)
+        .descriptionDe("Boss BO")
+        .status(Status.VALIDATED).build();
 
     businessOrganisationDistributor.saveToDistributedServices(businessOrganisationVersion);
 
