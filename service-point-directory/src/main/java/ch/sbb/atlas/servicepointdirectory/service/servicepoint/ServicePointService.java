@@ -52,8 +52,7 @@ public class ServicePointService {
     return servicePointVersionRepository.save(servicePointVersion);
   }
 
-  public void updateServicePointVersion(ServicePointVersion currentVersion, ServicePointVersion editedVersion) {
-    Integer number = currentVersion.getNumber().getNumber();
+  public ServicePointVersion updateServicePointVersion(ServicePointVersion currentVersion, ServicePointVersion editedVersion) {
     servicePointVersionRepository.incrementVersion(currentVersion.getNumber());
     if (editedVersion.getVersion() != null && !currentVersion.getVersion().equals(editedVersion.getVersion())) {
       throw new StaleObjectStateException(ServicePointVersion.class.getSimpleName(), "version");
@@ -64,6 +63,7 @@ public class ServicePointService {
         editedVersion, dbVersions);
     versionableService.applyVersioning(ServicePointVersion.class, versionedObjects,
         this::save, this::deleteById);
+    return currentVersion;
   }
 
   ServicePointVersion getCurrentServicePointVersion(List<ServicePointVersion> dbVersions, ServicePointVersion edited) {
