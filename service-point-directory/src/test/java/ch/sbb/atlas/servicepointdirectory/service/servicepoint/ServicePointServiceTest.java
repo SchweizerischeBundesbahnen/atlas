@@ -51,7 +51,7 @@ public class ServicePointServiceTest {
     ServicePointNumber servicePointNumber = ServicePointNumber.of(123);
 
     // when
-    servicePointService.findAllServicePointVersions(servicePointNumber);
+    servicePointService.findAllByNumberOrderByValidFrom(servicePointNumber);
 
     // then
     verify(servicePointVersionRepositoryMock).findAllByNumberOrderByValidFrom(eq(servicePointNumber));
