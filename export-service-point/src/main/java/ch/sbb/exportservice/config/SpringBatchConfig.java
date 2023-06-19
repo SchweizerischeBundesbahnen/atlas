@@ -10,7 +10,7 @@ import ch.sbb.exportservice.model.ServicePointExportType;
 import ch.sbb.exportservice.model.ServicePointVersionCsvModel;
 import ch.sbb.exportservice.processor.ServicePointVersionCsvProcessor;
 import ch.sbb.exportservice.processor.ServicePointVersionJsonProcessor;
-import ch.sbb.exportservice.reader.BaseServicePointVersionReader.ServicePointVersionRowMapper;
+import ch.sbb.exportservice.reader.ServicePointVersionRowMapper;
 import ch.sbb.exportservice.reader.SqlQueryUtil;
 import ch.sbb.exportservice.tasklet.FileCsvDeletingTasklet;
 import ch.sbb.exportservice.tasklet.FileJsonDeletingTasklet;
@@ -44,6 +44,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 public class SpringBatchConfig {
 
   private static final int CHUNK_SIZE = 200;
+  private static final int FETCH_SIZE = 10000;
   private final JobRepository jobRepository;
 
   private final PlatformTransactionManager transactionManager;
@@ -62,7 +63,7 @@ public class SpringBatchConfig {
     JdbcCursorItemReader<ServicePointVersion> itemReader = new JdbcCursorItemReader<>();
     itemReader.setDataSource(dataSource);
     itemReader.setSql(SqlQueryUtil.getSqlQuery(exportType));
-    itemReader.setFetchSize(10000);
+    itemReader.setFetchSize(FETCH_SIZE);
     itemReader.setRowMapper(new ServicePointVersionRowMapper());
     return itemReader;
   }
