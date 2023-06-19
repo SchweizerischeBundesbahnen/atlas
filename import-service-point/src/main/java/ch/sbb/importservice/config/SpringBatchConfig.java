@@ -42,7 +42,9 @@ import org.springframework.transaction.PlatformTransactionManager;
 @Slf4j
 public class SpringBatchConfig {
 
-  private static final int CHUNK_SIZE = 20;
+  private static final int SERVICE_POINT_CHUNK_SIZE = 20;
+  private static final int TRAFFIC_POINT_CHUNK_SIZE = 50;
+
   private static final int THREAD_EXECUTION_SIZE = 64;
 
   private final JobRepository jobRepository;
@@ -110,7 +112,7 @@ public class SpringBatchConfig {
   public Step parseServicePointCsvStep(ThreadSafeListItemReader<ServicePointCsvModelContainer> servicePointlistItemReader) {
     String stepName = "parseServicePointCsvStep";
     return new StepBuilder(stepName, jobRepository)
-        .<ServicePointCsvModelContainer, ServicePointCsvModelContainer>chunk(CHUNK_SIZE, transactionManager)
+        .<ServicePointCsvModelContainer, ServicePointCsvModelContainer>chunk(SERVICE_POINT_CHUNK_SIZE, transactionManager)
         .reader(servicePointlistItemReader)
         .writer(servicePointApiWriter)
         .faultTolerant()
@@ -125,7 +127,7 @@ public class SpringBatchConfig {
   public Step parseLoadingPointCsvStep(ThreadSafeListItemReader<LoadingPointCsvModel> loadingPointlistItemReader) {
     String stepName = "parseLoadingPointCsvStep";
     return new StepBuilder(stepName, jobRepository)
-        .<LoadingPointCsvModel, LoadingPointCsvModel>chunk(CHUNK_SIZE, transactionManager)
+        .<LoadingPointCsvModel, LoadingPointCsvModel>chunk(SERVICE_POINT_CHUNK_SIZE, transactionManager)
         .reader(loadingPointlistItemReader)
         .writer(loadingPointApiWriter)
         .faultTolerant()
@@ -139,7 +141,7 @@ public class SpringBatchConfig {
   public Step parseTrafficPointCsvStep(ThreadSafeListItemReader<TrafficPointCsvModelContainer> trafficPointListItemReader) {
     String stepName = "parseTrafficPointCsvStep";
     return new StepBuilder(stepName, jobRepository)
-        .<TrafficPointCsvModelContainer, TrafficPointCsvModelContainer>chunk(50, transactionManager)
+        .<TrafficPointCsvModelContainer, TrafficPointCsvModelContainer>chunk(TRAFFIC_POINT_CHUNK_SIZE, transactionManager)
         .reader(trafficPointListItemReader)
         .writer(trafficPointApiWriter)
         .faultTolerant()
