@@ -1,12 +1,14 @@
 package ch.sbb.business.organisation.directory.service;
 
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
+import ch.sbb.business.organisation.directory.entity.TransportCompany;
 import ch.sbb.business.organisation.directory.entity.TransportCompanyRelation;
 import ch.sbb.business.organisation.directory.exception.SboidNotFoundException;
 import ch.sbb.business.organisation.directory.exception.TransportCompanyNotFoundException;
 import ch.sbb.business.organisation.directory.exception.TransportCompanyRelationConflictException;
 import ch.sbb.business.organisation.directory.repository.TransportCompanyRelationRepository;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -47,6 +49,10 @@ public class TransportCompanyRelationService {
   List<TransportCompanyRelation> findRelationOverlaps(TransportCompanyRelation relation) {
     return transportCompanyRelationRepository.findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndSboid(
         relation.getValidFrom(), relation.getValidTo(), relation.getSboid());
+  }
+
+  public TransportCompanyRelation findById(Long id) {
+    return transportCompanyRelationRepository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
   }
 
 }

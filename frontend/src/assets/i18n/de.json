@@ -491,8 +491,10 @@
   },
   "RELATION": {
     "ADD": "Verknüpfung hinzufügen",
+    "UPDATE": "Verknüfung editieren",
     "DELETE": "Verknüpfung löschen",
     "ADD_SUCCESS_MSG": "Die gewünschte Verknüpfung wurde hinzugefügt.",
+    "UPDATE_SUCCESS_MSG": "Die gewünschte Verknüfung wurde erfolgreich aktualisiert.",
     "DELETE_SUCCESS_MSG": "Das Löschen der ausgewählten Verknüpfung war erfolgreich."
   },
   "WORKFLOW": {
