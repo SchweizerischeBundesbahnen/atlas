@@ -78,9 +78,9 @@ public class TransportCompanyRelationController implements TransportCompanyRelat
 
   @Override
   public void updateTransportCompanyRelation(UpdateTransportCompanyRelationModel model) {
-
     TransportCompanyRelation relationEntity = transportCompanyRelationService.findById(model.getId());
-
-    transportCompanyService.updateTransportCompanyRelation(relationEntity, model.getValidFrom(), model.getValidTo());
+    relationEntity.setValidFrom(model.getValidFrom());
+    relationEntity.setValidTo(model.getValidTo());
+    transportCompanyRelationService.save(relationEntity);
   }
 }
