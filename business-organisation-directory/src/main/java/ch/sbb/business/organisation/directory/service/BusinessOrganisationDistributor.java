@@ -44,7 +44,7 @@ public class BusinessOrganisationDistributor extends BaseProducer<SharedBusiness
         .descriptionIt(entity.getDescriptionIt())
         .descriptionEn(entity.getDescriptionEn())
         .organisationNumber(entity.getOrganisationNumber())
-        .status(entity.getStatus())
+        .status(entity.getStatus().name())
         .validFrom(entity.getValidFrom())
         .validTo(entity.getValidTo())
         .build();
