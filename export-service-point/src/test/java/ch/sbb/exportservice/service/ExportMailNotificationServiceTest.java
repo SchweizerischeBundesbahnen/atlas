@@ -17,7 +17,7 @@ import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepExecution;
 
 @ExtendWith(MockitoExtension.class)
-class ImportMailNotificationServiceTest {
+class ExportMailNotificationServiceTest {
 
   @Mock
   private Tracer tracer;
@@ -30,7 +30,7 @@ class ImportMailNotificationServiceTest {
   public void shouldBuildMailNotification() {
     //given
     Map<String, Object> expectedMailContent = new HashMap<>();
-    expectedMailContent.put("jobName", "import");
+    expectedMailContent.put("jobName", "export");
     expectedMailContent.put("cause", "");
     expectedMailContent.put("correlationId", "abc123");
     expectedMailContent.put("exception", "");
@@ -42,12 +42,12 @@ class ImportMailNotificationServiceTest {
     stepExecution.getExecutionContext().put("traceId", "abc123");
     stepExecution.setId(123L);
     //when
-    MailNotification result = notificationService.buildMailErrorNotification("import", stepExecution);
+    MailNotification result = notificationService.buildMailErrorNotification("export", stepExecution);
 
     //then
     assertThat(result).isNotNull();
-    assertThat(result.getMailType()).isEqualTo(MailType.IMPORT_SERVICE_POINT_ERROR_NOTIFICATION);
-    assertThat(result.getSubject()).isEqualTo("Job [import] execution failed");
+    assertThat(result.getMailType()).isEqualTo(MailType.EXPORT_SERVICE_POINT_ERROR_NOTIFICATION);
+    assertThat(result.getSubject()).isEqualTo("Job [export] execution failed");
     assertThat(result.getTemplateProperties()).isNotEmpty();
     assertThat(result.getTemplateProperties()).containsOnly(expectedMailContent);
   }
@@ -56,7 +56,7 @@ class ImportMailNotificationServiceTest {
   public void shouldBuildMailNotificationWhenThrowableIsNull() {
     //given
     Map<String, Object> expectedMailContent = new HashMap<>();
-    expectedMailContent.put("jobName", "import");
+    expectedMailContent.put("jobName", "export");
     expectedMailContent.put("cause", "");
     expectedMailContent.put("correlationId", "abc123");
     expectedMailContent.put("exception", "");
@@ -68,12 +68,12 @@ class ImportMailNotificationServiceTest {
     stepExecution.getExecutionContext().put("traceId", "abc123");
     stepExecution.setId(123L);
     //when
-    MailNotification result = notificationService.buildMailErrorNotification("import", stepExecution);
+    MailNotification result = notificationService.buildMailErrorNotification("export", stepExecution);
 
     //then
     assertThat(result).isNotNull();
-    assertThat(result.getMailType()).isEqualTo(MailType.IMPORT_SERVICE_POINT_ERROR_NOTIFICATION);
-    assertThat(result.getSubject()).isEqualTo("Job [import] execution failed");
+    assertThat(result.getMailType()).isEqualTo(MailType.EXPORT_SERVICE_POINT_ERROR_NOTIFICATION);
+    assertThat(result.getSubject()).isEqualTo("Job [export] execution failed");
     assertThat(result.getTemplateProperties()).isNotEmpty();
     assertThat(result.getTemplateProperties()).containsOnly(expectedMailContent);
   }
