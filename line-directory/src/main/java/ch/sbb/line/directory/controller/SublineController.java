@@ -5,7 +5,7 @@ import ch.sbb.atlas.api.lidi.SublineApiV1;
 import ch.sbb.atlas.api.lidi.SublineModel;
 import ch.sbb.atlas.api.lidi.SublineVersionModel;
 import ch.sbb.atlas.api.lidi.enumaration.SublineType;
-import ch.sbb.atlas.kafka.model.Status;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.line.directory.entity.Subline;

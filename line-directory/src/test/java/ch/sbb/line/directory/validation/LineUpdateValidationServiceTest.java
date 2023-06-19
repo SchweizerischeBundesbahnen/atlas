@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.atlas.kafka.model.Status;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.user.administration.security.service.BusinessOrganisationBasedUserAdministrationService;
 import ch.sbb.line.directory.LineTestData;

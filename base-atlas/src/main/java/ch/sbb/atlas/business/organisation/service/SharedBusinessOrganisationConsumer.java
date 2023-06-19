@@ -5,6 +5,7 @@ import ch.sbb.atlas.business.organisation.repository.SharedBusinessOrganisationV
 import ch.sbb.atlas.kafka.model.business.organisation.SharedBusinessOrganisationUpdate;
 import ch.sbb.atlas.kafka.model.business.organisation.SharedBusinessOrganisationVersionModel;
 import ch.sbb.atlas.kafka.model.business.organisation.UpdateAction;
+import ch.sbb.atlas.model.Status;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -41,7 +42,7 @@ public class SharedBusinessOrganisationConsumer {
         .descriptionIt(sharedBusinessOrganisationVersionModel.getDescriptionIt())
         .descriptionEn(sharedBusinessOrganisationVersionModel.getDescriptionEn())
         .organisationNumber(sharedBusinessOrganisationVersionModel.getOrganisationNumber())
-        .status(sharedBusinessOrganisationVersionModel.getStatus())
+        .status(Status.valueOf(sharedBusinessOrganisationVersionModel.getStatus()))
         .validFrom(sharedBusinessOrganisationVersionModel.getValidFrom())
         .validTo(sharedBusinessOrganisationVersionModel.getValidTo())
         .build();

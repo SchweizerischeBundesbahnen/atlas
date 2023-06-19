@@ -1,6 +1,6 @@
 package ch.sbb.atlas.business.organisation.entity;
 
-import ch.sbb.atlas.kafka.model.Status;
+import ch.sbb.atlas.model.Status;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

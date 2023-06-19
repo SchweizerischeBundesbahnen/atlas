@@ -1,7 +1,7 @@
 package ch.sbb.line.directory.model.csv;
 
 import ch.sbb.atlas.export.model.VersionCsvModel;
-import ch.sbb.atlas.kafka.model.Status;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.line.directory.entity.TimetableFieldLineRelation;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
