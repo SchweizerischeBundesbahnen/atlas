@@ -12,7 +12,7 @@ public interface VersionableService {
       Versionable edited,
       List<T> currentVersions);
 
-  <T extends Versionable> List<VersionedObject> versioningObjectsWithDeleteByNullProperties(Versionable current,
+  <T extends Versionable> List<VersionedObject> versioningObjectsForServicePointImportFromCsv(Versionable current,
       Versionable edited,
       List<T> currentVersions);
 
