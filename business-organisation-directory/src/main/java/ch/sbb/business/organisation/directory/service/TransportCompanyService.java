@@ -1,14 +1,10 @@
 package ch.sbb.business.organisation.directory.service;
 
-import ch.sbb.atlas.api.bodi.TransportCompanyModel;
-import ch.sbb.atlas.api.bodi.TransportCompanyRelationModel;
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import ch.sbb.atlas.kafka.model.mail.MailType;
 import ch.sbb.business.organisation.directory.controller.TransportCompanySearchRestrictions;
 import ch.sbb.business.organisation.directory.entity.TransportCompany;
 import ch.sbb.business.organisation.directory.entity.TransportCompany.Fields;
-import ch.sbb.business.organisation.directory.entity.TransportCompanyRelation;
-import ch.sbb.business.organisation.directory.repository.TransportCompanyRelationRepository;
 import ch.sbb.business.organisation.directory.repository.TransportCompanyRepository;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
@@ -17,7 +13,6 @@ import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import feign.Response.Body;
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +33,6 @@ public class TransportCompanyService {
 
   private final TransportCompanyClient transportCompanyClient;
   private final TransportCompanyRepository transportCompanyRepository;
-  private final TransportCompanyRelationRepository transportCompanyRelationRepository;
   private final MailClient mailClient;
 
   @Value("${mail.receiver.tu-relations-report}")
