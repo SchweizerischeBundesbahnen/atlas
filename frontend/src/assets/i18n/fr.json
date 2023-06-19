@@ -491,8 +491,10 @@
   },
   "RELATION": {
     "ADD": "Ajouter un lien",
+    "UPDATE": "Éditer le lien",
     "DELETE": "Supprimer le lien",
     "ADD_SUCCESS_MSG": "Le lien souhaité a été ajouté.",
+    "UPDATE_SUCCESS_MSG": "Le lien souhaité a été mis à jour avec succès.",
     "DELETE_SUCCESS_MSG": "La suppression du raccourci sélectionné a réussi."
   },
   "WORKFLOW": {

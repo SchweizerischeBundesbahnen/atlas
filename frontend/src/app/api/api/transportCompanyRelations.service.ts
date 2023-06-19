@@ -211,12 +211,11 @@ export class TransportCompanyRelationsService {
     reportProgress: boolean = false,
     options?: { httpHeaderAccept?: '*/*' }
   ): Observable<any> {
-    /*     if (relationId === null || relationId === undefined) {
+    if (transportCompanyRelation.id === null || transportCompanyRelation.id === undefined) {
       throw new Error(
-        'Required parameter relationId was null or undefined when calling deleteTransportCompanyRelation.'
+        'Required parameter relationId was null or undefined when calling updateTransportCompanyRelation.'
       );
     }
- */
     let headers = this.defaultHeaders;
 
     let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -243,7 +242,7 @@ export class TransportCompanyRelationsService {
     }
 
     return this.httpClient.put<TransportCompanyRelation>(
-      `${this.configuration.basePath}/business-organisation-directory/v1/transport-company-relations`,
+      `${this.configuration.basePath}/business-organisation-directory/v1/transport-company-relations/update`,
       transportCompanyRelation,
       {
         responseType: <any>responseType_,
