@@ -29,6 +29,8 @@ export class RelationComponent<RECORD_TYPE> {
   @Input() selectedIndex = -1;
   @Input() addBtnNameTranslationKey = 'RELATION.ADD';
   @Input() deleteBtnNameTranslationKey = 'RELATION.DELETE';
+  @Input() updateBtnNameTranslationKey = 'RELATION.UPDATE';
+  @Input() isRelationSelected = false;
 
   @Output() deleteRelation = new EventEmitter<void>();
   @Output() updateRelation = new EventEmitter<void>();
@@ -65,9 +67,7 @@ export class RelationComponent<RECORD_TYPE> {
 
   selectRecord(record: RECORD_TYPE): void {
     if (this.editable) {
-      console.log('test');
-      console.log('index of ', this._records.indexOf(record));
-
+      this.isRelationSelected = true;
       this.selectedIndexChanged.emit(this._records.indexOf(record));
     }
   }
@@ -96,7 +96,6 @@ export class RelationComponent<RECORD_TYPE> {
   }
 
   editRelation() {
-    console.log('log ', this.selectedIndex);
     this.updateRelation.emit();
     this.editModeChanged.emit();
   }
