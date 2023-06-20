@@ -226,6 +226,7 @@ export class TransportCompanyDetailComponent implements OnInit {
           this.reloadRelations().pipe(
             tap(() => {
               this.selectedTransportCompanyRelationIndex = -1;
+              this.isUpdateRelationSelected = false;
               this.notificationService.success('RELATION.DELETE_SUCCESS_MSG');
             })
           )
