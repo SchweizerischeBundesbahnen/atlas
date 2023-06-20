@@ -26,9 +26,9 @@ public @interface AtlasVersionableProperty {
   boolean ignoreDiff() default false;
 
   /**
-   * Used to specify that the property must not be overridden. Note that this property is used only for ServicePoint Import from CSV
+   * Used to specify that the property must not be overridden. Note that this property is used only for Import from CSV
    * and it works only when the versioning is executed with the option "deletePropertyWhenNull"=true otherwise it is ignored during the versioning process.
-   * See {@link VersionableService#versioningObjectsForServicePointImportFromCsv(Versionable, Versionable, List)}
+   * See {@link VersionableService#versioningObjectsForImportFromCsv(Versionable, Versionable, List)}
    */
   boolean doNotOverride() default false;
 
