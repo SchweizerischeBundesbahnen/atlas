@@ -114,7 +114,6 @@ describe('TransportCompanyRelationComponent', () => {
   it('test delete', () => {
     component.editable = true;
     component.selectedIndex = 0;
-    component.isRelationSelected = false;
     fixture.detectChanges();
     const deleteBtn = fixture.debugElement.queryAll(By.css('button'))[2];
     spyOn(component.deleteRelation, 'emit');
@@ -125,7 +124,6 @@ describe('TransportCompanyRelationComponent', () => {
   it('test update', () => {
     component.editable = true;
     component.selectedIndex = 0;
-    component.isRelationSelected = true;
     fixture.detectChanges();
     const deleteBtn = fixture.debugElement.queryAll(By.css('button'))[1];
     spyOn(component.updateRelation, 'emit');
