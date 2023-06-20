@@ -1,9 +1,7 @@
 package ch.sbb.exportservice.entity;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.atlas.validation.DatesValidator;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
-import ch.sbb.atlas.versioning.model.Versionable;
 import ch.sbb.exportservice.entity.geolocation.LoadingPointGeolocation;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
@@ -22,7 +20,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldNameConstants
 @AtlasVersionable
-public class LoadingPointVersion extends BaseDidokImportEntity implements Versionable, DatesValidator {
+public class LoadingPointVersion {
 
   private Long id;
 
@@ -39,9 +37,5 @@ public class LoadingPointVersion extends BaseDidokImportEntity implements Versio
   private LoadingPointGeolocation loadingPointGeolocation;
   private LocalDate validFrom;
   private LocalDate validTo;
-
-  public boolean hasGeolocation() {
-    return loadingPointGeolocation != null;
-  }
 
 }

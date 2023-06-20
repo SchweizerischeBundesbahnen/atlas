@@ -16,11 +16,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @MappedSuperclass
 @FieldNameConstants
-@Deprecated
-/**
- * Switch back to ch.sbb.atlas.base.service.model.entity.BaseEntity once Didok dies
- */
-public abstract class BaseDidokImportEntity {
+public abstract class BaseEntity {
 
   private LocalDateTime creationDate;
 
