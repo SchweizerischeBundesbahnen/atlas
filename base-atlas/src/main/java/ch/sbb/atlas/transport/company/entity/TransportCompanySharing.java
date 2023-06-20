@@ -36,4 +36,15 @@ public interface TransportCompanySharing {
     setBusinessRegisterName(model.getBusinessRegisterName());
     setBusinessRegisterNumber(model.getBusinessRegisterNumber());
   }
+
+  default SharedTransportCompanyModel toModel() {
+    return SharedTransportCompanyModel.builder()
+        .id(getId())
+        .number(getNumber())
+        .abbreviation(getAbbreviation())
+        .description(getDescription())
+        .businessRegisterName(getBusinessRegisterName())
+        .businessRegisterNumber(getBusinessRegisterNumber())
+        .build();
+  }
 }
