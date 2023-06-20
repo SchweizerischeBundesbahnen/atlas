@@ -6,6 +6,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
+import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.SublineTestData;
 import ch.sbb.line.directory.entity.LineVersion;
@@ -33,13 +34,16 @@ public class SublineValidationTest {
   @Mock
   private CoverageValidationService coverageValidationService;
 
+  @Mock
+  private SharedBusinessOrganisationService sharedBusinessOrganisationService;
+
   private SublineValidationService sublineValidationService;
 
   @BeforeEach()
   public void setUp() {
     MockitoAnnotations.openMocks(this);
     sublineValidationService = new SublineValidationService(sublineVersionRepository,
-        lineVersionRepository, coverageValidationService);
+        lineVersionRepository, coverageValidationService, sharedBusinessOrganisationService);
   }
 
   @Test
