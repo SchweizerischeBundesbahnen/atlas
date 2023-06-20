@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -26,6 +27,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class TransportCompanyRelationControllerApiTest extends BaseControllerApiTest {
 
+  private static final TransportCompanyRelationModel RELATION = TransportCompanyRelationModel.builder()
+      .transportCompanyId(5L)
+      .sboid("ch:1:sboid:1000000")
+      .validFrom(LocalDate.of(2022,1,1))
+      .validTo(LocalDate.of(2035,1,1))
+      .build();
+
   @Autowired
   private BusinessOrganisationVersionRepository businessOrganisationVersionRepository;
   @Autowired
@@ -35,11 +43,12 @@ public class TransportCompanyRelationControllerApiTest extends BaseControllerApi
   private TransportCompanyRelationRepository transportCompanyRelationRepository;
 
   @BeforeEach
-  void setup() {
+  void setUp() {
     businessOrganisationVersionRepository.save(
         BusinessOrganisationData.businessOrganisationVersion());
     transportCompanyRepository.save(TransportCompany.builder()
                                                     .id(5L).number("5").build());
+
   }
 
   @AfterEach
@@ -141,5 +150,56 @@ public class TransportCompanyRelationControllerApiTest extends BaseControllerApi
     mvc.perform(post("/v1/transport-company-relations").contentType(contentType)
                                                        .content(mapper.writeValueAsString(model)))
        .andExpect(status().isConflict());
+  }
+
+  @Test
+  void shouldUpdateTransportCompanyRelation() throws Exception{
+
+    TransportCompanyRelation savedRelationEntity = transportCompanyRelationRepository.save(
+        TransportCompanyRelation.builder()
+            .sboid("ch:1:sboid:1000000")
+            .transportCompany(
+                TransportCompany.builder().id(5L).build())
+            .validFrom(LocalDate.of(2020, 1, 1))
+            .validTo(LocalDate.of(2021, 1, 1))
+            .build());
+
+    savedRelationEntity.setValidFrom(LocalDate.of(2030,1,1));
+    savedRelationEntity.setValidTo(LocalDate.of(2035,1,1));
+
+
+    mvc.perform(put("/v1/transport-company-relations").contentType(contentType)
+            .content(
+                mapper.writeValueAsString(savedRelationEntity)))
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  void shouldThrowConflictWhenUpdatingTransportCompanyRelation() throws Exception{
+    TransportCompanyRelation savedRelationEntity = transportCompanyRelationRepository.save(
+        TransportCompanyRelation.builder()
+            .sboid("ch:1:sboid:1000000")
+            .transportCompany(
+                TransportCompany.builder().id(5L).build())
+            .validFrom(LocalDate.of(2020, 1, 1))
+            .validTo(LocalDate.of(2021, 1, 1))
+            .build());
+
+    transportCompanyRelationRepository.save(
+        TransportCompanyRelation.builder()
+            .sboid("ch:1:sboid:1000000")
+            .transportCompany(
+                TransportCompany.builder().id(5L).build())
+            .validFrom(LocalDate.of(2035, 1, 1))
+            .validTo(LocalDate.of(2040, 1, 1))
+            .build());
+
+    savedRelationEntity.setValidFrom(LocalDate.of(2031,1,1));
+    savedRelationEntity.setValidTo(LocalDate.of(2039,1,1));
+
+    mvc.perform(put("/v1/transport-company-relations").contentType(contentType)
+            .content(
+                mapper.writeValueAsString(savedRelationEntity)))
+        .andExpect(status().isConflict());
   }
 }

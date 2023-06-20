@@ -193,11 +193,10 @@ export class TransportCompanyDetailComponent implements OnInit {
             ? 'RELATION.UPDATE_SUCCESS_MSG'
             : 'RELATION.ADD_SUCCESS_MSG';
           this.notificationService.success(successMsg);
+          this.isUpdateRelationSelected = false;
         })
       )
       .subscribe();
-
-    this.isUpdateRelationSelected = false;
   }
 
   updateRelation() {
