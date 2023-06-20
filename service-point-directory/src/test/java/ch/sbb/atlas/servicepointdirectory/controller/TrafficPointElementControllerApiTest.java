@@ -99,4 +99,9 @@ public class TrafficPointElementControllerApiTest extends BaseControllerApiTest 
         .andExpect(status().isNotFound());
   }
 
+  @Test
+  void importEndpoint() {
+    // TODO
+  }
+
 }

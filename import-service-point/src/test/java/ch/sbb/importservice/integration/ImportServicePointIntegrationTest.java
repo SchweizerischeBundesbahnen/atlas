@@ -150,6 +150,14 @@ public class ImportServicePointIntegrationTest {
 
   }
 
+  @Test
+  void shouldExecuteImportTrafficPointJobFromGivenFile() {
+    // TODO: implement
+  }
+
+  @Test
+  void shouldExecuteImportTrafficPointJobDownloadingFileFromS3() {
+    // TODO: implement
+  }
+
 }
-
-

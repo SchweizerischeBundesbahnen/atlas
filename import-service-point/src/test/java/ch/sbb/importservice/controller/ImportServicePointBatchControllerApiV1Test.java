@@ -70,7 +70,7 @@ public class ImportServicePointBatchControllerApiV1Test extends BaseControllerAp
   }
 
   @Test
-  public void shouldPostServicePointImportBatchWithFileParameterWhenFileIsNotProvided() throws Exception {
+  public void shouldReturnBadRequestWhenFileIsNotProvidedOnServicePointFileImport() throws Exception {
     //given
     List<ServicePointCsvModelContainer> servicePointCsvModelContainers = ServicePointTestData.getServicePointCsvModelContainers();
     when(csvService.getActualServicePointCsvModelsFromS3()).thenReturn(servicePointCsvModelContainers);
@@ -78,6 +78,46 @@ public class ImportServicePointBatchControllerApiV1Test extends BaseControllerAp
 
     //when & then
     mvc.perform(multipart("/v1/import/service-point")
+            .contentType(contentType))
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  public void shouldPostTrafficPointImportBatchSuccessfully() throws Exception {
+    //given
+    when(sePoDiClient.postServicePointsImport(any())).thenReturn(List.of());
+    when(csvService.getActualServicePointCsvModelsFromS3()).thenReturn(List.of());
+    doNothing().when(mailProducerService).produceMailNotification(any());
+
+    //when & then
+    mvc.perform(post("/v1/import/traffic-point-batch")
+            .contentType(contentType))
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  public void shouldPostTrafficPointImportWithFileParameterSuccessfully() throws Exception {
+    //given
+    when(csvService.getActualServicePointCsvModelsFromS3()).thenReturn(List.of());
+    doNothing().when(mailProducerService).produceMailNotification(any());
+
+    File file = Files.createTempFile("dir", "file.csv").toFile();
+    when(fileHelperService.getFileFromMultipart(any())).thenReturn(file);
+
+    //when & then
+    mvc.perform(multipart("/v1/import/traffic-point").file("file", "example".getBytes(StandardCharsets.UTF_8))
+            .contentType(contentType))
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  public void shouldReturnBadRequestWhenFileIsNotProvidedOnTrafficPointFileImport() throws Exception {
+    //given
+    when(csvService.getActualServicePointCsvModelsFromS3()).thenReturn(List.of());
+    doNothing().when(mailProducerService).produceMailNotification(any());
+
+    //when & then
+    mvc.perform(multipart("/v1/import/traffic-point")
             .contentType(contentType))
         .andExpect(status().isBadRequest());
   }

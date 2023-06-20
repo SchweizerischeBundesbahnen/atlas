@@ -122,6 +122,25 @@ public class ImportServicePointBatchControllerApiV1 {
     }
   }
 
+  @PostMapping("traffic-point-batch")
+  @ResponseStatus(HttpStatus.OK)
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200"),
+  })
+  @Async
+  public void startTrafficPointImportBatch() {
+    JobParameters jobParameters = new JobParametersBuilder()
+        .addString(EXECUTION_TYPE_PARAMETER, EXECUTION_BATCH_PARAMETER)
+        .addLong(START_AT_JOB_PARAMETER, System.currentTimeMillis()).toJobParameters();
+    try {
+      JobExecution execution = jobLauncher.run(importTrafficPointCsvJob, jobParameters);
+      log.info("Job executed with status: {}", execution.getExitStatus().getExitCode());
+    } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException |
+             JobParametersInvalidException e) {
+      throw new JobExecutionException(IMPORT_TRAFFIC_POINT_CSV_JOB_NAME, e);
+    }
+  }
+
   @PostMapping("traffic-point")
   @ResponseStatus(HttpStatus.OK)
   @ApiResponses(value = {
