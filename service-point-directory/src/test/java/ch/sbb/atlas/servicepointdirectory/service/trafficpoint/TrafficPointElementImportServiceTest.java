@@ -54,4 +54,6 @@ public class TrafficPointElementImportServiceTest {
       assertThat(trafficPointElementVersionRepository.count()).isEqualTo(59088);
     }
   }
+
+  // TODO: extend tests
 }

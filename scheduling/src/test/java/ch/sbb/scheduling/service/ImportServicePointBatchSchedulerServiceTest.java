@@ -23,7 +23,7 @@ public class ImportServicePointBatchSchedulerServiceTest {
 
   @Mock
   private ImportServicePointBatchClient client;
-  
+
   @BeforeEach
   public void setUp() {
     MockitoAnnotations.openMocks(this);
@@ -31,7 +31,7 @@ public class ImportServicePointBatchSchedulerServiceTest {
   }
 
   @Test
-  public void shouldPostTriggerImportServicePointBatchSuccessfully() {
+  public void shouldTriggerImportServicePointBatchSuccessfully() {
     //given
     Response response = Response.builder()
         .status(200)
@@ -40,10 +40,10 @@ public class ImportServicePointBatchSchedulerServiceTest {
             Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
                 null, Util.UTF_8, null))
         .build();
-    when(client.postTriggerImportServicePointBatch()).thenReturn(response);
+    when(client.triggerImportServicePointBatch()).thenReturn(response);
 
     //when
-    Response result = importServicePointBatchSchedulerService.postTriggerImportServicePointBatch();
+    Response result = importServicePointBatchSchedulerService.triggerImportServicePointBatch();
 
     //then
     assertThat(result).isNotNull();
@@ -51,7 +51,27 @@ public class ImportServicePointBatchSchedulerServiceTest {
   }
 
   @Test
-  public void shouldPostLoadCompaniesFromCRDUnsuccessful() {
+  public void shouldTriggerImportTrafficPointBatchSuccessfully() {
+    //given
+    Response response = Response.builder()
+        .status(200)
+        .reason("OK")
+        .request(
+            Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                null, Util.UTF_8, null))
+        .build();
+    when(client.triggerImportTrafficPointBatch()).thenReturn(response);
+
+    //when
+    Response result = importServicePointBatchSchedulerService.triggerImportTrafficPointBatch();
+
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.status()).isEqualTo(200);
+  }
+
+  @Test
+  public void shouldTriggerImportServicePointBatchUnsuccessfully() {
     //given
     Response response = Response.builder()
         .status(HttpStatus.BAD_REQUEST.value())
@@ -60,12 +80,27 @@ public class ImportServicePointBatchSchedulerServiceTest {
             Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
                 null, Util.UTF_8, null))
         .build();
-    when(client.postTriggerImportServicePointBatch()).thenReturn(response);
+    when(client.triggerImportServicePointBatch()).thenReturn(response);
 
-    //when
-    assertThrows(SchedulingExecutionException.class, () -> {
-      importServicePointBatchSchedulerService.postTriggerImportServicePointBatch();
-    });
+    //when & then
+    assertThrows(SchedulingExecutionException.class,
+        () -> importServicePointBatchSchedulerService.triggerImportServicePointBatch().close());
+  }
 
+  @Test
+  public void shouldTriggerImportTrafficPointBatchUnsuccessfully() {
+    //given
+    Response response = Response.builder()
+        .status(HttpStatus.BAD_REQUEST.value())
+        .reason("Bad Request")
+        .request(
+            Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                null, Util.UTF_8, null))
+        .build();
+    when(client.triggerImportTrafficPointBatch()).thenReturn(response);
+
+    //when & then
+    assertThrows(SchedulingExecutionException.class,
+        () -> importServicePointBatchSchedulerService.triggerImportTrafficPointBatch().close());
   }
 }
