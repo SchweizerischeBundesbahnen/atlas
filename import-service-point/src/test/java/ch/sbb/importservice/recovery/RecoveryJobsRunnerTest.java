@@ -3,6 +3,7 @@ package ch.sbb.importservice.recovery;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_TYPE_PARAMETER;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_LOADING_POINT_CSV_JOB_NAME;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_SERVICE_POINT_CSV_JOB_NAME;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_TRAFFIC_POINT_CSV_JOB_NAME;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
@@ -64,6 +65,10 @@ public class RecoveryJobsRunnerTest {
   private Job importLoadingPointCsvJob;
 
   @Mock
+  @Qualifier(IMPORT_TRAFFIC_POINT_CSV_JOB_NAME)
+  private Job importTrafficPointCsvJob;
+
+  @Mock
   private ImportProcessedItemRepository importProcessedItemRepository;
 
   @BeforeEach
@@ -103,6 +108,7 @@ public class RecoveryJobsRunnerTest {
     //then
     verify(jobLauncher, never()).run(eq(importServicePointCsvJob), any());
     verify(jobLauncher, never()).run(eq(importLoadingPointCsvJob), any());
+    verify(jobLauncher, never()).run(eq(importTrafficPointCsvJob), any());
     verify(fileService).clearDir();
   }
 
@@ -127,5 +133,10 @@ public class RecoveryJobsRunnerTest {
     verify(jobLauncher).run(eq(importLoadingPointCsvJob), any());
     verify(jobLauncher, never()).run(eq(importServicePointCsvJob), any());
     verify(fileService).clearDir();
+  }
+
+  @Test
+  void shouldRecoverImportTrafficPointCsvJob() {
+    // TODO: implement
   }
 }

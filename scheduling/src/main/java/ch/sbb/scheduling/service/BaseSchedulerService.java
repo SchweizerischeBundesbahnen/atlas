@@ -12,7 +12,6 @@ public abstract class BaseSchedulerService {
   protected String clientName;
 
   protected Response executeRequest(Supplier<Response> clientCall, String jobName) {
-
     log.info("{}: Starting Export {}...", clientName, jobName);
     try (Response response = clientCall.get()) {
       if (HttpStatus.OK.value() == response.status()) {

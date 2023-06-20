@@ -72,8 +72,7 @@ public class SpringBatchConfig {
     } else {
       actualServicePointCsvModelsFromS3 = csvService.getActualServicePointCsvModelsFromS3();
     }
-    log.info("Start sending requests to service-point-directory with chunkSize: {}...",
-        jobHelperService.getServicePointDirectoryChunkSize());
+    log.info("Start sending requests to service-point-directory with chunkSize: {}...", SERVICE_POINT_CHUNK_SIZE);
     return new ThreadSafeListItemReader<>(Collections.synchronizedList(actualServicePointCsvModelsFromS3));
   }
 
