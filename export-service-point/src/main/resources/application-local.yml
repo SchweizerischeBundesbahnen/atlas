@@ -83,13 +83,6 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       retries: 1
-  jpa:
-    open-in-view: false
-    show-sql: true
-    hibernate:
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
 
 kafka:
   atlas:
@@ -112,11 +105,6 @@ atlas:
 mail:
   receiver:
     export-service-point: TechSupport-ATLAS@sbb.ch
-
-batch:
-  config:
-    service-point-directory:
-      chuck-size: 20
 
 amazon:
   region: "eu-central-1"

@@ -1,7 +1,7 @@
 package ch.sbb.exportservice.recovery;
 
 import ch.sbb.atlas.amazon.service.FileService;
-import ch.sbb.exportservice.exception.JobExecutionException;
+import ch.sbb.atlas.batch.exception.JobExecutionException;
 import ch.sbb.exportservice.service.ExportJobService;
 import ch.sbb.exportservice.utils.JobDescriptionConstants;
 import java.time.LocalDate;
@@ -75,9 +75,9 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
   private List<JobExecution> getTodayJobExecutions() {
     Set<JobExecution> executedJobs = new HashSet<>();
     for (String job : JOBS) {
-      List<JobInstance> jobInstances = jobExplorer.getJobInstances(job,
+      List<JobInstance> lastSixJobInstances = jobExplorer.getJobInstances(job,
           0, CSV_OR_JSON_EXPORTS_JOB_EXECUTION_SIZE);
-      for (JobInstance jobInstance : jobInstances) {
+      for (JobInstance jobInstance : lastSixJobInstances) {
         List<JobExecution> jobExecutions = jobExplorer.getJobExecutions(jobInstance);
         executedJobs.addAll(jobExecutions);
       }
