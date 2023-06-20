@@ -7,7 +7,6 @@ import ch.sbb.exportservice.model.ExportExtensionFileType;
 import ch.sbb.exportservice.model.ServicePointExportType;
 import ch.sbb.exportservice.model.ServicePointVersionCsvModel;
 import ch.sbb.exportservice.model.ServicePointVersionCsvModel.Fields;
-import ch.sbb.exportservice.service.CsvFlatFileHeaderCallback;
 import ch.sbb.exportservice.service.FileExportService;
 import java.nio.charset.StandardCharsets;
 import org.springframework.batch.item.file.FlatFileItemWriter;
@@ -38,6 +37,7 @@ public class CsvServicePointWriter {
       Fields.lv95North, Fields.wgs84East, Fields.wgs84North, Fields.wgs84WebEast, Fields.wgs84WebNorth,
       Fields.height, Fields.creationDate, Fields.editionDate, Fields.statusDidok3
   };
+  private static final String DELIMITER = ";";
   @Autowired
   private FileExportService fileExportService;
 
@@ -50,7 +50,7 @@ public class CsvServicePointWriter {
     writer.setAppendAllowed(true);
     writer.setLineAggregator(new DelimitedLineAggregator<>() {
       {
-        setDelimiter(";");
+        setDelimiter(DELIMITER);
         setFieldExtractor(new BeanWrapperFieldExtractor<>() {{
           setNames(CSV_HEADER);
         }});

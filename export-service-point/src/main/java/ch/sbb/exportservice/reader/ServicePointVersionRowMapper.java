@@ -44,9 +44,7 @@ public class ServicePointVersionRowMapper implements RowMapper<ServicePointVersi
       servicePointVersionBuilder.stopPointType(StopPointType.valueOf(rs.getString("stop_point_type")));
     }
     servicePointVersionBuilder.freightServicePoint(rs.getBoolean("freight_service_point"));
-
     getServicePointGeolocation(rs, servicePointVersionBuilder);
-
     if (rs.getString("operating_point_type") != null) {
       servicePointVersionBuilder.operatingPointType(OperatingPointType.valueOf(rs.getString("operating_point_type")));
     }
@@ -102,6 +100,7 @@ public class ServicePointVersionRowMapper implements RowMapper<ServicePointVersi
     if (rs.getString("swiss_canton") != null) {
       servicePointGeolocationBuilder.swissCanton(SwissCanton.valueOf(rs.getString("swiss_canton")));
     }
+    
     servicePointGeolocationBuilder.swissDistrictName(rs.getString("swiss_district_name"));
     servicePointGeolocationBuilder.swissDistrictNumber(rs.getInt("swiss_district_number"));
     servicePointGeolocationBuilder.swissMunicipalityNumber(rs.getInt("swiss_municipality_number"));
