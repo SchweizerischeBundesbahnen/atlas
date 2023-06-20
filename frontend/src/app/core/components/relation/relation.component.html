@@ -54,7 +54,7 @@
   </button>
   <button
     (click)="editRelation()"
-    [disabled]="editMode || !isRelationSelected"
+    [disabled]="editMode || selectedIndex === -1"
     class="atlas-primary-btn me-2"
     data-cy="add-relation-btn"
   >
@@ -62,7 +62,7 @@
   </button>
   <button
     (click)="deleteRelation.emit()"
-    [disabled]="selectedIndex === -1"
+    [disabled]="selectedIndex === -1 || editMode"
     id="delete"
     class="atlas-primary-btn"
     data-cy="delete-relation-btn"
