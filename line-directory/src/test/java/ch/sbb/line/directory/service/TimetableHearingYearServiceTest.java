@@ -40,14 +40,17 @@ public class TimetableHearingYearServiceTest {
   private final TimetableHearingYearRepository timetableHearingYearRepository;
   private final TimetableHearingYearService timetableHearingYearService;
   private final TimetableHearingStatementRepository timetableHearingStatementRepository;
+  private final TimetableHearingStatementMapper timetableHearingStatementMapper;
 
   @Autowired
   public TimetableHearingYearServiceTest(TimetableHearingYearRepository timetableHearingYearRepository,
       TimetableHearingYearService timetableHearingYearService,
-      TimetableHearingStatementRepository timetableHearingStatementRepository) {
+      TimetableHearingStatementRepository timetableHearingStatementRepository,
+      TimetableHearingStatementMapper timetableHearingStatementMapper) {
     this.timetableHearingYearRepository = timetableHearingYearRepository;
     this.timetableHearingYearService = timetableHearingYearService;
     this.timetableHearingStatementRepository = timetableHearingStatementRepository;
+    this.timetableHearingStatementMapper = timetableHearingStatementMapper;
   }
 
   private static TimetableHearingStatementModel buildTimetableHearingStatementModel() {
@@ -167,12 +170,12 @@ public class TimetableHearingYearServiceTest {
     // Junk Statement
     statementModel = buildTimetableHearingStatementModel();
     statementModel.setStatementStatus(StatementStatus.JUNK);
-    timetableHearingStatementRepository.save(TimetableHearingStatementMapper.toEntity(statementModel));
+    timetableHearingStatementRepository.save(timetableHearingStatementMapper.toEntity(statementModel));
 
     // Statement to move to next year and to update status
     statementModel = buildTimetableHearingStatementModel();
     statementModel.setStatementStatus(StatementStatus.MOVED);
-    timetableHearingStatementRepository.save(TimetableHearingStatementMapper.toEntity(statementModel));
+    timetableHearingStatementRepository.save(timetableHearingStatementMapper.toEntity(statementModel));
 
     // when
     TimetableHearingYear closed = timetableHearingYearService.closeTimetableHearing(startedTimetableHearing);

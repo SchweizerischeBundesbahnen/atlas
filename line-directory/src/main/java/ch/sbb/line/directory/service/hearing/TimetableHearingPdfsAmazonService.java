@@ -7,8 +7,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class TimetableHearingPdfsAmazonService {
@@ -16,6 +18,7 @@ public class TimetableHearingPdfsAmazonService {
   private final AmazonService amazonService;
 
   public void uploadPdfFiles(List<File> files, String dirName) {
+    log.info("Starting upload to S3 Bucket");
     files.forEach(file -> {
       try {
         amazonService.putFile(AmazonBucket.HEARING_DOCUMENT, file, dirName);
@@ -23,6 +26,7 @@ public class TimetableHearingPdfsAmazonService {
         throw new FileException("Error uploading file: " + file.getName() + " to bucket: " + AmazonBucket.HEARING_DOCUMENT, e);
       }
     });
+    log.info("Upload complete.");
   }
 
   public File downloadPdfFile(String dirName, String fileName) {
