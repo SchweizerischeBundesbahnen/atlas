@@ -1,6 +1,8 @@
 package ch.sbb.exportservice.service;
 
-import ch.sbb.exportservice.exception.JobExecutionException;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TYPE_JOB_PARAMETER;
+
+import ch.sbb.atlas.batch.exception.JobExecutionException;
 import ch.sbb.exportservice.model.ServicePointExportType;
 import ch.sbb.exportservice.utils.JobDescriptionConstants;
 import lombok.AllArgsConstructor;
@@ -45,7 +47,7 @@ public class ExportJobService {
   private void startExportJob(ServicePointExportType servicePointExportType, Job job) {
     JobParameters jobParameters = new JobParametersBuilder()
         .addString(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, JobDescriptionConstants.EXECUTION_BATCH_PARAMETER)
-        .addString("exportType", servicePointExportType.toString())
+        .addString(EXPORT_TYPE_JOB_PARAMETER, servicePointExportType.toString())
         .addLong(JobDescriptionConstants.START_AT_JOB_PARAMETER, System.currentTimeMillis()).toJobParameters();
     try {
       JobExecution execution = jobLauncher.run(job, jobParameters);

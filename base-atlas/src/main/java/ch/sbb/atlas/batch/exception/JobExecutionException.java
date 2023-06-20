@@ -1,4 +1,4 @@
-package ch.sbb.exportservice.exception;
+package ch.sbb.atlas.batch.exception;
 
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.model.ErrorResponse.Detail;

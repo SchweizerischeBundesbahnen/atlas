@@ -14,7 +14,7 @@ import org.springframework.retry.policy.SimpleRetryPolicy;
 @UtilityClass
 public class StepUtils {
 
-  private static final int BACK_OFF_PERIOD = 10_000;
+  private static final int BACK_OFF_PERIOD = 100_000;
   private static final int MAX_ATTEMPTS = 4;
 
   public static FixedBackOffPolicy getBackOffPolicy(String stepName) {
