@@ -108,4 +108,14 @@ public class TrafficPointElementVersionRepositoryTest {
     assertThat(savedVersion.hasGeolocation()).isTrue();
     assertThat(savedVersion.getTrafficPointElementGeolocation().getId()).isNotNull();
   }
+
+  @Test
+  void entityGraph() {
+    // TODO:
+  }
+
+  @Test
+  void existsBy() {
+    // TODO:
+  }
 }
