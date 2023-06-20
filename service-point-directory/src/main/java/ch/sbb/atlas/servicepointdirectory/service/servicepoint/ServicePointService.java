@@ -8,14 +8,15 @@ import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionReposito
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import jakarta.transaction.Transactional;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.StaleObjectStateException;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -53,7 +54,7 @@ public class ServicePointService {
     return servicePointVersionRepository.save(servicePointVersion);
   }
 
-  public ServicePointVersion update(ServicePointVersion newVersion) {
+  public ServicePointVersion applyVersioning(ServicePointVersion newVersion) {
     newVersion.setStatus(Status.VALIDATED);
     return servicePointVersionRepository.saveAndFlush(newVersion);
   }
@@ -68,7 +69,7 @@ public class ServicePointService {
     List<VersionedObject> versionedObjects = versionableService.versioningObjects(currentVersion,
         editedVersion, dbVersions);
     versionableService.applyVersioning(ServicePointVersion.class, versionedObjects,
-        this::save, this::deleteById);
+        this::applyVersioning, this::deleteById);
     return currentVersion;
   }
 
