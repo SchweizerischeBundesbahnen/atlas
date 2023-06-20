@@ -53,6 +53,14 @@ kafka:
       administration:
         topic: atlas.user.administration
         groupId: atlas.kafka.bodi.user.administration.groupId
+    business:
+      organisation:
+        topic: atlas.business.organisation
+        groupId: atlas.kafka.bodi.business.organisation.groupId
+    transport:
+      company:
+        topic: atlas.transport.company
+        groupId: atlas.kafka.bodi.transport.company.groupId
 auth:
   audience:
     service-name: 87e6e634-6ba1-4e7a-869d-3348b4c3eafc
