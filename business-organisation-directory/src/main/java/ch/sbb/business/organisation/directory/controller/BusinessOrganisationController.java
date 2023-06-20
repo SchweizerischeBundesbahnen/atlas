@@ -9,7 +9,7 @@ import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisation;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
-import ch.sbb.business.organisation.directory.exception.SboidNotFoundException;
+import ch.sbb.atlas.model.exception.SboidNotFoundException;
 import ch.sbb.business.organisation.directory.mapper.BusinessOrganisationMapper;
 import ch.sbb.business.organisation.directory.mapper.BusinessOrganisationVersionMapper;
 import ch.sbb.business.organisation.directory.service.BusinessOrganisationService;
@@ -141,6 +141,11 @@ public class BusinessOrganisationController implements BusinessOrganisationApiV1
   @Override
   public List<URL> exportFutureTimetableBusinessOrganisationVersions() {
     return exportService.exportFutureTimetableVersions();
+  }
+
+  @Override
+  public void syncBusinessOrganisations() {
+    service.syncAllBusinessOrganisations();
   }
 
 }
