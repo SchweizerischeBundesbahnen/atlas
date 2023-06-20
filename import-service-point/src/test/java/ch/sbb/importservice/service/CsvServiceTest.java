@@ -63,7 +63,35 @@ public class CsvServiceTest {
   }
 
   @Test
-  public void shouldGetActualLoadingPointCsvModelsModels() {
+  public void shouldGetActualLoadingPointCsvModels() {
+    //given
+    LocalDate date = MIN_LOCAL_DATE;
+    File csvFile = new File(this.getClass().getClassLoader().getResource("LADENSTELLEN_V3_IMPORT.csv").getFile());
+    when(fileHelperService.downloadImportFileFromS3(LADESTELLEN_FILE_PREFIX)).thenReturn(csvFile);
+    doCallRealMethod().when(jobHelperService).isDateMatchedBetweenTodayAndMatchingDate(date, date);
+    //when
+    List<LoadingPointCsvModel> result = csvService.getActualLoadingPointCsvModels(csvFile);
+    //then
+    assertThat(result).hasSize(0);
+  }
+
+  // TODO: implement correctly
+  @Test
+  public void shouldGetActualTrafficPointCsvModelsFromS3() {
+    //given
+    LocalDate date = MIN_LOCAL_DATE;
+    File csvFile = new File(this.getClass().getClassLoader().getResource("LADENSTELLEN_V3_IMPORT.csv").getFile());
+    when(fileHelperService.downloadImportFileFromS3(LADESTELLEN_FILE_PREFIX)).thenReturn(csvFile);
+    doCallRealMethod().when(jobHelperService).isDateMatchedBetweenTodayAndMatchingDate(date, date);
+    //when
+    List<LoadingPointCsvModel> result = csvService.getActualLoadingPointCsvModelsFromS3();
+    //then
+    assertThat(result).hasSize(0);
+  }
+
+  // TODO: implement correctly
+  @Test
+  public void shouldGetActualTrafficPointCsvModels() {
     //given
     LocalDate date = MIN_LOCAL_DATE;
     File csvFile = new File(this.getClass().getClassLoader().getResource("LADENSTELLEN_V3_IMPORT.csv").getFile());
