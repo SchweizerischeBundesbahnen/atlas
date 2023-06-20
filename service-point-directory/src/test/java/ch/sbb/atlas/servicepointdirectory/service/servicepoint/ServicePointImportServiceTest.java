@@ -2,6 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.imports.servicepoint.model.ServicePointItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
@@ -20,6 +21,7 @@ import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.util.Pair;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +32,9 @@ public class ServicePointImportServiceTest {
 
   private static final String CSV_FILE = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20221222015634.csv";
   private static final String SEPARATOR = "/";
+
+  @MockBean
+  private SharedBusinessOrganisationService sharedBusinessOrganisationService;
 
   private final ServicePointImportService servicePointImportService;
   private final ServicePointVersionRepository servicePointVersionRepository;

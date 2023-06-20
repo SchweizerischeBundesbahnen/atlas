@@ -19,7 +19,7 @@ public interface TransportCompanyApiV1 {
 
   String BASE_PATH = "v1/transport-companies";
 
-  @Secured(Role.ROLE_PREFIX + Role.ATLAS_ADMIN)
+  @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
   @PostMapping(BASE_PATH + "/loadFromBAV")
   void loadTransportCompaniesFromBav();
 
