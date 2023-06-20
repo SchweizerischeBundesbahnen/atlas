@@ -12,20 +12,20 @@
 
 ## Versioning Lib
 
-See [Versioning Documentaion](documentation/versioning/README.md).
+See [Versioning Documentation](documentation/versioning/README.md).
 
 ## Amazon S3 Lib
 
-See [Amazon S3 Documentaion](documentation/amazon/README.md).
+See [Amazon S3 Documentation](documentation/amazon/README.md).
 
 ## Export Lib
 
-See [Export Documentaion](documentation/export/README.md).
+See [Export Documentation](documentation/export/README.md).
 
 ## Atlas API
 
-See [Api Documentaion](documentation/api/README.md).
+See [Api Documentation](documentation/api/README.md).
 
 ## Workflow
 
-See [Workflow Documentaion](documentation/workflow/README.md).
+See [Workflow Documentation](documentation/workflow/README.md).

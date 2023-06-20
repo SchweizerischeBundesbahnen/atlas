@@ -2,6 +2,9 @@
 
 Hello there and welcome to Atlas Kafka Library.
 
+Use the [Kafka Portal](https://self.kafka.sbb.ch/) to manage Applications and Topics. \
+Or use the kafka-automation API available at https://automation-ng.kafka.sbb.ch/swagger-ui/index.html.
+
 <!-- toc -->
 
 - [How to use](#how-to-use)
