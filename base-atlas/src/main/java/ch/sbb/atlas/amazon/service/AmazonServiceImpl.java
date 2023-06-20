@@ -2,7 +2,9 @@ package ch.sbb.atlas.amazon.service;
 
 import ch.sbb.atlas.amazon.config.AmazonConfigProps.AmazonBucketConfig;
 import ch.sbb.atlas.amazon.exception.FileException;
+import ch.sbb.atlas.model.exception.NotFoundException.FileNotFoundException;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
@@ -19,7 +21,9 @@ import java.nio.file.Files;
 import java.util.List;
 import java.util.zip.GZIPOutputStream;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 public class AmazonServiceImpl implements AmazonService {
 
@@ -75,16 +79,22 @@ public class AmazonServiceImpl implements AmazonService {
 
   @Override
   public File pullFile(AmazonBucket bucket, String filePath) {
-    S3Object s3Object = getClient(bucket).getObject(getAmazonBucketConfig(bucket).getBucketName(), filePath);
-    String dir = fileService.getDir();
-    File fileDownload = new File(dir + filePath.replaceAll("/", "_"));
-    try (FileOutputStream fileOutputStream = new FileOutputStream(fileDownload);
-        S3ObjectInputStream s3InputStream = s3Object.getObjectContent()) {
-      fileOutputStream.write(s3InputStream.readAllBytes());
-      return fileDownload;
-    } catch (IOException e) {
-      throw new FileException("There was a problem with downloading file with name: " + fileDownload.getName(), e);
+    try {
+      S3Object s3Object = getClient(bucket).getObject(getAmazonBucketConfig(bucket).getBucketName(), filePath);
+      String dir = fileService.getDir();
+      File fileDownload = new File(dir + filePath.replaceAll("/", "_"));
+      try (FileOutputStream fileOutputStream = new FileOutputStream(fileDownload);
+          S3ObjectInputStream s3InputStream = s3Object.getObjectContent()) {
+        fileOutputStream.write(s3InputStream.readAllBytes());
+        return fileDownload;
+      } catch (IOException e) {
+        throw new FileException("There was a problem with downloading file with name: " + fileDownload.getName(), e);
+      }
+    } catch (AmazonS3Exception e) {
+      log.error(e.getMessage());
+      throw new FileNotFoundException(filePath);
     }
+
   }
 
   @Override
