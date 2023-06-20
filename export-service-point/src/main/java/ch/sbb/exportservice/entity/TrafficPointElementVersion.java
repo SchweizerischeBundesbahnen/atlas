@@ -2,9 +2,7 @@ package ch.sbb.exportservice.entity;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
-import ch.sbb.atlas.validation.DatesValidator;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
-import ch.sbb.atlas.versioning.model.Versionable;
 import ch.sbb.exportservice.entity.geolocation.TrafficPointElementGeolocation;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
@@ -23,7 +21,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldNameConstants
 @AtlasVersionable
-public class TrafficPointElementVersion extends BaseDidokImportEntity implements Versionable, DatesValidator {
+public class TrafficPointElementVersion extends BaseEntity {
 
   private Long id;
 
@@ -47,9 +45,5 @@ public class TrafficPointElementVersion extends BaseDidokImportEntity implements
   private TrafficPointElementGeolocation trafficPointElementGeolocation;
   private LocalDate validFrom;
   private LocalDate validTo;
-
-  public boolean hasGeolocation() {
-    return trafficPointElementGeolocation != null;
-  }
 
 }

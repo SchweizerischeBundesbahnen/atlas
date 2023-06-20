@@ -1,6 +1,5 @@
 package ch.sbb.exportservice.entity;
 
-import ch.sbb.atlas.api.model.BusinessOrganisationAssociated;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
@@ -11,15 +10,10 @@ import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
 import ch.sbb.atlas.servicepoint.enumeration.ServicePointStatus;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
-import ch.sbb.atlas.validation.DatesValidator;
-import ch.sbb.atlas.versioning.model.Versionable;
 import ch.sbb.exportservice.entity.geolocation.ServicePointGeolocation;
-import jakarta.validation.constraints.AssertTrue;
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Stream;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,7 +21,6 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
-import org.apache.commons.lang3.StringUtils;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -36,8 +29,7 @@ import org.apache.commons.lang3.StringUtils;
 @ToString
 @SuperBuilder
 @FieldNameConstants
-public class ServicePointVersion extends BaseDidokImportEntity implements Versionable,
-    BusinessOrganisationAssociated, DatesValidator {
+public class ServicePointVersion extends BaseEntity {
 
   private Long id;
 
@@ -119,33 +111,6 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
   @ToString.Include
   public boolean isOperatingPointKilometer() {
     return operatingPointKilometerMaster != null;
-  }
-
-  @AssertTrue(message = "StopPointType only allowed for StopPoint")
-  boolean isValidStopPointWithType() {
-    return isStopPoint() || stopPointType == null;
-  }
-
-  @AssertTrue(message = "FreightServicePoint in CH needs sortCodeOfDestinationStation")
-  public boolean isValidFreightServicePoint() {
-    return !(country == Country.SWITZERLAND && freightServicePoint && !getValidFrom().isBefore(LocalDate.now()))
-        || StringUtils.isNotBlank(sortCodeOfDestinationStation);
-  }
-
-  @AssertTrue(message = "Country needs to be the same as in ServicePointNumber")
-  public boolean isValidCountry() {
-    return Objects.equals(getCountry(), getNumber().getCountry());
-  }
-
-  @AssertTrue(message = "At most one of OperatingPointTechnicalTimetableType, "
-      + "OperatingPointTrafficPointType may be set")
-  public boolean isValidType() {
-    long mutualTypes = Stream.of(
-            getOperatingPointTechnicalTimetableType() != null,
-            getOperatingPointTrafficPointType() != null)
-        .filter(i -> i)
-        .count();
-    return mutualTypes <= 1;
   }
 
   public Set<MeanOfTransport> getMeansOfTransport() {
