@@ -11,7 +11,7 @@ import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.exception.NotFoundException.FileNotFoundException;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.line.directory.entity.ResponsibleTransportCompany;
+import ch.sbb.line.directory.entity.SharedTransportCompany;
 import ch.sbb.line.directory.entity.StatementDocument;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
 import ch.sbb.line.directory.mapper.ResponsibleTransportCompanyMapper;
@@ -48,6 +48,8 @@ public class TimetableHearingStatementService {
   private final FileService fileService;
   private final TimetableHearingPdfsAmazonService pdfsUploadAmazonService;
   private final StatementDocumentFilesValidationService statementDocumentFilesValidationService;
+  private final ResponsibleTransportCompanyMapper responsibleTransportCompanyMapper;
+  private final TimetableHearingStatementMapper timetableHearingStatementMapper;
 
   public Page<TimetableHearingStatement> getHearingStatements(TimetableHearingStatementSearchRestrictions searchRestrictions) {
     log.info("Loading statements using {}", searchRestrictions);
@@ -70,7 +72,7 @@ public class TimetableHearingStatementService {
 
   public TimetableHearingStatementModel createHearingStatement(TimetableHearingStatementModel statement,
       List<MultipartFile> documents) {
-    TimetableHearingStatement statementToCreate = TimetableHearingStatementMapper.toEntity(statement);
+    TimetableHearingStatement statementToCreate = timetableHearingStatementMapper.toEntity(statement);
     checkThatTimetableHearingYearExists(statementToCreate.getTimetableYear());
     statementToCreate.setStatementStatus(StatementStatus.RECEIVED);
 
@@ -142,10 +144,14 @@ public class TimetableHearingStatementService {
   }
 
   private void filesValidation(List<File> files, Set<StatementDocument> alreadySavedDocuments) {
+    log.info("Starting files validation for files {}", files.stream().map(File::getName).toList());
     statementDocumentFilesValidationService.validateMaxNumberOfFiles(files.size() + alreadySavedDocuments.size());
     statementDocumentFilesValidationService.validateNoFileNameDuplicate(files, alreadySavedDocuments);
     statementDocumentFilesValidationService.validateMaxSizeOfFiles(files, alreadySavedDocuments, MAX_DOCUMENTS_SIZE);
+
+    log.info("Starting PDF filetype validation.");
     statementDocumentFilesValidationService.validateAllFilessArePdfs(files);
+    log.info("Concluded files validation.");
   }
 
   @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin"
@@ -190,16 +196,16 @@ public class TimetableHearingStatementService {
     return timetableHearingStatementInDb;
   }
 
-  private static void updateResponsibleTransportCompanies(TimetableHearingStatementModel timetableHearingStatementModel,
+  private void updateResponsibleTransportCompanies(TimetableHearingStatementModel timetableHearingStatementModel,
       TimetableHearingStatement timetableHearingStatementInDb) {
     Set<Long> desiredTransportCompanies = timetableHearingStatementModel.getResponsibleTransportCompanies().stream().map(
         TimetableHearingStatementResponsibleTransportCompanyModel::getId).collect(Collectors.toSet());
     Set<Long> currentTransportCompanies = timetableHearingStatementInDb.getResponsibleTransportCompanies().stream()
-        .map(ResponsibleTransportCompany::getTransportCompanyId).collect(Collectors.toSet());
+        .map(SharedTransportCompany::getId).collect(Collectors.toSet());
 
-    Set<ResponsibleTransportCompany> transportCompaniesToRemove = new HashSet<>();
+    Set<SharedTransportCompany> transportCompaniesToRemove = new HashSet<>();
     timetableHearingStatementInDb.getResponsibleTransportCompanies().forEach(responsibleTransportCompany -> {
-      if (!desiredTransportCompanies.contains(responsibleTransportCompany.getTransportCompanyId())) {
+      if (!desiredTransportCompanies.contains(responsibleTransportCompany.getId())) {
         transportCompaniesToRemove.add(responsibleTransportCompany);
       }
     });
@@ -207,7 +213,7 @@ public class TimetableHearingStatementService {
     timetableHearingStatementModel.getResponsibleTransportCompanies().forEach(responsibleTransportCompany -> {
       if (!currentTransportCompanies.contains(responsibleTransportCompany.getId())) {
         timetableHearingStatementInDb.getResponsibleTransportCompanies()
-            .add(ResponsibleTransportCompanyMapper.toEntity(responsibleTransportCompany, timetableHearingStatementInDb));
+            .add(responsibleTransportCompanyMapper.toEntity(responsibleTransportCompany));
       }
     });
   }

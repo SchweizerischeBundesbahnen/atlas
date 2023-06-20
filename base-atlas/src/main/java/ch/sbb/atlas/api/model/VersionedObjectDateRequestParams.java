@@ -22,11 +22,13 @@ public class VersionedObjectDateRequestParams {
   @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN)
   private LocalDate validOn;
 
-  @Parameter(description = "[fromDate] >= validFrom. Date format: " + AtlasApiConstants.DATE_FORMAT_PATTERN)
+  @Parameter(description = "[fromDate] <= validFrom. Filters for all versions where validFrom is bigger or equal than fromDate"
+      + ". Date format: " + AtlasApiConstants.DATE_FORMAT_PATTERN)
   @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN)
   private LocalDate fromDate;
 
-  @Parameter(description = "[toDate] <= validTo. Date format: " + AtlasApiConstants.DATE_FORMAT_PATTERN)
+  @Parameter(description = "[toDate] >= validTo. Filters for all versions where validTo is smaller or equal than toDate"
+      + ". Date format: " + AtlasApiConstants.DATE_FORMAT_PATTERN)
   @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN)
   private LocalDate toDate;
 
