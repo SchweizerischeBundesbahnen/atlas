@@ -28,7 +28,6 @@ This is the repository for business relevant services for ATLAS.
   * [Service-Point-Directory](#service-point-directory)
   * [Import Service-Point](#import-service-point)
   * [Base Service lib](#base-service-lib)
-  * [Base Workflow lib](#base-workflow-lib)
   * [Frontend](#frontend)
 - [Troubleshooting](#troubleshooting)
 
@@ -238,14 +237,10 @@ Libraries used to perform:
 
 * business object **versioning** according to
   the [documentation](https://confluence.sbb.ch/pages/viewpage.action?spaceKey=ATLAS&title=%5BATLAS%5D+8.7+Versionierung)
-  See [Versioning documentation](base-service/documentaion/versioning/README.md);
-* CSV and ZIP exports. See [Export documentation](base-service/documentaion/export/README.md);
+  See [Versioning documentation](base-atlas/documentation/versioning/README.md);
+* CSV and ZIP exports. See [Export documentation](base-atlas/documentation/export/README.md);
 * Amazon REST Client operations.
-  See [Amazon documentation](base-service/documentaion/amazon/README.md);
-
-### Base Workflow lib
-
-Libraries used to implement ATLAS Workflows. See [documentation](base-workflow/README.md)
+  See [Amazon documentation](base-atlas/documentation/amazon/README.md);
 
 ### Frontend
 

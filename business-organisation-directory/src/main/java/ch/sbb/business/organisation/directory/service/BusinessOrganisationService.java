@@ -26,6 +26,7 @@ public class BusinessOrganisationService {
   private final BusinessOrganisationRepository repository;
   private final VersionableService versionableService;
   private final BusinessOrganisationValidationService validationService;
+  private final BusinessOrganisationDistributor businessOrganisationDistributor;
 
   public Page<BusinessOrganisation> getBusinessOrganisations(
       BusinessOrganisationSearchRestrictions searchRestrictions) {
@@ -45,7 +46,9 @@ public class BusinessOrganisationService {
   public BusinessOrganisationVersion save(BusinessOrganisationVersion version) {
     version.setStatus(Status.VALIDATED);
     validationService.validatePreconditionBusinessRule(version);
-    return versionRepository.save(version);
+    BusinessOrganisationVersion savedVersion = versionRepository.saveAndFlush(version);
+    businessOrganisationDistributor.saveToDistributedServices(savedVersion);
+    return savedVersion;
   }
 
   public List<BusinessOrganisationVersion> findBusinessOrganisationVersions(String sboid) {
@@ -60,7 +63,7 @@ public class BusinessOrganisationService {
       BusinessOrganisationVersion currentVersion, BusinessOrganisationVersion editedVersion) {
     versionRepository.incrementVersion(currentVersion.getSboid());
     if (editedVersion.getVersion() != null && !currentVersion.getVersion()
-                                                             .equals(editedVersion.getVersion())) {
+        .equals(editedVersion.getVersion())) {
       throw new StaleObjectStateException(BusinessOrganisationVersion.class.getSimpleName(),
           "version");
     }
@@ -74,17 +77,26 @@ public class BusinessOrganisationService {
   }
 
   void deleteById(long id) {
-    findById(id);
+    BusinessOrganisationVersion existingEntity = findById(id);
     versionRepository.deleteById(id);
+    businessOrganisationDistributor.deleteOnDistributedServices(existingEntity);
   }
 
   public void deleteAll(List<BusinessOrganisationVersion> versions) {
     versionRepository.deleteAll(versions);
+    versions.forEach(businessOrganisationDistributor::deleteOnDistributedServices);
   }
 
   public List<BusinessOrganisationVersion> revokeBusinessOrganisation(String sboid) {
     List<BusinessOrganisationVersion> versions = findBusinessOrganisationVersions(sboid);
-    versions.forEach(version -> version.setStatus(Status.REVOKED));
+    versions.forEach(version -> {
+      version.setStatus(Status.REVOKED);
+      businessOrganisationDistributor.saveToDistributedServices(version);
+    });
     return versions;
+  }
+
+  public void syncAllBusinessOrganisations() {
+    versionRepository.findAll().forEach(businessOrganisationDistributor::saveToDistributedServices);
   }
 }
