@@ -1,5 +1,6 @@
 package ch.sbb.line.directory.entity;
 
+import ch.sbb.atlas.business.organisation.entity.BusinessOrganisationVersionSharing;
 import ch.sbb.atlas.model.Status;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -23,7 +24,7 @@ import lombok.experimental.FieldNameConstants;
 @Builder
 @FieldNameConstants
 @Entity(name = "shared_business_organisation_version")
-public class SharedBusinessOrganisationVersion {
+public class SharedBusinessOrganisationVersion implements BusinessOrganisationVersionSharing {
 
   @Id
   private Long id;

@@ -14,14 +14,9 @@ public interface SharedTransportCompanyRepository extends JpaRepository<SharedTr
   }
 
   static SharedTransportCompany toEntity(SharedTransportCompanyModel model) {
-    return SharedTransportCompany.builder()
-        .id(model.getId())
-        .number(model.getNumber())
-        .abbreviation(model.getAbbreviation())
-        .description(model.getDescription())
-        .businessRegisterName(model.getBusinessRegisterName())
-        .businessRegisterNumber(model.getBusinessRegisterNumber())
-        .build();
+    SharedTransportCompany sharedTransportCompany = new SharedTransportCompany();
+    sharedTransportCompany.setPropertiesFromModel(model);
+    return sharedTransportCompany;
   }
 
   default Optional<SharedTransportCompanyModel> findTransportCompanyById(Long id) {
