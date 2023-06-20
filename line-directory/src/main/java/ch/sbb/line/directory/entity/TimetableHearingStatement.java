@@ -14,6 +14,8 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.Valid;
@@ -64,8 +66,11 @@ public class TimetableHearingStatement extends BaseEntity implements CantonAssoc
   @Size(max = AtlasFieldLengths.LENGTH_255)
   private String stopPlace;
 
-  @OneToMany(mappedBy = "statement", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-  private Set<ResponsibleTransportCompany> responsibleTransportCompanies;
+  @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+  @JoinTable(name = "timetable_hearing_statement_responsible_transport_companies",
+      joinColumns = {@JoinColumn(name = "timetable_hearing_statement_id")},
+      inverseJoinColumns = {@JoinColumn(name = "transport_company_id")})
+  private Set<SharedTransportCompany> responsibleTransportCompanies;
 
   private String responsibleTransportCompaniesDisplay;
 
