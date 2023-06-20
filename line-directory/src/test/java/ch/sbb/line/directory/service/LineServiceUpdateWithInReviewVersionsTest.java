@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.line.directory.LineTestData;
@@ -17,6 +18,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
@@ -24,6 +26,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class LineServiceUpdateWithInReviewVersionsTest {
 
   private static final String SLNID = "ch:1:slnid:100000";
+
+  @MockBean
+  private SharedBusinessOrganisationService sharedBusinessOrganisationService;
 
   private final LineVersionRepository lineVersionRepository;
   private final LineService lineService;

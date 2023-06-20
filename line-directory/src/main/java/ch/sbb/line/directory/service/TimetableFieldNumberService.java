@@ -5,7 +5,6 @@ import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
-import ch.sbb.line.directory.exception.TimetableFieldNumberConflictException;
 import ch.sbb.line.directory.model.search.TimetableFieldNumberSearchRestrictions;
 import ch.sbb.line.directory.repository.TimetableFieldNumberRepository;
 import ch.sbb.line.directory.repository.TimetableFieldNumberVersionRepository;
@@ -29,6 +28,7 @@ public class TimetableFieldNumberService {
 
   private final TimetableFieldNumberVersionRepository versionRepository;
   private final TimetableFieldNumberRepository timetableFieldNumberRepository;
+  private final TimetableFieldNumberValidationService timetableFieldNumberValidationService;
   private final VersionableService versionableService;
 
   public List<TimetableFieldNumberVersion> getAllVersionsVersioned(String ttfnId) {
@@ -63,10 +63,7 @@ public class TimetableFieldNumberService {
 
   public TimetableFieldNumberVersion save(TimetableFieldNumberVersion newVersion) {
     newVersion.setStatus(Status.VALIDATED);
-    List<TimetableFieldNumberVersion> overlappingVersions = getOverlapsOnNumberAndSttfn(newVersion);
-    if (!overlappingVersions.isEmpty()) {
-      throw new TimetableFieldNumberConflictException(newVersion, overlappingVersions);
-    }
+    timetableFieldNumberValidationService.validatePreSave(newVersion);
     return versionRepository.saveAndFlush(newVersion);
   }
 
@@ -103,15 +100,6 @@ public class TimetableFieldNumberService {
     versionableService.applyVersioning(TimetableFieldNumberVersion.class, versionedObjects,
         this::save,
         this::deleteById);
-  }
-
-  public List<TimetableFieldNumberVersion> getOverlapsOnNumberAndSttfn(TimetableFieldNumberVersion version) {
-    String ttfnid = version.getTtfnid() == null ? "" : version.getTtfnid();
-    return versionRepository.getAllByNumberOrSwissTimetableFieldNumberWithValidityOverlap(
-            version.getNumber(), version.getSwissTimetableFieldNumber().toLowerCase(),
-            version.getValidFrom(), version.getValidTo(), ttfnid).stream()
-        .filter(i -> i.getStatus() != Status.REVOKED)
-        .toList();
   }
 
   public void deleteAll(List<TimetableFieldNumberVersion> allVersionsVersioned) {

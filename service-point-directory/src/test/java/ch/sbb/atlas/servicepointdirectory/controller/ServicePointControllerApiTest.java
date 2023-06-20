@@ -5,11 +5,11 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
+import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.imports.servicepoint.BaseDidokCsvModel;
 import ch.sbb.atlas.imports.servicepoint.model.ServicePointImportReqModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
@@ -33,9 +33,13 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 public class ServicePointControllerApiTest extends BaseControllerApiTest {
+
+  @MockBean
+  private SharedBusinessOrganisationService sharedBusinessOrganisationService;
 
   private final ServicePointVersionRepository repository;
 
@@ -376,7 +380,6 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
     mvc.perform(MockMvcRequestBuilders.put("/v1/service-points/" + id)
             .contentType(contentType)
             .content(mapper.writeValueAsString(newServicePointVersionModel)))
-        .andDo(print())
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(1)));
   }
