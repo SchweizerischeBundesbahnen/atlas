@@ -1,6 +1,8 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
+import ch.sbb.atlas.servicepointdirectory.exception.ServicePointVersionConflictException;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
@@ -50,6 +52,23 @@ public class ServicePointService {
   public ServicePointVersion save(ServicePointVersion servicePointVersion) {
     servicePointValidationService.validateServicePointPreconditionBusinessRule(servicePointVersion);
     return servicePointVersionRepository.save(servicePointVersion);
+  }
+
+  public ServicePointVersion update(ServicePointVersion newVersion) {
+    newVersion.setStatus(Status.VALIDATED);
+    List<ServicePointVersion> overlappingVersions = getOverlapsOnNumber(newVersion);
+    if (!overlappingVersions.isEmpty()) {
+      throw new ServicePointVersionConflictException(newVersion, overlappingVersions);
+    }
+    return servicePointVersionRepository.saveAndFlush(newVersion);
+  }
+
+  public List<ServicePointVersion> getOverlapsOnNumber(ServicePointVersion version) {
+    return servicePointVersionRepository.getAllOverlapsByNumberAndValidFromValidTo(
+            version.getNumber(),
+            version.getValidFrom(), version.getValidTo()).stream()
+        .filter(i -> i.getStatus() != Status.REVOKED)
+        .toList();
   }
 
   public ServicePointVersion updateServicePointVersion(ServicePointVersion currentVersion, ServicePointVersion editedVersion) {
