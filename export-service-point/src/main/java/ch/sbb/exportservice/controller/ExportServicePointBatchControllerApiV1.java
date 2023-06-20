@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 @Tag(name = "Export Service Point Batch")
-@RequestMapping("v1/service-point-export")
+@RequestMapping("v1/export")
 @RestController
 @AllArgsConstructor
 @Slf4j
