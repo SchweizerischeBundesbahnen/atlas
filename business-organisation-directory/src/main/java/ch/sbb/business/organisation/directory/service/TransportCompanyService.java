@@ -1,6 +1,5 @@
 package ch.sbb.business.organisation.directory.service;
 
-import ch.sbb.atlas.api.bodi.TransportCompanyModel;
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import ch.sbb.atlas.kafka.model.mail.MailType;
 import ch.sbb.business.organisation.directory.controller.TransportCompanySearchRestrictions;
@@ -34,6 +33,7 @@ public class TransportCompanyService {
 
   private final TransportCompanyClient transportCompanyClient;
   private final TransportCompanyRepository transportCompanyRepository;
+  private final TransportCompanyDistributor transportCompanyDistributor;
   private final MailClient mailClient;
 
   @Value("${mail.receiver.tu-relations-report}")
@@ -69,6 +69,10 @@ public class TransportCompanyService {
                                                          .map(TransportCompanyCsvModel::toEntity)
                                                          .toList();
     transportCompanyRepository.saveAll(transportCompanies);
+    log.info("DB save complete");
+
+    transportCompanies.forEach(transportCompanyDistributor::pushToKafka);
+    log.info("Kafka sync complete");
   }
 
   List<TransportCompanyCsvModel> getTransportCompaniesFromBav() {

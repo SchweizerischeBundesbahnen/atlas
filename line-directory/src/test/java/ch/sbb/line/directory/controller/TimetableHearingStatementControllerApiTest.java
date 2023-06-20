@@ -25,9 +25,9 @@ import ch.sbb.atlas.api.client.bodi.TransportCompanyClient;
 import ch.sbb.atlas.api.client.user.administration.UserAdministrationClient;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel.Fields;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementSenderModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingYearModel;
-import ch.sbb.atlas.api.timetable.hearing.enumeration.HearingStatus;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.api.timetable.hearing.model.UpdateHearingCantonModel;
 import ch.sbb.atlas.api.timetable.hearing.model.UpdateHearingStatementStatusModel;
@@ -36,6 +36,7 @@ import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.controller.AtlasMockMultipartFile;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.model.exception.NotFoundException.FileNotFoundException;
+import ch.sbb.line.directory.entity.SharedTransportCompany;
 import ch.sbb.line.directory.entity.StatementSender;
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
@@ -43,16 +44,16 @@ import ch.sbb.line.directory.entity.TimetableHearingStatement;
 import ch.sbb.line.directory.exception.ForbiddenDueToHearingYearSettingsException;
 import ch.sbb.line.directory.exception.NoClientCredentialAuthUsedException;
 import ch.sbb.line.directory.exception.PdfDocumentConstraintViolationException;
+import ch.sbb.line.directory.repository.SharedTransportCompanyRepository;
 import ch.sbb.line.directory.repository.TimetableHearingStatementRepository;
 import ch.sbb.line.directory.repository.TimetableHearingYearRepository;
 import ch.sbb.line.directory.service.TimetableFieldNumberService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
-import java.time.Year;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -103,6 +104,9 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
   @MockBean
   private UserAdministrationClient userAdministrationClient;
 
+  @MockBean
+  private SharedTransportCompanyRepository sharedTransportCompanyRepository;
+
   @BeforeEach
   void setUp() {
     timetableHearingYearController.createHearingYear(TIMETABLE_HEARING_YEAR);
@@ -133,6 +137,19 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
         .businessRegisterName("Schweizerische Bundesbahnen SBB")
         .build();
     when(transportCompanyClient.getTransportCompaniesBySboid(SBOID)).thenReturn(List.of(transportCompanyModel));
+
+    when(sharedTransportCompanyRepository.findById(1L)).thenReturn(Optional.of(SharedTransportCompany.builder()
+        .id(1L)
+        .number("#0001")
+        .abbreviation("SBB")
+        .businessRegisterName("Schweizerische Bundesbahnen SBB")
+        .build()));
+    when(sharedTransportCompanyRepository.findById(2L)).thenReturn(Optional.of(SharedTransportCompany.builder()
+        .id(2L)
+        .number("#0001")
+        .abbreviation("BLS")
+        .businessRegisterName("Berner Land Seilbahnen")
+        .build()));
   }
 
   @AfterEach
@@ -864,5 +881,41 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
     assertThat(response).contains(statement.getStatement());
 
     verify(userAdministrationClient, times(1)).getUserInformation(any());
+  }
+
+  @Test
+  void shouldUpdateStatementWithReplacingTransportCompany() throws Exception {
+    TimetableHearingStatementModel timetableHearingStatementModel = TimetableHearingStatementModel.builder()
+        .id(1000L)
+        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .swissCanton(SwissCanton.BERN)
+        .statementSender(TimetableHearingStatementSenderModel.builder()
+            .email("fabienne.mueller@sbb.ch")
+            .build())
+        .responsibleTransportCompanies(List.of(TimetableHearingStatementResponsibleTransportCompanyModel.builder()
+            .id(1L)
+            .businessRegisterName("SBB")
+            .build()))
+        .statement("Ich haette gerne mehrere Verbindungen am Abend.")
+        .build();
+
+    TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
+        timetableHearingStatementModel, Collections.emptyList());
+    assertThat(statement.getResponsibleTransportCompanies()).hasSize(1);
+    assertThat(statement.getResponsibleTransportCompanies().get(0).getId()).isEqualTo(1);
+
+    statement.setResponsibleTransportCompanies(List.of(TimetableHearingStatementResponsibleTransportCompanyModel.builder()
+        .id(2L)
+        .businessRegisterName("BLS")
+        .build()));
+    MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
+        MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
+
+    mvc.perform(multipart(HttpMethod.PUT, "/v1/timetable-hearing/statements/" + statement.getId())
+            .file(statementJson))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
+        .andExpect(jsonPath("$." + Fields.responsibleTransportCompanies, hasSize(1)))
+        .andExpect(jsonPath("$." + Fields.responsibleTransportCompanies + "[0].id", is(2)));
   }
 }

@@ -2,6 +2,7 @@ package ch.sbb.atlas.api.bodi;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.model.Container;
+import ch.sbb.atlas.configuration.Role;
 import ch.sbb.atlas.model.Status;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -19,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -90,5 +92,10 @@ public interface BusinessOrganisationApiV1 {
       + "file to the ATLAS Amazon S3 Bucket")
   @PostMapping(value = "/export-csv/timetable-year-change", produces = MediaType.APPLICATION_JSON_VALUE)
   List<URL> exportFutureTimetableBusinessOrganisationVersions();
+
+  @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
+  @PostMapping("/sync-business-organisations")
+  @Operation(description = "Write all user permission to kafka again for redistribution")
+  void syncBusinessOrganisations();
 
 }

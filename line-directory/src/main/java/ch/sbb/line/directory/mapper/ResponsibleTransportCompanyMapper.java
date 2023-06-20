@@ -2,32 +2,28 @@ package ch.sbb.line.directory.mapper;
 
 import ch.sbb.atlas.api.bodi.TransportCompanyModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
-import ch.sbb.line.directory.entity.ResponsibleTransportCompany;
-import ch.sbb.line.directory.entity.TimetableHearingStatement;
-import lombok.experimental.UtilityClass;
+import ch.sbb.line.directory.entity.SharedTransportCompany;
+import ch.sbb.line.directory.repository.SharedTransportCompanyRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
-@UtilityClass
+@Component
+@RequiredArgsConstructor
 public class ResponsibleTransportCompanyMapper {
 
-  public static TimetableHearingStatementResponsibleTransportCompanyModel toModel(ResponsibleTransportCompany transportCompany) {
+  private final SharedTransportCompanyRepository sharedTransportCompanyRepository;
+
+  public static TimetableHearingStatementResponsibleTransportCompanyModel toModel(SharedTransportCompany transportCompany) {
     return TimetableHearingStatementResponsibleTransportCompanyModel.builder()
-        .id(transportCompany.getTransportCompanyId())
+        .id(transportCompany.getId())
         .number(transportCompany.getNumber())
         .abbreviation(transportCompany.getAbbreviation())
         .businessRegisterName(transportCompany.getBusinessRegisterName())
         .build();
   }
 
-  public static ResponsibleTransportCompany toEntity(
-      TimetableHearingStatementResponsibleTransportCompanyModel transportCompanyModel,
-      TimetableHearingStatement statement) {
-    return ResponsibleTransportCompany.builder()
-        .statement(statement)
-        .transportCompanyId(transportCompanyModel.getId())
-        .number(transportCompanyModel.getNumber())
-        .abbreviation(transportCompanyModel.getAbbreviation())
-        .businessRegisterName(transportCompanyModel.getBusinessRegisterName())
-        .build();
+  public SharedTransportCompany toEntity(TimetableHearingStatementResponsibleTransportCompanyModel transportCompanyModel) {
+    return sharedTransportCompanyRepository.findById(transportCompanyModel.getId()).orElseThrow();
   }
 
   public static TimetableHearingStatementResponsibleTransportCompanyModel toResponsibleTransportCompany(

@@ -1,5 +1,6 @@
 package ch.sbb.line.directory.validation;
 
+import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.exception.SubLineAssignToLineConflictException;
@@ -18,10 +19,12 @@ public class SublineValidationService {
   private final SublineVersionRepository sublineVersionRepository;
   private final LineVersionRepository lineVersionRepository;
   private final CoverageValidationService coverageValidationService;
+  private final SharedBusinessOrganisationService sharedBusinessOrganisationService;
 
   public void validatePreconditionSublineBusinessRules(SublineVersion sublineVersion) {
     validateSublineConflict(sublineVersion);
     validateDifferentMainLineAssignRule(sublineVersion);
+    sharedBusinessOrganisationService.validateSboidExists(sublineVersion.getBusinessOrganisation());
   }
 
   public void validateSublineAfterVersioningBusinessRule(SublineVersion sublineVersion) {
