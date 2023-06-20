@@ -3,11 +3,11 @@ package ch.sbb.exportservice.writer;
 import static ch.sbb.atlas.export.CsvExportWriter.UTF_8_BYTE_ORDER_MARK;
 import static ch.sbb.exportservice.model.ServicePointVersionCsvModel.Fields.numberShort;
 
-import ch.sbb.exportservice.config.CsvFlatFileHeaderCallback;
 import ch.sbb.exportservice.model.ExportExtensionFileType;
 import ch.sbb.exportservice.model.ServicePointExportType;
 import ch.sbb.exportservice.model.ServicePointVersionCsvModel;
 import ch.sbb.exportservice.model.ServicePointVersionCsvModel.Fields;
+import ch.sbb.exportservice.service.CsvFlatFileHeaderCallback;
 import ch.sbb.exportservice.service.FileExportService;
 import java.nio.charset.StandardCharsets;
 import org.springframework.batch.item.file.FlatFileItemWriter;
