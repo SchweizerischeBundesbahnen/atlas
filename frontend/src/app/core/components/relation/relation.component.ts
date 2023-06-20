@@ -30,7 +30,6 @@ export class RelationComponent<RECORD_TYPE> {
   @Input() addBtnNameTranslationKey = 'RELATION.ADD';
   @Input() deleteBtnNameTranslationKey = 'RELATION.DELETE';
   @Input() updateBtnNameTranslationKey = 'RELATION.UPDATE';
-  @Input() isRelationSelected = false;
 
   @Output() deleteRelation = new EventEmitter<void>();
   @Output() updateRelation = new EventEmitter<void>();
@@ -67,7 +66,6 @@ export class RelationComponent<RECORD_TYPE> {
 
   selectRecord(record: RECORD_TYPE): void {
     if (this.editable) {
-      this.isRelationSelected = true;
       this.selectedIndexChanged.emit(this._records.indexOf(record));
     }
   }
