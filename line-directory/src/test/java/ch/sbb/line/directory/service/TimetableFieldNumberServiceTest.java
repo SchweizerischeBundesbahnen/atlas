@@ -24,6 +24,8 @@ class TimetableFieldNumberServiceTest {
   @Mock
   private TimetableFieldNumberRepository timetableFieldNumberRepository;
   @Mock
+  private TimetableFieldNumberValidationService timetableFieldNumberValidationService;
+  @Mock
   private VersionableService versionableService;
 
   private TimetableFieldNumberService timetableFieldNumberService;
@@ -32,7 +34,7 @@ class TimetableFieldNumberServiceTest {
   void setUp() {
     MockitoAnnotations.openMocks(this);
     timetableFieldNumberService = new TimetableFieldNumberService(versionRepository,
-      timetableFieldNumberRepository, versionableService);
+      timetableFieldNumberRepository,timetableFieldNumberValidationService, versionableService);
   }
 
   @Test

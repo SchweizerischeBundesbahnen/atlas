@@ -57,3 +57,7 @@ kafka:
       administration:
         topic: atlas.user.administration
         groupId: atlas.kafka.lidi.user.administration.groupId
+    business:
+      organisation:
+        topic: atlas.business.organisation
+        groupId: atlas.kafka.spdi.business.organisation.groupId
