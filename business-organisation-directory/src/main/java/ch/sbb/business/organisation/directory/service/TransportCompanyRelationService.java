@@ -39,8 +39,14 @@ public class TransportCompanyRelationService {
 
   void validateRelationOverlaps(TransportCompanyRelation relation) {
     List<TransportCompanyRelation> relationOverlaps = findRelationOverlaps(relation);
-    boolean isSelfOverlapping = relationOverlaps.stream().anyMatch(rel -> rel.getId().longValue() == relation.getId());
-    if (!relationOverlaps.isEmpty() && !isSelfOverlapping) {
+
+    boolean isSelfOverlapping = false;
+    if (relation.getId() != null) {
+      isSelfOverlapping = relationOverlaps.stream()
+          .anyMatch(rel -> rel != null && rel.getId() != null && rel.getId().longValue() == relation.getId().longValue());
+    }
+
+    if (!relationOverlaps.isEmpty() && !isSelfOverlapping || relationOverlaps.size() > 1) {
       throw new TransportCompanyRelationConflictException(relation, relationOverlaps);
     }
   }

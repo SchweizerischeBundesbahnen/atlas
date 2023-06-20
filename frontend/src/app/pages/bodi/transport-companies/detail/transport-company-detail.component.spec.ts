@@ -134,7 +134,7 @@ describe('TransportCompanyDetailComponent', () => {
 
     expect(component.form.valid).toBeTrue();
 
-    component.createRelation();
+    component.save();
 
     expect(component.form.untouched).toBeTrue();
     expect(component.editMode).toBeFalse();
@@ -143,6 +143,36 @@ describe('TransportCompanyDetailComponent', () => {
     ).toHaveBeenCalledOnceWith({
       transportCompanyId: 1234,
       sboid: 'ch:1:sboid:100500',
+      validFrom: moment('2020-05-05').toDate(),
+      validTo: moment('2021-05-05').toDate(),
+    });
+    expect(
+      transportCompanyRelationsServiceSpy.getTransportCompanyRelations
+    ).toHaveBeenCalledOnceWith(1234);
+  });
+
+  it('should call updateTransportCompanyRelation and reloadRelations', () => {
+    component.editMode = true;
+    component.isUpdateRelationSelected = true;
+    component.relationId = 1;
+
+    component.form.setValue({
+      businessOrganisation: { sboid: 'ch:1:sboid:100500' } as BusinessOrganisation,
+      validFrom: moment('2020-05-05'),
+      validTo: moment('2021-05-05'),
+    });
+
+    expect(component.form.valid).toBeTrue();
+
+    component.save();
+
+    expect(component.form.untouched).toBeTrue();
+    expect(component.editMode).toBeFalse();
+    expect(component.isUpdateRelationSelected).toBeFalse();
+    expect(
+      transportCompanyRelationsServiceSpy.updateTransportCompanyRelation
+    ).toHaveBeenCalledOnceWith({
+      id: 1,
       validFrom: moment('2020-05-05').toDate(),
       validTo: moment('2021-05-05').toDate(),
     });
@@ -169,11 +199,13 @@ function setupTestBed(data: (TransportCompany | TransportCompanyBoRelation[])[])
   transportCompanyRelationsServiceSpy = jasmine.createSpyObj('TransportCompanyRelationsService', [
     'createTransportCompanyRelation',
     'getTransportCompanyRelations',
+    'updateTransportCompanyRelation',
     'deleteTransportCompanyRelation',
   ]);
 
   transportCompanyRelationsServiceSpy.createTransportCompanyRelation.and.returnValue(of({}));
   transportCompanyRelationsServiceSpy.getTransportCompanyRelations.and.returnValue(of([]));
+  transportCompanyRelationsServiceSpy.updateTransportCompanyRelation.and.returnValue(of({}));
   transportCompanyRelationsServiceSpy.deleteTransportCompanyRelation.and.returnValue(of({}));
 
   TestBed.configureTestingModule({
