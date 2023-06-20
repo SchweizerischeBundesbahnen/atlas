@@ -125,7 +125,6 @@ export class TransportCompanyDetailComponent implements OnInit {
     return this.authService.hasPermissionsToCreate(ApplicationType.Bodi);
   }
 
-  //TODO: isUpdateRelationSelected wieder auf false setzen, falls abgebrochen wird.
   leaveEditMode(): void {
     if (!this.form.dirty) {
       this.cancelEdit();
@@ -194,6 +193,7 @@ export class TransportCompanyDetailComponent implements OnInit {
             : 'RELATION.ADD_SUCCESS_MSG';
           this.notificationService.success(successMsg);
           this.isUpdateRelationSelected = false;
+          this.selectedTransportCompanyRelationIndex = -1;
         })
       )
       .subscribe();
