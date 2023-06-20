@@ -21,6 +21,7 @@ public class ServicePointService {
 
   private final ServicePointVersionRepository servicePointVersionRepository;
   private final VersionableService versionableService;
+  private final ServicePointValidationService servicePointValidationService;
 
   public Page<ServicePointVersion> findAll(ServicePointSearchRestrictions servicePointSearchRestrictions) {
     return servicePointVersionRepository.loadByIdsFindBySpecification(servicePointSearchRestrictions.getSpecification(),
@@ -44,6 +45,7 @@ public class ServicePointService {
   }
 
   public ServicePointVersion save(ServicePointVersion servicePointVersion) {
+    servicePointValidationService.validateServicePointPreconditionBusinessRule(servicePointVersion);
     return servicePointVersionRepository.save(servicePointVersion);
   }
 
