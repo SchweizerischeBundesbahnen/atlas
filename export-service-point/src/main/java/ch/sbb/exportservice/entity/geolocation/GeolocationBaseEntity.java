@@ -3,8 +3,7 @@ package ch.sbb.exportservice.entity.geolocation;
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
-import ch.sbb.exportservice.entity.BaseDidokImportEntity;
-import jakarta.persistence.Column;
+import ch.sbb.exportservice.entity.BaseEntity;
 import jakarta.persistence.MappedSuperclass;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,9 +22,8 @@ import lombok.experimental.SuperBuilder;
 @FieldNameConstants
 @MappedSuperclass
 @AtlasVersionable
-public abstract class GeolocationBaseEntity extends BaseDidokImportEntity {
+public abstract class GeolocationBaseEntity extends BaseEntity {
 
-  @Column(name = "spatial_reference")
   private SpatialReference spatialReference;
 
   private Double east;
@@ -42,7 +40,4 @@ public abstract class GeolocationBaseEntity extends BaseDidokImportEntity {
         .build();
   }
 
-  public boolean isValid() {
-    return (east != null && north != null);
-  }
 }
