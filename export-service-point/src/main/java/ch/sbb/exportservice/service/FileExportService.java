@@ -7,8 +7,6 @@ import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.exportservice.model.ExportExtensionFileType;
 import ch.sbb.exportservice.model.ServicePointExportType;
-import com.amazonaws.services.s3.model.S3Object;
-import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -29,43 +27,45 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 public class FileExportService {
 
   private static final String S3_BUCKER_SERVICE_POINT_EXPORT_DIR = "service_point";
+  private static final int OUT_BUFFER = 4096;
+  private static final int IN_BUFFER = 1024;
   private final AmazonService amazonService;
 
   private final FileService fileService;
 
-  public StreamingResponseBody streamingFile(ServicePointExportType servicePointExportType) {
+  public StreamingResponseBody streamingJsonFile(ServicePointExportType servicePointExportType) {
     String fileToDownload = getJsonFileToDownload(servicePointExportType);
-    S3Object s3Object = amazonService.pullS3Object(AmazonBucket.EXPORT, fileToDownload);
-    S3ObjectInputStream inputStream = s3Object.getObjectContent();
+    try {
+      File file = amazonService.pullFile(AmazonBucket.EXPORT, fileToDownload);
+      byte[] bytes = decompressGzipToBytes(file.toPath());
+      InputStream inputStream = new ByteArrayInputStream(bytes);
+      return writeOutputStream(file, inputStream);
+    } catch (IOException e) {
+      throw new FileException(e);
+    }
+  }
+
+  public StreamingResponseBody streamingGzipFile(ServicePointExportType servicePointExportType) {
+    String fileToDownload = getJsonFileToDownload(servicePointExportType);
+    try {
+      File file = amazonService.pullFile(AmazonBucket.EXPORT, fileToDownload);
+      InputStream inputStream = new FileInputStream(file);
+      return writeOutputStream(file, inputStream);
+    } catch (IOException e) {
+      throw new FileException(e);
+    }
+  }
+
+  private StreamingResponseBody writeOutputStream(File file, InputStream inputStream) {
     return outputStream -> {
       int len;
-      byte[] data = new byte[4096];
+      byte[] data = new byte[OUT_BUFFER];
       while ((len = inputStream.read(data, 0, data.length)) != -1) {
         outputStream.write(data, 0, len);
       }
       inputStream.close();
+      file.delete();
     };
-  }
-
-  public StreamingResponseBody streamingJsonFile(ServicePointExportType servicePointExportType) {
-    String fileToDownload = getJsonFileToDownload(servicePointExportType);
-    try {
-      //TODO: return HTTP 404 Not Found when file not found
-      File file = amazonService.pullFile(AmazonBucket.EXPORT, fileToDownload);
-      byte[] bytes = decompressGzipToBytes(file.toPath());
-      InputStream inputStream = new ByteArrayInputStream(bytes);
-      return outputStream -> {
-        int len;
-        byte[] data = new byte[4096];
-        while ((len = inputStream.read(data, 0, data.length)) != -1) {
-          outputStream.write(data, 0, len);
-        }
-        inputStream.close();
-        file.delete();
-      };
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
   }
 
   private String getJsonFileToDownload(ServicePointExportType servicePointExportType) {
@@ -81,7 +81,7 @@ public class FileExportService {
     ByteArrayOutputStream output = new ByteArrayOutputStream();
     try (GZIPInputStream gis = new GZIPInputStream(
         new FileInputStream(source.toFile()))) {
-      byte[] buffer = new byte[1024];
+      byte[] buffer = new byte[IN_BUFFER];
       int len;
       while ((len = gis.read(buffer)) > 0) {
         output.write(buffer, 0, len);
@@ -112,7 +112,7 @@ public class FileExportService {
     return dir + baseFileName + exportExtensionFileType.getExtention();
   }
 
-  private String getBaseFileName(ServicePointExportType exportType) {
+  public String getBaseFileName(ServicePointExportType exportType) {
     String actualDate = LocalDate.now()
         .format(DateTimeFormatter.ofPattern(
             AtlasApiConstants.DATE_FORMAT_PATTERN));

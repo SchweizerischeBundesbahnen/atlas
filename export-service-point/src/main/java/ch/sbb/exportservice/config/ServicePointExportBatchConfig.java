@@ -41,7 +41,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
 @AllArgsConstructor
-public class SpringBatchConfig {
+public class ServicePointExportBatchConfig {
 
   private static final int CHUNK_SIZE = 200;
   private static final int FETCH_SIZE = 10000;
