@@ -39,3 +39,36 @@ include::../release-notes.adoc[]
 = Export Service Point
 
 == Trigger export Service Point - Successfully
+
+include::{snippets}/export-service-point-batch-controller-api-v1-test/should-post-service-point-export-batch-successfully/auto-section.adoc[]
+
+== Get Service Point Json - Successfully
+
+include::{snippets}/export-service-point-batch-controller-api-v1-test/should-get-json-successfully/auto-section.adoc[]
+
+== Get Service Point Json - Unsuccessfully
+
+include::{snippets}/export-service-point-batch-controller-api-v1-test/should-get-json-unsuccessfully/auto-section.adoc[]
+
+== Get download Service Point Gzip Json - Successfully
+
+=== Stream Json File
+
+include::{snippets}/export-service-point-batch-controller-api-v1-test/should-get-json-unsuccessfully/auto-method-path.adoc[]
+include::{snippets}/export-service-point-batch-controller-api-v1-test/should-get-json-unsuccessfully/auto-description.adoc[]
+==== Path parameters
+
+include::{snippets}/export-service-point-batch-controller-api-v1-test/should-get-json-unsuccessfully/auto-path-parameters.adoc[]
+
+==== Response fields
+
+include::{snippets}/export-service-point-batch-controller-api-v1-test/should-get-json-unsuccessfully/auto-response-fields.adoc[]
+
+==== Example request
+
+include::{snippets}/export-service-point-batch-controller-api-v1-test/should-get-json-unsuccessfully/curl-request.adoc[]
+
+== Get download Service Point Gzip Json - Unsuccessfully
+
+include::{snippets}/export-service-point-batch-controller-api-v1-test/should-download-gzip-json-unsuccessfully/auto-section.adoc[]
+
