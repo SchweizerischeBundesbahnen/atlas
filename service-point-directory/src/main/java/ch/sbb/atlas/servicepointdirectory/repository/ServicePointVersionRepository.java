@@ -3,6 +3,7 @@ package ch.sbb.atlas.servicepointdirectory.repository;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion.Fields;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
@@ -32,6 +33,18 @@ public interface ServicePointVersionRepository extends JpaRepository<ServicePoin
   @Modifying(clearAutomatically = true)
   @Query("update service_point_version v set v.version = (v.version + 1) where v.number = :number")
   void incrementVersion(@Param("number") ServicePointNumber number);
+
+  @Query(value = "SELECT v FROM service_point_version v WHERE v.number = :number order by v.validFrom asc")
+  List<ServicePointVersion> getAllVersionsVersioned(@Param("number") ServicePointNumber number);
+
+  @Query(value = "select v from service_point_version v "
+      + "where (v.number = :number) "
+      + "and (((v.validFrom <= :validFrom and v.validTo >= :validFrom) or "
+      + "(v.validFrom <= :validTo and v.validTo >= :validTo)) "
+      + "or (v.validFrom > :validFrom and v.validTo < :validTo)) ")
+  List<ServicePointVersion> getAllOverlapsByNumberAndValidFromValidTo(
+      @Param("number") ServicePointNumber number,
+      @Param("validFrom") LocalDate validFrom, @Param("validTo") LocalDate validTo);
 
   @EntityGraph(attributePaths = {Fields.servicePointGeolocation, Fields.categories, Fields.meansOfTransport})
   List<ServicePointVersion> findAllByIdIn(Collection<Long> ids, Sort sort);
