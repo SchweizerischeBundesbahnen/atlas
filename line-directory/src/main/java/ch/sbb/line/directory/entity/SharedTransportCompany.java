@@ -1,5 +1,6 @@
 package ch.sbb.line.directory.entity;
 
+import ch.sbb.atlas.transport.company.entity.TransportCompanySharing;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
@@ -18,7 +19,7 @@ import lombok.experimental.FieldNameConstants;
 @Builder
 @FieldNameConstants
 @Entity(name = "shared_transport_company")
-public class SharedTransportCompany {
+public class SharedTransportCompany implements TransportCompanySharing {
 
   @Id
   private Long id;
