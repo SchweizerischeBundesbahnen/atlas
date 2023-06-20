@@ -1,4 +1,4 @@
-package ch.sbb.exportservice.service;
+package ch.sbb.exportservice.writer;
 
 import java.io.IOException;
 import java.io.Writer;
