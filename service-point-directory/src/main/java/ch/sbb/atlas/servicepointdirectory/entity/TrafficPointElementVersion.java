@@ -94,10 +94,6 @@ public class TrafficPointElementVersion extends BaseDidokImportEntity implements
       GeolocationBaseEntity.Fields.north,
       GeolocationBaseEntity.Fields.spatialReference,
       GeolocationBaseEntity.Fields.height,
-      BaseDidokImportEntity.Fields.creationDate,
-      BaseDidokImportEntity.Fields.editionDate,
-      BaseDidokImportEntity.Fields.creator,
-      BaseDidokImportEntity.Fields.editor,
   })
   private TrafficPointElementGeolocation trafficPointElementGeolocation;
 
