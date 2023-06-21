@@ -5,6 +5,7 @@ import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointElementCsvMode
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointItemImportResult.TrafficPointItemImportResultBuilder;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
+import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
 import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
 import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
@@ -20,8 +21,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Slf4j
 @Transactional
+@Slf4j
 @RequiredArgsConstructor
 public class TrafficPointElementImportService {
 
@@ -68,6 +69,20 @@ public class TrafficPointElementImportService {
           importResults.add(saveResult);
         }
       }
+
+      List<TrafficPointElementVersion> trafficPointElements = trafficPointElementService.findTrafficPointElements(
+          container.getSloid());
+      trafficPointElements.forEach(tp -> {
+        TrafficPointElementGeolocation geolocation = tp.getTrafficPointElementGeolocation();
+        if (geolocation == null) {
+          return;
+        }
+        geolocation.setEditor(tp.getEditor());
+        geolocation.setEditionDate(tp.getEditionDate());
+        geolocation.setCreator(tp.getCreator());
+        geolocation.setCreationDate(tp.getCreationDate());
+      });
+
     }
     return importResults;
   }
