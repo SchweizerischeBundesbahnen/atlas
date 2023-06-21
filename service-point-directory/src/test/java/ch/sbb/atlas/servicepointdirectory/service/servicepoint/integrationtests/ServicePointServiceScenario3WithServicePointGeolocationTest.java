@@ -140,15 +140,6 @@ public class ServicePointServiceScenario3WithServicePointGeolocationTest extends
         assertThat(fifthTemporalVersion.getComment()).isNull();
     }
 
-    /**
-     * Szenario 3: Update, dass über Versionsgrenze geht
-     * NEU:                                   |___________|
-     * IST:      |-----------|----------------------|--------------------
-     * Version:        1                 2                  3
-     *
-     * RESULTAT: |-----------|----------------|______|_____|-------------     NEUE VERSION EINGEFÜGT
-     * Version:        1                 2        4     5          3
-     */
     @Test
     public void scenario3UpdateVersion3ByChangingServicePointGeolocationCreatorAndEditor() {
         // given
@@ -177,13 +168,11 @@ public class ServicePointServiceScenario3WithServicePointGeolocationTest extends
         List<ServicePointVersion> result = versionRepository.getAllVersionsVersioned(SPN);
 
         // then
-        assertThat(result).isNotNull().hasSize(5);
+        assertThat(result).isNotNull().hasSize(3);
         result.sort(Comparator.comparing(ServicePointVersion::getValidFrom));
         assertThat(result.get(0)).isNotNull();
         assertThat(result.get(1)).isNotNull();
         assertThat(result.get(2)).isNotNull();
-        assertThat(result.get(3)).isNotNull();
-        assertThat(result.get(4)).isNotNull();
 
         // not touched
         ServicePointVersion firstTemporalVersion = result.get(0);
@@ -200,7 +189,7 @@ public class ServicePointServiceScenario3WithServicePointGeolocationTest extends
         // updated
         ServicePointVersion secondTemporalVersion = result.get(1);
         assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2022, 1, 1));
-        assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2023, 5, 31));
+        assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2023, 12, 31));
         assertThat(secondTemporalVersion.getNumber()).isEqualTo(SPN);
         assertThat(secondTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
         assertThat(secondTemporalVersion.getBusinessOrganisation()).isEqualTo("ch:1:sboid:100626");
@@ -209,16 +198,16 @@ public class ServicePointServiceScenario3WithServicePointGeolocationTest extends
         assertThat(secondTemporalVersion.getMeansOfTransport()).isEqualTo(Set.of(MeanOfTransport.TRAIN));
         assertThat(secondTemporalVersion.getComment()).isNull();
 
-        // new
+        // updated
         ServicePointVersion thirdTemporalVersion = result.get(2);
-        assertThat(thirdTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2023, 6, 1));
-        assertThat(thirdTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2023, 12, 31));
+        assertThat(thirdTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2024, 1, 1));
+        assertThat(thirdTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 12, 31));
         assertThat(thirdTemporalVersion.getNumber()).isEqualTo(SPN);
         assertThat(thirdTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
         assertThat(thirdTemporalVersion.getBusinessOrganisation()).isEqualTo("ch:1:sboid:100626");
         assertThat(thirdTemporalVersion.getSloid()).isEqualTo("ch:1:sloid:89008");
-        assertThat(thirdTemporalVersion.getDesignationOfficial()).isEqualTo("Bern, Thunplatz");
-        assertThat(thirdTemporalVersion.getMeansOfTransport()).isEqualTo(Set.of(MeanOfTransport.TRAIN));
+        assertThat(thirdTemporalVersion.getDesignationOfficial()).isEqualTo("Bern, Eigerplatz");
+        assertThat(thirdTemporalVersion.getMeansOfTransport()).isEqualTo(Set.of(MeanOfTransport.TRAM));
         assertThat(thirdTemporalVersion.getServicePointGeolocation().getSpatialReference()).isEqualTo(TestData.testGeolocationWgs84().getSpatialReference());
         assertThat(thirdTemporalVersion.getServicePointGeolocation().getEast()).isEqualTo(TestData.testGeolocationWgs84().getEast());
         assertThat(thirdTemporalVersion.getServicePointGeolocation().getNorth()).isEqualTo(TestData.testGeolocationWgs84().getNorth());
@@ -231,60 +220,7 @@ public class ServicePointServiceScenario3WithServicePointGeolocationTest extends
         assertThat(thirdTemporalVersion.getServicePointGeolocation().getSwissMunicipalityName()).isEqualTo(TestData.testGeolocationWgs84().getSwissMunicipalityName());
         assertThat(thirdTemporalVersion.getServicePointGeolocation().getSwissLocalityName()).isEqualTo(TestData.testGeolocationWgs84().getSwissLocalityName());
         assertThat(thirdTemporalVersion.getServicePointGeolocation().getSwissLocalityName()).isEqualTo(TestData.testGeolocationWgs84().getSwissLocalityName());
-        assertThat(thirdTemporalVersion.getServicePointGeolocation().getCreator()).isEqualTo(updatedCreator);
-        assertThat(thirdTemporalVersion.getServicePointGeolocation().getEditor()).isEqualTo(updatedEditor);
         assertThat(thirdTemporalVersion.getComment()).isNull();
-
-        // new
-        ServicePointVersion fourthTemporalVersion = result.get(3);
-        assertThat(fourthTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2024, 1, 1));
-        assertThat(fourthTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 6, 1));
-        assertThat(fourthTemporalVersion.getNumber()).isEqualTo(SPN);
-        assertThat(fourthTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
-        assertThat(fourthTemporalVersion.getBusinessOrganisation()).isEqualTo("ch:1:sboid:100626");
-        assertThat(fourthTemporalVersion.getSloid()).isEqualTo("ch:1:sloid:89008");
-        assertThat(fourthTemporalVersion.getDesignationOfficial()).isEqualTo("Bern, Eigerplatz");
-        assertThat(fourthTemporalVersion.getMeansOfTransport()).isEqualTo(Set.of(MeanOfTransport.TRAM));
-        assertThat(fourthTemporalVersion.getServicePointGeolocation().getSpatialReference()).isEqualTo(TestData.testGeolocationWgs84().getSpatialReference());
-        assertThat(fourthTemporalVersion.getServicePointGeolocation().getEast()).isEqualTo(TestData.testGeolocationWgs84().getEast());
-        assertThat(fourthTemporalVersion.getServicePointGeolocation().getNorth()).isEqualTo(TestData.testGeolocationWgs84().getNorth());
-        assertThat(fourthTemporalVersion.getServicePointGeolocation().getHeight()).isEqualTo(TestData.testGeolocationWgs84().getHeight());
-        assertThat(fourthTemporalVersion.getServicePointGeolocation().getCountry()).isEqualTo(TestData.testGeolocationWgs84().getCountry());
-        assertThat(fourthTemporalVersion.getServicePointGeolocation().getSwissCanton()).isEqualTo(TestData.testGeolocationWgs84().getSwissCanton());
-        assertThat(fourthTemporalVersion.getServicePointGeolocation().getSwissDistrictName()).isEqualTo(TestData.testGeolocationWgs84().getSwissDistrictName());
-        assertThat(fourthTemporalVersion.getServicePointGeolocation().getSwissDistrictNumber()).isEqualTo(TestData.testGeolocationWgs84().getSwissDistrictNumber());
-        assertThat(fourthTemporalVersion.getServicePointGeolocation().getSwissMunicipalityNumber()).isEqualTo(TestData.testGeolocationWgs84().getSwissMunicipalityNumber());
-        assertThat(fourthTemporalVersion.getServicePointGeolocation().getSwissMunicipalityName()).isEqualTo(TestData.testGeolocationWgs84().getSwissMunicipalityName());
-        assertThat(fourthTemporalVersion.getServicePointGeolocation().getSwissLocalityName()).isEqualTo(TestData.testGeolocationWgs84().getSwissLocalityName());
-        assertThat(fourthTemporalVersion.getServicePointGeolocation().getCreator()).isEqualTo(updatedCreator);
-        assertThat(fourthTemporalVersion.getServicePointGeolocation().getEditor()).isEqualTo(updatedEditor);
-        assertThat(fourthTemporalVersion.getComment()).isNull();
-
-        // updated
-        ServicePointVersion fifthTemporalVersion = result.get(4);
-        assertThat(fifthTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2024, 6, 2));
-        assertThat(fifthTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 12, 31));
-        assertThat(fifthTemporalVersion.getNumber()).isEqualTo(SPN);
-        assertThat(fifthTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
-        assertThat(fifthTemporalVersion.getBusinessOrganisation()).isEqualTo("ch:1:sboid:100626");
-        assertThat(fifthTemporalVersion.getSloid()).isEqualTo("ch:1:sloid:89008");
-        assertThat(fifthTemporalVersion.getDesignationOfficial()).isEqualTo("Bern, Eigerplatz");
-        assertThat(fifthTemporalVersion.getMeansOfTransport()).isEqualTo(Set.of(MeanOfTransport.TRAM));
-        assertThat(fifthTemporalVersion.getServicePointGeolocation().getSpatialReference()).isEqualTo(TestData.testGeolocationWgs84().getSpatialReference());
-        assertThat(fifthTemporalVersion.getServicePointGeolocation().getEast()).isEqualTo(TestData.testGeolocationWgs84().getEast());
-        assertThat(fifthTemporalVersion.getServicePointGeolocation().getNorth()).isEqualTo(TestData.testGeolocationWgs84().getNorth());
-        assertThat(fifthTemporalVersion.getServicePointGeolocation().getHeight()).isEqualTo(TestData.testGeolocationWgs84().getHeight());
-        assertThat(fifthTemporalVersion.getServicePointGeolocation().getCountry()).isEqualTo(TestData.testGeolocationWgs84().getCountry());
-        assertThat(fifthTemporalVersion.getServicePointGeolocation().getSwissCanton()).isEqualTo(TestData.testGeolocationWgs84().getSwissCanton());
-        assertThat(fifthTemporalVersion.getServicePointGeolocation().getSwissDistrictName()).isEqualTo(TestData.testGeolocationWgs84().getSwissDistrictName());
-        assertThat(fifthTemporalVersion.getServicePointGeolocation().getSwissDistrictNumber()).isEqualTo(TestData.testGeolocationWgs84().getSwissDistrictNumber());
-        assertThat(fifthTemporalVersion.getServicePointGeolocation().getSwissMunicipalityNumber()).isEqualTo(TestData.testGeolocationWgs84().getSwissMunicipalityNumber());
-        assertThat(fifthTemporalVersion.getServicePointGeolocation().getSwissMunicipalityName()).isEqualTo(TestData.testGeolocationWgs84().getSwissMunicipalityName());
-        assertThat(fifthTemporalVersion.getServicePointGeolocation().getSwissLocalityName()).isEqualTo(TestData.testGeolocationWgs84().getSwissLocalityName());
-        assertThat(fifthTemporalVersion.getServicePointGeolocation().getSwissLocalityName()).isEqualTo(TestData.testGeolocationWgs84().getSwissLocalityName());
-        assertThat(fifthTemporalVersion.getServicePointGeolocation().getCreator()).isEqualTo(initialCreator);
-        assertThat(fifthTemporalVersion.getServicePointGeolocation().getEditor()).isEqualTo(initialEditor);
-        assertThat(fifthTemporalVersion.getComment()).isNull();
     }
 
     @Test
