@@ -13,6 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.model.exception.NotFoundException.FileNotFoundException;
+import ch.sbb.exportservice.BatchDataSourceConfigTest;
 import ch.sbb.exportservice.model.ServicePointExportType;
 import ch.sbb.exportservice.service.FileExportService;
 import ch.sbb.exportservice.service.MailProducerService;
@@ -22,31 +23,11 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
-import org.springframework.test.context.jdbc.SqlConfig;
-import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
-@SqlGroup({
-    @Sql(scripts = {"/service-point-schema.sql", "/service-point-init-data.sql"}, executionPhase =
-        ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(dataSource =
-        "servicePointDataSource",
-        transactionManager =
-            "servicePointTransactionManager", transactionMode = SqlConfig.TransactionMode.ISOLATED)),
-    @Sql(scripts = {"/prune-batch-data-db.sql"}, executionPhase =
-        ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(dataSource =
-        "batchDataSource",
-        transactionManager =
-            "batchTransactionManager", transactionMode = SqlConfig.TransactionMode.ISOLATED)),
-    @Sql(scripts = {"/service-point-drop.sql"}, executionPhase = ExecutionPhase.AFTER_TEST_METHOD, config =
-    @SqlConfig(dataSource = "servicePointDataSource",
-        transactionManager =
-            "servicePointTransactionManager", transactionMode = SqlConfig.TransactionMode.ISOLATED))
-
-})
+@BatchDataSourceConfigTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class ExportServicePointBatchControllerApiV1Test extends BaseControllerApiTest {
+public class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseControllerApiTest {
 
   @MockBean
   private MailProducerService mailProducerService;
