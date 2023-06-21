@@ -2,6 +2,7 @@ package ch.sbb.atlas.api.bodi;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,15 +22,14 @@ import lombok.experimental.SuperBuilder;
 @Schema(name = "UpdateTransportCompanyRelation")
 public class UpdateTransportCompanyRelationModel {
 
-    @NotEmpty
     @Schema(description = "id")
     private long id;
 
     @Schema(description = "Valid From", example = "2022-01-01")
-    @NotEmpty
+    @NotNull
     private LocalDate validFrom;
 
     @Schema(description = "Valid To", example = "2022-01-01")
-    @NotEmpty
+    @NotNull
     private LocalDate validTo;
 }
