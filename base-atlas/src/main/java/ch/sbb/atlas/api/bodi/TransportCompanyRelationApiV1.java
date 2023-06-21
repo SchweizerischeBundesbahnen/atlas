@@ -33,5 +33,5 @@ public interface TransportCompanyRelationApiV1 {
   @PutMapping
   @ResponseStatus(HttpStatus.OK)
   @PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).BODI)")
-  void updateTransportCompanyRelation(@RequestBody UpdateTransportCompanyRelationModel model);
+  void updateTransportCompanyRelation(@RequestBody @Valid UpdateTransportCompanyRelationModel model);
 }

@@ -494,7 +494,7 @@
     "UPDATE": "Modifica il collegamento",
     "DELETE": "Eliminare il collegamento",
     "ADD_SUCCESS_MSG": "Il collegamento desiderato è stato aggiunto.",
-    "UPDATE_SUCCESS_MSG": "Il link desiderato è stato aggiornato con successo.",
+    "UPDATE_SUCCESS_MSG": "Il collegamento desiderato è stato aggiornato con successo.",
     "DELETE_SUCCESS_MSG": "L'eliminazione del collegamento selezionato è avvenuta con successo."
   },
   "WORKFLOW": {

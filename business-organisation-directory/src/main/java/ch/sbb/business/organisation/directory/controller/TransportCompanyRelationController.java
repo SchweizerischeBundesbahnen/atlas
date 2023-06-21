@@ -38,7 +38,7 @@ public class TransportCompanyRelationController implements TransportCompanyRelat
                                    model.getTransportCompanyId())));
 
     TransportCompanyRelation savedRelationEntity = transportCompanyRelationService.save(
-        relationEntity);
+        relationEntity, false);
 
     BusinessOrganisation businessOrganisation = businessOrganisationService.findBusinessOrganisationBySboid(
         savedRelationEntity.getSboid());
@@ -81,6 +81,6 @@ public class TransportCompanyRelationController implements TransportCompanyRelat
     TransportCompanyRelation relationEntity = transportCompanyRelationService.findById(model.getId());
     relationEntity.setValidFrom(model.getValidFrom());
     relationEntity.setValidTo(model.getValidTo());
-    transportCompanyRelationService.save(relationEntity);
+    transportCompanyRelationService.save(relationEntity, true);
   }
 }
