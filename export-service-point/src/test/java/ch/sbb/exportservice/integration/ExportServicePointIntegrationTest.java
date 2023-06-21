@@ -6,6 +6,7 @@ import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TYPE_JOB
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.exportservice.BatchDataSourceConfigTest;
 import ch.sbb.exportservice.model.ServicePointExportType;
 import ch.sbb.exportservice.utils.JobDescriptionConstants;
 import org.junit.jupiter.api.Test;
@@ -19,28 +20,8 @@ import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
-import org.springframework.test.context.jdbc.SqlConfig;
-import org.springframework.test.context.jdbc.SqlGroup;
 
-@SqlGroup({
-    @Sql(scripts = {"/service-point-schema.sql", "/service-point-init-data.sql"}, executionPhase =
-        ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(dataSource =
-        "servicePointDataSource",
-        transactionManager =
-            "servicePointTransactionManager", transactionMode = SqlConfig.TransactionMode.ISOLATED)),
-    @Sql(scripts = {"/prune-batch-data-db.sql"}, executionPhase =
-        ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(dataSource =
-        "batchDataSource",
-        transactionManager =
-            "batchTransactionManager", transactionMode = SqlConfig.TransactionMode.ISOLATED)),
-    @Sql(scripts = {"/service-point-drop.sql"}, executionPhase = ExecutionPhase.AFTER_TEST_METHOD, config =
-    @SqlConfig(dataSource = "servicePointDataSource",
-        transactionManager =
-            "servicePointTransactionManager", transactionMode = SqlConfig.TransactionMode.ISOLATED))
-
-})
+@BatchDataSourceConfigTest
 @IntegrationTest
 @AutoConfigureMockMvc(addFilters = false)
 public class ExportServicePointIntegrationTest {
