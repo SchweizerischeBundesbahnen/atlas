@@ -40,6 +40,8 @@ public class ServicePointServiceScenario12Test extends BaseServicePointServiceIn
         ServicePointVersion editedVersion = new ServicePointVersion();
         editedVersion.setValidFrom(version2.getValidFrom());
         editedVersion.setValidTo(LocalDate.of(2024, 6, 1));
+        editedVersion.setOperatingPoint(true);
+        editedVersion.setOperatingPointWithTimetable(true);
         editedVersion.setMeansOfTransport(Set.of(MeanOfTransport.CABLE_CAR));
         // when
         servicePointService.updateServicePointVersion(version1, editedVersion);
