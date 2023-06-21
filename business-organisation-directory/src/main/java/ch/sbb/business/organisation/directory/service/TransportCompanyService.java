@@ -136,5 +136,4 @@ public class TransportCompanyService {
   public List<TransportCompany> findBySboid(String sboid) {
     return transportCompanyRepository.findAllWithSboid(sboid);
   }
-
 }
