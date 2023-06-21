@@ -9,11 +9,13 @@
     fieldLabel="{{ label }}"
     infoIconTitle="{{ info }}"
   ></app-atlas-label-field>
+  <h1>Between</h1>
   <textarea
     [attr.data-cy]="controlName"
     formControlName="{{ controlName }}"
     matInput
     rows="7"
   ></textarea>
-  <app-atlas-field-error [form]="formGroup" controlName="{{ controlName }}"></app-atlas-field-error>
+  <!--   <app-atlas-field-error [form]="formGroup" controlName="{{ controlName }}"></app-atlas-field-error>
+ -->
 </div>
