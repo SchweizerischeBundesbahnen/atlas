@@ -74,7 +74,7 @@ public class FileExportService {
         + servicePointExportType.getDir()
         + "/"
         + getBaseFileName(servicePointExportType)
-        + ".json.gzip";
+        + ".json.gz";
   }
 
   byte[] decompressGzipToBytes(Path source) throws IOException {
