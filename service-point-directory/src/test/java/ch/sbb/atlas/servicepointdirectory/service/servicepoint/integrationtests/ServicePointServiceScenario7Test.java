@@ -5,6 +5,7 @@ import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
+import ch.sbb.atlas.versioning.exception.DateValidationException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class ServicePointServiceScenario7Test extends BaseServicePointServiceIntegrationTest{
 
@@ -57,7 +59,7 @@ public class ServicePointServiceScenario7Test extends BaseServicePointServiceInt
         assertThat(result.get(2)).isNotNull();
         assertThat(result.get(3)).isNotNull();
 
-        // first version no changes
+        // not touched
         ServicePointVersion firstTemporalVersion = result.get(0);
         assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
         assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2021, 12, 31));
@@ -69,7 +71,7 @@ public class ServicePointServiceScenario7Test extends BaseServicePointServiceInt
         assertThat(firstTemporalVersion.getMeansOfTransport()).isEqualTo(Set.of(MeanOfTransport.BUS));
         assertThat(firstTemporalVersion.getComment()).isNull();
 
-        // second version no changes
+        // not touched
         ServicePointVersion secondTemporalVersion = result.get(1);
         assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2022, 1, 1));
         assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2023, 12, 31));
@@ -81,7 +83,7 @@ public class ServicePointServiceScenario7Test extends BaseServicePointServiceInt
         assertThat(secondTemporalVersion.getMeansOfTransport()).isEqualTo(Set.of(MeanOfTransport.TRAIN));
         assertThat(secondTemporalVersion.getComment()).isNull();
 
-        // third version no changes
+        // not touched
         ServicePointVersion thirdTemporalVersion = result.get(2);
         assertThat(thirdTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2024, 1, 1));
         assertThat(thirdTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 12, 31));
@@ -140,7 +142,7 @@ public class ServicePointServiceScenario7Test extends BaseServicePointServiceInt
         assertThat(result.get(2)).isNotNull();
         assertThat(result.get(3)).isNotNull();
 
-        // first new
+        // new
         ServicePointVersion firstTemporalVersion = result.get(0);
         assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2019, 1, 1));
         assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2019, 12, 31));
@@ -152,7 +154,7 @@ public class ServicePointServiceScenario7Test extends BaseServicePointServiceInt
         assertThat(firstTemporalVersion.getMeansOfTransport()).isEqualTo(Set.of(MeanOfTransport.CABLE_CAR));
         assertThat(firstTemporalVersion.getComment()).isNull();
 
-        // first version no changes
+        // not touched
         ServicePointVersion secondTemporalVersion = result.get(1);
         assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
         assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2021, 12, 31));
@@ -164,7 +166,7 @@ public class ServicePointServiceScenario7Test extends BaseServicePointServiceInt
         assertThat(secondTemporalVersion.getMeansOfTransport()).isEqualTo(Set.of(MeanOfTransport.BUS));
         assertThat(secondTemporalVersion.getComment()).isNull();
 
-        // second version no changes
+        // not touched
         ServicePointVersion thirdTemporalVersion = result.get(2);
         assertThat(thirdTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2022, 1, 1));
         assertThat(thirdTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2023, 12, 31));
@@ -176,7 +178,7 @@ public class ServicePointServiceScenario7Test extends BaseServicePointServiceInt
         assertThat(thirdTemporalVersion.getMeansOfTransport()).isEqualTo(Set.of(MeanOfTransport.TRAIN));
         assertThat(thirdTemporalVersion.getComment()).isNull();
 
-        // third version no changes
+        // not touched
         ServicePointVersion fourthTemporalVersion = result.get(3);
         assertThat(fourthTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2024, 1, 1));
         assertThat(fourthTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 12, 31));
@@ -223,7 +225,7 @@ public class ServicePointServiceScenario7Test extends BaseServicePointServiceInt
         assertThat(result.get(2)).isNotNull();
         assertThat(result.get(3)).isNotNull();
 
-        // first version no changes
+        // not touched
         ServicePointVersion firstTemporalVersion = result.get(0);
         assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
         assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2021, 12, 31));
@@ -235,7 +237,7 @@ public class ServicePointServiceScenario7Test extends BaseServicePointServiceInt
         assertThat(firstTemporalVersion.getMeansOfTransport()).isEqualTo(Set.of(MeanOfTransport.BUS));
         assertThat(firstTemporalVersion.getComment()).isNull();
 
-        // second version no changes
+        // not touched
         ServicePointVersion secondTemporalVersion = result.get(1);
         assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2022, 1, 1));
         assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2023, 12, 31));
@@ -247,7 +249,7 @@ public class ServicePointServiceScenario7Test extends BaseServicePointServiceInt
         assertThat(secondTemporalVersion.getMeansOfTransport()).isEqualTo(Set.of(MeanOfTransport.TRAIN));
         assertThat(secondTemporalVersion.getComment()).isNull();
 
-        // third version no changes
+        // not touched
         ServicePointVersion thirdTemporalVersion = result.get(2);
         assertThat(thirdTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2024, 1, 1));
         assertThat(thirdTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 12, 31));
@@ -259,7 +261,7 @@ public class ServicePointServiceScenario7Test extends BaseServicePointServiceInt
         assertThat(thirdTemporalVersion.getMeansOfTransport()).isEqualTo(Set.of(MeanOfTransport.TRAM));
         assertThat(thirdTemporalVersion.getComment()).isNull();
 
-        // fourth new
+        // new
         ServicePointVersion fourthTemporalVersion = result.get(3);
         assertThat(fourthTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2025, 6, 1));
         assertThat(fourthTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2025, 12, 31));
@@ -306,7 +308,7 @@ public class ServicePointServiceScenario7Test extends BaseServicePointServiceInt
         assertThat(result.get(2)).isNotNull();
         assertThat(result.get(3)).isNotNull();
 
-        // first new
+        // new
         ServicePointVersion firstTemporalVersion = result.get(0);
         assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2019, 1, 1));
         assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2019, 5, 31));
@@ -318,7 +320,7 @@ public class ServicePointServiceScenario7Test extends BaseServicePointServiceInt
         assertThat(firstTemporalVersion.getMeansOfTransport()).isEqualTo(Set.of(MeanOfTransport.CABLE_CAR));
         assertThat(firstTemporalVersion.getComment()).isNull();
 
-        // first version no changes
+        // not touched
         ServicePointVersion secondTemporalVersion = result.get(1);
         assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
         assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2021, 12, 31));
@@ -330,7 +332,7 @@ public class ServicePointServiceScenario7Test extends BaseServicePointServiceInt
         assertThat(secondTemporalVersion.getMeansOfTransport()).isEqualTo(Set.of(MeanOfTransport.BUS));
         assertThat(secondTemporalVersion.getComment()).isNull();
 
-        // second version no changes
+        // not touched
         ServicePointVersion thirdTemporalVersion = result.get(2);
         assertThat(thirdTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2022, 1, 1));
         assertThat(thirdTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2023, 12, 31));
@@ -342,7 +344,7 @@ public class ServicePointServiceScenario7Test extends BaseServicePointServiceInt
         assertThat(thirdTemporalVersion.getMeansOfTransport()).isEqualTo(Set.of(MeanOfTransport.TRAIN));
         assertThat(thirdTemporalVersion.getComment()).isNull();
 
-        // third version no changes
+        // not touched
         ServicePointVersion fourthTemporalVersion = result.get(3);
         assertThat(fourthTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2024, 1, 1));
         assertThat(fourthTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 12, 31));
@@ -353,6 +355,29 @@ public class ServicePointServiceScenario7Test extends BaseServicePointServiceInt
         assertThat(fourthTemporalVersion.getDesignationOfficial()).isEqualTo("Bern, Eigerplatz");
         assertThat(fourthTemporalVersion.getMeansOfTransport()).isEqualTo(Set.of(MeanOfTransport.TRAM));
         assertThat(fourthTemporalVersion.getComment()).isNull();
+    }
+
+    /**
+     * ValidFrom is bigger than validTo: expected exception
+     */
+    @Test
+    public void scenarioValidFromBiggerThenValidTo() {
+        // given
+        version1.setValidFrom(LocalDate.of(2020, 12, 12));
+        version1.setValidTo(LocalDate.of(2029, 12, 8));
+        version1 = versionRepository.save(version1);
+        ServicePointVersion editedVersion = new ServicePointVersion();
+        editedVersion.setOperatingPoint(true);
+        editedVersion.setOperatingPointWithTimetable(true);
+        editedVersion.setMeansOfTransport(Set.of(MeanOfTransport.CABLE_CAR));
+        editedVersion.setValidFrom(LocalDate.of(2029, 12, 9));
+        editedVersion.setValidTo(version1.getValidTo());
+        //when
+        assertThatThrownBy(() -> {
+            servicePointService.updateServicePointVersion(version1, editedVersion);
+            //then
+        }).isInstanceOf(DateValidationException.class)
+                .hasMessageContaining("Edited ValidFrom 2029-12-09 is bigger than edited ValidTo 2029-12-08");
     }
 
 }
