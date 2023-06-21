@@ -287,4 +287,32 @@ public class ServicePointServiceScenario3WithServicePointGeolocationTest extends
         assertThat(fifthTemporalVersion.getComment()).isNull();
     }
 
+    @Test
+    public void updateServicePointGeolocationCreatorOnExistingVersion() {
+        // given
+        version1 = versionRepository.save(version1);
+        ServicePointGeolocation spg = TestData.testGeolocationWgs84();
+        String initialCreator = "initialCreator";
+        String initialEditor = "initialEditor";
+        spg.setCreator(initialCreator);
+        spg.setEditor(initialEditor);
+        version1.setServicePointGeolocation(spg);
+
+        ServicePointVersion editedVersion = new ServicePointVersion();
+        editedVersion.setOperatingPoint(true);
+        editedVersion.setOperatingPointWithTimetable(true);
+        ServicePointGeolocation updatedSpg = TestData.testGeolocationWgs84();
+        String updatedCreator = "updatedCreator";
+        updatedSpg.setCreator(updatedCreator);
+        editedVersion.setServicePointGeolocation(updatedSpg);
+        editedVersion.setValidFrom(LocalDate.of(2022, 1, 1));
+        editedVersion.setValidTo(LocalDate.of(2022, 1, 2));
+        // when
+        servicePointService.updateServicePointVersion(version1, editedVersion);
+        List<ServicePointVersion> result = versionRepository.getAllVersionsVersioned(SPN);
+
+        // then
+        assertThat(result).isNotNull().hasSize(1);
+    }
+
 }
