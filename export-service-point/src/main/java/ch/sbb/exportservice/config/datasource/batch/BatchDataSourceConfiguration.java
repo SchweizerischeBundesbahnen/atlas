@@ -7,6 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.jdbc.support.JdbcTransactionManager;
 
 @Configuration
 public class BatchDataSourceConfiguration {
@@ -25,6 +26,12 @@ public class BatchDataSourceConfiguration {
         .initializeDataSourceBuilder()
         .type(HikariDataSource.class)
         .build();
+  }
+
+  @Primary
+  @Bean(name = "batchTransactionManager")
+  public JdbcTransactionManager batchTransactionManager() {
+    return new JdbcTransactionManager(batchDataSource());
   }
 
 }
