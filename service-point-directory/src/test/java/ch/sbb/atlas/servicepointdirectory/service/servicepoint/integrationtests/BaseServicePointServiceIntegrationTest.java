@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint.integrationtests;
 
+import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
@@ -10,19 +11,24 @@ import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
 import jakarta.transaction.Transactional;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @IntegrationTest
 @Transactional
 public abstract class BaseServicePointServiceIntegrationTest {
+
+    @MockBean
+    private SharedBusinessOrganisationService sharedBusinessOrganisationService;
 
     protected static final ServicePointNumber SPN = ServicePointNumber.of(85890087);
     protected ServicePointVersionRepository versionRepository;
