@@ -30,11 +30,11 @@ import lombok.experimental.SuperBuilder;
  */
 public abstract class BaseDidokImportEntity {
 
-  @Column(columnDefinition = "TIMESTAMP", updatable = false)
+  @Column(columnDefinition = "TIMESTAMP")
   @AtlasVersionableProperty(ignoreDiff = true)
   private LocalDateTime creationDate;
 
-  @Column(updatable = false)
+  @Column
   @AtlasVersionableProperty(ignoreDiff = true)
   private String creator;
 
