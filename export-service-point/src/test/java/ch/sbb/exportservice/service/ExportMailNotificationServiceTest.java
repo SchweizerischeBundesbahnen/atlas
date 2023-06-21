@@ -7,24 +7,25 @@ import ch.sbb.atlas.kafka.model.mail.MailType;
 import io.micrometer.tracing.Tracer;
 import java.util.HashMap;
 import java.util.Map;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.MockitoAnnotations;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepExecution;
 
-@ExtendWith(MockitoExtension.class)
 class ExportMailNotificationServiceTest {
 
   @Mock
   private Tracer tracer;
 
-  @InjectMocks
-  @Spy
   private MailNotificationService notificationService;
+
+  @BeforeEach
+  public void setUp() {
+    MockitoAnnotations.openMocks(this);
+    notificationService = new MailNotificationService();
+  }
 
   @Test
   public void shouldBuildMailNotification() {
