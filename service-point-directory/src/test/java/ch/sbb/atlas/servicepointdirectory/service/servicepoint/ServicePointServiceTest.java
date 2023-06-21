@@ -98,7 +98,7 @@ public class ServicePointServiceTest {
     servicePointService.save(servicePointVersion);
 
     // then
-    verify(servicePointVersionRepositoryMock).save(eq(servicePointVersion));
+    verify(servicePointVersionRepositoryMock).saveAndFlush(eq(servicePointVersion));
   }
 
   @Test
