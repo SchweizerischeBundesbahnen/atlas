@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.support.JdbcTransactionManager;
 
 @Configuration
 public class ServicePointDataSourceConfiguration {
@@ -20,6 +21,11 @@ public class ServicePointDataSourceConfiguration {
     return servicePointDataSourceProperties()
         .initializeDataSourceBuilder()
         .build();
+  }
+
+  @Bean(name = "servicePointTransactionManager")
+  public JdbcTransactionManager servicePointTransactionManager() {
+    return new JdbcTransactionManager(servicePointDataSource());
   }
 
 }

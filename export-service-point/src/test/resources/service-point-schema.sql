@@ -1,18 +1,14 @@
 create sequence service_point_version_geolocation_seq;
 
-
 create sequence service_point_version_seq;
 
 create sequence loading_point_version_geolocation_seq;
 
 create sequence loading_point_version_seq;
 
-
 create sequence traffic_point_element_version_geolocation_seq;
 
-
 create sequence traffic_point_element_version_seq;
-
 
 create table service_point_version_geolocation
 (
@@ -35,12 +31,6 @@ create table service_point_version_geolocation
     editor                    varchar(50)      not null,
     version                   bigint default 0 not null
 );
-
-create index service_point_version_geolocation_spatial_reference_index
-    on service_point_version_geolocation (spatial_reference);
-
-create index service_point_version_geolocation_east_north_index
-    on service_point_version_geolocation (east, north);
 
 create table service_point_version
 (
@@ -81,12 +71,6 @@ create table service_point_version
         unique (number, valid_from)
 );
 
-
-create index service_point_version_number
-    on service_point_version (number);
-
-create index service_point_version_valid_from_to_index
-    on service_point_version (valid_from, valid_to);
 
 create table service_point_version_categories
 (
