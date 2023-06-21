@@ -67,7 +67,7 @@ public class TransportCompanyRelationServiceTest {
                                                               .validTo(LocalDate.of(2021, 1, 1))
                                                               .build();
 
-    Executable executable = () -> transportCompanyRelationService.save(entity);
+    Executable executable = () -> transportCompanyRelationService.save(entity, false);
     assertDoesNotThrow(executable);
     verify(transportCompanyRelationRepository, times(1)).save(entity);
   }
@@ -89,7 +89,7 @@ public class TransportCompanyRelationServiceTest {
                                                               .validTo(LocalDate.of(2021, 1, 1))
                                                               .build();
 
-    Executable executable = () -> transportCompanyRelationService.save(entity);
+    Executable executable = () -> transportCompanyRelationService.save(entity, false);
     assertThrows(TransportCompanyNotFoundException.class, executable, "Entity not found");
     verify(transportCompanyRelationRepository, times(0)).save(entity);
   }
@@ -111,7 +111,7 @@ public class TransportCompanyRelationServiceTest {
                                                               .validTo(LocalDate.of(2021, 1, 1))
                                                               .build();
 
-    Executable executable = () -> transportCompanyRelationService.save(entity);
+    Executable executable = () -> transportCompanyRelationService.save(entity, false);
     assertThrows(SboidNotFoundException.class, executable, "Entity not found");
     verify(transportCompanyRelationRepository, times(0)).save(entity);
   }
