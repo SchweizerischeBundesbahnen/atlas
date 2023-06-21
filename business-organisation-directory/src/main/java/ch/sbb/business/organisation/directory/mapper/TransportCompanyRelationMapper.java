@@ -1,7 +1,6 @@
 package ch.sbb.business.organisation.directory.mapper;
 
 import ch.sbb.atlas.api.bodi.TransportCompanyRelationModel;
-import ch.sbb.atlas.api.bodi.UpdateTransportCompanyRelationModel;
 import ch.sbb.business.organisation.directory.entity.TransportCompany;
 import ch.sbb.business.organisation.directory.entity.TransportCompanyRelation;
 import lombok.experimental.UtilityClass;
@@ -16,6 +15,7 @@ public class TransportCompanyRelationMapper {
         .validFrom(model.getValidFrom())
         .validTo(model.getValidTo()).build();
   }
+
   public static TransportCompanyRelationModel toModel(TransportCompanyRelation entity) {
     return TransportCompanyRelationModel.builder()
         .transportCompanyId(entity.getTransportCompany().getId())
