@@ -19,14 +19,14 @@ public class TransportCompanyRelationService {
   private final BusinessOrganisationService businessOrganisationService;
   private final TransportCompanyService transportCompanyService;
 
-  public TransportCompanyRelation save(TransportCompanyRelation entity) {
+  public TransportCompanyRelation save(TransportCompanyRelation entity, boolean isUpdateTransportCompanyRelation) {
     if (businessOrganisationService.findBusinessOrganisationVersions(entity.getSboid()).isEmpty()) {
       throw new SboidNotFoundException(entity.getSboid());
     }
     if (!transportCompanyService.existsById(entity.getTransportCompany().getId())) {
       throw new TransportCompanyNotFoundException(entity.getTransportCompany().getId());
     }
-    validateRelationOverlaps(entity);
+    validateRelationOverlaps(entity, isUpdateTransportCompanyRelation);
     return transportCompanyRelationRepository.save(entity);
   }
 
@@ -37,17 +37,15 @@ public class TransportCompanyRelationService {
     transportCompanyRelationRepository.deleteById(relationId);
   }
 
-  void validateRelationOverlaps(TransportCompanyRelation relation) {
-    List<TransportCompanyRelation> relationOverlaps = findRelationOverlaps(relation);
-
+  void validateRelationOverlaps(TransportCompanyRelation transportCompanyRelation, boolean isUpdateTransportCompanyRelation) {
+    List<TransportCompanyRelation> relationOverlaps = findRelationOverlaps(transportCompanyRelation);
     boolean isSelfOverlapping = false;
-    if (relation.getId() != null) {
+    if (isUpdateTransportCompanyRelation) {
       isSelfOverlapping = relationOverlaps.stream()
-          .anyMatch(rel -> rel != null && rel.getId() != null && rel.getId().longValue() == relation.getId().longValue());
+          .anyMatch(relation -> relation.getId().equals(transportCompanyRelation.getId()));
     }
-
-    if (!relationOverlaps.isEmpty() && !isSelfOverlapping || relationOverlaps.size() > 1) {
-      throw new TransportCompanyRelationConflictException(relation, relationOverlaps);
+    if (relationOverlaps.size() == 1 && !isSelfOverlapping || relationOverlaps.size() > 1) {
+      throw new TransportCompanyRelationConflictException(transportCompanyRelation, relationOverlaps);
     }
   }
 
