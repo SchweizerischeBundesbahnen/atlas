@@ -32,7 +32,7 @@ public class JsonServicePointWriter {
     JsonFileItemWriter<ServicePointVersionModel> writer = new JsonFileItemWriter<>(
         fileSystemResource,
         jacksonJsonObjectMarshaller);
-    writer.setEncoding(StandardCharsets.ISO_8859_1.name());
+    writer.setEncoding(StandardCharsets.UTF_8.name());
     return writer;
   }
 
