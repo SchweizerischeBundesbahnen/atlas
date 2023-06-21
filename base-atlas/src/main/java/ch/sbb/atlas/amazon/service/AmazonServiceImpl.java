@@ -130,7 +130,7 @@ public class AmazonServiceImpl implements AmazonService {
     URL url;
     PutObjectRequest putObjectRequest;
     try (FileInputStream inputStream = new FileInputStream(file)) {
-      String filePathName = getFilePathName(file, dir) + ".gzip";
+      String filePathName = getFilePathName(file, dir) + ".gz";
       byte[] zippedBytes = gzipFile(inputStream.readAllBytes());
       ObjectMetadata metadata = new ObjectMetadata();
       metadata.setContentType("application/gzip");

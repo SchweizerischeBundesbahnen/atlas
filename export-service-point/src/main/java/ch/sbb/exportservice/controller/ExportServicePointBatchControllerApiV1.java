@@ -56,7 +56,7 @@ public class ExportServicePointBatchControllerApiV1 {
     String fileName = fileExportService.getBaseFileName(servicePointExportType);
     HttpHeaders headers = new HttpHeaders();
     headers.add("Content-Type", "application/gzip");
-    headers.add("Content-Disposition", "attachment;filename=" + fileName + ".json.gzip");
+    headers.add("Content-Disposition", "attachment;filename=" + fileName + ".json.gz");
     headers.add("Pragma", "no-cache");
     headers.add("Cache-Control", "no-cache");
     StreamingResponseBody body = fileExportService.streamingGzipFile(servicePointExportType);
