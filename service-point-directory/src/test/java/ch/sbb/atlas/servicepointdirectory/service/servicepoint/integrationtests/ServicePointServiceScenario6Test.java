@@ -41,6 +41,8 @@ public class ServicePointServiceScenario6Test extends BaseServicePointServiceInt
         version2 = versionRepository.save(version2);
         version3 = versionRepository.save(version3);
         ServicePointVersion editedVersion = new ServicePointVersion();
+        editedVersion.setOperatingPoint(true);
+        editedVersion.setOperatingPointWithTimetable(true);
         editedVersion.setMeansOfTransport(Set.of(MeanOfTransport.CABLE_CAR));
         editedVersion.setValidFrom(LocalDate.of(2024, 6, 1));
         editedVersion.setValidTo(LocalDate.of(2024, 12, 31));
@@ -121,6 +123,8 @@ public class ServicePointServiceScenario6Test extends BaseServicePointServiceInt
         // given
         version1 = versionRepository.save(version1);
         ServicePointVersion editedVersion = new ServicePointVersion();
+        editedVersion.setOperatingPoint(true);
+        editedVersion.setOperatingPointWithTimetable(true);
         editedVersion.setMeansOfTransport(Set.of(MeanOfTransport.CABLE_CAR));
         editedVersion.setValidFrom(LocalDate.of(2020, 6, 1));
         editedVersion.setValidTo(LocalDate.of(2021, 12, 31));
@@ -175,6 +179,8 @@ public class ServicePointServiceScenario6Test extends BaseServicePointServiceInt
         // given
         version1 = versionRepository.save(version1);
         ServicePointVersion editedVersion = new ServicePointVersion();
+        editedVersion.setOperatingPoint(true);
+        editedVersion.setOperatingPointWithTimetable(true);
         editedVersion.setMeansOfTransport(Set.of(MeanOfTransport.CABLE_CAR));
         editedVersion.setValidFrom(LocalDate.of(2020, 6, 1));
         editedVersion.setValidTo(LocalDate.of(2022, 12, 31));
@@ -229,6 +235,8 @@ public class ServicePointServiceScenario6Test extends BaseServicePointServiceInt
         // given
         version1 = versionRepository.save(version1);
         ServicePointVersion editedVersion = new ServicePointVersion();
+        editedVersion.setOperatingPoint(true);
+        editedVersion.setOperatingPointWithTimetable(true);
         editedVersion.setMeansOfTransport(Set.of(MeanOfTransport.CABLE_CAR));
         editedVersion.setValidFrom(LocalDate.of(2020, 6, 1));
         editedVersion.setValidTo(version1.getValidTo());
