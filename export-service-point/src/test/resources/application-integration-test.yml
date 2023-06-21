@@ -1,8 +1,8 @@
 spring:
   datasource:
-    service-point-test:
+    service-point:
       driver-class-name: org.h2.Driver
-      url: jdbc:h2:mem:service-point-data.json;DB_CLOSE_ON_EXIT=FALSE
+      url: jdbc:h2:mem:servicepoint;DB_CLOSE_ON_EXIT=FALSE
       username: sa
       password: sa
     hikari:
