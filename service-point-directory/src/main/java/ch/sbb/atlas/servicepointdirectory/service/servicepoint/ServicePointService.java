@@ -59,9 +59,9 @@ public class ServicePointService {
       throw new StaleObjectStateException(ServicePointVersion.class.getSimpleName(), "version");
     }
 
-    List<ServicePointVersion> dbVersions = findAllByNumberOrderByValidFrom(currentVersion.getNumber());
+    List<ServicePointVersion> existingDbVersions = findAllByNumberOrderByValidFrom(currentVersion.getNumber());
     List<VersionedObject> versionedObjects = versionableService.versioningObjects(currentVersion,
-        editedVersion, dbVersions);
+        editedVersion, existingDbVersions);
     versionableService.applyVersioning(ServicePointVersion.class, versionedObjects,
         this::save, this::deleteById);
     return currentVersion;
