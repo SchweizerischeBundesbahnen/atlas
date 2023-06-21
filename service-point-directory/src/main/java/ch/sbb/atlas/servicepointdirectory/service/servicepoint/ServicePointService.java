@@ -1,6 +1,5 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
-import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
@@ -51,12 +50,7 @@ public class ServicePointService {
 
   public ServicePointVersion save(ServicePointVersion servicePointVersion) {
     servicePointValidationService.validateServicePointPreconditionBusinessRule(servicePointVersion);
-    return servicePointVersionRepository.save(servicePointVersion);
-  }
-
-  public ServicePointVersion applyVersioning(ServicePointVersion newVersion) {
-    newVersion.setStatus(Status.VALIDATED);
-    return servicePointVersionRepository.saveAndFlush(newVersion);
+    return servicePointVersionRepository.saveAndFlush(servicePointVersion);
   }
 
   public ServicePointVersion updateServicePointVersion(ServicePointVersion currentVersion, ServicePointVersion editedVersion) {
@@ -69,7 +63,7 @@ public class ServicePointService {
     List<VersionedObject> versionedObjects = versionableService.versioningObjects(currentVersion,
         editedVersion, dbVersions);
     versionableService.applyVersioning(ServicePointVersion.class, versionedObjects,
-        this::applyVersioning, this::deleteById);
+        this::save, this::deleteById);
     return currentVersion;
   }
 
