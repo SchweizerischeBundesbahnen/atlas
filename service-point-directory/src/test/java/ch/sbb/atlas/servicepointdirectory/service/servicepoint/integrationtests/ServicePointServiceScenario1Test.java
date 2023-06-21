@@ -1,18 +1,19 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint.integrationtests;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ServicePointServiceScenario1Test extends BaseServicePointServiceIntegrationTest {
 
@@ -38,6 +39,8 @@ public class ServicePointServiceScenario1Test extends BaseServicePointServiceInt
         version2 = versionRepository.save(version2);
 
         ServicePointVersion editedVersion = new ServicePointVersion();
+        editedVersion.setOperatingPoint(true);
+        editedVersion.setOperatingPointWithTimetable(true);
         editedVersion.setMeansOfTransport(Set.of(MeanOfTransport.CABLE_CAR));
         //when
         servicePointService.updateServicePointVersion(version2, editedVersion);
@@ -88,6 +91,8 @@ public class ServicePointServiceScenario1Test extends BaseServicePointServiceInt
         version2 = versionRepository.save(version2);
 
         ServicePointVersion editedVersion = new ServicePointVersion();
+        editedVersion.setOperatingPoint(true);
+        editedVersion.setOperatingPointWithTimetable(true);
         editedVersion.setMeansOfTransport(Set.of(MeanOfTransport.CABLE_CAR));
         editedVersion.setValidFrom(version2.getValidFrom());
         editedVersion.setValidTo(version2.getValidTo());
@@ -141,6 +146,8 @@ public class ServicePointServiceScenario1Test extends BaseServicePointServiceInt
         version3 = versionRepository.save(version3);
 
         ServicePointVersion editedVersion = new ServicePointVersion();
+        editedVersion.setOperatingPoint(true);
+        editedVersion.setOperatingPointWithTimetable(true);
         editedVersion.setMeansOfTransport(Set.of(MeanOfTransport.CABLE_CAR));
         //when
         servicePointService.updateServicePointVersion(version2, editedVersion);
@@ -205,6 +212,8 @@ public class ServicePointServiceScenario1Test extends BaseServicePointServiceInt
         version3 = versionRepository.save(version3);
 
         ServicePointVersion editedVersion = new ServicePointVersion();
+        editedVersion.setOperatingPoint(true);
+        editedVersion.setOperatingPointWithTimetable(true);
         editedVersion.setMeansOfTransport(Set.of(MeanOfTransport.CABLE_CAR));
         //when
         servicePointService.updateServicePointVersion(version1, editedVersion);
@@ -271,6 +280,8 @@ public class ServicePointServiceScenario1Test extends BaseServicePointServiceInt
         version5 = versionRepository.save(version5);
 
         ServicePointVersion editedVersion = new ServicePointVersion();
+        editedVersion.setOperatingPoint(true);
+        editedVersion.setOperatingPointWithTimetable(true);
         editedVersion.setMeansOfTransport(Set.of(MeanOfTransport.CABLE_CAR));
         editedVersion.setValidFrom(version2.getValidFrom());
         editedVersion.setValidTo(version3.getValidTo());
