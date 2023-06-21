@@ -28,11 +28,17 @@ import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
-@SqlGroup({@Sql(scripts = {"/service-point-schema.sql", "/service-point-init-data.sql"}, executionPhase =
-    ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(dataSource =
-    "servicePointDataSource",
-    transactionManager =
-        "servicePointTransactionManager", transactionMode = SqlConfig.TransactionMode.ISOLATED)),
+@SqlGroup({
+    @Sql(scripts = {"/service-point-schema.sql", "/service-point-init-data.sql"}, executionPhase =
+        ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(dataSource =
+        "servicePointDataSource",
+        transactionManager =
+            "servicePointTransactionManager", transactionMode = SqlConfig.TransactionMode.ISOLATED)),
+    @Sql(scripts = {"/prune-batch-data-db.sql"}, executionPhase =
+        ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(dataSource =
+        "batchDataSource",
+        transactionManager =
+            "batchTransactionManager", transactionMode = SqlConfig.TransactionMode.ISOLATED)),
     @Sql(scripts = {"/service-point-drop.sql"}, executionPhase = ExecutionPhase.AFTER_TEST_METHOD, config =
     @SqlConfig(dataSource = "servicePointDataSource",
         transactionManager =
