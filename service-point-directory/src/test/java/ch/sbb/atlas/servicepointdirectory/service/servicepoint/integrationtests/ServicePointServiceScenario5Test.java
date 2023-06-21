@@ -60,7 +60,7 @@ public class ServicePointServiceScenario5Test extends BaseServicePointServiceInt
         assertThat(result.get(4)).isNotNull();
         assertThat(result.get(5)).isNotNull();
 
-        // first current index updated
+        // update
         ServicePointVersion firstTemporalVersion = result.get(0);
         assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
         assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2020, 5, 31));
@@ -120,7 +120,7 @@ public class ServicePointServiceScenario5Test extends BaseServicePointServiceInt
         assertThat(fifthTemporalVersion.getMeansOfTransport()).isEqualTo(Set.of(MeanOfTransport.CABLE_CAR));
         assertThat(fifthTemporalVersion.getComment()).isNull();
 
-        // last current index updated
+        // update
         ServicePointVersion sixthTemporalVersion = result.get(5);
         assertThat(sixthTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2025, 6, 2));
         assertThat(sixthTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2025, 12, 31));
