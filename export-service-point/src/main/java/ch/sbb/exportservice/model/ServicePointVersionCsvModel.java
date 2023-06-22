@@ -1,5 +1,9 @@
 package ch.sbb.exportservice.model;
 
+import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
+import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
+import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
+import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -43,7 +47,7 @@ public class ServicePointVersionCsvModel {
 
   private boolean stopPoint;
 
-  private String stopPointTypeCode;
+  private StopPointType stopPointTypeCode;
 
   private boolean freightServicePoint;
 
@@ -67,15 +71,15 @@ public class ServicePointVersionCsvModel {
 
   private String localityName;
 
-  private String operatingPointTypeCode;
+  private OperatingPointType operatingPointTypeCode;
 
-  private String operatingPointTechnicalTimetableTypeCode;
+  private OperatingPointTechnicalTimetableType operatingPointTechnicalTimetableTypeCode;
 
   private String meansOfTransportCode;
 
   private String categoriesCode;
 
-  private String operatingPointTrafficPointTypeCode;
+  private OperatingPointTrafficPointType operatingPointTrafficPointTypeCode;
 
   private boolean operatingPointRouteNetwork;
 
