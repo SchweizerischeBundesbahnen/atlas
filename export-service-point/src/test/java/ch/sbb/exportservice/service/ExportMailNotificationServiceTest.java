@@ -13,7 +13,10 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepExecution;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
+@DirtiesContext(classMode = ClassMode.AFTER_CLASS)
 class ExportMailNotificationServiceTest {
 
   @Mock
