@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory;
 
+import ch.sbb.atlas.api.servicepoint.CodeAndDesignation;
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.Status;
@@ -10,10 +11,10 @@ import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
 import ch.sbb.atlas.servicepoint.enumeration.ServicePointStatus;
+import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.api.model.CreateServicePointVersionModel;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
-import ch.sbb.atlas.servicepointdirectory.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointGeolocationMapper;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -274,7 +275,7 @@ public class ServicePointTestData {
             .designationDe("Verkaufsstelle")
             .designationFr("Point de vente")
             .designationIt("Punto vendita")
-            .designationEn("Verkaufsstelle")
+            .designationEn("Point of sale")
             .build()))
         .operatingPointType(OperatingPointType.INVENTORY_POINT)
         .operatingPointTechnicalTimetableType(OperatingPointTechnicalTimetableType.ASSIGNED_OPERATING_POINT)
