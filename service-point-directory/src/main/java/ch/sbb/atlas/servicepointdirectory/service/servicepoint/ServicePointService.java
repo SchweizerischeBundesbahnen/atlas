@@ -46,11 +46,11 @@ public class ServicePointService {
 
   public void deleteById(Long id) {
     servicePointVersionRepository.deleteById(id);
+    servicePointVersionRepository.flush();
   }
 
   public ServicePointVersion save(ServicePointVersion servicePointVersion) {
     servicePointValidationService.validateServicePointPreconditionBusinessRule(servicePointVersion);
-    log.info("Check number of existing servicePointVersion: " + servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointVersion.getNumber()).size());
     return servicePointVersionRepository.saveAndFlush(servicePointVersion);
   }
 

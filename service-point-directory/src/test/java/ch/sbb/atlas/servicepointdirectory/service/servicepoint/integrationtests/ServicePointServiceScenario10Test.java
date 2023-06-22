@@ -91,6 +91,60 @@ public class ServicePointServiceScenario10Test extends BaseServicePointServiceIn
     }
 
     /**
+     * Szenario 10a (Spezialfall 3): Update in der Lücke zwischen zwei Versionen
+     *
+     * Änderung                     |_________|
+     *                 |-----------|           |-------------|
+     *                   Version 1                Version 2
+     *
+     * Ergebnis: Neue Version wird erstellt (mit Inhalt von Änderung und Version 3)
+     */
+    @Test
+    public void scenario10aMergeWhenNoPropertiesChanged() {
+        // given
+        version1 = versionRepository.save(version1);
+        version3 = versionRepository.save(version3);
+        ServicePointVersion editedVersion = new ServicePointVersion();
+        editedVersion.setOperatingPoint(true);
+        editedVersion.setOperatingPointWithTimetable(true);
+        editedVersion.setValidFrom(LocalDate.of(2022, 1, 1));
+        editedVersion.setValidTo(LocalDate.of(2023, 12, 31));
+        // when
+        servicePointService.updateServicePointVersion(version1, editedVersion);
+        List<ServicePointVersion> result = versionRepository.getAllVersionsVersioned(SPN);
+
+        // then
+        assertThat(result).isNotNull().hasSize(2);
+        result.sort(Comparator.comparing(ServicePointVersion::getValidFrom));
+        assertThat(result.get(0)).isNotNull();
+        assertThat(result.get(1)).isNotNull();
+
+        // first version updated
+        ServicePointVersion firstTemporalVersion = result.get(0);
+        assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
+        assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2023, 12, 31));
+        assertThat(firstTemporalVersion.getNumber()).isEqualTo(SPN);
+        assertThat(firstTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
+        assertThat(firstTemporalVersion.getBusinessOrganisation()).isEqualTo("ch:1:sboid:100626");
+        assertThat(firstTemporalVersion.getSloid()).isEqualTo("ch:1:sloid:89008");
+        assertThat(firstTemporalVersion.getDesignationOfficial()).isEqualTo("Bern, Wyleregg");
+        assertThat(firstTemporalVersion.getMeansOfTransport()).isEqualTo(Set.of(MeanOfTransport.BUS));
+        assertThat(firstTemporalVersion.getComment()).isNull();
+
+        // second version not touched
+        ServicePointVersion secondTemporalVersion = result.get(1);
+        assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2024, 1, 1));
+        assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 12, 31));
+        assertThat(secondTemporalVersion.getNumber()).isEqualTo(SPN);
+        assertThat(secondTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
+        assertThat(secondTemporalVersion.getBusinessOrganisation()).isEqualTo("ch:1:sboid:100626");
+        assertThat(secondTemporalVersion.getSloid()).isEqualTo("ch:1:sloid:89008");
+        assertThat(secondTemporalVersion.getDesignationOfficial()).isEqualTo("Bern, Eigerplatz");
+        assertThat(secondTemporalVersion.getMeansOfTransport()).isEqualTo(Set.of(MeanOfTransport.TRAM));
+        assertThat(secondTemporalVersion.getComment()).isNull();
+    }
+
+    /**
      * Szenario 10b (Spezialfall 6): Update, welches über die Lücke zwischen zwei Versionen hinaus geht
      *
      * Änderung                 |_________________|
