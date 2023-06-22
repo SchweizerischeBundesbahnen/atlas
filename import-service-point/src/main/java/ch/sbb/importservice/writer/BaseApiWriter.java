@@ -23,9 +23,9 @@ public abstract class BaseApiWriter {
     this.stepExecution = stepExecution;
   }
 
-  protected void saveItemProcessed(Long stepExecutionId, Integer number, ItemImportResponseStatus status, String message) {
+  protected void saveItemProcessed(Long stepExecutionId, String itemNumber, ItemImportResponseStatus status, String message) {
     ImportProcessItem importProcessItem = ImportProcessItem.builder()
-        .itemNumber(number)
+        .itemNumber(itemNumber)
         .stepExecutionId(stepExecutionId)
         .jobExecutionName(stepExecution.getJobExecution().getJobInstance().getJobName())
         .responseStatus(status)
