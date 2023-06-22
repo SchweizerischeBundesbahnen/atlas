@@ -28,7 +28,10 @@ import org.springframework.batch.core.explore.JobExplorer;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
+@DirtiesContext(classMode = ClassMode.AFTER_CLASS)
 public class RecoveryJobsRunnerTest {
 
   private RecoveryJobsRunner recoveryJobsRunner;
