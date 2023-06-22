@@ -204,7 +204,7 @@ include::{snippets}/timetable-field-number-controller-api-test/should-export-tim
 
 = Future Timetable
 
-For more information go to  https://www.fahrplanfelder.ch/en/explanations/timetable-year.html#c202[Timetable year] definition.
+For more information go to  https://www.xn--v-info-vxa.ch/de/fahrplan-aktuell/fahrplanwissen/fahrplanjahr-und-wechsel[Timetable year] definition.
 
 == Get Timetable Year change
 
