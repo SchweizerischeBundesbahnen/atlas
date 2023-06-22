@@ -1,6 +1,6 @@
 package ch.sbb.exportservice.writer;
 
-import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.exportservice.model.ExportExtensionFileType;
 import ch.sbb.exportservice.model.ServicePointExportType;
 import ch.sbb.exportservice.service.FileExportService;
@@ -20,8 +20,8 @@ public class JsonServicePointWriter {
   @Autowired
   private FileExportService fileExportService;
 
-  public JsonFileItemWriter<ServicePointVersionModel> getWriter(ServicePointExportType exportType) {
-    JacksonJsonObjectMarshaller<ServicePointVersionModel> jacksonJsonObjectMarshaller = new JacksonJsonObjectMarshaller<>();
+  public JsonFileItemWriter<ReadServicePointVersionModel> getWriter(ServicePointExportType exportType) {
+    JacksonJsonObjectMarshaller<ReadServicePointVersionModel> jacksonJsonObjectMarshaller = new JacksonJsonObjectMarshaller<>();
     ObjectMapper objectMapper = new ObjectMapper();
     objectMapper.registerModule(new JavaTimeModule());
     objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
@@ -29,7 +29,7 @@ public class JsonServicePointWriter {
     FileSystemResource fileSystemResource =
         new FileSystemResource(fileExportService.createFileNamePath(ExportExtensionFileType.JSON_EXTENSION,
             exportType));
-    JsonFileItemWriter<ServicePointVersionModel> writer = new JsonFileItemWriter<>(
+    JsonFileItemWriter<ReadServicePointVersionModel> writer = new JsonFileItemWriter<>(
         fileSystemResource,
         jacksonJsonObjectMarshaller);
     writer.setEncoding(StandardCharsets.UTF_8.name());
