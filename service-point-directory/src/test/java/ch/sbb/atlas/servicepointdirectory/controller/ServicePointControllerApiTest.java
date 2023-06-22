@@ -38,13 +38,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 public class ServicePointControllerApiTest extends BaseControllerApiTest {
 
+  private final ServicePointVersionRepository repository;
+  private final ServicePointController servicePointController;
   @MockBean
   private SharedBusinessOrganisationService sharedBusinessOrganisationService;
-
-  private final ServicePointVersionRepository repository;
-
-  private final ServicePointController servicePointController;
-
   private ServicePointVersion servicePointVersion;
 
   @Autowired
@@ -217,7 +214,7 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
             .contentType(contentType)
             .content(mapper.writeValueAsString(ServicePointTestData.getAargauServicePointVersionModel())))
         .andExpect(status().isCreated())
-        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.id, is(servicePointVersion.getId().intValue()+1)))
+        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.id, is(servicePointVersion.getId().intValue() + 1)))
         .andExpect(jsonPath("$.number.number", is(8034510)))
         .andExpect(jsonPath("$.number.numberShort", is(34510)))
         .andExpect(jsonPath("$.number.checkDigit", is(8)))
@@ -248,10 +245,12 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.operatingPointTypeInformation.designationFr", is("Point d'inventaire")))
         .andExpect(jsonPath("$.operatingPointTypeInformation.designationIt", is("punto di inventario")))
         .andExpect(jsonPath("$.operatingPointTypeInformation.designationEn", is("Inventory point")))
-        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.operatingPointTechnicalTimetableType, is("ASSIGNED_OPERATING_POINT")))
+        .andExpect(
+            jsonPath("$." + ServicePointVersionModel.Fields.operatingPointTechnicalTimetableType, is("ASSIGNED_OPERATING_POINT")))
         .andExpect(jsonPath("$.operatingPointTechnicalTimetableTypeInformation.code", is("16")))
         .andExpect(jsonPath("$.operatingPointTechnicalTimetableTypeInformation.designationDe", is("Zugeordneter Betriebspunkt")))
-        .andExpect(jsonPath("$.operatingPointTechnicalTimetableTypeInformation.designationFr", is("Point d’exploitation associé")))
+        .andExpect(
+            jsonPath("$.operatingPointTechnicalTimetableTypeInformation.designationFr", is("Point d’exploitation associé")))
         .andExpect(jsonPath("$.operatingPointTechnicalTimetableTypeInformation.designationIt", is("Punto d’esercizio associato")))
         .andExpect(jsonPath("$.operatingPointTechnicalTimetableTypeInformation.designationEn", is("Assigned operating point")))
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.operatingPointRouteNetwork, is(false)))
@@ -303,11 +302,13 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
 
   @Test
   public void shouldUpdateServicePointAndCreateMultipleVersions() throws Exception {
-    ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(ServicePointTestData.getAargauServicePointVersionModel());
+    ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
+        ServicePointTestData.getAargauServicePointVersionModel());
     Long id = servicePointVersionModel.getId();
 
     CreateServicePointVersionModel newServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
-    newServicePointVersionModel.setServicePointGeolocation(ServicePointGeolocationMapper.toModel(ServicePointTestData.getAargauServicePointGeolocation()));
+    newServicePointVersionModel.setServicePointGeolocation(
+        ServicePointGeolocationMapper.toModel(ServicePointTestData.getAargauServicePointGeolocation()));
     newServicePointVersionModel.setValidFrom(LocalDate.of(2011, 12, 11));
     newServicePointVersionModel.setValidTo(LocalDate.of(2012, 12, 11));
 
@@ -371,11 +372,13 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
 
   @Test
   public void shouldUpdateServicePointAndNotCreateMultipleVersions() throws Exception {
-    ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(ServicePointTestData.getAargauServicePointVersionModel());
+    ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
+        ServicePointTestData.getAargauServicePointVersionModel());
     Long id = servicePointVersionModel.getId();
 
     CreateServicePointVersionModel newServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
-    newServicePointVersionModel.setServicePointGeolocation(ServicePointGeolocationMapper.toModel(ServicePointTestData.getAargauServicePointGeolocation()));
+    newServicePointVersionModel.setServicePointGeolocation(
+        ServicePointGeolocationMapper.toModel(ServicePointTestData.getAargauServicePointGeolocation()));
 
     mvc.perform(MockMvcRequestBuilders.put("/v1/service-points/" + id)
             .contentType(contentType)

@@ -3,6 +3,7 @@ package ch.sbb.exportservice.config;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_SERVICE_POINT_CSV_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_SERVICE_POINT_JSON_JOB_NAME;
 
+import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.exportservice.entity.ServicePointVersion;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
@@ -70,7 +71,7 @@ public class ServicePointExportBatchConfig {
 
   @Bean
   @StepScope
-  public JsonFileItemWriter<ServicePointVersionModel> jsonFileItemWriter(
+  public JsonFileItemWriter<ReadServicePointVersionModel> jsonFileItemWriter(
       @Value("#{jobParameters[exportType]}") ServicePointExportType exportType) {
     return jsonServicePointWriter.getWriter(exportType);
   }
@@ -111,7 +112,7 @@ public class ServicePointExportBatchConfig {
   public Step exportServicePointJsonStep(ItemReader<ServicePointVersion> itemReader) {
     String stepName = "exportServicePointJsonStep";
     return new StepBuilder(stepName, jobRepository)
-        .<ServicePointVersion, ServicePointVersionModel>chunk(CHUNK_SIZE, transactionManager)
+        .<ServicePointVersion, ReadServicePointVersionModel>chunk(CHUNK_SIZE, transactionManager)
         .reader(itemReader)
         .processor(servicePointVersionJsonProcessor())
         .writer(jsonFileItemWriter(null))
