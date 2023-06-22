@@ -29,10 +29,10 @@ public class SqlQueryUtil {
 
   private static final String SWISS_ONLY_FUTURE_TIMETABLE_WHERE_STATEMENT = "WHERE spv.country "
       + "IN('SWITZERLAND','GERMANY_BUS','AUSTRIA_BUS','ITALY_BUS','FRANCE_BUS') "
-      + "AND '" + FutureTimetableHelper.getActualTimetableYearChangeDate(LocalDate.now()).format(
+      + "AND '" + FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now()).format(
       DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN)) + "' between spv.valid_from and spv.valid_to ";
   private static final String WORLD_ONLY_FUTURE_TIMETABLE_WHERE_STATEMENT = "WHERE "
-      + "'" + FutureTimetableHelper.getActualTimetableYearChangeDate(LocalDate.now()).format(
+      + "'" + FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now()).format(
       DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN)) + "' between spv.valid_from and spv.valid_to ";
   private static final String WORLD_ONLY_ACTUAL_WHERE_STATEMENT = "WHERE now() between spv.valid_from and spv.valid_to ";
 

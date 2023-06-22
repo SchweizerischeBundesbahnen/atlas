@@ -1,19 +1,19 @@
 package ch.sbb.exportservice.processor;
 
 import ch.sbb.atlas.api.servicepoint.CodeAndDesignation;
-import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.exportservice.entity.ServicePointVersion;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemProcessor;
 
 @Slf4j
 public class ServicePointVersionJsonProcessor extends BaseProcessor implements ItemProcessor<ServicePointVersion,
-    ServicePointVersionModel> {
+    ReadServicePointVersionModel> {
 
   @Override
-  public ServicePointVersionModel process(ServicePointVersion servicePointVersion) {
+  public ReadServicePointVersionModel process(ServicePointVersion servicePointVersion) {
 
-    return ServicePointVersionModel.builder()
+    return ReadServicePointVersionModel.builder()
         .id(servicePointVersion.getId())
         .number(servicePointVersion.getNumber())
         .sloid(servicePointVersion.getSloid())

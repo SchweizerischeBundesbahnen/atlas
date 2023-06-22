@@ -1,4 +1,4 @@
-package ch.sbb.atlas.servicepointdirectory.mapper;
+package ch.sbb.atlas.servicepointdirectory.api;
 
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
