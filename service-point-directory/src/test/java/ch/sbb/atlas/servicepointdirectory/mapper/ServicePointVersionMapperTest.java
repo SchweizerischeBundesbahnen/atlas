@@ -2,6 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.mapper;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+import ch.sbb.atlas.api.servicepoint.CodeAndDesignation;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;

@@ -1,7 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.api.model;
 
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
-import ch.sbb.atlas.servicepointdirectory.model.CoordinatePair;
+import ch.sbb.atlas.servicepoint.CoordinatePair;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
