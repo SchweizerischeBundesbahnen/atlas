@@ -5,8 +5,6 @@ import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointElementCsvMode
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointItemImportResult.TrafficPointItemImportResultBuilder;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
-import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
-import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
 import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
 import com.fasterxml.jackson.databind.MappingIterator;
@@ -26,15 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class TrafficPointElementImportService {
 
-  private final TrafficPointElementVersionRepository trafficPointElementVersionRepository;
   private final TrafficPointElementService trafficPointElementService;
-
-  public void importTrafficPointElements(List<TrafficPointElementCsvModel> csvModels) {
-    List<TrafficPointElementVersion> trafficPointElementVersions = csvModels.stream()
-        .map(new TrafficPointElementCsvToEntityMapper()).toList();
-
-    trafficPointElementVersionRepository.saveAll(trafficPointElementVersions);
-  }
 
   public static List<TrafficPointElementCsvModel> parseTrafficPointElements(InputStream inputStream)
       throws IOException {
@@ -69,27 +59,13 @@ public class TrafficPointElementImportService {
           importResults.add(saveResult);
         }
       }
-
-      List<TrafficPointElementVersion> trafficPointElements = trafficPointElementService.findTrafficPointElements(
-          container.getSloid());
-      trafficPointElements.forEach(tp -> {
-        TrafficPointElementGeolocation geolocation = tp.getTrafficPointElementGeolocation();
-        if (geolocation == null) {
-          return;
-        }
-        geolocation.setEditor(tp.getEditor());
-        geolocation.setEditionDate(tp.getEditionDate());
-        geolocation.setCreator(tp.getCreator());
-        geolocation.setCreationDate(tp.getCreationDate());
-      });
-
     }
     return importResults;
   }
 
   private TrafficPointItemImportResult updateTrafficPointVersion(TrafficPointElementVersion trafficPointElementVersion) {
     try {
-      trafficPointElementService.updateTrafficPointElementVersion(trafficPointElementVersion);
+      trafficPointElementService.updateTrafficPointElementVersionImport(trafficPointElementVersion);
       return buildSuccessImportResult(trafficPointElementVersion);
     } catch (Exception exception) {
       if (exception instanceof VersioningNoChangesException) {
@@ -133,8 +109,7 @@ public class TrafficPointElementImportService {
     return trafficPointItemImportResultBuilder
         .validFrom(trafficPointElementVersion.getValidFrom())
         .validTo(trafficPointElementVersion.getValidTo())
-        // TODO: use sloid as itemNumber when possible
-        .itemNumber(trafficPointElementVersion.getServicePointNumber().getValue());
+        .itemNumber(trafficPointElementVersion.getSloid());
   }
 
 }
