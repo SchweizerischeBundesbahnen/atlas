@@ -93,7 +93,7 @@ scheduler:
     service-point-trigger-batch:
       chron: "0 0 4 * * ?" #At 04:00:00am every day
     traffic-point-trigger-batch:
-      chron: "0 45 3 * * ?" # todo: anto fragen
+      chron: "0 30 3 * * ?" #At 03:30:00am every day
 
   lidi:
     export:
