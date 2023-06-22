@@ -95,7 +95,7 @@ public interface BusinessOrganisationApiV1 {
 
   @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
   @PostMapping("/sync-business-organisations")
-  @Operation(description = "Write all user permission to kafka again for redistribution")
+  @Operation(description = "Write all Business Organisations to kafka again for redistribution")
   void syncBusinessOrganisations();
 
 }
