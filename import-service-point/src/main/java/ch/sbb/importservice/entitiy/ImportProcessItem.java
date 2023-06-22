@@ -37,7 +37,7 @@ public class ImportProcessItem {
 
   private String jobExecutionName;
 
-  private Integer itemNumber;
+  private String itemNumber;
 
   @Enumerated(EnumType.STRING)
   private ItemImportResponseStatus responseStatus;

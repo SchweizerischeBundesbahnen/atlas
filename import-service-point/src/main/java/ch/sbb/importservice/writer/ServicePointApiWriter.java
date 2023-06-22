@@ -26,7 +26,7 @@ public class ServicePointApiWriter extends BaseApiWriter implements ItemWriter<S
         servicePointImportRequestModel);
 
     for (ServicePointItemImportResult response : servicePointsResult) {
-      saveItemProcessed(stepExecutionId, response.getItemNumber(), response.getStatus(), response.getMessage());
+      saveItemProcessed(stepExecutionId, response.getItemNumber().toString(), response.getStatus(), response.getMessage());
     }
   }
 }

@@ -8,6 +8,7 @@ import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
 import java.time.LocalDate;
+import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,12 +111,81 @@ public class TrafficPointElementVersionRepositoryTest {
   }
 
   @Test
-  void entityGraph() {
-    // TODO:
+  void shouldFindAllBySloidOrderByValidFrom() {
+    // given
+    TrafficPointElementVersion trafficPointElementVersion1 = TrafficPointElementVersion
+        .builder()
+        .designation("Bezeichnung")
+        .designationOperational("Betriebliche Bezeichnung")
+        .servicePointNumber(ServicePointNumber.of(85070003))
+        .sloid("ch:1:sloid:123")
+        .validFrom(LocalDate.of(2022, 1, 1))
+        .validTo(LocalDate.of(2022, 12, 31))
+        .build();
+    TrafficPointElementVersion trafficPointElementVersion2 = TrafficPointElementVersion
+        .builder()
+        .designation("Bezeichnung")
+        .designationOperational("Betriebliche Bezeichnung")
+        .servicePointNumber(ServicePointNumber.of(85070003))
+        .sloid("ch:1:sloid:123")
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 12, 31))
+        .build();
+    TrafficPointElementVersion trafficPointElementVersion3 = TrafficPointElementVersion
+        .builder()
+        .designation("Bezeichnung")
+        .designationOperational("Betriebliche Bezeichnung")
+        .servicePointNumber(ServicePointNumber.of(85070003))
+        .sloid("ch:1:sloid:other")
+        .validFrom(LocalDate.of(2022, 1, 1))
+        .validTo(LocalDate.of(2022, 12, 31))
+        .build();
+
+    trafficPointElementVersionRepository.save(trafficPointElementVersion1);
+    trafficPointElementVersionRepository.save(trafficPointElementVersion2);
+    trafficPointElementVersionRepository.save(trafficPointElementVersion3);
+
+    // when
+    List<TrafficPointElementVersion> found = trafficPointElementVersionRepository.findAllBySloidOrderByValidFrom(
+        "ch:1:sloid:123");
+
+    // then
+    assertThat(found).hasSize(2);
+    assertThat(found.get(0).getSloid()).isEqualTo("ch:1:sloid:123");
+    assertThat(found.get(0).getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
+    assertThat(found.get(1).getSloid()).isEqualTo("ch:1:sloid:123");
+    assertThat(found.get(1).getValidFrom()).isEqualTo(LocalDate.of(2022, 1, 1));
   }
 
   @Test
-  void existsBy() {
-    // TODO:
+  void shouldExistBySloid() {
+    // given
+    TrafficPointElementVersion trafficPointElementVersion = TrafficPointElementVersion
+        .builder()
+        .designation("Bezeichnung")
+        .designationOperational("Betriebliche Bezeichnung")
+        .servicePointNumber(ServicePointNumber.of(85070003))
+        .sloid("ch:1:sloid:123")
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 12, 31))
+        .build();
+
+    trafficPointElementVersionRepository.save(trafficPointElementVersion);
+
+    // when
+    boolean result = trafficPointElementVersionRepository.existsBySloid("ch:1:sloid:123");
+
+    // then
+    assertThat(result).isTrue();
+  }
+
+  @Test
+  void shouldNotExistBySloid() {
+    // given
+    // when
+    boolean result = trafficPointElementVersionRepository.existsBySloid("ch:1:sloid:123");
+
+    // then
+    assertThat(result).isFalse();
   }
 }
