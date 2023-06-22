@@ -31,7 +31,7 @@ public class ServicePointVersionCsvProcessor extends BaseProcessor implements
         .operatingPoint(version.isOperatingPoint())
         .operatingPointWithTimetable(version.isOperatingPointWithTimetable())
         .stopPoint(version.isStopPoint())
-        .stopPointTypeCode(version.getStopPointType() != null ? version.getStopPointType().getCode() : null)
+        .stopPointTypeCode(version.getStopPointType())
         .freightServicePoint(version.isFreightServicePoint())
         .trafficPoint(version.isTrafficPoint())
         .borderPoint(version.isBorderPoint())
@@ -40,14 +40,12 @@ public class ServicePointVersionCsvProcessor extends BaseProcessor implements
     if (version.getServicePointGeolocation() != null) {
       buildServicePointGeolocation(version, builder);
     }
-    builder.operatingPointTypeCode(version.getOperatingPointType() != null ?
-            version.getOperatingPointType().getCode() : null)
-        .operatingPointTechnicalTimetableTypeCode(version.getOperatingPointTechnicalTimetableType() != null ?
-            version.getOperatingPointTechnicalTimetableType().getCode() : null)
+    builder.operatingPointTypeCode(version.getOperatingPointType())
+        .operatingPointTechnicalTimetableTypeCode(version.getOperatingPointTechnicalTimetableType())
         .meansOfTransportCode(version.getMeansOfTransportPipeList())
         .categoriesCode(version.getCategoriesPipeList())
         .operatingPointTrafficPointTypeCode(
-            version.getOperatingPointTrafficPointType() != null ? version.getOperatingPointTrafficPointType().getCode() : null)
+            version.getOperatingPointTrafficPointType())
         .operatingPointRouteNetwork(version.isOperatingPointRouteNetwork())
         .operatingPointKilometer(version.isOperatingPointKilometer())
         .operatingPointKilometerMasterNumber(version.getOperatingPointKilometerMaster() != null ?
