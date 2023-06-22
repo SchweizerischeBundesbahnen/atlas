@@ -115,7 +115,7 @@ public class ServicePointServiceTest {
     List<ServicePointVersion> versions = new ArrayList<>();
     versions.add(version);
     //when
-    ServicePointVersion result = servicePointService.getCurrentServicePointVersion(versions, edited);
+    ServicePointVersion result = servicePointService.getCurrentPointVersion(versions, edited);
     //then
     assertThat(result).isNotNull();
   }
@@ -134,7 +134,7 @@ public class ServicePointServiceTest {
     List<ServicePointVersion> versions = new ArrayList<>();
     versions.add(version);
     //when
-    ServicePointVersion result = servicePointService.getCurrentServicePointVersion(versions, edited);
+    ServicePointVersion result = servicePointService.getCurrentPointVersion(versions, edited);
     //then
     assertThat(result).isNotNull();
   }
@@ -153,7 +153,7 @@ public class ServicePointServiceTest {
     List<ServicePointVersion> versions = new ArrayList<>();
     versions.add(version);
     //when
-    ServicePointVersion result = servicePointService.getCurrentServicePointVersion(versions, edited);
+    ServicePointVersion result = servicePointService.getCurrentPointVersion(versions, edited);
     //then
     assertThat(result).isNotNull();
   }
@@ -177,7 +177,7 @@ public class ServicePointServiceTest {
     versions.add(version1);
     versions.add(version2);
     //when
-    ServicePointVersion result = servicePointService.getCurrentServicePointVersion(versions, edited);
+    ServicePointVersion result = servicePointService.getCurrentPointVersion(versions, edited);
     //then
     assertThat(result).isNotNull();
   }
@@ -188,7 +188,7 @@ public class ServicePointServiceTest {
    * return             |-----------|
    */
   @Test
-  public void shouldGetCurrentServicePointVersionWhenNoCurrentversionMatchedAndReturnTheLastVersion() {
+  public void shouldGetCurrentServicePointVersionWhenNoCurrentVersionMatchedAndReturnTheLastVersion() {
     //given
     ServicePointVersion version1 = ServicePointVersion.builder()
         .validFrom(LocalDate.of(2000, 1, 2))
@@ -206,7 +206,7 @@ public class ServicePointServiceTest {
     versions.add(version1);
     versions.add(version2);
     //when
-    ServicePointVersion result = servicePointService.getCurrentServicePointVersion(versions, edited);
+    ServicePointVersion result = servicePointService.getCurrentPointVersion(versions, edited);
     //then
     assertThat(result).isNotNull();
     assertThat(result.getValidFrom()).isEqualTo(LocalDate.of(2000, 6, 2));
@@ -219,7 +219,7 @@ public class ServicePointServiceTest {
    * return             |------------|
    */
   @Test
-  public void shouldGetCurrentServicePointVersionWhenNoCurrentversionMatchedAndReturnTheFirstVersion() {
+  public void shouldGetCurrentServicePointVersionWhenNoCurrentVersionMatchedAndReturnTheFirstVersion() {
     //given
     ServicePointVersion version1 = ServicePointVersion.builder()
         .validFrom(LocalDate.of(2000, 1, 2))
@@ -237,7 +237,7 @@ public class ServicePointServiceTest {
     versions.add(version1);
     versions.add(version2);
     //when
-    ServicePointVersion result = servicePointService.getCurrentServicePointVersion(versions, edited);
+    ServicePointVersion result = servicePointService.getCurrentPointVersion(versions, edited);
     //then
     assertThat(result).isNotNull();
     assertThat(result.getValidFrom()).isEqualTo(LocalDate.of(2000, 1, 2));
@@ -264,7 +264,7 @@ public class ServicePointServiceTest {
     versions.add(version2);
     //when
     Assertions.assertThrows(RuntimeException.class, () -> {
-      servicePointService.getCurrentServicePointVersion(versions, edited);
+      servicePointService.getCurrentPointVersion(versions, edited);
     });
   }
 
@@ -305,7 +305,5 @@ public class ServicePointServiceTest {
       servicePointService.updateServicePointVersion(version1, version2);
     });
   }
-
-  //  todo: implement my test case for method updateServicePointVersion with versioningObjects
 
 }
