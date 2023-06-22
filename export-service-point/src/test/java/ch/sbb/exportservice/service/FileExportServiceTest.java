@@ -17,8 +17,11 @@ import java.io.IOException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
+@DirtiesContext(classMode = ClassMode.AFTER_CLASS)
 public class FileExportServiceTest {
 
   private FileExportService fileExportService;
@@ -78,5 +81,5 @@ public class FileExportServiceTest {
     //then
     verify(amazonService).putZipFile(AmazonBucket.EXPORT, file, "service_point/full");
   }
-  
+
 }
