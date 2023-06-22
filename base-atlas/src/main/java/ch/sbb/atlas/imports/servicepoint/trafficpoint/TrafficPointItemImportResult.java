@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Schema(name = "TrafficPointItemImportResult")
 public class TrafficPointItemImportResult {
 
-  private Integer itemNumber;
+  private String itemNumber;
 
   private LocalDate validFrom;
 

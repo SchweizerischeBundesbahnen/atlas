@@ -12,7 +12,6 @@ import ch.sbb.importservice.listener.JobCompletionListener;
 import ch.sbb.importservice.listener.StepTracerListener;
 import ch.sbb.importservice.reader.ThreadSafeListItemReader;
 import ch.sbb.importservice.service.CsvService;
-import ch.sbb.importservice.service.JobHelperService;
 import ch.sbb.importservice.utils.StepUtils;
 import ch.sbb.importservice.writer.LoadingPointApiWriter;
 import ch.sbb.importservice.writer.ServicePointApiWriter;
@@ -58,8 +57,6 @@ public class SpringBatchConfig {
   private final CsvService csvService;
   private final JobCompletionListener jobCompletionListener;
   private final StepTracerListener stepTracerListener;
-
-  private final JobHelperService jobHelperService;
 
   @StepScope
   @Bean
@@ -132,6 +129,7 @@ public class SpringBatchConfig {
         .faultTolerant()
         .backOffPolicy(StepUtils.getBackOffPolicy(stepName))
         .retryPolicy(StepUtils.getRetryPolicy(stepName))
+        .listener(stepTracerListener)
         .taskExecutor(asyncTaskExecutor())
         .build();
   }
