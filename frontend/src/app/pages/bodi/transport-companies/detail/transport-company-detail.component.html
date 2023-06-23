@@ -90,6 +90,7 @@
   <div class="mt-5">
     <app-relation
       (deleteRelation)="deleteRelation()"
+      (updateRelation)="updateRelation()"
       (editModeChanged)="editMode = !editMode"
       (selectedIndexChanged)="selectedTransportCompanyRelationIndex = $event"
       [editMode]="editMode"
@@ -102,6 +103,7 @@
       <form *ngIf="editMode" class="col-12 d-flex">
         <bo-select
           [formGroup]="form"
+          [disabled]="isUpdateRelationSelected"
           class="col-6 pe-3 mt-3"
           controlName="businessOrganisation"
           data-cy="businessOrganisation"
@@ -112,7 +114,6 @@
       </form>
     </app-relation>
   </div>
-
   <div class="footer fixed-bottom d-flex align-items-center justify-content-center">
     <atlas-button
       [footerEdit]="editMode"
@@ -132,7 +133,7 @@
     >
     </atlas-button>
     <atlas-button
-      (click)="createRelation()"
+      (click)="save()"
       [disabled]="!form.dirty"
       [footerEdit]="editMode"
       [submitButton]="true"
