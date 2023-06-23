@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,11 +56,11 @@ public class TrafficPointElementImportServiceTest {
     List<TrafficPointCsvModelContainer> trafficPointCsvModelContainers = List.of(
         TrafficPointCsvModelContainer.builder()
             .sloid("ch:1:sloid:123")
-            .trafficPointCsvModelList(getTrafficPointCsvModelVersions("ch:1:sloid:123"))
+            .trafficPointCsvModelList(getTrafficPointCsvModelVersions("ch:1:sloid:123", 2))
             .build(),
         TrafficPointCsvModelContainer.builder()
             .sloid("ch:1:sloid:567")
-            .trafficPointCsvModelList(getTrafficPointCsvModelVersions("ch:1:sloid:567"))
+            .trafficPointCsvModelList(getTrafficPointCsvModelVersions("ch:1:sloid:567", 2))
             .build()
     );
     //when
@@ -81,31 +82,87 @@ public class TrafficPointElementImportServiceTest {
     assertThat(resultSecondContainer.get(1).getId()).isNotNull();
   }
 
-  private List<TrafficPointElementCsvModel> getTrafficPointCsvModelVersions(String sloid) {
-    return List.of(
+  @Test
+  void shouldUpdateMergeOnSecondImportRun() {
+    // given
+    List<TrafficPointCsvModelContainer> trafficPointCsvModelContainers = List.of(
+        TrafficPointCsvModelContainer.builder()
+            .sloid("ch:1:sloid:123")
+            .trafficPointCsvModelList(getTrafficPointCsvModelVersions("ch:1:sloid:123", 3))
+            .build()
+    );
+    trafficPointElementImportService.importTrafficPoints(trafficPointCsvModelContainers);
+
+    List<TrafficPointCsvModelContainer> trafficPointCsvModelContainersMerged = List.of(
+        TrafficPointCsvModelContainer.builder()
+            .sloid("ch:1:sloid:123")
+            .trafficPointCsvModelList(getTrafficPointCsvModelVersions("ch:1:sloid:123", 2))
+            .build()
+    );
+    trafficPointCsvModelContainersMerged.get(0).getTrafficPointCsvModelList().get(1).setValidTo(
+        LocalDate.of(2022, 12, 31));
+    // todo: is it correct that we do not support the case when i would not set here the height to 1 (height would be 0)?
+    trafficPointCsvModelContainersMerged.get(0).getTrafficPointCsvModelList().get(1).setHeight(1D);
+
+    // when
+    List<TrafficPointItemImportResult> trafficPointItemImportResults = trafficPointElementImportService.importTrafficPoints(
+        trafficPointCsvModelContainersMerged);
+
+    // then
+    assertThat(trafficPointItemImportResults).hasSize(2);
+
+    List<TrafficPointElementVersion> allBySloidOrderByValidFrom =
+        trafficPointElementVersionRepository.findAllBySloidOrderByValidFrom(
+            "ch:1:sloid:123");
+    assertThat(allBySloidOrderByValidFrom).hasSize(2);
+    assertThat(allBySloidOrderByValidFrom.get(0).getValidFrom()).isEqualTo(
+        LocalDate.of(2020, 1, 1)
+    );
+    assertThat(allBySloidOrderByValidFrom.get(0).getValidTo()).isEqualTo(
+        LocalDate.of(2020, 12, 31)
+    );
+
+    assertThat(allBySloidOrderByValidFrom.get(1).getValidFrom()).isEqualTo(
+        LocalDate.of(2021, 1, 1)
+    );
+    assertThat(allBySloidOrderByValidFrom.get(1).getValidTo()).isEqualTo(
+        LocalDate.of(2022, 12, 31)
+    );
+  }
+
+  private List<TrafficPointElementCsvModel> getTrafficPointCsvModelVersions(String sloid, int numberOfVersions) {
+    final int startingYear = 2020;
+    final ArrayList<TrafficPointElementCsvModel> list = new ArrayList<>(List.of(
         TrafficPointElementCsvModel.builder()
             .sloid(sloid)
             .servicePointNumber(85700012)
-            .validFrom(LocalDate.of(2020, 1, 1))
-            .validTo(LocalDate.of(2022, 1, 1))
-            .createdAt(LocalDateTime.of(LocalDate.of(2020, 1, 1), LocalTime.of(5, 5)))
-            .createdBy("fs11111")
-            .editedAt(LocalDateTime.of(LocalDate.of(2021, 1, 1), LocalTime.of(10, 50)))
-            .editedBy("fs11111")
-            .build(),
-        TrafficPointElementCsvModel.builder()
-            .sloid(sloid)
-            .nWgs84(47.5961061)
-            .eWgs84(7.536484397)
-            .spatialReference(SpatialReference.WGS84)
-            .servicePointNumber(85700012)
-            .validFrom(LocalDate.of(2022, 1, 2))
-            .validTo(LocalDate.of(2022, 12, 31))
+            .validFrom(LocalDate.of(startingYear, 1, 1))
+            .validTo(LocalDate.of(startingYear, 12, 31))
             .createdAt(LocalDateTime.of(LocalDate.of(2020, 1, 1), LocalTime.of(5, 5)))
             .createdBy("fs11111")
             .editedAt(LocalDateTime.of(LocalDate.of(2021, 1, 1), LocalTime.of(10, 50)))
             .editedBy("fs11111")
             .build()
-    );
+    ));
+
+    for (double i = 0; i < numberOfVersions - 1; i++) {
+      list.add(
+          TrafficPointElementCsvModel.builder()
+              .sloid(sloid)
+              .nWgs84(47.5961061)
+              .eWgs84(7.536484397)
+              .height(i)
+              .spatialReference(SpatialReference.WGS84)
+              .servicePointNumber(85700012)
+              .validFrom(LocalDate.of(startingYear + ((int) i + 1), 1, 1))
+              .validTo(LocalDate.of(startingYear + ((int) i + 1), 12, 31))
+              .createdAt(LocalDateTime.of(LocalDate.of(2020, 1, 1), LocalTime.of(5, 5)))
+              .createdBy("fs11111")
+              .editedAt(LocalDateTime.of(LocalDate.of(2021, 1, 1), LocalTime.of(10, 50)))
+              .editedBy("fs11111")
+              .build()
+      );
+    }
+    return list;
   }
 }
