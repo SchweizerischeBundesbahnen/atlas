@@ -17,7 +17,7 @@ export class BusinessOrganisationDetailResolver
     const idParameter = route.paramMap.get('id') || '';
     return idParameter === 'add'
       ? of([])
-      : this.businessOrganisationsService.getBusinessOrganisationVersions(idParameter).pipe(
+      : this.businessOrganisationsService.getVersions(idParameter).pipe(
           catchError(() =>
             this.router
               .navigate([Pages.BODI.path], {
