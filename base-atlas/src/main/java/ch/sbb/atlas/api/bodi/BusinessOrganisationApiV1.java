@@ -51,7 +51,7 @@ public interface BusinessOrganisationApiV1 {
       @ParameterObject BusinessOrganisationVersionRequestParams businessOrganisationVersionRequestParams);
 
   @GetMapping("versions/{sboid}")
-  List<BusinessOrganisationVersionModel> getBusinessOrganisationVersions(
+  List<BusinessOrganisationVersionModel> getVersions(
       @PathVariable String sboid);
 
   @PostMapping("{sboid}/revoke")
