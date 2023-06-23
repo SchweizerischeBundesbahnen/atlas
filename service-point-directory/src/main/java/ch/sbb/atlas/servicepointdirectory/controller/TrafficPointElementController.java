@@ -47,7 +47,7 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
   @Override
   public List<TrafficPointElementVersionModel> getTrafficPointElement(String sloid) {
     List<TrafficPointElementVersionModel> trafficPointElementVersions =
-        trafficPointElementService.findTrafficPointElements(
+        trafficPointElementService.findBySloidOrderByValidFrom(
                 sloid)
             .stream()
             .map(TrafficPointElementVerisionMapper::fromEntity).toList();
