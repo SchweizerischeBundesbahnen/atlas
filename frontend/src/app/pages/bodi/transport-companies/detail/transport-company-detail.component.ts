@@ -32,6 +32,8 @@ export class TransportCompanyDetailComponent implements OnInit {
   selectedTransportCompanyRelationIndex = -1;
   editMode = false;
   totalCountOfFoundBusinessOrganisations = 0;
+  isUpdateRelationSelected = false;
+  relationId = 0;
   readonly pageSizeForBusinessOrganisationSearch = 100;
   readonly transportCompanyRelationTableColumns: TableColumn<TransportCompanyBoRelation>[] = [
     {
@@ -160,32 +162,58 @@ export class TransportCompanyDetailComponent implements OnInit {
       );
   }
 
-  createRelation(): void {
+  save(): void {
     this.form.markAllAsTouched();
     if (this.form.invalid) return;
 
-    this.transportCompanyRelationsService
-      .createTransportCompanyRelation({
-        transportCompanyId: this.transportCompany.id!,
-        sboid: this.form.value.businessOrganisation!.sboid!,
-        validFrom: moment(this.form.value.validFrom).toDate(),
-        validTo: moment(this.form.value.validTo).toDate(),
-      })
+    const validFrom = moment(this.form.value.validFrom).toDate();
+    const validTo = moment(this.form.value.validTo).toDate();
+
+    const save = this.isUpdateRelationSelected
+      ? this.transportCompanyRelationsService.updateTransportCompanyRelation({
+          id: this.relationId,
+          validFrom,
+          validTo,
+        })
+      : this.transportCompanyRelationsService.createTransportCompanyRelation({
+          transportCompanyId: this.transportCompany.id!,
+          sboid: this.form.value.businessOrganisation!.sboid!,
+          validFrom,
+          validTo,
+        });
+
+    save
       .pipe(
-        switchMap((savedRelation) =>
-          this.reloadRelations().pipe(
-            tap(() => {
-              this.editMode = false;
-              this.form.reset();
-              this.selectedTransportCompanyRelationIndex = this.transportCompanyRelations.findIndex(
-                (item) => item.id === savedRelation.id
-              );
-              this.notificationService.success('RELATION.ADD_SUCCESS_MSG');
-            })
-          )
-        )
+        switchMap(() => this.reloadRelations()),
+        tap(() => {
+          this.editMode = false;
+          this.form.reset();
+          const successMsg = this.isUpdateRelationSelected
+            ? 'RELATION.UPDATE_SUCCESS_MSG'
+            : 'RELATION.ADD_SUCCESS_MSG';
+          this.notificationService.success(successMsg);
+          this.isUpdateRelationSelected = false;
+          this.selectedTransportCompanyRelationIndex = -1;
+        })
       )
       .subscribe();
+  }
+
+  updateRelation() {
+    this.transportCompanyRelationsService
+      .getTransportCompanyRelations(this.transportCompany.id!)
+      .subscribe((relations) => {
+        const foundRelation = relations.find(
+          (_, index) => index === this.selectedTransportCompanyRelationIndex
+        )!;
+        this.form.setValue({
+          businessOrganisation: foundRelation.businessOrganisation!,
+          validFrom: moment(foundRelation.validFrom),
+          validTo: moment(foundRelation.validTo),
+        });
+        this.relationId = foundRelation.id!;
+        this.isUpdateRelationSelected = true;
+      });
   }
 
   deleteRelation(): void {
@@ -198,6 +226,7 @@ export class TransportCompanyDetailComponent implements OnInit {
           this.reloadRelations().pipe(
             tap(() => {
               this.selectedTransportCompanyRelationIndex = -1;
+              this.isUpdateRelationSelected = false;
               this.notificationService.success('RELATION.DELETE_SUCCESS_MSG');
             })
           )
@@ -208,6 +237,7 @@ export class TransportCompanyDetailComponent implements OnInit {
 
   private cancelEdit(): void {
     this.editMode = false;
+    this.isUpdateRelationSelected = false;
     this.form.reset();
   }
 
