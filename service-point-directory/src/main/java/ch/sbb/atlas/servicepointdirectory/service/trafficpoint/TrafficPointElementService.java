@@ -29,7 +29,7 @@ public class TrafficPointElementService extends BasePointService {
     return trafficPointElementVersionRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
   }
 
-  public List<TrafficPointElementVersion> findTrafficPointElements(String sloid) {
+  public List<TrafficPointElementVersion> findBySloidOrderByValidFrom(String sloid) {
     return trafficPointElementVersionRepository.findAllBySloidOrderByValidFrom(sloid);
   }
 
@@ -50,7 +50,7 @@ public class TrafficPointElementService extends BasePointService {
   }
 
   public void updateTrafficPointElementVersionImport(TrafficPointElementVersion edited) {
-    List<TrafficPointElementVersion> dbVersions = findTrafficPointElements(edited.getSloid());
+    List<TrafficPointElementVersion> dbVersions = findBySloidOrderByValidFrom(edited.getSloid());
     TrafficPointElementVersion current = getCurrentPointVersion(dbVersions, edited);
     List<VersionedObject> versionedObjects = versionableService.versioningObjectsWithDeleteByNullProperties(current, edited,
         dbVersions);
@@ -89,7 +89,7 @@ public class TrafficPointElementService extends BasePointService {
   }
 
   public void updateTrafficPointElementVersion(TrafficPointElementVersion edited) {
-    List<TrafficPointElementVersion> dbVersions = findTrafficPointElements(edited.getSloid());
+    List<TrafficPointElementVersion> dbVersions = findBySloidOrderByValidFrom(edited.getSloid());
     TrafficPointElementVersion current = getCurrentPointVersion(dbVersions, edited);
     List<VersionedObject> versionedObjects = versionableService.versioningObjects(current, edited,
         dbVersions);
