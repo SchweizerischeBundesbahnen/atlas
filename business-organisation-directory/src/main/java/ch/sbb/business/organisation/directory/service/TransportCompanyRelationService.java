@@ -19,14 +19,14 @@ public class TransportCompanyRelationService {
   private final BusinessOrganisationService businessOrganisationService;
   private final TransportCompanyService transportCompanyService;
 
-  public TransportCompanyRelation save(TransportCompanyRelation entity) {
+  public TransportCompanyRelation save(TransportCompanyRelation entity, boolean isUpdateTransportCompanyRelation) {
     if (businessOrganisationService.findBusinessOrganisationVersions(entity.getSboid()).isEmpty()) {
       throw new SboidNotFoundException(entity.getSboid());
     }
     if (!transportCompanyService.existsById(entity.getTransportCompany().getId())) {
       throw new TransportCompanyNotFoundException(entity.getTransportCompany().getId());
     }
-    validateRelationOverlaps(entity);
+    validateRelationOverlaps(entity, isUpdateTransportCompanyRelation);
     return transportCompanyRelationRepository.save(entity);
   }
 
@@ -37,16 +37,25 @@ public class TransportCompanyRelationService {
     transportCompanyRelationRepository.deleteById(relationId);
   }
 
-  void validateRelationOverlaps(TransportCompanyRelation relation) {
-    List<TransportCompanyRelation> relationOverlaps = findRelationOverlaps(relation);
-    if (!relationOverlaps.isEmpty()) {
-      throw new TransportCompanyRelationConflictException(relation, relationOverlaps);
+  void validateRelationOverlaps(TransportCompanyRelation transportCompanyRelation, boolean isUpdateTransportCompanyRelation) {
+    List<TransportCompanyRelation> relationOverlaps = findRelationOverlaps(transportCompanyRelation);
+    boolean isSelfOverlapping = false;
+    if (isUpdateTransportCompanyRelation) {
+      isSelfOverlapping = relationOverlaps.stream()
+          .anyMatch(relation -> relation.getId().equals(transportCompanyRelation.getId()));
+    }
+    if (relationOverlaps.size() == 1 && !isSelfOverlapping || relationOverlaps.size() > 1) {
+      throw new TransportCompanyRelationConflictException(transportCompanyRelation, relationOverlaps);
     }
   }
 
   List<TransportCompanyRelation> findRelationOverlaps(TransportCompanyRelation relation) {
     return transportCompanyRelationRepository.findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndSboid(
         relation.getValidFrom(), relation.getValidTo(), relation.getSboid());
+  }
+
+  public TransportCompanyRelation findById(Long id) {
+    return transportCompanyRelationRepository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
   }
 
 }
