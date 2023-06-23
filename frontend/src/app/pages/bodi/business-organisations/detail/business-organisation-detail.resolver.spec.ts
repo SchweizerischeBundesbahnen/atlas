@@ -24,9 +24,9 @@ const version: BusinessOrganisationVersion = {
 
 describe('BusinessOrganisationDetailResolver', () => {
   const businessOrganisationsServiceSpy = jasmine.createSpyObj('businessOrganisationsService', [
-    'getBusinessOrganisationVersions',
+    'getVersions',
   ]);
-  businessOrganisationsServiceSpy.getBusinessOrganisationVersions.and.returnValue(of([version]));
+  businessOrganisationsServiceSpy.getVersions.and.returnValue(of([version]));
 
   let resolver: BusinessOrganisationDetailResolver;
 
