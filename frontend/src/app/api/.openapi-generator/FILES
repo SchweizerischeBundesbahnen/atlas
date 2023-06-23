@@ -36,12 +36,13 @@ model/clientCredentialPermissionCreate.ts
 model/codeAndDesignation.ts
 model/company.ts
 model/containerBusinessOrganisation.ts
+model/containerBusinessOrganisationVersion.ts
 model/containerClientCredential.ts
 model/containerCompany.ts
 model/containerLine.ts
 model/containerLineVersionSnapshot.ts
 model/containerLoadingPointVersion.ts
-model/containerServicePointVersion.ts
+model/containerReadServicePointVersion.ts
 model/containerSubline.ts
 model/containerTimetableFieldNumber.ts
 model/containerTimetableHearingStatement.ts
@@ -49,8 +50,10 @@ model/containerTrafficPointElementVersion.ts
 model/containerTransportCompany.ts
 model/containerUser.ts
 model/coordinatePair.ts
+model/country.ts
 model/coverage.ts
 model/coverageType.ts
+model/createServicePointVersion.ts
 model/displayInfo.ts
 model/district.ts
 model/errorDetail.ts
@@ -76,13 +79,13 @@ model/models.ts
 model/operatingPointTechnicalTimetableType.ts
 model/operatingPointTrafficPointType.ts
 model/operatingPointType.ts
-model/operatingPointWithoutTimetableType.ts
 model/parameter.ts
 model/paymentType.ts
 model/permission.ts
 model/permissionRestrictionObject.ts
 model/permissionRestrictionType.ts
 model/person.ts
+model/readServicePointVersion.ts
 model/sboidPermissionRestrictionModel.ts
 model/servicePointCsvModel.ts
 model/servicePointCsvModelContainer.ts
@@ -91,7 +94,6 @@ model/servicePointImportReRequest.ts
 model/servicePointItemImportResult.ts
 model/servicePointNumber.ts
 model/servicePointStatus.ts
-model/servicePointVersion.ts
 model/spatialReference.ts
 model/statementStatus.ts
 model/status.ts
@@ -116,6 +118,7 @@ model/transportCompanyRelation.ts
 model/transportCompanyStatus.ts
 model/updateHearingCanton.ts
 model/updateHearingStatementStatus.ts
+model/updateTransportCompanyRelation.ts
 model/user.ts
 model/userAccountStatus.ts
 model/userDisplayName.ts

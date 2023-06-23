@@ -75,7 +75,7 @@ public class BusinessOrganisationController implements BusinessOrganisationApiV1
   }
 
   @Override
-  public List<BusinessOrganisationVersionModel> getBusinessOrganisationVersions(String sboid) {
+  public List<BusinessOrganisationVersionModel> getVersions(String sboid) {
     List<BusinessOrganisationVersionModel> organisationVersionModels =
         service.findBusinessOrganisationVersions(sboid).stream()
             .map(BusinessOrganisationVersionMapper::toModel)
