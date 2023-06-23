@@ -29,8 +29,10 @@ export class RelationComponent<RECORD_TYPE> {
   @Input() selectedIndex = -1;
   @Input() addBtnNameTranslationKey = 'RELATION.ADD';
   @Input() deleteBtnNameTranslationKey = 'RELATION.DELETE';
+  @Input() updateBtnNameTranslationKey = 'RELATION.UPDATE';
 
   @Output() deleteRelation = new EventEmitter<void>();
+  @Output() updateRelation = new EventEmitter<void>();
   @Output() editModeChanged = new EventEmitter<void>();
   @Output() selectedIndexChanged = new EventEmitter<number>();
 
@@ -89,6 +91,11 @@ export class RelationComponent<RECORD_TYPE> {
     });
 
     this.table.renderRows();
+  }
+
+  editRelation() {
+    this.updateRelation.emit();
+    this.editModeChanged.emit();
   }
 
   private getValuePathFromColumnName(column: string): string {
