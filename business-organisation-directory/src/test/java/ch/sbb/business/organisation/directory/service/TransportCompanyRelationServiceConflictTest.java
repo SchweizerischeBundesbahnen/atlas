@@ -82,7 +82,7 @@ public class TransportCompanyRelationServiceConflictTest {
                                                                      .validTo(
                                                                          LocalDate.of(2000, 12, 31))
                                                                      .build();
-    assertDoesNotThrow(() -> transportCompanyRelationService.save(firstRelation));
+    assertDoesNotThrow(() -> transportCompanyRelationService.save(firstRelation, false));
 
     TransportCompanyRelation secondRelation = TransportCompanyRelation.builder()
                                                                       .transportCompany(
@@ -94,7 +94,7 @@ public class TransportCompanyRelationServiceConflictTest {
                                                                           LocalDate.of(2000, 12,
                                                                               31))
                                                                       .build();
-    assertDoesNotThrow(() -> transportCompanyRelationService.save(secondRelation));
+    assertDoesNotThrow(() -> transportCompanyRelationService.save(secondRelation, false));
   }
 
   @Test
@@ -108,7 +108,7 @@ public class TransportCompanyRelationServiceConflictTest {
                                                                      .validTo(
                                                                          LocalDate.of(2000, 12, 31))
                                                                      .build();
-    assertDoesNotThrow(() -> transportCompanyRelationService.save(firstRelation));
+    assertDoesNotThrow(() -> transportCompanyRelationService.save(firstRelation, false));
 
     TransportCompanyRelation secondRelation = TransportCompanyRelation.builder()
                                                                       .transportCompany(
@@ -120,7 +120,7 @@ public class TransportCompanyRelationServiceConflictTest {
                                                                           LocalDate.of(2001, 12,
                                                                               31))
                                                                       .build();
-    assertDoesNotThrow(() -> transportCompanyRelationService.save(secondRelation));
+    assertDoesNotThrow(() -> transportCompanyRelationService.save(secondRelation, false));
   }
 
   @Test
@@ -134,7 +134,7 @@ public class TransportCompanyRelationServiceConflictTest {
                                                                      .validTo(
                                                                          LocalDate.of(2000, 12, 31))
                                                                      .build();
-    assertDoesNotThrow(() -> transportCompanyRelationService.save(firstRelation));
+    assertDoesNotThrow(() -> transportCompanyRelationService.save(firstRelation, false));
 
     TransportCompanyRelation secondRelation = TransportCompanyRelation.builder()
                                                                       .transportCompany(
@@ -147,7 +147,7 @@ public class TransportCompanyRelationServiceConflictTest {
                                                                               31))
                                                                       .build();
     assertThrows(TransportCompanyRelationConflictException.class,
-        () -> transportCompanyRelationService.save(secondRelation));
+        () -> transportCompanyRelationService.save(secondRelation, false));
   }
 
   @Test
@@ -161,7 +161,7 @@ public class TransportCompanyRelationServiceConflictTest {
                                                                      .validTo(
                                                                          LocalDate.of(2000, 12, 31))
                                                                      .build();
-    assertDoesNotThrow(() -> transportCompanyRelationService.save(firstRelation));
+    assertDoesNotThrow(() -> transportCompanyRelationService.save(firstRelation, false));
 
     TransportCompanyRelation secondRelation = TransportCompanyRelation.builder()
                                                                       .transportCompany(
@@ -173,7 +173,7 @@ public class TransportCompanyRelationServiceConflictTest {
                                                                           LocalDate.of(2000, 12,
                                                                               31))
                                                                       .build();
-    assertDoesNotThrow(() -> transportCompanyRelationService.save(secondRelation));
+    assertDoesNotThrow(() -> transportCompanyRelationService.save(secondRelation,false));
   }
 
 }
