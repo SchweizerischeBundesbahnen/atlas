@@ -1,9 +1,9 @@
 package ch.sbb.atlas.servicepointdirectory.api;
 
+import ch.sbb.atlas.api.servicepoint.GeolocationBaseModel;
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.servicepoint.transformer.CoordinateTransformer;
-import ch.sbb.atlas.servicepointdirectory.api.model.GeolocationBaseModel;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.GeolocationBaseEntity;
 import java.util.EnumMap;
 import java.util.Map;
