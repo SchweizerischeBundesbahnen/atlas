@@ -1,0 +1,31 @@
+package ch.sbb.exportservice.entity;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.experimental.FieldNameConstants;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@ToString
+@Builder
+@FieldNameConstants
+public class BusinessOrganisation {
+
+  private String businessOrganisation;
+  private String businessOrganisationNumber;
+  private String businessOrganisationAbbreviationDe;
+  private String businessOrganisationAbbreviationFr;
+  private String businessOrganisationAbbreviationIt;
+  private String businessOrganisationAbbreviationEn;
+  private String businessOrganisationDescriptionDe;
+  private String businessOrganisationDescriptionFr;
+  private String businessOrganisationDescriptionIt;
+  private String businessOrganisationDescriptionEn;
+
+}
