@@ -3,9 +3,6 @@ package ch.sbb.atlas.servicepointdirectory.repository;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion.Fields;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
-import java.util.Collection;
-import java.util.List;
-import java.util.function.Function;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +17,10 @@ import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuer
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.function.Function;
+
 @Repository
 public interface ServicePointVersionRepository extends JpaRepository<ServicePointVersion, Long>,
     JpaSpecificationExecutor<ServicePointVersion> {
@@ -32,9 +33,9 @@ public interface ServicePointVersionRepository extends JpaRepository<ServicePoin
   @Modifying(clearAutomatically = true)
   @Query("update service_point_version v set v.version = (v.version + 1) where v.number = :number")
   void incrementVersion(@Param("number") ServicePointNumber number);
-
-  @Query(value = "SELECT v FROM service_point_version v WHERE v.number = :number order by v.validFrom asc")
-  List<ServicePointVersion> getAllVersionsVersioned(@Param("number") ServicePointNumber number);
+//
+//  @Query(value = "SELECT v FROM service_point_version v WHERE v.number = :number order by v.validFrom asc")
+//  List<ServicePointVersion> getAllVersionsVersioned(@Param("number") ServicePointNumber number);
 
   @EntityGraph(attributePaths = {Fields.servicePointGeolocation, Fields.categories, Fields.meansOfTransport})
   List<ServicePointVersion> findAllByIdIn(Collection<Long> ids, Sort sort);

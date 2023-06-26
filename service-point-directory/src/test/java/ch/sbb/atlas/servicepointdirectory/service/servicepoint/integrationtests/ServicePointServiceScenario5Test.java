@@ -48,7 +48,7 @@ public class ServicePointServiceScenario5Test extends BaseServicePointServiceInt
         editedVersion.setValidTo(LocalDate.of(2025, 6, 1));
         // when
         servicePointService.updateServicePointVersion(version3, editedVersion);
-        List<ServicePointVersion> result = versionRepository.getAllVersionsVersioned(SPN);
+        List<ServicePointVersion> result = versionRepository.findAllByNumberOrderByValidFrom(SPN);
 
         // then
         assertThat(result).isNotNull().hasSize(6);
