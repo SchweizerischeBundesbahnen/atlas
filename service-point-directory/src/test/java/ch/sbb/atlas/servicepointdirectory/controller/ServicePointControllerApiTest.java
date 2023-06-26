@@ -9,6 +9,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
+import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.imports.servicepoint.BaseDidokCsvModel;
 import ch.sbb.atlas.imports.servicepoint.model.ServicePointImportReqModel;
@@ -17,8 +19,6 @@ import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContai
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.api.model.CreateServicePointVersionModel;
-import ch.sbb.atlas.servicepointdirectory.api.model.ReadServicePointVersionModel;
-import ch.sbb.atlas.servicepointdirectory.api.model.ServicePointVersionModel;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointGeolocationMapper;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;

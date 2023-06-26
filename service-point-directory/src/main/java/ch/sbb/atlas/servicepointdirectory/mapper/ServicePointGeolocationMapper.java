@@ -2,13 +2,13 @@ package ch.sbb.atlas.servicepointdirectory.mapper;
 
 import static ch.sbb.atlas.servicepointdirectory.mapper.GeolocationMapper.getTransformedCoordinates;
 
+import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationModel;
+import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationModel.Canton;
+import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationModel.DistrictModel;
+import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationModel.LocalityMunicipalityModel;
+import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationModel.SwissLocation;
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
-import ch.sbb.atlas.servicepointdirectory.api.model.ServicePointGeolocationModel;
-import ch.sbb.atlas.servicepointdirectory.api.model.ServicePointGeolocationModel.Canton;
-import ch.sbb.atlas.servicepointdirectory.api.model.ServicePointGeolocationModel.DistrictModel;
-import ch.sbb.atlas.servicepointdirectory.api.model.ServicePointGeolocationModel.LocalityMunicipalityModel;
-import ch.sbb.atlas.servicepointdirectory.api.model.ServicePointGeolocationModel.SwissLocation;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import java.util.Map;
 import lombok.experimental.UtilityClass;

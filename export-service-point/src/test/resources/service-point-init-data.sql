@@ -1,3 +1,4 @@
+-- Insert Categories
 insert into service_point_version_categories (service_point_version_id, categories)
 values (1228, 'POINT_OF_SALE');
 insert into service_point_version_categories (service_point_version_id, categories)
@@ -34,9 +35,6 @@ insert into service_point_version_categories (service_point_version_id, categori
 values (2055, 'POINT_OF_SALE');
 insert into service_point_version_categories (service_point_version_id, categories)
 values (2068, 'POINT_OF_SALE');
-
-
-
 insert into service_point_version_categories (service_point_version_id, categories)
 values (1228, 'POINT_OF_SALE');
 insert into service_point_version_categories (service_point_version_id, categories)
@@ -64,6 +62,7 @@ values (1845, 'POINT_OF_SALE');
 insert into service_point_version_categories (service_point_version_id, categories)
 values (1897, 'POINT_OF_SALE');
 
+-- Insert ServicePointGeolocation
 insert into service_point_version_geolocation (id, spatial_reference, east, north, height, country, swiss_canton,
                                                swiss_district_name, swiss_district_number, swiss_municipality_number,
                                                swiss_municipality_name, swiss_locality_name, creation_date, creator, edition_date,
@@ -131,6 +130,7 @@ insert into service_point_version_geolocation (id, spatial_reference, east, nort
 values (1010, 'LV95', 2627323.00000000000, 1266834.00000000000, 296.00, 'SWITZERLAND', 'AARGAU', 'Rheinfelden', 1909, 4258,
         'Rheinfelden', 'Rheinfelden', '2022-07-29 11:10:29.000000', 'fs45117', '2022-07-29 11:10:29.000000', 'fs45117', 0);
 
+-- Insert ServicePointVersion
 insert into service_point_version (id, service_point_geolocation_id, number, sloid, number_short, country, designation_long,
                                    designation_official, abbreviation, status_didok3, sort_code_of_destination_station,
                                    business_organisation, operating_point_type, stop_point_type, status,
@@ -212,3 +212,70 @@ insert into service_point_version (id, service_point_geolocation_id, number, slo
 values (1007, 1002, 12058867, null, 5886, 'AUSTRIA_BUS', null, 'Trins, Waldfestplatz', null, 'IN_OPERATION', null,
         'ch:1:sboid:101257', null, 'UNKNOWN', 'VALIDATED', null, false, null, '2022-09-01', '2099-12-31',
         '2022-09-10 17:29:29.000000', 'fs45117', '2022-09-10 17:29:29.000000', 'fs45117', 0, false, true, true, null, null);
+
+-- Insert SheredBusinessOrganisationVersion
+insert into shared_business_organisation_version (id, sboid, abbreviation_de, abbreviation_fr,
+                                                  abbreviation_it, abbreviation_en, description_de,
+                                                  description_fr, description_it, description_en,
+                                                  organisation_number, status, valid_from, valid_to)
+values (2716, 'ch:1:sboid:101006', 'TSDA', 'TSDA', 'TSDA', 'TSDA', 'Télésiège Les Dappes - La Dôle',
+        'Télésiège Les Dappes - La Dôle', 'Télésiège Les Dappes - La Dôle', 'Télésiège Les Dappes - La Dôle', 3065, 'VALIDATED',
+        '1900-01-01', '2099-12-31');
+insert into shared_business_organisation_version (id, sboid, abbreviation_de, abbreviation_fr,
+                                                  abbreviation_it, abbreviation_en, description_de,
+                                                  description_fr, description_it, description_en,
+                                                  organisation_number, status, valid_from, valid_to)
+values (2717, 'ch:1:sboid:101007', 'BDGAG-ssl', 'BDGAG-ssl', 'BDGAG-ssl', 'BDGAG-ssl', 'Bergbahnen Destination Gstaad AG',
+        'Bergbahnen Destination Gstaad AG', 'Bergbahnen Destination Gstaad AG', 'Bergbahnen Destination Gstaad AG', 3066,
+        'VALIDATED', '1900-01-01', '2099-12-31');
+insert into shared_business_organisation_version (id, sboid, abbreviation_de, abbreviation_fr,
+                                                  abbreviation_it, abbreviation_en, description_de,
+                                                  description_fr, description_it, description_en,
+                                                  organisation_number, status, valid_from, valid_to)
+values (2718, 'ch:1:sboid:101008', 'BDGAG-slg', 'BDGAG-slg', 'BDGAG-slg', 'BDGAG-slg', 'Bergbahnen Destination Gstaad AG',
+        'Bergbahnen Destination Gstaad AG', 'Bergbahnen Destination Gstaad AG', 'Bergbahnen Destination Gstaad AG', 3067,
+        'VALIDATED', '1900-01-01', '2099-12-31');
+insert into shared_business_organisation_version (id, sboid, abbreviation_de, abbreviation_fr,
+                                                  abbreviation_it, abbreviation_en, description_de,
+                                                  description_fr, description_it, description_en,
+                                                  organisation_number, status, valid_from, valid_to)
+values (2719, 'ch:1:sboid:100798', 'SAS-Code', 'SAS-Code', 'SAS-Code', 'SAS-Code', 'Reserviert für SAS (technischer Code)',
+        'Reserviert für SAS (technischer Code)', 'Reserviert für SAS (technischer Code)', 'Reserviert für SAS (technischer Code)',
+        999, 'VALIDATED', '1900-01-01', '2099-12-31');
+insert into shared_business_organisation_version (id, sboid, abbreviation_de, abbreviation_fr,
+                                                  abbreviation_it, abbreviation_en, description_de,
+                                                  description_fr, description_it, description_en,
+                                                  organisation_number, status, valid_from, valid_to)
+values (2720, 'ch:1:sboid:100799', 'Pool', 'Pool', 'Pool', 'Pool', 'Internationaler Schlafwagenpool',
+        'Pool international des wagons-lits', 'Internationaler Schlafwagenpool', 'Internationaler Schlafwagenpool', 1004,
+        'VALIDATED', '1900-01-01', '2099-12-31');
+insert into shared_business_organisation_version (id, sboid, abbreviation_de, abbreviation_fr,
+                                                  abbreviation_it, abbreviation_en, description_de,
+                                                  description_fr, description_it, description_en,
+                                                  organisation_number, status, valid_from, valid_to)
+values (2721, 'ch:1:sboid:100800', 'St.L', 'St.L', 'St.L', 'St.L', 'Stena Line (Ferry-boat)', 'Stena Line (Ferry-boat)',
+        'Stena Line (Ferry-boat)', 'Stena Line (Ferry-boat)', 1006, 'VALIDATED', '1900-01-01', '2099-12-31');
+insert into shared_business_organisation_version (id, sboid, abbreviation_de, abbreviation_fr,
+                                                  abbreviation_it, abbreviation_en, description_de,
+                                                  description_fr, description_it, description_en,
+                                                  organisation_number, status, valid_from, valid_to)
+values (2722, 'ch:1:sboid:100801', 'IC', 'IC', 'IC', 'IC', 'Intercontainer', 'Intercontainer', 'Intercontainer', 'Intercontainer',
+        1007, 'VALIDATED', '1900-01-01', '2099-12-31');
+insert into shared_business_organisation_version (id, sboid, abbreviation_de, abbreviation_fr,
+                                                  abbreviation_it, abbreviation_en, description_de,
+                                                  description_fr, description_it, description_en,
+                                                  organisation_number, status, valid_from, valid_to)
+values (2723, 'ch:1:sboid:101116', 'FBG', 'FBG', 'FBG', 'FBG', 'Fähre Beckenried-Gersau', 'Fähre Beckenried-Gersau',
+        'Fähre Beckenried-Gersau', 'Fähre Beckenried-Gersau', 3190, 'VALIDATED', '1900-01-01', '2099-12-31');
+insert into shared_business_organisation_version (id, sboid, abbreviation_de, abbreviation_fr,
+                                                  abbreviation_it, abbreviation_en, description_de,
+                                                  description_fr, description_it, description_en,
+                                                  organisation_number, status, valid_from, valid_to)
+values (2724, 'ch:1:sboid:101117', 'WG-wg', 'WG-wg', 'WG-wg', 'WG-wg', 'Wasserngrat 2000 AG', 'Wasserngrat 2000 AG',
+        'Wasserngrat 2000 AG', 'Wasserngrat 2000 AG', 3191, 'VALIDATED', '1900-01-01', '2099-12-31');
+insert into shared_business_organisation_version (id, sboid, abbreviation_de, abbreviation_fr,
+                                                  abbreviation_it, abbreviation_en, description_de,
+                                                  description_fr, description_it, description_en,
+                                                  organisation_number, status, valid_from, valid_to)
+values (5246, 'ch:1:sboid:1102313', 'test1026', 'tIdd', 'TIff', 'STIf', 'MIMO2 - 3883', 'Verkehrsbetriebe STI AG',
+        'Verkehrsbetriebe STI AG', 'Verkehrsbetriebe STI AG', 3883, 'VALIDATED', '2023-01-01', '2023-12-31');
