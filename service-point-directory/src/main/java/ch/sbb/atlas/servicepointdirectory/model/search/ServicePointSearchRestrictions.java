@@ -1,5 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.model.search;
 
+import static ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion.Fields.number;
+
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.searching.SearchRestrictions;
 import ch.sbb.atlas.searching.SpecificationBuilder;
@@ -10,7 +12,6 @@ import ch.sbb.atlas.searching.specification.ValidOrEditionTimerangeSpecification
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointRequestParams;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
-import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion.Fields;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion_;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation_;
 import jakarta.persistence.metamodel.SingularAttribute;
@@ -50,9 +51,9 @@ public class ServicePointSearchRestrictions extends SearchRestrictions<ServicePo
   protected SpecificationBuilder<ServicePointVersion> specificationBuilder() {
     return SpecificationBuilder.<ServicePointVersion>builder()
         .stringAttributes(
-            List.of(Fields.number,
-                Fields.numberShort,
-                Fields.designationOfficial))
+            List.of(number,
+                ServicePointVersion.Fields.numberShort,
+                ServicePointVersion.Fields.designationOfficial))
         .validFromAttribute(ServicePointVersion_.validFrom)
         .validToAttribute(ServicePointVersion_.validTo)
         .build();
@@ -62,8 +63,10 @@ public class ServicePointSearchRestrictions extends SearchRestrictions<ServicePo
   public Specification<ServicePointVersion> getSpecification() {
     return getBaseSpecification()
         .and(specificationBuilder().stringInSpecification(servicePointRequestParams.getSloids(), ServicePointVersion_.sloid))
-        .and(specificationBuilder().inSpecification(servicePointRequestParams.getServicePointNumbers(), Fields.number))
-        .and(specificationBuilder().inSpecification(servicePointRequestParams.getNumbersShort(), Fields.numberShort))
+        .and(specificationBuilder().inSpecification(servicePointRequestParams.getServicePointNumbers(),
+            ServicePointVersion.Fields.number))
+        .and(specificationBuilder().inSpecification(servicePointRequestParams.getNumbersShort(),
+            ServicePointVersion.Fields.numberShort))
         .and(specificationBuilder().stringInSpecification(servicePointRequestParams.getAbbreviations(),
             ServicePointVersion_.abbreviation))
         .and(specificationBuilder().stringInSpecification(servicePointRequestParams.getBusinessOrganisationSboids(),

@@ -34,7 +34,8 @@ public interface ServicePointVersionRepository extends JpaRepository<ServicePoin
   @Query("update service_point_version v set v.version = (v.version + 1) where v.number = :number")
   void incrementVersion(@Param("number") ServicePointNumber number);
 
-  @EntityGraph(attributePaths = {Fields.servicePointGeolocation, Fields.categories, Fields.meansOfTransport})
+  @EntityGraph(attributePaths = {ServicePointVersion.Fields.servicePointGeolocation, ServicePointVersion.Fields.categories,
+      ServicePointVersion.Fields.meansOfTransport})
   List<ServicePointVersion> findAllByIdIn(Collection<Long> ids, Sort sort);
 
   default Page<ServicePointVersion> loadByIdsFindBySpecification(Specification<ServicePointVersion> specification,
