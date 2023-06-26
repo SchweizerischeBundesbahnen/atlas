@@ -1,12 +1,13 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
 import ch.sbb.atlas.api.model.Container;
+import ch.sbb.atlas.api.servicepoint.LoadingPointVersionModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.api.LoadingPointApiV1;
-import ch.sbb.atlas.servicepointdirectory.api.model.LoadingPointVersionModel;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.LoadingPointNumberNotFoundException;
+import ch.sbb.atlas.servicepointdirectory.mapper.LoadingPointVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.model.search.LoadingPointSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.service.loadingpoint.LoadingPointService;
 import java.time.LocalDate;
@@ -35,7 +36,7 @@ public class LoadingPointController implements LoadingPointApiV1 {
             .validOn(validOn)
             .build());
     return Container.<LoadingPointVersionModel>builder()
-        .objects(loadingPointVersions.stream().map(LoadingPointVersionModel::fromEntity).toList())
+        .objects(loadingPointVersions.stream().map(LoadingPointVersionMapper::fromEntity).toList())
         .totalCount(loadingPointVersions.getTotalElements())
         .build();
   }
@@ -46,7 +47,7 @@ public class LoadingPointController implements LoadingPointApiV1 {
     List<LoadingPointVersionModel> loadingPointVersions = loadingPointService.findLoadingPoint(number,
             loadingPointNumber)
         .stream()
-        .map(LoadingPointVersionModel::fromEntity).toList();
+        .map(LoadingPointVersionMapper::fromEntity).toList();
     if (loadingPointVersions.isEmpty()) {
       throw new LoadingPointNumberNotFoundException(number, loadingPointNumber);
     }
@@ -55,7 +56,7 @@ public class LoadingPointController implements LoadingPointApiV1 {
 
   @Override
   public LoadingPointVersionModel getLoadingPointVersion(Long id) {
-    return loadingPointService.findById(id).map(LoadingPointVersionModel::fromEntity)
+    return loadingPointService.findById(id).map(LoadingPointVersionMapper::fromEntity)
         .orElseThrow(() -> new IdNotFoundException(id));
   }
 

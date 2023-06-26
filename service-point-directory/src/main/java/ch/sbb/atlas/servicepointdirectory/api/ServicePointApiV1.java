@@ -6,7 +6,7 @@ import ch.sbb.atlas.configuration.Role;
 import ch.sbb.atlas.imports.servicepoint.model.ServicePointImportReqModel;
 import ch.sbb.atlas.imports.servicepoint.model.ServicePointItemImportResult;
 import ch.sbb.atlas.servicepointdirectory.api.model.CreateServicePointVersionModel;
-import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion.Fields;
+import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -31,8 +31,10 @@ public interface ServicePointApiV1 {
 
   @GetMapping
   @PageableAsQueryParam
-  Container<ReadServicePointVersionModel> getServicePoints(@Parameter(hidden = true) @PageableDefault(sort = {Fields.number,
-      Fields.validFrom}) Pageable pageable, @ParameterObject ServicePointRequestParams servicePointRequestParams);
+  Container<ReadServicePointVersionModel> getServicePoints(@Parameter(hidden = true) @PageableDefault(sort =
+      {ServicePointVersion.Fields.number,
+          ServicePointVersion.Fields.validFrom}) Pageable pageable,
+      @ParameterObject ServicePointRequestParams servicePointRequestParams);
 
   @GetMapping("{servicePointNumber}")
   List<ReadServicePointVersionModel> getServicePointVersions(@PathVariable Integer servicePointNumber);
