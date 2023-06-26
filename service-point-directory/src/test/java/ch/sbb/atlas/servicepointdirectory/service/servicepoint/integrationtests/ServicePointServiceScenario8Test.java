@@ -45,7 +45,7 @@ public class ServicePointServiceScenario8Test extends BaseServicePointServiceInt
         editedVersion.setOperatingPointWithTimetable(true);
         // when
         servicePointService.updateServicePointVersion(version3, editedVersion);
-        List<ServicePointVersion> result = versionRepository.getAllVersionsVersioned(SPN);
+        List<ServicePointVersion> result = versionRepository.findAllByNumberOrderByValidFrom(SPN);
 
         // then
         assertThat(result).isNotNull().hasSize(3);
@@ -114,7 +114,7 @@ public class ServicePointServiceScenario8Test extends BaseServicePointServiceInt
         editedVersion.setValidTo(LocalDate.of(2024, 6, 1));
         // when
         servicePointService.updateServicePointVersion(version3, editedVersion);
-        List<ServicePointVersion> result = versionRepository.getAllVersionsVersioned(SPN);
+        List<ServicePointVersion> result = versionRepository.findAllByNumberOrderByValidFrom(SPN);
 
         // then
         assertThat(result).isNotNull().hasSize(4);
@@ -197,7 +197,7 @@ public class ServicePointServiceScenario8Test extends BaseServicePointServiceInt
         editedVersion.setValidFrom(version3.getValidFrom());
         // when
         servicePointService.updateServicePointVersion(version3, editedVersion);
-        List<ServicePointVersion> result = versionRepository.getAllVersionsVersioned(SPN);
+        List<ServicePointVersion> result = versionRepository.findAllByNumberOrderByValidFrom(SPN);
 
         // then
         assertThat(result).isNotNull().hasSize(4);
@@ -281,7 +281,7 @@ public class ServicePointServiceScenario8Test extends BaseServicePointServiceInt
         editedVersion.setValidFrom(version3.getValidFrom());
         // when
         servicePointService.updateServicePointVersion(version3, editedVersion);
-        List<ServicePointVersion> result = versionRepository.getAllVersionsVersioned(SPN);
+        List<ServicePointVersion> result = versionRepository.findAllByNumberOrderByValidFrom(SPN);
 
         // then
         assertThat(result).isNotNull().hasSize(4);
@@ -365,7 +365,7 @@ public class ServicePointServiceScenario8Test extends BaseServicePointServiceInt
         editedVersion.setValidFrom(version3.getValidFrom());
         // when
         servicePointService.updateServicePointVersion(version3, editedVersion);
-        List<ServicePointVersion> result = versionRepository.getAllVersionsVersioned(SPN);
+        List<ServicePointVersion> result = versionRepository.findAllByNumberOrderByValidFrom(SPN);
 
         // then
         assertThat(result).isNotNull().hasSize(5);
@@ -462,7 +462,7 @@ public class ServicePointServiceScenario8Test extends BaseServicePointServiceInt
         editedVersion.setValidFrom(version1.getValidFrom());
         // when
         servicePointService.updateServicePointVersion(version1, editedVersion);
-        List<ServicePointVersion> result = versionRepository.getAllVersionsVersioned(SPN);
+        List<ServicePointVersion> result = versionRepository.findAllByNumberOrderByValidFrom(SPN);
 
         // then
         assertThat(result).isNotNull().hasSize(5);
@@ -559,7 +559,7 @@ public class ServicePointServiceScenario8Test extends BaseServicePointServiceInt
         editedVersion.setValidFrom(version1.getValidFrom());
         // when
         servicePointService.updateServicePointVersion(version1, editedVersion);
-        List<ServicePointVersion> result = versionRepository.getAllVersionsVersioned(SPN);
+        List<ServicePointVersion> result = versionRepository.findAllByNumberOrderByValidFrom(SPN);
 
         // then
         assertThat(result).isNotNull().hasSize(4);
