@@ -70,6 +70,7 @@ public class TrafficPointElementVersionModel extends BaseVersionModel implements
   private GeolocationBaseModel trafficPointElementGeolocation;
   @NotNull
   private LocalDate validFrom;
+
   @NotNull
   private LocalDate validTo;
 
