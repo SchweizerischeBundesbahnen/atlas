@@ -52,7 +52,7 @@ public class ServicePointVersion extends BaseEntity {
   private ServicePointStatus statusDidok3;
   private String sortCodeOfDestinationStation;
 
-  private String businessOrganisation;
+  private BusinessOrganisation businessOrganisation;
 
   private Set<Category> categories;
   private String categoriesPipeList;
