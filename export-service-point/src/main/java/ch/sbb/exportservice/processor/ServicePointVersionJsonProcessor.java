@@ -26,7 +26,7 @@ public class ServicePointVersionJsonProcessor extends BaseProcessor implements I
         .operatingPointWithTimetable(servicePointVersion.isOperatingPointWithTimetable())
         .freightServicePoint(servicePointVersion.isFreightServicePoint())
         .sortCodeOfDestinationStation(servicePointVersion.getSortCodeOfDestinationStation())
-        .businessOrganisation(servicePointVersion.getBusinessOrganisation())
+        .businessOrganisation(servicePointVersion.getBusinessOrganisation().getBusinessOrganisation())
         .categories(getCategoriesSorted(servicePointVersion))
         .categoriesInformation(getCategoriesSorted(servicePointVersion).stream().map(CodeAndDesignation::fromEnum).toList())
         .operatingPointType(servicePointVersion.getOperatingPointType())
