@@ -2,6 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.api.model;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.model.BaseVersionModel;
+import ch.sbb.atlas.api.servicepoint.GeolocationBaseModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
 import ch.sbb.atlas.servicepointdirectory.mapper.GeolocationMapper;
