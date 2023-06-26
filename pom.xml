@@ -30,7 +30,7 @@
       <tika-core.version>2.7.0</tika-core.version>
 
       <!-- REST Doc -->
-      <asciidoctor-plugin.version>2.2.3</asciidoctor-plugin.version>
+      <asciidoctor-plugin.version>2.2.4</asciidoctor-plugin.version>
       <spring-restdocs-mockmvc.version>3.0.0</spring-restdocs-mockmvc.version>
       <spring-auto-rest-docs-core.version>2.0.11</spring-auto-rest-docs-core.version>
 
