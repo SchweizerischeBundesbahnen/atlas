@@ -45,7 +45,7 @@ public class ServicePointServiceScenario11Test extends BaseServicePointServiceIn
         editedVersion.setMeansOfTransport(Set.of(MeanOfTransport.CABLE_CAR));
         // when
         servicePointService.updateServicePointVersion(version1, editedVersion);
-        List<ServicePointVersion> result = versionRepository.getAllVersionsVersioned(SPN);
+        List<ServicePointVersion> result = versionRepository.findAllByNumberOrderByValidFrom(SPN);
 
         // then
         assertThat(result).isNotNull().hasSize(2);
@@ -101,7 +101,7 @@ public class ServicePointServiceScenario11Test extends BaseServicePointServiceIn
         editedVersion.setMeansOfTransport(Set.of(MeanOfTransport.CABLE_CAR));
         // when
         servicePointService.updateServicePointVersion(version1, editedVersion);
-        List<ServicePointVersion> result = versionRepository.getAllVersionsVersioned(SPN);
+        List<ServicePointVersion> result = versionRepository.findAllByNumberOrderByValidFrom(SPN);
 
         // then
         assertThat(result).isNotNull().hasSize(3);
@@ -170,7 +170,7 @@ public class ServicePointServiceScenario11Test extends BaseServicePointServiceIn
         editedVersion.setMeansOfTransport(Set.of(MeanOfTransport.CABLE_CAR));
         // when
         servicePointService.updateServicePointVersion(version1, editedVersion);
-        List<ServicePointVersion> result = versionRepository.getAllVersionsVersioned(SPN);
+        List<ServicePointVersion> result = versionRepository.findAllByNumberOrderByValidFrom(SPN);
 
         // then
         assertThat(result).isNotNull().hasSize(3);
@@ -239,7 +239,7 @@ public class ServicePointServiceScenario11Test extends BaseServicePointServiceIn
         editedVersion.setMeansOfTransport(Set.of(MeanOfTransport.CABLE_CAR));
         // when
         servicePointService.updateServicePointVersion(version1, editedVersion);
-        List<ServicePointVersion> result = versionRepository.getAllVersionsVersioned(SPN);
+        List<ServicePointVersion> result = versionRepository.findAllByNumberOrderByValidFrom(SPN);
 
         // then
         assertThat(result).isNotNull().hasSize(3);
