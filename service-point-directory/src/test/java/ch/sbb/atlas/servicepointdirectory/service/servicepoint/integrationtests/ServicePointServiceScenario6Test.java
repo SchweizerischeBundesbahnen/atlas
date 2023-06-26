@@ -48,7 +48,7 @@ public class ServicePointServiceScenario6Test extends BaseServicePointServiceInt
         editedVersion.setValidTo(LocalDate.of(2024, 12, 31));
         // when
         servicePointService.updateServicePointVersion(version3, editedVersion);
-        List<ServicePointVersion> result = versionRepository.getAllVersionsVersioned(SPN);
+        List<ServicePointVersion> result = versionRepository.findAllByNumberOrderByValidFrom(SPN);
 
         // then
         assertThat(result).isNotNull().hasSize(4);
@@ -130,7 +130,7 @@ public class ServicePointServiceScenario6Test extends BaseServicePointServiceInt
         editedVersion.setValidTo(LocalDate.of(2021, 12, 31));
         // when
         servicePointService.updateServicePointVersion(version1, editedVersion);
-        List<ServicePointVersion> result = versionRepository.getAllVersionsVersioned(SPN);
+        List<ServicePointVersion> result = versionRepository.findAllByNumberOrderByValidFrom(SPN);
 
         // then
         assertThat(result).isNotNull().hasSize(2);
@@ -186,7 +186,7 @@ public class ServicePointServiceScenario6Test extends BaseServicePointServiceInt
         editedVersion.setValidTo(LocalDate.of(2022, 12, 31));
         // when
         servicePointService.updateServicePointVersion(version1, editedVersion);
-        List<ServicePointVersion> result = versionRepository.getAllVersionsVersioned(SPN);
+        List<ServicePointVersion> result = versionRepository.findAllByNumberOrderByValidFrom(SPN);
 
         // then
         assertThat(result).isNotNull().hasSize(2);
@@ -242,7 +242,7 @@ public class ServicePointServiceScenario6Test extends BaseServicePointServiceInt
         editedVersion.setValidTo(version1.getValidTo());
         // when
         servicePointService.updateServicePointVersion(version1, editedVersion);
-        List<ServicePointVersion> result = versionRepository.getAllVersionsVersioned(SPN);
+        List<ServicePointVersion> result = versionRepository.findAllByNumberOrderByValidFrom(SPN);
 
         // then
         assertThat(result).isNotNull().hasSize(2);

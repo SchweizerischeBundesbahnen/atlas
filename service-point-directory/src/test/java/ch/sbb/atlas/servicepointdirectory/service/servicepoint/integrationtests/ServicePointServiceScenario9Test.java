@@ -44,7 +44,7 @@ public class ServicePointServiceScenario9Test extends BaseServicePointServiceInt
         editedVersion.setMeansOfTransport(Set.of(MeanOfTransport.CABLE_CAR));
         // when
         servicePointService.updateServicePointVersion(version1, editedVersion);
-        List<ServicePointVersion> result = versionRepository.getAllVersionsVersioned(SPN);
+        List<ServicePointVersion> result = versionRepository.findAllByNumberOrderByValidFrom(SPN);
 
         // then
         assertThat(result).isNotNull().hasSize(2);
@@ -99,7 +99,7 @@ public class ServicePointServiceScenario9Test extends BaseServicePointServiceInt
         editedVersion.setValidTo(LocalDate.of(2019, 6, 1));
         // when
         servicePointService.updateServicePointVersion(version1, editedVersion);
-        List<ServicePointVersion> result = versionRepository.getAllVersionsVersioned(SPN);
+        List<ServicePointVersion> result = versionRepository.findAllByNumberOrderByValidFrom(SPN);
 
         // then
         assertThat(result).isNotNull().hasSize(3);
@@ -166,7 +166,7 @@ public class ServicePointServiceScenario9Test extends BaseServicePointServiceInt
         editedVersion.setValidTo(version1.getValidTo());
         // when
         servicePointService.updateServicePointVersion(version1, editedVersion);
-        List<ServicePointVersion> result = versionRepository.getAllVersionsVersioned(SPN);
+        List<ServicePointVersion> result = versionRepository.findAllByNumberOrderByValidFrom(SPN);
 
         // then
         assertThat(result).isNotNull().hasSize(2);

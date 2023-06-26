@@ -48,7 +48,7 @@ public class ServicePointServiceScenario3WithServicePointGeolocationTest extends
         editedVersion.setValidTo(LocalDate.of(2024, 6, 1));
         // when
         servicePointService.updateServicePointVersion(version2, editedVersion);
-        List<ServicePointVersion> result = versionRepository.getAllVersionsVersioned(SPN);
+        List<ServicePointVersion> result = versionRepository.findAllByNumberOrderByValidFrom(SPN);
 
         // then
         assertThat(result).isNotNull().hasSize(5);
@@ -165,7 +165,7 @@ public class ServicePointServiceScenario3WithServicePointGeolocationTest extends
         editedVersion.setValidTo(LocalDate.of(2024, 6, 1));
         // when
         servicePointService.updateServicePointVersion(version3, editedVersion);
-        List<ServicePointVersion> result = versionRepository.getAllVersionsVersioned(SPN);
+        List<ServicePointVersion> result = versionRepository.findAllByNumberOrderByValidFrom(SPN);
 
         // then
         assertThat(result).isNotNull().hasSize(3);
@@ -245,7 +245,7 @@ public class ServicePointServiceScenario3WithServicePointGeolocationTest extends
         editedVersion.setValidTo(LocalDate.of(2022, 1, 2));
         // when
         servicePointService.updateServicePointVersion(version1, editedVersion);
-        List<ServicePointVersion> result = versionRepository.getAllVersionsVersioned(SPN);
+        List<ServicePointVersion> result = versionRepository.findAllByNumberOrderByValidFrom(SPN);
 
         // then
         assertThat(result).isNotNull().hasSize(1);
