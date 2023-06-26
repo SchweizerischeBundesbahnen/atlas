@@ -11,6 +11,7 @@ import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
 import ch.sbb.atlas.servicepoint.enumeration.ServicePointStatus;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
+import ch.sbb.exportservice.entity.BusinessOrganisation;
 import ch.sbb.exportservice.entity.ServicePointVersion;
 import ch.sbb.exportservice.entity.ServicePointVersion.ServicePointVersionBuilder;
 import ch.sbb.exportservice.entity.geolocation.ServicePointGeolocation;
@@ -74,7 +75,9 @@ public class ServicePointVersionRowMapper implements RowMapper<ServicePointVersi
     servicePointVersionBuilder.operatingPointKilometerMaster(
         ServicePointNumber.of(rs.getInt("operating_point_kilometer_master")));
     servicePointVersionBuilder.sortCodeOfDestinationStation(rs.getString("sort_code_of_destination_station"));
-    servicePointVersionBuilder.businessOrganisation(rs.getString("business_organisation"));
+
+    servicePointVersionBuilder.businessOrganisation(getBusinessOrganisation(rs));
+
     servicePointVersionBuilder.comment(rs.getString("comment"));
     servicePointVersionBuilder.creationDate(rs.getObject("creation_date", LocalDateTime.class));
     servicePointVersionBuilder.editionDate(rs.getObject("edition_date", LocalDateTime.class));
@@ -82,6 +85,20 @@ public class ServicePointVersionRowMapper implements RowMapper<ServicePointVersi
     servicePointVersionBuilder.creator(rs.getString("creator"));
     servicePointVersionBuilder.editor(rs.getString("editor"));
     return servicePointVersionBuilder.build();
+  }
+
+  private BusinessOrganisation getBusinessOrganisation(ResultSet rs) throws SQLException {
+    BusinessOrganisation businessOrganisation = BusinessOrganisation.builder()
+        .businessOrganisation(rs.getString("business_organisation"))
+        .businessOrganisationAbbreviationDe(rs.getString("abbreviation_de"))
+        .businessOrganisationAbbreviationFr(rs.getString("abbreviation_fr"))
+        .businessOrganisationAbbreviationEn(rs.getString("abbreviation_en"))
+        .businessOrganisationAbbreviationIt(rs.getString("abbreviation_it"))
+        .businessOrganisationDescriptionDe(rs.getString("description_de"))
+        .businessOrganisationDescriptionFr(rs.getString("description_fr"))
+        .businessOrganisationDescriptionEn(rs.getString("description_en"))
+        .businessOrganisationDescriptionIt(rs.getString("description_it")).build();
+    return businessOrganisation;
   }
 
   private void getServicePointGeolocation(ResultSet rs, ServicePointVersionBuilder<?, ?> servicePointVersionBuilder)
@@ -100,7 +117,7 @@ public class ServicePointVersionRowMapper implements RowMapper<ServicePointVersi
     if (rs.getString("swiss_canton") != null) {
       servicePointGeolocationBuilder.swissCanton(SwissCanton.valueOf(rs.getString("swiss_canton")));
     }
-    
+
     servicePointGeolocationBuilder.swissDistrictName(rs.getString("swiss_district_name"));
     servicePointGeolocationBuilder.swissDistrictNumber(rs.getInt("swiss_district_number"));
     servicePointGeolocationBuilder.swissMunicipalityNumber(rs.getInt("swiss_municipality_number"));
