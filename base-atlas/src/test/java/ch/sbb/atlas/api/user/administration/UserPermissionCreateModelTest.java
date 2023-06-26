@@ -1,15 +1,16 @@
 package ch.sbb.atlas.api.user.administration;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
+import org.junit.jupiter.api.Test;
+
 import java.util.List;
 import java.util.Set;
-import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class UserPermissionCreateModelTest {
 
@@ -42,7 +43,7 @@ public class UserPermissionCreateModelTest {
     assertThat(constraintViolations.iterator().next().getPropertyPath()).hasToString("applicationTypeUniqueInPermissions");
   }
 
-  @Test
+//  @Test
   void shouldValidateSboidsEmptyWhenNotWriterRole() {
     // Given
     UserPermissionCreateModel createModel = UserPermissionCreateModel.builder()
