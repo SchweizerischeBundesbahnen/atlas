@@ -1,12 +1,5 @@
 package ch.sbb.atlas.servicepointdirectory.entity;
 
-import static ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation.Fields.swissCanton;
-import static ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation.Fields.swissDistrictName;
-import static ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation.Fields.swissDistrictNumber;
-import static ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation.Fields.swissLocalityName;
-import static ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation.Fields.swissMunicipalityName;
-import static ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation.Fields.swissMunicipalityNumber;
-
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.model.BusinessOrganisationAssociated;
 import ch.sbb.atlas.model.Status;
@@ -192,12 +185,12 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
   @JoinColumn(name = "service_point_geolocation_id", referencedColumnName = "id")
   @AtlasVersionableProperty(relationType = RelationType.ONE_TO_ONE, relationsFields = {
       ServicePointGeolocation.Fields.country,
-      swissCanton,
-      swissDistrictNumber,
-      swissDistrictName,
-      swissMunicipalityNumber,
-      swissMunicipalityName,
-      swissLocalityName,
+      ServicePointGeolocation.Fields.swissCanton,
+      ServicePointGeolocation.Fields.swissDistrictNumber,
+      ServicePointGeolocation.Fields.swissDistrictName,
+      ServicePointGeolocation.Fields.swissMunicipalityNumber,
+      ServicePointGeolocation.Fields.swissMunicipalityName,
+      ServicePointGeolocation.Fields.swissLocalityName,
       GeolocationBaseEntity.Fields.east,
       GeolocationBaseEntity.Fields.north,
       GeolocationBaseEntity.Fields.spatialReference,
