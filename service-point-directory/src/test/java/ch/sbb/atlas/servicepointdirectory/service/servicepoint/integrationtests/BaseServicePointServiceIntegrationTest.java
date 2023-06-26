@@ -158,7 +158,7 @@ public abstract class BaseServicePointServiceIntegrationTest {
 
     @AfterEach
     void cleanUp() {
-        List<ServicePointVersion> versionsVersioned = versionRepository.getAllVersionsVersioned(SPN);
+        List<ServicePointVersion> versionsVersioned = versionRepository.findAllByNumberOrderByValidFrom(SPN);
         versionRepository.deleteAll(versionsVersioned);
     }
 
