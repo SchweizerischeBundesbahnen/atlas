@@ -26,3 +26,5 @@ drop table traffic_point_element_version;
 
 drop table traffic_point_element_version_geolocation;
 
+drop table shared_business_organisation_version;
+

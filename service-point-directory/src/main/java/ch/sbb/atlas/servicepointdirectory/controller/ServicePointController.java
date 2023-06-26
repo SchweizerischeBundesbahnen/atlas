@@ -1,6 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
 import ch.sbb.atlas.api.model.Container;
+import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.imports.servicepoint.model.ServicePointImportReqModel;
 import ch.sbb.atlas.imports.servicepoint.model.ServicePointItemImportResult;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
@@ -8,7 +9,6 @@ import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointApiV1;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointRequestParams;
 import ch.sbb.atlas.servicepointdirectory.api.model.CreateServicePointVersionModel;
-import ch.sbb.atlas.servicepointdirectory.api.model.ReadServicePointVersionModel;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointVersionMapper;
@@ -71,13 +71,15 @@ public class ServicePointController implements ServicePointApiV1 {
 
   @Override
   public ReadServicePointVersionModel createServicePoint(CreateServicePointVersionModel createServicePointVersionModel) {
-    return ServicePointVersionMapper.toModel(servicePointService.save(ServicePointVersionMapper.toEntity(createServicePointVersionModel)));
+    return ServicePointVersionMapper.toModel(
+        servicePointService.save(ServicePointVersionMapper.toEntity(createServicePointVersionModel)));
   }
 
   @Override
-  public List<ReadServicePointVersionModel> updateServicePoint(Long id, CreateServicePointVersionModel createServicePointVersionModel) {
+  public List<ReadServicePointVersionModel> updateServicePoint(Long id,
+      CreateServicePointVersionModel createServicePointVersionModel) {
     ServicePointVersion servicePointVersionToUpdate = servicePointService.findById(id)
-            .orElseThrow(() -> new IdNotFoundException(id));
+        .orElseThrow(() -> new IdNotFoundException(id));
     servicePointService.updateServicePointVersion(servicePointVersionToUpdate, ServicePointVersionMapper.toEntity(createServicePointVersionModel));
     return servicePointService.findAllByNumberOrderByValidFrom(servicePointVersionToUpdate.getNumber())
         .stream()
