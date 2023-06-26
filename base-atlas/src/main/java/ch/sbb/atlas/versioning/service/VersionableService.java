@@ -13,6 +13,11 @@ public interface VersionableService {
       Versionable edited,
       List<T> currentVersions);
 
+  /**
+   *
+   * Used only for versioning when we do ImportFromCsv and not for ordinary ServicePointUpdate
+   * @see ch.sbb.atlas.servicepointdirectory.api.ServicePointApiV1#importServicePoints(ch.sbb.atlas.imports.servicepoint.model.ServicePointImportReqModel)
+   */
   <T extends Versionable> List<VersionedObject> versioningObjectsForImportFromCsv(Versionable current,
       Versionable edited,
       List<T> currentVersions);
