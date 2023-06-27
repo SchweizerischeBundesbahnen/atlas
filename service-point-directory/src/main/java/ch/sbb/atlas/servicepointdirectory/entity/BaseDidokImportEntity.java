@@ -1,6 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.entity;
 
 import ch.sbb.atlas.service.UserService;
+import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -24,6 +25,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @MappedSuperclass
 @FieldNameConstants
+@AtlasVersionable
 @Deprecated
 /**
  * Switch back to ch.sbb.atlas.base.service.model.entity.BaseEntity once Didok dies

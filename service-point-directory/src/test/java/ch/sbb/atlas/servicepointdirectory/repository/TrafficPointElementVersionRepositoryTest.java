@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.servicepointdirectory.TrafficPointTestData;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
@@ -113,33 +114,13 @@ public class TrafficPointElementVersionRepositoryTest {
   @Test
   void shouldFindAllBySloidOrderByValidFrom() {
     // given
-    TrafficPointElementVersion trafficPointElementVersion1 = TrafficPointElementVersion
-        .builder()
-        .designation("Bezeichnung")
-        .designationOperational("Betriebliche Bezeichnung")
-        .servicePointNumber(ServicePointNumber.of(85070003))
-        .sloid("ch:1:sloid:123")
-        .validFrom(LocalDate.of(2022, 1, 1))
-        .validTo(LocalDate.of(2022, 12, 31))
-        .build();
-    TrafficPointElementVersion trafficPointElementVersion2 = TrafficPointElementVersion
-        .builder()
-        .designation("Bezeichnung")
-        .designationOperational("Betriebliche Bezeichnung")
-        .servicePointNumber(ServicePointNumber.of(85070003))
-        .sloid("ch:1:sloid:123")
-        .validFrom(LocalDate.of(2020, 1, 1))
-        .validTo(LocalDate.of(2020, 12, 31))
-        .build();
-    TrafficPointElementVersion trafficPointElementVersion3 = TrafficPointElementVersion
-        .builder()
-        .designation("Bezeichnung")
-        .designationOperational("Betriebliche Bezeichnung")
-        .servicePointNumber(ServicePointNumber.of(85070003))
-        .sloid("ch:1:sloid:other")
-        .validFrom(LocalDate.of(2022, 1, 1))
-        .validTo(LocalDate.of(2022, 12, 31))
-        .build();
+    TrafficPointElementVersion trafficPointElementVersion1 = TrafficPointTestData.getBasicTrafficPoint();
+    TrafficPointElementVersion trafficPointElementVersion2 = TrafficPointTestData.getBasicTrafficPoint();
+    trafficPointElementVersion2.setValidFrom(LocalDate.of(2020, 1, 1));
+    trafficPointElementVersion2.setValidTo(LocalDate.of(2022, 1, 1));
+
+    TrafficPointElementVersion trafficPointElementVersion3 = TrafficPointTestData.getBasicTrafficPoint();
+    trafficPointElementVersion3.setSloid("ch:1:sloid:other");
 
     trafficPointElementVersionRepository.save(trafficPointElementVersion1);
     trafficPointElementVersionRepository.save(trafficPointElementVersion2);
