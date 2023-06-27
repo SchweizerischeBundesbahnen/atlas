@@ -46,23 +46,23 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
 
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
   @Schema(description = "Unique code for locations that is used in customer information. The structure is described in the "
-      + "“Swiss Location ID” specification, chapter 4.2. The document is available here. "
-      + "https://transportdatamanagement.ch/standards/", example = "ch:1:sloid:18771")
+          + "“Swiss Location ID” specification, chapter 4.2. The document is available here. "
+          + "https://transportdatamanagement.ch/standards/", example = "ch:1:sloid:18771")
   private String sloid;
 
   @Schema(description = "Long designation of a location. Used primarily in customer information. "
-      + "Not all systems can process names of this length.", example = "Biel/Bienne Bözingenfeld/Champs-de-Boujean")
+          + "Not all systems can process names of this length.", example = "Biel/Bienne Bözingenfeld/Champs-de-Boujean")
   @Size(max = AtlasFieldLengths.LENGTH_50)
   private String designationLong;
 
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_30)
   @Schema(description = "Official designation of a location that must be used by all recipients"
-      , example = "Biel/Bienne Bözingenfeld/Champ", maxLength = 30)
+          , example = "Biel/Bienne Bözingenfeld/Champ", maxLength = 30)
   private String designationOfficial;
 
   @Size(max = AtlasFieldLengths.LENGTH_6)
   @Schema(description = "Location abbreviation. Mainly used by the railways. Abbreviations may not be used as a code for "
-      + "identifying locations.", example = "BIBD", maxLength = 6)
+          + "identifying locations.", example = "BIBD", maxLength = 6)
   private String abbreviation;
 
   @NotNull
@@ -103,7 +103,7 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
   private CodeAndDesignation operatingPointTypeInformation;
 
   @Schema(description = "OperatingPointTechnicalTimetableType, all service points relevant for timetable planning and "
-      + "publication. ")
+          + "publication. ")
   private OperatingPointTechnicalTimetableType operatingPointTechnicalTimetableType;
 
   @Schema(accessMode = AccessMode.READ_ONLY, description = "Details to the OperatingPointTechnicalTimetableType.")
@@ -118,19 +118,13 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
   @Schema(description = "ServicePoint is OperatingPointRouteNetwork", example = "false")
   private boolean operatingPointRouteNetwork;
 
-  @Min(value = 1000000, message = "Minimum value for number.")
-  @Max(value = 9999999, message = "Maximum value for number.")
-  @Schema(description = "Reference to a operatingPointRouteNetwork. OperatingPointKilometer are always related to a "
-      + "operatingPointRouteNetwork")
-  private Integer operatingPointKilometerMasterNumber;
-
   @Valid
   @Schema(description = "Reference to a operatingPointRouteNetwork. OperatingPointKilometer are always related to a "
-      + "operatingPointRouteNetwork")
+          + "operatingPointRouteNetwork")
   private ServicePointNumber operatingPointKilometerMaster;
 
   @Schema(description = "Means of transport. Indicates for which means of transport a stop is intended/equipped. Mandatory for "
-      + "StopPoints")
+          + "StopPoints")
   private List<MeanOfTransport> meansOfTransport;
 
   @Schema(accessMode = AccessMode.READ_ONLY)
@@ -164,7 +158,7 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
 
   @JsonInclude
   @Schema(description = "ServicePoint is OperatingPoint, Operating points refers to the totality of operationally used service "
-      + "points. These are not necessarily traffic-relevant service points. ")
+          + "points. These are not necessarily traffic-relevant service points. ")
   public boolean isOperatingPoint() {
     return operatingPointType != null || isTrafficPoint();
   }
@@ -217,13 +211,13 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
   }
 
   @AssertTrue(message = "At most one of OperatingPointWithoutTimetableType, OperatingPointTechnicalTimetableType, "
-      + "OperatingPointTrafficPointType may be set")
+          + "OperatingPointTrafficPointType may be set")
   public boolean isValidType() {
     long mutualTypes = Stream.of(
-            getOperatingPointTechnicalTimetableType() != null,
-            getOperatingPointTrafficPointType() != null)
-        .filter(i -> i)
-        .count();
+                    getOperatingPointTechnicalTimetableType() != null,
+                    getOperatingPointTrafficPointType() != null)
+            .filter(i -> i)
+            .count();
     return mutualTypes <= 1;
   }
 
