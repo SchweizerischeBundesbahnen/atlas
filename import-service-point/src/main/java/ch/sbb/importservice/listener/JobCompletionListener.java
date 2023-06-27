@@ -2,7 +2,7 @@ package ch.sbb.importservice.listener;
 
 import ch.sbb.atlas.imports.servicepoint.model.ItemImportResponseStatus;
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
-import ch.sbb.importservice.entitiy.ImportProcessItem;
+import ch.sbb.importservice.entity.ImportProcessItem;
 import ch.sbb.importservice.repository.ImportProcessedItemRepository;
 import ch.sbb.importservice.service.MailNotificationService;
 import ch.sbb.importservice.service.MailProducerService;

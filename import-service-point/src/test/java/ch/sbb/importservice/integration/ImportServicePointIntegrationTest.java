@@ -1,8 +1,5 @@
 package ch.sbb.importservice.integration;
 
-import static ch.sbb.importservice.controller.ImportServicePointBatchControllerApiV1.IMPORT_LOADING_POINT_CSV_JOB;
-import static ch.sbb.importservice.controller.ImportServicePointBatchControllerApiV1.IMPORT_SERVICE_POINT_CSV_JOB;
-import static ch.sbb.importservice.controller.ImportServicePointBatchControllerApiV1.IMPORT_TRAFFIC_POINT_CSV_JOB;
 import static ch.sbb.importservice.service.CsvService.DIENSTELLEN_FILE_PREFIX;
 import static ch.sbb.importservice.service.CsvService.VERKEHRSPUNKTELEMENTE_FILE_PREFIX;
 import static ch.sbb.importservice.service.JobHelperService.MIN_LOCAL_DATE;
@@ -59,15 +56,15 @@ public class ImportServicePointIntegrationTest {
   private JobLauncher jobLauncher;
 
   @Autowired
-  @Qualifier(IMPORT_LOADING_POINT_CSV_JOB)
+  @Qualifier(IMPORT_LOADING_POINT_CSV_JOB_NAME)
   private Job importLoadingPointCsvJob;
 
   @Autowired
-  @Qualifier(IMPORT_SERVICE_POINT_CSV_JOB)
+  @Qualifier(IMPORT_SERVICE_POINT_CSV_JOB_NAME)
   private Job importServicePointCsvJob;
 
   @Autowired
-  @Qualifier(IMPORT_TRAFFIC_POINT_CSV_JOB)
+  @Qualifier(IMPORT_TRAFFIC_POINT_CSV_JOB_NAME)
   private Job importTrafficPointCsvJob;
 
   @MockBean
