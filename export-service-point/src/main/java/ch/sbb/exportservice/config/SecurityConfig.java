@@ -30,7 +30,6 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtGra
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
-@Import(UserAdministrationConfig.class)
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig {
@@ -67,14 +66,14 @@ public class SecurityConfig {
                 // In order to use these annotations, you have to enable global-method-security using
                 // <code>@EnableGlobalMethodSecurity(prePostEnabled = true)</code>.
                 .requestMatchers(HttpMethod.DELETE, "/**").hasRole(Role.ATLAS_ADMIN)
+                .requestMatchers(HttpMethod.POST, "/**").hasRole(Role.ATLAS_ADMIN)
                 .anyRequest().authenticated()
         )
         .exceptionHandling(exceptionHandling -> exceptionHandling.accessDeniedHandler(accessDeniedHandler))
 
         // @see <a href="https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#oauth2resourceserver">OAuth
         // 2.0 Resource Server</a>
-        .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())))
-        .oauth2Login(withDefaults());
+        .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())));
     return http.build();
   }
 

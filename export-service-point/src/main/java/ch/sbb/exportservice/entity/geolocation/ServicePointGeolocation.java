@@ -15,10 +15,8 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString(exclude = "servicePointVersion")
 @SuperBuilder
 @FieldNameConstants
-@AtlasVersionable
 public class ServicePointGeolocation extends GeolocationBaseEntity {
 
   private Long id;

@@ -21,7 +21,7 @@ public class StepTracerListener implements StepExecutionListener {
     if (currentSpan != null) {
       String traceId = currentSpan.context().traceId();
       stepExecution.getExecutionContext().put("traceId", traceId);
-      log.info("Putting TraceId to stepExecution: {}", traceId);
+      log.debug("Putting TraceId to stepExecution: {}", traceId);
     }
   }
 

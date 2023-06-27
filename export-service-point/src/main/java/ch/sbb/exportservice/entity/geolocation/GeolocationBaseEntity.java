@@ -21,7 +21,6 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldNameConstants
 @MappedSuperclass
-@AtlasVersionable
 public abstract class GeolocationBaseEntity extends BaseEntity {
 
   private SpatialReference spatialReference;
