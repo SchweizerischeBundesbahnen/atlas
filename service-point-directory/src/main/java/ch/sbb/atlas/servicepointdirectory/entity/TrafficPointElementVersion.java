@@ -11,6 +11,7 @@ import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.versioning.model.Versionable;
 import ch.sbb.atlas.versioning.model.VersionableProperty.RelationType;
+import jakarta.validation.constraints.Digits;
 import java.time.LocalDate;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -61,12 +62,15 @@ public class TrafficPointElementVersion extends BaseDidokImportEntity implements
   private String designationOperational;
 
   @AtlasVersionableProperty
+  @Digits(integer = 13, fraction = 2)
   private Double length;
 
   @AtlasVersionableProperty
+  @Digits(integer = 5, fraction = 2)
   private Double boardingAreaHeight;
 
   @AtlasVersionableProperty
+  @Digits(integer = 5, fraction = 2)
   private Double compassDirection;
 
   @AtlasVersionableProperty
