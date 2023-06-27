@@ -8,6 +8,7 @@ import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
+import ch.sbb.atlas.servicepointdirectory.service.BasePointUtility;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import org.hibernate.StaleObjectStateException;
 import org.junit.jupiter.api.AfterEach;
@@ -39,7 +40,8 @@ public class ServicePointServiceTest {
   @BeforeEach
   void initMocksAndService() {
     mocks = MockitoAnnotations.openMocks(this);
-    servicePointService = new ServicePointService(servicePointVersionRepositoryMock, versionableServiceMock, servicePointValidationService);
+    servicePointService = new ServicePointService(servicePointVersionRepositoryMock, versionableServiceMock,
+        servicePointValidationService);
   }
 
   @AfterEach
@@ -115,7 +117,7 @@ public class ServicePointServiceTest {
     List<ServicePointVersion> versions = new ArrayList<>();
     versions.add(version);
     //when
-    ServicePointVersion result = servicePointService.getCurrentPointVersion(versions, edited);
+    ServicePointVersion result = BasePointUtility.getCurrentPointVersion(versions, edited);
     //then
     assertThat(result).isNotNull();
   }
@@ -134,7 +136,7 @@ public class ServicePointServiceTest {
     List<ServicePointVersion> versions = new ArrayList<>();
     versions.add(version);
     //when
-    ServicePointVersion result = servicePointService.getCurrentPointVersion(versions, edited);
+    ServicePointVersion result = BasePointUtility.getCurrentPointVersion(versions, edited);
     //then
     assertThat(result).isNotNull();
   }
@@ -153,7 +155,7 @@ public class ServicePointServiceTest {
     List<ServicePointVersion> versions = new ArrayList<>();
     versions.add(version);
     //when
-    ServicePointVersion result = servicePointService.getCurrentPointVersion(versions, edited);
+    ServicePointVersion result = BasePointUtility.getCurrentPointVersion(versions, edited);
     //then
     assertThat(result).isNotNull();
   }
@@ -177,7 +179,7 @@ public class ServicePointServiceTest {
     versions.add(version1);
     versions.add(version2);
     //when
-    ServicePointVersion result = servicePointService.getCurrentPointVersion(versions, edited);
+    ServicePointVersion result = BasePointUtility.getCurrentPointVersion(versions, edited);
     //then
     assertThat(result).isNotNull();
   }
@@ -206,7 +208,7 @@ public class ServicePointServiceTest {
     versions.add(version1);
     versions.add(version2);
     //when
-    ServicePointVersion result = servicePointService.getCurrentPointVersion(versions, edited);
+    ServicePointVersion result = BasePointUtility.getCurrentPointVersion(versions, edited);
     //then
     assertThat(result).isNotNull();
     assertThat(result.getValidFrom()).isEqualTo(LocalDate.of(2000, 6, 2));
@@ -237,7 +239,7 @@ public class ServicePointServiceTest {
     versions.add(version1);
     versions.add(version2);
     //when
-    ServicePointVersion result = servicePointService.getCurrentPointVersion(versions, edited);
+    ServicePointVersion result = BasePointUtility.getCurrentPointVersion(versions, edited);
     //then
     assertThat(result).isNotNull();
     assertThat(result.getValidFrom()).isEqualTo(LocalDate.of(2000, 1, 2));
@@ -263,9 +265,7 @@ public class ServicePointServiceTest {
     versions.add(version1);
     versions.add(version2);
     //when
-    Assertions.assertThrows(RuntimeException.class, () -> {
-      servicePointService.getCurrentPointVersion(versions, edited);
-    });
+    Assertions.assertThrows(RuntimeException.class, () -> BasePointUtility.getCurrentPointVersion(versions, edited));
   }
 
   @Test
