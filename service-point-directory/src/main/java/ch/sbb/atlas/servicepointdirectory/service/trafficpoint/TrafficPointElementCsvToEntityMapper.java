@@ -5,10 +5,9 @@ import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointElementCsvModel;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
+import java.util.Objects;
 import java.util.function.Function;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public class TrafficPointElementCsvToEntityMapper implements
     Function<TrafficPointElementCsvModel, TrafficPointElementVersion> {
 
@@ -18,7 +17,7 @@ public class TrafficPointElementCsvToEntityMapper implements
         .builder()
         .designation(trafficPointElementCsvModel.getDesignation())
         .designationOperational(trafficPointElementCsvModel.getDesignationOperational())
-        .length(trafficPointElementCsvModel.getLength())
+        .length(roundDoubleTwoDecimalPoints(trafficPointElementCsvModel.getLength()))
         .boardingAreaHeight(trafficPointElementCsvModel.getBoardingAreaHeight())
         .compassDirection(trafficPointElementCsvModel.getCompassDirection())
         .trafficPointElementType(TrafficPointElementType.fromValue(
@@ -40,7 +39,7 @@ public class TrafficPointElementCsvToEntityMapper implements
         .spatialReference(trafficPointElementCsvModel.getSpatialReference())
         .east(trafficPointElementCsvModel.getOriginalEast())
         .north(trafficPointElementCsvModel.getOriginalNorth())
-        .height(trafficPointElementCsvModel.getHeight())
+        .height(roundDoubleTwoDecimalPoints(trafficPointElementCsvModel.getHeight()))
         .creator(trafficPointElementCsvModel.getCreatedBy())
         .creationDate(trafficPointElementCsvModel.getCreatedAt())
         .editor(trafficPointElementCsvModel.getEditedBy())
@@ -53,5 +52,12 @@ public class TrafficPointElementCsvToEntityMapper implements
     }
 
     return trafficPointElementVersion;
+  }
+
+  private Double roundDoubleTwoDecimalPoints(Double height) {
+    if (Objects.nonNull(height)) {
+      return Math.round(height * 100) / 100D;
+    }
+    return null;
   }
 }
