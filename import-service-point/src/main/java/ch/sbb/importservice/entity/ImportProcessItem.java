@@ -1,4 +1,4 @@
-package ch.sbb.importservice.entitiy;
+package ch.sbb.importservice.entity;
 
 import ch.sbb.atlas.imports.servicepoint.model.ItemImportResponseStatus;
 import jakarta.persistence.Entity;

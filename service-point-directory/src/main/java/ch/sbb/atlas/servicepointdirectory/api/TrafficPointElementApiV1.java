@@ -44,7 +44,7 @@ public interface TrafficPointElementApiV1 {
   @GetMapping("versions/{id}")
   TrafficPointElementVersionModel getTrafficPointElementVersion(@PathVariable Long id);
 
-  @Secured(Role.ROLE_PREFIX + Role.ATLAS_ADMIN)
+  @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
   @PostMapping("import")
   List<TrafficPointItemImportResult> importTrafficPoints(
       @RequestBody @Valid TrafficPointImportRequestModel trafficPointImportRequestModel);
