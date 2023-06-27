@@ -12,7 +12,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BusinessOrganisationVersionRepository extends
-    JpaRepository<BusinessOrganisationVersion, Long>, JpaSpecificationExecutor<BusinessOrganisationVersion> {
+    JpaRepository<BusinessOrganisationVersion, Long>,
+    JpaSpecificationExecutor<BusinessOrganisationVersion> {
 
   List<BusinessOrganisationVersion> findAllBySboidOrderByValidFrom(String slnid);
 
