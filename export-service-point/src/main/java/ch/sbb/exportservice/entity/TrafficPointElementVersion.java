@@ -20,7 +20,6 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @SuperBuilder
 @FieldNameConstants
-@AtlasVersionable
 public class TrafficPointElementVersion extends BaseEntity {
 
   private Long id;

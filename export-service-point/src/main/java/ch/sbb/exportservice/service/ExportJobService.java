@@ -1,7 +1,5 @@
 package ch.sbb.exportservice.service;
 
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TYPE_JOB_PARAMETER;
-
 import ch.sbb.atlas.batch.exception.JobExecutionException;
 import ch.sbb.exportservice.model.ServicePointExportType;
 import ch.sbb.exportservice.utils.JobDescriptionConstants;
@@ -19,20 +17,20 @@ import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.*;
+
 @Slf4j
 @Component
 @AllArgsConstructor
 public class ExportJobService {
 
-  public static final String EXPORT_SERVICE_POINT_CSV_JOB = "exportServicePointCsvJob";
-  public static final String EXPORT_SERVICE_POINT_JSON_JOB = "exportServicePointJsonJob";
 
   private final JobLauncher jobLauncher;
 
-  @Qualifier(EXPORT_SERVICE_POINT_CSV_JOB)
+  @Qualifier(EXPORT_SERVICE_POINT_CSV_JOB_NAME)
   private final Job exportServicePointCsvJob;
 
-  @Qualifier(EXPORT_SERVICE_POINT_JSON_JOB)
+  @Qualifier(EXPORT_SERVICE_POINT_JSON_JOB_NAME)
   private final Job exportServicePointJsonJob;
 
   public void startExportJobs() {
@@ -54,7 +52,7 @@ public class ExportJobService {
       log.info("Job executed with status: {}", execution.getExitStatus().getExitCode());
     } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException |
              JobParametersInvalidException e) {
-      throw new JobExecutionException(JobDescriptionConstants.EXPORT_SERVICE_POINT_CSV_JOB_NAME, e);
+      throw new JobExecutionException(EXPORT_SERVICE_POINT_CSV_JOB_NAME, e);
     }
   }
 
