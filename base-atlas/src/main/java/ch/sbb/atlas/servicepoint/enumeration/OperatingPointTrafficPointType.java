@@ -12,9 +12,9 @@ import lombok.experimental.Accessors;
 @RequiredArgsConstructor
 public enum OperatingPointTrafficPointType implements CodeAndDesignations {
 
-  TARIFF_POINT(50, true, "Tarifpunkt", "Point tarifaire", "Punto tariffale", "Tarifpunkt", "verkehrspunkt,tarifstelle", null,
-      null,
-      null, null),
+  TARIFF_POINT(50, true, "Tarifpunkt", "Point tarifaire", "Punto tariffale", "Tariff point", "verkehrspunkt,tarifstelle", null,
+          null,
+          null, null),
 
   ;
 
@@ -32,9 +32,8 @@ public enum OperatingPointTrafficPointType implements CodeAndDesignations {
   private final String abbreviationEn;
 
   public static OperatingPointTrafficPointType from(Integer id) {
-    return Arrays.stream(OperatingPointTrafficPointType.values())
-        .filter(operatingPointType -> Objects.equals(operatingPointType.getId(), id))
-        .findFirst().orElse(null);
+    return Arrays.stream(OperatingPointTrafficPointType.values()).filter(operatingPointType -> Objects.equals(operatingPointType.getId(), id))
+            .findFirst().orElse(null);
   }
 
   @Override
