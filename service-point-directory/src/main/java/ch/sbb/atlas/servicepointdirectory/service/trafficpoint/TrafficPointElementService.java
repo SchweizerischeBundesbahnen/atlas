@@ -55,6 +55,12 @@ public class TrafficPointElementService extends BasePointService {
     List<VersionedObject> versionedObjects = versionableService.versioningObjectsWithDeleteByNullProperties(current, edited,
         dbVersions);
 
+    // Sets the values for the properties
+    // {@link BaseDidokImportEntity.Fields.creationDate},
+    // {@link BaseDidokImportEntity.Fields.creator},
+    // {@link BaseDidokImportEntity.Fields.editor} and
+    // {@link BaseDidokImportEntity.Fields.editionDate}
+    // on the child trafficPointElementGeolocation from the parent trafficPointElementVersion.
     versionedObjects.stream().filter(versionedObject -> {
       final VersioningAction action = versionedObject.getAction();
       return action == VersioningAction.UPDATE || action == VersioningAction.NEW;
