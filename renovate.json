@@ -1,0 +1,8 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "local>KD_ESTA/esta-renovate-preset"
+  ],
+  "branchPrefix": "feature/renovate/",
+  "dependencyDashboard": false
+}
