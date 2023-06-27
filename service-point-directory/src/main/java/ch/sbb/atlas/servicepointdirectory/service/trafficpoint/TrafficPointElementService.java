@@ -5,7 +5,7 @@ import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion.Fields;
 import ch.sbb.atlas.servicepointdirectory.model.search.TrafficPointElementSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepository;
-import ch.sbb.atlas.servicepointdirectory.service.BasePointService;
+import ch.sbb.atlas.servicepointdirectory.service.BasePointUtility;
 import ch.sbb.atlas.versioning.model.Property;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.model.VersioningAction;
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class TrafficPointElementService extends BasePointService {
+public class TrafficPointElementService {
 
   private final TrafficPointElementVersionRepository trafficPointElementVersionRepository;
   private final VersionableService versionableService;
@@ -51,7 +51,7 @@ public class TrafficPointElementService extends BasePointService {
 
   public void updateTrafficPointElementVersionImport(TrafficPointElementVersion edited) {
     List<TrafficPointElementVersion> dbVersions = findBySloidOrderByValidFrom(edited.getSloid());
-    TrafficPointElementVersion current = getCurrentPointVersion(dbVersions, edited);
+    TrafficPointElementVersion current = BasePointUtility.getCurrentPointVersion(dbVersions, edited);
     List<VersionedObject> versionedObjects = versionableService.versioningObjectsWithDeleteByNullProperties(current, edited,
         dbVersions);
 
@@ -96,7 +96,7 @@ public class TrafficPointElementService extends BasePointService {
 
   public void updateTrafficPointElementVersion(TrafficPointElementVersion edited) {
     List<TrafficPointElementVersion> dbVersions = findBySloidOrderByValidFrom(edited.getSloid());
-    TrafficPointElementVersion current = getCurrentPointVersion(dbVersions, edited);
+    TrafficPointElementVersion current = BasePointUtility.getCurrentPointVersion(dbVersions, edited);
     List<VersionedObject> versionedObjects = versionableService.versioningObjects(current, edited,
         dbVersions);
     versionableService.applyVersioning(TrafficPointElementVersion.class, versionedObjects, this::save, this::deleteById);

@@ -4,7 +4,6 @@ import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
-import ch.sbb.atlas.servicepointdirectory.service.BasePointService;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import java.util.List;
@@ -21,7 +20,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
-public class ServicePointService extends BasePointService {
+public class ServicePointService {
 
   private final ServicePointVersionRepository servicePointVersionRepository;
   private final VersionableService versionableService;
