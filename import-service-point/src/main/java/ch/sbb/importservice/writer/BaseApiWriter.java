@@ -1,7 +1,7 @@
 package ch.sbb.importservice.writer;
 
 import ch.sbb.atlas.imports.servicepoint.model.ItemImportResponseStatus;
-import ch.sbb.importservice.entitiy.ImportProcessItem;
+import ch.sbb.importservice.entity.ImportProcessItem;
 import ch.sbb.importservice.repository.ImportProcessedItemRepository;
 import ch.sbb.importservice.service.SePoDiClientService;
 import org.springframework.batch.core.StepExecution;
