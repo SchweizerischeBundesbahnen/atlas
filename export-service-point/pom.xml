@@ -24,16 +24,8 @@
          <groupId>org.springframework.boot</groupId>
       </dependency>
       <dependency>
-         <artifactId>spring-cloud-starter-openfeign</artifactId>
-         <groupId>org.springframework.cloud</groupId>
-      </dependency>
-      <dependency>
          <artifactId>spring-boot-starter-security</artifactId>
          <groupId>org.springframework.boot</groupId>
-      </dependency>
-      <dependency>
-         <artifactId>spring-security-oauth2-client</artifactId>
-         <groupId>org.springframework.security</groupId>
       </dependency>
       <dependency>
          <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>

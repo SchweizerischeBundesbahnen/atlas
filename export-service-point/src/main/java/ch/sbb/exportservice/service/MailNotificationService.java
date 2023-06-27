@@ -21,11 +21,11 @@ import org.springframework.stereotype.Service;
 public class MailNotificationService {
 
   @Value("${mail.receiver.export-service-point}")
-  private List<String> schedulingNotificationAddresses;
+  private List<String> notificationAddresses;
 
   public MailNotification buildMailErrorNotification(String jobName, StepExecution stepExecution) {
     return MailNotification.builder()
-        .to(schedulingNotificationAddresses)
+        .to(notificationAddresses)
         .subject("Job [" + jobName + "] execution failed")
         .mailType(MailType.EXPORT_SERVICE_POINT_ERROR_NOTIFICATION)
         .templateProperties(buildErrorMailContent(jobName, stepExecution))
