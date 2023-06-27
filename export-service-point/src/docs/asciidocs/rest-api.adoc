@@ -1,4 +1,4 @@
-= ATLAS -Export Service API Guide
+= ATLAS - Service Point Export Service API Guide
 :doctype: book
 :compat-mode:
 :page-layout!:
@@ -37,6 +37,26 @@ This API is available as a part of the ATLAS API on the SBB developer portal.
 include::../release-notes.adoc[]
 
 = Export Service Point
+
+ServicePoints data is available via the ServicePoint API or as a File (CSV or JSON) via the Export Service Point API or through the Amazon S3 Bucket Client (CSV and JSON);
+
+The Export Service Point generates nightly the following zipped CSV and gzipped JSON files:
+
+ * WORLD FULL
+ * WORLD ONLY ACTUAL DATE
+ * WORLD ONLY FUTURE TIMETABLE
+ * SWISS FULL
+ * SWISS ONLY ACTUAL DATE
+ * SWISS ONLY FUTURE TIMETABLE
+
+If you want to consume this files you have two options:
+
+ * Via API: see **Export Service Point API** section
+ * Through the Amazon S3 Bucket Client:  see **Atlas Amazon S3 Bucket Users onboarding**
+
+include::../../../../base-atlas/documentation/amazon/Amazon_S3_Buckets_Users_Onboarding.adoc[]
+
+= Export Service Point API
 
 == Trigger export Service Point - Successfully
 
