@@ -170,7 +170,7 @@ insert into service_point_version (id, service_point_geolocation_id, number, slo
                                    operating_point_with_timetable, operating_point_technical_timetable_type,
                                    operating_point_traffic_point_type)
 values (1003, null, 94111146, null, 11114, 'PORTUGAL', null, 'Ferradosa', null, 'IN_OPERATION', null, 'ch:1:sboid:100885', null,
-        null, 'VALIDATED', null, false, null, '2020-09-01', '2099-12-31', '2017-11-09 11:53:05.000000', 'GSU_DIDOK',
+        null, 'VALIDATED', null, false, null, '2020-09-01', '2020-12-12', '2017-11-09 11:53:05.000000', 'GSU_DIDOK',
         '2020-09-03 15:29:14.000000', 'fs45117', 2, false, true, true, null, null);
 insert into service_point_version (id, service_point_geolocation_id, number, sloid, number_short, country, designation_long,
                                    designation_official, abbreviation, status_didok3, sort_code_of_destination_station,
@@ -190,7 +190,7 @@ insert into service_point_version (id, service_point_geolocation_id, number, slo
                                    operating_point_with_timetable, operating_point_technical_timetable_type,
                                    operating_point_traffic_point_type)
 values (1005, 1001, 12058875, null, 5887, 'AUSTRIA_BUS', null, 'Trins, Wienerhof', null, 'IN_OPERATION', null,
-        'ch:1:sboid:101257', null, 'UNKNOWN', 'VALIDATED', null, false, null, '2022-09-01', '2099-12-31',
+        'ch:1:sboid:101257', null, 'UNKNOWN', 'VALIDATED', null, false, null, '2022-09-01', '2022-12-31',
         '2022-09-10 17:30:56.000000', 'fs45117', '2022-09-10 17:30:56.000000', 'fs45117', 0, false, true, true, null, null);
 insert into service_point_version (id, service_point_geolocation_id, number, sloid, number_short, country, designation_long,
                                    designation_official, abbreviation, status_didok3, sort_code_of_destination_station,
@@ -210,36 +210,36 @@ insert into service_point_version (id, service_point_geolocation_id, number, slo
                                    operating_point_with_timetable, operating_point_technical_timetable_type,
                                    operating_point_traffic_point_type)
 values (1007, 1002, 12058867, null, 5886, 'AUSTRIA_BUS', null, 'Trins, Waldfestplatz', null, 'IN_OPERATION', null,
-        'ch:1:sboid:101257', null, 'UNKNOWN', 'VALIDATED', null, false, null, '2022-09-01', '2099-12-31',
+        'ch:1:sboid:101257', null, 'UNKNOWN', 'VALIDATED', null, false, null, '2022-09-01', '2022-12-31',
         '2022-09-10 17:29:29.000000', 'fs45117', '2022-09-10 17:29:29.000000', 'fs45117', 0, false, true, true, null, null);
 
--- Insert SheredBusinessOrganisationVersion
+-- Insert SharedBusinessOrganisationVersion
 insert into shared_business_organisation_version (id, sboid, abbreviation_de, abbreviation_fr,
                                                   abbreviation_it, abbreviation_en, description_de,
                                                   description_fr, description_it, description_en,
                                                   organisation_number, status, valid_from, valid_to)
-values (2716, 'ch:1:sboid:101006', 'TSDA', 'TSDA', 'TSDA', 'TSDA', 'Télésiège Les Dappes - La Dôle',
+values (2716, 'ch:1:sboid:101257', 'TSDA', 'TSDA', 'TSDA', 'TSDA', 'Télésiège Les Dappes - La Dôle',
         'Télésiège Les Dappes - La Dôle', 'Télésiège Les Dappes - La Dôle', 'Télésiège Les Dappes - La Dôle', 3065, 'VALIDATED',
         '1900-01-01', '2099-12-31');
 insert into shared_business_organisation_version (id, sboid, abbreviation_de, abbreviation_fr,
                                                   abbreviation_it, abbreviation_en, description_de,
                                                   description_fr, description_it, description_en,
                                                   organisation_number, status, valid_from, valid_to)
-values (2717, 'ch:1:sboid:101007', 'BDGAG-ssl', 'BDGAG-ssl', 'BDGAG-ssl', 'BDGAG-ssl', 'Bergbahnen Destination Gstaad AG',
+values (2717, 'ch:1:sboid:101698', 'BDGAG-ssl', 'BDGAG-ssl', 'BDGAG-ssl', 'BDGAG-ssl', 'Bergbahnen Destination Gstaad AG',
         'Bergbahnen Destination Gstaad AG', 'Bergbahnen Destination Gstaad AG', 'Bergbahnen Destination Gstaad AG', 3066,
         'VALIDATED', '1900-01-01', '2099-12-31');
 insert into shared_business_organisation_version (id, sboid, abbreviation_de, abbreviation_fr,
                                                   abbreviation_it, abbreviation_en, description_de,
                                                   description_fr, description_it, description_en,
                                                   organisation_number, status, valid_from, valid_to)
-values (2718, 'ch:1:sboid:101008', 'BDGAG-slg', 'BDGAG-slg', 'BDGAG-slg', 'BDGAG-slg', 'Bergbahnen Destination Gstaad AG',
+values (2718, 'ch:1:sboid:100885', 'BDGAG-slg', 'BDGAG-slg', 'BDGAG-slg', 'BDGAG-slg', 'Bergbahnen Destination Gstaad AG',
         'Bergbahnen Destination Gstaad AG', 'Bergbahnen Destination Gstaad AG', 'Bergbahnen Destination Gstaad AG', 3067,
         'VALIDATED', '1900-01-01', '2099-12-31');
 insert into shared_business_organisation_version (id, sboid, abbreviation_de, abbreviation_fr,
                                                   abbreviation_it, abbreviation_en, description_de,
                                                   description_fr, description_it, description_en,
                                                   organisation_number, status, valid_from, valid_to)
-values (2719, 'ch:1:sboid:100798', 'SAS-Code', 'SAS-Code', 'SAS-Code', 'SAS-Code', 'Reserviert für SAS (technischer Code)',
+values (2719, 'ch:1:sboid:100602', 'SAS-Code', 'SAS-Code', 'SAS-Code', 'SAS-Code', 'Reserviert für SAS (technischer Code)',
         'Reserviert für SAS (technischer Code)', 'Reserviert für SAS (technischer Code)', 'Reserviert für SAS (technischer Code)',
         999, 'VALIDATED', '1900-01-01', '2099-12-31');
 insert into shared_business_organisation_version (id, sboid, abbreviation_de, abbreviation_fr,
