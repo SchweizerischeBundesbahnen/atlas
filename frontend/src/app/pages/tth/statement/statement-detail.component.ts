@@ -50,6 +50,7 @@ export class StatementDetailComponent implements OnInit, AfterViewInit {
   uploadedFiles: File[] = [];
   isLoading = false;
   isDuplicating = false;
+  validateOnSave = false;
 
   private ngUnsubscribe = new Subject<void>();
 
@@ -64,7 +65,8 @@ export class StatementDetailComponent implements OnInit, AfterViewInit {
     private readonly statementDialogService: StatementDialogService,
     private readonly openStatementInMailService: OpenStatementInMailService,
     private readonly statementShareService: StatementShareService,
-    private readonly elementRef: ElementRef<HTMLElement>
+    private readonly elementRef: ElementRef<HTMLElement>,
+    private validationService: ValidationService
   ) {}
 
   get isHearingStatusArchived() {
@@ -129,6 +131,12 @@ export class StatementDetailComponent implements OnInit, AfterViewInit {
   }
 
   save() {
+    this.validateOnSave = true;
+    console.log('this.form ', this.form);
+    if (this.form.get('statement')) {
+      ValidationService.checkWhitespaceErrors([this.form.get('statement')!], this.validateOnSave);
+    }
+
     if (!this.isNew && this.initialValueForCanton != this.form.value.swissCanton) {
       this.cantonSelectionChanged();
     } else {
@@ -214,11 +222,9 @@ export class StatementDetailComponent implements OnInit, AfterViewInit {
       statement: new FormControl(statement?.statement, [
         Validators.required,
         AtlasFieldLengthValidator.statement,
-        WhitespaceValidator.blankOrEmptySpaceSurrounding,
       ]),
       justification: new FormControl(statement?.justification, [
         AtlasFieldLengthValidator.statement,
-        WhitespaceValidator.blankOrEmptySpaceSurrounding,
       ]),
       comment: new FormControl(statement?.comment, [
         AtlasFieldLengthValidator.length_280,
