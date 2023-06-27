@@ -1,15 +1,8 @@
 package ch.sbb.atlas.servicepointdirectory.entity;
 
-import static ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation.Fields.swissCanton;
-import static ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation.Fields.swissDistrictName;
-import static ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation.Fields.swissDistrictNumber;
-import static ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation.Fields.swissLocalityName;
-import static ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation.Fields.swissMunicipalityName;
-import static ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation.Fields.swissMunicipalityNumber;
-
-import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.model.BusinessOrganisationAssociated;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepointdirectory.converter.CategoryConverter;
 import ch.sbb.atlas.servicepointdirectory.converter.MeanOfTransportConverter;
 import ch.sbb.atlas.servicepointdirectory.converter.ServicePointNumberConverter;
@@ -48,10 +41,6 @@ import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Stream;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -60,6 +49,18 @@ import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
 import org.apache.commons.lang3.StringUtils;
+
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Stream;
+
+import static ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation.Fields.swissCanton;
+import static ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation.Fields.swissDistrictName;
+import static ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation.Fields.swissDistrictNumber;
+import static ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation.Fields.swissLocalityName;
+import static ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation.Fields.swissMunicipalityName;
+import static ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation.Fields.swissMunicipalityNumber;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -199,11 +200,7 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
       GeolocationBaseEntity.Fields.east,
       GeolocationBaseEntity.Fields.north,
       GeolocationBaseEntity.Fields.spatialReference,
-      GeolocationBaseEntity.Fields.height,
-      BaseDidokImportEntity.Fields.creator,
-      BaseDidokImportEntity.Fields.editor,
-      BaseDidokImportEntity.Fields.creationDate,
-      BaseDidokImportEntity.Fields.editionDate
+      GeolocationBaseEntity.Fields.height
   })
   private ServicePointGeolocation servicePointGeolocation;
 
