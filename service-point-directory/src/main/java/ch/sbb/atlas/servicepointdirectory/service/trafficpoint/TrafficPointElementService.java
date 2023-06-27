@@ -1,6 +1,5 @@
 package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
 
-import ch.sbb.atlas.servicepointdirectory.entity.BaseDidokImportEntity;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion.Fields;
 import ch.sbb.atlas.servicepointdirectory.model.search.TrafficPointElementSearchRestrictions;
@@ -52,7 +51,7 @@ public class TrafficPointElementService {
   public void updateTrafficPointElementVersionImport(TrafficPointElementVersion edited) {
     List<TrafficPointElementVersion> dbVersions = findBySloidOrderByValidFrom(edited.getSloid());
     TrafficPointElementVersion current = BasePointUtility.getCurrentPointVersion(dbVersions, edited);
-    List<VersionedObject> versionedObjects = versionableService.versioningObjectsWithDeleteByNullProperties(current, edited,
+    List<VersionedObject> versionedObjects = versionableService.versioningObjectsForImportFromCsv(current, edited,
         dbVersions);
 
     // Sets the values for the properties
@@ -73,22 +72,7 @@ public class TrafficPointElementService {
               .findFirst()
               .orElseThrow();
 
-      if (geolocationProp.getOneToOne() != null) {
-        final List<Property> geolocationPropertyList = geolocationProp.getOneToOne().getProperties();
-        final List<Property> propertiesToAdd = versionedObject
-            .getEntity()
-            .getProperties()
-            .stream()
-            .filter(property -> List.of(
-                BaseDidokImportEntity.Fields.creationDate,
-                BaseDidokImportEntity.Fields.creator,
-                BaseDidokImportEntity.Fields.editor,
-                BaseDidokImportEntity.Fields.editionDate
-            ).contains(property.getKey()))
-            .toList();
-
-        geolocationPropertyList.addAll(propertiesToAdd);
-      }
+      BasePointUtility.addCreateAndEditDetailsToGeolocationPropertyFromVersionedObject(versionedObject, geolocationProp);
     });
 
     versionableService.applyVersioning(TrafficPointElementVersion.class, versionedObjects, this::save, this::deleteById);
