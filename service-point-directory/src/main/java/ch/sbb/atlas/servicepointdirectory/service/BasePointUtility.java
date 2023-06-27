@@ -4,8 +4,10 @@ import ch.sbb.atlas.versioning.model.Versionable;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import lombok.experimental.UtilityClass;
 
-public class BasePointService {
+@UtilityClass
+public class BasePointUtility {
 
   public <T extends Versionable> T getCurrentPointVersion(List<T> dbVersions, T edited) {
     dbVersions.sort(Comparator.comparing(Versionable::getValidFrom));
