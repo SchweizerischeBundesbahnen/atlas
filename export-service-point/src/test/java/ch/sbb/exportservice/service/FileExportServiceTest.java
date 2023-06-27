@@ -21,7 +21,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
-@DirtiesContext(classMode = ClassMode.AFTER_CLASS)
 public class FileExportServiceTest {
 
   private FileExportService fileExportService;

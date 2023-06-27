@@ -19,7 +19,6 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @SuperBuilder
 @FieldNameConstants
-@AtlasVersionable
 public class LoadingPointVersion {
 
   private Long id;

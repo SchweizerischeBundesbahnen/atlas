@@ -22,7 +22,8 @@ spring:
       isolation-level-for-create: default
     job:
       enabled: false
-
+  kafka:
+    bootstrap-servers: .bootstrap-servers=${spring.embedded.kafka.brokers}
   h2:
     console:
       enabled: true
@@ -81,7 +82,7 @@ kafka:
     user:
       administration:
         topic: atlas.user.administration
-        groupId: atlas.kafka.lidi.user.administration.groupId
+        groupId: atlas.kafka.export.user.administration.groupId
     mail:
       topic: atlas.mail
       groupId: atlas.kafka.mail.groupId
