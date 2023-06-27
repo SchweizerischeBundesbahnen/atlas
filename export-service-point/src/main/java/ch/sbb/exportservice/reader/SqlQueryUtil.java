@@ -12,6 +12,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SqlQueryUtil {
 
+  public static final String FUTURE_TIMETABLE_DATE = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now()).format(
+          DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN));
+
+  public static final String NOW_DATE = LocalDate.now().format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN));
+
   private static final String SELECT_AND_JOIN_STATEMENT =
       "SELECT spv.id, string_agg(spvmot.means_of_transport, '|') as list_of_transports, string_agg(spvc.categories, '|') "
           + "as list_of_categories, spv.*, spvg.*, sbov.* "
@@ -20,22 +25,25 @@ public class SqlQueryUtil {
           + "on spv.id = spvmot.service_point_version_id "
           + "LEFT JOIN service_point_version_categories spvc on spv.id = spvc.service_point_version_id "
           + "LEFT JOIN service_point_version_geolocation spvg on spv.service_point_geolocation_id = spvg.id "
-          + "LEFT JOIN shared_business_organisation_version sbov on spv.business_organisation = sbov.sboid ";
+          + "LEFT JOIN shared_business_organisation_version sbov on spv.business_organisation = sbov.sboid " +
+              "AND (CASE WHEN '" + LocalDate.now() + "' between sbov.valid_from and sbov.valid_to THEN 0 " +
+              "ELSE 1 " +
+              "END = 0)";
   private static final String GROUP_BY_STATEMENT = "group by spv.id, spvg.id, sbov.id";
   private static final String SWISS_ONLY_FULL_WHERE_STATEMENT = "WHERE spv.country "
       + "IN('SWITZERLAND','GERMANY_BUS','AUSTRIA_BUS','ITALY_BUS','FRANCE_BUS') ";
   private static final String SWISS_ONLY_ACTUAL_WHERE_STATEMENT = "WHERE spv.country "
       + "IN('SWITZERLAND','GERMANY_BUS','AUSTRIA_BUS','ITALY_BUS','FRANCE_BUS') "
-      + "AND now() between spv.valid_from and spv.valid_to ";
+      + "AND '"+ NOW_DATE +"' between spv.valid_from and spv.valid_to ";
 
   private static final String SWISS_ONLY_FUTURE_TIMETABLE_WHERE_STATEMENT = "WHERE spv.country "
       + "IN('SWITZERLAND','GERMANY_BUS','AUSTRIA_BUS','ITALY_BUS','FRANCE_BUS') "
       + "AND '" + FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now()).format(
       DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN)) + "' between spv.valid_from and spv.valid_to ";
+
   private static final String WORLD_ONLY_FUTURE_TIMETABLE_WHERE_STATEMENT = "WHERE "
-      + "'" + FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now()).format(
-      DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN)) + "' between spv.valid_from and spv.valid_to ";
-  private static final String WORLD_ONLY_ACTUAL_WHERE_STATEMENT = "WHERE now() between spv.valid_from and spv.valid_to ";
+      + "'" + FUTURE_TIMETABLE_DATE + "' between spv.valid_from and spv.valid_to ";
+  private static final String WORLD_ONLY_ACTUAL_WHERE_STATEMENT = " WHERE '"+NOW_DATE +"' between spv.valid_from and spv.valid_to ";
 
   public String getSqlQuery(ServicePointExportType exportType) {
     log.info("ExportType: {}", exportType);
@@ -57,7 +65,7 @@ public class SqlQueryUtil {
       case SWISS_ONLY_TIMETABLE_FUTURE -> SWISS_ONLY_FUTURE_TIMETABLE_WHERE_STATEMENT;
       case WORLD_ONLY_ACTUAL -> WORLD_ONLY_ACTUAL_WHERE_STATEMENT;
       case WORLD_ONLY_TIMETABLE_FUTURE -> WORLD_ONLY_FUTURE_TIMETABLE_WHERE_STATEMENT;
-      case WORLD_FULL -> null;
+      case WORLD_FULL -> "";
     };
   }
 
