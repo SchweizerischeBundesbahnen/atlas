@@ -6,17 +6,21 @@ import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestric
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.hibernate.StaleObjectStateException;
+import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Service;
+
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class ServicePointService {
 
   private final ServicePointVersionRepository servicePointVersionRepository;
@@ -28,7 +32,7 @@ public class ServicePointService {
         servicePointSearchRestrictions.getPageable());
   }
 
-  public List<ServicePointVersion> findAllServicePointVersions(ServicePointNumber servicePointNumber) {
+  public List<ServicePointVersion> findAllByNumberOrderByValidFrom(ServicePointNumber servicePointNumber) {
     return servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber);
   }
 
@@ -42,19 +46,26 @@ public class ServicePointService {
 
   public void deleteById(Long id) {
     servicePointVersionRepository.deleteById(id);
+    servicePointVersionRepository.flush();
   }
 
   public ServicePointVersion save(ServicePointVersion servicePointVersion) {
     servicePointValidationService.validateServicePointPreconditionBusinessRule(servicePointVersion);
-    return servicePointVersionRepository.save(servicePointVersion);
+    return servicePointVersionRepository.saveAndFlush(servicePointVersion);
   }
 
-  public void updateServicePointVersion(ServicePointVersion edited) {
-    List<ServicePointVersion> dbVersions = findAllServicePointVersions(edited.getNumber());
-    ServicePointVersion current = getCurrentServicePointVersion(dbVersions, edited);
-    List<VersionedObject> versionedObjects = versionableService.versioningObjectsWithDeleteByNullProperties(current, edited,
-        dbVersions);
-    versionableService.applyVersioning(ServicePointVersion.class, versionedObjects, this::save, this::deleteById);
+  public ServicePointVersion updateServicePointVersion(ServicePointVersion currentVersion, ServicePointVersion editedVersion) {
+    servicePointVersionRepository.incrementVersion(currentVersion.getNumber());
+    if (editedVersion.getVersion() != null && !currentVersion.getVersion().equals(editedVersion.getVersion())) {
+      throw new StaleObjectStateException(ServicePointVersion.class.getSimpleName(), "version");
+    }
+
+    List<ServicePointVersion> existingDbVersions = findAllByNumberOrderByValidFrom(currentVersion.getNumber());
+    List<VersionedObject> versionedObjects = versionableService.versioningObjects(currentVersion,
+        editedVersion, existingDbVersions);
+    versionableService.applyVersioning(ServicePointVersion.class, versionedObjects,
+        this::save, this::deleteById);
+    return currentVersion;
   }
 
   ServicePointVersion getCurrentServicePointVersion(List<ServicePointVersion> dbVersions, ServicePointVersion edited) {
