@@ -35,9 +35,9 @@ public class TrafficPointTestData {
     return TrafficPointElementGeolocation
         .builder()
         .spatialReference(SpatialReference.LV95)
-        .east(2600783D)
-        .north(1201099D)
-        .height(555D)
+        .east(2600783.31256)
+        .north(1201099.85634)
+        .height(555.98)
         .creationDate(LocalDateTime.of(LocalDate.of(2021, 3, 22), LocalTime.of(9, 26, 29)))
         .creator("fs45117")
         .editionDate(LocalDateTime.of(LocalDate.of(2022, 2, 23), LocalTime.of(17, 10, 10)))

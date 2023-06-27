@@ -43,7 +43,7 @@ public class TrafficPointElementImportServiceTest {
           csvStream);
 
       TrafficPointElementCsvModel csvModel = trafficPointElementCsvModels.get(0);
-      assertThat(csvModel.getTrafficPointElementType()).isNotNull();
+      assertThat(csvModel.getTrafficPointElementType()).isEqualTo(0);
       assertThat(csvModel.getCreatedAt()).isNotNull();
       assertThat(csvModel.getCreatedBy()).isNotNull();
       assertThat(trafficPointElementCsvModels).isNotEmpty();
@@ -101,7 +101,6 @@ public class TrafficPointElementImportServiceTest {
     );
     trafficPointCsvModelContainersMerged.get(0).getTrafficPointCsvModelList().get(1).setValidTo(
         LocalDate.of(2022, 12, 31));
-    // todo: is it correct that we do not support the case when i would not set here the height to 1 (height would be 0)?
     trafficPointCsvModelContainersMerged.get(0).getTrafficPointCsvModelList().get(1).setHeight(1D);
 
     // when
