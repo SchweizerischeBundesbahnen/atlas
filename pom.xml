@@ -7,11 +7,11 @@
       <artifactId>spring-boot-starter-parent</artifactId>
       <groupId>org.springframework.boot</groupId>
       <relativePath/>
-      <version>3.1.0</version>
+      <version>3.1.1</version>
    </parent>
    <groupId>ch.sbb.atlas</groupId>
    <artifactId>atlas</artifactId>
-   <version>1.286.0</version>
+   <version>1.295.0</version>
    <packaging>pom</packaging>
    <name>Atlas</name>
    <description>ATLAS - SKI Business Application</description>
@@ -26,11 +26,11 @@
       <spring-cloud.version>2022.0.2</spring-cloud.version>
       <spring-openapi-ui.version>2.1.0</spring-openapi-ui.version>
 
-      <swagger-core.version>2.2.10</swagger-core.version>
+      <swagger-core.version>2.2.14</swagger-core.version>
       <tika-core.version>2.7.0</tika-core.version>
 
       <!-- REST Doc -->
-      <asciidoctor-plugin.version>2.2.3</asciidoctor-plugin.version>
+      <asciidoctor-plugin.version>2.2.4</asciidoctor-plugin.version>
       <spring-restdocs-mockmvc.version>3.0.0</spring-restdocs-mockmvc.version>
       <spring-auto-rest-docs-core.version>2.0.11</spring-auto-rest-docs-core.version>
 
@@ -121,7 +121,7 @@
          <dependency>
             <artifactId>aws-java-sdk-s3</artifactId>
             <groupId>com.amazonaws</groupId>
-            <version>1.12.472</version>
+            <version>1.12.495</version>
          </dependency>
 
          <dependency>
@@ -197,7 +197,7 @@
                   </execution>
                </executions>
                <groupId>org.jacoco</groupId>
-               <version>0.8.8</version>
+               <version>0.8.10</version>
             </plugin>
             <plugin>
                <artifactId>spring-boot-maven-plugin</artifactId>
