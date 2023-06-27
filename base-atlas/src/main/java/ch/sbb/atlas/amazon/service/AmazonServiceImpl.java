@@ -31,12 +31,9 @@ public class AmazonServiceImpl implements AmazonService {
   private final FileService fileService;
 
   private static byte[] gzipFile(byte[] bytes) throws IOException {
-    try {
-      ByteArrayOutputStream baos = new ByteArrayOutputStream();
-      GZIPOutputStream out = new GZIPOutputStream(baos);
+    try (ByteArrayOutputStream baos = new ByteArrayOutputStream(); GZIPOutputStream out = new GZIPOutputStream(baos); ){
       out.write(bytes, 0, bytes.length);
       out.finish();
-      out.close();
 
       return baos.toByteArray();
     } catch (IOException e) {
