@@ -7,6 +7,7 @@ import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContai
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion.Fields;
 import ch.sbb.atlas.servicepointdirectory.geodata.service.ServicePointGeoDataService;
+import ch.sbb.atlas.servicepointdirectory.service.BasePointUtility;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
 import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
 import ch.sbb.atlas.versioning.model.VersionedObject;
@@ -96,11 +97,13 @@ public class ServicePointImportService {
 
   public void updateServicePointVersionForImportService(ServicePointVersion edited) {
     List<ServicePointVersion> dbVersions = servicePointService.findAllByNumberOrderByValidFrom(edited.getNumber());
-    ServicePointVersion current = servicePointService.getCurrentServicePointVersion(dbVersions, edited);
+    ServicePointVersion current = BasePointUtility.getCurrentPointVersion(dbVersions, edited);
     List<VersionedObject> versionedObjects = versionableService.versioningObjectsForImportFromCsv(current, edited,
         dbVersions);
-    servicePointGeoDataService.addCreateAndEditDetailsToGeolocationVersionedObjects(versionedObjects, Fields.servicePointGeolocation);
-    versionableService.applyVersioning(ServicePointVersion.class, versionedObjects, servicePointService::save, servicePointService::deleteById);
+    servicePointGeoDataService.addCreateAndEditDetailsToGeolocationVersionedObjects(versionedObjects,
+        Fields.servicePointGeolocation);
+    versionableService.applyVersioning(ServicePointVersion.class, versionedObjects, servicePointService::save,
+        servicePointService::deleteById);
   }
 
   private ServicePointItemImportResult buildSuccessImportResult(ServicePointVersion servicePointVersion) {
