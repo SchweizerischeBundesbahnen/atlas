@@ -131,9 +131,10 @@ public class CsvService {
     List<TrafficPointCsvModelContainer> trafficPointCsvModelContainers = new ArrayList<>();
     trafficPointsGroupedBySloid.forEach((sloid, trafficPointCsvModelGroup) -> {
       trafficPointCsvModelGroup.sort(Comparator.comparing(BaseDidokCsvModel::getValidFrom));
-      for (int csvModelIndex = 0; csvModelIndex + 1 < trafficPointCsvModelGroup.size(); ) {
-        TrafficPointElementCsvModel current = trafficPointCsvModelGroup.get(csvModelIndex);
-        TrafficPointElementCsvModel next = trafficPointCsvModelGroup.get(csvModelIndex + 1);
+      int csvModelIndex = 0;
+      while (csvModelIndex + 1 < trafficPointCsvModelGroup.size()) {
+        final TrafficPointElementCsvModel current = trafficPointCsvModelGroup.get(csvModelIndex);
+        final TrafficPointElementCsvModel next = trafficPointCsvModelGroup.get(csvModelIndex + 1);
 
         // merge if dates are sequential and current equals next with excluded properties
         if (DateHelper.areDatesSequential(current.getValidTo(), next.getValidFrom()) && current.equals(next)) {

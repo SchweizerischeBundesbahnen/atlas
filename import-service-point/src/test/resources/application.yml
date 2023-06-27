@@ -28,4 +28,4 @@ logging:
 
 mail:
   receiver:
-    schduling: forza.napoli@sbb.ch
+    scheduling: forza.napoli@sbb.ch
