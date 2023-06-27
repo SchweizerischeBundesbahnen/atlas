@@ -1,6 +1,9 @@
 package ch.sbb.atlas.servicepointdirectory.service;
 
+import ch.sbb.atlas.servicepointdirectory.entity.BaseDidokImportEntity;
+import ch.sbb.atlas.versioning.model.Property;
 import ch.sbb.atlas.versioning.model.Versionable;
+import ch.sbb.atlas.versioning.model.VersionedObject;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -45,6 +48,27 @@ public class BasePointUtility {
     }
 
     return currentVersionMatch.orElseThrow(() -> new RuntimeException("Not found current point version"));
+  }
+
+  public void addCreateAndEditDetailsToGeolocationPropertyFromVersionedObject(
+      VersionedObject versionedObject,
+      Property geolocationProp) {
+    if (geolocationProp.getOneToOne() != null) {
+      final List<Property> geolocationPropertyList = geolocationProp.getOneToOne().getProperties();
+      final List<Property> propertiesToAdd = versionedObject
+          .getEntity()
+          .getProperties()
+          .stream()
+          .filter(property -> List.of(
+              BaseDidokImportEntity.Fields.creationDate,
+              BaseDidokImportEntity.Fields.creator,
+              BaseDidokImportEntity.Fields.editor,
+              BaseDidokImportEntity.Fields.editionDate
+          ).contains(property.getKey()))
+          .toList();
+
+      geolocationPropertyList.addAll(propertiesToAdd);
+    }
   }
 
 }
