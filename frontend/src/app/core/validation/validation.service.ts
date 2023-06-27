@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ValidationError } from './validation-error';
-import { FormControl, FormGroup, ValidationErrors } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidationErrors } from '@angular/forms';
 import { DATE_PATTERN } from '../date/date.service';
 
 @Injectable({
@@ -59,6 +59,30 @@ export class ValidationService {
         control.markAsTouched({ onlySelf: true });
       } else if (control instanceof FormGroup) {
         ValidationService.validateForm(control);
+      }
+    });
+  }
+
+  public static checkWhitespaceErrors(controls: AbstractControl[], validateOnSave: boolean): void {
+    if (!validateOnSave) {
+      return;
+    }
+
+    controls.forEach((control) => {
+      const value = control?.value;
+      console.log(value);
+
+      /*       if (value === null) {
+        control.setErrors({ blank: control.value});
+      }
+      else{
+        control.setErrors(null);
+      } */
+
+      if ((value.startsWith(' ') && value !== null) || (value.endsWith(' ') && value !== null)) {
+        control.setErrors({ whitespaces: true });
+      } else {
+        control.setErrors(null);
       }
     });
   }
