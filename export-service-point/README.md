@@ -20,7 +20,8 @@
 
 <!-- tocstop -->
 
-The main goal of the Atlas Export Service Point is to export Service Point Directory Data as CSV and JSON file and upload them
+The main goal of the Atlas Export Service Point is to export Service Point Directory Data as CSV and JSON file and
+upload them
 to the Amazon S3 Bucket.
 
 See [ADR-0017](https://confluence.sbb.ch/display/ATLAS/ADR-0017%3A++Service+Point+Directory+CSV+Export)
@@ -78,26 +79,45 @@ This project uses [Semantic Versioning](https://semver.org/).
 
 ## Big Picture Architecture
 
-![Architecture](documentation/AtlasImportArch.svg)
+![Architecture](documentation/AtlasServicePointExportArch.svg)
 
 ## Development
 
 ### Spring Batch
 
-We use [Spring Batch Jobs](https://docs.spring.io/spring-batch/docs/current/reference/html/) to import CSV file from
+We use [Spring Batch Jobs](https://docs.spring.io/spring-batch/docs/current/reference/html/) to export CSV file from
 [ATLAS Amazon S3 Bucket](../base-atlas/documentation/amazon/README.md).
 
-Since CSV file sizes can be very large, we
-use [Async Chunk Steps](https://docs.spring.io/spring-batch/docs/current/reference/html/scalability.html#scalability) within the
-Job to scale the import process.
+### Multiple DataSources
 
-![Async Chunk Steps](documentation/BatchAsyncProcessing.svg)
+We use
+2 [Data Sources](https://docs.spring.io/spring-boot/docs/2.1.x/reference/html/howto-data-access.html#howto-two-datasources):
+
+1. Batch DB
+2. ServicePoint DB
 
 ## Jobs
 
 ### Export ServicePoint
 
-TBD
+The export ServicePoint Job is responsible to:
+
+* read ServicePoint data from ServicePoint dataSource
+* generate zipped CSV and gzipped JSON Files based
+  on [ServicePointExportType.java](src/main/java/ch/sbb/exportservice/model/ServicePointExportType.java):
+    * actual-date
+        * world
+        * swiss-only
+    * full
+        * world
+        * swiss-only
+    * future-timetable
+        * world
+        * swiss-only
+    * a retry system is configured on the step level when certain exception are thrown (see StepUtils.java)
+    * RecoveryJobsRunner.java checks at startup if there are any unfinished jobs or if all jobs have been run. In case
+      there are incomplete jobs or not all jobs have been run all jobs are run again.
+    * If a job has been completed unsuccessfully an email notification is sent to TechSupport-ATLAS@sbb.ch
 
 ### Tech Stack
 
