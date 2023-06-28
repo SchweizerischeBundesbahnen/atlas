@@ -1,6 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
 import ch.sbb.atlas.api.model.Container;
+import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.imports.servicepoint.model.ServicePointImportReqModel;
 import ch.sbb.atlas.imports.servicepoint.model.ServicePointItemImportResult;
@@ -8,19 +9,19 @@ import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointApiV1;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointRequestParams;
-import ch.sbb.atlas.servicepointdirectory.api.model.CreateServicePointVersionModel;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @Slf4j
