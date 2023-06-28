@@ -7,6 +7,7 @@ publishing:
         - import-service-point
         - line-directory
         - service-point-directory
+        - export-service-point
         - user-administration
         - workflow
     dev:
@@ -15,24 +16,31 @@ publishing:
         - line-directory
         - business-organisation-directory
         - service-point-directory
+        - export-service-point
     test:
       exportDirectory: api-test
       apis:
         - line-directory
         - business-organisation-directory
         - service-point-directory
+        - export-service-point
     int:
       exportDirectory: api-int
       apis:
         - line-directory
         - business-organisation-directory
         - service-point-directory
+        - export-service-point
+      excludePatterns:
+        - export/batch
     prod:
       exportDirectory: api-prod
       apis:
         - line-directory
         - business-organisation-directory
         - service-point-directory
+        - export-service-point
       excludePatterns:
         - timetable-hearing
         - TimetableHearing
+        - export/batch
