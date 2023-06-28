@@ -5,8 +5,12 @@ import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointElementCsvMode
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointItemImportResult.TrafficPointItemImportResultBuilder;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
+import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion.Fields;
+import ch.sbb.atlas.servicepointdirectory.service.BasePointUtility;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
 import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
+import ch.sbb.atlas.versioning.model.VersionedObject;
+import ch.sbb.atlas.versioning.service.VersionableService;
 import com.fasterxml.jackson.databind.MappingIterator;
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,6 +27,7 @@ import org.springframework.stereotype.Service;
 public class TrafficPointElementImportService {
 
   private final TrafficPointElementService trafficPointElementService;
+  private final VersionableService versionableService;
 
   public static List<TrafficPointElementCsvModel> parseTrafficPointElements(InputStream inputStream)
       throws IOException {
@@ -61,9 +66,20 @@ public class TrafficPointElementImportService {
     return importResults;
   }
 
+  void updateTrafficPointElementVersionImport(TrafficPointElementVersion edited) {
+    List<TrafficPointElementVersion> dbVersions = trafficPointElementService.findBySloidOrderByValidFrom(edited.getSloid());
+    TrafficPointElementVersion current = BasePointUtility.getCurrentPointVersion(dbVersions, edited);
+    List<VersionedObject> versionedObjects = versionableService.versioningObjectsForImportFromCsv(current, edited,
+        dbVersions);
+    BasePointUtility.addCreateAndEditDetailsToGeolocationPropertyFromVersionedObjects(versionedObjects,
+        Fields.trafficPointElementGeolocation);
+    versionableService.applyVersioning(TrafficPointElementVersion.class, versionedObjects, trafficPointElementService::save,
+        trafficPointElementService::deleteById);
+  }
+
   private TrafficPointItemImportResult updateTrafficPointVersion(TrafficPointElementVersion trafficPointElementVersion) {
     try {
-      trafficPointElementService.updateTrafficPointElementVersionImport(trafficPointElementVersion);
+      updateTrafficPointElementVersionImport(trafficPointElementVersion);
       return buildSuccessImportResult(trafficPointElementVersion);
     } catch (Exception exception) {
       if (exception instanceof VersioningNoChangesException) {

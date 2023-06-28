@@ -15,6 +15,7 @@ import static org.mockito.MockitoAnnotations.openMocks;
 import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
+import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointCsvModelContainer;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointElementCsvModel;
 import java.io.File;
 import java.time.LocalDate;
@@ -106,7 +107,45 @@ public class CsvServiceTest {
 
   @Test
   void shouldMapToTrafficPointCsvModelContainersWithPreMerge() {
-    // todo: implement
+    // given
+    List<TrafficPointElementCsvModel> csvModels = List.of(
+        TrafficPointElementCsvModel.builder()
+            .sloid("ch:1:sloid:123")
+            .validFrom(LocalDate.of(2020, 1, 1))
+            .validTo(LocalDate.of(2020, 12, 31))
+            .height(500.88)
+            .build(),
+        TrafficPointElementCsvModel.builder()
+            .sloid("ch:1:sloid:567")
+            .validFrom(LocalDate.of(2022, 1, 1))
+            .validTo(LocalDate.of(2022, 12, 31))
+            .height(500.88)
+            .build(),
+        TrafficPointElementCsvModel.builder()
+            .sloid("ch:1:sloid:567")
+            .validFrom(LocalDate.of(2021, 1, 1))
+            .validTo(LocalDate.of(2021, 12, 31))
+            .height(500.88)
+            .build()
+    );
+
+    // when
+    List<TrafficPointCsvModelContainer> trafficPointCsvModelContainers = csvService.mapToTrafficPointCsvModelContainers(
+        csvModels);
+
+    // then
+    assertThat(trafficPointCsvModelContainers).hasSize(2);
+    assertThat(trafficPointCsvModelContainers.get(0).getSloid()).isEqualTo("ch:1:sloid:123");
+    assertThat(trafficPointCsvModelContainers.get(0).getTrafficPointCsvModelList()).hasSize(1);
+    assertThat(trafficPointCsvModelContainers.get(0).getTrafficPointCsvModelList().get(0).getSloid()).isEqualTo("ch:1:sloid:123");
+
+    assertThat(trafficPointCsvModelContainers.get(1).getSloid()).isEqualTo("ch:1:sloid:567");
+    assertThat(trafficPointCsvModelContainers.get(1).getTrafficPointCsvModelList()).hasSize(1);
+    assertThat(trafficPointCsvModelContainers.get(1).getTrafficPointCsvModelList().get(0).getSloid()).isEqualTo("ch:1:sloid:567");
+    assertThat(trafficPointCsvModelContainers.get(1).getTrafficPointCsvModelList().get(0).getValidFrom()).isEqualTo(
+        LocalDate.of(2021, 1, 1));
+    assertThat(trafficPointCsvModelContainers.get(1).getTrafficPointCsvModelList().get(0).getValidTo()).isEqualTo(
+        LocalDate.of(2022, 12, 31));
   }
 
   @Test
