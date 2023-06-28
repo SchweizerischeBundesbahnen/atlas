@@ -70,17 +70,12 @@ export class ValidationService {
 
     controls.forEach((control) => {
       const value = control?.value;
-      console.log(value);
 
-      /*       if (value === null) {
-        control.setErrors({ blank: control.value});
-      }
-      else{
-        control.setErrors(null);
-      } */
-
-      if ((value.startsWith(' ') && value !== null) || (value.endsWith(' ') && value !== null)) {
+      if (value !== null && (value.startsWith(' ') || value.endsWith(' '))) {
         control.setErrors({ whitespaces: true });
+      }
+      if (control.value?.length && control.value?.trim().length === 0) {
+        control.setErrors({ blank: control.value });
       } else {
         control.setErrors(null);
       }
