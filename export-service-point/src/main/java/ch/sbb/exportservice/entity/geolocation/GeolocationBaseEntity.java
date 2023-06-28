@@ -2,14 +2,9 @@ package ch.sbb.exportservice.entity.geolocation;
 
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
-import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.exportservice.entity.BaseEntity;
 import jakarta.persistence.MappedSuperclass;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
 
