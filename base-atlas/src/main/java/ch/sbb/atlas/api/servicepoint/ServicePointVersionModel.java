@@ -17,10 +17,6 @@ import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Stream;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -28,6 +24,11 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
 import org.apache.commons.lang3.StringUtils;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
 
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
@@ -65,12 +66,7 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
   @Schema(description = "Status, Code of status of the service point, useful for specific business tasks.")
   private ServicePointStatus statusDidok3;
 
-  @NotNull
-  @Schema(accessMode = AccessMode.READ_WRITE, description = "Status didok3 information", example = "{\"code\" : \"3\",\n" +
-          "    \"designationDe\" : \"In Betrieb\",\n" +
-          "    \"designationFr\" : \"En fonctionnement\",\n" +
-          "    \"designationIt\" : \"In funzione\",\n" +
-          "    \"designationEn\" : \"In operation\"}")
+  @Schema(accessMode = AccessMode.READ_ONLY, description = "Status didok3 information")
   private CodeAndDesignation statusDidok3Information;
 
   @Schema(description = "Indicates if this a operatingPoint.")
