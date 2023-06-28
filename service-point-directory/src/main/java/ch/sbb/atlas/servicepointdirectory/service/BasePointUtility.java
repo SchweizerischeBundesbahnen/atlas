@@ -4,6 +4,7 @@ import ch.sbb.atlas.servicepointdirectory.entity.BaseDidokImportEntity;
 import ch.sbb.atlas.versioning.model.Property;
 import ch.sbb.atlas.versioning.model.Versionable;
 import ch.sbb.atlas.versioning.model.VersionedObject;
+import ch.sbb.atlas.versioning.model.VersioningAction;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -50,25 +51,43 @@ public class BasePointUtility {
     return currentVersionMatch.orElseThrow(() -> new RuntimeException("Not found current point version"));
   }
 
-  public void addCreateAndEditDetailsToGeolocationPropertyFromVersionedObject(
-      VersionedObject versionedObject,
-      Property geolocationProp) {
-    if (geolocationProp.getOneToOne() != null) {
-      final List<Property> geolocationPropertyList = geolocationProp.getOneToOne().getProperties();
-      final List<Property> propertiesToAdd = versionedObject
-          .getEntity()
-          .getProperties()
-          .stream()
-          .filter(property -> List.of(
-              BaseDidokImportEntity.Fields.creationDate,
-              BaseDidokImportEntity.Fields.creator,
-              BaseDidokImportEntity.Fields.editor,
-              BaseDidokImportEntity.Fields.editionDate
-          ).contains(property.getKey()))
-          .toList();
+  /**
+   * Sets the values for the properties {@link BaseDidokImportEntity.Fields.creationDate},
+   * {@link BaseDidokImportEntity.Fields.creator}, {@link BaseDidokImportEntity.Fields.editor} and
+   * {@link BaseDidokImportEntity.Fields.editionDate} on the child PointGeolocation from the parent
+   * PointVersion.
+   */
+  public void addCreateAndEditDetailsToGeolocationPropertyFromVersionedObjects(
+      List<VersionedObject> versionedObjects,
+      String geolocationField) {
+    versionedObjects.stream().filter(versionedObject -> {
+      final VersioningAction action = versionedObject.getAction();
+      return action == VersioningAction.UPDATE || action == VersioningAction.NEW;
+    }).forEach(versionedObject -> {
+      final Property geolocationProp =
+          versionedObject.getEntity()
+              .getProperties()
+              .stream()
+              .filter(property -> property.getKey().equals(geolocationField))
+              .findFirst()
+              .orElseThrow();
 
-      geolocationPropertyList.addAll(propertiesToAdd);
-    }
+      if (geolocationProp.getOneToOne() != null) {
+        final List<Property> geolocationPropertyList = geolocationProp.getOneToOne().getProperties();
+        final List<Property> propertiesToAdd = versionedObject
+            .getEntity()
+            .getProperties()
+            .stream()
+            .filter(property -> List.of(
+                BaseDidokImportEntity.Fields.creationDate,
+                BaseDidokImportEntity.Fields.creator,
+                BaseDidokImportEntity.Fields.editor,
+                BaseDidokImportEntity.Fields.editionDate
+            ).contains(property.getKey()))
+            .toList();
+        geolocationPropertyList.addAll(propertiesToAdd);
+      }
+    });
   }
 
 }

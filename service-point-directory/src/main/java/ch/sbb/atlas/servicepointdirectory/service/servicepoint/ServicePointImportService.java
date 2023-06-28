@@ -100,7 +100,7 @@ public class ServicePointImportService {
     ServicePointVersion current = BasePointUtility.getCurrentPointVersion(dbVersions, edited);
     List<VersionedObject> versionedObjects = versionableService.versioningObjectsForImportFromCsv(current, edited,
         dbVersions);
-    servicePointGeoDataService.addCreateAndEditDetailsToGeolocationVersionedObjects(versionedObjects,
+    BasePointUtility.addCreateAndEditDetailsToGeolocationPropertyFromVersionedObjects(versionedObjects,
         Fields.servicePointGeolocation);
     versionableService.applyVersioning(ServicePointVersion.class, versionedObjects, servicePointService::save,
         servicePointService::deleteById);
