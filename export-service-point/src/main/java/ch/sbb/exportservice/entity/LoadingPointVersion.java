@@ -1,16 +1,12 @@
 package ch.sbb.exportservice.entity;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.exportservice.entity.geolocation.LoadingPointGeolocation;
-import java.time.LocalDate;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
+
+import java.time.LocalDate;
 
 @NoArgsConstructor
 @AllArgsConstructor
