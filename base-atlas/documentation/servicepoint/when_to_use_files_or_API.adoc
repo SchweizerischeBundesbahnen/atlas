@@ -17,3 +17,9 @@ Customers get exactly the data they want.
 === How to decide between ServicePoint API or File (JSON/CSV)
 If you need every day all data, like all actual ServicePoints or all future timetable ServicePoints,
 choose CSV or JSON file available on the Export Service Point Service, otherwise, use the Service Point API.
+
+For more information see https://confluence.sbb.ch/x/yJLIk .
+
+=== Data Mapping Migration from DiDok to ATLAS
+
+See https://confluence.sbb.ch/x/GI3aj to get additional information about the data mapping migration from DiDok to ATLAS.
