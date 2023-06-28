@@ -54,6 +54,8 @@ If you want to consume this files you have two options:
  * Via API: see **Export Service Point API** section
  * Through the Amazon S3 Bucket Client:  see **Atlas Amazon S3 Bucket Users onboarding**
 
+include::../../../../base-atlas/documentation/servicepoint/when_to_use_files_or_API.adoc[]
+
 include::../../../../base-atlas/documentation/amazon/Amazon_S3_Buckets_Users_Onboarding.adoc[]
 
 = Export Service Point API

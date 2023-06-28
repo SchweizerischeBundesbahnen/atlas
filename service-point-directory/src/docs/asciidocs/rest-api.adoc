@@ -38,6 +38,9 @@ include::../release-notes.adoc[]
 
 = Service Points
 
+include::../../../../base-atlas/documentation/servicepoint/when_to_use_files_or_API.adoc[]
+
+
 == Read ServicePointVersions - Successfully
 
 include::{snippets}/service-point-controller-api-test/should-get-service-point-versions/auto-section.adoc[]
