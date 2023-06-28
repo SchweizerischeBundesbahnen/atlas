@@ -2,6 +2,7 @@ package ch.sbb.atlas.api.servicepoint;
 
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.AssertTrue;
@@ -34,5 +35,18 @@ public class ReadServicePointVersionModel extends ServicePointVersionModel {
         LocalDate.now()))
         || StringUtils.isNotBlank(super.getSortCodeOfDestinationStation());
   }
+
+    @Valid
+    @Schema(description = "Reference to a operatingPointRouteNetwork. OperatingPointKilometer are always related to a "
+            + "operatingPointRouteNetwork")
+    private ServicePointNumber operatingPointKilometerMaster;
+
+
+    @JsonInclude
+    @Schema(description = "ServicePoint is OperatingPointKilometer")
+    public boolean isOperatingPointKilometer() {
+        return operatingPointKilometerMaster != null;
+    }
+
 
 }
