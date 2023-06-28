@@ -2,11 +2,12 @@ package ch.sbb.atlas.servicepointdirectory.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
-import java.util.Set;
+import ch.sbb.atlas.servicepoint.Country;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
+import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 class ServicePointNumberTest {

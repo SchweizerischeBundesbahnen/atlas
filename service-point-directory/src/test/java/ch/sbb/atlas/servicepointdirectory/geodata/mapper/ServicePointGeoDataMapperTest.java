@@ -5,7 +5,6 @@ import static ch.sbb.atlas.servicepointdirectory.model.TestData.testGeoDataWgs84
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeoData;
-import ch.sbb.atlas.servicepointdirectory.transformer.CoordinateTransformer;
 import java.util.List;
 import java.util.Map;
 import org.assertj.core.data.Offset;
@@ -19,7 +18,7 @@ class ServicePointGeoDataMapperTest {
 
   @BeforeEach
   void setUp() {
-    servicePointGeoDataMapper = new ServicePointGeoDataMapper(new CoordinateTransformer());
+    servicePointGeoDataMapper = new ServicePointGeoDataMapper();
   }
 
   @Test
