@@ -7,7 +7,8 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum AmazonBucket {
-    EXPORT("export-files"), HEARING_DOCUMENT("hearing-documents");
+    EXPORT("export-files"),
+    HEARING_DOCUMENT("hearing-documents");
     private final String property;
 
     public static AmazonBucket fromProperty(String value) {
