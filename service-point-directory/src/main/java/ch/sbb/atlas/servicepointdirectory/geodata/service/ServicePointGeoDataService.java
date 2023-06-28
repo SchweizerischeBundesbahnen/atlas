@@ -7,10 +7,6 @@ import ch.sbb.atlas.servicepointdirectory.geodata.protobuf.VectorTile.Tile;
 import ch.sbb.atlas.servicepointdirectory.geodata.transformer.BoundingBoxTransformer;
 import ch.sbb.atlas.servicepointdirectory.geodata.transformer.GeometryTransformer;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointGeolocationRepository;
-import ch.sbb.atlas.servicepointdirectory.service.BasePointUtility;
-import ch.sbb.atlas.versioning.model.Property;
-import ch.sbb.atlas.versioning.model.VersionedObject;
-import ch.sbb.atlas.versioning.model.VersioningAction;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.locationtech.jts.geom.Envelope;
@@ -53,24 +49,6 @@ public class ServicePointGeoDataService {
         LAYER_NAME,
         buildServicePointsForMap(validAtDate, geoDataAreaWgs84),
         tileAreaWgs84WebExact);
-  }
-
-  public void addCreateAndEditDetailsToGeolocationVersionedObjects(List<VersionedObject> versionedObjects, String propertyField) {
-    versionedObjects.stream()
-        .filter(versionedObject -> {
-          final VersioningAction action = versionedObject.getAction();
-          return action == VersioningAction.UPDATE || action == VersioningAction.NEW;
-        })
-        .forEach(versionedObject -> {
-          final Property geolocationProp =
-              versionedObject.getEntity()
-                  .getProperties()
-                  .stream()
-                  .filter(property -> property.getKey().equals(propertyField))
-                  .findFirst()
-                  .orElseThrow();
-          BasePointUtility.addCreateAndEditDetailsToGeolocationPropertyFromVersionedObject(versionedObject, geolocationProp);
-        });
   }
 
   /**
