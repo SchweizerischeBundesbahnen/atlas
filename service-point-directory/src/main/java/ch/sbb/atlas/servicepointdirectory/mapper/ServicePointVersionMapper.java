@@ -1,12 +1,12 @@
 package ch.sbb.atlas.servicepointdirectory.mapper;
 
-import ch.sbb.atlas.servicepointdirectory.api.model.CodeAndDesignation;
+import ch.sbb.atlas.api.servicepoint.CodeAndDesignation;
+import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.atlas.servicepoint.enumeration.Category;
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepointdirectory.api.model.CreateServicePointVersionModel;
-import ch.sbb.atlas.servicepointdirectory.api.model.ReadServicePointVersionModel;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
-import ch.sbb.atlas.servicepointdirectory.enumeration.Category;
-import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
-import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import java.util.List;
 import java.util.Set;
 import lombok.experimental.UtilityClass;
@@ -59,8 +59,10 @@ public class ServicePointVersionMapper {
   }
 
   public static ServicePointVersion toEntity(CreateServicePointVersionModel createServicePointVersionModel) {
-    ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(createServicePointVersionModel.getNumberWithoutCheckDigit());
-    ServicePointNumber operatingPointKilometerMasterNumber = ServicePointNumber.ofNumberWithoutCheckDigit(createServicePointVersionModel.getOperatingPointKilometerMasterNumber());
+    ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(
+        createServicePointVersionModel.getNumberWithoutCheckDigit());
+    ServicePointNumber operatingPointKilometerMasterNumber = ServicePointNumber.ofNumberWithoutCheckDigit(
+        createServicePointVersionModel.getOperatingPointKilometerMasterNumber());
     return ServicePointVersion.builder()
         .id(createServicePointVersionModel.getId())
         .number(servicePointNumber)
@@ -88,7 +90,8 @@ public class ServicePointVersionMapper {
         .operatingPointTrafficPointType(createServicePointVersionModel.getOperatingPointTrafficPointType())
         .categories(Set.copyOf(createServicePointVersionModel.getCategories()))
         .meansOfTransport(Set.copyOf(createServicePointVersionModel.getMeansOfTransport()))
-        .servicePointGeolocation(ServicePointGeolocationMapper.toEntity(createServicePointVersionModel.getServicePointGeolocation()))
+        .servicePointGeolocation(
+            ServicePointGeolocationMapper.toEntity(createServicePointVersionModel.getServicePointGeolocation()))
         .build();
   }
 
@@ -101,3 +104,5 @@ public class ServicePointVersionMapper {
   }
 
 }
+
+
