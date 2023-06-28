@@ -281,7 +281,6 @@ public class ServicePointTestData {
         .operatingPointTechnicalTimetableType(OperatingPointTechnicalTimetableType.ASSIGNED_OPERATING_POINT)
         .operatingPointRouteNetwork(false)
         .operatingPointKilometerMasterNumber(8034511)
-        .operatingPointKilometerMaster(null)
         .meansOfTransport(List.of(MeanOfTransport.TRAIN))
         .meansOfTransportInformation(List.of(CodeAndDesignation.builder()
             .code("U")

@@ -3,7 +3,6 @@ package ch.sbb.atlas.api.servicepoint;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.model.BaseVersionModel;
 import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
@@ -15,10 +14,7 @@ import ch.sbb.atlas.validation.DatesValidator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.AssertTrue;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
@@ -70,7 +66,11 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
   private ServicePointStatus statusDidok3;
 
   @NotNull
-  @Schema(accessMode = AccessMode.READ_ONLY)
+  @Schema(accessMode = AccessMode.READ_WRITE, description = "Status didok3 information", example = "{\"code\" : \"3\",\n" +
+          "    \"designationDe\" : \"In Betrieb\",\n" +
+          "    \"designationFr\" : \"En fonctionnement\",\n" +
+          "    \"designationIt\" : \"In funzione\",\n" +
+          "    \"designationEn\" : \"In operation\"}")
   private CodeAndDesignation statusDidok3Information;
 
   @Schema(description = "Indicates if this a operatingPoint.")
@@ -103,13 +103,14 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
   private CodeAndDesignation operatingPointTypeInformation;
 
   @Schema(description = "OperatingPointTechnicalTimetableType, all service points relevant for timetable planning and "
-          + "publication. ")
+      + "publication. At most one of OperatingPointWithoutTimetableType, OperatingPointTechnicalTimetableType, OperatingPointTrafficPointType may be set")
   private OperatingPointTechnicalTimetableType operatingPointTechnicalTimetableType;
 
   @Schema(accessMode = AccessMode.READ_ONLY, description = "Details to the OperatingPointTechnicalTimetableType.")
   private CodeAndDesignation operatingPointTechnicalTimetableTypeInformation;
 
-  @Schema(description = "OperatingPointTrafficPointType, Specifies the detailed intended use of a traffic point.")
+  @Schema(description = "OperatingPointTrafficPointType, Specifies the detailed intended use of a traffic point." +
+          "At most one of OperatingPointWithoutTimetableType, OperatingPointTechnicalTimetableType, OperatingPointTrafficPointType may be set")
   private OperatingPointTrafficPointType operatingPointTrafficPointType;
 
   @Schema(accessMode = AccessMode.READ_ONLY)
@@ -117,11 +118,6 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
 
   @Schema(description = "ServicePoint is OperatingPointRouteNetwork", example = "false")
   private boolean operatingPointRouteNetwork;
-
-  @Valid
-  @Schema(description = "Reference to a operatingPointRouteNetwork. OperatingPointKilometer are always related to a "
-          + "operatingPointRouteNetwork")
-  private ServicePointNumber operatingPointKilometerMaster;
 
   @Schema(description = "Means of transport. Indicates for which means of transport a stop is intended/equipped. Mandatory for "
           + "StopPoints")
@@ -140,9 +136,11 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
   @Schema(description = "FotComment", example = "Good Service Point.")
   private String fotComment;
 
+  @Schema(description = "Service point geolocation")
   private ServicePointGeolocationModel servicePointGeolocation;
 
-  @Schema(description = "Status", accessMode = AccessMode.READ_ONLY)
+  @NotNull
+  @Schema(description = "Status")
   private Status status;
 
   @NotNull
@@ -197,12 +195,6 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
   @Schema(description = "ServicePoint is BorderPoint", example = "false")
   public boolean isBorderPoint() {
     return operatingPointTechnicalTimetableType == OperatingPointTechnicalTimetableType.COUNTRY_BORDER;
-  }
-
-  @JsonInclude
-  @Schema(description = "ServicePoint is OperatingPointKilometer")
-  public boolean isOperatingPointKilometer() {
-    return operatingPointKilometerMaster != null;
   }
 
   @AssertTrue(message = "StopPointType only allowed for StopPoint")
