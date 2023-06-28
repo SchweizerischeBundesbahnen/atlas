@@ -36,11 +36,12 @@ public class ServicePointRequestParams extends VersionedObjectDateRequestParams 
   @Singular(ignoreNullCollections = true)
   private List<Integer> numbers = new ArrayList<>();
 
-  @Parameter(description = "List of UIC Country codes.", example = "85")
+  @Parameter(description = "List of UIC Country codes. The UIC Country code applies to the country of the service point number")
   @Singular(ignoreNullCollections = true)
   private List<Integer> uicCountryCodes = new ArrayList<>();
 
-  @Parameter(description = "List of ISO Country codes.", example = "CH")
+  @Parameter(description = "List of ISO Country codes. The ISO Country code applies to the geolocation country of the service "
+      + "point. Service points without geolocation will not be found if specified.")
   @Singular(ignoreNullCollections = true)
   private List<String> isoCountryCodes = new ArrayList<>();
 
