@@ -16,6 +16,8 @@ public enum MailTemplateConfig {
   IMPORT_SERVCICE_POINT_ERROR_NOTIFICATION_TEMPLATE("import-service-point-error-notification", null, null, false, false, true),
   IMPORT_SERVCICE_POINT_SUCCESS_NOTIFICATION_TEMPLATE("import-service-point-success-notification", null, null, false, false,
       true),
+  EXPORT_SERVCICE_POINT_ERROR_NOTIFICATION_TEMPLATE("export-service-point-error-notification", null, null, false, false,
+      true),
   WORKFLOW_NOTIFICATION_TEMPLATE("workflow_notification", null, null, true, false, true);
 
   private final String template;
@@ -46,6 +48,9 @@ public enum MailTemplateConfig {
     }
     if (MailType.IMPORT_SERVICE_POINT_SUCCESS_NOTIFICATION == mailType) {
       return IMPORT_SERVCICE_POINT_SUCCESS_NOTIFICATION_TEMPLATE;
+    }
+    if (MailType.EXPORT_SERVICE_POINT_ERROR_NOTIFICATION == mailType) {
+      return EXPORT_SERVCICE_POINT_ERROR_NOTIFICATION_TEMPLATE;
     }
     throw new IllegalArgumentException("No configuration provided for: " + mailType.name());
   }
