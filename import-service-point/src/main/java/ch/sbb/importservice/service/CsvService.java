@@ -13,7 +13,6 @@ import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointCsvModelContainer;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointElementCsvModel;
-import ch.sbb.atlas.versioning.date.DateHelper;
 import ch.sbb.importservice.exception.CsvException;
 import com.fasterxml.jackson.databind.MappingIterator;
 import java.io.BufferedReader;
@@ -125,34 +124,24 @@ public class CsvService {
 
   public List<TrafficPointCsvModelContainer> mapToTrafficPointCsvModelContainers(
       List<TrafficPointElementCsvModel> trafficPointElementCsvModels) {
-    Map<String, List<TrafficPointElementCsvModel>> trafficPointsGroupedBySloid = trafficPointElementCsvModels.stream()
+    final Map<String, List<TrafficPointElementCsvModel>> trafficPointsGroupedBySloid = trafficPointElementCsvModels
+        .stream()
         .collect(Collectors.groupingBy(TrafficPointElementCsvModel::getSloid));
 
-    List<TrafficPointCsvModelContainer> trafficPointCsvModelContainers = new ArrayList<>();
-    trafficPointsGroupedBySloid.forEach((sloid, trafficPointCsvModelGroup) -> {
-      trafficPointCsvModelGroup.sort(Comparator.comparing(BaseDidokCsvModel::getValidFrom));
-      int csvModelIndex = 0;
-      while (csvModelIndex + 1 < trafficPointCsvModelGroup.size()) {
-        final TrafficPointElementCsvModel current = trafficPointCsvModelGroup.get(csvModelIndex);
-        final TrafficPointElementCsvModel next = trafficPointCsvModelGroup.get(csvModelIndex + 1);
-
-        // merge if dates are sequential and current equals next with excluded properties
-        if (DateHelper.areDatesSequential(current.getValidTo(), next.getValidFrom()) && current.equals(next)) {
-          trafficPointCsvModelGroup.remove(csvModelIndex);
-          next.setValidFrom(current.getValidFrom());
-        } else {
-          csvModelIndex++;
-        }
-      }
-
-      TrafficPointCsvModelContainer trafficPointCsvModelContainer = TrafficPointCsvModelContainer.builder()
-          .sloid(sloid)
-          .trafficPointCsvModelList(trafficPointCsvModelGroup)
-          .build();
-      trafficPointCsvModelContainers.add(trafficPointCsvModelContainer);
-    });
-
-    return trafficPointCsvModelContainers;
+    return trafficPointsGroupedBySloid
+        .keySet()
+        .stream()
+        .map(sloid -> {
+          final List<TrafficPointElementCsvModel> trafficPointCsvModelGroup = trafficPointsGroupedBySloid.get(sloid);
+          trafficPointCsvModelGroup.sort(Comparator.comparing(BaseDidokCsvModel::getValidFrom));
+          final TrafficPointCsvModelContainer trafficPointCsvModelContainer = TrafficPointCsvModelContainer
+              .builder()
+              .sloid(sloid)
+              .trafficPointCsvModelList(trafficPointCsvModelGroup)
+              .build();
+          trafficPointCsvModelContainer.mergeWhenDatesAreSequentialAndModelsAreEqual();
+          return trafficPointCsvModelContainer;
+        }).toList();
   }
 
   public <T> List<T> getCsvModelsToUpdate(File importFile, LocalDate matchingDate, Class<T> type) {
