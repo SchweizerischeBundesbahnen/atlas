@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 /**
  * See https://confluence.sbb.ch/display/ATLAS/Status
  */
-@Schema(enumAsRef = true)
+@Schema(enumAsRef = true, example = "VALIDATED")
 public enum Status {
 
   DRAFT,
