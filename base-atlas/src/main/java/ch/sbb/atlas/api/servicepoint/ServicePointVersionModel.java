@@ -66,9 +66,6 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
   @Schema(description = "Status, Code of status of the service point, useful for specific business tasks.")
   private ServicePointStatus statusDidok3;
 
-  @Schema(accessMode = AccessMode.READ_ONLY, description = "Status didok3 information")
-  private CodeAndDesignation statusDidok3Information;
-
   @Schema(description = "Indicates if this a operatingPoint.")
   private boolean operatingPoint;
 
@@ -89,28 +86,16 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
   @Schema(description = "ServicePoint Categories: Assignment of service points to defined business cases.")
   private List<Category> categories;
 
-  @Schema(accessMode = AccessMode.READ_ONLY, description = "Details to the categories.")
-  private List<CodeAndDesignation> categoriesInformation;
-
   @Schema(description = "OperatingPointType, Specifies the detailed intended use of a operating point.")
   private OperatingPointType operatingPointType;
-
-  @Schema(accessMode = AccessMode.READ_ONLY, description = "Details to the operationPointType.")
-  private CodeAndDesignation operatingPointTypeInformation;
 
   @Schema(description = "OperatingPointTechnicalTimetableType, all service points relevant for timetable planning and "
       + "publication. At most one of OperatingPointWithoutTimetableType, OperatingPointTechnicalTimetableType, OperatingPointTrafficPointType may be set")
   private OperatingPointTechnicalTimetableType operatingPointTechnicalTimetableType;
 
-  @Schema(accessMode = AccessMode.READ_ONLY, description = "Details to the OperatingPointTechnicalTimetableType.")
-  private CodeAndDesignation operatingPointTechnicalTimetableTypeInformation;
-
   @Schema(description = "OperatingPointTrafficPointType, Specifies the detailed intended use of a traffic point." +
           "At most one of OperatingPointWithoutTimetableType, OperatingPointTechnicalTimetableType, OperatingPointTrafficPointType may be set")
   private OperatingPointTrafficPointType operatingPointTrafficPointType;
-
-  @Schema(accessMode = AccessMode.READ_ONLY)
-  private CodeAndDesignation operatingPointTrafficPointTypeInformation;
 
   @Schema(description = "ServicePoint is OperatingPointRouteNetwork", example = "false")
   private boolean operatingPointRouteNetwork;
@@ -119,14 +104,8 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
           + "StopPoints")
   private List<MeanOfTransport> meansOfTransport;
 
-  @Schema(accessMode = AccessMode.READ_ONLY)
-  private List<CodeAndDesignation> meansOfTransportInformation;
-
   @Schema(description = "Type of the StopPoint, Indicates for which type of traffic (e.g. regular traffic) a stop was recorded. ")
   private StopPointType stopPointType;
-
-  @Schema(accessMode = AccessMode.READ_ONLY, description = "Details to the StopPointType.")
-  private CodeAndDesignation stopPointTypeInformation;
 
   @Size(max = AtlasFieldLengths.LENGTH_1500)
   @Schema(description = "FotComment", example = "Good Service Point.")
