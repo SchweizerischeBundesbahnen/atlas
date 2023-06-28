@@ -1,15 +1,16 @@
 package ch.sbb.atlas.servicepointdirectory.mapper;
 
 import ch.sbb.atlas.api.servicepoint.CodeAndDesignation;
+import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
-import ch.sbb.atlas.servicepointdirectory.api.model.CreateServicePointVersionModel;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
+import lombok.experimental.UtilityClass;
+
 import java.util.List;
 import java.util.Set;
-import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class ServicePointVersionMapper {

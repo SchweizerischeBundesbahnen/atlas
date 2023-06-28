@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory;
 
+import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.Status;
@@ -11,7 +12,6 @@ import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableTyp
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
 import ch.sbb.atlas.servicepoint.enumeration.ServicePointStatus;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
-import ch.sbb.atlas.servicepointdirectory.api.model.CreateServicePointVersionModel;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointGeolocationMapper;
