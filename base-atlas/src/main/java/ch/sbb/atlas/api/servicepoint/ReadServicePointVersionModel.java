@@ -31,25 +31,20 @@ public class ReadServicePointVersionModel extends ServicePointVersionModel {
   @Valid
   private ServicePointNumber number;
 
-  @Schema(accessMode = Schema.AccessMode.READ_ONLY, description = "Status didok3 information")
   private CodeAndDesignation statusDidok3Information;
 
-  @Schema(accessMode = Schema.AccessMode.READ_ONLY, description = "Details to the categories.")
+  @Schema(description = "Details to the categories.")
   private List<CodeAndDesignation> categoriesInformation;
 
-  @Schema(accessMode = Schema.AccessMode.READ_ONLY, description = "Details to the operationPointType.")
   private CodeAndDesignation operatingPointTypeInformation;
 
-  @Schema(accessMode = Schema.AccessMode.READ_ONLY, description = "Details to the OperatingPointTechnicalTimetableType.")
   private CodeAndDesignation operatingPointTechnicalTimetableTypeInformation;
 
-  @Schema(accessMode = Schema.AccessMode.READ_ONLY)
   private CodeAndDesignation operatingPointTrafficPointTypeInformation;
 
-  @Schema(accessMode = Schema.AccessMode.READ_ONLY)
+  @Schema(description = "Details to the MeansOfTransportInformation.")
   private List<CodeAndDesignation> meansOfTransportInformation;
 
-  @Schema(accessMode = Schema.AccessMode.READ_ONLY, description = "Details to the StopPointType.")
   private CodeAndDesignation stopPointTypeInformation;
 
   @Valid
