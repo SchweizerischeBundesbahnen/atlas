@@ -1,18 +1,19 @@
 package ch.sbb.atlas.servicepointdirectory.model.search;
 
-import ch.sbb.atlas.searching.specification.ValidOrEditionTimerangeSpecification;
+import static ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion.Fields.number;
+
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.searching.SearchRestrictions;
 import ch.sbb.atlas.searching.SpecificationBuilder;
 import ch.sbb.atlas.searching.specification.ElementCollectionContainsAnySpecification;
 import ch.sbb.atlas.searching.specification.EnumByConversionServicePointGeolocationSpecification;
 import ch.sbb.atlas.searching.specification.EnumByConversionSpecification;
+import ch.sbb.atlas.searching.specification.ValidOrEditionTimerangeSpecification;
+import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointRequestParams;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
-import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion.Fields;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion_;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation_;
-import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
 import jakarta.persistence.metamodel.SingularAttribute;
 import java.time.LocalDate;
 import java.util.List;
@@ -50,9 +51,9 @@ public class ServicePointSearchRestrictions extends SearchRestrictions<ServicePo
   protected SpecificationBuilder<ServicePointVersion> specificationBuilder() {
     return SpecificationBuilder.<ServicePointVersion>builder()
         .stringAttributes(
-            List.of(Fields.number,
-                Fields.numberShort,
-                Fields.designationOfficial))
+            List.of(number,
+                ServicePointVersion.Fields.numberShort,
+                ServicePointVersion.Fields.designationOfficial))
         .validFromAttribute(ServicePointVersion_.validFrom)
         .validToAttribute(ServicePointVersion_.validTo)
         .build();
@@ -62,26 +63,33 @@ public class ServicePointSearchRestrictions extends SearchRestrictions<ServicePo
   public Specification<ServicePointVersion> getSpecification() {
     return getBaseSpecification()
         .and(specificationBuilder().stringInSpecification(servicePointRequestParams.getSloids(), ServicePointVersion_.sloid))
-        .and(specificationBuilder().inSpecification(servicePointRequestParams.getServicePointNumbers(), Fields.number))
-        .and(specificationBuilder().inSpecification(servicePointRequestParams.getNumbersShort(), Fields.numberShort))
+        .and(specificationBuilder().inSpecification(servicePointRequestParams.getServicePointNumbers(),
+            ServicePointVersion.Fields.number))
+        .and(specificationBuilder().inSpecification(servicePointRequestParams.getNumbersShort(),
+            ServicePointVersion.Fields.numberShort))
         .and(specificationBuilder().stringInSpecification(servicePointRequestParams.getAbbreviations(),
             ServicePointVersion_.abbreviation))
         .and(specificationBuilder().stringInSpecification(servicePointRequestParams.getBusinessOrganisationSboids(),
             ServicePointVersion_.businessOrganisation))
         .and(specificationBuilder().enumSpecification(servicePointRequestParams.getCountries(), ServicePointVersion_.country))
-        .and(new ElementCollectionContainsAnySpecification<>(servicePointRequestParams.getCategories(), ServicePointVersion_.categories))
+        .and(new ElementCollectionContainsAnySpecification<>(servicePointRequestParams.getCategories(),
+            ServicePointVersion_.categories))
         .and(specificationBuilder().enumSpecification(servicePointRequestParams.getOperatingPointTypes(),
             ServicePointVersion_.operatingPointType))
         .and(specificationBuilder().enumSpecification(servicePointRequestParams.getStopPointTypes(),
             ServicePointVersion_.stopPointType))
-        .and(new ElementCollectionContainsAnySpecification<>(servicePointRequestParams.getMeansOfTransport(), ServicePointVersion_.meansOfTransport))
-        .and(specificationBuilder().enumSpecification(servicePointRequestParams.getOperatingPointTechnicalTimetableTypes(), ServicePointVersion_.operatingPointTechnicalTimetableType))
+        .and(new ElementCollectionContainsAnySpecification<>(servicePointRequestParams.getMeansOfTransport(),
+            ServicePointVersion_.meansOfTransport))
+        .and(specificationBuilder().enumSpecification(servicePointRequestParams.getOperatingPointTechnicalTimetableTypes(),
+            ServicePointVersion_.operatingPointTechnicalTimetableType))
         .and(specificationBuilder().booleanSpecification(ServicePointVersion_.operatingPoint,
             servicePointRequestParams.getOperatingPoint()))
         .and(specificationBuilder().booleanSpecification(ServicePointVersion_.operatingPointWithTimetable,
             servicePointRequestParams.getWithTimetable()))
-        .and(new EnumByConversionSpecification<>(servicePointRequestParams.getUicCountryCodes(), Country::from, ServicePointVersion_.country))
-        .and(new EnumByConversionServicePointGeolocationSpecification<>(servicePointRequestParams.getIsoCountryCodes(), Country::fromIsoCode, ServicePointVersion_.servicePointGeolocation,
+        .and(new EnumByConversionSpecification<>(servicePointRequestParams.getUicCountryCodes(), Country::from,
+            ServicePointVersion_.country))
+        .and(new EnumByConversionServicePointGeolocationSpecification<>(servicePointRequestParams.getIsoCountryCodes(),
+            Country::fromIsoCode, ServicePointVersion_.servicePointGeolocation,
             ServicePointGeolocation_.country))
         .and(new ValidOrEditionTimerangeSpecification<>(
             servicePointRequestParams.getFromDate(),
