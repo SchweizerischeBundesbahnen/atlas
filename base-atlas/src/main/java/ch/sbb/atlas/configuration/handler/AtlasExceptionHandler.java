@@ -12,7 +12,9 @@ import feign.FeignException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -192,8 +194,9 @@ public class AtlasExceptionHandler {
 
   @ExceptionHandler(value = FeignException.class)
   public ResponseEntity<ErrorResponse> handleFeignException(FeignException feignException) throws IOException {
-    if (feignException.responseBody().isPresent()) {
-      String responseBodyContent = new String(feignException.responseBody().get().array());
+    Optional<ByteBuffer> responseBody = feignException.responseBody();
+    if (responseBody.isPresent()) {
+      String responseBodyContent = new String(responseBody.get().array());
       ErrorResponse response = objectMapper.readValue(responseBodyContent, ErrorResponse.class);
       return ResponseEntity.status(feignException.status()).body(response);
     }
