@@ -1,7 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.exception;
 
 import ch.sbb.atlas.model.exception.NotFoundException;
-import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
 
 public class ServicePointNumberNotFoundException extends NotFoundException {
 
