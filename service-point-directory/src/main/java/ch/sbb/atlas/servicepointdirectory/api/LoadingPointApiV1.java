@@ -2,7 +2,8 @@ package ch.sbb.atlas.servicepointdirectory.api;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.model.Container;
-import ch.sbb.atlas.servicepointdirectory.api.model.LoadingPointVersionModel;
+import ch.sbb.atlas.api.servicepoint.LoadingPointVersionModel;
+import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion.Fields;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,7 +26,8 @@ public interface LoadingPointApiV1 {
   @GetMapping
   @PageableAsQueryParam
   Container<LoadingPointVersionModel> getLoadingPoints(
-      @Parameter(hidden = true) @PageableDefault(sort = {Fields.servicePointNumber, Fields.number, Fields.validFrom}) Pageable pageable,
+      @Parameter(hidden = true) @PageableDefault(sort = {LoadingPointVersion.Fields.servicePointNumber, Fields.number,
+          Fields.validFrom}) Pageable pageable,
       @Parameter @RequestParam(required = false) List<String> searchCriteria,
       @RequestParam(required = false) @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN) Optional<LocalDate> validOn);
 

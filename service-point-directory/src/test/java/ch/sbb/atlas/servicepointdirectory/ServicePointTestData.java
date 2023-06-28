@@ -1,21 +1,21 @@
 package ch.sbb.atlas.servicepointdirectory;
 
+import ch.sbb.atlas.api.servicepoint.CodeAndDesignation;
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
-import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.kafka.model.SwissCanton;
-import ch.sbb.atlas.servicepointdirectory.api.model.CodeAndDesignation;
+import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.servicepoint.Country;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.atlas.servicepoint.enumeration.Category;
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
+import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
+import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
+import ch.sbb.atlas.servicepoint.enumeration.ServicePointStatus;
+import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.api.model.CreateServicePointVersionModel;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
-import ch.sbb.atlas.servicepointdirectory.enumeration.Category;
-import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
-import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
-import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointTechnicalTimetableType;
-import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointType;
-import ch.sbb.atlas.servicepointdirectory.enumeration.ServicePointStatus;
-import ch.sbb.atlas.servicepointdirectory.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointGeolocationMapper;
-import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -275,7 +275,7 @@ public class ServicePointTestData {
             .designationDe("Verkaufsstelle")
             .designationFr("Point de vente")
             .designationIt("Punto vendita")
-            .designationEn("Verkaufsstelle")
+            .designationEn("Point of sale")
             .build()))
         .operatingPointType(OperatingPointType.INVENTORY_POINT)
         .operatingPointTechnicalTimetableType(OperatingPointTechnicalTimetableType.ASSIGNED_OPERATING_POINT)
@@ -291,7 +291,8 @@ public class ServicePointTestData {
             .designationEn("Unknown")
             .build()))
         .stopPointType(StopPointType.ON_REQUEST)
-        .servicePointGeolocation(ServicePointGeolocationMapper.toModel(ServicePointTestData.getServicePointGeolocationBernMittelland()))
+        .servicePointGeolocation(
+            ServicePointGeolocationMapper.toModel(ServicePointTestData.getServicePointGeolocationBernMittelland()))
         .fotComment("Bahnersatz")
         .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2010, 12, 11))
