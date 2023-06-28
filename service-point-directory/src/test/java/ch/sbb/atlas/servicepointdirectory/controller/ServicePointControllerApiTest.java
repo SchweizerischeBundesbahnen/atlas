@@ -10,6 +10,7 @@ import ch.sbb.atlas.imports.servicepoint.model.ServicePointImportReqModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
+import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointGeolocationMapper;
@@ -206,6 +207,18 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
             .contentType(contentType))
         // then
         .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  void shouldReturnBadRequestWhenCreateServicePointWithOperatingPointTrafficPointTypeAndOperatingPointTechnicalTimetableType() throws Exception {
+    CreateServicePointVersionModel aargauServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
+    aargauServicePointVersionModel.setOperatingPointTrafficPointType(OperatingPointTrafficPointType.TARIFF_POINT);
+    mvc.perform(post("/v1/service-points")
+                    .contentType(contentType)
+                    .content(mapper.writeValueAsString(aargauServicePointVersionModel)))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
+            .andExpect(jsonPath("$.details[0].message", is("Value false rejected due to At most one of OperatingPointWithoutTimetableType, OperatingPointTechnicalTimetableType, OperatingPointTrafficPointType may be set")));
   }
 
   @Test
