@@ -21,7 +21,8 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @FieldNameConstants
-@Schema(name = "ServicePointGeolocation",
+@Schema(description = "Service point geolocation",
+        name = "ServicePointGeolocation",
         example = "{\"spatialReference\" : \"LV95\",\n" +
                 "    \"lv95\" : {\n" +
                 "      \"north\" : 1201099.0,\n" +
