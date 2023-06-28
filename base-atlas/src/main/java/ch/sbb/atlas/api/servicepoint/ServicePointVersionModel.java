@@ -111,7 +111,6 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
   @Schema(description = "FotComment", example = "Good Service Point.")
   private String fotComment;
 
-  @Schema(description = "Service point geolocation")
   private ServicePointGeolocationModel servicePointGeolocation;
 
   @NotNull
