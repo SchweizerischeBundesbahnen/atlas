@@ -23,11 +23,11 @@
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
       <!-- Spring -->
-      <spring-cloud.version>2022.0.2</spring-cloud.version>
+      <spring-cloud.version>2022.0.3</spring-cloud.version>
       <spring-openapi-ui.version>2.1.0</spring-openapi-ui.version>
 
       <swagger-core.version>2.2.14</swagger-core.version>
-      <tika-core.version>2.7.0</tika-core.version>
+      <tika-core.version>2.8.0</tika-core.version>
 
       <!-- REST Doc -->
       <asciidoctor-plugin.version>2.2.4</asciidoctor-plugin.version>
@@ -122,7 +122,7 @@
          <dependency>
             <artifactId>aws-java-sdk-s3</artifactId>
             <groupId>com.amazonaws</groupId>
-            <version>1.12.495</version>
+            <version>1.12.497</version>
          </dependency>
 
          <dependency>
@@ -136,6 +136,12 @@
             <artifactId>spring-auto-restdocs-core</artifactId>
             <version>${spring-auto-rest-docs-core.version}</version>
             <scope>test</scope>
+         </dependency>
+         <dependency>
+            <artifactId>mockito-inline</artifactId>
+            <groupId>org.mockito</groupId>
+            <scope>test</scope>
+            <version>4.11.0</version>
          </dependency>
          <dependency>
             <groupId>org.apache.tika</groupId>
