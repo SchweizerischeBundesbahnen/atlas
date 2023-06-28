@@ -1,6 +1,5 @@
 package ch.sbb.atlas.servicepointdirectory;
 
-import ch.sbb.atlas.api.servicepoint.CodeAndDesignation;
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.Status;
@@ -16,6 +15,8 @@ import ch.sbb.atlas.servicepointdirectory.api.model.CreateServicePointVersionMod
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointGeolocationMapper;
+import lombok.experimental.UtilityClass;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -23,7 +24,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class ServicePointTestData {
@@ -257,38 +257,17 @@ public class ServicePointTestData {
         .designationOfficial("Aargau Strasse")
         .abbreviation("3")
         .statusDidok3(ServicePointStatus.IN_OPERATION)
-        .statusDidok3Information(CodeAndDesignation.builder()
-            .code("3")
-            .designationDe("In Betrieb")
-            .designationFr("En fonctionnement")
-            .designationIt("In funzione")
-            .designationEn("In operation")
-            .build())
         .operatingPoint(true)
         .operatingPointWithTimetable(true)
         .freightServicePoint(false)
         .sortCodeOfDestinationStation("39136")
         .businessOrganisation("ch:1:sboid:100871")
         .categories(List.of(Category.POINT_OF_SALE))
-        .categoriesInformation(List.of(CodeAndDesignation.builder()
-            .code("6")
-            .designationDe("Verkaufsstelle")
-            .designationFr("Point de vente")
-            .designationIt("Punto vendita")
-            .designationEn("Point of sale")
-            .build()))
         .operatingPointType(OperatingPointType.INVENTORY_POINT)
         .operatingPointTechnicalTimetableType(OperatingPointTechnicalTimetableType.ASSIGNED_OPERATING_POINT)
         .operatingPointRouteNetwork(false)
         .operatingPointKilometerMasterNumber(8034511)
         .meansOfTransport(List.of(MeanOfTransport.TRAIN))
-        .meansOfTransportInformation(List.of(CodeAndDesignation.builder()
-            .code("U")
-            .designationDe("Unbekannt")
-            .designationFr("Inconnu")
-            .designationIt("Sconosciute")
-            .designationEn("Unknown")
-            .build()))
         .stopPointType(StopPointType.ON_REQUEST)
         .servicePointGeolocation(
             ServicePointGeolocationMapper.toModel(ServicePointTestData.getServicePointGeolocationBernMittelland()))
