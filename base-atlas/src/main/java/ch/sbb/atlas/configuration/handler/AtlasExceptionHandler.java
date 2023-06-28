@@ -17,6 +17,7 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.StaleObjectStateException;
 import org.hibernate.validator.internal.engine.path.PathImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartException;
 
+@Slf4j
 @ControllerAdvice
 public class AtlasExceptionHandler {
 
@@ -195,5 +197,16 @@ public class AtlasExceptionHandler {
       return ResponseEntity.status(feignException.status()).body(response);
     }
     throw new UnsupportedOperationException();
+  }
+
+  @ExceptionHandler(value = Exception.class)
+  public ResponseEntity<ErrorResponse> handleException(Exception exception) {
+    log.error("Unexpected Exception occurred", exception);
+    return ResponseEntity.internalServerError()
+        .body(ErrorResponse.builder()
+            .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+            .error(exception.getMessage())
+            .message(exception.getMessage())
+            .build());
   }
 }
