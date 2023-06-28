@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -197,6 +198,16 @@ public class AtlasExceptionHandler {
       return ResponseEntity.status(feignException.status()).body(response);
     }
     throw new UnsupportedOperationException();
+  }
+
+  @ExceptionHandler(value = HttpMessageNotReadableException.class)
+  public ResponseEntity<ErrorResponse> handleHttpMessageNotReadableException(HttpMessageNotReadableException exception) {
+    return ResponseEntity.badRequest()
+        .body(ErrorResponse.builder()
+            .status(HttpStatus.BAD_REQUEST.value())
+            .error(exception.getMessage())
+            .message(exception.getMessage())
+            .build());
   }
 
   @ExceptionHandler(value = Exception.class)
