@@ -132,9 +132,11 @@ export class StatementDetailComponent implements OnInit, AfterViewInit {
 
   save() {
     this.validateOnSave = true;
-    console.log('this.form ', this.form);
-    if (this.form.get('statement')) {
-      ValidationService.checkWhitespaceErrors([this.form.get('statement')!], this.validateOnSave);
+    const statement = this.form.get('statement');
+    const justification = this.form.get('justification');
+
+    if (statement || justification) {
+      ValidationService.checkWhitespaceErrors([statement!, justification!], this.validateOnSave);
     }
 
     if (!this.isNew && this.initialValueForCanton != this.form.value.swissCanton) {
@@ -222,6 +224,7 @@ export class StatementDetailComponent implements OnInit, AfterViewInit {
       statement: new FormControl(statement?.statement, [
         Validators.required,
         AtlasFieldLengthValidator.statement,
+        WhitespaceValidator.blankOrEmptySpaceSurrounding,
       ]),
       justification: new FormControl(statement?.justification, [
         AtlasFieldLengthValidator.statement,
@@ -376,6 +379,8 @@ export class StatementDetailComponent implements OnInit, AfterViewInit {
 
   private createStatement(statement: TimetableHearingStatement) {
     this.isLoading = true;
+    console.log('statement ', statement);
+
     this.timetableHearingService
       .createStatement(statement, this.uploadedFiles)
       .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
