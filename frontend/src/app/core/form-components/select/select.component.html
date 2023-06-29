@@ -13,6 +13,14 @@
     [multiple]="multiple"
     [hideSingleSelectionIndicator]="true"
   >
+    <mat-checkbox
+      *ngIf="checkAllEnabled"
+      class="mat-option"
+      [checked]="isAllSelected()"
+      (click)="$event.stopPropagation()"
+      (change)="toggleSelection.emit($event)"
+    >
+    </mat-checkbox>
     <mat-option *ngFor="let option of options" [value]="valueExtractor(option)">
       <ng-container
         *ngTemplateOutlet="matOptionPrefix; context: getAsObject(option)"
