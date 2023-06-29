@@ -7,7 +7,7 @@
       <artifactId>atlas</artifactId>
       <groupId>ch.sbb.atlas</groupId>
       <relativePath>../pom.xml</relativePath>
-      <version>1.295.0</version>
+      <version>1.303.0</version>
    </parent>
    <artifactId>base-atlas</artifactId>
    <name>Atlas Base Library</name>
@@ -52,6 +52,22 @@
          <groupId>io.github.openfeign</groupId>
          <artifactId>feign-micrometer</artifactId>
       </dependency>
+      <!-- Service Point and ExportService -->
+      <dependency>
+         <groupId>org.locationtech.proj4j</groupId>
+         <artifactId>proj4j</artifactId>
+         <optional>true</optional>
+      </dependency>
+      <dependency>
+         <groupId>org.locationtech.proj4j</groupId>
+         <artifactId>proj4j-epsg</artifactId>
+         <optional>true</optional>
+      </dependency>
+      <dependency>
+         <groupId>org.locationtech.jts</groupId>
+         <artifactId>jts-core</artifactId>
+         <optional>true</optional>
+      </dependency>
 
       <dependency>
          <artifactId>spring-boot-starter-web</artifactId>
@@ -95,7 +111,7 @@
       <dependency>
          <artifactId>kafka</artifactId>
          <groupId>ch.sbb.atlas</groupId>
-         <version>1.295.0</version>
+         <version>1.303.0</version>
       </dependency>
 
       <dependency>

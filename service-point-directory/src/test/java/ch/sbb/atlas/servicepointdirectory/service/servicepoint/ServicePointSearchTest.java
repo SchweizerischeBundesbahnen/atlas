@@ -4,12 +4,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.servicepoint.Country;
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
+import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointRequestParams;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
-import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
-import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
-import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointTechnicalTimetableType;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import java.time.LocalDate;
@@ -392,6 +392,19 @@ public class ServicePointSearchTest {
                 .isoCountryCodes(List.of("HU", "DE"))
                 .build()).build());
     assertThat(servicePointVersions.getTotalElements()).isZero();
+  }
+
+  @Test
+  void shouldFindBernWylereggByIsoCountryCodeCHUicCountryCodeAndNumberShort() {
+    Page<ServicePointVersion> servicePointVersions =
+        servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
+            .servicePointRequestParams(ServicePointRequestParams.builder()
+                .isoCountryCodes(List.of("CH"))
+                .uicCountryCodes(List.of(85))
+                .numbersShort(List.of(89008))
+                .build()).build());
+    assertThat(servicePointVersions.getTotalElements()).isEqualTo(1);
+    assertThat(servicePointVersions.getContent().get(0).getDesignationOfficial()).isEqualTo("Bern, Wyleregg");
   }
 
   @Test

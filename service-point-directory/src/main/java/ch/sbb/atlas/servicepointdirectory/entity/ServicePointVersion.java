@@ -1,29 +1,22 @@
 package ch.sbb.atlas.servicepointdirectory.entity;
 
-import static ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation.Fields.swissCanton;
-import static ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation.Fields.swissDistrictName;
-import static ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation.Fields.swissDistrictNumber;
-import static ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation.Fields.swissLocalityName;
-import static ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation.Fields.swissMunicipalityName;
-import static ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation.Fields.swissMunicipalityNumber;
-
-import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.model.BusinessOrganisationAssociated;
+import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.servicepoint.Country;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.atlas.servicepoint.enumeration.Category;
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
+import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
+import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
+import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
+import ch.sbb.atlas.servicepoint.enumeration.ServicePointStatus;
+import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.converter.CategoryConverter;
 import ch.sbb.atlas.servicepointdirectory.converter.MeanOfTransportConverter;
 import ch.sbb.atlas.servicepointdirectory.converter.ServicePointNumberConverter;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.GeolocationBaseEntity;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
-import ch.sbb.atlas.servicepointdirectory.enumeration.Category;
-import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
-import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
-import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointTechnicalTimetableType;
-import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointTrafficPointType;
-import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointType;
-import ch.sbb.atlas.servicepointdirectory.enumeration.ServicePointStatus;
-import ch.sbb.atlas.servicepointdirectory.enumeration.StopPointType;
-import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import ch.sbb.atlas.validation.DatesValidator;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
@@ -48,10 +41,6 @@ import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Stream;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -60,6 +49,12 @@ import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
 import org.apache.commons.lang3.StringUtils;
+
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Stream;
+
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -190,20 +185,16 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
   @JoinColumn(name = "service_point_geolocation_id", referencedColumnName = "id")
   @AtlasVersionableProperty(relationType = RelationType.ONE_TO_ONE, relationsFields = {
       ServicePointGeolocation.Fields.country,
-      swissCanton,
-      swissDistrictNumber,
-      swissDistrictName,
-      swissMunicipalityNumber,
-      swissMunicipalityName,
-      swissLocalityName,
+      ServicePointGeolocation.Fields.swissCanton,
+      ServicePointGeolocation.Fields.swissDistrictNumber,
+      ServicePointGeolocation.Fields.swissDistrictName,
+      ServicePointGeolocation.Fields.swissMunicipalityNumber,
+      ServicePointGeolocation.Fields.swissMunicipalityName,
+      ServicePointGeolocation.Fields.swissLocalityName,
       GeolocationBaseEntity.Fields.east,
       GeolocationBaseEntity.Fields.north,
       GeolocationBaseEntity.Fields.spatialReference,
-      GeolocationBaseEntity.Fields.height,
-      BaseDidokImportEntity.Fields.creator,
-      BaseDidokImportEntity.Fields.editor,
-      BaseDidokImportEntity.Fields.creationDate,
-      BaseDidokImportEntity.Fields.editionDate
+      GeolocationBaseEntity.Fields.height
   })
   private ServicePointGeolocation servicePointGeolocation;
 
