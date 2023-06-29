@@ -55,6 +55,14 @@ export class ValidationService {
   public static validateForm(formGroup: FormGroup) {
     Object.keys(formGroup.controls).forEach((field) => {
       const control = formGroup.get(field);
+      const isStatement = control === formGroup.get('statement');
+      const isJustification = control === formGroup.get('justification');
+      const isComment = control === formGroup.get('comment');
+
+      if (isStatement || isJustification || isComment) {
+        ValidationService.checkWhitespaceErrors([control!]);
+      }
+
       if (control instanceof FormControl) {
         control.markAsTouched({ onlySelf: true });
       } else if (control instanceof FormGroup) {
@@ -63,19 +71,14 @@ export class ValidationService {
     });
   }
 
-  public static checkWhitespaceErrors(controls: AbstractControl[], validateOnSave: boolean): void {
-    if (!validateOnSave) {
-      return;
-    }
-
+  public static checkWhitespaceErrors(controls: AbstractControl[]): void {
     controls.forEach((control) => {
       const value = control?.value;
 
-      if (value !== null && (value.startsWith(' ') || value.endsWith(' '))) {
+      if (value === null || value === '') {
+        control.markAsTouched({ onlySelf: true });
+      } else if (value !== null && (value.startsWith(' ') || value.endsWith(' '))) {
         control.setErrors({ whitespaces: true });
-      }
-      if (control.value?.length && control.value?.trim().length === 0) {
-        control.setErrors({ blank: control.value });
       } else {
         control.setErrors(null);
       }
