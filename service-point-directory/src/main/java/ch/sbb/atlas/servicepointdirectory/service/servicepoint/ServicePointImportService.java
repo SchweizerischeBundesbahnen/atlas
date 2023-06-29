@@ -4,17 +4,22 @@ import ch.sbb.atlas.imports.servicepoint.model.ServicePointItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.model.ServicePointItemImportResult.ServicePointItemImportResultBuilder;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
-import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
+import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion.Fields;
+import ch.sbb.atlas.servicepointdirectory.geodata.service.ServicePointGeoDataService;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
+import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
+import ch.sbb.atlas.versioning.model.VersionedObject;
+import ch.sbb.atlas.versioning.service.VersionableService;
 import com.fasterxml.jackson.databind.MappingIterator;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
@@ -22,6 +27,8 @@ import org.springframework.stereotype.Service;
 public class ServicePointImportService {
 
   private final ServicePointService servicePointService;
+  private final VersionableService versionableService;
+  private final ServicePointGeoDataService servicePointGeoDataService;
 
   public static List<ServicePointCsvModel> parseServicePoints(InputStream inputStream)
       throws IOException {
@@ -71,7 +78,7 @@ public class ServicePointImportService {
 
   private ServicePointItemImportResult updateServicePointVersion(ServicePointVersion servicePointVersion) {
     try {
-      servicePointService.updateServicePointVersion(servicePointVersion);
+      updateServicePointVersionForImportService(servicePointVersion);
       return buildSuccessImportResult(servicePointVersion);
     } catch (Exception exception) {
       if (exception instanceof VersioningNoChangesException) {
@@ -85,6 +92,15 @@ public class ServicePointImportService {
         return buildFailedImportResult(servicePointVersion, exception);
       }
     }
+  }
+
+  public void updateServicePointVersionForImportService(ServicePointVersion edited) {
+    List<ServicePointVersion> dbVersions = servicePointService.findAllByNumberOrderByValidFrom(edited.getNumber());
+    ServicePointVersion current = servicePointService.getCurrentServicePointVersion(dbVersions, edited);
+    List<VersionedObject> versionedObjects = versionableService.versioningObjectsForImportFromCsv(current, edited,
+        dbVersions);
+    servicePointGeoDataService.addCreateAndEditDetailsToGeolocationVersionedObjects(versionedObjects, Fields.servicePointGeolocation);
+    versionableService.applyVersioning(ServicePointVersion.class, versionedObjects, servicePointService::save, servicePointService::deleteById);
   }
 
   private ServicePointItemImportResult buildSuccessImportResult(ServicePointVersion servicePointVersion) {

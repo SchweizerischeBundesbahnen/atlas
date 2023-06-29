@@ -1,15 +1,16 @@
 package ch.sbb.atlas.versioning.annotation;
 
-import static ch.sbb.atlas.versioning.model.VersionableProperty.RelationType.NONE;
-
 import ch.sbb.atlas.versioning.model.Versionable;
 import ch.sbb.atlas.versioning.model.VersionableProperty.RelationType;
 import ch.sbb.atlas.versioning.service.VersionableService;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.List;
+
+import static ch.sbb.atlas.versioning.model.VersionableProperty.RelationType.NONE;
 
 /**
  * Mark a property to be versioned. See {@link AtlasVersionable}.
@@ -26,9 +27,9 @@ public @interface AtlasVersionableProperty {
   boolean ignoreDiff() default false;
 
   /**
-   * Used to specify that the property must not be overridden. Note that this property works only when the versioning is executed
-   * with the option "deletePropertyWhenNull" otherwise it is ignored during the versioning process. See
-   * {@link VersionableService#versioningObjectsWithDeleteByNullProperties(Versionable, Versionable, List)}
+   * Used to specify that the property must not be overridden. Note that this property is used only for Import from CSV
+   * and it works only when the versioning is executed with the option "deletePropertyWhenNull"=true otherwise it is ignored during the versioning process.
+   * @see VersionableService#versioningObjectsForImportFromCsv(Versionable, Versionable, List)
    */
   boolean doNotOverride() default false;
 

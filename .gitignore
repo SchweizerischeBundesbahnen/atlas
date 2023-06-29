@@ -121,3 +121,4 @@ frontend/.npmrc
 .idea/sqldialects.xml
 
 /line-directory/export/
+/.export/
