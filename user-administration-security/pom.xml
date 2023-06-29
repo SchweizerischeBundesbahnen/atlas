@@ -42,7 +42,7 @@
     <dependency>
       <groupId>ch.sbb.atlas</groupId>
       <artifactId>base-atlas</artifactId>
-      <version>1.267.0</version>
+      <version>1.301.0</version>
       <type>test-jar</type>
     </dependency>
     <dependency>
