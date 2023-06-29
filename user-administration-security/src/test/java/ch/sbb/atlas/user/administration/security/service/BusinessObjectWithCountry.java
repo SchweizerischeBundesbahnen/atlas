@@ -1,12 +1,13 @@
 package ch.sbb.atlas.user.administration.security.service;
 
 import ch.sbb.atlas.api.model.CountryAndBusinessOrganisationAssociated;
-import ch.sbb.atlas.api.user.administration.enumeration.Country;
-import java.time.LocalDate;
+import ch.sbb.atlas.servicepoint.Country;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.time.LocalDate;
 
 @Getter
 @Setter
