@@ -1,12 +1,13 @@
 package ch.sbb.atlas.servicepoint.enumeration;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.Arrays;
-import java.util.Objects;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-@Schema(enumAsRef = true)
+import java.util.Arrays;
+import java.util.Objects;
+
+@Schema(enumAsRef = true, example = "BUS")
 @Getter
 @RequiredArgsConstructor
 public enum MeanOfTransport implements CodeAndDesignations {

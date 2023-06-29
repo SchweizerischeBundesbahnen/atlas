@@ -21,7 +21,40 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @FieldNameConstants
-@Schema(name = "ServicePointGeolocation")
+@Schema(description = "Service point geolocation",
+        name = "ServicePointGeolocation",
+        example = "{\"spatialReference\" : \"LV95\",\n" +
+                "    \"lv95\" : {\n" +
+                "      \"north\" : 1201099.0,\n" +
+                "      \"east\" : 2600783.0\n" +
+                "    },\n" +
+                "    \"wgs84\" : {\n" +
+                "      \"north\" : 46.96096808019183,\n" +
+                "      \"east\" : 7.448919722210132\n" +
+                "    },\n" +
+                "    \"wgs84web\" : {\n" +
+                "      \"north\" : 0,\n" +
+                "      \"east\" : 0\n" +
+                "    },\n" +
+                "    \"height\" : 555.0,\n" +
+                "    \"swissLocation\" : {\n" +
+                "      \"canton\" : \"BERN\",\n" +
+                "      \"cantonInformation\" : {\n" +
+                "        \"fsoNumber\" : 2,\n" +
+                "        \"name\" : \"Bern\",\n" +
+                "        \"abbreviation\" : \"BE\"\n" +
+                "      },\n" +
+                "      \"district\" : {\n" +
+                "        \"fsoNumber\" : 246,\n" +
+                "        \"districtName\" : \"Bern-Mittelland\"\n" +
+                "      },\n" +
+                "      \"localityMunicipality\" : {\n" +
+                "        \"fsoNumber\" : 351,\n" +
+                "        \"municipalityName\" : \"Bern\",\n" +
+                "        \"localityName\" : \"Bern\"\n" +
+                "      }\n" +
+                "    },\n" +
+                "    \"isoCountryCode\" : \"CH\"}")
 public class ServicePointGeolocationModel extends GeolocationBaseModel {
 
   @JsonIgnore
