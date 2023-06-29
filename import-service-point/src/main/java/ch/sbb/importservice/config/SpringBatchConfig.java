@@ -99,7 +99,7 @@ public class SpringBatchConfig {
     } else {
       actualTrafficPointCsvModels = csvService.getActualTrafficPointCsvModelsFromS3();
     }
-    List<TrafficPointCsvModelContainer> trafficPointCsvModelContainers = csvService.mapToTrafficPointCsvModelContainers(
+    final List<TrafficPointCsvModelContainer> trafficPointCsvModelContainers = csvService.mapToTrafficPointCsvModelContainers(
         actualTrafficPointCsvModels);
     return new ThreadSafeListItemReader<>(Collections.synchronizedList(trafficPointCsvModelContainers));
   }

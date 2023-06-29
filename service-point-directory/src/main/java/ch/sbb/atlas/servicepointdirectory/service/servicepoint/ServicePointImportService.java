@@ -6,7 +6,6 @@ import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion.Fields;
-import ch.sbb.atlas.servicepointdirectory.geodata.service.ServicePointGeoDataService;
 import ch.sbb.atlas.servicepointdirectory.service.BasePointUtility;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
 import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
@@ -29,7 +28,6 @@ public class ServicePointImportService {
 
   private final ServicePointService servicePointService;
   private final VersionableService versionableService;
-  private final ServicePointGeoDataService servicePointGeoDataService;
 
   public static List<ServicePointCsvModel> parseServicePoints(InputStream inputStream)
       throws IOException {
