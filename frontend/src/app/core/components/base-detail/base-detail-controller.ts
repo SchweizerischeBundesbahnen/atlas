@@ -118,7 +118,7 @@ export abstract class BaseDetailController<TYPE extends Record> implements OnIni
     const validateOnSave = true;
     console.log('this form ', this.form);
     if (this.form.get('comment')) {
-      ValidationService.checkWhitespaceErrors([this.form.get('comment')!], validateOnSave);
+      ValidationService.checkWhitespaceErrors([this.form.get('comment')!]);
     }
     ValidationService.validateForm(this.form);
     this.switchedIndex = undefined;
