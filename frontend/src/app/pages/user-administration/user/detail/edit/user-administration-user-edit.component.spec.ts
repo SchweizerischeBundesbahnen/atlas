@@ -71,7 +71,7 @@ describe('UserAdministrationUserEditComponent', () => {
       [
         'setSbbUserId',
         'setPermissions',
-        'clearPermissionRestrictionsIfNotWriter',
+        'clearPermissionRestrictionsIfNotWriterAndNotSepodi',
         'emitBoFormResetEvent',
       ],
       {
