@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LngLatBoundsLike, RequestParameters, ResourceTypeEnum } from 'maplibre-gl';
+import { LngLatBoundsLike, RequestParameters, ResourceType } from 'maplibre-gl';
 import { AuthService } from '../../../core/auth/auth.service';
 import { environment } from '../../../../environments/environment';
 
@@ -15,8 +15,8 @@ const SWISS_BOUNDING_BOX: LngLatBoundsLike = [
 export class MapOptionsService {
   constructor(private authService: AuthService) {}
 
-  authoriseRequest(url: string, resourceType?: ResourceTypeEnum): RequestParameters {
-    if (resourceType === 'Tile' && url.startsWith(environment.atlasApiUrl)) {
+  authoriseRequest(url: string, resourceType?: ResourceType): RequestParameters {
+    if (resourceType === ResourceType.Tile && url.startsWith(environment.atlasApiUrl)) {
       return {
         url: url,
         headers: { Authorization: 'Bearer ' + this.authService.accessToken },
