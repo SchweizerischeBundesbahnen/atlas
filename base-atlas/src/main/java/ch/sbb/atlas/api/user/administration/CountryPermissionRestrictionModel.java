@@ -1,7 +1,7 @@
 package ch.sbb.atlas.api.user.administration;
 
-import ch.sbb.atlas.api.user.administration.enumeration.Country;
 import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
+import ch.sbb.atlas.servicepoint.Country;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
