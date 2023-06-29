@@ -130,7 +130,17 @@
       </dependency>
    </dependencies>
    <build>
+      <testResources>
+         <testResource>
+            <directory>src/test/resources</directory>
+            <filtering>true</filtering>
+         </testResource>
+      </testResources>
       <plugins>
+         <plugin>
+            <artifactId>asciidoctor-maven-plugin</artifactId>
+            <groupId>org.asciidoctor</groupId>
+         </plugin>
          <plugin>
             <artifactId>spring-boot-maven-plugin</artifactId>
             <groupId>org.springframework.boot</groupId>
