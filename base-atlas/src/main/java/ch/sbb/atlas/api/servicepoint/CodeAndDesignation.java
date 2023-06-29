@@ -2,7 +2,6 @@ package ch.sbb.atlas.api.servicepoint;
 
 import ch.sbb.atlas.servicepoint.enumeration.CodeAndDesignations;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,7 +14,7 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 @FieldNameConstants
-@Schema(name = "CodeAndDesignation", description = "Gives more detail to types", accessMode = AccessMode.READ_ONLY)
+@Schema(name = "CodeAndDesignation", description = "Gives more detail to types")
 public class CodeAndDesignation {
 
   @NotNull
