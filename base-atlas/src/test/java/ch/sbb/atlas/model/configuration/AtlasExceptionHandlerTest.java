@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
 public class AtlasExceptionHandlerTest {
 
@@ -48,6 +49,22 @@ public class AtlasExceptionHandlerTest {
         .first()
         .getDisplayInfo()
         .getCode()).isEqualTo("ERROR.CONSTRAINT");
+  }
+
+  @Test
+  void shouldConvertBadRequestsExceptionToErrorResponse() {
+    // Given
+    MissingServletRequestPartException exception = new MissingServletRequestPartException("file");
+
+    // When
+    ResponseEntity<ErrorResponse> errorResponseEntity = atlasExceptionHandler.handleBadRequestExceptionsException(exception);
+
+    // Then
+    assertThat(errorResponseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    ErrorResponse responseBody = errorResponseEntity.getBody();
+    assertThat(responseBody).isNotNull();
+    assertThat(responseBody.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+    assertThat(responseBody.getMessage()).isEqualTo("Required part 'file' is not present.");
   }
 
   @Test
