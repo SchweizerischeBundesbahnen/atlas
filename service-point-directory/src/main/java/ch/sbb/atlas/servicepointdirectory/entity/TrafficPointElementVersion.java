@@ -62,7 +62,7 @@ public class TrafficPointElementVersion extends BaseDidokImportEntity implements
   private String designationOperational;
 
   @AtlasVersionableProperty
-  @Digits(integer = 13, fraction = 2)
+  @Digits(integer = 13, fraction = 3)
   private Double length;
 
   @AtlasVersionableProperty
