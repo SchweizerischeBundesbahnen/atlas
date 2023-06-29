@@ -81,7 +81,8 @@ public class ServicePointController implements ServicePointApiV1 {
       CreateServicePointVersionModel createServicePointVersionModel) {
     ServicePointVersion servicePointVersionToUpdate = servicePointService.findById(id)
         .orElseThrow(() -> new IdNotFoundException(id));
-    servicePointService.updateServicePointVersion(servicePointVersionToUpdate, ServicePointVersionMapper.toEntity(createServicePointVersionModel));
+    servicePointService.update(servicePointVersionToUpdate, ServicePointVersionMapper.toEntity(createServicePointVersionModel),
+            servicePointService.findAllByNumberOrderByValidFrom(servicePointVersionToUpdate.getNumber()));
     return servicePointService.findAllByNumberOrderByValidFrom(servicePointVersionToUpdate.getNumber())
         .stream()
         .map(ServicePointVersionMapper::toModel)

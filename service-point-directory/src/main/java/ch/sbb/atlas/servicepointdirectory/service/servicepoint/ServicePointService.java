@@ -58,6 +58,11 @@ public class ServicePointService {
 
   @PreAuthorize("@countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdateCountryBased(#editedVersion, "
           + "#currentVersions, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
+  public void update(ServicePointVersion currentVersion, ServicePointVersion editedVersion,
+                     List<ServicePointVersion> currentVersions) {
+    updateServicePointVersion(currentVersion, editedVersion);
+  }
+
   public ServicePointVersion updateServicePointVersion(ServicePointVersion currentVersion, ServicePointVersion editedVersion) {
     servicePointVersionRepository.incrementVersion(currentVersion.getNumber());
     if (editedVersion.getVersion() != null && !currentVersion.getVersion().equals(editedVersion.getVersion())) {
