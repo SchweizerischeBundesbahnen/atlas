@@ -115,6 +115,11 @@ scheduler:
           chron: "0 35 3 * * ?" #At 03:20:00am every day
         future:
           chron: "0 40 3 * * ?" #At 03:25:00am every day
+
+  export-service-point:
+    service-point-trigger-batch:
+      chron: "1 0 0 * * ?" #At 00:00:01am every day
+
 atlas:
   client:
     gateway:

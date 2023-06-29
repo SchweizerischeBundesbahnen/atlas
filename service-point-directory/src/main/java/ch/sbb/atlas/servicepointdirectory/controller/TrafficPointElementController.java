@@ -1,11 +1,12 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
 import ch.sbb.atlas.api.model.Container;
+import ch.sbb.atlas.api.servicepoint.TrafficPointElementVersionModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.api.TrafficPointElementApiV1;
-import ch.sbb.atlas.servicepointdirectory.api.model.TrafficPointElementVersionModel;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.SloidNotFoundException;
+import ch.sbb.atlas.servicepointdirectory.mapper.TrafficPointElementVerisionMapper;
 import ch.sbb.atlas.servicepointdirectory.model.search.TrafficPointElementSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementService;
 import java.time.LocalDate;
@@ -34,7 +35,7 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
             .validOn(validOn)
             .build());
     return Container.<TrafficPointElementVersionModel>builder()
-        .objects(trafficPointElementVersions.stream().map(TrafficPointElementVersionModel::fromEntity).toList())
+        .objects(trafficPointElementVersions.stream().map(TrafficPointElementVerisionMapper::fromEntity).toList())
         .totalCount(trafficPointElementVersions.getTotalElements())
         .build();
   }
@@ -45,7 +46,7 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
         trafficPointElementService.findTrafficPointElement(
                 sloid)
             .stream()
-            .map(TrafficPointElementVersionModel::fromEntity).toList();
+            .map(TrafficPointElementVerisionMapper::fromEntity).toList();
     if (trafficPointElementVersions.isEmpty()) {
       throw new SloidNotFoundException(sloid);
     }
@@ -54,7 +55,7 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
 
   @Override
   public TrafficPointElementVersionModel getTrafficPointElementVersion(Long id) {
-    return trafficPointElementService.findById(id).map(TrafficPointElementVersionModel::fromEntity)
+    return trafficPointElementService.findById(id).map(TrafficPointElementVerisionMapper::fromEntity)
         .orElseThrow(() -> new IdNotFoundException(id));
   }
 

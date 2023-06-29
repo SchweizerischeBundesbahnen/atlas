@@ -1,5 +1,35 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
+import ch.sbb.atlas.api.AtlasApiConstants;
+import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
+import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
+import ch.sbb.atlas.imports.servicepoint.BaseDidokCsvModel;
+import ch.sbb.atlas.imports.servicepoint.model.ServicePointImportReqModel;
+import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
+import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
+import ch.sbb.atlas.model.controller.BaseControllerApiTest;
+import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
+import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
+import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
+import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointGeolocationMapper;
+import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
+import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import java.io.InputStream;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.LV95;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -8,43 +38,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.atlas.api.AtlasApiConstants;
-import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
-import ch.sbb.atlas.imports.servicepoint.BaseDidokCsvModel;
-import ch.sbb.atlas.imports.servicepoint.model.ServicePointImportReqModel;
-import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
-import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
-import ch.sbb.atlas.model.controller.BaseControllerApiTest;
-import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
-import ch.sbb.atlas.servicepointdirectory.api.model.CreateServicePointVersionModel;
-import ch.sbb.atlas.servicepointdirectory.api.model.ReadServicePointVersionModel;
-import ch.sbb.atlas.servicepointdirectory.api.model.ServicePointVersionModel;
-import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
-import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointGeolocationMapper;
-import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
-import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
-import java.io.InputStream;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
 public class ServicePointControllerApiTest extends BaseControllerApiTest {
 
+  private final ServicePointVersionRepository repository;
+  private final ServicePointController servicePointController;
   @MockBean
   private SharedBusinessOrganisationService sharedBusinessOrganisationService;
-
-  private final ServicePointVersionRepository repository;
-
-  private final ServicePointController servicePointController;
-
   private ServicePointVersion servicePointVersion;
 
   @Autowired
@@ -211,13 +210,25 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldReturnBadRequestWhenCreateServicePointWithOperatingPointTrafficPointTypeAndOperatingPointTechnicalTimetableType() throws Exception {
+    CreateServicePointVersionModel aargauServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
+    aargauServicePointVersionModel.setOperatingPointTrafficPointType(OperatingPointTrafficPointType.TARIFF_POINT);
+    mvc.perform(post("/v1/service-points")
+                    .contentType(contentType)
+                    .content(mapper.writeValueAsString(aargauServicePointVersionModel)))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
+            .andExpect(jsonPath("$.details[0].message", is("Value false rejected due to At most one of OperatingPointWithoutTimetableType, OperatingPointTechnicalTimetableType, OperatingPointTrafficPointType may be set")));
+  }
+
+  @Test
   void shouldCreateServicePoint() throws Exception {
 
     mvc.perform(post("/v1/service-points")
             .contentType(contentType)
             .content(mapper.writeValueAsString(ServicePointTestData.getAargauServicePointVersionModel())))
         .andExpect(status().isCreated())
-        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.id, is(servicePointVersion.getId().intValue()+1)))
+        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.id, is(servicePointVersion.getId().intValue() + 1)))
         .andExpect(jsonPath("$.number.number", is(8034510)))
         .andExpect(jsonPath("$.number.numberShort", is(34510)))
         .andExpect(jsonPath("$.number.checkDigit", is(8)))
@@ -248,10 +259,12 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.operatingPointTypeInformation.designationFr", is("Point d'inventaire")))
         .andExpect(jsonPath("$.operatingPointTypeInformation.designationIt", is("punto di inventario")))
         .andExpect(jsonPath("$.operatingPointTypeInformation.designationEn", is("Inventory point")))
-        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.operatingPointTechnicalTimetableType, is("ASSIGNED_OPERATING_POINT")))
+        .andExpect(
+            jsonPath("$." + ServicePointVersionModel.Fields.operatingPointTechnicalTimetableType, is("ASSIGNED_OPERATING_POINT")))
         .andExpect(jsonPath("$.operatingPointTechnicalTimetableTypeInformation.code", is("16")))
         .andExpect(jsonPath("$.operatingPointTechnicalTimetableTypeInformation.designationDe", is("Zugeordneter Betriebspunkt")))
-        .andExpect(jsonPath("$.operatingPointTechnicalTimetableTypeInformation.designationFr", is("Point d’exploitation associé")))
+        .andExpect(
+            jsonPath("$.operatingPointTechnicalTimetableTypeInformation.designationFr", is("Point d’exploitation associé")))
         .andExpect(jsonPath("$.operatingPointTechnicalTimetableTypeInformation.designationIt", is("Punto d’esercizio associato")))
         .andExpect(jsonPath("$.operatingPointTechnicalTimetableTypeInformation.designationEn", is("Assigned operating point")))
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.operatingPointRouteNetwork, is(false)))
@@ -303,11 +316,13 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
 
   @Test
   public void shouldUpdateServicePointAndCreateMultipleVersions() throws Exception {
-    ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(ServicePointTestData.getAargauServicePointVersionModel());
+    ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
+        ServicePointTestData.getAargauServicePointVersionModel());
     Long id = servicePointVersionModel.getId();
 
     CreateServicePointVersionModel newServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
-    newServicePointVersionModel.setServicePointGeolocation(ServicePointGeolocationMapper.toModel(ServicePointTestData.getAargauServicePointGeolocation()));
+    newServicePointVersionModel.setServicePointGeolocation(
+        ServicePointGeolocationMapper.toModel(ServicePointTestData.getAargauServicePointGeolocation()));
     newServicePointVersionModel.setValidFrom(LocalDate.of(2011, 12, 11));
     newServicePointVersionModel.setValidTo(LocalDate.of(2012, 12, 11));
 
@@ -371,11 +386,13 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
 
   @Test
   public void shouldUpdateServicePointAndNotCreateMultipleVersions() throws Exception {
-    ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(ServicePointTestData.getAargauServicePointVersionModel());
+    ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
+        ServicePointTestData.getAargauServicePointVersionModel());
     Long id = servicePointVersionModel.getId();
 
     CreateServicePointVersionModel newServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
-    newServicePointVersionModel.setServicePointGeolocation(ServicePointGeolocationMapper.toModel(ServicePointTestData.getAargauServicePointGeolocation()));
+    newServicePointVersionModel.setServicePointGeolocation(
+        ServicePointGeolocationMapper.toModel(ServicePointTestData.getAargauServicePointGeolocation()));
 
     mvc.perform(MockMvcRequestBuilders.put("/v1/service-points/" + id)
             .contentType(contentType)
