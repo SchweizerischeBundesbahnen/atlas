@@ -2,19 +2,20 @@ package ch.sbb.atlas.user.administration.security.service;
 
 import ch.sbb.atlas.api.model.BusinessOrganisationAssociated;
 import ch.sbb.atlas.api.model.CountryAndBusinessOrganisationAssociated;
-import ch.sbb.atlas.api.user.administration.enumeration.Country;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionModel;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionRestrictionModel;
+import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.user.administration.security.UserPermissionHolder;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
