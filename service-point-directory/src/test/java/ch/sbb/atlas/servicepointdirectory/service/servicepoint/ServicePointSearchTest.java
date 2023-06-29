@@ -395,6 +395,19 @@ public class ServicePointSearchTest {
   }
 
   @Test
+  void shouldFindBernWylereggByIsoCountryCodeCHUicCountryCodeAndNumberShort() {
+    Page<ServicePointVersion> servicePointVersions =
+        servicePointService.findAll(ServicePointSearchRestrictions.builder().pageable(Pageable.unpaged())
+            .servicePointRequestParams(ServicePointRequestParams.builder()
+                .isoCountryCodes(List.of("CH"))
+                .uicCountryCodes(List.of(85))
+                .numbersShort(List.of(89008))
+                .build()).build());
+    assertThat(servicePointVersions.getTotalElements()).isEqualTo(1);
+    assertThat(servicePointVersions.getContent().get(0).getDesignationOfficial()).isEqualTo("Bern, Wyleregg");
+  }
+
+  @Test
   void shouldNotFindAnyCountryByIsoCountryCodeWhenThereIsNoServicePointGeolocation() {
     // Given
     servicePointVersionRepository.deleteAll();
