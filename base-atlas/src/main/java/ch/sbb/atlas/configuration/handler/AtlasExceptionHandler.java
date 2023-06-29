@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartException;
+import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
 @Slf4j
 @ControllerAdvice
@@ -203,8 +204,8 @@ public class AtlasExceptionHandler {
     throw new UnsupportedOperationException();
   }
 
-  @ExceptionHandler(value = HttpMessageNotReadableException.class)
-  public ResponseEntity<ErrorResponse> handleHttpMessageNotReadableException(HttpMessageNotReadableException exception) {
+  @ExceptionHandler(value = {HttpMessageNotReadableException.class, MissingServletRequestPartException.class})
+  public ResponseEntity<ErrorResponse> handleBadRequestExceptionsException(Exception exception) {
     return ResponseEntity.badRequest()
         .body(ErrorResponse.builder()
             .status(HttpStatus.BAD_REQUEST.value())
