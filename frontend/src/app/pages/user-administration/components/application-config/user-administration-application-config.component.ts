@@ -16,6 +16,7 @@ import { map } from 'rxjs/operators';
 import { Cantons } from '../../../tth/overview/canton/Cantons';
 import { MatSelectChange } from '@angular/material/select';
 import { Countries } from '../../../sepodi/overview/country/Countries';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-user-administration-application-config',
@@ -64,6 +65,7 @@ export class UserAdministrationApplicationConfigComponent implements OnInit, OnD
   private readonly boFormResetEventSubscription: Subscription;
   SWISS_CANTONS = Object.values(SwissCanton);
   COUNTRIES = Object.values(Country);
+  allCountries: Country[] | undefined;
   SWISS_CANTONS_PREFIX_LABEL = 'TTH.CANTON.';
   SWISS_COUNTRIES_PREFIX_LABEL = 'TTH.COUNTRY.';
   cantonSelection: [SwissCanton] | undefined;
@@ -132,5 +134,21 @@ export class UserAdministrationApplicationConfigComponent implements OnInit, OnD
     }));
     this.userPermissionManager.getPermissionByApplication(this.application).permissionRestrictions =
       permissionRestriction;
+  }
+
+  selectAllCountries($event: MatSelectChange) {
+    if ($event.value === true) {
+      console.log('sksd');
+    }
+    console.log('sksd');
+    const allCountries: Country[] = $event.value as Country[];
+  }
+  selectAllCountries1(change: MatCheckboxChange) {
+    if (change.checked) {
+      this.allCountries = this.COUNTRIES;
+    } else {
+      this.allCountries = [];
+    }
+    console.log('sksd');
   }
 }
