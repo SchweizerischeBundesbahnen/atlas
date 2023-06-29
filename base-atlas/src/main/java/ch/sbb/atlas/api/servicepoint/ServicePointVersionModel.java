@@ -3,7 +3,6 @@ package ch.sbb.atlas.api.servicepoint;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.model.BaseVersionModel;
 import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
@@ -15,16 +14,9 @@ import ch.sbb.atlas.validation.DatesValidator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.AssertTrue;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Stream;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -32,6 +24,11 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
 import org.apache.commons.lang3.StringUtils;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
 
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
@@ -69,10 +66,6 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
   @Schema(description = "Status, Code of status of the service point, useful for specific business tasks.")
   private ServicePointStatus statusDidok3;
 
-  @NotNull
-  @Schema(accessMode = AccessMode.READ_ONLY)
-  private CodeAndDesignation statusDidok3Information;
-
   @Schema(description = "Indicates if this a operatingPoint.")
   private boolean operatingPoint;
 
@@ -93,48 +86,26 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
   @Schema(description = "ServicePoint Categories: Assignment of service points to defined business cases.")
   private List<Category> categories;
 
-  @Schema(accessMode = AccessMode.READ_ONLY, description = "Details to the categories.")
-  private List<CodeAndDesignation> categoriesInformation;
-
   @Schema(description = "OperatingPointType, Specifies the detailed intended use of a operating point.")
   private OperatingPointType operatingPointType;
 
-  @Schema(accessMode = AccessMode.READ_ONLY, description = "Details to the operationPointType.")
-  private CodeAndDesignation operatingPointTypeInformation;
-
   @Schema(description = "OperatingPointTechnicalTimetableType, all service points relevant for timetable planning and "
-          + "publication. ")
+      + "publication. At most one of OperatingPointWithoutTimetableType, OperatingPointTechnicalTimetableType, OperatingPointTrafficPointType may be set")
   private OperatingPointTechnicalTimetableType operatingPointTechnicalTimetableType;
 
-  @Schema(accessMode = AccessMode.READ_ONLY, description = "Details to the OperatingPointTechnicalTimetableType.")
-  private CodeAndDesignation operatingPointTechnicalTimetableTypeInformation;
-
-  @Schema(description = "OperatingPointTrafficPointType, Specifies the detailed intended use of a traffic point.")
+  @Schema(description = "OperatingPointTrafficPointType, Specifies the detailed intended use of a traffic point." +
+          "At most one of OperatingPointWithoutTimetableType, OperatingPointTechnicalTimetableType, OperatingPointTrafficPointType may be set")
   private OperatingPointTrafficPointType operatingPointTrafficPointType;
-
-  @Schema(accessMode = AccessMode.READ_ONLY)
-  private CodeAndDesignation operatingPointTrafficPointTypeInformation;
 
   @Schema(description = "ServicePoint is OperatingPointRouteNetwork", example = "false")
   private boolean operatingPointRouteNetwork;
-
-  @Valid
-  @Schema(description = "Reference to a operatingPointRouteNetwork. OperatingPointKilometer are always related to a "
-          + "operatingPointRouteNetwork")
-  private ServicePointNumber operatingPointKilometerMaster;
 
   @Schema(description = "Means of transport. Indicates for which means of transport a stop is intended/equipped. Mandatory for "
           + "StopPoints")
   private List<MeanOfTransport> meansOfTransport;
 
-  @Schema(accessMode = AccessMode.READ_ONLY)
-  private List<CodeAndDesignation> meansOfTransportInformation;
-
   @Schema(description = "Type of the StopPoint, Indicates for which type of traffic (e.g. regular traffic) a stop was recorded. ")
   private StopPointType stopPointType;
-
-  @Schema(accessMode = AccessMode.READ_ONLY, description = "Details to the StopPointType.")
-  private CodeAndDesignation stopPointTypeInformation;
 
   @Size(max = AtlasFieldLengths.LENGTH_1500)
   @Schema(description = "FotComment", example = "Good Service Point.")
@@ -142,7 +113,8 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
 
   private ServicePointGeolocationModel servicePointGeolocation;
 
-  @Schema(description = "Status", accessMode = AccessMode.READ_ONLY)
+  @NotNull
+  @Schema(description = "Status")
   private Status status;
 
   @NotNull
@@ -197,12 +169,6 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
   @Schema(description = "ServicePoint is BorderPoint", example = "false")
   public boolean isBorderPoint() {
     return operatingPointTechnicalTimetableType == OperatingPointTechnicalTimetableType.COUNTRY_BORDER;
-  }
-
-  @JsonInclude
-  @Schema(description = "ServicePoint is OperatingPointKilometer")
-  public boolean isOperatingPointKilometer() {
-    return operatingPointKilometerMaster != null;
   }
 
   @AssertTrue(message = "StopPointType only allowed for StopPoint")
