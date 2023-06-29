@@ -1,36 +1,37 @@
 package ch.sbb.atlas.user.administration.security.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
-
-import ch.sbb.atlas.api.user.administration.enumeration.Country;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationModel;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionModel;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionRestrictionModel;
+import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.user.administration.security.UserPermissionHolder;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 class CountryAndBusinessOrganisationBasedUserAdministrationServiceTest {
 
   @Mock
   private UserPermissionHolder userPermissionHolder;
 
-  private CountryAndBusinessOrganisationBasedUserAdministrationService countryAndBusinessOrganisationBasedUserAdministrationService;
+  private CountryAndBusinessOrganisationBasedUserAdministrationService countryAndBOBasedUserAdministrationService;
 
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    countryAndBusinessOrganisationBasedUserAdministrationService =
+    countryAndBOBasedUserAdministrationService =
         new CountryAndBusinessOrganisationBasedUserAdministrationService(
             userPermissionHolder);
     when(userPermissionHolder.isAdmin()).thenReturn(false);
@@ -43,7 +44,7 @@ class CountryAndBusinessOrganisationBasedUserAdministrationServiceTest {
     when(userPermissionHolder.isAdmin()).thenReturn(true);
 
     // When
-    boolean permissionsToCreate = countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(
+    boolean permissionsToCreate = countryAndBOBasedUserAdministrationService.hasUserPermissionsToCreate(
         BusinessObjectWithCountry.createDummy().build(), ApplicationType.SEPODI);
 
     // Then
@@ -63,7 +64,7 @@ class CountryAndBusinessOrganisationBasedUserAdministrationServiceTest {
         .build()));
 
     // When
-    boolean permissionsToCreate = countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(
+    boolean permissionsToCreate = countryAndBOBasedUserAdministrationService.hasUserPermissionsToCreate(
         BusinessObjectWithCountry.createDummy().build(), ApplicationType.SEPODI);
 
     // Then
@@ -87,7 +88,7 @@ class CountryAndBusinessOrganisationBasedUserAdministrationServiceTest {
         .build()));
 
     // When
-    boolean permissionsToCreate = countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(
+    boolean permissionsToCreate = countryAndBOBasedUserAdministrationService.hasUserPermissionsToCreate(
         BusinessObjectWithCountry.createDummy().build(), ApplicationType.SEPODI);
 
     // Then
@@ -111,7 +112,7 @@ class CountryAndBusinessOrganisationBasedUserAdministrationServiceTest {
         .build()));
 
     // When
-    boolean permissionsToCreate = countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(
+    boolean permissionsToCreate = countryAndBOBasedUserAdministrationService.hasUserPermissionsToCreate(
         BusinessObjectWithCountry.createDummy().build(), ApplicationType.SEPODI);
 
     // Then
@@ -131,7 +132,7 @@ class CountryAndBusinessOrganisationBasedUserAdministrationServiceTest {
         .build()));
 
     // When
-    boolean permissionsToCreate = countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(
+    boolean permissionsToCreate = countryAndBOBasedUserAdministrationService.hasUserPermissionsToCreate(
         BusinessObjectWithCountry.createDummy().build(), ApplicationType.SEPODI);
 
     // Then
@@ -159,7 +160,7 @@ class CountryAndBusinessOrganisationBasedUserAdministrationServiceTest {
         .build()));
 
     // When
-    boolean permissionsToCreate = countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(
+    boolean permissionsToCreate = countryAndBOBasedUserAdministrationService.hasUserPermissionsToCreate(
         BusinessObjectWithCountry.createDummy().build(), ApplicationType.SEPODI);
 
     // Then
@@ -187,7 +188,7 @@ class CountryAndBusinessOrganisationBasedUserAdministrationServiceTest {
         .build()));
 
     // When
-    boolean permissionsToCreate = countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(
+    boolean permissionsToCreate = countryAndBOBasedUserAdministrationService.hasUserPermissionsToCreate(
         BusinessObjectWithCountry.createDummy().build(), ApplicationType.SEPODI);
 
     // Then
@@ -201,7 +202,7 @@ class CountryAndBusinessOrganisationBasedUserAdministrationServiceTest {
 
     // When
     boolean permissionsToUpdate =
-        countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdateCountryBased(
+        countryAndBOBasedUserAdministrationService.hasUserPermissionsToUpdateCountryBased(
             BusinessObjectWithCountry.createDummy().build(),
             List.of(BusinessObjectWithCountry.createDummy().anotherValue("previousValue").build()),
             ApplicationType.SEPODI);
@@ -224,7 +225,7 @@ class CountryAndBusinessOrganisationBasedUserAdministrationServiceTest {
 
     // When
     boolean permissionsToUpdate =
-        countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdateCountryBased(
+        countryAndBOBasedUserAdministrationService.hasUserPermissionsToUpdateCountryBased(
             BusinessObjectWithCountry.createDummy().build(),
             List.of(BusinessObjectWithCountry.createDummy().anotherValue("previousValue").build()),
             ApplicationType.SEPODI);
@@ -251,7 +252,7 @@ class CountryAndBusinessOrganisationBasedUserAdministrationServiceTest {
 
     // When
     boolean permissionsToUpdate =
-        countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdateCountryBased(
+        countryAndBOBasedUserAdministrationService.hasUserPermissionsToUpdateCountryBased(
             BusinessObjectWithCountry.createDummy().build(),
             List.of(BusinessObjectWithCountry.createDummy().anotherValue("previousValue").build()),
             ApplicationType.SEPODI);
@@ -274,7 +275,7 @@ class CountryAndBusinessOrganisationBasedUserAdministrationServiceTest {
 
     // When
     boolean permissionsToUpdate =
-        countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdateCountryBased(
+        countryAndBOBasedUserAdministrationService.hasUserPermissionsToUpdateCountryBased(
             BusinessObjectWithCountry.createDummy().build(),
             List.of(BusinessObjectWithCountry.createDummy().anotherValue("previousValue").build()),
             ApplicationType.SEPODI);
@@ -301,7 +302,7 @@ class CountryAndBusinessOrganisationBasedUserAdministrationServiceTest {
 
     // When
     boolean permissionsToUpdate =
-        countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdateCountryBased(
+        countryAndBOBasedUserAdministrationService.hasUserPermissionsToUpdateCountryBased(
             BusinessObjectWithCountry.createDummy().build(),
             List.of(BusinessObjectWithCountry.createDummy().anotherValue("previousValue").build()),
             ApplicationType.SEPODI);
@@ -329,7 +330,7 @@ class CountryAndBusinessOrganisationBasedUserAdministrationServiceTest {
 
     // When
     boolean permissionsToUpdate =
-        countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdateCountryBased(
+        countryAndBOBasedUserAdministrationService.hasUserPermissionsToUpdateCountryBased(
             BusinessObjectWithCountry.createDummy().build(),
             List.of(BusinessObjectWithCountry.createDummy().anotherValue("previousValue").build()),
             ApplicationType.SEPODI);
@@ -360,7 +361,7 @@ class CountryAndBusinessOrganisationBasedUserAdministrationServiceTest {
 
     // When
     boolean permissionsToUpdate =
-        countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdateCountryBased(
+        countryAndBOBasedUserAdministrationService.hasUserPermissionsToUpdateCountryBased(
             BusinessObjectWithCountry.createDummy().build(),
             List.of(BusinessObjectWithCountry.createDummy().anotherValue("previousValue").build()),
             ApplicationType.SEPODI);
@@ -386,7 +387,7 @@ class CountryAndBusinessOrganisationBasedUserAdministrationServiceTest {
 
     // When
     boolean permissionsToUpdate =
-        countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdateCountryBased(
+        countryAndBOBasedUserAdministrationService.hasUserPermissionsToUpdateCountryBased(
             BusinessObjectWithCountry.createDummy()
                 .businessOrganisation("sboid1")
                 .validFrom(LocalDate.of(2020, 1, 1))
@@ -428,7 +429,7 @@ class CountryAndBusinessOrganisationBasedUserAdministrationServiceTest {
 
     // When
     boolean permissionsToUpdate =
-        countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdateCountryBased(
+        countryAndBOBasedUserAdministrationService.hasUserPermissionsToUpdateCountryBased(
             BusinessObjectWithCountry.createDummy()
                 .businessOrganisation("sboid1")
                 .validFrom(LocalDate.of(2020, 1, 1))
@@ -462,7 +463,7 @@ class CountryAndBusinessOrganisationBasedUserAdministrationServiceTest {
 
     // When
     boolean permissionsToUpdate =
-        countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdateCountryBased(
+        countryAndBOBasedUserAdministrationService.hasUserPermissionsToUpdateCountryBased(
             BusinessObjectWithCountry.createDummy()
                 .businessOrganisation("sboid2")
                 .validFrom(LocalDate.of(2021, 1, 1))
@@ -481,7 +482,7 @@ class CountryAndBusinessOrganisationBasedUserAdministrationServiceTest {
     when(userPermissionHolder.isAdmin()).thenReturn(true);
 
     // When
-    boolean bodiPermissions = countryAndBusinessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(
+    boolean bodiPermissions = countryAndBOBasedUserAdministrationService.isAtLeastSupervisor(
         ApplicationType.BODI);
 
     // Then
@@ -503,7 +504,7 @@ class CountryAndBusinessOrganisationBasedUserAdministrationServiceTest {
         .build()));
 
     // When
-    boolean bodiPermissions = countryAndBusinessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(
+    boolean bodiPermissions = countryAndBOBasedUserAdministrationService.isAtLeastSupervisor(
         ApplicationType.BODI);
 
     // Then
@@ -525,7 +526,7 @@ class CountryAndBusinessOrganisationBasedUserAdministrationServiceTest {
         .build()));
 
     // When
-    boolean bodiPermissions = countryAndBusinessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(
+    boolean bodiPermissions = countryAndBOBasedUserAdministrationService.isAtLeastSupervisor(
         ApplicationType.BODI);
 
     // Then
@@ -547,7 +548,7 @@ class CountryAndBusinessOrganisationBasedUserAdministrationServiceTest {
         .build()));
 
     // When
-    boolean bodiPermissions = countryAndBusinessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(
+    boolean bodiPermissions = countryAndBOBasedUserAdministrationService.isAtLeastSupervisor(
         ApplicationType.BODI);
 
     // Then
@@ -569,7 +570,7 @@ class CountryAndBusinessOrganisationBasedUserAdministrationServiceTest {
         .build()));
 
     // When
-    boolean bodiPermissions = countryAndBusinessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(
+    boolean bodiPermissions = countryAndBOBasedUserAdministrationService.isAtLeastSupervisor(
         ApplicationType.BODI);
 
     // Then
@@ -582,7 +583,7 @@ class CountryAndBusinessOrganisationBasedUserAdministrationServiceTest {
     when(userPermissionHolder.getCurrentUser()).thenReturn(Optional.empty());
 
     // When
-    boolean bodiPermissions = countryAndBusinessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(
+    boolean bodiPermissions = countryAndBOBasedUserAdministrationService.isAtLeastSupervisor(
         ApplicationType.BODI);
 
     // Then
