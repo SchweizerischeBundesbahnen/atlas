@@ -5,9 +5,10 @@ import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationModel;
 import ch.sbb.exportservice.entity.ServicePointVersion;
 import ch.sbb.exportservice.model.ServicePointVersionCsvModel;
 import ch.sbb.exportservice.model.ServicePointVersionCsvModel.ServicePointVersionCsvModelBuilder;
-import java.time.format.DateTimeFormatter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemProcessor;
+
+import java.time.format.DateTimeFormatter;
 
 @Slf4j
 public class ServicePointVersionCsvProcessor extends BaseProcessor implements
@@ -53,6 +54,7 @@ public class ServicePointVersionCsvProcessor extends BaseProcessor implements
             version.getOperatingPointKilometerMaster().getValue() : null)
         .sortCodeOfDestinationStation(version.getSortCodeOfDestinationStation())
         .sboid(version.getBusinessOrganisation().getBusinessOrganisation())
+        .businessOrganisationOrganisationNumber(version.getBusinessOrganisation().getBusinessOrganisationNumber())
         .businessOrganisationAbbreviationDe(version.getBusinessOrganisation().getBusinessOrganisationAbbreviationDe())
         .businessOrganisationAbbreviationFr(version.getBusinessOrganisation().getBusinessOrganisationAbbreviationFr())
         .businessOrganisationAbbreviationIt(version.getBusinessOrganisation().getBusinessOrganisationAbbreviationIt())
