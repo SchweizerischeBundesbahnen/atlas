@@ -1,11 +1,6 @@
 package ch.sbb.exportservice.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.FieldNameConstants;
 
 @NoArgsConstructor
@@ -18,7 +13,7 @@ import lombok.experimental.FieldNameConstants;
 public class BusinessOrganisation {
 
   private String businessOrganisation;
-  private String businessOrganisationNumber;
+  private Integer businessOrganisationNumber;
   private String businessOrganisationAbbreviationDe;
   private String businessOrganisationAbbreviationFr;
   private String businessOrganisationAbbreviationIt;
