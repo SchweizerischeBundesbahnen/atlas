@@ -12,23 +12,29 @@ import feign.FeignException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.StaleObjectStateException;
 import org.hibernate.validator.internal.engine.path.PathImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartException;
+import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
+@Slf4j
 @ControllerAdvice
 public class AtlasExceptionHandler {
 
@@ -189,11 +195,33 @@ public class AtlasExceptionHandler {
 
   @ExceptionHandler(value = FeignException.class)
   public ResponseEntity<ErrorResponse> handleFeignException(FeignException feignException) throws IOException {
-    if (feignException.responseBody().isPresent()) {
-      String responseBodyContent = new String(feignException.responseBody().get().array());
+    Optional<ByteBuffer> responseBody = feignException.responseBody();
+    if (responseBody.isPresent()) {
+      String responseBodyContent = new String(responseBody.get().array());
       ErrorResponse response = objectMapper.readValue(responseBodyContent, ErrorResponse.class);
       return ResponseEntity.status(feignException.status()).body(response);
     }
     throw new UnsupportedOperationException();
+  }
+
+  @ExceptionHandler(value = {HttpMessageNotReadableException.class, MissingServletRequestPartException.class})
+  public ResponseEntity<ErrorResponse> handleBadRequestExceptionsException(Exception exception) {
+    return ResponseEntity.badRequest()
+        .body(ErrorResponse.builder()
+            .status(HttpStatus.BAD_REQUEST.value())
+            .error(exception.getMessage())
+            .message(exception.getMessage())
+            .build());
+  }
+
+  @ExceptionHandler(value = Exception.class)
+  public ResponseEntity<ErrorResponse> handleException(Exception exception) {
+    log.error("Unexpected Exception occurred", exception);
+    return ResponseEntity.internalServerError()
+        .body(ErrorResponse.builder()
+            .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+            .error(exception.getMessage())
+            .message(exception.getMessage())
+            .build());
   }
 }
