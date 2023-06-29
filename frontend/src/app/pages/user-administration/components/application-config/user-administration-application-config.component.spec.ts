@@ -5,12 +5,12 @@ import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-tran
 import { UserPermissionManager } from '../../service/user-permission-manager';
 import { MaterialModule } from '../../../../core/module/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import SpyObj = jasmine.SpyObj;
 import { BehaviorSubject, of } from 'rxjs';
 import { ApplicationType } from '../../../../api';
 import { SelectComponent } from '../../../../core/form-components/select/select.component';
 import { AtlasSpacerComponent } from '../../../../core/components/spacer/atlas-spacer.component';
 import { MockAtlasFieldErrorComponent } from '../../../../app.testing.mocks';
+import SpyObj = jasmine.SpyObj;
 
 describe('UserAdministrationApplicationConfigComponent', () => {
   let component: UserAdministrationApplicationConfigComponent;
@@ -36,6 +36,7 @@ describe('UserAdministrationApplicationConfigComponent', () => {
           LIDI: [],
           BODI: [],
           TIMETABLE_HEARING: [],
+          SEPODI: [],
         }),
         boFormResetEvent$: of(),
       }
