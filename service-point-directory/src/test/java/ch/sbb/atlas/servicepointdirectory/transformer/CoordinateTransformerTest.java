@@ -3,7 +3,8 @@ package ch.sbb.atlas.servicepointdirectory.transformer;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
-import ch.sbb.atlas.servicepointdirectory.model.CoordinatePair;
+import ch.sbb.atlas.servicepoint.CoordinatePair;
+import ch.sbb.atlas.servicepoint.transformer.CoordinateTransformer;
 import org.junit.jupiter.api.Test;
 
 class CoordinateTransformerTest {
