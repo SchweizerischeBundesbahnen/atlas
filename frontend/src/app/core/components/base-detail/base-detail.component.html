@@ -41,7 +41,6 @@
   </div>
   <div *ngIf="controller.isExistingRecord()" class="edit-section">
     <div *ngIf="isEditButtonVisible()">
-      <p>test</p>
       <atlas-button
         (buttonClicked)="controller.toggleEdit()"
         [applicationType]="this.controller.getApplicationType()"
