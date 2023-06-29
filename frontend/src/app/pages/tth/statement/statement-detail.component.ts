@@ -131,14 +131,6 @@ export class StatementDetailComponent implements OnInit, AfterViewInit {
   }
 
   save() {
-    this.validateOnSave = true;
-    const statement = this.form.get('statement');
-    const justification = this.form.get('justification');
-
-    if (statement || justification) {
-      ValidationService.checkWhitespaceErrors([statement!, justification!], this.validateOnSave);
-    }
-
     if (!this.isNew && this.initialValueForCanton != this.form.value.swissCanton) {
       this.cantonSelectionChanged();
     } else {
@@ -224,15 +216,11 @@ export class StatementDetailComponent implements OnInit, AfterViewInit {
       statement: new FormControl(statement?.statement, [
         Validators.required,
         AtlasFieldLengthValidator.statement,
-        WhitespaceValidator.blankOrEmptySpaceSurrounding,
       ]),
       justification: new FormControl(statement?.justification, [
         AtlasFieldLengthValidator.statement,
       ]),
-      comment: new FormControl(statement?.comment, [
-        AtlasFieldLengthValidator.length_280,
-        WhitespaceValidator.blankOrEmptySpaceSurrounding,
-      ]),
+      comment: new FormControl(statement?.comment, [AtlasFieldLengthValidator.length_280]),
       documents: new FormArray(
         statement?.documents?.map((document) => new FormControl(document)) ?? []
       ),
