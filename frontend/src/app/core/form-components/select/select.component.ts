@@ -32,6 +32,7 @@ export class SelectComponent<TYPE> implements OnInit, OnChanges {
   }
 
   @Input() additionalLabelspace = true;
+  @Input() checkAllEnabled = false;
   @Input() required = false;
 
   private _disabled = false;
@@ -59,11 +60,14 @@ export class SelectComponent<TYPE> implements OnInit, OnChanges {
   @Input() formGroup!: FormGroup;
 
   @Input() options: TYPE[] = [];
+  @Input() allCountries: TYPE[] = [];
   @Input() value: any;
 
   @ContentChild('matOptionPrefix') matOptionPrefix!: TemplateRef<any>;
 
   @Output() selectChanged = new EventEmitter();
+
+  @Output() toggleSelection = new EventEmitter();
 
   private _isDummyForm = false;
 
@@ -86,6 +90,15 @@ export class SelectComponent<TYPE> implements OnInit, OnChanges {
     return {
       option: option,
     };
+  }
+
+  isAllSelected(): boolean {
+    // console.log("isAllSelected is clicked");
+    // return true;
+    // const returnValue : boolean = this.formGroup.value.dummy && this.options.length
+    //   && this.formGroup.value.dummy.length === this.options.length;
+    const returnValue: boolean = this.allCountries.length === 76;
+    return returnValue;
   }
 
   private initDummyForm() {
