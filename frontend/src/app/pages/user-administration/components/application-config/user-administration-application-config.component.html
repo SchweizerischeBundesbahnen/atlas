@@ -34,6 +34,8 @@
           [options]="COUNTRIES"
           [disabled]="readOnly"
           [multiple]="true"
+          (toggleSelection)="selectAllCountries1($event)"
+          [checkAllEnabled]="true"
         >
         </atlas-select>
       </ng-template>
