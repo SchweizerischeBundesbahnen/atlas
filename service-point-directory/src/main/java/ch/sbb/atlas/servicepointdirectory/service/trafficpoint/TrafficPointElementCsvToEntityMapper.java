@@ -1,9 +1,9 @@
 package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
 
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
-import ch.sbb.atlas.servicepointdirectory.enumeration.TrafficPointElementType;
-import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import java.util.function.Function;
 import lombok.extern.slf4j.Slf4j;
 

@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
-import { Map, MapMouseEvent, Popup, ResourceTypeEnum } from 'maplibre-gl';
+import { Map, MapMouseEvent, Popup, ResourceType } from 'maplibre-gl';
 import { MapOptionsService } from '../map/map-options.service';
 import { MAP_SOURCE_NAME, MAP_STYLE_SPEC, MAP_ZOOM_DETAILS } from '../map/map-style';
 
@@ -21,7 +21,7 @@ export class SepodiOverviewComponent implements AfterViewInit, OnDestroy {
       container: this.mapContainer.nativeElement,
       style: MAP_STYLE_SPEC,
       bounds: this.mapOptionsService.getInitialBoundingBox(),
-      transformRequest: (url: string, resourceType?: ResourceTypeEnum) =>
+      transformRequest: (url: string, resourceType?: ResourceType) =>
         this.mapOptionsService.authoriseRequest(url, resourceType),
     });
 

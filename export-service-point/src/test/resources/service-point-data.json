@@ -1,0 +1,330 @@
+[
+  {
+    "creationDate": "2022-09-10T17:30:56",
+    "creator": "fs45117",
+    "editionDate": "2022-09-10T17:30:56",
+    "editor": "fs45117",
+    "id": 1005,
+    "number": {
+      "number": 1205887,
+      "numberShort": 5887,
+      "checkDigit": 5,
+      "uicCountryCode": 12
+    },
+    "sloid": null,
+    "designationLong": null,
+    "designationOfficial": "Trins, Wienerhof",
+    "abbreviation": null,
+    "statusDidok3": "IN_OPERATION",
+    "statusDidok3Information": {
+      "code": "3",
+      "designationDe": "In Betrieb",
+      "designationFr": "En fonctionnement",
+      "designationIt": "In funzione",
+      "designationEn": "In operation"
+    },
+    "operatingPoint": true,
+    "operatingPointWithTimetable": true,
+    "freightServicePoint": false,
+    "sortCodeOfDestinationStation": null,
+    "businessOrganisation": "ch:1:sboid:101257",
+    "categories": [],
+    "categoriesInformation": [],
+    "operatingPointType": null,
+    "operatingPointTypeInformation": null,
+    "operatingPointWithoutTimetableTypeInformation": null,
+    "operatingPointTechnicalTimetableType": null,
+    "operatingPointTechnicalTimetableTypeInformation": null,
+    "operatingPointTrafficPointType": null,
+    "operatingPointTrafficPointTypeInformation": null,
+    "operatingPointRouteNetwork": false,
+    "operatingPointKilometerMaster": {
+      "number": null,
+      "numberShort": null,
+      "checkDigit": null,
+      "uicCountryCode": null
+    },
+    "meansOfTransport": [
+      "BUS"
+    ],
+    "meansOfTransportInformation": [
+      {
+        "code": "B",
+        "designationDe": "Bus",
+        "designationFr": "Bus",
+        "designationIt": "Bus",
+        "designationEn": "Coach"
+      }
+    ],
+    "stopPointType": "UNKNOWN",
+    "stopPointTypeInformation": {
+      "code": "0",
+      "designationDe": "Nicht spezifiziert",
+      "designationFr": "Non spécifié",
+      "designationIt": "Non specificata",
+      "designationEn": null
+    },
+    "fotComment": null,
+    "servicePointGeolocation": {
+      "spatialReference": "WGS84",
+      "lv95": {
+        "north": 1222395.5543783815,
+        "east": 2902114.3598423623
+      },
+      "wgs84": {
+        "north": 47.083585,
+        "east": 11.418764
+      },
+      "wgs84web": {
+        "north": 5955727.959614634,
+        "east": 1271130.9939685636
+      },
+      "height": 0.0,
+      "swissLocation": {
+        "canton": null,
+        "cantonInformation": null,
+        "district": {
+          "fsoNumber": 0,
+          "districtName": null
+        },
+        "localityMunicipality": {
+          "fsoNumber": 0,
+          "municipalityName": null,
+          "localityName": null
+        }
+      },
+      "isoCountryCode": "AT"
+    },
+    "status": null,
+    "validFrom": "2022-09-01",
+    "validTo": "2099-12-31",
+    "borderPoint": false,
+    "trafficPoint": true,
+    "stopPoint": true,
+    "fareStop": false,
+    "hasGeolocation": true,
+    "validType": true,
+    "operatingPointKilometer": true,
+    "validFreightServicePoint": true
+  },
+  {
+    "creationDate": "2022-09-10T17:29:29",
+    "creator": "fs45117",
+    "editionDate": "2022-09-10T17:29:29",
+    "editor": "fs45117",
+    "id": 1007,
+    "number": {
+      "number": 1205886,
+      "numberShort": 5886,
+      "checkDigit": 7,
+      "uicCountryCode": 12
+    },
+    "sloid": null,
+    "designationLong": null,
+    "designationOfficial": "Trins, Waldfestplatz",
+    "abbreviation": null,
+    "statusDidok3": "IN_OPERATION",
+    "statusDidok3Information": {
+      "code": "3",
+      "designationDe": "In Betrieb",
+      "designationFr": "En fonctionnement",
+      "designationIt": "In funzione",
+      "designationEn": "In operation"
+    },
+    "operatingPoint": true,
+    "operatingPointWithTimetable": true,
+    "freightServicePoint": false,
+    "sortCodeOfDestinationStation": null,
+    "businessOrganisation": "ch:1:sboid:101257",
+    "categories": [],
+    "categoriesInformation": [],
+    "operatingPointType": null,
+    "operatingPointTypeInformation": null,
+    "operatingPointWithoutTimetableTypeInformation": null,
+    "operatingPointTechnicalTimetableType": null,
+    "operatingPointTechnicalTimetableTypeInformation": null,
+    "operatingPointTrafficPointType": null,
+    "operatingPointTrafficPointTypeInformation": null,
+    "operatingPointRouteNetwork": false,
+    "operatingPointKilometerMaster": {
+      "number": null,
+      "numberShort": null,
+      "checkDigit": null,
+      "uicCountryCode": null
+    },
+    "meansOfTransport": [
+      "BUS"
+    ],
+    "meansOfTransportInformation": [
+      {
+        "code": "B",
+        "designationDe": "Bus",
+        "designationFr": "Bus",
+        "designationIt": "Bus",
+        "designationEn": "Coach"
+      }
+    ],
+    "stopPointType": "UNKNOWN",
+    "stopPointTypeInformation": {
+      "code": "0",
+      "designationDe": "Nicht spezifiziert",
+      "designationFr": "Non spécifié",
+      "designationIt": "Non specificata",
+      "designationEn": null
+    },
+    "fotComment": null,
+    "servicePointGeolocation": {
+      "spatialReference": "WGS84",
+      "lv95": {
+        "north": 1221727.844646883,
+        "east": 2901206.9151938213
+      },
+      "wgs84": {
+        "north": 47.078,
+        "east": 11.406385
+      },
+      "wgs84web": {
+        "north": 5954814.963976119,
+        "east": 1269752.969992034
+      },
+      "height": 0.0,
+      "swissLocation": {
+        "canton": null,
+        "cantonInformation": null,
+        "district": {
+          "fsoNumber": 0,
+          "districtName": null
+        },
+        "localityMunicipality": {
+          "fsoNumber": 0,
+          "municipalityName": null,
+          "localityName": null
+        }
+      },
+      "isoCountryCode": "AT"
+    },
+    "status": null,
+    "validFrom": "2022-09-01",
+    "validTo": "2099-12-31",
+    "borderPoint": false,
+    "trafficPoint": true,
+    "stopPoint": true,
+    "fareStop": false,
+    "hasGeolocation": true,
+    "validType": true,
+    "operatingPointKilometer": true,
+    "validFreightServicePoint": true
+  },
+  {
+    "creationDate": "2017-11-09T11:53:05",
+    "creator": "GSU_DIDOK",
+    "editionDate": "2022-07-29T11:10:23",
+    "editor": "fs45117",
+    "id": 1011,
+    "number": {
+      "number": 8572248,
+      "numberShort": 72248,
+      "checkDigit": 8,
+      "uicCountryCode": 85
+    },
+    "sloid": "ch:1:sloid:72248",
+    "designationLong": null,
+    "designationOfficial": "Olsberg, Chloster",
+    "abbreviation": null,
+    "statusDidok3": "IN_OPERATION",
+    "statusDidok3Information": {
+      "code": "3",
+      "designationDe": "In Betrieb",
+      "designationFr": "En fonctionnement",
+      "designationIt": "In funzione",
+      "designationEn": "In operation"
+    },
+    "operatingPoint": true,
+    "operatingPointWithTimetable": true,
+    "freightServicePoint": false,
+    "sortCodeOfDestinationStation": null,
+    "businessOrganisation": "ch:1:sboid:100602",
+    "categories": [],
+    "categoriesInformation": [],
+    "operatingPointType": null,
+    "operatingPointTypeInformation": null,
+    "operatingPointWithoutTimetableTypeInformation": null,
+    "operatingPointTechnicalTimetableType": null,
+    "operatingPointTechnicalTimetableTypeInformation": null,
+    "operatingPointTrafficPointType": null,
+    "operatingPointTrafficPointTypeInformation": null,
+    "operatingPointRouteNetwork": false,
+    "operatingPointKilometerMaster": {
+      "number": null,
+      "numberShort": null,
+      "checkDigit": null,
+      "uicCountryCode": null
+    },
+    "meansOfTransport": [
+      "BUS"
+    ],
+    "meansOfTransportInformation": [
+      {
+        "code": "B",
+        "designationDe": "Bus",
+        "designationFr": "Bus",
+        "designationIt": "Bus",
+        "designationEn": "Coach"
+      }
+    ],
+    "stopPointType": "ORDERLY",
+    "stopPointTypeInformation": {
+      "code": "10",
+      "designationDe": "Ordentliche Haltestelle",
+      "designationFr": "Arrêt ordinaire",
+      "designationIt": "Fermata ordinaria",
+      "designationEn": null
+    },
+    "fotComment": null,
+    "servicePointGeolocation": {
+      "spatialReference": "LV03",
+      "lv95": {
+        "north": 1263657.9999999995,
+        "east": 2625254.0
+      },
+      "wgs84": {
+        "north": 47.52317630533577,
+        "east": 7.773936104046642
+      },
+      "wgs84web": {
+        "north": 6027891.807945336,
+        "east": 865390.6085619172
+      },
+      "height": 360.0,
+      "swissLocation": {
+        "canton": "AARGAU",
+        "cantonInformation": {
+          "fsoNumber": 19,
+          "name": "Aargau",
+          "abbreviation": "AG"
+        },
+        "district": {
+          "fsoNumber": 1909,
+          "districtName": "Rheinfelden"
+        },
+        "localityMunicipality": {
+          "fsoNumber": 4257,
+          "municipalityName": "Olsberg",
+          "localityName": "Olsberg"
+        }
+      },
+      "isoCountryCode": "CH"
+    },
+    "status": null,
+    "validFrom": "2022-07-26",
+    "validTo": "2099-12-31",
+    "borderPoint": false,
+    "trafficPoint": true,
+    "stopPoint": true,
+    "fareStop": false,
+    "hasGeolocation": true,
+    "validType": true,
+    "operatingPointKilometer": true,
+    "validFreightServicePoint": true
+  }
+]

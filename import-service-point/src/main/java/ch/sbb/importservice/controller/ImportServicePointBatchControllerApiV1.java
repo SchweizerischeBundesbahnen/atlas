@@ -7,7 +7,7 @@ import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_LOADING_
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_SERVICE_POINT_CSV_JOB_NAME;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.START_AT_JOB_PARAMETER;
 
-import ch.sbb.importservice.exception.JobExecutionException;
+import ch.sbb.atlas.batch.exception.JobExecutionException;
 import ch.sbb.importservice.service.FileHelperService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

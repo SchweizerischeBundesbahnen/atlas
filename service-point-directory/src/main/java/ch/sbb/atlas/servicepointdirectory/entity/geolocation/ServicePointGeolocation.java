@@ -2,8 +2,8 @@ package ch.sbb.atlas.servicepointdirectory.entity.geolocation;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.kafka.model.SwissCanton;
+import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
-import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import jakarta.persistence.Entity;
@@ -53,12 +53,12 @@ public class ServicePointGeolocation extends GeolocationBaseEntity {
   @AtlasVersionableProperty
   private SwissCanton swissCanton;
 
+  @AtlasVersionableProperty
+  private Integer swissDistrictNumber;
+
   @Size(max = AtlasFieldLengths.LENGTH_255)
   @AtlasVersionableProperty
   private String swissDistrictName;
-
-  @AtlasVersionableProperty
-  private Integer swissDistrictNumber;
 
   @AtlasVersionableProperty
   private Integer swissMunicipalityNumber;

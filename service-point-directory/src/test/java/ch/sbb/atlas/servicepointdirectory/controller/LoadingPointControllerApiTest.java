@@ -7,11 +7,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
-import ch.sbb.atlas.servicepointdirectory.api.model.LoadingPointVersionModel.Fields;
-import ch.sbb.atlas.servicepointdirectory.api.model.ServicePointVersionModel;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
+import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion.Fields;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.LoadingPointGeolocation;
-import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.repository.LoadingPointVersionRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -86,7 +85,7 @@ public class LoadingPointControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldGetLoadingPointVersions() throws Exception {
     mvc.perform(get("/v1/loading-points")).andExpect(status().isOk())
-        .andExpect(jsonPath("$.objects[0]." + ServicePointVersionModel.Fields.id, is(loadingPointVersion.getId().intValue())))
+        .andExpect(jsonPath("$.objects[0]." + Fields.id, is(loadingPointVersion.getId().intValue())))
         .andExpect(jsonPath("$.totalCount", is(1)));
   }
 
