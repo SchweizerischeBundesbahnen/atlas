@@ -1,19 +1,19 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
+import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.servicepoint.Country;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.atlas.servicepoint.enumeration.Category;
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
+import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
+import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
+import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
+import ch.sbb.atlas.servicepoint.enumeration.ServicePointStatus;
+import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
-import ch.sbb.atlas.servicepointdirectory.enumeration.Category;
-import ch.sbb.atlas.servicepointdirectory.enumeration.Country;
-import ch.sbb.atlas.servicepointdirectory.enumeration.MeanOfTransport;
-import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointTechnicalTimetableType;
-import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointTrafficPointType;
-import ch.sbb.atlas.servicepointdirectory.enumeration.OperatingPointType;
-import ch.sbb.atlas.servicepointdirectory.enumeration.ServicePointStatus;
-import ch.sbb.atlas.servicepointdirectory.enumeration.StopPointType;
-import ch.sbb.atlas.kafka.model.SwissCanton;
-import ch.sbb.atlas.servicepointdirectory.model.ServicePointNumber;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
@@ -99,7 +99,8 @@ public class ServicePointCsvToEntityMapper implements
         .meansOfTransport(meansOfTransport)
         .stopPointType(StopPointType.from(servicePointCsvModel.getHTypId()))
         .operatingPointType(OperatingPointType.from(servicePointCsvModel.getBpBetriebspunktArtId()))
-        .operatingPointTechnicalTimetableType(OperatingPointTechnicalTimetableType.from(servicePointCsvModel.getBptfBetriebspunktArtId()))
+        .operatingPointTechnicalTimetableType(
+            OperatingPointTechnicalTimetableType.from(servicePointCsvModel.getBptfBetriebspunktArtId()))
         .operatingPointTrafficPointType(OperatingPointTrafficPointType.from(servicePointCsvModel.getBpvbBetriebspunktArtId()))
         .freightServicePoint(servicePointCsvModel.getIsBedienpunkt())
         .operatingPoint(servicePointCsvModel.getIsBetriebspunkt())
