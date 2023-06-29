@@ -78,7 +78,7 @@ public class CsvService {
           .servicePointCsvModelList(value)
           .build();
       servicePointCsvModelContainer.mergeVersionsIsNotVirtualAndHasNotGeolocation();
-      servicePointCsvModelContainer.mergeHasJustBezeichnungDiff();
+      servicePointCsvModelContainer.mergeHasNotBezeichnungDiff();
       value.sort(Comparator.comparing(BaseDidokCsvModel::getValidFrom));
       servicePointCsvModelContainers.add(servicePointCsvModelContainer);
     });
@@ -141,7 +141,7 @@ public class CsvService {
               .build();
           trafficPointCsvModelContainer.mergeWhenDatesAreSequentialAndModelsAreEqual();
           return trafficPointCsvModelContainer;
-        }).toList();
+        }).collect(Collectors.toList());
   }
 
   public <T> List<T> getCsvModelsToUpdate(File importFile, LocalDate matchingDate, Class<T> type) {
