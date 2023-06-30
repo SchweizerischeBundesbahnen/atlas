@@ -1,4 +1,4 @@
-package ch.sbb.importservice.entitiy;
+package ch.sbb.importservice.entity;
 
 import ch.sbb.atlas.imports.servicepoint.model.ItemImportResponseStatus;
 import jakarta.persistence.Entity;
@@ -37,7 +37,7 @@ public class ImportProcessItem {
 
   private String jobExecutionName;
 
-  private Integer itemNumber;
+  private String itemNumber;
 
   @Enumerated(EnumType.STRING)
   private ItemImportResponseStatus responseStatus;
