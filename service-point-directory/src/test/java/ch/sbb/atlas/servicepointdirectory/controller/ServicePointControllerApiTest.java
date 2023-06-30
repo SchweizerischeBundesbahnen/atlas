@@ -6,7 +6,7 @@ import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.imports.servicepoint.BaseDidokCsvModel;
-import ch.sbb.atlas.imports.servicepoint.model.ServicePointImportReqModel;
+import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointImportRequestModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
@@ -147,7 +147,7 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
           .sorted(Comparator.comparing(BaseDidokCsvModel::getValidFrom))
           .toList();
       int didokCode = servicePointCsvModels.get(0).getDidokCode();
-      ServicePointImportReqModel importRequestModel = new ServicePointImportReqModel(
+      ServicePointImportRequestModel importRequestModel = new ServicePointImportRequestModel(
           List.of(
               ServicePointCsvModelContainer
                   .builder()
@@ -171,7 +171,7 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldReturnBadRequestOnEmptyListRequest() throws Exception {
     // given
-    ServicePointImportReqModel importRequestModel = new ServicePointImportReqModel(
+    ServicePointImportRequestModel importRequestModel = new ServicePointImportRequestModel(
         Collections.emptyList()
     );
     String jsonString = mapper.writeValueAsString(importRequestModel);
@@ -188,7 +188,7 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldReturnBadRequestOnNullListRequest() throws Exception {
     // given
-    ServicePointImportReqModel importRequestModel = new ServicePointImportReqModel();
+    ServicePointImportRequestModel importRequestModel = new ServicePointImportRequestModel();
     String jsonString = mapper.writeValueAsString(importRequestModel);
 
     // when
