@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { ValidationService } from './validation.service';
 import moment from 'moment';
+import { FormControl, FormGroup } from '@angular/forms';
 
 describe('ValidationService', () => {
   let service: ValidationService;
@@ -95,5 +96,23 @@ describe('ValidationService', () => {
     //then
     expect(result).toBeDefined();
     expect(result).toBe('10.10.2000');
+  });
+
+  it('should set whitespace error', () => {
+    ///given
+    const control1 = new FormControl(null);
+    const control2 = new FormControl(' test ');
+    const control3 = new FormControl('test');
+
+    ValidationService.checkWhitespaceErrors([control1, control2, control3]);
+
+    // Expectations
+    expect(control1.touched).toBe(true);
+    expect(control3.touched).toBe(false);
+    expect(control3.touched).toBe(false);
+
+    expect(control1.errors).toBe(null);
+    expect(control2.errors).toEqual({ whitespaces: true });
+    expect(control3.errors).toBe(null);
   });
 });
