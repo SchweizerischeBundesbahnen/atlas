@@ -5,6 +5,7 @@ import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_TYPE_
 import static ch.sbb.importservice.utils.JobDescriptionConstants.FULL_PATH_FILENAME_JOB_PARAMETER;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_LOADING_POINT_CSV_JOB_NAME;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_SERVICE_POINT_CSV_JOB_NAME;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_TRAFFIC_POINT_CSV_JOB_NAME;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.START_AT_JOB_PARAMETER;
 
 import ch.sbb.atlas.amazon.service.FileService;
@@ -48,8 +49,12 @@ public class RecoveryJobsRunner implements ApplicationRunner {
 
   @Qualifier(IMPORT_SERVICE_POINT_CSV_JOB_NAME)
   private final Job importServicePointCsvJob;
+
   @Qualifier(IMPORT_LOADING_POINT_CSV_JOB_NAME)
   private final Job importLoadingPointCsvJob;
+
+  @Qualifier(IMPORT_TRAFFIC_POINT_CSV_JOB_NAME)
+  private final Job importTrafficPointCsvJob;
 
   private final FileService fileService;
 
@@ -59,6 +64,7 @@ public class RecoveryJobsRunner implements ApplicationRunner {
     cleanDownloadedFiles();
     recoverJob(IMPORT_SERVICE_POINT_CSV_JOB_NAME);
     recoverJob(IMPORT_LOADING_POINT_CSV_JOB_NAME);
+    recoverJob(IMPORT_TRAFFIC_POINT_CSV_JOB_NAME);
   }
 
   void recoverJob(String jobName)
@@ -123,6 +129,9 @@ public class RecoveryJobsRunner implements ApplicationRunner {
     }
     if (IMPORT_LOADING_POINT_CSV_JOB_NAME.equals(jobName)) {
       return importLoadingPointCsvJob;
+    }
+    if (IMPORT_TRAFFIC_POINT_CSV_JOB_NAME.equals(jobName)) {
+      return importTrafficPointCsvJob;
     }
     throw new IllegalStateException("No job found with name: " + jobName);
   }

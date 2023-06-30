@@ -3,6 +3,9 @@ package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.model.search.TrafficPointElementSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepository;
+import ch.sbb.atlas.servicepointdirectory.service.BasePointUtility;
+import ch.sbb.atlas.versioning.model.VersionedObject;
+import ch.sbb.atlas.versioning.service.VersionableService;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -16,16 +19,37 @@ import org.springframework.stereotype.Service;
 public class TrafficPointElementService {
 
   private final TrafficPointElementVersionRepository trafficPointElementVersionRepository;
+  private final VersionableService versionableService;
 
   public Page<TrafficPointElementVersion> findAll(TrafficPointElementSearchRestrictions searchRestrictions) {
     return trafficPointElementVersionRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
   }
 
-  public List<TrafficPointElementVersion> findTrafficPointElement(String sloid) {
+  public List<TrafficPointElementVersion> findBySloidOrderByValidFrom(String sloid) {
     return trafficPointElementVersionRepository.findAllBySloidOrderByValidFrom(sloid);
   }
 
   public Optional<TrafficPointElementVersion> findById(Long id) {
     return trafficPointElementVersionRepository.findById(id);
+  }
+
+  public boolean isTrafficPointElementExisting(String sloid) {
+    return trafficPointElementVersionRepository.existsBySloid(sloid);
+  }
+
+  public TrafficPointElementVersion save(TrafficPointElementVersion trafficPointElementVersion) {
+    return trafficPointElementVersionRepository.save(trafficPointElementVersion);
+  }
+
+  public void deleteById(Long id) {
+    trafficPointElementVersionRepository.deleteById(id);
+  }
+
+  public void updateTrafficPointElementVersion(TrafficPointElementVersion edited) {
+    List<TrafficPointElementVersion> dbVersions = findBySloidOrderByValidFrom(edited.getSloid());
+    TrafficPointElementVersion current = BasePointUtility.getCurrentPointVersion(dbVersions, edited);
+    List<VersionedObject> versionedObjects = versionableService.versioningObjects(current, edited,
+        dbVersions);
+    versionableService.applyVersioning(TrafficPointElementVersion.class, versionedObjects, this::save, this::deleteById);
   }
 }
