@@ -55,11 +55,8 @@ export class ValidationService {
   public static validateForm(formGroup: FormGroup) {
     Object.keys(formGroup.controls).forEach((field) => {
       const control = formGroup.get(field);
-      const isStatement = control === formGroup.get('statement');
-      const isJustification = control === formGroup.get('justification');
-      const isComment = control === formGroup.get('comment');
 
-      if (isStatement || isJustification || isComment) {
+      if (['statement', 'justification', 'comment'].includes(field)) {
         ValidationService.checkWhitespaceErrors([control!]);
       }
 
