@@ -367,8 +367,6 @@ export class StatementDetailComponent implements OnInit, AfterViewInit {
 
   private createStatement(statement: TimetableHearingStatement) {
     this.isLoading = true;
-    console.log('statement ', statement);
-
     this.timetableHearingService
       .createStatement(statement, this.uploadedFiles)
       .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
