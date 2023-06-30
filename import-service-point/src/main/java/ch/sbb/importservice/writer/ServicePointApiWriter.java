@@ -1,7 +1,7 @@
 package ch.sbb.importservice.writer;
 
-import ch.sbb.atlas.imports.servicepoint.model.ServicePointImportReqModel;
-import ch.sbb.atlas.imports.servicepoint.model.ServicePointItemImportResult;
+import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointImportRequestModel;
+import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,13 +19,14 @@ public class ServicePointApiWriter extends BaseApiWriter implements ItemWriter<S
   @Override
   public void write(Chunk<? extends ServicePointCsvModelContainer> servicePoints) {
     List<ServicePointCsvModelContainer> servicePointCsvModels = new ArrayList<>(servicePoints.getItems());
-    ServicePointImportReqModel servicePointImportReqModel = new ServicePointImportReqModel();
-    servicePointImportReqModel.setServicePointCsvModelContainers(servicePointCsvModels);
+    ServicePointImportRequestModel servicePointImportRequestModel = new ServicePointImportRequestModel();
+    servicePointImportRequestModel.setServicePointCsvModelContainers(servicePointCsvModels);
     Long stepExecutionId = stepExecution.getId();
-    List<ServicePointItemImportResult> servicePointsResult = sePoDiClientService.postServicePoints(servicePointImportReqModel);
+    List<ServicePointItemImportResult> servicePointsResult = sePoDiClientService.postServicePoints(
+        servicePointImportRequestModel);
 
     for (ServicePointItemImportResult response : servicePointsResult) {
-      saveItemProcessed(stepExecutionId, response.getItemNumber(), response.getStatus(), response.getMessage());
+      saveItemProcessed(stepExecutionId, response.getItemNumber().toString(), response.getStatus(), response.getMessage());
     }
   }
 }
