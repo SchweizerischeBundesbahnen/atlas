@@ -3,9 +3,10 @@ package ch.sbb.importservice.controller;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_BATCH_PARAMETER;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_TYPE_PARAMETER;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.FULL_PATH_FILENAME_JOB_PARAMETER;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.START_AT_JOB_PARAMETER;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_LOADING_POINT_CSV_JOB_NAME;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_SERVICE_POINT_CSV_JOB_NAME;
-import static ch.sbb.importservice.utils.JobDescriptionConstants.START_AT_JOB_PARAMETER;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_TRAFFIC_POINT_CSV_JOB_NAME;
 
 import ch.sbb.atlas.batch.exception.JobExecutionException;
 import ch.sbb.importservice.service.FileHelperService;
@@ -40,19 +41,19 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @AllArgsConstructor
 @Slf4j
-public class ImportServicePointBatchControllerApiV1 {
+public class ImportServicePointBatchController {
 
-  public static final String IMPORT_LOADING_POINT_CSV_JOB = "importLoadingPointCsvJob";
-  public static final String IMPORT_SERVICE_POINT_CSV_JOB = "importServicePointCsvJob";
   private final JobLauncher jobLauncher;
-
   private final FileHelperService fileHelperService;
 
-  @Qualifier(IMPORT_SERVICE_POINT_CSV_JOB)
+  @Qualifier(IMPORT_SERVICE_POINT_CSV_JOB_NAME)
   private final Job importServicePointCsvJob;
 
-  @Qualifier(IMPORT_LOADING_POINT_CSV_JOB)
+  @Qualifier(IMPORT_LOADING_POINT_CSV_JOB_NAME)
   private final Job importLoadingPointCsvJob;
+
+  @Qualifier(IMPORT_TRAFFIC_POINT_CSV_JOB_NAME)
+  private final Job importTrafficPointCsvJob;
 
   @PostMapping("service-point-batch")
   @ResponseStatus(HttpStatus.OK)
@@ -112,6 +113,47 @@ public class ImportServicePointBatchControllerApiV1 {
     } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException |
              JobParametersInvalidException e) {
       throw new JobExecutionException(IMPORT_LOADING_POINT_CSV_JOB_NAME, e);
+    } finally {
+      file.delete();
+    }
+  }
+
+  @PostMapping("traffic-point-batch")
+  @ResponseStatus(HttpStatus.OK)
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200"),
+  })
+  @Async
+  public void startTrafficPointImportBatch() {
+    JobParameters jobParameters = new JobParametersBuilder()
+        .addString(EXECUTION_TYPE_PARAMETER, EXECUTION_BATCH_PARAMETER)
+        .addLong(START_AT_JOB_PARAMETER, System.currentTimeMillis()).toJobParameters();
+    try {
+      JobExecution execution = jobLauncher.run(importTrafficPointCsvJob, jobParameters);
+      log.info("Job executed with status: {}", execution.getExitStatus().getExitCode());
+    } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException |
+             JobParametersInvalidException e) {
+      throw new JobExecutionException(IMPORT_TRAFFIC_POINT_CSV_JOB_NAME, e);
+    }
+  }
+
+  @PostMapping("traffic-point")
+  @ResponseStatus(HttpStatus.OK)
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200"),
+  })
+  public ResponseEntity<?> startTrafficPointImport(@RequestParam("file") MultipartFile multipartFile) {
+    File file = fileHelperService.getFileFromMultipart(multipartFile);
+    JobParameters jobParameters = new JobParametersBuilder()
+        .addString(FULL_PATH_FILENAME_JOB_PARAMETER, file.getAbsolutePath())
+        .addLong(START_AT_JOB_PARAMETER, System.currentTimeMillis()).toJobParameters();
+    try {
+      JobExecution execution = jobLauncher.run(importTrafficPointCsvJob, jobParameters);
+      log.info("Job executed with status: {}", execution.getExitStatus().getExitCode());
+      return ResponseEntity.ok().body(execution.toString());
+    } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException |
+             JobParametersInvalidException e) {
+      throw new JobExecutionException(IMPORT_TRAFFIC_POINT_CSV_JOB_NAME, e);
     } finally {
       file.delete();
     }

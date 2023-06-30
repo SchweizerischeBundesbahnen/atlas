@@ -2,12 +2,11 @@ package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
+import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointElementCsvModel;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
 import java.util.function.Function;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public class TrafficPointElementCsvToEntityMapper implements
     Function<TrafficPointElementCsvModel, TrafficPointElementVersion> {
 
@@ -53,4 +52,5 @@ public class TrafficPointElementCsvToEntityMapper implements
 
     return trafficPointElementVersion;
   }
+
 }
