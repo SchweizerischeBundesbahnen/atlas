@@ -50,7 +50,6 @@ export class StatementDetailComponent implements OnInit, AfterViewInit {
   uploadedFiles: File[] = [];
   isLoading = false;
   isDuplicating = false;
-  validateOnSave = false;
 
   private ngUnsubscribe = new Subject<void>();
 
@@ -65,8 +64,7 @@ export class StatementDetailComponent implements OnInit, AfterViewInit {
     private readonly statementDialogService: StatementDialogService,
     private readonly openStatementInMailService: OpenStatementInMailService,
     private readonly statementShareService: StatementShareService,
-    private readonly elementRef: ElementRef<HTMLElement>,
-    private validationService: ValidationService
+    private readonly elementRef: ElementRef<HTMLElement>
   ) {}
 
   get isHearingStatusArchived() {
