@@ -2,8 +2,8 @@ package ch.sbb.atlas.imports.servicepoint.trafficpoint;
 
 import ch.sbb.atlas.versioning.date.DateHelper;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
