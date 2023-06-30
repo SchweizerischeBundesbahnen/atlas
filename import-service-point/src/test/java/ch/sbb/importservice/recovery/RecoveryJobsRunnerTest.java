@@ -3,6 +3,7 @@ package ch.sbb.importservice.recovery;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_TYPE_PARAMETER;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_LOADING_POINT_CSV_JOB_NAME;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_SERVICE_POINT_CSV_JOB_NAME;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_TRAFFIC_POINT_CSV_JOB_NAME;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
@@ -34,6 +35,7 @@ import org.springframework.boot.DefaultApplicationArguments;
 public class RecoveryJobsRunnerTest {
 
   private RecoveryJobsRunner recoveryJobsRunner;
+
   @Mock
   private JobExplorer jobExplorer;
 
@@ -64,13 +66,28 @@ public class RecoveryJobsRunnerTest {
   private Job importLoadingPointCsvJob;
 
   @Mock
+  @Qualifier(IMPORT_TRAFFIC_POINT_CSV_JOB_NAME)
+  private Job importTrafficPointCsvJob;
+
+  @Mock
   private ImportProcessedItemRepository importProcessedItemRepository;
 
   @BeforeEach
   public void setUp() {
     MockitoAnnotations.openMocks(this);
     recoveryJobsRunner = new RecoveryJobsRunner(jobExplorer, jobLauncher, jobRepository, importProcessedItemRepository,
-        importServicePointCsvJob, importLoadingPointCsvJob, fileService);
+        importServicePointCsvJob, importLoadingPointCsvJob, importTrafficPointCsvJob, fileService);
+  }
+
+  @Test
+  public void shouldNotRecoverAnyJob() throws Exception {
+    //when
+    recoveryJobsRunner.run(new DefaultApplicationArguments());
+    //then
+    verify(jobLauncher, never()).run(eq(importServicePointCsvJob), any());
+    verify(jobLauncher, never()).run(eq(importLoadingPointCsvJob), any());
+    verify(jobLauncher, never()).run(eq(importTrafficPointCsvJob), any());
+    verify(fileService).clearDir();
   }
 
   @Test
@@ -93,16 +110,7 @@ public class RecoveryJobsRunnerTest {
     //then
     verify(jobLauncher).run(eq(importServicePointCsvJob), any());
     verify(jobLauncher, never()).run(eq(importLoadingPointCsvJob), any());
-    verify(fileService).clearDir();
-  }
-
-  @Test
-  public void shouldNotRecoverAnyJob() throws Exception {
-    //when
-    recoveryJobsRunner.run(new DefaultApplicationArguments());
-    //then
-    verify(jobLauncher, never()).run(eq(importServicePointCsvJob), any());
-    verify(jobLauncher, never()).run(eq(importLoadingPointCsvJob), any());
+    verify(jobLauncher, never()).run(eq(importTrafficPointCsvJob), any());
     verify(fileService).clearDir();
   }
 
@@ -126,6 +134,31 @@ public class RecoveryJobsRunnerTest {
     //then
     verify(jobLauncher).run(eq(importLoadingPointCsvJob), any());
     verify(jobLauncher, never()).run(eq(importServicePointCsvJob), any());
+    verify(jobLauncher, never()).run(eq(importTrafficPointCsvJob), any());
+    verify(fileService).clearDir();
+  }
+
+  @Test
+  void shouldRecoverImportTrafficPointCsvJob()
+      throws Exception {
+    //given
+    StepExecution stepExecution = new StepExecution("myStep", jobExecution);
+    stepExecution.setId(132L);
+    Map<String, JobParameter<?>> parameters = new HashMap<>();
+    parameters.put(EXECUTION_TYPE_PARAMETER, new JobParameter<>("BATCH", String.class));
+    when(jobParameters.getParameters()).thenReturn(parameters);
+    when(jobExecution.getStatus()).thenReturn(BatchStatus.STARTING);
+    when(jobExecution.getJobParameters()).thenReturn(jobParameters);
+    when(jobExecution.getStepExecutions()).thenReturn(List.of(stepExecution));
+    when(jobExplorer.getLastJobInstance(IMPORT_TRAFFIC_POINT_CSV_JOB_NAME)).thenReturn(jobInstance);
+    when(jobExplorer.getLastJobExecution(jobInstance)).thenReturn(jobExecution);
+    when(jobLauncher.run(any(), any())).thenReturn(jobExecution);
+    //when
+    recoveryJobsRunner.run(new DefaultApplicationArguments());
+    //then
+    verify(jobLauncher).run(eq(importTrafficPointCsvJob), any());
+    verify(jobLauncher, never()).run(eq(importServicePointCsvJob), any());
+    verify(jobLauncher, never()).run(eq(importLoadingPointCsvJob), any());
     verify(fileService).clearDir();
   }
 }

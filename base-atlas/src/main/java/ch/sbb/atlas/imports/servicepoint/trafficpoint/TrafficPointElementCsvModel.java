@@ -1,4 +1,4 @@
-package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
+package ch.sbb.atlas.imports.servicepoint.trafficpoint;
 
 import ch.sbb.atlas.imports.servicepoint.BaseDidokCsvModel;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -8,11 +8,13 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TrafficPointElementCsvModel extends BaseDidokCsvModel {
@@ -21,10 +23,10 @@ public class TrafficPointElementCsvModel extends BaseDidokCsvModel {
   private String sloid;
 
   @JsonProperty("DS_LAENDERCODE")
-  private Integer country;
+  private int country;
 
   @JsonProperty("DIDOK_CODE")
-  private Integer servicePointNumber;
+  private int servicePointNumber;
 
   @JsonProperty("BEZEICHNUNG")
   private String designation;
@@ -45,6 +47,6 @@ public class TrafficPointElementCsvModel extends BaseDidokCsvModel {
   private String parentSloid;
 
   @JsonProperty("BPVE_TYPE")
-  private Integer trafficPointElementType;
+  private int trafficPointElementType;
 
 }

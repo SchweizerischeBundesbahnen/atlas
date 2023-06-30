@@ -1,5 +1,6 @@
-package ch.sbb.atlas.imports.servicepoint.model;
+package ch.sbb.atlas.imports.servicepoint.servicepoint;
 
+import ch.sbb.atlas.imports.servicepoint.model.ItemImportResponseStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
