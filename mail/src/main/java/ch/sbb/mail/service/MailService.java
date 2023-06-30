@@ -1,8 +1,6 @@
 package ch.sbb.mail.service;
 
-
 import static java.lang.String.format;
-import static java.util.Objects.requireNonNull;
 
 import ch.sbb.mail.exception.MailSendException;
 import ch.sbb.atlas.kafka.model.mail.MailNotification;

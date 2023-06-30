@@ -4,8 +4,8 @@ import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.configuration.Role;
-import ch.sbb.atlas.imports.servicepoint.model.ServicePointImportReqModel;
-import ch.sbb.atlas.imports.servicepoint.model.ServicePointItemImportResult;
+import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointImportRequestModel;
+import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointItemImportResult;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
 import java.util.List;
 
 @Tag(name = "ServicePoints")
@@ -45,7 +44,7 @@ public interface ServicePointApiV1 {
 
   @Secured(Role.ROLE_PREFIX + Role.ATLAS_ADMIN)
   @PostMapping("import")
-  List<ServicePointItemImportResult> importServicePoints(@RequestBody @Valid ServicePointImportReqModel servicePoints);
+  List<ServicePointItemImportResult> importServicePoints(@RequestBody @Valid ServicePointImportRequestModel servicePoints);
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping()
