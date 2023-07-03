@@ -104,9 +104,10 @@ describe('ValidationService', () => {
     const control2 = new FormControl(' test ');
     const control3 = new FormControl('test');
 
+    //when
     ValidationService.checkWhitespaceErrors([control1, control2, control3]);
 
-    // Expectations
+    // then
     expect(control1.touched).toBe(true);
     expect(control3.touched).toBe(false);
     expect(control3.touched).toBe(false);
