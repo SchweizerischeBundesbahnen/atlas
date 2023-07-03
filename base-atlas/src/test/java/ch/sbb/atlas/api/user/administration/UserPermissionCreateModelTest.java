@@ -43,7 +43,7 @@ public class UserPermissionCreateModelTest {
     assertThat(constraintViolations.iterator().next().getPropertyPath()).hasToString("applicationTypeUniqueInPermissions");
   }
 
-//  @Test
+  @Test
   void shouldValidateSboidsEmptyWhenNotWriterRole() {
     // Given
     UserPermissionCreateModel createModel = UserPermissionCreateModel.builder()
