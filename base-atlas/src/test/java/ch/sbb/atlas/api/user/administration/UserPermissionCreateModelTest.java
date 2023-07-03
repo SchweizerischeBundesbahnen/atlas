@@ -62,7 +62,7 @@ public class UserPermissionCreateModelTest {
 
     // Then
     assertThat(constraintViolations).hasSize(1);
-    assertThat(constraintViolations.iterator().next().getPropertyPath()).hasToString("sboidsEmptyWhenNotWriterOrBodi");
+    assertThat(constraintViolations.iterator().next().getPropertyPath()).hasToString("sboidsEmptyWhenNotWriterOrSuperUserOrBodi");
   }
 
   @Test
@@ -84,7 +84,29 @@ public class UserPermissionCreateModelTest {
 
     // Then
     assertThat(constraintViolations).hasSize(1);
-    assertThat(constraintViolations.iterator().next().getPropertyPath()).hasToString("sboidsEmptyWhenNotWriterOrBodi");
+    assertThat(constraintViolations.iterator().next().getPropertyPath()).hasToString("sboidsEmptyWhenNotWriterOrSuperUserOrBodi");
+  }
+
+  @Test
+  void shouldValidateSboidsEmptyWhenApplicationTypeSepodiAndSuperUser() {
+    // Given
+    UserPermissionCreateModel createModel = UserPermissionCreateModel.builder()
+            .sbbUserId("u123456")
+            .permissions(List.of(
+                    PermissionModel.builder()
+                            .permissionRestrictions(List.of(new SboidPermissionRestrictionModel("ch:1:sboid:test")))
+                            .role(ApplicationRole.SUPER_USER)
+                            .application(ApplicationType.TTFN)
+                            .build()
+            )).
+            build();
+    // When
+    Set<ConstraintViolation<UserPermissionCreateModel>> constraintViolations = validator.validate(
+            createModel);
+
+    // Then
+    assertThat(constraintViolations).hasSize(1);
+    assertThat(constraintViolations.iterator().next().getPropertyPath()).hasToString("sboidsEmptyWhenNotWriterOrSuperUserOrBodi");
   }
 
 }
