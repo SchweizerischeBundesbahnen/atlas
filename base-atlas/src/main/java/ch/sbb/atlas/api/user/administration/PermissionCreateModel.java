@@ -8,12 +8,13 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Data
 @SuperBuilder
@@ -40,15 +41,14 @@ public abstract class PermissionCreateModel {
   @AssertTrue(message = "Restrictions must be empty when not WRITER role or BODI ApplicationType")
   // TODO: Make it readable
   boolean isSboidsEmptyWhenNotWriterOrBodi() {
-    return permissions.stream().noneMatch(
+    boolean result =  permissions.stream().noneMatch(
         permission ->
             ((permission.getRole() != ApplicationRole.WRITER
                 || permission.getApplication() == ApplicationType.BODI)
-                && (permission.getApplication() != ApplicationType.SEPODI) &&
-                (permission.getRole() == ApplicationRole.SUPER_USER ||
-                permission.getRole() == ApplicationRole.WRITER))
+                && permission.getRole() != ApplicationRole.SUPER_USER)
                 && permission.getPermissionRestrictions().size() > 0
     );
+    return result;
   }
 
 }
