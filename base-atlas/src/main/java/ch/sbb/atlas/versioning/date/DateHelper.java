@@ -21,10 +21,17 @@ public final class DateHelper {
     return current.plusDays(1).equals(next);
   }
 
-  public static LocalDate min(LocalDate date1, LocalDate date2) {
-    if (date1.isBefore(date2)) {
-      return date1;
+  public static LocalDate min(LocalDate x, LocalDate y) {
+    if (x.isBefore(y)) {
+      return x;
     }
-    return date2;
+    return y;
+  }
+
+  public static LocalDate max(LocalDate x, LocalDate y) {
+    if (x.isAfter(y)) {
+      return x;
+    }
+    return y;
   }
 }
