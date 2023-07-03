@@ -214,16 +214,11 @@ export class StatementDetailComponent implements OnInit, AfterViewInit {
       statement: new FormControl(statement?.statement, [
         Validators.required,
         AtlasFieldLengthValidator.statement,
-        WhitespaceValidator.blankOrEmptySpaceSurrounding,
       ]),
       justification: new FormControl(statement?.justification, [
         AtlasFieldLengthValidator.statement,
-        WhitespaceValidator.blankOrEmptySpaceSurrounding,
       ]),
-      comment: new FormControl(statement?.comment, [
-        AtlasFieldLengthValidator.length_280,
-        WhitespaceValidator.blankOrEmptySpaceSurrounding,
-      ]),
+      comment: new FormControl(statement?.comment, [AtlasFieldLengthValidator.length_280]),
       documents: new FormArray(
         statement?.documents?.map((document) => new FormControl(document)) ?? []
       ),
