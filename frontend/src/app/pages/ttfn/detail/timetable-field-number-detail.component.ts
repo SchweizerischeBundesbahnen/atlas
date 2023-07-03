@@ -140,7 +140,6 @@ export class TimetableFieldNumberDetailComponent
         ]),
         comment: new FormControl(version.comment, [
           AtlasFieldLengthValidator.comments,
-          WhitespaceValidator.blankOrEmptySpaceSurrounding,
           AtlasCharsetsValidator.iso88591,
         ]),
         status: new FormControl(version.status),
