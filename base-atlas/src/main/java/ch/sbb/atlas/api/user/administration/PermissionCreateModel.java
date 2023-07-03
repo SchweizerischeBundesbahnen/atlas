@@ -38,17 +38,16 @@ public abstract class PermissionCreateModel {
 
   @Schema(hidden = true)
   @JsonIgnore
-  @AssertTrue(message = "Restrictions must be empty when not WRITER role or BODI ApplicationType")
-  // TODO: Make it readable
-  boolean isSboidsEmptyWhenNotWriterOrBodi() {
-    boolean result =  permissions.stream().noneMatch(
+  @AssertTrue(message = "Restrictions must be empty when not WRITER or SUPERUSER role or BODI ApplicationType")
+  boolean isSboidsEmptyWhenNotWriterOrSuperUserOrBodi() {
+    return permissions.stream().noneMatch(
         permission ->
             ((permission.getRole() != ApplicationRole.WRITER
                 || permission.getApplication() == ApplicationType.BODI)
-                && permission.getRole() != ApplicationRole.SUPER_USER)
+                && (permission.getApplication() != ApplicationType.SEPODI ||
+                    permission.getRole() != ApplicationRole.SUPER_USER))
                 && permission.getPermissionRestrictions().size() > 0
     );
-    return result;
   }
 
 }
