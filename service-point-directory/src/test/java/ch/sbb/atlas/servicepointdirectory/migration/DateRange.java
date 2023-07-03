@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.migration;
 
+import ch.sbb.atlas.versioning.date.DateHelper;
 import java.time.LocalDate;
 import lombok.Builder;
 import lombok.Data;
@@ -16,20 +17,10 @@ public class DateRange {
   }
 
   public DateRange mergeWith(DateRange other) {
-    return new DateRange(getMin(from, other.getFrom()), getMax(to, other.getTo()));
+    return new DateRange(DateHelper.min(from, other.getFrom()), DateHelper.max(to, other.getTo()));
   }
 
-  private LocalDate getMin(LocalDate x, LocalDate y) {
-    if (x.isBefore(y)) {
-      return x;
-    }
-    return y;
-  }
-
-  private LocalDate getMax(LocalDate x, LocalDate y) {
-    if (x.isAfter(y)) {
-      return x;
-    }
-    return y;
+  public boolean contains(LocalDate localDate) {
+    return !localDate.isBefore(from) && !localDate.isAfter(to);
   }
 }
