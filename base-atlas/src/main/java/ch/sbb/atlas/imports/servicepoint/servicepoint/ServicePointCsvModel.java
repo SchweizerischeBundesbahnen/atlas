@@ -80,6 +80,9 @@ public class ServicePointCsvModel extends BaseDidokCsvModel {
   @JsonProperty("KANTONSNAME")
   private String kantonsName;
 
+  @JsonProperty("KANTONSKUERZEL")
+  private String kantonsKuerzel;
+
   @JsonProperty("KANTONSNUM")
   private Integer kantonsNum;
 
