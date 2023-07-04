@@ -1,6 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.entity.geolocation;
 
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
+import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,6 +23,7 @@ import lombok.experimental.SuperBuilder;
 @ToString(exclude = "trafficPointElementVersion")
 @SuperBuilder
 @FieldNameConstants
+@AtlasVersionable
 @Entity(name = "traffic_point_element_version_geolocation")
 public class TrafficPointElementGeolocation extends GeolocationBaseEntity {
 
