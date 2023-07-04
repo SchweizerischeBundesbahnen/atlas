@@ -223,7 +223,6 @@ export class LineDetailComponent
         ]),
         comment: new FormControl(version.comment, [
           AtlasFieldLengthValidator.comments,
-          WhitespaceValidator.blankOrEmptySpaceSurrounding,
           AtlasCharsetsValidator.iso88591,
         ]),
         etagVersion: new FormControl(version.etagVersion),
