@@ -1,5 +1,6 @@
 package ch.sbb.atlas.imports.servicepoint.deserializer;
 
+import ch.sbb.atlas.api.AtlasApiConstants;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
@@ -16,7 +17,7 @@ public class LocalDateTimeDeserializer extends JsonDeserializer<LocalDateTime> {
   @Override
   public LocalDateTime deserialize(JsonParser jsonParser, DeserializationContext ctx) throws IOException {
     try {
-      return LocalDateTime.parse(jsonParser.getText(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+      return LocalDateTime.parse(jsonParser.getText(), DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN));
     } catch (DateTimeParseException ex1) {
       log.debug("LocalDateTime could not be parsed, trying with ISO_LOCAL_DATE_TIME.", ex1);
       try {
@@ -24,7 +25,8 @@ public class LocalDateTimeDeserializer extends JsonDeserializer<LocalDateTime> {
       } catch (DateTimeParseException ex2) {
         log.debug("LocalDateTime could not be parsed, trying with LocalDate.\n", ex2);
         try {
-          return LocalDate.parse(jsonParser.getText(), DateTimeFormatter.ofPattern("yyyy-MM-dd")).atStartOfDay();
+          return LocalDate.parse(jsonParser.getText(), DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN))
+              .atStartOfDay();
         } catch (DateTimeParseException ex3) {
           throw new IllegalArgumentException(
               jsonParser.getText() + " not valid for " + jsonParser.getCurrentName() + " lineNumber: "
@@ -36,4 +38,3 @@ public class LocalDateTimeDeserializer extends JsonDeserializer<LocalDateTime> {
   }
 
 }
-
