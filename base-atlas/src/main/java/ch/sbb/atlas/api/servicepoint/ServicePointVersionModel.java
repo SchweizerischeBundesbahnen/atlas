@@ -113,7 +113,7 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
   private ServicePointGeolocationModel servicePointGeolocation;
 
   @NotNull
-  @Schema(description = "Status")
+  @Schema(description = "Status", example = "VALIDATED")
   private Status status;
 
   @NotNull

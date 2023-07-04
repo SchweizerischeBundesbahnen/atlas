@@ -8,8 +8,10 @@ import {
   Output,
   SimpleChanges,
   TemplateRef,
+  ViewChild,
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { MatOption } from '@angular/material/core';
 
 @Component({
   selector: 'atlas-select',
@@ -34,6 +36,8 @@ export class SelectComponent<TYPE> implements OnInit, OnChanges {
   @Input() additionalLabelspace = true;
   @Input() checkAllEnabled = false;
   @Input() required = false;
+
+  @Input() selectAll = 'TTH.ALL_COUNTRIES';
 
   private _disabled = false;
   @Input()
@@ -60,7 +64,6 @@ export class SelectComponent<TYPE> implements OnInit, OnChanges {
   @Input() formGroup!: FormGroup;
 
   @Input() options: TYPE[] = [];
-  @Input() allCountries: TYPE[] = [];
   @Input() value: any;
 
   @ContentChild('matOptionPrefix') matOptionPrefix!: TemplateRef<any>;
@@ -69,14 +72,18 @@ export class SelectComponent<TYPE> implements OnInit, OnChanges {
 
   @Output() toggleSelection = new EventEmitter();
 
+  @ViewChild('allSelected') private allSelected!: MatOption;
+
   private _isDummyForm = false;
+
+  private _isAllSelected = false;
 
   ngOnInit(): void {
     if (!this.formGroup) {
       this.initDummyForm();
     }
     if (this.value) {
-      this.formGroup.get(this.controlName!)?.setValue(this.value);
+      this.getFormControlName()?.setValue(this.value);
     }
   }
 
@@ -92,13 +99,29 @@ export class SelectComponent<TYPE> implements OnInit, OnChanges {
     };
   }
 
-  isAllSelected(): boolean {
-    // console.log("isAllSelected is clicked");
-    // return true;
-    // const returnValue : boolean = this.formGroup.value.dummy && this.options.length
-    //   && this.formGroup.value.dummy.length === this.options.length;
-    const returnValue: boolean = this.allCountries.length === 76;
-    return returnValue;
+  getFormControlName() {
+    return this.formGroup.get(this.controlName!);
+  }
+
+  toggleAllSelection() {
+    if (this.allSelected.selected) {
+      this.getFormControlName()?.setValue(this.options);
+      this.allSelected.select();
+      this._isAllSelected = true;
+    } else {
+      this.getFormControlName()?.setValue([]);
+    }
+  }
+
+  deselectAllCheckboxUnlessAllSelected() {
+    if (this._isAllSelected) {
+      if (this.allSelected.selected) {
+        this.allSelected.deselect();
+      }
+      if (this.getFormControlName()?.value.length == this.options.length) {
+        this.allSelected.select();
+      }
+    }
   }
 
   private initDummyForm() {
