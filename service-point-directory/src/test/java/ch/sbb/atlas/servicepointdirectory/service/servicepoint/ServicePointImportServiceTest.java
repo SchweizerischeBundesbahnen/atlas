@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
-import ch.sbb.atlas.imports.servicepoint.model.ServicePointItemImportResult;
+import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
 import ch.sbb.atlas.model.controller.IntegrationTest;
