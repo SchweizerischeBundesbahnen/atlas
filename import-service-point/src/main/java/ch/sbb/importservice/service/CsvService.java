@@ -2,13 +2,17 @@ package ch.sbb.importservice.service;
 
 import static ch.sbb.importservice.service.JobHelperService.MIN_LOCAL_DATE;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_SERVICE_POINT_CSV_JOB_NAME;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_TRAFFIC_POINT_CSV_JOB_NAME;
 
 import ch.sbb.atlas.amazon.service.AmazonBucket;
+import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.imports.DidokCsvMapper;
 import ch.sbb.atlas.imports.servicepoint.BaseDidokCsvModel;
 import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
+import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointCsvModelContainer;
+import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointElementCsvModel;
 import ch.sbb.importservice.exception.CsvException;
 import com.fasterxml.jackson.databind.MappingIterator;
 import java.io.BufferedReader;
@@ -16,8 +20,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -34,9 +39,9 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class CsvService {
 
-  public static final String DINSTELLE_FILE_PREFIX = "DIDOK3_DIENSTSTELLEN_ALL_V_3_";
+  public static final String DIENSTELLEN_FILE_PREFIX = "DIDOK3_DIENSTSTELLEN_ALL_V_3_";
   public static final String LADESTELLEN_FILE_PREFIX = "DIDOK3_LADESTELLEN_";
-  private static final String CSV_DATE_TIME_FORMATTING = "yyyy-MM-dd HH:mm:ss";
+  public static final String VERKEHRSPUNKTELEMENTE_FILE_PREFIX = "DIDOK3_VERKEHRSPUNKTELEMENTE_ALL_V_1_";
   private static final String HASHTAG = "#";
   private static final String CSV_DELIMITER = ";";
   private static final String EDITED_AT_COLUMN_NAME = "GEAENDERT_AM";
@@ -45,7 +50,7 @@ public class CsvService {
 
   public List<ServicePointCsvModelContainer> getActualServicePointCsvModelsFromS3() {
     log.info("Downloading file from Amazon S3 Bucket: {}", AmazonBucket.EXPORT);
-    File file = fileHelperService.downloadImportFileFromS3(DINSTELLE_FILE_PREFIX);
+    File file = fileHelperService.downloadImportFileFromS3(DIENSTELLEN_FILE_PREFIX);
     LocalDate matchingDate = jobHelperService.getDateForImportFileToDownload(IMPORT_SERVICE_POINT_CSV_JOB_NAME);
     log.info("CSV File to import: {}", file.getName());
     List<ServicePointCsvModel> servicePointCsvModels = getCsvModelsToUpdate(file, matchingDate, ServicePointCsvModel.class);
@@ -64,16 +69,16 @@ public class CsvService {
 
   private List<ServicePointCsvModelContainer> mapToServicePointCsvModelContainers(
       List<ServicePointCsvModel> servicePointCsvModels) {
-    Map<Integer, List<ServicePointCsvModel>> servicePointGrouppedByDidokCode = servicePointCsvModels.stream()
+    Map<Integer, List<ServicePointCsvModel>> servicePointGroupedByDidokCode = servicePointCsvModels.stream()
         .collect(Collectors.groupingBy(ServicePointCsvModel::getDidokCode));
     List<ServicePointCsvModelContainer> servicePointCsvModelContainers = new ArrayList<>();
-    servicePointGrouppedByDidokCode.forEach((key, value) -> {
+    servicePointGroupedByDidokCode.forEach((key, value) -> {
       ServicePointCsvModelContainer servicePointCsvModelContainer = ServicePointCsvModelContainer.builder()
           .didokCode(key)
           .servicePointCsvModelList(value)
           .build();
       servicePointCsvModelContainer.mergeVersionsIsNotVirtualAndHasNotGeolocation();
-      servicePointCsvModelContainer.mergeHasJustBezeichnungDiff();
+      servicePointCsvModelContainer.mergeHasNotBezeichnungDiff();
       value.sort(Comparator.comparing(BaseDidokCsvModel::getValidFrom));
       servicePointCsvModelContainers.add(servicePointCsvModelContainer);
     });
@@ -94,6 +99,49 @@ public class CsvService {
         LoadingPointCsvModel.class);
     log.info("Found {} Loading Points to send to ServicePointDirectory", loadingPointCsvModels.size());
     return loadingPointCsvModels;
+  }
+
+  public List<TrafficPointElementCsvModel> getActualTrafficPointCsvModels(File file) {
+    log.info("Starting Traffic Point import process");
+    log.info("CSV File to import: {}", file.getName());
+    List<TrafficPointElementCsvModel> trafficPointElementCsvModels = getCsvModelsToUpdate(file, MIN_LOCAL_DATE,
+        TrafficPointElementCsvModel.class);
+    log.info("Found {} Traffic Points to send to ServicePointDirectory", trafficPointElementCsvModels.size());
+    return trafficPointElementCsvModels;
+  }
+
+  public List<TrafficPointElementCsvModel> getActualTrafficPointCsvModelsFromS3() {
+    log.info("Downloading file from Amazon S3 Bucket: {}", AmazonBucket.EXPORT);
+    File importFile = fileHelperService.downloadImportFileFromS3(VERKEHRSPUNKTELEMENTE_FILE_PREFIX);
+    LocalDate matchingDate = jobHelperService.getDateForImportFileToDownload(IMPORT_TRAFFIC_POINT_CSV_JOB_NAME);
+    log.info("CSV File to import: {}", importFile.getName());
+    List<TrafficPointElementCsvModel> trafficPointElementCsvModels = getCsvModelsToUpdate(importFile, matchingDate,
+        TrafficPointElementCsvModel.class);
+    log.info("Found {} Traffic Points to send to ServicePointDirectory", trafficPointElementCsvModels.size());
+    fileHelperService.deleteConsumedFile(importFile);
+    return trafficPointElementCsvModels;
+  }
+
+  public List<TrafficPointCsvModelContainer> mapToTrafficPointCsvModelContainers(
+      List<TrafficPointElementCsvModel> trafficPointElementCsvModels) {
+    final Map<String, List<TrafficPointElementCsvModel>> trafficPointsGroupedBySloid = trafficPointElementCsvModels
+        .stream()
+        .collect(Collectors.groupingBy(TrafficPointElementCsvModel::getSloid));
+
+    return trafficPointsGroupedBySloid
+        .keySet()
+        .stream()
+        .map(sloid -> {
+          final List<TrafficPointElementCsvModel> trafficPointCsvModelGroup = trafficPointsGroupedBySloid.get(sloid);
+          trafficPointCsvModelGroup.sort(Comparator.comparing(BaseDidokCsvModel::getValidFrom));
+          final TrafficPointCsvModelContainer trafficPointCsvModelContainer = TrafficPointCsvModelContainer
+              .builder()
+              .sloid(sloid)
+              .trafficPointCsvModelList(trafficPointCsvModelGroup)
+              .build();
+          trafficPointCsvModelContainer.mergeWhenDatesAreSequentialAndModelsAreEqual();
+          return trafficPointCsvModelContainer;
+        }).collect(Collectors.toList());
   }
 
   public <T> List<T> getCsvModelsToUpdate(File importFile, LocalDate matchingDate, Class<T> type) {
@@ -143,14 +191,21 @@ public class CsvService {
     String line;
     while ((line = bufferedReader.readLine()) != null) {
       String[] splittedLine = line.split(CSV_DELIMITER);
-      LocalDate lastEditionDate = LocalDateTime.parse(splittedLine[editedAtColumnIndex],
-          DateTimeFormatter.ofPattern(CSV_DATE_TIME_FORMATTING) // TODO: mby error handling
-      ).toLocalDate();
-      boolean dateMatchedBetweenTodayAndMatchingDate = jobHelperService.isDateMatchedBetweenTodayAndMatchingDate(matchingDate,
-          lastEditionDate);
-      if (dateMatchedBetweenTodayAndMatchingDate) {
-        mismatchedLines.add(line);
+
+      DateTimeFormatterBuilder dateTimeFormatterBuilder = new DateTimeFormatterBuilder().append(DateTimeFormatter.ofPattern(
+          "[" + AtlasApiConstants.DATE_TIME_FORMAT_PATTERN + "][" + AtlasApiConstants.DATE_FORMAT_PATTERN + "]"));
+      DateTimeFormatter dateTimeFormatter = dateTimeFormatterBuilder.toFormatter();
+      try {
+        LocalDate lastEditionDate = LocalDate.parse(splittedLine[editedAtColumnIndex], dateTimeFormatter);
+        boolean dateMatchedBetweenTodayAndMatchingDate = jobHelperService.isDateMatchedBetweenTodayAndMatchingDate(matchingDate,
+            lastEditionDate);
+        if (dateMatchedBetweenTodayAndMatchingDate) {
+          mismatchedLines.add(line);
+        }
+      } catch (DateTimeParseException e) {
+        log.error("Could not parse date, will ignore this line for mismatchedLines, line: " + line, e);
       }
+
     }
     return mismatchedLines;
   }
