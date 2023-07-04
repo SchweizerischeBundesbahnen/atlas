@@ -104,7 +104,12 @@ export class UserPermissionManager {
 
   clearPermissionRestrictionsIfNotWriterAndNotSepodi(): void {
     this.userPermission.permissions.forEach((permission) => {
-      if (permission.application != 'SEPODI' && permission.role !== 'WRITER') {
+      if (
+        !(
+          permission.role === 'WRITER' ||
+          (permission.role === 'SUPER_USER' && permission.application === 'SEPODI')
+        )
+      ) {
         permission.permissionRestrictions = [];
       }
     });
