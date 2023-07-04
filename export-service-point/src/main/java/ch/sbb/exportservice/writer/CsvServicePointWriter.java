@@ -1,6 +1,5 @@
 package ch.sbb.exportservice.writer;
 
-import static ch.sbb.atlas.export.CsvExportWriter.UTF_8_BYTE_ORDER_MARK;
 import static ch.sbb.exportservice.model.ServicePointVersionCsvModel.Fields.numberShort;
 
 import ch.sbb.exportservice.model.ExportExtensionFileType;
@@ -57,8 +56,7 @@ public class CsvServicePointWriter {
       }
     });
     writer.setHeaderCallback(new CsvFlatFileHeaderCallback(CSV_HEADER));
-    writer.setFooterCallback(writer1 -> writer1.append(UTF_8_BYTE_ORDER_MARK));
-    writer.setEncoding(StandardCharsets.ISO_8859_1.name());
+    writer.setEncoding(StandardCharsets.UTF_8.name());
     return writer;
   }
 

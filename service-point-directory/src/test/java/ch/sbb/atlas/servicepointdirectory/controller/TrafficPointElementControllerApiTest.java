@@ -1,11 +1,17 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.atlas.imports.servicepoint.BaseDidokCsvModel;
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
+import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointCsvModelContainer;
+import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointElementCsvModel;
+import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointImportRequestModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
@@ -13,8 +19,13 @@ import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion.Fields;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
 import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepository;
+import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementImportService;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -97,6 +108,79 @@ public class TrafficPointElementControllerApiTest extends BaseControllerApiTest 
   void shouldFailOnInvalidTrafficPointElementNumber() throws Exception {
     mvc.perform(get("/v1/traffic-point-elements/123"))
         .andExpect(status().isNotFound());
+  }
+
+  @Test
+  void shouldImportTrafficPointsSuccessfully() throws Exception {
+    try (InputStream csvStream = this.getClass().getResourceAsStream("/VERKEHRSPUNKTELEMENTE_VERSIONING.csv")) {
+      // given
+      List<TrafficPointElementCsvModel> trafficPointElementCsvModels = TrafficPointElementImportService.parseTrafficPointElements(
+          csvStream);
+      List<TrafficPointElementCsvModel> trafficPointElementCsvModelsOrderedByValidFrom
+          = trafficPointElementCsvModels.stream()
+          .sorted(Comparator.comparing(BaseDidokCsvModel::getValidFrom))
+          .toList();
+      String sloid = trafficPointElementCsvModels.get(0).getSloid();
+      TrafficPointImportRequestModel importRequestModel = new TrafficPointImportRequestModel(
+          List.of(
+              TrafficPointCsvModelContainer
+                  .builder()
+                  .trafficPointCsvModelList(trafficPointElementCsvModelsOrderedByValidFrom)
+                  .sloid(sloid)
+                  .build()
+          )
+      );
+      String jsonString = mapper.writeValueAsString(importRequestModel);
+
+      // when
+      mvc.perform(post("/v1/traffic-point-elements/import")
+              .content(jsonString)
+              .contentType(contentType))
+          // then
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$", hasSize(2)));
+    }
+  }
+
+  @Test
+  void shouldReturnBadRequestOnEmptyListImportRequest() throws Exception {
+    // given
+    TrafficPointImportRequestModel importRequestModel = new TrafficPointImportRequestModel(
+        Collections.emptyList()
+    );
+    String jsonString = mapper.writeValueAsString(importRequestModel);
+
+    // when
+    mvc.perform(post("/v1/traffic-point-elements/import")
+            .content(jsonString)
+            .contentType(contentType))
+        // then
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")));
+  }
+
+  @Test
+  void shouldReturnBadRequestOnNullListImportRequest() throws Exception {
+    // given
+    TrafficPointImportRequestModel importRequestModel = new TrafficPointImportRequestModel();
+    String jsonString = mapper.writeValueAsString(importRequestModel);
+
+    // when
+    mvc.perform(post("/v1/traffic-point-elements/import")
+            .content(jsonString)
+            .contentType(contentType))
+        // then
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")));
+  }
+
+  @Test
+  void shouldReturnBadRequestOnNullImportRequestModel() throws Exception {
+    // given & when
+    mvc.perform(post("/v1/traffic-point-elements/import")
+            .contentType(contentType))
+        // then
+        .andExpect(status().isBadRequest());
   }
 
 }

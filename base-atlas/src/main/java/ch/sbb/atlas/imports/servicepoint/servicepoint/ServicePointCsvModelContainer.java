@@ -4,7 +4,9 @@ import static java.util.Comparator.comparing;
 
 import ch.sbb.atlas.versioning.date.DateHelper;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,69 +25,71 @@ public class ServicePointCsvModelContainer {
 
   private static final String MERGE_NO_VIRTUAL_NO_GEOLOCATION = "[MERGE-NO-VIRTUAL-NO-GEOLOCATION] - ";
   private static final String MERGE_HAS_JUST_BEZEICHNUNG_DIFF = "[MERGE-HAS-JUST-BEZEICHNUNG-DIFF] - ";
+
   private Integer didokCode;
-
-  private boolean hasMergedVersionNotVirtualWithoutGeolocation;
-
   private List<ServicePointCsvModel> servicePointCsvModelList;
+  private boolean hasMergedVersionNotVirtualWithoutGeolocation;
   private boolean hasJustBezeichnungDiffMerged;
 
   public void mergeVersionsIsNotVirtualAndHasNotGeolocation() {
     if (this.servicePointCsvModelList.size() > 1) {
       this.servicePointCsvModelList.sort(comparing(ServicePointCsvModel::getValidFrom));
-      for (int i = 1; i < this.servicePointCsvModelList.size(); i++) {
-        int currentIndex = i - 1;
-        ServicePointCsvModel current = this.servicePointCsvModelList.get(currentIndex);
-        ServicePointCsvModel next = this.servicePointCsvModelList.get(i);
-        if (DateHelper.areDatesSequential(current.getValidTo(), next.getValidFrom()) && current.equals(next)) {
-          checkIfMergeVersionsNotVirtualAndHasNotGeolocation(current, next, currentIndex);
+      final List<ServicePointCsvModel> servicePointCsvModelListMerged = new ArrayList<>(
+          List.of(this.servicePointCsvModelList.get(0))
+      );
+      for (int currentIndex = 1; currentIndex < this.servicePointCsvModelList.size(); currentIndex++) {
+        final ServicePointCsvModel previous = servicePointCsvModelListMerged.get(servicePointCsvModelListMerged.size() - 1);
+        final ServicePointCsvModel current = this.servicePointCsvModelList.get(currentIndex);
+        if (DateHelper.areDatesSequential(previous.getValidTo(), current.getValidFrom())
+            && current.equals(previous)
+            && checkIfMergeVersionsNotVirtualAndHasNotGeolocation(previous, current)) {
+          this.hasMergedVersionNotVirtualWithoutGeolocation = true;
+          removeCurrentVersionIncreaseNextValidTo(MERGE_NO_VIRTUAL_NO_GEOLOCATION, previous, current);
+        } else {
+          servicePointCsvModelListMerged.add(current);
         }
       }
+      this.servicePointCsvModelList = servicePointCsvModelListMerged;
     }
   }
 
-  public void mergeHasJustBezeichnungDiff() {
+  public void mergeHasNotBezeichnungDiff() {
     if (this.servicePointCsvModelList.size() > 1) {
       this.servicePointCsvModelList.sort(comparing(ServicePointCsvModel::getValidFrom));
-      for (int i = 1; i < this.servicePointCsvModelList.size(); i++) {
-        int currentIndex = i - 1;
-        ServicePointCsvModel current = this.servicePointCsvModelList.get(currentIndex);
-        ServicePointCsvModel next = this.servicePointCsvModelList.get(i);
-        if (DateHelper.areDatesSequential(current.getValidTo(), next.getValidFrom()) && current.equals(next)) {
-          checkIfMergeHasJustBezeichnungDiff(current, next, currentIndex);
+      final List<ServicePointCsvModel> servicePointCsvModelListMerged = new ArrayList<>(
+          List.of(this.servicePointCsvModelList.get(0))
+      );
+      for (int currentIndex = 1; currentIndex < this.servicePointCsvModelList.size(); currentIndex++) {
+        final ServicePointCsvModel previous = servicePointCsvModelListMerged.get(servicePointCsvModelListMerged.size() - 1);
+        final ServicePointCsvModel current = this.servicePointCsvModelList.get(currentIndex);
+        if (DateHelper.areDatesSequential(previous.getValidTo(), current.getValidFrom())
+            && current.equals(previous)
+            && !hasBezeichnungDiff(previous, current)) {
+          this.hasJustBezeichnungDiffMerged = true;
+          removeCurrentVersionIncreaseNextValidTo(MERGE_HAS_JUST_BEZEICHNUNG_DIFF, previous, current);
+        } else {
+          servicePointCsvModelListMerged.add(current);
         }
       }
+      this.servicePointCsvModelList = servicePointCsvModelListMerged;
     }
   }
 
-  void checkIfMergeVersionsNotVirtualAndHasNotGeolocation(ServicePointCsvModel current, ServicePointCsvModel next,
-      int currentIndex) {
-    if ((isNotVirtualAndHasNotGeolocation(current) || isNotVirtualAndHasNotGeolocation(next))) {
-      this.hasMergedVersionNotVirtualWithoutGeolocation = true;
-      removeCurrentVersionIncreaseNextValidTo(MERGE_NO_VIRTUAL_NO_GEOLOCATION, current, next, currentIndex);
-    }
-  }
-
-  private void checkIfMergeHasJustBezeichnungDiff(ServicePointCsvModel current, ServicePointCsvModel next,
-      int currentIndex) {
-    if (hasJustBezeichnungDiff(current, next)) {
-      this.hasJustBezeichnungDiffMerged = true;
-      removeCurrentVersionIncreaseNextValidTo(MERGE_HAS_JUST_BEZEICHNUNG_DIFF, current, next, currentIndex);
-
-    }
+  boolean checkIfMergeVersionsNotVirtualAndHasNotGeolocation(ServicePointCsvModel previous, ServicePointCsvModel current) {
+    return isNotVirtualAndHasNotGeolocation(previous) || isNotVirtualAndHasNotGeolocation(current);
   }
 
   private boolean isNotVirtualAndHasNotGeolocation(ServicePointCsvModel servicePointCsvModel) {
-    return !servicePointCsvModel.getIsVirtuell()
-        && hasGeolocation(servicePointCsvModel);
+    return !servicePointCsvModel.getIsVirtuell() && hasNoGeolocation(servicePointCsvModel);
   }
 
-  private boolean hasJustBezeichnungDiff(ServicePointCsvModel corrent, ServicePointCsvModel next) {
-    return (corrent.getBezeichnung17() == null && next.getBezeichnung17() != null)
-        || (corrent.getBezeichnung17() != null && next.getBezeichnung17() == null);
+  private boolean hasBezeichnungDiff(ServicePointCsvModel previous, ServicePointCsvModel current) {
+    return Objects.nonNull(previous.getBezeichnung17())
+        && Objects.nonNull(current.getBezeichnung17())
+        && !previous.getBezeichnung17().equals(current.getBezeichnung17());
   }
 
-  private boolean hasGeolocation(ServicePointCsvModel servicePointCsvModel) {
+  private boolean hasNoGeolocation(ServicePointCsvModel servicePointCsvModel) {
     return servicePointCsvModel.getELv03() == null
         && servicePointCsvModel.getNLv03() == null
         && servicePointCsvModel.getELv95() == null
@@ -94,14 +98,13 @@ public class ServicePointCsvModelContainer {
         && servicePointCsvModel.getNWgs84() == null;
   }
 
-  private void removeCurrentVersionIncreaseNextValidTo(String mergeType, ServicePointCsvModel current,
-      ServicePointCsvModel next, int currentIndex) {
+  private void removeCurrentVersionIncreaseNextValidTo(String mergeType, ServicePointCsvModel previous,
+      ServicePointCsvModel current) {
     log.info(mergeType + "Found versions to merge with number {}", this.didokCode);
-    log.info(mergeType + "Version-1 [{}]-[{}]", current.getValidFrom(), current.getValidTo());
-    log.info(mergeType + "Version-2 [{}]-[{}]", next.getValidFrom(), next.getValidTo());
-    next.setValidFrom(current.getValidFrom());
-    log.info(mergeType + "Version merged [{}]-[{}]", next.getValidFrom(), next.getValidTo());
-    this.servicePointCsvModelList.remove(currentIndex);
+    log.info(mergeType + "Version-1 [{}]-[{}]", previous.getValidFrom(), previous.getValidTo());
+    log.info(mergeType + "Version-2 [{}]-[{}]", current.getValidFrom(), current.getValidTo());
+    previous.setValidTo(current.getValidTo());
+    log.info(mergeType + "Version merged [{}]-[{}]", previous.getValidFrom(), current.getValidTo());
   }
 
 }

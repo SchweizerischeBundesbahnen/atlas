@@ -94,11 +94,6 @@ mail:
   receiver:
     import-service-point: TechSupport-ATLAS@sbb.ch
 
-batch:
-  config:
-    service-point-directory:
-      chuck-size: 20
-
 amazon:
   region: "eu-central-1"
   bucketConfigs:
