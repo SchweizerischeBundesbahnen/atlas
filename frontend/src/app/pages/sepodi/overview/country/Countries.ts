@@ -75,7 +75,7 @@ export class Countries {
     { short: 'ZBH', uicCode: 89, enumCountry: Country.BosniaAndHerzegovinaRailway, path: 'zbh' },
     { short: 'AF', uicCode: 68, enumCountry: Country.Afghanistan, path: 'af' },
     { short: 'AL', uicCode: 41, enumCountry: Country.Albania, path: 'al' },
-    { short: 'DZ', uicCode: 22, enumCountry: Country.Algeria, path: 'dz' },
+    { short: 'DZ', uicCode: 92, enumCountry: Country.Algeria, path: 'dz' },
     { short: 'AM', uicCode: 58, enumCountry: Country.Armenia, path: 'am' },
     { short: 'AU', uicCode: 4, enumCountry: Country.Australia, path: 'au' },
     { short: 'AT', uicCode: 81, enumCountry: Country.Austria, path: 'at' },
@@ -87,21 +87,6 @@ export class Countries {
     path: 'az',
     enumCountry: 'AZERBAIJAN' as Country,
   };
-
-  public static allCountries: CountryName[] = [Countries.swiss].concat(Countries.countryNames);
-
-  public static getCountryEnum(country: string | null): Country | undefined {
-    if (!country) {
-      return undefined;
-    }
-    const foundCountry = Countries.allCountries.find((c) => {
-      return c.short.toLowerCase() === country?.toLowerCase();
-    });
-    if (!foundCountry) {
-      return undefined;
-    }
-    return foundCountry.enumCountry;
-  }
 
   public static fromCountry(country: Country | undefined): CountryName | undefined {
     return this.countryNames.find((countryName) => countryName.enumCountry === country);
