@@ -24,7 +24,7 @@
     "type": "git",
     "url": "git+https://code.sbb.ch/scm/ki_atlas/atlas-frontend.git"
   },
-  "version": "1.304.0",
+  "version": "1.309.0",
   "files": [
     "dist/*"
   ],
@@ -62,9 +62,6 @@
     "tslib": "^2.6",
     "zone.js": "^0.13"
   },
-  "optionalDependencies": {
-    "puppeteer": "^20.7"
-  },
   "devDependencies": {
     "@angular-devkit/architect": "0.x",
     "@angular-devkit/build-angular": "16.1.1",
@@ -99,5 +96,8 @@
     "lint-staged": "^13.2",
     "prettier": "^2.8",
     "typescript": "^5.1"
+  },
+  "optionalDependencies": {
+    "puppeteer": "^20.7.4"
   }
 }

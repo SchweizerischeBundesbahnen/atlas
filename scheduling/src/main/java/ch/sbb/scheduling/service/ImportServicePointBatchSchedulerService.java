@@ -19,7 +19,7 @@ public class ImportServicePointBatchSchedulerService extends BaseSchedulerServic
 
   public ImportServicePointBatchSchedulerService(ImportServicePointBatchClient importServicePointBatchClient) {
     this.importServicePointBatchClient = importServicePointBatchClient;
-    this.clientName = "ImportServicePointBatch-Client";
+    this.clientName = "ImportServicePoint-Client";
   }
 
   @SpanTracing
@@ -27,9 +27,19 @@ public class ImportServicePointBatchSchedulerService extends BaseSchedulerServic
   @Backoff(delay = 65000))
   @Scheduled(cron = "${scheduler.import-service-point.service-point-trigger-batch.chron}", zone = "${scheduler.zone}")
   @SchedulerLock(name = "triggerImportServicePointBatch", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
-  public Response postTriggerImportServicePointBatch() {
-    return executeRequest(importServicePointBatchClient::postTriggerImportServicePointBatch,
+  public Response triggerImportServicePointBatch() {
+    return executeRequest(importServicePointBatchClient::triggerImportServicePointBatch,
         "Trigger Import Service Point Batch");
+  }
+
+  @SpanTracing
+  @Retryable(label = "triggerImportTrafficPointBatch", retryFor = SchedulingExecutionException.class, maxAttempts = 4, backoff =
+  @Backoff(delay = 65000))
+  @Scheduled(cron = "${scheduler.import-service-point.traffic-point-trigger-batch.chron}", zone = "${scheduler.zone}")
+  @SchedulerLock(name = "triggerImportTrafficPointBatch", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
+  public Response triggerImportTrafficPointBatch() {
+    return executeRequest(importServicePointBatchClient::triggerImportTrafficPointBatch,
+        "Trigger Import Traffic Point Batch");
   }
 
 }
