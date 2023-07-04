@@ -9,6 +9,7 @@ import { TimetableHearingService } from '../../../../api';
 import { TthChangeCantonFormGroup } from './model/tth-change-canton-form-group';
 import { ChangeCantonData } from './model/change-canton-data';
 import { takeUntil } from 'rxjs/operators';
+import { ValidationService } from 'src/app/core/validation/validation.service';
 
 @Component({
   selector: 'app-tth-change-canton-dialog',
@@ -16,10 +17,7 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class TthChangeCantonDialogComponent {
   formGroup = new FormGroup<TthChangeCantonFormGroup>({
-    comment: new FormControl('', [
-      AtlasFieldLengthValidator.length_280,
-      WhitespaceValidator.blankOrEmptySpaceSurrounding,
-    ]),
+    comment: new FormControl('', [AtlasFieldLengthValidator.length_280]),
   });
 
   private ngUnsubscribe = new Subject<void>();
@@ -33,6 +31,7 @@ export class TthChangeCantonDialogComponent {
 
   onClick() {
     let comment: string | undefined;
+    ValidationService.validateForm(this.formGroup);
     if (this.formGroup.valid) {
       if (this.formGroup.controls['comment'].value) {
         comment = this.formGroup.controls['comment'].value;
