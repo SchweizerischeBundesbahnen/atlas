@@ -8,6 +8,7 @@ import { WhitespaceValidator } from '../../../../core/validation/whitespace/whit
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { Subject, takeUntil } from 'rxjs';
 import { TthChangeStatusFormGroup } from './model/tth-change-status-form-group';
+import { ValidationService } from 'src/app/core/validation/validation.service';
 
 @Component({
   selector: 'app-tth-change-status-dialog',
@@ -15,10 +16,7 @@ import { TthChangeStatusFormGroup } from './model/tth-change-status-form-group';
 })
 export class TthChangeStatusDialogComponent {
   formGroup = new FormGroup<TthChangeStatusFormGroup>({
-    justification: new FormControl(this.data.justification, [
-      AtlasFieldLengthValidator.statement,
-      WhitespaceValidator.blankOrEmptySpaceSurrounding,
-    ]),
+    justification: new FormControl(this.data.justification, [AtlasFieldLengthValidator.statement]),
   });
   private ngUnsubscribe = new Subject<void>();
 
@@ -31,6 +29,7 @@ export class TthChangeStatusDialogComponent {
 
   onClick(): void {
     let justification: string | undefined;
+    ValidationService.validateForm(this.formGroup);
     if (this.formGroup.valid) {
       if (this.formGroup.controls['justification'].value) {
         justification = this.formGroup.controls['justification'].value;
