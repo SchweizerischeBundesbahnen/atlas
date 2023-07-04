@@ -3,6 +3,8 @@ package ch.sbb.atlas.servicepointdirectory.migration;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,19 +36,28 @@ public class ServicePointMappingEquality {
     assertThat(atlasCsvLine.isTrafficPoint()).isEqualTo(didokCsvLine.getIsVerkehrspunkt());
     assertThat(atlasCsvLine.isBorderPoint()).isEqualTo(didokCsvLine.getIsGrenzpunkt());
 
-    performEqualityCheckOnGeoLocation(didokCsvLine, atlasCsvLine);
+    assertThat(atlasCsvLine.getSboid()).isEqualTo("ch:1:sboid:" + didokCsvLine.getSaid());
+    // TODO: GO Nummer 1056 expected for DS: 56134502
+    // assertThat(atlasCsvLine.getBusinessOrganisationOrganisationNumber()).isEqualTo(didokCsvLine.getGoNummer());
 
-    //    assertThat(atlasCsvLine.businessOrganisationOrganisationNumber).isEqualTo(didokCsvLine.GO_NUMMER);
-    //    assertThat(atlasCsvLine.businessOrganisation.abbreviationDe).isEqualTo(didokCsvLine.GO_ABKUERZUNG_DE);
-    //    assertThat(atlasCsvLine.businessOrganisation.abbreviationFr).isEqualTo(didokCsvLine.GO_ABKUERZUNG_FR);
-    //    assertThat(atlasCsvLine.businessOrganisation.abbreviationIt).isEqualTo(didokCsvLine.GO_ABKUERZUNG_IT);
-    //    assertThat(atlasCsvLine.businessOrganisation.abbreviationEn).isEqualTo(didokCsvLine.GO_ABKUERZUNG_EN);
-    //    assertThat(atlasCsvLine.businessOrganisation.descriptionDe).isEqualTo(didokCsvLine.GO_BEZEICHNUNG_DE);
-    //    assertThat(atlasCsvLine.businessOrganisation.descriptionFr).isEqualTo(didokCsvLine.GO_BEZEICHNUNG_FR);
-    //    assertThat(atlasCsvLine.businessOrganisation.descriptionIt).isEqualTo(didokCsvLine.GO_BEZEICHNUNG_IT);
-    //    assertThat(atlasCsvLine.businessOrganisation.descriptionEn).isEqualTo(didokCsvLine.GO_BEZEICHNUNG_EN);
+    // TODO: Warum werden die BO Infos nicht ins atlas csv gemappt?
+    /*
+    assertThat(atlasCsvLine.getBusinessOrganisationAbbreviationDe()).isEqualTo(didokCsvLine.getGoAbkuerzungDe());
+    assertThat(atlasCsvLine.getBusinessOrganisationAbbreviationFr()).isEqualTo(didokCsvLine.getGoAbkuerzungFr());
+    assertThat(atlasCsvLine.getBusinessOrganisationAbbreviationIt()).isEqualTo(didokCsvLine.getGoAbkuerzungIt());
+    assertThat(atlasCsvLine.getBusinessOrganisationAbbreviationEn()).isEqualTo(didokCsvLine.getGoAbkuerzungEn());
 
-    //    assertThat(atlasCsvLine.operatingPointTypeCode).isEqualTo(didokCsvLine.BP_BETRIEBSPUNKT_ART_ID);
+    assertThat(atlasCsvLine.getBusinessOrganisationDescriptionDe()).isEqualTo(didokCsvLine.getGoBezeichnungDe());
+    assertThat(atlasCsvLine.getBusinessOrganisationDescriptionFr()).isEqualTo(didokCsvLine.getGoBezeichnungFr());
+    assertThat(atlasCsvLine.getBusinessOrganisationDescriptionIt()).isEqualTo(didokCsvLine.getGoBezeichnungIt());
+    assertThat(atlasCsvLine.getBusinessOrganisationDescriptionEn()).isEqualTo(didokCsvLine.getGoBezeichnungEn());
+    */
+
+    if (atlasCsvLine.getOperatingPointTypeCode() != null) {
+      assertThat(atlasCsvLine.getOperatingPointTypeCode().getId()).isEqualTo(didokCsvLine.getBpBetriebspunktArtId());
+    } else {
+      assertThat(didokCsvLine.getBpBetriebspunktArtId()).isNull();
+    }
     //    assertThat(atlasCsvLine.operatingPointTechnicalTimetableTypeCode).isEqualTo(didokCsvLine.BPTF_BETRIEBSPUNKT_ART_ID);
     //    assertThat(atlasCsvLine.meansOfTransportCode).isEqualTo(didokCsvLine.BPVH_VERKEHRSMITTEL);
     //    assertThat(atlasCsvLine.categoriesCode).isEqualTo(didokCsvLine.DS_KATEGORIEN_IDS);
@@ -55,13 +66,15 @@ public class ServicePointMappingEquality {
     //    assertThat(atlasCsvLine.operatingPointKilometer).isEqualTo(didokCsvLine.IS_BPK);
     //    assertThat(atlasCsvLine.operatingPointKilometerMasterNumber).isEqualTo(didokCsvLine.BPK_MASTER);
     //    assertThat(atlasCsvLine.sort_code_of_destination_station).isEqualTo(didokCsvLine.RICHTPUNKT_CODE);
-    //    assertThat(atlasCsvLine.sboid).isEqualTo(didokCsvLine.IDENTIFIKATION);
 
+    // TODO: check after https://flow.sbb.ch/browse/ATLAS-1318 and https://flow.sbb.ch/browse/ATLAS-873
     //assertThat(atlasCsvLine.fotComment).isEqualTo(didokCsvLine.BAV_BEMERKUNG);
 
-    //assertThat(atlasCsvLine.creationDate).isEqualTo(didokCsvLine.ERSTELLT_AM);
-    //assertThat(atlasCsvLine.editionDate).isEqualTo(didokCsvLine.GEAENDERT_AM);
+    // TODO: geht nicht auf, Beispiel didokcode: 85945105, muss man anschauen warum ...
+    // assertThat(fromString(atlasCsvLine.getCreationDate())).isEqualTo(didokCsvLine.getCreatedAt().withSecond(0));
+    // assertThat(fromString(atlasCsvLine.getEditionDate())).isEqualTo(didokCsvLine.getEditedAt().withSecond(0));
 
+    performEqualityCheckOnGeoLocation(didokCsvLine, atlasCsvLine);
   }
 
   private static void performEqualityCheckOnGeoLocation(ServicePointCsvModel didokCsvLine,
@@ -69,7 +82,6 @@ public class ServicePointMappingEquality {
     //    assertThat(atlasCsvLine.getIsoCoutryCode()).isEqualTo(didokCsvLine.getIsoCountryCode());
     // TODO: Mapping -> CantonName in Atlas CSV is missing
     // cantonName	KANTONSNAME
-
 
     assertThat(atlasCsvLine.getCantonAbbreviation()).isEqualTo(didokCsvLine.getKantonsKuerzel());
 
@@ -98,5 +110,9 @@ public class ServicePointMappingEquality {
     //    assertThat(atlasCsvLine.wgs84web.east).isEqualTo(didokCsvLine.E_WGS84WEB);
     //    assertThat(atlasCsvLine.wgs84web.north).isEqualTo(didokCsvLine.N_WGS84WEB);
     //    assertThat(atlasCsvLine.height).isEqualTo(didokCsvLine.HEIGHT);
+  }
+
+  private LocalDateTime fromString(String string) {
+    return LocalDateTime.parse(string, DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"));
   }
 }
