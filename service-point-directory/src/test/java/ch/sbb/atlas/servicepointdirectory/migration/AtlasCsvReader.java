@@ -4,7 +4,6 @@ import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
 import com.fasterxml.jackson.databind.MappingIterator;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.experimental.UtilityClass;
@@ -15,8 +14,7 @@ public class AtlasCsvReader {
   public static List<ServicePointVersionCsvModel> parseAtlasServicePoints(InputStream inputStream)
       throws IOException {
     MappingIterator<ServicePointVersionCsvModel> mappingIterator = DidokCsvMapper.CSV_MAPPER.readerFor(
-        ServicePointVersionCsvModel.class).with(DidokCsvMapper.CSV_SCHEMA).readValues(new InputStreamReader(inputStream,
-        "UTF-8"));
+        ServicePointVersionCsvModel.class).with(DidokCsvMapper.CSV_SCHEMA).readValues(inputStream);
     List<ServicePointVersionCsvModel> servicePoints = new ArrayList<>();
 
     while (mappingIterator.hasNext()) {
