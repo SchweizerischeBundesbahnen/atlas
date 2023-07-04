@@ -30,11 +30,10 @@
           label="COMMON.COUNTRIES"
           [additionalLabelspace]="false"
           [optionTranslateLabelPrefix]="SWISS_COUNTRIES_PREFIX_LABEL"
-          [displayExtractor]="getCountryAbbreviation"
+          [displayExtractor]="getCountryEnum"
           [options]="COUNTRIES"
           [disabled]="readOnly"
           [multiple]="true"
-          (toggleSelection)="selectAllCountries1($event)"
           [checkAllEnabled]="true"
         >
         </atlas-select>
