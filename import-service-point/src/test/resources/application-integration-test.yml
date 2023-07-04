@@ -102,5 +102,3 @@ amazon:
       secretKey: ${AMAZON_S3_HEARING_DOCS_SECRET_KEY}
       bucketName: "atlas-hearing-documents-dev-dev"
       objectExpirationDays: 100000
-
-

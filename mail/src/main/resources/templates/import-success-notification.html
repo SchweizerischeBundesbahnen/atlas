@@ -115,13 +115,13 @@
     <div class="message mt-1" th:text="'The job ' + ${properties.get(0).get('jobName')} + ' was successfully executed.'"></div>
     <ul>
         <li><b th:text="'Step Execution Information: ' + ${properties.get(0).get('stepExecutionInformation')} "></b></li>
-        <li><b th:text="'Total Imported Service Point CSV lines: ' + ${properties.get(0).get('importProcessItemsSize')} "></b>
+        <li><b th:text="'Total Imported CSV lines: ' + ${properties.get(0).get('importProcessItemsSize')} "></b>
         </li>
         <li>
-            <b th:text="'Total Success Imported Service Point CSV lines: ' + ${properties.get(0).get('successImportedItemsSize')}  "></b>
+            <b th:text="'Total Success Imported CSV lines: ' + ${properties.get(0).get('successImportedItemsSize')}  "></b>
         </li>
         <li>
-            <b th:text="'Total Failed Imported Service Point CSV lines: ' + ${properties.get(0).get('failedImportedItemsSize')}"></b>
+            <b th:text="'Total Failed Imported CSV lines: ' + ${properties.get(0).get('failedImportedItemsSize')}"></b>
         </li>
     </ul>
 
@@ -131,7 +131,7 @@
     <div class='mt-1' th:if="${!properties.get(0).get('failedImportedItems').isEmpty()}">
         <table>
             <thead>
-            <caption>Imported Service Point items</caption>
+            <caption>Imported items</caption>
             <tr>
                 <th>Item Number</th>
                 <th>Response Status</th>
