@@ -144,6 +144,10 @@ public class ServicePointCsvModel extends BaseDidokCsvModel {
   @JsonDeserialize(using = NumericBooleanDeserializer.class)
   private Boolean operatingPointRouteNetwork;
 
+  @JsonProperty("IS_BPK")
+  @JsonDeserialize(using = NumericBooleanDeserializer.class)
+  private Boolean operatingPointKilometer;
+
   @JsonProperty("BPK_MASTER")
   private Integer operatingPointKilometerMaster;
 
