@@ -162,10 +162,12 @@ export class UserAdministrationApplicationConfigComponent implements OnInit, OnD
 
   countrySelectionChanged($event: MatSelectChange) {
     const values = $event.value as Country[];
-    const permissionRestriction = values.map((selection) => ({
-      valueAsString: selection,
-      type: PermissionRestrictionType.Country,
-    }));
+    const permissionRestriction = values
+      .filter((value) => value !== undefined)
+      .map((selection) => ({
+        valueAsString: selection,
+        type: PermissionRestrictionType.Country,
+      }));
     this.userPermissionManager.getPermissionByApplication(this.application).permissionRestrictions =
       permissionRestriction;
   }
