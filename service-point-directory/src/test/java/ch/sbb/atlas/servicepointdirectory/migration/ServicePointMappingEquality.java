@@ -60,20 +60,35 @@ public class ServicePointMappingEquality {
         } else {
             assertThat(didokCsvLine.getBpBetriebspunktArtId()).isNull();
         }
-        // TODO: DiDok=37 but ATLAS=UNKNOWN - find out DIDOK_CODE!
-        assertThat(atlasCsvLine.getOperatingPointTechnicalTimetableTypeCode()).isEqualTo(didokCsvLine.getBptfBetriebspunktArtId());
+
+        if (atlasCsvLine.getOperatingPointTechnicalTimetableTypeCode() != null) {
+            assertThat(atlasCsvLine.getOperatingPointTechnicalTimetableTypeCode().getId()).isEqualTo(didokCsvLine.getBptfBetriebspunktArtId());
+        } else {
+            assertThat(didokCsvLine.getBptfBetriebspunktArtId()).isNull();
+        }
 
         // TODO: Create mapping for DiDok to ATLAS, because e.g. DiDok=~Z~ and ATLAS=TRAIN
         //assertThat(atlasCsvLine.getMeansOfTransportCode()).isEqualTo(didokCsvLine.getBpvhVerkehrsmittel());
 
-        assertThat(atlasCsvLine.getCategoriesCode()).isEqualTo(didokCsvLine.getDsKategorienIds());
-        assertThat(atlasCsvLine.getOperatingPointTrafficPointTypeCode()).isEqualTo(didokCsvLine.getBpvbBetriebspunktArtId());
-        assertThat(atlasCsvLine.isOperatingPointRouteNetwork()).isEqualTo(didokCsvLine.getOperatingPointRouteNetwork());
-        // TODO: Is there a field called IS_BPK?
-        // assertThat(atlasCsvLine.isOperatingPointKilometer()).isEqualTo(didokCsvLine.IS_BPK);
+        // TODO: Mapping von ATLAS ("GSMR|MAINTENANCE_POINT|MIGRATION_MOBILE_EQUIPE") auf DiDok ("1|9|16") möglich machen
+        // assertThat(atlasCsvLine.getCategoriesCode()).isEqualTo(didokCsvLine.getDsKategorienIds());
+
+
+        if (atlasCsvLine.getOperatingPointTrafficPointTypeCode() != null) {
+            assertThat(atlasCsvLine.getOperatingPointTrafficPointTypeCode().getId()).isEqualTo(didokCsvLine.getBpvbBetriebspunktArtId());
+        } else {
+            assertThat(didokCsvLine.getBpvbBetriebspunktArtId()).isNull();
+        }
+
+        // TODO: For DIDOK_CODE=85173393 ATLAS=2x"FALSE" but DIDOK=1x"null" & 1x"0"
+        // assertThat(atlasCsvLine.isOperatingPointRouteNetwork()).isEqualTo(didokCsvLine.getOperatingPointRouteNetwork());
+
+        // TODO: For DIDOK_CODE=56134502 ATLAS=3x"TRUE", but DIDOK=3x"0"
+        // assertThat(atlasCsvLine.isOperatingPointKilometer()).isEqualTo(didokCsvLine.getOperatingPointKilometer());
 
         // TODO: DiDok=null but ATLAS=0, e.g. für DIDOK_CODE=56134502
         // assertThat(atlasCsvLine.getOperatingPointKilometerMasterNumber()).isEqualTo(didokCsvLine.getOperatingPointKilometerMaster());
+
         assertThat(atlasCsvLine.getSortCodeOfDestinationStation()).isEqualTo(didokCsvLine.getRichtpunktCode());
 
         // TODO: check after https://flow.sbb.ch/browse/ATLAS-1318 and https://flow.sbb.ch/browse/ATLAS-873
@@ -93,9 +108,7 @@ public class ServicePointMappingEquality {
         // cantonName	KANTONSNAME
 
         assertThat(atlasCsvLine.getCantonAbbreviation()).isEqualTo(didokCsvLine.getKantonsKuerzel());
-
-        // TODO: Commented out, because of UT8-Encoding problems
-        // assertThat(atlasCsvLine.getDistrictName()).isEqualTo(didokCsvLine.getBezirksName());
+        assertThat(atlasCsvLine.getDistrictName()).isEqualTo(didokCsvLine.getBezirksName());
 
         // TODO: Mapping -> cantonFsoNumber is missing in ATLAS-CSV, or is it the fsoNumber?
         //assertThat(atlasCsvLine.getFsoNumber()).isEqualTo(didokCsvLine.getKantonsNum());
@@ -103,25 +116,35 @@ public class ServicePointMappingEquality {
         // TODO: Commented out, because districtFsoName is 0 and bezirksNum is null
         // assertThat(atlasCsvLine.getDistrictFsoName()).isEqualTo(didokCsvLine.getBezirksNum());
 
-        // TODO: Commented out, because of UT8-Encoding problems
-        // assertThat(atlasCsvLine.getMunicipalityName()).isEqualTo(didokCsvLine.getGemeindeName());
+        assertThat(atlasCsvLine.getMunicipalityName()).isEqualTo(didokCsvLine.getGemeindeName());
 
         // TODO: Commented out, because getFsoNumber is 0 and getBfsNummer is null
         // assertThat(atlasCsvLine.getFsoNumber()).isEqualTo(didokCsvLine.getBfsNummer());
 
-        // TODO: Commented out, because of UT8-Encoding problems
-        // assertThat(atlasCsvLine.getLocalityName()).isEqualTo(didokCsvLine.getOrtschaftsName());
+        assertThat(atlasCsvLine.getLocalityName()).isEqualTo(didokCsvLine.getOrtschaftsName());
 
-        //    assertThat(atlasCsvLine.lv95.east).isEqualTo(didokCsvLine.E_LV95);
-        //    assertThat(atlasCsvLine.lv95.north).isEqualTo(didokCsvLine.N_LV95);
-        //    assertThat(atlasCsvLine.wgs84.east).isEqualTo(didokCsvLine.E_WGS84);
-        //    assertThat(atlasCsvLine.wgs84.north).isEqualTo(didokCsvLine.N_WGS84);
-        //    assertThat(atlasCsvLine.wgs84web.east).isEqualTo(didokCsvLine.E_WGS84WEB);
-        //    assertThat(atlasCsvLine.wgs84web.north).isEqualTo(didokCsvLine.N_WGS84WEB);
-        //    assertThat(atlasCsvLine.height).isEqualTo(didokCsvLine.HEIGHT);
+        assertThat(round(atlasCsvLine.getLv95East(), 5)).isEqualTo(didokCsvLine.getELv95());
+        assertThat(round(atlasCsvLine.getLv95North(), 5)).isEqualTo(didokCsvLine.getNLv95());
+
+        // TODO: Fix rounding
+//        assertThat(round(atlasCsvLine.getWgs84East(), 11)).isEqualTo(didokCsvLine.getEWgs84());
+//        assertThat(round(atlasCsvLine.getWgs84North(), 11)).isEqualTo(didokCsvLine.getNWgs84());
+
+        assertThat(round(atlasCsvLine.getWgs84WebEast(), 5)).isEqualTo(didokCsvLine.getEWgs84web());
+        assertThat(round(atlasCsvLine.getWgs84WebNorth(), 5)).isEqualTo(didokCsvLine.getNWgs84web());
+        assertThat(round(atlasCsvLine.getHeight(), 5)).isEqualTo(didokCsvLine.getHeight());
     }
 
     private LocalDateTime fromString(String string) {
         return LocalDateTime.parse(string, DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"));
+    }
+
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        long factor = (long) Math.pow(10, places);
+        value = value * factor;
+        long tmp = Math.round(value);
+        return (double) tmp / factor;
     }
 }
