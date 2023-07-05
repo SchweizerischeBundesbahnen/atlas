@@ -70,8 +70,6 @@ export class SelectComponent<TYPE> implements OnInit, OnChanges {
 
   @Output() selectChanged = new EventEmitter();
 
-  @Output() toggleSelection = new EventEmitter();
-
   @ViewChild('allSelected') private allSelected!: MatOption;
 
   private _isDummyForm = false;
@@ -106,10 +104,12 @@ export class SelectComponent<TYPE> implements OnInit, OnChanges {
   toggleAllSelection() {
     if (this.allSelected.selected) {
       this.getFormControlName()?.setValue(this.options);
+      this.selectChanged.emit({ value: this.options });
       this.allSelected.select();
       this._isAllSelected = true;
     } else {
       this.getFormControlName()?.setValue([]);
+      this.selectChanged.emit({ value: [] });
     }
   }
 
