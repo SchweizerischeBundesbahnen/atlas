@@ -61,13 +61,17 @@ public class ServicePointVersionCsvModel {
 
   private boolean hasGeolocation;
 
-  private String isoCoutryCode;
+  private String isoCountryCode;
+
+  private String cantonName;
+
+  private Integer cantonFsoNumber;
 
   private String cantonAbbreviation;
 
   private String districtName;
 
-  private Integer districtFsoName;
+  private Integer districtFsoNumber;
 
   private String municipalityName;
 
