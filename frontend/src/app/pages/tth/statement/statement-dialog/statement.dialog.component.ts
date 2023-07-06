@@ -6,6 +6,7 @@ import { Subject } from 'rxjs';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { StatementDetailFormGroup } from '../statement-detail-form-group';
 import { takeUntil } from 'rxjs/operators';
+import { ValidationService } from 'src/app/core/validation/validation.service';
 
 @Component({
   selector: 'app-dialog',
@@ -23,8 +24,11 @@ export class StatementDialogComponent {
 
   changeCantonAndAddComment() {
     const hearingStatement = this.form.value as TimetableHearingStatement;
-    this.updateStatement(this.form.value!.id!, hearingStatement);
-    this.dialogRef.close(true);
+    ValidationService.validateForm(this.form);
+    if (this.form.valid) {
+      this.updateStatement(this.form.value!.id!, hearingStatement);
+      this.dialogRef.close(true);
+    }
   }
 
   private updateStatement(id: number, statement: TimetableHearingStatement) {
