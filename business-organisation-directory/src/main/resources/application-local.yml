@@ -93,7 +93,7 @@ external:
     url: https://crd.rne.eu/CRD/services/CRDRFDataReplicationWS
     username: fs10651_li
     password: ${CRD_PASSWORD}
-    keystore: classpath:crd/newkeystore.jks
+    keystore: classpath:crd/keystore.jks
     keystore-password: ${CRD_KEYSTORE_PASSWORD}
     keystore-alias: atlas.app.sbb.ch
     truststore: classpath:crd/rne-truststore.jks
