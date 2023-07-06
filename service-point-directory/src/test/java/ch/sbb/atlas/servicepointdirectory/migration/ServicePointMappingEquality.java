@@ -4,10 +4,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.withPrecision;
 
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
+import ch.sbb.atlas.servicepoint.enumeration.Category;
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 @Slf4j
 @UtilityClass
@@ -65,11 +71,27 @@ public class ServicePointMappingEquality {
       assertThat(didokCsvLine.getBptfBetriebspunktArtId()).isNull();
     }
 
-    // TODO: Create mapping for DiDok to ATLAS, because e.g. DiDok=~Z~ and ATLAS=TRAIN
-    //assertThat(atlasCsvLine.getMeansOfTransportCode()).isEqualTo(didokCsvLine.getBpvhVerkehrsmittel());
+    if (didokCsvLine.getBpvhVerkehrsmittel() != null) {
+      Set<String> expectedVerkehrsmittel =
+          Stream.of(didokCsvLine.getBpvhVerkehrsmittel().split("~")).filter(StringUtils::isNotBlank).collect(Collectors.toSet());
+      Set<String> actualMeansOfTransport =
+          Stream.of(atlasCsvLine.getMeansOfTransportCode().split("\\|")).map(i -> MeanOfTransport.valueOf(i).getCode())
+              .collect(Collectors.toSet());
+      assertThat(actualMeansOfTransport).isEqualTo(expectedVerkehrsmittel);
+    } else {
+      assertThat(atlasCsvLine.getMeansOfTransportCode()).isNull();
+    }
 
-    // TODO: Mapping von ATLAS ("GSMR|MAINTENANCE_POINT|MIGRATION_MOBILE_EQUIPE") auf DiDok ("1|9|16") möglich machen
-    // assertThat(atlasCsvLine.getCategoriesCode()).isEqualTo(didokCsvLine.getDsKategorienIds());
+    if (didokCsvLine.getDsKategorienIds() != null) {
+      Set<String> expectedKategorien =
+          Stream.of(didokCsvLine.getDsKategorienIds().split("\\|")).filter(StringUtils::isNotBlank).collect(Collectors.toSet());
+      Set<String> actualCategories =
+          Stream.of(atlasCsvLine.getCategoriesCode().split("\\|")).map(i -> Category.valueOf(i).getCode())
+              .collect(Collectors.toSet());
+      assertThat(actualCategories).isEqualTo(expectedKategorien);
+    } else {
+      assertThat(atlasCsvLine.getCategoriesCode()).isNull();
+    }
 
     if (atlasCsvLine.getOperatingPointTrafficPointTypeCode() != null) {
       assertThat(atlasCsvLine.getOperatingPointTrafficPointTypeCode().getId()).isEqualTo(
@@ -122,22 +144,25 @@ public class ServicePointMappingEquality {
 
     /* TODO: AssertionError: 20935932: didok:108.25353489964, atlas:86.73474746103409
     assertThat(atlasCsvLine.getWgs84East())
-        .withFailMessage(didokCsvLine.getDidokCode() + ": didok:" + didokCsvLine.getEWgs84() + ", atlas:" + atlasCsvLine.getWgs84East())
+        .withFailMessage(didokCsvLine.getDidokCode() + ": didok:" + didokCsvLine.getEWgs84() + ", atlas:" + atlasCsvLine
+        .getWgs84East())
         .isEqualTo(didokCsvLine.getEWgs84(), withPrecision(0.8));
     assertThat(atlasCsvLine.getWgs84North()).isEqualTo(didokCsvLine.getNWgs84(), withPrecision(0.8));
     */
 
     /* TODO: AssertionError: 20935932: didok:1.20507283816E7, atlas:9655267.921445493
     assertThat(atlasCsvLine.getWgs84WebEast())
-        .withFailMessage(didokCsvLine.getDidokCode() + ": didok:" + didokCsvLine.getEWgs84web() + ", atlas:" + atlasCsvLine.getWgs84WebEast())
+        .withFailMessage(didokCsvLine.getDidokCode() + ": didok:" + didokCsvLine.getEWgs84web() + ", atlas:" + atlasCsvLine
+        .getWgs84WebEast())
         .isEqualTo(didokCsvLine.getEWgs84web(), withPrecision(0.4));
     assertThat(atlasCsvLine.getWgs84WebNorth()).isEqualTo(didokCsvLine.getNWgs84web(), withPrecision(0.4));
      */
 
     // TODO: null != 0.0 at DidokCode 12015503 ... zu checken
-//    assertThat(atlasCsvLine.getHeight())
-//        .withFailMessage(didokCsvLine.getDidokCode() + ": didok:" + didokCsvLine.getHeight() + ", atlas:" + atlasCsvLine.getHeight())
-//        .isEqualTo(didokCsvLine.getHeight());
+    //    assertThat(atlasCsvLine.getHeight())
+    //        .withFailMessage(didokCsvLine.getDidokCode() + ": didok:" + didokCsvLine.getHeight() + ", atlas:" + atlasCsvLine
+    //        .getHeight())
+    //        .isEqualTo(didokCsvLine.getHeight());
   }
 
   private LocalDateTime fromString(String string) {
