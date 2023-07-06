@@ -44,9 +44,13 @@ public class ServicePointMappingEquality {
     assertThat(atlasCsvLine.isBorderPoint()).isEqualTo(didokCsvLine.getIsGrenzpunkt());
 
     assertThat(atlasCsvLine.getSboid()).isEqualTo("ch:1:sboid:" + didokCsvLine.getSaid());
-    /*
-    assertThat(atlasCsvLine.getBusinessOrganisationOrganisationNumber()).isEqualTo(didokCsvLine.getGoNummer());
 
+    // TODO: AssertionError: 85848481: didok:801, atlas:null
+    /*
+    assertThat(atlasCsvLine.getBusinessOrganisationOrganisationNumber())
+        .withFailMessage(didokCsvLine.getDidokCode() + ": didok:" + didokCsvLine.getGoNummer() + ", atlas:" + atlasCsvLine
+            .getBusinessOrganisationOrganisationNumber())
+        .isEqualTo(didokCsvLine.getGoNummer());
     assertThat(atlasCsvLine.getBusinessOrganisationAbbreviationDe()).isEqualTo(didokCsvLine.getGoAbkuerzungDe());
     assertThat(atlasCsvLine.getBusinessOrganisationAbbreviationFr()).isEqualTo(didokCsvLine.getGoAbkuerzungFr());
     assertThat(atlasCsvLine.getBusinessOrganisationAbbreviationIt()).isEqualTo(didokCsvLine.getGoAbkuerzungIt());
