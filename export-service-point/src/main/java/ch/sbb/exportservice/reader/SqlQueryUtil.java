@@ -26,7 +26,7 @@ public class SqlQueryUtil {
           + "LEFT JOIN service_point_version_categories spvc on spv.id = spvc.service_point_version_id "
           + "LEFT JOIN service_point_version_geolocation spvg on spv.service_point_geolocation_id = spvg.id "
           + "LEFT JOIN shared_business_organisation_version sbov on spv.business_organisation = sbov.sboid " +
-              "AND (CASE WHEN '" + LocalDate.now() + "' between sbov.valid_from and sbov.valid_to THEN 0 " +
+              "AND (CASE WHEN current_date between sbov.valid_from and sbov.valid_to THEN 0 " +
               "ELSE 1 " +
               "END = 0)";
   private static final String GROUP_BY_STATEMENT = "group by spv.id, spvg.id, sbov.id";
