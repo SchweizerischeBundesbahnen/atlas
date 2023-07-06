@@ -698,7 +698,6 @@
       "BOSNIA_AND_HERZEGOVINA": "49 - Bosnia ed Erzegovina",
       "CROAT_BOSNIA_AND_HERZEGOVINA": "50 - Bosnia ed Erzegovina",
       "BULGARIA": "52 - Bulgaria",
-      "CANADA": "Canada",
       "CHINA": "33 - Cina",
       "NORTH_KOREA": "30 - Corea del Nord",
       "SOUTH_KOREA": "61 - Corea del Sud",
@@ -734,7 +733,6 @@
       "POLAND": "51 - Polonia",
       "PORTUGAL": "94 - Portogallo",
       "NORTHERN_IRELAND": "70 - Regno Unito",
-      "CONGO": "RD del Congo",
       "CZECH_REPUBLIC": "54 - Rep. Ceca",
       "ROMANIA": "53 - Romania",
       "RUSSIA": "20 - Russia",
@@ -744,7 +742,6 @@
       "SLOVENIA": "79 - Slovenia",
       "SPAIN": "71 - Spagna",
       "UNITED_STATES": "46 - Stati Uniti",
-      "SOUTH_AFRICA": "Sudafrica",
       "SWEDEN": "74 - Svezia",
       "SWITZERLAND": "85 - Svizzera",
       "TAJIKISTAN": "66 - Tagikistan",
@@ -765,7 +762,6 @@
       "ALBANIA": "41 - Albania",
       "ALGERIA": "92 - Algeria",
       "ARMENIA": "58 - Armenia",
-      "AUSTRALIA": "Australia",
       "AUSTRIA": "81 - Austria"
     },
     "STATEMENT": {
