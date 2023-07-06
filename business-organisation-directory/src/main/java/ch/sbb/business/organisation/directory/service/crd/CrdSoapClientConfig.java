@@ -74,7 +74,7 @@ public class CrdSoapClientConfig {
                   .setUnmarshaller(marshaller())
                   .additionalMessageSenders(createWebServiceMessageSender())
                   // LoggingInterceptor for Debugging purposes
-                  .additionalInterceptors(securityInterceptor(), soapMessageLoggerInterceptor)
+                  .additionalInterceptors(securityInterceptor()/*, soapMessageLoggerInterceptor*/)
                   .build();
   }
 
