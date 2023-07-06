@@ -40,7 +40,7 @@ describe('UserPermissionManager', () => {
       },
     ]);
     tick();
-    userPermissionManager.clearPermissionRestrictionsIfNotWriterAndNotSepodi();
+    userPermissionManager.clearPermisRestrIfNotWriterAndRemoveBOPermisRestrIfSepodiAndSuperUser();
     expect(userPermissionManager.userPermission.permissions[0].permissionRestrictions).toEqual([
       { valueAsString: 'ch:1:sboid:writer', type: PermissionRestrictionType.BusinessOrganisation },
     ]);
