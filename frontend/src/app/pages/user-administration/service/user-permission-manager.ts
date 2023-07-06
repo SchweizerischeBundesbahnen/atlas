@@ -102,14 +102,15 @@ export class UserPermissionManager {
     return this.availableApplicationRolesConfig[application];
   }
 
-  clearPermissionRestrictionsIfNotWriterAndNotSepodi(): void {
+  clearPermisRestrIfNotWriterAndRemoveBOPermisRestrIfSepodiAndSuperUser(): void {
     this.userPermission.permissions.forEach((permission) => {
-      if (
-        !(
-          permission.role === 'WRITER' ||
-          (permission.role === 'SUPER_USER' && permission.application === 'SEPODI')
-        )
-      ) {
+      const permissionIndex = this.getPermissionIndexFromApplication(ApplicationType.Sepodi);
+      if (permission.role === 'SUPER_USER' && permission.application === 'SEPODI') {
+        this.userPermission.permissions[permissionIndex].permissionRestrictions =
+          this.userPermission.permissions[permissionIndex].permissionRestrictions.filter(
+            (restriction) => restriction.type !== PermissionRestrictionType.BusinessOrganisation
+          );
+      } else if (permission.role !== 'WRITER') {
         permission.permissionRestrictions = [];
       }
     });
