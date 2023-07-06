@@ -179,6 +179,7 @@ export class OverviewDetailComponent implements OnInit {
       .subscribe((container) => {
         this.timeTableHearingStatements = container.objects!;
         this.totalCount$ = container.totalCount!;
+        this.isTableColumnsInitialized = true;
       });
   }
 
@@ -528,7 +529,6 @@ export class OverviewDetailComponent implements OnInit {
             this.foundTimetableHearingYear = timetableHearingYears[0];
             this.statementEditable = this.foundTimetableHearingYear.statementEditable!;
             this.tableColumns = this.getActiveTableColumns();
-            this.isTableColumnsInitialized = true;
             this.enableCheckboxViewMode();
             this.initOverviewTable();
           }

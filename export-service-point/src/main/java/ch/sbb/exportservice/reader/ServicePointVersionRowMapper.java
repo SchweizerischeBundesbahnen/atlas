@@ -72,8 +72,10 @@ public class ServicePointVersionRowMapper implements RowMapper<ServicePointVersi
           "operating_point_traffic_point_type")));
     }
     servicePointVersionBuilder.operatingPointRouteNetwork(rs.getBoolean("operating_point_route_network"));
-    servicePointVersionBuilder.operatingPointKilometerMaster(
-        ServicePointNumber.of(rs.getInt("operating_point_kilometer_master")));
+    Integer operatingPointKilometerMaster = RowMapperUtil.getInteger(rs, "operating_point_kilometer_master");
+    if (operatingPointKilometerMaster != null) {
+      servicePointVersionBuilder.operatingPointKilometerMaster(ServicePointNumber.of(operatingPointKilometerMaster));
+    }
     servicePointVersionBuilder.sortCodeOfDestinationStation(rs.getString("sort_code_of_destination_station"));
 
     servicePointVersionBuilder.businessOrganisation(getBusinessOrganisation(rs));
@@ -119,8 +121,8 @@ public class ServicePointVersionRowMapper implements RowMapper<ServicePointVersi
     }
 
     servicePointGeolocationBuilder.swissDistrictName(rs.getString("swiss_district_name"));
-    servicePointGeolocationBuilder.swissDistrictNumber(rs.getInt("swiss_district_number"));
-    servicePointGeolocationBuilder.swissMunicipalityNumber(rs.getInt("swiss_municipality_number"));
+    servicePointGeolocationBuilder.swissDistrictNumber(RowMapperUtil.getInteger(rs, "swiss_district_number"));
+    servicePointGeolocationBuilder.swissMunicipalityNumber(RowMapperUtil.getInteger(rs, "swiss_municipality_number"));
     servicePointGeolocationBuilder.swissMunicipalityName(rs.getString("swiss_municipality_name"));
     servicePointGeolocationBuilder.swissLocalityName(rs.getString("swiss_locality_name"));
     ServicePointGeolocation servicePointGeolocation = servicePointGeolocationBuilder.build();
