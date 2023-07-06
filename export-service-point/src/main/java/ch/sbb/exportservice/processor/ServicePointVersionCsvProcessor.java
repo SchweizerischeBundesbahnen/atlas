@@ -2,9 +2,11 @@ package ch.sbb.exportservice.processor;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationModel;
+import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.exportservice.entity.ServicePointVersion;
 import ch.sbb.exportservice.model.ServicePointVersionCsvModel;
 import ch.sbb.exportservice.model.ServicePointVersionCsvModel.ServicePointVersionCsvModelBuilder;
+import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemProcessor;
 
@@ -38,7 +40,7 @@ public class ServicePointVersionCsvProcessor extends BaseProcessor implements
         .trafficPoint(version.isTrafficPoint())
         .borderPoint(version.isBorderPoint())
         .hasGeolocation(version.hasGeolocation())
-        .isoCoutryCode(version.getCountry().getIsoCode());
+        .isoCountryCode(version.getCountry().getIsoCode());
     if (version.getServicePointGeolocation() != null) {
       buildServicePointGeolocation(version, builder);
     }
@@ -71,10 +73,12 @@ public class ServicePointVersionCsvProcessor extends BaseProcessor implements
   }
 
   private void buildServicePointGeolocation(ServicePointVersion version, ServicePointVersionCsvModelBuilder builder) {
-    builder.cantonAbbreviation(version.getServicePointGeolocation().getSwissCanton() != null ?
-            version.getServicePointGeolocation().getSwissCanton().getAbbreviation() : null)
-        .districtName(version.getServicePointGeolocation().getSwissDistrictName())
-        .districtFsoName(version.getServicePointGeolocation().getSwissDistrictNumber())
+    Optional<SwissCanton> swissCanton = Optional.ofNullable(version.getServicePointGeolocation().getSwissCanton());
+    swissCanton.ifPresent(canton -> builder.cantonAbbreviation(canton.getAbbreviation()).cantonName(canton.getName())
+        .cantonFsoNumber(canton.getNumber()));
+
+    builder.districtName(version.getServicePointGeolocation().getSwissDistrictName())
+        .districtFsoNumber(version.getServicePointGeolocation().getSwissDistrictNumber())
         .municipalityName(version.getServicePointGeolocation().getSwissMunicipalityName())
         .fsoNumber(version.getServicePointGeolocation().getSwissMunicipalityNumber())
         .localityName(version.getServicePointGeolocation().getSwissLocalityName());
