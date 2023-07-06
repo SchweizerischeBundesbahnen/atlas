@@ -72,7 +72,7 @@ npm install
 #### Run cypress test locally
 
 1. Create the file `cypress.env.json`
-2. Paste the json from the [credentials site](https://confluence.sbb.ch/pages/viewpage.action?pageId=1881802050). This is excluded
+2. Paste the json from the [credentials site](https://vault-nonprod.sbb.ch/ui/vault/secrets/kv/show/SKI/ATLAS/users/cypress-local). This is excluded
    from git, so the credentials are not commited.
 3. run cypress:
 1. with the console for debugging: `npm run cypress:open` or `cypress open`
