@@ -1,9 +1,5 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.verify;
-
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
@@ -21,6 +17,10 @@ import org.mockito.MockitoAnnotations;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
 
 public class ServicePointServiceTest {
 
@@ -89,6 +89,18 @@ public class ServicePointServiceTest {
 
     // then
     verify(servicePointVersionRepositoryMock).deleteById(eq(123L));
+  }
+
+  @Test
+  void shouldCallCreate() {
+    // given
+    ServicePointVersion servicePointVersion = ServicePointTestData.getBernWyleregg();
+
+    // when
+    servicePointService.create(servicePointVersion);
+
+    // then
+    verify(servicePointVersionRepositoryMock).save(eq(servicePointVersion));
   }
 
   @Test
