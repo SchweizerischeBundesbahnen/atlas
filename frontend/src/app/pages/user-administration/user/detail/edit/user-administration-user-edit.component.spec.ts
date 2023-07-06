@@ -71,7 +71,7 @@ describe('UserAdministrationUserEditComponent', () => {
       [
         'setSbbUserId',
         'setPermissions',
-        'clearPermissionRestrictionsIfNotWriterAndNotSepodi',
+        'clearPermisRestrIfNotWriterAndRemoveBOPermisRestrIfSepodiAndSuperUser',
         'emitBoFormResetEvent',
       ],
       {
@@ -162,7 +162,7 @@ describe('UserAdministrationUserEditComponent', () => {
     component.saveEdits();
 
     expect(
-      userPermissionManagerSpy.clearPermissionRestrictionsIfNotWriterAndNotSepodi
+      userPermissionManagerSpy.clearPermisRestrIfNotWriterAndRemoveBOPermisRestrIfSepodiAndSuperUser
     ).toHaveBeenCalledOnceWith();
     expect(userPermissionManagerSpy.emitBoFormResetEvent).toHaveBeenCalledOnceWith();
     expect(userServiceSpy.updateUserPermission).toHaveBeenCalledOnceWith({

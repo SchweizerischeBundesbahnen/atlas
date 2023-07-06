@@ -6,15 +6,16 @@ import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestric
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
-import java.util.List;
-import java.util.Optional;
-import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.StaleObjectStateException;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -51,6 +52,11 @@ public class ServicePointService {
 
   @PreAuthorize("@countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#servicePointVersion, "
           + "T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
+  public ServicePointVersion create(ServicePointVersion servicePointVersion) {
+    servicePointValidationService.validateServicePointPreconditionBusinessRule(servicePointVersion);
+    return servicePointVersionRepository.save(servicePointVersion);
+  }
+
   public ServicePointVersion save(ServicePointVersion servicePointVersion) {
     servicePointValidationService.validateServicePointPreconditionBusinessRule(servicePointVersion);
     return servicePointVersionRepository.saveAndFlush(servicePointVersion);
