@@ -90,8 +90,9 @@ public class ServicePointVersionRowMapper implements RowMapper<ServicePointVersi
   }
 
   private BusinessOrganisation getBusinessOrganisation(ResultSet rs) throws SQLException {
-    BusinessOrganisation businessOrganisation = BusinessOrganisation.builder()
+    return BusinessOrganisation.builder()
         .businessOrganisation(rs.getString("business_organisation"))
+        .businessOrganisationNumber(RowMapperUtil.getInteger(rs,"organisation_number"))
         .businessOrganisationAbbreviationDe(rs.getString("abbreviation_de"))
         .businessOrganisationAbbreviationFr(rs.getString("abbreviation_fr"))
         .businessOrganisationAbbreviationEn(rs.getString("abbreviation_en"))
@@ -100,7 +101,6 @@ public class ServicePointVersionRowMapper implements RowMapper<ServicePointVersi
         .businessOrganisationDescriptionFr(rs.getString("description_fr"))
         .businessOrganisationDescriptionEn(rs.getString("description_en"))
         .businessOrganisationDescriptionIt(rs.getString("description_it")).build();
-    return businessOrganisation;
   }
 
   private void getServicePointGeolocation(ResultSet rs, ServicePointVersionBuilder<?, ?> servicePointVersionBuilder)

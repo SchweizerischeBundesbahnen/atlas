@@ -2,6 +2,7 @@ package ch.sbb.atlas.api.servicepoint;
 
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
@@ -58,6 +59,7 @@ public class ReadServicePointVersionModel extends ServicePointVersionModel {
       return operatingPointKilometerMaster != null;
   }
 
+  @JsonIgnore
   @AssertTrue(message = "FreightServicePoint in CH needs sortCodeOfDestinationStation")
   public boolean isValidFreightServicePoint() {
     return !(getNumber().getCountry() == Country.SWITZERLAND && super.isFreightServicePoint() && !getValidFrom().isBefore(
