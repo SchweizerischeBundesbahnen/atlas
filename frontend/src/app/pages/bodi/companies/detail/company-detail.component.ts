@@ -1,8 +1,8 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Company } from '../../../../api';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, FormGroup } from '@angular/forms';
 import { CompanyFormGroup } from './company-form-group';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   templateUrl: './company-detail.component.html',
@@ -13,13 +13,10 @@ export class CompanyDetailComponent implements OnInit {
 
   form!: FormGroup<CompanyFormGroup>;
 
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public dialogData: any,
-    readonly dialogRef: MatDialogRef<any>
-  ) {}
+  constructor(private activatedRoute: ActivatedRoute) {}
 
   ngOnInit() {
-    this.company = this.dialogData.companyDetail;
+    this.company = this.activatedRoute.snapshot.data.companyDetail;
     if (this.company) {
       this.form = new FormGroup<CompanyFormGroup>({
         uicCode: new FormControl({ value: this.company.uicCode, disabled: true }),
