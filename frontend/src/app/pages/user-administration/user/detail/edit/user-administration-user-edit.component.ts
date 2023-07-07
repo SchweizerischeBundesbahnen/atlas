@@ -8,6 +8,7 @@ import { UserService } from '../../../service/user.service';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { CreationEditionRecord } from '../../../../../core/components/base-detail/user-edit-info/creation-edition-record';
 import moment from 'moment';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-administration-edit',
@@ -26,7 +27,8 @@ export class UserAdministrationUserEditComponent implements OnInit {
     private readonly translatePipe: TranslatePipe,
     private readonly userService: UserService,
     private readonly dialogService: DialogService,
-    readonly dialogRef: MatDialogRef<any>,
+    private readonly router: Router,
+    private readonly route: ActivatedRoute,
     readonly userPermissionManager: UserPermissionManager
   ) {}
 
@@ -64,7 +66,7 @@ export class UserAdministrationUserEditComponent implements OnInit {
 
   cancelEdit(showDialog = true): void {
     if (!showDialog) {
-      this.dialogRef.close();
+      this.router.navigate(['..'], { relativeTo: this.route }).then();
       return;
     }
     this.dialogService.confirmLeave().subscribe((result) => {
