@@ -32,11 +32,7 @@
   </ng-container>
 
   <ng-template #readMode>
-    <button
-      (click)="dialogRef.close()"
-      class="atlas-primary-btn footer-btn"
-      data-cy="backToOverview"
-    >
+    <button backButton class="atlas-primary-btn footer-btn" data-cy="backToOverview">
       {{ 'COMMON.BACK_TO_OVERVIEW' | translate }}
     </button>
     <button

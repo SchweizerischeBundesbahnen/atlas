@@ -1,16 +1,11 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { UserService } from '../../service/user.service';
-import { filter, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApplicationType, PermissionRestrictionType, SwissCanton, User } from '../../../../api';
-import { Subscription } from 'rxjs';
 import { tableColumns } from './table-column-definition';
 import { SearchType, SearchTypes } from './search-type';
-import {
-  DetailDialogEvents,
-  RouteToDialogService,
-} from '../../../../core/components/route-to-dialog/route-to-dialog.service';
 import { Cantons } from '../../../tth/overview/canton/Cantons';
 import { TableService } from '../../../../core/components/table/table.service';
 import { TablePagination } from '../../../../core/components/table/table-pagination';
@@ -22,7 +17,7 @@ import { MatSelectChange } from '@angular/material/select';
   styleUrls: ['./user-administration-overview.component.scss'],
   providers: [TableService],
 })
-export class UserAdministrationUserOverviewComponent implements OnDestroy {
+export class UserAdministrationUserOverviewComponent {
   userPageResult: { users: User[]; totalCount: number } = { users: [], totalCount: 0 };
   selectedSearch: SearchType = 'USER';
   readonly searchOptions = SearchTypes;
@@ -46,7 +41,6 @@ export class UserAdministrationUserOverviewComponent implements OnDestroy {
     [this.boSearchCtrlName]: new FormControl<string | null>(null),
   });
   readonly tableColumns = tableColumns;
-  private readonly dialogClosedEventSubscription: Subscription;
 
   SWISS_CANTONS_PREFIX_LABEL = 'TTH.CANTON.';
 
@@ -54,13 +48,8 @@ export class UserAdministrationUserOverviewComponent implements OnDestroy {
     private readonly userService: UserService,
     private readonly router: Router,
     private readonly route: ActivatedRoute,
-    private readonly routeToDialogService: RouteToDialogService,
     private readonly tableService: TableService
-  ) {
-    this.dialogClosedEventSubscription = this.routeToDialogService.detailDialogEvent
-      .pipe(filter((e) => e === DetailDialogEvents.Closed))
-      .subscribe(() => this.reloadTableWithCurrentSettings());
-  }
+  ) {}
 
   reloadTableWithCurrentSettings(): void {
     if (this.selectedSearch === 'USER') {
@@ -71,10 +60,6 @@ export class UserAdministrationUserOverviewComponent implements OnDestroy {
     } else {
       this.filterChanged(this.tableService.pageIndex);
     }
-  }
-
-  ngOnDestroy() {
-    this.dialogClosedEventSubscription.unsubscribe();
   }
 
   openUser(user: User) {
