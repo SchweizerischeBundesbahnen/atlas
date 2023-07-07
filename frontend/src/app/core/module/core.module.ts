@@ -21,7 +21,6 @@ import { TableFilterComponent } from '../components/table-filter/table-filter.co
 import { ErrorNotificationComponent } from '../notification/error/error-notification.component';
 import { WithDefaultValueDirective } from '../text-input/with-default-value.directive';
 import { CoverageComponent } from '../components/coverage/coverage.component';
-import { RouteToDialogComponent } from '../components/route-to-dialog/route-to-dialog.component';
 import { FormModule } from './form.module';
 import { RelationComponent } from '../components/relation/relation.component';
 import { UserDetailInfoComponent } from '../components/base-detail/user-edit-info/user-detail-info.component';
@@ -73,7 +72,6 @@ const coreComponents = [
   TableFilterComponent,
   ErrorNotificationComponent,
   CoverageComponent,
-  RouteToDialogComponent,
   RelationComponent,
   DisplayDatePipe,
   SelectComponent,

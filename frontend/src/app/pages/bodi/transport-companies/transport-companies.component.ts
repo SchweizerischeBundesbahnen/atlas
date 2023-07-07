@@ -3,11 +3,6 @@ import { TableColumn } from '../../../core/components/table/table-column';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { TransportCompaniesService, TransportCompany, TransportCompanyStatus } from '../../../api';
-import { filter } from 'rxjs/operators';
-import {
-  DetailDialogEvents,
-  RouteToDialogService,
-} from '../../../core/components/route-to-dialog/route-to-dialog.service';
 import { TablePagination } from '../../../core/components/table/table-pagination';
 import { TableService } from '../../../core/components/table/table.service';
 import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
@@ -65,25 +60,12 @@ export class TransportCompaniesComponent implements OnDestroy {
   totalCount = 0;
 
   private transportCompaniesSubscription?: Subscription;
-  private routeSubscription: Subscription;
 
   constructor(
     private transportCompaniesService: TransportCompaniesService,
     private route: ActivatedRoute,
-    private router: Router,
-    private routeToDialogService: RouteToDialogService,
-    private readonly tableService: TableService
-  ) {
-    this.routeSubscription = this.routeToDialogService.detailDialogEvent
-      .pipe(filter((e) => e === DetailDialogEvents.Closed))
-      .subscribe(() => {
-        this.getOverview({
-          page: this.tableService.pageIndex,
-          size: this.tableService.pageSize,
-          sort: this.tableService.sortString,
-        });
-      });
-  }
+    private router: Router
+  ) {}
 
   getOverview(pagination: TablePagination) {
     this.transportCompaniesSubscription = this.transportCompaniesService
@@ -110,6 +92,5 @@ export class TransportCompaniesComponent implements OnDestroy {
 
   ngOnDestroy() {
     this.transportCompaniesSubscription?.unsubscribe();
-    this.routeSubscription.unsubscribe();
   }
 }

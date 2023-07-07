@@ -3,10 +3,6 @@ import { LinesService, LineVersionSnapshot, WorkflowStatus } from '../../../../a
 import { TableColumn } from '../../../../core/components/table/table-column';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-  DetailDialogEvents,
-  RouteToDialogService,
-} from '../../../../core/components/route-to-dialog/route-to-dialog.service';
 import { filter } from 'rxjs/operators';
 import { TableService } from '../../../../core/components/table/table.service';
 import { TablePagination } from '../../../../core/components/table/table-pagination';
@@ -59,29 +55,17 @@ export class LidiWorkflowOverviewComponent implements OnDestroy {
   totalCount$ = 0;
 
   private lineVersionSnapshotsSubscription?: Subscription;
-  private routeSubscription: Subscription;
 
   constructor(
     private linesService: LinesService,
     private route: ActivatedRoute,
     private router: Router,
-    private routeToDialogService: RouteToDialogService,
     private readonly tableService: TableService
   ) {
     const slnidFromQueryParam: string | undefined = this.route.snapshot.queryParams.slnid;
     if (slnidFromQueryParam) {
       this.tableFilterConfigIntern.chipSearch.addSearchFromString(slnidFromQueryParam);
     }
-
-    this.routeSubscription = this.routeToDialogService.detailDialogEvent
-      .pipe(filter((e) => e === DetailDialogEvents.Closed))
-      .subscribe(() => {
-        this.getOverview({
-          page: this.tableService.pageIndex,
-          size: this.tableService.pageSize,
-          sort: this.tableService.sortString,
-        });
-      });
   }
 
   getOverview(pagination: TablePagination) {
@@ -110,6 +94,5 @@ export class LidiWorkflowOverviewComponent implements OnDestroy {
 
   ngOnDestroy() {
     this.lineVersionSnapshotsSubscription?.unsubscribe();
-    this.routeSubscription.unsubscribe();
   }
 }
