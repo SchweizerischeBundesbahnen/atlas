@@ -42,6 +42,7 @@ import { ShowTitlePipe } from '../components/table/pipe/show-title.pipe';
 import { MouseOverTitleDirective } from '../components/table/directive/mouse-over-title.directive';
 import { FormatPipe } from '../components/table/pipe/format.pipe';
 import { InstanceOfPipe } from '../components/table-filter/instance-of.pipe';
+import { BackButtonDirective } from '../components/button/back-button/back-button.directive';
 
 const coreComponents = [
   WorkflowFormComponent,
@@ -52,6 +53,7 @@ const coreComponents = [
   DetailFooterComponent,
   UserDetailInfoComponent,
   AtlasButtonComponent,
+  BackButtonDirective,
   AtlasSpacerComponent,
   SwitchVersionComponent,
   FileUploadComponent,

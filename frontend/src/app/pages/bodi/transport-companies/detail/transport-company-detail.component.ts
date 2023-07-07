@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   ApplicationType,
   BusinessOrganisation,
@@ -7,7 +7,6 @@ import {
   TransportCompanyBoRelation,
   TransportCompanyRelationsService,
 } from '../../../../api';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Observable, of } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { AuthService } from '../../../../core/auth/auth.service';
@@ -19,6 +18,7 @@ import { DialogService } from '../../../../core/components/dialog/dialog.service
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { BusinessOrganisationLanguageService } from '../../../../core/form-components/bo-select/business-organisation-language.service';
 import { TransportCompanyFormGroup } from './transport-company-form-group';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   templateUrl: './transport-company-detail.component.html',
@@ -84,14 +84,13 @@ export class TransportCompanyDetailComponent implements OnInit {
   );
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public dialogData: any,
     private readonly businessOrganisationsService: BusinessOrganisationsService,
     private readonly transportCompanyRelationsService: TransportCompanyRelationsService,
     private readonly authService: AuthService,
     private readonly businessOrganisationLanguageService: BusinessOrganisationLanguageService,
     private readonly dialogService: DialogService,
     private readonly notificationService: NotificationService,
-    readonly dialogRef: MatDialogRef<any>
+    private readonly activatedRoute: ActivatedRoute
   ) {}
 
   readonly selectOption = (item: BusinessOrganisation) => {
@@ -101,8 +100,8 @@ export class TransportCompanyDetailComponent implements OnInit {
   };
 
   ngOnInit() {
-    this.transportCompany = this.dialogData.transportCompanyDetail[0];
-    this.transportCompanyRelations = this.dialogData.transportCompanyDetail[1];
+    this.transportCompany = this.activatedRoute.snapshot.data.transportCompanyDetail[0];
+    this.transportCompanyRelations = this.activatedRoute.snapshot.data.transportCompanyDetail[1];
     this.transportFormGroup = new FormGroup<TransportCompanyFormGroup>({
       id: new FormControl({ value: this.transportCompany.id, disabled: true }),
       number: new FormControl({ value: this.transportCompany.number, disabled: true }),

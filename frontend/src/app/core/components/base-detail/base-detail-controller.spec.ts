@@ -9,7 +9,7 @@ import moment from 'moment';
 import { Page } from '../../model/page';
 import { NotificationService } from '../../notification/notification.service';
 import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MaterialModule } from '../../module/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -35,7 +35,7 @@ describe('BaseDetailController', () => {
 
   class DummyBaseDetailController extends BaseDetailController<Record> implements OnInit {
     constructor() {
-      super(dialogRef, dialogService, notificationService, authService, activatedRoute);
+      super(router, dialogService, notificationService, authService, activatedRoute);
     }
 
     getPageType(): Page {
@@ -90,7 +90,7 @@ describe('BaseDetailController', () => {
   }
 
   let controller: DummyBaseDetailController;
-  let dialogRef: MatDialogRef<any>;
+  let router: Router;
   let dialogService: DialogService;
   let notificationService: NotificationService;
   let authService: AuthService;
@@ -110,7 +110,6 @@ describe('BaseDetailController', () => {
       ],
       providers: [
         { provide: DialogService, useValue: dialogServiceSpy },
-        { provide: MatDialogRef, useValue: dialogRefSpy },
         { provide: MatSnackBarRef, useValue: {} },
         { provide: MAT_SNACK_BAR_DATA, useValue: {} },
         { provide: AuthService, useValue: authServiceMock },
@@ -118,7 +117,7 @@ describe('BaseDetailController', () => {
     });
     dialogService = TestBed.inject(DialogService);
     notificationService = TestBed.inject(NotificationService);
-    dialogRef = TestBed.inject(MatDialogRef);
+    router = TestBed.inject(Router);
     authService = TestBed.inject(AuthService);
     activatedRoute = TestBed.inject(ActivatedRoute);
   });
