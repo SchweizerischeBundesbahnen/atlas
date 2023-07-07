@@ -11,6 +11,7 @@ import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
 import ch.sbb.atlas.servicepoint.enumeration.ServicePointStatus;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.atlas.validation.DatesValidator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
@@ -90,11 +91,11 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
   private OperatingPointType operatingPointType;
 
   @Schema(description = "OperatingPointTechnicalTimetableType, all service points relevant for timetable planning and "
-      + "publication. At most one of OperatingPointWithoutTimetableType, OperatingPointTechnicalTimetableType, OperatingPointTrafficPointType may be set")
+      + "publication. At most one of OperatingPointTechnicalTimetableType, OperatingPointTrafficPointType may be set")
   private OperatingPointTechnicalTimetableType operatingPointTechnicalTimetableType;
 
   @Schema(description = "OperatingPointTrafficPointType, Specifies the detailed intended use of a traffic point." +
-          "At most one of OperatingPointWithoutTimetableType, OperatingPointTechnicalTimetableType, OperatingPointTrafficPointType may be set")
+          "At most one of OperatingPointTechnicalTimetableType, OperatingPointTrafficPointType may be set")
   private OperatingPointTrafficPointType operatingPointTrafficPointType;
 
   @Schema(description = "ServicePoint is OperatingPointRouteNetwork", example = "false")
@@ -171,11 +172,13 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
     return operatingPointTechnicalTimetableType == OperatingPointTechnicalTimetableType.COUNTRY_BORDER;
   }
 
+  @JsonIgnore
   @AssertTrue(message = "StopPointType only allowed for StopPoint")
   boolean isValidStopPointWithType() {
     return isStopPoint() || stopPointType == null;
   }
 
+  @JsonIgnore
   @AssertTrue(message = "At most one of OperatingPointWithoutTimetableType, OperatingPointTechnicalTimetableType, "
           + "OperatingPointTrafficPointType may be set")
   public boolean isValidType() {
