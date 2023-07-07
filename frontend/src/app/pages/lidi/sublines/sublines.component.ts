@@ -3,10 +3,6 @@ import { TableColumn } from '../../../core/components/table/table-column';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { BusinessOrganisation, Status, Subline, SublinesService, SublineType } from '../../../api';
-import {
-  DetailDialogEvents,
-  RouteToDialogService,
-} from '../../../core/components/route-to-dialog/route-to-dialog.service';
 import { filter } from 'rxjs/operators';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TableService } from '../../../core/components/table/table.service';
@@ -51,7 +47,6 @@ export class SublinesComponent implements OnDestroy {
   };
 
   private sublineVersionsSubscription?: Subscription;
-  private routeSubscription: Subscription;
 
   sublinesTableColumns: TableColumn<Subline>[] = [
     { headerTitle: 'LIDI.SUBLINE.NUMBER', value: 'number' },
@@ -89,20 +84,8 @@ export class SublinesComponent implements OnDestroy {
   constructor(
     private sublinesService: SublinesService,
     private route: ActivatedRoute,
-    private router: Router,
-    private routeToDialogService: RouteToDialogService,
-    private readonly tableService: TableService
-  ) {
-    this.routeSubscription = this.routeToDialogService.detailDialogEvent
-      .pipe(filter((e) => e === DetailDialogEvents.Closed))
-      .subscribe(() =>
-        this.getOverview({
-          page: this.tableService.pageIndex,
-          size: this.tableService.pageSize,
-          sort: this.tableService.sortString,
-        })
-      );
-  }
+    private router: Router
+  ) {}
 
   getOverview(pagination: TablePagination) {
     this.sublineVersionsSubscription = this.sublinesService
@@ -132,6 +115,5 @@ export class SublinesComponent implements OnDestroy {
 
   ngOnDestroy() {
     this.sublineVersionsSubscription?.unsubscribe();
-    this.routeSubscription.unsubscribe();
   }
 }
