@@ -36,9 +36,7 @@ export class BusinessOrganisationDetailComponent
   private ngUnsubscribe = new Subject<void>();
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public dialogData: any,
-    private router: Router,
-    protected dialogRef: MatDialogRef<BusinessOrganisationDetailComponent>,
+    protected router: Router,
     private businessOrganisationsService: BusinessOrganisationsService,
     private formBuilder: FormBuilder,
     private businessOrganisationLanguageService: BusinessOrganisationLanguageService,
@@ -47,7 +45,7 @@ export class BusinessOrganisationDetailComponent
     protected authService: AuthService,
     protected activatedRoute: ActivatedRoute
   ) {
-    super(dialogRef, dialogService, notificationService, authService, activatedRoute);
+    super(router, dialogService, notificationService, authService, activatedRoute);
   }
 
   ngOnInit() {
@@ -63,7 +61,7 @@ export class BusinessOrganisationDetailComponent
   }
 
   readRecord(): BusinessOrganisationVersion {
-    return this.dialogData.businessOrganisationDetail;
+    return this.activatedRoute.snapshot.data.businessOrganisationDetail;
   }
 
   getDetailHeading(record: BusinessOrganisationVersion): string {
