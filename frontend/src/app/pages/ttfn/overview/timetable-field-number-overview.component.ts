@@ -8,11 +8,6 @@ import {
   TimetableFieldNumber,
   TimetableFieldNumbersService,
 } from '../../../api';
-import {
-  DetailDialogEvents,
-  RouteToDialogService,
-} from '../../../core/components/route-to-dialog/route-to-dialog.service';
-import { filter } from 'rxjs/operators';
 import { TableService } from '../../../core/components/table/table.service';
 import { TablePagination } from '../../../core/components/table/table-pagination';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -51,7 +46,6 @@ export class TimetableFieldNumberOverviewComponent implements OnDestroy {
   };
 
   private getVersionsSubscription?: Subscription;
-  private routeSubscription: Subscription;
 
   tableFilterConfig: TableFilter<unknown>[][] = [
     [this.tableFilterConfigIntern.chipSearch],
@@ -82,20 +76,8 @@ export class TimetableFieldNumberOverviewComponent implements OnDestroy {
   constructor(
     private timetableFieldNumbersService: TimetableFieldNumbersService,
     private route: ActivatedRoute,
-    private router: Router,
-    private routeToDialogService: RouteToDialogService,
-    private readonly tableService: TableService
-  ) {
-    this.routeSubscription = this.routeToDialogService.detailDialogEvent
-      .pipe(filter((e) => e === DetailDialogEvents.Closed))
-      .subscribe(() => {
-        this.getOverview({
-          page: this.tableService.pageIndex,
-          size: this.tableService.pageSize,
-          sort: this.tableService.sortString,
-        });
-      });
-  }
+    private router: Router
+  ) {}
 
   getOverview(pagination: TablePagination) {
     this.getVersionsSubscription = this.timetableFieldNumbersService
@@ -133,6 +115,5 @@ export class TimetableFieldNumberOverviewComponent implements OnDestroy {
 
   ngOnDestroy() {
     this.getVersionsSubscription?.unsubscribe();
-    this.routeSubscription.unsubscribe();
   }
 }
