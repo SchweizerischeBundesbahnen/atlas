@@ -8,10 +8,9 @@ import { Page } from '../../model/page';
 import { NotificationService } from '../../notification/notification.service';
 import { DateService } from '../../date/date.service';
 import { ApplicationRole, ApplicationType, Status } from '../../../api';
-import { MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from '../../auth/auth.service';
 import { ValidationService } from '../../validation/validation.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Directive()
 export abstract class BaseDetailController<TYPE extends Record> implements OnInit {
@@ -24,7 +23,7 @@ export abstract class BaseDetailController<TYPE extends Record> implements OnIni
   switchVersionEvent = new Subject<Record>();
 
   protected constructor(
-    protected dialogRef: MatDialogRef<any>,
+    protected router: Router,
     protected dialogService: DialogService,
     protected notificationService: NotificationService,
     protected authService: AuthService,
@@ -221,7 +220,7 @@ export abstract class BaseDetailController<TYPE extends Record> implements OnIni
   abstract getApplicationType(): ApplicationType;
 
   backToOverview(): void {
-    this.dialogRef.close();
+    this.router.navigate(['..'], { relativeTo: this.activatedRoute }).then();
   }
 
   closeConfirmDialog(): void {
