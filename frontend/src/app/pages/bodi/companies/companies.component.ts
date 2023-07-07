@@ -3,11 +3,6 @@ import { TableColumn } from '../../../core/components/table/table-column';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { CompaniesService, Company } from '../../../api';
-import { filter } from 'rxjs/operators';
-import {
-  DetailDialogEvents,
-  RouteToDialogService,
-} from '../../../core/components/route-to-dialog/route-to-dialog.service';
 import { TableService } from '../../../core/components/table/table.service';
 import { TablePagination } from '../../../core/components/table/table-pagination';
 import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
@@ -46,25 +41,12 @@ export class CompaniesComponent implements OnDestroy {
   totalCount = 0;
 
   private companiesSubscription?: Subscription;
-  private routeSubscription: Subscription;
 
   constructor(
     private companiesService: CompaniesService,
     private route: ActivatedRoute,
-    private router: Router,
-    private routeToDialogService: RouteToDialogService,
-    private readonly tableService: TableService
-  ) {
-    this.routeSubscription = this.routeToDialogService.detailDialogEvent
-      .pipe(filter((e) => e === DetailDialogEvents.Closed))
-      .subscribe(() => {
-        this.getOverview({
-          page: this.tableService.pageIndex,
-          size: this.tableService.pageSize,
-          sort: this.tableService.sortString,
-        });
-      });
-  }
+    private router: Router
+  ) {}
 
   getOverview(pagination: TablePagination) {
     this.companiesSubscription = this.companiesService
@@ -90,6 +72,5 @@ export class CompaniesComponent implements OnDestroy {
 
   ngOnDestroy() {
     this.companiesSubscription?.unsubscribe();
-    this.routeSubscription.unsubscribe();
   }
 }

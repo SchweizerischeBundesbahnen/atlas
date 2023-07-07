@@ -6,7 +6,6 @@ import { NotificationService } from '../../../../../core/notification/notificati
 import { ActivatedRoute, Router } from '@angular/router';
 import { Pages } from '../../../../pages';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
-import { MatDialogRef } from '@angular/material/dialog';
 import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
@@ -29,7 +28,6 @@ export class UserAdministrationUserCreateComponent {
     private readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly dialogService: DialogService,
-    private readonly dialogRef: MatDialogRef<any>,
     readonly userPermissionManager: UserPermissionManager
   ) {}
 
@@ -68,13 +66,17 @@ export class UserAdministrationUserCreateComponent {
 
   cancelCreation(showDialog = true): void {
     if (!showDialog) {
-      this.dialogRef.close();
+      this.navigateBack();
       return;
     }
     this.dialogService.confirmLeave().subscribe((result) => {
       if (result) {
-        this.dialogRef.close();
+        this.navigateBack();
       }
     });
+  }
+
+  navigateBack() {
+    this.router.navigate(['..'], { relativeTo: this.route }).then();
   }
 }

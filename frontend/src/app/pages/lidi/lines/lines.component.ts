@@ -3,11 +3,6 @@ import { TableColumn } from '../../../core/components/table/table-column';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { BusinessOrganisation, Line, LinesService, LineType, Status } from '../../../api';
-import { filter } from 'rxjs/operators';
-import {
-  DetailDialogEvents,
-  RouteToDialogService,
-} from '../../../core/components/route-to-dialog/route-to-dialog.service';
 import { TableService } from '../../../core/components/table/table.service';
 import { TablePagination } from '../../../core/components/table/table-pagination';
 import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
@@ -51,7 +46,6 @@ export class LinesComponent implements OnDestroy {
   };
 
   private lineVersionsSubscription?: Subscription;
-  private routeSubscription: Subscription;
 
   linesTableColumns: TableColumn<Line>[] = [
     { headerTitle: 'LIDI.LINE.NUMBER', value: 'number' },
@@ -84,20 +78,8 @@ export class LinesComponent implements OnDestroy {
   constructor(
     private linesService: LinesService,
     private route: ActivatedRoute,
-    private router: Router,
-    private routeToDialogService: RouteToDialogService,
-    private readonly tableService: TableService
-  ) {
-    this.routeSubscription = this.routeToDialogService.detailDialogEvent
-      .pipe(filter((e) => e === DetailDialogEvents.Closed))
-      .subscribe(() =>
-        this.getOverview({
-          page: this.tableService.pageIndex,
-          size: this.tableService.pageSize,
-          sort: this.tableService.sortString,
-        })
-      );
-  }
+    private router: Router
+  ) {}
 
   getOverview(pagination: TablePagination) {
     this.lineVersionsSubscription = this.linesService
@@ -128,6 +110,5 @@ export class LinesComponent implements OnDestroy {
 
   ngOnDestroy() {
     this.lineVersionsSubscription?.unsubscribe();
-    this.routeSubscription.unsubscribe();
   }
 }
