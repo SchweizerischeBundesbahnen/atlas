@@ -19,6 +19,8 @@ import org.apache.commons.lang3.StringUtils;
 @UtilityClass
 public class ServicePointMappingEquality {
 
+  private static int wgs84EastWrongCounter = 0;
+
   public static void performEqualityCheck(ServicePointCsvModel didokCsvLine, ServicePointVersionCsvModel atlasCsvLine) {
     assertThat(atlasCsvLine.getNumber()).isEqualTo(didokCsvLine.getDidokCode());
     assertThat(atlasCsvLine.getNumberShort()).isEqualTo(didokCsvLine.getNummer());
@@ -86,6 +88,7 @@ public class ServicePointMappingEquality {
       assertThat(atlasCsvLine.getMeansOfTransportCode()).isNull();
     }
 
+    // TODO: Double-check if logic is working by introducing differences in DiDok and ATLAS
     if (didokCsvLine.getDsKategorienIds() != null) {
       Set<String> expectedKategorien =
           Stream.of(didokCsvLine.getDsKategorienIds().split("\\|")).filter(StringUtils::isNotBlank).collect(Collectors.toSet());
@@ -129,8 +132,13 @@ public class ServicePointMappingEquality {
     // AT != LI at DidokCode: 12018374 ... zu prüfen
     // assertThat(atlasCsvLine.getIsoCountryCode()).isEqualTo(didokCsvLine.getIsoCountryCode());
 
+    // TODO: DiDok nicht exportiert KantonsName?
     // Zürich != null at DidokCode: 85306480
     // assertThat(atlasCsvLine.getCantonName()).isEqualTo(didokCsvLine.getKantonsName());
+
+    //    if (didokCsvLine.getKantonsName() == null && atlasCsvLine.getCantonName() != null) {
+    //      log.error("DIDOK_CODE: " + didokCsvLine.getDidokCode() + " KantonsName " + didokCsvLine.getKantonsName() + " from " + didokCsvLine.getValidFrom() + " until " + didokCsvLine.getValidTo());
+    //    }
     assertThat(atlasCsvLine.getCantonFsoNumber()).isEqualTo(didokCsvLine.getKantonsNum());
     assertThat(atlasCsvLine.getCantonAbbreviation()).isEqualTo(didokCsvLine.getKantonsKuerzel());
     assertThat(atlasCsvLine.getDistrictName()).isEqualTo(didokCsvLine.getBezirksName());
@@ -154,6 +162,11 @@ public class ServicePointMappingEquality {
     assertThat(atlasCsvLine.getWgs84North()).isEqualTo(didokCsvLine.getNWgs84(), withPrecision(0.8));
     */
 
+    if (round(atlasCsvLine.getWgs84North(), 5).compareTo(round(didokCsvLine.getNWgs84(), 5)) != 0) {
+      log.error(didokCsvLine.getDidokCode() + ": sboid:" + atlasCsvLine.getSboid()  + " offizielle Bezeichnung:" + didokCsvLine.getBezeichnungOffiziell() + " didok:" + didokCsvLine.getNWgs84() + ", atlas:" + atlasCsvLine.getWgs84North() + " " + wgs84EastWrongCounter);
+      wgs84EastWrongCounter++;
+    }
+
     /* TODO: AssertionError: 20935932: didok:1.20507283816E7, atlas:9655267.921445493
     assertThat(atlasCsvLine.getWgs84WebEast())
         .withFailMessage(didokCsvLine.getDidokCode() + ": didok:" + didokCsvLine.getEWgs84web() + ", atlas:" + atlasCsvLine
@@ -163,14 +176,27 @@ public class ServicePointMappingEquality {
      */
 
     // TODO: null != 0.0 at DidokCode 12015503 ... zu checken
-    //    assertThat(atlasCsvLine.getHeight())
-    //        .withFailMessage(didokCsvLine.getDidokCode() + ": didok:" + didokCsvLine.getHeight() + ", atlas:" + atlasCsvLine
-    //        .getHeight())
-    //        .isEqualTo(didokCsvLine.getHeight());
+    //        assertThat(atlasCsvLine.getHeight())
+    //            .withFailMessage(didokCsvLine.getDidokCode() + ": didok:" + didokCsvLine.getHeight() + ", atlas:" + atlasCsvLine
+    //            .getHeight())
+    //            .isEqualTo(didokCsvLine.getHeight());
+
+    //    if (didokCsvLine.getHeight() == null && atlasCsvLine.getHeight() != null) {
+    //      log.error("DIDOK_CODE: " + didokCsvLine.getDidokCode() + " DiDok:" + didokCsvLine.getHeight() + " ATLAS:" + atlasCsvLine.getHeight() + " from " + didokCsvLine.getValidFrom() + " until " + didokCsvLine.getValidTo() + " counter: " + heightIsNullInDiDokCounter);
+    //      heightIsNullInDiDokCounter++;
+    //    }
   }
 
   private LocalDateTime fromString(String string) {
     return LocalDateTime.parse(string, DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"));
   }
 
+  public static Double round(double value, int places) {
+    if (places < 0) throw new IllegalArgumentException();
+
+    long factor = (long) Math.pow(10, places);
+    value = value * factor;
+    long tmp = Math.round(value);
+    return (double) tmp / factor;
+  }
 }
