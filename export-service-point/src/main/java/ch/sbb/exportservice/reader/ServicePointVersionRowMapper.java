@@ -84,7 +84,7 @@ public class ServicePointVersionRowMapper implements RowMapper<ServicePointVersi
   private BusinessOrganisation getBusinessOrganisation(ResultSet rs) throws SQLException {
     return BusinessOrganisation.builder()
         .businessOrganisation(rs.getString("business_organisation"))
-        .businessOrganisationNumber(RowMapperUtil.getInteger(rs,"organisation_number"))
+        .businessOrganisationNumber(RowMapperUtil.getInteger(rs, "organisation_number"))
         .businessOrganisationAbbreviationDe(rs.getString("abbreviation_de"))
         .businessOrganisationAbbreviationFr(rs.getString("abbreviation_fr"))
         .businessOrganisationAbbreviationEn(rs.getString("abbreviation_en"))
@@ -100,7 +100,7 @@ public class ServicePointVersionRowMapper implements RowMapper<ServicePointVersi
     ServicePointGeolocationBuilder<?, ?> servicePointGeolocationBuilder = ServicePointGeolocation.builder();
     servicePointGeolocationBuilder.east(rs.getDouble("east"));
     servicePointGeolocationBuilder.north(rs.getDouble("north"));
-    servicePointGeolocationBuilder.height(rs.getDouble("height"));
+    servicePointGeolocationBuilder.height(RowMapperUtil.getDouble(rs, "height"));
 
     if (rs.getString("spatial_reference") != null) {
       SpatialReference spatialReference = SpatialReference.valueOf(rs.getString("spatial_reference"));
@@ -142,10 +142,10 @@ public class ServicePointVersionRowMapper implements RowMapper<ServicePointVersi
   }
 
   private <T> Set<T> stringToSet(String values, Function<String, T> enumType) {
-    return Arrays.stream(values.split("\\|")).map(enumType)        .collect(Collectors.toSet());
+    return Arrays.stream(values.split("\\|")).map(enumType).collect(Collectors.toSet());
   }
 
-  private String toPipedString(Collection<? extends Enum<?>> collection){
+  private String toPipedString(Collection<? extends Enum<?>> collection) {
     return collection.stream().map(Enum::name).sorted().collect(Collectors.joining("|"));
   }
 }
