@@ -73,7 +73,7 @@ public class ServicePointController implements ServicePointApiV1 {
   @Override
   public ReadServicePointVersionModel createServicePoint(CreateServicePointVersionModel createServicePointVersionModel) {
     return ServicePointVersionMapper.toModel(
-        servicePointService.create(ServicePointVersionMapper.toEntity(createServicePointVersionModel)));
+        servicePointService.save(ServicePointVersionMapper.toEntity(createServicePointVersionModel)));
   }
 
   @Override
