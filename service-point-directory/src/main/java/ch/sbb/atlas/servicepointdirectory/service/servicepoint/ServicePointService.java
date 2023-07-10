@@ -52,11 +52,6 @@ public class ServicePointService {
 
   @PreAuthorize("@countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#servicePointVersion, "
           + "T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
-  public ServicePointVersion create(ServicePointVersion servicePointVersion) {
-    servicePointValidationService.validateServicePointPreconditionBusinessRule(servicePointVersion);
-    return servicePointVersionRepository.save(servicePointVersion);
-  }
-
   public ServicePointVersion save(ServicePointVersion servicePointVersion) {
     servicePointValidationService.validateServicePointPreconditionBusinessRule(servicePointVersion);
     return servicePointVersionRepository.saveAndFlush(servicePointVersion);
