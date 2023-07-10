@@ -92,18 +92,6 @@ public class ServicePointServiceTest {
   }
 
   @Test
-  void shouldCallCreate() {
-    // given
-    ServicePointVersion servicePointVersion = ServicePointTestData.getBernWyleregg();
-
-    // when
-    servicePointService.create(servicePointVersion);
-
-    // then
-    verify(servicePointVersionRepositoryMock).save(eq(servicePointVersion));
-  }
-
-  @Test
   void shouldCallSave() {
     // given
     ServicePointVersion servicePointVersion = ServicePointTestData.getBernWyleregg();
