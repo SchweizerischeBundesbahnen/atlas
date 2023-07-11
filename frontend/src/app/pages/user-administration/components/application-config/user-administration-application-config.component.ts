@@ -5,7 +5,9 @@ import {
   ApplicationType,
   BusinessOrganisation,
   Country,
+  CountryPermissionRestrictionModel,
   PermissionRestrictionType,
+  SboidPermissionRestrictionModel,
   SwissCanton,
 } from '../../../../api';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -162,13 +164,43 @@ export class UserAdministrationApplicationConfigComponent implements OnInit, OnD
 
   countrySelectionChanged($event: MatSelectChange) {
     const values = $event.value as Country[];
-    const permissionRestriction = values
+    const countryPermissionRestrictions = values
       .filter((value) => value !== undefined)
       .map((selection) => ({
         valueAsString: selection,
         type: PermissionRestrictionType.Country,
       }));
-    this.userPermissionManager.getPermissionByApplication(this.application).permissionRestrictions =
-      permissionRestriction;
+    const businessPermissionRestrictions = this.userPermissionManager
+      .getPermissionByApplication(this.application)
+      .permissionRestrictions.filter(
+        (sboid) => sboid.type === PermissionRestrictionType.BusinessOrganisation
+      );
+    const role = this.userPermissionManager.getPermissionByApplication(this.application).role;
+    this.setSboidandCountryPermissions(
+      businessPermissionRestrictions,
+      countryPermissionRestrictions,
+      role,
+      this.application
+    );
+  }
+
+  setSboidandCountryPermissions(
+    businessPermissionRestrictions: SboidPermissionRestrictionModel[],
+    countryPermissionRestrictions: CountryPermissionRestrictionModel[],
+    role: ApplicationRole,
+    application: ApplicationType
+  ) {
+    this.userPermissionManager.setPermissions([
+      {
+        application: application,
+        role: role,
+        permissionRestrictions: businessPermissionRestrictions,
+      },
+      {
+        application: application,
+        role: role,
+        permissionRestrictions: countryPermissionRestrictions,
+      },
+    ]);
   }
 }
