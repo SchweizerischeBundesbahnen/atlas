@@ -35,28 +35,27 @@ public class ServicePointVersionCsvProcessor extends BaseProcessor implements
         .operatingPoint(version.isOperatingPoint())
         .operatingPointWithTimetable(version.isOperatingPointWithTimetable())
         .stopPoint(version.isStopPoint())
-        .stopPointTypeCode(version.getStopPointType())
+        .stopPointType(version.getStopPointType())
         .freightServicePoint(version.isFreightServicePoint())
         .trafficPoint(version.isTrafficPoint())
         .borderPoint(version.isBorderPoint())
-        .hasGeolocation(version.hasGeolocation())
-        .isoCountryCode(version.getCountry().getIsoCode());
+        .hasGeolocation(version.hasGeolocation());
     if (version.getServicePointGeolocation() != null) {
       buildServicePointGeolocation(version, builder);
     }
-    builder.operatingPointTypeCode(version.getOperatingPointType())
-        .operatingPointTechnicalTimetableTypeCode(version.getOperatingPointTechnicalTimetableType())
-        .meansOfTransportCode(version.getMeansOfTransportPipeList())
-        .categoriesCode(version.getCategoriesPipeList())
-        .operatingPointTrafficPointTypeCode(
+    builder.operatingPointType(version.getOperatingPointType())
+        .operatingPointTechnicalTimetableType(version.getOperatingPointTechnicalTimetableType())
+        .meansOfTransport(version.getMeansOfTransportPipeList())
+        .categories(version.getCategoriesPipeList())
+        .operatingPointTrafficPointType(
             version.getOperatingPointTrafficPointType())
         .operatingPointRouteNetwork(version.isOperatingPointRouteNetwork())
         .operatingPointKilometer(version.isOperatingPointKilometer())
         .operatingPointKilometerMasterNumber(version.getOperatingPointKilometerMaster() != null ?
             version.getOperatingPointKilometerMaster().getValue() : null)
         .sortCodeOfDestinationStation(version.getSortCodeOfDestinationStation())
-        .sboid(version.getBusinessOrganisation().getBusinessOrganisation())
-        .businessOrganisationOrganisationNumber(version.getBusinessOrganisation().getBusinessOrganisationNumber())
+        .businessOrganisation(version.getBusinessOrganisation().getBusinessOrganisation())
+        .businessOrganisationNumber(version.getBusinessOrganisation().getBusinessOrganisationNumber())
         .businessOrganisationAbbreviationDe(version.getBusinessOrganisation().getBusinessOrganisationAbbreviationDe())
         .businessOrganisationAbbreviationFr(version.getBusinessOrganisation().getBusinessOrganisationAbbreviationFr())
         .businessOrganisationAbbreviationIt(version.getBusinessOrganisation().getBusinessOrganisationAbbreviationIt())
@@ -73,6 +72,8 @@ public class ServicePointVersionCsvProcessor extends BaseProcessor implements
   }
 
   private void buildServicePointGeolocation(ServicePointVersion version, ServicePointVersionCsvModelBuilder builder) {
+    builder.isoCountryCode(version.getServicePointGeolocation().getCountry().getIsoCode());
+
     Optional<SwissCanton> swissCanton = Optional.ofNullable(version.getServicePointGeolocation().getSwissCanton());
     swissCanton.ifPresent(canton -> builder.cantonAbbreviation(canton.getAbbreviation()).cantonName(canton.getName())
         .cantonFsoNumber(canton.getNumber()));

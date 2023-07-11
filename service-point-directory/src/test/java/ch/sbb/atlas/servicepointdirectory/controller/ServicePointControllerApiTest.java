@@ -1,35 +1,5 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
-import ch.sbb.atlas.api.AtlasApiConstants;
-import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
-import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
-import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
-import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
-import ch.sbb.atlas.imports.servicepoint.BaseDidokCsvModel;
-import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointImportRequestModel;
-import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
-import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
-import ch.sbb.atlas.model.controller.BaseControllerApiTest;
-import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
-import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
-import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
-import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointGeolocationMapper;
-import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
-import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-import java.io.InputStream;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
 import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.LV95;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -37,6 +7,41 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import ch.sbb.atlas.api.AtlasApiConstants;
+import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
+import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
+import ch.sbb.atlas.imports.servicepoint.BaseDidokCsvModel;
+import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
+import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
+import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointImportRequestModel;
+import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.model.controller.BaseControllerApiTest;
+import ch.sbb.atlas.servicepoint.Country;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
+import ch.sbb.atlas.servicepoint.enumeration.ServicePointStatus;
+import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
+import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
+import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointGeolocationMapper;
+import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
+import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
+import java.io.InputStream;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 public class ServicePointControllerApiTest extends BaseControllerApiTest {
 
@@ -243,8 +248,8 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.statusDidok3Information.designationIt", is("In funzione")))
         .andExpect(jsonPath("$.statusDidok3Information.designationEn", is("In operation")))
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.operatingPoint, is(true)))
-        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.operatingPointWithTimetable, is(false)))
-        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.freightServicePoint, is(true)))
+        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.operatingPointWithTimetable, is(true)))
+        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.freightServicePoint, is(false)))
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.sortCodeOfDestinationStation, is("39136")))
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.businessOrganisation, is("ch:1:sboid:100871")))
         .andExpect(jsonPath("$.categories[0]", is("POINT_OF_SALE")))
@@ -304,11 +309,9 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.validFrom, is("2010-12-11")))
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.validTo, is("2019-08-10")))
         .andExpect(jsonPath("$.operatingPointKilometer", is(true)))
-        .andExpect(jsonPath("$.validFreightServicePoint", is(true)))
         .andExpect(jsonPath("$.stopPoint", is(true)))
         .andExpect(jsonPath("$.fareStop", is(false)))
         .andExpect(jsonPath("$.borderPoint", is(false)))
-        .andExpect(jsonPath("$.validType", is(true)))
         .andExpect(jsonPath("$.trafficPoint", is(true)))
         .andExpect(jsonPath("$.hasGeolocation", is(true)))
         .andExpect(jsonPath("$.creator", is("e123456")));
@@ -401,4 +404,38 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$", hasSize(1)));
   }
 
+  @Test
+  void shouldReadServicePointWithOperatingPointFalseCorrectly() throws Exception {
+    ServicePointNumber number = ServicePointNumber.ofNumberWithoutCheckDigit(8590008);
+    repository.save(ServicePointVersion
+        .builder()
+        .number(number)
+        .sloid("ch:1:sloid:8590008")
+        .numberShort(number.getNumberShort())
+        .country(Country.SWITZERLAND)
+        .designationLong(null)
+        .designationOfficial("Bern, Fake thing")
+        .abbreviation(null)
+        .statusDidok3(ServicePointStatus.IN_OPERATION)
+        .businessOrganisation("ch:1:sboid:100626")
+        .status(Status.VALIDATED)
+        .validFrom(LocalDate.of(2014, 12, 14))
+        .validTo(LocalDate.of(2021, 3, 31))
+        .operatingPoint(true)
+        .operatingPointWithTimetable(true)
+        .freightServicePoint(true)
+        .creationDate(LocalDateTime.of(LocalDate.of(2021, 3, 22), LocalTime.of(9, 26, 29)))
+        .creator("fs45117")
+        .editionDate(LocalDateTime.of(LocalDate.of(2022, 2, 23), LocalTime.of(17, 10, 10)))
+        .editor("fs45117")
+        .build());
+
+    mvc.perform(get("/v1/service-points/" + number.getValue()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].number.number", is(number.getNumber())))
+        .andExpect(jsonPath("$[0].operatingPoint", is(true)))
+        .andExpect(jsonPath("$[0].operatingPointWithTimetable", is(true)))
+        .andExpect(jsonPath("$[0].freightServicePoint", is(true)))
+        .andExpect(jsonPath("$[0].trafficPoint", is(true)));
+  }
 }
