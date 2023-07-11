@@ -4,6 +4,11 @@ import ch.sbb.atlas.searching.SpecificationBuilder;
 import ch.sbb.atlas.searching.specification.ValidOrEditionTimerangeSpecification;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion.Fields;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import lombok.Builder;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion_;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementRequestParams;
 import lombok.Getter;
@@ -27,12 +32,14 @@ public class TrafficPointElementSearchRestrictions {
   private final Pageable pageable;
   private final TrafficPointElementRequestParams trafficPointElementRequestParams;
 
-  @Singular(ignoreNullCollections = true)
-  private List<String> searchCriterias;
+  //@Singular(ignoreNullCollections = true)
+  private Map<String, List<String>> searchCriterias;
 
   private Optional<LocalDate> validOn;
 
   public Specification<TrafficPointElementVersion> getSpecification() {
+    return specificationBuilder().searchCriteriaSpecificationTrafficPoint(searchCriterias)
+        .and(specificationBuilder().validOnSpecification(validOn));
     List<String> sloidValues = new ArrayList<>();
 
     if (trafficPointElementRequestParams.getSloids() != null) {
