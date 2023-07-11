@@ -8,12 +8,10 @@ import ch.sbb.atlas.configuration.Role;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointImportRequestModel;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointItemImportResult;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion.Fields;
-import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementRequestParams;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.springdoc.core.annotations.ParameterObject;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -31,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Tag(name = "TrafficPointElements")
@@ -41,8 +40,8 @@ public interface TrafficPointElementApiV1 {
   @PageableAsQueryParam
   @Operation(description = "INFO: Versions of DiDok3 were merged during migration, so there are now a few versions less here.")
   Container<ReadTrafficPointElementVersionModel> getTrafficPointElements(
-      @Parameter(hidden = true) @PageableDefault(sort = {Fields.sloid}) Pageable pageable,
-      @ParameterObject TrafficPointElementRequestParams trafficPointElementRequestParams,
+      @Parameter(hidden = true) @PageableDefault(sort = {Fields.sloid, Fields.validFrom}) Pageable pageable,
+      @Parameter @RequestParam(required = false) Map<String, String> searchCriteria,
       @RequestParam(required = false) @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN) Optional<LocalDate> validOn);
 
   @GetMapping("{sloid}")

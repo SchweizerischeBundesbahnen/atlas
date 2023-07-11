@@ -16,7 +16,6 @@ import ch.sbb.atlas.servicepointdirectory.mapper.TrafficPointElementVersionMappe
 import ch.sbb.atlas.servicepointdirectory.model.search.TrafficPointElementSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementImportService;
-import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementRequestParams;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementService;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementValidationService;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +25,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -39,22 +41,33 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
   private final TrafficPointElementValidationService trafficPointElementValidationService;
   private final TrafficPointElementImportService trafficPointElementImportService;
 
+  //TODO: Naming
+  //TODO: Still Bug with Dates
   @Override
-  public Container<ReadTrafficPointElementVersionModel> getTrafficPointElements(Pageable pageable, TrafficPointElementRequestParams trafficPointElementRequestParams,
-      Optional<LocalDate> validOn ) {
+  public Container<ReadTrafficPointElementVersionModel> getTrafficPointElements(Pageable pageable, Map<String, String> searchCriteria,
+                                                                            Optional<LocalDate> validOn) {
 
-    TrafficPointElementSearchRestrictions trafficPointElementSearchRestrictions = TrafficPointElementSearchRestrictions.builder()
-        .pageable(pageable)
-        .trafficPointElementRequestParams(trafficPointElementRequestParams)
-        .validOn(validOn)
-        .build();
+    Map<String, List<String>> searchCriteria2 = new HashMap<>();
 
-    Page<TrafficPointElementVersion> trafficPointElementVersions = trafficPointElementService.findAll(trafficPointElementSearchRestrictions);
+    for(Map.Entry<String, String> entry : searchCriteria.entrySet()){
+        String key = entry.getKey();
+        List<String> test = new ArrayList<>();
+        String[] splittedValue = entry.getValue().split(",");
 
+        for (String value : splittedValue){
+          test.add(value);
+        }
+        searchCriteria2.put(key, test);
+    }
+
+    Page<TrafficPointElementVersion> trafficPointElementVersions = trafficPointElementService.findAll(
+        TrafficPointElementSearchRestrictions.builder()
+            .pageable(pageable)
+            .searchCriterias(searchCriteria2)
+            .validOn(validOn)
+            .build());
     return Container.<ReadTrafficPointElementVersionModel>builder()
-        .objects(trafficPointElementVersions.stream()
-                .map(TrafficPointElementVersionMapper::toModel)
-                .toList())
+        .objects(trafficPointElementVersions.stream().map(TrafficPointElementVersionMapper::toModel).toList())
         .totalCount(trafficPointElementVersions.getTotalElements())
         .build();
   }
