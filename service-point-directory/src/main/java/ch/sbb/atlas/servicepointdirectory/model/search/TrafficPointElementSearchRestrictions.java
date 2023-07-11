@@ -5,6 +5,7 @@ import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion.Fields;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,13 +21,13 @@ public class TrafficPointElementSearchRestrictions {
 
   private final Pageable pageable;
 
-  @Singular(ignoreNullCollections = true)
-  private List<String> searchCriterias;
+  //@Singular(ignoreNullCollections = true)
+  private Map<String, List<String>> searchCriterias;
 
   private Optional<LocalDate> validOn;
 
   public Specification<TrafficPointElementVersion> getSpecification() {
-    return specificationBuilder().searchCriteriaSpecification(searchCriterias)
+    return specificationBuilder().searchCriteriaSpecificationTrafficPoint(searchCriterias)
         .and(specificationBuilder().validOnSpecification(validOn));
   }
 
