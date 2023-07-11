@@ -12,17 +12,21 @@ import { MaterialModule } from '../../../../../core/module/material.module';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatDialogRef } from '@angular/material/dialog';
 import { EditTitlePipe } from './edit-title.pipe';
-import SpyObj = jasmine.SpyObj;
 import { UserService } from '../../../service/user.service';
 import { UserPermissionManager } from '../../../service/user-permission-manager';
 import { Observable, of } from 'rxjs';
 import { NotificationService } from '../../../../../core/notification/notification.service';
-import { ApplicationRole, ApplicationType, BusinessOrganisationsService } from '../../../../../api';
-import { User } from '../../../../../api';
+import {
+  ApplicationRole,
+  ApplicationType,
+  BusinessOrganisationsService,
+  User,
+} from '../../../../../api';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { MockUserDetailInfoComponent } from '../../../../../app.testing.mocks';
 import { Data } from '../../../components/read-only-data/data';
 import { ReadOnlyData } from '../../../components/read-only-data/read-only-data';
+import SpyObj = jasmine.SpyObj;
 
 @Component({
   selector: 'app-dialog-close',
@@ -67,7 +71,7 @@ describe('UserAdministrationUserEditComponent', () => {
       [
         'setSbbUserId',
         'setPermissions',
-        'clearPermissionRestrictionsIfNotWriter',
+        'clearPermisRestrIfNotWriterAndRemoveBOPermisRestrIfSepodiAndSuperUser',
         'emitBoFormResetEvent',
       ],
       {
@@ -158,7 +162,7 @@ describe('UserAdministrationUserEditComponent', () => {
     component.saveEdits();
 
     expect(
-      userPermissionManagerSpy.clearPermissionRestrictionsIfNotWriter
+      userPermissionManagerSpy.clearPermisRestrIfNotWriterAndRemoveBOPermisRestrIfSepodiAndSuperUser
     ).toHaveBeenCalledOnceWith();
     expect(userPermissionManagerSpy.emitBoFormResetEvent).toHaveBeenCalledOnceWith();
     expect(userServiceSpy.updateUserPermission).toHaveBeenCalledOnceWith({
