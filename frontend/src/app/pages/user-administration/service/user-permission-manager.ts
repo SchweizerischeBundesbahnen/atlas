@@ -35,6 +35,11 @@ export class UserPermissionManager {
         role: 'READER',
         permissionRestrictions: [],
       },
+      {
+        application: 'SEPODI',
+        role: 'READER',
+        permissionRestrictions: [],
+      },
     ],
   };
 
@@ -45,6 +50,7 @@ export class UserPermissionManager {
     LIDI: [],
     BODI: [],
     TIMETABLE_HEARING: [],
+    SEPODI: [],
   };
 
   readonly boOfApplicationsSubject$: BehaviorSubject<{
@@ -75,6 +81,12 @@ export class UserPermissionManager {
       ApplicationRole.Writer,
       ApplicationRole.Supervisor,
     ],
+    SEPODI: [
+      ApplicationRole.Reader,
+      ApplicationRole.Writer,
+      ApplicationRole.SuperUser,
+      ApplicationRole.Supervisor,
+    ],
   };
 
   constructor(private readonly boService: BusinessOrganisationsService) {}
@@ -90,9 +102,15 @@ export class UserPermissionManager {
     return this.availableApplicationRolesConfig[application];
   }
 
-  clearPermissionRestrictionsIfNotWriter(): void {
+  clearPermisRestrIfNotWriterAndRemoveBOPermisRestrIfSepodiAndSuperUser(): void {
     this.userPermission.permissions.forEach((permission) => {
-      if (permission.role !== 'WRITER') {
+      const permissionIndex = this.getPermissionIndexFromApplication(ApplicationType.Sepodi);
+      if (permission.role === 'SUPER_USER' && permission.application === 'SEPODI') {
+        this.userPermission.permissions[permissionIndex].permissionRestrictions =
+          this.userPermission.permissions[permissionIndex].permissionRestrictions.filter(
+            (restriction) => restriction.type !== PermissionRestrictionType.BusinessOrganisation
+          );
+      } else if (permission.role !== 'WRITER') {
         permission.permissionRestrictions = [];
       }
     });
@@ -132,6 +150,14 @@ export class UserPermissionManager {
           this.userPermission.permissions[permissionIndex].permissionRestrictions.push({
             valueAsString: canton.valueAsString,
             type: PermissionRestrictionType.Canton,
+          });
+        });
+      permission.permissionRestrictions
+        .filter((restriction) => restriction.type === PermissionRestrictionType.Country)
+        .forEach((country) => {
+          this.userPermission.permissions[permissionIndex].permissionRestrictions.push({
+            valueAsString: country.valueAsString,
+            type: PermissionRestrictionType.Country,
           });
         });
     });
