@@ -47,22 +47,10 @@ public class ServicePointMappingEquality {
 
     assertThat(atlasCsvLine.getBusinessOrganisation()).isEqualTo("ch:1:sboid:" + didokCsvLine.getSaid());
 
-    // TODO: AssertionError: 85848481: didok:801, atlas:null
-    /*
-    assertThat(atlasCsvLine.getBusinessOrganisationOrganisationNumber())
+    assertThat(atlasCsvLine.getBusinessOrganisationNumber())
         .withFailMessage(didokCsvLine.getDidokCode() + ": didok:" + didokCsvLine.getGoNummer() + ", atlas:" + atlasCsvLine
-            .getBusinessOrganisationOrganisationNumber())
+            .getBusinessOrganisationNumber())
         .isEqualTo(didokCsvLine.getGoNummer());
-    assertThat(atlasCsvLine.getBusinessOrganisationAbbreviationDe()).isEqualTo(didokCsvLine.getGoAbkuerzungDe());
-    assertThat(atlasCsvLine.getBusinessOrganisationAbbreviationFr()).isEqualTo(didokCsvLine.getGoAbkuerzungFr());
-    assertThat(atlasCsvLine.getBusinessOrganisationAbbreviationIt()).isEqualTo(didokCsvLine.getGoAbkuerzungIt());
-    assertThat(atlasCsvLine.getBusinessOrganisationAbbreviationEn()).isEqualTo(didokCsvLine.getGoAbkuerzungEn());
-
-    assertThat(atlasCsvLine.getBusinessOrganisationDescriptionDe()).isEqualTo(didokCsvLine.getGoBezeichnungDe());
-    assertThat(atlasCsvLine.getBusinessOrganisationDescriptionFr()).isEqualTo(didokCsvLine.getGoBezeichnungFr());
-    assertThat(atlasCsvLine.getBusinessOrganisationDescriptionIt()).isEqualTo(didokCsvLine.getGoBezeichnungIt());
-    assertThat(atlasCsvLine.getBusinessOrganisationDescriptionEn()).isEqualTo(didokCsvLine.getGoBezeichnungEn());
-    */
 
     if (atlasCsvLine.getOperatingPointType() != null) {
       assertThat(atlasCsvLine.getOperatingPointType().getId()).isEqualTo(didokCsvLine.getBpBetriebspunktArtId());
@@ -129,16 +117,12 @@ public class ServicePointMappingEquality {
 
   private static void performEqualityCheckOnGeoLocation(ServicePointCsvModel didokCsvLine,
       ServicePointVersionCsvModel atlasCsvLine) {
-    // AT != LI at DidokCode: 12018374 ... zu prüfen
-    // assertThat(atlasCsvLine.getIsoCountryCode()).isEqualTo(didokCsvLine.getIsoCountryCode());
+    assertThat(atlasCsvLine.getIsoCountryCode()).isEqualTo(didokCsvLine.getIsoCountryCode());
 
-    // TODO: DiDok nicht exportiert KantonsName?
-    // Zürich != null at DidokCode: 85306480
-    // assertThat(atlasCsvLine.getCantonName()).isEqualTo(didokCsvLine.getKantonsName());
-
-    //    if (didokCsvLine.getKantonsName() == null && atlasCsvLine.getCantonName() != null) {
-    //      log.error("DIDOK_CODE: " + didokCsvLine.getDidokCode() + " KantonsName " + didokCsvLine.getKantonsName() + " from " + didokCsvLine.getValidFrom() + " until " + didokCsvLine.getValidTo());
-    //    }
+    // Atlas liefert den Kanontsnamen immer, in Didok fehlt er ab und zu
+    if (didokCsvLine.getKantonsName() != null) {
+      assertThat(atlasCsvLine.getCantonName()).isEqualTo(didokCsvLine.getKantonsName());
+    }
     assertThat(atlasCsvLine.getCantonFsoNumber()).isEqualTo(didokCsvLine.getKantonsNum());
     assertThat(atlasCsvLine.getCantonAbbreviation()).isEqualTo(didokCsvLine.getKantonsKuerzel());
     assertThat(atlasCsvLine.getDistrictName()).isEqualTo(didokCsvLine.getBezirksName());
@@ -163,7 +147,9 @@ public class ServicePointMappingEquality {
     */
 
     if (round(atlasCsvLine.getWgs84North(), 5).compareTo(round(didokCsvLine.getNWgs84(), 5)) != 0) {
-      log.error(didokCsvLine.getDidokCode() + ": sboid:" + atlasCsvLine.getBusinessOrganisation()  + " offizielle Bezeichnung:" + didokCsvLine.getBezeichnungOffiziell() + " didok:" + didokCsvLine.getNWgs84() + ", atlas:" + atlasCsvLine.getWgs84North() + " " + wgs84EastWrongCounter);
+      log.error(didokCsvLine.getDidokCode() + ": sboid:" + atlasCsvLine.getBusinessOrganisation() + " offizielle Bezeichnung:"
+          + didokCsvLine.getBezeichnungOffiziell() + " didok:" + didokCsvLine.getNWgs84() + ", atlas:"
+          + atlasCsvLine.getWgs84North() + " " + wgs84EastWrongCounter);
       wgs84EastWrongCounter++;
     }
 
@@ -176,13 +162,15 @@ public class ServicePointMappingEquality {
      */
 
     // TODO: null != 0.0 at DidokCode 12015503 ... zu checken
-    //        assertThat(atlasCsvLine.getHeight())
-    //            .withFailMessage(didokCsvLine.getDidokCode() + ": didok:" + didokCsvLine.getHeight() + ", atlas:" + atlasCsvLine
-    //            .getHeight())
-    //            .isEqualTo(didokCsvLine.getHeight());
+    assertThat(atlasCsvLine.getHeight())
+        .withFailMessage(didokCsvLine.getDidokCode() + ": didok:" + didokCsvLine.getHeight() + ", atlas:" + atlasCsvLine
+            .getHeight())
+        .isEqualTo(didokCsvLine.getHeight());
 
     //    if (didokCsvLine.getHeight() == null && atlasCsvLine.getHeight() != null) {
-    //      log.error("DIDOK_CODE: " + didokCsvLine.getDidokCode() + " DiDok:" + didokCsvLine.getHeight() + " ATLAS:" + atlasCsvLine.getHeight() + " from " + didokCsvLine.getValidFrom() + " until " + didokCsvLine.getValidTo() + " counter: " + heightIsNullInDiDokCounter);
+    //      log.error("DIDOK_CODE: " + didokCsvLine.getDidokCode() + " DiDok:" + didokCsvLine.getHeight() + " ATLAS:" +
+    //      atlasCsvLine.getHeight() + " from " + didokCsvLine.getValidFrom() + " until " + didokCsvLine.getValidTo() + "
+    //      counter: " + heightIsNullInDiDokCounter);
     //      heightIsNullInDiDokCounter++;
     //    }
   }
@@ -192,7 +180,9 @@ public class ServicePointMappingEquality {
   }
 
   public static Double round(double value, int places) {
-    if (places < 0) throw new IllegalArgumentException();
+    if (places < 0) {
+      throw new IllegalArgumentException();
+    }
 
     long factor = (long) Math.pow(10, places);
     value = value * factor;
