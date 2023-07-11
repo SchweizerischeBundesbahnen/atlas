@@ -107,7 +107,10 @@ public class ServicePointVersionRowMapper implements RowMapper<ServicePointVersi
       servicePointGeolocationBuilder.spatialReference(spatialReference);
     }
 
-    servicePointGeolocationBuilder.country(Country.valueOf(rs.getString("country")));
+    String geolocationCountry = rs.getString("geolocation_country");
+    if (geolocationCountry != null) {
+      servicePointGeolocationBuilder.country(Country.valueOf(geolocationCountry));
+    }
     if (rs.getString("swiss_canton") != null) {
       servicePointGeolocationBuilder.swissCanton(SwissCanton.valueOf(rs.getString("swiss_canton")));
     }
