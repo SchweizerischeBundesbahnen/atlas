@@ -35,8 +35,8 @@ public class ServicePointMappingEquality {
     assertThat(atlasCsvLine.isOperatingPointWithTimetable()).isEqualTo(didokCsvLine.getIsFahrplan());
     assertThat(atlasCsvLine.isStopPoint()).isEqualTo(didokCsvLine.getIsHaltestelle());
 
-    if (atlasCsvLine.getStopPointTypeCode() != null) {
-      assertThat(atlasCsvLine.getStopPointTypeCode().getId()).isEqualTo(didokCsvLine.getHTypId());
+    if (atlasCsvLine.getStopPointType() != null) {
+      assertThat(atlasCsvLine.getStopPointType().getId()).isEqualTo(didokCsvLine.getHTypId());
     } else {
       assertThat(didokCsvLine.getHTypId()).isNull();
     }
@@ -45,7 +45,7 @@ public class ServicePointMappingEquality {
     assertThat(atlasCsvLine.isTrafficPoint()).isEqualTo(didokCsvLine.getIsVerkehrspunkt());
     assertThat(atlasCsvLine.isBorderPoint()).isEqualTo(didokCsvLine.getIsGrenzpunkt());
 
-    assertThat(atlasCsvLine.getSboid()).isEqualTo("ch:1:sboid:" + didokCsvLine.getSaid());
+    assertThat(atlasCsvLine.getBusinessOrganisation()).isEqualTo("ch:1:sboid:" + didokCsvLine.getSaid());
 
     // TODO: AssertionError: 85848481: didok:801, atlas:null
     /*
@@ -64,14 +64,14 @@ public class ServicePointMappingEquality {
     assertThat(atlasCsvLine.getBusinessOrganisationDescriptionEn()).isEqualTo(didokCsvLine.getGoBezeichnungEn());
     */
 
-    if (atlasCsvLine.getOperatingPointTypeCode() != null) {
-      assertThat(atlasCsvLine.getOperatingPointTypeCode().getId()).isEqualTo(didokCsvLine.getBpBetriebspunktArtId());
+    if (atlasCsvLine.getOperatingPointType() != null) {
+      assertThat(atlasCsvLine.getOperatingPointType().getId()).isEqualTo(didokCsvLine.getBpBetriebspunktArtId());
     } else {
       assertThat(didokCsvLine.getBpBetriebspunktArtId()).isNull();
     }
 
-    if (atlasCsvLine.getOperatingPointTechnicalTimetableTypeCode() != null) {
-      assertThat(atlasCsvLine.getOperatingPointTechnicalTimetableTypeCode().getId()).isEqualTo(
+    if (atlasCsvLine.getOperatingPointTechnicalTimetableType() != null) {
+      assertThat(atlasCsvLine.getOperatingPointTechnicalTimetableType().getId()).isEqualTo(
           didokCsvLine.getBptfBetriebspunktArtId());
     } else {
       assertThat(didokCsvLine.getBptfBetriebspunktArtId()).isNull();
@@ -81,11 +81,11 @@ public class ServicePointMappingEquality {
       Set<String> expectedVerkehrsmittel =
           Stream.of(didokCsvLine.getBpvhVerkehrsmittel().split("~")).filter(StringUtils::isNotBlank).collect(Collectors.toSet());
       Set<String> actualMeansOfTransport =
-          Stream.of(atlasCsvLine.getMeansOfTransportCode().split("\\|")).map(i -> MeanOfTransport.valueOf(i).getCode())
+          Stream.of(atlasCsvLine.getMeansOfTransport().split("\\|")).map(i -> MeanOfTransport.valueOf(i).getCode())
               .collect(Collectors.toSet());
       assertThat(actualMeansOfTransport).isEqualTo(expectedVerkehrsmittel);
     } else {
-      assertThat(atlasCsvLine.getMeansOfTransportCode()).isNull();
+      assertThat(atlasCsvLine.getMeansOfTransport()).isNull();
     }
 
     // TODO: Double-check if logic is working by introducing differences in DiDok and ATLAS
@@ -93,15 +93,15 @@ public class ServicePointMappingEquality {
       Set<String> expectedKategorien =
           Stream.of(didokCsvLine.getDsKategorienIds().split("\\|")).filter(StringUtils::isNotBlank).collect(Collectors.toSet());
       Set<String> actualCategories =
-          Stream.of(atlasCsvLine.getCategoriesCode().split("\\|")).map(i -> Category.valueOf(i).getCode())
+          Stream.of(atlasCsvLine.getCategories().split("\\|")).map(i -> Category.valueOf(i).getCode())
               .collect(Collectors.toSet());
       assertThat(actualCategories).isEqualTo(expectedKategorien);
     } else {
-      assertThat(atlasCsvLine.getCategoriesCode()).isNull();
+      assertThat(atlasCsvLine.getCategories()).isNull();
     }
 
-    if (atlasCsvLine.getOperatingPointTrafficPointTypeCode() != null) {
-      assertThat(atlasCsvLine.getOperatingPointTrafficPointTypeCode().getId()).isEqualTo(
+    if (atlasCsvLine.getOperatingPointTrafficPointType() != null) {
+      assertThat(atlasCsvLine.getOperatingPointTrafficPointType().getId()).isEqualTo(
           didokCsvLine.getBpvbBetriebspunktArtId());
     } else {
       assertThat(didokCsvLine.getBpvbBetriebspunktArtId()).isNull();
@@ -163,7 +163,7 @@ public class ServicePointMappingEquality {
     */
 
     if (round(atlasCsvLine.getWgs84North(), 5).compareTo(round(didokCsvLine.getNWgs84(), 5)) != 0) {
-      log.error(didokCsvLine.getDidokCode() + ": sboid:" + atlasCsvLine.getSboid()  + " offizielle Bezeichnung:" + didokCsvLine.getBezeichnungOffiziell() + " didok:" + didokCsvLine.getNWgs84() + ", atlas:" + atlasCsvLine.getWgs84North() + " " + wgs84EastWrongCounter);
+      log.error(didokCsvLine.getDidokCode() + ": sboid:" + atlasCsvLine.getBusinessOrganisation()  + " offizielle Bezeichnung:" + didokCsvLine.getBezeichnungOffiziell() + " didok:" + didokCsvLine.getNWgs84() + ", atlas:" + atlasCsvLine.getWgs84North() + " " + wgs84EastWrongCounter);
       wgs84EastWrongCounter++;
     }
 
