@@ -27,7 +27,7 @@ import lombok.experimental.SuperBuilder;
 @FieldNameConstants
 @MappedSuperclass
 @AtlasVersionable
-public abstract class GeolocationBaseEntity extends BaseDidokImportEntity {
+public class GeolocationBaseEntity extends BaseDidokImportEntity {
 
   @NotNull
   @Enumerated(EnumType.STRING)
