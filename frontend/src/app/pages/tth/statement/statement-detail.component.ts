@@ -50,6 +50,7 @@ export class StatementDetailComponent implements OnInit, AfterViewInit {
   uploadedFiles: File[] = [];
   isLoading = false;
   isDuplicating = false;
+  isInitializingComponent = true;
 
   private ngUnsubscribe = new Subject<void>();
 
@@ -90,7 +91,10 @@ export class StatementDetailComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.statement = this.route.snapshot.data.statement;
+    if (this.isInitializingComponent) {
+      this.statement = this.route.snapshot.data.statement;
+    }
+
     this.hearingStatus = this.route.snapshot.data.hearingStatus;
     this.isNew = !this.statement;
     this.uploadedFiles = [];
@@ -388,9 +392,11 @@ export class StatementDetailComponent implements OnInit, AfterViewInit {
   }
 
   private navigateToStatementDetail(statement: TimetableHearingStatement) {
-    this.router
-      .navigate(['..', statement.id], { relativeTo: this.route })
-      .then(() => this.ngOnInit());
+    this.router.navigate(['..', statement.id], { relativeTo: this.route }).then(() => {
+      this.isInitializingComponent = false;
+      this.statement = statement;
+      this.ngOnInit();
+    });
   }
 
   private handleError() {
