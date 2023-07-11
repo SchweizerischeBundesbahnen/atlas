@@ -21,7 +21,9 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -53,20 +55,10 @@ public class ServicePointVersionRowMapper implements RowMapper<ServicePointVersi
       servicePointVersionBuilder.operatingPointTechnicalTimetableType(
           OperatingPointTechnicalTimetableType.valueOf(rs.getString("operating_point_technical_timetable_type")));
     }
-    if (rs.getString("list_of_transports") != null) {
-      String listOfMeansOfTransports = rs.getString("list_of_transports");
-      Set<MeanOfTransport> collectedMeansOfTransport = Arrays.stream(listOfMeansOfTransports.split("\\|")).map(
-          MeanOfTransport::valueOf).collect(Collectors.toSet());
-      servicePointVersionBuilder.meansOfTransportPipeList(rs.getString("list_of_transports"));
-      servicePointVersionBuilder.meansOfTransport(collectedMeansOfTransport);
-    }
-    if (rs.getString("list_of_categories") != null) {
-      String listOfCategories = rs.getString("list_of_categories");
-      servicePointVersionBuilder.categoriesPipeList(listOfCategories);
-      Set<Category> collectedCategories = Arrays.stream(listOfCategories.split("\\|")).map(Category::valueOf)
-          .collect(Collectors.toSet());
-      servicePointVersionBuilder.categories(collectedCategories);
-    }
+
+    setMeansOfTransport(servicePointVersionBuilder, rs.getString("list_of_transports"));
+    setCategories(servicePointVersionBuilder, rs.getString("list_of_categories"));
+
     if (rs.getString("operating_point_traffic_point_type") != null) {
       servicePointVersionBuilder.operatingPointTrafficPointType(OperatingPointTrafficPointType.valueOf(rs.getString(
           "operating_point_traffic_point_type")));
@@ -92,7 +84,7 @@ public class ServicePointVersionRowMapper implements RowMapper<ServicePointVersi
   private BusinessOrganisation getBusinessOrganisation(ResultSet rs) throws SQLException {
     return BusinessOrganisation.builder()
         .businessOrganisation(rs.getString("business_organisation"))
-        .businessOrganisationNumber(RowMapperUtil.getInteger(rs,"organisation_number"))
+        .businessOrganisationNumber(RowMapperUtil.getInteger(rs, "organisation_number"))
         .businessOrganisationAbbreviationDe(rs.getString("abbreviation_de"))
         .businessOrganisationAbbreviationFr(rs.getString("abbreviation_fr"))
         .businessOrganisationAbbreviationEn(rs.getString("abbreviation_en"))
@@ -108,7 +100,7 @@ public class ServicePointVersionRowMapper implements RowMapper<ServicePointVersi
     ServicePointGeolocationBuilder<?, ?> servicePointGeolocationBuilder = ServicePointGeolocation.builder();
     servicePointGeolocationBuilder.east(rs.getDouble("east"));
     servicePointGeolocationBuilder.north(rs.getDouble("north"));
-    servicePointGeolocationBuilder.height(rs.getDouble("height"));
+    servicePointGeolocationBuilder.height(RowMapperUtil.getDouble(rs, "height"));
 
     if (rs.getString("spatial_reference") != null) {
       SpatialReference spatialReference = SpatialReference.valueOf(rs.getString("spatial_reference"));
@@ -129,5 +121,31 @@ public class ServicePointVersionRowMapper implements RowMapper<ServicePointVersi
     if (servicePointGeolocation.getSpatialReference() != null) {
       servicePointVersionBuilder.servicePointGeolocation(servicePointGeolocation);
     }
+  }
+
+  void setCategories(ServicePointVersionBuilder<?, ?> servicePointVersionBuilder, String listOfCategories) {
+    if (listOfCategories != null) {
+      Set<Category> categories = stringToSet(listOfCategories, Category::valueOf);
+
+      servicePointVersionBuilder.categories(categories);
+      servicePointVersionBuilder.categoriesPipeList(toPipedString(categories));
+    }
+  }
+
+  void setMeansOfTransport(ServicePointVersionBuilder<?, ?> servicePointVersionBuilder, String listOfMeansOfTransport) {
+    if (listOfMeansOfTransport != null) {
+      Set<MeanOfTransport> meansOfTransport = stringToSet(listOfMeansOfTransport, MeanOfTransport::valueOf);
+
+      servicePointVersionBuilder.meansOfTransport(meansOfTransport);
+      servicePointVersionBuilder.meansOfTransportPipeList(toPipedString(meansOfTransport));
+    }
+  }
+
+  private <T> Set<T> stringToSet(String values, Function<String, T> enumType) {
+    return Arrays.stream(values.split("\\|")).map(enumType).collect(Collectors.toSet());
+  }
+
+  private String toPipedString(Collection<? extends Enum<?>> collection) {
+    return collection.stream().map(Enum::name).sorted().collect(Collectors.joining("|"));
   }
 }
