@@ -113,13 +113,17 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
   private ServicePointGeolocationModel servicePointGeolocation;
 
   @NotNull
-  @Schema(description = "Status")
+  @Schema(description = "Status", example = "VALIDATED")
   private Status status;
 
   @NotNull
   private LocalDate validFrom;
+
   @NotNull
   private LocalDate validTo;
+
+  @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)", example = "5")
+  private Integer etagVersion;
 
   @JsonInclude
   @Schema(description = "ServicePoint has a Geolocation")
