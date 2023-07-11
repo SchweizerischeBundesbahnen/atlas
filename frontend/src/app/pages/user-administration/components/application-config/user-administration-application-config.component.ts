@@ -116,6 +116,12 @@ export class UserAdministrationApplicationConfigComponent implements OnInit, OnD
     );
   }
 
+  resetCountries() {
+    this.countrySelection = this.userPermissionManager.getRestrictionValues(
+      this.userPermissionManager.getPermissionByApplication(this.application)
+    ) as [Country];
+  }
+
   ngOnInit() {
     this.availableOptions = this.userPermissionManager.getAvailableApplicationRolesOfApplication(
       this.application
