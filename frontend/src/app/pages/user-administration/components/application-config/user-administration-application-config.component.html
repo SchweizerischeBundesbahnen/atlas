@@ -8,7 +8,8 @@
       <atlas-select
         (selectChanged)="
           userPermissionManager.changePermissionRole(application, $event.value);
-          businessOrganisationForm.reset()
+          businessOrganisationForm.reset();
+          resetCountries()
         "
         [value]="role"
         label="USER_ADMIN.ROLE"
