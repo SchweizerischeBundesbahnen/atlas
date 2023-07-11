@@ -47,10 +47,13 @@ public class ServicePointMappingEquality {
 
     assertThat(atlasCsvLine.getBusinessOrganisation()).isEqualTo("ch:1:sboid:" + didokCsvLine.getSaid());
 
-    assertThat(atlasCsvLine.getBusinessOrganisationNumber())
-        .withFailMessage(didokCsvLine.getDidokCode() + ": didok:" + didokCsvLine.getGoNummer() + ", atlas:" + atlasCsvLine
-            .getBusinessOrganisationNumber())
-        .isEqualTo(didokCsvLine.getGoNummer());
+    // Atlas gibt nicht mehr gültige GO-Daten nicht mehr aus ...
+    if (atlasCsvLine.getBusinessOrganisationNumber() != null) {
+      assertThat(atlasCsvLine.getBusinessOrganisationNumber())
+          .withFailMessage(didokCsvLine.getDidokCode() + ": didok:" + didokCsvLine.getGoNummer() + ", atlas:" + atlasCsvLine
+              .getBusinessOrganisationNumber())
+          .isEqualTo(didokCsvLine.getGoNummer());
+    }
 
     if (atlasCsvLine.getOperatingPointType() != null) {
       assertThat(atlasCsvLine.getOperatingPointType().getId()).isEqualTo(didokCsvLine.getBpBetriebspunktArtId());
