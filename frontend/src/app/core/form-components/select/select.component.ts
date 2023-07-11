@@ -8,8 +8,10 @@ import {
   Output,
   SimpleChanges,
   TemplateRef,
+  ViewChild,
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { MatOption } from '@angular/material/core';
 
 @Component({
   selector: 'atlas-select',
@@ -32,7 +34,10 @@ export class SelectComponent<TYPE> implements OnInit, OnChanges {
   }
 
   @Input() additionalLabelspace = true;
+  @Input() isSelectAllEnabled = false;
   @Input() required = false;
+
+  @Input() selectAll = 'TTH.ALL_COUNTRIES';
 
   private _disabled = false;
   @Input()
@@ -65,14 +70,18 @@ export class SelectComponent<TYPE> implements OnInit, OnChanges {
 
   @Output() selectChanged = new EventEmitter();
 
+  @ViewChild('allSelected') private allSelected!: MatOption;
+
   private _isDummyForm = false;
+
+  private _isAllSelected = false;
 
   ngOnInit(): void {
     if (!this.formGroup) {
       this.initDummyForm();
     }
     if (this.value) {
-      this.formGroup.get(this.controlName!)?.setValue(this.value);
+      this.getFormControlName()?.setValue(this.value);
     }
   }
 
@@ -86,6 +95,33 @@ export class SelectComponent<TYPE> implements OnInit, OnChanges {
     return {
       option: option,
     };
+  }
+
+  getFormControlName() {
+    return this.formGroup.get(this.controlName!);
+  }
+
+  toggleAllSelection() {
+    if (this.allSelected.selected) {
+      this.getFormControlName()?.setValue(this.options);
+      this.selectChanged.emit({ value: this.options });
+      this.allSelected.select();
+      this._isAllSelected = true;
+    } else {
+      this.getFormControlName()?.setValue([]);
+      this.selectChanged.emit({ value: [] });
+    }
+  }
+
+  deselectAllCheckboxUnlessAllSelected() {
+    if (this._isAllSelected) {
+      if (this.allSelected.selected) {
+        this.allSelected.deselect();
+      }
+      if (this.getFormControlName()?.value.length == this.options.length) {
+        this.allSelected.select();
+      }
+    }
   }
 
   private initDummyForm() {
