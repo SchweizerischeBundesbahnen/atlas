@@ -22,8 +22,8 @@ import org.junit.jupiter.api.Test;
 @Slf4j
 public class ServicePointMigrationIntegrationTest {
 
-  private static final String DIDOK_CSV_FILE = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20230706021623.csv";
-  private static final String ATLAS_CSV_FILE = "full-world-service-point-2023-07-06.csv";
+  private static final String DIDOK_CSV_FILE = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20230711020757.csv";
+  private static final String ATLAS_CSV_FILE = "full-world-service-point-2023-07-11.csv";
   private static final String SEPARATOR = "/";
 
   @Test
