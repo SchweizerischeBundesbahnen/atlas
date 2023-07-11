@@ -12,4 +12,8 @@ public class RowMapperUtil {
     return resultSet.wasNull() ? null : intValue;
   }
 
+  public static Double getDouble(ResultSet resultSet, String column) throws SQLException {
+    double doubleValue = resultSet.getDouble(column);
+    return resultSet.wasNull() ? null : doubleValue;
+  }
 }

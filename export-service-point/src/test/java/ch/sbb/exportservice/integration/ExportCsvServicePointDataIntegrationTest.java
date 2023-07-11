@@ -74,7 +74,7 @@ public class ExportCsvServicePointDataIntegrationTest {
 
     ServicePointVersionCsvModel magdenObrist = exportedCsv.stream().filter(i -> i.getNumber().equals(85722413)).findFirst()
         .orElseThrow();
-    assertThat(magdenObrist.getBusinessOrganisationOrganisationNumber()).isEqualTo(999);
+    assertThat(magdenObrist.getBusinessOrganisationNumber()).isEqualTo(999);
     assertThat(magdenObrist.getBusinessOrganisationAbbreviationDe()).isEqualTo("SAS-Code");
   }
 
