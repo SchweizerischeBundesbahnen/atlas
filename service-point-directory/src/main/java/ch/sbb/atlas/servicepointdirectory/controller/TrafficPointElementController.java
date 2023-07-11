@@ -25,7 +25,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -38,13 +41,29 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
   private final TrafficPointElementValidationService trafficPointElementValidationService;
   private final TrafficPointElementImportService trafficPointElementImportService;
 
+  //TODO: Naming
+  //TODO: Still Bug with Dates
   @Override
-  public Container<ReadTrafficPointElementVersionModel> getTrafficPointElements(Pageable pageable, List<String> searchCriteria,
-                                                                         Optional<LocalDate> validOn) {
+  public Container<ReadTrafficPointElementVersionModel> getTrafficPointElements(Pageable pageable, Map<String, String> searchCriteria,
+                                                                            Optional<LocalDate> validOn) {
+
+    Map<String, List<String>> searchCriteria2 = new HashMap<>();
+
+    for(Map.Entry<String, String> entry : searchCriteria.entrySet()){
+        String key = entry.getKey();
+        List<String> test = new ArrayList<>();
+        String[] splittedValue = entry.getValue().split(",");
+
+        for (String value : splittedValue){
+          test.add(value);
+        }
+        searchCriteria2.put(key, test);
+    }
+
     Page<TrafficPointElementVersion> trafficPointElementVersions = trafficPointElementService.findAll(
         TrafficPointElementSearchRestrictions.builder()
             .pageable(pageable)
-            .searchCriterias(searchCriteria)
+            .searchCriterias(searchCriteria2)
             .validOn(validOn)
             .build());
     return Container.<ReadTrafficPointElementVersionModel>builder()
