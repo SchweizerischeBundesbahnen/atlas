@@ -18,18 +18,16 @@ import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
-import org.apache.commons.lang3.StringUtils;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Stream;
 
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
@@ -130,28 +128,9 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
   }
 
   @JsonInclude
-  @Schema(description = "ServicePoint is OperatingPoint, Operating points refers to the totality of operationally used service "
-          + "points. These are not necessarily traffic-relevant service points. ")
-  public boolean isOperatingPoint() {
-    return operatingPointType != null || isTrafficPoint();
-  }
-
-  @JsonInclude
-  @Schema(description = "ServicePoint is OperatingPoint with timetable")
-  public boolean isOperatingPointWithTimetable() {
-    return operatingPointType == null || operatingPointType.hasTimetable();
-  }
-
-  @JsonInclude
   @Schema(description = "ServicePoint is StopPoint")
   public boolean isStopPoint() {
     return !getMeansOfTransport().isEmpty();
-  }
-
-  @JsonInclude
-  @Schema(description = "ServicePoint is FreightServicePoint")
-  public boolean isFreightServicePoint() {
-    return StringUtils.isNotBlank(sortCodeOfDestinationStation);
   }
 
   @JsonInclude
