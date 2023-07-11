@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Tag(name = "TrafficPointElements")
@@ -40,7 +41,7 @@ public interface TrafficPointElementApiV1 {
   @Operation(description = "INFO: Versions of DiDok3 were merged during migration, so there are now a few versions less here.")
   Container<ReadTrafficPointElementVersionModel> getTrafficPointElements(
       @Parameter(hidden = true) @PageableDefault(sort = {Fields.sloid, Fields.validFrom}) Pageable pageable,
-      @Parameter @RequestParam(required = false) List<String> searchCriteria,
+      @Parameter @RequestParam(required = false) Map<String, String> searchCriteria,
       @RequestParam(required = false) @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN) Optional<LocalDate> validOn);
 
   @GetMapping("{sloid}")
