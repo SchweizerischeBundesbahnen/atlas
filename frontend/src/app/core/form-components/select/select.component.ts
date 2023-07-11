@@ -34,7 +34,7 @@ export class SelectComponent<TYPE> implements OnInit, OnChanges {
   }
 
   @Input() additionalLabelspace = true;
-  @Input() checkAllEnabled = false;
+  @Input() isSelectAllEnabled = false;
   @Input() required = false;
 
   @Input() selectAll = 'TTH.ALL_COUNTRIES';
