@@ -7,7 +7,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class TrafficPointElementVerisionMapper {
 
-  public static TrafficPointElementVersionModel fromEntity(TrafficPointElementVersion trafficPointElementVersion) {
+  public static TrafficPointElementVersionModel toModel(TrafficPointElementVersion trafficPointElementVersion) {
     return TrafficPointElementVersionModel.builder()
         .id(trafficPointElementVersion.getId())
         .sloid(trafficPointElementVersion.getSloid())
@@ -27,6 +27,28 @@ public class TrafficPointElementVerisionMapper {
         .editionDate(trafficPointElementVersion.getEditionDate())
         .editor(trafficPointElementVersion.getEditor())
         .build();
+  }
+
+  public static TrafficPointElementVersion toEntity(TrafficPointElementVersionModel trafficPointElementVersionModel) {
+    return TrafficPointElementVersion.builder()
+            .id(trafficPointElementVersionModel.getId())
+            .sloid(trafficPointElementVersionModel.getSloid())
+            .designation(trafficPointElementVersionModel.getDesignation())
+            .designationOperational(trafficPointElementVersionModel.getDesignationOperational())
+            .length(trafficPointElementVersionModel.getLength())
+            .boardingAreaHeight(trafficPointElementVersionModel.getBoardingAreaHeight())
+            .compassDirection(trafficPointElementVersionModel.getCompassDirection())
+            .trafficPointElementType(trafficPointElementVersionModel.getTrafficPointElementType())
+            .servicePointNumber(trafficPointElementVersionModel.getServicePointNumber())
+            .parentSloid(trafficPointElementVersionModel.getParentSloid())
+            .validFrom(trafficPointElementVersionModel.getValidFrom())
+            .validTo(trafficPointElementVersionModel.getValidTo())
+            .trafficPointElementGeolocation(null)
+            .creationDate(trafficPointElementVersionModel.getCreationDate())
+            .creator(trafficPointElementVersionModel.getCreator())
+            .editionDate(trafficPointElementVersionModel.getEditionDate())
+            .editor(trafficPointElementVersionModel.getEditor())
+            .build();
   }
 
 }
