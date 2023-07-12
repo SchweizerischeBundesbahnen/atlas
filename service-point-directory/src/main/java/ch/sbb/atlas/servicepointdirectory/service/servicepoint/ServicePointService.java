@@ -57,6 +57,10 @@ public class ServicePointService {
     return servicePointVersionRepository.saveAndFlush(servicePointVersion);
   }
 
+  public ServicePointVersion saveWithoutValidationForImportOnly(ServicePointVersion servicePointVersion) {
+    return servicePointVersionRepository.saveAndFlush(servicePointVersion);
+  }
+
   @PreAuthorize("@countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdateCountryBased(#editedVersion, "
           + "#currentVersions, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
   public void update(ServicePointVersion currentVersion, ServicePointVersion editedVersion,
