@@ -51,7 +51,7 @@ public class ServicePointVersionCsvModel {
 
   private boolean stopPoint;
 
-  private StopPointType stopPointTypeCode;
+  private StopPointType stopPointType;
 
   private boolean freightServicePoint;
 
@@ -79,15 +79,15 @@ public class ServicePointVersionCsvModel {
 
   private String localityName;
 
-  private OperatingPointType operatingPointTypeCode;
+  private OperatingPointType operatingPointType;
 
-  private OperatingPointTechnicalTimetableType operatingPointTechnicalTimetableTypeCode;
+  private OperatingPointTechnicalTimetableType operatingPointTechnicalTimetableType;
 
-  private String meansOfTransportCode;
+  private String meansOfTransport;
 
-  private String categoriesCode;
+  private String categories;
 
-  private OperatingPointTrafficPointType operatingPointTrafficPointTypeCode;
+  private OperatingPointTrafficPointType operatingPointTrafficPointType;
 
   private boolean operatingPointRouteNetwork;
 
@@ -97,9 +97,9 @@ public class ServicePointVersionCsvModel {
 
   private String sortCodeOfDestinationStation;
 
-  private String sboid;
+  private String businessOrganisation;
 
-  private Integer businessOrganisationOrganisationNumber;
+  private Integer businessOrganisationNumber;
 
   private String businessOrganisationAbbreviationDe;
 
