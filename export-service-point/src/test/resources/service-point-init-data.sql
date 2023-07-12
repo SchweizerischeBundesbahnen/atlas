@@ -67,7 +67,7 @@ insert into service_point_version_geolocation (id, spatial_reference, east, nort
                                                swiss_district_name, swiss_district_number, swiss_municipality_number,
                                                swiss_municipality_name, swiss_locality_name, creation_date, creator, edition_date,
                                                editor, version)
-values (1000, 'LV95', 2628500.00000000000, 1263200.00000000000, 329.00, 'SWITZERLAND', 'AARGAU', 'Rheinfelden', 1909, 4253,
+values (1000, 'LV95', 2628500.00000000000, 1263200.00000000000, 329.00, 'RUSSIA', 'AARGAU', 'Rheinfelden', 1909, 4253,
         'Magden', 'Magden', '2017-11-09 11:53:05.000000', 'GSU_DIDOK', '2022-02-23 17:53:50.000000', 'GSU_DIDOK', 0);
 insert into service_point_version_geolocation (id, spatial_reference, east, north, height, country, swiss_canton,
                                                swiss_district_name, swiss_district_number, swiss_municipality_number,
