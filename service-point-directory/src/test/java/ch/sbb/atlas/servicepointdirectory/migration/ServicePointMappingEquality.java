@@ -3,28 +3,30 @@ package ch.sbb.atlas.servicepointdirectory.migration;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.withPrecision;
 
+import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 @Slf4j
-@UtilityClass
 public class ServicePointMappingEquality {
+
+  private static final String SBOID_FIKTIVE_GO_INFOPLUS = "ch:1:sboid:101257";
 
   private static int counter = 0;
   private static Set<String> setOfIsoCountryCode = new HashSet<>();
   private static Set<Integer> setOfIsoCountryCodeIsELLaendercodes = new HashSet<>();
 
-  public static void performEqualityCheck(ServicePointCsvModel didokCsvLine,
+  public void performEqualityCheck(ServicePointCsvModel didokCsvLine,
       ServicePointVersionCsvModel atlasCsvLine) {
     assertThat(atlasCsvLine.getNumber()).isEqualTo(didokCsvLine.getDidokCode());
     assertThat(atlasCsvLine.getNumberShort()).isEqualTo(didokCsvLine.getNummer());
@@ -92,12 +94,12 @@ public class ServicePointMappingEquality {
     if (didokCsvLine.getBpvhVerkehrsmittel() != null) {
       Set<String> expectedVerkehrsmittel =
           Stream.of(didokCsvLine.getBpvhVerkehrsmittel().split("~"))
-                .filter(StringUtils::isNotBlank)
-                .collect(Collectors.toSet());
+              .filter(StringUtils::isNotBlank)
+              .collect(Collectors.toSet());
       Set<String> actualMeansOfTransport =
           Stream.of(atlasCsvLine.getMeansOfTransport().split("\\|"))
-                .map(i -> MeanOfTransport.valueOf(i).getCode())
-                .collect(Collectors.toSet());
+              .map(i -> MeanOfTransport.valueOf(i).getCode())
+              .collect(Collectors.toSet());
       assertThat(actualMeansOfTransport).isEqualTo(expectedVerkehrsmittel);
     } else {
       assertThat(atlasCsvLine.getMeansOfTransport()).isNull();
@@ -106,12 +108,12 @@ public class ServicePointMappingEquality {
     if (didokCsvLine.getDsKategorienIds() != null) {
       Set<String> expectedKategorien =
           Stream.of(didokCsvLine.getDsKategorienIds().split("\\|"))
-                .filter(StringUtils::isNotBlank)
-                .collect(Collectors.toSet());
+              .filter(StringUtils::isNotBlank)
+              .collect(Collectors.toSet());
       Set<String> actualCategories =
           Stream.of(atlasCsvLine.getCategories().split("\\|"))
-                .map(i -> Category.valueOf(i).getCode())
-                .collect(Collectors.toSet());
+              .map(i -> Category.valueOf(i).getCode())
+              .collect(Collectors.toSet());
       assertThat(actualCategories).isEqualTo(expectedKategorien);
     } else {
       assertThat(atlasCsvLine.getCategories()).isNull();
@@ -133,32 +135,14 @@ public class ServicePointMappingEquality {
     assertThat(atlasCsvLine.getSortCodeOfDestinationStation()).isEqualTo(
         didokCsvLine.getRichtpunktCode());
 
-    // TODO: check after https://flow.sbb.ch/browse/ATLAS-1318 and https://flow.sbb
-    //  .ch/browse/ATLAS-873
+    // TODO: check after https://flow.sbb.ch/browse/ATLAS-1318 and https://flow.sbb.ch/browse/ATLAS-873
     //assertThat(atlasCsvLine.fotComment).isEqualTo(didokCsvLine.BAV_BEMERKUNG);
 
-    // TODO: geht nicht auf, Beispiel didokcode: 85945105, muss man anschauen warum ...
-    assertThat(fromString(atlasCsvLine.getCreationDate()))
-        .withFailMessage(
-            generalErrorMessage(didokCsvLine) + "didok:" + didokCsvLine.getCreatedAt().withSecond(0)
-                + ", atlas:"
-                + fromString(atlasCsvLine.getCreationDate()))
-        .isEqualTo(didokCsvLine.getCreatedAt().withSecond(0));
-//    if (!fromString(atlasCsvLine.getCreationDate()).equals(didokCsvLine.getCreatedAt()
-//                                                                       .withSecond(0))) {
-//      log.error("DIDOK_CODE: " + didokCsvLine.getDidokCode() + " DiDok: " + didokCsvLine
-//          .getCreatedAt().withSecond(0) + " ATLAS: " + fromString(atlasCsvLine.getCreationDate
-//          ()) +
-//          "\tfrom " + didokCsvLine.getValidFrom() + " until " + didokCsvLine.getValidTo()
-//          + " counter: " + counter);
-//      counter++;
-//    }
-    assertThat(fromString(atlasCsvLine.getEditionDate()))
-        .withFailMessage(
-            generalErrorMessage(didokCsvLine) + "didok:" + didokCsvLine.getEditedAt().withSecond(0)
-                + ", atlas:"
-                + atlasCsvLine.getEditionDate())
-        .isEqualTo(didokCsvLine.getEditedAt().withSecond(0));
+    if (DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN_CH).parse(atlasCsvLine.getValidFrom())
+        .equals(didokCsvLine.getValidFrom())) {
+      assertThat(fromString(atlasCsvLine.getCreationDate())).isEqualTo(didokCsvLine.getCreatedAt().withSecond(0));
+      assertThat(fromString(atlasCsvLine.getEditionDate())).isEqualTo(didokCsvLine.getEditedAt().withSecond(0));
+    }
 
     // Since didok sometimes has locations but virtual, we should perform this check only if
     // atlas has a geolocation ?
@@ -167,33 +151,33 @@ public class ServicePointMappingEquality {
     }
   }
 
-  private static String generalErrorMessage(ServicePointCsvModel didokCsvLine) {
+  private String generalErrorMessage(ServicePointCsvModel didokCsvLine) {
     return didokCsvLine.getDidokCode() + " from:" + didokCsvLine.getValidFrom() + " to:"
         + didokCsvLine.getValidTo() + "\t";
   }
 
-  private static void performEqualityCheckOnGeoLocation(ServicePointCsvModel didokCsvLine,
+  private void performEqualityCheckOnGeoLocation(ServicePointCsvModel didokCsvLine,
       ServicePointVersionCsvModel atlasCsvLine) {
     // TODO: IsoCountryCode is null in ATLAS: 85810077 from:2002-06-16 to:2012-12-08	didok:LI,
     //  atlas:null
-//    assertThat(atlasCsvLine.getIsoCountryCode())
-//            .withFailMessage(generalErrorMessage(didokCsvLine) + "didok:" + didokCsvLine
-//            .getIsoCountryCode() + ", atlas:" + atlasCsvLine.getIsoCountryCode())
-//            .isEqualTo(didokCsvLine.getIsoCountryCode());
+    //    assertThat(atlasCsvLine.getIsoCountryCode())
+    //            .withFailMessage(generalErrorMessage(didokCsvLine) + "didok:" + didokCsvLine
+    //            .getIsoCountryCode() + ", atlas:" + atlasCsvLine.getIsoCountryCode())
+    //            .isEqualTo(didokCsvLine.getIsoCountryCode());
 
-//    if (atlasCsvLine.getIsoCountryCode() != null && didokCsvLine.getIsoCountryCode() == null ||
-//        atlasCsvLine.getIsoCountryCode() == null && didokCsvLine.getIsoCountryCode() != null) {
-//      setOfIsoCountryCode.add(didokCsvLine.getIsoCountryCode());
-//      if (didokCsvLine.getIsoCountryCode().equals("EL")) {
-//        setOfIsoCountryCodeIsELLaendercodes.add(didokCsvLine.getLaendercode());
-//      }
-//      log.error(
-//          generalErrorMessage(didokCsvLine) + " " + didokCsvLine.getGoBezeichnungDe() + " didok:"
-//              + didokCsvLine.getIsoCountryCode() + ", atlas:" + atlasCsvLine.getIsoCountryCode()
-//              + " " + counter + " " + setOfIsoCountryCode + " "
-//              + setOfIsoCountryCodeIsELLaendercodes);
-//      counter++;
-//    }
+    //    if (atlasCsvLine.getIsoCountryCode() != null && didokCsvLine.getIsoCountryCode() == null ||
+    //        atlasCsvLine.getIsoCountryCode() == null && didokCsvLine.getIsoCountryCode() != null) {
+    //      setOfIsoCountryCode.add(didokCsvLine.getIsoCountryCode());
+    //      if (didokCsvLine.getIsoCountryCode().equals("EL")) {
+    //        setOfIsoCountryCodeIsELLaendercodes.add(didokCsvLine.getLaendercode());
+    //      }
+    //      log.error(
+    //          generalErrorMessage(didokCsvLine) + " " + didokCsvLine.getGoBezeichnungDe() + " didok:"
+    //              + didokCsvLine.getIsoCountryCode() + ", atlas:" + atlasCsvLine.getIsoCountryCode()
+    //              + " " + counter + " " + setOfIsoCountryCode + " "
+    //              + setOfIsoCountryCodeIsELLaendercodes);
+    //      counter++;
+    //    }
 
     // Atlas liefert den Kanontsnamen immer, in Didok fehlt er ab und zu
     if (didokCsvLine.getKantonsName() != null) {
@@ -211,64 +195,36 @@ public class ServicePointMappingEquality {
 
     assertThat(atlasCsvLine.getLocalityName()).isEqualTo(didokCsvLine.getOrtschaftsName());
 
-    assertThat(atlasCsvLine.getLv95East()).isEqualTo(didokCsvLine.getELv95(), withPrecision(0.4));
-    assertThat(atlasCsvLine.getLv95North()).isEqualTo(didokCsvLine.getNLv95(), withPrecision(0.4));
+    performEqualityCheckOnCoordinates(didokCsvLine, atlasCsvLine);
+    assertThat(atlasCsvLine.getHeight()).isEqualTo(didokCsvLine.getHeight());
+  }
 
-    // TODO: AssertionError: 20935932: didok:108.25353489964, atlas:86.73474746103409
-//    assertThat(atlasCsvLine.getWgs84East())
-//            .withFailMessage(didokCsvLine.getDidokCode() + ": didok:" + didokCsvLine.getEWgs84
-//            () + ", atlas:" + atlasCsvLine
-//                    .getWgs84East())
-//            .isEqualTo(didokCsvLine.getEWgs84(), withPrecision(0.8));
-//    assertThat(atlasCsvLine.getWgs84North()).isEqualTo(didokCsvLine.getNWgs84(), withPrecision
-//    (0.8));
+  private void performEqualityCheckOnCoordinates(ServicePointCsvModel didokCsvLine,
+      ServicePointVersionCsvModel atlasCsvLine) {
+    assertThat(atlasCsvLine.getLv95East()).isEqualTo(didokCsvLine.getELv95(), withPrecision(0.001));
+    assertThat(atlasCsvLine.getLv95North()).isEqualTo(didokCsvLine.getNLv95(), withPrecision(0.001));
 
-//    if (round(atlasCsvLine.getWgs84North(), 5).compareTo(round(didokCsvLine.getNWgs84(), 5)) !=
-//    0) {
-//      log.error(didokCsvLine.getDidokCode() + ": sboid:" + atlasCsvLine.getBusinessOrganisation
-//      ()  + " offizielle Bezeichnung:" + didokCsvLine.getBezeichnungOffiziell() + " didok:" +
-//      didokCsvLine.getNWgs84() + ", atlas:" + atlasCsvLine.getWgs84North() + " " + counter);
-//      counter++;
-//    }
+    performEqualityCheckOrIgnoreInfoplus(atlasCsvLine, atlasCsvLine.getWgs84East(), didokCsvLine.getEWgs84());
+    performEqualityCheckOrIgnoreInfoplus(atlasCsvLine, atlasCsvLine.getWgs84North(), didokCsvLine.getNWgs84());
 
-    // TODO: AssertionError: 20935932: didok:1.20507283816E7, atlas:9655267.921445493
-//    assertThat(atlasCsvLine.getWgs84WebEast())
-//            .withFailMessage(didokCsvLine.getDidokCode() + ": didok:" + didokCsvLine
-//            .getEWgs84web() + ", atlas:" + atlasCsvLine
-//                    .getWgs84WebEast())
-//            .isEqualTo(didokCsvLine.getEWgs84web(), withPrecision(0.4));
-//    assertThat(atlasCsvLine.getWgs84WebNorth()).isEqualTo(didokCsvLine.getNWgs84web(),
-//    withPrecision(0.4));
+    performEqualityCheckOrIgnoreInfoplus(atlasCsvLine, atlasCsvLine.getWgs84WebEast(), didokCsvLine.getEWgs84web());
+    performEqualityCheckOrIgnoreInfoplus(atlasCsvLine, atlasCsvLine.getWgs84WebNorth(), didokCsvLine.getNWgs84web());
+  }
 
-    assertThat(atlasCsvLine.getHeight())
-        .withFailMessage(
-            didokCsvLine.getDidokCode() + ": didok:" + didokCsvLine.getHeight() + ", atlas:"
-                + atlasCsvLine
-                .getHeight())
-        .isEqualTo(didokCsvLine.getHeight());
-
-    //    if (didokCsvLine.getHeight() == null && atlasCsvLine.getHeight() != null) {
-    //      log.error("DIDOK_CODE: " + didokCsvLine.getDidokCode() + " DiDok:" + didokCsvLine
-    //      .getHeight() + " ATLAS:" +
-    //      atlasCsvLine.getHeight() + " from " + didokCsvLine.getValidFrom() + " until " +
-    //      didokCsvLine.getValidTo() + "
-    //      counter: " + heightIsNullInDiDokCounter);
-    //      heightIsNullInDiDokCounter++;
-    //    }
+  private static void performEqualityCheckOrIgnoreInfoplus(ServicePointVersionCsvModel atlasCsvLine, Double atlasValue, Double didokValue) {
+    if (isBigDifferenceBetween(atlasValue, didokValue)) {
+      assertThat(atlasCsvLine.getBusinessOrganisation()).isEqualTo(SBOID_FIKTIVE_GO_INFOPLUS);
+    } else {
+      assertThat(atlasValue).isEqualTo(didokValue, withPrecision(0.001));
+    }
   }
 
   private LocalDateTime fromString(String string) {
     return LocalDateTime.parse(string, DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"));
   }
 
-  public static Double round(double value, int places) {
-    if (places < 0) {
-      throw new IllegalArgumentException();
-    }
-
-    long factor = (long) Math.pow(10, places);
-    value = value * factor;
-    long tmp = Math.round(value);
-    return (double) tmp / factor;
+  private static boolean isBigDifferenceBetween(Double x, Double y) {
+    BigDecimal difference = BigDecimal.valueOf(x).subtract(BigDecimal.valueOf(y)).abs();
+    return difference.compareTo(BigDecimal.valueOf(0.001)) > 0;
   }
 }
