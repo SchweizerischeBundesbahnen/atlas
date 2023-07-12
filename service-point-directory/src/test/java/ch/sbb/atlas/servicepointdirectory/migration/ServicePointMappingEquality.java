@@ -138,18 +138,27 @@ public class ServicePointMappingEquality {
     //assertThat(atlasCsvLine.fotComment).isEqualTo(didokCsvLine.BAV_BEMERKUNG);
 
     // TODO: geht nicht auf, Beispiel didokcode: 85945105, muss man anschauen warum ...
-//    assertThat(fromString(atlasCsvLine.getCreationDate())).isEqualTo(didokCsvLine.getCreatedAt
-//    ().withSecond(0));
+    assertThat(fromString(atlasCsvLine.getCreationDate()))
+        .withFailMessage(
+            generalErrorMessage(didokCsvLine) + "didok:" + didokCsvLine.getCreatedAt().withSecond(0)
+                + ", atlas:"
+                + fromString(atlasCsvLine.getCreationDate()))
+        .isEqualTo(didokCsvLine.getCreatedAt().withSecond(0));
 //    if (!fromString(atlasCsvLine.getCreationDate()).equals(didokCsvLine.getCreatedAt()
-//    .withSecond(0))) {
+//                                                                       .withSecond(0))) {
 //      log.error("DIDOK_CODE: " + didokCsvLine.getDidokCode() + " DiDok: " + didokCsvLine
-//      .getCreatedAt().withSecond(0) + " ATLAS: " + fromString(atlasCsvLine.getCreationDate()) +
-//      "\tfrom " + didokCsvLine.getValidFrom() + " until " + didokCsvLine.getValidTo() + "
-//      counter: " + counter);
+//          .getCreatedAt().withSecond(0) + " ATLAS: " + fromString(atlasCsvLine.getCreationDate
+//          ()) +
+//          "\tfrom " + didokCsvLine.getValidFrom() + " until " + didokCsvLine.getValidTo()
+//          + " counter: " + counter);
 //      counter++;
 //    }
-//    assertThat(fromString(atlasCsvLine.getEditionDate())).isEqualTo(didokCsvLine.getEditedAt()
-//    .withSecond(0));
+    assertThat(fromString(atlasCsvLine.getEditionDate()))
+        .withFailMessage(
+            generalErrorMessage(didokCsvLine) + "didok:" + didokCsvLine.getEditedAt().withSecond(0)
+                + ", atlas:"
+                + atlasCsvLine.getEditionDate())
+        .isEqualTo(didokCsvLine.getEditedAt().withSecond(0));
 
     // Since didok sometimes has locations but virtual, we should perform this check only if
     // atlas has a geolocation ?
@@ -231,7 +240,6 @@ public class ServicePointMappingEquality {
 //    assertThat(atlasCsvLine.getWgs84WebNorth()).isEqualTo(didokCsvLine.getNWgs84web(),
 //    withPrecision(0.4));
 
-    // TODO: null != 0.0 at DidokCode 12015503 ... zu checken
     assertThat(atlasCsvLine.getHeight())
         .withFailMessage(
             didokCsvLine.getDidokCode() + ": didok:" + didokCsvLine.getHeight() + ", atlas:"
