@@ -124,10 +124,10 @@ public enum Country {
   public static Country fromIsoCode(String isoCode) {
     // Eurostat liefert nicht ISO konforme Codes!
     // siehe https://www.destatis.de/Europa/DE/Staat/Laendercodes.html
-    if (isoCode.equals("UK")) {
+    if ("UK".equals(isoCode)) {
       return Country.GREAT_BRITAIN;
     }
-    if (isoCode.equals("EL")) {
+    if ("EL".equals(isoCode)) {
       return Country.GREECE;
     }
     return Arrays.stream(Country.values()).filter(country -> Objects.equals(country.getIsoCode(), isoCode)).findFirst()
