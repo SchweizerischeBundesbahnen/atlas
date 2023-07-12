@@ -76,6 +76,7 @@ public class ExportCsvServicePointDataIntegrationTest {
         .orElseThrow();
     assertThat(magdenObrist.getBusinessOrganisationNumber()).isEqualTo(999);
     assertThat(magdenObrist.getBusinessOrganisationAbbreviationDe()).isEqualTo("SAS-Code");
+    assertThat(magdenObrist.getIsoCountryCode()).isEqualTo("RU");
   }
 
   private List<ServicePointVersionCsvModel> parseCsv(File file) throws IOException {
