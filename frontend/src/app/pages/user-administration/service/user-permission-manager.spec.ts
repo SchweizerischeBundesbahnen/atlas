@@ -1,7 +1,7 @@
 import { UserPermissionManager } from './user-permission-manager';
 import { of } from 'rxjs';
 import { fakeAsync, tick } from '@angular/core/testing';
-import { PermissionRestrictionType } from '../../../api';
+import { Country, PermissionRestrictionType, SwissCanton } from '../../../api';
 
 describe('UserPermissionManager', () => {
   let userPermissionManager: UserPermissionManager;
@@ -16,7 +16,7 @@ describe('UserPermissionManager', () => {
     );
   });
 
-  it('test clearSboidsIfNotWriter, setPermissions and getPermissions', fakeAsync(() => {
+  it('test clearPermisRestrIfNotWriterAndRemoveBOPermisRestrIfSepodiAndSuperUser, setPermissions and getPermissions', fakeAsync(() => {
     userPermissionManager.setPermissions([
       {
         application: 'TTFN',
@@ -38,6 +38,30 @@ describe('UserPermissionManager', () => {
           },
         ],
       },
+      {
+        application: 'TIMETABLE_HEARING',
+        role: 'WRITER',
+        permissionRestrictions: [
+          {
+            valueAsString: SwissCanton.Aargau,
+            type: PermissionRestrictionType.Canton,
+          },
+        ],
+      },
+      {
+        application: 'SEPODI',
+        role: 'SUPER_USER',
+        permissionRestrictions: [
+          {
+            valueAsString: 'ch:1:sboid:super_user',
+            type: PermissionRestrictionType.BusinessOrganisation,
+          },
+          {
+            valueAsString: Country.Canada,
+            type: PermissionRestrictionType.Country,
+          },
+        ],
+      },
     ]);
     tick();
     userPermissionManager.clearPermisRestrIfNotWriterAndRemoveBOPermisRestrIfSepodiAndSuperUser();
@@ -45,6 +69,12 @@ describe('UserPermissionManager', () => {
       { valueAsString: 'ch:1:sboid:writer', type: PermissionRestrictionType.BusinessOrganisation },
     ]);
     expect(userPermissionManager.userPermission.permissions[1].permissionRestrictions).toEqual([]);
+    expect(userPermissionManager.userPermission.permissions[3].permissionRestrictions).toEqual([
+      { valueAsString: SwissCanton.Aargau, type: PermissionRestrictionType.Canton },
+    ]);
+    expect(userPermissionManager.userPermission.permissions[4].permissionRestrictions).toEqual([
+      { valueAsString: Country.Canada, type: PermissionRestrictionType.Country },
+    ]);
   }));
 
   it('test getSbbUserId, setSbbUserId', () => {
