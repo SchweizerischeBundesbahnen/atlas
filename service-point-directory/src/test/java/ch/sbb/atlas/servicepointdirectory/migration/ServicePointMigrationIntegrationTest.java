@@ -116,6 +116,8 @@ public class ServicePointMigrationIntegrationTest {
               groupedAtlasNumbers.get(didokCsvLine.getDidokCode()));
       ServicePointMappingEquality.performEqualityCheck(didokCsvLine, atlasCsvLine);
     });
+
+    log.error("shouldHaveMappedFieldsToAtlasCorrectly() done");
   }
 
   ServicePointVersionCsvModel findCorrespondingAtlasServicePointVersion(ServicePointCsvModel didokCsvLine,
