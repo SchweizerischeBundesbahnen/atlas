@@ -97,7 +97,8 @@ public enum Country {
   ARMENIA("AM", 58, "Armenien", "Arménie", " Armenia", "Armenia"),
   AUSTRALIA("AU", null, "Australien", "Australie", " Australia", "Australia"),
   AUSTRIA("AT", 81, "Österreich", "Autriche", " Austria", "Austria"),
-  LIECHTENSTEIN("LI", null, "Liechtenstein", "Liechtenstein", " Liechtenstein", "Liechtenstein");
+  LIECHTENSTEIN("LI", null, "Fürstentum Liechtenstein", "principauté du Liechtenstein", " Principato del Liechtenstein",
+      "Principality of Liechtenstein");
 
   private final String isoCode;
   private final Integer uicCode;
