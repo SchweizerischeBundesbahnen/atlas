@@ -1,17 +1,22 @@
 package ch.sbb.atlas.searching;
 
+import ch.sbb.atlas.api.servicepoint.TrafficPointElementVersionModel;
 import ch.sbb.atlas.searching.specification.BooleanSpecification;
 import ch.sbb.atlas.searching.specification.EnumSpecification;
 import ch.sbb.atlas.searching.specification.InSpecification;
 import ch.sbb.atlas.searching.specification.SearchCriteriaSpecification;
 import ch.sbb.atlas.searching.specification.SingleStringSpecification;
 import ch.sbb.atlas.searching.specification.ValidOnSpecification;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import jakarta.persistence.metamodel.SingularAttribute;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -36,14 +41,29 @@ public class SpecificationBuilder<T> {
     return (root, query, builder) -> {
       List<Predicate> predicates = new ArrayList<>();
 
+      //TODO: Errorhandling & Clean Code
       for (Map.Entry<String, List<String>> entry : searchCriteria.entrySet()) {
         String key = entry.getKey();
         List<String> values = entry.getValue();
-
         List<Predicate> valuePredicates = new ArrayList<>();
+
         for (String value : values) {
-        //TODO: Bug with dates is here
-          valuePredicates.add(builder.equal(root.get(key), value));
+          if (LocalDate.class.isAssignableFrom(root.get(key).getJavaType())){
+            LocalDate date = LocalDate.parse(value);
+            if (key.equals("validFrom")){
+              valuePredicates.add(builder.greaterThanOrEqualTo(root.get(key), date));
+            }
+            if (key.equals("validTo")) {
+              valuePredicates.add(builder.lessThanOrEqualTo(root.get(key), date));
+            }
+          }
+          else if(LocalDateTime.class.isAssignableFrom(root.get(key).getJavaType())){
+            LocalDateTime dateTime = LocalDateTime.parse(value);
+            valuePredicates.add(builder.greaterThanOrEqualTo(root.get(key), dateTime));
+          }
+          else{
+            valuePredicates.add(builder.equal(root.get(key), value));
+          }
         }
 
         Predicate valuePredicate = builder.or(valuePredicates.toArray(new Predicate[0]));
