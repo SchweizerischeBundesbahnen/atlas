@@ -41,29 +41,29 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
   private final TrafficPointElementValidationService trafficPointElementValidationService;
   private final TrafficPointElementImportService trafficPointElementImportService;
 
-  //TODO: Naming
-  //TODO: Still Bug with Dates
   @Override
   public Container<ReadTrafficPointElementVersionModel> getTrafficPointElements(Pageable pageable, Map<String, String> searchCriteria,
                                                                             Optional<LocalDate> validOn) {
 
-    Map<String, List<String>> searchCriteria2 = new HashMap<>();
+    Map<String, List<String>> searchCriterias = new HashMap<>();
+      //TODO: Clean Code
+      for(Map.Entry<String, String> entry : searchCriteria.entrySet()){
+        if (!entry.getKey().equals("page") && !entry.getKey().equals("size")){
+          String key = entry.getKey();
+          List<String> values = new ArrayList<>();
+          String[] splittedValues = entry.getValue().split(",");
 
-    for(Map.Entry<String, String> entry : searchCriteria.entrySet()){
-        String key = entry.getKey();
-        List<String> test = new ArrayList<>();
-        String[] splittedValue = entry.getValue().split(",");
-
-        for (String value : splittedValue){
-          test.add(value);
+          for (String value : splittedValues){
+            values.add(value);
+          }
+          searchCriterias.put(key, values);
         }
-        searchCriteria2.put(key, test);
-    }
+      }
 
     Page<TrafficPointElementVersion> trafficPointElementVersions = trafficPointElementService.findAll(
         TrafficPointElementSearchRestrictions.builder()
             .pageable(pageable)
-            .searchCriterias(searchCriteria2)
+            .searchCriterias(searchCriterias)
             .validOn(validOn)
             .build());
     return Container.<ReadTrafficPointElementVersionModel>builder()
