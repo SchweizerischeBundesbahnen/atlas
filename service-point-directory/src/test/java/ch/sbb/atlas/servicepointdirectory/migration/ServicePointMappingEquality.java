@@ -1,30 +1,33 @@
 package ch.sbb.atlas.servicepointdirectory.migration;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.withPrecision;
-
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
+import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import lombok.experimental.UtilityClass;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.withPrecision;
 
 @Slf4j
 @UtilityClass
 public class ServicePointMappingEquality {
 
-  private static int wgs84EastWrongCounter = 0;
+  private static int counter = 0;
 
   public static void performEqualityCheck(ServicePointCsvModel didokCsvLine, ServicePointVersionCsvModel atlasCsvLine) {
     assertThat(atlasCsvLine.getNumber()).isEqualTo(didokCsvLine.getDidokCode());
     assertThat(atlasCsvLine.getNumberShort()).isEqualTo(didokCsvLine.getNummer());
-    assertThat(atlasCsvLine.getSloid()).isEqualTo(didokCsvLine.getSloid());
+
+    // TODO: actual_date: why does DIDOK don't export the SLOID?
+    assertThat(atlasCsvLine.getSloid()).withFailMessage(generalErrorMessage(didokCsvLine) + "didok:" + didokCsvLine.getSloid() + ", atlas:" + atlasCsvLine.getSloid()).isEqualTo(didokCsvLine.getSloid());
 
     assertThat(atlasCsvLine.getDesignationOfficial()).isEqualTo(didokCsvLine.getBezeichnungOffiziell());
     assertThat(atlasCsvLine.getDesignationLong()).isEqualTo(didokCsvLine.getBezeichnungLang());
@@ -45,7 +48,10 @@ public class ServicePointMappingEquality {
     assertThat(atlasCsvLine.isTrafficPoint()).isEqualTo(didokCsvLine.getIsVerkehrspunkt());
     assertThat(atlasCsvLine.isBorderPoint()).isEqualTo(didokCsvLine.getIsGrenzpunkt());
 
-    assertThat(atlasCsvLine.getSboid()).isEqualTo("ch:1:sboid:" + didokCsvLine.getSaid());
+    String didokSboid = "ch:1:sboid:" + didokCsvLine.getSaid();
+    assertThat(atlasCsvLine.getSboid())
+            .withFailMessage(generalErrorMessage(didokCsvLine) + "didok:" + didokSboid + ", atlas:" + atlasCsvLine.getSboid())
+            .isEqualTo(didokSboid);
 
     // TODO: AssertionError: 85848481: didok:801, atlas:null
     /*
@@ -72,17 +78,17 @@ public class ServicePointMappingEquality {
 
     if (atlasCsvLine.getOperatingPointTechnicalTimetableTypeCode() != null) {
       assertThat(atlasCsvLine.getOperatingPointTechnicalTimetableTypeCode().getId()).isEqualTo(
-          didokCsvLine.getBptfBetriebspunktArtId());
+              didokCsvLine.getBptfBetriebspunktArtId());
     } else {
       assertThat(didokCsvLine.getBptfBetriebspunktArtId()).isNull();
     }
 
     if (didokCsvLine.getBpvhVerkehrsmittel() != null) {
       Set<String> expectedVerkehrsmittel =
-          Stream.of(didokCsvLine.getBpvhVerkehrsmittel().split("~")).filter(StringUtils::isNotBlank).collect(Collectors.toSet());
+              Stream.of(didokCsvLine.getBpvhVerkehrsmittel().split("~")).filter(StringUtils::isNotBlank).collect(Collectors.toSet());
       Set<String> actualMeansOfTransport =
-          Stream.of(atlasCsvLine.getMeansOfTransportCode().split("\\|")).map(i -> MeanOfTransport.valueOf(i).getCode())
-              .collect(Collectors.toSet());
+              Stream.of(atlasCsvLine.getMeansOfTransportCode().split("\\|")).map(i -> MeanOfTransport.valueOf(i).getCode())
+                      .collect(Collectors.toSet());
       assertThat(actualMeansOfTransport).isEqualTo(expectedVerkehrsmittel);
     } else {
       assertThat(atlasCsvLine.getMeansOfTransportCode()).isNull();
@@ -91,10 +97,10 @@ public class ServicePointMappingEquality {
     // TODO: Double-check if logic is working by introducing differences in DiDok and ATLAS
     if (didokCsvLine.getDsKategorienIds() != null) {
       Set<String> expectedKategorien =
-          Stream.of(didokCsvLine.getDsKategorienIds().split("\\|")).filter(StringUtils::isNotBlank).collect(Collectors.toSet());
+              Stream.of(didokCsvLine.getDsKategorienIds().split("\\|")).filter(StringUtils::isNotBlank).collect(Collectors.toSet());
       Set<String> actualCategories =
-          Stream.of(atlasCsvLine.getCategoriesCode().split("\\|")).map(i -> Category.valueOf(i).getCode())
-              .collect(Collectors.toSet());
+              Stream.of(atlasCsvLine.getCategoriesCode().split("\\|")).map(i -> Category.valueOf(i).getCode())
+                      .collect(Collectors.toSet());
       assertThat(actualCategories).isEqualTo(expectedKategorien);
     } else {
       assertThat(atlasCsvLine.getCategoriesCode()).isNull();
@@ -102,7 +108,7 @@ public class ServicePointMappingEquality {
 
     if (atlasCsvLine.getOperatingPointTrafficPointTypeCode() != null) {
       assertThat(atlasCsvLine.getOperatingPointTrafficPointTypeCode().getId()).isEqualTo(
-          didokCsvLine.getBpvbBetriebspunktArtId());
+              didokCsvLine.getBpvbBetriebspunktArtId());
     } else {
       assertThat(didokCsvLine.getBpvbBetriebspunktArtId()).isNull();
     }
@@ -118,8 +124,13 @@ public class ServicePointMappingEquality {
     //assertThat(atlasCsvLine.fotComment).isEqualTo(didokCsvLine.BAV_BEMERKUNG);
 
     // TODO: geht nicht auf, Beispiel didokcode: 85945105, muss man anschauen warum ...
-    // assertThat(fromString(atlasCsvLine.getCreationDate())).isEqualTo(didokCsvLine.getCreatedAt().withSecond(0));
-    // assertThat(fromString(atlasCsvLine.getEditionDate())).isEqualTo(didokCsvLine.getEditedAt().withSecond(0));
+//        assertThat(fromString(atlasCsvLine.getCreationDate())).isEqualTo(didokCsvLine.getCreatedAt().withSecond(0));
+//    if (!fromString(atlasCsvLine.getCreationDate()).equals(didokCsvLine.getCreatedAt().withSecond(0))) {
+//      log.error("DIDOK_CODE: " + didokCsvLine.getDidokCode() + " DiDok: " + didokCsvLine.getCreatedAt().withSecond(0) + " ATLAS: " + fromString(atlasCsvLine.getCreationDate()) + "\tfrom " + didokCsvLine.getValidFrom() + " until " + didokCsvLine.getValidTo() + " counter: " + counter);
+//      counter++;
+//    }
+//    assertThat(fromString(atlasCsvLine.getEditionDate())).isEqualTo(didokCsvLine.getEditedAt().withSecond(0));
+
 
     // Since didok sometimes has locations but virtual, we should perform this check only if atlas has a geolocation ?
     if (atlasCsvLine.isHasGeolocation()) {
@@ -127,8 +138,12 @@ public class ServicePointMappingEquality {
     }
   }
 
+  private static String generalErrorMessage(ServicePointCsvModel didokCsvLine) {
+    return didokCsvLine.getDidokCode() + " from:" + didokCsvLine.getValidFrom() + " to:" + didokCsvLine.getValidTo() + "\t";
+  }
+
   private static void performEqualityCheckOnGeoLocation(ServicePointCsvModel didokCsvLine,
-      ServicePointVersionCsvModel atlasCsvLine) {
+                                                        ServicePointVersionCsvModel atlasCsvLine) {
     // AT != LI at DidokCode: 12018374 ... zu prüfen
     // assertThat(atlasCsvLine.getIsoCountryCode()).isEqualTo(didokCsvLine.getIsoCountryCode());
 
@@ -162,10 +177,10 @@ public class ServicePointMappingEquality {
     assertThat(atlasCsvLine.getWgs84North()).isEqualTo(didokCsvLine.getNWgs84(), withPrecision(0.8));
     */
 
-    if (round(atlasCsvLine.getWgs84North(), 5).compareTo(round(didokCsvLine.getNWgs84(), 5)) != 0) {
-      log.error(didokCsvLine.getDidokCode() + ": sboid:" + atlasCsvLine.getSboid()  + " offizielle Bezeichnung:" + didokCsvLine.getBezeichnungOffiziell() + " didok:" + didokCsvLine.getNWgs84() + ", atlas:" + atlasCsvLine.getWgs84North() + " " + wgs84EastWrongCounter);
-      wgs84EastWrongCounter++;
-    }
+//    if (round(atlasCsvLine.getWgs84North(), 5).compareTo(round(didokCsvLine.getNWgs84(), 5)) != 0) {
+//      log.error(didokCsvLine.getDidokCode() + ": sboid:" + atlasCsvLine.getSboid()  + " offizielle Bezeichnung:" + didokCsvLine.getBezeichnungOffiziell() + " didok:" + didokCsvLine.getNWgs84() + ", atlas:" + atlasCsvLine.getWgs84North() + " " + wgs84EastWrongCounter);
+//      wgs84EastWrongCounter++;
+//    }
 
     /* TODO: AssertionError: 20935932: didok:1.20507283816E7, atlas:9655267.921445493
     assertThat(atlasCsvLine.getWgs84WebEast())
