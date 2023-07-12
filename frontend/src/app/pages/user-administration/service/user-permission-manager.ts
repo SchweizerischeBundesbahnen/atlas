@@ -108,7 +108,7 @@ export class UserPermissionManager {
       if (permission.role === 'SUPER_USER' && permission.application === 'SEPODI') {
         this.userPermission.permissions[permissionIndex].permissionRestrictions =
           this.userPermission.permissions[permissionIndex].permissionRestrictions.filter(
-            (restriction) => restriction.type !== PermissionRestrictionType.BusinessOrganisation
+            (restriction) => restriction.type === PermissionRestrictionType.Country
           );
       } else if (permission.role !== 'WRITER') {
         permission.permissionRestrictions = [];
