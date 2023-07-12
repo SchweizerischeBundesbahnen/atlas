@@ -1,12 +1,11 @@
 package ch.sbb.atlas.servicepointdirectory.migration;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
-import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Test;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
@@ -16,8 +15,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Test;
 
 @IntegrationTest
 @Slf4j
@@ -111,10 +110,11 @@ public class ServicePointMigrationIntegrationTest {
     Map<Integer, List<ServicePointVersionCsvModel>> groupedAtlasNumbers =
             atlasCsvLines.stream().collect(Collectors.groupingBy(ServicePointVersionCsvModel::getNumber));
 
+    ServicePointMappingEquality equality = new ServicePointMappingEquality();
     didokCsvLines.forEach(didokCsvLine -> {
       ServicePointVersionCsvModel atlasCsvLine = findCorrespondingAtlasServicePointVersion(didokCsvLine,
               groupedAtlasNumbers.get(didokCsvLine.getDidokCode()));
-      ServicePointMappingEquality.performEqualityCheck(didokCsvLine, atlasCsvLine);
+      equality.performEqualityCheck(didokCsvLine, atlasCsvLine);
     });
 
     log.error("shouldHaveMappedFieldsToAtlasCorrectly() done");
