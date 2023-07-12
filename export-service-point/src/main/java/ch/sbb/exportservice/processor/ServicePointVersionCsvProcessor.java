@@ -72,7 +72,9 @@ public class ServicePointVersionCsvProcessor extends BaseProcessor implements
   }
 
   private void buildServicePointGeolocation(ServicePointVersion version, ServicePointVersionCsvModelBuilder builder) {
-    builder.isoCountryCode(version.getServicePointGeolocation().getCountry().getIsoCode());
+    if (version.getServicePointGeolocation().getCountry() != null) {
+      builder.isoCountryCode(version.getServicePointGeolocation().getCountry().getIsoCode());
+    }
 
     Optional<SwissCanton> swissCanton = Optional.ofNullable(version.getServicePointGeolocation().getSwissCanton());
     swissCanton.ifPresent(canton -> builder.cantonAbbreviation(canton.getAbbreviation()).cantonName(canton.getName())
