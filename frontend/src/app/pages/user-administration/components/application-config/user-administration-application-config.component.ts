@@ -88,15 +88,15 @@ export class UserAdministrationApplicationConfigComponent implements OnInit, OnD
       Country.FranceBus
     );
     const filteredCountries = this.filteredCountries();
-    const filteredCountriesSortedByUicCode: Country[] = filteredCountries.sort(
+    filteredCountries.sort(
       (n1, n2) =>
         this.getCountryNameUicCodeFromCountry(n1) - this.getCountryNameUicCodeFromCountry(n2)
     );
-    return sortedCountryArray.concat(filteredCountriesSortedByUicCode);
+    return sortedCountryArray.concat(filteredCountries);
   }
 
   private getCountryNameUicCodeFromCountry(country: Country): number {
-    return Countries.fromCountry(country)!.uicCode!;
+    return Countries.fromCountry(country)!.uicCode;
   }
 
   private readonly boFormResetEventSubscription: Subscription;
