@@ -1,14 +1,16 @@
 package ch.sbb.atlas.servicepointdirectory.mapper;
 
-import ch.sbb.atlas.api.servicepoint.TrafficPointElementVersionModel;
+import ch.sbb.atlas.api.servicepoint.CreateTrafficPointElementVersionModel;
+import ch.sbb.atlas.api.servicepoint.ReadTrafficPointElementVersionModel;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class TrafficPointElementVerisionMapper {
 
-  public static TrafficPointElementVersionModel toModel(TrafficPointElementVersion trafficPointElementVersion) {
-    return TrafficPointElementVersionModel.builder()
+  public static ReadTrafficPointElementVersionModel toModel(TrafficPointElementVersion trafficPointElementVersion) {
+    return ReadTrafficPointElementVersionModel.builder()
         .id(trafficPointElementVersion.getId())
         .sloid(trafficPointElementVersion.getSloid())
         .designation(trafficPointElementVersion.getDesignation())
@@ -21,33 +23,36 @@ public class TrafficPointElementVerisionMapper {
         .parentSloid(trafficPointElementVersion.getParentSloid())
         .validFrom(trafficPointElementVersion.getValidFrom())
         .validTo(trafficPointElementVersion.getValidTo())
-        .trafficPointElementGeolocation(GeolocationMapper.toModel(trafficPointElementVersion.getTrafficPointElementGeolocation()))
+//        .trafficPointElementGeolocation(GeolocationMapper.toModel(trafficPointElementVersion.getTrafficPointElementGeolocation()))
         .creationDate(trafficPointElementVersion.getCreationDate())
         .creator(trafficPointElementVersion.getCreator())
         .editionDate(trafficPointElementVersion.getEditionDate())
         .editor(trafficPointElementVersion.getEditor())
+        .etagVersion(trafficPointElementVersion.getVersion())
         .build();
   }
 
-  public static TrafficPointElementVersion toEntity(TrafficPointElementVersionModel trafficPointElementVersionModel) {
+  public static TrafficPointElementVersion toEntity(CreateTrafficPointElementVersionModel createTrafficPointElementVersionModel) {
+    ServicePointNumber servicePointNumber = ServicePointNumber.of(createTrafficPointElementVersionModel.getNumberWithoutCheckDigit());
     return TrafficPointElementVersion.builder()
-            .id(trafficPointElementVersionModel.getId())
-            .sloid(trafficPointElementVersionModel.getSloid())
-            .designation(trafficPointElementVersionModel.getDesignation())
-            .designationOperational(trafficPointElementVersionModel.getDesignationOperational())
-            .length(trafficPointElementVersionModel.getLength())
-            .boardingAreaHeight(trafficPointElementVersionModel.getBoardingAreaHeight())
-            .compassDirection(trafficPointElementVersionModel.getCompassDirection())
-            .trafficPointElementType(trafficPointElementVersionModel.getTrafficPointElementType())
-            .servicePointNumber(trafficPointElementVersionModel.getServicePointNumber())
-            .parentSloid(trafficPointElementVersionModel.getParentSloid())
-            .validFrom(trafficPointElementVersionModel.getValidFrom())
-            .validTo(trafficPointElementVersionModel.getValidTo())
-            .trafficPointElementGeolocation(null)
-            .creationDate(trafficPointElementVersionModel.getCreationDate())
-            .creator(trafficPointElementVersionModel.getCreator())
-            .editionDate(trafficPointElementVersionModel.getEditionDate())
-            .editor(trafficPointElementVersionModel.getEditor())
+            .id(createTrafficPointElementVersionModel.getId())
+            .sloid(createTrafficPointElementVersionModel.getSloid())
+            .designation(createTrafficPointElementVersionModel.getDesignation())
+            .designationOperational(createTrafficPointElementVersionModel.getDesignationOperational())
+            .length(createTrafficPointElementVersionModel.getLength())
+            .boardingAreaHeight(createTrafficPointElementVersionModel.getBoardingAreaHeight())
+            .compassDirection(createTrafficPointElementVersionModel.getCompassDirection())
+            .trafficPointElementType(createTrafficPointElementVersionModel.getTrafficPointElementType())
+            .servicePointNumber(servicePointNumber)
+            .parentSloid(createTrafficPointElementVersionModel.getParentSloid())
+            .validFrom(createTrafficPointElementVersionModel.getValidFrom())
+            .validTo(createTrafficPointElementVersionModel.getValidTo())
+            .version(createTrafficPointElementVersionModel.getEtagVersion())
+//            .trafficPointElementGeolocation((TrafficPointElementGeolocation) GeolocationMapper.toEntity(createTrafficPointElementVersionModel.getTrafficPointElementGeolocation()))
+            .creationDate(createTrafficPointElementVersionModel.getCreationDate())
+            .creator(createTrafficPointElementVersionModel.getCreator())
+            .editionDate(createTrafficPointElementVersionModel.getEditionDate())
+            .editor(createTrafficPointElementVersionModel.getEditor())
             .build();
   }
 
