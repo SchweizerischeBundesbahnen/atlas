@@ -34,6 +34,13 @@ public class GeolocationMapper {
     }
     return GeolocationBaseEntity.builder()
             .spatialReference(geolocationBaseModel.getSpatialReference())
+            .east(geolocationBaseModel.getLv95().getEast())
+            .north(geolocationBaseModel.getLv95().getNorth())
+            .east(geolocationBaseModel.getWgs84().getEast())
+            .north(geolocationBaseModel.getWgs84().getNorth())
+            .east(geolocationBaseModel.getWgs84web().getEast())
+            .north(geolocationBaseModel.getWgs84web().getNorth())
+            .height(geolocationBaseModel.getHeight())
             .build();
   }
 
