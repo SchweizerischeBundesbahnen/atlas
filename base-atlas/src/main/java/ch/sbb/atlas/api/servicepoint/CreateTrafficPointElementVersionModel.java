@@ -1,0 +1,29 @@
+package ch.sbb.atlas.api.servicepoint;
+
+import ch.sbb.atlas.api.AtlasFieldLengths;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.FieldNameConstants;
+import lombok.experimental.SuperBuilder;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@EqualsAndHashCode(callSuper = true)
+@SuperBuilder
+@FieldNameConstants
+@Schema(name = "TrafficPointElementVersion")
+public class CreateTrafficPointElementVersionModel extends TrafficPointElementVersionModel {
+
+    @Schema(description = "Seven digits number. First two digits represent Country Code. "
+            + "Last 5 digits represent traffic point ID.", example = "8034505")
+    @Min(AtlasFieldLengths.MIN_SEVEN_DIGITS_NUMBER)
+    @Max(AtlasFieldLengths.MAX_SEVEN_DIGITS_NUMBER)
+    private Integer numberWithoutCheckDigit;
+
+}
