@@ -1,6 +1,7 @@
 package ch.sbb.atlas.user.administration.mapper;
 
 import ch.sbb.atlas.api.user.administration.CantonPermissionRestrictionModel;
+import ch.sbb.atlas.api.user.administration.CountryPermissionRestrictionModel;
 import ch.sbb.atlas.api.user.administration.PermissionRestrictionModel;
 import ch.sbb.atlas.api.user.administration.SboidPermissionRestrictionModel;
 import ch.sbb.atlas.user.administration.entity.ClientCredentialPermission;
@@ -15,6 +16,7 @@ public class PermissionRestrictionMapper {
     PermissionRestrictionModel<?> restrictionModel = switch (permissionRestriction.getType()) {
       case CANTON -> new CantonPermissionRestrictionModel();
       case BUSINESS_ORGANISATION -> new SboidPermissionRestrictionModel();
+      case COUNTRY -> new CountryPermissionRestrictionModel();
     };
     restrictionModel.setValueAsString(permissionRestriction.getRestriction());
     return restrictionModel;

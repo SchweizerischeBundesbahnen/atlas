@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
+import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
@@ -41,14 +42,18 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ServicePointControllerApiTest extends BaseControllerApiTest {
 
-  private final ServicePointVersionRepository repository;
-  private final ServicePointController servicePointController;
   @MockBean
   private SharedBusinessOrganisationService sharedBusinessOrganisationService;
+  private final ServicePointVersionRepository repository;
+  private final ServicePointController servicePointController;
   private ServicePointVersion servicePointVersion;
 
   @Autowired
@@ -438,4 +443,40 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[0].freightServicePoint", is(true)))
         .andExpect(jsonPath("$[0].trafficPoint", is(true)));
   }
+
+  @Test
+  void shouldReturnOptimisticLockingErrorResponse() throws Exception {
+    //given
+    CreateServicePointVersionModel createServicePointVersionModel =
+        ServicePointTestData.getAargauServicePointVersionModel();
+    ReadServicePointVersionModel savedServicePoint = servicePointController.createServicePoint(createServicePointVersionModel);
+
+    // When first update it is ok
+    createServicePointVersionModel.setId(savedServicePoint.getId());
+    createServicePointVersionModel.setNumberWithoutCheckDigit(savedServicePoint.getNumber().getNumber());
+    createServicePointVersionModel.setEtagVersion(savedServicePoint.getEtagVersion());
+
+    createServicePointVersionModel.setDesignationLong("New and hot service point, ready to roll");
+    mvc.perform(MockMvcRequestBuilders.put("/v1/service-points/" + createServicePointVersionModel.getId())
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(createServicePointVersionModel)))
+        .andExpect(status().isOk());
+
+    // Then on a second update it has to return error for optimistic lock
+    createServicePointVersionModel.setDesignationLong("New and hot line, ready to rock");
+    MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.put("/v1/service-points/" + createServicePointVersionModel.getId())
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(createServicePointVersionModel)))
+        .andExpect(status().isPreconditionFailed()).andReturn();
+
+    ErrorResponse errorResponse = mapper.readValue(
+        mvcResult.getResponse().getContentAsString(), ErrorResponse.class);
+
+    assertThat(errorResponse.getStatus()).isEqualTo(HttpStatus.PRECONDITION_FAILED.value());
+    assertThat(errorResponse.getDetails()).size().isEqualTo(1);
+    assertThat(errorResponse.getDetails().first().getDisplayInfo().getCode()).isEqualTo(
+        "COMMON.NOTIFICATION.OPTIMISTIC_LOCK_ERROR");
+    assertThat(errorResponse.getError()).isEqualTo("Stale object state error");
+  }
+
 }

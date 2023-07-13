@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
 @Transactional
-class ServicePointGeolocationTest {
+class ServicePointGeolocationRepositoryTest {
 
   public static final Envelope ENVELOPE_WITH_DATA = new Envelope(0D, 0.1D, 0D, 0.1D);
   public static final Envelope ENVELOPE_WITHOUT_DATA = new Envelope(5D, 10D, 5D, 10D);
@@ -26,7 +26,7 @@ class ServicePointGeolocationTest {
   private final ServicePointVersionRepository servicePointVersionRepository;
 
   @Autowired
-  public ServicePointGeolocationTest(
+  public ServicePointGeolocationRepositoryTest(
       ServicePointGeolocationRepository repository,
       ServicePointVersionRepository servicePointVersionRepository) {
     this.repository = repository;

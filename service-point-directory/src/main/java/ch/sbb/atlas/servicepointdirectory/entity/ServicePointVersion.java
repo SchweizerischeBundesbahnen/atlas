@@ -1,7 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.entity;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
-import ch.sbb.atlas.api.model.BusinessOrganisationAssociated;
+import ch.sbb.atlas.api.model.CountryAndBusinessOrganisationAssociated;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
@@ -66,7 +66,7 @@ import java.util.stream.Stream;
 @Entity(name = "service_point_version")
 @AtlasVersionable
 public class ServicePointVersion extends BaseDidokImportEntity implements Versionable,
-    BusinessOrganisationAssociated, DatesValidator {
+    CountryAndBusinessOrganisationAssociated, DatesValidator {
 
   private static final String VERSION_SEQ = "service_point_version_seq";
 

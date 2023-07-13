@@ -1,9 +1,9 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
-import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointItemImportResult;
-import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointItemImportResult.ServicePointItemImportResultBuilder;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
+import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointItemImportResult;
+import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointItemImportResult.ServicePointItemImportResultBuilder;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion.Fields;
 import ch.sbb.atlas.servicepointdirectory.service.BasePointUtility;
@@ -12,14 +12,13 @@ import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import com.fasterxml.jackson.databind.MappingIterator;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
@@ -67,7 +66,7 @@ public class ServicePointImportService {
 
   private ServicePointItemImportResult saveServicePointVersion(ServicePointVersion servicePointVersion) {
     try {
-      ServicePointVersion savedServicePointVersion = servicePointService.save(servicePointVersion);
+      ServicePointVersion savedServicePointVersion = servicePointService.saveWithoutValidationForImportOnly(servicePointVersion);
       return buildSuccessImportResult(savedServicePointVersion);
     } catch (Exception exception) {
       log.error("[Service-Point Import]: Error during save", exception);
@@ -100,7 +99,8 @@ public class ServicePointImportService {
         dbVersions);
     BasePointUtility.addCreateAndEditDetailsToGeolocationPropertyFromVersionedObjects(versionedObjects,
         Fields.servicePointGeolocation);
-    versionableService.applyVersioning(ServicePointVersion.class, versionedObjects, servicePointService::save,
+    versionableService.applyVersioning(ServicePointVersion.class, versionedObjects,
+        servicePointService::saveWithoutValidationForImportOnly,
         servicePointService::deleteById);
   }
 
