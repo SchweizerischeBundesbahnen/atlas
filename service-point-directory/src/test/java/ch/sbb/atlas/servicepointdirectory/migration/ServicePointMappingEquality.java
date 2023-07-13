@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.migration;
 
+import static ch.sbb.atlas.servicepointdirectory.migration.AtlasCsvReader.timestampFromString;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
@@ -8,21 +9,24 @@ import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 @Slf4j
+@Data
 public class ServicePointMappingEquality {
 
   private static final String SBOID_FIKTIVE_GO_INFOPLUS = "ch:1:sboid:101257";
 
-  public void performEqualityCheck(ServicePointCsvModel didokCsvLine,
-      ServicePointVersionCsvModel atlasCsvLine) {
+  private final ServicePointCsvModel didokCsvLine;
+  private final ServicePointVersionCsvModel atlasCsvLine;
+
+  public void performCheck() {
     assertThat(atlasCsvLine.getNumber()).isEqualTo(didokCsvLine.getDidokCode());
     assertThat(atlasCsvLine.getNumberShort()).isEqualTo(didokCsvLine.getNummer());
 
@@ -137,15 +141,15 @@ public class ServicePointMappingEquality {
     if (DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN_CH)
         .parse(atlasCsvLine.getValidFrom())
         .equals(didokCsvLine.getValidFrom())) {
-      assertThat(fromString(atlasCsvLine.getCreationDate())).isEqualTo(
+      assertThat(timestampFromString(atlasCsvLine.getCreationDate())).isEqualTo(
           didokCsvLine.getCreatedAt().withSecond(0));
-      assertThat(fromString(atlasCsvLine.getEditionDate())).isEqualTo(
+      assertThat(timestampFromString(atlasCsvLine.getEditionDate())).isEqualTo(
           didokCsvLine.getEditedAt().withSecond(0));
     }
 
     // Since didok sometimes has locations but virtual, we should perform this check only if atlas has a geolocation ?
     if (atlasCsvLine.isHasGeolocation()) {
-      performEqualityCheckOnGeoLocation(didokCsvLine, atlasCsvLine);
+      performEqualityCheckOnGeoLocation();
     }
   }
 
@@ -154,8 +158,7 @@ public class ServicePointMappingEquality {
         + didokCsvLine.getValidTo() + "\t";
   }
 
-  private void performEqualityCheckOnGeoLocation(ServicePointCsvModel didokCsvLine,
-      ServicePointVersionCsvModel atlasCsvLine) {
+  private void performEqualityCheckOnGeoLocation() {
     if (didokCsvLine.getIsoCountryCode() != null) {
       assertThat(Country.fromIsoCode(atlasCsvLine.getIsoCountryCode())).isEqualTo(
           Country.fromIsoCode(didokCsvLine.getIsoCountryCode()));
@@ -177,19 +180,16 @@ public class ServicePointMappingEquality {
 
     assertThat(atlasCsvLine.getLocalityName()).isEqualTo(didokCsvLine.getOrtschaftsName());
 
-    performEqualityCheckOnCoordinates(didokCsvLine, atlasCsvLine);
+    performEqualityCheckOnCoordinates();
     assertThat(atlasCsvLine.getHeight()).isEqualTo(didokCsvLine.getHeight());
   }
 
-  private void performEqualityCheckOnCoordinates(ServicePointCsvModel didokCsvLine,
-      ServicePointVersionCsvModel atlasCsvLine) {
+  private void performEqualityCheckOnCoordinates() {
     assertThat(atlasCsvLine.getLv95East()).isEqualTo(didokCsvLine.getELv95(), DoubleAssertion.equalOnDecimalDigits(2));
     assertThat(atlasCsvLine.getLv95North()).isEqualTo(didokCsvLine.getNLv95(), DoubleAssertion.equalOnDecimalDigits(2));
 
-    performEqualityCheckOrIgnoreInfoplus(atlasCsvLine, atlasCsvLine.getWgs84East(),
-        didokCsvLine.getEWgs84(), 7);
-    performEqualityCheckOrIgnoreInfoplus(atlasCsvLine, atlasCsvLine.getWgs84North(),
-        didokCsvLine.getNWgs84(), 7);
+    performEqualityCheckOrIgnoreInfoplus(atlasCsvLine, atlasCsvLine.getWgs84East(), didokCsvLine.getEWgs84(), 7);
+    performEqualityCheckOrIgnoreInfoplus(atlasCsvLine, atlasCsvLine.getWgs84North(), didokCsvLine.getNWgs84(), 7);
 
     // TODO: Change from 1076444.88305452 to 1076444.88205452 on 0.001 in
     //  DIDOK3_DIENSTSTELLEN_ALL_V_3_20230712021552.csv was not recognized,
@@ -212,10 +212,6 @@ public class ServicePointMappingEquality {
     } else {
       assertThat(atlasValue).isEqualTo(didokValue, DoubleAssertion.equalOnDecimalDigits(digits));
     }
-  }
-
-  private LocalDateTime fromString(String string) {
-    return LocalDateTime.parse(string, DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"));
   }
 
   private static boolean isBigDifferenceBetween(Double x, Double y) {
