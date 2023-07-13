@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.withPrecision;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
+import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import java.math.BigDecimal;
@@ -94,12 +95,12 @@ public class ServicePointMappingEquality {
     if (didokCsvLine.getBpvhVerkehrsmittel() != null) {
       Set<String> expectedVerkehrsmittel =
           Stream.of(didokCsvLine.getBpvhVerkehrsmittel().split("~"))
-                .filter(StringUtils::isNotBlank)
-                .collect(Collectors.toSet());
+              .filter(StringUtils::isNotBlank)
+              .collect(Collectors.toSet());
       Set<String> actualMeansOfTransport =
           Stream.of(atlasCsvLine.getMeansOfTransport().split("\\|"))
-                .map(i -> MeanOfTransport.valueOf(i).getCode())
-                .collect(Collectors.toSet());
+              .map(i -> MeanOfTransport.valueOf(i).getCode())
+              .collect(Collectors.toSet());
       assertThat(actualMeansOfTransport).isEqualTo(expectedVerkehrsmittel);
     } else {
       assertThat(atlasCsvLine.getMeansOfTransport()).isNull();
@@ -108,12 +109,12 @@ public class ServicePointMappingEquality {
     if (didokCsvLine.getDsKategorienIds() != null) {
       Set<String> expectedKategorien =
           Stream.of(didokCsvLine.getDsKategorienIds().split("\\|"))
-                .filter(StringUtils::isNotBlank)
-                .collect(Collectors.toSet());
+              .filter(StringUtils::isNotBlank)
+              .collect(Collectors.toSet());
       Set<String> actualCategories =
           Stream.of(atlasCsvLine.getCategories().split("\\|"))
-                .map(i -> Category.valueOf(i).getCode())
-                .collect(Collectors.toSet());
+              .map(i -> Category.valueOf(i).getCode())
+              .collect(Collectors.toSet());
       assertThat(actualCategories).isEqualTo(expectedKategorien);
     } else {
       assertThat(atlasCsvLine.getCategories()).isNull();
@@ -140,16 +141,15 @@ public class ServicePointMappingEquality {
     //assertThat(atlasCsvLine.fotComment).isEqualTo(didokCsvLine.BAV_BEMERKUNG);
 
     if (DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN_CH)
-                         .parse(atlasCsvLine.getValidFrom())
-                         .equals(didokCsvLine.getValidFrom())) {
+        .parse(atlasCsvLine.getValidFrom())
+        .equals(didokCsvLine.getValidFrom())) {
       assertThat(fromString(atlasCsvLine.getCreationDate())).isEqualTo(
           didokCsvLine.getCreatedAt().withSecond(0));
       assertThat(fromString(atlasCsvLine.getEditionDate())).isEqualTo(
           didokCsvLine.getEditedAt().withSecond(0));
     }
 
-    // Since didok sometimes has locations but virtual, we should perform this check only if
-    // atlas has a geolocation ?
+    // Since didok sometimes has locations but virtual, we should perform this check only if atlas has a geolocation ?
     if (atlasCsvLine.isHasGeolocation()) {
       performEqualityCheckOnGeoLocation(didokCsvLine, atlasCsvLine);
     }
@@ -162,30 +162,10 @@ public class ServicePointMappingEquality {
 
   private void performEqualityCheckOnGeoLocation(ServicePointCsvModel didokCsvLine,
       ServicePointVersionCsvModel atlasCsvLine) {
-    // TODO: IsoCountryCode is null in ATLAS: 85810077 from:2002-06-16 to:2012-12-08	didok:LI,
-    //  atlas:null
-    //    assertThat(atlasCsvLine.getIsoCountryCode())
-    //            .withFailMessage(generalErrorMessage(didokCsvLine) + "didok:" + didokCsvLine
-    //            .getIsoCountryCode() + ", atlas:" + atlasCsvLine.getIsoCountryCode())
-    //            .isEqualTo(didokCsvLine.getIsoCountryCode());
-
-    //    if (atlasCsvLine.getIsoCountryCode() != null && didokCsvLine.getIsoCountryCode() ==
-    //    null ||
-    //        atlasCsvLine.getIsoCountryCode() == null && didokCsvLine.getIsoCountryCode() !=
-    //        null) {
-    //      setOfIsoCountryCode.add(didokCsvLine.getIsoCountryCode());
-    //      if (didokCsvLine.getIsoCountryCode().equals("EL")) {
-    //        setOfIsoCountryCodeIsELLaendercodes.add(didokCsvLine.getLaendercode());
-    //      }
-    //      log.error(
-    //          generalErrorMessage(didokCsvLine) + " " + didokCsvLine.getGoBezeichnungDe() + "
-    //          didok:"
-    //              + didokCsvLine.getIsoCountryCode() + ", atlas:" + atlasCsvLine
-    //              .getIsoCountryCode()
-    //              + " " + counter + " " + setOfIsoCountryCode + " "
-    //              + setOfIsoCountryCodeIsELLaendercodes);
-    //      counter++;
-    //    }
+    if (didokCsvLine.getIsoCountryCode() != null) {
+      assertThat(Country.fromIsoCode(atlasCsvLine.getIsoCountryCode())).isEqualTo(
+          Country.fromIsoCode(didokCsvLine.getIsoCountryCode()));
+    }
 
     // Atlas liefert den Kanontsnamen immer, in Didok fehlt er ab und zu
     if (didokCsvLine.getKantonsName() != null) {
