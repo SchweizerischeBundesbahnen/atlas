@@ -1,7 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.migration;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.withPrecision;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
@@ -189,35 +188,34 @@ public class ServicePointMappingEquality {
 
   private void performEqualityCheckOnCoordinates(ServicePointCsvModel didokCsvLine,
       ServicePointVersionCsvModel atlasCsvLine) {
-    assertThat(atlasCsvLine.getLv95East()).isEqualTo(didokCsvLine.getELv95(), withPrecision(0.001));
-    assertThat(atlasCsvLine.getLv95North()).isEqualTo(didokCsvLine.getNLv95(),
-        withPrecision(0.001));
+    assertThat(atlasCsvLine.getLv95East()).isEqualTo(didokCsvLine.getELv95(), DoubleAssertion.equalOnDecimalDigits(2));
+    assertThat(atlasCsvLine.getLv95North()).isEqualTo(didokCsvLine.getNLv95(), DoubleAssertion.equalOnDecimalDigits(2));
 
     performEqualityCheckOrIgnoreInfoplus(atlasCsvLine, atlasCsvLine.getWgs84East(),
-        didokCsvLine.getEWgs84());
+        didokCsvLine.getEWgs84(), 7);
     performEqualityCheckOrIgnoreInfoplus(atlasCsvLine, atlasCsvLine.getWgs84North(),
-        didokCsvLine.getNWgs84());
+        didokCsvLine.getNWgs84(), 7);
 
     // TODO: Change from 1076444.88305452 to 1076444.88205452 on 0.001 in
     //  DIDOK3_DIENSTSTELLEN_ALL_V_3_20230712021552.csv was not recognized,
     //  DIDOK_CODE=11023754
     performEqualityCheckOrIgnoreInfoplus(atlasCsvLine, atlasCsvLine.getWgs84WebEast(),
-        didokCsvLine.getEWgs84web());
+        didokCsvLine.getEWgs84web(), 3);
     if (Double.valueOf(1076444.88).equals(didokCsvLine.getEWgs84web())) {
       log.error(
           generalErrorMessage(didokCsvLine) + " didok: " + didokCsvLine.getEWgs84web() + " atlas: "
               + atlasCsvLine.getWgs84East());
     }
     performEqualityCheckOrIgnoreInfoplus(atlasCsvLine, atlasCsvLine.getWgs84WebNorth(),
-        didokCsvLine.getNWgs84web());
+        didokCsvLine.getNWgs84web(), 3);
   }
 
   private static void performEqualityCheckOrIgnoreInfoplus(ServicePointVersionCsvModel atlasCsvLine,
-      Double atlasValue, Double didokValue) {
+      Double atlasValue, Double didokValue, int digits) {
     if (isBigDifferenceBetween(atlasValue, didokValue)) {
       assertThat(atlasCsvLine.getBusinessOrganisation()).isEqualTo(SBOID_FIKTIVE_GO_INFOPLUS);
     } else {
-      assertThat(atlasValue).isEqualTo(didokValue, withPrecision(0.001));
+      assertThat(atlasValue).isEqualTo(didokValue, DoubleAssertion.equalOnDecimalDigits(digits));
     }
   }
 
