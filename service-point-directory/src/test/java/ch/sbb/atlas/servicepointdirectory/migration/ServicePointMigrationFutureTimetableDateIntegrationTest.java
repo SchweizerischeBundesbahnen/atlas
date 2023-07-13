@@ -25,11 +25,11 @@ import org.junit.jupiter.api.TestMethodOrder;
 @IntegrationTest
 @Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class ServicePointMigrationActualDateIntegrationTest {
+public class ServicePointMigrationFutureTimetableDateIntegrationTest {
 
-  private static final String DIDOK_CSV_FILE = "DIDOK3_DIENSTSTELLEN_ACTUALDATE_V_2_20230713020034.csv";
-  private static final String ATLAS_CSV_FILE = "actual_date-world-service-point-2023-07-13.csv";
-  private static final LocalDate ACTUAL_DATE = LocalDate.of(2023, 7, 13);
+  private static final String DIDOK_CSV_FILE = "DIDOK3_DIENSTSTELLEN_FUTURE_TIMETABLE_V_2_20230713023455.csv";
+  private static final String ATLAS_CSV_FILE = "future_timetable-world-service-point-2023-07-13.csv";
+  private static final LocalDate FUTURE_TIMETABLE_DATE = LocalDate.of(2023, 12, 10);
 
   private static final String SEPARATOR = "/";
 
@@ -84,12 +84,12 @@ public class ServicePointMigrationActualDateIntegrationTest {
 
   @Test
   @Order(4)
-  void shouldHaveOnlyVersionsValidOnActualDate() {
+  void shouldHaveOnlyVersionsValidOnFutureTimetableDate() {
     atlasCsvLines.forEach(atlasCsvLine -> {
       assertThat(
           new DateRange(dateFromString(atlasCsvLine.getValidFrom()),
               dateFromString(atlasCsvLine.getValidTo()))
-              .contains(ACTUAL_DATE)).isTrue();
+              .contains(FUTURE_TIMETABLE_DATE)).isTrue();
     });
   }
 
