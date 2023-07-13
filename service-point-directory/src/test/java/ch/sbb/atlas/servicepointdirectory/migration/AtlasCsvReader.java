@@ -1,9 +1,13 @@
 package ch.sbb.atlas.servicepointdirectory.migration;
 
+import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
 import com.fasterxml.jackson.databind.MappingIterator;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.experimental.UtilityClass;
@@ -21,5 +25,13 @@ public class AtlasCsvReader {
       servicePoints.add(mappingIterator.next());
     }
     return servicePoints;
+  }
+
+  public static LocalDateTime timestampFromString(String string) {
+    return LocalDateTime.parse(string, DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"));
+  }
+
+  public static LocalDate dateFromString(String string) {
+    return LocalDate.parse(string, DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN_CH));
   }
 }
