@@ -10,7 +10,6 @@ import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -21,10 +20,6 @@ import org.apache.commons.lang3.StringUtils;
 public class ServicePointMappingEquality {
 
   private static final String SBOID_FIKTIVE_GO_INFOPLUS = "ch:1:sboid:101257";
-
-  private static int counter = 0;
-  private static Set<String> setOfIsoCountryCode = new HashSet<>();
-  private static Set<Integer> setOfIsoCountryCodeIsELLaendercodes = new HashSet<>();
 
   public void performEqualityCheck(ServicePointCsvModel didokCsvLine,
       ServicePointVersionCsvModel atlasCsvLine) {
