@@ -1,7 +1,8 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
 import ch.sbb.atlas.api.model.Container;
-import ch.sbb.atlas.api.servicepoint.TrafficPointElementVersionModel;
+import ch.sbb.atlas.api.servicepoint.CreateTrafficPointElementVersionModel;
+import ch.sbb.atlas.api.servicepoint.ReadTrafficPointElementVersionModel;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointImportRequestModel;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointItemImportResult;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
@@ -31,23 +32,23 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
   private final TrafficPointElementImportService trafficPointElementImportService;
 
   @Override
-  public Container<TrafficPointElementVersionModel> getTrafficPointElements(Pageable pageable, List<String> searchCriteria,
-      Optional<LocalDate> validOn) {
+  public Container<ReadTrafficPointElementVersionModel> getTrafficPointElements(Pageable pageable, List<String> searchCriteria,
+                                                                         Optional<LocalDate> validOn) {
     Page<TrafficPointElementVersion> trafficPointElementVersions = trafficPointElementService.findAll(
         TrafficPointElementSearchRestrictions.builder()
             .pageable(pageable)
             .searchCriterias(searchCriteria)
             .validOn(validOn)
             .build());
-    return Container.<TrafficPointElementVersionModel>builder()
+    return Container.<ReadTrafficPointElementVersionModel>builder()
         .objects(trafficPointElementVersions.stream().map(TrafficPointElementVerisionMapper::toModel).toList())
         .totalCount(trafficPointElementVersions.getTotalElements())
         .build();
   }
 
   @Override
-  public List<TrafficPointElementVersionModel> getTrafficPointElement(String sloid) {
-    List<TrafficPointElementVersionModel> trafficPointElementVersions =
+  public List<ReadTrafficPointElementVersionModel> getTrafficPointElement(String sloid) {
+    List<ReadTrafficPointElementVersionModel> trafficPointElementVersions =
         trafficPointElementService.findBySloidOrderByValidFrom(
                 sloid)
             .stream()
@@ -59,7 +60,7 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
   }
 
   @Override
-  public TrafficPointElementVersionModel getTrafficPointElementVersion(Long id) {
+  public ReadTrafficPointElementVersionModel getTrafficPointElementVersion(Long id) {
     return trafficPointElementService.findById(id).map(TrafficPointElementVerisionMapper::toModel)
         .orElseThrow(() -> new IdNotFoundException(id));
   }
@@ -71,13 +72,13 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
   }
 
   @Override
-  public TrafficPointElementVersionModel createTrafficPoint(TrafficPointElementVersionModel trafficPointElementVersionModel) {
+  public ReadTrafficPointElementVersionModel createTrafficPoint(CreateTrafficPointElementVersionModel trafficPointElementVersionModel) {
     return TrafficPointElementVerisionMapper.toModel(
             trafficPointElementService.save(TrafficPointElementVerisionMapper.toEntity(trafficPointElementVersionModel)));
   }
 
   @Override
-  public List<TrafficPointElementVersionModel> updateTrafficPoint(Long id, TrafficPointElementVersionModel trafficPointElementVersionModel) {
+  public List<ReadTrafficPointElementVersionModel> updateTrafficPoint(Long id, CreateTrafficPointElementVersionModel trafficPointElementVersionModel) {
     TrafficPointElementVersion trafficPointElementVersionToUpdate = trafficPointElementService.findById(id)
             .orElseThrow(() -> new IdNotFoundException(id));
 
