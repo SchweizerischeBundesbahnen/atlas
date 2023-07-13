@@ -2,22 +2,21 @@ package ch.sbb.atlas.api.servicepoint;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.model.BaseVersionModel;
-import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
 import ch.sbb.atlas.validation.DatesValidator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
+
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -51,10 +50,6 @@ public class TrafficPointElementVersionModel extends BaseVersionModel implements
   private TrafficPointElementType trafficPointElementType;
 
   @NotNull
-  @Valid
-  private ServicePointNumber servicePointNumber;
-
-  @NotNull
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
   @Schema(description = "Unique code for traffic point element (TPE) that is used in customer information.\n" +
       "By means of this ID, the connection between stops and bus / station stop area or boarding area can be established.\n\n" +
@@ -73,6 +68,9 @@ public class TrafficPointElementVersionModel extends BaseVersionModel implements
 
   @NotNull
   private LocalDate validTo;
+
+  @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)", example = "5")
+  private Integer etagVersion;
 
   @JsonInclude
   @Schema(description = "TrafficPointElementVersion has a Geolocation")
