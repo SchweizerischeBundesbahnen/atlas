@@ -4,7 +4,10 @@ import {
   ApplicationRole,
   ApplicationType,
   BusinessOrganisation,
+  Country,
+  CountryPermissionRestrictionModel,
   PermissionRestrictionType,
+  SboidPermissionRestrictionModel,
   SwissCanton,
 } from '../../../../api';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -14,6 +17,7 @@ import { Observable, of, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Cantons } from '../../../tth/overview/canton/Cantons';
 import { MatSelectChange } from '@angular/material/select';
+import { Countries } from '../../../sepodi/overview/country/Countries';
 
 @Component({
   selector: 'app-user-administration-application-config',
@@ -59,10 +63,49 @@ export class UserAdministrationApplicationConfigComponent implements OnInit, OnD
     },
   ];
 
+  private filteredCountries(): Country[] {
+    return Object.values(Country).filter(
+      (country) =>
+        country !== Country.Canada &&
+        country !== Country.Congo &&
+        country !== Country.SouthAfrica &&
+        country !== Country.Australia &&
+        country !== Country.Switzerland &&
+        country !== Country.GermanyBus &&
+        country !== Country.AustriaBus &&
+        country !== Country.ItalyBus &&
+        country !== Country.FranceBus
+    );
+  }
+
+  private filterAndSortCountries(): Country[] {
+    const sortedCountryArray: Country[] = [];
+    sortedCountryArray.push(
+      Country.Switzerland,
+      Country.GermanyBus,
+      Country.AustriaBus,
+      Country.ItalyBus,
+      Country.FranceBus
+    );
+    const filteredCountries = this.filteredCountries();
+    filteredCountries.sort(
+      (n1, n2) =>
+        this.getCountryNameUicCodeFromCountry(n1) - this.getCountryNameUicCodeFromCountry(n2)
+    );
+    return sortedCountryArray.concat(filteredCountries);
+  }
+
+  private getCountryNameUicCodeFromCountry(country: Country): number {
+    return Countries.fromCountry(country)!.uicCode;
+  }
+
   private readonly boFormResetEventSubscription: Subscription;
   SWISS_CANTONS = Object.values(SwissCanton);
+  COUNTRIES = this.filterAndSortCountries();
   SWISS_CANTONS_PREFIX_LABEL = 'TTH.CANTON.';
+  SWISS_COUNTRIES_PREFIX_LABEL = 'TTH.COUNTRY.';
   cantonSelection: [SwissCanton] | undefined;
+  countrySelection: [Country] | undefined;
 
   constructor(
     private readonly boLanguageService: BusinessOrganisationLanguageService,
@@ -71,6 +114,12 @@ export class UserAdministrationApplicationConfigComponent implements OnInit, OnD
     this.boFormResetEventSubscription = userPermissionManager.boFormResetEvent$.subscribe(() =>
       this.businessOrganisationForm.reset()
     );
+  }
+
+  resetCountries() {
+    this.countrySelection = this.userPermissionManager.getRestrictionValues(
+      this.userPermissionManager.getPermissionByApplication(this.application)
+    ) as [Country];
   }
 
   ngOnInit() {
@@ -83,6 +132,7 @@ export class UserAdministrationApplicationConfigComponent implements OnInit, OnD
     this.cantonSelection = this.userPermissionManager.getRestrictionValues(
       this.userPermissionManager.getPermissionByApplication(this.application)
     ) as [SwissCanton];
+    this.resetCountries();
   }
 
   ngOnDestroy() {
@@ -104,6 +154,8 @@ export class UserAdministrationApplicationConfigComponent implements OnInit, OnD
 
   readonly getCantonAbbreviation = (canton: SwissCanton) => Cantons.fromSwissCanton(canton)?.short;
 
+  readonly getCountryEnum = (country: Country) => Countries.fromCountry(country)?.enumCountry;
+
   cantonSelectionChanged($event: MatSelectChange) {
     const values = $event.value as SwissCanton[];
     const permissionRestriction = values.map((selection) => ({
@@ -112,5 +164,47 @@ export class UserAdministrationApplicationConfigComponent implements OnInit, OnD
     }));
     this.userPermissionManager.getPermissionByApplication(this.application).permissionRestrictions =
       permissionRestriction;
+  }
+
+  countrySelectionChanged($event: MatSelectChange) {
+    const values = $event.value as Country[];
+    const countryPermissionRestrictions = values
+      .filter((value) => value !== undefined)
+      .map((selection) => ({
+        valueAsString: selection,
+        type: PermissionRestrictionType.Country,
+      }));
+    const businessPermissionRestrictions = this.userPermissionManager
+      .getPermissionByApplication(this.application)
+      .permissionRestrictions.filter(
+        (sboid) => sboid.type === PermissionRestrictionType.BusinessOrganisation
+      );
+    const role = this.userPermissionManager.getPermissionByApplication(this.application).role;
+    this.setSboidandCountryPermissions(
+      businessPermissionRestrictions,
+      countryPermissionRestrictions,
+      role,
+      this.application
+    );
+  }
+
+  setSboidandCountryPermissions(
+    businessPermissionRestrictions: SboidPermissionRestrictionModel[],
+    countryPermissionRestrictions: CountryPermissionRestrictionModel[],
+    role: ApplicationRole,
+    application: ApplicationType
+  ) {
+    this.userPermissionManager.setPermissions([
+      {
+        application: application,
+        role: role,
+        permissionRestrictions: businessPermissionRestrictions,
+      },
+      {
+        application: application,
+        role: role,
+        permissionRestrictions: countryPermissionRestrictions,
+      },
+    ]);
   }
 }
