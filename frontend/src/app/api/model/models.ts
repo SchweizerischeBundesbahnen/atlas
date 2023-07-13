@@ -27,6 +27,7 @@ export * from './containerTransportCompany';
 export * from './containerUser';
 export * from './coordinatePair';
 export * from './country';
+export * from './countryPermissionRestrictionModel';
 export * from './coverage';
 export * from './coverageType';
 export * from './createServicePointVersion';
