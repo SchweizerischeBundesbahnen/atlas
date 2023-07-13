@@ -50,7 +50,7 @@ export class UserAdministrationClientEditComponent implements OnInit {
   saveEdits(): void {
     this.saveEnabled = false;
     this.userPermissionManager.emitBoFormResetEvent();
-    this.userPermissionManager.clearPermissionRestrictionsIfNotWriter();
+    this.userPermissionManager.clearPermisRestrIfNotWriterAndRemoveBOPermisRestrIfSepodiAndSuperUser();
     const managedPermissions = this.userPermissionManager.userPermission;
     const permissions = {
       ...this.client,

@@ -59,8 +59,8 @@ public enum Country {
   NETHERLANDS("NL", 84, "Niederlande", "Pays-Bas", " Paesi Bassi", "Netherlands"),
   POLAND("PL", 51, "Polen", "Pologne", " Polonia", "Poland"),
   PORTUGAL("PT", 94, "Portugal", "Portugal", " Portogallo", "Portugal"),
-  NORTHERN_IRELAND("GB", 70, "Vereinigtes Königreich von Großbritannien und von Nordirland",
-      "Royaume-Uni de Grande-Bretagne et d''Irlande du Nord", " Regno Unito",
+  GREAT_BRITAIN("GB", 70, "Vereinigtes Königreich von Großbritannien und von Nordirland",
+      "Royaume-Uni de Grande-Bretagne et d'Irlande du Nord", "Regno Unito",
       "United Kingdom of Great Britain and Northern Ireland"),
   CONGO("CD", null, "Kongo, Demokratische Republik", "République démocratique du Congo", " RD del Congo",
       "Congo, the Democratic Republic of the"),
@@ -96,7 +96,18 @@ public enum Country {
   ALGERIA("DZ", 92, "Algerien", "Algérie", " Algeria", "Algeria"),
   ARMENIA("AM", 58, "Armenien", "Arménie", " Armenia", "Armenia"),
   AUSTRALIA("AU", null, "Australien", "Australie", " Australia", "Australia"),
-  AUSTRIA("AT", 81, "Österreich", "Autriche", " Austria", "Austria");
+  AUSTRIA("AT", 81, "Österreich", "Autriche", " Austria", "Austria"),
+  LIECHTENSTEIN("LI", null, "Fürstentum Liechtenstein", "principauté du Liechtenstein", " Principato del Liechtenstein",
+      "Principality of Liechtenstein"),
+  SUDAN("SD", null, "Sudan", "Sudan", "Sudan", "Sudan"),
+  TSCHAD("TD", null, "Tschad", "Tschad", "Tschad", "Tschad"),
+  LIBYEN("LY", null, "Libyen", "Libyen", "Libyen", "Libyen"),
+  MONACO("MC", null, "Monaco", "Monaco", "Monaco", "Monaco"),
+  NIGER("NE", null, "Niger", "Niger", "Niger", "Niger"),
+  NIGERIA("NG", null, "Nigeria", "Nigeria", "Nigeria", "Nigeria"),
+  JEMEN("YE", null, "Jemen", "Jemen", "Jemen", "Jemen"),
+
+  ;
 
   private final String isoCode;
   private final Integer uicCode;
@@ -111,6 +122,14 @@ public enum Country {
   }
 
   public static Country fromIsoCode(String isoCode) {
+    // Eurostat liefert nicht ISO konforme Codes!
+    // siehe https://www.destatis.de/Europa/DE/Staat/Laendercodes.html
+    if ("UK".equals(isoCode)) {
+      return Country.GREAT_BRITAIN;
+    }
+    if ("EL".equals(isoCode)) {
+      return Country.GREECE;
+    }
     return Arrays.stream(Country.values()).filter(country -> Objects.equals(country.getIsoCode(), isoCode)).findFirst()
         .orElse(null);
   }
