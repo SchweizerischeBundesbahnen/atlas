@@ -13,7 +13,14 @@
     [multiple]="multiple"
     [hideSingleSelectionIndicator]="true"
   >
-    <mat-option *ngFor="let option of options" [value]="valueExtractor(option)">
+    <mat-option *ngIf="isSelectAllEnabled" #allSelected (click)="toggleAllSelection()">{{
+      selectAll | translate
+    }}</mat-option>
+    <mat-option
+      *ngFor="let option of options"
+      [value]="valueExtractor(option)"
+      (click)="deselectAllCheckboxUnlessAllSelected()"
+    >
       <ng-container
         *ngTemplateOutlet="matOptionPrefix; context: getAsObject(option)"
       ></ng-container>
