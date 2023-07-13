@@ -53,7 +53,7 @@ export class UserAdministrationClientCreateComponent {
 
   create(): void {
     this.saveEnabled = false;
-    this.userPermissionManager.clearPermissionRestrictionsIfNotWriter();
+    this.userPermissionManager.clearPermisRestrIfNotWriterAndRemoveBOPermisRestrIfSepodiAndSuperUser();
     const managedPermission = this.userPermissionManager.userPermission;
     const permission = {
       ...this.form.value,

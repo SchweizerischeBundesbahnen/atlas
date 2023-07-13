@@ -19,7 +19,7 @@ public class SqlQueryUtil {
 
   private static final String SELECT_AND_JOIN_STATEMENT =
       "SELECT spv.id, string_agg(spvmot.means_of_transport, '|') as list_of_transports, string_agg(spvc.categories, '|') "
-          + "as list_of_categories, spv.*, spvg.*, sbov.* "
+          + "as list_of_categories, spv.*, spvg.country as geolocation_country, spvg.*, sbov.* "
           + "FROM service_point_version spv "
           + "LEFT JOIN service_point_version_means_of_transport spvmot "
           + "on spv.id = spvmot.service_point_version_id "

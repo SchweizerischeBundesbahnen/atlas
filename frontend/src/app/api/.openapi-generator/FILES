@@ -51,6 +51,7 @@ model/containerTransportCompany.ts
 model/containerUser.ts
 model/coordinatePair.ts
 model/country.ts
+model/countryPermissionRestrictionModel.ts
 model/coverage.ts
 model/coverageType.ts
 model/createServicePointVersion.ts

@@ -45,7 +45,7 @@ public abstract class GeolocationBaseEntity extends BaseDidokImportEntity {
   private Double north;
 
   @AtlasVersionableProperty
-  @Digits(integer = 10, fraction = 3)
+  @Digits(integer = 10, fraction = 4)
   private Double height;
 
   public CoordinatePair asCoordinatePair() {
