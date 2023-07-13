@@ -1,28 +1,28 @@
 package ch.sbb.business.organisation.directory.controller;
 
-
 import ch.sbb.atlas.api.bodi.BusinessOrganisationApiV1;
 import ch.sbb.atlas.api.bodi.BusinessOrganisationModel;
 import ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel;
 import ch.sbb.atlas.api.bodi.BusinessOrganisationVersionRequestParams;
-import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.api.model.Container;
+import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.model.exception.SboidNotFoundException;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisation;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
-import ch.sbb.atlas.model.exception.SboidNotFoundException;
 import ch.sbb.business.organisation.directory.mapper.BusinessOrganisationMapper;
 import ch.sbb.business.organisation.directory.mapper.BusinessOrganisationVersionMapper;
 import ch.sbb.business.organisation.directory.service.BusinessOrganisationService;
 import ch.sbb.business.organisation.directory.service.export.BusinessOrganisationVersionExportService;
-import java.net.URL;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.net.URL;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -60,7 +60,7 @@ public class BusinessOrganisationController implements BusinessOrganisationApiV1
 
   @Override
   public Container<BusinessOrganisationVersionModel> getBusinessOrganisationVersions(Pageable pageable,
-      BusinessOrganisationVersionRequestParams businessOrganisationVersionRequestParams) {
+                                                                 BusinessOrganisationVersionRequestParams businessOrganisationVersionRequestParams) {
     log.info("Load BusinessOrganisationVersions using pageable={}, params={}", pageable,
         businessOrganisationVersionRequestParams);
     Page<BusinessOrganisationVersion> businessOrganisationVersions = service.getBusinessOrganisationVersions(

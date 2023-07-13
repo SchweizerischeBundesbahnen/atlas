@@ -8,7 +8,8 @@
       <atlas-select
         (selectChanged)="
           userPermissionManager.changePermissionRole(application, $event.value);
-          businessOrganisationForm.reset()
+          businessOrganisationForm.reset();
+          resetCountries()
         "
         [value]="role"
         label="USER_ADMIN.ROLE"
@@ -21,6 +22,24 @@
     </div>
 
     <div class="d-flex flex-column col-9 pe-3">
+      <ng-template
+        [ngIf]="application === 'SEPODI' && (role === 'WRITER' || role === 'SUPER_USER')"
+      >
+        <atlas-select
+          (selectChanged)="countrySelectionChanged($event)"
+          [value]="countrySelection"
+          label="COMMON.COUNTRIES"
+          [additionalLabelspace]="false"
+          [optionTranslateLabelPrefix]="SWISS_COUNTRIES_PREFIX_LABEL"
+          [displayExtractor]="getCountryEnum"
+          [options]="COUNTRIES"
+          [disabled]="readOnly"
+          [multiple]="true"
+          [isSelectAllEnabled]="true"
+        >
+        </atlas-select>
+        <br />
+      </ng-template>
       <ng-template [ngIf]="application !== 'TIMETABLE_HEARING' && role === 'WRITER'">
         <span class="font-bold-lg">
           {{ 'BODI.BUSINESS_ORGANISATION.BUSINESS_ORGANISATIONS' | translate }}
