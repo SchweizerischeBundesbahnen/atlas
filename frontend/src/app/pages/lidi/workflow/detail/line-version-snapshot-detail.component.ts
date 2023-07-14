@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   LinesService,
   LineType,
@@ -8,12 +8,11 @@ import {
   Workflow,
   WorkflowService,
 } from '../../../../api';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import moment from 'moment';
 import { Pages } from '../../../pages';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { LineVersionSnapshotDetailFormGroup } from './line-version-snapshot-detail-form-group';
 import { takeUntil } from 'rxjs/operators';
 import { WorkflowFormGroup } from '../../../../core/workflow/workflow-form-group';
@@ -51,9 +50,8 @@ export class LineVersionSnapshotDetailComponent implements OnInit, OnDestroy {
   private ngUnsubscribe = new Subject<void>();
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public dialogData: any,
     private router: Router,
-    private dialogRef: MatDialogRef<LineVersionSnapshotDetailComponent>,
+    private activatedRoute: ActivatedRoute,
     private workflowService: WorkflowService,
     private lineService: LinesService
   ) {}
@@ -65,12 +63,8 @@ export class LineVersionSnapshotDetailComponent implements OnInit, OnDestroy {
     this.checkLineVersionSNapshottedAlreadyExists();
   }
 
-  backToOverview(): void {
-    this.dialogRef.close();
-  }
-
   readRecord(): LineVersionSnapshot {
-    return this.dialogData.lineVersionSnapshot;
+    return this.activatedRoute.snapshot.data.lineVersionSnapshot;
   }
 
   navigateToLine() {

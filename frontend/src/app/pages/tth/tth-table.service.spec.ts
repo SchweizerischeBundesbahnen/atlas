@@ -13,35 +13,31 @@ describe('TthTableService', () => {
   });
 
   it('should enableFilters', () => {
-    service.overviewDetailFilterConfigInternal.chipSearch.disabled = true;
-    service.overviewDetailFilterConfigInternal.multiSelectStatementStatus.disabled = true;
-    service.overviewDetailFilterConfigInternal.searchSelectTU.disabled = true;
-    service.overviewDetailFilterConfigInternal.searchSelectTTFN.disabled = true;
+    service.filterConfigInternal.chipSearch.disabled = true;
+    service.filterConfigInternal.multiSelectStatementStatus.disabled = true;
+    service.filterConfigInternal.searchSelectTU.disabled = true;
+    service.filterConfigInternal.searchSelectTTFN.disabled = true;
 
     service.enableFilters();
 
-    expect(service.overviewDetailFilterConfigInternal.chipSearch.disabled).toBeFalse();
-    expect(
-      service.overviewDetailFilterConfigInternal.multiSelectStatementStatus.disabled
-    ).toBeFalse();
-    expect(service.overviewDetailFilterConfigInternal.searchSelectTU.disabled).toBeFalse();
-    expect(service.overviewDetailFilterConfigInternal.searchSelectTTFN.disabled).toBeFalse();
+    expect(service.filterConfigInternal.chipSearch.disabled).toBeFalse();
+    expect(service.filterConfigInternal.multiSelectStatementStatus.disabled).toBeFalse();
+    expect(service.filterConfigInternal.searchSelectTU.disabled).toBeFalse();
+    expect(service.filterConfigInternal.searchSelectTTFN.disabled).toBeFalse();
   });
 
   it('should disableFilters', () => {
-    service.overviewDetailFilterConfigInternal.chipSearch.disabled = false;
-    service.overviewDetailFilterConfigInternal.multiSelectStatementStatus.disabled = false;
-    service.overviewDetailFilterConfigInternal.searchSelectTU.disabled = false;
-    service.overviewDetailFilterConfigInternal.searchSelectTTFN.disabled = false;
+    service.filterConfigInternal.chipSearch.disabled = false;
+    service.filterConfigInternal.multiSelectStatementStatus.disabled = false;
+    service.filterConfigInternal.searchSelectTU.disabled = false;
+    service.filterConfigInternal.searchSelectTTFN.disabled = false;
 
     service.disableFilters();
 
-    expect(service.overviewDetailFilterConfigInternal.chipSearch.disabled).toBeTrue();
-    expect(
-      service.overviewDetailFilterConfigInternal.multiSelectStatementStatus.disabled
-    ).toBeTrue();
-    expect(service.overviewDetailFilterConfigInternal.searchSelectTU.disabled).toBeTrue();
-    expect(service.overviewDetailFilterConfigInternal.searchSelectTTFN.disabled).toBeTrue();
+    expect(service.filterConfigInternal.chipSearch.disabled).toBeTrue();
+    expect(service.filterConfigInternal.multiSelectStatementStatus.disabled).toBeTrue();
+    expect(service.filterConfigInternal.searchSelectTU.disabled).toBeTrue();
+    expect(service.filterConfigInternal.searchSelectTTFN.disabled).toBeTrue();
   });
 
   it('should reset tableSettings on set activeTabPage', () => {
