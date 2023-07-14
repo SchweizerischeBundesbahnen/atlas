@@ -21,8 +21,8 @@ import { Observable, Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Record } from '../components/base-detail/record';
 import { ValidationService } from '../validation/validation.service';
-import WorkflowTypeEnum = Workflow.WorkflowTypeEnum;
 import { WhitespaceValidator } from '../validation/whitespace/whitespace-validator';
+import WorkflowTypeEnum = Workflow.WorkflowTypeEnum;
 
 @Component({
   selector: 'app-workflow [lineRecord]',

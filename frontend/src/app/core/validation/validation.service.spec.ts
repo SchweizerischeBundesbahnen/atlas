@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { ValidationService } from './validation.service';
 import moment from 'moment';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 
 describe('ValidationService', () => {
   let service: ValidationService;
