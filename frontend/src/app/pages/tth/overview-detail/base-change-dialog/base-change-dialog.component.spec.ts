@@ -13,7 +13,6 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { TthChangeStatusFormGroup } from '../tth-change-status-dialog/model/tth-change-status-form-group';
 import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
 import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
-import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
 import { By } from '@angular/platform-browser';
 
 const statement: TimetableHearingStatement = {

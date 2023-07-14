@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { environment } from '../../../../environments/environment';
-import { NavigationEnd, Router, ActivatedRouteSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
 import { filter, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { NON_PROD_STAGES, Stages } from '../../constants/stages';

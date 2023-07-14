@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Resolve, ActivatedRouteSnapshot, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
 import { catchError, Observable, of } from 'rxjs';
 import { UserService } from '../../service/user.service';
 import { Pages } from '../../../pages';
