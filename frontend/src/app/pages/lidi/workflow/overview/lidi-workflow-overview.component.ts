@@ -1,9 +1,8 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { LinesService, LineVersionSnapshot, WorkflowStatus } from '../../../../api';
 import { TableColumn } from '../../../../core/components/table/table-column';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { filter } from 'rxjs/operators';
 import { TableService } from '../../../../core/components/table/table.service';
 import { TablePagination } from '../../../../core/components/table/table-pagination';
 import { addElementsToArrayWhenNotUndefined } from '../../../../core/util/arrays';
@@ -11,13 +10,13 @@ import { TableFilterChip } from '../../../../core/components/table-filter/config
 import { TableFilterMultiSelect } from '../../../../core/components/table-filter/config/table-filter-multiselect';
 import { TableFilterDateSelect } from '../../../../core/components/table-filter/config/table-filter-date-select';
 import { TableFilter } from '../../../../core/components/table-filter/config/table-filter';
+import { Pages } from '../../../pages';
 
 @Component({
   selector: 'app-lidi-workflow-overview',
   templateUrl: './lidi-workflow-overview.component.html',
-  providers: [TableService],
 })
-export class LidiWorkflowOverviewComponent implements OnDestroy {
+export class LidiWorkflowOverviewComponent implements OnInit, OnDestroy {
   lineSnapshotsTableColumns: TableColumn<LineVersionSnapshot>[] = [
     { headerTitle: 'LIDI.LINE_VERSION_SNAPSHOT.TABLE.NUMBER', value: 'number' },
     { headerTitle: 'LIDI.LINE_VERSION_SNAPSHOT.TABLE.DESCRIPTION', value: 'description' },
@@ -31,25 +30,20 @@ export class LidiWorkflowOverviewComponent implements OnDestroy {
     { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
   ];
 
-  private readonly tableFilterConfigIntern = {
-    chipSearch: new TableFilterChip('col-6'),
+  private tableFilterConfigIntern = {
+    chipSearch: new TableFilterChip(0, 'col-6'),
     multiSelectWorkflowStatus: new TableFilterMultiSelect(
       'WORKFLOW.STATUS.',
       'COMMON.STATUS',
       [WorkflowStatus.Added, WorkflowStatus.Approved, WorkflowStatus.Rejected],
+      1,
       'col-3',
       [WorkflowStatus.Added, WorkflowStatus.Approved, WorkflowStatus.Rejected]
     ),
-    dateSelect: new TableFilterDateSelect('col-3'),
+    dateSelect: new TableFilterDateSelect(1, 'col-3'),
   };
 
-  tableFilterConfig: TableFilter<unknown>[][] = [
-    [this.tableFilterConfigIntern.chipSearch],
-    [
-      this.tableFilterConfigIntern.multiSelectWorkflowStatus,
-      this.tableFilterConfigIntern.dateSelect,
-    ],
-  ];
+  tableFilterConfig!: TableFilter<unknown>[][];
 
   lineVersionSnapshots: LineVersionSnapshot[] = [];
   totalCount$ = 0;
@@ -68,12 +62,19 @@ export class LidiWorkflowOverviewComponent implements OnDestroy {
     }
   }
 
+  ngOnInit() {
+    this.tableFilterConfig = this.tableService.initializeFilterConfig(
+      this.tableFilterConfigIntern,
+      Pages.WORKFLOWS
+    );
+  }
+
   getOverview(pagination: TablePagination) {
     this.lineVersionSnapshotsSubscription = this.linesService
       .getLineVersionSnapshot(
-        this.tableFilterConfigIntern.chipSearch.getActiveSearch(),
-        this.tableFilterConfigIntern.dateSelect.getActiveSearch(),
-        this.tableFilterConfigIntern.multiSelectWorkflowStatus.getActiveSearch(),
+        this.tableService.filter.chipSearch.getActiveSearch(),
+        this.tableService.filter.dateSelect.getActiveSearch(),
+        this.tableService.filter.multiSelectWorkflowStatus.getActiveSearch(),
         pagination.page,
         pagination.size,
         addElementsToArrayWhenNotUndefined(pagination.sort, 'number,asc')
