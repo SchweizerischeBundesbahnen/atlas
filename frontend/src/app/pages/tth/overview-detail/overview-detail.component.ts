@@ -1,4 +1,4 @@
-import { Component, DestroyRef, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   ApplicationType,
@@ -8,6 +8,7 @@ import {
   TimetableHearingService,
   TimetableHearingStatement,
   TimetableHearingYear,
+  TransportCompany,
   UserAdministrationService,
 } from '../../../api';
 import { Cantons } from '../overview/canton/Cantons';
@@ -22,7 +23,6 @@ import { TablePagination } from '../../../core/components/table/table-pagination
 import { TthChangeStatusDialogService } from './tth-change-status-dialog/service/tth-change-status-dialog.service';
 import { ColumnDropDownEvent } from '../../../core/components/table/column-drop-down-event';
 import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
-import { TthTableService } from '../tth-table.service';
 import { NewTimetableHearingYearDialogService } from '../new-timetable-hearing-year-dialog/service/new-timetable-hearing-year-dialog.service';
 import { SelectionModel } from '@angular/cdk/collections';
 import { TranslateService } from '@ngx-translate/core';
@@ -35,6 +35,9 @@ import { DialogService } from '../../../core/components/dialog/dialog.service';
 import { StatementShareService } from './statement-share-service';
 import { map } from 'rxjs/operators';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { TableService } from '../../../core/components/table/table.service';
+import { TableFilter } from '../../../core/components/table-filter/config/table-filter';
+import { TthTableFilterSettingsService } from '../tth-table-filter-settings.service';
 
 @Component({
   selector: 'app-timetable-hearing-overview-detail',
@@ -86,7 +89,7 @@ export class OverviewDetailComponent implements OnInit {
   isCheckBoxModeActive = false;
   private destroyRef = inject(DestroyRef);
 
-  readonly tableFilterConfig$ = this.tthTableService.overviewDetailFilterConfig.asObservable();
+  tableFilterConfig!: TableFilter<unknown>[][];
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -96,7 +99,7 @@ export class OverviewDetailComponent implements OnInit {
     private readonly tthStatusChangeDialogService: TthChangeStatusDialogService,
     private readonly tthChangeCantonDialogService: TthChangeCantonDialogService,
     private readonly dialogService: DialogService,
-    private readonly tthTableService: TthTableService,
+    private readonly tableService: TableService,
     private readonly newTimetableHearingYearDialogService: NewTimetableHearingYearDialogService,
     private readonly translateService: TranslateService,
     private readonly authService: AuthService,
@@ -125,7 +128,10 @@ export class OverviewDetailComponent implements OnInit {
     this.defaultDropdownCantonSelection = this.initDefaultDropdownCantonSelection();
     this.hearingStatus = this.route.snapshot.data.hearingStatus;
     if (TthUtils.isHearingStatusActive(this.hearingStatus)) {
-      this.tthTableService.activeTabPage = Pages.TTH_ACTIVE;
+      this.tableFilterConfig = this.tableService.initializeFilterConfig(
+        TthTableFilterSettingsService.createSettings(),
+        Pages.TTH_ACTIVE
+      );
       this.tableColumns = this.getActiveTableColumns();
       if (!this.isCollectingActionEnabled) {
         this.tableColumns = this.tableColumns.filter((value) => value.value !== 'etagVersion');
@@ -139,7 +145,10 @@ export class OverviewDetailComponent implements OnInit {
     }
     if (TthUtils.isHearingStatusPlanned(this.hearingStatus)) {
       this.removeCheckBoxViewMode();
-      this.tthTableService.activeTabPage = Pages.TTH_PLANNED;
+      this.tableFilterConfig = this.tableService.initializeFilterConfig(
+        TthTableFilterSettingsService.createSettings(),
+        Pages.TTH_PLANNED
+      );
       this.sorting = 'swissCanton,asc';
       this.tableColumns = this.getPlannedTableColumns();
       this.showAddNewTimetableHearingButton = true;
@@ -149,7 +158,10 @@ export class OverviewDetailComponent implements OnInit {
     }
     if (TthUtils.isHearingStatusArchived(this.hearingStatus)) {
       this.removeCheckBoxViewMode();
-      this.tthTableService.activeTabPage = Pages.TTH_ARCHIVED;
+      this.tableFilterConfig = this.tableService.initializeFilterConfig(
+        TthTableFilterSettingsService.createSettings(),
+        Pages.TTH_ARCHIVED
+      );
       this.sorting = 'swissCanton,asc';
       this.tableColumns = this.getArchivedTableColumns();
       this.showDownloadCsvButton = true;
@@ -163,11 +175,10 @@ export class OverviewDetailComponent implements OnInit {
       .getStatements(
         this.foundTimetableHearingYear.timetableYear,
         selectedCantonEnum,
-        this.tthTableService.filterConfigInternal.chipSearch.getActiveSearch(),
-        this.tthTableService.filterConfigInternal.multiSelectStatementStatus.getActiveSearch(),
-        this.tthTableService.filterConfigInternal.searchSelectTTFN.getActiveSearch()?.ttfnid,
-        this.tthTableService.filterConfigInternal.searchSelectTU
-          .getActiveSearch()
+        this.tableService.filter.chipSearch.getActiveSearch(),
+        this.tableService.filter.multiSelectStatementStatus.getActiveSearch(),
+        this.tableService.filter.searchSelectTTFN.getActiveSearch()?.ttfnid,
+        (this.tableService.filter.searchSelectTU.getActiveSearch() as TransportCompany[])
           ?.map((tu) => tu.id)
           .filter((numberOrUndefined): numberOrUndefined is number => !!numberOrUndefined),
         pagination.page,
@@ -208,11 +219,10 @@ export class OverviewDetailComponent implements OnInit {
         this.translateService.currentLang,
         this.foundTimetableHearingYear.timetableYear,
         this.getSelectedCantonToBeSearchFromNavigation(),
-        this.tthTableService.filterConfigInternal.chipSearch.getActiveSearch(),
-        this.tthTableService.filterConfigInternal.multiSelectStatementStatus.getActiveSearch(),
-        this.tthTableService.filterConfigInternal.searchSelectTTFN.getActiveSearch()?.ttfnid,
-        this.tthTableService.filterConfigInternal.searchSelectTU
-          .getActiveSearch()
+        this.tableService.filter.chipSearch.getActiveSearch(),
+        this.tableService.filter.multiSelectStatementStatus.getActiveSearch(),
+        this.tableService.filter.searchSelectTTFN.getActiveSearch()?.ttfnid,
+        (this.tableService.filter.searchSelectTU.getActiveSearch() as TransportCompany[])
           ?.map((tu) => tu.id)
           .filter((numberOrUndefined): numberOrUndefined is number => !!numberOrUndefined)
       )
@@ -380,7 +390,7 @@ export class OverviewDetailComponent implements OnInit {
     this.cantonDeliveryCollectingActionsEnabled = false;
     this.selectedCheckBox = new SelectionModel<TimetableHearingStatement>(true, []);
     this.selectedItems = [];
-    this.tthTableService.enableFilters();
+    this.tableService.filterConfig?.enableFilters();
   }
 
   private enableCheckboxViewMode() {
@@ -399,7 +409,7 @@ export class OverviewDetailComponent implements OnInit {
       this.tableColumns.forEach((value) => (value.disabled = true));
       this.disableChangeStatementStatusSelect();
       this.disableDuplicateButtonAction();
-      this.tthTableService.disableFilters();
+      this.tableService.filterConfig?.disableFilters();
     } else {
       this.removeCheckBoxViewMode();
     }
@@ -554,9 +564,9 @@ export class OverviewDetailComponent implements OnInit {
 
   private initOverviewTable() {
     this.getOverview({
-      page: this.tthTableService.pageIndex,
-      size: this.tthTableService.pageSize,
-      sort: this.tthTableService.sortString,
+      page: this.tableService.pageIndex,
+      size: this.tableService.pageSize,
+      sort: this.tableService.sortString,
     });
   }
 
