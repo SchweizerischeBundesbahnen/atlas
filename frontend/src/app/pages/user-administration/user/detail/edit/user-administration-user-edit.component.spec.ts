@@ -47,14 +47,6 @@ describe('UserAdministrationUserEditComponent', () => {
   let component: UserAdministrationUserEditComponent;
   let fixture: ComponentFixture<UserAdministrationUserEditComponent>;
 
-  const dialogMock = {
-    closeCalled: false,
-    close: () => {
-      // Mock implementation
-      dialogMock.closeCalled = true;
-    },
-  };
-
   let userServiceSpy: SpyObj<UserService>;
   let userPermissionManagerSpy: SpyObj<UserPermissionManager>;
   let notificationServiceSpy: SpyObj<NotificationService>;
@@ -86,7 +78,6 @@ describe('UserAdministrationUserEditComponent', () => {
       'getAllBusinessOrganisations',
     ]);
     dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirmLeave']);
-    dialogMock.closeCalled = false;
     await TestBed.overrideComponent(UserAdministrationUserEditComponent, {
       set: {
         viewProviders: [
@@ -118,7 +109,6 @@ describe('UserAdministrationUserEditComponent', () => {
       ],
       providers: [
         TranslatePipe,
-        { provide: MatDialogRef, useValue: dialogMock },
         {
           provide: UserService,
           useValue: userServiceSpy,
@@ -187,14 +177,12 @@ describe('UserAdministrationUserEditComponent', () => {
   it('test cancelEdit showDialog=false', () => {
     component.cancelEdit(false);
     expect(dialogServiceSpy.confirmLeave).not.toHaveBeenCalled();
-    expect(dialogMock.closeCalled).toBeTrue();
   });
 
   it('test cancelEdit showDialog=true,confirmLeaveResult=true', () => {
     component.editMode = true;
     dialogServiceSpy.confirmLeave.and.returnValue(of(true));
     component.cancelEdit();
-    expect(dialogMock.closeCalled).toBeFalse();
     expect(component.editMode).toBeFalse();
     expect(userPermissionManagerSpy.setPermissions).toHaveBeenCalledOnceWith([]);
     expect(userPermissionManagerSpy.emitBoFormResetEvent).toHaveBeenCalledOnceWith();

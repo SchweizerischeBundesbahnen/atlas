@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Company } from '../../../../api';
 import { CompanyDetailComponent } from './company-detail.component';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { ErrorNotificationComponent } from '../../../../core/notification/error/error-notification.component';
 import { InfoIconComponent } from '../../../../core/form-components/info-icon/info-icon.component';
@@ -13,6 +12,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { AtlasFieldErrorComponent } from '../../../../core/form-components/atlas-field-error/atlas-field-error.component';
 import { FieldExample } from '../../../../core/form-components/text-field/field-example';
 import { AtlasFieldCustomError } from '../../../../core/form-components/atlas-field-error/atlas-field-custom-error';
+import { ActivatedRoute } from '@angular/router';
 
 const company: Company = {
   uicCode: 1234,
@@ -92,10 +92,7 @@ function setupTestBed(data: { companyDetail: string | Company }) {
     ],
     imports: [AppTestingModule],
     providers: [
-      {
-        provide: MAT_DIALOG_DATA,
-        useValue: data,
-      },
+      { provide: ActivatedRoute, useValue: { snapshot: { data: data } } },
       { provide: TranslatePipe },
     ],
   })
