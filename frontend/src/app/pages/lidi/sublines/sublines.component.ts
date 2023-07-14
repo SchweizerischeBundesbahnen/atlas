@@ -1,9 +1,8 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TableColumn } from '../../../core/components/table/table-column';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { BusinessOrganisation, Status, Subline, SublinesService, SublineType } from '../../../api';
-import { filter } from 'rxjs/operators';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TableService } from '../../../core/components/table/table.service';
 import { TablePagination } from '../../../core/components/table/table-pagination';
@@ -14,17 +13,18 @@ import { TableFilterSearchType } from '../../../core/components/table-filter/con
 import { TableFilterMultiSelect } from '../../../core/components/table-filter/config/table-filter-multiselect';
 import { TableFilter } from '../../../core/components/table-filter/config/table-filter';
 import { TableFilterDateSelect } from '../../../core/components/table-filter/config/table-filter-date-select';
+import { Pages } from '../../pages';
 
 @Component({
   selector: 'app-lidi-sublines',
   templateUrl: './sublines.component.html',
-  providers: [TableService],
 })
-export class SublinesComponent implements OnDestroy {
+export class SublinesComponent implements OnInit, OnDestroy {
   private readonly tableFilterConfigIntern = {
-    chipSearch: new TableFilterChip('col-6'),
+    chipSearch: new TableFilterChip(0, 'col-6'),
     searchSelect: new TableFilterSearchSelect<BusinessOrganisation>(
       TableFilterSearchType.BUSINESS_ORGANISATION,
+      1,
       'col-3',
       new FormGroup({
         businessOrganisation: new FormControl(),
@@ -34,16 +34,18 @@ export class SublinesComponent implements OnDestroy {
       'LIDI.SUBLINE.TYPES.',
       'LIDI.SUBLINE_TYPE',
       Object.values(SublineType),
+      1,
       'col-3'
     ),
     multiSelectStatus: new TableFilterMultiSelect(
       'COMMON.STATUS_TYPES.',
       'COMMON.STATUS',
       Object.values(Status),
+      1,
       'col-3',
       [Status.Draft, Status.Validated, Status.InReview, Status.Withdrawn]
     ),
-    dateSelect: new TableFilterDateSelect('col-3'),
+    dateSelect: new TableFilterDateSelect(1, 'col-3'),
   };
 
   private sublineVersionsSubscription?: Subscription;
@@ -68,15 +70,7 @@ export class SublinesComponent implements OnDestroy {
     { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
   ];
 
-  tableFilterConfig: TableFilter<unknown>[][] = [
-    [this.tableFilterConfigIntern.chipSearch],
-    [
-      this.tableFilterConfigIntern.searchSelect,
-      this.tableFilterConfigIntern.multiSelectSublineType,
-      this.tableFilterConfigIntern.multiSelectStatus,
-      this.tableFilterConfigIntern.dateSelect,
-    ],
-  ];
+  tableFilterConfig!: TableFilter<unknown>[][];
 
   sublines: Subline[] = [];
   totalCount$ = 0;
@@ -84,17 +78,25 @@ export class SublinesComponent implements OnDestroy {
   constructor(
     private sublinesService: SublinesService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private tableService: TableService
   ) {}
+
+  ngOnInit() {
+    this.tableFilterConfig = this.tableService.initializeFilterConfig(
+      this.tableFilterConfigIntern,
+      Pages.SUBLINES
+    );
+  }
 
   getOverview(pagination: TablePagination) {
     this.sublineVersionsSubscription = this.sublinesService
       .getSublines(
-        this.tableFilterConfigIntern.chipSearch.getActiveSearch(),
-        this.tableFilterConfigIntern.multiSelectStatus.getActiveSearch(),
-        this.tableFilterConfigIntern.multiSelectSublineType.getActiveSearch(),
-        this.tableFilterConfigIntern.searchSelect.getActiveSearch()?.sboid,
-        this.tableFilterConfigIntern.dateSelect.getActiveSearch(),
+        this.tableService.filter.chipSearch.getActiveSearch(),
+        this.tableService.filter.multiSelectStatus.getActiveSearch(),
+        this.tableService.filter.multiSelectSublineType.getActiveSearch(),
+        this.tableService.filter.searchSelect.getActiveSearch()?.sboid,
+        this.tableService.filter.dateSelect.getActiveSearch(),
         pagination.page,
         pagination.size,
         addElementsToArrayWhenNotUndefined(pagination.sort, 'slnid,asc')

@@ -10,7 +10,6 @@ import { addElementsToArrayWhenNotUndefined } from '../../../../core/util/arrays
 @Component({
   selector: 'app-client-credential-administration-overview',
   templateUrl: './user-administration-client-overview.component.html',
-  providers: [TableService],
 })
 export class UserAdministrationClientOverviewComponent implements OnDestroy {
   clientCredentials: ClientCredential[] = [];
