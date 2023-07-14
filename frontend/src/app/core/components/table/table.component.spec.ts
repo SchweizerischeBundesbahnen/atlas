@@ -14,7 +14,6 @@ import { SelectComponent } from '../../form-components/select/select.component';
 import { Pipe, PipeTransform } from '@angular/core';
 import { TableColumn } from './table-column';
 import { MatCheckboxChange } from '@angular/material/checkbox';
-import { SelectionModel } from '@angular/cdk/collections';
 
 export interface Obj {
   prop: string;
