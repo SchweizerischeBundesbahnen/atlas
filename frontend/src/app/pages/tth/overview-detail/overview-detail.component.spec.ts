@@ -24,7 +24,7 @@ import {
   MockAtlasFieldErrorComponent,
   MockTableComponent,
 } from '../../../app.testing.mocks';
-import { TthTableService } from '../tth-table.service';
+import { TthTableService } from '../tth-table-filter-settings.service';
 import { SelectComponent } from '../../../core/form-components/select/select.component';
 import { AtlasSpacerComponent } from '../../../core/components/spacer/atlas-spacer.component';
 import { AuthService } from '../../../core/auth/auth.service';
