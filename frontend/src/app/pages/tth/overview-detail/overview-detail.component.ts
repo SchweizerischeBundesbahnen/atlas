@@ -163,11 +163,10 @@ export class OverviewDetailComponent implements OnInit {
       .getStatements(
         this.foundTimetableHearingYear.timetableYear,
         selectedCantonEnum,
-        this.tthTableService.overviewDetailFilterConfigInternal.chipSearch.getActiveSearch(),
-        this.tthTableService.overviewDetailFilterConfigInternal.multiSelectStatementStatus.getActiveSearch(),
-        this.tthTableService.overviewDetailFilterConfigInternal.searchSelectTTFN.getActiveSearch()
-          ?.ttfnid,
-        this.tthTableService.overviewDetailFilterConfigInternal.searchSelectTU
+        this.tthTableService.filterConfigInternal.chipSearch.getActiveSearch(),
+        this.tthTableService.filterConfigInternal.multiSelectStatementStatus.getActiveSearch(),
+        this.tthTableService.filterConfigInternal.searchSelectTTFN.getActiveSearch()?.ttfnid,
+        this.tthTableService.filterConfigInternal.searchSelectTU
           .getActiveSearch()
           ?.map((tu) => tu.id)
           .filter((numberOrUndefined): numberOrUndefined is number => !!numberOrUndefined),
@@ -209,11 +208,10 @@ export class OverviewDetailComponent implements OnInit {
         this.translateService.currentLang,
         this.foundTimetableHearingYear.timetableYear,
         this.getSelectedCantonToBeSearchFromNavigation(),
-        this.tthTableService.overviewDetailFilterConfigInternal.chipSearch.getActiveSearch(),
-        this.tthTableService.overviewDetailFilterConfigInternal.multiSelectStatementStatus.getActiveSearch(),
-        this.tthTableService.overviewDetailFilterConfigInternal.searchSelectTTFN.getActiveSearch()
-          ?.ttfnid,
-        this.tthTableService.overviewDetailFilterConfigInternal.searchSelectTU
+        this.tthTableService.filterConfigInternal.chipSearch.getActiveSearch(),
+        this.tthTableService.filterConfigInternal.multiSelectStatementStatus.getActiveSearch(),
+        this.tthTableService.filterConfigInternal.searchSelectTTFN.getActiveSearch()?.ttfnid,
+        this.tthTableService.filterConfigInternal.searchSelectTU
           .getActiveSearch()
           ?.map((tu) => tu.id)
           .filter((numberOrUndefined): numberOrUndefined is number => !!numberOrUndefined)
