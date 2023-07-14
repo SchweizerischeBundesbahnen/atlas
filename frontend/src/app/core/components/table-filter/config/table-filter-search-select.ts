@@ -10,10 +10,11 @@ export class TableFilterSearchSelect<T> extends TableFilter<T | undefined> {
 
   constructor(
     searchType: TableFilterSearchType,
+    row: number,
     elementWidthCssClass: string,
     formGroup?: FormGroup
   ) {
-    super(elementWidthCssClass);
+    super(row, elementWidthCssClass);
     this.searchType = searchType;
     this.formGroup = formGroup;
   }
