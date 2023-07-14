@@ -15,7 +15,6 @@ import { MatSelectChange } from '@angular/material/select';
   selector: 'app-user-administration-overview',
   templateUrl: './user-administration-overview.component.html',
   styleUrls: ['./user-administration-overview.component.scss'],
-  providers: [TableService],
 })
 export class UserAdministrationUserOverviewComponent {
   userPageResult: { users: User[]; totalCount: number } = { users: [], totalCount: 0 };
