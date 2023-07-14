@@ -2,14 +2,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TimetableFieldNumberDetailComponent } from './timetable-field-number-detail.component';
 import { AbstractControl, FormBuilder } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TimetableFieldNumbersService, TimetableFieldNumberVersion } from '../../../api';
 import moment from 'moment';
 import { of, throwError } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HomeComponent } from '../../home/home.component';
 import { HttpErrorResponse } from '@angular/common/http';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AppTestingModule, authServiceMock } from '../../../app.testing.module';
 import { AuthService } from '../../../core/auth/auth.service';
 import { FormModule } from '../../../core/module/form.module';
@@ -73,10 +72,6 @@ const mockData = {
   timetableFieldNumberDetail: version,
 };
 
-const addTtfData = {
-  timetableFieldNumberDetail: 'add',
-};
-
 @Component({
   selector: 'app-coverage',
   template: '<p>Mock Product Editor Component</p>',
@@ -88,7 +83,6 @@ class MockAppCoverageComponent {
 
 let component: TimetableFieldNumberDetailComponent;
 let fixture: ComponentFixture<TimetableFieldNumberDetailComponent>;
-let dialogRef: MatDialogRef<TimetableFieldNumberDetailComponent>;
 
 describe('TimetableFieldNumberDetailComponent detail page read version', () => {
   let router: Router;
@@ -115,10 +109,7 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
         { provide: FormBuilder },
         { provide: TimetableFieldNumbersService, useValue: mockTimetableFieldNumbersService },
         { provide: AuthService, useValue: authServiceMock },
-        {
-          provide: MAT_DIALOG_DATA,
-          useValue: mockData,
-        },
+        { provide: ActivatedRoute, useValue: { snapshot: { data: mockData } } },
         { provide: TranslatePipe },
       ],
     })
@@ -131,7 +122,6 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     router = TestBed.inject(Router);
-    dialogRef = TestBed.inject(MatDialogRef);
   });
 
   it('should create', () => {
@@ -164,7 +154,7 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
 
   it('should delete Version successfully', () => {
     mockTimetableFieldNumbersService.deleteVersions.and.returnValue(of({}));
-    spyOn(dialogRef, 'close');
+    spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
     fixture.componentInstance.deleteRecord();
     fixture.detectChanges();
 
@@ -173,7 +163,7 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
     expect(snackBarContainer).toBeDefined();
     expect(snackBarContainer.textContent.trim()).toBe('TTFN.NOTIFICATION.DELETE_SUCCESS');
     expect(snackBarContainer.classList).toContain('success');
-    expect(dialogRef.close).toHaveBeenCalled();
+    expect(router.navigate).toHaveBeenCalled();
   });
 });
 
@@ -204,8 +194,8 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
         { provide: FormBuilder },
         { provide: TimetableFieldNumbersService, useValue: mockTimetableFieldNumbersService },
         {
-          provide: MAT_DIALOG_DATA,
-          useValue: addTtfData,
+          provide: ActivatedRoute,
+          useValue: { snapshot: { data: { timetableFieldNumberDetail: 'add' } } },
         },
         {
           provide: AuthService,
