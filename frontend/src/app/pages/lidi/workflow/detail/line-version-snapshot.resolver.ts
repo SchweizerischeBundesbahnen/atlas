@@ -8,7 +8,7 @@ import { Pages } from '../../../pages';
 export class LineVersionSnapshotResolver implements Resolve<LineVersionSnapshot | never[]> {
   constructor(private readonly linesService: LinesService, private readonly router: Router) {}
 
-  resolve(route: ActivatedRouteSnapshot): Observable<Array<LineVersionSnapshot> | never[]> {
+  resolve(route: ActivatedRouteSnapshot): Observable<LineVersionSnapshot | never[]> {
     const idParameter = route.params.id;
     return this.linesService.getLineVersionSnapshotById(Number(idParameter)).pipe(
       catchError(() =>
