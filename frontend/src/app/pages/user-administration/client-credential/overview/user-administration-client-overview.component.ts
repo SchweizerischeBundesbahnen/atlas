@@ -4,7 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { tableColumns } from './table-column-definition';
 import { TablePagination } from '../../../../core/components/table/table-pagination';
-import { TableService } from '../../../../core/components/table/table.service';
 import { addElementsToArrayWhenNotUndefined } from '../../../../core/util/arrays';
 
 @Component({

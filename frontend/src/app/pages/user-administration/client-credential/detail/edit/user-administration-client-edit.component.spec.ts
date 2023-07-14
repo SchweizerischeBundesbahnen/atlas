@@ -17,9 +17,9 @@ import { NotificationService } from '../../../../../core/notification/notificati
 import { BusinessOrganisationsService } from '../../../../../api';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { MockUserDetailInfoComponent } from '../../../../../app.testing.mocks';
-import SpyObj = jasmine.SpyObj;
 import { Data } from '../../../components/read-only-data/data';
 import { ReadOnlyData } from '../../../components/read-only-data/read-only-data';
+import SpyObj = jasmine.SpyObj;
 
 @Component({
   selector: 'app-dialog-close',
