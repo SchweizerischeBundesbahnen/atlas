@@ -14,21 +14,22 @@
 import { Inject, Injectable, Optional } from '@angular/core';
 import {
   HttpClient,
+  HttpEvent,
   HttpHeaders,
+  HttpParameterCodec,
   HttpParams,
   HttpResponse,
-  HttpEvent,
-  HttpParameterCodec,
 } from '@angular/common/http';
 import { CustomHttpParameterCodec } from '../encoder';
 import { Observable } from 'rxjs';
 
-import { ErrorResponse } from '../model/models';
-import { TransportCompanyBoRelation } from '../model/models';
-import { TransportCompanyRelation } from '../model/models';
-import { UpdateTransportCompanyRelation } from '../model/models';
+import {
+  TransportCompanyBoRelation,
+  TransportCompanyRelation,
+  UpdateTransportCompanyRelation,
+} from '../model/models';
 
-import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
+import { BASE_PATH } from '../variables';
 import { Configuration } from '../configuration';
 
 @Injectable({

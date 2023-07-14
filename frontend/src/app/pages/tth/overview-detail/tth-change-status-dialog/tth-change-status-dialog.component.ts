@@ -4,7 +4,6 @@ import { StatusChangeData } from './model/status-change-data';
 import { TimetableHearingService } from '../../../../api';
 import { FormControl, FormGroup } from '@angular/forms';
 import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
-import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { Subject, takeUntil } from 'rxjs';
 import { TthChangeStatusFormGroup } from './model/tth-change-status-form-group';
