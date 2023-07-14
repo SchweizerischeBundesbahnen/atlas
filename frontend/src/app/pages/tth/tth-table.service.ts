@@ -25,7 +25,7 @@ export class TthTableService extends TableService {
   private readonly _overviewDetailFilterConfig$: BehaviorSubject<TableFilter<unknown>[][]> =
     new BehaviorSubject(this.getTableFilterConfig());
 
-  get overviewDetailFilterConfigInternal() {
+  get filterConfigInternal() {
     return this._overviewDetailFilterConfigInternal;
   }
 
@@ -44,16 +44,18 @@ export class TthTableService extends TableService {
 
   private createTableFilterConfigInternal(): OverviewDetailFilterConfigInternal {
     return {
-      chipSearch: new TableFilterChip('col-6'),
+      chipSearch: new TableFilterChip(0, 'col-6'),
       multiSelectStatementStatus: new TableFilterMultiSelect(
         'TTH.STATEMENT_STATUS.',
         'COMMON.STATUS',
         Object.values(StatementStatus),
+        1,
         'col-3',
         []
       ),
       searchSelectTU: new TableFilterSearchSelect<TransportCompany[]>(
         TableFilterSearchType.TRANSPORT_COMPANY,
+        1,
         'col-3',
         new FormGroup({
           transportCompany: new FormControl([]),
@@ -61,6 +63,7 @@ export class TthTableService extends TableService {
       ),
       searchSelectTTFN: new TableFilterSearchSelect<TimetableFieldNumber>(
         TableFilterSearchType.TIMETABLE_FIELD_NUMBER,
+        1,
         'col-3',
         new FormGroup({
           ttfnid: new FormControl(),

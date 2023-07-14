@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TableColumn } from '../../../core/components/table/table-column';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -8,13 +8,13 @@ import { TablePagination } from '../../../core/components/table/table-pagination
 import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
 import { TableFilterChip } from '../../../core/components/table-filter/config/table-filter-chip';
 import { TableFilter } from '../../../core/components/table-filter/config/table-filter';
+import { Pages } from '../../pages';
 
 @Component({
   selector: 'app-bodi-companies',
   templateUrl: './companies.component.html',
-  providers: [TableService],
 })
-export class CompaniesComponent implements OnDestroy {
+export class CompaniesComponent implements OnInit, OnDestroy {
   tableColumns: TableColumn<Company>[] = [
     { headerTitle: 'BODI.COMPANIES.UIC_CODE', value: 'uicCode' },
     {
@@ -29,13 +29,11 @@ export class CompaniesComponent implements OnDestroy {
     { headerTitle: 'BODI.COMPANIES.URL', value: 'url' },
   ];
 
-  private readonly tableFilterConfigIntern = {
-    chipSearch: new TableFilterChip('col-6'),
+  private tableFilterConfigIntern = {
+    chipSearch: new TableFilterChip(0, 'col-6'),
   };
 
-  readonly tableFilterConfig: TableFilter<unknown>[][] = [
-    [this.tableFilterConfigIntern.chipSearch],
-  ];
+  tableFilterConfig!: TableFilter<unknown>[][];
 
   companies: Company[] = [];
   totalCount = 0;
@@ -45,13 +43,21 @@ export class CompaniesComponent implements OnDestroy {
   constructor(
     private companiesService: CompaniesService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private tableService: TableService
   ) {}
+
+  ngOnInit() {
+    this.tableFilterConfig = this.tableService.initializeFilterConfig(
+      this.tableFilterConfigIntern,
+      Pages.COMPANIES
+    );
+  }
 
   getOverview(pagination: TablePagination) {
     this.companiesSubscription = this.companiesService
       .getCompanies(
-        this.tableFilterConfigIntern.chipSearch.getActiveSearch(),
+        this.tableService.filter.chipSearch.getActiveSearch(),
         pagination.page,
         pagination.size,
         addElementsToArrayWhenNotUndefined(pagination.sort, 'uicCode,asc')

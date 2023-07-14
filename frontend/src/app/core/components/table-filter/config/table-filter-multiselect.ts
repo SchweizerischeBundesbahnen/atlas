@@ -11,10 +11,11 @@ export class TableFilterMultiSelect<T> extends TableFilter<T[]> {
     typeTranslationKeyPrefix: string,
     labelTranslationKey: string,
     selectOptions: T[],
+    row: number,
     elementWidthCssClass: string,
     activeSearch?: T[]
   ) {
-    super(elementWidthCssClass);
+    super(row, elementWidthCssClass);
     this.typeTranslationKeyPrefix = typeTranslationKeyPrefix;
     this.labelTranslationKey = labelTranslationKey;
     this.selectOptions = selectOptions;
