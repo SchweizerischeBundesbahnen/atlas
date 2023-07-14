@@ -1,6 +1,7 @@
 export abstract class TableFilter<T> {
   row: number;
   elementWidthCssClass: string;
+  disabled = false;
 
   constructor(row: number, elementWidthCssClass: string) {
     this.row = row;
@@ -8,5 +9,6 @@ export abstract class TableFilter<T> {
   }
 
   protected abstract activeSearch: T;
+
   abstract getActiveSearch(): T;
 }
