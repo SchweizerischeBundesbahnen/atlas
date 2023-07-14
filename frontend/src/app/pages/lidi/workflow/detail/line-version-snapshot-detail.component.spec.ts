@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import {
   LinesService,
   LineType,
@@ -9,7 +9,6 @@ import {
   PaymentType,
 } from '../../../../api';
 import { LineVersionSnapshotDetailComponent } from './line-version-snapshot-detail.component';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AppTestingModule, authServiceMock } from '../../../../app.testing.module';
 import { ErrorNotificationComponent } from '../../../../core/notification/error/error-notification.component';
 import { InfoIconComponent } from '../../../../core/form-components/info-icon/info-icon.component';
@@ -72,8 +71,6 @@ const lineVersion: LineVersion = {
 
 let component: LineVersionSnapshotDetailComponent;
 let fixture: ComponentFixture<LineVersionSnapshotDetailComponent>;
-let router: Router;
-let dialogRef: MatDialogRef<LineVersionSnapshotDetailComponent>;
 
 @Component({
   selector: 'app-dialog-close',
@@ -97,8 +94,6 @@ describe('LineVersionSnapshotDetailComponent', () => {
     fixture = TestBed.createComponent(LineVersionSnapshotDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    router = TestBed.inject(Router);
-    dialogRef = TestBed.inject(MatDialogRef);
   });
 
   it('should be created', () => {
@@ -139,10 +134,7 @@ function setupTestBed(
       { provide: FormBuilder },
       { provide: LinesService, useValue: linesService },
       { provide: AuthService, useValue: authServiceMock },
-      {
-        provide: MAT_DIALOG_DATA,
-        useValue: data,
-      },
+      { provide: ActivatedRoute, useValue: { snapshot: { data: data } } },
       { provide: TranslatePipe },
     ],
   })
