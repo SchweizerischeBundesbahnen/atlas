@@ -5,7 +5,6 @@ import { TableFilterSearchType } from './table-filter-search-type';
 export class TableFilterSearchSelect<T> extends TableFilter<T | undefined> {
   protected activeSearch: T | undefined;
   searchType: TableFilterSearchType;
-  disabled?: boolean;
   formGroup?: FormGroup;
 
   constructor(

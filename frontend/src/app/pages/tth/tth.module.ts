@@ -9,8 +9,6 @@ import { OverviewTabComponent } from './overview-tab/overview-tab.component';
 import { OverviewTabHeadingComponent } from './overview-tab/overview-tab-heading/overview-tab-heading.component';
 import { StatementDetailComponent } from './statement/statement-detail.component';
 import { DialogManageTthComponent } from './dialog-manage-tth/dialog-manage-tth.component';
-import { TthTableService } from './tth-table.service';
-import { TableService } from '../../core/components/table/table.service';
 import { NewTimetableHearingYearDialogComponent } from './new-timetable-hearing-year-dialog/new-timetable-hearing-year-dialog.component';
 import { StatementDialogComponent } from './statement/statement-dialog/statement.dialog.component';
 import { BaseChangeDialogComponent } from './overview-detail/base-change-dialog/base-change-dialog.component';
@@ -33,15 +31,5 @@ import { TthChangeStatusDialogComponent } from './overview-detail/tth-change-sta
     TthChangeCantonDialogComponent,
   ],
   imports: [CoreModule, TthRoutingModule, FormModule],
-  providers: [
-    {
-      provide: TthTableService,
-      useClass: TthTableService,
-    },
-    {
-      provide: TableService,
-      useExisting: TthTableService,
-    },
-  ],
 })
 export class TthModule {}
