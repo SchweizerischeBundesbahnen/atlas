@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NotificationService } from '../../../../../core/notification/notification.service';
-import { MatDialogRef } from '@angular/material/dialog';
 import { UserPermissionManager } from '../../../service/user-permission-manager';
 import { BusinessOrganisationsService, User } from '../../../../../api';
 import { TranslatePipe } from '@ngx-translate/core';

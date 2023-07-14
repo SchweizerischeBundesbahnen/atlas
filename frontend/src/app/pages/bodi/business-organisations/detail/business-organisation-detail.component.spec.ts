@@ -1,11 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { BusinessOrganisationsService, BusinessOrganisationVersion } from '../../../../api';
 import { BusinessOrganisationDetailComponent } from './business-organisation-detail.component';
 import { HttpErrorResponse } from '@angular/common/http';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AppTestingModule, authServiceMock } from '../../../../app.testing.module';
 import { ErrorNotificationComponent } from '../../../../core/notification/error/error-notification.component';
 import { InfoIconComponent } from '../../../../core/form-components/info-icon/info-icon.component';
@@ -68,7 +67,6 @@ const error = new HttpErrorResponse({
 let component: BusinessOrganisationDetailComponent;
 let fixture: ComponentFixture<BusinessOrganisationDetailComponent>;
 let router: Router;
-let dialogRef: MatDialogRef<BusinessOrganisationDetailComponent>;
 
 describe('BusinessOrganisationDetailComponent for existing BusinessOrganisationVersion', () => {
   const mockBusinessOrganisationsService = jasmine.createSpyObj('businessOrganisationsService', [
@@ -86,7 +84,6 @@ describe('BusinessOrganisationDetailComponent for existing BusinessOrganisationV
     component = fixture.componentInstance;
     fixture.detectChanges();
     router = TestBed.inject(Router);
-    dialogRef = TestBed.inject(MatDialogRef);
   });
 
   it('should be created', () => {
@@ -123,7 +120,7 @@ describe('BusinessOrganisationDetailComponent for existing BusinessOrganisationV
 
   it('should delete BusinessOrganisationVersion successfully', () => {
     mockBusinessOrganisationsService.deleteBusinessOrganisation.and.returnValue(of({}));
-    spyOn(dialogRef, 'close');
+    spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
     fixture.componentInstance.deleteRecord();
     fixture.detectChanges();
 
@@ -134,7 +131,7 @@ describe('BusinessOrganisationDetailComponent for existing BusinessOrganisationV
       'BODI.BUSINESS_ORGANISATION.NOTIFICATION.DELETE_SUCCESS'
     );
     expect(snackBarContainer.classList).toContain('success');
-    expect(dialogRef.close).toHaveBeenCalled();
+    expect(router.navigate).toHaveBeenCalled();
   });
 });
 
@@ -205,10 +202,7 @@ function setupTestBed(
       { provide: FormBuilder },
       { provide: BusinessOrganisationsService, useValue: businessOrganisationsService },
       { provide: AuthService, useValue: authServiceMock },
-      {
-        provide: MAT_DIALOG_DATA,
-        useValue: data,
-      },
+      { provide: ActivatedRoute, useValue: { snapshot: { data: data } } },
       { provide: TranslatePipe },
     ],
   })
