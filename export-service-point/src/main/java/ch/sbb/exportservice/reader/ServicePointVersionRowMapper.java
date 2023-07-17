@@ -9,7 +9,6 @@ import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
-import ch.sbb.atlas.servicepoint.enumeration.ServicePointStatus;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.exportservice.entity.BusinessOrganisation;
 import ch.sbb.exportservice.entity.ServicePointVersion;
@@ -75,7 +74,6 @@ public class ServicePointVersionRowMapper implements RowMapper<ServicePointVersi
     servicePointVersionBuilder.comment(rs.getString("comment"));
     servicePointVersionBuilder.creationDate(rs.getObject("creation_date", LocalDateTime.class));
     servicePointVersionBuilder.editionDate(rs.getObject("edition_date", LocalDateTime.class));
-    servicePointVersionBuilder.statusDidok3(ServicePointStatus.valueOf(rs.getString("status_didok3")));
     servicePointVersionBuilder.creator(rs.getString("creator"));
     servicePointVersionBuilder.editor(rs.getString("editor"));
     return servicePointVersionBuilder.build();
