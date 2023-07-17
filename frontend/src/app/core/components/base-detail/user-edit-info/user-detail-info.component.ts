@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { UserAdministrationService } from '../../../../api';
 import moment from 'moment';
-import { DATE_PATTERN, DATE_TIME_FORMAT } from '../../../date/date.service';
+import { DATE_PATTERN, DATE_TIME_FORMAT_WITHOUT_SECONDS } from '../../../date/date.service';
 import { catchError, forkJoin, Observable, of } from 'rxjs';
 import { CreationEditionRecord } from './creation-edition-record';
 import { map } from 'rxjs/operators';
@@ -55,7 +55,7 @@ export class UserDetailInfoComponent {
   }
 
   private formatDateTime(dateTime: string | undefined) {
-    return moment(dateTime).format(DATE_TIME_FORMAT);
+    return moment(dateTime).format(DATE_TIME_FORMAT_WITHOUT_SECONDS);
   }
 
   private formatDate(dateTime: string | undefined) {
