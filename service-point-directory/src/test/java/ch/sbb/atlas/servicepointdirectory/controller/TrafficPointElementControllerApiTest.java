@@ -1,19 +1,13 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
-import ch.sbb.atlas.api.servicepoint.CreateTrafficPointElementVersionModel;
 import ch.sbb.atlas.imports.servicepoint.BaseDidokCsvModel;
-import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointCsvModelContainer;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointElementCsvModel;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointImportRequestModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
-import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
 import ch.sbb.atlas.servicepointdirectory.TrafficPointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion.Fields;
-import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
-import ch.sbb.atlas.servicepointdirectory.mapper.GeolocationMapper;
 import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementImportService;
 import org.junit.jupiter.api.AfterEach;
@@ -22,13 +16,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.InputStream;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.LV95;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -41,42 +33,17 @@ public class TrafficPointElementControllerApiTest extends BaseControllerApiTest 
   private final TrafficPointElementVersionRepository repository;
   private TrafficPointElementVersion trafficPointElementVersion;
 
+  private final TrafficPointElementController trafficPointElementController;
+
   @Autowired
-  public TrafficPointElementControllerApiTest(TrafficPointElementVersionRepository repository) {
+  public TrafficPointElementControllerApiTest(TrafficPointElementVersionRepository repository, TrafficPointElementController trafficPointElementController) {
     this.repository = repository;
+    this.trafficPointElementController = trafficPointElementController;
   }
 
   @BeforeEach
   void createDefaultVersion() {
-    TrafficPointElementGeolocation trafficPointElementGeolocation = TrafficPointElementGeolocation
-        .builder()
-        .spatialReference(SpatialReference.LV95)
-        .east(2505236.389)
-        .north(1116323.213)
-        .height(-9999.0)
-        .creationDate(LocalDateTime.of(2019, 12, 6, 8, 2, 34))
-        .creator("fs45117")
-        .editionDate(LocalDateTime.of(2019, 12, 6, 8, 2, 34))
-        .editor("fs45117")
-        .build();
-
-    TrafficPointElementVersion trafficPointElementVersion = TrafficPointElementVersion
-        .builder()
-        .designation("Bezeichnung")
-        .designationOperational("gali00")
-        .servicePointNumber(ServicePointNumber.of(14000158))
-        .trafficPointElementGeolocation(trafficPointElementGeolocation)
-        .sloid("ch:1:sloid:1400015:0:310240")
-        .compassDirection(277.0)
-        .trafficPointElementType(TrafficPointElementType.BOARDING_PLATFORM)
-        .validFrom(LocalDate.of(2020, 1, 6))
-        .validTo(LocalDate.of(2099, 12, 31))
-        .creationDate(LocalDateTime.of(2019, 12, 6, 8, 2, 34))
-        .creator("fs45117")
-        .editionDate(LocalDateTime.of(2019, 12, 6, 8, 2, 34))
-        .editor("fs45117")
-        .build();
-    trafficPointElementGeolocation.setTrafficPointElementVersion(trafficPointElementVersion);
+    trafficPointElementVersion = TrafficPointTestData.getTrafficPoint();
 
     this.trafficPointElementVersion = repository.save(trafficPointElementVersion);
   }
@@ -190,24 +157,29 @@ public class TrafficPointElementControllerApiTest extends BaseControllerApiTest 
 
   @Test
   void shouldCreateTrafficPointElement() throws Exception {
-    TrafficPointElementGeolocation trafficPointElementGeolocation = TrafficPointTestData.getTrafficPointGeolocationBernMittelland();
-    CreateTrafficPointElementVersionModel createTrafficPointElementVersionModel = CreateTrafficPointElementVersionModel
-            .builder()
-            .numberWithoutCheckDigit(8589108)
-            .sloid("ch:1:sloid:12345")
-            .validFrom(LocalDate.of(2022, 1, 1))
-            .validTo(LocalDate.of(2024, 1, 1))
-            .creationDate(LocalDateTime.of(LocalDate.of(2021, 3, 22), LocalTime.of(9, 26, 29)))
-            .creator("fs45117")
-            .editionDate(LocalDateTime.of(LocalDate.of(2022, 2, 23), LocalTime.of(17, 10, 10)))
-            .editor("fs45117")
-            .trafficPointElementGeolocation(GeolocationMapper.toModel(trafficPointElementGeolocation))
-            .build();
-
+    repository.deleteAll();
     mvc.perform(post("/v1/traffic-point-elements")
             .contentType(contentType)
-            .content(mapper.writeValueAsString(createTrafficPointElementVersionModel)))
-        .andExpect(status().isCreated());
+            .content(mapper.writeValueAsString(TrafficPointTestData.getCreateTrafficPointVersionModel())))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$." + TrafficPointElementVersion.Fields.id, is(trafficPointElementVersion.getId().intValue() + 1)))
+        .andExpect(jsonPath("$.servicePointNumber.number", is(1400015)))
+        .andExpect(jsonPath("$.servicePointNumber.numberShort", is(15)))
+        .andExpect(jsonPath("$.servicePointNumber.uicCountryCode", is(14)))
+        .andExpect(jsonPath("$.servicePointNumber.checkDigit", is(8)))
+        .andExpect(jsonPath("$."+ TrafficPointElementVersion.Fields.designation, is(trafficPointElementVersion.getDesignation())))
+        .andExpect(jsonPath("$."+ TrafficPointElementVersion.Fields.designationOperational, is(trafficPointElementVersion.getDesignationOperational())))
+        .andExpect(jsonPath("$."+ TrafficPointElementVersion.Fields.length, is(trafficPointElementVersion.getLength())))
+        .andExpect(jsonPath("$."+ TrafficPointElementVersion.Fields.boardingAreaHeight, is(trafficPointElementVersion.getBoardingAreaHeight())))
+        .andExpect(jsonPath("$."+ TrafficPointElementVersion.Fields.compassDirection, is(trafficPointElementVersion.getCompassDirection())))
+        .andExpect(jsonPath("$."+ TrafficPointElementVersion.Fields.sloid, is(trafficPointElementVersion.getSloid())))
+        .andExpect(jsonPath("$."+ TrafficPointElementVersion.Fields.parentSloid, is(trafficPointElementVersion.getParentSloid())))
+        .andExpect(jsonPath("$.trafficPointElementGeolocation.spatialReference", is(LV95.toString())))
+        .andExpect(jsonPath("$.trafficPointElementGeolocation.lv95.north", is(5811120.069385619)))
+        .andExpect(jsonPath("$.trafficPointElementGeolocation.lv95.east", is(691419.9033588431)))
+        .andExpect(jsonPath("$.trafficPointElementGeolocation.wgs84.north", is(76.16830524895504)))
+        .andExpect(jsonPath("$.trafficPointElementGeolocation.wgs84.east", is(-67.70653042926492)))
+        .andExpect(jsonPath("$.trafficPointElementGeolocation.height", is(-9999.0)));
   }
 
 }
