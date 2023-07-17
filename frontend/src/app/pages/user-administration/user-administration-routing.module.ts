@@ -19,7 +19,7 @@ const routes: Routes = [
     runGuardsAndResolvers: 'always',
   },
   {
-    path: Pages.USERS.path + '/:clientId',
+    path: Pages.CLIENTS.path + '/:clientId',
     component: UserAdministrationClientDetailComponent,
     resolve: {
       clientCredential: ClientCredentialAdministrationResolver,
