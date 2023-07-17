@@ -23,7 +23,7 @@ public class TrafficPointElementVerisionMapper {
         .parentSloid(trafficPointElementVersion.getParentSloid())
         .validFrom(trafficPointElementVersion.getValidFrom())
         .validTo(trafficPointElementVersion.getValidTo())
-//        .trafficPointElementGeolocation(GeolocationMapper.toModel(trafficPointElementVersion.getTrafficPointElementGeolocation()))
+        .trafficPointElementGeolocation(GeolocationMapper.toModel(trafficPointElementVersion.getTrafficPointElementGeolocation()))
         .creationDate(trafficPointElementVersion.getCreationDate())
         .creator(trafficPointElementVersion.getCreator())
         .editionDate(trafficPointElementVersion.getEditionDate())
@@ -33,7 +33,15 @@ public class TrafficPointElementVerisionMapper {
   }
 
   public static TrafficPointElementVersion toEntity(CreateTrafficPointElementVersionModel createTrafficPointElementVersionModel) {
-    ServicePointNumber servicePointNumber = ServicePointNumber.of(createTrafficPointElementVersionModel.getNumberWithoutCheckDigit());
+    ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(createTrafficPointElementVersionModel.getNumberWithoutCheckDigit());
+//    GeolocationBaseEntity geolocationBaseEntity = GeolocationMapper.toEntity(createTrafficPointElementVersionModel.getTrafficPointElementGeolocation());
+//    TrafficPointElementGeolocation trafficPointElementGeolocation = new TrafficPointElementGeolocation();
+//    if (geolocationBaseEntity != null) {
+//      trafficPointElementGeolocation.setEast(geolocationBaseEntity.getEast());
+//      trafficPointElementGeolocation.setHeight(geolocationBaseEntity.getHeight());
+//      trafficPointElementGeolocation.setNorth(geolocationBaseEntity.getNorth());
+//      trafficPointElementGeolocation.setSpatialReference(geolocationBaseEntity.getSpatialReference());
+//    }
     return TrafficPointElementVersion.builder()
             .id(createTrafficPointElementVersionModel.getId())
             .sloid(createTrafficPointElementVersionModel.getSloid())
@@ -48,7 +56,7 @@ public class TrafficPointElementVerisionMapper {
             .validFrom(createTrafficPointElementVersionModel.getValidFrom())
             .validTo(createTrafficPointElementVersionModel.getValidTo())
             .version(createTrafficPointElementVersionModel.getEtagVersion())
-//            .trafficPointElementGeolocation((TrafficPointElementGeolocation) GeolocationMapper.toEntity(createTrafficPointElementVersionModel.getTrafficPointElementGeolocation()))
+            .trafficPointElementGeolocation(GeolocationMapper.toTrafficPointElementEntity(createTrafficPointElementVersionModel.getTrafficPointElementGeolocation()))
             .creationDate(createTrafficPointElementVersionModel.getCreationDate())
             .creator(createTrafficPointElementVersionModel.getCreator())
             .editionDate(createTrafficPointElementVersionModel.getEditionDate())
