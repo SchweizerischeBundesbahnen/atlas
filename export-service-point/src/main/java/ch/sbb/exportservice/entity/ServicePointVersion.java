@@ -8,7 +8,6 @@ import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
-import ch.sbb.atlas.servicepoint.enumeration.ServicePointStatus;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.exportservice.entity.geolocation.ServicePointGeolocation;
 import java.time.LocalDate;
@@ -49,7 +48,6 @@ public class ServicePointVersion extends BaseEntity {
 
   private String abbreviation;
 
-  private ServicePointStatus statusDidok3;
   private String sortCodeOfDestinationStation;
 
   private BusinessOrganisation businessOrganisation;
