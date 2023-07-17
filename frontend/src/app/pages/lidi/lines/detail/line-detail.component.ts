@@ -71,7 +71,7 @@ export class LineDetailComponent
     return record.slnid!;
   }
 
-  getDecriptionForWorkflow(): string {
+  getDescriptionForWorkflow(): string {
     if (this.record) {
       if (this.record.description) {
         return this.record.description;
