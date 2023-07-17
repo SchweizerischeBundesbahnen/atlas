@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
+import ch.sbb.atlas.api.servicepoint.CreateTrafficPointElementVersionModel;
 import ch.sbb.atlas.imports.servicepoint.BaseDidokCsvModel;
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointCsvModelContainer;
@@ -12,6 +13,7 @@ import ch.sbb.atlas.servicepointdirectory.TrafficPointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion.Fields;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
+import ch.sbb.atlas.servicepointdirectory.mapper.GeolocationMapper;
 import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementImportService;
 import org.junit.jupiter.api.AfterEach;
@@ -22,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -187,9 +190,23 @@ public class TrafficPointElementControllerApiTest extends BaseControllerApiTest 
 
   @Test
   void shouldCreateTrafficPointElement() throws Exception {
+    TrafficPointElementGeolocation trafficPointElementGeolocation = TrafficPointTestData.getTrafficPointGeolocationBernMittelland();
+    CreateTrafficPointElementVersionModel createTrafficPointElementVersionModel = CreateTrafficPointElementVersionModel
+            .builder()
+            .numberWithoutCheckDigit(8589108)
+            .sloid("ch:1:sloid:12345")
+            .validFrom(LocalDate.of(2022, 1, 1))
+            .validTo(LocalDate.of(2024, 1, 1))
+            .creationDate(LocalDateTime.of(LocalDate.of(2021, 3, 22), LocalTime.of(9, 26, 29)))
+            .creator("fs45117")
+            .editionDate(LocalDateTime.of(LocalDate.of(2022, 2, 23), LocalTime.of(17, 10, 10)))
+            .editor("fs45117")
+            .trafficPointElementGeolocation(GeolocationMapper.toModel(trafficPointElementGeolocation))
+            .build();
+
     mvc.perform(post("/v1/traffic-point-elements")
             .contentType(contentType)
-            .content(mapper.writeValueAsString(TrafficPointTestData.getBasicTrafficPointWithoutGeolocation())))
+            .content(mapper.writeValueAsString(createTrafficPointElementVersionModel)))
         .andExpect(status().isCreated());
   }
 
