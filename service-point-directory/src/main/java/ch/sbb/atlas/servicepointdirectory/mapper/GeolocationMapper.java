@@ -5,6 +5,7 @@ import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.servicepoint.transformer.CoordinateTransformer;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.GeolocationBaseEntity;
+import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
 import lombok.experimental.UtilityClass;
 
 import java.util.EnumMap;
@@ -33,6 +34,22 @@ public class GeolocationMapper {
       return null;
     }
     return GeolocationBaseEntity.builder()
+            .spatialReference(geolocationBaseModel.getSpatialReference())
+            .east(geolocationBaseModel.getLv95().getEast())
+            .north(geolocationBaseModel.getLv95().getNorth())
+            .east(geolocationBaseModel.getWgs84().getEast())
+            .north(geolocationBaseModel.getWgs84().getNorth())
+            .east(geolocationBaseModel.getWgs84web().getEast())
+            .north(geolocationBaseModel.getWgs84web().getNorth())
+            .height(geolocationBaseModel.getHeight())
+            .build();
+  }
+
+  public static TrafficPointElementGeolocation toTrafficPointElementEntity(GeolocationBaseModel geolocationBaseModel) {
+    if (geolocationBaseModel == null) {
+      return null;
+    }
+    return TrafficPointElementGeolocation.builder()
             .spatialReference(geolocationBaseModel.getSpatialReference())
             .east(geolocationBaseModel.getLv95().getEast())
             .north(geolocationBaseModel.getLv95().getNorth())
