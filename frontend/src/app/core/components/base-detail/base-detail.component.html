@@ -85,7 +85,7 @@
           <app-workflow
             (workflowEvent)="this.receiveWorkflowEvent($event)"
             *ngIf="controller.isWorkflowable()"
-            [descriptionForWorkflow]="this.controller.getDecriptionForWorkflow()"
+            [descriptionForWorkflow]="this.controller.getDescriptionForWorkflow()"
             [lineRecord]="this.controller.record"
             [switchVersionEvent]="this.controller.switchVersionEvent.asObservable()"
           ></app-workflow>
