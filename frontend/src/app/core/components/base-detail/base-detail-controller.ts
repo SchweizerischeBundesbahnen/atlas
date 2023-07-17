@@ -213,7 +213,7 @@ export abstract class BaseDetailController<TYPE extends Record> implements OnIni
     throw new Error('You have to override me');
   }
 
-  getDecriptionForWorkflow(): string {
+  getDescriptionForWorkflow(): string {
     throw new Error('You have to override me');
   }
 
