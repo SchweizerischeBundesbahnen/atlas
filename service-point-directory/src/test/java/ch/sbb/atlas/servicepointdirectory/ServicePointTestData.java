@@ -10,7 +10,6 @@ import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
-import ch.sbb.atlas.servicepoint.enumeration.ServicePointStatus;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
@@ -41,7 +40,6 @@ public class ServicePointTestData {
         .designationLong(null)
         .designationOfficial("Bern, Wyleregg")
         .abbreviation(null)
-        .statusDidok3(ServicePointStatus.IN_OPERATION)
         .businessOrganisation("ch:1:sboid:100626")
         .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2014, 12, 14))
@@ -73,7 +71,6 @@ public class ServicePointTestData {
         .designationLong(null)
         .designationOfficial("Bern, Wyleregg")
         .abbreviation(null)
-        .statusDidok3(ServicePointStatus.IN_OPERATION)
         .businessOrganisation("ch:1:sboid:100626")
         .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2014, 12, 14))
@@ -148,7 +145,6 @@ public class ServicePointTestData {
         .designationOfficial("Flüh Grenze")
         .abbreviation(null)
         .meansOfTransport(Collections.emptySet())
-        .statusDidok3(ServicePointStatus.IN_OPERATION)
         .businessOrganisation("ch:1:sboid:100019")
         .comment("(Tram)")
         .status(Status.VALIDATED)
@@ -182,7 +178,6 @@ public class ServicePointTestData {
         .designationOfficial("Flüh Grenze")
         .abbreviation(null)
         .meansOfTransport(Set.of(MeanOfTransport.BUS, MeanOfTransport.TRAM, MeanOfTransport.TRAIN))
-        .statusDidok3(ServicePointStatus.IN_OPERATION)
         .businessOrganisation("ch:1:sboid:100019")
         .comment("(Tram)")
         .status(Status.VALIDATED)
@@ -230,7 +225,6 @@ public class ServicePointTestData {
         .designationOfficial("Flüh Grenze")
         .abbreviation(null)
         .meansOfTransport(Set.of(MeanOfTransport.BUS, MeanOfTransport.TRAM, MeanOfTransport.TRAIN))
-        .statusDidok3(ServicePointStatus.IN_OPERATION)
         .businessOrganisation("ch:1:sboid:100019")
         .comment("(Tram)")
         .status(Status.VALIDATED)
@@ -256,7 +250,6 @@ public class ServicePointTestData {
         .designationLong("designation long 1")
         .designationOfficial("Aargau Strasse")
         .abbreviation("3")
-        .statusDidok3(ServicePointStatus.IN_OPERATION)
         .operatingPoint(true)
         .operatingPointWithTimetable(true)
         .freightServicePoint(false)
