@@ -20,8 +20,6 @@ public class ServicePointVersionJsonProcessor extends BaseProcessor implements I
         .designationLong(servicePointVersion.getDesignationLong())
         .designationOfficial(servicePointVersion.getDesignationOfficial())
         .abbreviation(servicePointVersion.getAbbreviation())
-        .statusDidok3(servicePointVersion.getStatusDidok3())
-        .statusDidok3Information(CodeAndDesignation.fromEnum(servicePointVersion.getStatusDidok3()))
         .operatingPoint(servicePointVersion.isOperatingPoint())
         .operatingPointWithTimetable(servicePointVersion.isOperatingPointWithTimetable())
         .freightServicePoint(servicePointVersion.isFreightServicePoint())
