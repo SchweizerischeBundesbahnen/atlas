@@ -16,8 +16,8 @@ import java.time.format.DateTimeFormatter;
 public class ServicePointVersionCsvProcessor extends BaseProcessor implements
     ItemProcessor<ServicePointVersion, ServicePointVersionCsvModel> {
 
-  private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN_CH);
-  private static final DateTimeFormatter LOCAL_DATE_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+  private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN);
+  private static final DateTimeFormatter LOCAL_DATE_FORMATTER = DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN);
 
   @Override
   public ServicePointVersionCsvModel process(ServicePointVersion version) {
