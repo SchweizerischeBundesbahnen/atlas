@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NotificationService } from '../../../../../core/notification/notification.service';
-import { MatDialogRef } from '@angular/material/dialog';
 import { UserPermissionManager } from '../../../service/user-permission-manager';
 import {
   BusinessOrganisationsService,
@@ -12,6 +11,7 @@ import { UserService } from '../../../service/user.service';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { CreationEditionRecord } from '../../../../../core/components/base-detail/user-edit-info/creation-edition-record';
 import { ReadOnlyData } from '../../../components/read-only-data/read-only-data';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-client-credential-administration-edit',
@@ -35,8 +35,9 @@ export class UserAdministrationClientEditComponent implements OnInit {
     private readonly notificationService: NotificationService,
     private readonly userService: UserService,
     private readonly dialogService: DialogService,
-    readonly dialogRef: MatDialogRef<any>,
-    readonly userPermissionManager: UserPermissionManager
+    readonly userPermissionManager: UserPermissionManager,
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
@@ -71,7 +72,7 @@ export class UserAdministrationClientEditComponent implements OnInit {
 
   cancelEdit(showDialog = true): void {
     if (!showDialog) {
-      this.dialogRef.close();
+      this.back();
       return;
     }
     this.dialogService.confirmLeave().subscribe((result) => {
@@ -94,5 +95,9 @@ export class UserAdministrationClientEditComponent implements OnInit {
         creationDate: permissions[0].creationDate,
       };
     }
+  }
+
+  back() {
+    this.router.navigate(['..'], { relativeTo: this.route }).then();
   }
 }
