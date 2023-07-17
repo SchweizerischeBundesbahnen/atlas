@@ -66,8 +66,7 @@ public class ServicePointVersionCsvProcessor extends BaseProcessor implements
         .businessOrganisationDescriptionEn(version.getBusinessOrganisation().getBusinessOrganisationDescriptionEn())
         .fotComment(version.getComment())
         .creationDate(LOCAL_DATE_FORMATTER.format(version.getCreationDate()))
-        .editionDate(LOCAL_DATE_FORMATTER.format(version.getEditionDate()))
-        .statusDidok3(version.getStatusDidok3().name());
+        .editionDate(LOCAL_DATE_FORMATTER.format(version.getEditionDate()));
     return builder.build();
   }
 

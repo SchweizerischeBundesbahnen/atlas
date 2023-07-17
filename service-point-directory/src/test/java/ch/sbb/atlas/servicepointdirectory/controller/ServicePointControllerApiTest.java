@@ -1,6 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
 import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.LV95;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -23,7 +24,6 @@ import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
-import ch.sbb.atlas.servicepoint.enumeration.ServicePointStatus;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointGeolocationMapper;
@@ -45,8 +45,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class ServicePointControllerApiTest extends BaseControllerApiTest {
 
@@ -246,12 +244,6 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.sloid, is("ch:1:sloid:18771")))
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.designationLong, is("designation long 1")))
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.abbreviation, is("3")))
-        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.statusDidok3, is("IN_OPERATION")))
-        .andExpect(jsonPath("$.statusDidok3Information.code", is("3")))
-        .andExpect(jsonPath("$.statusDidok3Information.designationDe", is("In Betrieb")))
-        .andExpect(jsonPath("$.statusDidok3Information.designationFr", is("En fonctionnement")))
-        .andExpect(jsonPath("$.statusDidok3Information.designationIt", is("In funzione")))
-        .andExpect(jsonPath("$.statusDidok3Information.designationEn", is("In operation")))
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.operatingPoint, is(true)))
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.operatingPointWithTimetable, is(true)))
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.freightServicePoint, is(false)))
@@ -421,7 +413,6 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
         .designationLong(null)
         .designationOfficial("Bern, Fake thing")
         .abbreviation(null)
-        .statusDidok3(ServicePointStatus.IN_OPERATION)
         .businessOrganisation("ch:1:sboid:100626")
         .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2014, 12, 14))
