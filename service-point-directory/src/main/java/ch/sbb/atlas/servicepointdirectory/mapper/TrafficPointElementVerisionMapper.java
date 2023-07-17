@@ -34,14 +34,6 @@ public class TrafficPointElementVerisionMapper {
 
   public static TrafficPointElementVersion toEntity(CreateTrafficPointElementVersionModel createTrafficPointElementVersionModel) {
     ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(createTrafficPointElementVersionModel.getNumberWithoutCheckDigit());
-//    GeolocationBaseEntity geolocationBaseEntity = GeolocationMapper.toEntity(createTrafficPointElementVersionModel.getTrafficPointElementGeolocation());
-//    TrafficPointElementGeolocation trafficPointElementGeolocation = new TrafficPointElementGeolocation();
-//    if (geolocationBaseEntity != null) {
-//      trafficPointElementGeolocation.setEast(geolocationBaseEntity.getEast());
-//      trafficPointElementGeolocation.setHeight(geolocationBaseEntity.getHeight());
-//      trafficPointElementGeolocation.setNorth(geolocationBaseEntity.getNorth());
-//      trafficPointElementGeolocation.setSpatialReference(geolocationBaseEntity.getSpatialReference());
-//    }
     return TrafficPointElementVersion.builder()
             .id(createTrafficPointElementVersionModel.getId())
             .sloid(createTrafficPointElementVersionModel.getSloid())
