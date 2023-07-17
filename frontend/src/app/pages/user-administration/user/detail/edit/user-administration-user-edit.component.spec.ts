@@ -28,12 +28,6 @@ import { ReadOnlyData } from '../../../components/read-only-data/read-only-data'
 import SpyObj = jasmine.SpyObj;
 
 @Component({
-  selector: 'app-dialog-close',
-  template: '',
-})
-class MockDialogCloseComponent {}
-
-@Component({
   selector: 'app-user-administration-read-only-data',
   template: '',
 })
@@ -94,7 +88,6 @@ describe('UserAdministrationUserEditComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [
         UserAdministrationUserEditComponent,
-        MockDialogCloseComponent,
         MockUserAdministrationReadOnlyDataComponent,
         EditTitlePipe,
         MockUserDetailInfoComponent,
