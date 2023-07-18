@@ -1,9 +1,17 @@
 package ch.sbb.atlas.servicepointdirectory.model.search;
 
+import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.searching.SearchRestrictions;
 import ch.sbb.atlas.searching.SpecificationBuilder;
+import ch.sbb.atlas.searching.specification.ValidOrEditionTimerangeSpecification;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion.Fields;
+import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion_;
+import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementRequestParams;
+import jakarta.persistence.metamodel.SingularAttribute;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -11,24 +19,42 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Singular;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
 @Getter
 @ToString
-@Builder
+@SuperBuilder
 public class TrafficPointElementSearchRestrictions {
 
   private final Pageable pageable;
+  private final TrafficPointElementRequestParams trafficPointElementRequestParams;
 
-  //@Singular(ignoreNullCollections = true)
-  private Map<String, List<String>> searchCriterias;
+  @Singular(ignoreNullCollections = true)
+  private List<String> searchCriterias = new ArrayList<>();
 
   private Optional<LocalDate> validOn;
 
   public Specification<TrafficPointElementVersion> getSpecification() {
-    return specificationBuilder().searchCriteriaSpecificationTrafficPoint(searchCriterias)
-        .and(specificationBuilder().validOnSpecification(validOn));
+    List<String> sloidValues = new ArrayList<>();
+
+    if (trafficPointElementRequestParams.getSloids() != null) {
+      for (String sloidEntry : trafficPointElementRequestParams.getSloids()) {
+        String[] values = sloidEntry.split(",");
+        sloidValues.addAll(Arrays.asList(values));
+      }
+    }
+
+    return specificationBuilder().searchCriteriaSpecification(searchCriterias)
+        .and(specificationBuilder().validOnSpecification(getValidOn()))
+        .and(specificationBuilder().stringInSpecification(sloidValues, TrafficPointElementVersion_.sloid))
+        .and(specificationBuilder().inSpecification(trafficPointElementRequestParams.getServicePointNumbers(), Fields.servicePointNumber))
+        .and(new ValidOrEditionTimerangeSpecification<>(
+            trafficPointElementRequestParams.getFromDate(),
+            trafficPointElementRequestParams.getToDate(),
+            trafficPointElementRequestParams.getCreatedAfter(),
+            trafficPointElementRequestParams.getModifiedAfter()));
   }
 
   protected SpecificationBuilder<TrafficPointElementVersion> specificationBuilder() {
