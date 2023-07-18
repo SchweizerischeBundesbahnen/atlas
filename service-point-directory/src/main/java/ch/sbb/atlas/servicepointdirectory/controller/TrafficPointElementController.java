@@ -9,6 +9,7 @@ import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.api.TrafficPointElementApiV1;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.SloidNotFoundException;
+import ch.sbb.atlas.servicepointdirectory.exception.SloidsNotEqualException;
 import ch.sbb.atlas.servicepointdirectory.mapper.TrafficPointElementVerisionMapper;
 import ch.sbb.atlas.servicepointdirectory.model.search.TrafficPointElementSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementImportService;
@@ -78,9 +79,14 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
   }
 
   @Override
-  public List<ReadTrafficPointElementVersionModel> updateTrafficPoint(Long id, CreateTrafficPointElementVersionModel trafficPointElementVersionModel) {
+  public List<ReadTrafficPointElementVersionModel> updateTrafficPoint(Long id, CreateTrafficPointElementVersionModel trafficPointElementVersionModel) throws SloidsNotEqualException {
     TrafficPointElementVersion trafficPointElementVersionToUpdate = trafficPointElementService.findById(id)
             .orElseThrow(() -> new IdNotFoundException(id));
+
+    if (!trafficPointElementVersionToUpdate.getSloid().equals(trafficPointElementVersionModel.getSloid())) {
+        throw new SloidsNotEqualException("Sloid for provided id: " + trafficPointElementVersionToUpdate.getSloid() +
+                " and sloid in the request body: " + trafficPointElementVersionModel.getSloid() + " are not equal.");
+    }
 
     trafficPointElementService.updateTrafficPointElementVersion(trafficPointElementVersionToUpdate,
             TrafficPointElementVerisionMapper.toEntity(trafficPointElementVersionModel));
