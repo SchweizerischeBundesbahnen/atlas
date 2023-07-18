@@ -284,6 +284,31 @@ public class TrafficPointElementControllerApiTest extends BaseControllerApiTest 
   }
 
   @Test
+  public void shouldThrowSloidsNotEqualExceptionWhenUpdate() throws Exception {
+    repository.deleteAll();
+    // given
+    CreateTrafficPointElementVersionModel newTrafficPointElementVersionModel = TrafficPointTestData.getCreateTrafficPointVersionModel();
+    ReadTrafficPointElementVersionModel savedTrafficPointElementVersionModel = trafficPointElementController
+            .createTrafficPoint(newTrafficPointElementVersionModel);
+    newTrafficPointElementVersionModel.setId(savedTrafficPointElementVersionModel.getId());
+    newTrafficPointElementVersionModel.setSloid("ch:1:sloid:1400015:0:310241");
+
+    // when
+    MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.put("/v1/traffic-point-elements/" + savedTrafficPointElementVersionModel.getId())
+                    .contentType(contentType)
+                    .content(mapper.writeValueAsString(newTrafficPointElementVersionModel)))
+            .andExpect(status().isInternalServerError()).andReturn();
+
+    // then
+    ErrorResponse errorResponse = mapper.readValue(mvcResult.getResponse().getContentAsString(), ErrorResponse.class);
+
+    assertThat(errorResponse.getStatus()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR.value());
+    assertThat(errorResponse.getMessage()).isEqualTo("Sloid for provided id: ch:1:sloid:1400015:0:310240 and sloid in the request body: ch:1:sloid:1400015:0:310241 are not equal.");
+
+
+  }
+
+  @Test
   public void shouldReturnOptimisticLockingErrorResponse() throws Exception {
     repository.deleteAll();
     // given
