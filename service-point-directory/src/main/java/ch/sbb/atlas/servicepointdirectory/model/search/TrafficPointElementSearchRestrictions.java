@@ -32,16 +32,13 @@ public class TrafficPointElementSearchRestrictions {
   private final Pageable pageable;
   private final TrafficPointElementRequestParams trafficPointElementRequestParams;
 
-  //@Singular(ignoreNullCollections = true)
-  private Map<String, List<String>> searchCriterias;
+  @Singular(ignoreNullCollections = true)
+  private List<String> searchCriterias = new ArrayList<>();
 
   private Optional<LocalDate> validOn;
 
   public Specification<TrafficPointElementVersion> getSpecification() {
-    return specificationBuilder().searchCriteriaSpecificationTrafficPoint(searchCriterias)
-        .and(specificationBuilder().validOnSpecification(validOn));
     List<String> sloidValues = new ArrayList<>();
-
     if (trafficPointElementRequestParams.getSloids() != null) {
       for (String sloidEntry : trafficPointElementRequestParams.getSloids()) {
         String[] values = sloidEntry.split(",");
