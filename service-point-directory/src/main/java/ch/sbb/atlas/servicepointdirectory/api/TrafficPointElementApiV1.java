@@ -8,6 +8,7 @@ import ch.sbb.atlas.configuration.Role;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointImportRequestModel;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointItemImportResult;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion.Fields;
+import ch.sbb.atlas.servicepointdirectory.exception.SloidsNotEqualException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -63,7 +64,7 @@ public interface TrafficPointElementApiV1 {
   List<ReadTrafficPointElementVersionModel> updateTrafficPoint(
           @PathVariable Long id,
           @RequestBody @Valid CreateTrafficPointElementVersionModel trafficPointElementVersionModel
-  );
+  ) throws SloidsNotEqualException;
 
 
 }
