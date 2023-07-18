@@ -27,11 +27,9 @@ import org.junit.jupiter.api.TestMethodOrder;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ServicePointMigrationActualDateIntegrationTest {
 
-  private static final String DIDOK_CSV_FILE = "DIDOK3_DIENSTSTELLEN_ACTUALDATE_V_2_20230713020034.csv";
-  private static final String ATLAS_CSV_FILE = "actual_date-world-service-point-2023-07-13.csv";
-  private static final LocalDate ACTUAL_DATE = LocalDate.of(2023, 7, 13);
-
-  private static final String SEPARATOR = "/";
+  private static final String DIDOK_CSV_FILE = "DIDOK3_DIENSTSTELLEN_ACTUALDATE_V_2_20230718015418.csv";
+  private static final String ATLAS_CSV_FILE = "actual_date-world-service-point-2023-07-18.csv";
+  private static final LocalDate ACTUAL_DATE = LocalDate.of(2023, 7, 18);
 
   private static final List<ServicePointVersionCsvModel> atlasCsvLines = new ArrayList<>();
   private static final Map<Integer, ServicePointVersionCsvModel> atlasCsvLinesAsMap = new HashMap<>();
@@ -40,12 +38,12 @@ public class ServicePointMigrationActualDateIntegrationTest {
   @Test
   @Order(1)
   void shouldParseCsvsCorrectly() throws IOException {
-    try (InputStream csvStream = this.getClass().getResourceAsStream(SEPARATOR + DIDOK_CSV_FILE)) {
+    try (InputStream csvStream = this.getClass().getResourceAsStream(ServicePointMigrationIntegrationTest.BASE_PATH  + DIDOK_CSV_FILE)) {
       didokCsvLines.addAll(ServicePointImportService.parseServicePoints(csvStream));
     }
     assertThat(didokCsvLines).isNotEmpty();
 
-    try (InputStream csvStream = this.getClass().getResourceAsStream(SEPARATOR + ATLAS_CSV_FILE)) {
+    try (InputStream csvStream = this.getClass().getResourceAsStream(ServicePointMigrationIntegrationTest.BASE_PATH  + ATLAS_CSV_FILE)) {
       atlasCsvLines.addAll(AtlasCsvReader.parseAtlasServicePoints(csvStream));
     }
     assertThat(atlasCsvLines).isNotEmpty();
