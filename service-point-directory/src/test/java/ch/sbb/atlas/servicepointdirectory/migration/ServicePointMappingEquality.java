@@ -160,10 +160,10 @@ public class ServicePointMappingEquality {
 
   private void performCreatedAndEditedCheck() {
     if (AtlasCsvReader.dateFromString(atlasCsvLine.getValidFrom()).equals(didokCsvLine.getValidFrom())) {
-      assertThat(AtlasCsvReader.timestampFromString(atlasCsvLine.getCreationDate()).withSecond(0)).isEqualTo(
-          didokCsvLine.getCreatedAt().withSecond(0));
-      assertThat(AtlasCsvReader.timestampFromString(atlasCsvLine.getEditionDate()).withSecond(0)).isEqualTo(
-          didokCsvLine.getEditedAt().withSecond(0));
+      assertThat(AtlasCsvReader.timestampFromString(atlasCsvLine.getCreationDate()))
+          .isEqualToIgnoringNanos(didokCsvLine.getCreatedAt());
+      assertThat(AtlasCsvReader.timestampFromString(atlasCsvLine.getEditionDate()))
+          .isEqualToIgnoringNanos(didokCsvLine.getEditedAt());
     }
   }
 
@@ -186,7 +186,7 @@ public class ServicePointMappingEquality {
     assertThat(atlasCsvLine.getLocalityName()).isEqualTo(didokCsvLine.getOrtschaftsName());
 
     performEqualityCheckOnCoordinates();
-//    assertThat(atlasCsvLine.getHeight()).isEqualTo(didokCsvLine.getHeight());
+    assertThat(atlasCsvLine.getHeight()).isEqualTo(didokCsvLine.getHeight());
   }
 
   private void performEqualityCheckOnCoordinates() {
