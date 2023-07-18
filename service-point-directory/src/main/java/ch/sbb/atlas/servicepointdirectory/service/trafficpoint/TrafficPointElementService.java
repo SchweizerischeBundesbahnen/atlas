@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.StaleObjectStateException;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,7 +23,6 @@ public class TrafficPointElementService {
 
   private final TrafficPointElementVersionRepository trafficPointElementVersionRepository;
   private final VersionableService versionableService;
-  private final TrafficPointElementValidationService trafficPointElementValidationService;
 
   public Page<TrafficPointElementVersion> findAll(TrafficPointElementSearchRestrictions searchRestrictions) {
     return trafficPointElementVersionRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
@@ -40,13 +40,25 @@ public class TrafficPointElementService {
     return trafficPointElementVersionRepository.existsBySloid(sloid);
   }
 
+  @PreAuthorize("@countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#servicePointVersion, "
+          + "T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
+  public TrafficPointElementVersion checkPermissionRightsAndSave(TrafficPointElementVersion trafficPointElementVersion, ServicePointVersion servicePointVersion) {
+    return save(trafficPointElementVersion);
+  }
+
   public TrafficPointElementVersion save(TrafficPointElementVersion trafficPointElementVersion) {
-    trafficPointElementValidationService.validateServicePointNumberExists(trafficPointElementVersion.getServicePointNumber());
     return trafficPointElementVersionRepository.save(trafficPointElementVersion);
   }
 
   public void deleteById(Long id) {
     trafficPointElementVersionRepository.deleteById(id);
+  }
+
+  @PreAuthorize("@countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdateCountryBased(#editedVersion, "
+          + "#currentVersions, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
+  public void checkPermissionRightsAndUpdate(TrafficPointElementVersion currentVersionTPEV, TrafficPointElementVersion editedVersionTPEV,
+                                             ServicePointVersion editedVersion, List<ServicePointVersion> currentVersions) {
+    updateTrafficPointElementVersion(currentVersionTPEV, editedVersionTPEV);
   }
 
   public void updateTrafficPointElementVersion(TrafficPointElementVersion currentVersion, TrafficPointElementVersion editedVersion) {
