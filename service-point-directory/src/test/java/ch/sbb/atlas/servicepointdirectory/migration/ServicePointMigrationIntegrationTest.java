@@ -24,9 +24,10 @@ import org.junit.jupiter.api.TestMethodOrder;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ServicePointMigrationIntegrationTest {
 
-  private static final String DIDOK_CSV_FILE = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20230713021139.csv";
-  private static final String ATLAS_CSV_FILE = "full-world-service-point-2023-07-13.csv";
-  private static final String SEPARATOR = "/";
+  static final String BASE_PATH = "/migration/";
+
+  private static final String DIDOK_CSV_FILE = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20230718021052.csv";
+  private static final String ATLAS_CSV_FILE = "full-world-service-point-2023-07-18.csv";
 
   private static final List<ServicePointVersionCsvModel> atlasCsvLines = new ArrayList<>();
   private static final List<ServicePointCsvModel> didokCsvLines = new ArrayList<>();
@@ -34,12 +35,12 @@ public class ServicePointMigrationIntegrationTest {
   @Test
   @Order(1)
   void shouldParseCsvsCorrectly() throws IOException {
-    try (InputStream csvStream = this.getClass().getResourceAsStream(SEPARATOR + DIDOK_CSV_FILE)) {
+    try (InputStream csvStream = this.getClass().getResourceAsStream(BASE_PATH + DIDOK_CSV_FILE)) {
       didokCsvLines.addAll(ServicePointImportService.parseServicePoints(csvStream));
     }
     assertThat(didokCsvLines).isNotEmpty();
 
-    try (InputStream csvStream = this.getClass().getResourceAsStream(SEPARATOR + ATLAS_CSV_FILE)) {
+    try (InputStream csvStream = this.getClass().getResourceAsStream(BASE_PATH + ATLAS_CSV_FILE)) {
       atlasCsvLines.addAll(AtlasCsvReader.parseAtlasServicePoints(csvStream));
     }
     assertThat(atlasCsvLines).isNotEmpty();
