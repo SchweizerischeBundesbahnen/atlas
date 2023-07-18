@@ -35,7 +35,7 @@ public class CsvServicePointWriter {
       Fields.businessOrganisationDescriptionDe, Fields.businessOrganisationDescriptionFr,
       Fields.businessOrganisationDescriptionIt, Fields.businessOrganisationDescriptionEn, Fields.fotComment, Fields.lv95East,
       Fields.lv95North, Fields.wgs84East, Fields.wgs84North, Fields.wgs84WebEast, Fields.wgs84WebNorth,
-      Fields.height, Fields.creationDate, Fields.editionDate, Fields.statusDidok3
+      Fields.height, Fields.creationDate, Fields.editionDate
   };
   private static final String DELIMITER = ";";
   @Autowired
