@@ -47,8 +47,18 @@ public class TrafficPointElementRequestParams extends VersionedObjectDateRequest
     @Singular(value = "numberShort", ignoreNullCollections = true)
     private List<Integer> servicePointNumbersShort = new ArrayList<>();
 
+
     public List<ServicePointNumber> getServicePointNumbers() {
         return servicePointNumbers.stream().map(ServicePointNumber::ofNumberWithoutCheckDigit).toList();
     }
+
+    //public List<ServicePointNumber> getServicePointNumberShort() {
+            //return servicePointNumbers.stream().map(ServicePointNumber::getNumberShort).collect(Collectors.toList());
+    //}
+    //TODO
+//    @Parameter(description = "")
+//    @Singular(ignoreNullCollections = true)
+//    private List<String> sboid = new ArrayList<>();
+
 
 }
