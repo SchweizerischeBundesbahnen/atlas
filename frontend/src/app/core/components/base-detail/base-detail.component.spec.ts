@@ -105,27 +105,21 @@ describe('BaseDetailComponent', () => {
     });
 
     it('should switch from disabled to enabled', () => {
-      const editButton = fixture.debugElement.query(
-        By.css('.edit-section .btn-edit .atlas-primary-btn')
-      );
+      const editButton = fixture.debugElement.query(By.css('[data-cy=edit-item]'));
       editButton.nativeElement.click();
 
       expect(dummyController.toggleEdit).toHaveBeenCalled();
     });
 
     it('should revoke record', () => {
-      const editButton = fixture.debugElement.query(
-        By.css('.edit-section .btn-revoke .atlas-primary-btn')
-      );
+      const editButton = fixture.debugElement.query(By.css('[data-cy=revoke-item]'));
       editButton.nativeElement.click();
 
       expect(dummyController.revoke).toHaveBeenCalled();
     });
 
     it('should delete record', () => {
-      const deleteButton = fixture.debugElement.query(
-        By.css('.edit-section .btn-delete .atlas-primary-btn')
-      );
+      const deleteButton = fixture.debugElement.query(By.css('[data-cy=delete-item]'));
       deleteButton.nativeElement.click();
 
       expect(dummyController.delete).toHaveBeenCalled();
