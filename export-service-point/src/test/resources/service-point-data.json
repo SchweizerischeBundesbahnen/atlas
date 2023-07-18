@@ -15,14 +15,6 @@
     "designationLong": null,
     "designationOfficial": "Trins, Wienerhof",
     "abbreviation": null,
-    "statusDidok3": "IN_OPERATION",
-    "statusDidok3Information": {
-      "code": "3",
-      "designationDe": "In Betrieb",
-      "designationFr": "En fonctionnement",
-      "designationIt": "In funzione",
-      "designationEn": "In operation"
-    },
     "operatingPoint": true,
     "operatingPointWithTimetable": true,
     "freightServicePoint": false,
@@ -123,14 +115,6 @@
     "designationLong": null,
     "designationOfficial": "Trins, Waldfestplatz",
     "abbreviation": null,
-    "statusDidok3": "IN_OPERATION",
-    "statusDidok3Information": {
-      "code": "3",
-      "designationDe": "In Betrieb",
-      "designationFr": "En fonctionnement",
-      "designationIt": "In funzione",
-      "designationEn": "In operation"
-    },
     "operatingPoint": true,
     "operatingPointWithTimetable": true,
     "freightServicePoint": false,
@@ -231,14 +215,6 @@
     "designationLong": null,
     "designationOfficial": "Olsberg, Chloster",
     "abbreviation": null,
-    "statusDidok3": "IN_OPERATION",
-    "statusDidok3Information": {
-      "code": "3",
-      "designationDe": "In Betrieb",
-      "designationFr": "En fonctionnement",
-      "designationIt": "In funzione",
-      "designationEn": "In operation"
-    },
     "operatingPoint": true,
     "operatingPointWithTimetable": true,
     "freightServicePoint": false,
