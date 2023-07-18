@@ -7,7 +7,6 @@ import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionR
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.time.LocalDate;
 
@@ -15,9 +14,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
 public class TrafficPointElementServiceTest {
-
-  @MockBean
-  private TrafficPointElementValidationService trafficPointElementValidationService;
 
   private final TrafficPointElementService trafficPointElementService;
   private final TrafficPointElementVersionRepository trafficPointElementVersionRepository;

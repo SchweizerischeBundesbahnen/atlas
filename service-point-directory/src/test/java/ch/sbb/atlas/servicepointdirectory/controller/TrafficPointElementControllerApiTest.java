@@ -9,9 +9,12 @@ import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointElementCsvMode
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointImportRequestModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepointdirectory.TrafficPointTestData;
+import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion.Fields;
 import ch.sbb.atlas.servicepointdirectory.mapper.GeolocationMapper;
+import ch.sbb.atlas.servicepointdirectory.model.TestData;
+import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementImportService;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementValidationService;
@@ -46,25 +49,33 @@ public class TrafficPointElementControllerApiTest extends BaseControllerApiTest 
 
   private final TrafficPointElementVersionRepository repository;
   private TrafficPointElementVersion trafficPointElementVersion;
+  private ServicePointVersionRepository servicePointVersionRepository;
+  private ServicePointVersion servicePointVersion;
 
   private final TrafficPointElementController trafficPointElementController;
 
   @Autowired
-  public TrafficPointElementControllerApiTest(TrafficPointElementVersionRepository repository, TrafficPointElementController trafficPointElementController) {
+  public TrafficPointElementControllerApiTest(TrafficPointElementVersionRepository repository,
+                                              TrafficPointElementController trafficPointElementController,
+                                              ServicePointVersionRepository servicePointVersionRepository) {
     this.repository = repository;
     this.trafficPointElementController = trafficPointElementController;
+    this.servicePointVersionRepository = servicePointVersionRepository;
   }
 
   @BeforeEach
   void createDefaultVersion() {
     trafficPointElementVersion = TrafficPointTestData.getTrafficPoint();
-
     this.trafficPointElementVersion = repository.save(trafficPointElementVersion);
+
+    servicePointVersion = TestData.testServicePointForTrafficPoint();
+    this.servicePointVersion = servicePointVersionRepository.save(servicePointVersion);
   }
 
   @AfterEach
   void cleanUpDb() {
     repository.deleteAll();
+    servicePointVersionRepository.deleteAll();
   }
 
   @Test
