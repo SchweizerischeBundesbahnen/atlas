@@ -1,15 +1,12 @@
 package ch.sbb.atlas.servicepointdirectory.migration;
 
-import static ch.sbb.atlas.servicepointdirectory.migration.AtlasCsvReader.timestampFromString;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import java.math.BigDecimal;
-import java.time.format.DateTimeFormatter;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -162,12 +159,10 @@ public class ServicePointMappingEquality {
   }
 
   private void performCreatedAndEditedCheck() {
-    if (DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN_CH)
-        .parse(atlasCsvLine.getValidFrom())
-        .equals(didokCsvLine.getValidFrom())) {
-      assertThat(timestampFromString(atlasCsvLine.getCreationDate())).isEqualTo(
+    if (AtlasCsvReader.dateFromString(atlasCsvLine.getValidFrom()).equals(didokCsvLine.getValidFrom())) {
+      assertThat(AtlasCsvReader.timestampFromString(atlasCsvLine.getCreationDate()).withSecond(0)).isEqualTo(
           didokCsvLine.getCreatedAt().withSecond(0));
-      assertThat(timestampFromString(atlasCsvLine.getEditionDate())).isEqualTo(
+      assertThat(AtlasCsvReader.timestampFromString(atlasCsvLine.getEditionDate()).withSecond(0)).isEqualTo(
           didokCsvLine.getEditedAt().withSecond(0));
     }
   }
