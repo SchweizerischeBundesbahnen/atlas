@@ -45,6 +45,7 @@ public class ServicePointMappingEquality {
   private void performCoreDataCheck() {
     assertThat(atlasCsvLine.getNumber()).isEqualTo(didokCsvLine.getDidokCode());
     assertThat(atlasCsvLine.getNumberShort()).isEqualTo(didokCsvLine.getNummer());
+    assertThat(atlasCsvLine.getUicCountryCode()).isEqualTo(didokCsvLine.getLaendercode());
 
     // TODO: actual_date: why does DIDOK don't export the SLOID?
 //    assertThat(atlasCsvLine.getSloid())
