@@ -1,8 +1,7 @@
 <div class="mt-2 mb-5">
-  <div *ngIf="!isAddWorkflowButtonDisabled" class="d-flex">
+  <div *ngIf="!workflowInProgress" class="d-flex">
     <atlas-button
-      (buttonClicked)="showWorkflowForm()"
-      [disabled]="isAddWorkflowButtonDisabled"
+      (buttonClicked)="newWorkflow()"
       buttonDataCy="workflow-add"
       buttonText="WORKFLOW.BUTTON.ADD"
       buttonType="edit"
@@ -11,6 +10,7 @@
       wrapperStyleClass="me-3"
     ></atlas-button>
     <atlas-button
+      *ngIf="lineRecord.status === 'DRAFT'"
       (buttonClicked)="skipWorkflow()"
       applicationType="LIDI"
       buttonDataCy="workflow-skip"
@@ -18,51 +18,13 @@
       buttonType="skipworkflow"
     ></atlas-button>
   </div>
-  <div *ngIf="isReadMode">
-    <mat-expansion-panel>
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          <span class="font-bold-lg">{{ 'WORKFLOW.TITLE' | translate }}</span>
-        </mat-panel-title>
-        <mat-panel-description>
-          <span class="font-bold-lg me-2">{{ 'COMMON.STATUS' | translate }}</span>
-          <span class="font-bold-lg">{{ this.workflowStatusTranslated }}</span>
-        </mat-panel-description>
-        <i class="fs-2 bi bi-diagram-3-fill me-2 mt-1 icon-color"></i>
-      </mat-expansion-panel-header>
-      <app-workflow-form
-        [formGroup]="workflowFormGroup"
-        commentLabel="WORKFLOW.START.COMMENT"
-        personLabel="WORKFLOW.START.KEY_DATA"
-      ></app-workflow-form>
-      <app-workflow-check-form
-        (workflowEvent)="workflowChecked()"
-        *ngIf="lineRecord.status === 'IN_REVIEW'"
-        [workflowId]="workflowId"
-      ></app-workflow-check-form>
-    </mat-expansion-panel>
-  </div>
-  <div *ngIf="isWorkflowFormEditable">
-    <app-workflow-form
-      [formGroup]="workflowFormGroup"
-      commentLabel="WORKFLOW.START.COMMENT"
-      personLabel="WORKFLOW.START.KEY_DATA"
-    ></app-workflow-form>
-    <div class="d-flex align-items-center">
-      <atlas-button
-        (buttonClicked)="startWorkflow()"
-        buttonDataCy="workflow-start"
-        buttonText="WORKFLOW.BUTTON.START"
-        buttonType="defaultPrimary"
-        wrapperStyleClass="me-3"
-      ></atlas-button>
-      <atlas-button
-        (buttonClicked)="toggleWorkflow()"
-        buttonDataCy="workflow-cancel"
-        buttonText="WORKFLOW.BUTTON.CANCEL"
-        buttonType="defaultPrimary"
-        wrapperStyleClass="me-3"
-      ></atlas-button>
-    </div>
+  <div *ngIf="workflowInProgress">
+    <atlas-button
+      (buttonClicked)="openWorkflow()"
+      buttonType="defaultPrimary"
+      buttonDataCy="workflow-open"
+      buttonText="WORKFLOW.BUTTON.OPEN"
+      wrapperStyleClass="me-3"
+    ></atlas-button>
   </div>
 </div>

@@ -16,6 +16,7 @@
   "COMMON": {
     "LOADING": "Wird geladen...",
     "BACK_TO_OVERVIEW": "Zurück zur Übersicht",
+    "BACK": "Zurück",
     "SAVE": "Speichern",
     "SAVE_AND_CLOSE": "Speichern & Schliessen",
     "ADD": "Hinzufügen",
@@ -503,6 +504,7 @@
     "TITLE": "Anhörung",
     "BUTTON": {
       "ADD": "Anhörung erfassen",
+      "OPEN": "Anhörung einsehen",
       "START": "Anhörung starten",
       "ACCEPT": "Genehmigen",
       "REJECT": "Zurückweisen",
