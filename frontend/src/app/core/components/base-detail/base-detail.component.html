@@ -49,13 +49,11 @@
             'COMMON.STATUS_TYPES.' + controller.statusOfCurrentRecord | translate
           }}</span>
         </div>
-        <div *ngIf="workflowEnabled">
+        <div *ngIf="workflowEnabled && controller.form.disabled">
           <app-workflow
-            (workflowEvent)="this.receiveWorkflowEvent($event)"
             *ngIf="controller.isWorkflowable()"
             [descriptionForWorkflow]="this.controller.getDescriptionForWorkflow()"
             [lineRecord]="this.controller.record"
-            [switchVersionEvent]="this.controller.switchVersionEvent.asObservable()"
           ></app-workflow>
         </div>
       </div>
