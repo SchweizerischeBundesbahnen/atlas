@@ -88,7 +88,7 @@ public class TrafficPointElementVersion extends BaseDidokImportEntity implements
   @AtlasVersionableProperty
   private String sloid;
 
-  @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_128)
   @AtlasVersionableProperty
   private String parentSloid;
 
