@@ -16,6 +16,7 @@
   "COMMON": {
     "LOADING": "Chargement...",
     "BACK_TO_OVERVIEW": "Retour au sommaire",
+    "BACK": "Retour",
     "SAVE": "Sauvegarder",
     "SAVE_AND_CLOSE": "Enregistrer & fermer",
     "ADD": "Ajouter",
@@ -503,6 +504,7 @@
     "TITLE": "Audience",
     "BUTTON": {
       "ADD": "Saisir une audience",
+      "OPEN": "Consulter l'audience",
       "START": "Lancer l'audience",
       "ACCEPT": "Approuver",
       "REJECT": "Rejeter",
@@ -514,6 +516,7 @@
       "KEY_DATA": "Demandeur"
     },
     "CHECK": {
+      "CHECK": "Validation",
       "COMMENT": "Remarque sur la validation / le refus",
       "KEY_DATA": "Personne chargée de l'examen"
     },
