@@ -335,14 +335,14 @@ public class TrafficPointElementControllerApiTest extends BaseControllerApiTest 
     createTrafficPointElementVersionModel.setSloid(savedTrafficPointElementVersionModel.getSloid());
     createTrafficPointElementVersionModel.setEtagVersion(savedTrafficPointElementVersionModel.getEtagVersion());
 
-    createTrafficPointElementVersionModel.setDesignationOperational("1 designation operat");
+    createTrafficPointElementVersionModel.setDesignationOperational("1 designation");
     mvc.perform(MockMvcRequestBuilders.put("/v1/traffic-point-elements/" + createTrafficPointElementVersionModel.getId())
                     .contentType(contentType)
                     .content(mapper.writeValueAsString(createTrafficPointElementVersionModel)))
             .andExpect(status().isOk());
 
     // Then on a second update it has to return error for optimistic lock
-    createTrafficPointElementVersionModel.setDesignationOperational("This is second designation operational");
+    createTrafficPointElementVersionModel.setDesignationOperational("2 designation");
     MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.put("/v1/traffic-point-elements/" + createTrafficPointElementVersionModel.getId())
             .contentType(contentType)
             .content(mapper.writeValueAsString(createTrafficPointElementVersionModel)))
