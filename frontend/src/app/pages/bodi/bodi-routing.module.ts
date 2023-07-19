@@ -11,11 +11,13 @@ import { CompaniesComponent } from './companies/companies.component';
 import { CompanyDetailComponent } from './companies/detail/company-detail.component';
 import { CompanyDetailResolver } from './companies/detail/company-detail-resolver.service';
 import { BusinessOrganisationDetailResolver } from './business-organisations/detail/business-organisation-detail-resolver.service';
+import { canLeaveDirtyForm } from '../../core/leave-guard/leave-dirty-form-guard.service';
 
 const routes: Routes = [
   {
     path: Pages.BUSINESS_ORGANISATIONS.path + '/:id',
     component: BusinessOrganisationDetailComponent,
+    canDeactivate: [canLeaveDirtyForm],
     resolve: {
       businessOrganisationDetail: BusinessOrganisationDetailResolver,
     },
@@ -24,6 +26,7 @@ const routes: Routes = [
   {
     path: Pages.TRANSPORT_COMPANIES.path + '/:id',
     component: TransportCompanyDetailComponent,
+    canDeactivate: [canLeaveDirtyForm],
     resolve: {
       transportCompanyDetail: TransportCompanyDetailResolver,
     },
