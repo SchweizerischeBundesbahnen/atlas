@@ -1,19 +1,20 @@
 package ch.sbb.atlas.servicepointdirectory.repository;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.atlas.servicepointdirectory.TrafficPointTestData;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.atlas.servicepointdirectory.TrafficPointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
-import java.time.LocalDate;
-import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
 @Transactional
@@ -38,7 +39,7 @@ public class TrafficPointElementVersionRepositoryTest {
     TrafficPointElementVersion trafficPointElementVersion = TrafficPointElementVersion
         .builder()
         .designation("Bezeichnung")
-        .designationOperational("Betriebliche Bezeichnung")
+        .designationOperational("Betriebliche Bezeich")
         .servicePointNumber(ServicePointNumber.of(85070003))
         .sloid("ch:1:sloid:123")
         .validFrom(LocalDate.of(2022, 1, 1))
@@ -60,7 +61,7 @@ public class TrafficPointElementVersionRepositoryTest {
     TrafficPointElementVersion trafficPointElementVersion = TrafficPointElementVersion
         .builder()
         .designation("Bezeichnung")
-        .designationOperational("Betriebliche Bezeichnung")
+        .designationOperational("Betriebliche Bezeich")
         .servicePointNumber(ServicePointNumber.of(85070003))
         .sloid("ch:1:sloid:123")
         .parentSloid("ch:1:sloid:1")
@@ -91,7 +92,7 @@ public class TrafficPointElementVersionRepositoryTest {
     TrafficPointElementVersion trafficPointElementVersion = TrafficPointElementVersion
         .builder()
         .designation("Bezeichnung")
-        .designationOperational("Betriebliche Bezeichnung")
+        .designationOperational("Betriebliche Bezeich")
         .servicePointNumber(ServicePointNumber.of(85070003))
         .trafficPointElementGeolocation(trafficPointElementGeolocation)
         .sloid("ch:1:sloid:123")
@@ -144,7 +145,7 @@ public class TrafficPointElementVersionRepositoryTest {
     TrafficPointElementVersion trafficPointElementVersion = TrafficPointElementVersion
         .builder()
         .designation("Bezeichnung")
-        .designationOperational("Betriebliche Bezeichnung")
+        .designationOperational("Betriebliche Bezeich")
         .servicePointNumber(ServicePointNumber.of(85070003))
         .sloid("ch:1:sloid:123")
         .validFrom(LocalDate.of(2020, 1, 1))
