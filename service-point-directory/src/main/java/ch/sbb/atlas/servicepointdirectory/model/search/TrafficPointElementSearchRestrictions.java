@@ -1,21 +1,18 @@
 package ch.sbb.atlas.servicepointdirectory.model.search;
 
-import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.searching.SearchRestrictions;
 import ch.sbb.atlas.searching.SpecificationBuilder;
 import ch.sbb.atlas.searching.specification.ValidOrEditionTimerangeSpecification;
+import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion.Fields;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion_;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementRequestParams;
-import jakarta.persistence.metamodel.SingularAttribute;
+import jakarta.persistence.criteria.Join;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Singular;
 import lombok.ToString;
@@ -32,7 +29,7 @@ public class TrafficPointElementSearchRestrictions {
   private final TrafficPointElementRequestParams trafficPointElementRequestParams;
 
   @Singular(ignoreNullCollections = true)
-  private List<String> searchCriterias = new ArrayList<>();
+  private List<String> searchCriterias;
 
   private Optional<LocalDate> validOn;
 
@@ -50,6 +47,7 @@ public class TrafficPointElementSearchRestrictions {
         .and(specificationBuilder().validOnSpecification(getValidOn()))
         .and(specificationBuilder().stringInSpecification(sloidValues, TrafficPointElementVersion_.sloid))
         .and(specificationBuilder().inSpecification(trafficPointElementRequestParams.getServicePointNumbers(), Fields.servicePointNumber))
+        .and(specificationBuilder().inSpecification(trafficPointElementRequestParams.getServicePointNumberShort(), Fields.servicePointNumber))
         .and(new ValidOrEditionTimerangeSpecification<>(
             trafficPointElementRequestParams.getFromDate(),
             trafficPointElementRequestParams.getToDate(),
