@@ -19,6 +19,29 @@ public interface TrafficPointElementVersionRepository extends
   @EntityGraph(attributePaths = {Fields.trafficPointElementGeolocation})
   List<TrafficPointElementVersion> findAllBySloidOrderByValidFrom(String sloid);
 
+//TODO: Only if we do it with SQL Join
+//  @Override
+//  @Query(value = " SELECT trp.id, "
+//      + "trp.sloid, trp.parent_sloid, "
+//      + "trp.designation, trp.designation_operational, "
+//      + "trp.traffic_point_element_type, trp.length,  "
+//      + "trp.boarding_area_height, trp.compass_direction, "
+//      + "trp.service_point_number, trp.valid_from, "
+//      + "trp.valid_to, "
+//      + "trp.traffic_point_geolocation_id, "
+//      + "trp.creation_date, "
+//      + "trp.creator, "
+//      + "trp.edition_date, "
+//      + "trp.editor, "
+//      + "trp.version, "
+//      + "spv.sloid as servicePointSloid, "
+//      + "spv.number_short, "
+//      + "spv.country, "
+//      + "spv.business_organisation as sboid "
+//      + "from traffic_point_element_version trp left join service_point_version spv on trp.service_point_number = spv.number "
+//      + "and (case when current_date between spv.valid_from and spv.valid_to then 0 else 1 end = 0)", nativeQuery = true)
+//  Page<TrafficPointElementVersion> findAll(Specification<TrafficPointElementVersion> spec, Pageable pageable);
+
   boolean existsBySloid(String sloid);
 
   @Modifying(clearAutomatically = true)
