@@ -2,6 +2,9 @@ alter table traffic_point_element_version
 alter column sloid type varchar(128);
 
 alter table traffic_point_element_version
+alter column parent_sloid type varchar(128);
+
+alter table traffic_point_element_version
 alter column designation type varchar(40);
 
 alter table traffic_point_element_version
