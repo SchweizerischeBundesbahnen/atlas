@@ -23,6 +23,7 @@ public class TrafficPointElementService {
 
   private final TrafficPointElementVersionRepository trafficPointElementVersionRepository;
   private final VersionableService versionableService;
+  private final TrafficPointElementValidationService trafficPointElementValidationService;
 
   public Page<TrafficPointElementVersion> findAll(TrafficPointElementSearchRestrictions searchRestrictions) {
     return trafficPointElementVersionRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
@@ -47,6 +48,7 @@ public class TrafficPointElementService {
   }
 
   public TrafficPointElementVersion save(TrafficPointElementVersion trafficPointElementVersion) {
+    trafficPointElementValidationService.validateServicePointNumberExists(trafficPointElementVersion.getServicePointNumber());
     return trafficPointElementVersionRepository.save(trafficPointElementVersion);
   }
 
