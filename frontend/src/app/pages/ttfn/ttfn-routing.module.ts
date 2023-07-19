@@ -4,11 +4,13 @@ import { TimetableFieldNumberOverviewComponent } from './overview/timetable-fiel
 import { TimetableFieldNumberDetailComponent } from './detail/timetable-field-number-detail.component';
 import { TimetableFieldNumberDetailResolver } from './detail/timetable-field-number-detail.resolver';
 import { Pages } from '../pages';
+import { canLeaveDirtyForm } from '../../core/leave-guard/leave-dirty-form-guard.service';
 
 const routes: Routes = [
   {
     path: Pages.TTFN_DETAIL.path,
     component: TimetableFieldNumberDetailComponent,
+    canDeactivate: [canLeaveDirtyForm],
     resolve: {
       timetableFieldNumberDetail: TimetableFieldNumberDetailResolver,
     },

@@ -19,12 +19,13 @@ import { NotificationService } from '../../../../core/notification/notification.
 import { BusinessOrganisationLanguageService } from '../../../../core/form-components/bo-select/business-organisation-language.service';
 import { TransportCompanyFormGroup } from './transport-company-form-group';
 import { ActivatedRoute } from '@angular/router';
+import { DetailFormComponent } from '../../../../core/leave-guard/leave-dirty-form-guard.service';
 
 @Component({
   templateUrl: './transport-company-detail.component.html',
   styleUrls: ['./transport-company-detail.component.scss'],
 })
-export class TransportCompanyDetailComponent implements OnInit {
+export class TransportCompanyDetailComponent implements OnInit, DetailFormComponent {
   transportCompany!: TransportCompany;
   transportFormGroup!: FormGroup<TransportCompanyFormGroup>;
   transportCompanyRelations!: TransportCompanyBoRelation[];
@@ -257,5 +258,9 @@ export class TransportCompanyDetailComponent implements OnInit {
 
   private getCurrentLanguageDescription() {
     return this.businessOrganisationLanguageService.getCurrentLanguageDescription();
+  }
+
+  isFormDirty() {
+    return this.form.dirty;
   }
 }
