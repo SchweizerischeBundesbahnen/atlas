@@ -1,4 +1,4 @@
-package ch.sbb.atlas.servicepointdirectory.service.trafficpoint.versioningintegrationtests;
+package ch.sbb.atlas.servicepointdirectory.service.trafficpoint.versioningtests;
 
 import ch.sbb.atlas.servicepointdirectory.TrafficPointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
@@ -50,7 +50,7 @@ public class TrafficPointElementsServiceIntegrationTests extends BaseTrafficPoin
         assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2021, 12, 31));
         assertThat(firstTemporalVersion.getSloid()).isEqualTo(SLOID);
         assertThat(firstTemporalVersion.getDesignation()).isEqualTo("Bezeichnung");
-        assertThat(firstTemporalVersion.getDesignationOperational()).isEqualTo("Betriebliche Bezeichnung");
+        assertThat(firstTemporalVersion.getDesignationOperational()).isEqualTo("Betriebliche Bezeich");
         assertThat(firstTemporalVersion.getCompassDirection()).isEqualTo(271.0);
 
         // updated
@@ -59,7 +59,7 @@ public class TrafficPointElementsServiceIntegrationTests extends BaseTrafficPoin
         assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2023, 5, 31));
         assertThat(secondTemporalVersion.getSloid()).isEqualTo(SLOID);
         assertThat(secondTemporalVersion.getDesignation()).isEqualTo("Bezeichnung");
-        assertThat(secondTemporalVersion.getDesignationOperational()).isEqualTo("Betriebliche Bezeichnung");
+        assertThat(secondTemporalVersion.getDesignationOperational()).isEqualTo("Betriebliche Bezeich");
         assertThat(secondTemporalVersion.getCompassDirection()).isEqualTo(272.0);
 
         // new
@@ -68,7 +68,7 @@ public class TrafficPointElementsServiceIntegrationTests extends BaseTrafficPoin
         assertThat(thirdTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2023, 12, 31));
         assertThat(thirdTemporalVersion.getSloid()).isEqualTo(SLOID);
         assertThat(thirdTemporalVersion.getDesignation()).isEqualTo("Bezeichnung");
-        assertThat(thirdTemporalVersion.getDesignationOperational()).isEqualTo("Betriebliche Bezeichnung");
+        assertThat(thirdTemporalVersion.getDesignationOperational()).isEqualTo("Betriebliche Bezeich");
         assertThat(thirdTemporalVersion.getCompassDirection()).isEqualTo(272.0);
         assertThat(thirdTemporalVersion.getTrafficPointElementGeolocation().getSpatialReference()).isEqualTo(TrafficPointTestData.getTrafficPointGeolocationBernMittelland().getSpatialReference());
         assertThat(thirdTemporalVersion.getTrafficPointElementGeolocation().getEast()).isEqualTo(TrafficPointTestData.getTrafficPointGeolocationBernMittelland().getEast());
@@ -81,7 +81,7 @@ public class TrafficPointElementsServiceIntegrationTests extends BaseTrafficPoin
         assertThat(fourthTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 6, 1));
         assertThat(fourthTemporalVersion.getSloid()).isEqualTo(SLOID);
         assertThat(fourthTemporalVersion.getDesignation()).isEqualTo("Bezeichnung");
-        assertThat(fourthTemporalVersion.getDesignationOperational()).isEqualTo("Betriebliche Bezeichnung");
+        assertThat(fourthTemporalVersion.getDesignationOperational()).isEqualTo("Betriebliche Bezeich");
         assertThat(fourthTemporalVersion.getCompassDirection()).isEqualTo(273.0);
         assertThat(fourthTemporalVersion.getTrafficPointElementGeolocation().getSpatialReference()).isEqualTo(TrafficPointTestData.getTrafficPointGeolocationBernMittelland().getSpatialReference());
         assertThat(fourthTemporalVersion.getTrafficPointElementGeolocation().getEast()).isEqualTo(TrafficPointTestData.getTrafficPointGeolocationBernMittelland().getEast());
@@ -94,7 +94,7 @@ public class TrafficPointElementsServiceIntegrationTests extends BaseTrafficPoin
         assertThat(fifthTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 12, 31));
         assertThat(fifthTemporalVersion.getSloid()).isEqualTo(SLOID);
         assertThat(fifthTemporalVersion.getDesignation()).isEqualTo("Bezeichnung");
-        assertThat(fifthTemporalVersion.getDesignationOperational()).isEqualTo("Betriebliche Bezeichnung");
+        assertThat(fifthTemporalVersion.getDesignationOperational()).isEqualTo("Betriebliche Bezeich");
         assertThat(fifthTemporalVersion.getCompassDirection()).isEqualTo(273.0);
     }
 
@@ -136,7 +136,7 @@ public class TrafficPointElementsServiceIntegrationTests extends BaseTrafficPoin
         assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2021, 12, 31));
         assertThat(firstTemporalVersion.getSloid()).isEqualTo(SLOID);
         assertThat(firstTemporalVersion.getDesignation()).isEqualTo("Bezeichnung");
-        assertThat(firstTemporalVersion.getDesignationOperational()).isEqualTo("Betriebliche Bezeichnung");
+        assertThat(firstTemporalVersion.getDesignationOperational()).isEqualTo("Betriebliche Bezeich");
         assertThat(firstTemporalVersion.getCompassDirection()).isEqualTo(271.0);
 
         // updated
@@ -145,7 +145,7 @@ public class TrafficPointElementsServiceIntegrationTests extends BaseTrafficPoin
         assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2023, 12, 31));
         assertThat(secondTemporalVersion.getSloid()).isEqualTo(SLOID);
         assertThat(secondTemporalVersion.getDesignation()).isEqualTo("Bezeichnung");
-        assertThat(secondTemporalVersion.getDesignationOperational()).isEqualTo("Betriebliche Bezeichnung");
+        assertThat(secondTemporalVersion.getDesignationOperational()).isEqualTo("Betriebliche Bezeich");
         assertThat(secondTemporalVersion.getCompassDirection()).isEqualTo(272.0);
 
         // updated
@@ -154,7 +154,7 @@ public class TrafficPointElementsServiceIntegrationTests extends BaseTrafficPoin
         assertThat(thirdTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 12, 31));
         assertThat(thirdTemporalVersion.getSloid()).isEqualTo(SLOID);
         assertThat(thirdTemporalVersion.getDesignation()).isEqualTo("Bezeichnung");
-        assertThat(thirdTemporalVersion.getDesignationOperational()).isEqualTo("Betriebliche Bezeichnung");
+        assertThat(thirdTemporalVersion.getDesignationOperational()).isEqualTo("Betriebliche Bezeich");
         assertThat(thirdTemporalVersion.getCompassDirection()).isEqualTo(273.0);
         assertThat(thirdTemporalVersion.getTrafficPointElementGeolocation().getSpatialReference()).isEqualTo(TrafficPointTestData.getTrafficPointGeolocationBernMittelland().getSpatialReference());
         assertThat(thirdTemporalVersion.getTrafficPointElementGeolocation().getEast()).isEqualTo(TrafficPointTestData.getTrafficPointGeolocationBernMittelland().getEast());
@@ -193,7 +193,7 @@ public class TrafficPointElementsServiceIntegrationTests extends BaseTrafficPoin
         assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2022, 1, 2));
         assertThat(firstTemporalVersion.getSloid()).isEqualTo(SLOID);
         assertThat(firstTemporalVersion.getDesignation()).isEqualTo("Bezeichnung");
-        assertThat(firstTemporalVersion.getDesignationOperational()).isEqualTo("Betriebliche Bezeichnung");
+        assertThat(firstTemporalVersion.getDesignationOperational()).isEqualTo("Betriebliche Bezeich");
         assertThat(firstTemporalVersion.getCompassDirection()).isEqualTo(271.0);
     }
 

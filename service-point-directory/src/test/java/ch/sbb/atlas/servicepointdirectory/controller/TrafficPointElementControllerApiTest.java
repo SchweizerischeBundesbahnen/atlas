@@ -335,7 +335,7 @@ public class TrafficPointElementControllerApiTest extends BaseControllerApiTest 
     createTrafficPointElementVersionModel.setSloid(savedTrafficPointElementVersionModel.getSloid());
     createTrafficPointElementVersionModel.setEtagVersion(savedTrafficPointElementVersionModel.getEtagVersion());
 
-    createTrafficPointElementVersionModel.setDesignationOperational("This is first designation operational");
+    createTrafficPointElementVersionModel.setDesignationOperational("1 designation operat");
     mvc.perform(MockMvcRequestBuilders.put("/v1/traffic-point-elements/" + createTrafficPointElementVersionModel.getId())
                     .contentType(contentType)
                     .content(mapper.writeValueAsString(createTrafficPointElementVersionModel)))
