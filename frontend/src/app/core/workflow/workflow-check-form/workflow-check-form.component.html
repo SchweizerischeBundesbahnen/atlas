@@ -1,4 +1,7 @@
 <div *ngIf="authService.isAtLeastSupervisor('LIDI')" class="mt-5">
+  <div class="mb-2">
+    <span class="font-bold-4xl">{{ 'WORKFLOW.CHECK.CHECK' | translate }}</span>
+  </div>
   <app-workflow-form
     [formGroup]="formGroup"
     commentLabel="WORKFLOW.CHECK.COMMENT"

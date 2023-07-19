@@ -516,6 +516,7 @@
       "KEY_DATA": "Antragstellende Person"
     },
     "CHECK": {
+      "CHECK": "Freigabe",
       "COMMENT": "Bemerkung zur Freigabe / Ablehnung",
       "KEY_DATA": "Prüfende Person"
     },
