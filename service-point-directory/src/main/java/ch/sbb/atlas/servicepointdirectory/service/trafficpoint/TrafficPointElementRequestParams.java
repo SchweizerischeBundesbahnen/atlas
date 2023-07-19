@@ -37,6 +37,10 @@ public class TrafficPointElementRequestParams extends VersionedObjectDateRequest
     @Singular(ignoreNullCollections = true)
     private List<String> sboids = new ArrayList<>();
 
+    @Parameter(description = "sboid")
+    @Singular(ignoreNullCollections = true)
+    private List<String> businessOrganisations = new ArrayList<>();
+
     @Parameter(description = "List of UIC Country codes. The UIC Country code applies to the country of the service point number")
     @Singular(ignoreNullCollections = true)
     private List<String> uicCountryCodes = new ArrayList<>();
@@ -52,13 +56,10 @@ public class TrafficPointElementRequestParams extends VersionedObjectDateRequest
         return servicePointNumbers.stream().map(ServicePointNumber::ofNumberWithoutCheckDigit).toList();
     }
 
-    //public List<ServicePointNumber> getServicePointNumberShort() {
-            //return servicePointNumbers.stream().map(ServicePointNumber::getNumberShort).collect(Collectors.toList());
-    //}
-    //TODO
-//    @Parameter(description = "")
-//    @Singular(ignoreNullCollections = true)
-//    private List<String> sboid = new ArrayList<>();
+    //TODO: Does not work
+//    public List<ServicePointNumber> getServicePointNumberShort() {
+//            return servicePointNumbers.stream().map(servicePointNumber -> servicePointNumber.getNumberShort()).collect(Collectors.toList()).collect(Collectors.toList());
+//    }
 
 
 }
