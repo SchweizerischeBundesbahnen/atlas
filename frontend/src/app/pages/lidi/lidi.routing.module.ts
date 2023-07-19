@@ -11,11 +11,13 @@ import { SublinesComponent } from './sublines/sublines.component';
 import { LidiWorkflowOverviewComponent } from './workflow/overview/lidi-workflow-overview.component';
 import { LineVersionSnapshotResolver } from './workflow/detail/line-version-snapshot.resolver';
 import { LineVersionSnapshotDetailComponent } from './workflow/detail/line-version-snapshot-detail.component';
+import { canLeaveDirtyForm } from '../../core/leave-guard/leave-dirty-form-guard.service';
 
 const routes: Routes = [
   {
     path: Pages.LINES.path + '/:id',
     component: LineDetailComponent,
+    canDeactivate: [canLeaveDirtyForm],
     resolve: {
       lineDetail: LineDetailResolver,
     },
@@ -24,6 +26,7 @@ const routes: Routes = [
   {
     path: Pages.SUBLINES.path + '/:id',
     component: SublineDetailComponent,
+    canDeactivate: [canLeaveDirtyForm],
     resolve: {
       sublineDetail: SublineDetailResolver,
     },
