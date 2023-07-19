@@ -3,8 +3,10 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { LeaveDirtyFormGuard } from './leave-dirty-form-guard.service';
 import { DialogService } from '../components/dialog/dialog.service';
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
-const dialogServiceSpy = jasmine.createSpyObj(['confirm']);
+const dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirm']);
+const route = {} as ActivatedRouteSnapshot;
 
 describe('LeaveDirtyFormGuard', () => {
   let leaveDirtyFormGuard: LeaveDirtyFormGuard;
@@ -23,11 +25,24 @@ describe('LeaveDirtyFormGuard', () => {
   });
 
   it('should allow routing if form is not dirty', () => {
-    expect(leaveDirtyFormGuard.canDeactivate({ isFormDirty: () => false })).toBeTruthy();
+    const currentState = { url: '/line-directory/lines/add' } as RouterStateSnapshot;
+    const nextState = { url: '/line-directory/sublines' } as RouterStateSnapshot;
+
+    expect(
+      leaveDirtyFormGuard.canDeactivate(
+        { isFormDirty: () => false },
+        route,
+        currentState,
+        nextState
+      )
+    ).toBeTruthy();
   });
 
   it('should display confirmation dialog on dirty form', () => {
-    leaveDirtyFormGuard.canDeactivate({ isFormDirty: () => true });
+    const currentState = { url: '/line-directory/lines/add' } as RouterStateSnapshot;
+    const nextState = { url: '/line-directory/sublines' } as RouterStateSnapshot;
+
+    leaveDirtyFormGuard.canDeactivate({ isFormDirty: () => true }, route, currentState, nextState);
     expect(dialogServiceSpy.confirm).toHaveBeenCalled();
   });
 });
