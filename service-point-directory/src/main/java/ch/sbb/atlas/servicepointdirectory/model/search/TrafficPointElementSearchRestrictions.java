@@ -2,15 +2,24 @@ package ch.sbb.atlas.servicepointdirectory.model.search;
 
 import ch.sbb.atlas.searching.SpecificationBuilder;
 import ch.sbb.atlas.searching.specification.ValidOrEditionTimerangeSpecification;
+import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion.Fields;
+<<<<<<< HEAD
+=======
+import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion_;
+import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementRequestParams;
+import jakarta.persistence.criteria.Join;
+>>>>>>> dd12acf5e (ATLAS-1079 added commented out Join SQL)
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
+<<<<<<< HEAD
 import lombok.Builder;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion_;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementRequestParams;
+=======
+>>>>>>> dd12acf5e (ATLAS-1079 added commented out Join SQL)
 import lombok.Getter;
 import lombok.Singular;
 import lombok.ToString;
@@ -33,7 +42,7 @@ public class TrafficPointElementSearchRestrictions {
   private final TrafficPointElementRequestParams trafficPointElementRequestParams;
 
   @Singular(ignoreNullCollections = true)
-  private List<String> searchCriterias = new ArrayList<>();
+  private List<String> searchCriterias;
 
   private Optional<LocalDate> validOn;
 
@@ -50,7 +59,11 @@ public class TrafficPointElementSearchRestrictions {
         .and(specificationBuilder().validOnSpecification(getValidOn()))
         .and(specificationBuilder().stringInSpecification(sloidValues, TrafficPointElementVersion_.sloid))
         .and(specificationBuilder().inSpecification(trafficPointElementRequestParams.getServicePointNumbers(), Fields.servicePointNumber))
+<<<<<<< HEAD
         .and(specificationBuilder().inSpecification(trafficPointElementRequestParams.getServicePointNumbersShort(), Fields.servicePointNumber))
+=======
+        .and(specificationBuilder().inSpecification(trafficPointElementRequestParams.getServicePointNumberShort(), Fields.servicePointNumber))
+>>>>>>> dd12acf5e (ATLAS-1079 added commented out Join SQL)
         .and(new ValidOrEditionTimerangeSpecification<>(
             trafficPointElementRequestParams.getFromDate(),
             trafficPointElementRequestParams.getToDate(),
