@@ -6,9 +6,11 @@ import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementService;
+import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementValidationService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
@@ -19,6 +21,9 @@ import java.util.List;
 @IntegrationTest
 @Transactional
 public class BaseTrafficPointElementsServiceIntegrationTest {
+
+    @MockBean
+    private TrafficPointElementValidationService trafficPointElementValidationService;
 
     protected static final String SLOID = "ch:1:sloid:123";
     protected TrafficPointElementVersionRepository trafficPointElementVersionRepository;
