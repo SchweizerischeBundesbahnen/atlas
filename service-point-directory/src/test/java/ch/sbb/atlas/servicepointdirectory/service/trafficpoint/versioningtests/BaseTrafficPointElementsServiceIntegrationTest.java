@@ -1,4 +1,4 @@
-package ch.sbb.atlas.servicepointdirectory.service.trafficpoint.versioningintegrationtests;
+package ch.sbb.atlas.servicepointdirectory.service.trafficpoint.versioningtests;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
@@ -43,7 +43,7 @@ public class BaseTrafficPointElementsServiceIntegrationTest {
                 .servicePointNumber(ServicePointNumber.of(85891087))
                 .trafficPointElementType(TrafficPointElementType.BOARDING_PLATFORM)
                 .designation("Bezeichnung")
-                .designationOperational("Betriebliche Bezeichnung")
+                .designationOperational("Betriebliche Bezeich")
                 .compassDirection(271.0)
                 .sloid(SLOID)
                 .validFrom(LocalDate.of(2020, 1, 1))
@@ -58,7 +58,7 @@ public class BaseTrafficPointElementsServiceIntegrationTest {
                 .servicePointNumber(ServicePointNumber.of(85891088))
                 .trafficPointElementType(TrafficPointElementType.BOARDING_PLATFORM)
                 .designation("Bezeichnung")
-                .designationOperational("Betriebliche Bezeichnung")
+                .designationOperational("Betriebliche Bezeich")
                 .compassDirection(272.0)
                 .sloid(SLOID)
                 .validFrom(LocalDate.of(2022, 1, 1))
@@ -73,7 +73,7 @@ public class BaseTrafficPointElementsServiceIntegrationTest {
                 .servicePointNumber(ServicePointNumber.of(85891089))
                 .trafficPointElementType(TrafficPointElementType.BOARDING_PLATFORM)
                 .designation("Bezeichnung")
-                .designationOperational("Betriebliche Bezeichnung")
+                .designationOperational("Betriebliche Bezeich")
                 .compassDirection(273.0)
                 .sloid(SLOID)
                 .validFrom(LocalDate.of(2024, 1, 1))
@@ -88,7 +88,7 @@ public class BaseTrafficPointElementsServiceIntegrationTest {
                 .servicePointNumber(ServicePointNumber.of(85891090))
                 .trafficPointElementType(TrafficPointElementType.BOARDING_PLATFORM)
                 .designation("Bezeichnung")
-                .designationOperational("Betriebliche Bezeichnung")
+                .designationOperational("Betriebliche Bezeich")
                 .compassDirection(274.0)
                 .sloid(SLOID)
                 .validFrom(LocalDate.of(2025, 1, 1))
@@ -103,7 +103,7 @@ public class BaseTrafficPointElementsServiceIntegrationTest {
                 .servicePointNumber(ServicePointNumber.of(85891091))
                 .trafficPointElementType(TrafficPointElementType.BOARDING_PLATFORM)
                 .designation("Bezeichnung")
-                .designationOperational("Betriebliche Bezeichnung")
+                .designationOperational("Betriebliche Bezeich")
                 .compassDirection(275.0)
                 .sloid(SLOID)
                 .validFrom(LocalDate.of(2026, 1, 1))
