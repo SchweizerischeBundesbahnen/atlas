@@ -17,7 +17,6 @@ export class WorkflowComponent implements OnInit, OnDestroy {
   @Input() lineRecord!: LineRecord;
   @Input() descriptionForWorkflow!: string;
 
-  isAddWorkflowButtonDisabled = false;
   workflowInProgress = false;
   workflowId: number | undefined;
 
@@ -33,10 +32,10 @@ export class WorkflowComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.initWorkflowForm();
+    this.initWorkflowButtons();
   }
 
-  private initWorkflowForm() {
+  initWorkflowButtons() {
     const workflowsInProgress = this.filterWorkflowsInProgress();
     if (workflowsInProgress.length === 0) {
       this.workflowInProgress = false;

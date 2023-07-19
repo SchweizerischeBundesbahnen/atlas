@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { WorkflowDialogData } from './workflow-dialog-data';
@@ -28,7 +28,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './workflow-dialog.component.html',
   styleUrls: ['./workflow-dialog.component.scss'],
 })
-export class WorkflowDialogComponent implements OnInit {
+export class WorkflowDialogComponent implements OnInit, OnDestroy {
   workflowStartFormGroup: FormGroup<WorkflowFormGroup> = new FormGroup<WorkflowFormGroup>({
     comment: new FormControl('', [
       Validators.required,
@@ -82,6 +82,10 @@ export class WorkflowDialogComponent implements OnInit {
 
   ngOnInit() {
     this.initWorkflowForm();
+  }
+
+  ngOnDestroy() {
+    this.ngUnsubscribe.unsubscribe();
   }
 
   private initWorkflowForm() {
