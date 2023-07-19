@@ -11,9 +11,12 @@ import { ApplicationRole, ApplicationType, Status } from '../../../api';
 import { AuthService } from '../../auth/auth.service';
 import { ValidationService } from '../../validation/validation.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DetailFormComponent } from '../../leave-guard/leave-dirty-form-guard.service';
 
 @Directive()
-export abstract class BaseDetailController<TYPE extends Record> implements OnInit {
+export abstract class BaseDetailController<TYPE extends Record>
+  implements OnInit, DetailFormComponent
+{
   record!: TYPE;
   selectedRecordChange = new Subject<Record>();
   records!: Array<TYPE>;
@@ -352,5 +355,9 @@ export abstract class BaseDetailController<TYPE extends Record> implements OnIni
       });
     }
     return of(true);
+  }
+
+  isFormDirty() {
+    return this.form.dirty;
   }
 }

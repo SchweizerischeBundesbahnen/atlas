@@ -30,13 +30,14 @@ import { FileDownloadService } from '../../../core/components/file-upload/file/f
 import { OpenStatementInMailService } from './open-statement-in-mail.service';
 import { StatementShareService } from '../overview-detail/statement-share-service';
 import { Pages } from '../../pages';
+import { DetailFormComponent } from '../../../core/leave-guard/leave-dirty-form-guard.service';
 
 @Component({
   selector: 'app-statement-detail',
   templateUrl: './statement-detail.component.html',
   styleUrls: ['./statement-detail.component.scss'],
 })
-export class StatementDetailComponent implements OnInit, AfterViewInit {
+export class StatementDetailComponent implements OnInit, AfterViewInit, DetailFormComponent {
   YEAR_OPTIONS: number[] = [];
   CANTON_OPTIONS: Canton[] = [];
   STATUS_OPTIONS: StatementStatus[] = [];
@@ -67,6 +68,10 @@ export class StatementDetailComponent implements OnInit, AfterViewInit {
     private readonly statementShareService: StatementShareService,
     private readonly elementRef: ElementRef<HTMLElement>
   ) {}
+
+  isFormDirty() {
+    return this.form.dirty;
+  }
 
   get isHearingStatusArchived() {
     return TthUtils.isHearingStatusArchived(this.hearingStatus);
