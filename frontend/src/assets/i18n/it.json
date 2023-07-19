@@ -16,6 +16,7 @@
   "COMMON": {
     "LOADING": "Caricamento...",
     "BACK_TO_OVERVIEW": "Torna al sommario",
+    "BACK": "Indietro",
     "SAVE": "Salva",
     "SAVE_AND_CLOSE": "Salvare e chiudere",
     "ADD": "Aggiungi",
@@ -503,6 +504,7 @@
     "TITLE": "Audizione",
     "BUTTON": {
       "ADD": "Registrazione dell'audizione",
+      "OPEN": "Mostra l'audizione",
       "START": "Avviare audizione",
       "ACCEPT": "Approva",
       "REJECT": "Rifiuto",
@@ -514,6 +516,7 @@
       "KEY_DATA": "Richiedente"
     },
     "CHECK": {
+      "CHECK": "Rilascio",
       "COMMENT": "Commento sul rilascio / rifiuto",
       "KEY_DATA": "Revisore"
     },
