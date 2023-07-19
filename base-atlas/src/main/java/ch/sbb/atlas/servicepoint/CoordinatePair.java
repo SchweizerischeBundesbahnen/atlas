@@ -20,11 +20,11 @@ import lombok.ToString;
 public class CoordinatePair {
 
   @NotNull
-  @Schema(description = "North longitude", example = "47.15838")
+  @Schema(description = "North longitude", example = "225738.00000000000")
   private Double north;
 
   @NotNull
-  @Schema(description = "Eastern longitude", example = "7.29464")
+  @Schema(description = "Eastern longitude", example = "681821.00000000000")
   private Double east;
 
   @NotNull
