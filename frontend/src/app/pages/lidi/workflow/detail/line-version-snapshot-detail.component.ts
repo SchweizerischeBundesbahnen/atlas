@@ -1,10 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   LinesService,
-  LineType,
   LineVersion,
   LineVersionSnapshot,
-  PaymentType,
   Workflow,
   WorkflowService,
 } from '../../../../api';
@@ -24,8 +22,6 @@ import { DateService } from '../../../../core/date/date.service';
   styleUrls: ['./line-version-snapshot-detail.component.scss'],
 })
 export class LineVersionSnapshotDetailComponent implements OnInit, OnDestroy {
-  TYPE_OPTIONS = Object.values(LineType);
-  PAYMENT_TYPE_OPTIONS = Object.values(PaymentType);
   lineVersionSnapshot!: LineVersionSnapshot;
   showWorkflowCheckForm = false;
   versionAlreadyExists = true;

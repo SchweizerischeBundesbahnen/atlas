@@ -19,7 +19,7 @@ import { WhitespaceValidator } from '../../validation/whitespace/whitespace-vali
 })
 export class WorkflowCheckFormComponent implements OnInit {
   @Input() workflowId: number | undefined;
-  @Output() workflowEvent = new EventEmitter<WorkflowEvent>();
+  @Output() workflowChecked = new EventEmitter<void>();
 
   formGroup: FormGroup<WorkflowCheckFormGroup> = new FormGroup<WorkflowCheckFormGroup>({
     comment: new FormControl('', [
@@ -88,7 +88,7 @@ export class WorkflowCheckFormComponent implements OnInit {
         })
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe(() => {
-          this.workflowEvent.emit({ reload: true });
+          this.workflowChecked.emit();
           this.notificationService.success(
             accepted
               ? 'WORKFLOW.NOTIFICATION.CHECK.ACCEPTED'
