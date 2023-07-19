@@ -31,7 +31,7 @@ public class GeolocationBaseModel {
   @NotNull
   private CoordinatePair wgs84web;
 
-  @Schema(description = "Height of the coordinate point", example = "540.2")
+  @Schema(description = "Height of the coordinate point", example = "540.20000")
   private Double height;
 
 }
