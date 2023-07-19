@@ -168,7 +168,7 @@ describe('WorkflowComponent', () => {
     //when
     component.ngOnInit();
     //then
-    expect(component.isReadMode).toBeTruthy();
+    expect(component.workflowInProgress).toBeTruthy();
     expect(component.isAddWorkflowButtonDisabled).toBeTruthy();
     expect(component.workflowFormGroup.disable).toBeTruthy();
     const form = component.workflowFormGroup.value;
@@ -195,7 +195,7 @@ describe('WorkflowComponent', () => {
     expect(eventReloadParentSpy).toHaveBeenCalledWith({
       reload: true,
     });
-    expect(component.isReadMode).toBeTruthy();
+    expect(component.workflowInProgress).toBeTruthy();
     expect(component.isAddWorkflowButtonDisabled).toBeTruthy();
     expect(component.workflowFormGroup.disable).toBeTruthy();
     expect(component.isWorkflowFormEditable).toBeFalsy();
@@ -209,7 +209,7 @@ describe('WorkflowComponent', () => {
     //then
     expect(dialogServiceSpy.confirmLeave).toHaveBeenCalled();
     expect(component.isAddWorkflowButtonDisabled).toBeFalsy();
-    expect(component.isReadMode).toBeFalsy();
+    expect(component.workflowInProgress).toBeFalsy();
     expect(component.isWorkflowFormEditable).toBeFalsy();
   });
 
@@ -218,7 +218,7 @@ describe('WorkflowComponent', () => {
     component.toggleWorkflow();
     //then
     expect(component.isAddWorkflowButtonDisabled).toBeFalsy();
-    expect(component.isReadMode).toBeFalsy();
+    expect(component.workflowInProgress).toBeFalsy();
     expect(component.isWorkflowFormEditable).toBeFalsy();
   });
 });

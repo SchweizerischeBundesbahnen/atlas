@@ -42,11 +42,13 @@ import { MouseOverTitleDirective } from '../components/table/directive/mouse-ove
 import { FormatPipe } from '../components/table/pipe/format.pipe';
 import { InstanceOfPipe } from '../components/table-filter/instance-of.pipe';
 import { BackButtonDirective } from '../components/button/back-button/back-button.directive';
+import { WorkflowDialogComponent } from '../workflow/dialog/workflow-dialog.component';
 
 const coreComponents = [
   WorkflowFormComponent,
   WorkflowCheckFormComponent,
   WorkflowComponent,
+  WorkflowDialogComponent,
   BaseDetailComponent,
   DetailPageContainerComponent,
   DetailFooterComponent,
