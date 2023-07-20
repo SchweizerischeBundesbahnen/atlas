@@ -10,7 +10,6 @@ import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
-import ch.sbb.atlas.servicepoint.enumeration.ServicePointStatus;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
@@ -48,7 +47,6 @@ public class ServicePointVersionRepositoryTest {
         .designationLong("long designation")
         .designationOfficial("official designation")
         .abbreviation("BE")
-        .statusDidok3(ServicePointStatus.from(1))
         .businessOrganisation("somesboid")
         .status(Status.VALIDATED)
         .comment("Test comment.")
@@ -94,7 +92,6 @@ public class ServicePointVersionRepositoryTest {
         .designationLong("long designation")
         .designationOfficial("official designation")
         .abbreviation("BE")
-        .statusDidok3(ServicePointStatus.from(1))
         .businessOrganisation("somesboid")
         .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2020, 1, 1))
@@ -125,7 +122,6 @@ public class ServicePointVersionRepositoryTest {
         .designationLong("long designation")
         .designationOfficial("official designation")
         .abbreviation("BE")
-        .statusDidok3(ServicePointStatus.from(1))
         .businessOrganisation("somesboid")
         .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2020, 1, 1))
@@ -155,7 +151,6 @@ public class ServicePointVersionRepositoryTest {
         .designationLong("long designation")
         .designationOfficial("official designation")
         .abbreviation("BE")
-        .statusDidok3(ServicePointStatus.from(1))
         .businessOrganisation("somesboid")
         .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2020, 1, 1))
@@ -185,7 +180,6 @@ public class ServicePointVersionRepositoryTest {
         .designationLong("long designation")
         .designationOfficial("official designation")
         .abbreviation("BE")
-        .statusDidok3(ServicePointStatus.from(1))
         .businessOrganisation("somesboid")
         .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2020, 1, 1))
@@ -213,7 +207,6 @@ public class ServicePointVersionRepositoryTest {
         .designationLong("long designation")
         .designationOfficial("official designation")
         .abbreviation("BE")
-        .statusDidok3(ServicePointStatus.from(1))
         .businessOrganisation("somesboid")
         .status(Status.VALIDATED)
         .meansOfTransport(Set.of(MeanOfTransport.BUS))
@@ -246,7 +239,6 @@ public class ServicePointVersionRepositoryTest {
         .designationLong("long designation")
         .designationOfficial("official designation")
         .abbreviation("BE")
-        .statusDidok3(ServicePointStatus.from(1))
         .businessOrganisation("somesboid")
         .status(Status.VALIDATED)
         .meansOfTransport(Set.of(MeanOfTransport.BUS))
@@ -277,7 +269,6 @@ public class ServicePointVersionRepositoryTest {
         .designationLong("long designation")
         .designationOfficial("official designation")
         .abbreviation("BE")
-        .statusDidok3(ServicePointStatus.from(1))
         .businessOrganisation("somesboid")
         .status(Status.VALIDATED)
         .meansOfTransport(Set.of(MeanOfTransport.BUS))
@@ -321,7 +312,6 @@ public class ServicePointVersionRepositoryTest {
         .designationLong("long designation")
         .designationOfficial("official designation")
         .abbreviation("BE")
-        .statusDidok3(ServicePointStatus.from(1))
         .businessOrganisation("somesboid")
         .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2020, 1, 1))
