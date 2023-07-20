@@ -28,6 +28,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.util.List;
+
 @Tag(name = "ServicePoints")
 @RequestMapping("v1/service-points")
 public interface ServicePointApiV1 {
@@ -50,7 +52,7 @@ public interface ServicePointApiV1 {
   List<ServicePointItemImportResult> importServicePoints(@RequestBody @Valid ServicePointImportRequestModel servicePoints);
 
   @ResponseStatus(HttpStatus.CREATED)
-  @PostMapping()
+  @PostMapping
   ReadServicePointVersionModel createServicePoint(@RequestBody @Valid CreateServicePointVersionModel servicePointVersionModel);
 
   @ResponseStatus(HttpStatus.OK)

@@ -12,7 +12,7 @@ import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.SloidNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.exception.SloidsNotEqualException;
-import ch.sbb.atlas.servicepointdirectory.mapper.TrafficPointElementVerisionMapper;
+import ch.sbb.atlas.servicepointdirectory.mapper.TrafficPointElementVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.model.search.TrafficPointElementSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementImportService;
@@ -48,7 +48,7 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
             .validOn(validOn)
             .build());
     return Container.<ReadTrafficPointElementVersionModel>builder()
-        .objects(trafficPointElementVersions.stream().map(TrafficPointElementVerisionMapper::toModel).toList())
+        .objects(trafficPointElementVersions.stream().map(TrafficPointElementVersionMapper::toModel).toList())
         .totalCount(trafficPointElementVersions.getTotalElements())
         .build();
   }
@@ -59,7 +59,7 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
         trafficPointElementService.findBySloidOrderByValidFrom(
                 sloid)
             .stream()
-            .map(TrafficPointElementVerisionMapper::toModel).toList();
+            .map(TrafficPointElementVersionMapper::toModel).toList();
     if (trafficPointElementVersions.isEmpty()) {
       throw new SloidNotFoundException(sloid);
     }
@@ -68,7 +68,7 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
 
   @Override
   public ReadTrafficPointElementVersionModel getTrafficPointElementVersion(Long id) {
-    return trafficPointElementService.findById(id).map(TrafficPointElementVerisionMapper::toModel)
+    return trafficPointElementService.findById(id).map(TrafficPointElementVersionMapper::toModel)
         .orElseThrow(() -> new IdNotFoundException(id));
   }
 
@@ -80,26 +80,27 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
 
   @Override
   public ReadTrafficPointElementVersionModel createTrafficPoint(CreateTrafficPointElementVersionModel trafficPointElementVersionModel) {
-    return TrafficPointElementVerisionMapper.toModel(
-            createTrafficPoint(TrafficPointElementVerisionMapper.toEntity(trafficPointElementVersionModel)));
+    return TrafficPointElementVersionMapper.toModel(
+            createTrafficPoint(TrafficPointElementVersionMapper.toEntity(trafficPointElementVersionModel)));
   }
 
   @Override
-  public List<ReadTrafficPointElementVersionModel> updateTrafficPoint(Long id, CreateTrafficPointElementVersionModel trafficPointElementVersionModel) throws SloidsNotEqualException {
+  public List<ReadTrafficPointElementVersionModel> updateTrafficPoint(Long id, CreateTrafficPointElementVersionModel trafficPointElementVersionModel) {
     TrafficPointElementVersion trafficPointElementVersionToUpdate = trafficPointElementService.findById(id)
             .orElseThrow(() -> new IdNotFoundException(id));
 
     if (!trafficPointElementVersionToUpdate.getSloid().equals(trafficPointElementVersionModel.getSloid())) {
-        throw new SloidsNotEqualException("Sloid for provided id: " + trafficPointElementVersionToUpdate.getSloid() +
-                " and sloid in the request body: " + trafficPointElementVersionModel.getSloid() + " are not equal.");
+      String exceptionMessage = "Sloid for provided id: " + trafficPointElementVersionToUpdate.getSloid() +
+              " and sloid in the request body: " + trafficPointElementVersionModel.getSloid() + " are not equal.";
+        throw new SloidsNotEqualException(exceptionMessage);
     }
 
     update(trafficPointElementVersionToUpdate,
-            TrafficPointElementVerisionMapper.toEntity(trafficPointElementVersionModel));
+            TrafficPointElementVersionMapper.toEntity(trafficPointElementVersionModel));
 
     return trafficPointElementService.findBySloidOrderByValidFrom(trafficPointElementVersionToUpdate.getSloid())
             .stream()
-            .map(TrafficPointElementVerisionMapper::toModel)
+            .map(TrafficPointElementVersionMapper::toModel)
             .toList();
   }
 

@@ -27,7 +27,7 @@ import lombok.experimental.SuperBuilder;
 @FieldNameConstants
 @MappedSuperclass
 @AtlasVersionable
-public class GeolocationBaseEntity extends BaseDidokImportEntity {
+public abstract class GeolocationBaseEntity extends BaseDidokImportEntity {
 
   @NotNull
   @Enumerated(EnumType.STRING)
@@ -45,7 +45,7 @@ public class GeolocationBaseEntity extends BaseDidokImportEntity {
   private Double north;
 
   @AtlasVersionableProperty
-  @Digits(integer = 10, fraction = 3)
+  @Digits(integer = 10, fraction = 4)
   private Double height;
 
   public CoordinatePair asCoordinatePair() {
