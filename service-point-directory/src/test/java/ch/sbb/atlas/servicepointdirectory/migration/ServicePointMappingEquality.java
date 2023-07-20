@@ -62,9 +62,7 @@ public class ServicePointMappingEquality {
     assertThat(atlasCsvLine.isStopPoint()).isEqualTo(didokCsvLine.getIsHaltestelle());
 
     if (atlasCsvLine.getStopPointType() != null) {
-      assertThat(atlasCsvLine.getStopPointType().getId())
-          .withFailMessage("didokcode: "+ didokCsvLine.getDidokCode() +":"+didokCsvLine.getHTypId() + " atlas:"+atlasCsvLine.getStopPointType())
-          .isEqualTo(didokCsvLine.getHTypId());
+      assertThat(atlasCsvLine.getStopPointType().getId()).isEqualTo(didokCsvLine.getHTypId());
     } else {
       assertThat(didokCsvLine.getHTypId()).isNull();
     }
@@ -180,7 +178,10 @@ public class ServicePointMappingEquality {
   }
 
   private void performEqualityCheckOnCoordinates() {
-    assertThat(atlasCsvLine.getLv95East()).isEqualTo(didokCsvLine.getELv95(), DoubleAssertion.equalOnDecimalDigits(2));
+    assertThat(atlasCsvLine.getLv95East())
+        .withFailMessage("didokcode: "+ didokCsvLine.getDidokCode() +":"+didokCsvLine.getGoBezeichnungDe() + ":"+didokCsvLine.getValidFrom()+
+            " atlas:"+atlasCsvLine.getValidFrom())
+        .isEqualTo(didokCsvLine.getELv95(), DoubleAssertion.equalOnDecimalDigits(2));
     assertThat(atlasCsvLine.getLv95North()).isEqualTo(didokCsvLine.getNLv95(), DoubleAssertion.equalOnDecimalDigits(2));
 
     performEqualityCheckOrIgnoreInfoplus(atlasCsvLine, atlasCsvLine.getWgs84East(), didokCsvLine.getEWgs84(), 7);
