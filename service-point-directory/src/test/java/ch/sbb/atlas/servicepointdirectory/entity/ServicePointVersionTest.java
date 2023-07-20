@@ -8,7 +8,6 @@ import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
-import ch.sbb.atlas.servicepoint.enumeration.ServicePointStatus;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
@@ -31,7 +30,6 @@ class ServicePointVersionTest {
         .designationLong("long designation")
         .designationOfficial("official designation")
         .abbreviation("BE")
-        .statusDidok3(ServicePointStatus.from(1))
         .businessOrganisation("somesboid")
         .status(Status.VALIDATED)
         .meansOfTransport(Set.of(MeanOfTransport.BUS))
@@ -57,7 +55,6 @@ class ServicePointVersionTest {
         .designationLong("long designation")
         .designationOfficial("official designation")
         .abbreviation("BE")
-        .statusDidok3(ServicePointStatus.from(1))
         .businessOrganisation("somesboid")
         .status(Status.VALIDATED)
         .stopPointType(StopPointType.ORDERLY)
@@ -83,7 +80,6 @@ class ServicePointVersionTest {
         .designationLong("long designation")
         .designationOfficial("official designation")
         .abbreviation("BE")
-        .statusDidok3(ServicePointStatus.from(1))
         .businessOrganisation("somesboid")
         .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2020, 1, 1))
@@ -108,7 +104,6 @@ class ServicePointVersionTest {
         .designationLong("long designation")
         .designationOfficial("official designation")
         .abbreviation("BE")
-        .statusDidok3(ServicePointStatus.from(1))
         .businessOrganisation("somesboid")
         .status(Status.VALIDATED)
         .validFrom(LocalDate.now())
@@ -132,7 +127,6 @@ class ServicePointVersionTest {
         .designationLong("long designation")
         .designationOfficial("official designation")
         .abbreviation("BE")
-        .statusDidok3(ServicePointStatus.from(1))
         .businessOrganisation("somesboid")
         .status(Status.VALIDATED)
         .meansOfTransport(Set.of(MeanOfTransport.BUS))
