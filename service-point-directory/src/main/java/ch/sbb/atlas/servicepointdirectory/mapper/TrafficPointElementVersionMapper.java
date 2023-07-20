@@ -7,7 +7,7 @@ import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class TrafficPointElementVerisionMapper {
+public class TrafficPointElementVersionMapper {
 
   public static ReadTrafficPointElementVersionModel toModel(TrafficPointElementVersion trafficPointElementVersion) {
     return ReadTrafficPointElementVersionModel.builder()
