@@ -21,6 +21,8 @@ import { TextFieldComponent } from '../../../../core/form-components/text-field/
 import { SearchSelectComponent } from '../../../../core/form-components/search-select/search-select.component';
 import { SelectComponent } from '../../../../core/form-components/select/select.component';
 import { AtlasSpacerComponent } from '../../../../core/components/spacer/atlas-spacer.component';
+import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
+import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
 
 const sublineVersion: SublineVersion = {
   id: 1234,
@@ -196,6 +198,8 @@ function setupTestBed(
       TextFieldComponent,
       SelectComponent,
       AtlasSpacerComponent,
+      DetailPageContainerComponent,
+      DetailFooterComponent,
     ],
     imports: [AppTestingModule],
     providers: [

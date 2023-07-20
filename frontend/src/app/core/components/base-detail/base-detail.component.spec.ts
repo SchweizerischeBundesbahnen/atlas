@@ -12,6 +12,8 @@ import { ApplicationRole, ApplicationType, Permission, Status } from '../../../a
 import { MockUserDetailInfoComponent } from '../../../app.testing.mocks';
 import { AtlasButtonComponent } from '../button/atlas-button.component';
 import { NotificationService } from '../../notification/notification.service';
+import { DetailPageContainerComponent } from '../detail-page-container/detail-page-container.component';
+import { DetailFooterComponent } from '../detail-footer/detail-footer.component';
 
 @Component({
   selector: 'app-coverage',
@@ -21,12 +23,6 @@ class MockAppCoverageComponent {
   @Input() pageType!: any;
   @Input() currentRecord!: any;
 }
-
-@Component({
-  selector: 'app-dialog-close',
-  template: '',
-})
-class MockDialogCloseComponent {}
 
 describe('BaseDetailComponent', () => {
   /*eslint-disable */
@@ -76,9 +72,10 @@ describe('BaseDetailComponent', () => {
       declarations: [
         BaseDetailComponent,
         MockAppCoverageComponent,
-        MockDialogCloseComponent,
         AtlasButtonComponent,
         MockUserDetailInfoComponent,
+        DetailPageContainerComponent,
+        DetailFooterComponent,
       ],
       imports: [AppTestingModule],
       providers: [
