@@ -19,6 +19,8 @@ import { MaterialModule } from '../../../../../core/module/material.module';
 import { FormGroup } from '@angular/forms';
 import { UserPermissionManager } from '../../../service/user-permission-manager';
 import SpyObj = jasmine.SpyObj;
+import { DetailPageContainerComponent } from '../../../../../core/components/detail-page-container/detail-page-container.component';
+import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
 
 @Component({
   selector: 'app-user-select',
@@ -77,6 +79,8 @@ describe('UserAdministrationUserCreateComponent', () => {
         UserAdministrationUserCreateComponent,
         MockUserSelectComponent,
         MockDialogCloseComponent,
+        DetailPageContainerComponent,
+        DetailFooterComponent,
       ],
       imports: [
         RouterTestingModule,
