@@ -14,6 +14,7 @@ import { ErrorNotificationComponent } from '../../../../core/notification/error/
 import { InfoIconComponent } from '../../../../core/form-components/info-icon/info-icon.component';
 import {
   MockAppDetailWrapperComponent,
+  MockAtlasButtonComponent,
   MockBoSelectComponent,
 } from '../../../../app.testing.mocks';
 import { AuthService } from '../../../../core/auth/auth.service';
@@ -30,6 +31,8 @@ import { TextFieldComponent } from '../../../../core/form-components/text-field/
 import { InfoLinkDirective } from '../../../../core/form-components/info-icon/info-link.directive';
 import { SelectComponent } from '../../../../core/form-components/select/select.component';
 import { AtlasSpacerComponent } from '../../../../core/components/spacer/atlas-spacer.component';
+import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
+import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
 
 const lineVersionSnapsot: LineVersionSnapshot = {
   id: 1234,
@@ -72,12 +75,6 @@ const lineVersion: LineVersion = {
 let component: LineVersionSnapshotDetailComponent;
 let fixture: ComponentFixture<LineVersionSnapshotDetailComponent>;
 
-@Component({
-  selector: 'app-dialog-close',
-  template: '',
-})
-class MockDialogCloseComponent {}
-
 describe('LineVersionSnapshotDetailComponent', () => {
   const mockLinesService = jasmine.createSpyObj('linesService', [
     'getLineVersionSnapshotById',
@@ -117,7 +114,6 @@ function setupTestBed(
       LineDetailFormComponent,
       MockBoSelectComponent,
       ErrorNotificationComponent,
-      MockDialogCloseComponent,
       CommentComponent,
       UserDetailInfoComponent,
       AtlasLabelFieldComponent,
@@ -128,6 +124,9 @@ function setupTestBed(
       InfoIconComponent,
       LinkIconComponent,
       InfoLinkDirective,
+      MockAtlasButtonComponent,
+      DetailFooterComponent,
+      DetailPageContainerComponent,
     ],
     imports: [AppTestingModule],
     providers: [

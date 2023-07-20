@@ -12,6 +12,8 @@ import { MockAppDetailWrapperComponent, MockSelectComponent } from '../../../../
 import { AuthService } from '../../../../core/auth/auth.service';
 import { FormModule } from '../../../../core/module/form.module';
 import { TranslatePipe } from '@ngx-translate/core';
+import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
+import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
 
 const businessOrganisationVersion: BusinessOrganisationVersion = {
   id: 1234,
@@ -196,6 +198,8 @@ function setupTestBed(
       MockSelectComponent,
       ErrorNotificationComponent,
       InfoIconComponent,
+      DetailPageContainerComponent,
+      DetailFooterComponent,
     ],
     imports: [AppTestingModule, FormModule],
     providers: [
