@@ -10,7 +10,6 @@ import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
-import ch.sbb.atlas.servicepoint.enumeration.ServicePointStatus;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.converter.CategoryConverter;
 import ch.sbb.atlas.servicepointdirectory.converter.MeanOfTransportConverter;
@@ -106,11 +105,6 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
   @Size(max = AtlasFieldLengths.LENGTH_6)
   @AtlasVersionableProperty
   private String abbreviation;
-
-  @NotNull
-  @AtlasVersionableProperty
-  @Enumerated(EnumType.STRING)
-  private ServicePointStatus statusDidok3;
 
   @Size(max = AtlasFieldLengths.LENGTH_10)
   @AtlasVersionableProperty
