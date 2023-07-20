@@ -17,7 +17,7 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @FieldNameConstants
-@Schema(name = "TrafficPointElementVersion")
+@Schema(name = "CreateTrafficPointElementVersionModel")
 public class CreateTrafficPointElementVersionModel extends TrafficPointElementVersionModel {
 
     @Schema(description = "Seven digits number. First two digits represent Country Code. "
