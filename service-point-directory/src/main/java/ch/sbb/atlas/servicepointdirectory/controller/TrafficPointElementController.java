@@ -107,19 +107,14 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
   private TrafficPointElementVersion createTrafficPoint(TrafficPointElementVersion trafficPointElementVersion) {
     ServicePointNumber servicePointNumber = trafficPointElementVersion.getServicePointNumber();
     trafficPointElementValidationService.validateServicePointNumberExists(trafficPointElementVersion.getServicePointNumber());
-    ServicePointVersion servicePointVersionToCheckPermissionRights = servicePointService.findAllByNumberOrderByValidFrom(servicePointNumber)
-            .stream()
-            .findFirst()
-            .orElseThrow();
-    return trafficPointElementService.checkPermissionRightsAndSave(trafficPointElementVersion, servicePointVersionToCheckPermissionRights);
+    return trafficPointElementService.checkPermissionRightsAndSave(trafficPointElementVersion, servicePointService.findAllByNumberOrderByValidFrom(servicePointNumber));
   }
 
   private void update(TrafficPointElementVersion currentVersion, TrafficPointElementVersion editedVersion) {
     ServicePointNumber servicePointNumber = editedVersion.getServicePointNumber();
     trafficPointElementValidationService.validateServicePointNumberExists(editedVersion.getServicePointNumber());
     List<ServicePointVersion> allServicePointVersions = servicePointService.findAllByNumberOrderByValidFrom(servicePointNumber);
-    ServicePointVersion editedServicePointVersion = allServicePointVersions.stream().findFirst().orElseThrow();
-    trafficPointElementService.checkPermissionRightsAndUpdate(currentVersion, editedVersion, editedServicePointVersion, allServicePointVersions);
+    trafficPointElementService.checkPermissionRightsAndUpdate(currentVersion, editedVersion, allServicePointVersions);
   }
 
 }
