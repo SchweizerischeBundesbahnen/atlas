@@ -170,7 +170,7 @@ export class WorkflowDialogComponent implements OnInit, OnDestroy {
       businessObjectId: this.data.lineRecord.id !== undefined ? this.data.lineRecord.id : NaN,
       swissId: this.data.lineRecord.slnid ?? '',
       workflowType: WorkflowTypeEnum.Line,
-      description: this.data.descriptionForWorkflow!,
+      description: this.data.descriptionForWorkflow,
       workflowComment: this.workflowStartFormGroup.value.comment!,
       client: {
         firstName: this.workflowStartFormGroup.value.firstName!,
