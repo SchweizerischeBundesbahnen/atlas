@@ -93,6 +93,26 @@ include::{snippets}/traffic-point-element-controller-api-test/should-get-traffic
 
 include::{snippets}/traffic-point-element-controller-api-test/should-fail-on-invalid-traffic-point-element-number/auto-section.adoc[]
 
+== Create TrafficPointElement - Successfully
+
+include::{snippets}/traffic-point-element-controller-api-test/should-create-traffic-point-element/auto-section.adoc[]
+
+== Update TrafficPointElement - Successfully
+
+include::{snippets}/traffic-point-element-controller-api-test/should-update-traffic-point-and-create-multiple-versions/auto-section.adoc[]
+
+== Update TrafficPointElement - Successfully
+
+include::{snippets}/traffic-point-element-controller-api-test/should-update-traffic-point-and-not-create-multiple-versions/auto-section.adoc[]
+
+== Update TrafficPointElement - NotEqualSloids
+
+include::{snippets}/traffic-point-element-controller-api-test/should-throw-sloids-not-equal-exception-when-update/auto-section.adoc[]
+
+== Update TrafficPointElement - OptimisticLocking
+
+include::{snippets}/traffic-point-element-controller-api-test/should-return-optimistic-locking-error-response/auto-section.adoc[]
+
 
 = Loading Points
 
