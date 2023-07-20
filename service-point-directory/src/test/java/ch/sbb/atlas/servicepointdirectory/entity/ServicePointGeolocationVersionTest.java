@@ -28,7 +28,7 @@ class ServicePointGeolocationVersionTest {
         .spatialReference(SpatialReference.LV95)
         .east(2600037.945)
         .north(1199749.812)
-        .height(2540.211)
+        .height(2540.2112)
         .country(Country.SWITZERLAND)
         .swissCanton(SwissCanton.BERN)
         .swissDistrictName("Bern")
