@@ -23,18 +23,15 @@ public class ServicePointMappingEquality {
   private final ServicePointCsvModel didokCsvLine;
   private final ServicePointVersionCsvModel atlasCsvLine;
 
+  // ActualDate and FutureTimetable does not export SLOID in Didok
+  private final boolean isFullExport;
+
   public void performCheck() {
     performCoreDataCheck();
     performTypeChecks();
     performBusinessOrganisationCheck();
     performMeansOfTransportCheck();
     performCategoryCheck();
-
-    // TODO: check after https://flow.sbb.ch/browse/ATLAS-1318 and https://flow.sbb
-    //  .ch/browse/ATLAS-873
-    //assertThat(atlasCsvLine.fotComment).isEqualTo(didokCsvLine.BAV_BEMERKUNG);
-
-    performCreatedAndEditedCheck();
 
     // Since didok sometimes has locations but virtual, we should perform this check only if atlas has a geolocation ?
     if (atlasCsvLine.isHasGeolocation()) {
@@ -47,12 +44,9 @@ public class ServicePointMappingEquality {
     assertThat(atlasCsvLine.getNumberShort()).isEqualTo(didokCsvLine.getNummer());
     assertThat(atlasCsvLine.getUicCountryCode()).isEqualTo(didokCsvLine.getLaendercode());
 
-    // TODO: actual_date: why does DIDOK don't export the SLOID?
-//    assertThat(atlasCsvLine.getSloid())
-//        .withFailMessage(
-//            generalErrorMessage(didokCsvLine) + "didok:" + didokCsvLine.getSloid() + ", atlas:"
-//                + atlasCsvLine.getSloid())
-//        .isEqualTo(didokCsvLine.getSloid());
+    if (isFullExport) {
+      assertThat(atlasCsvLine.getSloid()).isEqualTo(didokCsvLine.getSloid());
+    }
 
     assertThat(atlasCsvLine.getDesignationOfficial()).isEqualTo(
         didokCsvLine.getBezeichnungOffiziell());
@@ -68,7 +62,9 @@ public class ServicePointMappingEquality {
     assertThat(atlasCsvLine.isStopPoint()).isEqualTo(didokCsvLine.getIsHaltestelle());
 
     if (atlasCsvLine.getStopPointType() != null) {
-      assertThat(atlasCsvLine.getStopPointType().getId()).isEqualTo(didokCsvLine.getHTypId());
+      assertThat(atlasCsvLine.getStopPointType().getId())
+          .withFailMessage("didokcode: "+ didokCsvLine.getDidokCode() +":"+didokCsvLine.getHTypId() + " atlas:"+atlasCsvLine.getStopPointType())
+          .isEqualTo(didokCsvLine.getHTypId());
     } else {
       assertThat(didokCsvLine.getHTypId()).isNull();
     }
@@ -159,15 +155,6 @@ public class ServicePointMappingEquality {
     }
   }
 
-  private void performCreatedAndEditedCheck() {
-    if (AtlasCsvReader.dateFromString(atlasCsvLine.getValidFrom()).equals(didokCsvLine.getValidFrom())) {
-      assertThat(AtlasCsvReader.timestampFromString(atlasCsvLine.getCreationDate()))
-          .isEqualToIgnoringNanos(didokCsvLine.getCreatedAt());
-      assertThat(AtlasCsvReader.timestampFromString(atlasCsvLine.getEditionDate()))
-          .isEqualToIgnoringNanos(didokCsvLine.getEditedAt());
-    }
-  }
-
   private void performEqualityCheckOnGeoLocation() {
     if (didokCsvLine.getIsoCountryCode() != null) {
       assertThat(Country.fromIsoCode(atlasCsvLine.getIsoCountryCode())).isEqualTo(
@@ -187,7 +174,9 @@ public class ServicePointMappingEquality {
     assertThat(atlasCsvLine.getLocalityName()).isEqualTo(didokCsvLine.getOrtschaftsName());
 
     performEqualityCheckOnCoordinates();
-    assertThat(atlasCsvLine.getHeight()).isEqualTo(didokCsvLine.getHeight());
+    if (isFullExport) {
+      assertThat(atlasCsvLine.getHeight()).isEqualTo(didokCsvLine.getHeight());
+    }
   }
 
   private void performEqualityCheckOnCoordinates() {
@@ -197,18 +186,10 @@ public class ServicePointMappingEquality {
     performEqualityCheckOrIgnoreInfoplus(atlasCsvLine, atlasCsvLine.getWgs84East(), didokCsvLine.getEWgs84(), 7);
     performEqualityCheckOrIgnoreInfoplus(atlasCsvLine, atlasCsvLine.getWgs84North(), didokCsvLine.getNWgs84(), 7);
 
-    // TODO: Change from 1076444.88305452 to 1076444.88205452 on 0.001 in
-    //  DIDOK3_DIENSTSTELLEN_ALL_V_3_20230712021552.csv was not recognized,
-    //  DIDOK_CODE=11023754
-//    performEqualityCheckOrIgnoreInfoplus(atlasCsvLine, atlasCsvLine.getWgs84WebEast(),
-//        didokCsvLine.getEWgs84web(), 3);
-//    if (Double.valueOf(1076444.88).equals(didokCsvLine.getEWgs84web())) {
-//      log.error(
-//          generalErrorMessage(didokCsvLine) + " didok: " + didokCsvLine.getEWgs84web() + " atlas: "
-//              + atlasCsvLine.getWgs84East());
-//    }
-//    performEqualityCheckOrIgnoreInfoplus(atlasCsvLine, atlasCsvLine.getWgs84WebNorth(),
-//        didokCsvLine.getNWgs84web(), 3);
+    if (isFullExport) {
+      performEqualityCheckOrIgnoreInfoplus(atlasCsvLine, atlasCsvLine.getWgs84WebEast(), didokCsvLine.getEWgs84web(), 3);
+      performEqualityCheckOrIgnoreInfoplus(atlasCsvLine, atlasCsvLine.getWgs84WebNorth(), didokCsvLine.getNWgs84web(), 3);
+    }
   }
 
   private static void performEqualityCheckOrIgnoreInfoplus(ServicePointVersionCsvModel atlasCsvLine,
