@@ -26,8 +26,8 @@ public class ServicePointMigrationIntegrationTest {
 
   static final String BASE_PATH = "/migration/";
 
-  private static final String DIDOK_CSV_FILE = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20230718021052.csv";
-  private static final String ATLAS_CSV_FILE = "full-world-service-point-2023-07-18.csv";
+  private static final String DIDOK_CSV_FILE = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20230720020014.csv";
+  private static final String ATLAS_CSV_FILE = "full-world-service-point-2023-07-20.csv";
 
   private static final List<ServicePointVersionCsvModel> atlasCsvLines = new ArrayList<>();
   private static final List<ServicePointCsvModel> didokCsvLines = new ArrayList<>();
@@ -106,7 +106,7 @@ public class ServicePointMigrationIntegrationTest {
     didokCsvLines.forEach(didokCsvLine -> {
       ServicePointVersionCsvModel atlasCsvLine = findCorrespondingAtlasServicePointVersion(didokCsvLine,
           groupedAtlasNumbers.get(didokCsvLine.getDidokCode()));
-      new ServicePointMappingEquality(didokCsvLine, atlasCsvLine).performCheck();
+      new ServicePointMappingEquality(didokCsvLine, atlasCsvLine, true).performCheck();
     });
   }
 
