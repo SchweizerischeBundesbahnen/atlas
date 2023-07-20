@@ -8,7 +8,6 @@ import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
-import ch.sbb.atlas.servicepoint.enumeration.ServicePointStatus;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.atlas.validation.DatesValidator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -60,10 +59,6 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
   @Schema(description = "Location abbreviation. Mainly used by the railways. Abbreviations may not be used as a code for "
           + "identifying locations.", example = "BIBD", maxLength = 6)
   private String abbreviation;
-
-  @NotNull
-  @Schema(description = "Status, Code of status of the service point, useful for specific business tasks.")
-  private ServicePointStatus statusDidok3;
 
   @Schema(description = "Indicates if this a operatingPoint.")
   private boolean operatingPoint;

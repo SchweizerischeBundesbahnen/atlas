@@ -32,8 +32,6 @@ public class ReadServicePointVersionModel extends ServicePointVersionModel {
   @Valid
   private ServicePointNumber number;
 
-  private CodeAndDesignation statusDidok3Information;
-
   @Schema(description = "Details to the categories.")
   private List<CodeAndDesignation> categoriesInformation;
 
