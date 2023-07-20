@@ -133,6 +133,4 @@ public class ServicePointVersionCsvModel {
 
   private String editionDate;
 
-  private String statusDidok3;
-
 }
