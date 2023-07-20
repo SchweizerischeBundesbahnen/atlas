@@ -26,6 +26,8 @@ import { MockUserDetailInfoComponent } from '../../../../../app.testing.mocks';
 import { Data } from '../../../components/read-only-data/data';
 import { ReadOnlyData } from '../../../components/read-only-data/read-only-data';
 import SpyObj = jasmine.SpyObj;
+import { DetailPageContainerComponent } from '../../../../../core/components/detail-page-container/detail-page-container.component';
+import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
 
 @Component({
   selector: 'app-user-administration-read-only-data',
@@ -91,6 +93,8 @@ describe('UserAdministrationUserEditComponent', () => {
         MockUserAdministrationReadOnlyDataComponent,
         EditTitlePipe,
         MockUserDetailInfoComponent,
+        DetailPageContainerComponent,
+        DetailFooterComponent,
       ],
       imports: [
         TranslateModule.forRoot({

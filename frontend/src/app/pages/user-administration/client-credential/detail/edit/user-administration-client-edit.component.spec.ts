@@ -20,12 +20,8 @@ import { MockUserDetailInfoComponent } from '../../../../../app.testing.mocks';
 import { Data } from '../../../components/read-only-data/data';
 import { ReadOnlyData } from '../../../components/read-only-data/read-only-data';
 import SpyObj = jasmine.SpyObj;
-
-@Component({
-  selector: 'app-dialog-close',
-  template: '',
-})
-class MockDialogCloseComponent {}
+import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
+import { DetailPageContainerComponent } from '../../../../../core/components/detail-page-container/detail-page-container.component';
 
 @Component({
   selector: 'app-user-administration-read-only-data',
@@ -97,9 +93,10 @@ describe('UserAdministrationClientEditComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [
         UserAdministrationClientEditComponent,
-        MockDialogCloseComponent,
         MockUserDetailInfoComponent,
         MockUserAdministrationReadOnlyDataComponent,
+        DetailFooterComponent,
+        DetailPageContainerComponent,
       ],
       imports: [
         TranslateModule.forRoot({

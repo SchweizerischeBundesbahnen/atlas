@@ -13,6 +13,9 @@ import { AtlasFieldErrorComponent } from '../../../../core/form-components/atlas
 import { FieldExample } from '../../../../core/form-components/text-field/field-example';
 import { AtlasFieldCustomError } from '../../../../core/form-components/atlas-field-error/atlas-field-custom-error';
 import { ActivatedRoute } from '@angular/router';
+import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
+import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
+import { MockAtlasButtonComponent } from '../../../../app.testing.mocks';
 
 const company: Company = {
   uicCode: 1234,
@@ -21,12 +24,6 @@ const company: Company = {
 
 let component: CompanyDetailComponent;
 let fixture: ComponentFixture<CompanyDetailComponent>;
-
-@Component({
-  selector: 'app-dialog-close',
-  template: '',
-})
-class MockDialogCloseComponent {}
 
 @Component({
   selector: 'atlas-text-field',
@@ -85,10 +82,12 @@ function setupTestBed(data: { companyDetail: string | Company }) {
       ErrorNotificationComponent,
       InfoIconComponent,
       LinkIconComponent,
-      MockDialogCloseComponent,
       AtlasLabelFieldComponent,
       AtlasFieldErrorComponent,
       MockAtlasTextFieldComponent,
+      DetailPageContainerComponent,
+      DetailFooterComponent,
+      MockAtlasButtonComponent,
     ],
     imports: [AppTestingModule],
     providers: [
