@@ -43,9 +43,9 @@ public class TrafficPointElementService {
     return trafficPointElementVersionRepository.existsBySloid(sloid);
   }
 
-  @PreAuthorize("@countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#servicePointVersion, "
+  @PreAuthorize("@countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreateOrEditTrafficPoint(#servicePointVersions, "
           + "T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
-  public TrafficPointElementVersion checkPermissionRightsAndSave(TrafficPointElementVersion trafficPointElementVersion, ServicePointVersion servicePointVersion) {
+  public TrafficPointElementVersion checkPermissionRightsAndSave(TrafficPointElementVersion trafficPointElementVersion, List<ServicePointVersion> servicePointVersions) {
     return save(trafficPointElementVersion);
   }
 
@@ -58,10 +58,9 @@ public class TrafficPointElementService {
     trafficPointElementVersionRepository.deleteById(id);
   }
 
-  @PreAuthorize("@countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdateCountryBased(#editedVersion, "
-          + "#currentVersions, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
-  public void checkPermissionRightsAndUpdate(TrafficPointElementVersion currentVersionTPEV, TrafficPointElementVersion editedVersionTPEV,
-                                             ServicePointVersion editedVersion, List<ServicePointVersion> currentVersions) {
+  @PreAuthorize("@countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreateOrEditTrafficPoint(#currentVersions, "
+          + "T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
+  public void checkPermissionRightsAndUpdate(TrafficPointElementVersion currentVersionTPEV, TrafficPointElementVersion editedVersionTPEV, List<ServicePointVersion> currentVersions) {
     updateTrafficPointElementVersion(currentVersionTPEV, editedVersionTPEV);
   }
 
