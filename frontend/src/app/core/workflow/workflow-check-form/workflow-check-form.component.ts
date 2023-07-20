@@ -10,7 +10,6 @@ import { Router } from '@angular/router';
 import { NotificationService } from '../../notification/notification.service';
 import { AuthService } from '../../auth/auth.service';
 import { ValidationService } from '../../validation/validation.service';
-import { WorkflowEvent } from '../model/workflow-event';
 import { WhitespaceValidator } from '../../validation/whitespace/whitespace-validator';
 
 @Component({
