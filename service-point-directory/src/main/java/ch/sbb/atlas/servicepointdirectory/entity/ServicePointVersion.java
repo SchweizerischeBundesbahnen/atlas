@@ -16,6 +16,7 @@ import ch.sbb.atlas.servicepointdirectory.converter.MeanOfTransportConverter;
 import ch.sbb.atlas.servicepointdirectory.converter.ServicePointNumberConverter;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.GeolocationBaseEntity;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
+import ch.sbb.atlas.servicepointdirectory.model.ServicePointStatus;
 import ch.sbb.atlas.validation.DatesValidator;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
@@ -40,6 +41,10 @@ import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Stream;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -48,11 +53,6 @@ import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
 import org.apache.commons.lang3.StringUtils;
-
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Stream;
 
 
 @NoArgsConstructor
@@ -105,6 +105,10 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
   @Size(max = AtlasFieldLengths.LENGTH_6)
   @AtlasVersionableProperty
   private String abbreviation;
+
+  @AtlasVersionableProperty
+  @Enumerated(EnumType.STRING)
+  private ServicePointStatus statusDidok3;
 
   @Size(max = AtlasFieldLengths.LENGTH_10)
   @AtlasVersionableProperty
