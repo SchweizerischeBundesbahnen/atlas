@@ -6,7 +6,6 @@ import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
-import ch.sbb.atlas.servicepoint.enumeration.ServicePointStatus;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
@@ -56,7 +55,6 @@ public abstract class BaseServicePointServiceIntegrationTest {
             .numberShort(89008)
             .country(Country.SWITZERLAND)
             .designationOfficial("Bern, Wyleregg")
-            .statusDidok3(ServicePointStatus.IN_OPERATION)
             .businessOrganisation("ch:1:sboid:100626")
             .status(Status.VALIDATED)
             .validFrom(LocalDate.of(2020, 1, 1))
@@ -77,7 +75,6 @@ public abstract class BaseServicePointServiceIntegrationTest {
             .numberShort(89008)
             .country(Country.SWITZERLAND)
             .designationOfficial("Bern, Thunplatz")
-            .statusDidok3(ServicePointStatus.IN_OPERATION)
             .businessOrganisation("ch:1:sboid:100626")
             .status(Status.VALIDATED)
             .validFrom(LocalDate.of(2022, 1, 1))
@@ -98,7 +95,6 @@ public abstract class BaseServicePointServiceIntegrationTest {
             .numberShort(89008)
             .country(Country.SWITZERLAND)
             .designationOfficial("Bern, Eigerplatz")
-            .statusDidok3(ServicePointStatus.IN_OPERATION)
             .businessOrganisation("ch:1:sboid:100626")
             .status(Status.VALIDATED)
             .validFrom(LocalDate.of(2024, 1, 1))
@@ -119,7 +115,6 @@ public abstract class BaseServicePointServiceIntegrationTest {
             .numberShort(89008)
             .country(Country.SWITZERLAND)
             .designationOfficial("Köniz, Liebefeld")
-            .statusDidok3(ServicePointStatus.IN_OPERATION)
             .businessOrganisation("ch:1:sboid:100626")
             .status(Status.VALIDATED)
             .validFrom(LocalDate.of(2025, 1, 1))
@@ -140,7 +135,6 @@ public abstract class BaseServicePointServiceIntegrationTest {
             .numberShort(89008)
             .country(Country.SWITZERLAND)
             .designationOfficial("Bern, Wankdorf")
-            .statusDidok3(ServicePointStatus.IN_OPERATION)
             .businessOrganisation("ch:1:sboid:100626")
             .status(Status.VALIDATED)
             .validFrom(LocalDate.of(2026, 1, 1))

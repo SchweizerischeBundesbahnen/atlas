@@ -10,7 +10,6 @@ import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
-import ch.sbb.atlas.servicepoint.enumeration.ServicePointStatus;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -35,7 +34,6 @@ class ServicePointVersionMapperTest {
         .designationOfficial("Basel EuroAirport P")
         .abbreviation("BSEU")
         .meansOfTransport(Collections.emptySet())
-        .statusDidok3(ServicePointStatus.IN_OPERATION)
         .businessOrganisation("ch:1:sboid:100001")
         .comment(null)
         .status(Status.VALIDATED)
@@ -64,8 +62,6 @@ class ServicePointVersionMapperTest {
         .abbreviation("BSEU")
         .meansOfTransport(Collections.emptyList())
         .meansOfTransportInformation(Collections.emptyList())
-        .statusDidok3(ServicePointStatus.IN_OPERATION)
-        .statusDidok3Information(CodeAndDesignation.fromEnum(ServicePointStatus.IN_OPERATION))
         .businessOrganisation("ch:1:sboid:100001")
         .fotComment(null)
         .status(Status.VALIDATED)

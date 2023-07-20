@@ -10,7 +10,6 @@ import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
-import ch.sbb.atlas.servicepoint.enumeration.ServicePointStatus;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
@@ -89,8 +88,6 @@ public class ServicePointCsvToEntityMapper implements
         .designationLong(servicePointCsvModel.getBezeichnungLang())
         .designationOfficial(servicePointCsvModel.getBezeichnungOffiziell())
         .abbreviation(servicePointCsvModel.getAbkuerzung())
-        .statusDidok3(
-            ServicePointStatus.from(servicePointCsvModel.getStatus()))
         .businessOrganisation("ch:1:sboid:" + servicePointCsvModel.getSaid())
         .status(Status.VALIDATED)
         .validFrom(servicePointCsvModel.getValidFrom())
