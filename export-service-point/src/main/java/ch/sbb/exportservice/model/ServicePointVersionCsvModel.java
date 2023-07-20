@@ -1,5 +1,6 @@
 package ch.sbb.exportservice.model;
 
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
@@ -132,5 +133,7 @@ public class ServicePointVersionCsvModel {
   private String creationDate;
 
   private String editionDate;
+
+  private Status status;
 
 }
