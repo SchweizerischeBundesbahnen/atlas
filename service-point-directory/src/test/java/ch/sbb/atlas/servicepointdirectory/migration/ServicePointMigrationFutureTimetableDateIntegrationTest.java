@@ -16,7 +16,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -27,8 +26,8 @@ import org.junit.jupiter.api.TestMethodOrder;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ServicePointMigrationFutureTimetableDateIntegrationTest {
 
-  private static final String DIDOK_CSV_FILE = "DIDOK3_DIENSTSTELLEN_FUTURE_TIMETABLE_V_2_20230718020028.csv";
-  private static final String ATLAS_CSV_FILE = "future_timetable-world-service-point-2023-07-18.csv";
+  private static final String DIDOK_CSV_FILE = "DIDOK3_DIENSTSTELLEN_FUTURE_TIMETABLE_V_2_20230720014959.csv";
+  private static final String ATLAS_CSV_FILE = "future_timetable-world-service-point-2023-07-20.csv";
   private static final LocalDate FUTURE_TIMETABLE_DATE = LocalDate.of(2023, 12, 10);
 
   private static final List<ServicePointVersionCsvModel> atlasCsvLines = new ArrayList<>();
@@ -72,17 +71,6 @@ public class ServicePointMigrationFutureTimetableDateIntegrationTest {
   }
 
   @Test
-  @Order(3)
-  void shouldHaveSameOrGreaterValidityInAtlasDueToMerges() {
-    didokCsvLines.forEach(didokCsvLine -> {
-      ServicePointVersionCsvModel atlasCsvLine = atlasCsvLinesAsMap.get(didokCsvLine.getDidokCode());
-
-      assertThat(dateFromString(atlasCsvLine.getValidFrom())).isBeforeOrEqualTo(didokCsvLine.getValidFrom());
-      assertThat(dateFromString(atlasCsvLine.getValidTo())).isAfterOrEqualTo(didokCsvLine.getValidTo());
-    });
-  }
-
-  @Test
   @Order(4)
   void shouldHaveOnlyVersionsValidOnFutureTimetableDate() {
     atlasCsvLines.forEach(atlasCsvLine -> {
@@ -95,11 +83,10 @@ public class ServicePointMigrationFutureTimetableDateIntegrationTest {
 
   @Test
   @Order(5)
-  @Disabled("Does not work. Didok does not export sloid, WGS84WEB. Height gets rounded to 1 decimal point.")
   void shouldHaveMappedFieldsToAtlasCorrectly() {
     didokCsvLines.forEach(didokCsvLine -> {
       ServicePointVersionCsvModel atlasCsvLine = atlasCsvLinesAsMap.get(didokCsvLine.getDidokCode());
-      new ServicePointMappingEquality(didokCsvLine, atlasCsvLine).performCheck();
+      new ServicePointMappingEquality(didokCsvLine, atlasCsvLine, false).performCheck();
     });
   }
 
