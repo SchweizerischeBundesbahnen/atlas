@@ -21,6 +21,10 @@ import { FormModule } from '../../module/form.module';
 import { NotificationService } from '../../notification/notification.service';
 import { of } from 'rxjs';
 import WorkflowTypeEnum = WorkflowStart.WorkflowTypeEnum;
+import { WorkflowCheckFormComponent } from '../workflow-check-form/workflow-check-form.component';
+import { AuthService } from '../../auth/auth.service';
+import { WorkflowFormComponent } from '../workflow-form/workflow-form.component';
+import { MockAtlasButtonComponent } from '../../../app.testing.mocks';
 
 const dialogRefSpy = jasmine.createSpyObj(['close']);
 const notificationServiceSpy = jasmine.createSpyObj(['success']);
@@ -52,6 +56,12 @@ const workflowServiceMock = jasmine.createSpyObj(WorkflowService, {
   getWorkflow: of(workflow),
   startWorkflow: of({}),
 });
+
+const authServiceMock: Partial<AuthService> = {
+  isAtLeastSupervisor(): boolean {
+    return true;
+  },
+};
 
 describe('WorkflowDialogComponent new', () => {
   let component: WorkflowDialogComponent;
@@ -139,9 +149,17 @@ describe('WorkflowDialogComponent open', () => {
 
 function setupTestBed(workflowDialogData: WorkflowDialogData) {
   TestBed.configureTestingModule({
-    declarations: [WorkflowDialogComponent, CommentComponent, ErrorNotificationComponent],
+    declarations: [
+      WorkflowDialogComponent,
+      WorkflowFormComponent,
+      WorkflowCheckFormComponent,
+      CommentComponent,
+      ErrorNotificationComponent,
+      MockAtlasButtonComponent,
+    ],
     imports: [AppTestingModule, FormModule],
     providers: [
+      { provide: AuthService, useValue: authServiceMock },
       { provide: UserAdministrationService, useValue: userAdministrationServiceMock },
       { provide: WorkflowService, useValue: workflowServiceMock },
       {
