@@ -18,12 +18,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { MaterialModule } from '../../../../../core/module/material.module';
 import { UserPermissionManager } from '../../../service/user-permission-manager';
 import SpyObj = jasmine.SpyObj;
-
-@Component({
-  selector: 'app-dialog-close',
-  template: '',
-})
-class MockDialogCloseComponent {}
+import { DetailPageContainerComponent } from '../../../../../core/components/detail-page-container/detail-page-container.component';
+import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
 
 describe('UserAdministrationClientCreateComponent', () => {
   let component: UserAdministrationClientCreateComponent;
@@ -62,7 +58,11 @@ describe('UserAdministrationClientCreateComponent', () => {
       },
     });
     await TestBed.configureTestingModule({
-      declarations: [UserAdministrationClientCreateComponent, MockDialogCloseComponent],
+      declarations: [
+        UserAdministrationClientCreateComponent,
+        DetailPageContainerComponent,
+        DetailFooterComponent,
+      ],
       imports: [
         RouterTestingModule,
         MaterialModule,
