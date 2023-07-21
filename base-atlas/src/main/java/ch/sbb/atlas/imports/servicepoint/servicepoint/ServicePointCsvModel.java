@@ -15,7 +15,7 @@ import lombok.experimental.SuperBuilder;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@ToString(callSuper = true)
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -80,6 +80,9 @@ public class ServicePointCsvModel extends BaseDidokCsvModel {
   @JsonProperty("KANTONSNAME")
   private String kantonsName;
 
+  @JsonProperty("KANTONSKUERZEL")
+  private String kantonsKuerzel;
+
   @JsonProperty("KANTONSNUM")
   private Integer kantonsNum;
 
@@ -104,6 +107,24 @@ public class ServicePointCsvModel extends BaseDidokCsvModel {
   @JsonProperty("GO_NUMMER")
   private Integer goNummer;
 
+  @JsonProperty("GO_ABKUERZUNG_DE")
+  private String goAbkuerzungDe;
+  @JsonProperty("GO_ABKUERZUNG_FR")
+  private String goAbkuerzungFr;
+  @JsonProperty("GO_ABKUERZUNG_IT")
+  private String goAbkuerzungIt;
+  @JsonProperty("GO_ABKUERZUNG_EN")
+  private String goAbkuerzungEn;
+
+  @JsonProperty("GO_BEZEICHNUNG_DE")
+  private String goBezeichnungDe;
+  @JsonProperty("GO_BEZEICHNUNG_FR")
+  private String goBezeichnungFr;
+  @JsonProperty("GO_BEZEICHNUNG_IT")
+  private String goBezeichnungIt;
+  @JsonProperty("GO_BEZEICHNUNG_EN")
+  private String goBezeichnungEn;
+
   @JsonProperty("DS_KATEGORIEN_IDS")
   private String dsKategorienIds;
 
@@ -122,6 +143,10 @@ public class ServicePointCsvModel extends BaseDidokCsvModel {
   @JsonProperty("IS_BPS")
   @JsonDeserialize(using = NumericBooleanDeserializer.class)
   private Boolean operatingPointRouteNetwork;
+
+  @JsonProperty("IS_BPK")
+  @JsonDeserialize(using = NumericBooleanDeserializer.class)
+  private Boolean operatingPointKilometer;
 
   @JsonProperty("BPK_MASTER")
   private Integer operatingPointKilometerMaster;
