@@ -140,10 +140,6 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
   @AtlasVersionableProperty
   private boolean operatingPointRouteNetwork;
 
-  @Size(max = AtlasFieldLengths.LENGTH_1500)
-  @AtlasVersionableProperty
-  private String comment;
-
   @NotNull
   @Column(columnDefinition = "DATE")
   private LocalDate validFrom;

@@ -19,14 +19,13 @@ import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestric
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointFotCommentService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @Slf4j
@@ -88,7 +87,7 @@ public class ServicePointController implements ServicePointApiV1 {
     ServicePointVersion servicePointVersionToUpdate = servicePointService.findById(id)
         .orElseThrow(() -> new IdNotFoundException(id));
     servicePointService.update(servicePointVersionToUpdate, ServicePointVersionMapper.toEntity(createServicePointVersionModel),
-            servicePointService.findAllByNumberOrderByValidFrom(servicePointVersionToUpdate.getNumber()));
+        servicePointService.findAllByNumberOrderByValidFrom(servicePointVersionToUpdate.getNumber()));
     return servicePointService.findAllByNumberOrderByValidFrom(servicePointVersionToUpdate.getNumber())
         .stream()
         .map(ServicePointVersionMapper::toModel)
@@ -102,6 +101,11 @@ public class ServicePointController implements ServicePointApiV1 {
 
   @Override
   public ServicePointFotCommentModel saveFotComment(Integer servicePointNumber, ServicePointFotCommentModel fotComment) {
+    ServicePointNumber number = ServicePointNumber.of(fotComment.getServicePointNumber());
+    if (!servicePointService.isServicePointNumberExisting(number)) {
+      throw new ServicePointNumberNotFoundException(number);
+    }
+
     ServicePointFotComment entity = ServicePointFotCommentMapper.toEntity(fotComment);
     return ServicePointFotCommentMapper.toModel(servicePointFotCommentService.save(entity));
   }
