@@ -1,0 +1,36 @@
+package ch.sbb.atlas.servicepointdirectory.mapper;
+
+import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel;
+import ch.sbb.atlas.servicepointdirectory.entity.ServicePointFotComment;
+import lombok.experimental.UtilityClass;
+
+@UtilityClass
+public class ServicePointFotCommentMapper {
+
+  public static ServicePointFotCommentModel toModel(ServicePointFotComment entity) {
+    return ServicePointFotCommentModel.builder()
+        .servicePointNumber(entity.getServicePointNumber())
+        .fotComment(entity.getFotComment())
+        .creationDate(entity.getCreationDate())
+        .creator(entity.getCreator())
+        .editionDate(entity.getEditionDate())
+        .editor(entity.getEditor())
+        .etagVersion(entity.getVersion())
+        .build();
+  }
+
+  public static ServicePointFotComment toEntity(ServicePointFotCommentModel model) {
+    return ServicePointFotComment.builder()
+        .servicePointNumber(model.getServicePointNumber())
+        .fotComment(model.getFotComment())
+        .creationDate(model.getCreationDate())
+        .creator(model.getCreator())
+        .editionDate(model.getEditionDate())
+        .editor(model.getEditor())
+        .version(model.getEtagVersion())
+        .build();
+  }
+
+}
+
+
