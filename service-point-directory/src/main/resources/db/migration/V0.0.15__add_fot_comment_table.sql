@@ -8,3 +8,6 @@ CREATE TABLE service_point_fot_comment
     editor               VARCHAR(50)   NOT NULL,
     version              BIGINT        NOT NULL DEFAULT 0
 );
+
+alter table service_point_version
+    drop column comment;
