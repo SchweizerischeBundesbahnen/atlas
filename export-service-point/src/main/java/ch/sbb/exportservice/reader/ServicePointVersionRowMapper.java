@@ -2,6 +2,7 @@ package ch.sbb.exportservice.reader;
 
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.kafka.model.SwissCanton;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
@@ -21,6 +22,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -71,11 +73,15 @@ public class ServicePointVersionRowMapper implements RowMapper<ServicePointVersi
 
     servicePointVersionBuilder.businessOrganisation(getBusinessOrganisation(rs));
 
+    Optional.ofNullable(rs.getString("status"))
+        .ifPresent(status -> servicePointVersionBuilder.status(Status.valueOf(status)));
+
     servicePointVersionBuilder.comment(rs.getString("comment"));
     servicePointVersionBuilder.creationDate(rs.getObject("creation_date", LocalDateTime.class));
     servicePointVersionBuilder.editionDate(rs.getObject("edition_date", LocalDateTime.class));
     servicePointVersionBuilder.creator(rs.getString("creator"));
     servicePointVersionBuilder.editor(rs.getString("editor"));
+    servicePointVersionBuilder.version(rs.getInt("version"));
     return servicePointVersionBuilder.build();
   }
 

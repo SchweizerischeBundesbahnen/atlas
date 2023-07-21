@@ -13,6 +13,7 @@ import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
+import ch.sbb.atlas.servicepointdirectory.model.ServicePointStatus;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
@@ -88,6 +89,7 @@ public class ServicePointCsvToEntityMapper implements
         .designationLong(servicePointCsvModel.getBezeichnungLang())
         .designationOfficial(servicePointCsvModel.getBezeichnungOffiziell())
         .abbreviation(servicePointCsvModel.getAbkuerzung())
+        .statusDidok3(ServicePointStatus.from(servicePointCsvModel.getStatus()))
         .businessOrganisation("ch:1:sboid:" + servicePointCsvModel.getSaid())
         .status(Status.VALIDATED)
         .validFrom(servicePointCsvModel.getValidFrom())
