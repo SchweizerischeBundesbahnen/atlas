@@ -3,18 +3,23 @@ package ch.sbb.atlas.servicepointdirectory.controller;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointImportRequestModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointItemImportResult;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointApiV1;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointRequestParams;
+import ch.sbb.atlas.servicepointdirectory.entity.ServicePointFotComment;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberNotFoundException;
+import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointFotCommentMapper;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
+import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointFotCommentService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -29,6 +34,7 @@ import java.util.List;
 public class ServicePointController implements ServicePointApiV1 {
 
   private final ServicePointService servicePointService;
+  private final ServicePointFotCommentService servicePointFotCommentService;
   private final ServicePointImportService servicePointImportService;
 
   @Override
@@ -87,6 +93,17 @@ public class ServicePointController implements ServicePointApiV1 {
         .stream()
         .map(ServicePointVersionMapper::toModel)
         .toList();
+  }
+
+  @Override
+  public Optional<ServicePointFotCommentModel> getFotComment(Integer servicePointNumber) {
+    return servicePointFotCommentService.findByServicePointNumber(servicePointNumber).map(ServicePointFotCommentMapper::toModel);
+  }
+
+  @Override
+  public ServicePointFotCommentModel saveFotComment(Integer servicePointNumber, ServicePointFotCommentModel fotComment) {
+    ServicePointFotComment entity = ServicePointFotCommentMapper.toEntity(fotComment);
+    return ServicePointFotCommentMapper.toModel(servicePointFotCommentService.save(entity));
   }
 
 }

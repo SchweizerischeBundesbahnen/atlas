@@ -285,7 +285,6 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.stopPointTypeInformation.designationFr", is("Arrêt sur demande")))
         .andExpect(jsonPath("$.stopPointTypeInformation.designationIt", is("Fermata facoltativa")))
         .andExpect(jsonPath("$.stopPointTypeInformation.designationEn", is("Request stop")))
-        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.fotComment, is("Bahnersatz")))
         .andExpect(jsonPath("$.servicePointGeolocation.swissLocation.cantonInformation.fsoNumber", is(2)))
         .andExpect(jsonPath("$.servicePointGeolocation.spatialReference", is(LV95.toString())))
         .andExpect(jsonPath("$.servicePointGeolocation.lv95.north", is(5935705.395163289)))
