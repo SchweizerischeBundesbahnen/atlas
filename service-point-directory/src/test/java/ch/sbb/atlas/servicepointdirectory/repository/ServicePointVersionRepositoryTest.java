@@ -49,7 +49,6 @@ public class ServicePointVersionRepositoryTest {
         .abbreviation("BE")
         .businessOrganisation("somesboid")
         .status(Status.VALIDATED)
-        .comment("Test comment.")
         .validFrom(LocalDate.of(2020, 1, 1))
         .validTo(LocalDate.of(2020, 12, 31))
         .build();
@@ -63,7 +62,6 @@ public class ServicePointVersionRepositoryTest {
     assertThat(savedVersion.getCategories()).isEmpty();
     assertThat(savedVersion.isOperatingPoint()).isFalse();
     assertThat(savedVersion.isStopPoint()).isFalse();
-    assertThat(savedVersion.getComment()).isEqualTo("Test comment.");
   }
 
   @Test
