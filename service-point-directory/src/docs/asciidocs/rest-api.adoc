@@ -65,6 +65,15 @@ include::{snippets}/service-point-controller-api-test/should-create-service-poin
 
 include::{snippets}/service-point-controller-api-test/should-update-service-point-and-create-multiple-versions/auto-section.adoc[]
 
+== Get ServicePoint FotComment
+
+include::{snippets}/service-point-controller-api-test/should-get-service-point-fot-comment/auto-section.adoc[]
+
+== Create ServicePoint FotComment
+
+include::{snippets}/service-point-controller-api-test/should-create-service-point-fot-comment/auto-section.adoc[]
+
+
 
 = Traffic Point Elements
 
