@@ -26,8 +26,8 @@ import org.junit.jupiter.api.TestMethodOrder;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ServicePointMigrationFutureTimetableDateIntegrationTest {
 
-  private static final String DIDOK_CSV_FILE = "DIDOK3_DIENSTSTELLEN_FUTURE_TIMETABLE_V_2_20230720014959.csv";
-  private static final String ATLAS_CSV_FILE = "future_timetable-world-service-point-2023-07-20.csv";
+  private static final String DIDOK_CSV_FILE = "DIDOK3_DIENSTSTELLEN_FUTURE_TIMETABLE_V_2_20230721015735.csv";
+  private static final String ATLAS_CSV_FILE = "future_timetable-world-service-point-2023-07-21.csv";
   private static final LocalDate FUTURE_TIMETABLE_DATE = LocalDate.of(2023, 12, 10);
 
   private static final List<ServicePointVersionCsvModel> atlasCsvLines = new ArrayList<>();
