@@ -264,7 +264,6 @@ public class ServicePointTestData {
         .stopPointType(StopPointType.ON_REQUEST)
         .servicePointGeolocation(
             ServicePointGeolocationMapper.toModel(ServicePointTestData.getServicePointGeolocationBernMittelland()))
-        .fotComment("Bahnersatz")
         .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2010, 12, 11))
         .validTo(LocalDate.of(2019, 8, 10))
