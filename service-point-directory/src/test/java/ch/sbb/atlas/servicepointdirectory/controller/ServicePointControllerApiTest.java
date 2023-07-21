@@ -30,6 +30,7 @@ import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointGeolocationMapper;
+import ch.sbb.atlas.servicepointdirectory.repository.ServicePointFotCommentRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
 import java.io.InputStream;
@@ -53,12 +54,15 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
   @MockBean
   private SharedBusinessOrganisationService sharedBusinessOrganisationService;
   private final ServicePointVersionRepository repository;
+  private final ServicePointFotCommentRepository fotCommentRepository;
   private final ServicePointController servicePointController;
   private ServicePointVersion servicePointVersion;
 
   @Autowired
-  public ServicePointControllerApiTest(ServicePointVersionRepository repository, ServicePointController servicePointController) {
+  public ServicePointControllerApiTest(ServicePointVersionRepository repository,
+      ServicePointFotCommentRepository fotCommentRepository, ServicePointController servicePointController) {
     this.repository = repository;
+    this.fotCommentRepository = fotCommentRepository;
     this.servicePointController = servicePointController;
   }
 
@@ -70,6 +74,7 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
   @AfterEach
   void cleanUpDb() {
     repository.deleteAll();
+    fotCommentRepository.deleteAll();
   }
 
   @Test
