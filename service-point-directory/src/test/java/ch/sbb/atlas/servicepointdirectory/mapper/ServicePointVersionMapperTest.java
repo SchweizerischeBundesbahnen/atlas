@@ -63,7 +63,6 @@ class ServicePointVersionMapperTest {
         .meansOfTransport(Collections.emptyList())
         .meansOfTransportInformation(Collections.emptyList())
         .businessOrganisation("ch:1:sboid:100001")
-        .fotComment(null)
         .status(Status.VALIDATED)
         .operatingPoint(true)
         .operatingPointWithTimetable(true)
