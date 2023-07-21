@@ -52,6 +52,7 @@ public class ServicePointVersionJsonProcessor extends BaseProcessor implements I
         .creator(servicePointVersion.getCreator())
         .editionDate(servicePointVersion.getEditionDate())
         .editor(servicePointVersion.getEditor())
+        .etagVersion(servicePointVersion.getVersion())
         .build();
   }
 
