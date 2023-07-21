@@ -115,7 +115,6 @@ public class ServicePointCsvToEntityMapper implements
         .creator(servicePointCsvModel.getCreatedBy())
         .editionDate(servicePointCsvModel.getEditedAt())
         .editor(servicePointCsvModel.getEditedBy())
-        .comment(servicePointCsvModel.getComment())
         .build();
   }
 

@@ -35,7 +35,6 @@ class ServicePointVersionMapperTest {
         .abbreviation("BSEU")
         .meansOfTransport(Collections.emptySet())
         .businessOrganisation("ch:1:sboid:100001")
-        .comment(null)
         .status(Status.VALIDATED)
         .operatingPoint(true)
         .operatingPointWithTimetable(true)
