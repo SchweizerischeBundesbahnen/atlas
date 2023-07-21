@@ -6,6 +6,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -13,6 +14,8 @@ import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel;
+import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel.Fields;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.imports.servicepoint.BaseDidokCsvModel;
@@ -44,7 +47,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 public class ServicePointControllerApiTest extends BaseControllerApiTest {
 
@@ -325,7 +327,7 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
     newServicePointVersionModel.setValidFrom(LocalDate.of(2011, 12, 11));
     newServicePointVersionModel.setValidTo(LocalDate.of(2012, 12, 11));
 
-    mvc.perform(MockMvcRequestBuilders.put("/v1/service-points/" + id)
+    mvc.perform(put("/v1/service-points/" + id)
             .contentType(contentType)
             .content(mapper.writeValueAsString(newServicePointVersionModel)))
         .andExpect(status().isOk())
@@ -393,7 +395,7 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
     newServicePointVersionModel.setServicePointGeolocation(
         ServicePointGeolocationMapper.toModel(ServicePointTestData.getAargauServicePointGeolocation()));
 
-    mvc.perform(MockMvcRequestBuilders.put("/v1/service-points/" + id)
+    mvc.perform(put("/v1/service-points/" + id)
             .contentType(contentType)
             .content(mapper.writeValueAsString(newServicePointVersionModel)))
         .andExpect(status().isOk())
@@ -447,14 +449,14 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
     createServicePointVersionModel.setEtagVersion(savedServicePoint.getEtagVersion());
 
     createServicePointVersionModel.setDesignationLong("New and hot service point, ready to roll");
-    mvc.perform(MockMvcRequestBuilders.put("/v1/service-points/" + createServicePointVersionModel.getId())
+    mvc.perform(put("/v1/service-points/" + createServicePointVersionModel.getId())
             .contentType(contentType)
             .content(mapper.writeValueAsString(createServicePointVersionModel)))
         .andExpect(status().isOk());
 
     // Then on a second update it has to return error for optimistic lock
     createServicePointVersionModel.setDesignationLong("New and hot line, ready to rock");
-    MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.put("/v1/service-points/" + createServicePointVersionModel.getId())
+    MvcResult mvcResult = mvc.perform(put("/v1/service-points/" + createServicePointVersionModel.getId())
             .contentType(contentType)
             .content(mapper.writeValueAsString(createServicePointVersionModel)))
         .andExpect(status().isPreconditionFailed()).andReturn();
@@ -469,4 +471,31 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
     assertThat(errorResponse.getError()).isEqualTo("Stale object state error");
   }
 
+  @Test
+  void shouldCreateServicePointFotComment() throws Exception {
+    ServicePointFotCommentModel fotComment = ServicePointFotCommentModel.builder()
+        .servicePointNumber(servicePointVersion.getNumber().getValue())
+        .fotComment("Very important on demand service point")
+        .build();
+
+    mvc.perform(put("/v1/service-points/"+servicePointVersion.getNumber().getValue()+"/fot-comment")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(fotComment)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$." + Fields.fotComment, is("Very important on demand service point")));
+  }
+
+  @Test
+  void shouldGetServicePointFotComment() throws Exception {
+    ServicePointFotCommentModel fotComment = ServicePointFotCommentModel.builder()
+        .servicePointNumber(servicePointVersion.getNumber().getValue())
+        .fotComment("Very important on demand service point")
+        .build();
+
+    servicePointController.saveFotComment(servicePointVersion.getNumber().getValue(), fotComment);
+
+    mvc.perform(get("/v1/service-points/"+servicePointVersion.getNumber().getValue()+"/fot-comment"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$." + Fields.fotComment, is("Very important on demand service point")));
+  }
 }
