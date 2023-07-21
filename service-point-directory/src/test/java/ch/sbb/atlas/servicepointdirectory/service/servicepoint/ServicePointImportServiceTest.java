@@ -10,6 +10,7 @@ import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContai
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
+import ch.sbb.atlas.servicepointdirectory.entity.ServicePointFotComment;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import java.io.IOException;
@@ -18,6 +19,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,12 +40,15 @@ public class ServicePointImportServiceTest {
 
   private final ServicePointImportService servicePointImportService;
   private final ServicePointVersionRepository servicePointVersionRepository;
+  private final ServicePointFotCommentService servicePointFotCommentService;
 
   @Autowired
   public ServicePointImportServiceTest(ServicePointImportService servicePointImportService,
-      ServicePointVersionRepository servicePointVersionRepository) {
+      ServicePointVersionRepository servicePointVersionRepository,
+      ServicePointFotCommentService servicePointFotCommentService) {
     this.servicePointImportService = servicePointImportService;
     this.servicePointVersionRepository = servicePointVersionRepository;
+    this.servicePointFotCommentService = servicePointFotCommentService;
   }
 
   @Test
@@ -61,10 +66,14 @@ public class ServicePointImportServiceTest {
     assertThat(result).isNotNull();
     assertThat(servicePointItemImportResults).hasSize(5);
     assertThat(result).hasSize(3);
-    for (ServicePointVersion servicePointVerion : result) {
-      assertThat(servicePointVerion.getNumber()).isNotNull();
-      assertThat(servicePointVerion.getNumber()).isEqualTo(servicePointNumber);
+    for (ServicePointVersion servicePointVersion : result) {
+      assertThat(servicePointVersion.getNumber()).isNotNull();
+      assertThat(servicePointVersion.getNumber()).isEqualTo(servicePointNumber);
     }
+
+    Optional<ServicePointFotComment> fotComment = servicePointFotCommentService.findByServicePointNumber(didokCode);
+    assertThat(fotComment).isPresent();
+    assertThat(fotComment.get().getFotComment()).isEqualTo("BAV-Kommentar");
   }
 
   @Test
@@ -124,6 +133,7 @@ public class ServicePointImportServiceTest {
         .status(1)
         .abkuerzung("a")
         .didokCode(didokCode)
+        .comment("BAV-Kommentar")
         .build();
     ServicePointCsvModel notVirtualWithoutGeolocation = ServicePointCsvModel.builder()
         .validFrom(LocalDate.of(2001, 1, 1))
@@ -138,6 +148,7 @@ public class ServicePointImportServiceTest {
         .laendercode(80)
         .status(1)
         .didokCode(didokCode)
+        .comment("BAV-Kommentar")
         .build();
     ServicePointCsvModel virtualWithoutGeolocation = ServicePointCsvModel.builder()
         .validFrom(LocalDate.of(2002, 1, 1))
@@ -152,6 +163,7 @@ public class ServicePointImportServiceTest {
         .laendercode(80)
         .status(1)
         .didokCode(didokCode)
+        .comment("BAV-Kommentar")
         .build();
     ServicePointCsvModel virtualWithoutGeolocation2 = ServicePointCsvModel.builder()
         .validFrom(LocalDate.of(2002, 1, 1))
@@ -166,6 +178,7 @@ public class ServicePointImportServiceTest {
         .laendercode(80)
         .status(1)
         .didokCode(didokCode)
+        .comment("BAV-Kommentar")
         .build();
     ServicePointCsvModel virtualWithoutGeolocation3 = ServicePointCsvModel.builder()
         .validFrom(LocalDate.of(2002, 1, 1))
@@ -180,6 +193,7 @@ public class ServicePointImportServiceTest {
         .laendercode(80)
         .status(1)
         .didokCode(didokCode)
+        .comment("BAV-Kommentar")
         .build();
     List<ServicePointCsvModel> modelList = new ArrayList<>();
     modelList.add(withGeolocation);
