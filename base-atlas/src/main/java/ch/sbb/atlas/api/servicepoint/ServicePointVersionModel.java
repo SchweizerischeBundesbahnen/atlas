@@ -101,10 +101,6 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
   @Schema(description = "Type of the StopPoint, Indicates for which type of traffic (e.g. regular traffic) a stop was recorded. ")
   private StopPointType stopPointType;
 
-  @Size(max = AtlasFieldLengths.LENGTH_1500)
-  @Schema(description = "FotComment", example = "Good Service Point.")
-  private String fotComment;
-
   private ServicePointGeolocationModel servicePointGeolocation;
 
   @NotNull
