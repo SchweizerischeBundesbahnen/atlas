@@ -101,12 +101,12 @@ public class ServicePointController implements ServicePointApiV1 {
 
   @Override
   public ServicePointFotCommentModel saveFotComment(Integer servicePointNumber, ServicePointFotCommentModel fotComment) {
-    ServicePointNumber number = ServicePointNumber.of(fotComment.getServicePointNumber());
+    ServicePointNumber number = ServicePointNumber.of(servicePointNumber);
     if (!servicePointService.isServicePointNumberExisting(number)) {
       throw new ServicePointNumberNotFoundException(number);
     }
 
-    ServicePointFotComment entity = ServicePointFotCommentMapper.toEntity(fotComment);
+    ServicePointFotComment entity = ServicePointFotCommentMapper.toEntity(fotComment, number);
     return ServicePointFotCommentMapper.toModel(servicePointFotCommentService.save(entity));
   }
 

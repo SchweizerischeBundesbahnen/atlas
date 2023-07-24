@@ -19,9 +19,6 @@ import lombok.experimental.SuperBuilder;
 @FieldNameConstants
 public class ServicePointFotCommentModel extends BaseVersionModel {
 
-  @Schema(description = "ServicePointNumber the comment is meant for")
-  private Integer servicePointNumber;
-
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_2000)
   @Schema(description = "FotComment", example = "Good Service Point.")
   private String fotComment;
