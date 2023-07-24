@@ -10,7 +10,6 @@ import { AtlasCharsetsValidator } from '../../validation/charsets/atlas-charsets
 import { WhitespaceValidator } from '../../validation/whitespace/whitespace-validator';
 import { takeUntil } from 'rxjs/operators';
 import {
-  LinesService,
   LineVersionWorkflow,
   UserAdministrationService,
   Workflow,
@@ -21,7 +20,6 @@ import {
 import { TranslateService } from '@ngx-translate/core';
 import { ValidationService } from '../../validation/validation.service';
 import WorkflowTypeEnum = Workflow.WorkflowTypeEnum;
-import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-workflow-dialog',
@@ -74,10 +72,7 @@ export class WorkflowDialogComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService,
     private workflowService: WorkflowService,
     private userAdministrationService: UserAdministrationService,
-    private translateService: TranslateService,
-    private lineService: LinesService,
-    private router: Router,
-    private route: ActivatedRoute
+    private translateService: TranslateService
   ) {}
 
   ngOnInit() {
@@ -158,9 +153,8 @@ export class WorkflowDialogComponent implements OnInit, OnDestroy {
         .startWorkflow(workflowStart)
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe(() => {
-          this.closeDialogAndReload().then(() => {
-            this.notificationService.success('WORKFLOW.NOTIFICATION.START.SUCCESS');
-          });
+          this.closeDialog();
+          this.notificationService.success('WORKFLOW.NOTIFICATION.START.SUCCESS');
         });
     }
   }
@@ -181,15 +175,7 @@ export class WorkflowDialogComponent implements OnInit, OnDestroy {
     };
   }
 
-  closeDialogAndReload() {
-    this.closeDialog();
-    this.router.routeReuseStrategy.shouldReuseRoute = function () {
-      return false;
-    };
-    return this.router.navigate([this.router.url], { relativeTo: this.route });
-  }
-
   closeDialog() {
-    this.dialogRef.close(false);
+    this.dialogRef.close(true);
   }
 }
