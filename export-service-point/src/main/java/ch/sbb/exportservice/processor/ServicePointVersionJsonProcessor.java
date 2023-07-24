@@ -42,7 +42,6 @@ public class ServicePointVersionJsonProcessor extends BaseProcessor implements I
             getMeansOfTransportSorted(servicePointVersion).stream().map(CodeAndDesignation::fromEnum).toList())
         .stopPointType(servicePointVersion.getStopPointType())
         .stopPointTypeInformation(CodeAndDesignation.fromEnum(servicePointVersion.getStopPointType()))
-        .fotComment(servicePointVersion.getComment())
         .servicePointGeolocation(servicePointVersion.getServicePointGeolocation() != null ?
             fromEntity(servicePointVersion.getServicePointGeolocation()) : null)
         .status(servicePointVersion.getStatus())
