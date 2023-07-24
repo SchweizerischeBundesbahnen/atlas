@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { TableColumn } from '../../../core/components/table/table-column';
@@ -8,12 +8,6 @@ import {
   TimetableFieldNumber,
   TimetableFieldNumbersService,
 } from '../../../api';
-import {
-  DetailDialogEvents,
-  RouteToDialogService,
-} from '../../../core/components/route-to-dialog/route-to-dialog.service';
-import { filter } from 'rxjs/operators';
-import { TableService } from '../../../core/components/table/table.service';
 import { TablePagination } from '../../../core/components/table/table-pagination';
 import { FormControl, FormGroup } from '@angular/forms';
 import { DEFAULT_STATUS_SELECTION } from '../../../core/constants/status.choices';
@@ -24,17 +18,19 @@ import { TableFilterSearchType } from '../../../core/components/table-filter/con
 import { TableFilterMultiSelect } from '../../../core/components/table-filter/config/table-filter-multiselect';
 import { TableFilterDateSelect } from '../../../core/components/table-filter/config/table-filter-date-select';
 import { TableFilter } from '../../../core/components/table-filter/config/table-filter';
+import { Pages } from '../../pages';
+import { TableService } from '../../../core/components/table/table.service';
 
 @Component({
   selector: 'app-timetable-field-number-overview',
   templateUrl: './timetable-field-number-overview.component.html',
-  providers: [TableService],
 })
-export class TimetableFieldNumberOverviewComponent implements OnDestroy {
+export class TimetableFieldNumberOverviewComponent implements OnInit, OnDestroy {
   private readonly tableFilterConfigIntern = {
-    chipSearch: new TableFilterChip('col-6'),
+    chipSearch: new TableFilterChip(0, 'col-6'),
     searchSelect: new TableFilterSearchSelect<BusinessOrganisation>(
       TableFilterSearchType.BUSINESS_ORGANISATION,
+      1,
       'col-3',
       new FormGroup({
         businessOrganisation: new FormControl(),
@@ -44,23 +40,16 @@ export class TimetableFieldNumberOverviewComponent implements OnDestroy {
       'COMMON.STATUS_TYPES.',
       'COMMON.STATUS',
       Object.values(Status),
+      1,
       'col-3',
       DEFAULT_STATUS_SELECTION
     ),
-    dateSelect: new TableFilterDateSelect('col-3'),
+    dateSelect: new TableFilterDateSelect(1, 'col-3'),
   };
 
   private getVersionsSubscription?: Subscription;
-  private routeSubscription: Subscription;
 
-  tableFilterConfig: TableFilter<unknown>[][] = [
-    [this.tableFilterConfigIntern.chipSearch],
-    [
-      this.tableFilterConfigIntern.searchSelect,
-      this.tableFilterConfigIntern.multiSelectStatus,
-      this.tableFilterConfigIntern.dateSelect,
-    ],
-  ];
+  tableFilterConfig!: TableFilter<unknown>[][];
 
   tableColumns: TableColumn<TimetableFieldNumber>[] = [
     { headerTitle: 'TTFN.NUMBER', value: 'number' },
@@ -83,28 +72,24 @@ export class TimetableFieldNumberOverviewComponent implements OnDestroy {
     private timetableFieldNumbersService: TimetableFieldNumbersService,
     private route: ActivatedRoute,
     private router: Router,
-    private routeToDialogService: RouteToDialogService,
-    private readonly tableService: TableService
-  ) {
-    this.routeSubscription = this.routeToDialogService.detailDialogEvent
-      .pipe(filter((e) => e === DetailDialogEvents.Closed))
-      .subscribe(() => {
-        this.getOverview({
-          page: this.tableService.pageIndex,
-          size: this.tableService.pageSize,
-          sort: this.tableService.sortString,
-        });
-      });
+    private tableService: TableService
+  ) {}
+
+  ngOnInit() {
+    this.tableFilterConfig = this.tableService.initializeFilterConfig(
+      this.tableFilterConfigIntern,
+      Pages.TTFN
+    );
   }
 
   getOverview(pagination: TablePagination) {
     this.getVersionsSubscription = this.timetableFieldNumbersService
       .getOverview(
-        this.tableFilterConfigIntern.chipSearch.getActiveSearch(),
+        this.tableService.filter.chipSearch.getActiveSearch(),
         undefined,
-        this.tableFilterConfigIntern.searchSelect.getActiveSearch()?.sboid,
-        this.tableFilterConfigIntern.dateSelect.getActiveSearch(),
-        this.tableFilterConfigIntern.multiSelectStatus.getActiveSearch(),
+        this.tableService.filter.searchSelect.getActiveSearch()?.sboid,
+        this.tableService.filter.dateSelect.getActiveSearch(),
+        this.tableService.filter.multiSelectStatus.getActiveSearch(),
         pagination.page,
         pagination.size,
         addElementsToArrayWhenNotUndefined(pagination.sort, 'ttfnid,asc')
@@ -133,6 +118,5 @@ export class TimetableFieldNumberOverviewComponent implements OnDestroy {
 
   ngOnDestroy() {
     this.getVersionsSubscription?.unsubscribe();
-    this.routeSubscription.unsubscribe();
   }
 }

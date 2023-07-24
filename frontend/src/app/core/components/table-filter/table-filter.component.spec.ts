@@ -191,7 +191,7 @@ describe('TableFilterComponent', () => {
   });
 
   it('should emitSearch on multi select change', () => {
-    const multiSelectFilter = new TableFilterMultiSelect('', '', ['one', 'two'], 'col-3');
+    const multiSelectFilter = new TableFilterMultiSelect('', '', ['one', 'two'], 1, 'col-3');
     component.filterConfigurations = [[multiSelectFilter]];
     fixture.detectChanges();
 
@@ -211,7 +211,7 @@ describe('TableFilterComponent', () => {
   });
 
   it('should emitSearch on valid Date', () => {
-    const dateSelect = new TableFilterDateSelect('col-3');
+    const dateSelect = new TableFilterDateSelect(1, 'col-3');
     component.filterConfigurations = [[dateSelect]];
     fixture.detectChanges();
 
@@ -231,7 +231,7 @@ describe('TableFilterComponent', () => {
   });
 
   it('should not set date when invalid', () => {
-    const dateSelect = new TableFilterDateSelect('col-3');
+    const dateSelect = new TableFilterDateSelect(1, 'col-3');
     component.filterConfigurations = [[dateSelect]];
     fixture.detectChanges();
 
@@ -251,7 +251,7 @@ describe('TableFilterComponent', () => {
   });
 
   it('should add Search', () => {
-    const chipSelect = new TableFilterChip('col-6');
+    const chipSelect = new TableFilterChip(0, 'col-6');
     component.filterConfigurations = [[chipSelect]];
     fixture.detectChanges();
 
@@ -275,7 +275,7 @@ describe('TableFilterComponent', () => {
   });
 
   it("should not add search if it's already there", () => {
-    const chipSelect = new TableFilterChip('col-6');
+    const chipSelect = new TableFilterChip(0, 'col-6');
     chipSelect.addSearchFromString('Test');
     component.filterConfigurations = [[chipSelect]];
     fixture.detectChanges();
@@ -300,7 +300,7 @@ describe('TableFilterComponent', () => {
   });
 
   it('should remove search', () => {
-    const chipSelect = new TableFilterChip('col-6');
+    const chipSelect = new TableFilterChip(0, 'col-6');
     chipSelect.addSearchFromString('Test');
     component.filterConfigurations = [[chipSelect]];
     fixture.detectChanges();
@@ -318,6 +318,7 @@ describe('TableFilterComponent', () => {
   it('should set active search on bo-select change', () => {
     const searchSelect = new TableFilterSearchSelect(
       TableFilterSearchType.BUSINESS_ORGANISATION,
+      0,
       'col-3',
       new FormGroup({
         businessOrganisation: new FormControl(),
@@ -339,6 +340,7 @@ describe('TableFilterComponent', () => {
   it('should set active search on ttfn-select change', () => {
     const searchSelect = new TableFilterSearchSelect(
       TableFilterSearchType.TIMETABLE_FIELD_NUMBER,
+      0,
       'col-3',
       new FormGroup({
         ttfnid: new FormControl(),
@@ -360,6 +362,7 @@ describe('TableFilterComponent', () => {
   it('should set active search on tu-select change', () => {
     const searchSelect = new TableFilterSearchSelect(
       TableFilterSearchType.TRANSPORT_COMPANY,
+      0,
       'col-3',
       new FormGroup({
         transportCompany: new FormControl(),

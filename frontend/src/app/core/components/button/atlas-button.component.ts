@@ -52,18 +52,10 @@ export class AtlasButtonComponent {
     if (this.buttonType === AtlasButtonType.CANTON_WRITE_PERMISSION) {
       return this.hasWritePermissionsForCanton();
     }
-    if (
-      [AtlasButtonType.FOOTER_NON_EDIT, AtlasButtonType.WHITE_FOOTER_NON_EDIT].includes(
-        this.buttonType
-      )
-    ) {
+    if ([AtlasButtonType.WHITE_FOOTER_NON_EDIT].includes(this.buttonType)) {
       return !this.footerEdit;
     }
-    if (
-      [AtlasButtonType.FOOTER_EDIT_MODE, AtlasButtonType.WHITE_FOOTER_EDIT_MODE].includes(
-        this.buttonType
-      )
-    ) {
+    if ([AtlasButtonType.WHITE_FOOTER_EDIT_MODE].includes(this.buttonType)) {
       return this.footerEdit;
     }
     return true;
@@ -120,11 +112,6 @@ export class AtlasButtonComponent {
       ].includes(this.buttonType)
     ) {
       return 'atlas-raised-button mat-mdc-raised-button';
-    }
-    if (
-      [AtlasButtonType.FOOTER_NON_EDIT, AtlasButtonType.FOOTER_EDIT_MODE].includes(this.buttonType)
-    ) {
-      return 'atlas-primary-btn footer-btn';
     }
     if (this.buttonType === AtlasButtonType.CONFIRM) {
       return 'atlas-primary-btn primary-color-btn';

@@ -14,27 +14,28 @@
 import { Inject, Injectable, Optional } from '@angular/core';
 import {
   HttpClient,
+  HttpEvent,
   HttpHeaders,
+  HttpParameterCodec,
   HttpParams,
   HttpResponse,
-  HttpEvent,
-  HttpParameterCodec,
 } from '@angular/common/http';
 import { CustomHttpParameterCodec } from '../encoder';
 import { Observable } from 'rxjs';
 
-import { ApplicationType } from '../model/models';
-import { ClientCredential } from '../model/models';
-import { ClientCredentialPermissionCreate } from '../model/models';
-import { ContainerClientCredential } from '../model/models';
-import { ContainerUser } from '../model/models';
-import { ErrorResponse } from '../model/models';
-import { PermissionRestrictionType } from '../model/models';
-import { User } from '../model/models';
-import { UserDisplayName } from '../model/models';
-import { UserPermissionCreate } from '../model/models';
+import {
+  ApplicationType,
+  ClientCredential,
+  ClientCredentialPermissionCreate,
+  ContainerClientCredential,
+  ContainerUser,
+  PermissionRestrictionType,
+  User,
+  UserDisplayName,
+  UserPermissionCreate,
+} from '../model/models';
 
-import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
+import { BASE_PATH } from '../variables';
 import { Configuration } from '../configuration';
 
 @Injectable({

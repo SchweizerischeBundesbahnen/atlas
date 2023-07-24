@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   ApplicationType,
@@ -17,7 +17,6 @@ import { Pages } from '../../pages';
 import { Page } from '../../../core/model/page';
 import { AtlasCharsetsValidator } from '../../../core/validation/charsets/atlas-charsets-validator';
 import { WhitespaceValidator } from '../../../core/validation/whitespace/whitespace-validator';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AtlasFieldLengthValidator } from '../../../core/validation/field-lengths/atlas-field-length-validator';
 import { TimetableFieldNumberDetailFormGroup } from './timetable-field-number-detail-form-group';
 import { AuthService } from '../../../core/auth/auth.service';
@@ -34,16 +33,14 @@ export class TimetableFieldNumberDetailComponent
   private ngUnsubscribe = new Subject<void>();
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public dialogData: any,
-    private router: Router,
-    protected dialogRef: MatDialogRef<TimetableFieldNumberDetailComponent>,
+    protected router: Router,
     private timetableFieldNumberService: TimetableFieldNumbersService,
     protected notificationService: NotificationService,
     protected dialogService: DialogService,
     protected authService: AuthService,
     protected activatedRoute: ActivatedRoute
   ) {
-    super(dialogRef, dialogService, notificationService, authService, activatedRoute);
+    super(router, dialogService, notificationService, authService, activatedRoute);
   }
 
   ngOnInit() {
@@ -51,7 +48,7 @@ export class TimetableFieldNumberDetailComponent
   }
 
   readRecord(): TimetableFieldNumberVersion {
-    return this.dialogData.timetableFieldNumberDetail;
+    return this.activatedRoute.snapshot.data.timetableFieldNumberDetail;
   }
 
   getDetailHeading(record: TimetableFieldNumberVersion): string {

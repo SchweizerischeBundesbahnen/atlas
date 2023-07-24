@@ -1,11 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { PaymentType, SublinesService, SublineType, SublineVersion } from '../../../../api';
 import { SublineDetailComponent } from './subline-detail.component';
 import { HttpErrorResponse } from '@angular/common/http';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AppTestingModule, authServiceMock } from '../../../../app.testing.module';
 import { InfoIconComponent } from '../../../../core/form-components/info-icon/info-icon.component';
 import {
@@ -22,6 +21,8 @@ import { TextFieldComponent } from '../../../../core/form-components/text-field/
 import { SearchSelectComponent } from '../../../../core/form-components/search-select/search-select.component';
 import { SelectComponent } from '../../../../core/form-components/select/select.component';
 import { AtlasSpacerComponent } from '../../../../core/components/spacer/atlas-spacer.component';
+import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
+import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
 
 const sublineVersion: SublineVersion = {
   id: 1234,
@@ -75,7 +76,6 @@ const error = new HttpErrorResponse({
 let component: SublineDetailComponent;
 let fixture: ComponentFixture<SublineDetailComponent>;
 let router: Router;
-let dialogRef: MatDialogRef<SublineDetailComponent>;
 
 describe('SublineDetailComponent for existing sublineVersion', () => {
   const mockSublinesService = jasmine.createSpyObj('sublinesService', [
@@ -93,7 +93,6 @@ describe('SublineDetailComponent for existing sublineVersion', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     router = TestBed.inject(Router);
-    dialogRef = TestBed.inject(MatDialogRef);
   });
 
   it('should be created', () => {
@@ -124,7 +123,7 @@ describe('SublineDetailComponent for existing sublineVersion', () => {
 
   it('should delete SublineVersion successfully', () => {
     mockSublinesService.deleteSublines.and.returnValue(of({}));
-    spyOn(dialogRef, 'close');
+    spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
     fixture.componentInstance.deleteRecord();
     fixture.detectChanges();
 
@@ -133,7 +132,7 @@ describe('SublineDetailComponent for existing sublineVersion', () => {
     expect(snackBarContainer).toBeDefined();
     expect(snackBarContainer.textContent.trim()).toBe('LIDI.SUBLINE.NOTIFICATION.DELETE_SUCCESS');
     expect(snackBarContainer.classList).toContain('success');
-    expect(dialogRef.close).toHaveBeenCalled();
+    expect(router.navigate).toHaveBeenCalled();
   });
 });
 
@@ -199,16 +198,15 @@ function setupTestBed(
       TextFieldComponent,
       SelectComponent,
       AtlasSpacerComponent,
+      DetailPageContainerComponent,
+      DetailFooterComponent,
     ],
     imports: [AppTestingModule],
     providers: [
       { provide: FormBuilder },
       { provide: SublinesService, useValue: sublinesService },
       { provide: AuthService, useValue: authServiceMock },
-      {
-        provide: MAT_DIALOG_DATA,
-        useValue: data,
-      },
+      { provide: ActivatedRoute, useValue: { snapshot: { data: data } } },
       TranslatePipe,
     ],
   })

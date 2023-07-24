@@ -5,15 +5,15 @@ import { TableFilterSearchType } from './table-filter-search-type';
 export class TableFilterSearchSelect<T> extends TableFilter<T | undefined> {
   protected activeSearch: T | undefined;
   searchType: TableFilterSearchType;
-  disabled?: boolean;
   formGroup?: FormGroup;
 
   constructor(
     searchType: TableFilterSearchType,
+    row: number,
     elementWidthCssClass: string,
     formGroup?: FormGroup
   ) {
-    super(elementWidthCssClass);
+    super(row, elementWidthCssClass);
     this.searchType = searchType;
     this.formGroup = formGroup;
   }

@@ -12,6 +12,8 @@ import { ApplicationRole, ApplicationType, Permission, Status } from '../../../a
 import { MockUserDetailInfoComponent } from '../../../app.testing.mocks';
 import { AtlasButtonComponent } from '../button/atlas-button.component';
 import { NotificationService } from '../../notification/notification.service';
+import { DetailPageContainerComponent } from '../detail-page-container/detail-page-container.component';
+import { DetailFooterComponent } from '../detail-footer/detail-footer.component';
 
 @Component({
   selector: 'app-coverage',
@@ -21,12 +23,6 @@ class MockAppCoverageComponent {
   @Input() pageType!: any;
   @Input() currentRecord!: any;
 }
-
-@Component({
-  selector: 'app-dialog-close',
-  template: '',
-})
-class MockDialogCloseComponent {}
 
 describe('BaseDetailComponent', () => {
   /*eslint-disable */
@@ -76,9 +72,10 @@ describe('BaseDetailComponent', () => {
       declarations: [
         BaseDetailComponent,
         MockAppCoverageComponent,
-        MockDialogCloseComponent,
         AtlasButtonComponent,
         MockUserDetailInfoComponent,
+        DetailPageContainerComponent,
+        DetailFooterComponent,
       ],
       imports: [AppTestingModule],
       providers: [
@@ -105,27 +102,21 @@ describe('BaseDetailComponent', () => {
     });
 
     it('should switch from disabled to enabled', () => {
-      const editButton = fixture.debugElement.query(
-        By.css('.edit-section .btn-edit .atlas-primary-btn')
-      );
+      const editButton = fixture.debugElement.query(By.css('[data-cy=edit-item]'));
       editButton.nativeElement.click();
 
       expect(dummyController.toggleEdit).toHaveBeenCalled();
     });
 
     it('should revoke record', () => {
-      const editButton = fixture.debugElement.query(
-        By.css('.edit-section .btn-revoke .atlas-primary-btn')
-      );
+      const editButton = fixture.debugElement.query(By.css('[data-cy=revoke-item]'));
       editButton.nativeElement.click();
 
       expect(dummyController.revoke).toHaveBeenCalled();
     });
 
     it('should delete record', () => {
-      const deleteButton = fixture.debugElement.query(
-        By.css('.edit-section .btn-delete .atlas-primary-btn')
-      );
+      const deleteButton = fixture.debugElement.query(By.css('[data-cy=delete-item]'));
       deleteButton.nativeElement.click();
 
       expect(dummyController.delete).toHaveBeenCalled();
