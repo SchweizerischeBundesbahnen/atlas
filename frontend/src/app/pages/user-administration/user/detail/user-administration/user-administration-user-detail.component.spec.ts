@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UserAdministrationUserDetailComponent } from './user-administration-user-detail.component';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-user-administration-create',
@@ -20,12 +20,7 @@ describe('UserAdministrationUserDetailComponent', () => {
         UserAdministrationUserDetailComponent,
         MockAppUserAdministrationCreateComponent,
       ],
-      providers: [
-        {
-          provide: MAT_DIALOG_DATA,
-          useValue: { user: {} },
-        },
-      ],
+      providers: [{ provide: ActivatedRoute, useValue: { snapshot: { data: { user: {} } } } }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(UserAdministrationUserDetailComponent);

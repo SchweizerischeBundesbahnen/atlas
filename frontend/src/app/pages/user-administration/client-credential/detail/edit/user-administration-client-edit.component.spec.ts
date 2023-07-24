@@ -17,15 +17,11 @@ import { NotificationService } from '../../../../../core/notification/notificati
 import { BusinessOrganisationsService } from '../../../../../api';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { MockUserDetailInfoComponent } from '../../../../../app.testing.mocks';
-import SpyObj = jasmine.SpyObj;
 import { Data } from '../../../components/read-only-data/data';
 import { ReadOnlyData } from '../../../components/read-only-data/read-only-data';
-
-@Component({
-  selector: 'app-dialog-close',
-  template: '',
-})
-class MockDialogCloseComponent {}
+import SpyObj = jasmine.SpyObj;
+import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
+import { DetailPageContainerComponent } from '../../../../../core/components/detail-page-container/detail-page-container.component';
 
 @Component({
   selector: 'app-user-administration-read-only-data',
@@ -97,9 +93,10 @@ describe('UserAdministrationClientEditComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [
         UserAdministrationClientEditComponent,
-        MockDialogCloseComponent,
         MockUserDetailInfoComponent,
         MockUserAdministrationReadOnlyDataComponent,
+        DetailFooterComponent,
+        DetailPageContainerComponent,
       ],
       imports: [
         TranslateModule.forRoot({
