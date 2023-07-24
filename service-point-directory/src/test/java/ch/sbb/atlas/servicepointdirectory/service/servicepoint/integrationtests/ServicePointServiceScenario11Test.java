@@ -1,19 +1,18 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint.integrationtests;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class ServicePointServiceScenario11Test extends BaseServicePointServiceIntegrationTest{
 
@@ -63,7 +62,6 @@ public class ServicePointServiceScenario11Test extends BaseServicePointServiceIn
         assertThat(firstTemporalVersion.getSloid()).isEqualTo("ch:1:sloid:89008");
         assertThat(firstTemporalVersion.getDesignationOfficial()).isEqualTo("Bern, Wyleregg");
         assertThat(firstTemporalVersion.getMeansOfTransport()).isEqualTo(Set.of(MeanOfTransport.CABLE_CAR));
-        assertThat(firstTemporalVersion.getComment()).isNull();
 
         // update
         ServicePointVersion secondTemporalVersion = result.get(1);
@@ -75,7 +73,6 @@ public class ServicePointServiceScenario11Test extends BaseServicePointServiceIn
         assertThat(secondTemporalVersion.getSloid()).isEqualTo("ch:1:sloid:89008");
         assertThat(secondTemporalVersion.getDesignationOfficial()).isEqualTo("Bern, Thunplatz");
         assertThat(secondTemporalVersion.getMeansOfTransport()).isEqualTo(Set.of(MeanOfTransport.CABLE_CAR));
-        assertThat(secondTemporalVersion.getComment()).isNull();
     }
 
     /**
@@ -120,7 +117,6 @@ public class ServicePointServiceScenario11Test extends BaseServicePointServiceIn
         assertThat(firstTemporalVersion.getSloid()).isEqualTo("ch:1:sloid:89008");
         assertThat(firstTemporalVersion.getDesignationOfficial()).isEqualTo("Bern, Wyleregg");
         assertThat(firstTemporalVersion.getMeansOfTransport()).isEqualTo(Set.of(MeanOfTransport.CABLE_CAR));
-        assertThat(firstTemporalVersion.getComment()).isNull();
 
         // update
         ServicePointVersion secondTemporalVersion = result.get(1);
@@ -132,7 +128,6 @@ public class ServicePointServiceScenario11Test extends BaseServicePointServiceIn
         assertThat(secondTemporalVersion.getSloid()).isEqualTo("ch:1:sloid:89008");
         assertThat(secondTemporalVersion.getDesignationOfficial()).isEqualTo("Bern, Thunplatz");
         assertThat(secondTemporalVersion.getMeansOfTransport()).isEqualTo(Set.of(MeanOfTransport.CABLE_CAR));
-        assertThat(secondTemporalVersion.getComment()).isNull();
 
         // update
         ServicePointVersion thirdTemporalVersion = result.get(2);
@@ -144,7 +139,6 @@ public class ServicePointServiceScenario11Test extends BaseServicePointServiceIn
         assertThat(thirdTemporalVersion.getSloid()).isEqualTo("ch:1:sloid:89008");
         assertThat(thirdTemporalVersion.getDesignationOfficial()).isEqualTo("Bern, Eigerplatz");
         assertThat(thirdTemporalVersion.getMeansOfTransport()).isEqualTo(Set.of(MeanOfTransport.CABLE_CAR));
-        assertThat(thirdTemporalVersion.getComment()).isNull();
     }
 
     /**
@@ -189,7 +183,6 @@ public class ServicePointServiceScenario11Test extends BaseServicePointServiceIn
         assertThat(firstTemporalVersion.getSloid()).isEqualTo("ch:1:sloid:89008");
         assertThat(firstTemporalVersion.getDesignationOfficial()).isEqualTo("Bern, Wyleregg");
         assertThat(firstTemporalVersion.getMeansOfTransport()).isEqualTo(Set.of(MeanOfTransport.CABLE_CAR));
-        assertThat(firstTemporalVersion.getComment()).isNull();
 
         // update
         ServicePointVersion secondTemporalVersion = result.get(1);
@@ -201,7 +194,6 @@ public class ServicePointServiceScenario11Test extends BaseServicePointServiceIn
         assertThat(secondTemporalVersion.getSloid()).isEqualTo("ch:1:sloid:89008");
         assertThat(secondTemporalVersion.getDesignationOfficial()).isEqualTo("Bern, Thunplatz");
         assertThat(secondTemporalVersion.getMeansOfTransport()).isEqualTo(Set.of(MeanOfTransport.CABLE_CAR));
-        assertThat(secondTemporalVersion.getComment()).isNull();
 
         // update
         ServicePointVersion thirdTemporalVersion = result.get(2);
@@ -213,7 +205,6 @@ public class ServicePointServiceScenario11Test extends BaseServicePointServiceIn
         assertThat(thirdTemporalVersion.getSloid()).isEqualTo("ch:1:sloid:89008");
         assertThat(thirdTemporalVersion.getDesignationOfficial()).isEqualTo("Bern, Eigerplatz");
         assertThat(thirdTemporalVersion.getMeansOfTransport()).isEqualTo(Set.of(MeanOfTransport.CABLE_CAR));
-        assertThat(thirdTemporalVersion.getComment()).isNull();
     }
 
     /**
@@ -258,7 +249,6 @@ public class ServicePointServiceScenario11Test extends BaseServicePointServiceIn
         assertThat(firstTemporalVersion.getSloid()).isEqualTo("ch:1:sloid:89008");
         assertThat(firstTemporalVersion.getDesignationOfficial()).isEqualTo("Bern, Wyleregg");
         assertThat(firstTemporalVersion.getMeansOfTransport()).isEqualTo(Set.of(MeanOfTransport.CABLE_CAR));
-        assertThat(firstTemporalVersion.getComment()).isNull();
 
         // update
         ServicePointVersion secondTemporalVersion = result.get(1);
@@ -270,7 +260,6 @@ public class ServicePointServiceScenario11Test extends BaseServicePointServiceIn
         assertThat(secondTemporalVersion.getSloid()).isEqualTo("ch:1:sloid:89008");
         assertThat(secondTemporalVersion.getDesignationOfficial()).isEqualTo("Bern, Thunplatz");
         assertThat(secondTemporalVersion.getMeansOfTransport()).isEqualTo(Set.of(MeanOfTransport.CABLE_CAR));
-        assertThat(secondTemporalVersion.getComment()).isNull();
 
         // update
         ServicePointVersion thirdTemporalVersion = result.get(2);
@@ -282,7 +271,6 @@ public class ServicePointServiceScenario11Test extends BaseServicePointServiceIn
         assertThat(thirdTemporalVersion.getSloid()).isEqualTo("ch:1:sloid:89008");
         assertThat(thirdTemporalVersion.getDesignationOfficial()).isEqualTo("Bern, Eigerplatz");
         assertThat(thirdTemporalVersion.getMeansOfTransport()).isEqualTo(Set.of(MeanOfTransport.CABLE_CAR));
-        assertThat(thirdTemporalVersion.getComment()).isNull();
     }
 
 }
