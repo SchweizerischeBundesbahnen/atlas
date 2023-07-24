@@ -479,7 +479,6 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldCreateServicePointFotComment() throws Exception {
     ServicePointFotCommentModel fotComment = ServicePointFotCommentModel.builder()
-        .servicePointNumber(servicePointVersion.getNumber().getValue())
         .fotComment("Very important on demand service point")
         .build();
 
@@ -493,7 +492,6 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldGetServicePointFotComment() throws Exception {
     ServicePointFotCommentModel fotComment = ServicePointFotCommentModel.builder()
-        .servicePointNumber(servicePointVersion.getNumber().getValue())
         .fotComment("Very important on demand service point")
         .build();
 
