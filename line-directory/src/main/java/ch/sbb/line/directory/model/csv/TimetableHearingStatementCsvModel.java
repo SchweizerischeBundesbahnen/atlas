@@ -48,16 +48,19 @@ public class TimetableHearingStatementCsvModel implements VersionCsvModel {
   public static TimetableHearingStatementCsvModel fromModel(TimetableHearingStatementModel timetableHearingStatementModel) {
 
     return TimetableHearingStatementCsvModel.builder()
-        .cantonAbbreviation(timetableHearingStatementModel.getSwissCanton() == null ? null :
-            timetableHearingStatementModel.getSwissCanton().getAbbreviation())
+        .cantonAbbreviation(timetableHearingStatementModel.getSwissCanton().getAbbreviation())
         .timetableFieldNumber(timetableHearingStatementModel.getTimetableFieldNumber())
         .timetableFieldNumberDescription(timetableHearingStatementModel.getTimetableFieldDescription())
         .stopPlace(timetableHearingStatementModel.getStopPlace())
-        .transportCompanyAbbreviations(timetableHearingStatementModel.getResponsibleTransportCompanies().stream().map(
-            TimetableHearingStatementResponsibleTransportCompanyModel::getAbbreviation).sorted().collect(Collectors.joining(",")))
-        .transportCompanyDescriptions(timetableHearingStatementModel.getResponsibleTransportCompanies().stream().map(
-            TimetableHearingStatementResponsibleTransportCompanyModel::getBusinessRegisterName).sorted().collect(Collectors.joining(
-                ",")))
+        .transportCompanyAbbreviations(
+            timetableHearingStatementModel.getResponsibleTransportCompanies().stream()
+                .map(TimetableHearingStatementResponsibleTransportCompanyModel::getAbbreviation)
+                .filter(Objects::nonNull)
+                .sorted().collect(Collectors.joining(",")))
+        .transportCompanyDescriptions(timetableHearingStatementModel.getResponsibleTransportCompanies().stream()
+            .map(TimetableHearingStatementResponsibleTransportCompanyModel::getBusinessRegisterName)
+            .filter(Objects::nonNull)
+            .sorted().collect(Collectors.joining(",")))
         .statement(timetableHearingStatementModel.getStatement())
         .documentsPresent(!timetableHearingStatementModel.getDocuments().isEmpty())
         .status(timetableHearingStatementModel.getStatementStatus())
@@ -66,7 +69,8 @@ public class TimetableHearingStatementCsvModel implements VersionCsvModel {
         .lastName(timetableHearingStatementModel.getStatementSender().getLastName())
         .organisation(timetableHearingStatementModel.getStatementSender().getOrganisation())
         .street(timetableHearingStatementModel.getStatementSender().getStreet())
-        .zipAndCity(getZipAndCity(timetableHearingStatementModel.getStatementSender().getZip(), timetableHearingStatementModel.getStatementSender().getCity()))
+        .zipAndCity(getZipAndCity(timetableHearingStatementModel.getStatementSender().getZip(),
+            timetableHearingStatementModel.getStatementSender().getCity()))
         .email(timetableHearingStatementModel.getStatementSender().getEmail())
         .editor(timetableHearingStatementModel.getEditor())
         .editionDate(timetableHearingStatementModel.getEditionDate())
@@ -75,9 +79,9 @@ public class TimetableHearingStatementCsvModel implements VersionCsvModel {
   }
 
   public static String getZipAndCity(Integer zip, String city) {
-    if(zip == null) {
+    if (zip == null) {
       return Objects.requireNonNullElse(city, "");
-    } else if(city == null || city.isEmpty()) {
+    } else if (city == null || city.isEmpty()) {
       return zip.toString();
     } else {
       return zip + "/" + city;
