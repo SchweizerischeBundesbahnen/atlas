@@ -1,18 +1,16 @@
 package ch.sbb.atlas.servicepointdirectory.entity;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
-import ch.sbb.atlas.servicepointdirectory.entity.geolocation.GeolocationBaseEntity;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
 import ch.sbb.atlas.servicepointdirectory.converter.ServicePointNumberConverter;
+import ch.sbb.atlas.servicepointdirectory.entity.geolocation.GeolocationBaseEntity;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
 import ch.sbb.atlas.validation.DatesValidator;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.versioning.model.Versionable;
 import ch.sbb.atlas.versioning.model.VersionableProperty.RelationType;
-import jakarta.validation.constraints.Digits;
-import java.time.LocalDate;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
@@ -24,6 +22,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -33,6 +32,8 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
+
+import java.time.LocalDate;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -53,11 +54,11 @@ public class TrafficPointElementVersion extends BaseDidokImportEntity implements
       initialValue = 1000)
   private Long id;
 
-  @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_40)
   @AtlasVersionableProperty
   private String designation;
 
-  @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_20)
   @AtlasVersionableProperty
   private String designationOperational;
 
@@ -83,11 +84,11 @@ public class TrafficPointElementVersion extends BaseDidokImportEntity implements
   private ServicePointNumber servicePointNumber;
 
   @NotNull
-  @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_128)
   @AtlasVersionableProperty
   private String sloid;
 
-  @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_128)
   @AtlasVersionableProperty
   private String parentSloid;
 

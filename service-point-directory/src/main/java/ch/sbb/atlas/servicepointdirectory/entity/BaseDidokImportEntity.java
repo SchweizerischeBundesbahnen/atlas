@@ -1,22 +1,25 @@
 package ch.sbb.atlas.servicepointdirectory.entity;
 
+import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.service.UserService;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
-import java.time.LocalDateTime;
-import java.util.Optional;
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Version;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
+
+import java.time.LocalDateTime;
+import java.util.Optional;
 
 @NoArgsConstructor
 @Getter
@@ -36,6 +39,7 @@ public abstract class BaseDidokImportEntity {
   @AtlasVersionableProperty(ignoreDiff = true)
   private LocalDateTime creationDate;
 
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
   @Column(updatable = false)
   @AtlasVersionableProperty(ignoreDiff = true)
   private String creator;
@@ -44,6 +48,7 @@ public abstract class BaseDidokImportEntity {
   @AtlasVersionableProperty(ignoreDiff = true)
   private LocalDateTime editionDate;
 
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
   @AtlasVersionableProperty(ignoreDiff = true)
   private String editor;
 
