@@ -1,17 +1,17 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, OnInit } from '@angular/core';
 import { ClientCredential } from '../../../../api';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-client-credential-administration',
   templateUrl: './user-administration-client-detail.component.html',
 })
 export class UserAdministrationClientDetailComponent implements OnInit {
-  constructor(@Inject(MAT_DIALOG_DATA) public dialogData: any) {}
+  constructor(private activatedRoute: ActivatedRoute) {}
 
   clientCredential: ClientCredential = {};
 
   ngOnInit(): void {
-    this.clientCredential = this.dialogData.clientCredential;
+    this.clientCredential = this.activatedRoute.snapshot.data.clientCredential;
   }
 }

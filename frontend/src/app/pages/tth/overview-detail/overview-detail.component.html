@@ -143,7 +143,7 @@
       [tableColumns]="tableColumns"
       [tableData]="timeTableHearingStatements"
       [totalCount]="totalCount$"
-      [tableFilterConfig]="(tableFilterConfig$ | async)!"
+      [tableFilterConfig]="tableFilterConfig"
       data-cy="tthTable"
     >
       <div *ngIf="!noTimetableHearingYearFound" class="d-flex flex-row col-12 mb-3 mt-5">

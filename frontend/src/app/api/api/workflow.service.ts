@@ -14,21 +14,18 @@
 import { Inject, Injectable, Optional } from '@angular/core';
 import {
   HttpClient,
+  HttpEvent,
   HttpHeaders,
+  HttpParameterCodec,
   HttpParams,
   HttpResponse,
-  HttpEvent,
-  HttpParameterCodec,
 } from '@angular/common/http';
 import { CustomHttpParameterCodec } from '../encoder';
 import { Observable } from 'rxjs';
 
-import { ErrorResponse } from '../model/models';
-import { ExaminantWorkflowCheck } from '../model/models';
-import { Workflow } from '../model/models';
-import { WorkflowStart } from '../model/models';
+import { ExaminantWorkflowCheck, Workflow, WorkflowStart } from '../model/models';
 
-import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
+import { BASE_PATH } from '../variables';
 import { Configuration } from '../configuration';
 
 @Injectable({

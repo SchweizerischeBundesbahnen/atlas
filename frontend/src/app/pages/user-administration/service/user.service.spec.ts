@@ -2,13 +2,13 @@ import { TestBed } from '@angular/core/testing';
 
 import { UserService } from './user.service';
 import {
+  ContainerUser,
+  User,
   UserAdministrationService,
   UserInformationService,
   UserPermissionCreate,
 } from '../../../api';
 import { of } from 'rxjs';
-import { ContainerUser } from '../../../api';
-import { User } from '../../../api';
 
 describe('UserService', () => {
   let service: UserService;

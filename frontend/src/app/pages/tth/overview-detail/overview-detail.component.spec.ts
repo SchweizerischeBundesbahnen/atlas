@@ -7,15 +7,12 @@ import { DisplayDatePipe } from '../../../core/pipe/display-date.pipe';
 import {
   ContainerTimetableHearingStatement,
   HearingStatus,
-  StatementStatus,
-  TimetableFieldNumber,
   TimetableHearingService,
   TimetableHearingStatement,
   TimetableHearingYear,
-  TransportCompany,
 } from '../../../api';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, of } from 'rxjs';
+import { of } from 'rxjs';
 import moment from 'moment';
 import { Pages } from '../../pages';
 import { Component, Input } from '@angular/core';
@@ -24,15 +21,10 @@ import {
   MockAtlasFieldErrorComponent,
   MockTableComponent,
 } from '../../../app.testing.mocks';
-import { TthTableService } from '../tth-table.service';
 import { SelectComponent } from '../../../core/form-components/select/select.component';
 import { AtlasSpacerComponent } from '../../../core/components/spacer/atlas-spacer.component';
 import { AuthService } from '../../../core/auth/auth.service';
-import { FormControl, FormGroup } from '@angular/forms';
-import { TableFilterChip } from '../../../core/components/table-filter/config/table-filter-chip';
-import { TableFilterMultiSelect } from '../../../core/components/table-filter/config/table-filter-multiselect';
-import { TableFilterSearchSelect } from '../../../core/components/table-filter/config/table-filter-search-select';
-import { TableFilterSearchType } from '../../../core/components/table-filter/config/table-filter-search-type';
+import { TableService } from '../../../core/components/table/table.service';
 
 @Component({
   selector: 'app-timetable-hearing-overview-tab-heading',
@@ -115,38 +107,6 @@ async function baseTestConfiguration() {
   );
   mockTimetableHearingService.getStatements.and.returnValue(of(containerTimetableHearingStatement));
 
-  const tthTableServiceSpy = jasmine.createSpyObj(['enableFilters', 'disableFilters'], {
-    pageIndex: undefined,
-    pageSize: undefined,
-    sortString: undefined,
-    activeTabPage: undefined,
-    overviewDetailFilterConfig: new BehaviorSubject([]),
-    overviewDetailFilterConfigInternal: {
-      chipSearch: new TableFilterChip('col-6'),
-      multiSelectStatementStatus: new TableFilterMultiSelect(
-        'TTH.STATEMENT_STATUS.',
-        'COMMON.STATUS',
-        Object.values(StatementStatus),
-        'col-3',
-        []
-      ),
-      searchSelectTU: new TableFilterSearchSelect<TransportCompany[]>(
-        TableFilterSearchType.TRANSPORT_COMPANY,
-        'col-3',
-        new FormGroup({
-          transportCompany: new FormControl(),
-        })
-      ),
-      searchSelectTTFN: new TableFilterSearchSelect<TimetableFieldNumber>(
-        TableFilterSearchType.TIMETABLE_FIELD_NUMBER,
-        'col-3',
-        new FormGroup({
-          ttfnid: new FormControl(),
-        })
-      ),
-    },
-  });
-
   await TestBed.configureTestingModule({
     declarations: [
       OverviewDetailComponent,
@@ -163,10 +123,7 @@ async function baseTestConfiguration() {
       { provide: TranslatePipe },
       { provide: DisplayDatePipe },
       { provide: AuthService, useValue: authServiceMock },
-      {
-        provide: TthTableService,
-        useValue: tthTableServiceSpy,
-      },
+      { provide: TableService },
     ],
   }).compileComponents();
 
