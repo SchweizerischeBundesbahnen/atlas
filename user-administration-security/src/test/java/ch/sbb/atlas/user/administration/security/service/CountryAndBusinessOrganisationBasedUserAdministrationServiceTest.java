@@ -1,5 +1,6 @@
 package ch.sbb.atlas.user.administration.security.service;
 
+import ch.sbb.atlas.api.model.CountryAndBusinessOrganisationAssociated;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
@@ -14,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -96,6 +98,70 @@ class CountryAndBusinessOrganisationBasedUserAdministrationServiceTest {
   }
 
   @Test
+  void shouldAllowCreateTPToAdminUser() {
+    // Given
+    when(userPermissionHolder.isAdmin()).thenReturn(true);
+
+    // When
+    boolean permissionsToCreate = countryAndBOBasedUserAdministrationService.hasUserPermissionsToCreateOrEditTrafficPoint(
+            getCountryAndBusinessOrganisationAssociateds(), ApplicationType.SEPODI);
+
+    // Then
+    assertThat(permissionsToCreate).isTrue();
+  }
+
+  private static List<CountryAndBusinessOrganisationAssociated> getCountryAndBusinessOrganisationAssociateds() {
+    List<CountryAndBusinessOrganisationAssociated> businessOrganisationAssociateds =  new ArrayList<>();
+    businessOrganisationAssociateds.add(BusinessObjectWithCountry.createDummy().build());
+    businessOrganisationAssociateds.add(BusinessObjectWithCountry.createDummy1().build());
+    return businessOrganisationAssociateds;
+  }
+
+  @Test
+  void shouldAllowCreateTPToSupervisor() {
+    // Given
+    when(userPermissionHolder.getCurrentUser()).thenReturn(Optional.of(UserAdministrationModel.builder()
+            .userId("e123456")
+            .permissions(Set.of(
+                    UserAdministrationPermissionModel.builder()
+                            .application(ApplicationType.SEPODI)
+                            .role(ApplicationRole.SUPERVISOR)
+                            .build()))
+            .build()));
+
+    // When
+    boolean permissionsToCreate = countryAndBOBasedUserAdministrationService.hasUserPermissionsToCreateOrEditTrafficPoint(
+            getCountryAndBusinessOrganisationAssociateds(), ApplicationType.SEPODI);
+
+    // Then
+    assertThat(permissionsToCreate).isTrue();
+  }
+
+  @Test
+  void shouldAllowCreateTPToSuperUser() {
+    // Given
+    when(userPermissionHolder.getCurrentUser()).thenReturn(Optional.of(UserAdministrationModel.builder()
+            .userId("e123456")
+            .permissions(Set.of(
+                    UserAdministrationPermissionModel.builder()
+                            .application(ApplicationType.SEPODI)
+                            .role(ApplicationRole.SUPER_USER)
+                            .restrictions(Set.of(UserAdministrationPermissionRestrictionModel.builder()
+                                    .value(Country.SWITZERLAND.name())
+                                    .restrictionType(PermissionRestrictionType.COUNTRY)
+                                    .build()))
+                            .build()))
+            .build()));
+
+    // When
+    boolean permissionsToCreate = countryAndBOBasedUserAdministrationService.hasUserPermissionsToCreateOrEditTrafficPoint(
+            getCountryAndBusinessOrganisationAssociateds(), ApplicationType.SEPODI);
+
+    // Then
+    assertThat(permissionsToCreate).isTrue();
+  }
+
+  @Test
   void shouldNotAllowCreateToSuperUserWithWrongCountry() {
     // Given
     when(userPermissionHolder.getCurrentUser()).thenReturn(Optional.of(UserAdministrationModel.builder()
@@ -165,6 +231,62 @@ class CountryAndBusinessOrganisationBasedUserAdministrationServiceTest {
 
     // Then
     assertThat(permissionsToCreate).isTrue();
+  }
+
+  @Test
+  void shouldAllowCreateTPToWriterCorrectSboids() {
+    // Given
+    when(userPermissionHolder.getCurrentUser()).thenReturn(Optional.of(UserAdministrationModel.builder()
+            .userId("e123456")
+            .permissions(Set.of(
+                    UserAdministrationPermissionModel.builder()
+                            .application(ApplicationType.SEPODI)
+                            .role(ApplicationRole.WRITER)
+                            .restrictions(Set.of(UserAdministrationPermissionRestrictionModel.builder()
+                                            .value("sboid")
+                                            .restrictionType(PermissionRestrictionType.BUSINESS_ORGANISATION)
+                                            .build(),
+                                    UserAdministrationPermissionRestrictionModel.builder()
+                                            .value(Country.SWITZERLAND.name())
+                                            .restrictionType(PermissionRestrictionType.COUNTRY)
+                                            .build()))
+                            .build()))
+            .build()));
+
+    // When
+    boolean permissionsToCreate = countryAndBOBasedUserAdministrationService.hasUserPermissionsToCreateOrEditTrafficPoint(
+            getCountryAndBusinessOrganisationAssociateds(), ApplicationType.SEPODI);
+
+    // Then
+    assertThat(permissionsToCreate).isTrue();
+  }
+
+  @Test
+  void shouldNotAllowCreateTPToWriterIncorrectSboids() {
+    // Given
+    when(userPermissionHolder.getCurrentUser()).thenReturn(Optional.of(UserAdministrationModel.builder()
+            .userId("e123456")
+            .permissions(Set.of(
+                    UserAdministrationPermissionModel.builder()
+                            .application(ApplicationType.SEPODI)
+                            .role(ApplicationRole.WRITER)
+                            .restrictions(Set.of(UserAdministrationPermissionRestrictionModel.builder()
+                                            .value("sboid2")
+                                            .restrictionType(PermissionRestrictionType.BUSINESS_ORGANISATION)
+                                            .build(),
+                                    UserAdministrationPermissionRestrictionModel.builder()
+                                            .value(Country.SWITZERLAND.name())
+                                            .restrictionType(PermissionRestrictionType.COUNTRY)
+                                            .build()))
+                            .build()))
+            .build()));
+
+    // When
+    boolean permissionsToCreate = countryAndBOBasedUserAdministrationService.hasUserPermissionsToCreateOrEditTrafficPoint(
+            getCountryAndBusinessOrganisationAssociateds(), ApplicationType.SEPODI);
+
+    // Then
+    assertThat(permissionsToCreate).isFalse();
   }
 
   @Test
