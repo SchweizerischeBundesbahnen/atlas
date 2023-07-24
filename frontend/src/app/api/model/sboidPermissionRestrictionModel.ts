@@ -10,6 +10,5 @@
  * Do not edit the class manually.
  */
 import { PermissionRestrictionObject } from './permissionRestrictionObject';
-import { PermissionRestrictionType } from './permissionRestrictionType';
 
 export interface SboidPermissionRestrictionModel extends PermissionRestrictionObject {}

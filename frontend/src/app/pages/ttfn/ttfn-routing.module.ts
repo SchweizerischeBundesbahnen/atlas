@@ -4,23 +4,21 @@ import { TimetableFieldNumberOverviewComponent } from './overview/timetable-fiel
 import { TimetableFieldNumberDetailComponent } from './detail/timetable-field-number-detail.component';
 import { TimetableFieldNumberDetailResolver } from './detail/timetable-field-number-detail.resolver';
 import { Pages } from '../pages';
-import { RouteToDialogComponent } from '../../core/components/route-to-dialog/route-to-dialog.component';
+import { canLeaveDirtyForm } from '../../core/leave-guard/leave-dirty-form-guard.service';
 
 const routes: Routes = [
   {
+    path: Pages.TTFN_DETAIL.path,
+    component: TimetableFieldNumberDetailComponent,
+    canDeactivate: [canLeaveDirtyForm],
+    resolve: {
+      timetableFieldNumberDetail: TimetableFieldNumberDetailResolver,
+    },
+    runGuardsAndResolvers: 'always',
+  },
+  {
     path: '',
     component: TimetableFieldNumberOverviewComponent,
-    children: [
-      {
-        path: Pages.TTFN_DETAIL.path,
-        component: RouteToDialogComponent,
-        data: { component: TimetableFieldNumberDetailComponent },
-        resolve: {
-          timetableFieldNumberDetail: TimetableFieldNumberDetailResolver,
-        },
-        runGuardsAndResolvers: 'always',
-      },
-    ],
   },
   { path: '**', redirectTo: '' },
 ];

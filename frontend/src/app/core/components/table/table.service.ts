@@ -1,9 +1,34 @@
 import { Injectable } from '@angular/core';
 import { SortDirection } from '@angular/material/sort';
+import { TableFilterConfig } from './table-filter-config';
+import { Page } from '../../model/page';
+import { TableFilters } from './table-filters-type';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class TableService {
   private _pageSize = 10;
+
+  private _filterConfig!: TableFilterConfig;
+
+  initializeFilterConfig(settings: TableFilters, page: Page) {
+    this.filterConfig = new TableFilterConfig(settings, page);
+    return this.filterConfig.settingsInRowRepresentation;
+  }
+
+  set filterConfig(tableFilterConfig: TableFilterConfig) {
+    if (tableFilterConfig.page != this._filterConfig?.page) {
+      this._filterConfig = tableFilterConfig;
+      this.resetTableSettings();
+    }
+  }
+
+  get filterConfig() {
+    return this._filterConfig;
+  }
+
+  get filter() {
+    return this._filterConfig.filters;
+  }
 
   get pageSize(): number {
     return this._pageSize;

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import {
   LinesService,
@@ -13,7 +13,6 @@ import {
 } from '../../../../api';
 import { LineDetailComponent } from './line-detail.component';
 import { HttpErrorResponse } from '@angular/common/http';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AppTestingModule, authServiceMock } from '../../../../app.testing.module';
 import { ErrorNotificationComponent } from '../../../../core/notification/error/error-notification.component';
 import { InfoIconComponent } from '../../../../core/form-components/info-icon/info-icon.component';
@@ -81,7 +80,6 @@ const error = new HttpErrorResponse({
 let component: LineDetailComponent;
 let fixture: ComponentFixture<LineDetailComponent>;
 let router: Router;
-let dialogRef: MatDialogRef<LineDetailComponent>;
 
 describe('LineDetailComponent for existing lineVersion', () => {
   const mockLinesService = jasmine.createSpyObj('linesService', [
@@ -99,7 +97,6 @@ describe('LineDetailComponent for existing lineVersion', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     router = TestBed.inject(Router);
-    dialogRef = TestBed.inject(MatDialogRef);
   });
 
   it('should be created', () => {
@@ -148,7 +145,7 @@ describe('LineDetailComponent for existing lineVersion', () => {
 
   it('should delete LineVersion successfully', () => {
     mockLinesService.deleteLines.and.returnValue(of({}));
-    spyOn(dialogRef, 'close');
+    spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
     fixture.componentInstance.deleteRecord();
     fixture.detectChanges();
 
@@ -157,7 +154,7 @@ describe('LineDetailComponent for existing lineVersion', () => {
     expect(snackBarContainer).toBeDefined();
     expect(snackBarContainer.textContent.trim()).toBe('LIDI.LINE.NOTIFICATION.DELETE_SUCCESS');
     expect(snackBarContainer.classList).toContain('success');
-    expect(dialogRef.close).toHaveBeenCalled();
+    expect(router.navigate).toHaveBeenCalled();
   });
 });
 
@@ -290,10 +287,7 @@ function setupTestBed(linesService: LinesService, data: { lineDetail: string | L
       { provide: FormBuilder },
       { provide: LinesService, useValue: linesService },
       { provide: AuthService, useValue: authServiceMock },
-      {
-        provide: MAT_DIALOG_DATA,
-        useValue: data,
-      },
+      { provide: ActivatedRoute, useValue: { snapshot: { data: data } } },
       { provide: TranslatePipe },
     ],
   })
