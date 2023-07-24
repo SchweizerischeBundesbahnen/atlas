@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UserAdministrationClientDetailComponent } from './user-administration-client-detail.component';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-client-credential-administration-create',
@@ -21,10 +21,7 @@ describe('UserAdministrationClientDetailComponent', () => {
         MockAppClientCredentialAdministrationCreateComponent,
       ],
       providers: [
-        {
-          provide: MAT_DIALOG_DATA,
-          useValue: { clientCredential: {} },
-        },
+        { provide: ActivatedRoute, useValue: { snapshot: { data: { clientCredential: {} } } } },
       ],
     }).compileComponents();
 

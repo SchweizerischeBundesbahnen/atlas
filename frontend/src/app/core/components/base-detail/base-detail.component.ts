@@ -3,7 +3,6 @@ import { BaseDetailController } from './base-detail-controller';
 import { KeepaliveService } from '../../keepalive/keepalive.service';
 import { Record } from './record';
 import { Subscription } from 'rxjs';
-import { WorkflowEvent } from '../../workflow/model/workflow-event';
 import { environment } from '../../../../environments/environment';
 import { AuthService } from '../../auth/auth.service';
 
@@ -30,10 +29,8 @@ export class BaseDetailComponent implements OnInit, OnDestroy {
     });
   }
 
-  receiveWorkflowEvent($event: WorkflowEvent) {
-    if ($event.reload) {
-      this.controller.reloadRecord();
-    }
+  receiveWorkflowEvent() {
+    this.controller.reloadRecord();
   }
 
   ngOnInit(): void {

@@ -14,30 +14,31 @@
 import { Inject, Injectable, Optional } from '@angular/core';
 import {
   HttpClient,
+  HttpEvent,
   HttpHeaders,
+  HttpParameterCodec,
   HttpParams,
   HttpResponse,
-  HttpEvent,
-  HttpParameterCodec,
 } from '@angular/common/http';
 import { CustomHttpParameterCodec } from '../encoder';
 import { Observable } from 'rxjs';
 
-import { Category } from '../model/models';
-import { ContainerReadServicePointVersion } from '../model/models';
-import { Country } from '../model/models';
-import { CreateServicePointVersion } from '../model/models';
-import { ErrorResponse } from '../model/models';
-import { MeanOfTransport } from '../model/models';
-import { OperatingPointTechnicalTimetableType } from '../model/models';
-import { OperatingPointType } from '../model/models';
-import { ReadServicePointVersion } from '../model/models';
-import { ServicePointImportReRequest } from '../model/models';
-import { ServicePointItemImportResult } from '../model/models';
-import { Status } from '../model/models';
-import { StopPointType } from '../model/models';
+import {
+  Category,
+  ContainerReadServicePointVersion,
+  Country,
+  CreateServicePointVersion,
+  MeanOfTransport,
+  OperatingPointTechnicalTimetableType,
+  OperatingPointType,
+  ReadServicePointVersion,
+  ServicePointImportReRequest,
+  ServicePointItemImportResult,
+  Status,
+  StopPointType,
+} from '../model/models';
 
-import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
+import { BASE_PATH } from '../variables';
 import { Configuration } from '../configuration';
 
 @Injectable({

@@ -8,9 +8,9 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { AuthService } from '../../../core/auth/auth.service';
 import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
 import { MockTableComponent } from '../../../app.testing.mocks';
+import { DEFAULT_STATUS_SELECTION } from '../../../core/constants/status.choices';
 import SpyObj = jasmine.SpyObj;
 import Spy = jasmine.Spy;
-import { DEFAULT_STATUS_SELECTION } from '../../../core/constants/status.choices';
 
 const timetableFieldNumberContainer: ContainerTimetableFieldNumber = {
   objects: [

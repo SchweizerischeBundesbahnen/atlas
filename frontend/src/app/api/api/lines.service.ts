@@ -14,27 +14,28 @@
 import { Inject, Injectable, Optional } from '@angular/core';
 import {
   HttpClient,
+  HttpEvent,
   HttpHeaders,
+  HttpParameterCodec,
   HttpParams,
   HttpResponse,
-  HttpEvent,
-  HttpParameterCodec,
 } from '@angular/common/http';
 import { CustomHttpParameterCodec } from '../encoder';
 import { Observable } from 'rxjs';
 
-import { ContainerLine } from '../model/models';
-import { ContainerLineVersionSnapshot } from '../model/models';
-import { Coverage } from '../model/models';
-import { ErrorResponse } from '../model/models';
-import { Line } from '../model/models';
-import { LineType } from '../model/models';
-import { LineVersion } from '../model/models';
-import { LineVersionSnapshot } from '../model/models';
-import { Status } from '../model/models';
-import { WorkflowStatus } from '../model/models';
+import {
+  ContainerLine,
+  ContainerLineVersionSnapshot,
+  Coverage,
+  Line,
+  LineType,
+  LineVersion,
+  LineVersionSnapshot,
+  Status,
+  WorkflowStatus,
+} from '../model/models';
 
-import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
+import { BASE_PATH } from '../variables';
 import { Configuration } from '../configuration';
 
 @Injectable({

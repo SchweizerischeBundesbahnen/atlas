@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Company } from '../../../../api';
 import { CompanyDetailComponent } from './company-detail.component';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { ErrorNotificationComponent } from '../../../../core/notification/error/error-notification.component';
 import { InfoIconComponent } from '../../../../core/form-components/info-icon/info-icon.component';
@@ -13,6 +12,10 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { AtlasFieldErrorComponent } from '../../../../core/form-components/atlas-field-error/atlas-field-error.component';
 import { FieldExample } from '../../../../core/form-components/text-field/field-example';
 import { AtlasFieldCustomError } from '../../../../core/form-components/atlas-field-error/atlas-field-custom-error';
+import { ActivatedRoute } from '@angular/router';
+import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
+import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
+import { MockAtlasButtonComponent } from '../../../../app.testing.mocks';
 
 const company: Company = {
   uicCode: 1234,
@@ -21,12 +24,6 @@ const company: Company = {
 
 let component: CompanyDetailComponent;
 let fixture: ComponentFixture<CompanyDetailComponent>;
-
-@Component({
-  selector: 'app-dialog-close',
-  template: '',
-})
-class MockDialogCloseComponent {}
 
 @Component({
   selector: 'atlas-text-field',
@@ -85,17 +82,16 @@ function setupTestBed(data: { companyDetail: string | Company }) {
       ErrorNotificationComponent,
       InfoIconComponent,
       LinkIconComponent,
-      MockDialogCloseComponent,
       AtlasLabelFieldComponent,
       AtlasFieldErrorComponent,
       MockAtlasTextFieldComponent,
+      DetailPageContainerComponent,
+      DetailFooterComponent,
+      MockAtlasButtonComponent,
     ],
     imports: [AppTestingModule],
     providers: [
-      {
-        provide: MAT_DIALOG_DATA,
-        useValue: data,
-      },
+      { provide: ActivatedRoute, useValue: { snapshot: { data: data } } },
       { provide: TranslatePipe },
     ],
   })

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 
 export const DATE_PATTERN = 'DD.MM.yyyy';
 export const DATE_TIME_FORMAT = 'DD.MM.yyyy HH:mm:ss';
+export const DATE_TIME_FORMAT_WITHOUT_SECONDS = 'DD.MM.yyyy HH:mm';
 
 export const MIN_DATE: Date = new Date(moment('1700-01-01 00:00:00').valueOf());
 
