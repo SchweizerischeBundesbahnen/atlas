@@ -5,6 +5,7 @@ import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTr
 import ch.sbb.line.directory.entity.SharedTransportCompany;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -65,6 +66,7 @@ public class TimetableHearingStatementMapper {
     List<String> sorted = statement.getResponsibleTransportCompanies()
         .stream()
         .map(SharedTransportCompany::getAbbreviation)
+        .filter(Objects::nonNull)
         .sorted()
         .toList();
     return String.join(", ", sorted);

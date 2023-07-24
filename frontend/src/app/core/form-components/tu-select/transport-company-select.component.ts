@@ -80,4 +80,9 @@ export class TransportCompanySelectComponent implements OnInit, OnDestroy, OnCha
   ngOnDestroy() {
     this.formSubscription?.unsubscribe();
   }
+
+  getDisplayText(transportCompany: TransportCompany) {
+    const abbreviation = transportCompany.abbreviation ? transportCompany.abbreviation + ' - ' : '';
+    return abbreviation + transportCompany.businessRegisterName;
+  }
 }
