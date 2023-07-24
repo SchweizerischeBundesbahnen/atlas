@@ -30,4 +30,14 @@ public class BusinessObjectWithCountry implements CountryAndBusinessOrganisation
         .validTo(LocalDate.of(2020, 12, 31));
   }
 
+  public static BusinessObjectWithCountryBuilder createDummy1() {
+    return BusinessObjectWithCountry.builder()
+            .anotherValue("value1")
+            .businessOrganisation("sboid1")
+            .validFrom(LocalDate.of(2020, 1, 1))
+            .validTo(LocalDate.of(2020, 12, 31));
+  }
+
+
+
 }
