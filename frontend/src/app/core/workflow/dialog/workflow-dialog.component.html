@@ -22,7 +22,7 @@
     <div *ngIf="workflowId">
       <app-workflow-check-form
         [workflowId]="workflowId"
-        (workflowChecked)="closeDialogAndReload()"
+        (workflowChecked)="closeDialog()"
       ></app-workflow-check-form>
     </div>
   </div>
