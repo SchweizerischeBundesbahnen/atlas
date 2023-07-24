@@ -54,6 +54,7 @@
             *ngIf="controller.isWorkflowable()"
             [descriptionForWorkflow]="this.controller.getDescriptionForWorkflow()"
             [lineRecord]="this.controller.record"
+            (workflowEvent)="receiveWorkflowEvent()"
           ></app-workflow>
         </div>
       </div>
