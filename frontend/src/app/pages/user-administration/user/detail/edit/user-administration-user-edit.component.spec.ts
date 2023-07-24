@@ -10,7 +10,6 @@ import {
 import { Component, Input } from '@angular/core';
 import { MaterialModule } from '../../../../../core/module/material.module';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MatDialogRef } from '@angular/material/dialog';
 import { EditTitlePipe } from './edit-title.pipe';
 import { UserService } from '../../../service/user.service';
 import { UserPermissionManager } from '../../../service/user-permission-manager';
@@ -27,12 +26,8 @@ import { MockUserDetailInfoComponent } from '../../../../../app.testing.mocks';
 import { Data } from '../../../components/read-only-data/data';
 import { ReadOnlyData } from '../../../components/read-only-data/read-only-data';
 import SpyObj = jasmine.SpyObj;
-
-@Component({
-  selector: 'app-dialog-close',
-  template: '',
-})
-class MockDialogCloseComponent {}
+import { DetailPageContainerComponent } from '../../../../../core/components/detail-page-container/detail-page-container.component';
+import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
 
 @Component({
   selector: 'app-user-administration-read-only-data',
@@ -46,14 +41,6 @@ export class MockUserAdministrationReadOnlyDataComponent<T extends Data> {
 describe('UserAdministrationUserEditComponent', () => {
   let component: UserAdministrationUserEditComponent;
   let fixture: ComponentFixture<UserAdministrationUserEditComponent>;
-
-  const dialogMock = {
-    closeCalled: false,
-    close: () => {
-      // Mock implementation
-      dialogMock.closeCalled = true;
-    },
-  };
 
   let userServiceSpy: SpyObj<UserService>;
   let userPermissionManagerSpy: SpyObj<UserPermissionManager>;
@@ -86,7 +73,6 @@ describe('UserAdministrationUserEditComponent', () => {
       'getAllBusinessOrganisations',
     ]);
     dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirmLeave']);
-    dialogMock.closeCalled = false;
     await TestBed.overrideComponent(UserAdministrationUserEditComponent, {
       set: {
         viewProviders: [
@@ -104,10 +90,11 @@ describe('UserAdministrationUserEditComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [
         UserAdministrationUserEditComponent,
-        MockDialogCloseComponent,
         MockUserAdministrationReadOnlyDataComponent,
         EditTitlePipe,
         MockUserDetailInfoComponent,
+        DetailPageContainerComponent,
+        DetailFooterComponent,
       ],
       imports: [
         TranslateModule.forRoot({
@@ -118,7 +105,6 @@ describe('UserAdministrationUserEditComponent', () => {
       ],
       providers: [
         TranslatePipe,
-        { provide: MatDialogRef, useValue: dialogMock },
         {
           provide: UserService,
           useValue: userServiceSpy,
@@ -187,14 +173,12 @@ describe('UserAdministrationUserEditComponent', () => {
   it('test cancelEdit showDialog=false', () => {
     component.cancelEdit(false);
     expect(dialogServiceSpy.confirmLeave).not.toHaveBeenCalled();
-    expect(dialogMock.closeCalled).toBeTrue();
   });
 
   it('test cancelEdit showDialog=true,confirmLeaveResult=true', () => {
     component.editMode = true;
     dialogServiceSpy.confirmLeave.and.returnValue(of(true));
     component.cancelEdit();
-    expect(dialogMock.closeCalled).toBeFalse();
     expect(component.editMode).toBeFalse();
     expect(userPermissionManagerSpy.setPermissions).toHaveBeenCalledOnceWith([]);
     expect(userPermissionManagerSpy.emitBoFormResetEvent).toHaveBeenCalledOnceWith();

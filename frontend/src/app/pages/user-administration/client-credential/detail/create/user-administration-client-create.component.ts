@@ -6,7 +6,6 @@ import { NotificationService } from '../../../../../core/notification/notificati
 import { ActivatedRoute, Router } from '@angular/router';
 import { Pages } from '../../../../pages';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
-import { MatDialogRef } from '@angular/material/dialog';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ClientCredentialCreateFormGroup } from './create-form-group';
 import { WhitespaceValidator } from '../../../../../core/validation/whitespace/whitespace-validator';
@@ -47,7 +46,6 @@ export class UserAdministrationClientCreateComponent {
     private readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly dialogService: DialogService,
-    private readonly dialogRef: MatDialogRef<any>,
     readonly userPermissionManager: UserPermissionManager
   ) {}
 
@@ -76,13 +74,17 @@ export class UserAdministrationClientCreateComponent {
 
   cancelCreation(): void {
     if (this.form.untouched) {
-      this.dialogRef.close();
+      this.back();
     } else {
       this.dialogService.confirmLeave().subscribe((result) => {
         if (result) {
-          this.dialogRef.close();
+          this.back();
         }
       });
     }
+  }
+
+  back() {
+    this.router.navigate(['..'], { relativeTo: this.route }).then();
   }
 }

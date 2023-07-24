@@ -1,8 +1,6 @@
 export const AtlasButtonType = {
   CREATE: 'create' as AtlasButtonType,
   CREATE_CHECKING_PERMISSION: 'createCheckingPermission' as AtlasButtonType,
-  FOOTER_NON_EDIT: 'footerNonEdit' as AtlasButtonType,
-  FOOTER_EDIT_MODE: 'footerEdit' as AtlasButtonType,
   EDIT: 'edit' as AtlasButtonType,
   REVOKE: 'revoke' as AtlasButtonType,
   SKIP_WORKFLOW: 'skipworkflow' as AtlasButtonType,
@@ -22,8 +20,6 @@ export const AtlasButtonType = {
 export type AtlasButtonType =
   | 'createCheckingPermission'
   | 'create'
-  | 'footerNonEdit'
-  | 'footerEdit'
   | 'whiteFooterNonEdit'
   | 'whiteFooterEdit'
   | 'edit'

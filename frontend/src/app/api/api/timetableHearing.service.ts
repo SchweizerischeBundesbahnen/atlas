@@ -14,25 +14,26 @@
 import { Inject, Injectable, Optional } from '@angular/core';
 import {
   HttpClient,
+  HttpEvent,
   HttpHeaders,
+  HttpParameterCodec,
   HttpParams,
   HttpResponse,
-  HttpEvent,
-  HttpParameterCodec,
 } from '@angular/common/http';
 import { CustomHttpParameterCodec } from '../encoder';
 import { Observable } from 'rxjs';
 
-import { ContainerTimetableHearingStatement } from '../model/models';
-import { ErrorResponse } from '../model/models';
-import { HearingStatus } from '../model/models';
-import { StatementStatus } from '../model/models';
-import { SwissCanton } from '../model/models';
-import { TimetableHearingStatement } from '../model/models';
-import { TimetableHearingYear } from '../model/models';
-import { TransportCompany } from '../model/models';
-import { UpdateHearingCanton } from '../model/models';
-import { UpdateHearingStatementStatus } from '../model/models';
+import {
+  ContainerTimetableHearingStatement,
+  HearingStatus,
+  StatementStatus,
+  SwissCanton,
+  TimetableHearingStatement,
+  TimetableHearingYear,
+  TransportCompany,
+  UpdateHearingCanton,
+  UpdateHearingStatementStatus,
+} from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
 import { Configuration } from '../configuration';

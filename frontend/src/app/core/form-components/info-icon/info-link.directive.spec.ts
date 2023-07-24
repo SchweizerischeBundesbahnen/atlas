@@ -3,8 +3,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
-import SpyObj = jasmine.SpyObj;
 import { of } from 'rxjs';
+import SpyObj = jasmine.SpyObj;
 
 @Component({
   template: `<span infoLink infoLinkTranslationKey="TEST_TRANSLATION_KEY">Test</span>`,

@@ -4,13 +4,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { tableColumns } from './table-column-definition';
 import { TablePagination } from '../../../../core/components/table/table-pagination';
-import { TableService } from '../../../../core/components/table/table.service';
 import { addElementsToArrayWhenNotUndefined } from '../../../../core/util/arrays';
 
 @Component({
   selector: 'app-client-credential-administration-overview',
   templateUrl: './user-administration-client-overview.component.html',
-  providers: [TableService],
 })
 export class UserAdministrationClientOverviewComponent implements OnDestroy {
   clientCredentials: ClientCredential[] = [];

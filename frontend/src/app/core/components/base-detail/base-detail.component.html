@@ -1,110 +1,83 @@
-<div class="detail-wrapper">
-  <app-dialog-close
-    (clicked)="controller.form.disabled ? controller.backToOverview() : controller.toggleEdit()"
-  ></app-dialog-close>
+<div>
+  <atlas-detail-page-container>
+    <div class="detail-wrapper">
+      <h1 *ngIf="!controller.showSwitch; else detailPageTitle" class="font-bold-4xl mb-5">
+        {{ headingNew | translate }}
+      </h1>
+      <ng-template #detailPageTitle>
+        <div class="font-bold-4xl detail-title mb-3">
+          {{ controller.getDetailHeading(controller.record) }}
+        </div>
+        <div class="font-bold-xl mb-2">
+          <span data-cy="detail-subheading-id">{{
+            controller.getDetailSubheading(controller.record)
+          }}</span>
+          <span data-cy="total-range">
+            - {{ 'COMMON.VALID_FROM' | translate }}
+            {{ controller.getStartDate() }}
+            {{ 'COMMON.TO' | translate }}
+            {{ controller.getEndDate() }}</span
+          >
+        </div>
+      </ng-template>
+      <div class="col-12 d-flex mt-3">
+        <div class="d-flex flex-column col-7 pe-3">
+          <app-switch-version
+            (switchVersion)="controller.switchVersion($event)"
+            *ngIf="controller.showSwitch"
+            [currentRecord]="controller.record!"
+            [records]="controller.records!"
+            [switchDisabled]="controller.form.enabled"
+          ></app-switch-version>
+        </div>
+        <div class="d-flex flex-column col-5 pe-3">
+          <app-coverage
+            [currentRecord]="controller.record!"
+            [pageType]="controller.getPageType()"
+          ></app-coverage>
+        </div>
+      </div>
 
-  <h1 *ngIf="!controller.showSwitch; else detailPageTitle" class="font-bold-4xl mb-5">
-    {{ headingNew | translate }}
-  </h1>
-  <ng-template #detailPageTitle>
-    <div class="font-bold-4xl detail-title mb-3">
-      {{ controller.getDetailHeading(controller.record) }}
+      <div *ngIf="controller.isExistingRecord()" class="form-title-section">
+        <h2 class="font-bold-2xl color-gray-900">
+          {{ formDetailHeading | translate }} - {{ 'COMMON.VERSION' | translate }}
+          {{ controller.versionNumberOfCurrentRecord }}
+        </h2>
+        <div>
+          <span class="font-bold-lg color-gray-900">{{ 'COMMON.STATUS' | translate }} </span>
+          <span class="color-gray-900">{{
+            'COMMON.STATUS_TYPES.' + controller.statusOfCurrentRecord | translate
+          }}</span>
+        </div>
+        <div *ngIf="workflowEnabled && controller.form.disabled">
+          <app-workflow
+            *ngIf="controller.isWorkflowable()"
+            [descriptionForWorkflow]="this.controller.getDescriptionForWorkflow()"
+            [lineRecord]="this.controller.record"
+            (workflowEvent)="receiveWorkflowEvent()"
+          ></app-workflow>
+        </div>
+      </div>
+
+      <div>
+        <ng-content></ng-content>
+      </div>
+      <div class="mt-5">
+        <app-user-detail-info
+          *ngIf="controller.isExistingRecord()"
+          [record]="controller.record"
+        ></app-user-detail-info>
+      </div>
     </div>
-    <div class="font-bold-xl mb-2">
-      <span data-cy="detail-subheading-id">{{
-        controller.getDetailSubheading(controller.record)
-      }}</span>
-      <span data-cy="total-range">
-        - {{ 'COMMON.VALID_FROM' | translate }}
-        {{ controller.getStartDate() }}
-        {{ 'COMMON.TO' | translate }}
-        {{ controller.getEndDate() }}</span
-      >
-    </div>
-  </ng-template>
-  <div class="col-12 d-flex mt-3">
-    <div class="d-flex flex-column col-7 pe-3">
-      <app-switch-version
-        (switchVersion)="controller.switchVersion($event)"
-        *ngIf="controller.showSwitch"
-        [currentRecord]="controller.record!"
-        [records]="controller.records!"
-        [switchDisabled]="controller.form.enabled"
-      ></app-switch-version>
-    </div>
-    <div class="d-flex flex-column col-5 pe-3">
-      <app-coverage
-        [currentRecord]="controller.record!"
-        [pageType]="controller.getPageType()"
-      ></app-coverage>
-    </div>
-  </div>
-  <div *ngIf="controller.isExistingRecord()" class="edit-section">
-    <div *ngIf="isEditButtonVisible()">
-      <atlas-button
-        (buttonClicked)="controller.toggleEdit()"
-        [applicationType]="this.controller.getApplicationType()"
-        [businessOrganisation]="selectedRecord.businessOrganisation!"
-        [disabled]="controller.form.enabled || selectedRecord.status === 'REVOKED'"
-        buttonDataCy="edit-item"
-        buttonText="COMMON.EDIT_VERSION"
-        buttonType="edit"
-        wrapperStyleClass="me-3"
-      ></atlas-button>
-    </div>
+  </atlas-detail-page-container>
+
+  <atlas-detail-footer>
     <atlas-button
-      (buttonClicked)="controller.revoke()"
-      [applicationType]="this.controller.getApplicationType()"
-      [disabled]="controller.form.enabled || controller.record.status === 'REVOKED'"
-      buttonDataCy="revoke-item"
-      buttonText="COMMON.REVOKE"
-      buttonType="revoke"
-      wrapperStyleClass="me-3"
-    >
-    </atlas-button>
-    <atlas-button
-      (buttonClicked)="controller.delete()"
-      [disabled]="controller.form.enabled"
-      buttonDataCy="delete-item"
-      buttonText="COMMON.DELETE"
-      buttonType="delete"
-    >
-    </atlas-button>
-  </div>
-
-  <div *ngIf="controller.isExistingRecord()" class="form-title-section">
-    <h2 class="font-bold-2xl color-gray-900">
-      {{ formDetailHeading | translate }} - {{ 'COMMON.VERSION' | translate }}
-      {{ controller.versionNumberOfCurrentRecord }}
-    </h2>
-    <div>
-      <span class="font-bold-lg color-gray-900">{{ 'COMMON.STATUS' | translate }} </span>
-      <span class="color-gray-900">{{
-        'COMMON.STATUS_TYPES.' + controller.statusOfCurrentRecord | translate
-      }}</span>
-    </div>
-    <div *ngIf="workflowEnabled">
-      <app-workflow
-        (workflowEvent)="this.receiveWorkflowEvent($event)"
-        *ngIf="controller.isWorkflowable()"
-        [descriptionForWorkflow]="this.controller.getDecriptionForWorkflow()"
-        [lineRecord]="this.controller.record"
-        [switchVersionEvent]="this.controller.switchVersionEvent.asObservable()"
-      ></app-workflow>
-    </div>
-  </div>
-
-  <div>
-    <ng-content></ng-content>
-  </div>
-
-  <div class="footer fixed-bottom d-flex align-items-center justify-content-center">
-    <atlas-button
+      (click)="controller.backToOverview()"
       [footerEdit]="controller.form.enabled"
-      [mat-dialog-close]="true"
       buttonDataCy="back-to-overview"
       buttonText="COMMON.BACK_TO_OVERVIEW"
-      buttonType="footerNonEdit"
+      buttonType="whiteFooterNonEdit"
     >
     </atlas-button>
     <atlas-button
@@ -112,7 +85,7 @@
       [footerEdit]="controller.form.enabled"
       buttonDataCy="cancel"
       buttonText="COMMON.CANCEL"
-      buttonType="footerEdit"
+      buttonType="whiteFooterEdit"
       wrapperStyleClass="me-3"
     >
     </atlas-button>
@@ -123,12 +96,41 @@
       [submitButton]="true"
       buttonDataCy="save-item"
       buttonText="COMMON.SAVE"
-      buttonType="footerEdit"
+      buttonType="whiteFooterEdit"
     >
     </atlas-button>
-  </div>
-  <app-user-detail-info
-    *ngIf="controller.isExistingRecord()"
-    [record]="controller.record"
-  ></app-user-detail-info>
+    <ng-container *ngIf="controller.isExistingRecord()">
+      <div *ngIf="isEditButtonVisible()">
+        <atlas-button
+          (buttonClicked)="controller.toggleEdit()"
+          [applicationType]="this.controller.getApplicationType()"
+          [businessOrganisation]="selectedRecord.businessOrganisation!"
+          [disabled]="controller.form.enabled || selectedRecord.status === 'REVOKED'"
+          buttonDataCy="edit-item"
+          buttonText="COMMON.EDIT"
+          buttonType="edit"
+          wrapperStyleClass="ms-3"
+        ></atlas-button>
+      </div>
+      <atlas-button
+        (buttonClicked)="controller.revoke()"
+        [applicationType]="this.controller.getApplicationType()"
+        [disabled]="controller.form.enabled || controller.record.status === 'REVOKED'"
+        buttonDataCy="revoke-item"
+        buttonText="COMMON.REVOKE"
+        buttonType="revoke"
+        wrapperStyleClass="ms-3"
+      >
+      </atlas-button>
+      <atlas-button
+        (buttonClicked)="controller.delete()"
+        [disabled]="controller.form.enabled"
+        buttonDataCy="delete-item"
+        buttonText="COMMON.DELETE"
+        buttonType="delete"
+        wrapperStyleClass="ms-3"
+      >
+      </atlas-button>
+    </ng-container>
+  </atlas-detail-footer>
 </div>

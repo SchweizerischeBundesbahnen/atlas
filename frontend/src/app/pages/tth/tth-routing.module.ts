@@ -7,6 +7,7 @@ import { OverviewDetailComponent } from './overview-detail/overview-detail.compo
 import { HearingStatus } from '../../api';
 import { StatementDetailComponent } from './statement/statement-detail.component';
 import { StatementDetailResolver } from './statement/statement-detail.resolver';
+import { canLeaveDirtyForm } from '../../core/leave-guard/leave-dirty-form-guard.service';
 
 const statementActiveDetailPath = `${Pages.TTH_OVERVIEW_DETAIL.path}/${Pages.TTH_ACTIVE.path}/${Pages.TTH_STATEMENT_DETAILS.path}`;
 const statementPlannedDetailPath = `${Pages.TTH_OVERVIEW_DETAIL.path}/${Pages.TTH_PLANNED.path}/${Pages.TTH_STATEMENT_DETAILS.path}`;
@@ -20,6 +21,7 @@ const routes: Routes = [
   {
     path: statementActiveDetailPath,
     component: StatementDetailComponent,
+    canDeactivate: [canLeaveDirtyForm],
     resolve: {
       statement: StatementDetailResolver,
     },
@@ -31,6 +33,7 @@ const routes: Routes = [
   {
     path: statementPlannedDetailPath,
     component: StatementDetailComponent,
+    canDeactivate: [canLeaveDirtyForm],
     resolve: {
       statement: StatementDetailResolver,
     },
@@ -42,6 +45,7 @@ const routes: Routes = [
   {
     path: statementArchivedDetailPath,
     component: StatementDetailComponent,
+    canDeactivate: [canLeaveDirtyForm],
     resolve: {
       statement: StatementDetailResolver,
     },
