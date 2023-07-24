@@ -41,7 +41,7 @@ public interface TrafficPointElementApiV1 {
   @PageableAsQueryParam
   @Operation(description = "INFO: Versions of DiDok3 were merged during migration, so there are now a few versions less here.")
   Container<ReadTrafficPointElementVersionModel> getTrafficPointElements(
-      @Parameter(hidden = true) @PageableDefault(sort = {Fields.sloid, Fields.validFrom}) Pageable pageable,
+      @Parameter(hidden = true) @PageableDefault(sort = {Fields.sloid}) Pageable pageable,
       @ParameterObject TrafficPointElementRequestParams trafficPointElementRequestParams,
       @RequestParam(required = false) @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN) Optional<LocalDate> validOn);
 
