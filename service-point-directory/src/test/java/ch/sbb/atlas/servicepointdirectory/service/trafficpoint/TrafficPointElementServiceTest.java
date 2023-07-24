@@ -1,19 +1,23 @@
 package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepointdirectory.TrafficPointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepository;
-import java.time.LocalDate;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+
+import java.time.LocalDate;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
 public class TrafficPointElementServiceTest {
 
+  @MockBean
+  private TrafficPointElementValidationService trafficPointElementValidationService;
   private final TrafficPointElementService trafficPointElementService;
   private final TrafficPointElementVersionRepository trafficPointElementVersionRepository;
 
@@ -43,7 +47,7 @@ public class TrafficPointElementServiceTest {
     edited.getTrafficPointElementGeolocation().setEditionDate(null);
     edited.getTrafficPointElementGeolocation().setEditor(null);
     // when
-    trafficPointElementService.updateTrafficPointElementVersion(edited);
+    trafficPointElementService.updateTrafficPointElementVersion(trafficPointElementVersion, edited);
 
     // then
     assertThat(trafficPointElementService.findBySloidOrderByValidFrom("ch:1:sloid:123")).hasSize(1);
