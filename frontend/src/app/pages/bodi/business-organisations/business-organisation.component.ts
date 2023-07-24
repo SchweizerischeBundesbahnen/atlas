@@ -1,14 +1,9 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { TableColumn } from '../../../core/components/table/table-column';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { BusinessOrganisation, BusinessOrganisationsService, Status } from '../../../api';
-import { filter } from 'rxjs/operators';
-import {
-  DetailDialogEvents,
-  RouteToDialogService,
-} from '../../../core/components/route-to-dialog/route-to-dialog.service';
 import { BusinessOrganisationLanguageService } from '../../../core/form-components/bo-select/business-organisation-language.service';
 import { TableService } from '../../../core/components/table/table.service';
 import { TablePagination } from '../../../core/components/table/table-pagination';
@@ -18,69 +13,62 @@ import { TableFilterChip } from '../../../core/components/table-filter/config/ta
 import { TableFilterMultiSelect } from '../../../core/components/table-filter/config/table-filter-multiselect';
 import { TableFilterDateSelect } from '../../../core/components/table-filter/config/table-filter-date-select';
 import { TableFilter } from '../../../core/components/table-filter/config/table-filter';
+import { Pages } from '../../pages';
 
 @Component({
   selector: 'app-bodi-business-organisations',
   templateUrl: './business-organisation.component.html',
-  providers: [TableService],
 })
-export class BusinessOrganisationComponent implements OnDestroy {
+export class BusinessOrganisationComponent implements OnInit, OnDestroy {
   tableColumns: TableColumn<BusinessOrganisation>[] = this.getColumns();
 
-  private readonly tableFilterConfigIntern = {
-    chipSearch: new TableFilterChip('col-6'),
+  private tableFilterConfigIntern = {
+    chipSearch: new TableFilterChip(0, 'col-6'),
     multiSelectStatus: new TableFilterMultiSelect(
       'COMMON.STATUS_TYPES.',
       'COMMON.STATUS',
       Object.values(Status),
+      1,
       'col-3',
       DEFAULT_STATUS_SELECTION
     ),
-    dateSelect: new TableFilterDateSelect('col-3'),
+    dateSelect: new TableFilterDateSelect(1, 'col-3'),
   };
 
-  readonly tableFilterConfig: TableFilter<unknown>[][] = [
-    [this.tableFilterConfigIntern.chipSearch],
-    [this.tableFilterConfigIntern.multiSelectStatus, this.tableFilterConfigIntern.dateSelect],
-  ];
+  tableFilterConfig!: TableFilter<unknown>[][];
 
   businessOrganisations: BusinessOrganisation[] = [];
   totalCount$ = 0;
 
   private businessOrganisationsSubscription?: Subscription;
-  private routeSubscription: Subscription;
   private langChangeSubscription: Subscription;
 
   constructor(
     private businessOrganisationsService: BusinessOrganisationsService,
     private route: ActivatedRoute,
     private router: Router,
-    private routeToDialogService: RouteToDialogService,
     private businessOrganisationLanguageService: BusinessOrganisationLanguageService,
-    private readonly tableService: TableService
+    private tableService: TableService
   ) {
-    this.routeSubscription = this.routeToDialogService.detailDialogEvent
-      .pipe(filter((e) => e === DetailDialogEvents.Closed))
-      .subscribe(() => {
-        this.getOverview({
-          page: this.tableService.pageIndex,
-          size: this.tableService.pageSize,
-          sort: this.tableService.sortString,
-        });
-      });
-
     this.langChangeSubscription = this.businessOrganisationLanguageService
       .languageChanged()
       .subscribe(() => (this.tableColumns = this.getColumns()));
   }
 
+  ngOnInit() {
+    this.tableFilterConfig = this.tableService.initializeFilterConfig(
+      this.tableFilterConfigIntern,
+      Pages.BUSINESS_ORGANISATIONS
+    );
+  }
+
   getOverview(pagination: TablePagination) {
     this.businessOrganisationsSubscription = this.businessOrganisationsService
       .getAllBusinessOrganisations(
-        this.tableFilterConfigIntern.chipSearch.getActiveSearch(),
+        this.tableService.filter.chipSearch.getActiveSearch(),
         undefined,
-        this.tableFilterConfigIntern.dateSelect.getActiveSearch(),
-        this.tableFilterConfigIntern.multiSelectStatus.getActiveSearch(),
+        this.tableService.filter.dateSelect.getActiveSearch(),
+        this.tableService.filter.multiSelectStatus.getActiveSearch(),
         pagination.page,
         pagination.size,
         addElementsToArrayWhenNotUndefined(pagination.sort, this.getDefaultSort())
@@ -101,7 +89,6 @@ export class BusinessOrganisationComponent implements OnDestroy {
 
   ngOnDestroy() {
     this.businessOrganisationsSubscription?.unsubscribe();
-    this.routeSubscription.unsubscribe();
     this.langChangeSubscription.unsubscribe();
   }
 

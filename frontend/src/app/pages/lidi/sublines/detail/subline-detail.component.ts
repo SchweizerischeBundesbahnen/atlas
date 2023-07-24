@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   ApplicationType,
   Line,
@@ -23,7 +23,6 @@ import { map } from 'rxjs/operators';
 import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
 import { ValidationService } from '../../../../core/validation/validation.service';
 import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
 import { SublineDetailFormGroup } from './subline-detail-form-group';
 import { AuthService } from '../../../../core/auth/auth.service';
@@ -45,9 +44,7 @@ export class SublineDetailComponent
   readonly mainlineSlnidFormControlName = 'mainlineSlnid';
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public dialogData: any,
-    private router: Router,
-    protected dialogRef: MatDialogRef<SublineDetailComponent>,
+    protected router: Router,
     private sublinesService: SublinesService,
     private formBuilder: FormBuilder,
     protected notificationService: NotificationService,
@@ -58,7 +55,7 @@ export class SublineDetailComponent
     protected authService: AuthService,
     protected activatedRoute: ActivatedRoute
   ) {
-    super(dialogRef, dialogService, notificationService, authService, activatedRoute);
+    super(router, dialogService, notificationService, authService, activatedRoute);
   }
 
   ngOnInit() {
@@ -79,7 +76,7 @@ export class SublineDetailComponent
   }
 
   readRecord(): SublineVersion {
-    return this.dialogData.sublineDetail;
+    return this.activatedRoute.snapshot.data.sublineDetail;
   }
 
   getDetailHeading(record: SublineVersion): string {

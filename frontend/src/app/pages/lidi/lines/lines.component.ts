@@ -1,13 +1,8 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TableColumn } from '../../../core/components/table/table-column';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { BusinessOrganisation, Line, LinesService, LineType, Status } from '../../../api';
-import { filter } from 'rxjs/operators';
-import {
-  DetailDialogEvents,
-  RouteToDialogService,
-} from '../../../core/components/route-to-dialog/route-to-dialog.service';
 import { TableService } from '../../../core/components/table/table.service';
 import { TablePagination } from '../../../core/components/table/table-pagination';
 import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
@@ -18,17 +13,18 @@ import { TableFilterSearchType } from '../../../core/components/table-filter/con
 import { TableFilterMultiSelect } from '../../../core/components/table-filter/config/table-filter-multiselect';
 import { TableFilter } from '../../../core/components/table-filter/config/table-filter';
 import { TableFilterDateSelect } from '../../../core/components/table-filter/config/table-filter-date-select';
+import { Pages } from '../../pages';
 
 @Component({
   selector: 'app-lidi-lines',
   templateUrl: './lines.component.html',
-  providers: [TableService],
 })
-export class LinesComponent implements OnDestroy {
+export class LinesComponent implements OnInit, OnDestroy {
   private readonly tableFilterConfigIntern = {
-    chipSearch: new TableFilterChip('col-6'),
+    chipSearch: new TableFilterChip(0, 'col-6'),
     searchSelect: new TableFilterSearchSelect<BusinessOrganisation>(
       TableFilterSearchType.BUSINESS_ORGANISATION,
+      1,
       'col-3',
       new FormGroup({
         businessOrganisation: new FormControl(),
@@ -38,20 +34,21 @@ export class LinesComponent implements OnDestroy {
       'LIDI.LINE.TYPES.',
       'LIDI.TYPE',
       Object.values(LineType),
+      1,
       'col-3'
     ),
     multiSelectStatus: new TableFilterMultiSelect(
       'COMMON.STATUS_TYPES.',
       'COMMON.STATUS',
       Object.values(Status),
+      1,
       'col-3',
       [Status.Draft, Status.Validated, Status.InReview, Status.Withdrawn]
     ),
-    dateSelect: new TableFilterDateSelect('col-3'),
+    dateSelect: new TableFilterDateSelect(1, 'col-3'),
   };
 
   private lineVersionsSubscription?: Subscription;
-  private routeSubscription: Subscription;
 
   linesTableColumns: TableColumn<Line>[] = [
     { headerTitle: 'LIDI.LINE.NUMBER', value: 'number' },
@@ -68,15 +65,7 @@ export class LinesComponent implements OnDestroy {
     { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
   ];
 
-  tableFilterConfig: TableFilter<unknown>[][] = [
-    [this.tableFilterConfigIntern.chipSearch],
-    [
-      this.tableFilterConfigIntern.searchSelect,
-      this.tableFilterConfigIntern.multiSelectLineType,
-      this.tableFilterConfigIntern.multiSelectStatus,
-      this.tableFilterConfigIntern.dateSelect,
-    ],
-  ];
+  tableFilterConfig!: TableFilter<unknown>[][];
 
   lineVersions: Line[] = [];
   totalCount$ = 0;
@@ -85,29 +74,25 @@ export class LinesComponent implements OnDestroy {
     private linesService: LinesService,
     private route: ActivatedRoute,
     private router: Router,
-    private routeToDialogService: RouteToDialogService,
-    private readonly tableService: TableService
-  ) {
-    this.routeSubscription = this.routeToDialogService.detailDialogEvent
-      .pipe(filter((e) => e === DetailDialogEvents.Closed))
-      .subscribe(() =>
-        this.getOverview({
-          page: this.tableService.pageIndex,
-          size: this.tableService.pageSize,
-          sort: this.tableService.sortString,
-        })
-      );
+    private tableService: TableService
+  ) {}
+
+  ngOnInit() {
+    this.tableFilterConfig = this.tableService.initializeFilterConfig(
+      this.tableFilterConfigIntern,
+      Pages.LINES
+    );
   }
 
   getOverview(pagination: TablePagination) {
     this.lineVersionsSubscription = this.linesService
       .getLines(
         undefined,
-        this.tableFilterConfigIntern.chipSearch.getActiveSearch(),
-        this.tableFilterConfigIntern.multiSelectStatus.getActiveSearch(),
-        this.tableFilterConfigIntern.multiSelectLineType.getActiveSearch(),
-        this.tableFilterConfigIntern.searchSelect.getActiveSearch()?.sboid,
-        this.tableFilterConfigIntern.dateSelect.getActiveSearch(),
+        this.tableService.filter.chipSearch.getActiveSearch(),
+        this.tableService.filter.multiSelectStatus.getActiveSearch(),
+        this.tableService.filter.multiSelectLineType.getActiveSearch(),
+        this.tableService.filter.searchSelect.getActiveSearch()?.sboid,
+        this.tableService.filter.dateSelect.getActiveSearch(),
         pagination.page,
         pagination.size,
         addElementsToArrayWhenNotUndefined(pagination.sort, 'slnid,asc')
@@ -128,6 +113,5 @@ export class LinesComponent implements OnDestroy {
 
   ngOnDestroy() {
     this.lineVersionsSubscription?.unsubscribe();
-    this.routeSubscription.unsubscribe();
   }
 }

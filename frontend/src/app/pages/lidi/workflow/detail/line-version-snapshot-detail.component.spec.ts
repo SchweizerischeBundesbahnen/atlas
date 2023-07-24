@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import {
   LinesService,
   LineType,
@@ -9,12 +9,12 @@ import {
   PaymentType,
 } from '../../../../api';
 import { LineVersionSnapshotDetailComponent } from './line-version-snapshot-detail.component';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AppTestingModule, authServiceMock } from '../../../../app.testing.module';
 import { ErrorNotificationComponent } from '../../../../core/notification/error/error-notification.component';
 import { InfoIconComponent } from '../../../../core/form-components/info-icon/info-icon.component';
 import {
   MockAppDetailWrapperComponent,
+  MockAtlasButtonComponent,
   MockBoSelectComponent,
 } from '../../../../app.testing.mocks';
 import { AuthService } from '../../../../core/auth/auth.service';
@@ -31,6 +31,8 @@ import { TextFieldComponent } from '../../../../core/form-components/text-field/
 import { InfoLinkDirective } from '../../../../core/form-components/info-icon/info-link.directive';
 import { SelectComponent } from '../../../../core/form-components/select/select.component';
 import { AtlasSpacerComponent } from '../../../../core/components/spacer/atlas-spacer.component';
+import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
+import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
 
 const lineVersionSnapsot: LineVersionSnapshot = {
   id: 1234,
@@ -72,14 +74,6 @@ const lineVersion: LineVersion = {
 
 let component: LineVersionSnapshotDetailComponent;
 let fixture: ComponentFixture<LineVersionSnapshotDetailComponent>;
-let router: Router;
-let dialogRef: MatDialogRef<LineVersionSnapshotDetailComponent>;
-
-@Component({
-  selector: 'app-dialog-close',
-  template: '',
-})
-class MockDialogCloseComponent {}
 
 describe('LineVersionSnapshotDetailComponent', () => {
   const mockLinesService = jasmine.createSpyObj('linesService', [
@@ -97,8 +91,6 @@ describe('LineVersionSnapshotDetailComponent', () => {
     fixture = TestBed.createComponent(LineVersionSnapshotDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    router = TestBed.inject(Router);
-    dialogRef = TestBed.inject(MatDialogRef);
   });
 
   it('should be created', () => {
@@ -122,7 +114,6 @@ function setupTestBed(
       LineDetailFormComponent,
       MockBoSelectComponent,
       ErrorNotificationComponent,
-      MockDialogCloseComponent,
       CommentComponent,
       UserDetailInfoComponent,
       AtlasLabelFieldComponent,
@@ -133,16 +124,16 @@ function setupTestBed(
       InfoIconComponent,
       LinkIconComponent,
       InfoLinkDirective,
+      MockAtlasButtonComponent,
+      DetailFooterComponent,
+      DetailPageContainerComponent,
     ],
     imports: [AppTestingModule],
     providers: [
       { provide: FormBuilder },
       { provide: LinesService, useValue: linesService },
       { provide: AuthService, useValue: authServiceMock },
-      {
-        provide: MAT_DIALOG_DATA,
-        useValue: data,
-      },
+      { provide: ActivatedRoute, useValue: { snapshot: { data: data } } },
       { provide: TranslatePipe },
     ],
   })
