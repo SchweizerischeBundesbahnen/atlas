@@ -7,7 +7,6 @@ import {
   TransportCompanyRelationsService,
 } from '../../../../api';
 import { TransportCompanyDetailComponent } from './transport-company-detail.component';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { AuthService } from '../../../../core/auth/auth.service';
 import { RelationComponent } from '../../../../core/components/relation/relation.component';
@@ -21,6 +20,9 @@ import { AtlasLabelFieldComponent } from '../../../../core/form-components/atlas
 import { AtlasFieldErrorComponent } from '../../../../core/form-components/atlas-field-error/atlas-field-error.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { SearchSelectComponent } from '../../../../core/form-components/search-select/search-select.component';
+import { ActivatedRoute } from '@angular/router';
+import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
+import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
 
 const transportCompany: TransportCompany = {
   id: 1234,
@@ -219,12 +221,14 @@ function setupTestBed(data: (TransportCompany | TransportCompanyBoRelation[])[])
       TextFieldComponent,
       AtlasLabelFieldComponent,
       AtlasFieldErrorComponent,
+      DetailPageContainerComponent,
+      DetailFooterComponent,
     ],
     imports: [AppTestingModule],
     providers: [
       {
-        provide: MAT_DIALOG_DATA,
-        useValue: { transportCompanyDetail: data },
+        provide: ActivatedRoute,
+        useValue: { snapshot: { data: { transportCompanyDetail: data } } },
       },
       {
         provide: AuthService,

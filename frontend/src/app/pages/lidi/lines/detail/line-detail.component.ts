@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   ApplicationType,
   LinesService,
@@ -20,7 +20,6 @@ import { Pages } from '../../../pages';
 import { Page } from 'src/app/core/model/page';
 import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
 import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
 import { LineDetailFormGroup } from './line-detail-form-group';
 import { AuthService } from '../../../../core/auth/auth.service';
@@ -37,16 +36,14 @@ export class LineDetailComponent
   private ngUnsubscribe = new Subject<void>();
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public dialogData: any,
-    private router: Router,
-    protected dialogRef: MatDialogRef<LineDetailComponent>,
+    protected router: Router,
     private linesService: LinesService,
     protected notificationService: NotificationService,
     protected dialogService: DialogService,
     protected authService: AuthService,
     protected activatedRoute: ActivatedRoute
   ) {
-    super(dialogRef, dialogService, notificationService, authService, activatedRoute);
+    super(router, dialogService, notificationService, authService, activatedRoute);
   }
 
   ngOnInit() {
@@ -63,7 +60,7 @@ export class LineDetailComponent
   }
 
   readRecord(): LineVersion {
-    return this.dialogData.lineDetail;
+    return this.activatedRoute.snapshot.data.lineDetail;
   }
 
   getDetailHeading(record: LineVersion): string {
@@ -74,7 +71,7 @@ export class LineDetailComponent
     return record.slnid!;
   }
 
-  getDecriptionForWorkflow(): string {
+  getDescriptionForWorkflow(): string {
     if (this.record) {
       if (this.record.description) {
         return this.record.description;

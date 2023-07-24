@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   ApplicationType,
   BusinessOrganisationsService,
@@ -18,7 +18,6 @@ import { Pages } from '../../../pages';
 import { Page } from 'src/app/core/model/page';
 import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
 import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
 import { BusinessOrganisationDetailFormGroup } from './business-organisation-detail-form-group';
 import { BusinessOrganisationLanguageService } from '../../../../core/form-components/bo-select/business-organisation-language.service';
@@ -36,9 +35,7 @@ export class BusinessOrganisationDetailComponent
   private ngUnsubscribe = new Subject<void>();
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public dialogData: any,
-    private router: Router,
-    protected dialogRef: MatDialogRef<BusinessOrganisationDetailComponent>,
+    protected router: Router,
     private businessOrganisationsService: BusinessOrganisationsService,
     private formBuilder: FormBuilder,
     private businessOrganisationLanguageService: BusinessOrganisationLanguageService,
@@ -47,7 +44,7 @@ export class BusinessOrganisationDetailComponent
     protected authService: AuthService,
     protected activatedRoute: ActivatedRoute
   ) {
-    super(dialogRef, dialogService, notificationService, authService, activatedRoute);
+    super(router, dialogService, notificationService, authService, activatedRoute);
   }
 
   ngOnInit() {
@@ -63,7 +60,7 @@ export class BusinessOrganisationDetailComponent
   }
 
   readRecord(): BusinessOrganisationVersion {
-    return this.dialogData.businessOrganisationDetail;
+    return this.activatedRoute.snapshot.data.businessOrganisationDetail;
   }
 
   getDetailHeading(record: BusinessOrganisationVersion): string {

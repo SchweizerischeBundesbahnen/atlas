@@ -14,22 +14,23 @@
 import { Inject, Injectable, Optional } from '@angular/core';
 import {
   HttpClient,
+  HttpEvent,
   HttpHeaders,
+  HttpParameterCodec,
   HttpParams,
   HttpResponse,
-  HttpEvent,
-  HttpParameterCodec,
 } from '@angular/common/http';
 import { CustomHttpParameterCodec } from '../encoder';
 import { Observable } from 'rxjs';
 
-import { BusinessOrganisationVersion } from '../model/models';
-import { ContainerBusinessOrganisation } from '../model/models';
-import { ContainerBusinessOrganisationVersion } from '../model/models';
-import { ErrorResponse } from '../model/models';
-import { Status } from '../model/models';
+import {
+  BusinessOrganisationVersion,
+  ContainerBusinessOrganisation,
+  ContainerBusinessOrganisationVersion,
+  Status,
+} from '../model/models';
 
-import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
+import { BASE_PATH } from '../variables';
 import { Configuration } from '../configuration';
 
 @Injectable({
