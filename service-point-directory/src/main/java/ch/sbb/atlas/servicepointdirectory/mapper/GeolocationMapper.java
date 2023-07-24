@@ -5,26 +5,44 @@ import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.servicepoint.transformer.CoordinateTransformer;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.GeolocationBaseEntity;
+import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
+import lombok.experimental.UtilityClass;
+
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.stream.Stream;
-import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class GeolocationMapper {
 
-  public static GeolocationBaseModel toModel(GeolocationBaseEntity geolocation) {
-    if (geolocation == null) {
+  public static GeolocationBaseModel toModel(GeolocationBaseEntity geolocationBaseEntity) {
+    if (geolocationBaseEntity == null) {
       return null;
     }
-    Map<SpatialReference, CoordinatePair> coordinates = getTransformedCoordinates(geolocation);
+    Map<SpatialReference, CoordinatePair> coordinates = getTransformedCoordinates(geolocationBaseEntity);
     return GeolocationBaseModel.builder()
-        .spatialReference(geolocation.getSpatialReference())
+        .spatialReference(geolocationBaseEntity.getSpatialReference())
         .lv95(coordinates.get(SpatialReference.LV95))
         .wgs84(coordinates.get(SpatialReference.WGS84))
         .wgs84web(coordinates.get(SpatialReference.WGS84WEB))
-        .height(geolocation.getHeight())
+        .height(geolocationBaseEntity.getHeight())
         .build();
+  }
+
+  public static TrafficPointElementGeolocation toTrafficPointElementEntity(GeolocationBaseModel geolocationBaseModel) {
+    if (geolocationBaseModel == null) {
+      return null;
+    }
+    return TrafficPointElementGeolocation.builder()
+            .spatialReference(geolocationBaseModel.getSpatialReference())
+            .east(geolocationBaseModel.getLv95().getEast())
+            .north(geolocationBaseModel.getLv95().getNorth())
+            .east(geolocationBaseModel.getWgs84().getEast())
+            .north(geolocationBaseModel.getWgs84().getNorth())
+            .east(geolocationBaseModel.getWgs84web().getEast())
+            .north(geolocationBaseModel.getWgs84web().getNorth())
+            .height(geolocationBaseModel.getHeight())
+            .build();
   }
 
   static public Map<SpatialReference, CoordinatePair> getTransformedCoordinates(GeolocationBaseEntity entity) {
