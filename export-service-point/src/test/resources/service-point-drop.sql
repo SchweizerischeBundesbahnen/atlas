@@ -12,6 +12,8 @@ drop sequence traffic_point_element_version_seq;
 
 drop table service_point_version;
 
+drop table service_point_fot_comment;
+
 drop table service_point_version_geolocation;
 
 drop table service_point_version_categories;
