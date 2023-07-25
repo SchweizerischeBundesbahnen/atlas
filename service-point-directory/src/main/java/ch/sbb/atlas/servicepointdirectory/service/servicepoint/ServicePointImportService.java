@@ -4,6 +4,7 @@ import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointItemImportResult.ServicePointItemImportResultBuilder;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointFotComment;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion.Fields;
@@ -13,15 +14,17 @@ import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import com.fasterxml.jackson.databind.MappingIterator;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
@@ -54,6 +57,7 @@ public class ServicePointImportService {
           .stream()
           .map(new ServicePointCsvToEntityMapper())
           .toList();
+      replaceCsvMergedVersions(container, servicePointVersions);
       for (ServicePointVersion servicePointVersion : servicePointVersions) {
         boolean servicePointNumberExisting = servicePointService.isServicePointNumberExisting(servicePointVersion.getNumber());
         if (servicePointNumberExisting) {
@@ -67,6 +71,44 @@ public class ServicePointImportService {
       saveFotComment(container);
     }
     return importResults;
+  }
+
+  /**
+   * When the ServicePoint versions imported from CSV are less than the stored ServicePoint DB versions (that means that there were changes on Didok that caused a merge)
+   * then whe need to find which ServicePoint versions are merged (we just need to find the versions exactly included between validFrom and validTo),
+   * delete them and save the merged ServicePoint version which comes from the CSV file.
+   */
+  private void replaceCsvMergedVersions(ServicePointCsvModelContainer container, List<ServicePointVersion> servicePointVersions) {
+    List<ServicePointVersion> dbVersions = servicePointService.findAllByNumberOrderByValidFrom(ServicePointNumber.of(container.getDidokCode()));
+    if(dbVersions.size() > servicePointVersions.size()){
+      log.info("The ServicePoint CSV versions are less than the ServicePoint versions stored in the DB. A merge has occurred on Didok.");
+      for(ServicePointVersion version : servicePointVersions){
+        List<ServicePointVersion> objectToVersioningInValidFromValidToRange = findObjectToVersioningInValidFromValidToRange(version.getValidFrom(), version.getValidTo(), dbVersions);
+        if(objectToVersioningInValidFromValidToRange.size() > 1){
+          log.info("The following versions will be deleted: {}", objectToVersioningInValidFromValidToRange);
+          for(ServicePointVersion servicePointVersion : objectToVersioningInValidFromValidToRange){
+            servicePointService.deleteById(servicePointVersion.getId());
+          }
+          log.info("The following version will replace the deleted versions: {}",version);
+          saveServicePointVersion(version);
+        }
+      }
+    }
+  }
+
+  public static List<ServicePointVersion> findObjectToVersioningInValidFromValidToRange(
+          LocalDate editedValidFrom, LocalDate editedValidTo, List<ServicePointVersion> versions) {
+    return versions.stream()
+            .filter(
+                    toVersioning -> !toVersioning.getValidFrom()
+                            .isAfter(
+                                    editedValidTo))
+            .filter(
+                    toVersioning -> !toVersioning.getValidTo()
+                            .isBefore(
+                                    editedValidFrom))
+            .collect(
+                    Collectors.toList());
   }
 
   private void saveFotComment(ServicePointCsvModelContainer container) {
