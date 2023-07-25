@@ -163,7 +163,7 @@ export default class BodiUtils {
   }
 
   static switchTabToBusinessOrganisations() {
-    this.interceptBusinessOrganisations('#mat-tab-link-1');
+    this.interceptBusinessOrganisations('[data-cy=tab-business-organisations]');
   }
 
   static switchTabToTU() {
