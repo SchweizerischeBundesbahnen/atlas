@@ -54,7 +54,6 @@ create table service_point_version
     status                                   varchar(50)           not null,
     operating_point_kilometer_master         integer,
     operating_point_route_network            boolean default false not null,
-    comment                                  varchar(1500),
     valid_from                               date                  not null,
     valid_to                                 date                  not null,
     creation_date                            timestamp             not null,
@@ -71,6 +70,16 @@ create table service_point_version
         unique (number, valid_from)
 );
 
+CREATE TABLE service_point_fot_comment
+(
+    service_point_number INTEGER PRIMARY KEY,
+    fot_comment          VARCHAR(2000) NOT NULL,
+    creation_date        TIMESTAMP     NOT NULL,
+    creator              VARCHAR(50)   NOT NULL,
+    edition_date         TIMESTAMP     NOT NULL,
+    editor               VARCHAR(50)   NOT NULL,
+    version              BIGINT        NOT NULL DEFAULT 0
+);
 
 create table service_point_version_categories
 (
