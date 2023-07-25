@@ -43,6 +43,13 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
   public Container<ReadTrafficPointElementVersionModel> getTrafficPointElements(Pageable pageable, TrafficPointElementRequestParams trafficPointElementRequestParams,
       Optional<LocalDate> validOn ) {
 
+//    List<Integer> servicePointNumbers = trafficPointElementRequestParams.getBusinessOrganisations()
+//            .stream()
+//            .map(sboid -> trafficPointElementService.findServicePointNumberForSboid(sboid))
+//            .toList();
+//
+//    trafficPointElementRequestParams.setServicePointNumbers(servicePointNumbers);
+
     TrafficPointElementSearchRestrictions trafficPointElementSearchRestrictions = TrafficPointElementSearchRestrictions.builder()
         .pageable(pageable)
         .trafficPointElementRequestParams(trafficPointElementRequestParams)
@@ -52,8 +59,11 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
     Page<TrafficPointElementVersion> trafficPointElementVersions = trafficPointElementService.findAll(trafficPointElementSearchRestrictions);
 
     return Container.<ReadTrafficPointElementVersionModel>builder()
-        .objects(trafficPointElementVersions.stream().map(TrafficPointElementVersionMapper::toModel).toList())
-        .totalCount(trafficPointElementVersions.getTotalElements())
+        .objects(trafficPointElementVersions.stream()
+                .distinct()
+                .map(TrafficPointElementVersionMapper::toModel)
+                .toList())
+        .totalCount(trafficPointElementVersions.stream().distinct().count())
         .build();
   }
 
