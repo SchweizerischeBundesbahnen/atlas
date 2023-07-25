@@ -27,7 +27,7 @@ public class SqlQueryUtil {
       LEFT JOIN shared_business_organisation_version sbov
       on spv.business_organisation = sbov.sboid AND (CASE WHEN current_date between sbov.valid_from and sbov.valid_to THEN 0 ELSE 1 END = 0)
       """;
-  private static final String GROUP_BY_STATEMENT = "group by spv.id, spvg.id, sbov.id";
+  private static final String GROUP_BY_STATEMENT = "group by spv.id, spvg.id, sbov.id, spfc.service_point_number";
 
   private static final String SWISS_ONLY_FULL_WHERE_STATEMENT = "WHERE spv.country "
       + "IN('SWITZERLAND','GERMANY_BUS','AUSTRIA_BUS','ITALY_BUS','FRANCE_BUS') ";
