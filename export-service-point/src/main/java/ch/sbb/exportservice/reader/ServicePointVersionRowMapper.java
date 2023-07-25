@@ -76,7 +76,7 @@ public class ServicePointVersionRowMapper implements RowMapper<ServicePointVersi
     Optional.ofNullable(rs.getString("status"))
         .ifPresent(status -> servicePointVersionBuilder.status(Status.valueOf(status)));
 
-    servicePointVersionBuilder.comment(rs.getString("comment"));
+    servicePointVersionBuilder.comment(rs.getString("fot_comment"));
     servicePointVersionBuilder.creationDate(rs.getObject("creation_date", LocalDateTime.class));
     servicePointVersionBuilder.editionDate(rs.getObject("edition_date", LocalDateTime.class));
     servicePointVersionBuilder.creator(rs.getString("creator"));
