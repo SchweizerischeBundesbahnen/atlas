@@ -4,9 +4,13 @@ import { AuthService } from '../../../core/auth/auth.service';
 import { environment } from '../../../../environments/environment';
 
 const SWISS_BOUNDING_BOX: LngLatBoundsLike = [
-  // CH bounds;
   [5.7349, 45.6755],
   [10.6677, 47.9163],
+];
+
+export const SWISS_TOPO_BOUNDING_BOX: LngLatBoundsLike = [
+  [5.140242, 45.3981812],
+  [11.47757, 48.230651],
 ];
 
 @Injectable({
