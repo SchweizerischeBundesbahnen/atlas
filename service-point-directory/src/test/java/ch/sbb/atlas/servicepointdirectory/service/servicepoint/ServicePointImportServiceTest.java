@@ -1,18 +1,23 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
-import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
+import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointItemImportResult;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointFotComment;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.util.Pair;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
@@ -20,12 +25,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.util.Pair;
-import org.springframework.transaction.annotation.Transactional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
 @Transactional
@@ -74,6 +75,191 @@ public class ServicePointImportServiceTest {
     Optional<ServicePointFotComment> fotComment = servicePointFotCommentService.findByServicePointNumber(didokCode);
     assertThat(fotComment).isPresent();
     assertThat(fotComment.get().getFotComment()).isEqualTo("BAV-Kommentar");
+  }
+
+  @Test
+  public void shouldMergeServicePointByImportServicePointsWithoutGeolocation() throws IOException {
+    //given
+    ServicePointNumber servicePointNumber ;
+    String firstFile = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20230717021649_without_geolocation.csv";
+    try (InputStream csvStream = this.getClass().getResourceAsStream(SEPARATOR + firstFile)) {
+      List<ServicePointCsvModel> servicePointCsvModels = ServicePointImportService.parseServicePoints(csvStream);
+      ServicePointCsvModelContainer container = new ServicePointCsvModelContainer();
+      Integer didokCode = servicePointCsvModels.get(0).getDidokCode();
+      servicePointNumber = ServicePointNumber.of(didokCode);
+      container.setServicePointCsvModelList(servicePointCsvModels);
+      container.setDidokCode(didokCode);
+       servicePointImportService.importServicePoints(List.of(container));
+      List<ServicePointVersion> result = servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber);
+      assertThat(result.size()).isEqualTo(2);
+      assertThat(result.get(0).getValidFrom()).isEqualTo(LocalDate.of(2020,9,1));
+      assertThat(result.get(0).getValidTo()).isEqualTo(LocalDate.of(2022,5,30));
+      assertThat(result.get(0).getAbbreviation()).isEqualTo("FIGE");
+      assertThat(result.get(1).getValidFrom()).isEqualTo(LocalDate.of(2022,5,31));
+      assertThat(result.get(1).getValidTo()).isEqualTo(LocalDate.of(2099,12,31));
+      assertThat(result.get(1).getAbbreviation()).isEqualTo("FIBE");
+    }
+
+    //when
+    String secondFile = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20230718021052_without_geolocation.csv";
+    try (InputStream csvStream = this.getClass().getResourceAsStream(SEPARATOR + secondFile)) {
+      List<ServicePointCsvModel> servicePointCsvModels = ServicePointImportService.parseServicePoints(csvStream);
+      ServicePointCsvModelContainer container = new ServicePointCsvModelContainer();
+      Integer didokCode = servicePointCsvModels.get(0).getDidokCode();
+      container.setServicePointCsvModelList(servicePointCsvModels);
+      container.setDidokCode(didokCode);
+      servicePointImportService.importServicePoints(List.of(container));
+
+    }
+    //then
+    List<ServicePointVersion> result = servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber);
+    assertThat(result.size()).isEqualTo(1);
+    assertThat(result.get(0).getValidFrom()).isEqualTo(LocalDate.of(2020,9,1));
+    assertThat(result.get(0).getValidTo()).isEqualTo(LocalDate.of(2099,12,31));
+    assertThat(result.get(0).getAbbreviation()).isEqualTo("FIBE");
+  }
+
+  /**
+   * 1) The first File has 2 identical sequential ServicePoint versions with different Geolocation versions
+   * 2) The second File has 2 identical sequential ServicePoint versions and two identical Geolocation version
+   * 3) The Result is one ServicePoint version with one Geolocation version -> the sequential versions are merged
+   */
+  @Test
+  public void shouldMergeServicePointByImportServicePointsWithMergeGeolocation() throws IOException {
+    //given
+    ServicePointNumber servicePointNumber ;
+    String firstFile = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20230717021649_geo_with_merge.csv";
+    try (InputStream csvStream = this.getClass().getResourceAsStream(SEPARATOR + firstFile)) {
+      List<ServicePointCsvModel> servicePointCsvModels = ServicePointImportService.parseServicePoints(csvStream);
+      ServicePointCsvModelContainer container = new ServicePointCsvModelContainer();
+      Integer didokCode = servicePointCsvModels.get(0).getDidokCode();
+      servicePointNumber = ServicePointNumber.of(didokCode);
+      container.setServicePointCsvModelList(servicePointCsvModels);
+      container.setDidokCode(didokCode);
+       servicePointImportService.importServicePoints(List.of(container));
+      List<ServicePointVersion> result = servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber);
+      assertThat(result.size()).isEqualTo(2);
+      assertThat(result.get(0).getValidFrom()).isEqualTo(LocalDate.of(2020,9,1));
+      assertThat(result.get(0).getValidTo()).isEqualTo(LocalDate.of(2022,5,30));
+      assertThat(result.get(0).getAbbreviation()).isEqualTo("FIBE");
+      assertThat(result.get(1).getValidFrom()).isEqualTo(LocalDate.of(2022,5,31));
+      assertThat(result.get(1).getValidTo()).isEqualTo(LocalDate.of(2099,12,31));
+      assertThat(result.get(1).getAbbreviation()).isEqualTo("FIBE");
+    }
+
+    //when
+    String secondFile = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20230718021052_geo_with_merge.csv";
+    try (InputStream csvStream = this.getClass().getResourceAsStream(SEPARATOR + secondFile)) {
+      List<ServicePointCsvModel> servicePointCsvModels = ServicePointImportService.parseServicePoints(csvStream);
+      ServicePointCsvModelContainer container = new ServicePointCsvModelContainer();
+      Integer didokCode = servicePointCsvModels.get(0).getDidokCode();
+      container.setServicePointCsvModelList(servicePointCsvModels);
+      container.setDidokCode(didokCode);
+      servicePointImportService.importServicePoints(List.of(container));
+
+    }
+    //then
+    List<ServicePointVersion> result = servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber);
+    assertThat(result.size()).isEqualTo(1);
+    assertThat(result.get(0).getValidFrom()).isEqualTo(LocalDate.of(2020,9,1));
+    assertThat(result.get(0).getValidTo()).isEqualTo(LocalDate.of(2099,12,31));
+    assertThat(result.get(0).getAbbreviation()).isEqualTo("FIBE");
+  }
+
+
+  /**
+   * 1) The first File has 2 identical sequential ServicePoint versions with different Geolocation versions
+   * 2) The second File has 1 ServicePoint version and one Geolocation version, the versions are already be merged
+   * 3) The Result should be one ServicePoint version with one Geolocation version like the second file
+   */
+  @Test
+  public void shouldMergeServicePointByImportServicePointsWithPremergedGeolocation() throws IOException {
+    //given
+    ServicePointNumber servicePointNumber ;
+    String firstFile = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20230717021649_geo.csv";
+    try (InputStream csvStream = this.getClass().getResourceAsStream(SEPARATOR + firstFile)) {
+      List<ServicePointCsvModel> servicePointCsvModels = ServicePointImportService.parseServicePoints(csvStream);
+      ServicePointCsvModelContainer container = new ServicePointCsvModelContainer();
+      Integer didokCode = servicePointCsvModels.get(0).getDidokCode();
+      servicePointNumber = ServicePointNumber.of(didokCode);
+      container.setServicePointCsvModelList(servicePointCsvModels);
+      container.setDidokCode(didokCode);
+       servicePointImportService.importServicePoints(List.of(container));
+      List<ServicePointVersion> result = servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber);
+      assertThat(result.size()).isEqualTo(2);
+      assertThat(result.get(0).getValidFrom()).isEqualTo(LocalDate.of(2020,9,1));
+      assertThat(result.get(0).getValidTo()).isEqualTo(LocalDate.of(2022,5,30));
+      assertThat(result.get(0).getAbbreviation()).isEqualTo("FIGE");
+      assertThat(result.get(1).getValidFrom()).isEqualTo(LocalDate.of(2022,5,31));
+      assertThat(result.get(1).getValidTo()).isEqualTo(LocalDate.of(2099,12,31));
+      assertThat(result.get(1).getAbbreviation()).isEqualTo("FIBE");
+    }
+
+    //when
+    String secondFile = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20230718021052_geo.csv";
+    try (InputStream csvStream = this.getClass().getResourceAsStream(SEPARATOR + secondFile)) {
+      List<ServicePointCsvModel> servicePointCsvModels = ServicePointImportService.parseServicePoints(csvStream);
+      ServicePointCsvModelContainer container = new ServicePointCsvModelContainer();
+      Integer didokCode = servicePointCsvModels.get(0).getDidokCode();
+      container.setServicePointCsvModelList(servicePointCsvModels);
+      container.setDidokCode(didokCode);
+      servicePointImportService.importServicePoints(List.of(container));
+
+    }
+    //then
+    List<ServicePointVersion> result = servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber);
+    assertThat(result.size()).isEqualTo(1);
+    assertThat(result.get(0).getValidFrom()).isEqualTo(LocalDate.of(2020,9,1));
+    assertThat(result.get(0).getValidTo()).isEqualTo(LocalDate.of(2099,12,31));
+    assertThat(result.get(0).getAbbreviation()).isEqualTo("FIBE");
+  }
+
+
+  /**
+   * 1) The first File has 2 identical sequential ServicePoint versions with different Geolocation versions
+   * 2) The second File has 1 ServicePoint version and one Geolocation version, the versions are already be merged
+   * 3) The Result should be one ServicePoint version with one Geolocation version like the second file
+   */
+  @Test
+  public void shouldMergeServicePointByImportServicePointsWithPremergedGeolocationDataExample() throws IOException {
+    //given
+    ServicePointNumber servicePointNumber ;
+    String firstFile = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20230717021649.csv";
+    try (InputStream csvStream = this.getClass().getResourceAsStream(SEPARATOR + firstFile)) {
+      List<ServicePointCsvModel> servicePointCsvModels = ServicePointImportService.parseServicePoints(csvStream);
+      ServicePointCsvModelContainer container = new ServicePointCsvModelContainer();
+      Integer didokCode = servicePointCsvModels.get(0).getDidokCode();
+      servicePointNumber = ServicePointNumber.of(didokCode);
+      container.setServicePointCsvModelList(servicePointCsvModels);
+      container.setDidokCode(didokCode);
+      servicePointImportService.importServicePoints(List.of(container));
+      List<ServicePointVersion> result = servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber);
+      assertThat(result.size()).isEqualTo(7);
+//      assertThat(result.get(0).getValidFrom()).isEqualTo(LocalDate.of(2020,9,1));
+//      assertThat(result.get(0).getValidTo()).isEqualTo(LocalDate.of(2022,5,30));
+//      assertThat(result.get(0).getAbbreviation()).isEqualTo("FIGE");
+//      assertThat(result.get(1).getValidFrom()).isEqualTo(LocalDate.of(2022,5,31));
+//      assertThat(result.get(1).getValidTo()).isEqualTo(LocalDate.of(2099,12,31));
+//      assertThat(result.get(1).getAbbreviation()).isEqualTo("FIBE");
+    }
+
+    //when
+    String secondFile = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20230718021052.csv";
+    try (InputStream csvStream = this.getClass().getResourceAsStream(SEPARATOR + secondFile)) {
+      List<ServicePointCsvModel> servicePointCsvModels = ServicePointImportService.parseServicePoints(csvStream);
+      ServicePointCsvModelContainer container = new ServicePointCsvModelContainer();
+      Integer didokCode = servicePointCsvModels.get(0).getDidokCode();
+      container.setServicePointCsvModelList(servicePointCsvModels);
+      container.setDidokCode(didokCode);
+      servicePointImportService.importServicePoints(List.of(container));
+
+    }
+    //then
+    List<ServicePointVersion> result = servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber);
+    assertThat(result.size()).isEqualTo(6);
+//    assertThat(result.get(0).getValidFrom()).isEqualTo(LocalDate.of(2020,9,1));
+//    assertThat(result.get(0).getValidTo()).isEqualTo(LocalDate.of(2099,12,31));
+//    assertThat(result.get(0).getAbbreviation()).isEqualTo("FIBE");
   }
 
   @Test
