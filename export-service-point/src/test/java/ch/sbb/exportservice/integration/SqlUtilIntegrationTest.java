@@ -1,5 +1,7 @@
 package ch.sbb.exportservice.integration;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.model.controller.IntegrationTest;
@@ -9,12 +11,6 @@ import ch.sbb.exportservice.entity.ServicePointVersion;
 import ch.sbb.exportservice.model.ServicePointExportType;
 import ch.sbb.exportservice.reader.ServicePointVersionRowMapper;
 import ch.sbb.exportservice.reader.SqlQueryUtil;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,8 +19,11 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import javax.sql.DataSource;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 
 @BatchDataSourceConfigTest
 @IntegrationTest
@@ -196,12 +195,12 @@ public class SqlUtilIntegrationTest {
         String insertSql = "insert into service_point_version (id, service_point_geolocation_id, number, sloid, number_short, country, designation_long," +
                 " designation_official, abbreviation, status_didok3, sort_code_of_destination_station," +
                 " business_organisation, operating_point_type, stop_point_type, status," +
-                " operating_point_kilometer_master, operating_point_route_network, comment, valid_from, valid_to," +
+                " operating_point_kilometer_master, operating_point_route_network, valid_from, valid_to," +
                 " creation_date, creator, edition_date, editor, version, freight_service_point, operating_point," +
                 " operating_point_with_timetable, operating_point_technical_timetable_type," +
                 " operating_point_traffic_point_type)" +
                 " values (nextval('service_point_version_seq'), 1002, " + number + ", null, 5887, '" + country.name() + "', null, 'Trins, Waldfestplatz', null, 'IN_OPERATION', null," +
-                " 'ch:1:sboid:101999', null, 'UNKNOWN', 'VALIDATED', null, false, null, '" + formatDate(validFrom) + "', '" + formatDate(validTo) + "'," +
+                " 'ch:1:sboid:101999', null, 'UNKNOWN', 'VALIDATED', null, false, '" + formatDate(validFrom) + "', '" + formatDate(validTo) + "'," +
                 " '2022-09-10 17:29:29.000000', 'fs45117', '2022-09-10 17:29:29.000000', 'fs45117', 0, false, true, true, null, null);";
         Connection connection = servicePointDataSource.getConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(insertSql)) {
