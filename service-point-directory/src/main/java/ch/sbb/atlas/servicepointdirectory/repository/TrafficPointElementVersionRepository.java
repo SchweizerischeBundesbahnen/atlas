@@ -41,6 +41,9 @@ public interface TrafficPointElementVersionRepository extends
       + "where spv.business_organisation in (:sboids) and spv.number_short in (:shorNumbers)", nativeQuery = true)
   List<TrafficPointElementVersion> blaBloBlu(@Param("sboids") List<String> sboids, @Param("shorNumbers") List<Integer> shorNumbers);
 
+  @Override
+  List<TrafficPointElementVersion> blaBloBlu2(@Param("sboids") List<String> sboids, @Param("shorNumbers") List<Integer> shorNumbers);
+
   @Query(value = "SELECT trp.id, "
           + "trp.sloid, trp.parent_sloid, "
           + "trp.designation, trp.designation_operational, "
