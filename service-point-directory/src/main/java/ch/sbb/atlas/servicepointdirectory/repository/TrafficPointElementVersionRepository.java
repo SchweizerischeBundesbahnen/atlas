@@ -14,7 +14,7 @@ import java.util.List;
 
 @Repository
 public interface TrafficPointElementVersionRepository extends
-    JpaRepository<TrafficPointElementVersion, Long>, JpaSpecificationExecutor<TrafficPointElementVersion> {
+    JpaRepository<TrafficPointElementVersion, Long>, JpaSpecificationExecutor<TrafficPointElementVersion>, TrafficPointElementVersionRepositoryCustom {
 
   @EntityGraph(attributePaths = {Fields.trafficPointElementGeolocation})
   List<TrafficPointElementVersion> findAllBySloidOrderByValidFrom(String sloid);
@@ -40,6 +40,9 @@ public interface TrafficPointElementVersionRepository extends
       + "from traffic_point_element_version trp left join service_point_version spv on trp.service_point_number = spv.number "
       + "where spv.business_organisation in (:sboids) and spv.number_short in (:shorNumbers)", nativeQuery = true)
   List<TrafficPointElementVersion> blaBloBlu(@Param("sboids") List<String> sboids, @Param("shorNumbers") List<Integer> shorNumbers);
+
+  @Override
+  List<TrafficPointElementVersion> blaBloBlu2(@Param("sboids") List<String> sboids, @Param("shorNumbers") List<Integer> shorNumbers);
 
   @Query(value = "SELECT trp.id, "
           + "trp.sloid, trp.parent_sloid, "
