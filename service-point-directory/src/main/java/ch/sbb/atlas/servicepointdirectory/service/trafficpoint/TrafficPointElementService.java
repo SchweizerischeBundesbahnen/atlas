@@ -113,16 +113,14 @@ public class TrafficPointElementService {
             return trafficPointElementVersionRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
         }
 
-    if (!searchRestrictions.getTrafficPointElementRequestParams().getBusinessOrganisations().isEmpty() ||
-    !searchRestrictions.getTrafficPointElementRequestParams().getServicePointNumberShort().isEmpty() ||
-    !searchRestrictions.getTrafficPointElementRequestParams().getUicCountryCodes().isEmpty()) {
-      List<TrafficPointElementVersion> list = trafficPointElementVersionRepository.blaBloBlu2(searchRestrictions.getTrafficPointElementRequestParams());
-      Page<TrafficPointElementVersion> page = new PageImpl<>(list);
-      return page;
-    } else {
-      return trafficPointElementVersionRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
+        if (!searchRestrictions.getTrafficPointElementRequestParams().getBusinessOrganisations().isEmpty() ||
+                !searchRestrictions.getTrafficPointElementRequestParams().getServicePointNumberShort().isEmpty() ||
+                !searchRestrictions.getTrafficPointElementRequestParams().getUicCountryCodes().isEmpty()) {
+            return trafficPointElementVersionRepository.blaBloBlu2(searchRestrictions.getTrafficPointElementRequestParams(), searchRestrictions.getPageable());
+        } else {
+            return trafficPointElementVersionRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
+        }
     }
-  }
 
     public List<TrafficPointElementVersion> findBySloidOrderByValidFrom(String sloid) {
         return trafficPointElementVersionRepository.findAllBySloidOrderByValidFrom(sloid);
