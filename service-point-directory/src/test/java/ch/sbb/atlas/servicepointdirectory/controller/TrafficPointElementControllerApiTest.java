@@ -16,6 +16,8 @@ import ch.sbb.atlas.servicepointdirectory.mapper.GeolocationMapper;
 import ch.sbb.atlas.servicepointdirectory.model.TestData;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepository;
+import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepositoryCustom;
+import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepositoryCustomImpl;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementImportService;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementValidationService;
 import org.junit.jupiter.api.AfterEach;
@@ -48,6 +50,7 @@ public class TrafficPointElementControllerApiTest extends BaseControllerApiTest 
   private TrafficPointElementValidationService trafficPointElementValidationService;
 
   private final TrafficPointElementVersionRepository repository;
+  private TrafficPointElementVersionRepositoryCustom customRepository;
   private TrafficPointElementVersion trafficPointElementVersion;
   private ServicePointVersionRepository servicePointVersionRepository;
   private ServicePointVersion servicePointVersion;
@@ -57,8 +60,10 @@ public class TrafficPointElementControllerApiTest extends BaseControllerApiTest 
   @Autowired
   public TrafficPointElementControllerApiTest(TrafficPointElementVersionRepository repository,
                                               TrafficPointElementController trafficPointElementController,
+                                              TrafficPointElementVersionRepositoryCustomImpl customRepository,
                                               ServicePointVersionRepository servicePointVersionRepository) {
     this.repository = repository;
+    this.customRepository = customRepository;
     this.trafficPointElementController = trafficPointElementController;
     this.servicePointVersionRepository = servicePointVersionRepository;
   }
@@ -94,6 +99,35 @@ public class TrafficPointElementControllerApiTest extends BaseControllerApiTest 
     mvc.perform(get("/v1/traffic-point-elements")).andExpect(status().isOk())
         .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
         .andExpect(jsonPath("$.totalCount", is(1)));
+  }
+
+  @Test
+  void shouldGetTrafficPointElementVersionsBySboid() throws Exception {
+    mvc.perform(get("/v1/traffic-point-elements?businessOrganisations=somesboid")).andExpect(status().isOk())
+            .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
+            .andExpect(jsonPath("$.totalCount", is(1)));
+  }
+
+  @Test
+  void shouldGetTrafficPointElementVersionsByCountry() throws Exception {
+    mvc.perform(get("/v1/traffic-point-elements?uicCountryCodes=14")).andExpect(status().isOk())
+            .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
+            .andExpect(jsonPath("$.totalCount", is(1)));
+  }
+
+
+  @Test
+  void shouldGetTrafficPointElementVersionsByShortNumber() throws Exception {
+    mvc.perform(get("/v1/traffic-point-elements?servicePointNumberShort=1")).andExpect(status().isOk())
+            .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
+            .andExpect(jsonPath("$.totalCount", is(1)));
+  }
+
+  @Test
+  void shouldGetTrafficPointElementVersionsBySboidAndCountryAndShortNumber() throws Exception {
+    mvc.perform(get("/v1/traffic-point-elements?businessOrganisations=somesboid&uicCountryCodes=14&servicePointNumberShort=1")).andExpect(status().isOk())
+            .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
+            .andExpect(jsonPath("$.totalCount", is(1)));
   }
 
   @Test
