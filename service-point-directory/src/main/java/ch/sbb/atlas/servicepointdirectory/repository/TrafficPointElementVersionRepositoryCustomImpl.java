@@ -40,7 +40,7 @@ public class TrafficPointElementVersionRepositoryCustomImpl implements TrafficPo
 
         List<TrafficPointElementVersion> elements = jdbcTemplate.query(query, mapSqlParameterSource, (rs, rowNum) -> {
             return TrafficPointElementVersion.builder()
-                    .id(rs.getLong("id"))
+                    .id(rs.getLong("id1"))
                     .designation(rs.getString("designation"))
                     .designationOperational(rs.getString("designation_operational"))
                     .length(rs.getDouble("length"))
@@ -56,19 +56,19 @@ public class TrafficPointElementVersionRepositoryCustomImpl implements TrafficPo
                             .east(rs.getDouble("east"))
                             .north(rs.getDouble("north"))
                             .spatialReference(SpatialReference.valueOf(rs.getString("spatial_reference")))
-                            .creationDate(rs.getTimestamp("creation_date").toLocalDateTime())
-                            .editionDate(rs.getTimestamp("edition_date").toLocalDateTime())
-                            .creator(rs.getString("creator"))
-                            .editor(rs.getString("editor"))
-                            .version(rs.getInt("version"))
+                            .creationDate(rs.getTimestamp("creation_date2").toLocalDateTime())
+                            .editionDate(rs.getTimestamp("edition_date2").toLocalDateTime())
+                            .creator(rs.getString("creator2"))
+                            .editor(rs.getString("editor2"))
+                            .version(rs.getInt("version2"))
                             .build())
                     .validFrom(rs.getDate("valid_from").toLocalDate())
                     .validTo(rs.getDate("valid_to").toLocalDate())
-                    .creationDate(rs.getTimestamp("creation_date").toLocalDateTime())
-                    .editionDate(rs.getTimestamp("edition_date").toLocalDateTime())
-                    .creator(rs.getString("creator"))
-                    .editor(rs.getString("editor"))
-                    .version(rs.getInt("version"))
+                    .creationDate(rs.getTimestamp("creation_date1").toLocalDateTime())
+                    .editionDate(rs.getTimestamp("edition_date1").toLocalDateTime())
+                    .creator(rs.getString("creator1"))
+                    .editor(rs.getString("editor1"))
+                    .version(rs.getInt("version1"))
                     .build();
         });
 
@@ -86,7 +86,7 @@ public class TrafficPointElementVersionRepositoryCustomImpl implements TrafficPo
                                          MapSqlParameterSource mapSqlParameterSource) {
         String query = """
                 SELECT DISTINCT
-                    trp.id as b1,
+                    trp.id as id1,
                     trp.sloid,
                     trp.parent_sloid,
                     trp.designation,
@@ -99,21 +99,21 @@ public class TrafficPointElementVersionRepositoryCustomImpl implements TrafficPo
                     trp.valid_from,
                     trp.valid_to,
                     trp.traffic_point_geolocation_id,
-                    trp.creation_date as b2,
-                    trp.creator as b3,
-                    trp.edition_date as b4,
-                    trp.editor as b5,
-                    trp.version as b6,
-                    tpevg.id as c1,
+                    trp.creation_date as creation_date1,
+                    trp.creator as creator1,
+                    trp.edition_date as edition_date1,
+                    trp.editor as editor1,
+                    trp.version as version1,
+                    tpevg.id as id2,
                     tpevg.spatial_reference,
                     tpevg.height,
                     tpevg.east,
                     tpevg.north,
-                    tpevg.creation_date as c2,
-                    tpevg.creator as c3,
-                    tpevg.edition_date as c4,
-                    tpevg.editor as c5,
-                    tpevg.version as c6
+                    tpevg.creation_date as creation_date2,
+                    tpevg.creator as creator2,
+                    tpevg.edition_date as edition_date2,
+                    tpevg.editor as editor2,
+                    tpevg.version as version2
                 FROM
                     traffic_point_element_version trp
                 LEFT JOIN
