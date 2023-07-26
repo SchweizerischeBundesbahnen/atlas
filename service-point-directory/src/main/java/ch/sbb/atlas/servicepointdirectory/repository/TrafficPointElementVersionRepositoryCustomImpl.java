@@ -1,6 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.repository;
 
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
+import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
@@ -24,9 +25,9 @@ public class TrafficPointElementVersionRepositoryCustomImpl implements TrafficPo
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
     @Override
-    public Page<TrafficPointElementVersion> blaBloBlu2(TrafficPointElementRequestParams trafficPointElementRequestParams, Pageable pageable) {
+    public Page<TrafficPointElementVersion> findByServicePointParameters(TrafficPointElementRequestParams trafficPointElementRequestParams, Pageable pageable) {
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
-        String query = getQueryString(trafficPointElementRequestParams, mapSqlParameterSource, pageable);
+        String query = getQueryString(trafficPointElementRequestParams, mapSqlParameterSource);
 
         Integer count = getCount(query, mapSqlParameterSource);
 
@@ -82,28 +83,10 @@ public class TrafficPointElementVersionRepositoryCustomImpl implements TrafficPo
     }
 
     private static String getQueryString(TrafficPointElementRequestParams trafficPointElementRequestParams,
-                                         MapSqlParameterSource mapSqlParameterSource,
-                                         Pageable pageable) {
+                                         MapSqlParameterSource mapSqlParameterSource) {
         String query = """
                 SELECT DISTINCT
-                    trp.id,
-                    trp.sloid,
-                    trp.parent_sloid,
-                    trp.designation,
-                    trp.designation_operational,
-                    trp.traffic_point_element_type,
-                    trp.length,
-                    trp.boarding_area_height,
-                    trp.compass_direction,
-                    trp.service_point_number,
-                    trp.valid_from,
-                    trp.valid_to,
-                    trp.traffic_point_geolocation_id,
-                    trp.creation_date,
-                    trp.creator,
-                    trp.edition_date,
-                    trp.editor,
-                    trp.version,
+                    trp.*,
                     tpevg.*
                 FROM
                     traffic_point_element_version trp
@@ -117,9 +100,17 @@ public class TrafficPointElementVersionRepositoryCustomImpl implements TrafficPo
             query += " AND spv.business_organisation IN (:sboids)";
             mapSqlParameterSource.addValue("sboids", trafficPointElementRequestParams.getBusinessOrganisations());
         }
-//        if (!trafficPointElementRequestParams.getServicePointNumberShort().isEmpty()) {
-//            query += " and spv.number_short in (:shorts)";
-//        }
+        if (!trafficPointElementRequestParams.getServicePointNumberShort().isEmpty()) {
+            query += " AND spv.number_short IN (:shorts)";
+            mapSqlParameterSource.addValue("shorts", trafficPointElementRequestParams.getServicePointNumberShort());
+        }
+        if (!trafficPointElementRequestParams.getUicCountryCodes().isEmpty()) {
+            query += " AND spv.country IN (:countries)";
+            mapSqlParameterSource.addValue("countries", trafficPointElementRequestParams.getUicCountryCodes()
+                    .stream()
+                    .map(uicCountryCode -> Country.from(Integer.valueOf(uicCountryCode)).toString())
+                    .toList());
+        }
 
         return query;
     }

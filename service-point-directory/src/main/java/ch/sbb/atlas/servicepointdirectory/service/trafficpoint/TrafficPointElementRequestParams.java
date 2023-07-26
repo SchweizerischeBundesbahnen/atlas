@@ -3,9 +3,6 @@ package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
 import ch.sbb.atlas.api.model.VersionedObjectDateRequestParams;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import io.swagger.v3.oas.annotations.Parameter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +10,9 @@ import lombok.Setter;
 import lombok.Singular;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -56,6 +56,12 @@ public class TrafficPointElementRequestParams extends VersionedObjectDateRequest
 //    public List<ServicePointNumber> getServicePointNumberShort() {
 //            return servicePointNumbers.stream().map(servicePointNumber -> servicePointNumber.getNumberShort()).collect(Collectors.toList()).collect(Collectors.toList());
 //    }
+
+    public static boolean isServicePointParameterQueried(TrafficPointElementRequestParams trafficPointElementRequestParams) {
+        return !trafficPointElementRequestParams.getBusinessOrganisations().isEmpty() ||
+                !trafficPointElementRequestParams.getServicePointNumberShort().isEmpty() ||
+                !trafficPointElementRequestParams.getUicCountryCodes().isEmpty();
+    }
 
 
 }
