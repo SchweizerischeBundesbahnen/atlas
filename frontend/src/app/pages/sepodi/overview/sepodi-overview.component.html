@@ -1,1 +1,6 @@
-<atlas-map (elementClicked)="servicePointClicked($event)"></atlas-map>
+<div class="page-with-map">
+  <div class="detail-container">
+    <router-outlet></router-outlet>
+  </div>
+  <atlas-map class="map-container" (elementClicked)="servicePointClicked($event)"></atlas-map>
+</div>

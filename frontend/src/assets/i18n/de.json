@@ -821,5 +821,11 @@
       "EDIT_STATEMENT": "Bearbeitung Stellungnahme in atlas",
       "SUCCESSFUL_SAVE_NOTIFICATION": "Einstellungen erfolgreich gespeichert"
     }
+  },
+  "SEPODI": {
+    "SERVICE_POINTS": {
+      "SLOID": "Swiss Location ID (SLOID)",
+      "DIDOK_CODE": "Didok-Code (Ländercode & Nummer)"
+    }
   }
 }
