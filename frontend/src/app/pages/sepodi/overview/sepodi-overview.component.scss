@@ -1,0 +1,17 @@
+.page-with-map {
+  height: 100%;
+  display: flex;
+
+  .detail-container {
+    display: flex;
+    height: 100%;
+    overflow: auto;
+    resize: horizontal;
+  }
+
+  .map-container {
+    display: flex;
+    flex: 1 1 auto;
+    height: 100%;
+  }
+}

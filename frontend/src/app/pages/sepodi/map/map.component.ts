@@ -3,6 +3,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  Input,
   OnDestroy,
   Output,
   ViewChild,
@@ -45,6 +46,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
         this.mapOptionsService.authoriseRequest(url, resourceType),
     });
     this.initMapEvents();
+    this.map.resize();
   }
 
   private initMapEvents() {
