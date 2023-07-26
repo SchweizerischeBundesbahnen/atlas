@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -55,7 +54,7 @@ public class TrafficPointElementService {
 //    }
 //  }
 
-    public Page<TrafficPointElementVersion> findAll(TrafficPointElementSearchRestrictions searchRestrictions) {
+  public Page<TrafficPointElementVersion> findAll(TrafficPointElementSearchRestrictions searchRestrictions) {
 
         if (!searchRestrictions.getTrafficPointElementRequestParams().getBusinessOrganisations().isEmpty()) {
             if (!searchRestrictions.getTrafficPointElementRequestParams().getServicePointNumberShort().isEmpty()) {
@@ -113,6 +112,17 @@ public class TrafficPointElementService {
         } else {
             return trafficPointElementVersionRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
         }
+
+    if (!searchRestrictions.getTrafficPointElementRequestParams().getBusinessOrganisations().isEmpty() ||
+    !searchRestrictions.getTrafficPointElementRequestParams().getServicePointNumberShort().isEmpty() ||
+    !searchRestrictions.getTrafficPointElementRequestParams().getUicCountryCodes().isEmpty()) {
+      List<TrafficPointElementVersion> list = trafficPointElementVersionRepository.blaBloBlu2(searchRestrictions.getTrafficPointElementRequestParams());
+      Page<TrafficPointElementVersion> page = new PageImpl<>(list);
+      return page;
+    } else {
+      return trafficPointElementVersionRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
+    }
+  }
 
     public List<TrafficPointElementVersion> findBySloidOrderByValidFrom(String sloid) {
         return trafficPointElementVersionRepository.findAllBySloidOrderByValidFrom(sloid);
