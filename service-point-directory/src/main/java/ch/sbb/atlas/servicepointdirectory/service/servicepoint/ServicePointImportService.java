@@ -10,6 +10,7 @@ import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion.Fields;
 import ch.sbb.atlas.servicepointdirectory.service.BasePointUtility;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
+import ch.sbb.atlas.servicepointdirectory.service.servicepoint.util.BeanCopyUtil;
 import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -80,17 +81,21 @@ public class ServicePointImportService {
    */
   private void replaceCsvMergedVersions(ServicePointCsvModelContainer container, List<ServicePointVersion> servicePointVersions) {
     List<ServicePointVersion> dbVersions = servicePointService.findAllByNumberOrderByValidFrom(ServicePointNumber.of(container.getDidokCode()));
-    if(dbVersions.size() > servicePointVersions.size()){
+    if(dbVersions.size() > servicePointVersions.size()) {
       log.info("The ServicePoint CSV versions are less than the ServicePoint versions stored in the DB. A merge has occurred on Didok.");
-      for(ServicePointVersion version : servicePointVersions){
-        List<ServicePointVersion> objectToVersioningInValidFromValidToRange = findVersionsExactlyIncludedBetweenEditedValidFromAndEditedValidTo(version.getValidFrom(), version.getValidTo(), dbVersions);
-        if(objectToVersioningInValidFromValidToRange.size() > 1){
-          log.info("The following versions will be deleted: {}", objectToVersioningInValidFromValidToRange);
-          for(ServicePointVersion servicePointVersion : objectToVersioningInValidFromValidToRange){
-            servicePointService.deleteById(servicePointVersion.getId());
+      for(ServicePointVersion version : servicePointVersions) {
+        List<ServicePointVersion> objectToVersioningInValidFromValidToRange =
+                findVersionsExactlyIncludedBetweenEditedValidFromAndEditedValidTo(version.getValidFrom(), version.getValidTo(), dbVersions);
+        if(objectToVersioningInValidFromValidToRange.size() > 1) {
+          log.info("The properties of the following versions: {}", objectToVersioningInValidFromValidToRange);
+          for(ServicePointVersion servicePointVersion : objectToVersioningInValidFromValidToRange) {
+            log.info("Will be overridden with (expect [validFrom, validTo, id]): {}", servicePointVersion);
+            BeanCopyUtil.copyNonNullProperties(version,servicePointVersion, Fields.validFrom,Fields.validTo,Fields.id);
+            if(servicePointVersion.getServicePointGeolocation() != null) {
+              servicePointVersion.getServicePointGeolocation().setServicePointVersion(servicePointVersion);
+            }
+            servicePointService.save(servicePointVersion);
           }
-          log.info("The following version will replace the deleted versions: {}",version);
-          saveServicePointVersion(version);
         }
       }
     }
