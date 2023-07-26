@@ -28,11 +28,9 @@ public class TrafficPointElementService {
     private final TrafficPointElementValidationService trafficPointElementValidationService;
 
     public Page<TrafficPointElementVersion> findAll(TrafficPointElementSearchRestrictions searchRestrictions) {
-
-        if (!searchRestrictions.getTrafficPointElementRequestParams().getBusinessOrganisations().isEmpty() ||
-                !searchRestrictions.getTrafficPointElementRequestParams().getServicePointNumberShort().isEmpty() ||
-                !searchRestrictions.getTrafficPointElementRequestParams().getUicCountryCodes().isEmpty()) {
-            return trafficPointElementVersionRepository.blaBloBlu2(searchRestrictions.getTrafficPointElementRequestParams(), searchRestrictions.getPageable());
+        if (TrafficPointElementRequestParams.isServicePointParameterQueried(searchRestrictions.getTrafficPointElementRequestParams())) {
+            return trafficPointElementVersionRepository.findByServicePointParameters(
+                    searchRestrictions.getTrafficPointElementRequestParams(), searchRestrictions.getPageable());
         } else {
             return trafficPointElementVersionRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
         }

@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TrafficPointElementVersionRepositoryCustom {
 
-    Page<TrafficPointElementVersion> blaBloBlu2(TrafficPointElementRequestParams trafficPointElementRequestParams, Pageable pageable);
+    Page<TrafficPointElementVersion> findByServicePointParameters(TrafficPointElementRequestParams trafficPointElementRequestParams, Pageable pageable);
 
 }
