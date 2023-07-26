@@ -83,7 +83,7 @@ public class ServicePointImportService {
     if(dbVersions.size() > servicePointVersions.size()){
       log.info("The ServicePoint CSV versions are less than the ServicePoint versions stored in the DB. A merge has occurred on Didok.");
       for(ServicePointVersion version : servicePointVersions){
-        List<ServicePointVersion> objectToVersioningInValidFromValidToRange = findObjectToVersioningInValidFromValidToRange(version.getValidFrom(), version.getValidTo(), dbVersions);
+        List<ServicePointVersion> objectToVersioningInValidFromValidToRange = findVersionsExactlyIncludedBetweenEditedValidFromAndEditedValidTo(version.getValidFrom(), version.getValidTo(), dbVersions);
         if(objectToVersioningInValidFromValidToRange.size() > 1){
           log.info("The following versions will be deleted: {}", objectToVersioningInValidFromValidToRange);
           for(ServicePointVersion servicePointVersion : objectToVersioningInValidFromValidToRange){
@@ -96,19 +96,17 @@ public class ServicePointImportService {
     }
   }
 
-  public static List<ServicePointVersion> findObjectToVersioningInValidFromValidToRange(
+  List<ServicePointVersion> findVersionsExactlyIncludedBetweenEditedValidFromAndEditedValidTo(
           LocalDate editedValidFrom, LocalDate editedValidTo, List<ServicePointVersion> versions) {
-    return versions.stream()
-            .filter(
-                    toVersioning -> !toVersioning.getValidFrom()
-                            .isAfter(
-                                    editedValidTo))
-            .filter(
-                    toVersioning -> !toVersioning.getValidTo()
-                            .isBefore(
-                                    editedValidFrom))
-            .collect(
-                    Collectors.toList());
+    List<ServicePointVersion> collected = versions.stream()
+            .filter(toVersioning -> !toVersioning.getValidFrom().isAfter(editedValidTo))
+            .filter(toVersioning -> !toVersioning.getValidTo().isBefore(editedValidFrom))
+            .collect(Collectors.toList());
+    if(!collected.isEmpty() &&
+            (collected.get(0).getValidFrom().equals(editedValidFrom) && collected.get(collected.size()-1).getValidTo().equals(editedValidTo))){
+      return collected;
+    }
+    return List.of();
   }
 
   private void saveFotComment(ServicePointCsvModelContainer container) {

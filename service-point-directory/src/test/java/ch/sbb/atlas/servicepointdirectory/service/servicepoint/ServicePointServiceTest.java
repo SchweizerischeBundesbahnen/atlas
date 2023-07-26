@@ -246,8 +246,13 @@ public class ServicePointServiceTest {
     assertThat(result.getValidTo()).isEqualTo(LocalDate.of(2000, 6, 1));
   }
 
+  /**
+   * given  |------------|-----------|
+   * edit   |------------------------|
+   * return |------------|-----------|
+   */
   @Test
-  public void shouldThrowExceptionWhenNoMatchWasFound() {
+  public void shouldReturnTheFirstVersionWhenTheEditVersionMatchExactlyMoreThenOneVersion() {
     //given
     ServicePointVersion version1 = ServicePointVersion.builder()
         .validFrom(LocalDate.of(2000, 1, 1))
@@ -259,13 +264,14 @@ public class ServicePointServiceTest {
         .build();
     ServicePointVersion edited = ServicePointVersion.builder()
         .validFrom(LocalDate.of(2000, 1, 2))
-        .validTo(LocalDate.of(2000, 12, 30))
+        .validTo(LocalDate.of(2000, 12, 31))
         .build();
     List<ServicePointVersion> versions = new ArrayList<>();
     versions.add(version1);
     versions.add(version2);
     //when
-    Assertions.assertThrows(RuntimeException.class, () -> BasePointUtility.getCurrentPointVersion(versions, edited));
+    ServicePointVersion result = BasePointUtility.getCurrentPointVersion(versions, edited);
+    assertThat(result).isNotNull();
   }
 
   @Test
