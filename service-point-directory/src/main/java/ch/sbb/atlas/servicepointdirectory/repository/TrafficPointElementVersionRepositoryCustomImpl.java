@@ -86,8 +86,34 @@ public class TrafficPointElementVersionRepositoryCustomImpl implements TrafficPo
                                          MapSqlParameterSource mapSqlParameterSource) {
         String query = """
                 SELECT DISTINCT
-                    trp.*,
-                    tpevg.*
+                    trp.id as b1,
+                    trp.sloid,
+                    trp.parent_sloid,
+                    trp.designation,
+                    trp.designation_operational,
+                    trp.traffic_point_element_type,
+                    trp.length,
+                    trp.boarding_area_height,
+                    trp.compass_direction,
+                    trp.service_point_number,
+                    trp.valid_from,
+                    trp.valid_to,
+                    trp.traffic_point_geolocation_id,
+                    trp.creation_date as b2,
+                    trp.creator as b3,
+                    trp.edition_date as b4,
+                    trp.editor as b5,
+                    trp.version as b6,
+                    tpevg.id as c1,
+                    tpevg.spatial_reference,
+                    tpevg.height,
+                    tpevg.east,
+                    tpevg.north,
+                    tpevg.creation_date as c2,
+                    tpevg.creator as c3,
+                    tpevg.edition_date as c4,
+                    tpevg.editor as c5,
+                    tpevg.version as c6
                 FROM
                     traffic_point_element_version trp
                 LEFT JOIN
