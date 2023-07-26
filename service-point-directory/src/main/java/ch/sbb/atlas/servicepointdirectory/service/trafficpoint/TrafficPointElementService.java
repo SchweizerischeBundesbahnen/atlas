@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.StaleObjectStateException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,18 +27,16 @@ public class TrafficPointElementService {
     private final VersionableService versionableService;
     private final TrafficPointElementValidationService trafficPointElementValidationService;
 
-  public Page<TrafficPointElementVersion> findAll(TrafficPointElementSearchRestrictions searchRestrictions) {
+    public Page<TrafficPointElementVersion> findAll(TrafficPointElementSearchRestrictions searchRestrictions) {
 
-    if (!searchRestrictions.getTrafficPointElementRequestParams().getBusinessOrganisations().isEmpty() ||
-    !searchRestrictions.getTrafficPointElementRequestParams().getServicePointNumberShort().isEmpty() ||
-    !searchRestrictions.getTrafficPointElementRequestParams().getUicCountryCodes().isEmpty()) {
-      List<TrafficPointElementVersion> list = trafficPointElementVersionRepository.blaBloBlu2(searchRestrictions.getTrafficPointElementRequestParams());
-      Page<TrafficPointElementVersion> page = new PageImpl<>(list);
-      return page;
-    } else {
-      return trafficPointElementVersionRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
+        if (!searchRestrictions.getTrafficPointElementRequestParams().getBusinessOrganisations().isEmpty() ||
+                !searchRestrictions.getTrafficPointElementRequestParams().getServicePointNumberShort().isEmpty() ||
+                !searchRestrictions.getTrafficPointElementRequestParams().getUicCountryCodes().isEmpty()) {
+            return trafficPointElementVersionRepository.blaBloBlu2(searchRestrictions.getTrafficPointElementRequestParams(), searchRestrictions.getPageable());
+        } else {
+            return trafficPointElementVersionRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
+        }
     }
-  }
 
     public List<TrafficPointElementVersion> findBySloidOrderByValidFrom(String sloid) {
         return trafficPointElementVersionRepository.findAllBySloidOrderByValidFrom(sloid);
