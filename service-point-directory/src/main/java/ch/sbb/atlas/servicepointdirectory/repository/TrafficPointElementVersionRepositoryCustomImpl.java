@@ -26,9 +26,9 @@ public class TrafficPointElementVersionRepositoryCustomImpl implements TrafficPo
 
     @Override
     public Page<TrafficPointElementVersion> findByServicePointParameters(TrafficPointElementRequestParams trafficPointElementRequestParams, Pageable pageable) {
-    public Page<TrafficPointElementVersion> blaBloBlu2(TrafficPointElementRequestParams trafficPointElementRequestParams, Pageable pageable) {
+    public Page<TrafficPointElementVersion> findByServicePointParameters(TrafficPointElementRequestParams trafficPointElementRequestParams, Pageable pageable) {
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
-        String query = getQueryString(trafficPointElementRequestParams, mapSqlParameterSource, pageable);
+        String query = getQueryString(trafficPointElementRequestParams, mapSqlParameterSource);
 
         Integer count = getCount(query, mapSqlParameterSource);
 
@@ -162,10 +162,6 @@ public class TrafficPointElementVersionRepositoryCustomImpl implements TrafficPo
             query += " AND trp.edition_date > :modifiedafter";
             mapSqlParameterSource.addValue("modifiedafter", trafficPointElementRequestParams.getModifiedAfter());
         }
-        return query;
-        });
-
-
         return new PageImpl<>(elements, pageable, count);
 
     }
@@ -175,46 +171,4 @@ public class TrafficPointElementVersionRepositoryCustomImpl implements TrafficPo
         return jdbcTemplate.queryForObject(countQuery, mapSqlParameterSource, Integer.class);
     }
 
-    private static String getQueryString(TrafficPointElementRequestParams trafficPointElementRequestParams,
-                                         MapSqlParameterSource mapSqlParameterSource,
-                                         Pageable pageable) {
-        String query = """
-                SELECT DISTINCT
-                    trp.id,
-                    trp.sloid,
-                    trp.parent_sloid,
-                    trp.designation,
-                    trp.designation_operational,
-                    trp.traffic_point_element_type,
-                    trp.length,
-                    trp.boarding_area_height,
-                    trp.compass_direction,
-                    trp.service_point_number,
-                    trp.valid_from,
-                    trp.valid_to,
-                    trp.traffic_point_geolocation_id,
-                    trp.creation_date,
-                    trp.creator,
-                    trp.edition_date,
-                    trp.editor,
-                    trp.version,
-                    tpevg.*
-                FROM
-                    traffic_point_element_version trp
-                LEFT JOIN
-                    service_point_version spv ON trp.service_point_number = spv.number
-                LEFT JOIN traffic_point_element_version_geolocation tpevg ON tpevg.id = trp.traffic_point_geolocation_id
-                WHERE 1=1
-                """;
-
-        if (!trafficPointElementRequestParams.getBusinessOrganisations().isEmpty()) {
-            query += " AND spv.business_organisation IN (:sboids)";
-            mapSqlParameterSource.addValue("sboids", trafficPointElementRequestParams.getBusinessOrganisations());
-        }
-//        if (!trafficPointElementRequestParams.getServicePointNumberShort().isEmpty()) {
-//            query += " and spv.number_short in (:shorts)";
-//        }
-
-        return query;
-    }
 }
