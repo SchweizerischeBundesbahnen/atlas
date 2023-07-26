@@ -61,5 +61,11 @@ public class TrafficPointElementRequestParams extends VersionedObjectDateRequest
 //            return servicePointNumbers.stream().map(servicePointNumber -> servicePointNumber.getNumberShort()).collect(Collectors.toList()).collect(Collectors.toList());
 //    }
 
+    public static boolean isServicePointParameterQueried(TrafficPointElementRequestParams trafficPointElementRequestParams) {
+        return !trafficPointElementRequestParams.getBusinessOrganisations().isEmpty() ||
+                !trafficPointElementRequestParams.getServicePointNumberShort().isEmpty() ||
+                !trafficPointElementRequestParams.getUicCountryCodes().isEmpty();
+    }
+
 
 }
