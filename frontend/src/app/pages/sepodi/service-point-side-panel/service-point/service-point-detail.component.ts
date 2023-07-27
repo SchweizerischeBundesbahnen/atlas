@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ReadServicePointVersion } from '../../../api';
-import { VersionsHandlingService } from '../../../core/versioning/VersionsHandling.service';
-import { DateRange } from '../../../core/versioning/date-range';
+import { VersionsHandlingService } from '../../../../core/versioning/VersionsHandling.service';
+import { ReadServicePointVersion } from '../../../../api';
 
 @Component({
-  selector: 'app-sepodi-overview',
+  selector: 'app-service-point',
   templateUrl: './service-point-detail.component.html',
   styleUrls: ['./service-point-detail.component.scss'],
 })
@@ -13,17 +12,19 @@ export class ServicePointDetailComponent implements OnInit {
   servicePointVersions!: ReadServicePointVersion[];
   selectedVersion!: ReadServicePointVersion;
   showVersionSwitch = false;
-  maxValidity!: DateRange;
 
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.servicePointVersions = this.route.snapshot.data.servicePoint;
+    this.servicePointVersions = this.route.parent?.snapshot.data.servicePoint;
 
     this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.servicePointVersions);
-    this.maxValidity = VersionsHandlingService.getMaxValidity(this.servicePointVersions);
     this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(
       this.servicePointVersions
     );
+  }
+
+  switchVersion(newIndex: number) {
+    this.selectedVersion = this.servicePointVersions[newIndex];
   }
 }
