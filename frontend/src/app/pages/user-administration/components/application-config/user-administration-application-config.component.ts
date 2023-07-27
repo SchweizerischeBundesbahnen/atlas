@@ -70,6 +70,14 @@ export class UserAdministrationApplicationConfigComponent implements OnInit, OnD
         country !== Country.Congo &&
         country !== Country.SouthAfrica &&
         country !== Country.Australia &&
+        country !== Country.Liechtenstein &&
+        country !== Country.Sudan &&
+        country !== Country.Tschad &&
+        country !== Country.Libyen &&
+        country !== Country.Monaco &&
+        country !== Country.Niger &&
+        country !== Country.Nigeria &&
+        country !== Country.Jemen &&
         country !== Country.Switzerland &&
         country !== Country.GermanyBus &&
         country !== Country.AustriaBus &&
