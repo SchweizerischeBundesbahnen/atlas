@@ -45,7 +45,7 @@ export class Countries {
     { short: 'NL', uicCode: 84, enumCountry: Country.Netherlands, path: 'nl' },
     { short: 'PL', uicCode: 51, enumCountry: Country.Poland, path: 'pl' },
     { short: 'PT', uicCode: 94, enumCountry: Country.Portugal, path: 'pt' },
-    { short: 'GB', uicCode: 70, enumCountry: Country.NorthernIreland, path: 'gb' },
+    { short: 'GB', uicCode: 70, enumCountry: Country.GreatBritain, path: 'gb' },
     { short: 'CD', uicCode: 2, enumCountry: Country.Congo, path: 'cd' },
     { short: 'CZ', uicCode: 54, enumCountry: Country.CzechRepublic, path: 'cz' },
     { short: 'RO', uicCode: 53, enumCountry: Country.Romania, path: 'ro' },
