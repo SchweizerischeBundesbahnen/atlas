@@ -4,6 +4,7 @@ api.module.ts
 api/api.ts
 api/businessOrganisations.service.ts
 api/companies.service.ts
+api/exportServicePointBatch.service.ts
 api/importServicePointBatch.service.ts
 api/lines.service.ts
 api/loadingPoints.service.ts
@@ -43,10 +44,10 @@ model/containerLine.ts
 model/containerLineVersionSnapshot.ts
 model/containerLoadingPointVersion.ts
 model/containerReadServicePointVersion.ts
+model/containerReadTrafficPointElementVersionModel.ts
 model/containerSubline.ts
 model/containerTimetableFieldNumber.ts
 model/containerTimetableHearingStatement.ts
-model/containerTrafficPointElementVersion.ts
 model/containerTransportCompany.ts
 model/containerUser.ts
 model/coordinatePair.ts
@@ -55,6 +56,7 @@ model/countryPermissionRestrictionModel.ts
 model/coverage.ts
 model/coverageType.ts
 model/createServicePointVersion.ts
+model/createTrafficPointElementVersionModel.ts
 model/displayInfo.ts
 model/district.ts
 model/errorDetail.ts
@@ -67,6 +69,7 @@ model/inlineObject1.ts
 model/inlineObject2.ts
 model/inlineObject3.ts
 model/inlineObject4.ts
+model/inlineObject5.ts
 model/itemImportResponseStatus.ts
 model/line.ts
 model/lineType.ts
@@ -87,14 +90,16 @@ model/permissionRestrictionObject.ts
 model/permissionRestrictionType.ts
 model/person.ts
 model/readServicePointVersion.ts
+model/readTrafficPointElementVersionModel.ts
 model/sboidPermissionRestrictionModel.ts
 model/servicePointCsvModel.ts
 model/servicePointCsvModelContainer.ts
+model/servicePointExportType.ts
+model/servicePointFotCommentModel.ts
 model/servicePointGeolocation.ts
-model/servicePointImportReRequest.ts
+model/servicePointImportRequest.ts
 model/servicePointItemImportResult.ts
 model/servicePointNumber.ts
-model/servicePointStatus.ts
 model/spatialReference.ts
 model/statementStatus.ts
 model/status.ts
@@ -111,8 +116,11 @@ model/timetableHearingStatementDocument.ts
 model/timetableHearingStatementResponsibleTransportCompany.ts
 model/timetableHearingStatementSender.ts
 model/timetableHearingYear.ts
+model/trafficPointCsvModelContainer.ts
+model/trafficPointElementCsvModel.ts
 model/trafficPointElementType.ts
-model/trafficPointElementVersion.ts
+model/trafficPointImportRequest.ts
+model/trafficPointItemImportResult.ts
 model/transportCompany.ts
 model/transportCompanyBoRelation.ts
 model/transportCompanyRelation.ts
