@@ -1,18 +1,19 @@
 package ch.sbb.atlas.servicepointdirectory.migration;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+
 import java.math.BigDecimal;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
 @Data
@@ -33,12 +34,13 @@ public class ServicePointMappingEquality {
     performMeansOfTransportCheck();
     performCategoryCheck();
 
+    assertThat(atlasCsvLine.getFotComment()).isEqualTo(didokCsvLine.getComment());
+
     // Since didok sometimes has locations but virtual, we should perform this check only if atlas has a geolocation ?
     if (atlasCsvLine.isHasGeolocation()) {
       performEqualityCheckOnGeoLocation();
     }
   }
-
   private void performCoreDataCheck() {
     assertThat(atlasCsvLine.getNumber()).isEqualTo(didokCsvLine.getDidokCode());
     assertThat(atlasCsvLine.getNumberShort()).isEqualTo(didokCsvLine.getNummer());
