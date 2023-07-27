@@ -1,0 +1,12 @@
+<div class="col-12 d-flex mt-3">
+  <div class="d-flex flex-column col-7 pe-3">
+    <app-switch-version
+      (switchVersion)="switchVersion($event)"
+      *ngIf="showVersionSwitch"
+      [currentRecord]="selectedVersion"
+      [records]="servicePointVersions"
+    ></app-switch-version>
+  </div>
+
+  {{ selectedVersion.validFrom }}
+</div>
