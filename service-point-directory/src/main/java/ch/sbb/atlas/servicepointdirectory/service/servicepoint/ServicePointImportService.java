@@ -75,29 +75,35 @@ public class ServicePointImportService {
   }
 
   /**
-   * When the ServicePoint versions imported from CSV are less than the stored ServicePoint DB versions (that means that there were changes on Didok that caused a merge)
-   * then whe need to find which ServicePoint versions are merged (we just need to find the versions exactly included between validFrom and validTo),
-   * delete them and save the merged ServicePoint version which comes from the CSV file.
+   * In case we want to merge 2 or more versions from a CSV File (Import or "Massen Import") first we need to compare the
+   * number of the found DB versions with the number of the versions present in the CSV File.
+   * If the number of the CSV File versions are less than the DB Versions, and we found more than one version
+   * exactly included between CSV Version validFrom and CSV Version validTo, than we replace the versions properties,
+   * (expect validFrom, validTo and id) and save the versions that comes from the DB.
    */
-  private void replaceCsvMergedVersions(ServicePointCsvModelContainer container, List<ServicePointVersion> servicePointVersions) {
+  private void replaceCsvMergedVersions(ServicePointCsvModelContainer container, List<ServicePointVersion> csvServicePointVersions) {
     List<ServicePointVersion> dbVersions = servicePointService.findAllByNumberOrderByValidFrom(ServicePointNumber.of(container.getDidokCode()));
-    if(dbVersions.size() > servicePointVersions.size()) {
-      log.info("The ServicePoint CSV versions are less than the ServicePoint versions stored in the DB. A merge has occurred on Didok.");
-      for(ServicePointVersion version : servicePointVersions) {
-        List<ServicePointVersion> objectToVersioningInValidFromValidToRange =
-                findVersionsExactlyIncludedBetweenEditedValidFromAndEditedValidTo(version.getValidFrom(), version.getValidTo(), dbVersions);
-        if(objectToVersioningInValidFromValidToRange.size() > 1) {
-          log.info("The properties of the following versions: {}", objectToVersioningInValidFromValidToRange);
-          for(ServicePointVersion servicePointVersion : objectToVersioningInValidFromValidToRange) {
-            log.info("Will be overridden with (expect [validFrom, validTo, id]): {}", servicePointVersion);
-            BeanCopyUtil.copyNonNullProperties(version,servicePointVersion, Fields.validFrom,Fields.validTo,Fields.id);
-            if(servicePointVersion.getServicePointGeolocation() != null) {
-              servicePointVersion.getServicePointGeolocation().setServicePointVersion(servicePointVersion);
-            }
-            servicePointService.save(servicePointVersion);
-          }
+    if(dbVersions.size() > csvServicePointVersions.size()) {
+      log.info("The ServicePoint CSV versions are less than the ServicePoint versions stored in the DB. A merge may have taken place...");
+      for(ServicePointVersion csvVersion : csvServicePointVersions) {
+        List<ServicePointVersion> dbVersionsFoundToBeReplaced =
+                findVersionsExactlyIncludedBetweenEditedValidFromAndEditedValidTo(csvVersion.getValidFrom(), csvVersion.getValidTo(), dbVersions);
+        if(dbVersionsFoundToBeReplaced.size() > 1) {
+          updateMergedVersions(csvVersion, dbVersionsFoundToBeReplaced);
         }
       }
+    }
+  }
+
+  private void updateMergedVersions(ServicePointVersion csvVersion, List<ServicePointVersion> dbVersionsFoundToBeReplaced) {
+    log.info("The properties of the following versions: {}", dbVersionsFoundToBeReplaced);
+    for(ServicePointVersion dbVersion : dbVersionsFoundToBeReplaced) {
+      log.info("will be overridden with (expect [validFrom, validTo, id]): {}", dbVersion);
+      BeanCopyUtil.copyNonNullProperties(csvVersion,dbVersion, Fields.validFrom,Fields.validTo,Fields.id);
+      if(dbVersion.getServicePointGeolocation() != null) {
+        dbVersion.getServicePointGeolocation().setServicePointVersion(dbVersion);
+      }
+      servicePointService.save(dbVersion);
     }
   }
 
