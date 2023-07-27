@@ -1,6 +1,24 @@
-import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
+import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core';
 import { Configuration } from './configuration';
 import { HttpClient } from '@angular/common/http';
+
+import { BusinessOrganisationsService } from './api/businessOrganisations.service';
+import { CompaniesService } from './api/companies.service';
+import { ExportServicePointBatchService } from './api/exportServicePointBatch.service';
+import { ImportServicePointBatchService } from './api/importServicePointBatch.service';
+import { LinesService } from './api/lines.service';
+import { LoadingPointsService } from './api/loadingPoints.service';
+import { ServicePointsService } from './api/servicePoints.service';
+import { SublinesService } from './api/sublines.service';
+import { TimetableFieldNumbersService } from './api/timetableFieldNumbers.service';
+import { TimetableHearingService } from './api/timetableHearing.service';
+import { TimetableYearChangeService } from './api/timetableYearChange.service';
+import { TrafficPointElementsService } from './api/trafficPointElements.service';
+import { TransportCompaniesService } from './api/transportCompanies.service';
+import { TransportCompanyRelationsService } from './api/transportCompanyRelations.service';
+import { UserAdministrationService } from './api/userAdministration.service';
+import { UserInformationService } from './api/userInformation.service';
+import { WorkflowService } from './api/workflow.service';
 
 @NgModule({
   imports: [],
