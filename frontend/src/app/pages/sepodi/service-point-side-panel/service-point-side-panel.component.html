@@ -21,5 +21,21 @@
     </div>
   </div>
 
-  <!--  TABS HERE-->
+  <nav mat-tab-nav-bar class="tabs" data-cy="tabs" [tabPanel]="tabPanel">
+    <a
+      mat-tab-link
+      class="font-bold-xl"
+      *ngFor="let tab of tabs"
+      [routerLink]="tab.link"
+      routerLinkActive="active-tab"
+      [attr.data-cy]="'tab-' + tab.link"
+    >
+      {{ tab.title | translate }}
+    </a>
+  </nav>
+  <div class="tab-content">
+    <mat-tab-nav-panel #tabPanel>
+      <router-outlet></router-outlet>
+    </mat-tab-nav-panel>
+  </div>
 </div>
