@@ -77,6 +77,12 @@ public class ServicePointImportServiceTest {
     assertThat(fotComment.get().getFotComment()).isEqualTo("BAV-Kommentar");
   }
 
+
+  /**
+   * DB   |-------A--------|-------B-------|
+   * CSV  |----------------A---------------|
+   * Res  |----------------A---------------|
+   */
   @Test
   public void shouldMergeServicePointByImportServicePointsWithoutGeolocation() throws IOException {
     //given
@@ -112,7 +118,7 @@ public class ServicePointImportServiceTest {
    * Res  |---A---|-------C--------|---B---|
    */
 @Test
-  public void shouldMergeServicePointByImportServicePointsWithoutGeolocationThirdVersion() throws IOException {
+  public void shouldUpdateServicePointByImportServicePoints() throws IOException {
     //given
     ServicePointNumber servicePointNumber ;
     String firstFile = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20230717021649_without_geolocation.csv";
@@ -148,6 +154,10 @@ public class ServicePointImportServiceTest {
   }
 
   /**
+   *    * DB   |-------A--------|-------B-------|
+   *    * CSV  |-------A--------|-------A-------|
+   *    * Res  |----------------A---------------|
+   * <p>
    * 1) The first File has 2 identical sequential ServicePoint versions with different Geolocation versions
    * 2) The second File has 2 identical sequential ServicePoint versions and two identical Geolocation version
    * 3) The Result is one ServicePoint version with one Geolocation version -> the sequential versions are merged
@@ -181,8 +191,11 @@ public class ServicePointImportServiceTest {
     assertThat(result.get(0).getAbbreviation()).isEqualTo("FIBE");
   }
 
-
   /**
+   *    * DB   |-------A--------|-------B-------|
+   *    * CSV  |----------------A---------------|
+   *    * Res  |----------------A---------------|
+   * <p>
    * 1) The first File has 2 identical sequential ServicePoint versions with different Geolocation versions
    * 2) The second File has 1 ServicePoint version and one Geolocation version, the versions are already be merged
    * 3) The Result should be one ServicePoint version with one Geolocation version like the second file
@@ -218,6 +231,12 @@ public class ServicePointImportServiceTest {
   }
 
   /**
+   * See https://flow.sbb.ch/browse/ATLAS-1341
+   * <p>
+   * DB   |-------A--------|-------B-------|
+   * CSV  |----------------A---------------|
+   * Res  |----------------A---------------|
+   * <p>
    * 1) The first File has 2 identical sequential ServicePoint versions with different Geolocation versions
    * 2) The second File has 1 ServicePoint version and one Geolocation version, the versions are already be merged
    * 3) The Result should be one ServicePoint version with one Geolocation version like the second file
