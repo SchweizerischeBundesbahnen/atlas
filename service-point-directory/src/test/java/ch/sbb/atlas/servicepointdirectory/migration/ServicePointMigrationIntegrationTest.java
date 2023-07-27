@@ -1,11 +1,14 @@
 package ch.sbb.atlas.servicepointdirectory.migration;
 
-import static ch.sbb.atlas.servicepointdirectory.migration.AtlasCsvReader.dateFromString;
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -13,11 +16,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+
+import static ch.sbb.atlas.servicepointdirectory.migration.AtlasCsvReader.dateFromString;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
 @Slf4j
@@ -26,8 +27,8 @@ public class ServicePointMigrationIntegrationTest {
 
   static final String BASE_PATH = "/migration/";
 
-  private static final String DIDOK_CSV_FILE = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20230721020813.csv";
-  private static final String ATLAS_CSV_FILE = "full-world-service-point-2023-07-21.csv";
+  private static final String DIDOK_CSV_FILE = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20230726021701.csv";
+  private static final String ATLAS_CSV_FILE = "full-world-service-point-2023-07-27.csv";
 
   private static final List<ServicePointVersionCsvModel> atlasCsvLines = new ArrayList<>();
   private static final List<ServicePointCsvModel> didokCsvLines = new ArrayList<>();
