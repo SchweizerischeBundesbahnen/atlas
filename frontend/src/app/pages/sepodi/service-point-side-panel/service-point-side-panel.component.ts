@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ReadServicePointVersion } from '../../../api';
-import { VersionsHandlingService } from '../../../core/versioning/VersionsHandling.service';
+import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
 import { DateRange } from '../../../core/versioning/date-range';
 
 export const TABS = [

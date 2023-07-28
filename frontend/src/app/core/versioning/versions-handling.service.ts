@@ -3,6 +3,10 @@ import { DateRange } from './date-range';
 import moment from 'moment';
 
 export class VersionsHandlingService {
+  static addVersionNumbers<TYPE extends Record>(versions: Array<TYPE>): void {
+    versions.forEach((item, index) => (item.versionNumber = index + 1));
+  }
+
   static hasMultipleVersions<TYPE extends Record>(versions: Array<TYPE>): boolean {
     return !!Array.isArray(versions);
   }
