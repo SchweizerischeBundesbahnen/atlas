@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { VersionsHandlingService } from '../../../../core/versioning/VersionsHandling.service';
+import { VersionsHandlingService } from '../../../../core/versioning/versions-handling.service';
 import { ReadServicePointVersion } from '../../../../api';
 
 @Component({
@@ -18,6 +18,7 @@ export class ServicePointDetailComponent implements OnInit {
   ngOnInit() {
     this.servicePointVersions = this.route.parent?.snapshot.data.servicePoint;
 
+    VersionsHandlingService.addVersionNumbers(this.servicePointVersions);
     this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.servicePointVersions);
     this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(
       this.servicePointVersions
