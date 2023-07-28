@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { VersionsHandlingService } from '../../../../core/versioning/versions-handling.service';
 import {
+  Category,
   OperatingPointTechnicalTimetableType,
   OperatingPointType,
   ReadServicePointVersion,
@@ -42,6 +43,7 @@ export class ServicePointDetailComponent implements OnInit {
   freightServicePoint = false;
 
   stopPointTypes = Object.values(StopPointType);
+  categories = Object.values(Category);
 
   constructor(private route: ActivatedRoute) {}
 

@@ -7,6 +7,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class AtlasSlideToggleComponent {
   @Input() toggle = false;
+  @Input() disabled = false;
   @Output() toggleChange = new EventEmitter<boolean>();
 
   handleToggleClick(): void {
