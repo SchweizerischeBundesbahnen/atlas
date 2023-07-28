@@ -164,3 +164,75 @@
     {{ selectedVersion.abbreviation ?? '-' }}
   </div>
 </div>
+
+<div class="font-bold-2xl mt-4">
+  {{ 'SEPODI.GEOLOCATION.GEOGRAPHY' | translate }}
+  <atlas-slide-toggle
+    [(toggle)]="selectedVersion.hasGeolocation!"
+    [disabled]="form.disabled"
+  ></atlas-slide-toggle>
+</div>
+
+<sepodi-geography
+  *ngIf="selectedVersion.hasGeolocation"
+  [formGroup]="form.controls.geolocation"
+></sepodi-geography>
+<div *ngIf="selectedVersion.hasGeolocation && selectedVersion.number.uicCountryCode === 85">
+  <div class="font-bold-2xl mt-4">{{ 'SEPODI.GEOLOCATION.ADMINISTRATION' | translate }}</div>
+
+  <div class="d-flex flex-row">
+    <div class="col-3 pe-3 flex-column">
+      <div class="font-bold-lg color-gray-900">
+        {{ 'SEPODI.GEOLOCATION.COUNTRY' | translate }}
+      </div>
+      <div class="color-gray-900">
+        {{ selectedVersion.servicePointGeolocation?.isoCountryCode }}
+      </div>
+    </div>
+    <div class="col-3 pe-3">
+      <div class="font-bold-lg color-gray-900">
+        {{ 'SEPODI.GEOLOCATION.CANTON' | translate }}
+      </div>
+      <div class="color-gray-900">
+        {{ selectedVersion.servicePointGeolocation?.swissLocation?.canton }}
+      </div>
+    </div>
+    <div class="col-3 pe-3">
+      <div class="font-bold-lg color-gray-900">
+        {{ 'SEPODI.GEOLOCATION.MUNICIPALITY' | translate }}
+      </div>
+      <div class="color-gray-900">
+        {{
+          selectedVersion.servicePointGeolocation?.swissLocation?.localityMunicipality
+            ?.municipalityName
+        }}
+      </div>
+    </div>
+    <div class="col-3 pe-3">
+      <div class="font-bold-lg color-gray-900">
+        {{ 'SEPODI.GEOLOCATION.DISTRICT' | translate }}
+      </div>
+      <div class="color-gray-900">
+        {{
+          selectedVersion.servicePointGeolocation?.swissLocation?.localityMunicipality?.localityName
+        }}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="d-flex flex-column col-12">
+  <div class="font-bold-2xl mt-4">
+    {{ 'SEPODI.SERVICE_POINTS.CATEGORIES' | translate }}
+  </div>
+  <atlas-select
+    [formGroup]="form"
+    controlName="categories"
+    dataCy="categories"
+    [additionalLabelspace]="false"
+    optionTranslateLabelPrefix="SEPODI.SERVICE_POINTS.CATEGORY."
+    [options]="categories"
+    [multiple]="true"
+  >
+  </atlas-select>
+</div>

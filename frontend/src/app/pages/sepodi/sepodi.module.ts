@@ -13,6 +13,7 @@ import { LoadingPointsDetailComponent } from './service-point-side-panel/loading
 import { FormModule } from '../../core/module/form.module';
 import { FormsModule } from '@angular/forms';
 import { MeansOfTransportPickerComponent } from './means-of-transport-picker/means-of-transport-picker.component';
+import { GeographyComponent } from './geography/geography.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { MeansOfTransportPickerComponent } from './means-of-transport-picker/mea
     MapComponent,
     FormatServicePointNumber,
     MeansOfTransportPickerComponent,
+    GeographyComponent,
   ],
   imports: [CoreModule, FormModule, FormsModule, SepodiRoutingModule],
 })
