@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import {
   ApplicationRole,
   ApplicationType,
@@ -37,7 +37,7 @@ import { DetailFormComponent } from '../../../core/leave-guard/leave-dirty-form-
   templateUrl: './statement-detail.component.html',
   styleUrls: ['./statement-detail.component.scss'],
 })
-export class StatementDetailComponent implements OnInit, AfterViewInit, DetailFormComponent {
+export class StatementDetailComponent implements OnInit, DetailFormComponent {
   YEAR_OPTIONS: number[] = [];
   CANTON_OPTIONS: Canton[] = [];
   STATUS_OPTIONS: StatementStatus[] = [];
@@ -89,11 +89,6 @@ export class StatementDetailComponent implements OnInit, AfterViewInit, DetailFo
   readonly extractEnumCanton = (option: Canton) => option.enumCanton;
 
   readonly extractShort = (option: Canton) => option.short;
-
-  ngAfterViewInit() {
-    const scrollbarElement = this.elementRef.nativeElement.closest('#scrollbar-content-container');
-    scrollbarElement?.scroll(0, 0);
-  }
 
   ngOnInit() {
     if (this.isInitializingComponent) {
