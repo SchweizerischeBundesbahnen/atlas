@@ -889,13 +889,57 @@
       },
       "FREIGHT_SERVICE_POINT": "Bedienpunkt",
       "SORT_CODE_OF_DESTINATION_STATION": "Richtpunktcode",
-      "ABBREVIATION": "Abkürzung"
+      "ABBREVIATION": "Abkürzung",
+      "CATEGORIES": "Kategorien",
+      "CATEGORY": {
+        "NOVA_VIRTUAL": "NOVA virtuell",
+        "BILLETING_MACHINE": "Billettautomat SBB",
+        "PARK_AND_RAIL": "P+Rail",
+        "MAINTENANCE_POINT": "Unterhaltstell",
+        "BORDER_POINT": "Grenzpunkt (UIC)e",
+        "TCV_PASSENGER_TRANSPORT": "TCV Personenverkehr",
+        "HIGH_VOLTAGE_AREA": "Hochspannungsareal",
+        "GSMR_POLE": "GSM-R Mast",
+        "POINT_OF_SALE": "Verkaufsstelle",
+        "DISTRIBUTION_POINT": "Vertriebspunkt",
+        "PROTECTED_PATH": "Schutzstrecke",
+        "GSMR": "GSM-R",
+        "HOSTNAME": "Hostname",
+        "SIGNAL_BOX": "Stellwerk",
+        "IP_CLEAN_UP": "IP Bereinigung",
+        "GALLERY": "Tunnel",
+        "MIGRATION_DIVERSE": "Migr. (alt Uhst Diverse)",
+        "MIGRATION_CENTRAL_SERVICE": "Migr. (alt Uhst Zentr. Dienst)",
+        "MIGRATION_MOBILE_EQUIPE": "Migr. (alt Uhst Mobile Equipe)",
+        "MIGRATION_TCV_PV": "Migr. (alt Uhst TCV PV)",
+        "TRAVEL_AGENCY": "Reisebüro",
+        "TRAVEL_AGENCY_ORGANISATION": "Reisebüro Organisation"
+      }
     },
     "TRAFFIC_POINT_ELEMENTS": {
       "TRAFFIC_POINT_ELEMENTS": "Haltekanten"
     },
     "LOADING_POINTS": {
       "LOADING_POINTS": "Ladestellen"
+    },
+    "GEOLOCATION": {
+      "GEOGRAPHY": "Geografie",
+      "SYSTEM_LV95": "Landeskoordinaten LV95",
+      "SYSTEM_WGS84": "Globale Koordinaten WGS84",
+      "LV95": {
+        "EAST": "E (Ost-West) [ m]",
+        "NORTH": "N (Nord-Süd) [ m]"
+      },
+      "WGS84": {
+        "EAST": "Länge [ °]",
+        "NORTH": "Breite [ °]"
+      },
+      "HEIGHT": "Höhe (M.ü.M.)",
+      "ADMINISTRATION": "Administrative Einheiten",
+      "COUNTRY": "Land",
+      "CANTON": "Kanton",
+      "MUNICIPALITY": "Gemeinde",
+      "DISTRICT": "Ortschaft"
     }
   }
 }
