@@ -1,11 +1,20 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseDetailFormGroup } from '../../../../core/components/base-detail/base-detail-form-group';
-import { MeanOfTransport, ReadServicePointVersion, Status, StopPointType } from '../../../../api';
+import {
+  Category,
+  CoordinatePair,
+  MeanOfTransport,
+  ReadServicePointVersion,
+  SpatialReference,
+  Status,
+  StopPointType,
+} from '../../../../api';
 import moment from 'moment';
 import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
 import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
 import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
 import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
+import { GeographyFormGroup } from '../../geography/geography-form-group';
 
 export interface ServicePointDetailFormGroup extends BaseDetailFormGroup {
   status: FormControl<Status | null | undefined>;
@@ -16,7 +25,9 @@ export interface ServicePointDetailFormGroup extends BaseDetailFormGroup {
   sortCodeOfDestinationStation: FormControl<string | null | undefined>;
   stopPointType: FormControl<StopPointType | null | undefined>;
   meansOfTransport: FormControl<Array<MeanOfTransport> | null | undefined>;
+  categories: FormControl<Array<Category> | null | undefined>;
   etagVersion: FormControl<number | null | undefined>;
+  geolocation: FormGroup<GeographyFormGroup>;
 }
 
 export class ServicePointFormGroupBuilder {
@@ -50,9 +61,23 @@ export class ServicePointFormGroupBuilder {
         sortCodeOfDestinationStation: new FormControl(version.sortCodeOfDestinationStation),
         stopPointType: new FormControl(version.stopPointType),
         meansOfTransport: new FormControl(version.meansOfTransport),
+        categories: new FormControl(version.categories),
         etagVersion: new FormControl(version.etagVersion),
+        geolocation: new FormGroup<GeographyFormGroup>({
+          east: new FormControl(this.getCoordinates(version).east),
+          north: new FormControl(this.getCoordinates(version).north),
+          height: new FormControl(version.servicePointGeolocation?.height),
+          spatialReference: new FormControl(version.servicePointGeolocation?.spatialReference),
+        }),
       },
       [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
     );
+  }
+
+  private static getCoordinates(version: ReadServicePointVersion): CoordinatePair {
+    if (version.servicePointGeolocation?.spatialReference === SpatialReference.Wgs84) {
+      return version.servicePointGeolocation!.wgs84;
+    }
+    return version.servicePointGeolocation!.lv95;
   }
 }
