@@ -10,6 +10,9 @@ import { ServicePointDetailComponent } from './service-point-side-panel/service-
 import { AreasDetailComponent } from './service-point-side-panel/areas/areas-detail.component';
 import { TrafficPointElementsDetailComponent } from './service-point-side-panel/traffic-point-elements/traffic-point-elements-detail.component';
 import { LoadingPointsDetailComponent } from './service-point-side-panel/loading-points/loading-points-detail.component';
+import { FormModule } from '../../core/module/form.module';
+import { FormsModule } from '@angular/forms';
+import { MeansOfTransportPickerComponent } from './means-of-transport-picker/means-of-transport-picker.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +24,8 @@ import { LoadingPointsDetailComponent } from './service-point-side-panel/loading
     LoadingPointsDetailComponent,
     MapComponent,
     FormatServicePointNumber,
+    MeansOfTransportPickerComponent,
   ],
-  imports: [CoreModule, SepodiRoutingModule],
+  imports: [CoreModule, FormModule, FormsModule, SepodiRoutingModule],
 })
 export class SepodiModule {}
