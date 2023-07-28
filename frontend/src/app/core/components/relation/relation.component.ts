@@ -23,6 +23,7 @@ export class RelationComponent<RECORD_TYPE> {
     }
   }
   @Input() titleTranslationKey = '';
+  @Input() relationEditable = true;
   @Input() editable = false;
   @Input() tableColumns!: TableColumn<RECORD_TYPE>[];
   @Input() editMode = false;
