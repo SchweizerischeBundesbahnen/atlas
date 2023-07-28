@@ -43,4 +43,8 @@ export class HeaderComponent {
       'bg-warning': this.environmentLabel === Stages.INT,
     };
   }
+
+  isItWednesday() {
+    return new Date().getDay() === 3;
+  }
 }
