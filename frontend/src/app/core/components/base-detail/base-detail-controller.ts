@@ -3,7 +3,6 @@ import { FormGroup } from '@angular/forms';
 import { Record } from './record';
 import { DialogService } from '../dialog/dialog.service';
 import { EMPTY, Observable, of, Subject } from 'rxjs';
-import moment from 'moment';
 import { Page } from '../../model/page';
 import { NotificationService } from '../../notification/notification.service';
 import { DateService } from '../../date/date.service';
@@ -12,6 +11,7 @@ import { AuthService } from '../../auth/auth.service';
 import { ValidationService } from '../../validation/validation.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DetailFormComponent } from '../../leave-guard/leave-dirty-form-guard.service';
+import { VersionsHandlingService } from '../../versioning/versions-handling.service';
 
 @Directive()
 export abstract class BaseDetailController<TYPE extends Record>
@@ -43,7 +43,7 @@ export abstract class BaseDetailController<TYPE extends Record>
 
   ngOnInit(): void {
     this.init();
-    this.showSwitch = !!Array.isArray(this.records);
+    this.showSwitch = VersionsHandlingService.hasMultipleVersions(this.records);
   }
 
   evaluateSelectedRecord(records: Array<TYPE>) {
@@ -98,13 +98,15 @@ export abstract class BaseDetailController<TYPE extends Record>
   }
 
   getStartDate() {
-    this.sortRecords();
-    return DateService.getDateFormatted(this.records[0].validFrom);
+    return DateService.getDateFormatted(
+      VersionsHandlingService.getMaxValidity(this.records).validFrom
+    );
   }
 
   getEndDate() {
-    this.sortRecords();
-    return DateService.getDateFormatted(this.records[this.records.length - 1].validTo);
+    return DateService.getDateFormatted(
+      VersionsHandlingService.getMaxValidity(this.records).validTo
+    );
   }
 
   toggleEdit() {
@@ -166,32 +168,7 @@ export abstract class BaseDetailController<TYPE extends Record>
   }
 
   getActualRecord(records: Array<TYPE>): TYPE {
-    if (records.length == 1) {
-      return records[0];
-    }
-    const now = moment();
-    const matchedRecord = this.findRecordByTodayDate(records, now);
-    if (matchedRecord.length == 1) {
-      return matchedRecord[0];
-    } else if (matchedRecord.length > 1) {
-      throw new Error('Something went wrong. Found more than one Record.');
-    } else if (matchedRecord.length == 0 && records.length > 1) {
-      const foundRecordBetweenGap = this.findRecordBetweenGap(records, now);
-      if (foundRecordBetweenGap != null) {
-        return foundRecordBetweenGap;
-      }
-      //get next in future
-      const firstIndexValidFrom = moment(records[0].validFrom);
-      if (now.isBefore(firstIndexValidFrom)) {
-        return records[0];
-      }
-      //get last in passt
-      const lastIndexValidTo = moment(records[records.length - 1].validTo);
-      if (now.isAfter(lastIndexValidTo)) {
-        return records[records.length - 1];
-      }
-    }
-    return records[0];
+    return VersionsHandlingService.determineDefaultVersionByValidity(records);
   }
 
   abstract getDetailHeading(record: TYPE): string;
@@ -253,7 +230,7 @@ export abstract class BaseDetailController<TYPE extends Record>
   private init() {
     this.getRecord();
     if (this.records) {
-      this.records.forEach((item, index) => (item.versionNumber = index + 1));
+      VersionsHandlingService.addVersionNumbers(this.records);
     }
     this.form = this.getFormGroup(this.record);
     this.switchVersionEvent.next(this.record);
@@ -295,34 +272,8 @@ export abstract class BaseDetailController<TYPE extends Record>
     });
   }
 
-  private findRecordByTodayDate(records: Array<TYPE>, now: moment.Moment) {
-    return records.filter((record) => {
-      const currentValidFrom = moment(record.validFrom);
-      const currentValidTo = moment(record.validTo);
-      if (currentValidFrom.isSame(currentValidTo, 'day') && now.isSame(currentValidFrom, 'day')) {
-        return true;
-      }
-      return now.isBetween(currentValidFrom, currentValidTo);
-    });
-  }
-
-  private findRecordBetweenGap(records: Array<TYPE>, now: moment.Moment) {
-    const startRecordsDateRange = records[0].validFrom;
-    const endRecordsDateRange = records[records.length - 1].validTo;
-    if (now.isBetween(startRecordsDateRange, endRecordsDateRange)) {
-      for (let i = 1; i < records.length; i++) {
-        const currentValidTo = moment(records[i - 1].validTo);
-        const nextValidFrom = moment(records[i].validFrom);
-        if (now.isBetween(currentValidTo, nextValidFrom)) {
-          return records[i];
-        }
-      }
-    }
-    return null;
-  }
-
   private sortRecords() {
-    this.records.sort((x, y) => +new Date(x.validFrom!) - +new Date(y.validFrom!));
+    VersionsHandlingService.sortByValidFrom(this.records);
   }
 
   private disableUneditableFormFields(): void {
