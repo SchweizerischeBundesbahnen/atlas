@@ -2,12 +2,8 @@ package ch.sbb.exportservice.recovery;
 
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.batch.exception.JobExecutionException;
-import ch.sbb.exportservice.service.ExportJobService;
+import ch.sbb.exportservice.service.ExportServicePointJobService;
 import ch.sbb.exportservice.utils.JobDescriptionConstants;
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.BatchStatus;
@@ -20,6 +16,11 @@ import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Component
 @AllArgsConstructor
@@ -34,7 +35,8 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
   private final FileService fileService;
 
   private final JobRepository jobRepository;
-  private final ExportJobService exportJobService;
+  private final ExportServicePointJobService exportServicePointJobService;
+//  private final ExportJobService exportJobService; TODO
 
   private boolean checkIfHasJobsToRecover() {
     if (!isTheFirstJobsExecution()) {
@@ -97,7 +99,7 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
     cleanDownloadedFiles();
     if (checkIfHasJobsToRecover()) {
       log.info("Rerunning all export jobs...");
-      exportJobService.startExportJobs();
+      exportServicePointJobService.startExportJobs();
       log.info("All export jobs successfully recovered!");
     } else {
       log.info("No job found to recover.");
