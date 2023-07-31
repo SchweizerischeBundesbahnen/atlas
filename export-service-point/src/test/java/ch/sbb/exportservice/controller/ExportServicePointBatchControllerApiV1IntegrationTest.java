@@ -1,29 +1,26 @@
 package ch.sbb.exportservice.controller;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.doThrow;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.model.exception.NotFoundException.FileNotFoundException;
 import ch.sbb.exportservice.BatchDataSourceConfigTest;
-import ch.sbb.exportservice.model.ServicePointExportType;
+import ch.sbb.exportservice.model.ExportType;
 import ch.sbb.exportservice.service.FileExportService;
 import ch.sbb.exportservice.service.MailProducerService;
-import java.io.InputStream;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
+
+import java.io.InputStream;
+
+import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @BatchDataSourceConfigTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -41,7 +38,7 @@ public class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseC
     try (InputStream inputStream = this.getClass().getResourceAsStream("/service-point-data.json")) {
       StreamingResponseBody streamingResponseBody = writeOutputStream(inputStream);
 
-      doReturn(streamingResponseBody).when(fileExportService).streamingJsonFile(ServicePointExportType.WORLD_FULL);
+      doReturn(streamingResponseBody).when(fileExportService).streamingJsonFile(ExportType.WORLD_FULL);
 
       //when & then
       mvc.perform(get("/v1/export/json/world-full")
@@ -55,7 +52,7 @@ public class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseC
   @Order(2)
   public void shouldGetJsonUnsuccessfully() throws Exception {
     //given
-    doThrow(FileNotFoundException.class).when(fileExportService).streamingJsonFile(ServicePointExportType.WORLD_FULL);
+    doThrow(FileNotFoundException.class).when(fileExportService).streamingJsonFile(ExportType.WORLD_FULL);
 
     //when & then
     mvc.perform(get("/v1/export/json/world-full")
@@ -69,8 +66,8 @@ public class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseC
     //given
     try (InputStream inputStream = this.getClass().getResourceAsStream("/service-point.json.gz")) {
       StreamingResponseBody streamingResponseBody = writeOutputStream(inputStream);
-      doReturn(streamingResponseBody).when(fileExportService).streamingGzipFile(ServicePointExportType.WORLD_FULL);
-      doReturn("service-point").when(fileExportService).getBaseFileName(ServicePointExportType.WORLD_FULL);
+      doReturn(streamingResponseBody).when(fileExportService).streamingGzipFile(ExportType.WORLD_FULL);
+      doReturn("service-point").when(fileExportService).getBaseFileName(ExportType.WORLD_FULL);
       //when & then
       mvc.perform(get("/v1/export/download-gzip-json/world-full")
               .contentType(contentType))
@@ -83,7 +80,7 @@ public class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseC
   @Order(4)
   public void shouldDownloadGzipJsonUnsuccessfully() throws Exception {
     //given
-    doThrow(FileNotFoundException.class).when(fileExportService).streamingGzipFile(ServicePointExportType.WORLD_FULL);
+    doThrow(FileNotFoundException.class).when(fileExportService).streamingGzipFile(ExportType.WORLD_FULL);
 
     //when & then
     mvc.perform(get("/v1/export/download-gzip-json/world-full")
