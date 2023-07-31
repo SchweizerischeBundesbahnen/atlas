@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @Schema(enumAsRef = true)
 @Getter
 @RequiredArgsConstructor
-public enum ServicePointExportType {
+public enum ExportType {
 
   SWISS_ONLY_FULL(Constants.FULL_DIR_NAME, Constants.SWISS_ONLY_PREFIX),
   SWISS_ONLY_ACTUAL(Constants.ACTUAL_DATE_DIR_NAME, Constants.SWISS_ONLY_PREFIX),
