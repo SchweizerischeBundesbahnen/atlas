@@ -1,0 +1,22 @@
+package ch.sbb.exportservice.writer;
+
+import ch.sbb.exportservice.model.TrafficPointVersionCsvModel;
+import ch.sbb.exportservice.model.TrafficPointVersionCsvModel.Fields;
+import org.springframework.stereotype.Component;
+
+
+@Component
+public class CsvTrafficPointElementVersionWriter extends BaseCsvWriter<TrafficPointVersionCsvModel>{
+
+  @Override
+  String[] getCsvHeader() {
+    return  new String[]{Fields.sloid, Fields.numberShort, Fields.uicCountryCode,
+            Fields.number, Fields.validFrom, Fields.validTo, Fields.designation,
+            Fields.designationOperational, Fields.length, Fields.boardingAreaHeight, Fields.compassDirection, Fields.parentSloid,
+            Fields.trafficPointElementType,  Fields.lv95East, Fields.lv95North, Fields.wgs84East, Fields.wgs84North, Fields.wgs84WebEast, Fields.wgs84WebNorth,
+            Fields.servicePointBusinessOrganisation, Fields.servicePointBusinessOrganisationAbbreviationDe, Fields.servicePointBusinessOrganisationAbbreviationFr, Fields.servicePointBusinessOrganisationAbbreviationIt,
+            Fields.servicePointBusinessOrganisationDescriptionDe, Fields.servicePointBusinessOrganisationDescriptionFr, Fields.servicePointBusinessOrganisationDescriptionFr, Fields.servicePointBusinessOrganisationDescriptionIt
+    };
+  }
+
+}
