@@ -2,15 +2,16 @@ package ch.sbb.exportservice.reader;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.model.FutureTimetableHelper;
-import ch.sbb.exportservice.model.ServicePointExportType;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import ch.sbb.exportservice.model.ExportType;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 @UtilityClass
 @Slf4j
-public class SqlQueryUtil {
+public class ServicePointVersionSqlQueryUtil {
 
   private static final String SELECT_AND_JOIN_STATEMENT = """
       SELECT spv.id, string_agg(spvmot.means_of_transport, '|') as list_of_transports, string_agg(spvc.categories, '|') as list_of_categories,
@@ -42,7 +43,7 @@ public class SqlQueryUtil {
       + "'%s' between spv.valid_from and spv.valid_to ";
   private static final String WORLD_ONLY_ACTUAL_WHERE_STATEMENT = " WHERE '%s' between spv.valid_from and spv.valid_to ";
 
-  public String getSqlQuery(ServicePointExportType exportType) {
+  public String getSqlQuery(ExportType exportType) {
     log.info("ExportType: {}", exportType);
     StringBuilder sqlQueryBuilder = new StringBuilder();
     sqlQueryBuilder.append(SELECT_AND_JOIN_STATEMENT);
@@ -55,7 +56,7 @@ public class SqlQueryUtil {
     return sqlQuery;
   }
 
-  private String getSqlWhereClause(ServicePointExportType exportType) {
+  private String getSqlWhereClause(ExportType exportType) {
     LocalDate nextTimetableYearStartDate = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
     return switch (exportType) {
       case SWISS_ONLY_FULL -> SWISS_ONLY_FULL_WHERE_STATEMENT;

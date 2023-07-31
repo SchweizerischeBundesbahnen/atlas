@@ -6,21 +6,17 @@ import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.exportservice.model.ExportExtensionFileType;
-import ch.sbb.exportservice.model.ServicePointExportType;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import ch.sbb.exportservice.model.ExportType;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
+
+import java.io.*;
 import java.net.URL;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.zip.GZIPInputStream;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 @Service
 @RequiredArgsConstructor
@@ -33,8 +29,8 @@ public class FileExportService {
 
   private final FileService fileService;
 
-  public StreamingResponseBody streamingJsonFile(ServicePointExportType servicePointExportType) {
-    String fileToDownload = getJsonFileToDownload(servicePointExportType);
+  public StreamingResponseBody streamingJsonFile(ExportType exportType) {
+    String fileToDownload = getJsonFileToDownload(exportType);
     try {
       File file = amazonService.pullFile(AmazonBucket.EXPORT, fileToDownload);
       byte[] bytes = decompressGzipToBytes(file.toPath());
@@ -45,8 +41,8 @@ public class FileExportService {
     }
   }
 
-  public StreamingResponseBody streamingGzipFile(ServicePointExportType servicePointExportType) {
-    String fileToDownload = getJsonFileToDownload(servicePointExportType);
+  public StreamingResponseBody streamingGzipFile(ExportType exportType) {
+    String fileToDownload = getJsonFileToDownload(exportType);
     try {
       File file = amazonService.pullFile(AmazonBucket.EXPORT, fileToDownload);
       InputStream inputStream = new FileInputStream(file);
@@ -68,12 +64,12 @@ public class FileExportService {
     };
   }
 
-  private String getJsonFileToDownload(ServicePointExportType servicePointExportType) {
+  private String getJsonFileToDownload(ExportType exportType) {
     return S3_BUCKER_SERVICE_POINT_EXPORT_DIR
         + "/"
-        + servicePointExportType.getDir()
+        + exportType.getDir()
         + "/"
-        + getBaseFileName(servicePointExportType)
+        + getBaseFileName(exportType)
         + ".json.gz";
   }
 
@@ -90,7 +86,7 @@ public class FileExportService {
     return output.toByteArray();
   }
 
-  public URL exportFile(File file, ServicePointExportType exportType, ExportExtensionFileType exportExtensionFileType) {
+  public URL exportFile(File file, ExportType exportType, ExportExtensionFileType exportExtensionFileType) {
     String pathDirectory = S3_BUCKER_SERVICE_POINT_EXPORT_DIR + "/" + exportType.getDir();
     try {
       if (exportExtensionFileType.equals(ExportExtensionFileType.CSV_EXTENSION)) {
@@ -106,13 +102,13 @@ public class FileExportService {
     }
   }
 
-  public String createFileNamePath(ExportExtensionFileType exportExtensionFileType, ServicePointExportType exportType) {
+  public String createFileNamePath(ExportExtensionFileType exportExtensionFileType, ExportType exportType) {
     String dir = fileService.getDir();
     String baseFileName = getBaseFileName(exportType);
     return dir + baseFileName + exportExtensionFileType.getExtention();
   }
 
-  public String getBaseFileName(ServicePointExportType exportType) {
+  public String getBaseFileName(ExportType exportType) {
     String actualDate = LocalDate.now()
         .format(DateTimeFormatter.ofPattern(
             AtlasApiConstants.DATE_FORMAT_PATTERN));
