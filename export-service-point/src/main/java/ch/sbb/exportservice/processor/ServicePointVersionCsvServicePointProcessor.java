@@ -6,14 +6,14 @@ import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.exportservice.entity.ServicePointVersion;
 import ch.sbb.exportservice.model.ServicePointVersionCsvModel;
 import ch.sbb.exportservice.model.ServicePointVersionCsvModel.ServicePointVersionCsvModelBuilder;
-import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemProcessor;
 
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 @Slf4j
-public class ServicePointVersionCsvProcessor extends BaseProcessor implements
+public class ServicePointVersionCsvServicePointProcessor extends BaseServicePointProcessor implements
     ItemProcessor<ServicePointVersion, ServicePointVersionCsvModel> {
 
   private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN);
