@@ -15,6 +15,16 @@ public class TrafficPointElementVersionJsonProcessor extends BaseServicePointPro
         GeolocationBaseModel geolocation = toModel(version.getTrafficPointElementGeolocation());
 
         return ReadTrafficPointElementVersionModel.builder()
+                .creationDate(version.getCreationDate())
+                .editionDate(version.getEditionDate())
+                .creator(version.getCreator())
+                .editor(version.getEditor())
+                .id(version.getId())
+                .sloid(version.getSloid())
+                .validFrom(version.getValidFrom())
+                .validTo(version.getValidTo())
+                .etagVersion(version.getVersion())
+                .parentSloid(version.getParentSloid())
                 .designation(version.getDesignation())
                 .designationOperational(version.getDesignationOperational())
                 .length(version.getLength())

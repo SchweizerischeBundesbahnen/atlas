@@ -6,6 +6,7 @@ import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.exportservice.model.ExportExtensionFileType;
+import ch.sbb.exportservice.model.ExportFileName;
 import ch.sbb.exportservice.model.ExportType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,8 +30,8 @@ public class FileExportService {
 
   private final FileService fileService;
 
-  public StreamingResponseBody streamingJsonFile(ExportType exportType) {
-    String fileToDownload = getJsonFileToDownload(exportType);
+  public StreamingResponseBody streamingJsonFile(ExportType exportType, ExportFileName exportFileName) {
+    String fileToDownload = getJsonFileToDownload(exportType,exportFileName);
     try {
       File file = amazonService.pullFile(AmazonBucket.EXPORT, fileToDownload);
       byte[] bytes = decompressGzipToBytes(file.toPath());
@@ -41,8 +42,8 @@ public class FileExportService {
     }
   }
 
-  public StreamingResponseBody streamingGzipFile(ExportType exportType) {
-    String fileToDownload = getJsonFileToDownload(exportType);
+  public StreamingResponseBody streamingGzipFile(ExportType exportType, ExportFileName exportFileName) {
+    String fileToDownload = getJsonFileToDownload(exportType, exportFileName);
     try {
       File file = amazonService.pullFile(AmazonBucket.EXPORT, fileToDownload);
       InputStream inputStream = new FileInputStream(file);
@@ -64,12 +65,12 @@ public class FileExportService {
     };
   }
 
-  private String getJsonFileToDownload(ExportType exportType) {
+  private String getJsonFileToDownload(ExportType exportType, ExportFileName exportFileName) {
     return S3_BUCKER_SERVICE_POINT_EXPORT_DIR
         + "/"
         + exportType.getDir()
         + "/"
-        + getBaseFileName(exportType)
+        + getBaseFileName(exportType, exportFileName)
         + ".json.gz";
   }
 
@@ -86,8 +87,8 @@ public class FileExportService {
     return output.toByteArray();
   }
 
-  public URL exportFile(File file, ExportType exportType, ExportExtensionFileType exportExtensionFileType) {
-    String pathDirectory = S3_BUCKER_SERVICE_POINT_EXPORT_DIR + "/" + exportType.getDir();
+  public URL exportFile(File file, ExportType exportType, ExportFileName exportFileName, ExportExtensionFileType exportExtensionFileType) {
+    String pathDirectory = exportFileName.getBaseDir() + "/" + exportType.getDir();
     try {
       if (exportExtensionFileType.equals(ExportExtensionFileType.CSV_EXTENSION)) {
         return amazonService.putZipFile(AmazonBucket.EXPORT, file, pathDirectory);
@@ -102,17 +103,17 @@ public class FileExportService {
     }
   }
 
-  public String createFileNamePath(ExportExtensionFileType exportExtensionFileType, ExportType exportType) {
+  public String createFileNamePath(ExportExtensionFileType exportExtensionFileType, ExportType exportType, ExportFileName exportFileName) {
     String dir = fileService.getDir();
-    String baseFileName = getBaseFileName(exportType);
+    String baseFileName = getBaseFileName(exportType,exportFileName);
     return dir + baseFileName + exportExtensionFileType.getExtention();
   }
 
-  public String getBaseFileName(ExportType exportType) {
+  public String getBaseFileName(ExportType exportType, ExportFileName exportFileName) {
     String actualDate = LocalDate.now()
         .format(DateTimeFormatter.ofPattern(
             AtlasApiConstants.DATE_FORMAT_PATTERN));
-    return exportType.getDir() + "-" + exportType.getFileTypePrefix() + "-service-point-" + actualDate;
+    return exportType.getDir() + "-" + exportType.getFileTypePrefix() + "-"+exportFileName.getFileName()+"-" + actualDate;
   }
 
 }
