@@ -1,6 +1,7 @@
 package ch.sbb.exportservice.controller;
 
 import ch.sbb.atlas.api.model.ErrorResponse;
+import ch.sbb.exportservice.model.ExportFileName;
 import ch.sbb.exportservice.model.ExportType;
 import ch.sbb.exportservice.service.ExportServicePointJobService;
 import ch.sbb.exportservice.service.ExportTrafficPointElementJobService;
@@ -40,7 +41,7 @@ public class ExportServicePointBatchControllerApiV1 {
       @Schema(implementation = ErrorResponse.class)))
   })
   public ResponseEntity<StreamingResponseBody> streamJsonFile(@PathVariable ExportType exportType) {
-    StreamingResponseBody body = fileExportService.streamingJsonFile(exportType);
+    StreamingResponseBody body = fileExportService.streamingJsonFile(exportType,ExportFileName.SERVICE_POINT_VERSION);
     return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(body);
   }
 
@@ -51,13 +52,13 @@ public class ExportServicePointBatchControllerApiV1 {
       @Schema(implementation = ErrorResponse.class)))
   })
   public ResponseEntity<StreamingResponseBody> streamGzipFile(@PathVariable ExportType exportType) {
-    String fileName = fileExportService.getBaseFileName(exportType);
+    String fileName = fileExportService.getBaseFileName(exportType, ExportFileName.SERVICE_POINT_VERSION);
     HttpHeaders headers = new HttpHeaders();
     headers.add("Content-Type", "application/gzip");
     headers.add("Content-Disposition", "attachment;filename=" + fileName + ".json.gz");
     headers.add("Pragma", "no-cache");
     headers.add("Cache-Control", "no-cache");
-    StreamingResponseBody body = fileExportService.streamingGzipFile(exportType);
+    StreamingResponseBody body = fileExportService.streamingGzipFile(exportType, ExportFileName.SERVICE_POINT_VERSION);
     return ResponseEntity.ok().headers(headers).body(body);
   }
 
