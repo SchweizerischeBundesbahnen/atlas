@@ -14,6 +14,7 @@ public class CsvTrafficPointElementVersionWriter extends BaseCsvWriter<TrafficPo
             Fields.number, Fields.validFrom, Fields.validTo, Fields.designation,
             Fields.designationOperational, Fields.length, Fields.boardingAreaHeight, Fields.compassDirection, Fields.parentSloid,
             Fields.trafficPointElementType,  Fields.lv95East, Fields.lv95North, Fields.wgs84East, Fields.wgs84North, Fields.wgs84WebEast, Fields.wgs84WebNorth,
+            Fields.height,Fields.creationDate,Fields.editionDate,Fields.parentSloidServicePoint,Fields.designationOfficial,
             Fields.servicePointBusinessOrganisation, Fields.servicePointBusinessOrganisationAbbreviationDe, Fields.servicePointBusinessOrganisationAbbreviationFr, Fields.servicePointBusinessOrganisationAbbreviationIt,
             Fields.servicePointBusinessOrganisationDescriptionDe, Fields.servicePointBusinessOrganisationDescriptionFr, Fields.servicePointBusinessOrganisationDescriptionFr, Fields.servicePointBusinessOrganisationDescriptionIt
     };

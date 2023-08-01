@@ -58,6 +58,8 @@ public class TrafficPointVersionCsvModel {
 
   private String parentSloidServicePoint;
 
+  private String designationOfficial;
+
   private String servicePointBusinessOrganisation;
 
   private Integer servicePointBusinessOrganisationNumber;
