@@ -19,8 +19,6 @@ public class TrafficPointElementVersionCsvProcessor extends BaseServicePointProc
 
     @Override
     public TrafficPointVersionCsvModel process(TrafficPointElementVersion version) {
-
-
         BusinessOrganisation servicePointBusinessOrganisation = version.getServicePointBusinessOrganisation();
         TrafficPointVersionCsvModel.TrafficPointVersionCsvModelBuilder builder = TrafficPointVersionCsvModel.builder()
                 .sloid(version.getSloid())
@@ -37,10 +35,10 @@ public class TrafficPointElementVersionCsvProcessor extends BaseServicePointProc
                 .compassDirection(version.getCompassDirection())
                 .parentSloid(version.getParentSloid())
                 .trafficPointElementType(version.getTrafficPointElementType().name())
-
+                .designationOfficial(version.getServicePointDesignationOfficial())
                 .creationDate(LOCAL_DATE_FORMATTER.format(version.getCreationDate()))
                 .editionDate(LOCAL_DATE_FORMATTER.format(version.getEditionDate()))
-//            .parentSloidServicePoint() TODO
+                .parentSloidServicePoint(version.getParentSloidServicePoint())
                 .servicePointBusinessOrganisation(servicePointBusinessOrganisation.getBusinessOrganisation())
                 .servicePointBusinessOrganisationAbbreviationDe(servicePointBusinessOrganisation.getBusinessOrganisationAbbreviationDe())
                 .servicePointBusinessOrganisationAbbreviationFr(servicePointBusinessOrganisation.getBusinessOrganisationAbbreviationFr())
@@ -50,9 +48,7 @@ public class TrafficPointElementVersionCsvProcessor extends BaseServicePointProc
                 .servicePointBusinessOrganisationDescriptionFr(servicePointBusinessOrganisation.getBusinessOrganisationDescriptionFr())
                 .servicePointBusinessOrganisationDescriptionIt(servicePointBusinessOrganisation.getBusinessOrganisationDescriptionIt())
                 .servicePointBusinessOrganisationDescriptionEn(servicePointBusinessOrganisation.getBusinessOrganisationDescriptionEn());
-
         buildGeolocation(version, builder);
-
         return builder.build();
 
     }

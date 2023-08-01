@@ -14,12 +14,13 @@ import java.time.format.DateTimeFormatter;
 public class TrafficPointElementVersionSqlQueryUtil {
 
   private static final String SELECT_AND_JOIN_STATEMENT = """
-      SELECT tpev.id, tpev.*, sbov.*, spv.*, tpevg.*
+      SELECT tpev.*, sbov.*, spv.*, tpevg.*, spv.sloid as parent_service_point_sloid
       FROM traffic_point_element_version as tpev
          LEFT JOIN traffic_point_element_version_geolocation tpevg ON tpevg.id = tpev.traffic_point_geolocation_id
-         LEFT JOIN service_point_version spv ON spv.sloid = tpev.parent_sloid
-         LEFT JOIN shared_business_organisation_version sbov
-              ON spv.business_organisation = sbov.sboid AND (CASE WHEN current_date between sbov.valid_from and sbov.valid_to THEN 0 ELSE 1 END = 0)
+         LEFT JOIN service_point_version spv ON spv.number = tpev.service_point_number
+              AND (CASE WHEN current_date between spv.valid_from and spv.valid_to THEN 0 ELSE 1 END = 0)
+         LEFT JOIN shared_business_organisation_version sbov ON spv.business_organisation = sbov.sboid
+              AND (CASE WHEN current_date between sbov.valid_from and sbov.valid_to THEN 0 ELSE 1 END = 0)
       """;
   private static final String GROUP_BY_STATEMENT = "group by spv.id, tpev.id, sbov.id, tpevg.id";
 
@@ -35,7 +36,7 @@ public class TrafficPointElementVersionSqlQueryUtil {
     }
     sqlQueryBuilder.append(GROUP_BY_STATEMENT);
     String sqlQuery = sqlQueryBuilder.toString();
-    log.info("Execution SQL query: {}", sqlQuery);
+    log.info("Execution SQL query: {}\n", sqlQuery);
     return sqlQuery;
   }
 
