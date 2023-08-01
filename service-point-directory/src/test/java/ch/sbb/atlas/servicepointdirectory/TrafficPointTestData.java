@@ -70,7 +70,11 @@ public class TrafficPointTestData {
             .servicePointNumber(ServicePointNumber.of(14000158))
             .trafficPointElementGeolocation(trafficPointElementGeolocation)
             .sloid("ch:1:sloid:1400015:0:310240")
+<<<<<<< HEAD
             .parentSloid("ch:1:sloid:1400015:310240")
+=======
+            .parentSloid("ch:1:sloid:1400015:0")
+>>>>>>> 1b47519d9 (ATLAS-1079: Add missing queries and add tests.)
             .compassDirection(277.0)
             .trafficPointElementType(TrafficPointElementType.BOARDING_PLATFORM)
             .validFrom(LocalDate.of(2020, 1, 6))
@@ -104,7 +108,11 @@ public class TrafficPointTestData {
             .numberWithoutCheckDigit(1400015)
             .trafficPointElementGeolocation(GeolocationMapper.toModel(trafficPointElementGeolocation))
             .sloid("ch:1:sloid:1400015:0:310240")
+<<<<<<< HEAD
             .parentSloid("ch:1:sloid:1400015:310240")
+=======
+            .parentSloid("ch:1:sloid:1400015:0")
+>>>>>>> 1b47519d9 (ATLAS-1079: Add missing queries and add tests.)
             .compassDirection(277.0)
             .trafficPointElementType(TrafficPointElementType.BOARDING_PLATFORM)
             .validFrom(LocalDate.of(2020, 1, 6))
