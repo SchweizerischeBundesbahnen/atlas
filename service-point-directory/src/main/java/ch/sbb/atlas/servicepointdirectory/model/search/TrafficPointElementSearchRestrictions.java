@@ -2,23 +2,22 @@ package ch.sbb.atlas.servicepointdirectory.model.search;
 
 import ch.sbb.atlas.searching.SpecificationBuilder;
 import ch.sbb.atlas.searching.specification.ValidOrEditionTimerangeSpecification;
-import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion.Fields;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion_;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementRequestParams;
-import jakarta.persistence.criteria.Join;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
 import lombok.Getter;
 import lombok.Singular;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 @Getter
 @ToString
@@ -47,7 +46,7 @@ public class TrafficPointElementSearchRestrictions {
         .and(specificationBuilder().validOnSpecification(getValidOn()))
         .and(specificationBuilder().stringInSpecification(sloidValues, TrafficPointElementVersion_.sloid))
         .and(specificationBuilder().inSpecification(trafficPointElementRequestParams.getServicePointNumbers(), Fields.servicePointNumber))
-        .and(specificationBuilder().inSpecification(trafficPointElementRequestParams.getServicePointNumberShort(), Fields.servicePointNumber))
+        .and(specificationBuilder().inSpecification(trafficPointElementRequestParams.getServicePointNumbersShort(), Fields.servicePointNumber))
         .and(new ValidOrEditionTimerangeSpecification<>(
             trafficPointElementRequestParams.getFromDate(),
             trafficPointElementRequestParams.getToDate(),
