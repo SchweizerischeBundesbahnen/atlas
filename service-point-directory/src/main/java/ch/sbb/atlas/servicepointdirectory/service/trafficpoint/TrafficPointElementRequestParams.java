@@ -31,11 +31,11 @@ public class TrafficPointElementRequestParams extends VersionedObjectDateRequest
 
     @Parameter(description = "")
     @Singular(ignoreNullCollections = true)
-    private List<String> servicePointSloids = new ArrayList<>();
+    private List<String> parentsloids = new ArrayList<>();
 
     @Parameter(description = "sboid")
     @Singular(ignoreNullCollections = true)
-    private List<String> businessOrganisations = new ArrayList<>();
+    private List<String> sboids = new ArrayList<>();
 
     @Parameter(description = "List of UIC Country codes. The UIC Country code applies to the country of the service point number")
     @Singular(ignoreNullCollections = true)
@@ -45,23 +45,10 @@ public class TrafficPointElementRequestParams extends VersionedObjectDateRequest
         "Number of a service point which is provided by DiDok for Switzerland. It is part of the unique key for"
             + " service points.")
     @Singular(value = "numberShort", ignoreNullCollections = true)
-    private List<Integer> servicePointNumberShort = new ArrayList<>();
-
+    private List<Integer> servicePointNumbersShort = new ArrayList<>();
 
     public List<ServicePointNumber> getServicePointNumbers() {
         return servicePointNumbers.stream().map(ServicePointNumber::ofNumberWithoutCheckDigit).toList();
     }
-
-    //TODO: Does not work
-//    public List<ServicePointNumber> getServicePointNumberShort() {
-//            return servicePointNumbers.stream().map(servicePointNumber -> servicePointNumber.getNumberShort()).collect(Collectors.toList()).collect(Collectors.toList());
-//    }
-
-    public static boolean isServicePointParameterQueried(TrafficPointElementRequestParams trafficPointElementRequestParams) {
-        return !trafficPointElementRequestParams.getBusinessOrganisations().isEmpty() ||
-                !trafficPointElementRequestParams.getServicePointNumberShort().isEmpty() ||
-                !trafficPointElementRequestParams.getUicCountryCodes().isEmpty();
-    }
-
 
 }
