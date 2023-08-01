@@ -20,7 +20,6 @@ public class TrafficPointElementVersionRowMapper implements RowMapper<TrafficPoi
     ServicePointNumber servicePointNumber = ServicePointNumber.of(rs.getInt("service_point_number"));
     TrafficPointElementVersion.TrafficPointElementVersionBuilder<?, ?> builder = TrafficPointElementVersion.builder();
     builder.id(rs.getLong("id"));
-//    builder.servicePointNumber(servicePointNumber);
     builder.sloid(rs.getString("sloid"));
     builder.designation(rs.getString("designation"));
     builder.designationOperational(rs.getString("designation_operational"));
@@ -31,6 +30,7 @@ public class TrafficPointElementVersionRowMapper implements RowMapper<TrafficPoi
     builder.parentSloid(rs.getString("parent_sloid"));
     builder.servicePointNumber(ServicePointNumber.of(rs.getInt("number")));
     getTrafficPointElementGeolocation(rs,builder);
+    builder.parentSloidServicePoint(rs.getString("parent_service_point_sloid"));
     builder.servicePointBusinessOrganisation(getBusinessOrganisation(rs));
     builder.servicePointDesignationOfficial(rs.getString("designation_official"));
     builder.creationDate(rs.getObject("creation_date", LocalDateTime.class));
