@@ -1,6 +1,7 @@
 package ch.sbb.exportservice.writer;
 
 import ch.sbb.exportservice.model.ExportExtensionFileType;
+import ch.sbb.exportservice.model.ExportFileName;
 import ch.sbb.exportservice.model.ExportType;
 import ch.sbb.exportservice.service.FileExportService;
 import org.springframework.batch.item.file.FlatFileItemWriter;
@@ -22,10 +23,10 @@ public abstract class BaseCsvWriter<T> {
   @Autowired
   private FileExportService fileExportService;
 
-  public FlatFileItemWriter<T> csvWriter(ExportType exportType) {
+  public FlatFileItemWriter<T> csvWriter(ExportType exportType, ExportFileName exportFileName) {
     WritableResource outputResource = new FileSystemResource(
         fileExportService.createFileNamePath(ExportExtensionFileType.CSV_EXTENSION,
-            exportType));
+            exportType,exportFileName));
     FlatFileItemWriter<T> writer = new FlatFileItemWriter<>();
     writer.setResource(outputResource);
     writer.setAppendAllowed(true);
