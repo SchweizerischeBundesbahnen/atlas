@@ -122,13 +122,13 @@ public class TrafficPointElementVersionRepositoryCustomImpl implements TrafficPo
                 WHERE 1=1
                 """;
 
-        if (!trafficPointElementRequestParams.getBusinessOrganisations().isEmpty()) {
+        if (!trafficPointElementRequestParams.getSboids().isEmpty()) {
             query += " AND spv.business_organisation IN (:sboids)";
-            mapSqlParameterSource.addValue("sboids", trafficPointElementRequestParams.getBusinessOrganisations());
+            mapSqlParameterSource.addValue("sboids", trafficPointElementRequestParams.getSboids());
         }
-        if (!trafficPointElementRequestParams.getServicePointNumberShort().isEmpty()) {
+        if (!trafficPointElementRequestParams.getServicePointNumbersShort().isEmpty()) {
             query += " AND spv.number_short IN (:shorts)";
-            mapSqlParameterSource.addValue("shorts", trafficPointElementRequestParams.getServicePointNumberShort());
+            mapSqlParameterSource.addValue("shorts", trafficPointElementRequestParams.getServicePointNumbersShort());
         }
         if (!trafficPointElementRequestParams.getUicCountryCodes().isEmpty()) {
             query += " AND spv.country IN (:countries)";
@@ -137,7 +137,30 @@ public class TrafficPointElementVersionRepositoryCustomImpl implements TrafficPo
                     .map(uicCountryCode -> Country.from(Integer.valueOf(uicCountryCode)).toString())
                     .toList());
         }
-
+        if (!trafficPointElementRequestParams.getSloids().isEmpty()) {
+            query += " AND trp.sloid IN (:sloids)";
+            mapSqlParameterSource.addValue("sloids", trafficPointElementRequestParams.getSloids());
+        }
+        if (!trafficPointElementRequestParams.getParentsloids().isEmpty()) {
+            query += " AND trp.parent_sloid IN (:psloids)";
+            mapSqlParameterSource.addValue("psloids", trafficPointElementRequestParams.getParentsloids());
+        }
+        if (trafficPointElementRequestParams.getFromDate() != null) {
+            query += " AND trp.valid_from = :validfrom";
+            mapSqlParameterSource.addValue("validfrom", trafficPointElementRequestParams.getFromDate());
+        }
+        if (trafficPointElementRequestParams.getToDate() != null) {
+            query += " AND trp.valid_to = :validto";
+            mapSqlParameterSource.addValue("validto", trafficPointElementRequestParams.getToDate());
+        }
+        if (trafficPointElementRequestParams.getCreatedAfter() != null) {
+            query += " AND trp.creation_date > :createdafter";
+            mapSqlParameterSource.addValue("createdafter", trafficPointElementRequestParams.getCreatedAfter());
+        }
+        if (trafficPointElementRequestParams.getModifiedAfter() != null) {
+            query += " AND trp.edition_date > :modifiedafter";
+            mapSqlParameterSource.addValue("modifiedafter", trafficPointElementRequestParams.getModifiedAfter());
+        }
         return query;
     }
 }
