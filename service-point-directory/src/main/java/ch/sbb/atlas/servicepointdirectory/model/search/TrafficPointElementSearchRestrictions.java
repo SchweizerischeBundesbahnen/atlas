@@ -2,13 +2,13 @@ package ch.sbb.atlas.servicepointdirectory.model.search;
 
 import ch.sbb.atlas.searching.SpecificationBuilder;
 import ch.sbb.atlas.searching.specification.ValidOrEditionTimerangeSpecification;
-import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion.Fields;
 <<<<<<< HEAD
 =======
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion_;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementRequestParams;
+<<<<<<< HEAD
 import jakarta.persistence.criteria.Join;
 >>>>>>> dd12acf5e (ATLAS-1079 added commented out Join SQL)
 import java.time.LocalDate;
@@ -20,6 +20,8 @@ import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion_;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementRequestParams;
 =======
 >>>>>>> dd12acf5e (ATLAS-1079 added commented out Join SQL)
+=======
+>>>>>>> 1b47519d9 (ATLAS-1079: Add missing queries and add tests.)
 import lombok.Getter;
 import lombok.Singular;
 import lombok.ToString;
@@ -60,10 +62,14 @@ public class TrafficPointElementSearchRestrictions {
         .and(specificationBuilder().stringInSpecification(sloidValues, TrafficPointElementVersion_.sloid))
         .and(specificationBuilder().inSpecification(trafficPointElementRequestParams.getServicePointNumbers(), Fields.servicePointNumber))
 <<<<<<< HEAD
+<<<<<<< HEAD
         .and(specificationBuilder().inSpecification(trafficPointElementRequestParams.getServicePointNumbersShort(), Fields.servicePointNumber))
 =======
         .and(specificationBuilder().inSpecification(trafficPointElementRequestParams.getServicePointNumberShort(), Fields.servicePointNumber))
 >>>>>>> dd12acf5e (ATLAS-1079 added commented out Join SQL)
+=======
+        .and(specificationBuilder().inSpecification(trafficPointElementRequestParams.getServicePointNumbersShort(), Fields.servicePointNumber))
+>>>>>>> 1b47519d9 (ATLAS-1079: Add missing queries and add tests.)
         .and(new ValidOrEditionTimerangeSpecification<>(
             trafficPointElementRequestParams.getFromDate(),
             trafficPointElementRequestParams.getToDate(),

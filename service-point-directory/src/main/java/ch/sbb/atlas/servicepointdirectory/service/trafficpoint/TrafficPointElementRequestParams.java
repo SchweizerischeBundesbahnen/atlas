@@ -32,14 +32,17 @@ public class TrafficPointElementRequestParams extends VersionedObjectDateRequest
     @Parameter(description = "")
     @Singular(ignoreNullCollections = true)
     private List<String> parentsloids = new ArrayList<>();
+<<<<<<< HEAD
 
     @Parameter(description = "sboid")
     @Singular(ignoreNullCollections = true)
     private List<String> sboids = new ArrayList<>();
+=======
+>>>>>>> 1b47519d9 (ATLAS-1079: Add missing queries and add tests.)
 
     @Parameter(description = "sboid")
     @Singular(ignoreNullCollections = true)
-    private List<String> businessOrganisations = new ArrayList<>();
+    private List<String> sboids = new ArrayList<>();
 
     @Parameter(description = "List of UIC Country codes. The UIC Country code applies to the country of the service point number")
     @Singular(ignoreNullCollections = true)
@@ -50,22 +53,13 @@ public class TrafficPointElementRequestParams extends VersionedObjectDateRequest
             + " service points.")
     @Singular(value = "numberShort", ignoreNullCollections = true)
     private List<Integer> servicePointNumbersShort = new ArrayList<>();
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1b47519d9 (ATLAS-1079: Add missing queries and add tests.)
 
     public List<ServicePointNumber> getServicePointNumbers() {
         return servicePointNumbers.stream().map(ServicePointNumber::ofNumberWithoutCheckDigit).toList();
     }
-
-    //TODO: Does not work
-//    public List<ServicePointNumber> getServicePointNumberShort() {
-//            return servicePointNumbers.stream().map(servicePointNumber -> servicePointNumber.getNumberShort()).collect(Collectors.toList()).collect(Collectors.toList());
-//    }
-
-    public static boolean isServicePointParameterQueried(TrafficPointElementRequestParams trafficPointElementRequestParams) {
-        return !trafficPointElementRequestParams.getBusinessOrganisations().isEmpty() ||
-                !trafficPointElementRequestParams.getServicePointNumberShort().isEmpty() ||
-                !trafficPointElementRequestParams.getUicCountryCodes().isEmpty();
-    }
-
 
 }
