@@ -1,5 +1,6 @@
 package ch.sbb.exportservice.service;
 
+import ch.sbb.exportservice.model.ExportFileName;
 import ch.sbb.exportservice.model.ExportType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -34,8 +35,8 @@ public class ExportTrafficPointElementJobService extends BaseExportJobService{
     List<ExportType> exportTypes = List.of(ExportType.WORLD_FULL, ExportType.WORLD_ONLY_ACTUAL, ExportType.WORLD_ONLY_TIMETABLE_FUTURE);
 
     for (ExportType exportType : exportTypes) {
-      startExportJob(exportType, exportTrafficPointElementCsvJob);
-      startExportJob(exportType, exportTrafficPointElementJsonJob);
+      startExportJob(exportType, ExportFileName.TRAFFIC_POINT_ELEMENT_VERSION, exportTrafficPointElementCsvJob);
+      startExportJob(exportType, ExportFileName.TRAFFIC_POINT_ELEMENT_VERSION, exportTrafficPointElementJsonJob);
     }
     log.info("CSV and JSON export execution finished!");
   }
