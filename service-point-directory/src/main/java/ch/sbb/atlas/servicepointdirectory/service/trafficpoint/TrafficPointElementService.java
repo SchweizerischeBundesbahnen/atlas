@@ -31,6 +31,7 @@ public class TrafficPointElementService {
     public Page<TrafficPointElementVersion> findAll(TrafficPointElementSearchRestrictions searchRestrictions) {
         return trafficPointElementVersionRepository.findByServicePointParameters(
                 searchRestrictions.getTrafficPointElementRequestParams(), searchRestrictions.getPageable());
+<<<<<<< HEAD
     }
     public Integer findServicePointNumberForSboid(String sboid) {
         return trafficPointElementVersionRepository.forGivenSboidFindSpn(sboid).stream().findFirst().orElseThrow();
@@ -120,6 +121,8 @@ public class TrafficPointElementService {
         } else {
             return trafficPointElementVersionRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
         }
+=======
+>>>>>>> 1b47519d9 (ATLAS-1079: Add missing queries and add tests.)
     }
 
     public List<TrafficPointElementVersion> findBySloidOrderByValidFrom(String sloid) {
