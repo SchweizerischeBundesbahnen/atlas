@@ -104,7 +104,7 @@ public class TrafficPointElementControllerApiTest extends BaseControllerApiTest 
 
   @Test
   void shouldGetTrafficPointElementVersionsBySboid() throws Exception {
-    mvc.perform(get("/v1/traffic-point-elements?businessOrganisations=somesboid")).andExpect(status().isOk())
+    mvc.perform(get("/v1/traffic-point-elements?sboids=somesboid")).andExpect(status().isOk())
             .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
             .andExpect(jsonPath("$.totalCount", is(1)));
   }
@@ -119,14 +119,60 @@ public class TrafficPointElementControllerApiTest extends BaseControllerApiTest 
 
   @Test
   void shouldGetTrafficPointElementVersionsByShortNumber() throws Exception {
-    mvc.perform(get("/v1/traffic-point-elements?servicePointNumberShort=1")).andExpect(status().isOk())
+    mvc.perform(get("/v1/traffic-point-elements?servicePointNumbersShort=1")).andExpect(status().isOk())
             .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
             .andExpect(jsonPath("$.totalCount", is(1)));
   }
 
   @Test
   void shouldGetTrafficPointElementVersionsBySboidAndCountryAndShortNumber() throws Exception {
-    mvc.perform(get("/v1/traffic-point-elements?businessOrganisations=somesboid&uicCountryCodes=14&servicePointNumberShort=1")).andExpect(status().isOk())
+    mvc.perform(get("/v1/traffic-point-elements?sboids=somesboid&uicCountryCodes=14&servicePointNumbersShort=1")).andExpect(status().isOk())
+            .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
+            .andExpect(jsonPath("$.totalCount", is(1)));
+  }
+
+  @Test
+  void shouldGetTrafficPointElementVersionsBySloid() throws Exception {
+    mvc.perform(get("/v1/traffic-point-elements?sloids=ch:1:sloid:1400015:0:310240")).andExpect(status().isOk())
+            .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
+            .andExpect(jsonPath("$.totalCount", is(1)));
+  }
+
+  @Test
+  void shouldGetTrafficPointElementVersionsByParentSloid() throws Exception {
+    mvc.perform(get("/v1/traffic-point-elements?parentsloids=ch:1:sloid:1400015:0")).andExpect(status().isOk())
+            .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
+            .andExpect(jsonPath("$.totalCount", is(1)));
+  }
+
+  @Test
+  void shouldGetTrafficPointElementVersionsByCreatedAfter() throws Exception {
+    LocalDateTime creationTime = trafficPointElementVersion.getCreationDate().minusSeconds(1);
+    mvc.perform(get("/v1/traffic-point-elements?createdAfter=" + creationTime)).andExpect(status().isOk())
+            .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
+            .andExpect(jsonPath("$.totalCount", is(1)));
+  }
+
+  @Test
+  void shouldGetTrafficPointElementVersionsByModifiedAfter() throws Exception {
+    LocalDateTime modificationTime = trafficPointElementVersion.getEditionDate().minusSeconds(1);
+    mvc.perform(get("/v1/traffic-point-elements?modifiedAfter=" + modificationTime)).andExpect(status().isOk())
+            .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
+            .andExpect(jsonPath("$.totalCount", is(1)));
+  }
+
+  @Test
+  void shouldGetTrafficPointElementVersionsByFromDate() throws Exception {
+    LocalDate fromDate = trafficPointElementVersion.getValidFrom();
+    mvc.perform(get("/v1/traffic-point-elements?fromDate=" + fromDate)).andExpect(status().isOk())
+            .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
+            .andExpect(jsonPath("$.totalCount", is(1)));
+  }
+
+  @Test
+  void shouldGetTrafficPointElementVersionsByToDate() throws Exception {
+    LocalDate toDate = trafficPointElementVersion.getValidTo();
+    mvc.perform(get("/v1/traffic-point-elements?toDate=" + toDate)).andExpect(status().isOk())
             .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
             .andExpect(jsonPath("$.totalCount", is(1)));
   }

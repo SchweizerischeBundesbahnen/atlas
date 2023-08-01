@@ -162,8 +162,12 @@ public class TrafficPointElementVersionRepositoryCustomImpl implements TrafficPo
             query += " AND trp.edition_date > :modifiedafter";
             mapSqlParameterSource.addValue("modifiedafter", trafficPointElementRequestParams.getModifiedAfter());
         }
+<<<<<<< HEAD
         return new PageImpl<>(elements, pageable, count);
 
+=======
+        return query;
+>>>>>>> 1b47519d9 (ATLAS-1079: Add missing queries and add tests.)
     }
 
     private Integer getCount(String query, MapSqlParameterSource mapSqlParameterSource) {
