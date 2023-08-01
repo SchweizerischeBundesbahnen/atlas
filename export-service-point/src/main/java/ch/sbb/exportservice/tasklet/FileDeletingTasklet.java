@@ -1,6 +1,7 @@
 package ch.sbb.exportservice.tasklet;
 
 import ch.sbb.exportservice.model.ExportExtensionFileType;
+import ch.sbb.exportservice.model.ExportFileName;
 import ch.sbb.exportservice.model.ExportType;
 import ch.sbb.exportservice.service.FileExportService;
 import lombok.extern.slf4j.Slf4j;
@@ -18,16 +19,18 @@ public abstract class FileDeletingTasklet implements Tasklet {
   @Autowired
   private FileExportService fileExportService;
   private ExportType exportType;
+  private ExportFileName exportFileName;
 
-  public FileDeletingTasklet(ExportType exportType) {
+  public FileDeletingTasklet(ExportType exportType, ExportFileName exportFileName) {
     this.exportType = exportType;
+    this.exportFileName = exportFileName;
   }
 
   protected abstract ExportExtensionFileType getExportFileType();
 
   @Override
   public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) {
-    String fileNamePath = fileExportService.createFileNamePath(getExportFileType(), exportType);
+    String fileNamePath = fileExportService.createFileNamePath(getExportFileType(), exportType, exportFileName);
     log.info("File {} deleting...", fileNamePath);
     Paths.get(fileNamePath).toFile().delete();
     log.info("File {} deleted!", fileNamePath);
