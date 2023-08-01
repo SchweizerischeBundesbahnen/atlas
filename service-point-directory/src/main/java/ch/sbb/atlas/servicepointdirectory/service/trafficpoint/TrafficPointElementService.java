@@ -28,12 +28,8 @@ public class TrafficPointElementService {
     private final TrafficPointElementValidationService trafficPointElementValidationService;
 
     public Page<TrafficPointElementVersion> findAll(TrafficPointElementSearchRestrictions searchRestrictions) {
-        if (TrafficPointElementRequestParams.isServicePointParameterQueried(searchRestrictions.getTrafficPointElementRequestParams())) {
-            return trafficPointElementVersionRepository.findByServicePointParameters(
-                    searchRestrictions.getTrafficPointElementRequestParams(), searchRestrictions.getPageable());
-        } else {
-            return trafficPointElementVersionRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
-        }
+        return trafficPointElementVersionRepository.findByServicePointParameters(
+                searchRestrictions.getTrafficPointElementRequestParams(), searchRestrictions.getPageable());
     }
 
     public List<TrafficPointElementVersion> findBySloidOrderByValidFrom(String sloid) {
