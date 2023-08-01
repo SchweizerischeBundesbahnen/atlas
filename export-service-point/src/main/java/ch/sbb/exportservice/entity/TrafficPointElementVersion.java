@@ -40,6 +40,8 @@ public class TrafficPointElementVersion extends BaseEntity {
 
   private String parentSloid;
 
+  private String parentSloidServicePoint;
+
   private String servicePointDesignationOfficial;
 
   private TrafficPointElementGeolocation trafficPointElementGeolocation;
