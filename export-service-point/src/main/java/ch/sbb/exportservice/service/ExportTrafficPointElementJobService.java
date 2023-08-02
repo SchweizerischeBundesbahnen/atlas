@@ -7,8 +7,6 @@ import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRAFFIC_POINT_ELEMENT_CSV_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRAFFIC_POINT_ELEMENT_JSON_JOB_NAME;
 
@@ -30,9 +28,7 @@ public class ExportTrafficPointElementJobService extends BaseExportJobService{
 
   public void startExportJobs() {
     log.info("Starting export CSV and JSON execution...");
-    List<ExportType> exportTypes = List.of(ExportType.WORLD_FULL, ExportType.WORLD_ONLY_ACTUAL, ExportType.WORLD_ONLY_TIMETABLE_FUTURE);
-
-    for (ExportType exportType : exportTypes) {
+    for (ExportType exportType : ExportType.getWorldOnly()) {
       startExportJob(exportType, exportTrafficPointElementCsvJob);
       startExportJob(exportType, exportTrafficPointElementJsonJob);
     }

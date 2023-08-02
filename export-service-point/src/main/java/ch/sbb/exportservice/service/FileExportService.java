@@ -66,7 +66,7 @@ public class FileExportService {
   }
 
   private String getJsonFileToDownload(ExportType exportType, ExportFileName exportFileName) {
-    return S3_BUCKER_SERVICE_POINT_EXPORT_DIR
+    return exportFileName.getBaseDir()
         + "/"
         + exportType.getDir()
         + "/"
