@@ -12,14 +12,20 @@ import { NON_PROD_STAGES, Stages } from '../../constants/stages';
 })
 export class HeaderComponent {
   version: string = environment.appVersion;
+  showLabel = true;
   environmentLabel: string = environment.label;
   headerTitle$: Observable<string>;
+
+  isItWednesday = false;
 
   constructor(private readonly router: Router) {
     this.headerTitle$ = router.events.pipe(
       filter((e) => e instanceof NavigationEnd),
       map(() => this.getHeaderTitleForCurrentRoute(router.routerState.snapshot.root))
     );
+
+    this.isItWednesday = new Date().getDay() === 3;
+    this.showLabel = NON_PROD_STAGES.includes(this.environmentLabel);
   }
 
   private getHeaderTitleForCurrentRoute(node: ActivatedRouteSnapshot): string {
@@ -27,10 +33,6 @@ export class HeaderComponent {
       return node.data.headerTitle;
     }
     return this.getHeaderTitleForCurrentRoute(node.firstChild);
-  }
-
-  showLabel() {
-    return NON_PROD_STAGES.includes(this.environmentLabel);
   }
 
   getEnvLabelClass() {
@@ -42,9 +44,5 @@ export class HeaderComponent {
       'bg-secondary': this.environmentLabel === Stages.TEST,
       'bg-warning': this.environmentLabel === Stages.INT,
     };
-  }
-
-  isItWednesday() {
-    return new Date().getDay() === 3;
   }
 }
