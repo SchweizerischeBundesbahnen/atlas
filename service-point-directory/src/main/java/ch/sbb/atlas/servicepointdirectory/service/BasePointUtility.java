@@ -5,10 +5,11 @@ import ch.sbb.atlas.versioning.model.Property;
 import ch.sbb.atlas.versioning.model.Versionable;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.model.VersioningAction;
+import lombok.experimental.UtilityClass;
+
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class BasePointUtility {
@@ -29,6 +30,12 @@ public class BasePointUtility {
               // match edited version between dbVersion
               if (edited.getValidFrom().isAfter(dbVersion.getValidFrom()) && edited.getValidTo().isBefore(dbVersion.getValidTo())) {
                 return true;
+              }
+              if(edited.getValidFrom().isAfter(dbVersion.getValidFrom()) && edited.getValidFrom().isBefore(dbVersion.getValidTo())){
+                  return true;
+              }
+              if(edited.getValidTo().isAfter(dbVersion.getValidFrom()) && edited.getValidTo().isBefore(dbVersion.getValidTo())){
+                  return true;
               }
               // match 1 or more dbVersion/s between edited version
               return dbVersion.getValidFrom().isAfter(edited.getValidFrom()) && dbVersion.getValidTo()
