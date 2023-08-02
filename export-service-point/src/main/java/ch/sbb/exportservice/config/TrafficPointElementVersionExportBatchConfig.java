@@ -74,15 +74,15 @@ public class TrafficPointElementVersionExportBatchConfig {
   @Bean
   @StepScope
   public JsonFileItemWriter<ReadTrafficPointElementVersionModel> trafficPointElementJsonFileItemWriter(
-      @Value("#{jobParameters[exportType]}") ExportType exportType,@Value("#{jobParameters[exportFileName]}") ExportFileName exportFileName) {
-    return jsonServicePointVersionWriter.getWriter(exportType,exportFileName);
+      @Value("#{jobParameters[exportType]}") ExportType exportType) {
+    return jsonServicePointVersionWriter.getWriter(exportType,ExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
   }
 
   @Bean
   @StepScope
   public FlatFileItemWriter<TrafficPointVersionCsvModel> trafficPointElementCsvWriter(
-      @Value("#{jobParameters[exportType]}") ExportType exportType, @Value("#{jobParameters[exportFileName]}") ExportFileName exportFileName) {
-    return csvTrafficPointElementVersionWriter.csvWriter(exportType,exportFileName);
+      @Value("#{jobParameters[exportType]}") ExportType exportType) {
+    return csvTrafficPointElementVersionWriter.csvWriter(exportType,ExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
   }
 
   @Bean
@@ -102,7 +102,7 @@ public class TrafficPointElementVersionExportBatchConfig {
         .<TrafficPointElementVersion, TrafficPointVersionCsvModel>chunk(CHUNK_SIZE, transactionManager)
         .reader(itemReader)
         .processor(trafficPointElementVersionCsvProcessor())
-        .writer(trafficPointElementCsvWriter(null, null))
+        .writer(trafficPointElementCsvWriter(null))
         .faultTolerant()
         .backOffPolicy(StepUtils.getBackOffPolicy(stepName))
         .retryPolicy(StepUtils.getRetryPolicy(stepName))
@@ -117,7 +117,7 @@ public class TrafficPointElementVersionExportBatchConfig {
         .<TrafficPointElementVersion, ReadTrafficPointElementVersionModel>chunk(CHUNK_SIZE, transactionManager)
         .reader(itemReader)
         .processor(trafficPointElementVersionJsonProcessor())
-        .writer(trafficPointElementJsonFileItemWriter(null,null))
+        .writer(trafficPointElementJsonFileItemWriter(null))
         .faultTolerant()
         .backOffPolicy(StepUtils.getBackOffPolicy(stepName))
         .retryPolicy(StepUtils.getRetryPolicy(stepName))
@@ -153,34 +153,34 @@ public class TrafficPointElementVersionExportBatchConfig {
 
   @Bean
   @StepScope
-  public UploadCsvFileTasklet uploadTrafficPointElementCsvFileTasklet(@Value("#{jobParameters[exportType]}") ExportType exportType,@Value("#{jobParameters[exportFileName]}") ExportFileName exportFileName) {
-    return new UploadCsvFileTasklet(exportType,exportFileName);
+  public UploadCsvFileTasklet uploadTrafficPointElementCsvFileTasklet(@Value("#{jobParameters[exportType]}") ExportType exportType) {
+    return new UploadCsvFileTasklet(exportType,ExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
   }
 
   @Bean
   @StepScope
-  public UploadJsonFileTasklet uploadTrafficPointElementJsonFileTasklet(@Value("#{jobParameters[exportType]}") ExportType exportType, @Value("#{jobParameters[exportFileName]}") ExportFileName exportFileName) {
-    return new UploadJsonFileTasklet(exportType,exportFileName);
+  public UploadJsonFileTasklet uploadTrafficPointElementJsonFileTasklet(@Value("#{jobParameters[exportType]}") ExportType exportType) {
+    return new UploadJsonFileTasklet(exportType,ExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
   }
 
   @Bean
   @StepScope
   public FileJsonDeletingTasklet fileTrafficPointElementJsonDeletingTasklet(
-      @Value("#{jobParameters[exportType]}") ExportType exportType, @Value("#{jobParameters[exportFileName]}") ExportFileName exportFileName) {
-    return new FileJsonDeletingTasklet(exportType, exportFileName);
+      @Value("#{jobParameters[exportType]}") ExportType exportType) {
+    return new FileJsonDeletingTasklet(exportType, ExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
   }
 
   @Bean
   @StepScope
   @Qualifier("fileTrafficPointElementCsvDeletingTasklet")
-  public FileCsvDeletingTasklet fileTrafficPointElementCsvDeletingTasklet(@Value("#{jobParameters[exportType]}") ExportType exportType, @Value("#{jobParameters[exportFileName]}") ExportFileName exportFileName) {
-    return new FileCsvDeletingTasklet(exportType, exportFileName);
+  public FileCsvDeletingTasklet fileTrafficPointElementCsvDeletingTasklet(@Value("#{jobParameters[exportType]}") ExportType exportType) {
+    return new FileCsvDeletingTasklet(exportType, ExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
   }
 
   @Bean
   public Step uploadTrafficPointElementCsvFileStep() {
     return new StepBuilder("uploadCsvFile", jobRepository)
-        .tasklet(uploadTrafficPointElementCsvFileTasklet(null,null), transactionManager)
+        .tasklet(uploadTrafficPointElementCsvFileTasklet(null), transactionManager)
         .listener(stepTracerListener)
         .build();
   }
@@ -188,7 +188,7 @@ public class TrafficPointElementVersionExportBatchConfig {
   @Bean
   public Step uploadTrafficPointElementJsonFileStep() {
     return new StepBuilder("uploadJsonFile", jobRepository)
-        .tasklet(uploadTrafficPointElementJsonFileTasklet(null,null), transactionManager)
+        .tasklet(uploadTrafficPointElementJsonFileTasklet(null), transactionManager)
         .listener(stepTracerListener)
         .build();
   }
@@ -196,7 +196,7 @@ public class TrafficPointElementVersionExportBatchConfig {
   @Bean
   public Step deleteTrafficPointElementCsvFileStep() {
     return new StepBuilder("deleteCsvFiles", jobRepository)
-        .tasklet(fileTrafficPointElementCsvDeletingTasklet(null, null), transactionManager)
+        .tasklet(fileTrafficPointElementCsvDeletingTasklet(null), transactionManager)
         .listener(stepTracerListener)
         .build();
   }
@@ -204,7 +204,7 @@ public class TrafficPointElementVersionExportBatchConfig {
   @Bean
   public Step deleteTrafficPointElementJsonFileStep() {
     return new StepBuilder("deleteJsonFiles", jobRepository)
-        .tasklet(fileTrafficPointElementJsonDeletingTasklet(null,null), transactionManager)
+        .tasklet(fileTrafficPointElementJsonDeletingTasklet(null), transactionManager)
         .listener(stepTracerListener)
         .build();
   }
