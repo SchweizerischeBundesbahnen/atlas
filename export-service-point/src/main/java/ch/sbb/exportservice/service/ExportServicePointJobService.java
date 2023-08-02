@@ -1,6 +1,5 @@
 package ch.sbb.exportservice.service;
 
-import ch.sbb.exportservice.model.ExportFileName;
 import ch.sbb.exportservice.model.ExportType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -30,8 +29,8 @@ public class ExportServicePointJobService extends BaseExportJobService{
   public void startExportJobs() {
     log.info("Starting export CSV and JSON execution...");
     for (ExportType exportType : ExportType.values()) {
-      startExportJob(exportType, ExportFileName.SERVICE_POINT_VERSION, exportServicePointCsvJob);
-      startExportJob(exportType, ExportFileName.SERVICE_POINT_VERSION, exportServicePointJsonJob);
+      startExportJob(exportType, exportServicePointCsvJob);
+      startExportJob(exportType, exportServicePointJsonJob);
     }
     log.info("CSV and JSON export execution finished!");
   }
