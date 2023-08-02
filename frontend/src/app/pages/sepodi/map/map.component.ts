@@ -3,21 +3,13 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  Input,
   OnDestroy,
   Output,
   ViewChild,
 } from '@angular/core';
-import { Map, MapMouseEvent, Popup, ResourceType } from 'maplibre-gl';
-import { MapOptionsService, SWISS_TOPO_BOUNDING_BOX } from './map-options.service';
-import { MAP_SOURCE_NAME, MAP_STYLE_SPEC, MAP_ZOOM_DETAILS } from './map-style';
+import { Map } from 'maplibre-gl';
 import { GeoJsonProperties } from 'geojson';
-
-export interface MouseInfo {
-  lng: number;
-  lat: number;
-  zoom: number;
-}
+import { MapService } from './map.service';
 
 @Component({
   selector: 'atlas-map',
@@ -25,63 +17,15 @@ export interface MouseInfo {
   styleUrls: ['./map.component.scss'],
 })
 export class MapComponent implements AfterViewInit, OnDestroy {
-  @Output() elementClicked = new EventEmitter<GeoJsonProperties>();
-
   map!: Map;
-  mouseInfo!: MouseInfo;
 
   @ViewChild('map')
   private mapContainer!: ElementRef<HTMLElement>;
 
-  constructor(private mapOptionsService: MapOptionsService) {}
+  constructor(private mapService: MapService) {}
 
   ngAfterViewInit() {
-    this.map = new Map({
-      container: this.mapContainer.nativeElement,
-      style: MAP_STYLE_SPEC,
-      bounds: this.mapOptionsService.getInitialBoundingBox(),
-      maxBounds: SWISS_TOPO_BOUNDING_BOX,
-      minZoom: 7,
-      transformRequest: (url: string, resourceType?: ResourceType) =>
-        this.mapOptionsService.authoriseRequest(url, resourceType),
-    });
-    this.initMapEvents();
-    this.map.resize();
-  }
-
-  private initMapEvents() {
-    this.map.once('style.load', () => {
-      this.map.on('mousemove', (e) => this.onMouseOver(e));
-
-      this.map.on('click', MAP_SOURCE_NAME, (e) => this.onClick(e));
-      this.map.on('mouseenter', MAP_SOURCE_NAME, () => {
-        if (this.showDetails()) {
-          this.map.getCanvas().style.cursor = 'pointer';
-        }
-      });
-      this.map.on('mouseleave', MAP_SOURCE_NAME, () => {
-        this.map.getCanvas().style.cursor = '';
-      });
-    });
-  }
-
-  private showDetails(): boolean {
-    return this.map.getZoom() >= MAP_ZOOM_DETAILS;
-  }
-
-  private onMouseOver(event: MapMouseEvent) {
-    this.mouseInfo = {
-      lng: event.lngLat.lng,
-      lat: event.lngLat.lat,
-      zoom: this.map.getZoom(),
-    };
-  }
-
-  private onClick(e: MapMouseEvent & { features?: GeoJSON.Feature[] }) {
-    if (!this.showDetails() || !e.features) {
-      return;
-    }
-    this.elementClicked.emit(e.features[0].properties);
+    this.map = this.mapService.initMap(this.mapContainer.nativeElement);
   }
 
   ngOnDestroy() {
