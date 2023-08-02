@@ -62,7 +62,7 @@ public class ExportServicePointBatchControllerApiV1 {
     return ResponseEntity.ok().headers(headers).body(body);
   }
 
-  @PostMapping("batch")
+  @PostMapping("service-point-batch")
   @ResponseStatus(HttpStatus.OK)
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200"),
