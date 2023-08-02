@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 import java.io.InputStream;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -42,7 +43,7 @@ public class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseC
       doReturn(streamingResponseBody).when(fileExportService).streamingJsonFile(ExportType.WORLD_FULL, ExportFileName.SERVICE_POINT_VERSION);
 
       //when & then
-      mvc.perform(get("/v1/export/json/world-full")
+      mvc.perform(get("/v1/export/json/service-point-version/world-full")
               .contentType(contentType))
           .andExpect(status().isOk())
           .andExpect(jsonPath("$", hasSize(3)));
@@ -56,7 +57,7 @@ public class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseC
     doThrow(FileNotFoundException.class).when(fileExportService).streamingJsonFile(ExportType.WORLD_FULL, ExportFileName.SERVICE_POINT_VERSION);
 
     //when & then
-    mvc.perform(get("/v1/export/json/world-full")
+    mvc.perform(get("/v1/export/json/service-point-version/world-full")
             .contentType(contentType))
         .andExpect(status().isNotFound());
   }
@@ -70,7 +71,7 @@ public class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseC
       doReturn(streamingResponseBody).when(fileExportService).streamingGzipFile(ExportType.WORLD_FULL, ExportFileName.SERVICE_POINT_VERSION);
       doReturn("service-point").when(fileExportService).getBaseFileName(ExportType.WORLD_FULL, ExportFileName.SERVICE_POINT_VERSION);
       //when & then
-      mvc.perform(get("/v1/export/download-gzip-json/world-full")
+      mvc.perform(get("/v1/export/download-gzip-json/service-point-version/world-full")
               .contentType(contentType))
           .andExpect(status().isOk())
           .andExpect(content().contentType("application/gzip"));
@@ -84,18 +85,42 @@ public class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseC
     doThrow(FileNotFoundException.class).when(fileExportService).streamingGzipFile(ExportType.WORLD_FULL,ExportFileName.SERVICE_POINT_VERSION);
 
     //when & then
-    mvc.perform(get("/v1/export/download-gzip-json/world-full")
+    mvc.perform(get("/v1/export/download-gzip-json/service-point-version/world-full")
             .contentType(contentType))
         .andExpect(status().isNotFound());
   }
-
   @Test
   @Order(5)
+  public void shouldNotDownloadJsonWhenExportTypeIsNotAllowedForTheExportFile() throws Exception {
+    //given
+    doThrow(FileNotFoundException.class).when(fileExportService).streamingGzipFile(ExportType.WORLD_FULL,ExportFileName.SERVICE_POINT_VERSION);
+
+    //when & then
+    mvc.perform(get("/v1/export/download-gzip-json/traffic-point-element-version/swiss-only-full")
+            .contentType(contentType))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.status", is(400)))
+        .andExpect(jsonPath("$.message", is("Download file [TRAFFIC_POINT_ELEMENT_VERSION] with export type [SWISS_ONLY_FULL] not allowed!")))
+        .andExpect(jsonPath("$.error", is("To download the file [TRAFFIC_POINT_ELEMENT_VERSION] are only allowed the following export types: [WORLD_FULL, WORLD_ONLY_ACTUAL, WORLD_ONLY_TIMETABLE_FUTURE]")));
+  }
+
+  @Test
+  @Order(6)
   public void shouldPostServicePointExportBatchSuccessfully() throws Exception {
     //given
     doNothing().when(mailProducerService).produceMailNotification(any());
     //when & then
-    mvc.perform(post("/v1/export/batch")
+    mvc.perform(post("/v1/export/service-point-batch")
+            .contentType(contentType))
+        .andExpect(status().isOk());
+  }
+  @Test
+  @Order(7)
+  public void shouldPostTrafficPointExportBatchSuccessfully() throws Exception {
+    //given
+    doNothing().when(mailProducerService).produceMailNotification(any());
+    //when & then
+    mvc.perform(post("/v1/export/traffic-point-batch")
             .contentType(contentType))
         .andExpect(status().isOk());
   }
