@@ -18,9 +18,9 @@ public class TrafficPointElementVersionSqlQueryUtil {
       FROM traffic_point_element_version as tpev
          LEFT JOIN traffic_point_element_version_geolocation tpevg ON tpevg.id = tpev.traffic_point_geolocation_id
          LEFT JOIN service_point_version spv ON spv.number = tpev.service_point_number
-              AND (CASE WHEN current_date between spv.valid_from and spv.valid_to THEN 0 ELSE 1 END = 0)
+              AND (CASE WHEN '%s' between spv.valid_from and spv.valid_to THEN 0 ELSE 1 END = 0)
          LEFT JOIN shared_business_organisation_version sbov ON spv.business_organisation = sbov.sboid
-              AND (CASE WHEN current_date between sbov.valid_from and sbov.valid_to THEN 0 ELSE 1 END = 0)
+              AND (CASE WHEN '%s' between sbov.valid_from and sbov.valid_to THEN 0 ELSE 1 END = 0)
       """;
   private static final String GROUP_BY_STATEMENT = "group by spv.id, tpev.id, sbov.id, tpevg.id";
 
@@ -29,8 +29,9 @@ public class TrafficPointElementVersionSqlQueryUtil {
 
   public String getSqlQuery(ExportType exportType) {
     log.info("ExportType: {}", exportType);
+    String fromStatementQuery = getFromStatementQuery(exportType);
     StringBuilder sqlQueryBuilder = new StringBuilder();
-    sqlQueryBuilder.append(SELECT_AND_JOIN_STATEMENT);
+    sqlQueryBuilder.append(fromStatementQuery);
     if (getSqlWhereClause(exportType) != null) {
       sqlQueryBuilder.append(getSqlWhereClause(exportType));
     }
@@ -50,6 +51,17 @@ public class TrafficPointElementVersionSqlQueryUtil {
     }
     if(exportType.equals(ExportType.WORLD_FULL)){
       return "";
+    }
+    throw  new IllegalStateException("ExportType " + exportType + " not allowed!");
+  }
+
+  private String getFromStatementQuery(ExportType exportType) {
+    LocalDate nextTimetableYearStartDate = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
+    if(exportType.equals(ExportType.WORLD_ONLY_ACTUAL) || exportType.equals(ExportType.WORLD_FULL)){
+      return String.format(SELECT_AND_JOIN_STATEMENT, getDateAsSqlString(LocalDate.now()), getDateAsSqlString(LocalDate.now()));
+    }
+    if(exportType.equals(ExportType.WORLD_ONLY_TIMETABLE_FUTURE)){
+      return String.format(SELECT_AND_JOIN_STATEMENT, getDateAsSqlString(nextTimetableYearStartDate),getDateAsSqlString(nextTimetableYearStartDate));
     }
     throw  new IllegalStateException("ExportType " + exportType + " not allowed!");
   }
