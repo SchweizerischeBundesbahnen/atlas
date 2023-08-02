@@ -9,6 +9,7 @@ import { SideNavComponent } from './core/components/side-nav/side-nav.component'
 import { LoadingSpinnerComponent } from './core/components/loading-spinner/loading-spinner.component';
 import { AppTestingModule } from './app.testing.module';
 import { SwUpdate } from '@angular/service-worker';
+import { MaintenanceIconComponent } from './core/components/header/maintenance-icon/maintenance-icon.component';
 
 const authServiceMock: Partial<AuthService> = {
   claims: { name: 'Test', email: 'test@test.ch', sbbuid: 'e123456', roles: [] },
@@ -26,6 +27,7 @@ describe('AppComponent', () => {
       declarations: [
         AppComponent,
         HeaderComponent,
+        MaintenanceIconComponent,
         UserComponent,
         LanguageSwitcherComponent,
         SideNavComponent,

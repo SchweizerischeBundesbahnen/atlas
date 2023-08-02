@@ -5,6 +5,7 @@ import { AuthService } from '../../auth/auth.service';
 import { UserComponent } from '../user/user.component';
 import { LanguageSwitcherComponent } from '../language-switcher/language-switcher.component';
 import { AppTestingModule } from '../../../app.testing.module';
+import { MaintenanceIconComponent } from './maintenance-icon/maintenance-icon.component';
 
 describe('HeaderComponent', () => {
   const authServiceMock: Partial<AuthService> = {
@@ -18,7 +19,12 @@ describe('HeaderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [HeaderComponent, UserComponent, LanguageSwitcherComponent],
+      declarations: [
+        HeaderComponent,
+        UserComponent,
+        LanguageSwitcherComponent,
+        MaintenanceIconComponent,
+      ],
       imports: [AppTestingModule],
       providers: [{ provide: AuthService, useValue: authServiceMock }],
     }).compileComponents();
@@ -41,7 +47,7 @@ describe('HeaderComponent', () => {
       //given
       component.environmentLabel = 'dev';
       //when
-      const result = component.showLabel();
+      const result = component.showLabel;
       //then
       expect(result).toBeTruthy();
     });
@@ -50,7 +56,7 @@ describe('HeaderComponent', () => {
       //given
       component.environmentLabel = 'int';
       //when
-      const result = component.showLabel();
+      const result = component.showLabel;
       //then
       expect(result).toBeTruthy();
     });
@@ -58,8 +64,9 @@ describe('HeaderComponent', () => {
     it('should not show label different from dev, test or int', () => {
       //given
       component.environmentLabel = 'pro';
+      component.ngOnInit();
       //when
-      const result = component.showLabel();
+      const result = component.showLabel;
       //then
       expect(result).toBeFalsy();
     });
