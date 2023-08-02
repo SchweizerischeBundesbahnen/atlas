@@ -19,7 +19,6 @@ import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TYPE_JOB
 @AllArgsConstructor
 public abstract class BaseExportJobService {
 
-
   protected final JobLauncher jobLauncher;
 
   protected void startExportJob(ExportType exportType, Job job) {
