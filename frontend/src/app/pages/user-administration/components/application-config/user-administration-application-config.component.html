@@ -54,6 +54,7 @@
           [records]="boListener$ | async"
           [selectedIndex]="selectedIndex"
           [tableColumns]="tableColumnDef"
+          [relationEditable]="false"
         >
           <div *ngIf="!readOnly" class="mb-3 bo-select-wrapper" table-button-between>
             <bo-select
