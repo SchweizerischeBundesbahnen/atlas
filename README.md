@@ -144,6 +144,7 @@ Stop infrastructure container and remove volume (deletes persistent content):
 docker-compose down -v 
 ~~~
 
+
 ### Monorepo
 
 ATLAS has a Monorepo project structure. The CI/CD is executed on each module. For each push event on
