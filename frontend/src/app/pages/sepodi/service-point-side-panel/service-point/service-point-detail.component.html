@@ -54,8 +54,16 @@
     </atlas-text-field>
   </div>
 </div>
+<div class="col-12 d-flex mt-2 flex-column">
+  <div class="font-bold-lg color-gray-900">
+    {{ 'SEPODI.SERVICE_POINTS.ABBREVIATION' | translate }}
+  </div>
+  <div class="color-gray-900">
+    {{ selectedVersion.abbreviation ?? '-' }}
+  </div>
+</div>
 
-<div class="font-bold-2xl mt-4">{{ 'FORM.KEY_DATA' | translate }}</div>
+<div class="font-bold-2xl mt-5">{{ 'FORM.KEY_DATA' | translate }}</div>
 <div class="col-12 d-flex">
   <div class="col-6 d-flex pb-3">
     <form-date-range [formGroup]="form"></form-date-range>
@@ -71,12 +79,12 @@
   </div>
 </div>
 
-<div class="col-12 d-flex mt-4">
-  <mat-label class="font-bold-xl required-indicator">{{
+<div class="col-12 d-flex mt-5">
+  <mat-label class="font-bold-2xl required-indicator">{{
     'SEPODI.SERVICE_POINTS.TYPE' | translate
   }}</mat-label>
 </div>
-<div class="col-12 d-flex">
+<div class="col-12 d-flex mt-2">
   <mat-radio-group [(ngModel)]="selectedType" [disabled]="form.disabled">
     <mat-radio-button *ngFor="let option of types" [value]="option">
       {{ 'SEPODI.SERVICE_POINTS.TYPES.' + option | translate }}
@@ -100,8 +108,8 @@
 </div>
 
 <div *ngIf="selectedType === 'STOP_POINT'" class="d-flex mt-2 d-flex flex-column">
-  <div class="font-bold-xl d-flex col-12">{{ 'PAGES.DETAILS' | translate }}</div>
-  <div class="d-flex col-12">
+  <div class="font-bold-lg d-flex col-12">{{ 'PAGES.DETAILS' | translate }}</div>
+  <div class="d-flex col-12 mt-2">
     <mat-checkbox [disabled]="form.disabled" [(ngModel)]="stopPoint" data-cy="stopPoint">
       {{ 'SEPODI.SERVICE_POINTS.STOP_POINT' | translate }}
     </mat-checkbox>
@@ -140,7 +148,7 @@
       {{ 'SEPODI.SERVICE_POINTS.FREIGHT_SERVICE_POINT' | translate }}
     </mat-checkbox>
   </div>
-  <div class="d-flex col-12" *ngIf="freightServicePoint">
+  <div class="d-flex col-12 mt-2" *ngIf="freightServicePoint">
     <atlas-text-field
       [fieldExamples]="[
         { label: 'FORM.FOR_EXAMPLE', translate: true },
@@ -156,16 +164,7 @@
   </div>
 </div>
 
-<div class="col-12 d-flex mt-4 flex-column">
-  <div class="font-bold-lg color-gray-900">
-    {{ 'SEPODI.SERVICE_POINTS.ABBREVIATION' | translate }}
-  </div>
-  <div class="color-gray-900">
-    {{ selectedVersion.abbreviation ?? '-' }}
-  </div>
-</div>
-
-<div class="font-bold-2xl mt-4">
+<div class="font-bold-2xl mt-5">
   {{ 'SEPODI.GEOLOCATION.GEOGRAPHY' | translate }}
   <atlas-slide-toggle
     [(toggle)]="selectedVersion.hasGeolocation!"
@@ -178,9 +177,9 @@
   [formGroup]="form.controls.geolocation"
 ></sepodi-geography>
 <div *ngIf="selectedVersion.hasGeolocation && selectedVersion.number.uicCountryCode === 85">
-  <div class="font-bold-2xl mt-4">{{ 'SEPODI.GEOLOCATION.ADMINISTRATION' | translate }}</div>
+  <div class="font-bold-2xl mt-5">{{ 'SEPODI.GEOLOCATION.ADMINISTRATION' | translate }}</div>
 
-  <div class="d-flex flex-row">
+  <div class="d-flex flex-row mt-2">
     <div class="col-3 pe-3 flex-column">
       <div class="font-bold-lg color-gray-900">
         {{ 'SEPODI.GEOLOCATION.COUNTRY' | translate }}
@@ -222,7 +221,7 @@
 </div>
 
 <div class="d-flex flex-column col-12">
-  <div class="font-bold-2xl mt-4">
+  <div class="font-bold-2xl mt-5 mb-2">
     {{ 'SEPODI.SERVICE_POINTS.CATEGORIES' | translate }}
   </div>
   <atlas-select
@@ -235,4 +234,16 @@
     [multiple]="true"
   >
   </atlas-select>
+</div>
+
+<div class="font-bold-2xl mt-5 d-flex col-12">
+  {{ 'SEPODI.SERVICE_POINTS.ROUTE_NETWORK_DATA' | translate }}
+</div>
+<div class="d-flex col-12" [formGroup]="form">
+  <mat-checkbox formControlName="operatingPointRouteNetwork" data-cy="operatingPointRouteNetwork">
+    {{ 'SEPODI.SERVICE_POINTS.ROUTE_NETWORK' | translate }}
+  </mat-checkbox>
+  <mat-checkbox formControlName="operatingPointKilometer" data-cy="operatingPointKilometer">
+    {{ 'SEPODI.SERVICE_POINTS.OPERATING_POINT_KILOMETER' | translate }}
+  </mat-checkbox>
 </div>
