@@ -44,6 +44,13 @@ export class ServicePointSidePanelComponent implements OnInit {
   ngOnInit() {
     this.servicePointVersions = this.route.snapshot.data.servicePoint;
 
+    this.route.data.subscribe((next) => {
+      this.servicePointVersions = next.servicePoint;
+      this.initVersioning();
+    });
+  }
+
+  private initVersioning() {
     this.maxValidity = VersionsHandlingService.getMaxValidity(this.servicePointVersions);
     this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(
       this.servicePointVersions
