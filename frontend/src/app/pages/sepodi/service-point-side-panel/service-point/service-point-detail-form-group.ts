@@ -26,6 +26,9 @@ export interface ServicePointDetailFormGroup extends BaseDetailFormGroup {
   stopPointType: FormControl<StopPointType | null | undefined>;
   meansOfTransport: FormControl<Array<MeanOfTransport> | null | undefined>;
   categories: FormControl<Array<Category> | null | undefined>;
+  operatingPointRouteNetwork: FormControl<boolean | null | undefined>;
+  operatingPointKilometer: FormControl<boolean | null | undefined>;
+  operatingPointKilometerMaster: FormControl<number | null | undefined>;
   etagVersion: FormControl<number | null | undefined>;
   geolocation: FormGroup<GeographyFormGroup>;
 }
@@ -69,6 +72,11 @@ export class ServicePointFormGroupBuilder {
           height: new FormControl(version.servicePointGeolocation?.height),
           spatialReference: new FormControl(version.servicePointGeolocation?.spatialReference),
         }),
+        operatingPointRouteNetwork: new FormControl(version.operatingPointRouteNetwork),
+        operatingPointKilometer: new FormControl(version.operatingPointKilometer),
+        operatingPointKilometerMaster: new FormControl(
+          version.operatingPointKilometerMaster?.number
+        ),
       },
       [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
     );
