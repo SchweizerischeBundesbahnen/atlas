@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint.util;
 
+import lombok.experimental.UtilityClass;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
@@ -9,6 +10,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+@UtilityClass
 public class BeanCopyUtil {
     /**
      * Copies properties from one object to another
@@ -34,7 +36,9 @@ public class BeanCopyUtil {
         for(PropertyDescriptor pd : pds) {
             //check if value of this property is null then add it to the collection
             Object srcValue = src.getPropertyValue(pd.getName());
-            if (srcValue == null) emptyNames.add(pd.getName());
+            if (srcValue == null) {
+                emptyNames.add(pd.getName());
+            }
         }
         return emptyNames;
     }
