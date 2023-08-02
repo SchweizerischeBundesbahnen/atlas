@@ -1,15 +1,11 @@
 package ch.sbb.atlas.servicepointdirectory.migration;
 
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.FieldNameConstants;
 
 @Data
@@ -136,5 +132,7 @@ public class ServicePointVersionCsvModel {
   private String creationDate;
 
   private String editionDate;
+
+  private Status status;
 
 }
