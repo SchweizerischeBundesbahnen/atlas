@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
 import { filter, map } from 'rxjs/operators';
@@ -10,7 +10,7 @@ import { NON_PROD_STAGES, Stages } from '../../constants/stages';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   version: string = environment.appVersion;
   showLabel = true;
   environmentLabel: string = environment.label;
@@ -23,7 +23,9 @@ export class HeaderComponent {
       filter((e) => e instanceof NavigationEnd),
       map(() => this.getHeaderTitleForCurrentRoute(router.routerState.snapshot.root))
     );
+  }
 
+  ngOnInit() {
     this.isItWednesday = new Date().getDay() === 3;
     this.showLabel = NON_PROD_STAGES.includes(this.environmentLabel);
   }
