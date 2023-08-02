@@ -43,6 +43,8 @@ import { FormatPipe } from '../components/table/pipe/format.pipe';
 import { InstanceOfPipe } from '../components/table-filter/instance-of.pipe';
 import { BackButtonDirective } from '../components/button/back-button/back-button.directive';
 import { WorkflowDialogComponent } from '../workflow/dialog/workflow-dialog.component';
+import { ScrollToTopDirective } from '../scroll-to-top/scroll-to-top.directive';
+import { MaintenanceIconComponent } from '../components/header/maintenance-icon/maintenance-icon.component';
 
 const coreComponents = [
   WorkflowFormComponent,
@@ -77,6 +79,8 @@ const coreComponents = [
   RelationComponent,
   DisplayDatePipe,
   SelectComponent,
+  ScrollToTopDirective,
+  MaintenanceIconComponent,
 ];
 
 @NgModule({

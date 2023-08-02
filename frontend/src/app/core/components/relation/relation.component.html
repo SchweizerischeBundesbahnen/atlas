@@ -53,6 +53,7 @@
     {{ addBtnNameTranslationKey | translate }}
   </button>
   <button
+    *ngIf="relationEditable"
     (click)="editRelation()"
     [disabled]="editMode || selectedIndex === -1"
     class="atlas-primary-btn me-2"
