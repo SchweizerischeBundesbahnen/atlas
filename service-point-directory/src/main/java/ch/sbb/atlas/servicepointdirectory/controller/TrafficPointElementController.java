@@ -53,10 +53,9 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
 
     return Container.<ReadTrafficPointElementVersionModel>builder()
         .objects(trafficPointElementVersions.stream()
-                .distinct()
                 .map(TrafficPointElementVersionMapper::toModel)
                 .toList())
-        .totalCount(trafficPointElementVersions.stream().distinct().count())
+        .totalCount(trafficPointElementVersions.getTotalElements())
         .build();
   }
 
