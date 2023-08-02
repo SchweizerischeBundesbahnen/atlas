@@ -140,7 +140,7 @@ public class TrafficPointElementControllerApiTest extends BaseControllerApiTest 
 
   @Test
   void shouldGetTrafficPointElementVersionsByParentSloid() throws Exception {
-    mvc.perform(get("/v1/traffic-point-elements?parentsloids=ch:1:sloid:1400015:0")).andExpect(status().isOk())
+    mvc.perform(get("/v1/traffic-point-elements?parentsloids=ch:1:sloid:1400015:310240")).andExpect(status().isOk())
             .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
             .andExpect(jsonPath("$.totalCount", is(1)));
   }
