@@ -8,12 +8,7 @@ import {
   ReadServicePointVersion,
   StopPointType,
 } from '../../../../api';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
-import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
-import moment from 'moment/moment';
-import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
-import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
+import { FormGroup } from '@angular/forms';
 import {
   ServicePointDetailFormGroup,
   ServicePointFormGroupBuilder,
@@ -48,8 +43,13 @@ export class ServicePointDetailComponent implements OnInit {
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.servicePointVersions = this.route.parent?.snapshot.data.servicePoint;
+    this.route.parent?.data.subscribe((next) => {
+      this.servicePointVersions = next.servicePoint;
+      this.initServicePoint();
+    });
+  }
 
+  private initServicePoint() {
     VersionsHandlingService.addVersionNumbers(this.servicePointVersions);
     this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.servicePointVersions);
     this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(
