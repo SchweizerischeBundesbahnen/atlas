@@ -12,10 +12,10 @@
     >
     <div class="font-regular-sm">
       <span>Version {{ version }}</span>
-      <span *ngIf="showLabel()" [ngClass]="getEnvLabelClass()">
+      <span *ngIf="showLabel" [ngClass]="getEnvLabelClass()">
         {{ environmentLabel }}
       </span>
-      <div *ngIf="isItWednesday()" class="d-flex maintenance-info flex-row">
+      <div *ngIf="isItWednesday" class="d-flex maintenance-info flex-row">
         <maintenance-icon class="d-flex"></maintenance-icon>
         <div class="d-flex ms-2 p-0">{{ 'COMMON.MAINTENANCE_WINDOW' | translate }}</div>
       </div>
