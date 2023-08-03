@@ -29,7 +29,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @BatchDataSourceConfigTest
 @IntegrationTest
 @AutoConfigureMockMvc(addFilters = false)
-public class SqlUtilIntegrationTest {
+public class ServicePointVersionSqlQueryUtilIntegrationTest {
 
     @Autowired
     @Qualifier("servicePointDataSource")
