@@ -1,3 +1,5 @@
+@use 'src/styles/variables' as variables;
+
 .map-wrapper {
   width: 100%;
   height: 100%;
@@ -7,10 +9,27 @@
     width: 100%;
   }
 
-  .mouse-info {
+  .map-style-selector {
     background: white;
     position: absolute;
-    bottom: 0;
-    font-size: 12px;
+    top: 15px;
+    right: 15px;
+  }
+
+  .map-styles {
+    background-color: transparent;
+
+    button {
+      border-radius: variables.$border-radius;
+      border: unset;
+
+      &:hover {
+        background-color: variables.$gray-100;
+      }
+    }
+
+    .current {
+      border: 2px solid variables.$primary-500;
+    }
   }
 }

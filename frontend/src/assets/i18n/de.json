@@ -943,6 +943,12 @@
       "CANTON": "Kanton",
       "MUNICIPALITY": "Gemeinde",
       "DISTRICT": "Ortschaft"
+    },
+    "MAP_STYLES": {
+      "SWISSTOPO": "Swisstopo (Schweiz)",
+      "OPEN_STREET_MAP": "Openstreetmap (weltweit)",
+      "SATELLITE": "Satellit (weltweit)",
+      "SATELLITE_SWISS": "Satellit (Schweiz)"
     }
   }
 }
