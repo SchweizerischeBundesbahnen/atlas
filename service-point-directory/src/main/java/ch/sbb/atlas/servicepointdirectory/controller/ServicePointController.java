@@ -54,7 +54,7 @@ public class ServicePointController implements ServicePointApiV1 {
 
   @Override
   public List<ReadServicePointVersionModel> getServicePointVersions(Integer servicePointNumber) {
-    ServicePointNumber number = ServicePointNumber.of(servicePointNumber);
+    ServicePointNumber number = ServicePointNumber.ofNumberWithoutCheckDigit(servicePointNumber);
     List<ReadServicePointVersionModel> servicePointVersions = servicePointService.findAllByNumberOrderByValidFrom(
             number).stream()
         .map(ServicePointVersionMapper::toModel).toList();

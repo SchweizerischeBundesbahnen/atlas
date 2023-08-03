@@ -14,6 +14,7 @@ import {
   ServicePointFormGroupBuilder,
 } from './service-point-detail-form-group';
 import { ServicePointType } from './service-point-type';
+import { MapService } from '../../map/map.service';
 
 @Component({
   selector: 'app-service-point',
@@ -40,12 +41,20 @@ export class ServicePointDetailComponent implements OnInit {
   stopPointTypes = Object.values(StopPointType);
   categories = Object.values(Category);
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute, private mapService: MapService) {}
 
   ngOnInit() {
     this.route.parent?.data.subscribe((next) => {
       this.servicePointVersions = next.servicePoint;
       this.initServicePoint();
+
+      this.mapService.mapInitialized.subscribe((initialized) => {
+        if (initialized) {
+          this.mapService
+            .centerOn(this.selectedVersion.servicePointGeolocation?.wgs84)
+            .then(() => this.mapService.selectServicePoint(this.selectedVersion.number.number));
+        }
+      });
     });
   }
 
