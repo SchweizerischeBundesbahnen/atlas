@@ -10,7 +10,7 @@
       {{ maxValidity.validTo | displayDate }}
     </span>
   </div>
-  <div class="d-flex flex-row mb-2">
+  <div class="d-flex flex-row mb-3">
     <div class="d-flex flex-column" data-cy="selected-version-sloid">
       <div class="font-bold-base">{{ 'SEPODI.SERVICE_POINTS.SLOID' | translate }}</div>
       <div>{{ selectedVersion.sloid }}</div>
@@ -21,7 +21,7 @@
     </div>
   </div>
 
-  <nav mat-tab-nav-bar class="tabs" data-cy="tabs" [tabPanel]="tabPanel">
+  <nav mat-tab-nav-bar class="tabs mt-5" data-cy="tabs" [tabPanel]="tabPanel">
     <a
       mat-tab-link
       class="font-bold-xl"
