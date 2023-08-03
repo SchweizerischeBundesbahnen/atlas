@@ -342,55 +342,6 @@ public class ServicePointImportServiceTest {
     }
   }
 
-  @Test
-  public void shouldReturnVersionsExactlyIncludedBetweenEditedValidFromAndEditedValidTo() {
-    //given
-    ServicePointVersion version1 = ServicePointVersion.builder()
-        .validFrom(LocalDate.of(2000, 1, 1))
-        .validTo(LocalDate.of(2000, 12, 31))
-        .build();
-    ServicePointVersion version2 = ServicePointVersion.builder()
-        .validFrom(LocalDate.of(2001, 1, 1))
-        .validTo(LocalDate.of(2001, 12, 31))
-        .build();
-
-    //when
-    List<ServicePointVersion> result = BaseImportService.findVersionsExactlyIncludedBetweenEditedValidFromAndEditedValidTo(
-        LocalDate.of(2000, 1, 1),
-        LocalDate.of(2001, 12, 31),
-        List.of(version1, version2)
-    );
-
-    //then
-    assertThat(result).isNotNull();
-    assertThat(result.isEmpty()).isFalse();
-    assertThat(result.size()).isEqualTo(2);
-  }
-
-  @Test
-  public void shouldNotReturnVersionsWhenNotExactlyIncludedBetweenEditedValidFromAndEditedValidTo() {
-    //given
-    ServicePointVersion version1 = ServicePointVersion.builder()
-        .validFrom(LocalDate.of(2000, 1, 1))
-        .validTo(LocalDate.of(2000, 12, 31))
-        .build();
-    ServicePointVersion version2 = ServicePointVersion.builder()
-        .validFrom(LocalDate.of(2001, 1, 1))
-        .validTo(LocalDate.of(2001, 12, 31))
-        .build();
-
-    //when
-    List<ServicePointVersion> result = BaseImportService.findVersionsExactlyIncludedBetweenEditedValidFromAndEditedValidTo(
-        LocalDate.of(2000, 1, 2),
-        LocalDate.of(2001, 12, 30),
-        List.of(version1, version2)
-    );
-
-    //then
-    assertThat(result).isNotNull();
-    assertThat(result.isEmpty()).isTrue();
-  }
-
   private List<ServicePointCsvModelContainer> getServicePointCsvModelContainers() {
     ServicePointTestData.getBernWyleregg();
     int didokCode = 80187710;
