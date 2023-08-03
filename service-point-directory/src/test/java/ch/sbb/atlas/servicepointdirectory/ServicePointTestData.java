@@ -212,8 +212,7 @@ public class ServicePointTestData {
   }
 
   public static ServicePointVersion createServicePointVersionWithoutServicePointGeolocation() {
-
-    ServicePointVersion servicePointVersionWithCountryBorder = ServicePointVersion
+    return ServicePointVersion
         .builder()
         .number(ServicePointNumber.of(85197616))
         .sloid("ch:1:sloid:19761")
@@ -236,8 +235,6 @@ public class ServicePointTestData {
         .editionDate(LocalDateTime.of(LocalDate.of(2019, 5, 20), LocalTime.of(15, 3, 58)))
         .editor("fs45117")
         .build();
-
-    return servicePointVersionWithCountryBorder;
   }
 
   public static CreateServicePointVersionModel getAargauServicePointVersionModel() {
