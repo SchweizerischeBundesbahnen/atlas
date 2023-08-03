@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ReadServicePointVersion } from '../../../api';
 import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
 import { DateRange } from '../../../core/versioning/date-range';
+import { MapService } from '../map/map.service';
 
 export const TABS = [
   {
@@ -32,14 +33,14 @@ export const TABS = [
   templateUrl: './service-point-side-panel.component.html',
   styleUrls: ['./service-point-side-panel.component.scss'],
 })
-export class ServicePointSidePanelComponent implements OnInit {
+export class ServicePointSidePanelComponent implements OnInit, OnDestroy {
   servicePointVersions!: ReadServicePointVersion[];
   selectedVersion!: ReadServicePointVersion;
   maxValidity!: DateRange;
 
   tabs = TABS;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute, private mapService: MapService) {}
 
   ngOnInit() {
     this.servicePointVersions = this.route.snapshot.data.servicePoint;
@@ -48,6 +49,10 @@ export class ServicePointSidePanelComponent implements OnInit {
       this.servicePointVersions = next.servicePoint;
       this.initVersioning();
     });
+  }
+
+  ngOnDestroy() {
+    this.mapService.deselectServicePoint();
   }
 
   private initVersioning() {
