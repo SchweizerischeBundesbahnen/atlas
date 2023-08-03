@@ -5,11 +5,11 @@ import { Pages } from '../../pages';
 import { MapService } from '../map/map.service';
 
 @Component({
-  selector: 'app-sepodi-overview',
-  templateUrl: './sepodi-overview.component.html',
-  styleUrls: ['./sepodi-overview.component.scss'],
+  selector: 'app-sepodi-mapview',
+  templateUrl: './sepodi-mapview.component.html',
+  styleUrls: ['./sepodi-mapview.component.scss'],
 })
-export class SepodiOverviewComponent {
+export class SepodiMapviewComponent {
   constructor(private router: Router, private mapService: MapService) {
     this.mapService.selectedElement.subscribe((selectedPoint) =>
       this.servicePointClicked(selectedPoint)
