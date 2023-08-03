@@ -27,7 +27,7 @@ export const MAP_STYLE_SPEC: StyleSpecification = {
         '&copy; SBB/CFF/FFS &copy; geOps Tiles &copy; imagico &copy; OpenMapTiles &copy; OpenStreetMap Contributors',
       maxzoom: 22,
     },
-    satelite: {
+    satellite: {
       type: 'raster',
       tiles: [
         'https://journey-maps-tiles.geocdn.sbb.ch/styles/aerial/{z}/{x}/{y}.webp?api_key=74c0170da613da0d825339a7f0dd0546',
@@ -37,7 +37,7 @@ export const MAP_STYLE_SPEC: StyleSpecification = {
         '&copy; SBB/CFF/FFS &copy; geOps Tiles &copy; imagico &copy; OpenMapTiles &copy; OpenStreetMap Contributors',
       maxzoom: 22,
     },
-    satelite_swiss: {
+    satellite_swiss: {
       type: 'raster',
       tiles: [
         'https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.swissimage-product/default/current/3857/{z}/{x}/{y}.jpeg',
@@ -65,9 +65,6 @@ export const MAP_STYLE_SPEC: StyleSpecification = {
       paint: {
         'raster-opacity': 0.5,
       },
-      layout: {
-        visibility: 'none',
-      },
     },
     {
       id: 'osm',
@@ -76,16 +73,22 @@ export const MAP_STYLE_SPEC: StyleSpecification = {
       paint: {
         'raster-opacity': 0.8,
       },
+      layout: {
+        visibility: 'none',
+      },
     },
     {
-      id: 'satelite',
+      id: 'satellite',
       type: 'raster',
-      source: 'satelite',
+      source: 'satellite',
+      layout: {
+        visibility: 'none',
+      },
     },
     {
-      id: 'satelite_swiss',
+      id: 'satellite_swiss',
       type: 'raster',
-      source: 'satelite_swiss',
+      source: 'satellite_swiss',
       layout: {
         visibility: 'none',
       },
