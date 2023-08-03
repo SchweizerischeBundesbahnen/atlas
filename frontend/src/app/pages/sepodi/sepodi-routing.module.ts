@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { SepodiOverviewComponent } from './overview/sepodi-overview.component';
+import { SepodiMapviewComponent } from './overview/sepodi-mapview.component';
 import { ServicePointSidePanelComponent } from './service-point-side-panel/service-point-side-panel.component';
 import { Pages } from '../pages';
 import { servicePointResolver } from './service-point-side-panel/service-point-detail.resolver';
@@ -13,7 +13,7 @@ import { FotCommentDetailComponent } from './service-point-side-panel/comment/fo
 const routes: Routes = [
   {
     path: '',
-    component: SepodiOverviewComponent,
+    component: SepodiMapviewComponent,
     children: [
       {
         path: Pages.SERVICE_POINTS.path + '/:id',
