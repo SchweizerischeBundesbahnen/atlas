@@ -12,13 +12,12 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class TrafficPointElementValidationService {
 
-    private final ServicePointService servicePointService;
+  private final ServicePointService servicePointService;
 
-    public void validateServicePointNumberExists(ServicePointNumber servicePointNumber) {
-        if(!servicePointService.isServicePointNumberExisting(servicePointNumber)) {
-            throw new ServicePointNumberNotFoundException(servicePointNumber);
-        }
+  public void validateServicePointNumberExists(ServicePointNumber servicePointNumber) {
+    if (!servicePointService.isServicePointNumberExisting(servicePointNumber)) {
+      throw new ServicePointNumberNotFoundException(servicePointNumber);
     }
-
+  }
 
 }

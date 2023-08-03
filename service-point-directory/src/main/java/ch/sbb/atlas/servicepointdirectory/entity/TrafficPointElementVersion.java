@@ -44,7 +44,7 @@ import java.time.LocalDate;
 @FieldNameConstants
 @Entity(name = "traffic_point_element_version")
 @AtlasVersionable
-public class TrafficPointElementVersion extends BaseDidokImportEntity implements Versionable, DatesValidator {
+public class TrafficPointElementVersion extends BasePointVersion implements Versionable, DatesValidator {
 
   private static final String VERSION_SEQ = "traffic_point_element_version_seq";
 
@@ -114,4 +114,10 @@ public class TrafficPointElementVersion extends BaseDidokImportEntity implements
     return trafficPointElementGeolocation != null;
   }
 
+  @Override
+  public void setThisAsParentOnRelatingEntities() {
+    if (this.trafficPointElementGeolocation != null) {
+      this.trafficPointElementGeolocation.setTrafficPointElementVersion(this);
+    }
+  }
 }
