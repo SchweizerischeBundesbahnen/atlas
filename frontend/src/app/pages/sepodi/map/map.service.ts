@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { LngLat, Map, MapMouseEvent, ResourceType } from 'maplibre-gl';
 import { MAP_LAYER_NAME, MAP_SOURCE_NAME, MAP_STYLE_SPEC, MAP_ZOOM_DETAILS } from './map-style';
 import { GeoJsonProperties } from 'geojson';
-import { MapOptionsService } from './map-options.service';
+import { MAP_STYLES, MapOptionsService, MapStyle } from './map-options.service';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { CoordinatePair } from '../../../api';
 
@@ -16,6 +16,7 @@ export class MapService {
   map!: Map;
   mapInitialized = new BehaviorSubject(false);
   selectedElement = new Subject<GeoJsonProperties>();
+  currentMapStyle = MAP_STYLES[0];
 
   constructor(private mapOptionsService: MapOptionsService) {}
 
@@ -114,5 +115,17 @@ export class MapService {
       return;
     }
     this.selectedElement.next(e.features[0].properties);
+  }
+
+  switchToStyle(style: MapStyle) {
+    this.hideAllMapStyles();
+    this.currentMapStyle = style;
+    this.map.setLayoutProperty(style.id, 'visibility', 'visible');
+  }
+
+  private hideAllMapStyles() {
+    MAP_STYLES.forEach((style) => {
+      this.map.setLayoutProperty(style.id, 'visibility', 'none');
+    });
   }
 }
