@@ -6,12 +6,10 @@ import {
   TranslateModule,
   TranslatePipe,
 } from '@ngx-translate/core';
-import { FormControl, FormGroup } from '@angular/forms';
 import { FormModule } from '../../../core/module/form.module';
 import { GeographyComponent } from './geography.component';
-import { MeanOfTransport } from '../../../api';
 
-describe('MeansOfTransportPickerComponent', () => {
+describe('GeographyComponent', () => {
   let component: GeographyComponent;
   let fixture: ComponentFixture<GeographyComponent>;
 
@@ -29,10 +27,6 @@ describe('MeansOfTransportPickerComponent', () => {
 
     fixture = TestBed.createComponent(GeographyComponent);
     component = fixture.componentInstance;
-    component.formGroup = new FormGroup({
-      meansOfTransport: new FormControl([MeanOfTransport.Bus]),
-    });
-    component.controlName = 'meansOfTransport';
     fixture.detectChanges();
   });
 
