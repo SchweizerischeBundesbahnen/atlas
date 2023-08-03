@@ -54,7 +54,6 @@ import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
 import org.apache.commons.lang3.StringUtils;
 
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -64,7 +63,7 @@ import org.apache.commons.lang3.StringUtils;
 @FieldNameConstants
 @Entity(name = "service_point_version")
 @AtlasVersionable
-public class ServicePointVersion extends BaseDidokImportEntity implements Versionable,
+public class ServicePointVersion extends BasePointVersion implements Versionable,
     CountryAndBusinessOrganisationAssociated, DatesValidator {
 
   private static final String VERSION_SEQ = "service_point_version_seq";
@@ -260,5 +259,12 @@ public class ServicePointVersion extends BaseDidokImportEntity implements Versio
       return new HashSet<>();
     }
     return categories;
+  }
+
+  @Override
+  public void setThisAsParentOnRelatingEntities() {
+    if (this.servicePointGeolocation != null) {
+      this.servicePointGeolocation.setServicePointVersion(this);
+    }
   }
 }
