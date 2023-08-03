@@ -13,6 +13,18 @@ export const SWISS_TOPO_BOUNDING_BOX: LngLatBoundsLike = [
   [11.47757, 48.230651],
 ];
 
+export const MAP_STYLES: MapStyle[] = [
+  { id: 'swisstopofarbe', label: 'SEPODI.MAP_STYLES.SWISSTOPO' },
+  { id: 'osm', label: 'SEPODI.MAP_STYLES.OPEN_STREET_MAP' },
+  { id: 'satellite', label: 'SEPODI.MAP_STYLES.SATELLITE' },
+  { id: 'satellite_swiss', label: 'SEPODI.MAP_STYLES.SATELLITE_SWISS' },
+];
+
+export interface MapStyle {
+  id: string;
+  label: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -30,7 +42,6 @@ export class MapOptionsService {
   }
 
   getInitialBoundingBox(): LngLatBoundsLike {
-    // STAM: later  we will keep the latest user bbox in localStorage.
     return SWISS_BOUNDING_BOX;
   }
 }
