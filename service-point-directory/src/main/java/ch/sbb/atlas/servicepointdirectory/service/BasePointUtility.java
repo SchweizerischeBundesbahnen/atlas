@@ -5,6 +5,9 @@ import ch.sbb.atlas.versioning.model.Property;
 import ch.sbb.atlas.versioning.model.Versionable;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.model.VersioningAction;
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.stream.Collectors;
 import lombok.experimental.UtilityClass;
 
 import java.util.Comparator;
@@ -31,11 +34,11 @@ public class BasePointUtility {
               if (edited.getValidFrom().isAfter(dbVersion.getValidFrom()) && edited.getValidTo().isBefore(dbVersion.getValidTo())) {
                 return true;
               }
-              if(edited.getValidFrom().isAfter(dbVersion.getValidFrom()) && edited.getValidFrom().isBefore(dbVersion.getValidTo())){
-                  return true;
+              if (edited.getValidFrom().isAfter(dbVersion.getValidFrom()) && edited.getValidFrom().isBefore(dbVersion.getValidTo())) {
+                return true;
               }
-              if(edited.getValidTo().isAfter(dbVersion.getValidFrom()) && edited.getValidTo().isBefore(dbVersion.getValidTo())){
-                  return true;
+              if (edited.getValidTo().isAfter(dbVersion.getValidFrom()) && edited.getValidTo().isBefore(dbVersion.getValidTo())) {
+                return true;
               }
               // match 1 or more dbVersion/s between edited version
               return dbVersion.getValidFrom().isAfter(edited.getValidFrom()) && dbVersion.getValidTo()
@@ -95,6 +98,20 @@ public class BasePointUtility {
         geolocationPropertyList.addAll(propertiesToAdd);
       }
     });
+  }
+
+  public <T extends Versionable> List<T> findVersionsExactlyIncludedBetweenEditedValidFromAndEditedValidTo(
+      LocalDate editedValidFrom, LocalDate editedValidTo, List<T> versions) {
+    List<T> collected = versions.stream()
+        .filter(toVersioning -> !toVersioning.getValidFrom().isAfter(editedValidTo))
+        .filter(toVersioning -> !toVersioning.getValidTo().isBefore(editedValidFrom))
+        .collect(Collectors.toList());
+    if (!collected.isEmpty() &&
+        (collected.get(0).getValidFrom().equals(editedValidFrom) && collected.get(collected.size() - 1).getValidTo()
+            .equals(editedValidTo))) {
+      return collected;
+    }
+    return Collections.emptyList();
   }
 
 }
