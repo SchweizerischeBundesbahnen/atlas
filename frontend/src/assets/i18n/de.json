@@ -930,12 +930,12 @@
       "SYSTEM_LV95": "Landeskoordinaten LV95",
       "SYSTEM_WGS84": "Globale Koordinaten WGS84",
       "LV95": {
-        "EAST": "E (Ost-West) [ m]",
-        "NORTH": "N (Nord-Süd) [ m]"
+        "EAST": "E (Ost-West) [m]",
+        "NORTH": "N (Nord-Süd) [m]"
       },
       "WGS84": {
-        "EAST": "Länge [ °]",
-        "NORTH": "Breite [ °]"
+        "EAST": "Länge [°]",
+        "NORTH": "Breite [°]"
       },
       "HEIGHT": "Höhe (M.ü.M.)",
       "ADMINISTRATION": "Administrative Einheiten",
@@ -949,6 +949,7 @@
       "OPEN_STREET_MAP": "Openstreetmap (weltweit)",
       "SATELLITE": "Satellit (weltweit)",
       "SATELLITE_SWISS": "Satellit (Schweiz)"
-    }
+    },
+    "BACK_TO_MAP": "Schliessen"
   }
 }
