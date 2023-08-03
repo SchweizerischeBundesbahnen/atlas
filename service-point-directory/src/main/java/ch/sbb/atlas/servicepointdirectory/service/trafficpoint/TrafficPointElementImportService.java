@@ -6,6 +6,7 @@ import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointItemImportResu
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointItemImportResult.TrafficPointItemImportResultBuilder;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion.Fields;
+import ch.sbb.atlas.servicepointdirectory.service.BaseImportService;
 import ch.sbb.atlas.servicepointdirectory.service.BasePointUtility;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
 import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
@@ -51,6 +52,8 @@ public class TrafficPointElementImportService {
           .map(new TrafficPointElementCsvToEntityMapper())
           .sorted(Comparator.comparing(TrafficPointElementVersion::getValidFrom))
           .toList();
+      List<TrafficPointElementVersion> dbVersions = trafficPointElementService.findBySloidOrderByValidFrom(container.getSloid());
+      BaseImportService.replaceCsvMergedVersions(dbVersions, trafficPointElementVersions, trafficPointElementService::save);
       for (TrafficPointElementVersion trafficPointElementVersion : trafficPointElementVersions) {
         boolean trafficPointElementExisting = trafficPointElementService.isTrafficPointElementExisting(
             trafficPointElementVersion.getSloid());
