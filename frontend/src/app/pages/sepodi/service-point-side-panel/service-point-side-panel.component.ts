@@ -1,9 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ReadServicePointVersion } from '../../../api';
 import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
 import { DateRange } from '../../../core/versioning/date-range';
 import { MapService } from '../map/map.service';
+import { Pages } from '../../pages';
 
 export const TABS = [
   {
@@ -40,11 +41,13 @@ export class ServicePointSidePanelComponent implements OnInit, OnDestroy {
 
   tabs = TABS;
 
-  constructor(private route: ActivatedRoute, private mapService: MapService) {}
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private mapService: MapService
+  ) {}
 
   ngOnInit() {
-    this.servicePointVersions = this.route.snapshot.data.servicePoint;
-
     this.route.data.subscribe((next) => {
       this.servicePointVersions = next.servicePoint;
       this.initVersioning();
@@ -60,5 +63,9 @@ export class ServicePointSidePanelComponent implements OnInit, OnDestroy {
     this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(
       this.servicePointVersions
     );
+  }
+
+  closeSidePanel() {
+    this.router.navigate([Pages.SEPODI.path]).then();
   }
 }
