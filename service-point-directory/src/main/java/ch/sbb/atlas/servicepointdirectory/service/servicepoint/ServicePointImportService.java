@@ -7,7 +7,6 @@ import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointItemImportResu
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointFotComment;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
-import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion.Fields;
 import ch.sbb.atlas.servicepointdirectory.service.BaseImportService;
 import ch.sbb.atlas.servicepointdirectory.service.BasePointUtility;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
@@ -29,7 +28,7 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class ServicePointImportService {
+public class ServicePointImportService extends BaseImportService<ServicePointVersion> {
 
   private final ServicePointService servicePointService;
   private final VersionableService versionableService;
@@ -59,7 +58,7 @@ public class ServicePointImportService {
           .toList();
       List<ServicePointVersion> dbVersions = servicePointService.findAllByNumberOrderByValidFrom(
           ServicePointNumber.of(container.getDidokCode()));
-      BaseImportService.replaceCsvMergedVersions(dbVersions, servicePointVersions, servicePointService::save);
+      replaceCsvMergedVersions(dbVersions, servicePointVersions);
       for (ServicePointVersion servicePointVersion : servicePointVersions) {
         boolean servicePointNumberExisting = servicePointService.isServicePointNumberExisting(servicePointVersion.getNumber());
         if (servicePointNumberExisting) {
@@ -73,6 +72,23 @@ public class ServicePointImportService {
       saveFotComment(container);
     }
     return importResults;
+  }
+
+  public void updateServicePointVersionForImportService(ServicePointVersion edited) {
+    List<ServicePointVersion> dbVersions = servicePointService.findAllByNumberOrderByValidFrom(edited.getNumber());
+    ServicePointVersion current = BasePointUtility.getCurrentPointVersion(dbVersions, edited);
+    List<VersionedObject> versionedObjects = versionableService.versioningObjectsForImportFromCsv(current, edited,
+        dbVersions);
+    BasePointUtility.addCreateAndEditDetailsToGeolocationPropertyFromVersionedObjects(versionedObjects,
+        ServicePointVersion.Fields.servicePointGeolocation);
+    versionableService.applyVersioning(ServicePointVersion.class, versionedObjects,
+        servicePointService::saveWithoutValidationForImportOnly,
+        servicePointService::deleteById);
+  }
+
+  @Override
+  protected void save(ServicePointVersion servicePointVersion) {
+    servicePointService.save(servicePointVersion);
   }
 
   private void saveFotComment(ServicePointCsvModelContainer container) {
@@ -113,18 +129,6 @@ public class ServicePointImportService {
         return buildFailedImportResult(servicePointVersion, exception);
       }
     }
-  }
-
-  public void updateServicePointVersionForImportService(ServicePointVersion edited) {
-    List<ServicePointVersion> dbVersions = servicePointService.findAllByNumberOrderByValidFrom(edited.getNumber());
-    ServicePointVersion current = BasePointUtility.getCurrentPointVersion(dbVersions, edited);
-    List<VersionedObject> versionedObjects = versionableService.versioningObjectsForImportFromCsv(current, edited,
-        dbVersions);
-    BasePointUtility.addCreateAndEditDetailsToGeolocationPropertyFromVersionedObjects(versionedObjects,
-        Fields.servicePointGeolocation);
-    versionableService.applyVersioning(ServicePointVersion.class, versionedObjects,
-        servicePointService::saveWithoutValidationForImportOnly,
-        servicePointService::deleteById);
   }
 
   private ServicePointItemImportResult buildSuccessImportResult(ServicePointVersion servicePointVersion) {
