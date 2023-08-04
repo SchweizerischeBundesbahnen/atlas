@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FotCommentDetailComponent } from './fot-comment-detail.component';
-import { AuthService } from '../../../../core/auth/auth.service';
 
 describe('FotCommentDetailComponent', () => {
   let component: FotCommentDetailComponent;
