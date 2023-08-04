@@ -64,6 +64,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy {
 
   switchVersion(newIndex: number) {
     this.selectedVersion = this.servicePointVersions[newIndex];
+    this.initSelectedVersion();
   }
 
   private initServicePoint() {
@@ -72,16 +73,21 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy {
     this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(
       this.servicePointVersions
     );
+
+    this.initSelectedVersion();
+  }
+
+  private initSelectedVersion() {
     if (this.selectedVersion.id) {
       this.isNew = false;
     }
+
     this.selectedVersionIndex = this.servicePointVersions.indexOf(this.selectedVersion);
 
     this.form = ServicePointFormGroupBuilder.buildFormGroup(this.selectedVersion);
     if (!this.isNew) {
       this.form.disable();
     }
-
     this.initType();
   }
 
