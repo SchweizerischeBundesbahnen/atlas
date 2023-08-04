@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { VersionsHandlingService } from '../../../../core/versioning/versions-handling.service';
 import {
@@ -15,13 +15,14 @@ import {
 } from './service-point-detail-form-group';
 import { ServicePointType } from './service-point-type';
 import { MapService } from '../../map/map.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-service-point',
   templateUrl: './service-point-detail.component.html',
   styleUrls: ['./service-point-detail.component.scss'],
 })
-export class ServicePointDetailComponent implements OnInit {
+export class ServicePointDetailComponent implements OnInit, OnDestroy {
   servicePointVersions!: ReadServicePointVersion[];
   selectedVersion!: ReadServicePointVersion;
   showVersionSwitch = false;
@@ -41,15 +42,24 @@ export class ServicePointDetailComponent implements OnInit {
   stopPointTypes = Object.values(StopPointType);
   categories = Object.values(Category);
 
+  private mapSubscription!: Subscription;
+  private servicePointSubscription?: Subscription;
+
   constructor(private route: ActivatedRoute, private mapService: MapService) {}
 
   ngOnInit() {
-    this.route.parent?.data.subscribe((next) => {
+    this.servicePointSubscription = this.route.parent?.data.subscribe((next) => {
       this.servicePointVersions = next.servicePoint;
+      this.mapSubscription?.unsubscribe();
 
       this.initServicePoint();
       this.displayAndSelectServicePointOnMap();
     });
+  }
+
+  ngOnDestroy() {
+    this.mapSubscription?.unsubscribe();
+    this.servicePointSubscription?.unsubscribe();
   }
 
   switchVersion(newIndex: number) {
@@ -94,7 +104,7 @@ export class ServicePointDetailComponent implements OnInit {
   }
 
   private displayAndSelectServicePointOnMap() {
-    this.mapService.mapInitialized.subscribe((initialized) => {
+    this.mapSubscription = this.mapService.mapInitialized.subscribe((initialized) => {
       if (initialized) {
         this.mapService
           .centerOn(this.selectedVersion.servicePointGeolocation?.wgs84)
