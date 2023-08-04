@@ -6,6 +6,7 @@
         [title]="'SEPODI.SERVICE_POINTS.MEAN_OF_TRANSPORT.' + mean | translate"
         src="../../../../assets/images/means-of-transport/{{ getIcon(mean) }}.svg"
         (click)="clicked(mean)"
+        [attr.data-cy]="mean"
       />
     </ng-container>
   </div>
