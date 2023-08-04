@@ -96,6 +96,25 @@ public class ImportServicePointBatchController {
     }
   }
 
+  @PostMapping("loading-point-batch")
+  @ResponseStatus(HttpStatus.OK)
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200"),
+  })
+  @Async
+  public void startLoadingPointImportBatch() {
+    JobParameters jobParameters = new JobParametersBuilder()
+        .addString(EXECUTION_TYPE_PARAMETER, EXECUTION_BATCH_PARAMETER)
+        .addLong(START_AT_JOB_PARAMETER, System.currentTimeMillis()).toJobParameters();
+    try {
+      JobExecution execution = jobLauncher.run(importLoadingPointCsvJob, jobParameters);
+      log.info("Job executed with status: {}", execution.getExitStatus().getExitCode());
+    } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException |
+             JobParametersInvalidException e) {
+      throw new JobExecutionException(IMPORT_LOADING_POINT_CSV_JOB_NAME, e);
+    }
+  }
+
   @PostMapping("loading-point")
   @ResponseStatus(HttpStatus.OK)
   @ApiResponses(value = {
@@ -109,7 +128,7 @@ public class ImportServicePointBatchController {
     try {
       JobExecution execution = jobLauncher.run(importLoadingPointCsvJob, jobParameters);
       log.info("Job executed with status: {}", execution.getExitStatus().getExitCode());
-      return ResponseEntity.ok().body(execution);
+      return ResponseEntity.ok().body(execution.toString());
     } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException |
              JobParametersInvalidException e) {
       throw new JobExecutionException(IMPORT_LOADING_POINT_CSV_JOB_NAME, e);
