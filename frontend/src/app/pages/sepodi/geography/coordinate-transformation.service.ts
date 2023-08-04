@@ -2,8 +2,6 @@ import { CoordinatePair, SpatialReference } from '../../../api';
 import proj4 from 'proj4';
 import { Injectable } from '@angular/core';
 
-export const keyLv95 = 'EPSG:2056';
-
 /**
  * EPSG String from https://epsg.io/2056
  */
@@ -23,8 +21,8 @@ export class CoordinateTransformationService {
   ): CoordinatePair {
     const transformationResult = proj4(from, to, [coordinatePair.east, coordinatePair.north]);
     return {
-      east: transformationResult[1],
-      north: transformationResult[0],
+      east: transformationResult[0],
+      north: transformationResult[1],
     };
   }
 }
