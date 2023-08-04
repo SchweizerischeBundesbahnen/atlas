@@ -1,5 +1,7 @@
 package ch.sbb.importservice.client;
 
+import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointImportRequestModel;
+import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointImportRequestModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointImportRequestModel;
@@ -20,5 +22,9 @@ public interface SePoDiClient {
   @PostMapping(value = "/service-point-directory/v1/traffic-point-elements/import")
   List<TrafficPointItemImportResult> postTrafficPointsImport(
       @RequestBody TrafficPointImportRequestModel trafficPointImportRequestModel);
+
+  @PostMapping(value = "/service-point-directory/v1/loading-points/import")
+  List<LoadingPointItemImportResult> postLoadingPointsImport(
+      @RequestBody LoadingPointImportRequestModel loadingPointImportRequestModel);
 
 }

@@ -43,6 +43,7 @@ public class SpringBatchConfig {
 
   private static final int SERVICE_POINT_CHUNK_SIZE = 20;
   private static final int TRAFFIC_POINT_CHUNK_SIZE = 50;
+  private static final int LOADING_POINT_CHUNK_SIZE = 50;
 
   private static final int THREAD_EXECUTION_SIZE = 64;
 
@@ -84,7 +85,6 @@ public class SpringBatchConfig {
     } else {
       actualLoadingPointCsvModelsFromS3 = csvService.getActualLoadingPointCsvModelsFromS3();
     }
-
     return new ThreadSafeListItemReader<>(Collections.synchronizedList(actualLoadingPointCsvModelsFromS3));
   }
 
@@ -123,7 +123,7 @@ public class SpringBatchConfig {
   public Step parseLoadingPointCsvStep(ThreadSafeListItemReader<LoadingPointCsvModel> loadingPointlistItemReader) {
     String stepName = "parseLoadingPointCsvStep";
     return new StepBuilder(stepName, jobRepository)
-        .<LoadingPointCsvModel, LoadingPointCsvModel>chunk(SERVICE_POINT_CHUNK_SIZE, transactionManager)
+        .<LoadingPointCsvModel, LoadingPointCsvModel>chunk(LOADING_POINT_CHUNK_SIZE, transactionManager)
         .reader(loadingPointlistItemReader)
         .writer(loadingPointApiWriter)
         .faultTolerant()
