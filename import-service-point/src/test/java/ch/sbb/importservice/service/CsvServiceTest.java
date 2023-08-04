@@ -3,9 +3,10 @@ package ch.sbb.importservice.service;
 import static ch.sbb.importservice.service.CsvService.DIENSTELLEN_FILE_PREFIX;
 import static ch.sbb.importservice.service.CsvService.LADESTELLEN_FILE_PREFIX;
 import static ch.sbb.importservice.service.CsvService.VERKEHRSPUNKTELEMENTE_FILE_PREFIX;
-import static ch.sbb.importservice.service.JobHelperService.MIN_LOCAL_DATE;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_LOADING_POINT_CSV_JOB_NAME;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_SERVICE_POINT_CSV_JOB_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -46,7 +47,7 @@ public class CsvServiceTest {
     LocalDate date = LocalDate.of(2022, 2, 21);
     File csvFile = new File(this.getClass().getClassLoader().getResource("DIENSTSTELLEN_V3_IMPORT.csv").getFile());
     when(fileHelperService.downloadImportFileFromS3(DIENSTELLEN_FILE_PREFIX)).thenReturn(csvFile);
-    doCallRealMethod().when(jobHelperService).isDateMatchedBetweenTodayAndMatchingDate(date, date);
+    doCallRealMethod().when(jobHelperService).isDateMatchedBetweenTodayAndMatchingDate(any(), any());
     when(jobHelperService.getDateForImportFileToDownload(IMPORT_SERVICE_POINT_CSV_JOB_NAME)).thenReturn(date);
     //when
     List<ServicePointCsvModelContainer> result = csvService.getActualServicePointCsvModelsFromS3();
@@ -57,27 +58,26 @@ public class CsvServiceTest {
   @Test
   public void shouldGetActualLoadingPointCsvModelsFromS3() {
     //given
-    LocalDate date = MIN_LOCAL_DATE;
-    File csvFile = new File(this.getClass().getClassLoader().getResource("LADENSTELLEN_V3_IMPORT.csv").getFile());
+    LocalDate date = LocalDate.of(2018, 6, 27);
+    File csvFile = new File(this.getClass().getClassLoader().getResource("LADESTELLEN_V3_IMPORT.csv").getFile());
     when(fileHelperService.downloadImportFileFromS3(LADESTELLEN_FILE_PREFIX)).thenReturn(csvFile);
-    doCallRealMethod().when(jobHelperService).isDateMatchedBetweenTodayAndMatchingDate(date, date);
+    doCallRealMethod().when(jobHelperService).isDateMatchedBetweenTodayAndMatchingDate(any(), any());
+    when(jobHelperService.getDateForImportFileToDownload(IMPORT_LOADING_POINT_CSV_JOB_NAME)).thenReturn(date);
     //when
     List<LoadingPointCsvModel> result = csvService.getActualLoadingPointCsvModelsFromS3();
     //then
-    assertThat(result).hasSize(0);
+    assertThat(result).hasSize(12);
   }
 
   @Test
   public void shouldGetActualLoadingPointCsvModels() {
     //given
-    LocalDate date = MIN_LOCAL_DATE;
-    File csvFile = new File(this.getClass().getClassLoader().getResource("LADENSTELLEN_V3_IMPORT.csv").getFile());
-    when(fileHelperService.downloadImportFileFromS3(LADESTELLEN_FILE_PREFIX)).thenReturn(csvFile);
-    doCallRealMethod().when(jobHelperService).isDateMatchedBetweenTodayAndMatchingDate(date, date);
+    File csvFile = new File(this.getClass().getClassLoader().getResource("LADESTELLEN_V3_IMPORT.csv").getFile());
     //when
     List<LoadingPointCsvModel> result = csvService.getActualLoadingPointCsvModels(csvFile);
     //then
     assertThat(result).hasSize(0);
+    verify(fileHelperService, times(0)).downloadImportFileFromS3(LADESTELLEN_FILE_PREFIX);
   }
 
   @Test

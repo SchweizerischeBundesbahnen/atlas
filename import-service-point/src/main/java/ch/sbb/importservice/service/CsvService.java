@@ -1,6 +1,7 @@
 package ch.sbb.importservice.service;
 
 import static ch.sbb.importservice.service.JobHelperService.MIN_LOCAL_DATE;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_LOADING_POINT_CSV_JOB_NAME;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_SERVICE_POINT_CSV_JOB_NAME;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_TRAFFIC_POINT_CSV_JOB_NAME;
 
@@ -87,6 +88,8 @@ public class CsvService {
   }
 
   public List<LoadingPointCsvModel> getActualLoadingPointCsvModels(File file) {
+    log.info("Starting Loading Point import process");
+    log.info("CSV File to import: {}", file.getName());
     List<LoadingPointCsvModel> loadingPointCsvModels = getCsvModelsToUpdate(file, MIN_LOCAL_DATE,
         LoadingPointCsvModel.class);
     log.info("Found {} Loading Points to send to ServicePointDirectory", loadingPointCsvModels.size());
@@ -94,10 +97,13 @@ public class CsvService {
   }
 
   public List<LoadingPointCsvModel> getActualLoadingPointCsvModelsFromS3() {
+    log.info("Downloading file from Amazon S3 Bucket: {}", AmazonBucket.EXPORT);
     File importFile = fileHelperService.downloadImportFileFromS3(LADESTELLEN_FILE_PREFIX);
-    List<LoadingPointCsvModel> loadingPointCsvModels = getCsvModelsToUpdate(importFile, MIN_LOCAL_DATE,
-        LoadingPointCsvModel.class);
+    LocalDate matchingDate = jobHelperService.getDateForImportFileToDownload(IMPORT_LOADING_POINT_CSV_JOB_NAME);
+    log.info("CSV File to import: {}", importFile.getName());
+    List<LoadingPointCsvModel> loadingPointCsvModels = getCsvModelsToUpdate(importFile, matchingDate, LoadingPointCsvModel.class);
     log.info("Found {} Loading Points to send to ServicePointDirectory", loadingPointCsvModels.size());
+    fileHelperService.deleteConsumedFile(importFile);
     return loadingPointCsvModels;
   }
 
