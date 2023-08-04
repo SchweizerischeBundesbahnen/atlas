@@ -85,8 +85,8 @@ public class ImportServicePointBatchControllerTest extends BaseControllerApiTest
   @Test
   public void shouldPostTrafficPointImportBatchSuccessfully() throws Exception {
     //given
-    when(sePoDiClient.postServicePointsImport(any())).thenReturn(List.of());
-    when(csvService.getActualServicePointCsvModelsFromS3()).thenReturn(List.of());
+    when(sePoDiClient.postTrafficPointsImport(any())).thenReturn(List.of());
+    when(csvService.getActualTrafficPointCsvModelsFromS3()).thenReturn(List.of());
     doNothing().when(mailProducerService).produceMailNotification(any());
 
     //when & then
@@ -98,7 +98,6 @@ public class ImportServicePointBatchControllerTest extends BaseControllerApiTest
   @Test
   public void shouldPostTrafficPointImportWithFileParameterSuccessfully() throws Exception {
     //given
-    when(csvService.getActualServicePointCsvModelsFromS3()).thenReturn(List.of());
     doNothing().when(mailProducerService).produceMailNotification(any());
 
     File file = Files.createTempFile("dir", "file.csv").toFile();
@@ -113,11 +112,48 @@ public class ImportServicePointBatchControllerTest extends BaseControllerApiTest
   @Test
   public void shouldReturnBadRequestWhenFileIsNotProvidedOnTrafficPointFileImport() throws Exception {
     //given
-    when(csvService.getActualServicePointCsvModelsFromS3()).thenReturn(List.of());
     doNothing().when(mailProducerService).produceMailNotification(any());
 
     //when & then
     mvc.perform(multipart("/v1/import/traffic-point")
+            .contentType(contentType))
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  public void shouldPostLoadingPointImportBatchSuccessfully() throws Exception {
+    //given
+    when(sePoDiClient.postLoadingPointsImport(any())).thenReturn(List.of());
+    when(csvService.getActualLoadingPointCsvModelsFromS3()).thenReturn(List.of());
+    doNothing().when(mailProducerService).produceMailNotification(any());
+
+    //when & then
+    mvc.perform(post("/v1/import/loading-point-batch")
+            .contentType(contentType))
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  public void shouldPostLoadingPointImportWithFileParameterSuccessfully() throws Exception {
+    //given
+    doNothing().when(mailProducerService).produceMailNotification(any());
+
+    File file = Files.createTempFile("dir", "file.csv").toFile();
+    when(fileHelperService.getFileFromMultipart(any())).thenReturn(file);
+
+    //when & then
+    mvc.perform(multipart("/v1/import/loading-point").file("file", "example".getBytes(StandardCharsets.UTF_8))
+            .contentType(contentType))
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  public void shouldReturnBadRequestWhenFileIsNotProvidedOnLoadingPointFileImport() throws Exception {
+    //given
+    doNothing().when(mailProducerService).produceMailNotification(any());
+
+    //when & then
+    mvc.perform(multipart("/v1/import/loading-point")
             .contentType(contentType))
         .andExpect(status().isBadRequest());
   }

@@ -1,5 +1,7 @@
 package ch.sbb.importservice.service;
 
+import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointImportRequestModel;
+import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointImportRequestModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointImportRequestModel;
@@ -24,4 +26,9 @@ public class SePoDiClientService {
   public List<TrafficPointItemImportResult> postTrafficPoints(TrafficPointImportRequestModel trafficPointImportRequestModel) {
     return sePoDiClient.postTrafficPointsImport(trafficPointImportRequestModel);
   }
+
+  public List<LoadingPointItemImportResult> postLoadingPoints(LoadingPointImportRequestModel loadingPointImportRequestModel) {
+    return sePoDiClient.postLoadingPointsImport(loadingPointImportRequestModel);
+  }
+
 }
