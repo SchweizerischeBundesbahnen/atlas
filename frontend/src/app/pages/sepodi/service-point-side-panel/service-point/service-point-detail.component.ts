@@ -46,16 +46,14 @@ export class ServicePointDetailComponent implements OnInit {
   ngOnInit() {
     this.route.parent?.data.subscribe((next) => {
       this.servicePointVersions = next.servicePoint;
-      this.initServicePoint();
 
-      this.mapService.mapInitialized.subscribe((initialized) => {
-        if (initialized) {
-          this.mapService
-            .centerOn(this.selectedVersion.servicePointGeolocation?.wgs84)
-            .then(() => this.mapService.selectServicePoint(this.selectedVersion.number.number));
-        }
-      });
+      this.initServicePoint();
+      this.displayAndSelectServicePointOnMap();
     });
+  }
+
+  switchVersion(newIndex: number) {
+    this.selectedVersion = this.servicePointVersions[newIndex];
   }
 
   private initServicePoint() {
@@ -77,10 +75,6 @@ export class ServicePointDetailComponent implements OnInit {
     this.initType();
   }
 
-  switchVersion(newIndex: number) {
-    this.selectedVersion = this.servicePointVersions[newIndex];
-  }
-
   private initType() {
     if (
       this.selectedVersion.operatingPointType ||
@@ -97,5 +91,15 @@ export class ServicePointDetailComponent implements OnInit {
     if (this.selectedVersion.fareStop) {
       this.selectedType = ServicePointType.FareStop;
     }
+  }
+
+  private displayAndSelectServicePointOnMap() {
+    this.mapService.mapInitialized.subscribe((initialized) => {
+      if (initialized) {
+        this.mapService
+          .centerOn(this.selectedVersion.servicePointGeolocation?.wgs84)
+          .then(() => this.mapService.selectServicePoint(this.selectedVersion.number.number));
+      }
+    });
   }
 }
