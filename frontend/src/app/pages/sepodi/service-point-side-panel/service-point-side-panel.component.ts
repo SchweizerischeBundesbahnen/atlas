@@ -5,6 +5,7 @@ import { VersionsHandlingService } from '../../../core/versioning/versions-handl
 import { DateRange } from '../../../core/versioning/date-range';
 import { MapService } from '../map/map.service';
 import { Pages } from '../../pages';
+import { Subscription } from 'rxjs';
 
 export const TABS = [
   {
@@ -41,6 +42,8 @@ export class ServicePointSidePanelComponent implements OnInit, OnDestroy {
 
   tabs = TABS;
 
+  private servicePointSubscription?: Subscription;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -48,7 +51,7 @@ export class ServicePointSidePanelComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.route.data.subscribe((next) => {
+    this.servicePointSubscription = this.route.data.subscribe((next) => {
       this.servicePointVersions = next.servicePoint;
       this.initVersioning();
     });
@@ -56,6 +59,7 @@ export class ServicePointSidePanelComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.mapService.deselectServicePoint();
+    this.servicePointSubscription?.unsubscribe();
   }
 
   private initVersioning() {

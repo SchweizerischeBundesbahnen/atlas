@@ -26,7 +26,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.map.remove();
+    this.mapService.map.remove();
   }
 
   openStyleSelection() {
