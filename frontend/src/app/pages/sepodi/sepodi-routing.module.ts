@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { SepodiMapviewComponent } from './overview/sepodi-mapview.component';
+import { SepodiMapviewComponent } from './mapview/sepodi-mapview.component';
 import { ServicePointSidePanelComponent } from './service-point-side-panel/service-point-side-panel.component';
 import { Pages } from '../pages';
 import { servicePointResolver } from './service-point-side-panel/service-point-detail.resolver';
