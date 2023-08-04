@@ -29,13 +29,16 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.map.remove();
   }
 
-  toggleStyleSelection() {
-    this.showMapStyleSelection = !this.showMapStyleSelection;
+  openStyleSelection() {
+    this.showMapStyleSelection = true;
+    this.map.once('click', () => {
+      this.showMapStyleSelection = false;
+    });
   }
 
   switchToStyle(style: MapStyle) {
     this.mapService.switchToStyle(style);
-    this.toggleStyleSelection();
+    this.showMapStyleSelection = false;
     this.currentMapStyle = this.mapService.currentMapStyle;
   }
 }
