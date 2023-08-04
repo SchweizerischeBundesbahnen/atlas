@@ -1,30 +1,37 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { CoordinatePair, SpatialReference } from '../../../api';
 import { GeographyFormGroup } from './geography-form-group';
 import { CoordinateTransformationService } from './coordinate-transformation.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'sepodi-geography',
   templateUrl: './geography.component.html',
   styleUrls: ['./geography.component.scss'],
 })
-export class GeographyComponent implements OnInit {
+export class GeographyComponent implements OnInit, OnDestroy {
   @Input() disabled = false;
   @Input() formGroup!: FormGroup<GeographyFormGroup>;
 
   transformedCoordinatePair!: CoordinatePair;
+  private spatialReferenceSubscription!: Subscription;
 
   constructor(private coordinateTransformationService: CoordinateTransformationService) {}
 
   ngOnInit() {
     this.initTransformedCoordinatePair(this.currentSpatialReference);
-    this.formGroup.controls.spatialReference.valueChanges.subscribe((changedReference) => {
-      this.initTransformedCoordinatePair(changedReference!);
-    });
+    this.spatialReferenceSubscription =
+      this.formGroup.controls.spatialReference.valueChanges.subscribe((changedReference) => {
+        this.initTransformedCoordinatePair(changedReference!);
+      });
   }
 
-  initTransformedCoordinatePair(currentSpactialReference: SpatialReference) {
+  ngOnDestroy() {
+    this.spatialReferenceSubscription.unsubscribe();
+  }
+
+  private initTransformedCoordinatePair(currentSpactialReference: SpatialReference) {
     this.transformedCoordinatePair = this.coordinateTransformationService.transform(
       {
         east: this.formGroup.value.east!,
