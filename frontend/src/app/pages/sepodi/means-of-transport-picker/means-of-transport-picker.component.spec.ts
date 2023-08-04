@@ -6,10 +6,11 @@ import {
   TranslateModule,
   TranslatePipe,
 } from '@ngx-translate/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule } from '@angular/forms';
 import { FormModule } from '../../../core/module/form.module';
 import { MeansOfTransportPickerComponent } from './means-of-transport-picker.component';
 import { MeanOfTransport } from '../../../api';
+import { MaterialModule } from '../../../core/module/material.module';
 
 describe('MeansOfTransportPickerComponent', () => {
   let component: MeansOfTransportPickerComponent;
@@ -20,6 +21,8 @@ describe('MeansOfTransportPickerComponent', () => {
       declarations: [MeansOfTransportPickerComponent],
       imports: [
         FormModule,
+        FormsModule,
+        MaterialModule,
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
