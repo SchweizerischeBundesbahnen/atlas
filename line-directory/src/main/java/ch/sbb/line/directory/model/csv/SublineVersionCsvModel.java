@@ -68,7 +68,7 @@ public class SublineVersionCsvModel implements VersionCsvModel {
   public static SublineVersionCsvModel toCsvModel(SublineVersion sublineVersion) {
     SublineVersionCsvModel sublineVersionCsvModel = new SublineVersionCsvModel();
     sublineVersionCsvModel.setSwissSublineNumber(sublineVersion.getSwissSublineNumber());
-    sublineVersionCsvModel.setSwissSublineNumber(sublineVersion.getSwissSublineNumber());
+    sublineVersionCsvModel.setMainlineSlnid(sublineVersion.getMainlineSlnid());
     sublineVersionCsvModel.setSlnid(sublineVersion.getSlnid());
     sublineVersionCsvModel.setStatus(sublineVersion.getStatus());
     sublineVersionCsvModel.setSublineType(sublineVersion.getSublineType());
