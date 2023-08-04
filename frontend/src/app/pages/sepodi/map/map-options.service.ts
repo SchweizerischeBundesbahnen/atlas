@@ -8,11 +8,6 @@ const SWISS_BOUNDING_BOX: LngLatBoundsLike = [
   [10.6677, 47.9163],
 ];
 
-export const SWISS_TOPO_BOUNDING_BOX: LngLatBoundsLike = [
-  [5.140242, 45.3981812],
-  [11.47757, 48.230651],
-];
-
 export const MAP_STYLES: MapStyle[] = [
   { id: 'swisstopofarbe', label: 'SEPODI.MAP_STYLES.SWISSTOPO' },
   { id: 'osm', label: 'SEPODI.MAP_STYLES.OPEN_STREET_MAP' },
