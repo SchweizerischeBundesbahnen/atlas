@@ -1,27 +1,33 @@
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { GeoJsonProperties } from 'geojson';
 import { Router } from '@angular/router';
 import { Pages } from '../../pages';
 import { MapService } from '../map/map.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-sepodi-mapview',
   templateUrl: './sepodi-mapview.component.html',
   styleUrls: ['./sepodi-mapview.component.scss'],
 })
-export class SepodiMapviewComponent implements AfterViewInit {
+export class SepodiMapviewComponent implements AfterViewInit, OnDestroy {
   @ViewChild('detailContainer') detailContainer!: ElementRef<HTMLElement>;
 
   private routeActive = false;
+  private selectedElementSubscription!: Subscription;
 
   constructor(private router: Router, private mapService: MapService) {
-    this.mapService.selectedElement.subscribe((selectedPoint) =>
+    this.selectedElementSubscription = this.mapService.selectedElement.subscribe((selectedPoint) =>
       this.servicePointClicked(selectedPoint)
     );
   }
 
   ngAfterViewInit() {
     this.styleDetailContainer();
+  }
+
+  ngOnDestroy() {
+    this.selectedElementSubscription.unsubscribe();
   }
 
   servicePointClicked($event: GeoJsonProperties) {
