@@ -1,10 +1,9 @@
 <div class="page-with-map">
-  <div
-    class="detail-container"
-    [ngClass]="{ 'side-panel-open': outlet.isActivated }"
-    [ngStyle]="{ width: !outlet.isActivated ? 'unset' : '' }"
-  >
-    <router-outlet #outlet="outlet"></router-outlet>
+  <div #detailContainer class="detail-container">
+    <router-outlet
+      (activate)="setRouteActive(true)"
+      (deactivate)="setRouteActive(false)"
+    ></router-outlet>
   </div>
   <atlas-map class="map-container"></atlas-map>
 </div>
