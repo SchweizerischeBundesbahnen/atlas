@@ -85,7 +85,9 @@ export class MapService {
   }
 
   deselectServicePoint() {
-    this.map.removeFeatureState({ source: MAP_SOURCE_NAME, sourceLayer: MAP_LAYER_NAME });
+    if (this.map) {
+      this.map.removeFeatureState({ source: MAP_SOURCE_NAME, sourceLayer: MAP_LAYER_NAME });
+    }
   }
 
   selectServicePoint(servicePointNumber: number) {
