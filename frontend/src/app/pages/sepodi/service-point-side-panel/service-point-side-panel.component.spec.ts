@@ -4,7 +4,7 @@ import { ServicePointSidePanelComponent } from './service-point-side-panel.compo
 import { ActivatedRoute } from '@angular/router';
 import { AppTestingModule } from '../../../app.testing.module';
 import { DisplayDatePipe } from '../../../core/pipe/display-date.pipe';
-import { FormatServicePointNumber } from '../number-pipe/service-point-number.pipe';
+import { FormatServicePointNumber } from '../number-pipe/format-service-point-number.pipe';
 import { of } from 'rxjs';
 import { BERN_WYLEREGG } from '../service-point-test-data';
 import { AuthService } from '../../../core/auth/auth.service';
@@ -40,5 +40,13 @@ describe('ServicePointSidePanelComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should display current designationOfficial and validity', () => {
+    expect(component.selectedVersion).toBeTruthy();
+
+    expect(component.selectedVersion.designationOfficial).toEqual('Bern, Wyleregg');
+    expect(component.maxValidity.validFrom).toEqual(new Date('2014-12-14'));
+    expect(component.maxValidity.validTo).toEqual(new Date('2021-03-31'));
   });
 });
