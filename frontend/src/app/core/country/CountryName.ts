@@ -1,4 +1,4 @@
-import { Country } from '../../../../api';
+import { Country } from '../../api';
 
 export interface CountryName {
   short: string;

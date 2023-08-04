@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { CoordinatePair, SpatialReference } from '../../../api';
 import { GeographyFormGroup } from './geography-form-group';
-import { CoordinateTransformationService } from './coordinate-transformation-service';
+import { CoordinateTransformationService } from './coordinate-transformation.service';
 
 @Component({
   selector: 'sepodi-geography',
