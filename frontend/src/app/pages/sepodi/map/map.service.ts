@@ -34,41 +34,6 @@ export class MapService {
     return this.map;
   }
 
-  private initMapEvents() {
-    this.map.once('style.load', () => {
-      this.initStoredMapBehaviour();
-      this.deselectServicePoint();
-
-      this.map.on('click', 'selected-sepo', (e) => this.onClick(e));
-      this.map.on('mouseenter', MAP_SOURCE_NAME, () => {
-        if (this.showDetails()) {
-          this.map.getCanvas().style.cursor = 'pointer';
-        }
-      });
-      this.map.on('mouseleave', MAP_SOURCE_NAME, () => {
-        this.map.getCanvas().style.cursor = '';
-      });
-    });
-    this.map.once('load', () => {
-      this.mapInitialized.next(true);
-    });
-  }
-
-  private initStoredMapBehaviour() {
-    this.map.setZoom(Number(localStorage.getItem(mapZoomLocalStorageKey)));
-    this.map.on('zoomend', (e) => {
-      localStorage.setItem(mapZoomLocalStorageKey, String(e.target.getZoom()));
-    });
-
-    const storedLocation = localStorage.getItem(mapLocationLocalStorageKey);
-    if (storedLocation) {
-      this.map.setCenter(JSON.parse(storedLocation) as LngLat);
-    }
-    this.map.on('moveend', (e) => {
-      localStorage.setItem(mapLocationLocalStorageKey, JSON.stringify(e.target.getCenter()));
-    });
-  }
-
   centerOn(wgs84Coordinates: CoordinatePair | undefined) {
     this.map.resize();
     return new Promise((resolve, reject) => {
@@ -108,6 +73,38 @@ export class MapService {
     );
   }
 
+  switchToStyle(style: MapStyle) {
+    this.hideAllMapStyles();
+    this.currentMapStyle = style;
+    this.map.setLayoutProperty(style.id, 'visibility', 'visible');
+  }
+
+  private hideAllMapStyles() {
+    MAP_STYLES.forEach((style) => {
+      this.map.setLayoutProperty(style.id, 'visibility', 'none');
+    });
+  }
+
+  private initMapEvents() {
+    this.map.once('style.load', () => {
+      this.initStoredMapBehaviour();
+      this.deselectServicePoint();
+
+      this.map.on('click', 'selected-sepo', (e) => this.onClick(e));
+      this.map.on('mouseenter', MAP_SOURCE_NAME, () => {
+        if (this.showDetails()) {
+          this.map.getCanvas().style.cursor = 'pointer';
+        }
+      });
+      this.map.on('mouseleave', MAP_SOURCE_NAME, () => {
+        this.map.getCanvas().style.cursor = '';
+      });
+    });
+    this.map.once('load', () => {
+      this.mapInitialized.next(true);
+    });
+  }
+
   private showDetails(): boolean {
     return this.map.getZoom() >= MAP_ZOOM_DETAILS;
   }
@@ -119,15 +116,18 @@ export class MapService {
     this.selectedElement.next(e.features[0].properties);
   }
 
-  switchToStyle(style: MapStyle) {
-    this.hideAllMapStyles();
-    this.currentMapStyle = style;
-    this.map.setLayoutProperty(style.id, 'visibility', 'visible');
-  }
+  private initStoredMapBehaviour() {
+    this.map.setZoom(Number(localStorage.getItem(mapZoomLocalStorageKey)));
+    this.map.on('zoomend', (e) => {
+      localStorage.setItem(mapZoomLocalStorageKey, String(e.target.getZoom()));
+    });
 
-  private hideAllMapStyles() {
-    MAP_STYLES.forEach((style) => {
-      this.map.setLayoutProperty(style.id, 'visibility', 'none');
+    const storedLocation = localStorage.getItem(mapLocationLocalStorageKey);
+    if (storedLocation) {
+      this.map.setCenter(JSON.parse(storedLocation) as LngLat);
+    }
+    this.map.on('moveend', (e) => {
+      localStorage.setItem(mapLocationLocalStorageKey, JSON.stringify(e.target.getCenter()));
     });
   }
 }
