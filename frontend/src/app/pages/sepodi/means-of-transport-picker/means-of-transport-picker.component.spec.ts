@@ -11,6 +11,7 @@ import { FormModule } from '../../../core/module/form.module';
 import { MeansOfTransportPickerComponent } from './means-of-transport-picker.component';
 import { MeanOfTransport } from '../../../api';
 import { MaterialModule } from '../../../core/module/material.module';
+import { By } from '@angular/platform-browser';
 
 describe('MeansOfTransportPickerComponent', () => {
   let component: MeansOfTransportPickerComponent;
@@ -41,5 +42,21 @@ describe('MeansOfTransportPickerComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should add train on click', () => {
+    const trainImage = fixture.debugElement.query(By.css('[data-cy=TRAIN]'));
+    trainImage.nativeElement.click();
+
+    const currentMeans = component.formGroup.value.meansOfTransport;
+    expect(currentMeans).toEqual([MeanOfTransport.Bus, MeanOfTransport.Train]);
+  });
+
+  it('should remove bus on click', () => {
+    const trainImage = fixture.debugElement.query(By.css('[data-cy=BUS]'));
+    trainImage.nativeElement.click();
+
+    const currentMeans = component.formGroup.value.meansOfTransport;
+    expect(currentMeans).toEqual([]);
   });
 });
