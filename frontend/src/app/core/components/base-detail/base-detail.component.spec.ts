@@ -14,6 +14,7 @@ import { AtlasButtonComponent } from '../button/atlas-button.component';
 import { NotificationService } from '../../notification/notification.service';
 import { DetailPageContainerComponent } from '../detail-page-container/detail-page-container.component';
 import { DetailFooterComponent } from '../detail-footer/detail-footer.component';
+import { DateRangeTextComponent } from '../../versioning/date-range-text/date-range-text.component';
 
 @Component({
   selector: 'app-coverage',
@@ -76,6 +77,7 @@ describe('BaseDetailComponent', () => {
         MockUserDetailInfoComponent,
         DetailPageContainerComponent,
         DetailFooterComponent,
+        DateRangeTextComponent,
       ],
       imports: [AppTestingModule],
       providers: [
