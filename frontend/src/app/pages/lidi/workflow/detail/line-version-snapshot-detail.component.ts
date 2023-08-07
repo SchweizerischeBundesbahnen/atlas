@@ -107,10 +107,6 @@ export class LineVersionSnapshotDetailComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
-  formatDate(date: Date) {
-    return DateService.getDateFormatted(date);
-  }
-
   private checkLineVersionSNapshottedAlreadyExists() {
     this.lineService
       .getLineVersions(this.lineVersionSnapshot!.slnid!)
