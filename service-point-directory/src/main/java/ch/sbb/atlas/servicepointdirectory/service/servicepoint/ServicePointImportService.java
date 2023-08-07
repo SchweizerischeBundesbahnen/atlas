@@ -7,10 +7,9 @@ import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointItemImportResu
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointFotComment;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
-import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion.Fields;
+import ch.sbb.atlas.servicepointdirectory.service.BaseImportService;
 import ch.sbb.atlas.servicepointdirectory.service.BasePointUtility;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
-import ch.sbb.atlas.servicepointdirectory.service.servicepoint.util.BeanCopyUtil;
 import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -21,7 +20,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -30,7 +28,7 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class ServicePointImportService {
+public class ServicePointImportService extends BaseImportService<ServicePointVersion> {
 
   private final ServicePointService servicePointService;
   private final VersionableService versionableService;
@@ -58,7 +56,9 @@ public class ServicePointImportService {
           .stream()
           .map(new ServicePointCsvToEntityMapper())
           .toList();
-      replaceCsvMergedVersions(container, servicePointVersions);
+      List<ServicePointVersion> dbVersions = servicePointService.findAllByNumberOrderByValidFrom(
+          ServicePointNumber.of(container.getDidokCode()));
+      replaceCsvMergedVersions(dbVersions, servicePointVersions);
       for (ServicePointVersion servicePointVersion : servicePointVersions) {
         boolean servicePointNumberExisting = servicePointService.isServicePointNumberExisting(servicePointVersion.getNumber());
         if (servicePointNumberExisting) {
@@ -74,50 +74,21 @@ public class ServicePointImportService {
     return importResults;
   }
 
-  /**
-   * In case we want to merge 2 or more versions from a CSV File (Import or "Massen Import") first we need to compare the
-   * number of the found DB versions with the number of the versions present in the CSV File.
-   * If the number of the CSV File versions are less than the DB Versions, and we found more than one version
-   * exactly included between CSV Version validFrom and CSV Version validTo, than we replace the versions properties,
-   * (expect validFrom, validTo and id) and save the versions that comes from the DB.
-   */
-  private void replaceCsvMergedVersions(ServicePointCsvModelContainer container, List<ServicePointVersion> csvServicePointVersions) {
-    List<ServicePointVersion> dbVersions = servicePointService.findAllByNumberOrderByValidFrom(ServicePointNumber.of(container.getDidokCode()));
-    if(dbVersions.size() > csvServicePointVersions.size()) {
-      log.info("The ServicePoint CSV versions are less than the ServicePoint versions stored in the DB. A merge may have taken place...");
-      for(ServicePointVersion csvVersion : csvServicePointVersions) {
-        List<ServicePointVersion> dbVersionsFoundToBeReplaced =
-                findVersionsExactlyIncludedBetweenEditedValidFromAndEditedValidTo(csvVersion.getValidFrom(), csvVersion.getValidTo(), dbVersions);
-        if(dbVersionsFoundToBeReplaced.size() > 1) {
-          updateMergedVersions(csvVersion, dbVersionsFoundToBeReplaced);
-        }
-      }
-    }
+  public void updateServicePointVersionForImportService(ServicePointVersion edited) {
+    List<ServicePointVersion> dbVersions = servicePointService.findAllByNumberOrderByValidFrom(edited.getNumber());
+    ServicePointVersion current = BasePointUtility.getCurrentPointVersion(dbVersions, edited);
+    List<VersionedObject> versionedObjects = versionableService.versioningObjectsForImportFromCsv(current, edited,
+        dbVersions);
+    BasePointUtility.addCreateAndEditDetailsToGeolocationPropertyFromVersionedObjects(versionedObjects,
+        ServicePointVersion.Fields.servicePointGeolocation);
+    versionableService.applyVersioning(ServicePointVersion.class, versionedObjects,
+        servicePointService::saveWithoutValidationForImportOnly,
+        servicePointService::deleteById);
   }
 
-  private void updateMergedVersions(ServicePointVersion csvVersion, List<ServicePointVersion> dbVersionsFoundToBeReplaced) {
-    log.info("The properties of the following versions: {}", dbVersionsFoundToBeReplaced);
-    for(ServicePointVersion dbVersion : dbVersionsFoundToBeReplaced) {
-      log.info("will be overridden with (expect [validFrom, validTo, id]): {}", dbVersion);
-      BeanCopyUtil.copyNonNullProperties(csvVersion,dbVersion, Fields.validFrom,Fields.validTo,Fields.id);
-      if(dbVersion.getServicePointGeolocation() != null) {
-        dbVersion.getServicePointGeolocation().setServicePointVersion(dbVersion);
-      }
-      servicePointService.save(dbVersion);
-    }
-  }
-
-  List<ServicePointVersion> findVersionsExactlyIncludedBetweenEditedValidFromAndEditedValidTo(
-          LocalDate editedValidFrom, LocalDate editedValidTo, List<ServicePointVersion> versions) {
-    List<ServicePointVersion> collected = versions.stream()
-            .filter(toVersioning -> !toVersioning.getValidFrom().isAfter(editedValidTo))
-            .filter(toVersioning -> !toVersioning.getValidTo().isBefore(editedValidFrom))
-            .collect(Collectors.toList());
-    if(!collected.isEmpty() &&
-            (collected.get(0).getValidFrom().equals(editedValidFrom) && collected.get(collected.size()-1).getValidTo().equals(editedValidTo))){
-      return collected;
-    }
-    return List.of();
+  @Override
+  protected void save(ServicePointVersion servicePointVersion) {
+    servicePointService.save(servicePointVersion);
   }
 
   private void saveFotComment(ServicePointCsvModelContainer container) {
@@ -131,7 +102,6 @@ public class ServicePointImportService {
         .fotComment(comments.iterator().next())
         .build());
   }
-
 
   private ServicePointItemImportResult saveServicePointVersion(ServicePointVersion servicePointVersion) {
     try {
@@ -159,18 +129,6 @@ public class ServicePointImportService {
         return buildFailedImportResult(servicePointVersion, exception);
       }
     }
-  }
-
-  public void updateServicePointVersionForImportService(ServicePointVersion edited) {
-    List<ServicePointVersion> dbVersions = servicePointService.findAllByNumberOrderByValidFrom(edited.getNumber());
-    ServicePointVersion current = BasePointUtility.getCurrentPointVersion(dbVersions, edited);
-    List<VersionedObject> versionedObjects = versionableService.versioningObjectsForImportFromCsv(current, edited,
-        dbVersions);
-    BasePointUtility.addCreateAndEditDetailsToGeolocationPropertyFromVersionedObjects(versionedObjects,
-        Fields.servicePointGeolocation);
-    versionableService.applyVersioning(ServicePointVersion.class, versionedObjects,
-        servicePointService::saveWithoutValidationForImportOnly,
-        servicePointService::deleteById);
   }
 
   private ServicePointItemImportResult buildSuccessImportResult(ServicePointVersion servicePointVersion) {
