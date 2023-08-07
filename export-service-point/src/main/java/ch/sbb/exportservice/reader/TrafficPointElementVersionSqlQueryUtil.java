@@ -1,13 +1,12 @@
 package ch.sbb.exportservice.reader;
 
-import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.model.FutureTimetableHelper;
+import ch.sbb.atlas.versioning.date.DateHelper;
 import ch.sbb.exportservice.model.ExportType;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 @UtilityClass
 @Slf4j
@@ -44,10 +43,10 @@ public class TrafficPointElementVersionSqlQueryUtil {
   private String getSqlWhereClause(ExportType exportType) {
     LocalDate nextTimetableYearStartDate = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
     if(exportType.equals(ExportType.WORLD_ONLY_ACTUAL)){
-      return String.format(WORLD_ONLY_ACTUAL_WHERE_STATEMENT, getDateAsSqlString(LocalDate.now()));
+      return String.format(WORLD_ONLY_ACTUAL_WHERE_STATEMENT, DateHelper.getDateAsSqlString(LocalDate.now()));
     }
     if(exportType.equals(ExportType.WORLD_ONLY_TIMETABLE_FUTURE)){
-      return String.format(WORLD_ONLY_FUTURE_TIMETABLE_WHERE_STATEMENT, getDateAsSqlString(nextTimetableYearStartDate));
+      return String.format(WORLD_ONLY_FUTURE_TIMETABLE_WHERE_STATEMENT, DateHelper.getDateAsSqlString(nextTimetableYearStartDate));
     }
     if(exportType.equals(ExportType.WORLD_FULL)){
       return "";
@@ -58,16 +57,14 @@ public class TrafficPointElementVersionSqlQueryUtil {
   private String getFromStatementQuery(ExportType exportType) {
     LocalDate nextTimetableYearStartDate = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
     if(exportType.equals(ExportType.WORLD_ONLY_ACTUAL) || exportType.equals(ExportType.WORLD_FULL)){
-      return String.format(SELECT_AND_JOIN_STATEMENT, getDateAsSqlString(LocalDate.now()), getDateAsSqlString(LocalDate.now()));
+      return String.format(SELECT_AND_JOIN_STATEMENT, DateHelper.getDateAsSqlString(LocalDate.now()), DateHelper.getDateAsSqlString(LocalDate.now()));
     }
     if(exportType.equals(ExportType.WORLD_ONLY_TIMETABLE_FUTURE)){
-      return String.format(SELECT_AND_JOIN_STATEMENT, getDateAsSqlString(nextTimetableYearStartDate),getDateAsSqlString(nextTimetableYearStartDate));
+      return String.format(SELECT_AND_JOIN_STATEMENT, DateHelper.getDateAsSqlString(nextTimetableYearStartDate),DateHelper.getDateAsSqlString(nextTimetableYearStartDate));
     }
     throw  new IllegalStateException("ExportType " + exportType + " not allowed!");
   }
 
-  private String getDateAsSqlString(LocalDate localDate) {
-    return localDate.format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN));
-  }
+
 
 }

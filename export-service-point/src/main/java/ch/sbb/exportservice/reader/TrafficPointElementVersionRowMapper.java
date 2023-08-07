@@ -22,10 +22,10 @@ public class TrafficPointElementVersionRowMapper extends BaseRowMapper implement
     builder.sloid(rs.getString("sloid"));
     builder.designation(rs.getString("designation"));
     builder.designationOperational(rs.getString("designation_operational"));
-    builder.length(rs.getDouble("length"));
+    builder.length(rs.getObject("length") != null ? rs.getDouble("length") : null );
     builder.trafficPointElementType(TrafficPointElementType.fromValue(rs.getInt("traffic_point_element_type")));
-    builder.boardingAreaHeight(rs.getDouble("boarding_area_height"));
-    builder.compassDirection(rs.getDouble("compass_direction"));
+    builder.boardingAreaHeight(rs.getObject("boarding_area_height") != null ? rs.getDouble("boarding_area_height") : null);
+    builder.compassDirection(rs.getObject("compass_direction") != null ? rs.getDouble("compass_direction") : null );
     builder.parentSloid(rs.getString("parent_sloid"));
     builder.servicePointNumber(ServicePointNumber.of(rs.getInt("number")));
     getTrafficPointElementGeolocation(rs,builder);
