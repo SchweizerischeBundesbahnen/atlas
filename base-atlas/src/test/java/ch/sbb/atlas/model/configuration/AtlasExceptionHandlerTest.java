@@ -1,12 +1,14 @@
 package ch.sbb.atlas.model.configuration;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.configuration.handler.AtlasExceptionHandler;
 import java.util.Collections;
+import org.apache.catalina.connector.ClientAbortException;
 import org.hibernate.StaleStateException;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.MethodParameter;
@@ -81,5 +83,10 @@ public class AtlasExceptionHandlerTest {
     assertThat(responseBody).isNotNull();
     assertThat(responseBody.getStatus()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR.value());
     assertThat(responseBody.getMessage()).isEqualTo("bad things happened");
+  }
+
+  @Test
+  void shouldIgnoreClientAbortException() {
+    assertDoesNotThrow(() -> atlasExceptionHandler.handleException(new ClientAbortException()));
   }
 }
