@@ -1,13 +1,12 @@
 package ch.sbb.exportservice.reader;
 
-import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.model.FutureTimetableHelper;
+import ch.sbb.atlas.versioning.date.DateHelper;
 import ch.sbb.exportservice.model.ExportType;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 @UtilityClass
 @Slf4j
@@ -56,16 +55,12 @@ public class ServicePointVersionSqlQueryUtil {
     LocalDate nextTimetableYearStartDate = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
     return switch (exportType) {
       case SWISS_ONLY_FULL -> SWISS_ONLY_FULL_WHERE_STATEMENT;
-      case SWISS_ONLY_ACTUAL -> String.format(SWISS_ONLY_ACTUAL_WHERE_STATEMENT, getDateAsSqlString(LocalDate.now()));
-      case SWISS_ONLY_TIMETABLE_FUTURE -> String.format(SWISS_ONLY_FUTURE_TIMETABLE_WHERE_STATEMENT, getDateAsSqlString(nextTimetableYearStartDate));
-      case WORLD_ONLY_ACTUAL -> String.format(WORLD_ONLY_ACTUAL_WHERE_STATEMENT, getDateAsSqlString(LocalDate.now()));
-      case WORLD_ONLY_TIMETABLE_FUTURE -> String.format(WORLD_ONLY_FUTURE_TIMETABLE_WHERE_STATEMENT, getDateAsSqlString(nextTimetableYearStartDate));
+      case SWISS_ONLY_ACTUAL -> String.format(SWISS_ONLY_ACTUAL_WHERE_STATEMENT, DateHelper.getDateAsSqlString(LocalDate.now()));
+      case SWISS_ONLY_TIMETABLE_FUTURE -> String.format(SWISS_ONLY_FUTURE_TIMETABLE_WHERE_STATEMENT, DateHelper.getDateAsSqlString(nextTimetableYearStartDate));
+      case WORLD_ONLY_ACTUAL -> String.format(WORLD_ONLY_ACTUAL_WHERE_STATEMENT, DateHelper.getDateAsSqlString(LocalDate.now()));
+      case WORLD_ONLY_TIMETABLE_FUTURE -> String.format(WORLD_ONLY_FUTURE_TIMETABLE_WHERE_STATEMENT, DateHelper.getDateAsSqlString(nextTimetableYearStartDate));
       case WORLD_FULL -> "";
     };
-  }
-
-  private String getDateAsSqlString(LocalDate localDate) {
-    return localDate.format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN));
   }
 
 }
