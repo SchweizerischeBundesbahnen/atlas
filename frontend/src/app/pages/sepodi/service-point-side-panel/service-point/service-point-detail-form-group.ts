@@ -2,7 +2,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseDetailFormGroup } from '../../../../core/components/base-detail/base-detail-form-group';
 import {
   Category,
-  CoordinatePair,
   MeanOfTransport,
   ReadServicePointVersion,
   SpatialReference,
