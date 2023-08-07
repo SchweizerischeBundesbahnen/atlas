@@ -66,6 +66,10 @@ export class MapService {
     this.selectServicePointOnMap(renderedFeatures[0].properties.number);
   }
 
+  removeMap() {
+    this.map.remove();
+  }
+
   private selectServicePointOnMap(servicePointNumber: string | number) {
     this.map.setFeatureState(
       { source: MAP_SOURCE_NAME, sourceLayer: MAP_LAYER_NAME, id: servicePointNumber },
@@ -77,6 +81,7 @@ export class MapService {
     this.hideAllMapStyles();
     this.currentMapStyle = style;
     this.map.setLayoutProperty(style.id, 'visibility', 'visible');
+    return this.currentMapStyle;
   }
 
   private hideAllMapStyles() {
