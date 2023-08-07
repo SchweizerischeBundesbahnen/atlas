@@ -8,7 +8,6 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'sepodi-geography',
   templateUrl: './geography.component.html',
-  styleUrls: ['./geography.component.scss'],
 })
 export class GeographyComponent implements OnInit, OnDestroy {
   @Input() disabled = false;
