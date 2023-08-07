@@ -5,13 +5,13 @@ import { DialogService } from '../dialog/dialog.service';
 import { EMPTY, Observable, of, Subject } from 'rxjs';
 import { Page } from '../../model/page';
 import { NotificationService } from '../../notification/notification.service';
-import { DateService } from '../../date/date.service';
 import { ApplicationRole, ApplicationType, Status } from '../../../api';
 import { AuthService } from '../../auth/auth.service';
 import { ValidationService } from '../../validation/validation.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DetailFormComponent } from '../../leave-guard/leave-dirty-form-guard.service';
 import { VersionsHandlingService } from '../../versioning/versions-handling.service';
+import { DateRange } from '../../versioning/date-range';
 
 @Directive()
 export abstract class BaseDetailController<TYPE extends Record>
@@ -24,6 +24,7 @@ export abstract class BaseDetailController<TYPE extends Record>
   switchedIndex!: number | undefined;
   showSwitch: boolean | undefined;
   switchVersionEvent = new Subject<Record>();
+  maxValidity!: DateRange;
 
   protected constructor(
     protected router: Router,
@@ -95,18 +96,6 @@ export abstract class BaseDetailController<TYPE extends Record>
     } else {
       this.ngOnInit();
     }
-  }
-
-  getStartDate() {
-    return DateService.getDateFormatted(
-      VersionsHandlingService.getMaxValidity(this.records).validFrom
-    );
-  }
-
-  getEndDate() {
-    return DateService.getDateFormatted(
-      VersionsHandlingService.getMaxValidity(this.records).validTo
-    );
   }
 
   toggleEdit() {
@@ -231,6 +220,7 @@ export abstract class BaseDetailController<TYPE extends Record>
     this.getRecord();
     if (this.records) {
       VersionsHandlingService.addVersionNumbers(this.records);
+      this.maxValidity = VersionsHandlingService.getMaxValidity(this.records);
     }
     this.form = this.getFormGroup(this.record);
     this.switchVersionEvent.next(this.record);
