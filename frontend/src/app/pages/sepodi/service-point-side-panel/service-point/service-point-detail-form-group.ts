@@ -67,8 +67,8 @@ export class ServicePointFormGroupBuilder {
         categories: new FormControl(version.categories),
         etagVersion: new FormControl(version.etagVersion),
         geolocation: new FormGroup<GeographyFormGroup>({
-          east: new FormControl(this.getCoordinates(version).east),
-          north: new FormControl(this.getCoordinates(version).north),
+          east: new FormControl(this.getCoordinates(version)?.east),
+          north: new FormControl(this.getCoordinates(version)?.north),
           height: new FormControl(version.servicePointGeolocation?.height),
           spatialReference: new FormControl(version.servicePointGeolocation?.spatialReference),
         }),
@@ -82,10 +82,10 @@ export class ServicePointFormGroupBuilder {
     );
   }
 
-  private static getCoordinates(version: ReadServicePointVersion): CoordinatePair {
+  private static getCoordinates(version: ReadServicePointVersion) {
     if (version.servicePointGeolocation?.spatialReference === SpatialReference.Wgs84) {
-      return version.servicePointGeolocation!.wgs84;
+      return version.servicePointGeolocation?.wgs84;
     }
-    return version.servicePointGeolocation!.lv95;
+    return version.servicePointGeolocation?.lv95;
   }
 }
