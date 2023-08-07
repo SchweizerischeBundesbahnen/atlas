@@ -9,6 +9,7 @@ import { of } from 'rxjs';
 import { BERN_WYLEREGG } from '../service-point-test-data';
 import { AuthService } from '../../../core/auth/auth.service';
 import { MockAtlasButtonComponent } from '../../../app.testing.mocks';
+import { DateRangeTextComponent } from '../../../core/versioning/date-range-text/date-range-text.component';
 
 const authService: Partial<AuthService> = {};
 
@@ -25,6 +26,7 @@ describe('ServicePointSidePanelComponent', () => {
         DisplayDatePipe,
         FormatServicePointNumber,
         MockAtlasButtonComponent,
+        DateRangeTextComponent,
       ],
       imports: [AppTestingModule],
       providers: [
