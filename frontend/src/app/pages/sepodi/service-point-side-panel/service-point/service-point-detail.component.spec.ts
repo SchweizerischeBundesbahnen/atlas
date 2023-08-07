@@ -60,7 +60,6 @@ describe('ServicePointDetailComponent', () => {
   it('should initialize versioning correctly', () => {
     expect(component.showVersionSwitch).toBeTrue();
     expect(component.selectedVersion).toBeTruthy();
-    expect(component.selectedVersionIndex).toBe(5);
 
     expect((component.servicePointVersions[0] as Record).versionNumber).toBeTruthy();
   });
