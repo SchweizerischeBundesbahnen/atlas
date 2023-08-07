@@ -73,9 +73,11 @@ public class LoadingPointVersion extends BaseDidokImportEntity implements Versio
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "loading_point_geolocation_id", referencedColumnName = "id")
   private LoadingPointGeolocation loadingPointGeolocation;
+
   @NotNull
   @Column(columnDefinition = "DATE")
   private LocalDate validFrom;
+
   @NotNull
   @Column(columnDefinition = "DATE")
   private LocalDate validTo;

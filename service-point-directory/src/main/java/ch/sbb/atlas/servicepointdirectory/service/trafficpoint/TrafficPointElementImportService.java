@@ -5,7 +5,7 @@ import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointElementCsvMode
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointItemImportResult.TrafficPointItemImportResultBuilder;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
-import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion.Fields;
+import ch.sbb.atlas.servicepointdirectory.service.BaseImportService;
 import ch.sbb.atlas.servicepointdirectory.service.BasePointUtility;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
 import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class TrafficPointElementImportService {
+public class TrafficPointElementImportService extends BaseImportService<TrafficPointElementVersion> {
 
   private final TrafficPointElementService trafficPointElementService;
   private final VersionableService versionableService;
@@ -51,6 +51,8 @@ public class TrafficPointElementImportService {
           .map(new TrafficPointElementCsvToEntityMapper())
           .sorted(Comparator.comparing(TrafficPointElementVersion::getValidFrom))
           .toList();
+      List<TrafficPointElementVersion> dbVersions = trafficPointElementService.findBySloidOrderByValidFrom(container.getSloid());
+      replaceCsvMergedVersions(dbVersions, trafficPointElementVersions);
       for (TrafficPointElementVersion trafficPointElementVersion : trafficPointElementVersions) {
         boolean trafficPointElementExisting = trafficPointElementService.isTrafficPointElementExisting(
             trafficPointElementVersion.getSloid());
@@ -66,13 +68,18 @@ public class TrafficPointElementImportService {
     return importResults;
   }
 
+  @Override
+  protected void save(TrafficPointElementVersion trafficPointElementVersion) {
+    trafficPointElementService.save(trafficPointElementVersion);
+  }
+
   void updateTrafficPointElementVersionImport(TrafficPointElementVersion edited) {
     List<TrafficPointElementVersion> dbVersions = trafficPointElementService.findBySloidOrderByValidFrom(edited.getSloid());
     TrafficPointElementVersion current = BasePointUtility.getCurrentPointVersion(dbVersions, edited);
     List<VersionedObject> versionedObjects = versionableService.versioningObjectsForImportFromCsv(current, edited,
         dbVersions);
     BasePointUtility.addCreateAndEditDetailsToGeolocationPropertyFromVersionedObjects(versionedObjects,
-        Fields.trafficPointElementGeolocation);
+        TrafficPointElementVersion.Fields.trafficPointElementGeolocation);
     versionableService.applyVersioning(TrafficPointElementVersion.class, versionedObjects, trafficPointElementService::save,
         trafficPointElementService::deleteById);
   }
