@@ -1,5 +1,8 @@
 package ch.sbb.atlas.servicepointdirectory.geodata.service;
 
+import static ch.sbb.atlas.servicepointdirectory.repository.ServicePointGeolocationRepository.coordinatesBetween;
+import static ch.sbb.atlas.servicepointdirectory.repository.ServicePointGeolocationRepository.validAtDate;
+
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeoData;
 import ch.sbb.atlas.servicepointdirectory.geodata.mapper.ServicePointGeoDataMapper;
@@ -7,18 +10,14 @@ import ch.sbb.atlas.servicepointdirectory.geodata.protobuf.VectorTile.Tile;
 import ch.sbb.atlas.servicepointdirectory.geodata.transformer.BoundingBoxTransformer;
 import ch.sbb.atlas.servicepointdirectory.geodata.transformer.GeometryTransformer;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointGeolocationRepository;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Point;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
-
-import static ch.sbb.atlas.servicepointdirectory.repository.ServicePointGeolocationRepository.coordinatesBetween;
-import static ch.sbb.atlas.servicepointdirectory.repository.ServicePointGeolocationRepository.validAtDate;
 
 @Service
 @Slf4j
@@ -39,7 +38,7 @@ public class ServicePointGeoDataService {
     log.debug("Calculating Geodata");
     Envelope tileAreaWgs84Exact = boundingBoxTransformer.calculateBoundingBox(z, x, y);
 
-    log.info("Building Tile {}/{}/{}", z, x, y);
+    log.debug("Building Tile {}/{}/{}", z, x, y);
     Envelope tileAreaWgs84WebExact = geometryTransformer.projectArea(SpatialReference.WGS84,
         tileAreaWgs84Exact, SpatialReference.WGS84WEB);
 
