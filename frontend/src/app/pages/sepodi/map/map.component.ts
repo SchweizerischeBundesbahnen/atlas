@@ -26,7 +26,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.mapService.map.remove();
+    this.mapService.removeMap();
   }
 
   openStyleSelection() {
@@ -37,8 +37,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   }
 
   switchToStyle(style: MapStyle) {
-    this.mapService.switchToStyle(style);
+    this.currentMapStyle = this.mapService.switchToStyle(style);
     this.showMapStyleSelection = false;
-    this.currentMapStyle = this.mapService.currentMapStyle;
   }
 }
