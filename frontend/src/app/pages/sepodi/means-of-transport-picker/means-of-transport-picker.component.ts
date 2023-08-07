@@ -12,7 +12,7 @@ export class MeansOfTransportPickerComponent {
   @Input() disabled = false;
   @Input() formGroup!: FormGroup;
 
-  means = Object.values(MeanOfTransport).filter((i) => i !== MeanOfTransport.Unknown);
+  means = Object.values(MeanOfTransport);
 
   get currentlySelectedMeans() {
     return this.formControl.value as MeanOfTransport[];
