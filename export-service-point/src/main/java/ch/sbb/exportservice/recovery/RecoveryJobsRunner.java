@@ -101,16 +101,24 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
   public void onApplicationEvent(ApplicationReadyEvent event) {
     log.info("Start checking jobs to recover...");
     cleanDownloadedFiles();
-    if (checkIfHasJobsToRecover(EXPORT_SERVICE_POINT_JOBS_NAME)) {
-      log.info("Rerunning all export jobs...");
-      exportServicePointJobService.startExportJobs();
+    checkExportServicePointJobToRecover();
+    checkExportTrafficPointJobToRecover();
+  }
+
+  private void checkExportTrafficPointJobToRecover() {
+    if (checkIfHasJobsToRecover(TRAFFIC_POINT_ELEMENT_JOBS_NAME)) {
+      log.info("Rerunning {} export jobs...",EXPORT_SERVICE_POINT_JOBS_NAME);
+      exportTrafficPointElementJobService.startExportJobs();
       log.info("All export jobs successfully recovered!");
     } else {
       log.info("No job found to recover.");
     }
-    if (checkIfHasJobsToRecover(TRAFFIC_POINT_ELEMENT_JOBS_NAME)) {
-      log.info("Rerunning all export jobs...");
-      exportTrafficPointElementJobService.startExportJobs();
+  }
+
+  private void checkExportServicePointJobToRecover() {
+    if (checkIfHasJobsToRecover(EXPORT_SERVICE_POINT_JOBS_NAME)) {
+      log.info("Rerunning {} export jobs...", EXPORT_SERVICE_POINT_JOBS_NAME);
+      exportServicePointJobService.startExportJobs();
       log.info("All export jobs successfully recovered!");
     } else {
       log.info("No job found to recover.");

@@ -43,7 +43,6 @@ public abstract class BaseServicePointProcessor {
         .build();
   }
 
-  //TODO
   public GeolocationBaseModel toModel(GeolocationBaseEntity geolocationBaseEntity) {
     if (geolocationBaseEntity == null) {
       return null;
@@ -57,7 +56,6 @@ public abstract class BaseServicePointProcessor {
             .height(geolocationBaseEntity.getHeight())
             .build();
   }
-
 
   public ServicePointGeolocationModel fromEntity(ServicePointGeolocation servicePointGeolocation) {
     if (servicePointGeolocation == null) {
