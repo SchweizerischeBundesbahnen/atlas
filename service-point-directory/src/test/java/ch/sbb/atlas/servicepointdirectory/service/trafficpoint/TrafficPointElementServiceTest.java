@@ -16,8 +16,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 @IntegrationTest
 public class TrafficPointElementServiceTest {
 
+  // required for test functionality
   @MockBean
   private TrafficPointElementValidationService trafficPointElementValidationService;
+
   private final TrafficPointElementService trafficPointElementService;
   private final TrafficPointElementVersionRepository trafficPointElementVersionRepository;
 
