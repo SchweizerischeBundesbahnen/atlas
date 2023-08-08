@@ -1,26 +1,28 @@
 package ch.sbb.atlas.servicepointdirectory.service.loadingpoint;
 
 import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointCsvModel;
+import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointCsvModelContainer;
+import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointItemImportResult;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
-import ch.sbb.atlas.servicepointdirectory.repository.LoadingPointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
+import ch.sbb.atlas.versioning.service.VersionableService;
 import com.fasterxml.jackson.databind.MappingIterator;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
-@Transactional
 @RequiredArgsConstructor
 public class LoadingPointImportService {
 
-  private final LoadingPointVersionRepository loadingPointVersionRepository;
+  private final LoadingPointService loadingPointService;
+  private final VersionableService versionableService;
 
   static List<LoadingPointCsvModel> parseLoadingPoints(InputStream inputStream)
       throws IOException {
@@ -34,9 +36,34 @@ public class LoadingPointImportService {
     return loadingPoints;
   }
 
-  public void importLoadingPoints(List<LoadingPointCsvModel> csvModels) {
-    List<LoadingPointVersion> loadingPointVersions = csvModels.stream().map(new LoadingPointCsvToEntityMapper()).toList();
-    loadingPointVersionRepository.saveAll(loadingPointVersions);
+  public List<LoadingPointItemImportResult> importLoadingPoints(
+      final List<LoadingPointCsvModelContainer> loadingPointCsvModelContainers) {
+    final List<LoadingPointItemImportResult> importResults = new ArrayList<>();
+    for (LoadingPointCsvModelContainer container : loadingPointCsvModelContainers) {
+      final List<LoadingPointVersion> loadingPointVersions = container.getLoadingPointCsvModelList()
+          .stream()
+          .map(new LoadingPointCsvToEntityMapper())
+          .sorted(Comparator.comparing(LoadingPointVersion::getValidFrom))
+          .toList();
+      for (LoadingPointVersion loadingPointVersion : loadingPointVersions) {
+        boolean loadingPointElementExisting = true; // todo: with service
+        if (loadingPointElementExisting) {
+          importResults.add(updateLoadingPointVersion(loadingPointVersion));
+        } else {
+          importResults.add(saveLoadingPointVersion(loadingPointVersion));
+        }
+      }
+    }
+    return importResults;
+  }
+
+  private LoadingPointItemImportResult updateLoadingPointVersion(LoadingPointVersion loadingPointVersion) {
+
+  }
+
+  private LoadingPointItemImportResult saveLoadingPointVersion(LoadingPointVersion loadingPointVersion) {
+
   }
 
 }
+// todo: pre-merge, pre-check, with geolocation versionable property update
