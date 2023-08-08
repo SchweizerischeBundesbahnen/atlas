@@ -7,7 +7,6 @@ import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion.Fields;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion_;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementRequestParams;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Singular;
 import lombok.ToString;
@@ -15,7 +14,6 @@ import lombok.experimental.SuperBuilder;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,9 +28,6 @@ public class TrafficPointElementSearchRestrictions {
   @Singular(ignoreNullCollections = true)
   private List<String> searchCriterias;
 
-  @Builder.Default
-  private Optional<LocalDate> validOn = Optional.empty();
-
   public Specification<TrafficPointElementVersion> getSpecification() {
 //    List<String> sloidValues = new ArrayList<>();
 //
@@ -44,17 +39,17 @@ public class TrafficPointElementSearchRestrictions {
 //    }
 
     return specificationBuilder().searchCriteriaSpecification(searchCriterias)
-        .and(specificationBuilder().validOnSpecification(validOn))
-        .and(specificationBuilder().inSpecification(trafficPointElementRequestParams.getSloids(), Fields.sloid))
-        .and(specificationBuilder().inSpecification(trafficPointElementRequestParams.getParentsloids(), Fields.parentSloid))
-        .and(specificationBuilder().inSpecification(trafficPointElementRequestParams.getServicePointNumbers(), Fields.servicePointNumber))
-        .and(new ServicePointNumberSboidSpecification<>(
+            .and(specificationBuilder().validOnSpecification(Optional.ofNullable(trafficPointElementRequestParams.getValidOn())))
+            .and(specificationBuilder().inSpecification(trafficPointElementRequestParams.getSloids(), Fields.sloid))
+            .and(specificationBuilder().inSpecification(trafficPointElementRequestParams.getParentsloids(), Fields.parentSloid))
+            .and(specificationBuilder().inSpecification(trafficPointElementRequestParams.getServicePointNumbers(), Fields.servicePointNumber))
+            .and(new ServicePointNumberSboidSpecification<>(
                 trafficPointElementRequestParams.getSboids(),
                 trafficPointElementRequestParams.getServicePointNumbersShort(),
                 trafficPointElementRequestParams.getServicePointNumbers(),
                 trafficPointElementRequestParams.getUicCountryCodes().stream().map(uicCountryCode -> Country.from(Integer.valueOf(uicCountryCode))).toList()
                 ))
-        .and(new ValidOrEditionTimerangeSpecification<>(
+            .and(new ValidOrEditionTimerangeSpecification<>(
             trafficPointElementRequestParams.getFromDate(),
             trafficPointElementRequestParams.getToDate(),
             trafficPointElementRequestParams.getCreatedAfter(),
