@@ -29,14 +29,6 @@ public class TrafficPointElementSearchRestrictions {
   private List<String> searchCriterias;
 
   public Specification<TrafficPointElementVersion> getSpecification() {
-//    List<String> sloidValues = new ArrayList<>();
-//
-//    if (trafficPointElementRequestParams.getSloids() != null) {
-//      for (String sloidEntry : trafficPointElementRequestParams.getSloids()) {
-//        String[] values = sloidEntry.split(",");
-//        sloidValues.addAll(Arrays.asList(values));
-//      }
-//    }
 
     return specificationBuilder().searchCriteriaSpecification(searchCriterias)
             .and(specificationBuilder().validOnSpecification(Optional.ofNullable(trafficPointElementRequestParams.getValidOn())))
