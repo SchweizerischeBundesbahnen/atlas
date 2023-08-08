@@ -26,8 +26,8 @@ public class TrafficPointMigrationIntegrationTest {
 
   static final String BASE_PATH = "/migration/";
 
-  private static final String DIDOK_CSV_FILE = "DIDOK3_VERKEHRSPUNKTELEMENTE_ALL_V_1_20230807011916.csv";
-  private static final String ATLAS_CSV_FILE = "full-world-traffic_point-2023-08-07.csv";
+  private static final String DIDOK_CSV_FILE = "DIDOK3_VERKEHRSPUNKTELEMENTE_ALL_V_1_20230808023927.csv";
+  private static final String ATLAS_CSV_FILE = "full-world-traffic_point-2023-08-08.csv";
 
   private static final List<TrafficPointVersionCsvModel> trafficPointElementCsvModels = new ArrayList<>();
   private static final List<TrafficPointElementCsvModel> didokCsvLines = new ArrayList<>();
@@ -67,9 +67,7 @@ public class TrafficPointMigrationIntegrationTest {
   @Test
   @Order(3)
   void shouldHaveSameValidityOnEachDidokCode() {
-    //TODO: regenerate Export after this Traffic Point is fixed on Didok
-    List<TrafficPointElementCsvModel> filterOverlappedVersionToBeFixed = didokCsvLines.stream().filter(trafficPointElementCsvModel -> !trafficPointElementCsvModel.getSloid().equals("ch:1:sloid:70577:0:17162")).toList();
-    Map<String, Validity> groupedDidokSloids = filterOverlappedVersionToBeFixed.stream().collect(
+    Map<String, Validity> groupedDidokSloids = didokCsvLines.stream().collect(
         Collectors.groupingBy(TrafficPointElementCsvModel::getSloid, Collectors.collectingAndThen(Collectors.toList(),
             list -> new Validity(
                 list.stream().map(i -> new DateRange(i.getValidFrom(), i.getValidTo())).collect(Collectors.toList())).minify())));
