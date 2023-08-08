@@ -14,9 +14,9 @@ import lombok.NoArgsConstructor;
 @Schema(name = "LoadingPointImportRequest")
 public class LoadingPointImportRequestModel {
 
-  @Schema(name = "List of LoadingPointCsvModels to import")
+  @Schema(name = "List of LoadingPointCsvModelContainers to import")
   @NotNull
   @NotEmpty
-  private List<LoadingPointCsvModel> loadingPointCsvModels;
+  private List<LoadingPointCsvModelContainer> loadingPointCsvModelContainers;
 
 }
