@@ -76,7 +76,7 @@ public class TrafficPointElementServiceTest {
         TrafficPointElementSearchRestrictions.builder()
             .pageable(Pageable.unpaged())
             .trafficPointElementRequestParams(TrafficPointElementRequestParams.builder()
-                .sloid("ch:1:sloid:1400015:0:310240")
+                .sloids(List.of("ch:1:sloid:1400015:0:310240"))
                 .build())
             .build();
     Page<TrafficPointElementVersion> result = trafficPointElementService.findAll(searchRestrictions);
@@ -97,9 +97,135 @@ public class TrafficPointElementServiceTest {
         TrafficPointElementSearchRestrictions.builder()
             .pageable(Pageable.unpaged())
             .trafficPointElementRequestParams(TrafficPointElementRequestParams.builder()
-                .sloid("daniel hat ferien")
+                .sloids(List.of("daniel hat ferien"))
                 .build())
             .build();
+    Page<TrafficPointElementVersion> result = trafficPointElementService.findAll(searchRestrictions);
+
+    // then
+    assertThat(result.getContent()).isEmpty();
+  }
+
+  @Test
+  void shouldFindByParentSloids() {
+    // given
+    servicePointVersionRepository.save(TrafficPointTestData.testServicePointForTrafficPoint());
+    TrafficPointElementVersion trafficPointElementVersion = TrafficPointTestData.getTrafficPoint();
+    trafficPointElementService.save(trafficPointElementVersion);
+
+    // when
+    TrafficPointElementSearchRestrictions searchRestrictions =
+            TrafficPointElementSearchRestrictions.builder()
+                    .pageable(Pageable.unpaged())
+                    .trafficPointElementRequestParams(TrafficPointElementRequestParams.builder()
+                            .parentsloids(List.of("ch:1:sloid:1400015:310240"))
+                            .build())
+                    .build();
+    Page<TrafficPointElementVersion> result = trafficPointElementService.findAll(searchRestrictions);
+
+    // then
+    assertThat(result.getContent()).hasSize(1);
+  }
+
+  @Test
+  void shouldNotFindByParentSloids() {
+    // given
+    servicePointVersionRepository.save(TrafficPointTestData.testServicePointForTrafficPoint());
+    TrafficPointElementVersion trafficPointElementVersion = TrafficPointTestData.getTrafficPoint();
+    trafficPointElementService.save(trafficPointElementVersion);
+
+    // when
+    TrafficPointElementSearchRestrictions searchRestrictions =
+            TrafficPointElementSearchRestrictions.builder()
+                    .pageable(Pageable.unpaged())
+                    .trafficPointElementRequestParams(TrafficPointElementRequestParams.builder()
+                            .parentsloids(List.of("888"))
+                            .build())
+                    .build();
+    Page<TrafficPointElementVersion> result = trafficPointElementService.findAll(searchRestrictions);
+
+    // then
+    assertThat(result.getContent()).isEmpty();
+  }
+
+  @Test
+  void shouldFindByUicCountryCodes() {
+    // given
+    servicePointVersionRepository.save(TrafficPointTestData.testServicePointForTrafficPoint());
+    TrafficPointElementVersion trafficPointElementVersion = TrafficPointTestData.getTrafficPoint();
+    trafficPointElementService.save(trafficPointElementVersion);
+
+    // when
+    TrafficPointElementSearchRestrictions searchRestrictions =
+            TrafficPointElementSearchRestrictions.builder()
+                    .pageable(Pageable.unpaged())
+                    .trafficPointElementRequestParams(TrafficPointElementRequestParams.builder()
+                            .uicCountryCodes(List.of("14"))
+                            .build())
+                    .build();
+    Page<TrafficPointElementVersion> result = trafficPointElementService.findAll(searchRestrictions);
+
+    // then
+    assertThat(result.getContent()).hasSize(1);
+  }
+
+  @Test
+  void shouldNotFindByUicCountryCodes() {
+    // given
+    servicePointVersionRepository.save(TrafficPointTestData.testServicePointForTrafficPoint());
+    TrafficPointElementVersion trafficPointElementVersion = TrafficPointTestData.getTrafficPoint();
+    trafficPointElementService.save(trafficPointElementVersion);
+
+    // when
+    TrafficPointElementSearchRestrictions searchRestrictions =
+            TrafficPointElementSearchRestrictions.builder()
+                    .pageable(Pageable.unpaged())
+                    .trafficPointElementRequestParams(TrafficPointElementRequestParams.builder()
+                            .uicCountryCodes(List.of("11"))
+                            .build())
+                    .build();
+    Page<TrafficPointElementVersion> result = trafficPointElementService.findAll(searchRestrictions);
+
+    // then
+    assertThat(result.getContent()).isEmpty();
+  }
+
+  @Test
+  void shouldFindByServicePointNumberShortNumbers() {
+    // given
+    servicePointVersionRepository.save(TrafficPointTestData.testServicePointForTrafficPoint());
+    TrafficPointElementVersion trafficPointElementVersion = TrafficPointTestData.getTrafficPoint();
+    trafficPointElementService.save(trafficPointElementVersion);
+
+    // when
+    TrafficPointElementSearchRestrictions searchRestrictions =
+            TrafficPointElementSearchRestrictions.builder()
+                    .pageable(Pageable.unpaged())
+                    .trafficPointElementRequestParams(TrafficPointElementRequestParams.builder()
+                            .servicePointNumbersShort(List.of(1))
+                            .build())
+                    .build();
+    Page<TrafficPointElementVersion> result = trafficPointElementService.findAll(searchRestrictions);
+
+    // then
+    assertThat(result.getContent()).hasSize(1);
+  }
+
+  @Test
+  void shouldNotFindByServicePointNumberShortNumbers() {
+    // given
+    servicePointVersionRepository.save(TrafficPointTestData.testServicePointForTrafficPoint());
+    TrafficPointElementVersion trafficPointElementVersion = TrafficPointTestData.getTrafficPoint();
+    trafficPointElementService.save(trafficPointElementVersion);
+
+    // when
+    TrafficPointElementSearchRestrictions searchRestrictions =
+            TrafficPointElementSearchRestrictions.builder()
+                    .pageable(Pageable.unpaged())
+                    .trafficPointElementRequestParams(TrafficPointElementRequestParams.builder()
+                            .servicePointNumbersShort(List.of(55))
+                            .build())
+                    .build();
     Page<TrafficPointElementVersion> result = trafficPointElementService.findAll(searchRestrictions);
 
     // then
@@ -149,91 +275,7 @@ public class TrafficPointElementServiceTest {
   }
 
   @Test
-  void shouldFindByServicePointNumberSboid() {
-    // given
-    servicePointVersionRepository.save(TrafficPointTestData.testServicePointForTrafficPoint());
-    TrafficPointElementVersion trafficPointElementVersion = TrafficPointTestData.getTrafficPoint();
-    trafficPointElementService.save(trafficPointElementVersion);
-
-    // when
-    TrafficPointElementSearchRestrictions searchRestrictions =
-        TrafficPointElementSearchRestrictions.builder()
-            .pageable(Pageable.unpaged())
-            .trafficPointElementRequestParams(TrafficPointElementRequestParams.builder()
-                .sboids(List.of("somesboid"))
-                .build())
-            .build();
-    Page<TrafficPointElementVersion> result = trafficPointElementService.findAll(searchRestrictions);
-
-    // then
-    assertThat(result.getContent()).hasSize(1);
-  }
-
-  @Test
-  void shouldNotFindByServicePointNumberSboid() {
-    // given
-    servicePointVersionRepository.save(TrafficPointTestData.testServicePointForTrafficPoint());
-    TrafficPointElementVersion trafficPointElementVersion = TrafficPointTestData.getTrafficPoint();
-    trafficPointElementService.save(trafficPointElementVersion);
-
-    // when
-    TrafficPointElementSearchRestrictions searchRestrictions =
-            TrafficPointElementSearchRestrictions.builder()
-                    .pageable(Pageable.unpaged())
-                    .trafficPointElementRequestParams(TrafficPointElementRequestParams.builder()
-                            .sboids(List.of("abrakadabra"))
-                            .build())
-                    .build();
-    Page<TrafficPointElementVersion> result = trafficPointElementService.findAll(searchRestrictions);
-
-    // then
-    assertThat(result.getContent()).isEmpty();
-  }
-
-  @Test
-  void shouldFindByServicePointNumberShortNumber() {
-    // given
-    servicePointVersionRepository.save(TrafficPointTestData.testServicePointForTrafficPoint());
-    TrafficPointElementVersion trafficPointElementVersion = TrafficPointTestData.getTrafficPoint();
-    trafficPointElementService.save(trafficPointElementVersion);
-
-    // when
-    TrafficPointElementSearchRestrictions searchRestrictions =
-            TrafficPointElementSearchRestrictions.builder()
-                    .pageable(Pageable.unpaged())
-                    .trafficPointElementRequestParams(TrafficPointElementRequestParams.builder()
-                            .servicePointNumbersShort(List.of(1))
-                            .build())
-                    .build();
-    Page<TrafficPointElementVersion> result = trafficPointElementService.findAll(searchRestrictions);
-
-    // then
-    assertThat(result.getContent()).hasSize(1);
-  }
-
-  @Test
-  void shouldNotFindByServicePointNumberShortNumber() {
-    // given
-    servicePointVersionRepository.save(TrafficPointTestData.testServicePointForTrafficPoint());
-    TrafficPointElementVersion trafficPointElementVersion = TrafficPointTestData.getTrafficPoint();
-    trafficPointElementService.save(trafficPointElementVersion);
-
-    // when
-    TrafficPointElementSearchRestrictions searchRestrictions =
-            TrafficPointElementSearchRestrictions.builder()
-                    .pageable(Pageable.unpaged())
-                    .trafficPointElementRequestParams(TrafficPointElementRequestParams.builder()
-                            .servicePointNumbersShort(List.of(55))
-                            .build())
-                    .build();
-    Page<TrafficPointElementVersion> result = trafficPointElementService.findAll(searchRestrictions);
-
-    // then
-    assertThat(result.getContent()).isEmpty();
-  }
-
-  @Test
-  void shouldFindByServicePointNumberServicePointNumber() {
+  void shouldFindByServicePointNumberServicePointNumbers() {
     // given
     servicePointVersionRepository.save(TrafficPointTestData.testServicePointForTrafficPoint());
     TrafficPointElementVersion trafficPointElementVersion = TrafficPointTestData.getTrafficPoint();
@@ -254,7 +296,7 @@ public class TrafficPointElementServiceTest {
   }
 
   @Test
-  void shouldNotFindByServicePointNumberServicePointNumber() {
+  void shouldNotFindByServicePointNumberServicePointNumbers() {
     // given
     servicePointVersionRepository.save(TrafficPointTestData.testServicePointForTrafficPoint());
     TrafficPointElementVersion trafficPointElementVersion = TrafficPointTestData.getTrafficPoint();
@@ -275,7 +317,7 @@ public class TrafficPointElementServiceTest {
   }
 
   @Test
-  void shouldFindByServicePointNumberUicCountryCode() {
+  void shouldFindByServicePointNumberSboids() {
     // given
     servicePointVersionRepository.save(TrafficPointTestData.testServicePointForTrafficPoint());
     TrafficPointElementVersion trafficPointElementVersion = TrafficPointTestData.getTrafficPoint();
@@ -283,12 +325,12 @@ public class TrafficPointElementServiceTest {
 
     // when
     TrafficPointElementSearchRestrictions searchRestrictions =
-            TrafficPointElementSearchRestrictions.builder()
-                    .pageable(Pageable.unpaged())
-                    .trafficPointElementRequestParams(TrafficPointElementRequestParams.builder()
-                            .uicCountryCodes(List.of("14"))
-                            .build())
-                    .build();
+        TrafficPointElementSearchRestrictions.builder()
+            .pageable(Pageable.unpaged())
+            .trafficPointElementRequestParams(TrafficPointElementRequestParams.builder()
+                .sboids(List.of("somesboid"))
+                .build())
+            .build();
     Page<TrafficPointElementVersion> result = trafficPointElementService.findAll(searchRestrictions);
 
     // then
@@ -296,7 +338,7 @@ public class TrafficPointElementServiceTest {
   }
 
   @Test
-  void shouldNotFindByServicePointNumberUicCountryCode() {
+  void shouldNotFindByServicePointNumberSboids() {
     // given
     servicePointVersionRepository.save(TrafficPointTestData.testServicePointForTrafficPoint());
     TrafficPointElementVersion trafficPointElementVersion = TrafficPointTestData.getTrafficPoint();
@@ -307,7 +349,7 @@ public class TrafficPointElementServiceTest {
             TrafficPointElementSearchRestrictions.builder()
                     .pageable(Pageable.unpaged())
                     .trafficPointElementRequestParams(TrafficPointElementRequestParams.builder()
-                            .uicCountryCodes(List.of("11"))
+                            .sboids(List.of("abrakadabra"))
                             .build())
                     .build();
     Page<TrafficPointElementVersion> result = trafficPointElementService.findAll(searchRestrictions);
@@ -317,54 +359,11 @@ public class TrafficPointElementServiceTest {
   }
 
   @Test
-  void shouldFindByServicePointNumberParentSloid() {
+  void shouldFindByFromDate() {
     // given
     servicePointVersionRepository.save(TrafficPointTestData.testServicePointForTrafficPoint());
     TrafficPointElementVersion trafficPointElementVersion = TrafficPointTestData.getTrafficPoint();
     trafficPointElementService.save(trafficPointElementVersion);
-
-    // when
-    TrafficPointElementSearchRestrictions searchRestrictions =
-            TrafficPointElementSearchRestrictions.builder()
-                    .pageable(Pageable.unpaged())
-                    .trafficPointElementRequestParams(TrafficPointElementRequestParams.builder()
-                            .parentsloids(List.of("ch:1:sloid:1400015:310240"))
-                            .build())
-                    .build();
-    Page<TrafficPointElementVersion> result = trafficPointElementService.findAll(searchRestrictions);
-
-    // then
-    assertThat(result.getContent()).hasSize(1);
-  }
-
-  @Test
-  void shouldNotFindByServicePointNumberParentSloid() {
-    // given
-    servicePointVersionRepository.save(TrafficPointTestData.testServicePointForTrafficPoint());
-    TrafficPointElementVersion trafficPointElementVersion = TrafficPointTestData.getTrafficPoint();
-    trafficPointElementService.save(trafficPointElementVersion);
-
-    // when
-    TrafficPointElementSearchRestrictions searchRestrictions =
-            TrafficPointElementSearchRestrictions.builder()
-                    .pageable(Pageable.unpaged())
-                    .trafficPointElementRequestParams(TrafficPointElementRequestParams.builder()
-                            .parentsloids(List.of("888"))
-                            .build())
-                    .build();
-    Page<TrafficPointElementVersion> result = trafficPointElementService.findAll(searchRestrictions);
-
-    // then
-    assertThat(result.getContent()).isEmpty();
-  }
-
-  @Test
-  void shouldFindByServicePointNumberFromDate() {
-    // given
-    servicePointVersionRepository.save(TrafficPointTestData.testServicePointForTrafficPoint());
-    TrafficPointElementVersion trafficPointElementVersion = TrafficPointTestData.getTrafficPoint();
-    trafficPointElementService.save(trafficPointElementVersion);
-    LocalDate toDate = trafficPointElementVersion.getValidTo();
     LocalDate fromDate = trafficPointElementVersion.getValidFrom().minusDays(1);
 
     // when
@@ -382,7 +381,7 @@ public class TrafficPointElementServiceTest {
   }
 
   @Test
-  void shouldNotFindByServicePointNumberFromDate() {
+  void shouldNotFindByFromDate() {
     // given
     servicePointVersionRepository.save(TrafficPointTestData.testServicePointForTrafficPoint());
     TrafficPointElementVersion trafficPointElementVersion = TrafficPointTestData.getTrafficPoint();
@@ -404,7 +403,7 @@ public class TrafficPointElementServiceTest {
   }
 
   @Test
-  void shouldFindByServicePointNumberToDate() {
+  void shouldFindByToDate() {
     // given
     servicePointVersionRepository.save(TrafficPointTestData.testServicePointForTrafficPoint());
     TrafficPointElementVersion trafficPointElementVersion = TrafficPointTestData.getTrafficPoint();
@@ -426,7 +425,7 @@ public class TrafficPointElementServiceTest {
   }
 
   @Test
-  void shouldNotFindByServicePointNumberToDate() {
+  void shouldNotFindByToDate() {
     // given
     servicePointVersionRepository.save(TrafficPointTestData.testServicePointForTrafficPoint());
     TrafficPointElementVersion trafficPointElementVersion = TrafficPointTestData.getTrafficPoint();
@@ -448,7 +447,7 @@ public class TrafficPointElementServiceTest {
   }
 
   @Test
-  void shouldFindByServicePointNumberOnDate() {
+  void shouldFindByOnDate() {
     // given
     servicePointVersionRepository.save(TrafficPointTestData.testServicePointForTrafficPoint());
     TrafficPointElementVersion trafficPointElementVersion = TrafficPointTestData.getTrafficPoint();
@@ -469,7 +468,7 @@ public class TrafficPointElementServiceTest {
   }
 
   @Test
-  void shouldNotFindByServicePointNumberOnDate() {
+  void shouldNotFindByOnDate() {
     // given
     servicePointVersionRepository.save(TrafficPointTestData.testServicePointForTrafficPoint());
     TrafficPointElementVersion trafficPointElementVersion = TrafficPointTestData.getTrafficPoint();
@@ -481,6 +480,90 @@ public class TrafficPointElementServiceTest {
                     .pageable(Pageable.unpaged())
                     .trafficPointElementRequestParams(TrafficPointElementRequestParams.builder()
                             .validOn(LocalDate.of(2999, 1, 1))
+                            .build())
+                    .build();
+    Page<TrafficPointElementVersion> result = trafficPointElementService.findAll(searchRestrictions);
+
+    // then
+    assertThat(result.getContent()).isEmpty();
+  }
+
+  @Test
+  void shouldFindByCreatedAfter() {
+    // given
+    servicePointVersionRepository.save(TrafficPointTestData.testServicePointForTrafficPoint());
+    TrafficPointElementVersion trafficPointElementVersion = TrafficPointTestData.getTrafficPoint();
+    trafficPointElementService.save(trafficPointElementVersion);
+
+    // when
+    TrafficPointElementSearchRestrictions searchRestrictions =
+            TrafficPointElementSearchRestrictions.builder()
+                    .pageable(Pageable.unpaged())
+                    .trafficPointElementRequestParams(TrafficPointElementRequestParams.builder()
+                            .createdAfter(trafficPointElementVersion.getCreationDate().minusSeconds(1))
+                            .build())
+                    .build();
+    Page<TrafficPointElementVersion> result = trafficPointElementService.findAll(searchRestrictions);
+
+    // then
+    assertThat(result.getContent()).hasSize(1);
+  }
+
+  @Test
+  void shouldNoFindByCreatedAfter() {
+    // given
+    servicePointVersionRepository.save(TrafficPointTestData.testServicePointForTrafficPoint());
+    TrafficPointElementVersion trafficPointElementVersion = TrafficPointTestData.getTrafficPoint();
+    trafficPointElementService.save(trafficPointElementVersion);
+
+    // when
+    TrafficPointElementSearchRestrictions searchRestrictions =
+            TrafficPointElementSearchRestrictions.builder()
+                    .pageable(Pageable.unpaged())
+                    .trafficPointElementRequestParams(TrafficPointElementRequestParams.builder()
+                            .createdAfter(trafficPointElementVersion.getCreationDate().plusSeconds(1))
+                            .build())
+                    .build();
+    Page<TrafficPointElementVersion> result = trafficPointElementService.findAll(searchRestrictions);
+
+    // then
+    assertThat(result.getContent()).isEmpty();
+  }
+
+  @Test
+  void shouldFindByModifiedAfter() {
+    // given
+    servicePointVersionRepository.save(TrafficPointTestData.testServicePointForTrafficPoint());
+    TrafficPointElementVersion trafficPointElementVersion = TrafficPointTestData.getTrafficPoint();
+    trafficPointElementService.save(trafficPointElementVersion);
+
+    // when
+    TrafficPointElementSearchRestrictions searchRestrictions =
+            TrafficPointElementSearchRestrictions.builder()
+                    .pageable(Pageable.unpaged())
+                    .trafficPointElementRequestParams(TrafficPointElementRequestParams.builder()
+                            .modifiedAfter(trafficPointElementVersion.getEditionDate().minusSeconds(1))
+                            .build())
+                    .build();
+    Page<TrafficPointElementVersion> result = trafficPointElementService.findAll(searchRestrictions);
+
+    // then
+    assertThat(result.getContent()).hasSize(1);
+  }
+
+  @Test
+  void shouldNoFindByModifiedAfter() {
+    // given
+    servicePointVersionRepository.save(TrafficPointTestData.testServicePointForTrafficPoint());
+    TrafficPointElementVersion trafficPointElementVersion = TrafficPointTestData.getTrafficPoint();
+    trafficPointElementService.save(trafficPointElementVersion);
+
+    // when
+    TrafficPointElementSearchRestrictions searchRestrictions =
+            TrafficPointElementSearchRestrictions.builder()
+                    .pageable(Pageable.unpaged())
+                    .trafficPointElementRequestParams(TrafficPointElementRequestParams.builder()
+                            .modifiedAfter(trafficPointElementVersion.getEditionDate().plusSeconds(1))
                             .build())
                     .build();
     Page<TrafficPointElementVersion> result = trafficPointElementService.findAll(searchRestrictions);
