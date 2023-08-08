@@ -38,7 +38,6 @@ public class TrafficPointElementSearchRestrictions {
             .and(new ServicePointNumberSboidSpecification<>(
                 trafficPointElementRequestParams.getSboids(),
                 trafficPointElementRequestParams.getServicePointNumbersShort(),
-                trafficPointElementRequestParams.getServicePointNumbers(),
                 trafficPointElementRequestParams.getUicCountryCodes().stream().map(uicCountryCode -> Country.from(Integer.valueOf(uicCountryCode))).toList()
                 ))
             .and(new ValidOrEditionTimerangeSpecification<>(
