@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.StaleObjectStateException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,100 +28,8 @@ public class TrafficPointElementService {
     private final TrafficPointElementValidationService trafficPointElementValidationService;
 
     public Page<TrafficPointElementVersion> findAll(TrafficPointElementSearchRestrictions searchRestrictions) {
-        return trafficPointElementVersionRepository.findByServicePointParameters(
-                searchRestrictions.getTrafficPointElementRequestParams(), searchRestrictions.getPageable());
-<<<<<<< HEAD
-    }
-    public Integer findServicePointNumberForSboid(String sboid) {
-        return trafficPointElementVersionRepository.forGivenSboidFindSpn(sboid).stream().findFirst().orElseThrow();
-    }
-
-//  public Page<TrafficPointElementVersion> findAll(TrafficPointElementSearchRestrictions searchRestrictions) {
-//    List<String> bos = new ArrayList<>();
-//    bos.add("imposiblebos");
-//    List<Integer> shorts = new ArrayList<>();
-//    shorts.add(-1);
-//    if (!searchRestrictions.getTrafficPointElementRequestParams().getBusinessOrganisations().isEmpty() ||
-//    !searchRestrictions.getTrafficPointElementRequestParams().getServicePointNumberShort().isEmpty() ||
-//    !searchRestrictions.getTrafficPointElementRequestParams().getUicCountryCodes().isEmpty()) {
-//      bos.addAll(searchRestrictions.getTrafficPointElementRequestParams().getBusinessOrganisations());
-//      shorts.addAll(searchRestrictions.getTrafficPointElementRequestParams().getServicePointNumberShort());
-//      List<TrafficPointElementVersion> list = trafficPointElementVersionRepository.blaBloBlu(bos,shorts);
-//      Page<TrafficPointElementVersion> page = new PageImpl<>(list);
-//      return page;
-//    } else {
-//      return trafficPointElementVersionRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
-//    }
-//  }
-
-  public Page<TrafficPointElementVersion> findAll(TrafficPointElementSearchRestrictions searchRestrictions) {
-
-        if (!searchRestrictions.getTrafficPointElementRequestParams().getBusinessOrganisations().isEmpty()) {
-            if (!searchRestrictions.getTrafficPointElementRequestParams().getServicePointNumberShort().isEmpty()) {
-                if (!searchRestrictions.getTrafficPointElementRequestParams().getUicCountryCodes().isEmpty()) {
-                    String query = "where spv.business_organisation in (" + searchRestrictions.getTrafficPointElementRequestParams().getBusinessOrganisations() + ") " +
-                            "and spv.number_short in (" + searchRestrictions.getTrafficPointElementRequestParams().getServicePointNumberShort() + ")" +
-                            "ans spv.country in (" + searchRestrictions.getTrafficPointElementRequestParams().getUicCountryCodes() + ")";
-                    List<TrafficPointElementVersion> list = trafficPointElementVersionRepository.blaBloBlu1(query);
-                    Page<TrafficPointElementVersion> page = new PageImpl<>(list);
-                    return page;
-                } else {
-                    String query = "where spv.business_organisation in (" + searchRestrictions.getTrafficPointElementRequestParams().getBusinessOrganisations() + ") " +
-                            "and spv.number_short in (" + searchRestrictions.getTrafficPointElementRequestParams().getServicePointNumberShort() + ")";
-                    List<TrafficPointElementVersion> list = trafficPointElementVersionRepository.blaBloBlu1(query);
-                    Page<TrafficPointElementVersion> page = new PageImpl<>(list);
-                    return page;
-                }
-            }
-            if (!searchRestrictions.getTrafficPointElementRequestParams().getUicCountryCodes().isEmpty()) {
-                String query = "where spv.business_organisation in (" + searchRestrictions.getTrafficPointElementRequestParams().getBusinessOrganisations() + ") " +
-                        "and spv.country in (" + searchRestrictions.getTrafficPointElementRequestParams().getUicCountryCodes() + ")";
-                List<TrafficPointElementVersion> list = trafficPointElementVersionRepository.blaBloBlu1(query);
-                Page<TrafficPointElementVersion> page = new PageImpl<>(list);
-                return page;
-            } else {
-                String query = "where spv.business_organisation in (" + searchRestrictions.getTrafficPointElementRequestParams().getBusinessOrganisations() + ") ";
-                List<TrafficPointElementVersion> list = trafficPointElementVersionRepository.blaBloBlu1(query);
-                Page<TrafficPointElementVersion> page = new PageImpl<>(list);
-                return page;
-            }
-        }
-        if (!searchRestrictions.getTrafficPointElementRequestParams().getServicePointNumberShort().isEmpty()) {
-            if (!searchRestrictions.getTrafficPointElementRequestParams().getUicCountryCodes().isEmpty()) {
-                String query = "where spv.number_short in (" + searchRestrictions.getTrafficPointElementRequestParams().getServicePointNumberShort() + ")" +
-                        "and spv.country in (" + searchRestrictions.getTrafficPointElementRequestParams().getUicCountryCodes() + ")";
-                List<TrafficPointElementVersion> list = trafficPointElementVersionRepository.blaBloBlu1(query);
-                Page<TrafficPointElementVersion> page = new PageImpl<>(list);
-                return page;
-            } else {
-                String stringOfShorts = searchRestrictions.getTrafficPointElementRequestParams().getServicePointNumberShort()
-                        .stream()
-                        .map(String::valueOf)
-                        .collect(Collectors.joining(","));
-                String query = " where spv.number_short in (" + stringOfShorts + ")";
-                List<TrafficPointElementVersion> list = trafficPointElementVersionRepository.blaBloBlu1(query);
-                Page<TrafficPointElementVersion> page = new PageImpl<>(list);
-                return page;
-            }
-        }
-        if (!searchRestrictions.getTrafficPointElementRequestParams().getUicCountryCodes().isEmpty()) {
-            String query = "where spv.country in (" + searchRestrictions.getTrafficPointElementRequestParams().getUicCountryCodes() + ")";
-            List<TrafficPointElementVersion> list = trafficPointElementVersionRepository.blaBloBlu1(query);
-            Page<TrafficPointElementVersion> page = new PageImpl<>(list);
-            return page;
-        } else {
-            return trafficPointElementVersionRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
-        }
-
-        if (!searchRestrictions.getTrafficPointElementRequestParams().getBusinessOrganisations().isEmpty() ||
-                !searchRestrictions.getTrafficPointElementRequestParams().getServicePointNumberShort().isEmpty() ||
-                !searchRestrictions.getTrafficPointElementRequestParams().getUicCountryCodes().isEmpty()) {
-            return trafficPointElementVersionRepository.blaBloBlu2(searchRestrictions.getTrafficPointElementRequestParams(), searchRestrictions.getPageable());
-        } else {
-            return trafficPointElementVersionRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
-        }
-=======
->>>>>>> 1b47519d9 (ATLAS-1079: Add missing queries and add tests.)
+        return trafficPointElementVersionRepository.findAll(searchRestrictions.getSpecification(),
+            searchRestrictions.getPageable());
     }
 
     public List<TrafficPointElementVersion> findBySloidOrderByValidFrom(String sloid) {
