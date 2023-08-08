@@ -19,8 +19,7 @@ public abstract class BaseImportService<T extends BasePointVersion & Versionable
   public void replaceCsvMergedVersions(List<T> dbVersions, List<T> csvVersions) {
     if (dbVersions.size() > csvVersions.size()) {
       log.info(
-          "The ServicePoint CSV versions are less than the ServicePoint versions stored in the DB. A merge may have taken place"
-              + "...");
+          "The CSV versions are less than the versions stored in the DB. A merge may have taken place...");
       for (T csvVersion : csvVersions) {
         List<T> dbVersionsFoundToBeReplaced =
             BasePointUtility.findVersionsExactlyIncludedBetweenEditedValidFromAndEditedValidTo(csvVersion.getValidFrom(),

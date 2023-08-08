@@ -1,6 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.entity.geolocation;
 
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
+import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,6 +23,7 @@ import lombok.experimental.SuperBuilder;
 @ToString(exclude = "loadingPointVersion")
 @SuperBuilder
 @FieldNameConstants
+@AtlasVersionable
 @Entity(name = "loading_point_version_geolocation")
 public class LoadingPointGeolocation extends GeolocationBaseEntity {
 

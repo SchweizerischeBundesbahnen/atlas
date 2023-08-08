@@ -64,11 +64,11 @@ public class TrafficPointElementImportServiceTest {
     List<TrafficPointCsvModelContainer> trafficPointCsvModelContainers = List.of(
         TrafficPointCsvModelContainer.builder()
             .sloid("ch:1:sloid:123")
-            .trafficPointCsvModelList(getTrafficPointCsvModelVersions("ch:1:sloid:123", 2020, 1, 2, 1))
+            .csvModelList(getTrafficPointCsvModelVersions("ch:1:sloid:123", 2020, 1, 2, 1))
             .build(),
         TrafficPointCsvModelContainer.builder()
             .sloid("ch:1:sloid:567")
-            .trafficPointCsvModelList(getTrafficPointCsvModelVersions("ch:1:sloid:567", 2020, 1, 2, 1))
+            .csvModelList(getTrafficPointCsvModelVersions("ch:1:sloid:567", 2020, 1, 2, 1))
             .build()
     );
     //when
@@ -96,7 +96,7 @@ public class TrafficPointElementImportServiceTest {
     List<TrafficPointCsvModelContainer> trafficPointCsvModelContainers = List.of(
         TrafficPointCsvModelContainer.builder()
             .sloid("ch:1:sloid:123")
-            .trafficPointCsvModelList(getTrafficPointCsvModelVersions("ch:1:sloid:123", 2020, 1, 6, 1))
+            .csvModelList(getTrafficPointCsvModelVersions("ch:1:sloid:123", 2020, 1, 6, 1))
             .build()
     );
     trafficPointElementImportService.importTrafficPoints(trafficPointCsvModelContainers);
@@ -113,7 +113,7 @@ public class TrafficPointElementImportServiceTest {
     List<TrafficPointCsvModelContainer> trafficPointCsvModelContainersMerged = List.of(
         TrafficPointCsvModelContainer.builder()
             .sloid("ch:1:sloid:123")
-            .trafficPointCsvModelList(trafficPointCsvModelVersionsMerged)
+            .csvModelList(trafficPointCsvModelVersionsMerged)
             .build()
     );
 
@@ -125,7 +125,7 @@ public class TrafficPointElementImportServiceTest {
     assertThat(trafficPointItemImportResults).hasSize(4);
     List<TrafficPointElementVersion> allBySloidOrderByValidFrom =
         trafficPointElementVersionRepository.findAllBySloidOrderByValidFrom(
-        "ch:1:sloid:123");
+            "ch:1:sloid:123");
     assertThat(allBySloidOrderByValidFrom).hasSize(4);
     assertThat(allBySloidOrderByValidFrom.get(0).getValidFrom()).isEqualTo(
         LocalDate.of(2020, 1, 1)
