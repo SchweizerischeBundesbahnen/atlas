@@ -40,7 +40,7 @@ public interface ServicePointApiV1 {
   @GetMapping("versions/{id}")
   ReadServicePointVersionModel getServicePointVersion(@PathVariable Long id);
 
-  @Secured(Role.ROLE_PREFIX + Role.ATLAS_ADMIN)
+  @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
   @PostMapping("import")
   List<ServicePointItemImportResult> importServicePoints(@RequestBody @Valid ServicePointImportRequestModel servicePoints);
 
