@@ -5,17 +5,13 @@ import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.atlas.servicepoint.enumeration.Category;
-import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
-import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
-import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
-import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
-import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
-import ch.sbb.exportservice.entity.BusinessOrganisation;
+import ch.sbb.atlas.servicepoint.enumeration.*;
 import ch.sbb.exportservice.entity.ServicePointVersion;
 import ch.sbb.exportservice.entity.ServicePointVersion.ServicePointVersionBuilder;
 import ch.sbb.exportservice.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.exportservice.entity.geolocation.ServicePointGeolocation.ServicePointGeolocationBuilder;
+import org.springframework.jdbc.core.RowMapper;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -26,9 +22,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import org.springframework.jdbc.core.RowMapper;
 
-public class ServicePointVersionRowMapper implements RowMapper<ServicePointVersion> {
+public class ServicePointVersionRowMapper extends BaseRowMapper implements RowMapper<ServicePointVersion> {
 
   @Override
   public ServicePointVersion mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -85,19 +80,6 @@ public class ServicePointVersionRowMapper implements RowMapper<ServicePointVersi
     return servicePointVersionBuilder.build();
   }
 
-  private BusinessOrganisation getBusinessOrganisation(ResultSet rs) throws SQLException {
-    return BusinessOrganisation.builder()
-        .businessOrganisation(rs.getString("business_organisation"))
-        .businessOrganisationNumber(RowMapperUtil.getInteger(rs, "organisation_number"))
-        .businessOrganisationAbbreviationDe(rs.getString("abbreviation_de"))
-        .businessOrganisationAbbreviationFr(rs.getString("abbreviation_fr"))
-        .businessOrganisationAbbreviationEn(rs.getString("abbreviation_en"))
-        .businessOrganisationAbbreviationIt(rs.getString("abbreviation_it"))
-        .businessOrganisationDescriptionDe(rs.getString("description_de"))
-        .businessOrganisationDescriptionFr(rs.getString("description_fr"))
-        .businessOrganisationDescriptionEn(rs.getString("description_en"))
-        .businessOrganisationDescriptionIt(rs.getString("description_it")).build();
-  }
 
   private void getServicePointGeolocation(ResultSet rs, ServicePointVersionBuilder<?, ?> servicePointVersionBuilder)
       throws SQLException {
