@@ -20,6 +20,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.connector.ClientAbortException;
 import org.hibernate.StaleObjectStateException;
 import org.hibernate.validator.internal.engine.path.PathImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -212,6 +213,11 @@ public class AtlasExceptionHandler {
             .error(exception.getMessage())
             .message(exception.getMessage())
             .build());
+  }
+
+  @ExceptionHandler(value = ClientAbortException.class)
+  public void handleException(ClientAbortException exception) {
+    log.debug("Client aborted connection", exception);
   }
 
   @ExceptionHandler(value = Exception.class)
