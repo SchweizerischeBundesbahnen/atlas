@@ -23,7 +23,6 @@ public class TrafficPointElementVersionRepositoryCustomImpl implements TrafficPo
 
     @Override
     public Page<TrafficPointElementVersion> findByServicePointParameters(TrafficPointElementRequestParams trafficPointElementRequestParams, Pageable pageable) {
-    public Page<TrafficPointElementVersion> findByServicePointParameters(TrafficPointElementRequestParams trafficPointElementRequestParams, Pageable pageable) {
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         String query = getQueryString(trafficPointElementRequestParams, mapSqlParameterSource);
 
@@ -100,7 +99,7 @@ public class TrafficPointElementVersionRepositoryCustomImpl implements TrafficPo
         if (!trafficPointElementRequestParams.getServicePointNumbers().isEmpty()) {
             query += " AND spv.number IN (:numbers)";
             mapSqlParameterSource.addValue("numbers",
-                trafficPointElementRequestParams.getServicePointNumbers().stream().map(ServicePointNumber::getValue).toList());
+                    trafficPointElementRequestParams.getServicePointNumbers().stream().map(ServicePointNumber::getValue).toList());
         }
         if (!trafficPointElementRequestParams.getUicCountryCodes().isEmpty()) {
             query += " AND spv.country IN (:countries)";
@@ -133,17 +132,6 @@ public class TrafficPointElementVersionRepositoryCustomImpl implements TrafficPo
             query += " AND trp.edition_date >= :modifiedafter";
             mapSqlParameterSource.addValue("modifiedafter", trafficPointElementRequestParams.getModifiedAfter());
         }
-<<<<<<< HEAD
-        return new PageImpl<>(elements, pageable, count);
-
-=======
         return query;
->>>>>>> 1b47519d9 (ATLAS-1079: Add missing queries and add tests.)
     }
-
-    private Integer getCount(String query, MapSqlParameterSource mapSqlParameterSource) {
-        String countQuery = "select count (*) from (" + query + ") as foo";
-        return jdbcTemplate.queryForObject(countQuery, mapSqlParameterSource, Integer.class);
-    }
-
 }

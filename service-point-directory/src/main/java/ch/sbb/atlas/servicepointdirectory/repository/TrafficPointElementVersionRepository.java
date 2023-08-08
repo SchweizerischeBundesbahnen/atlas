@@ -14,7 +14,7 @@ import java.util.List;
 
 @Repository
 public interface TrafficPointElementVersionRepository extends
-    JpaRepository<TrafficPointElementVersion, Long>, JpaSpecificationExecutor<TrafficPointElementVersion>, TrafficPointElementVersionRepositoryCustom {
+    JpaRepository<TrafficPointElementVersion, Long>, JpaSpecificationExecutor<TrafficPointElementVersion> {
 
   @EntityGraph(attributePaths = {Fields.trafficPointElementGeolocation})
   List<TrafficPointElementVersion> findAllBySloidOrderByValidFrom(String sloid);
