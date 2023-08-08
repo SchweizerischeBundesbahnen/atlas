@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemProcessor;
 
 @Slf4j
-public class ServicePointVersionJsonProcessor extends BaseProcessor implements ItemProcessor<ServicePointVersion,
+public class ServicePointVersionJsonServicePointProcessor extends BaseServicePointProcessor implements ItemProcessor<ServicePointVersion,
     ReadServicePointVersionModel> {
 
   @Override

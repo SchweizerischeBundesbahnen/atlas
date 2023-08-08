@@ -3,11 +3,7 @@ package ch.sbb.exportservice.entity;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
 import ch.sbb.exportservice.entity.geolocation.TrafficPointElementGeolocation;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
 
@@ -37,12 +33,21 @@ public class TrafficPointElementVersion extends BaseEntity {
   private TrafficPointElementType trafficPointElementType;
 
   private ServicePointNumber servicePointNumber;
+
   private String sloid;
+
+  private BusinessOrganisation servicePointBusinessOrganisation;
 
   private String parentSloid;
 
+  private String parentSloidServicePoint;
+
+  private String servicePointDesignationOfficial;
+
   private TrafficPointElementGeolocation trafficPointElementGeolocation;
+
   private LocalDate validFrom;
+
   private LocalDate validTo;
 
 }
