@@ -821,5 +821,135 @@
       "EDIT_STATEMENT": "Modifica del parere in atlas",
       "SUCCESSFUL_SAVE_NOTIFICATION": "Impostazioni salvate con successo"
     }
+  },
+  "SEPODI": {
+    "SERVICE_POINTS": {
+      "SLOID": "Swiss Location ID (SLOID)",
+      "DIDOK_CODE": "Codice DiDok (codice paese e numero)",
+      "SERVICE_POINT": "Posto di servizio",
+      "AREAS": "Settori",
+      "FOT_COMMENT": "Commento UFT",
+      "DETAILS": "Informazioni sul posto di servizio",
+      "DESIGNATION_OFFICIAL": "Denominazione ufficiale",
+      "DESIGNATION_LONG": "Denominazione lunga",
+      "TYPE": "Tipo di posto di servizio",
+      "TYPES": {
+        "SERVICE_POINT": "Posto di servizio",
+        "OPERATING_POINT": "Punto d'esercizio",
+        "STOP_POINT": "Fermata / Punto di servizio",
+        "FARE_STOP": "Fermata tariffaria"
+      },
+      "OPERATING_POINT_TYPE": "Tipo di punto d'esercizio",
+      "OPERATING_POINT_TYPES": {
+        "INVENTORY_POINT": "Punto di inventario",
+        "SYSTEM_OPERATING_POINT": "Punto d’esercizio sistema",
+        "RAILNET_POINT": "Punto di rete",
+        "PROPERTY_LINE": "Confine di proprietà",
+        "INVESTMENT_LOCATIONS_OPERATING_POINT": "Punto d’esercizio per gli impianti fissi DfA",
+        "COUNTRY_BORDER": "Confine",
+        "UNKNOWN": "Non spezificato",
+        "OPERATING_POINT_BUS": "Punto d’esercizio bus",
+        "TURNING_LOOP": "Cappio di ritorno",
+        "ASSIGNED_OPERATING_POINT": "Punto d’esercizio associato",
+        "BLOCKING_POINT": "Posto di blocco",
+        "END_OF_TRACK": "Fine della traccia",
+        "LANE_SEPARATION": "Separazione dei binari",
+        "INTERSECTION": "Incrocio",
+        "CONNECTING_POINT": "Punto di raccordo",
+        "LANE_CHANGE": "Cambio binario",
+        "BRANCH": "Diramazione",
+        "SERVICE_STATION": "Stazione di servizio",
+        "ERROR_PROFILE": "Profilo errore/Salto chilometrico",
+        "EX_STOP_POINT": "Precedente fermata con infrastruttura",
+        "ROUTE_SPEED_CHANGE": "Variazioni di velocità di linea"
+      },
+      "STOP_POINT": "Fermata",
+      "STOP_POINT_TYPE": "Tipo di fermata",
+      "STOP_POINT_TYPES": {
+        "ORDERLY": "Fermata ordinaria",
+        "ON_REQUEST": "Fermata facoltativa",
+        "ZONE_ON_REQUEST": "Fermata facoltativa (zona)",
+        "TEMPORARY": "Fermata temporanea",
+        "OUT_OF_ORDER": "Fermata fuori servizio",
+        "UNKNOWN": "Non specificata"
+      },
+      "MEANS_OF_TRANSPORT": "Mezzi di trasporto",
+      "MEAN_OF_TRANSPORT": {
+        "TRAIN": "Treno",
+        "BUS": "Bus",
+        "TRAM": "Tram",
+        "BOAT": "Nave",
+        "CABLE_CAR": "Cabinovia",
+        "CHAIRLIFT": "Seggiovia",
+        "CABLE_RAILWAY": "Funicolare",
+        "RACK_RAILWAY": "Ferrovia a cremagliera",
+        "METRO": "Metro",
+        "ELEVATOR": "Ascensore",
+        "UNKNOWN": "Sconosciute"
+      },
+      "FREIGHT_SERVICE_POINT": "Punto di servizio",
+      "SORT_CODE_OF_DESTINATION_STATION": "Codice punto di riferimento",
+      "ABBREVIATION": "Abbreviazione",
+      "CATEGORIES": "Categorie",
+      "CATEGORY": {
+        "NOVA_VIRTUAL": "NOVA virtuale",
+        "BILLETING_MACHINE": "Billettautomat SBB",
+        "PARK_AND_RAIL": "P+Rail",
+        "MAINTENANCE_POINT": "Punto di manutenzione",
+        "BORDER_POINT": "Punto di confine (UIC)",
+        "TCV_PASSENGER_TRANSPORT": "TCV traffico viaggiatori",
+        "HIGH_VOLTAGE_AREA": "Impianto ad alta tensione",
+        "GSMR_POLE": "Asta GSM-R",
+        "POINT_OF_SALE": "Punto vendita",
+        "DISTRIBUTION_POINT": "Punto di distribuzione",
+        "PROTECTED_PATH": "Tratta di protezione",
+        "GSMR": "GSM-R",
+        "HOSTNAME": "Hostname",
+        "SIGNAL_BOX": "Apparato centrale",
+        "IP_CLEAN_UP": "Pulizia IP",
+        "GALLERY": "Galleria",
+        "MIGRATION_DIVERSE": "Migr. (alt Uhst Diverse)",
+        "MIGRATION_CENTRAL_SERVICE": "Migr. (alt Uhst Zentr. Dienst)",
+        "MIGRATION_MOBILE_EQUIPE": "Migr. (alt Uhst Mobile Equipe)",
+        "MIGRATION_TCV_PV": "Migr. (alt Uhst TCV PV)",
+        "TRAVEL_AGENCY": "Agenzia di viaggi",
+        "TRAVEL_AGENCY_ORGANISATION": "Organizzazione delle agenzie di viaggio"
+      },
+      "ROUTE_NETWORK_DATA": "Dati sulla rete di percorsi (solo per le ferrovie)",
+      "ROUTE_NETWORK": "PE-tratta",
+      "OPERATING_POINT_KILOMETER": "PE-chilometrico"
+    },
+    "TRAFFIC_POINT_ELEMENTS": {
+      "TRAFFIC_POINT_ELEMENTS": "Bordi fermata"
+    },
+    "LOADING_POINTS": {
+      "LOADING_POINTS": "Posti di carico"
+    },
+    "GEOLOCATION": {
+      "GEOGRAPHY": "Geografia",
+      "SYSTEM_LV95": "Coordinate del paese LV95",
+      "SYSTEM_WGS84": "Coordinate geografiche WGS84",
+      "LV95": {
+        "EAST": "E (Est-Ovest) [m]",
+        "NORTH": "N (Nord-Sud) [m]"
+      },
+      "WGS84": {
+        "EAST": "Lunghezza [°]",
+        "NORTH": "Larghezza [°]"
+      },
+      "HEIGHT": "Altezza (m.s.l.m.)",
+      "ADMINISTRATION": "Unità amministrative",
+      "COUNTRY": "Campagna",
+      "CANTON": "Cantone",
+      "MUNICIPALITY": "Comune",
+      "DISTRICT": "Località"
+    },
+    "MAP_STYLES": {
+      "SWISSTOPO": "Swisstopo (Svizzera)",
+      "OPEN_STREET_MAP": "Openstreetmap (globale)",
+      "SATELLITE": "Satellite (globale)",
+      "SATELLITE_SWISS": "Satellite (Svizzera)"
+    },
+    "BACK_TO_MAP": "Chiudere"
   }
 }

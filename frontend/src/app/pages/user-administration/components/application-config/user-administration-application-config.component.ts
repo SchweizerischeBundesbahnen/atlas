@@ -17,7 +17,7 @@ import { Observable, of, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Cantons } from '../../../tth/overview/canton/Cantons';
 import { MatSelectChange } from '@angular/material/select';
-import { Countries } from '../../../sepodi/overview/country/Countries';
+import { Countries } from '../../../../core/country/Countries';
 
 @Component({
   selector: 'app-user-administration-application-config',

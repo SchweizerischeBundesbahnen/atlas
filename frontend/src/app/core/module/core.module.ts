@@ -45,6 +45,7 @@ import { BackButtonDirective } from '../components/button/back-button/back-butto
 import { WorkflowDialogComponent } from '../workflow/dialog/workflow-dialog.component';
 import { ScrollToTopDirective } from '../scroll-to-top/scroll-to-top.directive';
 import { MaintenanceIconComponent } from '../components/header/maintenance-icon/maintenance-icon.component';
+import { DateRangeTextComponent } from '../versioning/date-range-text/date-range-text.component';
 
 const coreComponents = [
   WorkflowFormComponent,
@@ -81,6 +82,7 @@ const coreComponents = [
   SelectComponent,
   ScrollToTopDirective,
   MaintenanceIconComponent,
+  DateRangeTextComponent,
 ];
 
 @NgModule({

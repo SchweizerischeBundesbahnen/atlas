@@ -1,0 +1,9 @@
+<div class="page-with-map">
+  <div #detailContainer class="detail-container">
+    <router-outlet
+      (activate)="setRouteActive(true)"
+      (deactivate)="setRouteActive(false)"
+    ></router-outlet>
+  </div>
+  <atlas-map class="map-container"></atlas-map>
+</div>

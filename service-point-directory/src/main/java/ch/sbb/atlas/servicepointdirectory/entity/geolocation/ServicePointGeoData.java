@@ -35,7 +35,7 @@ public class ServicePointGeoData extends GeolocationBaseEntity {
       sp.valid_from,
       sp.valid_to,
       sp.sloid,
-      sp.number
+      sp.number/10 as number
       FROM service_point_version_geolocation geo
       JOIN service_point_version sp on sp.service_point_geolocation_id = geo.id                                   
       """;
