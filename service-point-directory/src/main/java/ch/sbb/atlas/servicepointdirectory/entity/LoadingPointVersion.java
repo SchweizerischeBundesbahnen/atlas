@@ -3,11 +3,13 @@ package ch.sbb.atlas.servicepointdirectory.entity;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.converter.ServicePointNumberConverter;
+import ch.sbb.atlas.servicepointdirectory.entity.geolocation.GeolocationBaseEntity;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.LoadingPointGeolocation;
 import ch.sbb.atlas.validation.DatesValidator;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.versioning.model.Versionable;
+import ch.sbb.atlas.versioning.model.VersionableProperty.RelationType;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
@@ -39,9 +41,16 @@ import lombok.experimental.SuperBuilder;
 @FieldNameConstants
 @Entity(name = "loading_point_version")
 @AtlasVersionable
-public class LoadingPointVersion extends BaseDidokImportEntity implements Versionable, DatesValidator {
+public class LoadingPointVersion extends BasePointVersion implements Versionable, DatesValidator {
 
   private static final String VERSION_SEQ = "loading_point_version_seq";
+
+  @Override
+  public void setThisAsParentOnRelatingEntities() {
+    if (this.loadingPointGeolocation != null) {
+      this.loadingPointGeolocation.setLoadingPointVersion(this);
+    }
+  }
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = VERSION_SEQ)
@@ -72,6 +81,12 @@ public class LoadingPointVersion extends BaseDidokImportEntity implements Versio
 
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "loading_point_geolocation_id", referencedColumnName = "id")
+  @AtlasVersionableProperty(relationType = RelationType.ONE_TO_ONE, relationsFields = {
+      GeolocationBaseEntity.Fields.east,
+      GeolocationBaseEntity.Fields.north,
+      GeolocationBaseEntity.Fields.spatialReference,
+      GeolocationBaseEntity.Fields.height,
+  })
   private LoadingPointGeolocation loadingPointGeolocation;
 
   @NotNull
