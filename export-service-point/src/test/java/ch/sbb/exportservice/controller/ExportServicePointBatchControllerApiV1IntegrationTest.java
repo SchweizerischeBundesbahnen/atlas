@@ -2,7 +2,6 @@ package ch.sbb.exportservice.controller;
 
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.model.exception.NotFoundException.FileNotFoundException;
-import ch.sbb.exportservice.BatchDataSourceConfigTest;
 import ch.sbb.exportservice.model.ExportFileName;
 import ch.sbb.exportservice.model.ExportType;
 import ch.sbb.exportservice.service.FileExportService;
@@ -24,7 +23,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@BatchDataSourceConfigTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseControllerApiTest {
 
