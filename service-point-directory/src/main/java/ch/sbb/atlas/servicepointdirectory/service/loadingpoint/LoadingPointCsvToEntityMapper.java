@@ -44,6 +44,5 @@ public class LoadingPointCsvToEntityMapper implements
     }
 
     return loadingPointVersion;
-
   }
 }

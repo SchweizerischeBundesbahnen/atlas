@@ -29,6 +29,11 @@ public class TrafficPointElementImportService extends BaseImportService<TrafficP
   private final TrafficPointElementService trafficPointElementService;
   private final VersionableService versionableService;
 
+  @Override
+  protected void save(TrafficPointElementVersion trafficPointElementVersion) {
+    trafficPointElementService.save(trafficPointElementVersion);
+  }
+
   public static List<TrafficPointElementCsvModel> parseTrafficPointElements(InputStream inputStream)
       throws IOException {
     MappingIterator<TrafficPointElementCsvModel> mappingIterator = DidokCsvMapper.CSV_MAPPER.readerFor(
@@ -46,7 +51,7 @@ public class TrafficPointElementImportService extends BaseImportService<TrafficP
   ) {
     List<TrafficPointItemImportResult> importResults = new ArrayList<>();
     for (TrafficPointCsvModelContainer container : trafficPointCsvModelContainers) {
-      List<TrafficPointElementVersion> trafficPointElementVersions = container.getTrafficPointCsvModelList()
+      List<TrafficPointElementVersion> trafficPointElementVersions = container.getCsvModelList()
           .stream()
           .map(new TrafficPointElementCsvToEntityMapper())
           .sorted(Comparator.comparing(TrafficPointElementVersion::getValidFrom))
@@ -66,11 +71,6 @@ public class TrafficPointElementImportService extends BaseImportService<TrafficP
       }
     }
     return importResults;
-  }
-
-  @Override
-  protected void save(TrafficPointElementVersion trafficPointElementVersion) {
-    trafficPointElementService.save(trafficPointElementVersion);
   }
 
   void updateTrafficPointElementVersionImport(TrafficPointElementVersion edited) {
