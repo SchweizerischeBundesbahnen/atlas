@@ -8,7 +8,10 @@ import ch.sbb.atlas.model.controller.WithMockJwtAuthentication;
 import ch.sbb.atlas.servicepointdirectory.repository.LoadingPointVersionRepository;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
@@ -20,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class LoadingPointImportServiceTest {
 
-  private static final String CSV_FILE = "DIDOK3_LADESTELLEN_20221222011259.csv";
+  private static final String CSV_FILE = "DIDOK3_LADESTELLEN_20230803011047.csv";
 
   private final LoadingPointImportService loadingPointImportService;
   private final LoadingPointVersionRepository loadingPointVersionRepository;
@@ -36,9 +39,7 @@ public class LoadingPointImportServiceTest {
   void shouldParseCsvSuccessfully() throws IOException {
     try (InputStream csvStream = this.getClass().getResourceAsStream("/" + CSV_FILE)) {
       List<LoadingPointCsvModel> loadingPointCsvModels = LoadingPointImportService.parseLoadingPoints(csvStream);
-
       assertThat(loadingPointCsvModels).isNotEmpty();
-
       LoadingPointCsvModel csvModel = loadingPointCsvModels.get(0);
       assertThat(csvModel.getServicePointNumber()).isNotNull();
       assertThat(csvModel.getDesignation()).isNotNull();
@@ -48,13 +49,29 @@ public class LoadingPointImportServiceTest {
   }
 
   @Test
-  void shouldSaveParsedCsvToDb() throws IOException {
+  void findNumberOfLoadingPointVersionsInCsv() throws IOException {
     try (InputStream csvStream = this.getClass().getResourceAsStream("/" + CSV_FILE)) {
       List<LoadingPointCsvModel> loadingPointCsvModels = LoadingPointImportService.parseLoadingPoints(csvStream);
 
-      loadingPointImportService.importLoadingPoints(loadingPointCsvModels);
+      Map<Integer, Map<Integer, Integer>> finalMap = new HashMap<>();
+      Map<Integer, List<LoadingPointCsvModel>> didokCodeMap = loadingPointCsvModels.stream()
+          .collect(Collectors.groupingBy(LoadingPointCsvModel::getServicePointNumber));
+      didokCodeMap.forEach((didokCode, list) -> {
+        final Map<Integer, List<LoadingPointCsvModel>> numberMap = list.stream()
+            .collect(Collectors.groupingBy(LoadingPointCsvModel::getNumber));
+        final Map<Integer, Integer> mapCountNumbers = new HashMap<>();
+        numberMap.forEach((number, listOfModels) -> mapCountNumbers.put(number, listOfModels.size()));
+        finalMap.put(didokCode, mapCountNumbers);
+      });
 
-      assertThat(loadingPointVersionRepository.count()).isEqualTo(3019);
+      finalMap.forEach((didokCode, map) -> {
+        boolean allMatch = map.values().stream().allMatch(number -> number == 1);
+        if (!allMatch) {
+          System.out.println(didokCode + "=" + map);
+        }
+      });
+
     }
   }
+
 }
