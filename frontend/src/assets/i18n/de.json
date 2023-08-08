@@ -821,5 +821,135 @@
       "EDIT_STATEMENT": "Bearbeitung Stellungnahme in atlas",
       "SUCCESSFUL_SAVE_NOTIFICATION": "Einstellungen erfolgreich gespeichert"
     }
+  },
+  "SEPODI": {
+    "SERVICE_POINTS": {
+      "SLOID": "Swiss Location ID (SLOID)",
+      "DIDOK_CODE": "Didok-Code (Ländercode & Nummer)",
+      "SERVICE_POINT": "Dienststelle",
+      "AREAS": "Bereiche",
+      "FOT_COMMENT": "BAV-Kommentar",
+      "DETAILS": "Angaben zur Dienststelle",
+      "DESIGNATION_OFFICIAL": "Offizielle Bezeichnung",
+      "DESIGNATION_LONG": "Lange Bezeichnung",
+      "TYPE": "Dienststellenart",
+      "TYPES": {
+        "SERVICE_POINT": "Dienststelle",
+        "OPERATING_POINT": "Betriebspunkt",
+        "STOP_POINT": "Haltestelle / Bedienpunkt",
+        "FARE_STOP": "Tarifhaltestelle"
+      },
+      "OPERATING_POINT_TYPE": "Betriebspunktart",
+      "OPERATING_POINT_TYPES": {
+        "INVENTORY_POINT": "Inventarpunkt",
+        "SYSTEM_OPERATING_POINT": "System Betriebspunkt",
+        "RAILNET_POINT": "BP Netze",
+        "PROPERTY_LINE": "Eigentumsgrenze",
+        "INVESTMENT_LOCATIONS_OPERATING_POINT": "BP für Anlagestandorte DfA",
+        "COUNTRY_BORDER": "Landesgrenze",
+        "UNKNOWN": "Nicht spezifiziert",
+        "OPERATING_POINT_BUS": "Betriebspunkt Bus",
+        "TURNING_LOOP": "Wendeschlaufe",
+        "ASSIGNED_OPERATING_POINT": "Zugeordneter Betriebspunkt",
+        "BLOCKING_POINT": "Blockstelle",
+        "END_OF_TRACK": "Gleisende",
+        "LANE_SEPARATION": "Spurtrennung",
+        "INTERSECTION": "Ausweiche",
+        "CONNECTING_POINT": "Anschlusspunkt",
+        "LANE_CHANGE": "Spurwechsel",
+        "BRANCH": "Abzweigung, Verzweigung, Spaltweiche",
+        "SERVICE_STATION": "Dienststation",
+        "ERROR_PROFILE": "Fehlerprofil/Kilometersprung",
+        "EX_STOP_POINT": "Ehemalige Haltestelle mit Infrastruktur",
+        "ROUTE_SPEED_CHANGE": "Streckengeschwindigkeitswechsel"
+      },
+      "STOP_POINT": "Haltestelle",
+      "STOP_POINT_TYPE": "Haltestellentyp",
+      "STOP_POINT_TYPES": {
+        "ORDERLY": "Ordentliche Haltestelle",
+        "ON_REQUEST": "Bedarfshaltestelle",
+        "ZONE_ON_REQUEST": "Bedarfshaltestelle (Gebiet)",
+        "TEMPORARY": "Temporäre Haltestelle",
+        "OUT_OF_ORDER": "Haltestelle ausser Betrieb",
+        "UNKNOWN": "Nicht spezifiziert"
+      },
+      "MEANS_OF_TRANSPORT": "Verkehrsmittel",
+      "MEAN_OF_TRANSPORT": {
+        "TRAIN": "Zug",
+        "BUS": "Bus",
+        "TRAM": "Tram",
+        "BOAT": "Schiff",
+        "CABLE_CAR": "Kabinenbahn",
+        "CHAIRLIFT": "Sesselbahn",
+        "CABLE_RAILWAY": "Standseilbahn",
+        "RACK_RAILWAY": "Zahnradbahn",
+        "METRO": "Metro",
+        "ELEVATOR": "Aufzug",
+        "UNKNOWN": "Unbekannt"
+      },
+      "FREIGHT_SERVICE_POINT": "Bedienpunkt",
+      "SORT_CODE_OF_DESTINATION_STATION": "Richtpunktcode",
+      "ABBREVIATION": "Abkürzung",
+      "CATEGORIES": "Kategorien",
+      "CATEGORY": {
+        "NOVA_VIRTUAL": "NOVA virtuell",
+        "BILLETING_MACHINE": "Billettautomat SBB",
+        "PARK_AND_RAIL": "P+Rail",
+        "MAINTENANCE_POINT": "Unterhaltstelle",
+        "BORDER_POINT": "Grenzpunkt (UIC)",
+        "TCV_PASSENGER_TRANSPORT": "TCV Personenverkehr",
+        "HIGH_VOLTAGE_AREA": "Hochspannungsareal",
+        "GSMR_POLE": "GSM-R Mast",
+        "POINT_OF_SALE": "Verkaufsstelle",
+        "DISTRIBUTION_POINT": "Vertriebspunkt",
+        "PROTECTED_PATH": "Schutzstrecke",
+        "GSMR": "GSM-R",
+        "HOSTNAME": "Hostname",
+        "SIGNAL_BOX": "Stellwerk",
+        "IP_CLEAN_UP": "IP Bereinigung",
+        "GALLERY": "Tunnel",
+        "MIGRATION_DIVERSE": "Migr. (alt Uhst Diverse)",
+        "MIGRATION_CENTRAL_SERVICE": "Migr. (alt Uhst Zentr. Dienst)",
+        "MIGRATION_MOBILE_EQUIPE": "Migr. (alt Uhst Mobile Equipe)",
+        "MIGRATION_TCV_PV": "Migr. (alt Uhst TCV PV)",
+        "TRAVEL_AGENCY": "Reisebüro",
+        "TRAVEL_AGENCY_ORGANISATION": "Reisebüro Organisation"
+      },
+      "ROUTE_NETWORK_DATA": "Streckennetzdaten (nur Eisenbahn)",
+      "ROUTE_NETWORK": "BP-Strecke",
+      "OPERATING_POINT_KILOMETER": "BP-Kilometrierung"
+    },
+    "TRAFFIC_POINT_ELEMENTS": {
+      "TRAFFIC_POINT_ELEMENTS": "Haltekanten"
+    },
+    "LOADING_POINTS": {
+      "LOADING_POINTS": "Ladestellen"
+    },
+    "GEOLOCATION": {
+      "GEOGRAPHY": "Geografie",
+      "SYSTEM_LV95": "Landeskoordinaten LV95",
+      "SYSTEM_WGS84": "Globale Koordinaten WGS84",
+      "LV95": {
+        "EAST": "E (Ost-West) [m]",
+        "NORTH": "N (Nord-Süd) [m]"
+      },
+      "WGS84": {
+        "EAST": "Länge [°]",
+        "NORTH": "Breite [°]"
+      },
+      "HEIGHT": "Höhe (M.ü.M.)",
+      "ADMINISTRATION": "Administrative Einheiten",
+      "COUNTRY": "Land",
+      "CANTON": "Kanton",
+      "MUNICIPALITY": "Gemeinde",
+      "DISTRICT": "Ortschaft"
+    },
+    "MAP_STYLES": {
+      "SWISSTOPO": "Swisstopo (Schweiz)",
+      "OPEN_STREET_MAP": "Openstreetmap (weltweit)",
+      "SATELLITE": "Satellit (weltweit)",
+      "SATELLITE_SWISS": "Satellit (Schweiz)"
+    },
+    "BACK_TO_MAP": "Schliessen"
   }
 }
