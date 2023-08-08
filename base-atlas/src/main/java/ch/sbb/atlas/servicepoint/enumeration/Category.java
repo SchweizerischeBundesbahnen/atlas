@@ -30,8 +30,8 @@ public enum Category implements CodeAndDesignations {
   GSMR(9, "GSM-R", "GSM-R", "GSM-R", "GSM-R", "GSM-R"),
   HOSTNAME(10, "Hostname", "Nom d'hôte", "Hostname", "Hostname", "Hostname"),
   SIGNAL_BOX(11, "Stellwerk", "Poste d’enclenchement", "Apparato centrale", "Signal box", "Stellwerk"),
-  IP_CLEAN_UP(12, "IP Bereinigung", "IP Bereinigung ", "IP Bereinigung", "IP cleanup", "IP Bereinigung"),
-  GALLERY(13, "Tunnel", "Tunnel", "Tunnel", "Tunnel", "Tunnel"),
+  IP_CLEAN_UP(12, "IP Bereinigung", "IP Bereinigung ", "IP Pulizia", "IP cleanup", "IP Bereinigung"),
+  GALLERY(13, "Tunnel", "Tunnel", "Galleria", "Tunnel", "Tunnel"),
   MIGRATION_DIVERSE(14, "Migr. (alt Uhst Diverse)", "Migr. (alt Uhst Diverse)", "Migr. (alt Uhst Diverse)",
       "Migr. (alt Uhst Diverse)", "Migration (alt Uhst Diverse)"),
   MIGRATION_CENTRAL_SERVICE(15, "Migr. (alt Uhst Zentr. Dienst)", "Migr. (alt Uhst Zentr. Dienst)", "Migr. (alt Uhst Zentr. "
@@ -43,8 +43,8 @@ public enum Category implements CodeAndDesignations {
   MIGRATION_TCV_PV(17, "Migr. (alt Uhst TCV PV)", "Migr. (alt Uhst TCV PV)", "Migr. (alt Uhst TCV PV)", "Migr. (alt Uhst TCV PV)",
       "Migration (alt Uhst TCV Personenverkehr)"),
   TRAVEL_AGENCY(21, "Reisebüro", "Agence de voyage", "Agenzia di viaggi", "Travel Agency", null),
-  TRAVEL_AGENCY_ORGANISATION(22, "Reisebüro Organisation", "Organisation de l'agence de vo", "Organizzazione delle agenzie d",
-      "Travel Agency Organization", null);
+  TRAVEL_AGENCY_ORGANISATION(22, "Reisebüro Organisation", "Organisation de l'agence de voyage", "Organizzazione delle agenzie "
+      + "di viaggio",      "Travel Agency Organization", null);
 
   private final Integer id;
   private final String designationDe;

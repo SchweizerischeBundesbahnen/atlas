@@ -1,4 +1,4 @@
-<button type="button" class="slide-btn" (click)="handleToggleClick()">
+<button type="button" class="slide-btn" (click)="handleToggleClick()" [disabled]="disabled">
   <div [class]="toggle ? 'slide-track-on' : 'slide-track-off'">
     <div class="slide-toggle"></div>
   </div>
