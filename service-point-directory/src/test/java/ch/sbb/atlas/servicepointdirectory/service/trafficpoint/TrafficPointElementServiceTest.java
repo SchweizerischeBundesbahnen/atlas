@@ -572,4 +572,37 @@ public class TrafficPointElementServiceTest {
     assertThat(result.getContent()).isEmpty();
   }
 
+  @Test
+  void shouldFindByMultipleSearch() {
+    // given
+    servicePointVersionRepository.save(TrafficPointTestData.testServicePointForTrafficPoint());
+    TrafficPointElementVersion trafficPointElementVersion = TrafficPointTestData.getTrafficPoint();
+    trafficPointElementService.save(trafficPointElementVersion);
+    LocalDate fromDate = trafficPointElementVersion.getValidFrom().minusDays(1);
+    LocalDate toDate = trafficPointElementVersion.getValidTo().plusDays(1);
+
+    // when
+    TrafficPointElementSearchRestrictions searchRestrictions =
+            TrafficPointElementSearchRestrictions.builder()
+                    .pageable(Pageable.unpaged())
+                    .trafficPointElementRequestParams(TrafficPointElementRequestParams.builder()
+                            .sloids(List.of("ch:1:sloid:1400015:0:310240"))
+                            .parentsloids(List.of("ch:1:sloid:1400015:310240"))
+                            .uicCountryCodes(List.of("14"))
+                            .servicePointNumbers(List.of(1400015))
+                            .servicePointNumbersShort(List.of(1))
+                            .sboids(List.of("somesboid"))
+                            .fromDate(fromDate)
+                            .toDate(toDate)
+                            .validOn(LocalDate.of(2021, 1, 1))
+                            .createdAfter(trafficPointElementVersion.getCreationDate().minusSeconds(1))
+                            .modifiedAfter(trafficPointElementVersion.getEditionDate().minusSeconds(1))
+                            .build())
+                    .build();
+    Page<TrafficPointElementVersion> result = trafficPointElementService.findAll(searchRestrictions);
+
+    // then
+    assertThat(result.getContent()).hasSize(1);
+  }
+
 }
