@@ -1,7 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.model.search;
 
 import ch.sbb.atlas.servicepoint.Country;
-import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion_;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -26,8 +25,6 @@ public class ServicePointNumberSboidSpecification<T> implements Specification<T>
 
   private final List<Integer> shortNumbers;
 
-  private final List<ServicePointNumber> servicePointNumbers;
-
   private final List<Country> countries;
 
   @Override
@@ -41,9 +38,6 @@ public class ServicePointNumberSboidSpecification<T> implements Specification<T>
     }
     if (!shortNumbers.isEmpty()) {
       predicates.add(criteriaBuilder.and(fromServicePoint.get(ServicePointVersion_.numberShort).in(shortNumbers)));
-    }
-    if (!servicePointNumbers.isEmpty()) {
-      predicates.add(criteriaBuilder.and(fromServicePoint.get("number").in(servicePointNumbers)));
     }
     if (!countries.isEmpty()) {
       predicates.add(criteriaBuilder.and(fromServicePoint.get(ServicePointVersion_.country).in(countries)));
