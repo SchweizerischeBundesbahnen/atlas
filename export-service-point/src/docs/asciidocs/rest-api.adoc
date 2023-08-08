@@ -3,7 +3,7 @@
 :compat-mode:
 :page-layout!:
 :toc: left
-:toclevels: 1
+:toclevels: 3
 :sectanchors:
 :sectlinks:
 :linkattrs:
@@ -36,9 +36,16 @@ This API is available as a part of the ATLAS API on the SBB developer portal.
 
 include::../release-notes.adoc[]
 
-= Export Service Point
+= Export
 
-ServicePoints data is available via the ServicePoint API or as a File (CSV or JSON) via the Export Service Point API or through the Amazon S3 Bucket Client (CSV and JSON);
+This service exports the following data:
+
+ * *Service Point Versions*
+ * *Traffic Point Element Versions*
+
+== Service Point Versions
+
+Service Point Versions data is available via the ServicePoint API or as a File (CSV or JSON) via the Export Service Point API or through the Amazon S3 Bucket Client (CSV and JSON);
 
 The Export Service Point generates nightly the following zipped CSV and gzipped JSON files:
 
@@ -51,18 +58,45 @@ The Export Service Point generates nightly the following zipped CSV and gzipped 
 
 If you want to consume this files you have two options:
 
- * Via API: see **Export Service Point API** section
+ * Via API: see **Export Service Point Directory API** section
  * Through the Amazon S3 Bucket Client:  see **Atlas Amazon S3 Bucket Users onboarding**
+
+=== Data Mapping Migration from DiDok to ATLAS
+
+See https://confluence.sbb.ch/x/GI3aj to get additional information about the data mapping migration from DiDok to ATLAS.
+
+== Traffic Point Element Versions
+
+Traffic Point Element Versions data is available via the ServicePoint API or as a File (CSV or JSON) via the Export Service Point API or through the Amazon S3 Bucket Client (CSV and JSON);
+
+The Export Service Point Directory generates nightly the following zipped CSV and gzipped JSON files:
+
+ * WORLD FULL
+ * WORLD ONLY ACTUAL DATE
+ * WORLD ONLY FUTURE TIMETABLE
+
+If you want to consume this files you have two options:
+
+ * Via API: see **Export Service Point Directory API** section
+ * Through the Amazon S3 Bucket Client:  see **Atlas Amazon S3 Bucket Users onboarding**
+
+=== Data Mapping Migration from DiDok to ATLAS
+
+See https://confluence.sbb.ch/x/PB1Xl to get additional information about the data mapping migration from DiDok to ATLAS.
 
 include::../../../../base-atlas/documentation/servicepoint/when_to_use_files_or_API.adoc[]
 
 include::../../../../base-atlas/documentation/amazon/Amazon_S3_Buckets_Users_Onboarding.adoc[]
 
-= Export Service Point API
+= Export Service Point Directory API
 
-== Trigger export Service Point - Successfully
+== Trigger export Service Point Versions - Successfully
 
 include::{snippets}/export-service-point-batch-controller-api-v1-integration-test/should-post-service-point-export-batch-successfully/auto-section.adoc[]
+
+== Trigger export Traffic Point Element Versions - Successfully
+
+include::{snippets}/export-service-point-batch-controller-api-v1-integration-test/should-post-traffic-point-export-batch-successfully/auto-section.adoc[]
 
 == Get Service Point Json - Successfully
 
@@ -94,3 +128,6 @@ include::{snippets}/export-service-point-batch-controller-api-v1-integration-tes
 
 include::{snippets}/export-service-point-batch-controller-api-v1-integration-test/should-download-gzip-json-unsuccessfully/auto-section.adoc[]
 
+== Get download Traffic Point Gzip Json - Unsuccessfully
+
+include::{snippets}/export-service-point-batch-controller-api-v1-integration-test/should-not-download-json-when-export-type-is-not-allowed-for-the-export-file/auto-section.adoc[]
