@@ -21,7 +21,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @IntegrationTest
 public class TrafficPointElementServiceTest {
 
-  // required for test functionality
   @MockBean
   private TrafficPointElementValidationService trafficPointElementValidationService;
 
