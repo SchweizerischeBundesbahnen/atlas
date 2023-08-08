@@ -19,15 +19,12 @@ import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointEleme
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementRequestParams;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementService;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementValidationService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @Slf4j
@@ -40,13 +37,11 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
   private final TrafficPointElementImportService trafficPointElementImportService;
 
   @Override
-  public Container<ReadTrafficPointElementVersionModel> getTrafficPointElements(Pageable pageable, TrafficPointElementRequestParams trafficPointElementRequestParams,
-      Optional<LocalDate> validOn ) {
+  public Container<ReadTrafficPointElementVersionModel> getTrafficPointElements(Pageable pageable, TrafficPointElementRequestParams trafficPointElementRequestParams ) {
 
     TrafficPointElementSearchRestrictions trafficPointElementSearchRestrictions = TrafficPointElementSearchRestrictions.builder()
         .pageable(pageable)
         .trafficPointElementRequestParams(trafficPointElementRequestParams)
-        .validOn(validOn)
         .build();
 
     Page<TrafficPointElementVersion> trafficPointElementVersions = trafficPointElementService.findAll(trafficPointElementSearchRestrictions);
