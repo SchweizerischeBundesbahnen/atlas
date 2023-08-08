@@ -15,7 +15,6 @@ import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion.Fiel
 import ch.sbb.atlas.servicepointdirectory.mapper.GeolocationMapper;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepository;
-import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepositoryCustomImpl;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementImportService;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementValidationService;
 import org.junit.jupiter.api.AfterEach;
@@ -58,7 +57,6 @@ public class TrafficPointElementControllerApiTest extends BaseControllerApiTest 
   @Autowired
   public TrafficPointElementControllerApiTest(TrafficPointElementVersionRepository repository,
                                               TrafficPointElementController trafficPointElementController,
-                                              TrafficPointElementVersionRepositoryCustomImpl customRepository,
                                               ServicePointVersionRepository servicePointVersionRepository) {
     this.repository = repository;
     this.trafficPointElementController = trafficPointElementController;
