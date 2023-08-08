@@ -5,7 +5,7 @@ import { AppTestingModule } from '../../../../app.testing.module';
 import { AuthService } from '../../../../core/auth/auth.service';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
-import { BERN, BERN_WYLEREGG } from '../../service-point-test-data';
+import { BERN } from '../../service-point-test-data';
 import { FormsModule } from '@angular/forms';
 import { TextFieldComponent } from '../../../../core/form-components/text-field/text-field.component';
 import { MeansOfTransportPickerComponent } from '../../means-of-transport-picker/means-of-transport-picker.component';
