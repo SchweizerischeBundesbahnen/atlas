@@ -1,5 +1,14 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
+import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.LV95;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.servicepoint.CreateTrafficPointElementVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadTrafficPointElementVersionModel;
@@ -13,13 +22,17 @@ import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion.Fields;
 import ch.sbb.atlas.servicepointdirectory.mapper.GeolocationMapper;
-import ch.sbb.atlas.servicepointdirectory.model.TestData;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepository;
-import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepositoryCustom;
 import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepositoryCustomImpl;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementImportService;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementValidationService;
+import java.io.InputStream;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,29 +42,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.io.InputStream;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.LV95;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 public class TrafficPointElementControllerApiTest extends BaseControllerApiTest {
 
   @MockBean
   private TrafficPointElementValidationService trafficPointElementValidationService;
 
   private final TrafficPointElementVersionRepository repository;
-  private TrafficPointElementVersionRepositoryCustom customRepository;
   private TrafficPointElementVersion trafficPointElementVersion;
   private ServicePointVersionRepository servicePointVersionRepository;
   private ServicePointVersion servicePointVersion;
@@ -64,7 +60,6 @@ public class TrafficPointElementControllerApiTest extends BaseControllerApiTest 
                                               TrafficPointElementVersionRepositoryCustomImpl customRepository,
                                               ServicePointVersionRepository servicePointVersionRepository) {
     this.repository = repository;
-    this.customRepository = customRepository;
     this.trafficPointElementController = trafficPointElementController;
     this.servicePointVersionRepository = servicePointVersionRepository;
   }
@@ -74,7 +69,7 @@ public class TrafficPointElementControllerApiTest extends BaseControllerApiTest 
     trafficPointElementVersion = TrafficPointTestData.getTrafficPoint();
     this.trafficPointElementVersion = repository.save(trafficPointElementVersion);
 
-    servicePointVersion = TestData.testServicePointForTrafficPoint();
+    servicePointVersion = TrafficPointTestData.testServicePointForTrafficPoint();
     this.servicePointVersion = servicePointVersionRepository.save(servicePointVersion);
   }
 
