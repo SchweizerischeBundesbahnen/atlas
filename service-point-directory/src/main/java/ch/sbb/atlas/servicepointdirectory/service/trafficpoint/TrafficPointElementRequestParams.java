@@ -32,13 +32,6 @@ public class TrafficPointElementRequestParams extends VersionedObjectDateRequest
     @Parameter(description = "")
     @Singular(ignoreNullCollections = true)
     private List<String> parentsloids = new ArrayList<>();
-<<<<<<< HEAD
-
-    @Parameter(description = "sboid")
-    @Singular(ignoreNullCollections = true)
-    private List<String> sboids = new ArrayList<>();
-=======
->>>>>>> 1b47519d9 (ATLAS-1079: Add missing queries and add tests.)
 
     @Parameter(description = "sboid")
     @Singular(ignoreNullCollections = true)
@@ -49,14 +42,10 @@ public class TrafficPointElementRequestParams extends VersionedObjectDateRequest
     private List<String> uicCountryCodes = new ArrayList<>();
 
     @Parameter(description =
-        "Number of a service point which is provided by DiDok for Switzerland. It is part of the unique key for"
-            + " service points.")
+            "Number of a service point which is provided by DiDok for Switzerland. It is part of the unique key for"
+                    + " service points.")
     @Singular(value = "numberShort", ignoreNullCollections = true)
     private List<Integer> servicePointNumbersShort = new ArrayList<>();
-<<<<<<< HEAD
-
-=======
->>>>>>> 1b47519d9 (ATLAS-1079: Add missing queries and add tests.)
 
     public List<ServicePointNumber> getServicePointNumbers() {
         return servicePointNumbers.stream().map(ServicePointNumber::ofNumberWithoutCheckDigit).toList();
