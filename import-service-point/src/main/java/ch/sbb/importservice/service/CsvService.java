@@ -10,6 +10,7 @@ import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.imports.DidokCsvMapper;
 import ch.sbb.atlas.imports.servicepoint.BaseDidokCsvModel;
 import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointCsvModel;
+import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointCsvModelContainer;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointCsvModelContainer;
@@ -105,6 +106,31 @@ public class CsvService {
     log.info("Found {} Loading Points to send to ServicePointDirectory", loadingPointCsvModels.size());
     fileHelperService.deleteConsumedFile(importFile);
     return loadingPointCsvModels;
+  }
+
+  public List<LoadingPointCsvModelContainer> mapToLoadingPointCsvModelContainers(
+      final List<LoadingPointCsvModel> loadingPointCsvModels) {
+    final Map<Integer, List<LoadingPointCsvModel>> groupedByDidokCode = loadingPointCsvModels.stream()
+        .collect(Collectors.groupingBy(LoadingPointCsvModel::getServicePointNumber));
+
+    final List<LoadingPointCsvModelContainer> loadingPointCsvModelContainers = new ArrayList<>();
+    groupedByDidokCode.forEach((didokCode, csvModelsByDidokCode) -> {
+      final Map<Integer, List<LoadingPointCsvModel>> groupedByLoadingPointNumber = csvModelsByDidokCode.stream()
+          .collect(Collectors.groupingBy(LoadingPointCsvModel::getNumber));
+
+      groupedByLoadingPointNumber.forEach((number, csvModelsByLoadingPointNumber) -> {
+        csvModelsByLoadingPointNumber.sort(Comparator.comparing(BaseDidokCsvModel::getValidFrom));
+        final LoadingPointCsvModelContainer loadingPointCsvModelContainer = LoadingPointCsvModelContainer
+            .builder()
+            .didokCode(didokCode)
+            .loadingPointNumber(number)
+            .loadingPointCsvModelList(csvModelsByLoadingPointNumber)
+            .build();
+        loadingPointCsvModelContainers.add(loadingPointCsvModelContainer);
+      });
+    });
+
+    return loadingPointCsvModelContainers;
   }
 
   public List<TrafficPointElementCsvModel> getActualTrafficPointCsvModels(File file) {

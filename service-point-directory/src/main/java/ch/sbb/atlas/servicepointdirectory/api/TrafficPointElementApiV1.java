@@ -51,14 +51,14 @@ public interface TrafficPointElementApiV1 {
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
-  ReadTrafficPointElementVersionModel createTrafficPoint(@RequestBody @Valid CreateTrafficPointElementVersionModel trafficPointElementVersionModel);
+  ReadTrafficPointElementVersionModel createTrafficPoint(
+      @RequestBody @Valid CreateTrafficPointElementVersionModel trafficPointElementVersionModel);
 
   @ResponseStatus(HttpStatus.OK)
   @PutMapping(path = "{id}")
   List<ReadTrafficPointElementVersionModel> updateTrafficPoint(
-          @PathVariable Long id,
-          @RequestBody @Valid CreateTrafficPointElementVersionModel trafficPointElementVersionModel
+      @PathVariable Long id,
+      @RequestBody @Valid CreateTrafficPointElementVersionModel trafficPointElementVersionModel
   );
-
 
 }
