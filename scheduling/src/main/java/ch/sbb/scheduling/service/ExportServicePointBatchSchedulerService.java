@@ -32,4 +32,14 @@ public class ExportServicePointBatchSchedulerService extends BaseSchedulerServic
         "Trigger Export Service Point Batch");
   }
 
+  @SpanTracing
+  @Retryable(label = "triggerExportTrafficPointBatch", retryFor = SchedulingExecutionException.class, maxAttempts = 4, backoff =
+  @Backoff(delay = 65000))
+  @Scheduled(cron = "${scheduler.export-service-point.traffic-point-trigger-batch.chron}", zone = "${scheduler.zone}")
+  @SchedulerLock(name = "triggerImportTrafficPointBatch", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
+  public Response postTriggerExportTrafficPointBatch() {
+    return executeRequest(importServicePointBatchClient::postTriggerExportTrafficPointBatch,
+        "Trigger Export Traffic Point Batch");
+  }
+
 }
