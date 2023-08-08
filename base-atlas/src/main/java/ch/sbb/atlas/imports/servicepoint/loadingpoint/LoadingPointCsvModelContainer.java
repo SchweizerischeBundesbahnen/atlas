@@ -1,17 +1,20 @@
 package ch.sbb.atlas.imports.servicepoint.loadingpoint;
 
-import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import ch.sbb.atlas.imports.servicepoint.BaseCsvModelContainer;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
-@Data
-@AllArgsConstructor
-@Builder
-public class LoadingPointCsvModelContainer {
+@NoArgsConstructor
+@Getter
+@SuperBuilder
+@ToString
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class LoadingPointCsvModelContainer extends BaseCsvModelContainer<LoadingPointCsvModel> {
 
   private Integer didokCode;
   private Integer loadingPointNumber;
-  private List<LoadingPointCsvModel> loadingPointCsvModelList;
 
 }
