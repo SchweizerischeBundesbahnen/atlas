@@ -1,5 +1,5 @@
 import TthUtils from '../../support/util/tth-utils';
-import { DataCy } from '../../support/data-cy';
+import {DataCy} from '../../support/data-cy';
 import CommonUtils from '../../support/util/common-utils';
 import AngularMaterialConstants from '../../support/util/angular-material-constants';
 
@@ -105,6 +105,7 @@ describe('Timetable Hearing', { testIsolation: false }, () => {
 
   it('Step-10: Fahrplanjahr schliessen', () => {
     CommonUtils.visit('timetable-hearing/ch/active');
+    cy.get(DataCy.TTH_TABLE).should('be.visible');
     cy.get(DataCy.TTH_MANAGE_TIMETABLE_HEARING).click();
     cy.get(DataCy.TTH_CLOSE_TTH_YEAR).click();
     cy.get(DataCy.TTH_CLOSE_TTH_TIMETABLE_HEARING).click();
