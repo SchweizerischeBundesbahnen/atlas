@@ -33,6 +33,8 @@ import { SelectComponent } from '../../../../core/form-components/select/select.
 import { AtlasSpacerComponent } from '../../../../core/components/spacer/atlas-spacer.component';
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
 import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
+import { DateRangeTextComponent } from '../../../../core/versioning/date-range-text/date-range-text.component';
+import { DisplayDatePipe } from '../../../../core/pipe/display-date.pipe';
 
 const lineVersionSnapsot: LineVersionSnapshot = {
   id: 1234,
@@ -127,6 +129,8 @@ function setupTestBed(
       MockAtlasButtonComponent,
       DetailFooterComponent,
       DetailPageContainerComponent,
+      DateRangeTextComponent,
+      DisplayDatePipe,
     ],
     imports: [AppTestingModule],
     providers: [

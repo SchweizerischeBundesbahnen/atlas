@@ -1,0 +1,21 @@
+<div class="map-wrapper d-flex">
+  <div class="map" #map></div>
+  <button
+    *ngIf="!showMapStyleSelection"
+    mat-icon-button
+    class="map-style-selector"
+    (click)="openStyleSelection()"
+  >
+    <em class="bi bi-stack"></em>
+  </button>
+  <div *ngIf="showMapStyleSelection" class="map-style-selector map-styles d-flex flex-column">
+    <button
+      [ngClass]="{ current: style === currentMapStyle }"
+      class="style-switch-button mb-1"
+      (click)="switchToStyle(style)"
+      *ngFor="let style of availableMapStyles"
+    >
+      {{ style.label | translate }}
+    </button>
+  </div>
+</div>
