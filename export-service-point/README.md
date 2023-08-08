@@ -5,24 +5,26 @@
 - [ATLAS](#atlas)
 - [Project Versioning](#project-versioning)
 - [Links](#links)
-    * [Localhost](#localhost)
-    * [Development](#development)
-    * [Test](#test)
-    * [Integration](#integration)
-    * [Production](#production)
-    * [Project Infrastructure](#project-infrastructure)
+  * [Localhost](#localhost)
+  * [Development](#development)
+  * [Test](#test)
+  * [Integration](#integration)
+  * [Production](#production)
+  * [Project Infrastructure](#project-infrastructure)
 - [Big Picture Architecture](#big-picture-architecture)
 - [Development](#development-1)
-    * [Spring Batch](#spring-batch)
+  * [Spring Batch](#spring-batch)
+  * [Multiple DataSources](#multiple-datasources)
 - [Jobs](#jobs)
-    * [Export ServicePoint](#export-servicepoint)
-    * [Tech Stack](#tech-stack)
+  * [Export ServicePointVersions](#export-servicepointversions)
+  * [Export TrafficPointElementVersions](#export-trafficpointelementversions)
+  * [Jobs Recovery](#jobs-recovery)
+- [Tech Stack](#tech-stack)
 
 <!-- tocstop -->
 
 The main goal of the Atlas Export Service Point is to export Service Point Directory Data as CSV and JSON file and
-upload them
-to the Amazon S3 Bucket.
+upload them to the Amazon S3 Bucket.
 
 See [ADR-0017](https://confluence.sbb.ch/display/ATLAS/ADR-0017%3A++Service+Point+Directory+CSV+Export)
 
@@ -98,13 +100,16 @@ We use
 
 ## Jobs
 
-### Export ServicePoint
+### Export ServicePointVersions
 
-The export ServicePoint Job is responsible to:
+The
+export [ServicePointVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/config/ServicePointVersionExportBatchConfig.java)
+Job is responsible to:
 
-* read ServicePoint data from ServicePoint dataSource
+* read [ServicePointVersion](src/main/java/ch/sbb/exportservice/entity/ServicePointVersion.java) data from ServicePoint
+  dataSource
 * generate zipped CSV and gzipped JSON Files based
-  on [ServicePointExportType.java](src/main/java/ch/sbb/exportservice/model/ServicePointExportType.java):
+  on [ExportType.java](src/main/java/ch/sbb/exportservice/model/ExportType.java):
     * actual-date
         * world
         * swiss-only
@@ -114,11 +119,32 @@ The export ServicePoint Job is responsible to:
     * future-timetable
         * world
         * swiss-only
-    * a retry system is configured on the step level when certain exception are thrown (see StepUtils.java)
-    * RecoveryJobsRunner.java checks at startup if there are any unfinished jobs or if all jobs have been run. In case
-      there are incomplete jobs or not all jobs have been run all jobs are run again.
-    * If a job has been completed unsuccessfully an email notification is sent to TechSupport-ATLAS@sbb.ch
 
-### Tech Stack
+### Export TrafficPointElementVersions
+
+The
+export [TrafficPointElementVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/config/TrafficPointElementVersionExportBatchConfig.java)
+Job is responsible to:
+
+* read [TrafficPointElementVersions](src/main/java/ch/sbb/exportservice/entity/TrafficPointElementVersion.java) data
+  from ServicePoint dataSource
+* generate zipped CSV and gzipped JSON Files based
+  on [ExportType.java](src/main/java/ch/sbb/exportservice/model/ExportType.java):
+    * actual-date
+        * world
+    * full
+        * world
+    * future-timetable
+        * world
+
+### Jobs Recovery
+
+* a retry system is configured on the step level when certain exception are thrown (
+  see [StepUtils.java](src/main/java/ch/sbb/exportservice/utils/StepUtils.java))
+* [RecoveryJobsRunner.java](src/main/java/ch/sbb/exportservice/recovery/RecoveryJobsRunner.java) checks at startup if there are any unfinished jobs or if all jobs have been run. In case
+  there are incomplete jobs or not all jobs have been run all jobs are run again.
+* If a job has been completed unsuccessfully an email notification is sent to TechSupport-ATLAS@sbb.ch
+
+## Tech Stack
 
 See [Tech Stack Documentation](../documentation/tech-stack-service.md)
