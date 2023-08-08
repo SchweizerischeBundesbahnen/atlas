@@ -14,4 +14,6 @@ public interface LoadingPointVersionRepository extends
 
   List<LoadingPointVersion> findAllByServicePointNumberAndNumberOrderByValidFrom(ServicePointNumber servicePointNumber,
       Integer loadingPointNumber);
+
+  boolean existsByServicePointNumberAndNumber(ServicePointNumber servicePointNumber, Integer loadingPointNumber);
 }

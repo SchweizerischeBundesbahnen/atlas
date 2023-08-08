@@ -4,6 +4,7 @@ import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.model.search.TrafficPointElementSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepository;
+import ch.sbb.atlas.servicepointdirectory.service.CrossValidationService;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,7 @@ public class TrafficPointElementService {
 
     private final TrafficPointElementVersionRepository trafficPointElementVersionRepository;
     private final VersionableService versionableService;
-    private final TrafficPointElementValidationService trafficPointElementValidationService;
+    private final CrossValidationService crossValidationService;
 
     public Page<TrafficPointElementVersion> findAll(TrafficPointElementSearchRestrictions searchRestrictions) {
         return trafficPointElementVersionRepository.findAll(searchRestrictions.getSpecification(),
@@ -44,14 +45,17 @@ public class TrafficPointElementService {
         return trafficPointElementVersionRepository.existsBySloid(sloid);
     }
 
-    @PreAuthorize("@countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreateOrEditTrafficPoint(#servicePointVersions, "
+    @PreAuthorize(
+      "@countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreateOrEditTrafficPoint"
+          + "(#servicePointVersions, "
             + "T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
-    public TrafficPointElementVersion checkPermissionRightsAndSave(TrafficPointElementVersion trafficPointElementVersion, List<ServicePointVersion> servicePointVersions) {
+    public TrafficPointElementVersion checkPermissionRightsAndSave(TrafficPointElementVersion trafficPointElementVersion,
+      List<ServicePointVersion> servicePointVersions) {
         return save(trafficPointElementVersion);
     }
 
     public TrafficPointElementVersion save(TrafficPointElementVersion trafficPointElementVersion) {
-        trafficPointElementValidationService.validateServicePointNumberExists(trafficPointElementVersion.getServicePointNumber());
+        crossValidationService.validateServicePointNumberExists(trafficPointElementVersion.getServicePointNumber());
         return trafficPointElementVersionRepository.saveAndFlush(trafficPointElementVersion);
     }
 
@@ -60,13 +64,17 @@ public class TrafficPointElementService {
         trafficPointElementVersionRepository.flush();
     }
 
-    @PreAuthorize("@countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreateOrEditTrafficPoint(#currentVersions, "
+    @PreAuthorize(
+      "@countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreateOrEditTrafficPoint"
+          + "(#currentVersions, "
             + "T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
-    public void checkPermissionRightsAndUpdate(TrafficPointElementVersion currentVersionTPEV, TrafficPointElementVersion editedVersionTPEV, List<ServicePointVersion> currentVersions) {
+    public void checkPermissionRightsAndUpdate(TrafficPointElementVersion currentVersionTPEV,
+      TrafficPointElementVersion editedVersionTPEV, List<ServicePointVersion> currentVersions) {
         updateTrafficPointElementVersion(currentVersionTPEV, editedVersionTPEV);
     }
 
-    public void updateTrafficPointElementVersion(TrafficPointElementVersion currentVersion, TrafficPointElementVersion editedVersion) {
+    public void updateTrafficPointElementVersion(TrafficPointElementVersion currentVersion,
+      TrafficPointElementVersion editedVersion) {
         trafficPointElementVersionRepository.incrementVersion(currentVersion.getSloid());
         if (editedVersion.getVersion() != null && !currentVersion.getVersion().equals(editedVersion.getVersion())) {
             throw new StaleObjectStateException(ServicePointVersion.class.getSimpleName(), "version");
