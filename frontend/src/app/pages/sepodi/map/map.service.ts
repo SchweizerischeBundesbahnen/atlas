@@ -122,7 +122,7 @@ export class MapService {
   }
 
   private initStoredMapBehaviour() {
-    this.map.setZoom(Number(localStorage.getItem(mapZoomLocalStorageKey)));
+    this.map.setZoom(Number(localStorage.getItem(mapZoomLocalStorageKey) ?? 7.2));
     this.map.on('zoomend', (e) => {
       localStorage.setItem(mapZoomLocalStorageKey, String(e.target.getZoom()));
     });
@@ -130,6 +130,8 @@ export class MapService {
     const storedLocation = localStorage.getItem(mapLocationLocalStorageKey);
     if (storedLocation) {
       this.map.setCenter(JSON.parse(storedLocation) as LngLat);
+    } else {
+      this.map.setCenter({ lng: 8.088542571207768, lat: 46.79229542892091 });
     }
     this.map.on('moveend', (e) => {
       localStorage.setItem(mapLocationLocalStorageKey, JSON.stringify(e.target.getCenter()));
