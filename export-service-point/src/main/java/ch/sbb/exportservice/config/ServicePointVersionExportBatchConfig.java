@@ -48,11 +48,13 @@ public class ServicePointVersionExportBatchConfig {
 
   private static final int CHUNK_SIZE = 200;
   private static final int FETCH_SIZE = 10000;
+
   private final JobRepository jobRepository;
 
   private final PlatformTransactionManager transactionManager;
 
   private final JobCompletionListener jobCompletionListener;
+
   private final StepTracerListener stepTracerListener;
 
   private final JsonServicePointVersionWriter jsonServicePointVersionWriter;
