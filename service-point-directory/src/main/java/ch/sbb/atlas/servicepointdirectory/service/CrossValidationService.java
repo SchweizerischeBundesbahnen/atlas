@@ -1,4 +1,4 @@
-package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
+package ch.sbb.atlas.servicepointdirectory.service;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberNotFoundException;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class TrafficPointElementValidationService {
+public class CrossValidationService {
 
   private final ServicePointService servicePointService;
 
