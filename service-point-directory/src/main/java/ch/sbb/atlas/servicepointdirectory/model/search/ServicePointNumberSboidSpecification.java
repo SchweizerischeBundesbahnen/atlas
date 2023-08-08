@@ -30,29 +30,6 @@ public class ServicePointNumberSboidSpecification<T> implements Specification<T>
 
   private final List<Country> countries;
 
-//  @Override
-//  public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-//    if (sboids.isEmpty()) {
-//      return criteriaBuilder.and();
-//    }
-//    Subquery<?> servicePointSubquery = query.subquery(ServicePointVersion.class);
-//    Root<ServicePointVersion> fromServicePoint = servicePointSubquery.from(ServicePointVersion.class);
-//    List<Predicate> predicates = new ArrayList<>();
-//    if (sboids != null) {
-//      predicates.add(criteriaBuilder.and(fromServicePoint.get(ServicePointVersion_.businessOrganisation).in(sboids)));
-//    }
-//    if (shortNumbers != null) {
-//      predicates.add(criteriaBuilder.and(fromServicePoint.get(ServicePointVersion_.numberShort).in(shortNumbers)));
-//    }
-//    servicePointSubquery
-//            .where(criteriaBuilder.and(criteriaBuilder.equal(fromServicePoint.get("number"), root.get("servicePointNumber")),
-//                            fromServicePoint.get(ServicePointVersion_.businessOrganisation).in(sboids)));
-//    servicePointSubquery.where(criteriaBuilder.and(criteriaBuilder.equal(fromServicePoint.get("number"), root.get("servicePointNumber"))));
-//    servicePointSubquery.where(predicates);
-//    return criteriaBuilder.exists(servicePointSubquery);
-//  }
-
-
   @Override
   public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
 //    if (sboids.isEmpty()) {
