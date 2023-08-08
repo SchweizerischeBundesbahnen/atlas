@@ -3,6 +3,8 @@ package ch.sbb.atlas.servicepointdirectory.migration;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
 import com.fasterxml.jackson.databind.MappingIterator;
+import lombok.experimental.UtilityClass;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
@@ -10,7 +12,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class AtlasCsvReader {
@@ -25,6 +26,17 @@ public class AtlasCsvReader {
       servicePoints.add(mappingIterator.next());
     }
     return servicePoints;
+  }
+  public static List<TrafficPointVersionCsvModel> parseAtlasTraffics(InputStream inputStream)
+      throws IOException {
+    MappingIterator<TrafficPointVersionCsvModel> mappingIterator = DidokCsvMapper.CSV_MAPPER.readerFor(
+            TrafficPointVersionCsvModel.class).with(DidokCsvMapper.CSV_SCHEMA).readValues(inputStream);
+    List<TrafficPointVersionCsvModel> trafficPointVersionCsvModels = new ArrayList<>();
+
+    while (mappingIterator.hasNext()) {
+      trafficPointVersionCsvModels.add(mappingIterator.next());
+    }
+    return trafficPointVersionCsvModels;
   }
 
   public static LocalDateTime timestampFromString(String string) {

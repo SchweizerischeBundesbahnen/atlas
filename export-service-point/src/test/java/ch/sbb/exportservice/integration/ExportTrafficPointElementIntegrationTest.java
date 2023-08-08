@@ -17,18 +17,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 @BatchDataSourceConfigTest
 @IntegrationTest
 @AutoConfigureMockMvc(addFilters = false)
-public class ExportServicePointIntegrationTest {
+public class ExportTrafficPointElementIntegrationTest {
 
   @Autowired
   private JobLauncher jobLauncher;
 
   @Autowired
-  @Qualifier(EXPORT_SERVICE_POINT_CSV_JOB_NAME)
-  private Job exportServicePointCsvJob;
+  @Qualifier(EXPORT_TRAFFIC_POINT_ELEMENT_CSV_JOB_NAME)
+  private Job exportTrafficPointElementCsvJob;
 
   @Autowired
-  @Qualifier(EXPORT_SERVICE_POINT_JSON_JOB_NAME)
-  private Job exportServicePointJsonJob;
+  @Qualifier(EXPORT_TRAFFIC_POINT_ELEMENT_JSON_JOB_NAME)
+  private Job exportTrafficPointElementJsonJob;
 
   @Test
   public void shouldExecuteExportServicePointCsvJob() throws Exception {
@@ -38,12 +38,12 @@ public class ExportServicePointIntegrationTest {
         .addString(EXPORT_TYPE_JOB_PARAMETER, ExportType.WORLD_FULL.toString())
         .addLong(JobDescriptionConstants.START_AT_JOB_PARAMETER, System.currentTimeMillis()).toJobParameters();
     // when
-    JobExecution jobExecution = jobLauncher.run(exportServicePointCsvJob, jobParameters);
+    JobExecution jobExecution = jobLauncher.run(exportTrafficPointElementCsvJob, jobParameters);
     JobInstance actualJobInstance = jobExecution.getJobInstance();
     ExitStatus actualJobExitStatus = jobExecution.getExitStatus();
 
     // then
-    assertThat(actualJobInstance.getJobName()).isEqualTo(EXPORT_SERVICE_POINT_CSV_JOB_NAME);
+    assertThat(actualJobInstance.getJobName()).isEqualTo(EXPORT_TRAFFIC_POINT_ELEMENT_CSV_JOB_NAME);
     assertThat(actualJobExitStatus.getExitCode()).isEqualTo(ExitStatus.COMPLETED.getExitCode());
   }
 
@@ -55,12 +55,12 @@ public class ExportServicePointIntegrationTest {
         .addString(EXPORT_TYPE_JOB_PARAMETER, ExportType.WORLD_FULL.toString())
         .addLong(JobDescriptionConstants.START_AT_JOB_PARAMETER, System.currentTimeMillis()).toJobParameters();
     // when
-    JobExecution jobExecution = jobLauncher.run(exportServicePointJsonJob, jobParameters);
+    JobExecution jobExecution = jobLauncher.run(exportTrafficPointElementJsonJob, jobParameters);
     JobInstance actualJobInstance = jobExecution.getJobInstance();
     ExitStatus actualJobExitStatus = jobExecution.getExitStatus();
 
     // then
-    assertThat(actualJobInstance.getJobName()).isEqualTo(EXPORT_SERVICE_POINT_JSON_JOB_NAME);
+    assertThat(actualJobInstance.getJobName()).isEqualTo(EXPORT_TRAFFIC_POINT_ELEMENT_JSON_JOB_NAME);
     assertThat(actualJobExitStatus.getExitCode()).isEqualTo(ExitStatus.COMPLETED.getExitCode());
   }
 

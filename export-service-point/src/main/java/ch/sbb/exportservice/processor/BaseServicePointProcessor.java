@@ -1,5 +1,6 @@
 package ch.sbb.exportservice.processor;
 
+import ch.sbb.atlas.api.servicepoint.GeolocationBaseModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationModel.Canton;
 import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationModel.DistrictModel;
@@ -13,12 +14,13 @@ import ch.sbb.atlas.servicepoint.transformer.CoordinateTransformer;
 import ch.sbb.exportservice.entity.ServicePointVersion;
 import ch.sbb.exportservice.entity.geolocation.GeolocationBaseEntity;
 import ch.sbb.exportservice.entity.geolocation.ServicePointGeolocation;
+
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-public abstract class BaseProcessor {
+public abstract class BaseServicePointProcessor {
 
   CoordinateTransformer coordinateTransformer = new CoordinateTransformer();
 
@@ -39,6 +41,20 @@ public abstract class BaseProcessor {
         .fsoNumber(servicePointGeolocation.getSwissCanton().getNumber())
         .name(servicePointGeolocation.getSwissCanton().getName())
         .build();
+  }
+
+  public GeolocationBaseModel toModel(GeolocationBaseEntity geolocationBaseEntity) {
+    if (geolocationBaseEntity == null) {
+      return null;
+    }
+    Map<SpatialReference, CoordinatePair> coordinates = getTransformedCoordinates(geolocationBaseEntity);
+    return GeolocationBaseModel.builder()
+            .spatialReference(geolocationBaseEntity.getSpatialReference())
+            .lv95(coordinates.get(SpatialReference.LV95))
+            .wgs84(coordinates.get(SpatialReference.WGS84))
+            .wgs84web(coordinates.get(SpatialReference.WGS84WEB))
+            .height(geolocationBaseEntity.getHeight())
+            .build();
   }
 
   public ServicePointGeolocationModel fromEntity(ServicePointGeolocation servicePointGeolocation) {
