@@ -79,7 +79,7 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
 
   @Test
   void shouldGetServicePoint() throws Exception {
-    mvc.perform(get("/v1/service-points/85890087")).andExpect(status().isOk())
+    mvc.perform(get("/v1/service-points/8589008")).andExpect(status().isOk())
         .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.id, is(servicePointVersion.getId().intValue())))
         .andExpect(jsonPath("$[0].number.number", is(8589008)))
         .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.designationOfficial, is("Bern, Wyleregg")))

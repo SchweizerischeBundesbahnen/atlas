@@ -1,5 +1,5 @@
 import { CountryName } from './CountryName';
-import { Country } from '../../../../api';
+import { Country } from '../../api';
 
 export class Countries {
   public static countryNames: CountryName[] = [

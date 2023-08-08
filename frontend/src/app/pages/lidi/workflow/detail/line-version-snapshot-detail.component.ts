@@ -15,7 +15,6 @@ import { LineVersionSnapshotDetailFormGroup } from './line-version-snapshot-deta
 import { takeUntil } from 'rxjs/operators';
 import { WorkflowFormGroup } from '../../../../core/workflow/workflow-form-group';
 import { WorkflowCheckFormGroup } from '../../../../core/workflow/workflow-check-form/workflow-check-form-group';
-import { DateService } from '../../../../core/date/date.service';
 
 @Component({
   templateUrl: './line-version-snapshot-detail.component.html',
@@ -105,10 +104,6 @@ export class LineVersionSnapshotDetailComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
-  }
-
-  formatDate(date: Date) {
-    return DateService.getDateFormatted(date);
   }
 
   private checkLineVersionSNapshottedAlreadyExists() {
