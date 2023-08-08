@@ -2,8 +2,11 @@ package ch.sbb.atlas.servicepointdirectory;
 
 import ch.sbb.atlas.api.servicepoint.CreateTrafficPointElementVersionModel;
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
+import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
+import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
 import ch.sbb.atlas.servicepointdirectory.mapper.GeolocationMapper;
@@ -15,6 +18,8 @@ import java.time.LocalTime;
 
 @UtilityClass
 public class TrafficPointTestData {
+
+  public static final ServicePointNumber SERVICE_POINT_NUMBER = ServicePointNumber.of(14000158);
 
   public static TrafficPointElementVersion getBasicTrafficPoint() {
     TrafficPointElementGeolocation geolocation = getTrafficPointGeolocationBernMittelland();
@@ -63,11 +68,11 @@ public class TrafficPointTestData {
             .editor("fs45117")
             .build();
 
-    TrafficPointElementVersion trafficPointElementVersion = TrafficPointElementVersion
+    return TrafficPointElementVersion
             .builder()
             .designation("Bezeichnung")
             .designationOperational("gali00")
-            .servicePointNumber(ServicePointNumber.of(14000158))
+            .servicePointNumber(SERVICE_POINT_NUMBER)
             .trafficPointElementGeolocation(trafficPointElementGeolocation)
             .sloid("ch:1:sloid:1400015:0:310240")
             .parentSloid("ch:1:sloid:1400015:310240")
@@ -80,8 +85,21 @@ public class TrafficPointTestData {
             .editionDate(LocalDateTime.of(2019, 12, 6, 8, 2, 34))
             .editor("fs45117")
             .build();
+  }
 
-    return trafficPointElementVersion;
+  public static ServicePointVersion testServicePointForTrafficPoint() {
+    return ServicePointVersion.builder()
+        .number(SERVICE_POINT_NUMBER)
+        .numberShort(1)
+        .country(Country.FRANCE_BUS)
+        .designationLong("long designation")
+        .designationOfficial("official designation")
+        .abbreviation("BE")
+        .businessOrganisation("somesboid")
+        .status(Status.VALIDATED)
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 12, 31))
+        .build();
   }
 
   public static CreateTrafficPointElementVersionModel getCreateTrafficPointVersionModel() {
@@ -97,7 +115,7 @@ public class TrafficPointTestData {
             .editor("fs45117")
             .build();
 
-    CreateTrafficPointElementVersionModel trafficPointElementVersion = CreateTrafficPointElementVersionModel
+    return CreateTrafficPointElementVersionModel
             .builder()
             .designation("Bezeichnung")
             .designationOperational("gali00")
@@ -114,7 +132,5 @@ public class TrafficPointTestData {
             .editionDate(LocalDateTime.of(2019, 12, 6, 8, 2, 34))
             .editor("fs45117")
             .build();
-
-    return trafficPointElementVersion;
   }
 }
