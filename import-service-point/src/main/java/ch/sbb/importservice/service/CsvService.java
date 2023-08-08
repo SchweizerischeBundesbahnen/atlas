@@ -124,8 +124,9 @@ public class CsvService {
             .builder()
             .didokCode(didokCode)
             .loadingPointNumber(number)
-            .loadingPointCsvModelList(csvModelsByLoadingPointNumber)
+            .csvModelList(csvModelsByLoadingPointNumber)
             .build();
+        loadingPointCsvModelContainer.mergeWhenDatesAreSequentialAndModelsAreEqual();
         loadingPointCsvModelContainers.add(loadingPointCsvModelContainer);
       });
     });
@@ -169,7 +170,7 @@ public class CsvService {
           final TrafficPointCsvModelContainer trafficPointCsvModelContainer = TrafficPointCsvModelContainer
               .builder()
               .sloid(sloid)
-              .trafficPointCsvModelList(trafficPointCsvModelGroup)
+              .csvModelList(trafficPointCsvModelGroup)
               .build();
           trafficPointCsvModelContainer.mergeWhenDatesAreSequentialAndModelsAreEqual();
           return trafficPointCsvModelContainer;
