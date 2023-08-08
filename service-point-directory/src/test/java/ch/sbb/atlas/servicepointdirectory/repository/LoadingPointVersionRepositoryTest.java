@@ -83,4 +83,7 @@ public class LoadingPointVersionRepositoryTest {
     assertThat(savedVersion.getLoadingPointGeolocation().getId()).isNotNull();
   }
 
+  // todo: findAll test
+  // todo: existsBy test
+
 }

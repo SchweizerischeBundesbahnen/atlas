@@ -48,6 +48,13 @@ public class TrafficPointElementVersion extends BasePointVersion implements Vers
 
   private static final String VERSION_SEQ = "traffic_point_element_version_seq";
 
+  @Override
+  public void setThisAsParentOnRelatingEntities() {
+    if (this.trafficPointElementGeolocation != null) {
+      this.trafficPointElementGeolocation.setTrafficPointElementVersion(this);
+    }
+  }
+
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = VERSION_SEQ)
   @SequenceGenerator(name = VERSION_SEQ, sequenceName = VERSION_SEQ, allocationSize = 1,
@@ -114,10 +121,4 @@ public class TrafficPointElementVersion extends BasePointVersion implements Vers
     return trafficPointElementGeolocation != null;
   }
 
-  @Override
-  public void setThisAsParentOnRelatingEntities() {
-    if (this.trafficPointElementGeolocation != null) {
-      this.trafficPointElementGeolocation.setTrafficPointElementVersion(this);
-    }
-  }
 }

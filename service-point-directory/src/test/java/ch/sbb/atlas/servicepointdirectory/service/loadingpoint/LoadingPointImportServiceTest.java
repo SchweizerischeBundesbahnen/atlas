@@ -74,4 +74,6 @@ public class LoadingPointImportServiceTest {
     }
   }
 
+  // todo: test import
+
 }

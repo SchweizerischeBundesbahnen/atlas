@@ -47,11 +47,10 @@ public class TrafficPointElementControllerApiTest extends BaseControllerApiTest 
   private CrossValidationService crossValidationService;
 
   private final TrafficPointElementVersionRepository repository;
-  private TrafficPointElementVersion trafficPointElementVersion;
-  private ServicePointVersionRepository servicePointVersionRepository;
-  private ServicePointVersion servicePointVersion;
-
+  private final ServicePointVersionRepository servicePointVersionRepository;
   private final TrafficPointElementController trafficPointElementController;
+
+  private TrafficPointElementVersion trafficPointElementVersion;
 
   @Autowired
   public TrafficPointElementControllerApiTest(TrafficPointElementVersionRepository repository,
@@ -67,8 +66,8 @@ public class TrafficPointElementControllerApiTest extends BaseControllerApiTest 
     trafficPointElementVersion = TrafficPointTestData.getTrafficPoint();
     this.trafficPointElementVersion = repository.save(trafficPointElementVersion);
 
-    servicePointVersion = TrafficPointTestData.testServicePointForTrafficPoint();
-    this.servicePointVersion = servicePointVersionRepository.save(servicePointVersion);
+    ServicePointVersion servicePointVersion = TrafficPointTestData.testServicePointForTrafficPoint();
+    servicePointVersionRepository.save(servicePointVersion);
   }
 
   @AfterEach
@@ -196,7 +195,7 @@ public class TrafficPointElementControllerApiTest extends BaseControllerApiTest 
           List.of(
               TrafficPointCsvModelContainer
                   .builder()
-                  .trafficPointCsvModelList(trafficPointElementCsvModelsOrderedByValidFrom)
+                  .csvModelList(trafficPointElementCsvModelsOrderedByValidFrom)
                   .sloid(sloid)
                   .build()
           )
