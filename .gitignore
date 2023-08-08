@@ -119,6 +119,7 @@ frontend/.npmrc
 .idea/vcs.xml
 .idea/sonarlint/
 .idea/sqldialects.xml
+.idea/kubernetes-settings.xml
 
 /line-directory/export/
 /.export/
