@@ -13,11 +13,9 @@
             controller.getDetailSubheading(controller.record)
           }}</span>
           <span data-cy="total-range">
-            - {{ 'COMMON.VALID_FROM' | translate }}
-            {{ controller.getStartDate() }}
-            {{ 'COMMON.TO' | translate }}
-            {{ controller.getEndDate() }}</span
-          >
+            -
+            <date-range-text [dateRange]="controller.maxValidity"></date-range-text>
+          </span>
         </div>
       </ng-template>
       <div class="col-12 d-flex mt-3">
