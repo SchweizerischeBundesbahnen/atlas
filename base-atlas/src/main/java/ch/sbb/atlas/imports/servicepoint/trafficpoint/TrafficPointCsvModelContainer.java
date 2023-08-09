@@ -6,7 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @NoArgsConstructor
 @Getter
 @SuperBuilder
@@ -15,5 +17,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class TrafficPointCsvModelContainer extends BaseCsvModelContainer<TrafficPointElementCsvModel> {
 
   private String sloid;
+
+  @Override
+  protected void logFoundVersionsToMerge() {
+    log.info("Found versions to merge with sloid: {}", this.sloid);
+  }
 
 }

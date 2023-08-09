@@ -1,9 +1,9 @@
 package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
 
+import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
+import ch.sbb.atlas.imports.servicepoint.ItemImportResult.ItemImportResultBuilder;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointCsvModelContainer;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointElementCsvModel;
-import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointItemImportResult;
-import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointItemImportResult.TrafficPointItemImportResultBuilder;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.service.BaseImportService;
 import ch.sbb.atlas.servicepointdirectory.service.BasePointUtility;
@@ -46,10 +46,10 @@ public class TrafficPointElementImportService extends BaseImportService<TrafficP
     return trafficPointElements;
   }
 
-  public List<TrafficPointItemImportResult> importTrafficPoints(
+  public List<ItemImportResult> importTrafficPoints(
       List<TrafficPointCsvModelContainer> trafficPointCsvModelContainers
   ) {
-    List<TrafficPointItemImportResult> importResults = new ArrayList<>();
+    List<ItemImportResult> importResults = new ArrayList<>();
     for (TrafficPointCsvModelContainer container : trafficPointCsvModelContainers) {
       List<TrafficPointElementVersion> trafficPointElementVersions = container.getCsvModelList()
           .stream()
@@ -62,10 +62,10 @@ public class TrafficPointElementImportService extends BaseImportService<TrafficP
         boolean trafficPointElementExisting = trafficPointElementService.isTrafficPointElementExisting(
             trafficPointElementVersion.getSloid());
         if (trafficPointElementExisting) {
-          TrafficPointItemImportResult updateResult = updateTrafficPointVersion(trafficPointElementVersion);
+          ItemImportResult updateResult = updateTrafficPointVersion(trafficPointElementVersion);
           importResults.add(updateResult);
         } else {
-          TrafficPointItemImportResult saveResult = saveTrafficPointVersion(trafficPointElementVersion);
+          ItemImportResult saveResult = saveTrafficPointVersion(trafficPointElementVersion);
           importResults.add(saveResult);
         }
       }
@@ -84,7 +84,7 @@ public class TrafficPointElementImportService extends BaseImportService<TrafficP
         trafficPointElementService::deleteById);
   }
 
-  private TrafficPointItemImportResult updateTrafficPointVersion(TrafficPointElementVersion trafficPointElementVersion) {
+  private ItemImportResult updateTrafficPointVersion(TrafficPointElementVersion trafficPointElementVersion) {
     try {
       updateTrafficPointElementVersionImport(trafficPointElementVersion);
       return buildSuccessImportResult(trafficPointElementVersion);
@@ -102,7 +102,7 @@ public class TrafficPointElementImportService extends BaseImportService<TrafficP
     }
   }
 
-  private TrafficPointItemImportResult saveTrafficPointVersion(TrafficPointElementVersion trafficPointElementVersion) {
+  private ItemImportResult saveTrafficPointVersion(TrafficPointElementVersion trafficPointElementVersion) {
     try {
       TrafficPointElementVersion savedTrafficPointVersion = trafficPointElementService.save(trafficPointElementVersion);
       return buildSuccessImportResult(savedTrafficPointVersion);
@@ -112,22 +112,22 @@ public class TrafficPointElementImportService extends BaseImportService<TrafficP
     }
   }
 
-  private TrafficPointItemImportResult buildSuccessImportResult(TrafficPointElementVersion trafficPointElementVersion) {
-    TrafficPointItemImportResultBuilder successResultBuilder = TrafficPointItemImportResult.successResultBuilder();
+  private ItemImportResult buildSuccessImportResult(TrafficPointElementVersion trafficPointElementVersion) {
+    ItemImportResultBuilder successResultBuilder = ItemImportResult.successResultBuilder();
     return addTrafficPointInfoTo(successResultBuilder, trafficPointElementVersion).build();
   }
 
-  private TrafficPointItemImportResult buildFailedImportResult(TrafficPointElementVersion trafficPointElementVersion,
+  private ItemImportResult buildFailedImportResult(TrafficPointElementVersion trafficPointElementVersion,
       Exception exception) {
-    TrafficPointItemImportResultBuilder failedResultBuilder = TrafficPointItemImportResult.failedResultBuilder(exception);
+    ItemImportResultBuilder failedResultBuilder = ItemImportResult.failedResultBuilder(exception);
     return addTrafficPointInfoTo(failedResultBuilder, trafficPointElementVersion).build();
   }
 
-  private TrafficPointItemImportResultBuilder addTrafficPointInfoTo(
-      TrafficPointItemImportResultBuilder trafficPointItemImportResultBuilder,
+  private ItemImportResultBuilder addTrafficPointInfoTo(
+      ItemImportResultBuilder ItemImportResultBuilder,
       TrafficPointElementVersion trafficPointElementVersion
   ) {
-    return trafficPointItemImportResultBuilder
+    return ItemImportResultBuilder
         .validFrom(trafficPointElementVersion.getValidFrom())
         .validTo(trafficPointElementVersion.getValidTo())
         .itemNumber(trafficPointElementVersion.getSloid());
