@@ -1,11 +1,9 @@
 package ch.sbb.importservice.client;
 
+import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointImportRequestModel;
-import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointImportRequestModel;
-import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointImportRequestModel;
-import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointItemImportResult;
 import ch.sbb.importservice.config.OAuthFeignConfig;
 import java.util.List;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -16,15 +14,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface SePoDiClient {
 
   @PostMapping(value = "/service-point-directory/v1/service-points/import")
-  List<ServicePointItemImportResult> postServicePointsImport(
+  List<ItemImportResult> postServicePointsImport(
       @RequestBody ServicePointImportRequestModel servicePointImportRequestModel);
 
   @PostMapping(value = "/service-point-directory/v1/traffic-point-elements/import")
-  List<TrafficPointItemImportResult> postTrafficPointsImport(
+  List<ItemImportResult> postTrafficPointsImport(
       @RequestBody TrafficPointImportRequestModel trafficPointImportRequestModel);
 
   @PostMapping(value = "/service-point-directory/v1/loading-points/import")
-  List<LoadingPointItemImportResult> postLoadingPointsImport(
+  List<ItemImportResult> postLoadingPointsImport(
       @RequestBody LoadingPointImportRequestModel loadingPointImportRequestModel);
 
 }
