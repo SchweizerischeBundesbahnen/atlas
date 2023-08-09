@@ -4,7 +4,6 @@ import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.model.BaseVersionModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.validation.DatesValidator;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.Valid;
@@ -67,12 +66,6 @@ public class LoadingPointVersionModel extends BaseVersionModel implements DatesV
 
   public String getServicePointSloid(){
     return ServicePointNumber.calculateSloid(this.servicePointNumber);
-  }
-
-  @JsonInclude
-  @Schema(description = "LoadingPoint has a Geolocation")
-  public boolean isHasGeolocation() {
-    return loadingPointGeolocation != null;
   }
 
 }
