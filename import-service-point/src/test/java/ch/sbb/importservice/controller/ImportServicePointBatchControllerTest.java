@@ -7,7 +7,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointItemImportResult;
+import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.importservice.ServicePointTestData;
@@ -41,9 +41,9 @@ public class ImportServicePointBatchControllerTest extends BaseControllerApiTest
     //given
     List<ServicePointCsvModelContainer> servicePointCsvModelContainers = ServicePointTestData.getServicePointCsvModelContainers();
 
-    List<ServicePointItemImportResult> servicePointItemImportResults = ServicePointTestData.getServicePointItemImportResults(
+    List<ItemImportResult> itemImportResults = ServicePointTestData.getServicePointItemImportResults(
         servicePointCsvModelContainers);
-    when(sePoDiClient.postServicePointsImport(any())).thenReturn(servicePointItemImportResults);
+    when(sePoDiClient.postServicePointsImport(any())).thenReturn(itemImportResults);
 
     when(csvService.getActualServicePointCsvModelsFromS3()).thenReturn(servicePointCsvModelContainers);
     doNothing().when(mailProducerService).produceMailNotification(any());

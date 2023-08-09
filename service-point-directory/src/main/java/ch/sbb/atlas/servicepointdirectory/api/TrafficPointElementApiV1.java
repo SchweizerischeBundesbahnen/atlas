@@ -4,8 +4,8 @@ import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.CreateTrafficPointElementVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadTrafficPointElementVersionModel;
 import ch.sbb.atlas.configuration.Role;
+import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointImportRequestModel;
-import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointItemImportResult;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion.Fields;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementRequestParams;
 import io.swagger.v3.oas.annotations.Operation;
@@ -46,7 +46,7 @@ public interface TrafficPointElementApiV1 {
 
   @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
   @PostMapping("import")
-  List<TrafficPointItemImportResult> importTrafficPoints(
+  List<ItemImportResult> importTrafficPoints(
       @RequestBody @Valid TrafficPointImportRequestModel trafficPointImportRequestModel);
 
   @ResponseStatus(HttpStatus.CREATED)

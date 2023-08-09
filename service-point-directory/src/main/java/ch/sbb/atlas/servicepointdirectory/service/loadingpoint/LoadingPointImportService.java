@@ -1,9 +1,9 @@
 package ch.sbb.atlas.servicepointdirectory.service.loadingpoint;
 
+import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
+import ch.sbb.atlas.imports.servicepoint.ItemImportResult.ItemImportResultBuilder;
 import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointCsvModelContainer;
-import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointItemImportResult;
-import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointItemImportResult.LoadingPointItemImportResultBuilder;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
 import ch.sbb.atlas.servicepointdirectory.service.BaseImportService;
@@ -47,9 +47,9 @@ public class LoadingPointImportService extends BaseImportService<LoadingPointVer
     return loadingPoints;
   }
 
-  public List<LoadingPointItemImportResult> importLoadingPoints(
+  public List<ItemImportResult> importLoadingPoints(
       final List<LoadingPointCsvModelContainer> loadingPointCsvModelContainers) {
-    final List<LoadingPointItemImportResult> importResults = new ArrayList<>();
+    final List<ItemImportResult> importResults = new ArrayList<>();
     for (LoadingPointCsvModelContainer container : loadingPointCsvModelContainers) {
       final List<LoadingPointVersion> loadingPointVersions = container.getCsvModelList()
           .stream()
@@ -86,7 +86,7 @@ public class LoadingPointImportService extends BaseImportService<LoadingPointVer
         loadingPointService::deleteById);
   }
 
-  private LoadingPointItemImportResult updateLoadingPointVersion(LoadingPointVersion loadingPointVersion) {
+  private ItemImportResult updateLoadingPointVersion(LoadingPointVersion loadingPointVersion) {
     try {
       updateLoadingPointVersionImport(loadingPointVersion);
       return buildSuccessImportResult(loadingPointVersion);
@@ -105,7 +105,7 @@ public class LoadingPointImportService extends BaseImportService<LoadingPointVer
     }
   }
 
-  private LoadingPointItemImportResult saveLoadingPointVersion(LoadingPointVersion loadingPointVersion) {
+  private ItemImportResult saveLoadingPointVersion(LoadingPointVersion loadingPointVersion) {
     try {
       final LoadingPointVersion savedLoadingPointVersion = loadingPointService.save(loadingPointVersion);
       return buildSuccessImportResult(savedLoadingPointVersion);
@@ -116,22 +116,22 @@ public class LoadingPointImportService extends BaseImportService<LoadingPointVer
     }
   }
 
-  private LoadingPointItemImportResult buildSuccessImportResult(LoadingPointVersion loadingPointVersion) {
-    LoadingPointItemImportResultBuilder successResultBuilder = LoadingPointItemImportResult.successResultBuilder();
+  private ItemImportResult buildSuccessImportResult(LoadingPointVersion loadingPointVersion) {
+    ItemImportResultBuilder successResultBuilder = ItemImportResult.successResultBuilder();
     return addLoadingPointInfoTo(successResultBuilder, loadingPointVersion).build();
   }
 
-  private LoadingPointItemImportResult buildFailedImportResult(LoadingPointVersion loadingPointVersion,
+  private ItemImportResult buildFailedImportResult(LoadingPointVersion loadingPointVersion,
       Exception exception) {
-    LoadingPointItemImportResultBuilder failedResultBuilder = LoadingPointItemImportResult.failedResultBuilder(exception);
+    ItemImportResultBuilder failedResultBuilder = ItemImportResult.failedResultBuilder(exception);
     return addLoadingPointInfoTo(failedResultBuilder, loadingPointVersion).build();
   }
 
-  private LoadingPointItemImportResultBuilder addLoadingPointInfoTo(
-      LoadingPointItemImportResultBuilder loadingPointItemImportResultBuilder,
+  private ItemImportResultBuilder addLoadingPointInfoTo(
+      ItemImportResultBuilder ItemImportResultBuilder,
       LoadingPointVersion loadingPointVersion
   ) {
-    return loadingPointItemImportResultBuilder
+    return ItemImportResultBuilder
         .validFrom(loadingPointVersion.getValidFrom())
         .validTo(loadingPointVersion.getValidTo())
         .itemNumber(getIdentifyingLoadingPointVersionString(loadingPointVersion));
