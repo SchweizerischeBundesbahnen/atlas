@@ -83,19 +83,4 @@ public class TestData {
         .validTo(LocalDate.of(2020, 12, 31))
         .build();
   }
-
-  public static ServicePointVersion testServicePointForTrafficPoint() {
-    return ServicePointVersion.builder()
-            .number(ServicePointNumber.of(14000158))
-            .numberShort(1)
-            .country(Country.FRANCE_BUS)
-            .designationLong("long designation")
-            .designationOfficial("official designation")
-            .abbreviation("BE")
-            .businessOrganisation("somesboid")
-            .status(Status.VALIDATED)
-            .validFrom(LocalDate.of(2020, 1, 1))
-            .validTo(LocalDate.of(2020, 12, 31))
-            .build();
-  }
 }
