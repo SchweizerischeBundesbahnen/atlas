@@ -1,8 +1,8 @@
 package ch.sbb.importservice.writer;
 
+import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointCsvModelContainer;
 import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointImportRequestModel;
-import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointItemImportResult;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -25,10 +25,10 @@ public class LoadingPointApiWriter extends BaseApiWriter implements ItemWriter<L
         loadingPointCsvModelContainerList);
 
     Long stepExecutionId = stepExecution.getId();
-    List<LoadingPointItemImportResult> loadingPointItemImportResults = sePoDiClientService.postLoadingPoints(
+    List<ItemImportResult> loadingPointItemImportResults = sePoDiClientService.postLoadingPoints(
         loadingPointImportRequestModel);
 
-    for (LoadingPointItemImportResult result : loadingPointItemImportResults) {
+    for (ItemImportResult result : loadingPointItemImportResults) {
       saveItemProcessed(stepExecutionId, result.getItemNumber(), result.getStatus(), result.getMessage());
     }
   }

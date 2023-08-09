@@ -15,7 +15,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointItemImportResult;
+import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
 import ch.sbb.atlas.model.controller.IntegrationTest;
@@ -67,12 +67,12 @@ public class ImportServicePointIntegrationTest {
     // given
     List<ServicePointCsvModelContainer> servicePointCsvModelContainers = ServicePointTestData.getServicePointCsvModelContainers();
 
-    List<ServicePointItemImportResult> servicePointItemImportResults = ServicePointTestData.getServicePointItemImportResults(
+    List<ItemImportResult> itemImportResults = ServicePointTestData.getServicePointItemImportResults(
         servicePointCsvModelContainers);
 
     when(csvService.getActualServicePointCsvModelsFromS3()).thenReturn(servicePointCsvModelContainers);
     doNothing().when(mailProducerService).produceMailNotification(any());
-    when(sePoDiClient.postServicePointsImport(any())).thenReturn(servicePointItemImportResults);
+    when(sePoDiClient.postServicePointsImport(any())).thenReturn(itemImportResults);
 
     JobParameters jobParameters = new JobParametersBuilder()
         .addString(EXECUTION_TYPE_PARAMETER, EXECUTION_BATCH_PARAMETER)
@@ -97,7 +97,7 @@ public class ImportServicePointIntegrationTest {
     when(fileHelperService.downloadImportFileFromS3(DIENSTELLEN_FILE_PREFIX)).thenReturn(file);
     List<ServicePointCsvModelContainer> servicePointCsvModelContainers = ServicePointTestData.getServicePointCsvModelContainers();
 
-    List<ServicePointItemImportResult> servicePointItemImportResults = ServicePointTestData.getServicePointItemImportResults(
+    List<ItemImportResult> itemImportResults = ServicePointTestData.getServicePointItemImportResults(
         servicePointCsvModelContainers);
     when(csvService.getActualServicePointCsvModels(file)).thenReturn(servicePointCsvModelContainers);
     doCallRealMethod().when(csvService).getActualServicePointCsvModels(file);
@@ -105,7 +105,7 @@ public class ImportServicePointIntegrationTest {
     when(csvService.getCsvModelsToUpdate(file, MIN_LOCAL_DATE, ServicePointCsvModel.class)).thenReturn(
         defaultServicePointCsvModels);
     doNothing().when(mailProducerService).produceMailNotification(any());
-    when(sePoDiClient.postServicePointsImport(any())).thenReturn(servicePointItemImportResults);
+    when(sePoDiClient.postServicePointsImport(any())).thenReturn(itemImportResults);
 
     JobParameters jobParameters = new JobParametersBuilder()
         .addString(FULL_PATH_FILENAME_JOB_PARAMETER, file.getAbsolutePath())

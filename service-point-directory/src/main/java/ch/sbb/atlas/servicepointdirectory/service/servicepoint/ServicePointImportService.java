@@ -1,9 +1,9 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
+import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
+import ch.sbb.atlas.imports.servicepoint.ItemImportResult.ItemImportResultBuilder;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
-import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointItemImportResult;
-import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointItemImportResult.ServicePointItemImportResultBuilder;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointFotComment;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
@@ -47,10 +47,10 @@ public class ServicePointImportService extends BaseImportService<ServicePointVer
     return servicePoints;
   }
 
-  public List<ServicePointItemImportResult> importServicePoints(
+  public List<ItemImportResult> importServicePoints(
       List<ServicePointCsvModelContainer> servicePointCsvModelContainers
   ) {
-    List<ServicePointItemImportResult> importResults = new ArrayList<>();
+    List<ItemImportResult> importResults = new ArrayList<>();
     for (ServicePointCsvModelContainer container : servicePointCsvModelContainers) {
       List<ServicePointVersion> servicePointVersions = container.getServicePointCsvModelList()
           .stream()
@@ -62,10 +62,10 @@ public class ServicePointImportService extends BaseImportService<ServicePointVer
       for (ServicePointVersion servicePointVersion : servicePointVersions) {
         boolean servicePointNumberExisting = servicePointService.isServicePointNumberExisting(servicePointVersion.getNumber());
         if (servicePointNumberExisting) {
-          ServicePointItemImportResult updateResult = updateServicePointVersion(servicePointVersion);
+          ItemImportResult updateResult = updateServicePointVersion(servicePointVersion);
           importResults.add(updateResult);
         } else {
-          ServicePointItemImportResult saveResult = saveServicePointVersion(servicePointVersion);
+          ItemImportResult saveResult = saveServicePointVersion(servicePointVersion);
           importResults.add(saveResult);
         }
       }
@@ -103,7 +103,7 @@ public class ServicePointImportService extends BaseImportService<ServicePointVer
         .build());
   }
 
-  private ServicePointItemImportResult saveServicePointVersion(ServicePointVersion servicePointVersion) {
+  private ItemImportResult saveServicePointVersion(ServicePointVersion servicePointVersion) {
     try {
       ServicePointVersion savedServicePointVersion = servicePointService.saveWithoutValidationForImportOnly(servicePointVersion);
       return buildSuccessImportResult(savedServicePointVersion);
@@ -113,7 +113,7 @@ public class ServicePointImportService extends BaseImportService<ServicePointVer
     }
   }
 
-  private ServicePointItemImportResult updateServicePointVersion(ServicePointVersion servicePointVersion) {
+  private ItemImportResult updateServicePointVersion(ServicePointVersion servicePointVersion) {
     try {
       updateServicePointVersionForImportService(servicePointVersion);
       return buildSuccessImportResult(servicePointVersion);
@@ -131,24 +131,24 @@ public class ServicePointImportService extends BaseImportService<ServicePointVer
     }
   }
 
-  private ServicePointItemImportResult buildSuccessImportResult(ServicePointVersion servicePointVersion) {
-    ServicePointItemImportResultBuilder successResultBuilder = ServicePointItemImportResult.successResultBuilder();
+  private ItemImportResult buildSuccessImportResult(ServicePointVersion servicePointVersion) {
+    ItemImportResultBuilder successResultBuilder = ItemImportResult.successResultBuilder();
     return addServicePointInfoTo(successResultBuilder, servicePointVersion).build();
   }
 
-  private ServicePointItemImportResult buildFailedImportResult(ServicePointVersion servicePointVersion, Exception exception) {
-    ServicePointItemImportResultBuilder failedResultBuilder = ServicePointItemImportResult.failedResultBuilder(exception);
+  private ItemImportResult buildFailedImportResult(ServicePointVersion servicePointVersion, Exception exception) {
+    ItemImportResultBuilder failedResultBuilder = ItemImportResult.failedResultBuilder(exception);
     return addServicePointInfoTo(failedResultBuilder, servicePointVersion).build();
   }
 
-  private ServicePointItemImportResultBuilder addServicePointInfoTo(
-      ServicePointItemImportResult.ServicePointItemImportResultBuilder servicePointItemImportResultBuilder,
+  private ItemImportResultBuilder addServicePointInfoTo(
+      ItemImportResultBuilder servicePointItemImportResultBuilder,
       ServicePointVersion servicePointVersion
   ) {
     return servicePointItemImportResultBuilder
         .validFrom(servicePointVersion.getValidFrom())
         .validTo(servicePointVersion.getValidTo())
-        .itemNumber(servicePointVersion.getNumber().getValue());
+        .itemNumber(servicePointVersion.getNumber().asString());
   }
 
 }
