@@ -3,8 +3,8 @@ package ch.sbb.atlas.servicepointdirectory.api;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.LoadingPointVersionModel;
 import ch.sbb.atlas.configuration.Role;
+import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointImportRequestModel;
-import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointItemImportResult;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
 import ch.sbb.atlas.servicepointdirectory.service.loadingpoint.LoadingPointElementRequestParams;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -44,7 +44,7 @@ public interface LoadingPointApiV1 {
 
   @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
   @PostMapping("import")
-  List<LoadingPointItemImportResult> importLoadingPoints(
+  List<ItemImportResult> importLoadingPoints(
       @RequestBody @Valid LoadingPointImportRequestModel loadingPointImportRequestModel);
 
 }

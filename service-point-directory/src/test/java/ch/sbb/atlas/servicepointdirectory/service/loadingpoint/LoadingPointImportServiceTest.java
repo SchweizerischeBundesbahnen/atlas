@@ -4,9 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 
+import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointCsvModelContainer;
-import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointItemImportResult;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
@@ -123,7 +123,7 @@ public class LoadingPointImportServiceTest {
     );
 
     // when
-    final List<LoadingPointItemImportResult> loadingPointItemImportResults = loadingPointImportService.importLoadingPoints(
+    final List<ItemImportResult> loadingPointItemImportResults = loadingPointImportService.importLoadingPoints(
         loadingPointCsvModelContainers);
 
     // then
@@ -217,7 +217,7 @@ public class LoadingPointImportServiceTest {
     );
 
     // when
-    final List<LoadingPointItemImportResult> loadingPointItemImportResults = loadingPointImportService.importLoadingPoints(
+    final List<ItemImportResult> loadingPointItemImportResults = loadingPointImportService.importLoadingPoints(
         loadingPointCsvModelContainersSecondRun);
 
     // then
