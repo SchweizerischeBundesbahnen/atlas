@@ -13,7 +13,6 @@ import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion.Fields;
 import ch.sbb.atlas.servicepointdirectory.mapper.GeolocationMapper;
-import ch.sbb.atlas.servicepointdirectory.model.TestData;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementImportService;
@@ -29,6 +28,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.io.InputStream;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -68,7 +68,7 @@ public class TrafficPointElementControllerApiTest extends BaseControllerApiTest 
     trafficPointElementVersion = TrafficPointTestData.getTrafficPoint();
     this.trafficPointElementVersion = repository.save(trafficPointElementVersion);
 
-    servicePointVersion = TestData.testServicePointForTrafficPoint();
+    servicePointVersion = TrafficPointTestData.testServicePointForTrafficPoint();
     this.servicePointVersion = servicePointVersionRepository.save(servicePointVersion);
   }
 
@@ -94,6 +94,81 @@ public class TrafficPointElementControllerApiTest extends BaseControllerApiTest 
     mvc.perform(get("/v1/traffic-point-elements")).andExpect(status().isOk())
         .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
         .andExpect(jsonPath("$.totalCount", is(1)));
+  }
+
+  @Test
+  void shouldGetTrafficPointElementVersionsBySboid() throws Exception {
+    mvc.perform(get("/v1/traffic-point-elements?sboids=somesboid")).andExpect(status().isOk())
+            .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
+            .andExpect(jsonPath("$.totalCount", is(1)));
+  }
+
+  @Test
+  void shouldGetTrafficPointElementVersionsByCountry() throws Exception {
+    mvc.perform(get("/v1/traffic-point-elements?uicCountryCodes=14")).andExpect(status().isOk())
+            .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
+            .andExpect(jsonPath("$.totalCount", is(1)));
+  }
+
+
+  @Test
+  void shouldGetTrafficPointElementVersionsByShortNumber() throws Exception {
+    mvc.perform(get("/v1/traffic-point-elements?servicePointNumbersShort=1")).andExpect(status().isOk())
+            .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
+            .andExpect(jsonPath("$.totalCount", is(1)));
+  }
+
+  @Test
+  void shouldGetTrafficPointElementVersionsBySboidAndCountryAndShortNumber() throws Exception {
+    mvc.perform(get("/v1/traffic-point-elements?sboids=somesboid&uicCountryCodes=14&servicePointNumbersShort=1")).andExpect(status().isOk())
+            .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
+            .andExpect(jsonPath("$.totalCount", is(1)));
+  }
+
+  @Test
+  void shouldGetTrafficPointElementVersionsBySloid() throws Exception {
+    mvc.perform(get("/v1/traffic-point-elements?sloids=ch:1:sloid:1400015:0:310240")).andExpect(status().isOk())
+            .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
+            .andExpect(jsonPath("$.totalCount", is(1)));
+  }
+
+  @Test
+  void shouldGetTrafficPointElementVersionsByParentSloid() throws Exception {
+    mvc.perform(get("/v1/traffic-point-elements?parentsloids=ch:1:sloid:1400015:310240")).andExpect(status().isOk())
+            .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
+            .andExpect(jsonPath("$.totalCount", is(1)));
+  }
+
+  @Test
+  void shouldGetTrafficPointElementVersionsByCreatedAfter() throws Exception {
+    LocalDateTime creationTime = trafficPointElementVersion.getCreationDate().minusSeconds(1);
+    mvc.perform(get("/v1/traffic-point-elements?createdAfter=" + creationTime)).andExpect(status().isOk())
+            .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
+            .andExpect(jsonPath("$.totalCount", is(1)));
+  }
+
+  @Test
+  void shouldGetTrafficPointElementVersionsByModifiedAfter() throws Exception {
+    LocalDateTime modificationTime = trafficPointElementVersion.getEditionDate().minusSeconds(1);
+    mvc.perform(get("/v1/traffic-point-elements?modifiedAfter=" + modificationTime)).andExpect(status().isOk())
+            .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
+            .andExpect(jsonPath("$.totalCount", is(1)));
+  }
+
+  @Test
+  void shouldGetTrafficPointElementVersionsByFromDate() throws Exception {
+    LocalDate fromDate = trafficPointElementVersion.getValidFrom();
+    mvc.perform(get("/v1/traffic-point-elements?fromDate=" + fromDate)).andExpect(status().isOk())
+            .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
+            .andExpect(jsonPath("$.totalCount", is(1)));
+  }
+
+  @Test
+  void shouldGetTrafficPointElementVersionsByToDate() throws Exception {
+    LocalDate toDate = trafficPointElementVersion.getValidTo();
+    mvc.perform(get("/v1/traffic-point-elements?toDate=" + toDate)).andExpect(status().isOk())
+            .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
+            .andExpect(jsonPath("$.totalCount", is(1)));
   }
 
   @Test
