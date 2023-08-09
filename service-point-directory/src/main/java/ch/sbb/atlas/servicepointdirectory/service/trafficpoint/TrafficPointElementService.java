@@ -52,11 +52,12 @@ public class TrafficPointElementService {
 
     public TrafficPointElementVersion save(TrafficPointElementVersion trafficPointElementVersion) {
         trafficPointElementValidationService.validateServicePointNumberExists(trafficPointElementVersion.getServicePointNumber());
-        return trafficPointElementVersionRepository.save(trafficPointElementVersion);
+        return trafficPointElementVersionRepository.saveAndFlush(trafficPointElementVersion);
     }
 
     public void deleteById(Long id) {
         trafficPointElementVersionRepository.deleteById(id);
+        trafficPointElementVersionRepository.flush();
     }
 
     @PreAuthorize("@countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreateOrEditTrafficPoint(#currentVersions, "
