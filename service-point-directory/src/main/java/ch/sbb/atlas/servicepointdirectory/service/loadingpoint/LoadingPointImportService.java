@@ -6,7 +6,6 @@ import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointItemImportResu
 import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointItemImportResult.LoadingPointItemImportResultBuilder;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
-import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion.Fields;
 import ch.sbb.atlas.servicepointdirectory.service.BaseImportService;
 import ch.sbb.atlas.servicepointdirectory.service.BasePointUtility;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
@@ -83,8 +82,6 @@ public class LoadingPointImportService extends BaseImportService<LoadingPointVer
     final LoadingPointVersion current = BasePointUtility.getCurrentPointVersion(dbVersions, loadingPointVersionEdited);
     final List<VersionedObject> versionedObjects = versionableService.versioningObjectsForImportFromCsv(current,
         loadingPointVersionEdited, dbVersions);
-    BasePointUtility.addCreateAndEditDetailsToGeolocationPropertyFromVersionedObjects(versionedObjects,
-        Fields.loadingPointGeolocation);
     versionableService.applyVersioning(LoadingPointVersion.class, versionedObjects, loadingPointService::save,
         loadingPointService::deleteById);
   }
