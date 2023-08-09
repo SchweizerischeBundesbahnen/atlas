@@ -1,0 +1,1 @@
+alter table traffic_point_element_version add constraint tpev_sloid_unique unique (sloid, valid_from);
