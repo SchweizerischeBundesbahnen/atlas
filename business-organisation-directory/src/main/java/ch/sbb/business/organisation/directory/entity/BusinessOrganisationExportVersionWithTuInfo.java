@@ -38,21 +38,26 @@ public class BusinessOrganisationExportVersionWithTuInfo extends BaseVersion {
   @Id
   private Long id;
   private String sboid;
-  private String descriptionDe;
-  private String descriptionFr;
-  private String descriptionIt;
-  private String descriptionEn;
+
   private String abbreviationDe;
   private String abbreviationFr;
   private String abbreviationIt;
   private String abbreviationEn;
+
+  private String descriptionDe;
+  private String descriptionFr;
+  private String descriptionIt;
+  private String descriptionEn;
+
   private Integer organisationNumber;
   private String contactEnterpriseEmail;
+
   @ElementCollection(targetClass = BusinessType.class, fetch = FetchType.EAGER)
   @CollectionTable(name = "business_organisation_version_business_types", joinColumns = {
       @JoinColumn(name = "business_organisation_version_id")})
   @Convert(converter = BusinessTypeConverter.class)
   private Set<BusinessType> businessTypes;
+
   private LocalDate validFrom;
   private LocalDate validTo;
 
