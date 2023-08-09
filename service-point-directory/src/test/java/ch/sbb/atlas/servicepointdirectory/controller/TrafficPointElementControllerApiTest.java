@@ -111,19 +111,19 @@ public class TrafficPointElementControllerApiTest extends BaseControllerApiTest 
   }
 
 
-//  @Test
-//  void shouldGetTrafficPointElementVersionsByShortNumber() throws Exception {
-//    mvc.perform(get("/v1/traffic-point-elements?servicePointNumbersShort=1")).andExpect(status().isOk())
-//            .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
-//            .andExpect(jsonPath("$.totalCount", is(1)));
-//  }
-//
-//  @Test
-//  void shouldGetTrafficPointElementVersionsBySboidAndCountryAndShortNumber() throws Exception {
-//    mvc.perform(get("/v1/traffic-point-elements?sboids=somesboid&uicCountryCodes=14&servicePointNumbersShort=1")).andExpect(status().isOk())
-//            .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
-//            .andExpect(jsonPath("$.totalCount", is(1)));
-//  }
+  @Test
+  void shouldGetTrafficPointElementVersionsByShortNumber() throws Exception {
+    mvc.perform(get("/v1/traffic-point-elements?servicePointNumbersShort=1")).andExpect(status().isOk())
+            .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
+            .andExpect(jsonPath("$.totalCount", is(1)));
+  }
+
+  @Test
+  void shouldGetTrafficPointElementVersionsBySboidAndCountryAndShortNumber() throws Exception {
+    mvc.perform(get("/v1/traffic-point-elements?sboids=somesboid&uicCountryCodes=14&servicePointNumbersShort=1")).andExpect(status().isOk())
+            .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
+            .andExpect(jsonPath("$.totalCount", is(1)));
+  }
 
   @Test
   void shouldGetTrafficPointElementVersionsBySloid() throws Exception {
