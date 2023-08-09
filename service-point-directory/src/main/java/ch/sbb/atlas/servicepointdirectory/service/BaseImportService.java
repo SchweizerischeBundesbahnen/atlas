@@ -15,6 +15,15 @@ public abstract class BaseImportService<T extends BasePointVersion & Versionable
    * If the number of the CSV File versions are less than the DB Versions, and we found more than one version
    * exactly included between CSV Version validFrom and CSV Version validTo, than we replace the versions properties,
    * (expect validFrom, validTo and id) and save the versions that comes from the DB.
+   * ---
+   * Difference between versioning merge and this merge:
+   * Case it works with normal versioning:
+   * DB:    |- v1,1.1.2020-31.12.2020,value:A -|  |- v2,1.1.2022-31.12.2022,value:B -|
+   * CSV:   |--------------------- v1,1.1.2020-31.12.2022,value:B -------------------|
+   * Case it needs this pre-check:
+   * DB:    |- v1,1.1.2020-31.12.2020,value:A -|  |- v2,1.1.2022-31.12.2022,value:B -|
+   * CSV:   |--------------------- v1,1.1.2020-31.12.2022,value:A -------------------|
+   * The order from the value difference is decisive.
    */
   public void replaceCsvMergedVersions(List<T> dbVersions, List<T> csvVersions) {
     if (dbVersions.size() > csvVersions.size()) {
