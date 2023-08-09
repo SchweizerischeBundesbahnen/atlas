@@ -1,12 +1,10 @@
 package ch.sbb.atlas.servicepointdirectory.service.loadingpoint;
 
-import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.LV95;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointCsvModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
-import ch.sbb.atlas.servicepointdirectory.entity.geolocation.LoadingPointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
 import com.fasterxml.jackson.databind.MappingIterator;
 import java.io.IOException;
@@ -31,18 +29,6 @@ class LoadingPointCsvToEntityMapperTest {
     List<LoadingPointVersion> loadingPoints = mappingIterator
         .readAll().stream().map(new LoadingPointCsvToEntityMapper()).toList();
 
-    LoadingPointGeolocation loadingPointGeolocation = LoadingPointGeolocation
-        .builder()
-        .spatialReference(LV95)
-        .east(2506426.604)
-        .north(1116455.883)
-        .height(-9999.0)
-        .creator("fs45117")
-        .creationDate(LocalDateTime.of(2017, 12, 4, 13, 11, 3))
-        .editor("GSU_DIDOK")
-        .editionDate(LocalDateTime.of(2018, 6, 28, 11, 48, 56))
-        .build();
-
     // when & then
     LoadingPointVersion expected = LoadingPointVersion
         .builder()
@@ -57,10 +43,7 @@ class LoadingPointCsvToEntityMapperTest {
         .creationDate(LocalDateTime.of(2017, 12, 4, 13, 11, 3))
         .editor("GSU_DIDOK")
         .editionDate(LocalDateTime.of(2018, 6, 28, 11, 48, 56))
-        .loadingPointGeolocation(loadingPointGeolocation)
         .build();
-
-    loadingPointGeolocation.setLoadingPointVersion(expected);
 
     assertThat(loadingPoints).isNotEmpty();
     assertThat(loadingPoints).first().usingRecursiveComparison().isEqualTo(expected);

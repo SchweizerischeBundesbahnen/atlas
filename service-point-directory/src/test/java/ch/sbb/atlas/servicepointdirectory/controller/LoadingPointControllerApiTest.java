@@ -1,6 +1,5 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
-import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.LV95;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
@@ -20,7 +19,6 @@ import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion.Fields;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
-import ch.sbb.atlas.servicepointdirectory.entity.geolocation.LoadingPointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.repository.LoadingPointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.CrossValidationService;
 import ch.sbb.atlas.servicepointdirectory.service.loadingpoint.LoadingPointImportService;
@@ -58,18 +56,6 @@ public class LoadingPointControllerApiTest extends BaseControllerApiTest {
 
   @BeforeEach
   void createDefaultVersion() {
-    LoadingPointGeolocation loadingPointGeolocation = LoadingPointGeolocation
-        .builder()
-        .spatialReference(LV95)
-        .east(2506426.604)
-        .north(1116455.883)
-        .height(-9999.0)
-        .creator("fs45117")
-        .creationDate(LocalDateTime.of(2017, 12, 4, 13, 11, 3))
-        .editor("GSU_DIDOK")
-        .editionDate(LocalDateTime.of(2018, 6, 28, 11, 48, 56))
-        .build();
-
     servicePointVersion = servicePointVersionRepository.save(ServicePointTestData.createAbroadServicePointVersion());
 
     LoadingPointVersion loadingPointVersion = LoadingPointVersion
@@ -85,10 +71,7 @@ public class LoadingPointControllerApiTest extends BaseControllerApiTest {
         .creationDate(LocalDateTime.of(2017, 12, 4, 13, 11, 3))
         .editor("GSU_DIDOK")
         .editionDate(LocalDateTime.of(2018, 6, 28, 11, 48, 56))
-        .loadingPointGeolocation(loadingPointGeolocation)
         .build();
-
-    loadingPointGeolocation.setLoadingPointVersion(loadingPointVersion);
 
     this.loadingPointVersion = repository.save(loadingPointVersion);
   }
@@ -108,8 +91,6 @@ public class LoadingPointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[0]." + Fields.number, is(4201)))
         .andExpect(jsonPath("$[0]." + Fields.connectionPoint, is(false)))
         .andExpect(jsonPath("$[0].servicePointNumber.number", is(ServicePointNumber.ofNumberWithoutCheckDigit(servicePointNumber).getNumber())))
-        .andExpect(jsonPath("$[0].hasGeolocation", is(true)))
-        .andExpect(jsonPath("$[0].loadingPointGeolocation.lv95.north", is(1116455.883)))
         .andExpect(jsonPath("$[0].creationDate", is("2017-12-04T13:11:03")))
         .andExpect(jsonPath("$[0].creator", is("fs45117")));
   }
