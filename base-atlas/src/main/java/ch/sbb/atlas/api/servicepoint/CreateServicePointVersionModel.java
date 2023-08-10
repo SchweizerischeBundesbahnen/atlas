@@ -4,6 +4,7 @@ import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Max;
@@ -38,6 +39,14 @@ public class CreateServicePointVersionModel extends ServicePointVersionModel {
   @Schema(description = "Reference to a operatingPointRouteNetwork. OperatingPointKilometer are always related to a "
           + "operatingPointRouteNetwork", example = "8034505")
   private Integer operatingPointKilometerMasterNumber;
+
+  private ServicePointGeolocationCreateModel servicePointGeolocation;
+
+  @JsonInclude
+  @Schema(description = "ServicePoint has a Geolocation")
+  public boolean isHasGeolocation() {
+    return servicePointGeolocation != null;
+  }
 
   @JsonIgnore
   @AssertTrue(message = "FreightServicePoint in CH needs sortCodeOfDestinationStation")
