@@ -19,6 +19,7 @@ const routes: Routes = [
         path: Pages.SERVICE_POINTS.path + '/:id',
         component: ServicePointSidePanelComponent,
         resolve: { servicePoint: servicePointResolver },
+        runGuardsAndResolvers: 'always',
         children: [
           {
             path: 'service-point',
