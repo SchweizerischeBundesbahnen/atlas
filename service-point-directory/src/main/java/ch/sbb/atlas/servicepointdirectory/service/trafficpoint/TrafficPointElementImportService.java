@@ -34,6 +34,16 @@ public class TrafficPointElementImportService extends BaseImportService<TrafficP
     trafficPointElementService.save(trafficPointElementVersion);
   }
 
+  @Override
+  protected ItemImportResult addInfoToItemImportResult(ItemImportResultBuilder itemImportResultBuilder,
+      TrafficPointElementVersion trafficPointElementVersion) {
+    return itemImportResultBuilder
+        .validFrom(trafficPointElementVersion.getValidFrom())
+        .validTo(trafficPointElementVersion.getValidTo())
+        .itemNumber(trafficPointElementVersion.getSloid())
+        .build();
+  }
+
   public static List<TrafficPointElementCsvModel> parseTrafficPointElements(InputStream inputStream)
       throws IOException {
     MappingIterator<TrafficPointElementCsvModel> mappingIterator = DidokCsvMapper.CSV_MAPPER.readerFor(
@@ -110,27 +120,6 @@ public class TrafficPointElementImportService extends BaseImportService<TrafficP
       log.error("[Traffic-Point Import]: Error during save with sloid: " + trafficPointElementVersion.getSloid(), exception);
       return buildFailedImportResult(trafficPointElementVersion, exception);
     }
-  }
-
-  private ItemImportResult buildSuccessImportResult(TrafficPointElementVersion trafficPointElementVersion) {
-    ItemImportResultBuilder successResultBuilder = ItemImportResult.successResultBuilder();
-    return addTrafficPointInfoTo(successResultBuilder, trafficPointElementVersion).build();
-  }
-
-  private ItemImportResult buildFailedImportResult(TrafficPointElementVersion trafficPointElementVersion,
-      Exception exception) {
-    ItemImportResultBuilder failedResultBuilder = ItemImportResult.failedResultBuilder(exception);
-    return addTrafficPointInfoTo(failedResultBuilder, trafficPointElementVersion).build();
-  }
-
-  private ItemImportResultBuilder addTrafficPointInfoTo(
-      ItemImportResultBuilder ItemImportResultBuilder,
-      TrafficPointElementVersion trafficPointElementVersion
-  ) {
-    return ItemImportResultBuilder
-        .validFrom(trafficPointElementVersion.getValidFrom())
-        .validTo(trafficPointElementVersion.getValidTo())
-        .itemNumber(trafficPointElementVersion.getSloid());
   }
 
 }

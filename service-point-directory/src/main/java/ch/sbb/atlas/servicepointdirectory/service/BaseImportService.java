@@ -1,5 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.service;
 
+import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
+import ch.sbb.atlas.imports.servicepoint.ItemImportResult.ItemImportResultBuilder;
 import ch.sbb.atlas.servicepointdirectory.entity.BasePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.versioning.model.Versionable;
@@ -56,5 +58,20 @@ public abstract class BaseImportService<T extends BasePointVersion & Versionable
       save(dbVersion);
     }
   }
+
+  protected ItemImportResult buildSuccessImportResult(T element) {
+    ItemImportResultBuilder successResultBuilder = ItemImportResult.successResultBuilder();
+    return addInfoToItemImportResult(successResultBuilder, element);
+  }
+
+  protected ItemImportResult buildFailedImportResult(T element, Exception exception) {
+    ItemImportResultBuilder failedResultBuilder = ItemImportResult.failedResultBuilder(exception);
+    return addInfoToItemImportResult(failedResultBuilder, element);
+  }
+
+  protected abstract ItemImportResult addInfoToItemImportResult(
+      ItemImportResultBuilder itemImportResultBuilder,
+      T element
+  );
 
 }
