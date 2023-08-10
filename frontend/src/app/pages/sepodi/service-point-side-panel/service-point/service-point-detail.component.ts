@@ -1,11 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { VersionsHandlingService } from '../../../../core/versioning/versions-handling.service';
 import {
   Category,
+  CreateServicePointVersion,
   OperatingPointTechnicalTimetableType,
   OperatingPointType,
   ReadServicePointVersion,
+  ServicePointsService,
   StopPointType,
 } from '../../../../api';
 import { FormGroup } from '@angular/forms';
@@ -15,7 +17,12 @@ import {
 } from './service-point-detail-form-group';
 import { ServicePointType } from './service-point-type';
 import { MapService } from '../../map/map.service';
-import { Subscription } from 'rxjs';
+import { catchError, EMPTY, Observable, of, Subject, Subscription } from 'rxjs';
+import { Pages } from '../../../pages';
+import { DialogService } from '../../../../core/components/dialog/dialog.service';
+import { ValidationService } from '../../../../core/validation/validation.service';
+import { takeUntil } from 'rxjs/operators';
+import { NotificationService } from '../../../../core/notification/notification.service';
 
 @Component({
   selector: 'app-service-point',
@@ -44,8 +51,16 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy {
 
   private mapSubscription!: Subscription;
   private servicePointSubscription?: Subscription;
+  private ngUnsubscribe = new Subject<void>();
 
-  constructor(private route: ActivatedRoute, private mapService: MapService) {}
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private dialogService: DialogService,
+    private servicePointService: ServicePointsService,
+    private notificationService: NotificationService,
+    private mapService: MapService
+  ) {}
 
   ngOnInit() {
     this.servicePointSubscription = this.route.parent?.data.subscribe((next) => {
@@ -65,6 +80,10 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy {
   switchVersion(newIndex: number) {
     this.selectedVersion = this.servicePointVersions[newIndex];
     this.initSelectedVersion();
+  }
+
+  closeSidePanel() {
+    this.router.navigate([Pages.SEPODI.path]).then();
   }
 
   private initServicePoint() {
@@ -117,5 +136,82 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy {
           .then(() => this.mapService.selectServicePoint(this.selectedVersion.number.number));
       }
     });
+  }
+
+  toggleEdit() {
+    if (this.form.enabled) {
+      this.showConfirmationDialog();
+    } else {
+      this.form.enable();
+    }
+  }
+
+  private showConfirmationDialog() {
+    this.confirmLeave().subscribe((confirmed) => {
+      if (confirmed) {
+        if (this.isNew) {
+          this.closeSidePanel();
+        } else {
+          this.form.disable();
+          this.initSelectedVersion();
+        }
+      }
+    });
+  }
+
+  private confirmLeave(): Observable<boolean> {
+    if (this.form.dirty) {
+      return this.dialogService.confirm({
+        title: 'DIALOG.DISCARD_CHANGES_TITLE',
+        message: 'DIALOG.LEAVE_SITE',
+      });
+    }
+    return of(true);
+  }
+
+  save() {
+    ValidationService.validateForm(this.form);
+    if (this.form.valid) {
+      this.form.disable();
+      const servicePointVersion = this.form.value as unknown as CreateServicePointVersion;
+      if (this.isNew) {
+        this.create(servicePointVersion);
+      } else {
+        servicePointVersion.numberWithoutCheckDigit = this.selectedVersion.number.number;
+        this.update(this.selectedVersion.id!, servicePointVersion);
+      }
+    }
+  }
+
+  private create(servicePointVersion: CreateServicePointVersion) {
+    this.servicePointService
+      .createServicePoint(servicePointVersion)
+      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
+      .subscribe((servicePointVersion) => {
+        this.notificationService.success('SEPODI.SERVICE_POINTS.NOTIFICATION.ADD_SUCCESS');
+        this.router
+          .navigate(['..', servicePointVersion.number.number], { relativeTo: this.route })
+          .then();
+      });
+  }
+
+  private update(id: number, servicePointVersion: CreateServicePointVersion) {
+    console.log('updating to ', servicePointVersion);
+    this.servicePointService
+      .updateServicePoint(id, servicePointVersion)
+      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
+      .subscribe(() => {
+        this.notificationService.success('SEPODI.SERVICE_POINTS.NOTIFICATION.EDIT_SUCCESS');
+        this.router
+          .navigate(['..', this.selectedVersion.number.number], { relativeTo: this.route })
+          .then();
+      });
+  }
+
+  private handleError() {
+    return () => {
+      this.form.enable();
+      return EMPTY;
+    };
   }
 }

@@ -1,7 +1,7 @@
 package ch.sbb.exportservice.processor;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
-import ch.sbb.atlas.api.servicepoint.GeolocationBaseModel;
+import ch.sbb.atlas.api.servicepoint.GeolocationBaseReadModel;
 import ch.sbb.exportservice.entity.BusinessOrganisation;
 import ch.sbb.exportservice.entity.TrafficPointElementVersion;
 import ch.sbb.exportservice.model.TrafficPointVersionCsvModel;
@@ -53,7 +53,7 @@ public class TrafficPointElementVersionCsvProcessor extends BaseServicePointProc
     }
 
     private void buildGeolocation(TrafficPointElementVersion version, TrafficPointVersionCsvModel.TrafficPointVersionCsvModelBuilder builder) {
-        GeolocationBaseModel geolocation = toModel(version.getTrafficPointElementGeolocation());
+        GeolocationBaseReadModel geolocation = toModel(version.getTrafficPointElementGeolocation());
         if(geolocation != null) {
           builder.lv95East(geolocation.getLv95().getEast())
                   .lv95North(geolocation.getLv95().getNorth())
