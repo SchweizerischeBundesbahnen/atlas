@@ -49,8 +49,8 @@ class VectorTileServiceTest {
     point1.setSRID(SpatialReference.WGS84WEB.getWellKnownId());
     point1.setUserData(Map.of("id", 1000L));
 
-    final long tileLayerCenter = DEFAULT_VECTOR_TILE_EXTENT / 2;
-    final long tileLayerEncodedCenter = getZigZagValue(tileLayerCenter);
+    final int tileLayerCenter = DEFAULT_VECTOR_TILE_EXTENT / 2;
+    final int tileLayerEncodedCenter = getZigZagValue(tileLayerCenter);
 
     final Tile tileLayer = vectorTileService.encodeTileLayer(
         TEST_LAYER_NAME,
@@ -73,7 +73,8 @@ class VectorTileServiceTest {
   }
 
   // https://developers.google.com/protocol-buffers/docs/encoding#signed-ints
-  static long getZigZagValue(long postition) {
-    return postition + postition + ((postition < 0) ? 1 : 0);
+  static int getZigZagValue(int position) {
+    return position + position + ((position < 0) ? 1 : 0);
   }
+
 }
