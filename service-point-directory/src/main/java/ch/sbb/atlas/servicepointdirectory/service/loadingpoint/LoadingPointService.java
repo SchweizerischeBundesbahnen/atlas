@@ -7,11 +7,13 @@ import ch.sbb.atlas.servicepointdirectory.repository.LoadingPointVersionReposito
 import ch.sbb.atlas.servicepointdirectory.service.CrossValidationService;
 import java.util.List;
 import java.util.Optional;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+@Getter
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -42,7 +44,4 @@ public class LoadingPointService {
     return loadingPointVersionRepository.save(loadingPointVersion);
   }
 
-  public void deleteById(Long id) {
-    loadingPointVersionRepository.deleteById(id);
-  }
 }
