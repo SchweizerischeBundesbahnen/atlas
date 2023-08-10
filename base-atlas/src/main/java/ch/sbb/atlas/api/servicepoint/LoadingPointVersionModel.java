@@ -50,7 +50,7 @@ public class LoadingPointVersionModel extends BaseVersionModel implements DatesV
   @Valid
   private ServicePointNumber servicePointNumber;
 
-  private GeolocationBaseModel loadingPointGeolocation;
+  private GeolocationBaseReadModel loadingPointGeolocation;
   @NotNull
   private LocalDate validFrom;
   @NotNull
