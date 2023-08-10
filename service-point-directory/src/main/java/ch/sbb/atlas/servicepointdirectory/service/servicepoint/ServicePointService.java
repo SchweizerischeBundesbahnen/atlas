@@ -4,8 +4,10 @@ import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
+import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.StaleObjectStateException;
@@ -17,8 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-
 @Service
+@Getter
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
@@ -45,13 +47,8 @@ public class ServicePointService {
     return servicePointVersionRepository.findById(id);
   }
 
-  public void deleteById(Long id) {
-    servicePointVersionRepository.deleteById(id);
-    servicePointVersionRepository.flush();
-  }
-
   @PreAuthorize("@countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#servicePointVersion, "
-          + "T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
+      + "T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
   public ServicePointVersion save(ServicePointVersion servicePointVersion) {
     servicePointValidationService.validateServicePointPreconditionBusinessRule(servicePointVersion);
     return servicePointVersionRepository.saveAndFlush(servicePointVersion);
@@ -61,10 +58,11 @@ public class ServicePointService {
     return servicePointVersionRepository.saveAndFlush(servicePointVersion);
   }
 
-  @PreAuthorize("@countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdateCountryBased(#editedVersion, "
+  @PreAuthorize(
+      "@countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdateCountryBased(#editedVersion, "
           + "#currentVersions, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
   public void update(ServicePointVersion currentVersion, ServicePointVersion editedVersion,
-                     List<ServicePointVersion> currentVersions) {
+      List<ServicePointVersion> currentVersions) {
     updateServicePointVersion(currentVersion, editedVersion);
   }
 
@@ -78,7 +76,7 @@ public class ServicePointService {
     List<VersionedObject> versionedObjects = versionableService.versioningObjects(currentVersion,
         editedVersion, existingDbVersions);
     versionableService.applyVersioning(ServicePointVersion.class, versionedObjects,
-        this::save, this::deleteById);
+        this::save, new ApplyVersioningDeleteByIdLongConsumer(servicePointVersionRepository));
     return currentVersion;
   }
 
