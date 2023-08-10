@@ -10,6 +10,7 @@ import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.service.BaseImportService;
 import ch.sbb.atlas.servicepointdirectory.service.BasePointUtility;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
+import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -98,7 +99,7 @@ public class ServicePointImportService extends BaseImportService<ServicePointVer
         ServicePointVersion.Fields.servicePointGeolocation);
     versionableService.applyVersioning(ServicePointVersion.class, versionedObjects,
         servicePointService::saveWithoutValidationForImportOnly,
-        servicePointService::deleteById);
+        new ApplyVersioningDeleteByIdLongConsumer(servicePointService.getServicePointVersionRepository()));
   }
 
   private void saveFotComment(ServicePointCsvModelContainer container) {
