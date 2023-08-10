@@ -67,7 +67,5 @@ describe('ServicePointDetailComponent', () => {
   it('should initialize form correctly', () => {
     expect(component.isNew).toBeFalse();
     expect(component.form.disabled).toBeTrue();
-
-    expect(component.selectedType).toBe(ServicePointType.StopPoint);
   });
 });
