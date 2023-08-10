@@ -35,6 +35,16 @@ public class LoadingPointImportService extends BaseImportService<LoadingPointVer
     loadingPointService.save(loadingPointVersion);
   }
 
+  @Override
+  protected ItemImportResult addInfoToItemImportResult(ItemImportResultBuilder itemImportResultBuilder,
+      LoadingPointVersion loadingPointVersion) {
+    return itemImportResultBuilder
+        .validFrom(loadingPointVersion.getValidFrom())
+        .validTo(loadingPointVersion.getValidTo())
+        .itemNumber(getIdentifyingLoadingPointVersionString(loadingPointVersion))
+        .build();
+  }
+
   public static List<LoadingPointCsvModel> parseLoadingPoints(InputStream inputStream)
       throws IOException {
     MappingIterator<LoadingPointCsvModel> mappingIterator = DidokCsvMapper.CSV_MAPPER.readerFor(
@@ -114,27 +124,6 @@ public class LoadingPointImportService extends BaseImportService<LoadingPointVer
           loadingPointVersion), exception);
       return buildFailedImportResult(loadingPointVersion, exception);
     }
-  }
-
-  private ItemImportResult buildSuccessImportResult(LoadingPointVersion loadingPointVersion) {
-    ItemImportResultBuilder successResultBuilder = ItemImportResult.successResultBuilder();
-    return addLoadingPointInfoTo(successResultBuilder, loadingPointVersion).build();
-  }
-
-  private ItemImportResult buildFailedImportResult(LoadingPointVersion loadingPointVersion,
-      Exception exception) {
-    ItemImportResultBuilder failedResultBuilder = ItemImportResult.failedResultBuilder(exception);
-    return addLoadingPointInfoTo(failedResultBuilder, loadingPointVersion).build();
-  }
-
-  private ItemImportResultBuilder addLoadingPointInfoTo(
-      ItemImportResultBuilder ItemImportResultBuilder,
-      LoadingPointVersion loadingPointVersion
-  ) {
-    return ItemImportResultBuilder
-        .validFrom(loadingPointVersion.getValidFrom())
-        .validTo(loadingPointVersion.getValidTo())
-        .itemNumber(getIdentifyingLoadingPointVersionString(loadingPointVersion));
   }
 
   private static String getIdentifyingLoadingPointVersionString(LoadingPointVersion loadingPointVersion) {
