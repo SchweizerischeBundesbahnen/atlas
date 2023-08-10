@@ -44,11 +44,7 @@ export class ServicePointSidePanelComponent implements OnInit, OnDestroy {
 
   private servicePointSubscription?: Subscription;
 
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private mapService: MapService
-  ) {}
+  constructor(private route: ActivatedRoute, private mapService: MapService) {}
 
   ngOnInit() {
     this.servicePointSubscription = this.route.data.subscribe((next) => {
@@ -67,9 +63,5 @@ export class ServicePointSidePanelComponent implements OnInit, OnDestroy {
     this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(
       this.servicePointVersions
     );
-  }
-
-  closeSidePanel() {
-    this.router.navigate([Pages.SEPODI.path]).then();
   }
 }
