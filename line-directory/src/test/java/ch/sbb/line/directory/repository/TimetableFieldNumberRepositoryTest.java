@@ -263,8 +263,6 @@ public class TimetableFieldNumberRepositoryTest {
 
     //then
     assertThat(result.size()).isEqualTo(1);
-    assertThat(result).containsAll(result);
-
   }
 
   @Test
