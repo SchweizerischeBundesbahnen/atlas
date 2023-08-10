@@ -40,9 +40,13 @@ export class ServicePointFormGroupBuilder {
         designationOfficial: new FormControl(version.designationOfficial, [
           Validators.required,
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
+          Validators.maxLength(30),
+          Validators.minLength(2),
         ]),
         designationLong: new FormControl(version.designationLong, [
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
+          Validators.maxLength(50),
+          Validators.minLength(2),
         ]),
         validFrom: new FormControl(
           version.validFrom ? moment(version.validFrom) : version.validFrom,
