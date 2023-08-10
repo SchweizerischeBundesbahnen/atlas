@@ -1,10 +1,10 @@
 package ch.sbb.business.organisation.directory.model.csv;
 
 import ch.sbb.atlas.api.bodi.SboidToSaidConverter;
+import ch.sbb.atlas.api.bodi.enumeration.BusinessType;
 import ch.sbb.atlas.export.model.VersionCsvModel;
 import ch.sbb.atlas.model.Status;
-import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
-import ch.sbb.atlas.api.bodi.enumeration.BusinessType;
+import ch.sbb.business.organisation.directory.entity.BusinessOrganisationExportVersionWithTuInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -20,9 +20,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonPropertyOrder({"sboid", "said", "validFrom", "validTo", "organisationNumber", "status",
-    "descriptionDe", "descriptionFr", "descriptionIt", "descriptionEn", "abbreviationDe",
-    "abbreviationFr", "abbreviationIt", "abbreviationEn", "businessTypesId", "businessTypesDe",
-    "businessTypesIt", "businessTypesFr", "creationTime", "editionTime"})
+    "descriptionDe", "descriptionFr", "descriptionIt", "descriptionEn",
+    "abbreviationDe", "abbreviationFr", "abbreviationIt", "abbreviationEn",
+    "businessTypesId", "businessTypesDe", "businessTypesIt", "businessTypesFr",
+    "transportCompanyNumber", "transportCompanyAbbreviation", "transportCompanyBusinessRegisterName", "transportCompanyId",
+    "creationTime", "editionTime"})
 public class BusinessOrganisationVersionCsvModel implements VersionCsvModel {
 
   @JsonProperty("sboid")
@@ -79,6 +81,18 @@ public class BusinessOrganisationVersionCsvModel implements VersionCsvModel {
   @JsonProperty("businessTypesIt")
   private String businessTypesIt;
 
+  @JsonProperty("transportCompanyNumber")
+  private String transportCompanyNumber;
+
+  @JsonProperty("transportCompanyAbbreviation")
+  private String transportCompanyAbbreviation;
+
+  @JsonProperty("transportCompanyBusinessRegisterName")
+  private String transportCompanyBusinessRegisterName;
+
+  @JsonProperty("transportCompanyId")
+  private Long transportCompanyId;
+
   @JsonProperty("editionTime")
   private LocalDateTime editionTime;
 
@@ -86,7 +100,7 @@ public class BusinessOrganisationVersionCsvModel implements VersionCsvModel {
   private LocalDateTime creationTime;
 
   public static BusinessOrganisationVersionCsvModel toCsvModel(
-      BusinessOrganisationVersion version) {
+      BusinessOrganisationExportVersionWithTuInfo version) {
 
     BusinessOrganisationVersionCsvModel model = new BusinessOrganisationVersionCsvModel();
     model.setSboid(version.getSboid());
@@ -106,23 +120,31 @@ public class BusinessOrganisationVersionCsvModel implements VersionCsvModel {
     model.setBusinessTypesId(
         version.getBusinessTypes()
             .stream()
+            .sorted()
             .map(businessType -> String.valueOf(businessType.getId()))
             .collect(Collectors.joining(",")));
     model.setBusinessTypesDe(
         version.getBusinessTypes()
             .stream()
+            .sorted()
             .map(BusinessType::getTypeDe)
             .collect(Collectors.joining(",")));
     model.setBusinessTypesFr(
         version.getBusinessTypes()
             .stream()
+            .sorted()
             .map(BusinessType::getTypeFr)
             .collect(Collectors.joining(",")));
     model.setBusinessTypesIt(
         version.getBusinessTypes()
             .stream()
+            .sorted()
             .map(BusinessType::getTypeIt)
             .collect(Collectors.joining(",")));
+    model.setTransportCompanyNumber(version.getNumber());
+    model.setTransportCompanyAbbreviation(version.getAbbreviation());
+    model.setTransportCompanyBusinessRegisterName(version.getBusinessRegisterName());
+    model.setTransportCompanyId(version.getTransportCompanyId());
     model.setEditionTime(version.getEditionDate());
     model.setCreationTime(version.getCreationDate());
     return model;
