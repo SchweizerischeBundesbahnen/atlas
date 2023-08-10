@@ -101,8 +101,6 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
   @Schema(description = "Type of the StopPoint, Indicates for which type of traffic (e.g. regular traffic) a stop was recorded. ")
   private StopPointType stopPointType;
 
-  private ServicePointGeolocationModel servicePointGeolocation;
-
   @NotNull
   @Schema(description = "Status", example = "VALIDATED")
   private Status status;
@@ -115,12 +113,6 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
 
   @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)", example = "5")
   private Integer etagVersion;
-
-  @JsonInclude
-  @Schema(description = "ServicePoint has a Geolocation")
-  public boolean isHasGeolocation() {
-    return servicePointGeolocation != null;
-  }
 
   @JsonInclude
   @Schema(description = "ServicePoint is StopPoint")
