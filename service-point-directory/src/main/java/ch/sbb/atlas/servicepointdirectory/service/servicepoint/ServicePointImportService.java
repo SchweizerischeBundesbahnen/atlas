@@ -34,6 +34,21 @@ public class ServicePointImportService extends BaseImportService<ServicePointVer
   private final VersionableService versionableService;
   private final ServicePointFotCommentService servicePointFotCommentService;
 
+  @Override
+  protected void save(ServicePointVersion servicePointVersion) {
+    servicePointService.save(servicePointVersion);
+  }
+
+  @Override
+  protected ItemImportResult addInfoToItemImportResult(ItemImportResultBuilder itemImportResultBuilder,
+      ServicePointVersion servicePointVersion) {
+    return itemImportResultBuilder
+        .validFrom(servicePointVersion.getValidFrom())
+        .validTo(servicePointVersion.getValidTo())
+        .itemNumber(servicePointVersion.getNumber().asString())
+        .build();
+  }
+
   public static List<ServicePointCsvModel> parseServicePoints(InputStream inputStream)
       throws IOException {
     MappingIterator<ServicePointCsvModel> mappingIterator = DidokCsvMapper.CSV_MAPPER.readerFor(
@@ -86,11 +101,6 @@ public class ServicePointImportService extends BaseImportService<ServicePointVer
         servicePointService::deleteById);
   }
 
-  @Override
-  protected void save(ServicePointVersion servicePointVersion) {
-    servicePointService.save(servicePointVersion);
-  }
-
   private void saveFotComment(ServicePointCsvModelContainer container) {
     Set<String> comments = container.getServicePointCsvModelList().stream().map(ServicePointCsvModel::getComment)
         .collect(Collectors.toSet());
@@ -129,26 +139,6 @@ public class ServicePointImportService extends BaseImportService<ServicePointVer
         return buildFailedImportResult(servicePointVersion, exception);
       }
     }
-  }
-
-  private ItemImportResult buildSuccessImportResult(ServicePointVersion servicePointVersion) {
-    ItemImportResultBuilder successResultBuilder = ItemImportResult.successResultBuilder();
-    return addServicePointInfoTo(successResultBuilder, servicePointVersion).build();
-  }
-
-  private ItemImportResult buildFailedImportResult(ServicePointVersion servicePointVersion, Exception exception) {
-    ItemImportResultBuilder failedResultBuilder = ItemImportResult.failedResultBuilder(exception);
-    return addServicePointInfoTo(failedResultBuilder, servicePointVersion).build();
-  }
-
-  private ItemImportResultBuilder addServicePointInfoTo(
-      ItemImportResultBuilder servicePointItemImportResultBuilder,
-      ServicePointVersion servicePointVersion
-  ) {
-    return servicePointItemImportResultBuilder
-        .validFrom(servicePointVersion.getValidFrom())
-        .validTo(servicePointVersion.getValidTo())
-        .itemNumber(servicePointVersion.getNumber().asString());
   }
 
 }
