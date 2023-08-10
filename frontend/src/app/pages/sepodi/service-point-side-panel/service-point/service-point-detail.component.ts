@@ -196,7 +196,6 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy {
   }
 
   private update(id: number, servicePointVersion: CreateServicePointVersion) {
-    console.log('updating to ', servicePointVersion);
     this.servicePointService
       .updateServicePoint(id, servicePointVersion)
       .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
