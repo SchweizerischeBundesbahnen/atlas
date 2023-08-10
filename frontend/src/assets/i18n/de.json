@@ -917,7 +917,11 @@
       },
       "ROUTE_NETWORK_DATA": "Streckennetzdaten (nur Eisenbahn)",
       "ROUTE_NETWORK": "BP-Strecke",
-      "OPERATING_POINT_KILOMETER": "BP-Kilometrierung"
+      "OPERATING_POINT_KILOMETER": "BP-Kilometrierung",
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Die Dienststelle wurde erfolgreich hinzugefügt.",
+        "EDIT_SUCCESS": "Die Dienststelle wurde erfolgreich gespeichert."
+      }
     },
     "TRAFFIC_POINT_ELEMENTS": {
       "TRAFFIC_POINT_ELEMENTS": "Haltekanten"
