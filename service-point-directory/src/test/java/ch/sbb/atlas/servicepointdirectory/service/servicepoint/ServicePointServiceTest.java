@@ -83,15 +83,6 @@ public class ServicePointServiceTest {
   }
 
   @Test
-  void shouldCallDeleteById() {
-    // given & when
-    servicePointService.deleteById(123L);
-
-    // then
-    verify(servicePointVersionRepositoryMock).deleteById(eq(123L));
-  }
-
-  @Test
   void shouldCallSave() {
     // given
     ServicePointVersion servicePointVersion = ServicePointTestData.getBernWyleregg();
