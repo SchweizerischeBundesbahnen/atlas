@@ -7,6 +7,7 @@ import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
+import java.util.Optional;
 import lombok.experimental.UtilityClass;
 
 import java.util.List;
@@ -60,8 +61,12 @@ public class ServicePointVersionMapper {
   public static ServicePointVersion toEntity(CreateServicePointVersionModel createServicePointVersionModel) {
     ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(
         createServicePointVersionModel.getNumberWithoutCheckDigit());
-    ServicePointNumber operatingPointKilometerMasterNumber = ServicePointNumber.ofNumberWithoutCheckDigit(
-        createServicePointVersionModel.getOperatingPointKilometerMasterNumber());
+
+    ServicePointNumber operatingPointKilometerMasterNumber =
+        Optional.ofNullable(createServicePointVersionModel.getOperatingPointKilometerMasterNumber())
+            .map(ServicePointNumber::ofNumberWithoutCheckDigit)
+            .orElse(null);
+
     return ServicePointVersion.builder()
         .id(createServicePointVersionModel.getId())
         .number(servicePointNumber)

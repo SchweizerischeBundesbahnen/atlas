@@ -51,6 +51,14 @@ public class ReadServicePointVersionModel extends ServicePointVersionModel {
           + "operatingPointRouteNetwork")
   private ServicePointNumber operatingPointKilometerMaster;
 
+  private ServicePointGeolocationReadModel servicePointGeolocation;
+
+  @JsonInclude
+  @Schema(description = "ServicePoint has a Geolocation")
+  public boolean isHasGeolocation() {
+    return servicePointGeolocation != null;
+  }
+
   @JsonInclude
   @Schema(description = "ServicePoint is OperatingPointKilometer")
   public boolean isOperatingPointKilometer() {

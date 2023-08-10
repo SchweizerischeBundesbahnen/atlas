@@ -66,7 +66,7 @@ public abstract class TrafficPointElementVersionModel extends BaseVersionModel i
       + "As key, the SLOID is used.", example = "ch:1:sloid:16161:1")
   private String parentSloid;
 
-  private GeolocationBaseModel trafficPointElementGeolocation;
+  private GeolocationBaseReadModel trafficPointElementGeolocation;
   @NotNull
   private LocalDate validFrom;
 
