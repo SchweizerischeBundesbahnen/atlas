@@ -8,6 +8,7 @@ import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.service.BaseImportService;
 import ch.sbb.atlas.servicepointdirectory.service.BasePointUtility;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
+import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -91,7 +92,7 @@ public class TrafficPointElementImportService extends BaseImportService<TrafficP
     BasePointUtility.addCreateAndEditDetailsToGeolocationPropertyFromVersionedObjects(versionedObjects,
         TrafficPointElementVersion.Fields.trafficPointElementGeolocation);
     versionableService.applyVersioning(TrafficPointElementVersion.class, versionedObjects, trafficPointElementService::save,
-        trafficPointElementService::deleteById);
+        new ApplyVersioningDeleteByIdLongConsumer(trafficPointElementService.getTrafficPointElementVersionRepository()));
   }
 
   private ItemImportResult updateTrafficPointVersion(TrafficPointElementVersion trafficPointElementVersion) {
