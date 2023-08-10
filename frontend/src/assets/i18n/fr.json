@@ -197,6 +197,7 @@
     "REQUIRED": "Ce champ est obligatoire.",
     "BLANK": "Ce champ ne peut pas être vide.",
     "MAXLENGTH": "Le nombre maximum de caractères autorisés est {{length}}.",
+    "MINLENGTH": "Un minimum de {{length}} caractères est requis.",
     "MATDATEPICKERMIN": "La date doit être supérieure ou égale à {{date}}.",
     "MATDATEPICKERMAX": "La date doit être inférieure ou égale à {{date}}.",
     "MATDATEPICKERPARSE": "Le format de date n’est pas valable. (Format valide: JJ.MM.AAAA)",

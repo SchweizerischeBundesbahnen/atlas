@@ -197,6 +197,7 @@
     "REQUIRED": "Dies ist ein Pflichtfeld.",
     "BLANK": "Dieses Feld darf nicht leer sein.",
     "MAXLENGTH": "Es sind maximal {{length}} Zeichen erlaubt.",
+    "MINLENGTH": "Es sind minimal {{length}} Zeichen erforderlich.",
     "MATDATEPICKERMIN": "Das Datum muss grösser als oder gleich dem {{date}} sein.",
     "MATDATEPICKERMAX": "Das Datum muss kleiner als oder gleich dem {{date}} sein.",
     "MATDATEPICKERPARSE": "Das Datumsformat ist ungültig. (Gültige Format: TT.MM.YYYY)",
