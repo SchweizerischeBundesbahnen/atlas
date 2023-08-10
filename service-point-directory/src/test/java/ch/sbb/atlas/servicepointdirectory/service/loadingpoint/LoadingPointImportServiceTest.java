@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -57,6 +58,7 @@ public class LoadingPointImportServiceTest {
     }
   }
 
+  @Disabled("Is only for finding loading points in csv where multiple versions exist")
   @Test
   void findNumberOfLoadingPointVersionsInCsv() throws IOException {
     try (InputStream csvStream = this.getClass().getResourceAsStream("/" + CSV_FILE)) {

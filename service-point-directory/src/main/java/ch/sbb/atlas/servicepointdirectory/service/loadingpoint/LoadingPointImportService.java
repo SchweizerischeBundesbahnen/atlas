@@ -11,6 +11,7 @@ import ch.sbb.atlas.servicepointdirectory.service.BasePointUtility;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
 import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
 import ch.sbb.atlas.versioning.model.VersionedObject;
+import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import com.fasterxml.jackson.databind.MappingIterator;
 import java.io.IOException;
@@ -93,7 +94,7 @@ public class LoadingPointImportService extends BaseImportService<LoadingPointVer
     final List<VersionedObject> versionedObjects = versionableService.versioningObjectsForImportFromCsv(current,
         loadingPointVersionEdited, dbVersions);
     versionableService.applyVersioning(LoadingPointVersion.class, versionedObjects, loadingPointService::save,
-        loadingPointService::deleteById);
+        new ApplyVersioningDeleteByIdLongConsumer(loadingPointService.getLoadingPointVersionRepository()));
   }
 
   private ItemImportResult updateLoadingPointVersion(LoadingPointVersion loadingPointVersion) {
