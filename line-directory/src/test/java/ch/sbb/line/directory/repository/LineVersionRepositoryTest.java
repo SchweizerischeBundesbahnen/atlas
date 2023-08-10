@@ -202,8 +202,6 @@ public class LineVersionRepositoryTest {
 
     //then
     assertThat(result.size()).isEqualTo(3);
-    assertThat(result).containsAll(result);
-
   }
 
   @Test
