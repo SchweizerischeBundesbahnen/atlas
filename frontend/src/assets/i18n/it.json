@@ -918,7 +918,11 @@
       },
       "ROUTE_NETWORK_DATA": "Dati sulla rete di percorsi (solo per le ferrovie)",
       "ROUTE_NETWORK": "PE-tratta",
-      "OPERATING_POINT_KILOMETER": "PE-chilometrico"
+      "OPERATING_POINT_KILOMETER": "PE-chilometrico",
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Il posto di servizio è stato aggiunto con successo.",
+        "EDIT_SUCCESS": "Il posto di servizio è stato salvato con successo."
+      }
     },
     "TRAFFIC_POINT_ELEMENTS": {
       "TRAFFIC_POINT_ELEMENTS": "Bordi fermata"
