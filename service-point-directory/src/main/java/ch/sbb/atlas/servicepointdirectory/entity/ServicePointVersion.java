@@ -68,6 +68,13 @@ public class ServicePointVersion extends BasePointVersion implements Versionable
 
   private static final String VERSION_SEQ = "service_point_version_seq";
 
+  @Override
+  public void setThisAsParentOnRelatingEntities() {
+    if (this.servicePointGeolocation != null) {
+      this.servicePointGeolocation.setServicePointVersion(this);
+    }
+  }
+
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = VERSION_SEQ)
   @SequenceGenerator(name = VERSION_SEQ, sequenceName = VERSION_SEQ, allocationSize = 1, initialValue = 1000)
@@ -261,10 +268,4 @@ public class ServicePointVersion extends BasePointVersion implements Versionable
     return categories;
   }
 
-  @Override
-  public void setThisAsParentOnRelatingEntities() {
-    if (this.servicePointGeolocation != null) {
-      this.servicePointGeolocation.setServicePointVersion(this);
-    }
-  }
 }
