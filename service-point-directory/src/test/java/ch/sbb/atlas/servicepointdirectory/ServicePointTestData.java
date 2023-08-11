@@ -257,7 +257,7 @@ public class ServicePointTestData {
         .meansOfTransport(List.of(MeanOfTransport.TRAIN))
         .stopPointType(StopPointType.ON_REQUEST)
         .servicePointGeolocation(
-            ServicePointGeolocationMapper.toModel(ServicePointTestData.getServicePointGeolocationBernMittelland()))
+            ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getServicePointGeolocationBernMittelland()))
         .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2010, 12, 11))
         .validTo(LocalDate.of(2019, 8, 10))
