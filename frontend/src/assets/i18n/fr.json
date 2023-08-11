@@ -918,7 +918,11 @@
       },
       "ROUTE_NETWORK_DATA": "Données du réseau (ferroviaire uniquement)",
       "ROUTE_NETWORK": "PE-segment",
-      "OPERATING_POINT_KILOMETER": "PE-kilométrage"
+      "OPERATING_POINT_KILOMETER": "PE-kilométrage",
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Le service a été ajouté avec succès.",
+        "EDIT_SUCCESS": "Le service a été enregistré avec succès."
+      }
     },
     "TRAFFIC_POINT_ELEMENTS": {
       "TRAFFIC_POINT_ELEMENTS": "Bordures d’arrêts"
