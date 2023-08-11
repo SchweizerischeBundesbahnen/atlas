@@ -59,8 +59,6 @@ public class TrafficPointElementVersionCsvProcessor extends BaseServicePointProc
                   .lv95North(geolocation.getLv95().getNorth())
                   .wgs84East(geolocation.getWgs84().getEast())
                   .wgs84North(geolocation.getWgs84().getNorth())
-                  .wgs84WebEast(geolocation.getWgs84web().getEast())
-                  .wgs84WebNorth(geolocation.getWgs84web().getNorth())
                   .height(geolocation.getHeight());
         }
     }
