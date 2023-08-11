@@ -18,6 +18,7 @@ import { AtlasFieldErrorComponent } from '../../../../core/form-components/atlas
 import { AtlasSpacerComponent } from '../../../../core/components/spacer/atlas-spacer.component';
 import { Record } from '../../../../core/components/base-detail/record';
 import { ServicePointType } from './service-point-type';
+import { MockAtlasButtonComponent } from '../../../../app.testing.mocks';
 
 const authService: Partial<AuthService> = {};
 
@@ -39,6 +40,7 @@ describe('ServicePointDetailComponent', () => {
         SelectComponent,
         SwitchVersionComponent,
         AtlasSlideToggleComponent,
+        MockAtlasButtonComponent,
       ],
       imports: [AppTestingModule, FormsModule],
       providers: [
