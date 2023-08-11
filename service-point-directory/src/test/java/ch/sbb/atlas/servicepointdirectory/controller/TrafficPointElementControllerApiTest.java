@@ -1,5 +1,14 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
+import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.LV95;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.servicepoint.CreateTrafficPointElementVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadTrafficPointElementVersionModel;
@@ -17,6 +26,12 @@ import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionReposito
 import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementImportService;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementValidationService;
+import java.io.InputStream;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,22 +40,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-import java.io.InputStream;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.LV95;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class TrafficPointElementControllerApiTest extends BaseControllerApiTest {
 
@@ -275,10 +274,10 @@ public class TrafficPointElementControllerApiTest extends BaseControllerApiTest 
         .andExpect(jsonPath("$."+ TrafficPointElementVersion.Fields.sloid, is(trafficPointElementVersion.getSloid())))
         .andExpect(jsonPath("$."+ TrafficPointElementVersion.Fields.parentSloid, is(trafficPointElementVersion.getParentSloid())))
         .andExpect(jsonPath("$.trafficPointElementGeolocation.spatialReference", is(LV95.toString())))
-        .andExpect(jsonPath("$.trafficPointElementGeolocation.lv95.north", is(5811120.069385619)))
-        .andExpect(jsonPath("$.trafficPointElementGeolocation.lv95.east", is(691419.9033588431)))
-        .andExpect(jsonPath("$.trafficPointElementGeolocation.wgs84.north", is(76.16830524895504)))
-        .andExpect(jsonPath("$.trafficPointElementGeolocation.wgs84.east", is(-67.70653042926492)))
+        .andExpect(jsonPath("$.trafficPointElementGeolocation.lv95.north", is(1116323.213)))
+        .andExpect(jsonPath("$.trafficPointElementGeolocation.lv95.east", is(2505236.389)))
+        .andExpect(jsonPath("$.trafficPointElementGeolocation.wgs84.north", is(46.19168377864148)))
+        .andExpect(jsonPath("$.trafficPointElementGeolocation.wgs84.east", is(6.211130669316912)))
         .andExpect(jsonPath("$.trafficPointElementGeolocation.height", is(-9999.0)));
   }
 
@@ -291,7 +290,7 @@ public class TrafficPointElementControllerApiTest extends BaseControllerApiTest 
 
     CreateTrafficPointElementVersionModel newTrafficPointVersionModel = TrafficPointTestData.getCreateTrafficPointVersionModel();
     newTrafficPointVersionModel.setTrafficPointElementGeolocation(
-            GeolocationMapper.toModel(TrafficPointTestData.getTrafficPointGeolocationBernMittelland()));
+            GeolocationMapper.toCreateModel(TrafficPointTestData.getTrafficPointGeolocationBernMittelland()));
     newTrafficPointVersionModel.setValidFrom(LocalDate.of(2021, 1, 1));
     newTrafficPointVersionModel.setValidTo(LocalDate.of(2021, 12, 31));
 
@@ -313,10 +312,10 @@ public class TrafficPointElementControllerApiTest extends BaseControllerApiTest 
             .andExpect(jsonPath("$[0]."+ TrafficPointElementVersion.Fields.sloid, is(trafficPointElementVersion.getSloid())))
             .andExpect(jsonPath("$[0]."+ TrafficPointElementVersion.Fields.parentSloid, is(trafficPointElementVersion.getParentSloid())))
             .andExpect(jsonPath("$[0].trafficPointElementGeolocation.spatialReference", is(LV95.toString())))
-            .andExpect(jsonPath("$[0].trafficPointElementGeolocation.lv95.north", is(5811120.069385619)))
-            .andExpect(jsonPath("$[0].trafficPointElementGeolocation.lv95.east", is(691419.9033588431)))
-            .andExpect(jsonPath("$[0].trafficPointElementGeolocation.wgs84.north", is(76.16830524895504)))
-            .andExpect(jsonPath("$[0].trafficPointElementGeolocation.wgs84.east", is(-67.70653042926492)))
+            .andExpect(jsonPath("$[0].trafficPointElementGeolocation.lv95.north", is(1116323.213)))
+            .andExpect(jsonPath("$[0].trafficPointElementGeolocation.lv95.east", is(2505236.389)))
+            .andExpect(jsonPath("$[0].trafficPointElementGeolocation.wgs84.north", is(46.19168377864148)))
+            .andExpect(jsonPath("$[0].trafficPointElementGeolocation.wgs84.east", is(6.211130669316912)))
             .andExpect(jsonPath("$[0].trafficPointElementGeolocation.height", is(-9999.0)))
             .andExpect(jsonPath("$[1]." + TrafficPointElementVersion.Fields.id, is(trafficPointElementVersion.getId().intValue() + 2)))
             .andExpect(jsonPath("$[1].servicePointNumber.number", is(1400015)))
@@ -331,10 +330,10 @@ public class TrafficPointElementControllerApiTest extends BaseControllerApiTest 
             .andExpect(jsonPath("$[1]."+ TrafficPointElementVersion.Fields.sloid, is(trafficPointElementVersion.getSloid())))
             .andExpect(jsonPath("$[1]."+ TrafficPointElementVersion.Fields.parentSloid, is(trafficPointElementVersion.getParentSloid())))
             .andExpect(jsonPath("$[1].trafficPointElementGeolocation.spatialReference", is(LV95.toString())))
-            .andExpect(jsonPath("$[1].trafficPointElementGeolocation.lv95.north", is(5935706.6515024565)))
-            .andExpect(jsonPath("$[1].trafficPointElementGeolocation.lv95.east", is(829210.4077282187)))
-            .andExpect(jsonPath("$[1].trafficPointElementGeolocation.wgs84.north", is(77.40956704901323)))
-            .andExpect(jsonPath("$[1].trafficPointElementGeolocation.wgs84.east", is(-69.39759684060752)))
+            .andExpect(jsonPath("$[1].trafficPointElementGeolocation.lv95.north", is(1201099.85634)))
+            .andExpect(jsonPath("$[1].trafficPointElementGeolocation.lv95.east", is(2600783.31256)))
+            .andExpect(jsonPath("$[1].trafficPointElementGeolocation.wgs84.north", is(46.96097578276866)))
+            .andExpect(jsonPath("$[1].trafficPointElementGeolocation.wgs84.east", is(7.44892383013239)))
             .andExpect(jsonPath("$[1].trafficPointElementGeolocation.height", is(555.98)))
             .andExpect(jsonPath("$[2]." + TrafficPointElementVersion.Fields.id, is(trafficPointElementVersion.getId().intValue() + 3)))
             .andExpect(jsonPath("$[2].servicePointNumber.number", is(1400015)))
@@ -349,10 +348,10 @@ public class TrafficPointElementControllerApiTest extends BaseControllerApiTest 
             .andExpect(jsonPath("$[2]."+ TrafficPointElementVersion.Fields.sloid, is(trafficPointElementVersion.getSloid())))
             .andExpect(jsonPath("$[2]."+ TrafficPointElementVersion.Fields.parentSloid, is(trafficPointElementVersion.getParentSloid())))
             .andExpect(jsonPath("$[2].trafficPointElementGeolocation.spatialReference", is(LV95.toString())))
-            .andExpect(jsonPath("$[2].trafficPointElementGeolocation.lv95.north", is(5811120.069385619)))
-            .andExpect(jsonPath("$[2].trafficPointElementGeolocation.lv95.east", is(691419.9033588431)))
-            .andExpect(jsonPath("$[2].trafficPointElementGeolocation.wgs84.north", is(76.16830524895504)))
-            .andExpect(jsonPath("$[2].trafficPointElementGeolocation.wgs84.east", is(-67.70653042926492)))
+            .andExpect(jsonPath("$[2].trafficPointElementGeolocation.lv95.north", is(1116323.213)))
+            .andExpect(jsonPath("$[2].trafficPointElementGeolocation.lv95.east", is(2505236.389)))
+            .andExpect(jsonPath("$[2].trafficPointElementGeolocation.wgs84.north", is(46.19168377864148)))
+            .andExpect(jsonPath("$[2].trafficPointElementGeolocation.wgs84.east", is(6.211130669316912)))
             .andExpect(jsonPath("$[2].trafficPointElementGeolocation.height", is(-9999.0)));
   }
 
@@ -366,7 +365,7 @@ public class TrafficPointElementControllerApiTest extends BaseControllerApiTest 
 
     CreateTrafficPointElementVersionModel newTrafficPointVersionModel = TrafficPointTestData.getCreateTrafficPointVersionModel();
     newTrafficPointVersionModel.setTrafficPointElementGeolocation(
-            GeolocationMapper.toModel(TrafficPointTestData.getTrafficPointGeolocationBernMittelland()));
+            GeolocationMapper.toCreateModel(TrafficPointTestData.getTrafficPointGeolocationBernMittelland()));
     mvc.perform(MockMvcRequestBuilders.put("/v1/traffic-point-elements/" + id)
              .contentType(contentType)
              .content(mapper.writeValueAsString(newTrafficPointVersionModel)))
