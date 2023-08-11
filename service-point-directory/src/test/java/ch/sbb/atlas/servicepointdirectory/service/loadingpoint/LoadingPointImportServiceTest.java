@@ -16,11 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -55,33 +51,6 @@ public class LoadingPointImportServiceTest {
       assertThat(csvModel.getDesignation()).isNotNull();
       assertThat(csvModel.getCreatedAt()).isNotNull();
       assertThat(csvModel.getCreatedBy()).isNotNull();
-    }
-  }
-
-  @Disabled("Is only for finding loading points in csv where multiple versions exist")
-  @Test
-  void findNumberOfLoadingPointVersionsInCsv() throws IOException {
-    try (InputStream csvStream = this.getClass().getResourceAsStream("/" + CSV_FILE)) {
-      List<LoadingPointCsvModel> loadingPointCsvModels = LoadingPointImportService.parseLoadingPoints(csvStream);
-
-      Map<Integer, Map<Integer, Integer>> finalMap = new HashMap<>();
-      Map<Integer, List<LoadingPointCsvModel>> didokCodeMap = loadingPointCsvModels.stream()
-          .collect(Collectors.groupingBy(LoadingPointCsvModel::getServicePointNumber));
-      didokCodeMap.forEach((didokCode, list) -> {
-        final Map<Integer, List<LoadingPointCsvModel>> numberMap = list.stream()
-            .collect(Collectors.groupingBy(LoadingPointCsvModel::getNumber));
-        final Map<Integer, Integer> mapCountNumbers = new HashMap<>();
-        numberMap.forEach((number, listOfModels) -> mapCountNumbers.put(number, listOfModels.size()));
-        finalMap.put(didokCode, mapCountNumbers);
-      });
-
-      finalMap.forEach((didokCode, map) -> {
-        boolean allMatch = map.values().stream().allMatch(number -> number == 1);
-        if (!allMatch) {
-          System.out.println(didokCode + "=" + map);
-        }
-      });
-
     }
   }
 
