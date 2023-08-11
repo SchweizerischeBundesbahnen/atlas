@@ -134,10 +134,11 @@ Maps, OpenStreetMap, etc.
 - ServicePoint Category
   Tree: https://confluence.sbb.ch/display/ADIDOK/Big+Picture#BigPicture-Kategorienbaum
 
-## Full clean import of service points
+## Full clean import of service points and traffic point elements
 
 To do a full import of service points from csv we need to delete all the existing data from the service-point db:
 ```sql
+-- Service Points
 delete from service_point_version;
 
 -- faster delete without fk constraint
@@ -149,6 +150,17 @@ alter table service_point_version add constraint fk_service_point_geolocation_id
 
 delete from service_point_version_categories;
 delete from service_point_version_means_of_transport;
+
+
+-- Traffic Point Elements
+delete from traffic_point_element_version;
+
+-- faster delete without fk constraint
+alter table traffic_point_element_version drop constraint fk_traffic_point_element_version_geolocation_id;
+delete from traffic_point_element_version_geolocation;
+alter table traffic_point_element_version add constraint fk_traffic_point_element_version_geolocation_id
+FOREIGN KEY (traffic_point_geolocation_id)
+REFERENCES traffic_point_element_version_geolocation (id);
 ```
 
 Further we need to clear the import-service-point db:
