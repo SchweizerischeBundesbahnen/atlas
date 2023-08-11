@@ -90,9 +90,7 @@ public class ServicePointVersionCsvServicePointProcessor extends BaseServicePoin
         .lv95East(geolocationModel.getLv95().getEast())
         .lv95North(geolocationModel.getLv95().getNorth())
         .wgs84East(geolocationModel.getWgs84().getEast())
-        .wgs84North(geolocationModel.getWgs84().getNorth())
-        .wgs84WebEast(geolocationModel.getWgs84web().getEast())
-        .wgs84WebNorth(geolocationModel.getWgs84web().getNorth());
+        .wgs84North(geolocationModel.getWgs84().getNorth());
   }
 
 }
