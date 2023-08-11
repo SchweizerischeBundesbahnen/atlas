@@ -39,10 +39,6 @@ public class LoadingPointVersion extends BasePointVersion implements Versionable
 
   private static final String VERSION_SEQ = "loading_point_version_seq";
 
-  @Override
-  public void setThisAsParentOnRelatingEntities() {
-  }
-
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = VERSION_SEQ)
   @SequenceGenerator(name = VERSION_SEQ, sequenceName = VERSION_SEQ, allocationSize = 1, initialValue = 1000)

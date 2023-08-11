@@ -101,18 +101,16 @@ public class LoadingPointImportService extends BaseImportService<LoadingPointVer
     try {
       updateLoadingPointVersionImport(loadingPointVersion);
       return buildSuccessImportResult(loadingPointVersion);
+    } catch (VersioningNoChangesException versioningNoChangesException) {
+      log.info("Found version {} to import without modification: {}",
+          getIdentifyingLoadingPointVersionString(loadingPointVersion),
+          versioningNoChangesException.getMessage()
+      );
+      return buildSuccessImportResult(loadingPointVersion);
     } catch (Exception exception) {
-      if (exception instanceof VersioningNoChangesException) {
-        log.info("Found version {} to import without modification: {}",
-            getIdentifyingLoadingPointVersionString(loadingPointVersion),
-            exception.getMessage()
-        );
-        return buildSuccessImportResult(loadingPointVersion);
-      } else {
-        log.error("[Loading-Point Import]: Error during update with version: " + getIdentifyingLoadingPointVersionString(
-            loadingPointVersion), exception);
-        return buildFailedImportResult(loadingPointVersion, exception);
-      }
+      log.error("[Loading-Point Import]: Error during update with version: " + getIdentifyingLoadingPointVersionString(
+          loadingPointVersion), exception);
+      return buildFailedImportResult(loadingPointVersion, exception);
     }
   }
 
