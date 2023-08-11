@@ -45,6 +45,32 @@ public class ServicePointGeolocationMapper {
         .build();
   }
 
+  public static ServicePointGeolocationCreateModel toCreateModel(ServicePointGeolocation servicePointGeolocation) {
+    if (servicePointGeolocation == null) {
+      return null;
+    }
+    return ServicePointGeolocationCreateModel.builder()
+        .country(servicePointGeolocation.getCountry())
+        .swissLocation(SwissLocation.builder()
+            .canton(servicePointGeolocation.getSwissCanton())
+            .cantonInformation(getCanton(servicePointGeolocation))
+            .district(DistrictModel.builder()
+                .fsoNumber(servicePointGeolocation.getSwissDistrictNumber())
+                .districtName(servicePointGeolocation.getSwissDistrictName())
+                .build())
+            .localityMunicipality(LocalityMunicipalityModel.builder()
+                .fsoNumber(servicePointGeolocation.getSwissMunicipalityNumber())
+                .municipalityName(servicePointGeolocation.getSwissMunicipalityName())
+                .localityName(servicePointGeolocation.getSwissLocalityName())
+                .build())
+            .build())
+        .spatialReference(servicePointGeolocation.getSpatialReference())
+        .north(servicePointGeolocation.getNorth())
+        .east(servicePointGeolocation.getEast())
+        .height(servicePointGeolocation.getHeight())
+        .build();
+  }
+
   public static ServicePointGeolocation toEntity(ServicePointGeolocationCreateModel servicePointGeolocationModel) {
     ServicePointGeolocationBuilder<?, ?> geolocationBuilder = ServicePointGeolocation.builder()
         .country(servicePointGeolocationModel.getCountry());
