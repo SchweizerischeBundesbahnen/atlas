@@ -7,6 +7,8 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public abstract class BasePointVersion extends BaseDidokImportEntity {
 
-  public abstract void setThisAsParentOnRelatingEntities();
+  public void setThisAsParentOnRelatingEntities() {
+    // default no operation when no relating Entities exist
+  }
 
 }
