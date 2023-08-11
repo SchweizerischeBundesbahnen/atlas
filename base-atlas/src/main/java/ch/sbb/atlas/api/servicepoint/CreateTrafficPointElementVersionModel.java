@@ -1,6 +1,7 @@
 package ch.sbb.atlas.api.servicepoint;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -26,4 +27,11 @@ public class CreateTrafficPointElementVersionModel extends TrafficPointElementVe
     @Max(AtlasFieldLengths.MAX_SEVEN_DIGITS_NUMBER)
     private Integer numberWithoutCheckDigit;
 
+    private GeolocationBaseCreateModel trafficPointElementGeolocation;
+
+    @JsonInclude
+    @Schema(description = "TrafficPointElementVersion has a Geolocation")
+    public boolean isHasGeolocation() {
+        return trafficPointElementGeolocation != null;
+    }
 }
