@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.mapper;
 
+import ch.sbb.atlas.api.servicepoint.GeolocationBaseCreateModel;
 import ch.sbb.atlas.api.servicepoint.GeolocationBaseReadModel;
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
@@ -28,16 +29,26 @@ public class GeolocationMapper {
         .build();
   }
 
-  public static TrafficPointElementGeolocation toTrafficPointElementEntity(GeolocationBaseReadModel geolocationBaseModel) {
+  public static GeolocationBaseCreateModel toCreateModel(GeolocationBaseEntity geolocationBaseEntity) {
+    if (geolocationBaseEntity == null) {
+      return null;
+    }
+    return GeolocationBaseCreateModel.builder()
+        .spatialReference(geolocationBaseEntity.getSpatialReference())
+        .east(geolocationBaseEntity.getEast())
+        .north(geolocationBaseEntity.getNorth())
+        .height(geolocationBaseEntity.getHeight())
+        .build();
+  }
+
+  public static TrafficPointElementGeolocation toTrafficPointElementEntity(GeolocationBaseCreateModel geolocationBaseModel) {
     if (geolocationBaseModel == null) {
       return null;
     }
     return TrafficPointElementGeolocation.builder()
             .spatialReference(geolocationBaseModel.getSpatialReference())
-            .east(geolocationBaseModel.getLv95().getEast())
-            .north(geolocationBaseModel.getLv95().getNorth())
-            .east(geolocationBaseModel.getWgs84().getEast())
-            .north(geolocationBaseModel.getWgs84().getNorth())
+            .east(geolocationBaseModel.getEast())
+            .north(geolocationBaseModel.getNorth())
             .height(geolocationBaseModel.getHeight())
             .build();
   }

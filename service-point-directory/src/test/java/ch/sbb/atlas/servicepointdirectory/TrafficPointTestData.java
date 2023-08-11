@@ -1,6 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory;
 
 import ch.sbb.atlas.api.servicepoint.CreateTrafficPointElementVersionModel;
+import ch.sbb.atlas.api.servicepoint.GeolocationBaseCreateModel;
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.Country;
@@ -9,12 +10,10 @@ import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
-import ch.sbb.atlas.servicepointdirectory.mapper.GeolocationMapper;
-import lombok.experimental.UtilityClass;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class TrafficPointTestData {
@@ -103,16 +102,12 @@ public class TrafficPointTestData {
   }
 
   public static CreateTrafficPointElementVersionModel getCreateTrafficPointVersionModel() {
-    TrafficPointElementGeolocation trafficPointElementGeolocation = TrafficPointElementGeolocation
+    GeolocationBaseCreateModel trafficPointElementGeolocation = GeolocationBaseCreateModel
             .builder()
             .spatialReference(SpatialReference.LV95)
             .east(2505236.389)
             .north(1116323.213)
             .height(-9999.0)
-            .creationDate(LocalDateTime.of(2019, 12, 6, 8, 2, 34))
-            .creator("fs45117")
-            .editionDate(LocalDateTime.of(2019, 12, 6, 8, 2, 34))
-            .editor("fs45117")
             .build();
 
     return CreateTrafficPointElementVersionModel
@@ -120,7 +115,7 @@ public class TrafficPointTestData {
             .designation("Bezeichnung")
             .designationOperational("gali00")
             .numberWithoutCheckDigit(1400015)
-            .trafficPointElementGeolocation(GeolocationMapper.toModel(trafficPointElementGeolocation))
+            .trafficPointElementGeolocation(trafficPointElementGeolocation)
             .sloid("ch:1:sloid:1400015:0:310240")
             .parentSloid("ch:1:sloid:1400015:310240")
             .compassDirection(277.0)
