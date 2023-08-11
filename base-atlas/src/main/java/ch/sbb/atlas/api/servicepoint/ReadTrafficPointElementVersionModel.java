@@ -1,6 +1,7 @@
 package ch.sbb.atlas.api.servicepoint;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -24,4 +25,11 @@ public class ReadTrafficPointElementVersionModel extends TrafficPointElementVers
     @Valid
     private ServicePointNumber servicePointNumber;
 
+    private GeolocationBaseReadModel trafficPointElementGeolocation;
+
+    @JsonInclude
+    @Schema(description = "TrafficPointElementVersion has a Geolocation")
+    public boolean isHasGeolocation() {
+        return trafficPointElementGeolocation != null;
+    }
 }
