@@ -1,6 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.service.loadingpoint;
 
 import ch.sbb.atlas.servicepoint.Country;
+import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion_;
 import jakarta.persistence.criteria.*;
@@ -29,7 +30,7 @@ public class LoadingPointServicePointSpecification <T> implements Specification<
         Subquery<?> servicePointSubquery = query.subquery(ServicePointVersion.class);
         Root<ServicePointVersion> fromServicePoint = servicePointSubquery.from(ServicePointVersion.class);
         List<Predicate> predicates = new ArrayList<>();
-        predicates.add(criteriaBuilder.equal(fromServicePoint.get("number"), root.get("servicePointNumber")));
+        predicates.add(criteriaBuilder.equal(fromServicePoint.get(ServicePointVersion.Fields.number), root.get(LoadingPointVersion.Fields.servicePointNumber)));
         if (!sboids.isEmpty()) {
             predicates.add(criteriaBuilder.and(fromServicePoint.get(ServicePointVersion_.businessOrganisation).in(sboids)));
         }
