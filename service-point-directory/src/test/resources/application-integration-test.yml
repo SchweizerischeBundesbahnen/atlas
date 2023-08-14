@@ -35,9 +35,7 @@ logging:
   level:
     root: ERROR
     org:
-      hibernate:
-        SQL: DEBUG
-        type: TRACE
+      hibernate: ERROR
       jboss: ERROR
       springframework:
         core: fatal
