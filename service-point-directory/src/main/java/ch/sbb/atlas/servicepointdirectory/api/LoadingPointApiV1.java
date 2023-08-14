@@ -2,7 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.api;
 
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.LoadingPointVersionModel;
-import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
+import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
 import ch.sbb.atlas.servicepointdirectory.service.loadingpoint.LoadingPointElementRequestParams;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,7 +23,7 @@ public interface LoadingPointApiV1 {
   @GetMapping
   @PageableAsQueryParam
   Container<LoadingPointVersionModel> getLoadingPoints(
-          @Parameter(hidden = true) @PageableDefault(sort = {TrafficPointElementVersion.Fields.sloid}) Pageable pageable,
+          @Parameter(hidden = true) @PageableDefault(sort = {LoadingPointVersion.Fields.servicePointNumber, LoadingPointVersion.Fields.number, LoadingPointVersion.Fields.validFrom}) Pageable pageable,
           @ParameterObject LoadingPointElementRequestParams loadingPointElementRequestParams);
 
   @GetMapping("{servicePointNumber}/{loadingPointNumber}")
