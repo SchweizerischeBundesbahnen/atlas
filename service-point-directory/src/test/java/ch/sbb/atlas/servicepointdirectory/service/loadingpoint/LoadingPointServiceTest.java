@@ -741,8 +741,9 @@ public class LoadingPointServiceTest {
         //then
         assertThat(result).isNotNull();
         assertThat(result.getContent()).isNotNull();
-        assertThat(result.getTotalElements()).isEqualTo(1);
+        assertThat(result.getTotalElements()).isEqualTo(2);
         assertThat(result.getContent()).contains(loadingPointVersion1);
+        assertThat(result.getContent()).contains(loadingPointVersion2);
     }
 
     @Test
