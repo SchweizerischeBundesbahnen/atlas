@@ -270,7 +270,7 @@ public class ServicePointTestData {
         .designationOfficial("Flüh Grenze")
         .abbreviation(null)
         .meansOfTransport(Set.of(MeanOfTransport.BUS))
-        .businessOrganisation("ch:1:sboid:100015")
+        .businessOrganisation("ch:1:sboid:100626")
         .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2014, 11, 2))
         .validTo(LocalDate.of(2099, 12, 31))
