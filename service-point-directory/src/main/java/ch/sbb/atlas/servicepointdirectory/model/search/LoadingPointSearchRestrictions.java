@@ -38,7 +38,7 @@ public class LoadingPointSearchRestrictions {
                         loadingPointElementRequestParams.getSboids(),
                         loadingPointElementRequestParams.getServicePointNumbersShorts(),
                         loadingPointElementRequestParams.getServicePointUicCountryCodes().stream()
-                                .map(uicCountryCode -> Country.from(Integer.valueOf(uicCountryCode))).toList(),
+                                .map(Country::from).toList(),
                         loadingPointElementRequestParams.getServicePointSloids()
                 ))
                 .and(new ValidOrEditionTimerangeSpecification<>(
