@@ -7,8 +7,10 @@ import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContai
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointFotComment;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
+import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.service.BaseImportService;
 import ch.sbb.atlas.servicepointdirectory.service.BasePointUtility;
+import ch.sbb.atlas.servicepointdirectory.service.BeanCopyUtil;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
@@ -38,6 +40,34 @@ public class ServicePointImportService extends BaseImportService<ServicePointVer
   @Override
   protected void save(ServicePointVersion servicePointVersion) {
     servicePointService.save(servicePointVersion);
+  }
+
+  @Override
+  protected void copyPropertiesFromCsvVersionToDbVersion(ServicePointVersion csvVersion, ServicePointVersion dbVersion) {
+    if (csvVersion.hasGeolocation() && !dbVersion.hasGeolocation()) {
+      BeanCopyUtil.copyNonNullProperties(csvVersion, dbVersion,
+          ServicePointVersion.Fields.validFrom,
+          ServicePointVersion.Fields.validTo,
+          ServicePointVersion.Fields.id
+      );
+      dbVersion.getServicePointGeolocation().setServicePointVersion(dbVersion);
+    } else {
+      BeanCopyUtil.copyNonNullProperties(csvVersion, dbVersion,
+          ServicePointVersion.Fields.validFrom,
+          ServicePointVersion.Fields.validTo,
+          ServicePointVersion.Fields.id,
+          ServicePointVersion.Fields.servicePointGeolocation
+      );
+      if (csvVersion.hasGeolocation() && dbVersion.hasGeolocation()) {
+        BeanCopyUtil.copyNonNullProperties(
+            csvVersion.getServicePointGeolocation(),
+            dbVersion.getServicePointGeolocation(),
+            ServicePointGeolocation.Fields.servicePointVersion);
+      }
+      if (!csvVersion.hasGeolocation() && dbVersion.hasGeolocation()) {
+        dbVersion.setServicePointGeolocation(null);
+      }
+    }
   }
 
   @Override

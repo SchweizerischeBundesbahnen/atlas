@@ -1,6 +1,5 @@
 package ch.sbb.importservice.integration;
 
-import static ch.sbb.importservice.service.CsvService.DIENSTELLEN_FILE_PREFIX;
 import static ch.sbb.importservice.service.JobHelperService.MIN_LOCAL_DATE;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_BATCH_PARAMETER;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_TYPE_PARAMETER;
@@ -21,9 +20,9 @@ import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContai
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.importservice.ServicePointTestData;
 import ch.sbb.importservice.client.SePoDiClient;
-import ch.sbb.importservice.service.CsvService;
 import ch.sbb.importservice.service.FileHelperService;
 import ch.sbb.importservice.service.MailProducerService;
+import ch.sbb.importservice.service.csv.ServicePointCsvService;
 import java.io.File;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -51,7 +50,7 @@ public class ImportServicePointIntegrationTest {
   private Job importServicePointCsvJob;
 
   @MockBean
-  private CsvService csvService;
+  private ServicePointCsvService servicePointCsvService;
 
   @MockBean
   private SePoDiClient sePoDiClient;
@@ -65,12 +64,13 @@ public class ImportServicePointIntegrationTest {
   @Test
   public void shouldExecuteImportServicePointJobDownloadingFileFromS3() throws Exception {
     // given
-    List<ServicePointCsvModelContainer> servicePointCsvModelContainers = ServicePointTestData.getServicePointCsvModelContainers();
+    List<ServicePointCsvModel> servicePointCsvModels = ServicePointTestData
+        .getDefaultServicePointCsvModels(85070005);
 
     List<ItemImportResult> itemImportResults = ServicePointTestData.getServicePointItemImportResults(
-        servicePointCsvModelContainers);
+        ServicePointTestData.getServicePointCsvModelContainers());
 
-    when(csvService.getActualServicePointCsvModelsFromS3()).thenReturn(servicePointCsvModelContainers);
+    when(servicePointCsvService.getActualCsvModelsFromS3()).thenReturn(servicePointCsvModels);
     doNothing().when(mailProducerService).produceMailNotification(any());
     when(sePoDiClient.postServicePointsImport(any())).thenReturn(itemImportResults);
 
@@ -87,22 +87,25 @@ public class ImportServicePointIntegrationTest {
     assertThat(actualJobExitStatus.getExitCode()).isEqualTo(ExitStatus.COMPLETED.getExitCode());
 
     verify(mailProducerService, times(1)).produceMailNotification(any());
-    verify(csvService, times(1)).getActualServicePointCsvModelsFromS3();
+    verify(servicePointCsvService, times(1)).getActualCsvModelsFromS3();
   }
 
   @Test
   public void shouldExecuteImportServicePointJobFromGivenFile() throws Exception {
     // given
     File file = new File(this.getClass().getClassLoader().getResource("DIENSTSTELLEN_V3_IMPORT.csv").getFile());
-    when(fileHelperService.downloadImportFileFromS3(DIENSTELLEN_FILE_PREFIX)).thenReturn(file);
-    List<ServicePointCsvModelContainer> servicePointCsvModelContainers = ServicePointTestData.getServicePointCsvModelContainers();
+    when(fileHelperService.downloadImportFileFromS3("DIDOK3_DIENSTSTELLEN_ALL_V_3_")).thenReturn(file);
+    List<ServicePointCsvModelContainer> servicePointCsvModelContainers = ServicePointTestData
+        .getServicePointCsvModelContainers();
 
     List<ItemImportResult> itemImportResults = ServicePointTestData.getServicePointItemImportResults(
         servicePointCsvModelContainers);
-    when(csvService.getActualServicePointCsvModels(file)).thenReturn(servicePointCsvModelContainers);
-    doCallRealMethod().when(csvService).getActualServicePointCsvModels(file);
-    List<ServicePointCsvModel> defaultServicePointCsvModels = ServicePointTestData.getDefaultServicePointCsvModels(123);
-    when(csvService.getCsvModelsToUpdate(file, MIN_LOCAL_DATE, ServicePointCsvModel.class)).thenReturn(
+    when(servicePointCsvService.getActualCsvModels(file)).thenReturn(
+        ServicePointTestData.getDefaultServicePointCsvModels(85070005));
+    doCallRealMethod().when(servicePointCsvService).getActualCsvModels(file);
+    List<ServicePointCsvModel> defaultServicePointCsvModels = ServicePointTestData
+        .getDefaultServicePointCsvModels(123);
+    when(servicePointCsvService.getCsvModelsToUpdate(file, MIN_LOCAL_DATE)).thenReturn(
         defaultServicePointCsvModels);
     doNothing().when(mailProducerService).produceMailNotification(any());
     when(sePoDiClient.postServicePointsImport(any())).thenReturn(itemImportResults);
