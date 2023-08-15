@@ -34,11 +34,11 @@ public class LoadingPointElementRequestParams extends VersionedObjectDateRequest
     @Singular(ignoreNullCollections = true)
     private List<Integer> servicePointNumbersShorts = new ArrayList<>();
 
-    @Parameter(description = "DiDok-Number formerly known as UIC-Code, combination of uicCountryCode and numberShort.")
+    @Parameter(description = "DiDok-Number of the ServicePoint formerly known as UIC-Code, combination of uicCountryCode and numberShort.")
     @Singular(ignoreNullCollections = true)
     private List<Integer> servicePointNumbers = new ArrayList<>();
 
-    @Parameter(description = "sboid")
+    @Parameter(description = "Swiss Business Organisation ID (SBOID).")
     @Singular(ignoreNullCollections = true)
     private List<String> sboids = new ArrayList<>();
 
