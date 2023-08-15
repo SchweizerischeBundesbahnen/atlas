@@ -48,13 +48,6 @@ public class TrafficPointElementVersion extends BasePointVersion implements Vers
 
   private static final String VERSION_SEQ = "traffic_point_element_version_seq";
 
-  @Override
-  public void setThisAsParentOnRelatingEntities() {
-    if (this.trafficPointElementGeolocation != null) {
-      this.trafficPointElementGeolocation.setTrafficPointElementVersion(this);
-    }
-  }
-
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = VERSION_SEQ)
   @SequenceGenerator(name = VERSION_SEQ, sequenceName = VERSION_SEQ, allocationSize = 1,
@@ -99,7 +92,7 @@ public class TrafficPointElementVersion extends BasePointVersion implements Vers
   @AtlasVersionableProperty
   private String parentSloid;
 
-  @OneToOne(cascade = CascadeType.ALL)
+  @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
   @JoinColumn(name = "traffic_point_geolocation_id", referencedColumnName = "id")
   @AtlasVersionableProperty(relationType = RelationType.ONE_TO_ONE, relationsFields = {
       GeolocationBaseEntity.Fields.east,

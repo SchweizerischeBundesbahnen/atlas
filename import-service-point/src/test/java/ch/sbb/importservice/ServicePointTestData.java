@@ -2,7 +2,6 @@ package ch.sbb.importservice;
 
 import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.enumeration.ItemImportResponseStatus;
-import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointImportRequestModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
 import java.time.LocalDate;
@@ -15,9 +14,6 @@ public class ServicePointTestData {
 
   public List<ItemImportResult> getServicePointItemImportResults(
       List<ServicePointCsvModelContainer> servicePointCsvModelContainers) {
-    ServicePointImportRequestModel servicePointImportRequestModel = new ServicePointImportRequestModel();
-    servicePointImportRequestModel.setServicePointCsvModelContainers(servicePointCsvModelContainers);
-
     List<ItemImportResult> itemImportResults = new ArrayList<>();
     for (ServicePointCsvModelContainer container : servicePointCsvModelContainers) {
       ItemImportResult itemImportResult = new ItemImportResult();

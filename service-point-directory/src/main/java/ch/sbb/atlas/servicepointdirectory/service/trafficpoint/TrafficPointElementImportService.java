@@ -5,8 +5,10 @@ import ch.sbb.atlas.imports.servicepoint.ItemImportResult.ItemImportResultBuilde
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointCsvModelContainer;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointElementCsvModel;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
+import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
 import ch.sbb.atlas.servicepointdirectory.service.BaseImportService;
 import ch.sbb.atlas.servicepointdirectory.service.BasePointUtility;
+import ch.sbb.atlas.servicepointdirectory.service.BeanCopyUtil;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
@@ -33,6 +35,35 @@ public class TrafficPointElementImportService extends BaseImportService<TrafficP
   @Override
   protected void save(TrafficPointElementVersion trafficPointElementVersion) {
     trafficPointElementService.save(trafficPointElementVersion);
+  }
+
+  @Override
+  protected void copyPropertiesFromCsvVersionToDbVersion(TrafficPointElementVersion csvVersion,
+      TrafficPointElementVersion dbVersion) {
+    if (csvVersion.hasGeolocation() && !dbVersion.hasGeolocation()) {
+      BeanCopyUtil.copyNonNullProperties(csvVersion, dbVersion,
+          TrafficPointElementVersion.Fields.validFrom,
+          TrafficPointElementVersion.Fields.validTo,
+          TrafficPointElementVersion.Fields.id
+      );
+      dbVersion.getTrafficPointElementGeolocation().setTrafficPointElementVersion(dbVersion);
+    } else {
+      BeanCopyUtil.copyNonNullProperties(csvVersion, dbVersion,
+          TrafficPointElementVersion.Fields.validFrom,
+          TrafficPointElementVersion.Fields.validTo,
+          TrafficPointElementVersion.Fields.id,
+          TrafficPointElementVersion.Fields.trafficPointElementGeolocation
+      );
+      if (csvVersion.hasGeolocation() && dbVersion.hasGeolocation()) {
+        BeanCopyUtil.copyNonNullProperties(
+            csvVersion.getTrafficPointElementGeolocation(),
+            dbVersion.getTrafficPointElementGeolocation(),
+            TrafficPointElementGeolocation.Fields.trafficPointElementVersion);
+      }
+      if (!csvVersion.hasGeolocation() && dbVersion.hasGeolocation()) {
+        dbVersion.setTrafficPointElementGeolocation(null);
+      }
+    }
   }
 
   @Override
