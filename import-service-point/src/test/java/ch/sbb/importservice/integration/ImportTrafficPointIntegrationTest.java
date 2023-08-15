@@ -1,6 +1,5 @@
 package ch.sbb.importservice.integration;
 
-import static ch.sbb.importservice.service.CsvService.VERKEHRSPUNKTELEMENTE_FILE_PREFIX;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_BATCH_PARAMETER;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_TYPE_PARAMETER;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.FULL_PATH_FILENAME_JOB_PARAMETER;
@@ -15,9 +14,9 @@ import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.importservice.client.SePoDiClient;
-import ch.sbb.importservice.service.CsvService;
 import ch.sbb.importservice.service.FileHelperService;
 import ch.sbb.importservice.service.MailProducerService;
+import ch.sbb.importservice.service.csv.TrafficPointCsvService;
 import java.io.File;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -49,7 +48,7 @@ public class ImportTrafficPointIntegrationTest {
   private Job importTrafficPointCsvJob;
 
   @MockBean
-  private CsvService csvService;
+  private TrafficPointCsvService trafficPointCsvService;
 
   @MockBean
   private SePoDiClient sePoDiClient;
@@ -90,7 +89,7 @@ public class ImportTrafficPointIntegrationTest {
       JobRestartException {
     // given
     File file = new File(this.getClass().getClassLoader().getResource("VERKEHRSPUNKTELEMENTE_IMPORT.csv").getFile());
-    when(fileHelperService.downloadImportFileFromS3(VERKEHRSPUNKTELEMENTE_FILE_PREFIX)).thenReturn(file);
+    when(fileHelperService.downloadImportFileFromS3("DIDOK3_VERKEHRSPUNKTELEMENTE_ALL_V_1_")).thenReturn(file);
     doNothing().when(mailProducerService).produceMailNotification(any());
     when(sePoDiClient.postTrafficPointsImport(any())).thenReturn(List.of());
 
@@ -108,7 +107,7 @@ public class ImportTrafficPointIntegrationTest {
     assertThat(actualJobExitStatus.getExitCode()).isEqualTo(ExitStatus.COMPLETED.getExitCode());
 
     verify(mailProducerService, times(1)).produceMailNotification(any());
-    verify(csvService, times(1)).getActualTrafficPointCsvModelsFromS3();
+    verify(trafficPointCsvService, times(1)).getActualCsvModelsFromS3();
   }
 
 }

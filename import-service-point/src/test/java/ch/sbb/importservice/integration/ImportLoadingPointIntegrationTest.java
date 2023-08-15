@@ -13,9 +13,8 @@ import static org.mockito.Mockito.when;
 import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointCsvModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.importservice.client.SePoDiClient;
-import ch.sbb.importservice.service.CsvService;
-import ch.sbb.importservice.service.FileHelperService;
 import ch.sbb.importservice.service.MailProducerService;
+import ch.sbb.importservice.service.csv.LoadingPointCsvService;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,13 +47,10 @@ public class ImportLoadingPointIntegrationTest {
   private Job importLoadingPointCsvJob;
 
   @MockBean
-  private CsvService csvService;
+  private LoadingPointCsvService loadingPointService;
 
   @MockBean
   private SePoDiClient sePoDiClient;
-
-  @MockBean
-  private FileHelperService fileHelperService;
 
   @MockBean
   private MailProducerService mailProducerService;
@@ -63,7 +59,7 @@ public class ImportLoadingPointIntegrationTest {
   public void shouldExecuteImportLoadingPointJobDownloadingFileFromS3() throws Exception {
     // given
     List<LoadingPointCsvModel> loadingPointCsvModels = new ArrayList<>();
-    when(csvService.getActualLoadingPointCsvModelsFromS3()).thenReturn(loadingPointCsvModels);
+    when(loadingPointService.getActualCsvModelsFromS3()).thenReturn(loadingPointCsvModels);
     doNothing().when(mailProducerService).produceMailNotification(any());
 
     JobParameters jobParameters = new JobParametersBuilder()

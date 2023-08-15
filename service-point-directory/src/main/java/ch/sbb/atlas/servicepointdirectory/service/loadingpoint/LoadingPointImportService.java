@@ -8,6 +8,7 @@ import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
 import ch.sbb.atlas.servicepointdirectory.service.BaseImportService;
 import ch.sbb.atlas.servicepointdirectory.service.BasePointUtility;
+import ch.sbb.atlas.servicepointdirectory.service.BeanCopyUtil;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
 import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
 import ch.sbb.atlas.versioning.model.VersionedObject;
@@ -34,6 +35,15 @@ public class LoadingPointImportService extends BaseImportService<LoadingPointVer
   @Override
   protected void save(LoadingPointVersion loadingPointVersion) {
     loadingPointService.save(loadingPointVersion);
+  }
+
+  @Override
+  protected void copyPropertiesFromCsvVersionToDbVersion(LoadingPointVersion csvVersion, LoadingPointVersion dbVersion) {
+    BeanCopyUtil.copyNonNullProperties(csvVersion, dbVersion,
+        LoadingPointVersion.Fields.validFrom,
+        LoadingPointVersion.Fields.validTo,
+        LoadingPointVersion.Fields.id
+    );
   }
 
   @Override
