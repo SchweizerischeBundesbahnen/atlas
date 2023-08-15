@@ -3,13 +3,21 @@ package ch.sbb.atlas.servicepointdirectory.service;
 import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.ItemImportResult.ItemImportResultBuilder;
 import ch.sbb.atlas.servicepointdirectory.entity.BasePointVersion;
-import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.versioning.model.Versionable;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public abstract class BaseImportService<T extends BasePointVersion & Versionable> {
+
+  protected abstract void save(T element);
+
+  protected abstract void copyPropertiesFromCsvVersionToDbVersion(T csvVersion, T dbVersion);
+
+  protected abstract ItemImportResult addInfoToItemImportResult(
+      ItemImportResultBuilder itemImportResultBuilder,
+      T element
+  );
 
   /**
    * In case we want to merge 2 or more versions from a CSV File (Import or "Massen Import") first we need to compare the
@@ -36,26 +44,10 @@ public abstract class BaseImportService<T extends BasePointVersion & Versionable
             BasePointUtility.findVersionsExactlyIncludedBetweenEditedValidFromAndEditedValidTo(csvVersion.getValidFrom(),
                 csvVersion.getValidTo(),
                 dbVersions);
-        if (dbVersionsFoundToBeReplaced.size() > 1) {
+        if (!dbVersionsFoundToBeReplaced.isEmpty()) {
           updateMergedVersions(csvVersion, dbVersionsFoundToBeReplaced);
         }
       }
-    }
-  }
-
-  protected abstract void save(T element);
-
-  private void updateMergedVersions(T csvVersion, List<T> dbVersionsFoundToBeReplaced) {
-    log.info("The properties of the following versions: {}", dbVersionsFoundToBeReplaced);
-    for (T dbVersion : dbVersionsFoundToBeReplaced) {
-      log.info("will be overridden with (expect [validFrom, validTo, id]): {}", dbVersion);
-      BeanCopyUtil.copyNonNullProperties(csvVersion, dbVersion,
-          ServicePointVersion.Fields.validFrom,
-          ServicePointVersion.Fields.validTo,
-          ServicePointVersion.Fields.id
-      );
-      dbVersion.setThisAsParentOnRelatingEntities();
-      save(dbVersion);
     }
   }
 
@@ -69,9 +61,13 @@ public abstract class BaseImportService<T extends BasePointVersion & Versionable
     return addInfoToItemImportResult(failedResultBuilder, element);
   }
 
-  protected abstract ItemImportResult addInfoToItemImportResult(
-      ItemImportResultBuilder itemImportResultBuilder,
-      T element
-  );
+  private void updateMergedVersions(T csvVersion, List<T> dbVersionsFoundToBeReplaced) {
+    log.info("The properties of the following versions: {}", dbVersionsFoundToBeReplaced);
+    for (T dbVersion : dbVersionsFoundToBeReplaced) {
+      log.info("will be overridden with (expect [validFrom, validTo, id]): {}", dbVersion);
+      copyPropertiesFromCsvVersionToDbVersion(csvVersion, dbVersion);
+      save(dbVersion);
+    }
+  }
 
 }
