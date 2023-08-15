@@ -8,13 +8,16 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
+import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.importservice.ServicePointTestData;
 import ch.sbb.importservice.client.SePoDiClient;
-import ch.sbb.importservice.service.CsvService;
 import ch.sbb.importservice.service.FileHelperService;
 import ch.sbb.importservice.service.MailProducerService;
+import ch.sbb.importservice.service.csv.LoadingPointCsvService;
+import ch.sbb.importservice.service.csv.ServicePointCsvService;
+import ch.sbb.importservice.service.csv.TrafficPointCsvService;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -28,7 +31,13 @@ public class ImportServicePointBatchControllerTest extends BaseControllerApiTest
   private SePoDiClient sePoDiClient;
 
   @MockBean
-  private CsvService csvService;
+  private ServicePointCsvService servicePointCsvService;
+
+  @MockBean
+  private LoadingPointCsvService loadingPointCsvService;
+
+  @MockBean
+  private TrafficPointCsvService trafficPointCsvService;
 
   @MockBean
   private MailProducerService mailProducerService;
@@ -39,13 +48,15 @@ public class ImportServicePointBatchControllerTest extends BaseControllerApiTest
   @Test
   public void shouldPostServicePointImportBatchSuccessfully() throws Exception {
     //given
-    List<ServicePointCsvModelContainer> servicePointCsvModelContainers = ServicePointTestData.getServicePointCsvModelContainers();
+    List<ServicePointCsvModelContainer> servicePointCsvModelContainers = ServicePointTestData
+        .getServicePointCsvModelContainers();
 
     List<ItemImportResult> itemImportResults = ServicePointTestData.getServicePointItemImportResults(
         servicePointCsvModelContainers);
     when(sePoDiClient.postServicePointsImport(any())).thenReturn(itemImportResults);
 
-    when(csvService.getActualServicePointCsvModelsFromS3()).thenReturn(servicePointCsvModelContainers);
+    when(servicePointCsvService.getActualCsvModelsFromS3()).thenReturn(
+        ServicePointTestData.getDefaultServicePointCsvModels(85070001));
     doNothing().when(mailProducerService).produceMailNotification(any());
 
     //when & then
@@ -57,8 +68,9 @@ public class ImportServicePointBatchControllerTest extends BaseControllerApiTest
   @Test
   public void shouldPostServicePointImportBatchWithFileParameterSuccessfully() throws Exception {
     //given
-    List<ServicePointCsvModelContainer> servicePointCsvModelContainers = ServicePointTestData.getServicePointCsvModelContainers();
-    when(csvService.getActualServicePointCsvModelsFromS3()).thenReturn(servicePointCsvModelContainers);
+    List<ServicePointCsvModel> servicePointCsvModels = ServicePointTestData
+        .getDefaultServicePointCsvModels(85070005);
+    when(servicePointCsvService.getActualCsvModelsFromS3()).thenReturn(servicePointCsvModels);
     doNothing().when(mailProducerService).produceMailNotification(any());
     File file = Files.createTempFile("dir", "file.csv").toFile();
     when(fileHelperService.getFileFromMultipart(any())).thenReturn(file);
@@ -72,8 +84,9 @@ public class ImportServicePointBatchControllerTest extends BaseControllerApiTest
   @Test
   public void shouldReturnBadRequestWhenFileIsNotProvidedOnServicePointFileImport() throws Exception {
     //given
-    List<ServicePointCsvModelContainer> servicePointCsvModelContainers = ServicePointTestData.getServicePointCsvModelContainers();
-    when(csvService.getActualServicePointCsvModelsFromS3()).thenReturn(servicePointCsvModelContainers);
+    List<ServicePointCsvModel> servicePointCsvModels = ServicePointTestData
+        .getDefaultServicePointCsvModels(85070005);
+    when(servicePointCsvService.getActualCsvModelsFromS3()).thenReturn(servicePointCsvModels);
     doNothing().when(mailProducerService).produceMailNotification(any());
 
     //when & then
@@ -86,7 +99,7 @@ public class ImportServicePointBatchControllerTest extends BaseControllerApiTest
   public void shouldPostTrafficPointImportBatchSuccessfully() throws Exception {
     //given
     when(sePoDiClient.postTrafficPointsImport(any())).thenReturn(List.of());
-    when(csvService.getActualTrafficPointCsvModelsFromS3()).thenReturn(List.of());
+    when(trafficPointCsvService.getActualCsvModelsFromS3()).thenReturn(List.of());
     doNothing().when(mailProducerService).produceMailNotification(any());
 
     //when & then
@@ -124,7 +137,7 @@ public class ImportServicePointBatchControllerTest extends BaseControllerApiTest
   public void shouldPostLoadingPointImportBatchSuccessfully() throws Exception {
     //given
     when(sePoDiClient.postLoadingPointsImport(any())).thenReturn(List.of());
-    when(csvService.getActualLoadingPointCsvModelsFromS3()).thenReturn(List.of());
+    when(loadingPointCsvService.getActualCsvModelsFromS3()).thenReturn(List.of());
     doNothing().when(mailProducerService).produceMailNotification(any());
 
     //when & then
