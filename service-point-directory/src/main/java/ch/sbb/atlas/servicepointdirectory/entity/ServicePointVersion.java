@@ -68,13 +68,6 @@ public class ServicePointVersion extends BasePointVersion implements Versionable
 
   private static final String VERSION_SEQ = "service_point_version_seq";
 
-  @Override
-  public void setThisAsParentOnRelatingEntities() {
-    if (this.servicePointGeolocation != null) {
-      this.servicePointGeolocation.setServicePointVersion(this);
-    }
-  }
-
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = VERSION_SEQ)
   @SequenceGenerator(name = VERSION_SEQ, sequenceName = VERSION_SEQ, allocationSize = 1, initialValue = 1000)
@@ -181,7 +174,7 @@ public class ServicePointVersion extends BasePointVersion implements Versionable
   @Convert(converter = MeanOfTransportConverter.class)
   private Set<MeanOfTransport> meansOfTransport;
 
-  @OneToOne(cascade = CascadeType.ALL)
+  @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
   @JoinColumn(name = "service_point_geolocation_id", referencedColumnName = "id")
   @AtlasVersionableProperty(relationType = RelationType.ONE_TO_ONE, relationsFields = {
       ServicePointGeolocation.Fields.country,
