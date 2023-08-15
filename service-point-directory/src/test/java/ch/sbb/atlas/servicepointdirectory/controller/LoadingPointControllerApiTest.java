@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.LV95;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -97,11 +98,55 @@ public class LoadingPointControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldGetLoadingPointVersions() throws Exception {
+  void shouldGetLoadingPointVersionsWithoutFilter() throws Exception {
     mvc.perform(get("/v1/loading-points"))
          .andExpect(status().isOk())
          .andExpect(jsonPath("$.totalCount", is(1)))
-        .andExpect(jsonPath("$.objects[0]." + Fields.id, is(loadingPointVersion.getId().intValue())));
+         .andExpect(jsonPath("$.objects[0]." + Fields.id, is(loadingPointVersion.getId().intValue())));
+  }
+
+  @Test
+  void shouldGetLoadingPointVersionsWithFilter() throws Exception {
+    mvc.perform(get("/v1/loading-points" +
+                    "?numbers=4201" +
+                    "&servicePointSloids=ch:1:sloid:19768" +
+                    "&servicePointUicCountryCodes=58" +
+                    "&servicePointNumbersShorts=1976" +
+                    "8&servicePointNumbers=58197681" +
+                    "&sboid=ch:1:sboid:100626" +
+                    "&fromDate=" + loadingPointVersion.getValidFrom() +
+                    "&toDate=" + loadingPointVersion.getValidTo()+
+                    "&validOn=" + LocalDate.of(2020, 6, 28) +
+                    "&createdAfter=" + loadingPointVersion.getCreationDate().minusSeconds(1) +
+                    "&modifiedAfter=" + loadingPointVersion.getEditionDate()))
+         .andExpect(status().isOk())
+         .andExpect(jsonPath("$.totalCount", is(1)))
+         .andExpect(jsonPath("$.objects[0]." + Fields.id, is(loadingPointVersion.getId().intValue())));
+  }
+  @Test
+  void shouldGetLoadingPointVersionsWithArrayInFilter() throws Exception {
+    mvc.perform(get("/v1/loading-points" +
+                    "?numbers=4201&numbers=0001" +
+                    "&servicePointSloids=ch:1:sloid:19768&servicePointSloids=ch:1:sloid:19769" +
+                    "&servicePointUicCountryCodes=58&servicePointUicCountryCodes=85" +
+                    "&servicePointNumbersShorts=19768&servicePointNumbersShorts=12768" +
+                    "&servicePointNumbers=58197681&servicePointNumbers=58197687" +
+                    "&sboid=ch:1:sboid:100626&sboid=ch:1:sboid:100628" +
+                    "&fromDate=" + loadingPointVersion.getValidFrom() +
+                    "&toDate=" + loadingPointVersion.getValidTo()+
+                    "&validOn=" + LocalDate.of(2020, 6, 28) +
+                    "&createdAfter=" + loadingPointVersion.getCreationDate().minusSeconds(1) +
+                    "&modifiedAfter=" + loadingPointVersion.getEditionDate())).andDo(print())
+         .andExpect(status().isOk())
+         .andExpect(jsonPath("$.totalCount", is(1)))
+         .andExpect(jsonPath("$.objects[0]." + Fields.id, is(loadingPointVersion.getId().intValue())));
+  }
+
+  @Test
+  void shouldNotGetLoadingPointVersionsWithFilter() throws Exception {
+    mvc.perform(get("/v1/loading-points?numbers=1000"))
+         .andExpect(status().isOk())
+         .andExpect(jsonPath("$.totalCount", is(0)));
   }
 
   @Test
