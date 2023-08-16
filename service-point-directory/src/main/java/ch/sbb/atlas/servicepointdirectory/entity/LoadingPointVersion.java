@@ -35,7 +35,7 @@ import lombok.experimental.SuperBuilder;
 @FieldNameConstants
 @Entity(name = "loading_point_version")
 @AtlasVersionable
-public class LoadingPointVersion extends BasePointVersion implements Versionable, DatesValidator {
+public class LoadingPointVersion extends BasePointVersion<LoadingPointVersion> implements Versionable, DatesValidator {
 
   private static final String VERSION_SEQ = "loading_point_version_seq";
 
