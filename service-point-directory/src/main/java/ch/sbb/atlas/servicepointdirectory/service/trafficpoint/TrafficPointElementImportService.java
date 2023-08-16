@@ -8,7 +8,6 @@ import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
 import ch.sbb.atlas.servicepointdirectory.service.BaseImportService;
 import ch.sbb.atlas.servicepointdirectory.service.BasePointUtility;
-import ch.sbb.atlas.servicepointdirectory.service.BeanCopyUtil;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
@@ -22,6 +21,7 @@ import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -38,32 +38,23 @@ public class TrafficPointElementImportService extends BaseImportService<TrafficP
   }
 
   @Override
-  protected void copyPropertiesFromCsvVersionToDbVersion(TrafficPointElementVersion csvVersion,
-      TrafficPointElementVersion dbVersion) {
-    if (csvVersion.hasGeolocation() && !dbVersion.hasGeolocation()) {
-      BeanCopyUtil.copyNonNullProperties(csvVersion, dbVersion,
-          TrafficPointElementVersion.Fields.validFrom,
-          TrafficPointElementVersion.Fields.validTo,
-          TrafficPointElementVersion.Fields.id
-      );
-      dbVersion.getTrafficPointElementGeolocation().setTrafficPointElementVersion(dbVersion);
-    } else {
-      BeanCopyUtil.copyNonNullProperties(csvVersion, dbVersion,
-          TrafficPointElementVersion.Fields.validFrom,
-          TrafficPointElementVersion.Fields.validTo,
-          TrafficPointElementVersion.Fields.id,
-          TrafficPointElementVersion.Fields.trafficPointElementGeolocation
-      );
-      if (csvVersion.hasGeolocation() && dbVersion.hasGeolocation()) {
-        BeanCopyUtil.copyNonNullProperties(
-            csvVersion.getTrafficPointElementGeolocation(),
-            dbVersion.getTrafficPointElementGeolocation(),
-            TrafficPointElementGeolocation.Fields.trafficPointElementVersion);
-      }
-      if (!csvVersion.hasGeolocation() && dbVersion.hasGeolocation()) {
-        dbVersion.setTrafficPointElementGeolocation(null);
-      }
-    }
+  protected String[] getIgnoredPropertiesWithoutGeolocation() {
+    return new String[]{
+        TrafficPointElementVersion.Fields.validFrom,
+        TrafficPointElementVersion.Fields.validTo,
+        TrafficPointElementVersion.Fields.id
+    };
+  }
+
+  @Override
+  protected String[] getIgnoredPropertiesWithGeolocation() {
+    return ArrayUtils.add(getIgnoredPropertiesWithoutGeolocation(),
+        TrafficPointElementVersion.Fields.trafficPointElementGeolocation);
+  }
+
+  @Override
+  protected String getIgnoredReferenceFieldOnGeolocationEntity() {
+    return TrafficPointElementGeolocation.Fields.trafficPointElementVersion;
   }
 
   @Override
