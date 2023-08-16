@@ -1,6 +1,5 @@
 package ch.sbb.atlas.servicepointdirectory.mapper;
 
-import ch.sbb.atlas.api.servicepoint.CodeAndDesignation;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
@@ -26,9 +25,7 @@ public class ServicePointVersionMapper {
         .sortCodeOfDestinationStation(servicePointVersion.getSortCodeOfDestinationStation())
         .businessOrganisation(servicePointVersion.getBusinessOrganisation())
         .operatingPointType(servicePointVersion.getOperatingPointType())
-        .operatingPointTypeInformation(CodeAndDesignation.fromEnum(servicePointVersion.getOperatingPointType()))
         .stopPointType(servicePointVersion.getStopPointType())
-        .stopPointTypeInformation(CodeAndDesignation.fromEnum(servicePointVersion.getStopPointType()))
         .status(servicePointVersion.getStatus())
         .operatingPointKilometerMaster(servicePointVersion.getOperatingPointKilometerMaster())
         .operatingPointRouteNetwork(servicePointVersion.isOperatingPointRouteNetwork())
@@ -38,16 +35,9 @@ public class ServicePointVersionMapper {
         .operatingPoint(servicePointVersion.isOperatingPoint())
         .operatingPointWithTimetable(servicePointVersion.isOperatingPointWithTimetable())
         .operatingPointTechnicalTimetableType(servicePointVersion.getOperatingPointTechnicalTimetableType())
-        .operatingPointTechnicalTimetableTypeInformation(
-            CodeAndDesignation.fromEnum(servicePointVersion.getOperatingPointTechnicalTimetableType()))
         .operatingPointTrafficPointType(servicePointVersion.getOperatingPointTrafficPointType())
-        .operatingPointTrafficPointTypeInformation(
-            CodeAndDesignation.fromEnum(servicePointVersion.getOperatingPointTrafficPointType()))
         .categories(getCategoriesSorted(servicePointVersion))
-        .categoriesInformation(getCategoriesSorted(servicePointVersion).stream().map(CodeAndDesignation::fromEnum).toList())
         .meansOfTransport(getMeansOfTransportSorted(servicePointVersion))
-        .meansOfTransportInformation(
-            getMeansOfTransportSorted(servicePointVersion).stream().map(CodeAndDesignation::fromEnum).toList())
         .servicePointGeolocation(ServicePointGeolocationMapper.toModel(servicePointVersion.getServicePointGeolocation()))
         .creationDate(servicePointVersion.getCreationDate())
         .creator(servicePointVersion.getCreator())

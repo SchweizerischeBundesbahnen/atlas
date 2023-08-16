@@ -1,8 +1,5 @@
 package ch.sbb.atlas.servicepointdirectory.mapper;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import ch.sbb.atlas.api.servicepoint.CodeAndDesignation;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.Country;
@@ -11,13 +8,16 @@ import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
+import org.junit.jupiter.api.Test;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class ServicePointVersionMapperTest {
 
@@ -60,7 +60,6 @@ class ServicePointVersionMapperTest {
         .designationOfficial("Basel EuroAirport P")
         .abbreviation("BSEU")
         .meansOfTransport(Collections.emptyList())
-        .meansOfTransportInformation(Collections.emptyList())
         .businessOrganisation("ch:1:sboid:100001")
         .status(Status.VALIDATED)
         .operatingPoint(true)
@@ -68,14 +67,8 @@ class ServicePointVersionMapperTest {
         .validFrom(LocalDate.of(2000, 2, 7))
         .validTo(LocalDate.of(2007, 2, 26))
         .categories(List.of(Category.MAINTENANCE_POINT, Category.HOSTNAME, Category.MIGRATION_DIVERSE))
-        .categoriesInformation(List.of(CodeAndDesignation.fromEnum(Category.MAINTENANCE_POINT),
-            CodeAndDesignation.fromEnum(Category.HOSTNAME),
-            CodeAndDesignation.fromEnum(Category.MIGRATION_DIVERSE)))
         .operatingPointType(OperatingPointType.INVENTORY_POINT)
-        .operatingPointTypeInformation(CodeAndDesignation.fromEnum(OperatingPointType.INVENTORY_POINT))
         .operatingPointTechnicalTimetableType(OperatingPointTechnicalTimetableType.UNKNOWN)
-        .operatingPointTechnicalTimetableTypeInformation(
-            CodeAndDesignation.fromEnum(OperatingPointTechnicalTimetableType.UNKNOWN))
         .creationDate(LocalDateTime.of(LocalDate.of(2018, 2, 19), LocalTime.of(13, 44, 2)))
         .creator("fs45117")
         .editionDate(LocalDateTime.of(LocalDate.of(2018, 2, 19), LocalTime.of(13, 44, 2)))
