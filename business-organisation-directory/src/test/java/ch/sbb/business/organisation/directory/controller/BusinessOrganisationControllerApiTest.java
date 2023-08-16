@@ -3,8 +3,10 @@ package ch.sbb.business.organisation.directory.controller;
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel;
 import ch.sbb.atlas.api.bodi.enumeration.BusinessType;
+import ch.sbb.atlas.export.ExportType;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerWithAmazonS3ApiTest;
+import ch.sbb.atlas.model.exception.NotFoundException;
 import ch.sbb.business.organisation.directory.BusinessOrganisationData;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
 import ch.sbb.business.organisation.directory.repository.BusinessOrganisationVersionRepository;
@@ -35,6 +37,7 @@ import static ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel.Fields.vali
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -61,8 +64,10 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerWithAma
       .validFrom(LocalDate.of(2000, 1, 1))
       .validTo(LocalDate.of(2000, 12, 31))
       .build();
+
   @Autowired
   private BusinessOrganisationVersionRepository versionRepository;
+
   @Autowired
   private BusinessOrganisationController controller;
 
@@ -455,7 +460,7 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerWithAma
   }
 
   @Test
-  void shouldExportFullBusinessOrganisationVersionsCsv() throws Exception {
+  void shouldExportFullBusinessOrganisationVersions() throws Exception {
     //given
     BusinessOrganisationVersionModel versionModel = BusinessOrganisationData.businessOrganisationVersionModelBuilder()
                                                                             .validFrom(LocalDate.of(2001, 1, 1))
@@ -470,7 +475,55 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerWithAma
   }
 
   @Test
-  void shouldExportActualBusinessOrganisationVersionsCsv() throws Exception {
+  void shouldReadJsonAfterExportFullBusinessOrganisationVersions() throws Exception {
+    //given
+    BusinessOrganisationVersionModel versionModel = BusinessOrganisationData.businessOrganisationVersionModelBuilder()
+            .validFrom(LocalDate.of(2001, 1, 1))
+            .validTo(LocalDate.of(2001, 12, 31))
+            .build();
+    controller.createBusinessOrganisationVersion(versionModel);
+
+    //when
+    MvcResult mvcResult = mvc.perform(post("/v1/business-organisations/export/full"))
+            .andExpect(status().isOk()).andReturn();
+
+    mvc.perform(get("/v1/business-organisations/export/download-json/" + ExportType.FULL))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.[0]."
+                    + businessTypes, containsInAnyOrder(BusinessType.RAILROAD.name(), BusinessType.AIR.name(), BusinessType.SHIP.name())))
+            .andExpect(jsonPath("$.[0]." + organisationNumber, is(123)))
+            .andExpect(jsonPath("$.[0]." + contactEnterpriseEmail, is("mail@mail.ch")))
+            .andExpect(jsonPath("$.[0]." + descriptionDe, is("desc-de")))
+            .andExpect(jsonPath("$.[0]." + descriptionFr, is("desc-fr")))
+            .andExpect(jsonPath("$.[0]." + descriptionIt, is("desc-it")))
+            .andExpect(jsonPath("$.[0]." + descriptionEn, is("desc-en")))
+            .andExpect(jsonPath("$.[0]." + abbreviationDe, is("de")))
+            .andExpect(jsonPath("$.[0]." + abbreviationFr, is("fr")))
+            .andExpect(jsonPath("$.[0]." + abbreviationIt, is("it")))
+            .andExpect(jsonPath("$.[0]." + abbreviationEn, is("en")));
+    deleteFileFromBucket(mvcResult, exportService.getDirectory(), amazonService);
+  }
+
+  @Test
+  void shouldGetJonGzAfterExportFullBusinessOrganisationVersions() throws Exception {
+    //given
+    BusinessOrganisationVersionModel versionModel = BusinessOrganisationData.businessOrganisationVersionModelBuilder()
+            .validFrom(LocalDate.of(2001, 1, 1))
+            .validTo(LocalDate.of(2001, 12, 31))
+            .build();
+    controller.createBusinessOrganisationVersion(versionModel);
+
+    //when
+    MvcResult mvcResult = mvc.perform(post("/v1/business-organisations/export/full"))
+            .andExpect(status().isOk()).andReturn();
+
+    MvcResult mvcResult1 = mvc.perform(get("/v1/business-organisations/export/download-gz-json/" + ExportType.FULL))
+            .andExpect(status().isOk()).andReturn();
+    deleteFileFromBucket(mvcResult, exportService.getDirectory(), amazonService);
+  }
+
+  @Test
+  void shouldExportActualBusinessOrganisationVersions() throws Exception {
     //given
     BusinessOrganisationVersionModel versionModel = BusinessOrganisationData.businessOrganisationVersionModelBuilder()
                                                                             .validFrom(LocalDate.now().withMonth(1).withDayOfMonth(1))
@@ -485,7 +538,57 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerWithAma
   }
 
   @Test
-  void shouldExportFutureTimetableBusinessOrganisationVersionsCsv() throws Exception {
+  void shouldReadJsonAfterExportActualBusinessOrganisationVersions() throws Exception {
+    //given
+    BusinessOrganisationVersionModel versionModel = BusinessOrganisationData.businessOrganisationVersionModelBuilder()
+            .validFrom(LocalDate.now().withMonth(1).withDayOfMonth(1))
+            .validTo(LocalDate.now().withMonth(12).withDayOfMonth(31))
+            .build();
+    controller.createBusinessOrganisationVersion(versionModel);
+
+    //when
+    MvcResult mvcResult = mvc.perform(post("/v1/business-organisations/export/actual"))
+            .andExpect(status().isOk()).andReturn();
+
+    mvc.perform(get("/v1/business-organisations/export/download-json/" + ExportType.ACTUAL_DATE))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.[0]."
+                    + businessTypes, containsInAnyOrder(BusinessType.RAILROAD.name(), BusinessType.AIR.name(), BusinessType.SHIP.name())))
+            .andExpect(jsonPath("$.[0]." + organisationNumber, is(123)))
+            .andExpect(jsonPath("$.[0]." + contactEnterpriseEmail, is("mail@mail.ch")))
+            .andExpect(jsonPath("$.[0]." + descriptionDe, is("desc-de")))
+            .andExpect(jsonPath("$.[0]." + descriptionFr, is("desc-fr")))
+            .andExpect(jsonPath("$.[0]." + descriptionIt, is("desc-it")))
+            .andExpect(jsonPath("$.[0]." + descriptionEn, is("desc-en")))
+            .andExpect(jsonPath("$.[0]." + abbreviationDe, is("de")))
+            .andExpect(jsonPath("$.[0]." + abbreviationFr, is("fr")))
+            .andExpect(jsonPath("$.[0]." + abbreviationIt, is("it")))
+            .andExpect(jsonPath("$.[0]." + abbreviationEn, is("en")));
+
+    deleteFileFromBucket(mvcResult, exportService.getDirectory(), amazonService);
+  }
+
+  @Test
+  void shouldGetJsonGzAfterExportActualBusinessOrganisationVersions() throws Exception {
+    //given
+    BusinessOrganisationVersionModel versionModel = BusinessOrganisationData.businessOrganisationVersionModelBuilder()
+            .validFrom(LocalDate.now().withMonth(1).withDayOfMonth(1))
+            .validTo(LocalDate.now().withMonth(12).withDayOfMonth(31))
+            .build();
+    controller.createBusinessOrganisationVersion(versionModel);
+
+    //when
+    MvcResult mvcResult = mvc.perform(post("/v1/business-organisations/export/actual"))
+            .andExpect(status().isOk()).andReturn();
+
+    MvcResult mvcResult1 = mvc.perform(get("/v1/business-organisations/export/download-gz-json/" + ExportType.ACTUAL_DATE))
+            .andExpect(status().isOk()).andReturn();
+
+    deleteFileFromBucket(mvcResult, exportService.getDirectory(), amazonService);
+  }
+
+  @Test
+  void shouldExportFutureTimetableBusinessOrganisationVersions() throws Exception {
     //given
     BusinessOrganisationVersionModel versionModel = BusinessOrganisationData.businessOrganisationVersionModelBuilder()
                                                                             .validFrom(LocalDate.now().withMonth(1).withDayOfMonth(1))
@@ -497,6 +600,70 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerWithAma
     MvcResult mvcResult = mvc.perform(post("/v1/business-organisations/export/timetable-year-change"))
         .andExpect(status().isOk()).andReturn();
     deleteFileFromBucket(mvcResult, exportService.getDirectory(), amazonService);
+  }
+
+  @Test
+  void shouldReadJsonAfterExportTimetableYearChangeBusinessOrganisationVersions() throws Exception {
+    //given
+    BusinessOrganisationVersionModel versionModel = BusinessOrganisationData.businessOrganisationVersionModelBuilder()
+            .validFrom(LocalDate.now().withMonth(1).withDayOfMonth(1))
+            .validTo(LocalDate.now().withMonth(12).withDayOfMonth(31))
+            .build();
+    controller.createBusinessOrganisationVersion(versionModel);
+
+    //when
+    MvcResult mvcResult = mvc.perform(post("/v1/business-organisations/export/timetable-year-change"))
+            .andExpect(status().isOk()).andReturn();
+
+    mvc.perform(get("/v1/business-organisations/export/download-json/" + ExportType.FUTURE_TIMETABLE))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.[0]."
+                    + businessTypes, containsInAnyOrder(BusinessType.RAILROAD.name(), BusinessType.AIR.name(), BusinessType.SHIP.name())))
+            .andExpect(jsonPath("$.[0]." + organisationNumber, is(123)))
+            .andExpect(jsonPath("$.[0]." + contactEnterpriseEmail, is("mail@mail.ch")))
+            .andExpect(jsonPath("$.[0]." + descriptionDe, is("desc-de")))
+            .andExpect(jsonPath("$.[0]." + descriptionFr, is("desc-fr")))
+            .andExpect(jsonPath("$.[0]." + descriptionIt, is("desc-it")))
+            .andExpect(jsonPath("$.[0]." + descriptionEn, is("desc-en")))
+            .andExpect(jsonPath("$.[0]." + abbreviationDe, is("de")))
+            .andExpect(jsonPath("$.[0]." + abbreviationFr, is("fr")))
+            .andExpect(jsonPath("$.[0]." + abbreviationIt, is("it")))
+            .andExpect(jsonPath("$.[0]." + abbreviationEn, is("en")));
+
+    deleteFileFromBucket(mvcResult, exportService.getDirectory(), amazonService);
+  }
+
+  @Test
+  void shouldGetJsonGzAfterExportTimetableYearChangeBusinessOrganisationVersions() throws Exception {
+    //given
+    BusinessOrganisationVersionModel versionModel = BusinessOrganisationData.businessOrganisationVersionModelBuilder()
+            .validFrom(LocalDate.now().withMonth(1).withDayOfMonth(1))
+            .validTo(LocalDate.now().withMonth(12).withDayOfMonth(31))
+            .build();
+    controller.createBusinessOrganisationVersion(versionModel);
+
+    //when
+    MvcResult mvcResult = mvc.perform(post("/v1/business-organisations/export/timetable-year-change"))
+            .andExpect(status().isOk()).andReturn();
+
+    MvcResult mvcResult1 = mvc.perform(get("/v1/business-organisations/export/download-gz-json/" + ExportType.FUTURE_TIMETABLE))
+            .andExpect(status().isOk()).andReturn();
+
+    deleteFileFromBucket(mvcResult, exportService.getDirectory(), amazonService);
+  }
+
+  @Test
+  void shouldFailToReadJson() throws Exception {
+    mvc.perform(get("/v1/business-organisations/export/download-json/" + ExportType.FUTURE_TIMETABLE))
+            .andExpect(status().isNotFound())
+            .andExpect(result -> assertTrue(result.getResolvedException() instanceof NotFoundException));
+  }
+
+  @Test
+  void shouldFailToGetJsonGz() throws Exception {
+    mvc.perform(get("/v1/business-organisations/export/download-gz-json/" + ExportType.FUTURE_TIMETABLE))
+            .andExpect(status().isNotFound())
+            .andExpect(result -> assertTrue(result.getResolvedException() instanceof NotFoundException));
   }
 
   @Test
