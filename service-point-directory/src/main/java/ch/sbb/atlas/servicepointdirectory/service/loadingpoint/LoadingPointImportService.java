@@ -39,11 +39,16 @@ public class LoadingPointImportService extends BaseImportService<LoadingPointVer
 
   @Override
   protected void copyPropertiesFromCsvVersionToDbVersion(LoadingPointVersion csvVersion, LoadingPointVersion dbVersion) {
-    BeanCopyUtil.copyNonNullProperties(csvVersion, dbVersion,
+    BeanCopyUtil.copyNonNullProperties(csvVersion, dbVersion, getIgnoredPropertiesWithoutGeolocation());
+  }
+
+  @Override
+  protected String[] getIgnoredPropertiesWithoutGeolocation() {
+    return new String[]{
         LoadingPointVersion.Fields.validFrom,
         LoadingPointVersion.Fields.validTo,
         LoadingPointVersion.Fields.id
-    );
+    };
   }
 
   @Override
