@@ -40,6 +40,18 @@ public class BusinessOrganisationAmazonService {
         }
     }
 
+//    public StreamingResponseBody streamingGzipFile(ExportType exportType, ExportFileName exportFileName) {
+    public StreamingResponseBody streamingGzipFile(ExportType exportType) {
+        String fileToDownload = getJsonFileToDownload(exportType);
+        try {
+            File file = amazonService.pullFile(AmazonBucket.EXPORT, fileToDownload);
+            InputStream inputStream = new FileInputStream(file);
+            return writeOutputStream(file, inputStream);
+        } catch (IOException e) {
+            throw new FileException(e);
+        }
+    }
+
     byte[] decompressGzipToBytes(Path source) throws IOException {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         try (GZIPInputStream gis = new GZIPInputStream(
