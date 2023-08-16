@@ -1,5 +1,24 @@
 package ch.sbb.business.organisation.directory.controller;
 
+import ch.sbb.atlas.amazon.service.AmazonService;
+import ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel;
+import ch.sbb.atlas.api.bodi.enumeration.BusinessType;
+import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.model.controller.BaseControllerWithAmazonS3ApiTest;
+import ch.sbb.business.organisation.directory.BusinessOrganisationData;
+import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
+import ch.sbb.business.organisation.directory.repository.BusinessOrganisationVersionRepository;
+import ch.sbb.business.organisation.directory.service.export.BusinessOrganisationVersionExportService;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.web.servlet.MvcResult;
+
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.HashSet;
+
 import static ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel.Fields.abbreviationDe;
 import static ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel.Fields.abbreviationEn;
 import static ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel.Fields.abbreviationFr;
@@ -21,24 +40,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import ch.sbb.atlas.amazon.service.AmazonService;
-import ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel;
-import ch.sbb.atlas.api.bodi.enumeration.BusinessType;
-import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.model.controller.BaseControllerWithAmazonS3ApiTest;
-import ch.sbb.business.organisation.directory.BusinessOrganisationData;
-import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
-import ch.sbb.business.organisation.directory.repository.BusinessOrganisationVersionRepository;
-import ch.sbb.business.organisation.directory.service.export.BusinessOrganisationVersionExportService;
-import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.HashSet;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.web.servlet.MvcResult;
 
 public class BusinessOrganisationControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
 
@@ -463,7 +464,7 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerWithAma
     controller.createBusinessOrganisationVersion(versionModel);
 
     //when
-    MvcResult mvcResult = mvc.perform(post("/v1/business-organisations/export-csv/full"))
+    MvcResult mvcResult = mvc.perform(post("/v1/business-organisations/export/full"))
         .andExpect(status().isOk()).andReturn();
     deleteFileFromBucket(mvcResult, exportService.getDirectory(), amazonService);
   }
@@ -478,7 +479,7 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerWithAma
     controller.createBusinessOrganisationVersion(versionModel);
 
     //when
-    MvcResult mvcResult = mvc.perform(post("/v1/business-organisations/export-csv/actual"))
+    MvcResult mvcResult = mvc.perform(post("/v1/business-organisations/export/actual"))
         .andExpect(status().isOk()).andReturn();
     deleteFileFromBucket(mvcResult, exportService.getDirectory(), amazonService);
   }
@@ -493,7 +494,7 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerWithAma
     controller.createBusinessOrganisationVersion(versionModel);
 
     //when
-    MvcResult mvcResult = mvc.perform(post("/v1/business-organisations/export-csv/timetable-year-change"))
+    MvcResult mvcResult = mvc.perform(post("/v1/business-organisations/export/timetable-year-change"))
         .andExpect(status().isOk()).andReturn();
     deleteFileFromBucket(mvcResult, exportService.getDirectory(), amazonService);
   }
