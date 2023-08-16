@@ -26,7 +26,6 @@ export const BERN_WYLEREGG: ReadServicePointVersion = {
     spatialReference: 'LV95',
     lv95: { north: 1201099.0, east: 2600783.0 },
     wgs84: { north: 46.96096808019183, east: 7.448919722210132 },
-    wgs84web: { north: 5935705.395163289, east: 829209.9504364047 },
     height: 555.0,
     swissLocation: {
       canton: 'BERN',
@@ -96,10 +95,6 @@ export const BERN: ReadServicePointVersion[] = [
       wgs84: {
         north: 46.9488249863665,
         east: 7.4391184768737615,
-      },
-      wgs84web: {
-        north: 5933725.004347582,
-        east: 828118.8807964199,
       },
       height: 540.0,
       swissLocation: {
@@ -177,10 +172,6 @@ export const BERN: ReadServicePointVersion[] = [
         north: 46.94881999405051,
         east: 7.439120000642723,
       },
-      wgs84web: {
-        north: 5933724.190254007,
-        east: 828119.0504216049,
-      },
       height: 540.1,
       swissLocation: {
         canton: 'BERN',
@@ -256,10 +247,6 @@ export const BERN: ReadServicePointVersion[] = [
       wgs84: {
         north: 46.94881999405051,
         east: 7.439120000642723,
-      },
-      wgs84web: {
-        north: 5933724.190254007,
-        east: 828119.0504216049,
       },
       height: 540.1,
       swissLocation: {
@@ -342,10 +329,6 @@ export const BERN: ReadServicePointVersion[] = [
         north: 46.94883229049842,
         east: 7.439130889923937,
       },
-      wgs84web: {
-        north: 5933726.195427547,
-        east: 828120.2626108447,
-      },
       height: 540.2,
       swissLocation: {
         canton: 'BERN',
@@ -427,10 +410,6 @@ export const BERN: ReadServicePointVersion[] = [
         north: 46.94883229049842,
         east: 7.439130889923937,
       },
-      wgs84web: {
-        north: 5933726.195427547,
-        east: 828120.2626108447,
-      },
       height: 540.2,
       swissLocation: {
         canton: 'BERN',
@@ -511,10 +490,6 @@ export const BERN: ReadServicePointVersion[] = [
       wgs84: {
         north: 46.94883229049842,
         east: 7.439130889923937,
-      },
-      wgs84web: {
-        north: 5933726.195427547,
-        east: 828120.2626108447,
       },
       height: 540.2,
       swissLocation: {

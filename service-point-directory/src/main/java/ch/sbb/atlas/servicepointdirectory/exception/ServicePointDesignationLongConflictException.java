@@ -19,7 +19,7 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public class ServicePointDesignationLongConflictException extends AtlasException {
 
-  private static final String CODE_PREFIX = "SEPODI.SERVIE_POINTS.CONFLICT.";
+  private static final String CODE_PREFIX = "SEPODI.SERVICE_POINTS.CONFLICT.";
   private static final String ERROR = "ServicePoint conflict";
 
   private final ServicePointVersion newVersion;
@@ -45,7 +45,7 @@ public class ServicePointDesignationLongConflictException extends AtlasException
         .field(Fields.designationLong)
         .message("DesignationLong {0} already taken from {1} to {2} by {3}")
         .displayInfo(builder()
-            .code(CODE_PREFIX + "DESIGNATION_OFFICIAL")
+            .code(CODE_PREFIX + "DESIGNATION_LONG")
             .with(Fields.designationLong, newVersion.getDesignationLong())
             .with(Fields.validFrom, servicePointVersion.getValidFrom())
             .with(Fields.validTo, servicePointVersion.getValidTo())
