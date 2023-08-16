@@ -113,7 +113,7 @@ public interface BusinessOrganisationApiV1 {
   })
     ResponseEntity<StreamingResponseBody> streamGzipFile(@PathVariable("exportType") ExportType exportType);
 
-  @GetMapping(value = "/export/download-json/{exportType}", produces = MediaType.APPLICATION_JSON_VALUE)
+  @GetMapping(value = "/export/download-json/{exportType}")
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200"),
           @ApiResponse(responseCode = "404", description = "filename myFile not found", content = @Content(schema =
