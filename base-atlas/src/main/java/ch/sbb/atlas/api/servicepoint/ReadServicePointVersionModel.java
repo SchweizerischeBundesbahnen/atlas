@@ -17,7 +17,6 @@ import lombok.experimental.SuperBuilder;
 import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -31,21 +30,7 @@ public class ReadServicePointVersionModel extends ServicePointVersionModel {
   @NotNull
   @Valid
   private ServicePointNumber number;
-
-  @Schema(description = "Details to the categories.")
-  private List<CodeAndDesignation> categoriesInformation;
-
-  private CodeAndDesignation operatingPointTypeInformation;
-
-  private CodeAndDesignation operatingPointTechnicalTimetableTypeInformation;
-
-  private CodeAndDesignation operatingPointTrafficPointTypeInformation;
-
-  @Schema(description = "Details to the MeansOfTransportInformation.")
-  private List<CodeAndDesignation> meansOfTransportInformation;
-
-  private CodeAndDesignation stopPointTypeInformation;
-
+  
   @Valid
   @Schema(description = "Reference to a operatingPointRouteNetwork. OperatingPointKilometer are always related to a "
           + "operatingPointRouteNetwork")
