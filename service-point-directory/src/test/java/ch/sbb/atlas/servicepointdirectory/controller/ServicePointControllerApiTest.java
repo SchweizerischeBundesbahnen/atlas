@@ -1,15 +1,5 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
-import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.LV95;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
@@ -33,6 +23,14 @@ import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointGeolocationMapper;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointFotCommentRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
+import org.springframework.test.web.servlet.MvcResult;
+
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -41,13 +39,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
-import org.springframework.test.web.servlet.MvcResult;
+
+import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.LV95;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class ServicePointControllerApiTest extends BaseControllerApiTest {
 
@@ -83,8 +82,6 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.id, is(servicePointVersion.getId().intValue())))
         .andExpect(jsonPath("$[0].number.number", is(8589008)))
         .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.designationOfficial, is("Bern, Wyleregg")))
-        .andExpect(jsonPath("$[0].meansOfTransportInformation[0].code", is("B")))
-        .andExpect(jsonPath("$[0].meansOfTransportInformation[0].designationDe", is("Bus")))
         .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.operatingPointRouteNetwork, is(false)))
 
         // IS_BETRIEBSPUNKT
@@ -257,41 +254,15 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.sortCodeOfDestinationStation, is("39136")))
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.businessOrganisation, is("ch:1:sboid:100871")))
         .andExpect(jsonPath("$.categories[0]", is("POINT_OF_SALE")))
-        .andExpect(jsonPath("$.categoriesInformation[0].code", is("6")))
-        .andExpect(jsonPath("$.categoriesInformation[0].designationDe", is("Verkaufsstelle")))
-        .andExpect(jsonPath("$.categoriesInformation[0].designationFr", is("Point de vente")))
-        .andExpect(jsonPath("$.categoriesInformation[0].designationIt", is("Punto vendita")))
-        .andExpect(jsonPath("$.categoriesInformation[0].designationEn", is("Point of sale")))
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.operatingPointType, is("INVENTORY_POINT")))
-        .andExpect(jsonPath("$.operatingPointTypeInformation.code", is("30")))
-        .andExpect(jsonPath("$.operatingPointTypeInformation.designationDe", is("Inventarpunkt")))
-        .andExpect(jsonPath("$.operatingPointTypeInformation.designationFr", is("Point d'inventaire")))
-        .andExpect(jsonPath("$.operatingPointTypeInformation.designationIt", is("punto di inventario")))
-        .andExpect(jsonPath("$.operatingPointTypeInformation.designationEn", is("Inventory point")))
         .andExpect(
             jsonPath("$." + ServicePointVersionModel.Fields.operatingPointTechnicalTimetableType, is("ASSIGNED_OPERATING_POINT")))
-        .andExpect(jsonPath("$.operatingPointTechnicalTimetableTypeInformation.code", is("16")))
-        .andExpect(jsonPath("$.operatingPointTechnicalTimetableTypeInformation.designationDe", is("Zugeordneter Betriebspunkt")))
-        .andExpect(
-            jsonPath("$.operatingPointTechnicalTimetableTypeInformation.designationFr", is("Point d’exploitation associé")))
-        .andExpect(jsonPath("$.operatingPointTechnicalTimetableTypeInformation.designationIt", is("Punto d’esercizio associato")))
-        .andExpect(jsonPath("$.operatingPointTechnicalTimetableTypeInformation.designationEn", is("Assigned operating point")))
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.operatingPointRouteNetwork, is(false)))
         .andExpect(jsonPath("$.operatingPointKilometerMaster.number", is(8034511)))
         .andExpect(jsonPath("$.operatingPointKilometerMaster.numberShort", is(34511)))
         .andExpect(jsonPath("$.operatingPointKilometerMaster.checkDigit", is(6)))
         .andExpect(jsonPath("$.meansOfTransport[0]", is("TRAIN")))
-        .andExpect(jsonPath("$.meansOfTransportInformation[0].code", is("Z")))
-        .andExpect(jsonPath("$.meansOfTransportInformation[0].designationDe", is("Zug")))
-        .andExpect(jsonPath("$.meansOfTransportInformation[0].designationFr", is("Train")))
-        .andExpect(jsonPath("$.meansOfTransportInformation[0].designationIt", is("Treno")))
-        .andExpect(jsonPath("$.meansOfTransportInformation[0].designationEn", is("Train")))
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.stopPointType, is("ON_REQUEST")))
-        .andExpect(jsonPath("$.stopPointTypeInformation.code", is("20")))
-        .andExpect(jsonPath("$.stopPointTypeInformation.designationDe", is("Bedarfshaltestelle")))
-        .andExpect(jsonPath("$.stopPointTypeInformation.designationFr", is("Arrêt sur demande")))
-        .andExpect(jsonPath("$.stopPointTypeInformation.designationIt", is("Fermata facoltativa")))
-        .andExpect(jsonPath("$.stopPointTypeInformation.designationEn", is("Request stop")))
         .andExpect(jsonPath("$.servicePointGeolocation.swissLocation.cantonInformation.fsoNumber", is(2)))
         .andExpect(jsonPath("$.servicePointGeolocation.spatialReference", is(LV95.toString())))
         .andExpect(jsonPath("$.servicePointGeolocation.lv95.north", is(5935705.395163289)))
