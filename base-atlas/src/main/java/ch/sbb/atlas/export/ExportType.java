@@ -7,9 +7,10 @@ import lombok.Getter;
 @Getter
 public enum ExportType {
 
-  FULL("full_"),
-  ACTUAL_DATE("actual_date_"),
-  FUTURE_TIMETABLE("future_timetable_");
+  FULL("full_", "full"),
+  ACTUAL_DATE("actual_date_", "actual_date"),
+  FUTURE_TIMETABLE("future_timetable_", "future_timetable");
 
   private final String filePrefix;
+  private final String dir;
 }
