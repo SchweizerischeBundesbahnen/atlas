@@ -159,7 +159,6 @@ public class BusinessOrganisationController implements BusinessOrganisationApiV1
 
   @Override
   public ResponseEntity<StreamingResponseBody> streamGzipFile(ExportType exportType) {
-    checkIfValidInputPath(exportType.getName());
     String fileName = businessOrganisationAmazonService.getFileName(exportType);
     HttpHeaders headers = new HttpHeaders();
     headers.add("Content-Type", "application/gzip");
@@ -172,13 +171,8 @@ public class BusinessOrganisationController implements BusinessOrganisationApiV1
 
   @Override
   public ResponseEntity<StreamingResponseBody> streamJsonFile(ExportType exportType) {
-    checkIfValidInputPath(exportType.getName());
     StreamingResponseBody body = businessOrganisationAmazonService.streamingJsonFile(exportType);
     return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(body);
-  }
-
-  private boolean checkIfValidInputPath(String exportType) {
-    return ExportType.getExportTypeNames().stream().anyMatch(name -> name.equals(exportType));
   }
 
 }
