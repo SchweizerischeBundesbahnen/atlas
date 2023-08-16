@@ -12,12 +12,15 @@ import ch.sbb.business.organisation.directory.entity.BusinessOrganisation;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
 import ch.sbb.business.organisation.directory.mapper.BusinessOrganisationMapper;
 import ch.sbb.business.organisation.directory.mapper.BusinessOrganisationVersionMapper;
+import ch.sbb.business.organisation.directory.service.BusinessOrganisationAmazonService;
 import ch.sbb.business.organisation.directory.service.BusinessOrganisationService;
 import ch.sbb.business.organisation.directory.service.export.BusinessOrganisationVersionExportService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
@@ -35,6 +38,8 @@ public class BusinessOrganisationController implements BusinessOrganisationApiV1
   private final BusinessOrganisationService service;
 
   private final BusinessOrganisationVersionExportService exportService;
+
+  private final BusinessOrganisationAmazonService businessOrganisationAmazonService;
 
   @Override
   public Container<BusinessOrganisationModel> getAllBusinessOrganisations(Pageable pageable,
@@ -158,7 +163,9 @@ public class BusinessOrganisationController implements BusinessOrganisationApiV1
 
   @Override
   public ResponseEntity<StreamingResponseBody> streamJsonFile(ExportType exportType) {
-    return null;
+//    checkInputPath(exportFileName,exportType);
+    StreamingResponseBody body = businessOrganisationAmazonService.streamingJsonFile(exportType);
+    return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(body);
   }
 
 }
