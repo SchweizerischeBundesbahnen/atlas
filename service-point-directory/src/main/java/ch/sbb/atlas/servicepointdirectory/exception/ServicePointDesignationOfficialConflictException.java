@@ -19,7 +19,7 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public class ServicePointDesignationOfficialConflictException extends AtlasException {
 
-  private static final String CODE_PREFIX = "SEPODI.SERVIE_POINTS.CONFLICT.";
+  private static final String CODE_PREFIX = "SEPODI.SERVICE_POINTS.CONFLICT.";
   private static final String ERROR = "ServicePoint conflict";
 
   private final ServicePointVersion newVersion;
