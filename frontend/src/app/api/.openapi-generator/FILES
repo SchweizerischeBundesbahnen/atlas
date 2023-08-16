@@ -62,7 +62,10 @@ model/district.ts
 model/errorDetail.ts
 model/errorResponse.ts
 model/examinantWorkflowCheck.ts
+model/exportFileName.ts
+model/exportType.ts
 model/geolocation.ts
+model/geolocationCreate.ts
 model/hearingStatus.ts
 model/inlineObject.ts
 model/inlineObject1.ts
@@ -94,9 +97,9 @@ model/readTrafficPointElementVersionModel.ts
 model/sboidPermissionRestrictionModel.ts
 model/servicePointCsvModel.ts
 model/servicePointCsvModelContainer.ts
-model/servicePointExportType.ts
 model/servicePointFotCommentModel.ts
 model/servicePointGeolocation.ts
+model/servicePointGeolocationCreate.ts
 model/servicePointImportRequest.ts
 model/servicePointItemImportResult.ts
 model/servicePointNumber.ts

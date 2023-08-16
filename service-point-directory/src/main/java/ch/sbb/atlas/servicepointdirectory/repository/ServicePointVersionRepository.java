@@ -1,8 +1,10 @@
 package ch.sbb.atlas.servicepointdirectory.repository;
 
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion.Fields;
+import java.time.LocalDate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -50,4 +52,29 @@ public interface ServicePointVersionRepository extends JpaRepository<ServicePoin
     return new PageImpl<>(loadedObjectsById, pagedIds.getPageable(), pagedIds.getTotalElements());
   }
 
+  default List<ServicePointVersion> findDesignationOfficialOverlaps(ServicePointVersion servicePointVersion){
+    return findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndDesignationOfficialIgnoreCase(
+        servicePointVersion.getValidFrom(), servicePointVersion.getValidTo(),
+        servicePointVersion.getDesignationOfficial())
+        .stream()
+        .filter(i -> !i.getNumber().equals(servicePointVersion.getNumber()))
+        .filter(i -> i.getStatus() != Status.REVOKED)
+        .toList();
+  }
+
+  List<ServicePointVersion> findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndDesignationOfficialIgnoreCase(
+      LocalDate validFrom, LocalDate validTo, String designationOfficial);
+
+  default List<ServicePointVersion> findDesignationLongOverlaps(ServicePointVersion servicePointVersion){
+    return findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndDesignationLongIgnoreCase(
+        servicePointVersion.getValidFrom(), servicePointVersion.getValidTo(),
+        servicePointVersion.getDesignationLong())
+        .stream()
+        .filter(i -> !i.getNumber().equals(servicePointVersion.getNumber()))
+        .filter(i -> i.getStatus() != Status.REVOKED)
+        .toList();
+  }
+
+  List<ServicePointVersion> findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndDesignationLongIgnoreCase(
+      LocalDate validFrom, LocalDate validTo, String designationLong);
 }
