@@ -10,17 +10,19 @@
  * Do not edit the class manually.
  */
 
-export interface UpdateTransportCompanyRelation {
-  /**
-   * id
-   */
-  id?: number;
-  /**
-   * Valid From
-   */
-  validFrom: Date;
-  /**
-   * Valid To
-   */
-  validTo: Date;
-}
+export type ExportType =
+  | 'SWISS_ONLY_FULL'
+  | 'SWISS_ONLY_ACTUAL'
+  | 'SWISS_ONLY_TIMETABLE_FUTURE'
+  | 'WORLD_FULL'
+  | 'WORLD_ONLY_ACTUAL'
+  | 'WORLD_ONLY_TIMETABLE_FUTURE';
+
+export const ExportType = {
+  SwissOnlyFull: 'SWISS_ONLY_FULL' as ExportType,
+  SwissOnlyActual: 'SWISS_ONLY_ACTUAL' as ExportType,
+  SwissOnlyTimetableFuture: 'SWISS_ONLY_TIMETABLE_FUTURE' as ExportType,
+  WorldFull: 'WORLD_FULL' as ExportType,
+  WorldOnlyActual: 'WORLD_ONLY_ACTUAL' as ExportType,
+  WorldOnlyTimetableFuture: 'WORLD_ONLY_TIMETABLE_FUTURE' as ExportType,
+};
