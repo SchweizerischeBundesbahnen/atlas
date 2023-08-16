@@ -9,7 +9,6 @@ export * from './category';
 export * from './client';
 export * from './clientCredential';
 export * from './clientCredentialPermissionCreate';
-export * from './codeAndDesignation';
 export * from './company';
 export * from './containerBusinessOrganisation';
 export * from './containerBusinessOrganisationVersion';
