@@ -47,10 +47,10 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
 
   @Schema(description = "Long designation of a location. Used primarily in customer information. "
           + "Not all systems can process names of this length.", example = "Biel/Bienne Bözingenfeld/Champs-de-Boujean")
-  @Size(max = AtlasFieldLengths.LENGTH_50)
+  @Size(min = 2, max = AtlasFieldLengths.LENGTH_50)
   private String designationLong;
 
-  @Size(min = 1, max = AtlasFieldLengths.LENGTH_30)
+  @Size(min = 2, max = AtlasFieldLengths.LENGTH_30)
   @Schema(description = "Official designation of a location that must be used by all recipients"
           , example = "Biel/Bienne Bözingenfeld/Champ", maxLength = 30)
   private String designationOfficial;
@@ -101,8 +101,6 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
   @Schema(description = "Type of the StopPoint, Indicates for which type of traffic (e.g. regular traffic) a stop was recorded. ")
   private StopPointType stopPointType;
 
-  private ServicePointGeolocationModel servicePointGeolocation;
-
   @NotNull
   @Schema(description = "Status", example = "VALIDATED")
   private Status status;
@@ -115,12 +113,6 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
 
   @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)", example = "5")
   private Integer etagVersion;
-
-  @JsonInclude
-  @Schema(description = "ServicePoint has a Geolocation")
-  public boolean isHasGeolocation() {
-    return servicePointGeolocation != null;
-  }
 
   @JsonInclude
   @Schema(description = "ServicePoint is StopPoint")

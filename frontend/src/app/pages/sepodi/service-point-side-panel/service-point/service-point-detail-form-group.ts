@@ -29,7 +29,7 @@ export interface ServicePointDetailFormGroup extends BaseDetailFormGroup {
   operatingPointKilometer: FormControl<boolean | null | undefined>;
   operatingPointKilometerMaster: FormControl<number | null | undefined>;
   etagVersion: FormControl<number | null | undefined>;
-  geolocation: FormGroup<GeographyFormGroup>;
+  servicePointGeolocation: FormGroup<GeographyFormGroup>;
 }
 
 export class ServicePointFormGroupBuilder {
@@ -40,9 +40,13 @@ export class ServicePointFormGroupBuilder {
         designationOfficial: new FormControl(version.designationOfficial, [
           Validators.required,
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
+          Validators.maxLength(30),
+          Validators.minLength(2),
         ]),
-        designationLong: new FormControl(version.designationOfficial, [
+        designationLong: new FormControl(version.designationLong, [
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
+          Validators.maxLength(50),
+          Validators.minLength(2),
         ]),
         validFrom: new FormControl(
           version.validFrom ? moment(version.validFrom) : version.validFrom,
@@ -65,7 +69,7 @@ export class ServicePointFormGroupBuilder {
         meansOfTransport: new FormControl(version.meansOfTransport),
         categories: new FormControl(version.categories),
         etagVersion: new FormControl(version.etagVersion),
-        geolocation: new FormGroup<GeographyFormGroup>({
+        servicePointGeolocation: new FormGroup<GeographyFormGroup>({
           east: new FormControl(this.getCoordinates(version)?.east),
           north: new FormControl(this.getCoordinates(version)?.north),
           height: new FormControl(version.servicePointGeolocation?.height),
