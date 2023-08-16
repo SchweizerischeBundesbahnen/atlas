@@ -23,13 +23,14 @@ import { DialogService } from '../../../../core/components/dialog/dialog.service
 import { ValidationService } from '../../../../core/validation/validation.service';
 import { takeUntil } from 'rxjs/operators';
 import { NotificationService } from '../../../../core/notification/notification.service';
+import { DetailFormComponent } from '../../../../core/leave-guard/leave-dirty-form-guard.service';
 
 @Component({
   selector: 'app-service-point',
   templateUrl: './service-point-detail.component.html',
   styleUrls: ['./service-point-detail.component.scss'],
 })
-export class ServicePointDetailComponent implements OnInit, OnDestroy {
+export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFormComponent {
   servicePointVersions!: ReadServicePointVersion[];
   selectedVersion!: ReadServicePointVersion;
   showVersionSwitch = false;
@@ -212,5 +213,9 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy {
       this.form.enable();
       return EMPTY;
     };
+  }
+
+  isFormDirty(): boolean {
+    return this.form.dirty;
   }
 }
