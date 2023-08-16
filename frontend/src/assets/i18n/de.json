@@ -922,6 +922,10 @@
       "NOTIFICATION": {
         "ADD_SUCCESS": "Die Dienststelle wurde erfolgreich hinzugefügt.",
         "EDIT_SUCCESS": "Die Dienststelle wurde erfolgreich gespeichert."
+      },
+      "CONFLICT": {
+        "DESIGNATION_OFFICIAL": "Die offizielle Bezeichnung {{designationOfficial}} ist bereits von {{validFrom}} bis {{validTo}} durch {{number}} vergeben.",
+        "DESIGNATION_LONG": "Die lange Bezeichnung {{designationLong}} ist bereits von {{validFrom}} bis {{validTo}} durch {{number}} vergeben."
       }
     },
     "TRAFFIC_POINT_ELEMENTS": {

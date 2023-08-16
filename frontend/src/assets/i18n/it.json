@@ -922,6 +922,10 @@
       "NOTIFICATION": {
         "ADD_SUCCESS": "Il posto di servizio è stato aggiunto con successo.",
         "EDIT_SUCCESS": "Il posto di servizio è stato salvato con successo."
+      },
+      "CONFLICT": {
+        "DESIGNATION_OFFICIAL": "La denominazione ufficiale {{designationOfficial}} è già assegnato nel periodo dal {{validFrom}} al {{validTo}} da {{number}}.",
+        "DESIGNATION_LONG": "La denominazione lunga {{designationLong}} è già assegnato nel periodo dal {{validFrom}} al {{validTo}} da {{number}}."
       }
     },
     "TRAFFIC_POINT_ELEMENTS": {
