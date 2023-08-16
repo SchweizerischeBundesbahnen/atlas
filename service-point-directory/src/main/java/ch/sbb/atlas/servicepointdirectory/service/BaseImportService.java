@@ -8,11 +8,42 @@ import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public abstract class BaseImportService<T extends BasePointVersion & Versionable> {
+public abstract class BaseImportService<T extends BasePointVersion<T> & Versionable> {
 
   protected abstract void save(T element);
 
-  protected abstract void copyPropertiesFromCsvVersionToDbVersion(T csvVersion, T dbVersion);
+  protected void copyPropertiesFromCsvVersionToDbVersion(T csvVersion, T dbVersion) {
+    if (isNewGeolocation(csvVersion, dbVersion)) {
+      csvVersion.referenceGeolocationTo(dbVersion);
+      BeanCopyUtil.copyNonNullProperties(csvVersion, dbVersion, getIgnoredPropertiesWithoutGeolocation());
+    } else {
+      BeanCopyUtil.copyNonNullProperties(csvVersion, dbVersion, getIgnoredPropertiesWithGeolocation());
+      if (isUpdatedGeolocation(csvVersion, dbVersion)) {
+        BeanCopyUtil.copyNonNullProperties(
+            csvVersion.geolocation(),
+            dbVersion.geolocation(),
+            getIgnoredReferenceFieldOnGeolocationEntity());
+      }
+    }
+  }
+
+  private boolean isNewGeolocation(T csvVersion, T dbVersion) {
+    return csvVersion.hasGeolocation() && !dbVersion.hasGeolocation();
+  }
+
+  protected abstract String[] getIgnoredPropertiesWithoutGeolocation();
+
+  protected String[] getIgnoredPropertiesWithGeolocation() {
+    throw new IllegalStateException("cannot have geolocation");
+  }
+
+  private boolean isUpdatedGeolocation(T csvVersion, T dbVersion) {
+    return csvVersion.hasGeolocation() && dbVersion.hasGeolocation();
+  }
+
+  protected String getIgnoredReferenceFieldOnGeolocationEntity() {
+    throw new IllegalStateException("cannot have geolocation");
+  }
 
   protected abstract ItemImportResult addInfoToItemImportResult(
       ItemImportResultBuilder itemImportResultBuilder,

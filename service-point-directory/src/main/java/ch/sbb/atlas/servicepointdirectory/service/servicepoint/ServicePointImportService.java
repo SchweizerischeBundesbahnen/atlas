@@ -10,7 +10,6 @@ import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.service.BaseImportService;
 import ch.sbb.atlas.servicepointdirectory.service.BasePointUtility;
-import ch.sbb.atlas.servicepointdirectory.service.BeanCopyUtil;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
@@ -19,6 +18,7 @@ import ch.sbb.atlas.versioning.service.VersionableService;
 import com.fasterxml.jackson.databind.MappingIterator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -43,31 +43,22 @@ public class ServicePointImportService extends BaseImportService<ServicePointVer
   }
 
   @Override
-  protected void copyPropertiesFromCsvVersionToDbVersion(ServicePointVersion csvVersion, ServicePointVersion dbVersion) {
-    if (csvVersion.hasGeolocation() && !dbVersion.hasGeolocation()) {
-      BeanCopyUtil.copyNonNullProperties(csvVersion, dbVersion,
-          ServicePointVersion.Fields.validFrom,
-          ServicePointVersion.Fields.validTo,
-          ServicePointVersion.Fields.id
-      );
-      dbVersion.getServicePointGeolocation().setServicePointVersion(dbVersion);
-    } else {
-      BeanCopyUtil.copyNonNullProperties(csvVersion, dbVersion,
-          ServicePointVersion.Fields.validFrom,
-          ServicePointVersion.Fields.validTo,
-          ServicePointVersion.Fields.id,
-          ServicePointVersion.Fields.servicePointGeolocation
-      );
-      if (csvVersion.hasGeolocation() && dbVersion.hasGeolocation()) {
-        BeanCopyUtil.copyNonNullProperties(
-            csvVersion.getServicePointGeolocation(),
-            dbVersion.getServicePointGeolocation(),
-            ServicePointGeolocation.Fields.servicePointVersion);
-      }
-      if (!csvVersion.hasGeolocation() && dbVersion.hasGeolocation()) {
-        dbVersion.setServicePointGeolocation(null);
-      }
-    }
+  protected String[] getIgnoredPropertiesWithoutGeolocation() {
+    return new String[]{
+        ServicePointVersion.Fields.validFrom,
+        ServicePointVersion.Fields.validTo,
+        ServicePointVersion.Fields.id
+    };
+  }
+
+  @Override
+  protected String[] getIgnoredPropertiesWithGeolocation() {
+    return ArrayUtils.add(getIgnoredPropertiesWithoutGeolocation(), ServicePointVersion.Fields.servicePointGeolocation);
+  }
+
+  @Override
+  protected String getIgnoredReferenceFieldOnGeolocationEntity() {
+    return ServicePointGeolocation.Fields.servicePointVersion;
   }
 
   @Override
