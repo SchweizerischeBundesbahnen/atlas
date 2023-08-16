@@ -922,6 +922,10 @@
       "NOTIFICATION": {
         "ADD_SUCCESS": "Le service a été ajouté avec succès.",
         "EDIT_SUCCESS": "Le service a été enregistré avec succès."
+      },
+      "CONFLICT": {
+        "DESIGNATION_OFFICIAL": "Le désignation officielle {{designationOfficial}} est déjà attribué de {{validFrom}} à {{validTo}} par {{number}}.",
+        "DESIGNATION_LONG": "Le désignation longue {{designationLong}} est déjà attribué de {{validFrom}} à {{validTo}} par {{number}}."
       }
     },
     "TRAFFIC_POINT_ELEMENTS": {
