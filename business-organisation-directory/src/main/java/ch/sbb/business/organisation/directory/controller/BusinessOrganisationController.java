@@ -159,12 +159,11 @@ public class BusinessOrganisationController implements BusinessOrganisationApiV1
 
   @Override
   public ResponseEntity<StreamingResponseBody> streamGzipFile(ExportType exportType) {
-//    checkInputPath(exportFileName,exportType);
-//    String fileName = fileExportService.getBaseFileName(exportType, exportFileName);
+    checkIfValidInputPath(exportType.getName());
+    String fileName = businessOrganisationAmazonService.getFileName(exportType);
     HttpHeaders headers = new HttpHeaders();
     headers.add("Content-Type", "application/gzip");
-//    headers.add("Content-Disposition", "attachment;filename=" + fileName + ".json.gz");
-    headers.add("Content-Disposition", "attachment;filename=" + "fileName" + ".json.gz");
+    headers.add("Content-Disposition", "attachment;filename=" + fileName + ".json.gz");
     headers.add("Pragma", "no-cache");
     headers.add("Cache-Control", "no-cache");
     StreamingResponseBody body = businessOrganisationAmazonService.streamingGzipFile(exportType);
@@ -173,9 +172,13 @@ public class BusinessOrganisationController implements BusinessOrganisationApiV1
 
   @Override
   public ResponseEntity<StreamingResponseBody> streamJsonFile(ExportType exportType) {
-//    checkInputPath(exportFileName,exportType);
+    checkIfValidInputPath(exportType.getName());
     StreamingResponseBody body = businessOrganisationAmazonService.streamingJsonFile(exportType);
     return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(body);
+  }
+
+  private boolean checkIfValidInputPath(String exportType) {
+    return ExportType.getExportTypeNames().stream().anyMatch(name -> name.equals(exportType));
   }
 
 }

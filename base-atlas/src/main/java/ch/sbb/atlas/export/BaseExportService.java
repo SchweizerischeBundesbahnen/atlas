@@ -39,11 +39,8 @@ public abstract class BaseExportService<T extends BaseVersion> {
   }
 
   public List<URL> exportFullVersionsAllFormats() {
-    List<URL> urls = new ArrayList<>();
-    File fullVersionsCsv = getFullVersionsCsv();
+    List<URL> urls = exportFullVersions();
     File fullVersionsJson = getFullVersionsJson();
-    urls.add(putCsvFile(fullVersionsCsv));
-    urls.add(putZipFile(fullVersionsCsv));
     urls.add(putGzFile(fullVersionsJson));
     return urls;
   }
@@ -57,11 +54,8 @@ public abstract class BaseExportService<T extends BaseVersion> {
   }
 
   public List<URL> exportActualVersionsAllFormats() {
-    List<URL> urls = new ArrayList<>();
-    File actualVersionsCsv = getActualVersionsCsv();
+    List<URL> urls = exportActualVersions();
     File actualVersionsJson = getActualVersionsJson();
-    urls.add(putCsvFile(actualVersionsCsv));
-    urls.add(putZipFile(actualVersionsCsv));
     urls.add(putGzFile(actualVersionsJson));
     return urls;
   }
@@ -75,11 +69,8 @@ public abstract class BaseExportService<T extends BaseVersion> {
   }
 
   public List<URL> exportFutureTimetableVersionsAllFormats() {
-    List<URL> urls = new ArrayList<>();
-    File futureTimetableVersionsCsv = getFutureTimetableVersionsCsv();
+    List<URL> urls = exportFutureTimetableVersions();
     File futureTimetableVersionsJson = getFutureTimetableVersionsJson();
-    urls.add(putCsvFile(futureTimetableVersionsCsv));
-    urls.add(putZipFile(futureTimetableVersionsCsv));
     urls.add(putGzFile(futureTimetableVersionsJson));
     return urls;
   }
