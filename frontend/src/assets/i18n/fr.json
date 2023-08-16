@@ -827,7 +827,7 @@
       "SLOID": "Swiss Location ID (SLOID)",
       "DIDOK_CODE": "Code DiDok (code et numéro du pays)",
       "SERVICE_POINT": "Service",
-      "AREAS": "D’application",
+      "AREAS": "Zones d'arrêt",
       "FOT_COMMENT": "Commentaire OFT",
       "DETAILS": "Informations sur le service",
       "DESIGNATION_OFFICIAL": "Désignation officielle",
