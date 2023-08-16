@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -158,7 +159,16 @@ public class BusinessOrganisationController implements BusinessOrganisationApiV1
 
   @Override
   public ResponseEntity<StreamingResponseBody> streamGzipFile(ExportType exportType) {
-    return null;
+//    checkInputPath(exportFileName,exportType);
+//    String fileName = fileExportService.getBaseFileName(exportType, exportFileName);
+    HttpHeaders headers = new HttpHeaders();
+    headers.add("Content-Type", "application/gzip");
+//    headers.add("Content-Disposition", "attachment;filename=" + fileName + ".json.gz");
+    headers.add("Content-Disposition", "attachment;filename=" + "fileName" + ".json.gz");
+    headers.add("Pragma", "no-cache");
+    headers.add("Cache-Control", "no-cache");
+    StreamingResponseBody body = businessOrganisationAmazonService.streamingGzipFile(exportType);
+    return ResponseEntity.ok().headers(headers).body(body);
   }
 
   @Override
