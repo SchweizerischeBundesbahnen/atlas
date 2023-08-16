@@ -34,7 +34,6 @@ model/category.ts
 model/client.ts
 model/clientCredential.ts
 model/clientCredentialPermissionCreate.ts
-model/codeAndDesignation.ts
 model/company.ts
 model/containerBusinessOrganisation.ts
 model/containerBusinessOrganisationVersion.ts
