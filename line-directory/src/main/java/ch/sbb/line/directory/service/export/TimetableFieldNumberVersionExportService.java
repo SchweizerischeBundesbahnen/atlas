@@ -1,22 +1,24 @@
 package ch.sbb.line.directory.service.export;
 
-import static java.util.stream.Collectors.toList;
-
-import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.api.model.BaseVersionModel;
 import ch.sbb.atlas.export.AtlasCsvMapper;
 import ch.sbb.atlas.export.BaseExportService;
 import ch.sbb.atlas.export.ExportType;
 import ch.sbb.atlas.export.model.VersionCsvModel;
+import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.model.csv.TimetableFieldNumberVersionCsvModel;
 import ch.sbb.line.directory.repository.TimetableFieldNumberVersionRepository;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import org.springframework.stereotype.Service;
+
 import java.io.File;
 import java.time.LocalDate;
 import java.util.List;
-import org.springframework.stereotype.Service;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class TimetableFieldNumberVersionExportService extends
@@ -48,6 +50,11 @@ public class TimetableFieldNumberVersionExportService extends
     }
 
     @Override
+    protected File getFullVersionsJson() {
+        return null;
+    }
+
+    @Override
     protected File getActualVersionsCsv() {
         List<TimetableFieldNumberVersion> actualTimeTableNumberVersions = timetableFieldNumberVersionRepository.getActualTimeTableNumberVersions(
             LocalDate.now());
@@ -55,10 +62,20 @@ public class TimetableFieldNumberVersionExportService extends
     }
 
     @Override
+    protected File getActualVersionsJson() {
+        return null;
+    }
+
+    @Override
     protected File getFutureTimetableVersionsCsv() {
         List<TimetableFieldNumberVersion> actualTimeTableNumberVersions = timetableFieldNumberVersionRepository.getActualTimeTableNumberVersions(
             FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now()));
         return createCsvFile(actualTimeTableNumberVersions, ExportType.FUTURE_TIMETABLE);
+    }
+
+    @Override
+    protected File getFutureTimetableVersionsJson() {
+        return null;
     }
 
     @Override
@@ -72,6 +89,11 @@ public class TimetableFieldNumberVersionExportService extends
         return versions.stream()
             .map(TimetableFieldNumberVersionCsvModel::toCsvModel)
             .collect(toList());
+    }
+
+    @Override
+    protected List<? extends BaseVersionModel> convertToJsonModel(List<TimetableFieldNumberVersion> versions) {
+        return null;
     }
 
 }
