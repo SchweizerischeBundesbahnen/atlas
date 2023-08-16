@@ -4,6 +4,7 @@ import ch.sbb.atlas.amazon.exception.FileException;
 import ch.sbb.atlas.amazon.service.AmazonBucket;
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.export.ExportType;
+import ch.sbb.business.organisation.directory.model.json.ExportFileName;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
+import java.time.LocalDate;
 import java.util.zip.GZIPInputStream;
 
 @Slf4j
@@ -78,13 +80,29 @@ public class BusinessOrganisationAmazonService {
     }
 
     private String getJsonFileToDownload(ExportType exportType) {
-        return "business_organisation/full_business_organisation_versions_2023-08-14.json.gz";
-//        return exportFileName.getBaseDir()
+        ExportFileName exportFileName = ExportFileName.BUSINESS_ORGANISATION_VERSION;
+        LocalDate todayDate = LocalDate.now();
+//        String filePath = exportFileName.getBaseDir()
 //                + "/"
 //                + exportType.getDir()
 //                + "/"
-//                + getBaseFileName(exportType, exportFileName)
+//                + exportType.getFilePrefix()
+//                + exportFileName.getFileName()
+//                + "_"
+//                + todayDate
 //                + ".json.gz";
+
+        String filePath = exportFileName.getBaseDir()
+                + "/"
+                + exportType.getFilePrefix()
+                + exportFileName.getFileName()
+                + "_"
+                + todayDate
+                + ".json.gz";
+
+//        return "business_organisation/full_business_organisation_versions_2023-08-14.json.gz";
+//        return "business_organisation/full_business_organisation_versions_2023-08-16.json.gz";
+        return filePath;
     }
 
 }
