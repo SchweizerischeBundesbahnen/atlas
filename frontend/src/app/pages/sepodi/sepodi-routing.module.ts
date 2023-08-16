@@ -9,6 +9,7 @@ import { AreasDetailComponent } from './service-point-side-panel/areas/areas-det
 import { TrafficPointElementsDetailComponent } from './service-point-side-panel/traffic-point-elements/traffic-point-elements-detail.component';
 import { LoadingPointsDetailComponent } from './service-point-side-panel/loading-points/loading-points-detail.component';
 import { FotCommentDetailComponent } from './service-point-side-panel/comment/fot-comment-detail.component';
+import { canLeaveDirtyForm } from '../../core/leave-guard/leave-dirty-form-guard.service';
 
 const routes: Routes = [
   {
@@ -24,6 +25,7 @@ const routes: Routes = [
           {
             path: 'service-point',
             component: ServicePointDetailComponent,
+            canDeactivate: [canLeaveDirtyForm],
           },
           {
             path: 'areas',
