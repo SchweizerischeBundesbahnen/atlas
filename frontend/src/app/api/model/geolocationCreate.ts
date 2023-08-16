@@ -9,18 +9,20 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { SpatialReference } from './spatialReference';
 
-export interface UpdateTransportCompanyRelation {
+export interface GeolocationCreate {
+  spatialReference: SpatialReference;
   /**
-   * id
+   * North longitude
    */
-  id?: number;
+  north: number;
   /**
-   * Valid From
+   * Eastern longitude
    */
-  validFrom: Date;
+  east: number;
   /**
-   * Valid To
+   * Height of the coordinate point
    */
-  validTo: Date;
+  height?: number;
 }

@@ -10,17 +10,9 @@
  * Do not edit the class manually.
  */
 
-export interface UpdateTransportCompanyRelation {
-  /**
-   * id
-   */
-  id?: number;
-  /**
-   * Valid From
-   */
-  validFrom: Date;
-  /**
-   * Valid To
-   */
-  validTo: Date;
-}
+export type ExportFileName = 'SERVICE_POINT_VERSION' | 'TRAFFIC_POINT_ELEMENT_VERSION';
+
+export const ExportFileName = {
+  ServicePointVersion: 'SERVICE_POINT_VERSION' as ExportFileName,
+  TrafficPointElementVersion: 'TRAFFIC_POINT_ELEMENT_VERSION' as ExportFileName,
+};
