@@ -28,6 +28,8 @@ public class BusinessOrganisationAmazonService {
     private static final int OUT_BUFFER = 4096;
     private static final int IN_BUFFER = 1024;
 
+    private static final ExportFileName exportFileName = ExportFileName.BUSINESS_ORGANISATION_VERSION;
+
     private final AmazonService amazonService;
 
     public StreamingResponseBody streamingJsonFile(ExportType exportType) {
@@ -42,7 +44,6 @@ public class BusinessOrganisationAmazonService {
         }
     }
 
-//    public StreamingResponseBody streamingGzipFile(ExportType exportType, ExportFileName exportFileName) {
     public StreamingResponseBody streamingGzipFile(ExportType exportType) {
         String fileToDownload = getJsonFileToDownload(exportType);
         try {
@@ -79,30 +80,17 @@ public class BusinessOrganisationAmazonService {
         };
     }
 
-    private String getJsonFileToDownload(ExportType exportType) {
-        ExportFileName exportFileName = ExportFileName.BUSINESS_ORGANISATION_VERSION;
+    public String getFileName(ExportType exportType) {
         LocalDate todayDate = LocalDate.now();
-//        String filePath = exportFileName.getBaseDir()
-//                + "/"
-//                + exportType.getDir()
-//                + "/"
-//                + exportType.getFilePrefix()
-//                + exportFileName.getFileName()
-//                + "_"
-//                + todayDate
-//                + ".json.gz";
+        return exportType.getFilePrefix() + exportFileName.getFileName() + "_" + todayDate;
+    }
 
-        String filePath = exportFileName.getBaseDir()
+    private String getJsonFileToDownload(ExportType exportType) {
+        String fileName = this.getFileName(exportType);
+        return exportFileName.getBaseDir()
                 + "/"
-                + exportType.getFilePrefix()
-                + exportFileName.getFileName()
-                + "_"
-                + todayDate
+                + fileName
                 + ".json.gz";
-
-//        return "business_organisation/full_business_organisation_versions_2023-08-14.json.gz";
-//        return "business_organisation/full_business_organisation_versions_2023-08-16.json.gz";
-        return filePath;
     }
 
 }
