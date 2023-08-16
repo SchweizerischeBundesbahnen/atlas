@@ -125,17 +125,6 @@ class ServicePointNumberTest {
     //then
     assertThat(result).isEqualTo("ch:1:sloid:1492223");
   }
-  @Test
-  void shouldCalculateSloidForAl(){
-    //given
-    ServicePointNumber ch = ServicePointNumber.of(Country.ALBANIA, 92223);
-
-    //when
-    String result = ServicePointNumber.calculateSloid(ch);
-
-    //then
-    assertThat(result).isEqualTo("");
-  }
 
   @Test
   void shouldCalculateSloidForNotSwissCompatible() {
@@ -151,7 +140,7 @@ class ServicePointNumberTest {
       ServicePointNumber sp = ServicePointNumber.of(country, 92223);
         //then
         String result = ServicePointNumber.calculateSloid(sp);
-        assertThat(result).isEqualTo("");
+        assertThat(result).isNull();
       }
     });
 
