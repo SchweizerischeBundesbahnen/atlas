@@ -60,7 +60,7 @@ public final class ServicePointNumber {
     if(Country.SLOID_COMPATIBLE_COUNTRY_CODES.contains(servicePointNumber.getUicCountryCode())){
       return SLOID_PREFIX + servicePointNumber.getNumber();
     }
-    return EMPTY_STRING;
+    return null;
   }
 
   private static ServicePointNumber fromString(String number) {

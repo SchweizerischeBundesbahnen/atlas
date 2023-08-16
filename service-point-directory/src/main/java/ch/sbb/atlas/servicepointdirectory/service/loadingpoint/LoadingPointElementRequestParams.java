@@ -17,7 +17,7 @@ import java.util.List;
 @ToString
 public class LoadingPointElementRequestParams extends VersionedObjectDateRequestParams {
 
-    @Parameter(description = "DiDok-Number formerly known as UIC-Code, combination of uicCountryCode and numberShort.")
+    @Parameter(description = "Number", example = "345 or 545 or 323445")
     @Singular(ignoreNullCollections = true)
     private List<Integer> numbers = new ArrayList<>();
 
