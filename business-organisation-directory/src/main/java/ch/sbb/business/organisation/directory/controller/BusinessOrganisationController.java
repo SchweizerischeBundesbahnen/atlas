@@ -5,6 +5,7 @@ import ch.sbb.atlas.api.bodi.BusinessOrganisationModel;
 import ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel;
 import ch.sbb.atlas.api.bodi.BusinessOrganisationVersionRequestParams;
 import ch.sbb.atlas.api.model.Container;
+import ch.sbb.atlas.export.ExportType;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.SboidNotFoundException;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisation;
@@ -17,7 +18,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -130,22 +133,32 @@ public class BusinessOrganisationController implements BusinessOrganisationApiV1
 
   @Override
   public List<URL> exportFullBusinessOrganisationVersions() {
-    return exportService.exportFullVersions();
+    return exportService.exportFullVersionsAllFormats();
   }
 
   @Override
   public List<URL> exportActualBusinessOrganisationVersions() {
-    return exportService.exportActualVersions();
+    return exportService.exportActualVersionsAllFormats();
   }
 
   @Override
   public List<URL> exportFutureTimetableBusinessOrganisationVersions() {
-    return exportService.exportFutureTimetableVersions();
+    return exportService.exportFutureTimetableVersionsAllFormats();
   }
 
   @Override
   public void syncBusinessOrganisations() {
     service.syncAllBusinessOrganisations();
+  }
+
+  @Override
+  public ResponseEntity<StreamingResponseBody> streamGzipFile(ExportType exportType) {
+    return null;
+  }
+
+  @Override
+  public ResponseEntity<StreamingResponseBody> streamJsonFile(ExportType exportType) {
+    return null;
   }
 
 }
