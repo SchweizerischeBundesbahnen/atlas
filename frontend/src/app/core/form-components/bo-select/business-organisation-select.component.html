@@ -21,6 +21,8 @@
     [ngClass]="formModus ? 'form-mode-label-form-field-space' : 'search-mode-space-between'"
   ></div>
   <ng-template #labelOptionTemplates let-item>
-    {{ item | boSelectionDisplay }}
+    <div class="text-truncate" [title]="item | boSelectionDisplay">
+      {{ item | boSelectionDisplay }}
+    </div>
   </ng-template>
 </form-search-select>
