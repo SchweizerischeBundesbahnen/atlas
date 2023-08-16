@@ -17,9 +17,15 @@ import { AtlasLabelFieldComponent } from '../../../../core/form-components/atlas
 import { AtlasFieldErrorComponent } from '../../../../core/form-components/atlas-field-error/atlas-field-error.component';
 import { AtlasSpacerComponent } from '../../../../core/components/spacer/atlas-spacer.component';
 import { Record } from '../../../../core/components/base-detail/record';
-import { ServicePointType } from './service-point-type';
+import { MockAtlasButtonComponent } from '../../../../app.testing.mocks';
+import { DialogService } from '../../../../core/components/dialog/dialog.service';
+import { ServicePointsService } from '../../../../api';
+import { NotificationService } from '../../../../core/notification/notification.service';
 
 const authService: Partial<AuthService> = {};
+const dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirm']);
+const servicePointsServiceSpy = jasmine.createSpyObj('ServicePointService', ['updateServicePoint']);
+const notificationServiceSpy = jasmine.createSpyObj('NotificationService', ['success']);
 
 describe('ServicePointDetailComponent', () => {
   let component: ServicePointDetailComponent;
@@ -39,11 +45,15 @@ describe('ServicePointDetailComponent', () => {
         SelectComponent,
         SwitchVersionComponent,
         AtlasSlideToggleComponent,
+        MockAtlasButtonComponent,
       ],
       imports: [AppTestingModule, FormsModule],
       providers: [
         { provide: AuthService, useValue: authService },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
+        { provide: DialogService, useValue: dialogServiceSpy },
+        { provide: ServicePointsService, useValue: servicePointsServiceSpy },
+        { provide: NotificationService, useValue: notificationServiceSpy },
         { provide: TranslatePipe },
       ],
     }).compileComponents();
@@ -67,5 +77,67 @@ describe('ServicePointDetailComponent', () => {
   it('should initialize form correctly', () => {
     expect(component.isNew).toBeFalse();
     expect(component.form.disabled).toBeTrue();
+  });
+
+  it('should switch to edit mode', () => {
+    expect(component.form.disabled).toBeTrue();
+
+    component.toggleEdit();
+    expect(component.form.enabled).toBeTrue();
+  });
+
+  it('should switch to readonly mode when not dirty without confirmation', () => {
+    component.form.enable();
+    expect(component.form.enabled).toBeTrue();
+    expect(component.form.dirty).toBeFalse();
+
+    component.toggleEdit();
+    expect(component.form.disabled).toBeTrue();
+  });
+
+  it('should switch to readonly mode when dirty with confirmation', () => {
+    // given
+    component.form.enable();
+    expect(component.form.enabled).toBeTrue();
+
+    component.form.controls.designationOfficial.setValue('Basel beste Sport');
+    component.form.markAsDirty();
+    expect(component.form.dirty).toBeTrue();
+
+    dialogServiceSpy.confirm.and.returnValue(of(true));
+
+    // when & then
+    component.toggleEdit();
+    expect(component.form.disabled).toBeTrue();
+  });
+
+  it('should stay in edit mode when confirmation canceled', () => {
+    // given
+    component.form.enable();
+    expect(component.form.enabled).toBeTrue();
+
+    component.form.controls.designationOfficial.setValue('Basel beste Sport');
+    component.form.markAsDirty();
+    expect(component.form.dirty).toBeTrue();
+
+    dialogServiceSpy.confirm.and.returnValue(of(false));
+
+    // when & then
+    component.toggleEdit();
+    expect(component.form.enabled).toBeTrue();
+  });
+
+  it('should save and update service point', () => {
+    // given
+    component.form.enable();
+    component.form.controls.designationOfficial.setValue('Basel beste Sport');
+    component.form.markAsDirty();
+
+    servicePointsServiceSpy.updateServicePoint.and.returnValue(of([BERN]));
+
+    // when & then
+    component.save();
+    expect(servicePointsServiceSpy.updateServicePoint).toHaveBeenCalled();
+    expect(notificationServiceSpy.success).toHaveBeenCalled();
   });
 });
