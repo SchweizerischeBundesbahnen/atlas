@@ -1,13 +1,13 @@
 package ch.sbb.business.organisation.directory.controller;
 
-import static org.mockito.Mockito.verify;
-
 import ch.sbb.business.organisation.directory.service.BusinessOrganisationService;
 import ch.sbb.business.organisation.directory.service.export.BusinessOrganisationVersionExportService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
+import static org.mockito.Mockito.verify;
 
 class BusinessOrganisationControllerTest {
 
@@ -21,7 +21,7 @@ class BusinessOrganisationControllerTest {
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    businessOrganisationController = new BusinessOrganisationController(service, exportService);
+    businessOrganisationController = new BusinessOrganisationController(service, exportService, null);
   }
 
   @Test
