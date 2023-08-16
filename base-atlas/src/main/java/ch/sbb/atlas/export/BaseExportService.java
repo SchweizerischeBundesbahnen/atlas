@@ -167,15 +167,6 @@ public abstract class BaseExportService<T extends BaseVersion> {
 
   protected abstract String getFileName();
 
-//  protected File createFile(ExportType exportType, String extension) {
-//    String dir = fileService.getDir();
-//    String exportTypeDir = exportType.getDir();
-//    String actualDate = LocalDate.now()
-//        .format(DateTimeFormatter.ofPattern(
-//            AtlasApiConstants.DATE_FORMAT_PATTERN));
-//    return new File(dir + "/" + exportTypeDir + "/" + exportType.getFilePrefix() + getFileName() + actualDate + extension);
-//  }
-
   protected File createFile(ExportType exportType, String extension) {
     String dir = fileService.getDir();
     String actualDate = LocalDate.now()
