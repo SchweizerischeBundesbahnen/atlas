@@ -2,26 +2,28 @@ package ch.sbb.atlas.servicepointdirectory.mapper;
 
 import static ch.sbb.atlas.servicepointdirectory.mapper.GeolocationMapper.getTransformedCoordinates;
 
-import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationModel;
-import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationModel.Canton;
-import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationModel.DistrictModel;
-import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationModel.LocalityMunicipalityModel;
-import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationModel.SwissLocation;
+import ch.sbb.atlas.api.servicepoint.Canton;
+import ch.sbb.atlas.api.servicepoint.DistrictModel;
+import ch.sbb.atlas.api.servicepoint.LocalityMunicipalityModel;
+import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationCreateModel;
+import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationReadModel;
+import ch.sbb.atlas.api.servicepoint.SwissLocation;
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
+import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation.ServicePointGeolocationBuilder;
 import java.util.Map;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class ServicePointGeolocationMapper {
 
-  public static ServicePointGeolocationModel toModel(ServicePointGeolocation servicePointGeolocation) {
+  public static ServicePointGeolocationReadModel toModel(ServicePointGeolocation servicePointGeolocation) {
     if (servicePointGeolocation == null) {
       return null;
     }
     Map<SpatialReference, CoordinatePair> coordinates = getTransformedCoordinates(servicePointGeolocation);
-    return ServicePointGeolocationModel.builder()
+    return ServicePointGeolocationReadModel.builder()
         .country(servicePointGeolocation.getCountry())
         .swissLocation(SwissLocation.builder()
             .canton(servicePointGeolocation.getSwissCanton())
@@ -39,27 +41,53 @@ public class ServicePointGeolocationMapper {
         .spatialReference(servicePointGeolocation.getSpatialReference())
         .lv95(coordinates.get(SpatialReference.LV95))
         .wgs84(coordinates.get(SpatialReference.WGS84))
-        .wgs84web(coordinates.get(SpatialReference.WGS84WEB))
         .height(servicePointGeolocation.getHeight())
         .build();
   }
 
-  public static ServicePointGeolocation toEntity(ServicePointGeolocationModel servicePointGeolocationModel) {
-    return ServicePointGeolocation.builder()
-        .country(servicePointGeolocationModel.getCountry())
-        .swissCanton(servicePointGeolocationModel.getSwissLocation().getCanton())
-        .swissDistrictName(servicePointGeolocationModel.getSwissLocation().getDistrict().getDistrictName())
-        .swissDistrictNumber(servicePointGeolocationModel.getSwissLocation().getDistrict().getFsoNumber())
-        .swissMunicipalityNumber(servicePointGeolocationModel.getSwissLocation().getLocalityMunicipality().getFsoNumber())
-        .swissMunicipalityName(servicePointGeolocationModel.getSwissLocation().getLocalityMunicipality().getMunicipalityName())
-        .swissLocalityName(servicePointGeolocationModel.getSwissLocation().getLocalityMunicipality().getLocalityName())
-        .spatialReference(servicePointGeolocationModel.getSpatialReference())
-        .north(servicePointGeolocationModel.getLv95().getNorth())
-        .east(servicePointGeolocationModel.getLv95().getEast())
-        .north(servicePointGeolocationModel.getWgs84().getNorth())
-        .east(servicePointGeolocationModel.getWgs84().getEast())
-        .north(servicePointGeolocationModel.getWgs84web().getNorth())
-        .east(servicePointGeolocationModel.getWgs84web().getEast())
+  public static ServicePointGeolocationCreateModel toCreateModel(ServicePointGeolocation servicePointGeolocation) {
+    if (servicePointGeolocation == null) {
+      return null;
+    }
+    return ServicePointGeolocationCreateModel.builder()
+        .country(servicePointGeolocation.getCountry())
+        .swissLocation(SwissLocation.builder()
+            .canton(servicePointGeolocation.getSwissCanton())
+            .cantonInformation(getCanton(servicePointGeolocation))
+            .district(DistrictModel.builder()
+                .fsoNumber(servicePointGeolocation.getSwissDistrictNumber())
+                .districtName(servicePointGeolocation.getSwissDistrictName())
+                .build())
+            .localityMunicipality(LocalityMunicipalityModel.builder()
+                .fsoNumber(servicePointGeolocation.getSwissMunicipalityNumber())
+                .municipalityName(servicePointGeolocation.getSwissMunicipalityName())
+                .localityName(servicePointGeolocation.getSwissLocalityName())
+                .build())
+            .build())
+        .spatialReference(servicePointGeolocation.getSpatialReference())
+        .north(servicePointGeolocation.getNorth())
+        .east(servicePointGeolocation.getEast())
+        .height(servicePointGeolocation.getHeight())
+        .build();
+  }
+
+  public static ServicePointGeolocation toEntity(ServicePointGeolocationCreateModel servicePointGeolocationModel) {
+    ServicePointGeolocationBuilder<?, ?> geolocationBuilder = ServicePointGeolocation.builder()
+        .country(servicePointGeolocationModel.getCountry());
+    if (servicePointGeolocationModel.getSwissLocation() != null) {
+      geolocationBuilder
+          .swissCanton(servicePointGeolocationModel.getSwissLocation().getCanton())
+          .swissDistrictName(servicePointGeolocationModel.getSwissLocation().getDistrict().getDistrictName())
+          .swissDistrictNumber(servicePointGeolocationModel.getSwissLocation().getDistrict().getFsoNumber())
+          .swissMunicipalityNumber(servicePointGeolocationModel.getSwissLocation().getLocalityMunicipality().getFsoNumber())
+          .swissMunicipalityName(servicePointGeolocationModel.getSwissLocation().getLocalityMunicipality().getMunicipalityName())
+          .swissLocalityName(servicePointGeolocationModel.getSwissLocation().getLocalityMunicipality().getLocalityName());
+    }
+    return geolocationBuilder.spatialReference(
+        servicePointGeolocationModel.getSpatialReference())
+        .north(servicePointGeolocationModel.getNorth())
+        .east(servicePointGeolocationModel.getEast())
+        .height(servicePointGeolocationModel.getHeight())
         .build();
   }
 

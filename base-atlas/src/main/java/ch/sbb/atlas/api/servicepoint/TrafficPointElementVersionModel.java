@@ -4,20 +4,18 @@ import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.model.BaseVersionModel;
 import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
 import ch.sbb.atlas.validation.DatesValidator;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
-
-import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -66,7 +64,6 @@ public abstract class TrafficPointElementVersionModel extends BaseVersionModel i
       + "As key, the SLOID is used.", example = "ch:1:sloid:16161:1")
   private String parentSloid;
 
-  private GeolocationBaseModel trafficPointElementGeolocation;
   @NotNull
   private LocalDate validFrom;
 
@@ -75,11 +72,5 @@ public abstract class TrafficPointElementVersionModel extends BaseVersionModel i
 
   @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)", example = "5")
   private Integer etagVersion;
-
-  @JsonInclude
-  @Schema(description = "TrafficPointElementVersion has a Geolocation")
-  public boolean isHasGeolocation() {
-    return trafficPointElementGeolocation != null;
-  }
 
 }

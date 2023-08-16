@@ -1,7 +1,6 @@
 package ch.sbb.atlas.api.servicepoint;
 
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
-import ch.sbb.atlas.servicepoint.CoordinatePair;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -15,21 +14,20 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 @FieldNameConstants
-@Schema(name = "Geolocation")
-public class GeolocationBaseModel {
+@Schema(name = "GeolocationCreate")
+public class GeolocationBaseCreateModel {
 
   @Schema(description = "Coordinate system spatial reference", example = "LV95")
   @NotNull
   private SpatialReference spatialReference;
 
   @NotNull
-  private CoordinatePair lv95;
+  @Schema(description = "North longitude", example = "225738.00000000000")
+  private Double north;
 
   @NotNull
-  private CoordinatePair wgs84;
-
-  @NotNull
-  private CoordinatePair wgs84web;
+  @Schema(description = "Eastern longitude", example = "681821.00000000000")
+  private Double east;
 
   @Schema(description = "Height of the coordinate point", example = "540.20000")
   private Double height;
