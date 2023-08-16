@@ -1,6 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.mapper;
 
-import ch.sbb.atlas.api.servicepoint.GeolocationBaseModel;
+import ch.sbb.atlas.api.servicepoint.GeolocationBaseCreateModel;
+import ch.sbb.atlas.api.servicepoint.GeolocationBaseReadModel;
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.servicepoint.transformer.CoordinateTransformer;
@@ -15,32 +16,39 @@ import java.util.stream.Stream;
 @UtilityClass
 public class GeolocationMapper {
 
-  public static GeolocationBaseModel toModel(GeolocationBaseEntity geolocationBaseEntity) {
+  public static GeolocationBaseReadModel toModel(GeolocationBaseEntity geolocationBaseEntity) {
     if (geolocationBaseEntity == null) {
       return null;
     }
     Map<SpatialReference, CoordinatePair> coordinates = getTransformedCoordinates(geolocationBaseEntity);
-    return GeolocationBaseModel.builder()
+    return GeolocationBaseReadModel.builder()
         .spatialReference(geolocationBaseEntity.getSpatialReference())
         .lv95(coordinates.get(SpatialReference.LV95))
         .wgs84(coordinates.get(SpatialReference.WGS84))
-        .wgs84web(coordinates.get(SpatialReference.WGS84WEB))
         .height(geolocationBaseEntity.getHeight())
         .build();
   }
 
-  public static TrafficPointElementGeolocation toTrafficPointElementEntity(GeolocationBaseModel geolocationBaseModel) {
+  public static GeolocationBaseCreateModel toCreateModel(GeolocationBaseEntity geolocationBaseEntity) {
+    if (geolocationBaseEntity == null) {
+      return null;
+    }
+    return GeolocationBaseCreateModel.builder()
+        .spatialReference(geolocationBaseEntity.getSpatialReference())
+        .east(geolocationBaseEntity.getEast())
+        .north(geolocationBaseEntity.getNorth())
+        .height(geolocationBaseEntity.getHeight())
+        .build();
+  }
+
+  public static TrafficPointElementGeolocation toTrafficPointElementEntity(GeolocationBaseCreateModel geolocationBaseModel) {
     if (geolocationBaseModel == null) {
       return null;
     }
     return TrafficPointElementGeolocation.builder()
             .spatialReference(geolocationBaseModel.getSpatialReference())
-            .east(geolocationBaseModel.getLv95().getEast())
-            .north(geolocationBaseModel.getLv95().getNorth())
-            .east(geolocationBaseModel.getWgs84().getEast())
-            .north(geolocationBaseModel.getWgs84().getNorth())
-            .east(geolocationBaseModel.getWgs84web().getEast())
-            .north(geolocationBaseModel.getWgs84web().getNorth())
+            .east(geolocationBaseModel.getEast())
+            .north(geolocationBaseModel.getNorth())
             .height(geolocationBaseModel.getHeight())
             .build();
   }

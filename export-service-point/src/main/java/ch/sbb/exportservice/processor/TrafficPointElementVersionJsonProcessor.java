@@ -1,6 +1,6 @@
 package ch.sbb.exportservice.processor;
 
-import ch.sbb.atlas.api.servicepoint.GeolocationBaseModel;
+import ch.sbb.atlas.api.servicepoint.GeolocationBaseReadModel;
 import ch.sbb.atlas.api.servicepoint.ReadTrafficPointElementVersionModel;
 import ch.sbb.exportservice.entity.TrafficPointElementVersion;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +12,7 @@ public class TrafficPointElementVersionJsonProcessor extends BaseServicePointPro
 
     @Override
     public ReadTrafficPointElementVersionModel process(TrafficPointElementVersion version) {
-        GeolocationBaseModel geolocation = toModel(version.getTrafficPointElementGeolocation());
+        GeolocationBaseReadModel geolocation = toModel(version.getTrafficPointElementGeolocation());
 
         return ReadTrafficPointElementVersionModel.builder()
                 .creationDate(version.getCreationDate())
