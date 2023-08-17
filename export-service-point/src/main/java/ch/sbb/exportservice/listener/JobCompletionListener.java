@@ -5,12 +5,10 @@ import ch.sbb.exportservice.service.MailNotificationService;
 import ch.sbb.exportservice.service.MailProducerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.batch.core.BatchStatus;
-import org.springframework.batch.core.ExitStatus;
-import org.springframework.batch.core.JobExecution;
-import org.springframework.batch.core.JobExecutionListener;
-import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.*;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -28,9 +26,9 @@ public class JobCompletionListener implements JobExecutionListener {
   @Override
   public void afterJob(JobExecution jobExecution) {
     if (ExitStatus.FAILED.equals(jobExecution.getExitStatus())) {
-      StepExecution failedStepExecution = jobExecution.getStepExecutions().stream()
-          .filter(stepExecution -> stepExecution.getStatus() == BatchStatus.FAILED).findFirst().get();
-      sendUnsuccessffulyNotification(failedStepExecution);
+      Optional<StepExecution> failedStepExecution = jobExecution.getStepExecutions().stream()
+          .filter(stepExecution -> stepExecution.getStatus() == BatchStatus.FAILED).findFirst();
+      failedStepExecution.ifPresent(this::sendUnsuccessffulyNotification);
     }
   }
 

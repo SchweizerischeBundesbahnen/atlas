@@ -20,7 +20,7 @@ import java.util.List;
 
 @IntegrationTest
 @Transactional
-public class BaseTrafficPointElementsServiceIntegrationTest {
+public abstract class BaseTrafficPointElementsServiceIntegrationTest {
 
     @MockBean
     private TrafficPointElementValidationService trafficPointElementValidationService;
