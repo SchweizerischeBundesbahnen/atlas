@@ -4,12 +4,14 @@ import static ch.sbb.atlas.servicepointdirectory.mapper.GeolocationMapper.getTra
 
 import ch.sbb.atlas.api.servicepoint.Canton;
 import ch.sbb.atlas.api.servicepoint.DistrictModel;
+import ch.sbb.atlas.api.servicepoint.GeolocationBaseCreateModel;
 import ch.sbb.atlas.api.servicepoint.LocalityMunicipalityModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationCreateModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationReadModel;
 import ch.sbb.atlas.api.servicepoint.SwissLocation;
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
+import ch.sbb.atlas.servicepoint.transformer.CoordinateTransformer;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation.ServicePointGeolocationBuilder;
 import java.util.Map;
@@ -17,6 +19,8 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class ServicePointGeolocationMapper {
+
+  private static final CoordinateTransformer COORDINATE_TRANSFORMER = new CoordinateTransformer();
 
   public static ServicePointGeolocationReadModel toModel(ServicePointGeolocation servicePointGeolocation) {
     if (servicePointGeolocation == null) {
@@ -83,12 +87,39 @@ public class ServicePointGeolocationMapper {
           .swissMunicipalityName(servicePointGeolocationModel.getSwissLocation().getLocalityMunicipality().getMunicipalityName())
           .swissLocalityName(servicePointGeolocationModel.getSwissLocation().getLocalityMunicipality().getLocalityName());
     }
+    GeolocationBaseCreateModel transformedModel = transformLv03andWgs84(servicePointGeolocationModel);
     return geolocationBuilder.spatialReference(
-        servicePointGeolocationModel.getSpatialReference())
-        .north(servicePointGeolocationModel.getNorth())
-        .east(servicePointGeolocationModel.getEast())
+            transformedModel.getSpatialReference())
+        .north(transformedModel.getNorth())
+        .east(transformedModel.getEast())
         .height(servicePointGeolocationModel.getHeight())
         .build();
+  }
+
+  ServicePointGeolocationCreateModel transformLv03andWgs84(ServicePointGeolocationCreateModel servicePointGeolocationModel) {
+    if (servicePointGeolocationModel.getSpatialReference() == SpatialReference.LV03) {
+      CoordinatePair transformedCoordinates = COORDINATE_TRANSFORMER.transform(CoordinatePair.builder()
+          .spatialReference(SpatialReference.LV03)
+          .east(servicePointGeolocationModel.getEast())
+          .north(servicePointGeolocationModel.getNorth())
+          .build(), SpatialReference.LV95);
+      servicePointGeolocationModel.setSpatialReference(SpatialReference.LV95);
+      servicePointGeolocationModel.setEast(transformedCoordinates.getEast());
+      servicePointGeolocationModel.setNorth(transformedCoordinates.getNorth());
+      return servicePointGeolocationModel;
+    }
+    if (servicePointGeolocationModel.getSpatialReference() == SpatialReference.WGS84WEB) {
+      CoordinatePair transformedCoordinates = COORDINATE_TRANSFORMER.transform(CoordinatePair.builder()
+          .spatialReference(SpatialReference.WGS84WEB)
+          .east(servicePointGeolocationModel.getEast())
+          .north(servicePointGeolocationModel.getNorth())
+          .build(), SpatialReference.WGS84);
+      servicePointGeolocationModel.setSpatialReference(SpatialReference.WGS84);
+      servicePointGeolocationModel.setEast(transformedCoordinates.getEast());
+      servicePointGeolocationModel.setNorth(transformedCoordinates.getNorth());
+      return servicePointGeolocationModel;
+    }
+    return servicePointGeolocationModel;
   }
 
   private static Canton getCanton(ServicePointGeolocation servicePointGeolocation) {
