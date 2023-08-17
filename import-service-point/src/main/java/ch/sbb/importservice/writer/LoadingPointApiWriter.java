@@ -1,6 +1,10 @@
 package ch.sbb.importservice.writer;
 
-import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointCsvModel;
+import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
+import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointCsvModelContainer;
+import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointImportRequestModel;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.ItemWriter;
@@ -8,12 +12,25 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-public class LoadingPointApiWriter extends BaseApiWriter implements ItemWriter<LoadingPointCsvModel> {
+public class LoadingPointApiWriter extends BaseApiWriter implements ItemWriter<LoadingPointCsvModelContainer> {
 
   @Override
-  public void write(Chunk<? extends LoadingPointCsvModel> loadingPointCsvModels) {
-    log.info("Call for LoadingPointService not configured...");
-    log.info("Prepared {} loadingPointCsvModels to send to LoadingPointService", loadingPointCsvModels.size());
+  public void write(Chunk<? extends LoadingPointCsvModelContainer> loadingPointCsvModelContainerChunk) {
+    log.info("Prepared {} loadingPointCsvModelContainers to send to ServicePointDirectory",
+        loadingPointCsvModelContainerChunk.size());
+
+    List<LoadingPointCsvModelContainer> loadingPointCsvModelContainerList = new ArrayList<>(
+        loadingPointCsvModelContainerChunk.getItems());
+    LoadingPointImportRequestModel loadingPointImportRequestModel = new LoadingPointImportRequestModel(
+        loadingPointCsvModelContainerList);
+
+    Long stepExecutionId = stepExecution.getId();
+    List<ItemImportResult> loadingPointItemImportResults = sePoDiClientService.postLoadingPoints(
+        loadingPointImportRequestModel);
+
+    for (ItemImportResult result : loadingPointItemImportResults) {
+      saveItemProcessed(stepExecutionId, result.getItemNumber(), result.getStatus(), result.getMessage());
+    }
   }
 
 }
