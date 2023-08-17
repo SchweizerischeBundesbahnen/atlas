@@ -4,8 +4,8 @@ import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel;
+import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointImportRequestModel;
-import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointItemImportResult;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointApiV1;
@@ -71,7 +71,7 @@ public class ServicePointController implements ServicePointApiV1 {
   }
 
   @Override
-  public List<ServicePointItemImportResult> importServicePoints(ServicePointImportRequestModel servicePointImportRequestModel) {
+  public List<ItemImportResult> importServicePoints(ServicePointImportRequestModel servicePointImportRequestModel) {
     return servicePointImportService.importServicePoints(servicePointImportRequestModel.getServicePointCsvModelContainers());
   }
 
