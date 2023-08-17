@@ -3,20 +3,16 @@ package ch.sbb.atlas.servicepointdirectory.entity;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.converter.ServicePointNumberConverter;
-import ch.sbb.atlas.servicepointdirectory.entity.geolocation.LoadingPointGeolocation;
 import ch.sbb.atlas.validation.DatesValidator;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.versioning.model.Versionable;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -39,7 +35,7 @@ import lombok.experimental.SuperBuilder;
 @FieldNameConstants
 @Entity(name = "loading_point_version")
 @AtlasVersionable
-public class LoadingPointVersion extends BaseDidokImportEntity implements Versionable, DatesValidator {
+public class LoadingPointVersion extends BasePointVersion<LoadingPointVersion> implements Versionable, DatesValidator {
 
   private static final String VERSION_SEQ = "loading_point_version_seq";
 
@@ -70,10 +66,6 @@ public class LoadingPointVersion extends BaseDidokImportEntity implements Versio
   @Valid
   private ServicePointNumber servicePointNumber;
 
-  @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "loading_point_geolocation_id", referencedColumnName = "id")
-  private LoadingPointGeolocation loadingPointGeolocation;
-
   @NotNull
   @Column(columnDefinition = "DATE")
   private LocalDate validFrom;
@@ -81,9 +73,5 @@ public class LoadingPointVersion extends BaseDidokImportEntity implements Versio
   @NotNull
   @Column(columnDefinition = "DATE")
   private LocalDate validTo;
-
-  public boolean hasGeolocation() {
-    return loadingPointGeolocation != null;
-  }
 
 }

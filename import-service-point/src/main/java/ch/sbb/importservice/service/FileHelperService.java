@@ -19,9 +19,12 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class FileHelperService {
 
+  public static final String SERVICE_POINT_FILE_PREFIX = "DIDOK3_DIENSTSTELLEN_ALL_V_3_";
+  public static final String LOADING_POINT_FILE_PREFIX = "DIDOK3_LADESTELLEN_";
+  public static final String TRAFFIC_POINT_FILE_PREFIX = "DIDOK3_VERKEHRSPUNKTELEMENTE_ALL_V_1_";
   private static final String SERVICEPOINT_DIDOK_DIR_NAME = "servicepoint_didok";
-  private final AmazonService amazonService;
 
+  private final AmazonService amazonService;
   private final FileService fileService;
 
   public File getFileFromMultipart(MultipartFile multipartFile) {

@@ -1,36 +1,51 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+
+import ch.sbb.atlas.imports.servicepoint.BaseDidokCsvModel;
+import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointCsvModel;
+import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointCsvModelContainer;
+import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointImportRequestModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion.Fields;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
-import ch.sbb.atlas.servicepointdirectory.entity.geolocation.LoadingPointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.repository.LoadingPointVersionRepository;
+import ch.sbb.atlas.servicepointdirectory.service.CrossValidationService;
+import ch.sbb.atlas.servicepointdirectory.service.loadingpoint.LoadingPointImportService;
+import java.io.InputStream;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.LV95;
-import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 public class LoadingPointControllerApiTest extends BaseControllerApiTest {
 
+  @MockBean
+  private CrossValidationService crossValidationServiceMock;
+
   private final LoadingPointVersionRepository repository;
-
   private final ServicePointVersionRepository servicePointVersionRepository;
-  private LoadingPointVersion loadingPointVersion;
 
+  private LoadingPointVersion loadingPointVersion;
   private ServicePointVersion servicePointVersion;
 
   @Autowired
@@ -41,18 +56,6 @@ public class LoadingPointControllerApiTest extends BaseControllerApiTest {
 
   @BeforeEach
   void createDefaultVersion() {
-    LoadingPointGeolocation loadingPointGeolocation = LoadingPointGeolocation
-        .builder()
-        .spatialReference(LV95)
-        .east(2506426.604)
-        .north(1116455.883)
-        .height(-9999.0)
-        .creator("fs45117")
-        .creationDate(LocalDateTime.of(2017, 12, 4, 13, 11, 3))
-        .editor("GSU_DIDOK")
-        .editionDate(LocalDateTime.of(2018, 6, 28, 11, 48, 56))
-        .build();
-
     servicePointVersion = servicePointVersionRepository.save(ServicePointTestData.createAbroadServicePointVersion());
 
     LoadingPointVersion loadingPointVersion = LoadingPointVersion
@@ -68,10 +71,7 @@ public class LoadingPointControllerApiTest extends BaseControllerApiTest {
         .creationDate(LocalDateTime.of(2017, 12, 4, 13, 11, 3))
         .editor("GSU_DIDOK")
         .editionDate(LocalDateTime.of(2018, 6, 28, 11, 48, 56))
-        .loadingPointGeolocation(loadingPointGeolocation)
         .build();
-
-    loadingPointGeolocation.setLoadingPointVersion(loadingPointVersion);
 
     this.loadingPointVersion = repository.save(loadingPointVersion);
   }
@@ -91,8 +91,6 @@ public class LoadingPointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[0]." + Fields.number, is(4201)))
         .andExpect(jsonPath("$[0]." + Fields.connectionPoint, is(false)))
         .andExpect(jsonPath("$[0].servicePointNumber.number", is(ServicePointNumber.ofNumberWithoutCheckDigit(servicePointNumber).getNumber())))
-        .andExpect(jsonPath("$[0].hasGeolocation", is(true)))
-        .andExpect(jsonPath("$[0].loadingPointGeolocation.lv95.north", is(1116455.883)))
         .andExpect(jsonPath("$[0].creationDate", is("2017-12-04T13:11:03")))
         .andExpect(jsonPath("$[0].creator", is("fs45117")));
   }
@@ -158,6 +156,77 @@ public class LoadingPointControllerApiTest extends BaseControllerApiTest {
   void shouldFailOnInvalidLoadingPointNumber() throws Exception {
     mvc.perform(get("/v1/loading-points/9123"))
         .andExpect(status().isNotFound());
+  }
+
+  @Test
+  void shouldImportLoadingPointsSuccessfully() throws Exception {
+    Mockito.doNothing().when(crossValidationServiceMock).validateServicePointNumberExists(any());
+
+    try (InputStream csvStream = this.getClass().getResourceAsStream("/LADESTELLEN_VERSIONING.csv")) {
+      // given
+      List<LoadingPointCsvModel> loadingPointCsvModels = LoadingPointImportService.parseLoadingPoints(csvStream);
+      List<LoadingPointCsvModel> loadingPointCsvModelsOrderedByValidFrom = loadingPointCsvModels.stream()
+          .sorted(Comparator.comparing(BaseDidokCsvModel::getValidFrom))
+          .toList();
+      LoadingPointImportRequestModel importRequestModel = new LoadingPointImportRequestModel(
+          List.of(
+              LoadingPointCsvModelContainer
+                  .builder()
+                  .didokCode(83017186)
+                  .loadingPointNumber(4600)
+                  .csvModelList(loadingPointCsvModelsOrderedByValidFrom)
+                  .build()
+          )
+      );
+      String jsonString = mapper.writeValueAsString(importRequestModel);
+
+      // when
+      mvc.perform(post("/v1/loading-points/import")
+              .content(jsonString)
+              .contentType(contentType))
+          // then
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$", hasSize(2)));
+    }
+  }
+
+  @Test
+  void shouldReturnBadRequestOnEmptyListImportRequest() throws Exception {
+    // given
+    LoadingPointImportRequestModel importRequestModel = new LoadingPointImportRequestModel(Collections.emptyList());
+    String jsonString = mapper.writeValueAsString(importRequestModel);
+
+    // when
+    mvc.perform(post("/v1/loading-points/import")
+            .content(jsonString)
+            .contentType(contentType))
+        // then
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")));
+  }
+
+  @Test
+  void shouldReturnBadRequestOnNullListImportRequest() throws Exception {
+    // given
+    LoadingPointImportRequestModel importRequestModel = new LoadingPointImportRequestModel();
+    String jsonString = mapper.writeValueAsString(importRequestModel);
+
+    // when
+    mvc.perform(post("/v1/loading-points/import")
+            .content(jsonString)
+            .contentType(contentType))
+        // then
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")));
+  }
+
+  @Test
+  void shouldReturnBadRequestOnNullImportRequestModel() throws Exception {
+    // given & when
+    mvc.perform(post("/v1/loading-points/import")
+            .contentType(contentType))
+        // then
+        .andExpect(status().isBadRequest());
   }
 
 }

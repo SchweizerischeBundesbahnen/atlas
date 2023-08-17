@@ -1,7 +1,5 @@
 package ch.sbb.atlas.servicepointdirectory.model.search;
 
-import static ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion.Fields.number;
-
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.searching.SearchRestrictions;
 import ch.sbb.atlas.searching.SpecificationBuilder;
@@ -51,7 +49,7 @@ public class ServicePointSearchRestrictions extends SearchRestrictions<ServicePo
   protected SpecificationBuilder<ServicePointVersion> specificationBuilder() {
     return SpecificationBuilder.<ServicePointVersion>builder()
         .stringAttributes(
-            List.of(number,
+            List.of(ServicePointVersion.Fields.number,
                 ServicePointVersion.Fields.numberShort,
                 ServicePointVersion.Fields.designationOfficial))
         .validFromAttribute(ServicePointVersion_.validFrom)

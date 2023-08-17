@@ -46,11 +46,11 @@ public class GeolocationMapper {
       return null;
     }
     return TrafficPointElementGeolocation.builder()
-            .spatialReference(geolocationBaseModel.getSpatialReference())
-            .east(geolocationBaseModel.getEast())
-            .north(geolocationBaseModel.getNorth())
-            .height(geolocationBaseModel.getHeight())
-            .build();
+        .spatialReference(geolocationBaseModel.getSpatialReference())
+        .east(geolocationBaseModel.getEast())
+        .north(geolocationBaseModel.getNorth())
+        .height(geolocationBaseModel.getHeight())
+        .build();
   }
 
   static public Map<SpatialReference, CoordinatePair> getTransformedCoordinates(GeolocationBaseEntity entity) {

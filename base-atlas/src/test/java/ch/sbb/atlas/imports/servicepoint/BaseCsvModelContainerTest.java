@@ -1,20 +1,22 @@
-package ch.sbb.atlas.imports.servicepoint.trafficpoint;
+package ch.sbb.atlas.imports.servicepoint;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointCsvModelContainer;
+import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointElementCsvModel;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-class TrafficPointCsvModelContainerTest {
+class BaseCsvModelContainerTest {
 
   @Test
   void shouldMergeWhenDatesAreSequentialAndModelsAreEqual() {
     // given
     TrafficPointCsvModelContainer container = TrafficPointCsvModelContainer.builder()
         .sloid("ch:1:sloid:123")
-        .trafficPointCsvModelList(new ArrayList<>(
+        .csvModelList(new ArrayList<>(
             List.of(
                 TrafficPointElementCsvModel.builder()
                     .validFrom(LocalDate.of(2020, 1, 1))
@@ -44,13 +46,13 @@ class TrafficPointCsvModelContainerTest {
     container.mergeWhenDatesAreSequentialAndModelsAreEqual();
 
     // then
-    assertThat(container.getTrafficPointCsvModelList()).hasSize(2);
-    assertThat(container.getTrafficPointCsvModelList().get(0).getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
-    assertThat(container.getTrafficPointCsvModelList().get(0).getValidTo()).isEqualTo(LocalDate.of(2020, 12, 31));
-    assertThat(container.getTrafficPointCsvModelList().get(0).getHeight()).isEqualTo(100.12);
+    assertThat(container.getCsvModelList()).hasSize(2);
+    assertThat(container.getCsvModelList().get(0).getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
+    assertThat(container.getCsvModelList().get(0).getValidTo()).isEqualTo(LocalDate.of(2020, 12, 31));
+    assertThat(container.getCsvModelList().get(0).getHeight()).isEqualTo(100.12);
 
-    assertThat(container.getTrafficPointCsvModelList().get(1).getValidFrom()).isEqualTo(LocalDate.of(2021, 1, 1));
-    assertThat(container.getTrafficPointCsvModelList().get(1).getValidTo()).isEqualTo(LocalDate.of(2023, 12, 31));
-    assertThat(container.getTrafficPointCsvModelList().get(1).getHeight()).isEqualTo(500.88);
+    assertThat(container.getCsvModelList().get(1).getValidFrom()).isEqualTo(LocalDate.of(2021, 1, 1));
+    assertThat(container.getCsvModelList().get(1).getValidTo()).isEqualTo(LocalDate.of(2023, 12, 31));
+    assertThat(container.getCsvModelList().get(1).getHeight()).isEqualTo(500.88);
   }
 }
