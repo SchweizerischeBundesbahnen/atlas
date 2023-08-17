@@ -1,6 +1,6 @@
-package ch.sbb.atlas.imports.servicepoint.servicepoint;
+package ch.sbb.atlas.imports.servicepoint;
 
-import ch.sbb.atlas.imports.servicepoint.model.ItemImportResponseStatus;
+import ch.sbb.atlas.imports.servicepoint.enumeration.ItemImportResponseStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
@@ -12,10 +12,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-@Schema(name = "ServicePointItemImportResult")
-public class ServicePointItemImportResult {
+@Schema(name = "ItemImportResult")
+public class ItemImportResult {
 
-  private Integer itemNumber;
+  private String itemNumber;
 
   private LocalDate validFrom;
 
@@ -25,14 +25,14 @@ public class ServicePointItemImportResult {
 
   private String message;
 
-  public static ServicePointItemImportResultBuilder successResultBuilder() {
-    return ServicePointItemImportResult.builder()
+  public static ItemImportResultBuilder successResultBuilder() {
+    return ItemImportResult.builder()
         .status(ItemImportResponseStatus.SUCCESS)
         .message("[SUCCESS]: This version was imported successfully");
   }
 
-  public static ServicePointItemImportResultBuilder failedResultBuilder(Exception exception) {
-    return ServicePointItemImportResult.builder()
+  public static ItemImportResultBuilder failedResultBuilder(Exception exception) {
+    return ItemImportResult.builder()
         .status(ItemImportResponseStatus.FAILED)
         .message("[FAILED]: This version could not be imported due to: " + exception.getMessage());
   }

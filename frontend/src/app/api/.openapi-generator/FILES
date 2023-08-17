@@ -34,7 +34,6 @@ model/category.ts
 model/client.ts
 model/clientCredential.ts
 model/clientCredentialPermissionCreate.ts
-model/codeAndDesignation.ts
 model/company.ts
 model/containerBusinessOrganisation.ts
 model/containerBusinessOrganisationVersion.ts
@@ -74,11 +73,15 @@ model/inlineObject3.ts
 model/inlineObject4.ts
 model/inlineObject5.ts
 model/itemImportResponseStatus.ts
+model/itemImportResult.ts
 model/line.ts
 model/lineType.ts
 model/lineVersion.ts
 model/lineVersionSnapshot.ts
 model/lineVersionWorkflow.ts
+model/loadingPointCsvModel.ts
+model/loadingPointCsvModelContainer.ts
+model/loadingPointImportRequest.ts
 model/loadingPointVersion.ts
 model/localityMunicipality.ts
 model/meanOfTransport.ts
@@ -101,7 +104,6 @@ model/servicePointFotCommentModel.ts
 model/servicePointGeolocation.ts
 model/servicePointGeolocationCreate.ts
 model/servicePointImportRequest.ts
-model/servicePointItemImportResult.ts
 model/servicePointNumber.ts
 model/spatialReference.ts
 model/statementStatus.ts
@@ -123,7 +125,6 @@ model/trafficPointCsvModelContainer.ts
 model/trafficPointElementCsvModel.ts
 model/trafficPointElementType.ts
 model/trafficPointImportRequest.ts
-model/trafficPointItemImportResult.ts
 model/transportCompany.ts
 model/transportCompanyBoRelation.ts
 model/transportCompanyRelation.ts

@@ -3,7 +3,6 @@ package ch.sbb.atlas.servicepointdirectory.repository;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
-import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion.Fields;
 import java.time.LocalDate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -23,12 +22,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
 
-
 @Repository
 public interface ServicePointVersionRepository extends JpaRepository<ServicePointVersion, Long>,
     JpaSpecificationExecutor<ServicePointVersion> {
 
-  @EntityGraph(attributePaths = {Fields.servicePointGeolocation, Fields.categories, Fields.meansOfTransport})
+  @EntityGraph(attributePaths = {ServicePointVersion.Fields.servicePointGeolocation, ServicePointVersion.Fields.categories,
+      ServicePointVersion.Fields.meansOfTransport})
   List<ServicePointVersion> findAllByNumberOrderByValidFrom(ServicePointNumber number);
 
   boolean existsByNumber(ServicePointNumber servicePointNumber);

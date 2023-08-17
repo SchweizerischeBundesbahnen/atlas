@@ -1,8 +1,8 @@
 package ch.sbb.importservice.writer;
 
+import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointCsvModelContainer;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointImportRequestModel;
-import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointItemImportResult;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -25,10 +25,10 @@ public class TrafficPointApiWriter extends BaseApiWriter implements ItemWriter<T
     trafficPointImportRequestModel.setTrafficPointCsvModelContainers(trafficPointCsvModelContainerList);
 
     Long stepExecutionId = stepExecution.getId();
-    List<TrafficPointItemImportResult> trafficPointItemImportResults =
+    List<ItemImportResult> trafficPointItemImportResults =
         sePoDiClientService.postTrafficPoints(trafficPointImportRequestModel);
 
-    for (TrafficPointItemImportResult result : trafficPointItemImportResults) {
+    for (ItemImportResult result : trafficPointItemImportResults) {
       saveItemProcessed(stepExecutionId, result.getItemNumber(), result.getStatus(), result.getMessage());
     }
   }

@@ -4,8 +4,11 @@ import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.model.search.TrafficPointElementSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepository;
+import ch.sbb.atlas.servicepointdirectory.service.CrossValidationService;
+import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.StaleObjectStateException;
@@ -18,63 +21,69 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Getter
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
 public class TrafficPointElementService {
 
-    private final TrafficPointElementVersionRepository trafficPointElementVersionRepository;
-    private final VersionableService versionableService;
-    private final TrafficPointElementValidationService trafficPointElementValidationService;
+  private final TrafficPointElementVersionRepository trafficPointElementVersionRepository;
+  private final VersionableService versionableService;
+  private final CrossValidationService crossValidationService;
 
-    public Page<TrafficPointElementVersion> findAll(TrafficPointElementSearchRestrictions searchRestrictions) {
-        return trafficPointElementVersionRepository.findAll(searchRestrictions.getSpecification(),
-            searchRestrictions.getPageable());
+  public Page<TrafficPointElementVersion> findAll(TrafficPointElementSearchRestrictions searchRestrictions) {
+    return trafficPointElementVersionRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
+  }
+
+  public List<TrafficPointElementVersion> findBySloidOrderByValidFrom(String sloid) {
+    return trafficPointElementVersionRepository.findAllBySloidOrderByValidFrom(sloid);
+  }
+
+  public Optional<TrafficPointElementVersion> findById(Long id) {
+    return trafficPointElementVersionRepository.findById(id);
+  }
+
+  public boolean isTrafficPointElementExisting(String sloid) {
+    return trafficPointElementVersionRepository.existsBySloid(sloid);
+  }
+
+  @PreAuthorize(
+      "@countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreateOrEditTrafficPoint"
+          + "(#servicePointVersions, "
+          + "T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
+  public TrafficPointElementVersion checkPermissionRightsAndSave(TrafficPointElementVersion trafficPointElementVersion,
+      List<ServicePointVersion> servicePointVersions) {
+    return save(trafficPointElementVersion);
+  }
+
+  public TrafficPointElementVersion save(TrafficPointElementVersion trafficPointElementVersion) {
+    crossValidationService.validateServicePointNumberExists(trafficPointElementVersion.getServicePointNumber());
+    return trafficPointElementVersionRepository.saveAndFlush(trafficPointElementVersion);
+  }
+
+  @PreAuthorize(
+      "@countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreateOrEditTrafficPoint"
+          + "(#currentVersions, "
+          + "T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
+  public void checkPermissionRightsAndUpdate(
+      TrafficPointElementVersion currentVersionTPEV,
+      TrafficPointElementVersion editedVersionTPEV,
+      List<ServicePointVersion> currentVersions) {
+    updateTrafficPointElementVersion(currentVersionTPEV, editedVersionTPEV);
+  }
+
+  public void updateTrafficPointElementVersion(TrafficPointElementVersion currentVersion,
+      TrafficPointElementVersion editedVersion) {
+    trafficPointElementVersionRepository.incrementVersion(currentVersion.getSloid());
+    if (editedVersion.getVersion() != null && !currentVersion.getVersion().equals(editedVersion.getVersion())) {
+      throw new StaleObjectStateException(ServicePointVersion.class.getSimpleName(), "version");
     }
 
-    public List<TrafficPointElementVersion> findBySloidOrderByValidFrom(String sloid) {
-        return trafficPointElementVersionRepository.findAllBySloidOrderByValidFrom(sloid);
-    }
+    List<TrafficPointElementVersion> dbVersions = findBySloidOrderByValidFrom(currentVersion.getSloid());
+    List<VersionedObject> versionedObjects = versionableService.versioningObjects(currentVersion, editedVersion,
+        dbVersions);
+    versionableService.applyVersioning(TrafficPointElementVersion.class, versionedObjects, this::save,
+        new ApplyVersioningDeleteByIdLongConsumer(trafficPointElementVersionRepository));
+  }
 
-    public Optional<TrafficPointElementVersion> findById(Long id) {
-        return trafficPointElementVersionRepository.findById(id);
-    }
-
-    public boolean isTrafficPointElementExisting(String sloid) {
-        return trafficPointElementVersionRepository.existsBySloid(sloid);
-    }
-
-    @PreAuthorize("@countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreateOrEditTrafficPoint(#servicePointVersions, "
-            + "T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
-    public TrafficPointElementVersion checkPermissionRightsAndSave(TrafficPointElementVersion trafficPointElementVersion, List<ServicePointVersion> servicePointVersions) {
-        return save(trafficPointElementVersion);
-    }
-
-    public TrafficPointElementVersion save(TrafficPointElementVersion trafficPointElementVersion) {
-        trafficPointElementValidationService.validateServicePointNumberExists(trafficPointElementVersion.getServicePointNumber());
-        return trafficPointElementVersionRepository.saveAndFlush(trafficPointElementVersion);
-    }
-
-    public void deleteById(Long id) {
-        trafficPointElementVersionRepository.deleteById(id);
-        trafficPointElementVersionRepository.flush();
-    }
-
-    @PreAuthorize("@countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreateOrEditTrafficPoint(#currentVersions, "
-            + "T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
-    public void checkPermissionRightsAndUpdate(TrafficPointElementVersion currentVersionTPEV, TrafficPointElementVersion editedVersionTPEV, List<ServicePointVersion> currentVersions) {
-        updateTrafficPointElementVersion(currentVersionTPEV, editedVersionTPEV);
-    }
-
-    public void updateTrafficPointElementVersion(TrafficPointElementVersion currentVersion, TrafficPointElementVersion editedVersion) {
-        trafficPointElementVersionRepository.incrementVersion(currentVersion.getSloid());
-        if (editedVersion.getVersion() != null && !currentVersion.getVersion().equals(editedVersion.getVersion())) {
-            throw new StaleObjectStateException(ServicePointVersion.class.getSimpleName(), "version");
-        }
-
-        List<TrafficPointElementVersion> dbVersions = findBySloidOrderByValidFrom(currentVersion.getSloid());
-        List<VersionedObject> versionedObjects = versionableService.versioningObjects(currentVersion, editedVersion,
-                dbVersions);
-        versionableService.applyVersioning(TrafficPointElementVersion.class, versionedObjects, this::save, this::deleteById);
-    }
 }

@@ -1,13 +1,15 @@
 package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
 
+import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
+import ch.sbb.atlas.imports.servicepoint.ItemImportResult.ItemImportResultBuilder;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointCsvModelContainer;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointElementCsvModel;
-import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointItemImportResult;
-import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointItemImportResult.TrafficPointItemImportResultBuilder;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
+import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
 import ch.sbb.atlas.servicepointdirectory.service.BaseImportService;
 import ch.sbb.atlas.servicepointdirectory.service.BasePointUtility;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
+import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -19,6 +21,7 @@ import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,6 +31,41 @@ public class TrafficPointElementImportService extends BaseImportService<TrafficP
 
   private final TrafficPointElementService trafficPointElementService;
   private final VersionableService versionableService;
+
+  @Override
+  protected void save(TrafficPointElementVersion trafficPointElementVersion) {
+    trafficPointElementService.save(trafficPointElementVersion);
+  }
+
+  @Override
+  protected String[] getIgnoredPropertiesWithoutGeolocation() {
+    return new String[]{
+        TrafficPointElementVersion.Fields.validFrom,
+        TrafficPointElementVersion.Fields.validTo,
+        TrafficPointElementVersion.Fields.id
+    };
+  }
+
+  @Override
+  protected String[] getIgnoredPropertiesWithGeolocation() {
+    return ArrayUtils.add(getIgnoredPropertiesWithoutGeolocation(),
+        TrafficPointElementVersion.Fields.trafficPointElementGeolocation);
+  }
+
+  @Override
+  protected String getIgnoredReferenceFieldOnGeolocationEntity() {
+    return TrafficPointElementGeolocation.Fields.trafficPointElementVersion;
+  }
+
+  @Override
+  protected ItemImportResult addInfoToItemImportResult(ItemImportResultBuilder itemImportResultBuilder,
+      TrafficPointElementVersion trafficPointElementVersion) {
+    return itemImportResultBuilder
+        .validFrom(trafficPointElementVersion.getValidFrom())
+        .validTo(trafficPointElementVersion.getValidTo())
+        .itemNumber(trafficPointElementVersion.getSloid())
+        .build();
+  }
 
   public static List<TrafficPointElementCsvModel> parseTrafficPointElements(InputStream inputStream)
       throws IOException {
@@ -41,12 +79,12 @@ public class TrafficPointElementImportService extends BaseImportService<TrafficP
     return trafficPointElements;
   }
 
-  public List<TrafficPointItemImportResult> importTrafficPoints(
+  public List<ItemImportResult> importTrafficPoints(
       List<TrafficPointCsvModelContainer> trafficPointCsvModelContainers
   ) {
-    List<TrafficPointItemImportResult> importResults = new ArrayList<>();
+    List<ItemImportResult> importResults = new ArrayList<>();
     for (TrafficPointCsvModelContainer container : trafficPointCsvModelContainers) {
-      List<TrafficPointElementVersion> trafficPointElementVersions = container.getTrafficPointCsvModelList()
+      List<TrafficPointElementVersion> trafficPointElementVersions = container.getCsvModelList()
           .stream()
           .map(new TrafficPointElementCsvToEntityMapper())
           .sorted(Comparator.comparing(TrafficPointElementVersion::getValidFrom))
@@ -57,20 +95,15 @@ public class TrafficPointElementImportService extends BaseImportService<TrafficP
         boolean trafficPointElementExisting = trafficPointElementService.isTrafficPointElementExisting(
             trafficPointElementVersion.getSloid());
         if (trafficPointElementExisting) {
-          TrafficPointItemImportResult updateResult = updateTrafficPointVersion(trafficPointElementVersion);
+          ItemImportResult updateResult = updateTrafficPointVersion(trafficPointElementVersion);
           importResults.add(updateResult);
         } else {
-          TrafficPointItemImportResult saveResult = saveTrafficPointVersion(trafficPointElementVersion);
+          ItemImportResult saveResult = saveTrafficPointVersion(trafficPointElementVersion);
           importResults.add(saveResult);
         }
       }
     }
     return importResults;
-  }
-
-  @Override
-  protected void save(TrafficPointElementVersion trafficPointElementVersion) {
-    trafficPointElementService.save(trafficPointElementVersion);
   }
 
   void updateTrafficPointElementVersionImport(TrafficPointElementVersion edited) {
@@ -81,10 +114,10 @@ public class TrafficPointElementImportService extends BaseImportService<TrafficP
     BasePointUtility.addCreateAndEditDetailsToGeolocationPropertyFromVersionedObjects(versionedObjects,
         TrafficPointElementVersion.Fields.trafficPointElementGeolocation);
     versionableService.applyVersioning(TrafficPointElementVersion.class, versionedObjects, trafficPointElementService::save,
-        trafficPointElementService::deleteById);
+        new ApplyVersioningDeleteByIdLongConsumer(trafficPointElementService.getTrafficPointElementVersionRepository()));
   }
 
-  private TrafficPointItemImportResult updateTrafficPointVersion(TrafficPointElementVersion trafficPointElementVersion) {
+  private ItemImportResult updateTrafficPointVersion(TrafficPointElementVersion trafficPointElementVersion) {
     try {
       updateTrafficPointElementVersionImport(trafficPointElementVersion);
       return buildSuccessImportResult(trafficPointElementVersion);
@@ -102,7 +135,7 @@ public class TrafficPointElementImportService extends BaseImportService<TrafficP
     }
   }
 
-  private TrafficPointItemImportResult saveTrafficPointVersion(TrafficPointElementVersion trafficPointElementVersion) {
+  private ItemImportResult saveTrafficPointVersion(TrafficPointElementVersion trafficPointElementVersion) {
     try {
       TrafficPointElementVersion savedTrafficPointVersion = trafficPointElementService.save(trafficPointElementVersion);
       return buildSuccessImportResult(savedTrafficPointVersion);
@@ -110,27 +143,6 @@ public class TrafficPointElementImportService extends BaseImportService<TrafficP
       log.error("[Traffic-Point Import]: Error during save with sloid: " + trafficPointElementVersion.getSloid(), exception);
       return buildFailedImportResult(trafficPointElementVersion, exception);
     }
-  }
-
-  private TrafficPointItemImportResult buildSuccessImportResult(TrafficPointElementVersion trafficPointElementVersion) {
-    TrafficPointItemImportResultBuilder successResultBuilder = TrafficPointItemImportResult.successResultBuilder();
-    return addTrafficPointInfoTo(successResultBuilder, trafficPointElementVersion).build();
-  }
-
-  private TrafficPointItemImportResult buildFailedImportResult(TrafficPointElementVersion trafficPointElementVersion,
-      Exception exception) {
-    TrafficPointItemImportResultBuilder failedResultBuilder = TrafficPointItemImportResult.failedResultBuilder(exception);
-    return addTrafficPointInfoTo(failedResultBuilder, trafficPointElementVersion).build();
-  }
-
-  private TrafficPointItemImportResultBuilder addTrafficPointInfoTo(
-      TrafficPointItemImportResultBuilder trafficPointItemImportResultBuilder,
-      TrafficPointElementVersion trafficPointElementVersion
-  ) {
-    return trafficPointItemImportResultBuilder
-        .validFrom(trafficPointElementVersion.getValidFrom())
-        .validTo(trafficPointElementVersion.getValidTo())
-        .itemNumber(trafficPointElementVersion.getSloid());
   }
 
 }

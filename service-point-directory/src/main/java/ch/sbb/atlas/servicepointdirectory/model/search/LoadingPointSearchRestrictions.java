@@ -4,7 +4,6 @@ import ch.sbb.atlas.searching.SpecificationBuilder;
 import ch.sbb.atlas.searching.specification.ValidOrEditionTimerangeSpecification;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
-import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion.Fields;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion_;
 import ch.sbb.atlas.servicepointdirectory.service.loadingpoint.LoadingPointElementRequestParams;
 import ch.sbb.atlas.servicepointdirectory.service.loadingpoint.LoadingPointServicePointSpecification;
@@ -32,8 +31,10 @@ public class LoadingPointSearchRestrictions {
     public Specification<LoadingPointVersion> getSpecification() {
         return specBuilder().searchCriteriaSpecification(searchCriterias)
                 .and(specBuilder().validOnSpecification(Optional.ofNullable(loadingPointElementRequestParams.getValidOn())))
-                .and(specBuilder().inSpecification(loadingPointElementRequestParams.getNumbers(), Fields.number))
-                .and(specBuilder().inSpecification(loadingPointElementRequestParams.getServicePointNumbers(),Fields.servicePointNumber))
+                .and(specBuilder().inSpecification(loadingPointElementRequestParams.getNumbers(),
+                    LoadingPointVersion.Fields.number))
+                .and(specBuilder().inSpecification(loadingPointElementRequestParams.getServicePointNumbers(),
+                    LoadingPointVersion.Fields.servicePointNumber))
                 .and(new LoadingPointServicePointSpecification<>(
                         loadingPointElementRequestParams.getSboids(),
                         loadingPointElementRequestParams.getServicePointNumbersShorts(),
@@ -51,7 +52,7 @@ public class LoadingPointSearchRestrictions {
 
     protected SpecificationBuilder<LoadingPointVersion> specBuilder() {
         return SpecificationBuilder.<LoadingPointVersion>builder()
-                .stringAttributes(List.of(Fields.number))
+                .stringAttributes(List.of(LoadingPointVersion.Fields.number))
                 .validFromAttribute(LoadingPointVersion_.validFrom)
                 .validToAttribute(LoadingPointVersion_.validTo)
                 .build();
