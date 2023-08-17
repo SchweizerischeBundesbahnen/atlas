@@ -38,14 +38,14 @@ include::../release-notes.adoc[]
 
 = Import Service Point
 
-== Trigger import Service Point - Successfully
+== Trigger import Service Point by providing file (Massenimport) - Successfully
 
-include::{snippets}/import-service-point-batch-controller-api-v1-test/should-post-service-point-import-batch-successfully/auto-section.adoc[]
+include::{snippets}/import-service-point-batch-controller-test/should-post-service-point-import-batch-with-file-parameter-successfully/auto-section.adoc[]
 
-== Trigger import Service Point by providing file (Massenimport)- Successfully
+== Trigger import Traffic Point by providing file (Massenimport) - Successfully
 
-include::{snippets}/import-service-point-batch-controller-api-v1-test/should-post-service-point-import-batch-with-file-parameter-successfully/auto-section.adoc[]
+include::{snippets}/import-service-point-batch-controller-test/should-post-traffic-point-import-with-file-parameter-successfully/auto-section.adoc[]
 
-== Trigger import Service Point by providing file (Massenimport)- Unsuccessfully
+== Trigger import Loading Point by providing file (Massenimport) - Successfully
 
-include::{snippets}/import-service-point-batch-controller-api-v1-test/should-post-service-point-import-batch-with-file-parameter-when-file-is-not-provided/auto-section.adoc[]
+include::{snippets}/import-service-point-batch-controller-test/should-post-loading-point-import-with-file-parameter-successfully/auto-section.adoc[]

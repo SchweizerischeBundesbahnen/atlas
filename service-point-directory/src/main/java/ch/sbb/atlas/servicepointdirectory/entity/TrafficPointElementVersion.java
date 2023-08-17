@@ -44,9 +44,25 @@ import java.time.LocalDate;
 @FieldNameConstants
 @Entity(name = "traffic_point_element_version")
 @AtlasVersionable
-public class TrafficPointElementVersion extends BasePointVersion implements Versionable, DatesValidator {
+public class TrafficPointElementVersion extends BasePointVersion<TrafficPointElementVersion> implements Versionable,
+    DatesValidator {
 
   private static final String VERSION_SEQ = "traffic_point_element_version_seq";
+
+  @Override
+  public boolean hasGeolocation() {
+    return trafficPointElementGeolocation != null;
+  }
+
+  @Override
+  public void referenceGeolocationTo(TrafficPointElementVersion version) {
+    trafficPointElementGeolocation.setTrafficPointElementVersion(version);
+  }
+
+  @Override
+  public GeolocationBaseEntity geolocation() {
+    return trafficPointElementGeolocation;
+  }
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = VERSION_SEQ)
@@ -92,7 +108,7 @@ public class TrafficPointElementVersion extends BasePointVersion implements Vers
   @AtlasVersionableProperty
   private String parentSloid;
 
-  @OneToOne(cascade = CascadeType.ALL)
+  @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
   @JoinColumn(name = "traffic_point_geolocation_id", referencedColumnName = "id")
   @AtlasVersionableProperty(relationType = RelationType.ONE_TO_ONE, relationsFields = {
       GeolocationBaseEntity.Fields.east,
@@ -110,14 +126,4 @@ public class TrafficPointElementVersion extends BasePointVersion implements Vers
   @Column(columnDefinition = "DATE")
   private LocalDate validTo;
 
-  public boolean hasGeolocation() {
-    return trafficPointElementGeolocation != null;
-  }
-
-  @Override
-  public void setThisAsParentOnRelatingEntities() {
-    if (this.trafficPointElementGeolocation != null) {
-      this.trafficPointElementGeolocation.setTrafficPointElementVersion(this);
-    }
-  }
 }

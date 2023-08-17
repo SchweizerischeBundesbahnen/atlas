@@ -17,7 +17,6 @@ public class LoadingPointVersionMapper {
         .servicePointNumber(loadingPointVersion.getServicePointNumber())
         .validFrom(loadingPointVersion.getValidFrom())
         .validTo(loadingPointVersion.getValidTo())
-        .loadingPointGeolocation(GeolocationMapper.toModel(loadingPointVersion.getLoadingPointGeolocation()))
         .creationDate(loadingPointVersion.getCreationDate())
         .creator(loadingPointVersion.getCreator())
         .editionDate(loadingPointVersion.getEditionDate())
