@@ -1,13 +1,14 @@
 package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
 
+import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointCsvModelContainer;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointElementCsvModel;
-import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointItemImportResult;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepointdirectory.TrafficPointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepository;
+import ch.sbb.atlas.servicepointdirectory.service.CrossValidationService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -29,7 +30,7 @@ public class TrafficPointElementImportServiceTest {
 
   // required for test functionality
   @MockBean
-  private TrafficPointElementValidationService trafficPointElementValidationService;
+  private CrossValidationService crossValidationService;
 
   private static final String CSV_FILE = "DIDOK3_VERKEHRSPUNKTELEMENTE_ALL_V_1_20221222011816.csv";
 
@@ -63,15 +64,15 @@ public class TrafficPointElementImportServiceTest {
     List<TrafficPointCsvModelContainer> trafficPointCsvModelContainers = List.of(
         TrafficPointCsvModelContainer.builder()
             .sloid("ch:1:sloid:123")
-            .trafficPointCsvModelList(getTrafficPointCsvModelVersions("ch:1:sloid:123", 2020, 1, 2, 1))
+            .csvModelList(getTrafficPointCsvModelVersions("ch:1:sloid:123", 2020, 1, 2, 1))
             .build(),
         TrafficPointCsvModelContainer.builder()
             .sloid("ch:1:sloid:567")
-            .trafficPointCsvModelList(getTrafficPointCsvModelVersions("ch:1:sloid:567", 2020, 1, 2, 1))
+            .csvModelList(getTrafficPointCsvModelVersions("ch:1:sloid:567", 2020, 1, 2, 1))
             .build()
     );
     //when
-    List<TrafficPointItemImportResult> trafficPointItemImportResults = trafficPointElementImportService.importTrafficPoints(
+    List<ItemImportResult> trafficPointItemImportResults = trafficPointElementImportService.importTrafficPoints(
         trafficPointCsvModelContainers);
 
     //then
@@ -95,7 +96,7 @@ public class TrafficPointElementImportServiceTest {
     List<TrafficPointCsvModelContainer> trafficPointCsvModelContainers = List.of(
         TrafficPointCsvModelContainer.builder()
             .sloid("ch:1:sloid:123")
-            .trafficPointCsvModelList(getTrafficPointCsvModelVersions("ch:1:sloid:123", 2020, 1, 6, 1))
+            .csvModelList(getTrafficPointCsvModelVersions("ch:1:sloid:123", 2020, 1, 6, 1))
             .build()
     );
     trafficPointElementImportService.importTrafficPoints(trafficPointCsvModelContainers);
@@ -112,19 +113,19 @@ public class TrafficPointElementImportServiceTest {
     List<TrafficPointCsvModelContainer> trafficPointCsvModelContainersMerged = List.of(
         TrafficPointCsvModelContainer.builder()
             .sloid("ch:1:sloid:123")
-            .trafficPointCsvModelList(trafficPointCsvModelVersionsMerged)
+            .csvModelList(trafficPointCsvModelVersionsMerged)
             .build()
     );
 
     // when
-    List<TrafficPointItemImportResult> trafficPointItemImportResults = trafficPointElementImportService.importTrafficPoints(
+    List<ItemImportResult> trafficPointItemImportResults = trafficPointElementImportService.importTrafficPoints(
         trafficPointCsvModelContainersMerged);
 
     // then
     assertThat(trafficPointItemImportResults).hasSize(4);
     List<TrafficPointElementVersion> allBySloidOrderByValidFrom =
         trafficPointElementVersionRepository.findAllBySloidOrderByValidFrom(
-        "ch:1:sloid:123");
+            "ch:1:sloid:123");
     assertThat(allBySloidOrderByValidFrom).hasSize(4);
     assertThat(allBySloidOrderByValidFrom.get(0).getValidFrom()).isEqualTo(
         LocalDate.of(2020, 1, 1)

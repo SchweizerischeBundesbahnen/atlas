@@ -6,6 +6,7 @@ import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.model.search.TrafficPointElementSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepository;
+import ch.sbb.atlas.servicepointdirectory.service.CrossValidationService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +18,14 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 
 @IntegrationTest
 public class TrafficPointElementServiceTest {
 
   @MockBean
-  private TrafficPointElementValidationService trafficPointElementValidationService;
+  private CrossValidationService crossValidationService;
 
   private final TrafficPointElementService trafficPointElementService;
   private final TrafficPointElementVersionRepository trafficPointElementVersionRepository;
@@ -46,6 +49,8 @@ public class TrafficPointElementServiceTest {
   @Test
   void shouldMergeTrafficPoint() {
     // given
+    doNothing().when(crossValidationService).validateServicePointNumberExists(any());
+
     TrafficPointElementVersion trafficPointElementVersion = TrafficPointTestData.getBasicTrafficPoint();
     trafficPointElementService.save(trafficPointElementVersion);
 
@@ -56,6 +61,7 @@ public class TrafficPointElementServiceTest {
     edited.getTrafficPointElementGeolocation().setCreator(null);
     edited.getTrafficPointElementGeolocation().setEditionDate(null);
     edited.getTrafficPointElementGeolocation().setEditor(null);
+
     // when
     trafficPointElementService.updateTrafficPointElementVersion(trafficPointElementVersion, edited);
 
