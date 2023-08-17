@@ -17,7 +17,8 @@
 - [Jobs](#jobs)
   * [Import ServicePoint](#import-servicepoint)
   * [Import TrafficPoint](#import-trafficpoint)
-    + [Import Service API calls](#import-service-api-calls)
+  * [Import LoadingPoint](#import-loadingpoint)
+  * [Import Service API calls](#import-service-api-calls)
   * [Tech Stack](#tech-stack)
 
 <!-- tocstop -->
@@ -101,7 +102,7 @@ Job to scale the import process.
 
 The import ServicePoint Job is responsible to:
 
-* download, parse and groupy by didok number the **DINSTSTELLEN_V3_IMPORT_{date_time}.csv** from the Amazon S3 Bucket
+* download, parse and group by didok number the **DINSTSTELLEN_V3_IMPORT_{date_time}.csv** from the Amazon S3 Bucket
 * send over HTTP chunks with lists of ServicePoints grouped by didok number (multithreading)
 * a retry system is configured on the step level when certain exception are thrown
   (see [StepUtils.java](src/main/java/ch/sbb/importservice/utils/StepUtils.java))
@@ -113,7 +114,7 @@ The import ServicePoint Job is responsible to:
 
 The import TrafficPoint Job is responsible to:
 
-* download, parse and groupy by didok number the **VERKEHRSPUNKTELEMENTE_ALL_V1_{date_time}.csv** from the Amazon S3 Bucket
+* download, parse and group by didok number the **VERKEHRSPUNKTELEMENTE_ALL_V1_{date_time}.csv** from the Amazon S3 Bucket
 * send over HTTP chunks with lists of TrafficPoints grouped by didok number (multithreading)
 * a retry system is configured on the step level when certain exception are thrown
   (see [StepUtils.java](src/main/java/ch/sbb/importservice/utils/StepUtils.java))
@@ -121,7 +122,19 @@ The import TrafficPoint Job is responsible to:
   there are jobs not completed. When an uncompleted job is found, it will be restarted
 * After a job has been completed (successfully or unsuccessfully) an email notification is sent to TechSupport-ATLAS@sbb.ch
 
-#### Import Service API calls
+### Import LoadingPoint
+
+The import LoadingPoint Job is responsible to:
+
+* download, parse and group by didok number the **DIDOK3_LADESTELLEN_{date_time}.csv** from the Amazon S3 Bucket
+* send over HTTP chunks with lists of LoadingPoints grouped by didok number (multithreading)
+* a retry system is configured on the step level when certain exception are thrown
+  (see [StepUtils.java](src/main/java/ch/sbb/importservice/utils/StepUtils.java))
+* the [RecoveryJobsRunner.java](src/main/java/ch/sbb/importservice/recovery/RecoveryJobsRunner.java) checks at startup if
+  there are jobs not completed. When an uncompleted job is found, it will be restarted
+* After a job has been completed (successfully or unsuccessfully) an email notification is sent to TechSupport-ATLAS@sbb.ch
+
+### Import Service API calls
 
 See [ImportServicePointBatchControllerApiV1.java](src/main/java/ch/sbb/importservice/controller/ImportServicePointBatchController.java)
 
