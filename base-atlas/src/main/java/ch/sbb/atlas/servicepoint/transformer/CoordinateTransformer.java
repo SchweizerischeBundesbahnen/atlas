@@ -1,6 +1,7 @@
 package ch.sbb.atlas.servicepoint.transformer;
 
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
+import ch.sbb.atlas.math.DoubleOperations;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
 import jakarta.validation.Valid;
 import java.util.EnumMap;
@@ -47,8 +48,8 @@ public class CoordinateTransformer {
 
     return CoordinatePair
         .builder()
-        .north(result.y)
-        .east(result.x)
+        .north(DoubleOperations.round(result.y, 11))
+        .east(DoubleOperations.round(result.x, 11))
         .spatialReference(targetSpatialReference)
         .build();
   }
