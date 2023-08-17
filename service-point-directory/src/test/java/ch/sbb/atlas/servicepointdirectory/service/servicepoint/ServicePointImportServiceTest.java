@@ -4,14 +4,13 @@ import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationServ
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
-import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointItemImportResult;
+import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointFotComment;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
-import ch.sbb.atlas.servicepointdirectory.service.BaseImportService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,13 +60,13 @@ public class ServicePointImportServiceTest {
     Integer didokCode = servicePointCsvModelContainers.get(0).getDidokCode();
     ServicePointNumber servicePointNumber = ServicePointNumber.of(didokCode);
     //when
-    List<ServicePointItemImportResult> servicePointItemImportResults = servicePointImportService.importServicePoints(
+    List<ItemImportResult> itemImportResults = servicePointImportService.importServicePoints(
         servicePointCsvModelContainers);
 
     //then
     List<ServicePointVersion> result = servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber);
     assertThat(result).isNotNull();
-    assertThat(servicePointItemImportResults).hasSize(5);
+    assertThat(itemImportResults).hasSize(5);
     assertThat(result).hasSize(3);
     for (ServicePointVersion servicePointVersion : result) {
       assertThat(servicePointVersion.getNumber()).isNotNull();

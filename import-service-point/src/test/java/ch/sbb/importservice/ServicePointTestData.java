@@ -1,8 +1,7 @@
 package ch.sbb.importservice;
 
-import ch.sbb.atlas.imports.servicepoint.model.ItemImportResponseStatus;
-import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointImportRequestModel;
-import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointItemImportResult;
+import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
+import ch.sbb.atlas.imports.servicepoint.enumeration.ItemImportResponseStatus;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
 import java.time.LocalDate;
@@ -13,20 +12,16 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class ServicePointTestData {
 
-  public List<ServicePointItemImportResult> getServicePointItemImportResults(
+  public List<ItemImportResult> getServicePointItemImportResults(
       List<ServicePointCsvModelContainer> servicePointCsvModelContainers) {
-    ServicePointImportRequestModel servicePointImportRequestModel = new ServicePointImportRequestModel();
-    servicePointImportRequestModel.setServicePointCsvModelContainers(servicePointCsvModelContainers);
-
-    List<ServicePointItemImportResult> servicePointItemImportResults = new ArrayList<>();
+    List<ItemImportResult> itemImportResults = new ArrayList<>();
     for (ServicePointCsvModelContainer container : servicePointCsvModelContainers) {
-
-      ServicePointItemImportResult servicePointItemImportResult = new ServicePointItemImportResult();
-      servicePointItemImportResult.setItemNumber(container.getDidokCode());
-      servicePointItemImportResult.setStatus(ItemImportResponseStatus.SUCCESS);
-      servicePointItemImportResults.add(servicePointItemImportResult);
+      ItemImportResult itemImportResult = new ItemImportResult();
+      itemImportResult.setItemNumber(container.getDidokCode().toString());
+      itemImportResult.setStatus(ItemImportResponseStatus.SUCCESS);
+      itemImportResults.add(itemImportResult);
     }
-    return servicePointItemImportResults;
+    return itemImportResults;
   }
 
   public List<ServicePointCsvModelContainer> getServicePointCsvModelContainers() {
