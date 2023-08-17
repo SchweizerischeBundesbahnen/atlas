@@ -5,18 +5,20 @@
 - [ATLAS](#atlas)
 - [Project Versioning](#project-versioning)
 - [Links](#links)
-    * [Localhost](#localhost)
-    * [Development](#development)
-    * [Test](#test)
-    * [Integration](#integration)
-    * [Production](#production)
-    * [Project Infrastructure](#project-infrastructure)
+  * [Localhost](#localhost)
+  * [Development](#development)
+  * [Test](#test)
+  * [Integration](#integration)
+  * [Production](#production)
+  * [Project Infrastructure](#project-infrastructure)
 - [Big Picture Architecture](#big-picture-architecture)
 - [Development](#development-1)
-    * [Spring Batch](#spring-batch)
+  * [Spring Batch](#spring-batch)
 - [Jobs](#jobs)
-    * [Import ServicePoint](#import-servicepoint)
-    * [Tech Stack](#tech-stack)
+  * [Import ServicePoint](#import-servicepoint)
+  * [Import TrafficPoint](#import-trafficpoint)
+    + [Import Service API calls](#import-service-api-calls)
+  * [Tech Stack](#tech-stack)
 
 <!-- tocstop -->
 
@@ -104,12 +106,24 @@ The import ServicePoint Job is responsible to:
 * a retry system is configured on the step level when certain exception are thrown
   (see [StepUtils.java](src/main/java/ch/sbb/importservice/utils/StepUtils.java))
 * the [RecoveryJobsRunner.java](src/main/java/ch/sbb/importservice/recovery/RecoveryJobsRunner.java) checks at startup if
-  there are jobs not completed. When an icompleted job is found, it will be restarted
+  there are jobs not completed. When an uncompleted job is found, it will be restarted
+* After a job has been completed (successfully or unsuccessfully) an email notification is sent to TechSupport-ATLAS@sbb.ch
+
+### Import TrafficPoint
+
+The import TrafficPoint Job is responsible to:
+
+* download, parse and groupy by didok number the **VERKEHRSPUNKTELEMENTE_ALL_V1_{date_time}.csv** from the Amazon S3 Bucket
+* send over HTTP chunks with lists of TrafficPoints grouped by didok number (multithreading)
+* a retry system is configured on the step level when certain exception are thrown
+  (see [StepUtils.java](src/main/java/ch/sbb/importservice/utils/StepUtils.java))
+* the [RecoveryJobsRunner.java](src/main/java/ch/sbb/importservice/recovery/RecoveryJobsRunner.java) checks at startup if
+  there are jobs not completed. When an uncompleted job is found, it will be restarted
 * After a job has been completed (successfully or unsuccessfully) an email notification is sent to TechSupport-ATLAS@sbb.ch
 
 #### Import Service API calls
 
-See [ImportServicePointBatchControllerApiV1.java](src/main/java/ch/sbb/importservice/controller/ImportServicePointBatchControllerApiV1.java)
+See [ImportServicePointBatchControllerApiV1.java](src/main/java/ch/sbb/importservice/controller/ImportServicePointBatchController.java)
 
 ### Tech Stack
 
