@@ -1,10 +1,12 @@
 package ch.sbb.atlas.servicepoint;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.Arrays;
-import java.util.Objects;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 @Getter
@@ -115,6 +117,10 @@ public enum Country {
   private final String nameFr;
   private final String nameIt;
   private final String nameEn;
+
+  public static final List<Country> SLOID_COMPATIBLE_COUNTRIES = List.of(GERMANY_BUS, AUSTRIA_BUS, ITALY_BUS, FRANCE_BUS );
+
+  public static final List<Integer> SLOID_COMPATIBLE_COUNTRY_CODES = SLOID_COMPATIBLE_COUNTRIES.stream().map(Country::getUicCode).toList();
 
   public static Country from(Integer uicCode) {
     return Arrays.stream(Country.values()).filter(country -> Objects.equals(country.getUicCode(), uicCode)).findFirst()
