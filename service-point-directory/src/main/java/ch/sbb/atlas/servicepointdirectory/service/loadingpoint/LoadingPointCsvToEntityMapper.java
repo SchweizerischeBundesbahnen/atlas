@@ -3,7 +3,6 @@ package ch.sbb.atlas.servicepointdirectory.service.loadingpoint;
 import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointCsvModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
-import ch.sbb.atlas.servicepointdirectory.entity.geolocation.LoadingPointGeolocation;
 import java.util.function.Function;
 
 public class LoadingPointCsvToEntityMapper implements
@@ -11,7 +10,7 @@ public class LoadingPointCsvToEntityMapper implements
 
   @Override
   public LoadingPointVersion apply(LoadingPointCsvModel loadingPointCsvModel) {
-    LoadingPointVersion loadingPointVersion = LoadingPointVersion
+    return LoadingPointVersion
         .builder()
         .number(loadingPointCsvModel.getNumber())
         .designation(loadingPointCsvModel.getDesignation())
@@ -25,25 +24,6 @@ public class LoadingPointCsvToEntityMapper implements
         .editor(loadingPointCsvModel.getEditedBy())
         .editionDate(loadingPointCsvModel.getEditedAt())
         .build();
-
-    LoadingPointGeolocation geolocation = LoadingPointGeolocation
-        .builder()
-        .spatialReference(loadingPointCsvModel.getSpatialReference())
-        .east(loadingPointCsvModel.getOriginalEast())
-        .north(loadingPointCsvModel.getOriginalNorth())
-        .height(loadingPointCsvModel.getHeight())
-        .creator(loadingPointCsvModel.getCreatedBy())
-        .creationDate(loadingPointCsvModel.getCreatedAt())
-        .editor(loadingPointCsvModel.getEditedBy())
-        .editionDate(loadingPointCsvModel.getEditedAt())
-        .build();
-
-    if (geolocation.isValid()) {
-      loadingPointVersion.setLoadingPointGeolocation(geolocation);
-      geolocation.setLoadingPointVersion(loadingPointVersion);
-    }
-
-    return loadingPointVersion;
-
   }
+
 }
