@@ -23,8 +23,8 @@ class CoordinateTransformerTest {
     CoordinatePair result = coordinateTransformer.transform(
         TEST_COORDINATE_WGS84, SpatialReference.WGS84WEB);
 
-    assertThat(result.getNorth()).isEqualTo(6274861.394006577);
-    assertThat(result.getEast()).isEqualTo(779236.435552915);
+    assertThat(result.getNorth()).isEqualTo(6274861.394006578);
+    assertThat(result.getEast()).isEqualTo(779236.4355529151);
   }
 
   @Test
@@ -41,8 +41,8 @@ class CoordinateTransformerTest {
     CoordinatePair result = coordinateTransformer.transform(
         TEST_COORDINATE_WGS84, SpatialReference.LV95);
 
-    assertThat(result.getNorth()).isEqualTo(1427959.1864304289);
-    assertThat(result.getEast()).isEqualTo(2567886.754474996);
+    assertThat(result.getNorth()).isEqualTo(1427959.18643);
+    assertThat(result.getEast()).isEqualTo(2567886.75447);
   }
 
   @Test
@@ -50,7 +50,7 @@ class CoordinateTransformerTest {
     CoordinatePair result = coordinateTransformer.transform(
         TEST_COORDINATE_WGS84, SpatialReference.LV03);
 
-    assertThat(result.getNorth()).isEqualTo(427959.1864304288);
-    assertThat(result.getEast()).isEqualTo(567886.7544749964);
+    assertThat(result.getNorth()).isEqualTo(427959.18643);
+    assertThat(result.getEast()).isEqualTo(567886.75447);
   }
 }
