@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepoint.transformer;
 
+import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.math.DoubleOperations;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
@@ -15,9 +16,6 @@ import org.locationtech.proj4j.CoordinateTransformFactory;
 import org.locationtech.proj4j.ProjCoordinate;
 
 public class CoordinateTransformer {
-
-  private static final int ATLAS_WGS84_MAX_DIGITS = 11;
-  private static final int ATLAS_LV_MAX_DIGITS = 5;
 
   private final CoordinateTransformFactory coordinateTransformFactory = new CoordinateTransformFactory();
   private final Map<SpatialReference, CoordinateReferenceSystem> referenceSystemMap =
@@ -60,8 +58,8 @@ public class CoordinateTransformer {
 
   private int getMaxDigits(SpatialReference targetSpatialReference) {
     return switch (targetSpatialReference) {
-      case WGS84, WGS84WEB -> ATLAS_WGS84_MAX_DIGITS;
-      case LV03, LV95 -> ATLAS_LV_MAX_DIGITS;
+      case WGS84, WGS84WEB -> AtlasApiConstants.ATLAS_WGS84_MAX_DIGITS;
+      case LV03, LV95 -> AtlasApiConstants.ATLAS_LV_MAX_DIGITS;
     };
   }
 
