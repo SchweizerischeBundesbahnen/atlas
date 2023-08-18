@@ -16,7 +16,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldNameConstants
 @Schema(name = "ServicePointGeolocationCreate")
-public class ServicePointGeolocationCreateModel extends GeolocationBaseCreateModel {
+public class ServicePointGeolocationCreateModel extends GeolocationBaseCreateModel implements TransformableGeolocation {
 
   private Country country;
   private SwissLocation swissLocation;
