@@ -24,8 +24,8 @@ import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion.Fiel
 import ch.sbb.atlas.servicepointdirectory.mapper.GeolocationMapper;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepository;
-import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementImportService;
 import ch.sbb.atlas.servicepointdirectory.service.CrossValidationService;
+import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementImportService;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -97,76 +97,76 @@ public class TrafficPointElementControllerApiTest extends BaseControllerApiTest 
   @Test
   void shouldGetTrafficPointElementVersionsBySboid() throws Exception {
     mvc.perform(get("/v1/traffic-point-elements?sboids=somesboid")).andExpect(status().isOk())
-            .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
-            .andExpect(jsonPath("$.totalCount", is(1)));
+        .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
+        .andExpect(jsonPath("$.totalCount", is(1)));
   }
 
   @Test
   void shouldGetTrafficPointElementVersionsByCountry() throws Exception {
     mvc.perform(get("/v1/traffic-point-elements?uicCountryCodes=14")).andExpect(status().isOk())
-            .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
-            .andExpect(jsonPath("$.totalCount", is(1)));
+        .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
+        .andExpect(jsonPath("$.totalCount", is(1)));
   }
-
 
   @Test
   void shouldGetTrafficPointElementVersionsByShortNumber() throws Exception {
     mvc.perform(get("/v1/traffic-point-elements?servicePointNumbersShort=1")).andExpect(status().isOk())
-            .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
-            .andExpect(jsonPath("$.totalCount", is(1)));
+        .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
+        .andExpect(jsonPath("$.totalCount", is(1)));
   }
 
   @Test
   void shouldGetTrafficPointElementVersionsBySboidAndCountryAndShortNumber() throws Exception {
-    mvc.perform(get("/v1/traffic-point-elements?sboids=somesboid&uicCountryCodes=14&servicePointNumbersShort=1")).andExpect(status().isOk())
-            .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
-            .andExpect(jsonPath("$.totalCount", is(1)));
+    mvc.perform(get("/v1/traffic-point-elements?sboids=somesboid&uicCountryCodes=14&servicePointNumbersShort=1"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
+        .andExpect(jsonPath("$.totalCount", is(1)));
   }
 
   @Test
   void shouldGetTrafficPointElementVersionsBySloid() throws Exception {
     mvc.perform(get("/v1/traffic-point-elements?sloids=ch:1:sloid:1400015:0:310240")).andExpect(status().isOk())
-            .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
-            .andExpect(jsonPath("$.totalCount", is(1)));
+        .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
+        .andExpect(jsonPath("$.totalCount", is(1)));
   }
 
   @Test
   void shouldGetTrafficPointElementVersionsByParentSloid() throws Exception {
     mvc.perform(get("/v1/traffic-point-elements?parentsloids=ch:1:sloid:1400015:310240")).andExpect(status().isOk())
-            .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
-            .andExpect(jsonPath("$.totalCount", is(1)));
+        .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
+        .andExpect(jsonPath("$.totalCount", is(1)));
   }
 
   @Test
   void shouldGetTrafficPointElementVersionsByCreatedAfter() throws Exception {
     LocalDateTime creationTime = trafficPointElementVersion.getCreationDate().minusSeconds(1);
     mvc.perform(get("/v1/traffic-point-elements?createdAfter=" + creationTime)).andExpect(status().isOk())
-            .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
-            .andExpect(jsonPath("$.totalCount", is(1)));
+        .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
+        .andExpect(jsonPath("$.totalCount", is(1)));
   }
 
   @Test
   void shouldGetTrafficPointElementVersionsByModifiedAfter() throws Exception {
     LocalDateTime modificationTime = trafficPointElementVersion.getEditionDate().minusSeconds(1);
     mvc.perform(get("/v1/traffic-point-elements?modifiedAfter=" + modificationTime)).andExpect(status().isOk())
-            .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
-            .andExpect(jsonPath("$.totalCount", is(1)));
+        .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
+        .andExpect(jsonPath("$.totalCount", is(1)));
   }
 
   @Test
   void shouldGetTrafficPointElementVersionsByFromDate() throws Exception {
     LocalDate fromDate = trafficPointElementVersion.getValidFrom();
     mvc.perform(get("/v1/traffic-point-elements?fromDate=" + fromDate)).andExpect(status().isOk())
-            .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
-            .andExpect(jsonPath("$.totalCount", is(1)));
+        .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
+        .andExpect(jsonPath("$.totalCount", is(1)));
   }
 
   @Test
   void shouldGetTrafficPointElementVersionsByToDate() throws Exception {
     LocalDate toDate = trafficPointElementVersion.getValidTo();
     mvc.perform(get("/v1/traffic-point-elements?toDate=" + toDate)).andExpect(status().isOk())
-            .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
-            .andExpect(jsonPath("$.totalCount", is(1)));
+        .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
+        .andExpect(jsonPath("$.totalCount", is(1)));
   }
 
   @Test
@@ -280,8 +280,8 @@ public class TrafficPointElementControllerApiTest extends BaseControllerApiTest 
         .andExpect(jsonPath("$.trafficPointElementGeolocation.spatialReference", is(LV95.toString())))
         .andExpect(jsonPath("$.trafficPointElementGeolocation.lv95.north", is(1116323.213)))
         .andExpect(jsonPath("$.trafficPointElementGeolocation.lv95.east", is(2505236.389)))
-        .andExpect(jsonPath("$.trafficPointElementGeolocation.wgs84.north", is(46.19168377864148)))
-        .andExpect(jsonPath("$.trafficPointElementGeolocation.wgs84.east", is(6.211130669316912)))
+        .andExpect(jsonPath("$.trafficPointElementGeolocation.wgs84.north", is(46.19168377864)))
+        .andExpect(jsonPath("$.trafficPointElementGeolocation.wgs84.east", is(6.21113066932)))
         .andExpect(jsonPath("$.trafficPointElementGeolocation.height", is(-9999.0)));
   }
 
@@ -324,8 +324,8 @@ public class TrafficPointElementControllerApiTest extends BaseControllerApiTest 
         .andExpect(jsonPath("$[0].trafficPointElementGeolocation.spatialReference", is(LV95.toString())))
         .andExpect(jsonPath("$[0].trafficPointElementGeolocation.lv95.north", is(1116323.213)))
         .andExpect(jsonPath("$[0].trafficPointElementGeolocation.lv95.east", is(2505236.389)))
-        .andExpect(jsonPath("$[0].trafficPointElementGeolocation.wgs84.north", is(46.19168377864148)))
-        .andExpect(jsonPath("$[0].trafficPointElementGeolocation.wgs84.east", is(6.211130669316912)))
+        .andExpect(jsonPath("$[0].trafficPointElementGeolocation.wgs84.north", is(46.19168377864)))
+        .andExpect(jsonPath("$[0].trafficPointElementGeolocation.wgs84.east", is(6.21113066932)))
         .andExpect(jsonPath("$[0].trafficPointElementGeolocation.height", is(-9999.0)))
         .andExpect(
             jsonPath("$[1]." + TrafficPointElementVersion.Fields.id, is(trafficPointElementVersion.getId().intValue() + 2)))
@@ -348,8 +348,8 @@ public class TrafficPointElementControllerApiTest extends BaseControllerApiTest 
         .andExpect(jsonPath("$[1].trafficPointElementGeolocation.spatialReference", is(LV95.toString())))
         .andExpect(jsonPath("$[1].trafficPointElementGeolocation.lv95.north", is(1201099.85634)))
         .andExpect(jsonPath("$[1].trafficPointElementGeolocation.lv95.east", is(2600783.31256)))
-        .andExpect(jsonPath("$[1].trafficPointElementGeolocation.wgs84.north", is(46.96097578276866)))
-        .andExpect(jsonPath("$[1].trafficPointElementGeolocation.wgs84.east", is(7.44892383013239)))
+        .andExpect(jsonPath("$[1].trafficPointElementGeolocation.wgs84.north", is(46.96097578277)))
+        .andExpect(jsonPath("$[1].trafficPointElementGeolocation.wgs84.east", is(7.44892383013)))
         .andExpect(jsonPath("$[1].trafficPointElementGeolocation.height", is(555.98)))
         .andExpect(
             jsonPath("$[2]." + TrafficPointElementVersion.Fields.id, is(trafficPointElementVersion.getId().intValue() + 3)))
@@ -372,8 +372,8 @@ public class TrafficPointElementControllerApiTest extends BaseControllerApiTest 
         .andExpect(jsonPath("$[2].trafficPointElementGeolocation.spatialReference", is(LV95.toString())))
         .andExpect(jsonPath("$[2].trafficPointElementGeolocation.lv95.north", is(1116323.213)))
         .andExpect(jsonPath("$[2].trafficPointElementGeolocation.lv95.east", is(2505236.389)))
-        .andExpect(jsonPath("$[2].trafficPointElementGeolocation.wgs84.north", is(46.19168377864148)))
-        .andExpect(jsonPath("$[2].trafficPointElementGeolocation.wgs84.east", is(6.211130669316912)))
+        .andExpect(jsonPath("$[2].trafficPointElementGeolocation.wgs84.north", is(46.19168377864)))
+        .andExpect(jsonPath("$[2].trafficPointElementGeolocation.wgs84.east", is(6.21113066932)))
         .andExpect(jsonPath("$[2].trafficPointElementGeolocation.height", is(-9999.0)));
   }
 
