@@ -2,19 +2,21 @@ package ch.sbb.atlas.servicepointdirectory.mapper;
 
 import ch.sbb.atlas.api.servicepoint.GeolocationBaseCreateModel;
 import ch.sbb.atlas.api.servicepoint.GeolocationBaseReadModel;
+import ch.sbb.atlas.api.servicepoint.TransformableGeolocation;
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.servicepoint.transformer.CoordinateTransformer;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.GeolocationBaseEntity;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
-import lombok.experimental.UtilityClass;
-
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.stream.Stream;
+import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class GeolocationMapper {
+
+  private static final CoordinateTransformer COORDINATE_TRANSFORMER = new CoordinateTransformer();
 
   public static GeolocationBaseReadModel toModel(GeolocationBaseEntity geolocationBaseEntity) {
     if (geolocationBaseEntity == null) {
@@ -45,6 +47,7 @@ public class GeolocationMapper {
     if (geolocationBaseModel == null) {
       return null;
     }
+    GeolocationMapper.transformLv03andWgs84(geolocationBaseModel);
     return TrafficPointElementGeolocation.builder()
         .spatialReference(geolocationBaseModel.getSpatialReference())
         .east(geolocationBaseModel.getEast())
@@ -56,15 +59,39 @@ public class GeolocationMapper {
   static public Map<SpatialReference, CoordinatePair> getTransformedCoordinates(GeolocationBaseEntity entity) {
     Map<SpatialReference, CoordinatePair> coordinates = new EnumMap<>(SpatialReference.class);
 
-    CoordinateTransformer coordinateTransformer = new CoordinateTransformer();
     Stream.of(SpatialReference.values()).forEach(spatialReference -> {
       if (spatialReference == entity.getSpatialReference()) {
         coordinates.put(spatialReference, entity.asCoordinatePair());
       } else {
-        coordinates.put(spatialReference, coordinateTransformer.transform(entity.asCoordinatePair(), spatialReference));
+        coordinates.put(spatialReference, COORDINATE_TRANSFORMER.transform(entity.asCoordinatePair(), spatialReference));
       }
     });
     return coordinates;
+  }
+
+  public static <T extends TransformableGeolocation> void transformLv03andWgs84(T geolocation) {
+    if (geolocation.getEast() != null && geolocation.getNorth() != null) {
+      if (geolocation.getSpatialReference() == SpatialReference.LV03) {
+        CoordinatePair transformedCoordinates = COORDINATE_TRANSFORMER.transform(CoordinatePair.builder()
+            .spatialReference(geolocation.getSpatialReference())
+            .east(geolocation.getEast())
+            .north(geolocation.getNorth())
+            .build(), SpatialReference.LV95);
+        geolocation.setSpatialReference(SpatialReference.LV95);
+        geolocation.setEast(transformedCoordinates.getEast());
+        geolocation.setNorth(transformedCoordinates.getNorth());
+      }
+      if (geolocation.getSpatialReference() == SpatialReference.WGS84WEB) {
+        CoordinatePair transformedCoordinates = COORDINATE_TRANSFORMER.transform(CoordinatePair.builder()
+            .spatialReference(geolocation.getSpatialReference())
+            .east(geolocation.getEast())
+            .north(geolocation.getNorth())
+            .build(), SpatialReference.WGS84);
+        geolocation.setSpatialReference(SpatialReference.WGS84);
+        geolocation.setEast(transformedCoordinates.getEast());
+        geolocation.setNorth(transformedCoordinates.getNorth());
+      }
+    }
   }
 
 }

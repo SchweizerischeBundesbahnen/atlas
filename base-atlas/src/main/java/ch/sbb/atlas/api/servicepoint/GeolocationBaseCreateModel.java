@@ -15,7 +15,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldNameConstants
 @Schema(name = "GeolocationCreate")
-public class GeolocationBaseCreateModel {
+public class GeolocationBaseCreateModel implements TransformableGeolocation {
 
   @Schema(description = "Coordinate system spatial reference", example = "LV95")
   @NotNull
