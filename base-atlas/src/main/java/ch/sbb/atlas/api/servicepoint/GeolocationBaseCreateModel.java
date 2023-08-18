@@ -5,6 +5,7 @@ import static ch.sbb.atlas.api.AtlasApiConstants.ATLAS_WGS84_MAX_DIGITS;
 
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.math.DoubleOperations;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
@@ -37,8 +38,9 @@ public class GeolocationBaseCreateModel implements TransformableGeolocation {
   @Schema(description = "Height of the coordinate point", example = "540.20000")
   private Double height;
 
+  @JsonIgnore
   @AssertTrue(message = "Max Fractions exceeded. LV03 and LV95 max. 5 digits. WGS84 and WGS84WEB max. 11 digits.")
-  boolean isSpatialReferenceFractionValid() {
+  public boolean isValidSpatialReferenceFraction() {
     if (getSpatialReference() == null || getNorth() == null || getEast() == null) {
       return false;
     }
