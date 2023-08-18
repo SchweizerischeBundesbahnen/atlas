@@ -16,6 +16,9 @@ import org.locationtech.proj4j.ProjCoordinate;
 
 public class CoordinateTransformer {
 
+  private static final int ATLAS_WGS84_MAX_DIGITS = 11;
+  private static final int ATLAS_LV_MAX_DIGITS = 5;
+
   private final CoordinateTransformFactory coordinateTransformFactory = new CoordinateTransformFactory();
   private final Map<SpatialReference, CoordinateReferenceSystem> referenceSystemMap =
       new EnumMap<>(SpatialReference.class);
@@ -46,12 +49,20 @@ public class CoordinateTransformer {
         referenceSystemMap.get(targetSpatialReference)
     ).transform(source, result);
 
+    int maxDigits = getMaxDigits(targetSpatialReference);
     return CoordinatePair
         .builder()
-        .north(DoubleOperations.round(result.y, 11))
-        .east(DoubleOperations.round(result.x, 11))
+        .north(DoubleOperations.round(result.y, maxDigits))
+        .east(DoubleOperations.round(result.x, maxDigits))
         .spatialReference(targetSpatialReference)
         .build();
+  }
+
+  private int getMaxDigits(SpatialReference targetSpatialReference) {
+    return switch (targetSpatialReference) {
+      case WGS84, WGS84WEB -> ATLAS_WGS84_MAX_DIGITS;
+      case LV03, LV95 -> ATLAS_LV_MAX_DIGITS;
+    };
   }
 
   private CoordinateTransform findTransformer(CoordinateReferenceSystem source,
