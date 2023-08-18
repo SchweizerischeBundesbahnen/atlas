@@ -477,7 +477,7 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
   void shouldCreateServicePointWithLv03ConvertingToLv95() throws Exception {
     CreateServicePointVersionModel aargauServicePointVersion = ServicePointTestData.getAargauServicePointVersionModel();
     aargauServicePointVersion.getServicePointGeolocation().setSpatialReference(SpatialReference.LV03);
-    aargauServicePointVersion.getServicePointGeolocation().setEast(600127.583032);
+    aargauServicePointVersion.getServicePointGeolocation().setEast(600127.58303);
     aargauServicePointVersion.getServicePointGeolocation().setNorth(199776.88044);
 
     mvc.perform(post("/v1/service-points")
