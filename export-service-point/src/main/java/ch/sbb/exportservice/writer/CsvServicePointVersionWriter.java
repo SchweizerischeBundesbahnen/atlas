@@ -1,10 +1,10 @@
 package ch.sbb.exportservice.writer;
 
+import static ch.sbb.exportservice.model.ServicePointVersionCsvModel.Fields.numberShort;
+
 import ch.sbb.exportservice.model.ServicePointVersionCsvModel;
 import ch.sbb.exportservice.model.ServicePointVersionCsvModel.Fields;
 import org.springframework.stereotype.Component;
-
-import static ch.sbb.exportservice.model.ServicePointVersionCsvModel.Fields.numberShort;
 
 @Component
 public class CsvServicePointVersionWriter extends BaseCsvWriter<ServicePointVersionCsvModel>{
@@ -26,7 +26,7 @@ public class CsvServicePointVersionWriter extends BaseCsvWriter<ServicePointVers
             Fields.businessOrganisationAbbreviationIt, Fields.businessOrganisationAbbreviationEn,
             Fields.businessOrganisationDescriptionDe, Fields.businessOrganisationDescriptionFr,
             Fields.businessOrganisationDescriptionIt, Fields.businessOrganisationDescriptionEn, Fields.fotComment, Fields.lv95East,
-            Fields.lv95North, Fields.wgs84East, Fields.wgs84North, Fields.wgs84WebEast, Fields.wgs84WebNorth,
+            Fields.lv95North, Fields.wgs84East, Fields.wgs84North,
             Fields.height, Fields.creationDate, Fields.editionDate, Fields.status
     };
   }
