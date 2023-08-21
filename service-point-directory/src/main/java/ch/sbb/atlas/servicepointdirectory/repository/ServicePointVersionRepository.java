@@ -51,12 +51,13 @@ public interface ServicePointVersionRepository extends JpaRepository<ServicePoin
     return new PageImpl<>(loadedObjectsById, pagedIds.getPageable(), pagedIds.getTotalElements());
   }
 
-  default List<ServicePointVersion> findDesignationOfficialOverlaps(ServicePointVersion servicePointVersion){
+  default List<ServicePointVersion> findDesignationOfficialOverlaps(ServicePointVersion servicePointVersion) {
     return findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndDesignationOfficialIgnoreCase(
         servicePointVersion.getValidFrom(), servicePointVersion.getValidTo(),
         servicePointVersion.getDesignationOfficial())
         .stream()
         .filter(i -> !i.getNumber().equals(servicePointVersion.getNumber()))
+        .filter(i -> i.getCountry() == servicePointVersion.getCountry())
         .filter(i -> i.getStatus() != Status.REVOKED)
         .toList();
   }
@@ -64,12 +65,13 @@ public interface ServicePointVersionRepository extends JpaRepository<ServicePoin
   List<ServicePointVersion> findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndDesignationOfficialIgnoreCase(
       LocalDate validFrom, LocalDate validTo, String designationOfficial);
 
-  default List<ServicePointVersion> findDesignationLongOverlaps(ServicePointVersion servicePointVersion){
+  default List<ServicePointVersion> findDesignationLongOverlaps(ServicePointVersion servicePointVersion) {
     return findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndDesignationLongIgnoreCase(
         servicePointVersion.getValidFrom(), servicePointVersion.getValidTo(),
         servicePointVersion.getDesignationLong())
         .stream()
         .filter(i -> !i.getNumber().equals(servicePointVersion.getNumber()))
+        .filter(i -> i.getCountry() == servicePointVersion.getCountry())
         .filter(i -> i.getStatus() != Status.REVOKED)
         .toList();
   }
