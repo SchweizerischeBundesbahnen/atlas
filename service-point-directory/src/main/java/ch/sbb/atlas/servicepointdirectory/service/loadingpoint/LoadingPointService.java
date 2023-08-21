@@ -10,6 +10,7 @@ import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import java.util.List;
 import java.util.Optional;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.StaleObjectStateException;
 import org.springframework.data.domain.Page;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 @Service
+@Getter
 @RequiredArgsConstructor
 public class LoadingPointService {
 
@@ -52,7 +54,7 @@ public class LoadingPointService {
 
   public LoadingPointVersion save(LoadingPointVersion loadingPointVersion) {
     crossValidationService.validateServicePointNumberExists(loadingPointVersion.getServicePointNumber());
-    return loadingPointVersionRepository.save(loadingPointVersion);
+    return loadingPointVersionRepository.saveAndFlush(loadingPointVersion);
   }
 
   @PreAuthorize(
