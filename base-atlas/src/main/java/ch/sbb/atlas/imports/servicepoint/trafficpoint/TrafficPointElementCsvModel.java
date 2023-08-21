@@ -57,16 +57,4 @@ public class TrafficPointElementCsvModel extends BaseDidokCsvModel {
   @JsonProperty("DS_GO_NUMMER")
   private int servicePointBusinessOrganisationNumber;
 
-  @JsonProperty("DS_GO_ABKUERZUNG_DE")
-  private int servicePointBusinessOrganisationAbbreviationDe;
-
-  @JsonProperty("DS_GO_ABKUERZUNG_FR")
-  private int servicePointBusinessOrganisationAbbreviationFr;
-
-  @JsonProperty("DS_GO_ABKUERZUNG_IT")
-  private int servicePointBusinessOrganisationAbbreviationIt;
-
-  @JsonProperty("DS_GO_ABKUERZUNG_EN")
-  private int servicePointBusinessOrganisationAbbreviationEn;
-
 }
