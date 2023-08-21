@@ -26,10 +26,14 @@ public class CountryAndBusinessOrganisationBasedUserAdministrationService extend
     super(userPermissionHolder);
   }
 
-  public boolean hasUserPermissionsToCreateOrEditServicePointDependentObject(List<CountryAndBusinessOrganisationAssociated> businessObjects,
+  public boolean hasUserPermissionsToCreateOrEditServicePointDependentObject(List<CountryAndBusinessOrganisationAssociated> servicePointVersions,
       ApplicationType applicationType) {
+    if (servicePointVersions == null || servicePointVersions.isEmpty()) {
+      log.error("List of ServicePointVersions was empty. Cannot perform check permissions.");
+      return false;
+    }
     log.info("Checking if user may create or edit any of given list");
-    return businessObjects.stream().anyMatch(obj -> hasUserPermissionsToCreate(obj, applicationType));
+    return servicePointVersions.stream().anyMatch(obj -> hasUserPermissionsToCreate(obj, applicationType));
   }
 
   public boolean hasUserPermissionsToCreate(CountryAndBusinessOrganisationAssociated businessObject,
