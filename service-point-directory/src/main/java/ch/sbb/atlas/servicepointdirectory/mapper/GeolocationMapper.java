@@ -27,6 +27,7 @@ public class GeolocationMapper {
         .spatialReference(geolocationBaseEntity.getSpatialReference())
         .lv95(coordinates.get(SpatialReference.LV95))
         .wgs84(coordinates.get(SpatialReference.WGS84))
+        .lv03(coordinates.get(SpatialReference.LV03))
         .height(geolocationBaseEntity.getHeight())
         .build();
   }

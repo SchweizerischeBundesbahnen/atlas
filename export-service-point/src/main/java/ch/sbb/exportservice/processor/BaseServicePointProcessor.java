@@ -51,6 +51,7 @@ public abstract class BaseServicePointProcessor {
             .spatialReference(geolocationBaseEntity.getSpatialReference())
             .lv95(coordinates.get(SpatialReference.LV95))
             .wgs84(coordinates.get(SpatialReference.WGS84))
+            .lv03(coordinates.get(SpatialReference.LV03))
             .height(geolocationBaseEntity.getHeight())
             .build();
   }
@@ -78,6 +79,7 @@ public abstract class BaseServicePointProcessor {
         .spatialReference(servicePointGeolocation.getSpatialReference())
         .lv95(coordinates.get(SpatialReference.LV95))
         .wgs84(coordinates.get(SpatialReference.WGS84))
+        .lv03(coordinates.get(SpatialReference.LV03))
         .height(servicePointGeolocation.getHeight())
         .build();
   }
