@@ -39,7 +39,7 @@ public class ServicePointImportService extends BaseImportService<ServicePointVer
 
   @Override
   protected void save(ServicePointVersion servicePointVersion) {
-    servicePointService.save(servicePointVersion);
+    servicePointService.saveWithoutValidationForImportOnly(servicePointVersion);
   }
 
   @Override
