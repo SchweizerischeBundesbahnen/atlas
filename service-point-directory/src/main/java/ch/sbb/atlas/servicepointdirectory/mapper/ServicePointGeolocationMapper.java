@@ -41,6 +41,7 @@ public class ServicePointGeolocationMapper {
         .spatialReference(servicePointGeolocation.getSpatialReference())
         .lv95(coordinates.get(SpatialReference.LV95))
         .wgs84(coordinates.get(SpatialReference.WGS84))
+        .lv03(coordinates.get(SpatialReference.LV03))
         .height(servicePointGeolocation.getHeight())
         .build();
   }
@@ -83,13 +84,15 @@ public class ServicePointGeolocationMapper {
           .swissMunicipalityName(servicePointGeolocationModel.getSwissLocation().getLocalityMunicipality().getMunicipalityName())
           .swissLocalityName(servicePointGeolocationModel.getSwissLocation().getLocalityMunicipality().getLocalityName());
     }
-    return geolocationBuilder.spatialReference(
-        servicePointGeolocationModel.getSpatialReference())
+    GeolocationMapper.transformLv03andWgs84(servicePointGeolocationModel);
+    return geolocationBuilder.spatialReference(servicePointGeolocationModel.getSpatialReference())
         .north(servicePointGeolocationModel.getNorth())
         .east(servicePointGeolocationModel.getEast())
         .height(servicePointGeolocationModel.getHeight())
         .build();
   }
+
+
 
   private static Canton getCanton(ServicePointGeolocation servicePointGeolocation) {
     if (servicePointGeolocation.getSwissCanton() == null) {

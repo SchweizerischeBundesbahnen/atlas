@@ -7,7 +7,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 import ch.sbb.atlas.imports.servicepoint.BaseDidokCsvModel;
 import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointCsvModel;
@@ -20,10 +19,12 @@ import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion.Fields;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.repository.LoadingPointVersionRepository;
+import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.CrossValidationService;
 import ch.sbb.atlas.servicepointdirectory.service.loadingpoint.LoadingPointImportService;
 import java.io.InputStream;
-import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -33,9 +34,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public class LoadingPointControllerApiTest extends BaseControllerApiTest {
 
@@ -134,7 +132,7 @@ public class LoadingPointControllerApiTest extends BaseControllerApiTest {
                     "&toDate=" + loadingPointVersion.getValidTo()+
                     "&validOn=" + LocalDate.of(2020, 6, 28) +
                     "&createdAfter=" + loadingPointVersion.getCreationDate().minusSeconds(1) +
-                    "&modifiedAfter=" + loadingPointVersion.getEditionDate())).andDo(print())
+                    "&modifiedAfter=" + loadingPointVersion.getEditionDate()))
          .andExpect(status().isOk())
          .andExpect(jsonPath("$.totalCount", is(1)))
          .andExpect(jsonPath("$.objects[0]." + Fields.id, is(loadingPointVersion.getId().intValue())));
