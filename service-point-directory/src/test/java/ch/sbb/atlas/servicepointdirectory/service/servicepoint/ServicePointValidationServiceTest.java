@@ -33,8 +33,6 @@ public class ServicePointValidationServiceTest {
   private final ServicePointValidationService servicePointValidationService;
   private final ServicePointVersionRepository versionRepository;
 
-  private ServicePointVersion bernWyleregg;
-
   @Autowired
   public ServicePointValidationServiceTest(ServicePointValidationService servicePointValidationService,
       ServicePointVersionRepository versionRepository) {
@@ -46,7 +44,7 @@ public class ServicePointValidationServiceTest {
   void createDefaultVersion() {
     ServicePointVersion servicePointVersion = ServicePointTestData.getBernWyleregg();
     servicePointVersion.setDesignationLong("Wyleregg, Loraine, Bern");
-    bernWyleregg = versionRepository.save(servicePointVersion);
+    versionRepository.save(servicePointVersion);
   }
 
   @AfterEach
@@ -69,9 +67,29 @@ public class ServicePointValidationServiceTest {
   }
 
   @Test
+  void shouldNotThrowExceptionOnSameDesignationOfficialInDifferentCountries() {
+    ServicePointVersion servicePointVersion = servicePointVersionBuilder()
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8014350))
+        .country(Country.GERMANY)
+        .build();
+    assertDoesNotThrow(() -> servicePointValidationService.validateServicePointPreconditionBusinessRule(servicePointVersion));
+  }
+
+  @Test
   void shouldNotThrowExceptionOnDifferentDesignationLong() {
     ServicePointVersion servicePointVersion = servicePointVersionBuilder()
         .designationOfficial("Antonios Hood").build();
+    assertDoesNotThrow(() -> servicePointValidationService.validateServicePointPreconditionBusinessRule(servicePointVersion));
+  }
+
+  @Test
+  void shouldNotThrowExceptionOnSameDesignationLongInDifferentCountries() {
+    ServicePointVersion servicePointVersion = servicePointVersionBuilder()
+        .designationOfficial("Wyler Egg")
+        .designationLong("Wyleregg, Loraine, Bern")
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8014350))
+        .country(Country.GERMANY)
+        .build();
     assertDoesNotThrow(() -> servicePointValidationService.validateServicePointPreconditionBusinessRule(servicePointVersion));
   }
 
