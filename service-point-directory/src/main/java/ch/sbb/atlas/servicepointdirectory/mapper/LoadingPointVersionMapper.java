@@ -24,4 +24,16 @@ public class LoadingPointVersionMapper {
         .build();
   }
 
+  public static LoadingPointVersion toEntity(LoadingPointVersionModel model) {
+    return LoadingPointVersion.builder()
+        .id(model.getId())
+        .number(model.getNumber())
+        .designation(model.getDesignation())
+        .designationLong(model.getDesignationLong())
+        .connectionPoint(model.isConnectionPoint())
+        .servicePointNumber(model.getServicePointNumber())
+        .validFrom(model.getValidFrom())
+        .validTo(model.getValidTo())
+        .build();
+  }
 }
