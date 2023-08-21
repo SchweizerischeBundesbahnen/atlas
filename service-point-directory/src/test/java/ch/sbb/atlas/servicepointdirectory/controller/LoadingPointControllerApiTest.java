@@ -279,7 +279,7 @@ public class LoadingPointControllerApiTest extends BaseControllerApiTest {
         .validTo(LocalDate.of(2020, 12, 31))
         .build();
 
-    mvc.perform(post("/v1/loading-points/" + loadingPointVersion.getId())
+    mvc.perform(put("/v1/loading-points/" + loadingPointVersion.getId())
             .contentType(contentType)
             .content(mapper.writeValueAsString(update)))
         .andExpect(status().isOk())
