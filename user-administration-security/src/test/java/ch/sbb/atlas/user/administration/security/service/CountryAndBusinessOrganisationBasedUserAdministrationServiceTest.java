@@ -103,7 +103,7 @@ class CountryAndBusinessOrganisationBasedUserAdministrationServiceTest {
     when(userPermissionHolder.isAdmin()).thenReturn(true);
 
     // When
-    boolean permissionsToCreate = countryAndBOBasedUserAdministrationService.hasUserPermissionsToCreateOrEditTrafficPoint(
+    boolean permissionsToCreate = countryAndBOBasedUserAdministrationService.hasUserPermissionsToCreateOrEditServicePointDependentObject(
             getCountryAndBusinessOrganisationAssociateds(), ApplicationType.SEPODI);
 
     // Then
@@ -130,7 +130,7 @@ class CountryAndBusinessOrganisationBasedUserAdministrationServiceTest {
             .build()));
 
     // When
-    boolean permissionsToCreate = countryAndBOBasedUserAdministrationService.hasUserPermissionsToCreateOrEditTrafficPoint(
+    boolean permissionsToCreate = countryAndBOBasedUserAdministrationService.hasUserPermissionsToCreateOrEditServicePointDependentObject(
             getCountryAndBusinessOrganisationAssociateds(), ApplicationType.SEPODI);
 
     // Then
@@ -154,7 +154,7 @@ class CountryAndBusinessOrganisationBasedUserAdministrationServiceTest {
             .build()));
 
     // When
-    boolean permissionsToCreate = countryAndBOBasedUserAdministrationService.hasUserPermissionsToCreateOrEditTrafficPoint(
+    boolean permissionsToCreate = countryAndBOBasedUserAdministrationService.hasUserPermissionsToCreateOrEditServicePointDependentObject(
             getCountryAndBusinessOrganisationAssociateds(), ApplicationType.SEPODI);
 
     // Then
@@ -254,7 +254,7 @@ class CountryAndBusinessOrganisationBasedUserAdministrationServiceTest {
             .build()));
 
     // When
-    boolean permissionsToCreate = countryAndBOBasedUserAdministrationService.hasUserPermissionsToCreateOrEditTrafficPoint(
+    boolean permissionsToCreate = countryAndBOBasedUserAdministrationService.hasUserPermissionsToCreateOrEditServicePointDependentObject(
             getCountryAndBusinessOrganisationAssociateds(), ApplicationType.SEPODI);
 
     // Then
@@ -282,7 +282,7 @@ class CountryAndBusinessOrganisationBasedUserAdministrationServiceTest {
             .build()));
 
     // When
-    boolean permissionsToCreate = countryAndBOBasedUserAdministrationService.hasUserPermissionsToCreateOrEditTrafficPoint(
+    boolean permissionsToCreate = countryAndBOBasedUserAdministrationService.hasUserPermissionsToCreateOrEditServicePointDependentObject(
             getCountryAndBusinessOrganisationAssociateds(), ApplicationType.SEPODI);
 
     // Then
