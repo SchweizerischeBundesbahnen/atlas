@@ -56,8 +56,6 @@ public class LoadingPointVersionModel extends BaseVersionModel implements DatesV
           + "https://transportdatamanagement.ch/standards/", example = "ch:1:sloid:18771")
   private String servicePointSloid;
 
-  private GeolocationBaseReadModel loadingPointGeolocation;
-
   @NotNull
   private LocalDate validFrom;
 
