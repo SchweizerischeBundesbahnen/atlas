@@ -28,6 +28,9 @@ public class GeolocationBaseReadModel {
   @NotNull
   private CoordinatePair wgs84;
 
+  @NotNull
+  private CoordinatePair lv03;
+
   @Schema(description = "Height of the coordinate point", example = "540.20000")
   private Double height;
 
