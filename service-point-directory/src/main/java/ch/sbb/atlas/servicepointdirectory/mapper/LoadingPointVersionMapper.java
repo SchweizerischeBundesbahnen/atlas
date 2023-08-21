@@ -1,14 +1,16 @@
 package ch.sbb.atlas.servicepointdirectory.mapper;
 
-import ch.sbb.atlas.api.servicepoint.LoadingPointVersionModel;
+import ch.sbb.atlas.api.servicepoint.CreateLoadingPointVersionModel;
+import ch.sbb.atlas.api.servicepoint.ReadLoadingPointVersionModel;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class LoadingPointVersionMapper {
 
-  public static LoadingPointVersionModel fromEntity(LoadingPointVersion loadingPointVersion) {
-    return LoadingPointVersionModel.builder()
+  public static ReadLoadingPointVersionModel fromEntity(LoadingPointVersion loadingPointVersion) {
+    return ReadLoadingPointVersionModel.builder()
         .id(loadingPointVersion.getId())
         .number(loadingPointVersion.getNumber())
         .designation(loadingPointVersion.getDesignation())
@@ -21,19 +23,21 @@ public class LoadingPointVersionMapper {
         .creator(loadingPointVersion.getCreator())
         .editionDate(loadingPointVersion.getEditionDate())
         .editor(loadingPointVersion.getEditor())
+        .etagVersion(loadingPointVersion.getVersion())
         .build();
   }
 
-  public static LoadingPointVersion toEntity(LoadingPointVersionModel model) {
+  public static LoadingPointVersion toEntity(CreateLoadingPointVersionModel model) {
     return LoadingPointVersion.builder()
         .id(model.getId())
         .number(model.getNumber())
         .designation(model.getDesignation())
         .designationLong(model.getDesignationLong())
         .connectionPoint(model.isConnectionPoint())
-        .servicePointNumber(model.getServicePointNumber())
+        .servicePointNumber(ServicePointNumber.ofNumberWithoutCheckDigit(model.getServicePointNumber()))
         .validFrom(model.getValidFrom())
         .validTo(model.getValidTo())
+        .version(model.getEtagVersion())
         .build();
   }
 }

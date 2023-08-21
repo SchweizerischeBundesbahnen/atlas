@@ -1,7 +1,8 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
 import ch.sbb.atlas.api.model.Container;
-import ch.sbb.atlas.api.servicepoint.LoadingPointVersionModel;
+import ch.sbb.atlas.api.servicepoint.CreateLoadingPointVersionModel;
+import ch.sbb.atlas.api.servicepoint.ReadLoadingPointVersionModel;
 import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointImportRequestModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
@@ -32,7 +33,7 @@ public class LoadingPointController implements LoadingPointApiV1 {
   private final LoadingPointImportService loadingPointImportService;
 
   @Override
-  public Container<LoadingPointVersionModel> getLoadingPoints(Pageable pageable,
+  public Container<ReadLoadingPointVersionModel> getLoadingPoints(Pageable pageable,
       LoadingPointElementRequestParams loadingPointElementRequestParams) {
     LoadingPointSearchRestrictions loadingPointSearchRestrictions = LoadingPointSearchRestrictions.builder()
         .pageable(pageable)
@@ -40,16 +41,16 @@ public class LoadingPointController implements LoadingPointApiV1 {
         .build();
 
     Page<LoadingPointVersion> loadingPointVersions = loadingPointService.findAll(loadingPointSearchRestrictions);
-    return Container.<LoadingPointVersionModel>builder()
+    return Container.<ReadLoadingPointVersionModel>builder()
         .objects(loadingPointVersions.stream().map(LoadingPointVersionMapper::fromEntity).toList())
         .totalCount(loadingPointVersions.getTotalElements())
         .build();
   }
 
   @Override
-  public List<LoadingPointVersionModel> getLoadingPoint(Integer servicePointNumber, Integer loadingPointNumber) {
+  public List<ReadLoadingPointVersionModel> getLoadingPoint(Integer servicePointNumber, Integer loadingPointNumber) {
     ServicePointNumber number = ServicePointNumber.ofNumberWithoutCheckDigit(servicePointNumber);
-    List<LoadingPointVersionModel> loadingPointVersions = loadingPointService.findLoadingPoint(number,
+    List<ReadLoadingPointVersionModel> loadingPointVersions = loadingPointService.findLoadingPoint(number,
             loadingPointNumber)
         .stream()
         .map(LoadingPointVersionMapper::fromEntity).toList();
@@ -60,7 +61,7 @@ public class LoadingPointController implements LoadingPointApiV1 {
   }
 
   @Override
-  public LoadingPointVersionModel getLoadingPointVersion(Long id) {
+  public ReadLoadingPointVersionModel getLoadingPointVersion(Long id) {
     return loadingPointService.findById(id).map(LoadingPointVersionMapper::fromEntity)
         .orElseThrow(() -> new IdNotFoundException(id));
   }
@@ -71,14 +72,15 @@ public class LoadingPointController implements LoadingPointApiV1 {
   }
 
   @Override
-  public LoadingPointVersionModel createLoadingPoint(LoadingPointVersionModel newVersion) {
+  public ReadLoadingPointVersionModel createLoadingPoint(CreateLoadingPointVersionModel newVersion) {
     LoadingPointVersion loadingPointVersion = loadingPointService.create(LoadingPointVersionMapper.toEntity(newVersion),
-        servicePointService.findAllByNumberOrderByValidFrom(newVersion.getServicePointNumber()));
+        servicePointService.findAllByNumberOrderByValidFrom(
+            ServicePointNumber.ofNumberWithoutCheckDigit(newVersion.getServicePointNumber())));
     return LoadingPointVersionMapper.fromEntity(loadingPointVersion);
   }
 
   @Override
-  public List<LoadingPointVersionModel> updateLoadingPoint(Long id, LoadingPointVersionModel updatedVersion) {
+  public List<ReadLoadingPointVersionModel> updateLoadingPoint(Long id, CreateLoadingPointVersionModel updatedVersion) {
     LoadingPointVersion loadingPointVersionToUpdate = loadingPointService.findById(id)
         .orElseThrow(() -> new IdNotFoundException(id));
     loadingPointService.updateVersion(loadingPointVersionToUpdate, LoadingPointVersionMapper.toEntity(updatedVersion),
