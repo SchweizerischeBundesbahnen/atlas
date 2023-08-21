@@ -9,7 +9,7 @@ import org.assertj.core.data.Offset;
 public class DoubleAssertion {
 
   public static Offset<Double> equalOnDecimalDigits(int digits) {
-    double offsetValue = Math.pow(10.0, -(digits + 1));
+    double offsetValue = Math.pow(10.0, -(digits));
     return withPrecision(offsetValue);
   }
 
