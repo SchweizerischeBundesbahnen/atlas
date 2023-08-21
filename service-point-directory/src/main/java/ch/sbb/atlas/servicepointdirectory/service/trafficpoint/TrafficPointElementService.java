@@ -48,7 +48,7 @@ public class TrafficPointElementService {
   }
 
   @PreAuthorize(
-      "@countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreateOrEditTrafficPoint"
+      "@countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreateOrEditServicePointDependentObject"
           + "(#servicePointVersions, "
           + "T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
   public TrafficPointElementVersion checkPermissionRightsAndSave(TrafficPointElementVersion trafficPointElementVersion,
@@ -62,7 +62,7 @@ public class TrafficPointElementService {
   }
 
   @PreAuthorize(
-      "@countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreateOrEditTrafficPoint"
+      "@countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreateOrEditServicePointDependentObject"
           + "(#currentVersions, "
           + "T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
   public void checkPermissionRightsAndUpdate(
