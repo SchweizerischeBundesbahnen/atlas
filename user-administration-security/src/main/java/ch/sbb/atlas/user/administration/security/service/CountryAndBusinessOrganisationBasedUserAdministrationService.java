@@ -26,9 +26,10 @@ public class CountryAndBusinessOrganisationBasedUserAdministrationService extend
     super(userPermissionHolder);
   }
 
-  public boolean hasUserPermissionsToCreateOrEditTrafficPoint(List<CountryAndBusinessOrganisationAssociated> businessObjects, ApplicationType applicationType) {
-    return businessObjects.stream()
-                    .anyMatch(obj -> hasUserPermissionsToCreate(obj, applicationType));
+  public boolean hasUserPermissionsToCreateOrEditServicePointDependentObject(List<CountryAndBusinessOrganisationAssociated> businessObjects,
+      ApplicationType applicationType) {
+    log.info("Checking if user may create or edit any of given list");
+    return businessObjects.stream().anyMatch(obj -> hasUserPermissionsToCreate(obj, applicationType));
   }
 
   public boolean hasUserPermissionsToCreate(CountryAndBusinessOrganisationAssociated businessObject,
