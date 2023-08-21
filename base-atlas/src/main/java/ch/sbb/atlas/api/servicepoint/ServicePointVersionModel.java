@@ -50,6 +50,7 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
   @Size(min = 2, max = AtlasFieldLengths.LENGTH_50)
   private String designationLong;
 
+  @NotNull
   @Size(min = 2, max = AtlasFieldLengths.LENGTH_30)
   @Schema(description = "Official designation of a location that must be used by all recipients"
           , example = "Biel/Bienne Bözingenfeld/Champ", maxLength = 30)
@@ -73,6 +74,7 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
   @Schema(description = "SortCodeOfDestinationStation - only for FreightServicePoint", example = "1234")
   private String sortCodeOfDestinationStation;
 
+  @NotNull
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
   @Schema(description = "SBOID of the associated BusinessOrganisation", example = "ch:1:sboid:100001")
   private String businessOrganisation;

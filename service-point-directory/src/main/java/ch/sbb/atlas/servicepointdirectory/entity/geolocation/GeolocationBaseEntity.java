@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.entity.geolocation;
 
+import ch.sbb.atlas.api.servicepoint.TransformableGeolocation;
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.servicepointdirectory.entity.BaseDidokImportEntity;
@@ -27,7 +28,7 @@ import lombok.experimental.SuperBuilder;
 @FieldNameConstants
 @MappedSuperclass
 @AtlasVersionable
-public abstract class GeolocationBaseEntity extends BaseDidokImportEntity {
+public abstract class GeolocationBaseEntity extends BaseDidokImportEntity implements TransformableGeolocation {
 
   @NotNull
   @Enumerated(EnumType.STRING)
