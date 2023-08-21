@@ -1,5 +1,16 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
+import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.LV95;
+import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.WGS84;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
@@ -9,6 +20,7 @@ import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel.Fields;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.imports.servicepoint.BaseDidokCsvModel;
+import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointImportRequestModel;
@@ -23,14 +35,6 @@ import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointGeolocationMapper;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointFotCommentRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
-import org.springframework.test.web.servlet.MvcResult;
-
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -39,19 +43,19 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
-import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.LV95;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
+import org.springframework.test.web.servlet.MvcResult;
 
 public class ServicePointControllerApiTest extends BaseControllerApiTest {
 
   @MockBean
   private SharedBusinessOrganisationService sharedBusinessOrganisationService;
+
   private final ServicePointVersionRepository repository;
   private final ServicePointFotCommentRepository fotCommentRepository;
   private final ServicePointController servicePointController;
@@ -267,8 +271,8 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.servicePointGeolocation.spatialReference", is(LV95.toString())))
         .andExpect(jsonPath("$.servicePointGeolocation.lv95.north", is(1201099.0)))
         .andExpect(jsonPath("$.servicePointGeolocation.lv95.east", is(2600783.0)))
-        .andExpect(jsonPath("$.servicePointGeolocation.wgs84.north", is(46.96096808019183)))
-        .andExpect(jsonPath("$.servicePointGeolocation.wgs84.east", is(7.448919722210132)))
+        .andExpect(jsonPath("$.servicePointGeolocation.wgs84.north", is(46.96096808019)))
+        .andExpect(jsonPath("$.servicePointGeolocation.wgs84.east", is(7.44891972221)))
         .andExpect(jsonPath("$.servicePointGeolocation.swissLocation.canton", is("BERN")))
         .andExpect(jsonPath("$.servicePointGeolocation.swissLocation.cantonInformation.fsoNumber", is(2)))
         .andExpect(jsonPath("$.servicePointGeolocation.swissLocation.cantonInformation.name", is("Bern")))
@@ -313,8 +317,8 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[0].servicePointGeolocation.spatialReference", is(LV95.toString())))
         .andExpect(jsonPath("$[0].servicePointGeolocation.lv95.north", is(1201099.0)))
         .andExpect(jsonPath("$[0].servicePointGeolocation.lv95.east", is(2600783.0)))
-        .andExpect(jsonPath("$[0].servicePointGeolocation.wgs84.north", is(46.96096808019183)))
-        .andExpect(jsonPath("$[0].servicePointGeolocation.wgs84.east", is(7.448919722210132)))
+        .andExpect(jsonPath("$[0].servicePointGeolocation.wgs84.north", is(46.96096808019)))
+        .andExpect(jsonPath("$[0].servicePointGeolocation.wgs84.east", is(7.44891972221)))
         .andExpect(jsonPath("$[0].servicePointGeolocation.swissLocation.canton", is("BERN")))
         .andExpect(jsonPath("$[0].servicePointGeolocation.swissLocation.cantonInformation.fsoNumber", is(2)))
         .andExpect(jsonPath("$[0].servicePointGeolocation.swissLocation.cantonInformation.name", is("Bern")))
@@ -329,8 +333,8 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[1].servicePointGeolocation.spatialReference", is(LV95.toString())))
         .andExpect(jsonPath("$[1].servicePointGeolocation.lv95.north", is(1485245.92913)))
         .andExpect(jsonPath("$[1].servicePointGeolocation.lv95.east", is(2671984.26107)))
-        .andExpect(jsonPath("$[1].servicePointGeolocation.wgs84.north", is(49.51139999799088)))
-        .andExpect(jsonPath("$[1].servicePointGeolocation.wgs84.east", is(8.431600000009265)))
+        .andExpect(jsonPath("$[1].servicePointGeolocation.wgs84.north", is(49.51139999799)))
+        .andExpect(jsonPath("$[1].servicePointGeolocation.wgs84.east", is(8.43160000001)))
         .andExpect(jsonPath("$[1].servicePointGeolocation.swissLocation.canton", is("AARGAU")))
         .andExpect(jsonPath("$[1].servicePointGeolocation.swissLocation.cantonInformation.fsoNumber", is(19)))
         .andExpect(jsonPath("$[1].servicePointGeolocation.swissLocation.cantonInformation.name", is("Aargau")))
@@ -345,8 +349,8 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[2].servicePointGeolocation.spatialReference", is(LV95.toString())))
         .andExpect(jsonPath("$[2].servicePointGeolocation.lv95.north", is(1201099.0)))
         .andExpect(jsonPath("$[2].servicePointGeolocation.lv95.east", is(2600783.0)))
-        .andExpect(jsonPath("$[2].servicePointGeolocation.wgs84.north", is(46.96096808019183)))
-        .andExpect(jsonPath("$[2].servicePointGeolocation.wgs84.east", is(7.448919722210132)))
+        .andExpect(jsonPath("$[2].servicePointGeolocation.wgs84.north", is(46.96096808019)))
+        .andExpect(jsonPath("$[2].servicePointGeolocation.wgs84.east", is(7.44891972221)))
         .andExpect(jsonPath("$[2].servicePointGeolocation.swissLocation.canton", is("BERN")))
         .andExpect(jsonPath("$[2].servicePointGeolocation.swissLocation.cantonInformation.fsoNumber", is(2)))
         .andExpect(jsonPath("$[2].servicePointGeolocation.swissLocation.cantonInformation.name", is("Bern")))
@@ -467,5 +471,53 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
     mvc.perform(get("/v1/service-points/"+servicePointVersion.getNumber().getValue()+"/fot-comment"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$." + Fields.fotComment, is("Very important on demand service point")));
+  }
+
+  @Test
+  void shouldCreateServicePointWithLv03ConvertingToLv95() throws Exception {
+    CreateServicePointVersionModel aargauServicePointVersion = ServicePointTestData.getAargauServicePointVersionModel();
+    aargauServicePointVersion.getServicePointGeolocation().setSpatialReference(SpatialReference.LV03);
+    aargauServicePointVersion.getServicePointGeolocation().setEast(600127.58303);
+    aargauServicePointVersion.getServicePointGeolocation().setNorth(199776.88044);
+
+    mvc.perform(post("/v1/service-points")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(aargauServicePointVersion)))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.id, is(servicePointVersion.getId().intValue() + 1)))
+        .andExpect(jsonPath("$.number.number", is(8034510)))
+        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.designationOfficial, is("Aargau Strasse")))
+        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.sloid, is("ch:1:sloid:18771")))
+        .andExpect(jsonPath("$.servicePointGeolocation.spatialReference", is(LV95.toString())))
+        .andExpect(jsonPath("$.servicePointGeolocation.lv95.east", is(2600127.58303)))
+        .andExpect(jsonPath("$.servicePointGeolocation.lv95.north", is(1199776.88044)))
+        .andExpect(jsonPath("$.servicePointGeolocation.wgs84.north", is(46.94907577445)))
+        .andExpect(jsonPath("$.servicePointGeolocation.wgs84.east", is(7.44030833981)))
+        .andExpect(jsonPath("$.servicePointGeolocation.lv03.north", is(199776.88044)))
+        .andExpect(jsonPath("$.servicePointGeolocation.lv03.east", is(600127.58303)))
+        .andExpect(jsonPath("$.hasGeolocation", is(true)));
+  }
+
+  @Test
+  void shouldCreateServicePointWithWgs84webConvertingToWgs84() throws Exception {
+    CreateServicePointVersionModel aargauServicePointVersion = ServicePointTestData.getAargauServicePointVersionModel();
+    aargauServicePointVersion.getServicePointGeolocation().setSpatialReference(SpatialReference.WGS84WEB);
+    aargauServicePointVersion.getServicePointGeolocation().setEast(828251.335735);
+    aargauServicePointVersion.getServicePointGeolocation().setNorth(5933765.900287);
+
+    mvc.perform(post("/v1/service-points")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(aargauServicePointVersion)))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.id, is(servicePointVersion.getId().intValue() + 1)))
+        .andExpect(jsonPath("$.number.number", is(8034510)))
+        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.designationOfficial, is("Aargau Strasse")))
+        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.sloid, is("ch:1:sloid:18771")))
+        .andExpect(jsonPath("$.servicePointGeolocation.spatialReference", is(WGS84.toString())))
+        .andExpect(jsonPath("$.servicePointGeolocation.wgs84.north", is(46.94907577445)))
+        .andExpect(jsonPath("$.servicePointGeolocation.wgs84.east", is(7.44030833983)))
+        .andExpect(jsonPath("$.servicePointGeolocation.lv95.east", is(2600127.58359)))
+        .andExpect(jsonPath("$.servicePointGeolocation.lv95.north", is(1199776.88159)))
+        .andExpect(jsonPath("$.hasGeolocation", is(true)));
   }
 }
