@@ -83,7 +83,10 @@ public class LoadingPointController implements LoadingPointApiV1 {
   public List<ReadLoadingPointVersionModel> updateLoadingPoint(Long id, CreateLoadingPointVersionModel updatedVersion) {
     LoadingPointVersion loadingPointVersionToUpdate = loadingPointService.findById(id)
         .orElseThrow(() -> new IdNotFoundException(id));
-    loadingPointService.updateVersion(loadingPointVersionToUpdate, LoadingPointVersionMapper.toEntity(updatedVersion),
+    LoadingPointVersion editedVersion = LoadingPointVersionMapper.toEntity(updatedVersion);
+    editedVersion.setNumber(loadingPointVersionToUpdate.getNumber());
+    editedVersion.setServicePointNumber(loadingPointVersionToUpdate.getServicePointNumber());
+    loadingPointService.updateVersion(loadingPointVersionToUpdate, editedVersion,
         servicePointService.findAllByNumberOrderByValidFrom(loadingPointVersionToUpdate.getServicePointNumber()));
     return loadingPointService.findLoadingPoint(loadingPointVersionToUpdate.getServicePointNumber(),
             loadingPointVersionToUpdate.getNumber())
