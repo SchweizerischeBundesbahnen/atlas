@@ -72,7 +72,7 @@ public class ServicePointMigrationFutureTimetableDateIntegrationTest {
   }
 
   @Test
-  @Order(4)
+  @Order(3)
   void shouldHaveOnlyVersionsValidOnFutureTimetableDate() {
     atlasCsvLines.forEach(atlasCsvLine -> {
       assertThat(
@@ -83,7 +83,7 @@ public class ServicePointMigrationFutureTimetableDateIntegrationTest {
   }
 
   @Test
-  @Order(5)
+  @Order(4)
   void shouldHaveMappedFieldsToAtlasCorrectly() {
     didokCsvLines.forEach(didokCsvLine -> {
       ServicePointVersionCsvModel atlasCsvLine = atlasCsvLinesAsMap.get(didokCsvLine.getDidokCode());
