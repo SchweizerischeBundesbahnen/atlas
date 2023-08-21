@@ -2,7 +2,8 @@ package ch.sbb.atlas.servicepointdirectory.api;
 
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.model.ErrorResponse;
-import ch.sbb.atlas.api.servicepoint.LoadingPointVersionModel;
+import ch.sbb.atlas.api.servicepoint.CreateLoadingPointVersionModel;
+import ch.sbb.atlas.api.servicepoint.ReadLoadingPointVersionModel;
 import ch.sbb.atlas.configuration.Role;
 import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointImportRequestModel;
@@ -25,6 +26,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -35,34 +37,34 @@ public interface LoadingPointApiV1 {
 
   @GetMapping
   @PageableAsQueryParam
-  Container<LoadingPointVersionModel> getLoadingPoints(
+  Container<ReadLoadingPointVersionModel> getLoadingPoints(
       @Parameter(hidden = true) @PageableDefault(sort = {
           LoadingPointVersion.Fields.servicePointNumber,
           LoadingPointVersion.Fields.number, LoadingPointVersion.Fields.validFrom}) Pageable pageable,
           @ParameterObject LoadingPointElementRequestParams loadingPointElementRequestParams);
 
   @GetMapping("{servicePointNumber}/{loadingPointNumber}")
-  List<LoadingPointVersionModel> getLoadingPoint(@PathVariable Integer servicePointNumber,
+  List<ReadLoadingPointVersionModel> getLoadingPoint(@PathVariable Integer servicePointNumber,
       @PathVariable Integer loadingPointNumber);
 
-  @GetMapping("versions/{id}")
-  LoadingPointVersionModel getLoadingPointVersion(@PathVariable Long id);
+  @GetMapping("{id}")
+  ReadLoadingPointVersionModel getLoadingPointVersion(@PathVariable Long id);
 
   @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
   @PostMapping("import")
   List<ItemImportResult> importLoadingPoints(
       @RequestBody @Valid LoadingPointImportRequestModel loadingPointImportRequestModel);
 
-  @PostMapping("versions")
+  @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201"),
       @ApiResponse(responseCode = "409", description = "Number is not unique in time per service point", content =
       @Content(schema = @Schema(implementation = ErrorResponse.class)))
   })
-  LoadingPointVersionModel createLoadingPoint(@RequestBody @Valid LoadingPointVersionModel newVersion);
+  ReadLoadingPointVersionModel createLoadingPoint(@RequestBody @Valid CreateLoadingPointVersionModel newVersion);
 
-  @PostMapping({"versions/{id}"})
+  @PutMapping({"{id}"})
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200"),
       @ApiResponse(responseCode = "409", description = "Number is not unique in time per service point", content =
@@ -70,6 +72,6 @@ public interface LoadingPointApiV1 {
       @ApiResponse(responseCode = "412", description = "Entity has already been updated (etagVersion out of date)", content =
       @Content(schema = @Schema(implementation = ErrorResponse.class)))
   })
-  List<LoadingPointVersionModel> updateLoadingPoint(@PathVariable Long id,
-      @RequestBody @Valid LoadingPointVersionModel updatedVersion);
+  List<ReadLoadingPointVersionModel> updateLoadingPoint(@PathVariable Long id,
+      @RequestBody @Valid CreateLoadingPointVersionModel updatedVersion);
 }
