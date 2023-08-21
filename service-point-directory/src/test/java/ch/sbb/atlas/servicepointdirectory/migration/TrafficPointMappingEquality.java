@@ -58,15 +58,7 @@ public class TrafficPointMappingEquality {
     //    assertThat(atlasCsvLine.getServicePointBusinessOrganisationNumber()).isEqualTo(didokCsvLine
     //    .getServicePointBusinessOrganisationNumber());
 
-    // The abbreviations are not available in the DiDok-Exports, that is why they are commented out
-    //    assertThat(atlasCsvLine.getServicePointBusinessOrganisationAbbreviationDe()).isEqualTo(
-    //        didokCsvLine.getServicePointBusinessOrganisationAbbreviationDe());
-    //    assertThat(atlasCsvLine.getServicePointBusinessOrganisationAbbreviationFr()).isEqualTo(
-    //        didokCsvLine.getServicePointBusinessOrganisationAbbreviationFr());
-    //    assertThat(atlasCsvLine.getServicePointBusinessOrganisationAbbreviationIt()).isEqualTo(
-    //        didokCsvLine.getServicePointBusinessOrganisationAbbreviationIt());
-    //    assertThat(atlasCsvLine.getServicePointBusinessOrganisationAbbreviationEn()).isEqualTo(
-    //        didokCsvLine.getServicePointBusinessOrganisationAbbreviationEn());
+    // The servicePointBusinessOrganisationAbbreviations are not available in the DiDok-Exports
 
   }
 
