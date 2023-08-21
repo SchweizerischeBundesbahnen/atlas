@@ -1,6 +1,14 @@
 package ch.sbb.atlas.servicepointdirectory.migration;
 
-import lombok.*;
+import ch.sbb.atlas.imports.servicepoint.deserializer.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
 
 @Data
@@ -56,9 +64,11 @@ public class TrafficPointVersionCsvModel {
 
   private Double height;
 
-  private String creationDate;
+  @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+  private LocalDateTime creationDate;
 
-  private String editionDate;
+  @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+  private LocalDateTime editionDate;
 
   private String parentSloidServicePoint;
 
