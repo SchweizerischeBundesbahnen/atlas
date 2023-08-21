@@ -9,6 +9,7 @@ import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.api.LoadingPointApiV1;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
+import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.LoadingPointNumberNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.mapper.LoadingPointVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.model.search.LoadingPointSearchRestrictions;
@@ -83,11 +84,14 @@ public class LoadingPointController implements LoadingPointApiV1 {
   public List<ReadLoadingPointVersionModel> updateLoadingPoint(Long id, CreateLoadingPointVersionModel updatedVersion) {
     LoadingPointVersion loadingPointVersionToUpdate = loadingPointService.findById(id)
         .orElseThrow(() -> new IdNotFoundException(id));
+
     LoadingPointVersion editedVersion = LoadingPointVersionMapper.toEntity(updatedVersion);
     editedVersion.setNumber(loadingPointVersionToUpdate.getNumber());
     editedVersion.setServicePointNumber(loadingPointVersionToUpdate.getServicePointNumber());
-    loadingPointService.updateVersion(loadingPointVersionToUpdate, editedVersion,
-        servicePointService.findAllByNumberOrderByValidFrom(loadingPointVersionToUpdate.getServicePointNumber()));
+
+    List<ServicePointVersion> associatedServicePoint = servicePointService.findAllByNumberOrderByValidFrom(
+        loadingPointVersionToUpdate.getServicePointNumber());
+    loadingPointService.updateVersion(loadingPointVersionToUpdate, editedVersion, associatedServicePoint);
     return loadingPointService.findLoadingPoint(loadingPointVersionToUpdate.getServicePointNumber(),
             loadingPointVersionToUpdate.getNumber())
         .stream()
