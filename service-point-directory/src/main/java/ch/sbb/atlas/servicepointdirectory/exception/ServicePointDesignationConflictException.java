@@ -25,7 +25,7 @@ public abstract class ServicePointDesignationConflictException extends AtlasExce
   public ErrorResponse getErrorResponse() {
     return ErrorResponse.builder()
         .status(HttpStatus.CONFLICT.value())
-        .message("A conflict occurred due to a business rule")
+        .message("A conflict occurred due to a business rule while saving " + newVersion.getNumber().getNumber())
         .error(ERROR)
         .details(getErrorDetails())
         .build();
