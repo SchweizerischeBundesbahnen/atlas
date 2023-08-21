@@ -493,6 +493,8 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.servicePointGeolocation.lv95.north", is(1199776.88044)))
         .andExpect(jsonPath("$.servicePointGeolocation.wgs84.north", is(46.94907577445)))
         .andExpect(jsonPath("$.servicePointGeolocation.wgs84.east", is(7.44030833981)))
+        .andExpect(jsonPath("$.servicePointGeolocation.lv03.north", is(199776.88044)))
+        .andExpect(jsonPath("$.servicePointGeolocation.lv03.east", is(600127.58303)))
         .andExpect(jsonPath("$.hasGeolocation", is(true)));
   }
 
