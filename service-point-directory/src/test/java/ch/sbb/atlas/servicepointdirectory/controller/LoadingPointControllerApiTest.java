@@ -8,6 +8,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -24,6 +25,7 @@ import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion.Fields;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
+import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.repository.LoadingPointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.CrossValidationService;
@@ -264,6 +266,28 @@ public class LoadingPointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.validFrom", is("2018-06-28")))
         .andExpect(jsonPath("$.validTo", is("2099-12-31")))
         .andExpect(jsonPath("$.creator", is("e123456")));
+  }
+
+  @Test
+  void shouldNotCreateLoadingPointVersionIfCorrespondingServicePointDoesNotExist() throws Exception {
+    Mockito.doThrow(new ServicePointNumberNotFoundException(ServicePointNumber.ofNumberWithoutCheckDigit(11_00703)))
+        .when(crossValidationServiceMock).validateServicePointNumberExists(any());
+
+    CreateLoadingPointVersionModel ladestationOne = CreateLoadingPointVersionModel
+        .builder()
+        .number(2201)
+        .designation("Ladest Nr.1")
+        .designationLong("Ladestation Nummer 1")
+        .connectionPoint(false)
+        .servicePointNumber(11_00703)
+        .validFrom(LocalDate.of(2018, 6, 28))
+        .validTo(LocalDate.of(2099, 12, 31))
+        .build();
+
+    mvc.perform(post("/v1/loading-points")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(ladestationOne)))
+        .andExpect(status().isNotFound());
   }
 
   @Test
