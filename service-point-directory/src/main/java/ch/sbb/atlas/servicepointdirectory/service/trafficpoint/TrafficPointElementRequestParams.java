@@ -3,6 +3,8 @@ package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
 import ch.sbb.atlas.api.model.VersionedObjectDateRequestParams;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import io.swagger.v3.oas.annotations.Parameter;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
