@@ -2,6 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.migration;
 
 import static ch.sbb.atlas.servicepointdirectory.migration.AtlasCsvReader.dateFromString;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
@@ -84,7 +85,7 @@ public class ServicePointMigrationActualDateIntegrationTest {
   void shouldHaveMappedFieldsToAtlasCorrectly() {
     didokCsvLines.forEach(didokCsvLine -> {
       ServicePointVersionCsvModel atlasCsvLine = atlasCsvLinesAsMap.get(didokCsvLine.getDidokCode());
-      new ServicePointMappingEquality(didokCsvLine, atlasCsvLine, false).performCheck();
+      assertDoesNotThrow(() -> new ServicePointMappingEquality(didokCsvLine, atlasCsvLine, false).performCheck());
     });
   }
 
