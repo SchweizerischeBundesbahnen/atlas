@@ -5,7 +5,7 @@ import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.model.BaseVersionModel;
 import ch.sbb.atlas.export.AtlasCsvMapper;
 import ch.sbb.atlas.export.BaseExportService;
-import ch.sbb.atlas.export.ExportType;
+import ch.sbb.atlas.export.enumeration.ExportType;
 import ch.sbb.atlas.export.model.VersionCsvModel;
 import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationExportVersionWithTuInfo;
