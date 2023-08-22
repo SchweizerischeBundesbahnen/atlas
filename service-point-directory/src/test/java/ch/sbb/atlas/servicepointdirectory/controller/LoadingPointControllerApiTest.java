@@ -1,13 +1,19 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.atlas.api.model.ErrorResponse;
+import ch.sbb.atlas.api.servicepoint.CreateLoadingPointVersionModel;
+import ch.sbb.atlas.api.servicepoint.ReadLoadingPointVersionModel;
 import ch.sbb.atlas.imports.servicepoint.BaseDidokCsvModel;
 import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointCsvModelContainer;
@@ -18,6 +24,7 @@ import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion.Fields;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
+import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.repository.LoadingPointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.CrossValidationService;
@@ -34,6 +41,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
+import org.springframework.test.web.servlet.MvcResult;
 
 public class LoadingPointControllerApiTest extends BaseControllerApiTest {
 
@@ -42,14 +51,17 @@ public class LoadingPointControllerApiTest extends BaseControllerApiTest {
 
   private final LoadingPointVersionRepository repository;
   private final ServicePointVersionRepository servicePointVersionRepository;
+  private final LoadingPointController loadingPointController;
 
   private LoadingPointVersion loadingPointVersion;
   private ServicePointVersion servicePointVersion;
 
   @Autowired
-  public LoadingPointControllerApiTest(LoadingPointVersionRepository repository, ServicePointVersionRepository servicePointVersionRepository) {
+  public LoadingPointControllerApiTest(LoadingPointVersionRepository repository, ServicePointVersionRepository servicePointVersionRepository,
+      LoadingPointController loadingPointController) {
     this.repository = repository;
     this.servicePointVersionRepository = servicePointVersionRepository;
+    this.loadingPointController = loadingPointController;
   }
 
   @BeforeEach
@@ -147,7 +159,7 @@ public class LoadingPointControllerApiTest extends BaseControllerApiTest {
 
   @Test
   void shouldGetLoadingPointVersionById() throws Exception {
-    mvc.perform(get("/v1/loading-points/versions/" + loadingPointVersion.getId())).andExpect(status().isOk());
+    mvc.perform(get("/v1/loading-points/" + loadingPointVersion.getId())).andExpect(status().isOk());
   }
 
   @Test
@@ -227,4 +239,126 @@ public class LoadingPointControllerApiTest extends BaseControllerApiTest {
         .andExpect(status().isBadRequest());
   }
 
+  @Test
+  void shouldCreateLoadingPointVersion() throws Exception {
+    CreateLoadingPointVersionModel ladestationOne = CreateLoadingPointVersionModel
+        .builder()
+        .number(2201)
+        .designation("Ladest Nr.1")
+        .designationLong("Ladestation Nummer 1")
+        .connectionPoint(false)
+        .servicePointNumber(servicePointVersion.getNumber().getNumber())
+        .validFrom(LocalDate.of(2018, 6, 28))
+        .validTo(LocalDate.of(2099, 12, 31))
+        .build();
+
+    mvc.perform(post("/v1/loading-points")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(ladestationOne)))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.id", is(notNullValue())))
+        .andExpect(jsonPath("$.number", is(2201)))
+        .andExpect(jsonPath("$.designation", is("Ladest Nr.1")))
+        .andExpect(jsonPath("$.designationLong", is("Ladestation Nummer 1")))
+        .andExpect(jsonPath("$.servicePointNumber.number", is(5819768)))
+        .andExpect(jsonPath("$.connectionPoint", is(false)))
+        .andExpect(jsonPath("$.validFrom", is("2018-06-28")))
+        .andExpect(jsonPath("$.validTo", is("2099-12-31")))
+        .andExpect(jsonPath("$.creator", is("e123456")));
+  }
+
+  @Test
+  void shouldNotCreateLoadingPointVersionIfCorrespondingServicePointDoesNotExist() throws Exception {
+    Mockito.doThrow(new ServicePointNumberNotFoundException(ServicePointNumber.ofNumberWithoutCheckDigit(11_00703)))
+        .when(crossValidationServiceMock).validateServicePointNumberExists(any());
+
+    CreateLoadingPointVersionModel ladestationOne = CreateLoadingPointVersionModel
+        .builder()
+        .number(2201)
+        .designation("Ladest Nr.1")
+        .designationLong("Ladestation Nummer 1")
+        .connectionPoint(false)
+        .servicePointNumber(11_00703)
+        .validFrom(LocalDate.of(2018, 6, 28))
+        .validTo(LocalDate.of(2099, 12, 31))
+        .build();
+
+    mvc.perform(post("/v1/loading-points")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(ladestationOne)))
+        .andExpect(status().isNotFound());
+  }
+
+  @Test
+  void shouldUpdateExistingLoadingPointVersionByVersioningInTheMiddle() throws Exception {
+    CreateLoadingPointVersionModel update = CreateLoadingPointVersionModel
+        .builder()
+        .number(loadingPointVersion.getNumber())
+        .servicePointNumber(loadingPointVersion.getServicePointNumber().getNumber())
+        .designation("Pizzale")
+        .designationLong("Piazzaleee")
+        .connectionPoint(false)
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 12, 31))
+        .build();
+
+    mvc.perform(put("/v1/loading-points/" + loadingPointVersion.getId())
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(update)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].id", is(notNullValue())))
+        .andExpect(jsonPath("$[0].designation", is("Piazzale")))
+        .andExpect(jsonPath("$[0].validFrom", is("2018-06-28")))
+        .andExpect(jsonPath("$[0].validTo", is("2019-12-31")))
+        .andExpect(jsonPath("$[1].id", is(notNullValue())))
+        .andExpect(jsonPath("$[1].designation", is("Pizzale")))
+        .andExpect(jsonPath("$[1].validFrom", is("2020-01-01")))
+        .andExpect(jsonPath("$[1].validTo", is("2020-12-31")))
+        .andExpect(jsonPath("$[2].id", is(notNullValue())))
+        .andExpect(jsonPath("$[2].designation", is("Piazzale")))
+        .andExpect(jsonPath("$[2].validFrom", is("2021-01-01")))
+        .andExpect(jsonPath("$[2].validTo", is("2099-12-31")));
+  }
+
+  @Test
+  void shouldReturnOptimisticLockingErrorResponse() throws Exception {
+    //given
+    ReadLoadingPointVersionModel currentLoadingPoint =
+        loadingPointController.getLoadingPointVersion(loadingPointVersion.getId());
+
+    // When first update it is ok
+    CreateLoadingPointVersionModel update = CreateLoadingPointVersionModel
+        .builder()
+        .id(currentLoadingPoint.getId())
+        .number(currentLoadingPoint.getNumber())
+        .servicePointNumber(currentLoadingPoint.getServicePointNumber().getNumber())
+        .designation("Pitzale")
+        .designationLong(currentLoadingPoint.getDesignationLong())
+        .connectionPoint(currentLoadingPoint.isConnectionPoint())
+        .validFrom(currentLoadingPoint.getValidFrom())
+        .validTo(currentLoadingPoint.getValidTo())
+        .etagVersion(currentLoadingPoint.getEtagVersion())
+        .build();
+
+    mvc.perform(put("/v1/loading-points/" + currentLoadingPoint.getId())
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(update)))
+        .andExpect(status().isOk());
+
+    // Then on a second update it has to return error for optimistic lock
+    update.setDesignationLong("New and hot loadingpoint");
+    MvcResult mvcResult = mvc.perform(put("/v1/loading-points/" + currentLoadingPoint.getId())
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(update)))
+        .andExpect(status().isPreconditionFailed()).andReturn();
+
+    ErrorResponse errorResponse = mapper.readValue(
+        mvcResult.getResponse().getContentAsString(), ErrorResponse.class);
+
+    assertThat(errorResponse.getStatus()).isEqualTo(HttpStatus.PRECONDITION_FAILED.value());
+    assertThat(errorResponse.getDetails()).size().isEqualTo(1);
+    assertThat(errorResponse.getDetails().first().getDisplayInfo().getCode()).isEqualTo(
+        "COMMON.NOTIFICATION.OPTIMISTIC_LOCK_ERROR");
+    assertThat(errorResponse.getError()).isEqualTo("Stale object state error");
+  }
 }
