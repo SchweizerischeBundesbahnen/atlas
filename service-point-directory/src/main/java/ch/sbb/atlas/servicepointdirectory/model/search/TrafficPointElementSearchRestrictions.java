@@ -7,6 +7,8 @@ import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion.Fields;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion_;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementRequestParams;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.Singular;
 import lombok.ToString;
@@ -37,8 +39,8 @@ public class TrafficPointElementSearchRestrictions {
             .and(specificationBuilder().inSpecification(trafficPointElementRequestParams.getServicePointNumbers(), Fields.servicePointNumber))
             .and(new ServicePointNumberSboidSpecification<>(
                 trafficPointElementRequestParams.getSboids(),
-                trafficPointElementRequestParams.getServicePointNumbersShort(),
-                trafficPointElementRequestParams.getUicCountryCodes().stream().map(uicCountryCode -> Country.from(Integer.valueOf(uicCountryCode))).toList()
+                trafficPointElementRequestParams.getServicePointNumbersShort().stream().flatMap(str -> Arrays.stream(str.split(","))).map(Integer::valueOf).collect(Collectors.toList()),
+                trafficPointElementRequestParams.getUicCountryCodes().stream().flatMap(code -> Arrays.stream(code.split(","))).map(uicCountryCode -> Country.from(Integer.valueOf(uicCountryCode))).toList()
                 ))
             .and(new ValidOrEditionTimerangeSpecification<>(
             trafficPointElementRequestParams.getFromDate(),
