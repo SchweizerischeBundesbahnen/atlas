@@ -6,7 +6,7 @@ import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel;
 import ch.sbb.atlas.configuration.Role;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointImportRequestModel;
-import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointItemImportResult;
+import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -40,9 +40,9 @@ public interface ServicePointApiV1 {
   @GetMapping("versions/{id}")
   ReadServicePointVersionModel getServicePointVersion(@PathVariable Long id);
 
-  @Secured(Role.ROLE_PREFIX + Role.ATLAS_ADMIN)
+  @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
   @PostMapping("import")
-  List<ServicePointItemImportResult> importServicePoints(@RequestBody @Valid ServicePointImportRequestModel servicePoints);
+  List<ItemImportResult> importServicePoints(@RequestBody @Valid ServicePointImportRequestModel servicePoints);
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping

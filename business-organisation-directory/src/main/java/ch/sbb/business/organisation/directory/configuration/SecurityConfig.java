@@ -3,11 +3,10 @@ package ch.sbb.business.organisation.directory.configuration;
 import static org.springframework.security.config.Customizer.withDefaults;
 import static org.springframework.security.oauth2.jwt.JwtClaimNames.AUD;
 
-import java.util.List;
-
-import ch.sbb.atlas.configuration.handler.AtlasAccessDeniedHandler;
 import ch.sbb.atlas.configuration.Role;
+import ch.sbb.atlas.configuration.handler.AtlasAccessDeniedHandler;
 import ch.sbb.atlas.user.administration.security.UserAdministrationConfig;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,6 +29,8 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
+import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 @Import(UserAdministrationConfig.class)
 @EnableWebSecurity
@@ -43,7 +44,8 @@ public class SecurityConfig {
   private String serviceName;
 
   @Bean
-  protected SecurityFilterChain filterChain(HttpSecurity http, AccessDeniedHandler accessDeniedHandler) throws Exception {
+  protected SecurityFilterChain filterChain(HttpSecurity http, AccessDeniedHandler accessDeniedHandler, HandlerMappingIntrospector introspector) throws Exception {
+    MvcRequestMatcher.Builder mvcMatcherBuilder = new MvcRequestMatcher.Builder(introspector);
     http
         // CORS: by default Spring uses a bean with the name of corsConfigurationSource: @see ch.sbb.esta.config.CorsConfig
         .cors(withDefaults())
@@ -55,10 +57,10 @@ public class SecurityConfig {
         // Requests</a>
         .authorizeHttpRequests(authorizeRequests ->
             authorizeRequests
-                .requestMatchers(HttpMethod.GET, "/actuator/**").permitAll()
-                .requestMatchers("/swagger-ui/**").permitAll()
-                .requestMatchers("/v3/api-docs/**").permitAll()
-                .requestMatchers("/static/rest-api.html").permitAll()
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/actuator/**")).permitAll()
+                .requestMatchers(mvcMatcherBuilder.pattern("/swagger-ui/**")).permitAll()
+                .requestMatchers(mvcMatcherBuilder.pattern("/v3/api-docs/**")).permitAll()
+                .requestMatchers(mvcMatcherBuilder.pattern("/static/rest-api.html")).permitAll()
 
                 // Method security may also be configured using the annotations <code>@PreAuthorize</code> and
                 // <code>@PostAuthorize</code>
@@ -67,7 +69,7 @@ public class SecurityConfig {
                 // Security Expressions</a>
                 // In order to use these annotations, you have to enable global-method-security using
                 // <code>@EnableGlobalMethodSecurity(prePostEnabled = true)</code>.
-                .requestMatchers(HttpMethod.DELETE, "/**").hasRole(Role.ATLAS_ADMIN)
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.DELETE, "/**")).hasRole(Role.ATLAS_ADMIN)
                 .anyRequest().authenticated()
         )
         .exceptionHandling(exceptionHandling -> exceptionHandling.accessDeniedHandler(accessDeniedHandler))

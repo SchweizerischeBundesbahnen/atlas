@@ -25,9 +25,11 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public final class ServicePointNumber {
 
+  private static final String SLOID_PREFIX = "ch:1:sloid:";
   private static final int LENGTH = 8;
   private static final int TEN = 10;
   private static final int SEVEN_DIGIT_SPLITTER = 100000;
+  public static final String EMPTY_STRING = "";
 
   @JsonIgnore
   private final int value;
@@ -44,8 +46,21 @@ public final class ServicePointNumber {
   }
 
   public static ServicePointNumber of(Country country, int servicePointId) {
+    if(country.getUicCode() == null){
+      throw new IllegalArgumentException("Country " + country + " does not provide any uicCountryCode!");
+    }
     String formattedId = String.format("%05d", servicePointId);
     return ServicePointNumber.fromString(country.getUicCode() + formattedId + calculateCheckDigit(formattedId));
+  }
+
+  public static String calculateSloid(ServicePointNumber servicePointNumber){
+    if(Country.SWITZERLAND.getUicCode().equals(servicePointNumber.getUicCountryCode())){
+      return SLOID_PREFIX + servicePointNumber.getNumberShort();
+    }
+    if(Country.SLOID_COMPATIBLE_COUNTRY_CODES.contains(servicePointNumber.getUicCountryCode())){
+      return SLOID_PREFIX + servicePointNumber.getNumber();
+    }
+    return null;
   }
 
   private static ServicePointNumber fromString(String number) {
