@@ -44,7 +44,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class BusinessOrganisationControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
+public class BusinessOrganisationControllerIntegrationTest extends BaseControllerWithAmazonS3ApiTest {
 
   private final BusinessOrganisationVersion version = BusinessOrganisationVersion
       .builder()
