@@ -5,6 +5,7 @@ import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointElementCsvModel;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
+import ch.sbb.atlas.servicepointdirectory.mapper.GeolocationMapper;
 import java.util.function.Function;
 
 public class TrafficPointElementCsvToEntityMapper implements
@@ -44,6 +45,7 @@ public class TrafficPointElementCsvToEntityMapper implements
         .editor(trafficPointElementCsvModel.getEditedBy())
         .editionDate(trafficPointElementCsvModel.getEditedAt())
         .build();
+    GeolocationMapper.transformLv03andWgs84(geolocation);
 
     if (geolocation.isValid()) {
       trafficPointElementVersion.setTrafficPointElementGeolocation(geolocation);

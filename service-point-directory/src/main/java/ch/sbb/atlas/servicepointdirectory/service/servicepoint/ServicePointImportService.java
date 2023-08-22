@@ -1,21 +1,24 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
+import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
+import ch.sbb.atlas.imports.servicepoint.ItemImportResult.ItemImportResultBuilder;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
-import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointItemImportResult;
-import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointItemImportResult.ServicePointItemImportResultBuilder;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointFotComment;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
+import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.service.BaseImportService;
 import ch.sbb.atlas.servicepointdirectory.service.BasePointUtility;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
+import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import com.fasterxml.jackson.databind.MappingIterator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -34,6 +37,40 @@ public class ServicePointImportService extends BaseImportService<ServicePointVer
   private final VersionableService versionableService;
   private final ServicePointFotCommentService servicePointFotCommentService;
 
+  @Override
+  protected void save(ServicePointVersion servicePointVersion) {
+    servicePointService.saveWithoutValidationForImportOnly(servicePointVersion);
+  }
+
+  @Override
+  protected String[] getIgnoredPropertiesWithoutGeolocation() {
+    return new String[]{
+        ServicePointVersion.Fields.validFrom,
+        ServicePointVersion.Fields.validTo,
+        ServicePointVersion.Fields.id
+    };
+  }
+
+  @Override
+  protected String[] getIgnoredPropertiesWithGeolocation() {
+    return ArrayUtils.add(getIgnoredPropertiesWithoutGeolocation(), ServicePointVersion.Fields.servicePointGeolocation);
+  }
+
+  @Override
+  protected String getIgnoredReferenceFieldOnGeolocationEntity() {
+    return ServicePointGeolocation.Fields.servicePointVersion;
+  }
+
+  @Override
+  protected ItemImportResult addInfoToItemImportResult(ItemImportResultBuilder itemImportResultBuilder,
+      ServicePointVersion servicePointVersion) {
+    return itemImportResultBuilder
+        .validFrom(servicePointVersion.getValidFrom())
+        .validTo(servicePointVersion.getValidTo())
+        .itemNumber(servicePointVersion.getNumber().asString())
+        .build();
+  }
+
   public static List<ServicePointCsvModel> parseServicePoints(InputStream inputStream)
       throws IOException {
     MappingIterator<ServicePointCsvModel> mappingIterator = DidokCsvMapper.CSV_MAPPER.readerFor(
@@ -47,10 +84,10 @@ public class ServicePointImportService extends BaseImportService<ServicePointVer
     return servicePoints;
   }
 
-  public List<ServicePointItemImportResult> importServicePoints(
+  public List<ItemImportResult> importServicePoints(
       List<ServicePointCsvModelContainer> servicePointCsvModelContainers
   ) {
-    List<ServicePointItemImportResult> importResults = new ArrayList<>();
+    List<ItemImportResult> importResults = new ArrayList<>();
     for (ServicePointCsvModelContainer container : servicePointCsvModelContainers) {
       List<ServicePointVersion> servicePointVersions = container.getServicePointCsvModelList()
           .stream()
@@ -62,10 +99,10 @@ public class ServicePointImportService extends BaseImportService<ServicePointVer
       for (ServicePointVersion servicePointVersion : servicePointVersions) {
         boolean servicePointNumberExisting = servicePointService.isServicePointNumberExisting(servicePointVersion.getNumber());
         if (servicePointNumberExisting) {
-          ServicePointItemImportResult updateResult = updateServicePointVersion(servicePointVersion);
+          ItemImportResult updateResult = updateServicePointVersion(servicePointVersion);
           importResults.add(updateResult);
         } else {
-          ServicePointItemImportResult saveResult = saveServicePointVersion(servicePointVersion);
+          ItemImportResult saveResult = saveServicePointVersion(servicePointVersion);
           importResults.add(saveResult);
         }
       }
@@ -83,12 +120,7 @@ public class ServicePointImportService extends BaseImportService<ServicePointVer
         ServicePointVersion.Fields.servicePointGeolocation);
     versionableService.applyVersioning(ServicePointVersion.class, versionedObjects,
         servicePointService::saveWithoutValidationForImportOnly,
-        servicePointService::deleteById);
-  }
-
-  @Override
-  protected void save(ServicePointVersion servicePointVersion) {
-    servicePointService.save(servicePointVersion);
+        new ApplyVersioningDeleteByIdLongConsumer(servicePointService.getServicePointVersionRepository()));
   }
 
   private void saveFotComment(ServicePointCsvModelContainer container) {
@@ -103,7 +135,7 @@ public class ServicePointImportService extends BaseImportService<ServicePointVer
         .build());
   }
 
-  private ServicePointItemImportResult saveServicePointVersion(ServicePointVersion servicePointVersion) {
+  private ItemImportResult saveServicePointVersion(ServicePointVersion servicePointVersion) {
     try {
       ServicePointVersion savedServicePointVersion = servicePointService.saveWithoutValidationForImportOnly(servicePointVersion);
       return buildSuccessImportResult(savedServicePointVersion);
@@ -113,7 +145,7 @@ public class ServicePointImportService extends BaseImportService<ServicePointVer
     }
   }
 
-  private ServicePointItemImportResult updateServicePointVersion(ServicePointVersion servicePointVersion) {
+  private ItemImportResult updateServicePointVersion(ServicePointVersion servicePointVersion) {
     try {
       updateServicePointVersionForImportService(servicePointVersion);
       return buildSuccessImportResult(servicePointVersion);
@@ -129,26 +161,6 @@ public class ServicePointImportService extends BaseImportService<ServicePointVer
         return buildFailedImportResult(servicePointVersion, exception);
       }
     }
-  }
-
-  private ServicePointItemImportResult buildSuccessImportResult(ServicePointVersion servicePointVersion) {
-    ServicePointItemImportResultBuilder successResultBuilder = ServicePointItemImportResult.successResultBuilder();
-    return addServicePointInfoTo(successResultBuilder, servicePointVersion).build();
-  }
-
-  private ServicePointItemImportResult buildFailedImportResult(ServicePointVersion servicePointVersion, Exception exception) {
-    ServicePointItemImportResultBuilder failedResultBuilder = ServicePointItemImportResult.failedResultBuilder(exception);
-    return addServicePointInfoTo(failedResultBuilder, servicePointVersion).build();
-  }
-
-  private ServicePointItemImportResultBuilder addServicePointInfoTo(
-      ServicePointItemImportResult.ServicePointItemImportResultBuilder servicePointItemImportResultBuilder,
-      ServicePointVersion servicePointVersion
-  ) {
-    return servicePointItemImportResultBuilder
-        .validFrom(servicePointVersion.getValidFrom())
-        .validTo(servicePointVersion.getValidTo())
-        .itemNumber(servicePointVersion.getNumber().getValue());
   }
 
 }
