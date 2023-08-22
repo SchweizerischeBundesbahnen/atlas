@@ -13,6 +13,7 @@ import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.LoadingPointNumberNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.mapper.LoadingPointVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.model.search.LoadingPointSearchRestrictions;
+import ch.sbb.atlas.servicepointdirectory.service.CrossValidationService;
 import ch.sbb.atlas.servicepointdirectory.service.loadingpoint.LoadingPointElementRequestParams;
 import ch.sbb.atlas.servicepointdirectory.service.loadingpoint.LoadingPointImportService;
 import ch.sbb.atlas.servicepointdirectory.service.loadingpoint.LoadingPointService;
@@ -32,6 +33,7 @@ public class LoadingPointController implements LoadingPointApiV1 {
   private final LoadingPointService loadingPointService;
   private final ServicePointService servicePointService;
   private final LoadingPointImportService loadingPointImportService;
+  private final CrossValidationService crossValidationService;
 
   @Override
   public Container<ReadLoadingPointVersionModel> getLoadingPoints(Pageable pageable,
@@ -74,9 +76,11 @@ public class LoadingPointController implements LoadingPointApiV1 {
 
   @Override
   public ReadLoadingPointVersionModel createLoadingPoint(CreateLoadingPointVersionModel newVersion) {
+    ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(newVersion.getServicePointNumber());
+    crossValidationService.validateServicePointNumberExists(servicePointNumber);
+
     LoadingPointVersion loadingPointVersion = loadingPointService.create(LoadingPointVersionMapper.toEntity(newVersion),
-        servicePointService.findAllByNumberOrderByValidFrom(
-            ServicePointNumber.ofNumberWithoutCheckDigit(newVersion.getServicePointNumber())));
+        servicePointService.findAllByNumberOrderByValidFrom(servicePointNumber));
     return LoadingPointVersionMapper.fromEntity(loadingPointVersion);
   }
 
