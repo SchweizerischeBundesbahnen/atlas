@@ -3,6 +3,8 @@ package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
 import ch.sbb.atlas.api.model.VersionedObjectDateRequestParams;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import io.swagger.v3.oas.annotations.Parameter;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,7 +29,7 @@ public class TrafficPointElementRequestParams extends VersionedObjectDateRequest
 
     @Parameter(description = "DiDok-Number formerly known as UIC-Code, combination of uicCountryCode and numberShort.")
     @Singular(ignoreNullCollections = true)
-    private List<Integer> servicePointNumbers = new ArrayList<>();
+    private List<String> servicePointNumbers = new ArrayList<>();
 
     @Parameter(description = "")
     @Singular(ignoreNullCollections = true)
@@ -45,10 +47,14 @@ public class TrafficPointElementRequestParams extends VersionedObjectDateRequest
             "Number of a service point which is provided by DiDok for Switzerland. It is part of the unique key for"
                     + " service points.")
     @Singular(value = "numberShort", ignoreNullCollections = true)
-    private List<Integer> servicePointNumbersShort = new ArrayList<>();
+    private List<String> servicePointNumbersShort = new ArrayList<>();
 
     public List<ServicePointNumber> getServicePointNumbers() {
-        return servicePointNumbers.stream().map(ServicePointNumber::ofNumberWithoutCheckDigit).toList();
+        return servicePointNumbers.stream()
+            .flatMap(str -> Arrays.stream(str.split(",")))
+            .map(Integer::valueOf)
+            .map(ServicePointNumber::ofNumberWithoutCheckDigit)
+            .collect(Collectors.toList());
     }
 
 }
