@@ -3,7 +3,7 @@ package ch.sbb.business.organisation.directory.controller;
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel;
 import ch.sbb.atlas.api.bodi.enumeration.BusinessType;
-import ch.sbb.atlas.export.ExportType;
+import ch.sbb.atlas.export.enumeration.ExportType;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerWithAmazonS3ApiTest;
 import ch.sbb.atlas.model.exception.NotFoundException;
