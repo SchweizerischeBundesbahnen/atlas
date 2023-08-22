@@ -14,9 +14,9 @@ management:
 
 spring:
   datasource:
-    url: jdbc:postgresql://service-point-directory-dev.cdv0rjtmldns.eu-central-1.rds.amazonaws.com:5432/service_point_directory
-    username: service_point_directory
-    password: 2Z2jyydA!GpZME9f!4GgqUaeSfyRuw
+    url: jdbc:postgresql://localhost:5439/service-point-directory?currentSchema=service-point-directory
+    username: user
+    password: pwd
     driver-class-name: org.postgresql.Driver
   application:
     name: service-point-directory
