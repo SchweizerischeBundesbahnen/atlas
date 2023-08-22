@@ -1,12 +1,12 @@
 package ch.sbb.exportservice.tasklet;
 
 import ch.sbb.exportservice.model.ExportExtensionFileType;
-import ch.sbb.exportservice.model.ExportFileName;
 import ch.sbb.exportservice.model.ExportType;
+import ch.sbb.exportservice.model.SpExportFileName;
 
 public class UploadCsvFileTasklet extends FileUploadTasklet {
 
-  public UploadCsvFileTasklet(ExportType exportType, ExportFileName exportFileName) {
+  public UploadCsvFileTasklet(ExportType exportType, SpExportFileName exportFileName) {
     super(exportType,exportFileName);
   }
 
