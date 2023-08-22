@@ -4,7 +4,7 @@ import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.configuration.Role;
-import ch.sbb.atlas.export.ExportType;
+import ch.sbb.atlas.export.enumeration.ExportType;
 import ch.sbb.atlas.model.Status;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
