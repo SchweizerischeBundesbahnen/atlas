@@ -6,11 +6,7 @@ import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.atlas.servicepoint.enumeration.Category;
-import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
-import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
-import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
-import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
+import ch.sbb.atlas.servicepoint.enumeration.*;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointGeolocationMapper;
@@ -237,6 +233,58 @@ public class ServicePointTestData {
         .build();
   }
 
+  public static ServicePointVersion createServicePointVersion() {
+    return ServicePointVersion
+        .builder()
+        .number(ServicePointNumber.of(85197688))
+        .sloid("ch:1:sloid:19765")
+        .numberShort(19744)
+        .country(Country.SWITZERLAND)
+        .designationLong(null)
+        .designationOfficial("Flüh Grenze")
+        .abbreviation(null)
+        .meansOfTransport(Set.of(MeanOfTransport.BUS))
+        .businessOrganisation("ch:1:sboid:100015")
+        .status(Status.VALIDATED)
+        .validFrom(LocalDate.of(2014, 11, 2))
+        .validTo(LocalDate.of(2099, 12, 31))
+        .categories(new HashSet<>())
+        .operatingPointTechnicalTimetableType(OperatingPointTechnicalTimetableType.COUNTRY_BORDER)
+        .operatingPoint(true)
+        .operatingPointWithTimetable(true)
+        .creationDate(LocalDateTime.of(LocalDate.of(2017, 11, 9), LocalTime.of(11, 53, 5)))
+        .creator("GSU_DIDOK")
+        .editionDate(LocalDateTime.of(LocalDate.of(2019, 5, 20), LocalTime.of(15, 3, 58)))
+        .editor("fs45117")
+        .build();
+  }
+
+  public static ServicePointVersion createAbroadServicePointVersion() {
+    return ServicePointVersion
+        .builder()
+        .number(ServicePointNumber.of(58197681))
+        .sloid("ch:1:sloid:19768")
+        .numberShort(19768)
+        .country(Country.ARMENIA)
+        .designationLong(null)
+        .designationOfficial("Flüh Grenze")
+        .abbreviation(null)
+        .meansOfTransport(Set.of(MeanOfTransport.BUS))
+        .businessOrganisation("ch:1:sboid:100626")
+        .status(Status.VALIDATED)
+        .validFrom(LocalDate.of(2014, 11, 2))
+        .validTo(LocalDate.of(2099, 12, 31))
+        .categories(new HashSet<>())
+        .operatingPointTechnicalTimetableType(OperatingPointTechnicalTimetableType.COUNTRY_BORDER)
+        .operatingPoint(true)
+        .operatingPointWithTimetable(true)
+        .creationDate(LocalDateTime.of(LocalDate.of(2017, 11, 9), LocalTime.of(11, 53, 5)))
+        .creator("GSU_DIDOK")
+        .editionDate(LocalDateTime.of(LocalDate.of(2019, 5, 20), LocalTime.of(15, 3, 58)))
+        .editor("fs45117")
+        .build();
+  }
+
   public static CreateServicePointVersionModel getAargauServicePointVersionModel() {
     return CreateServicePointVersionModel.builder()
         .numberWithoutCheckDigit(8034510)
@@ -257,7 +305,7 @@ public class ServicePointTestData {
         .meansOfTransport(List.of(MeanOfTransport.TRAIN))
         .stopPointType(StopPointType.ON_REQUEST)
         .servicePointGeolocation(
-            ServicePointGeolocationMapper.toModel(ServicePointTestData.getServicePointGeolocationBernMittelland()))
+            ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getServicePointGeolocationBernMittelland()))
         .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2010, 12, 11))
         .validTo(LocalDate.of(2019, 8, 10))

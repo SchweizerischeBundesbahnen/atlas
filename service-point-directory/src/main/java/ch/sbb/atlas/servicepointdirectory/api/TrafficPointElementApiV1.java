@@ -4,9 +4,9 @@ import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.CreateTrafficPointElementVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadTrafficPointElementVersionModel;
 import ch.sbb.atlas.configuration.Role;
+import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointImportRequestModel;
-import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointItemImportResult;
-import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion.Fields;
+import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementRequestParams;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -35,7 +35,7 @@ public interface TrafficPointElementApiV1 {
   @PageableAsQueryParam
   @Operation(description = "INFO: Versions of DiDok3 were merged during migration, so there are now a few versions less here.")
   Container<ReadTrafficPointElementVersionModel> getTrafficPointElements(
-      @Parameter(hidden = true) @PageableDefault(sort = {Fields.sloid}) Pageable pageable,
+      @Parameter(hidden = true) @PageableDefault(sort = {TrafficPointElementVersion.Fields.sloid}) Pageable pageable,
       @ParameterObject TrafficPointElementRequestParams trafficPointElementRequestParams);
 
   @GetMapping("{sloid}")
@@ -46,19 +46,19 @@ public interface TrafficPointElementApiV1 {
 
   @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
   @PostMapping("import")
-  List<TrafficPointItemImportResult> importTrafficPoints(
+  List<ItemImportResult> importTrafficPoints(
       @RequestBody @Valid TrafficPointImportRequestModel trafficPointImportRequestModel);
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
-  ReadTrafficPointElementVersionModel createTrafficPoint(@RequestBody @Valid CreateTrafficPointElementVersionModel trafficPointElementVersionModel);
+  ReadTrafficPointElementVersionModel createTrafficPoint(
+      @RequestBody @Valid CreateTrafficPointElementVersionModel trafficPointElementVersionModel);
 
   @ResponseStatus(HttpStatus.OK)
   @PutMapping(path = "{id}")
   List<ReadTrafficPointElementVersionModel> updateTrafficPoint(
-          @PathVariable Long id,
-          @RequestBody @Valid CreateTrafficPointElementVersionModel trafficPointElementVersionModel
+      @PathVariable Long id,
+      @RequestBody @Valid CreateTrafficPointElementVersionModel trafficPointElementVersionModel
   );
-
 
 }

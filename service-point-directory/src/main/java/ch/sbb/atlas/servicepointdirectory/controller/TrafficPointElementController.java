@@ -3,8 +3,8 @@ package ch.sbb.atlas.servicepointdirectory.controller;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.CreateTrafficPointElementVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadTrafficPointElementVersionModel;
+import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointImportRequestModel;
-import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointItemImportResult;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.api.TrafficPointElementApiV1;
@@ -18,8 +18,8 @@ import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointServi
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementImportService;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementRequestParams;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementService;
-import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementValidationService;
 import java.util.List;
+import ch.sbb.atlas.servicepointdirectory.service.CrossValidationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -33,7 +33,7 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
 
   private final TrafficPointElementService trafficPointElementService;
   private final ServicePointService servicePointService;
-  private final TrafficPointElementValidationService trafficPointElementValidationService;
+  private final CrossValidationService crossValidationService;
   private final TrafficPointElementImportService trafficPointElementImportService;
 
   @Override
@@ -74,46 +74,49 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
   }
 
   @Override
-  public List<TrafficPointItemImportResult> importTrafficPoints(TrafficPointImportRequestModel trafficPointImportRequestModel) {
+  public List<ItemImportResult> importTrafficPoints(TrafficPointImportRequestModel trafficPointImportRequestModel) {
     return trafficPointElementImportService.importTrafficPoints(
         trafficPointImportRequestModel.getTrafficPointCsvModelContainers());
   }
 
   @Override
-  public ReadTrafficPointElementVersionModel createTrafficPoint(CreateTrafficPointElementVersionModel trafficPointElementVersionModel) {
+  public ReadTrafficPointElementVersionModel createTrafficPoint(
+      CreateTrafficPointElementVersionModel trafficPointElementVersionModel) {
     return TrafficPointElementVersionMapper.toModel(
-            createTrafficPoint(TrafficPointElementVersionMapper.toEntity(trafficPointElementVersionModel)));
+        createTrafficPoint(TrafficPointElementVersionMapper.toEntity(trafficPointElementVersionModel)));
   }
 
   @Override
-  public List<ReadTrafficPointElementVersionModel> updateTrafficPoint(Long id, CreateTrafficPointElementVersionModel trafficPointElementVersionModel) {
+  public List<ReadTrafficPointElementVersionModel> updateTrafficPoint(Long id,
+      CreateTrafficPointElementVersionModel trafficPointElementVersionModel) {
     TrafficPointElementVersion trafficPointElementVersionToUpdate = trafficPointElementService.findById(id)
-            .orElseThrow(() -> new IdNotFoundException(id));
+        .orElseThrow(() -> new IdNotFoundException(id));
 
     if (!trafficPointElementVersionToUpdate.getSloid().equals(trafficPointElementVersionModel.getSloid())) {
       String exceptionMessage = "Sloid for provided id: " + trafficPointElementVersionToUpdate.getSloid() +
-              " and sloid in the request body: " + trafficPointElementVersionModel.getSloid() + " are not equal.";
-        throw new SloidsNotEqualException(exceptionMessage);
+          " and sloid in the request body: " + trafficPointElementVersionModel.getSloid() + " are not equal.";
+      throw new SloidsNotEqualException(exceptionMessage);
     }
 
     update(trafficPointElementVersionToUpdate,
-            TrafficPointElementVersionMapper.toEntity(trafficPointElementVersionModel));
+        TrafficPointElementVersionMapper.toEntity(trafficPointElementVersionModel));
 
     return trafficPointElementService.findBySloidOrderByValidFrom(trafficPointElementVersionToUpdate.getSloid())
-            .stream()
-            .map(TrafficPointElementVersionMapper::toModel)
-            .toList();
+        .stream()
+        .map(TrafficPointElementVersionMapper::toModel)
+        .toList();
   }
 
   private TrafficPointElementVersion createTrafficPoint(TrafficPointElementVersion trafficPointElementVersion) {
     ServicePointNumber servicePointNumber = trafficPointElementVersion.getServicePointNumber();
-    trafficPointElementValidationService.validateServicePointNumberExists(trafficPointElementVersion.getServicePointNumber());
-    return trafficPointElementService.checkPermissionRightsAndSave(trafficPointElementVersion, servicePointService.findAllByNumberOrderByValidFrom(servicePointNumber));
+    crossValidationService.validateServicePointNumberExists(trafficPointElementVersion.getServicePointNumber());
+    return trafficPointElementService.checkPermissionRightsAndSave(trafficPointElementVersion,
+        servicePointService.findAllByNumberOrderByValidFrom(servicePointNumber));
   }
 
   private void update(TrafficPointElementVersion currentVersion, TrafficPointElementVersion editedVersion) {
     ServicePointNumber servicePointNumber = editedVersion.getServicePointNumber();
-    trafficPointElementValidationService.validateServicePointNumberExists(editedVersion.getServicePointNumber());
+    crossValidationService.validateServicePointNumberExists(editedVersion.getServicePointNumber());
     List<ServicePointVersion> allServicePointVersions = servicePointService.findAllByNumberOrderByValidFrom(servicePointNumber);
     trafficPointElementService.checkPermissionRightsAndUpdate(currentVersion, editedVersion, allServicePointVersions);
   }
