@@ -5,7 +5,7 @@ import ch.sbb.atlas.api.bodi.BusinessOrganisationModel;
 import ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel;
 import ch.sbb.atlas.api.bodi.BusinessOrganisationVersionRequestParams;
 import ch.sbb.atlas.api.model.Container;
-import ch.sbb.atlas.export.ExportType;
+import ch.sbb.atlas.export.enumeration.ExportType;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.SboidNotFoundException;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisation;
@@ -165,13 +165,13 @@ public class BusinessOrganisationController implements BusinessOrganisationApiV1
     headers.add("Content-Disposition", "attachment;filename=" + fileName + ".json.gz");
     headers.add("Pragma", "no-cache");
     headers.add("Cache-Control", "no-cache");
-    StreamingResponseBody body = businessOrganisationAmazonService.streamingGzipFile(exportType);
+    StreamingResponseBody body = businessOrganisationAmazonService.streamGzipFile(exportType);
     return ResponseEntity.ok().headers(headers).body(body);
   }
 
   @Override
   public ResponseEntity<StreamingResponseBody> streamJsonFile(ExportType exportType) {
-    StreamingResponseBody body = businessOrganisationAmazonService.streamingJsonFile(exportType);
+    StreamingResponseBody body = businessOrganisationAmazonService.streamJsonFile(exportType);
     return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(body);
   }
 
