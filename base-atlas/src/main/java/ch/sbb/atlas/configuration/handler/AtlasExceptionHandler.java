@@ -28,6 +28,7 @@ import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -218,6 +219,24 @@ public class AtlasExceptionHandler {
   @ExceptionHandler(value = ClientAbortException.class)
   public void handleException(ClientAbortException exception) {
     log.debug("Client aborted connection", exception);
+  }
+
+  @ExceptionHandler(value = AccessDeniedException.class)
+  public ResponseEntity<ErrorResponse> handleAccessDeniedException(AccessDeniedException exception) {
+    SortedSet<Detail> details = new TreeSet<>();
+    details.add(Detail.builder()
+        .message(exception.getMessage())
+        .displayInfo(
+            DisplayInfo.builder()
+                .code("ERROR.NOTALLOWED")
+                .build())
+        .build());
+    ErrorResponse errorResponse = ErrorResponse.builder().status(HttpStatus.FORBIDDEN.value())
+        .message(
+            "You are not allowed to perform this operation on the ATLAS platform.")
+        .error("Access denied")
+        .details(details).build();
+    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorResponse);
   }
 
   @ExceptionHandler(value = Exception.class)
