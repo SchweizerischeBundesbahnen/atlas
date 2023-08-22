@@ -5,6 +5,7 @@ import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.model.BaseVersionModel;
+import ch.sbb.atlas.export.enumeration.ExportType;
 import ch.sbb.atlas.export.exception.ExportException;
 import ch.sbb.atlas.export.model.VersionCsvModel;
 import ch.sbb.atlas.model.entity.BaseVersion;
@@ -172,7 +173,7 @@ public abstract class BaseExportService<T extends BaseVersion> {
     String actualDate = LocalDate.now()
             .format(DateTimeFormatter.ofPattern(
                     AtlasApiConstants.DATE_FORMAT_PATTERN));
-    return new File(dir + exportType.getFilePrefix() + getFileName() + actualDate + extension);
+    return new File(dir + exportType.getFileTypePrefix() + getFileName() + actualDate + extension);
   }
 
 }
