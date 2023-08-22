@@ -17,6 +17,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Optional;
@@ -133,7 +134,7 @@ public class FileServiceImpl implements FileService {
         outputStream.write(data, 0, len);
       }
       inputStream.close();
-      file.delete();
+      Files.delete(file.toPath());
     };
   }
 
