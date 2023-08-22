@@ -2,8 +2,8 @@ package ch.sbb.exportservice.controller;
 
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.exportservice.exception.NotAllowedExportFileException;
-import ch.sbb.exportservice.model.ExportFileName;
 import ch.sbb.exportservice.model.ExportType;
+import ch.sbb.exportservice.model.SpExportFileName;
 import ch.sbb.exportservice.service.ExportServicePointJobService;
 import ch.sbb.exportservice.service.ExportTrafficPointElementJobService;
 import ch.sbb.exportservice.service.FileExportService;
@@ -46,10 +46,10 @@ public class ExportServicePointBatchControllerApiV1 {
       @ApiResponse(responseCode = "404", description = "Object with filename myFile not found", content = @Content(schema =
       @Schema(implementation = ErrorResponse.class)))
   })
-  public ResponseEntity<StreamingResponseBody> streamJsonFile(@PathVariable("exportFileName") ExportFileName exportFileName,
+  public ResponseEntity<StreamingResponseBody> streamJsonFile(@PathVariable("exportFileName") SpExportFileName exportFileName,
                                                               @PathVariable("exportType") ExportType exportType) {
     checkInputPath(exportFileName,exportType);
-    StreamingResponseBody body = fileExportService.streamingJsonFile(exportType,exportFileName);
+    StreamingResponseBody body = fileExportService.streamJsonFile(exportType,exportFileName);
     return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(body);
   }
 
@@ -59,7 +59,7 @@ public class ExportServicePointBatchControllerApiV1 {
       @ApiResponse(responseCode = "404", description = "filename myFile not found", content = @Content(schema =
       @Schema(implementation = ErrorResponse.class)))
   })
-  public ResponseEntity<StreamingResponseBody> streamGzipFile(@PathVariable("exportFileName") ExportFileName exportFileName,
+  public ResponseEntity<StreamingResponseBody> streamGzipFile(@PathVariable("exportFileName") SpExportFileName exportFileName,
                                                               @PathVariable("exportType") ExportType exportType) throws NotAllowedExportFileException {
     checkInputPath(exportFileName,exportType);
     String fileName = fileExportService.getBaseFileName(exportType, exportFileName);
@@ -68,7 +68,7 @@ public class ExportServicePointBatchControllerApiV1 {
     headers.add("Content-Disposition", "attachment;filename=" + fileName + ".json.gz");
     headers.add("Pragma", "no-cache");
     headers.add("Cache-Control", "no-cache");
-    StreamingResponseBody body = fileExportService.streamingGzipFile(exportType, exportFileName);
+    StreamingResponseBody body = fileExportService.streamGzipFile(exportType, exportFileName);
     return ResponseEntity.ok().headers(headers).body(body);
   }
 
@@ -92,8 +92,8 @@ public class ExportServicePointBatchControllerApiV1 {
     exportTrafficPointElementJobService.startExportJobs();
   }
 
-  protected void checkInputPath(ExportFileName exportFileName, ExportType exportType) throws NotAllowedExportFileException {
-    if(ExportFileName.TRAFFIC_POINT_ELEMENT_VERSION.equals(exportFileName)){
+  protected void checkInputPath(SpExportFileName exportFileName, ExportType exportType) throws NotAllowedExportFileException {
+    if(SpExportFileName.TRAFFIC_POINT_ELEMENT_VERSION.equals(exportFileName)){
       if(!ExportType.getWorldOnly().contains(exportType)){
         throw new NotAllowedExportFileException(exportFileName,exportType);
       }
