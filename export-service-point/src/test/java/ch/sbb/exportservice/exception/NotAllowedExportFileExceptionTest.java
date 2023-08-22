@@ -1,7 +1,7 @@
 package ch.sbb.exportservice.exception;
 
-import ch.sbb.exportservice.model.ExportFileName;
 import ch.sbb.exportservice.model.ExportType;
+import ch.sbb.exportservice.model.SpExportFileName;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +15,7 @@ public class NotAllowedExportFileExceptionTest {
 
         // when
         NotAllowedExportFileException exception = Assertions.assertThrows(NotAllowedExportFileException.class, () -> {
-            throw new NotAllowedExportFileException(ExportFileName.TRAFFIC_POINT_ELEMENT_VERSION, ExportType.SWISS_ONLY_FULL);
+            throw new NotAllowedExportFileException(SpExportFileName.TRAFFIC_POINT_ELEMENT_VERSION, ExportType.SWISS_ONLY_FULL);
         });
         // then
         assertThat(exception.getErrorResponse().getError()).isEqualTo("To download the file [TRAFFIC_POINT_ELEMENT_VERSION] are only allowed the following export types: [WORLD_FULL, WORLD_ONLY_ACTUAL, WORLD_ONLY_TIMETABLE_FUTURE]");

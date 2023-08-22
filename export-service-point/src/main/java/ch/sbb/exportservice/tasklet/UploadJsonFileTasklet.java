@@ -1,12 +1,12 @@
 package ch.sbb.exportservice.tasklet;
 
 import ch.sbb.exportservice.model.ExportExtensionFileType;
-import ch.sbb.exportservice.model.ExportFileName;
 import ch.sbb.exportservice.model.ExportType;
+import ch.sbb.exportservice.model.SpExportFileName;
 
 public class UploadJsonFileTasklet extends FileUploadTasklet {
 
-  public UploadJsonFileTasklet(ExportType exportType, ExportFileName exportFileName) {
+  public UploadJsonFileTasklet(ExportType exportType, SpExportFileName exportFileName) {
     super(exportType,exportFileName);
   }
 
