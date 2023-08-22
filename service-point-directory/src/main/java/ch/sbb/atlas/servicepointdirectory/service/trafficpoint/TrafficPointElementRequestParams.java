@@ -55,7 +55,7 @@ public class TrafficPointElementRequestParams extends VersionedObjectDateRequest
             .flatMap(str -> Arrays.stream(str.split(",")))
             .map(Integer::valueOf)
             .map(ServicePointNumber::ofNumberWithoutCheckDigit)
-            .collect(Collectors.toList());
+            .toList();
     }
 
 }
