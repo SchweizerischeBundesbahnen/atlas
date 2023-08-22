@@ -1,4 +1,4 @@
-package ch.sbb.atlas.imports.servicepoint.model;
+package ch.sbb.atlas.imports.servicepoint.enumeration;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 

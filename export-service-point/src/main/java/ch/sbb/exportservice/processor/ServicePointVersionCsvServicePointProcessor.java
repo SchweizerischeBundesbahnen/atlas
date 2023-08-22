@@ -1,7 +1,7 @@
 package ch.sbb.exportservice.processor;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
-import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationModel;
+import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationReadModel;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.exportservice.entity.ServicePointVersion;
 import ch.sbb.exportservice.model.ServicePointVersionCsvModel;
@@ -85,14 +85,12 @@ public class ServicePointVersionCsvServicePointProcessor extends BaseServicePoin
         .municipalityName(version.getServicePointGeolocation().getSwissMunicipalityName())
         .fsoNumber(version.getServicePointGeolocation().getSwissMunicipalityNumber())
         .localityName(version.getServicePointGeolocation().getSwissLocalityName());
-    ServicePointGeolocationModel geolocationModel = fromEntity(version.getServicePointGeolocation());
+    ServicePointGeolocationReadModel geolocationModel = fromEntity(version.getServicePointGeolocation());
     builder.height(geolocationModel.getHeight())
         .lv95East(geolocationModel.getLv95().getEast())
         .lv95North(geolocationModel.getLv95().getNorth())
         .wgs84East(geolocationModel.getWgs84().getEast())
-        .wgs84North(geolocationModel.getWgs84().getNorth())
-        .wgs84WebEast(geolocationModel.getWgs84web().getEast())
-        .wgs84WebNorth(geolocationModel.getWgs84web().getNorth());
+        .wgs84North(geolocationModel.getWgs84().getNorth());
   }
 
 }

@@ -5,13 +5,17 @@ import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_SERVICE_
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_TRAFFIC_POINT_CSV_JOB_NAME;
 
 import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointCsvModel;
+import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointCsvModelContainer;
+import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointCsvModelContainer;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointElementCsvModel;
 import ch.sbb.importservice.listener.JobCompletionListener;
 import ch.sbb.importservice.listener.StepTracerListener;
 import ch.sbb.importservice.reader.ThreadSafeListItemReader;
-import ch.sbb.importservice.service.CsvService;
+import ch.sbb.importservice.service.csv.LoadingPointCsvService;
+import ch.sbb.importservice.service.csv.ServicePointCsvService;
+import ch.sbb.importservice.service.csv.TrafficPointCsvService;
 import ch.sbb.importservice.utils.StepUtils;
 import ch.sbb.importservice.writer.LoadingPointApiWriter;
 import ch.sbb.importservice.writer.ServicePointApiWriter;
@@ -43,18 +47,21 @@ public class SpringBatchConfig {
 
   private static final int SERVICE_POINT_CHUNK_SIZE = 20;
   private static final int TRAFFIC_POINT_CHUNK_SIZE = 50;
+  private static final int LOADING_POINT_CHUNK_SIZE = 50;
 
   private static final int THREAD_EXECUTION_SIZE = 64;
 
   private final JobRepository jobRepository;
-
   private final PlatformTransactionManager transactionManager;
 
   private final ServicePointApiWriter servicePointApiWriter;
   private final LoadingPointApiWriter loadingPointApiWriter;
   private final TrafficPointApiWriter trafficPointApiWriter;
 
-  private final CsvService csvService;
+  private final ServicePointCsvService servicePointCsvService;
+  private final LoadingPointCsvService loadingPointCsvService;
+  private final TrafficPointCsvService trafficPointCsvService;
+
   private final JobCompletionListener jobCompletionListener;
   private final StepTracerListener stepTracerListener;
 
@@ -62,30 +69,33 @@ public class SpringBatchConfig {
   @Bean
   public ThreadSafeListItemReader<ServicePointCsvModelContainer> servicePointlistItemReader(
       @Value("#{jobParameters[fullPathFileName]}") String pathToFile) {
-    List<ServicePointCsvModelContainer> actualServicePointCsvModelsFromS3;
+    final List<ServicePointCsvModel> actualServicePointCsvModels;
     if (pathToFile != null) {
       File file = new File(pathToFile);
-      actualServicePointCsvModelsFromS3 = csvService.getActualServicePointCsvModels(file);
+      actualServicePointCsvModels = servicePointCsvService.getActualCsvModels(file);
     } else {
-      actualServicePointCsvModelsFromS3 = csvService.getActualServicePointCsvModelsFromS3();
+      actualServicePointCsvModels = servicePointCsvService.getActualCsvModelsFromS3();
     }
     log.info("Start sending requests to service-point-directory with chunkSize: {}...", SERVICE_POINT_CHUNK_SIZE);
-    return new ThreadSafeListItemReader<>(Collections.synchronizedList(actualServicePointCsvModelsFromS3));
+    final List<ServicePointCsvModelContainer> servicePointCsvModelContainers =
+        servicePointCsvService.mapToServicePointCsvModelContainers(actualServicePointCsvModels);
+    return new ThreadSafeListItemReader<>(Collections.synchronizedList(servicePointCsvModelContainers));
   }
 
   @StepScope
   @Bean
-  public ThreadSafeListItemReader<LoadingPointCsvModel> loadingPointlistItemReader(
+  public ThreadSafeListItemReader<LoadingPointCsvModelContainer> loadingPointlistItemReader(
       @Value("#{jobParameters[fullPathFileName]}") String pathToFile) {
-    List<LoadingPointCsvModel> actualLoadingPointCsvModelsFromS3;
+    final List<LoadingPointCsvModel> actualLoadingPointCsvModels;
     if (pathToFile != null) {
       File file = new File(pathToFile);
-      actualLoadingPointCsvModelsFromS3 = csvService.getActualLoadingPointCsvModels(file);
+      actualLoadingPointCsvModels = loadingPointCsvService.getActualCsvModels(file);
     } else {
-      actualLoadingPointCsvModelsFromS3 = csvService.getActualLoadingPointCsvModelsFromS3();
+      actualLoadingPointCsvModels = loadingPointCsvService.getActualCsvModelsFromS3();
     }
-
-    return new ThreadSafeListItemReader<>(Collections.synchronizedList(actualLoadingPointCsvModelsFromS3));
+    final List<LoadingPointCsvModelContainer> loadingPointCsvModelContainers =
+        loadingPointCsvService.mapToLoadingPointCsvModelContainers(actualLoadingPointCsvModels);
+    return new ThreadSafeListItemReader<>(Collections.synchronizedList(loadingPointCsvModelContainers));
   }
 
   @StepScope
@@ -95,12 +105,12 @@ public class SpringBatchConfig {
     List<TrafficPointElementCsvModel> actualTrafficPointCsvModels;
     if (pathToFile != null) {
       File file = new File(pathToFile);
-      actualTrafficPointCsvModels = csvService.getActualTrafficPointCsvModels(file);
+      actualTrafficPointCsvModels = trafficPointCsvService.getActualCsvModels(file);
     } else {
-      actualTrafficPointCsvModels = csvService.getActualTrafficPointCsvModelsFromS3();
+      actualTrafficPointCsvModels = trafficPointCsvService.getActualCsvModelsFromS3();
     }
-    final List<TrafficPointCsvModelContainer> trafficPointCsvModelContainers = csvService.mapToTrafficPointCsvModelContainers(
-        actualTrafficPointCsvModels);
+    final List<TrafficPointCsvModelContainer> trafficPointCsvModelContainers =
+        trafficPointCsvService.mapToTrafficPointCsvModelContainers(actualTrafficPointCsvModels);
     return new ThreadSafeListItemReader<>(Collections.synchronizedList(trafficPointCsvModelContainers));
   }
 
@@ -120,10 +130,10 @@ public class SpringBatchConfig {
   }
 
   @Bean
-  public Step parseLoadingPointCsvStep(ThreadSafeListItemReader<LoadingPointCsvModel> loadingPointlistItemReader) {
+  public Step parseLoadingPointCsvStep(ThreadSafeListItemReader<LoadingPointCsvModelContainer> loadingPointlistItemReader) {
     String stepName = "parseLoadingPointCsvStep";
     return new StepBuilder(stepName, jobRepository)
-        .<LoadingPointCsvModel, LoadingPointCsvModel>chunk(SERVICE_POINT_CHUNK_SIZE, transactionManager)
+        .<LoadingPointCsvModelContainer, LoadingPointCsvModelContainer>chunk(LOADING_POINT_CHUNK_SIZE, transactionManager)
         .reader(loadingPointlistItemReader)
         .writer(loadingPointApiWriter)
         .faultTolerant()
@@ -160,7 +170,7 @@ public class SpringBatchConfig {
   }
 
   @Bean
-  public Job importLoadingPointCsvJob(ThreadSafeListItemReader<LoadingPointCsvModel> loadingPointlistItemReader) {
+  public Job importLoadingPointCsvJob(ThreadSafeListItemReader<LoadingPointCsvModelContainer> loadingPointlistItemReader) {
     return new JobBuilder(IMPORT_LOADING_POINT_CSV_JOB_NAME, jobRepository)
         .listener(jobCompletionListener)
         .incrementer(new RunIdIncrementer())
