@@ -25,9 +25,9 @@ import org.junit.jupiter.api.TestMethodOrder;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TrafficPointMigrationActualDateIntegrationTest {
 
-  private static final String DIDOK_CSV_FILE = "DIDOK3_VERKEHRSPUNKTELEMENTE_STICHTAG_V_1_20230821022057.csv";
-  private static final String ATLAS_CSV_FILE = "actual_date-world-traffic_point-2023-08-21.csv";
-  private static final LocalDate ACTUAL_DATE = LocalDate.of(2023, 8, 21);
+  private static final String DIDOK_CSV_FILE = "DIDOK3_VERKEHRSPUNKTELEMENTE_STICHTAG_V_1_20230822011742.csv";
+  private static final String ATLAS_CSV_FILE = "actual_date-world-traffic_point-2023-08-22.csv";
+  private static final LocalDate ACTUAL_DATE = LocalDate.of(2023, 8, 22);
 
   private static final List<TrafficPointVersionCsvModel> trafficPointElementCsvModels = new ArrayList<>();
   private static final List<TrafficPointElementCsvModel> didokCsvLines = new ArrayList<>();
