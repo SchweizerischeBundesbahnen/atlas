@@ -201,7 +201,7 @@ public class TrafficPointElementServiceTest {
             TrafficPointElementSearchRestrictions.builder()
                     .pageable(Pageable.unpaged())
                     .trafficPointElementRequestParams(TrafficPointElementRequestParams.builder()
-                            .servicePointNumbersShort(List.of(1))
+                            .servicePointNumbersShort(List.of("1"))
                             .build())
                     .build();
     Page<TrafficPointElementVersion> result = trafficPointElementService.findAll(searchRestrictions);
@@ -222,7 +222,7 @@ public class TrafficPointElementServiceTest {
             TrafficPointElementSearchRestrictions.builder()
                     .pageable(Pageable.unpaged())
                     .trafficPointElementRequestParams(TrafficPointElementRequestParams.builder()
-                            .servicePointNumbersShort(List.of(55))
+                            .servicePointNumbersShort(List.of("55"))
                             .build())
                     .build();
     Page<TrafficPointElementVersion> result = trafficPointElementService.findAll(searchRestrictions);
@@ -243,7 +243,7 @@ public class TrafficPointElementServiceTest {
         TrafficPointElementSearchRestrictions.builder()
             .pageable(Pageable.unpaged())
             .trafficPointElementRequestParams(TrafficPointElementRequestParams.builder()
-                .servicePointNumbers(List.of(1400015))
+                .servicePointNumbers(List.of("1400015"))
                 .build())
             .build();
     Page<TrafficPointElementVersion> result = trafficPointElementService.findAll(searchRestrictions);
@@ -264,7 +264,7 @@ public class TrafficPointElementServiceTest {
         TrafficPointElementSearchRestrictions.builder()
             .pageable(Pageable.unpaged())
             .trafficPointElementRequestParams(TrafficPointElementRequestParams.builder()
-                .servicePointNumbers(List.of(8089107))
+                .servicePointNumbers(List.of("8089107"))
                 .build())
             .build();
     Page<TrafficPointElementVersion> result = trafficPointElementService.findAll(searchRestrictions);
@@ -546,8 +546,8 @@ public class TrafficPointElementServiceTest {
                             .sloids(List.of("ch:1:sloid:1400015:0:310240"))
                             .parentsloids(List.of("ch:1:sloid:1400015:310240"))
                             .uicCountryCodes(List.of("14"))
-                            .servicePointNumbers(List.of(1400015))
-                            .servicePointNumbersShort(List.of(1))
+                            .servicePointNumbers(List.of("1400015"))
+                            .servicePointNumbersShort(List.of("1"))
                             .sboids(List.of("somesboid"))
                             .fromDate(fromDate)
                             .toDate(toDate)
