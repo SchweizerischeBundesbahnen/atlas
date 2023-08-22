@@ -1,7 +1,8 @@
 package ch.sbb.business.organisation.directory.service;
 
-import java.io.ByteArrayOutputStream;
 import jakarta.xml.soap.SOAPMessage;
+import java.io.ByteArrayOutputStream;
+import javax.xml.XMLConstants;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -63,7 +64,11 @@ public class SoapMessageLoggerInterceptor extends ClientInterceptorAdapter {
     }
 
     private static Transformer createTransformer() throws TransformerConfigurationException {
-      Transformer transformer = TransformerFactory.newInstance().newTransformer();
+      TransformerFactory factory = TransformerFactory.newInstance();
+      factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+      factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
+
+      Transformer transformer = factory.newTransformer();
       transformer.setOutputProperty(OutputKeys.INDENT, "yes");
       transformer.setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, "yes");
       transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");

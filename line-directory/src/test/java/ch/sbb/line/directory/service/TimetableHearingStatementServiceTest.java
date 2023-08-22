@@ -2,6 +2,7 @@ package ch.sbb.line.directory.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -184,8 +185,8 @@ public class TimetableHearingStatementServiceTest {
         timetableHearingStatementModel, Collections.emptyList());
     TimetableHearingStatement createdStatementEntity = timetableHearingStatementMapper.toEntity(createdStatement);
 
-    timetableHearingStatementService.deleteStatementDocument(createdStatementEntity,
-        PdfFiles.MULTIPART_FILES.get(0).getOriginalFilename());
+    assertDoesNotThrow(() -> timetableHearingStatementService.deleteStatementDocument(createdStatementEntity,
+        PdfFiles.MULTIPART_FILES.get(0).getOriginalFilename()));
   }
 
   @Test
@@ -293,25 +294,25 @@ public class TimetableHearingStatementServiceTest {
     // then
     assertThat(timetableHearingStatementRepository.findAll()).hasSize(5);
 
-    assertThat(timetableHearingStatementRepository.findById(statement1Id).get().getStatementStatus()).isEqualTo(
+    assertThat(timetableHearingStatementRepository.findById(statement1Id).orElseThrow().getStatementStatus()).isEqualTo(
         StatementStatus.RECEIVED);
-    assertThat(timetableHearingStatementRepository.findById(statement1Id).get().getTimetableYear()).isEqualTo(YEAR - 1);
+    assertThat(timetableHearingStatementRepository.findById(statement1Id).orElseThrow().getTimetableYear()).isEqualTo(YEAR - 1);
 
-    assertThat(timetableHearingStatementRepository.findById(statement2Id).get().getStatementStatus()).isEqualTo(
+    assertThat(timetableHearingStatementRepository.findById(statement2Id).orElseThrow().getStatementStatus()).isEqualTo(
         StatementStatus.IN_REVIEW);
-    assertThat(timetableHearingStatementRepository.findById(statement2Id).get().getTimetableYear()).isEqualTo(YEAR + 1);
+    assertThat(timetableHearingStatementRepository.findById(statement2Id).orElseThrow().getTimetableYear()).isEqualTo(YEAR + 1);
 
-    assertThat(timetableHearingStatementRepository.findById(statement3Id).get().getStatementStatus()).isEqualTo(
+    assertThat(timetableHearingStatementRepository.findById(statement3Id).orElseThrow().getStatementStatus()).isEqualTo(
         StatementStatus.RECEIVED);
-    assertThat(timetableHearingStatementRepository.findById(statement3Id).get().getTimetableYear()).isEqualTo(YEAR + 1);
+    assertThat(timetableHearingStatementRepository.findById(statement3Id).orElseThrow().getTimetableYear()).isEqualTo(YEAR + 1);
 
-    assertThat(timetableHearingStatementRepository.findById(statement4Id).get().getStatementStatus()).isEqualTo(
+    assertThat(timetableHearingStatementRepository.findById(statement4Id).orElseThrow().getStatementStatus()).isEqualTo(
         StatementStatus.JUNK);
-    assertThat(timetableHearingStatementRepository.findById(statement4Id).get().getTimetableYear()).isEqualTo(YEAR);
+    assertThat(timetableHearingStatementRepository.findById(statement4Id).orElseThrow().getTimetableYear()).isEqualTo(YEAR);
 
-    assertThat(timetableHearingStatementRepository.findById(statement5Id).get().getStatementStatus()).isEqualTo(
+    assertThat(timetableHearingStatementRepository.findById(statement5Id).orElseThrow().getStatementStatus()).isEqualTo(
         StatementStatus.RECEIVED);
-    assertThat(timetableHearingStatementRepository.findById(statement5Id).get().getTimetableYear()).isEqualTo(YEAR + 1);
+    assertThat(timetableHearingStatementRepository.findById(statement5Id).orElseThrow().getTimetableYear()).isEqualTo(YEAR + 1);
 
   }
 
