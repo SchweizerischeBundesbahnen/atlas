@@ -29,7 +29,7 @@ public class CountryAndBusinessOrganisationBasedUserAdministrationService extend
   public boolean hasUserPermissionsToCreateOrEditServicePointDependentObject(List<CountryAndBusinessOrganisationAssociated> servicePointVersions,
       ApplicationType applicationType) {
     if (servicePointVersions == null || servicePointVersions.isEmpty()) {
-      log.error("List of ServicePointVersions was empty. Cannot perform check permissions.");
+      log.error("List of ServicePointVersions was empty. Cannot perform check permissions. Will deny operation");
       return false;
     }
     log.info("Checking if user may create or edit any of given list");
