@@ -1,6 +1,5 @@
 package ch.sbb.exportservice.processor;
 
-import ch.sbb.atlas.api.servicepoint.CodeAndDesignation;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.exportservice.entity.ServicePointVersion;
 import lombok.extern.slf4j.Slf4j;
@@ -26,22 +25,12 @@ public class ServicePointVersionJsonServicePointProcessor extends BaseServicePoi
         .sortCodeOfDestinationStation(servicePointVersion.getSortCodeOfDestinationStation())
         .businessOrganisation(servicePointVersion.getBusinessOrganisation().getBusinessOrganisation())
         .categories(getCategoriesSorted(servicePointVersion))
-        .categoriesInformation(getCategoriesSorted(servicePointVersion).stream().map(CodeAndDesignation::fromEnum).toList())
         .operatingPointType(servicePointVersion.getOperatingPointType())
-        .operatingPointTypeInformation(CodeAndDesignation.fromEnum(servicePointVersion.getOperatingPointType()))
         .operatingPointTechnicalTimetableType(servicePointVersion.getOperatingPointTechnicalTimetableType())
-        .operatingPointTechnicalTimetableTypeInformation(
-            CodeAndDesignation.fromEnum(servicePointVersion.getOperatingPointTechnicalTimetableType()))
-        .operatingPointTrafficPointType(servicePointVersion.getOperatingPointTrafficPointType())
-        .operatingPointTrafficPointTypeInformation(
-            CodeAndDesignation.fromEnum(servicePointVersion.getOperatingPointTrafficPointType()))
         .operatingPointRouteNetwork(servicePointVersion.isOperatingPointRouteNetwork())
         .operatingPointKilometerMaster(servicePointVersion.getOperatingPointKilometerMaster())
         .meansOfTransport(getMeansOfTransportSorted(servicePointVersion))
-        .meansOfTransportInformation(
-            getMeansOfTransportSorted(servicePointVersion).stream().map(CodeAndDesignation::fromEnum).toList())
         .stopPointType(servicePointVersion.getStopPointType())
-        .stopPointTypeInformation(CodeAndDesignation.fromEnum(servicePointVersion.getStopPointType()))
         .servicePointGeolocation(servicePointVersion.getServicePointGeolocation() != null ?
             fromEntity(servicePointVersion.getServicePointGeolocation()) : null)
         .status(servicePointVersion.getStatus())

@@ -33,16 +33,20 @@ public class TrafficPointElementSearchRestrictions {
   public Specification<TrafficPointElementVersion> getSpecification() {
 
     return specificationBuilder().searchCriteriaSpecification(searchCriterias)
-            .and(specificationBuilder().validOnSpecification(Optional.ofNullable(trafficPointElementRequestParams.getValidOn())))
-            .and(specificationBuilder().inSpecification(trafficPointElementRequestParams.getSloids(), Fields.sloid))
-            .and(specificationBuilder().inSpecification(trafficPointElementRequestParams.getParentsloids(), Fields.parentSloid))
-            .and(specificationBuilder().inSpecification(trafficPointElementRequestParams.getServicePointNumbers(), Fields.servicePointNumber))
-            .and(new ServicePointNumberSboidSpecification<>(
-                trafficPointElementRequestParams.getSboids(),
-                trafficPointElementRequestParams.getServicePointNumbersShort().stream().flatMap(str -> Arrays.stream(str.split(","))).map(Integer::valueOf).collect(Collectors.toList()),
-                trafficPointElementRequestParams.getUicCountryCodes().stream().flatMap(code -> Arrays.stream(code.split(","))).map(uicCountryCode -> Country.from(Integer.valueOf(uicCountryCode))).toList()
-                ))
-            .and(new ValidOrEditionTimerangeSpecification<>(
+        .and(specificationBuilder().validOnSpecification(Optional.ofNullable(trafficPointElementRequestParams.getValidOn())))
+        .and(specificationBuilder().inSpecification(trafficPointElementRequestParams.getSloids(),
+            TrafficPointElementVersion.Fields.sloid))
+        .and(specificationBuilder().inSpecification(trafficPointElementRequestParams.getParentsloids(),
+            TrafficPointElementVersion.Fields.parentSloid))
+        .and(specificationBuilder().inSpecification(trafficPointElementRequestParams.getServicePointNumbers(),
+            TrafficPointElementVersion.Fields.servicePointNumber))
+        .and(new ServicePointNumberSboidSpecification<>(
+            trafficPointElementRequestParams.getSboids(),
+            trafficPointElementRequestParams.getServicePointNumbersShort().stream().flatMap(str -> Arrays.stream(str.split(","))).map(Integer::valueOf).collect(Collectors.toList()),
+            trafficPointElementRequestParams.getUicCountryCodes().stream()
+                .map(uicCountryCode -> Country.from(Integer.valueOf(uicCountryCode))).toList()
+        ))
+        .and(new ValidOrEditionTimerangeSpecification<>(
             trafficPointElementRequestParams.getFromDate(),
             trafficPointElementRequestParams.getToDate(),
             trafficPointElementRequestParams.getCreatedAfter(),
@@ -51,9 +55,12 @@ public class TrafficPointElementSearchRestrictions {
 
   protected SpecificationBuilder<TrafficPointElementVersion> specificationBuilder() {
     return SpecificationBuilder.<TrafficPointElementVersion>builder()
-        .stringAttributes(List.of(Fields.sloid, Fields.designation, Fields.designationOperational))
-            .validFromAttribute(TrafficPointElementVersion_.validFrom)
-            .validToAttribute(TrafficPointElementVersion_.validTo)
-            .build();
+        .stringAttributes(List.of(
+            TrafficPointElementVersion.Fields.sloid,
+            TrafficPointElementVersion.Fields.designation,
+            TrafficPointElementVersion.Fields.designationOperational))
+        .validFromAttribute(TrafficPointElementVersion_.validFrom)
+        .validToAttribute(TrafficPointElementVersion_.validTo)
+        .build();
   }
 }

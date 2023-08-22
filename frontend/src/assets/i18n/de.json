@@ -197,6 +197,7 @@
     "REQUIRED": "Dies ist ein Pflichtfeld.",
     "BLANK": "Dieses Feld darf nicht leer sein.",
     "MAXLENGTH": "Es sind maximal {{length}} Zeichen erlaubt.",
+    "MINLENGTH": "Es sind minimal {{length}} Zeichen erforderlich.",
     "MATDATEPICKERMIN": "Das Datum muss grösser als oder gleich dem {{date}} sein.",
     "MATDATEPICKERMAX": "Das Datum muss kleiner als oder gleich dem {{date}} sein.",
     "MATDATEPICKERPARSE": "Das Datumsformat ist ungültig. (Gültige Format: TT.MM.YYYY)",
@@ -917,7 +918,15 @@
       },
       "ROUTE_NETWORK_DATA": "Streckennetzdaten (nur Eisenbahn)",
       "ROUTE_NETWORK": "BP-Strecke",
-      "OPERATING_POINT_KILOMETER": "BP-Kilometrierung"
+      "OPERATING_POINT_KILOMETER": "BP-Kilometrierung",
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Die Dienststelle wurde erfolgreich hinzugefügt.",
+        "EDIT_SUCCESS": "Die Dienststelle wurde erfolgreich gespeichert."
+      },
+      "CONFLICT": {
+        "DESIGNATION_OFFICIAL": "Die offizielle Bezeichnung {{designationOfficial}} ist bereits von {{validFrom}} bis {{validTo}} durch {{number}} vergeben.",
+        "DESIGNATION_LONG": "Die lange Bezeichnung {{designationLong}} ist bereits von {{validFrom}} bis {{validTo}} durch {{number}} vergeben."
+      }
     },
     "TRAFFIC_POINT_ELEMENTS": {
       "TRAFFIC_POINT_ELEMENTS": "Haltekanten"

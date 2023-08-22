@@ -11,7 +11,7 @@
    </parent>
    <groupId>ch.sbb.atlas</groupId>
    <artifactId>atlas</artifactId>
-   <version>1.359.0</version>
+   <version>1.373.0</version>
    <packaging>pom</packaging>
    <name>Atlas</name>
    <description>ATLAS - SKI Business Application</description>
@@ -23,7 +23,7 @@
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
       <!-- Spring -->
-      <spring-cloud.version>2022.0.3</spring-cloud.version>
+      <spring-cloud.version>2022.0.4</spring-cloud.version>
       <spring-openapi-ui.version>2.1.0</spring-openapi-ui.version>
 
       <swagger-core.version>2.2.15</swagger-core.version>
@@ -122,7 +122,7 @@
          <dependency>
             <artifactId>aws-java-sdk-s3</artifactId>
             <groupId>com.amazonaws</groupId>
-            <version>1.12.527</version>
+            <version>1.12.534</version>
          </dependency>
 
          <dependency>

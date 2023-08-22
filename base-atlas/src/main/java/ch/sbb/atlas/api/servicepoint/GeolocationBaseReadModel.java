@@ -16,7 +16,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldNameConstants
 @Schema(name = "Geolocation")
-public class GeolocationBaseModel {
+public class GeolocationBaseReadModel {
 
   @Schema(description = "Coordinate system spatial reference", example = "LV95")
   @NotNull
@@ -29,7 +29,7 @@ public class GeolocationBaseModel {
   private CoordinatePair wgs84;
 
   @NotNull
-  private CoordinatePair wgs84web;
+  private CoordinatePair lv03;
 
   @Schema(description = "Height of the coordinate point", example = "540.20000")
   private Double height;

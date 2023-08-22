@@ -63,10 +63,25 @@ import org.apache.commons.lang3.StringUtils;
 @FieldNameConstants
 @Entity(name = "service_point_version")
 @AtlasVersionable
-public class ServicePointVersion extends BasePointVersion implements Versionable,
+public class ServicePointVersion extends BasePointVersion<ServicePointVersion> implements Versionable,
     CountryAndBusinessOrganisationAssociated, DatesValidator {
 
   private static final String VERSION_SEQ = "service_point_version_seq";
+
+  @Override
+  public boolean hasGeolocation() {
+    return servicePointGeolocation != null;
+  }
+
+  @Override
+  public void referenceGeolocationTo(ServicePointVersion version) {
+    servicePointGeolocation.setServicePointVersion(version);
+  }
+
+  @Override
+  public GeolocationBaseEntity geolocation() {
+    return servicePointGeolocation;
+  }
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = VERSION_SEQ)
@@ -174,7 +189,7 @@ public class ServicePointVersion extends BasePointVersion implements Versionable
   @Convert(converter = MeanOfTransportConverter.class)
   private Set<MeanOfTransport> meansOfTransport;
 
-  @OneToOne(cascade = CascadeType.ALL)
+  @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
   @JoinColumn(name = "service_point_geolocation_id", referencedColumnName = "id")
   @AtlasVersionableProperty(relationType = RelationType.ONE_TO_ONE, relationsFields = {
       ServicePointGeolocation.Fields.country,
@@ -190,10 +205,6 @@ public class ServicePointVersion extends BasePointVersion implements Versionable
       GeolocationBaseEntity.Fields.height
   })
   private ServicePointGeolocation servicePointGeolocation;
-
-  public boolean hasGeolocation() {
-    return servicePointGeolocation != null;
-  }
 
   @ToString.Include
   public boolean isStopPoint() {
@@ -261,10 +272,4 @@ public class ServicePointVersion extends BasePointVersion implements Versionable
     return categories;
   }
 
-  @Override
-  public void setThisAsParentOnRelatingEntities() {
-    if (this.servicePointGeolocation != null) {
-      this.servicePointGeolocation.setServicePointVersion(this);
-    }
-  }
 }
