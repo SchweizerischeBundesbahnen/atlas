@@ -3,8 +3,6 @@ package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
 import ch.sbb.atlas.api.model.VersionedObjectDateRequestParams;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import io.swagger.v3.oas.annotations.Parameter;
-import java.util.Arrays;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,25 +21,26 @@ import java.util.List;
 @SuperBuilder
 @ToString
 public class TrafficPointElementRequestParams extends VersionedObjectDateRequestParams {
-    @Parameter(description = "Unique key for service points which is used in the customer information.")
-    @Singular(ignoreNullCollections = true)
-    private List<String> sloids = new ArrayList<>();
+
+  @Parameter(description = "Unique key for service points which is used in the customer information.")
+  @Singular(ignoreNullCollections = true)
+  private List<String> sloids = new ArrayList<>();
 
     @Parameter(description = "DiDok-Number formerly known as UIC-Code, combination of uicCountryCode and numberShort.")
     @Singular(ignoreNullCollections = true)
     private List<String> servicePointNumbers = new ArrayList<>();
 
-    @Parameter(description = "")
-    @Singular(ignoreNullCollections = true)
-    private List<String> parentsloids = new ArrayList<>();
+  @Parameter(description = "")
+  @Singular(ignoreNullCollections = true)
+  private List<String> parentsloids = new ArrayList<>();
 
-    @Parameter(description = "sboid")
-    @Singular(ignoreNullCollections = true)
-    private List<String> sboids = new ArrayList<>();
+  @Parameter(description = "sboid")
+  @Singular(ignoreNullCollections = true)
+  private List<String> sboids = new ArrayList<>();
 
-    @Parameter(description = "List of UIC Country codes. The UIC Country code applies to the country of the service point number")
-    @Singular(ignoreNullCollections = true)
-    private List<String> uicCountryCodes = new ArrayList<>();
+  @Parameter(description = "List of UIC Country codes. The UIC Country code applies to the country of the service point number")
+  @Singular(ignoreNullCollections = true)
+  private List<String> uicCountryCodes = new ArrayList<>();
 
     @Parameter(description =
             "Number of a service point which is provided by DiDok for Switzerland. It is part of the unique key for"

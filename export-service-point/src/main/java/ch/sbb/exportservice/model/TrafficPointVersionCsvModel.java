@@ -46,10 +46,6 @@ public class TrafficPointVersionCsvModel {
 
   private Double wgs84North;
 
-  private Double wgs84WebEast;
-
-  private Double wgs84WebNorth;
-
   private Double height;
 
   private String creationDate;

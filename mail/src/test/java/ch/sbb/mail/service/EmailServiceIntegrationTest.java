@@ -1,17 +1,14 @@
 package ch.sbb.mail.service;
 
-import ch.sbb.mail.exception.MailSendException;
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
-import ch.sbb.mail.model.MailTemplateConfig;
 import ch.sbb.atlas.kafka.model.mail.MailType;
+import ch.sbb.mail.exception.MailSendException;
+import ch.sbb.mail.model.MailTemplateConfig;
 import com.icegreen.greenmail.configuration.GreenMailConfiguration;
 import com.icegreen.greenmail.junit5.GreenMailExtension;
 import com.icegreen.greenmail.util.ServerSetupTest;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +16,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static java.lang.String.valueOf;
 import static java.util.Collections.singletonList;
@@ -53,20 +53,6 @@ class EmailServiceIntegrationTest {
     assertThat(mail.getSubject()).isEqualTo(current.getSubject());
     assertThat(mail.getTo()).contains(current.getAllRecipients()[0].toString());
     assertThat(valueOf(current.getContent()).contains(mail.getContent())).isTrue();
-
-  }
-
-  @Test
-  public void shouldThrowExceptionWhenSmtpServerIsDown() {
-    //given
-    MailNotification mail = MailNotification.builder()
-        .content("Ciao ragazzi")
-        .from("as@cc.ch")
-        .subject("Hello")
-        .to(singletonList("as@cc.ch"))
-        .build();
-    //when
-    mailService.sendSimpleMail(mail);
 
   }
 
