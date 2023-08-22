@@ -1,7 +1,10 @@
 package ch.sbb.exportservice.config;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+import static org.springframework.security.oauth2.jwt.JwtClaimNames.AUD;
+
 import ch.sbb.atlas.configuration.Role;
-import ch.sbb.atlas.configuration.handler.AtlasAccessDeniedHandler;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,16 +16,15 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
-import org.springframework.security.oauth2.jwt.*;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.jwt.JwtClaimValidator;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.JwtDecoders;
+import org.springframework.security.oauth2.jwt.JwtValidators;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.AccessDeniedHandler;
-
-import java.util.List;
-
-import static org.springframework.security.config.Customizer.withDefaults;
-import static org.springframework.security.oauth2.jwt.JwtClaimNames.AUD;
 
 @EnableWebSecurity
 @Configuration
@@ -35,7 +37,7 @@ public class SecurityConfig {
   private String serviceName;
 
   @Bean
-  protected SecurityFilterChain filterChain(HttpSecurity http, AccessDeniedHandler accessDeniedHandler) throws Exception {
+  protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
         // CORS: by default Spring uses a bean with the name of corsConfigurationSource: @see ch.sbb.esta.config.CorsConfig
         .cors(withDefaults())
@@ -63,7 +65,6 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/**").hasRole(Role.ATLAS_ADMIN)
                 .anyRequest().authenticated()
         )
-        .exceptionHandling(exceptionHandling -> exceptionHandling.accessDeniedHandler(accessDeniedHandler))
 
         // @see <a href="https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#oauth2resourceserver">OAuth
         // 2.0 Resource Server</a>
@@ -107,8 +108,4 @@ public class SecurityConfig {
     return roleConverter;
   }
 
-  @Bean
-  public AccessDeniedHandler accessDeniedHandler() {
-    return new AtlasAccessDeniedHandler();
-  }
 }
