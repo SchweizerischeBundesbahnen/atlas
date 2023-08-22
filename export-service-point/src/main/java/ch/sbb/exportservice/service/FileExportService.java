@@ -8,12 +8,12 @@ import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.exportservice.model.ExportExtensionFileType;
 import ch.sbb.exportservice.model.ExportFileName;
 import ch.sbb.exportservice.model.ExportType;
+import java.nio.file.Files;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import java.io.*;
-import java.net.URL;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -23,7 +23,6 @@ import java.util.zip.GZIPInputStream;
 @RequiredArgsConstructor
 public class FileExportService {
 
-  private static final String S3_BUCKER_SERVICE_POINT_EXPORT_DIR = "service_point";
   private static final int OUT_BUFFER = 4096;
   private static final int IN_BUFFER = 1024;
   private final AmazonService amazonService;
@@ -61,7 +60,7 @@ public class FileExportService {
         outputStream.write(data, 0, len);
       }
       inputStream.close();
-      file.delete();
+      Files.delete(file.toPath());
     };
   }
 
@@ -87,14 +86,16 @@ public class FileExportService {
     return output.toByteArray();
   }
 
-  public URL exportFile(File file, ExportType exportType, ExportFileName exportFileName, ExportExtensionFileType exportExtensionFileType) {
+  public void exportFile(File file, ExportType exportType, ExportFileName exportFileName, ExportExtensionFileType exportExtensionFileType) {
     String pathDirectory = exportFileName.getBaseDir() + "/" + exportType.getDir();
     try {
       if (exportExtensionFileType.equals(ExportExtensionFileType.CSV_EXTENSION)) {
-        return amazonService.putZipFile(AmazonBucket.EXPORT, file, pathDirectory);
+        amazonService.putZipFile(AmazonBucket.EXPORT, file, pathDirectory);
+        return;
       }
       if (exportExtensionFileType.equals(ExportExtensionFileType.JSON_EXTENSION)) {
-        return amazonService.putGzipFile(AmazonBucket.EXPORT, file, pathDirectory);
+        amazonService.putGzipFile(AmazonBucket.EXPORT, file, pathDirectory);
+        return;
       }
       throw new IllegalStateException("File extension must me " + ExportExtensionFileType.CSV_EXTENSION.name() + " or " +
           ExportExtensionFileType.JSON_EXTENSION.name());
