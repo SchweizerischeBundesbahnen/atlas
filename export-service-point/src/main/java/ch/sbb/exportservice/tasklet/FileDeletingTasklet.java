@@ -1,8 +1,8 @@
 package ch.sbb.exportservice.tasklet;
 
 import ch.sbb.exportservice.model.ExportExtensionFileType;
-import ch.sbb.exportservice.model.ExportFileName;
 import ch.sbb.exportservice.model.ExportType;
+import ch.sbb.exportservice.model.SpExportFileName;
 import ch.sbb.exportservice.service.FileExportService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.StepContribution;
@@ -19,9 +19,9 @@ public abstract class FileDeletingTasklet implements Tasklet {
   @Autowired
   private FileExportService fileExportService;
   private ExportType exportType;
-  private ExportFileName exportFileName;
+  private SpExportFileName exportFileName;
 
-  public FileDeletingTasklet(ExportType exportType, ExportFileName exportFileName) {
+  public FileDeletingTasklet(ExportType exportType, SpExportFileName exportFileName) {
     this.exportType = exportType;
     this.exportFileName = exportFileName;
   }
