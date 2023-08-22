@@ -38,8 +38,6 @@ public class OpenApiMerger {
             description
                     .append("<li>")
                     .append(application)
-                    .append(":")
-                    .append(api.getInfo().getVersion())
                     .append(NEWLINE)
                     .append("RestDoc: ")
                     .append("<a href='").append(restDocLocation).append("' target='_blank'>").append(restDocLocation).append("</a>")

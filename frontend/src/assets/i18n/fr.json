@@ -197,6 +197,7 @@
     "REQUIRED": "Ce champ est obligatoire.",
     "BLANK": "Ce champ ne peut pas être vide.",
     "MAXLENGTH": "Le nombre maximum de caractères autorisés est {{length}}.",
+    "MINLENGTH": "Un minimum de {{length}} caractères est requis.",
     "MATDATEPICKERMIN": "La date doit être supérieure ou égale à {{date}}.",
     "MATDATEPICKERMAX": "La date doit être inférieure ou égale à {{date}}.",
     "MATDATEPICKERPARSE": "Le format de date n’est pas valable. (Format valide: JJ.MM.AAAA)",
@@ -827,7 +828,7 @@
       "SLOID": "Swiss Location ID (SLOID)",
       "DIDOK_CODE": "Code DiDok (code et numéro du pays)",
       "SERVICE_POINT": "Service",
-      "AREAS": "D’application",
+      "AREAS": "Zones d'arrêt",
       "FOT_COMMENT": "Commentaire OFT",
       "DETAILS": "Informations sur le service",
       "DESIGNATION_OFFICIAL": "Désignation officielle",
@@ -917,7 +918,15 @@
       },
       "ROUTE_NETWORK_DATA": "Données du réseau (ferroviaire uniquement)",
       "ROUTE_NETWORK": "PE-segment",
-      "OPERATING_POINT_KILOMETER": "PE-kilométrage"
+      "OPERATING_POINT_KILOMETER": "PE-kilométrage",
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Le service a été ajouté avec succès.",
+        "EDIT_SUCCESS": "Le service a été enregistré avec succès."
+      },
+      "CONFLICT": {
+        "DESIGNATION_OFFICIAL": "Le désignation officielle {{designationOfficial}} est déjà attribué de {{validFrom}} à {{validTo}} par {{number}}.",
+        "DESIGNATION_LONG": "Le désignation longue {{designationLong}} est déjà attribué de {{validFrom}} à {{validTo}} par {{number}}."
+      }
     },
     "TRAFFIC_POINT_ELEMENTS": {
       "TRAFFIC_POINT_ELEMENTS": "Bordures d’arrêts"

@@ -4,16 +4,16 @@
 
 - [Service Point Directory in ATLAS](#service-point-directory-in-atlas)
 - [Service Point geographic data in ATLAS](#service-point-geographic-data-in-atlas)
-  * [How?](#how)
-    + [Important DEV-notice](#important-dev-notice)
+    * [How?](#how)
+        + [Important DEV-notice](#important-dev-notice)
 - [Links](#links)
-  * [Localhost](#localhost)
-  * [Development](#development)
-  * [Test](#test)
-  * [Integration](#integration)
-  * [Production](#production)
+    * [Localhost](#localhost)
+    * [Development](#development)
+    * [Test](#test)
+    * [Integration](#integration)
+    * [Production](#production)
 - [Legacy Documentation - DB Schema - Didok](#legacy-documentation---db-schema---didok)
-- [Full clean import of service points](#full-clean-import-of-service-points)
+- [Full clean import of service points, traffic point elements and loading points](#full-clean-import-of-service-points-traffic-point-elements-and-loading-points)
 
 <!-- tocstop -->
 
@@ -134,29 +134,64 @@ Maps, OpenStreetMap, etc.
 - ServicePoint Category
   Tree: https://confluence.sbb.ch/display/ADIDOK/Big+Picture#BigPicture-Kategorienbaum
 
-## Full clean import of service points
+## Full clean import of service points, traffic point elements and loading points
 
-To do a full import of service points from csv we need to delete all the existing data from the service-point db:
+To do a full import of service points, traffic point elements and loading points from csv we need to delete all the existing data
+from the service-point db:
+
 ```sql
-delete from service_point_version;
+-- Service Points
+delete
+from service_point_version;
 
 -- faster delete without fk constraint
 alter table service_point_version drop constraint fk_service_point_geolocation_id;
-delete from service_point_version_geolocation;
-alter table service_point_version add constraint fk_service_point_geolocation_id
-    FOREIGN KEY (service_point_geolocation_id)
-    REFERENCES service_point_version_geolocation (id);
+delete
+from service_point_version_geolocation;
+alter table service_point_version
+    add constraint fk_service_point_geolocation_id
+        FOREIGN KEY (service_point_geolocation_id)
+            REFERENCES service_point_version_geolocation (id);
 
-delete from service_point_version_categories;
-delete from service_point_version_means_of_transport;
+delete
+from service_point_version_categories;
+delete
+from service_point_version_means_of_transport;
+delete
+from service_point_fot_comment;
+
+
+-- Traffic Point Elements
+delete
+from traffic_point_element_version;
+
+-- faster delete without fk constraint
+alter table traffic_point_element_version drop constraint fk_traffic_point_element_version_geolocation_id;
+delete
+from traffic_point_element_version_geolocation;
+alter table traffic_point_element_version
+    add constraint fk_traffic_point_element_version_geolocation_id
+        FOREIGN KEY (traffic_point_geolocation_id)
+            REFERENCES traffic_point_element_version_geolocation (id);
+
+-- Loading Points
+delete
+from loading_point_version;
 ```
 
 Further we need to clear the import-service-point db:
+
 ```sql
-DELETE FROM BATCH_STEP_EXECUTION_CONTEXT;
-DELETE FROM BATCH_STEP_EXECUTION;
-DELETE FROM BATCH_JOB_EXECUTION_PARAMS;
-DELETE FROM batch_job_execution_context;
-DELETE FROM BATCH_JOB_EXECUTION;
-DELETE FROM BATCH_JOB_INSTANCE;
+DELETE
+FROM BATCH_STEP_EXECUTION_CONTEXT;
+DELETE
+FROM BATCH_STEP_EXECUTION;
+DELETE
+FROM BATCH_JOB_EXECUTION_PARAMS;
+DELETE
+FROM batch_job_execution_context;
+DELETE
+FROM BATCH_JOB_EXECUTION;
+DELETE
+FROM BATCH_JOB_INSTANCE;
 ```
