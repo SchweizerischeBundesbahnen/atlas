@@ -36,4 +36,32 @@ class DateRangeTest {
     DateRange dateRange = DateRange.builder().from(LocalDate.of(2013, 1, 25)).to(LocalDate.of(2018, 2, 17)).build();
     assertThat(dateRange.contains(LocalDate.of(2018, 2, 18))).isFalse();
   }
+
+  @Test
+  void shouldEvaluateDateRangeDoesNotOverlapIfBefore() {
+    DateRange dateRange = DateRange.builder().from(LocalDate.of(2013, 1, 25)).to(LocalDate.of(2018, 2, 17)).build();
+    DateRange other = DateRange.builder().from(LocalDate.of(2012, 1, 25)).to(LocalDate.of(2012, 2, 17)).build();
+    assertThat(dateRange.overlapsWith(other)).isFalse();
+  }
+
+  @Test
+  void shouldEvaluateDateRangeOverlapIfValidFromOverlaps() {
+    DateRange dateRange = DateRange.builder().from(LocalDate.of(2013, 1, 25)).to(LocalDate.of(2018, 2, 17)).build();
+    DateRange other = DateRange.builder().from(LocalDate.of(2012, 1, 25)).to(LocalDate.of(2013, 1, 25)).build();
+    assertThat(dateRange.overlapsWith(other)).isTrue();
+  }
+
+  @Test
+  void shouldEvaluateDateRangeOverlapIfValidToOverlaps() {
+    DateRange dateRange = DateRange.builder().from(LocalDate.of(2013, 1, 25)).to(LocalDate.of(2018, 2, 17)).build();
+    DateRange other = DateRange.builder().from(LocalDate.of(2018, 2, 17)).to(LocalDate.of(2019, 1, 25)).build();
+    assertThat(dateRange.overlapsWith(other)).isTrue();
+  }
+
+  @Test
+  void shouldEvaluateDateRangeOverlapIfBetween() {
+    DateRange dateRange = DateRange.builder().from(LocalDate.of(2013, 1, 25)).to(LocalDate.of(2018, 2, 17)).build();
+    DateRange other = DateRange.builder().from(LocalDate.of(2014, 2, 17)).to(LocalDate.of(2015, 1, 25)).build();
+    assertThat(dateRange.overlapsWith(other)).isTrue();
+  }
 }

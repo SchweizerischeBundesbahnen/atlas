@@ -23,4 +23,8 @@ public class DateRange {
   public boolean contains(LocalDate localDate) {
     return !localDate.isBefore(from) && !localDate.isAfter(to);
   }
+
+  public boolean overlapsWith(DateRange dateRange) {
+    return !to.isBefore(dateRange.getFrom()) && !from.isAfter(dateRange.getTo());
+  }
 }

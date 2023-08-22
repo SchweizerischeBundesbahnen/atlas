@@ -13,6 +13,7 @@ import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
+import ch.sbb.atlas.servicepointdirectory.mapper.GeolocationMapper;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointStatus;
 import java.util.Arrays;
 import java.util.Objects;
@@ -47,6 +48,7 @@ public class ServicePointCsvToEntityMapper implements
   public ServicePointVersion apply(ServicePointCsvModel servicePointCsvModel) {
     ServicePointVersion servicePointVersion = mapServicePointVersion(servicePointCsvModel);
     ServicePointGeolocation servicePointGeolocation = mapGeolocation(servicePointCsvModel);
+    GeolocationMapper.transformLv03andWgs84(servicePointGeolocation);
 
     if (servicePointGeolocation.isValid()) {
       servicePointVersion.setServicePointGeolocation(servicePointGeolocation);
