@@ -25,8 +25,8 @@ public class TrafficPointMigrationIntegrationTest {
 
   static final String BASE_PATH = "/migration/";
 
-  private static final String DIDOK_CSV_FILE = "DIDOK3_VERKEHRSPUNKTELEMENTE_ALL_V_1_20230821011747.csv";
-  private static final String ATLAS_CSV_FILE = "full-world-traffic_point-2023-08-21.csv";
+  private static final String DIDOK_CSV_FILE = "DIDOK3_VERKEHRSPUNKTELEMENTE_ALL_V_1_20230822011910.csv";
+  private static final String ATLAS_CSV_FILE = "full-world-traffic_point-2023-08-22.csv";
 
   private static final List<TrafficPointVersionCsvModel> trafficPointElementCsvModels = new ArrayList<>();
   private static final List<TrafficPointElementCsvModel> didokCsvLines = new ArrayList<>();
