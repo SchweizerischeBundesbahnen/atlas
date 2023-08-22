@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -88,5 +89,31 @@ public class AtlasExceptionHandlerTest {
   @Test
   void shouldIgnoreClientAbortException() {
     assertDoesNotThrow(() -> atlasExceptionHandler.handleException(new ClientAbortException()));
+  }
+
+  @Test
+  void shouldConvertAccessDeniedExceptionToErrorResponse() {
+    // Given
+    AccessDeniedException exception = new AccessDeniedException("Access Denied");
+
+    // When
+    ResponseEntity<ErrorResponse> errorResponseEntity = atlasExceptionHandler.handleAccessDeniedException(
+        exception);
+
+    // Then
+    assertThat(errorResponseEntity.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+    ErrorResponse responseBody = errorResponseEntity.getBody();
+    assertThat(responseBody).isNotNull();
+    assertThat(responseBody.getStatus()).isEqualTo(
+        HttpStatus.FORBIDDEN.value());
+    assertThat(responseBody.getMessage()).isEqualTo(
+        "You are not allowed to perform this operation on the ATLAS platform.");
+    assertThat(responseBody.getDetails()).size().isEqualTo(1);
+    assertThat(responseBody.getDetails().first().getMessage()).isEqualTo(
+        "Access Denied");
+    assertThat(responseBody.getDetails()
+        .first()
+        .getDisplayInfo()
+        .getCode()).isEqualTo("ERROR.NOTALLOWED");
   }
 }

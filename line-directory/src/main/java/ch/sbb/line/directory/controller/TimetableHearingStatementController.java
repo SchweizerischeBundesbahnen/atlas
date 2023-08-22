@@ -172,7 +172,7 @@ public class TimetableHearingStatementController implements TimetableHearingStat
         timetableHearingStatementService.getTimetableHearingStatementsByIds(
             updateHearingStatementStatus.getIds());
 
-    long firstStatementTimetableYear = timetableHearingStatements.stream().findFirst().get().getTimetableYear();
+    long firstStatementTimetableYear = timetableHearingStatements.stream().findFirst().orElseThrow().getTimetableYear();
 
     TimetableHearingYear hearingYear = timetableHearingYearService.getHearingYear(firstStatementTimetableYear);
 
