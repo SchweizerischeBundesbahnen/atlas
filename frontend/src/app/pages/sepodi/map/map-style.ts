@@ -113,18 +113,28 @@ export const MAP_STYLE_SPEC: StyleSpecification = {
       id: MAP_SOURCE_NAME,
       'source-layer': MAP_LAYER_NAME,
       source: MAP_SOURCE_NAME,
-      type: 'circle',
-      paint: {
-        'circle-radius': ['interpolate', ['linear'], ['zoom'], 5, 1.5, 20, 9],
-        'circle-color': [
-          'step',
+      type: 'symbol',
+      layout: {
+        'icon-image': ['get', 'type'],
+        'icon-size': [
+          'interpolate',
+          ['linear'],
           ['zoom'],
-          'darkblue',
-          MAP_ZOOM_DETAILS,
-          'darkblue' /* => STAM: write the expression, to color the service-point type-specific */,
+          // zoom is 9 (or less) -> icon-size will be 0.2
+          9,
+          0.2,
+          10,
+          0.4,
+          12,
+          0.6,
+          14,
+          0.8,
+          // zoom is 16 (or greater) -> icon-size will be 1
+          16,
+          1,
         ],
-        'circle-opacity': 0.9,
-        'circle-stroke-width': ['interpolate', ['linear'], ['zoom'], 12, 1, 20, 2],
+        'icon-allow-overlap': true,
+        'icon-ignore-placement': true,
       },
     },
   ],
