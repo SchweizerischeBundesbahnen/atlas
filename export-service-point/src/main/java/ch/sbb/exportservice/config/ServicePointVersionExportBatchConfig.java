@@ -1,12 +1,12 @@
 package ch.sbb.exportservice.config;
 
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
+import ch.sbb.atlas.export.enumeration.SpExportFileName;
 import ch.sbb.exportservice.entity.ServicePointVersion;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
 import ch.sbb.exportservice.model.ExportType;
 import ch.sbb.exportservice.model.ServicePointVersionCsvModel;
-import ch.sbb.exportservice.model.SpExportFileName;
 import ch.sbb.exportservice.processor.ServicePointVersionCsvServicePointProcessor;
 import ch.sbb.exportservice.processor.ServicePointVersionJsonServicePointProcessor;
 import ch.sbb.exportservice.reader.ServicePointVersionRowMapper;

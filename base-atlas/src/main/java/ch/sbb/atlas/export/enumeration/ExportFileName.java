@@ -6,11 +6,11 @@ import jakarta.validation.constraints.NotNull;
 public interface ExportFileName {
 
     @NotNull
-    @Schema(description = "")
+    @Schema(description = "Name of directory e.g. business_organisation, service_point, traffic_point.")
     String getBaseDir();
 
     @NotNull
-    @Schema(description = "")
+    @Schema(description = "Name of file e.g. business_organisation_versions, service_point, traffic_point.")
     String getFileName();
 
 }

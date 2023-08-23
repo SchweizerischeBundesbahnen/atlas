@@ -3,9 +3,9 @@ package ch.sbb.exportservice.service;
 import ch.sbb.atlas.amazon.service.AmazonBucket;
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.amazon.service.FileServiceImpl;
+import ch.sbb.atlas.export.enumeration.SpExportFileName;
 import ch.sbb.exportservice.model.ExportExtensionFileType;
 import ch.sbb.exportservice.model.ExportType;
-import ch.sbb.exportservice.model.SpExportFileName;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -28,8 +28,6 @@ public class FileExportServiceTest {
   @Mock
   private AmazonService amazonService;
 
-//  @Mock
-//  private FileService fileService;
   private final FileServiceImpl fileService = new FileServiceImpl();
 
   @BeforeEach

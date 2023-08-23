@@ -1,9 +1,9 @@
 package ch.sbb.exportservice.controller;
 
+import ch.sbb.atlas.export.enumeration.SpExportFileName;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.model.exception.NotFoundException.FileNotFoundException;
 import ch.sbb.exportservice.model.ExportType;
-import ch.sbb.exportservice.model.SpExportFileName;
 import ch.sbb.exportservice.service.FileExportService;
 import ch.sbb.exportservice.service.MailProducerService;
 import org.junit.jupiter.api.MethodOrderer;
