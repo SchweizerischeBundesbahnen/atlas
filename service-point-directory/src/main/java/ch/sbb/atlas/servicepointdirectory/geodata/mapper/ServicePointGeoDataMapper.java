@@ -5,6 +5,7 @@ import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.servicepoint.transformer.CoordinateTransformer;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeoData;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +23,13 @@ public class ServicePointGeoDataMapper {
   private final CoordinateTransformer coordinateTransformer = new CoordinateTransformer();
 
   private static Map<String, Object> getProperties(ServicePointGeoData geolocation) {
-    return Map.of("id", geolocation.getId(),
-        "number", geolocation.getNumber());
+    Map<String, Object> properties = new HashMap<>();
+
+    properties.put("id", geolocation.getId());
+    properties.put("number", geolocation.getNumber());
+    properties.put("type", geolocation.getServicePointType());
+
+    return properties;
   }
 
   public List<Point> mapToWgs84WebGeometry(Collection<ServicePointGeoData> geolocations) {

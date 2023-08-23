@@ -35,9 +35,20 @@ public class ServicePointGeoData extends GeolocationBaseEntity {
       sp.valid_from,
       sp.valid_to,
       sp.sloid,
-      sp.number/10 as number
+      sp.number/10 as number,
+      case
+          when sp.operating_point_technical_timetable_type is not null then 'OPERATING_POINT_TECHNICAL'
+          when exists(select * from service_point_version_means_of_transport where service_point_version_id = sp.id) then
+              (case
+                when sp.freight_service_point then 'STOP_POINT_AND_FREIGHT_SERVICE_POINT'
+                ELSE 'STOP_POINT'
+              end)
+          when sp.freight_service_point then 'FREIGHT_SERVICE_POINT'
+          else 'SERVICE_POINT'
+      end
+      as service_point_type
       FROM service_point_version_geolocation geo
-      JOIN service_point_version sp on sp.service_point_geolocation_id = geo.id                                   
+      JOIN service_point_version sp on sp.service_point_geolocation_id = geo.id
       """;
   @Id
   private Long id;
@@ -52,6 +63,8 @@ public class ServicePointGeoData extends GeolocationBaseEntity {
   private Integer swissMunicipalityNumber;
   private String swissMunicipalityName;
   private String swissLocalityName;
+  @Enumerated(EnumType.STRING)
+  private ServicePointType servicePointType;
   @NotNull
   private LocalDate validFrom;
   @NotNull
