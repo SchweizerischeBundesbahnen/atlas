@@ -84,7 +84,7 @@ public class TimetableFieldNumberVersionExportService extends
     }
 
     @Override
-    protected List<? extends VersionCsvModel> convertToCsvModel(
+    protected List<VersionCsvModel> convertToCsvModel(
         List<TimetableFieldNumberVersion> versions) {
         return versions.stream()
             .map(TimetableFieldNumberVersionCsvModel::toCsvModel)
@@ -92,7 +92,7 @@ public class TimetableFieldNumberVersionExportService extends
     }
 
     @Override
-    protected List<? extends BaseVersionModel> convertToJsonModel(List<TimetableFieldNumberVersion> versions) {
+    protected List<BaseVersionModel> convertToJsonModel(List<TimetableFieldNumberVersion> versions) {
         return null;
     }
 

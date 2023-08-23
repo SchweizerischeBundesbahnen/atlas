@@ -82,14 +82,14 @@ public class SublineVersionExportService extends BaseExportService<SublineVersio
     }
 
     @Override
-    protected List<? extends VersionCsvModel> convertToCsvModel(List<SublineVersion> versions) {
+    protected List<VersionCsvModel> convertToCsvModel(List<SublineVersion> versions) {
         return versions.stream()
             .map(SublineVersionCsvModel::toCsvModel)
             .collect(toList());
     }
 
     @Override
-    protected List<? extends BaseVersionModel> convertToJsonModel(List<SublineVersion> versions) {
+    protected List<BaseVersionModel> convertToJsonModel(List<SublineVersion> versions) {
         return null;
     }
 
