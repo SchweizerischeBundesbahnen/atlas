@@ -5,6 +5,7 @@ import { GeoJsonProperties } from 'geojson';
 import { MAP_STYLES, MapOptionsService, MapStyle } from './map-options.service';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { CoordinatePair } from '../../../api';
+import { MapIconsService } from './map-icons.service';
 
 export const mapZoomLocalStorageKey = 'map-zoom';
 export const mapLocationLocalStorageKey = 'map-location';
@@ -106,6 +107,13 @@ export class MapService {
       });
     });
     this.map.once('load', () => {
+      MapIconsService.getIconsAsImages().then((icons) => {
+        icons.forEach((icon) => {
+          if (!this.map.hasImage(icon.id)) {
+            this.map.addImage(icon.id, icon.icon);
+          }
+        });
+      });
       this.mapInitialized.next(true);
     });
   }
