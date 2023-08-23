@@ -91,7 +91,7 @@ public class BusinessOrganisationVersionExportService extends
     }
 
     @Override
-    protected List<? extends VersionCsvModel> convertToCsvModel(
+    protected List<VersionCsvModel> convertToCsvModel(
         List<BusinessOrganisationExportVersionWithTuInfo> versions) {
         return versions.stream()
             .map(BusinessOrganisationVersionCsvModel::toCsvModel)
@@ -99,7 +99,7 @@ public class BusinessOrganisationVersionExportService extends
     }
 
     @Override
-    protected List<? extends BaseVersionModel> convertToJsonModel(List<BusinessOrganisationExportVersionWithTuInfo> versions) {
+    protected List<BaseVersionModel> convertToJsonModel(List<BusinessOrganisationExportVersionWithTuInfo> versions) {
         return versions.stream()
                 .map(BusinessOrganisationVersionMapper::toModelFromBOExportVersionWithTuInfo)
                 .collect(toList());

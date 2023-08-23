@@ -82,14 +82,14 @@ public class LineVersionExportService extends BaseExportService<LineVersion> {
   }
 
   @Override
-  protected List<? extends VersionCsvModel> convertToCsvModel(List<LineVersion> versions) {
+  protected List<VersionCsvModel> convertToCsvModel(List<LineVersion> versions) {
     return versions.stream()
         .map(LineVersionCsvModel::toCsvModel)
         .collect(toList());
   }
 
   @Override
-  protected List<? extends BaseVersionModel> convertToJsonModel(List<LineVersion> versions) {
+  protected List<BaseVersionModel> convertToJsonModel(List<LineVersion> versions) {
     return null;
   }
 
