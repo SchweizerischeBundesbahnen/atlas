@@ -129,18 +129,11 @@ public abstract class BaseExportService<T extends BaseVersion> {
     objectMapper.registerModule(new JavaTimeModule());
     objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
-//    DefaultPrettyPrinter prettyPrinter = new DefaultPrettyPrinter();
-//    prettyPrinter.indentArraysWith(DefaultIndenter.SYSTEM_LINEFEED_INSTANCE);
-
     try {
       objectMapper
-//              .writerWithDefaultPrettyPrinter()
-//              .writer(new MinimalPrettyPrinter(System.lineSeparator()))
-//              .writer(prettyPrinter)
-//              .writer(new PrettyPrinterCustom())
               .writeValue(jsonFile, versionJsonModels);
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new ExportException(jsonFile, e);
     }
 
     return jsonFile;
@@ -148,9 +141,9 @@ public abstract class BaseExportService<T extends BaseVersion> {
 
   protected abstract ObjectWriter getObjectWriter();
 
-  protected abstract List<? extends VersionCsvModel> convertToCsvModel(List<T> versions);
+  protected abstract List<VersionCsvModel> convertToCsvModel(List<T> versions);
 
-  protected abstract List<? extends BaseVersionModel> convertToJsonModel(List<T> versions);
+  protected abstract List<BaseVersionModel> convertToJsonModel(List<T> versions);
 
   protected abstract String getDirectory();
 
