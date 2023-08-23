@@ -38,7 +38,7 @@ public class ServicePointGeoData extends GeolocationBaseEntity {
       sp.number/10 as number,
       case
           when sp.operating_point_technical_timetable_type is not null then 'OPERATING_POINT_TECHNICAL'
-          when exists(select * from service_point_version_means_of_transport where service_point_version_id = sp.id) then
+          when spvmot.means_of_transport is not null then
               (case
                 when sp.freight_service_point then 'STOP_POINT_AND_FREIGHT_SERVICE_POINT'
                 ELSE 'STOP_POINT'
@@ -49,6 +49,7 @@ public class ServicePointGeoData extends GeolocationBaseEntity {
       as service_point_type
       FROM service_point_version_geolocation geo
       JOIN service_point_version sp on sp.service_point_geolocation_id = geo.id
+      LEFT JOIN service_point_version_means_of_transport spvmot on sp.id = spvmot.service_point_version_id
       """;
   @Id
   private Long id;

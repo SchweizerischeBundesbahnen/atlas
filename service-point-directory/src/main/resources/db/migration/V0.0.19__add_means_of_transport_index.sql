@@ -1,0 +1,2 @@
+create index means_of_transport_service_point_version_id_index
+    on service_point_version_means_of_transport (service_point_version_id);
