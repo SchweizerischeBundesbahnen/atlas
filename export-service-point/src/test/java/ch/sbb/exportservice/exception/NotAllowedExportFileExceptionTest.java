@@ -1,7 +1,7 @@
 package ch.sbb.exportservice.exception;
 
+import ch.sbb.atlas.export.enumeration.SpExportFileName;
 import ch.sbb.exportservice.model.ExportType;
-import ch.sbb.exportservice.model.SpExportFileName;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

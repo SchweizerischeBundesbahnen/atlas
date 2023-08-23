@@ -1,9 +1,9 @@
 package ch.sbb.exportservice.controller;
 
 import ch.sbb.atlas.api.model.ErrorResponse;
+import ch.sbb.atlas.export.enumeration.SpExportFileName;
 import ch.sbb.exportservice.exception.NotAllowedExportFileException;
 import ch.sbb.exportservice.model.ExportType;
-import ch.sbb.exportservice.model.SpExportFileName;
 import ch.sbb.exportservice.service.ExportServicePointJobService;
 import ch.sbb.exportservice.service.ExportTrafficPointElementJobService;
 import ch.sbb.exportservice.service.FileExportService;
