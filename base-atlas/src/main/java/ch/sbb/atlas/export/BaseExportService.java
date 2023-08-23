@@ -113,7 +113,7 @@ public abstract class BaseExportService<T extends BaseVersion> {
 
     File csvFile = createFile(exportType, ".csv");
 
-    List<VersionCsvModel> versionCsvModels = convertToCsvModel(versions);
+    List<? extends VersionCsvModel> versionCsvModels = convertToCsvModel(versions);
 
     ObjectWriter objectWriter = getObjectWriter();
     return CsvExportWriter.writeToFile(csvFile, versionCsvModels, objectWriter);
@@ -123,7 +123,7 @@ public abstract class BaseExportService<T extends BaseVersion> {
 
     File jsonFile = createFile(exportType, ".json");
 
-    List<BaseVersionModel> versionJsonModels = convertToJsonModel(versions);
+    List<? extends BaseVersionModel> versionJsonModels = convertToJsonModel(versions);
 
     ObjectMapper objectMapper = new ObjectMapper();
     objectMapper.registerModule(new JavaTimeModule());
