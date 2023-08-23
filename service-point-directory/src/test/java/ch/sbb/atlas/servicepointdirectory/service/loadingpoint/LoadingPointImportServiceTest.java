@@ -205,4 +205,77 @@ public class LoadingPointImportServiceTest {
     assertThat(dbVersions.get(0).getValidTo()).isEqualTo("2023-12-31");
   }
 
+  @Test
+  void shouldUpdateValidToAndEditionPropertiesCorrectlyOnSecondRun() {
+    // given
+    doNothing().when(crossValidationServiceMock).validateServicePointNumberExists(any());
+    final List<LoadingPointCsvModel> loadingPointCsvModels = List.of(
+        LoadingPointCsvModel.builder()
+            .designation("Ladestelle 1")
+            .connectionPoint(false)
+            .number(1)
+            .servicePointNumber(85070001)
+            .createdBy("fs111111")
+            .createdAt(LocalDateTime.of(2020, 1, 1, 1, 1))
+            .editedBy("fs222222")
+            .editedAt(LocalDateTime.of(2022, 1, 1, 1, 1))
+            .validFrom(LocalDate.of(2020, 1, 1))
+            .validTo(LocalDate.of(2020, 12, 31))
+            .build()
+    );
+
+    final List<LoadingPointCsvModelContainer> loadingPointCsvModelContainers = List.of(
+        LoadingPointCsvModelContainer.builder()
+            .csvModelList(loadingPointCsvModels)
+            .didokCode(85070001)
+            .loadingPointNumber(1)
+            .build()
+    );
+    loadingPointImportService.importLoadingPoints(loadingPointCsvModelContainers);
+
+    final List<LoadingPointCsvModel> loadingPointCsvModelsSecondRun = List.of(
+        LoadingPointCsvModel.builder()
+            .designation("Ladestelle 1")
+            .connectionPoint(false)
+            .number(1)
+            .servicePointNumber(85070001)
+            .createdBy("fs111111")
+            .createdAt(LocalDateTime.of(2020, 1, 1, 1, 1))
+            .editedBy("fs666666")
+            .editedAt(LocalDateTime.of(2023, 1, 1, 1, 1))
+            .validFrom(LocalDate.of(2020, 1, 1))
+            .validTo(LocalDate.of(2020, 6, 15))
+            .build()
+    );
+
+    final List<LoadingPointCsvModelContainer> loadingPointCsvModelContainersSecondRun = List.of(
+        LoadingPointCsvModelContainer.builder()
+            .csvModelList(loadingPointCsvModelsSecondRun)
+            .didokCode(85070001)
+            .loadingPointNumber(1)
+            .build()
+    );
+
+    // when
+    final List<ItemImportResult> loadingPointItemImportResults = loadingPointImportService.importLoadingPoints(
+        loadingPointCsvModelContainersSecondRun);
+
+    // then
+    assertThat(loadingPointItemImportResults).hasSize(1);
+
+    final List<LoadingPointVersion> dbVersions =
+        loadingPointVersionRepository.findAllByServicePointNumberAndNumberOrderByValidFrom(
+            ServicePointNumber.of(85070001),
+            1
+        );
+
+    assertThat(dbVersions).hasSize(1);
+    assertThat(dbVersions.get(0).getEditor()).isEqualTo("fs666666");
+    assertThat(dbVersions.get(0).getEditionDate()).isEqualTo(LocalDateTime.of(2023, 1, 1, 1, 1));
+    assertThat(dbVersions.get(0).getCreator()).isEqualTo("fs111111");
+    assertThat(dbVersions.get(0).getCreationDate()).isEqualTo(LocalDateTime.of(2020, 1, 1, 1, 1));
+    assertThat(dbVersions.get(0).getValidFrom()).isEqualTo("2020-01-01");
+    assertThat(dbVersions.get(0).getValidTo()).isEqualTo("2020-06-15");
+  }
+
 }
