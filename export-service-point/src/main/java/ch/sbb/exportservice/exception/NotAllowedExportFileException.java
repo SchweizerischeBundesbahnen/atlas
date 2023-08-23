@@ -5,16 +5,14 @@ import ch.sbb.atlas.model.exception.AtlasException;
 import ch.sbb.exportservice.model.ExportType;
 import ch.sbb.exportservice.model.SpExportFileName;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
-@RequiredArgsConstructor
 @Getter
 public class NotAllowedExportFileException extends AtlasException {
 
 
-    private SpExportFileName exportFileName;
-    private ExportType exportType;
+    private final SpExportFileName exportFileName;
+    private final ExportType exportType;
 
     public NotAllowedExportFileException(SpExportFileName exportFileName, ExportType exportType) {
         this.exportFileName = exportFileName;
