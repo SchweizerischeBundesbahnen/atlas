@@ -23,7 +23,6 @@ public class TrafficPointMappingEquality {
 
   public void performCheck() {
     performCoreDataCheck();
-
   }
 
   private void performCoreDataCheck() {
@@ -64,12 +63,10 @@ public class TrafficPointMappingEquality {
       }
     }
 
-    // TODO: Comment back in when https://flow.sbb.ch/browse/ATLAS-1395 is done
-    //    assertThat(atlasCsvLine.getServicePointBusinessOrganisationNumber()).isEqualTo(didokCsvLine
-    //    .getServicePointBusinessOrganisationNumber());
+    assertThat(atlasCsvLine.getServicePointBusinessOrganisationNumber()).isEqualTo(
+        didokCsvLine.getServicePointBusinessOrganisationNumber());
 
     // The servicePointBusinessOrganisationAbbreviations are not available in the DiDok-Exports - hence we don't test them
-
   }
 
   private Integer getParentServicePointNumberFromParentSLOID() {
