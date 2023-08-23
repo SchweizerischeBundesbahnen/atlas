@@ -1,8 +1,8 @@
 package ch.sbb.exportservice.writer;
 
+import ch.sbb.atlas.export.enumeration.SpExportFileName;
 import ch.sbb.exportservice.model.ExportExtensionFileType;
 import ch.sbb.exportservice.model.ExportType;
-import ch.sbb.exportservice.model.SpExportFileName;
 import ch.sbb.exportservice.service.FileExportService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
