@@ -1,8 +1,8 @@
 package ch.sbb.exportservice.tasklet;
 
+import ch.sbb.atlas.export.enumeration.SpExportFileName;
 import ch.sbb.exportservice.model.ExportExtensionFileType;
 import ch.sbb.exportservice.model.ExportType;
-import ch.sbb.exportservice.model.SpExportFileName;
 import ch.sbb.exportservice.service.FileExportService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.StepContribution;

@@ -1,9 +1,9 @@
 package ch.sbb.exportservice.exception;
 
 import ch.sbb.atlas.api.model.ErrorResponse;
+import ch.sbb.atlas.export.enumeration.SpExportFileName;
 import ch.sbb.atlas.model.exception.AtlasException;
 import ch.sbb.exportservice.model.ExportType;
-import ch.sbb.exportservice.model.SpExportFileName;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 

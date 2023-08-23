@@ -1,8 +1,8 @@
 package ch.sbb.exportservice.tasklet;
 
+import ch.sbb.atlas.export.enumeration.SpExportFileName;
 import ch.sbb.exportservice.model.ExportExtensionFileType;
 import ch.sbb.exportservice.model.ExportType;
-import ch.sbb.exportservice.model.SpExportFileName;
 
 public class UploadJsonFileTasklet extends FileUploadTasklet {
 
