@@ -87,7 +87,7 @@ public class TrafficPointMigrationActualDateIntegrationTest {
     didokCsvLines.forEach(didokCsvLine -> {
       TrafficPointVersionCsvModel atlasCsvLine = findCorrespondingAtlasServicePointVersion(didokCsvLine,
           groupedAtlasNumbers.get(didokCsvLine.getSloid()));
-      new TrafficPointMappingEquality(didokCsvLine, atlasCsvLine).performCheck();
+      new TrafficPointMappingEquality(didokCsvLine, atlasCsvLine, false).performCheck();
     });
   }
 
