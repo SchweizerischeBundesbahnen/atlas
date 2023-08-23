@@ -86,7 +86,7 @@ public class FileServiceImplTest {
   }
 
   @Test
-  public void shouldStreamJsonFile() throws IOException {
+  void shouldStreamJsonFile() throws IOException {
     String fileName = "full_business_organisation_versions_2023-08-16.json.gz";
     ClassLoader classLoader = getClass().getClassLoader();
     File file = new File(classLoader.getResource(fileName).getFile());
@@ -98,7 +98,7 @@ public class FileServiceImplTest {
   }
 
   @Test
-  public void shouldStreamJsonFileAndThrowException() throws IOException {
+  void shouldStreamJsonFileAndThrowException() throws IOException {
     String fileName = "fakefile.txt";
     ClassLoader classLoader = getClass().getClassLoader();
     File file = new File(classLoader.getResource(fileName).getFile());
@@ -109,7 +109,7 @@ public class FileServiceImplTest {
   }
 
   @Test
-  public void shouldStreamGzipFile() throws IOException {
+  void shouldStreamGzipFile() throws IOException {
     String fileName = "full_business_organisation_versions_2023-08-16.json.gz";
     ClassLoader classLoader = getClass().getClassLoader();
     File file = new File(classLoader.getResource(fileName).getFile());

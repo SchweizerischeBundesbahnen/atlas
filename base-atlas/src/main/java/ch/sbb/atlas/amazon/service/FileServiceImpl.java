@@ -165,7 +165,7 @@ public class FileServiceImpl implements FileService {
               + baseFileName
               + ".json.gz";
     }
-    else return null;
+    else { return null; }
   }
 
 }
