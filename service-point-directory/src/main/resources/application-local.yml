@@ -22,7 +22,7 @@ spring:
     name: service-point-directory
   jpa:
     open-in-view: false
-    show-sql: false
+    show-sql: true
     properties:
       hibernate:
         format_sql: true
