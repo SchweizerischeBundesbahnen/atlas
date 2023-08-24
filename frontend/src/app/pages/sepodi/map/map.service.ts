@@ -29,6 +29,7 @@ export class MapService {
       transformRequest: (url: string, resourceType?: ResourceType) =>
         this.mapOptionsService.authoriseRequest(url, resourceType),
     });
+    MapIconsService.addAllIconsToMap(this.map);
     this.initMapEvents();
     this.map.resize();
 
@@ -107,13 +108,6 @@ export class MapService {
       });
     });
     this.map.once('load', () => {
-      MapIconsService.getIconsAsImages().then((icons) => {
-        icons.forEach((icon) => {
-          if (!this.map.hasImage(icon.id)) {
-            this.map.addImage(icon.id, icon.icon);
-          }
-        });
-      });
       this.mapInitialized.next(true);
     });
   }
