@@ -4,7 +4,9 @@ import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.servicepoint.GeolocationBaseReadModel;
 import ch.sbb.exportservice.entity.BusinessOrganisation;
 import ch.sbb.exportservice.entity.TrafficPointElementVersion;
+import ch.sbb.exportservice.entity.geolocation.TrafficPointElementGeolocation;
 import ch.sbb.exportservice.model.TrafficPointVersionCsvModel;
+import ch.sbb.exportservice.model.TrafficPointVersionCsvModel.TrafficPointVersionCsvModelBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemProcessor;
 
@@ -21,7 +23,7 @@ public class TrafficPointElementVersionCsvProcessor extends BaseServicePointProc
   @Override
   public TrafficPointVersionCsvModel process(TrafficPointElementVersion version) {
     BusinessOrganisation servicePointBusinessOrganisation = version.getServicePointBusinessOrganisation();
-    TrafficPointVersionCsvModel.TrafficPointVersionCsvModelBuilder builder = TrafficPointVersionCsvModel.builder()
+    TrafficPointVersionCsvModelBuilder builder = TrafficPointVersionCsvModel.builder()
         .sloid(version.getSloid())
         .numberShort(version.getServicePointNumber().getNumberShort())
         .number(version.getServicePointNumber().getNumber())
@@ -49,20 +51,21 @@ public class TrafficPointElementVersionCsvProcessor extends BaseServicePointProc
         .servicePointBusinessOrganisationDescriptionFr(servicePointBusinessOrganisation.getBusinessOrganisationDescriptionFr())
         .servicePointBusinessOrganisationDescriptionIt(servicePointBusinessOrganisation.getBusinessOrganisationDescriptionIt())
         .servicePointBusinessOrganisationDescriptionEn(servicePointBusinessOrganisation.getBusinessOrganisationDescriptionEn());
-    buildGeolocation(version, builder);
+
+    if (version.getTrafficPointElementGeolocation() != null) {
+      buildGeolocation(version.getTrafficPointElementGeolocation(), builder);
+    }
     return builder.build();
   }
 
-  private void buildGeolocation(TrafficPointElementVersion version,
-      TrafficPointVersionCsvModel.TrafficPointVersionCsvModelBuilder builder) {
-    GeolocationBaseReadModel geolocation = toModel(version.getTrafficPointElementGeolocation());
-    if (geolocation != null) {
-      builder.lv95East(geolocation.getLv95().getEast())
-          .lv95North(geolocation.getLv95().getNorth())
-          .wgs84East(geolocation.getWgs84().getEast())
-          .wgs84North(geolocation.getWgs84().getNorth())
-          .height(geolocation.getHeight());
-    }
+  private void buildGeolocation(TrafficPointElementGeolocation geolocation, TrafficPointVersionCsvModelBuilder builder) {
+    GeolocationBaseReadModel geolocationModel = toModel(geolocation);
+    builder
+        .lv95East(geolocationModel.getLv95().getEast())
+        .lv95North(geolocationModel.getLv95().getNorth())
+        .wgs84East(geolocationModel.getWgs84().getEast())
+        .wgs84North(geolocationModel.getWgs84().getNorth())
+        .height(geolocationModel.getHeight());
   }
 
 }
