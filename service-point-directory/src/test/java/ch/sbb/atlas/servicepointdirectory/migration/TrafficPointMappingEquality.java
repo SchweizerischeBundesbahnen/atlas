@@ -63,8 +63,9 @@ public class TrafficPointMappingEquality {
       }
     }
 
-    assertThat(atlasCsvLine.getServicePointBusinessOrganisationNumber()).isEqualTo(
-        didokCsvLine.getServicePointBusinessOrganisationNumber());
+    // TODO: Comment back in and update export files to compare when https://flow.sbb.ch/browse/ATLAS-1395 is done
+    // assertThat(atlasCsvLine.getServicePointBusinessOrganisationNumber()).isEqualTo(
+    //    didokCsvLine.getServicePointBusinessOrganisationNumber());
 
     // The servicePointBusinessOrganisationAbbreviations are not available in the DiDok-Exports - hence we don't test them
   }
