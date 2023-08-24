@@ -85,9 +85,7 @@ public class ServicePointGeoDataService {
         .findAll(
             validAtDate(validAtDate).and(
                 coordinatesBetween(SpatialReference.LV95, geoDataAreas.get(SpatialReference.LV95))
-                    .or(coordinatesBetween(SpatialReference.WGS84WEB, geoDataAreas.get(SpatialReference.WGS84WEB)))
                     .or(coordinatesBetween(SpatialReference.WGS84, geoDataAreas.get(SpatialReference.WGS84)))
-                    .or(coordinatesBetween(SpatialReference.LV03, geoDataAreas.get(SpatialReference.LV03)))
             )
         );
   }
