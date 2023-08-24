@@ -32,4 +32,11 @@
       border: 2px solid variables.$primary-500;
     }
   }
+
+  .map-legend-button {
+    background: white;
+    position: absolute;
+    top: 70px;
+    right: 15px;
+  }
 }

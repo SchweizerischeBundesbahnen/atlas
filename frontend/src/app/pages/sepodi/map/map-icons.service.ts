@@ -1,7 +1,7 @@
 import { Map } from 'maplibre-gl';
 import { ServicePointIconType } from './service-point-icon-type';
 
-interface MapIcon {
+export interface MapIcon {
   id: string;
   icon: HTMLImageElement;
 }
