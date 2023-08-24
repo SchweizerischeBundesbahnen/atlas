@@ -1,8 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.migration;
 
-import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -30,14 +28,14 @@ public class ServicePointMigrationIntegrationTest {
   private static final String DIDOK_CSV_FILE = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20230726021701.csv";
   private static final String ATLAS_CSV_FILE = "full-world-service-point-2023-07-27.csv";
 
-  private static final List<ServicePointVersionCsvModel> atlasCsvLines = new ArrayList<>();
-  private static final List<ServicePointCsvModel> didokCsvLines = new ArrayList<>();
+  private static final List<ServicePointAtlasCsvModel> atlasCsvLines = new ArrayList<>();
+  private static final List<ServicePointDidokCsvModel> didokCsvLines = new ArrayList<>();
 
   @Test
   @Order(1)
   void shouldParseCsvsCorrectly() throws IOException {
     try (InputStream csvStream = this.getClass().getResourceAsStream(BASE_PATH + DIDOK_CSV_FILE)) {
-      didokCsvLines.addAll(ServicePointImportService.parseServicePoints(csvStream));
+      didokCsvLines.addAll(DidokCsvReader.parseDidokServicePoints(csvStream));
     }
     assertThat(didokCsvLines).isNotEmpty();
 
@@ -50,8 +48,8 @@ public class ServicePointMigrationIntegrationTest {
   @Test
   @Order(2)
   void shouldHaveSameDidokCodesInBothCsvs() {
-    Set<Integer> didokCodes = didokCsvLines.stream().map(ServicePointCsvModel::getDidokCode).collect(Collectors.toSet());
-    Set<Integer> atlasNumbers = atlasCsvLines.stream().map(ServicePointVersionCsvModel::getNumber).collect(Collectors.toSet());
+    Set<Integer> didokCodes = didokCsvLines.stream().map(ServicePointDidokCsvModel::getDidokCode).collect(Collectors.toSet());
+    Set<Integer> atlasNumbers = atlasCsvLines.stream().map(ServicePointAtlasCsvModel::getNumber).collect(Collectors.toSet());
 
     Set<Integer> difference = atlasNumbers.stream().filter(e -> !didokCodes.contains(e)).collect(Collectors.toSet());
     if (!difference.isEmpty()) {
@@ -69,12 +67,12 @@ public class ServicePointMigrationIntegrationTest {
   @Order(3)
   void shouldHaveSameValidityOnEachDidokCode() {
     Map<Integer, Validity> groupedDidokCodes = didokCsvLines.stream().collect(
-        Collectors.groupingBy(ServicePointCsvModel::getDidokCode, Collectors.collectingAndThen(Collectors.toList(),
+        Collectors.groupingBy(ServicePointDidokCsvModel::getDidokCode, Collectors.collectingAndThen(Collectors.toList(),
             list -> new Validity(
                 list.stream().map(i -> new DateRange(i.getValidFrom(), i.getValidTo())).collect(Collectors.toList())).minify())));
 
     Map<Integer, Validity> groupedAtlasNumbers = atlasCsvLines.stream().collect(
-        Collectors.groupingBy(ServicePointVersionCsvModel::getNumber, Collectors.collectingAndThen(Collectors.toList(),
+        Collectors.groupingBy(ServicePointAtlasCsvModel::getNumber, Collectors.collectingAndThen(Collectors.toList(),
             list -> new Validity(
                 list.stream().map(i -> new DateRange(dateFromString(i.getValidFrom()), dateFromString(i.getValidTo())))
                     .collect(Collectors.toList())).minify())));
@@ -101,19 +99,19 @@ public class ServicePointMigrationIntegrationTest {
   @Test
   @Order(4)
   void shouldHaveMappedFieldsToAtlasCorrectly() {
-    Map<Integer, List<ServicePointVersionCsvModel>> groupedAtlasNumbers = atlasCsvLines.stream()
-        .collect(Collectors.groupingBy(ServicePointVersionCsvModel::getNumber));
+    Map<Integer, List<ServicePointAtlasCsvModel>> groupedAtlasNumbers = atlasCsvLines.stream()
+        .collect(Collectors.groupingBy(ServicePointAtlasCsvModel::getNumber));
 
     didokCsvLines.forEach(didokCsvLine -> {
-      ServicePointVersionCsvModel atlasCsvLine = findCorrespondingAtlasServicePointVersion(didokCsvLine,
+      ServicePointAtlasCsvModel atlasCsvLine = findCorrespondingAtlasServicePointVersion(didokCsvLine,
           groupedAtlasNumbers.get(didokCsvLine.getDidokCode()));
       new ServicePointMappingEquality(didokCsvLine, atlasCsvLine, true).performCheck();
     });
   }
 
-  private ServicePointVersionCsvModel findCorrespondingAtlasServicePointVersion(ServicePointCsvModel didokCsvLine,
-      List<ServicePointVersionCsvModel> atlasCsvLines) {
-    List<ServicePointVersionCsvModel> matchedVersions = atlasCsvLines.stream().filter(
+  private ServicePointAtlasCsvModel findCorrespondingAtlasServicePointVersion(ServicePointDidokCsvModel didokCsvLine,
+      List<ServicePointAtlasCsvModel> atlasCsvLines) {
+    List<ServicePointAtlasCsvModel> matchedVersions = atlasCsvLines.stream().filter(
         atlasCsvLine -> new DateRange(dateFromString(atlasCsvLine.getValidFrom()),
             dateFromString(atlasCsvLine.getValidTo())).contains(
             didokCsvLine.getValidFrom())).toList();
@@ -122,4 +120,5 @@ public class ServicePointMigrationIntegrationTest {
     }
     throw new IllegalStateException("Not exactly one match");
   }
+
 }

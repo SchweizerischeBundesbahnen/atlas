@@ -18,11 +18,7 @@ import lombok.experimental.FieldNameConstants;
 @Builder
 @FieldNameConstants
 @EqualsAndHashCode
-/**
- * Intentional
- * Copy of ch.sbb.atlas.imports.servicepoint.trafficpoint
- */
-public class TrafficPointVersionCsvModel {
+public class TrafficPointAtlasCsvModel {
 
   private String sloid;
 

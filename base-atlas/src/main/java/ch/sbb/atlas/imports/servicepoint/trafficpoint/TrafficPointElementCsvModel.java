@@ -34,9 +34,6 @@ public class TrafficPointElementCsvModel extends BaseDidokCsvModel {
   @JsonProperty("BEZEICHNUNG_BETRIEBLICH")
   private String designationOperational;
 
-  @JsonProperty("DS_BEZEICHNUNG_OFFIZIELL")
-  private String designationOfficial;
-
   @JsonProperty("LAENGE")
   private Double length;
 
@@ -51,11 +48,5 @@ public class TrafficPointElementCsvModel extends BaseDidokCsvModel {
 
   @JsonProperty("BPVE_TYPE")
   private int trafficPointElementType;
-
-  @JsonProperty("DS_GO_IDENTIFIKATION")
-  private int servicePointBusinessOrganisation;
-
-  @JsonProperty("DS_GO_NUMMER")
-  private int servicePointBusinessOrganisationNumber;
 
 }
