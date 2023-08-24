@@ -36,6 +36,7 @@ public class TrafficPointElementCsvModel extends BaseDidokCsvModel {
 
   @JsonProperty("DS_BEZEICHNUNG_OFFIZIELL")
   private String designationOfficial;
+
   @JsonProperty("LAENGE")
   private Double length;
 
