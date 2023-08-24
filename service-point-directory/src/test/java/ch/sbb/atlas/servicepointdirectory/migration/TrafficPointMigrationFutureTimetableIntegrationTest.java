@@ -25,8 +25,8 @@ import org.junit.jupiter.api.TestMethodOrder;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TrafficPointMigrationFutureTimetableIntegrationTest {
 
-  private static final String DIDOK_CSV_FILE = "DIDOK3_VERKEHRSPUNKTELEMENTE_FUTURE_TIMETABLE_V_1_20230822012253.csv";
-  private static final String ATLAS_CSV_FILE = "future_timetable-world-traffic_point-2023-08-22.csv";
+  private static final String DIDOK_CSV_FILE = "DIDOK3_VERKEHRSPUNKTELEMENTE_FUTURE_TIMETABLE_V_1_20230824012319.csv";
+  private static final String ATLAS_CSV_FILE = "future_timetable-world-traffic_point-2023-08-24.csv";
   private static final LocalDate FUTURE_TIMETABLE_DATE = LocalDate.of(2023, 12, 10);
 
   private static final List<TrafficPointVersionCsvModel> trafficPointElementCsvModels = new ArrayList<>();
