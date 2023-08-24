@@ -2,7 +2,6 @@ package ch.sbb.atlas.servicepointdirectory.migration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointElementCsvModel;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
@@ -13,8 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 @Data
 public class TrafficPointMappingEquality {
 
-  private final TrafficPointElementCsvModel didokCsvLine;
-  private final TrafficPointVersionCsvModel atlasCsvLine;
+  private final TrafficPointDidokCsvModel didokCsvLine;
+  private final TrafficPointAtlasCsvModel atlasCsvLine;
 
   // For FutureTimetable DiDok exports the following attributes of <today> and not the FutureTimetable-date
   // - designationOfficial
@@ -63,9 +62,8 @@ public class TrafficPointMappingEquality {
       }
     }
 
-    // TODO: Comment back in and update export files to compare when https://flow.sbb.ch/browse/ATLAS-1395 is done
-    // assertThat(atlasCsvLine.getServicePointBusinessOrganisationNumber()).isEqualTo(
-    //    didokCsvLine.getServicePointBusinessOrganisationNumber());
+    assertThat(atlasCsvLine.getServicePointBusinessOrganisationNumber()).isEqualTo(
+        didokCsvLine.getServicePointBusinessOrganisationNumber());
 
     // The servicePointBusinessOrganisationAbbreviations are not available in the DiDok-Exports - hence we don't test them
   }

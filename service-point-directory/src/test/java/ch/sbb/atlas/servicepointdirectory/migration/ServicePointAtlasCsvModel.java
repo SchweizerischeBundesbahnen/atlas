@@ -15,11 +15,7 @@ import lombok.experimental.FieldNameConstants;
 @Builder
 @FieldNameConstants
 @EqualsAndHashCode
-/**
- * Intentional
- * Copy of ch.sbb.exportservice.model.ServicePointVersionCsvModel
- */
-public class ServicePointVersionCsvModel {
+public class ServicePointAtlasCsvModel {
 
   private Integer numberShort;
 
