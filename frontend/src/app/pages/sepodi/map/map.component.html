@@ -21,12 +21,17 @@
   <button *ngIf="!showMapLegend" mat-icon-button class="map-legend-button" (click)="openLegend()">
     <em class="bi bi-info-circle-fill"></em>
   </button>
-  <div *ngIf="showMapLegend" class="map-legend-button map-legend d-flex flex-column">
+  <div *ngIf="showMapLegend" class="map-legend-button map-legend d-flex flex-column p-2">
     <div class="legend-row d-flex flex-row align-items-center" *ngFor="let row of legend">
       <div class="image d-flex pe-2">
-        <img [src]="row.icon.src" height="10px" width="10px" />
+        <img
+          [src]="row.icon.src"
+          height="10px"
+          width="10px"
+          [alt]="'SEPODI.MAP_LEGEND.' + row.id | translate"
+        />
       </div>
-      <div class="text d-flex">{{ row.id }}</div>
+      <div class="text d-flex">{{ 'SEPODI.MAP_LEGEND.' + row.id | translate }}</div>
     </div>
   </div>
 </div>
