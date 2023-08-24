@@ -2,6 +2,7 @@ import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@ang
 import { Map } from 'maplibre-gl';
 import { MapService } from './map.service';
 import { MAP_STYLES, MapStyle } from './map-options.service';
+import { MapIcon, MapIconsService } from './map-icons.service';
 
 @Component({
   selector: 'atlas-map',
@@ -12,6 +13,9 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   availableMapStyles = MAP_STYLES;
   currentMapStyle!: MapStyle;
   showMapStyleSelection = false;
+  showMapLegend = false;
+
+  legend!: MapIcon[];
 
   map!: Map;
 
@@ -23,6 +27,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   ngAfterViewInit() {
     this.map = this.mapService.initMap(this.mapContainer.nativeElement);
     this.currentMapStyle = this.mapService.currentMapStyle;
+    MapIconsService.getIconsAsImages().then((icons) => (this.legend = icons));
   }
 
   ngOnDestroy() {
@@ -33,6 +38,13 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.showMapStyleSelection = true;
     this.map.once('click', () => {
       this.showMapStyleSelection = false;
+    });
+  }
+
+  openLegend() {
+    this.showMapLegend = true;
+    this.map.once('click', () => {
+      this.showMapLegend = false;
     });
   }
 
