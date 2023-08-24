@@ -23,7 +23,8 @@ public class TrafficPointElementVersionSqlQueryUtil {
       """;
   private static final String GROUP_BY_STATEMENT = "group by spv.id, tpev.id, sbov.id, tpevg.id";
 
-  private static final String WORLD_ONLY_FUTURE_TIMETABLE_WHERE_STATEMENT = "WHERE '%s' between tpev.valid_from and tpev.valid_to ";
+  private static final String WORLD_ONLY_FUTURE_TIMETABLE_WHERE_STATEMENT = "WHERE '%s' between tpev.valid_from and tpev"
+      + ".valid_to ";
   private static final String WORLD_ONLY_ACTUAL_WHERE_STATEMENT = " WHERE '%s' between tpev.valid_from and tpev.valid_to ";
 
   public String getSqlQuery(ExportType exportType) {
@@ -42,29 +43,30 @@ public class TrafficPointElementVersionSqlQueryUtil {
 
   private String getSqlWhereClause(ExportType exportType) {
     LocalDate nextTimetableYearStartDate = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
-    if(exportType.equals(ExportType.WORLD_ONLY_ACTUAL)){
+    if (exportType.equals(ExportType.WORLD_ONLY_ACTUAL)) {
       return String.format(WORLD_ONLY_ACTUAL_WHERE_STATEMENT, DateHelper.getDateAsSqlString(LocalDate.now()));
     }
-    if(exportType.equals(ExportType.WORLD_ONLY_TIMETABLE_FUTURE)){
-      return String.format(WORLD_ONLY_FUTURE_TIMETABLE_WHERE_STATEMENT, DateHelper.getDateAsSqlString(nextTimetableYearStartDate));
+    if (exportType.equals(ExportType.WORLD_ONLY_TIMETABLE_FUTURE)) {
+      return String.format(WORLD_ONLY_FUTURE_TIMETABLE_WHERE_STATEMENT,
+          DateHelper.getDateAsSqlString(nextTimetableYearStartDate));
     }
-    if(exportType.equals(ExportType.WORLD_FULL)){
+    if (exportType.equals(ExportType.WORLD_FULL)) {
       return "";
     }
-    throw  new IllegalStateException("ExportType " + exportType + " not allowed!");
+    throw new IllegalStateException("ExportType " + exportType + " not allowed!");
   }
 
   private String getFromStatementQuery(ExportType exportType) {
     LocalDate nextTimetableYearStartDate = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
-    if(exportType.equals(ExportType.WORLD_ONLY_ACTUAL) || exportType.equals(ExportType.WORLD_FULL)){
-      return String.format(SELECT_AND_JOIN_STATEMENT, DateHelper.getDateAsSqlString(LocalDate.now()), DateHelper.getDateAsSqlString(LocalDate.now()));
+    if (exportType.equals(ExportType.WORLD_ONLY_ACTUAL) || exportType.equals(ExportType.WORLD_FULL)) {
+      return String.format(SELECT_AND_JOIN_STATEMENT, DateHelper.getDateAsSqlString(LocalDate.now()),
+          DateHelper.getDateAsSqlString(LocalDate.now()));
     }
-    if(exportType.equals(ExportType.WORLD_ONLY_TIMETABLE_FUTURE)){
-      return String.format(SELECT_AND_JOIN_STATEMENT, DateHelper.getDateAsSqlString(nextTimetableYearStartDate),DateHelper.getDateAsSqlString(nextTimetableYearStartDate));
+    if (exportType.equals(ExportType.WORLD_ONLY_TIMETABLE_FUTURE)) {
+      return String.format(SELECT_AND_JOIN_STATEMENT, DateHelper.getDateAsSqlString(nextTimetableYearStartDate),
+          DateHelper.getDateAsSqlString(nextTimetableYearStartDate));
     }
-    throw  new IllegalStateException("ExportType " + exportType + " not allowed!");
+    throw new IllegalStateException("ExportType " + exportType + " not allowed!");
   }
-
-
 
 }
