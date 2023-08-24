@@ -16,4 +16,5 @@ public class DoubleAssertionWithPrecisionTest {
   void shouldNotBeEqual() {
     assertThat(0.0001).isNotCloseTo(0.000201, DoubleAssertion.equalOnDecimalDigits(4));
   }
+
 }
