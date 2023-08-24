@@ -36,6 +36,8 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
   openStyleSelection() {
     this.showMapStyleSelection = true;
+    this.showMapLegend = false;
+
     this.map.once('click', () => {
       this.showMapStyleSelection = false;
     });
@@ -43,6 +45,8 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
   openLegend() {
     this.showMapLegend = true;
+    this.showMapStyleSelection = false;
+
     this.map.once('click', () => {
       this.showMapLegend = false;
     });
