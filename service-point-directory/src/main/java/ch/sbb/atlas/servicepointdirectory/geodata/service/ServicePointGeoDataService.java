@@ -18,7 +18,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Point;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StopWatch;
 
 @Service
 @Slf4j
@@ -68,19 +67,14 @@ public class ServicePointGeoDataService {
     Map<SpatialReference, Envelope> geoDataAreas = geometryTransformer.getProjectedAreas(
         geoDataAreaWgs84);
 
-    log.info("Finding service points");
-    StopWatch stopWatch = new StopWatch();
-    stopWatch.start();
+    log.debug("Finding service points");
     List<ServicePointGeoData> servicePoints = getServicePointGeoData(validAtDate, geoDataAreas);
-    stopWatch.stop();
-    log.info("Finding took {}ms", stopWatch.getTotalTimeMillis());
 
     log.info("mapping {} service points", servicePoints.size());
     return servicePointGeoDataMapper.mapToWgs84WebGeometry(servicePoints);
   }
 
   private List<ServicePointGeoData> getServicePointGeoData(LocalDate validAtDate, Map<SpatialReference, Envelope> geoDataAreas) {
-    log.info("{}", geoDataAreas.get(SpatialReference.LV95));
     return geolocationRepository
         .findAll(
             validAtDate(validAtDate).and(
