@@ -1,10 +1,5 @@
-export enum ServicePointType {
-  OPERATING_POINT_TECHNICAL = 'OPERATING_POINT_TECHNICAL',
-  STOP_POINT_AND_FREIGHT_SERVICE_POINT = 'STOP_POINT_AND_FREIGHT_SERVICE_POINT',
-  STOP_POINT = 'STOP_POINT',
-  FREIGHT_SERVICE_POINT = 'FREIGHT_SERVICE_POINT',
-  SERVICE_POINT = 'SERVICE_POINT',
-}
+import { Map } from 'maplibre-gl';
+import { ServicePointIconType } from './service-point-icon-type';
 
 interface MapIcon {
   id: string;
@@ -14,8 +9,18 @@ interface MapIcon {
 export class MapIconsService {
   private static ICONS_BASE_PATH = '../../../../assets/images/service-point-symbols/';
 
+  static addAllIconsToMap(map: Map) {
+    MapIconsService.getIconsAsImages().then((icons) => {
+      icons.forEach((icon) => {
+        if (!map.hasImage(icon.id)) {
+          map.addImage(icon.id, icon.icon);
+        }
+      });
+    });
+  }
+
   static getIconsAsImages() {
-    const types = Object.keys(ServicePointType).map((type) => this.getIconAsImage(type));
+    const types = Object.keys(ServicePointIconType).map((type) => this.getIconAsImage(type));
     return Promise.all(types);
   }
 
