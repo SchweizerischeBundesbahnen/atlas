@@ -1,37 +1,36 @@
 <div class="map-wrapper d-flex">
   <div class="map" #map></div>
-  <button
-    *ngIf="!showMapStyleSelection"
-    mat-icon-button
-    class="map-style-selector"
-    (click)="openStyleSelection()"
-  >
+  <button mat-icon-button class="map-style-selector" (click)="toggleStyleSelection()">
     <em class="bi bi-stack"></em>
   </button>
-  <div *ngIf="showMapStyleSelection" class="map-style-selector map-styles d-flex flex-column">
-    <button
-      [ngClass]="{ current: style === currentMapStyle }"
-      class="style-switch-button mb-1"
-      (click)="switchToStyle(style)"
-      *ngFor="let style of availableMapStyles"
-    >
-      {{ style.label | translate }}
-    </button>
+  <div *ngIf="showMapStyleSelection" class="map-styles map-popup-menu">
+    <div class="popup-content d-flex flex-column">
+      <button
+        [ngClass]="{ current: style === currentMapStyle }"
+        class="style-switch-button mb-1"
+        (click)="switchToStyle(style)"
+        *ngFor="let style of availableMapStyles"
+      >
+        {{ style.label | translate }}
+      </button>
+    </div>
   </div>
-  <button *ngIf="!showMapLegend" mat-icon-button class="map-legend-button" (click)="openLegend()">
+  <button mat-icon-button class="map-legend-button" (click)="toggleLegend()">
     <em class="bi bi-info-circle-fill"></em>
   </button>
-  <div *ngIf="showMapLegend" class="map-legend-button map-legend d-flex flex-column p-2">
-    <div class="legend-row d-flex flex-row align-items-center" *ngFor="let row of legend">
-      <div class="image d-flex pe-2">
-        <img
-          [src]="row.icon.src"
-          height="10px"
-          width="10px"
-          [alt]="'SEPODI.MAP_LEGEND.' + row.id | translate"
-        />
+  <div *ngIf="showMapLegend" class="map-legend map-popup-menu">
+    <div class="popup-content">
+      <div class="legend-row d-flex flex-row align-items-center" *ngFor="let row of legend">
+        <div class="image d-flex pe-2">
+          <img
+            [src]="row.icon.src"
+            height="10px"
+            width="10px"
+            [alt]="'SEPODI.MAP_LEGEND.' + row.id | translate"
+          />
+        </div>
+        <div class="text d-flex">{{ 'SEPODI.MAP_LEGEND.' + row.id | translate }}</div>
       </div>
-      <div class="text d-flex">{{ 'SEPODI.MAP_LEGEND.' + row.id | translate }}</div>
     </div>
   </div>
 </div>

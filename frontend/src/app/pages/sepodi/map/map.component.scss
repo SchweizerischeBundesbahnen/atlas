@@ -12,12 +12,14 @@
   .map-style-selector {
     background: white;
     position: absolute;
-    top: 15px;
+    bottom: 25px;
     right: 15px;
   }
 
   .map-styles {
-    background-color: transparent;
+    position: absolute;
+    bottom: 30px;
+    right: 80px;
 
     button {
       border-radius: variables.$border-radius;
@@ -36,12 +38,50 @@
   .map-legend-button {
     background: white;
     position: absolute;
-    top: 70px;
+    bottom: 80px;
     right: 15px;
   }
 
   .map-legend {
-    -webkit-box-shadow: 0 0 5px 1px #000000;
-    box-shadow: 0 0 5px 1px #000000;
+    position: absolute;
+    bottom: 85px;
+    right: 80px;
+  }
+
+  $map-popup-shadow: 0 0 5px 1px variables.$gray-700;
+  .map-popup-menu {
+    -webkit-box-shadow: $map-popup-shadow;
+    box-shadow: $map-popup-shadow;
+
+    .popup-content {
+      background-color: white;
+      position: relative;
+      z-index: 999;
+
+      padding: 10px;
+    }
+
+    &:after {
+      content: '';
+      height: 100%;
+      width: 100%;
+      border-radius: 4px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      box-shadow: $map-popup-shadow;
+    }
+    &:before {
+      content: '';
+      width: 20px;
+      height: 20px;
+      transform: rotate(45deg);
+      box-shadow: $map-popup-shadow;
+      background: #fff;
+      position: absolute;
+      z-index: 998;
+      right: -10px;
+      bottom: 10px;
+    }
   }
 }
