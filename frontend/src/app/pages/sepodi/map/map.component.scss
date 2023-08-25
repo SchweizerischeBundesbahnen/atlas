@@ -52,11 +52,13 @@
   .map-popup-menu {
     -webkit-box-shadow: $map-popup-shadow;
     box-shadow: $map-popup-shadow;
+    border-radius: variables.$border-radius-small;
 
     .popup-content {
       background-color: white;
       position: relative;
       z-index: 999;
+      border-radius: variables.$border-radius-small;
 
       padding: 10px;
     }
@@ -65,11 +67,11 @@
       content: '';
       height: 100%;
       width: 100%;
-      border-radius: 4px;
       position: absolute;
       top: 0;
       left: 0;
       box-shadow: $map-popup-shadow;
+      border-radius: variables.$border-radius-small;
     }
     &:before {
       content: '';
