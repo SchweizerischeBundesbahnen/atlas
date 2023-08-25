@@ -10,7 +10,6 @@ import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
 import ch.sbb.atlas.service.UserService;
 import ch.sbb.atlas.user.administration.entity.UserPermission;
-import ch.sbb.atlas.user.administration.exception.LimitedPageSizeRequestException;
 import ch.sbb.atlas.user.administration.exception.RestrictionWithoutTypeException;
 import ch.sbb.atlas.user.administration.mapper.ClientCredentialMapper;
 import ch.sbb.atlas.user.administration.mapper.KafkaModelMapper;
@@ -45,10 +44,6 @@ public class UserAdministrationController implements UserAdministrationApiV1 {
   @Override
   public Container<UserModel> getUsers(Pageable pageable, Set<String> permissionRestrictions, PermissionRestrictionType type,
       Set<ApplicationType> applicationTypes) {
-    if (pageable.getPageSize() > GraphApiService.BATCH_REQUEST_LIMIT) {
-      throw new LimitedPageSizeRequestException(pageable.getPageSize(),
-          GraphApiService.BATCH_REQUEST_LIMIT);
-    }
     if (permissionRestrictions != null && !permissionRestrictions.isEmpty() && type == null) {
       throw new RestrictionWithoutTypeException();
     }
