@@ -7,8 +7,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeoData;
+import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointType;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,8 +22,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 class ServicePointGeolocationRepositoryTest {
 
-  public static final Envelope ENVELOPE_WITH_DATA = new Envelope(0D, 0.1D, 0D, 0.1D);
-  public static final Envelope ENVELOPE_WITHOUT_DATA = new Envelope(5D, 10D, 5D, 10D);
+  private static final Envelope ENVELOPE_WITH_DATA = new Envelope(0D, 0.1D, 0D, 0.1D);
+  private static final Envelope ENVELOPE_WITHOUT_DATA = new Envelope(5D, 10D, 5D, 10D);
+
   private final ServicePointGeolocationRepository repository;
   private final ServicePointVersionRepository servicePointVersionRepository;
 
@@ -35,17 +38,17 @@ class ServicePointGeolocationRepositoryTest {
 
   @BeforeEach
   void createTestData() {
-    final ServicePointVersion servicePointVersion = testServicePoint();
+    ServicePointVersion servicePointVersion = testServicePoint();
     servicePointVersion.setServicePointGeolocation(testGeolocationWgs84());
     servicePointVersionRepository.save(servicePointVersion);
 
-    final List<ServicePointVersion> all = servicePointVersionRepository.findAll();
+    List<ServicePointVersion> all = servicePointVersionRepository.findAll();
     assertThat(all).isNotEmpty();
   }
 
   @Test
-  void findAllByCoordinates() {
-    final List<ServicePointGeoData> servicePoints = repository
+  void shouldFindAllByCoordinates() {
+    List<ServicePointGeoData> servicePoints = repository
         .findAll(coordinatesBetween(SpatialReference.WGS84WEB, ENVELOPE_WITHOUT_DATA)
             .or(coordinatesBetween(SpatialReference.LV95, ENVELOPE_WITHOUT_DATA))
             .or(coordinatesBetween(SpatialReference.LV03, ENVELOPE_WITHOUT_DATA))
@@ -58,10 +61,51 @@ class ServicePointGeolocationRepositoryTest {
   }
 
   @Test
-  void findAllByCoordinatesNothingFound() {
-    final List<ServicePointGeoData> servicePoints = repository.findAll(
+  void shouldFindAllByCoordinatesNothingFound() {
+    List<ServicePointGeoData> servicePoints = repository.findAll(
         coordinatesBetween(SpatialReference.WGS84, ENVELOPE_WITHOUT_DATA));
 
     assertThat(servicePoints).isEmpty();
+  }
+
+  @Test
+  void shouldFindCorrectServicePointType() {
+    List<ServicePointGeoData> servicePoints = repository.findAll();
+
+    assertThat(servicePoints).isNotEmpty().hasSize(1);
+    assertThat(servicePoints.get(0).getServicePointType()).isEqualTo(ServicePointType.SERVICE_POINT);
+  }
+
+  @Test
+  void shouldFindCorrectServicePointTypeForWyleregg() {
+    servicePointVersionRepository.deleteAll();
+    servicePointVersionRepository.saveAndFlush(ServicePointTestData.getBernWyleregg());
+
+    List<ServicePointGeoData> servicePoints = repository.findAll();
+
+    assertThat(servicePoints).isNotEmpty().hasSize(1);
+    assertThat(servicePoints.get(0).getServicePointType()).isEqualTo(ServicePointType.STOP_POINT);
+  }
+
+  @Test
+  void shouldFindCorrectServicePointTypeForBern() {
+    servicePointVersionRepository.deleteAll();
+    servicePointVersionRepository.saveAndFlush(ServicePointTestData.getBern());
+
+    List<ServicePointGeoData> servicePoints = repository.findAll();
+
+    assertThat(servicePoints).isNotEmpty().hasSize(1);
+    assertThat(servicePoints.get(0).getServicePointType()).isEqualTo(ServicePointType.STOP_POINT_AND_FREIGHT_SERVICE_POINT);
+  }
+
+  @Test
+  void shouldFindCorrectServicePointTypeForBernOst() {
+    servicePointVersionRepository.deleteAll();
+    servicePointVersionRepository.saveAndFlush(ServicePointTestData.getBernOst());
+
+    List<ServicePointGeoData> servicePoints = repository.findAll();
+
+    assertThat(servicePoints).isNotEmpty().hasSize(1);
+    assertThat(servicePoints.get(0).getServicePointType()).isEqualTo(ServicePointType.OPERATING_POINT_TECHNICAL);
   }
 }
