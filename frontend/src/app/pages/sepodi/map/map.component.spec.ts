@@ -33,7 +33,7 @@ describe('MapComponent', () => {
   it('should open map style selection', () => {
     expect(component.showMapStyleSelection).toBeFalse();
 
-    component.openStyleSelection();
+    component.toggleStyleSelection();
     expect(component.showMapStyleSelection).toBeTrue();
   });
 
