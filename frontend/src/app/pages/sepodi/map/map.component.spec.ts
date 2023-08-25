@@ -47,4 +47,14 @@ describe('MapComponent', () => {
     expect(component.currentMapStyle).toEqual(newStyle);
     expect(component.showMapStyleSelection).toBeFalse();
   });
+
+  it('should toggle legend', () => {
+    expect(component.showMapLegend).toBeFalse();
+
+    component.toggleLegend();
+    expect(component.showMapLegend).toBeTrue();
+
+    component.toggleLegend();
+    expect(component.showMapLegend).toBeFalse();
+  });
 });
