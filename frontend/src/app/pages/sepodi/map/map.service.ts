@@ -141,15 +141,11 @@ export class MapService {
       return;
     }
     if (e.features.length == 1) {
-      this.selectFeature(e.features[0]);
+      this.selectedElement.next(e.features[0].properties);
     } else {
       this.popup.getElement().classList.add('fixed-popup');
       this.keepPopup = true;
     }
-  }
-
-  selectFeature(feature: GeoJSON.Feature) {
-    this.selectedElement.next(feature.properties);
   }
 
   private initStoredMapBehaviour() {
