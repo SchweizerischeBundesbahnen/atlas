@@ -34,18 +34,22 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.mapService.removeMap();
   }
 
-  openStyleSelection() {
-    this.showMapStyleSelection = true;
-    this.showMapLegend = false;
+  toggleStyleSelection() {
+    this.showMapStyleSelection = !this.showMapStyleSelection;
+    if (this.showMapStyleSelection) {
+      this.showMapLegend = false;
+    }
 
     this.map.once('click', () => {
       this.showMapStyleSelection = false;
     });
   }
 
-  openLegend() {
-    this.showMapLegend = true;
-    this.showMapStyleSelection = false;
+  toggleLegend() {
+    this.showMapLegend = !this.showMapLegend;
+    if (this.showMapLegend) {
+      this.showMapStyleSelection = false;
+    }
 
     this.map.once('click', () => {
       this.showMapLegend = false;
