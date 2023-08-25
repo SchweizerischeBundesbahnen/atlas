@@ -31,19 +31,18 @@ public class TrafficPointElementSearchRestrictions {
   private List<String> searchCriterias;
 
   public Specification<TrafficPointElementVersion> getSpecification() {
-
     return specificationBuilder().searchCriteriaSpecification(searchCriterias)
         .and(specificationBuilder().validOnSpecification(Optional.ofNullable(trafficPointElementRequestParams.getValidOn())))
         .and(specificationBuilder().inSpecification(trafficPointElementRequestParams.getSloids(),
             TrafficPointElementVersion.Fields.sloid))
         .and(specificationBuilder().inSpecification(trafficPointElementRequestParams.getParentsloids(),
             TrafficPointElementVersion.Fields.parentSloid))
-        .and(specificationBuilder().inSpecification(trafficPointElementRequestParams.getServicePointNumbers(),
+        .and(specificationBuilder().inSpecification(trafficPointElementRequestParams.getServicePointNumbersWithoutCheckDigit(),
             TrafficPointElementVersion.Fields.servicePointNumber))
         .and(new ServicePointNumberSboidSpecification<>(
             trafficPointElementRequestParams.getSboids(),
-            trafficPointElementRequestParams.getServicePointNumbersShort().stream().flatMap(str -> Arrays.stream(str.split(","))).map(Integer::valueOf).toList(),
-            trafficPointElementRequestParams.getUicCountryCodes().stream().flatMap(countryCode -> Arrays.stream(countryCode.split(","))).map(uicCountryCode -> Country.from(Integer.valueOf(uicCountryCode))).toList()
+            trafficPointElementRequestParams.getServicePointNumbersShort().stream().flatMap(str -> Arrays.stream(str.split(",")).map(String::trim)).map(Integer::valueOf).toList(),
+            trafficPointElementRequestParams.getUicCountryCodes().stream().flatMap(countryCode -> Arrays.stream(countryCode.split(",")).map(String::trim)).map(uicCountryCode -> Country.from(Integer.valueOf(uicCountryCode))).toList()
         ))
         .and(new ValidOrEditionTimerangeSpecification<>(
             trafficPointElementRequestParams.getFromDate(),
