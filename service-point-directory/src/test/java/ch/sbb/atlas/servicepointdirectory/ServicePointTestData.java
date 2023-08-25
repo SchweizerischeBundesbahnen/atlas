@@ -10,6 +10,7 @@ import ch.sbb.atlas.servicepoint.enumeration.*;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointGeolocationMapper;
+import ch.sbb.atlas.servicepointdirectory.model.ServicePointStatus;
 import lombok.experimental.UtilityClass;
 
 import java.time.LocalDate;
@@ -52,6 +53,105 @@ public class ServicePointTestData {
 
     geolocation.setServicePointVersion(servicePoint);
     return servicePoint;
+  }
+
+  public static ServicePointVersion getBern() {
+    ServicePointGeolocation geolocation = ServicePointGeolocation
+        .builder()
+        .spatialReference(SpatialReference.LV95)
+        .east(2600037.945)
+        .north(1199749.812)
+        .height(540.2)
+        .country(Country.SWITZERLAND)
+        .swissMunicipalityNumber(351)
+        .swissCanton(SwissCanton.BERN)
+        .swissDistrictName("Bern-Mittelland")
+        .swissDistrictNumber(246)
+        .swissMunicipalityName("Bern")
+        .swissLocalityName("Bern")
+        .creationDate(LocalDateTime.of(LocalDate.of(2021, 3, 22), LocalTime.of(9, 26, 29)))
+        .creator("fs45117")
+        .editionDate(LocalDateTime.of(LocalDate.of(2022, 2, 23), LocalTime.of(17, 10, 10)))
+        .editor("fs45117")
+        .build();;
+
+    ServicePointVersion servicePoint = ServicePointVersion
+        .builder()
+        .servicePointGeolocation(geolocation)
+        .number(ServicePointNumber.of(85070003))
+        .sloid("ch:1:sloid:7000")
+        .numberShort(7000)
+        .country(Country.SWITZERLAND)
+        .designationLong(null)
+        .designationOfficial("Bern")
+        .abbreviation("BN")
+        .businessOrganisation("ch:1:sboid:100001")
+        .status(Status.VALIDATED)
+        .validFrom(LocalDate.of(2021, 4, 1))
+        .validTo(LocalDate.of(2099, 12, 31))
+        .categories(new HashSet<>())
+        .meansOfTransport(Set.of(MeanOfTransport.TRAIN))
+        .operatingPoint(true)
+        .operatingPointWithTimetable(true)
+        .freightServicePoint(true)
+        .creationDate(LocalDateTime.of(LocalDate.of(2021, 3, 22), LocalTime.of(9, 26, 29)))
+        .creator("fs45117")
+        .editionDate(LocalDateTime.of(LocalDate.of(2022, 2, 23), LocalTime.of(17, 10, 10)))
+        .editor("fs45117")
+        .build();
+
+    geolocation.setServicePointVersion(servicePoint);
+    return servicePoint;
+  }
+
+  public static ServicePointVersion getBernOst(){
+    ServicePointGeolocation geolocation = ServicePointGeolocation
+        .builder()
+        .spatialReference(SpatialReference.LV95)
+        .east(2600212D)
+        .north(1200214D)
+        .height(533D)
+        .country(Country.SWITZERLAND)
+        .swissMunicipalityNumber(351)
+        .swissCanton(SwissCanton.BERN)
+        .swissDistrictName("Bern-Mittelland")
+        .swissDistrictNumber(246)
+        .swissMunicipalityName("Bern")
+        .swissLocalityName("Bern")
+        .creationDate(LocalDateTime.of(LocalDate.of(2018, 1, 31), LocalTime.of(13, 2, 54)))
+        .creator("u150522")
+        .editionDate(LocalDateTime.of(LocalDate.of(2022, 2, 24), LocalTime.of(21, 48, 25)))
+        .editor("fs45117")
+        .build();
+
+    ServicePointVersion bernOst = ServicePointVersion
+        .builder()
+        .servicePointGeolocation(geolocation)
+        .number(ServicePointNumber.of(85009258))
+        .sloid("ch:1:sloid:925")
+        .numberShort(925)
+        .country(Country.SWITZERLAND)
+        .designationLong(null)
+        .designationOfficial("Bern Ost (Spw)")
+        .abbreviation("BNO")
+        .statusDidok3(ServicePointStatus.IN_OPERATION)
+        .businessOrganisation("ch:1:sboid:100001")
+        .status(Status.VALIDATED)
+        .validFrom(LocalDate.of(2018, 1, 31))
+        .validTo(LocalDate.of(2099, 12, 31))
+        .categories(new HashSet<>())
+        .meansOfTransport(Collections.emptySet())
+        .operatingPoint(true)
+        .operatingPointWithTimetable(true)
+        .operatingPointTechnicalTimetableType(OperatingPointTechnicalTimetableType.LANE_CHANGE)
+        .creationDate(LocalDateTime.of(LocalDate.of(2018, 1, 31), LocalTime.of(13, 2, 54)))
+        .creator("u150522")
+        .editionDate(LocalDateTime.of(LocalDate.of(2022, 2, 24), LocalTime.of(21, 48, 25)))
+        .editor("fs45117")
+        .build();
+
+    geolocation.setServicePointVersion(bernOst);
+    return bernOst;
   }
 
   public static ServicePointVersion getVersionWithCategoriesAndMeansOfTransport(int servicePointId) {
