@@ -36,6 +36,7 @@ public class ServicePointGeoData extends GeolocationBaseEntity {
       sp.valid_to,
       sp.sloid,
       sp.number/10 as number,
+      sp.designation_official,
       case
           when sp.operating_point_technical_timetable_type is not null then 'OPERATING_POINT_TECHNICAL'
           when spvmot.means_of_transport is not null then
@@ -61,6 +62,7 @@ public class ServicePointGeoData extends GeolocationBaseEntity {
   private SwissCanton swissCanton;
   private Integer swissDistrictNumber;
   private String swissDistrictName;
+  private String designationOfficial;
   private Integer swissMunicipalityNumber;
   private String swissMunicipalityName;
   private String swissLocalityName;

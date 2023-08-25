@@ -132,6 +132,9 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   private displayAndSelectServicePointOnMap() {
     this.mapSubscription = this.mapService.mapInitialized.subscribe((initialized) => {
       if (initialized) {
+        if (this.mapService.map.getZoom() <= 14) {
+          this.mapService.map.setZoom(14);
+        }
         this.mapService
           .centerOn(this.selectedVersion.servicePointGeolocation?.wgs84)
           .then(() => this.mapService.selectServicePoint(this.selectedVersion.number.number));

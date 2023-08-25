@@ -28,6 +28,7 @@ public class ServicePointGeoDataMapper {
     properties.put("id", geolocation.getId());
     properties.put("number", geolocation.getNumber());
     properties.put("type", geolocation.getServicePointType());
+    properties.put("designationOfficial", geolocation.getDesignationOfficial());
 
     return properties;
   }
