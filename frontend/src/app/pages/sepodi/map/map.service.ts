@@ -32,7 +32,7 @@ export class MapService {
     closeOnClick: false,
     closeOnMove: false,
   });
-  private keepPopup = false;
+  private _keepPopup = false;
 
   constructor(private mapOptionsService: MapOptionsService) {}
 
@@ -141,9 +141,9 @@ export class MapService {
       return;
     }
     if (e.features.length == 1) {
+      this.popup.remove();
       this.selectedElement.next(e.features[0].properties);
     } else {
-      this.popup.getElement().classList.add('fixed-popup');
       this.keepPopup = true;
     }
   }
@@ -165,27 +165,43 @@ export class MapService {
     });
   }
 
-  private showPopup(event: MapMouseEvent & { features?: MapGeoJSONFeature[] }) {
+  showPopup(event: MapMouseEvent & { features?: MapGeoJSONFeature[] }) {
     if (!event.features || this.keepPopup) {
       return;
     }
     const coordinates = (event.features[0].geometry as Point).coordinates.slice() as LngLatLike;
-
-    const pointDescriptions = new Set<string>();
-    event.features.forEach((point) => {
-      pointDescriptions.add(
-        `<a href="service-point-directory/service-points/${point.properties.number}" "><b>${point.properties.number}</b> - ${point.properties.designationOfficial}</a> <br/>`
-      );
-    });
-    let popupText = '';
-    pointDescriptions.forEach((line) => (popupText += line));
-    this.popup.setLngLat(coordinates).setHTML(popupText).addTo(this.map);
+    this.popup
+      .setLngLat(coordinates)
+      .setHTML(this.buildServicePointPopupInformation(event.features))
+      .addTo(this.map);
     this.popup.on('close', () => {
       this.keepPopup = false;
     });
     this.popup.on('click', () => {
       this.keepPopup = true;
-      this.popup.getElement().classList.add('fixed-popup');
     });
+  }
+
+  buildServicePointPopupInformation(features: MapGeoJSONFeature[]) {
+    let popupHtml = '';
+
+    features.forEach((point) => {
+      let formattedNumber = String(point.properties.number);
+      formattedNumber = formattedNumber.slice(0, 2) + ' ' + formattedNumber.slice(2);
+      popupHtml += `<a href="service-point-directory/service-points/${point.properties.number}" "><b>${formattedNumber}</b> - ${point.properties.designationOfficial}</a> <br/>`;
+    });
+
+    return popupHtml;
+  }
+
+  get keepPopup() {
+    return this._keepPopup;
+  }
+
+  set keepPopup(value: boolean) {
+    this._keepPopup = value;
+    if (this._keepPopup) {
+      this.popup.getElement().classList.add('fixed-popup');
+    }
   }
 }
