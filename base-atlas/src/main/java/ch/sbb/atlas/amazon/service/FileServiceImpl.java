@@ -101,8 +101,8 @@ public class FileServiceImpl implements FileService {
 
   @Override
   public StreamingResponseBody streamingJsonFile(ExportTypeBase exportType, ExportFileName exportFileName,
-                                                 AmazonService amazonService, String fileName, String baseFileName) {
-    String fileToDownload = getJsonFileToDownload(exportType,exportFileName, fileName, baseFileName);
+                                                 AmazonService amazonService, String fileName) {
+    String fileToDownload = getJsonFileToDownload(exportType,exportFileName, fileName);
     try {
       File file = amazonService.pullFile(AmazonBucket.EXPORT, fileToDownload);
       byte[] bytes = decompressGzipToBytes(file.toPath());
@@ -115,8 +115,8 @@ public class FileServiceImpl implements FileService {
 
   @Override
   public StreamingResponseBody streamingGzipFile(ExportTypeBase exportType, ExportFileName exportFileName,
-                                                 AmazonService amazonService, String fileName, String baseFileName) {
-    String fileToDownload = getJsonFileToDownload(exportType, exportFileName, fileName, baseFileName);
+                                                 AmazonService amazonService, String fileName) {
+    String fileToDownload = getJsonFileToDownload(exportType, exportFileName, fileName);
     try {
       File file = amazonService.pullFile(AmazonBucket.EXPORT, fileToDownload);
       InputStream inputStream = new FileInputStream(file);
@@ -151,21 +151,17 @@ public class FileServiceImpl implements FileService {
     return output.toByteArray();
   }
 
-  private String getJsonFileToDownload(ExportTypeBase exportType, ExportFileName exportFileName, String fileName, String baseFileName) {
+  private String getJsonFileToDownload(ExportTypeBase exportType, ExportFileName exportFileName, String fileName) {
+    String fileNameSuffix = "/" + fileName + ".json.gz";
     if (exportFileName.toString().equals("BUSINESS_ORGANISATION_VERSION")) {
       return exportFileName.getBaseDir()
-              + "/"
-              + fileName
-              + ".json.gz";
-    } else if (exportFileName.toString().equals("SERVICE_POINT_VERSION") || exportFileName.toString().equals("TRAFFIC_POINT_ELEMENT_VERSION")) {
+              + fileNameSuffix;
+    } else {
       return exportFileName.getBaseDir()
               + "/"
               + exportType.getDir()
-              + "/"
-              + baseFileName
-              + ".json.gz";
+              + fileNameSuffix;
     }
-    else { return null; }
   }
 
 }

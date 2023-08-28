@@ -23,11 +23,11 @@ public class BusinessOrganisationAmazonService {
     private final FileService fileService;
 
     public StreamingResponseBody streamJsonFile(ExportType exportType) {
-        return fileService.streamingJsonFile(exportType, exportFileName, amazonService, getFileName(exportType), null);
+        return fileService.streamingJsonFile(exportType, exportFileName, amazonService, getFileName(exportType));
     }
 
     public StreamingResponseBody streamGzipFile(ExportType exportType) {
-        return fileService.streamingGzipFile(exportType, exportFileName, amazonService, getFileName(exportType), null);
+        return fileService.streamingGzipFile(exportType, exportFileName, amazonService, getFileName(exportType));
     }
 
     public String getFileName(ExportType exportType) {
