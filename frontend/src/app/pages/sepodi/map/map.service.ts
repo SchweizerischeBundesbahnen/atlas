@@ -27,7 +27,7 @@ export class MapService {
   selectedElement = new Subject<GeoJsonProperties>();
   currentMapStyle = MAP_STYLES[0];
 
-  private popup = new Popup({
+  popup = new Popup({
     closeButton: true,
     closeOnClick: false,
     closeOnMove: false,
@@ -136,7 +136,7 @@ export class MapService {
     return this.map.getZoom() >= MAP_ZOOM_DETAILS;
   }
 
-  private onClick(e: MapMouseEvent & { features?: GeoJSON.Feature[] }) {
+  onClick(e: MapMouseEvent & { features?: GeoJSON.Feature[] }) {
     if (!this.showDetails() || !e.features) {
       return;
     }
@@ -201,7 +201,11 @@ export class MapService {
   set keepPopup(value: boolean) {
     this._keepPopup = value;
     if (this._keepPopup) {
-      this.popup.getElement().classList.add('fixed-popup');
+      this.setPopupToFixed();
     }
+  }
+
+  setPopupToFixed() {
+    this.popup.getElement().classList.add('fixed-popup');
   }
 }
