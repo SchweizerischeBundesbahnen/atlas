@@ -1,6 +1,6 @@
 package ch.sbb.exportservice.writer;
 
-import ch.sbb.atlas.export.enumeration.SpExportFileName;
+import ch.sbb.atlas.export.enumeration.ServicePointExportFileName;
 import ch.sbb.exportservice.model.ExportExtensionFileType;
 import ch.sbb.exportservice.model.ExportType;
 import ch.sbb.exportservice.service.FileExportService;
@@ -23,7 +23,7 @@ public abstract class BaseCsvWriter<T> {
   @Autowired
   private FileExportService fileExportService;
 
-  public FlatFileItemWriter<T> csvWriter(ExportType exportType, SpExportFileName exportFileName) {
+  public FlatFileItemWriter<T> csvWriter(ExportType exportType, ServicePointExportFileName exportFileName) {
     WritableResource outputResource = new FileSystemResource(
         fileExportService.createFileNamePath(ExportExtensionFileType.CSV_EXTENSION,
             exportType,exportFileName));

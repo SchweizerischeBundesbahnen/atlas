@@ -1,7 +1,7 @@
 package ch.sbb.exportservice.exception;
 
 import ch.sbb.atlas.api.model.ErrorResponse;
-import ch.sbb.atlas.export.enumeration.SpExportFileName;
+import ch.sbb.atlas.export.enumeration.ServicePointExportFileName;
 import ch.sbb.atlas.model.exception.AtlasException;
 import ch.sbb.exportservice.model.ExportType;
 import lombok.Getter;
@@ -11,10 +11,10 @@ import org.springframework.http.HttpStatus;
 public class NotAllowedExportFileException extends AtlasException {
 
 
-    private final SpExportFileName exportFileName;
+    private final ServicePointExportFileName exportFileName;
     private final ExportType exportType;
 
-    public NotAllowedExportFileException(SpExportFileName exportFileName, ExportType exportType) {
+    public NotAllowedExportFileException(ServicePointExportFileName exportFileName, ExportType exportType) {
         this.exportFileName = exportFileName;
         this.exportType = exportType;
     }
