@@ -22,7 +22,7 @@ public abstract class FileUploadTasklet implements Tasklet {
   private ExportType exportType;
   private SpExportFileName exportFileName;
 
-  public FileUploadTasklet(ExportType exportType, SpExportFileName exportFileName) {
+  protected FileUploadTasklet(ExportType exportType, SpExportFileName exportFileName) {
     this.exportType = exportType;
     this.exportFileName = exportFileName;
   }
