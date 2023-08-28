@@ -21,7 +21,7 @@ public abstract class FileDeletingTasklet implements Tasklet {
   private ExportType exportType;
   private SpExportFileName exportFileName;
 
-  public FileDeletingTasklet(ExportType exportType, SpExportFileName exportFileName) {
+  protected FileDeletingTasklet(ExportType exportType, SpExportFileName exportFileName) {
     this.exportType = exportType;
     this.exportFileName = exportFileName;
   }

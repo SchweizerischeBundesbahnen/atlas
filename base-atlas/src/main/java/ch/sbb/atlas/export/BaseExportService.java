@@ -24,8 +24,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-@RequiredArgsConstructor
 @Slf4j
+@RequiredArgsConstructor
 public abstract class BaseExportService<T extends BaseVersion> {
 
   private final FileService fileService;
