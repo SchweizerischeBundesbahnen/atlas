@@ -26,11 +26,11 @@ public class FileExportService {
   private final FileService fileService;
 
   public StreamingResponseBody streamJsonFile(ExportType exportType, ServicePointExportFileName exportFileName) {
-    return fileService.streamingJsonFile(exportType, exportFileName, amazonService, null, getBaseFileName(exportType, exportFileName));
+    return fileService.streamingJsonFile(exportType, exportFileName, amazonService, getBaseFileName(exportType, exportFileName));
   }
 
   public StreamingResponseBody streamGzipFile(ExportType exportType, ServicePointExportFileName exportFileName) {
-    return fileService.streamingGzipFile(exportType, exportFileName, amazonService, null, getBaseFileName(exportType, exportFileName));
+    return fileService.streamingGzipFile(exportType, exportFileName, amazonService, getBaseFileName(exportType, exportFileName));
   }
 
   public void exportFile(File file, ExportType exportType, ServicePointExportFileName exportFileName, ExportExtensionFileType exportExtensionFileType) {
