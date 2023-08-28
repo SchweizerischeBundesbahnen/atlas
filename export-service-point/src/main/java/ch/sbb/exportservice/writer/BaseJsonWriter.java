@@ -1,6 +1,6 @@
 package ch.sbb.exportservice.writer;
 
-import ch.sbb.atlas.export.enumeration.SpExportFileName;
+import ch.sbb.atlas.export.enumeration.ServicePointExportFileName;
 import ch.sbb.exportservice.model.ExportExtensionFileType;
 import ch.sbb.exportservice.model.ExportType;
 import ch.sbb.exportservice.service.FileExportService;
@@ -21,7 +21,7 @@ public abstract class BaseJsonWriter<T> {
   @Autowired
   private FileExportService fileExportService;
 
-  public JsonFileItemWriter<T> getWriter(ExportType exportType, SpExportFileName exportFileName) {
+  public JsonFileItemWriter<T> getWriter(ExportType exportType, ServicePointExportFileName exportFileName) {
     JacksonJsonObjectMarshaller<T> jacksonJsonObjectMarshaller = new JacksonJsonObjectMarshaller<>();
     ObjectMapper objectMapper = new ObjectMapper();
     objectMapper.registerModule(new JavaTimeModule());

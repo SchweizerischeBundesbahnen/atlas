@@ -7,9 +7,10 @@ import lombok.RequiredArgsConstructor;
 @Schema(enumAsRef = true)
 @Getter
 @RequiredArgsConstructor
-public enum BoExportFileName implements ExportFileName {
+public enum ServicePointExportFileName implements ExportFileName {
 
-        BUSINESS_ORGANISATION_VERSION("business_organisation","business_organisation_versions");
+        SERVICE_POINT_VERSION("service_point","service_point"),
+        TRAFFIC_POINT_ELEMENT_VERSION("traffic_point","traffic_point");
 
         private final String baseDir;
         private final String fileName;
