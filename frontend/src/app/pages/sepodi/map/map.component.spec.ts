@@ -33,7 +33,7 @@ describe('MapComponent', () => {
   it('should open map style selection', () => {
     expect(component.showMapStyleSelection).toBeFalse();
 
-    component.openStyleSelection();
+    component.toggleStyleSelection();
     expect(component.showMapStyleSelection).toBeTrue();
   });
 
@@ -46,5 +46,15 @@ describe('MapComponent', () => {
     expect(mapService.switchToStyle).toHaveBeenCalled();
     expect(component.currentMapStyle).toEqual(newStyle);
     expect(component.showMapStyleSelection).toBeFalse();
+  });
+
+  it('should toggle legend', () => {
+    expect(component.showMapLegend).toBeFalse();
+
+    component.toggleLegend();
+    expect(component.showMapLegend).toBeTrue();
+
+    component.toggleLegend();
+    expect(component.showMapLegend).toBeFalse();
   });
 });
