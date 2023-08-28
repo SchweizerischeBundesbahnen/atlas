@@ -1,9 +1,9 @@
 package ch.sbb.atlas.amazon.service;
 
 import ch.sbb.atlas.amazon.exception.FileException;
-import ch.sbb.atlas.export.enumeration.BoExportFileName;
+import ch.sbb.atlas.export.enumeration.BusinessOrganisationExportFileName;
 import ch.sbb.atlas.export.enumeration.ExportType;
-import ch.sbb.atlas.export.enumeration.SpExportFileName;
+import ch.sbb.atlas.export.enumeration.ServicePointExportFileName;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -93,7 +93,7 @@ public class FileServiceImplTest {
     when(amazonService.pullFile(any(), any())).thenReturn(file);
     fileService.setActiveProfile("local");
 
-    StreamingResponseBody result = fileService.streamingJsonFile(ExportType.FULL, SpExportFileName.SERVICE_POINT_VERSION, amazonService, "fileName", "baseFileName");
+    StreamingResponseBody result = fileService.streamingJsonFile(ExportType.FULL, ServicePointExportFileName.SERVICE_POINT_VERSION, amazonService, "fileName", "baseFileName");
     assertThat(result).isNotNull();
   }
 
@@ -105,7 +105,7 @@ public class FileServiceImplTest {
     when(amazonService.pullFile(any(), any())).thenReturn(file);
     fileService.setActiveProfile("local");
 
-    assertThrows(FileException.class, () -> fileService.streamingJsonFile(ExportType.FULL, SpExportFileName.TRAFFIC_POINT_ELEMENT_VERSION, amazonService, "fileName", "baseFileName"));
+    assertThrows(FileException.class, () -> fileService.streamingJsonFile(ExportType.FULL, ServicePointExportFileName.TRAFFIC_POINT_ELEMENT_VERSION, amazonService, "fileName", "baseFileName"));
   }
 
   @Test
@@ -116,7 +116,7 @@ public class FileServiceImplTest {
     when(amazonService.pullFile(any(), any())).thenReturn(file);
     fileService.setActiveProfile("local");
 
-    StreamingResponseBody result = fileService.streamingGzipFile(ExportType.FULL, BoExportFileName.BUSINESS_ORGANISATION_VERSION, amazonService, "fileName", "baseFileName");
+    StreamingResponseBody result = fileService.streamingGzipFile(ExportType.FULL, BusinessOrganisationExportFileName.BUSINESS_ORGANISATION_VERSION, amazonService, "fileName", "baseFileName");
     assertThat(result).isNotNull();
   }
 
@@ -128,7 +128,7 @@ public class FileServiceImplTest {
     when(amazonService.pullFile(any(), any())).thenReturn(file);
     fileService.setActiveProfile("local");
 
-    StreamingResponseBody result = fileService.streamingGzipFile(ExportType.FULL, SpExportFileName.SERVICE_POINT_VERSION, amazonService, "fileName", "baseFileName");
+    StreamingResponseBody result = fileService.streamingGzipFile(ExportType.FULL, ServicePointExportFileName.SERVICE_POINT_VERSION, amazonService, "fileName", "baseFileName");
     assertThat(result).isNotNull();
   }
 
