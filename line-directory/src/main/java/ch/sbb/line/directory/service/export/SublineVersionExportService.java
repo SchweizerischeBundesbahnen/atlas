@@ -73,7 +73,7 @@ public class SublineVersionExportService extends BaseExportService<SublineVersio
 
     @Override
     protected File getFutureTimetableVersionsJson() {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -90,7 +90,7 @@ public class SublineVersionExportService extends BaseExportService<SublineVersio
 
     @Override
     protected List<BaseVersionModel> convertToJsonModel(List<SublineVersion> versions) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
 }
