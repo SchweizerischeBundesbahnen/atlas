@@ -174,4 +174,5 @@ public class ServicePointCsvModel extends BaseDidokCsvModel {
   @JsonProperty("IS_GRENZPUNKT")
   @JsonDeserialize(using = NumericBooleanDeserializer.class)
   private Boolean isGrenzpunkt;
+
 }
