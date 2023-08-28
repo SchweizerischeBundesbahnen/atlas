@@ -1,7 +1,8 @@
 package ch.sbb.exportservice.controller;
 
+import ch.sbb.atlas.api.controller.HttpHeader;
 import ch.sbb.atlas.api.model.ErrorResponse;
-import ch.sbb.atlas.export.enumeration.SpExportFileName;
+import ch.sbb.atlas.export.enumeration.ServicePointExportFileName;
 import ch.sbb.exportservice.exception.NotAllowedExportFileException;
 import ch.sbb.exportservice.model.ExportType;
 import ch.sbb.exportservice.service.ExportServicePointJobService;
@@ -46,7 +47,7 @@ public class ExportServicePointBatchControllerApiV1 {
       @ApiResponse(responseCode = "404", description = "Object with filename myFile not found", content = @Content(schema =
       @Schema(implementation = ErrorResponse.class)))
   })
-  public ResponseEntity<StreamingResponseBody> streamJsonFile(@PathVariable("exportFileName") SpExportFileName exportFileName,
+  public ResponseEntity<StreamingResponseBody> streamJsonFile(@PathVariable("exportFileName") ServicePointExportFileName exportFileName,
                                                               @PathVariable("exportType") ExportType exportType) {
     checkInputPath(exportFileName,exportType);
     StreamingResponseBody body = fileExportService.streamJsonFile(exportType,exportFileName);
@@ -59,15 +60,11 @@ public class ExportServicePointBatchControllerApiV1 {
       @ApiResponse(responseCode = "404", description = "filename myFile not found", content = @Content(schema =
       @Schema(implementation = ErrorResponse.class)))
   })
-  public ResponseEntity<StreamingResponseBody> streamGzipFile(@PathVariable("exportFileName") SpExportFileName exportFileName,
+  public ResponseEntity<StreamingResponseBody> streamGzipFile(@PathVariable("exportFileName") ServicePointExportFileName exportFileName,
                                                               @PathVariable("exportType") ExportType exportType) throws NotAllowedExportFileException {
     checkInputPath(exportFileName,exportType);
     String fileName = fileExportService.getBaseFileName(exportType, exportFileName);
-    HttpHeaders headers = new HttpHeaders();
-    headers.add("Content-Type", "application/gzip");
-    headers.add("Content-Disposition", "attachment;filename=" + fileName + ".json.gz");
-    headers.add("Pragma", "no-cache");
-    headers.add("Cache-Control", "no-cache");
+    HttpHeaders headers = HttpHeader.getHeaders(fileName);
     StreamingResponseBody body = fileExportService.streamGzipFile(exportType, exportFileName);
     return ResponseEntity.ok().headers(headers).body(body);
   }
@@ -92,8 +89,8 @@ public class ExportServicePointBatchControllerApiV1 {
     exportTrafficPointElementJobService.startExportJobs();
   }
 
-  protected void checkInputPath(SpExportFileName exportFileName, ExportType exportType) throws NotAllowedExportFileException {
-    if(SpExportFileName.TRAFFIC_POINT_ELEMENT_VERSION.equals(exportFileName)){
+  protected void checkInputPath(ServicePointExportFileName exportFileName, ExportType exportType) throws NotAllowedExportFileException {
+    if(ServicePointExportFileName.TRAFFIC_POINT_ELEMENT_VERSION.equals(exportFileName)){
       if(!ExportType.getWorldOnly().contains(exportType)){
         throw new NotAllowedExportFileException(exportFileName,exportType);
       }

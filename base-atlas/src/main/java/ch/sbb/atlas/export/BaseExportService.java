@@ -143,21 +143,29 @@ public abstract class BaseExportService<T extends BaseVersion> {
 
   protected abstract List<VersionCsvModel> convertToCsvModel(List<T> versions);
 
-  protected abstract List<BaseVersionModel> convertToJsonModel(List<T> versions);
+  protected List<BaseVersionModel> convertToJsonModel(List<T> versions){
+    throw new UnsupportedOperationException();
+  }
 
   protected abstract String getDirectory();
 
   protected abstract File getFullVersionsCsv();
 
-  protected abstract File getFullVersionsJson();
+  protected File getFullVersionsJson() {
+    throw new UnsupportedOperationException();
+  }
 
   protected abstract File getActualVersionsCsv();
 
-  protected abstract File getActualVersionsJson();
+  protected File getActualVersionsJson() {
+    throw new UnsupportedOperationException();
+  }
 
   protected abstract File getFutureTimetableVersionsCsv();
 
-  protected abstract File getFutureTimetableVersionsJson();
+  protected File getFutureTimetableVersionsJson() {
+    throw new UnsupportedOperationException();
+  }
 
   protected abstract String getFileName();
 
