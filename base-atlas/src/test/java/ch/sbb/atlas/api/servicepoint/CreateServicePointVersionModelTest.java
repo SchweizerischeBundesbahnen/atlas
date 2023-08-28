@@ -46,7 +46,7 @@ class CreateServicePointVersionModelTest {
         .build();
 
     Set<ConstraintViolation<CreateServicePointVersionModel>> constraintViolations = validator.validate(servicePointVersionModel);
-    assertThat(constraintViolations).hasSize(2);
+    assertThat(constraintViolations).hasSize(1);
   }
 
   @Test
