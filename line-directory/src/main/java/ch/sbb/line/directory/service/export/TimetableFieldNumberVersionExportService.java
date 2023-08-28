@@ -75,7 +75,7 @@ public class TimetableFieldNumberVersionExportService extends
 
     @Override
     protected File getFutureTimetableVersionsJson() {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -93,7 +93,7 @@ public class TimetableFieldNumberVersionExportService extends
 
     @Override
     protected List<BaseVersionModel> convertToJsonModel(List<TimetableFieldNumberVersion> versions) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
 }
