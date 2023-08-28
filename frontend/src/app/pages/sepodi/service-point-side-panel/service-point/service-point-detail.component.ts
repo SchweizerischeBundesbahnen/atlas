@@ -50,6 +50,8 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   stopPointTypes = Object.values(StopPointType);
   categories = Object.values(Category);
 
+  private readonly ZOOM_LEVEL_FOR_DETAIL = 14;
+
   private mapSubscription!: Subscription;
   private servicePointSubscription?: Subscription;
   private ngUnsubscribe = new Subject<void>();
@@ -132,6 +134,9 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   private displayAndSelectServicePointOnMap() {
     this.mapSubscription = this.mapService.mapInitialized.subscribe((initialized) => {
       if (initialized) {
+        if (this.mapService.map.getZoom() <= this.ZOOM_LEVEL_FOR_DETAIL) {
+          this.mapService.map.setZoom(this.ZOOM_LEVEL_FOR_DETAIL);
+        }
         this.mapService
           .centerOn(this.selectedVersion.servicePointGeolocation?.wgs84)
           .then(() => this.mapService.selectServicePoint(this.selectedVersion.number.number));
