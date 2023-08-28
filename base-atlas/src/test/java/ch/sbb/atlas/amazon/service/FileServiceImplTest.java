@@ -86,14 +86,26 @@ public class FileServiceImplTest {
   }
 
   @Test
-  void shouldStreamJsonFile() throws IOException {
+  void shouldStreamServicePointVersionJsonFile() throws IOException {
     String fileName = "full_business_organisation_versions_2023-08-16.json.gz";
     ClassLoader classLoader = getClass().getClassLoader();
     File file = new File(classLoader.getResource(fileName).getFile());
     when(amazonService.pullFile(any(), any())).thenReturn(file);
     fileService.setActiveProfile("local");
 
-    StreamingResponseBody result = fileService.streamingJsonFile(ExportType.FULL, ServicePointExportFileName.SERVICE_POINT_VERSION, amazonService, "fileName", "baseFileName");
+    StreamingResponseBody result = fileService.streamingJsonFile(ExportType.FULL, ServicePointExportFileName.SERVICE_POINT_VERSION, amazonService, "fileName");
+    assertThat(result).isNotNull();
+  }
+
+  @Test
+  void shouldStreamBusinessOrganisationJsonFile() throws IOException {
+    String fileName = "full_business_organisation_versions_2023-08-16.json.gz";
+    ClassLoader classLoader = getClass().getClassLoader();
+    File file = new File(classLoader.getResource(fileName).getFile());
+    when(amazonService.pullFile(any(), any())).thenReturn(file);
+    fileService.setActiveProfile("local");
+
+    StreamingResponseBody result = fileService.streamingJsonFile(ExportType.FULL, BusinessOrganisationExportFileName.BUSINESS_ORGANISATION_VERSION, amazonService, "fileName");
     assertThat(result).isNotNull();
   }
 
@@ -105,7 +117,7 @@ public class FileServiceImplTest {
     when(amazonService.pullFile(any(), any())).thenReturn(file);
     fileService.setActiveProfile("local");
 
-    assertThrows(FileException.class, () -> fileService.streamingJsonFile(ExportType.FULL, ServicePointExportFileName.TRAFFIC_POINT_ELEMENT_VERSION, amazonService, "fileName", "baseFileName"));
+    assertThrows(FileException.class, () -> fileService.streamingJsonFile(ExportType.FULL, ServicePointExportFileName.TRAFFIC_POINT_ELEMENT_VERSION, amazonService, "fileName"));
   }
 
   @Test
@@ -116,7 +128,7 @@ public class FileServiceImplTest {
     when(amazonService.pullFile(any(), any())).thenReturn(file);
     fileService.setActiveProfile("local");
 
-    StreamingResponseBody result = fileService.streamingGzipFile(ExportType.FULL, BusinessOrganisationExportFileName.BUSINESS_ORGANISATION_VERSION, amazonService, "fileName", "baseFileName");
+    StreamingResponseBody result = fileService.streamingGzipFile(ExportType.FULL, BusinessOrganisationExportFileName.BUSINESS_ORGANISATION_VERSION, amazonService, "fileName");
     assertThat(result).isNotNull();
   }
 
@@ -128,7 +140,7 @@ public class FileServiceImplTest {
     when(amazonService.pullFile(any(), any())).thenReturn(file);
     fileService.setActiveProfile("local");
 
-    StreamingResponseBody result = fileService.streamingGzipFile(ExportType.FULL, ServicePointExportFileName.SERVICE_POINT_VERSION, amazonService, "fileName", "baseFileName");
+    StreamingResponseBody result = fileService.streamingGzipFile(ExportType.FULL, ServicePointExportFileName.SERVICE_POINT_VERSION, amazonService, "fileName");
     assertThat(result).isNotNull();
   }
 
