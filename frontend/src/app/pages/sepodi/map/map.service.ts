@@ -1,10 +1,19 @@
 import { Injectable } from '@angular/core';
-import { LngLat, Map, MapMouseEvent, ResourceType } from 'maplibre-gl';
+import {
+  LngLat,
+  LngLatLike,
+  Map,
+  MapGeoJSONFeature,
+  MapMouseEvent,
+  Popup,
+  ResourceType,
+} from 'maplibre-gl';
 import { MAP_LAYER_NAME, MAP_SOURCE_NAME, MAP_STYLE_SPEC, MAP_ZOOM_DETAILS } from './map-style';
-import { GeoJsonProperties } from 'geojson';
+import { GeoJsonProperties, Point } from 'geojson';
 import { MAP_STYLES, MapOptionsService, MapStyle } from './map-options.service';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { CoordinatePair } from '../../../api';
+import { MapIconsService } from './map-icons.service';
 
 export const mapZoomLocalStorageKey = 'map-zoom';
 export const mapLocationLocalStorageKey = 'map-location';
@@ -18,6 +27,13 @@ export class MapService {
   selectedElement = new Subject<GeoJsonProperties>();
   currentMapStyle = MAP_STYLES[0];
 
+  popup = new Popup({
+    closeButton: true,
+    closeOnClick: false,
+    closeOnMove: false,
+  });
+  private _keepPopup = false;
+
   constructor(private mapOptionsService: MapOptionsService) {}
 
   initMap(mapContainer: HTMLElement) {
@@ -28,6 +44,7 @@ export class MapService {
       transformRequest: (url: string, resourceType?: ResourceType) =>
         this.mapOptionsService.authoriseRequest(url, resourceType),
     });
+    MapIconsService.addAllIconsToMap(this.map);
     this.initMapEvents();
     this.map.resize();
 
@@ -104,6 +121,11 @@ export class MapService {
       this.map.on('mouseleave', MAP_SOURCE_NAME, () => {
         this.map.getCanvas().style.cursor = '';
       });
+      this.map.on('mousemove', MAP_SOURCE_NAME, (e) => {
+        if (this.showDetails()) {
+          this.showPopup(e);
+        }
+      });
     });
     this.map.once('load', () => {
       this.mapInitialized.next(true);
@@ -114,11 +136,16 @@ export class MapService {
     return this.map.getZoom() >= MAP_ZOOM_DETAILS;
   }
 
-  private onClick(e: MapMouseEvent & { features?: GeoJSON.Feature[] }) {
+  onClick(e: MapMouseEvent & { features?: GeoJSON.Feature[] }) {
     if (!this.showDetails() || !e.features) {
       return;
     }
-    this.selectedElement.next(e.features[0].properties);
+    if (e.features.length == 1) {
+      this.popup.remove();
+      this.selectedElement.next(e.features[0].properties);
+    } else {
+      this.keepPopup = true;
+    }
   }
 
   private initStoredMapBehaviour() {
@@ -136,5 +163,49 @@ export class MapService {
     this.map.on('moveend', (e) => {
       localStorage.setItem(mapLocationLocalStorageKey, JSON.stringify(e.target.getCenter()));
     });
+  }
+
+  showPopup(event: MapMouseEvent & { features?: MapGeoJSONFeature[] }) {
+    if (!event.features || this.keepPopup) {
+      return;
+    }
+    const coordinates = (event.features[0].geometry as Point).coordinates.slice() as LngLatLike;
+    this.popup
+      .setLngLat(coordinates)
+      .setHTML(this.buildServicePointPopupInformation(event.features))
+      .addTo(this.map);
+    this.popup.on('close', () => {
+      this.keepPopup = false;
+    });
+    this.popup.on('click', () => {
+      this.keepPopup = true;
+    });
+  }
+
+  buildServicePointPopupInformation(features: MapGeoJSONFeature[]) {
+    let popupHtml = '';
+
+    features.forEach((point) => {
+      let formattedNumber = String(point.properties.number);
+      formattedNumber = `${formattedNumber.slice(0, 2)} ${formattedNumber.slice(2)}`;
+      popupHtml += `<a href="service-point-directory/service-points/${point.properties.number}"><b>${formattedNumber}</b> - ${point.properties.designationOfficial}</a> <br/>`;
+    });
+
+    return popupHtml;
+  }
+
+  get keepPopup() {
+    return this._keepPopup;
+  }
+
+  set keepPopup(value: boolean) {
+    this._keepPopup = value;
+    if (this._keepPopup) {
+      this.setPopupToFixed();
+    }
+  }
+
+  setPopupToFixed() {
+    this.popup.getElement().classList.add('fixed-popup');
   }
 }

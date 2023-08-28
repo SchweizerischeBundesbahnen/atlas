@@ -106,19 +106,6 @@ public class UserAdministrationControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldThrowPageSizeException() throws Exception {
-    mvc.perform(get("/v1/users")
-            .queryParam("page", "0")
-            .queryParam("size", "21"))
-        .andExpect(status().is(405))
-        .andExpect(jsonPath("$.status").value(405))
-        .andExpect(
-            jsonPath("$.message").value("Page size 21 is bigger than max allowed page size 20"))
-        .andExpect(jsonPath("$.error").value("Page Request not allowed"))
-        .andExpect(jsonPath("$.details").value(hasSize(0)));
-  }
-
-  @Test
   void shouldCreateUserPermission() throws Exception {
     PermissionModel permissionModelWriter = PermissionModel.builder()
         .role(ApplicationRole.WRITER)

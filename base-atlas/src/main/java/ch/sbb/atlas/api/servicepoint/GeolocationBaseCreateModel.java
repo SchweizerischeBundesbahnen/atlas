@@ -39,10 +39,10 @@ public class GeolocationBaseCreateModel implements TransformableGeolocation {
   private Double height;
 
   @JsonIgnore
-  @AssertTrue(message = "Max Fractions exceeded. LV03 and LV95 max. 5 digits. WGS84 and WGS84WEB max. 11 digits.")
+  @AssertTrue(message = "Max decimal places exceeded. LV03 and LV95 max. 5. WGS84 and WGS84WEB max. 11.")
   public boolean isValidSpatialReferenceFraction() {
     if (getSpatialReference() == null || getNorth() == null || getEast() == null) {
-      return false;
+      return true;
     }
     return switch (getSpatialReference()) {
       case LV03, LV95 ->
