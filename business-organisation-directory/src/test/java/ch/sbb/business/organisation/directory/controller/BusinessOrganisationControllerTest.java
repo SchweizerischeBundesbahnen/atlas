@@ -1,5 +1,6 @@
 package ch.sbb.business.organisation.directory.controller;
 
+import ch.sbb.business.organisation.directory.service.BusinessOrganisationAmazonService;
 import ch.sbb.business.organisation.directory.service.BusinessOrganisationService;
 import ch.sbb.business.organisation.directory.service.export.BusinessOrganisationVersionExportService;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,12 +17,15 @@ class BusinessOrganisationControllerTest {
   @Mock
   private BusinessOrganisationVersionExportService exportService;
 
+  @Mock
+  private BusinessOrganisationAmazonService businessOrganisationAmazonService;
+
   private BusinessOrganisationController businessOrganisationController;
 
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    businessOrganisationController = new BusinessOrganisationController(service, exportService, null);
+    businessOrganisationController = new BusinessOrganisationController(service, exportService, businessOrganisationAmazonService);
   }
 
   @Test
@@ -29,4 +33,5 @@ class BusinessOrganisationControllerTest {
     businessOrganisationController.syncBusinessOrganisations();
     verify(service).syncAllBusinessOrganisations();
   }
+
 }
