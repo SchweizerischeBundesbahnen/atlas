@@ -11,6 +11,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -39,7 +41,7 @@ public class BusinessOrganisationVersionExportServiceTest {
   }
 
   @Test
-  public void shouldGetFullVersionsCsv() {
+  public void shouldGetFullVersionsCsv() throws IOException {
     //given
     BusinessOrganisationExportVersionWithTuInfo version1 =
         BusinessOrganisationExportVersionWithTuInfo.builder()
@@ -61,11 +63,11 @@ public class BusinessOrganisationVersionExportServiceTest {
     assertThat(result).isNotNull();
     assertThat(result.getName()).isNotNull();
     assertThat(result.getName()).contains("full_");
-    result.delete();
+    Files.delete(result.toPath());
   }
 
   @Test
-  public void shouldGetFullVersionsJson() {
+  public void shouldGetFullVersionsJson() throws IOException {
     //given
     BusinessOrganisationExportVersionWithTuInfo version1 =
             BusinessOrganisationExportVersionWithTuInfo.builder()
@@ -87,11 +89,11 @@ public class BusinessOrganisationVersionExportServiceTest {
     assertThat(result).isNotNull();
     assertThat(result.getName()).isNotNull();
     assertThat(result.getName()).contains("full_");
-    result.delete();
+    Files.delete(result.toPath());
   }
 
   @Test
-  public void shouldGetActualVersionsCsv() {
+  public void shouldGetActualVersionsCsv() throws IOException {
     //given
     BusinessOrganisationExportVersionWithTuInfo version1 =
         BusinessOrganisationExportVersionWithTuInfo.builder()
@@ -112,11 +114,11 @@ public class BusinessOrganisationVersionExportServiceTest {
     assertThat(result).isNotNull();
     assertThat(result.getName()).isNotNull();
     assertThat(result.getName()).contains("actual_date_");
-    result.delete();
+    Files.delete(result.toPath());
   }
 
   @Test
-  public void shouldGetActualVersionsJson() {
+  public void shouldGetActualVersionsJson() throws IOException {
     //given
     BusinessOrganisationExportVersionWithTuInfo version1 =
             BusinessOrganisationExportVersionWithTuInfo.builder()
@@ -137,11 +139,11 @@ public class BusinessOrganisationVersionExportServiceTest {
     assertThat(result).isNotNull();
     assertThat(result.getName()).isNotNull();
     assertThat(result.getName()).contains("actual_date_");
-    result.delete();
+    Files.delete(result.toPath());
   }
 
   @Test
-  public void shouldGetFutureTimetableVersionsCsv() {
+  public void shouldGetFutureTimetableVersionsCsv() throws IOException {
     //given
     BusinessOrganisationExportVersionWithTuInfo version1 =
         BusinessOrganisationExportVersionWithTuInfo.builder()
@@ -163,11 +165,11 @@ public class BusinessOrganisationVersionExportServiceTest {
     assertThat(result).isNotNull();
     assertThat(result.getName()).isNotNull();
     assertThat(result.getName()).contains("future_timetable_");
-    result.delete();
+    Files.delete(result.toPath());
   }
 
   @Test
-  public void shouldGetFutureTimetableVersionsJson() {
+  public void shouldGetFutureTimetableVersionsJson() throws IOException {
     //given
     BusinessOrganisationExportVersionWithTuInfo version1 =
             BusinessOrganisationExportVersionWithTuInfo.builder()
@@ -189,7 +191,7 @@ public class BusinessOrganisationVersionExportServiceTest {
     assertThat(result).isNotNull();
     assertThat(result.getName()).isNotNull();
     assertThat(result.getName()).contains("future_timetable_");
-    result.delete();
+    Files.delete(result.toPath());
   }
 
   @Test

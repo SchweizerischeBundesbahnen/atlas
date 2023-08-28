@@ -73,7 +73,7 @@ public class LineVersionExportService extends BaseExportService<LineVersion> {
 
   @Override
   protected File getFutureTimetableVersionsJson() {
-    return null;
+    throw new UnsupportedOperationException();
   }
 
   @Override
@@ -90,7 +90,7 @@ public class LineVersionExportService extends BaseExportService<LineVersion> {
 
   @Override
   protected List<BaseVersionModel> convertToJsonModel(List<LineVersion> versions) {
-    return null;
+    throw new UnsupportedOperationException();
   }
 
 }
