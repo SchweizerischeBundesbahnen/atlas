@@ -21,27 +21,28 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldNameConstants
 @Schema(name = "ReadTrafficPointElementVersionModel")
-public class ReadTrafficPointElementVersionModel extends TrafficPointElementVersionModel{
+public class ReadTrafficPointElementVersionModel extends TrafficPointElementVersionModel {
 
-    @NotNull
-    @Valid
-    private ServicePointNumber servicePointNumber;
+  @NotNull
+  @Valid
+  private ServicePointNumber servicePointNumber;
 
-    @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
-    @Schema(description = "Unique code for locations that is used in customer information. The structure is described in the "
-            + "“Swiss Location ID” specification, chapter 4.2. The document is available here. "
-            + "https://transportdatamanagement.ch/standards/", example = "ch:1:sloid:18771")
-    private String servicePointSloid;
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
+  @Schema(description = "Unique code for locations that is used in customer information. The structure is described in the "
+      + "“Swiss Location ID” specification, chapter 4.2. The document is available here. "
+      + "https://transportdatamanagement.ch/standards/", example = "ch:1:sloid:18771")
+  private String servicePointSloid;
 
-    public String getServicePointSloid(){
-        return ServicePointNumber.calculateSloid(this.servicePointNumber);
-    }
+  public String getServicePointSloid() {
+    return ServicePointNumber.calculateSloid(this.servicePointNumber);
+  }
 
-    private GeolocationBaseReadModel trafficPointElementGeolocation;
+  private GeolocationBaseReadModel trafficPointElementGeolocation;
 
-    @JsonInclude
-    @Schema(description = "TrafficPointElementVersion has a Geolocation")
-    public boolean isHasGeolocation() {
-        return trafficPointElementGeolocation != null;
-    }
+  @JsonInclude
+  @Schema(description = "TrafficPointElementVersion has a Geolocation")
+  public boolean isHasGeolocation() {
+    return trafficPointElementGeolocation != null;
+  }
+  
 }

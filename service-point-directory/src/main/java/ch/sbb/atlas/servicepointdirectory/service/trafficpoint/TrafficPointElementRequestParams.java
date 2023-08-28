@@ -2,9 +2,9 @@ package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
 
 import ch.sbb.atlas.api.model.VersionedObjectDateRequestParams;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.Parameter;
 import java.util.Arrays;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,9 +28,9 @@ public class TrafficPointElementRequestParams extends VersionedObjectDateRequest
   @Singular(ignoreNullCollections = true)
   private List<String> sloids = new ArrayList<>();
 
-    @Parameter(description = "DiDok-Number formerly known as UIC-Code, combination of uicCountryCode and numberShort.")
-    @Singular(ignoreNullCollections = true)
-    private List<String> servicePointNumbers = new ArrayList<>();
+  @Parameter(description = "DiDok-Number formerly known as UIC-Code, combination of uicCountryCode and numberShort.")
+  @Singular(ignoreNullCollections = true)
+  private List<String> servicePointNumbers = new ArrayList<>();
 
   @Parameter(description = "")
   @Singular(ignoreNullCollections = true)
@@ -50,9 +50,11 @@ public class TrafficPointElementRequestParams extends VersionedObjectDateRequest
     @Singular(value = "numberShort", ignoreNullCollections = true)
     private List<String> servicePointNumbersShort = new ArrayList<>();
 
-    public List<ServicePointNumber> getServicePointNumbers() {
+    @JsonIgnore
+    public List<ServicePointNumber> getServicePointNumbersWithoutCheckDigit() {
         return servicePointNumbers.stream()
-            .flatMap(str -> Arrays.stream(str.split(",")))
+            .flatMap(str -> Arrays.stream(str.split(","))
+                .map(String::trim))
             .map(Integer::valueOf)
             .map(ServicePointNumber::ofNumberWithoutCheckDigit)
             .toList();
