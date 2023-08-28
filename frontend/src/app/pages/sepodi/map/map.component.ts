@@ -45,13 +45,13 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
   zoomIn() {
     const currentZoom = this.map.getZoom();
-    let newZoom = currentZoom + 0.75;
+    const newZoom = currentZoom + 0.75;
     this.map.zoomTo(newZoom, { duration: 500 });
   }
 
   zoomOut() {
     const currentZoom = this.map.getZoom();
-    let newZoom = currentZoom - 0.75;
+    const newZoom = currentZoom - 0.75;
     this.map.zoomTo(newZoom, { duration: 500 });
   }
 
