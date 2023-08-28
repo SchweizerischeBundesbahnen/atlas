@@ -187,8 +187,8 @@ export class MapService {
 
     features.forEach((point) => {
       let formattedNumber = String(point.properties.number);
-      formattedNumber = formattedNumber.slice(0, 2) + ' ' + formattedNumber.slice(2);
-      popupHtml += `<a href="service-point-directory/service-points/${point.properties.number}" "><b>${formattedNumber}</b> - ${point.properties.designationOfficial}</a> <br/>`;
+      formattedNumber = `${formattedNumber.slice(0, 2)} ${formattedNumber.slice(2)}`;
+      popupHtml += `<a href="service-point-directory/service-points/${point.properties.number}"><b>${formattedNumber}</b> - ${point.properties.designationOfficial}</a> <br/>`;
     });
 
     return popupHtml;
