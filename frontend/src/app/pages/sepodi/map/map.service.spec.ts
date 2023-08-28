@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { MapService } from './map.service';
 import { AuthService } from '../../../core/auth/auth.service';
 import { MAP_STYLES, MapOptionsService } from './map-options.service';
-import { Map, MapGeoJSONFeature } from 'maplibre-gl';
+import { Map, MapGeoJSONFeature, MapMouseEvent, Popup } from 'maplibre-gl';
 
 const authService: Partial<AuthService> = {};
 
@@ -83,5 +83,123 @@ describe('MapService', () => {
     service.removeMap();
 
     expect(mapSpy.remove).toHaveBeenCalledWith();
+  });
+
+  it('should build popup information correctly', () => {
+    const features = [
+      {
+        geometry: {
+          coordinates: [7.439133524894714, 46.94883407094761],
+        },
+        properties: {
+          number: 8507000,
+          designationOfficial: 'Bern',
+          id: 10019,
+          type: 'STOP_POINT_AND_FREIGHT_SERVICE_POINT',
+        },
+      },
+    ] as unknown as MapGeoJSONFeature[];
+
+    const result = service.buildServicePointPopupInformation(features);
+    expect(result).toBe(
+      '<a href="service-point-directory/service-points/8507000"><b>85 07000</b> - Bern</a> <br/>'
+    );
+  });
+
+  it('should show popup on features coordinates', () => {
+    const mouseEvent = {
+      features: [
+        {
+          geometry: {
+            coordinates: [7.439133524894714, 46.94883407094761],
+          },
+          properties: {
+            number: 8507000,
+            designationOfficial: 'Bern',
+            id: 10019,
+            type: 'STOP_POINT_AND_FREIGHT_SERVICE_POINT',
+          },
+        },
+      ],
+    } as unknown as MapMouseEvent & { features?: MapGeoJSONFeature[] };
+
+    spyOn(service.popup, 'addTo');
+    service.showPopup(mouseEvent);
+
+    expect(service.popup.getLngLat().lat).toEqual(46.94883407094761);
+    expect(service.popup.getLngLat().lng).toEqual(7.439133524894714);
+  });
+
+  it('should select service point on click if only one is on coordinates', () => {
+    const mapSpy = jasmine.createSpyObj<Map>(['getZoom']);
+    mapSpy.getZoom.and.returnValue(12);
+    service.map = mapSpy;
+
+    const mouseEvent = {
+      features: [
+        {
+          geometry: {
+            coordinates: [7.439133524894714, 46.94883407094761],
+          },
+          properties: {
+            number: 8507000,
+            designationOfficial: 'Bern',
+            id: 10019,
+            type: 'STOP_POINT_AND_FREIGHT_SERVICE_POINT',
+          },
+        },
+      ],
+    } as unknown as MapMouseEvent & { features?: MapGeoJSONFeature[] };
+
+    spyOn(service.selectedElement, 'next');
+    service.onClick(mouseEvent);
+
+    expect(service.selectedElement.next).toHaveBeenCalled();
+  });
+
+  it('should fix popup on click if only multiple service points are on coordinates', () => {
+    // Given
+    const mapSpy = jasmine.createSpyObj<Map>(['getZoom']);
+    mapSpy.getZoom.and.returnValue(12);
+    service.map = mapSpy;
+
+    const mouseEvent = {
+      features: [
+        {
+          geometry: {
+            coordinates: [7.439133524894714, 46.94883407094761],
+          },
+          properties: {
+            number: 8507000,
+            designationOfficial: 'Bern',
+            id: 10019,
+            type: 'STOP_POINT_AND_FREIGHT_SERVICE_POINT',
+          },
+        },
+        {
+          geometry: {
+            coordinates: [7.439133524894714, 46.94883407094761],
+          },
+          properties: {
+            number: 8507001,
+            designationOfficial: 'Bern Bhf Aufzug',
+            id: 10019,
+            type: 'STOP_POINT',
+          },
+        },
+      ],
+    } as unknown as MapMouseEvent & { features?: MapGeoJSONFeature[] };
+    expect(service.keepPopup).toBeFalse();
+
+    spyOn(service.selectedElement, 'next');
+    spyOn(service, 'setPopupToFixed');
+
+    // when
+    service.onClick(mouseEvent);
+
+    // then
+    expect(service.selectedElement.next).not.toHaveBeenCalled();
+    expect(service.keepPopup).toBeTrue();
+    expect(service.setPopupToFixed).toHaveBeenCalled();
   });
 });
