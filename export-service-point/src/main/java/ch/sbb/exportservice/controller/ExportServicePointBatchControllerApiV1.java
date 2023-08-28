@@ -1,6 +1,6 @@
 package ch.sbb.exportservice.controller;
 
-import ch.sbb.atlas.api.controller.HttpHeader;
+import ch.sbb.atlas.api.controller.GzipFileDownloadHttpHeader;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.export.enumeration.ServicePointExportFileName;
 import ch.sbb.exportservice.exception.NotAllowedExportFileException;
@@ -64,7 +64,7 @@ public class ExportServicePointBatchControllerApiV1 {
                                                               @PathVariable("exportType") ExportType exportType) throws NotAllowedExportFileException {
     checkInputPath(exportFileName,exportType);
     String fileName = fileExportService.getBaseFileName(exportType, exportFileName);
-    HttpHeaders headers = HttpHeader.getHeaders(fileName);
+    HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(fileName);
     StreamingResponseBody body = fileExportService.streamGzipFile(exportType, exportFileName);
     return ResponseEntity.ok().headers(headers).body(body);
   }

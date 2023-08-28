@@ -1,10 +1,10 @@
 package ch.sbb.atlas.api.controller;
 
+import lombok.experimental.UtilityClass;
 import org.springframework.http.HttpHeaders;
 
-public final class HttpHeader {
-
-    private HttpHeader() {}
+@UtilityClass
+public final class GzipFileDownloadHttpHeader {
 
     public static HttpHeaders getHeaders(String fileName) {
         HttpHeaders headers = new HttpHeaders();
