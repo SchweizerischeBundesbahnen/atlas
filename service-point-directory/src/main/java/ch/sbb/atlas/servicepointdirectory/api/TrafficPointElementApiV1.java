@@ -7,6 +7,7 @@ import ch.sbb.atlas.configuration.Role;
 import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointImportRequestModel;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
+import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion.Fields;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementRequestParams;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -16,6 +17,7 @@ import java.util.List;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
@@ -35,7 +37,7 @@ public interface TrafficPointElementApiV1 {
   @PageableAsQueryParam
   @Operation(description = "INFO: Versions of DiDok3 were merged during migration, so there are now a few versions less here.")
   Container<ReadTrafficPointElementVersionModel> getTrafficPointElements(
-      @Parameter(hidden = true) @PageableDefault(sort = {TrafficPointElementVersion.Fields.sloid}) Pageable pageable,
+      @Parameter(hidden = true) @PageableDefault(sort = {TrafficPointElementVersion.Fields.sloid, Fields.validFrom}, direction = Direction.ASC) Pageable pageable,
       @ParameterObject TrafficPointElementRequestParams trafficPointElementRequestParams);
 
   @GetMapping("{sloid}")
