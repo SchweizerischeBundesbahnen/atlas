@@ -84,4 +84,25 @@ describe('MapService', () => {
 
     expect(mapSpy.remove).toHaveBeenCalledWith();
   });
+
+  it('should build popup information correctly', () => {
+    const features = [
+      {
+        geometry: {
+          coordinates: [7.439133524894714, 46.94883407094761],
+        },
+        properties: {
+          number: 8507000,
+          designationOfficial: 'Bern',
+          id: 10019,
+          type: 'STOP_POINT_AND_FREIGHT_SERVICE_POINT',
+        },
+      },
+    ] as unknown as MapGeoJSONFeature[];
+
+    const result = service.buildServicePointPopupInformation(features);
+    expect(result).toBe(
+      '<a href="service-point-directory/service-points/8507000" "><b>85 07000</b> - Bern</a> <br/>'
+    );
+  });
 });
