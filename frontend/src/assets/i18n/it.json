@@ -959,6 +959,13 @@
       "SATELLITE": "Satellite (globale)",
       "SATELLITE_SWISS": "Satellite (Svizzera)"
     },
+    "MAP_LEGEND": {
+      "STOP_POINT_AND_FREIGHT_SERVICE_POINT": "Fermata / punto di servizio",
+      "STOP_POINT": "Fermata",
+      "FREIGHT_SERVICE_POINT": "Punto di servizio",
+      "OPERATING_POINT_TECHNICAL": "Punto d'orario",
+      "SERVICE_POINT": "Posto di servizio"
+    },
     "BACK_TO_MAP": "Chiudere"
   }
 }
