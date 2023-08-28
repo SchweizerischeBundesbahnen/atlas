@@ -1,6 +1,5 @@
 package ch.sbb.atlas.servicepointdirectory.migration;
 
-import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
@@ -21,8 +20,8 @@ public class ServicePointMappingEquality {
 
   private static final String SBOID_FIKTIVE_GO_INFOPLUS = "ch:1:sboid:101257";
 
-  private final ServicePointCsvModel didokCsvLine;
-  private final ServicePointVersionCsvModel atlasCsvLine;
+  private final ServicePointDidokCsvModel didokCsvLine;
+  private final ServicePointAtlasCsvModel atlasCsvLine;
 
   // ActualDate and FutureTimetable does not export SLOID in Didok
   private final boolean isFullExport;
@@ -41,6 +40,7 @@ public class ServicePointMappingEquality {
       performEqualityCheckOnGeoLocation();
     }
   }
+
   private void performCoreDataCheck() {
     assertThat(atlasCsvLine.getNumber()).isEqualTo(didokCsvLine.getDidokCode());
     assertThat(atlasCsvLine.getNumberShort()).isEqualTo(didokCsvLine.getNummer());
@@ -181,8 +181,9 @@ public class ServicePointMappingEquality {
 
   private void performEqualityCheckOnCoordinates() {
     assertThat(atlasCsvLine.getLv95East())
-        .withFailMessage("didokcode: "+ didokCsvLine.getDidokCode() +":"+didokCsvLine.getGoBezeichnungDe() + ":"+didokCsvLine.getValidFrom()+
-            " atlas:"+atlasCsvLine.getValidFrom())
+        .withFailMessage("didokcode: " + didokCsvLine.getDidokCode() + ":" + didokCsvLine.getGoBezeichnungDe() + ":"
+            + didokCsvLine.getValidFrom() +
+            " atlas:" + atlasCsvLine.getValidFrom())
         .isEqualTo(didokCsvLine.getELv95(), DoubleAssertion.equalOnDecimalDigits(2));
     assertThat(atlasCsvLine.getLv95North()).isEqualTo(didokCsvLine.getNLv95(), DoubleAssertion.equalOnDecimalDigits(2));
 
@@ -195,7 +196,7 @@ public class ServicePointMappingEquality {
     }
   }
 
-  private static void performEqualityCheckOrIgnoreInfoplus(ServicePointVersionCsvModel atlasCsvLine,
+  private static void performEqualityCheckOrIgnoreInfoplus(ServicePointAtlasCsvModel atlasCsvLine,
       Double atlasValue, Double didokValue, int digits) {
     if (isBigDifferenceBetween(atlasValue, didokValue)) {
       assertThat(atlasCsvLine.getBusinessOrganisation()).isEqualTo(SBOID_FIKTIVE_GO_INFOPLUS);
@@ -209,8 +210,9 @@ public class ServicePointMappingEquality {
     return difference.compareTo(BigDecimal.valueOf(0.001)) > 0;
   }
 
-  private String generalErrorMessage(ServicePointCsvModel didokCsvLine) {
+  private String generalErrorMessage(ServicePointDidokCsvModel didokCsvLine) {
     return didokCsvLine.getDidokCode() + " from:" + didokCsvLine.getValidFrom() + " to:"
         + didokCsvLine.getValidTo() + "\t";
   }
+
 }
