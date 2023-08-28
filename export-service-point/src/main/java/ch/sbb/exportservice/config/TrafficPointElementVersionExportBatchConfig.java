@@ -63,7 +63,8 @@ public class TrafficPointElementVersionExportBatchConfig {
 
   @Bean
   @StepScope
-  public JdbcCursorItemReader<TrafficPointElementVersion> trafficPointElementReader(@Autowired @Qualifier("servicePointDataSource") DataSource dataSource
+  public JdbcCursorItemReader<TrafficPointElementVersion> trafficPointElementReader(
+      @Autowired @Qualifier("servicePointDataSource") DataSource dataSource
       , @Value("#{jobParameters[exportType]}") ExportType exportType) {
     JdbcCursorItemReader<TrafficPointElementVersion> itemReader = new JdbcCursorItemReader<>();
     itemReader.setDataSource(dataSource);
@@ -77,14 +78,14 @@ public class TrafficPointElementVersionExportBatchConfig {
   @StepScope
   public JsonFileItemWriter<ReadTrafficPointElementVersionModel> trafficPointElementJsonFileItemWriter(
       @Value("#{jobParameters[exportType]}") ExportType exportType) {
-    return jsonServicePointVersionWriter.getWriter(exportType,ExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
+    return jsonServicePointVersionWriter.getWriter(exportType, ExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
   }
 
   @Bean
   @StepScope
   public FlatFileItemWriter<TrafficPointVersionCsvModel> trafficPointElementCsvWriter(
       @Value("#{jobParameters[exportType]}") ExportType exportType) {
-    return csvTrafficPointElementVersionWriter.csvWriter(exportType,ExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
+    return csvTrafficPointElementVersionWriter.csvWriter(exportType, ExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
   }
 
   @Bean
@@ -155,14 +156,16 @@ public class TrafficPointElementVersionExportBatchConfig {
 
   @Bean
   @StepScope
-  public UploadCsvFileTasklet uploadTrafficPointElementCsvFileTasklet(@Value("#{jobParameters[exportType]}") ExportType exportType) {
-    return new UploadCsvFileTasklet(exportType,ExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
+  public UploadCsvFileTasklet uploadTrafficPointElementCsvFileTasklet(
+      @Value("#{jobParameters[exportType]}") ExportType exportType) {
+    return new UploadCsvFileTasklet(exportType, ExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
   }
 
   @Bean
   @StepScope
-  public UploadJsonFileTasklet uploadTrafficPointElementJsonFileTasklet(@Value("#{jobParameters[exportType]}") ExportType exportType) {
-    return new UploadJsonFileTasklet(exportType,ExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
+  public UploadJsonFileTasklet uploadTrafficPointElementJsonFileTasklet(
+      @Value("#{jobParameters[exportType]}") ExportType exportType) {
+    return new UploadJsonFileTasklet(exportType, ExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
   }
 
   @Bean
@@ -175,7 +178,8 @@ public class TrafficPointElementVersionExportBatchConfig {
   @Bean
   @StepScope
   @Qualifier("fileTrafficPointElementCsvDeletingTasklet")
-  public FileCsvDeletingTasklet fileTrafficPointElementCsvDeletingTasklet(@Value("#{jobParameters[exportType]}") ExportType exportType) {
+  public FileCsvDeletingTasklet fileTrafficPointElementCsvDeletingTasklet(
+      @Value("#{jobParameters[exportType]}") ExportType exportType) {
     return new FileCsvDeletingTasklet(exportType, ExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
   }
 
