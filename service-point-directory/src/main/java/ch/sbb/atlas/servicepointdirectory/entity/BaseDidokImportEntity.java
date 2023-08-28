@@ -45,11 +45,11 @@ public abstract class BaseDidokImportEntity {
   private String creator;
 
   @Column(columnDefinition = "TIMESTAMP")
-  @AtlasVersionableProperty(ignoreDiff = true)
+  @AtlasVersionableProperty(ignoreDiff = true, doNotOverride = true)
   private LocalDateTime editionDate;
 
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
-  @AtlasVersionableProperty(ignoreDiff = true)
+  @AtlasVersionableProperty(ignoreDiff = true, doNotOverride = true)
   private String editor;
 
   @Version
