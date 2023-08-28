@@ -8,7 +8,6 @@ import lombok.experimental.UtilityClass;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,31 +15,28 @@ import java.util.List;
 @UtilityClass
 public class AtlasCsvReader {
 
-  public static List<ServicePointVersionCsvModel> parseAtlasServicePoints(InputStream inputStream)
+  public static List<ServicePointAtlasCsvModel> parseAtlasServicePoints(InputStream inputStream)
       throws IOException {
-    MappingIterator<ServicePointVersionCsvModel> mappingIterator = DidokCsvMapper.CSV_MAPPER.readerFor(
-        ServicePointVersionCsvModel.class).with(DidokCsvMapper.CSV_SCHEMA).readValues(inputStream);
-    List<ServicePointVersionCsvModel> servicePoints = new ArrayList<>();
+    MappingIterator<ServicePointAtlasCsvModel> mappingIterator = DidokCsvMapper.CSV_MAPPER.readerFor(
+        ServicePointAtlasCsvModel.class).with(DidokCsvMapper.CSV_SCHEMA).readValues(inputStream);
+    List<ServicePointAtlasCsvModel> servicePoints = new ArrayList<>();
 
     while (mappingIterator.hasNext()) {
       servicePoints.add(mappingIterator.next());
     }
     return servicePoints;
   }
-  public static List<TrafficPointVersionCsvModel> parseAtlasTraffics(InputStream inputStream)
+
+  public static List<TrafficPointAtlasCsvModel> parseAtlasTraffics(InputStream inputStream)
       throws IOException {
-    MappingIterator<TrafficPointVersionCsvModel> mappingIterator = DidokCsvMapper.CSV_MAPPER.readerFor(
-            TrafficPointVersionCsvModel.class).with(DidokCsvMapper.CSV_SCHEMA).readValues(inputStream);
-    List<TrafficPointVersionCsvModel> trafficPointVersionCsvModels = new ArrayList<>();
+    MappingIterator<TrafficPointAtlasCsvModel> mappingIterator = DidokCsvMapper.CSV_MAPPER.readerFor(
+        TrafficPointAtlasCsvModel.class).with(DidokCsvMapper.CSV_SCHEMA).readValues(inputStream);
+    List<TrafficPointAtlasCsvModel> trafficPointAtlasCsvModels = new ArrayList<>();
 
     while (mappingIterator.hasNext()) {
-      trafficPointVersionCsvModels.add(mappingIterator.next());
+      trafficPointAtlasCsvModels.add(mappingIterator.next());
     }
-    return trafficPointVersionCsvModels;
-  }
-
-  public static LocalDateTime timestampFromString(String string) {
-    return LocalDateTime.parse(string, DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN));
+    return trafficPointAtlasCsvModels;
   }
 
   public static LocalDate dateFromString(String string) {
