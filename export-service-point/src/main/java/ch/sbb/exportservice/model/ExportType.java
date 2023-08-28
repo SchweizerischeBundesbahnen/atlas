@@ -22,8 +22,8 @@ public enum ExportType implements ExportTypeBase {
   private final String dir;
   private final String fileTypePrefix;
 
-  public static List<ExportType> getWorldOnly(){
-    return List.of(WORLD_FULL, WORLD_ONLY_ACTUAL,WORLD_ONLY_TIMETABLE_FUTURE);
+  public static List<ExportType> getWorldOnly() {
+    return List.of(WORLD_FULL, WORLD_ONLY_ACTUAL, WORLD_ONLY_TIMETABLE_FUTURE);
   }
 
   private static class Constants {
