@@ -153,15 +153,12 @@ public class FileServiceImpl implements FileService {
 
   private String getJsonFileToDownload(ExportTypeBase exportType, ExportFileName exportFileName, String fileName) {
     String fileNameSuffix = "/" + fileName + ".json.gz";
-    if (exportFileName.toString().equals("BUSINESS_ORGANISATION_VERSION")) {
-      return exportFileName.getBaseDir()
-              + fileNameSuffix;
-    } else {
-      return exportFileName.getBaseDir()
-              + "/"
-              + exportType.getDir()
-              + fileNameSuffix;
+    String jsonFileName = exportFileName.getBaseDir();
+    if(!exportFileName.toString().equals("BUSINESS_ORGANISATION_VERSION")){
+      jsonFileName += "/" + exportType.getDir();
     }
+    jsonFileName += fileNameSuffix;
+    return jsonFileName;
   }
 
 }
