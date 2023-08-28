@@ -1,8 +1,8 @@
 package ch.sbb.exportservice.controller;
 
+import ch.sbb.atlas.export.enumeration.ServicePointExportFileName;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.model.exception.NotFoundException.FileNotFoundException;
-import ch.sbb.exportservice.model.ExportFileName;
 import ch.sbb.exportservice.model.ExportType;
 import ch.sbb.exportservice.service.FileExportService;
 import ch.sbb.exportservice.service.MailProducerService;
@@ -18,10 +18,14 @@ import java.io.InputStream;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseControllerApiTest {
@@ -38,7 +42,7 @@ public class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseC
     try (InputStream inputStream = this.getClass().getResourceAsStream("/service-point-data.json")) {
       StreamingResponseBody streamingResponseBody = writeOutputStream(inputStream);
 
-      doReturn(streamingResponseBody).when(fileExportService).streamingJsonFile(ExportType.WORLD_FULL, ExportFileName.SERVICE_POINT_VERSION);
+      doReturn(streamingResponseBody).when(fileExportService).streamJsonFile(ExportType.WORLD_FULL, ServicePointExportFileName.SERVICE_POINT_VERSION);
 
       //when & then
       mvc.perform(get("/v1/export/json/service-point-version/world-full")
@@ -52,7 +56,7 @@ public class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseC
   @Order(2)
   public void shouldGetJsonUnsuccessfully() throws Exception {
     //given
-    doThrow(FileNotFoundException.class).when(fileExportService).streamingJsonFile(ExportType.WORLD_FULL, ExportFileName.SERVICE_POINT_VERSION);
+    doThrow(FileNotFoundException.class).when(fileExportService).streamJsonFile(ExportType.WORLD_FULL, ServicePointExportFileName.SERVICE_POINT_VERSION);
 
     //when & then
     mvc.perform(get("/v1/export/json/service-point-version/world-full")
@@ -66,8 +70,8 @@ public class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseC
     //given
     try (InputStream inputStream = this.getClass().getResourceAsStream("/service-point.json.gz")) {
       StreamingResponseBody streamingResponseBody = writeOutputStream(inputStream);
-      doReturn(streamingResponseBody).when(fileExportService).streamingGzipFile(ExportType.WORLD_FULL, ExportFileName.SERVICE_POINT_VERSION);
-      doReturn("service-point").when(fileExportService).getBaseFileName(ExportType.WORLD_FULL, ExportFileName.SERVICE_POINT_VERSION);
+      doReturn(streamingResponseBody).when(fileExportService).streamGzipFile(ExportType.WORLD_FULL, ServicePointExportFileName.SERVICE_POINT_VERSION);
+      doReturn("service-point").when(fileExportService).getBaseFileName(ExportType.WORLD_FULL, ServicePointExportFileName.SERVICE_POINT_VERSION);
       //when & then
       mvc.perform(get("/v1/export/download-gzip-json/service-point-version/world-full")
               .contentType(contentType))
@@ -80,7 +84,7 @@ public class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseC
   @Order(4)
   public void shouldDownloadGzipJsonUnsuccessfully() throws Exception {
     //given
-    doThrow(FileNotFoundException.class).when(fileExportService).streamingGzipFile(ExportType.WORLD_FULL,ExportFileName.SERVICE_POINT_VERSION);
+    doThrow(FileNotFoundException.class).when(fileExportService).streamGzipFile(ExportType.WORLD_FULL, ServicePointExportFileName.SERVICE_POINT_VERSION);
 
     //when & then
     mvc.perform(get("/v1/export/download-gzip-json/service-point-version/world-full")
@@ -91,7 +95,7 @@ public class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseC
   @Order(5)
   public void shouldNotDownloadJsonWhenExportTypeIsNotAllowedForTheExportFile() throws Exception {
     //given
-    doThrow(FileNotFoundException.class).when(fileExportService).streamingGzipFile(ExportType.WORLD_FULL,ExportFileName.SERVICE_POINT_VERSION);
+    doThrow(FileNotFoundException.class).when(fileExportService).streamGzipFile(ExportType.WORLD_FULL, ServicePointExportFileName.SERVICE_POINT_VERSION);
 
     //when & then
     mvc.perform(get("/v1/export/download-gzip-json/traffic-point-element-version/swiss-only-full")
