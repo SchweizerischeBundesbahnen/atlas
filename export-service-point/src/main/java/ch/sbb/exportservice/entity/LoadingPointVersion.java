@@ -1,7 +1,6 @@
 package ch.sbb.exportservice.entity;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.exportservice.entity.geolocation.LoadingPointGeolocation;
 import lombok.*;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
@@ -29,8 +28,8 @@ public class LoadingPointVersion {
 
   private ServicePointNumber servicePointNumber;
 
-  private LoadingPointGeolocation loadingPointGeolocation;
   private LocalDate validFrom;
+
   private LocalDate validTo;
 
 }
