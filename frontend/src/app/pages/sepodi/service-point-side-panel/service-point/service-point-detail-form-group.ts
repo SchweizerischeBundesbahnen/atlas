@@ -1,8 +1,9 @@
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Form, FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseDetailFormGroup } from '../../../../core/components/base-detail/base-detail-form-group';
 import {
   Category,
   MeanOfTransport,
+  OperatingPointTrafficPointType,
   ReadServicePointVersion,
   SpatialReference,
   Status,
@@ -14,8 +15,11 @@ import { WhitespaceValidator } from '../../../../core/validation/whitespace/whit
 import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
 import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
 import { GeographyFormGroup } from '../../geography/geography-form-group';
+import { ServicePointType } from './service-point-type';
 
 export interface ServicePointDetailFormGroup extends BaseDetailFormGroup {
+  sloid: FormControl<string | null | undefined>;
+  abbreviation: FormControl<string | null | undefined>;
   status: FormControl<Status | null | undefined>;
   designationOfficial: FormControl<string | null | undefined>;
   designationLong: FormControl<string | null | undefined>;
@@ -28,14 +32,20 @@ export interface ServicePointDetailFormGroup extends BaseDetailFormGroup {
   operatingPointRouteNetwork: FormControl<boolean | null | undefined>;
   operatingPointKilometer: FormControl<boolean | null | undefined>;
   operatingPointKilometerMaster: FormControl<number | null | undefined>;
+  freightServicePoint: FormControl<boolean | null | undefined>;
+  operatingPointTrafficPointType: FormControl<OperatingPointTrafficPointType | null | undefined>;
   etagVersion: FormControl<number | null | undefined>;
   servicePointGeolocation: FormGroup<GeographyFormGroup>;
+
+  selectedType: FormControl<ServicePointType | null | undefined>;
 }
 
 export class ServicePointFormGroupBuilder {
   static buildFormGroup(version: ReadServicePointVersion): FormGroup {
-    return new FormGroup<ServicePointDetailFormGroup>(
+    const formGroup = new FormGroup<ServicePointDetailFormGroup>(
       {
+        sloid: new FormControl(version.sloid),
+        abbreviation: new FormControl(version.abbreviation),
         status: new FormControl(version.status),
         designationOfficial: new FormControl(version.designationOfficial, [
           Validators.required,
@@ -80,9 +90,14 @@ export class ServicePointFormGroupBuilder {
         operatingPointKilometerMaster: new FormControl(
           version.operatingPointKilometerMaster?.number
         ),
+        selectedType: new FormControl(this.determineType(version)),
+        freightServicePoint: new FormControl(version.freightServicePoint),
+        operatingPointTrafficPointType: new FormControl(version.operatingPointTrafficPointType),
       },
       [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
     );
+    this.initConditionalValidators(formGroup);
+    return formGroup;
   }
 
   private static getCoordinates(version: ReadServicePointVersion) {
@@ -90,5 +105,27 @@ export class ServicePointFormGroupBuilder {
       return version.servicePointGeolocation?.wgs84;
     }
     return version.servicePointGeolocation?.lv95;
+  }
+
+  private static determineType(version: ReadServicePointVersion) {
+    if (version.operatingPointType || version.operatingPointTechnicalTimetableType) {
+      return ServicePointType.OperatingPoint;
+    }
+    if (version.stopPoint || version.freightServicePoint) {
+      return ServicePointType.StopPoint;
+    }
+    if (version.fareStop) {
+      return ServicePointType.FareStop;
+    }
+    return ServicePointType.ServicePoint;
+  }
+
+  private static initConditionalValidators(formGroup: FormGroup<ServicePointDetailFormGroup>) {
+    formGroup.controls.selectedType.valueChanges.subscribe((newType) => {
+      if (newType === ServicePointType.OperatingPoint) {
+        formGroup.controls.operatingPointType.setValidators([Validators.required]);
+      }
+      formGroup.controls.operatingPointType.updateValueAndValidity();
+    });
   }
 }
