@@ -4,6 +4,7 @@ import ch.sbb.atlas.api.bodi.BusinessOrganisationApiV1;
 import ch.sbb.atlas.api.bodi.BusinessOrganisationModel;
 import ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel;
 import ch.sbb.atlas.api.bodi.BusinessOrganisationVersionRequestParams;
+import ch.sbb.atlas.api.controller.HttpHeader;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.export.enumeration.ExportType;
 import ch.sbb.atlas.model.Status;
@@ -160,18 +161,9 @@ public class BusinessOrganisationController implements BusinessOrganisationApiV1
   @Override
   public ResponseEntity<StreamingResponseBody> streamGzipFile(ExportType exportType) {
     String fileName = businessOrganisationAmazonService.getFileName(exportType);
-    HttpHeaders headers = getHeaders(fileName);
+    HttpHeaders headers = HttpHeader.getHeaders(fileName);
     StreamingResponseBody body = businessOrganisationAmazonService.streamGzipFile(exportType);
     return ResponseEntity.ok().headers(headers).body(body);
-  }
-
-  private HttpHeaders getHeaders(String fileName) {
-    HttpHeaders headers = new HttpHeaders();
-    headers.add("Content-Type", "application/gzip");
-    headers.add("Content-Disposition", "attachment;filename=" + fileName + ".json.gz");
-    headers.add("Pragma", "no-cache");
-    headers.add("Cache-Control", "no-cache");
-    return headers;
   }
 
   @Override

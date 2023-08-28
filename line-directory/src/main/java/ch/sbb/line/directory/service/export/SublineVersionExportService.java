@@ -2,7 +2,6 @@ package ch.sbb.line.directory.service.export;
 
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.amazon.service.FileService;
-import ch.sbb.atlas.api.model.BaseVersionModel;
 import ch.sbb.atlas.export.AtlasCsvMapper;
 import ch.sbb.atlas.export.BaseExportService;
 import ch.sbb.atlas.export.enumeration.ExportType;
@@ -48,11 +47,6 @@ public class SublineVersionExportService extends BaseExportService<SublineVersio
     }
 
     @Override
-    protected File getFullVersionsJson() {
-        return null;
-    }
-
-    @Override
     protected File getActualVersionsCsv() {
         List<SublineVersion> actualLineVersions = sublineVersionRepository.getActualSublineVersions(
             LocalDate.now());
@@ -60,20 +54,10 @@ public class SublineVersionExportService extends BaseExportService<SublineVersio
     }
 
     @Override
-    protected File getActualVersionsJson() {
-        return null;
-    }
-
-    @Override
     protected File getFutureTimetableVersionsCsv() {
         List<SublineVersion> actualLineVersions = sublineVersionRepository.getActualSublineVersions(
             FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now()));
         return createCsvFile(actualLineVersions, ExportType.FUTURE_TIMETABLE);
-    }
-
-    @Override
-    protected File getFutureTimetableVersionsJson() {
-        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -86,11 +70,6 @@ public class SublineVersionExportService extends BaseExportService<SublineVersio
         return versions.stream()
             .map(SublineVersionCsvModel::toCsvModel)
             .collect(toList());
-    }
-
-    @Override
-    protected List<BaseVersionModel> convertToJsonModel(List<SublineVersion> versions) {
-        throw new UnsupportedOperationException();
     }
 
 }

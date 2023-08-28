@@ -2,7 +2,7 @@ package ch.sbb.business.organisation.directory.service;
 
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.amazon.service.FileService;
-import ch.sbb.atlas.export.enumeration.BoExportFileName;
+import ch.sbb.atlas.export.enumeration.BusinessOrganisationExportFileName;
 import ch.sbb.atlas.export.enumeration.ExportType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 public class BusinessOrganisationAmazonService {
 
-    private static final BoExportFileName exportFileName = BoExportFileName.BUSINESS_ORGANISATION_VERSION;
+    private static final BusinessOrganisationExportFileName exportFileName = BusinessOrganisationExportFileName.BUSINESS_ORGANISATION_VERSION;
 
     private final AmazonService amazonService;
 

@@ -2,7 +2,6 @@ package ch.sbb.line.directory.service.export;
 
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.amazon.service.FileService;
-import ch.sbb.atlas.api.model.BaseVersionModel;
 import ch.sbb.atlas.export.AtlasCsvMapper;
 import ch.sbb.atlas.export.BaseExportService;
 import ch.sbb.atlas.export.enumeration.ExportType;
@@ -50,11 +49,6 @@ public class TimetableFieldNumberVersionExportService extends
     }
 
     @Override
-    protected File getFullVersionsJson() {
-        return null;
-    }
-
-    @Override
     protected File getActualVersionsCsv() {
         List<TimetableFieldNumberVersion> actualTimeTableNumberVersions = timetableFieldNumberVersionRepository.getActualTimeTableNumberVersions(
             LocalDate.now());
@@ -62,20 +56,10 @@ public class TimetableFieldNumberVersionExportService extends
     }
 
     @Override
-    protected File getActualVersionsJson() {
-        return null;
-    }
-
-    @Override
     protected File getFutureTimetableVersionsCsv() {
         List<TimetableFieldNumberVersion> actualTimeTableNumberVersions = timetableFieldNumberVersionRepository.getActualTimeTableNumberVersions(
             FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now()));
         return createCsvFile(actualTimeTableNumberVersions, ExportType.FUTURE_TIMETABLE);
-    }
-
-    @Override
-    protected File getFutureTimetableVersionsJson() {
-        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -89,11 +73,6 @@ public class TimetableFieldNumberVersionExportService extends
         return versions.stream()
             .map(TimetableFieldNumberVersionCsvModel::toCsvModel)
             .collect(toList());
-    }
-
-    @Override
-    protected List<BaseVersionModel> convertToJsonModel(List<TimetableFieldNumberVersion> versions) {
-        throw new UnsupportedOperationException();
     }
 
 }
