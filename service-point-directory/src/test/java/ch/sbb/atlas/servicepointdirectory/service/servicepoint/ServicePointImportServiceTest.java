@@ -11,6 +11,7 @@ import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointFotComment;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
+import java.time.LocalDateTime;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -339,6 +340,87 @@ public class ServicePointImportServiceTest {
         assertThat(csvModel.getIsGrenzpunkt()).isEqualTo(atlasModel.isBorderPoint());
       }
     }
+  }
+
+  @Test
+  void shouldUpdateValidToAndEditionPropertiesCorrectlyOnSecondRun() {
+    // given
+    final List<ServicePointCsvModel> servicePointCsvModels = List.of(
+        ServicePointCsvModel.builder()
+            .validFrom(LocalDate.of(2002, 1, 1))
+            .validTo(LocalDate.of(2002, 12, 31))
+            .abkuerzung("BWYG")
+            .bezeichnungLang("Bern, Wyleregg")
+            .bezeichnungOffiziell("Bern, Wyleregg")
+            .isBedienpunkt(true)
+            .isBetriebspunkt(true)
+            .isFahrplan(true)
+            .nummer(85070001)
+            .laendercode(85)
+            .status(1)
+            .didokCode(85070001)
+            .comment("BAV-Kommentar")
+            .createdAt(LocalDateTime.of(2020, 1, 1, 1, 1))
+            .createdBy("fs11111")
+            .editedAt(LocalDateTime.of(2020, 1, 1, 1, 1))
+            .editedBy("fs11111")
+            .build()
+    );
+
+    final List<ServicePointCsvModelContainer> servicePointCsvModelContainers = List.of(
+        ServicePointCsvModelContainer.builder()
+            .servicePointCsvModelList(servicePointCsvModels)
+            .didokCode(85070001)
+            .build()
+    );
+    servicePointImportService.importServicePoints(servicePointCsvModelContainers);
+
+    final List<ServicePointCsvModel> servicePointCsvModelsSecondRun = List.of(
+        ServicePointCsvModel.builder()
+            .validFrom(LocalDate.of(2002, 1, 1))
+            .validTo(LocalDate.of(2002, 6, 15))
+            .abkuerzung("BWYG")
+            .bezeichnungLang("Bern, Wyleregg")
+            .bezeichnungOffiziell("Bern, Wyleregg")
+            .isBedienpunkt(true)
+            .isBetriebspunkt(true)
+            .isFahrplan(true)
+            .nummer(85070001)
+            .laendercode(85)
+            .status(1)
+            .didokCode(85070001)
+            .comment("BAV-Kommentar")
+            .createdAt(LocalDateTime.of(2020, 1, 1, 1, 1))
+            .createdBy("fs11111")
+            .editedAt(LocalDateTime.of(2023, 1, 1, 1, 1))
+            .editedBy("fs22222")
+            .build()
+    );
+
+    final List<ServicePointCsvModelContainer> servicePointCsvModelContainersSecondRun = List.of(
+        ServicePointCsvModelContainer.builder()
+            .servicePointCsvModelList(servicePointCsvModelsSecondRun)
+            .didokCode(85070001)
+            .build()
+    );
+
+    // when
+    final List<ItemImportResult> servicePointItemImportResults =
+        servicePointImportService.importServicePoints(servicePointCsvModelContainersSecondRun);
+
+    // then
+    assertThat(servicePointItemImportResults).hasSize(1);
+
+    final List<ServicePointVersion> dbVersions =
+        servicePointVersionRepository.findAllByNumberOrderByValidFrom(ServicePointNumber.of(85070001));
+
+    assertThat(dbVersions).hasSize(1);
+    assertThat(dbVersions.get(0).getEditor()).isEqualTo("fs22222");
+    assertThat(dbVersions.get(0).getEditionDate()).isEqualTo(LocalDateTime.of(2023, 1, 1, 1, 1));
+    assertThat(dbVersions.get(0).getCreator()).isEqualTo("fs11111");
+    assertThat(dbVersions.get(0).getCreationDate()).isEqualTo(LocalDateTime.of(2020, 1, 1, 1, 1));
+    assertThat(dbVersions.get(0).getValidFrom()).isEqualTo("2002-01-01");
+    assertThat(dbVersions.get(0).getValidTo()).isEqualTo("2002-06-15");
   }
 
   private List<ServicePointCsvModelContainer> getServicePointCsvModelContainers() {

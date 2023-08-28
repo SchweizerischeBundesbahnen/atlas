@@ -8,12 +8,13 @@ public class DoubleAssertionWithPrecisionTest {
 
   @Test
   void shouldBeEqual() {
-    assertThat(0.0001).isCloseTo(0.0002, DoubleAssertion.equalOnDecimalDigits(3));
+    assertThat(0.0001).isCloseTo(0.000199, DoubleAssertion.equalOnDecimalDigits(4));
 
   }
 
   @Test
   void shouldNotBeEqual() {
-    assertThat(0.0001).isNotCloseTo(0.0002, DoubleAssertion.equalOnDecimalDigits(4));
+    assertThat(0.0001).isNotCloseTo(0.000201, DoubleAssertion.equalOnDecimalDigits(4));
   }
+
 }
