@@ -16,7 +16,20 @@
     right: 15px;
   }
 
+  .zoom-in {
+    top: 70px;
+  }
+
+  .zoom-out {
+    top: 125px;
+  }
+
+  .zoom-home {
+    top: 180px;
+  }
+
   .map-styles {
+    z-index: 1;
     background-color: transparent;
 
     button {
