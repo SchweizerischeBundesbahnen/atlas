@@ -649,6 +649,9 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
 
   @Test
   void shouldFailToReadJson() throws Exception {
+    // make sure to delete file first if exists, in order to make test stable
+    cleanUpBeforeExceptionTests();
+
     mvc.perform(get("/v1/business-organisations/export/download-json/" + ExportType.FUTURE_TIMETABLE))
             .andExpect(status().isNotFound())
             .andExpect(result -> assertTrue(result.getResolvedException() instanceof NotFoundException));
@@ -656,9 +659,26 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
 
   @Test
   void shouldFailToGetJsonGz() throws Exception {
+    // make sure to delete file first if exists, in order to make test stable
+    cleanUpBeforeExceptionTests();
+
     mvc.perform(get("/v1/business-organisations/export/download-gz-json/" + ExportType.FUTURE_TIMETABLE))
             .andExpect(status().isNotFound())
             .andExpect(result -> assertTrue(result.getResolvedException() instanceof NotFoundException));
+  }
+
+  private void cleanUpBeforeExceptionTests() throws Exception {
+    // make sure to delete file first if exists, in order to make test stable
+    BusinessOrganisationVersionModel versionModel = BusinessOrganisationData.businessOrganisationVersionModelBuilder()
+            .validFrom(LocalDate.now().withMonth(1).withDayOfMonth(1))
+            .validTo(LocalDate.now().withMonth(12).withDayOfMonth(31))
+            .build();
+    controller.createBusinessOrganisationVersion(versionModel);
+
+    MvcResult mvcResult = mvc.perform(post("/v1/business-organisations/export/timetable-year-change"))
+            .andExpect(status().isOk()).andReturn();
+
+    deleteFileFromBucket(mvcResult, exportService.getDirectory(), amazonService);
   }
 
   @Test
@@ -676,4 +696,5 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
         .andExpect(jsonPath("$.totalCount").value(1))
         .andExpect(jsonPath("$.objects[0].sboid").value(version.getSboid()));
   }
+
 }
