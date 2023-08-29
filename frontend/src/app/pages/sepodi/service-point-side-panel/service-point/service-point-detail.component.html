@@ -110,10 +110,11 @@
 
   <div *ngIf="form.value.selectedType === 'STOP_POINT'" class="d-flex mt-2 d-flex flex-column">
     <div class="font-bold-lg d-flex col-12">{{ 'PAGES.DETAILS' | translate }}</div>
-    <div class="d-flex col-12 mt-2" [formGroup]="form">
+    <div class="d-flex col-12 mt-2 flex-column" [formGroup]="form">
       <mat-checkbox formControlName="stopPoint" data-cy="stopPoint">
         {{ 'SEPODI.SERVICE_POINTS.STOP_POINT' | translate }}
       </mat-checkbox>
+      <app-atlas-field-error [form]="form" controlName="stopPoint"></app-atlas-field-error>
     </div>
     <div class="d-flex col-12 mb-3 mt-2" *ngIf="form.value.stopPoint">
       <atlas-select
@@ -141,10 +142,14 @@
       </div>
     </div>
 
-    <div class="d-flex col-12" [formGroup]="form">
+    <div class="d-flex col-12 flex-column" [formGroup]="form">
       <mat-checkbox formControlName="freightServicePoint" data-cy="freightServicePoint">
         {{ 'SEPODI.SERVICE_POINTS.FREIGHT_SERVICE_POINT' | translate }}
       </mat-checkbox>
+      <app-atlas-field-error
+        [form]="form"
+        controlName="freightServicePoint"
+      ></app-atlas-field-error>
     </div>
     <div class="d-flex col-12 mt-2" *ngIf="form.value.freightServicePoint">
       <atlas-text-field
