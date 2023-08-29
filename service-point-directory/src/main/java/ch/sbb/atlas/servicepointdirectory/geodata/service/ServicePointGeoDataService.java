@@ -11,8 +11,10 @@ import ch.sbb.atlas.servicepointdirectory.geodata.transformer.BoundingBoxTransfo
 import ch.sbb.atlas.servicepointdirectory.geodata.transformer.GeometryTransformer;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointGeolocationRepository;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.locationtech.jts.geom.Envelope;
@@ -68,22 +70,20 @@ public class ServicePointGeoDataService {
         geoDataAreaWgs84);
 
     log.debug("Finding service points");
-    List<ServicePointGeoData> servicePoints = getServicePointGeoData(validAtDate, geoDataAreas);
+    Set<ServicePointGeoData> servicePoints = getServicePointGeoData(validAtDate, geoDataAreas);
 
-    log.debug("mapping {} service points", servicePoints.size());
+    log.info("mapping {} service points", servicePoints.size());
     return servicePointGeoDataMapper.mapToWgs84WebGeometry(servicePoints);
   }
 
-  private List<ServicePointGeoData> getServicePointGeoData(LocalDate validAtDate, Map<SpatialReference, Envelope> geoDataAreas) {
-    return geolocationRepository
+  private Set<ServicePointGeoData> getServicePointGeoData(LocalDate validAtDate, Map<SpatialReference, Envelope> geoDataAreas) {
+    return new HashSet<>(geolocationRepository
         .findAll(
             validAtDate(validAtDate).and(
                 coordinatesBetween(SpatialReference.LV95, geoDataAreas.get(SpatialReference.LV95))
-                    .or(coordinatesBetween(SpatialReference.WGS84WEB, geoDataAreas.get(SpatialReference.WGS84WEB)))
                     .or(coordinatesBetween(SpatialReference.WGS84, geoDataAreas.get(SpatialReference.WGS84)))
-                    .or(coordinatesBetween(SpatialReference.LV03, geoDataAreas.get(SpatialReference.LV03)))
             )
-        );
+        ));
   }
 
 }

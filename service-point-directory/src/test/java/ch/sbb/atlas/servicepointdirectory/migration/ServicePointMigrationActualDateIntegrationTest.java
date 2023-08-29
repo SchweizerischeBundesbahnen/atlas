@@ -4,9 +4,7 @@ import static ch.sbb.atlas.servicepointdirectory.migration.AtlasCsvReader.dateFr
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
@@ -31,19 +29,21 @@ public class ServicePointMigrationActualDateIntegrationTest {
   private static final String ATLAS_CSV_FILE = "actual_date-world-service-point-2023-07-21.csv";
   private static final LocalDate ACTUAL_DATE = LocalDate.of(2023, 7, 21);
 
-  private static final List<ServicePointVersionCsvModel> atlasCsvLines = new ArrayList<>();
-  private static final Map<Integer, ServicePointVersionCsvModel> atlasCsvLinesAsMap = new HashMap<>();
-  private static final List<ServicePointCsvModel> didokCsvLines = new ArrayList<>();
+  private static final List<ServicePointAtlasCsvModel> atlasCsvLines = new ArrayList<>();
+  private static final Map<Integer, ServicePointAtlasCsvModel> atlasCsvLinesAsMap = new HashMap<>();
+  private static final List<ServicePointDidokCsvModel> didokCsvLines = new ArrayList<>();
 
   @Test
   @Order(1)
   void shouldParseCsvsCorrectly() throws IOException {
-    try (InputStream csvStream = this.getClass().getResourceAsStream(ServicePointMigrationIntegrationTest.BASE_PATH  + DIDOK_CSV_FILE)) {
-      didokCsvLines.addAll(ServicePointImportService.parseServicePoints(csvStream));
+    try (InputStream csvStream = this.getClass()
+        .getResourceAsStream(ServicePointMigrationIntegrationTest.BASE_PATH + DIDOK_CSV_FILE)) {
+      didokCsvLines.addAll(DidokCsvReader.parseDidokServicePoints(csvStream));
     }
     assertThat(didokCsvLines).isNotEmpty();
 
-    try (InputStream csvStream = this.getClass().getResourceAsStream(ServicePointMigrationIntegrationTest.BASE_PATH  + ATLAS_CSV_FILE)) {
+    try (InputStream csvStream = this.getClass()
+        .getResourceAsStream(ServicePointMigrationIntegrationTest.BASE_PATH + ATLAS_CSV_FILE)) {
       atlasCsvLines.addAll(AtlasCsvReader.parseAtlasServicePoints(csvStream));
     }
     assertThat(atlasCsvLines).isNotEmpty();
@@ -54,8 +54,8 @@ public class ServicePointMigrationActualDateIntegrationTest {
   @Test
   @Order(2)
   void shouldHaveSameDidokCodesInBothCsvs() {
-    Set<Integer> didokCodes = didokCsvLines.stream().map(ServicePointCsvModel::getDidokCode).collect(Collectors.toSet());
-    Set<Integer> atlasNumbers = atlasCsvLines.stream().map(ServicePointVersionCsvModel::getNumber).collect(Collectors.toSet());
+    Set<Integer> didokCodes = didokCsvLines.stream().map(ServicePointDidokCsvModel::getDidokCode).collect(Collectors.toSet());
+    Set<Integer> atlasNumbers = atlasCsvLines.stream().map(ServicePointAtlasCsvModel::getNumber).collect(Collectors.toSet());
 
     Set<Integer> difference = atlasNumbers.stream().filter(e -> !didokCodes.contains(e)).collect(Collectors.toSet());
     if (!difference.isEmpty()) {
@@ -84,7 +84,7 @@ public class ServicePointMigrationActualDateIntegrationTest {
   @Order(4)
   void shouldHaveMappedFieldsToAtlasCorrectly() {
     didokCsvLines.forEach(didokCsvLine -> {
-      ServicePointVersionCsvModel atlasCsvLine = atlasCsvLinesAsMap.get(didokCsvLine.getDidokCode());
+      ServicePointAtlasCsvModel atlasCsvLine = atlasCsvLinesAsMap.get(didokCsvLine.getDidokCode());
       assertDoesNotThrow(() -> new ServicePointMappingEquality(didokCsvLine, atlasCsvLine, false).performCheck());
     });
   }
