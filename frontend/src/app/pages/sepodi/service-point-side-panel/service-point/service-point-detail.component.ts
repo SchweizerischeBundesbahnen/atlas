@@ -40,13 +40,9 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   isNew = true;
 
   types = Object.values(ServicePointType);
-  selectedType: ServicePointType = ServicePointType.ServicePoint;
   operatingPointTypes = (Object.values(OperatingPointType) as string[]).concat(
     Object.values(OperatingPointTechnicalTimetableType)
   );
-
-  stopPoint = false;
-  freightServicePoint = false;
 
   stopPointTypes = Object.values(StopPointType);
   categories = Object.values(Category);
@@ -110,25 +106,6 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     this.form = ServicePointFormGroupBuilder.buildFormGroup(this.selectedVersion);
     if (!this.isNew) {
       this.form.disable();
-    }
-    this.initType();
-  }
-
-  private initType() {
-    if (
-      this.selectedVersion.operatingPointType ||
-      this.selectedVersion.operatingPointTechnicalTimetableType
-    ) {
-      this.selectedType = ServicePointType.OperatingPoint;
-    }
-    if (this.selectedVersion.stopPoint || this.selectedVersion.freightServicePoint) {
-      this.stopPoint = this.selectedVersion.stopPoint!;
-      this.freightServicePoint = this.selectedVersion.freightServicePoint!;
-
-      this.selectedType = ServicePointType.StopPoint;
-    }
-    if (this.selectedVersion.fareStop) {
-      this.selectedType = ServicePointType.FareStop;
     }
   }
 
@@ -206,30 +183,28 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
       designationOfficial: this.form.value.designationOfficial!,
       designationLong: this.form.value.designationLong!,
       abbreviation: this.form.value.abbreviation!,
-      freightServicePoint: this.form.value.freightServicePoint!,
-      sortCodeOfDestinationStation: this.form.value.sortCodeOfDestinationStation!,
       businessOrganisation: this.form.value.businessOrganisation!,
       categories: this.form.value.categories!,
-      operatingPointType:
-        this.form.value.selectedType == ServicePointType.OperatingPoint
-          ? this.operatingPointType
-          : undefined,
-      operatingPointTechnicalTimetableType:
-        this.form.value.selectedType == ServicePointType.OperatingPoint
-          ? this.operatingPointTechnicalTimetableType
-          : undefined,
-      operatingPointTrafficPointType:
-        this.form.value.selectedType == ServicePointType.FareStop
-          ? OperatingPointTrafficPointType.TariffPoint
-          : undefined,
       operatingPointRouteNetwork: this.form.value.operatingPointRouteNetwork!,
-      meansOfTransport: this.form.value.meansOfTransport!,
-      stopPointType: this.form.value.stopPointType!,
+      operatingPointKilometerMasterNumber: this.form.value.operatingPointKilometerMaster!,
+      meansOfTransport: [],
       status: this.form.value.status!,
       validFrom: this.form.value.validFrom!.toDate(),
       validTo: this.form.value.validTo!.toDate(),
-      operatingPointKilometerMasterNumber: this.form.value.operatingPointKilometerMaster!,
     };
+    if (this.form.value.selectedType == ServicePointType.OperatingPoint) {
+      writableForm.operatingPointType = this.operatingPointType;
+      writableForm.operatingPointTechnicalTimetableType = this.operatingPointTechnicalTimetableType;
+    }
+    if (this.form.value.selectedType == ServicePointType.StopPoint) {
+      writableForm.meansOfTransport = this.form.value.meansOfTransport!;
+      writableForm.stopPointType = this.form.value.stopPointType!;
+      writableForm.freightServicePoint = this.form.value.freightServicePoint!;
+      writableForm.sortCodeOfDestinationStation = this.form.value.sortCodeOfDestinationStation!;
+    }
+    if (this.form.value.selectedType == ServicePointType.FareStop) {
+      writableForm.operatingPointTrafficPointType = OperatingPointTrafficPointType.TariffPoint;
+    }
     if (this.form.value.servicePointGeolocation) {
       writableForm.servicePointGeolocation = {
         spatialReference: this.form.value.servicePointGeolocation.spatialReference!,
