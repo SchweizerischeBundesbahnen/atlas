@@ -208,7 +208,8 @@
     "COLOR_INVALID": "Couleur attendue au format #FFFFFF",
     "CMYK_INVALID": "Couleur CMJN attendue au format 0-100,0-100,0-100,0-100. Exemple 10,10,0,100",
     "MIN": "La valeur doit être au minimum {{min}}.",
-    "MAX": "La valeur doit être au maximum {{max}}."
+    "MAX": "La valeur doit être au maximum {{max}}.",
+    "AT_LEAST_ONE": "Sélectionnez au moins une modalité."
   },
   "USER_ADMIN": {
     "SEARCH_FOR_FILTER": "Organisations commerciales et Applications",
@@ -839,6 +840,10 @@
         "OPERATING_POINT": "Point d'exploitation",
         "STOP_POINT": "Arrêt / Point de chargement",
         "FARE_STOP": "Arrêt tarifaire"
+      },
+      "TYPE_CHANGE_DIALOG": {
+        "TITLE": "Changer de type de service?",
+        "MESSAGE": "Le changement de type de service a une influence sur les possibilités d'utilisation d'un service. Êtes-vous sûr(e) de vouloir faire ce changement?"
       },
       "OPERATING_POINT_TYPE": "Type de point d'exploitation",
       "OPERATING_POINT_TYPES": {
