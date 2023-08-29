@@ -5,7 +5,6 @@ import {
   Category,
   CreateServicePointVersion,
   OperatingPointTechnicalTimetableType,
-  OperatingPointTrafficPointType,
   OperatingPointType,
   ReadServicePointVersion,
   ServicePointsService,
@@ -156,7 +155,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   save() {
     ValidationService.validateForm(this.form);
     if (this.form.valid) {
-      const servicePointVersion = this.getWritableServicePointFromForm();
+      const servicePointVersion = ServicePointFormGroupBuilder.getWritableServicePoint(this.form);
       this.form.disable();
       if (this.isNew) {
         this.create(servicePointVersion);
@@ -165,78 +164,6 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
         this.update(this.selectedVersion.id!, servicePointVersion);
       }
     }
-  }
-
-  getWritableServicePointFromForm(): CreateServicePointVersion {
-    // What to set for:
-    /**
-     * Indicates if this a operatingPoint.
-     */
-    // operatingPoint?: boolean;
-    /**
-     * Indicates if this a operatingPoint including Timetables.
-     */
-    // operatingPointWithTimetable?: boolean;
-
-    const writableForm: CreateServicePointVersion = {
-      sloid: this.form.value.sloid!,
-      designationOfficial: this.form.value.designationOfficial!,
-      designationLong: this.form.value.designationLong!,
-      abbreviation: this.form.value.abbreviation!,
-      businessOrganisation: this.form.value.businessOrganisation!,
-      categories: this.form.value.categories!,
-      operatingPointRouteNetwork: this.form.value.operatingPointRouteNetwork!,
-      operatingPointKilometerMasterNumber: this.form.value.operatingPointKilometerMaster!,
-      meansOfTransport: [],
-      status: this.form.value.status!,
-      validFrom: this.form.value.validFrom!.toDate(),
-      validTo: this.form.value.validTo!.toDate(),
-    };
-    if (this.form.value.selectedType == ServicePointType.OperatingPoint) {
-      writableForm.operatingPointType = this.operatingPointType;
-      writableForm.operatingPointTechnicalTimetableType = this.operatingPointTechnicalTimetableType;
-    }
-    if (this.form.value.selectedType == ServicePointType.StopPoint) {
-      writableForm.meansOfTransport = this.form.value.meansOfTransport!;
-      writableForm.stopPointType = this.form.value.stopPointType!;
-      writableForm.freightServicePoint = this.form.value.freightServicePoint!;
-      writableForm.sortCodeOfDestinationStation = this.form.value.sortCodeOfDestinationStation!;
-    }
-    if (this.form.value.selectedType == ServicePointType.FareStop) {
-      writableForm.operatingPointTrafficPointType = OperatingPointTrafficPointType.TariffPoint;
-    }
-    if (this.form.value.servicePointGeolocation) {
-      writableForm.servicePointGeolocation = {
-        spatialReference: this.form.value.servicePointGeolocation.spatialReference!,
-        north: this.form.value.servicePointGeolocation.north!,
-        east: this.form.value.servicePointGeolocation.east!,
-        height: this.form.value.servicePointGeolocation.height!,
-      };
-    }
-    console.log('writing form ', writableForm);
-    return writableForm;
-  }
-
-  get operatingPointTechnicalTimetableType() {
-    if (
-      Object.values(OperatingPointTechnicalTimetableType).includes(
-        this.form.value.operatingPointType as OperatingPointTechnicalTimetableType
-      )
-    ) {
-      return this.form.value.operatingPointType! as OperatingPointTechnicalTimetableType;
-    }
-    return undefined;
-  }
-
-  get operatingPointType() {
-    if (
-      Object.values(OperatingPointType).includes(
-        this.form.value.operatingPointType as OperatingPointType
-      )
-    ) {
-      return this.form.value.operatingPointType! as OperatingPointType;
-    }
-    return undefined;
   }
 
   private create(servicePointVersion: CreateServicePointVersion) {
