@@ -40,59 +40,59 @@ include::../release-notes.adoc[]
 
 == Create Business Organisation Directory - Successfully
 
-include::{snippets}/business-organisation-controller-api-test/should-create-business-organisation-version/auto-section.adoc[]
+include::{snippets}/business-organisation-controller-integration-test/should-create-business-organisation-version/auto-section.adoc[]
 
 == Get All Business Organisation Directories - Successfully
 
-include::{snippets}/business-organisation-controller-api-test/should-get-all-business-organisation-versions/auto-section.adoc[]
+include::{snippets}/business-organisation-controller-integration-test/should-get-all-business-organisation-versions/auto-section.adoc[]
 
 == Get Business Organisation Directories Versions - Successfully
 
-include::{snippets}/business-organisation-controller-api-test/should-get-business-organisation-versions/auto-section.adoc[]
+include::{snippets}/business-organisation-controller-integration-test/should-get-business-organisation-versions/auto-section.adoc[]
 
 == Get Business Organisation Directories Versions By SBOID - Successfully
 
-include::{snippets}/business-organisation-controller-api-test/should-get-business-organisation-versions-by-sboid/auto-section.adoc[]
+include::{snippets}/business-organisation-controller-integration-test/should-get-business-organisation-versions-by-sboid/auto-section.adoc[]
 
 == Get Business Organisation Directories Versions- Unsuccessfully
 
-include::{snippets}/business-organisation-controller-api-test/should-not-get-business-organisation-versions-when-provided-sboid-does-not-exists/auto-section.adoc[]
+include::{snippets}/business-organisation-controller-integration-test/should-not-get-business-organisation-versions-when-provided-sboid-does-not-exists/auto-section.adoc[]
 
 == Create Business Organisation Directory when provided field is too long - Unsuccessfully
 
-include::{snippets}/business-organisation-controller-api-test/should-not-create-business-organisation-version-when-required-abbreviation-de-field-provided-is-too-long/auto-section.adoc[]
+include::{snippets}/business-organisation-controller-integration-test/should-not-create-business-organisation-version-when-required-abbreviation-de-field-provided-is-too-long/auto-section.adoc[]
 
 == Update Business Organisation Directory when required field is not provided - Unsuccessfully
 
-include::{snippets}/business-organisation-controller-api-test/should-not-update-business-organisation-version-when-required-abbreviation-de-field-not-provided/auto-section.adoc[]
+include::{snippets}/business-organisation-controller-integration-test/should-not-update-business-organisation-version-when-required-abbreviation-de-field-not-provided/auto-section.adoc[]
 
 == Update Business Organisation Directory when id provided does not exist - Unsuccessfully
 
-include::{snippets}/business-organisation-controller-api-test/should-not-update-business-organisation-version-when-provided-id-does-not-exists/auto-section.adoc[]
+include::{snippets}/business-organisation-controller-integration-test/should-not-update-business-organisation-version-when-provided-id-does-not-exists/auto-section.adoc[]
 
 == Delete Business Organisation when id provided does exist - Successful
 
-include::{snippets}/business-organisation-controller-api-test/should-delete-business-organisation-by-sboid/auto-section.adoc[]
+include::{snippets}/business-organisation-controller-integration-test/should-delete-business-organisation-by-sboid/auto-section.adoc[]
 
 == Create Business Organisation when Abbreviation conflict occurs
 
-include::{snippets}/business-organisation-controller-api-test/should-return-conflict-error-response/auto-section.adoc[]
+include::{snippets}/business-organisation-controller-integration-test/should-return-conflict-error-response/auto-section.adoc[]
 
 = Export Business Organisation
 
 include::../../../../base-atlas/documentation/amazon/Amazon_S3_Buckets_Users_Onboarding.adoc[]
 
-== Export Full Business Organisation Versions Csv and Zip file to Amazon S3 Bucket
+== Export Full Business Organisation Versions Csv, Zip and Json gz file to Amazon S3 Bucket
 
-include::{snippets}/business-organisation-controller-api-test/should-export-full-business-organisation-versions-csv/auto-section.adoc[]
+include::{snippets}/business-organisation-controller-integration-test/should-export-full-business-organisation-versions/auto-section.adoc[]
 
-== Export Actual Business Organisation Versions Csv and Zip file to Amazon S3 Bucket
+== Export Actual Business Organisation Versions Csv, Zip and Json gz file to Amazon S3 Bucket
 
-include::{snippets}/business-organisation-controller-api-test/should-export-actual-business-organisation-versions-csv/auto-section.adoc[]
+include::{snippets}/business-organisation-controller-integration-test/should-export-actual-business-organisation-versions/auto-section.adoc[]
 
-== Export Timetable Year change Business Organisation Versions Csv and Zip file to Amazon S3 Bucket
+== Export Timetable Year change Business Organisation Versions Csv, Zip and Json gz file to Amazon S3 Bucket
 
-include::{snippets}/business-organisation-controller-api-test/should-export-future-timetable-business-organisation-versions-csv/auto-section.adoc[]
+include::{snippets}/business-organisation-controller-integration-test/should-export-future-timetable-business-organisation-versions/auto-section.adoc[]
 
 = Transport Companies
 
@@ -119,3 +119,22 @@ include::{snippets}/company-controller-api-test/should-get-companies/auto-sectio
 == Get Company - Successfully
 
 include::{snippets}/company-controller-api-test/should-get-company/auto-section.adoc[]
+
+== Get Business Organisation Json - Successfully
+
+include::{snippets}/business-organisation-controller-integration-test/should-read-json-after-export-actual-business-organisation-versions/auto-section.adoc[]
+include::{snippets}/business-organisation-controller-integration-test/should-read-json-after-export-full-business-organisation-versions/auto-section.adoc[]
+include::{snippets}/business-organisation-controller-integration-test/should-read-json-after-export-timetable-year-change-business-organisation-versions/auto-section.adoc[]
+
+== Get Business Organisation Json - Unsuccessfully
+
+include::{snippets}/business-organisation-controller-integration-test/should-fail-to-read-json/auto-section.adoc[]
+
+== Get download Business Organisation Gz Json - Successfully
+
+include::{snippets}/business-organisation-controller-integration-test/should-get-json-gz-after-export-actual-business-organisation-versions/auto-section.adoc[]
+include::{snippets}/business-organisation-controller-integration-test/should-get-json-gz-after-export-timetable-year-change-business-organisation-versions/auto-section.adoc[]
+
+== Get download Business Organisation Gz Json - Unsuccessfully
+
+include::{snippets}/business-organisation-controller-integration-test/should-fail-to-get-json-gz/auto-section.adoc[]
