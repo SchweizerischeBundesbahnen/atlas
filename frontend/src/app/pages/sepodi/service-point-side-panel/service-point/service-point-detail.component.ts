@@ -8,6 +8,7 @@ import {
   OperatingPointType,
   ReadServicePointVersion,
   ServicePointsService,
+  SpatialReference,
   StopPointType,
 } from '../../../../api';
 import { FormGroup } from '@angular/forms';
@@ -136,7 +137,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
 
   private displayAndSelectServicePointOnMap() {
     this.mapSubscription = this.mapService.mapInitialized.subscribe((initialized) => {
-      if (initialized) {
+      if (initialized && this.form.value.servicePointGeolocation?.spatialReference) {
         if (this.mapService.map.getZoom() <= this.ZOOM_LEVEL_FOR_DETAIL) {
           this.mapService.map.setZoom(this.ZOOM_LEVEL_FOR_DETAIL);
         }
@@ -225,5 +226,16 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
 
   isFormDirty(): boolean {
     return this.form.dirty;
+  }
+
+  handleGeolocationToggle(hasGeolocation: boolean) {
+    if (hasGeolocation) {
+      this.form.controls.servicePointGeolocation.controls.spatialReference.setValue(
+        SpatialReference.Lv95
+      );
+    } else {
+      this.form.controls.servicePointGeolocation.controls.spatialReference.setValue(null);
+    }
+    this.form.markAsDirty();
   }
 }
