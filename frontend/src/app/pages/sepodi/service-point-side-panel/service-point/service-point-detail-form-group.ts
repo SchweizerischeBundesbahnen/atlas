@@ -25,14 +25,15 @@ export interface ServicePointDetailFormGroup extends BaseDetailFormGroup {
   designationLong: FormControl<string | null | undefined>;
   businessOrganisation: FormControl<string | null | undefined>;
   operatingPointType: FormControl<string | null | undefined>;
+  freightServicePoint: FormControl<boolean | null | undefined>;
   sortCodeOfDestinationStation: FormControl<string | null | undefined>;
+  stopPoint: FormControl<boolean | null | undefined>;
   stopPointType: FormControl<StopPointType | null | undefined>;
   meansOfTransport: FormControl<Array<MeanOfTransport> | null | undefined>;
   categories: FormControl<Array<Category> | null | undefined>;
   operatingPointRouteNetwork: FormControl<boolean | null | undefined>;
   operatingPointKilometer: FormControl<boolean | null | undefined>;
   operatingPointKilometerMaster: FormControl<number | null | undefined>;
-  freightServicePoint: FormControl<boolean | null | undefined>;
   operatingPointTrafficPointType: FormControl<OperatingPointTrafficPointType | null | undefined>;
   etagVersion: FormControl<number | null | undefined>;
   servicePointGeolocation: FormGroup<GeographyFormGroup>;
@@ -74,7 +75,9 @@ export class ServicePointFormGroupBuilder {
         operatingPointType: new FormControl(
           version.operatingPointType ?? version.operatingPointTechnicalTimetableType
         ),
-        sortCodeOfDestinationStation: new FormControl(version.sortCodeOfDestinationStation),
+        sortCodeOfDestinationStation: new FormControl(version.sortCodeOfDestinationStation, [
+          Validators.maxLength(5),
+        ]),
         stopPointType: new FormControl(version.stopPointType),
         meansOfTransport: new FormControl(version.meansOfTransport),
         categories: new FormControl(version.categories),
@@ -92,6 +95,7 @@ export class ServicePointFormGroupBuilder {
         ),
         selectedType: new FormControl(this.determineType(version)),
         freightServicePoint: new FormControl(version.freightServicePoint),
+        stopPoint: new FormControl(version.stopPoint),
         operatingPointTrafficPointType: new FormControl(version.operatingPointTrafficPointType),
       },
       [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
@@ -124,6 +128,19 @@ export class ServicePointFormGroupBuilder {
     formGroup.controls.selectedType.valueChanges.subscribe((newType) => {
       if (newType === ServicePointType.OperatingPoint) {
         formGroup.controls.operatingPointType.setValidators([Validators.required]);
+      } else {
+        formGroup.controls.operatingPointType.clearValidators();
+      }
+      formGroup.controls.operatingPointType.updateValueAndValidity();
+    });
+
+    formGroup.controls.stopPoint.valueChanges.subscribe((isStopPoint) => {
+      if (isStopPoint) {
+        formGroup.controls.stopPointType.setValidators([Validators.required]);
+        formGroup.controls.meansOfTransport.setValidators([Validators.required]);
+      } else {
+        formGroup.controls.stopPointType.clearValidators();
+        formGroup.controls.meansOfTransport.clearValidators();
       }
       formGroup.controls.operatingPointType.updateValueAndValidity();
     });
