@@ -1,14 +1,20 @@
 <form [formGroup]="formGroup">
-  <div class="means-of-transport-wrapper">
-    <ng-container *ngFor="let mean of means">
-      <img
-        [ngClass]="{ 'icon-image': !disabled }"
-        [title]="'SEPODI.SERVICE_POINTS.MEAN_OF_TRANSPORT.' + mean | translate"
-        src="../../../../assets/images/means-of-transport/{{ getIcon(mean) }}.svg"
-        (click)="clicked(mean)"
-        [attr.data-cy]="mean"
-        [alt]="'SEPODI.SERVICE_POINTS.MEAN_OF_TRANSPORT.' + mean | translate"
-      />
-    </ng-container>
+  <div class="picker">
+    <div class="means-of-transport-wrapper">
+      <ng-container *ngFor="let mean of means">
+        <img
+          [ngClass]="{ 'icon-image': !disabled }"
+          [title]="'SEPODI.SERVICE_POINTS.MEAN_OF_TRANSPORT.' + mean | translate"
+          src="../../../../assets/images/means-of-transport/{{ getIcon(mean) }}.svg"
+          (click)="clicked(mean)"
+          [attr.data-cy]="mean"
+          [alt]="'SEPODI.SERVICE_POINTS.MEAN_OF_TRANSPORT.' + mean | translate"
+        />
+      </ng-container>
+    </div>
+    <app-atlas-field-error
+      [form]="formGroup"
+      controlName="{{ controlName }}"
+    ></app-atlas-field-error>
   </div>
 </form>
