@@ -37,7 +37,7 @@ export class AtLeastOneValidator {
   }
 
   static clearValidationError(controlForm: AbstractControl | null) {
-    if (controlForm?.errors?.date_range_error) {
+    if (controlForm?.errors?.at_least_one) {
       delete controlForm.errors['at_least_one'];
       if (Object.keys(controlForm.errors).length === 0) {
         controlForm.setErrors(null);
