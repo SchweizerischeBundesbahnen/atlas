@@ -14,6 +14,9 @@ import org.springframework.retry.policy.SimpleRetryPolicy;
 @UtilityClass
 public class StepUtils {
 
+  public static final int CHUNK_SIZE = 200;
+  public static final int FETCH_SIZE = 10_000;
+
   private static final int BACK_OFF_PERIOD = 100_000;
   private static final int MAX_ATTEMPTS = 4;
 

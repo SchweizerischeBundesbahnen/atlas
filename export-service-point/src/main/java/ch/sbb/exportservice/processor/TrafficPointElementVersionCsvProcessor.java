@@ -1,6 +1,5 @@
 package ch.sbb.exportservice.processor;
 
-import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.servicepoint.GeolocationBaseReadModel;
 import ch.sbb.exportservice.entity.BusinessOrganisation;
 import ch.sbb.exportservice.entity.TrafficPointElementVersion;
@@ -10,15 +9,9 @@ import ch.sbb.exportservice.model.TrafficPointVersionCsvModel.TrafficPointVersio
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemProcessor;
 
-import java.time.format.DateTimeFormatter;
-
 @Slf4j
 public class TrafficPointElementVersionCsvProcessor extends BaseServicePointProcessor implements
     ItemProcessor<TrafficPointElementVersion, TrafficPointVersionCsvModel> {
-
-  private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN);
-  private static final DateTimeFormatter LOCAL_DATE_FORMATTER = DateTimeFormatter.ofPattern(
-      AtlasApiConstants.DATE_TIME_FORMAT_PATTERN);
 
   @Override
   public TrafficPointVersionCsvModel process(TrafficPointElementVersion version) {
