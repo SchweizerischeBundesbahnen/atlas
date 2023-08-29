@@ -196,6 +196,69 @@ public class TrafficPointElementImportServiceTest {
         .isEqualTo(LocalDateTime.of(LocalDate.of(2022, 2, 23), LocalTime.of(17, 10, 10)));
   }
 
+  @Test
+  void shouldUpdateValidToAndEditionPropertiesCorrectlyOnSecondRun() {
+    // given
+    final List<TrafficPointElementCsvModel> trafficPointCsvModels = List.of(
+        TrafficPointElementCsvModel.builder()
+            .sloid("ch:1:sloid:1")
+            .servicePointNumber(85700012)
+            .validFrom(LocalDate.of(2020, 1, 1))
+            .validTo(LocalDate.of(2023, 12, 31))
+            .createdAt(LocalDateTime.of(2020, 1, 15, 5, 5))
+            .createdBy("fs11111")
+            .editedAt(LocalDateTime.of(2020, 1, 15, 5, 5))
+            .editedBy("fs11111")
+            .build()
+    );
+
+    final List<TrafficPointCsvModelContainer> trafficPointCsvModelContainers = List.of(
+        TrafficPointCsvModelContainer.builder()
+            .csvModelList(trafficPointCsvModels)
+            .sloid("ch:1:sloid:1")
+            .build()
+    );
+    trafficPointElementImportService.importTrafficPoints(trafficPointCsvModelContainers);
+
+    final List<TrafficPointElementCsvModel> trafficPointCsvModelsSecondRun = List.of(
+        TrafficPointElementCsvModel.builder()
+            .sloid("ch:1:sloid:1")
+            .servicePointNumber(85700012)
+            .validFrom(LocalDate.of(2020, 1, 1))
+            .validTo(LocalDate.of(2021, 6, 15))
+            .createdAt(LocalDateTime.of(2020, 1, 15, 5, 5))
+            .createdBy("fs11111")
+            .editedAt(LocalDateTime.of(2023, 1, 15, 5, 5))
+            .editedBy("fs22222")
+            .build()
+    );
+
+    final List<TrafficPointCsvModelContainer> trafficPointCsvModelContainersSecondRun = List.of(
+        TrafficPointCsvModelContainer.builder()
+            .csvModelList(trafficPointCsvModelsSecondRun)
+            .sloid("ch:1:sloid:1")
+            .build()
+    );
+
+    // when
+    final List<ItemImportResult> trafficPointItemImportResults = trafficPointElementImportService.importTrafficPoints(
+        trafficPointCsvModelContainersSecondRun);
+
+    // then
+    assertThat(trafficPointItemImportResults).hasSize(1);
+
+    final List<TrafficPointElementVersion> dbVersions =
+        trafficPointElementVersionRepository.findAllBySloidOrderByValidFrom("ch:1:sloid:1");
+
+    assertThat(dbVersions).hasSize(1);
+    assertThat(dbVersions.get(0).getEditor()).isEqualTo("fs22222");
+    assertThat(dbVersions.get(0).getEditionDate()).isEqualTo(LocalDateTime.of(2023, 1, 15, 5, 5));
+    assertThat(dbVersions.get(0).getCreator()).isEqualTo("fs11111");
+    assertThat(dbVersions.get(0).getCreationDate()).isEqualTo(LocalDateTime.of(2020, 1, 15, 5, 5));
+    assertThat(dbVersions.get(0).getValidFrom()).isEqualTo("2020-01-01");
+    assertThat(dbVersions.get(0).getValidTo()).isEqualTo("2021-06-15");
+  }
+
   private List<TrafficPointElementCsvModel> getTrafficPointCsvModelVersions(String sloid,
       int startingYear, int yearsPerVersion, int numberOfVersions, double startingHeight) {
     final ArrayList<TrafficPointElementCsvModel> list = new ArrayList<>();

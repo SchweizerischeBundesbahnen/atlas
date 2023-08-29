@@ -1,14 +1,8 @@
 package ch.sbb.atlas.servicepointdirectory.migration;
 
-import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointElementCsvModel;
-import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementImportService;
-import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.model.controller.IntegrationTest;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -16,8 +10,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 @IntegrationTest
 @Slf4j
@@ -26,17 +23,17 @@ public class TrafficPointMigrationIntegrationTest {
 
   static final String BASE_PATH = "/migration/";
 
-  private static final String DIDOK_CSV_FILE = "DIDOK3_VERKEHRSPUNKTELEMENTE_ALL_V_1_20230808023927.csv";
-  private static final String ATLAS_CSV_FILE = "full-world-traffic_point-2023-08-08.csv";
+  private static final String DIDOK_CSV_FILE = "DIDOK3_VERKEHRSPUNKTELEMENTE_ALL_V_1_20230824011928.csv";
+  private static final String ATLAS_CSV_FILE = "full-world-traffic_point-2023-08-24.csv";
 
-  private static final List<TrafficPointVersionCsvModel> trafficPointElementCsvModels = new ArrayList<>();
-  private static final List<TrafficPointElementCsvModel> didokCsvLines = new ArrayList<>();
+  private static final List<TrafficPointAtlasCsvModel> trafficPointElementCsvModels = new ArrayList<>();
+  private static final List<TrafficPointDidokCsvModel> didokCsvLines = new ArrayList<>();
 
   @Test
   @Order(1)
   void shouldParseCsvsCorrectly() throws IOException {
     try (InputStream csvStream = this.getClass().getResourceAsStream(BASE_PATH + DIDOK_CSV_FILE)) {
-      didokCsvLines.addAll(TrafficPointElementImportService.parseTrafficPointElements(csvStream));
+      didokCsvLines.addAll(DidokCsvReader.parseDidokTrafficPoints(csvStream));
     }
     assertThat(didokCsvLines).isNotEmpty();
 
@@ -49,8 +46,9 @@ public class TrafficPointMigrationIntegrationTest {
   @Test
   @Order(2)
   void shouldHaveSameSloidInBothCsvs() {
-    Set<String> didokSloids = didokCsvLines.stream().map(TrafficPointElementCsvModel::getSloid).collect(Collectors.toSet());
-    Set<String> atlasSloids = trafficPointElementCsvModels.stream().map(TrafficPointVersionCsvModel::getSloid).collect(Collectors.toSet());
+    Set<String> didokSloids = didokCsvLines.stream().map(TrafficPointDidokCsvModel::getSloid).collect(Collectors.toSet());
+    Set<String> atlasSloids = trafficPointElementCsvModels.stream().map(TrafficPointAtlasCsvModel::getSloid)
+        .collect(Collectors.toSet());
 
     Set<String> difference = atlasSloids.stream().filter(e -> !didokSloids.contains(e)).collect(Collectors.toSet());
     if (!difference.isEmpty()) {
@@ -68,22 +66,23 @@ public class TrafficPointMigrationIntegrationTest {
   @Order(3)
   void shouldHaveSameValidityOnEachDidokCode() {
     Map<String, Validity> groupedDidokSloids = didokCsvLines.stream().collect(
-        Collectors.groupingBy(TrafficPointElementCsvModel::getSloid, Collectors.collectingAndThen(Collectors.toList(),
+        Collectors.groupingBy(TrafficPointDidokCsvModel::getSloid, Collectors.collectingAndThen(Collectors.toList(),
             list -> new Validity(
                 list.stream().map(i -> new DateRange(i.getValidFrom(), i.getValidTo())).collect(Collectors.toList())).minify())));
 
     Map<String, Validity> groupedAtlasSloids = trafficPointElementCsvModels.stream().collect(
-        Collectors.groupingBy(TrafficPointVersionCsvModel::getSloid, Collectors.collectingAndThen(Collectors.toList(),
+        Collectors.groupingBy(TrafficPointAtlasCsvModel::getSloid, Collectors.collectingAndThen(Collectors.toList(),
             list -> new Validity(
-                list.stream().map(i -> new DateRange(AtlasCsvReader.dateFromString(i.getValidFrom()), AtlasCsvReader.dateFromString(i.getValidTo())))
+                list.stream().map(i -> new DateRange(AtlasCsvReader.dateFromString(i.getValidFrom()),
+                        AtlasCsvReader.dateFromString(i.getValidTo())))
                     .collect(Collectors.toList())).minify())));
 
     List<String> validityErrors = new ArrayList<>();
     groupedDidokSloids.forEach((sloid, didokValidity) -> {
       Validity atlasValidity = groupedAtlasSloids.get(sloid);
-      if(atlasValidity == null){
-        System.out.println("Didok SLOID ["+sloid+"] not found in ATLAS");
-      } else  if (!atlasValidity.equals(didokValidity)) {
+      if (atlasValidity == null) {
+        System.out.println("Didok SLOID [" + sloid + "] not found in ATLAS");
+      } else if (!atlasValidity.equals(didokValidity)) {
         validityErrors.add(
             "ValidityError on didokCode: " + sloid + " didokValidity=" + didokValidity + ", atlasValidity=" + atlasValidity);
       }
@@ -102,25 +101,26 @@ public class TrafficPointMigrationIntegrationTest {
   @Test
   @Order(4)
   void shouldHaveMappedFieldsToAtlasCorrectly() {
-    Map<String, List<TrafficPointVersionCsvModel>> groupedAtlasNumbers = trafficPointElementCsvModels.stream()
-        .collect(Collectors.groupingBy(TrafficPointVersionCsvModel::getSloid));
+    Map<String, List<TrafficPointAtlasCsvModel>> groupedAtlasNumbers = trafficPointElementCsvModels.stream()
+        .collect(Collectors.groupingBy(TrafficPointAtlasCsvModel::getSloid));
 
     didokCsvLines.forEach(didokCsvLine -> {
-      TrafficPointVersionCsvModel atlasCsvLine = findCorrespondingAtlasServicePointVersion(didokCsvLine,
+      TrafficPointAtlasCsvModel atlasCsvLine = findCorrespondingAtlasServicePointVersion(didokCsvLine,
           groupedAtlasNumbers.get(didokCsvLine.getSloid()));
-      new TrafficPointMappingEquality(didokCsvLine, atlasCsvLine).performCheck();
+      new TrafficPointMappingEquality(didokCsvLine, atlasCsvLine, false).performCheck();
     });
   }
 
-  private TrafficPointVersionCsvModel findCorrespondingAtlasServicePointVersion(TrafficPointElementCsvModel didokCsvLine,
-      List<TrafficPointVersionCsvModel> atlasCsvLines) {
-    List<TrafficPointVersionCsvModel> matchedVersions = atlasCsvLines.stream().filter(
+  private TrafficPointAtlasCsvModel findCorrespondingAtlasServicePointVersion(TrafficPointDidokCsvModel didokCsvLine,
+      List<TrafficPointAtlasCsvModel> atlasCsvLines) {
+    List<TrafficPointAtlasCsvModel> matchedVersions = atlasCsvLines.stream().filter(
         atlasCsvLine -> new DateRange(AtlasCsvReader.dateFromString(atlasCsvLine.getValidFrom()),
-                AtlasCsvReader.dateFromString(atlasCsvLine.getValidTo())).contains(
+            AtlasCsvReader.dateFromString(atlasCsvLine.getValidTo())).contains(
             didokCsvLine.getValidFrom())).toList();
     if (matchedVersions.size() == 1) {
       return matchedVersions.get(0);
     }
     throw new IllegalStateException("Not exactly one match");
   }
+
 }
