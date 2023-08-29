@@ -13,32 +13,34 @@ export class GeographyComponent implements OnInit, OnDestroy {
   @Input() disabled = false;
   @Input() formGroup!: FormGroup<GeographyFormGroup>;
 
-  transformedCoordinatePair!: CoordinatePair;
+  transformedCoordinatePair?: CoordinatePair;
   private spatialReferenceSubscription!: Subscription;
 
   constructor(private coordinateTransformationService: CoordinateTransformationService) {}
 
   ngOnInit() {
-    this.initTransformedCoordinatePair(this.currentSpatialReference);
-    this.spatialReferenceSubscription =
-      this.formGroup.controls.spatialReference.valueChanges.subscribe((changedReference) => {
-        this.initTransformedCoordinatePair(changedReference!);
-      });
+    this.initTransformedCoordinatePair();
+    this.spatialReferenceSubscription = this.formGroup.valueChanges.subscribe(() => {
+      this.initTransformedCoordinatePair();
+    });
   }
 
   ngOnDestroy() {
     this.spatialReferenceSubscription.unsubscribe();
   }
 
-  private initTransformedCoordinatePair(currentSpactialReference: SpatialReference) {
-    this.transformedCoordinatePair = this.coordinateTransformationService.transform(
-      {
-        east: this.formGroup.value.east!,
-        north: this.formGroup.value.north!,
-      },
-      currentSpactialReference,
-      this.transformedSpatialReference
-    );
+  private initTransformedCoordinatePair() {
+    if (
+      this.formGroup.value.spatialReference &&
+      this.currentCoordinates.east &&
+      this.currentCoordinates.north
+    ) {
+      this.transformedCoordinatePair = this.coordinateTransformationService.transform(
+        this.currentCoordinates,
+        this.currentSpatialReference,
+        this.transformedSpatialReference
+      );
+    }
   }
 
   get transformedSpatialReference() {
@@ -49,5 +51,12 @@ export class GeographyComponent implements OnInit, OnDestroy {
 
   get currentSpatialReference() {
     return this.formGroup.controls.spatialReference.value!;
+  }
+
+  get currentCoordinates(): CoordinatePair {
+    return {
+      east: Number(this.formGroup.value.east!),
+      north: Number(this.formGroup.value.north!),
+    };
   }
 }
