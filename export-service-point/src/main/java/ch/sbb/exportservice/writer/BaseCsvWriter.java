@@ -18,6 +18,7 @@ import java.nio.charset.StandardCharsets;
 public abstract class BaseCsvWriter<T> {
 
   abstract String[] getCsvHeader();
+
   private static final String DELIMITER = ";";
 
   @Autowired
@@ -26,7 +27,7 @@ public abstract class BaseCsvWriter<T> {
   public FlatFileItemWriter<T> csvWriter(ExportType exportType, ServicePointExportFileName exportFileName) {
     WritableResource outputResource = new FileSystemResource(
         fileExportService.createFileNamePath(ExportExtensionFileType.CSV_EXTENSION,
-            exportType,exportFileName));
+            exportType, exportFileName));
     FlatFileItemWriter<T> writer = new FlatFileItemWriter<>();
     writer.setResource(outputResource);
     writer.setAppendAllowed(true);
