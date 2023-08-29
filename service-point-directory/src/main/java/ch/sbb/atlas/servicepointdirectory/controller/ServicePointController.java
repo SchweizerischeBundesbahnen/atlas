@@ -6,16 +6,17 @@ import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel;
 import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointImportRequestModel;
+import ch.sbb.atlas.model.exception.BadRequestException;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointApiV1;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointRequestParams;
+import ch.sbb.atlas.servicepointdirectory.api.ServicePointSearchResult;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointFotComment;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointFotCommentMapper;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointVersionMapper;
-import ch.sbb.atlas.servicepointdirectory.model.ServicePointSearchResult;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointFotCommentService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
@@ -56,6 +57,9 @@ public class ServicePointController implements ServicePointApiV1 {
 
   @Override
   public List<ServicePointSearchResult> searchServicePoints(String value) {
+    if(value.length() < 2){
+      throw new BadRequestException("You must enter at least 2 digits to start a search!");
+    }
     return servicePointService.searchServicePointVersion(value);
   }
 
