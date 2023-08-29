@@ -3,7 +3,9 @@ package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
+import ch.sbb.atlas.servicepointdirectory.model.ServicePointSearchResult;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
+import ch.sbb.atlas.servicepointdirectory.repository.ServicePointSearchVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
@@ -30,6 +32,11 @@ public class ServicePointService {
   private final ServicePointVersionRepository servicePointVersionRepository;
   private final VersionableService versionableService;
   private final ServicePointValidationService servicePointValidationService;
+  private final ServicePointSearchVersionRepository servicePointSearchVersionRepository;
+
+  public List<ServicePointSearchResult> searchServicePointVersion(String value){
+    return servicePointSearchVersionRepository.searchServicePoints(value);
+  }
 
   public Page<ServicePointVersion> findAll(ServicePointSearchRestrictions servicePointSearchRestrictions) {
     return servicePointVersionRepository.loadByIdsFindBySpecification(servicePointSearchRestrictions.getSpecification(),
