@@ -8,7 +8,6 @@ import ch.sbb.atlas.configuration.Role;
 import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointImportRequestModel;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
-import ch.sbb.atlas.servicepointdirectory.model.ServicePointSearchResult;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -35,8 +34,12 @@ public interface ServicePointApiV1 {
           ServicePointVersion.Fields.validFrom}) Pageable pageable,
       @ParameterObject ServicePointRequestParams servicePointRequestParams);
   @GetMapping("search/{value}")
-  @PageableAsQueryParam
-  List<ServicePointSearchResult> searchServicePoints(@PathVariable String value);
+  List<ServicePointSearchResult> searchServicePoints(@PathVariable @Parameter(description = """
+          Search over:
+          - ServicePointNumber/DiDok-Number formerly known as UIC-Code
+          - Official designation of a location
+          - Location abbreviation
+          - Long designation of a location""") String value);
 
   @GetMapping("{servicePointNumber}")
   List<ReadServicePointVersionModel> getServicePointVersions(@PathVariable Integer servicePointNumber);
