@@ -46,9 +46,6 @@ import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRAFFIC_
 @AllArgsConstructor
 public class TrafficPointElementVersionExportBatchConfig {
 
-  private static final int CHUNK_SIZE = 200;
-  private static final int FETCH_SIZE = 10000;
-
   private final JobRepository jobRepository;
 
   private final PlatformTransactionManager transactionManager;
@@ -64,12 +61,12 @@ public class TrafficPointElementVersionExportBatchConfig {
   @Bean
   @StepScope
   public JdbcCursorItemReader<TrafficPointElementVersion> trafficPointElementReader(
-          @Autowired @Qualifier("servicePointDataSource") DataSource dataSource
-      , @Value("#{jobParameters[exportType]}") ExportType exportType) {
+      @Autowired @Qualifier("servicePointDataSource") DataSource dataSource,
+      @Value("#{jobParameters[exportType]}") ExportType exportType) {
     JdbcCursorItemReader<TrafficPointElementVersion> itemReader = new JdbcCursorItemReader<>();
     itemReader.setDataSource(dataSource);
     itemReader.setSql(TrafficPointElementVersionSqlQueryUtil.getSqlQuery(exportType));
-    itemReader.setFetchSize(FETCH_SIZE);
+    itemReader.setFetchSize(StepUtils.FETCH_SIZE);
     itemReader.setRowMapper(new TrafficPointElementVersionRowMapper());
     return itemReader;
   }
@@ -102,7 +99,7 @@ public class TrafficPointElementVersionExportBatchConfig {
   public Step exportTrafficPointElementCsvStep(ItemReader<TrafficPointElementVersion> itemReader) {
     String stepName = "exportTrafficPointElementCsvStep";
     return new StepBuilder(stepName, jobRepository)
-        .<TrafficPointElementVersion, TrafficPointVersionCsvModel>chunk(CHUNK_SIZE, transactionManager)
+        .<TrafficPointElementVersion, TrafficPointVersionCsvModel>chunk(StepUtils.CHUNK_SIZE, transactionManager)
         .reader(itemReader)
         .processor(trafficPointElementVersionCsvProcessor())
         .writer(trafficPointElementCsvWriter(null))
@@ -117,7 +114,7 @@ public class TrafficPointElementVersionExportBatchConfig {
   public Step exportTrafficPointElementJsonStep(ItemReader<TrafficPointElementVersion> itemReader) {
     String stepName = "exportTrafficPointElementJsonStep";
     return new StepBuilder(stepName, jobRepository)
-        .<TrafficPointElementVersion, ReadTrafficPointElementVersionModel>chunk(CHUNK_SIZE, transactionManager)
+        .<TrafficPointElementVersion, ReadTrafficPointElementVersionModel>chunk(StepUtils.CHUNK_SIZE, transactionManager)
         .reader(itemReader)
         .processor(trafficPointElementVersionJsonProcessor())
         .writer(trafficPointElementJsonFileItemWriter(null))
@@ -177,7 +174,6 @@ public class TrafficPointElementVersionExportBatchConfig {
 
   @Bean
   @StepScope
-  @Qualifier("fileTrafficPointElementCsvDeletingTasklet")
   public FileCsvDeletingTasklet fileTrafficPointElementCsvDeletingTasklet(
           @Value("#{jobParameters[exportType]}") ExportType exportType) {
     return new FileCsvDeletingTasklet(exportType, ServicePointExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
