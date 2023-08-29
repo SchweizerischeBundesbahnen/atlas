@@ -161,8 +161,8 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
         if (this.isNew) {
           this.closeSidePanel();
         } else {
-          this.form.disable();
           this.initSelectedVersion();
+          this.form.disable();
         }
       }
     });
