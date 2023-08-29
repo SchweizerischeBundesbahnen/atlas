@@ -94,9 +94,15 @@ export class ServicePointFormGroupBuilder {
         categories: new FormControl(version.categories),
         etagVersion: new FormControl(version.etagVersion),
         servicePointGeolocation: new FormGroup<GeographyFormGroup>({
-          east: new FormControl(this.getCoordinates(version)?.east),
-          north: new FormControl(this.getCoordinates(version)?.north),
-          height: new FormControl(version.servicePointGeolocation?.height),
+          east: new FormControl(this.getCoordinates(version)?.east, [
+            AtlasCharsetsValidator.numericWithDot,
+          ]),
+          north: new FormControl(this.getCoordinates(version)?.north, [
+            AtlasCharsetsValidator.numericWithDot,
+          ]),
+          height: new FormControl(version.servicePointGeolocation?.height, [
+            AtlasCharsetsValidator.numericWithDot,
+          ]),
           spatialReference: new FormControl(version.servicePointGeolocation?.spatialReference),
         }),
         operatingPointRouteNetwork: new FormControl(version.operatingPointRouteNetwork),
@@ -210,7 +216,7 @@ export class ServicePointFormGroupBuilder {
       writableForm.operatingPoint = true;
       writableForm.operatingPointWithTimetable = true;
     }
-    if (value.servicePointGeolocation) {
+    if (value.servicePointGeolocation?.spatialReference) {
       writableForm.servicePointGeolocation = {
         spatialReference: value.servicePointGeolocation.spatialReference!,
         north: value.servicePointGeolocation.north!,

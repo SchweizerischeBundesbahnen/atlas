@@ -170,13 +170,14 @@
   <div class="font-bold-2xl mt-5">
     {{ 'SEPODI.GEOLOCATION.GEOGRAPHY' | translate }}
     <atlas-slide-toggle
-      [(toggle)]="selectedVersion.hasGeolocation!"
+      [toggle]="!!form.value.servicePointGeolocation?.spatialReference"
+      (toggleChange)="handleGeolocationToggle($event)"
       [disabled]="form.disabled"
     ></atlas-slide-toggle>
   </div>
 
   <sepodi-geography
-    *ngIf="selectedVersion.hasGeolocation"
+    *ngIf="this.form.value.servicePointGeolocation?.spatialReference"
     [formGroup]="form.controls.servicePointGeolocation"
   ></sepodi-geography>
   <div *ngIf="selectedVersion.hasGeolocation && selectedVersion.number.uicCountryCode === 85">
