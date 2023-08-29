@@ -1,7 +1,5 @@
-package ch.sbb.atlas.servicepointdirectory.model;
+package ch.sbb.atlas.servicepoint;
 
-import ch.sbb.atlas.servicepoint.Country;
-import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
