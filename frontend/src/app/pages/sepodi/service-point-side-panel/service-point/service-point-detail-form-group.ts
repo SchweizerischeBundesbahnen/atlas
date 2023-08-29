@@ -26,6 +26,7 @@ import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atl
 import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
 import { GeographyFormGroup } from '../../geography/geography-form-group';
 import { ServicePointType } from './service-point-type';
+import { AtLeastOneValidator } from '../../../../core/validation/boolean-cross-validator/at-least-one-validator';
 
 export interface ServicePointDetailFormGroup extends BaseDetailFormGroup {
   sloid: FormControl<string | null | undefined>;
@@ -103,7 +104,7 @@ export class ServicePointFormGroupBuilder {
         operatingPointKilometerMaster: new FormControl(
           version.operatingPointKilometerMaster?.number
         ),
-        selectedType: new FormControl(this.determineType(version)),
+        selectedType: new FormControl(this.determineType(version), { nonNullable: true }),
         freightServicePoint: new FormControl(version.freightServicePoint),
         stopPoint: new FormControl(version.stopPoint),
         operatingPointTrafficPointType: new FormControl(version.operatingPointTrafficPointType),
@@ -141,6 +142,13 @@ export class ServicePointFormGroupBuilder {
       } else {
         formGroup.controls.operatingPointType.clearValidators();
       }
+      if (newType === ServicePointType.StopPoint) {
+        formGroup.addValidators(AtLeastOneValidator.of('stopPoint', 'freightServicePoint'));
+      } else {
+        formGroup.clearValidators();
+        formGroup.updateValueAndValidity();
+      }
+
       formGroup.controls.operatingPointType.updateValueAndValidity();
     });
 
@@ -160,15 +168,6 @@ export class ServicePointFormGroupBuilder {
     form: FormGroup<ServicePointDetailFormGroup>
   ): CreateServicePointVersion {
     const value = form.value;
-    // What to set for:
-    /**
-     * Indicates if this a operatingPoint.
-     */
-    // operatingPoint?: boolean;
-    /**
-     * Indicates if this a operatingPoint including Timetables.
-     */
-    // operatingPointWithTimetable?: boolean;
 
     const writableForm: CreateServicePointVersion = {
       sloid: value.sloid!,
@@ -184,19 +183,32 @@ export class ServicePointFormGroupBuilder {
       validFrom: value.validFrom!.toDate(),
       validTo: value.validTo!.toDate(),
     };
+    if (value.selectedType == ServicePointType.ServicePoint) {
+      writableForm.operatingPoint = false;
+      writableForm.operatingPointWithTimetable = false;
+    }
     if (value.selectedType == ServicePointType.OperatingPoint) {
       writableForm.operatingPointType = this.getOperatingPointType(form);
       writableForm.operatingPointTechnicalTimetableType =
         this.getOperatingPointTechnicalTimetableType(form);
+
+      writableForm.operatingPoint = true;
+      writableForm.operatingPointWithTimetable = !writableForm.operatingPointType;
     }
     if (value.selectedType == ServicePointType.StopPoint) {
       writableForm.meansOfTransport = value.meansOfTransport!;
       writableForm.stopPointType = value.stopPointType!;
       writableForm.freightServicePoint = value.freightServicePoint!;
       writableForm.sortCodeOfDestinationStation = value.sortCodeOfDestinationStation!;
+
+      writableForm.operatingPoint = true;
+      writableForm.operatingPointWithTimetable = true;
     }
     if (value.selectedType == ServicePointType.FareStop) {
       writableForm.operatingPointTrafficPointType = OperatingPointTrafficPointType.TariffPoint;
+
+      writableForm.operatingPoint = true;
+      writableForm.operatingPointWithTimetable = true;
     }
     if (value.servicePointGeolocation) {
       writableForm.servicePointGeolocation = {
@@ -206,7 +218,6 @@ export class ServicePointFormGroupBuilder {
         height: value.servicePointGeolocation.height!,
       };
     }
-    console.log('writing form ', writableForm);
     return writableForm;
   }
 
