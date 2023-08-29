@@ -23,7 +23,7 @@ public class ExportLoadingPointJobService extends BaseExportJobService {
 
   @Override
   protected List<ExportType> getExportTypes() {
-    return List.of(); // todo
+    return ExportType.getWorldOnly();
   }
 
 }
