@@ -22,8 +22,6 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     this.map = this.mapService.initMap(this.mapContainer.nativeElement);
-    this.map.dragRotate.disable();
-    this.map.touchZoomRotate.disableRotation();
     this.currentMapStyle = this.mapService.currentMapStyle;
   }
 
