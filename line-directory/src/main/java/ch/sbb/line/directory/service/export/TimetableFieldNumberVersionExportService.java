@@ -1,22 +1,23 @@
 package ch.sbb.line.directory.service.export;
 
-import static java.util.stream.Collectors.toList;
-
-import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.export.AtlasCsvMapper;
 import ch.sbb.atlas.export.BaseExportService;
-import ch.sbb.atlas.export.ExportType;
+import ch.sbb.atlas.export.enumeration.ExportType;
 import ch.sbb.atlas.export.model.VersionCsvModel;
+import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.model.csv.TimetableFieldNumberVersionCsvModel;
 import ch.sbb.line.directory.repository.TimetableFieldNumberVersionRepository;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import org.springframework.stereotype.Service;
+
 import java.io.File;
 import java.time.LocalDate;
 import java.util.List;
-import org.springframework.stereotype.Service;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class TimetableFieldNumberVersionExportService extends
@@ -67,7 +68,7 @@ public class TimetableFieldNumberVersionExportService extends
     }
 
     @Override
-    protected List<? extends VersionCsvModel> convertToCsvModel(
+    protected List<VersionCsvModel> convertToCsvModel(
         List<TimetableFieldNumberVersion> versions) {
         return versions.stream()
             .map(TimetableFieldNumberVersionCsvModel::toCsvModel)
