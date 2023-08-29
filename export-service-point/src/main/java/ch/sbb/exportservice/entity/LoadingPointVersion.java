@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @ToString
 @SuperBuilder
 @FieldNameConstants
-public class LoadingPointVersion {
+public class LoadingPointVersion extends BaseEntity {
 
   private Long id;
 
@@ -27,6 +27,10 @@ public class LoadingPointVersion {
   private boolean connectionPoint;
 
   private ServicePointNumber servicePointNumber;
+
+  private BusinessOrganisation servicePointBusinessOrganisation;
+
+  private String parentSloidServicePoint;
 
   private LocalDate validFrom;
 
