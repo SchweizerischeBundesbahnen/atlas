@@ -46,9 +46,6 @@ import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_SERVICE_
 @AllArgsConstructor
 public class ServicePointVersionExportBatchConfig {
 
-  private static final int CHUNK_SIZE = 200;
-  private static final int FETCH_SIZE = 10000;
-
   private final JobRepository jobRepository;
 
   private final PlatformTransactionManager transactionManager;
@@ -68,7 +65,7 @@ public class ServicePointVersionExportBatchConfig {
     JdbcCursorItemReader<ServicePointVersion> itemReader = new JdbcCursorItemReader<>();
     itemReader.setDataSource(dataSource);
     itemReader.setSql(ServicePointVersionSqlQueryUtil.getSqlQuery(exportType));
-    itemReader.setFetchSize(FETCH_SIZE);
+    itemReader.setFetchSize(StepUtils.FETCH_SIZE);
     itemReader.setRowMapper(new ServicePointVersionRowMapper());
     return itemReader;
   }
@@ -101,7 +98,7 @@ public class ServicePointVersionExportBatchConfig {
   public Step exportServicePointCsvStep(ItemReader<ServicePointVersion> itemReader) {
     String stepName = "exportServicePointCsvStep";
     return new StepBuilder(stepName, jobRepository)
-        .<ServicePointVersion, ServicePointVersionCsvModel>chunk(CHUNK_SIZE, transactionManager)
+        .<ServicePointVersion, ServicePointVersionCsvModel>chunk(StepUtils.CHUNK_SIZE, transactionManager)
         .reader(itemReader)
         .processor(servicePointVersionCsvProcessor())
         .writer(csvWriter(null))
@@ -116,7 +113,7 @@ public class ServicePointVersionExportBatchConfig {
   public Step exportServicePointJsonStep(ItemReader<ServicePointVersion> itemReader) {
     String stepName = "exportServicePointJsonStep";
     return new StepBuilder(stepName, jobRepository)
-        .<ServicePointVersion, ReadServicePointVersionModel>chunk(CHUNK_SIZE, transactionManager)
+        .<ServicePointVersion, ReadServicePointVersionModel>chunk(StepUtils.CHUNK_SIZE, transactionManager)
         .reader(itemReader)
         .processor(servicePointVersionJsonProcessor())
         .writer(jsonFileItemWriter(null))
