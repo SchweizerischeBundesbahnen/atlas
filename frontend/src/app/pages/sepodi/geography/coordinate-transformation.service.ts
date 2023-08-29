@@ -19,6 +19,11 @@ export class CoordinateTransformationService {
     from: SpatialReference,
     to: SpatialReference
   ): CoordinatePair {
+    if (!coordinatePair.east || !coordinatePair.north) {
+      throw new Error(
+        'Could not transform invalid coordinatePair ' + JSON.stringify(coordinatePair)
+      );
+    }
     const transformationResult = proj4(from, to, [coordinatePair.east, coordinatePair.north]);
     return {
       east: transformationResult[0],
