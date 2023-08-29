@@ -12,31 +12,25 @@
   .map-style-selector {
     background: white;
     position: absolute;
-    bottom: 215px;
+    bottom: 135px;
     right: 15px;
   }
 
-  .zoom-buttons {
-    position: absolute;
-    right: 0;
-    bottom: 0px;
+  .zoom-in {
+    bottom: 245px;
+  }
 
-    .zoom-in {
-      bottom: 145px;
-    }
+  .zoom-out {
+    bottom: 190px; //
+  }
 
-    .zoom-out {
-      bottom: 90px;
-    }
-
-    .zoom-home {
-      bottom: 25px;
-    }
+  .zoom-home {
+    bottom: 25px;
   }
 
   .map-styles {
     position: absolute;
-    bottom: 215px;
+    bottom: 135px;
     right: 80px;
 
     button {
@@ -56,13 +50,13 @@
   .map-legend-button {
     background: white;
     position: absolute;
-    bottom: 270px;
+    bottom: 80px; // 2
     right: 15px;
   }
 
   .map-legend {
     position: absolute;
-    bottom: 270px;
+    bottom: 8%;
     right: 80px;
   }
 
