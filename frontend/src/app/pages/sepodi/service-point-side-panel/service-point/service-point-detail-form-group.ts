@@ -1,9 +1,19 @@
-import { Form, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  Form,
+  FormControl,
+  FormGroup,
+  Validators,
+  ɵFormGroupValue,
+  ɵTypedOrUntyped,
+} from '@angular/forms';
 import { BaseDetailFormGroup } from '../../../../core/components/base-detail/base-detail-form-group';
 import {
   Category,
+  CreateServicePointVersion,
   MeanOfTransport,
+  OperatingPointTechnicalTimetableType,
   OperatingPointTrafficPointType,
+  OperatingPointType,
   ReadServicePointVersion,
   SpatialReference,
   Status,
@@ -144,5 +154,83 @@ export class ServicePointFormGroupBuilder {
       }
       formGroup.controls.operatingPointType.updateValueAndValidity();
     });
+  }
+
+  static getWritableServicePoint(
+    form: FormGroup<ServicePointDetailFormGroup>
+  ): CreateServicePointVersion {
+    const value = form.value;
+    // What to set for:
+    /**
+     * Indicates if this a operatingPoint.
+     */
+    // operatingPoint?: boolean;
+    /**
+     * Indicates if this a operatingPoint including Timetables.
+     */
+    // operatingPointWithTimetable?: boolean;
+
+    const writableForm: CreateServicePointVersion = {
+      sloid: value.sloid!,
+      designationOfficial: value.designationOfficial!,
+      designationLong: value.designationLong!,
+      abbreviation: value.abbreviation!,
+      businessOrganisation: value.businessOrganisation!,
+      categories: value.categories!,
+      operatingPointRouteNetwork: value.operatingPointRouteNetwork!,
+      operatingPointKilometerMasterNumber: value.operatingPointKilometerMaster!,
+      meansOfTransport: [],
+      status: value.status!,
+      validFrom: value.validFrom!.toDate(),
+      validTo: value.validTo!.toDate(),
+    };
+    if (value.selectedType == ServicePointType.OperatingPoint) {
+      writableForm.operatingPointType = this.getOperatingPointType(form);
+      writableForm.operatingPointTechnicalTimetableType =
+        this.getOperatingPointTechnicalTimetableType(form);
+    }
+    if (value.selectedType == ServicePointType.StopPoint) {
+      writableForm.meansOfTransport = value.meansOfTransport!;
+      writableForm.stopPointType = value.stopPointType!;
+      writableForm.freightServicePoint = value.freightServicePoint!;
+      writableForm.sortCodeOfDestinationStation = value.sortCodeOfDestinationStation!;
+    }
+    if (value.selectedType == ServicePointType.FareStop) {
+      writableForm.operatingPointTrafficPointType = OperatingPointTrafficPointType.TariffPoint;
+    }
+    if (value.servicePointGeolocation) {
+      writableForm.servicePointGeolocation = {
+        spatialReference: value.servicePointGeolocation.spatialReference!,
+        north: value.servicePointGeolocation.north!,
+        east: value.servicePointGeolocation.east!,
+        height: value.servicePointGeolocation.height!,
+      };
+    }
+    console.log('writing form ', writableForm);
+    return writableForm;
+  }
+
+  private static getOperatingPointTechnicalTimetableType(
+    form: FormGroup<ServicePointDetailFormGroup>
+  ) {
+    if (
+      Object.values(OperatingPointTechnicalTimetableType).includes(
+        form.value.operatingPointType as OperatingPointTechnicalTimetableType
+      )
+    ) {
+      return form.value.operatingPointType! as OperatingPointTechnicalTimetableType;
+    }
+    return undefined;
+  }
+
+  private static getOperatingPointType(form: FormGroup<ServicePointDetailFormGroup>) {
+    if (
+      Object.values(OperatingPointType).includes(
+        form.value.operatingPointType as OperatingPointType
+      )
+    ) {
+      return form.value.operatingPointType! as OperatingPointType;
+    }
+    return undefined;
   }
 }
