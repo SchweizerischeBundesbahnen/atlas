@@ -19,8 +19,8 @@ public abstract class FileUploadTasklet implements Tasklet {
 
   @Autowired
   private FileExportService fileExportService;
-  private ExportType exportType;
-  private ServicePointExportFileName exportFileName;
+  private final ExportType exportType;
+  private final ServicePointExportFileName exportFileName;
 
   protected FileUploadTasklet(ExportType exportType, ServicePointExportFileName exportFileName) {
     this.exportType = exportType;
