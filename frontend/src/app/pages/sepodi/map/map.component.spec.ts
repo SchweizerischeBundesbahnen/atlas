@@ -6,7 +6,7 @@ import { MAP_STYLES } from './map-options.service';
 import { MapService } from './map.service';
 import { Map } from 'maplibre-gl';
 
-const mapSpy = jasmine.createSpyObj<Map>(['once']);
+const mapSpy = jasmine.createSpyObj<Map>(['once', 'getZoom', 'zoomTo', 'flyTo']);
 const mapService = jasmine.createSpyObj<MapService>(['initMap', 'switchToStyle', 'removeMap']);
 mapService.initMap.and.returnValue(mapSpy);
 
@@ -46,5 +46,28 @@ describe('MapComponent', () => {
     expect(mapService.switchToStyle).toHaveBeenCalled();
     expect(component.currentMapStyle).toEqual(newStyle);
     expect(component.showMapStyleSelection).toBeFalse();
+  });
+
+  it('should increase zoom when zoomIn() is called', () => {
+    component.zoomIn();
+    expect(component.map.zoomTo).toHaveBeenCalledWith(component.map.getZoom() + 0.75, {
+      duration: 500,
+    });
+  });
+
+  it('should decrease zoom when zoomOut() is called', () => {
+    component.zoomOut();
+    expect(component.map.zoomTo).toHaveBeenCalledWith(component.map.getZoom() - 0.75, {
+      duration: 500,
+    });
+  });
+
+  it('should center into swiss country when goHome() is called', () => {
+    component.goHome();
+    expect(component.map.flyTo).toHaveBeenCalledWith({
+      center: [8.2275, 46.8182],
+      zoom: 7.25,
+      speed: 0.8,
+    });
   });
 });
