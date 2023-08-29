@@ -43,6 +43,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     Object.values(OperatingPointTechnicalTimetableType)
   );
 
+  previouslySelectedType!: ServicePointType;
   stopPointTypes = Object.values(StopPointType);
   categories = Object.values(Category);
 
@@ -106,6 +107,31 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     if (!this.isNew) {
       this.form.disable();
     }
+    this.initTypeChangeInformationDialog();
+  }
+
+  private initTypeChangeInformationDialog() {
+    this.previouslySelectedType = this.form.controls.selectedType.value!;
+    this.form.controls.selectedType.valueChanges.subscribe((newType) => {
+      if (this.previouslySelectedType != newType) {
+        if (this.previouslySelectedType != ServicePointType.ServicePoint) {
+          this.dialogService
+            .confirm({
+              title: 'SEPODI.SERVICE_POINTS.TYPE_CHANGE_DIALOG.TITLE',
+              message: 'SEPODI.SERVICE_POINTS.TYPE_CHANGE_DIALOG.MESSAGE',
+            })
+            .subscribe((result) => {
+              if (result) {
+                this.previouslySelectedType = newType!;
+              } else {
+                this.form.controls.selectedType.setValue(this.previouslySelectedType);
+              }
+            });
+        } else {
+          this.previouslySelectedType = newType!;
+        }
+      }
+    });
   }
 
   private displayAndSelectServicePointOnMap() {
