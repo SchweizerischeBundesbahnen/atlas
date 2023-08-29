@@ -1,0 +1,23 @@
+@use 'src/styles/variables' as variables;
+
+.maplibregl-popup {
+  a {
+    color: variables.$gray-900;
+    text-decoration: none;
+    cursor: unset;
+    outline: none;
+  }
+
+  &.fixed-popup {
+    a {
+      color: variables.$primary-400;
+      text-decoration: none;
+      cursor: pointer;
+      outline: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}

@@ -74,14 +74,7 @@ public class BasePointUtility {
       final VersioningAction action = versionedObject.getAction();
       return action == VersioningAction.UPDATE || action == VersioningAction.NEW;
     }).forEach(versionedObject -> {
-      final Property geolocationProp =
-          versionedObject.getEntity()
-              .getProperties()
-              .stream()
-              .filter(property -> property.getKey().equals(geolocationField))
-              .findFirst()
-              .orElseThrow();
-
+      final Property geolocationProp = getPropertyFromFieldOnVersionedObject(geolocationField, versionedObject);
       if (geolocationProp.getOneToOne() != null) {
         final List<Property> geolocationPropertyList = geolocationProp.getOneToOne().getProperties();
         final List<Property> propertiesToAdd = versionedObject
@@ -100,6 +93,26 @@ public class BasePointUtility {
     });
   }
 
+  public <T extends BaseDidokImportEntity> void overrideEditionDateAndEditorOnVersionedObjects(
+      T version,
+      List<VersionedObject> versionedObjects) {
+    versionedObjects.stream().filter(versionedObject -> {
+      final VersioningAction action = versionedObject.getAction();
+      return action == VersioningAction.UPDATE || action == VersioningAction.NEW;
+    }).forEach(versionedObject -> {
+      final Property editionDate = getPropertyFromFieldOnVersionedObject(
+          BaseDidokImportEntity.Fields.editionDate,
+          versionedObject
+      );
+      final Property editor = getPropertyFromFieldOnVersionedObject(
+          BaseDidokImportEntity.Fields.editor,
+          versionedObject
+      );
+      editionDate.setValue(version.getEditionDate());
+      editor.setValue(version.getEditor());
+    });
+  }
+
   public <T extends Versionable> List<T> findVersionsExactlyIncludedBetweenEditedValidFromAndEditedValidTo(
       LocalDate editedValidFrom, LocalDate editedValidTo, List<T> versions) {
     List<T> collected = versions.stream()
@@ -112,6 +125,15 @@ public class BasePointUtility {
       return collected;
     }
     return Collections.emptyList();
+  }
+
+  private Property getPropertyFromFieldOnVersionedObject(String fieldName, VersionedObject versionedObject) {
+    return versionedObject
+        .getEntity()
+        .getProperties()
+        .stream()
+        .filter(property -> property.getKey().equals(fieldName))
+        .findFirst().orElseThrow();
   }
 
 }
