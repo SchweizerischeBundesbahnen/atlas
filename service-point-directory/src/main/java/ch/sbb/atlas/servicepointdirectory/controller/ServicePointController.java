@@ -15,17 +15,19 @@ import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointFotCommentMapper;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointVersionMapper;
+import ch.sbb.atlas.servicepointdirectory.model.ServicePointSearchResult;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointFotCommentService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
-import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @Slf4j
@@ -50,6 +52,11 @@ public class ServicePointController implements ServicePointApiV1 {
         .objects(servicePointVersions.stream().map(ServicePointVersionMapper::toModel).toList())
         .totalCount(servicePointVersions.getTotalElements())
         .build();
+  }
+
+  @Override
+  public List<ServicePointSearchResult> searchServicePoints(String value) {
+    return servicePointService.searchServicePointVersion(value);
   }
 
   @Override
