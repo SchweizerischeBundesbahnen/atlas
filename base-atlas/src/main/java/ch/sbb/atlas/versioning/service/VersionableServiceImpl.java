@@ -28,7 +28,7 @@ public class VersionableServiceImpl implements VersionableService {
   }
 
   @Override
-  public <T extends Versionable> List<VersionedObject> versioningObjectsForImportFromCsv(Versionable current,
+  public <T extends Versionable> List<VersionedObject> versioningObjectsDeletingNullProperties(Versionable current,
       Versionable editedVersion, List<T> currentVersions) {
     return doVersioningObjects(true, current, editedVersion, currentVersions);
   }

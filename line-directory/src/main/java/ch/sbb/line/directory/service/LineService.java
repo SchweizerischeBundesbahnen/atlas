@@ -136,7 +136,7 @@ public class LineService {
       throw new StaleObjectStateException(LineVersion.class.getSimpleName(), "version");
     }
 
-    List<VersionedObject> versionedObjects = versionableService.versioningObjects(currentVersion,
+    List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion,
         editedVersion, currentVersions);
     lineUpdateValidationService.validateVersioningNotAffectingReview(currentVersions, versionedObjects);
 
