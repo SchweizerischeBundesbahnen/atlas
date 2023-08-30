@@ -114,7 +114,7 @@ public class ServicePointImportService extends BaseImportService<ServicePointVer
   public void updateServicePointVersionForImportService(ServicePointVersion edited) {
     List<ServicePointVersion> dbVersions = servicePointService.findAllByNumberOrderByValidFrom(edited.getNumber());
     ServicePointVersion current = BasePointUtility.getCurrentPointVersion(dbVersions, edited);
-    List<VersionedObject> versionedObjects = versionableService.versioningObjectsForImportFromCsv(current, edited,
+    List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(current, edited,
         dbVersions);
     BasePointUtility.overrideEditionDateAndEditorOnVersionedObjects(edited, versionedObjects);
     BasePointUtility.addCreateAndEditDetailsToGeolocationPropertyFromVersionedObjects(versionedObjects,
