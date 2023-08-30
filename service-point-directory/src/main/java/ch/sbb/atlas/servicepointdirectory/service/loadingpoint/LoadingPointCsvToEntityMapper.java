@@ -3,6 +3,7 @@ package ch.sbb.atlas.servicepointdirectory.service.loadingpoint;
 import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointCsvModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
+
 import java.util.function.Function;
 
 public class LoadingPointCsvToEntityMapper implements
@@ -16,7 +17,7 @@ public class LoadingPointCsvToEntityMapper implements
         .designation(loadingPointCsvModel.getDesignation())
         .designationLong(loadingPointCsvModel.getDesignationLong())
         .connectionPoint(loadingPointCsvModel.getConnectionPoint())
-        .servicePointNumber(ServicePointNumber.of(loadingPointCsvModel.getServicePointNumber()))
+        .servicePointNumber(ServicePointNumber.ofNumberWithoutCheckDigit(loadingPointCsvModel.getServicePointNumber()))
         .validFrom(loadingPointCsvModel.getValidFrom())
         .validTo(loadingPointCsvModel.getValidTo())
         .creator(loadingPointCsvModel.getCreatedBy())

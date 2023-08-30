@@ -1,18 +1,16 @@
 package ch.sbb.atlas.imports.servicepoint.servicepoint;
 
-import static java.util.Comparator.comparing;
-
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.versioning.date.DateHelper;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.*;
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-import lombok.extern.slf4j.Slf4j;
+
+import static java.util.Comparator.comparing;
 
 @Slf4j
 @Data
@@ -100,11 +98,15 @@ public class ServicePointCsvModelContainer {
 
   private void removeCurrentVersionIncreaseNextValidTo(String mergeType, ServicePointCsvModel previous,
       ServicePointCsvModel current) {
-    log.info(mergeType + "Found versions to merge with number {}", this.didokCode);
+    log.info(mergeType + "Found versions to merge with number {}", getDidokCode());
     log.info(mergeType + "Version-1 [{}]-[{}]", previous.getValidFrom(), previous.getValidTo());
     log.info(mergeType + "Version-2 [{}]-[{}]", current.getValidFrom(), current.getValidTo());
     previous.setValidTo(current.getValidTo());
     log.info(mergeType + "Version merged [{}]-[{}]", previous.getValidFrom(), current.getValidTo());
+  }
+
+  public Integer getDidokCode(){
+    return ServicePointNumber.removeCheckDigit(this.didokCode);
   }
 
 }
