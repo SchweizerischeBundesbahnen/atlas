@@ -1,0 +1,54 @@
+[
+  {
+    "creationDate": "2023-06-21T16:49:20.367888",
+    "creator": "e552064",
+    "editionDate": "2023-06-21T16:49:20.367888",
+    "editor": "e552064",
+    "id": 1000,
+    "sboid": "ch:1:sboid:1100000",
+    "said": "1100000",
+    "descriptionDe": "BLS/SBB Thun - Brig/-Interlaken",
+    "descriptionFr": "BLS/SBB Thun - Brig/-Interlaken",
+    "descriptionIt": "BLS/SBB Thun - Brig/-Interlaken",
+    "descriptionEn": "BLS/SBB Thun - Brig/-Interlaken",
+    "abbreviationDe": "BLS/SBB",
+    "abbreviationFr": "BLS/SBB",
+    "abbreviationIt": "BLS/SBB",
+    "abbreviationEn": "BLS/SBB",
+    "organisationNumber": 500,
+    "contactEnterpriseEmail": null,
+    "status": "VALIDATED",
+    "businessTypes": [
+      "RAILROAD"
+    ],
+    "validFrom": "1900-01-01",
+    "validTo": "9999-12-31",
+    "etagVersion": 0
+  },
+  {
+    "creationDate": "2023-07-06T18:42:30.312078",
+    "creator": "e552064",
+    "editionDate": "2023-07-06T18:42:30.312078",
+    "editor": "e552064",
+    "id": 1001,
+    "sboid": "ch:1:sboid:1100001",
+    "said": "1100001",
+    "descriptionDe": "Regionalverkehr Bern-Solothurn",
+    "descriptionFr": "Regionalverkehr Bern-Solothurn",
+    "descriptionIt": "Regionalverkehr Bern-Solothurn",
+    "descriptionEn": "Regionalverkehr Bern-Solothurn",
+    "abbreviationDe": "RBS",
+    "abbreviationFr": "RBS",
+    "abbreviationIt": "RBS",
+    "abbreviationEn": "RBS",
+    "organisationNumber": 88,
+    "contactEnterpriseEmail": null,
+    "status": "VALIDATED",
+    "businessTypes": [
+      "RAILROAD"
+    ],
+    "validFrom": "2008-01-01",
+    "validTo": "2088-01-01",
+    "etagVersion": 0
+  }
+]
