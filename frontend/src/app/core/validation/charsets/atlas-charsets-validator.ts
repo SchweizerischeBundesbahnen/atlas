@@ -1,4 +1,4 @@
-import { AbstractControl, ValidationErrors, Validators } from '@angular/forms';
+import { AbstractControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 
 export class AtlasCharsetsValidator {
   static numeric(control: AbstractControl): ValidationErrors | null {
@@ -7,6 +7,21 @@ export class AtlasCharsetsValidator {
 
   static numericWithDot(control: AbstractControl): ValidationErrors | null {
     return AtlasCharsetsValidator.validateAllowedCharacters(control, '[.0-9]*', '.0-9');
+  }
+
+  static decimalWithDigits(decimalDigits: number): ValidatorFn {
+    return (control) => {
+      const patternErrors = Validators.pattern('[0-9]*\\.?[0-9]{0,' + decimalDigits + '}')(control);
+      if (patternErrors) {
+        const error: ValidationErrors = {
+          decimal_number: {
+            maxDecimalDigits: decimalDigits,
+          },
+        };
+        return error;
+      }
+      return patternErrors;
+    };
   }
 
   static sid4pt(control: AbstractControl): ValidationErrors | null {
