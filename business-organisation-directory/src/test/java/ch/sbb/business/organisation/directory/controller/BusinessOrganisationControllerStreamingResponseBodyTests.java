@@ -31,40 +31,6 @@ public class BusinessOrganisationControllerStreamingResponseBodyTests extends Ba
         };
     }
 
-//    @Test
-//    void shouldReadJsonAfterExportFullBusinessOrganisationVersions() throws Exception {
-//        try (InputStream inputStream = this.getClass().getResourceAsStream("/business-organisation-data.json")) {
-//            System.out.println("HERE IS INPUT STRING");
-//            System.out.println(inputStream.toString());
-//            StreamingResponseBody streamingResponseBody = writeOutputStream(inputStream);
-//            Thread.sleep(2000);
-//
-//            doReturn(streamingResponseBody).when(businessOrganisationAmazonService).streamJsonFile(ExportType.FULL);
-//
-//            //when & then
-//            mvc.perform(get("/v1/business-organisations/export/download-json/" + ExportType.FULL))
-//                    .andExpect(status().isOk())
-//                    .andExpect(jsonPath("$", hasSize(2)));
-//        }
-//    }
-//
-//    @Test
-//    void shouldReadJsonAfterExportActualBusinessOrganisationVersions() throws Exception {
-//        try (InputStream inputStream = this.getClass().getResourceAsStream("/business-organisation-data.json")) {
-//            System.out.println("HERE IS INPUT STRING");
-//            System.out.println(inputStream.toString());
-//            StreamingResponseBody streamingResponseBody = writeOutputStream(inputStream);
-//            Thread.sleep(2000);
-//
-//            doReturn(streamingResponseBody).when(businessOrganisationAmazonService).streamJsonFile(ExportType.ACTUAL_DATE);
-//
-//            //when & then
-//            mvc.perform(get("/v1/business-organisations/export/download-json/" + ExportType.ACTUAL_DATE))
-//                    .andExpect(status().isOk())
-//                    .andExpect(jsonPath("$", hasSize(2)));
-//        }
-//    }
-
     @Test
     void shouldReadJsonAfterExportTimetableYearChangeBusinessOrganisationVersions() throws Exception {
         try (InputStream inputStream = this.getClass().getResourceAsStream("/business-organisation-data.json")) {
