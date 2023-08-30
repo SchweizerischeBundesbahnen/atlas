@@ -511,13 +511,13 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
                                                                             .build();
     controller.createBusinessOrganisationVersion(versionModel);
 
-    //when
+    //when and then
     mvc.perform(post("/v1/business-organisations/export/full"))
         .andExpect(status().isOk()).andReturn();
   }
 
   @Test
-  void shouldGetJonGzAfterExportFullBusinessOrganisationVersions() throws Exception {
+  void shouldGetJsonGzAfterExportFullBusinessOrganisationVersions() throws Exception {
     // given
     List<BusinessOrganisationVersion> versions = new ArrayList<>();
     versions.add(version1);
@@ -526,9 +526,8 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
     mapper.registerModule(new JavaTimeModule());
     File fileCreatedOnFly = new File("test.json");
     mapper.writeValue(fileCreatedOnFly, versions);
-    // when
     when(amazonService.pullFile(any(), any())).thenReturn(fileCreatedOnFly);
-    // then
+    // when and then
     mvc.perform(get("/v1/business-organisations/export/download-gz-json/" + ExportType.FULL))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$", hasSize(2)));
@@ -543,7 +542,7 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
                                                                             .build();
     controller.createBusinessOrganisationVersion(versionModel);
 
-    //when
+    //when and then
     mvc.perform(post("/v1/business-organisations/export/actual"))
         .andExpect(status().isOk());
   }
@@ -558,9 +557,8 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
     mapper.registerModule(new JavaTimeModule());
     File fileCreatedOnFly = new File("test.json");
     mapper.writeValue(fileCreatedOnFly, versions);
-    // when
     when(amazonService.pullFile(any(), any())).thenReturn(fileCreatedOnFly);
-    // then
+    // when and then
     mvc.perform(get("/v1/business-organisations/export/download-gz-json/" + ExportType.ACTUAL_DATE))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$", hasSize(2)));
@@ -575,13 +573,14 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
                                                                             .build();
     controller.createBusinessOrganisationVersion(versionModel);
 
-    //when
+    //when and then
     mvc.perform(post("/v1/business-organisations/export/timetable-year-change"))
         .andExpect(status().isOk());
   }
 
   @Test
   void shouldGetJsonGzAfterExportTimetableYearChangeBusinessOrganisationVersions() throws Exception {
+    // given
     List<BusinessOrganisationVersion> versions = new ArrayList<>();
     versions.add(version1);
     versions.add(version2);
@@ -591,7 +590,7 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
     mapper.writeValue(fileCreatedOnFly, versions);
 
     when(amazonService.pullFile(any(), any())).thenReturn(fileCreatedOnFly);
-
+    // when and then
     mvc.perform(get("/v1/business-organisations/export/download-gz-json/" + ExportType.FUTURE_TIMETABLE))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$", hasSize(2)));
@@ -599,6 +598,7 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
 
   @Test
   void shouldFailToReadJson() throws Exception {
+    // given
     when(amazonService.pullFile(any(), any())).thenThrow(new NotFoundException("", "") {
       @Override
       public ErrorResponse getErrorResponse() {
@@ -606,6 +606,7 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
       }
     });
 
+    // when and then
     mvc.perform(get("/v1/business-organisations/export/download-json/" + ExportType.FUTURE_TIMETABLE))
             .andExpect(status().isNotFound())
             .andExpect(result -> assertTrue(result.getResolvedException() instanceof NotFoundException));
@@ -613,6 +614,7 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
 
   @Test
   void shouldFailToGetJsonGz() throws Exception {
+    // given
     when(amazonService.pullFile(any(), any())).thenThrow(new NotFoundException("", "") {
       @Override
       public ErrorResponse getErrorResponse() {
@@ -620,6 +622,7 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
       }
     });
 
+    // when and then
     mvc.perform(get("/v1/business-organisations/export/download-gz-json/" + ExportType.FUTURE_TIMETABLE))
             .andExpect(status().isNotFound())
             .andExpect(result -> assertTrue(result.getResolvedException() instanceof NotFoundException));
@@ -627,6 +630,7 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
 
   @Test
   public void shouldReturnErrorMessageOnEmptyBody() throws Exception {
+    // when and then
     mvc.perform(post("/v1/business-organisations/versions").contentType(contentType)
                     .content(mapper.writeValueAsString("{}")))
             .andExpect(status().isBadRequest());
