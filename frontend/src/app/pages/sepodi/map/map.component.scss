@@ -9,6 +9,10 @@
     width: 100%;
   }
 
+  #map {
+    cursor: default; /* Standard-Mauszeigerstil */
+  }
+
   .map-style-selector {
     background: white;
     position: absolute;
