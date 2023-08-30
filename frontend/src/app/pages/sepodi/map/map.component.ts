@@ -14,7 +14,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   currentMapStyle!: MapStyle;
   showMapStyleSelection = false;
   showMapLegend = false;
-
+  test: any;
   legend!: MapIcon[];
 
   map!: Map;
@@ -28,6 +28,16 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.map = this.mapService.initMap(this.mapContainer.nativeElement);
     this.currentMapStyle = this.mapService.currentMapStyle;
     MapIconsService.getIconsAsImages().then((icons) => (this.legend = icons));
+
+    //Event click on map.
+    this.map.on('click', (e: any) => {
+      const clickedCoordinates = e.lngLat;
+
+      //Changes the cursor
+      this.map.getCanvas().style.cursor = 'crosshair';
+
+      console.log('Klick auf die Karte:', clickedCoordinates);
+    });
   }
 
   ngOnDestroy() {
