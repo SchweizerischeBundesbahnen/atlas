@@ -107,7 +107,7 @@ public class SublineService {
     List<SublineVersion> currentVersions = sublineVersionRepository.findAllBySlnidOrderByValidFrom(
         currentVersion.getSlnid());
 
-    List<VersionedObject> versionedObjects = versionableService.versioningObjects(currentVersion,
+    List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion,
         editedVersion, currentVersions);
 
     versionableService.applyVersioning(SublineVersion.class, versionedObjects, this::save,

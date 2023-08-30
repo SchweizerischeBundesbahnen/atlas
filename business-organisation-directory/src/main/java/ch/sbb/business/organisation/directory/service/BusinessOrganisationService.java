@@ -70,7 +70,7 @@ public class BusinessOrganisationService {
 
     List<BusinessOrganisationVersion> currentVersions = versionRepository.findAllBySboidOrderByValidFrom(
         currentVersion.getSboid());
-    List<VersionedObject> versionedObjects = versionableService.versioningObjects(currentVersion,
+    List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion,
         editedVersion, currentVersions);
     versionableService.applyVersioning(BusinessOrganisationVersion.class, versionedObjects,
         this::save, this::deleteById);

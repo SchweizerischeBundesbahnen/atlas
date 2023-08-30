@@ -34,7 +34,7 @@ public class TimetableFieldNumberServiceScenario11Test extends BaseTimetableFiel
     //given
     version1 = versionRepository.save(version1);
     version2 = versionRepository.save(version2);
-    TimetableFieldNumberVersion editedVersion = new TimetableFieldNumberVersion();
+    TimetableFieldNumberVersion editedVersion = version1Builder().build();
     editedVersion.setValidFrom(LocalDate.of(2019, 6, 1));
     editedVersion.setValidTo(LocalDate.of(2024, 6, 1));
     editedVersion.setDescription("FPFN Description <changed>");
@@ -90,7 +90,7 @@ public class TimetableFieldNumberServiceScenario11Test extends BaseTimetableFiel
     version1 = versionRepository.save(version1);
     version2 = versionRepository.save(version2);
     version3 = versionRepository.save(version3);
-    TimetableFieldNumberVersion editedVersion = new TimetableFieldNumberVersion();
+    TimetableFieldNumberVersion editedVersion = version1Builder().build();
     editedVersion.setValidFrom(LocalDate.of(2019, 6, 1));
     editedVersion.setValidTo(LocalDate.of(2025, 6, 1));
     editedVersion.setDescription("FPFN Description <changed>");
@@ -158,7 +158,7 @@ public class TimetableFieldNumberServiceScenario11Test extends BaseTimetableFiel
     version1 = versionRepository.save(version1);
     version2 = versionRepository.save(version2);
     version3 = versionRepository.save(version3);
-    TimetableFieldNumberVersion editedVersion = new TimetableFieldNumberVersion();
+    TimetableFieldNumberVersion editedVersion = version1Builder().build();
     editedVersion.setValidFrom(LocalDate.of(2019, 6, 1));
     editedVersion.setValidTo(LocalDate.of(2024, 12, 31));
     editedVersion.setDescription("FPFN Description <changed>");
@@ -226,7 +226,7 @@ public class TimetableFieldNumberServiceScenario11Test extends BaseTimetableFiel
     version1 = versionRepository.save(version1);
     version2 = versionRepository.save(version2);
     version3 = versionRepository.save(version3);
-    TimetableFieldNumberVersion editedVersion = new TimetableFieldNumberVersion();
+    TimetableFieldNumberVersion editedVersion = version1Builder().build();
     editedVersion.setValidFrom(LocalDate.of(2020, 1, 1));
     editedVersion.setValidTo(LocalDate.of(2025, 6, 1));
     editedVersion.setDescription("FPFN Description <changed>");
