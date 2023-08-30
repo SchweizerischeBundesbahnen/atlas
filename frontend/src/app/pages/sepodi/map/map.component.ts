@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
-import { Map } from 'maplibre-gl';
+import maplibregl, { Map } from 'maplibre-gl';
 import { MapService } from './map.service';
 import { MAP_STYLES, MapStyle } from './map-options.service';
 import { MapIcon, MapIconsService } from './map-icons.service';
@@ -59,5 +59,27 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   switchToStyle(style: MapStyle) {
     this.currentMapStyle = this.mapService.switchToStyle(style);
     this.showMapStyleSelection = false;
+  }
+
+  zoomIn() {
+    const currentZoom = this.map.getZoom();
+    const newZoom = currentZoom + 0.75;
+    this.map.zoomTo(newZoom, { duration: 500 });
+  }
+
+  zoomOut() {
+    const currentZoom = this.map.getZoom();
+    const newZoom = currentZoom - 0.75;
+    this.map.zoomTo(newZoom, { duration: 500 });
+  }
+
+  goHome() {
+    const swissLongLat = [8.2275, 46.8182];
+
+    this.map.flyTo({
+      center: swissLongLat as maplibregl.LngLatLike,
+      zoom: 7.25,
+      speed: 0.8,
+    });
   }
 }
