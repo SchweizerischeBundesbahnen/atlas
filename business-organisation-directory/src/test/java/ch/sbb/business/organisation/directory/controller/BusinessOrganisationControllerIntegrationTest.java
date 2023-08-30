@@ -12,16 +12,22 @@ import ch.sbb.business.organisation.directory.BusinessOrganisationData;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
 import ch.sbb.business.organisation.directory.repository.BusinessOrganisationVersionRepository;
 import ch.sbb.business.organisation.directory.service.export.BusinessOrganisationVersionExportService;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.web.servlet.MvcResult;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
+import java.util.zip.GZIPOutputStream;
 
 import static ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel.Fields.abbreviationDe;
 import static ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel.Fields.abbreviationEn;
@@ -81,8 +87,49 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
   @MockBean
   private AmazonService amazonService;
 
+  BusinessOrganisationVersion version1;
+  BusinessOrganisationVersion version2;
+
   @BeforeEach
   void createDefaultVersion() {
+    version1 = BusinessOrganisationVersion.builder()
+            .sboid("ch:1:sboid:100000")
+            .abbreviationDe("de1")
+            .abbreviationFr("fr1")
+            .abbreviationIt("it1")
+            .abbreviationEn("en1")
+            .descriptionDe("desc-de1")
+            .descriptionFr("desc-fr1")
+            .descriptionIt("desc-it1")
+            .descriptionEn("desc-en1")
+            .businessTypes(new HashSet<>(
+                    Arrays.asList(BusinessType.RAILROAD, BusinessType.AIR,
+                            BusinessType.SHIP)))
+            .contactEnterpriseEmail("mail1@mail.ch")
+            .organisationNumber(1234)
+            .status(Status.VALIDATED)
+            .validFrom(LocalDate.of(2020, 1, 1))
+            .validTo(LocalDate.of(2021, 12, 31))
+            .build();
+    version2 = BusinessOrganisationVersion.builder()
+            .sboid("ch:1:sboid:100000")
+            .abbreviationDe("de2")
+            .abbreviationFr("fr1")
+            .abbreviationIt("it1")
+            .abbreviationEn("en1")
+            .descriptionDe("desc-de1")
+            .descriptionFr("desc-fr1")
+            .descriptionIt("desc-it1")
+            .descriptionEn("desc-en1")
+            .businessTypes(new HashSet<>(
+                    Arrays.asList(BusinessType.RAILROAD, BusinessType.AIR,
+                            BusinessType.SHIP)))
+            .contactEnterpriseEmail("mail1@mail.ch")
+            .organisationNumber(1234)
+            .status(Status.VALIDATED)
+            .validFrom(LocalDate.of(2022, 1, 1))
+            .validTo(LocalDate.of(2023, 12, 31))
+            .build();
     versionRepository.save(version);
   }
 
@@ -468,57 +515,57 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
     controller.createBusinessOrganisationVersion(versionModel);
 
     //when
-    MvcResult mvcResult = mvc.perform(post("/v1/business-organisations/export/full"))
+    mvc.perform(post("/v1/business-organisations/export/full"))
         .andExpect(status().isOk()).andReturn();
-//    deleteFileFromBucket(mvcResult, exportService.getDirectory(), amazonService);
   }
 
   @Test
   void shouldReadJsonAfterExportFullBusinessOrganisationVersions() throws Exception {
-    //given
-    BusinessOrganisationVersionModel versionModel = BusinessOrganisationData.businessOrganisationVersionModelBuilder()
-            .validFrom(LocalDate.of(2001, 1, 1))
-            .validTo(LocalDate.of(2001, 12, 31))
-            .build();
-    controller.createBusinessOrganisationVersion(versionModel);
+    // given
+    List<BusinessOrganisationVersion> versions = new ArrayList<>();
+    versions.add(version1);
+    versions.add(version2);
 
-    //when
-    MvcResult mvcResult = mvc.perform(post("/v1/business-organisations/export/full"))
-            .andExpect(status().isOk()).andReturn();
+    mapper.registerModule(new JavaTimeModule());
+    File inputFile = new File("test.json");
+    mapper.writeValue(inputFile, versions);
+    File gzipFile = gzipFile(inputFile);
+    // when
+    when(amazonService.pullFile(any(), any())).thenReturn(gzipFile);
 
     mvc.perform(get("/v1/business-organisations/export/download-json/" + ExportType.FULL))
             .andExpect(status().isOk())
+            .andExpect(jsonPath("$", hasSize(2)))
             .andExpect(jsonPath("$.[0]."
                     + businessTypes, containsInAnyOrder(BusinessType.RAILROAD.name(), BusinessType.AIR.name(), BusinessType.SHIP.name())))
-            .andExpect(jsonPath("$.[0]." + organisationNumber, is(123)))
-            .andExpect(jsonPath("$.[0]." + contactEnterpriseEmail, is("mail@mail.ch")))
-            .andExpect(jsonPath("$.[0]." + descriptionDe, is("desc-de")))
-            .andExpect(jsonPath("$.[0]." + descriptionFr, is("desc-fr")))
-            .andExpect(jsonPath("$.[0]." + descriptionIt, is("desc-it")))
-            .andExpect(jsonPath("$.[0]." + descriptionEn, is("desc-en")))
-            .andExpect(jsonPath("$.[0]." + abbreviationDe, is("de")))
-            .andExpect(jsonPath("$.[0]." + abbreviationFr, is("fr")))
-            .andExpect(jsonPath("$.[0]." + abbreviationIt, is("it")))
-            .andExpect(jsonPath("$.[0]." + abbreviationEn, is("en")));
-//    deleteFileFromBucket(mvcResult, exportService.getDirectory(), amazonService);
+            .andExpect(jsonPath("$.[0]." + organisationNumber, is(1234)))
+            .andExpect(jsonPath("$.[0]." + contactEnterpriseEmail, is("mail1@mail.ch")))
+            .andExpect(jsonPath("$.[0]." + descriptionDe, is("desc-de1")))
+            .andExpect(jsonPath("$.[0]." + descriptionFr, is("desc-fr1")))
+            .andExpect(jsonPath("$.[0]." + descriptionIt, is("desc-it1")))
+            .andExpect(jsonPath("$.[0]." + descriptionEn, is("desc-en1")))
+            .andExpect(jsonPath("$.[0]." + abbreviationDe, is("de1")))
+            .andExpect(jsonPath("$.[0]." + abbreviationFr, is("fr1")))
+            .andExpect(jsonPath("$.[0]." + abbreviationIt, is("it1")))
+            .andExpect(jsonPath("$.[0]." + abbreviationEn, is("en1")));
   }
 
   @Test
   void shouldGetJonGzAfterExportFullBusinessOrganisationVersions() throws Exception {
-    //given
-    BusinessOrganisationVersionModel versionModel = BusinessOrganisationData.businessOrganisationVersionModelBuilder()
-            .validFrom(LocalDate.of(2001, 1, 1))
-            .validTo(LocalDate.of(2001, 12, 31))
-            .build();
-    controller.createBusinessOrganisationVersion(versionModel);
+    // given
+    List<BusinessOrganisationVersion> versions = new ArrayList<>();
+    versions.add(version1);
+    versions.add(version2);
 
-    //when
-    MvcResult mvcResult = mvc.perform(post("/v1/business-organisations/export/full"))
-            .andExpect(status().isOk()).andReturn();
-
-    MvcResult mvcResult1 = mvc.perform(get("/v1/business-organisations/export/download-gz-json/" + ExportType.FULL))
-            .andExpect(status().isOk()).andReturn();
-    deleteFileFromBucket(mvcResult, exportService.getDirectory(), amazonService);
+    mapper.registerModule(new JavaTimeModule());
+    File fileCreatedOnFly = new File("test.json");
+    mapper.writeValue(fileCreatedOnFly, versions);
+    // when
+    when(amazonService.pullFile(any(), any())).thenReturn(fileCreatedOnFly);
+    // then
+    mvc.perform(get("/v1/business-organisations/export/download-gz-json/" + ExportType.FULL))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$", hasSize(2)));
   }
 
   @Test
@@ -531,59 +578,57 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
     controller.createBusinessOrganisationVersion(versionModel);
 
     //when
-    MvcResult mvcResult = mvc.perform(post("/v1/business-organisations/export/actual"))
-        .andExpect(status().isOk()).andReturn();
-//    deleteFileFromBucket(mvcResult, exportService.getDirectory(), amazonService);
+    mvc.perform(post("/v1/business-organisations/export/actual"))
+        .andExpect(status().isOk());
   }
 
   @Test
   void shouldReadJsonAfterExportActualBusinessOrganisationVersions() throws Exception {
-    //given
-    BusinessOrganisationVersionModel versionModel = BusinessOrganisationData.businessOrganisationVersionModelBuilder()
-            .validFrom(LocalDate.now().withMonth(1).withDayOfMonth(1))
-            .validTo(LocalDate.now().withMonth(12).withDayOfMonth(31))
-            .build();
-    controller.createBusinessOrganisationVersion(versionModel);
+    // given
+    List<BusinessOrganisationVersion> versions = new ArrayList<>();
+    versions.add(version1);
+    versions.add(version2);
 
-    //when
-    MvcResult mvcResult = mvc.perform(post("/v1/business-organisations/export/actual"))
-            .andExpect(status().isOk()).andReturn();
+    mapper.registerModule(new JavaTimeModule());
+    File inputFile = new File("test.json");
+    mapper.writeValue(inputFile, versions);
+    File gzipFile = gzipFile(inputFile);
+    // when
+    when(amazonService.pullFile(any(), any())).thenReturn(gzipFile);
 
     mvc.perform(get("/v1/business-organisations/export/download-json/" + ExportType.ACTUAL_DATE))
             .andExpect(status().isOk())
+            .andExpect(jsonPath("$", hasSize(2)))
             .andExpect(jsonPath("$.[0]."
                     + businessTypes, containsInAnyOrder(BusinessType.RAILROAD.name(), BusinessType.AIR.name(), BusinessType.SHIP.name())))
-            .andExpect(jsonPath("$.[0]." + organisationNumber, is(123)))
-            .andExpect(jsonPath("$.[0]." + contactEnterpriseEmail, is("mail@mail.ch")))
-            .andExpect(jsonPath("$.[0]." + descriptionDe, is("desc-de")))
-            .andExpect(jsonPath("$.[0]." + descriptionFr, is("desc-fr")))
-            .andExpect(jsonPath("$.[0]." + descriptionIt, is("desc-it")))
-            .andExpect(jsonPath("$.[0]." + descriptionEn, is("desc-en")))
-            .andExpect(jsonPath("$.[0]." + abbreviationDe, is("de")))
-            .andExpect(jsonPath("$.[0]." + abbreviationFr, is("fr")))
-            .andExpect(jsonPath("$.[0]." + abbreviationIt, is("it")))
-            .andExpect(jsonPath("$.[0]." + abbreviationEn, is("en")));
-
-//    deleteFileFromBucket(mvcResult, exportService.getDirectory(), amazonService);
+            .andExpect(jsonPath("$.[0]." + organisationNumber, is(1234)))
+            .andExpect(jsonPath("$.[0]." + contactEnterpriseEmail, is("mail1@mail.ch")))
+            .andExpect(jsonPath("$.[0]." + descriptionDe, is("desc-de1")))
+            .andExpect(jsonPath("$.[0]." + descriptionFr, is("desc-fr1")))
+            .andExpect(jsonPath("$.[0]." + descriptionIt, is("desc-it1")))
+            .andExpect(jsonPath("$.[0]." + descriptionEn, is("desc-en1")))
+            .andExpect(jsonPath("$.[0]." + abbreviationDe, is("de1")))
+            .andExpect(jsonPath("$.[0]." + abbreviationFr, is("fr1")))
+            .andExpect(jsonPath("$.[0]." + abbreviationIt, is("it1")))
+            .andExpect(jsonPath("$.[0]." + abbreviationEn, is("en1")));
   }
 
   @Test
   void shouldGetJsonGzAfterExportActualBusinessOrganisationVersions() throws Exception {
-    //given
-    BusinessOrganisationVersionModel versionModel = BusinessOrganisationData.businessOrganisationVersionModelBuilder()
-            .validFrom(LocalDate.now().withMonth(1).withDayOfMonth(1))
-            .validTo(LocalDate.now().withMonth(12).withDayOfMonth(31))
-            .build();
-    controller.createBusinessOrganisationVersion(versionModel);
+    // given
+    List<BusinessOrganisationVersion> versions = new ArrayList<>();
+    versions.add(version1);
+    versions.add(version2);
 
-    //when
-    MvcResult mvcResult = mvc.perform(post("/v1/business-organisations/export/actual"))
-            .andExpect(status().isOk()).andReturn();
-
-    MvcResult mvcResult1 = mvc.perform(get("/v1/business-organisations/export/download-gz-json/" + ExportType.ACTUAL_DATE))
-            .andExpect(status().isOk()).andReturn();
-
-//    deleteFileFromBucket(mvcResult, exportService.getDirectory(), amazonService);
+    mapper.registerModule(new JavaTimeModule());
+    File fileCreatedOnFly = new File("test.json");
+    mapper.writeValue(fileCreatedOnFly, versions);
+    // when
+    when(amazonService.pullFile(any(), any())).thenReturn(fileCreatedOnFly);
+    // then
+    mvc.perform(get("/v1/business-organisations/export/download-gz-json/" + ExportType.ACTUAL_DATE))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$", hasSize(2)));
   }
 
   @Test
@@ -596,59 +641,71 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
     controller.createBusinessOrganisationVersion(versionModel);
 
     //when
-    MvcResult mvcResult = mvc.perform(post("/v1/business-organisations/export/timetable-year-change"))
-        .andExpect(status().isOk()).andReturn();
-//    deleteFileFromBucket(mvcResult, exportService.getDirectory(), amazonService);
+    mvc.perform(post("/v1/business-organisations/export/timetable-year-change"))
+        .andExpect(status().isOk());
   }
 
   @Test
   void shouldReadJsonAfterExportTimetableYearChangeBusinessOrganisationVersions() throws Exception {
-    //given
-    BusinessOrganisationVersionModel versionModel = BusinessOrganisationData.businessOrganisationVersionModelBuilder()
-            .validFrom(LocalDate.now().withMonth(1).withDayOfMonth(1))
-            .validTo(LocalDate.now().withMonth(12).withDayOfMonth(31))
-            .build();
-    controller.createBusinessOrganisationVersion(versionModel);
+    // given
+    List<BusinessOrganisationVersion> versions = new ArrayList<>();
+    versions.add(version1);
+    versions.add(version2);
 
-    //when
-    MvcResult mvcResult = mvc.perform(post("/v1/business-organisations/export/timetable-year-change"))
-            .andExpect(status().isOk()).andReturn();
-
+    mapper.registerModule(new JavaTimeModule());
+    File inputFile = new File("test.json");
+    mapper.writeValue(inputFile, versions);
+    File gzipFile = gzipFile(inputFile);
+    // when
+    when(amazonService.pullFile(any(), any())).thenReturn(gzipFile);
+    // then
     mvc.perform(get("/v1/business-organisations/export/download-json/" + ExportType.FUTURE_TIMETABLE))
             .andExpect(status().isOk())
+            .andExpect(jsonPath("$", hasSize(2)))
             .andExpect(jsonPath("$.[0]."
                     + businessTypes, containsInAnyOrder(BusinessType.RAILROAD.name(), BusinessType.AIR.name(), BusinessType.SHIP.name())))
-            .andExpect(jsonPath("$.[0]." + organisationNumber, is(123)))
-            .andExpect(jsonPath("$.[0]." + contactEnterpriseEmail, is("mail@mail.ch")))
-            .andExpect(jsonPath("$.[0]." + descriptionDe, is("desc-de")))
-            .andExpect(jsonPath("$.[0]." + descriptionFr, is("desc-fr")))
-            .andExpect(jsonPath("$.[0]." + descriptionIt, is("desc-it")))
-            .andExpect(jsonPath("$.[0]." + descriptionEn, is("desc-en")))
-            .andExpect(jsonPath("$.[0]." + abbreviationDe, is("de")))
-            .andExpect(jsonPath("$.[0]." + abbreviationFr, is("fr")))
-            .andExpect(jsonPath("$.[0]." + abbreviationIt, is("it")))
-            .andExpect(jsonPath("$.[0]." + abbreviationEn, is("en")));
+            .andExpect(jsonPath("$.[0]." + organisationNumber, is(1234)))
+            .andExpect(jsonPath("$.[0]." + contactEnterpriseEmail, is("mail1@mail.ch")))
+            .andExpect(jsonPath("$.[0]." + descriptionDe, is("desc-de1")))
+            .andExpect(jsonPath("$.[0]." + descriptionFr, is("desc-fr1")))
+            .andExpect(jsonPath("$.[0]." + descriptionIt, is("desc-it1")))
+            .andExpect(jsonPath("$.[0]." + descriptionEn, is("desc-en1")))
+            .andExpect(jsonPath("$.[0]." + abbreviationDe, is("de1")))
+            .andExpect(jsonPath("$.[0]." + abbreviationFr, is("fr1")))
+            .andExpect(jsonPath("$.[0]." + abbreviationIt, is("it1")))
+            .andExpect(jsonPath("$.[0]." + abbreviationEn, is("en1")));
+  }
 
-//    deleteFileFromBucket(mvcResult, exportService.getDirectory(), amazonService);
+  private File gzipFile(File inputFile) throws Exception {
+    File outputFile = new File("test.json.gz");
+    FileInputStream fileInputStream = new FileInputStream(inputFile.getPath());
+    FileOutputStream fileOutputStream = new FileOutputStream(outputFile.getPath());
+    GZIPOutputStream gzipOutputStream = new GZIPOutputStream(fileOutputStream);
+
+    byte[] buffer = new byte[1024];
+    int length;
+    while ((length = fileInputStream.read(buffer)) != -1) {
+      gzipOutputStream.write(buffer, 0, length);
+    }
+    gzipOutputStream.close();
+    return outputFile;
   }
 
   @Test
   void shouldGetJsonGzAfterExportTimetableYearChangeBusinessOrganisationVersions() throws Exception {
-    //given
-    BusinessOrganisationVersionModel versionModel = BusinessOrganisationData.businessOrganisationVersionModelBuilder()
-            .validFrom(LocalDate.now().withMonth(1).withDayOfMonth(1))
-            .validTo(LocalDate.now().withMonth(12).withDayOfMonth(31))
-            .build();
-    controller.createBusinessOrganisationVersion(versionModel);
+    List<BusinessOrganisationVersion> versions = new ArrayList<>();
+    versions.add(version1);
+    versions.add(version2);
 
-    //when
-    MvcResult mvcResult = mvc.perform(post("/v1/business-organisations/export/timetable-year-change"))
-            .andExpect(status().isOk()).andReturn();
+    mapper.registerModule(new JavaTimeModule());
+    File fileCreatedOnFly = new File("test.json");
+    mapper.writeValue(fileCreatedOnFly, versions);
 
-    MvcResult mvcResult1 = mvc.perform(get("/v1/business-organisations/export/download-gz-json/" + ExportType.FUTURE_TIMETABLE))
-            .andExpect(status().isOk()).andReturn();
+    when(amazonService.pullFile(any(), any())).thenReturn(fileCreatedOnFly);
 
-//    deleteFileFromBucket(mvcResult, exportService.getDirectory(), amazonService);
+    mvc.perform(get("/v1/business-organisations/export/download-gz-json/" + ExportType.FUTURE_TIMETABLE))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$", hasSize(2)));
   }
 
   @Test
