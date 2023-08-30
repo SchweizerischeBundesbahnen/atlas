@@ -38,7 +38,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   selectedVersionIndex!: number;
   form!: FormGroup<ServicePointDetailFormGroup>;
   isNew = true;
-
+  test: any;
   types = Object.values(ServicePointType);
   operatingPointTypes = (Object.values(OperatingPointType) as string[]).concat(
     Object.values(OperatingPointTechnicalTimetableType)
@@ -152,6 +152,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     if (this.form.enabled) {
       this.showConfirmationDialog();
     } else {
+      this.mapService.isEditModus.next(true);
       this.form.enable();
     }
   }
