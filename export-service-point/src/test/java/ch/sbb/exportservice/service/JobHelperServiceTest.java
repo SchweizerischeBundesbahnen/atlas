@@ -20,8 +20,6 @@ import org.springframework.batch.core.JobInstance;
 import org.springframework.batch.core.JobParameter;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.explore.JobExplorer;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
 public class JobHelperServiceTest {
 
@@ -51,7 +49,6 @@ public class JobHelperServiceTest {
     LocalDate result = jobHelperService.getDateForImportFileToDownload("myJob");
     //then
     assertThat(result).isEqualTo(JobHelperService.MIN_LOCAL_DATE);
-
   }
 
   @Test
@@ -72,11 +69,10 @@ public class JobHelperServiceTest {
     LocalDate result = jobHelperService.getDateForImportFileToDownload("myJob");
     //then
     assertThat(result).isEqualTo(successfullyJobExecutionLocalDate);
-
   }
 
   @Test
-  public void shouldReturnTrueWhenMacthedDateIsBetweenTodayAndMatchingDate() {
+  public void shouldReturnTrueWhenMatchedDateIsBetweenTodayAndMatchingDate() {
     //given
     LocalDate matchingDate = LocalDate.now();
     LocalDate lastEditionDate = LocalDate.now();
