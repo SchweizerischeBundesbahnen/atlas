@@ -41,7 +41,7 @@ class ServicePointGeolocationVersionTest {
 
     ServicePointVersion servicePoint = ServicePointVersion
         .builder()
-        .number(ServicePointNumber.of(85070003))
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8507000))
         .numberShort(1)
         .country(Country.SWITZERLAND)
         .designationLong("long designation")

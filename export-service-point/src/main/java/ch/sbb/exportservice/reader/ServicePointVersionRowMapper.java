@@ -29,7 +29,7 @@ public class ServicePointVersionRowMapper extends BaseRowMapper implements RowMa
   public ServicePointVersion mapRow(ResultSet rs, int rowNum) throws SQLException {
     ServicePointVersionBuilder<?, ?> servicePointVersionBuilder = ServicePointVersion.builder();
     servicePointVersionBuilder.id(rs.getLong("id"));
-    servicePointVersionBuilder.number(ServicePointNumber.of(rs.getInt("number")));
+    servicePointVersionBuilder.number(ServicePointNumber.ofNumberWithoutCheckDigit(rs.getInt("number")));
     servicePointVersionBuilder.country(Country.valueOf(rs.getString("country")));
     servicePointVersionBuilder.sloid(rs.getString("sloid"));
     servicePointVersionBuilder.validFrom(rs.getObject("valid_from", LocalDate.class));
@@ -62,7 +62,7 @@ public class ServicePointVersionRowMapper extends BaseRowMapper implements RowMa
     servicePointVersionBuilder.operatingPointRouteNetwork(rs.getBoolean("operating_point_route_network"));
     Integer operatingPointKilometerMaster = RowMapperUtil.getInteger(rs, "operating_point_kilometer_master");
     if (operatingPointKilometerMaster != null) {
-      servicePointVersionBuilder.operatingPointKilometerMaster(ServicePointNumber.of(operatingPointKilometerMaster));
+      servicePointVersionBuilder.operatingPointKilometerMaster(ServicePointNumber.ofNumberWithoutCheckDigit(operatingPointKilometerMaster));
     }
     servicePointVersionBuilder.sortCodeOfDestinationStation(rs.getString("sort_code_of_destination_station"));
 
