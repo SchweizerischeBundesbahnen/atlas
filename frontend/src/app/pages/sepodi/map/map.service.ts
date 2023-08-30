@@ -47,7 +47,8 @@ export class MapService {
     MapIconsService.addAllIconsToMap(this.map);
     this.initMapEvents();
     this.map.resize();
-
+    this.map.dragRotate.disable();
+    this.map.touchZoomRotate.disableRotation();
     return this.map;
   }
 
