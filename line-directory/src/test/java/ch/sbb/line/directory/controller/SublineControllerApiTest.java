@@ -1,14 +1,5 @@
 package ch.sbb.line.directory.controller;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.api.lidi.LineVersionModel;
 import ch.sbb.atlas.api.lidi.LineVersionModel.Fields;
@@ -27,13 +18,23 @@ import ch.sbb.line.directory.repository.CoverageRepository;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import ch.sbb.line.directory.service.export.SublineVersionExportService;
-import java.time.LocalDate;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MvcResult;
+
+import java.time.LocalDate;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class SublineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
 
@@ -58,7 +59,7 @@ public class SublineControllerApiTest extends BaseControllerWithAmazonS3ApiTest 
   @Autowired
   private SublineVersionExportService sublineVersionExportService;
 
-  @Autowired
+  @MockBean
   private AmazonService amazonService;
 
   @AfterEach
@@ -490,7 +491,6 @@ public class SublineControllerApiTest extends BaseControllerWithAmazonS3ApiTest 
     //when
     MvcResult mvcResult = mvc.perform(post("/v1/sublines/export-csv/full"))
         .andExpect(status().isOk()).andReturn();
-    deleteFileFromBucket(mvcResult, sublineVersionExportService.getDirectory(), amazonService);
   }
 
   @Test
@@ -520,7 +520,6 @@ public class SublineControllerApiTest extends BaseControllerWithAmazonS3ApiTest 
     //when
     MvcResult mvcResult = mvc.perform(post("/v1/sublines/export-csv/actual"))
         .andExpect(status().isOk()).andReturn();
-    deleteFileFromBucket(mvcResult, sublineVersionExportService.getDirectory(),amazonService);
   }
 
   @Test
@@ -550,7 +549,6 @@ public class SublineControllerApiTest extends BaseControllerWithAmazonS3ApiTest 
     //when
     MvcResult mvcResult = mvc.perform(post("/v1/sublines/export-csv/timetable-year-change"))
         .andExpect(status().isOk()).andReturn();
-    deleteFileFromBucket(mvcResult, sublineVersionExportService.getDirectory(), amazonService);
   }
 
   @Test

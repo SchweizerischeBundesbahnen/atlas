@@ -3,6 +3,7 @@ package ch.sbb.business.organisation.directory.controller;
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel;
 import ch.sbb.atlas.api.bodi.enumeration.BusinessType;
+import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.export.enumeration.ExportType;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerWithAmazonS3ApiTest;
@@ -15,6 +16,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.time.LocalDate;
@@ -38,6 +40,8 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -74,7 +78,7 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
   @Autowired
   private BusinessOrganisationVersionExportService exportService;
 
-  @Autowired
+  @MockBean
   private AmazonService amazonService;
 
   @BeforeEach
@@ -466,7 +470,7 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
     //when
     MvcResult mvcResult = mvc.perform(post("/v1/business-organisations/export/full"))
         .andExpect(status().isOk()).andReturn();
-    deleteFileFromBucket(mvcResult, exportService.getDirectory(), amazonService);
+//    deleteFileFromBucket(mvcResult, exportService.getDirectory(), amazonService);
   }
 
   @Test
@@ -496,7 +500,7 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
             .andExpect(jsonPath("$.[0]." + abbreviationFr, is("fr")))
             .andExpect(jsonPath("$.[0]." + abbreviationIt, is("it")))
             .andExpect(jsonPath("$.[0]." + abbreviationEn, is("en")));
-    deleteFileFromBucket(mvcResult, exportService.getDirectory(), amazonService);
+//    deleteFileFromBucket(mvcResult, exportService.getDirectory(), amazonService);
   }
 
   @Test
@@ -529,7 +533,7 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
     //when
     MvcResult mvcResult = mvc.perform(post("/v1/business-organisations/export/actual"))
         .andExpect(status().isOk()).andReturn();
-    deleteFileFromBucket(mvcResult, exportService.getDirectory(), amazonService);
+//    deleteFileFromBucket(mvcResult, exportService.getDirectory(), amazonService);
   }
 
   @Test
@@ -560,7 +564,7 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
             .andExpect(jsonPath("$.[0]." + abbreviationIt, is("it")))
             .andExpect(jsonPath("$.[0]." + abbreviationEn, is("en")));
 
-    deleteFileFromBucket(mvcResult, exportService.getDirectory(), amazonService);
+//    deleteFileFromBucket(mvcResult, exportService.getDirectory(), amazonService);
   }
 
   @Test
@@ -579,7 +583,7 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
     MvcResult mvcResult1 = mvc.perform(get("/v1/business-organisations/export/download-gz-json/" + ExportType.ACTUAL_DATE))
             .andExpect(status().isOk()).andReturn();
 
-    deleteFileFromBucket(mvcResult, exportService.getDirectory(), amazonService);
+//    deleteFileFromBucket(mvcResult, exportService.getDirectory(), amazonService);
   }
 
   @Test
@@ -594,7 +598,7 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
     //when
     MvcResult mvcResult = mvc.perform(post("/v1/business-organisations/export/timetable-year-change"))
         .andExpect(status().isOk()).andReturn();
-    deleteFileFromBucket(mvcResult, exportService.getDirectory(), amazonService);
+//    deleteFileFromBucket(mvcResult, exportService.getDirectory(), amazonService);
   }
 
   @Test
@@ -625,7 +629,7 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
             .andExpect(jsonPath("$.[0]." + abbreviationIt, is("it")))
             .andExpect(jsonPath("$.[0]." + abbreviationEn, is("en")));
 
-    deleteFileFromBucket(mvcResult, exportService.getDirectory(), amazonService);
+//    deleteFileFromBucket(mvcResult, exportService.getDirectory(), amazonService);
   }
 
   @Test
@@ -644,13 +648,17 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
     MvcResult mvcResult1 = mvc.perform(get("/v1/business-organisations/export/download-gz-json/" + ExportType.FUTURE_TIMETABLE))
             .andExpect(status().isOk()).andReturn();
 
-    deleteFileFromBucket(mvcResult, exportService.getDirectory(), amazonService);
+//    deleteFileFromBucket(mvcResult, exportService.getDirectory(), amazonService);
   }
 
   @Test
   void shouldFailToReadJson() throws Exception {
-    // make sure to delete file first if exists, in order to make test stable
-    cleanUpBeforeExceptionTests();
+    when(amazonService.pullFile(any(), any())).thenThrow(new NotFoundException("", "") {
+      @Override
+      public ErrorResponse getErrorResponse() {
+        return super.getErrorResponse();
+      }
+    });
 
     mvc.perform(get("/v1/business-organisations/export/download-json/" + ExportType.FUTURE_TIMETABLE))
             .andExpect(status().isNotFound())
@@ -659,26 +667,16 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
 
   @Test
   void shouldFailToGetJsonGz() throws Exception {
-    // make sure to delete file first if exists, in order to make test stable
-    cleanUpBeforeExceptionTests();
+    when(amazonService.pullFile(any(), any())).thenThrow(new NotFoundException("", "") {
+      @Override
+      public ErrorResponse getErrorResponse() {
+        return super.getErrorResponse();
+      }
+    });
 
     mvc.perform(get("/v1/business-organisations/export/download-gz-json/" + ExportType.FUTURE_TIMETABLE))
             .andExpect(status().isNotFound())
             .andExpect(result -> assertTrue(result.getResolvedException() instanceof NotFoundException));
-  }
-
-  private void cleanUpBeforeExceptionTests() throws Exception {
-    // make sure to delete file first if exists, in order to make test stable
-    BusinessOrganisationVersionModel versionModel = BusinessOrganisationData.businessOrganisationVersionModelBuilder()
-            .validFrom(LocalDate.now().withMonth(1).withDayOfMonth(1))
-            .validTo(LocalDate.now().withMonth(12).withDayOfMonth(31))
-            .build();
-    controller.createBusinessOrganisationVersion(versionModel);
-
-    MvcResult mvcResult = mvc.perform(post("/v1/business-organisations/export/timetable-year-change"))
-            .andExpect(status().isOk()).andReturn();
-
-    deleteFileFromBucket(mvcResult, exportService.getDirectory(), amazonService);
   }
 
   @Test
