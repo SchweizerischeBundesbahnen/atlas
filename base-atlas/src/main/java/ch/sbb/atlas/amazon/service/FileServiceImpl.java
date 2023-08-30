@@ -101,8 +101,8 @@ public class FileServiceImpl implements FileService {
 
   @Override
   public StreamingResponseBody streamingJsonFile(ExportTypeBase exportType, ExportFileName exportFileName,
-                                                 AmazonService amazonService, String fileName) {
-    String fileToDownload = getJsonFileToDownload(exportType,exportFileName, fileName);
+      AmazonService amazonService, String fileName) {
+    String fileToDownload = getJsonFileToDownload(exportType, exportFileName, fileName);
     try {
       File file = amazonService.pullFile(AmazonBucket.EXPORT, fileToDownload);
       byte[] bytes = decompressGzipToBytes(file.toPath());
@@ -115,7 +115,7 @@ public class FileServiceImpl implements FileService {
 
   @Override
   public StreamingResponseBody streamingGzipFile(ExportTypeBase exportType, ExportFileName exportFileName,
-                                                 AmazonService amazonService, String fileName) {
+      AmazonService amazonService, String fileName) {
     String fileToDownload = getJsonFileToDownload(exportType, exportFileName, fileName);
     try {
       File file = amazonService.pullFile(AmazonBucket.EXPORT, fileToDownload);
@@ -141,7 +141,7 @@ public class FileServiceImpl implements FileService {
   byte[] decompressGzipToBytes(Path source) throws IOException {
     ByteArrayOutputStream output = new ByteArrayOutputStream();
     try (GZIPInputStream gis = new GZIPInputStream(
-            new FileInputStream(source.toFile()))) {
+        new FileInputStream(source.toFile()))) {
       byte[] buffer = new byte[IN_BUFFER];
       int len;
       while ((len = gis.read(buffer)) > 0) {
@@ -154,7 +154,7 @@ public class FileServiceImpl implements FileService {
   private String getJsonFileToDownload(ExportTypeBase exportType, ExportFileName exportFileName, String fileName) {
     String fileNameSuffix = "/" + fileName + ".json.gz";
     String jsonFileName = exportFileName.getBaseDir();
-    if(!exportFileName.toString().equals("BUSINESS_ORGANISATION_VERSION")){
+    if (!exportFileName.toString().equals("BUSINESS_ORGANISATION_VERSION")) {
       jsonFileName += "/" + exportType.getDir();
     }
     jsonFileName += fileNameSuffix;

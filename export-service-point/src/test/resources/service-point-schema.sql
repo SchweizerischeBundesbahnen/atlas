@@ -2,8 +2,6 @@ create sequence service_point_version_geolocation_seq;
 
 create sequence service_point_version_seq;
 
-create sequence loading_point_version_geolocation_seq;
-
 create sequence loading_point_version_seq;
 
 create sequence traffic_point_element_version_geolocation_seq;
@@ -87,40 +85,22 @@ create table service_point_version_categories
     categories               varchar(50) not null
 );
 
-create table loading_point_version_geolocation
-(
-    id                bigint           not null
-        primary key,
-    spatial_reference varchar(50)      not null,
-    east              numeric(19, 11),
-    north             numeric(19, 11),
-    height            numeric(6, 2),
-    creation_date     timestamp        not null,
-    creator           varchar(50)      not null,
-    edition_date      timestamp        not null,
-    editor            varchar(50)      not null,
-    version           bigint default 0 not null
-);
-
 create table loading_point_version
 (
-    id                           bigint           not null
+    id                   bigint           not null
         primary key,
-    number                       bigint           not null,
-    designation                  varchar(12)      not null,
-    designation_long             varchar(35),
-    connection_point             boolean          not null,
-    service_point_number         integer          not null,
-    valid_from                   date             not null,
-    valid_to                     date             not null,
-    loading_point_geolocation_id bigint
-        constraint fk_loading_point_version_geolocation_id
-            references loading_point_version_geolocation,
-    creation_date                timestamp        not null,
-    creator                      varchar(50)      not null,
-    edition_date                 timestamp        not null,
-    editor                       varchar(50)      not null,
-    version                      bigint default 0 not null
+    number               bigint           not null,
+    designation          varchar(12)      not null,
+    designation_long     varchar(35),
+    connection_point     boolean          not null,
+    service_point_number integer          not null,
+    valid_from           date             not null,
+    valid_to             date             not null,
+    creation_date        timestamp        not null,
+    creator              varchar(50)      not null,
+    edition_date         timestamp        not null,
+    editor               varchar(50)      not null,
+    version              bigint default 0 not null
 );
 
 create table service_point_version_means_of_transport
