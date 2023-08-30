@@ -7,6 +7,7 @@ import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.entity.LineVersion;
+import ch.sbb.line.directory.entity.LineVersion.LineVersionBuilder;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import java.time.LocalDate;
 import java.util.Comparator;
@@ -44,24 +45,33 @@ public class LineServiceVersioningTest {
 
   @BeforeEach
   void init() {
-    version1 = LineTestData.lineVersionBuilder().slnid(SLNID)
-                           .swissLineNumber("1")
-                           .comment(null)
-                           .validFrom(LocalDate.of(2020, 1, 1))
-                           .validTo(LocalDate.of(2021, 12, 31))
-                           .build();
-    version2 = LineTestData.lineVersionBuilder().slnid(SLNID)
-                           .swissLineNumber("2")
-                           .comment(null)
-                           .validFrom(LocalDate.of(2022, 1, 1))
-                           .validTo(LocalDate.of(2023, 12, 31))
-                           .build();
-    version3 = LineTestData.lineVersionBuilder().slnid(SLNID)
-                           .swissLineNumber("3")
-                           .comment(null)
-                           .validFrom(LocalDate.of(2024, 1, 1))
-                           .validTo(LocalDate.of(2024, 12, 31))
-                           .build();
+    version1 = version1Builder().build();
+    version2 = version2Builder().build();
+    version3 = version3Builder().build();
+  }
+
+  private static LineVersionBuilder<?, ?> version3Builder() {
+    return LineTestData.lineVersionBuilder().slnid(SLNID)
+        .swissLineNumber("3")
+        .comment(null)
+        .validFrom(LocalDate.of(2024, 1, 1))
+        .validTo(LocalDate.of(2024, 12, 31));
+  }
+
+  private static LineVersionBuilder<?, ?> version2Builder() {
+    return LineTestData.lineVersionBuilder().slnid(SLNID)
+        .swissLineNumber("2")
+        .comment(null)
+        .validFrom(LocalDate.of(2022, 1, 1))
+        .validTo(LocalDate.of(2023, 12, 31));
+  }
+
+  private static LineVersionBuilder<?, ?> version1Builder() {
+    return LineTestData.lineVersionBuilder().slnid(SLNID)
+        .swissLineNumber("1")
+        .comment(null)
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2021, 12, 31));
   }
 
   @AfterEach
@@ -84,7 +94,7 @@ public class LineServiceVersioningTest {
     version1 = lineVersionRepository.save(version1);
     version2 = lineVersionRepository.save(version2);
     version3 = lineVersionRepository.save(version3);
-    LineVersion editedVersion = new LineVersion();
+    LineVersion editedVersion = version2Builder().build();
     editedVersion.setDescription("Description <changed>");
     editedVersion.setComment("Scenario 2");
     editedVersion.setValidFrom(LocalDate.of(2022, 6, 1));
@@ -160,7 +170,7 @@ public class LineServiceVersioningTest {
     version2 = lineVersionRepository.save(version2);
     version3.setSwissLineNumber("2");
     version3 = lineVersionRepository.save(version3);
-    LineVersion editedVersion = new LineVersion();
+    LineVersion editedVersion = version2Builder().build();
     editedVersion.setSwissLineNumber("2");
     editedVersion.setValidFrom(version2.getValidFrom());
     editedVersion.setValidTo(version2.getValidTo());
@@ -207,7 +217,7 @@ public class LineServiceVersioningTest {
     version1 = lineVersionRepository.save(version1);
     version2 = lineVersionRepository.save(version2);
     version3 = lineVersionRepository.save(version3);
-    LineVersion editedVersion = new LineVersion();
+    LineVersion editedVersion = version3Builder().build();
     editedVersion.setDescription("Name <changed>");
     editedVersion.setComment("Scenario 4");
     editedVersion.setValidFrom(LocalDate.of(2020, 6, 1));

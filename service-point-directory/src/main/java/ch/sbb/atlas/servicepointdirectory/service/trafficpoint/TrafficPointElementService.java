@@ -80,7 +80,7 @@ public class TrafficPointElementService {
     }
 
     List<TrafficPointElementVersion> dbVersions = findBySloidOrderByValidFrom(currentVersion.getSloid());
-    List<VersionedObject> versionedObjects = versionableService.versioningObjects(currentVersion, editedVersion,
+    List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion, editedVersion,
         dbVersions);
     versionableService.applyVersioning(TrafficPointElementVersion.class, versionedObjects, this::save,
         new ApplyVersioningDeleteByIdLongConsumer(trafficPointElementVersionRepository));
