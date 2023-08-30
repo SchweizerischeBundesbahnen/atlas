@@ -27,6 +27,8 @@ export class MapService {
   selectedElement = new Subject<GeoJsonProperties>();
   currentMapStyle = MAP_STYLES[0];
 
+  isEditModus = new BehaviorSubject(false);
+
   popup = new Popup({
     closeButton: true,
     closeOnClick: false,
