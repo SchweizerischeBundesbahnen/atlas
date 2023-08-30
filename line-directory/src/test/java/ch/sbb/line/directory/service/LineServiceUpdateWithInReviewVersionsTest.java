@@ -9,6 +9,7 @@ import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.entity.LineVersion;
+import ch.sbb.line.directory.entity.LineVersion.LineVersionBuilder;
 import ch.sbb.line.directory.exception.LineInReviewValidationException;
 import ch.sbb.line.directory.exception.MergeOrSplitInReviewVersionException;
 import ch.sbb.line.directory.repository.LineVersionRepository;
@@ -47,30 +48,39 @@ public class LineServiceUpdateWithInReviewVersionsTest {
 
   @BeforeEach
   void init() {
-    version1 = LineTestData.lineVersionBuilder().slnid(SLNID)
-        .swissLineNumber("1")
-        .number("1")
-        .status(Status.VALIDATED)
-        .colorBackRgb(LineTestData.RBG_YELLOW)
-        .validFrom(LocalDate.of(2020, 1, 1))
-        .validTo(LocalDate.of(2021, 12, 31))
-        .build();
-    version2 = LineTestData.lineVersionBuilder().slnid(SLNID)
-        .swissLineNumber("2")
-        .number("2")
-        .status(Status.VALIDATED)
-        .colorBackRgb(LineTestData.RGB_BLACK)
-        .validFrom(LocalDate.of(2022, 1, 1))
-        .validTo(LocalDate.of(2023, 12, 31))
-        .build();
-    version3 = LineTestData.lineVersionBuilder().slnid(SLNID)
+    version1 = version1Builder().build();
+    version2 = version2Builder().build();
+    version3 = version3Builder().build();
+  }
+
+  private static LineVersionBuilder<?, ?> version3Builder() {
+    return LineTestData.lineVersionBuilder().slnid(SLNID)
         .swissLineNumber("3")
         .number("3")
         .status(Status.VALIDATED)
         .colorBackRgb(LineTestData.RBG_RED)
         .validFrom(LocalDate.of(2024, 1, 1))
-        .validTo(LocalDate.of(2024, 12, 31))
-        .build();
+        .validTo(LocalDate.of(2024, 12, 31));
+  }
+
+  private static LineVersionBuilder<?, ?> version2Builder() {
+    return LineTestData.lineVersionBuilder().slnid(SLNID)
+        .swissLineNumber("2")
+        .number("2")
+        .status(Status.VALIDATED)
+        .colorBackRgb(LineTestData.RGB_BLACK)
+        .validFrom(LocalDate.of(2022, 1, 1))
+        .validTo(LocalDate.of(2023, 12, 31));
+  }
+
+  private static LineVersionBuilder<?, ?> version1Builder() {
+    return LineTestData.lineVersionBuilder().slnid(SLNID)
+        .swissLineNumber("1")
+        .number("1")
+        .status(Status.VALIDATED)
+        .colorBackRgb(LineTestData.RBG_YELLOW)
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2021, 12, 31));
   }
 
   @AfterEach
@@ -96,7 +106,7 @@ public class LineServiceUpdateWithInReviewVersionsTest {
     version1.setStatus(Status.IN_REVIEW);
     version1 = lineVersionRepository.save(version1);
 
-    LineVersion editedVersion = new LineVersion();
+    LineVersion editedVersion = version1Builder().build();
     editedVersion.setDescription("Description <changed>");
     editedVersion.setValidFrom(LocalDate.of(2022, 1, 1));
     editedVersion.setValidTo(LocalDate.of(2022, 12, 31));
@@ -141,7 +151,7 @@ public class LineServiceUpdateWithInReviewVersionsTest {
     version1.setStatus(Status.IN_REVIEW);
     version1 = lineVersionRepository.save(version1);
 
-    LineVersion editedVersion = new LineVersion();
+    LineVersion editedVersion = version1Builder().build();
     editedVersion.setDescription("Description <changed>");
     editedVersion.setComment("Scenario 1");
     editedVersion.setValidFrom(LocalDate.of(2021, 1, 1));
@@ -170,7 +180,7 @@ public class LineServiceUpdateWithInReviewVersionsTest {
     version1 = lineVersionRepository.save(version1);
     version3 = lineVersionRepository.save(version3);
 
-    LineVersion editedVersion = new LineVersion();
+    LineVersion editedVersion = version3Builder().build();
     editedVersion.setSwissLineNumber("2");
     editedVersion.setNumber("2");
     editedVersion.setColorBackRgb(LineTestData.RGB_BLACK);
@@ -199,7 +209,7 @@ public class LineServiceUpdateWithInReviewVersionsTest {
     version1.setStatus(Status.IN_REVIEW);
     version1 = lineVersionRepository.save(version1);
 
-    LineVersion editedVersion = new LineVersion();
+    LineVersion editedVersion = version1Builder().build();
     editedVersion.setValidFrom(LocalDate.of(2020, 7, 1));
     editedVersion.setValidTo(LocalDate.of(2021, 7, 1));
 
@@ -224,7 +234,7 @@ public class LineServiceUpdateWithInReviewVersionsTest {
     version1.setStatus(Status.IN_REVIEW);
     version1 = lineVersionRepository.save(version1);
 
-    LineVersion editedVersion = new LineVersion();
+    LineVersion editedVersion = version1Builder().build();
     editedVersion.setDescription("Description <changed>");
     editedVersion.setComment("Scenario 1");
     editedVersion.setValidFrom(LocalDate.of(2021, 1, 1));
@@ -251,7 +261,7 @@ public class LineServiceUpdateWithInReviewVersionsTest {
     version1.setStatus(Status.IN_REVIEW);
     version1 = lineVersionRepository.save(version1);
 
-    LineVersion editedVersion = new LineVersion();
+    LineVersion editedVersion = version1Builder().build();
     editedVersion.setValidFrom(version1.getValidFrom().minusMonths(1));
     editedVersion.setValidTo(version1.getValidTo().plusMonths(1));
 
@@ -278,7 +288,7 @@ public class LineServiceUpdateWithInReviewVersionsTest {
     version2 = lineVersionRepository.save(version2);
     version3 = lineVersionRepository.save(version3);
 
-    LineVersion editedVersion = new LineVersion();
+    LineVersion editedVersion = version3Builder().build();
     editedVersion.setValidFrom(version2.getValidFrom().plusMonths(1));
     editedVersion.setValidTo(version2.getValidTo().minusMonths(1));
     editedVersion.setNumber("7");
@@ -306,7 +316,7 @@ public class LineServiceUpdateWithInReviewVersionsTest {
     version2 = lineVersionRepository.save(version2);
     version3 = lineVersionRepository.save(version3);
 
-    LineVersion editedVersion = new LineVersion();
+    LineVersion editedVersion = version3Builder().build();
     editedVersion.setValidFrom(version2.getValidFrom().plusMonths(1));
     editedVersion.setValidTo(version2.getValidTo().minusMonths(1));
     editedVersion.setNumber("7");
@@ -332,7 +342,7 @@ public class LineServiceUpdateWithInReviewVersionsTest {
     version1.setStatus(Status.IN_REVIEW);
     version1 = lineVersionRepository.save(version1);
 
-    LineVersion editedVersion = new LineVersion();
+    LineVersion editedVersion = version1Builder().build();
     editedVersion.setDescription("Description <changed>");
     editedVersion.setLineType(version1.getLineType());
     editedVersion.setValidFrom(version1.getValidFrom());

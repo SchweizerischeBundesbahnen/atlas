@@ -243,6 +243,10 @@ public class LineController implements LineApiV1 {
         .businessOrganisation(lineVersionModel.getBusinessOrganisation())
         .comment(lineVersionModel.getComment())
         .swissLineNumber(lineVersionModel.getSwissLineNumber())
+        .creationDate(lineVersionModel.getCreationDate())
+        .creator(lineVersionModel.getCreator())
+        .editionDate(lineVersionModel.getEditionDate())
+        .editor(lineVersionModel.getEditor())
         .version(lineVersionModel.getEtagVersion())
         .build();
   }

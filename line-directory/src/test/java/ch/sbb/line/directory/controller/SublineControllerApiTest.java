@@ -257,26 +257,26 @@ public class SublineControllerApiTest extends BaseControllerWithAmazonS3ApiTest 
             .paymentType(PaymentType.LOCAL)
             .mainlineSlnid(lineVersionSaved.getSlnid())
             .build();
-    SublineVersionModel sublineVersionSaved = sublineController.createSublineVersion(
-        sublineVersionModel);
+    SublineVersionModel sublineVersionSaved = sublineController.createSublineVersion(sublineVersionModel);
 
     //when
-    sublineVersionModel.setMainlineSlnid(changedlineVersionSaved.getSlnid());
+    sublineVersionSaved.setSwissSublineNumber("another");
+    sublineVersionSaved.setMainlineSlnid(changedlineVersionSaved.getSlnid());
     mvc.perform(post("/v1/sublines/versions/" + sublineVersionSaved.getId())
             .contentType(contentType)
-            .content(mapper.writeValueAsString(sublineVersionModel)))
+            .content(mapper.writeValueAsString(sublineVersionSaved)))
         .andExpect(status().isConflict())
         .andExpect(jsonPath("$.status", is(409)))
         .andExpect(jsonPath("$.message", is("A conflict occurred due to a business rule")))
         .andExpect(jsonPath("$.error", is("Subline conflict")))
         .andExpect(jsonPath("$.details[0].message",
-            is("The mainline " + sublineVersionSaved.getMainlineSlnid() + " cannot be changed")))
+            is("The mainline " + sublineVersionModel.getMainlineSlnid() + " cannot be changed")))
         .andExpect(jsonPath("$.details[0].field", is("mainlineSlnid")))
         .andExpect(jsonPath("$.details[0].displayInfo.code",
             is("LIDI.SUBLINE.CONFLICT.ASSIGN_DIFFERENT_LINE_CONFLICT")))
         .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("mainlineSlnid")))
         .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value",
-            is(sublineVersionSaved.getMainlineSlnid())));
+            is(sublineVersionModel.getMainlineSlnid())));
   }
 
   @Test
