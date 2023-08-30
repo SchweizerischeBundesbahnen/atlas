@@ -7,159 +7,33 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class SwissCantonTest {
 
     @Test
-    void shouldGetZurichCanton() {
-        SwissCanton swissCanton = SwissCanton.fromCantonNumber(SwissCanton.ZURICH.getNumber());
-        assertEquals(SwissCanton.ZURICH, swissCanton);
-    }
-
-    @Test
-    void shouldGetBernCanton() {
-        SwissCanton swissCanton = SwissCanton.fromCantonNumber(SwissCanton.BERN.getNumber());
-        assertEquals(SwissCanton.BERN, swissCanton);
-    }
-
-    @Test
-    void shouldGetLucerneCanton() {
-        SwissCanton swissCanton = SwissCanton.fromCantonNumber(SwissCanton.LUCERNE.getNumber());
-        assertEquals(SwissCanton.LUCERNE, swissCanton);
-    }
-
-    @Test
-    void shouldGetUriCanton() {
-        SwissCanton swissCanton = SwissCanton.fromCantonNumber(SwissCanton.URI.getNumber());
-        assertEquals(SwissCanton.URI, swissCanton);
-    }
-
-    @Test
-    void shouldGetSchwyzCanton() {
-        SwissCanton swissCanton = SwissCanton.fromCantonNumber(SwissCanton.SCHWYZ.getNumber());
-        assertEquals(SwissCanton.SCHWYZ, swissCanton);
-    }
-
-    @Test
-    void shouldGetObwaldenCanton() {
-        SwissCanton swissCanton = SwissCanton.fromCantonNumber(SwissCanton.OBWALDEN.getNumber());
-        assertEquals(SwissCanton.OBWALDEN, swissCanton);
-    }
-
-    @Test
-    void shouldGetNidwaldenCanton() {
-        SwissCanton swissCanton = SwissCanton.fromCantonNumber(SwissCanton.NIDWALDEN.getNumber());
-        assertEquals(SwissCanton.NIDWALDEN, swissCanton);
-    }
-
-    @Test
-    void shouldGetGlarusCanton() {
-        SwissCanton swissCanton = SwissCanton.fromCantonNumber(SwissCanton.GLARUS.getNumber());
-        assertEquals(SwissCanton.GLARUS, swissCanton);
-    }
-
-    @Test
-    void shouldGetZugCanton() {
-        SwissCanton swissCanton = SwissCanton.fromCantonNumber(SwissCanton.ZUG.getNumber());
-        assertEquals(SwissCanton.ZUG, swissCanton);
-    }
-
-    @Test
-    void shouldGetFribourgCanton() {
-        SwissCanton swissCanton = SwissCanton.fromCantonNumber(SwissCanton.FRIBOURG.getNumber());
-        assertEquals(SwissCanton.FRIBOURG, swissCanton);
-    }
-
-    @Test
-    void shouldGetSolothurnCanton() {
-        SwissCanton swissCanton = SwissCanton.fromCantonNumber(SwissCanton.SOLOTHURN.getNumber());
-        assertEquals(SwissCanton.SOLOTHURN, swissCanton);
-    }
-
-    @Test
-    void shouldGetBaselCityCanton() {
-        SwissCanton swissCanton = SwissCanton.fromCantonNumber(SwissCanton.BASEL_CITY.getNumber());
-        assertEquals(SwissCanton.BASEL_CITY, swissCanton);
-    }
-
-    @Test
-    void shouldGetBaselCountryCanton() {
-        SwissCanton swissCanton = SwissCanton.fromCantonNumber(SwissCanton.BASEL_COUNTRY.getNumber());
-        assertEquals(SwissCanton.BASEL_COUNTRY, swissCanton);
-    }
-
-    @Test
-    void shouldGetSchaffhausenCanton() {
-        SwissCanton swissCanton = SwissCanton.fromCantonNumber(SwissCanton.SCHAFFHAUSEN.getNumber());
-        assertEquals(SwissCanton.SCHAFFHAUSEN, swissCanton);
-    }
-
-    @Test
-    void shouldGetAppenzellAusserrhodenCanton() {
-        SwissCanton swissCanton = SwissCanton.fromCantonNumber(SwissCanton.APPENZELL_AUSSERRHODEN.getNumber());
-        assertEquals(SwissCanton.APPENZELL_AUSSERRHODEN, swissCanton);
-    }
-
-    @Test
-    void shouldGetAppenzeellInnerrhodenCanton() {
-        SwissCanton swissCanton = SwissCanton.fromCantonNumber(SwissCanton.APPENZELL_INNERRHODEN.getNumber());
-        assertEquals(SwissCanton.APPENZELL_INNERRHODEN, swissCanton);
-    }
-
-    @Test
-    void shouldGetStGallenCanton() {
-        SwissCanton swissCanton = SwissCanton.fromCantonNumber(SwissCanton.ST_GALLEN.getNumber());
-        assertEquals(SwissCanton.ST_GALLEN, swissCanton);
-    }
-
-    @Test
-    void shouldGetGraubundenCanton() {
-        SwissCanton swissCanton = SwissCanton.fromCantonNumber(SwissCanton.GRAUBUNDEN.getNumber());
-        assertEquals(SwissCanton.GRAUBUNDEN, swissCanton);
-    }
-
-    @Test
-    void shouldGetAargauCanton() {
-        SwissCanton swissCanton = SwissCanton.fromCantonNumber(SwissCanton.AARGAU.getNumber());
-        assertEquals(SwissCanton.AARGAU, swissCanton);
-    }
-
-    @Test
-    void shouldGetThurgauCanton() {
-        SwissCanton swissCanton = SwissCanton.fromCantonNumber(SwissCanton.THURGAU.getNumber());
-        assertEquals(SwissCanton.THURGAU, swissCanton);
-    }
-
-    @Test
-    void shouldGetTicinoCanton() {
-        SwissCanton swissCanton = SwissCanton.fromCantonNumber(SwissCanton.TICINO.getNumber());
-        assertEquals(SwissCanton.TICINO, swissCanton);
-    }
-
-    @Test
-    void shouldGetVaudCanton() {
-        SwissCanton swissCanton = SwissCanton.fromCantonNumber(SwissCanton.VAUD.getNumber());
-        assertEquals(SwissCanton.VAUD, swissCanton);
-    }
-
-    @Test
-    void shouldGetValaisCanton() {
-        SwissCanton swissCanton = SwissCanton.fromCantonNumber(SwissCanton.VALAIS.getNumber());
-        assertEquals(SwissCanton.VALAIS, swissCanton);
-    }
-
-    @Test
-    void shouldGetNeuchatelCanton() {
-        SwissCanton swissCanton = SwissCanton.fromCantonNumber(SwissCanton.NEUCHATEL.getNumber());
-        assertEquals(SwissCanton.NEUCHATEL, swissCanton);
-    }
-
-    @Test
-    void shouldGetGeneveCanton() {
-        SwissCanton swissCanton = SwissCanton.fromCantonNumber(SwissCanton.GENEVE.getNumber());
-        assertEquals(SwissCanton.GENEVE, swissCanton);
-    }
-
-    @Test
-    void shouldGetJuraCanton() {
-        SwissCanton swissCanton = SwissCanton.fromCantonNumber(SwissCanton.JURA.getNumber());
-        assertEquals(SwissCanton.JURA, swissCanton);
+    void shouldGetCantonByNumber() {
+        assertEquals(SwissCanton.ZURICH, SwissCanton.fromCantonNumber(1));
+        assertEquals(SwissCanton.BERN, SwissCanton.fromCantonNumber(2));
+        assertEquals(SwissCanton.LUCERNE, SwissCanton.fromCantonNumber(3));
+        assertEquals(SwissCanton.URI, SwissCanton.fromCantonNumber(4));
+        assertEquals(SwissCanton.SCHWYZ, SwissCanton.fromCantonNumber(5));
+        assertEquals(SwissCanton.OBWALDEN, SwissCanton.fromCantonNumber(6));
+        assertEquals(SwissCanton.NIDWALDEN, SwissCanton.fromCantonNumber(7));
+        assertEquals(SwissCanton.GLARUS, SwissCanton.fromCantonNumber(8));
+        assertEquals(SwissCanton.ZUG, SwissCanton.fromCantonNumber(9));
+        assertEquals(SwissCanton.FRIBOURG, SwissCanton.fromCantonNumber(10));
+        assertEquals(SwissCanton.SOLOTHURN, SwissCanton.fromCantonNumber(11));
+        assertEquals(SwissCanton.BASEL_CITY, SwissCanton.fromCantonNumber(12));
+        assertEquals(SwissCanton.BASEL_COUNTRY, SwissCanton.fromCantonNumber(13));
+        assertEquals(SwissCanton.SCHAFFHAUSEN, SwissCanton.fromCantonNumber(14));
+        assertEquals(SwissCanton.APPENZELL_AUSSERRHODEN, SwissCanton.fromCantonNumber(15));
+        assertEquals(SwissCanton.APPENZELL_INNERRHODEN, SwissCanton.fromCantonNumber(16));
+        assertEquals(SwissCanton.ST_GALLEN, SwissCanton.fromCantonNumber(17));
+        assertEquals(SwissCanton.GRAUBUNDEN, SwissCanton.fromCantonNumber(18));
+        assertEquals(SwissCanton.AARGAU, SwissCanton.fromCantonNumber(19));
+        assertEquals(SwissCanton.THURGAU, SwissCanton.fromCantonNumber(20));
+        assertEquals(SwissCanton.TICINO, SwissCanton.fromCantonNumber(21));
+        assertEquals(SwissCanton.VAUD, SwissCanton.fromCantonNumber(22));
+        assertEquals(SwissCanton.VALAIS, SwissCanton.fromCantonNumber(23));
+        assertEquals(SwissCanton.NEUCHATEL, SwissCanton.fromCantonNumber(24));
+        assertEquals(SwissCanton.GENEVE, SwissCanton.fromCantonNumber(25));
+        assertEquals(SwissCanton.JURA, SwissCanton.fromCantonNumber(26));
     }
 
 }
