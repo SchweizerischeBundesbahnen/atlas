@@ -38,7 +38,7 @@ public class ServicePointSearchVersionRepository {
                 (rs, rowNum) -> {
                     rs.setFetchSize(1000);
                     return new ServicePointSearchResult(
-                            ServicePointNumber.of(rs.getInt("number")),
+                            ServicePointNumber.ofNumberWithoutCheckDigit(rs.getInt("number")),
                             rs.getString("designation_official"));
                 }
         );

@@ -94,7 +94,7 @@ public class ServicePointImportService extends BaseImportService<ServicePointVer
           .map(new ServicePointCsvToEntityMapper())
           .toList();
       List<ServicePointVersion> dbVersions = servicePointService.findAllByNumberOrderByValidFrom(
-          ServicePointNumber.of(container.getDidokCode()));
+          ServicePointNumber.ofNumberWithoutCheckDigit(container.getDidokCode()));
       replaceCsvMergedVersions(dbVersions, servicePointVersions);
       for (ServicePointVersion servicePointVersion : servicePointVersions) {
         boolean servicePointNumberExisting = servicePointService.isServicePointNumberExisting(servicePointVersion.getNumber());
