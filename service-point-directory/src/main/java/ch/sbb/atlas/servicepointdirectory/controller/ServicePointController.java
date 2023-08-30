@@ -112,7 +112,7 @@ public class ServicePointController implements ServicePointApiV1 {
 
   @Override
   public ServicePointFotCommentModel saveFotComment(Integer servicePointNumber, ServicePointFotCommentModel fotComment) {
-    ServicePointNumber number = ServicePointNumber.of(servicePointNumber);
+    ServicePointNumber number = ServicePointNumber.ofNumberWithoutCheckDigit(servicePointNumber);
     if (!servicePointService.isServicePointNumberExisting(number)) {
       throw new ServicePointNumberNotFoundException(number);
     }

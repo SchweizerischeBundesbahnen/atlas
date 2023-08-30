@@ -27,7 +27,7 @@ class ServicePointVersionTest {
   void shouldAcceptStopPointWithType() {
     // Given
     ServicePointVersion servicePoint = ServicePointVersion.builder()
-        .number(ServicePointNumber.of(85070003))
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8507000))
         .numberShort(1)
         .country(Country.SWITZERLAND)
         .designationLong("long designation")
@@ -52,7 +52,7 @@ class ServicePointVersionTest {
   void shouldNotAcceptStopPointWithoutMeansOfTransport() {
     // Given
     ServicePointVersion servicePoint = ServicePointVersion.builder()
-        .number(ServicePointNumber.of(85070003))
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8507000))
         .numberShort(1)
         .country(Country.SWITZERLAND)
         .designationLong("long designation")
@@ -76,7 +76,7 @@ class ServicePointVersionTest {
   void shouldAcceptFreightServicePointWithSortCodeOfDestinationStation() {
     // Given
     ServicePointVersion servicePoint = ServicePointVersion.builder()
-        .number(ServicePointNumber.of(10070003))
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(1007000))
         .numberShort(7000)
         .country(Country.FINLAND)
         .freightServicePoint(true)
@@ -100,7 +100,7 @@ class ServicePointVersionTest {
   void shouldNotAcceptFreightServicePointWithoutSortCodeOfDestinationStationInSwitzerland() {
     // Given
     ServicePointVersion servicePoint = ServicePointVersion.builder()
-        .number(ServicePointNumber.of(85070003))
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8507000))
         .numberShort(7000)
         .country(Country.SWITZERLAND)
         .freightServicePoint(true)
@@ -124,7 +124,7 @@ class ServicePointVersionTest {
   void shouldNotAcceptSpeedChangeAndTariffPoint() {
     // Given
     ServicePointVersion servicePoint = ServicePointVersion.builder()
-        .number(ServicePointNumber.of(85070003))
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8507000))
         .numberShort(1)
         .country(Country.SWITZERLAND)
         .designationLong("long designation")

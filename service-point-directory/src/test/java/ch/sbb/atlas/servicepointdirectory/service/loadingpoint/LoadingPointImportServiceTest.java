@@ -1,9 +1,5 @@
 package ch.sbb.atlas.servicepointdirectory.service.loadingpoint;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-
 import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointCsvModelContainer;
@@ -12,15 +8,20 @@ import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
 import ch.sbb.atlas.servicepointdirectory.repository.LoadingPointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.CrossValidationService;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.transaction.annotation.Transactional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 
 @IntegrationTest
 @Transactional
@@ -63,7 +64,7 @@ public class LoadingPointImportServiceTest {
             .designation("Ladestelle 1")
             .connectionPoint(false)
             .number(1)
-            .servicePointNumber(85070001)
+            .servicePointNumber(8507000)
             .createdBy("fs111111")
             .createdAt(LocalDateTime.of(2020, 1, 1, 1, 1))
             .editedBy("fs222222")
@@ -75,7 +76,7 @@ public class LoadingPointImportServiceTest {
             .designation("Ladestelle 2")
             .connectionPoint(false)
             .number(1)
-            .servicePointNumber(85070001)
+            .servicePointNumber(8507000)
             .createdBy("fs333333")
             .createdAt(LocalDateTime.of(2021, 1, 1, 1, 1))
             .editedBy("fs444444")
@@ -88,7 +89,7 @@ public class LoadingPointImportServiceTest {
     final List<LoadingPointCsvModelContainer> loadingPointCsvModelContainers = List.of(
         LoadingPointCsvModelContainer.builder()
             .csvModelList(loadingPointCsvModels)
-            .didokCode(85070001)
+            .didokCode(8507000)
             .loadingPointNumber(1)
             .build()
     );
@@ -102,7 +103,7 @@ public class LoadingPointImportServiceTest {
 
     final List<LoadingPointVersion> dbVersions =
         loadingPointVersionRepository.findAllByServicePointNumberAndNumberOrderByValidFrom(
-            ServicePointNumber.of(85070001), 1);
+            ServicePointNumber.ofNumberWithoutCheckDigit(8507000), 1);
 
     assertThat(dbVersions).hasSize(2);
     assertThat(dbVersions.get(0).getId()).isNotNull();
@@ -121,7 +122,7 @@ public class LoadingPointImportServiceTest {
             .designation("Ladestelle 1")
             .connectionPoint(false)
             .number(1)
-            .servicePointNumber(85070001)
+            .servicePointNumber(8507000)
             .createdBy("fs111111")
             .createdAt(LocalDateTime.of(2020, 1, 1, 1, 1))
             .editedBy("fs222222")
@@ -133,7 +134,7 @@ public class LoadingPointImportServiceTest {
             .designation("Ladestelle 2")
             .connectionPoint(false)
             .number(1)
-            .servicePointNumber(85070001)
+            .servicePointNumber(8507000)
             .createdBy("fs333333")
             .createdAt(LocalDateTime.of(2021, 1, 1, 1, 1))
             .editedBy("fs444444")
@@ -145,7 +146,7 @@ public class LoadingPointImportServiceTest {
             .designation("Ladestelle 3")
             .connectionPoint(false)
             .number(1)
-            .servicePointNumber(85070001)
+            .servicePointNumber(8507000)
             .createdBy("fs333333")
             .createdAt(LocalDateTime.of(2021, 1, 1, 1, 1))
             .editedBy("fs444444")
@@ -158,7 +159,7 @@ public class LoadingPointImportServiceTest {
     final List<LoadingPointCsvModelContainer> loadingPointCsvModelContainers = List.of(
         LoadingPointCsvModelContainer.builder()
             .csvModelList(loadingPointCsvModels)
-            .didokCode(85070001)
+            .didokCode(8507000)
             .loadingPointNumber(1)
             .build()
     );
@@ -169,7 +170,7 @@ public class LoadingPointImportServiceTest {
             .designation("Ladestelle 1")
             .connectionPoint(false)
             .number(1)
-            .servicePointNumber(85070001)
+            .servicePointNumber(8507000)
             .createdBy("fs555555")
             .createdAt(LocalDateTime.of(2022, 1, 1, 1, 1))
             .editedBy("fs666666")
@@ -195,7 +196,7 @@ public class LoadingPointImportServiceTest {
     assertThat(loadingPointItemImportResults).hasSize(1);
 
     final List<LoadingPointVersion> dbVersions =
-        loadingPointVersionRepository.findAllByServicePointNumberAndNumberOrderByValidFrom(ServicePointNumber.of(85070001), 1);
+        loadingPointVersionRepository.findAllByServicePointNumberAndNumberOrderByValidFrom(ServicePointNumber.ofNumberWithoutCheckDigit(8507000), 1);
 
     assertThat(dbVersions).hasSize(1);
     assertThat(dbVersions.get(0).getId()).isNotNull();

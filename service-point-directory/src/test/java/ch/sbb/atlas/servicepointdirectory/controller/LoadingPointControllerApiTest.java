@@ -1,16 +1,5 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.servicepoint.CreateLoadingPointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadLoadingPointVersionModel;
@@ -29,12 +18,6 @@ import ch.sbb.atlas.servicepointdirectory.repository.LoadingPointVersionReposito
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.CrossValidationService;
 import ch.sbb.atlas.servicepointdirectory.service.loadingpoint.LoadingPointImportService;
-import java.io.InputStream;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,6 +26,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MvcResult;
+
+import java.io.InputStream;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class LoadingPointControllerApiTest extends BaseControllerApiTest {
 
@@ -120,7 +117,7 @@ public class LoadingPointControllerApiTest extends BaseControllerApiTest {
                     "&servicePointSloids=ch:1:sloid:19768" +
                     "&servicePointUicCountryCodes=58" +
                     "&servicePointNumbersShorts=1976" +
-                    "8&servicePointNumbers=58197681" +
+                    "8&servicePointNumbers=5819768" +
                     "&sboid=ch:1:sboid:100626" +
                     "&fromDate=" + loadingPointVersion.getValidFrom() +
                     "&toDate=" + loadingPointVersion.getValidTo()+
@@ -138,7 +135,7 @@ public class LoadingPointControllerApiTest extends BaseControllerApiTest {
                     "&servicePointSloids=ch:1:sloid:19768&servicePointSloids=ch:1:sloid:19769" +
                     "&servicePointUicCountryCodes=58&servicePointUicCountryCodes=85" +
                     "&servicePointNumbersShorts=19768&servicePointNumbersShorts=12768" +
-                    "&servicePointNumbers=58197681&servicePointNumbers=58197687" +
+                    "&servicePointNumbers=5819768&servicePointNumbers=5819768" +
                     "&sboid=ch:1:sboid:100626&sboid=ch:1:sboid:100628" +
                     "&fromDate=" + loadingPointVersion.getValidFrom() +
                     "&toDate=" + loadingPointVersion.getValidTo()+

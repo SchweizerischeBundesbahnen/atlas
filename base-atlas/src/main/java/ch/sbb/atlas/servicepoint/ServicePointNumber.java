@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Former DIDOK Code:
@@ -26,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 public final class ServicePointNumber {
 
   private static final String SLOID_PREFIX = "ch:1:sloid:";
-  private static final int LENGTH = 8;
+  private static final int LENGTH = 7;
   private static final int TEN = 10;
   private static final int SEVEN_DIGIT_SPLITTER = 100000;
   public static final String EMPTY_STRING = "";
@@ -34,15 +35,11 @@ public final class ServicePointNumber {
   @JsonIgnore
   private final int value;
 
-  public static ServicePointNumber of(int number) {
-    return new ServicePointNumber(number);
-  }
-
   public static ServicePointNumber ofNumberWithoutCheckDigit(int number) {
-    if (String.valueOf(number).length() == LENGTH - 1) {
-      return of(Country.from(number / SEVEN_DIGIT_SPLITTER), number % SEVEN_DIGIT_SPLITTER);
+    if(String.valueOf(number).length() != LENGTH){
+      throw new IllegalArgumentException("The number size must be 7!");
     }
-    return of(number);
+    return new ServicePointNumber(number);
   }
 
   public static ServicePointNumber of(Country country, int servicePointId) {
@@ -50,7 +47,7 @@ public final class ServicePointNumber {
       throw new IllegalArgumentException("Country " + country + " does not provide any uicCountryCode!");
     }
     String formattedId = String.format("%05d", servicePointId);
-    return ServicePointNumber.fromString(country.getUicCode() + formattedId + calculateCheckDigit(formattedId));
+    return ServicePointNumber.fromString(country.getUicCode() + formattedId);
   }
 
   public static String calculateSloid(ServicePointNumber servicePointNumber){
@@ -63,8 +60,17 @@ public final class ServicePointNumber {
     return null;
   }
 
+  public static Integer removeCheckDigit(Integer didokCode){
+    String didokCodeAsString = Integer.toString(didokCode);
+    if(didokCodeAsString.length() == 7){
+      return didokCode;
+    }
+    String didokCodeWithoutDigits = StringUtils.substring(didokCodeAsString,0, didokCodeAsString.length() - 1);
+    return Integer.parseInt(didokCodeWithoutDigits);
+  }
+
   private static ServicePointNumber fromString(String number) {
-    return ServicePointNumber.of(Integer.parseInt(number));
+    return ServicePointNumber.ofNumberWithoutCheckDigit(Integer.parseInt(number));
   }
 
   private static int calculateCheckDigit(String servicePointId) {
@@ -118,13 +124,13 @@ public final class ServicePointNumber {
   @NotNull
   @Schema(description = "NumberShort - 5 chars identifying number. Range: 1-99.999", example = "18771")
   public Integer getNumberShort() {
-    return getNumericPart(2, LENGTH - 1);
+    return getNumericPart(2, LENGTH);
   }
 
   @NotNull
   @Schema(description = "Calculated value formed from the numberShort. Range: 0-9", example = "6")
   public Integer getCheckDigit() {
-    return getNumericPart(LENGTH - 1, LENGTH);
+    return calculateCheckDigit(String.format("%05d", getNumberShort()));
   }
 
   @AssertTrue
