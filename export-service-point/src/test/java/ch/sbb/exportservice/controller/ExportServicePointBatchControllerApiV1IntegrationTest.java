@@ -1,6 +1,6 @@
 package ch.sbb.exportservice.controller;
 
-import ch.sbb.atlas.export.enumeration.ServicePointExportFileName;
+import ch.sbb.exportservice.model.BatchExportFileName;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.model.exception.NotFoundException.FileNotFoundException;
 import ch.sbb.exportservice.model.ExportType;
@@ -32,6 +32,7 @@ public class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseC
 
   @MockBean
   private MailProducerService mailProducerService;
+
   @MockBean
   private FileExportService fileExportService;
 
@@ -42,7 +43,8 @@ public class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseC
     try (InputStream inputStream = this.getClass().getResourceAsStream("/service-point-data.json")) {
       StreamingResponseBody streamingResponseBody = writeOutputStream(inputStream);
 
-      doReturn(streamingResponseBody).when(fileExportService).streamJsonFile(ExportType.WORLD_FULL, ServicePointExportFileName.SERVICE_POINT_VERSION);
+      doReturn(streamingResponseBody).when(fileExportService)
+          .streamJsonFile(ExportType.WORLD_FULL, BatchExportFileName.SERVICE_POINT_VERSION);
 
       //when & then
       mvc.perform(get("/v1/export/json/service-point-version/world-full")
@@ -56,7 +58,8 @@ public class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseC
   @Order(2)
   public void shouldGetJsonUnsuccessfully() throws Exception {
     //given
-    doThrow(FileNotFoundException.class).when(fileExportService).streamJsonFile(ExportType.WORLD_FULL, ServicePointExportFileName.SERVICE_POINT_VERSION);
+    doThrow(FileNotFoundException.class).when(fileExportService)
+        .streamJsonFile(ExportType.WORLD_FULL, BatchExportFileName.SERVICE_POINT_VERSION);
 
     //when & then
     mvc.perform(get("/v1/export/json/service-point-version/world-full")
@@ -70,8 +73,10 @@ public class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseC
     //given
     try (InputStream inputStream = this.getClass().getResourceAsStream("/service-point.json.gz")) {
       StreamingResponseBody streamingResponseBody = writeOutputStream(inputStream);
-      doReturn(streamingResponseBody).when(fileExportService).streamGzipFile(ExportType.WORLD_FULL, ServicePointExportFileName.SERVICE_POINT_VERSION);
-      doReturn("service-point").when(fileExportService).getBaseFileName(ExportType.WORLD_FULL, ServicePointExportFileName.SERVICE_POINT_VERSION);
+      doReturn(streamingResponseBody).when(fileExportService)
+          .streamGzipFile(ExportType.WORLD_FULL, BatchExportFileName.SERVICE_POINT_VERSION);
+      doReturn("service-point").when(fileExportService)
+          .getBaseFileName(ExportType.WORLD_FULL, BatchExportFileName.SERVICE_POINT_VERSION);
       //when & then
       mvc.perform(get("/v1/export/download-gzip-json/service-point-version/world-full")
               .contentType(contentType))
@@ -84,26 +89,29 @@ public class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseC
   @Order(4)
   public void shouldDownloadGzipJsonUnsuccessfully() throws Exception {
     //given
-    doThrow(FileNotFoundException.class).when(fileExportService).streamGzipFile(ExportType.WORLD_FULL, ServicePointExportFileName.SERVICE_POINT_VERSION);
+    doThrow(FileNotFoundException.class).when(fileExportService)
+        .streamGzipFile(ExportType.WORLD_FULL, BatchExportFileName.SERVICE_POINT_VERSION);
 
     //when & then
     mvc.perform(get("/v1/export/download-gzip-json/service-point-version/world-full")
             .contentType(contentType))
         .andExpect(status().isNotFound());
   }
+
   @Test
   @Order(5)
   public void shouldNotDownloadJsonWhenExportTypeIsNotAllowedForTheExportFile() throws Exception {
     //given
-    doThrow(FileNotFoundException.class).when(fileExportService).streamGzipFile(ExportType.WORLD_FULL, ServicePointExportFileName.SERVICE_POINT_VERSION);
-
     //when & then
     mvc.perform(get("/v1/export/download-gzip-json/traffic-point-element-version/swiss-only-full")
             .contentType(contentType))
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.status", is(400)))
-        .andExpect(jsonPath("$.message", is("Download file [TRAFFIC_POINT_ELEMENT_VERSION] with export type [SWISS_ONLY_FULL] not allowed!")))
-        .andExpect(jsonPath("$.error", is("To download the file [TRAFFIC_POINT_ELEMENT_VERSION] are only allowed the following export types: [WORLD_FULL, WORLD_ONLY_ACTUAL, WORLD_ONLY_TIMETABLE_FUTURE]")));
+        .andExpect(jsonPath("$.message",
+            is("Download file [TRAFFIC_POINT_ELEMENT_VERSION] with export type [SWISS_ONLY_FULL] not allowed!")))
+        .andExpect(jsonPath("$.error",
+            is("To download the file [TRAFFIC_POINT_ELEMENT_VERSION] are only allowed the following export types: [WORLD_FULL, "
+                + "WORLD_ONLY_ACTUAL, WORLD_ONLY_TIMETABLE_FUTURE]")));
   }
 
   @Test
@@ -111,18 +119,33 @@ public class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseC
   public void shouldPostServicePointExportBatchSuccessfully() throws Exception {
     //given
     doNothing().when(mailProducerService).produceMailNotification(any());
+
     //when & then
     mvc.perform(post("/v1/export/service-point-batch")
             .contentType(contentType))
         .andExpect(status().isOk());
   }
+
   @Test
   @Order(7)
   public void shouldPostTrafficPointExportBatchSuccessfully() throws Exception {
     //given
     doNothing().when(mailProducerService).produceMailNotification(any());
+
     //when & then
     mvc.perform(post("/v1/export/traffic-point-batch")
+            .contentType(contentType))
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  @Order(8)
+  public void shouldPostLoadingPointExportBatchSuccessfully() throws Exception {
+    //given
+    doNothing().when(mailProducerService).produceMailNotification(any());
+
+    //when & then
+    mvc.perform(post("/v1/export/loading-point-batch")
             .contentType(contentType))
         .andExpect(status().isOk());
   }

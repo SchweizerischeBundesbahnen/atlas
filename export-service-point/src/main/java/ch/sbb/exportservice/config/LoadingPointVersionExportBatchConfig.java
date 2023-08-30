@@ -3,18 +3,24 @@ package ch.sbb.exportservice.config;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_LOADING_POINT_CSV_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_LOADING_POINT_JSON_JOB_NAME;
 
+import ch.sbb.atlas.api.servicepoint.ReadLoadingPointVersionModel;
+import ch.sbb.exportservice.model.BatchExportFileName;
 import ch.sbb.exportservice.entity.LoadingPointVersion;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
-import ch.sbb.exportservice.model.ExportFileName;
 import ch.sbb.exportservice.model.ExportType;
 import ch.sbb.exportservice.model.LoadingPointVersionCsvModel;
 import ch.sbb.exportservice.processor.LoadingPointVersionCsvProcessor;
+import ch.sbb.exportservice.processor.LoadingPointVersionJsonProcessor;
 import ch.sbb.exportservice.reader.LoadingPointVersionRowMapper;
 import ch.sbb.exportservice.reader.LoadingPointVersionSqlQueryUtil;
+import ch.sbb.exportservice.tasklet.FileCsvDeletingTasklet;
+import ch.sbb.exportservice.tasklet.FileJsonDeletingTasklet;
 import ch.sbb.exportservice.tasklet.UploadCsvFileTasklet;
+import ch.sbb.exportservice.tasklet.UploadJsonFileTasklet;
 import ch.sbb.exportservice.utils.StepUtils;
 import ch.sbb.exportservice.writer.CsvLoadingPointVersionWriter;
+import ch.sbb.exportservice.writer.JsonLoadingPointVersionWriter;
 import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
@@ -27,6 +33,7 @@ import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.database.JdbcCursorItemReader;
 import org.springframework.batch.item.file.FlatFileItemWriter;
+import org.springframework.batch.item.json.JsonFileItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -43,6 +50,7 @@ public class LoadingPointVersionExportBatchConfig {
   private final JobCompletionListener jobCompletionListener;
   private final StepTracerListener stepTracerListener;
   private final CsvLoadingPointVersionWriter csvLoadingPointVersionWriter;
+  private final JsonLoadingPointVersionWriter jsonLoadingPointVersionWriter;
 
   @Bean
   @StepScope
@@ -83,7 +91,7 @@ public class LoadingPointVersionExportBatchConfig {
   public FlatFileItemWriter<LoadingPointVersionCsvModel> loadingPointCsvWriter(
       @Value("#{jobParameters[exportType]}") ExportType exportType
   ) {
-    return csvLoadingPointVersionWriter.csvWriter(exportType, ExportFileName.LOADING_POINT_VERSION);
+    return csvLoadingPointVersionWriter.csvWriter(exportType, BatchExportFileName.LOADING_POINT_VERSION);
   }
 
   @Bean
@@ -94,7 +102,7 @@ public class LoadingPointVersionExportBatchConfig {
         .incrementer(new RunIdIncrementer())
         .flow(exportLoadingPointCsvStep(itemReader))
         .next(uploadLoadingPointCsvFileStep())
-        .next(deleteTrafficPointElementCsvFileStep())
+        .next(deleteLoadingPointCsvFileStep())
         .end()
         .build();
   }
@@ -112,7 +120,23 @@ public class LoadingPointVersionExportBatchConfig {
   public UploadCsvFileTasklet uploadLoadingPointCsvFileTasklet(
       @Value("#{jobParameters[exportType]}") ExportType exportType
   ) {
-    return new UploadCsvFileTasklet(exportType, ExportFileName.LOADING_POINT_VERSION);
+    return new UploadCsvFileTasklet(exportType, BatchExportFileName.LOADING_POINT_VERSION);
+  }
+
+  @Bean
+  public Step deleteLoadingPointCsvFileStep() {
+    return new StepBuilder("deleteCsvFiles", jobRepository)
+        .tasklet(loadingPointCsvFileDeletingTasklet(null), transactionManager)
+        .listener(stepTracerListener)
+        .build();
+  }
+
+  @Bean
+  @StepScope
+  public FileCsvDeletingTasklet loadingPointCsvFileDeletingTasklet(
+      @Value("#{jobParameters[exportType]}") ExportType exportType
+  ) {
+    return new FileCsvDeletingTasklet(exportType, BatchExportFileName.LOADING_POINT_VERSION);
   }
 
   @Bean
@@ -121,11 +145,68 @@ public class LoadingPointVersionExportBatchConfig {
     return new JobBuilder(EXPORT_LOADING_POINT_JSON_JOB_NAME, jobRepository)
         .listener(jobCompletionListener)
         .incrementer(new RunIdIncrementer())
-        .flow(exportTrafficPointElementJsonStep(itemReader))
-        .next(uploadTrafficPointElementJsonFileStep())
-        .next(deleteTrafficPointElementJsonFileStep())
+        .flow(exportLoadingPointJsonStep(itemReader))
+        .next(uploadLoadingPointJsonFileStep())
+        .next(deleteLoadingPointJsonFileStep())
         .end()
         .build();
+  }
+
+  @Bean
+  public Step uploadLoadingPointJsonFileStep() {
+    return new StepBuilder("uploadJsonFile", jobRepository)
+        .tasklet(uploadLoadingPointJsonFileTasklet(null), transactionManager)
+        .listener(stepTracerListener)
+        .build();
+  }
+
+  @Bean
+  @StepScope
+  public UploadJsonFileTasklet uploadLoadingPointJsonFileTasklet(
+      @Value("#{jobParameters[exportType]}") ExportType exportType) {
+    return new UploadJsonFileTasklet(exportType, BatchExportFileName.LOADING_POINT_VERSION);
+  }
+
+  @Bean
+  public Step deleteLoadingPointJsonFileStep() {
+    return new StepBuilder("deleteJsonFiles", jobRepository)
+        .tasklet(fileLoadingPointJsonDeletingTasklet(null), transactionManager)
+        .listener(stepTracerListener)
+        .build();
+  }
+
+  @Bean
+  @StepScope
+  public FileJsonDeletingTasklet fileLoadingPointJsonDeletingTasklet(
+      @Value("#{jobParameters[exportType]}") ExportType exportType) {
+    return new FileJsonDeletingTasklet(exportType, BatchExportFileName.LOADING_POINT_VERSION);
+  }
+
+  @Bean
+  public Step exportLoadingPointJsonStep(ItemReader<LoadingPointVersion> itemReader) {
+    String stepName = "exportLoadingPointJsonStep";
+    return new StepBuilder(stepName, jobRepository)
+        .<LoadingPointVersion, ReadLoadingPointVersionModel>chunk(StepUtils.CHUNK_SIZE, transactionManager)
+        .reader(itemReader)
+        .processor(loadingPointVersionJsonProcessor())
+        .writer(loadingPointJsonFileItemWriter(null))
+        .faultTolerant()
+        .backOffPolicy(StepUtils.getBackOffPolicy(stepName))
+        .retryPolicy(StepUtils.getRetryPolicy(stepName))
+        .listener(stepTracerListener)
+        .build();
+  }
+
+  @Bean
+  public LoadingPointVersionJsonProcessor loadingPointVersionJsonProcessor() {
+    return new LoadingPointVersionJsonProcessor();
+  }
+
+  @Bean
+  @StepScope
+  public JsonFileItemWriter<ReadLoadingPointVersionModel> loadingPointJsonFileItemWriter(
+      @Value("#{jobParameters[exportType]}") ExportType exportType) {
+    return jsonLoadingPointVersionWriter.getWriter(exportType, BatchExportFileName.LOADING_POINT_VERSION);
   }
 
 }
