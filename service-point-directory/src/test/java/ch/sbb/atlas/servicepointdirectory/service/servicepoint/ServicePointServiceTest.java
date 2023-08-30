@@ -50,7 +50,7 @@ public class ServicePointServiceTest {
   @Test
   void shouldFindServicePoint() {
     // given
-    ServicePointNumber servicePointNumber = ServicePointNumber.of(123);
+    ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(1234567);
 
     // when
     servicePointService.findAllByNumberOrderByValidFrom(servicePointNumber);
@@ -62,7 +62,7 @@ public class ServicePointServiceTest {
   @Test
   void shouldCallExistsByServicePointNumber() {
     // given
-    ServicePointNumber servicePointNumber = ServicePointNumber.of(123);
+    ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(1234567);
 
     // when
     servicePointService.isServicePointNumberExisting(servicePointNumber);
