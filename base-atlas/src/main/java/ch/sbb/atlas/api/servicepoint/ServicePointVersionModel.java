@@ -147,7 +147,7 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
   }
 
   @JsonIgnore
-  @AssertTrue(message = "At most one of OperatingPointWithoutTimetableType, OperatingPointTechnicalTimetableType, "
+  @AssertTrue(message = "At most one of OperatingPointTechnicalTimetableType, "
           + "OperatingPointTrafficPointType may be set")
   public boolean isValidType() {
     long mutualTypes = Stream.of(
