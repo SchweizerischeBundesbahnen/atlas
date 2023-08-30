@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @BatchDataSourceConfigTest
 @IntegrationTest
 @AutoConfigureMockMvc(addFilters = false)
-public class ExportTrafficPointElementIntegrationTest {
+public class ExportTrafficPointElementTest {
 
   @Autowired
   private JobLauncher jobLauncher;

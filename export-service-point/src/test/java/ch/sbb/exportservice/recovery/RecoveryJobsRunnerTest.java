@@ -63,7 +63,8 @@ public class RecoveryJobsRunnerTest {
   @BeforeEach
   public void setUp() {
     MockitoAnnotations.openMocks(this);
-    recoveryJobsRunner = new RecoveryJobsRunner(jobExplorer, fileService, jobRepository, exportServicePointJobService, exportTrafficPointElementJobService);
+    recoveryJobsRunner = new RecoveryJobsRunner(jobExplorer, fileService, jobRepository, exportServicePointJobService,
+        exportTrafficPointElementJobService);
   }
 
   @Test
@@ -238,5 +239,7 @@ public class RecoveryJobsRunnerTest {
     verify(exportServicePointJobService, never()).startExportJobs();
     verify(fileService).clearDir();
   }
+
+  // todo: loading point export
 
 }
