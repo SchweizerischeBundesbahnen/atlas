@@ -1,11 +1,4 @@
-import {
-  Form,
-  FormControl,
-  FormGroup,
-  Validators,
-  ɵFormGroupValue,
-  ɵTypedOrUntyped,
-} from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseDetailFormGroup } from '../../../../core/components/base-detail/base-detail-form-group';
 import {
   Category,
@@ -148,14 +141,14 @@ export class ServicePointFormGroupBuilder {
       } else {
         formGroup.controls.operatingPointType.clearValidators();
       }
+      formGroup.controls.operatingPointType.updateValueAndValidity();
+
       if (newType === ServicePointType.StopPoint) {
         formGroup.addValidators(AtLeastOneValidator.of('stopPoint', 'freightServicePoint'));
       } else {
         formGroup.clearValidators();
         formGroup.updateValueAndValidity();
       }
-
-      formGroup.controls.operatingPointType.updateValueAndValidity();
     });
 
     formGroup.controls.stopPoint.valueChanges.subscribe((isStopPoint) => {
@@ -168,6 +161,26 @@ export class ServicePointFormGroupBuilder {
       }
       formGroup.controls.operatingPointType.updateValueAndValidity();
     });
+
+    formGroup.controls.servicePointGeolocation.controls.spatialReference.valueChanges.subscribe(
+      (newSpatialReference) => {
+        if (newSpatialReference) {
+          formGroup.controls.servicePointGeolocation.controls.east.setValidators([
+            Validators.required,
+            AtlasCharsetsValidator.numericWithDot,
+          ]);
+          formGroup.controls.servicePointGeolocation.controls.north.setValidators([
+            Validators.required,
+            AtlasCharsetsValidator.numericWithDot,
+          ]);
+        } else {
+          formGroup.controls.servicePointGeolocation.controls.east.clearValidators();
+          formGroup.controls.servicePointGeolocation.controls.north.clearValidators();
+        }
+        formGroup.controls.servicePointGeolocation.controls.east.updateValueAndValidity();
+        formGroup.controls.servicePointGeolocation.controls.north.updateValueAndValidity();
+      }
+    );
   }
 
   static getWritableServicePoint(
