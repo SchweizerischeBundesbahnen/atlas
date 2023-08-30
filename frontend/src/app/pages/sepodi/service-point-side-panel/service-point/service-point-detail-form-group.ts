@@ -88,14 +88,10 @@ export class ServicePointFormGroupBuilder {
         etagVersion: new FormControl(version.etagVersion),
         servicePointGeolocation: new FormGroup<GeographyFormGroup>({
           east: new FormControl(this.getCoordinates(version)?.east, [
-            AtlasCharsetsValidator.decimalWithDigits(
-              version.servicePointGeolocation?.spatialReference == SpatialReference.Lv95 ? 5 : 11
-            ),
+            this.getValidatorForCoordinates(version.servicePointGeolocation?.spatialReference),
           ]),
           north: new FormControl(this.getCoordinates(version)?.north, [
-            AtlasCharsetsValidator.decimalWithDigits(
-              version.servicePointGeolocation?.spatialReference == SpatialReference.Lv95 ? 5 : 11
-            ),
+            this.getValidatorForCoordinates(version.servicePointGeolocation?.spatialReference),
           ]),
           height: new FormControl(version.servicePointGeolocation?.height, [
             AtlasCharsetsValidator.decimalWithDigits(4),
@@ -171,15 +167,11 @@ export class ServicePointFormGroupBuilder {
         if (newSpatialReference) {
           formGroup.controls.servicePointGeolocation.controls.east.setValidators([
             Validators.required,
-            AtlasCharsetsValidator.decimalWithDigits(
-              newSpatialReference == SpatialReference.Lv95 ? 5 : 11
-            ),
+            this.getValidatorForCoordinates(newSpatialReference),
           ]);
           formGroup.controls.servicePointGeolocation.controls.north.setValidators([
             Validators.required,
-            AtlasCharsetsValidator.decimalWithDigits(
-              newSpatialReference == SpatialReference.Lv95 ? 5 : 11
-            ),
+            this.getValidatorForCoordinates(newSpatialReference),
           ]);
         } else {
           formGroup.controls.servicePointGeolocation.controls.east.clearValidators();
@@ -188,6 +180,12 @@ export class ServicePointFormGroupBuilder {
         formGroup.controls.servicePointGeolocation.controls.east.updateValueAndValidity();
         formGroup.controls.servicePointGeolocation.controls.north.updateValueAndValidity();
       }
+    );
+  }
+
+  private static getValidatorForCoordinates(spatialReference?: SpatialReference) {
+    return AtlasCharsetsValidator.decimalWithDigits(
+      spatialReference == SpatialReference.Lv95 ? 5 : 11
     );
   }
 
