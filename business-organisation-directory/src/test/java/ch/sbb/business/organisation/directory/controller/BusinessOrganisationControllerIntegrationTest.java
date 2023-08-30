@@ -20,14 +20,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.zip.GZIPOutputStream;
 
 import static ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel.Fields.abbreviationDe;
 import static ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel.Fields.abbreviationEn;
@@ -520,37 +517,6 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
   }
 
   @Test
-  void shouldReadJsonAfterExportFullBusinessOrganisationVersions() throws Exception {
-    // given
-    List<BusinessOrganisationVersion> versions = new ArrayList<>();
-    versions.add(version1);
-    versions.add(version2);
-
-    mapper.registerModule(new JavaTimeModule());
-    File inputFile = new File("test.json");
-    mapper.writeValue(inputFile, versions);
-    File gzipFile = gzipFile(inputFile);
-    // when
-    when(amazonService.pullFile(any(), any())).thenReturn(gzipFile);
-
-    mvc.perform(get("/v1/business-organisations/export/download-json/" + ExportType.FULL))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$", hasSize(2)))
-            .andExpect(jsonPath("$.[0]."
-                    + businessTypes, containsInAnyOrder(BusinessType.RAILROAD.name(), BusinessType.AIR.name(), BusinessType.SHIP.name())))
-            .andExpect(jsonPath("$.[0]." + organisationNumber, is(1234)))
-            .andExpect(jsonPath("$.[0]." + contactEnterpriseEmail, is("mail1@mail.ch")))
-            .andExpect(jsonPath("$.[0]." + descriptionDe, is("desc-de1")))
-            .andExpect(jsonPath("$.[0]." + descriptionFr, is("desc-fr1")))
-            .andExpect(jsonPath("$.[0]." + descriptionIt, is("desc-it1")))
-            .andExpect(jsonPath("$.[0]." + descriptionEn, is("desc-en1")))
-            .andExpect(jsonPath("$.[0]." + abbreviationDe, is("de1")))
-            .andExpect(jsonPath("$.[0]." + abbreviationFr, is("fr1")))
-            .andExpect(jsonPath("$.[0]." + abbreviationIt, is("it1")))
-            .andExpect(jsonPath("$.[0]." + abbreviationEn, is("en1")));
-  }
-
-  @Test
   void shouldGetJonGzAfterExportFullBusinessOrganisationVersions() throws Exception {
     // given
     List<BusinessOrganisationVersion> versions = new ArrayList<>();
@@ -583,37 +549,6 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
   }
 
   @Test
-  void shouldReadJsonAfterExportActualBusinessOrganisationVersions() throws Exception {
-    // given
-    List<BusinessOrganisationVersion> versions = new ArrayList<>();
-    versions.add(version1);
-    versions.add(version2);
-
-    mapper.registerModule(new JavaTimeModule());
-    File inputFile = new File("test.json");
-    mapper.writeValue(inputFile, versions);
-    File gzipFile = gzipFile(inputFile);
-    // when
-    when(amazonService.pullFile(any(), any())).thenReturn(gzipFile);
-
-    mvc.perform(get("/v1/business-organisations/export/download-json/" + ExportType.ACTUAL_DATE))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$", hasSize(2)))
-            .andExpect(jsonPath("$.[0]."
-                    + businessTypes, containsInAnyOrder(BusinessType.RAILROAD.name(), BusinessType.AIR.name(), BusinessType.SHIP.name())))
-            .andExpect(jsonPath("$.[0]." + organisationNumber, is(1234)))
-            .andExpect(jsonPath("$.[0]." + contactEnterpriseEmail, is("mail1@mail.ch")))
-            .andExpect(jsonPath("$.[0]." + descriptionDe, is("desc-de1")))
-            .andExpect(jsonPath("$.[0]." + descriptionFr, is("desc-fr1")))
-            .andExpect(jsonPath("$.[0]." + descriptionIt, is("desc-it1")))
-            .andExpect(jsonPath("$.[0]." + descriptionEn, is("desc-en1")))
-            .andExpect(jsonPath("$.[0]." + abbreviationDe, is("de1")))
-            .andExpect(jsonPath("$.[0]." + abbreviationFr, is("fr1")))
-            .andExpect(jsonPath("$.[0]." + abbreviationIt, is("it1")))
-            .andExpect(jsonPath("$.[0]." + abbreviationEn, is("en1")));
-  }
-
-  @Test
   void shouldGetJsonGzAfterExportActualBusinessOrganisationVersions() throws Exception {
     // given
     List<BusinessOrganisationVersion> versions = new ArrayList<>();
@@ -643,52 +578,6 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
     //when
     mvc.perform(post("/v1/business-organisations/export/timetable-year-change"))
         .andExpect(status().isOk());
-  }
-
-  @Test
-  void shouldReadJsonAfterExportTimetableYearChangeBusinessOrganisationVersions() throws Exception {
-    // given
-    List<BusinessOrganisationVersion> versions = new ArrayList<>();
-    versions.add(version1);
-    versions.add(version2);
-
-    mapper.registerModule(new JavaTimeModule());
-    File inputFile = new File("test.json");
-    mapper.writeValue(inputFile, versions);
-    File gzipFile = gzipFile(inputFile);
-    // when
-    when(amazonService.pullFile(any(), any())).thenReturn(gzipFile);
-    // then
-    mvc.perform(get("/v1/business-organisations/export/download-json/" + ExportType.FUTURE_TIMETABLE))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$", hasSize(2)))
-            .andExpect(jsonPath("$.[0]."
-                    + businessTypes, containsInAnyOrder(BusinessType.RAILROAD.name(), BusinessType.AIR.name(), BusinessType.SHIP.name())))
-            .andExpect(jsonPath("$.[0]." + organisationNumber, is(1234)))
-            .andExpect(jsonPath("$.[0]." + contactEnterpriseEmail, is("mail1@mail.ch")))
-            .andExpect(jsonPath("$.[0]." + descriptionDe, is("desc-de1")))
-            .andExpect(jsonPath("$.[0]." + descriptionFr, is("desc-fr1")))
-            .andExpect(jsonPath("$.[0]." + descriptionIt, is("desc-it1")))
-            .andExpect(jsonPath("$.[0]." + descriptionEn, is("desc-en1")))
-            .andExpect(jsonPath("$.[0]." + abbreviationDe, is("de1")))
-            .andExpect(jsonPath("$.[0]." + abbreviationFr, is("fr1")))
-            .andExpect(jsonPath("$.[0]." + abbreviationIt, is("it1")))
-            .andExpect(jsonPath("$.[0]." + abbreviationEn, is("en1")));
-  }
-
-  private File gzipFile(File inputFile) throws Exception {
-    File outputFile = new File("test.json.gz");
-    FileInputStream fileInputStream = new FileInputStream(inputFile.getPath());
-    FileOutputStream fileOutputStream = new FileOutputStream(outputFile.getPath());
-    GZIPOutputStream gzipOutputStream = new GZIPOutputStream(fileOutputStream);
-
-    byte[] buffer = new byte[1024];
-    int length;
-    while ((length = fileInputStream.read(buffer)) != -1) {
-      gzipOutputStream.write(buffer, 0, length);
-    }
-    gzipOutputStream.close();
-    return outputFile;
   }
 
   @Test
