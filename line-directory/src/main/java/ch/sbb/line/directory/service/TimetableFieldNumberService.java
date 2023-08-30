@@ -59,6 +59,7 @@ public class TimetableFieldNumberService {
       + ".model.user.admin.ApplicationType).TTFN)")
   public void update(TimetableFieldNumberVersion currentVersion, TimetableFieldNumberVersion editedVersion,
       List<TimetableFieldNumberVersion> currentVersions) {
+    editedVersion.setTtfnid(currentVersion.getTtfnid());
     updateVersion(currentVersion, editedVersion);
   }
 
@@ -95,7 +96,7 @@ public class TimetableFieldNumberService {
     List<TimetableFieldNumberVersion> currentVersions = getAllVersionsVersioned(
         currentVersion.getTtfnid());
 
-    List<VersionedObject> versionedObjects = versionableService.versioningObjects(currentVersion,
+    List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion,
         editedVersion, currentVersions);
 
     versionableService.applyVersioning(TimetableFieldNumberVersion.class, versionedObjects,

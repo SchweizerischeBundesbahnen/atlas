@@ -33,7 +33,7 @@ public class TimetableFieldNumberServiceScenario9Test extends BaseTimetableField
   public void scenario9a() {
     //given
     version1 = versionRepository.save(version1);
-    TimetableFieldNumberVersion editedVersion = new TimetableFieldNumberVersion();
+    TimetableFieldNumberVersion editedVersion = version1Builder().build();
     editedVersion.setValidFrom(LocalDate.of(2019, 1, 1));
     editedVersion.setValidTo(LocalDate.of(2019, 6, 1));
     editedVersion.setDescription("FPFN Description <changed>");
@@ -88,7 +88,7 @@ public class TimetableFieldNumberServiceScenario9Test extends BaseTimetableField
     //given
     version1 = versionRepository.save(version1);
     version2 = versionRepository.save(version2);
-    TimetableFieldNumberVersion editedVersion = new TimetableFieldNumberVersion();
+    TimetableFieldNumberVersion editedVersion = version1Builder().build();
     editedVersion.setValidFrom(LocalDate.of(2019, 1, 1));
     editedVersion.setValidTo(LocalDate.of(2019, 6, 1));
     editedVersion.setDescription("FPFN Description <changed>");
@@ -154,7 +154,7 @@ public class TimetableFieldNumberServiceScenario9Test extends BaseTimetableField
     //given
     version1 = versionRepository.save(version1);
     version2 = versionRepository.save(version2);
-    TimetableFieldNumberVersion editedVersion = new TimetableFieldNumberVersion();
+    TimetableFieldNumberVersion editedVersion = version1Builder().build();
     editedVersion.setValidFrom(LocalDate.of(2019, 1, 1));
     editedVersion.setValidTo(version1.getValidTo());
     editedVersion.setDescription("FPFN Description <changed>");

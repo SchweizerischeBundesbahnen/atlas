@@ -73,7 +73,7 @@ public class ServicePointService {
     }
 
     List<ServicePointVersion> existingDbVersions = findAllByNumberOrderByValidFrom(currentVersion.getNumber());
-    List<VersionedObject> versionedObjects = versionableService.versioningObjects(currentVersion,
+    List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion,
         editedVersion, existingDbVersions);
     versionableService.applyVersioning(ServicePointVersion.class, versionedObjects,
         this::save, new ApplyVersioningDeleteByIdLongConsumer(servicePointVersionRepository));
