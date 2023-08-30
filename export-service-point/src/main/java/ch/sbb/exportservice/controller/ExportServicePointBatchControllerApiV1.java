@@ -2,7 +2,7 @@ package ch.sbb.exportservice.controller;
 
 import ch.sbb.atlas.api.controller.GzipFileDownloadHttpHeader;
 import ch.sbb.atlas.api.model.ErrorResponse;
-import ch.sbb.atlas.export.enumeration.ServicePointExportFileName;
+import ch.sbb.exportservice.model.BatchExportFileName;
 import ch.sbb.exportservice.exception.NotAllowedExportFileException;
 import ch.sbb.exportservice.model.ExportType;
 import ch.sbb.exportservice.service.ExportLoadingPointJobService;
@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -48,7 +49,7 @@ public class ExportServicePointBatchControllerApiV1 {
       @ApiResponse(responseCode = "404", description = "Object with filename myFile not found", content = @Content(schema =
       @Schema(implementation = ErrorResponse.class)))
   })
-  public ResponseEntity<StreamingResponseBody> streamJsonFile(@PathVariable("exportFileName") ServicePointExportFileName exportFileName,
+  public ResponseEntity<StreamingResponseBody> streamJsonFile(@PathVariable("exportFileName") BatchExportFileName exportFileName,
       @PathVariable("exportType") ExportType exportType) {
     checkInputPath(exportFileName, exportType);
     StreamingResponseBody body = fileExportService.streamJsonFile(exportType, exportFileName);
@@ -61,7 +62,7 @@ public class ExportServicePointBatchControllerApiV1 {
       @ApiResponse(responseCode = "404", description = "filename myFile not found", content = @Content(schema =
       @Schema(implementation = ErrorResponse.class)))
   })
-  public ResponseEntity<StreamingResponseBody> streamGzipFile(@PathVariable("exportFileName") ServicePointExportFileName exportFileName,
+  public ResponseEntity<StreamingResponseBody> streamGzipFile(@PathVariable("exportFileName") BatchExportFileName exportFileName,
       @PathVariable("exportType") ExportType exportType) throws NotAllowedExportFileException {
     checkInputPath(exportFileName, exportType);
     String fileName = fileExportService.getBaseFileName(exportType, exportFileName);
@@ -100,11 +101,13 @@ public class ExportServicePointBatchControllerApiV1 {
     exportLoadingPointJobService.startExportJobs();
   }
 
-  protected void checkInputPath(ServicePointExportFileName exportFileName, ExportType exportType) throws NotAllowedExportFileException {
-    if (ServicePointExportFileName.TRAFFIC_POINT_ELEMENT_VERSION.equals(exportFileName)) {
-      if (!ExportType.getWorldOnly().contains(exportType)) {
-        throw new NotAllowedExportFileException(exportFileName, exportType);
-      }
+  protected void checkInputPath(BatchExportFileName exportFileName, ExportType exportType) {
+    final List<BatchExportFileName> worldOnlyTypes = List.of(
+        BatchExportFileName.TRAFFIC_POINT_ELEMENT_VERSION,
+        BatchExportFileName.LOADING_POINT_VERSION
+    );
+    if (worldOnlyTypes.contains(exportFileName) && !ExportType.getWorldOnly().contains(exportType)) {
+      throw new NotAllowedExportFileException(exportFileName, exportType);
     }
   }
 

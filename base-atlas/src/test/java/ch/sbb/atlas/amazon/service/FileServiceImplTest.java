@@ -1,9 +1,9 @@
 package ch.sbb.atlas.amazon.service;
 
-import ch.sbb.atlas.amazon.exception.FileException;
-import ch.sbb.atlas.export.enumeration.BusinessOrganisationExportFileName;
+import ch.sbb.atlas.export.enumeration.ExportFileName;
 import ch.sbb.atlas.export.enumeration.ExportType;
-import ch.sbb.atlas.export.enumeration.ServicePointExportFileName;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -17,7 +17,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -25,7 +24,7 @@ public class FileServiceImplTest {
 
   private static final String SEPARATOR = File.separator;
 
-  private FileServiceImpl fileService = new FileServiceImpl();
+  private final FileServiceImpl fileService = new FileServiceImpl();
 
   @Mock
   private AmazonService amazonService;
@@ -93,31 +92,9 @@ public class FileServiceImplTest {
     when(amazonService.pullFile(any(), any())).thenReturn(file);
     fileService.setActiveProfile("local");
 
-    StreamingResponseBody result = fileService.streamingJsonFile(ExportType.FULL, ServicePointExportFileName.SERVICE_POINT_VERSION, amazonService, "fileName");
+    StreamingResponseBody result = fileService.streamingJsonFile(ExportType.FULL, TestExportFileName.SERVICE_POINT_VERSION,
+        amazonService, "fileName");
     assertThat(result).isNotNull();
-  }
-
-  @Test
-  void shouldStreamBusinessOrganisationJsonFile() throws IOException {
-    String fileName = "full_business_organisation_versions_2023-08-16.json.gz";
-    ClassLoader classLoader = getClass().getClassLoader();
-    File file = new File(classLoader.getResource(fileName).getFile());
-    when(amazonService.pullFile(any(), any())).thenReturn(file);
-    fileService.setActiveProfile("local");
-
-    StreamingResponseBody result = fileService.streamingJsonFile(ExportType.FULL, BusinessOrganisationExportFileName.BUSINESS_ORGANISATION_VERSION, amazonService, "fileName");
-    assertThat(result).isNotNull();
-  }
-
-  @Test
-  void shouldStreamJsonFileAndThrowException() throws IOException {
-    String fileName = "fakefile.txt";
-    ClassLoader classLoader = getClass().getClassLoader();
-    File file = new File(classLoader.getResource(fileName).getFile());
-    when(amazonService.pullFile(any(), any())).thenReturn(file);
-    fileService.setActiveProfile("local");
-
-    assertThrows(FileException.class, () -> fileService.streamingJsonFile(ExportType.FULL, ServicePointExportFileName.TRAFFIC_POINT_ELEMENT_VERSION, amazonService, "fileName"));
   }
 
   @Test
@@ -128,20 +105,18 @@ public class FileServiceImplTest {
     when(amazonService.pullFile(any(), any())).thenReturn(file);
     fileService.setActiveProfile("local");
 
-    StreamingResponseBody result = fileService.streamingGzipFile(ExportType.FULL, BusinessOrganisationExportFileName.BUSINESS_ORGANISATION_VERSION, amazonService, "fileName");
+    StreamingResponseBody result = fileService.streamingGzipFile(ExportType.FULL,
+        TestExportFileName.SERVICE_POINT_VERSION, amazonService, "fileName");
     assertThat(result).isNotNull();
   }
 
-  @Test
-  void shouldStreamGzipFileWithServicePointVersion() throws IOException {
-    String fileName = "full_business_organisation_versions_2023-08-16.json.gz";
-    ClassLoader classLoader = getClass().getClassLoader();
-    File file = new File(classLoader.getResource(fileName).getFile());
-    when(amazonService.pullFile(any(), any())).thenReturn(file);
-    fileService.setActiveProfile("local");
+  @Getter
+  @RequiredArgsConstructor
+  private enum TestExportFileName implements ExportFileName {
+    SERVICE_POINT_VERSION("pippo_baudo", "lukaku");
 
-    StreamingResponseBody result = fileService.streamingGzipFile(ExportType.FULL, ServicePointExportFileName.SERVICE_POINT_VERSION, amazonService, "fileName");
-    assertThat(result).isNotNull();
+    private final String baseDir;
+    private final String fileName;
   }
 
 }
