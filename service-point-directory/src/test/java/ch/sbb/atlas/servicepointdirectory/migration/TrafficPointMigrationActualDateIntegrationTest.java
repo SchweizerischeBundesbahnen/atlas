@@ -23,9 +23,9 @@ import org.junit.jupiter.api.TestMethodOrder;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TrafficPointMigrationActualDateIntegrationTest {
 
-  private static final String DIDOK_CSV_FILE = "DIDOK3_VERKEHRSPUNKTELEMENTE_STICHTAG_V_1_20230824011759.csv";
-  private static final String ATLAS_CSV_FILE = "actual_date-world-traffic_point-2023-08-24.csv";
-  private static final LocalDate ACTUAL_DATE = LocalDate.of(2023, 8, 24);
+  private static final String DIDOK_CSV_FILE = "DIDOK3_VERKEHRSPUNKTELEMENTE_STICHTAG_V_1_20230906011803.csv";
+  private static final String ATLAS_CSV_FILE = "actual_date-world-traffic_point-2023-09-06.csv";
+  private static final LocalDate ACTUAL_DATE = LocalDate.of(2023, 9, 6);
 
   private static final List<TrafficPointAtlasCsvModel> trafficPointElementCsvModels = new ArrayList<>();
   private static final List<TrafficPointDidokCsvModel> didokCsvLines = new ArrayList<>();
@@ -68,12 +68,10 @@ public class TrafficPointMigrationActualDateIntegrationTest {
   @Test
   @Order(3)
   void shouldHaveOnlyVersionsValidOnActualDate() {
-    trafficPointElementCsvModels.forEach(atlasCsvLine -> {
-      assertThat(
-          new DateRange(dateFromString(atlasCsvLine.getValidFrom()),
-              dateFromString(atlasCsvLine.getValidTo()))
-              .contains(ACTUAL_DATE)).isTrue();
-    });
+    trafficPointElementCsvModels.forEach(atlasCsvLine -> assertThat(
+        new DateRange(dateFromString(atlasCsvLine.getValidFrom()),
+            dateFromString(atlasCsvLine.getValidTo()))
+            .contains(ACTUAL_DATE)).isTrue());
   }
 
   @Test
