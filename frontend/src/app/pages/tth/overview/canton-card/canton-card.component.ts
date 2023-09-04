@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Canton } from '../canton/Canton';
+import { Canton } from '../../../../core/cantons/Canton';
 
 @Component({
   selector: 'atlas-canton-card',
