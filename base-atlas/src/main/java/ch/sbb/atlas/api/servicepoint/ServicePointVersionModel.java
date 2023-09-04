@@ -2,7 +2,6 @@ package ch.sbb.atlas.api.servicepoint;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.model.BaseVersionModel;
-import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
@@ -11,7 +10,6 @@ import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.atlas.validation.DatesValidator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.constraints.AssertTrue;
@@ -104,10 +102,6 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
   private StopPointType stopPointType;
 
   @NotNull
-  @Schema(description = "Status", example = "VALIDATED")
-  private Status status;
-
-  @NotNull
   private LocalDate validFrom;
 
   @NotNull
@@ -115,36 +109,6 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
 
   @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)", example = "5")
   private Integer etagVersion;
-
-  @JsonInclude
-  @Schema(description = "ServicePoint is StopPoint")
-  public boolean isStopPoint() {
-    return !getMeansOfTransport().isEmpty();
-  }
-
-  @JsonInclude
-  @Schema(description = "ServicePoint is FareStop", example = "false")
-  public boolean isFareStop() {
-    return operatingPointTrafficPointType == OperatingPointTrafficPointType.TARIFF_POINT;
-  }
-
-  @JsonInclude
-  @Schema(description = "ServicePoint is TrafficPoint")
-  public boolean isTrafficPoint() {
-    return isStopPoint() || isFreightServicePoint() || isFareStop();
-  }
-
-  @JsonInclude
-  @Schema(description = "ServicePoint is BorderPoint", example = "false")
-  public boolean isBorderPoint() {
-    return operatingPointTechnicalTimetableType == OperatingPointTechnicalTimetableType.COUNTRY_BORDER;
-  }
-
-  @JsonIgnore
-  @AssertTrue(message = "StopPointType only allowed for StopPoint")
-  boolean isValidStopPointWithType() {
-    return isStopPoint() || stopPointType == null;
-  }
 
   @JsonIgnore
   @AssertTrue(message = "At most one of OperatingPointTechnicalTimetableType, "
