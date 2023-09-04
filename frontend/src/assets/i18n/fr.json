@@ -209,7 +209,8 @@
     "CMYK_INVALID": "Couleur CMJN attendue au format 0-100,0-100,0-100,0-100. Exemple 10,10,0,100",
     "MIN": "La valeur doit être au minimum {{min}}.",
     "MAX": "La valeur doit être au maximum {{max}}.",
-    "AT_LEAST_ONE": "Sélectionnez au moins une modalité."
+    "AT_LEAST_ONE": "Sélectionnez au moins une modalité.",
+    "DECIMAL_NUMBER": "Saisissez un nombre décimal avec un maximum de {{maxDecimalDigits}} chiffres après la virgule."
   },
   "USER_ADMIN": {
     "SEARCH_FOR_FILTER": "Organisations commerciales et Applications",
