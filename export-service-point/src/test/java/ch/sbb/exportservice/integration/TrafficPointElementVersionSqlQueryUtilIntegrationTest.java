@@ -23,7 +23,7 @@ public class TrafficPointElementVersionSqlQueryUtilIntegrationTest extends BaseS
   @Test
   public void shouldReturnWorldFullWithServicePointAndBusinessOrganisation() throws SQLException {
     //given
-    final int servicePointNumber = 12058870;
+    final int servicePointNumber = 1205887;
     insertServicePoint(servicePointNumber, LocalDate.of(2020, 1, 1), LocalDate.of(2099, 12, 31), Country.SWITZERLAND);
     insertTrafficPoint("ch:1:sloid:1", LocalDate.of(1950, 1, 1), LocalDate.of(1960, 1, 1));
     insertTrafficPoint("ch:1:sloid:2", LocalDate.of(2020, 1, 1), LocalDate.of(2030, 1, 1));
@@ -48,7 +48,7 @@ public class TrafficPointElementVersionSqlQueryUtilIntegrationTest extends BaseS
   public void shouldReturnTimetableFuture() throws SQLException {
     //given
     final LocalDate futureDate = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
-    final int servicePointNumber = 12058870;
+    final int servicePointNumber = 1205887;
     insertServicePoint(servicePointNumber, futureDate, futureDate, Country.SWITZERLAND);
     final String sloid = "ch:1:sloid:77559:0:2";
     insertTrafficPoint(sloid, futureDate, futureDate);
@@ -72,7 +72,7 @@ public class TrafficPointElementVersionSqlQueryUtilIntegrationTest extends BaseS
   @Test
   public void shouldReturnWorldActual() throws SQLException {
     //given
-    final int servicePointNumber = 12058870;
+    final int servicePointNumber = 1205887;
     final LocalDate now = LocalDate.now();
     insertServicePoint(servicePointNumber, now, now, Country.SWITZERLAND);
     final String sloid = "ch:1:sloid:77559:0:2";
@@ -115,7 +115,7 @@ public class TrafficPointElementVersionSqlQueryUtilIntegrationTest extends BaseS
         insert into traffic_point_element_version (id, sloid, parent_sloid, designation,
         designation_operational, traffic_point_element_type, length, boarding_area_height, compass_direction,
         service_point_number, valid_from, valid_to, creation_date, creator, edition_date, editor, version)
-        values (nextval('traffic_point_element_version_seq'), '%s', null, null, '2', '0', 18.000, 2.00, null, 12058870,
+        values (nextval('traffic_point_element_version_seq'), '%s', null, null, '2', '0', 18.000, 2.00, null, 1205887,
         '%s', '%s', '2022-03-03 07:56:42.000000', 'fs45117', '2022-05-03 11:50:46.000000', 'e536178', 0);
         """
         .formatted(sloid, formatDate(validFrom), formatDate(validTo));
