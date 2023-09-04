@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,8 +19,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
 import org.apache.commons.lang3.StringUtils;
-
-import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -42,6 +41,12 @@ public class ReadServicePointVersionModel extends ServicePointVersionModel {
   @NotNull
   @Schema(description = "Status", example = "VALIDATED")
   private Status status;
+
+  @Schema(description = "Indicates if this a operatingPoint.")
+  private boolean operatingPoint;
+
+  @Schema(description = "Indicates if this a operatingPoint including Timetables.")
+  private boolean operatingPointWithTimetable;
 
   private ServicePointGeolocationReadModel servicePointGeolocation;
 
