@@ -60,6 +60,12 @@
     right: 80px;
   }
 
+  .search-sp-content {
+    position: absolute;
+    left: 1rem;
+    top: 1rem;
+  }
+
   $map-popup-shadow: 0 0 5px 1px variables.$gray-700;
   .map-popup-menu {
     -webkit-box-shadow: $map-popup-shadow;

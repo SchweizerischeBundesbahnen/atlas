@@ -266,7 +266,7 @@ public class LoadingPointImportServiceTest {
 
     final List<LoadingPointVersion> dbVersions =
         loadingPointVersionRepository.findAllByServicePointNumberAndNumberOrderByValidFrom(
-            ServicePointNumber.of(85070001),
+            ServicePointNumber.ofNumberWithoutCheckDigit(8507000),
             1
         );
 

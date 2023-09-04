@@ -11,7 +11,6 @@ import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointFotComment;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
-import java.time.LocalDateTime;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -412,7 +412,7 @@ public class ServicePointImportServiceTest {
     assertThat(servicePointItemImportResults).hasSize(1);
 
     final List<ServicePointVersion> dbVersions =
-        servicePointVersionRepository.findAllByNumberOrderByValidFrom(ServicePointNumber.of(85070001));
+        servicePointVersionRepository.findAllByNumberOrderByValidFrom(ServicePointNumber.ofNumberWithoutCheckDigit(8507000));
 
     assertThat(dbVersions).hasSize(1);
     assertThat(dbVersions.get(0).getEditor()).isEqualTo("fs22222");

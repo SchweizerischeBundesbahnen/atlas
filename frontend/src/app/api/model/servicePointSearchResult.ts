@@ -9,24 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { SpatialReference } from './spatialReference';
-import { Country } from './country';
-import { SwissLocation } from './swissLocation';
+import { ServicePointNumber } from './servicePointNumber';
 
-export interface ServicePointGeolocationCreate {
-  spatialReference: SpatialReference;
+export interface ServicePointSearchResult {
+  number?: ServicePointNumber;
   /**
-   * North longitude
+   * Official designation of a location that must be used by all recipients
    */
-  north: number;
-  /**
-   * Eastern longitude
-   */
-  east: number;
-  /**
-   * Height of the coordinate point
-   */
-  height?: number;
-  country?: Country;
-  swissLocation?: SwissLocation;
+  designationOfficial?: string;
 }
