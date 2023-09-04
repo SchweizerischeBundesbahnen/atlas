@@ -1,7 +1,10 @@
 package ch.sbb.atlas.api.servicepoint;
 
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
+import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -36,6 +39,10 @@ public class ReadServicePointVersionModel extends ServicePointVersionModel {
           + "operatingPointRouteNetwork")
   private ServicePointNumber operatingPointKilometerMaster;
 
+  @NotNull
+  @Schema(description = "Status", example = "VALIDATED")
+  private Status status;
+
   private ServicePointGeolocationReadModel servicePointGeolocation;
 
   @JsonInclude
@@ -48,6 +55,30 @@ public class ReadServicePointVersionModel extends ServicePointVersionModel {
   @Schema(description = "ServicePoint is OperatingPointKilometer")
   public boolean isOperatingPointKilometer() {
       return operatingPointKilometerMaster != null;
+  }
+
+  @JsonInclude
+  @Schema(description = "ServicePoint is StopPoint")
+  public boolean isStopPoint() {
+    return !getMeansOfTransport().isEmpty();
+  }
+
+  @JsonInclude
+  @Schema(description = "ServicePoint is FareStop", example = "false")
+  public boolean isFareStop() {
+    return getOperatingPointTrafficPointType() == OperatingPointTrafficPointType.TARIFF_POINT;
+  }
+
+  @JsonInclude
+  @Schema(description = "ServicePoint is TrafficPoint")
+  public boolean isTrafficPoint() {
+    return isStopPoint() || isFreightServicePoint() || isFareStop();
+  }
+
+  @JsonInclude
+  @Schema(description = "ServicePoint is BorderPoint", example = "false")
+  public boolean isBorderPoint() {
+    return getOperatingPointTechnicalTimetableType() == OperatingPointTechnicalTimetableType.COUNTRY_BORDER;
   }
 
   @JsonIgnore
