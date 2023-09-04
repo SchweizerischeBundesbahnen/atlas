@@ -2,9 +2,11 @@ package ch.sbb.exportservice.recovery;
 
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.exportservice.model.ExportType;
+import ch.sbb.exportservice.service.ExportLoadingPointJobService;
 import ch.sbb.exportservice.service.ExportServicePointJobService;
 import ch.sbb.exportservice.service.ExportTrafficPointElementJobService;
 import ch.sbb.exportservice.utils.JobDescriptionConstants;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -30,6 +32,8 @@ import static org.mockito.Mockito.*;
 public class RecoveryJobsRunnerTest {
 
   private RecoveryJobsRunner recoveryJobsRunner;
+  private AutoCloseable closeable;
+
   @Mock
   private JobExplorer jobExplorer;
 
@@ -44,6 +48,9 @@ public class RecoveryJobsRunnerTest {
 
   @Mock
   private ExportTrafficPointElementJobService exportTrafficPointElementJobService;
+
+  @Mock
+  private ExportLoadingPointJobService exportLoadingPointJobService;
 
   @Mock
   private JobInstance jobInstance;
@@ -61,15 +68,19 @@ public class RecoveryJobsRunnerTest {
   private ApplicationReadyEvent applicationReadyEvent;
 
   @BeforeEach
-  public void setUp() {
-    MockitoAnnotations.openMocks(this);
+  void setUp() {
+    closeable = MockitoAnnotations.openMocks(this);
     recoveryJobsRunner = new RecoveryJobsRunner(jobExplorer, fileService, jobRepository, exportServicePointJobService,
-        exportTrafficPointElementJobService);
+        exportTrafficPointElementJobService, exportLoadingPointJobService);
+  }
+
+  @AfterEach
+  void tearDown() throws Exception {
+    closeable.close();
   }
 
   @Test
-  public void shouldRecoverExportServicePointWhenNotAllJobsAreExecutedPointCsvJob()
-      throws Exception {
+  public void shouldRecoverExportServicePointWhenNotAllJobsAreExecutedCsvJob() throws Exception {
     //given
     StepExecution stepExecution = new StepExecution("myStep", jobExecution);
     stepExecution.setId(132L);
@@ -95,8 +106,7 @@ public class RecoveryJobsRunnerTest {
   }
 
   @Test
-  public void shouldRecoverExportServicePointWhenNotAllJobsAreExecutedPointJsonJob()
-      throws Exception {
+  public void shouldRecoverExportServicePointWhenNotAllJobsAreExecutedJsonJob() throws Exception {
     //given
     StepExecution stepExecution = new StepExecution("myStep", jobExecution);
     stepExecution.setId(132L);
@@ -122,8 +132,7 @@ public class RecoveryJobsRunnerTest {
   }
 
   @Test
-  public void shouldRecoverExportTrafficPointElementWhenNotAllJobsAreExecutedPointCsvJob()
-      throws Exception {
+  public void shouldRecoverExportTrafficPointElementWhenNotAllJobsAreExecutedCsvJob() throws Exception {
     //given
     StepExecution stepExecution = new StepExecution("myStep", jobExecution);
     stepExecution.setId(132L);
@@ -149,8 +158,7 @@ public class RecoveryJobsRunnerTest {
   }
 
   @Test
-  public void shouldRecoverExportTrafficPointElementWhenNotAllJobsAreExecutedPointJsonJob()
-      throws Exception {
+  public void shouldRecoverExportTrafficPointElementWhenNotAllJobsAreExecutedJsonJob() throws Exception {
     //given
     StepExecution stepExecution = new StepExecution("myStep", jobExecution);
     stepExecution.setId(132L);
@@ -176,8 +184,59 @@ public class RecoveryJobsRunnerTest {
   }
 
   @Test
-  public void shouldRecoverExportServicePointWhenOneJobIsNotSuccessfullyExecuted()
-      throws Exception {
+  void shouldRecoverExportLoadingPointWhenNotAllJobsAreExecutedCsvJob() throws Exception {
+    //given
+    StepExecution stepExecution = new StepExecution("myStep", jobExecution);
+    stepExecution.setId(132L);
+    Map<String, JobParameter<?>> parameters = new HashMap<>();
+    parameters.put(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, new JobParameter<>("BATCH", String.class));
+    parameters.put(EXPORT_TYPE_JOB_PARAMETER, new JobParameter<>(ExportType.WORLD_FULL.name(), String.class));
+    when(jobParameters.getParameters()).thenReturn(parameters);
+    when(jobExecution.getStatus()).thenReturn(BatchStatus.STARTING);
+    when(jobExecution.getJobParameters()).thenReturn(jobParameters);
+    when(jobExecution.getStepExecutions()).thenReturn(List.of(stepExecution));
+    when(jobExplorer.getJobInstanceCount(JobDescriptionConstants.EXPORT_LOADING_POINT_CSV_JOB_NAME)).thenReturn(1L);
+    when(jobExplorer.getJobInstances(JobDescriptionConstants.EXPORT_LOADING_POINT_CSV_JOB_NAME, 0, 12)).thenReturn(
+        List.of(jobInstance));
+    when(jobExplorer.getLastJobExecution(jobInstance)).thenReturn(jobExecution);
+    when(jobLauncher.run(any(), any())).thenReturn(jobExecution);
+
+    //when
+    recoveryJobsRunner.onApplicationEvent(applicationReadyEvent);
+
+    //then
+    verify(exportLoadingPointJobService).startExportJobs();
+    verify(fileService).clearDir();
+  }
+
+  @Test
+  void shouldRecoverExportLoadingPointWhenNotAllJobsAreExecutedJsonJob() throws Exception {
+    //given
+    StepExecution stepExecution = new StepExecution("myStep", jobExecution);
+    stepExecution.setId(132L);
+    Map<String, JobParameter<?>> parameters = new HashMap<>();
+    parameters.put(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, new JobParameter<>("BATCH", String.class));
+    parameters.put(EXPORT_TYPE_JOB_PARAMETER, new JobParameter<>(ExportType.WORLD_FULL.name(), String.class));
+    when(jobParameters.getParameters()).thenReturn(parameters);
+    when(jobExecution.getStatus()).thenReturn(BatchStatus.STARTING);
+    when(jobExecution.getJobParameters()).thenReturn(jobParameters);
+    when(jobExecution.getStepExecutions()).thenReturn(List.of(stepExecution));
+    when(jobExplorer.getJobInstanceCount(JobDescriptionConstants.EXPORT_LOADING_POINT_JSON_JOB_NAME)).thenReturn(1L);
+    when(jobExplorer.getJobInstances(JobDescriptionConstants.EXPORT_LOADING_POINT_JSON_JOB_NAME, 0, 12)).thenReturn(
+        List.of(jobInstance));
+    when(jobExplorer.getLastJobExecution(jobInstance)).thenReturn(jobExecution);
+    when(jobLauncher.run(any(), any())).thenReturn(jobExecution);
+
+    //when
+    recoveryJobsRunner.onApplicationEvent(applicationReadyEvent);
+
+    //then
+    verify(exportLoadingPointJobService).startExportJobs();
+    verify(fileService).clearDir();
+  }
+
+  @Test
+  public void shouldRecoverExportServicePointWhenOneJobIsNotSuccessfullyExecuted() throws Exception {
     //given
     StepExecution stepExecution = new StepExecution("myStep", jobExecution);
     stepExecution.setId(132L);
@@ -204,8 +263,7 @@ public class RecoveryJobsRunnerTest {
   }
 
   @Test
-  public void shouldRecoverExportTrafficPointWhenOneJobIsNotSuccessfullyExecuted()
-      throws Exception {
+  public void shouldRecoverExportTrafficPointWhenOneJobIsNotSuccessfullyExecuted() throws Exception {
     //given
     StepExecution stepExecution = new StepExecution("myStep", jobExecution);
     stepExecution.setId(132L);
@@ -232,14 +290,41 @@ public class RecoveryJobsRunnerTest {
   }
 
   @Test
+  void shouldRecoverExportLoadingPointWhenOneJobIsNotSuccessfullyExecuted() throws Exception {
+    //given
+    StepExecution stepExecution = new StepExecution("myStep", jobExecution);
+    stepExecution.setId(132L);
+    Map<String, JobParameter<?>> parameters = new HashMap<>();
+    parameters.put(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, new JobParameter<>("BATCH", String.class));
+    parameters.put(EXPORT_TYPE_JOB_PARAMETER, new JobParameter<>(ExportType.WORLD_FULL.name(), String.class));
+    when(jobParameters.getParameters()).thenReturn(parameters);
+    when(jobExecution.getStatus()).thenReturn(BatchStatus.STARTING);
+    when(jobExecution.getJobParameters()).thenReturn(jobParameters);
+    when(jobExecution.getStepExecutions()).thenReturn(List.of(stepExecution));
+    when(jobExecution.getCreateTime()).thenReturn(LocalDateTime.now());
+    when(jobExplorer.getJobInstanceCount(JobDescriptionConstants.EXPORT_LOADING_POINT_CSV_JOB_NAME)).thenReturn(6L);
+    when(jobExplorer.getJobInstances(JobDescriptionConstants.EXPORT_LOADING_POINT_CSV_JOB_NAME, 0, 6)).thenReturn(
+        List.of(jobInstance));
+    when(jobExplorer.getJobExecutions(jobInstance)).thenReturn(List.of(jobExecution));
+    when(jobLauncher.run(any(), any())).thenReturn(jobExecution);
+
+    //when
+    recoveryJobsRunner.onApplicationEvent(applicationReadyEvent);
+
+    //then
+    verify(exportLoadingPointJobService).startExportJobs();
+    verify(fileService).clearDir();
+  }
+
+  @Test
   public void shouldNotRecoverAnyJob() {
     //when
     recoveryJobsRunner.onApplicationEvent(applicationReadyEvent);
     //then
     verify(exportServicePointJobService, never()).startExportJobs();
+    verify(exportTrafficPointElementJobService, never()).startExportJobs();
+    verify(exportLoadingPointJobService, never()).startExportJobs();
     verify(fileService).clearDir();
   }
-
-  // todo: loading point export
 
 }
