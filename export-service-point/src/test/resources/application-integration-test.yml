@@ -100,5 +100,3 @@ amazon:
       secretKey: ${AMAZON_S3_SECRET_KEY}
       bucketName: "atlas-data-export-dev-dev"
       objectExpirationDays: 30
-
-
