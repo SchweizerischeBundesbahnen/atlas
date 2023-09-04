@@ -34,6 +34,7 @@ public abstract class BaseJsonWriter<T> {
         fileSystemResource,
         jacksonJsonObjectMarshaller);
     writer.setEncoding(StandardCharsets.UTF_8.name());
+    writer.close();
     return writer;
   }
 
