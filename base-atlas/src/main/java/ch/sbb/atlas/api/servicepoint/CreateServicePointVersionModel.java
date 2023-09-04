@@ -45,6 +45,16 @@ public class CreateServicePointVersionModel extends ServicePointVersionModel {
   private GeolocationBaseCreateModel servicePointGeolocation;
 
   @JsonIgnore
+  public boolean isOperatingPoint() {
+    return !isRawServicePoint();
+  }
+
+  @JsonIgnore
+  public boolean isOperatingPointWithTimetable() {
+    return isOperatingPoint() && getOperatingPointType() == null;
+  }
+
+  @JsonIgnore
   @AssertTrue(message = "FreightServicePoint in CH needs sortCodeOfDestinationStation")
   public boolean isValidFreightServicePoint() {
     ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(numberWithoutCheckDigit);

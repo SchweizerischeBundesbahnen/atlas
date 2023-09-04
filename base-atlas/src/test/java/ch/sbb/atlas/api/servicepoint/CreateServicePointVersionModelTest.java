@@ -3,10 +3,15 @@ package ch.sbb.atlas.api.servicepoint;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
+import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
+import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
+import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 
@@ -124,5 +129,69 @@ class CreateServicePointVersionModelTest {
 
     Set<ConstraintViolation<CreateServicePointVersionModel>> constraintViolations = validator.validate(servicePointVersionModel);
     assertThat(constraintViolations).hasSize(1);
+  }
+
+  @Test
+  void shouldNotAllowServiceWithOperatingPointTypeAndTechnical() {
+    CreateServicePointVersionModel servicePointVersionModel = CreateServicePointVersionModel.builder()
+        .numberWithoutCheckDigit(8507000)
+        .designationOfficial("Bern")
+        .businessOrganisation("ch:1:sboid:5846489645")
+        .operatingPointType(OperatingPointType.INVENTORY_POINT)
+        .operatingPointTechnicalTimetableType(OperatingPointTechnicalTimetableType.OPERATING_POINT_BUS)
+        .validFrom(LocalDate.of(2022, 1, 1))
+        .validTo(LocalDate.of(2022, 12, 31))
+        .build();
+
+    Set<ConstraintViolation<CreateServicePointVersionModel>> constraintViolations = validator.validate(servicePointVersionModel);
+    assertThat(constraintViolations).isNotEmpty();
+  }
+
+  @Test
+  void shouldNotAllowServiceWithOperatingPointTypeAndTariffPoint() {
+    CreateServicePointVersionModel servicePointVersionModel = CreateServicePointVersionModel.builder()
+        .numberWithoutCheckDigit(8507000)
+        .designationOfficial("Bern")
+        .businessOrganisation("ch:1:sboid:5846489645")
+        .operatingPointType(OperatingPointType.INVENTORY_POINT)
+        .operatingPointTrafficPointType(OperatingPointTrafficPointType.TARIFF_POINT)
+        .validFrom(LocalDate.of(2022, 1, 1))
+        .validTo(LocalDate.of(2022, 12, 31))
+        .build();
+
+    Set<ConstraintViolation<CreateServicePointVersionModel>> constraintViolations = validator.validate(servicePointVersionModel);
+    assertThat(constraintViolations).isNotEmpty();
+  }
+
+  @Test
+  void shouldNotAllowServiceWithPlainOperatingPointAndStopPoint() {
+    CreateServicePointVersionModel servicePointVersionModel = CreateServicePointVersionModel.builder()
+        .numberWithoutCheckDigit(8507000)
+        .designationOfficial("Bern")
+        .businessOrganisation("ch:1:sboid:5846489645")
+        .operatingPointType(OperatingPointType.INVENTORY_POINT)
+        .meansOfTransport(List.of(MeanOfTransport.BUS))
+        .validFrom(LocalDate.of(2022, 1, 1))
+        .validTo(LocalDate.of(2022, 12, 31))
+        .build();
+
+    Set<ConstraintViolation<CreateServicePointVersionModel>> constraintViolations = validator.validate(servicePointVersionModel);
+    assertThat(constraintViolations).isNotEmpty();
+  }
+
+  @Test
+  void shouldNotAllowServiceWithPlainOperatingPointAndFreightServicePoint() {
+    CreateServicePointVersionModel servicePointVersionModel = CreateServicePointVersionModel.builder()
+        .numberWithoutCheckDigit(8507000)
+        .designationOfficial("Bern")
+        .businessOrganisation("ch:1:sboid:5846489645")
+        .operatingPointType(OperatingPointType.INVENTORY_POINT)
+        .freightServicePoint(true)
+        .validFrom(LocalDate.of(2022, 1, 1))
+        .validTo(LocalDate.of(2022, 12, 31))
+        .build();
+
+    Set<ConstraintViolation<CreateServicePointVersionModel>> constraintViolations = validator.validate(servicePointVersionModel);
+    assertThat(constraintViolations).isNotEmpty();
   }
 }
