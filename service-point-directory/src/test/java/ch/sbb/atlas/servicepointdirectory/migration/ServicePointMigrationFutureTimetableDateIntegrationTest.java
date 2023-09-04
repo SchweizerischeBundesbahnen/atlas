@@ -25,8 +25,8 @@ import org.junit.jupiter.api.TestMethodOrder;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ServicePointMigrationFutureTimetableDateIntegrationTest {
 
-  private static final String DIDOK_CSV_FILE = "DIDOK3_DIENSTSTELLEN_FUTURE_TIMETABLE_V_2_20230721015735.csv";
-  private static final String ATLAS_CSV_FILE = "future_timetable-world-service-point-2023-07-21.csv";
+  private static final String DIDOK_CSV_FILE = "DIDOK3_DIENSTSTELLEN_FUTURE_TIMETABLE_V_2_20230906020753.csv";
+  private static final String ATLAS_CSV_FILE = "future_timetable-world-service_point-2023-09-06.csv";
   private static final LocalDate FUTURE_TIMETABLE_DATE = LocalDate.of(2023, 12, 10);
 
   private static final List<ServicePointAtlasCsvModel> atlasCsvLines = new ArrayList<>();
@@ -72,12 +72,10 @@ public class ServicePointMigrationFutureTimetableDateIntegrationTest {
   @Test
   @Order(3)
   void shouldHaveOnlyVersionsValidOnFutureTimetableDate() {
-    atlasCsvLines.forEach(atlasCsvLine -> {
-      assertThat(
-          new DateRange(dateFromString(atlasCsvLine.getValidFrom()),
-              dateFromString(atlasCsvLine.getValidTo()))
-              .contains(FUTURE_TIMETABLE_DATE)).isTrue();
-    });
+    atlasCsvLines.forEach(atlasCsvLine -> assertThat(
+        new DateRange(dateFromString(atlasCsvLine.getValidFrom()),
+            dateFromString(atlasCsvLine.getValidTo()))
+            .contains(FUTURE_TIMETABLE_DATE)).isTrue());
   }
 
   @Test
