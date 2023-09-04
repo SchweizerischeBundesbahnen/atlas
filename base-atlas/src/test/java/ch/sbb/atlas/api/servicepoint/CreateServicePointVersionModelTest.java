@@ -3,7 +3,6 @@ package ch.sbb.atlas.api.servicepoint;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
-import ch.sbb.atlas.model.Status;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -21,7 +20,6 @@ class CreateServicePointVersionModelTest {
         .numberWithoutCheckDigit(8507000)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
-        .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2022, 12, 31))
         .build();
@@ -36,7 +34,6 @@ class CreateServicePointVersionModelTest {
         .numberWithoutCheckDigit(8507000)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
-        .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2022, 12, 31))
         .servicePointGeolocation(ServicePointGeolocationCreateModel.builder()
@@ -55,7 +52,6 @@ class CreateServicePointVersionModelTest {
         .numberWithoutCheckDigit(8507000)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
-        .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2022, 12, 31))
         .servicePointGeolocation(ServicePointGeolocationCreateModel.builder()
@@ -76,7 +72,6 @@ class CreateServicePointVersionModelTest {
         .numberWithoutCheckDigit(8507000)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
-        .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2022, 12, 31))
         .servicePointGeolocation(ServicePointGeolocationCreateModel.builder()
@@ -97,7 +92,6 @@ class CreateServicePointVersionModelTest {
         .numberWithoutCheckDigit(8507000)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
-        .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2022, 12, 31))
         .servicePointGeolocation(ServicePointGeolocationCreateModel.builder()
@@ -118,7 +112,6 @@ class CreateServicePointVersionModelTest {
         .numberWithoutCheckDigit(8507000)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
-        .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2022, 12, 31))
         .servicePointGeolocation(ServicePointGeolocationCreateModel.builder()
