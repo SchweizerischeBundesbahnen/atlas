@@ -25,8 +25,8 @@ public class ServicePointMigrationIntegrationTest {
 
   static final String BASE_PATH = "/migration/";
 
-  private static final String DIDOK_CSV_FILE = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20230726021701.csv";
-  private static final String ATLAS_CSV_FILE = "full-world-service-point-2023-07-27.csv";
+  private static final String DIDOK_CSV_FILE = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20230906021755.csv";
+  private static final String ATLAS_CSV_FILE = "full-world-service_point-2023-09-06.csv";
 
   private static final List<ServicePointAtlasCsvModel> atlasCsvLines = new ArrayList<>();
   private static final List<ServicePointDidokCsvModel> didokCsvLines = new ArrayList<>();
