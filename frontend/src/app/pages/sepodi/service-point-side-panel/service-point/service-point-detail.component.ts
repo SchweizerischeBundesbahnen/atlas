@@ -71,6 +71,8 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
       this.initServicePoint();
       this.displayAndSelectServicePointOnMap();
     });
+
+    console.log('service-point-detail , ', this.form);
   }
 
   ngOnDestroy() {
@@ -152,6 +154,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     if (this.form.enabled) {
       this.showConfirmationDialog();
     } else {
+      //TODO: On cancel, remove marker
       this.mapService.isEditModus.next(true);
       this.form.enable();
     }
