@@ -1,0 +1,18 @@
+<div class="search-form">
+  <form-search-select
+    (changeTrigger)="navigateToServicePoint($event)"
+    (searchTrigger)="searchServicePoint($event)"
+    [formGroup]="form"
+    [controlName]="'servicePointSearch'"
+    [items$]="servicePointSearchResult$"
+    placeholderTextKey="{{ 'SEPODI.SERVICE_POINTS.SERVICE_POINT' | translate }}"
+  >
+    <ng-template #labelOptionTemplates let-item>
+      <span
+        [innerHTML]="item.number.number.toString() | searchResultHighlight : searchValue"
+      ></span>
+      <span>&nbsp;&nbsp;&nbsp;</span>
+      <span [innerHTML]="item.designationOfficial | searchResultHighlight : searchValue"></span>
+    </ng-template>
+  </form-search-select>
+</div>
