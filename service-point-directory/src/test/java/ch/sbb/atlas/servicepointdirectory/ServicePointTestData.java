@@ -78,7 +78,7 @@ public class ServicePointTestData {
     ServicePointVersion servicePoint = ServicePointVersion
         .builder()
         .servicePointGeolocation(geolocation)
-        .number(ServicePointNumber.of(85070003))
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8507000))
         .sloid("ch:1:sloid:7000")
         .numberShort(7000)
         .country(Country.SWITZERLAND)
@@ -127,7 +127,7 @@ public class ServicePointTestData {
     ServicePointVersion bernOst = ServicePointVersion
         .builder()
         .servicePointGeolocation(geolocation)
-        .number(ServicePointNumber.of(85009258))
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8500925))
         .sloid("ch:1:sloid:925")
         .numberShort(925)
         .country(Country.SWITZERLAND)
