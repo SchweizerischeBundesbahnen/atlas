@@ -66,4 +66,9 @@ public abstract class BaseSqlTest {
     return localDate.format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN));
   }
 
+  protected boolean isDateInRange(LocalDate matchDate, LocalDate validFrom, LocalDate validTo) {
+    return (matchDate.equals(validFrom) || matchDate.isAfter(validFrom))
+        && (matchDate.equals(validTo) || matchDate.isBefore(validTo));
+  }
+
 }
