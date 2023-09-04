@@ -11,7 +11,7 @@ import {
 import { MAP_LAYER_NAME, MAP_SOURCE_NAME, MAP_STYLE_SPEC, MAP_ZOOM_DETAILS } from './map-style';
 import { GeoJsonProperties, Point } from 'geojson';
 import { MAP_STYLES, MapOptionsService, MapStyle } from './map-options.service';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, Subject, Subscription } from 'rxjs';
 import { CoordinatePair } from '../../../api';
 import { MapIconsService } from './map-icons.service';
 
@@ -28,6 +28,7 @@ export class MapService {
   currentMapStyle = MAP_STYLES[0];
 
   isEditModus = new BehaviorSubject(false);
+  clickedCoordinates: BehaviorSubject<any> = new BehaviorSubject<any[]>([]);
 
   popup = new Popup({
     closeButton: true,
