@@ -15,7 +15,7 @@ import { UserPermissionManager } from '../../service/user-permission-manager';
 import { BusinessOrganisationLanguageService } from '../../../../core/form-components/bo-select/business-organisation-language.service';
 import { Observable, of, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Cantons } from '../../../tth/overview/canton/Cantons';
+import { Cantons } from '../../../../core/cantons/Cantons';
 import { MatSelectChange } from '@angular/material/select';
 import { Countries } from '../../../../core/country/Countries';
 
