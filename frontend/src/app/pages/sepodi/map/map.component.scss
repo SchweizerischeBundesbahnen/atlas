@@ -9,10 +9,6 @@
     width: 100%;
   }
 
-  #map {
-    cursor: default; /* Standard-Mauszeigerstil */
-  }
-
   .map-style-selector {
     background: white;
     position: absolute;
@@ -90,4 +86,13 @@
       bottom: 10px;
     }
   }
+}
+
+.custom-marker {
+  width: 30px;
+  height: 30px;
+  background-color: red;
+  border: 2px solid black;
+  border-radius: 50%;
+  z-index: 1000;
 }
