@@ -37,7 +37,7 @@ public final class ServicePointNumber {
 
   public static ServicePointNumber ofNumberWithoutCheckDigit(int number) {
     if(String.valueOf(number).length() != LENGTH){
-      throw new IllegalArgumentException("The number size must be 7!");
+      throw new IllegalArgumentException("The number size must be 7!["+number +"]");
     }
     return new ServicePointNumber(number);
   }

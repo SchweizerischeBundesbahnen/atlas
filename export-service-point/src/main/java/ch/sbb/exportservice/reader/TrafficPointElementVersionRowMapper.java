@@ -16,7 +16,7 @@ public class TrafficPointElementVersionRowMapper extends BaseRowMapper implement
 
   @Override
   public TrafficPointElementVersion mapRow(ResultSet rs, int rowNum) throws SQLException {
-    ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(rs.getInt("service_point_number"));
+    ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(ServicePointNumber.removeCheckDigit(rs.getInt("service_point_number")));
     TrafficPointElementVersion.TrafficPointElementVersionBuilder<?, ?> builder = TrafficPointElementVersion.builder();
     builder.id(rs.getLong("id"));
     builder.sloid(rs.getString("sloid"));
@@ -27,7 +27,6 @@ public class TrafficPointElementVersionRowMapper extends BaseRowMapper implement
     builder.boardingAreaHeight(rs.getObject("boarding_area_height") != null ? rs.getDouble("boarding_area_height") : null);
     builder.compassDirection(rs.getObject("compass_direction") != null ? rs.getDouble("compass_direction") : null);
     builder.parentSloid(rs.getString("parent_sloid"));
-    builder.servicePointNumber(ServicePointNumber.ofNumberWithoutCheckDigit(rs.getInt("number")));
     getTrafficPointElementGeolocation(rs, builder);
     builder.parentSloidServicePoint(rs.getString("parent_service_point_sloid"));
     builder.servicePointBusinessOrganisation(getBusinessOrganisation(rs));
