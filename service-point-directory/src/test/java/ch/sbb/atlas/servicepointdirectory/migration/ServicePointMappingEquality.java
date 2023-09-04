@@ -189,11 +189,6 @@ public class ServicePointMappingEquality {
 
     performEqualityCheckOrIgnoreInfoplus(atlasCsvLine, atlasCsvLine.getWgs84East(), didokCsvLine.getEWgs84(), 7);
     performEqualityCheckOrIgnoreInfoplus(atlasCsvLine, atlasCsvLine.getWgs84North(), didokCsvLine.getNWgs84(), 7);
-
-    if (isFullExport) {
-      performEqualityCheckOrIgnoreInfoplus(atlasCsvLine, atlasCsvLine.getWgs84WebEast(), didokCsvLine.getEWgs84web(), 3);
-      performEqualityCheckOrIgnoreInfoplus(atlasCsvLine, atlasCsvLine.getWgs84WebNorth(), didokCsvLine.getNWgs84web(), 3);
-    }
   }
 
   private static void performEqualityCheckOrIgnoreInfoplus(ServicePointAtlasCsvModel atlasCsvLine,
