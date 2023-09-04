@@ -234,7 +234,7 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
                     .content(mapper.writeValueAsString(aargauServicePointVersionModel)))
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
-            .andExpect(jsonPath("$.details[0].message", is("Value false rejected due to At most one of OperatingPointWithoutTimetableType, OperatingPointTechnicalTimetableType, OperatingPointTrafficPointType may be set")));
+            .andExpect(jsonPath("$.details[0].message", is("Value false rejected due to At most one of OperatingPointTechnicalTimetableType, OperatingPointTrafficPointType may be set")));
   }
 
   @Test
