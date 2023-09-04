@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { Cantons } from './canton/Cantons';
-import { Canton } from './canton/Canton';
+import { Cantons } from '../../../core/cantons/Cantons';
+import { Canton } from '../../../core/cantons/Canton';
 
 @Component({
   selector: 'app-timetable-hearing-overview',
