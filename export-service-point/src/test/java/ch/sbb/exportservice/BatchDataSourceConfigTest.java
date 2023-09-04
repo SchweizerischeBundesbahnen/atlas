@@ -23,7 +23,7 @@ import org.springframework.test.context.jdbc.SqlGroup;
         transactionManager =
             "servicePointTransactionManager", transactionMode = SqlConfig.TransactionMode.ISOLATED)),
     @Sql(scripts = {"/prune-batch-data-db.sql"}, executionPhase =
-        ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(dataSource =
+        ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(dataSource =
         "batchDataSource",
         transactionManager =
             "batchTransactionManager", transactionMode = SqlConfig.TransactionMode.ISOLATED)),
