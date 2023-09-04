@@ -13,7 +13,4 @@ public class TrafficPointDidokCsvModel extends TrafficPointElementCsvModel {
   @JsonProperty("DS_GO_IDENTIFIKATION")
   private int servicePointBusinessOrganisation;
 
-  @JsonProperty("DS_GO_NUMMER")
-  private int servicePointBusinessOrganisationNumber;
-
 }
