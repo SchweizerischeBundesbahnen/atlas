@@ -22,6 +22,7 @@ import { DialogService } from '../../../../core/components/dialog/dialog.service
 import { ServicePointsService } from '../../../../api';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { ServicePointType } from './service-point-type';
+import { DisplayCantonPipe } from '../../../../core/cantons/display-canton.pipe';
 
 const authService: Partial<AuthService> = {};
 const dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirm']);
@@ -47,6 +48,7 @@ describe('ServicePointDetailComponent', () => {
         SwitchVersionComponent,
         AtlasSlideToggleComponent,
         MockAtlasButtonComponent,
+        DisplayCantonPipe,
       ],
       imports: [AppTestingModule, FormsModule],
       providers: [
