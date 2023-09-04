@@ -12,13 +12,13 @@ import {
 } from '../../../api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
-import { Cantons } from '../overview/canton/Cantons';
+import { Cantons } from '../../../core/cantons/Cantons';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AtlasCharsetsValidator } from '../../../core/validation/charsets/atlas-charsets-validator';
 import { AtlasFieldLengthValidator } from '../../../core/validation/field-lengths/atlas-field-length-validator';
 import { WhitespaceValidator } from '../../../core/validation/whitespace/whitespace-validator';
 import { StatementDetailFormGroup, StatementSenderFormGroup } from './statement-detail-form-group';
-import { Canton } from '../overview/canton/Canton';
+import { Canton } from '../../../core/cantons/Canton';
 import { map, takeUntil } from 'rxjs/operators';
 import { catchError, EMPTY, Observable, of, Subject } from 'rxjs';
 import { NotificationService } from '../../../core/notification/notification.service';
