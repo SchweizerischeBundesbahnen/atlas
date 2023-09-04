@@ -31,6 +31,11 @@ class CreateServicePointVersionModelTest {
 
     Set<ConstraintViolation<CreateServicePointVersionModel>> constraintViolations = validator.validate(servicePointVersionModel);
     assertThat(constraintViolations).isEmpty();
+
+    assertThat(servicePointVersionModel.isRawServicePoint()).isTrue();
+    assertThat(servicePointVersionModel.isOperatingPoint()).isFalse();
+    assertThat(servicePointVersionModel.isOperatingPointWithTimetable()).isFalse();
+    assertThat(servicePointVersionModel.isStopPoint()).isFalse();
   }
 
   @Test
