@@ -28,12 +28,12 @@ public class BusinessOrganisationAmazonService {
   }
 
   public StreamingResponseBody streamGzipFile(ExportType exportType) {
-    return fileService.streamingGzipFile(exportType, exportFileName, amazonService, getFileName(exportType));
+    return fileService.streamingGzFile(exportType, exportFileName, amazonService, getFileName(exportType));
   }
 
-  public String getFileName(ExportType exportType) {
-    LocalDate todayDate = LocalDate.now();
-    return exportType.getFileTypePrefix() + exportFileName.getFileName() + "_" + todayDate;
-  }
+    public String getFileName(ExportType exportType) {
+        LocalDate todayDate = LocalDate.now();
+        return exportType.getFileTypePrefix() + exportFileName.getFileName() + "_" + todayDate;
+    }
 
 }
