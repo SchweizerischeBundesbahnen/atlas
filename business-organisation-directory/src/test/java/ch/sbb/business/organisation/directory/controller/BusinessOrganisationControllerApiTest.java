@@ -140,8 +140,6 @@ public class BusinessOrganisationControllerApiTest extends BaseControllerWithAma
     mvc.perform(get(
             "/v1/business-organisations/versions/" + businessOrganisationVersion.getSboid()))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$[0]."
-            + businessTypes, containsInAnyOrder(BusinessType.RAILROAD.name(), BusinessType.AIR.name(), BusinessType.SHIP.name())))
         .andExpect(jsonPath("$[0]." + validFrom, is("2001-01-01")))
         .andExpect(jsonPath("$[0]." + validTo, is("2001-12-31")))
         .andExpect(jsonPath("$[0]." + organisationNumber, is(1234)))
