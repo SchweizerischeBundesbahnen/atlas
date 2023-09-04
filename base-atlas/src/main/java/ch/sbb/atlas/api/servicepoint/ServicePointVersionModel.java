@@ -59,12 +59,6 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
           + "identifying locations.", example = "BIBD", maxLength = 6)
   private String abbreviation;
 
-  @Schema(description = "Indicates if this a operatingPoint.")
-  private boolean operatingPoint;
-
-  @Schema(description = "Indicates if this a operatingPoint including Timetables.")
-  private boolean operatingPointWithTimetable;
-
   @Schema(description = "Indicates if this a Service Point for freights.")
   private boolean freightServicePoint;
 
@@ -98,7 +92,7 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
           + "StopPoints")
   private List<MeanOfTransport> meansOfTransport;
 
-  @Schema(description = "Type of the StopPoint, Indicates for which type of traffic (e.g. regular traffic) a stop was recorded. ")
+  @Schema(description = "Type of the StopPoint, Indicates for which type of traffic (e.g. regular traffic) a stop was recorded.")
   private StopPointType stopPointType;
 
   @NotNull
@@ -111,14 +105,36 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
   private Integer etagVersion;
 
   @JsonIgnore
-  @AssertTrue(message = "At most one of OperatingPointTechnicalTimetableType, "
-          + "OperatingPointTrafficPointType may be set")
+  public boolean isRawServicePoint() {
+    return getOperatingPointType() == null &&
+        getOperatingPointTechnicalTimetableType() == null &&
+        getMeansOfTransport().isEmpty() &&
+        !isFreightServicePoint() &&
+        getOperatingPointTrafficPointType() == null;
+  }
+
+  @JsonIgnore
+  @AssertTrue(message = """
+      ServicePoint rejected due to invalid type information.
+      A ServicePoint might either have:
+       - OperatingPointType
+       - OperatingPointTechnicalTimetableType
+       - OperatingPointTrafficPointType
+       - MeansOfTransport or FreightServicePoint
+      """)
   public boolean isValidType() {
     long mutualTypes = Stream.of(
-                    getOperatingPointTechnicalTimetableType() != null,
-                    getOperatingPointTrafficPointType() != null)
-            .filter(i -> i)
-            .count();
+            // Betriebspunkt
+            getOperatingPointType() != null,
+            // Reiner Betriebspunkt
+            getOperatingPointTechnicalTimetableType() != null,
+            // Haltestelle und/oder Bedienpunkt
+            (!getMeansOfTransport().isEmpty() || isFreightServicePoint()),
+            // Tarifhaltestelle
+            getOperatingPointTrafficPointType() != null)
+        .filter(i -> i)
+        .count();
+    // Dienststelle (eg. Verkaufsstelle) hat keines dieser Informationen
     return mutualTypes <= 1;
   }
 

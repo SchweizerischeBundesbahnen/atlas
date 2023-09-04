@@ -73,6 +73,9 @@ public class ServicePointGeolocationMapper {
   }
 
   public static ServicePointGeolocation toEntity(GeolocationBaseCreateModel servicePointGeolocationModel) {
+    if (servicePointGeolocationModel == null) {
+      return null;
+    }
     GeolocationMapper.transformLv03andWgs84(servicePointGeolocationModel);
     return ServicePointGeolocation.builder()
         .spatialReference(servicePointGeolocationModel.getSpatialReference())
