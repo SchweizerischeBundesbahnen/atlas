@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
@@ -50,6 +51,7 @@ public class ServicePointService {
   @PreAuthorize("@countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#servicePointVersion, "
       + "T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
   public ServicePointVersion save(ServicePointVersion servicePointVersion) {
+    servicePointVersion.setStatus(Status.VALIDATED);
     servicePointValidationService.validateServicePointPreconditionBusinessRule(servicePointVersion);
     return servicePointVersionRepository.saveAndFlush(servicePointVersion);
   }

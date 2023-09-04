@@ -70,7 +70,6 @@ public class ServicePointVersionMapper {
         .businessOrganisation(createServicePointVersionModel.getBusinessOrganisation())
         .operatingPointType(createServicePointVersionModel.getOperatingPointType())
         .stopPointType(createServicePointVersionModel.getStopPointType())
-        .status(createServicePointVersionModel.getStatus())
         .operatingPointKilometerMaster(operatingPointKilometerMasterNumber)
         .operatingPointRouteNetwork(createServicePointVersionModel.isOperatingPointRouteNetwork())
         .validFrom(createServicePointVersionModel.getValidFrom())
