@@ -28,7 +28,6 @@ import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointGeolocationMapper;
@@ -226,18 +225,6 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldReturnBadRequestWhenCreateServicePointWithOperatingPointTrafficPointTypeAndOperatingPointTechnicalTimetableType() throws Exception {
-    CreateServicePointVersionModel aargauServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
-    aargauServicePointVersionModel.setOperatingPointTrafficPointType(OperatingPointTrafficPointType.TARIFF_POINT);
-    mvc.perform(post("/v1/service-points")
-                    .contentType(contentType)
-                    .content(mapper.writeValueAsString(aargauServicePointVersionModel)))
-            .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
-            .andExpect(jsonPath("$.details[0].message", is("Value false rejected due to At most one of OperatingPointTechnicalTimetableType, OperatingPointTrafficPointType may be set")));
-  }
-
-  @Test
   void shouldCreateServicePoint() throws Exception {
 
     mvc.perform(post("/v1/service-points")
@@ -252,15 +239,12 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.sloid, is("ch:1:sloid:18771")))
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.designationLong, is("designation long 1")))
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.abbreviation, is("3")))
-        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.operatingPoint, is(true)))
-        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.operatingPointWithTimetable, is(true)))
+        .andExpect(jsonPath("$.operatingPoint", is(true)))
+        .andExpect(jsonPath("$.operatingPointWithTimetable", is(true)))
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.freightServicePoint, is(false)))
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.sortCodeOfDestinationStation, is("39136")))
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.businessOrganisation, is("ch:1:sboid:100871")))
         .andExpect(jsonPath("$.categories[0]", is("POINT_OF_SALE")))
-        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.operatingPointType, is("INVENTORY_POINT")))
-        .andExpect(
-            jsonPath("$." + ServicePointVersionModel.Fields.operatingPointTechnicalTimetableType, is("ASSIGNED_OPERATING_POINT")))
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.operatingPointRouteNetwork, is(false)))
         .andExpect(jsonPath("$.operatingPointKilometerMaster.number", is(8034511)))
         .andExpect(jsonPath("$.operatingPointKilometerMaster.numberShort", is(34511)))
