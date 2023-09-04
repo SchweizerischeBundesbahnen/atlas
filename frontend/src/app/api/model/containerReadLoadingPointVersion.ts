@@ -9,10 +9,9 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { ReadLoadingPointVersion } from './readLoadingPointVersion';
 
-export type ExportFileName = 'SERVICE_POINT_VERSION' | 'TRAFFIC_POINT_ELEMENT_VERSION';
-
-export const ExportFileName = {
-  ServicePointVersion: 'SERVICE_POINT_VERSION' as ExportFileName,
-  TrafficPointElementVersion: 'TRAFFIC_POINT_ELEMENT_VERSION' as ExportFileName,
-};
+export interface ContainerReadLoadingPointVersion {
+  objects?: Array<ReadLoadingPointVersion>;
+  totalCount?: number;
+}
