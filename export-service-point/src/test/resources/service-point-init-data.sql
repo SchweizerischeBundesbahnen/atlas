@@ -160,7 +160,7 @@ insert into service_point_version (id, service_point_geolocation_id, number, slo
                                    operating_point,
                                    operating_point_with_timetable, operating_point_technical_timetable_type,
                                    operating_point_traffic_point_type)
-values (1000, 1000, 85722413, 'ch:1:sloid:72241', 72241, 'SWITZERLAND', null, 'Magden, Obrist', null, 'HISTORICAL',
+values (1000, 1000, 8572241, 'ch:1:sloid:72241', 72241, 'SWITZERLAND', null, 'Magden, Obrist', null, 'HISTORICAL',
         null,
         'ch:1:sboid:100602', null, null, 'VALIDATED', null, false, '1993-02-01',
         '2020-12-12', '2017-11-09 11:53:05.000000', 'GSU_DIDOK', '2022-02-23 17:53:50.000000', 'GSU_DIDOK', 0, false,
@@ -168,7 +168,7 @@ values (1000, 1000, 85722413, 'ch:1:sloid:72241', 72241, 'SWITZERLAND', null, 'M
         null, null);
 insert into service_point_fot_comment (service_point_number, fot_comment, creation_date, creator, edition_date, editor,
                                        version)
-values (85722413, '(Bus) ohne Fahrplandaten 2016/2018', '2017-11-09 11:53:05.000000', 'GSU_DIDOK',
+values (8572241, '(Bus) ohne Fahrplandaten 2016/2018', '2017-11-09 11:53:05.000000', 'GSU_DIDOK',
         '2022-02-23 17:53:50.000000',
         'GSU_DIDOK', 0);
 insert into service_point_version (id, service_point_geolocation_id, number, sloid, number_short, country,
@@ -181,7 +181,7 @@ insert into service_point_version (id, service_point_geolocation_id, number, slo
                                    operating_point,
                                    operating_point_with_timetable, operating_point_technical_timetable_type,
                                    operating_point_traffic_point_type)
-values (1001, null, 94111146, null, 11114, 'PORTUGAL', null, 'Ferradosa', null, 'IN_OPERATION', null,
+values (1001, null, 9411114, null, 11114, 'PORTUGAL', null, 'Ferradosa', null, 'IN_OPERATION', null,
         'ch:1:sboid:100885', null,
         null, 'VALIDATED', null, false, '2001-01-01', '2010-12-11', '2018-02-15 23:28:53.000000', 'fs45117',
         '2018-03-08 18:21:49.000000', 'fs45117', 0, false, true, true, null, null);
@@ -195,7 +195,7 @@ insert into service_point_version (id, service_point_geolocation_id, number, slo
                                    operating_point,
                                    operating_point_with_timetable, operating_point_technical_timetable_type,
                                    operating_point_traffic_point_type)
-values (1002, null, 94111146, null, 11114, 'PORTUGAL', null, 'Ferradosa', null, 'IN_OPERATION', null,
+values (1002, null, 9411114, null, 11114, 'PORTUGAL', null, 'Ferradosa', null, 'IN_OPERATION', null,
         'ch:1:sboid:100885', null,
         null, 'VALIDATED', null, false, '2010-12-12', '2020-08-31', '2020-09-03 14:58:44.000000', 'fs45117',
         '2020-09-03 14:58:44.000000', 'fs45117', 1, false, true, true, null, null);
@@ -209,7 +209,7 @@ insert into service_point_version (id, service_point_geolocation_id, number, slo
                                    operating_point,
                                    operating_point_with_timetable, operating_point_technical_timetable_type,
                                    operating_point_traffic_point_type)
-values (1003, null, 94111146, null, 11114, 'PORTUGAL', null, 'Ferradosa', null, 'IN_OPERATION', null,
+values (1003, null, 9411114, null, 11114, 'PORTUGAL', null, 'Ferradosa', null, 'IN_OPERATION', null,
         'ch:1:sboid:100885', null,
         null, 'VALIDATED', null, false, '2020-09-01', '2020-12-12', '2017-11-09 11:53:05.000000', 'GSU_DIDOK',
         '2020-09-03 15:29:14.000000', 'fs45117', 2, false, true, true, null, null);
@@ -223,7 +223,7 @@ insert into service_point_version (id, service_point_geolocation_id, number, slo
                                    operating_point,
                                    operating_point_with_timetable, operating_point_technical_timetable_type,
                                    operating_point_traffic_point_type)
-values (1004, null, 11010199, null, 1019, 'GERMANY_BUS', null, 'München Hbf Nord II', null, 'HISTORICAL', null,
+values (1004, null, 1101019, null, 1019, 'GERMANY_BUS', null, 'München Hbf Nord II', null, 'HISTORICAL', null,
         'ch:1:sboid:101698', null, null, 'VALIDATED', null, false, '2015-04-09', '2021-05-05',
         '2017-11-09 11:53:05.000000',
         'GSU_DIDOK', '2021-08-12 22:35:38.000000', 'GSU_DIDOK', 0, false, false, false, null, null);
@@ -237,7 +237,7 @@ insert into service_point_version (id, service_point_geolocation_id, number, slo
                                    operating_point,
                                    operating_point_with_timetable, operating_point_technical_timetable_type,
                                    operating_point_traffic_point_type)
-values (1005, 1001, 12058875, null, 5887, 'AUSTRIA_BUS', null, 'Trins, Wienerhof', null, 'IN_OPERATION', null,
+values (1005, 1001, 1205887, null, 5887, 'AUSTRIA_BUS', null, 'Trins, Wienerhof', null, 'IN_OPERATION', null,
         'ch:1:sboid:101257', null, 'UNKNOWN', 'VALIDATED', null, false, '2022-09-01', '2022-12-31',
         '2022-09-10 17:30:56.000000', 'fs45117', '2022-09-10 17:30:56.000000', 'fs45117', 0, false, true, true, null,
         null);
@@ -251,7 +251,7 @@ insert into service_point_version (id, service_point_geolocation_id, number, slo
                                    operating_point,
                                    operating_point_with_timetable, operating_point_technical_timetable_type,
                                    operating_point_traffic_point_type)
-values (1006, null, 11010272, null, 1027, 'GERMANY_BUS', null, 'Bad Camberg Mecklenburgerstr.', null, 'HISTORICAL',
+values (1006, null, 1101027, null, 1027, 'GERMANY_BUS', null, 'Bad Camberg Mecklenburgerstr.', null, 'HISTORICAL',
         null,
         'ch:1:sboid:101698', null, null, 'VALIDATED', null, false, '2015-04-10', '2021-05-05',
         '2017-11-09 11:53:05.000000',
@@ -266,7 +266,7 @@ insert into service_point_version (id, service_point_geolocation_id, number, slo
                                    operating_point,
                                    operating_point_with_timetable, operating_point_technical_timetable_type,
                                    operating_point_traffic_point_type)
-values (1007, 1002, 12058867, null, 5886, 'AUSTRIA_BUS', null, 'Trins, Waldfestplatz', null, 'IN_OPERATION', null,
+values (1007, 1002, 1205886, null, 5886, 'AUSTRIA_BUS', null, 'Trins, Waldfestplatz', null, 'IN_OPERATION', null,
         'ch:1:sboid:101257', null, 'UNKNOWN', 'VALIDATED', null, false, '2022-09-01', '2022-12-31',
         '2022-09-10 17:29:29.000000', 'fs45117', '2022-09-10 17:29:29.000000', 'fs45117', 0, false, true, true, null,
         null);
@@ -378,7 +378,7 @@ insert into traffic_point_element_version (id, sloid, parent_sloid, designation,
                                            service_point_number, valid_from, valid_to,
                                            traffic_point_geolocation_id, creation_date, creator,
                                            edition_date, editor, version)
-values (1000, 'ch:1:sloid:77559:0:2', null, null, '2', '0', 18.000, 2.00, null, 12058870, '2022-03-01', '2099-12-31',
+values (1000, 'ch:1:sloid:77559:0:2', null, null, '2', '0', 18.000, 2.00, null, 1205887, '2022-03-01', '2099-12-31',
         1000, '2022-03-03 07:56:42.000000', 'fs45117', '2022-05-03 11:50:46.000000', 'e536178', 0);
 insert into traffic_point_element_version (id, sloid, parent_sloid, designation,
                                            designation_operational, traffic_point_element_type,
@@ -386,7 +386,7 @@ insert into traffic_point_element_version (id, sloid, parent_sloid, designation,
                                            service_point_number, valid_from, valid_to,
                                            traffic_point_geolocation_id, creation_date, creator,
                                            edition_date, editor, version)
-values (1001, 'ch:1:sloid:88253:0:1', null, null, '1', '0', null, null, 57.00, 94111146, '2020-07-03', '2099-12-31',
+values (1001, 'ch:1:sloid:88253:0:1', null, null, '1', '0', null, null, 57.00, 9411114, '2020-07-03', '2099-12-31',
         1001, '2020-07-03 08:12:08.000000', 'fs45117', '2020-07-03 08:22:43.000000', 'fs45117', 0);
 insert into traffic_point_element_version (id, sloid, parent_sloid, designation,
                                            designation_operational, traffic_point_element_type,
@@ -394,7 +394,7 @@ insert into traffic_point_element_version (id, sloid, parent_sloid, designation,
                                            service_point_number, valid_from, valid_to,
                                            traffic_point_geolocation_id, creation_date, creator,
                                            edition_date, editor, version)
-values (1002, 'ch:1:sloid:6602:0:7110', null, null, 'EINSIEG1', '0', null, null, null, 85066027, '2021-12-12',
+values (1002, 'ch:1:sloid:6602:0:7110', null, null, 'EINSIEG1', '0', null, null, null, 8506602, '2021-12-12',
         '2023-04-25', 1002, '2023-04-27 06:26:01.000000', 'fs45117', '2023-04-27 06:27:26.000000', 'fs45117', 0);
 insert into traffic_point_element_version (id, sloid, parent_sloid, designation,
                                            designation_operational, traffic_point_element_type,
@@ -402,7 +402,7 @@ insert into traffic_point_element_version (id, sloid, parent_sloid, designation,
                                            service_point_number, valid_from, valid_to,
                                            traffic_point_geolocation_id, creation_date, creator,
                                            edition_date, editor, version)
-values (1003, 'ch:1:sloid:71449:0:523431', null, null, '177MAUS1', '0', null, null, null, 12058875, '2021-12-12',
+values (1003, 'ch:1:sloid:71449:0:523431', null, null, '177MAUS1', '0', null, null, null, 1205887, '2021-12-12',
         '2023-03-26', 1003, '2023-03-03 08:11:46.000000', 'ue02112', '2023-04-27 10:27:18.000000', 'fs45117', 0);
 insert into traffic_point_element_version (id, sloid, parent_sloid, designation,
                                            designation_operational, traffic_point_element_type,
@@ -410,7 +410,7 @@ insert into traffic_point_element_version (id, sloid, parent_sloid, designation,
                                            service_point_number, valid_from, valid_to,
                                            traffic_point_geolocation_id, creation_date, creator,
                                            edition_date, editor, version)
-values (1004, 'ch:1:sloid:3020:1', null, 'Perron 1', null, '1', null, null, null, 12058867, '2020-05-07', '2099-12-31',
+values (1004, 'ch:1:sloid:3020:1', null, 'Perron 1', null, '1', null, null, null, 1205886, '2020-05-07', '2099-12-31',
         null, '2020-05-18 12:43:34.000000', 'fs45117', '2020-05-18 12:43:34.000000', 'fs45117', 0);
 
 -- loading points
