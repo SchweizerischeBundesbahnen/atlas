@@ -46,6 +46,7 @@ import { WorkflowDialogComponent } from '../workflow/dialog/workflow-dialog.comp
 import { ScrollToTopDirective } from '../scroll-to-top/scroll-to-top.directive';
 import { MaintenanceIconComponent } from '../components/header/maintenance-icon/maintenance-icon.component';
 import { DateRangeTextComponent } from '../versioning/date-range-text/date-range-text.component';
+import { DisplayCantonPipe } from '../cantons/display-canton.pipe';
 
 const coreComponents = [
   WorkflowFormComponent,
@@ -79,6 +80,7 @@ const coreComponents = [
   CoverageComponent,
   RelationComponent,
   DisplayDatePipe,
+  DisplayCantonPipe,
   SelectComponent,
   ScrollToTopDirective,
   MaintenanceIconComponent,
