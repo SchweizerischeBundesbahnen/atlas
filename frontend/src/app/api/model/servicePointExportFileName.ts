@@ -9,24 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { SpatialReference } from './spatialReference';
-import { Country } from './country';
-import { SwissLocation } from './swissLocation';
 
-export interface ServicePointGeolocationCreate {
-  spatialReference: SpatialReference;
-  /**
-   * North longitude
-   */
-  north: number;
-  /**
-   * Eastern longitude
-   */
-  east: number;
-  /**
-   * Height of the coordinate point
-   */
-  height?: number;
-  country?: Country;
-  swissLocation?: SwissLocation;
-}
+export type ServicePointExportFileName = 'SERVICE_POINT_VERSION' | 'TRAFFIC_POINT_ELEMENT_VERSION';
+
+export const ServicePointExportFileName = {
+  ServicePointVersion: 'SERVICE_POINT_VERSION' as ServicePointExportFileName,
+  TrafficPointElementVersion: 'TRAFFIC_POINT_ELEMENT_VERSION' as ServicePointExportFileName,
+};
