@@ -209,7 +209,8 @@
     "CMYK_INVALID": "Colore CMYK previsto nel formato 0-100,0-100,0-100,0-100. Esempio 10,10,0,100",
     "MIN": "Il valore deve essere minimo {{min}}",
     "MAX": "Il valore può essere massimo {{max}}",
-    "AT_LEAST_ONE": "Selezionare almeno un'espressione."
+    "AT_LEAST_ONE": "Selezionare almeno un'espressione.",
+    "DECIMAL_NUMBER": "Inserire un numero decimale con un massimo di {{maxDecimalDigits}} cifre decimali."
   },
   "USER_ADMIN": {
     "SEARCH_FOR_FILTER": "Organizzazioni aziendali e Applicazioni",
