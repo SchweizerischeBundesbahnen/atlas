@@ -9,10 +9,54 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { ServicePointNumber } from './servicePointNumber';
 
-export type ExportFileName = 'SERVICE_POINT_VERSION' | 'TRAFFIC_POINT_ELEMENT_VERSION';
-
-export const ExportFileName = {
-  ServicePointVersion: 'SERVICE_POINT_VERSION' as ExportFileName,
-  TrafficPointElementVersion: 'TRAFFIC_POINT_ELEMENT_VERSION' as ExportFileName,
-};
+export interface ReadLoadingPointVersion {
+  /**
+   * Object creation date
+   */
+  readonly creationDate?: string;
+  /**
+   * User creator
+   */
+  readonly creator?: string;
+  /**
+   * Last edition date
+   */
+  readonly editionDate?: string;
+  /**
+   * User editor
+   */
+  readonly editor?: string;
+  /**
+   * Technical identifier
+   */
+  readonly id?: number;
+  /**
+   * Loading Point Number
+   */
+  number: number;
+  /**
+   * Designation
+   */
+  designation: string;
+  /**
+   * Designation Long
+   */
+  designationLong?: string;
+  /**
+   * Is a connectionPoint
+   */
+  connectionPoint?: boolean;
+  validFrom: Date;
+  validTo: Date;
+  /**
+   * Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)
+   */
+  etagVersion?: number;
+  servicePointNumber: ServicePointNumber;
+  /**
+   * Unique code for locations that is used in customer information. The structure is described in the “Swiss Location ID” specification, chapter 4.2. The document is available here. https://transportdatamanagement.ch/standards/
+   */
+  servicePointSloid?: string;
+}
