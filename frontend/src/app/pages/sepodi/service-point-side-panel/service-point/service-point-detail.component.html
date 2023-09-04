@@ -125,7 +125,6 @@
         label="SEPODI.SERVICE_POINTS.STOP_POINT_TYPE"
         optionTranslateLabelPrefix="SEPODI.SERVICE_POINTS.STOP_POINT_TYPES."
         [options]="stopPointTypes"
-        [required]="true"
         [additionalLabelspace]="false"
       >
       </atlas-select>
@@ -180,7 +179,7 @@
     *ngIf="this.form.value.servicePointGeolocation?.spatialReference"
     [formGroup]="form.controls.servicePointGeolocation"
   ></sepodi-geography>
-  <div *ngIf="selectedVersion.hasGeolocation && selectedVersion.number.uicCountryCode === 85">
+  <div *ngIf="this.form.value.servicePointGeolocation?.spatialReference">
     <div class="font-bold-2xl mt-5">{{ 'SEPODI.GEOLOCATION.ADMINISTRATION' | translate }}</div>
 
     <div class="d-flex flex-row mt-2">
@@ -189,7 +188,7 @@
           {{ 'SEPODI.GEOLOCATION.COUNTRY' | translate }}
         </div>
         <div class="color-gray-900">
-          {{ selectedVersion.servicePointGeolocation?.isoCountryCode }}
+          {{ selectedVersion.servicePointGeolocation?.isoCountryCode ?? '-' }}
         </div>
       </div>
       <div class="col-3 pe-3">
@@ -197,7 +196,7 @@
           {{ 'SEPODI.GEOLOCATION.CANTON' | translate }}
         </div>
         <div class="color-gray-900">
-          {{ selectedVersion.servicePointGeolocation?.swissLocation?.canton }}
+          {{ selectedVersion.servicePointGeolocation?.swissLocation?.canton | displayCanton }}
         </div>
       </div>
       <div class="col-3 pe-3">
@@ -207,7 +206,7 @@
         <div class="color-gray-900">
           {{
             selectedVersion.servicePointGeolocation?.swissLocation?.localityMunicipality
-              ?.municipalityName
+              ?.municipalityName ?? '-'
           }}
         </div>
       </div>
@@ -218,7 +217,7 @@
         <div class="color-gray-900">
           {{
             selectedVersion.servicePointGeolocation?.swissLocation?.localityMunicipality
-              ?.localityName
+              ?.localityName ?? '-'
           }}
         </div>
       </div>
