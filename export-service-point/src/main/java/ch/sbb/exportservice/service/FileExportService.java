@@ -22,7 +22,6 @@ import java.time.format.DateTimeFormatter;
 public class FileExportService {
 
   private final AmazonService amazonService;
-
   private final FileService fileService;
 
   public StreamingResponseBody streamJsonFile(ExportType exportType, BatchExportFileName exportFileName) {
@@ -56,7 +55,7 @@ public class FileExportService {
       BatchExportFileName exportFileName) {
     String dir = fileService.getDir();
     String baseFileName = getBaseFileName(exportType, exportFileName);
-    return dir + baseFileName + exportExtensionFileType.getExtention();
+    return dir + baseFileName + exportExtensionFileType.getExtension();
   }
 
   public String getBaseFileName(ExportType exportType, BatchExportFileName exportFileName) {
