@@ -1,11 +1,13 @@
 package ch.sbb.exportservice.controller;
 
+import ch.sbb.atlas.amazon.exception.FileException;
 import ch.sbb.exportservice.model.BatchExportFileName;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
-import ch.sbb.atlas.model.exception.NotFoundException.FileNotFoundException;
 import ch.sbb.exportservice.model.ExportType;
+import ch.sbb.exportservice.service.ExportLoadingPointJobService;
+import ch.sbb.exportservice.service.ExportServicePointJobService;
+import ch.sbb.exportservice.service.ExportTrafficPointElementJobService;
 import ch.sbb.exportservice.service.FileExportService;
-import ch.sbb.exportservice.service.MailProducerService;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -17,7 +19,6 @@ import java.io.InputStream;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
@@ -31,10 +32,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseControllerApiTest {
 
   @MockBean
-  private MailProducerService mailProducerService;
+  private FileExportService fileExportService;
 
   @MockBean
-  private FileExportService fileExportService;
+  private ExportServicePointJobService exportServicePointJobService;
+
+  @MockBean
+  private ExportTrafficPointElementJobService exportTrafficPointElementJobService;
+
+  @MockBean
+  private ExportLoadingPointJobService exportLoadingPointJobService;
 
   @Test
   @Order(1)
@@ -58,13 +65,13 @@ public class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseC
   @Order(2)
   public void shouldGetJsonUnsuccessfully() throws Exception {
     //given
-    doThrow(FileNotFoundException.class).when(fileExportService)
+    doThrow(FileException.class).when(fileExportService)
         .streamJsonFile(ExportType.WORLD_FULL, BatchExportFileName.SERVICE_POINT_VERSION);
 
     //when & then
     mvc.perform(get("/v1/export/json/service-point-version/world-full")
             .contentType(contentType))
-        .andExpect(status().isNotFound());
+        .andExpect(status().isInternalServerError());
   }
 
   @Test
@@ -89,13 +96,13 @@ public class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseC
   @Order(4)
   public void shouldDownloadGzipJsonUnsuccessfully() throws Exception {
     //given
-    doThrow(FileNotFoundException.class).when(fileExportService)
+    doThrow(FileException.class).when(fileExportService)
         .streamGzipFile(ExportType.WORLD_FULL, BatchExportFileName.SERVICE_POINT_VERSION);
 
     //when & then
     mvc.perform(get("/v1/export/download-gzip-json/service-point-version/world-full")
             .contentType(contentType))
-        .andExpect(status().isNotFound());
+        .andExpect(status().isInternalServerError());
   }
 
   @Test
@@ -118,7 +125,7 @@ public class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseC
   @Order(6)
   public void shouldPostServicePointExportBatchSuccessfully() throws Exception {
     //given
-    doNothing().when(mailProducerService).produceMailNotification(any());
+    doNothing().when(exportServicePointJobService).startExportJobs();
 
     //when & then
     mvc.perform(post("/v1/export/service-point-batch")
@@ -130,7 +137,7 @@ public class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseC
   @Order(7)
   public void shouldPostTrafficPointExportBatchSuccessfully() throws Exception {
     //given
-    doNothing().when(mailProducerService).produceMailNotification(any());
+    doNothing().when(exportTrafficPointElementJobService).startExportJobs();
 
     //when & then
     mvc.perform(post("/v1/export/traffic-point-batch")
@@ -142,7 +149,7 @@ public class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseC
   @Order(8)
   public void shouldPostLoadingPointExportBatchSuccessfully() throws Exception {
     //given
-    doNothing().when(mailProducerService).produceMailNotification(any());
+    doNothing().when(exportLoadingPointJobService).startExportJobs();
 
     //when & then
     mvc.perform(post("/v1/export/loading-point-batch")

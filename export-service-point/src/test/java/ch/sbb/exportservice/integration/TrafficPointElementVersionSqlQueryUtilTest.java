@@ -110,11 +110,6 @@ public class TrafficPointElementVersionSqlQueryUtilTest extends BaseSqlTest {
     return result;
   }
 
-  private boolean isDateInRange(LocalDate matchDate, LocalDate validFrom, LocalDate validTo) {
-    return (matchDate.equals(validFrom) || matchDate.isAfter(validFrom))
-        && (matchDate.equals(validTo) || matchDate.isBefore(validTo));
-  }
-
   private void insertTrafficPoint(String sloid, LocalDate validFrom, LocalDate validTo) throws SQLException {
     final String insertSql = """
         insert into traffic_point_element_version (id, sloid, parent_sloid, designation,
