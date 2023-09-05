@@ -1,4 +1,10 @@
 <div class="search-form">
+  <div class="d-flex flex-column">
+    <mat-label class="font-bold-sm pb-2">
+      {{ 'SEPODI.SERVICE_POINTS.DIDOK_CODE' | translate }} -
+      {{ 'SEPODI.SERVICE_POINTS.DESIGNATION_OFFICIAL' | translate }}
+    </mat-label>
+  </div>
   <form-search-select
     (changeTrigger)="navigateToServicePoint($event)"
     (searchTrigger)="searchServicePoint($event)"
