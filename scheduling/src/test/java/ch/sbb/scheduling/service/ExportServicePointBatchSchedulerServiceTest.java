@@ -51,6 +51,46 @@ public class ExportServicePointBatchSchedulerServiceTest {
   }
 
   @Test
+  public void shouldPostTriggerExportTrafficPointBatchSuccessfully() {
+    //given
+    Response response = Response.builder()
+        .status(200)
+        .reason("OK")
+        .request(
+            Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                null, Util.UTF_8, null))
+        .build();
+    when(client.postTriggerExportTrafficPointBatch()).thenReturn(response);
+
+    //when
+    Response result = exportServicePointBatchSchedulerService.postTriggerExportTrafficPointBatch();
+
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.status()).isEqualTo(200);
+  }
+
+  @Test
+  public void shouldPostTriggerExportLoadingPointBatchSuccessfully() {
+    //given
+    Response response = Response.builder()
+        .status(200)
+        .reason("OK")
+        .request(
+            Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                null, Util.UTF_8, null))
+        .build();
+    when(client.postTriggerExportLoadingPointBatch()).thenReturn(response);
+
+    //when
+    Response result = exportServicePointBatchSchedulerService.postTriggerExportLoadingPointBatch();
+
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.status()).isEqualTo(200);
+  }
+
+  @Test
   public void shouldPostLoadCompaniesFromCRDUnsuccessful() {
     //given
     Response response = Response.builder()
@@ -68,4 +108,5 @@ public class ExportServicePointBatchSchedulerServiceTest {
     });
 
   }
+
 }

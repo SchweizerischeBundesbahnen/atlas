@@ -1,6 +1,6 @@
 package ch.sbb.exportservice.tasklet;
 
-import ch.sbb.atlas.export.enumeration.ServicePointExportFileName;
+import ch.sbb.exportservice.model.BatchExportFileName;
 import ch.sbb.exportservice.model.ExportExtensionFileType;
 import ch.sbb.exportservice.model.ExportType;
 import ch.sbb.exportservice.service.FileExportService;
@@ -19,10 +19,10 @@ public abstract class FileUploadTasklet implements Tasklet {
 
   @Autowired
   private FileExportService fileExportService;
-  private ExportType exportType;
-  private ServicePointExportFileName exportFileName;
+  private final ExportType exportType;
+  private final BatchExportFileName exportFileName;
 
-  protected FileUploadTasklet(ExportType exportType, ServicePointExportFileName exportFileName) {
+  protected FileUploadTasklet(ExportType exportType, BatchExportFileName exportFileName) {
     this.exportType = exportType;
     this.exportFileName = exportFileName;
   }
