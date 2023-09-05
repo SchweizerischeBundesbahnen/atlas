@@ -18,7 +18,7 @@ import java.util.Comparator;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-public class LoadingPointVersionSqlQueryUtilTest extends BaseSqlTest {
+public class LoadingPointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationTest {
 
   @Test
   void shouldReturnFullWorld() throws SQLException {
