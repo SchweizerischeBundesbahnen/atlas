@@ -101,7 +101,7 @@ public class ExportServicePointBatchControllerApiV1 {
     exportLoadingPointJobService.startExportJobs();
   }
 
-  protected void checkInputPath(BatchExportFileName exportFileName, ExportType exportType) {
+  private void checkInputPath(BatchExportFileName exportFileName, ExportType exportType) {
     final List<BatchExportFileName> worldOnlyTypes = List.of(
         BatchExportFileName.TRAFFIC_POINT_ELEMENT_VERSION,
         BatchExportFileName.LOADING_POINT_VERSION
