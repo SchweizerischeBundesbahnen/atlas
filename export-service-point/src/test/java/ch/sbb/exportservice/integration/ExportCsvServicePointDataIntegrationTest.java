@@ -60,6 +60,7 @@ public class ExportCsvServicePointDataIntegrationTest {
   @Test
   public void shouldExportServicePointToCsvWithCorrectData() throws Exception {
     when(amazonService.putZipFile(any(), fileArgumentCaptor.capture(), any())).thenReturn(new URL("https://sbb.ch"));
+    when(fileCsvDeletingTasklet.execute(any(), any())).thenReturn(null);
 
     JobParameters jobParameters = new JobParametersBuilder()
         .addString(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, JobDescriptionConstants.EXECUTION_BATCH_PARAMETER)
@@ -93,5 +94,3 @@ public class ExportCsvServicePointDataIntegrationTest {
   }
 
 }
-
-

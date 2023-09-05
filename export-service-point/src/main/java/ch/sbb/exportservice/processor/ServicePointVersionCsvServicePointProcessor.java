@@ -1,6 +1,5 @@
 package ch.sbb.exportservice.processor;
 
-import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationReadModel;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.exportservice.entity.ServicePointVersion;
@@ -9,15 +8,11 @@ import ch.sbb.exportservice.model.ServicePointVersionCsvModel.ServicePointVersio
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemProcessor;
 
-import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 @Slf4j
 public class ServicePointVersionCsvServicePointProcessor extends BaseServicePointProcessor implements
     ItemProcessor<ServicePointVersion, ServicePointVersionCsvModel> {
-
-  private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN);
-  private static final DateTimeFormatter LOCAL_DATE_FORMATTER = DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN);
 
   @Override
   public ServicePointVersionCsvModel process(ServicePointVersion version) {

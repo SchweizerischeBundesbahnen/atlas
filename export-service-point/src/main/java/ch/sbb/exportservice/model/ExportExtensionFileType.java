@@ -10,5 +10,5 @@ public enum ExportExtensionFileType {
   CSV_EXTENSION(".csv"),
   JSON_EXTENSION(".json");
 
-  private String extention;
+  private final String extension;
 }
