@@ -5,6 +5,7 @@ import { MAP_STYLES, MapStyle } from './map-options.service';
 import { MapIcon, MapIconsService } from './map-icons.service';
 import proj4 from 'proj4';
 import { MAP_SOURCE_NAME } from './map-style';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'atlas-map',
@@ -17,6 +18,8 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   showMapStyleSelection = false;
   showMapLegend = false;
   legend!: MapIcon[];
+
+  private isEditModeSubsription!: Subscription;
 
   map!: Map;
 
@@ -32,47 +35,12 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.currentMapStyle = this.mapService.currentMapStyle;
     MapIconsService.getIconsAsImages().then((icons) => (this.legend = icons));
 
-    const marker = new maplibregl.Marker({ color: '#FF0000' });
-
-    const handleMapClick = (e: any) => {
-      const clickedCoordinates = e.lngLat;
-      const transformationResult = proj4('WGS84', 'LV95', [
-        clickedCoordinates.lng,
-        clickedCoordinates.lat,
-      ]);
-
-      marker.setLngLat(clickedCoordinates).addTo(this.map);
-
-      this.mapService.clickedCoordinates.next(transformationResult);
-
-      this.map.flyTo({
-        center: clickedCoordinates as maplibregl.LngLatLike,
-        speed: 0.8,
-      });
-    };
-
-    this.mapService.isEditMode.subscribe((isEditMode) => {
-      if (isEditMode) {
-        marker.remove();
-        this.map.getCanvas().style.cursor = 'crosshair';
-        this.map.on('mouseleave', MAP_SOURCE_NAME, () => {
-          this.map.getCanvas().style.cursor = 'crosshair';
-        });
-        this.map.on('click', handleMapClick);
-      } else {
-        marker.remove();
-        this.map.off('click', handleMapClick);
-        this.map.getCanvas().style.cursor = '';
-        this.map.on('mouseleave', MAP_SOURCE_NAME, () => {
-          this.map.getCanvas().style.cursor = '';
-        });
-        this.mapService.clickedCoordinates.next([]);
-      }
-    });
+    this.handleMapClick();
   }
 
   ngOnDestroy() {
     this.mapService.removeMap();
+    this.isEditModeSubsription.unsubscribe();
   }
 
   toggleStyleSelection() {
@@ -100,5 +68,45 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   switchToStyle(style: MapStyle) {
     this.currentMapStyle = this.mapService.switchToStyle(style);
     this.showMapStyleSelection = false;
+  }
+
+  handleMapClick() {
+    const marker = new maplibregl.Marker({ color: '#FF0000' });
+
+    const onMapClick = (e: any) => {
+      const clickedGeographyCoordinates = e.lngLat;
+      const transformedCoordinates = proj4('WGS84', 'LV95', [
+        clickedGeographyCoordinates.lng,
+        clickedGeographyCoordinates.lat,
+      ]);
+
+      marker.setLngLat(clickedGeographyCoordinates).addTo(this.map);
+
+      this.map.flyTo({
+        center: clickedGeographyCoordinates as maplibregl.LngLatLike,
+        speed: 0.8,
+      });
+
+      this.mapService.clickedGeographyCoordinates.next(transformedCoordinates);
+    };
+
+    this.isEditModeSubsription = this.mapService.isEditMode.subscribe((isEditMode) => {
+      if (isEditMode) {
+        marker.remove();
+        this.map.getCanvas().style.cursor = 'crosshair';
+        this.map.on('mouseleave', MAP_SOURCE_NAME, () => {
+          this.map.getCanvas().style.cursor = 'crosshair';
+        });
+        this.map.on('click', onMapClick);
+      } else {
+        marker.remove();
+        this.map.off('click', onMapClick);
+        this.map.getCanvas().style.cursor = '';
+        this.map.on('mouseleave', MAP_SOURCE_NAME, () => {
+          this.map.getCanvas().style.cursor = '';
+        });
+        this.mapService.clickedGeographyCoordinates.next([]);
+      }
+    });
   }
 }
