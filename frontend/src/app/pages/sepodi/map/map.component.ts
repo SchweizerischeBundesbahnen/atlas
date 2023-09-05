@@ -27,43 +27,48 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
   map!: Map;
 
+  marker = new maplibregl.Marker({ color: '#FF0000' });
+
   @ViewChild('map')
   private mapContainer!: ElementRef<HTMLElement>;
 
-  constructor(private mapService: MapService, private cdr: ChangeDetectorRef) {}
+  constructor(private mapService: MapService) {}
 
   ngAfterViewInit() {
     this.map = this.mapService.initMap(this.mapContainer.nativeElement);
     this.currentMapStyle = this.mapService.currentMapStyle;
     MapIconsService.getIconsAsImages().then((icons) => (this.legend = icons));
 
-    //Funktioniert
-    //TODO: Destroy Subscription
+    const marker = new maplibregl.Marker({ color: '#FF0000' });
+
+    const handleMapClick = (e: any) => {
+      const clickedCoordinates = e.lngLat;
+      const transformationResult = proj4('WGS84', 'LV95', [
+        clickedCoordinates.lng,
+        clickedCoordinates.lat,
+      ]);
+
+      marker.setLngLat(clickedCoordinates).addTo(this.map);
+
+      this.mapService.clickedCoordinates.next(transformationResult);
+
+      this.map.flyTo({
+        center: clickedCoordinates as maplibregl.LngLatLike,
+        speed: 0.8,
+      });
+    };
+
     this.mapService.isEditModus.subscribe((isEdit) => {
       if (isEdit) {
-        const marker = new maplibregl.Marker({ color: '#FF0000' });
         marker.remove();
-
+        //BUG: Cursor
         this.map.getCanvas().style.cursor = 'crosshair';
-
-        //BUG: Funktioniert solang maus auf karte bleibt. Wenn maus über blauen punkt fährt ist
-        //     das Kreuz weg.
-        this.map.on('click', (e: any) => {
-          const clickedCoordinates = e.lngLat;
-          const transformationResult = proj4('WGS84', 'LV95', [
-            clickedCoordinates.lng,
-            clickedCoordinates.lat,
-          ]);
-
-          marker.setLngLat(clickedCoordinates).addTo(this.map);
-
-          this.mapService.clickedCoordinates.next(transformationResult);
-
-          this.map.flyTo({
-            center: clickedCoordinates as maplibregl.LngLatLike,
-            speed: 0.8,
-          });
-        });
+        this.map.on('click', handleMapClick);
+      } else {
+        marker.remove();
+        this.map.off('click', handleMapClick);
+        this.map.getCanvas().style.cursor = '';
+        this.mapService.clickedCoordinates.next([]);
       }
     });
   }
