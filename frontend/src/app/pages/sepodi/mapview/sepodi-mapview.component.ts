@@ -15,6 +15,7 @@ export class SepodiMapviewComponent implements AfterViewInit, OnDestroy {
 
   private routeActive = false;
   private selectedElementSubscription!: Subscription;
+  showSearch = true;
 
   constructor(private router: Router, private mapService: MapService) {
     this.selectedElementSubscription = this.mapService.selectedElement.subscribe((selectedPoint) =>
@@ -36,6 +37,7 @@ export class SepodiMapviewComponent implements AfterViewInit, OnDestroy {
 
   setRouteActive(value: boolean) {
     this.routeActive = value;
+    this.showSearch = !value;
     this.styleDetailContainer();
   }
 
