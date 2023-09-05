@@ -1,6 +1,5 @@
 package ch.sbb.atlas.servicepointdirectory.api;
 
-import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
@@ -13,7 +12,7 @@ import lombok.*;
 public class ServicePointSearchResult {
 
     @Schema(description = "DiDok-Number formerly known as UIC-Code, combination of uicCountryCode and numberShort.")
-    private ServicePointNumber number;
+    private Integer number;
 
     @Schema(description = "Official designation of a location that must be used by all recipients"
             , example = "Biel/Bienne Bözingenfeld/Champ")

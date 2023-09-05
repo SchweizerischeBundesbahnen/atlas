@@ -9,10 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ServicePointNumber } from './servicePointNumber';
 
 export interface ServicePointSearchResult {
-  number?: ServicePointNumber;
+  /**
+   * DiDok-Number formerly known as UIC-Code, combination of uicCountryCode and numberShort.
+   */
+  number?: number;
   /**
    * Official designation of a location that must be used by all recipients
    */
