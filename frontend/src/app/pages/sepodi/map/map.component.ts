@@ -1,16 +1,10 @@
-import {
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  OnDestroy,
-  ViewChild,
-} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import maplibregl, { Map, MapLibreGL } from 'maplibre-gl';
 import { MapService } from './map.service';
 import { MAP_STYLES, MapStyle } from './map-options.service';
 import { MapIcon, MapIconsService } from './map-icons.service';
-import proj4, { WGS84 } from 'proj4';
+import proj4 from 'proj4';
+import { MAP_SOURCE_NAME } from './map-style';
 
 @Component({
   selector: 'atlas-map',
@@ -61,13 +55,18 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.mapService.isEditModus.subscribe((isEdit) => {
       if (isEdit) {
         marker.remove();
-        //BUG: Cursor
         this.map.getCanvas().style.cursor = 'crosshair';
+        this.map.on('mouseleave', MAP_SOURCE_NAME, () => {
+          this.map.getCanvas().style.cursor = 'crosshair';
+        });
         this.map.on('click', handleMapClick);
       } else {
         marker.remove();
         this.map.off('click', handleMapClick);
         this.map.getCanvas().style.cursor = '';
+        this.map.on('mouseleave', MAP_SOURCE_NAME, () => {
+          this.map.getCanvas().style.cursor = '';
+        });
         this.mapService.clickedCoordinates.next([]);
       }
     });
