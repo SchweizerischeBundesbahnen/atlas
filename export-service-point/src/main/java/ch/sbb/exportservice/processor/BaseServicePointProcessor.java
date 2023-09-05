@@ -1,5 +1,6 @@
 package ch.sbb.exportservice.processor;
 
+import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.servicepoint.GeolocationBaseReadModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationReadModel;
 import ch.sbb.atlas.api.servicepoint.SwissLocation;
@@ -14,12 +15,17 @@ import ch.sbb.atlas.servicepoint.transformer.CoordinateTransformer;
 import ch.sbb.exportservice.entity.ServicePointVersion;
 import ch.sbb.exportservice.entity.geolocation.GeolocationBaseEntity;
 import ch.sbb.exportservice.entity.geolocation.ServicePointGeolocation;
+import java.time.format.DateTimeFormatter;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
 public abstract class BaseServicePointProcessor {
+
+  public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN);
+  public static final DateTimeFormatter LOCAL_DATE_FORMATTER = DateTimeFormatter.ofPattern(
+      AtlasApiConstants.DATE_TIME_FORMAT_PATTERN);
 
   CoordinateTransformer coordinateTransformer = new CoordinateTransformer();
 
@@ -48,12 +54,12 @@ public abstract class BaseServicePointProcessor {
     }
     Map<SpatialReference, CoordinatePair> coordinates = getTransformedCoordinates(geolocationBaseEntity);
     return GeolocationBaseReadModel.builder()
-            .spatialReference(geolocationBaseEntity.getSpatialReference())
-            .lv95(coordinates.get(SpatialReference.LV95))
-            .wgs84(coordinates.get(SpatialReference.WGS84))
-            .lv03(coordinates.get(SpatialReference.LV03))
-            .height(geolocationBaseEntity.getHeight())
-            .build();
+        .spatialReference(geolocationBaseEntity.getSpatialReference())
+        .lv95(coordinates.get(SpatialReference.LV95))
+        .wgs84(coordinates.get(SpatialReference.WGS84))
+        .lv03(coordinates.get(SpatialReference.LV03))
+        .height(geolocationBaseEntity.getHeight())
+        .build();
   }
 
   public ServicePointGeolocationReadModel fromEntity(ServicePointGeolocation servicePointGeolocation) {
