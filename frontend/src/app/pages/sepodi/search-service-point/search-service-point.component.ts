@@ -1,6 +1,5 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { ServicePointSearchResult, ServicePointsService } from '../../../api';
-import { FormGroup } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Pages } from '../../pages';
@@ -23,18 +22,21 @@ export class SearchServicePointComponent {
     return this._searchValue;
   }
 
-  @Input() form!: FormGroup;
-  @Output() selectionChange: EventEmitter<ServicePointSearchResult> =
-    new EventEmitter<ServicePointSearchResult>();
   servicePointSearchResult$: Observable<ServicePointSearchResult[]> = of([]);
+
   navigateToServicePoint(searchResultSelected: ServicePointSearchResult) {
     //todo: do not show search component when detail mode
-    this.router
-      .navigate([Pages.SERVICE_POINTS.path, searchResultSelected.number?.number], {
-        relativeTo: this.route,
-      })
-      .then();
+    if (searchResultSelected) {
+      this.router
+        .navigate([Pages.SERVICE_POINTS.path, searchResultSelected.number?.number], {
+          relativeTo: this.route,
+        })
+        .then();
+    } else {
+      this.servicePointSearchResult$ = of([]);
+    }
   }
+
   searchServicePoint(value: string): void {
     this._searchValue = value;
     if (!value) {

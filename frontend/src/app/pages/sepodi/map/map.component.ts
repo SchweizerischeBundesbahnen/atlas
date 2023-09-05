@@ -1,9 +1,8 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnDestroy, ViewChild } from '@angular/core';
 import maplibregl, { Map } from 'maplibre-gl';
 import { MapService } from './map.service';
 import { MAP_STYLES, MapStyle } from './map-options.service';
 import { MapIcon, MapIconsService } from './map-icons.service';
-import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'atlas-map',
@@ -15,11 +14,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   currentMapStyle!: MapStyle;
   showMapStyleSelection = false;
   showMapLegend = false;
-
-  //TODO: remove
-  readonly servicePointSearchForm: FormGroup = new FormGroup({
-    servicePointSearch: new FormControl<string | null>(null),
-  });
+  @Input() showSearch!: boolean;
 
   legend!: MapIcon[];
 
