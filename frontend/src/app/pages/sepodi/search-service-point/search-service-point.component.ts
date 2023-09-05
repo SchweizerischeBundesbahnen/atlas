@@ -25,10 +25,9 @@ export class SearchServicePointComponent {
   servicePointSearchResult$: Observable<ServicePointSearchResult[]> = of([]);
 
   navigateToServicePoint(searchResultSelected: ServicePointSearchResult) {
-    //todo: do not show search component when detail mode
     if (searchResultSelected) {
       this.router
-        .navigate([Pages.SERVICE_POINTS.path, searchResultSelected.number?.number], {
+        .navigate([Pages.SERVICE_POINTS.path, searchResultSelected.number], {
           relativeTo: this.route,
         })
         .then();
@@ -38,10 +37,14 @@ export class SearchServicePointComponent {
   }
 
   searchServicePoint(value: string): void {
-    this._searchValue = value;
-    if (!value) {
-      return;
+    if (value) {
+      this._searchValue = value.trim();
+      if (!this._searchValue) {
+        return;
+      }
+      this.servicePointSearchResult$ = this.servicePointService.searchServicePoints(
+        this._searchValue
+      );
     }
-    this.servicePointSearchResult$ = this.servicePointService.searchServicePoints(value);
   }
 }
