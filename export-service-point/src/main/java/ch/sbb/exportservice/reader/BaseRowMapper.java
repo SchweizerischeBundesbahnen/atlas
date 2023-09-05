@@ -5,7 +5,7 @@ import ch.sbb.exportservice.entity.BusinessOrganisation;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public abstract class BaseRowMapper  {
+public abstract class BaseRowMapper {
 
   protected BusinessOrganisation getBusinessOrganisation(ResultSet rs) throws SQLException {
     return BusinessOrganisation.builder()
@@ -18,7 +18,8 @@ public abstract class BaseRowMapper  {
         .businessOrganisationDescriptionDe(rs.getString("description_de"))
         .businessOrganisationDescriptionFr(rs.getString("description_fr"))
         .businessOrganisationDescriptionEn(rs.getString("description_en"))
-        .businessOrganisationDescriptionIt(rs.getString("description_it")).build();
+        .businessOrganisationDescriptionIt(rs.getString("description_it"))
+        .build();
   }
 
 }

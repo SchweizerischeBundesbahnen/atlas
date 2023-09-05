@@ -7,7 +7,6 @@ import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionReposito
 import ch.sbb.atlas.servicepointdirectory.service.BasePointUtility;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import org.hibernate.StaleObjectStateException;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,18 +34,11 @@ public class ServicePointServiceTest {
   @Mock
   private ServicePointValidationService servicePointValidationService;
 
-  private AutoCloseable mocks;
-
   @BeforeEach
   void initMocksAndService() {
-    mocks = MockitoAnnotations.openMocks(this);
+    MockitoAnnotations.openMocks(this);
     servicePointService = new ServicePointService(servicePointVersionRepositoryMock, versionableServiceMock,
         servicePointValidationService);
-  }
-
-  @AfterEach
-  void closeMocks() throws Exception {
-    mocks.close();
   }
 
   @Test
