@@ -1,6 +1,5 @@
 package ch.sbb.business.organisation.directory.service;
 
-
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.times;
@@ -16,7 +15,6 @@ import ch.sbb.business.organisation.directory.exception.TransportCompanyNotFound
 import ch.sbb.business.organisation.directory.repository.TransportCompanyRelationRepository;
 import java.time.LocalDate;
 import java.util.Collections;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
@@ -35,19 +33,13 @@ public class TransportCompanyRelationServiceTest {
   @Mock
   private TransportCompanyRelationRepository transportCompanyRelationRepository;
 
-  private AutoCloseable closeable;
   private TransportCompanyRelationService transportCompanyRelationService;
 
   @BeforeEach
   void setUp() {
-    closeable = MockitoAnnotations.openMocks(this);
+    MockitoAnnotations.openMocks(this);
     transportCompanyRelationService = new TransportCompanyRelationService(
         transportCompanyRelationRepository, businessOrganisationService, transportCompanyService);
-  }
-
-  @AfterEach
-  void cleanUp() throws Exception {
-    closeable.close();
   }
 
   @Test
@@ -58,14 +50,14 @@ public class TransportCompanyRelationServiceTest {
         Collections.singletonList(Mockito.mock(BusinessOrganisationVersion.class)));
 
     TransportCompanyRelation entity = TransportCompanyRelation.builder()
-                                                              .transportCompany(
-                                                                  TransportCompany.builder()
-                                                                                  .id(5L).build())
-                                                              .sboid("ch:1:sboid:100500")
-                                                              .validFrom(
-                                                                  LocalDate.of(2020, 1, 1))
-                                                              .validTo(LocalDate.of(2021, 1, 1))
-                                                              .build();
+        .transportCompany(
+            TransportCompany.builder()
+                .id(5L).build())
+        .sboid("ch:1:sboid:100500")
+        .validFrom(
+            LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2021, 1, 1))
+        .build();
 
     Executable executable = () -> transportCompanyRelationService.save(entity, false);
     assertDoesNotThrow(executable);
@@ -80,14 +72,14 @@ public class TransportCompanyRelationServiceTest {
         Collections.singletonList(Mockito.mock(BusinessOrganisationVersion.class)));
 
     TransportCompanyRelation entity = TransportCompanyRelation.builder()
-                                                              .transportCompany(
-                                                                  TransportCompany.builder()
-                                                                                  .id(5L).build())
-                                                              .sboid("ch:1:sboid:100500")
-                                                              .validFrom(
-                                                                  LocalDate.of(2020, 1, 1))
-                                                              .validTo(LocalDate.of(2021, 1, 1))
-                                                              .build();
+        .transportCompany(
+            TransportCompany.builder()
+                .id(5L).build())
+        .sboid("ch:1:sboid:100500")
+        .validFrom(
+            LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2021, 1, 1))
+        .build();
 
     Executable executable = () -> transportCompanyRelationService.save(entity, false);
     assertThrows(TransportCompanyNotFoundException.class, executable, "Entity not found");
@@ -102,14 +94,14 @@ public class TransportCompanyRelationServiceTest {
         Collections.emptyList());
 
     TransportCompanyRelation entity = TransportCompanyRelation.builder()
-                                                              .transportCompany(
-                                                                  TransportCompany.builder()
-                                                                                  .id(5L).build())
-                                                              .sboid("ch:1:sboid:100500")
-                                                              .validFrom(
-                                                                  LocalDate.of(2020, 1, 1))
-                                                              .validTo(LocalDate.of(2021, 1, 1))
-                                                              .build();
+        .transportCompany(
+            TransportCompany.builder()
+                .id(5L).build())
+        .sboid("ch:1:sboid:100500")
+        .validFrom(
+            LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2021, 1, 1))
+        .build();
 
     Executable executable = () -> transportCompanyRelationService.save(entity, false);
     assertThrows(SboidNotFoundException.class, executable, "Entity not found");
@@ -117,7 +109,7 @@ public class TransportCompanyRelationServiceTest {
   }
 
   @Test
-  void shouldDelete(){
+  void shouldDelete() {
     when(transportCompanyRelationRepository.existsById(5L)).thenReturn(true);
 
     Executable executable = () -> transportCompanyRelationService.deleteById(5L);
@@ -126,7 +118,7 @@ public class TransportCompanyRelationServiceTest {
   }
 
   @Test
-  void shouldThrowIdNotFoundExceptionAndNotDelete(){
+  void shouldThrowIdNotFoundExceptionAndNotDelete() {
     when(transportCompanyRelationRepository.existsById(5L)).thenReturn(false);
 
     Executable executable = () -> transportCompanyRelationService.deleteById(5L);

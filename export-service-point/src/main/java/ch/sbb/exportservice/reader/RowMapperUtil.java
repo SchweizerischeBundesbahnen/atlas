@@ -16,4 +16,5 @@ public class RowMapperUtil {
     double doubleValue = resultSet.getDouble(column);
     return resultSet.wasNull() ? null : doubleValue;
   }
+
 }

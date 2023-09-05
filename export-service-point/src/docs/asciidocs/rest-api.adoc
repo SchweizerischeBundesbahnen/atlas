@@ -40,8 +40,9 @@ include::../release-notes.adoc[]
 
 This service exports the following data:
 
- * *Service Point Versions*
- * *Traffic Point Element Versions*
+* *Service Point Versions*
+* *Traffic Point Element Versions*
+* *Loading Point Versions*
 
 == Service Point Versions
 
@@ -49,17 +50,17 @@ Service Point Versions data is available via the ServicePoint API or as a File (
 
 The Export Service Point generates nightly the following zipped CSV and gzipped JSON files:
 
- * WORLD FULL
- * WORLD ONLY ACTUAL DATE
- * WORLD ONLY FUTURE TIMETABLE
- * SWISS FULL
- * SWISS ONLY ACTUAL DATE
- * SWISS ONLY FUTURE TIMETABLE
+* WORLD FULL
+* WORLD ONLY ACTUAL DATE
+* WORLD ONLY FUTURE TIMETABLE
+* SWISS FULL
+* SWISS ONLY ACTUAL DATE
+* SWISS ONLY FUTURE TIMETABLE
 
 If you want to consume this files you have two options:
 
- * Via API: see **Export Service Point Directory API** section
- * Through the Amazon S3 Bucket Client:  see **Atlas Amazon S3 Bucket Users onboarding**
+* Via API: see **Export Service Point Directory API** section
+* Through the Amazon S3 Bucket Client: see **Atlas Amazon S3 Bucket Users onboarding**
 
 === Data Mapping Migration from DiDok to ATLAS
 
@@ -71,18 +72,37 @@ Traffic Point Element Versions data is available via the ServicePoint API or as 
 
 The Export Service Point Directory generates nightly the following zipped CSV and gzipped JSON files:
 
- * WORLD FULL
- * WORLD ONLY ACTUAL DATE
- * WORLD ONLY FUTURE TIMETABLE
+* WORLD FULL
+* WORLD ONLY ACTUAL DATE
+* WORLD ONLY FUTURE TIMETABLE
 
 If you want to consume this files you have two options:
 
- * Via API: see **Export Service Point Directory API** section
- * Through the Amazon S3 Bucket Client:  see **Atlas Amazon S3 Bucket Users onboarding**
+* Via API: see **Export Service Point Directory API** section
+* Through the Amazon S3 Bucket Client: see **Atlas Amazon S3 Bucket Users onboarding**
 
 === Data Mapping Migration from DiDok to ATLAS
 
 See https://confluence.sbb.ch/x/PB1Xl to get additional information about the data mapping migration from DiDok to ATLAS.
+
+== Loading Point Versions
+
+Loading Point Versions data is available via the ServicePoint API or as a File (CSV or JSON) via the Export Service Point API or through the Amazon S3 Bucket Client (CSV and JSON);
+
+The Export Service Point Directory generates nightly the following zipped CSV and gzipped JSON files:
+
+* WORLD FULL
+* WORLD ONLY ACTUAL DATE
+* WORLD ONLY FUTURE TIMETABLE
+
+If you want to consume this files you have two options:
+
+* Via API: see **Export Service Point Directory API** section
+* Through the Amazon S3 Bucket Client: see **Atlas Amazon S3 Bucket Users onboarding**
+
+=== Data Mapping Migration from DiDok to ATLAS
+
+See https://confluence.sbb.ch/x/6R_uj to get additional information about the data mapping migration from DiDok to ATLAS.
 
 include::../../../../base-atlas/documentation/servicepoint/when_to_use_files_or_API.adoc[]
 
@@ -98,6 +118,10 @@ include::{snippets}/export-service-point-batch-controller-api-v1-integration-tes
 
 include::{snippets}/export-service-point-batch-controller-api-v1-integration-test/should-post-traffic-point-export-batch-successfully/auto-section.adoc[]
 
+== Trigger export Loading Point Versions - Successfully
+
+include::{snippets}/export-service-point-batch-controller-api-v1-integration-test/should-post-loading-point-export-batch-successfully/auto-section.adoc[]
+
 == Get Service Point Json - Successfully
 
 include::{snippets}/export-service-point-batch-controller-api-v1-integration-test/should-get-json-successfully/auto-section.adoc[]
@@ -108,26 +132,12 @@ include::{snippets}/export-service-point-batch-controller-api-v1-integration-tes
 
 == Get download Service Point Gzip Json - Successfully
 
-=== Stream Json File
-
-include::{snippets}/export-service-point-batch-controller-api-v1-integration-test/should-get-json-unsuccessfully/auto-method-path.adoc[]
-include::{snippets}/export-service-point-batch-controller-api-v1-integration-test/should-get-json-unsuccessfully/auto-description.adoc[]
-==== Path parameters
-
-include::{snippets}/export-service-point-batch-controller-api-v1-integration-test/should-get-json-unsuccessfully/auto-path-parameters.adoc[]
-
-==== Response fields
-
-include::{snippets}/export-service-point-batch-controller-api-v1-integration-test/should-get-json-unsuccessfully/auto-response-fields.adoc[]
-
-==== Example request
-
-include::{snippets}/export-service-point-batch-controller-api-v1-integration-test/should-get-json-unsuccessfully/curl-request.adoc[]
+include::{snippets}/export-service-point-batch-controller-api-v1-integration-test/should-download-gzip-json-successfully/auto-section.adoc[]
 
 == Get download Service Point Gzip Json - Unsuccessfully
 
 include::{snippets}/export-service-point-batch-controller-api-v1-integration-test/should-download-gzip-json-unsuccessfully/auto-section.adoc[]
 
-== Get download Traffic Point Gzip Json - Unsuccessfully
+== Get download Traffic Point/Loading Point Gzip Json - Unsuccessfully
 
 include::{snippets}/export-service-point-batch-controller-api-v1-integration-test/should-not-download-json-when-export-type-is-not-allowed-for-the-export-file/auto-section.adoc[]

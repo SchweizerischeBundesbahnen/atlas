@@ -80,7 +80,6 @@ public class ServicePointVersionRowMapper extends BaseRowMapper implements RowMa
     return servicePointVersionBuilder.build();
   }
 
-
   private void getServicePointGeolocation(ResultSet rs, ServicePointVersionBuilder<?, ?> servicePointVersionBuilder)
       throws SQLException {
     ServicePointGeolocationBuilder<?, ?> servicePointGeolocationBuilder = ServicePointGeolocation.builder();
@@ -137,4 +136,5 @@ public class ServicePointVersionRowMapper extends BaseRowMapper implements RowMa
   private String toPipedString(Collection<? extends Enum<?>> collection) {
     return collection.stream().map(Enum::name).sorted().collect(Collectors.joining("|"));
   }
+
 }
