@@ -1,24 +1,24 @@
-package ch.sbb.atlas.servicepointdirectory.migration;
+package ch.sbb.atlas.servicepointdirectory.migration.trafficpoints;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
-import lombok.Data;
+import ch.sbb.atlas.servicepointdirectory.migration.DoubleAssertion;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * @param isFutureTimetable For FutureTimetable DiDok exports the following attributes of <today> and not the
+ *     FutureTimetable-date
+ *     - designationOfficial
+ *     - servicePointBusinessOrganisationNumber
+ */
 @Slf4j
-@Data
-public class TrafficPointMappingEquality {
-
-  private final TrafficPointDidokCsvModel didokCsvLine;
-  private final TrafficPointAtlasCsvModel atlasCsvLine;
-
-  // For FutureTimetable DiDok exports the following attributes of <today> and not the FutureTimetable-date
-  // - designationOfficial
-  // - servicePointBusinessOrganisationNumber
-  private final boolean isFutureTimetable;
+public record TrafficPointMappingEquality(
+    TrafficPointDidokCsvModel didokCsvLine,
+    TrafficPointAtlasCsvModel atlasCsvLine,
+    boolean isFutureTimetable) {
 
   public void performCheck() {
     performCoreDataCheck();
