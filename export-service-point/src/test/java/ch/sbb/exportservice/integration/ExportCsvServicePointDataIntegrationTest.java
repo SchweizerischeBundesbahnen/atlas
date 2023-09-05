@@ -38,7 +38,7 @@ import static org.mockito.Mockito.when;
 @BatchDataSourceConfigTest
 @IntegrationTest
 @AutoConfigureMockMvc(addFilters = false)
-public class ExportCsvServicePointDataTest {
+public class ExportCsvServicePointDataIntegrationTest {
 
   @Autowired
   private JobLauncher jobLauncher;

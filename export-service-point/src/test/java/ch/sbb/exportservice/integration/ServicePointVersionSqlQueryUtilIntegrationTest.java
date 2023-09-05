@@ -18,7 +18,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ServicePointVersionSqlQueryUtilTest extends BaseSqlTest {
+public class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationTest {
 
   @Test
   public void shouldReturnWorldOnlyActualWithActualBusinessOrganisationData() throws SQLException {
