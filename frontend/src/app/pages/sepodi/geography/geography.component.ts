@@ -17,7 +17,7 @@ export class GeographyComponent implements OnInit, OnDestroy {
 
   transformedCoordinatePair?: CoordinatePair;
   private spatialReferenceSubscription!: Subscription;
-  private geographyCoordinatesSubscription!: Subscription;
+  private clickedGeographyCoordinatesSubscription!: Subscription;
 
   constructor(
     private coordinateTransformationService: CoordinateTransformationService,
@@ -30,23 +30,24 @@ export class GeographyComponent implements OnInit, OnDestroy {
     this.spatialReferenceSubscription = this.formGroup.valueChanges.subscribe(() => {
       this.initTransformedCoordinatePair();
     });
-    this.geographyCoordinatesSubscription = this.mapService.clickedCoordinates.subscribe((data) => {
-      if (data.length != 0) {
-        const lat = Number(data[0].toFixed(4));
-        const lng = Number(data[1].toFixed(4));
+    this.clickedGeographyCoordinatesSubscription =
+      this.mapService.clickedGeographyCoordinates.subscribe((data) => {
+        if (data.length != 0) {
+          const lat = Number(data[0].toFixed(4));
+          const lng = Number(data[1].toFixed(4));
 
-        this.formGroup.controls.east.setValue(lat);
-        this.formGroup.controls.north.setValue(lng);
-        this.formGroup.markAsDirty();
-      } else {
-        this.formGroup = this.initFormGroup;
-      }
-    });
+          this.formGroup.controls.east.setValue(lat);
+          this.formGroup.controls.north.setValue(lng);
+          this.formGroup.markAsDirty();
+        } else {
+          this.formGroup = this.initFormGroup;
+        }
+      });
   }
 
   ngOnDestroy() {
     this.spatialReferenceSubscription.unsubscribe();
-    this.geographyCoordinatesSubscription.unsubscribe();
+    this.clickedGeographyCoordinatesSubscription.unsubscribe();
   }
 
   private initTransformedCoordinatePair() {
