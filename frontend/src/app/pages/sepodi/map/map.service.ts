@@ -28,7 +28,7 @@ export class MapService {
   currentMapStyle = MAP_STYLES[0];
 
   isEditMode = new BehaviorSubject(false);
-  clickedCoordinates: BehaviorSubject<any> = new BehaviorSubject<any[]>([]);
+  clickedGeographyCoordinates = new BehaviorSubject<number[]>([]);
 
   popup = new Popup({
     closeButton: true,
