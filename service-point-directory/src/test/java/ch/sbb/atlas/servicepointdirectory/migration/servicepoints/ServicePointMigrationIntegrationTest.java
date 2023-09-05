@@ -1,6 +1,8 @@
-package ch.sbb.atlas.servicepointdirectory.migration;
+package ch.sbb.atlas.servicepointdirectory.migration.servicepoints;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.servicepointdirectory.migration.DateRange;
+import ch.sbb.atlas.servicepointdirectory.migration.Validity;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -15,15 +17,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static ch.sbb.atlas.servicepointdirectory.migration.AtlasCsvReader.dateFromString;
+import static ch.sbb.atlas.servicepointdirectory.migration.CsvReader.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
 @Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ServicePointMigrationIntegrationTest {
-
-  static final String BASE_PATH = "/migration/";
 
   private static final String DIDOK_CSV_FILE = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20230906021755.csv";
   private static final String ATLAS_CSV_FILE = "full-world-service_point-2023-09-06.csv";
@@ -35,12 +35,12 @@ public class ServicePointMigrationIntegrationTest {
   @Order(1)
   void shouldParseCsvsCorrectly() throws IOException {
     try (InputStream csvStream = this.getClass().getResourceAsStream(BASE_PATH + DIDOK_CSV_FILE)) {
-      didokCsvLines.addAll(DidokCsvReader.parseDidokServicePoints(csvStream));
+      didokCsvLines.addAll(parseCsv(csvStream, ServicePointDidokCsvModel.class));
     }
     assertThat(didokCsvLines).isNotEmpty();
 
     try (InputStream csvStream = this.getClass().getResourceAsStream(BASE_PATH + ATLAS_CSV_FILE)) {
-      atlasCsvLines.addAll(AtlasCsvReader.parseAtlasServicePoints(csvStream));
+      atlasCsvLines.addAll(parseCsv(csvStream, ServicePointAtlasCsvModel.class));
     }
     assertThat(atlasCsvLines).isNotEmpty();
   }
@@ -69,12 +69,14 @@ public class ServicePointMigrationIntegrationTest {
     Map<Integer, Validity> groupedDidokCodes = didokCsvLines.stream().collect(
         Collectors.groupingBy(ServicePointDidokCsvModel::getDidokCode, Collectors.collectingAndThen(Collectors.toList(),
             list -> new Validity(
-                list.stream().map(i -> new DateRange(i.getValidFrom(), i.getValidTo())).collect(Collectors.toList())).minify())));
+                list.stream().map(i -> DateRange.builder().from(i.getValidFrom()).to(i.getValidTo()).build())
+                    .collect(Collectors.toList())).minify())));
 
     Map<Integer, Validity> groupedAtlasNumbers = atlasCsvLines.stream().collect(
         Collectors.groupingBy(ServicePointAtlasCsvModel::getNumber, Collectors.collectingAndThen(Collectors.toList(),
             list -> new Validity(
-                list.stream().map(i -> new DateRange(dateFromString(i.getValidFrom()), dateFromString(i.getValidTo())))
+                list.stream().map(
+                        i -> DateRange.builder().from(dateFromString(i.getValidFrom())).to(dateFromString(i.getValidTo())).build())
                     .collect(Collectors.toList())).minify())));
 
     List<String> validityErrors = new ArrayList<>();
@@ -112,9 +114,12 @@ public class ServicePointMigrationIntegrationTest {
   private ServicePointAtlasCsvModel findCorrespondingAtlasServicePointVersion(ServicePointDidokCsvModel didokCsvLine,
       List<ServicePointAtlasCsvModel> atlasCsvLines) {
     List<ServicePointAtlasCsvModel> matchedVersions = atlasCsvLines.stream().filter(
-        atlasCsvLine -> new DateRange(dateFromString(atlasCsvLine.getValidFrom()),
-            dateFromString(atlasCsvLine.getValidTo())).contains(
-            didokCsvLine.getValidFrom())).toList();
+            atlasCsvLine -> DateRange.builder()
+                .from(dateFromString(atlasCsvLine.getValidFrom()))
+                .to(dateFromString(atlasCsvLine.getValidTo()))
+                .build()
+                .contains(didokCsvLine.getValidFrom()))
+        .toList();
     if (matchedVersions.size() == 1) {
       return matchedVersions.get(0);
     }

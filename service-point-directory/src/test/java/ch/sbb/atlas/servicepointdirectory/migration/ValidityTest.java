@@ -118,4 +118,5 @@ public class ValidityTest {
     assertThat(validity.getDateRanges()).hasSize(1);
     assertThat(validity.getDateRanges().get(0).getFrom()).isEqualTo(LocalDate.of(1993, 1, 18));
   }
+
 }
