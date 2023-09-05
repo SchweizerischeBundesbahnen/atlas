@@ -60,4 +60,15 @@ describe('Atlas Charsets Validator', () => {
     expect(email(new FormControl(' @ .  '))).toBeDefined();
     expect(email(new FormControl('@@.@@'))).toBeDefined();
   });
+
+  it('should allow Decimal with max digits', () => {
+    const decimalWithDigits = AtlasCharsetsValidator.decimalWithDigits(3);
+
+    expect(decimalWithDigits(new FormControl('123'))).toBeNull();
+    expect(decimalWithDigits(new FormControl('1.002'))).toBeNull();
+    expect(decimalWithDigits(new FormControl('500.0'))).toBeNull();
+
+    expect(decimalWithDigits(new FormControl('a'))).toBeDefined();
+    expect(decimalWithDigits(new FormControl('1.0002'))).toBeDefined();
+  });
 });
