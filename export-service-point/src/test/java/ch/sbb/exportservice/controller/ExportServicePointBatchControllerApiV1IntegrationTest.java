@@ -81,7 +81,7 @@ public class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseC
       doReturn("service-point").when(fileExportService)
           .getBaseFileName(ExportType.WORLD_FULL, BatchExportFileName.SERVICE_POINT_VERSION);
       //when & then
-      mvc.perform(get("/v1/export/download-gzip-json/service-point-version/world-full")
+      mvc.perform(get("/v1/export/download-gz-json/service-point-version/world-full")
               .contentType(contentType))
           .andExpect(status().isOk())
           .andExpect(content().contentType("application/gzip"));
@@ -96,7 +96,7 @@ public class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseC
         .streamGzipFile(ExportType.WORLD_FULL, BatchExportFileName.SERVICE_POINT_VERSION);
 
     //when & then
-    mvc.perform(get("/v1/export/download-gzip-json/service-point-version/world-full")
+    mvc.perform(get("/v1/export/download-gz-json/service-point-version/world-full")
             .contentType(contentType))
         .andExpect(status().isInternalServerError());
   }
@@ -106,7 +106,7 @@ public class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseC
   public void shouldNotDownloadJsonWhenExportTypeIsNotAllowedForTheExportFile() throws Exception {
     //given
     //when & then
-    mvc.perform(get("/v1/export/download-gzip-json/traffic-point-element-version/swiss-only-full")
+    mvc.perform(get("/v1/export/download-gztarttart-json/traffic-point-element-version/swiss-only-full")
             .contentType(contentType))
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.status", is(400)))
