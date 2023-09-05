@@ -13,6 +13,7 @@ import { MapService } from '../map/map.service';
 export class GeographyComponent implements OnInit, OnDestroy {
   @Input() disabled = false;
   @Input() formGroup!: FormGroup<GeographyFormGroup>;
+  initFormGroup!: FormGroup<GeographyFormGroup>;
 
   transformedCoordinatePair?: CoordinatePair;
   private spatialReferenceSubscription!: Subscription;
@@ -24,17 +25,21 @@ export class GeographyComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.initFormGroup = this.formGroup;
     this.initTransformedCoordinatePair();
     this.spatialReferenceSubscription = this.formGroup.valueChanges.subscribe(() => {
       this.initTransformedCoordinatePair();
     });
     this.geographyCoordinatesSubscription = this.mapService.clickedCoordinates.subscribe((data) => {
       if (data.length != 0) {
+        //TODO: Data noch valid machen
         this.formGroup.controls.east.setValue(data[0]);
         this.formGroup.controls.north.setValue(data[1]);
+        this.formGroup.markAsDirty();
+      } else {
+        this.formGroup = this.initFormGroup;
       }
     });
-    console.log('formgroup ', this.formGroup);
   }
 
   ngOnDestroy() {
