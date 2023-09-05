@@ -5,11 +5,13 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
-import lombok.Builder;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
-@Data
-@Builder
+@AllArgsConstructor
+@EqualsAndHashCode
+@Getter
 public class Validity {
 
   private List<DateRange> dateRanges;
@@ -60,7 +62,7 @@ public class Validity {
         DateRange removed = minifiedRanges.remove(minifiedRanges.size() - 1);
         // Replace it with merged
         minifiedRanges.add(removed.mergeWith(current));
-      }else {
+      } else {
         minifiedRanges.add(current);
       }
       previous = current;

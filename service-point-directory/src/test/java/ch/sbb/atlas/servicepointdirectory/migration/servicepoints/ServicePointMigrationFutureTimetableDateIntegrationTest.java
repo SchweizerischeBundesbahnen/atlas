@@ -1,10 +1,11 @@
-package ch.sbb.atlas.servicepointdirectory.migration;
+package ch.sbb.atlas.servicepointdirectory.migration.servicepoints;
 
-import static ch.sbb.atlas.servicepointdirectory.migration.AtlasCsvReader.dateFromString;
+import static ch.sbb.atlas.servicepointdirectory.migration.CsvReader.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.servicepointdirectory.migration.DateRange;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
@@ -37,14 +38,14 @@ public class ServicePointMigrationFutureTimetableDateIntegrationTest {
   @Order(1)
   void shouldParseCsvsCorrectly() throws IOException {
     try (InputStream csvStream =
-        this.getClass().getResourceAsStream(ServicePointMigrationIntegrationTest.BASE_PATH + DIDOK_CSV_FILE)) {
-      didokCsvLines.addAll(DidokCsvReader.parseDidokServicePoints(csvStream));
+        this.getClass().getResourceAsStream(BASE_PATH + DIDOK_CSV_FILE)) {
+      didokCsvLines.addAll(parseCsv(csvStream, ServicePointDidokCsvModel.class));
     }
     assertThat(didokCsvLines).isNotEmpty();
 
     try (InputStream csvStream =
-        this.getClass().getResourceAsStream(ServicePointMigrationIntegrationTest.BASE_PATH + ATLAS_CSV_FILE)) {
-      atlasCsvLines.addAll(AtlasCsvReader.parseAtlasServicePoints(csvStream));
+        this.getClass().getResourceAsStream(BASE_PATH + ATLAS_CSV_FILE)) {
+      atlasCsvLines.addAll(parseCsv(csvStream, ServicePointAtlasCsvModel.class));
     }
     assertThat(atlasCsvLines).isNotEmpty();
 
@@ -73,9 +74,13 @@ public class ServicePointMigrationFutureTimetableDateIntegrationTest {
   @Order(3)
   void shouldHaveOnlyVersionsValidOnFutureTimetableDate() {
     atlasCsvLines.forEach(atlasCsvLine -> assertThat(
-        new DateRange(dateFromString(atlasCsvLine.getValidFrom()),
-            dateFromString(atlasCsvLine.getValidTo()))
-            .contains(FUTURE_TIMETABLE_DATE)).isTrue());
+            DateRange.builder()
+                .from(dateFromString(atlasCsvLine.getValidFrom()))
+                .to(dateFromString(atlasCsvLine.getValidTo()))
+                .build()
+                .contains(FUTURE_TIMETABLE_DATE)
+        ).isTrue()
+    );
   }
 
   @Test
