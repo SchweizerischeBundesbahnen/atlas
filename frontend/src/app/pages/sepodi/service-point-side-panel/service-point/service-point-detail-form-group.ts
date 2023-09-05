@@ -198,7 +198,7 @@ export class ServicePointFormGroupBuilder {
       numberWithoutCheckDigit: value.number!,
       sloid: value.sloid!,
       designationOfficial: value.designationOfficial!,
-      designationLong: value.designationLong!,
+      designationLong: value.designationLong ? value.designationLong : undefined,
       abbreviation: value.abbreviation!,
       businessOrganisation: value.businessOrganisation!,
       categories: value.categories!,
