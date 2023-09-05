@@ -106,7 +106,7 @@ public class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseC
   public void shouldNotDownloadJsonWhenExportTypeIsNotAllowedForTheExportFile() throws Exception {
     //given
     //when & then
-    mvc.perform(get("/v1/export/download-gztarttart-json/traffic-point-element-version/swiss-only-full")
+    mvc.perform(get("/v1/export/download-gz-json/traffic-point-element-version/swiss-only-full")
             .contentType(contentType))
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.status", is(400)))
