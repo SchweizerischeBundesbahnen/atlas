@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @UtilityClass
 @Slf4j
-public class TrafficPointElementVersionSqlQueryUtil {
+public class TrafficPointElementVersionSqlQueryUtil extends SqlQueryUtil {
 
   private static final String SELECT_AND_JOIN_STATEMENT = """
       SELECT tpev.*, sbov.*, spv.*, tpevg.*, spv.sloid as parent_service_point_sloid
@@ -22,8 +22,8 @@ public class TrafficPointElementVersionSqlQueryUtil {
 
   public String getSqlQuery(ExportType exportType) {
     log.info("ExportType: {}", exportType);
-    final String sqlQuery = SqlQueryUtil.getFromStatementQueryForWorldOnlyTypes(exportType, SELECT_AND_JOIN_STATEMENT)
-        + SqlQueryUtil.getWhereClauseForWorldOnlyTypes(exportType, WHERE_STATEMENT)
+    final String sqlQuery = getFromStatementQueryForWorldOnlyTypes(exportType, SELECT_AND_JOIN_STATEMENT)
+        + getWhereClauseForWorldOnlyTypes(exportType, WHERE_STATEMENT)
         + GROUP_BY_STATEMENT;
     log.info("Execution SQL query: {}\n", sqlQuery);
     return sqlQuery;

@@ -18,7 +18,7 @@ import java.time.format.DateTimeFormatter;
 @DbSchemaCreation
 @IntegrationTest
 @AutoConfigureMockMvc(addFilters = false)
-public abstract class BaseSqlTest {
+public abstract class BaseSqlIntegrationTest {
 
   @Autowired
   @Qualifier("servicePointDataSource")

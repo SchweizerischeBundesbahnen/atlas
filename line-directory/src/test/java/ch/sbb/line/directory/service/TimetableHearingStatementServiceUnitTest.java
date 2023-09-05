@@ -11,7 +11,6 @@ import ch.sbb.line.directory.repository.TimetableHearingYearRepository;
 import ch.sbb.line.directory.service.hearing.StatementDocumentFilesValidationService;
 import ch.sbb.line.directory.service.hearing.TimetableHearingPdfsAmazonService;
 import ch.sbb.line.directory.service.hearing.TimetableHearingStatementService;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -20,7 +19,6 @@ import org.mockito.MockitoAnnotations;
 public class TimetableHearingStatementServiceUnitTest {
 
   private TimetableHearingStatementService timetableHearingStatementService;
-  private AutoCloseable closeable;
 
   @Mock
   private TimetableHearingStatementRepository timetableHearingStatementRepositoryMock;
@@ -39,7 +37,7 @@ public class TimetableHearingStatementServiceUnitTest {
 
   @BeforeEach
   void setUp() {
-    closeable = MockitoAnnotations.openMocks(this);
+    MockitoAnnotations.openMocks(this);
     timetableHearingStatementService = new TimetableHearingStatementService(
         timetableHearingStatementRepositoryMock,
         timetableHearingYearRepositoryMock,
@@ -49,11 +47,6 @@ public class TimetableHearingStatementServiceUnitTest {
         responsibleTransportCompanyMapper,
         timetableHearingStatementMapper
     );
-  }
-
-  @AfterEach
-  void cleanUp() throws Exception {
-    closeable.close();
   }
 
   @Test
