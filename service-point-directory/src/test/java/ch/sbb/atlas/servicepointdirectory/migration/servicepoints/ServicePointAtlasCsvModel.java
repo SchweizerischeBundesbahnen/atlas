@@ -1,4 +1,4 @@
-package ch.sbb.atlas.servicepointdirectory.migration;
+package ch.sbb.atlas.servicepointdirectory.migration.servicepoints;
 
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
