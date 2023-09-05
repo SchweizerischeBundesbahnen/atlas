@@ -1,5 +1,10 @@
+@use 'src/styles/variables' as variables;
+
 .search-form {
   left: 1rem;
   top: 1rem;
   min-width: 25rem;
+  background: white;
+  padding: 0.6rem;
+  border-radius: variables.$border-radius-small;
 }
