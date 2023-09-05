@@ -35,7 +35,11 @@ public class ServicePointService {
   private final ServicePointSearchVersionRepository servicePointSearchVersionRepository;
 
   public List<ServicePointSearchResult> searchServicePointVersion(String value){
-    return servicePointSearchVersionRepository.searchServicePoints(value);
+    List<ServicePointSearchResult> servicePointSearchResults = servicePointSearchVersionRepository.searchServicePoints(value);
+    if(servicePointSearchResults.size() > 200){
+      return servicePointSearchResults.subList(0,200);
+    }
+    return servicePointSearchResults;
   }
 
   public Page<ServicePointVersion> findAll(ServicePointSearchRestrictions servicePointSearchRestrictions) {
