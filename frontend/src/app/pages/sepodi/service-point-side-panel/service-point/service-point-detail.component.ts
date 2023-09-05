@@ -38,7 +38,6 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   selectedVersionIndex!: number;
   form!: FormGroup<ServicePointDetailFormGroup>;
   isNew = true;
-  test: any;
   types = Object.values(ServicePointType);
   operatingPointTypes = (Object.values(OperatingPointType) as string[]).concat(
     Object.values(OperatingPointTechnicalTimetableType)
@@ -152,8 +151,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     if (this.form.enabled) {
       this.showConfirmationDialog();
     } else {
-      //TODO: On cancel, remove marker
-      this.mapService.isEditModus.next(true);
+      this.mapService.isEditMode.next(true);
       this.form.enable();
     }
   }
@@ -166,7 +164,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
         } else {
           this.initSelectedVersion();
           this.form.disable();
-          this.mapService.isEditModus.next(false);
+          this.mapService.isEditMode.next(false);
         }
       }
     });
