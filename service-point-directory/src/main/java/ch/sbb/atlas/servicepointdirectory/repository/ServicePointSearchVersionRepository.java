@@ -1,6 +1,5 @@
 package ch.sbb.atlas.servicepointdirectory.repository;
 
-import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointSearchResult;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -19,16 +18,17 @@ public class ServicePointSearchVersionRepository {
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
     public List<ServicePointSearchResult> searchServicePoints(String value) {
-        String sanitizeValue = value.trim();
+        String sanitizeValue = value;
         if(NumberUtils.isParsable(value.replaceAll("\\s", ""))){
             sanitizeValue = value.replaceAll("\\s", "");
         }
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
-        mapSqlParameterSource.addValue("contains_value", "%" + sanitizeValue + "%");
         mapSqlParameterSource.addValue("perfect_match", sanitizeValue);
-        mapSqlParameterSource.addValue("ends_with_with_space", sanitizeValue + " %");
         mapSqlParameterSource.addValue("starts_with", sanitizeValue + "%");
+        mapSqlParameterSource.addValue("starts_with_space", sanitizeValue + " %");
         mapSqlParameterSource.addValue("ends_with", "%" + sanitizeValue);
+        mapSqlParameterSource.addValue("ends_with_space", "% " +sanitizeValue );
+        mapSqlParameterSource.addValue("contains_value", "%" + sanitizeValue + "%");
 
         String query = getSqlQuery(value);
 
@@ -36,9 +36,9 @@ public class ServicePointSearchVersionRepository {
                 query,
                 mapSqlParameterSource,
                 (rs, rowNum) -> {
-                    rs.setFetchSize(1000);
+                    rs.setFetchSize(10);
                     return new ServicePointSearchResult(
-                            ServicePointNumber.ofNumberWithoutCheckDigit(rs.getInt("number")),
+                            rs.getInt("number"),
                             rs.getString("designation_official"));
                 }
         );
@@ -61,23 +61,32 @@ public class ServicePointSearchVersionRepository {
                     $dynamicCases
                     (case
                         when designation_long = :perfect_match then 0
-                        when replace(upper(designation_long), ',','') like replace(upper(:perfect_match), ',','') then 1
-                        when designation_long like :ends_with_with_space then 2
-                        when replace(upper(designation_long), ',','') like replace(upper(:ends_with_with_space), ',','') then 3
-                        when designation_long like :starts_with then 4
-                        when designation_long like :ends_with then 5
-                        when designation_long like :contains_value then 6
-                        else 8 end),
+                        when upper(designation_long) like upper(:perfect_match) then 1
+                        when designation_long like :starts_with then 2
+                        when upper(designation_long) like upper(:starts_with) then 3
+                        when designation_long like :starts_with_space then 4
+                        when upper(designation_long) like upper(:starts_with_space) then 5
+                        when designation_long like :ends_with then 6
+                        when upper(designation_long) like upper(:ends_with) then 7
+                        when designation_long like :ends_with_space then 8
+                        when upper(designation_long) like upper(:ends_with_space) then 9
+                        when designation_long like :contains_value then 10
+                        else 11 end),
+                    designation_long,
                     (case
                         when abbreviation = :perfect_match then 0
-                        when replace(upper(abbreviation), ',','') like replace(upper(:perfect_match), ',','') then 1
-                        when abbreviation like :ends_with_with_space then 2
-                        when replace(upper(abbreviation), ',','') like replace(upper(:ends_with_with_space), ',','') then 3
-                        when abbreviation like :starts_with then 4
-                        when abbreviation like :ends_with then 5
-                        when abbreviation like :contains_value then 6
-                        else 7 end)
-                        limit 1000
+                        when upper(abbreviation) like upper(:perfect_match) then 1
+                        when abbreviation like :starts_with then 2
+                        when upper(abbreviation) like upper(:starts_with) then 3
+                        when abbreviation like :starts_with_space then 4
+                        when upper(abbreviation) like upper(:starts_with_space) then 5
+                        when abbreviation like :ends_with then 6
+                        when upper(abbreviation) like upper(:ends_with) then 7
+                        when abbreviation like :ends_with_space then 8
+                        when upper(abbreviation) like upper(:ends_with_space) then 9
+                        when abbreviation like :contains_value then 10
+                        else 11 end),
+                    abbreviation
                 """.replace("$dynamicCases", getDynamicCases(value));
     }
 
@@ -92,14 +101,19 @@ public class ServicePointSearchVersionRepository {
         return """
                 (case
                     when designation_official = :perfect_match then 0
-                    when replace(upper(designation_official), ',','') like replace(upper(:perfect_match), ',','') then 1
-                    when designation_official like :ends_with_with_space then 2
-                    when replace(upper(designation_official), ',','') like replace(upper(:ends_with_with_space), ',','') then 3
-                    when designation_official like :starts_with then 4
-                    when designation_official like :ends_with then 5
-                    when designation_official like :contains_value then 6
-                    else 7 end
-                )
+                    when upper(designation_official) like upper(:perfect_match) then 1
+                    when designation_official like :starts_with then 2
+                    when upper(designation_official) like upper(:starts_with) then 3
+                    when designation_official like :starts_with_space then 4
+                    when upper(designation_official) like upper(:starts_with_space) then 5
+                    when designation_official like :ends_with then 6
+                    when upper(designation_official) like upper(:ends_with) then 7
+                    when designation_official like :ends_with_space then 8
+                    when upper(designation_official) like upper(:ends_with_space) then 9
+                    when designation_official like :contains_value then 10
+                    else 11 end
+                ),
+                designation_official
                 """;
     }
 
@@ -107,12 +121,13 @@ public class ServicePointSearchVersionRepository {
         return """
                 (case
                     when cast(number as text) = :perfect_match then 0
-                    when cast(number as text) like :ends_with_with_space then 1
+                    when cast(number as text) like :ends_with_space then 1
                     when cast(number as text) like :starts_with then 2
                     when cast(number as text) like :ends_with then 3
                     when cast(number as text) like :contains_value then 4
                     else 5 end
-                )
+                ),
+                number
                 """;
     }
 
