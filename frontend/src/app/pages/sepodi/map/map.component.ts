@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
-import maplibregl, { Map, MapLibreGL } from 'maplibre-gl';
+import maplibregl, { Map } from 'maplibre-gl';
 import { MapService } from './map.service';
 import { MAP_STYLES, MapStyle } from './map-options.service';
 import { MapIcon, MapIconsService } from './map-icons.service';
@@ -16,7 +16,6 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   currentMapStyle!: MapStyle;
   showMapStyleSelection = false;
   showMapLegend = false;
-  test: any;
   legend!: MapIcon[];
 
   map!: Map;
@@ -52,8 +51,8 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       });
     };
 
-    this.mapService.isEditModus.subscribe((isEdit) => {
-      if (isEdit) {
+    this.mapService.isEditMode.subscribe((isEditMode) => {
+      if (isEditMode) {
         marker.remove();
         this.map.getCanvas().style.cursor = 'crosshair';
         this.map.on('mouseleave', MAP_SOURCE_NAME, () => {
