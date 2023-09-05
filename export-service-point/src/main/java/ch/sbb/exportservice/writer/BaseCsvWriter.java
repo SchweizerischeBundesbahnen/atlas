@@ -1,6 +1,6 @@
 package ch.sbb.exportservice.writer;
 
-import ch.sbb.atlas.export.enumeration.ServicePointExportFileName;
+import ch.sbb.exportservice.model.BatchExportFileName;
 import ch.sbb.exportservice.model.ExportExtensionFileType;
 import ch.sbb.exportservice.model.ExportType;
 import ch.sbb.exportservice.service.FileExportService;
@@ -18,15 +18,16 @@ import java.nio.charset.StandardCharsets;
 public abstract class BaseCsvWriter<T> {
 
   abstract String[] getCsvHeader();
+
   private static final String DELIMITER = ";";
 
   @Autowired
   private FileExportService fileExportService;
 
-  public FlatFileItemWriter<T> csvWriter(ExportType exportType, ServicePointExportFileName exportFileName) {
+  public FlatFileItemWriter<T> csvWriter(ExportType exportType, BatchExportFileName exportFileName) {
     WritableResource outputResource = new FileSystemResource(
         fileExportService.createFileNamePath(ExportExtensionFileType.CSV_EXTENSION,
-            exportType,exportFileName));
+            exportType, exportFileName));
     FlatFileItemWriter<T> writer = new FlatFileItemWriter<>();
     writer.setResource(outputResource);
     writer.setAppendAllowed(true);

@@ -2,9 +2,11 @@ package ch.sbb.exportservice.recovery;
 
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.batch.exception.JobExecutionException;
+import ch.sbb.exportservice.service.ExportLoadingPointJobService;
 import ch.sbb.exportservice.service.ExportServicePointJobService;
 import ch.sbb.exportservice.service.ExportTrafficPointElementJobService;
 import ch.sbb.exportservice.utils.JobDescriptionConstants;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.BatchStatus;
@@ -28,18 +30,26 @@ import java.util.Set;
 @Slf4j
 public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyEvent> {
 
-  private static final List<String> EXPORT_SERVICE_POINT_JOBS_NAME = List.of(JobDescriptionConstants.EXPORT_SERVICE_POINT_CSV_JOB_NAME,
-      JobDescriptionConstants.EXPORT_SERVICE_POINT_JSON_JOB_NAME);
-  private static final List<String> TRAFFIC_POINT_ELEMENT_JOBS_NAME = List.of(JobDescriptionConstants.EXPORT_TRAFFIC_POINT_ELEMENT_CSV_JOB_NAME,
-      JobDescriptionConstants.EXPORT_TRAFFIC_POINT_ELEMENT_JSON_JOB_NAME);
-  private static final int ALL_EXPORTS_JOB_EXECUTION_SIZE = 12;
+  private static final List<String> EXPORT_SERVICE_POINT_JOBS_NAME = List.of(
+      JobDescriptionConstants.EXPORT_SERVICE_POINT_CSV_JOB_NAME, JobDescriptionConstants.EXPORT_SERVICE_POINT_JSON_JOB_NAME
+  );
+  private static final List<String> TRAFFIC_POINT_ELEMENT_JOBS_NAME = List.of(
+      JobDescriptionConstants.EXPORT_TRAFFIC_POINT_ELEMENT_CSV_JOB_NAME,
+      JobDescriptionConstants.EXPORT_TRAFFIC_POINT_ELEMENT_JSON_JOB_NAME
+  );
+  private static final List<String> EXPORT_LOADING_POINT_JOBS_NAME = List.of(
+      JobDescriptionConstants.EXPORT_LOADING_POINT_CSV_JOB_NAME, JobDescriptionConstants.EXPORT_LOADING_POINT_JSON_JOB_NAME
+  );
+  private static final int ALL_EXPORTS_JOB_EXECUTION_SIZE = 24;
   private static final int CSV_OR_JSON_EXPORTS_JOB_EXECUTION_SIZE = 6;
+
   private final JobExplorer jobExplorer;
   private final FileService fileService;
-
   private final JobRepository jobRepository;
+
   private final ExportServicePointJobService exportServicePointJobService;
   private final ExportTrafficPointElementJobService exportTrafficPointElementJobService;
+  private final ExportLoadingPointJobService exportLoadingPointJobService;
 
   private boolean checkIfHasJobsToRecover(List<String> exportJobsName) {
     log.info("Start checking {} jobs to recover...", exportJobsName);
@@ -70,7 +80,7 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
     int totalJobExecutionCount = 0;
     for (String job : exportJobsName) {
       try {
-        totalJobExecutionCount += jobExplorer.getJobInstanceCount(job);
+        totalJobExecutionCount += (int) jobExplorer.getJobInstanceCount(job);
       } catch (NoSuchJobException e) {
         throw new JobExecutionException(job, e);
       }
@@ -92,27 +102,18 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
         .filter(jobExecution -> LocalDate.now().isEqual(jobExecution.getCreateTime().toLocalDate())).toList();
   }
 
-  private void cleanDownloadedFiles() {
-    log.info("Cleaning downloaded csv files directory..");
-    fileService.clearDir();
-  }
-
   @Override
-  public void onApplicationEvent(ApplicationReadyEvent event) {
+  public void onApplicationEvent(@NotNull ApplicationReadyEvent event) {
     log.info("Start checking jobs to recover...");
     cleanDownloadedFiles();
     checkExportServicePointJobToRecover();
     checkExportTrafficPointJobToRecover();
+    checkExportLoadingPointJobToRecover();
   }
 
-  private void checkExportTrafficPointJobToRecover() {
-    if (checkIfHasJobsToRecover(TRAFFIC_POINT_ELEMENT_JOBS_NAME)) {
-      log.info("Rerunning {} export jobs...",EXPORT_SERVICE_POINT_JOBS_NAME);
-      exportTrafficPointElementJobService.startExportJobs();
-      log.info("All export jobs successfully recovered!");
-    } else {
-      log.info("No job found to recover.");
-    }
+  private void cleanDownloadedFiles() {
+    log.info("Cleaning downloaded csv files directory..");
+    fileService.clearDir();
   }
 
   private void checkExportServicePointJobToRecover() {
@@ -124,4 +125,25 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
       log.info("No job found to recover.");
     }
   }
+
+  private void checkExportTrafficPointJobToRecover() {
+    if (checkIfHasJobsToRecover(TRAFFIC_POINT_ELEMENT_JOBS_NAME)) {
+      log.info("Rerunning {} export jobs...", TRAFFIC_POINT_ELEMENT_JOBS_NAME);
+      exportTrafficPointElementJobService.startExportJobs();
+      log.info("All export jobs successfully recovered!");
+    } else {
+      log.info("No job found to recover.");
+    }
+  }
+
+  private void checkExportLoadingPointJobToRecover() {
+    if (checkIfHasJobsToRecover(EXPORT_LOADING_POINT_JOBS_NAME)) {
+      log.info("Rerunning {} export jobs...", EXPORT_LOADING_POINT_JOBS_NAME);
+      exportLoadingPointJobService.startExportJobs();
+      log.info("All export jobs successfully recovered!");
+    } else {
+      log.info("No job found to recover.");
+    }
+  }
+
 }

@@ -18,9 +18,9 @@ public interface FileService {
   File getFileFromMultipart(MultipartFile multipartFile);
 
   StreamingResponseBody streamingJsonFile(ExportTypeBase exportType, ExportFileName exportFileName,
-                                          AmazonService amazonService, String fileName);
+      AmazonService amazonService, String fileName);
 
   StreamingResponseBody streamingGzipFile(ExportTypeBase exportType, ExportFileName exportFileName,
-                                          AmazonService amazonService, String fileName);
+      AmazonService amazonService, String fileName);
 
 }

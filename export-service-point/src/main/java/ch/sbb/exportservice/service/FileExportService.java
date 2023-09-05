@@ -5,7 +5,7 @@ import ch.sbb.atlas.amazon.service.AmazonBucket;
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.AtlasApiConstants;
-import ch.sbb.atlas.export.enumeration.ServicePointExportFileName;
+import ch.sbb.exportservice.model.BatchExportFileName;
 import ch.sbb.exportservice.model.ExportExtensionFileType;
 import ch.sbb.exportservice.model.ExportType;
 import lombok.RequiredArgsConstructor;
@@ -22,18 +22,18 @@ import java.time.format.DateTimeFormatter;
 public class FileExportService {
 
   private final AmazonService amazonService;
-
   private final FileService fileService;
 
-  public StreamingResponseBody streamJsonFile(ExportType exportType, ServicePointExportFileName exportFileName) {
+  public StreamingResponseBody streamJsonFile(ExportType exportType, BatchExportFileName exportFileName) {
     return fileService.streamingJsonFile(exportType, exportFileName, amazonService, getBaseFileName(exportType, exportFileName));
   }
 
-  public StreamingResponseBody streamGzipFile(ExportType exportType, ServicePointExportFileName exportFileName) {
+  public StreamingResponseBody streamGzipFile(ExportType exportType, BatchExportFileName exportFileName) {
     return fileService.streamingGzipFile(exportType, exportFileName, amazonService, getBaseFileName(exportType, exportFileName));
   }
 
-  public void exportFile(File file, ExportType exportType, ServicePointExportFileName exportFileName, ExportExtensionFileType exportExtensionFileType) {
+  public void exportFile(File file, ExportType exportType, BatchExportFileName exportFileName,
+      ExportExtensionFileType exportExtensionFileType) {
     String pathDirectory = exportFileName.getBaseDir() + "/" + exportType.getDir();
     try {
       if (exportExtensionFileType.equals(ExportExtensionFileType.CSV_EXTENSION)) {
@@ -51,17 +51,18 @@ public class FileExportService {
     }
   }
 
-  public String createFileNamePath(ExportExtensionFileType exportExtensionFileType, ExportType exportType, ServicePointExportFileName exportFileName) {
+  public String createFileNamePath(ExportExtensionFileType exportExtensionFileType, ExportType exportType,
+      BatchExportFileName exportFileName) {
     String dir = fileService.getDir();
-    String baseFileName = getBaseFileName(exportType,exportFileName);
-    return dir + baseFileName + exportExtensionFileType.getExtention();
+    String baseFileName = getBaseFileName(exportType, exportFileName);
+    return dir + baseFileName + exportExtensionFileType.getExtension();
   }
 
-  public String getBaseFileName(ExportType exportType, ServicePointExportFileName exportFileName) {
+  public String getBaseFileName(ExportType exportType, BatchExportFileName exportFileName) {
     String actualDate = LocalDate.now()
         .format(DateTimeFormatter.ofPattern(
             AtlasApiConstants.DATE_FORMAT_PATTERN));
-    return exportType.getDir() + "-" + exportType.getFileTypePrefix() + "-"+exportFileName.getFileName()+"-" + actualDate;
+    return exportType.getDir() + "-" + exportType.getFileTypePrefix() + "-" + exportFileName.getFileName() + "-" + actualDate;
   }
 
 }
