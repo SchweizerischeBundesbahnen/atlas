@@ -24,7 +24,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 @BatchDataSourceConfigTest
 @IntegrationTest
 @AutoConfigureMockMvc(addFilters = false)
-public class ExportLoadingPointTest {
+public class ExportLoadingPointIntegrationTest {
 
   @Autowired
   private JobLauncher jobLauncher;
