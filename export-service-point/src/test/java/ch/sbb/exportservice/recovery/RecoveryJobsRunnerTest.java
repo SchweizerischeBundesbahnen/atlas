@@ -6,7 +6,6 @@ import ch.sbb.exportservice.service.ExportLoadingPointJobService;
 import ch.sbb.exportservice.service.ExportServicePointJobService;
 import ch.sbb.exportservice.service.ExportTrafficPointElementJobService;
 import ch.sbb.exportservice.utils.JobDescriptionConstants;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -32,7 +31,6 @@ import static org.mockito.Mockito.*;
 public class RecoveryJobsRunnerTest {
 
   private RecoveryJobsRunner recoveryJobsRunner;
-  private AutoCloseable closeable;
 
   @Mock
   private JobExplorer jobExplorer;
@@ -69,14 +67,9 @@ public class RecoveryJobsRunnerTest {
 
   @BeforeEach
   void setUp() {
-    closeable = MockitoAnnotations.openMocks(this);
+    MockitoAnnotations.openMocks(this);
     recoveryJobsRunner = new RecoveryJobsRunner(jobExplorer, fileService, jobRepository, exportServicePointJobService,
         exportTrafficPointElementJobService, exportLoadingPointJobService);
-  }
-
-  @AfterEach
-  void tearDown() throws Exception {
-    closeable.close();
   }
 
   @Test

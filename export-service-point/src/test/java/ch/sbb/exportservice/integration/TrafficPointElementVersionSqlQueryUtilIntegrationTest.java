@@ -18,7 +18,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class TrafficPointElementVersionSqlQueryUtilTest extends BaseSqlTest {
+public class TrafficPointElementVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationTest {
 
   @Test
   public void shouldReturnWorldFullWithServicePointAndBusinessOrganisation() throws SQLException {

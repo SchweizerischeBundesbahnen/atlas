@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @UtilityClass
-public class LoadingPointVersionSqlQueryUtil {
+public class LoadingPointVersionSqlQueryUtil extends SqlQueryUtil {
 
   private static final String SELECT_STATEMENT = """
       SELECT lpv.*, sbov.*, spv.business_organisation, spv.sloid as parent_service_point_sloid
@@ -21,8 +21,8 @@ public class LoadingPointVersionSqlQueryUtil {
 
   public String getSqlQuery(ExportType exportType) {
     log.info("ExportType: {}", exportType);
-    final String sqlQuery = SqlQueryUtil.getFromStatementQueryForWorldOnlyTypes(exportType, SELECT_STATEMENT)
-        + SqlQueryUtil.getWhereClauseForWorldOnlyTypes(exportType, WHERE_STATEMENT)
+    final String sqlQuery = getFromStatementQueryForWorldOnlyTypes(exportType, SELECT_STATEMENT)
+        + getWhereClauseForWorldOnlyTypes(exportType, WHERE_STATEMENT)
         + GROUP_BY_STATEMENT;
     log.info("Execution SQL query: {}\n", sqlQuery);
     return sqlQuery;
