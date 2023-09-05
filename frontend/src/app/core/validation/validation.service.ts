@@ -54,8 +54,6 @@ export class ValidationService {
   }
 
   public static validateForm(formGroup: FormGroup) {
-    console.log('im validate');
-
     Object.keys(formGroup.controls).forEach((field) => {
       const control = formGroup.get(field);
 
