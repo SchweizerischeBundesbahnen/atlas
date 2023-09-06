@@ -941,6 +941,7 @@
       "LOADING_POINTS": "Ladestellen"
     },
     "GEOLOCATION": {
+      "INVALID": "Die angegebenen Koordinaten sind ungültig. Bitte korrigieren Sie Ihre Eingabe.",
       "GEOGRAPHY": "Geografie",
       "SYSTEM_LV95": "Landeskoordinaten LV95",
       "SYSTEM_WGS84": "Globale Koordinaten WGS84",
