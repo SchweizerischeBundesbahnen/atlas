@@ -412,3 +412,52 @@ insert into traffic_point_element_version (id, sloid, parent_sloid, designation,
                                            edition_date, editor, version)
 values (1004, 'ch:1:sloid:3020:1', null, 'Perron 1', null, '1', null, null, null, 12058867, '2020-05-07', '2099-12-31',
         null, '2020-05-18 12:43:34.000000', 'fs45117', '2020-05-18 12:43:34.000000', 'fs45117', 0);
+
+-- loading points
+insert into loading_point_version (id,
+                                   number,
+                                   designation,
+                                   designation_long,
+                                   connection_point,
+                                   service_point_number,
+                                   valid_from,
+                                   valid_to,
+                                   creation_date,
+                                   creator,
+                                   edition_date,
+                                   editor,
+                                   version)
+values (1000, 50, 'Ladestelle 1', 'Ladestelle Lang', false, 85091111, '1993-01-01', '2020-05-05', '2020-05-18 12:43:34.000000',
+        'fs45117', '2020-05-18 12:43:34.000000', 'fs45117', 0);
+
+insert into loading_point_version (id,
+                                   number,
+                                   designation,
+                                   designation_long,
+                                   connection_point,
+                                   service_point_number,
+                                   valid_from,
+                                   valid_to,
+                                   creation_date,
+                                   creator,
+                                   edition_date,
+                                   editor,
+                                   version)
+values (1001, 60, 'Ladestelle 2', 'Ladestelle Lang', false, 85092222, '2020-01-01', '2099-12-31', '2020-05-18 12:43:34.000000',
+        'fs45117', '2020-05-18 12:43:34.000000', 'fs45117', 0);
+
+insert into loading_point_version (id,
+                                   number,
+                                   designation,
+                                   designation_long,
+                                   connection_point,
+                                   service_point_number,
+                                   valid_from,
+                                   valid_to,
+                                   creation_date,
+                                   creator,
+                                   edition_date,
+                                   editor,
+                                   version)
+values (1002, 70, 'Ladestelle 3', 'Ladestelle Lang', true, 85093333, '2040-01-01', '2050-12-31', '2020-05-18 12:43:34.000000',
+        'fs45117', '2020-05-18 12:43:34.000000', 'fs45117', 0);

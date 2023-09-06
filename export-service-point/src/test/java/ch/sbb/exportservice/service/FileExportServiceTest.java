@@ -2,9 +2,9 @@ package ch.sbb.exportservice.service;
 
 import ch.sbb.atlas.amazon.service.AmazonBucket;
 import ch.sbb.atlas.amazon.service.AmazonService;
-import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.amazon.service.FileServiceImpl;
+import ch.sbb.exportservice.model.BatchExportFileName;
 import ch.sbb.exportservice.model.ExportExtensionFileType;
-import ch.sbb.exportservice.model.ExportFileName;
 import ch.sbb.exportservice.model.ExportType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,8 +28,7 @@ public class FileExportServiceTest {
   @Mock
   private AmazonService amazonService;
 
-  @Mock
-  private FileService fileService;
+  private final FileServiceImpl fileService = new FileServiceImpl();
 
   @BeforeEach
   public void init() {
@@ -43,10 +42,10 @@ public class FileExportServiceTest {
     File file = new File(this.getClass().getResource("/service-point.json.gzip").getFile());
     when(amazonService.pullFile(eq(AmazonBucket.EXPORT), any())).thenReturn(file);
     //when
-    StreamingResponseBody result = fileExportService.streamingJsonFile(ExportType.WORLD_FULL, ExportFileName.SERVICE_POINT_VERSION);
+    StreamingResponseBody result = fileExportService.streamJsonFile(ExportType.WORLD_FULL,
+        BatchExportFileName.SERVICE_POINT_VERSION);
     //then
     assertThat(result).isNotNull();
-
   }
 
   @Test
@@ -55,10 +54,10 @@ public class FileExportServiceTest {
     File file = new File(this.getClass().getResource("/service-point.json.gzip").getFile());
     when(amazonService.pullFile(eq(AmazonBucket.EXPORT), any())).thenReturn(file);
     //when
-    StreamingResponseBody result = fileExportService.streamingGzipFile(ExportType.WORLD_FULL,ExportFileName.SERVICE_POINT_VERSION);
+    StreamingResponseBody result = fileExportService.streamGzipFile(ExportType.WORLD_FULL,
+        BatchExportFileName.SERVICE_POINT_VERSION);
     //then
     assertThat(result).isNotNull();
-
   }
 
   @Test
@@ -66,7 +65,8 @@ public class FileExportServiceTest {
     //given
     File file = new File(this.getClass().getResource("/service-point.json.gzip").getFile());
     //when
-    fileExportService.exportFile(file, ExportType.WORLD_FULL, ExportFileName.SERVICE_POINT_VERSION, ExportExtensionFileType.JSON_EXTENSION);
+    fileExportService.exportFile(file, ExportType.WORLD_FULL, BatchExportFileName.SERVICE_POINT_VERSION,
+        ExportExtensionFileType.JSON_EXTENSION);
     //then
     verify(amazonService).putGzipFile(AmazonBucket.EXPORT, file, "service_point/full");
   }
@@ -76,7 +76,8 @@ public class FileExportServiceTest {
     //given
     File file = new File(this.getClass().getResource("/service-point-data.json").getFile());
     //when
-    fileExportService.exportFile(file, ExportType.WORLD_FULL, ExportFileName.SERVICE_POINT_VERSION, ExportExtensionFileType.CSV_EXTENSION);
+    fileExportService.exportFile(file, ExportType.WORLD_FULL, BatchExportFileName.SERVICE_POINT_VERSION,
+        ExportExtensionFileType.CSV_EXTENSION);
     //then
     verify(amazonService).putZipFile(AmazonBucket.EXPORT, file, "service_point/full");
   }
