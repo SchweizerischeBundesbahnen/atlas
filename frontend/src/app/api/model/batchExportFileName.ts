@@ -9,14 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { SwissCanton } from './swissCanton';
-import { LocalityMunicipality } from './localityMunicipality';
-import { Canton } from './canton';
-import { District } from './district';
 
-export interface SwissLocation {
-  canton?: SwissCanton;
-  cantonInformation?: Canton;
-  district?: District;
-  localityMunicipality?: LocalityMunicipality;
-}
+export type BatchExportFileName =
+  | 'SERVICE_POINT_VERSION'
+  | 'TRAFFIC_POINT_ELEMENT_VERSION'
+  | 'LOADING_POINT_VERSION';
+
+export const BatchExportFileName = {
+  ServicePointVersion: 'SERVICE_POINT_VERSION' as BatchExportFileName,
+  TrafficPointElementVersion: 'TRAFFIC_POINT_ELEMENT_VERSION' as BatchExportFileName,
+  LoadingPointVersion: 'LOADING_POINT_VERSION' as BatchExportFileName,
+};
