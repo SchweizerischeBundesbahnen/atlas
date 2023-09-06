@@ -75,43 +75,53 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
   handleMapClick() {
     const marker = new maplibregl.Marker({ color: '#FF0000' });
-    const onMapClick = (e: any) => {
-      const clickedGeographyCoordinates = e.lngLat;
-      const coordinatePair = {
-        north: clickedGeographyCoordinates.lat,
-        east: clickedGeographyCoordinates.lng,
-      };
-      const transformedCoordinates = this.coordinateTransformationService.transform(
-        coordinatePair,
-        'WGS84',
-        'LV95'
-      );
 
-      marker.setLngLat(clickedGeographyCoordinates).addTo(this.map);
+    const onMapClicked = (e: any) => {
+      const clickedCoordinates = e.lngLat;
+      const transformedCoordinates = transformCoordinates(clickedCoordinates);
+      placeMarkerAndFlyTo(clickedCoordinates);
+      this.mapService.clickedGeographyCoordinates.next(transformedCoordinates);
+    };
+
+    const transformCoordinates = (coordinates: any) => {
+      const coordinatePair = {
+        north: coordinates.lat,
+        east: coordinates.lng,
+      };
+      return this.coordinateTransformationService.transform(coordinatePair, 'WGS84', 'LV95');
+    };
+
+    const placeMarkerAndFlyTo = (coordinates: any) => {
+      marker.setLngLat(coordinates).addTo(this.map);
       this.map.flyTo({
-        center: clickedGeographyCoordinates as maplibregl.LngLatLike,
+        center: coordinates as maplibregl.LngLatLike,
         speed: 0.8,
       });
+    };
 
-      this.mapService.clickedGeographyCoordinates.next(transformedCoordinates);
+    const enterEditMode = () => {
+      this.map.getCanvas().style.cursor = 'crosshair';
+      this.map.on(
+        'mouseleave',
+        MAP_SOURCE_NAME,
+        () => (this.map.getCanvas().style.cursor = 'crosshair')
+      );
+      this.map.on('click', onMapClicked);
+    };
+
+    const exitEditMode = () => {
+      marker.remove();
+      this.map.off('click', onMapClicked);
+      this.map.getCanvas().style.cursor = '';
+      this.map.on('mouseleave', MAP_SOURCE_NAME, () => (this.map.getCanvas().style.cursor = ''));
+      this.mapService.clickedGeographyCoordinates.next({ north: 0, east: 0 });
     };
 
     this.isEditModeSubsription = this.mapService.isEditMode.subscribe((isEditMode) => {
       if (isEditMode) {
-        marker.remove();
-        this.map.getCanvas().style.cursor = 'crosshair';
-        this.map.on('mouseleave', MAP_SOURCE_NAME, () => {
-          this.map.getCanvas().style.cursor = 'crosshair';
-        });
-        this.map.on('click', onMapClick);
+        enterEditMode();
       } else {
-        marker.remove();
-        this.map.off('click', onMapClick);
-        this.map.getCanvas().style.cursor = '';
-        this.map.on('mouseleave', MAP_SOURCE_NAME, () => {
-          this.map.getCanvas().style.cursor = '';
-        });
-        this.mapService.clickedGeographyCoordinates.next({ north: 0, east: 0 });
+        exitEditMode();
       }
     });
   }
