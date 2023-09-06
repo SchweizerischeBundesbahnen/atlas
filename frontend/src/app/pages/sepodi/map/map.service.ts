@@ -153,6 +153,9 @@ export class MapService {
     this.map.setZoom(Number(localStorage.getItem(mapZoomLocalStorageKey) ?? 7.2));
     this.map.on('zoomend', (e) => {
       localStorage.setItem(mapZoomLocalStorageKey, String(e.target.getZoom()));
+      if (!this.showDetails()) {
+        this.popup.remove();
+      }
     });
 
     const storedLocation = localStorage.getItem(mapLocationLocalStorageKey);

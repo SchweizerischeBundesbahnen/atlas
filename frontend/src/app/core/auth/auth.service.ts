@@ -8,7 +8,7 @@ import jwtDecode from 'jwt-decode';
 import { Role } from './role';
 import { ApplicationRole, ApplicationType, Permission, UserAdministrationService } from '../../api';
 import { BehaviorSubject } from 'rxjs';
-import { Cantons } from '../../pages/tth/overview/canton/Cantons';
+import { Cantons } from '../cantons/Cantons';
 
 @Injectable({
   providedIn: 'root',

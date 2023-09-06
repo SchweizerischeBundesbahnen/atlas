@@ -8,6 +8,7 @@ import {
   OperatingPointType,
   ReadServicePointVersion,
   ServicePointsService,
+  SpatialReference,
   StopPointType,
 } from '../../../../api';
 import { FormGroup } from '@angular/forms';
@@ -38,15 +39,14 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   form!: FormGroup<ServicePointDetailFormGroup>;
   isNew = true;
 
+  preferredId?: number;
+
   types = Object.values(ServicePointType);
-  selectedType: ServicePointType = ServicePointType.ServicePoint;
   operatingPointTypes = (Object.values(OperatingPointType) as string[]).concat(
     Object.values(OperatingPointTechnicalTimetableType)
   );
 
-  stopPoint = false;
-  freightServicePoint = false;
-
+  previouslySelectedType!: ServicePointType;
   stopPointTypes = Object.values(StopPointType);
   categories = Object.values(Category);
 
@@ -81,6 +81,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   }
 
   switchVersion(newIndex: number) {
+    this.selectedVersionIndex = newIndex;
     this.selectedVersion = this.servicePointVersions[newIndex];
     this.initSelectedVersion();
   }
@@ -92,9 +93,16 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   private initServicePoint() {
     VersionsHandlingService.addVersionNumbers(this.servicePointVersions);
     this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.servicePointVersions);
-    this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(
-      this.servicePointVersions
-    );
+
+    if (this.preferredId) {
+      this.selectedVersion = this.servicePointVersions.find((i) => i.id === this.preferredId)!;
+      this.preferredId = undefined;
+    } else {
+      this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(
+        this.servicePointVersions
+      );
+    }
+    this.selectedVersionIndex = this.servicePointVersions.indexOf(this.selectedVersion);
 
     this.initSelectedVersion();
   }
@@ -104,36 +112,43 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
       this.isNew = false;
     }
 
-    this.selectedVersionIndex = this.servicePointVersions.indexOf(this.selectedVersion);
-
     this.form = ServicePointFormGroupBuilder.buildFormGroup(this.selectedVersion);
     if (!this.isNew) {
       this.form.disable();
     }
-    this.initType();
+    this.initTypeChangeInformationDialog();
   }
 
-  private initType() {
-    if (
-      this.selectedVersion.operatingPointType ||
-      this.selectedVersion.operatingPointTechnicalTimetableType
-    ) {
-      this.selectedType = ServicePointType.OperatingPoint;
-    }
-    if (this.selectedVersion.stopPoint || this.selectedVersion.freightServicePoint) {
-      this.stopPoint = this.selectedVersion.stopPoint!;
-      this.freightServicePoint = this.selectedVersion.freightServicePoint!;
-
-      this.selectedType = ServicePointType.StopPoint;
-    }
-    if (this.selectedVersion.fareStop) {
-      this.selectedType = ServicePointType.FareStop;
-    }
+  private initTypeChangeInformationDialog() {
+    this.previouslySelectedType = this.form.controls.selectedType.value!;
+    this.form.controls.selectedType.valueChanges.subscribe((newType) => {
+      if (this.previouslySelectedType != newType) {
+        if (this.previouslySelectedType != ServicePointType.ServicePoint) {
+          this.dialogService
+            .confirm({
+              title: 'SEPODI.SERVICE_POINTS.TYPE_CHANGE_DIALOG.TITLE',
+              message: 'SEPODI.SERVICE_POINTS.TYPE_CHANGE_DIALOG.MESSAGE',
+            })
+            .subscribe((result) => {
+              if (result) {
+                this.previouslySelectedType = newType!;
+              } else {
+                this.form.controls.selectedType.setValue(this.previouslySelectedType);
+              }
+            });
+        } else {
+          this.previouslySelectedType = newType!;
+        }
+      }
+    });
   }
 
   private displayAndSelectServicePointOnMap() {
     this.mapSubscription = this.mapService.mapInitialized.subscribe((initialized) => {
-      if (initialized) {
+      if (
+        initialized &&
+        this.form.controls.servicePointGeolocation.controls.spatialReference.value
+      ) {
         if (this.mapService.map.getZoom() <= this.ZOOM_LEVEL_FOR_DETAIL) {
           this.mapService.map.setZoom(this.ZOOM_LEVEL_FOR_DETAIL);
         }
@@ -158,8 +173,8 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
         if (this.isNew) {
           this.closeSidePanel();
         } else {
-          this.form.disable();
           this.initSelectedVersion();
+          this.form.disable();
         }
       }
     });
@@ -178,8 +193,8 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   save() {
     ValidationService.validateForm(this.form);
     if (this.form.valid) {
+      const servicePointVersion = ServicePointFormGroupBuilder.getWritableServicePoint(this.form);
       this.form.disable();
-      const servicePointVersion = this.form.value as unknown as CreateServicePointVersion;
       if (this.isNew) {
         this.create(servicePointVersion);
       } else {
@@ -202,6 +217,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   }
 
   private update(id: number, servicePointVersion: CreateServicePointVersion) {
+    this.preferredId = id;
     this.servicePointService
       .updateServicePoint(id, servicePointVersion)
       .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
@@ -222,5 +238,16 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
 
   isFormDirty(): boolean {
     return this.form.dirty;
+  }
+
+  handleGeolocationToggle(hasGeolocation: boolean) {
+    if (hasGeolocation) {
+      this.form.controls.servicePointGeolocation.controls.spatialReference.setValue(
+        SpatialReference.Lv95
+      );
+    } else {
+      this.form.controls.servicePointGeolocation.controls.spatialReference.setValue(null);
+    }
+    this.form.markAsDirty();
   }
 }

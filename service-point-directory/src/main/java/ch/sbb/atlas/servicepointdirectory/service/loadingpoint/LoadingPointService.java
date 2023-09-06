@@ -75,7 +75,7 @@ public class LoadingPointService {
 
     List<LoadingPointVersion> currentVersions = findLoadingPoint(currentVersion.getServicePointNumber(),
         currentVersion.getNumber());
-    List<VersionedObject> versionedObjects = versionableService.versioningObjects(currentVersion, editedVersion, currentVersions);
+    List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion, editedVersion, currentVersions);
 
     versionableService.applyVersioning(LoadingPointVersion.class, versionedObjects, this::save,
         loadingPointVersionRepository::deleteById);
