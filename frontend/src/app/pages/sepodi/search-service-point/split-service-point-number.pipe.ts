@@ -6,7 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class SplitServicePointNumberPipe implements PipeTransform {
   transform(number: string): string {
     if (number.length > 7) {
-      let index = this.findIndexToSplit(number);
+      const index = this.findIndexToSplit(number);
       return this.splitNumber(number, index);
     }
     return this.splitNumber(number, 1);
