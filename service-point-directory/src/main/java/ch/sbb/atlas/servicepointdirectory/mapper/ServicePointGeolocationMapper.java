@@ -77,6 +77,7 @@ public class ServicePointGeolocationMapper {
       return null;
     }
     GeolocationMapper.transformLv03andWgs84(servicePointGeolocationModel);
+    GeolocationMapper.checkIfCoordinatesAreTransformable(servicePointGeolocationModel);
     return ServicePointGeolocation.builder()
         .spatialReference(servicePointGeolocationModel.getSpatialReference())
         .north(servicePointGeolocationModel.getNorth())

@@ -1,5 +1,6 @@
 package ch.sbb.exportservice.model;
 
+import ch.sbb.atlas.export.enumeration.ExportTypeBase;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +10,7 @@ import java.util.List;
 @Schema(enumAsRef = true)
 @Getter
 @RequiredArgsConstructor
-public enum ExportType {
+public enum ExportType implements ExportTypeBase {
 
   SWISS_ONLY_FULL(Constants.FULL_DIR_NAME, Constants.SWISS_ONLY_PREFIX),
   SWISS_ONLY_ACTUAL(Constants.ACTUAL_DATE_DIR_NAME, Constants.SWISS_ONLY_PREFIX),
@@ -21,8 +22,8 @@ public enum ExportType {
   private final String dir;
   private final String fileTypePrefix;
 
-  public static List<ExportType> getWorldOnly(){
-    return List.of(WORLD_FULL, WORLD_ONLY_ACTUAL,WORLD_ONLY_TIMETABLE_FUTURE);
+  public static List<ExportType> getWorldOnly() {
+    return List.of(WORLD_FULL, WORLD_ONLY_ACTUAL, WORLD_ONLY_TIMETABLE_FUTURE);
   }
 
   private static class Constants {

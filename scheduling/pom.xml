@@ -10,7 +10,7 @@
       <artifactId>atlas</artifactId>
       <groupId>ch.sbb.atlas</groupId>
       <relativePath>../pom.xml</relativePath>
-      <version>1.383.0</version>
+      <version>1.397.0</version>
    </parent>
    <description>Atlas Scheduling Service</description>
    <artifactId>scheduling</artifactId>
@@ -42,12 +42,12 @@
       <dependency>
          <artifactId>shedlock-spring</artifactId>
          <groupId>net.javacrumbs.shedlock</groupId>
-         <version>5.5.0</version>
+         <version>5.7.0</version>
       </dependency>
       <dependency>
          <artifactId>shedlock-provider-jdbc-template</artifactId>
          <groupId>net.javacrumbs.shedlock</groupId>
-         <version>5.5.0</version>
+         <version>5.7.0</version>
       </dependency>
       <dependency>
          <artifactId>postgresql</artifactId>
@@ -75,12 +75,12 @@
       <dependency>
          <artifactId>base-atlas</artifactId>
          <groupId>ch.sbb.atlas</groupId>
-         <version>1.383.0</version>
+         <version>1.397.0</version>
       </dependency>
       <dependency>
          <groupId>ch.sbb.atlas</groupId>
          <artifactId>kafka</artifactId>
-         <version>1.383.0</version>
+         <version>1.397.0</version>
       </dependency>
       <dependency>
          <artifactId>spring-boot-starter-test</artifactId>

@@ -8,5 +8,4 @@ public class SchedulingExecutionException extends RuntimeException {
     super(response.reason());
   }
 
-
 }
