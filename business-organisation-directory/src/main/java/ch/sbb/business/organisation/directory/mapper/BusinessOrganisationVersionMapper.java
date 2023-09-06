@@ -2,6 +2,7 @@ package ch.sbb.business.organisation.directory.mapper;
 
 import ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel;
 import ch.sbb.atlas.api.bodi.SboidToSaidConverter;
+import ch.sbb.business.organisation.directory.entity.BusinessOrganisationExportVersionWithTuInfo;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
 import lombok.experimental.UtilityClass;
 
@@ -58,5 +59,32 @@ public class BusinessOrganisationVersionMapper {
         .build();
   }
 
+  public static BusinessOrganisationVersionModel toModelFromBOExportVersionWithTuInfo(BusinessOrganisationExportVersionWithTuInfo entity) {
+    return BusinessOrganisationVersionModel
+            .builder()
+            .id(entity.getId())
+            .status(entity.getStatus())
+            .descriptionDe(entity.getDescriptionDe())
+            .descriptionFr(entity.getDescriptionFr())
+            .descriptionIt(entity.getDescriptionIt())
+            .descriptionEn(entity.getDescriptionEn())
+            .abbreviationDe(entity.getAbbreviationDe())
+            .abbreviationFr(entity.getAbbreviationFr())
+            .abbreviationIt(entity.getAbbreviationIt())
+            .abbreviationEn(entity.getAbbreviationEn())
+            .validFrom(entity.getValidFrom())
+            .validTo(entity.getValidTo())
+            .organisationNumber(entity.getOrganisationNumber())
+            .contactEnterpriseEmail(entity.getContactEnterpriseEmail())
+            .sboid(entity.getSboid())
+            .etagVersion(entity.getVersion())
+            .said(SboidToSaidConverter.toSaid(entity.getSboid()))
+            .businessTypes(entity.getBusinessTypes())
+            .creator(entity.getCreator())
+            .creationDate(entity.getCreationDate())
+            .editor(entity.getEditor())
+            .editionDate(entity.getEditionDate())
+            .build();
+  }
 
 }

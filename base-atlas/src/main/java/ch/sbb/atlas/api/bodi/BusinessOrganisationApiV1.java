@@ -2,10 +2,14 @@ package ch.sbb.atlas.api.bodi;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.model.Container;
+import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.configuration.Role;
+import ch.sbb.atlas.export.enumeration.ExportType;
 import ch.sbb.atlas.model.Status;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -16,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -81,22 +87,38 @@ public interface BusinessOrganisationApiV1 {
   @DeleteMapping("{sboid}")
   void deleteBusinessOrganisation(@PathVariable String sboid);
 
-  @Operation(description = "Export all Business Organisations versions as csv and zip file to the ATLAS Amazon S3 Bucket")
-  @PostMapping(value = "/export-csv/full", produces = MediaType.APPLICATION_JSON_VALUE)
+  @Operation(description = "Export all Business Organisations versions as csv, zip and gz file to the ATLAS Amazon S3 Bucket")
+  @PostMapping(value = "/export/full", produces = MediaType.APPLICATION_JSON_VALUE)
   List<URL> exportFullBusinessOrganisationVersions();
 
-  @Operation(description = "Export all actual Business Organisations versions as csv and zip file to the ATLAS Amazon S3 Bucket")
-  @PostMapping(value = "/export-csv/actual", produces = MediaType.APPLICATION_JSON_VALUE)
+  @Operation(description = "Export all actual Business Organisations versions as csv, zip and gz file to the ATLAS Amazon S3 Bucket")
+  @PostMapping(value = "/export/actual", produces = MediaType.APPLICATION_JSON_VALUE)
   List<URL> exportActualBusinessOrganisationVersions();
 
-  @Operation(description = "Export all Business Organisations versions for the current timetable year change as csv and zip "
-      + "file to the ATLAS Amazon S3 Bucket")
-  @PostMapping(value = "/export-csv/timetable-year-change", produces = MediaType.APPLICATION_JSON_VALUE)
+  @Operation(description = "Export all Business Organisations versions for the current timetable year change as csv, zip and gz "
+          + "file to the ATLAS Amazon S3 Bucket")
+  @PostMapping(value = "/export/timetable-year-change", produces = MediaType.APPLICATION_JSON_VALUE)
   List<URL> exportFutureTimetableBusinessOrganisationVersions();
 
   @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
   @PostMapping("/sync-business-organisations")
   @Operation(description = "Write all Business Organisations to kafka again for redistribution")
   void syncBusinessOrganisations();
+
+  @GetMapping(value = "/export/download-gz-json/{exportType}")
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200"),
+          @ApiResponse(responseCode = "404", description = "filename myFile not found", content = @Content(schema =
+          @Schema(implementation = ErrorResponse.class)))
+  })
+    ResponseEntity<StreamingResponseBody> streamGzipFile(@PathVariable("exportType") ExportType exportType);
+
+  @GetMapping(value = "/export/download-json/{exportType}")
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200"),
+          @ApiResponse(responseCode = "404", description = "filename myFile not found", content = @Content(schema =
+          @Schema(implementation = ErrorResponse.class)))
+  })
+  ResponseEntity<StreamingResponseBody> streamJsonFile(@PathVariable("exportType") ExportType exportType);
 
 }
