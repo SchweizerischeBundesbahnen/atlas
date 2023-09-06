@@ -3,6 +3,7 @@ package ch.sbb.exportservice.listener;
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import ch.sbb.exportservice.service.MailNotificationService;
 import ch.sbb.exportservice.service.MailProducerService;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.*;
@@ -19,8 +20,8 @@ public class JobCompletionListener implements JobExecutionListener {
   private final MailProducerService mailProducerService;
 
   @Override
-  public void beforeJob(JobExecution jobExecution) {
-    //nothing to do
+  public void beforeJob(@NotNull JobExecution jobExecution) {
+    // nothing to do
   }
 
   @Override

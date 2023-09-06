@@ -123,9 +123,11 @@ scheduler:
 
   export-service-point:
     service-point-trigger-batch:
-      chron: "1 0 0 * * ?" #At 00:00:01am every day
+      chron: "0 0 5 * * ?" #At 05:00:00am every day
     traffic-point-trigger-batch:
-      chron: "10 0 0 * * ?" #At 00:00:10am every day
+      chron: "0 10 5 * * ?" #At 05:10:00am every day
+    loading-point-trigger-batch:
+      chron: "0 20 5 * * ?" #At 05:20:00am every day
 
 atlas:
   client:
