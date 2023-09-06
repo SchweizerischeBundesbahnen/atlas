@@ -12,6 +12,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { GeographyFormGroup } from './geography-form-group';
 import { SpatialReference } from '../../../api';
 import { MaterialModule } from '../../../core/module/material.module';
+import { TextFieldComponent } from '../../../core/form-components/text-field/text-field.component';
+import { RemoveCharsDirective } from '../../../core/form-components/text-field/remove-chars.directive';
 
 describe('GeographyComponent', () => {
   let component: GeographyComponent;
@@ -19,7 +21,7 @@ describe('GeographyComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [GeographyComponent],
+      declarations: [GeographyComponent, TextFieldComponent, RemoveCharsDirective],
       imports: [
         FormModule,
         MaterialModule,
