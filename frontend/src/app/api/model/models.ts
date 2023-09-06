@@ -1,5 +1,6 @@
 export * from './applicationRole';
 export * from './applicationType';
+export * from './batchExportFileName';
 export * from './businessOrganisation';
 export * from './businessOrganisationVersion';
 export * from './businessType';
@@ -74,7 +75,6 @@ export * from './readTrafficPointElementVersionModel';
 export * from './sboidPermissionRestrictionModel';
 export * from './servicePointCsvModel';
 export * from './servicePointCsvModelContainer';
-export * from './servicePointExportFileName';
 export * from './servicePointFotCommentModel';
 export * from './servicePointGeolocation';
 export * from './servicePointImportRequest';

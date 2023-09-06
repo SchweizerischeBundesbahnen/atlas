@@ -2,8 +2,8 @@ package ch.sbb.business.organisation.directory.service;
 
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.amazon.service.FileService;
-import ch.sbb.business.organisation.directory.service.export.BusinessOrganisationExportFileName;
 import ch.sbb.atlas.export.enumeration.ExportType;
+import ch.sbb.business.organisation.directory.service.export.BusinessOrganisationExportFileName;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -28,7 +28,7 @@ public class BusinessOrganisationAmazonService {
   }
 
   public StreamingResponseBody streamGzipFile(ExportType exportType) {
-    return fileService.streamingGzFile(exportType, exportFileName, amazonService, getFileName(exportType));
+    return fileService.streamingGzipFile(exportType, exportFileName, amazonService, getFileName(exportType));
   }
 
     public String getFileName(ExportType exportType) {
