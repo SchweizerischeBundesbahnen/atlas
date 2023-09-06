@@ -4,7 +4,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'searchResultHighlight',
 })
 export class SearchResultHighlightPipe implements PipeTransform {
-  transform(value: string, search: string): unknown {
+  transform(value: string, search: string): string {
     if (!value) {
       return search;
     }
@@ -13,6 +13,8 @@ export class SearchResultHighlightPipe implements PipeTransform {
       return value;
     }
     const regex = new RegExp(search, 'gi');
-    return value.replace(regex, (match) => `<b>${match}</b>`);
+    return value.replace(regex, (match) => {
+      return `<b>${match}</b>`;
+    });
   }
 }

@@ -18,7 +18,7 @@ public class ServicePointSearchVersionRepository {
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
     public List<ServicePointSearchResult> searchServicePoints(String value) {
-        String sanitizeValue = value;
+        String sanitizeValue = value.replaceAll("%", "\\\\%");
         if(NumberUtils.isParsable(value.replaceAll("\\s", ""))){
             sanitizeValue = value.replaceAll("\\s", "");
         }
