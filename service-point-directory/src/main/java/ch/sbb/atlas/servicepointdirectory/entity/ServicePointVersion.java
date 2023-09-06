@@ -143,7 +143,6 @@ public class ServicePointVersion extends BasePointVersion<ServicePointVersion> i
 
   @NotNull
   @Enumerated(EnumType.STRING)
-  @AtlasVersionableProperty
   private Status status;
 
   @AtlasVersionableProperty
