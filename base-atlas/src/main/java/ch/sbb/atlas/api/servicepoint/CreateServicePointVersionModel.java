@@ -4,13 +4,13 @@ import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,8 +18,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
 import org.apache.commons.lang3.StringUtils;
-
-import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -44,12 +42,16 @@ public class CreateServicePointVersionModel extends ServicePointVersionModel {
   private Integer operatingPointKilometerMasterNumber;
 
   @Valid
-  private ServicePointGeolocationCreateModel servicePointGeolocation;
+  private GeolocationBaseCreateModel servicePointGeolocation;
 
-  @JsonInclude
-  @Schema(description = "ServicePoint has a Geolocation")
-  public boolean isHasGeolocation() {
-    return servicePointGeolocation != null;
+  @JsonIgnore
+  public boolean isOperatingPoint() {
+    return !isRawServicePoint();
+  }
+
+  @JsonIgnore
+  public boolean isOperatingPointWithTimetable() {
+    return isOperatingPoint() && getOperatingPointType() == null;
   }
 
   @JsonIgnore
@@ -59,6 +61,17 @@ public class CreateServicePointVersionModel extends ServicePointVersionModel {
     return !(servicePointNumber.getCountry() == Country.SWITZERLAND && super.isFreightServicePoint() && !getValidFrom().isBefore(
             LocalDate.now()))
             || StringUtils.isNotBlank(super.getSortCodeOfDestinationStation());
+  }
+
+  @JsonIgnore
+  public boolean isStopPoint() {
+    return !getMeansOfTransport().isEmpty();
+  }
+
+  @JsonIgnore
+  @AssertTrue(message = "StopPointType only allowed for StopPoint")
+  boolean isValidStopPointWithType() {
+    return isStopPoint() || getStopPointType() == null;
   }
 
 }

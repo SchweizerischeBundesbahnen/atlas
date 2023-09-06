@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ApplicationType, PermissionRestrictionType, SwissCanton, User } from '../../../../api';
 import { tableColumns } from './table-column-definition';
 import { SearchType, SearchTypes } from './search-type';
-import { Cantons } from '../../../tth/overview/canton/Cantons';
+import { Cantons } from '../../../../core/cantons/Cantons';
 import { TableService } from '../../../../core/components/table/table.service';
 import { TablePagination } from '../../../../core/components/table/table-pagination';
 import { MatSelectChange } from '@angular/material/select';

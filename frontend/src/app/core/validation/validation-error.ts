@@ -10,6 +10,7 @@ export interface TranslationParameter {
   date?: string;
   length?: string;
   allowedChars?: string;
+  maxDecimalDigits?: string;
   max?: string;
   min?: string;
   number?: string;
