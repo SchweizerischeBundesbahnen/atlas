@@ -36,8 +36,16 @@ public class TimetableFieldNumberServiceScenario8Test extends BaseTimetableField
     //given
     version1 = versionRepository.save(version1);
     version2 = versionRepository.save(version2);
-    version3 = versionRepository.save(version3);
-    TimetableFieldNumberVersion editedVersion = new TimetableFieldNumberVersion();
+    version3 = versionRepository.saveAndFlush(version3);
+
+    TimetableFieldNumberVersion editedVersion = version3Builder()
+        .creationDate(version3.getCreationDate())
+        .creator(version3.getCreator())
+        .editionDate(version3.getEditionDate())
+        .editor(version3.getEditor())
+        .version(version3.getVersion())
+        .build();
+
     editedVersion.setValidTo(LocalDate.of(2024, 6, 1));
     editedVersion.setValidFrom(version3.getValidFrom());
 
@@ -105,7 +113,7 @@ public class TimetableFieldNumberServiceScenario8Test extends BaseTimetableField
     version1 = versionRepository.save(version1);
     version2 = versionRepository.save(version2);
     version3 = versionRepository.save(version3);
-    TimetableFieldNumberVersion editedVersion = new TimetableFieldNumberVersion();
+    TimetableFieldNumberVersion editedVersion = version3Builder().build();
     editedVersion.setValidTo(LocalDate.of(2024, 6, 1));
     editedVersion.setValidFrom(version3.getValidFrom());
     editedVersion.setDescription("FPFN Description <changed>");
@@ -189,7 +197,7 @@ public class TimetableFieldNumberServiceScenario8Test extends BaseTimetableField
     version3 = versionRepository.save(version3);
     version4.setValidFrom(LocalDate.of(2025, 6, 1));
     version4 = versionRepository.save(version4);
-    TimetableFieldNumberVersion editedVersion = new TimetableFieldNumberVersion();
+    TimetableFieldNumberVersion editedVersion = version3Builder().build();
     editedVersion.setValidTo(LocalDate.of(2025, 2, 1));
     editedVersion.setValidFrom(version3.getValidFrom());
 
@@ -272,7 +280,7 @@ public class TimetableFieldNumberServiceScenario8Test extends BaseTimetableField
     version3 = versionRepository.save(version3);
     version4.setValidFrom(LocalDate.of(2025, 6, 1));
     version4 = versionRepository.save(version4);
-    TimetableFieldNumberVersion editedVersion = new TimetableFieldNumberVersion();
+    TimetableFieldNumberVersion editedVersion = version3Builder().build();
     editedVersion.setValidTo(LocalDate.of(2025, 2, 1));
     editedVersion.setValidFrom(version3.getValidFrom());
     editedVersion.setDescription("FPFN Description <changed>");
@@ -356,7 +364,7 @@ public class TimetableFieldNumberServiceScenario8Test extends BaseTimetableField
     version3 = versionRepository.save(version3);
     version4.setValidFrom(LocalDate.of(2025, 6, 1));
     version4 = versionRepository.save(version4);
-    TimetableFieldNumberVersion editedVersion = new TimetableFieldNumberVersion();
+    TimetableFieldNumberVersion editedVersion = version3Builder().build();
     editedVersion.setValidTo(LocalDate.of(2025, 8, 1));
     editedVersion.setValidFrom(version3.getValidFrom());
     editedVersion.setDescription("FPFN Description <changed>");
@@ -453,7 +461,7 @@ public class TimetableFieldNumberServiceScenario8Test extends BaseTimetableField
     version2 = versionRepository.save(version2);
     version3 = versionRepository.save(version3);
     version4 = versionRepository.save(version4);
-    TimetableFieldNumberVersion editedVersion = new TimetableFieldNumberVersion();
+    TimetableFieldNumberVersion editedVersion = version1Builder().build();
     editedVersion.setValidTo(LocalDate.of(2025, 6, 1));
     editedVersion.setValidFrom(version1.getValidFrom());
     editedVersion.setDescription("FPFN Description <changed>");
@@ -550,7 +558,7 @@ public class TimetableFieldNumberServiceScenario8Test extends BaseTimetableField
     version2.setValidTo(LocalDate.of(2022,6,1));
     version2 = versionRepository.save(version2);
     version3 = versionRepository.save(version3);
-    TimetableFieldNumberVersion editedVersion = new TimetableFieldNumberVersion();
+    TimetableFieldNumberVersion editedVersion = version1Builder().build();
     editedVersion.setValidTo(LocalDate.of(2024, 6, 1));
     editedVersion.setValidFrom(version1.getValidFrom());
     editedVersion.setDescription("FPFN Description <changed>");

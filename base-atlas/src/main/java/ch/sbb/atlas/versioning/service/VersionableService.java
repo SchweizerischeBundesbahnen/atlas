@@ -8,16 +8,18 @@ import java.util.function.LongConsumer;
 
 public interface VersionableService {
 
+  /**
+   * Patch Versioning.
+   * Null properties will be treated as not to update.
+   */
   <T extends Versionable> List<VersionedObject> versioningObjects(Versionable current,
       Versionable edited,
       List<T> currentVersions);
 
   /**
-   * Used only for versioning when we do ImportFromCsv and not for ordinary ServicePointUpdate
-   *
-   * @see ch.sbb.atlas.servicepointdirectory.api.ServicePointApiV1#importServicePoints(ch.sbb.atlas.imports.servicepoint.model.ServicePointImportReqModel)
+   * Properties set to null will get Deleted from the DB
    */
-  <T extends Versionable> List<VersionedObject> versioningObjectsForImportFromCsv(Versionable current,
+  <T extends Versionable> List<VersionedObject> versioningObjectsDeletingNullProperties(Versionable current,
       Versionable edited,
       List<T> currentVersions);
 

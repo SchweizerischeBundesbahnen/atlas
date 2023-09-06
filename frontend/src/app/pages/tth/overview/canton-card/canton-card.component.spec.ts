@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CantonCardComponent } from './canton-card.component';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { By } from '@angular/platform-browser';
-import { Canton } from '../canton/Canton';
+import { Canton } from '../../../../core/cantons/Canton';
 
 const cantonAG: Canton = { short: 'AG', path: 'ag' };
 
