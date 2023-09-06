@@ -16,6 +16,7 @@ import { MeansOfTransportPickerComponent } from './means-of-transport-picker/mea
 import { GeographyComponent } from './geography/geography.component';
 import { SearchServicePointComponent } from './search-service-point/search-service-point.component';
 import { SearchResultHighlightPipe } from './search-service-point/search-result-highlight.pipe';
+import { SplitServicePointNumberPipe } from './search-service-point/split-service-point-number.pipe';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { SearchResultHighlightPipe } from './search-service-point/search-result-
     GeographyComponent,
     SearchServicePointComponent,
     SearchResultHighlightPipe,
+    SplitServicePointNumberPipe,
   ],
   imports: [CoreModule, FormModule, FormsModule, SepodiRoutingModule],
 })
