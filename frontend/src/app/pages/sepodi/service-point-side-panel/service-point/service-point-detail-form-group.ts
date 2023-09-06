@@ -20,6 +20,7 @@ import { DateRangeValidator } from '../../../../core/validation/date-range/date-
 import { GeographyFormGroup } from '../../geography/geography-form-group';
 import { ServicePointType } from './service-point-type';
 import { AtLeastOneValidator } from '../../../../core/validation/boolean-cross-validator/at-least-one-validator';
+import { LV95_MAX_DIGITS, WGS84_MAX_DIGITS } from '../../geography/geography.component';
 
 export interface ServicePointDetailFormGroup extends BaseDetailFormGroup {
   number: FormControl<number | null | undefined>;
@@ -185,7 +186,7 @@ export class ServicePointFormGroupBuilder {
 
   private static getValidatorForCoordinates(spatialReference?: SpatialReference) {
     return AtlasCharsetsValidator.decimalWithDigits(
-      spatialReference == SpatialReference.Lv95 ? 5 : 11
+      spatialReference == SpatialReference.Lv95 ? LV95_MAX_DIGITS : WGS84_MAX_DIGITS
     );
   }
 
