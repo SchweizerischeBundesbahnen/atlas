@@ -105,6 +105,7 @@ model/servicePointFotCommentModel.ts
 model/servicePointGeolocation.ts
 model/servicePointImportRequest.ts
 model/servicePointNumber.ts
+model/servicePointSearchRequest.ts
 model/servicePointSearchResult.ts
 model/spatialReference.ts
 model/statementStatus.ts
