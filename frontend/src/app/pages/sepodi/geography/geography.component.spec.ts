@@ -14,6 +14,7 @@ import { SpatialReference } from '../../../api';
 import { MaterialModule } from '../../../core/module/material.module';
 import { TextFieldComponent } from '../../../core/form-components/text-field/text-field.component';
 import { RemoveCharsDirective } from '../../../core/form-components/text-field/remove-chars.directive';
+import { DecimalNumberPipe } from '../../../core/pipe/decimal-number.pipe';
 
 describe('GeographyComponent', () => {
   let component: GeographyComponent;
@@ -21,7 +22,12 @@ describe('GeographyComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [GeographyComponent, TextFieldComponent, RemoveCharsDirective],
+      declarations: [
+        GeographyComponent,
+        TextFieldComponent,
+        RemoveCharsDirective,
+        DecimalNumberPipe,
+      ],
       imports: [
         FormModule,
         MaterialModule,
