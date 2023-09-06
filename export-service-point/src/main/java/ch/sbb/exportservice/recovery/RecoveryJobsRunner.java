@@ -18,6 +18,7 @@ import org.springframework.batch.core.launch.NoSuchJobException;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -40,7 +41,6 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
   private static final List<String> EXPORT_LOADING_POINT_JOBS_NAME = List.of(
       JobDescriptionConstants.EXPORT_LOADING_POINT_CSV_JOB_NAME, JobDescriptionConstants.EXPORT_LOADING_POINT_JSON_JOB_NAME
   );
-  private static final int ALL_EXPORTS_JOB_EXECUTION_SIZE = 24;
   private static final int CSV_OR_JSON_EXPORTS_JOB_EXECUTION_SIZE = 6;
 
   private final JobExplorer jobExplorer;
@@ -50,6 +50,16 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
   private final ExportServicePointJobService exportServicePointJobService;
   private final ExportTrafficPointElementJobService exportTrafficPointElementJobService;
   private final ExportLoadingPointJobService exportLoadingPointJobService;
+
+  @Override
+  @Async
+  public void onApplicationEvent(@NotNull ApplicationReadyEvent event) {
+    log.info("Start checking jobs to recover...");
+    cleanDownloadedFiles();
+    checkExportServicePointJobToRecover();
+    checkExportTrafficPointJobToRecover();
+    checkExportLoadingPointJobToRecover();
+  }
 
   private boolean checkIfHasJobsToRecover(List<String> exportJobsName) {
     log.info("Start checking {} jobs to recover...", exportJobsName);
@@ -61,10 +71,6 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
           log.info("Found job to recovery: {}", jobExecution);
           return true;
         }
-      }
-      if (todayExecutedJobs.size() < ALL_EXPORTS_JOB_EXECUTION_SIZE) {
-        log.info("Not all export jobs were executed..");
-        return true;
       }
     }
     return false;
@@ -100,15 +106,6 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
     }
     return executedJobs.stream()
         .filter(jobExecution -> LocalDate.now().isEqual(jobExecution.getCreateTime().toLocalDate())).toList();
-  }
-
-  @Override
-  public void onApplicationEvent(@NotNull ApplicationReadyEvent event) {
-    log.info("Start checking jobs to recover...");
-    cleanDownloadedFiles();
-    checkExportServicePointJobToRecover();
-    checkExportTrafficPointJobToRecover();
-    checkExportLoadingPointJobToRecover();
   }
 
   private void cleanDownloadedFiles() {
