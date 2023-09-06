@@ -1,6 +1,7 @@
 package ch.sbb.exportservice.config;
 
 import ch.sbb.exportservice.model.ExportType;
+import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.aop.interceptor.SimpleAsyncUncaughtExceptionHandler;
@@ -33,6 +34,7 @@ public class AsyncConfig implements AsyncConfigurer {
    * When using {@link org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody}
    * {@link ch.sbb.exportservice.controller.ExportServicePointBatchControllerApiV1#streamJsonFile(ExportType)},
    * it is highly recommended to configure TaskExecutor used in Spring MVC for executing asynchronous requests.
+   *
    * @return taskExecutor
    */
   @Override
@@ -57,7 +59,7 @@ public class AsyncConfig implements AsyncConfigurer {
       CallableProcessingInterceptor callableProcessingInterceptor) {
     return new WebMvcConfigurer() {
       @Override
-      public void configureAsyncSupport(AsyncSupportConfigurer configurer) {
+      public void configureAsyncSupport(@NotNull AsyncSupportConfigurer configurer) {
         configurer.setDefaultTimeout(DEFAULT_TIMEOUT).setTaskExecutor(taskExecutor);
         configurer.registerCallableInterceptors(callableProcessingInterceptor);
         WebMvcConfigurer.super.configureAsyncSupport(configurer);
@@ -69,7 +71,7 @@ public class AsyncConfig implements AsyncConfigurer {
   public CallableProcessingInterceptor callableProcessingInterceptor() {
     return new TimeoutCallableProcessingInterceptor() {
       @Override
-      public <T> Object handleTimeout(NativeWebRequest request, Callable<T> task) throws Exception {
+      public <T> @NotNull Object handleTimeout(@NotNull NativeWebRequest request, @NotNull Callable<T> task) throws Exception {
         log.error("timeout!");
         return super.handleTimeout(request, task);
       }

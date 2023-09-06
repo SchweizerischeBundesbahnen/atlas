@@ -1,22 +1,25 @@
 package ch.sbb.business.organisation.directory.service.export;
 
-import static java.util.stream.Collectors.toList;
-
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.api.model.BaseVersionModel;
 import ch.sbb.atlas.export.AtlasCsvMapper;
 import ch.sbb.atlas.export.BaseExportService;
-import ch.sbb.atlas.export.ExportType;
+import ch.sbb.atlas.export.enumeration.ExportType;
 import ch.sbb.atlas.export.model.VersionCsvModel;
 import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationExportVersionWithTuInfo;
+import ch.sbb.business.organisation.directory.mapper.BusinessOrganisationVersionMapper;
 import ch.sbb.business.organisation.directory.model.csv.BusinessOrganisationVersionCsvModel;
 import ch.sbb.business.organisation.directory.repository.BusinessOrganisationVersionExportRepository;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import org.springframework.stereotype.Service;
+
 import java.io.File;
 import java.time.LocalDate;
 import java.util.List;
-import org.springframework.stereotype.Service;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class BusinessOrganisationVersionExportService extends
@@ -48,10 +51,23 @@ public class BusinessOrganisationVersionExportService extends
     }
 
     @Override
+    protected File getFullVersionsJson() {
+        List<BusinessOrganisationExportVersionWithTuInfo> fullLineVersions = businessOrganisationVersionExportRepository.findAll();
+        return createJsonFile(fullLineVersions, ExportType.FULL);
+    }
+
+    @Override
     protected File getActualVersionsCsv() {
         List<BusinessOrganisationExportVersionWithTuInfo> actualLineVersions =
             businessOrganisationVersionExportRepository.findVersionsValidOn(LocalDate.now());
         return createCsvFile(actualLineVersions, ExportType.ACTUAL_DATE);
+    }
+
+    @Override
+    protected File getActualVersionsJson() {
+        List<BusinessOrganisationExportVersionWithTuInfo> actualLineVersions =
+                businessOrganisationVersionExportRepository.findVersionsValidOn(LocalDate.now());
+        return createJsonFile(actualLineVersions, ExportType.ACTUAL_DATE);
     }
 
     @Override
@@ -63,16 +79,30 @@ public class BusinessOrganisationVersionExportService extends
     }
 
     @Override
+    protected File getFutureTimetableVersionsJson() {
+        List<BusinessOrganisationExportVersionWithTuInfo> actualLineVersions = businessOrganisationVersionExportRepository.findVersionsValidOn(
+                FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now()));
+        return createJsonFile(actualLineVersions, ExportType.FUTURE_TIMETABLE);
+    }
+
+    @Override
     protected ObjectWriter getObjectWriter() {
         return new AtlasCsvMapper(BusinessOrganisationVersionCsvModel.class).getObjectWriter();
     }
 
     @Override
-    protected List<? extends VersionCsvModel> convertToCsvModel(
+    protected List<VersionCsvModel> convertToCsvModel(
         List<BusinessOrganisationExportVersionWithTuInfo> versions) {
         return versions.stream()
             .map(BusinessOrganisationVersionCsvModel::toCsvModel)
             .collect(toList());
+    }
+
+    @Override
+    protected List<BaseVersionModel> convertToJsonModel(List<BusinessOrganisationExportVersionWithTuInfo> versions) {
+        return versions.stream()
+                .map(BusinessOrganisationVersionMapper::toModelFromBOExportVersionWithTuInfo)
+                .collect(toList());
     }
 
 }

@@ -8,7 +8,7 @@ import org.springframework.batch.item.file.FlatFileHeaderCallback;
 
 public class CsvFlatFileHeaderCallback implements FlatFileHeaderCallback {
 
-  private String[] csvHeader;
+  private final String[] csvHeader;
 
   public CsvFlatFileHeaderCallback(String[] csvHeader) {
     this.csvHeader = csvHeader;

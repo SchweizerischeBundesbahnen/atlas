@@ -4,28 +4,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import ch.sbb.atlas.kafka.model.mail.MailType;
-import io.micrometer.tracing.Tracer;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepExecution;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
 class ExportMailNotificationServiceTest {
-
-  @Mock
-  private Tracer tracer;
 
   private MailNotificationService notificationService;
 
   @BeforeEach
   public void setUp() {
-    MockitoAnnotations.openMocks(this);
     notificationService = new MailNotificationService();
   }
 
