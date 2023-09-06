@@ -1,5 +1,5 @@
 import { Canton } from './Canton';
-import { SwissCanton } from '../../../../api';
+import { SwissCanton } from '../../api';
 
 export class Cantons {
   public static cantons: Canton[] = [

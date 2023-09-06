@@ -4,6 +4,7 @@ import static ch.sbb.atlas.servicepointdirectory.mapper.GeolocationMapper.getTra
 
 import ch.sbb.atlas.api.servicepoint.Canton;
 import ch.sbb.atlas.api.servicepoint.DistrictModel;
+import ch.sbb.atlas.api.servicepoint.GeolocationBaseCreateModel;
 import ch.sbb.atlas.api.servicepoint.LocalityMunicipalityModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationCreateModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationReadModel;
@@ -11,7 +12,6 @@ import ch.sbb.atlas.api.servicepoint.SwissLocation;
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
-import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation.ServicePointGeolocationBuilder;
 import java.util.Map;
 import lombok.experimental.UtilityClass;
 
@@ -72,20 +72,14 @@ public class ServicePointGeolocationMapper {
         .build();
   }
 
-  public static ServicePointGeolocation toEntity(ServicePointGeolocationCreateModel servicePointGeolocationModel) {
-    ServicePointGeolocationBuilder<?, ?> geolocationBuilder = ServicePointGeolocation.builder()
-        .country(servicePointGeolocationModel.getCountry());
-    if (servicePointGeolocationModel.getSwissLocation() != null) {
-      geolocationBuilder
-          .swissCanton(servicePointGeolocationModel.getSwissLocation().getCanton())
-          .swissDistrictName(servicePointGeolocationModel.getSwissLocation().getDistrict().getDistrictName())
-          .swissDistrictNumber(servicePointGeolocationModel.getSwissLocation().getDistrict().getFsoNumber())
-          .swissMunicipalityNumber(servicePointGeolocationModel.getSwissLocation().getLocalityMunicipality().getFsoNumber())
-          .swissMunicipalityName(servicePointGeolocationModel.getSwissLocation().getLocalityMunicipality().getMunicipalityName())
-          .swissLocalityName(servicePointGeolocationModel.getSwissLocation().getLocalityMunicipality().getLocalityName());
+  public static ServicePointGeolocation toEntity(GeolocationBaseCreateModel servicePointGeolocationModel) {
+    if (servicePointGeolocationModel == null) {
+      return null;
     }
     GeolocationMapper.transformLv03andWgs84(servicePointGeolocationModel);
-    return geolocationBuilder.spatialReference(servicePointGeolocationModel.getSpatialReference())
+    GeolocationMapper.checkIfCoordinatesAreTransformable(servicePointGeolocationModel);
+    return ServicePointGeolocation.builder()
+        .spatialReference(servicePointGeolocationModel.getSpatialReference())
         .north(servicePointGeolocationModel.getNorth())
         .east(servicePointGeolocationModel.getEast())
         .height(servicePointGeolocationModel.getHeight())

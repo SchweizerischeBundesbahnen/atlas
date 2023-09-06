@@ -21,6 +21,8 @@ import { MockAtlasButtonComponent } from '../../../../app.testing.mocks';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { ServicePointsService } from '../../../../api';
 import { NotificationService } from '../../../../core/notification/notification.service';
+import { ServicePointType } from './service-point-type';
+import { DisplayCantonPipe } from '../../../../core/cantons/display-canton.pipe';
 
 const authService: Partial<AuthService> = {};
 const dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirm']);
@@ -46,6 +48,7 @@ describe('ServicePointDetailComponent', () => {
         SwitchVersionComponent,
         AtlasSlideToggleComponent,
         MockAtlasButtonComponent,
+        DisplayCantonPipe,
       ],
       imports: [AppTestingModule, FormsModule],
       providers: [
@@ -139,5 +142,37 @@ describe('ServicePointDetailComponent', () => {
     component.save();
     expect(servicePointsServiceSpy.updateServicePoint).toHaveBeenCalled();
     expect(notificationServiceSpy.success).toHaveBeenCalled();
+  });
+
+  it('should show type change warning dialog and change on confirmation', () => {
+    // given
+    dialogServiceSpy.confirm.and.returnValue(of(true));
+
+    component.form.enable();
+    expect(component.previouslySelectedType).toBe(ServicePointType.StopPoint);
+
+    // when
+    component.form.controls.selectedType.setValue(ServicePointType.OperatingPoint);
+    fixture.detectChanges();
+
+    // then
+    expect(dialogServiceSpy.confirm).toHaveBeenCalled();
+    expect(component.previouslySelectedType).toBe(ServicePointType.OperatingPoint);
+  });
+
+  it('should show type change warning dialog and reset on cancel', () => {
+    // given
+    dialogServiceSpy.confirm.and.returnValue(of(false));
+
+    component.form.enable();
+    expect(component.previouslySelectedType).toBe(ServicePointType.StopPoint);
+
+    // when
+    component.form.controls.selectedType.setValue(ServicePointType.OperatingPoint);
+    fixture.detectChanges();
+
+    // then
+    expect(dialogServiceSpy.confirm).toHaveBeenCalled();
+    expect(component.previouslySelectedType).toBe(ServicePointType.StopPoint);
   });
 });

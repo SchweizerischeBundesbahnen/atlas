@@ -4,6 +4,10 @@ import { CoordinatePair, SpatialReference } from '../../../api';
 import { GeographyFormGroup } from './geography-form-group';
 import { CoordinateTransformationService } from './coordinate-transformation.service';
 import { Subscription } from 'rxjs';
+import { MatRadioChange } from '@angular/material/radio';
+
+export const LV95_MAX_DIGITS = 5;
+export const WGS84_MAX_DIGITS = 11;
 
 @Component({
   selector: 'sepodi-geography',
@@ -13,32 +17,37 @@ export class GeographyComponent implements OnInit, OnDestroy {
   @Input() disabled = false;
   @Input() formGroup!: FormGroup<GeographyFormGroup>;
 
-  transformedCoordinatePair!: CoordinatePair;
+  readonly LV95_MAX_DIGITS = LV95_MAX_DIGITS;
+  readonly WGS84_MAX_DIGITS = WGS84_MAX_DIGITS;
+
+  transformedCoordinatePair?: CoordinatePair;
   private spatialReferenceSubscription!: Subscription;
 
   constructor(private coordinateTransformationService: CoordinateTransformationService) {}
 
   ngOnInit() {
-    this.initTransformedCoordinatePair(this.currentSpatialReference);
-    this.spatialReferenceSubscription =
-      this.formGroup.controls.spatialReference.valueChanges.subscribe((changedReference) => {
-        this.initTransformedCoordinatePair(changedReference!);
-      });
+    this.initTransformedCoordinatePair();
+    this.spatialReferenceSubscription = this.formGroup.valueChanges.subscribe(() => {
+      this.initTransformedCoordinatePair();
+    });
   }
 
   ngOnDestroy() {
     this.spatialReferenceSubscription.unsubscribe();
   }
 
-  private initTransformedCoordinatePair(currentSpactialReference: SpatialReference) {
-    this.transformedCoordinatePair = this.coordinateTransformationService.transform(
-      {
-        east: this.formGroup.value.east!,
-        north: this.formGroup.value.north!,
-      },
-      currentSpactialReference,
-      this.transformedSpatialReference
-    );
+  private initTransformedCoordinatePair() {
+    if (
+      this.formGroup.value.spatialReference &&
+      this.currentCoordinates.east &&
+      this.currentCoordinates.north
+    ) {
+      this.transformedCoordinatePair = this.coordinateTransformationService.transform(
+        this.currentCoordinates,
+        this.currentSpatialReference,
+        this.transformedSpatialReference
+      );
+    }
   }
 
   get transformedSpatialReference() {
@@ -49,5 +58,35 @@ export class GeographyComponent implements OnInit, OnDestroy {
 
   get currentSpatialReference() {
     return this.formGroup.controls.spatialReference.value!;
+  }
+
+  get currentCoordinates(): CoordinatePair {
+    return {
+      east: Number(this.formGroup.value.east!),
+      north: Number(this.formGroup.value.north!),
+    };
+  }
+
+  switchSpatialReference($event: MatRadioChange) {
+    const newReference: SpatialReference = $event.value;
+    const transformedCoordinatePair = this.coordinateTransformationService.transform(
+      this.currentCoordinates,
+      this.transformedSpatialReference,
+      newReference
+    );
+    this.formGroup.controls.east.setValue(
+      Number(
+        transformedCoordinatePair.east.toFixed(
+          newReference == SpatialReference.Lv95 ? this.LV95_MAX_DIGITS : this.WGS84_MAX_DIGITS
+        )
+      )
+    );
+    this.formGroup.controls.north.setValue(
+      Number(
+        transformedCoordinatePair.north.toFixed(
+          newReference == SpatialReference.Lv95 ? this.LV95_MAX_DIGITS : this.WGS84_MAX_DIGITS
+        )
+      )
+    );
   }
 }

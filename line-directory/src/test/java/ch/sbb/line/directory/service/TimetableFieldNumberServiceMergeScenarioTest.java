@@ -51,7 +51,8 @@ public class TimetableFieldNumberServiceMergeScenarioTest extends
     version4.setDescription("SBB4");
     version4.setNumber("BEX");
     version4 = versionRepository.save(version4);
-    TimetableFieldNumberVersion editedVersion = new TimetableFieldNumberVersion();
+    TimetableFieldNumberVersion editedVersion = version3Builder().build();
+    editedVersion.setNumber("BEX");
     editedVersion.setDescription("SBB2");
 
     //when
@@ -81,7 +82,7 @@ public class TimetableFieldNumberServiceMergeScenarioTest extends
     assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2022, 1, 1));
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2024, 12, 31));
     assertThat(secondTemporalVersion.getDescription()).isEqualTo("SBB2");
-    assertThat(firstTemporalVersion.getComment()).isNull();
+    assertThat(secondTemporalVersion.getComment()).isNull();
     assertThat(secondTemporalVersion.getLineRelations()).isEmpty();
     assertThat(secondTemporalVersion.getNumber()).isEqualTo("BEX");
     assertThat(secondTemporalVersion.getStatus()).isEqualTo(Status.VALIDATED);
@@ -128,7 +129,9 @@ public class TimetableFieldNumberServiceMergeScenarioTest extends
     version3.setDescription("SBB1");
     version3.setNumber("BEX");
     version3 = versionRepository.save(version3);
-    TimetableFieldNumberVersion editedVersion = new TimetableFieldNumberVersion();
+    TimetableFieldNumberVersion editedVersion = version2Builder().build();
+    editedVersion.setDescription("SBB2");
+    editedVersion.setNumber("BEX");
     editedVersion.setDescription("SBB1");
 
     //when
@@ -186,7 +189,8 @@ public class TimetableFieldNumberServiceMergeScenarioTest extends
     version5.setNumber("BEX");
     version5.setDescription("SBB4");
     version5 = versionRepository.save(version5);
-    TimetableFieldNumberVersion editedVersion = new TimetableFieldNumberVersion();
+    TimetableFieldNumberVersion editedVersion = version2Builder().build();
+    editedVersion.setNumber("BEX");
     editedVersion.setDescription("SBB1");
     editedVersion.setValidFrom(version2.getValidFrom());
     editedVersion.setValidTo(version3.getValidTo());
@@ -258,7 +262,8 @@ public class TimetableFieldNumberServiceMergeScenarioTest extends
     version5.setNumber("BEX");
     version5.setDescription("SBB4");
     version5 = versionRepository.save(version5);
-    TimetableFieldNumberVersion editedVersion = new TimetableFieldNumberVersion();
+    TimetableFieldNumberVersion editedVersion = version2Builder().build();
+    editedVersion.setNumber("BEX");
     editedVersion.setDescription("SBB1");
     editedVersion.setValidFrom(version2.getValidFrom());
     editedVersion.setValidTo(version3.getValidTo());

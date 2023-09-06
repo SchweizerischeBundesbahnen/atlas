@@ -129,7 +129,6 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
         .descriptionFr("desc-fr1")
         .descriptionIt("desc-it1")
         .descriptionEn("desc-en1")
-        .businessTypes(new HashSet<>(Arrays.asList(BusinessType.RAILROAD, BusinessType.AIR, BusinessType.SHIP)))
         .contactEnterpriseEmail("mail1@mail.ch")
         .organisationNumber(1234)
         .status(Status.VALIDATED)
@@ -147,8 +146,6 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
     mvc.perform(get(
             "/v1/business-organisations/versions/" + businessOrganisationVersion.getSboid()))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$[0]."
-            + businessTypes, containsInAnyOrder(BusinessType.RAILROAD.name(), BusinessType.AIR.name(), BusinessType.SHIP.name())))
         .andExpect(jsonPath("$[0]." + validFrom, is("2001-01-01")))
         .andExpect(jsonPath("$[0]." + validTo, is("2001-12-31")))
         .andExpect(jsonPath("$[0]." + organisationNumber, is(1234)))
@@ -162,8 +159,6 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
         .andExpect(jsonPath("$[0]." + abbreviationIt, is("it1")))
         .andExpect(jsonPath("$[0]." + abbreviationEn, is("en1")))
 
-        .andExpect(jsonPath("$[1]."
-            + businessTypes, containsInAnyOrder(BusinessType.RAILROAD.name(), BusinessType.AIR.name(), BusinessType.SHIP.name())))
         .andExpect(jsonPath("$[1]." + validFrom, is("2002-01-01")))
         .andExpect(jsonPath("$[1]." + validTo, is("2002-12-31")))
         .andExpect(jsonPath("$[1]." + organisationNumber, is(1234)))
