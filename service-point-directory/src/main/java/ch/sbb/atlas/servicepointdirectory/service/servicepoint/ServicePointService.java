@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
@@ -50,11 +51,13 @@ public class ServicePointService {
   @PreAuthorize("@countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#servicePointVersion, "
       + "T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
   public ServicePointVersion save(ServicePointVersion servicePointVersion) {
+    servicePointVersion.setStatus(Status.VALIDATED);
     servicePointValidationService.validateServicePointPreconditionBusinessRule(servicePointVersion);
     return servicePointVersionRepository.saveAndFlush(servicePointVersion);
   }
 
   public ServicePointVersion saveWithoutValidationForImportOnly(ServicePointVersion servicePointVersion) {
+    servicePointVersion.setStatus(Status.VALIDATED);
     return servicePointVersionRepository.saveAndFlush(servicePointVersion);
   }
 
@@ -71,9 +74,11 @@ public class ServicePointService {
     if (editedVersion.getVersion() != null && !currentVersion.getVersion().equals(editedVersion.getVersion())) {
       throw new StaleObjectStateException(ServicePointVersion.class.getSimpleName(), "version");
     }
+    editedVersion.setNumber(currentVersion.getNumber());
+    editedVersion.setSloid(currentVersion.getSloid());
 
     List<ServicePointVersion> existingDbVersions = findAllByNumberOrderByValidFrom(currentVersion.getNumber());
-    List<VersionedObject> versionedObjects = versionableService.versioningObjects(currentVersion,
+    List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion,
         editedVersion, existingDbVersions);
     versionableService.applyVersioning(ServicePointVersion.class, versionedObjects,
         this::save, new ApplyVersioningDeleteByIdLongConsumer(servicePointVersionRepository));

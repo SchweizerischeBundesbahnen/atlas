@@ -18,6 +18,7 @@ export class ValidationService {
             date: this.displayDate(controlErrors[keyError]),
             length: controlErrors[keyError]['requiredLength'],
             allowedChars: controlErrors[keyError]['allowedCharacters'],
+            maxDecimalDigits: controlErrors[keyError]['maxDecimalDigits'],
             max: controlErrors[keyError]['max'],
             min: controlErrors[keyError]['min'],
             number: controlErrors[keyError]['number'],

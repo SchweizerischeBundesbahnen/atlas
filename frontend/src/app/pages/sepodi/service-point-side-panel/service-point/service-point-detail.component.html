@@ -85,15 +85,15 @@
       'SEPODI.SERVICE_POINTS.TYPE' | translate
     }}</mat-label>
   </div>
-  <div class="col-12 d-flex mt-2">
-    <mat-radio-group [(ngModel)]="selectedType" [disabled]="form.disabled">
+  <div class="col-12 d-flex mt-2" [formGroup]="form">
+    <mat-radio-group formControlName="selectedType">
       <mat-radio-button *ngFor="let option of types" [value]="option">
         {{ 'SEPODI.SERVICE_POINTS.TYPES.' + option | translate }}
       </mat-radio-button>
     </mat-radio-group>
   </div>
 
-  <div *ngIf="selectedType === 'OPERATING_POINT'" class="col-12 d-flex mt-2">
+  <div *ngIf="form.value.selectedType === 'OPERATING_POINT'" class="col-12 d-flex mt-2">
     <atlas-select
       class="col-12"
       [formGroup]="form"
@@ -108,14 +108,15 @@
     </atlas-select>
   </div>
 
-  <div *ngIf="selectedType === 'STOP_POINT'" class="d-flex mt-2 d-flex flex-column">
+  <div *ngIf="form.value.selectedType === 'STOP_POINT'" class="d-flex mt-2 d-flex flex-column">
     <div class="font-bold-lg d-flex col-12">{{ 'PAGES.DETAILS' | translate }}</div>
-    <div class="d-flex col-12 mt-2">
-      <mat-checkbox [disabled]="form.disabled" [(ngModel)]="stopPoint" data-cy="stopPoint">
+    <div class="d-flex col-12 mt-2 flex-column" [formGroup]="form">
+      <mat-checkbox formControlName="stopPoint" data-cy="stopPoint">
         {{ 'SEPODI.SERVICE_POINTS.STOP_POINT' | translate }}
       </mat-checkbox>
+      <app-atlas-field-error [form]="form" controlName="stopPoint"></app-atlas-field-error>
     </div>
-    <div class="d-flex col-12 mb-3 mt-2" *ngIf="stopPoint">
+    <div class="d-flex col-12 mb-3 mt-2" *ngIf="form.value.stopPoint">
       <atlas-select
         class="col-6 pe-3"
         [formGroup]="form"
@@ -124,7 +125,6 @@
         label="SEPODI.SERVICE_POINTS.STOP_POINT_TYPE"
         optionTranslateLabelPrefix="SEPODI.SERVICE_POINTS.STOP_POINT_TYPES."
         [options]="stopPointTypes"
-        [required]="true"
         [additionalLabelspace]="false"
       >
       </atlas-select>
@@ -141,16 +141,16 @@
       </div>
     </div>
 
-    <div class="d-flex col-12">
-      <mat-checkbox
-        [disabled]="form.disabled"
-        [(ngModel)]="freightServicePoint"
-        data-cy="freightServicePoint"
-      >
+    <div class="d-flex col-12 flex-column" [formGroup]="form">
+      <mat-checkbox formControlName="freightServicePoint" data-cy="freightServicePoint">
         {{ 'SEPODI.SERVICE_POINTS.FREIGHT_SERVICE_POINT' | translate }}
       </mat-checkbox>
+      <app-atlas-field-error
+        [form]="form"
+        controlName="freightServicePoint"
+      ></app-atlas-field-error>
     </div>
-    <div class="d-flex col-12 mt-2" *ngIf="freightServicePoint">
+    <div class="d-flex col-12 mt-2" *ngIf="form.value.freightServicePoint">
       <atlas-text-field
         [fieldExamples]="[
           { label: 'FORM.FOR_EXAMPLE', translate: true },
@@ -169,16 +169,17 @@
   <div class="font-bold-2xl mt-5">
     {{ 'SEPODI.GEOLOCATION.GEOGRAPHY' | translate }}
     <atlas-slide-toggle
-      [(toggle)]="selectedVersion.hasGeolocation!"
+      [toggle]="!!form.value.servicePointGeolocation?.spatialReference"
+      (toggleChange)="handleGeolocationToggle($event)"
       [disabled]="form.disabled"
     ></atlas-slide-toggle>
   </div>
 
   <sepodi-geography
-    *ngIf="selectedVersion.hasGeolocation"
+    *ngIf="this.form.value.servicePointGeolocation?.spatialReference"
     [formGroup]="form.controls.servicePointGeolocation"
   ></sepodi-geography>
-  <div *ngIf="selectedVersion.hasGeolocation && selectedVersion.number.uicCountryCode === 85">
+  <div *ngIf="this.form.value.servicePointGeolocation?.spatialReference">
     <div class="font-bold-2xl mt-5">{{ 'SEPODI.GEOLOCATION.ADMINISTRATION' | translate }}</div>
 
     <div class="d-flex flex-row mt-2">
@@ -187,7 +188,7 @@
           {{ 'SEPODI.GEOLOCATION.COUNTRY' | translate }}
         </div>
         <div class="color-gray-900">
-          {{ selectedVersion.servicePointGeolocation?.isoCountryCode }}
+          {{ selectedVersion.servicePointGeolocation?.isoCountryCode ?? '-' }}
         </div>
       </div>
       <div class="col-3 pe-3">
@@ -195,7 +196,7 @@
           {{ 'SEPODI.GEOLOCATION.CANTON' | translate }}
         </div>
         <div class="color-gray-900">
-          {{ selectedVersion.servicePointGeolocation?.swissLocation?.canton }}
+          {{ selectedVersion.servicePointGeolocation?.swissLocation?.canton | displayCanton }}
         </div>
       </div>
       <div class="col-3 pe-3">
@@ -205,7 +206,7 @@
         <div class="color-gray-900">
           {{
             selectedVersion.servicePointGeolocation?.swissLocation?.localityMunicipality
-              ?.municipalityName
+              ?.municipalityName ?? '-'
           }}
         </div>
       </div>
@@ -216,7 +217,7 @@
         <div class="color-gray-900">
           {{
             selectedVersion.servicePointGeolocation?.swissLocation?.localityMunicipality
-              ?.localityName
+              ?.localityName ?? '-'
           }}
         </div>
       </div>

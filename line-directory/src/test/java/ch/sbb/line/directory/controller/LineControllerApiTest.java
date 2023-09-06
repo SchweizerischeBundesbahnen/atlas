@@ -184,10 +184,10 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
             .build();
     LineVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
     //when
-    lineVersionModel.setBusinessOrganisation("PostAuto");
+    lineVersionSaved.setBusinessOrganisation("PostAuto");
     mvc.perform(post("/v1/lines/versions/" + lineVersionSaved.getId().toString())
             .contentType(contentType)
-            .content(mapper.writeValueAsString(lineVersionModel))
+            .content(mapper.writeValueAsString(lineVersionSaved))
         ).andExpect(status().isOk())
         .andExpect(jsonPath("$[0]." + businessOrganisation, is("PostAuto")))
         .andExpect(jsonPath("$[0]." + alternativeName, is("alternative")))
@@ -221,17 +221,17 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
             .longName("  long name  ")
             .swissLineNumber("  b0.IC2       ")
             .build();
-    LineVersionModel lineVersionSaved = lineController.createLineVersion(lineVersionModel);
+
     //when
-    mvc.perform(post("/v1/lines/versions/" + lineVersionSaved.getId().toString())
+    mvc.perform(post("/v1/lines/versions")
             .contentType(contentType)
             .content(mapper.writeValueAsString(lineVersionModel))
-        ).andExpect(status().isOk())
-        .andExpect(jsonPath("$[0]." + businessOrganisation, is("sbb")))
-        .andExpect(jsonPath("$[0]." + alternativeName, is("alternative")))
-        .andExpect(jsonPath("$[0]." + combinationName, is("combination")))
-        .andExpect(jsonPath("$[0]." + longName, is("long name")))
-        .andExpect(jsonPath("$[0]." + swissLineNumber, is("b0.IC2")));
+        ).andExpect(status().isCreated())
+        .andExpect(jsonPath("$." + businessOrganisation, is("sbb")))
+        .andExpect(jsonPath("$." + alternativeName, is("alternative")))
+        .andExpect(jsonPath("$." + combinationName, is("combination")))
+        .andExpect(jsonPath("$." + longName, is("long name")))
+        .andExpect(jsonPath("$." + swissLineNumber, is("b0.IC2")));
   }
 
   @Test

@@ -3,6 +3,7 @@ package ch.sbb.line.directory.service;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
+import ch.sbb.line.directory.entity.TimetableFieldNumberVersion.TimetableFieldNumberVersionBuilder;
 import ch.sbb.line.directory.repository.TimetableFieldNumberVersionRepository;
 import java.time.LocalDate;
 import java.util.List;
@@ -38,51 +39,66 @@ public abstract class BaseTimetableFieldNumberServiceTest {
 
   @BeforeEach
   void init() {
-    version1 = TimetableFieldNumberVersion.builder().ttfnid(TTFNID)
-                                          .description("FPFN Description")
-                                          .number("BEX1")
-                                          .status(Status.VALIDATED)
-                                          .swissTimetableFieldNumber("b0.BEX")
-                                          .validFrom(LocalDate.of(2020, 1, 1))
-                                          .validTo(LocalDate.of(2021, 12, 31))
-                                          .businessOrganisation("sbb")
-                                          .build();
-    version2 = TimetableFieldNumberVersion.builder().ttfnid(TTFNID)
-                                          .description("FPFN Description")
-                                          .number("BEX2")
-                                          .status(Status.VALIDATED)
-                                          .swissTimetableFieldNumber("b0.BEX")
-                                          .validFrom(LocalDate.of(2022, 1, 1))
-                                          .validTo(LocalDate.of(2023, 12, 31))
-                                          .businessOrganisation("sbb")
-                                          .build();
-    version3 = TimetableFieldNumberVersion.builder().ttfnid(TTFNID)
-                                          .description("FPFN Description")
-                                          .number("BEX3")
-                                          .status(Status.VALIDATED)
-                                          .swissTimetableFieldNumber("b0.BEX")
-                                          .validFrom(LocalDate.of(2024, 1, 1))
-                                          .validTo(LocalDate.of(2024, 12, 31))
-                                          .businessOrganisation("sbb")
-                                          .build();
-    version4 = TimetableFieldNumberVersion.builder().ttfnid(TTFNID)
-                                          .description("FPFN Description")
-                                          .number("BEX4")
-                                          .status(Status.VALIDATED)
-                                          .swissTimetableFieldNumber("b0.BEX")
-                                          .validFrom(LocalDate.of(2025, 1, 1))
-                                          .validTo(LocalDate.of(2025, 12, 31))
-                                          .businessOrganisation("sbb")
-                                          .build();
-    version5 = TimetableFieldNumberVersion.builder().ttfnid(TTFNID)
-                                          .description("FPFN Description")
-                                          .number("BEX5")
-                                          .status(Status.VALIDATED)
-                                          .swissTimetableFieldNumber("b0.BEX")
-                                          .validFrom(LocalDate.of(2026, 1, 1))
-                                          .validTo(LocalDate.of(2026, 12, 31))
-                                          .businessOrganisation("sbb")
-                                          .build();
+    version1 = version1Builder().build();
+    version2 = version2Builder().build();
+    version3 = version3Builder().build();
+    version4 = version4Builder().build();
+    version5 = version5Builder().build();
+  }
+
+  protected static TimetableFieldNumberVersionBuilder<?, ?> version5Builder() {
+    return TimetableFieldNumberVersion.builder().ttfnid(TTFNID)
+        .description("FPFN Description")
+        .number("BEX5")
+        .status(Status.VALIDATED)
+        .swissTimetableFieldNumber("b0.BEX")
+        .validFrom(LocalDate.of(2026, 1, 1))
+        .validTo(LocalDate.of(2026, 12, 31))
+        .businessOrganisation("sbb");
+  }
+
+  protected static TimetableFieldNumberVersionBuilder<?, ?> version4Builder() {
+    return TimetableFieldNumberVersion.builder().ttfnid(TTFNID)
+        .description("FPFN Description")
+        .number("BEX4")
+        .status(Status.VALIDATED)
+        .swissTimetableFieldNumber("b0.BEX")
+        .validFrom(LocalDate.of(2025, 1, 1))
+        .validTo(LocalDate.of(2025, 12, 31))
+        .businessOrganisation("sbb");
+  }
+
+  protected static TimetableFieldNumberVersionBuilder<?, ?> version3Builder() {
+    return TimetableFieldNumberVersion.builder().ttfnid(TTFNID)
+        .description("FPFN Description")
+        .number("BEX3")
+        .status(Status.VALIDATED)
+        .swissTimetableFieldNumber("b0.BEX")
+        .validFrom(LocalDate.of(2024, 1, 1))
+        .validTo(LocalDate.of(2024, 12, 31))
+        .businessOrganisation("sbb");
+  }
+
+  protected static TimetableFieldNumberVersionBuilder<?, ?> version2Builder() {
+    return TimetableFieldNumberVersion.builder().ttfnid(TTFNID)
+        .description("FPFN Description")
+        .number("BEX2")
+        .status(Status.VALIDATED)
+        .swissTimetableFieldNumber("b0.BEX")
+        .validFrom(LocalDate.of(2022, 1, 1))
+        .validTo(LocalDate.of(2023, 12, 31))
+        .businessOrganisation("sbb");
+  }
+
+  protected static TimetableFieldNumberVersionBuilder<?, ?> version1Builder() {
+    return TimetableFieldNumberVersion.builder().ttfnid(TTFNID)
+        .description("FPFN Description")
+        .number("BEX1")
+        .status(Status.VALIDATED)
+        .swissTimetableFieldNumber("b0.BEX")
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2021, 12, 31))
+        .businessOrganisation("sbb");
   }
 
   @AfterEach
