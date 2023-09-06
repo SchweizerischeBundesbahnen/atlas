@@ -18,16 +18,15 @@ public class ServicePointSearchVersionRepository {
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
     public List<ServicePointSearchResult> searchServicePoints(String value) {
-        String sanitizeValue = value.replaceAll("%", "\\\\%");
-        if(NumberUtils.isParsable(value.replaceAll("\\s", ""))){
-            sanitizeValue = value.replaceAll("\\s", "");
-        }
+
+        validateInput(value);
+        String sanitizeValue = sanitizeValue(value);
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("perfect_match", sanitizeValue);
         mapSqlParameterSource.addValue("starts_with", sanitizeValue + "%");
         mapSqlParameterSource.addValue("starts_with_space", sanitizeValue + " %");
         mapSqlParameterSource.addValue("ends_with", "%" + sanitizeValue);
-        mapSqlParameterSource.addValue("ends_with_space", "% " +sanitizeValue );
+        mapSqlParameterSource.addValue("ends_with_space", "% " + sanitizeValue);
         mapSqlParameterSource.addValue("contains_value", "%" + sanitizeValue + "%");
 
         String query = getSqlQuery(value);
@@ -46,6 +45,30 @@ public class ServicePointSearchVersionRepository {
         return new ArrayList<>(new LinkedHashSet<>(servicePointSearchResults));
     }
 
+    private static void validateInput(String value) {
+        if (value.length() < 2) {
+            throw new IllegalArgumentException("You must enter at least 2 digits to start a search!");
+        }
+    }
+
+    String sanitizeValue(String value) {
+        String sanitizeValue = escapePercent(value);
+        sanitizeValue = removeSpaceIfOnlyDigits(value, sanitizeValue);
+        return sanitizeValue;
+    }
+
+    private static String removeSpaceIfOnlyDigits(String value, String sanitizeValue) {
+        if (NumberUtils.isParsable(value.replaceAll("\\s", ""))) {
+            sanitizeValue = value.replaceAll("\\s", "");
+        }
+        return sanitizeValue;
+    }
+
+    private static String escapePercent(String value) {
+        String sanitizeValue = value.replaceAll("%", "\\\\%");
+        return sanitizeValue;
+    }
+
     private String getSqlQuery(String value) {
         return """
                 select number, designation_official
@@ -53,7 +76,6 @@ public class ServicePointSearchVersionRepository {
                 where upper(cast(number as text)) like upper( :contains_value)
                     or replace(upper(designation_official), ',','') like replace(upper(:contains_value), ',','')
                     or replace(upper(designation_long), ',','') like replace(upper(:contains_value), ',','')
-                    or replace(upper(abbreviation), ',','') like replace(upper(:contains_value), ',','')
                 order by
                     (case
                         when cast(number as text) like '85%' then 0
@@ -72,21 +94,7 @@ public class ServicePointSearchVersionRepository {
                         when upper(designation_long) like upper(:ends_with_space) then 9
                         when designation_long like :contains_value then 10
                         else 11 end),
-                    designation_long,
-                    (case
-                        when abbreviation = :perfect_match then 0
-                        when upper(abbreviation) like upper(:perfect_match) then 1
-                        when abbreviation like :starts_with then 2
-                        when upper(abbreviation) like upper(:starts_with) then 3
-                        when abbreviation like :starts_with_space then 4
-                        when upper(abbreviation) like upper(:starts_with_space) then 5
-                        when abbreviation like :ends_with then 6
-                        when upper(abbreviation) like upper(:ends_with) then 7
-                        when abbreviation like :ends_with_space then 8
-                        when upper(abbreviation) like upper(:ends_with_space) then 9
-                        when abbreviation like :contains_value then 10
-                        else 11 end),
-                    abbreviation
+                    designation_long
                 """.replace("$dynamicCases", getDynamicCases(value));
     }
 
