@@ -12,8 +12,8 @@
 import { SpatialReference } from './spatialReference';
 
 export interface ServicePointCsvModel {
-  originalNorth?: number;
   originalEast?: number;
+  originalNorth?: number;
   SOURCE_SPATIAL_REF?: SpatialReference;
   E_LV95?: number;
   N_LV95?: number;
