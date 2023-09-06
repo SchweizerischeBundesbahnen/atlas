@@ -8,6 +8,7 @@ import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.servicepoint.transformer.CoordinateTransformer;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.GeolocationBaseEntity;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
+import ch.sbb.atlas.servicepointdirectory.exception.CoordinatesNotTransformableException;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -49,6 +50,7 @@ public class GeolocationMapper {
       return null;
     }
     GeolocationMapper.transformLv03andWgs84(geolocationBaseModel);
+    GeolocationMapper.checkIfCoordinatesAreTransformable(geolocationBaseModel);
     return TrafficPointElementGeolocation.builder()
         .spatialReference(geolocationBaseModel.getSpatialReference())
         .east(geolocationBaseModel.getEast())
@@ -95,4 +97,15 @@ public class GeolocationMapper {
     }
   }
 
+  public static void checkIfCoordinatesAreTransformable(TransformableGeolocation geolocation) {
+    try {
+      Stream.of(SpatialReference.values()).forEach(spatialReference -> COORDINATE_TRANSFORMER.transform(CoordinatePair.builder()
+          .east(geolocation.getEast())
+          .north(geolocation.getNorth())
+          .spatialReference(geolocation.getSpatialReference())
+          .build(), spatialReference));
+    } catch (IllegalStateException exception) {
+      throw new CoordinatesNotTransformableException(exception);
+    }
+  }
 }
