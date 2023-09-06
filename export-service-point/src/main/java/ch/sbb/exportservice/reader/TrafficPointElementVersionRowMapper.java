@@ -22,13 +22,13 @@ public class TrafficPointElementVersionRowMapper extends BaseRowMapper implement
     builder.sloid(rs.getString("sloid"));
     builder.designation(rs.getString("designation"));
     builder.designationOperational(rs.getString("designation_operational"));
-    builder.length(rs.getObject("length") != null ? rs.getDouble("length") : null );
+    builder.length(rs.getObject("length") != null ? rs.getDouble("length") : null);
     builder.trafficPointElementType(TrafficPointElementType.fromValue(rs.getInt("traffic_point_element_type")));
     builder.boardingAreaHeight(rs.getObject("boarding_area_height") != null ? rs.getDouble("boarding_area_height") : null);
-    builder.compassDirection(rs.getObject("compass_direction") != null ? rs.getDouble("compass_direction") : null );
+    builder.compassDirection(rs.getObject("compass_direction") != null ? rs.getDouble("compass_direction") : null);
     builder.parentSloid(rs.getString("parent_sloid"));
     builder.servicePointNumber(ServicePointNumber.of(rs.getInt("number")));
-    getTrafficPointElementGeolocation(rs,builder);
+    getTrafficPointElementGeolocation(rs, builder);
     builder.parentSloidServicePoint(rs.getString("parent_service_point_sloid"));
     builder.servicePointBusinessOrganisation(getBusinessOrganisation(rs));
     builder.servicePointDesignationOfficial(rs.getString("designation_official"));
@@ -45,8 +45,10 @@ public class TrafficPointElementVersionRowMapper extends BaseRowMapper implement
     return trafficPointElementVersion;
   }
 
-  private void getTrafficPointElementGeolocation(ResultSet rs,  TrafficPointElementVersion.TrafficPointElementVersionBuilder<?, ?> builder) throws SQLException {
-    TrafficPointElementGeolocation.TrafficPointElementGeolocationBuilder<?, ?> trafficPointElementGeolocationBuilder = TrafficPointElementGeolocation.builder();
+  private void getTrafficPointElementGeolocation(ResultSet rs,
+      TrafficPointElementVersion.TrafficPointElementVersionBuilder<?, ?> builder) throws SQLException {
+    TrafficPointElementGeolocation.TrafficPointElementGeolocationBuilder<?, ?> trafficPointElementGeolocationBuilder =
+        TrafficPointElementGeolocation.builder();
     trafficPointElementGeolocationBuilder.east(rs.getDouble("east"));
     trafficPointElementGeolocationBuilder.north(rs.getDouble("north"));
     trafficPointElementGeolocationBuilder.height(RowMapperUtil.getDouble(rs, "height"));
@@ -55,10 +57,9 @@ public class TrafficPointElementVersionRowMapper extends BaseRowMapper implement
       trafficPointElementGeolocationBuilder.spatialReference(spatialReference);
     }
     TrafficPointElementGeolocation trafficPointElementGeolocation = trafficPointElementGeolocationBuilder.build();
-    if(trafficPointElementGeolocation.getSpatialReference() != null){
+    if (trafficPointElementGeolocation.getSpatialReference() != null) {
       builder.trafficPointElementGeolocation(trafficPointElementGeolocation);
     }
-
   }
 
 }

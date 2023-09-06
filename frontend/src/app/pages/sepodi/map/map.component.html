@@ -34,4 +34,15 @@
       </div>
     </div>
   </div>
+  <button mat-icon-button class="map-style-selector zoom-in" (click)="zoomIn()">
+    <em class="bi bi-plus"></em>
+  </button>
+
+  <button mat-icon-button class="map-style-selector zoom-out" (click)="zoomOut()">
+    <em class="bi bi-dash"></em>
+  </button>
+
+  <button mat-icon-button class="map-style-selector zoom-home" (click)="goHome()">
+    <em class="bi bi-house-door"></em>
+  </button>
 </div>

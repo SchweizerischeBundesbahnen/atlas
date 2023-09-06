@@ -1,10 +1,10 @@
 package ch.sbb.exportservice.config;
 
 import ch.sbb.atlas.api.servicepoint.ReadTrafficPointElementVersionModel;
+import ch.sbb.exportservice.model.BatchExportFileName;
 import ch.sbb.exportservice.entity.TrafficPointElementVersion;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
-import ch.sbb.exportservice.model.ExportFileName;
 import ch.sbb.exportservice.model.ExportType;
 import ch.sbb.exportservice.model.TrafficPointVersionCsvModel;
 import ch.sbb.exportservice.processor.TrafficPointElementVersionCsvProcessor;
@@ -46,9 +46,6 @@ import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRAFFIC_
 @AllArgsConstructor
 public class TrafficPointElementVersionExportBatchConfig {
 
-  private static final int CHUNK_SIZE = 200;
-  private static final int FETCH_SIZE = 10000;
-
   private final JobRepository jobRepository;
 
   private final PlatformTransactionManager transactionManager;
@@ -57,19 +54,19 @@ public class TrafficPointElementVersionExportBatchConfig {
 
   private final StepTracerListener stepTracerListener;
 
-  private final JsonTrafficPointElementVersionWriter jsonServicePointVersionWriter;
+  private final JsonTrafficPointElementVersionWriter jsonTrafficPointElementVersionWriter;
 
   private final CsvTrafficPointElementVersionWriter csvTrafficPointElementVersionWriter;
 
   @Bean
   @StepScope
   public JdbcCursorItemReader<TrafficPointElementVersion> trafficPointElementReader(
-      @Autowired @Qualifier("servicePointDataSource") DataSource dataSource
-      , @Value("#{jobParameters[exportType]}") ExportType exportType) {
+      @Autowired @Qualifier("servicePointDataSource") DataSource dataSource,
+      @Value("#{jobParameters[exportType]}") ExportType exportType) {
     JdbcCursorItemReader<TrafficPointElementVersion> itemReader = new JdbcCursorItemReader<>();
     itemReader.setDataSource(dataSource);
     itemReader.setSql(TrafficPointElementVersionSqlQueryUtil.getSqlQuery(exportType));
-    itemReader.setFetchSize(FETCH_SIZE);
+    itemReader.setFetchSize(StepUtils.FETCH_SIZE);
     itemReader.setRowMapper(new TrafficPointElementVersionRowMapper());
     return itemReader;
   }
@@ -78,14 +75,14 @@ public class TrafficPointElementVersionExportBatchConfig {
   @StepScope
   public JsonFileItemWriter<ReadTrafficPointElementVersionModel> trafficPointElementJsonFileItemWriter(
       @Value("#{jobParameters[exportType]}") ExportType exportType) {
-    return jsonServicePointVersionWriter.getWriter(exportType, ExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
+    return jsonTrafficPointElementVersionWriter.getWriter(exportType, BatchExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
   }
 
   @Bean
   @StepScope
   public FlatFileItemWriter<TrafficPointVersionCsvModel> trafficPointElementCsvWriter(
       @Value("#{jobParameters[exportType]}") ExportType exportType) {
-    return csvTrafficPointElementVersionWriter.csvWriter(exportType, ExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
+    return csvTrafficPointElementVersionWriter.csvWriter(exportType, BatchExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
   }
 
   @Bean
@@ -102,7 +99,7 @@ public class TrafficPointElementVersionExportBatchConfig {
   public Step exportTrafficPointElementCsvStep(ItemReader<TrafficPointElementVersion> itemReader) {
     String stepName = "exportTrafficPointElementCsvStep";
     return new StepBuilder(stepName, jobRepository)
-        .<TrafficPointElementVersion, TrafficPointVersionCsvModel>chunk(CHUNK_SIZE, transactionManager)
+        .<TrafficPointElementVersion, TrafficPointVersionCsvModel>chunk(StepUtils.CHUNK_SIZE, transactionManager)
         .reader(itemReader)
         .processor(trafficPointElementVersionCsvProcessor())
         .writer(trafficPointElementCsvWriter(null))
@@ -117,7 +114,7 @@ public class TrafficPointElementVersionExportBatchConfig {
   public Step exportTrafficPointElementJsonStep(ItemReader<TrafficPointElementVersion> itemReader) {
     String stepName = "exportTrafficPointElementJsonStep";
     return new StepBuilder(stepName, jobRepository)
-        .<TrafficPointElementVersion, ReadTrafficPointElementVersionModel>chunk(CHUNK_SIZE, transactionManager)
+        .<TrafficPointElementVersion, ReadTrafficPointElementVersionModel>chunk(StepUtils.CHUNK_SIZE, transactionManager)
         .reader(itemReader)
         .processor(trafficPointElementVersionJsonProcessor())
         .writer(trafficPointElementJsonFileItemWriter(null))
@@ -158,29 +155,28 @@ public class TrafficPointElementVersionExportBatchConfig {
   @StepScope
   public UploadCsvFileTasklet uploadTrafficPointElementCsvFileTasklet(
       @Value("#{jobParameters[exportType]}") ExportType exportType) {
-    return new UploadCsvFileTasklet(exportType, ExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
+    return new UploadCsvFileTasklet(exportType, BatchExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
   }
 
   @Bean
   @StepScope
   public UploadJsonFileTasklet uploadTrafficPointElementJsonFileTasklet(
       @Value("#{jobParameters[exportType]}") ExportType exportType) {
-    return new UploadJsonFileTasklet(exportType, ExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
+    return new UploadJsonFileTasklet(exportType, BatchExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
   }
 
   @Bean
   @StepScope
   public FileJsonDeletingTasklet fileTrafficPointElementJsonDeletingTasklet(
       @Value("#{jobParameters[exportType]}") ExportType exportType) {
-    return new FileJsonDeletingTasklet(exportType, ExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
+    return new FileJsonDeletingTasklet(exportType, BatchExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
   }
 
   @Bean
   @StepScope
-  @Qualifier("fileTrafficPointElementCsvDeletingTasklet")
   public FileCsvDeletingTasklet fileTrafficPointElementCsvDeletingTasklet(
       @Value("#{jobParameters[exportType]}") ExportType exportType) {
-    return new FileCsvDeletingTasklet(exportType, ExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
+    return new FileCsvDeletingTasklet(exportType, BatchExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
   }
 
   @Bean

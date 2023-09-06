@@ -2,9 +2,11 @@ package ch.sbb.exportservice.recovery;
 
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.batch.exception.JobExecutionException;
+import ch.sbb.exportservice.service.ExportLoadingPointJobService;
 import ch.sbb.exportservice.service.ExportServicePointJobService;
 import ch.sbb.exportservice.service.ExportTrafficPointElementJobService;
 import ch.sbb.exportservice.utils.JobDescriptionConstants;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.BatchStatus;
@@ -16,6 +18,7 @@ import org.springframework.batch.core.launch.NoSuchJobException;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -28,18 +31,35 @@ import java.util.Set;
 @Slf4j
 public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyEvent> {
 
-  private static final List<String> EXPORT_SERVICE_POINT_JOBS_NAME = List.of(JobDescriptionConstants.EXPORT_SERVICE_POINT_CSV_JOB_NAME,
-      JobDescriptionConstants.EXPORT_SERVICE_POINT_JSON_JOB_NAME);
-  private static final List<String> TRAFFIC_POINT_ELEMENT_JOBS_NAME = List.of(JobDescriptionConstants.EXPORT_TRAFFIC_POINT_ELEMENT_CSV_JOB_NAME,
-      JobDescriptionConstants.EXPORT_TRAFFIC_POINT_ELEMENT_JSON_JOB_NAME);
-  private static final int ALL_EXPORTS_JOB_EXECUTION_SIZE = 12;
+  private static final List<String> EXPORT_SERVICE_POINT_JOBS_NAME = List.of(
+      JobDescriptionConstants.EXPORT_SERVICE_POINT_CSV_JOB_NAME, JobDescriptionConstants.EXPORT_SERVICE_POINT_JSON_JOB_NAME
+  );
+  private static final List<String> TRAFFIC_POINT_ELEMENT_JOBS_NAME = List.of(
+      JobDescriptionConstants.EXPORT_TRAFFIC_POINT_ELEMENT_CSV_JOB_NAME,
+      JobDescriptionConstants.EXPORT_TRAFFIC_POINT_ELEMENT_JSON_JOB_NAME
+  );
+  private static final List<String> EXPORT_LOADING_POINT_JOBS_NAME = List.of(
+      JobDescriptionConstants.EXPORT_LOADING_POINT_CSV_JOB_NAME, JobDescriptionConstants.EXPORT_LOADING_POINT_JSON_JOB_NAME
+  );
   private static final int CSV_OR_JSON_EXPORTS_JOB_EXECUTION_SIZE = 6;
+
   private final JobExplorer jobExplorer;
   private final FileService fileService;
-
   private final JobRepository jobRepository;
+
   private final ExportServicePointJobService exportServicePointJobService;
   private final ExportTrafficPointElementJobService exportTrafficPointElementJobService;
+  private final ExportLoadingPointJobService exportLoadingPointJobService;
+
+  @Override
+  @Async
+  public void onApplicationEvent(@NotNull ApplicationReadyEvent event) {
+    log.info("Start checking jobs to recover...");
+    cleanDownloadedFiles();
+    checkExportServicePointJobToRecover();
+    checkExportTrafficPointJobToRecover();
+    checkExportLoadingPointJobToRecover();
+  }
 
   private boolean checkIfHasJobsToRecover(List<String> exportJobsName) {
     log.info("Start checking {} jobs to recover...", exportJobsName);
@@ -51,10 +71,6 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
           log.info("Found job to recovery: {}", jobExecution);
           return true;
         }
-      }
-      if (todayExecutedJobs.size() < ALL_EXPORTS_JOB_EXECUTION_SIZE) {
-        log.info("Not all export jobs were executed..");
-        return true;
       }
     }
     return false;
@@ -70,7 +86,7 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
     int totalJobExecutionCount = 0;
     for (String job : exportJobsName) {
       try {
-        totalJobExecutionCount += jobExplorer.getJobInstanceCount(job);
+        totalJobExecutionCount += (int) jobExplorer.getJobInstanceCount(job);
       } catch (NoSuchJobException e) {
         throw new JobExecutionException(job, e);
       }
@@ -97,24 +113,6 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
     fileService.clearDir();
   }
 
-  @Override
-  public void onApplicationEvent(ApplicationReadyEvent event) {
-    log.info("Start checking jobs to recover...");
-    cleanDownloadedFiles();
-    checkExportServicePointJobToRecover();
-    checkExportTrafficPointJobToRecover();
-  }
-
-  private void checkExportTrafficPointJobToRecover() {
-    if (checkIfHasJobsToRecover(TRAFFIC_POINT_ELEMENT_JOBS_NAME)) {
-      log.info("Rerunning {} export jobs...",EXPORT_SERVICE_POINT_JOBS_NAME);
-      exportTrafficPointElementJobService.startExportJobs();
-      log.info("All export jobs successfully recovered!");
-    } else {
-      log.info("No job found to recover.");
-    }
-  }
-
   private void checkExportServicePointJobToRecover() {
     if (checkIfHasJobsToRecover(EXPORT_SERVICE_POINT_JOBS_NAME)) {
       log.info("Rerunning {} export jobs...", EXPORT_SERVICE_POINT_JOBS_NAME);
@@ -124,4 +122,25 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
       log.info("No job found to recover.");
     }
   }
+
+  private void checkExportTrafficPointJobToRecover() {
+    if (checkIfHasJobsToRecover(TRAFFIC_POINT_ELEMENT_JOBS_NAME)) {
+      log.info("Rerunning {} export jobs...", TRAFFIC_POINT_ELEMENT_JOBS_NAME);
+      exportTrafficPointElementJobService.startExportJobs();
+      log.info("All export jobs successfully recovered!");
+    } else {
+      log.info("No job found to recover.");
+    }
+  }
+
+  private void checkExportLoadingPointJobToRecover() {
+    if (checkIfHasJobsToRecover(EXPORT_LOADING_POINT_JOBS_NAME)) {
+      log.info("Rerunning {} export jobs...", EXPORT_LOADING_POINT_JOBS_NAME);
+      exportLoadingPointJobService.startExportJobs();
+      log.info("All export jobs successfully recovered!");
+    } else {
+      log.info("No job found to recover.");
+    }
+  }
+
 }
