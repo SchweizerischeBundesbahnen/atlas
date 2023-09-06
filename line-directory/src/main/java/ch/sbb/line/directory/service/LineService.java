@@ -124,6 +124,8 @@ public class LineService {
 
   void updateVersion(LineVersion currentVersion, LineVersion editedVersion) {
     lineVersionRepository.incrementVersion(currentVersion.getSlnid());
+    editedVersion.setSlnid(currentVersion.getSlnid());
+
     List<LineVersion> currentVersions = findLineVersions(currentVersion.getSlnid());
     lineUpdateValidationService.validateLineForUpdate(currentVersion, editedVersion, currentVersions);
     updateVersion(currentVersion, editedVersion, currentVersions);
