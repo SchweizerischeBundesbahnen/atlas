@@ -33,13 +33,8 @@ public interface ServicePointApiV1 {
       {ServicePointVersion.Fields.number,
           ServicePointVersion.Fields.validFrom}) Pageable pageable,
       @ParameterObject ServicePointRequestParams servicePointRequestParams);
-  @GetMapping("search/{value}")
-  List<ServicePointSearchResult> searchServicePoints(@PathVariable @Parameter(description = """
-          Search over:
-          - ServicePointNumber/DiDok-Number formerly known as UIC-Code
-          - Official designation of a location
-          - Location abbreviation
-          - Long designation of a location""") String value);
+  @PostMapping("search")
+  List<ServicePointSearchResult> searchServicePoints(@RequestBody ServicePointSearchRequest value);
 
   @GetMapping("{servicePointNumber}")
   List<ReadServicePointVersionModel> getServicePointVersions(@PathVariable Integer servicePointNumber);
