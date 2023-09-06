@@ -1,7 +1,6 @@
 package ch.sbb.exportservice.entity;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.exportservice.entity.geolocation.LoadingPointGeolocation;
 import lombok.*;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
@@ -15,7 +14,7 @@ import java.time.LocalDate;
 @ToString
 @SuperBuilder
 @FieldNameConstants
-public class LoadingPointVersion {
+public class LoadingPointVersion extends BaseEntity {
 
   private Long id;
 
@@ -29,8 +28,12 @@ public class LoadingPointVersion {
 
   private ServicePointNumber servicePointNumber;
 
-  private LoadingPointGeolocation loadingPointGeolocation;
+  private BusinessOrganisation servicePointBusinessOrganisation;
+
+  private String parentSloidServicePoint;
+
   private LocalDate validFrom;
+
   private LocalDate validTo;
 
 }
