@@ -3,17 +3,18 @@ package ch.sbb.exportservice.reader;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.exportservice.entity.LoadingPointVersion;
 import ch.sbb.exportservice.entity.LoadingPointVersion.LoadingPointVersionBuilder;
+import org.springframework.jdbc.core.RowMapper;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import org.springframework.jdbc.core.RowMapper;
 
 public class LoadingPointVersionRowMapper extends BaseRowMapper implements RowMapper<LoadingPointVersion> {
 
   @Override
   public LoadingPointVersion mapRow(ResultSet rs, int rowNum) throws SQLException {
-    ServicePointNumber servicePointNumber = ServicePointNumber.of(rs.getInt("service_point_number"));
+    ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(rs.getInt("service_point_number"));
     LoadingPointVersionBuilder<?, ?> builder = LoadingPointVersion.builder();
     builder.id(rs.getLong("id"));
     builder.number(rs.getInt("number"));
