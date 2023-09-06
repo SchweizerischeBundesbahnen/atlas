@@ -42,9 +42,11 @@ export class SearchServicePointComponent {
       if (!this._searchValue) {
         return;
       }
-      this.servicePointSearchResult$ = this.servicePointService.searchServicePoints(
-        this._searchValue
-      );
+      this.servicePointSearchResult$ = this.servicePointService.searchServicePoints({
+        value: this._searchValue,
+      });
+    } else {
+      this.servicePointSearchResult$ = of([]);
     }
   }
 }

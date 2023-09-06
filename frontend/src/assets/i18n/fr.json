@@ -829,6 +829,7 @@
     "SERVICE_POINTS": {
       "SLOID": "Swiss Location ID (SLOID)",
       "DIDOK_CODE": "Code DiDok (code et numéro du pays)",
+      "DIDOK_CODE_SEARCH": "Code DiDok",
       "SERVICE_POINT": "Service",
       "AREAS": "Zones d'arrêt",
       "FOT_COMMENT": "Commentaire OFT",

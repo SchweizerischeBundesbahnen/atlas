@@ -11,6 +11,7 @@ import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointApiV1;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointRequestParams;
+import ch.sbb.atlas.servicepointdirectory.api.ServicePointSearchRequest;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointSearchResult;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointFotComment;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
@@ -56,11 +57,11 @@ public class ServicePointController implements ServicePointApiV1 {
   }
 
   @Override
-  public List<ServicePointSearchResult> searchServicePoints(String value) {
-    if(value.length() < 2){
+  public List<ServicePointSearchResult> searchServicePoints(ServicePointSearchRequest searchRequest) {
+    if(searchRequest == null || searchRequest.getValue() == null || searchRequest.getValue().length() <2 ){
       throw new BadRequestException("You must enter at least 2 digits to start a search!");
     }
-    return servicePointService.searchServicePointVersion(value);
+    return servicePointService.searchServicePointVersion(searchRequest.getValue());
   }
 
   @Override
