@@ -32,9 +32,9 @@ export class GeographyComponent implements OnInit, OnDestroy {
     });
     this.clickedGeographyCoordinatesSubscription =
       this.mapService.clickedGeographyCoordinates.subscribe((data) => {
-        if (data.length != 0) {
-          const lat = Number(data[0].toFixed(4));
-          const lng = Number(data[1].toFixed(4));
+        if (data.north != 0 && data.east != 0) {
+          const lat = Number(data.east.toFixed(4));
+          const lng = Number(data.north.toFixed(4));
 
           this.formGroup.controls.east.setValue(lat);
           this.formGroup.controls.north.setValue(lng);

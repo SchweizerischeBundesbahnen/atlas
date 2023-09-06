@@ -3,9 +3,9 @@ import maplibregl, { Map } from 'maplibre-gl';
 import { MapService } from './map.service';
 import { MAP_STYLES, MapStyle } from './map-options.service';
 import { MapIcon, MapIconsService } from './map-icons.service';
-import proj4 from 'proj4';
 import { MAP_SOURCE_NAME } from './map-style';
 import { Subscription } from 'rxjs';
+import { CoordinateTransformationService } from '../geography/coordinate-transformation.service';
 
 @Component({
   selector: 'atlas-map',
@@ -28,7 +28,10 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   @ViewChild('map')
   private mapContainer!: ElementRef<HTMLElement>;
 
-  constructor(private mapService: MapService) {}
+  constructor(
+    private mapService: MapService,
+    private coordinateTransformationService: CoordinateTransformationService
+  ) {}
 
   ngAfterViewInit() {
     this.map = this.mapService.initMap(this.mapContainer.nativeElement);
@@ -72,16 +75,19 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
   handleMapClick() {
     const marker = new maplibregl.Marker({ color: '#FF0000' });
-
     const onMapClick = (e: any) => {
       const clickedGeographyCoordinates = e.lngLat;
-      const transformedCoordinates = proj4('WGS84', 'LV95', [
-        clickedGeographyCoordinates.lng,
-        clickedGeographyCoordinates.lat,
-      ]);
+      const coordinatePair = {
+        north: clickedGeographyCoordinates.lat,
+        east: clickedGeographyCoordinates.lng,
+      };
+      const transformedCoordinates = this.coordinateTransformationService.transform(
+        coordinatePair,
+        'WGS84',
+        'LV95'
+      );
 
       marker.setLngLat(clickedGeographyCoordinates).addTo(this.map);
-
       this.map.flyTo({
         center: clickedGeographyCoordinates as maplibregl.LngLatLike,
         speed: 0.8,
@@ -105,7 +111,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
         this.map.on('mouseleave', MAP_SOURCE_NAME, () => {
           this.map.getCanvas().style.cursor = '';
         });
-        this.mapService.clickedGeographyCoordinates.next([]);
+        this.mapService.clickedGeographyCoordinates.next({ north: 0, east: 0 });
       }
     });
   }
