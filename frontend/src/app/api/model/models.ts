@@ -79,6 +79,7 @@ export * from './servicePointFotCommentModel';
 export * from './servicePointGeolocation';
 export * from './servicePointImportRequest';
 export * from './servicePointNumber';
+export * from './servicePointSearchRequest';
 export * from './servicePointSearchResult';
 export * from './spatialReference';
 export * from './statementStatus';
