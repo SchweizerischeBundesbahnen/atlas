@@ -137,7 +137,10 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
 
   private displayAndSelectServicePointOnMap() {
     this.mapSubscription = this.mapService.mapInitialized.subscribe((initialized) => {
-      if (initialized && this.form.value.servicePointGeolocation?.spatialReference) {
+      if (
+        initialized &&
+        this.form.controls.servicePointGeolocation.controls.spatialReference.value
+      ) {
         if (this.mapService.map.getZoom() <= this.ZOOM_LEVEL_FOR_DETAIL) {
           this.mapService.map.setZoom(this.ZOOM_LEVEL_FOR_DETAIL);
         }
