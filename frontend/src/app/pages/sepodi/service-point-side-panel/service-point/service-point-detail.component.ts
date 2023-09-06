@@ -187,9 +187,11 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
       this.form.disable();
       if (this.isNew) {
         this.create(servicePointVersion);
+        this.mapService.isEditMode.next(false);
       } else {
         servicePointVersion.numberWithoutCheckDigit = this.selectedVersion.number.number;
         this.update(this.selectedVersion.id!, servicePointVersion);
+        this.mapService.isEditMode.next(false);
       }
     }
   }
