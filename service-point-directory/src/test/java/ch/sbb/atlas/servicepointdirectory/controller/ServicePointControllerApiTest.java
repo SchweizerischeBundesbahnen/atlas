@@ -18,6 +18,7 @@ import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
+import ch.sbb.atlas.servicepointdirectory.api.ServicePointSearchRequest;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointGeolocationMapper;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointFotCommentRepository;
@@ -118,6 +119,52 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldGetServicePointVersionById() throws Exception {
     mvc.perform(get("/v1/service-points/versions/" + servicePointVersion.getId())).andExpect(status().isOk());
+  }
+
+  @Test
+  void shouldSearchServicePointSuccessfully() throws Exception {
+    // given
+    ServicePointSearchRequest request = new ServicePointSearchRequest("bern");
+    String jsonString = mapper.writeValueAsString(request);
+
+    // when
+    mvc.perform(post("/v1/service-points/search")
+                    .content(jsonString)
+                    .contentType(contentType))
+            // then
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$[0].number", is(8589008)))
+            .andExpect(jsonPath("$[0].designationOfficial", is("Bern, Wyleregg")));
+  }
+
+  @Test
+  void shouldReturnEmptyListWhenNoMatchFound() throws Exception {
+    // given
+    ServicePointSearchRequest request = new ServicePointSearchRequest("zug");
+    String jsonString = mapper.writeValueAsString(request);
+
+    // when
+    mvc.perform(post("/v1/service-points/search")
+                    .content(jsonString)
+                    .contentType(contentType))
+            // then
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$", hasSize(0)));
+  }
+
+  @Test
+  void shouldReturnBadRequestWhenSearchWhitLessThanTwoDigit() throws Exception {
+    // given
+    ServicePointSearchRequest request = new ServicePointSearchRequest("b");
+    String jsonString = mapper.writeValueAsString(request);
+
+    // when
+    mvc.perform(post("/v1/service-points/search")
+                    .content(jsonString)
+                    .contentType(contentType))
+            // then
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.message", is("You must enter at least 2 digits to start a search!")));
   }
 
   @Test
