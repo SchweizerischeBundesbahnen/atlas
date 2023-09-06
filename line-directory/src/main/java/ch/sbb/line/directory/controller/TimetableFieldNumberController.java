@@ -37,8 +37,7 @@ public class TimetableFieldNumberController implements TimetableFieldNumberApiV1
         .description(version.getDescription())
         .number(version.getNumber())
         .ttfnid(version.getTtfnid())
-        .swissTimetableFieldNumber(
-            version.getSwissTimetableFieldNumber())
+        .swissTimetableFieldNumber(version.getSwissTimetableFieldNumber())
         .status(version.getStatus())
         .validFrom(version.getValidFrom())
         .validTo(version.getValidTo())
@@ -93,11 +92,9 @@ public class TimetableFieldNumberController implements TimetableFieldNumberApiV1
   @Override
   public List<TimetableFieldNumberVersionModel> getAllVersionsVersioned(String ttfnId) {
     List<TimetableFieldNumberVersionModel> timetableFieldNumberVersionModels =
-        timetableFieldNumberService.getAllVersionsVersioned(
-                ttfnId)
+        timetableFieldNumberService.getAllVersionsVersioned(ttfnId)
             .stream()
-            .map(
-                TimetableFieldNumberController::toModel)
+            .map(TimetableFieldNumberController::toModel)
             .toList();
     if (timetableFieldNumberVersionModels.isEmpty()) {
       throw new TtfnidNotFoundException(ttfnId);
@@ -167,17 +164,18 @@ public class TimetableFieldNumberController implements TimetableFieldNumberApiV1
       TimetableFieldNumberVersionModel timetableFieldNumberVersionModel) {
     return TimetableFieldNumberVersion.builder()
         .id(timetableFieldNumberVersionModel.getId())
-        .description(
-            timetableFieldNumberVersionModel.getDescription())
+        .description(timetableFieldNumberVersionModel.getDescription())
         .number(timetableFieldNumberVersionModel.getNumber())
-        .swissTimetableFieldNumber(
-            timetableFieldNumberVersionModel.getSwissTimetableFieldNumber())
+        .swissTimetableFieldNumber(timetableFieldNumberVersionModel.getSwissTimetableFieldNumber())
         .status(timetableFieldNumberVersionModel.getStatus())
         .validFrom(timetableFieldNumberVersionModel.getValidFrom())
         .validTo(timetableFieldNumberVersionModel.getValidTo())
-        .businessOrganisation(
-            timetableFieldNumberVersionModel.getBusinessOrganisation())
+        .businessOrganisation(timetableFieldNumberVersionModel.getBusinessOrganisation())
         .comment(timetableFieldNumberVersionModel.getComment())
+        .creationDate(timetableFieldNumberVersionModel.getCreationDate())
+        .creator(timetableFieldNumberVersionModel.getCreator())
+        .editionDate(timetableFieldNumberVersionModel.getEditionDate())
+        .editor(timetableFieldNumberVersionModel.getEditor())
         .version(timetableFieldNumberVersionModel.getEtagVersion())
         .build();
   }

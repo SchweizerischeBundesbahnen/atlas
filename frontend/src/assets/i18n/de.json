@@ -208,7 +208,9 @@
     "COLOR_INVALID": "Farbe im Format #FFFFFF erwartet",
     "CMYK_INVALID": "CMYK Farbe im Format 0-100,0-100,0-100,0-100 erwartet. Beispiel 10,10,0,100",
     "MIN": "Die Zahl muss mindestens {{min}} sein.",
-    "MAX": "Die Zahl darf maximal {{max}} sein."
+    "MAX": "Die Zahl darf maximal {{max}} sein.",
+    "AT_LEAST_ONE": "Wählen Sie mindestens eine Ausprägung aus.",
+    "DECIMAL_NUMBER": "Geben Sie eine Dezimalzahl mit maximal {{maxDecimalDigits}} Nachkommastellen ein."
   },
   "USER_ADMIN": {
     "SEARCH_FOR_FILTER": "Geschäftsorganisationen und Applikationen",
@@ -840,6 +842,10 @@
         "STOP_POINT": "Haltestelle / Bedienpunkt",
         "FARE_STOP": "Tarifhaltestelle"
       },
+      "TYPE_CHANGE_DIALOG": {
+        "TITLE": "Dienstellenart ändern?",
+        "MESSAGE": "Die Änderung der Dienststellenart hat Einfluss auf die Verwendungsmöglichkeiten einer Dienststelle. Sind Sie sicher, dass Sie die Änderung vornehmen möchten?"
+      },
       "OPERATING_POINT_TYPE": "Betriebspunktart",
       "OPERATING_POINT_TYPES": {
         "INVENTORY_POINT": "Inventarpunkt",
@@ -935,6 +941,7 @@
       "LOADING_POINTS": "Ladestellen"
     },
     "GEOLOCATION": {
+      "INVALID": "Die angegebenen Koordinaten sind ungültig. Bitte korrigieren Sie Ihre Eingabe.",
       "GEOGRAPHY": "Geografie",
       "SYSTEM_LV95": "Landeskoordinaten LV95",
       "SYSTEM_WGS84": "Globale Koordinaten WGS84",

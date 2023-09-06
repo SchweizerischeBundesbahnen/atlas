@@ -11,7 +11,7 @@ import {
   TransportCompany,
   UserAdministrationService,
 } from '../../../api';
-import { Cantons } from '../overview/canton/Cantons';
+import { Cantons } from '../../../core/cantons/Cantons';
 import { TableColumn } from '../../../core/components/table/table-column';
 import { Pages } from '../../pages';
 import { Observable, take } from 'rxjs';

@@ -25,6 +25,7 @@ export const BERN_WYLEREGG: ReadServicePointVersion = {
   servicePointGeolocation: {
     spatialReference: 'LV95',
     lv95: { north: 1201099.0, east: 2600783.0 },
+    lv03: { north: 1201099.0, east: 2600783.0 },
     wgs84: { north: 46.96096808019183, east: 7.448919722210132 },
     height: 555.0,
     swissLocation: {
@@ -75,6 +76,10 @@ export const BERN: ReadServicePointVersion[] = [
     servicePointGeolocation: {
       spatialReference: 'LV95',
       lv95: {
+        north: 1199749.0,
+        east: 2600037.0,
+      },
+      lv03: {
         north: 1199749.0,
         east: 2600037.0,
       },
@@ -148,6 +153,10 @@ export const BERN: ReadServicePointVersion[] = [
         north: 1199748.445,
         east: 2600037.116,
       },
+      lv03: {
+        north: 1199748.445,
+        east: 2600037.116,
+      },
       wgs84: {
         north: 46.94881999405051,
         east: 7.439120000642723,
@@ -215,6 +224,10 @@ export const BERN: ReadServicePointVersion[] = [
     servicePointGeolocation: {
       spatialReference: 'LV95',
       lv95: {
+        north: 1199748.445,
+        east: 2600037.116,
+      },
+      lv03: {
         north: 1199748.445,
         east: 2600037.116,
       },
@@ -293,6 +306,10 @@ export const BERN: ReadServicePointVersion[] = [
         north: 1199749.812,
         east: 2600037.945,
       },
+      lv03: {
+        north: 1199749.812,
+        east: 2600037.945,
+      },
       wgs84: {
         north: 46.94883229049842,
         east: 7.439130889923937,
@@ -368,6 +385,10 @@ export const BERN: ReadServicePointVersion[] = [
         north: 1199749.812,
         east: 2600037.945,
       },
+      lv03: {
+        north: 1199749.812,
+        east: 2600037.945,
+      },
       wgs84: {
         north: 46.94883229049842,
         east: 7.439130889923937,
@@ -440,6 +461,10 @@ export const BERN: ReadServicePointVersion[] = [
     servicePointGeolocation: {
       spatialReference: 'LV95',
       lv95: {
+        north: 1199749.812,
+        east: 2600037.945,
+      },
+      lv03: {
         north: 1199749.812,
         east: 2600037.945,
       },
