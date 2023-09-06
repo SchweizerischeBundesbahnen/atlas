@@ -41,7 +41,7 @@ model/containerClientCredential.ts
 model/containerCompany.ts
 model/containerLine.ts
 model/containerLineVersionSnapshot.ts
-model/containerLoadingPointVersion.ts
+model/containerReadLoadingPointVersion.ts
 model/containerReadServicePointVersion.ts
 model/containerReadTrafficPointElementVersionModel.ts
 model/containerSubline.ts
@@ -54,6 +54,7 @@ model/country.ts
 model/countryPermissionRestrictionModel.ts
 model/coverage.ts
 model/coverageType.ts
+model/createLoadingPointVersion.ts
 model/createServicePointVersion.ts
 model/createTrafficPointElementVersionModel.ts
 model/displayInfo.ts
@@ -82,7 +83,6 @@ model/lineVersionWorkflow.ts
 model/loadingPointCsvModel.ts
 model/loadingPointCsvModelContainer.ts
 model/loadingPointImportRequest.ts
-model/loadingPointVersion.ts
 model/localityMunicipality.ts
 model/meanOfTransport.ts
 model/models.ts
@@ -95,6 +95,7 @@ model/permission.ts
 model/permissionRestrictionObject.ts
 model/permissionRestrictionType.ts
 model/person.ts
+model/readLoadingPointVersion.ts
 model/readServicePointVersion.ts
 model/readTrafficPointElementVersionModel.ts
 model/sboidPermissionRestrictionModel.ts
@@ -102,7 +103,6 @@ model/servicePointCsvModel.ts
 model/servicePointCsvModelContainer.ts
 model/servicePointFotCommentModel.ts
 model/servicePointGeolocation.ts
-model/servicePointGeolocationCreate.ts
 model/servicePointImportRequest.ts
 model/servicePointNumber.ts
 model/spatialReference.ts

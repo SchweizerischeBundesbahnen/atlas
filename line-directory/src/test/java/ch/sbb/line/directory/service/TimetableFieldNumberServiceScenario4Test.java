@@ -38,7 +38,7 @@ public class TimetableFieldNumberServiceScenario4Test extends BaseTimetableField
     version1 = versionRepository.save(version1);
     version2 = versionRepository.save(version2);
     version3 = versionRepository.save(version3);
-    TimetableFieldNumberVersion editedVersion = new TimetableFieldNumberVersion();
+    TimetableFieldNumberVersion editedVersion = version3Builder().build();
     editedVersion.setDescription("FPFN Description <changed>");
     editedVersion.setComment("Scenario 4");
     editedVersion.setValidFrom(LocalDate.of(2020, 6, 1));

@@ -46,6 +46,9 @@ import { WorkflowDialogComponent } from '../workflow/dialog/workflow-dialog.comp
 import { ScrollToTopDirective } from '../scroll-to-top/scroll-to-top.directive';
 import { MaintenanceIconComponent } from '../components/header/maintenance-icon/maintenance-icon.component';
 import { DateRangeTextComponent } from '../versioning/date-range-text/date-range-text.component';
+import { DisplayCantonPipe } from '../cantons/display-canton.pipe';
+import { RemoveCharsDirective } from '../form-components/text-field/remove-chars.directive';
+import { DecimalNumberPipe } from '../pipe/decimal-number.pipe';
 
 const coreComponents = [
   WorkflowFormComponent,
@@ -79,10 +82,13 @@ const coreComponents = [
   CoverageComponent,
   RelationComponent,
   DisplayDatePipe,
+  DecimalNumberPipe,
+  DisplayCantonPipe,
   SelectComponent,
   ScrollToTopDirective,
   MaintenanceIconComponent,
   DateRangeTextComponent,
+  RemoveCharsDirective,
 ];
 
 @NgModule({
