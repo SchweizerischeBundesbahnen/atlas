@@ -44,7 +44,7 @@ public abstract class BaseEntity {
 
   @Version
   @NotNull
-  @AtlasVersionableProperty(ignoreDiff = true)
+  @AtlasVersionableProperty(ignoreDiff = true, doNotOverride = true)
   private Integer version;
 
   @PrePersist

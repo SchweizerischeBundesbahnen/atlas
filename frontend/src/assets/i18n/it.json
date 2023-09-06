@@ -208,7 +208,9 @@
     "COLOR_INVALID": "Colore previsto nel formato #FFFFFF",
     "CMYK_INVALID": "Colore CMYK previsto nel formato 0-100,0-100,0-100,0-100. Esempio 10,10,0,100",
     "MIN": "Il valore deve essere minimo {{min}}",
-    "MAX": "Il valore può essere massimo {{max}}"
+    "MAX": "Il valore può essere massimo {{max}}",
+    "AT_LEAST_ONE": "Selezionare almeno un'espressione.",
+    "DECIMAL_NUMBER": "Inserire un numero decimale con un massimo di {{maxDecimalDigits}} cifre decimali."
   },
   "USER_ADMIN": {
     "SEARCH_FOR_FILTER": "Organizzazioni aziendali e Applicazioni",
@@ -840,6 +842,10 @@
         "STOP_POINT": "Fermata / Punto di servizio",
         "FARE_STOP": "Fermata tariffaria"
       },
+      "TYPE_CHANGE_DIALOG": {
+        "TITLE": "Cambiare il tipo di servizio?",
+        "MESSAGE": "Il cambiamento del tipo di servizio influisce sulle possibilità di utilizzo di un servizio. Siete sicuri di voler fare questo cambiamento?"
+      },
       "OPERATING_POINT_TYPE": "Tipo di punto d'esercizio",
       "OPERATING_POINT_TYPES": {
         "INVENTORY_POINT": "Punto di inventario",
@@ -935,6 +941,7 @@
       "LOADING_POINTS": "Posti di carico"
     },
     "GEOLOCATION": {
+      "INVALID": "Le coordinate fornite non sono valide. Correggere l’inserimento.",
       "GEOGRAPHY": "Geografia",
       "SYSTEM_LV95": "Coordinate del paese LV95",
       "SYSTEM_WGS84": "Coordinate geografiche WGS84",

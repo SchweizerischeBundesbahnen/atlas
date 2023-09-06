@@ -106,7 +106,7 @@ public class LoadingPointImportService extends BaseImportService<LoadingPointVer
         loadingPointService.findLoadingPoint(loadingPointVersionEdited.getServicePointNumber(),
             loadingPointVersionEdited.getNumber());
     final LoadingPointVersion current = BasePointUtility.getCurrentPointVersion(dbVersions, loadingPointVersionEdited);
-    final List<VersionedObject> versionedObjects = versionableService.versioningObjectsForImportFromCsv(current,
+    final List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(current,
         loadingPointVersionEdited, dbVersions);
     BasePointUtility.overrideEditionDateAndEditorOnVersionedObjects(loadingPointVersionEdited, versionedObjects);
     versionableService.applyVersioning(LoadingPointVersion.class, versionedObjects, loadingPointService::save,

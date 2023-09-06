@@ -1,18 +1,17 @@
 package ch.sbb.atlas.servicepointdirectory.service.trafficpoint.versioningtests;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.servicepointdirectory.TrafficPointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
 import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementService;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class TrafficPointElementsServiceIntegrationTests extends BaseTrafficPointElementsServiceIntegrationTest{
 
@@ -27,7 +26,7 @@ public class TrafficPointElementsServiceIntegrationTests extends BaseTrafficPoin
         version1 = trafficPointElementVersionRepository.save(version1);
         version2 = trafficPointElementVersionRepository.save(version2);
         version3 = trafficPointElementVersionRepository.save(version3);
-        TrafficPointElementVersion editedVersion = new TrafficPointElementVersion();
+        TrafficPointElementVersion editedVersion = version2Builder().build();
         editedVersion.setTrafficPointElementGeolocation(TrafficPointTestData.getTrafficPointGeolocationBernMittelland());
         editedVersion.setValidFrom(LocalDate.of(2023, 6, 1));
         editedVersion.setValidTo(LocalDate.of(2024, 6, 1));
@@ -110,7 +109,7 @@ public class TrafficPointElementsServiceIntegrationTests extends BaseTrafficPoin
         tpeg.setEditor(initialEditor);
         version3.setTrafficPointElementGeolocation(tpeg);
         version3 = trafficPointElementVersionRepository.save(version3);
-        TrafficPointElementVersion editedVersion = new TrafficPointElementVersion();
+        TrafficPointElementVersion editedVersion = version3Builder().build();
         TrafficPointElementGeolocation updatedTpeg = TrafficPointTestData.getTrafficPointGeolocationBernMittelland();
         String updatedCreator = "updatedCreator";
         String updatedEditor = "updatedEditor";
@@ -173,7 +172,7 @@ public class TrafficPointElementsServiceIntegrationTests extends BaseTrafficPoin
         tpeg.setEditor(initialEditor);
         version1.setTrafficPointElementGeolocation(tpeg);
 
-        TrafficPointElementVersion editedVersion = new TrafficPointElementVersion();
+        TrafficPointElementVersion editedVersion = version1Builder().build();
         TrafficPointElementGeolocation updatedTpeg = TrafficPointTestData.getTrafficPointGeolocationBernMittelland();
         String updatedCreator = "updatedCreator";
         updatedTpeg.setCreator(updatedCreator);

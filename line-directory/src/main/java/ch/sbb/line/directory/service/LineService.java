@@ -124,6 +124,8 @@ public class LineService {
 
   void updateVersion(LineVersion currentVersion, LineVersion editedVersion) {
     lineVersionRepository.incrementVersion(currentVersion.getSlnid());
+    editedVersion.setSlnid(currentVersion.getSlnid());
+
     List<LineVersion> currentVersions = findLineVersions(currentVersion.getSlnid());
     lineUpdateValidationService.validateLineForUpdate(currentVersion, editedVersion, currentVersions);
     updateVersion(currentVersion, editedVersion, currentVersions);
@@ -136,7 +138,7 @@ public class LineService {
       throw new StaleObjectStateException(LineVersion.class.getSimpleName(), "version");
     }
 
-    List<VersionedObject> versionedObjects = versionableService.versioningObjects(currentVersion,
+    List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion,
         editedVersion, currentVersions);
     lineUpdateValidationService.validateVersioningNotAffectingReview(currentVersions, versionedObjects);
 

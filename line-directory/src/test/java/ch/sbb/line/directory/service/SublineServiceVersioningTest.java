@@ -8,6 +8,7 @@ import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.SublineTestData;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
+import ch.sbb.line.directory.entity.SublineVersion.SublineVersionBuilder;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import java.time.LocalDate;
@@ -55,21 +56,30 @@ public class SublineServiceVersioningTest {
                                     .validTo(LocalDate.of(2025, 12, 31))
                                     .build();
     lineVersionRepository.save(lineVersion);
-    version1 = SublineTestData.sublineVersionBuilder().slnid(SLNID)
-                              .swissSublineNumber("1")
-                              .validFrom(LocalDate.of(2020, 1, 1))
-                              .validTo(LocalDate.of(2021, 12, 31))
-                              .build();
-    version2 = SublineTestData.sublineVersionBuilder().slnid(SLNID)
-                              .swissSublineNumber("2")
-                              .validFrom(LocalDate.of(2022, 1, 1))
-                              .validTo(LocalDate.of(2023, 12, 31))
-                              .build();
-    version3 = SublineTestData.sublineVersionBuilder().slnid(SLNID)
-                              .swissSublineNumber("3")
-                              .validFrom(LocalDate.of(2024, 1, 1))
-                              .validTo(LocalDate.of(2024, 12, 31))
-                              .build();
+    version1 = version1Builder()                              .build();
+    version2 = version2Builder()                              .build();
+    version3 = version3Builder()                              .build();
+  }
+
+  private static SublineVersionBuilder<?, ?> version3Builder() {
+    return SublineTestData.sublineVersionBuilder().slnid(SLNID)
+        .swissSublineNumber("3")
+        .validFrom(LocalDate.of(2024, 1, 1))
+        .validTo(LocalDate.of(2024, 12, 31));
+  }
+
+  private static SublineVersionBuilder<?, ?> version2Builder() {
+    return SublineTestData.sublineVersionBuilder().slnid(SLNID)
+        .swissSublineNumber("2")
+        .validFrom(LocalDate.of(2022, 1, 1))
+        .validTo(LocalDate.of(2023, 12, 31));
+  }
+
+  private static SublineVersionBuilder<?, ?> version1Builder() {
+    return SublineTestData.sublineVersionBuilder().slnid(SLNID)
+        .swissSublineNumber("1")
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2021, 12, 31));
   }
 
   @AfterEach
@@ -92,7 +102,7 @@ public class SublineServiceVersioningTest {
     version1 = sublineVersionRepository.save(version1);
     version2 = sublineVersionRepository.save(version2);
     version3 = sublineVersionRepository.save(version3);
-    SublineVersion editedVersion = new SublineVersion();
+    SublineVersion editedVersion = version2Builder().build();
     editedVersion.setDescription("Description <changed>");
     editedVersion.setValidFrom(LocalDate.of(2022, 6, 1));
     editedVersion.setValidTo(LocalDate.of(2023, 6, 1));
@@ -162,7 +172,7 @@ public class SublineServiceVersioningTest {
     version2 = sublineVersionRepository.save(version2);
     version3.setSwissSublineNumber("2");
     version3 = sublineVersionRepository.save(version3);
-    SublineVersion editedVersion = new SublineVersion();
+    SublineVersion editedVersion = version2Builder().build();
     editedVersion.setSwissSublineNumber("2");
 
     //when

@@ -2,7 +2,6 @@ package ch.sbb.atlas.api.servicepoint;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.model.BaseVersionModel;
-import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
@@ -11,7 +10,6 @@ import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.atlas.validation.DatesValidator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.constraints.AssertTrue;
@@ -61,12 +59,6 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
           + "identifying locations.", example = "BIBD", maxLength = 6)
   private String abbreviation;
 
-  @Schema(description = "Indicates if this a operatingPoint.")
-  private boolean operatingPoint;
-
-  @Schema(description = "Indicates if this a operatingPoint including Timetables.")
-  private boolean operatingPointWithTimetable;
-
   @Schema(description = "Indicates if this a Service Point for freights.")
   private boolean freightServicePoint;
 
@@ -100,12 +92,8 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
           + "StopPoints")
   private List<MeanOfTransport> meansOfTransport;
 
-  @Schema(description = "Type of the StopPoint, Indicates for which type of traffic (e.g. regular traffic) a stop was recorded. ")
+  @Schema(description = "Type of the StopPoint, Indicates for which type of traffic (e.g. regular traffic) a stop was recorded.")
   private StopPointType stopPointType;
-
-  @NotNull
-  @Schema(description = "Status", example = "VALIDATED")
-  private Status status;
 
   @NotNull
   private LocalDate validFrom;
@@ -116,45 +104,37 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
   @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)", example = "5")
   private Integer etagVersion;
 
-  @JsonInclude
-  @Schema(description = "ServicePoint is StopPoint")
-  public boolean isStopPoint() {
-    return !getMeansOfTransport().isEmpty();
-  }
-
-  @JsonInclude
-  @Schema(description = "ServicePoint is FareStop", example = "false")
-  public boolean isFareStop() {
-    return operatingPointTrafficPointType == OperatingPointTrafficPointType.TARIFF_POINT;
-  }
-
-  @JsonInclude
-  @Schema(description = "ServicePoint is TrafficPoint")
-  public boolean isTrafficPoint() {
-    return isStopPoint() || isFreightServicePoint() || isFareStop();
-  }
-
-  @JsonInclude
-  @Schema(description = "ServicePoint is BorderPoint", example = "false")
-  public boolean isBorderPoint() {
-    return operatingPointTechnicalTimetableType == OperatingPointTechnicalTimetableType.COUNTRY_BORDER;
+  @JsonIgnore
+  public boolean isRawServicePoint() {
+    return getOperatingPointType() == null &&
+        getOperatingPointTechnicalTimetableType() == null &&
+        getMeansOfTransport().isEmpty() &&
+        !isFreightServicePoint() &&
+        getOperatingPointTrafficPointType() == null;
   }
 
   @JsonIgnore
-  @AssertTrue(message = "StopPointType only allowed for StopPoint")
-  boolean isValidStopPointWithType() {
-    return isStopPoint() || stopPointType == null;
-  }
-
-  @JsonIgnore
-  @AssertTrue(message = "At most one of OperatingPointWithoutTimetableType, OperatingPointTechnicalTimetableType, "
-          + "OperatingPointTrafficPointType may be set")
+  @AssertTrue(message = """
+      ServicePoint rejected due to invalid type information.
+      A ServicePoint might either have:
+       - OperatingPointType
+       - OperatingPointTechnicalTimetableType
+       - OperatingPointTrafficPointType
+       - MeansOfTransport or FreightServicePoint
+      """)
   public boolean isValidType() {
     long mutualTypes = Stream.of(
-                    getOperatingPointTechnicalTimetableType() != null,
-                    getOperatingPointTrafficPointType() != null)
-            .filter(i -> i)
-            .count();
+            // Betriebspunkt
+            getOperatingPointType() != null,
+            // Reiner Betriebspunkt
+            getOperatingPointTechnicalTimetableType() != null,
+            // Haltestelle und/oder Bedienpunkt
+            (!getMeansOfTransport().isEmpty() || isFreightServicePoint()),
+            // Tarifhaltestelle
+            getOperatingPointTrafficPointType() != null)
+        .filter(i -> i)
+        .count();
+    // Dienststelle (eg. Verkaufsstelle) hat keines dieser Informationen
     return mutualTypes <= 1;
   }
 

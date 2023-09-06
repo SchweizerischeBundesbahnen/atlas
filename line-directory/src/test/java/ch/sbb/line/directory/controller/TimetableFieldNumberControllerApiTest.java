@@ -37,7 +37,15 @@ public class TimetableFieldNumberControllerApiTest extends BaseControllerWithAma
   @MockBean
   private TimetableFieldNumberValidationService timetableFieldNumberValidationService;
 
-  private final TimetableFieldNumberVersion version =
+  @Autowired
+  private TimetableFieldNumberVersionRepository versionRepository;
+  @Autowired
+  private TimetableFieldNumberVersionExportService versionExportService;
+
+  @Autowired
+  private AmazonService amazonService;
+
+  private TimetableFieldNumberVersion version =
       TimetableFieldNumberVersion.builder()
           .ttfnid("ch:1:ttfnid:100000")
           .description("FPFN Description")
@@ -48,17 +56,10 @@ public class TimetableFieldNumberControllerApiTest extends BaseControllerWithAma
           .validTo(LocalDate.of(2020, 12, 31))
           .businessOrganisation("sbb")
           .build();
-  @Autowired
-  private TimetableFieldNumberVersionRepository versionRepository;
-  @Autowired
-  private TimetableFieldNumberVersionExportService versionExportService;
-
-  @Autowired
-  private AmazonService amazonService;
 
   @BeforeEach
   void createDefaultVersion() {
-    versionRepository.save(version);
+    version = versionRepository.saveAndFlush(version);
   }
 
   @Test
@@ -136,47 +137,35 @@ public class TimetableFieldNumberControllerApiTest extends BaseControllerWithAma
   void shouldReturnValidationNoChangesErrorResponse() throws Exception {
     // Given
     TimetableFieldNumberVersion secondVersion = TimetableFieldNumberVersion.builder()
-        .ttfnid(
-            "ch:1:ttfnid:100000")
-        .description(
-            "FPFN Description")
+        .ttfnid("ch:1:ttfnid:100000")
+        .description("FPFN Description")
         .number("10.100")
         .status(Status.VALIDATED)
-        .swissTimetableFieldNumber(
-            "b0.100")
-        .validFrom(
-            LocalDate.of(2021, 1,
-                1))
-        .validTo(
-            LocalDate.of(2021,
-                12, 31))
-        .businessOrganisation(
-            "BLS")
+        .swissTimetableFieldNumber("b0.100")
+        .validFrom(LocalDate.of(2021, 1, 1))
+        .validTo(LocalDate.of(2021, 12, 31))
+        .businessOrganisation("BLS")
         .build();
-    versionRepository.save(secondVersion);
+    versionRepository.saveAndFlush(secondVersion);
     //When
     TimetableFieldNumberVersionModel timetableFieldNumberVersionModel = TimetableFieldNumberVersionModel.builder()
-        .validFrom(
-            version.getValidFrom())
-        .validTo(
-            version.getValidTo())
         .id(version.getId())
-        .ttfnid(
-            version.getTtfnid())
-        .description(
-            version.getDescription())
-        .number(
-            version.getNumber())
-        .status(
-            version.getStatus())
-        .swissTimetableFieldNumber(
-            version.getSwissTimetableFieldNumber())
-        .businessOrganisation(
-            version.getBusinessOrganisation())
+        .validFrom(version.getValidFrom())
+        .validTo(version.getValidTo())
+        .ttfnid(version.getTtfnid())
+        .description(version.getDescription())
+        .number(version.getNumber())
+        .status(version.getStatus())
+        .swissTimetableFieldNumber(version.getSwissTimetableFieldNumber())
+        .businessOrganisation(version.getBusinessOrganisation())
+        .creationDate(version.getCreationDate())
+        .editionDate(version.getEditionDate())
+        .creator(version.getCreator())
+        .editor(version.getEditor())
+        .etagVersion(version.getVersion())
         .build();
 
     //Then
-
     mvc.perform(post("/v1/field-numbers/versions/" + timetableFieldNumberVersionModel.getId())
             .contentType(MediaType.APPLICATION_JSON)
             .content(mapper.writeValueAsString(timetableFieldNumberVersionModel)))
