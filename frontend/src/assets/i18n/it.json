@@ -941,6 +941,7 @@
       "LOADING_POINTS": "Posti di carico"
     },
     "GEOLOCATION": {
+      "INVALID": "Le coordinate fornite non sono valide. Correggere l’inserimento.",
       "GEOGRAPHY": "Geografia",
       "SYSTEM_LV95": "Coordinate del paese LV95",
       "SYSTEM_WGS84": "Coordinate geografiche WGS84",

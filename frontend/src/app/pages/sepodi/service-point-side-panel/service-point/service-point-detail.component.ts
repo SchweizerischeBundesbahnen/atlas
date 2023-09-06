@@ -38,6 +38,9 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   selectedVersionIndex!: number;
   form!: FormGroup<ServicePointDetailFormGroup>;
   isNew = true;
+
+  preferredId?: number;
+
   types = Object.values(ServicePointType);
   operatingPointTypes = (Object.values(OperatingPointType) as string[]).concat(
     Object.values(OperatingPointTechnicalTimetableType)
@@ -78,6 +81,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   }
 
   switchVersion(newIndex: number) {
+    this.selectedVersionIndex = newIndex;
     this.selectedVersion = this.servicePointVersions[newIndex];
     this.initSelectedVersion();
   }
@@ -89,9 +93,16 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   private initServicePoint() {
     VersionsHandlingService.addVersionNumbers(this.servicePointVersions);
     this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.servicePointVersions);
-    this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(
-      this.servicePointVersions
-    );
+
+    if (this.preferredId) {
+      this.selectedVersion = this.servicePointVersions.find((i) => i.id === this.preferredId)!;
+      this.preferredId = undefined;
+    } else {
+      this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(
+        this.servicePointVersions
+      );
+    }
+    this.selectedVersionIndex = this.servicePointVersions.indexOf(this.selectedVersion);
 
     this.initSelectedVersion();
   }
@@ -100,8 +111,6 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     if (this.selectedVersion.id) {
       this.isNew = false;
     }
-
-    this.selectedVersionIndex = this.servicePointVersions.indexOf(this.selectedVersion);
 
     this.form = ServicePointFormGroupBuilder.buildFormGroup(this.selectedVersion);
     if (!this.isNew) {
@@ -136,7 +145,10 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
 
   private displayAndSelectServicePointOnMap() {
     this.mapSubscription = this.mapService.mapInitialized.subscribe((initialized) => {
-      if (initialized && this.form.value.servicePointGeolocation?.spatialReference) {
+      if (
+        initialized &&
+        this.form.controls.servicePointGeolocation.controls.spatialReference.value
+      ) {
         if (this.mapService.map.getZoom() <= this.ZOOM_LEVEL_FOR_DETAIL) {
           this.mapService.map.setZoom(this.ZOOM_LEVEL_FOR_DETAIL);
         }
@@ -209,6 +221,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   }
 
   private update(id: number, servicePointVersion: CreateServicePointVersion) {
+    this.preferredId = id;
     this.servicePointService
       .updateServicePoint(id, servicePointVersion)
       .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))

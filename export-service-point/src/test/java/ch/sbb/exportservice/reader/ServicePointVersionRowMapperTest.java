@@ -54,4 +54,5 @@ class ServicePointVersionRowMapperTest {
         MeanOfTransport.TRAIN));
     assertThat(servicePointVersion.getMeansOfTransportPipeList()).isEqualTo("BUS|TRAIN");
   }
+
 }

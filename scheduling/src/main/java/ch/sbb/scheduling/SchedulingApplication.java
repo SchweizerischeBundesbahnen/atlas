@@ -18,4 +18,5 @@ public class SchedulingApplication {
     KafkaTruststorePreparation.setupTruststore();
     SpringApplication.run(SchedulingApplication.class, args);
   }
+
 }
