@@ -58,7 +58,7 @@ public class ServicePointSearchVersionRepositoryTest {
         List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("bern");
         //then
         assertThat(results).isNotNull();
-        assertThat(results.size()).isEqualTo(3);
+        assertThat(results).hasSize(3);
         assertThat(results.get(0).getDesignationOfficial()).isEqualTo("Bern");
         assertThat(results.get(1).getDesignationOfficial()).isEqualTo("Bern Ost (Spw)");
         assertThat(results.get(2).getDesignationOfficial()).isEqualTo("Bern, Wyleregg");
@@ -70,7 +70,7 @@ public class ServicePointSearchVersionRepositoryTest {
         List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("ost");
         //then
         assertThat(results).isNotNull();
-        assertThat(results.size()).isEqualTo(1);
+        assertThat(results).hasSize(1);
         assertThat(results.get(0).getDesignationOfficial()).isEqualTo("Bern Ost (Spw)");
     }
 
@@ -80,7 +80,7 @@ public class ServicePointSearchVersionRepositoryTest {
         List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("egg");
         //then
         assertThat(results).isNotNull();
-        assertThat(results.size()).isEqualTo(1);
+        assertThat(results).hasSize(1);
         assertThat(results.get(0).getDesignationOfficial()).isEqualTo("Bern, Wyleregg");
     }
 
@@ -90,7 +90,7 @@ public class ServicePointSearchVersionRepositoryTest {
         List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("milan");
         //then
         assertThat(results).isNotNull();
-        assertThat(results.size()).isEqualTo(0);
+        assertThat(results).isEmpty();
     }
 
     @Test
@@ -99,7 +99,7 @@ public class ServicePointSearchVersionRepositoryTest {
         List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("85");
         //then
         assertThat(results).isNotNull();
-        assertThat(results.size()).isEqualTo(4);
+        assertThat(results).hasSize(4);
         assertThat(results.get(0).getNumber()).isEqualTo(8500925);
         assertThat(results.get(1).getNumber()).isEqualTo(8507000);
         assertThat(results.get(2).getNumber()).isEqualTo(8519761);
@@ -112,7 +112,7 @@ public class ServicePointSearchVersionRepositoryTest {
         List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("61");
         //then
         assertThat(results).isNotNull();
-        assertThat(results.size()).isEqualTo(1);
+        assertThat(results).hasSize(1);
         assertThat(results.get(0).getNumber()).isEqualTo(8519761);
     }
 
@@ -122,7 +122,7 @@ public class ServicePointSearchVersionRepositoryTest {
         List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("7000");
         //then
         assertThat(results).isNotNull();
-        assertThat(results.size()).isEqualTo(1);
+        assertThat(results).hasSize(1);
         assertThat(results.get(0).getNumber()).isEqualTo(8507000);
     }
 
@@ -132,7 +132,7 @@ public class ServicePointSearchVersionRepositoryTest {
         List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("napoli");
         //then
         assertThat(results).isNotNull();
-        assertThat(results.size()).isEqualTo(2);
+        assertThat(results).hasSize(2);
         assertThat(results.get(0).getDesignationOfficial()).isEqualTo("Bern");
         assertThat(results.get(1).getDesignationOfficial()).isEqualTo("Bern, Wyleregg");
     }
@@ -143,7 +143,7 @@ public class ServicePointSearchVersionRepositoryTest {
         List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("napol");
         //then
         assertThat(results).isNotNull();
-        assertThat(results.size()).isEqualTo(3);
+        assertThat(results).hasSize(3);
         assertThat(results.get(0).getDesignationOfficial()).isEqualTo("Bern");
         assertThat(results.get(1).getDesignationOfficial()).isEqualTo("Bern Ost (Spw)");
         assertThat(results.get(2).getDesignationOfficial()).isEqualTo("Bern, Wyleregg");
