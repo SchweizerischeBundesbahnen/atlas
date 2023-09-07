@@ -1,15 +1,14 @@
 package ch.sbb.atlas.servicepointdirectory.repository;
 
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointSearchResult;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor
