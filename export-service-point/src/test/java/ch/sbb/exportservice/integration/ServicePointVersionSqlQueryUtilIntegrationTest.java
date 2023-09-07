@@ -24,7 +24,7 @@ public class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlInteg
   public void shouldReturnWorldOnlyActualWithActualBusinessOrganisationData() throws SQLException {
     //given
     LocalDate now = LocalDate.now();
-    int servicePointNumber = 19058867;
+    int servicePointNumber = 1905886;
     insertServicePoint(servicePointNumber, now, now, Country.ALBANIA);
     String sboid = "ch:1:sboid:101999";
     insertSharedBusinessOrganisation(sboid, "abb", now, now);
@@ -46,7 +46,7 @@ public class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlInteg
   public void shouldReturnWorldOnlyActualWithoutBusinessOrganisationData() throws SQLException {
     //given
     LocalDate now = LocalDate.now();
-    int servicePointNumber = 19058867;
+    int servicePointNumber = 1905886;
     insertServicePoint(servicePointNumber, now, now, Country.ALBANIA);
     String sboid = "ch:1:sboid:101999";
     insertSharedBusinessOrganisation(sboid, "abb", now.minusMonths(2), now.minusMonths(1));
@@ -67,9 +67,9 @@ public class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlInteg
   public void shouldReturnWorldFullData() throws SQLException {
     //given
     final LocalDate now = LocalDate.now();
-    insertServicePoint(19567343, now, now, Country.ALBANIA);
-    insertServicePoint(78473823, now.minusMonths(5), now.minusMonths(4), Country.AFGHANISTAN);
-    insertServicePoint(85473894, now.plusMonths(4), now.plusMonths(5), Country.SWITZERLAND);
+    insertServicePoint(1956734, now, now, Country.ALBANIA);
+    insertServicePoint(7847382, now.minusMonths(5), now.minusMonths(4), Country.AFGHANISTAN);
+    insertServicePoint(8547389, now.plusMonths(4), now.plusMonths(5), Country.SWITZERLAND);
     String sqlQuery = ServicePointVersionSqlQueryUtil.getSqlQuery(ExportType.WORLD_FULL);
 
     //when
@@ -84,7 +84,7 @@ public class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlInteg
   public void shouldReturnWorldOnlyActualData() throws SQLException {
     //given
     LocalDate now = LocalDate.now();
-    int servicePointNumber = 19058867;
+    int servicePointNumber = 1905886;
     insertServicePoint(servicePointNumber, now, now, Country.ALBANIA);
     String sqlQuery = ServicePointVersionSqlQueryUtil.getSqlQuery(ExportType.WORLD_ONLY_ACTUAL);
 
@@ -101,7 +101,7 @@ public class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlInteg
   public void shouldReturnWorldOnlyTimetableFutureData() throws SQLException {
     //given
     LocalDate now = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
-    int servicePointNumber = 19058867;
+    int servicePointNumber = 1905886;
     insertServicePoint(servicePointNumber, now, now, Country.EGYPT);
     String sqlQuery = ServicePointVersionSqlQueryUtil.getSqlQuery(ExportType.WORLD_ONLY_TIMETABLE_FUTURE);
 
@@ -118,9 +118,9 @@ public class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlInteg
   public void shouldReturnSwissOnlyTimetableFutureData() throws SQLException {
     //given
     LocalDate now = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
-    int servicePointNumberAfghanistan = 68058867;
+    int servicePointNumberAfghanistan = 6805886;
     insertServicePoint(servicePointNumberAfghanistan, now, now, Country.AFGHANISTAN);
-    int servicePointNumberSwitzerland = 85722999;
+    int servicePointNumberSwitzerland = 8572299;
     insertServicePoint(servicePointNumberSwitzerland, now, now, Country.SWITZERLAND);
     String sqlQuery = ServicePointVersionSqlQueryUtil.getSqlQuery(ExportType.SWISS_ONLY_TIMETABLE_FUTURE);
 
@@ -137,7 +137,7 @@ public class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlInteg
   public void shouldReturnSwissOnlyActualData() throws SQLException {
     //given
     LocalDate now = LocalDate.now();
-    int servicePointNumber = 85722999;
+    int servicePointNumber = 8572299;
     insertServicePoint(servicePointNumber, now, now, Country.SWITZERLAND);
     String sqlQuery = ServicePointVersionSqlQueryUtil.getSqlQuery(ExportType.SWISS_ONLY_ACTUAL);
 
@@ -154,9 +154,9 @@ public class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlInteg
   public void shouldReturnSwissOnlyFullData() throws SQLException {
     //given
     final LocalDate now = LocalDate.now();
-    int servicePointNumberAfghanistan = 68058867;
+    int servicePointNumberAfghanistan = 6805886;
     insertServicePoint(servicePointNumberAfghanistan, now, now, Country.AFGHANISTAN);
-    int servicePointNumberSwitzerland = 85722999;
+    int servicePointNumberSwitzerland = 8572299;
     insertServicePoint(servicePointNumberSwitzerland, now.minusMonths(5), now.minusMonths(4), Country.SWITZERLAND);
     String sqlQuery = ServicePointVersionSqlQueryUtil.getSqlQuery(ExportType.SWISS_ONLY_FULL);
 

@@ -22,12 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 @Tag(name = "Export Service Point Batch")
@@ -49,22 +44,22 @@ public class ExportServicePointBatchControllerApiV1 {
       @ApiResponse(responseCode = "404", description = "Object with filename myFile not found", content = @Content(schema =
       @Schema(implementation = ErrorResponse.class)))
   })
-  public ResponseEntity<StreamingResponseBody> streamJsonFile(@PathVariable("exportFileName") BatchExportFileName exportFileName,
-      @PathVariable("exportType") ExportType exportType) {
-    checkInputPath(exportFileName, exportType);
-    StreamingResponseBody body = fileExportService.streamJsonFile(exportType, exportFileName);
+  public ResponseEntity<StreamingResponseBody> streamExportJsonFile(@PathVariable("exportFileName") BatchExportFileName exportFileName,
+                                                                    @PathVariable("exportType") ExportType exportType) {
+    checkInputPath(exportFileName,exportType);
+    StreamingResponseBody body = fileExportService.streamJsonFile(exportType,exportFileName);
     return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(body);
   }
 
-  @GetMapping(value = "download-gzip-json/{exportFileName}/{exportType}")
+  @GetMapping(value = "download-gz-json/{exportFileName}/{exportType}")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200"),
       @ApiResponse(responseCode = "404", description = "filename myFile not found", content = @Content(schema =
       @Schema(implementation = ErrorResponse.class)))
   })
-  public ResponseEntity<StreamingResponseBody> streamGzipFile(@PathVariable("exportFileName") BatchExportFileName exportFileName,
-      @PathVariable("exportType") ExportType exportType) throws NotAllowedExportFileException {
-    checkInputPath(exportFileName, exportType);
+  public ResponseEntity<StreamingResponseBody> streamExportGzFile(@PathVariable("exportFileName") BatchExportFileName exportFileName,
+                                                                  @PathVariable("exportType") ExportType exportType) throws NotAllowedExportFileException {
+    checkInputPath(exportFileName,exportType);
     String fileName = fileExportService.getBaseFileName(exportType, exportFileName);
     HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(fileName);
     StreamingResponseBody body = fileExportService.streamGzipFile(exportType, exportFileName);

@@ -5,8 +5,8 @@ import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel;
 import ch.sbb.atlas.configuration.Role;
-import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointImportRequestModel;
 import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
+import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointImportRequestModel;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -33,6 +33,8 @@ public interface ServicePointApiV1 {
       {ServicePointVersion.Fields.number,
           ServicePointVersion.Fields.validFrom}) Pageable pageable,
       @ParameterObject ServicePointRequestParams servicePointRequestParams);
+  @PostMapping("search")
+  List<ServicePointSearchResult> searchServicePoints(@RequestBody ServicePointSearchRequest value);
 
   @GetMapping("{servicePointNumber}")
   List<ReadServicePointVersionModel> getServicePointVersions(@PathVariable Integer servicePointNumber);

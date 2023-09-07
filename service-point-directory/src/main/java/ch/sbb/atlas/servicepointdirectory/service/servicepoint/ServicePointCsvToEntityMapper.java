@@ -5,16 +5,12 @@ import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.atlas.servicepoint.enumeration.Category;
-import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
-import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
-import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
-import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
-import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
+import ch.sbb.atlas.servicepoint.enumeration.*;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.mapper.GeolocationMapper;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointStatus;
+
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
@@ -84,7 +80,7 @@ public class ServicePointCsvToEntityMapper implements
     Set<MeanOfTransport> meansOfTransport = getMeansOfTransport(servicePointCsvModel);
     return ServicePointVersion
         .builder()
-        .number(ServicePointNumber.of(servicePointCsvModel.getDidokCode()))
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(servicePointCsvModel.getDidokCode()))
         .sloid(servicePointCsvModel.getSloid())
         .numberShort(servicePointCsvModel.getNummer())
         .country(Country.from(servicePointCsvModel.getLaendercode()))
@@ -111,7 +107,7 @@ public class ServicePointCsvToEntityMapper implements
             Boolean.TRUE.equals(servicePointCsvModel.getOperatingPointRouteNetwork()))
         .operatingPointKilometerMaster(
             Optional.ofNullable(servicePointCsvModel.getOperatingPointKilometerMaster())
-                .map(ServicePointNumber::of)
+                .map(ServicePointNumber::ofNumberWithoutCheckDigit)
                 .orElse(null))
         .creationDate(servicePointCsvModel.getCreatedAt())
         .creator(servicePointCsvModel.getCreatedBy())
