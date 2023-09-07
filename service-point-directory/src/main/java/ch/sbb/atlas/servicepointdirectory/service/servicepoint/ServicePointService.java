@@ -10,6 +10,8 @@ import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionReposito
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
+import java.util.List;
+import java.util.Optional;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,9 +20,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @Getter
@@ -38,7 +37,7 @@ public class ServicePointService {
   public List<ServicePointSearchResult> searchServicePointVersion(String value){
     List<ServicePointSearchResult> servicePointSearchResults = servicePointSearchVersionRepository.searchServicePoints(value);
     if(servicePointSearchResults.size() > SEARCH_RESULT_SIZE){
-      return servicePointSearchResults.subList(0,200);
+      return servicePointSearchResults.subList(0,SEARCH_RESULT_SIZE);
     }
     return servicePointSearchResults;
   }
