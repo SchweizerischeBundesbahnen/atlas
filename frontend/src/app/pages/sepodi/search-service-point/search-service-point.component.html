@@ -1,0 +1,25 @@
+<div class="search-form">
+  <div class="d-flex flex-column">
+    <mat-label class="font-bold-sm pb-2">
+      {{ 'SEPODI.SERVICE_POINTS.DIDOK_CODE_SEARCH' | translate }} -
+      {{ 'SEPODI.SERVICE_POINTS.DESIGNATION_OFFICIAL' | translate }}
+    </mat-label>
+  </div>
+  <form-search-select
+    (changeTrigger)="navigateToServicePoint($event)"
+    (searchTrigger)="searchServicePoint($event)"
+    [items$]="servicePointSearchResult$"
+    [hasForm]="false"
+    placeholderTextKey="{{ 'SEPODI.SERVICE_POINTS.SERVICE_POINT' | translate }}"
+  >
+    <ng-template #labelOptionTemplates let-item>
+      <span
+        [innerHTML]="
+          item.number.toString() | searchResultHighlight : searchValue | splitServicePointNumber
+        "
+      ></span>
+      <span>&nbsp;&nbsp;&nbsp;</span>
+      <span [innerHTML]="item.designationOfficial | searchResultHighlight : searchValue"></span>
+    </ng-template>
+  </form-search-select>
+</div>
