@@ -829,6 +829,7 @@
     "SERVICE_POINTS": {
       "SLOID": "Swiss Location ID (SLOID)",
       "DIDOK_CODE": "Didok-Code (Ländercode & Nummer)",
+      "DIDOK_CODE_SEARCH": "Didok-Code",
       "SERVICE_POINT": "Dienststelle",
       "AREAS": "Bereiche",
       "FOT_COMMENT": "BAV-Kommentar",
