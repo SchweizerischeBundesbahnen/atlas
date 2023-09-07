@@ -10,7 +10,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * Former DIDOK Code:
@@ -60,13 +59,16 @@ public final class ServicePointNumber {
     return null;
   }
 
+  /**
+   * @deprecated used until Didok CSV File are imported.
+   */
+  @Deprecated
   public static Integer removeCheckDigit(Integer didokCode){
     String didokCodeAsString = Integer.toString(didokCode);
     if(didokCodeAsString.length() == LENGTH){
       return didokCode;
     }
-    String didokCodeWithoutDigits = StringUtils.substring(didokCodeAsString,0, didokCodeAsString.length() - 1);
-    return Integer.parseInt(didokCodeWithoutDigits);
+    return Integer.parseInt(didokCodeAsString.substring(0, didokCodeAsString.length() -1));
   }
 
   private static ServicePointNumber fromString(String number) {
