@@ -160,9 +160,28 @@ export class ServicePointFormGroupBuilder {
       } else {
         formGroup.controls.meansOfTransport.clearValidators();
       }
-      formGroup.controls.operatingPointType.updateValueAndValidity();
+      formGroup.controls.meansOfTransport.updateValueAndValidity();
     });
 
+    formGroup.controls.freightServicePoint.valueChanges.subscribe((isFreightServicePoint) => {
+      if (
+        isFreightServicePoint &&
+        String(formGroup.controls.number.value).startsWith('85') &&
+        !formGroup.controls.validFrom.value?.isAfter(moment())
+      ) {
+        formGroup.controls.sortCodeOfDestinationStation.setValidators([Validators.required]);
+      } else {
+        formGroup.controls.sortCodeOfDestinationStation.clearValidators();
+      }
+      formGroup.controls.sortCodeOfDestinationStation.updateValueAndValidity();
+    });
+
+    this.initConditionalLocationValidators(formGroup);
+  }
+
+  private static initConditionalLocationValidators(
+    formGroup: FormGroup<ServicePointDetailFormGroup>
+  ) {
     formGroup.controls.servicePointGeolocation.controls.spatialReference.valueChanges.subscribe(
       (newSpatialReference) => {
         if (newSpatialReference) {
