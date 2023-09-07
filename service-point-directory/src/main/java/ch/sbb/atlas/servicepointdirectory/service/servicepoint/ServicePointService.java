@@ -29,6 +29,7 @@ import java.util.Optional;
 @Transactional
 public class ServicePointService {
 
+  public static final int SEARCH_RESULT_SIZE = 200;
   private final ServicePointVersionRepository servicePointVersionRepository;
   private final VersionableService versionableService;
   private final ServicePointValidationService servicePointValidationService;
@@ -36,7 +37,7 @@ public class ServicePointService {
 
   public List<ServicePointSearchResult> searchServicePointVersion(String value){
     List<ServicePointSearchResult> servicePointSearchResults = servicePointSearchVersionRepository.searchServicePoints(value);
-    if(servicePointSearchResults.size() > 200){
+    if(servicePointSearchResults.size() > SEARCH_RESULT_SIZE){
       return servicePointSearchResults.subList(0,200);
     }
     return servicePointSearchResults;

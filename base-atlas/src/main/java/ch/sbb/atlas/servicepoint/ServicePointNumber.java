@@ -62,7 +62,7 @@ public final class ServicePointNumber {
 
   public static Integer removeCheckDigit(Integer didokCode){
     String didokCodeAsString = Integer.toString(didokCode);
-    if(didokCodeAsString.length() == 7){
+    if(didokCodeAsString.length() == LENGTH){
       return didokCode;
     }
     String didokCodeWithoutDigits = StringUtils.substring(didokCodeAsString,0, didokCodeAsString.length() - 1);
