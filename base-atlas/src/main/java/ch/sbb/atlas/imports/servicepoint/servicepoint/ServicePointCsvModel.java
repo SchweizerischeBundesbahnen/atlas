@@ -2,14 +2,11 @@ package ch.sbb.atlas.imports.servicepoint.servicepoint;
 
 import ch.sbb.atlas.imports.servicepoint.BaseDidokCsvModel;
 import ch.sbb.atlas.imports.servicepoint.deserializer.NumericBooleanDeserializer;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 @Data
@@ -174,5 +171,15 @@ public class ServicePointCsvModel extends BaseDidokCsvModel {
   @JsonProperty("IS_GRENZPUNKT")
   @JsonDeserialize(using = NumericBooleanDeserializer.class)
   private Boolean isGrenzpunkt;
+
+  public Integer getDidokCode(){
+    return ServicePointNumber.removeCheckDigit(didokCode);
+  }
+  public Integer getOperatingPointKilometerMaster(){
+    if(operatingPointKilometerMaster != null) {
+      return ServicePointNumber.removeCheckDigit(operatingPointKilometerMaster);
+    }
+    return null;
+  }
 
 }

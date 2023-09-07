@@ -30,7 +30,7 @@ public class ServicePointTestData {
     ServicePointVersion servicePoint = ServicePointVersion
         .builder()
         .servicePointGeolocation(geolocation)
-        .number(ServicePointNumber.of(85890087))
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8589008))
         .sloid("ch:1:sloid:89008")
         .numberShort(89008)
         .country(Country.SWITZERLAND)
@@ -78,7 +78,7 @@ public class ServicePointTestData {
     ServicePointVersion servicePoint = ServicePointVersion
         .builder()
         .servicePointGeolocation(geolocation)
-        .number(ServicePointNumber.of(85070003))
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8507000))
         .sloid("ch:1:sloid:7000")
         .numberShort(7000)
         .country(Country.SWITZERLAND)
@@ -127,7 +127,7 @@ public class ServicePointTestData {
     ServicePointVersion bernOst = ServicePointVersion
         .builder()
         .servicePointGeolocation(geolocation)
-        .number(ServicePointNumber.of(85009258))
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8500925))
         .sloid("ch:1:sloid:925")
         .numberShort(925)
         .country(Country.SWITZERLAND)
@@ -233,7 +233,7 @@ public class ServicePointTestData {
     ServicePointVersion servicePointVersionWithCountryBorder = ServicePointVersion
         .builder()
         .servicePointGeolocation(servicePointGeolocation)
-        .number(ServicePointNumber.of(85197616))
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8519761))
         .sloid("ch:1:sloid:19761")
         .numberShort(19761)
         .country(Country.SWITZERLAND)
@@ -265,7 +265,7 @@ public class ServicePointTestData {
     ServicePointVersion servicePointVersionWithCountryBorder = ServicePointVersion
         .builder()
         .servicePointGeolocation(servicePointGeolocation)
-        .number(ServicePointNumber.of(85197616))
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8519761))
         .sloid("ch:1:sloid:19761")
         .numberShort(19761)
         .country(Country.SWITZERLAND)
@@ -310,7 +310,7 @@ public class ServicePointTestData {
   public static ServicePointVersion createServicePointVersionWithoutServicePointGeolocation() {
     return ServicePointVersion
         .builder()
-        .number(ServicePointNumber.of(85197616))
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8519761))
         .sloid("ch:1:sloid:19761")
         .numberShort(19761)
         .country(Country.SWITZERLAND)
@@ -336,7 +336,7 @@ public class ServicePointTestData {
   public static ServicePointVersion createServicePointVersion() {
     return ServicePointVersion
         .builder()
-        .number(ServicePointNumber.of(85197688))
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8519768))
         .sloid("ch:1:sloid:19765")
         .numberShort(19744)
         .country(Country.SWITZERLAND)
@@ -362,7 +362,7 @@ public class ServicePointTestData {
   public static ServicePointVersion createAbroadServicePointVersion() {
     return ServicePointVersion
         .builder()
-        .number(ServicePointNumber.of(58197681))
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(5819768))
         .sloid("ch:1:sloid:19768")
         .numberShort(19768)
         .country(Country.ARMENIA)
