@@ -93,6 +93,4 @@ logging:
     ch:
       sbb:
         atlas:
-          base:
-            service:
-              versioning: ERROR
+          versioning: ERROR
