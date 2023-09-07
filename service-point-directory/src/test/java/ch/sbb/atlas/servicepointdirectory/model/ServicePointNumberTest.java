@@ -1,20 +1,19 @@
 package ch.sbb.atlas.servicepointdirectory.model;
 
+import static ch.sbb.atlas.servicepoint.Country.SLOID_COMPATIBLE_COUNTRIES;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
-import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-
-import static ch.sbb.atlas.servicepoint.Country.SLOID_COMPATIBLE_COUNTRIES;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.Test;
 
 class ServicePointNumberTest {
 
@@ -156,6 +155,23 @@ class ServicePointNumberTest {
       }
     });
 
+  }
+
+  @Test
+  public void shouldRemoveCheckDigit(){
+    //when
+    Integer result = ServicePointNumber.removeCheckDigit(85070003);
+    //then
+    assertThat(String.valueOf(result)).hasSize(7);
+  }
+
+  @Test
+  public void shouldReturnNumberWithoutCheckDigit(){
+    //when
+    Integer result = ServicePointNumber.removeCheckDigit(8507000);
+    //then
+    assertThat(String.valueOf(result)).hasSize(7);
+    assertThat(result).isEqualTo(8507000);
   }
 
 }
