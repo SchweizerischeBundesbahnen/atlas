@@ -1,28 +1,31 @@
 package ch.sbb.exportservice.controller;
 
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import ch.sbb.atlas.amazon.exception.FileException;
-import ch.sbb.exportservice.model.BatchExportFileName;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
+import ch.sbb.exportservice.model.BatchExportFileName;
 import ch.sbb.exportservice.model.ExportType;
 import ch.sbb.exportservice.service.ExportLoadingPointJobService;
 import ch.sbb.exportservice.service.ExportServicePointJobService;
 import ch.sbb.exportservice.service.ExportTrafficPointElementJobService;
 import ch.sbb.exportservice.service.FileExportService;
+import java.io.InputStream;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
-
-import java.io.InputStream;
-
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseControllerApiTest {
@@ -81,7 +84,7 @@ public class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseC
       doReturn("service-point").when(fileExportService)
           .getBaseFileName(ExportType.WORLD_FULL, BatchExportFileName.SERVICE_POINT_VERSION);
       //when & then
-      mvc.perform(get("/v1/export/download-gz-json/service-point-version/world-full")
+      mvc.perform(get("/v1/export/download-gzip-json/service-point-version/world-full")
               .contentType(contentType))
           .andExpect(status().isOk())
           .andExpect(content().contentType("application/gzip"));
@@ -96,7 +99,7 @@ public class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseC
         .streamGzipFile(ExportType.WORLD_FULL, BatchExportFileName.SERVICE_POINT_VERSION);
 
     //when & then
-    mvc.perform(get("/v1/export/download-gz-json/service-point-version/world-full")
+    mvc.perform(get("/v1/export/download-gzip-json/service-point-version/world-full")
             .contentType(contentType))
         .andExpect(status().isInternalServerError());
   }
@@ -106,7 +109,7 @@ public class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseC
   public void shouldNotDownloadJsonWhenExportTypeIsNotAllowedForTheExportFile() throws Exception {
     //given
     //when & then
-    mvc.perform(get("/v1/export/download-gz-json/traffic-point-element-version/swiss-only-full")
+    mvc.perform(get("/v1/export/download-gzip-json/traffic-point-element-version/swiss-only-full")
             .contentType(contentType))
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.status", is(400)))
