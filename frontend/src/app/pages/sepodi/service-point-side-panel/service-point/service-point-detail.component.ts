@@ -95,7 +95,9 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.servicePointVersions);
 
     if (this.preferredId) {
-      this.selectedVersion = this.servicePointVersions.find((i) => i.id === this.preferredId)!;
+      this.selectedVersion =
+        this.servicePointVersions.find((i) => i.id === this.preferredId) ??
+        VersionsHandlingService.determineDefaultVersionByValidity(this.servicePointVersions);
       this.preferredId = undefined;
     } else {
       this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(
