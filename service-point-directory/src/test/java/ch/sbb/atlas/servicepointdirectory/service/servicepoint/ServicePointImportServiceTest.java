@@ -1,17 +1,16 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
+import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
-import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointFotComment;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
-import java.time.LocalDateTime;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -59,7 +59,7 @@ public class ServicePointImportServiceTest {
     //given
     List<ServicePointCsvModelContainer> servicePointCsvModelContainers = getServicePointCsvModelContainers();
     Integer didokCode = servicePointCsvModelContainers.get(0).getDidokCode();
-    ServicePointNumber servicePointNumber = ServicePointNumber.of(didokCode);
+    ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(didokCode);
     //when
     List<ItemImportResult> itemImportResults = servicePointImportService.importServicePoints(
         servicePointCsvModelContainers);
@@ -91,7 +91,7 @@ public class ServicePointImportServiceTest {
     String firstFile = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20230717021649_without_geolocation.csv";
     ServicePointCsvModelContainer firstFileCsvContainer = getContainer(firstFile);
     servicePointImportService.importServicePoints(List.of(firstFileCsvContainer));
-    servicePointNumber = ServicePointNumber.of(firstFileCsvContainer.getDidokCode());
+    servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(firstFileCsvContainer.getDidokCode());
     List<ServicePointVersion> firstResult = servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber);
     assertThat(firstResult.size()).isEqualTo(2);
     assertThat(firstResult.get(0).getValidFrom()).isEqualTo(LocalDate.of(2020, 9, 1));
@@ -125,7 +125,7 @@ public class ServicePointImportServiceTest {
     String firstFile = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20230717021649_without_geolocation.csv";
     ServicePointCsvModelContainer firstFileCsvContainer = getContainer(firstFile);
     servicePointImportService.importServicePoints(List.of(firstFileCsvContainer));
-    servicePointNumber = ServicePointNumber.of(firstFileCsvContainer.getDidokCode());
+    servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(firstFileCsvContainer.getDidokCode());
     List<ServicePointVersion> firstResult = servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber);
     assertThat(firstResult.size()).isEqualTo(2);
     assertThat(firstResult.get(0).getValidFrom()).isEqualTo(LocalDate.of(2020, 9, 1));
@@ -170,7 +170,7 @@ public class ServicePointImportServiceTest {
     String firstFile = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20230717021649_geo_with_merge.csv";
     ServicePointCsvModelContainer firstFileCsvContainer = getContainer(firstFile);
     servicePointImportService.importServicePoints(List.of(firstFileCsvContainer));
-    servicePointNumber = ServicePointNumber.of(firstFileCsvContainer.getDidokCode());
+    servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(firstFileCsvContainer.getDidokCode());
     List<ServicePointVersion> firstResult = servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber);
     assertThat(firstResult.size()).isEqualTo(2);
     assertThat(firstResult.get(0).getValidFrom()).isEqualTo(LocalDate.of(2020, 9, 1));
@@ -208,7 +208,7 @@ public class ServicePointImportServiceTest {
     String firstFile = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20230717021649_geo.csv";
     ServicePointCsvModelContainer firstFileCsvContainer = getContainer(firstFile);
     servicePointImportService.importServicePoints(List.of(firstFileCsvContainer));
-    servicePointNumber = ServicePointNumber.of(firstFileCsvContainer.getDidokCode());
+    servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(firstFileCsvContainer.getDidokCode());
     List<ServicePointVersion> firstResult = servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber);
     assertThat(firstResult.size()).isEqualTo(2);
     assertThat(firstResult.get(0).getValidFrom()).isEqualTo(LocalDate.of(2020, 9, 1));
@@ -249,7 +249,7 @@ public class ServicePointImportServiceTest {
     String firstFile = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20230717021649.csv";
     ServicePointCsvModelContainer firstFileCsvContainer = getContainer(firstFile);
     servicePointImportService.importServicePoints(List.of(firstFileCsvContainer));
-    servicePointNumber = ServicePointNumber.of(firstFileCsvContainer.getDidokCode());
+    servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(firstFileCsvContainer.getDidokCode());
     List<ServicePointVersion> firstResult = servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber);
     assertThat(firstResult.size()).isEqualTo(7);
     assertThat(firstResult.get(0).getValidFrom()).isEqualTo(LocalDate.of(1987, 12, 31));
@@ -412,7 +412,7 @@ public class ServicePointImportServiceTest {
     assertThat(servicePointItemImportResults).hasSize(1);
 
     final List<ServicePointVersion> dbVersions =
-        servicePointVersionRepository.findAllByNumberOrderByValidFrom(ServicePointNumber.of(85070001));
+        servicePointVersionRepository.findAllByNumberOrderByValidFrom(ServicePointNumber.ofNumberWithoutCheckDigit(8507000));
 
     assertThat(dbVersions).hasSize(1);
     assertThat(dbVersions.get(0).getEditor()).isEqualTo("fs22222");

@@ -1,6 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.migration;
 
 import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
@@ -130,5 +131,17 @@ public class ServicePointAtlasCsvModel {
   private String editionDate;
 
   private Status status;
+
+  //Remove as soon a new file is generated with the ServicePointNumber without checkDigit
+  public Integer getNumber(){
+    return ServicePointNumber.removeCheckDigit(number);
+  }
+  //Remove as soon a new file is generated with the ServicePointNumber without checkDigit
+  public Integer getOperatingPointKilometerMasterNumber(){
+    if(operatingPointKilometerMasterNumber != null) {
+      return ServicePointNumber.removeCheckDigit(operatingPointKilometerMasterNumber);
+    }
+    return null;
+  }
 
 }

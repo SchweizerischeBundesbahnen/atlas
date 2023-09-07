@@ -1,7 +1,5 @@
 package ch.sbb.atlas.servicepointdirectory.repository;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.Status;
@@ -13,12 +11,15 @@ import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
 public class ServicePointVersionRepositoryTest {
@@ -41,7 +42,7 @@ public class ServicePointVersionRepositoryTest {
     // given
     ServicePointVersion servicePoint = ServicePointVersion
         .builder()
-        .number(ServicePointNumber.of(85070003))
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8507000))
         .numberShort(1)
         .country(Country.SWITZERLAND)
         .designationLong("long designation")
@@ -84,7 +85,7 @@ public class ServicePointVersionRepositoryTest {
 
     ServicePointVersion servicePoint = ServicePointVersion
         .builder()
-        .number(ServicePointNumber.of(85070003))
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8507000))
         .numberShort(1)
         .country(Country.SWITZERLAND)
         .designationLong("long designation")
@@ -114,7 +115,7 @@ public class ServicePointVersionRepositoryTest {
 
     ServicePointVersion servicePoint = ServicePointVersion
         .builder()
-        .number(ServicePointNumber.of(85070003))
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8507000))
         .numberShort(1)
         .country(Country.SWITZERLAND)
         .designationLong("long designation")
@@ -141,7 +142,7 @@ public class ServicePointVersionRepositoryTest {
     // given
     ServicePointVersion servicePoint = ServicePointVersion
         .builder()
-        .number(ServicePointNumber.of(85070003))
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8507000))
         .numberShort(1)
         .operatingPoint(true)
         .operatingPointWithTimetable(true)
@@ -172,7 +173,7 @@ public class ServicePointVersionRepositoryTest {
     // given
     ServicePointVersion servicePoint = ServicePointVersion
         .builder()
-        .number(ServicePointNumber.of(85070003))
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8507000))
         .numberShort(1)
         .country(Country.SWITZERLAND)
         .designationLong("long designation")
@@ -199,7 +200,7 @@ public class ServicePointVersionRepositoryTest {
         .builder()
         .operatingPoint(true)
         .operatingPointWithTimetable(true)
-        .number(ServicePointNumber.of(85070003))
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8507000))
         .numberShort(1)
         .country(Country.SWITZERLAND)
         .designationLong("long designation")
@@ -226,7 +227,7 @@ public class ServicePointVersionRepositoryTest {
   @Test
   void shouldServicePointExistsByServicePointNumber() {
     // given
-    ServicePointNumber servicePointNumber = ServicePointNumber.of(85070003);
+    ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(8507000);
     ServicePointVersion servicePoint = ServicePointVersion
         .builder()
         .operatingPoint(true)
@@ -256,7 +257,7 @@ public class ServicePointVersionRepositoryTest {
   @Test
   void shouldServicePointNotExistsByServicePointNumber() {
     // given
-    ServicePointNumber servicePointNumber = ServicePointNumber.of(85070003);
+    ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(8507001);
     ServicePointVersion servicePoint = ServicePointVersion
         .builder()
         .operatingPoint(true)
@@ -277,7 +278,7 @@ public class ServicePointVersionRepositoryTest {
     servicePointVersionRepository.save(servicePoint);
 
     // when
-    boolean result = servicePointVersionRepository.existsByNumber(ServicePointNumber.of(85070001));
+    boolean result = servicePointVersionRepository.existsByNumber(ServicePointNumber.ofNumberWithoutCheckDigit(8507000));
 
     // then
     assertThat(result).isFalse();
@@ -301,7 +302,7 @@ public class ServicePointVersionRepositoryTest {
         .swissLocalityName("Bern")
         .build();
 
-    ServicePointNumber servicePointNumber = ServicePointNumber.of(85070003);
+    ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(8507000);
     ServicePointVersion servicePoint = ServicePointVersion
         .builder()
         .number(servicePointNumber)

@@ -25,6 +25,7 @@ git_push.sh
 index.ts
 model/applicationRole.ts
 model/applicationType.ts
+model/batchExportFileName.ts
 model/businessOrganisation.ts
 model/businessOrganisationVersion.ts
 model/businessType.ts
@@ -62,7 +63,6 @@ model/district.ts
 model/errorDetail.ts
 model/errorResponse.ts
 model/examinantWorkflowCheck.ts
-model/exportFileName.ts
 model/exportType.ts
 model/geolocation.ts
 model/geolocationCreate.ts
@@ -105,6 +105,8 @@ model/servicePointFotCommentModel.ts
 model/servicePointGeolocation.ts
 model/servicePointImportRequest.ts
 model/servicePointNumber.ts
+model/servicePointSearchRequest.ts
+model/servicePointSearchResult.ts
 model/spatialReference.ts
 model/statementStatus.ts
 model/status.ts

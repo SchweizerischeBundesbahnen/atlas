@@ -26,7 +26,7 @@ class ServicePointVersionMapperTest {
     // Given
     ServicePointVersion servicePointVersion = ServicePointVersion
         .builder()
-        .number(ServicePointNumber.of(85000307))
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8500030))
         .sloid("ch:1:sloid:30")
         .numberShort(30)
         .country(Country.SWITZERLAND)
@@ -54,7 +54,7 @@ class ServicePointVersionMapperTest {
 
     ReadServicePointVersionModel expected = ReadServicePointVersionModel
         .builder()
-        .number(ServicePointNumber.of(85000307))
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8500030))
         .sloid("ch:1:sloid:30")
         .designationLong(null)
         .designationOfficial("Basel EuroAirport P")
