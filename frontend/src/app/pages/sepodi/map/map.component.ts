@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnDestroy, ViewChild } from '@angular/core';
 import maplibregl, { Map } from 'maplibre-gl';
 import { MapService } from './map.service';
 import { MAP_STYLES, MapStyle } from './map-options.service';
@@ -14,6 +14,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   currentMapStyle!: MapStyle;
   showMapStyleSelection = false;
   showMapLegend = false;
+  @Input() showSearch!: boolean;
 
   legend!: MapIcon[];
 

@@ -41,6 +41,7 @@ public abstract class BaseCsvWriter<T> {
     });
     writer.setHeaderCallback(new CsvFlatFileHeaderCallback(getCsvHeader()));
     writer.setEncoding(StandardCharsets.UTF_8.name());
+    writer.close();
     return writer;
   }
 

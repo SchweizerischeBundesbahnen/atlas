@@ -6,10 +6,13 @@ import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel;
 import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointImportRequestModel;
+import ch.sbb.atlas.model.exception.BadRequestException;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointApiV1;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointRequestParams;
+import ch.sbb.atlas.servicepointdirectory.api.ServicePointSearchRequest;
+import ch.sbb.atlas.servicepointdirectory.api.ServicePointSearchResult;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointFotComment;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberNotFoundException;
@@ -19,13 +22,14 @@ import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestric
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointFotCommentService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
-import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @Slf4j
@@ -50,6 +54,14 @@ public class ServicePointController implements ServicePointApiV1 {
         .objects(servicePointVersions.stream().map(ServicePointVersionMapper::toModel).toList())
         .totalCount(servicePointVersions.getTotalElements())
         .build();
+  }
+
+  @Override
+  public List<ServicePointSearchResult> searchServicePoints(ServicePointSearchRequest searchRequest) {
+    if(searchRequest == null || searchRequest.getValue() == null || searchRequest.getValue().length() <2 ){
+      throw new BadRequestException("You must enter at least 2 digits to start a search!");
+    }
+    return servicePointService.searchServicePointVersion(searchRequest.getValue());
   }
 
   @Override
@@ -101,7 +113,7 @@ public class ServicePointController implements ServicePointApiV1 {
 
   @Override
   public ServicePointFotCommentModel saveFotComment(Integer servicePointNumber, ServicePointFotCommentModel fotComment) {
-    ServicePointNumber number = ServicePointNumber.of(servicePointNumber);
+    ServicePointNumber number = ServicePointNumber.ofNumberWithoutCheckDigit(servicePointNumber);
     if (!servicePointService.isServicePointNumberExisting(number)) {
       throw new ServicePointNumberNotFoundException(number);
     }
