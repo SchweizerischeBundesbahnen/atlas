@@ -4,7 +4,6 @@ import ch.sbb.atlas.versioning.exception.VersioningException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -48,7 +47,7 @@ public class VersionedObject {
                 objectToVersioningFound
                     .stream()
                     .noneMatch(toVersioningFound -> toVersioningFound.equals(toVersioning))
-            ).collect(Collectors.toList());
+            ).toList();
 
     objectsToVersioningNotFound.forEach(
         toVersioning -> versionedObjects.add(

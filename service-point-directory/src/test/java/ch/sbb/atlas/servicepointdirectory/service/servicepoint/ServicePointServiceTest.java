@@ -3,6 +3,7 @@ package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
+import ch.sbb.atlas.servicepointdirectory.repository.ServicePointSearchVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.BasePointUtility;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -34,17 +35,22 @@ public class ServicePointServiceTest {
   @Mock
   private ServicePointValidationService servicePointValidationService;
 
+  @Mock
+  private ServicePointSearchVersionRepository servicePointSearchVersionRepository;
+
+  private AutoCloseable mocks;
+
   @BeforeEach
   void initMocksAndService() {
     MockitoAnnotations.openMocks(this);
     servicePointService = new ServicePointService(servicePointVersionRepositoryMock, versionableServiceMock,
-        servicePointValidationService);
+        servicePointValidationService, servicePointSearchVersionRepository);
   }
 
   @Test
   void shouldFindServicePoint() {
     // given
-    ServicePointNumber servicePointNumber = ServicePointNumber.of(123);
+    ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(1234567);
 
     // when
     servicePointService.findAllByNumberOrderByValidFrom(servicePointNumber);
@@ -56,7 +62,7 @@ public class ServicePointServiceTest {
   @Test
   void shouldCallExistsByServicePointNumber() {
     // given
-    ServicePointNumber servicePointNumber = ServicePointNumber.of(123);
+    ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(1234567);
 
     // when
     servicePointService.isServicePointNumberExisting(servicePointNumber);

@@ -68,6 +68,7 @@ public class TrafficPointElementVersionExportBatchConfig {
     itemReader.setSql(TrafficPointElementVersionSqlQueryUtil.getSqlQuery(exportType));
     itemReader.setFetchSize(StepUtils.FETCH_SIZE);
     itemReader.setRowMapper(new TrafficPointElementVersionRowMapper());
+    itemReader.close();
     return itemReader;
   }
 
