@@ -14,7 +14,8 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class ServicePointSearchVersionRepository {
-
+    public static final int FETCH_SIZE = 10;
+    public static final int MIN_DIGIT_SEARCH = 2;
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
     public List<ServicePointSearchResult> searchServicePoints(String value) {
@@ -35,7 +36,7 @@ public class ServicePointSearchVersionRepository {
                 query,
                 mapSqlParameterSource,
                 (rs, rowNum) -> {
-                    rs.setFetchSize(10);
+                    rs.setFetchSize(FETCH_SIZE);
                     return new ServicePointSearchResult(
                             rs.getInt("number"),
                             rs.getString("designation_official"));
@@ -46,7 +47,7 @@ public class ServicePointSearchVersionRepository {
     }
 
     private static void validateInput(String value) {
-        if (value.length() < 2) {
+        if (value.length() < MIN_DIGIT_SEARCH) {
             throw new IllegalArgumentException("You must enter at least 2 digits to start a search!");
         }
     }
@@ -65,8 +66,7 @@ public class ServicePointSearchVersionRepository {
     }
 
     private static String escapePercent(String value) {
-        String sanitizeValue = value.replaceAll("%", "\\\\%");
-        return sanitizeValue;
+        return value.replaceAll("%", "\\\\%");
     }
 
     private String getSqlQuery(String value) {
