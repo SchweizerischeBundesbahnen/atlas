@@ -15,14 +15,15 @@ import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import com.fasterxml.jackson.databind.MappingIterator;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
@@ -83,7 +84,7 @@ public class LoadingPointImportService extends BaseImportService<LoadingPointVer
           .sorted(Comparator.comparing(LoadingPointVersion::getValidFrom))
           .toList();
       final List<LoadingPointVersion> dbVersions =
-          loadingPointService.findLoadingPoint(ServicePointNumber.of(container.getDidokCode()),
+          loadingPointService.findLoadingPoint(ServicePointNumber.ofNumberWithoutCheckDigit(container.getDidokCode()),
               container.getLoadingPointNumber());
       replaceCsvMergedVersions(dbVersions, loadingPointVersions);
       for (LoadingPointVersion loadingPointVersion : loadingPointVersions) {
