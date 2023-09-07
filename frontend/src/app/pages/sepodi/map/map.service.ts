@@ -44,6 +44,7 @@ export class MapService {
       bounds: this.mapOptionsService.getInitialBoundingBox(),
       transformRequest: (url: string, resourceType?: ResourceType) =>
         this.mapOptionsService.authoriseRequest(url, resourceType),
+      minZoom: 5,
     });
     MapIconsService.addAllIconsToMap(this.map);
     this.initMapEvents();
