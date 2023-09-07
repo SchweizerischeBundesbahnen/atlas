@@ -31,7 +31,6 @@
 </div>
 
 <div *ngIf="!hasForm">
-  <ng-content></ng-content>
   <ng-select
     #ngSelect
     (change)="changeTrigger.emit($event)"
