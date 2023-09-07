@@ -215,10 +215,14 @@ export class ServicePointFormGroupBuilder {
         this.getOperatingPointTechnicalTimetableType(form);
     }
     if (value.selectedType == ServicePointType.StopPoint) {
-      writableForm.meansOfTransport = value.meansOfTransport!;
-      writableForm.stopPointType = value.stopPointType!;
+      if (value.stopPoint) {
+        writableForm.meansOfTransport = value.meansOfTransport!;
+        writableForm.stopPointType = value.stopPointType!;
+      }
       writableForm.freightServicePoint = value.freightServicePoint!;
-      writableForm.sortCodeOfDestinationStation = value.sortCodeOfDestinationStation!;
+      if (value.freightServicePoint) {
+        writableForm.sortCodeOfDestinationStation = value.sortCodeOfDestinationStation!;
+      }
     }
     if (value.selectedType == ServicePointType.FareStop) {
       writableForm.operatingPointTrafficPointType = OperatingPointTrafficPointType.TariffPoint;
