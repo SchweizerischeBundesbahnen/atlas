@@ -17,6 +17,7 @@ import { MapIconsService } from './map-icons.service';
 
 export const mapZoomLocalStorageKey = 'map-zoom';
 export const mapLocationLocalStorageKey = 'map-location';
+export const mapStyleLocalStorageKey = 'map-style';
 
 @Injectable({
   providedIn: 'root',
@@ -25,7 +26,7 @@ export class MapService {
   map!: Map;
   mapInitialized = new BehaviorSubject(false);
   selectedElement = new Subject<GeoJsonProperties>();
-  currentMapStyle = MAP_STYLES[0];
+  currentMapStyle!: MapStyle;
 
   popup = new Popup({
     closeButton: true,
@@ -98,6 +99,7 @@ export class MapService {
   switchToStyle(style: MapStyle) {
     this.hideAllMapStyles();
     this.currentMapStyle = style;
+    localStorage.setItem(mapStyleLocalStorageKey, style.id);
     this.map.setLayoutProperty(style.id, 'visibility', 'visible');
     return this.currentMapStyle;
   }
@@ -167,6 +169,19 @@ export class MapService {
     this.map.on('moveend', (e) => {
       localStorage.setItem(mapLocationLocalStorageKey, JSON.stringify(e.target.getCenter()));
     });
+
+    this.initStoredMapStyle();
+  }
+
+  private initStoredMapStyle() {
+    const storedStyle = MAP_STYLES.find(
+      (i) => i.id === localStorage.getItem(mapStyleLocalStorageKey)
+    );
+    if (storedStyle) {
+      this.switchToStyle(storedStyle);
+    } else {
+      this.switchToStyle(MAP_STYLES[0]);
+    }
   }
 
   showPopup(event: MapMouseEvent & { features?: MapGeoJSONFeature[] }) {
