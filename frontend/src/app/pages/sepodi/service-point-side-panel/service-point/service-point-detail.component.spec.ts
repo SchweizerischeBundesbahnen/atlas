@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ServicePointDetailComponent } from './service-point-detail.component';
-import { AppTestingModule } from '../../../../app.testing.module';
+import { AppTestingModule, authServiceMock } from '../../../../app.testing.module';
 import { AuthService } from '../../../../core/auth/auth.service';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
@@ -24,7 +24,6 @@ import { NotificationService } from '../../../../core/notification/notification.
 import { ServicePointType } from './service-point-type';
 import { DisplayCantonPipe } from '../../../../core/cantons/display-canton.pipe';
 
-const authService: Partial<AuthService> = {};
 const dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirm']);
 const servicePointsServiceSpy = jasmine.createSpyObj('ServicePointService', ['updateServicePoint']);
 const notificationServiceSpy = jasmine.createSpyObj('NotificationService', ['success']);
@@ -52,7 +51,7 @@ describe('ServicePointDetailComponent', () => {
       ],
       imports: [AppTestingModule, FormsModule],
       providers: [
-        { provide: AuthService, useValue: authService },
+        { provide: AuthService, useValue: authServiceMock },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: DialogService, useValue: dialogServiceSpy },
         { provide: ServicePointsService, useValue: servicePointsServiceSpy },
