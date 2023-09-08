@@ -10,11 +10,11 @@ describe('FormatServicePointNumber', () => {
 
   it('should display service point number formatted', () => {
     const servicePointNumber: ServicePointNumber = {
-      number: 857000,
+      number: 8507000,
       numberShort: 7000,
       checkDigit: 3,
       uicCountryCode: 85,
     };
-    expect(pipe.transform(servicePointNumber)).toEqual('85 7000');
+    expect(pipe.transform(servicePointNumber)).toEqual('85 07000');
   });
 });
