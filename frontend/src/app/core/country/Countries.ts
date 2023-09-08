@@ -91,4 +91,8 @@ export class Countries {
   public static fromCountry(country: Country | undefined): CountryName | undefined {
     return this.countryNames.find((countryName) => countryName.enumCountry === country);
   }
+
+  static fromUicCode(uicCountryCode: number) {
+    return this.countryNames.find((countryName) => countryName.uicCode === uicCountryCode)!;
+  }
 }
