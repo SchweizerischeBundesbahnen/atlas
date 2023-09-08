@@ -4,6 +4,7 @@ import { AuthService } from '../../auth/auth.service';
 import { AtlasButtonType } from './atlas-button.type';
 import { NON_PROD_STAGES } from '../../constants/stages';
 import { environment } from '../../../../environments/environment';
+import { Countries } from '../../country/Countries';
 
 @Component({
   selector: 'atlas-button[buttonType]',
@@ -13,6 +14,7 @@ export class AtlasButtonComponent {
   @Input() applicationType!: ApplicationType;
   @Input() businessOrganisation!: string;
   @Input() canton!: string;
+  @Input() uicCountryCode?: number;
   @Input() disabled!: boolean;
 
   @Input() wrapperStyleClass!: string;
@@ -74,6 +76,15 @@ export class AtlasButtonComponent {
     }
     if (this.applicationType !== ApplicationType.Bodi && !this.businessOrganisation) {
       throw new Error('Edit button needs businessOrganisation');
+    }
+    if (this.uicCountryCode) {
+      return (
+        this.authService.hasPermissionsToWrite(this.applicationType, this.businessOrganisation) &&
+        this.authService.hasPermissionsToWrite(
+          this.applicationType,
+          Countries.fromUicCode(this.uicCountryCode).enumCountry
+        )
+      );
     }
     return this.authService.hasPermissionsToWrite(this.applicationType, this.businessOrganisation);
   }
