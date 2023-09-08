@@ -453,4 +453,23 @@ class BusinessOrganisationBasedUserAdministrationServiceTest {
         assertThat(bodiPermissions).isFalse();
     }
 
+    @Test
+    void shouldReturnNoAccessForReaderOfUnknownApplication() {
+        // Given
+        when(userPermissionHolder.getCurrentUser()).thenReturn(Optional.of(UserAdministrationModel.builder()
+            .userId("e123456")
+            .permissions(Set.of(
+                UserAdministrationPermissionModel.builder()
+                    .application(ApplicationType.BODI)
+                    .role(ApplicationRole.READER)
+                    .build()))
+            .build()));
+
+        // When
+        boolean bodiPermissions = businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(ApplicationType.SEPODI);
+
+        // Then
+        assertThat(bodiPermissions).isFalse();
+    }
+
 }
