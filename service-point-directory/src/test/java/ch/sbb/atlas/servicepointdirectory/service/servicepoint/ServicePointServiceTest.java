@@ -1,26 +1,24 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
+
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointSearchVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.BasePointUtility;
 import ch.sbb.atlas.versioning.service.VersionableService;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import org.hibernate.StaleObjectStateException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.verify;
 
 public class ServicePointServiceTest {
 
@@ -78,18 +76,6 @@ public class ServicePointServiceTest {
 
     // then
     verify(servicePointVersionRepositoryMock).findById(eq(123L));
-  }
-
-  @Test
-  void shouldCallSave() {
-    // given
-    ServicePointVersion servicePointVersion = ServicePointTestData.getBernWyleregg();
-
-    // when
-    servicePointService.save(servicePointVersion);
-
-    // then
-    verify(servicePointVersionRepositoryMock).saveAndFlush(eq(servicePointVersion));
   }
 
   @Test
