@@ -1,6 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
 import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.service.UserService;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointSearchResult;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
@@ -12,6 +13,7 @@ import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import java.util.List;
 import java.util.Optional;
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -63,6 +65,9 @@ public class ServicePointService {
       + "T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
   public ServicePointVersion save(ServicePointVersion servicePointVersion) {
     servicePointVersion.setStatus(Status.VALIDATED);
+    servicePointVersion.setEditionDate(LocalDateTime.now());
+    servicePointVersion.setEditor(UserService.getUserIdentifier());
+
     servicePointValidationService.validateServicePointPreconditionBusinessRule(servicePointVersion);
     return servicePointVersionRepository.saveAndFlush(servicePointVersion);
   }
