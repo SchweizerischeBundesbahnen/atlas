@@ -6,6 +6,8 @@ import { ServicePointNumber } from '../../../api';
 })
 export class FormatServicePointNumber implements PipeTransform {
   transform(value: ServicePointNumber): string {
-    return `${value.uicCountryCode} ${value.numberShort}`;
+    let numberShort = String(value.numberShort);
+    numberShort = '0'.repeat(5 - numberShort.length) + numberShort;
+    return `${value.uicCountryCode} ${numberShort}`;
   }
 }
