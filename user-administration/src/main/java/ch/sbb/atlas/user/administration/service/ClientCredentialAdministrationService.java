@@ -9,6 +9,7 @@ import ch.sbb.atlas.user.administration.mapper.ClientCredentialMapper;
 import ch.sbb.atlas.user.administration.mapper.ClientCredentialPermissionCreateMapper;
 import ch.sbb.atlas.user.administration.mapper.PermissionRestrictionMapper;
 import ch.sbb.atlas.user.administration.repository.ClientCredentialPermissionRepository;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -70,6 +71,7 @@ public class ClientCredentialAdministrationService {
             restriction -> PermissionRestrictionMapper.toEntity(existingPermission, restriction))
         .collect(Collectors.toSet());
     existingPermission.getPermissionRestrictions().addAll(permissionRestrictions);
+    existingPermission.setEditionDate(LocalDateTime.now());
   }
 
 }
