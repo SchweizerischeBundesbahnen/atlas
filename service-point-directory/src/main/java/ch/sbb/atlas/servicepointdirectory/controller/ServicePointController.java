@@ -15,6 +15,7 @@ import ch.sbb.atlas.servicepointdirectory.api.ServicePointSearchRequest;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointSearchResult;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointFotComment;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
+import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberAlreadyExistsException;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointFotCommentMapper;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointVersionMapper;
@@ -89,8 +90,11 @@ public class ServicePointController implements ServicePointApiV1 {
 
   @Override
   public ReadServicePointVersionModel createServicePoint(CreateServicePointVersionModel createServicePointVersionModel) {
-    return ServicePointVersionMapper.toModel(
-        servicePointService.save(ServicePointVersionMapper.toEntity(createServicePointVersionModel)));
+    ServicePointVersion servicePointVersion = ServicePointVersionMapper.toEntity(createServicePointVersionModel);
+    if (servicePointService.isServicePointNumberExisting(servicePointVersion.getNumber())) {
+      throw new ServicePointNumberAlreadyExistsException(servicePointVersion.getNumber());
+    }
+    return ServicePointVersionMapper.toModel(servicePointService.save(servicePointVersion));
   }
 
   @Override

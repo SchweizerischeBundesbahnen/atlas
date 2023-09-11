@@ -199,4 +199,17 @@ class CreateServicePointVersionModelTest {
     Set<ConstraintViolation<CreateServicePointVersionModel>> constraintViolations = validator.validate(servicePointVersionModel);
     assertThat(constraintViolations).isNotEmpty();
   }
+
+  @Test
+  void shouldNotAllowServicePointVersionWithoutNumber() {
+    CreateServicePointVersionModel servicePointVersionModel = CreateServicePointVersionModel.builder()
+        .designationOfficial("Bern")
+        .businessOrganisation("ch:1:sboid:5846489645")
+        .validFrom(LocalDate.of(2022, 1, 1))
+        .validTo(LocalDate.of(2022, 12, 31))
+        .build();
+
+    Set<ConstraintViolation<CreateServicePointVersionModel>> constraintViolations = validator.validate(servicePointVersionModel);
+    assertThat(constraintViolations).hasSize(1);
+  }
 }
