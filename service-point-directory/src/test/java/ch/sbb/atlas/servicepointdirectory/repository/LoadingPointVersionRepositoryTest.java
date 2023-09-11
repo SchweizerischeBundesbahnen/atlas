@@ -1,15 +1,16 @@
 package ch.sbb.atlas.servicepointdirectory.repository;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
-import java.time.LocalDate;
-import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
 @Transactional
@@ -31,7 +32,7 @@ public class LoadingPointVersionRepositoryTest {
         .designation("Ladestelle")
         .designationLong("Grosse Ladestelle")
         .connectionPoint(true)
-        .servicePointNumber(ServicePointNumber.of(85070003))
+        .servicePointNumber(ServicePointNumber.ofNumberWithoutCheckDigit(8507000))
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2022, 12, 31))
         .build();
@@ -50,7 +51,7 @@ public class LoadingPointVersionRepositoryTest {
         LoadingPointVersion
             .builder()
             .number(1)
-            .servicePointNumber(ServicePointNumber.of(90070001))
+            .servicePointNumber(ServicePointNumber.ofNumberWithoutCheckDigit(9007000))
             .validFrom(LocalDate.of(2022, 1, 1))
             .validTo(LocalDate.of(2022, 12, 31))
             .designation("Ladestelle")
@@ -58,7 +59,7 @@ public class LoadingPointVersionRepositoryTest {
         LoadingPointVersion
             .builder()
             .number(1)
-            .servicePointNumber(ServicePointNumber.of(85070001))
+            .servicePointNumber(ServicePointNumber.ofNumberWithoutCheckDigit(8507000))
             .validFrom(LocalDate.of(2022, 1, 1))
             .validTo(LocalDate.of(2022, 12, 31))
             .designation("Ladestelle")
@@ -66,7 +67,7 @@ public class LoadingPointVersionRepositoryTest {
         LoadingPointVersion
             .builder()
             .number(5)
-            .servicePointNumber(ServicePointNumber.of(85070001))
+            .servicePointNumber(ServicePointNumber.ofNumberWithoutCheckDigit(8507000))
             .validFrom(LocalDate.of(2022, 1, 1))
             .validTo(LocalDate.of(2022, 12, 31))
             .designation("Ladestelle")
@@ -74,7 +75,7 @@ public class LoadingPointVersionRepositoryTest {
         LoadingPointVersion
             .builder()
             .number(1)
-            .servicePointNumber(ServicePointNumber.of(85070001))
+            .servicePointNumber(ServicePointNumber.ofNumberWithoutCheckDigit(8507000))
             .validFrom(LocalDate.of(2020, 1, 1))
             .validTo(LocalDate.of(2020, 12, 31))
             .designation("Ladestelle")
@@ -85,7 +86,7 @@ public class LoadingPointVersionRepositoryTest {
     // when
     final List<LoadingPointVersion> foundLoadingPoints =
         loadingPointVersionRepository.findAllByServicePointNumberAndNumberOrderByValidFrom(
-            ServicePointNumber.of(85070001),
+            ServicePointNumber.ofNumberWithoutCheckDigit(8507000),
             1
         );
 
@@ -93,11 +94,11 @@ public class LoadingPointVersionRepositoryTest {
     assertThat(foundLoadingPoints).hasSize(2);
     assertThat(foundLoadingPoints.get(0).getValidFrom()).isEqualTo("2020-01-01");
     assertThat(foundLoadingPoints.get(0).getNumber()).isEqualTo(1);
-    assertThat(foundLoadingPoints.get(0).getServicePointNumber().asString()).isEqualTo("85070001");
+    assertThat(foundLoadingPoints.get(0).getServicePointNumber().asString()).isEqualTo("8507000");
 
     assertThat(foundLoadingPoints.get(1).getValidFrom()).isEqualTo("2022-01-01");
     assertThat(foundLoadingPoints.get(1).getNumber()).isEqualTo(1);
-    assertThat(foundLoadingPoints.get(1).getServicePointNumber().asString()).isEqualTo("85070001");
+    assertThat(foundLoadingPoints.get(1).getServicePointNumber().asString()).isEqualTo("8507000");
   }
 
   @Test
@@ -106,7 +107,7 @@ public class LoadingPointVersionRepositoryTest {
     final LoadingPointVersion loadingPointVersion = LoadingPointVersion
         .builder()
         .number(1)
-        .servicePointNumber(ServicePointNumber.of(85070001))
+        .servicePointNumber(ServicePointNumber.ofNumberWithoutCheckDigit(8507000))
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2022, 12, 31))
         .designation("Ladestelle")
@@ -115,7 +116,7 @@ public class LoadingPointVersionRepositoryTest {
 
     // when
     final boolean result = loadingPointVersionRepository.existsByServicePointNumberAndNumber(
-        ServicePointNumber.of(85070001),
+        ServicePointNumber.ofNumberWithoutCheckDigit(8507000),
         1
     );
 
