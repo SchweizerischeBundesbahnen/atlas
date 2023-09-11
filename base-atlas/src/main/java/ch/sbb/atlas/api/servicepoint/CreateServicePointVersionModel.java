@@ -57,6 +57,9 @@ public class CreateServicePointVersionModel extends ServicePointVersionModel {
   @JsonIgnore
   @AssertTrue(message = "FreightServicePoint in CH needs sortCodeOfDestinationStation")
   public boolean isValidFreightServicePoint() {
+    if (numberWithoutCheckDigit == null) {
+      return true;
+    }
     ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(numberWithoutCheckDigit);
     return !(servicePointNumber.getCountry() == Country.SWITZERLAND && super.isFreightServicePoint() && !getValidFrom().isBefore(
             LocalDate.now()))
