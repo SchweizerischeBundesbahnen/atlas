@@ -2,6 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { VersionsHandlingService } from '../../../../core/versioning/versions-handling.service';
 import {
+  ApplicationRole,
+  ApplicationType,
   Category,
   CreateServicePointVersion,
   OperatingPointTechnicalTimetableType,
@@ -25,6 +27,7 @@ import { ValidationService } from '../../../../core/validation/validation.servic
 import { takeUntil } from 'rxjs/operators';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { DetailFormComponent } from '../../../../core/leave-guard/leave-dirty-form-guard.service';
+import { AuthService } from '../../../../core/auth/auth.service';
 
 @Component({
   selector: 'app-service-point',
@@ -62,7 +65,8 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     private dialogService: DialogService,
     private servicePointService: ServicePointsService,
     private notificationService: NotificationService,
-    private mapService: MapService
+    private mapService: MapService,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
@@ -95,7 +99,9 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.servicePointVersions);
 
     if (this.preferredId) {
-      this.selectedVersion = this.servicePointVersions.find((i) => i.id === this.preferredId)!;
+      this.selectedVersion =
+        this.servicePointVersions.find((i) => i.id === this.preferredId) ??
+        VersionsHandlingService.determineDefaultVersionByValidity(this.servicePointVersions);
       this.preferredId = undefined;
     } else {
       this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(
@@ -190,6 +196,23 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     return of(true);
   }
 
+  private confirmBoTransfer(): Observable<boolean> {
+    const currentlySelectedBo = this.form.controls.businessOrganisation.value;
+    const permission = this.authService.getApplicationUserPermission(ApplicationType.Sepodi);
+    if (
+      !this.authService.isAdmin &&
+      permission.role == ApplicationRole.Writer &&
+      currentlySelectedBo &&
+      !AuthService.getSboidRestrictions(permission).includes(currentlySelectedBo)
+    ) {
+      return this.dialogService.confirm({
+        title: 'DIALOG.CONFIRM_BO_TRANSFER_TITLE',
+        message: 'DIALOG.CONFIRM_BO_TRANSFER',
+      });
+    }
+    return of(true);
+  }
+
   save() {
     ValidationService.validateForm(this.form);
     if (this.form.valid) {
@@ -217,16 +240,22 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   }
 
   private update(id: number, servicePointVersion: CreateServicePointVersion) {
-    this.preferredId = id;
-    this.servicePointService
-      .updateServicePoint(id, servicePointVersion)
-      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
-      .subscribe(() => {
-        this.notificationService.success('SEPODI.SERVICE_POINTS.NOTIFICATION.EDIT_SUCCESS');
-        this.router
-          .navigate(['..', this.selectedVersion.number.number], { relativeTo: this.route })
-          .then();
-      });
+    this.confirmBoTransfer().subscribe((confirmed) => {
+      if (confirmed) {
+        this.preferredId = id;
+        this.servicePointService
+          .updateServicePoint(id, servicePointVersion)
+          .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
+          .subscribe(() => {
+            this.notificationService.success('SEPODI.SERVICE_POINTS.NOTIFICATION.EDIT_SUCCESS');
+            this.router
+              .navigate(['..', this.selectedVersion.number.number], { relativeTo: this.route })
+              .then();
+          });
+      } else {
+        this.form.enable();
+      }
+    });
   }
 
   private handleError() {
