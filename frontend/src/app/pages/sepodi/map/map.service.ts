@@ -14,9 +14,11 @@ import { MAP_STYLES, MapOptionsService, MapStyle } from './map-options.service';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { CoordinatePair } from '../../../api';
 import { MapIconsService } from './map-icons.service';
+import { Pages } from '../../pages';
 
 export const mapZoomLocalStorageKey = 'map-zoom';
 export const mapLocationLocalStorageKey = 'map-location';
+export const mapStyleLocalStorageKey = 'map-style';
 
 @Injectable({
   providedIn: 'root',
@@ -25,7 +27,7 @@ export class MapService {
   map!: Map;
   mapInitialized = new BehaviorSubject(false);
   selectedElement = new Subject<GeoJsonProperties>();
-  currentMapStyle = MAP_STYLES[0];
+  currentMapStyle!: MapStyle;
 
   popup = new Popup({
     closeButton: true,
@@ -43,6 +45,7 @@ export class MapService {
       bounds: this.mapOptionsService.getInitialBoundingBox(),
       transformRequest: (url: string, resourceType?: ResourceType) =>
         this.mapOptionsService.authoriseRequest(url, resourceType),
+      minZoom: 5,
     });
     MapIconsService.addAllIconsToMap(this.map);
     this.initMapEvents();
@@ -98,6 +101,7 @@ export class MapService {
   switchToStyle(style: MapStyle) {
     this.hideAllMapStyles();
     this.currentMapStyle = style;
+    localStorage.setItem(mapStyleLocalStorageKey, style.id);
     this.map.setLayoutProperty(style.id, 'visibility', 'visible');
     return this.currentMapStyle;
   }
@@ -167,6 +171,19 @@ export class MapService {
     this.map.on('moveend', (e) => {
       localStorage.setItem(mapLocationLocalStorageKey, JSON.stringify(e.target.getCenter()));
     });
+
+    this.initStoredMapStyle();
+  }
+
+  private initStoredMapStyle() {
+    const storedStyle = MAP_STYLES.find(
+      (i) => i.id === localStorage.getItem(mapStyleLocalStorageKey)
+    );
+    if (storedStyle) {
+      this.switchToStyle(storedStyle);
+    } else {
+      this.switchToStyle(MAP_STYLES[0]);
+    }
   }
 
   showPopup(event: MapMouseEvent & { features?: MapGeoJSONFeature[] }) {
@@ -192,7 +209,9 @@ export class MapService {
     features.forEach((point) => {
       let formattedNumber = String(point.properties.number);
       formattedNumber = `${formattedNumber.slice(0, 2)} ${formattedNumber.slice(2)}`;
-      popupHtml += `<a href="service-point-directory/service-points/${point.properties.number}"><b>${formattedNumber}</b> - ${point.properties.designationOfficial}</a> <br/>`;
+      popupHtml +=
+        `<a href="${Pages.SEPODI.path}/${Pages.SERVICE_POINTS.path}/${point.properties.number}">` +
+        `<b>${formattedNumber}</b> - ${point.properties.designationOfficial}</a> <br/>`;
     });
 
     return popupHtml;
