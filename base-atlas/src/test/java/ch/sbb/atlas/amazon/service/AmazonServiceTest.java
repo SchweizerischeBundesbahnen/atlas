@@ -1,6 +1,7 @@
 package ch.sbb.atlas.amazon.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -8,6 +9,7 @@ import ch.sbb.atlas.amazon.config.AmazonConfigProps.AmazonBucketConfig;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.PutObjectResult;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -37,6 +39,11 @@ public class AmazonServiceTest {
         List<AmazonBucketClient> amazonBucketClientList = new ArrayList<>();
         amazonBucketClientList.add(amazonBucketClient);
         amazonService = new AmazonServiceImpl(amazonBucketClientList, fileService);
+
+        PutObjectResult putObjectResult = new PutObjectResult();
+        putObjectResult.setMetadata(new ObjectMetadata());
+        putObjectResult.getMetadata().setContentLength(1);
+        when(amazonS3.putObject(any(PutObjectRequest.class))).thenReturn(putObjectResult);
     }
 
     @Test
@@ -50,7 +57,7 @@ public class AmazonServiceTest {
         when(amazonBucketConfig.getBucketName()).thenReturn("testBucket");
         amazonService.putFile(AmazonBucket.EXPORT, tempFile.toFile(), "dir");
         //then
-        verify(amazonS3).putObject(Mockito.any(PutObjectRequest.class));
+        verify(amazonS3).putObject(any(PutObjectRequest.class));
         verify(amazonS3).getUrl(Mockito.anyString(), Mockito.anyString());
     }
 
@@ -68,7 +75,7 @@ public class AmazonServiceTest {
         amazonService.putZipFile(AmazonBucket.EXPORT, tempFile.toFile(), "dir");
         //then
         verify(fileService).zipFile(tempFile.toFile());
-        verify(amazonS3).putObject(Mockito.any(PutObjectRequest.class));
+        verify(amazonS3).putObject(any(PutObjectRequest.class));
         verify(amazonS3).getUrl(Mockito.anyString(), Mockito.anyString());
     }
 
