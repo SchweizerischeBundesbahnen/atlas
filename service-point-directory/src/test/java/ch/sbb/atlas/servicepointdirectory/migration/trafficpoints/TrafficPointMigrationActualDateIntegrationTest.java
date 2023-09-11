@@ -1,10 +1,13 @@
-package ch.sbb.atlas.servicepointdirectory.migration;
+package ch.sbb.atlas.servicepointdirectory.migration.trafficpoints;
 
+import static ch.sbb.atlas.servicepointdirectory.migration.CsvReader.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.servicepointdirectory.migration.DateRange;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -19,12 +22,11 @@ import org.junit.jupiter.api.TestMethodOrder;
 @IntegrationTest
 @Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class TrafficPointMigrationIntegrationTest {
+public class TrafficPointMigrationActualDateIntegrationTest {
 
-  static final String BASE_PATH = "/migration/";
-
-  private static final String DIDOK_CSV_FILE = "DIDOK3_VERKEHRSPUNKTELEMENTE_ALL_V_1_20230824011928.csv";
-  private static final String ATLAS_CSV_FILE = "full-world-traffic_point-2023-08-24.csv";
+  private static final String DIDOK_CSV_FILE = "DIDOK3_VERKEHRSPUNKTELEMENTE_STICHTAG_V_1_20230906011803.csv";
+  private static final String ATLAS_CSV_FILE = "actual_date-world-traffic_point-2023-09-06.csv";
+  private static final LocalDate ACTUAL_DATE = LocalDate.of(2023, 9, 6);
 
   private static final List<TrafficPointAtlasCsvModel> trafficPointElementCsvModels = new ArrayList<>();
   private static final List<TrafficPointDidokCsvModel> didokCsvLines = new ArrayList<>();
@@ -32,13 +34,15 @@ public class TrafficPointMigrationIntegrationTest {
   @Test
   @Order(1)
   void shouldParseCsvsCorrectly() throws IOException {
-    try (InputStream csvStream = this.getClass().getResourceAsStream(BASE_PATH + DIDOK_CSV_FILE)) {
-      didokCsvLines.addAll(DidokCsvReader.parseDidokTrafficPoints(csvStream));
+    try (InputStream csvStream =
+        this.getClass().getResourceAsStream(BASE_PATH + DIDOK_CSV_FILE)) {
+      didokCsvLines.addAll(parseCsv(csvStream, TrafficPointDidokCsvModel.class));
     }
     assertThat(didokCsvLines).isNotEmpty();
 
-    try (InputStream csvStream = this.getClass().getResourceAsStream(BASE_PATH + ATLAS_CSV_FILE)) {
-      trafficPointElementCsvModels.addAll(AtlasCsvReader.parseAtlasTraffics(csvStream));
+    try (InputStream csvStream =
+        this.getClass().getResourceAsStream(BASE_PATH + ATLAS_CSV_FILE)) {
+      trafficPointElementCsvModels.addAll(parseCsv(csvStream, TrafficPointAtlasCsvModel.class));
     }
     assertThat(trafficPointElementCsvModels).isNotEmpty();
   }
@@ -64,40 +68,17 @@ public class TrafficPointMigrationIntegrationTest {
 
   @Test
   @Order(3)
-  void shouldHaveSameValidityOnEachDidokCode() {
-    Map<String, Validity> groupedDidokSloids = didokCsvLines.stream().collect(
-        Collectors.groupingBy(TrafficPointDidokCsvModel::getSloid, Collectors.collectingAndThen(Collectors.toList(),
-            list -> new Validity(
-                list.stream().map(i -> new DateRange(i.getValidFrom(), i.getValidTo())).collect(Collectors.toList())).minify())));
-
-    Map<String, Validity> groupedAtlasSloids = trafficPointElementCsvModels.stream().collect(
-        Collectors.groupingBy(TrafficPointAtlasCsvModel::getSloid, Collectors.collectingAndThen(Collectors.toList(),
-            list -> new Validity(
-                list.stream().map(i -> new DateRange(AtlasCsvReader.dateFromString(i.getValidFrom()),
-                        AtlasCsvReader.dateFromString(i.getValidTo())))
-                    .collect(Collectors.toList())).minify())));
-
-    List<String> validityErrors = new ArrayList<>();
-    groupedDidokSloids.forEach((sloid, didokValidity) -> {
-      Validity atlasValidity = groupedAtlasSloids.get(sloid);
-      if (atlasValidity == null) {
-        System.out.println("Didok SLOID [" + sloid + "] not found in ATLAS");
-      } else if (!atlasValidity.equals(didokValidity)) {
-        validityErrors.add(
-            "ValidityError on didokCode: " + sloid + " didokValidity=" + didokValidity + ", atlasValidity=" + atlasValidity);
-      }
-    });
-
-    if (!validityErrors.isEmpty()) {
-      log.error("{}", validityErrors);
-    }
-    assertThat(validityErrors).isEmpty();
+  void shouldHaveOnlyVersionsValidOnActualDate() {
+    trafficPointElementCsvModels.forEach(atlasCsvLine -> assertThat(
+            DateRange.builder()
+                .from(dateFromString(atlasCsvLine.getValidFrom()))
+                .to(dateFromString(atlasCsvLine.getValidTo()))
+                .build()
+                .contains(ACTUAL_DATE)
+        ).isTrue()
+    );
   }
 
-  /**
-   * For each Version in didok we will look at the GUELTIG_VON, look up the corresponding Atlas Traffic Point Version (valid on
-   * GUELTIG_VON) and do a comparison
-   */
   @Test
   @Order(4)
   void shouldHaveMappedFieldsToAtlasCorrectly() {
@@ -114,9 +95,12 @@ public class TrafficPointMigrationIntegrationTest {
   private TrafficPointAtlasCsvModel findCorrespondingAtlasServicePointVersion(TrafficPointDidokCsvModel didokCsvLine,
       List<TrafficPointAtlasCsvModel> atlasCsvLines) {
     List<TrafficPointAtlasCsvModel> matchedVersions = atlasCsvLines.stream().filter(
-        atlasCsvLine -> new DateRange(AtlasCsvReader.dateFromString(atlasCsvLine.getValidFrom()),
-            AtlasCsvReader.dateFromString(atlasCsvLine.getValidTo())).contains(
-            didokCsvLine.getValidFrom())).toList();
+            atlasCsvLine -> DateRange.builder()
+                .from(dateFromString(atlasCsvLine.getValidFrom()))
+                .to(dateFromString(atlasCsvLine.getValidTo()))
+                .build()
+                .contains(didokCsvLine.getValidFrom()))
+        .toList();
     if (matchedVersions.size() == 1) {
       return matchedVersions.get(0);
     }
