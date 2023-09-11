@@ -7,15 +7,14 @@ import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion_;
 import ch.sbb.atlas.servicepointdirectory.service.loadingpoint.LoadingPointElementRequestParams;
 import ch.sbb.atlas.servicepointdirectory.service.loadingpoint.LoadingPointServicePointSpecification;
+import java.util.List;
+import java.util.Optional;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Singular;
 import lombok.ToString;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-
-import java.util.List;
-import java.util.Optional;
 
 @Getter
 @ToString
@@ -33,7 +32,7 @@ public class LoadingPointSearchRestrictions {
                 .and(specBuilder().validOnSpecification(Optional.ofNullable(loadingPointElementRequestParams.getValidOn())))
                 .and(specBuilder().inSpecification(loadingPointElementRequestParams.getNumbers(),
                     LoadingPointVersion.Fields.number))
-                .and(specBuilder().inSpecification(loadingPointElementRequestParams.getServicePointNumbers(),
+                .and(specBuilder().inSpecification(loadingPointElementRequestParams.getServicePointNumbersWithoutDigits(),
                     LoadingPointVersion.Fields.servicePointNumber))
                 .and(new LoadingPointServicePointSpecification<>(
                         loadingPointElementRequestParams.getSboids(),

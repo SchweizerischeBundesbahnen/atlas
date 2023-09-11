@@ -20,7 +20,7 @@ public class ServicePointVersionCsvServicePointProcessor extends BaseServicePoin
         .numberShort(version.getNumber().getNumberShort())
         .uicCountryCode(version.getCountry().getUicCode())
         .sloid(version.getSloid())
-        .number(version.getNumber().getValue())
+        .number(version.getNumber().getNumber())
         .checkDigit(version.getNumber().getCheckDigit())
         .validFrom(DATE_FORMATTER.format(version.getValidFrom()))
         .validTo(DATE_FORMATTER.format(version.getValidTo()))

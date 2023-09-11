@@ -2,8 +2,8 @@ package ch.sbb.exportservice.controller;
 
 import ch.sbb.atlas.api.controller.GzipFileDownloadHttpHeader;
 import ch.sbb.atlas.api.model.ErrorResponse;
-import ch.sbb.exportservice.model.BatchExportFileName;
 import ch.sbb.exportservice.exception.NotAllowedExportFileException;
+import ch.sbb.exportservice.model.BatchExportFileName;
 import ch.sbb.exportservice.model.ExportType;
 import ch.sbb.exportservice.service.ExportLoadingPointJobService;
 import ch.sbb.exportservice.service.ExportServicePointJobService;
@@ -49,10 +49,10 @@ public class ExportServicePointBatchControllerApiV1 {
       @ApiResponse(responseCode = "404", description = "Object with filename myFile not found", content = @Content(schema =
       @Schema(implementation = ErrorResponse.class)))
   })
-  public ResponseEntity<StreamingResponseBody> streamJsonFile(@PathVariable("exportFileName") BatchExportFileName exportFileName,
-      @PathVariable("exportType") ExportType exportType) {
-    checkInputPath(exportFileName, exportType);
-    StreamingResponseBody body = fileExportService.streamJsonFile(exportType, exportFileName);
+  public ResponseEntity<StreamingResponseBody> streamExportJsonFile(@PathVariable("exportFileName") BatchExportFileName exportFileName,
+                                                                    @PathVariable("exportType") ExportType exportType) {
+    checkInputPath(exportFileName,exportType);
+    StreamingResponseBody body = fileExportService.streamJsonFile(exportType,exportFileName);
     return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(body);
   }
 
@@ -62,9 +62,9 @@ public class ExportServicePointBatchControllerApiV1 {
       @ApiResponse(responseCode = "404", description = "filename myFile not found", content = @Content(schema =
       @Schema(implementation = ErrorResponse.class)))
   })
-  public ResponseEntity<StreamingResponseBody> streamGzipFile(@PathVariable("exportFileName") BatchExportFileName exportFileName,
-      @PathVariable("exportType") ExportType exportType) throws NotAllowedExportFileException {
-    checkInputPath(exportFileName, exportType);
+  public ResponseEntity<StreamingResponseBody> streamExportGzFile(@PathVariable("exportFileName") BatchExportFileName exportFileName,
+                                                                  @PathVariable("exportType") ExportType exportType) throws NotAllowedExportFileException {
+    checkInputPath(exportFileName,exportType);
     String fileName = fileExportService.getBaseFileName(exportType, exportFileName);
     HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(fileName);
     StreamingResponseBody body = fileExportService.streamGzipFile(exportType, exportFileName);
