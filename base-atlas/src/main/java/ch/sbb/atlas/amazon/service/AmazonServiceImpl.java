@@ -7,6 +7,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.PutObjectResult;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
@@ -36,8 +37,6 @@ public class AmazonServiceImpl implements AmazonService {
       out.finish();
 
       return baos.toByteArray();
-    } catch (IOException e) {
-      throw e;
     }
   }
 
@@ -114,20 +113,16 @@ public class AmazonServiceImpl implements AmazonService {
   }
 
   private URL putFileToBucket(AmazonBucket bucket, File file, String dir, ObjectMetadata metadata) throws IOException {
-    URL url;
     PutObjectRequest putObjectRequest;
     try (FileInputStream inputStream = new FileInputStream(file)) {
       String filePathName = getFilePathName(file, dir);
       putObjectRequest = new PutObjectRequest(getAmazonBucketConfig(bucket).getBucketName(), filePathName, inputStream,
           metadata);
-      getClient(bucket).putObject(putObjectRequest);
-      url = getClient(bucket).getUrl(getAmazonBucketConfig(bucket).getBucketName(), filePathName);
-      return url;
+      return executePutObjectRequest(putObjectRequest, bucket, filePathName);
     }
   }
 
   private URL putGzipFileToBucket(AmazonBucket bucket, File file, String dir) throws IOException {
-    URL url;
     PutObjectRequest putObjectRequest;
     try (FileInputStream inputStream = new FileInputStream(file)) {
       String filePathName = getFilePathName(file, dir) + ".gz";
@@ -138,10 +133,15 @@ public class AmazonServiceImpl implements AmazonService {
       putObjectRequest = new PutObjectRequest(getAmazonBucketConfig(bucket).getBucketName(), filePathName,
           new ByteArrayInputStream(zippedBytes),
           metadata);
-      getClient(bucket).putObject(putObjectRequest);
-      url = getClient(bucket).getUrl(getAmazonBucketConfig(bucket).getBucketName(), filePathName);
-      return url;
+      return executePutObjectRequest(putObjectRequest, bucket, filePathName);
     }
+  }
+
+  private URL executePutObjectRequest(PutObjectRequest putObjectRequest, AmazonBucket bucket, String filePathName) {
+    PutObjectResult putObjectResult = getClient(bucket).putObject(putObjectRequest);
+    URL url = getClient(bucket).getUrl(getAmazonBucketConfig(bucket).getBucketName(), filePathName);
+    log.info("Upload to S3 completed. file={}, size={}", filePathName, putObjectResult.getMetadata().getContentLength());
+    return url;
   }
 
   String getFilePathName(File file, String dir) {
