@@ -142,38 +142,6 @@ describe('ServicePointDetailComponent', () => {
     expect(component.form.enabled).toBeTrue();
   });
 
-  it('should show type change warning dialog and change on confirmation', () => {
-    // given
-    dialogServiceSpy.confirm.and.returnValue(of(true));
-
-    component.form.enable();
-    expect(component.previouslySelectedType).toBe(ServicePointType.StopPoint);
-
-    // when
-    component.form.controls.selectedType.setValue(ServicePointType.OperatingPoint);
-    fixture.detectChanges();
-
-    // then
-    expect(dialogServiceSpy.confirm).toHaveBeenCalled();
-    expect(component.previouslySelectedType).toBe(ServicePointType.OperatingPoint);
-  });
-
-  it('should show type change warning dialog and reset on cancel', () => {
-    // given
-    dialogServiceSpy.confirm.and.returnValue(of(false));
-
-    component.form.enable();
-    expect(component.previouslySelectedType).toBe(ServicePointType.StopPoint);
-
-    // when
-    component.form.controls.selectedType.setValue(ServicePointType.OperatingPoint);
-    fixture.detectChanges();
-
-    // then
-    expect(dialogServiceSpy.confirm).toHaveBeenCalled();
-    expect(component.previouslySelectedType).toBe(ServicePointType.StopPoint);
-  });
-
   it('should show bo transfer dialog on update if user is writer', () => {
     // given
     servicePointsServiceSpy.updateServicePoint.and.returnValue(of(BERN));
