@@ -5,7 +5,6 @@ import { SepodiMapviewComponent } from './mapview/sepodi-mapview.component';
 import { MapComponent } from './map/map.component';
 import { ServicePointSidePanelComponent } from './service-point-side-panel/service-point-side-panel.component';
 import { CoreModule } from '../../core/module/core.module';
-import { FormatServicePointNumber } from './number-pipe/format-service-point-number.pipe';
 import { ServicePointDetailComponent } from './service-point-side-panel/service-point/service-point-detail.component';
 import { AreasDetailComponent } from './service-point-side-panel/areas/areas-detail.component';
 import { TrafficPointElementsDetailComponent } from './service-point-side-panel/traffic-point-elements/traffic-point-elements-detail.component';
@@ -27,7 +26,6 @@ import { SplitServicePointNumberPipe } from './search-service-point/split-servic
     TrafficPointElementsDetailComponent,
     LoadingPointsDetailComponent,
     MapComponent,
-    FormatServicePointNumber,
     MeansOfTransportPickerComponent,
     GeographyComponent,
     SearchServicePointComponent,

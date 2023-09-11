@@ -101,7 +101,7 @@ describe('MapService', () => {
     ] as unknown as MapGeoJSONFeature[];
 
     const result = service.buildServicePointPopupInformation(features);
-    expect(result).toBe(
+    expect(result).toEqual(
       '<a href="service-point-directory/service-points/8507000"><b>85 07000</b> - Bern</a> <br/>'
     );
   });
