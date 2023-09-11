@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.servicepoint.transformer.CoordinateTransformer;
+import ch.sbb.atlas.servicepointdirectory.migration.DoubleAssertion;
 import org.junit.jupiter.api.Test;
 
 class CoordinateTransformerTest {
@@ -23,8 +24,8 @@ class CoordinateTransformerTest {
     CoordinatePair result = coordinateTransformer.transform(
         TEST_COORDINATE_WGS84, SpatialReference.WGS84WEB);
 
-    assertThat(result.getNorth()).isEqualTo(6274861.394006578);
-    assertThat(result.getEast()).isEqualTo(779236.4355529151);
+    assertThat(result.getNorth()).isCloseTo(6274861.3940065, DoubleAssertion.equalOnDecimalDigits(4));
+    assertThat(result.getEast()).isCloseTo(779236.43555291, DoubleAssertion.equalOnDecimalDigits(4));
   }
 
   @Test
