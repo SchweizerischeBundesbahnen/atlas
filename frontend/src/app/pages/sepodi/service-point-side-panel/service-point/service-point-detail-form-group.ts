@@ -138,6 +138,13 @@ export class ServicePointFormGroupBuilder {
   }
 
   private static initConditionalValidators(formGroup: FormGroup<ServicePointDetailFormGroup>) {
+    this.initSelectedTypeValidation(formGroup);
+    this.initStopPointValidation(formGroup);
+    this.initFreightServicePointValidation(formGroup);
+    this.initConditionalLocationValidators(formGroup);
+  }
+
+  private static initSelectedTypeValidation(formGroup: FormGroup<ServicePointDetailFormGroup>) {
     formGroup.controls.selectedType.valueChanges.subscribe((newType) => {
       if (newType === ServicePointType.OperatingPoint) {
         formGroup.controls.operatingPointType.setValidators([Validators.required]);
@@ -153,16 +160,39 @@ export class ServicePointFormGroupBuilder {
         formGroup.updateValueAndValidity();
       }
     });
+  }
 
+  private static initStopPointValidation(formGroup: FormGroup<ServicePointDetailFormGroup>) {
     formGroup.controls.stopPoint.valueChanges.subscribe((isStopPoint) => {
       if (isStopPoint) {
         formGroup.controls.meansOfTransport.setValidators([Validators.required]);
       } else {
         formGroup.controls.meansOfTransport.clearValidators();
       }
-      formGroup.controls.operatingPointType.updateValueAndValidity();
+      formGroup.controls.meansOfTransport.updateValueAndValidity();
     });
+  }
 
+  private static initFreightServicePointValidation(
+    formGroup: FormGroup<ServicePointDetailFormGroup>
+  ) {
+    formGroup.controls.freightServicePoint.valueChanges.subscribe((isFreightServicePoint) => {
+      if (
+        isFreightServicePoint &&
+        String(formGroup.controls.number.value).startsWith('85') &&
+        !formGroup.controls.validFrom.value?.isAfter(moment())
+      ) {
+        formGroup.controls.sortCodeOfDestinationStation.setValidators([Validators.required]);
+      } else {
+        formGroup.controls.sortCodeOfDestinationStation.clearValidators();
+      }
+      formGroup.controls.sortCodeOfDestinationStation.updateValueAndValidity();
+    });
+  }
+
+  private static initConditionalLocationValidators(
+    formGroup: FormGroup<ServicePointDetailFormGroup>
+  ) {
     formGroup.controls.servicePointGeolocation.controls.spatialReference.valueChanges.subscribe(
       (newSpatialReference) => {
         if (newSpatialReference) {
@@ -215,10 +245,14 @@ export class ServicePointFormGroupBuilder {
         this.getOperatingPointTechnicalTimetableType(form);
     }
     if (value.selectedType == ServicePointType.StopPoint) {
-      writableForm.meansOfTransport = value.meansOfTransport!;
-      writableForm.stopPointType = value.stopPointType!;
+      if (value.stopPoint) {
+        writableForm.meansOfTransport = value.meansOfTransport!;
+        writableForm.stopPointType = value.stopPointType!;
+      }
       writableForm.freightServicePoint = value.freightServicePoint!;
-      writableForm.sortCodeOfDestinationStation = value.sortCodeOfDestinationStation!;
+      if (value.freightServicePoint) {
+        writableForm.sortCodeOfDestinationStation = value.sortCodeOfDestinationStation!;
+      }
     }
     if (value.selectedType == ServicePointType.FareStop) {
       writableForm.operatingPointTrafficPointType = OperatingPointTrafficPointType.TariffPoint;

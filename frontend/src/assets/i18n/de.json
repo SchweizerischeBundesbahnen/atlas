@@ -947,14 +947,14 @@
       "SYSTEM_LV95": "Landeskoordinaten LV95",
       "SYSTEM_WGS84": "Globale Koordinaten WGS84",
       "LV95": {
-        "EAST": "E (Ost-West) [m]",
-        "NORTH": "N (Nord-Süd) [m]"
+        "EAST": "Ost [m]",
+        "NORTH": "Nord [m]"
       },
       "WGS84": {
         "EAST": "Länge [°]",
         "NORTH": "Breite [°]"
       },
-      "HEIGHT": "Höhe (M.ü.M.)",
+      "HEIGHT": "Höhe [M.ü.M.]",
       "ADMINISTRATION": "Administrative Einheiten",
       "COUNTRY": "Land",
       "CANTON": "Kanton",
