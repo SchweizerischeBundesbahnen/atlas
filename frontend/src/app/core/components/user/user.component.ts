@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../auth/auth.service';
 import { User } from './user';
-import { Permission } from '../../../api';
+import { ApplicationRole, ApplicationType, Permission } from '../../../api';
 
 @Component({
   selector: 'app-user',
@@ -42,7 +42,15 @@ export class UserComponent implements OnInit {
 
   extractRoles() {
     this.roles = this.authService.roles;
-    this.permissions = this.authService.getPermissions();
+    this.permissions = this.authService
+      .getPermissions()
+      .filter(
+        (permission) =>
+          !(
+            permission.application === ApplicationType.TimetableHearing &&
+            permission.role === ApplicationRole.Reader
+          )
+      );
   }
 
   authenticate() {
