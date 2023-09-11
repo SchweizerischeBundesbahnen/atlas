@@ -27,9 +27,9 @@ public class TrafficPointMappingEquality {
   private void performCoreDataCheck() {
     assertThat(atlasCsvLine.getSloid()).isEqualTo(didokCsvLine.getSloid());
     assertThat(atlasCsvLine.getNumberShort()).isEqualTo(
-        ServicePointNumber.of(didokCsvLine.getServicePointNumber()).getNumberShort());
+        ServicePointNumber.ofNumberWithoutCheckDigit(didokCsvLine.getServicePointNumber()).getNumberShort());
     assertThat(atlasCsvLine.getUicCountryCode()).isEqualTo(Country.from(didokCsvLine.getCountry()).getUicCode());
-    assertThat(atlasCsvLine.getNumber()).isEqualTo(ServicePointNumber.of(didokCsvLine.getServicePointNumber()).getNumber());
+    assertThat(atlasCsvLine.getNumber()).isEqualTo(ServicePointNumber.ofNumberWithoutCheckDigit(didokCsvLine.getServicePointNumber()).getNumber());
     assertThat(atlasCsvLine.getDesignation()).isEqualTo(didokCsvLine.getDesignation());
     assertThat(atlasCsvLine.getDesignationOperational()).isEqualTo(didokCsvLine.getDesignationOperational());
     assertThat(atlasCsvLine.getLength()).isEqualTo(didokCsvLine.getLength());
@@ -50,7 +50,7 @@ public class TrafficPointMappingEquality {
 
     if (atlasCsvLine.getParentSloidServicePoint() != null) {
       assertThat(getParentServicePointNumberFromParentSLOID()).isEqualTo(
-          ServicePointNumber.of(didokCsvLine.getServicePointNumber()).getNumberShort());
+          ServicePointNumber.ofNumberWithoutCheckDigit(didokCsvLine.getServicePointNumber()).getNumberShort());
     }
 
     if (!isFutureTimetable) {

@@ -1,12 +1,13 @@
 package ch.sbb.atlas.imports.servicepoint;
 
 import ch.sbb.atlas.versioning.date.DateHelper;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @NoArgsConstructor
@@ -41,5 +42,7 @@ public abstract class BaseCsvModelContainer<T extends BaseDidokCsvModel> {
   }
 
   protected abstract void logFoundVersionsToMerge();
+
+
 
 }

@@ -1,12 +1,13 @@
 package ch.sbb.atlas.imports.servicepoint.servicepoint;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class ServicePointCsvModelContainerTest {
 
@@ -63,7 +64,7 @@ public class ServicePointCsvModelContainerTest {
         notVirtualWithoutGeolocation.getValidFrom());
     assertThat(container.getServicePointCsvModelList().get(1).getValidTo()).isEqualTo(notVirtualWithoutGeolocation2.getValidTo());
     assertThat(container.isHasMergedVersionNotVirtualWithoutGeolocation()).isTrue();
-    assertThat(container.getDidokCode()).isEqualTo(123);
+    assertThat(container.getDidokCode()).isEqualTo(12);
   }
 
   @Test
@@ -111,7 +112,7 @@ public class ServicePointCsvModelContainerTest {
     assertThat(container.getServicePointCsvModelList().get(1)).isEqualTo(notVirtualWithoutGeolocation);
     assertThat(container.getServicePointCsvModelList().get(2)).isEqualTo(virtualWithoutGeolocation);
     assertThat(container.isHasMergedVersionNotVirtualWithoutGeolocation()).isFalse();
-    assertThat(container.getDidokCode()).isEqualTo(123);
+    assertThat(container.getDidokCode()).isEqualTo(12);
   }
 
   @Test
@@ -160,7 +161,7 @@ public class ServicePointCsvModelContainerTest {
     assertThat(container.getServicePointCsvModelList().get(1)).isEqualTo(notVirtualWithoutGeolocation);
     assertThat(container.getServicePointCsvModelList().get(2)).isEqualTo(virtualWithoutGeolocation);
     assertThat(container.isHasMergedVersionNotVirtualWithoutGeolocation()).isFalse();
-    assertThat(container.getDidokCode()).isEqualTo(123);
+    assertThat(container.getDidokCode()).isEqualTo(12);
   }
 
   @Test
@@ -214,7 +215,7 @@ public class ServicePointCsvModelContainerTest {
     assertThat(container.getServicePointCsvModelList().get(1).getValidTo()).isEqualTo(withAbkuerzung.getValidTo());
     assertThat(container.isHasMergedVersionNotVirtualWithoutGeolocation()).isFalse();
     assertThat(container.isHasJustBezeichnungDiffMerged()).isTrue();
-    assertThat(container.getDidokCode()).isEqualTo(123);
+    assertThat(container.getDidokCode()).isEqualTo(12);
   }
 
   @Test
@@ -254,7 +255,7 @@ public class ServicePointCsvModelContainerTest {
 
     //then
     assertThat(container.getServicePointCsvModelList().size()).isEqualTo(3);
-    assertThat(container.getDidokCode()).isEqualTo(123);
+    assertThat(container.getDidokCode()).isEqualTo(12);
   }
 
 }

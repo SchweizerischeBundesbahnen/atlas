@@ -8,7 +8,6 @@ import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.model.VersioningData;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public final class VersioningHelper {
 
@@ -285,16 +284,11 @@ public final class VersioningHelper {
   public static List<ToVersioning> findObjectToVersioningInValidFromValidToRange(
       LocalDate editedValidFrom, LocalDate editedValidTo, List<ToVersioning> objectsToVersioning) {
     return objectsToVersioning.stream()
-                              .filter(
-                                  toVersioning -> !toVersioning.getValidFrom()
-                                                               .isAfter(
-                                                                   editedValidTo))
-                              .filter(
-                                  toVersioning -> !toVersioning.getValidTo()
-                                                               .isBefore(
-                                                                   editedValidFrom))
-                              .collect(
-                                  Collectors.toList());
+                              .filter(toVersioning ->
+                                  !toVersioning.getValidFrom().isAfter(editedValidTo))
+                              .filter(toVersioning ->
+                                  !toVersioning.getValidTo().isBefore(editedValidFrom))
+                              .toList();
   }
 
   public static boolean isNoObjectToVersioningFound(VersioningData versioningData) {

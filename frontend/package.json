@@ -24,7 +24,7 @@
     "type": "git",
     "url": "git+https://code.sbb.ch/scm/ki_atlas/atlas-frontend.git"
   },
-  "version": "1.397.0",
+  "version": "1.404.0",
   "files": [
     "dist/*"
   ],
@@ -85,7 +85,7 @@
     "cypress-failed-log": "^2.10",
     "cypress-high-resolution": "^1.0",
     "eslint": "^8.43",
-    "eslint-config-prettier": "^8.8",
+    "eslint-config-prettier": "^9.0.0",
     "husky": "^8.0",
     "jasmine-core": "^5.0",
     "karma": "^6.4",
