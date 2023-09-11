@@ -10,6 +10,7 @@ import { BERN_WYLEREGG } from '../service-point-test-data';
 import { AuthService } from '../../../core/auth/auth.service';
 import { MockAtlasButtonComponent } from '../../../app.testing.mocks';
 import { DateRangeTextComponent } from '../../../core/versioning/date-range-text/date-range-text.component';
+import { SplitServicePointNumberPipe } from '../search-service-point/split-service-point-number.pipe';
 
 const authService: Partial<AuthService> = {};
 
@@ -25,6 +26,7 @@ describe('ServicePointSidePanelComponent', () => {
         ServicePointSidePanelComponent,
         DisplayDatePipe,
         FormatServicePointNumber,
+        SplitServicePointNumberPipe,
         MockAtlasButtonComponent,
         DateRangeTextComponent,
       ],
@@ -32,6 +34,7 @@ describe('ServicePointSidePanelComponent', () => {
       providers: [
         { provide: AuthService, useValue: authService },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
+        SplitServicePointNumberPipe,
       ],
     }).compileComponents();
 
