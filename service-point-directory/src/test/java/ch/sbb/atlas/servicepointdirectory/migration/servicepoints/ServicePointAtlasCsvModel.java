@@ -1,4 +1,4 @@
-package ch.sbb.atlas.servicepointdirectory.migration;
+package ch.sbb.atlas.servicepointdirectory.migration.servicepoints;
 
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
@@ -119,10 +119,6 @@ public class ServicePointAtlasCsvModel {
   private Double wgs84East;
 
   private Double wgs84North;
-
-  private Double wgs84WebEast;
-
-  private Double wgs84WebNorth;
 
   private Double height;
 
