@@ -4,7 +4,6 @@ import { ServicePointSidePanelComponent } from './service-point-side-panel.compo
 import { ActivatedRoute } from '@angular/router';
 import { AppTestingModule } from '../../../app.testing.module';
 import { DisplayDatePipe } from '../../../core/pipe/display-date.pipe';
-import { FormatServicePointNumber } from '../number-pipe/format-service-point-number.pipe';
 import { of } from 'rxjs';
 import { BERN_WYLEREGG } from '../service-point-test-data';
 import { AuthService } from '../../../core/auth/auth.service';
@@ -25,7 +24,6 @@ describe('ServicePointSidePanelComponent', () => {
       declarations: [
         ServicePointSidePanelComponent,
         DisplayDatePipe,
-        FormatServicePointNumber,
         SplitServicePointNumberPipe,
         MockAtlasButtonComponent,
         DateRangeTextComponent,
