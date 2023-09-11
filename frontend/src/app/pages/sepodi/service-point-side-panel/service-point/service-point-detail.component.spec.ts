@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ServicePointDetailComponent } from './service-point-detail.component';
-import { AppTestingModule, authServiceMock } from '../../../../app.testing.module';
+import { AppTestingModule } from '../../../../app.testing.module';
 import { AuthService } from '../../../../core/auth/auth.service';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
@@ -19,7 +19,7 @@ import { AtlasSpacerComponent } from '../../../../core/components/spacer/atlas-s
 import { Record } from '../../../../core/components/base-detail/record';
 import { MockAtlasButtonComponent } from '../../../../app.testing.mocks';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
-import { ServicePointsService } from '../../../../api';
+import { ApplicationRole, ServicePointsService } from '../../../../api';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { ServicePointType } from './service-point-type';
 import { DisplayCantonPipe } from '../../../../core/cantons/display-canton.pipe';
@@ -27,6 +27,19 @@ import { DisplayCantonPipe } from '../../../../core/cantons/display-canton.pipe'
 const dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirm']);
 const servicePointsServiceSpy = jasmine.createSpyObj('ServicePointService', ['updateServicePoint']);
 const notificationServiceSpy = jasmine.createSpyObj('NotificationService', ['success']);
+const authServiceMock: Partial<AuthService> = {
+  claims: { name: 'Test', email: 'test@test.ch', sbbuid: 'e123456', roles: [] },
+  isAdmin: false,
+  getPermissions: () => [],
+  getApplicationUserPermission: (applicationType) => {
+    return {
+      application: applicationType,
+      role: ApplicationRole.Writer,
+      permissionRestrictions: [],
+    };
+  },
+  logout: () => Promise.resolve(true),
+};
 
 describe('ServicePointDetailComponent', () => {
   let component: ServicePointDetailComponent;
@@ -129,20 +142,6 @@ describe('ServicePointDetailComponent', () => {
     expect(component.form.enabled).toBeTrue();
   });
 
-  it('should save and update service point', () => {
-    // given
-    component.form.enable();
-    component.form.controls.designationOfficial.setValue('Basel beste Sport');
-    component.form.markAsDirty();
-
-    servicePointsServiceSpy.updateServicePoint.and.returnValue(of([BERN]));
-
-    // when & then
-    component.save();
-    expect(servicePointsServiceSpy.updateServicePoint).toHaveBeenCalled();
-    expect(notificationServiceSpy.success).toHaveBeenCalled();
-  });
-
   it('should show type change warning dialog and change on confirmation', () => {
     // given
     dialogServiceSpy.confirm.and.returnValue(of(true));
@@ -175,7 +174,7 @@ describe('ServicePointDetailComponent', () => {
     expect(component.previouslySelectedType).toBe(ServicePointType.StopPoint);
   });
 
-  it('should show bo transfer dialog on update', () => {
+  it('should show bo transfer dialog on update if user is writer', () => {
     // given
     servicePointsServiceSpy.updateServicePoint.and.returnValue(of(BERN));
     dialogServiceSpy.confirm.and.returnValue(of(true));
