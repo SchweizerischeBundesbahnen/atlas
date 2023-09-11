@@ -1,10 +1,12 @@
-package ch.sbb.atlas.servicepointdirectory.migration;
+package ch.sbb.atlas.servicepointdirectory.migration.servicepoints;
 
-import static ch.sbb.atlas.servicepointdirectory.migration.AtlasCsvReader.dateFromString;
+import static ch.sbb.atlas.servicepointdirectory.migration.CsvReader.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.servicepointdirectory.migration.DateRange;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
@@ -23,11 +25,11 @@ import org.junit.jupiter.api.TestMethodOrder;
 @IntegrationTest
 @Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class ServicePointMigrationFutureTimetableDateIntegrationTest {
+public class ServicePointMigrationActualDateIntegrationTest {
 
-  private static final String DIDOK_CSV_FILE = "DIDOK3_DIENSTSTELLEN_FUTURE_TIMETABLE_V_2_20230721015735.csv";
-  private static final String ATLAS_CSV_FILE = "future_timetable-world-service-point-2023-07-21.csv";
-  private static final LocalDate FUTURE_TIMETABLE_DATE = LocalDate.of(2023, 12, 10);
+  private static final String DIDOK_CSV_FILE = "DIDOK3_DIENSTSTELLEN_ACTUALDATE_V_2_20230906020132.csv";
+  private static final String ATLAS_CSV_FILE = "actual_date-world-service_point-2023-09-06.csv";
+  private static final LocalDate ACTUAL_DATE = LocalDate.of(2023, 9, 6);
 
   private static final List<ServicePointAtlasCsvModel> atlasCsvLines = new ArrayList<>();
   private static final Map<Integer, ServicePointAtlasCsvModel> atlasCsvLinesAsMap = new HashMap<>();
@@ -36,15 +38,15 @@ public class ServicePointMigrationFutureTimetableDateIntegrationTest {
   @Test
   @Order(1)
   void shouldParseCsvsCorrectly() throws IOException {
-    try (InputStream csvStream =
-        this.getClass().getResourceAsStream(ServicePointMigrationIntegrationTest.BASE_PATH + DIDOK_CSV_FILE)) {
-      didokCsvLines.addAll(DidokCsvReader.parseDidokServicePoints(csvStream));
+    try (InputStream csvStream = this.getClass()
+        .getResourceAsStream(BASE_PATH + DIDOK_CSV_FILE)) {
+      didokCsvLines.addAll(parseCsv(csvStream, ServicePointDidokCsvModel.class));
     }
     assertThat(didokCsvLines).isNotEmpty();
 
-    try (InputStream csvStream =
-        this.getClass().getResourceAsStream(ServicePointMigrationIntegrationTest.BASE_PATH + ATLAS_CSV_FILE)) {
-      atlasCsvLines.addAll(AtlasCsvReader.parseAtlasServicePoints(csvStream));
+    try (InputStream csvStream = this.getClass()
+        .getResourceAsStream(BASE_PATH + ATLAS_CSV_FILE)) {
+      atlasCsvLines.addAll(parseCsv(csvStream, ServicePointAtlasCsvModel.class));
     }
     assertThat(atlasCsvLines).isNotEmpty();
 
@@ -55,7 +57,10 @@ public class ServicePointMigrationFutureTimetableDateIntegrationTest {
   @Order(2)
   void shouldHaveSameDidokCodesInBothCsvs() {
     Set<Integer> didokCodes = didokCsvLines.stream().map(ServicePointDidokCsvModel::getDidokCode).collect(Collectors.toSet());
-    Set<Integer> atlasNumbers = atlasCsvLines.stream().map(ServicePointAtlasCsvModel::getNumber).collect(Collectors.toSet());
+    Set<Integer> atlasNumbers = atlasCsvLines.stream()
+        // Remove this check as soon a new export with servicePointNumber without checkDigit is generated
+        .map(servicePointVersionCsvModel -> ServicePointNumber.removeCheckDigit(servicePointVersionCsvModel.getNumber()))
+        .collect(Collectors.toSet());
 
     Set<Integer> difference = atlasNumbers.stream().filter(e -> !didokCodes.contains(e)).collect(Collectors.toSet());
     if (!difference.isEmpty()) {
@@ -71,13 +76,15 @@ public class ServicePointMigrationFutureTimetableDateIntegrationTest {
 
   @Test
   @Order(3)
-  void shouldHaveOnlyVersionsValidOnFutureTimetableDate() {
-    atlasCsvLines.forEach(atlasCsvLine -> {
-      assertThat(
-          new DateRange(dateFromString(atlasCsvLine.getValidFrom()),
-              dateFromString(atlasCsvLine.getValidTo()))
-              .contains(FUTURE_TIMETABLE_DATE)).isTrue();
-    });
+  void shouldHaveOnlyVersionsValidOnActualDate() {
+    atlasCsvLines.forEach(atlasCsvLine -> assertThat(
+            DateRange.builder()
+                .from(dateFromString(atlasCsvLine.getValidFrom()))
+                .to(dateFromString(atlasCsvLine.getValidTo()))
+                .build()
+                .contains(ACTUAL_DATE)
+        ).isTrue()
+    );
   }
 
   @Test
