@@ -1,6 +1,7 @@
 package ch.sbb.atlas.imports.servicepoint.loadingpoint;
 
 import ch.sbb.atlas.imports.servicepoint.BaseCsvModelContainer;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,9 @@ public class LoadingPointCsvModelContainer extends BaseCsvModelContainer<Loading
   @Override
   protected void logFoundVersionsToMerge() {
     log.info("Found versions to merge with didokCode|loadingPointNumber: {}", this.didokCode + "|" + this.loadingPointNumber);
+  }
+  public Integer getDidokCode(){
+    return ServicePointNumber.removeCheckDigit(didokCode);
   }
 
 }

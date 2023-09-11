@@ -1,11 +1,12 @@
 package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
 
+import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointElementCsvModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
-import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointElementCsvModel;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
 import ch.sbb.atlas.servicepointdirectory.mapper.GeolocationMapper;
+
 import java.util.function.Function;
 
 public class TrafficPointElementCsvToEntityMapper implements
@@ -23,7 +24,7 @@ public class TrafficPointElementCsvToEntityMapper implements
         .trafficPointElementType(TrafficPointElementType.fromValue(
             trafficPointElementCsvModel.getTrafficPointElementType()))
         .servicePointNumber(
-            ServicePointNumber.of(trafficPointElementCsvModel.getServicePointNumber()))
+            ServicePointNumber.ofNumberWithoutCheckDigit(trafficPointElementCsvModel.getServicePointNumber()))
         .sloid(trafficPointElementCsvModel.getSloid())
         .parentSloid(trafficPointElementCsvModel.getParentSloid())
         .validFrom(trafficPointElementCsvModel.getValidFrom())

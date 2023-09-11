@@ -3,11 +3,15 @@ package ch.sbb.atlas.servicepointdirectory.service.loadingpoint;
 import ch.sbb.atlas.api.model.VersionedObjectDateRequestParams;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import io.swagger.v3.oas.annotations.Parameter;
-import lombok.*;
-import lombok.experimental.SuperBuilder;
-
 import java.util.ArrayList;
 import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.Singular;
+import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
@@ -17,7 +21,7 @@ import java.util.List;
 @ToString
 public class LoadingPointElementRequestParams extends VersionedObjectDateRequestParams {
 
-    @Parameter(description = "Number", example = "345 or 545 or 323445")
+    @Parameter(description = "Number")
     @Singular(ignoreNullCollections = true)
     private List<Integer> numbers = new ArrayList<>();
 
@@ -42,7 +46,7 @@ public class LoadingPointElementRequestParams extends VersionedObjectDateRequest
     @Singular(ignoreNullCollections = true)
     private List<String> sboids = new ArrayList<>();
 
-    public List<ServicePointNumber> getServicePointNumbers() {
+    public List<ServicePointNumber> getServicePointNumbersWithoutDigits() {
         return servicePointNumbers.stream().map(ServicePointNumber::ofNumberWithoutCheckDigit).toList();
     }
 

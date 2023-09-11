@@ -1,20 +1,13 @@
 package ch.sbb.atlas.servicepointdirectory.service.loadingpoint;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.model.search.LoadingPointSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.repository.LoadingPointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
-
-import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.service.CrossValidationService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +19,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 @IntegrationTest
 @Transactional
@@ -54,7 +51,7 @@ public class LoadingPointServiceTest {
     // given
     doNothing().when(crossValidationServiceMock).validateServicePointNumberExists(any());
     LoadingPointVersion loadingPointVersion = LoadingPointVersion.builder()
-        .servicePointNumber(ServicePointNumber.of(85070001))
+        .servicePointNumber(ServicePointNumber.ofNumberWithoutCheckDigit(8507000))
         .validFrom(LocalDate.of(2014, 12, 10))
         .validTo(LocalDate.of(2021, 3, 15))
         .connectionPoint(true)
@@ -68,7 +65,7 @@ public class LoadingPointServiceTest {
 
     // then
     verify(crossValidationServiceMock, times(1))
-        .validateServicePointNumberExists(ServicePointNumber.of(85070001));
+        .validateServicePointNumberExists(ServicePointNumber.ofNumberWithoutCheckDigit(8507000));
     assertThat(loadingPointVersionRepository.findAll()).hasSize(1);
   }
 
@@ -665,7 +662,7 @@ public class LoadingPointServiceTest {
     loadingPointVersionRepository.saveAndFlush(loadingPointVersion1);
 
     LoadingPointElementRequestParams params = LoadingPointElementRequestParams.builder()
-        .servicePointNumber(80000).build();
+        .servicePointNumber(8000007).build();
 
     LoadingPointSearchRestrictions restrictions = LoadingPointSearchRestrictions.builder()
         .pageable(Pageable.unpaged())

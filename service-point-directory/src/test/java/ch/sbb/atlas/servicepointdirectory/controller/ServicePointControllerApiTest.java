@@ -1,16 +1,5 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
-import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.LV95;
-import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.WGS84;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
@@ -29,11 +18,20 @@ import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
+import ch.sbb.atlas.servicepointdirectory.api.ServicePointSearchRequest;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointGeolocationMapper;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointFotCommentRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
+import org.springframework.test.web.servlet.MvcResult;
+
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -42,13 +40,15 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
-import org.springframework.test.web.servlet.MvcResult;
+
+import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.LV95;
+import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.WGS84;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class ServicePointControllerApiTest extends BaseControllerApiTest {
 
@@ -122,6 +122,52 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldSearchServicePointSuccessfully() throws Exception {
+    // given
+    ServicePointSearchRequest request = new ServicePointSearchRequest("bern");
+    String jsonString = mapper.writeValueAsString(request);
+
+    // when
+    mvc.perform(post("/v1/service-points/search")
+                    .content(jsonString)
+                    .contentType(contentType))
+            // then
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$[0].number", is(8589008)))
+            .andExpect(jsonPath("$[0].designationOfficial", is("Bern, Wyleregg")));
+  }
+
+  @Test
+  void shouldReturnEmptyListWhenNoMatchFound() throws Exception {
+    // given
+    ServicePointSearchRequest request = new ServicePointSearchRequest("zug");
+    String jsonString = mapper.writeValueAsString(request);
+
+    // when
+    mvc.perform(post("/v1/service-points/search")
+                    .content(jsonString)
+                    .contentType(contentType))
+            // then
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$", hasSize(0)));
+  }
+
+  @Test
+  void shouldReturnBadRequestWhenSearchWhitLessThanTwoDigit() throws Exception {
+    // given
+    ServicePointSearchRequest request = new ServicePointSearchRequest("b");
+    String jsonString = mapper.writeValueAsString(request);
+
+    // when
+    mvc.perform(post("/v1/service-points/search")
+                    .content(jsonString)
+                    .contentType(contentType))
+            // then
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.message", is("You must enter at least 2 digits to start a search!")));
+  }
+
+  @Test
   void shouldFindServicePointVersionByModifiedAfter() throws Exception {
     String modifiedAfterQueryString = servicePointVersion.getEditionDate().plusDays(1)
         .format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN));
@@ -149,7 +195,7 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
 
   @Test
   void shouldFailOnInvalidServicePointNumber() throws Exception {
-    mvc.perform(get("/v1/service-points/123"))
+    mvc.perform(get("/v1/service-points/1234567"))
         .andExpect(status().isNotFound());
   }
 

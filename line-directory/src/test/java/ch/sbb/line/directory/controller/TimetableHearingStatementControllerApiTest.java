@@ -676,9 +676,7 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
 
   @Test
   void shouldUpdateStatementWithDocumentsWithAdditionalDocuments() throws Exception {
-
     TimetableHearingStatementModel timetableHearingStatementModel = TimetableHearingStatementModel.builder()
-        .id(1000L)
         .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
         .swissCanton(SwissCanton.BERN)
         .statementSender(TimetableHearingStatementSenderModel.builder()
@@ -710,7 +708,6 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
   @Test
   void shouldUpdateStatementWithDocumentsWithAdditionalDocumentAndRemoveExisting() throws Exception {
     TimetableHearingStatementModel timetableHearingStatementModel = TimetableHearingStatementModel.builder()
-        .id(1000L)
         .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
         .swissCanton(SwissCanton.BERN)
         .statementSender(TimetableHearingStatementSenderModel.builder()
@@ -886,7 +883,6 @@ public class TimetableHearingStatementControllerApiTest extends BaseControllerAp
   @Test
   void shouldUpdateStatementWithReplacingTransportCompany() throws Exception {
     TimetableHearingStatementModel timetableHearingStatementModel = TimetableHearingStatementModel.builder()
-        .id(1000L)
         .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
         .swissCanton(SwissCanton.BERN)
         .statementSender(TimetableHearingStatementSenderModel.builder()

@@ -1,20 +1,19 @@
 package ch.sbb.atlas.servicepointdirectory.model;
 
+import static ch.sbb.atlas.servicepoint.Country.SLOID_COMPATIBLE_COUNTRIES;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
-import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-
-import static ch.sbb.atlas.servicepoint.Country.SLOID_COMPATIBLE_COUNTRIES;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.Test;
 
 class ServicePointNumberTest {
 
@@ -22,31 +21,28 @@ class ServicePointNumberTest {
 
   @Test
   void shouldGetCountrySuccessfully() {
-    assertThat(ServicePointNumber.of(85070003).getCountry()).isEqualTo(Country.SWITZERLAND);
+    assertThat(ServicePointNumber.ofNumberWithoutCheckDigit(8507000).getCountry()).isEqualTo(Country.SWITZERLAND);
   }
 
   @Test
   void shouldGetServicePointIdSuccessfully() {
-    assertThat(ServicePointNumber.of(85070003).getNumberShort()).isEqualTo(7000);
+    assertThat(ServicePointNumber.ofNumberWithoutCheckDigit(8507000).getNumberShort()).isEqualTo(7000);
   }
 
   @Test
   void shouldCheckDigitSuccessfully() {
-    assertThat(ServicePointNumber.of(85070003).getCheckDigit()).isEqualTo(3);
+    assertThat(ServicePointNumber.ofNumberWithoutCheckDigit(8507000).getCheckDigit()).isEqualTo(3);
   }
 
   @Test
   void shouldCheckServicePointNumberLength() {
-    Set<ConstraintViolation<ServicePointNumber>> constraintViolations = validator.validate(ServicePointNumber.of(1));
-    assertThat(constraintViolations).isNotEmpty();
-
-    constraintViolations = validator.validate(ServicePointNumber.of(85070003));
-    assertThat(constraintViolations).isEmpty();
+    assertThrows(IllegalArgumentException.class,
+            () -> ServicePointNumber.ofNumberWithoutCheckDigit(85070008));
   }
 
   @Test
   void shouldCheckServicePointCountry() {
-    Set<ConstraintViolation<ServicePointNumber>> constraintViolations = validator.validate(ServicePointNumber.of(15000001));
+    Set<ConstraintViolation<ServicePointNumber>> constraintViolations = validator.validate(ServicePointNumber.ofNumberWithoutCheckDigit(1500000));
     assertThat(constraintViolations).isNotEmpty();
   }
 
@@ -63,7 +59,7 @@ class ServicePointNumberTest {
   @Test
   void shouldBuildServicePointNumberFromSevenDigitNumberSuccessfully() {
     ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(8507000);
-    assertThat(servicePointNumber).isEqualTo(ServicePointNumber.of(85070003));
+    assertThat(servicePointNumber.getValue()).isEqualTo(8507000);
   }
 
   @Test
@@ -159,6 +155,23 @@ class ServicePointNumberTest {
       }
     });
 
+  }
+
+  @Test
+  public void shouldRemoveCheckDigit(){
+    //when
+    Integer result = ServicePointNumber.removeCheckDigit(85070003);
+    //then
+    assertThat(String.valueOf(result)).hasSize(7);
+  }
+
+  @Test
+  public void shouldReturnNumberWithoutCheckDigit(){
+    //when
+    Integer result = ServicePointNumber.removeCheckDigit(8507000);
+    //then
+    assertThat(String.valueOf(result)).hasSize(7);
+    assertThat(result).isEqualTo(8507000);
   }
 
 }

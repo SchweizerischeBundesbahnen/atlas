@@ -16,7 +16,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -45,7 +44,7 @@ public final class ConverterHelper {
     if (!deletePropertyWhenNull) {
       List<Property> propertiesNotEmpty = editedProperties.stream()
           .filter(Property::isNotEmpty)
-          .collect(Collectors.toList());
+          .toList();
       return buildEntity(currentVersion.getId(), propertiesNotEmpty);
     } else {
       //import case
