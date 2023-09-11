@@ -81,13 +81,6 @@ export class Countries {
     { short: 'AT', uicCode: 81, enumCountry: Country.Austria, path: 'at' },
   ];
 
-  public static swiss: CountryName = {
-    short: 'AZ',
-    uicCode: 57,
-    path: 'az',
-    enumCountry: 'AZERBAIJAN' as Country,
-  };
-
   public static fromCountry(country: Country | undefined): CountryName | undefined {
     return this.countryNames.find((countryName) => countryName.enumCountry === country);
   }
