@@ -12,7 +12,7 @@ public record LoadingPointMappingEquality(LoadingPointDidokCsvModel didokCsvLine
     assertThat(atlasCsvLine.getDesignation()).isEqualTo(didokCsvLine.getDesignation());
     assertThat(atlasCsvLine.getDesignationLong()).isEqualTo(didokCsvLine.getDesignationLong());
     assertThat(atlasCsvLine.getConnectionPoint()).isEqualTo(didokCsvLine.getConnectionPoint());
-    assertThat(atlasCsvLine.getServicePointNumber()).isEqualTo(didokCsvLine.getServicePointNumberWithoutCheckDigit());
+    assertThat(atlasCsvLine.getServicePointNumber()).isEqualTo(didokCsvLine.getServicePointNumber());
     assertThat(dateFromString(atlasCsvLine.getValidFrom())).isEqualTo(didokCsvLine.getValidFrom());
     assertThat(dateFromString(atlasCsvLine.getValidTo())).isEqualTo(didokCsvLine.getValidTo());
     assertThat(atlasCsvLine.getCreationDate()).isEqualTo(didokCsvLine.getCreatedAt());
@@ -20,7 +20,7 @@ public record LoadingPointMappingEquality(LoadingPointDidokCsvModel didokCsvLine
 
     if (atlasCsvLine.getParentSloidServicePoint() != null) {
       assertThat(getParentServicePointNumberFromParentSLOID()).isEqualTo(
-          ServicePointNumber.of(didokCsvLine.getServicePointNumber()).getNumberShort());
+          ServicePointNumber.ofNumberWithoutCheckDigit(didokCsvLine.getServicePointNumber()).getNumberShort());
     }
   }
 
