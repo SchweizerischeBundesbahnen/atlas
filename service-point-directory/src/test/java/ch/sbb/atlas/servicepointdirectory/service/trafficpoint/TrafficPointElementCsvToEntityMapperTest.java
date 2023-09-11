@@ -1,20 +1,21 @@
 package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
+import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointElementCsvModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
-import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointElementCsvModel;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
 import com.fasterxml.jackson.databind.MappingIterator;
+import org.junit.jupiter.api.Test;
+
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class TrafficPointElementCsvToEntityMapperTest {
 
@@ -51,7 +52,7 @@ class TrafficPointElementCsvToEntityMapperTest {
         .builder()
         .designation("Bezeichnung")
         .designationOperational("gali00")
-        .servicePointNumber(ServicePointNumber.of(14000158))
+        .servicePointNumber(ServicePointNumber.ofNumberWithoutCheckDigit(1400015))
         .trafficPointElementGeolocation(trafficPointElementGeolocation)
         .sloid("ch:1:sloid:1400015:0:310240")
         .compassDirection(277.0)
