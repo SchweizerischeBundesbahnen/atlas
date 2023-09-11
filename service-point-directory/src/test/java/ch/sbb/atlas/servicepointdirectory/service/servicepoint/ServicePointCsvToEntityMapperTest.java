@@ -1,24 +1,19 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.atlas.servicepoint.enumeration.Category;
-import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
-import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
-import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
-import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
-import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
+import ch.sbb.atlas.servicepoint.enumeration.*;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointStatus;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
 import com.fasterxml.jackson.databind.MappingIterator;
+import org.junit.jupiter.api.Test;
+
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -27,7 +22,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class ServicePointCsvToEntityMapperTest {
 
@@ -119,7 +115,7 @@ public class ServicePointCsvToEntityMapperTest {
 
     ServicePointVersion expected = ServicePointVersion
         .builder()
-        .number(ServicePointNumber.of(85027516))
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8502751))
         .sloid("ch:1:sloid:2751")
         .numberShort(2751)
         .country(Country.SWITZERLAND)
@@ -175,7 +171,7 @@ public class ServicePointCsvToEntityMapperTest {
 
     ServicePointVersion expectedServicePoint = ServicePointVersion
         .builder()
-        .number(ServicePointNumber.of(85027516))
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8502751))
         .sloid("ch:1:sloid:2751")
         .numberShort(2751)
         .country(Country.SWITZERLAND)
@@ -232,7 +228,7 @@ public class ServicePointCsvToEntityMapperTest {
     // then
     ServicePointVersion expectedServicePoint = ServicePointVersion
         .builder()
-        .number(ServicePointNumber.of(85104398))
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8510439))
         .sloid("ch:1:sloid:10439")
         .numberShort(10439)
         .country(Country.SWITZERLAND)
@@ -313,7 +309,7 @@ public class ServicePointCsvToEntityMapperTest {
     ServicePointVersion expectedServicePoint = ServicePointVersion
         .builder()
         .servicePointGeolocation(expectedServicePointGeolocation)
-        .number(ServicePointNumber.of(85009258))
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8500925))
         .sloid("ch:1:sloid:925")
         .numberShort(925)
         .country(Country.SWITZERLAND)
@@ -399,7 +395,7 @@ public class ServicePointCsvToEntityMapperTest {
     ServicePointVersion expectedServicePoint = ServicePointVersion
         .builder()
         .servicePointGeolocation(expectedServicePointGeolocation)
-        .number(ServicePointNumber.of(85890087))
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8589008))
         .sloid("ch:1:sloid:89008")
         .numberShort(89008)
         .country(Country.SWITZERLAND)
@@ -478,7 +474,7 @@ public class ServicePointCsvToEntityMapperTest {
     ServicePointVersion expectedServicePoint = ServicePointVersion
         .builder()
         .servicePointGeolocation(expectedServicePointGeolocation)
-        .number(ServicePointNumber.of(85197616))
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8519761))
         .sloid("ch:1:sloid:19761")
         .numberShort(19761)
         .country(Country.SWITZERLAND)
@@ -558,7 +554,7 @@ public class ServicePointCsvToEntityMapperTest {
     ServicePointVersion expectedServicePoint = ServicePointVersion
         .builder()
         .servicePointGeolocation(expectedServicePointGeolocation)
-        .number(ServicePointNumber.of(85948059))
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8594805))
         .sloid("ch:1:sloid:94805")
         .numberShort(94805)
         .country(Country.SWITZERLAND)
@@ -648,7 +644,7 @@ public class ServicePointCsvToEntityMapperTest {
     ServicePointVersion expectedServicePoint = ServicePointVersion
         .builder()
         .servicePointGeolocation(expectedServicePointGeolocation)
-        .number(ServicePointNumber.of(85035071))
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8503507))
         .sloid("ch:1:sloid:3507")
         .numberShort(3507)
         .country(Country.SWITZERLAND)
@@ -666,7 +662,7 @@ public class ServicePointCsvToEntityMapperTest {
         .operatingPoint(true)
         .operatingPointWithTimetable(true)
         .sortCodeOfDestinationStation("35071")
-        .operatingPointKilometerMaster(ServicePointNumber.of(85035071))
+        .operatingPointKilometerMaster(ServicePointNumber.ofNumberWithoutCheckDigit(8503507))
         .operatingPointRouteNetwork(true)
         .creationDate(LocalDateTime.of(LocalDate.of(2019, 12, 10), LocalTime.of(13, 35, 7)))
         .creator("fs45117")
@@ -741,7 +737,7 @@ public class ServicePointCsvToEntityMapperTest {
     ServicePointVersion expectedServicePoint = ServicePointVersion
         .builder()
         .servicePointGeolocation(expectedServicePointGeolocation)
-        .number(ServicePointNumber.of(85153965))
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8515396))
         .sloid("ch:1:sloid:15396")
         .numberShort(15396)
         .country(Country.SWITZERLAND)
@@ -758,7 +754,7 @@ public class ServicePointCsvToEntityMapperTest {
         .operatingPoint(true)
         .operatingPointWithTimetable(true)
         .operatingPointTechnicalTimetableType(OperatingPointTechnicalTimetableType.ASSIGNED_OPERATING_POINT)
-        .operatingPointKilometerMaster(ServicePointNumber.of(85050047))
+        .operatingPointKilometerMaster(ServicePointNumber.ofNumberWithoutCheckDigit(8505004))
         .operatingPointRouteNetwork(false)
         .creationDate(LocalDateTime.of(LocalDate.of(2019, 12, 10), LocalTime.of(13, 33, 34)))
         .creator("fs45117")
@@ -833,7 +829,7 @@ public class ServicePointCsvToEntityMapperTest {
     ServicePointVersion expectedServicePoint = ServicePointVersion
         .builder()
         .servicePointGeolocation(expectedServicePointGeolocation)
-        .number(ServicePointNumber.of(85173492))
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8517349))
         .sloid("ch:1:sloid:17349")
         .numberShort(17349)
         .country(Country.SWITZERLAND)
@@ -923,7 +919,7 @@ public class ServicePointCsvToEntityMapperTest {
     ServicePointVersion expectedServicePoint = ServicePointVersion
         .builder()
         .servicePointGeolocation(expectedServicePointGeolocation)
-        .number(ServicePointNumber.of(85191999))
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8519199))
         .sloid("ch:1:sloid:19199")
         .numberShort(19199)
         .country(Country.SWITZERLAND)
@@ -992,7 +988,7 @@ public class ServicePointCsvToEntityMapperTest {
 
     ServicePointVersion expectedServicePoint = ServicePointVersion
         .builder()
-        .number(ServicePointNumber.of(85000307))
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8500030))
         .sloid("ch:1:sloid:30")
         .numberShort(30)
         .country(Country.SWITZERLAND)
@@ -1057,7 +1053,7 @@ public class ServicePointCsvToEntityMapperTest {
     // then
     ServicePointVersion expectedServicePoint = ServicePointVersion
         .builder()
-        .number(ServicePointNumber.of(85188151))
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8518815))
         .sloid("ch:1:sloid:18815")
         .numberShort(18815)
         .country(Country.SWITZERLAND)

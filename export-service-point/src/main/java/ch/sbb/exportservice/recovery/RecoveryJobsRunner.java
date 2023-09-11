@@ -7,6 +7,10 @@ import ch.sbb.exportservice.service.ExportServicePointJobService;
 import ch.sbb.exportservice.service.ExportTrafficPointElementJobService;
 import ch.sbb.exportservice.utils.JobDescriptionConstants;
 import jakarta.validation.constraints.NotNull;
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.BatchStatus;
@@ -20,11 +24,6 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @Component
 @AllArgsConstructor
@@ -115,32 +114,45 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
 
   private void checkExportServicePointJobToRecover() {
     if (checkIfHasJobsToRecover(EXPORT_SERVICE_POINT_JOBS_NAME)) {
-      log.info("Rerunning {} export jobs...", EXPORT_SERVICE_POINT_JOBS_NAME);
+      logRerunning(EXPORT_SERVICE_POINT_JOBS_NAME);
       exportServicePointJobService.startExportJobs();
-      log.info("All export jobs successfully recovered!");
+      lodRecovered();
     } else {
-      log.info("No job found to recover.");
+      logNotFound();
     }
   }
 
+
   private void checkExportTrafficPointJobToRecover() {
     if (checkIfHasJobsToRecover(TRAFFIC_POINT_ELEMENT_JOBS_NAME)) {
-      log.info("Rerunning {} export jobs...", TRAFFIC_POINT_ELEMENT_JOBS_NAME);
+      logRerunning(TRAFFIC_POINT_ELEMENT_JOBS_NAME);
       exportTrafficPointElementJobService.startExportJobs();
-      log.info("All export jobs successfully recovered!");
+      lodRecovered();
     } else {
-      log.info("No job found to recover.");
+      logNotFound();
     }
   }
 
   private void checkExportLoadingPointJobToRecover() {
     if (checkIfHasJobsToRecover(EXPORT_LOADING_POINT_JOBS_NAME)) {
-      log.info("Rerunning {} export jobs...", EXPORT_LOADING_POINT_JOBS_NAME);
+      logRerunning(EXPORT_LOADING_POINT_JOBS_NAME);
       exportLoadingPointJobService.startExportJobs();
-      log.info("All export jobs successfully recovered!");
+      lodRecovered();
     } else {
-      log.info("No job found to recover.");
+      logNotFound();
     }
+  }
+
+  private static void logNotFound() {
+    log.info("No job found to recover.");
+  }
+
+  private static void lodRecovered() {
+    log.info("All export jobs successfully recovered!");
+  }
+
+  private static void logRerunning(List<String> jobs) {
+    log.info("Rerunning {} export jobs...", jobs);
   }
 
 }

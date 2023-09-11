@@ -78,19 +78,22 @@ public class AmazonServiceImpl implements AmazonService {
     try {
       S3Object s3Object = getClient(bucket).getObject(getAmazonBucketConfig(bucket).getBucketName(), filePath);
       String dir = fileService.getDir();
-      File fileDownload = new File(dir + filePath.replaceAll("/", "_"));
-      try (FileOutputStream fileOutputStream = new FileOutputStream(fileDownload);
-          S3ObjectInputStream s3InputStream = s3Object.getObjectContent()) {
-        fileOutputStream.write(s3InputStream.readAllBytes());
-        return fileDownload;
-      } catch (IOException e) {
-        throw new FileException("There was a problem with downloading file with name: " + fileDownload.getName(), e);
-      }
+      return getFile(filePath, s3Object, dir);
     } catch (AmazonS3Exception e) {
       log.error(e.getMessage());
       throw new FileNotFoundException(filePath);
     }
+  }
 
+  private static File getFile(String filePath, S3Object s3Object, String dir) {
+    File fileDownload = new File(dir + filePath.replaceAll("/", "_"));
+    try (FileOutputStream fileOutputStream = new FileOutputStream(fileDownload);
+        S3ObjectInputStream s3InputStream = s3Object.getObjectContent()) {
+      fileOutputStream.write(s3InputStream.readAllBytes());
+      return fileDownload;
+    } catch (IOException e) {
+      throw new FileException("There was a problem with downloading file with name: " + fileDownload.getName(), e);
+    }
   }
 
   @Override

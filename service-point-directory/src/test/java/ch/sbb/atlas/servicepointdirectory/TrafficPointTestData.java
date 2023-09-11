@@ -10,22 +10,23 @@ import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
+import lombok.experimental.UtilityClass;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class TrafficPointTestData {
 
-  public static final ServicePointNumber SERVICE_POINT_NUMBER = ServicePointNumber.of(14000158);
+  public static final ServicePointNumber SERVICE_POINT_NUMBER = ServicePointNumber.ofNumberWithoutCheckDigit(1400015);
 
   public static TrafficPointElementVersion getBasicTrafficPoint() {
     TrafficPointElementGeolocation geolocation = getTrafficPointGeolocationBernMittelland();
 
     TrafficPointElementVersion trafficPointElementVersion = TrafficPointElementVersion.builder()
         .trafficPointElementGeolocation(geolocation)
-        .servicePointNumber(ServicePointNumber.of(85891087))
+        .servicePointNumber(ServicePointNumber.ofNumberWithoutCheckDigit(8589108))
         .sloid("ch:1:sloid:123")
         .parentSloid("ch:1:sloid:123")
         .validFrom(LocalDate.of(2022, 1, 1))

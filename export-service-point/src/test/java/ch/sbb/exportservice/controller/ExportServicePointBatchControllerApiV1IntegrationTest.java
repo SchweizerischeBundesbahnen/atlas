@@ -1,22 +1,5 @@
 package ch.sbb.exportservice.controller;
 
-import ch.sbb.atlas.amazon.exception.FileException;
-import ch.sbb.exportservice.model.BatchExportFileName;
-import ch.sbb.atlas.model.controller.BaseControllerApiTest;
-import ch.sbb.exportservice.model.ExportType;
-import ch.sbb.exportservice.service.ExportLoadingPointJobService;
-import ch.sbb.exportservice.service.ExportServicePointJobService;
-import ch.sbb.exportservice.service.ExportTrafficPointElementJobService;
-import ch.sbb.exportservice.service.FileExportService;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
-
-import java.io.InputStream;
-
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.doNothing;
@@ -27,6 +10,22 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import ch.sbb.atlas.amazon.exception.FileException;
+import ch.sbb.atlas.model.controller.BaseControllerApiTest;
+import ch.sbb.exportservice.model.BatchExportFileName;
+import ch.sbb.exportservice.model.ExportType;
+import ch.sbb.exportservice.service.ExportLoadingPointJobService;
+import ch.sbb.exportservice.service.ExportServicePointJobService;
+import ch.sbb.exportservice.service.ExportTrafficPointElementJobService;
+import ch.sbb.exportservice.service.FileExportService;
+import java.io.InputStream;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseControllerApiTest {
