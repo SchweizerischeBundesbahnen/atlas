@@ -78,15 +78,19 @@ export class AtlasButtonComponent {
       throw new Error('Edit button needs businessOrganisation');
     }
     if (this.uicCountryCode) {
-      return (
-        this.authService.hasPermissionsToWrite(this.applicationType, this.businessOrganisation) &&
-        this.authService.hasPermissionsToWrite(
-          this.applicationType,
-          Countries.fromUicCode(this.uicCountryCode).enumCountry
-        )
-      );
+      return this.mayEditWithUicCountryCode();
     }
     return this.authService.hasPermissionsToWrite(this.applicationType, this.businessOrganisation);
+  }
+
+  private mayEditWithUicCountryCode() {
+    return (
+      this.authService.hasPermissionsToWrite(this.applicationType, this.businessOrganisation) &&
+      this.authService.hasPermissionsToWrite(
+        this.applicationType,
+        Countries.fromUicCode(this.uicCountryCode!).enumCountry
+      )
+    );
   }
 
   isAtLeastSupervisor(): boolean {

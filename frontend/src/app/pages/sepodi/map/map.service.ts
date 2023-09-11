@@ -14,6 +14,7 @@ import { MAP_STYLES, MapOptionsService, MapStyle } from './map-options.service';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { CoordinatePair } from '../../../api';
 import { MapIconsService } from './map-icons.service';
+import { Pages } from '../../pages';
 
 export const mapZoomLocalStorageKey = 'map-zoom';
 export const mapLocationLocalStorageKey = 'map-location';
@@ -208,7 +209,9 @@ export class MapService {
     features.forEach((point) => {
       let formattedNumber = String(point.properties.number);
       formattedNumber = `${formattedNumber.slice(0, 2)} ${formattedNumber.slice(2)}`;
-      popupHtml += `<a href="service-point-directory/service-points/${point.properties.number}"><b>${formattedNumber}</b> - ${point.properties.designationOfficial}</a> <br/>`;
+      popupHtml +=
+        `<a href="${Pages.SEPODI.path}/${Pages.SERVICE_POINTS.path}/${point.properties.number}">` +
+        `<b>${formattedNumber}</b> - ${point.properties.designationOfficial}</a> <br/>`;
     });
 
     return popupHtml;
