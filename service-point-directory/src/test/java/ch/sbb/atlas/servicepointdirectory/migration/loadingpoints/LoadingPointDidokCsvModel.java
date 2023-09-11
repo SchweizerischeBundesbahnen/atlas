@@ -9,11 +9,7 @@ import lombok.EqualsAndHashCode;
 public class LoadingPointDidokCsvModel extends LoadingPointCsvModel {
 
   public String getServicePointNumberAndLoadingPointNumberKey() {
-    return getServicePointNumberWithoutCheckDigit() + "-" + getNumber();
-  }
-
-  public Integer getServicePointNumberWithoutCheckDigit() {
-    return getServicePointNumber() / 10;
+    return getServicePointNumber() + "-" + getNumber();
   }
 
 }
