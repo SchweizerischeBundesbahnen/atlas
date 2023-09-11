@@ -21,12 +21,10 @@ export default class TthUtils {
   static collectingActionStatusChangeToAccepted() {
     cy.window().then((win) => {
       const collectingActionDropdown = win.document.querySelector(DataCy.TTH_COLLECT_ACTION_TYPE);
-      console.log(collectingActionDropdown!.getAttributeNode('aria-disabled')!.value);
       if (
         collectingActionDropdown &&
         !collectingActionDropdown.getAttributeNode('aria-disabled')!.value
       ) {
-        console.log(collectingActionDropdown!.getAttributeNode('aria-disabled')!.value);
         CommonUtils.selectFirstItemFromDropDown(DataCy.TTH_COLLECT_ACTION_TYPE);
         cy.get(DataCy.TTH_TABLE_CHECKBOX_ALL).click();
         CommonUtils.selectItemFromDropDown(DataCy.COLLECT_STATUS_CHANGE_ACTION_TYPE, 'angenommen');
