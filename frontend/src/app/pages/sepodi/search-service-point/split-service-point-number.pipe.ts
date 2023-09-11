@@ -1,10 +1,18 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { ServicePointNumber } from '../../../api';
 
 @Pipe({
   name: 'splitServicePointNumber',
 })
 export class SplitServicePointNumberPipe implements PipeTransform {
-  transform(number: string): string {
+  transform(number: string | ServicePointNumber): string {
+    if (typeof number === 'string') {
+      return this.transformString(number);
+    }
+    return this.transformString(String(number.number));
+  }
+
+  transformString(number: string) {
     if (number.length > 7) {
       const index = this.findIndexToSplit(number);
       return this.splitNumber(number, index);

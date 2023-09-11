@@ -947,8 +947,8 @@
       "SYSTEM_LV95": "Coordonnées nationales LV95",
       "SYSTEM_WGS84": "Coordinations mondiales WGS84",
       "LV95": {
-        "EAST": "E (Est-West) [m]",
-        "NORTH": "N (Nord-Sud) [m]"
+        "EAST": "Est [m]",
+        "NORTH": "Nord [m]"
       },
       "WGS84": {
         "EAST": "Longitude [°]",
