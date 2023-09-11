@@ -174,7 +174,6 @@ export default class CommonUtils {
   static selectFirstItemFromDropDown(selector: string) {
     cy.get(selector).should('be.visible');
     cy.get(selector).first().click().then((el) => {
-      console.log('I need time to be stable:' + el)
       // simulate click event on the drop down item (mat-option)
       CommonUtils.chooseMatOptionByText(undefined);
     })
@@ -182,7 +181,6 @@ export default class CommonUtils {
 
   static chooseMatOptionByText(value: string | undefined) {
     cy.get('mat-option > span').should('be.visible').then((options) => {
-      console.log("I need time to be stable:" + options);
       for (const option of options) {
         if (value) {
           if (option.innerText === value) {

@@ -87,7 +87,8 @@ export class DataCy {
   static TTH_CLOSE_TTH_YEAR = '[data-cy=closeTthYearButton]';
   static TTH_CLOSE_TTH_TIMETABLE_HEARING = '[data-cy=closeTthTimetableHearingButton]';
   static COLLECT_STATUS_CHANGE_ACTION_TYPE = '[data-cy=collect-status-change-action-type]';
-  static TTH_SELECT_YEAR = '[data-cy=selecTthYear]';
+  static TTH_SELECT_YEAR = '[data-cy=selectTthYear]';
+  static TTH_DETAIL_SELECT_YEAR = '[data-cy=detailSelectTthYear]';
   static STATEMENT_STATUS_DROPDOWN = '[data-cy=statementStatus]';
 
   static TABLE_FILTER_MULTI_SELECT = (rowIndex: number, columnIndex: number) =>
