@@ -138,6 +138,13 @@ export class ServicePointFormGroupBuilder {
   }
 
   private static initConditionalValidators(formGroup: FormGroup<ServicePointDetailFormGroup>) {
+    this.initSelectedTypeValidation(formGroup);
+    this.initStopPointValidation(formGroup);
+    this.initFreightServicePointValidation(formGroup);
+    this.initConditionalLocationValidators(formGroup);
+  }
+
+  private static initSelectedTypeValidation(formGroup: FormGroup<ServicePointDetailFormGroup>) {
     formGroup.controls.selectedType.valueChanges.subscribe((newType) => {
       if (newType === ServicePointType.OperatingPoint) {
         formGroup.controls.operatingPointType.setValidators([Validators.required]);
@@ -153,7 +160,9 @@ export class ServicePointFormGroupBuilder {
         formGroup.updateValueAndValidity();
       }
     });
+  }
 
+  private static initStopPointValidation(formGroup: FormGroup<ServicePointDetailFormGroup>) {
     formGroup.controls.stopPoint.valueChanges.subscribe((isStopPoint) => {
       if (isStopPoint) {
         formGroup.controls.meansOfTransport.setValidators([Validators.required]);
@@ -162,7 +171,11 @@ export class ServicePointFormGroupBuilder {
       }
       formGroup.controls.meansOfTransport.updateValueAndValidity();
     });
+  }
 
+  private static initFreightServicePointValidation(
+    formGroup: FormGroup<ServicePointDetailFormGroup>
+  ) {
     formGroup.controls.freightServicePoint.valueChanges.subscribe((isFreightServicePoint) => {
       if (
         isFreightServicePoint &&
@@ -175,8 +188,6 @@ export class ServicePointFormGroupBuilder {
       }
       formGroup.controls.sortCodeOfDestinationStation.updateValueAndValidity();
     });
-
-    this.initConditionalLocationValidators(formGroup);
   }
 
   private static initConditionalLocationValidators(
