@@ -65,7 +65,7 @@ public class LoadingPointMigrationIntegrationTest {
   @Test
   @Order(3)
   void shouldHaveSameServicePointNumbersInBothCsvs() {
-    Set<Integer> didokNumbers = didokCsvLines.stream().map(LoadingPointDidokCsvModel::getServicePointNumberWithoutCheckDigit)
+    Set<Integer> didokNumbers = didokCsvLines.stream().map(LoadingPointDidokCsvModel::getServicePointNumber)
         .collect(Collectors.toSet());
     Set<Integer> atlasNumbers = atlasCsvLines.stream().map(LoadingPointAtlasCsvModel::getServicePointNumber)
         .collect(Collectors.toSet());
