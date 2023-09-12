@@ -3,13 +3,15 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SepodiMapviewComponent } from './sepodi-mapview.component';
 import { AuthService } from '../../../core/auth/auth.service';
 import { AppTestingModule } from '../../../app.testing.module';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'atlas-map',
   template: '',
 })
-export class MockAtlasMapComponent {}
+export class MockAtlasMapComponent {
+  @Input() showSearch = true;
+}
 
 const authService: Partial<AuthService> = {};
 
