@@ -1,7 +1,16 @@
 package ch.sbb.atlas.amazon.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+
 import ch.sbb.atlas.export.enumeration.ExportFileName;
 import ch.sbb.atlas.export.enumeration.ExportType;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,16 +18,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
 public class FileServiceImplTest {
 
@@ -50,8 +49,7 @@ public class FileServiceImplTest {
     zipFile.deleteOnExit();
 
     //then
-    assertThat(zipFile).isNotNull();
-    assertThat(zipFile.getName()).isEqualTo("tmp.csv.zip");
+    assertThat(zipFile).isNotNull().hasName("tmp.csv.zip");
   }
 
   @Test
