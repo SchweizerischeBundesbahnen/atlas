@@ -7,7 +7,7 @@
       <div class="user-name color-primary-400">{{ userName }}</div>
     </div>
   </button>
-  <mat-menu #profile="matMenu">
+  <mat-menu #profile="matMenu" class="user-menu">
     <div class="font-regular-base">
       <div class="ps-1 pe-1 flex-column">
         <div *ngIf="roles || permissions" id="user-roles-modal">
@@ -17,13 +17,14 @@
           <div class="d-inline-block">
             <span class="mb-0 user-info-modal">{{ 'PROFILE.YOUR_ROLES' | translate }}</span>
           </div>
-          <div *ngFor="let role of roles" class="user-role-item">
+          <div *ngFor="let role of roles" class="user-role-item d-flex flex-row">
             <em class="bi bi-circle-fill user-roles-list-item pe-1"></em>
-            {{ 'COMMON.ROLES.' + role | translate }}
+            <b>{{ 'COMMON.ROLES.' + role | translate }}</b>
           </div>
-          <div *ngFor="let permission of permissions" class="user-role-item">
+          <div *ngFor="let permission of permissions" class="user-role-item d-flex flex-row">
             <em class="bi bi-circle-fill user-roles-list-item pe-1"></em>
-            {{ permission.application }}: {{ 'COMMON.ROLES.' + permission.role | translate }}
+            <b>{{ 'USER_ADMIN.APPLICATION.' + permission.application | translate }}</b
+            >: {{ 'COMMON.ROLES.' + permission.role | translate }}
           </div>
         </div>
         <hr />

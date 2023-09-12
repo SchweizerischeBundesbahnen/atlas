@@ -12,20 +12,15 @@ describe('Timetable Hearing', { testIsolation: false }, () => {
 
   it('Step-2: Navigate to Fahrplananhörung', () => {
     TthUtils.navigateToTimetableHearing();
-  });
-
-  it('Step-3 Check: Navigate to Aktuelle Anhörungen and close it if exists', () => {
     cy.wait(2000);
     cy.get(DataCy.TTH_SWISS_CANTON_CARD).click();
-    TthUtils.changeTabToTTH('PLANNED');
-    TthUtils.archiveHearingIfAlreadyActive();
   });
 
-  it('Step-4: Navigate to Geplante Anhörungen', () => {
+  it('Step-3: Navigate to Geplante Anhörungen', () => {
     TthUtils.changeTabToTTH('PLANNED');
   });
 
-  it('Step-5: Fahrplanjahr anlegen', () => {
+  it('Step-4: Fahrplanjahr anlegen', () => {
     cy.get(DataCy.ADD_NEW_TIMETABLE_HEARING_BUTTON).click();
     cy.wait(2000);
     CommonUtils.selectFirstItemFromDropDown(DataCy.ADD_NEW_TIMETABLE_HEARING_SELECT_YEAR_DROPDOWN);
@@ -42,7 +37,7 @@ describe('Timetable Hearing', { testIsolation: false }, () => {
     cy.get(DataCy.DIALOG_CONFIRM_BUTTON).click();
   });
 
-  it('Step-6: Fahrplanjahr Starten', () => {
+  it('Step-5: Fahrplanjahr Starten', () => {
     cy.get(DataCy.TTH_SELECT_YEAR).wait(1000).should('be.visible');
     CommonUtils.selectItemFromDropDown(DataCy.TTH_SELECT_YEAR, String(selectedHearingYear));
     cy.get(DataCy.START_TIMETABLE_HEARING_YEAR_BUTTON)
@@ -52,7 +47,7 @@ describe('Timetable Hearing', { testIsolation: false }, () => {
       });
   });
 
-  it('Step-7: Stellungnahmen erfassen', () => {
+  it('Step-6: Stellungnahmen erfassen', () => {
     CommonUtils.visit('timetable-hearing/ch/active');
     CommonUtils.selectItemFromDropDown(DataCy.SELECT_TTH_CANTON_DROPDOWN, ' Tessin');
     cy.get(DataCy.NEW_STATEMENT_BUTTON).click();
@@ -70,7 +65,7 @@ describe('Timetable Hearing', { testIsolation: false }, () => {
     cy.get(DataCy.SAVE_ITEM).click();
   });
 
-  it('Step-8: Stellungnahmen editieren', () => {
+  it('Step-7: Stellungnahmen editieren', () => {
     const getStatementsPath = 'line-directory/v1/timetable-hearing/statements*';
     cy.intercept('GET', getStatementsPath).as('getStatementsPath');
     cy.get(DataCy.BACK_TO_OVERVIEW).click();
@@ -88,7 +83,7 @@ describe('Timetable Hearing', { testIsolation: false }, () => {
     cy.get(DataCy.BACK_TO_OVERVIEW).click();
   });
 
-  it('Step-9: Sammelaktion -> Status ändern -> angenommen', () => {
+  it('Step-8: Sammelaktion -> Status ändern -> angenommen', () => {
     cy.get(DataCy.TTH_TABLE + ' table tbody tr td').should(
       'not.contain',
       'Es wurden keine Daten gefunden.'
@@ -103,7 +98,7 @@ describe('Timetable Hearing', { testIsolation: false }, () => {
     cy.get(DataCy.DIALOG_CONFIRM_BUTTON).click();
   });
 
-  it('Step-10: Fahrplanjahr schliessen', () => {
+  it('Step-9: Fahrplanjahr schliessen', () => {
     CommonUtils.visit('timetable-hearing/ch/active');
     cy.get(DataCy.TTH_TABLE).should('be.visible');
     cy.get(DataCy.TTH_MANAGE_TIMETABLE_HEARING).click();
@@ -111,7 +106,7 @@ describe('Timetable Hearing', { testIsolation: false }, () => {
     cy.get(DataCy.TTH_CLOSE_TTH_TIMETABLE_HEARING).click();
   });
 
-  it('Step-11: Archivierte Anhörungn kontrollieren', () => {
+  it('Step-10: Archivierte Anhörungn kontrollieren', () => {
     TthUtils.changeTabToTTH('ARCHIVED');
     CommonUtils.selectItemFromDropDown(DataCy.TTH_SELECT_YEAR, String(selectedHearingYear));
     CommonUtils.assertNumberOfTableRows(DataCy.TTH_TABLE, 1);
