@@ -28,6 +28,7 @@ import { takeUntil } from 'rxjs/operators';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { DetailFormComponent } from '../../../../core/leave-guard/leave-dirty-form-guard.service';
 import { AuthService } from '../../../../core/auth/auth.service';
+import { TranslationSortingService } from '../../../../core/translation/translation-sorting.service';
 
 @Component({
   selector: 'app-service-point',
@@ -45,9 +46,12 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   preferredId?: number;
 
   types = Object.values(ServicePointType);
-  operatingPointTypes = (Object.values(OperatingPointType) as string[]).concat(
+
+  readonly operatingPointTypeValues = (Object.values(OperatingPointType) as string[]).concat(
     Object.values(OperatingPointTechnicalTimetableType)
   );
+
+  operatingPointTypes!: string[];
 
   previouslySelectedType!: ServicePointType;
   stopPointTypes = Object.values(StopPointType);
@@ -66,7 +70,8 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     private servicePointService: ServicePointsService,
     private notificationService: NotificationService,
     private mapService: MapService,
-    private authService: AuthService
+    private authService: AuthService,
+    private translationSortingService: TranslationSortingService
   ) {}
 
   ngOnInit() {
@@ -77,6 +82,22 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
       this.initServicePoint();
       this.displayAndSelectServicePointOnMap();
     });
+
+    this.initSortedOperatingPointTypes();
+  }
+
+  initSortedOperatingPointTypes() {
+    this.setSortedOperatingPointTypes();
+    this.translationSortingService.translateService.onLangChange.subscribe(() =>
+      this.setSortedOperatingPointTypes()
+    );
+  }
+
+  setSortedOperatingPointTypes() {
+    this.operatingPointTypes = this.translationSortingService.sort(
+      this.operatingPointTypeValues,
+      'SEPODI.SERVICE_POINTS.OPERATING_POINT_TYPES.'
+    );
   }
 
   ngOnDestroy() {
