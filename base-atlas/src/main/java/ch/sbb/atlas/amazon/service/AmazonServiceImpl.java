@@ -7,7 +7,6 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.PutObjectResult;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
@@ -138,9 +137,11 @@ public class AmazonServiceImpl implements AmazonService {
   }
 
   private URL executePutObjectRequest(PutObjectRequest putObjectRequest, AmazonBucket bucket, String filePathName) {
-    PutObjectResult putObjectResult = getClient(bucket).putObject(putObjectRequest);
+    getClient(bucket).putObject(putObjectRequest);
     URL url = getClient(bucket).getUrl(getAmazonBucketConfig(bucket).getBucketName(), filePathName);
-    log.info("Upload to S3 completed. file={}, size={}", filePathName, putObjectResult.getMetadata().getContentLength());
+
+    // Used for splunk dashboard to display exported files.
+    log.info("Upload to S3 completed. file={}, size={}", filePathName, putObjectRequest.getMetadata().getContentLength());
     return url;
   }
 
