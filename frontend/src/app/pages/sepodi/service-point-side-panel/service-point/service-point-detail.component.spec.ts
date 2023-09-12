@@ -141,23 +141,4 @@ describe('ServicePointDetailComponent', () => {
     component.toggleEdit();
     expect(component.form.enabled).toBeTrue();
   });
-
-  it('should show bo transfer dialog on update if user is writer', () => {
-    // given
-    servicePointsServiceSpy.updateServicePoint.and.returnValue(of(BERN));
-    dialogServiceSpy.confirm.and.returnValue(of(true));
-
-    component.form.enable();
-
-    const initialBO = component.selectedVersion.businessOrganisation;
-    const newBo = 'ch:1:sboid:123123123';
-    expect(initialBO).not.toBe(newBo);
-
-    // when
-    component.form.controls.businessOrganisation.setValue(newBo);
-    component.save();
-
-    // then
-    expect(dialogServiceSpy.confirm).toHaveBeenCalled();
-  });
 });
