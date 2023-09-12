@@ -5,14 +5,20 @@
       {{ 'SEPODI.SERVICE_POINTS.DESIGNATION_OFFICIAL' | translate }}
     </mat-label>
   </div>
-  <form-search-select
-    (changeTrigger)="navigateToServicePoint($event)"
-    (searchTrigger)="searchServicePoint($event)"
-    [items$]="servicePointSearchResult$"
-    [hasForm]="false"
-    placeholderTextKey="{{ 'SEPODI.SERVICE_POINTS.SERVICE_POINT' | translate }}"
+
+  <ng-select
+    [items]="servicePointSearchResult$ | async"
+    [typeahead]="searchInput$"
+    [loading]="loading"
+    (change)="navigateToServicePoint($event)"
+    (clear)="clearResult()"
+    placeholder="{{ 'SEPODI.SERVICE_POINTS.SERVICE_POINT' | translate }}"
+    appearance="outline"
+    [notFoundText]="notFoundText"
+    [typeToSearchText]="minThermLongText"
+    loadingText="{{ 'COMMON.LOADING' | translate }}"
   >
-    <ng-template #labelOptionTemplates let-item>
+    <ng-template let-item="item" ng-option-tmp>
       <span
         [innerHTML]="
           item.number.toString() | searchResultHighlight : searchValue | splitServicePointNumber
@@ -21,5 +27,5 @@
       <span>&nbsp;&nbsp;&nbsp;</span>
       <span [innerHTML]="item.designationOfficial | searchResultHighlight : searchValue"></span>
     </ng-template>
-  </form-search-select>
+  </ng-select>
 </div>
