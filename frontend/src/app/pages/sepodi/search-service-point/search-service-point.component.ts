@@ -30,7 +30,7 @@ export class SearchServicePointComponent implements OnInit {
     private readonly translatePipe: TranslatePipe
   ) {}
 
-  private _searchValue!: string;
+  private _searchValue = '';
 
   get searchValue(): string {
     return this._searchValue;
@@ -108,6 +108,7 @@ export class SearchServicePointComponent implements OnInit {
   }
 
   clearResult() {
+    this._searchValue = '';
     this.loadResult();
   }
 }

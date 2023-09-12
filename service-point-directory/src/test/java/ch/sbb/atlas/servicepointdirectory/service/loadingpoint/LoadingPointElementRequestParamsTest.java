@@ -19,8 +19,7 @@ class LoadingPointElementRequestParamsTest extends BaseValidatorTest {
     Set<ConstraintViolation<LoadingPointElementRequestParams>> violations = validator.validate(requestParams);
 
     //then
-    assertThat(violations).isNotNull();
-    assertThat(violations).isNotEmpty();
+    assertThat(violations).hasSize(1);
     List<String> violationMessages = violations.stream()
         .map(ConstraintViolation::getMessage)
         .toList();
@@ -38,8 +37,7 @@ class LoadingPointElementRequestParamsTest extends BaseValidatorTest {
     Set<ConstraintViolation<LoadingPointElementRequestParams>> violations = validator.validate(requestParams);
 
     //then
-    assertThat(violations).isNotNull();
-    assertThat(violations).isNotEmpty();
+    assertThat(violations).hasSize(1);
     List<String> violationMessages = violations.stream()
         .map(ConstraintViolation::getMessage)
         .toList();
@@ -58,7 +56,6 @@ class LoadingPointElementRequestParamsTest extends BaseValidatorTest {
     Set<ConstraintViolation<LoadingPointElementRequestParams>> violations = validator.validate(requestParams);
 
     //then
-    assertThat(violations).isNotNull();
     assertThat(violations).isEmpty();
   }
 
@@ -71,8 +68,7 @@ class LoadingPointElementRequestParamsTest extends BaseValidatorTest {
     Set<ConstraintViolation<LoadingPointElementRequestParams>> violations = validator.validate(requestParams);
 
     //then
-    assertThat(violations).isNotNull();
-    assertThat(violations).isNotEmpty();
+    assertThat(violations).hasSize(1);
     List<String> violationMessages = violations.stream()
         .map(ConstraintViolation::getMessage)
         .toList();
@@ -90,8 +86,7 @@ class LoadingPointElementRequestParamsTest extends BaseValidatorTest {
     Set<ConstraintViolation<LoadingPointElementRequestParams>> violations = validator.validate(requestParams);
 
     //then
-    assertThat(violations).isNotNull();
-    assertThat(violations).isNotEmpty();
+    assertThat(violations).hasSize(1);
     List<String> violationMessages = violations.stream()
         .map(ConstraintViolation::getMessage)
         .toList();
@@ -110,7 +105,6 @@ class LoadingPointElementRequestParamsTest extends BaseValidatorTest {
     Set<ConstraintViolation<LoadingPointElementRequestParams>> violations = validator.validate(requestParams);
 
     //then
-    assertThat(violations).isNotNull();
     assertThat(violations).isEmpty();
   }
 

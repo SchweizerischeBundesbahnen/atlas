@@ -19,8 +19,7 @@ class TrafficPointElementRequestParamsTest extends BaseValidatorTest {
     Set<ConstraintViolation<TrafficPointElementRequestParams>> violations = validator.validate(requestParams);
 
     //then
-    assertThat(violations).isNotNull();
-    assertThat(violations).isNotEmpty();
+    assertThat(violations).hasSize(1);
     List<String> violationMessages = violations.stream()
         .map(ConstraintViolation::getMessage)
         .toList();
@@ -38,8 +37,7 @@ class TrafficPointElementRequestParamsTest extends BaseValidatorTest {
     Set<ConstraintViolation<TrafficPointElementRequestParams>> violations = validator.validate(requestParams);
 
     //then
-    assertThat(violations).isNotNull();
-    assertThat(violations).isNotEmpty();
+    assertThat(violations).hasSize(1);
     List<String> violationMessages = violations.stream()
         .map(ConstraintViolation::getMessage)
         .toList();
@@ -58,7 +56,6 @@ class TrafficPointElementRequestParamsTest extends BaseValidatorTest {
     Set<ConstraintViolation<TrafficPointElementRequestParams>> violations = validator.validate(requestParams);
 
     //then
-    assertThat(violations).isNotNull();
     assertThat(violations).isEmpty();
   }
 
