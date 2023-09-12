@@ -34,6 +34,7 @@
     },
     "NODATAFOUND": "Aucune donnée n’a été trouvée.",
     "TYPE_TO_SEARCH": "Entrez au moins 2 caractères pour commencer la recherche.",
+    "TYPE_TO_SEARCH_SHORT": "Entrez au moins 2 caractères...",
     "JA": "Oui",
     "NEIN": "Non",
     "ACHTUNG": "Attention!",
