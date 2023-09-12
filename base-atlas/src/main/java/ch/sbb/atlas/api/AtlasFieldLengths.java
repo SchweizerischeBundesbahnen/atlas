@@ -7,6 +7,7 @@ public class AtlasFieldLengths {
 
   public static final int MIN_STRING_LENGTH = 1;
   public static final int LENGTH_6 = 6;
+  public static final int SERVICE_POINT_NUMBER_LENGTH = 7;
   public static final int LENGTH_10 = 10;
   public static final int LENGTH_12 = 12;
   public static final int LENGTH_20 = 20;

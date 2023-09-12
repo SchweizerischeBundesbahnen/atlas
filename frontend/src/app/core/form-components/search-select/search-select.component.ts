@@ -7,7 +7,7 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { Observable, of, Subject } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { FormGroup } from '@angular/forms';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -18,7 +18,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   styleUrls: ['./search-select.component.scss'],
 })
 export class SearchSelectComponent<TYPE> {
-  @Input() items$: Observable<any[]> = of([]);
+  @Input() items$: Observable<TYPE[]> = of([]);
   @Input() multiple = false;
   @Input() placeholderTextKey = '';
   @Input() controlName!: string;
@@ -26,10 +26,6 @@ export class SearchSelectComponent<TYPE> {
   @Input() bindValueInp = '';
   @Input() pipe?: TranslatePipe;
   @Input() disabled!: boolean;
-
-  @Input() typeahead = new Subject<string>();
-  @Input() loading = false;
-
   @Output() searchTrigger = new EventEmitter<string>();
 
   @Output() changeTrigger = new EventEmitter<TYPE>();
