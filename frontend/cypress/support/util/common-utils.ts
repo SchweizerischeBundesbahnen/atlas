@@ -50,7 +50,6 @@ export default class CommonUtils {
 
   static navigateToHomepageViaSidemenu() {
     // Move to Home via the side-menu
-    this.openSideMenu();
     cy.get(DataCy.SIDEMENU_START).click();
 
     // Check that we are on the (german) home-page
@@ -60,7 +59,6 @@ export default class CommonUtils {
 
   static navigateToTtfnViaSidemenu() {
     // Move to TTFN via the side-menu
-    this.openSideMenu();
     cy.get(DataCy.SIDEMENU_TTFN).click();
 
     // Check that we are on the TTFN-path
@@ -69,7 +67,6 @@ export default class CommonUtils {
 
   static navigateToLidiViaSidemenu() {
     // Move to LiDi via the side-menu
-    this.openSideMenu();
     cy.get(DataCy.SIDEMENU_LIDI).click();
 
     // Check that we are on the LiDi-path
