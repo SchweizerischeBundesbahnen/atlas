@@ -3,7 +3,6 @@ package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.service.UserService;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.atlas.servicepointdirectory.api.ServicePointSearchResult;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointSearchVersionRepository;
