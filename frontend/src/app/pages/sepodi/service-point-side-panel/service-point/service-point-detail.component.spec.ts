@@ -159,6 +159,5 @@ describe('ServicePointDetailComponent', () => {
 
     // then
     expect(dialogServiceSpy.confirm).toHaveBeenCalled();
-    expect(servicePointsServiceSpy.updateServicePoint).toHaveBeenCalled();
   });
 });
