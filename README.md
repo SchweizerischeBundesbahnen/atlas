@@ -45,7 +45,6 @@ ATLAS shall be a platform, on which relevant data for customer information can b
 Applications on this platform share their tech stack and have the same monitoring and logging.
 
 It's applications share the following architectural goal:
-
 ![ATLAS Big Picture](documentation/image/ATLAS_Infrastruktur.svg)
 
 Application MEGAID: `ADB3AE9A60E510ED`
@@ -76,8 +75,6 @@ Application MEGAID: `ADB3AE9A60E510ED`
   - **INT**: https://api-management.int.sbb-cloud.net
   - **PROD**: https://api-management.prod.sbb-cloud.net
 - **Vulnerability Management (VMC)**: https://vmc.sbb.ch/de/reporting/mg/ADB3AE9A60E510ED/vulnerabilitylist
-- **Jenkins**: https://ci.sbb.ch/job/KI_ATLAS/job/atlas/job/master/ :warning: **deprecated**
-- **Jenkins-E2E**: https://ci.sbb.ch/job/KI_ATLAS_E2E/job/atlas/ :warning: **deprecated**
 
 ## ATLAS CI/CD
 
