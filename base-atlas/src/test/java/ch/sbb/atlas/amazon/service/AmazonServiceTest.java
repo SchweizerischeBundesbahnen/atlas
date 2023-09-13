@@ -23,6 +23,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 public class AmazonServiceTest {
+
     @Mock
     private AmazonS3 amazonS3;
     @Mock
@@ -40,6 +41,11 @@ public class AmazonServiceTest {
         amazonBucketClientList.add(amazonBucketClient);
         amazonService = new AmazonServiceImpl(amazonBucketClientList, fileService);
 
+        when(amazonBucketClient.getAmazonBucketConfig()).thenReturn(amazonBucketConfig);
+        when(amazonBucketClient.getClient()).thenReturn(amazonS3);
+        when(amazonBucketClient.getBucket()).thenReturn(AmazonBucket.EXPORT);
+        when(amazonBucketConfig.getBucketName()).thenReturn("testBucket");
+
         PutObjectResult putObjectResult = new PutObjectResult();
         putObjectResult.setMetadata(new ObjectMetadata());
         putObjectResult.getMetadata().setContentLength(1);
@@ -51,9 +57,6 @@ public class AmazonServiceTest {
         //given
         Path tempFile = createTempFile();
         //when
-        when(amazonBucketClient.getAmazonBucketConfig()).thenReturn(amazonBucketConfig);
-        when(amazonBucketClient.getClient()).thenReturn(amazonS3);
-        when(amazonBucketClient.getBucket()).thenReturn(AmazonBucket.EXPORT);
         when(amazonBucketConfig.getBucketName()).thenReturn("testBucket");
         amazonService.putFile(AmazonBucket.EXPORT, tempFile.toFile(), "dir");
         //then
@@ -68,10 +71,7 @@ public class AmazonServiceTest {
         Path zipFile = createTempFile();
         //when
         when(fileService.zipFile(tempFile.toFile())).thenReturn(zipFile.toFile());
-        when(amazonBucketClient.getAmazonBucketConfig()).thenReturn(amazonBucketConfig);
-        when(amazonBucketClient.getClient()).thenReturn(amazonS3);
-        when(amazonBucketClient.getBucket()).thenReturn(AmazonBucket.EXPORT);
-        when(amazonBucketConfig.getBucketName()).thenReturn("testBucket");
+
         amazonService.putZipFile(AmazonBucket.EXPORT, tempFile.toFile(), "dir");
         //then
         verify(fileService).zipFile(tempFile.toFile());
@@ -80,7 +80,7 @@ public class AmazonServiceTest {
     }
 
     @Test
-    public void shouldRetrunBucketDir() throws IOException {
+    public void shouldReturnBucketDir() throws IOException {
         //when
         String result = amazonService.getFilePathName(createTempFile().toFile(), "dev");
         //then
