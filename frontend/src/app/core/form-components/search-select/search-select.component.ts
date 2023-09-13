@@ -26,11 +26,9 @@ export class SearchSelectComponent<TYPE> {
   @Input() bindValueInp = '';
   @Input() pipe?: TranslatePipe;
   @Input() disabled!: boolean;
-  @Input() hasForm = true;
-
   @Output() searchTrigger = new EventEmitter<string>();
-  @Output() changeTrigger = new EventEmitter<TYPE>();
 
+  @Output() changeTrigger = new EventEmitter<TYPE>();
   @ViewChild('ngSelect') ngSelect?: NgSelectComponent;
   @ContentChild('labelOptionTemplates') labelOptionTemplates!: TemplateRef<any>;
 

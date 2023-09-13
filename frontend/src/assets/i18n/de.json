@@ -33,7 +33,8 @@
       "INCOMPLETE": "Lückenhaft"
     },
     "NODATAFOUND": "Es wurden keine Daten gefunden.",
-    "TYPE_TO_SEARCH": "Tippe mindestens 2 Zeichen ein, um die Suche zu beginnen.",
+    "TYPE_TO_SEARCH": "Tippen Sie mindestens 2 Zeichen ein, um die Suche zu beginnen.",
+    "TYPE_TO_SEARCH_SHORT": "Tippen Sie mindestens 2 Zeichen ein...",
     "JA": "Ja",
     "NEIN": "Nein",
     "ACHTUNG": "Achtung!",
