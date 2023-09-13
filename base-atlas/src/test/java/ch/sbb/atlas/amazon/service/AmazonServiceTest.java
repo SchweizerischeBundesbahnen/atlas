@@ -57,7 +57,6 @@ public class AmazonServiceTest {
         //given
         Path tempFile = createTempFile();
         //when
-        when(amazonBucketConfig.getBucketName()).thenReturn("testBucket");
         amazonService.putFile(AmazonBucket.EXPORT, tempFile.toFile(), "dir");
         //then
         verify(amazonS3).putObject(any(PutObjectRequest.class));
