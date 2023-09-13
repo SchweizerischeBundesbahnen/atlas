@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum ExportType implements ExportTypeBase{
+public enum ExportType implements ExportTypeBase {
 
   FULL("full", "full_"),
   ACTUAL_DATE("actual_date", "actual_date_"),
