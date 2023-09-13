@@ -18,5 +18,4 @@ export interface LineDetailFormGroup extends BaseDetailFormGroup {
   colorBackCmyk: FormControl<string | null>;
   description: FormControl<string | null | undefined>;
   comment: FormControl<string | null | undefined>;
-  etagVersion: FormControl<number | null | undefined>;
 }

@@ -1,31 +1,5 @@
 package ch.sbb.business.organisation.directory.controller;
 
-import ch.sbb.atlas.amazon.service.AmazonService;
-import ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel;
-import ch.sbb.atlas.api.bodi.enumeration.BusinessType;
-import ch.sbb.atlas.api.model.ErrorResponse;
-import ch.sbb.atlas.export.enumeration.ExportType;
-import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.model.controller.BaseControllerWithAmazonS3ApiTest;
-import ch.sbb.atlas.model.exception.NotFoundException;
-import ch.sbb.business.organisation.directory.BusinessOrganisationData;
-import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
-import ch.sbb.business.organisation.directory.repository.BusinessOrganisationVersionRepository;
-import ch.sbb.business.organisation.directory.service.export.BusinessOrganisationVersionExportService;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-
-import java.io.File;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-
 import static ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel.Fields.abbreviationDe;
 import static ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel.Fields.abbreviationEn;
 import static ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel.Fields.abbreviationFr;
@@ -50,6 +24,31 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import ch.sbb.atlas.amazon.service.AmazonService;
+import ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel;
+import ch.sbb.atlas.api.bodi.enumeration.BusinessType;
+import ch.sbb.atlas.api.model.ErrorResponse;
+import ch.sbb.atlas.export.enumeration.ExportType;
+import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.model.controller.BaseControllerWithAmazonS3ApiTest;
+import ch.sbb.atlas.model.exception.NotFoundException;
+import ch.sbb.business.organisation.directory.BusinessOrganisationData;
+import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
+import ch.sbb.business.organisation.directory.repository.BusinessOrganisationVersionRepository;
+import ch.sbb.business.organisation.directory.service.export.BusinessOrganisationVersionExportService;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import java.io.File;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 public class BusinessOrganisationControllerIntegrationTest extends BaseControllerWithAmazonS3ApiTest {
 
