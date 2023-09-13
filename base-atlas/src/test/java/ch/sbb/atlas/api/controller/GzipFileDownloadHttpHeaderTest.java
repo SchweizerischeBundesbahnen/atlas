@@ -1,17 +1,16 @@
 package ch.sbb.atlas.api.controller;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpHeaders;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Objects;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpHeaders;
 
 public class GzipFileDownloadHttpHeaderTest {
 
     @Test
     void shouldGetHttpHeader() {
-        HttpHeaders httpHeaders = GzipFileDownloadHttpHeader.getHeaders("filename");
+        HttpHeaders httpHeaders = GzipFileDownloadHttpHeader.getHeaders("filename.json.gz");
 
         assertEquals("application/gzip", Objects.requireNonNull(httpHeaders.getContentType()).toString());
         assertEquals("attachment; filename=\"filename.json.gz\"", httpHeaders.getContentDisposition().toString());
