@@ -16,12 +16,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.util.List;
 import java.util.zip.GZIPOutputStream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -31,7 +33,8 @@ public class AmazonServiceImpl implements AmazonService {
   private final FileService fileService;
 
   private static byte[] gzipFile(byte[] bytes) throws IOException {
-    try (ByteArrayOutputStream baos = new ByteArrayOutputStream(); GZIPOutputStream out = new GZIPOutputStream(baos); ){
+    try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        GZIPOutputStream out = new GZIPOutputStream(baos)){
       out.write(bytes, 0, bytes.length);
       out.finish();
 
@@ -74,9 +77,8 @@ public class AmazonServiceImpl implements AmazonService {
   @Override
   public File pullFile(AmazonBucket bucket, String filePath) {
     try {
-      S3Object s3Object = getClient(bucket).getObject(getAmazonBucketConfig(bucket).getBucketName(), filePath);
-      String dir = fileService.getDir();
-      return getFile(filePath, s3Object, dir);
+      S3Object s3Object = pullS3Object(bucket, filePath);
+      return getFile(filePath, s3Object, fileService.getDir());
     } catch (AmazonS3Exception e) {
       log.error(e.getMessage());
       throw new FileNotFoundException(filePath);
@@ -84,19 +86,38 @@ public class AmazonServiceImpl implements AmazonService {
   }
 
   private static File getFile(String filePath, S3Object s3Object, String dir) {
-    File fileDownload = new File(dir + filePath.replaceAll("/", "_"));
-    try (FileOutputStream fileOutputStream = new FileOutputStream(fileDownload);
+    File downloadedFile = new File(dir + filePath.replaceAll("/", "_"));
+    try (FileOutputStream fileOutputStream = new FileOutputStream(downloadedFile);
         S3ObjectInputStream s3InputStream = s3Object.getObjectContent()) {
       fileOutputStream.write(s3InputStream.readAllBytes());
-      return fileDownload;
+      return downloadedFile;
     } catch (IOException e) {
-      throw new FileException("There was a problem with downloading file with name: " + fileDownload.getName(), e);
+      throw new FileException("There was a problem with downloading filePath=" + filePath + " to dir=" + dir, e);
     }
   }
 
   @Override
   public S3Object pullS3Object(AmazonBucket bucket, String filePath) {
     return getClient(bucket).getObject(getAmazonBucketConfig(bucket).getBucketName(), filePath);
+  }
+
+  @Override
+  public StreamingResponseBody streamFile(AmazonBucket bucket, String fileToStream, boolean decompressGzip) {
+    try {
+      File file = pullFile(bucket, fileToStream);
+
+      InputStream inputStream;
+      if (decompressGzip) {
+        byte[] bytes = fileService.decompressGzipToBytes(file.toPath());
+        inputStream = new ByteArrayInputStream(bytes);
+      } else {
+        inputStream = new FileInputStream(file);
+      }
+
+      return fileService.writeOutputStream(file, inputStream);
+    } catch (IOException e) {
+      throw new FileException(e);
+    }
   }
 
   @Override
