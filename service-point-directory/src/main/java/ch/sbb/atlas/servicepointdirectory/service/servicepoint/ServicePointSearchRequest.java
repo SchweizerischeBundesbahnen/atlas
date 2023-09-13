@@ -1,7 +1,12 @@
-package ch.sbb.atlas.servicepointdirectory.api;
+package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
