@@ -1,5 +1,7 @@
 package ch.sbb.atlas.servicepoint;
 
+import static ch.sbb.atlas.api.AtlasFieldLengths.SERVICE_POINT_NUMBER_LENGTH;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -26,7 +28,6 @@ import lombok.extern.slf4j.Slf4j;
 public final class ServicePointNumber {
 
   private static final String SLOID_PREFIX = "ch:1:sloid:";
-  private static final int LENGTH = 7;
   private static final int TEN = 10;
   private static final int SEVEN_DIGIT_SPLITTER = 100000;
   public static final String EMPTY_STRING = "";
@@ -35,7 +36,7 @@ public final class ServicePointNumber {
   private final int value;
 
   public static ServicePointNumber ofNumberWithoutCheckDigit(int number) {
-    if(String.valueOf(number).length() != LENGTH){
+    if(String.valueOf(number).length() != SERVICE_POINT_NUMBER_LENGTH){
       throw new IllegalArgumentException("The number size must be 7!["+number +"]");
     }
     return new ServicePointNumber(number);
@@ -65,7 +66,7 @@ public final class ServicePointNumber {
   @Deprecated
   public static Integer removeCheckDigit(Integer didokCode){
     String didokCodeAsString = Integer.toString(didokCode);
-    if(didokCodeAsString.length() == LENGTH){
+    if(didokCodeAsString.length() == SERVICE_POINT_NUMBER_LENGTH){
       return didokCode;
     }
     return Integer.parseInt(didokCodeAsString.substring(0, didokCodeAsString.length() -1));
@@ -126,7 +127,7 @@ public final class ServicePointNumber {
   @NotNull
   @Schema(description = "NumberShort - 5 chars identifying number. Range: 1-99.999", example = "18771")
   public Integer getNumberShort() {
-    return getNumericPart(2, LENGTH);
+    return getNumericPart(2, SERVICE_POINT_NUMBER_LENGTH);
   }
 
   @NotNull
@@ -137,7 +138,7 @@ public final class ServicePointNumber {
 
   @AssertTrue
   boolean isEightDigitsLong() {
-    return asString().length() == LENGTH;
+    return asString().length() == SERVICE_POINT_NUMBER_LENGTH;
   }
 
   public String asString() {
