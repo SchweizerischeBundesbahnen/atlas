@@ -5,7 +5,7 @@ import static ch.sbb.atlas.amazon.config.AmazonAtlasConfig.configureAmazonS3Clie
 import ch.sbb.atlas.amazon.config.AmazonConfigProps;
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.amazon.service.AmazonServiceImpl;
-import ch.sbb.atlas.amazon.service.FileServiceImpl;
+import ch.sbb.atlas.amazon.service.FileService;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +19,7 @@ public class AmazonConfig {
     }
 
     @Bean
-    public AmazonService amazonService() {
-        return new AmazonServiceImpl(configureAmazonS3Client(amazonConfigProps()), new FileServiceImpl());
+    public AmazonService amazonService(FileService fileService) {
+        return new AmazonServiceImpl(configureAmazonS3Client(amazonConfigProps()), fileService);
     }
 }
