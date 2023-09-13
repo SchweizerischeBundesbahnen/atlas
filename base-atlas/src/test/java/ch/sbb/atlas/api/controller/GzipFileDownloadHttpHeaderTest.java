@@ -10,7 +10,7 @@ public class GzipFileDownloadHttpHeaderTest {
 
     @Test
     void shouldGetHttpHeader() {
-        HttpHeaders httpHeaders = GzipFileDownloadHttpHeader.getHeaders("filename.json.gz");
+        HttpHeaders httpHeaders = GzipFileDownloadHttpHeader.getHeaders("filename");
 
         assertEquals("application/gzip", Objects.requireNonNull(httpHeaders.getContentType()).toString());
         assertEquals("attachment; filename=\"filename.json.gz\"", httpHeaders.getContentDisposition().toString());

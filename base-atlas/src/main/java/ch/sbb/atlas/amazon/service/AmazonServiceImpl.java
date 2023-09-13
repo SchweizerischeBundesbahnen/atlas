@@ -16,14 +16,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.util.List;
 import java.util.zip.GZIPOutputStream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -99,25 +97,6 @@ public class AmazonServiceImpl implements AmazonService {
   @Override
   public S3Object pullS3Object(AmazonBucket bucket, String filePath) {
     return getClient(bucket).getObject(getAmazonBucketConfig(bucket).getBucketName(), filePath);
-  }
-
-  @Override
-  public StreamingResponseBody streamFile(AmazonBucket bucket, String fileToStream, boolean decompressGzip) {
-    try {
-      File file = pullFile(bucket, fileToStream);
-
-      InputStream inputStream;
-      if (decompressGzip) {
-        byte[] bytes = fileService.decompressGzipToBytes(file.toPath());
-        inputStream = new ByteArrayInputStream(bytes);
-      } else {
-        inputStream = new FileInputStream(file);
-      }
-
-      return fileService.writeOutputStream(file, inputStream);
-    } catch (IOException e) {
-      throw new FileException(e);
-    }
   }
 
   @Override
