@@ -66,7 +66,7 @@ public class ExportServicePointBatchControllerApiV1 {
       @PathVariable("exportFileName") BatchExportFileName exportFileName,
       @PathVariable("exportType") ExportType exportType) throws NotAllowedExportFileException {
     checkInputPath(exportFileName, exportType);
-    String fileName = fileExportService.getBaseFileName(exportType, exportFileName) + ".json.gz";
+    String fileName = fileExportService.getBaseFileName(exportType, exportFileName);
     HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(fileName);
     StreamingResponseBody body = fileExportService.streamGzipFile(exportType, exportFileName);
     return ResponseEntity.ok().headers(headers).body(body);
