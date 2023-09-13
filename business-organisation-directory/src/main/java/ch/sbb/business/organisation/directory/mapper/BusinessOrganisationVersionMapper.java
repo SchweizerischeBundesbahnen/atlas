@@ -28,6 +28,11 @@ public class BusinessOrganisationVersionMapper {
         .sboid(model.getSboid())
         .businessTypes(model.getBusinessTypes())
         .version(model.getEtagVersion())
+        .creationDate(model.getCreationDate())
+        .creator(model.getCreator())
+        .editionDate(model.getEditionDate())
+        .editor(model.getEditor())
+        .version(model.getEtagVersion())
         .build();
   }
 

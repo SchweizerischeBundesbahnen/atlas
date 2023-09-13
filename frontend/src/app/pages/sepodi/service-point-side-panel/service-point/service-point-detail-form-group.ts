@@ -43,7 +43,6 @@ export interface ServicePointDetailFormGroup extends BaseDetailFormGroup {
   operatingPointTrafficPointType: FormControl<OperatingPointTrafficPointType | null | undefined>;
   etagVersion: FormControl<number | null | undefined>;
   servicePointGeolocation: FormGroup<GeographyFormGroup>;
-
   selectedType: FormControl<ServicePointType | null | undefined>;
 }
 
@@ -88,7 +87,6 @@ export class ServicePointFormGroupBuilder {
         stopPointType: new FormControl(version.stopPointType),
         meansOfTransport: new FormControl(version.meansOfTransport),
         categories: new FormControl(version.categories),
-        etagVersion: new FormControl(version.etagVersion),
         servicePointGeolocation: new FormGroup<GeographyFormGroup>({
           east: new FormControl(this.getCoordinates(version)?.east, [
             this.getValidatorForCoordinates(version.servicePointGeolocation?.spatialReference),
@@ -110,6 +108,11 @@ export class ServicePointFormGroupBuilder {
         freightServicePoint: new FormControl(version.freightServicePoint),
         stopPoint: new FormControl(version.stopPoint),
         operatingPointTrafficPointType: new FormControl(version.operatingPointTrafficPointType),
+        etagVersion: new FormControl(version.etagVersion),
+        creationDate: new FormControl(version.creationDate),
+        editionDate: new FormControl(version.editionDate),
+        editor: new FormControl(version.editor),
+        creator: new FormControl(version.creator),
       },
       [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
     );
@@ -238,6 +241,11 @@ export class ServicePointFormGroupBuilder {
       meansOfTransport: [],
       validFrom: value.validFrom!.toDate(),
       validTo: value.validTo!.toDate(),
+      etagVersion: value.etagVersion!,
+      creationDate: value.creationDate!,
+      editionDate: value.editionDate!,
+      editor: value.editor!,
+      creator: value.creator!,
     };
     if (value.selectedType == ServicePointType.OperatingPoint) {
       writableForm.operatingPointType = this.getOperatingPointType(form);
