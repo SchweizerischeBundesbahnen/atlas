@@ -30,11 +30,7 @@ public class TimetableHearingPdfsAmazonService {
   }
 
   public File downloadPdfFile(String dirName, String fileName) {
-    try {
-      return amazonService.pullFile(AmazonBucket.HEARING_DOCUMENT, dirName + "/" + fileName);
-    } catch (IOException e) {
-      throw new FileException("Error downloading file: " + fileName + " to bucket: " + AmazonBucket.HEARING_DOCUMENT, e);
-    }
+    return amazonService.pullFile(AmazonBucket.HEARING_DOCUMENT, dirName + "/" + fileName);
   }
 
   public void deletePdfFile(String dirName, String fileName) {
