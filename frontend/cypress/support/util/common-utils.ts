@@ -1,4 +1,4 @@
-import {DataCy} from '../data-cy';
+import { DataCy } from '../data-cy';
 
 export default class CommonUtils {
   static fromDetailBackToTtfnOverview() {
@@ -31,7 +31,7 @@ export default class CommonUtils {
   }
 
   static clickFirstRowInTable(selector: string) {
-    cy.get(selector + ' table tbody tr').click({force: true});
+    cy.get(selector + ' table tbody tr').click({ force: true });
   }
 
   static assertNumberOfTableRows(selector: string, numberOfRows: number) {
@@ -44,7 +44,7 @@ export default class CommonUtils {
   }
 
   static navigateToHomeViaHomeLogo() {
-    cy.get(DataCy.ATLAS_LOGO_HOME_LINK).click({force: true});
+    cy.get(DataCy.ATLAS_LOGO_HOME_LINK).click({ force: true });
     cy.url().should('contain', Cypress.config().baseUrl);
   }
 
@@ -162,48 +162,60 @@ export default class CommonUtils {
   }
 
   static selectItemFromDropDown(selector: string, value: string) {
-    cy.get(selector).should('be.visible').first().click().then(() => {
-      // simulate click event on the drop down item (mat-option)
-      CommonUtils.chooseMatOptionByText(value);
-    })
+    cy.get(selector)
+      .should('be.visible')
+      .first()
+      .click()
+      .then(() => {
+        // simulate click event on the drop down item (mat-option)
+        CommonUtils.chooseMatOptionByText(value);
+      });
   }
 
   static selectFirstItemFromDropDown(selector: string) {
     cy.get(selector).should('be.visible');
-    cy.get(selector).first().click().then((el) => {
-      // simulate click event on the drop down item (mat-option)
-      CommonUtils.chooseMatOptionByText(undefined);
-    })
+    cy.get(selector)
+      .first()
+      .click()
+      .then((el) => {
+        // simulate click event on the drop down item (mat-option)
+        CommonUtils.chooseMatOptionByText(undefined);
+      });
   }
 
   static chooseMatOptionByText(value: string | undefined) {
-    cy.get('mat-option > span').should('be.visible').then((options) => {
-      for (const option of options) {
-        if (value) {
-          if (option.innerText === value) {
-            option.click(); // this is jquery click() not cypress click()
+    cy.get('mat-option > span')
+      .should('be.visible')
+      .then((options) => {
+        for (const option of options) {
+          if (value) {
+            if (option.innerText === value) {
+              option.click(); // this is jquery click() not cypress click()
+            }
+          } else {
+            option.click();
           }
-        } else {
-          option.click();
         }
-      }
-    });
+      });
   }
 
   static chooseOneValueFromMultiselect(selector: string, value: string) {
     cy.get(selector).first().click();
     // deselect all
+
+    // Deselect all selected dropDownElements
     cy.get('mat-option').then((options) => {
       for (const option of options) {
-        if (option.classList.contains('mat-selected')) {
+        if (option.getAttribute('aria-selected') == 'true') {
           option.click(); // this is jquery click() not cypress click()
         }
       }
     });
+
     // only select given value
     CommonUtils.chooseMatOptionByText(value);
     // Leave multiselect
-    cy.get('.mat-select-panel').focus().type('{esc}');
+    cy.get(selector).first().focus().type('{esc}');
   }
 
   /**
@@ -216,7 +228,7 @@ export default class CommonUtils {
       .then((e) => {
         // Workaround so that no exception is thrown when textToType="" (meaning an empty string)
         if (textToType) {
-          cy.wrap(e).type(textToType, {delay: 0, force: force});
+          cy.wrap(e).type(textToType, { delay: 0, force: force });
         }
       });
   }
@@ -243,15 +255,17 @@ export default class CommonUtils {
     cy.get(selector)
       .click()
       .get('mat-option')
-      .each(($dropDownElement) => {
-        const dropDownElementName = $dropDownElement.text().trim();
-        const message = 'State of checkbox "' + dropDownElementName + '"';
+      .then(($dropDownElement) => {
+        for (const element of $dropDownElement) {
+          const elementName = element.innerText.trim();
+          const message = 'State of checkbox "' + elementName + '"';
 
-        const checkBoxState = $dropDownElement.hasClass('mat-selected');
-        if (checkedOptionNames.includes(dropDownElementName)) {
-          expect(checkBoxState, message).to.be.true;
-        } else {
-          expect(checkBoxState, message).to.be.false;
+          const checkBoxState = element.getAttribute('aria-selected') == 'true';
+          if (checkedOptionNames.includes(elementName)) {
+            expect(checkBoxState, message).to.be.true;
+          } else {
+            expect(checkBoxState, message).to.be.false;
+          }
         }
       });
     // Workaround to close the dropDown-menu again after all checks are done
@@ -284,7 +298,7 @@ export default class CommonUtils {
         expect(Cypress.dom.isFocusable($el)).to.be.true;
       })
       .should('be.enabled')
-      .type(value, {delay: 0, force: true})
+      .type(value, { delay: 0, force: true })
       .wait('@searchIntercept')
       .wait(100);
     cy.get(selector).type('{enter}');
@@ -292,7 +306,7 @@ export default class CommonUtils {
 
   static visit(itemToDeleteUrl: string) {
     CommonUtils.unregisterServiceWorker();
-    cy.visit({url: itemToDeleteUrl, method: 'GET'});
+    cy.visit({ url: itemToDeleteUrl, method: 'GET' });
   }
 
   private static clickCancelOnDetailView(overviewPath: string) {
