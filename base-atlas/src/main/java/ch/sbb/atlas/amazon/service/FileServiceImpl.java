@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.Set;
@@ -93,7 +92,7 @@ public class FileServiceImpl implements FileService {
   }
 
   @Override
-  public StreamingResponseBody writeOutputStream(File fileToCleanUp, InputStream inputStream) {
+  public StreamingResponseBody toStreamingResponse(File fileToCleanUp, InputStream inputStream) {
     return outputStream -> {
       inputStream.transferTo(outputStream);
       inputStream.close();
@@ -102,11 +101,15 @@ public class FileServiceImpl implements FileService {
   }
 
   @Override
-  public byte[] decompressGzipToBytes(Path source) throws IOException {
-    ByteArrayOutputStream output = new ByteArrayOutputStream();
-    try (GZIPInputStream gis = new GZIPInputStream(new FileInputStream(source.toFile()))) {
-      gis.transferTo(output);
+  public byte[] decompressGzipToBytes(File file) {
+    try {
+      ByteArrayOutputStream output = new ByteArrayOutputStream();
+      try (GZIPInputStream gis = new GZIPInputStream(new FileInputStream(file))) {
+        gis.transferTo(output);
+      }
+      return output.toByteArray();
+    } catch (IOException exception) {
+      throw new IllegalStateException("Could not unzip file", exception);
     }
-    return output.toByteArray();
   }
 }
