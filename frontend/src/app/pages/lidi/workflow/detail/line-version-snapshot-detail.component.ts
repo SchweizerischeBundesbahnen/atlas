@@ -98,6 +98,10 @@ export class LineVersionSnapshotDetailComponent implements OnInit, OnDestroy {
       validTo: new FormControl(version.validTo ? moment(version.validTo) : version.validTo),
       comment: new FormControl(version.comment),
       etagVersion: new FormControl(version.etagVersion),
+      creationDate: new FormControl(version.creationDate),
+      editionDate: new FormControl(version.editionDate),
+      editor: new FormControl(version.editor),
+      creator: new FormControl(version.creator),
     });
   }
 
