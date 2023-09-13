@@ -1,6 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.repository;
 
-import ch.sbb.atlas.servicepointdirectory.api.ServicePointSearchResult;
+import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchResult;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
