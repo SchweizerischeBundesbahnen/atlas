@@ -8,14 +8,13 @@ import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.exportservice.model.BatchExportFileName;
 import ch.sbb.exportservice.model.ExportExtensionFileType;
 import ch.sbb.exportservice.model.ExportType;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
-
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 @Service
 @RequiredArgsConstructor
@@ -25,11 +24,20 @@ public class FileExportService {
   private final FileService fileService;
 
   public StreamingResponseBody streamJsonFile(ExportType exportType, BatchExportFileName exportFileName) {
-    return fileService.streamingJsonFile(exportType, exportFileName, amazonService, getBaseFileName(exportType, exportFileName));
+    String fileToStream = getFileToStream(exportType, exportFileName);
+    return amazonService.streamFile(AmazonBucket.EXPORT, fileToStream, true);
   }
 
   public StreamingResponseBody streamGzipFile(ExportType exportType, BatchExportFileName exportFileName) {
-    return fileService.streamingGzipFile(exportType, exportFileName, amazonService, getBaseFileName(exportType, exportFileName));
+    String fileToStream = getFileToStream(exportType, exportFileName);
+    return amazonService.streamFile(AmazonBucket.EXPORT, fileToStream, false);
+  }
+
+  private String getFileToStream(ExportType exportType, BatchExportFileName exportFileName) {
+    return exportFileName.getBaseDir() + "/" +
+        exportType.getDir() + "/" +
+        getBaseFileName(exportType, exportFileName)+
+        ".json.gz";
   }
 
   public void exportFile(File file, ExportType exportType, BatchExportFileName exportFileName,
@@ -59,9 +67,7 @@ public class FileExportService {
   }
 
   public String getBaseFileName(ExportType exportType, BatchExportFileName exportFileName) {
-    String actualDate = LocalDate.now()
-        .format(DateTimeFormatter.ofPattern(
-            AtlasApiConstants.DATE_FORMAT_PATTERN));
+    String actualDate = LocalDate.now().format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN));
     return exportType.getDir() + "-" + exportType.getFileTypePrefix() + "-" + exportFileName.getFileName() + "-" + actualDate;
   }
 
