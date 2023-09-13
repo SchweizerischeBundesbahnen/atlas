@@ -101,5 +101,4 @@ public class BusinessOrganisationService {
     versionRepository.findAll().forEach(businessOrganisationDistributor::saveToDistributedServices);
   }
 
-//  private BusinessOrganisationVersion copyBusinessOrganisationVersion(BusinessOrganisationVersion businessOrganisationVersion)
 }
