@@ -1,10 +1,15 @@
 package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
 
+import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.model.VersionedObjectDateRequestParams;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.Parameter;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,9 +17,6 @@ import lombok.Setter;
 import lombok.Singular;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Setter
@@ -30,7 +32,9 @@ public class TrafficPointElementRequestParams extends VersionedObjectDateRequest
 
   @Parameter(description = "DiDok-Number formerly known as UIC-Code, combination of uicCountryCode and numberShort.")
   @Singular(ignoreNullCollections = true)
-  private List<String> servicePointNumbers = new ArrayList<>();
+  private List<
+      @Min(AtlasFieldLengths.MIN_SEVEN_DIGITS_NUMBER)
+      @Max(AtlasFieldLengths.MAX_SEVEN_DIGITS_NUMBER) String> servicePointNumbers = new ArrayList<>();
 
   @Parameter(description = "")
   @Singular(ignoreNullCollections = true)
