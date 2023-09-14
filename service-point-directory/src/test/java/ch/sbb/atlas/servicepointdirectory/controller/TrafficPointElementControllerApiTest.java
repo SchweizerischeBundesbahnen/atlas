@@ -458,4 +458,14 @@ public class TrafficPointElementControllerApiTest extends BaseControllerApiTest 
     assertThat(errorResponse.getError()).isEqualTo("Stale object state error");
   }
 
+  @Test
+  void shouldFailOnFindWithInvalidServicePointNumber() throws Exception {
+    mvc.perform(get("/v1/traffic-point-elements?servicePointNumbers=12345678"))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
+        .andExpect(jsonPath("$.details[0].message",
+            is("Value 12345678 rejected due to must be less than or equal to 9999999")));
+  }
+
+
 }
