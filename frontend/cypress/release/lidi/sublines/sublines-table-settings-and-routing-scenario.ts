@@ -3,7 +3,7 @@ import { DataCy } from '../../../support/data-cy';
 import LidiUtils from '../../../support/util/lidi-utils';
 import BodiDependentUtils from '../../../support/util/bodi-dependent-utils';
 
-describe('Sublines: TableSettings and Routing', () => {
+describe('Sublines: TableSettings and Routing', { testIsolation: false }, () => {
   const minimalLine1 = LidiUtils.getFirstMinimalLineVersion();
   const minimalSubline1 = LidiUtils.getFirstMinimalSubline();
   const minimalSubline2 = LidiUtils.getSecondMinimalSubline();
@@ -22,7 +22,7 @@ describe('Sublines: TableSettings and Routing', () => {
   }
 
   function assertAllTableFiltersAreFilled() {
-    cy.get(DataCy.TABLE_FILTER_CHIP_INPUT).contains(minimalSubline1.swissSublineNumber);
+    cy.get(DataCy.TABLE_FILTER_CHIP_DIV).contains(minimalSubline1.swissSublineNumber);
     CommonUtils.assertItemsFromDropdownAreChecked(DataCy.TABLE_FILTER_MULTI_SELECT(1, 2), [
       statusValidiert,
     ]);
@@ -114,7 +114,7 @@ describe('Sublines: TableSettings and Routing', () => {
     // Search still present after edit
     assertAllTableFiltersAreFilled();
     // Change is already visible in table
-    cy.get(DataCy.LIDI_SUBLINES + ' .mat-row > .cdk-column-swissSublineNumber').contains(newCHTLNR);
+    cy.get(DataCy.LIDI_SUBLINES + ' .cdk-column-swissSublineNumber').contains(newCHTLNR);
   });
 
   it('Step-9: Delete subline minimal1', () => {
@@ -143,7 +143,7 @@ describe('Sublines: TableSettings and Routing', () => {
     deleteFirstFoundSublineInTable();
 
     // Search still present after delete
-    cy.get(DataCy.TABLE_FILTER_CHIP_INPUT).contains(minimalSubline2.swissSublineNumber);
+    cy.get(DataCy.TABLE_FILTER_CHIP_DIV).contains(minimalSubline2.swissSublineNumber);
     // No more items found
     CommonUtils.assertNoItemsInTable(DataCy.LIDI_SUBLINES);
   });

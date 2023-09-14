@@ -4,7 +4,7 @@ import { DataCy } from '../support/data-cy';
 import BodiDependentUtils from '../support/util/bodi-dependent-utils';
 
 /** Szenario 14: Linke Grenze ("Gültig von") auf gleichen Tag setzen, wie rechte Grenze ("Gültig bis")
- *
+ *           01.01.2000                                             31.12.2000
  * NEU:                                                             |
  * IST:      |------------------------------------------------------|
  * Version:                               1
@@ -12,7 +12,7 @@ import BodiDependentUtils from '../support/util/bodi-dependent-utils';
  * RESULTAT:                                                        |
  * Version:                                                         1
  */
-describe('LiDi: Versioning Teillinie Scenario 14 - ATLAS-316', () => {
+describe('LiDi: Versioning Teillinie Scenario 14 - ATLAS-316', { testIsolation: false }, () => {
   const sublineVersion = LidiUtils.getFirstSublineVersion();
   const newValidFrom = '31.12.2000';
   let mainline: any;

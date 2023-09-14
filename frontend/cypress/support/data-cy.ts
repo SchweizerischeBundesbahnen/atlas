@@ -44,7 +44,8 @@ export class DataCy {
   static COLOR_FONT_CMYK = '[data-cy=colorFontCmyk]';
   static CMYK_PICKER_INPUT = '[data-cy=cmyk-picker-input]';
   static COLOR_BACK_CMYK = '[data-cy=colorBackCmyk]';
-  static TABLE_FILTER_CHIP_INPUT = '[data-cy|="table-filter-chip-search"]';
+  static TABLE_FILTER_CHIP_INPUT = '[data-cy=table-filter-chip-search-0-0]';
+  static TABLE_FILTER_CHIP_DIV = '[data-cy=table-filter-chip-div]';
   static TTFN = '[data-cy=ttfn]';
   static SIDEMENU_START = '[data-cy=sidemenu-start]';
   static SIDEMENU_TTFN = '[data-cy=sidemenu-timetable-field-number]';
