@@ -10,12 +10,16 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectResult;
+import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.S3ObjectInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.http.client.methods.HttpGet;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -101,4 +105,24 @@ public class AmazonServiceTest {
         return tempFile;
     }
 
+    @Test
+    public void shouldPullFile() throws IOException {
+        //given
+        when(fileService.getDir()).thenReturn("export");
+        Path zipFile = createTempFile();
+
+        S3Object s3Object = Mockito.mock(S3Object.class);
+        when(s3Object.getObjectContent()).thenReturn(new S3ObjectInputStream(new FileInputStream(zipFile.toFile()),
+            new HttpGet()));
+
+        //when
+        when(amazonS3.getObject("testBucket", "dir/desiredFile.zip")).thenReturn(s3Object);
+
+        File pulledFile = amazonService.pullFile(AmazonBucket.EXPORT, "dir/desiredFile.zip");
+
+        //then
+        assertThat(pulledFile).isNotNull();
+        verify(amazonS3).getObject("testBucket", "dir/desiredFile.zip");
+        Files.delete(pulledFile.toPath());
+    }
 }
