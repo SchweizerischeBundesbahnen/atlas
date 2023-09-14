@@ -107,6 +107,7 @@ frontend/.npmrc
 
 # IntelliJ
 .idea/aws.xml
+.idea/csv-editor.xml
 .idea/compiler.xml
 .idea/dataSources.xml
 .idea/encodings.xml
