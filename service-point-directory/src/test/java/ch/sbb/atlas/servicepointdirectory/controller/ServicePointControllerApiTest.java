@@ -201,6 +201,15 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldFailOnFindWithInvalidServicePointNumber() throws Exception {
+    mvc.perform(get("/v1/service-points?numbers=12345678"))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
+        .andExpect(jsonPath("$.details[0].message",
+            is("Value 12345678 rejected due to must be less than or equal to 9999999")));
+  }
+
+  @Test
   void shouldImportServicePointsSuccessfully() throws Exception {
     try (InputStream csvStream = this.getClass().getResourceAsStream("/SERVICE_POINTS_VERSIONING.csv")) {
       // given
