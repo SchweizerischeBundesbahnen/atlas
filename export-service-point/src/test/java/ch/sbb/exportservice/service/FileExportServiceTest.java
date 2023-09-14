@@ -12,11 +12,12 @@ import ch.sbb.exportservice.model.ExportExtensionFileType;
 import ch.sbb.exportservice.model.ExportType;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-public class FileExportServiceTest {
+class FileExportServiceTest {
 
   private FileExportService fileExportService;
 
@@ -34,7 +35,7 @@ public class FileExportServiceTest {
   }
 
   @Test
-  public void shouldPutGzipFile() throws IOException {
+  void shouldPutGzipFile() throws IOException {
     //given
     File file = new File(this.getClass().getResource("/service-point.json.gzip").getFile());
     //when
@@ -45,7 +46,7 @@ public class FileExportServiceTest {
   }
 
   @Test
-  public void shouldPutZipFile() throws IOException {
+  void shouldPutZipFile() throws IOException {
     //given
     File file = new File(this.getClass().getResource("/service-point-data.json").getFile());
     //when
@@ -53,6 +54,20 @@ public class FileExportServiceTest {
         ExportExtensionFileType.CSV_EXTENSION);
     //then
     verify(amazonService).putZipFile(AmazonBucket.EXPORT, file, "service_point/full");
+  }
+
+  @Test
+  void shouldStreamJsonFileWhileDecompressing() {
+    fileExportService.streamJsonFile(ExportType.WORLD_FULL, BatchExportFileName.SERVICE_POINT_VERSION);
+    verify(amazonFileStreamingService).streamFileAndDecompress(AmazonBucket.EXPORT,
+        "service_point/full/full-world-service_point-" + LocalDate.now() + ".json.gz");
+  }
+
+  @Test
+  void shouldStreamGzipFile() {
+    fileExportService.streamGzipFile(ExportType.WORLD_FULL, BatchExportFileName.SERVICE_POINT_VERSION);
+    verify(amazonFileStreamingService).streamFile(AmazonBucket.EXPORT,
+        "service_point/full/full-world-service_point-" + LocalDate.now() + ".json.gz");
   }
 
 }
