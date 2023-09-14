@@ -9,18 +9,20 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 @RequiredArgsConstructor
-public class BaseAmazonFileStreamingService {
+public class AmazonFileStreamingServiceImpl implements AmazonFileStreamingService {
 
-  protected final AmazonService amazonService;
-  protected final FileService fileService;
+  private final AmazonService amazonService;
+  private final FileService fileService;
 
-  protected StreamingResponseBody streamFileAndDecompress(AmazonBucket amazonBucket, String fileToStream) {
+  @Override
+  public StreamingResponseBody streamFileAndDecompress(AmazonBucket amazonBucket, String fileToStream) {
     File file = amazonService.pullFile(amazonBucket, fileToStream);
-    InputStream inputStream = new ByteArrayInputStream(fileService.decompressGzipToBytes(file));
+    InputStream inputStream = new ByteArrayInputStream(fileService.gzipDecompress(file));
     return fileService.toStreamingResponse(file, inputStream);
   }
 
-  protected StreamingResponseBody streamFile(AmazonBucket amazonBucket, String fileToStream) {
+  @Override
+  public StreamingResponseBody streamFile(AmazonBucket amazonBucket, String fileToStream) {
     File file = amazonService.pullFile(amazonBucket, fileToStream);
     try {
       return fileService.toStreamingResponse(file, new FileInputStream(file));

@@ -14,6 +14,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import lombok.Setter;
@@ -101,7 +102,7 @@ public class FileServiceImpl implements FileService {
   }
 
   @Override
-  public byte[] decompressGzipToBytes(File file) {
+  public byte[] gzipDecompress(File file) {
     try {
       ByteArrayOutputStream output = new ByteArrayOutputStream();
       try (GZIPInputStream gis = new GZIPInputStream(new FileInputStream(file))) {
@@ -110,6 +111,17 @@ public class FileServiceImpl implements FileService {
       return output.toByteArray();
     } catch (IOException exception) {
       throw new IllegalStateException("Could not unzip file", exception);
+    }
+  }
+
+  @Override
+  public byte[] gzipCompress(byte[] bytes) throws IOException {
+    try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        GZIPOutputStream out = new GZIPOutputStream(baos)){
+      out.write(bytes, 0, bytes.length);
+      out.finish();
+
+      return baos.toByteArray();
     }
   }
 }

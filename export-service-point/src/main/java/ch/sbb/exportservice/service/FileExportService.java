@@ -2,8 +2,8 @@ package ch.sbb.exportservice.service;
 
 import ch.sbb.atlas.amazon.exception.FileException;
 import ch.sbb.atlas.amazon.service.AmazonBucket;
+import ch.sbb.atlas.amazon.service.AmazonFileStreamingService;
 import ch.sbb.atlas.amazon.service.AmazonService;
-import ch.sbb.atlas.amazon.service.BaseAmazonFileStreamingService;
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.exportservice.model.BatchExportFileName;
@@ -13,24 +13,26 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 @Service
-public class FileExportService extends BaseAmazonFileStreamingService {
+@RequiredArgsConstructor
+public class FileExportService {
 
-  public FileExportService(AmazonService amazonService, FileService fileService) {
-    super(amazonService, fileService);
-  }
+  private final AmazonFileStreamingService amazonFileStreamingService;
+  private final AmazonService amazonService;
+  private final FileService fileService;
 
   public StreamingResponseBody streamJsonFile(ExportType exportType, BatchExportFileName exportFileName) {
     String fileToStream = getFileToStream(exportType, exportFileName);
-    return streamFileAndDecompress(AmazonBucket.EXPORT, fileToStream);
+    return amazonFileStreamingService.streamFileAndDecompress(AmazonBucket.EXPORT, fileToStream);
   }
 
   public StreamingResponseBody streamGzipFile(ExportType exportType, BatchExportFileName exportFileName) {
     String fileToStream = getFileToStream(exportType, exportFileName);
-    return streamFile(AmazonBucket.EXPORT, fileToStream);
+    return amazonFileStreamingService.streamFile(AmazonBucket.EXPORT, fileToStream);
   }
 
   private String getFileToStream(ExportType exportType, BatchExportFileName exportFileName) {
