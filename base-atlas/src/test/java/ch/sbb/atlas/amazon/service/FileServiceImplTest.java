@@ -12,14 +12,14 @@ import java.nio.file.Paths;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
-public class FileServiceImplTest {
+class FileServiceImplTest {
 
   private static final String SEPARATOR = File.separator;
 
   private final FileServiceImpl fileService = new FileServiceImpl();
 
   @Test
-  public void shouldCreateZipFile() throws IOException {
+  void shouldCreateZipFile() throws IOException {
     //given
     File dir = new File("./export");
     if (!dir.exists()) {
@@ -38,7 +38,7 @@ public class FileServiceImplTest {
   }
 
   @Test
-  public void shouldGetDirWhenActivatedProfileIsDefined() {
+  void shouldGetDirWhenActivatedProfileIsDefined() {
     //given
     fileService.setActiveProfile("dev");
     //when
@@ -48,7 +48,7 @@ public class FileServiceImplTest {
   }
 
   @Test
-  public void shouldGetDirWhenActivatedProfileIsNull() {
+  void shouldGetDirWhenActivatedProfileIsNull() {
     //given
     fileService.setActiveProfile(null);
     //when
@@ -58,7 +58,7 @@ public class FileServiceImplTest {
   }
 
   @Test
-  public void shouldGetDirWhenActivatedProfileIsLocal() {
+  void shouldGetDirWhenActivatedProfileIsLocal() {
     //given
     fileService.setActiveProfile("local");
     //when
@@ -68,7 +68,7 @@ public class FileServiceImplTest {
   }
 
   @Test
-  public void shouldStreamFileToResponse() throws IOException {
+  void shouldStreamFileToResponse() throws IOException {
     //given
     File file = new File("testfile");
     Files.writeString(file.toPath(), "Test Data");
@@ -87,7 +87,7 @@ public class FileServiceImplTest {
   }
 
   @Test
-  public void shouldCompressAndDecompressFile() throws IOException {
+  void shouldCompressAndDecompressFile() throws IOException {
     //given
     File file = new File("testfile");
     Files.writeString(file.toPath(), "Test Data");
