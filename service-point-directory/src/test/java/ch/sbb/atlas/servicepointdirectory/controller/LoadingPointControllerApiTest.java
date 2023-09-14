@@ -361,4 +361,23 @@ public class LoadingPointControllerApiTest extends BaseControllerApiTest {
         "COMMON.NOTIFICATION.OPTIMISTIC_LOCK_ERROR");
     assertThat(errorResponse.getError()).isEqualTo("Stale object state error");
   }
+
+  @Test
+  void shouldFailOnFindWithInvalidServicePointNumber() throws Exception {
+    mvc.perform(get("/v1/loading-points?servicePointNumbers=12345678"))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
+        .andExpect(jsonPath("$.details[0].message",
+            is("Value 12345678 rejected due to must be less than or equal to 9999999")));
+  }
+
+  @Test
+  void shouldFailOnFindWithInvalidNumber() throws Exception {
+    mvc.perform(get("/v1/loading-points?numbers=12345678"))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
+        .andExpect(jsonPath("$.details[0].message",
+            is("Value 12345678 rejected due to must be less than or equal to 9999999")));
+  }
+
 }
