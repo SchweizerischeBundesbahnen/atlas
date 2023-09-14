@@ -14,7 +14,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
-class BaseAmazonFileStreamingServiceTest {
+class AmazonFileStreamingServiceTest {
 
   @Mock
   private AmazonService amazonService;
