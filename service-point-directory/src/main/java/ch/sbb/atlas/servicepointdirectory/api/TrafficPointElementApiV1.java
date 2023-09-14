@@ -38,7 +38,7 @@ public interface TrafficPointElementApiV1 {
   @Operation(description = "INFO: Versions of DiDok3 were merged during migration, so there are now a few versions less here.")
   Container<ReadTrafficPointElementVersionModel> getTrafficPointElements(
       @Parameter(hidden = true) @PageableDefault(sort = {TrafficPointElementVersion.Fields.sloid, Fields.validFrom}, direction = Direction.ASC) Pageable pageable,
-      @ParameterObject TrafficPointElementRequestParams trafficPointElementRequestParams);
+      @Valid @ParameterObject TrafficPointElementRequestParams trafficPointElementRequestParams);
 
   @GetMapping("{sloid}")
   List<ReadTrafficPointElementVersionModel> getTrafficPointElement(@PathVariable String sloid);
