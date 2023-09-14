@@ -49,6 +49,10 @@ include::{snippets}/service-point-controller-api-test/should-get-service-point-v
 
 include::{snippets}/service-point-controller-api-test/should-get-service-point/auto-section.adoc[]
 
+== Read ServicePoint by ServicePointNumber - Unsuccessfully
+
+include::{snippets}/service-point-controller-api-test/should-fail-on-find-with-invalid-service-point-number/auto-section.adoc[]
+
 == Read ServicePointVersion by ID - Successfully
 
 include::{snippets}/service-point-controller-api-test/should-get-service-point-version-by-id/auto-section.adoc[]
@@ -101,6 +105,10 @@ include::{snippets}/traffic-point-element-controller-api-test/should-get-traffic
 
 include::{snippets}/traffic-point-element-controller-api-test/should-get-traffic-point-element-version-by-id/auto-section.adoc[]
 
+== Read TrafficPointElement by ServicePointNumbers - Successfully
+
+include::{snippets}/traffic-point-element-controller-api-test/should-fail-on-invalid-traffic-point-element-number/auto-section.adoc[]
+
 == Read TrafficPointElement by SLOID - NotFound
 
 include::{snippets}/traffic-point-element-controller-api-test/should-fail-on-invalid-traffic-point-element-number/auto-section.adoc[]
@@ -139,6 +147,14 @@ include::{snippets}/loading-point-controller-api-test/should-get-loading-point-v
 == Read LoadingPoint by number - NotFound
 
 include::{snippets}/loading-point-controller-api-test/should-fail-on-invalid-loading-point-number/auto-section.adoc[]
+
+== Read LoadingPoint by number - Unsuccessfully
+
+include::{snippets}/loading-point-controller-api-test/should-fail-on-find-with-invalid-number/auto-section.adoc[]
+
+== Read LoadingPoint by servicePointNumber - Unsuccessfully
+
+include::{snippets}/loading-point-controller-api-test/should-fail-on-find-with-invalid-service-point-number/auto-section.adoc[]
 
 == Read LoadingPoints without filter - Successfully
 
