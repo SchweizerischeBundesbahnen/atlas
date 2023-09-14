@@ -4,6 +4,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.openMocks;
 
 import ch.sbb.atlas.amazon.service.AmazonBucket;
+import ch.sbb.atlas.amazon.service.AmazonFileStreamingService;
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.amazon.service.FileServiceImpl;
 import ch.sbb.exportservice.model.BatchExportFileName;
@@ -21,13 +22,15 @@ public class FileExportServiceTest {
 
   @Mock
   private AmazonService amazonService;
+  @Mock
+  private AmazonFileStreamingService amazonFileStreamingService;
 
   private final FileServiceImpl fileService = new FileServiceImpl();
 
   @BeforeEach
   public void init() {
     openMocks(this);
-    fileExportService = new FileExportService(amazonService, fileService);
+    fileExportService = new FileExportService(amazonFileStreamingService, amazonService, fileService);
   }
 
   @Test
