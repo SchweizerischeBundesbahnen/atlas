@@ -9,7 +9,11 @@
         <mat-label class="font-bold-lg">{{
           'COMMON.SEARCH.SEARCH_CRITERIA' | translate
         }}</mat-label>
-        <div [ngClass]="chipSearch.disabled ? 'disabled' : ''" class="search-main-field mb-4">
+        <div
+          [ngClass]="chipSearch.disabled ? 'disabled' : ''"
+          class="search-main-field mb-4"
+          data-cy="table-filter-chip-div"
+        >
           <mat-chip-grid #chipList [disabled]="!!chipSearch.disabled">
             <mat-chip-row
               *ngFor="let search of chipSearch.activeSearch"
