@@ -1,11 +1,10 @@
 package ch.sbb.atlas.amazon.service;
 
-import ch.sbb.atlas.export.enumeration.ExportFileName;
-import ch.sbb.atlas.export.enumeration.ExportTypeBase;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
-
-import java.io.File;
 
 public interface FileService {
 
@@ -17,10 +16,9 @@ public interface FileService {
 
   File getFileFromMultipart(MultipartFile multipartFile);
 
-  StreamingResponseBody streamingJsonFile(ExportTypeBase exportType, ExportFileName exportFileName,
-      AmazonService amazonService, String fileName);
+  StreamingResponseBody toStreamingResponse(File fileToCleanUp, InputStream inputStream);
 
-  StreamingResponseBody streamingGzipFile(ExportTypeBase exportType, ExportFileName exportFileName,
-      AmazonService amazonService, String fileName);
+  byte[] gzipDecompress(File file);
 
+  byte[] gzipCompress(byte[] bytes) throws IOException;
 }

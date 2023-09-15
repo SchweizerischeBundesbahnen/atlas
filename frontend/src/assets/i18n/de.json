@@ -33,7 +33,8 @@
       "INCOMPLETE": "Lückenhaft"
     },
     "NODATAFOUND": "Es wurden keine Daten gefunden.",
-    "TYPE_TO_SEARCH": "Tippe mindestens 2 Zeichen ein, um die Suche zu beginnen.",
+    "TYPE_TO_SEARCH": "Tippen Sie mindestens 2 Zeichen ein, um die Suche zu beginnen.",
+    "TYPE_TO_SEARCH_SHORT": "Tippen Sie mindestens 2 Zeichen ein...",
     "JA": "Ja",
     "NEIN": "Nein",
     "ACHTUNG": "Achtung!",
@@ -947,14 +948,14 @@
       "SYSTEM_LV95": "Landeskoordinaten LV95",
       "SYSTEM_WGS84": "Globale Koordinaten WGS84",
       "LV95": {
-        "EAST": "E (Ost-West) [m]",
-        "NORTH": "N (Nord-Süd) [m]"
+        "EAST": "Ost [m]",
+        "NORTH": "Nord [m]"
       },
       "WGS84": {
         "EAST": "Länge [°]",
         "NORTH": "Breite [°]"
       },
-      "HEIGHT": "Höhe (M.ü.M.)",
+      "HEIGHT": "Höhe [M.ü.M.]",
       "ADMINISTRATION": "Administrative Einheiten",
       "COUNTRY": "Land",
       "CANTON": "Kanton",
