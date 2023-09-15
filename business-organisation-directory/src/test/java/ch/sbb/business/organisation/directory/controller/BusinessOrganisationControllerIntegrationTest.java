@@ -1,31 +1,5 @@
 package ch.sbb.business.organisation.directory.controller;
 
-import ch.sbb.atlas.amazon.service.AmazonService;
-import ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel;
-import ch.sbb.atlas.api.bodi.enumeration.BusinessType;
-import ch.sbb.atlas.api.model.ErrorResponse;
-import ch.sbb.atlas.export.enumeration.ExportType;
-import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.model.controller.BaseControllerWithAmazonS3ApiTest;
-import ch.sbb.atlas.model.exception.NotFoundException;
-import ch.sbb.business.organisation.directory.BusinessOrganisationData;
-import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
-import ch.sbb.business.organisation.directory.repository.BusinessOrganisationVersionRepository;
-import ch.sbb.business.organisation.directory.service.export.BusinessOrganisationVersionExportService;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-
-import java.io.File;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-
 import static ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel.Fields.abbreviationDe;
 import static ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel.Fields.abbreviationEn;
 import static ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel.Fields.abbreviationFr;
@@ -42,14 +16,28 @@ import static ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel.Fields.vali
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import ch.sbb.atlas.amazon.service.AmazonService;
+import ch.sbb.atlas.api.bodi.BusinessOrganisationVersionModel;
+import ch.sbb.atlas.api.bodi.enumeration.BusinessType;
+import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.model.controller.BaseControllerWithAmazonS3ApiTest;
+import ch.sbb.business.organisation.directory.BusinessOrganisationData;
+import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
+import ch.sbb.business.organisation.directory.repository.BusinessOrganisationVersionRepository;
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.HashSet;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 public class BusinessOrganisationControllerIntegrationTest extends BaseControllerWithAmazonS3ApiTest {
 
@@ -77,9 +65,6 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
 
   @Autowired
   private BusinessOrganisationController controller;
-
-  @Autowired
-  private BusinessOrganisationVersionExportService exportService;
 
   @MockBean
   private AmazonService amazonService;
@@ -517,23 +502,6 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
   }
 
   @Test
-  void shouldGetJsonGzAfterExportFullBusinessOrganisationVersions() throws Exception {
-    // given
-    List<BusinessOrganisationVersion> versions = new ArrayList<>();
-    versions.add(version1);
-    versions.add(version2);
-
-    mapper.registerModule(new JavaTimeModule());
-    File fileCreatedOnFly = new File("test.json");
-    mapper.writeValue(fileCreatedOnFly, versions);
-    when(amazonService.pullFile(any(), any())).thenReturn(fileCreatedOnFly);
-    // when and then
-    mvc.perform(get("/v1/business-organisations/export/download-gz-json/" + ExportType.FULL))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$", hasSize(2)));
-  }
-
-  @Test
   void shouldExportActualBusinessOrganisationVersions() throws Exception {
     //given
     BusinessOrganisationVersionModel versionModel = BusinessOrganisationData.businessOrganisationVersionModelBuilder()
@@ -548,23 +516,6 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
   }
 
   @Test
-  void shouldGetJsonGzAfterExportActualBusinessOrganisationVersions() throws Exception {
-    // given
-    List<BusinessOrganisationVersion> versions = new ArrayList<>();
-    versions.add(version1);
-    versions.add(version2);
-
-    mapper.registerModule(new JavaTimeModule());
-    File fileCreatedOnFly = new File("test.json");
-    mapper.writeValue(fileCreatedOnFly, versions);
-    when(amazonService.pullFile(any(), any())).thenReturn(fileCreatedOnFly);
-    // when and then
-    mvc.perform(get("/v1/business-organisations/export/download-gz-json/" + ExportType.ACTUAL_DATE))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$", hasSize(2)));
-  }
-
-  @Test
   void shouldExportFutureTimetableBusinessOrganisationVersions() throws Exception {
     //given
     BusinessOrganisationVersionModel versionModel = BusinessOrganisationData.businessOrganisationVersionModelBuilder()
@@ -576,56 +527,6 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
     //when and then
     mvc.perform(post("/v1/business-organisations/export/timetable-year-change"))
         .andExpect(status().isOk());
-  }
-
-  @Test
-  void shouldGetJsonGzAfterExportTimetableYearChangeBusinessOrganisationVersions() throws Exception {
-    // given
-    List<BusinessOrganisationVersion> versions = new ArrayList<>();
-    versions.add(version1);
-    versions.add(version2);
-
-    mapper.registerModule(new JavaTimeModule());
-    File fileCreatedOnFly = new File("test.json");
-    mapper.writeValue(fileCreatedOnFly, versions);
-
-    when(amazonService.pullFile(any(), any())).thenReturn(fileCreatedOnFly);
-    // when and then
-    mvc.perform(get("/v1/business-organisations/export/download-gz-json/" + ExportType.FUTURE_TIMETABLE))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$", hasSize(2)));
-  }
-
-  @Test
-  void shouldFailToReadJson() throws Exception {
-    // given
-    when(amazonService.pullFile(any(), any())).thenThrow(new NotFoundException("", "") {
-      @Override
-      public ErrorResponse getErrorResponse() {
-        return super.getErrorResponse();
-      }
-    });
-
-    // when and then
-    mvc.perform(get("/v1/business-organisations/export/download-json/" + ExportType.FUTURE_TIMETABLE))
-            .andExpect(status().isNotFound())
-            .andExpect(result -> assertTrue(result.getResolvedException() instanceof NotFoundException));
-  }
-
-  @Test
-  void shouldFailToGetJsonGz() throws Exception {
-    // given
-    when(amazonService.pullFile(any(), any())).thenThrow(new NotFoundException("", "") {
-      @Override
-      public ErrorResponse getErrorResponse() {
-        return super.getErrorResponse();
-      }
-    });
-
-    // when and then
-    mvc.perform(get("/v1/business-organisations/export/download-gz-json/" + ExportType.FUTURE_TIMETABLE))
-            .andExpect(status().isNotFound())
-            .andExpect(result -> assertTrue(result.getResolvedException() instanceof NotFoundException));
   }
 
   @Test

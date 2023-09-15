@@ -1,9 +1,9 @@
-package ch.sbb.atlas.servicepointdirectory.migration;
+package ch.sbb.atlas.servicepointdirectory.migration.servicepoints;
 
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
-import lombok.Data;
+import ch.sbb.atlas.servicepointdirectory.migration.DoubleAssertion;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
@@ -14,17 +14,15 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+/**
+ * @param isFullExport ActualDate and FutureTimetable does not export SLOID in Didok
+ */
 @Slf4j
-@Data
-public class ServicePointMappingEquality {
+public record ServicePointMappingEquality(ServicePointDidokCsvModel didokCsvLine,
+                                          ServicePointAtlasCsvModel atlasCsvLine,
+                                          boolean isFullExport) {
 
   private static final String SBOID_FIKTIVE_GO_INFOPLUS = "ch:1:sboid:101257";
-
-  private final ServicePointDidokCsvModel didokCsvLine;
-  private final ServicePointAtlasCsvModel atlasCsvLine;
-
-  // ActualDate and FutureTimetable does not export SLOID in Didok
-  private final boolean isFullExport;
 
   public void performCheck() {
     performCoreDataCheck();
@@ -189,11 +187,6 @@ public class ServicePointMappingEquality {
 
     performEqualityCheckOrIgnoreInfoplus(atlasCsvLine, atlasCsvLine.getWgs84East(), didokCsvLine.getEWgs84(), 7);
     performEqualityCheckOrIgnoreInfoplus(atlasCsvLine, atlasCsvLine.getWgs84North(), didokCsvLine.getNWgs84(), 7);
-
-    if (isFullExport) {
-      performEqualityCheckOrIgnoreInfoplus(atlasCsvLine, atlasCsvLine.getWgs84WebEast(), didokCsvLine.getEWgs84web(), 3);
-      performEqualityCheckOrIgnoreInfoplus(atlasCsvLine, atlasCsvLine.getWgs84WebNorth(), didokCsvLine.getNWgs84web(), 3);
-    }
   }
 
   private static void performEqualityCheckOrIgnoreInfoplus(ServicePointAtlasCsvModel atlasCsvLine,

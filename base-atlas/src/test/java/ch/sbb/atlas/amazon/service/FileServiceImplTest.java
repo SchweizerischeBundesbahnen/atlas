@@ -1,41 +1,25 @@
 package ch.sbb.atlas.amazon.service;
 
-import ch.sbb.atlas.export.enumeration.ExportFileName;
-import ch.sbb.atlas.export.enumeration.ExportType;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
+import static org.assertj.core.api.Assertions.assertThat;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import org.junit.jupiter.api.Test;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-
-public class FileServiceImplTest {
+class FileServiceImplTest {
 
   private static final String SEPARATOR = File.separator;
 
   private final FileServiceImpl fileService = new FileServiceImpl();
 
-  @Mock
-  private AmazonService amazonService;
-
-  @BeforeEach
-  public void setUp() throws IOException {
-    MockitoAnnotations.openMocks(this);
-  }
-
   @Test
-  public void shouldCreateZipFile() throws IOException {
+  void shouldCreateZipFile() throws IOException {
     //given
     File dir = new File("./export");
     if (!dir.exists()) {
@@ -50,12 +34,11 @@ public class FileServiceImplTest {
     zipFile.deleteOnExit();
 
     //then
-    assertThat(zipFile).isNotNull();
-    assertThat(zipFile.getName()).isEqualTo("tmp.csv.zip");
+    assertThat(zipFile).isNotNull().hasName("tmp.csv.zip");
   }
 
   @Test
-  public void shouldGetDirWhenActivatedProfileIsDefined() {
+  void shouldGetDirWhenActivatedProfileIsDefined() {
     //given
     fileService.setActiveProfile("dev");
     //when
@@ -65,7 +48,7 @@ public class FileServiceImplTest {
   }
 
   @Test
-  public void shouldGetDirWhenActivatedProfileIsNull() {
+  void shouldGetDirWhenActivatedProfileIsNull() {
     //given
     fileService.setActiveProfile(null);
     //when
@@ -75,7 +58,7 @@ public class FileServiceImplTest {
   }
 
   @Test
-  public void shouldGetDirWhenActivatedProfileIsLocal() {
+  void shouldGetDirWhenActivatedProfileIsLocal() {
     //given
     fileService.setActiveProfile("local");
     //when
@@ -85,38 +68,45 @@ public class FileServiceImplTest {
   }
 
   @Test
-  void shouldStreamServicePointVersionJsonFile() throws IOException {
-    String fileName = "full_business_organisation_versions_2023-08-16.json.gz";
-    ClassLoader classLoader = getClass().getClassLoader();
-    File file = new File(classLoader.getResource(fileName).getFile());
-    when(amazonService.pullFile(any(), any())).thenReturn(file);
-    fileService.setActiveProfile("local");
+  void shouldStreamFileToResponse() throws IOException {
+    //given
+    File file = new File("testfile");
+    Files.writeString(file.toPath(), "Test Data");
+    file.deleteOnExit();
 
-    StreamingResponseBody result = fileService.streamingJsonFile(ExportType.FULL, TestExportFileName.SERVICE_POINT_VERSION,
-        amazonService, "fileName");
-    assertThat(result).isNotNull();
+    //when
+    StreamingResponseBody response = fileService.toStreamingResponse(file, new FileInputStream(file));
+
+    //then
+    assertThat(response).isNotNull();
+
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    response.writeTo(outputStream);
+    String output = outputStream.toString();
+    assertThat(output).isEqualTo("Test Data");
   }
 
   @Test
-  void shouldStreamGzipFile() throws IOException {
-    String fileName = "full_business_organisation_versions_2023-08-16.json.gz";
-    ClassLoader classLoader = getClass().getClassLoader();
-    File file = new File(classLoader.getResource(fileName).getFile());
-    when(amazonService.pullFile(any(), any())).thenReturn(file);
-    fileService.setActiveProfile("local");
+  void shouldCompressAndDecompressFile() throws IOException {
+    //given
+    File file = new File("testfile");
+    Files.writeString(file.toPath(), "Test Data");
+    file.deleteOnExit();
 
-    StreamingResponseBody result = fileService.streamingGzipFile(ExportType.FULL,
-        TestExportFileName.SERVICE_POINT_VERSION, amazonService, "fileName");
-    assertThat(result).isNotNull();
-  }
+    //when
+    byte[] compressedBytes;
+    try( FileInputStream fileInputStream = new FileInputStream(file)){
+     compressedBytes = fileService.gzipCompress(fileInputStream.readAllBytes());
+    }
 
-  @Getter
-  @RequiredArgsConstructor
-  private enum TestExportFileName implements ExportFileName {
-    SERVICE_POINT_VERSION("pippo_baudo", "lukaku");
+    File compressed = new File("compressed");
+    compressed.deleteOnExit();
+    Files.write(compressed.toPath(), compressedBytes);
+    byte[] decompressedBytes = fileService.gzipDecompress(compressed);
 
-    private final String baseDir;
-    private final String fileName;
+    //then
+
+    assertThat(new String(decompressedBytes)).isEqualTo("Test Data");
   }
 
 }

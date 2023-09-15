@@ -1,5 +1,16 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.servicepoint.CreateLoadingPointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadLoadingPointVersionModel;
@@ -18,6 +29,12 @@ import ch.sbb.atlas.servicepointdirectory.repository.LoadingPointVersionReposito
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.CrossValidationService;
 import ch.sbb.atlas.servicepointdirectory.service.loadingpoint.LoadingPointImportService;
+import java.io.InputStream;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,20 +43,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MvcResult;
-
-import java.io.InputStream;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class LoadingPointControllerApiTest extends BaseControllerApiTest {
 
@@ -67,7 +70,7 @@ public class LoadingPointControllerApiTest extends BaseControllerApiTest {
 
     LoadingPointVersion loadingPointVersion = LoadingPointVersion
         .builder()
-        .number(4201)
+        .number(4201000)
         .designation("Piazzale")
         .designationLong("Piazzaleee")
         .connectionPoint(false)
@@ -95,7 +98,7 @@ public class LoadingPointControllerApiTest extends BaseControllerApiTest {
     Integer number = loadingPointVersion.getNumber();
     mvc.perform(get("/v1/loading-points/"+servicePointNumber+"/"+ number)).andExpect(status().isOk())
         .andExpect(jsonPath("$[0]." + Fields.id, is(loadingPointVersion.getId().intValue())))
-        .andExpect(jsonPath("$[0]." + Fields.number, is(4201)))
+        .andExpect(jsonPath("$[0]." + Fields.number, is(4201000)))
         .andExpect(jsonPath("$[0]." + Fields.connectionPoint, is(false)))
         .andExpect(jsonPath("$[0].servicePointNumber.number", is(ServicePointNumber.ofNumberWithoutCheckDigit(servicePointNumber).getNumber())))
         .andExpect(jsonPath("$[0].creationDate", is("2017-12-04T13:11:03")))
@@ -113,7 +116,7 @@ public class LoadingPointControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldGetLoadingPointVersionsWithFilter() throws Exception {
     mvc.perform(get("/v1/loading-points" +
-                    "?numbers=4201" +
+                    "?numbers=4201000" +
                     "&servicePointSloids=ch:1:sloid:19768" +
                     "&servicePointUicCountryCodes=58" +
                     "&servicePointNumbersShorts=1976" +
@@ -131,7 +134,7 @@ public class LoadingPointControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldGetLoadingPointVersionsWithArrayInFilter() throws Exception {
     mvc.perform(get("/v1/loading-points" +
-                    "?numbers=4201&numbers=0001" +
+                    "?numbers=4201000&numbers=1000000" +
                     "&servicePointSloids=ch:1:sloid:19768&servicePointSloids=ch:1:sloid:19769" +
                     "&servicePointUicCountryCodes=58&servicePointUicCountryCodes=85" +
                     "&servicePointNumbersShorts=19768&servicePointNumbersShorts=12768" +
@@ -149,7 +152,7 @@ public class LoadingPointControllerApiTest extends BaseControllerApiTest {
 
   @Test
   void shouldNotGetLoadingPointVersionsWithFilter() throws Exception {
-    mvc.perform(get("/v1/loading-points?numbers=1000"))
+    mvc.perform(get("/v1/loading-points?numbers=1000000"))
          .andExpect(status().isOk())
          .andExpect(jsonPath("$.totalCount", is(0)));
   }
@@ -358,4 +361,23 @@ public class LoadingPointControllerApiTest extends BaseControllerApiTest {
         "COMMON.NOTIFICATION.OPTIMISTIC_LOCK_ERROR");
     assertThat(errorResponse.getError()).isEqualTo("Stale object state error");
   }
+
+  @Test
+  void shouldFailOnFindWithInvalidServicePointNumber() throws Exception {
+    mvc.perform(get("/v1/loading-points?servicePointNumbers=12345678"))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
+        .andExpect(jsonPath("$.details[0].message",
+            is("Value 12345678 rejected due to must be less than or equal to 9999999")));
+  }
+
+  @Test
+  void shouldFailOnFindWithInvalidNumber() throws Exception {
+    mvc.perform(get("/v1/loading-points?numbers=12345678"))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
+        .andExpect(jsonPath("$.details[0].message",
+            is("Value 12345678 rejected due to must be less than or equal to 9999999")));
+  }
+
 }

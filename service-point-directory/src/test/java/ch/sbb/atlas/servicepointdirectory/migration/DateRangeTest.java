@@ -64,4 +64,5 @@ class DateRangeTest {
     DateRange other = DateRange.builder().from(LocalDate.of(2014, 2, 17)).to(LocalDate.of(2015, 1, 25)).build();
     assertThat(dateRange.overlapsWith(other)).isTrue();
   }
+
 }
