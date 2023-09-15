@@ -80,7 +80,6 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
       this.mapSubscription?.unsubscribe();
 
       this.initServicePoint();
-      this.displayAndSelectServicePointOnMap();
     });
 
     this.initSortedOperatingPointTypes();
@@ -143,6 +142,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     if (!this.isNew) {
       this.form.disable();
     }
+    this.displayAndSelectServicePointOnMap();
     this.initTypeChangeInformationDialog();
   }
 
@@ -172,16 +172,14 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
 
   private displayAndSelectServicePointOnMap() {
     this.mapSubscription = this.mapService.mapInitialized.subscribe((initialized) => {
-      if (
-        initialized &&
-        this.form.controls.servicePointGeolocation.controls.spatialReference.value
-      ) {
+      if (initialized) {
         if (this.mapService.map.getZoom() <= this.ZOOM_LEVEL_FOR_DETAIL) {
           this.mapService.map.setZoom(this.ZOOM_LEVEL_FOR_DETAIL);
         }
-        this.mapService
-          .centerOn(this.selectedVersion.servicePointGeolocation?.wgs84)
-          .then(() => this.mapService.selectServicePoint(this.selectedVersion.number.number));
+        this.mapService.centerOn(this.selectedVersion.servicePointGeolocation?.wgs84).then();
+        this.mapService.displayCurrentCoordinates(
+          this.selectedVersion.servicePointGeolocation?.wgs84
+        );
       }
     });
   }
