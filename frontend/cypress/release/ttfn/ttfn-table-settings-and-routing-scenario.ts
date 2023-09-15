@@ -3,7 +3,7 @@ import TtfnUtils from '../../support/util/ttfn-utils';
 import { DataCy } from '../../support/data-cy';
 import BodiDependentUtils from '../../support/util/bodi-dependent-utils';
 
-describe('TTFN: TableSettings and Routing', () => {
+describe('TTFN: TableSettings and Routing', { testIsolation: false }, () => {
   const ttfnBernThun = TtfnUtils.getTtfnBernThun();
   const churGrenze = TtfnUtils.getFirstVersion();
 
@@ -11,7 +11,7 @@ describe('TTFN: TableSettings and Routing', () => {
   const statusValidiert = 'Validiert';
 
   function assertAllTableFiltersAreFilled() {
-    cy.get(DataCy.TABLE_FILTER_CHIP_INPUT).contains(ttfnBernThun.swissTimetableFieldNumber);
+    cy.get(DataCy.TABLE_FILTER_CHIP_DIV).contains(ttfnBernThun.swissTimetableFieldNumber);
     CommonUtils.assertItemsFromDropdownAreChecked(DataCy.TABLE_FILTER_MULTI_SELECT(1, 1), [
       statusValidiert,
     ]);
@@ -92,7 +92,7 @@ describe('TTFN: TableSettings and Routing', () => {
     // Search still present after edit
     assertAllTableFiltersAreFilled();
     // Change is already visible in table
-    cy.get(DataCy.TTFN + ' .mat-row > .cdk-column-description').contains(newDescription);
+    cy.get(DataCy.TTFN + ' .cdk-column-description').contains(newDescription);
   });
 
   it('Step-8: Delete Bern-Thun-Interlaken', () => {
@@ -127,7 +127,7 @@ describe('TTFN: TableSettings and Routing', () => {
     cy.url().should('eq', Cypress.config().baseUrl + '/timetable-field-number');
 
     // Search still present after delete
-    cy.get(DataCy.TABLE_FILTER_CHIP_INPUT).contains(churGrenze.swissTimetableFieldNumber);
+    cy.get(DataCy.TABLE_FILTER_CHIP_DIV).contains(churGrenze.swissTimetableFieldNumber);
     // No more items found
     CommonUtils.assertNoItemsInTable(DataCy.TTFN);
   });

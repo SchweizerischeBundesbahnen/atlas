@@ -1,5 +1,6 @@
-package ch.sbb.atlas.servicepointdirectory.api;
+package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
+import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.model.VersionedObjectDateRequestParams;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.Country;
@@ -10,6 +11,8 @@ import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableTyp
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import io.swagger.v3.oas.annotations.Parameter;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -34,7 +37,9 @@ public class ServicePointRequestParams extends VersionedObjectDateRequestParams 
 
   @Parameter(description = "DiDok-Number formerly known as UIC-Code, combination of uicCountryCode and numberShort.")
   @Singular(ignoreNullCollections = true)
-  private List<Integer> numbers = new ArrayList<>();
+  private List<
+      @Min(AtlasFieldLengths.MIN_SEVEN_DIGITS_NUMBER)
+      @Max(AtlasFieldLengths.MAX_SEVEN_DIGITS_NUMBER) Integer> numbers = new ArrayList<>();
 
   @Parameter(description = "List of UIC Country codes. The UIC Country code applies to the country of the service point number")
   @Singular(ignoreNullCollections = true)

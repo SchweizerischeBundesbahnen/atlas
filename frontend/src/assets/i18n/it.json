@@ -34,6 +34,7 @@
     },
     "NODATAFOUND": "Nessun dato trovato.",
     "TYPE_TO_SEARCH": "Digitare almeno 2 caratteri per iniziare la ricerca.",
+    "TYPE_TO_SEARCH_SHORT": "Digitare almeno 2 caratteri...",
     "JA": "Sì",
     "NEIN": "No",
     "ACHTUNG": "Attenzione!",
@@ -947,14 +948,14 @@
       "SYSTEM_LV95": "Coordinate del paese LV95",
       "SYSTEM_WGS84": "Coordinate geografiche WGS84",
       "LV95": {
-        "EAST": "E (Est-Ovest) [m]",
-        "NORTH": "N (Nord-Sud) [m]"
+        "EAST": "Est [m]",
+        "NORTH": "Nord-Sud [m]"
       },
       "WGS84": {
         "EAST": "Lunghezza [°]",
         "NORTH": "Larghezza [°]"
       },
-      "HEIGHT": "Altezza (m.s.l.m.)",
+      "HEIGHT": "Altezza [m.s.l.m.]",
       "ADMINISTRATION": "Unità amministrative",
       "COUNTRY": "Campagna",
       "CANTON": "Cantone",

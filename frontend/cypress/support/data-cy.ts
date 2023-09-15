@@ -44,7 +44,8 @@ export class DataCy {
   static COLOR_FONT_CMYK = '[data-cy=colorFontCmyk]';
   static CMYK_PICKER_INPUT = '[data-cy=cmyk-picker-input]';
   static COLOR_BACK_CMYK = '[data-cy=colorBackCmyk]';
-  static TABLE_FILTER_CHIP_INPUT = '[data-cy|="table-filter-chip-search"]';
+  static TABLE_FILTER_CHIP_INPUT = '[data-cy=table-filter-chip-search-0-0]';
+  static TABLE_FILTER_CHIP_DIV = '[data-cy=table-filter-chip-div]';
   static TTFN = '[data-cy=ttfn]';
   static SIDEMENU_START = '[data-cy=sidemenu-start]';
   static SIDEMENU_TTFN = '[data-cy=sidemenu-timetable-field-number]';
@@ -87,7 +88,8 @@ export class DataCy {
   static TTH_CLOSE_TTH_YEAR = '[data-cy=closeTthYearButton]';
   static TTH_CLOSE_TTH_TIMETABLE_HEARING = '[data-cy=closeTthTimetableHearingButton]';
   static COLLECT_STATUS_CHANGE_ACTION_TYPE = '[data-cy=collect-status-change-action-type]';
-  static TTH_SELECT_YEAR = '[data-cy=selecTthYear]';
+  static TTH_SELECT_YEAR = '[data-cy=selectTthYear]';
+  static TTH_DETAIL_SELECT_YEAR = '[data-cy=detailSelectTthYear]';
   static STATEMENT_STATUS_DROPDOWN = '[data-cy=statementStatus]';
 
   static TABLE_FILTER_MULTI_SELECT = (rowIndex: number, columnIndex: number) =>

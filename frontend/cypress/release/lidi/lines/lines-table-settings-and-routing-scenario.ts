@@ -3,12 +3,12 @@ import { DataCy } from '../../../support/data-cy';
 import LidiUtils from '../../../support/util/lidi-utils';
 import BodiDependentUtils from '../../../support/util/bodi-dependent-utils';
 
-describe('Lines: TableSettings and Routing', () => {
+describe('Lines: TableSettings and Routing', { testIsolation: false }, () => {
   const minimalLine1 = LidiUtils.getFirstMinimalLineVersion();
   const minimalLine2 = LidiUtils.getSecondMinimalLineVersion();
 
   const firstValidDate = '01.01.1700';
-  const statusValidiert = 'Validiert';
+  const statusEntwurf = 'Entwurf';
 
   const lineDirectoryUrlPath = '/line-directory/lines';
   const lineDirectoryUrlPathToIntercept = '/line-directory/v1/lines?**';
@@ -21,9 +21,10 @@ describe('Lines: TableSettings and Routing', () => {
   }
 
   function assertAllTableFiltersAreFilled() {
-    cy.get(DataCy.TABLE_FILTER_CHIP_INPUT).contains(minimalLine1.swissLineNumber);
+    cy.get(DataCy.TABLE_FILTER_CHIP_DIV).contains(minimalLine1.swissLineNumber);
+
     CommonUtils.assertItemsFromDropdownAreChecked(DataCy.TABLE_FILTER_MULTI_SELECT(1, 2), [
-      statusValidiert,
+      statusEntwurf,
     ]);
 
     CommonUtils.assertItemsFromDropdownAreChecked(DataCy.TABLE_FILTER_MULTI_SELECT(1, 1), [
@@ -62,27 +63,35 @@ describe('Lines: TableSettings and Routing', () => {
   });
 
   it('Step-5: Look for line minimal1', () => {
+    // Set all table-filters (for now: except the business-organisation)
+    // ---------------------
     CommonUtils.typeSearchInput(
       lineDirectoryUrlPathToIntercept,
       DataCy.TABLE_FILTER_CHIP_INPUT,
       minimalLine1.swissLineNumber
     );
 
+    // Set Status=Entwurf
     CommonUtils.chooseOneValueFromMultiselect(
       DataCy.TABLE_FILTER_MULTI_SELECT(1, 2),
-      statusValidiert
+      statusEntwurf
     );
+
+    //
     CommonUtils.selectItemFromDropdownSearchItem(
       DataCy.TABLE_FILTER_MULTI_SELECT(1, 1),
       minimalLine1.type
     );
 
+    // Set validOn=firstValidDate
     CommonUtils.typeSearchInput(
       lineDirectoryUrlPathToIntercept,
       DataCy.TABLE_FILTER_DATE_INPUT(1, 3),
       firstValidDate
     );
 
+    // Check that all table-filters are filled
+    // ---------------------------------------
     assertAllTableFiltersAreFilled();
   });
 
@@ -109,7 +118,7 @@ describe('Lines: TableSettings and Routing', () => {
     // Search still present after edit
     assertAllTableFiltersAreFilled();
     // Change is already visible in table
-    cy.get(DataCy.LIDI_LINES + ' .mat-row > .cdk-column-swissLineNumber').contains(newCHLNR);
+    cy.get(DataCy.LIDI_LINES + ' .cdk-column-swissLineNumber').contains(newCHLNR);
   });
 
   it('Step-8: Delete Line minimal1', () => {
@@ -138,7 +147,7 @@ describe('Lines: TableSettings and Routing', () => {
     deleteFirstFoundLineInTable();
 
     // Search still present after delete
-    cy.get(DataCy.TABLE_FILTER_CHIP_INPUT).contains(minimalLine2.swissLineNumber);
+    cy.get(DataCy.TABLE_FILTER_CHIP_DIV).contains(minimalLine2.swissLineNumber);
     // No more items found
     CommonUtils.assertNoItemsInTable(DataCy.LIDI_LINES);
   });

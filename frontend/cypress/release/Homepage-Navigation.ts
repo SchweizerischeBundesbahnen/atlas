@@ -1,8 +1,13 @@
 import CommonUtils from '../support/util/common-utils';
 
-describe('Test the navigation of the homepage links', () => {
+describe('Test the navigation of the homepage links', { testIsolation: false }, () => {
   it('Step-01: Login on ATLAS', () => {
     cy.atlasLogin();
+  });
+
+  // We need this check so that the reload of ATLAS doesn't interfere with the click on #timetable-field-number
+  it('Make sure timetable-hearing is also visible', () => {
+    cy.get('#timetable-hearing').should('be.visible');
   });
 
   // Navigation via Start-Page and ATLAS-logo
