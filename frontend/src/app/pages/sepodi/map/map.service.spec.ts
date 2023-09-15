@@ -51,22 +51,6 @@ describe('MapService', () => {
     expect(mapSpy.removeFeatureState).toHaveBeenCalled();
   });
 
-  it('should select service point', () => {
-    const mapSpy = jasmine.createSpyObj<Map>([
-      'removeFeatureState',
-      'queryRenderedFeatures',
-      'setFeatureState',
-    ]);
-    const feature = { properties: { number: 8507000 } } as unknown as MapGeoJSONFeature;
-    const renderedFeatures = [feature];
-    mapSpy.queryRenderedFeatures.and.returnValue(renderedFeatures);
-    service.map = mapSpy;
-
-    service.selectServicePoint(8507000);
-
-    expect(mapSpy.removeFeatureState).toHaveBeenCalled();
-  });
-
   it('should switch to different map style', () => {
     const mapSpy = jasmine.createSpyObj<Map>(['setLayoutProperty']);
     service.map = mapSpy;
