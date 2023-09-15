@@ -8,10 +8,10 @@ import ch.sbb.atlas.searching.specification.EnumByConversionServicePointGeolocat
 import ch.sbb.atlas.searching.specification.EnumByConversionSpecification;
 import ch.sbb.atlas.searching.specification.ValidOrEditionTimerangeSpecification;
 import ch.sbb.atlas.servicepoint.Country;
-import ch.sbb.atlas.servicepointdirectory.api.ServicePointRequestParams;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion_;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation_;
+import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointRequestParams;
 import jakarta.persistence.metamodel.SingularAttribute;
 import java.time.LocalDate;
 import java.util.List;

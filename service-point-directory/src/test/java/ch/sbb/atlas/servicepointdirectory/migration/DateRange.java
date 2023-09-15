@@ -3,10 +3,12 @@ package ch.sbb.atlas.servicepointdirectory.migration;
 import ch.sbb.atlas.versioning.date.DateHelper;
 import java.time.LocalDate;
 import lombok.Builder;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
-@Data
 @Builder
+@EqualsAndHashCode
+@Getter
 public class DateRange {
 
   private LocalDate from;
@@ -27,4 +29,5 @@ public class DateRange {
   public boolean overlapsWith(DateRange dateRange) {
     return !to.isBefore(dateRange.getFrom()) && !from.isAfter(dateRange.getTo());
   }
+
 }

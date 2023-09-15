@@ -10,6 +10,7 @@ import ch.sbb.atlas.user.administration.mapper.PermissionRestrictionMapper;
 import ch.sbb.atlas.user.administration.mapper.UserPermissionCreateMapper;
 import ch.sbb.atlas.user.administration.mapper.UserPermissionMapper;
 import ch.sbb.atlas.user.administration.repository.UserPermissionRepository;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -70,6 +71,7 @@ public class UserAdministrationService {
                 restriction -> PermissionRestrictionMapper.toEntity(updateableUserPermission, restriction))
             .collect(Collectors.toSet());
         updateableUserPermission.getPermissionRestrictions().addAll(permissionRestrictions);
+        updateableUserPermission.setEditionDate(LocalDateTime.now());
       } else {
         UserPermission additionalUserPermission = UserPermissionMapper.toEntity(editedPermissions.getSbbUserId(),
             editedPermission);

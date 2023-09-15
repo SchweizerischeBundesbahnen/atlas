@@ -141,6 +141,10 @@ export class TimetableFieldNumberDetailComponent
         ]),
         status: new FormControl(version.status),
         etagVersion: new FormControl(version.etagVersion),
+        creationDate: new FormControl(version.creationDate),
+        editionDate: new FormControl(version.editionDate),
+        editor: new FormControl(version.editor),
+        creator: new FormControl(version.creator),
       },
       [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
     );
