@@ -56,6 +56,16 @@ export const MAP_STYLE_SPEC: StyleSpecification = {
       ],
       promoteId: 'number',
     },
+    current_coordinates: {
+      type: 'geojson',
+      data: {
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: [0, 0],
+        },
+      },
+    },
   },
   layers: [
     {
@@ -94,22 +104,6 @@ export const MAP_STYLE_SPEC: StyleSpecification = {
       },
     },
     {
-      id: 'selected-sepo',
-      'source-layer': MAP_LAYER_NAME,
-      source: MAP_SOURCE_NAME,
-      type: 'circle',
-      paint: {
-        'circle-radius': ['interpolate', ['linear'], ['zoom'], 5, 3, 20, 18],
-        'circle-color': [
-          'case',
-          ['boolean', ['feature-state', 'selected'], false],
-          '#FFFF00',
-          'transparent',
-        ],
-        'circle-opacity': 0.9,
-      },
-    },
-    {
       id: MAP_SOURCE_NAME,
       'source-layer': MAP_LAYER_NAME,
       source: MAP_SOURCE_NAME,
@@ -135,6 +129,19 @@ export const MAP_STYLE_SPEC: StyleSpecification = {
         ],
         'icon-allow-overlap': true,
         'icon-ignore-placement': true,
+      },
+    },
+    {
+      id: 'current_coordinates',
+      type: 'circle',
+      source: 'current_coordinates',
+      paint: {
+        'circle-radius': ['interpolate', ['linear'], ['zoom'], 9, 2, 10, 4, 12, 5, 14, 7, 16, 8],
+        'circle-color': 'transparent',
+        'circle-opacity': 1,
+        'circle-stroke-color': 'hotpink',
+        'circle-stroke-opacity': 1,
+        'circle-stroke-width': 3,
       },
     },
   ],
