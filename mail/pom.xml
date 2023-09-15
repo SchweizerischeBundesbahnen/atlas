@@ -10,7 +10,7 @@
       <artifactId>atlas</artifactId>
       <groupId>ch.sbb.atlas</groupId>
       <relativePath>../pom.xml</relativePath>
-      <version>1.404.0</version>
+      <version>1.419.0</version>
    </parent>
    <artifactId>mail</artifactId>
    <description>Atlas Mail Service</description>
@@ -44,12 +44,12 @@
       <dependency>
          <artifactId>kafka</artifactId>
          <groupId>ch.sbb.atlas</groupId>
-         <version>1.404.0</version>
+         <version>1.419.0</version>
       </dependency>
       <dependency>
          <artifactId>base-atlas</artifactId>
          <groupId>ch.sbb.atlas</groupId>
-         <version>1.404.0</version>
+         <version>1.419.0</version>
          <exclusions>
             <exclusion>
                <groupId>org.hibernate.orm</groupId>
@@ -78,7 +78,7 @@
          <artifactId>greenmail-junit5</artifactId>
          <groupId>com.icegreen</groupId>
          <scope>test</scope>
-         <version>2.0.0-alpha-3</version>
+         <version>2.0.0</version>
       </dependency>
    </dependencies>
    <build>

@@ -1,4 +1,4 @@
-package ch.sbb.atlas.servicepointdirectory.migration;
+package ch.sbb.atlas.servicepointdirectory.migration.trafficpoints;
 
 import ch.sbb.atlas.imports.servicepoint.deserializer.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
