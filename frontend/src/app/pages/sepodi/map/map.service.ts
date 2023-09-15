@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {
+  GeoJSONSource,
   LngLat,
   LngLatLike,
   Map,
@@ -11,7 +12,7 @@ import {
 import { MAP_LAYER_NAME, MAP_SOURCE_NAME, MAP_STYLE_SPEC, MAP_ZOOM_DETAILS } from './map-style';
 import { GeoJsonProperties, Point } from 'geojson';
 import { MAP_STYLES, MapOptionsService, MapStyle } from './map-options.service';
-import { BehaviorSubject, Subject, Subscription } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { CoordinatePair } from '../../../api';
 import { MapIconsService } from './map-icons.service';
 import { Pages } from '../../pages';
@@ -60,7 +61,7 @@ export class MapService {
 
   centerOn(wgs84Coordinates: CoordinatePair | undefined) {
     this.map.resize();
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       if (wgs84Coordinates) {
         this.map
           .flyTo({ center: { lng: wgs84Coordinates.east, lat: wgs84Coordinates.north }, speed: 5 })
@@ -68,8 +69,21 @@ export class MapService {
             resolve(true);
           });
       } else {
-        reject('No Coordinates to go to');
+        resolve(false);
       }
+    });
+  }
+
+  displayCurrentCoordinates(coordinates?: CoordinatePair) {
+    const source = this.map.getSource('current_coordinates') as GeoJSONSource;
+    const coordinatesToSet = [coordinates?.east ?? 0, coordinates?.north ?? 0];
+    source.setData({
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: coordinatesToSet,
+      },
+      properties: {},
     });
   }
 
@@ -79,26 +93,8 @@ export class MapService {
     }
   }
 
-  selectServicePoint(servicePointNumber: number) {
-    this.deselectServicePoint();
-
-    const renderedFeatures = this.map.queryRenderedFeatures({
-      layers: [MAP_SOURCE_NAME],
-      filter: ['==', 'number', servicePointNumber],
-    });
-
-    this.selectServicePointOnMap(renderedFeatures[0].properties.number);
-  }
-
   removeMap() {
     this.map.remove();
-  }
-
-  private selectServicePointOnMap(servicePointNumber: string | number) {
-    this.map.setFeatureState(
-      { source: MAP_SOURCE_NAME, sourceLayer: MAP_LAYER_NAME, id: servicePointNumber },
-      { selected: true }
-    );
   }
 
   switchToStyle(style: MapStyle) {
