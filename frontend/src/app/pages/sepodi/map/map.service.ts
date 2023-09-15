@@ -89,7 +89,7 @@ export class MapService {
 
   deselectServicePoint() {
     if (this.map) {
-      this.map.removeFeatureState({ source: MAP_SOURCE_NAME, sourceLayer: MAP_LAYER_NAME });
+      this.displayCurrentCoordinates();
     }
   }
 
@@ -116,7 +116,7 @@ export class MapService {
       this.initStoredMapBehaviour();
       this.deselectServicePoint();
 
-      this.map.on('click', 'selected-sepo', (e) => this.onClick(e));
+      this.map.on('click', MAP_SOURCE_NAME, (e) => this.onClick(e));
       this.map.on('mouseenter', MAP_SOURCE_NAME, () => {
         if (this.showDetails()) {
           this.map.getCanvas().style.cursor = 'pointer';
