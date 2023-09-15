@@ -32,6 +32,7 @@ export class MeansOfTransportPickerComponent {
       this.currentlySelectedMeans.push(meanOfTransport);
       this.formControl.setValue(this.currentlySelectedMeans);
     }
+    this.formControl.markAsDirty();
   }
 
   getIcon(mean: MeanOfTransport) {

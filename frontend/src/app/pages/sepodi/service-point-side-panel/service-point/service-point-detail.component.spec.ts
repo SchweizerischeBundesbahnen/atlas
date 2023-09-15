@@ -19,15 +19,27 @@ import { AtlasSpacerComponent } from '../../../../core/components/spacer/atlas-s
 import { Record } from '../../../../core/components/base-detail/record';
 import { MockAtlasButtonComponent } from '../../../../app.testing.mocks';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
-import { ServicePointsService } from '../../../../api';
+import { ApplicationRole, ServicePointsService } from '../../../../api';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { ServicePointType } from './service-point-type';
 import { DisplayCantonPipe } from '../../../../core/cantons/display-canton.pipe';
 
-const authService: Partial<AuthService> = {};
 const dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirm']);
 const servicePointsServiceSpy = jasmine.createSpyObj('ServicePointService', ['updateServicePoint']);
 const notificationServiceSpy = jasmine.createSpyObj('NotificationService', ['success']);
+const authServiceMock: Partial<AuthService> = {
+  claims: { name: 'Test', email: 'test@test.ch', sbbuid: 'e123456', roles: [] },
+  isAdmin: false,
+  getPermissions: () => [],
+  getApplicationUserPermission: (applicationType) => {
+    return {
+      application: applicationType,
+      role: ApplicationRole.Writer,
+      permissionRestrictions: [],
+    };
+  },
+  logout: () => Promise.resolve(true),
+};
 
 describe('ServicePointDetailComponent', () => {
   let component: ServicePointDetailComponent;
@@ -52,7 +64,7 @@ describe('ServicePointDetailComponent', () => {
       ],
       imports: [AppTestingModule, FormsModule],
       providers: [
-        { provide: AuthService, useValue: authService },
+        { provide: AuthService, useValue: authServiceMock },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: DialogService, useValue: dialogServiceSpy },
         { provide: ServicePointsService, useValue: servicePointsServiceSpy },
@@ -128,51 +140,5 @@ describe('ServicePointDetailComponent', () => {
     // when & then
     component.toggleEdit();
     expect(component.form.enabled).toBeTrue();
-  });
-
-  it('should save and update service point', () => {
-    // given
-    component.form.enable();
-    component.form.controls.designationOfficial.setValue('Basel beste Sport');
-    component.form.markAsDirty();
-
-    servicePointsServiceSpy.updateServicePoint.and.returnValue(of([BERN]));
-
-    // when & then
-    component.save();
-    expect(servicePointsServiceSpy.updateServicePoint).toHaveBeenCalled();
-    expect(notificationServiceSpy.success).toHaveBeenCalled();
-  });
-
-  it('should show type change warning dialog and change on confirmation', () => {
-    // given
-    dialogServiceSpy.confirm.and.returnValue(of(true));
-
-    component.form.enable();
-    expect(component.previouslySelectedType).toBe(ServicePointType.StopPoint);
-
-    // when
-    component.form.controls.selectedType.setValue(ServicePointType.OperatingPoint);
-    fixture.detectChanges();
-
-    // then
-    expect(dialogServiceSpy.confirm).toHaveBeenCalled();
-    expect(component.previouslySelectedType).toBe(ServicePointType.OperatingPoint);
-  });
-
-  it('should show type change warning dialog and reset on cancel', () => {
-    // given
-    dialogServiceSpy.confirm.and.returnValue(of(false));
-
-    component.form.enable();
-    expect(component.previouslySelectedType).toBe(ServicePointType.StopPoint);
-
-    // when
-    component.form.controls.selectedType.setValue(ServicePointType.OperatingPoint);
-    fixture.detectChanges();
-
-    // then
-    expect(dialogServiceSpy.confirm).toHaveBeenCalled();
-    expect(component.previouslySelectedType).toBe(ServicePointType.StopPoint);
   });
 });

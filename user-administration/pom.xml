@@ -5,7 +5,7 @@
    <parent>
       <groupId>ch.sbb.atlas</groupId>
       <artifactId>atlas</artifactId>
-      <version>1.404.0</version>
+      <version>1.419.0</version>
       <relativePath>../pom.xml</relativePath>
    </parent>
    <modelVersion>4.0.0</modelVersion>
@@ -14,8 +14,8 @@
    <artifactId>user-administration</artifactId>
 
    <properties>
-      <microsoft-graph-sdk-version>5.69.0</microsoft-graph-sdk-version>
-      <azure-identity-version>1.10.0</azure-identity-version>
+      <microsoft-graph-sdk-version>5.70.0</microsoft-graph-sdk-version>
+      <azure-identity-version>1.10.1</azure-identity-version>
    </properties>
    <dependencies>
       <dependency>
@@ -91,12 +91,12 @@
       <dependency>
          <artifactId>base-atlas</artifactId>
          <groupId>ch.sbb.atlas</groupId>
-         <version>1.404.0</version>
+         <version>1.419.0</version>
       </dependency>
       <dependency>
          <artifactId>kafka</artifactId>
          <groupId>ch.sbb.atlas</groupId>
-         <version>1.404.0</version>
+         <version>1.419.0</version>
       </dependency>
       <dependency>
          <artifactId>base-atlas</artifactId>
@@ -104,7 +104,7 @@
          <groupId>ch.sbb.atlas</groupId>
          <scope>test</scope>
          <type>test-jar</type>
-         <version>1.404.0</version>
+         <version>1.419.0</version>
       </dependency>
       <dependency>
          <artifactId>spring-security-test</artifactId>
