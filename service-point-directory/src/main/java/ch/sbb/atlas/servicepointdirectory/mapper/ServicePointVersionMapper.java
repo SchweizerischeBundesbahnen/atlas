@@ -6,11 +6,10 @@ import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
-import java.util.Optional;
-import lombok.experimental.UtilityClass;
-
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class ServicePointVersionMapper {
@@ -83,6 +82,10 @@ public class ServicePointVersionMapper {
         .meansOfTransport(Set.copyOf(createServicePointVersionModel.getMeansOfTransport()))
         .servicePointGeolocation(ServicePointGeolocationMapper.toEntity(createServicePointVersionModel.getServicePointGeolocation()))
         .version(createServicePointVersionModel.getEtagVersion())
+        .editor(createServicePointVersionModel.getEditor())
+        .editionDate(createServicePointVersionModel.getEditionDate())
+        .creator(createServicePointVersionModel.getCreator())
+        .creationDate(createServicePointVersionModel.getCreationDate())
         .build();
   }
 

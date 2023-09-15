@@ -121,6 +121,17 @@ describe('AtlasButtonComponent', () => {
       expect(button).toBeFalsy();
     });
 
+    it('should not be visible for type EDIT with uicCountryCode', () => {
+      hasPermissionsToWrite = false;
+      component.buttonType = AtlasButtonType.EDIT;
+      component.applicationType = ApplicationType.Bodi;
+      component.uicCountryCode = 85;
+      fixture.detectChanges();
+
+      const button = fixture.debugElement.query(By.css('button'));
+      expect(button).toBeFalsy();
+    });
+
     it('should be visible for type REVOKE', () => {
       component.buttonType = AtlasButtonType.REVOKE;
       component.applicationType = ApplicationType.Bodi;
