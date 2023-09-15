@@ -1,11 +1,10 @@
 package ch.sbb.atlas.api.controller;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpHeaders;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Objects;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpHeaders;
 
 public class GzipFileDownloadHttpHeaderTest {
 

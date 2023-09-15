@@ -55,3 +55,9 @@ $height: 36px;
 .ng-select.ng-select-disabled .ng-value-container .ng-input {
   visibility: hidden;
 }
+
+.ng-select {
+  .ng-arrow-wrapper {
+    display: none;
+  }
+}

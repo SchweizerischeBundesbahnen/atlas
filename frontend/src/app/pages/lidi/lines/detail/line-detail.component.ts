@@ -223,6 +223,10 @@ export class LineDetailComponent
           AtlasCharsetsValidator.iso88591,
         ]),
         etagVersion: new FormControl(version.etagVersion),
+        creationDate: new FormControl(version.creationDate),
+        editionDate: new FormControl(version.editionDate),
+        editor: new FormControl(version.editor),
+        creator: new FormControl(version.creator),
       },
       [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
     );

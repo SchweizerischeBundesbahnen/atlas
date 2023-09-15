@@ -63,6 +63,9 @@ public abstract class BaseUserAdministrationService {
     if (userPermissionsForCurrentApplication.size() == 1) {
       return userPermissionsForCurrentApplication.get(0);
     }
+    if (userPermissionsForCurrentApplication.isEmpty()) {
+      return UserAdministrationPermissionModel.builder().application(applicationType).role(ApplicationRole.READER).build();
+    }
     throw new IllegalStateException(
         "Found multiple Permissions for application " + applicationType + " and user "
             + getCurrentUserSbbUid());

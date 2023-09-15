@@ -21,6 +21,9 @@ import lombok.experimental.SuperBuilder;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+/**
+ * Switch back to ch.sbb.atlas.model.entity.BaseEntity once Didok dies.
+ */
 @NoArgsConstructor
 @Getter
 @Setter
@@ -30,9 +33,6 @@ import java.util.Optional;
 @FieldNameConstants
 @AtlasVersionable
 @Deprecated
-/**
- * Switch back to ch.sbb.atlas.base.service.model.entity.BaseEntity once Didok dies
- */
 public abstract class BaseDidokImportEntity {
 
   @Column(columnDefinition = "TIMESTAMP", updatable = false)
