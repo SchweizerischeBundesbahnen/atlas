@@ -1,30 +1,29 @@
 package ch.sbb.line.directory.repository;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.model.controller.WithMockJwtAuthentication;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.entity.LineVersion;
+import java.time.LocalDate;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 @IntegrationTest
 @Transactional
-public class LineVersionRepositoryTest {
+ class LineVersionRepositoryTest {
 
   private static final LineVersion LINE_VERSION = LineTestData.lineVersion();
 
   private final LineVersionRepository lineVersionRepository;
 
   @Autowired
-  public LineVersionRepositoryTest(LineVersionRepository lineVersionRepository) {
+   LineVersionRepositoryTest(LineVersionRepository lineVersionRepository) {
     this.lineVersionRepository = lineVersionRepository;
   }
 

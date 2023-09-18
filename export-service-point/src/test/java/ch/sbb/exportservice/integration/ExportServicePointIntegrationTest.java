@@ -1,23 +1,30 @@
 package ch.sbb.exportservice.integration;
 
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_SERVICE_POINT_CSV_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_SERVICE_POINT_JSON_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TYPE_JOB_PARAMETER;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.exportservice.BatchDataSourceConfigTest;
 import ch.sbb.exportservice.model.ExportType;
 import ch.sbb.exportservice.utils.JobDescriptionConstants;
 import org.junit.jupiter.api.Test;
-import org.springframework.batch.core.*;
+import org.springframework.batch.core.ExitStatus;
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobExecution;
+import org.springframework.batch.core.JobInstance;
+import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.*;
-import static org.assertj.core.api.Assertions.assertThat;
-
 @BatchDataSourceConfigTest
 @IntegrationTest
 @AutoConfigureMockMvc(addFilters = false)
-public class ExportServicePointIntegrationTest {
+ class ExportServicePointIntegrationTest {
 
   @Autowired
   private JobLauncher jobLauncher;
@@ -31,7 +38,7 @@ public class ExportServicePointIntegrationTest {
   private Job exportServicePointJsonJob;
 
   @Test
-  public void shouldExecuteExportServicePointCsvJob() throws Exception {
+   void shouldExecuteExportServicePointCsvJob() throws Exception {
     // given
     JobParameters jobParameters = new JobParametersBuilder()
         .addString(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, JobDescriptionConstants.EXECUTION_BATCH_PARAMETER)
@@ -48,7 +55,7 @@ public class ExportServicePointIntegrationTest {
   }
 
   @Test
-  public void shouldExecuteExportServicePointJsonJob() throws Exception {
+   void shouldExecuteExportServicePointJsonJob() throws Exception {
     // given
     JobParameters jobParameters = new JobParametersBuilder()
         .addString(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, JobDescriptionConstants.EXECUTION_BATCH_PARAMETER)

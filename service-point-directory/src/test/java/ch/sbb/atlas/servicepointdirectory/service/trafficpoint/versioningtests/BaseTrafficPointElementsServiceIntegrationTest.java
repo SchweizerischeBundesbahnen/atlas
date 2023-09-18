@@ -8,20 +8,19 @@ import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion.Traf
 import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.CrossValidationService;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementService;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.List;
-
 @IntegrationTest
 @Transactional
-public abstract class BaseTrafficPointElementsServiceIntegrationTest {
+ abstract class BaseTrafficPointElementsServiceIntegrationTest {
 
   @MockBean
   private CrossValidationService crossValidationService;
@@ -37,7 +36,7 @@ public abstract class BaseTrafficPointElementsServiceIntegrationTest {
   TrafficPointElementVersion version5;
 
   @Autowired
-  public BaseTrafficPointElementsServiceIntegrationTest(TrafficPointElementVersionRepository trafficPointElementVersionRepository,
+   BaseTrafficPointElementsServiceIntegrationTest(TrafficPointElementVersionRepository trafficPointElementVersionRepository,
       TrafficPointElementService trafficPointElementService) {
     this.trafficPointElementService = trafficPointElementService;
     this.trafficPointElementVersionRepository = trafficPointElementVersionRepository;

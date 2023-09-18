@@ -27,7 +27,7 @@ class ServicePointTypeTest extends BaseControllerApiTest {
   private final ServicePointController servicePointController;
 
   @Autowired
-  public ServicePointTypeTest(ServicePointVersionRepository repository, ServicePointController servicePointController) {
+   ServicePointTypeTest(ServicePointVersionRepository repository, ServicePointController servicePointController) {
     this.repository = repository;
     this.servicePointController = servicePointController;
   }

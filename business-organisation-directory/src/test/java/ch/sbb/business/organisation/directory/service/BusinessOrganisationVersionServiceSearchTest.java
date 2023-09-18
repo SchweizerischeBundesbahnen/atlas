@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
 @Transactional
-public class BusinessOrganisationVersionServiceSearchTest {
+ class BusinessOrganisationVersionServiceSearchTest {
 
   private final BusinessOrganisationVersionRepository repository;
   private final BusinessOrganisationService service;
@@ -34,14 +34,14 @@ public class BusinessOrganisationVersionServiceSearchTest {
   private BusinessOrganisationVersion version3;
 
   @Autowired
-  public BusinessOrganisationVersionServiceSearchTest(BusinessOrganisationVersionRepository repository,
+   BusinessOrganisationVersionServiceSearchTest(BusinessOrganisationVersionRepository repository,
       BusinessOrganisationService service) {
     this.repository = repository;
     this.service = service;
   }
 
   @BeforeEach
-  public void init() {
+   void init() {
     version1 = BusinessOrganisationVersion.builder().sboid("ch:1:sboid:100000").abbreviationDe("de1").abbreviationFr("fr1")
         .abbreviationIt("it1").abbreviationEn("en1").descriptionDe("desc-de1").descriptionFr("desc-fr1").descriptionIt("desc-it1")
         .descriptionEn("desc-en1")
@@ -63,7 +63,7 @@ public class BusinessOrganisationVersionServiceSearchTest {
   }
 
   @AfterEach
-  public void cleanUp() {
+   void cleanUp() {
     repository.deleteAll();
   }
 

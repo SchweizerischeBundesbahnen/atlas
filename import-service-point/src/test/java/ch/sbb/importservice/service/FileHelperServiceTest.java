@@ -19,7 +19,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-public class FileHelperServiceTest {
+ class FileHelperServiceTest {
 
   private FileHelperService fileHelperService;
 
@@ -30,7 +30,7 @@ public class FileHelperServiceTest {
   private FileService fileService;
 
   @BeforeEach
-  public void init() {
+   void init() {
     openMocks(this);
     fileHelperService = new FileHelperService(amazonService, fileService);
   }

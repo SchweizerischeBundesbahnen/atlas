@@ -11,10 +11,10 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class TimetableFieldNumberServiceScenario11Test extends BaseTimetableFieldNumberServiceTest {
+ class TimetableFieldNumberServiceScenario11Test extends BaseTimetableFieldNumberServiceTest {
 
   @Autowired
-  public TimetableFieldNumberServiceScenario11Test(
+   TimetableFieldNumberServiceScenario11Test(
       TimetableFieldNumberVersionRepository versionRepository,
       TimetableFieldNumberService timetableFieldNumberService) {
     super(versionRepository, timetableFieldNumberService);
@@ -30,7 +30,7 @@ public class TimetableFieldNumberServiceScenario11Test extends BaseTimetableFiel
    * Ergebnis: Versionen an der Grenze werden verlängert
    */
   @Test
-  public void scenario11a() {
+   void scenario11a() {
     //given
     version1 = versionRepository.save(version1);
     version2 = versionRepository.save(version2);
@@ -85,7 +85,7 @@ public class TimetableFieldNumberServiceScenario11Test extends BaseTimetableFiel
    * Ergebnis: Versionen an der Grenze werden verlängert in der mitte nur properties updated
    */
   @Test
-  public void scenario11b() {
+   void scenario11b() {
     //given
     version1 = versionRepository.save(version1);
     version2 = versionRepository.save(version2);
@@ -153,7 +153,7 @@ public class TimetableFieldNumberServiceScenario11Test extends BaseTimetableFiel
    * Ergebnis: Versionen an der Grenze werden verlängert in der mitte nur properties updated
    */
   @Test
-  public void scenario11c() {
+   void scenario11c() {
     //given
     version1 = versionRepository.save(version1);
     version2 = versionRepository.save(version2);
@@ -221,7 +221,7 @@ public class TimetableFieldNumberServiceScenario11Test extends BaseTimetableFiel
    * Ergebnis: Versionen an der Grenze werden verlängert in der mitte nur properties updated
    */
   @Test
-  public void scenario11d() {
+   void scenario11d() {
     //given
     version1 = versionRepository.save(version1);
     version2 = versionRepository.save(version2);

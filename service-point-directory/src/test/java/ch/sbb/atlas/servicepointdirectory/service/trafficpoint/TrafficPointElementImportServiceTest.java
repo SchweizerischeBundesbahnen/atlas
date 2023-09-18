@@ -1,5 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointCsvModelContainer;
@@ -9,11 +11,6 @@ import ch.sbb.atlas.servicepointdirectory.TrafficPointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.CrossValidationService;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
@@ -21,12 +18,14 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
 @Transactional
-public class TrafficPointElementImportServiceTest {
+ class TrafficPointElementImportServiceTest {
 
   // required for test functionality
   @MockBean
@@ -38,7 +37,7 @@ public class TrafficPointElementImportServiceTest {
   private final TrafficPointElementVersionRepository trafficPointElementVersionRepository;
 
   @Autowired
-  public TrafficPointElementImportServiceTest(TrafficPointElementImportService trafficPointElementImportService,
+   TrafficPointElementImportServiceTest(TrafficPointElementImportService trafficPointElementImportService,
       TrafficPointElementVersionRepository trafficPointElementVersionRepository) {
     this.trafficPointElementImportService = trafficPointElementImportService;
     this.trafficPointElementVersionRepository = trafficPointElementVersionRepository;
@@ -59,7 +58,7 @@ public class TrafficPointElementImportServiceTest {
   }
 
   @Test
-  public void shouldImportTrafficPoints() {
+   void shouldImportTrafficPoints() {
     //given
     List<TrafficPointCsvModelContainer> trafficPointCsvModelContainers = List.of(
         TrafficPointCsvModelContainer.builder()
