@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
 @Transactional
-public class SublineServiceVersioningTest {
+ class SublineServiceVersioningTest {
 
   private static final String DESCRIPTION = SublineTestData.sublineVersion().getDescription();
 
@@ -39,7 +39,7 @@ public class SublineServiceVersioningTest {
   private SublineVersion version3;
 
   @Autowired
-  public SublineServiceVersioningTest(
+   SublineServiceVersioningTest(
       SublineVersionRepository sublineVersionRepository,
       LineVersionRepository lineVersionRepository,
       SublineService sublineService) {
@@ -97,7 +97,7 @@ public class SublineServiceVersioningTest {
    * Version:        1       2         4       5          3
    */
   @Test
-  public void scenario2() {
+   void scenario2() {
     //given
     version1 = sublineVersionRepository.save(version1);
     version2 = sublineVersionRepository.save(version2);
@@ -164,7 +164,7 @@ public class SublineServiceVersioningTest {
    * Änderung:  name=SBB1       number=2
    */
   @Test
-  public void scenarioMergeTwoVersions() {
+   void scenarioMergeTwoVersions() {
     //given
     version1.setSwissSublineNumber("1");
     version1 = sublineVersionRepository.save(version1);

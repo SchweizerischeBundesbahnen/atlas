@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 @IntegrationTest
-public class TimetableFieldNumberServiceCustomUniqueValidationTest {
+ class TimetableFieldNumberServiceCustomUniqueValidationTest {
 
   @MockBean
   private SharedBusinessOrganisationService sharedBusinessOrganisationService;
@@ -35,7 +35,7 @@ public class TimetableFieldNumberServiceCustomUniqueValidationTest {
                                                                                  .build();
 
   @Autowired
-  public TimetableFieldNumberServiceCustomUniqueValidationTest(
+   TimetableFieldNumberServiceCustomUniqueValidationTest(
       TimetableFieldNumberService timetableFieldNumberService,
       TimetableFieldNumberVersionRepository versionRepository) {
     this.timetableFieldNumberService = timetableFieldNumberService;

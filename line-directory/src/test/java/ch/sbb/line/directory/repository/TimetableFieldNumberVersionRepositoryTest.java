@@ -18,13 +18,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
 @Transactional
-public class TimetableFieldNumberVersionRepositoryTest {
+ class TimetableFieldNumberVersionRepositoryTest {
 
   private final TimetableFieldNumberVersionRepository versionRepository;
   private TimetableFieldNumberVersion version;
 
   @Autowired
-  public TimetableFieldNumberVersionRepositoryTest(
+   TimetableFieldNumberVersionRepositoryTest(
       TimetableFieldNumberVersionRepository versionRepository) {
     this.versionRepository = versionRepository;
   }

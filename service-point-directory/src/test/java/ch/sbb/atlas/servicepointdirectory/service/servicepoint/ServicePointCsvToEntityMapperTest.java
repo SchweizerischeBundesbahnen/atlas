@@ -1,19 +1,24 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.atlas.servicepoint.enumeration.*;
+import ch.sbb.atlas.servicepoint.enumeration.Category;
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
+import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
+import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
+import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
+import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointStatus;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
 import com.fasterxml.jackson.databind.MappingIterator;
-import org.junit.jupiter.api.Test;
-
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -22,10 +27,9 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-
-public class ServicePointCsvToEntityMapperTest {
+ class ServicePointCsvToEntityMapperTest {
 
   private static final String csvHeader = """
       NUMMER;LAENDERCODE;COUNTRYCODE;UIC_NUMMER;DIDOK_CODE;GUELTIG_VON;GUELTIG_BIS;STATUS;BEZEICHNUNG_OFFIZIELL;BEZEICHNUNG_LANG;ABKUERZUNG;IS_BETRIEBSPUNKT;IS_FAHRPLAN;IS_HALTESTELLE;IS_BEDIENPUNKT;IS_VERKEHRSPUNKT;IS_GRENZPUNKT;IS_VIRTUELL;ORTSCHAFTSNAME;GEMEINDENAME;BFS_NUMMER;BEZIRKSNAME;BEZIRKSNUM;KANTONSNAME;KANTONSNUM;LAND_ISO2_GEO;VERANTWORTLICHE_GO_ID;IDENTIFIKATION;ID;ERSTELLT_AM;GEAENDERT_AM;BP_ART_BEZEICHNUNG_DE;BP_ART_BEZEICHNUNG_FR;BP_ART_BEZEICHNUNG_IT;BP_ART_BEZEICHNUNG_EN;BP_BETRIEBSPUNKT_ART_ID;BPOF_ART_BEZEICHNUNG_DE;BPOF_ART_BEZEICHNUNG_FR;BPOF_ART_BEZEICHNUNG_IT;BPOF_ART_BEZEICHNUNG_EN;BPOF_BETRIEBSPUNKT_ART_ID;IS_BPS;IS_BPK;BPK_MASTER;BPTF_ART_BEZEICHNUNG_DE;BPTF_ART_BEZEICHNUNG_FR;BPTF_ART_BEZEICHNUNG_IT;BPTF_ART_BEZEICHNUNG_EN;BPTF_BETRIEBSPUNKT_ART_ID;IS_CONTAINER_HANDLING;CRDCODE;NAME;NAME_ASCII;NUTS_CODE_ID;RESPONSIBLE_IM;DESCRIPTION;BEZEICHNUNG_17;BEZEICHNUNG_35;OEFFNUNGSBEDINGUNG;RESA_BEDINGUNG;WAGENETIKETTE;ZOLL_CODE;RICHTPUNKT_CODE;BPVB_ART_BEZEICHNUNG_DE;BPVB_ART_BEZEICHNUNG_FR;BPVB_ART_BEZEICHNUNG_IT;BPVB_ART_BEZEICHNUNG_EN;BPVB_BETRIEBSPUNKT_ART_ID;BPVH_BEZEICHNUNG_ALT;BPVH_EPR_CODE;BPVH_IATA_CODE;BPVH_VERKEHRSMITTEL;BPVH_VERKEHRSMITTEL_TEXT_DE;BPVH_VERKEHRSMITTEL_TEXT_FR;BPVH_VERKEHRSMITTEL_TEXT_IT;BPVH_VERKEHRSMITTEL_TEXT_EN;MIN_GUELTIG_VON;MAX_GUELTIG_BIS;KANTONSKUERZEL;GO_NUMMER;GO_ABKUERZUNG_DE;GO_ABKUERZUNG_FR;GO_ABKUERZUNG_IT;GO_ABKUERZUNG_EN;GO_BEZEICHNUNG_DE;GO_BEZEICHNUNG_FR;GO_BEZEICHNUNG_IT;GO_BEZEICHNUNG_EN;DS_KATEGORIEN_IDS;DS_KATEGORIEN_DE;DS_KATEGORIEN_FR;DS_KATEGORIEN_IT;DS_KATEGORIEN_EN;BAV_BEMERKUNG;OST;NORD;HEIGHT;SLOID;E_LV03;N_LV03;E_LV95;N_LV95;E_WGS84;N_WGS84;E_WGS84WEB;N_WGS84WEB;IS_GEOMETRY_EMPTY;HTYP_ID;HTYP_BESCHREIBUNG_DE;HTYP_BESCHREIBUNG_FR;HTYP_BESCHREIBUNG_IT;HTYP_BESCHREIBUNG_EN;HTYP_ABKUERZUNG_DE;HTYP_ABKUERZUNG_FR;HTYP_ABKUERZUNG_IT;HTYP_ABKUERZUNG_EN;HTYP_ANHOERUNG;HTYP_IS_AKTIV;HTYP_IS_SICHTBAR;MAPPING_CRDCODE;MAPPING_EVAPLUS;MAPPING_IFOPT;MAPPING_FUTURE_ID1;MAPPING_FUTURE_ID2;MAPPING_FUTURE_ID3;MAPPING_UICCODE;LETZTER_CRD_UPDATE;TU_ABKUERZUNG;TU_AMTLICHE_BEZEICHNUNG;TU_NUMMER;TU_HR_NAME;TU_UNTERNEHMENS_ID;ERSTELLT_VON;GEAENDERT_VON;SOURCE_SPATIAL_REF

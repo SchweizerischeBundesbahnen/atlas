@@ -25,7 +25,7 @@ public class VersionableServiceScenario10Test extends VersionableServiceBaseTest
    * Ergebnis: Neue Version wird erstellt (mit Inhalt von Änderung und Version 3)
    */
   @Test
-  public void scenario10a() {
+   void scenario10a() {
     //given
     LocalDate editedValidFrom = LocalDate.of(2022, 1, 1);
     LocalDate editedValidTo = LocalDate.of(2023, 12, 31);
@@ -95,7 +95,7 @@ public class VersionableServiceScenario10Test extends VersionableServiceBaseTest
    * Ergebnis: Neue Version wird erstellt (mit Inhalt von Änderung und Version 3)
    */
   @Test
-  public void scenario10aMergeWhenNoPropertiesChanged() {
+   void scenario10aMergeWhenNoPropertiesChanged() {
     //given
     LocalDate editedValidFrom = LocalDate.of(2022, 1, 1);
     LocalDate editedValidTo = LocalDate.of(2023, 12, 31);
@@ -149,7 +149,7 @@ public class VersionableServiceScenario10Test extends VersionableServiceBaseTest
    * Ergebnis: In der Lücke wird eine neue Version erstellt (mit Inhalt von Änderung und Version 3)
    */
   @Test
-  public void scenario10b() {
+   void scenario10b() {
     //given
     LocalDate editedValidFrom = LocalDate.of(2020, 6, 1);
     LocalDate editedValidTo = LocalDate.of(2024, 6, 1);
@@ -253,7 +253,7 @@ public class VersionableServiceScenario10Test extends VersionableServiceBaseTest
    * Ergebnis: In der Lücke wird eine neue Version erstellt (mit Inhalt von Änderung und Version 1)
    */
   @Test
-  public void scenario10c() {
+   void scenario10c() {
     //given
     LocalDate editedValidFrom = versionableObject1.getValidTo();
     LocalDate editedValidTo = versionableObject3.getValidFrom();
@@ -359,7 +359,7 @@ public class VersionableServiceScenario10Test extends VersionableServiceBaseTest
    * Ergebnis: In der Lücke wird eine neue Version erstellt (mit Inhalt von Änderung und Version 1)
    */
   @Test
-  public void scenario10cVersionOnlyOneDay() {
+   void scenario10cVersionOnlyOneDay() {
     //given
     versionableObject1.setValidTo(versionableObject1.getValidFrom());
     versionableObject3.setValidTo(versionableObject3.getValidFrom());
@@ -418,7 +418,7 @@ public class VersionableServiceScenario10Test extends VersionableServiceBaseTest
    * Ergebnis: In der Lücke wird eine neue Version erstellt (mit Inhalt von Änderung und Version 1)
    */
   @Test
-  public void scenario10d() {
+   void scenario10d() {
     //given
     versionableObject3.setProperty(versionableObject1.getProperty());
     versionableObject3.setAnotherProperty(versionableObject1.getAnotherProperty());

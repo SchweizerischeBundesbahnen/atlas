@@ -1,18 +1,17 @@
 package ch.sbb.atlas.imports.servicepoint.servicepoint;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-
-public class ServicePointCsvModelContainerTest {
+class ServicePointCsvModelContainerTest {
 
   @Test
-  public void shouldMergeVersionsWithIsNotVirtualAndHasNotGeolocation() {
+  void shouldMergeVersionsWithIsNotVirtualAndHasNotGeolocation() {
     //given
     ServicePointCsvModel withGeolocation = ServicePointCsvModel.builder()
         .validFrom(LocalDate.of(2000, 1, 1))
@@ -68,7 +67,7 @@ public class ServicePointCsvModelContainerTest {
   }
 
   @Test
-  public void shouldNotMergeVersionsWithIsNotVirtualAndHasNotGeolocationAreNotSequential() {
+  void shouldNotMergeVersionsWithIsNotVirtualAndHasNotGeolocationAreNotSequential() {
     //given
     ServicePointCsvModel withGeolocation = ServicePointCsvModel.builder()
         .validFrom(LocalDate.of(2000, 1, 1))
@@ -116,7 +115,7 @@ public class ServicePointCsvModelContainerTest {
   }
 
   @Test
-  public void shouldNotMergeVersionsWithIsNotVirtualAndHasNotGeolocationWhenAbkuerzungIsDifferent() {
+  void shouldNotMergeVersionsWithIsNotVirtualAndHasNotGeolocationWhenAbkuerzungIsDifferent() {
     //given
     ServicePointCsvModel withGeolocation = ServicePointCsvModel.builder()
         .validFrom(LocalDate.of(2000, 1, 1))
@@ -165,7 +164,7 @@ public class ServicePointCsvModelContainerTest {
   }
 
   @Test
-  public void shouldMergeNotHasBezeichnungDiff() {
+  void shouldMergeNotHasBezeichnungDiff() {
     //given
     ServicePointCsvModel withBezeichnung17 = ServicePointCsvModel.builder()
         .validFrom(LocalDate.of(2000, 1, 1))
@@ -219,7 +218,7 @@ public class ServicePointCsvModelContainerTest {
   }
 
   @Test
-  public void shouldNotMergeWhenBezeichnungAreDifferent() {
+  void shouldNotMergeWhenBezeichnungAreDifferent() {
     //given
     ServicePointCsvModel withBezeichnung17 = ServicePointCsvModel.builder()
         .validFrom(LocalDate.of(2000, 1, 1))

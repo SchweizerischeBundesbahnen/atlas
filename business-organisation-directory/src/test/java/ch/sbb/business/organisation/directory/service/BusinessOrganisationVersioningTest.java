@@ -1,12 +1,11 @@
 package ch.sbb.business.organisation.directory.service;
 
-
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.api.bodi.enumeration.BusinessType;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
-import ch.sbb.atlas.api.bodi.enumeration.BusinessType;
 import ch.sbb.business.organisation.directory.repository.BusinessOrganisationVersionRepository;
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -21,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
 @Transactional
-public class BusinessOrganisationVersioningTest {
+ class BusinessOrganisationVersioningTest {
 
   protected static final String SBOID = "ch:1:sboid:100000";
 
@@ -134,7 +133,7 @@ public class BusinessOrganisationVersioningTest {
    * Version:      1     5       2           3         6      4
    */
   @Test
-  public void scenario5() {
+   void scenario5() {
     //given
     version1 = repository.save(version1);
     version2 = repository.save(version2);
