@@ -1,13 +1,13 @@
 package ch.sbb.exportservice.integration;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.exportservice.entity.LoadingPointVersion;
 import ch.sbb.exportservice.model.ExportType;
 import ch.sbb.exportservice.reader.LoadingPointVersionRowMapper;
 import ch.sbb.exportservice.reader.LoadingPointVersionSqlQueryUtil;
-import org.junit.jupiter.api.Test;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,10 +16,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-public class LoadingPointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationTest {
+ class LoadingPointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationTest {
 
   @Test
   void shouldReturnFullWorld() throws SQLException {

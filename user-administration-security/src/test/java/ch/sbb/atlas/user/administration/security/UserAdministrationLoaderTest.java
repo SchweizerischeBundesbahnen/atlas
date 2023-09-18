@@ -31,7 +31,7 @@ class UserAdministrationLoaderTest {
   private final UserAdministrationLoader userAdministrationLoader;
 
   @Autowired
-  public UserAdministrationLoaderTest(PermissionRepository permissionRepository,
+   UserAdministrationLoaderTest(PermissionRepository permissionRepository,
       UserAdministrationLoader userAdministrationLoader) {
     this.permissionRepository = permissionRepository;
     this.userAdministrationLoader = userAdministrationLoader;

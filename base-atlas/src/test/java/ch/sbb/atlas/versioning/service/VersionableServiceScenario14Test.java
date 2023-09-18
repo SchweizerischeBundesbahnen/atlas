@@ -27,7 +27,7 @@ public class VersionableServiceScenario14Test extends VersionableServiceBaseTest
    * 1
    */
   @Test
-  public void scenario14a() {
+   void scenario14a() {
     //given
     LocalDate editedValidFrom = versionableObject1.getValidTo();
 
@@ -76,7 +76,7 @@ public class VersionableServiceScenario14Test extends VersionableServiceBaseTest
    * Ergebnis: Die Version ist später gültig und weniger lang.
    */
   @Test
-  public void scenario14b() {
+   void scenario14b() {
     //given
     LocalDate editedValidFrom = versionableObject1.getValidFrom().plusMonths(1);
     LocalDate editedValidTo = versionableObject1.getValidTo().minusMonths(1);
@@ -125,7 +125,7 @@ public class VersionableServiceScenario14Test extends VersionableServiceBaseTest
    * Version:      1
    */
   @Test
-  public void scenario14c() {
+   void scenario14c() {
     //given
     LocalDate editedValidFrom = versionableObject1.getValidFrom().minusMonths(1);
     LocalDate editedValidTo = versionableObject1.getValidTo().plusMonths(1);
@@ -175,7 +175,7 @@ public class VersionableServiceScenario14Test extends VersionableServiceBaseTest
    * Version:                  1                       2
    */
   @Test
-  public void scenario14d() {
+   void scenario14d() {
     //given
     LocalDate editedValidFrom = versionableObject1.getValidFrom().minusMonths(3);
     LocalDate editedValidTo = versionableObject1.getValidTo();
@@ -227,7 +227,7 @@ public class VersionableServiceScenario14Test extends VersionableServiceBaseTest
    * Version:          1                       2
    */
   @Test
-  public void scenario14e() {
+   void scenario14e() {
     //given
     LocalDate editedValidFrom = versionableObject3.getValidFrom();
     LocalDate editedValidTo = versionableObject3.getValidTo().plusMonths(5);
@@ -278,7 +278,7 @@ public class VersionableServiceScenario14Test extends VersionableServiceBaseTest
    * RESULTAT: Warnung, dass dies nicht erlaubt ist
    */
   @Test
-  public void scenario14mShouldThrowException() {
+   void scenario14mShouldThrowException() {
     //given
     LocalDate editedValidFrom = versionableObject2.getValidFrom().plusMonths(2);
     LocalDate editedValidTo = versionableObject2.getValidTo().minusMonths(2);

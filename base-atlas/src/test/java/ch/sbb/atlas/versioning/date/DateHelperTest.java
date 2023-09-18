@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 class DateHelperTest {
 
   @Test
-  public void shouldReturnTrueWhenTwoDatesAreSequential() {
+   void shouldReturnTrueWhenTwoDatesAreSequential() {
     //given
     LocalDate current = LocalDate.of(2000, 1, 1);
     LocalDate next = LocalDate.of(2000, 1, 2);
@@ -23,7 +23,7 @@ class DateHelperTest {
   }
 
   @Test
-  public void shouldReturnFalseWhenTwoDatesAreNotSequential() {
+   void shouldReturnFalseWhenTwoDatesAreNotSequential() {
     //given
     LocalDate current = LocalDate.of(2000, 1, 1);
     LocalDate next = LocalDate.of(2000, 1, 3);
@@ -36,7 +36,7 @@ class DateHelperTest {
   }
 
   @Test
-  public void shouldThrowIllegalStateExceptionWhenCurrentDateIsNull() {
+   void shouldThrowIllegalStateExceptionWhenCurrentDateIsNull() {
     //given
     LocalDate next = LocalDate.of(2000, 1, 3);
 
@@ -50,7 +50,7 @@ class DateHelperTest {
   }
 
   @Test
-  public void shouldThrowIllegalStateExceptionWhenNextDateIsNull() {
+   void shouldThrowIllegalStateExceptionWhenNextDateIsNull() {
     //given
     LocalDate current = LocalDate.of(2000, 1, 1);
 
@@ -65,7 +65,7 @@ class DateHelperTest {
 
 
   @Test
-  public void shouldReturnMinimumOfTwoEqualsDates() {
+   void shouldReturnMinimumOfTwoEqualsDates() {
     LocalDate date1 = LocalDate.of(2020, 1, 1);
     LocalDate date2 = LocalDate.of(2020, 1, 1);
 
@@ -74,7 +74,7 @@ class DateHelperTest {
   }
 
   @Test
-  public void shouldReturnMinimumOfTwoDates() {
+   void shouldReturnMinimumOfTwoDates() {
     LocalDate date1 = LocalDate.of(2020, 1, 2);
     LocalDate date2 = LocalDate.of(2020, 1, 1);
 

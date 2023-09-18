@@ -1,13 +1,13 @@
 package ch.sbb.exportservice.integration;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.exportservice.entity.ServicePointVersion;
 import ch.sbb.exportservice.model.ExportType;
 import ch.sbb.exportservice.reader.ServicePointVersionRowMapper;
 import ch.sbb.exportservice.reader.ServicePointVersionSqlQueryUtil;
-import org.junit.jupiter.api.Test;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,13 +15,12 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-public class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationTest {
+ class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationTest {
 
   @Test
-  public void shouldReturnWorldOnlyActualWithActualBusinessOrganisationData() throws SQLException {
+   void shouldReturnWorldOnlyActualWithActualBusinessOrganisationData() throws SQLException {
     //given
     LocalDate now = LocalDate.now();
     int servicePointNumber = 1905886;
@@ -43,7 +42,7 @@ public class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlInteg
   }
 
   @Test
-  public void shouldReturnWorldOnlyActualWithoutBusinessOrganisationData() throws SQLException {
+   void shouldReturnWorldOnlyActualWithoutBusinessOrganisationData() throws SQLException {
     //given
     LocalDate now = LocalDate.now();
     int servicePointNumber = 1905886;
@@ -64,7 +63,7 @@ public class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlInteg
   }
 
   @Test
-  public void shouldReturnWorldFullData() throws SQLException {
+   void shouldReturnWorldFullData() throws SQLException {
     //given
     final LocalDate now = LocalDate.now();
     insertServicePoint(1956734, now, now, Country.ALBANIA);
@@ -81,7 +80,7 @@ public class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlInteg
   }
 
   @Test
-  public void shouldReturnWorldOnlyActualData() throws SQLException {
+   void shouldReturnWorldOnlyActualData() throws SQLException {
     //given
     LocalDate now = LocalDate.now();
     int servicePointNumber = 1905886;
@@ -98,7 +97,7 @@ public class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlInteg
   }
 
   @Test
-  public void shouldReturnWorldOnlyTimetableFutureData() throws SQLException {
+   void shouldReturnWorldOnlyTimetableFutureData() throws SQLException {
     //given
     LocalDate now = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
     int servicePointNumber = 1905886;
@@ -115,7 +114,7 @@ public class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlInteg
   }
 
   @Test
-  public void shouldReturnSwissOnlyTimetableFutureData() throws SQLException {
+   void shouldReturnSwissOnlyTimetableFutureData() throws SQLException {
     //given
     LocalDate now = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
     int servicePointNumberAfghanistan = 6805886;
@@ -134,7 +133,7 @@ public class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlInteg
   }
 
   @Test
-  public void shouldReturnSwissOnlyActualData() throws SQLException {
+   void shouldReturnSwissOnlyActualData() throws SQLException {
     //given
     LocalDate now = LocalDate.now();
     int servicePointNumber = 8572299;
@@ -151,7 +150,7 @@ public class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlInteg
   }
 
   @Test
-  public void shouldReturnSwissOnlyFullData() throws SQLException {
+   void shouldReturnSwissOnlyFullData() throws SQLException {
     //given
     final LocalDate now = LocalDate.now();
     int servicePointNumberAfghanistan = 6805886;

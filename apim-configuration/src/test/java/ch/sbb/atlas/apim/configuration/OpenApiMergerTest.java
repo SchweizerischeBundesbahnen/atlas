@@ -16,7 +16,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
 @ActiveProfiles("integration-test")
-public class OpenApiMergerTest {
+ class OpenApiMergerTest {
 
   @Value("classpath:apis/lidiApi.json")
   private Resource lidiApi;
