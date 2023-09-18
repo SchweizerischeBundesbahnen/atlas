@@ -17,7 +17,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 
-public class ImportServicePointBatchSchedulerServiceTest {
+ class ImportServicePointBatchSchedulerServiceTest {
 
   private ImportServicePointBatchSchedulerService importServicePointBatchSchedulerService;
 
@@ -25,13 +25,13 @@ public class ImportServicePointBatchSchedulerServiceTest {
   private ImportServicePointBatchClient client;
 
   @BeforeEach
-  public void setUp() {
+   void setUp() {
     MockitoAnnotations.openMocks(this);
     importServicePointBatchSchedulerService = new ImportServicePointBatchSchedulerService(client);
   }
 
   @Test
-  public void shouldTriggerImportServicePointBatchSuccessfully() {
+   void shouldTriggerImportServicePointBatchSuccessfully() {
     //given
     Response response = Response.builder()
         .status(200)
@@ -51,7 +51,7 @@ public class ImportServicePointBatchSchedulerServiceTest {
   }
 
   @Test
-  public void shouldTriggerImportTrafficPointBatchSuccessfully() {
+   void shouldTriggerImportTrafficPointBatchSuccessfully() {
     //given
     Response response = Response.builder()
         .status(200)
@@ -71,7 +71,7 @@ public class ImportServicePointBatchSchedulerServiceTest {
   }
 
   @Test
-  public void shouldTriggerImportServicePointBatchUnsuccessfully() {
+   void shouldTriggerImportServicePointBatchUnsuccessfully() {
     //given
     Response response = Response.builder()
         .status(HttpStatus.BAD_REQUEST.value())
@@ -88,7 +88,7 @@ public class ImportServicePointBatchSchedulerServiceTest {
   }
 
   @Test
-  public void shouldTriggerImportTrafficPointBatchUnsuccessfully() {
+   void shouldTriggerImportTrafficPointBatchUnsuccessfully() {
     //given
     Response response = Response.builder()
         .status(HttpStatus.BAD_REQUEST.value())

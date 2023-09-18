@@ -1,29 +1,28 @@
 package ch.sbb.atlas.servicepointdirectory.repository;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.TrafficPointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
+import java.time.LocalDate;
+import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 @IntegrationTest
 @Transactional
-public class TrafficPointElementVersionRepositoryTest {
+ class TrafficPointElementVersionRepositoryTest {
 
   private final TrafficPointElementVersionRepository trafficPointElementVersionRepository;
 
   @Autowired
-  public TrafficPointElementVersionRepositoryTest(
+   TrafficPointElementVersionRepositoryTest(
       TrafficPointElementVersionRepository trafficPointElementVersionRepository) {
     this.trafficPointElementVersionRepository = trafficPointElementVersionRepository;
   }

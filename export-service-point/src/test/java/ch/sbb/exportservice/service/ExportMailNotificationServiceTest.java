@@ -16,12 +16,12 @@ class ExportMailNotificationServiceTest {
   private MailNotificationService notificationService;
 
   @BeforeEach
-  public void setUp() {
+   void setUp() {
     notificationService = new MailNotificationService();
   }
 
   @Test
-  public void shouldBuildMailNotification() {
+   void shouldBuildMailNotification() {
     //given
     Map<String, Object> expectedMailContent = new HashMap<>();
     expectedMailContent.put("jobName", "export");
@@ -47,7 +47,7 @@ class ExportMailNotificationServiceTest {
   }
 
   @Test
-  public void shouldBuildMailNotificationWhenThrowableIsNull() {
+   void shouldBuildMailNotificationWhenThrowableIsNull() {
     //given
     Map<String, Object> expectedMailContent = new HashMap<>();
     expectedMailContent.put("jobName", "export");

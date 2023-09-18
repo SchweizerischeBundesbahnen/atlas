@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-public class CoverageServiceTest {
+ class CoverageServiceTest {
 
   @Mock
   private CoverageRepository coverageRepository;
@@ -34,13 +34,13 @@ public class CoverageServiceTest {
   private CoverageService coverageService;
 
   @BeforeEach
-  public void setUp() {
+   void setUp() {
     MockitoAnnotations.openMocks(this);
     coverageService = new CoverageService(coverageRepository);
   }
 
   @Test
-  public void shouldCoverageComplete() {
+   void shouldCoverageComplete() {
     //given
     LineVersion lineVersion = LineTestData.lineVersionBuilder().slnid("ch:1000").build();
     SublineVersion firstSublineVersion = SublineTestData.sublineVersionBuilder()
@@ -66,7 +66,7 @@ public class CoverageServiceTest {
   }
 
   @Test
-  public void shoouldGetSublineCoverageBySlnidAndLineModelType() {
+   void shoouldGetSublineCoverageBySlnidAndLineModelType() {
     //given
     String slnid = "ch:1000";
     Coverage coverage = Coverage.builder()
@@ -85,7 +85,7 @@ public class CoverageServiceTest {
   }
 
   @Test
-  public void shouldGetSublineCoverageBySlnidAndSublineModelType() {
+   void shouldGetSublineCoverageBySlnidAndSublineModelType() {
     //given
     String slnid = "ch:1000";
     Coverage coverage = Coverage.builder()
@@ -105,7 +105,7 @@ public class CoverageServiceTest {
   }
 
   @Test
-  public void getThrowSlnidNotFoundExceptionWhenLineCoverageDoesNotExists() {
+   void getThrowSlnidNotFoundExceptionWhenLineCoverageDoesNotExists() {
     //given
     String slnid = "ch:1000";
     doReturn(null).when(coverageRepository).findSublineCoverageBySlnidAndModelType(slnid, LINE);
@@ -116,7 +116,7 @@ public class CoverageServiceTest {
   }
 
   @Test
-  public void getThrowSlnidNotFoundExceptionWhenSublineCoverageDoesNotExists() {
+   void getThrowSlnidNotFoundExceptionWhenSublineCoverageDoesNotExists() {
     //given
     String slnid = "ch:1000";
     doReturn(null).when(coverageRepository).findSublineCoverageBySlnidAndModelType(slnid, SUBLINE);

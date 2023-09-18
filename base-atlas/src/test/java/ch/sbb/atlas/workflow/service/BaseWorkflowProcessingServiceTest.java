@@ -38,14 +38,14 @@ public class BaseWorkflowProcessingServiceTest {
   private ObjectWorkflowProcessingService workflowProcessingService;
 
   @BeforeEach
-  public void init() {
+   void init() {
     MockitoAnnotations.openMocks(this);
     workflowProcessingService = new ObjectWorkflowProcessingService(objectVersionRepository, objectWorkflowRepository,
         objectVersionSnapshotRepository);
   }
 
   @Test
-  public void shouldProcessWorkflowSuccessfully() {
+   void shouldProcessWorkflowSuccessfully() {
     //given
     WorkflowEvent workflowEvent = BaseWorkflowProcessingServiceTest.WorkflowEvent.builder()
         .workflowId(1000L)
@@ -79,7 +79,7 @@ public class BaseWorkflowProcessingServiceTest {
   }
 
   @Test
-  public void shouldUpdateObjectStatusToValidated() {
+   void shouldUpdateObjectStatusToValidated() {
     //given
     WorkflowEvent workflowEvent = BaseWorkflowProcessingServiceTest.WorkflowEvent.builder()
         .workflowId(1000L)
@@ -112,7 +112,7 @@ public class BaseWorkflowProcessingServiceTest {
   }
 
   @Test
-  public void shouldUpdateObjectStatusToDraft() {
+   void shouldUpdateObjectStatusToDraft() {
     //given
     WorkflowEvent workflowEvent = BaseWorkflowProcessingServiceTest.WorkflowEvent.builder()
         .workflowId(1000L)
@@ -145,7 +145,7 @@ public class BaseWorkflowProcessingServiceTest {
   }
 
   @Test
-  public void shouldNotProcessWorkflowWhenWorkflowStatusNotImplemenmted() {
+   void shouldNotProcessWorkflowWhenWorkflowStatusNotImplemenmted() {
     //given
     WorkflowEvent workflowEvent = BaseWorkflowProcessingServiceTest.WorkflowEvent.builder()
         .workflowId(1000L)
@@ -170,7 +170,7 @@ public class BaseWorkflowProcessingServiceTest {
   }
 
   @Test
-  public void shouldNotUpdateObjectStatusIfRevoked() {
+   void shouldNotUpdateObjectStatusIfRevoked() {
     //given
     WorkflowEvent workflowEvent = BaseWorkflowProcessingServiceTest.WorkflowEvent.builder()
         .workflowId(1000L)
@@ -203,18 +203,18 @@ public class BaseWorkflowProcessingServiceTest {
     assertThat(objectVersion.getStatus()).isEqualTo(Status.REVOKED);
   }
 
-  public interface ObjectVersionRepository extends JpaRepository<ObjectVersion, Long> {
+   interface ObjectVersionRepository extends JpaRepository<ObjectVersion, Long> {
 
   }
 
-  public interface ObjectVersionSnapshotRepository extends JpaRepository<ObjectVersionSnapshot, Long> {
+   interface ObjectVersionSnapshotRepository extends JpaRepository<ObjectVersionSnapshot, Long> {
 
   }
 
-  public static class ObjectWorkflowProcessingService extends
+   static class ObjectWorkflowProcessingService extends
       BaseWorkflowProcessingService<ObjectVersion, ObjectWorkflowEntityVersion, ObjectVersionSnapshot> {
 
-    public ObjectWorkflowProcessingService(JpaRepository<ObjectVersion, Long> objectVersionRepository,
+     ObjectWorkflowProcessingService(JpaRepository<ObjectVersion, Long> objectVersionRepository,
         ObjectWorkflowRepository<ObjectWorkflowEntityVersion> objectWorkflowRepository,
         JpaRepository<ObjectVersionSnapshot, Long> objectVersionSnapshotRepository) {
       super(objectVersionRepository, objectWorkflowRepository, objectVersionSnapshotRepository);
@@ -234,7 +234,7 @@ public class BaseWorkflowProcessingServiceTest {
   @Data
   @EqualsAndHashCode(callSuper = false)
   @SuperBuilder
-  public static class ObjectVersion extends BaseVersion {
+   static class ObjectVersion extends BaseVersion {
 
     private LocalDate validFrom;
     private LocalDate validTo;
@@ -253,18 +253,18 @@ public class BaseWorkflowProcessingServiceTest {
   @Data
   @EqualsAndHashCode(callSuper = false)
   @SuperBuilder
-  public static class ObjectVersionSnapshot extends BaseVersionSnapshot {
+   static class ObjectVersionSnapshot extends BaseVersionSnapshot {
 
     private LocalDate validFrom;
     private LocalDate validTo;
 
     private Status status;
 
-    public LocalDate getValidFrom() {
+     LocalDate getValidFrom() {
       return this.validFrom;
     }
 
-    public LocalDate getValidTo() {
+     LocalDate getValidTo() {
       return this.validTo;
     }
 
@@ -282,13 +282,13 @@ public class BaseWorkflowProcessingServiceTest {
   @Data
   @EqualsAndHashCode(callSuper = false)
   @SuperBuilder
-  public static class ObjectWorkflowEntityVersion extends BaseWorkflowEntity {
+   static class ObjectWorkflowEntityVersion extends BaseWorkflowEntity {
 
     private ObjectVersion objectVersion;
   }
   
   @SuperBuilder
-  public static class WorkflowEvent extends ch.sbb.atlas.workflow.model.WorkflowEvent {
+   static class WorkflowEvent extends ch.sbb.atlas.workflow.model.WorkflowEvent {
     
   }
 

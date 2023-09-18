@@ -6,15 +6,15 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.api.model.Container;
-import ch.sbb.line.directory.LineTestData;
 import ch.sbb.atlas.api.lidi.LineModel;
 import ch.sbb.atlas.api.lidi.LineVersionModel;
-import ch.sbb.line.directory.entity.Line;
-import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
+import ch.sbb.atlas.api.model.Container;
+import ch.sbb.atlas.model.Status;
+import ch.sbb.line.directory.LineTestData;
+import ch.sbb.line.directory.entity.Line;
+import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.service.CoverageService;
 import ch.sbb.line.directory.service.LineService;
 import ch.sbb.line.directory.service.LineVersionSnapshotService;
@@ -32,7 +32,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
-public class LineControllerTest {
+ class LineControllerTest {
 
   private static final String[] RECURSIVE_COMPARISION_IGNORE_FIELDS = {"editor", "creator",
       "editionDate", "creationDate", "version"};
@@ -82,7 +82,7 @@ public class LineControllerTest {
   }
 
   @Test
-  public void shouldSaveNewVersion() {
+   void shouldSaveNewVersion() {
     // Given
     LineVersionModel lineVersionModel = createModel();
 
