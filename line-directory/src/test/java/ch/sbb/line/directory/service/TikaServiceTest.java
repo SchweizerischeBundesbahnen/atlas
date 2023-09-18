@@ -11,31 +11,31 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @IntegrationTest
-public class TikaServiceTest {
+ class TikaServiceTest {
 
   private final TikaService tikaService;
 
   @Autowired
-  public TikaServiceTest(TikaService tikaService) {
+   TikaServiceTest(TikaService tikaService) {
     this.tikaService = tikaService;
   }
 
   @Test
-  public void givenPdfFile_whenIsFilePdf_thenReturnTrue() {
+   void givenPdfFile_whenIsFilePdf_thenReturnTrue() {
     File file = new File("src/test/resources/pdf/dummy.pdf");
 
     assertTrue(tikaService.isFilePdf(file));
   }
 
   @Test
-  public void givenTextFile_whenIsFilePdf_thenReturnFalse() {
+   void givenTextFile_whenIsFilePdf_thenReturnFalse() {
     File file = new File("src/test/resources/pdf/test.txt");
 
     assertFalse(tikaService.isFilePdf(file));
   }
 
   @Test
-  public void givenNoFile_whenIsFilePdf_thenException() {
+   void givenNoFile_whenIsFilePdf_thenException() {
     File file = new File("src/test/resources/pdf/nonexistingfile.txt");
 
     assertThrows(IllegalStateException.class, () -> tikaService.isFilePdf(file));

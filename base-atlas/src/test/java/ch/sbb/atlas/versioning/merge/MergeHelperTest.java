@@ -13,26 +13,26 @@ import java.util.Comparator;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-public class MergeHelperTest extends VersionableServiceBaseTest {
+class MergeHelperTest extends VersionableServiceBaseTest {
 
   @Test
-  public void shouldMergeTwoIdenticalSequentialVersionedObject() {
+  void shouldMergeTwoIdenticalSequentialVersionedObject() {
     //given
 
     Property prop = Property.builder().key("prop").value("ciao").build();
     Entity entity = Entity.builder().properties(List.of(prop)).id(1L).build();
 
     VersionedObject first = VersionedObject.builder()
-                                           .validFrom(LocalDate.of(2000, 1, 1))
-                                           .validTo(LocalDate.of(2000, 12, 31))
-                                           .entity(entity)
-                                           .build();
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 12, 31))
+        .entity(entity)
+        .build();
 
     VersionedObject second = VersionedObject.builder()
-                                            .validFrom(LocalDate.of(2001, 1, 1))
-                                            .validTo(LocalDate.of(2001, 12, 31))
-                                            .entity(entity)
-                                            .build();
+        .validFrom(LocalDate.of(2001, 1, 1))
+        .validTo(LocalDate.of(2001, 12, 31))
+        .entity(entity)
+        .build();
     //when
     List<VersionedObject> result = MergeHelper.mergeVersionedObject(
         Arrays.asList(first, second));
@@ -54,25 +54,25 @@ public class MergeHelperTest extends VersionableServiceBaseTest {
   }
 
   @Test
-  public void shouldMergeTwoIdenticalSequentialVersionedObjectFirstNewSecondUpdate() {
+  void shouldMergeTwoIdenticalSequentialVersionedObjectFirstNewSecondUpdate() {
     //given
     Property prop = Property.builder().key("prop").value("ciao").build();
 
     VersionedObject first = VersionedObject.builder()
-                                           .validFrom(LocalDate.of(2000, 1, 1))
-                                           .validTo(LocalDate.of(2000, 12, 31))
-                                           .entity(
-                                               Entity.builder().properties(List.of(prop)).build())
-                                           .build();
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 12, 31))
+        .entity(
+            Entity.builder().properties(List.of(prop)).build())
+        .build();
 
     VersionedObject second = VersionedObject.builder()
-                                            .validFrom(LocalDate.of(2001, 1, 1))
-                                            .validTo(LocalDate.of(2001, 12, 31))
-                                            .entity(Entity.builder()
-                                                          .properties(List.of(prop))
-                                                          .id(1L)
-                                                          .build())
-                                            .build();
+        .validFrom(LocalDate.of(2001, 1, 1))
+        .validTo(LocalDate.of(2001, 12, 31))
+        .entity(Entity.builder()
+            .properties(List.of(prop))
+            .id(1L)
+            .build())
+        .build();
     //when
     List<VersionedObject> result = MergeHelper.mergeVersionedObject(
         Arrays.asList(first, second));
@@ -93,25 +93,25 @@ public class MergeHelperTest extends VersionableServiceBaseTest {
   }
 
   @Test
-  public void shouldNotMergeTwoIdenticalNotSequentialVersionedObject() {
+  void shouldNotMergeTwoIdenticalNotSequentialVersionedObject() {
     //given
 
     Property prop = Property.builder().key("prop").value("ciao").build();
     Entity entity = Entity.builder().properties(List.of(prop)).id(1L).build();
 
     VersionedObject first = VersionedObject.builder()
-                                           .validFrom(LocalDate.of(2000, 1, 1))
-                                           .validTo(LocalDate.of(2000, 12, 31))
-                                           .entity(entity)
-                                           .action(VersioningAction.NOT_TOUCHED)
-                                           .build();
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 12, 31))
+        .entity(entity)
+        .action(VersioningAction.NOT_TOUCHED)
+        .build();
 
     VersionedObject second = VersionedObject.builder()
-                                            .validFrom(LocalDate.of(2001, 1, 2))
-                                            .validTo(LocalDate.of(2001, 12, 31))
-                                            .entity(entity)
-                                            .action(VersioningAction.NOT_TOUCHED)
-                                            .build();
+        .validFrom(LocalDate.of(2001, 1, 2))
+        .validTo(LocalDate.of(2001, 12, 31))
+        .entity(entity)
+        .action(VersioningAction.NOT_TOUCHED)
+        .build();
     //when
     List<VersionedObject> result = MergeHelper.mergeVersionedObject(
         Arrays.asList(first, second));
@@ -133,27 +133,27 @@ public class MergeHelperTest extends VersionableServiceBaseTest {
   }
 
   @Test
-  public void shouldNotMergeTwoNotIdenticalButSequentialVersionedObject() {
+  void shouldNotMergeTwoNotIdenticalButSequentialVersionedObject() {
     //given
 
     Property prop = Property.builder().key("prop").value("ciao").build();
     Entity entity = Entity.builder().properties(List.of(prop)).id(1L).build();
 
     VersionedObject first = VersionedObject.builder()
-                                           .validFrom(LocalDate.of(2000, 1, 1))
-                                           .validTo(LocalDate.of(2000, 12, 31))
-                                           .entity(entity)
-                                           .action(VersioningAction.NOT_TOUCHED)
-                                           .build();
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 12, 31))
+        .entity(entity)
+        .action(VersioningAction.NOT_TOUCHED)
+        .build();
 
     Property prop1 = Property.builder().key("prop").value("ciao ciao").build();
     Entity entity1 = Entity.builder().properties(List.of(prop1)).id(1L).build();
     VersionedObject second = VersionedObject.builder()
-                                            .validFrom(LocalDate.of(2001, 1, 1))
-                                            .validTo(LocalDate.of(2001, 12, 31))
-                                            .entity(entity1)
-                                            .action(VersioningAction.NOT_TOUCHED)
-                                            .build();
+        .validFrom(LocalDate.of(2001, 1, 1))
+        .validTo(LocalDate.of(2001, 12, 31))
+        .entity(entity1)
+        .action(VersioningAction.NOT_TOUCHED)
+        .build();
     //when
     List<VersionedObject> result = MergeHelper.mergeVersionedObject(
         Arrays.asList(first, second));
@@ -175,27 +175,27 @@ public class MergeHelperTest extends VersionableServiceBaseTest {
   }
 
   @Test
-  public void shouldNotMergeTwoNotIdenticalAntNotSequentialVersionedObject() {
+  void shouldNotMergeTwoNotIdenticalAntNotSequentialVersionedObject() {
     //given
 
     Property prop = Property.builder().key("prop").value("ciao").build();
     Entity entity = Entity.builder().properties(List.of(prop)).id(1L).build();
 
     VersionedObject first = VersionedObject.builder()
-                                           .validFrom(LocalDate.of(2000, 1, 1))
-                                           .validTo(LocalDate.of(2000, 12, 31))
-                                           .entity(entity)
-                                           .action(VersioningAction.NOT_TOUCHED)
-                                           .build();
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 12, 31))
+        .entity(entity)
+        .action(VersioningAction.NOT_TOUCHED)
+        .build();
 
     Property prop1 = Property.builder().key("prop").value("ciao ciao").build();
     Entity entity1 = Entity.builder().properties(List.of(prop1)).id(1L).build();
     VersionedObject second = VersionedObject.builder()
-                                            .validFrom(LocalDate.of(2001, 1, 2))
-                                            .validTo(LocalDate.of(2001, 12, 31))
-                                            .entity(entity1)
-                                            .action(VersioningAction.NOT_TOUCHED)
-                                            .build();
+        .validFrom(LocalDate.of(2001, 1, 2))
+        .validTo(LocalDate.of(2001, 12, 31))
+        .entity(entity1)
+        .action(VersioningAction.NOT_TOUCHED)
+        .build();
     //when
     List<VersionedObject> result = MergeHelper.mergeVersionedObject(
         Arrays.asList(first, second));
@@ -216,19 +216,18 @@ public class MergeHelperTest extends VersionableServiceBaseTest {
 
   }
 
-
   @Test
-  public void shouldReturnTrueWhenVersionsAreSequential() {
+  void shouldReturnTrueWhenVersionsAreSequential() {
     //given
     VersionedObject current = VersionedObject.builder()
-                                             .validFrom(LocalDate.of(2000, 1, 1))
-                                             .validTo(LocalDate.of(2000, 12, 31))
-                                             .build();
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 12, 31))
+        .build();
 
     VersionedObject next = VersionedObject.builder()
-                                          .validFrom(LocalDate.of(2001, 1, 1))
-                                          .validTo(LocalDate.of(2001, 12, 31))
-                                          .build();
+        .validFrom(LocalDate.of(2001, 1, 1))
+        .validTo(LocalDate.of(2001, 12, 31))
+        .build();
     //when
     boolean result = MergeHelper.areVersionedObjectsSequential(current, next);
 
@@ -237,17 +236,17 @@ public class MergeHelperTest extends VersionableServiceBaseTest {
   }
 
   @Test
-  public void shouldReturnFalseWhenVersionsAreSequential() {
+  void shouldReturnFalseWhenVersionsAreSequential() {
     //given
     VersionedObject current = VersionedObject.builder()
-                                             .validFrom(LocalDate.of(2000, 1, 1))
-                                             .validTo(LocalDate.of(2000, 12, 31))
-                                             .build();
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 12, 31))
+        .build();
 
     VersionedObject next = VersionedObject.builder()
-                                          .validFrom(LocalDate.of(2001, 1, 2))
-                                          .validTo(LocalDate.of(2001, 12, 31))
-                                          .build();
+        .validFrom(LocalDate.of(2001, 1, 2))
+        .validTo(LocalDate.of(2001, 12, 31))
+        .build();
     //when
     boolean result = MergeHelper.areVersionedObjectsSequential(current, next);
 

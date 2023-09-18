@@ -2,12 +2,12 @@ package ch.sbb.line.directory.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
-import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.line.directory.model.search.LineSearchRestrictions;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import java.time.LocalDate;
@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
 @Transactional
-public class LineServiceSearchTest {
+ class LineServiceSearchTest {
 
   private final LineVersionRepository lineVersionRepository;
   private final LineService lineService;
@@ -34,7 +34,7 @@ public class LineServiceSearchTest {
   private LineVersion version3;
 
   @Autowired
-  public LineServiceSearchTest(LineVersionRepository lineVersionRepository,
+   LineServiceSearchTest(LineVersionRepository lineVersionRepository,
       LineService lineService) {
     this.lineVersionRepository = lineVersionRepository;
     this.lineService = lineService;

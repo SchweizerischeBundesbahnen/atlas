@@ -4,13 +4,13 @@ import static ch.sbb.line.directory.converter.CmykColorConverter.fromCmykString;
 import static ch.sbb.line.directory.converter.RgbColorConverter.fromHex;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.api.lidi.enumaration.LineType;
+import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.line.directory.entity.LineVersionSnapshot;
 import ch.sbb.line.directory.entity.LineVersionSnapshot.LineVersionSnapshotBuilder;
-import ch.sbb.atlas.api.lidi.enumaration.LineType;
-import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
 import ch.sbb.line.directory.model.search.LineVersionSnapshotSearchRestrictions;
 import ch.sbb.line.directory.repository.LineVersionSnapshotRepository;
 import java.time.LocalDate;
@@ -29,7 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
 @Transactional
-public class LineVersionSnapshotSearchTest {
+ class LineVersionSnapshotSearchTest {
 
   private final LineVersionSnapshotRepository lineVersionSnapshotRepository;
   private final LineVersionSnapshotService lineVersionSnapshotService;
@@ -38,7 +38,7 @@ public class LineVersionSnapshotSearchTest {
   private LineVersionSnapshot version3;
 
   @Autowired
-  public LineVersionSnapshotSearchTest(LineVersionSnapshotRepository lineVersionSnapshotRepository,
+   LineVersionSnapshotSearchTest(LineVersionSnapshotRepository lineVersionSnapshotRepository,
       LineVersionSnapshotService lineVersionSnapshotService) {
     this.lineVersionSnapshotRepository = lineVersionSnapshotRepository;
     this.lineVersionSnapshotService = lineVersionSnapshotService;

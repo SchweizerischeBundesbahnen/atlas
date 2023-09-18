@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @IntegrationTest
-public class TimetableHearingYearServiceTest {
+ class TimetableHearingYearServiceTest {
 
   private static final long YEAR = 2023L;
   private static final TimetableHearingYear TIMETABLE_HEARING_YEAR = TimetableHearingYear.builder()
@@ -43,7 +43,7 @@ public class TimetableHearingYearServiceTest {
   private final TimetableHearingStatementMapper timetableHearingStatementMapper;
 
   @Autowired
-  public TimetableHearingYearServiceTest(TimetableHearingYearRepository timetableHearingYearRepository,
+   TimetableHearingYearServiceTest(TimetableHearingYearRepository timetableHearingYearRepository,
       TimetableHearingYearService timetableHearingYearService,
       TimetableHearingStatementRepository timetableHearingStatementRepository,
       TimetableHearingStatementMapper timetableHearingStatementMapper) {

@@ -1,16 +1,15 @@
 package ch.sbb.exportservice.entity;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
+import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-public class ServicePointVersionTest {
+ class ServicePointVersionTest {
 
     @Test
-    public void servicePointSharedEntityIntegrityTest(){
+     void servicePointSharedEntityIntegrityTest(){
         //given
 
         //when

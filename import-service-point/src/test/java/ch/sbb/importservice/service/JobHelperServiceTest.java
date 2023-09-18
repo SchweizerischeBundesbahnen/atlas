@@ -21,7 +21,7 @@ import org.springframework.batch.core.JobParameter;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.explore.JobExplorer;
 
-public class JobHelperServiceTest {
+ class JobHelperServiceTest {
 
   @Mock
   private JobExplorer jobExplorer;
@@ -38,13 +38,13 @@ public class JobHelperServiceTest {
   private JobHelperService jobHelperService;
 
   @BeforeEach
-  public void setUp() {
+   void setUp() {
     MockitoAnnotations.openMocks(this);
     jobHelperService = new JobHelperService(jobExplorer);
   }
 
   @Test
-  public void shouldReturnMinDateWhenNoJobExecutionWasFound() {
+   void shouldReturnMinDateWhenNoJobExecutionWasFound() {
     //when
     LocalDate result = jobHelperService.getDateForImportFileToDownload("myJob");
     //then
@@ -53,7 +53,7 @@ public class JobHelperServiceTest {
   }
 
   @Test
-  public void shouldReturnDateWhenJobExecutionWasFound() {
+   void shouldReturnDateWhenJobExecutionWasFound() {
     //given
     Map<String, JobParameter<?>> parameters = new HashMap<>();
     parameters.put(EXECUTION_TYPE_PARAMETER, new JobParameter<>("BATCH", String.class));
@@ -74,7 +74,7 @@ public class JobHelperServiceTest {
   }
 
   @Test
-  public void shouldReturnTrueWhenMacthedDateIsBetweenTodayAndMatchingDate() {
+   void shouldReturnTrueWhenMacthedDateIsBetweenTodayAndMatchingDate() {
     //given
     LocalDate matchingDate = LocalDate.now();
     LocalDate lastEditionDate = LocalDate.now();
@@ -87,7 +87,7 @@ public class JobHelperServiceTest {
   }
 
   @Test
-  public void shouldReturnTrueWhenLastEditionDateIsBetweenTodayAndMatchingDate() {
+   void shouldReturnTrueWhenLastEditionDateIsBetweenTodayAndMatchingDate() {
     //given
     LocalDate now = LocalDate.now();
     LocalDate matchingDate = now.minusDays(2);
@@ -101,7 +101,7 @@ public class JobHelperServiceTest {
   }
 
   @Test
-  public void shouldReturnFalseWhenLastEditionDateIsNotBetweenTodayAndMatchingDate() {
+   void shouldReturnFalseWhenLastEditionDateIsNotBetweenTodayAndMatchingDate() {
     //given
     LocalDate now = LocalDate.now();
     LocalDate lastEditionDate = now.minusDays(1);

@@ -39,7 +39,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-public class BusinessOrganisationControllerIntegrationTest extends BaseControllerWithAmazonS3ApiTest {
+ class BusinessOrganisationControllerIntegrationTest extends BaseControllerWithAmazonS3ApiTest {
 
   private final BusinessOrganisationVersion version = BusinessOrganisationVersion
       .builder()
@@ -121,7 +121,7 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
   }
 
   @Test
-  public void shouldCreateBusinessOrganisationVersion() throws Exception {
+   void shouldCreateBusinessOrganisationVersion() throws Exception {
     //given
     BusinessOrganisationVersionModel model = BusinessOrganisationVersionModel
         .builder()
@@ -149,7 +149,7 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
   }
 
   @Test
-  public void shouldGetBusinessOrganisationVersionsBySboid() throws Exception {
+   void shouldGetBusinessOrganisationVersionsBySboid() throws Exception {
     //given
     BusinessOrganisationVersionModel model = BusinessOrganisationVersionModel
         .builder()
@@ -207,7 +207,7 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
   }
 
   @Test
-  public void shouldNotGetBusinessOrganisationVersionsWhenProvidedSboidDoesNotExists()
+   void shouldNotGetBusinessOrganisationVersionsWhenProvidedSboidDoesNotExists()
       throws Exception {
     //when and then
     mvc.perform(get("/v1/business-organisations/versions/ch:1:sboid:110000112"))
@@ -225,7 +225,7 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
   }
 
   @Test
-  public void shouldGetAllBusinessOrganisationVersions() throws Exception {
+   void shouldGetAllBusinessOrganisationVersions() throws Exception {
     //given
     BusinessOrganisationVersionModel model = BusinessOrganisationVersionModel
         .builder()
@@ -283,7 +283,7 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
   }
 
   @Test
-  public void shouldNotCreateBusinessOrganisationVersionWhenRequiredAbbreviationDeFieldProvidedIsTooLong()
+   void shouldNotCreateBusinessOrganisationVersionWhenRequiredAbbreviationDeFieldProvidedIsTooLong()
       throws Exception {
     //given
     BusinessOrganisationVersionModel model = BusinessOrganisationVersionModel
@@ -323,7 +323,7 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
   }
 
   @Test
-  public void shouldNotUpdateBusinessOrganisationVersionWhenRequiredAbbreviationDeFieldNotProvided()
+   void shouldNotUpdateBusinessOrganisationVersionWhenRequiredAbbreviationDeFieldNotProvided()
       throws Exception {
     //given
     BusinessOrganisationVersionModel model = BusinessOrganisationVersionModel
@@ -361,7 +361,7 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
   }
 
   @Test
-  public void shouldNotUpdateBusinessOrganisationVersionWhenProvidedIdDoesNotExists()
+   void shouldNotUpdateBusinessOrganisationVersionWhenProvidedIdDoesNotExists()
       throws Exception {
     //given
     BusinessOrganisationVersionModel model = BusinessOrganisationVersionModel
@@ -400,14 +400,14 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
   }
 
   @Test
-  public void shouldDeleteBusinessOrganisationBySboid() throws Exception {
+   void shouldDeleteBusinessOrganisationBySboid() throws Exception {
     //when and then
     mvc.perform(delete("/v1/business-organisations/" + version.getSboid()))
         .andExpect(status().isOk());
   }
 
   @Test
-  public void shouldRevokeBusinessOrganisationBySboid() throws Exception {
+   void shouldRevokeBusinessOrganisationBySboid() throws Exception {
     //when and then
     mvc.perform(post("/v1/business-organisations/" + version.getSboid() + "/revoke"))
         .andExpect(status().isOk())
@@ -416,7 +416,7 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
   }
 
   @Test
-  public void shouldReturnConflictErrorResponse() throws Exception {
+   void shouldReturnConflictErrorResponse() throws Exception {
     //given
     BusinessOrganisationVersionModel model = BusinessOrganisationVersionModel
         .builder()
@@ -530,7 +530,7 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
   }
 
   @Test
-  public void shouldReturnErrorMessageOnEmptyBody() throws Exception {
+   void shouldReturnErrorMessageOnEmptyBody() throws Exception {
     // when and then
     mvc.perform(post("/v1/business-organisations/versions").contentType(contentType)
                     .content(mapper.writeValueAsString("{}")))
@@ -538,7 +538,7 @@ public class BusinessOrganisationControllerIntegrationTest extends BaseControlle
   }
 
   @Test
-  public void shouldGetBusinessOrganisationVersions() throws Exception {
+   void shouldGetBusinessOrganisationVersions() throws Exception {
     //when and then
     mvc.perform(get("/v1/business-organisations/versions"))
         .andExpect(status().isOk())

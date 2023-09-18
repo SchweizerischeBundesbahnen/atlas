@@ -1,9 +1,9 @@
 package ch.sbb.atlas.servicepointdirectory.migration.loadingpoints;
 
-import static ch.sbb.atlas.servicepointdirectory.migration.CsvReader.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.servicepointdirectory.migration.CsvReader;
 import ch.sbb.atlas.servicepointdirectory.migration.DateRange;
 import ch.sbb.atlas.servicepointdirectory.migration.Validity;
 import java.io.IOException;
@@ -22,7 +22,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 @IntegrationTest
 @Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class LoadingPointMigrationIntegrationTest {
+class LoadingPointMigrationIntegrationTest {
 
   private static final String DIDOK_CSV_FILE = "DIDOK3_LADESTELLEN_20230906011320.csv";
   private static final String ATLAS_CSV_FILE = "full-world-loading_point-2023-09-06.csv";
@@ -33,13 +33,13 @@ public class LoadingPointMigrationIntegrationTest {
   @Test
   @Order(1)
   void shouldParseCsvsCorrectly() throws IOException {
-    try (InputStream csvStream = this.getClass().getResourceAsStream(BASE_PATH + DIDOK_CSV_FILE)) {
-      didokCsvLines.addAll(parseCsv(csvStream, LoadingPointDidokCsvModel.class));
+    try (InputStream csvStream = this.getClass().getResourceAsStream(CsvReader.BASE_PATH + DIDOK_CSV_FILE)) {
+      didokCsvLines.addAll(CsvReader.parseCsv(csvStream, LoadingPointDidokCsvModel.class));
     }
     assertThat(didokCsvLines).isNotEmpty();
 
-    try (InputStream csvStream = this.getClass().getResourceAsStream(BASE_PATH + ATLAS_CSV_FILE)) {
-      atlasCsvLines.addAll(parseCsv(csvStream, LoadingPointAtlasCsvModel.class));
+    try (InputStream csvStream = this.getClass().getResourceAsStream(CsvReader.BASE_PATH + ATLAS_CSV_FILE)) {
+      atlasCsvLines.addAll(CsvReader.parseCsv(csvStream, LoadingPointAtlasCsvModel.class));
     }
     assertThat(atlasCsvLines).isNotEmpty();
   }
@@ -106,8 +106,8 @@ public class LoadingPointMigrationIntegrationTest {
                 Collectors.toList(),
                 list -> new Validity(
                     list.stream().map(item -> DateRange.builder()
-                        .from(dateFromString(item.getValidFrom()))
-                        .to(dateFromString(item.getValidTo()))
+                        .from(CsvReader.dateFromString(item.getValidFrom()))
+                        .to(CsvReader.dateFromString(item.getValidTo()))
                         .build()
                     ).collect(Collectors.toList())
                 ).minify()
@@ -150,8 +150,8 @@ public class LoadingPointMigrationIntegrationTest {
       List<LoadingPointAtlasCsvModel> atlasCsvLines) {
     List<LoadingPointAtlasCsvModel> matchedVersions = atlasCsvLines.stream().filter(
             atlasCsvLine -> DateRange.builder()
-                .from(dateFromString(atlasCsvLine.getValidFrom()))
-                .to(dateFromString(atlasCsvLine.getValidTo()))
+                .from(CsvReader.dateFromString(atlasCsvLine.getValidFrom()))
+                .to(CsvReader.dateFromString(atlasCsvLine.getValidTo()))
                 .build()
                 .contains(didokCsvLine.getValidFrom()))
         .toList();

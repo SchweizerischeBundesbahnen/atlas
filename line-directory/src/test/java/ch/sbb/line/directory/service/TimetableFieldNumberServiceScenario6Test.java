@@ -13,10 +13,10 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class TimetableFieldNumberServiceScenario6Test extends BaseTimetableFieldNumberServiceTest {
+ class TimetableFieldNumberServiceScenario6Test extends BaseTimetableFieldNumberServiceTest {
 
   @Autowired
-  public TimetableFieldNumberServiceScenario6Test(
+   TimetableFieldNumberServiceScenario6Test(
       TimetableFieldNumberVersionRepository versionRepository,
       TimetableFieldNumberService timetableFieldNumberService) {
     super(versionRepository, timetableFieldNumberService);
@@ -34,7 +34,7 @@ public class TimetableFieldNumberServiceScenario6Test extends BaseTimetableField
    *
    */
   @Test
-  public void scenario6() {
+   void scenario6() {
     //given
     version1 = versionRepository.save(version1);
     version2 = versionRepository.save(version2);
@@ -125,7 +125,7 @@ public class TimetableFieldNumberServiceScenario6Test extends BaseTimetableField
    *
    */
   @Test
-  public void scenario6WithOnlyOneVersion() {
+   void scenario6WithOnlyOneVersion() {
     //given
     version1 = versionRepository.save(version1);
     TimetableFieldNumberVersion editedVersion = version1Builder().build();
@@ -189,7 +189,7 @@ public class TimetableFieldNumberServiceScenario6Test extends BaseTimetableField
    *
    */
   @Test
-  public void scenario6WhenEditedValidToIsBiggerThenCurrentValidTo() {
+   void scenario6WhenEditedValidToIsBiggerThenCurrentValidTo() {
     //given
     version1 = versionRepository.save(version1);
     TimetableFieldNumberVersion editedVersion = version1Builder().build();
@@ -253,7 +253,7 @@ public class TimetableFieldNumberServiceScenario6Test extends BaseTimetableField
    *
    */
   @Test
-  public void scenario6WhenOnlyValidFromIsEdited() {
+   void scenario6WhenOnlyValidFromIsEdited() {
     //given
     version1 = versionRepository.save(version1);
     TimetableFieldNumberVersion editedVersion = version1Builder().build();
