@@ -1,16 +1,31 @@
 package ch.sbb.exportservice.recovery;
 
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TYPE_JOB_PARAMETER;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.exportservice.model.ExportType;
 import ch.sbb.exportservice.service.ExportLoadingPointJobService;
 import ch.sbb.exportservice.service.ExportServicePointJobService;
 import ch.sbb.exportservice.service.ExportTrafficPointElementJobService;
 import ch.sbb.exportservice.utils.JobDescriptionConstants;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.batch.core.*;
+import org.springframework.batch.core.BatchStatus;
+import org.springframework.batch.core.JobExecution;
+import org.springframework.batch.core.JobInstance;
+import org.springframework.batch.core.JobParameter;
+import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.explore.JobExplorer;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.repository.JobRepository;
@@ -18,17 +33,8 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TYPE_JOB_PARAMETER;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
-
 @DirtiesContext(classMode = ClassMode.AFTER_CLASS)
-public class RecoveryJobsRunnerTest {
+ class RecoveryJobsRunnerTest {
 
   private RecoveryJobsRunner recoveryJobsRunner;
 
@@ -73,7 +79,7 @@ public class RecoveryJobsRunnerTest {
   }
 
   @Test
-  public void shouldRecoverExportServicePointWhenOneJobIsNotSuccessfullyExecuted() throws Exception {
+   void shouldRecoverExportServicePointWhenOneJobIsNotSuccessfullyExecuted() throws Exception {
     //given
     StepExecution stepExecution = new StepExecution("myStep", jobExecution);
     stepExecution.setId(132L);
@@ -100,7 +106,7 @@ public class RecoveryJobsRunnerTest {
   }
 
   @Test
-  public void shouldRecoverExportTrafficPointWhenOneJobIsNotSuccessfullyExecuted() throws Exception {
+   void shouldRecoverExportTrafficPointWhenOneJobIsNotSuccessfullyExecuted() throws Exception {
     //given
     StepExecution stepExecution = new StepExecution("myStep", jobExecution);
     stepExecution.setId(132L);
@@ -154,7 +160,7 @@ public class RecoveryJobsRunnerTest {
   }
 
   @Test
-  public void shouldNotRecoverAnyJob() {
+   void shouldNotRecoverAnyJob() {
     //when
     recoveryJobsRunner.onApplicationEvent(applicationReadyEvent);
     //then

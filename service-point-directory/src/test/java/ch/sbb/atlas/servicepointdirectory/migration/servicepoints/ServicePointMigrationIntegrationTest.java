@@ -1,14 +1,11 @@
 package ch.sbb.atlas.servicepointdirectory.migration.servicepoints;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.servicepointdirectory.migration.CsvReader;
 import ch.sbb.atlas.servicepointdirectory.migration.DateRange;
 import ch.sbb.atlas.servicepointdirectory.migration.Validity;
-import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -16,14 +13,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import static ch.sbb.atlas.servicepointdirectory.migration.CsvReader.*;
-import static org.assertj.core.api.Assertions.assertThat;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 @IntegrationTest
 @Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class ServicePointMigrationIntegrationTest {
+ class ServicePointMigrationIntegrationTest {
 
   private static final String DIDOK_CSV_FILE = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20230906021755.csv";
   private static final String ATLAS_CSV_FILE = "full-world-service_point-2023-09-06.csv";
@@ -34,13 +33,13 @@ public class ServicePointMigrationIntegrationTest {
   @Test
   @Order(1)
   void shouldParseCsvsCorrectly() throws IOException {
-    try (InputStream csvStream = this.getClass().getResourceAsStream(BASE_PATH + DIDOK_CSV_FILE)) {
-      didokCsvLines.addAll(parseCsv(csvStream, ServicePointDidokCsvModel.class));
+    try (InputStream csvStream = this.getClass().getResourceAsStream(CsvReader.BASE_PATH + DIDOK_CSV_FILE)) {
+      didokCsvLines.addAll(CsvReader.parseCsv(csvStream, ServicePointDidokCsvModel.class));
     }
     assertThat(didokCsvLines).isNotEmpty();
 
-    try (InputStream csvStream = this.getClass().getResourceAsStream(BASE_PATH + ATLAS_CSV_FILE)) {
-      atlasCsvLines.addAll(parseCsv(csvStream, ServicePointAtlasCsvModel.class));
+    try (InputStream csvStream = this.getClass().getResourceAsStream(CsvReader.BASE_PATH + ATLAS_CSV_FILE)) {
+      atlasCsvLines.addAll(CsvReader.parseCsv(csvStream, ServicePointAtlasCsvModel.class));
     }
     assertThat(atlasCsvLines).isNotEmpty();
   }
@@ -76,7 +75,7 @@ public class ServicePointMigrationIntegrationTest {
         Collectors.groupingBy(ServicePointAtlasCsvModel::getNumber, Collectors.collectingAndThen(Collectors.toList(),
             list -> new Validity(
                 list.stream().map(
-                        i -> DateRange.builder().from(dateFromString(i.getValidFrom())).to(dateFromString(i.getValidTo())).build())
+                        i -> DateRange.builder().from(CsvReader.dateFromString(i.getValidFrom())).to(CsvReader.dateFromString(i.getValidTo())).build())
                     .collect(Collectors.toList())).minify())));
 
     List<String> validityErrors = new ArrayList<>();
@@ -115,8 +114,8 @@ public class ServicePointMigrationIntegrationTest {
       List<ServicePointAtlasCsvModel> atlasCsvLines) {
     List<ServicePointAtlasCsvModel> matchedVersions = atlasCsvLines.stream().filter(
             atlasCsvLine -> DateRange.builder()
-                .from(dateFromString(atlasCsvLine.getValidFrom()))
-                .to(dateFromString(atlasCsvLine.getValidTo()))
+                .from(CsvReader.dateFromString(atlasCsvLine.getValidFrom()))
+                .to(CsvReader.dateFromString(atlasCsvLine.getValidTo()))
                 .build()
                 .contains(didokCsvLine.getValidFrom()))
         .toList();

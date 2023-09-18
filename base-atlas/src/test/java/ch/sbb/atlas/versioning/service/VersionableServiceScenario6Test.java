@@ -25,7 +25,7 @@ public class VersionableServiceScenario6Test extends VersionableServiceBaseTest 
    * 2
    */
   @Test
-  public void scenario6() {
+   void scenario6() {
     //given
     LocalDate editedValidFrom = LocalDate.of(2024, 6, 1);
     LocalDate editedValidTo = LocalDate.of(2024, 12, 31);
@@ -102,7 +102,7 @@ public class VersionableServiceScenario6Test extends VersionableServiceBaseTest 
    * 2
    */
   @Test
-  public void scenario6WithOnlyOneVersion() {
+   void scenario6WithOnlyOneVersion() {
     //given
     LocalDate editedValidFrom = LocalDate.of(2020, 6, 1);
     LocalDate editedValidTo = LocalDate.of(2021, 12, 31);
@@ -171,7 +171,7 @@ public class VersionableServiceScenario6Test extends VersionableServiceBaseTest 
    * 2
    */
   @Test
-  public void scenario6WhenEditedValidToIsBiggerThenCurrentValidTo() {
+   void scenario6WhenEditedValidToIsBiggerThenCurrentValidTo() {
     //given
     LocalDate editedValidFrom = LocalDate.of(2020, 6, 1);
     LocalDate editedValidTo = LocalDate.of(2022, 12, 31);
@@ -240,7 +240,7 @@ public class VersionableServiceScenario6Test extends VersionableServiceBaseTest 
    * 2
    */
   @Test
-  public void scenario6WhenOnlyValidFromIsEdited() {
+   void scenario6WhenOnlyValidFromIsEdited() {
     //given
     LocalDate editedValidFrom = LocalDate.of(2020, 6, 1);
 

@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
 @Transactional
-public class TransportCompanyRelationServiceConflictTest {
+ class TransportCompanyRelationServiceConflictTest {
 
   private static final String SBOID_1 = "ch:1:sboid:1";
   private static final String SBOID_2 = "ch:1:sboid:2";

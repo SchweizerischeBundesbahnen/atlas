@@ -40,7 +40,7 @@ public class VersioningHelperTest {
   private final List<ToVersioning> toVersioningList = new ArrayList<>(List.of(toVersioningCurrent));
 
   @Test
-  public void shouldReturnTrueIfEditedVersionIsInTheMiddleOfACurrentVersion() {
+   void shouldReturnTrueIfEditedVersionIsInTheMiddleOfACurrentVersion() {
     //given
     VersionableObject versionableObject1 = VersionableObject
         .builder()
@@ -62,7 +62,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnFalseIfEditedValidToIsBiggerThenCurrentValidTo() {
+   void shouldReturnFalseIfEditedValidToIsBiggerThenCurrentValidTo() {
     //given
     VersionableObject versionableObject1 = VersionableObject
         .builder()
@@ -84,7 +84,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnFalseIfEditedValidFromIsSmallerThenCurrentValidFrom() {
+   void shouldReturnFalseIfEditedValidFromIsSmallerThenCurrentValidFrom() {
     //given
     VersionableObject versionableObject1 = VersionableObject
         .builder()
@@ -106,7 +106,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnFalseIfEditedVersionIsBeforeTheCurrentVersion() {
+   void shouldReturnFalseIfEditedVersionIsBeforeTheCurrentVersion() {
     //given
     VersionableObject versionableObject1 = VersionableObject
         .builder()
@@ -128,7 +128,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnFalseIfEditedVersionIsAfterTheCurrentVersion() {
+   void shouldReturnFalseIfEditedVersionIsAfterTheCurrentVersion() {
     //given
     VersionableObject versionableObject1 = VersionableObject
         .builder()
@@ -150,7 +150,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnTrueIfEditedVersionExactMatchMultipleVersions() {
+   void shouldReturnTrueIfEditedVersionExactMatchMultipleVersions() {
     //given
     VersionableObject versionableObject1 = VersionableObject
         .builder()
@@ -183,7 +183,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnFalseIfEditedVersionIsBiggerThenMultipleVersionsFound() {
+   void shouldReturnFalseIfEditedVersionIsBiggerThenMultipleVersionsFound() {
     //given
     VersionableObject versionableObject1 = VersionableObject
         .builder()
@@ -216,7 +216,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnFalseIfEditedVersionIsSmallerThenMultipleVersionsFound() {
+   void shouldReturnFalseIfEditedVersionIsSmallerThenMultipleVersionsFound() {
     //given
     VersionableObject versionableObject1 = VersionableObject
         .builder()
@@ -249,7 +249,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnTrueIfEditedValidToIsAfterTheRightBorder() {
+   void shouldReturnTrueIfEditedValidToIsAfterTheRightBorder() {
     //given
     VersionableObject editedVersion = VersionableObject
         .builder()
@@ -280,7 +280,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnFalseIfEditedValidToIsBeforeTheRightBorder() {
+   void shouldReturnFalseIfEditedValidToIsBeforeTheRightBorder() {
     //given
     VersionableObject editedVersion = VersionableObject
         .builder()
@@ -311,7 +311,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnFalseIfEditedValidToIsEqualToTheCurrentValidFrom() {
+   void shouldReturnFalseIfEditedValidToIsEqualToTheCurrentValidFrom() {
     //given
     VersionableObject versionableObject1 = VersionableObject
         .builder()
@@ -334,7 +334,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnFalseIfEditedValidToIsBeforeTheCurrentValidFrom() {
+   void shouldReturnFalseIfEditedValidToIsBeforeTheCurrentValidFrom() {
     //given
     VersionableObject versionableObject1 = VersionableObject
         .builder()
@@ -357,7 +357,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnTrueIfVersionIsOnTheLeftBorder() {
+   void shouldReturnTrueIfVersionIsOnTheLeftBorder() {
     //given
     VersionableObject versionableObject1 = VersionableObject
         .builder()
@@ -377,7 +377,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnTrueIfThereIsGapBetweenVersions() {
+   void shouldReturnTrueIfThereIsGapBetweenVersions() {
     //given
     VersionableObject versionableObject1 = VersionableObject
         .builder()
@@ -405,7 +405,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnFalseIfTheVersionsAreSequential() {
+   void shouldReturnFalseIfTheVersionsAreSequential() {
     //given
     VersionableObject versionableObject1 = VersionableObject
         .builder()
@@ -433,7 +433,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnTrueIfOnlyValidToIsEditedEndPropertiesAreNOtEdited() {
+   void shouldReturnTrueIfOnlyValidToIsEditedEndPropertiesAreNOtEdited() {
     //given
     VersionableObject editedVersion = VersionableObject
         .builder()
@@ -461,7 +461,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnFalseIfOnlyValidToIsEditedEndPropertiesAreEdited() {
+   void shouldReturnFalseIfOnlyValidToIsEditedEndPropertiesAreEdited() {
     //given
     VersionableObject editedVersion = VersionableObject
         .builder()
@@ -490,7 +490,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnTrueIfValidToAndPropertiesAreEdited() {
+   void shouldReturnTrueIfValidToAndPropertiesAreEdited() {
     //given
     VersionableObject editedVersion = VersionableObject
         .builder()
@@ -520,7 +520,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldFindObjectToVersioningIfEditedValidFromIsEqualToCurrentValidTo() {
+   void shouldFindObjectToVersioningIfEditedValidFromIsEqualToCurrentValidTo() {
     //given
     VersionableObject versionableObject1 = VersionableObject
         .builder()
@@ -544,7 +544,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnTrueIfTheEditedVersionIsOnTheRightBorder() {
+   void shouldReturnTrueIfTheEditedVersionIsOnTheRightBorder() {
     //given
     VersionableObject versionableObject1 = VersionableObject
         .builder()
@@ -565,7 +565,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnTrueIfEditedVersionIsInTheMiddleOfToVersioningAndNoPropertiesAreEdited() {
+   void shouldReturnTrueIfEditedVersionIsInTheMiddleOfToVersioningAndNoPropertiesAreEdited() {
     //given
     VersionableObject editedVersion = VersionableObject
         .builder()
@@ -595,7 +595,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnFalseIfEditedVersionIsOnTheLeftBorderOfToVersioningAndNoPropertiesAreEdited() {
+   void shouldReturnFalseIfEditedVersionIsOnTheLeftBorderOfToVersioningAndNoPropertiesAreEdited() {
     //given
     VersionableObject editedVersion = VersionableObject
         .builder()
@@ -625,7 +625,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnFalseIfEditedVersionIsOnTheRightBorderOfToVersioningAndNoPropertiesAreEdited() {
+   void shouldReturnFalseIfEditedVersionIsOnTheRightBorderOfToVersioningAndNoPropertiesAreEdited() {
     //given
     VersionableObject editedVersion = VersionableObject
         .builder()
@@ -655,7 +655,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnFalseIfEditedVersionIsOverTheRightANndTheLeftBorderOfToVersioningAndNoPropertiesAreEdited() {
+   void shouldReturnFalseIfEditedVersionIsOverTheRightANndTheLeftBorderOfToVersioningAndNoPropertiesAreEdited() {
     //given
     VersionableObject editedVersion = VersionableObject
         .builder()
@@ -685,7 +685,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnFalseIfEditedVersionIsInTheMiddleOfToVersioningAndPropertiesAreEdited() {
+   void shouldReturnFalseIfEditedVersionIsInTheMiddleOfToVersioningAndPropertiesAreEdited() {
     //given
     VersionableObject editedVersion = VersionableObject
         .builder()
@@ -717,7 +717,7 @@ public class VersioningHelperTest {
 
 
   @Test
-  public void shouldReturnTrueWhenValidFromAndValidToAreNotEdited() {
+   void shouldReturnTrueWhenValidFromAndValidToAreNotEdited() {
     //given
     VersionableObject edited = VersionableObject.builder().build();
     VersionableObject current = VersionableObject.builder()
@@ -732,7 +732,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnFalseWhenEditedValidFromIsEqualToCurrentValidFromAndValidToIsNotEdited() {
+   void shouldReturnFalseWhenEditedValidFromIsEqualToCurrentValidFromAndValidToIsNotEdited() {
     //given
     VersionableObject edited = VersionableObject.builder()
                                                 .validFrom(LocalDate.of(2000, 1, 1))
@@ -749,7 +749,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnFalseWhenValidFromIsNotEditedAndEditedValidToIsEqualToCurrentValidTo() {
+   void shouldReturnFalseWhenValidFromIsNotEditedAndEditedValidToIsEqualToCurrentValidTo() {
     //given
     VersionableObject edited = VersionableObject.builder()
                                                 .validTo(LocalDate.of(2000, 12, 31))
@@ -766,7 +766,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnTrueWhenCurrentAndEditedValidFrom_ValidToAreEquals() {
+   void shouldReturnTrueWhenCurrentAndEditedValidFrom_ValidToAreEquals() {
     //given
     VersionableObject edited = VersionableObject.builder()
                                                 .validFrom(LocalDate.of(2000, 1, 1))
@@ -784,7 +784,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnTrueWhenEditedVersionIsBetweenMultipleVersionsAndOverTheBorders() {
+   void shouldReturnTrueWhenEditedVersionIsBetweenMultipleVersionsAndOverTheBorders() {
     //given
     VersionableObject versionableObject1 = VersionableObject
         .builder()
@@ -821,7 +821,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnTrueWhenEditedVersionStartsOnVersionAndOverTheBorders() {
+   void shouldReturnTrueWhenEditedVersionStartsOnVersionAndOverTheBorders() {
     //given
     VersionableObject versionableObject1 = VersionableObject
         .builder()
@@ -858,7 +858,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnTrueWhenEditedVersionEndsOnVersionAndOverTheBorders() {
+   void shouldReturnTrueWhenEditedVersionEndsOnVersionAndOverTheBorders() {
     //given
     VersionableObject versionableObject1 = VersionableObject
         .builder()
@@ -895,7 +895,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnFalseWhenEditedVersionIsOverOneVersionAndOverTheBorders() {
+   void shouldReturnFalseWhenEditedVersionIsOverOneVersionAndOverTheBorders() {
     //given
     VersionableObject versionableObject1 = VersionableObject
         .builder()
@@ -916,7 +916,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnTrueWhenVersionIsOverTheLeftBorder() {
+   void shouldReturnTrueWhenVersionIsOverTheLeftBorder() {
     //given
     VersionableObject editedVersion = VersionableObject
         .builder()
@@ -947,7 +947,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnFalseWhenVersionIsOnTheLeftBorder() {
+   void shouldReturnFalseWhenVersionIsOnTheLeftBorder() {
     //given
     VersionableObject editedVersion = VersionableObject
         .builder()
@@ -978,7 +978,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnFalseWhenVersionIsNotOverTheLeftBorder() {
+   void shouldReturnFalseWhenVersionIsNotOverTheLeftBorder() {
     //given
     VersionableObject editedVersion = VersionableObject
         .builder()
@@ -1009,7 +1009,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnTrueWhenVersionIsOnOrOverTheRightBorder() {
+   void shouldReturnTrueWhenVersionIsOnOrOverTheRightBorder() {
     //given
     VersionableObject editedVersion = VersionableObject
         .builder()
@@ -1039,7 +1039,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnTrueWhenVersionIsOnBeginningOfVersionAndEndingWithin() {
+   void shouldReturnTrueWhenVersionIsOnBeginningOfVersionAndEndingWithin() {
     //given
     VersionableObject editedVersion = VersionableObject
         .builder()
@@ -1069,7 +1069,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnToVersioningObjectWhenEntityIsOnAGapBetweenTwoVersions() {
+   void shouldReturnToVersioningObjectWhenEntityIsOnAGapBetweenTwoVersions() {
     //given
     VersionableObject versionableObject1 = VersionableObject
         .builder()
@@ -1098,7 +1098,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnNullWhenEntityIsOverTheLeftGapBetweenTwoVersions() {
+   void shouldReturnNullWhenEntityIsOverTheLeftGapBetweenTwoVersions() {
     //given
     VersionableObject versionableObject1 = VersionableObject
         .builder()
@@ -1127,7 +1127,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnNullWhenEntityIsOverTheRightGapBetweenTwoVersions() {
+   void shouldReturnNullWhenEntityIsOverTheRightGapBetweenTwoVersions() {
     //given
     VersionableObject versionableObject1 = VersionableObject
         .builder()
@@ -1156,7 +1156,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnNullWhenEntityIsOverTheRightAndTheLeftGapBetweenTwoVersions() {
+   void shouldReturnNullWhenEntityIsOverTheRightAndTheLeftGapBetweenTwoVersions() {
     //given
     VersionableObject versionableObject1 = VersionableObject
         .builder()
@@ -1185,7 +1185,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnNullWhenThereIsNoGapBetweenTwoVersions() {
+   void shouldReturnNullWhenThereIsNoGapBetweenTwoVersions() {
     //given
     VersionableObject versionableObject1 = VersionableObject
         .builder()
@@ -1214,7 +1214,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnTrueWennIndexIsTheNextItemThatExists() {
+   void shouldReturnTrueWennIndexIsTheNextItemThatExists() {
     //given
     VersionableObject versionableObject1 = VersionableObject
         .builder()
@@ -1241,7 +1241,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnFalseWennIndexIsBiggerThenSizeOfTheList() {
+   void shouldReturnFalseWennIndexIsBiggerThenSizeOfTheList() {
     //given
     VersionableObject versionableObject1 = VersionableObject
         .builder()
@@ -1268,7 +1268,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnTrueWennOnlyValidToIsChanged() {
+   void shouldReturnTrueWennOnlyValidToIsChanged() {
     //given
     VersionableObject editedVersion = VersionableObject
         .builder()
@@ -1298,7 +1298,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnFalseWennEditedValidToAndEditedValidFromIsChanged() {
+   void shouldReturnFalseWennEditedValidToAndEditedValidFromIsChanged() {
     //given
     VersionableObject editedVersion = VersionableObject
         .builder()
@@ -1328,7 +1328,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnTrueWhenBothValidToAndValidFromChanged() {
+   void shouldReturnTrueWhenBothValidToAndValidFromChanged() {
     //given
     VersionableObject editedVersion = VersionableObject
         .builder()
@@ -1358,7 +1358,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnTrueWhenBothEditedValidToAndEditedValidFromChanged() {
+   void shouldReturnTrueWhenBothEditedValidToAndEditedValidFromChanged() {
     //given
     VersionableObject editedVersion = VersionableObject
         .builder()
@@ -1388,7 +1388,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnTrueWhenBothEditedValidToAndEditedValidAreNull() {
+   void shouldReturnTrueWhenBothEditedValidToAndEditedValidAreNull() {
     //given
     VersionableObject editedVersion = VersionableObject
         .builder()
@@ -1416,7 +1416,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnTrueEditedValidFromIsAfterCurrentValidFromAndBetweenCurrentValidTo() {
+   void shouldReturnTrueEditedValidFromIsAfterCurrentValidFromAndBetweenCurrentValidTo() {
     //given
     VersionableObject editedVersion = VersionableObject
         .builder()
@@ -1445,7 +1445,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnFalseWennEditedValidFromIsBeforeCurrentValidFrom() {
+   void shouldReturnFalseWennEditedValidFromIsBeforeCurrentValidFrom() {
     //given
     VersionableObject editedVersion = VersionableObject
         .builder()
@@ -1474,7 +1474,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnFalseWennEditedValidFromIsAfterCurrentValidTo() {
+   void shouldReturnFalseWennEditedValidFromIsAfterCurrentValidTo() {
     //given
     VersionableObject editedVersion = VersionableObject
         .builder()
@@ -1503,7 +1503,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnTrueWhenEditedValidFromIsEqualToCurrentValidFrom() {
+   void shouldReturnTrueWhenEditedValidFromIsEqualToCurrentValidFrom() {
     //given
     VersionableObject current = VersionableObject
         .builder()
@@ -1521,7 +1521,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnFalseWhenEditedValidFromIsBiggerThanCurrentValidFrom() {
+   void shouldReturnFalseWhenEditedValidFromIsBiggerThanCurrentValidFrom() {
     //given
     VersionableObject current = VersionableObject
         .builder()
@@ -1539,7 +1539,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnFalseWhenEditedValidFromIsSmallerThanCurrentValidFrom() {
+   void shouldReturnFalseWhenEditedValidFromIsSmallerThanCurrentValidFrom() {
     //given
     VersionableObject current = VersionableObject
         .builder()
@@ -1557,7 +1557,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnTrueWhenCurrentVersionIsBetweenEditedValidFromAndEditedValidTo() {
+   void shouldReturnTrueWhenCurrentVersionIsBetweenEditedValidFromAndEditedValidTo() {
     //given
     VersionableObject current = VersionableObject
         .builder()
@@ -1577,7 +1577,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnTrueWhenEditedValidFromIsOverTheLeftBorder() {
+   void shouldReturnTrueWhenEditedValidFromIsOverTheLeftBorder() {
     //given
     VersionableObject first = VersionableObject
         .builder()
@@ -1603,7 +1603,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnFalseWhenEditedValidFromIsNotOverTheLeftBorder() {
+   void shouldReturnFalseWhenEditedValidFromIsNotOverTheLeftBorder() {
     //given
     VersionableObject first = VersionableObject
         .builder()
@@ -1629,7 +1629,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldThrowVersioningExceptionWhenToVersioningListHasLessThenTwoItems() {
+   void shouldThrowVersioningExceptionWhenToVersioningListHasLessThenTwoItems() {
     //given
     VersionableObject first = VersionableObject
         .builder()
@@ -1652,7 +1652,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnTrueWhenEditedValidToIsOverTheRightBorder() {
+   void shouldReturnTrueWhenEditedValidToIsOverTheRightBorder() {
     //given
     VersionableObject first = VersionableObject
         .builder()
@@ -1678,7 +1678,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnFalseWhenEditedValidToIsNotOverTheRightBorder() {
+   void shouldReturnFalseWhenEditedValidToIsNotOverTheRightBorder() {
     //given
     VersionableObject first = VersionableObject
         .builder()
@@ -1704,7 +1704,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldThrowVersioningExceptionWhenToVersioningListHasLessThenTwoItemsToCheckTheRightBorder() {
+   void shouldThrowVersioningExceptionWhenToVersioningListHasLessThenTwoItemsToCheckTheRightBorder() {
     //given
     VersionableObject first = VersionableObject
         .builder()
@@ -1727,7 +1727,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnTrueWhenEditedValidToIsExactOnTheRightBorder() {
+   void shouldReturnTrueWhenEditedValidToIsExactOnTheRightBorder() {
     //given
     VersionableObject first = VersionableObject
         .builder()
@@ -1747,7 +1747,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnFalseWhenEditedValidToIsNotExactOnTheRightBorder() {
+   void shouldReturnFalseWhenEditedValidToIsNotExactOnTheRightBorder() {
     //given
     VersionableObject first = VersionableObject
         .builder()
@@ -1767,7 +1767,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnTrueWhenVersionsAreSequential() {
+   void shouldReturnTrueWhenVersionsAreSequential() {
     //given
     VersionableObject first = VersionableObject
         .builder()
@@ -1792,7 +1792,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnFalseWhenVersionsAreSequential() {
+   void shouldReturnFalseWhenVersionsAreSequential() {
     //given
     VersionableObject first = VersionableObject
         .builder()
@@ -1817,7 +1817,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldFoundObjectToVersioning() {
+   void shouldFoundObjectToVersioning() {
     //given
     VersionableObject first = VersionableObject
         .builder()
@@ -1852,7 +1852,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldNotFoundObjectToVersioning() {
+   void shouldNotFoundObjectToVersioning() {
     //given
     VersionableObject first = VersionableObject
         .builder()
@@ -1894,7 +1894,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnTrueOnNoPropertiesEditedAndOnlySingleVersion() {
+   void shouldReturnTrueOnNoPropertiesEditedAndOnlySingleVersion() {
     //given
     VersionableObject version = VersionableObject
         .builder()
@@ -1917,7 +1917,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnTrueWhenObjectToVersioningNotFound() {
+   void shouldReturnTrueWhenObjectToVersioningNotFound() {
     //given
     editedVersion.setValidFrom(LocalDate.of(2021, 1, 1));
     editedVersion.setValidTo(LocalDate.of(2021, 12, 31));
@@ -1932,7 +1932,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnFalseWhenObjectToVersioningFound() {
+   void shouldReturnFalseWhenObjectToVersioningFound() {
     //given
     VersioningData versioningData = new VersioningData(editedVersion, currentVersion, editedEntity,
         toVersioningList);
@@ -1947,7 +1947,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnTrueWhenJustOneObjectToVersioningFound() {
+   void shouldReturnTrueWhenJustOneObjectToVersioningFound() {
     //given
     VersioningData versioningData = new VersioningData(editedVersion, currentVersion, editedEntity,
         toVersioningList);
@@ -1962,7 +1962,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnFalseWhenNoObjectToVersioningFound() {
+   void shouldReturnFalseWhenNoObjectToVersioningFound() {
     //given
     editedVersion.setValidFrom(LocalDate.of(2021, 1, 1));
     editedVersion.setValidTo(LocalDate.of(2021, 12, 31));
@@ -1978,7 +1978,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnTrueWhenOnlyValidFromIsEdited() {
+   void shouldReturnTrueWhenOnlyValidFromIsEdited() {
     //given
     editedVersion.setValidFrom(LocalDate.of(2020, 1, 2));
     VersioningData versioningData = new VersioningData(editedVersion, currentVersion, editedEntity,
@@ -1992,7 +1992,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnTrueWhenValidFromIsEditedEndEditedValidToIsEqualTOCurrentValidTo() {
+   void shouldReturnTrueWhenValidFromIsEditedEndEditedValidToIsEqualTOCurrentValidTo() {
     //given
     editedVersion.setValidFrom(LocalDate.of(2020, 1, 2));
     editedVersion.setValidTo(currentVersion.getValidTo());
@@ -2007,7 +2007,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnTrueWhenOnlyValidToIsEdited() {
+   void shouldReturnTrueWhenOnlyValidToIsEdited() {
     //given
     editedVersion.setValidTo(LocalDate.of(2020, 1, 2));
     VersioningData versioningData = new VersioningData(editedVersion, currentVersion, editedEntity,
@@ -2021,7 +2021,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnTrueWhenValidToIsEditedEndEditedValidFromIsEqualToCurrentValidFrom() {
+   void shouldReturnTrueWhenValidToIsEditedEndEditedValidFromIsEqualToCurrentValidFrom() {
     //given
     editedVersion.setValidTo(LocalDate.of(2020, 1, 2));
     editedVersion.setValidFrom(currentVersion.getValidFrom());
@@ -2036,7 +2036,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnTrueWhenVersionIsFirstInList() {
+   void shouldReturnTrueWhenVersionIsFirstInList() {
     //given
     VersionableObject firstVersion = VersionableObject
         .builder()
@@ -2056,7 +2056,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnFalseWhenVersionIsLaterInList() {
+   void shouldReturnFalseWhenVersionIsLaterInList() {
     //given
     VersionableObject firstVersion = VersionableObject
         .builder()
@@ -2076,7 +2076,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnTrueWhenThereIsAtLeastOneNewEntity() {
+   void shouldReturnTrueWhenThereIsAtLeastOneNewEntity() {
     //given
     VersionedObject versionedObject1 =
         VersionedObject.builder()
@@ -2115,7 +2115,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnTrueWhenThereIsAPropertyChange() {
+   void shouldReturnTrueWhenThereIsAPropertyChange() {
     //given
     Entity entity1 = Entity.builder()
                            .id(2L)
@@ -2188,7 +2188,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnFalseWhenNoPropertyChange() {
+   void shouldReturnFalseWhenNoPropertyChange() {
     //given
     Entity entity1 = Entity.builder()
                            .id(2L)
@@ -2253,7 +2253,7 @@ public class VersioningHelperTest {
   }
 
   @Test
-  public void shouldReturnTrueWhenEditedVersionIsOverTheLeftAndTheRightBorder() {
+   void shouldReturnTrueWhenEditedVersionIsOverTheLeftAndTheRightBorder() {
     //given
     VersionableObject version = VersionableObject
         .builder()

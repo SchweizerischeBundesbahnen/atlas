@@ -1,5 +1,10 @@
 package ch.sbb.mail.service;
 
+import static java.lang.String.valueOf;
+import static java.util.Collections.singletonList;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import ch.sbb.atlas.kafka.model.mail.MailType;
 import ch.sbb.mail.exception.MailSendException;
@@ -9,21 +14,15 @@ import com.icegreen.greenmail.junit5.GreenMailExtension;
 import com.icegreen.greenmail.util.ServerSetupTest;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.RegisterExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static java.lang.String.valueOf;
-import static java.util.Collections.singletonList;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class EmailServiceIntegrationTest {
@@ -37,7 +36,7 @@ class EmailServiceIntegrationTest {
   private MailService mailService;
 
   @Test
-  public void shouldSendSimpleMail() throws MessagingException, IOException {
+   void shouldSendSimpleMail() throws MessagingException, IOException {
     //given
     MailNotification mail = createMail();
 
@@ -57,7 +56,7 @@ class EmailServiceIntegrationTest {
   }
 
   @Test
-  public void shouldThrowExceptionWhenSendSimpleEmailHasNotRecipientAddress() {
+   void shouldThrowExceptionWhenSendSimpleEmailHasNotRecipientAddress() {
     //given
     MailNotification mail = MailNotification.builder()
         .content("Ciao ragazzi")
@@ -73,7 +72,7 @@ class EmailServiceIntegrationTest {
   }
 
   @Test
-  public void shouldThrowExceptionWhenSendSimpleEmailHasNotWellFormedRecipientAddress() {
+   void shouldThrowExceptionWhenSendSimpleEmailHasNotWellFormedRecipientAddress() {
     //given
     MailNotification mail = MailNotification.builder()
         .content("Ciao ragazzi")
@@ -89,7 +88,7 @@ class EmailServiceIntegrationTest {
   }
 
   @Test
-  public void shouldSendEmailWithTUHtmlTemplate() throws MessagingException, IOException {
+   void shouldSendEmailWithTUHtmlTemplate() throws MessagingException, IOException {
     //given
 
     List<Map<String, Object>> templateProperties = new ArrayList<>();
@@ -132,7 +131,7 @@ class EmailServiceIntegrationTest {
   }
 
   @Test
-  public void shouldThrowExceptionWhenSendSimpleEmailHasNotWellFormedFromAddress() {
+   void shouldThrowExceptionWhenSendSimpleEmailHasNotWellFormedFromAddress() {
     //given
     MailNotification mail = MailNotification.builder()
         .content("Ciao ragazzi")
@@ -147,7 +146,7 @@ class EmailServiceIntegrationTest {
   }
 
   @Test
-  public void shouldThrowExceptionWhenSendEmailWithHtmlTemplateHasNotRecipientAddress() {
+   void shouldThrowExceptionWhenSendEmailWithHtmlTemplateHasNotRecipientAddress() {
     //given
     MailNotification mail = MailNotification.builder()
         .content("Ciao ragazzi")
@@ -163,7 +162,7 @@ class EmailServiceIntegrationTest {
   }
 
   @Test
-  public void shouldThrowExceptionWhenSendEmailWithHtmlTemplateHasNotWellFormedRecipientAddress() {
+   void shouldThrowExceptionWhenSendEmailWithHtmlTemplateHasNotWellFormedRecipientAddress() {
     //given
     MailNotification mail = MailNotification.builder()
         .content("Ciao ragazzi")
@@ -179,7 +178,7 @@ class EmailServiceIntegrationTest {
   }
 
   @Test
-  public void shouldThrowExceptionWhenSendEmailWithHtmlTemplateHasNotWellFormedFromAddress() {
+   void shouldThrowExceptionWhenSendEmailWithHtmlTemplateHasNotWellFormedFromAddress() {
     //given
     MailNotification mail = MailNotification.builder()
         .content("Ciao ragazzi")

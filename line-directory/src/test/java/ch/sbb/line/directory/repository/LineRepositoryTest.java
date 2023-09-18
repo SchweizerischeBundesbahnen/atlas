@@ -16,14 +16,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
 @Transactional
-public class LineRepositoryTest {
+ class LineRepositoryTest {
 
   private static final String SLNID = "slnid";
   private final LineVersionRepository lineVersionRepository;
   private final LineRepository lineRepository;
 
   @Autowired
-  public LineRepositoryTest(LineVersionRepository lineVersionRepository,
+   LineRepositoryTest(LineVersionRepository lineVersionRepository,
       LineRepository lineRepository) {
     this.lineVersionRepository = lineVersionRepository;
     this.lineRepository = lineRepository;
