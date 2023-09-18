@@ -37,7 +37,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 @IntegrationTest
 @AutoConfigureMockMvc(addFilters = false)
-public class ImportLoadingPointIntegrationTest {
+ class ImportLoadingPointIntegrationTest {
 
   @Autowired
   private JobLauncher jobLauncher;
@@ -56,7 +56,7 @@ public class ImportLoadingPointIntegrationTest {
   private MailProducerService mailProducerService;
 
   @Test
-  public void shouldExecuteImportLoadingPointJobDownloadingFileFromS3() throws Exception {
+   void shouldExecuteImportLoadingPointJobDownloadingFileFromS3() throws Exception {
     // given
     List<LoadingPointCsvModel> loadingPointCsvModels = new ArrayList<>();
     when(loadingPointService.getActualCsvModelsFromS3()).thenReturn(loadingPointCsvModels);

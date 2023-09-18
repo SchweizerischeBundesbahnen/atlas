@@ -10,12 +10,12 @@ import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-public class AtlasAnnotationProcessorTest {
+class AtlasAnnotationProcessorTest {
 
   private final AtlasAnnotationProcessor atlasAnnotationProcessor = new AtlasAnnotationProcessor();
 
   @Test
-  public void shouldThrowAtlasVersionableExceptionWhenTheObjectIsNull() {
+  void shouldThrowAtlasVersionableExceptionWhenTheObjectIsNull() {
 
     //when
     assertThatThrownBy(() -> {
@@ -28,7 +28,7 @@ public class AtlasAnnotationProcessorTest {
   }
 
   @Test
-  public void shouldThrowAtlasVersionableExceptionWhenObjectToVersioningDoesNotImplementVersioningInterface() {
+  void shouldThrowAtlasVersionableExceptionWhenObjectToVersioningDoesNotImplementVersioningInterface() {
     //given
     @AtlasVersionable
     class NonVersionable {
@@ -36,7 +36,7 @@ public class AtlasAnnotationProcessorTest {
       @AtlasVersionableProperty
       private String property;
 
-      public void setProperty(String property) {
+      void setProperty(String property) {
         this.property = property;
       }
     }
@@ -55,7 +55,7 @@ public class AtlasAnnotationProcessorTest {
   }
 
   @Test
-  public void shouldThrowAtlasVersionableExceptionWhenObjectIsNotAnnotatedWithAtlasVersionable() {
+  void shouldThrowAtlasVersionableExceptionWhenObjectIsNotAnnotatedWithAtlasVersionable() {
     //given
     class NonVersionable implements Versionable {
 
@@ -77,7 +77,7 @@ public class AtlasAnnotationProcessorTest {
         return null;
       }
 
-      public void setProperty(String property) {
+      void setProperty(String property) {
         this.property = property;
       }
 
@@ -111,7 +111,7 @@ public class AtlasAnnotationProcessorTest {
   }
 
   @Test
-  public void shouldThrowAtlasVersionableExceptionWhenObjectHasNoOnePropertyAnnotatedWithAtlasVersionableProperty() {
+  void shouldThrowAtlasVersionableExceptionWhenObjectHasNoOnePropertyAnnotatedWithAtlasVersionableProperty() {
     //given
     @AtlasVersionable
     class NonVersionable implements Versionable {
@@ -168,7 +168,7 @@ public class AtlasAnnotationProcessorTest {
   }
 
   @Test
-  public void shouldReturnVersionableProperties() {
+  void shouldReturnVersionableProperties() {
     //given
     @AtlasVersionable
     class NonVersionable implements Versionable {
@@ -191,7 +191,7 @@ public class AtlasAnnotationProcessorTest {
         return null;
       }
 
-      public void setProperty(String property) {
+      void setProperty(String property) {
         this.property = property;
       }
 
@@ -229,14 +229,14 @@ public class AtlasAnnotationProcessorTest {
   }
 
   @Test
-  public void shouldReturnVersionablePropertiesWithSuperclass() {
+  void shouldReturnVersionablePropertiesWithSuperclass() {
     //given
     class ParentVersionable {
 
       @AtlasVersionableProperty
       private String additionalProperty;
 
-      public void setAdditionalProperty(String additionalProperty) {
+      void setAdditionalProperty(String additionalProperty) {
         this.additionalProperty = additionalProperty;
       }
     }

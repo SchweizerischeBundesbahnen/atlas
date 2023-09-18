@@ -44,7 +44,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MvcResult;
 
-public class LoadingPointControllerApiTest extends BaseControllerApiTest {
+ class LoadingPointControllerApiTest extends BaseControllerApiTest {
 
   @MockBean
   private CrossValidationService crossValidationServiceMock;
@@ -57,7 +57,7 @@ public class LoadingPointControllerApiTest extends BaseControllerApiTest {
   private ServicePointVersion servicePointVersion;
 
   @Autowired
-  public LoadingPointControllerApiTest(LoadingPointVersionRepository repository, ServicePointVersionRepository servicePointVersionRepository,
+   LoadingPointControllerApiTest(LoadingPointVersionRepository repository, ServicePointVersionRepository servicePointVersionRepository,
       LoadingPointController loadingPointController) {
     this.repository = repository;
     this.servicePointVersionRepository = servicePointVersionRepository;

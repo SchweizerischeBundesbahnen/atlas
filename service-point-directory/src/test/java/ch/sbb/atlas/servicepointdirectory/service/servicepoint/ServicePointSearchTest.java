@@ -24,7 +24,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 @IntegrationTest
-public class ServicePointSearchTest {
+ class ServicePointSearchTest {
 
   private final ServicePointService servicePointService;
   private final ServicePointVersionRepository servicePointVersionRepository;
@@ -32,7 +32,7 @@ public class ServicePointSearchTest {
   private ServicePointVersion servicePointVersion;
 
   @Autowired
-  public ServicePointSearchTest(ServicePointService servicePointService,
+   ServicePointSearchTest(ServicePointService servicePointService,
       ServicePointVersionRepository servicePointVersionRepository) {
     this.servicePointService = servicePointService;
     this.servicePointVersionRepository = servicePointVersionRepository;

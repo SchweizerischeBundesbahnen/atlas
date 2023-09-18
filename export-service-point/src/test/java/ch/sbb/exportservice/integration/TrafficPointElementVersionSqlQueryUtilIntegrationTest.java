@@ -1,13 +1,13 @@
 package ch.sbb.exportservice.integration;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.exportservice.entity.TrafficPointElementVersion;
 import ch.sbb.exportservice.model.ExportType;
 import ch.sbb.exportservice.reader.TrafficPointElementVersionRowMapper;
 import ch.sbb.exportservice.reader.TrafficPointElementVersionSqlQueryUtil;
-import org.junit.jupiter.api.Test;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,13 +15,12 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-public class TrafficPointElementVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationTest {
+ class TrafficPointElementVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationTest {
 
   @Test
-  public void shouldReturnWorldFullWithServicePointAndBusinessOrganisation() throws SQLException {
+   void shouldReturnWorldFullWithServicePointAndBusinessOrganisation() throws SQLException {
     //given
     final int servicePointNumber = 1205887;
     insertServicePoint(servicePointNumber, LocalDate.of(2020, 1, 1), LocalDate.of(2099, 12, 31), Country.SWITZERLAND);
@@ -45,7 +44,7 @@ public class TrafficPointElementVersionSqlQueryUtilIntegrationTest extends BaseS
   }
 
   @Test
-  public void shouldReturnTimetableFuture() throws SQLException {
+   void shouldReturnTimetableFuture() throws SQLException {
     //given
     final LocalDate futureDate = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
     final int servicePointNumber = 1205887;
@@ -70,7 +69,7 @@ public class TrafficPointElementVersionSqlQueryUtilIntegrationTest extends BaseS
   }
 
   @Test
-  public void shouldReturnWorldActual() throws SQLException {
+   void shouldReturnWorldActual() throws SQLException {
     //given
     final int servicePointNumber = 1205887;
     final LocalDate now = LocalDate.now();

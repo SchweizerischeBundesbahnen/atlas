@@ -17,7 +17,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 
-public class BoDiSchedulerServiceTest {
+ class BoDiSchedulerServiceTest {
 
   private BoDiSchedulerService boDiSchedulerService;
 
@@ -25,13 +25,13 @@ public class BoDiSchedulerServiceTest {
   private BoDiClient boDiClient;
 
   @BeforeEach
-  public void setUp() {
+   void setUp() {
     MockitoAnnotations.openMocks(this);
     boDiSchedulerService = new BoDiSchedulerService(boDiClient);
   }
 
   @Test
-  public void shouldPostLoadCompaniesFromCRDSuccessfully() {
+   void shouldPostLoadCompaniesFromCRDSuccessfully() {
     //given
     Response response = Response.builder()
         .status(200)
@@ -51,7 +51,7 @@ public class BoDiSchedulerServiceTest {
   }
 
   @Test
-  public void shouldPostLoadCompaniesFromCRDUnsuccessful() {
+   void shouldPostLoadCompaniesFromCRDUnsuccessful() {
     //given
     Response response = Response.builder()
         .status(HttpStatus.BAD_REQUEST.value())
@@ -70,7 +70,7 @@ public class BoDiSchedulerServiceTest {
   }
 
   @Test
-  public void shouldPostLoadCompaniesFromBAVSuccessfully() {
+   void shouldPostLoadCompaniesFromBAVSuccessfully() {
     //given
     Response response = Response.builder()
         .status(200)
@@ -90,7 +90,7 @@ public class BoDiSchedulerServiceTest {
   }
 
   @Test
-  public void shouldPostLoadCompaniesFromBAVUnsuccessful() {
+   void shouldPostLoadCompaniesFromBAVUnsuccessful() {
     //given
     Response response = Response.builder()
         .status(HttpStatus.BAD_REQUEST.value())
@@ -108,7 +108,7 @@ public class BoDiSchedulerServiceTest {
   }
 
   @Test
-  public void shouldExportFullBusinessOrganisationVersionsSuccessfully() {
+   void shouldExportFullBusinessOrganisationVersionsSuccessfully() {
     //given
     Response response = Response.builder()
         .status(200)
@@ -128,7 +128,7 @@ public class BoDiSchedulerServiceTest {
   }
 
   @Test
-  public void shouldExportFullBusinessOrganisationVersionsUnsuccessful() {
+   void shouldExportFullBusinessOrganisationVersionsUnsuccessful() {
     //given
     Response response = Response.builder()
         .status(HttpStatus.BAD_REQUEST.value())
@@ -145,7 +145,7 @@ public class BoDiSchedulerServiceTest {
   }
 
   @Test
-  public void shouldExportActualBusinessOrganisationVersionsSuccessfully() {
+   void shouldExportActualBusinessOrganisationVersionsSuccessfully() {
     //given
     Response response = Response.builder()
         .status(200)
@@ -165,7 +165,7 @@ public class BoDiSchedulerServiceTest {
   }
 
   @Test
-  public void shouldExportActualBusinessOrganisationVersionsUnsuccessful() {
+   void shouldExportActualBusinessOrganisationVersionsUnsuccessful() {
     //given
     Response response = Response.builder()
         .status(HttpStatus.BAD_REQUEST.value())
@@ -182,7 +182,7 @@ public class BoDiSchedulerServiceTest {
   }
 
   @Test
-  public void shouldNextTimetableBusinessOrganisationVersionsSuccessfully() {
+   void shouldNextTimetableBusinessOrganisationVersionsSuccessfully() {
     //given
     Response response = Response.builder()
         .status(200)
@@ -202,7 +202,7 @@ public class BoDiSchedulerServiceTest {
   }
 
   @Test
-  public void shouldExportNextTimetableBusinessOrganisationVersionsUnsuccessful() {
+   void shouldExportNextTimetableBusinessOrganisationVersionsUnsuccessful() {
     //given
     Response response = Response.builder()
         .status(HttpStatus.BAD_REQUEST.value())

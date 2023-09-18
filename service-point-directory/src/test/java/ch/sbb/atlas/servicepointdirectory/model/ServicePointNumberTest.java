@@ -158,7 +158,7 @@ class ServicePointNumberTest {
   }
 
   @Test
-  public void shouldRemoveCheckDigit(){
+   void shouldRemoveCheckDigit(){
     //when
     Integer result = ServicePointNumber.removeCheckDigit(85070003);
     //then
@@ -166,7 +166,7 @@ class ServicePointNumberTest {
   }
 
   @Test
-  public void shouldReturnNumberWithoutCheckDigit(){
+   void shouldReturnNumberWithoutCheckDigit(){
     //when
     Integer result = ServicePointNumber.removeCheckDigit(8507000);
     //then

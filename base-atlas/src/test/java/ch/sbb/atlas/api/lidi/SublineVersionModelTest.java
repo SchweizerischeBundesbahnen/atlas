@@ -110,7 +110,7 @@ class SublineVersionModelTest {
   }
 
   @Test
-  public void shouldHaveDateValidationExceptionWhenValidFromIsBefore1700_1_1() {
+   void shouldHaveDateValidationExceptionWhenValidFromIsBefore1700_1_1() {
     //given
     SublineVersionModel lineVersion = sublineVersionModel()
         .validFrom(LocalDate.of(1699, 12, 31))
@@ -127,7 +127,7 @@ class SublineVersionModelTest {
   }
 
   @Test
-  public void shouldHaveDateValidationExceptionWhenValidFromIsAfter9999_12_31() {
+   void shouldHaveDateValidationExceptionWhenValidFromIsAfter9999_12_31() {
     //given
     SublineVersionModel lineVersion = sublineVersionModel()
         .validFrom(LocalDate.of(10000, 1, 1))
@@ -148,7 +148,7 @@ class SublineVersionModelTest {
   }
 
   @Test
-  public void shouldHaveDateValidationExceptionWhenValidToIsBefore1700_1_1() {
+   void shouldHaveDateValidationExceptionWhenValidToIsBefore1700_1_1() {
     //given
     SublineVersionModel lineVersion = sublineVersionModel()
         .validTo(LocalDate.of(1699, 12, 31))
@@ -169,7 +169,7 @@ class SublineVersionModelTest {
   }
 
   @Test
-  public void shouldHaveDateValidationExceptionWhenValidToIsAfter9999_12_31() {
+   void shouldHaveDateValidationExceptionWhenValidToIsAfter9999_12_31() {
     //given
     SublineVersionModel lineVersion = sublineVersionModel()
         .validTo(LocalDate.of(10000, 1, 1))

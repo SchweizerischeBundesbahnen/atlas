@@ -1,5 +1,11 @@
 package ch.sbb.atlas.servicepointdirectory.service.loadingpoint;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
@@ -9,6 +15,9 @@ import ch.sbb.atlas.servicepointdirectory.model.search.LoadingPointSearchRestric
 import ch.sbb.atlas.servicepointdirectory.repository.LoadingPointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.CrossValidationService;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -16,17 +25,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
-
 @IntegrationTest
 @Transactional
-public class LoadingPointServiceTest {
+ class LoadingPointServiceTest {
 
   private final ServicePointVersionRepository servicePointVersionRepository;
 
@@ -38,7 +39,7 @@ public class LoadingPointServiceTest {
   private CrossValidationService crossValidationServiceMock;
 
   @Autowired
-  public LoadingPointServiceTest(ServicePointVersionRepository servicePointVersionRepository,
+   LoadingPointServiceTest(ServicePointVersionRepository servicePointVersionRepository,
       LoadingPointVersionRepository loadingPointVersionRepository,
       LoadingPointService loadingPointService) {
     this.servicePointVersionRepository = servicePointVersionRepository;
@@ -70,7 +71,7 @@ public class LoadingPointServiceTest {
   }
 
   @Test
-  public void shouldGetLoadingPointByNumber() {
+   void shouldGetLoadingPointByNumber() {
     //given
     ServicePointVersion servicePointVersion = servicePointVersionRepository.save(ServicePointTestData.getBernWyleregg());
     int loadingPointNumber = 77777;
@@ -103,7 +104,7 @@ public class LoadingPointServiceTest {
   }
 
   @Test
-  public void shouldNotGetLoadingPointByNumber() {
+   void shouldNotGetLoadingPointByNumber() {
     //given
     ServicePointVersion servicePointVersion = servicePointVersionRepository.save(ServicePointTestData.getBernWyleregg());
     int loadingPointNumber = 77777;
@@ -135,7 +136,7 @@ public class LoadingPointServiceTest {
   }
 
   @Test
-  public void shouldGetLoadingPointByNumbers() {
+   void shouldGetLoadingPointByNumbers() {
     //given
     ServicePointVersion servicePointVersion = servicePointVersionRepository.save(ServicePointTestData.getBernWyleregg());
     int loadingPointNumber1 = 77777;
@@ -192,7 +193,7 @@ public class LoadingPointServiceTest {
   }
 
   @Test
-  public void shouldGetLoadingPointByServicePointSloid() {
+   void shouldGetLoadingPointByServicePointSloid() {
     //given
     ServicePointVersion servicePointVersion = servicePointVersionRepository.save(ServicePointTestData.getBernWyleregg());
     int loadingPointNumber1 = 77777;
@@ -237,7 +238,7 @@ public class LoadingPointServiceTest {
   }
 
   @Test
-  public void shouldNotGetLoadingPointByServicePointSloid() {
+   void shouldNotGetLoadingPointByServicePointSloid() {
     //given
     ServicePointVersion servicePointVersion = servicePointVersionRepository.save(ServicePointTestData.getBernWyleregg());
     int loadingPointNumber1 = 77777;
@@ -268,7 +269,7 @@ public class LoadingPointServiceTest {
   }
 
   @Test
-  public void shouldGetLoadingPointByServicePointSloids() {
+   void shouldGetLoadingPointByServicePointSloids() {
     //given
     ServicePointVersion servicePointVersion = servicePointVersionRepository.save(ServicePointTestData.getBernWyleregg());
     int loadingPointNumber1 = 77777;
@@ -332,7 +333,7 @@ public class LoadingPointServiceTest {
   }
 
   @Test
-  public void shouldGetLoadingPointByServicePointUicCountryCode() {
+   void shouldGetLoadingPointByServicePointUicCountryCode() {
     //given
     ServicePointVersion servicePointVersion = servicePointVersionRepository.save(ServicePointTestData.getBernWyleregg());
     int loadingPointNumber1 = 77777;
@@ -378,7 +379,7 @@ public class LoadingPointServiceTest {
   }
 
   @Test
-  public void shouldGetLoadingPointByServicePointUicCountryCodes() {
+   void shouldGetLoadingPointByServicePointUicCountryCodes() {
     //given
     ServicePointVersion servicePointVersion = servicePointVersionRepository.save(ServicePointTestData.getBernWyleregg());
     int loadingPointNumber1 = 77777;
@@ -427,7 +428,7 @@ public class LoadingPointServiceTest {
   }
 
   @Test
-  public void shouldNotGetLoadingPointByServicePointUicCountryCode() {
+   void shouldNotGetLoadingPointByServicePointUicCountryCode() {
     //given
     ServicePointVersion servicePointVersion = servicePointVersionRepository.save(ServicePointTestData.getBernWyleregg());
     int loadingPointNumber1 = 77777;
@@ -459,7 +460,7 @@ public class LoadingPointServiceTest {
   }
 
   @Test
-  public void shouldGetLoadingPointByServicePointNumberShort() {
+   void shouldGetLoadingPointByServicePointNumberShort() {
     //given
     ServicePointVersion servicePointVersion = servicePointVersionRepository.save(ServicePointTestData.getBernWyleregg());
     int loadingPointNumber1 = 77777;
@@ -505,7 +506,7 @@ public class LoadingPointServiceTest {
   }
 
   @Test
-  public void shouldNotGetLoadingPointByServicePointNumberShort() {
+   void shouldNotGetLoadingPointByServicePointNumberShort() {
     //given
     ServicePointVersion servicePointVersion = servicePointVersionRepository.save(ServicePointTestData.getBernWyleregg());
     int loadingPointNumber1 = 77777;
@@ -536,7 +537,7 @@ public class LoadingPointServiceTest {
   }
 
   @Test
-  public void shouldGetLoadingPointByServicePointNumberShorts() {
+   void shouldGetLoadingPointByServicePointNumberShorts() {
     //given
     ServicePointVersion servicePointVersion = servicePointVersionRepository.save(ServicePointTestData.getBernWyleregg());
     int loadingPointNumber1 = 77777;
@@ -600,7 +601,7 @@ public class LoadingPointServiceTest {
   }
 
   @Test
-  public void shouldGetLoadingPointByServicePointNumber() {
+   void shouldGetLoadingPointByServicePointNumber() {
     //given
     ServicePointVersion servicePointVersion = servicePointVersionRepository.save(ServicePointTestData.getBernWyleregg());
     int loadingPointNumber1 = 77777;
@@ -646,7 +647,7 @@ public class LoadingPointServiceTest {
   }
 
   @Test
-  public void shouldNotGetLoadingPointByServicePointNumber() {
+   void shouldNotGetLoadingPointByServicePointNumber() {
     //given
     ServicePointVersion servicePointVersion = servicePointVersionRepository.save(ServicePointTestData.getBernWyleregg());
     int loadingPointNumber1 = 77777;
@@ -677,7 +678,7 @@ public class LoadingPointServiceTest {
   }
 
   @Test
-  public void shouldGetLoadingPointByServicePointNumbers() {
+   void shouldGetLoadingPointByServicePointNumbers() {
     //given
     ServicePointVersion servicePointVersion = servicePointVersionRepository.save(ServicePointTestData.getBernWyleregg());
     int loadingPointNumber1 = 77777;
@@ -741,7 +742,7 @@ public class LoadingPointServiceTest {
   }
 
   @Test
-  public void shouldGetLoadingPointBySboid() {
+   void shouldGetLoadingPointBySboid() {
     //given
     ServicePointVersion servicePointVersion = servicePointVersionRepository.save(ServicePointTestData.getBernWyleregg());
     int loadingPointNumber1 = 77777;
@@ -788,7 +789,7 @@ public class LoadingPointServiceTest {
   }
 
   @Test
-  public void shouldGetLoadingPointBySboids() {
+   void shouldGetLoadingPointBySboids() {
     //given
     ServicePointVersion servicePointVersion = servicePointVersionRepository.save(ServicePointTestData.getBernWyleregg());
     int loadingPointNumber1 = 77777;
@@ -849,7 +850,7 @@ public class LoadingPointServiceTest {
   }
 
   @Test
-  public void shouldGetLoadingPointByValidFrom() {
+   void shouldGetLoadingPointByValidFrom() {
     //given
     ServicePointVersion servicePointVersion = servicePointVersionRepository.save(ServicePointTestData.getBernWyleregg());
     int loadingPointNumber1 = 77777;
@@ -911,7 +912,7 @@ public class LoadingPointServiceTest {
   }
 
   @Test
-  public void shouldGetLoadingPointByValidTo() {
+   void shouldGetLoadingPointByValidTo() {
     //given
     ServicePointVersion servicePointVersion = servicePointVersionRepository.save(ServicePointTestData.getBernWyleregg());
     int loadingPointNumber1 = 77777;
@@ -973,7 +974,7 @@ public class LoadingPointServiceTest {
   }
 
   @Test
-  public void shouldGetLoadingPointByValidOn() {
+   void shouldGetLoadingPointByValidOn() {
     //given
     ServicePointVersion servicePointVersion = servicePointVersionRepository.save(ServicePointTestData.getBernWyleregg());
     int loadingPointNumber1 = 77777;
@@ -1035,7 +1036,7 @@ public class LoadingPointServiceTest {
   }
 
   @Test
-  public void shouldGetLoadingPointByCreateAt() {
+   void shouldGetLoadingPointByCreateAt() {
     //given
     ServicePointVersion servicePointVersion = servicePointVersionRepository.save(ServicePointTestData.getBernWyleregg());
     int loadingPointNumber1 = 77777;
@@ -1100,7 +1101,7 @@ public class LoadingPointServiceTest {
   }
 
   @Test
-  public void shouldGetLoadingPointByModifiedAt() {
+   void shouldGetLoadingPointByModifiedAt() {
     //given
     ServicePointVersion servicePointVersion = servicePointVersionRepository.save(ServicePointTestData.getBernWyleregg());
     int loadingPointNumber1 = 77777;
@@ -1165,7 +1166,7 @@ public class LoadingPointServiceTest {
   }
 
   @Test
-  public void shouldGetLoadingPointByMultipleFilter() {
+   void shouldGetLoadingPointByMultipleFilter() {
     //given
     ServicePointVersion servicePointVersion = servicePointVersionRepository.save(ServicePointTestData.getBernWyleregg());
     int loadingPointNumber1 = 77777;
