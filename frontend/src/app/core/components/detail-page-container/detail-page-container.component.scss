@@ -10,3 +10,7 @@
   min-height: calc(100vh - #{variables.$footerHeight} - #{variables.$headerHeight});
   width: variables.$detailPageWidth;
 }
+
+.disable-horizontal-scroll {
+  overflow-x: clip;
+}
