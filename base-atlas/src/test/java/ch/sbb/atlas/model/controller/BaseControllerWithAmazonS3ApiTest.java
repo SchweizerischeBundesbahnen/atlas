@@ -2,11 +2,10 @@ package ch.sbb.atlas.model.controller;
 
 import ch.sbb.atlas.amazon.service.AmazonBucket;
 import ch.sbb.atlas.amazon.service.AmazonService;
-import org.springframework.test.web.servlet.MvcResult;
-
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.List;
+import org.springframework.test.web.servlet.MvcResult;
 
 public abstract class BaseControllerWithAmazonS3ApiTest extends BaseControllerApiTest {
 

@@ -15,7 +15,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.thymeleaf.TemplateEngine;
 
-public class MailContentBuilderTest {
+ class MailContentBuilderTest {
 
   @Mock
   private TemplateEngine templateEngine;
@@ -23,14 +23,14 @@ public class MailContentBuilderTest {
   private MailContentBuilder mailContentBuilder;
 
   @BeforeEach
-  public void setUp() {
+   void setUp() {
     MockitoAnnotations.openMocks(this);
     mailContentBuilder = new MailContentBuilder(templateEngine);
     mailContentBuilder.setActiveProfile("dev");
   }
 
   @Test
-  public void shouldReturnToFromMailTemplateConfig() {
+   void shouldReturnToFromMailTemplateConfig() {
     //given
     MailNotification mailNotification = MailNotification.builder().build();
 
@@ -43,7 +43,7 @@ public class MailContentBuilderTest {
   }
 
   @Test
-  public void shouldReturnToFromMailNotification() {
+   void shouldReturnToFromMailNotification() {
     //given
     MailNotification mailNotification =
         MailNotification.builder()
@@ -60,7 +60,7 @@ public class MailContentBuilderTest {
   }
 
   @Test
-  public void shouldThrowExceptionWhenToFromMailNotificationAndMailTemplateCofigIsNull() {
+   void shouldThrowExceptionWhenToFromMailNotificationAndMailTemplateCofigIsNull() {
     //given
     MailNotification mailNotification =
         MailNotification.builder()
@@ -73,7 +73,7 @@ public class MailContentBuilderTest {
   }
 
   @Test
-  public void shouldGetSubjectFromMailNotification(){
+   void shouldGetSubjectFromMailNotification(){
     //given
     MailNotification mailNotification =
         MailNotification.builder()
@@ -90,7 +90,7 @@ public class MailContentBuilderTest {
   }
 
   @Test
-  public void shouldGetSubjectForProdFromMailNotification(){
+   void shouldGetSubjectForProdFromMailNotification(){
     //given
     mailContentBuilder.setActiveProfile("prod");
     MailNotification mailNotification =
@@ -108,7 +108,7 @@ public class MailContentBuilderTest {
   }
 
   @Test
-  public void shouldGetSubjectFromMailTemplateConfig(){
+   void shouldGetSubjectFromMailTemplateConfig(){
     //given
     MailNotification mailNotification =
         MailNotification.builder()
@@ -125,7 +125,7 @@ public class MailContentBuilderTest {
   }
 
   @Test
-  public void shouldThrowExceptionWhenNoSubjectIsDefined(){
+   void shouldThrowExceptionWhenNoSubjectIsDefined(){
     //given
     MailNotification mailNotification =
         MailNotification.builder()
@@ -139,7 +139,7 @@ public class MailContentBuilderTest {
 
   }
   @Test
-  public void shouldGetFromFromMailNotification(){
+   void shouldGetFromFromMailNotification(){
     //given
     MailNotification mailNotification =
         MailNotification.builder()
@@ -156,7 +156,7 @@ public class MailContentBuilderTest {
   }
 
   @Test
-  public void shouldGetFromFromMailTemplateConfig(){
+   void shouldGetFromFromMailTemplateConfig(){
     //given
     MailNotification mailNotification =
         MailNotification.builder()

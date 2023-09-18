@@ -35,7 +35,7 @@ public class VersioningDataTest {
   private final List<ToVersioning> toVersioningList = new ArrayList<>(List.of(toVersioningCurrent));
 
   @Test
-  public void shouldReturnJustOneObjectToVersioningFound() {
+   void shouldReturnJustOneObjectToVersioningFound() {
     //given
     VersioningData versioningData = new VersioningData(editedVersion, currentVersion, editedEntity,
         toVersioningList);
@@ -48,7 +48,7 @@ public class VersioningDataTest {
   }
 
   @Test
-  public void shouldReturnNullWhenNoObjectToVersioningFound() {
+   void shouldReturnNullWhenNoObjectToVersioningFound() {
     //given
     editedVersion.setValidFrom(LocalDate.of(2021, 1, 1));
     editedVersion.setValidTo(LocalDate.of(2021, 12, 31));
@@ -65,7 +65,7 @@ public class VersioningDataTest {
   }
 
   @Test
-  public void shouldThrowDateValidationExceptionWhenValidFromIsBiggerThanValidTo() {
+   void shouldThrowDateValidationExceptionWhenValidFromIsBiggerThanValidTo() {
     //given
     editedVersion.setValidFrom(LocalDate.of(2020, 1, 2));
     editedVersion.setValidTo(LocalDate.of(2019, 1, 2));
@@ -81,7 +81,7 @@ public class VersioningDataTest {
   }
 
   @Test
-  public void shouldThrowDateValidationExceptionWhenValidFromIsBefore1700_01_01() {
+   void shouldThrowDateValidationExceptionWhenValidFromIsBefore1700_01_01() {
     //given
     editedVersion.setValidFrom(LocalDate.of(1699, 12, 31));
     editedVersion.setValidTo(LocalDate.of(2019, 1, 2));
@@ -97,7 +97,7 @@ public class VersioningDataTest {
   }
 
   @Test
-  public void shouldThrowDateValidationExceptionWhenValidToIsAfter2099_12_31() {
+   void shouldThrowDateValidationExceptionWhenValidToIsAfter2099_12_31() {
     //given
     editedVersion.setValidFrom(LocalDate.of(1699, 12, 31));
     editedVersion.setValidTo(LocalDate.of(2019, 1, 2));

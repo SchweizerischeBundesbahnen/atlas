@@ -1,25 +1,24 @@
 package ch.sbb.atlas.servicepointdirectory.repository;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
+import java.time.LocalDate;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 @IntegrationTest
 @Transactional
-public class LoadingPointVersionRepositoryTest {
+ class LoadingPointVersionRepositoryTest {
 
   private final LoadingPointVersionRepository loadingPointVersionRepository;
 
   @Autowired
-  public LoadingPointVersionRepositoryTest(LoadingPointVersionRepository loadingPointVersionRepository) {
+   LoadingPointVersionRepositoryTest(LoadingPointVersionRepository loadingPointVersionRepository) {
     this.loadingPointVersionRepository = loadingPointVersionRepository;
   }
 

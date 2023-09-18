@@ -28,7 +28,7 @@ public class VersionableMergeScenarioTest extends MergeBaseTest {
   protected MergeVersionableObject versionableObject4;
 
   @BeforeEach
-  public void init() {
+   void init() {
     versionableObject1 = MergeVersionableObject
         .builder()
         .id(1L)
@@ -82,7 +82,7 @@ public class VersionableMergeScenarioTest extends MergeBaseTest {
    * Änderung:  name=SBB1       name=SBB2        name=SBB4
    */
   @Test
-  public void scenarioMergeTwoVersions() {
+   void scenarioMergeTwoVersions() {
     //given
 
     MergeVersionableObject editedVersion = MergeVersionableObject.builder()
@@ -158,7 +158,7 @@ public class VersionableMergeScenarioTest extends MergeBaseTest {
    * Änderung:            name=Ciao1
    */
   @Test
-  public void scenarioMergeAllVersions() {
+   void scenarioMergeAllVersions() {
     //given
     versionableObject3.setProperty("Ciao1");
     versionableObject3.setAnotherProperty("prop1");
@@ -229,7 +229,7 @@ public class VersionableMergeScenarioTest extends MergeBaseTest {
    * Änderung:            name=Ciao1                          name=Ciao4
    */
   @Test
-  public void scenarioMergeThroughMultipleVersions() {
+   void scenarioMergeThroughMultipleVersions() {
 
     MergeVersionableObject versionableObject5 = MergeVersionableObject
         .builder()
@@ -343,7 +343,7 @@ public class VersionableMergeScenarioTest extends MergeBaseTest {
    * Änderung:            name=Ciao1                 name=Ciao1  name=Ciao5
    */
   @Test
-  public void scenarioMergeThroughMultipleVersionsWithInterruption() {
+   void scenarioMergeThroughMultipleVersionsWithInterruption() {
 
     MergeVersionableObject versionableObject5 = MergeVersionableObject
         .builder()
@@ -477,7 +477,7 @@ public class VersionableMergeScenarioTest extends MergeBaseTest {
    * Ergebnis: Versionen werden gemerged
    */
   @Test
-  public void scenarioMergeWithIgnoredProperty() {
+   void scenarioMergeWithIgnoredProperty() {
     //given
     LocalDate editedValidFrom = LocalDate.of(2020, 1, 1);
     LocalDate editedValidTo = LocalDate.of(2023, 12, 31);
@@ -545,7 +545,7 @@ public class VersionableMergeScenarioTest extends MergeBaseTest {
    * Ergebnis: Versionen werden gemerged
    */
   @Test
-  public void scenarioUpdateInDerMitteUndMerge() {
+   void scenarioUpdateInDerMitteUndMerge() {
     //given
     LocalDate editedValidFrom = LocalDate.of(2021, 6, 1);
     LocalDate editedValidTo = LocalDate.of(2023, 6, 1);

@@ -25,7 +25,7 @@ import org.springframework.test.context.ActiveProfiles;
 @SpringBootTest
 @WithMockJwtAuthentication(sbbuid = "u236171")
 //@ActiveProfiles("prod")
-public class LineSublineCoverageCorrectionTest {
+ class LineSublineCoverageCorrectionTest {
 
 //  static {
 //    System.setProperty("DB_USER", "");

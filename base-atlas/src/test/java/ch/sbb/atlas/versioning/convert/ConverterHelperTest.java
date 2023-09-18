@@ -19,9 +19,9 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class ConverterHelperTest extends BaseTest {
+class ConverterHelperTest extends BaseTest {
 
-  public static List<VersionableProperty> VERSIONABLE = new ArrayList<>();
+   static List<VersionableProperty> VERSIONABLE = new ArrayList<>();
 
   static {
     VERSIONABLE.add(VersionableProperty.builder()
@@ -47,7 +47,7 @@ public class ConverterHelperTest extends BaseTest {
   private Relation relation;
 
   @BeforeEach
-  public void init() {
+   void init() {
     relation = Relation.builder().id(1L).value("value1").build();
     versionableObject1 = VersionableObject
         .builder()
@@ -68,7 +68,7 @@ public class ConverterHelperTest extends BaseTest {
   }
 
   @Test
-  public void shouldConvertToEditedEntity() {
+   void shouldConvertToEditedEntity() {
     //given
     VersionableObject current = VersionableObject
         .builder()
@@ -124,7 +124,7 @@ public class ConverterHelperTest extends BaseTest {
   }
 
   @Test
-  public void shouldReturnConvertedEntityWithEmptyPropertiesWhenCurrentAndEditedPropertiesAreEquals() {
+   void shouldReturnConvertedEntityWithEmptyPropertiesWhenCurrentAndEditedPropertiesAreEquals() {
 
     //when
     Entity result = ConverterHelper.convertToEditedEntity(false, versionableObject1, versionableObject1,
@@ -139,7 +139,7 @@ public class ConverterHelperTest extends BaseTest {
   }
 
   @Test
-  public void shouldContainsNullPropertyWhenDeletePropertyWhenNull() {
+   void shouldContainsNullPropertyWhenDeletePropertyWhenNull() {
     //given
     VersionableObject versionableObject1 = VersionableObject
         .builder()
@@ -181,7 +181,7 @@ public class ConverterHelperTest extends BaseTest {
   }
 
   @Test
-  public void shouldContainsNullPropertyWhenDeletePropertyWhenNullAndDoNotOverrideProperty() {
+   void shouldContainsNullPropertyWhenDeletePropertyWhenNullAndDoNotOverrideProperty() {
     //given
     List<VersionableProperty> versionableProperties = new ArrayList<>();
 
@@ -243,7 +243,7 @@ public class ConverterHelperTest extends BaseTest {
   }
 
   @Test
-  public void shouldNotContainsNullPropertyWhenNotDeletePropertyWhenNull() {
+   void shouldNotContainsNullPropertyWhenNotDeletePropertyWhenNull() {
     //given
     VersionableObject versionableObject1 = VersionableObject
         .builder()
@@ -279,7 +279,7 @@ public class ConverterHelperTest extends BaseTest {
   }
 
   @Test
-  public void shouldConvertAllObjectsToVersioning() {
+   void shouldConvertAllObjectsToVersioning() {
     //given
 
     //when
@@ -388,7 +388,7 @@ public class ConverterHelperTest extends BaseTest {
   }
 
   @Test
-  public void shouldConvertEntityOneToOneRelation() {
+   void shouldConvertEntityOneToOneRelation() {
     //given
 
     //when
@@ -413,7 +413,7 @@ public class ConverterHelperTest extends BaseTest {
   }
 
   @Test
-  public void shouldThrowExceptionWhenTryToUsePropertyNotDefinedAsVersionable() {
+   void shouldThrowExceptionWhenTryToUsePropertyNotDefinedAsVersionable() {
     //given
     List<VersionableProperty> versionable = new ArrayList<>();
 
@@ -433,7 +433,7 @@ public class ConverterHelperTest extends BaseTest {
   }
 
   @Test
-  public void shouldThrowExceptionWhenTryToUsePropertyOnOneToManyRelationNotDefinedAsVersionable() {
+   void shouldThrowExceptionWhenTryToUsePropertyOnOneToManyRelationNotDefinedAsVersionable() {
     //given
     List<VersionableProperty> versionable = new ArrayList<>();
 

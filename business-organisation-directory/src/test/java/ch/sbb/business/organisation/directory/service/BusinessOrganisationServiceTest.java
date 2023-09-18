@@ -19,7 +19,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-public class BusinessOrganisationServiceTest {
+ class BusinessOrganisationServiceTest {
 
   private BusinessOrganisationService service;
 
@@ -45,7 +45,7 @@ public class BusinessOrganisationServiceTest {
   }
 
   @Test
-  public void shouldDeleteById() {
+   void shouldDeleteById() {
     //given
     BusinessOrganisationVersion version = new BusinessOrganisationVersion();
 
@@ -56,7 +56,7 @@ public class BusinessOrganisationServiceTest {
   }
 
   @Test
-  public void shouldDeleteByList() {
+   void shouldDeleteByList() {
     //given
     BusinessOrganisationVersion version = new BusinessOrganisationVersion();
 
@@ -67,7 +67,7 @@ public class BusinessOrganisationServiceTest {
   }
 
   @Test
-  public void shouldThrowStaleExceptionOnDifferentVersion() {
+   void shouldThrowStaleExceptionOnDifferentVersion() {
     //given
     BusinessOrganisationVersionBuilder<?, ?> version = BusinessOrganisationVersion.builder()
                                                                                   .sboid(

@@ -40,7 +40,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 @IntegrationTest
 @AutoConfigureMockMvc(addFilters = false)
-public class ImportServicePointIntegrationTest {
+ class ImportServicePointIntegrationTest {
 
   @Autowired
   private JobLauncher jobLauncher;
@@ -62,7 +62,7 @@ public class ImportServicePointIntegrationTest {
   private MailProducerService mailProducerService;
 
   @Test
-  public void shouldExecuteImportServicePointJobDownloadingFileFromS3() throws Exception {
+   void shouldExecuteImportServicePointJobDownloadingFileFromS3() throws Exception {
     // given
     List<ServicePointCsvModel> servicePointCsvModels = ServicePointTestData
         .getDefaultServicePointCsvModels(85070005);
@@ -91,7 +91,7 @@ public class ImportServicePointIntegrationTest {
   }
 
   @Test
-  public void shouldExecuteImportServicePointJobFromGivenFile() throws Exception {
+   void shouldExecuteImportServicePointJobFromGivenFile() throws Exception {
     // given
     File file = new File(this.getClass().getClassLoader().getResource("DIENSTSTELLEN_V3_IMPORT.csv").getFile());
     when(fileHelperService.downloadImportFileFromS3("DIDOK3_DIENSTSTELLEN_ALL_V_3_")).thenReturn(file);

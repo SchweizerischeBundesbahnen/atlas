@@ -2,12 +2,12 @@ package ch.sbb.line.directory.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.entity.LineVersion;
-import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.line.directory.entity.LineVersion.LineVersionBuilder;
 import ch.sbb.line.directory.repository.LineVersionRepository;
 import java.time.LocalDate;
@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
 @Transactional
-public class LineServiceStatusDecisionTest {
+ class LineServiceStatusDecisionTest {
 
   private static final String SLNID = "ch:1:slnid:100000";
 
@@ -36,7 +36,7 @@ public class LineServiceStatusDecisionTest {
   private LineVersion version3;
 
   @Autowired
-  public LineServiceStatusDecisionTest(
+   LineServiceStatusDecisionTest(
       LineVersionRepository lineVersionRepository,
       LineService lineService) {
     this.lineVersionRepository = lineVersionRepository;
@@ -86,7 +86,7 @@ public class LineServiceStatusDecisionTest {
   }
 
   @Test
-  public void newlyCreatedOrderlyVersionShouldRequireWorkflow() {
+   void newlyCreatedOrderlyVersionShouldRequireWorkflow() {
     //given
     LineVersion lineVersion = version1;
     lineVersion.setLineType(LineType.ORDERLY);
@@ -106,7 +106,7 @@ public class LineServiceStatusDecisionTest {
   }
 
   @Test
-  public void newlyCreatedOperationalVersionShouldNotRequireWorkflow() {
+   void newlyCreatedOperationalVersionShouldNotRequireWorkflow() {
     //given
     LineVersion lineVersion = version1;
     lineVersion.setLineType(LineType.OPERATIONAL);
@@ -126,7 +126,7 @@ public class LineServiceStatusDecisionTest {
   }
 
   @Test
-  public void updateCreatingNewFeatureVersionAndReupdateShouldStayAsDraft() {
+   void updateCreatingNewFeatureVersionAndReupdateShouldStayAsDraft() {
     //given
     version1 = lineVersionRepository.save(version1);
     LineVersion editedVersion = version1Builder().build();
@@ -183,7 +183,7 @@ public class LineServiceStatusDecisionTest {
    *  - Worflow auf 2 nötig, da Name neu und noch nie genehmigt.
    */
   @Test
-  public void updateCreatingNewFeatureVersion() {
+   void updateCreatingNewFeatureVersion() {
     //given
     version1 = lineVersionRepository.save(version1);
     LineVersion editedVersion = version1Builder().build();
@@ -227,7 +227,7 @@ public class LineServiceStatusDecisionTest {
    *  - Worflow auf 2 nötig, da Name im Vergleich zu vorher geändert hat.
    */
   @Test
-  public void updateScenario1() {
+   void updateScenario1() {
     //given
     version1 = lineVersionRepository.save(version1);
     LineVersion editedVersion = version1Builder().build();
@@ -272,7 +272,7 @@ public class LineServiceStatusDecisionTest {
    *  - Worflow auf 2 nicht nötig, da nur eingekürzt.
    */
   @Test
-  public void updateScenario1a() {
+   void updateScenario1a() {
     //given
     version1 = lineVersionRepository.save(version1);
     LineVersion editedVersion = version1Builder().build();
@@ -316,7 +316,7 @@ public class LineServiceStatusDecisionTest {
    *  - Worflow auf 2 nötig, da Name im Vergleich zu vorher geändert hat.
    */
   @Test
-  public void updateScenario1b() {
+   void updateScenario1b() {
     //given
     version1 = lineVersionRepository.save(version1);
     LineVersion editedVersion = version1Builder().build();
@@ -359,7 +359,7 @@ public class LineServiceStatusDecisionTest {
    *  - Worflow auf 2 nötig, da Name im Vergleich zu vorher geändert hat.
    */
   @Test
-  public void updateScenarioVersioning10c() {
+   void updateScenarioVersioning10c() {
     //given
     version1 = lineVersionRepository.save(version1);
     version3 = lineVersionRepository.save(version3);
@@ -412,7 +412,7 @@ public class LineServiceStatusDecisionTest {
    *  - Worflow auf 1 nicht nötig da nur eingekürzt
    */
   @Test
-  public void updateScenarioVersioning14b() {
+   void updateScenarioVersioning14b() {
     //given
     version1 = lineVersionRepository.saveAndFlush(version1);
     LineVersion editedVersion = version1Builder().build();
@@ -452,7 +452,7 @@ public class LineServiceStatusDecisionTest {
    *  - Worflow auf 2 nötig, da Name im Vergleich zu vorher geändert.
    */
   @Test
-  public void updateScenario2() {
+   void updateScenario2() {
     //given
     version1 = lineVersionRepository.save(version1);
     version2 = lineVersionRepository.save(version2);
@@ -506,7 +506,7 @@ public class LineServiceStatusDecisionTest {
    *  - Worflow auf 3 nicht nötig, da Name im Vergleich zur Version vorher im Zeitraum nicht geändert
    */
   @Test
-  public void updateScenario3() {
+   void updateScenario3() {
     //given
     version1 = lineVersionRepository.save(version1);
     version2 = lineVersionRepository.save(version2);

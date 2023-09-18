@@ -25,7 +25,7 @@ public class VersionableServiceScenario9Test extends VersionableServiceBaseTest 
    * Version ist vom update nicht betroffen
    */
   @Test
-  public void scenario9a() {
+   void scenario9a() {
     //given
     LocalDate editedValidFrom = LocalDate.of(2019, 1, 1);
     LocalDate editedValidTo = LocalDate.of(2019, 6, 1);
@@ -86,7 +86,7 @@ public class VersionableServiceScenario9Test extends VersionableServiceBaseTest 
    * Ergebnis: Neue Version wird erstellt (mit Inhalt von Änderung und Version 1)
    */
   @Test
-  public void scenario9b() {
+   void scenario9b() {
     //given
     LocalDate editedValidFrom = LocalDate.of(2019, 1, 1);
     LocalDate editedValidTo = LocalDate.of(2019, 6, 1);
@@ -155,7 +155,7 @@ public class VersionableServiceScenario9Test extends VersionableServiceBaseTest 
    * Ergebnis: Version 1 wird verlängert
    */
   @Test
-  public void scenario9c() {
+   void scenario9c() {
     //given
     LocalDate editedValidFrom = LocalDate.of(2019, 1, 1);
 
@@ -218,7 +218,7 @@ public class VersionableServiceScenario9Test extends VersionableServiceBaseTest 
    * Ergebnis: Version 1 wird auf "Gültig von"-Seite verkürzt.
    */
   @Test
-  public void scenario9d() {
+   void scenario9d() {
     //given
     LocalDate editedValidFrom = versionableObject1.getValidFrom().minusMonths(3);
     LocalDate editedValidTo = versionableObject1.getValidFrom().plusMonths(1);
@@ -285,7 +285,7 @@ public class VersionableServiceScenario9Test extends VersionableServiceBaseTest 
    * Ergebnis: Version 1 wird auf "Gültig bis"-Seite verkürzt.
    */
   @Test
-  public void scenario9e() {
+   void scenario9e() {
     //given
     LocalDate editedValidFrom = versionableObject1.getValidTo().minusMonths(1);
     LocalDate editedValidTo = versionableObject1.getValidTo().plusMonths(1);
