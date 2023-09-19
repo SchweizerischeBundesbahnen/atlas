@@ -23,7 +23,7 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-public class LineWorkflowProcessingServiceTest {
+ class LineWorkflowProcessingServiceTest {
 
   @Mock
   private LineVersionRepository lineVersionRepository;
@@ -40,14 +40,14 @@ public class LineWorkflowProcessingServiceTest {
   private LineWorkflowProcessingService workflowProcessingService;
 
   @BeforeEach
-  public void init() {
+   void init() {
     MockitoAnnotations.openMocks(this);
     workflowProcessingService = new LineWorkflowProcessingService(lineVersionRepository, lineWorkflowRepository,
         lineVersionSnapshotRepository);
   }
 
   @Test
-  public void shouldExecuteProcessLineWorkflow() {
+   void shouldExecuteProcessLineWorkflow() {
     //given
     WorkflowEvent workflowEvent = WorkflowEvent.builder()
         .workflowId(1000L)
@@ -67,7 +67,7 @@ public class LineWorkflowProcessingServiceTest {
   }
 
   @Test
-  public void shouldApproveLineWorkflow() {
+   void shouldApproveLineWorkflow() {
     //given
     WorkflowEvent workflowEvent = WorkflowEvent.builder()
         .workflowId(1000L)

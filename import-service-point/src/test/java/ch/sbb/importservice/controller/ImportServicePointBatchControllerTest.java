@@ -25,7 +25,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-public class ImportServicePointBatchControllerTest extends BaseControllerApiTest {
+ class ImportServicePointBatchControllerTest extends BaseControllerApiTest {
 
   @MockBean
   private SePoDiClient sePoDiClient;
@@ -46,7 +46,7 @@ public class ImportServicePointBatchControllerTest extends BaseControllerApiTest
   private FileHelperService fileHelperService;
 
   @Test
-  public void shouldPostServicePointImportBatchSuccessfully() throws Exception {
+   void shouldPostServicePointImportBatchSuccessfully() throws Exception {
     //given
     List<ServicePointCsvModelContainer> servicePointCsvModelContainers = ServicePointTestData
         .getServicePointCsvModelContainers();
@@ -66,7 +66,7 @@ public class ImportServicePointBatchControllerTest extends BaseControllerApiTest
   }
 
   @Test
-  public void shouldPostServicePointImportBatchWithFileParameterSuccessfully() throws Exception {
+   void shouldPostServicePointImportBatchWithFileParameterSuccessfully() throws Exception {
     //given
     List<ServicePointCsvModel> servicePointCsvModels = ServicePointTestData
         .getDefaultServicePointCsvModels(85070005);
@@ -82,7 +82,7 @@ public class ImportServicePointBatchControllerTest extends BaseControllerApiTest
   }
 
   @Test
-  public void shouldReturnBadRequestWhenFileIsNotProvidedOnServicePointFileImport() throws Exception {
+   void shouldReturnBadRequestWhenFileIsNotProvidedOnServicePointFileImport() throws Exception {
     //given
     List<ServicePointCsvModel> servicePointCsvModels = ServicePointTestData
         .getDefaultServicePointCsvModels(85070005);
@@ -96,7 +96,7 @@ public class ImportServicePointBatchControllerTest extends BaseControllerApiTest
   }
 
   @Test
-  public void shouldPostTrafficPointImportBatchSuccessfully() throws Exception {
+   void shouldPostTrafficPointImportBatchSuccessfully() throws Exception {
     //given
     when(sePoDiClient.postTrafficPointsImport(any())).thenReturn(List.of());
     when(trafficPointCsvService.getActualCsvModelsFromS3()).thenReturn(List.of());
@@ -109,7 +109,7 @@ public class ImportServicePointBatchControllerTest extends BaseControllerApiTest
   }
 
   @Test
-  public void shouldPostTrafficPointImportWithFileParameterSuccessfully() throws Exception {
+   void shouldPostTrafficPointImportWithFileParameterSuccessfully() throws Exception {
     //given
     doNothing().when(mailProducerService).produceMailNotification(any());
 
@@ -123,7 +123,7 @@ public class ImportServicePointBatchControllerTest extends BaseControllerApiTest
   }
 
   @Test
-  public void shouldReturnBadRequestWhenFileIsNotProvidedOnTrafficPointFileImport() throws Exception {
+   void shouldReturnBadRequestWhenFileIsNotProvidedOnTrafficPointFileImport() throws Exception {
     //given
     doNothing().when(mailProducerService).produceMailNotification(any());
 
@@ -134,7 +134,7 @@ public class ImportServicePointBatchControllerTest extends BaseControllerApiTest
   }
 
   @Test
-  public void shouldPostLoadingPointImportBatchSuccessfully() throws Exception {
+   void shouldPostLoadingPointImportBatchSuccessfully() throws Exception {
     //given
     when(sePoDiClient.postLoadingPointsImport(any())).thenReturn(List.of());
     when(loadingPointCsvService.getActualCsvModelsFromS3()).thenReturn(List.of());
@@ -147,7 +147,7 @@ public class ImportServicePointBatchControllerTest extends BaseControllerApiTest
   }
 
   @Test
-  public void shouldPostLoadingPointImportWithFileParameterSuccessfully() throws Exception {
+   void shouldPostLoadingPointImportWithFileParameterSuccessfully() throws Exception {
     //given
     doNothing().when(mailProducerService).produceMailNotification(any());
 
@@ -161,7 +161,7 @@ public class ImportServicePointBatchControllerTest extends BaseControllerApiTest
   }
 
   @Test
-  public void shouldReturnBadRequestWhenFileIsNotProvidedOnLoadingPointFileImport() throws Exception {
+   void shouldReturnBadRequestWhenFileIsNotProvidedOnLoadingPointFileImport() throws Exception {
     //given
     doNothing().when(mailProducerService).produceMailNotification(any());
 

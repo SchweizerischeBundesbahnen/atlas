@@ -1,9 +1,10 @@
 package ch.sbb.atlas.servicepointdirectory.migration.loadingpoints;
 
-import static ch.sbb.atlas.servicepointdirectory.migration.CsvReader.*;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.servicepointdirectory.migration.CsvReader;
 import ch.sbb.atlas.servicepointdirectory.migration.DateRange;
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,7 +20,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 @IntegrationTest
 @Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class LoadingPointMigrationFutureTimetableIntegrationTest {
+class LoadingPointMigrationFutureTimetableIntegrationTest {
 
   private static final String DIDOK_CSV_FILE = "DIDOK3_LADESTELLEN_20230906011320.csv";
   private static final String ATLAS_CSV_FILE = "future_timetable-world-loading_point-2023-09-06.csv";
@@ -32,14 +33,14 @@ public class LoadingPointMigrationFutureTimetableIntegrationTest {
   @Order(1)
   void shouldParseCsvsCorrectly() throws IOException {
     try (InputStream csvStream =
-        this.getClass().getResourceAsStream(BASE_PATH + DIDOK_CSV_FILE)) {
-      didokCsvLines.addAll(parseCsv(csvStream, LoadingPointDidokCsvModel.class));
+        this.getClass().getResourceAsStream(CsvReader.BASE_PATH + DIDOK_CSV_FILE)) {
+      didokCsvLines.addAll(CsvReader.parseCsv(csvStream, LoadingPointDidokCsvModel.class));
     }
     assertThat(didokCsvLines).isNotEmpty();
 
     try (InputStream csvStream =
-        this.getClass().getResourceAsStream(BASE_PATH + ATLAS_CSV_FILE)) {
-      atlasCsvLines.addAll(parseCsv(csvStream, LoadingPointAtlasCsvModel.class));
+        this.getClass().getResourceAsStream(CsvReader.BASE_PATH + ATLAS_CSV_FILE)) {
+      atlasCsvLines.addAll(CsvReader.parseCsv(csvStream, LoadingPointAtlasCsvModel.class));
     }
     assertThat(atlasCsvLines).isNotEmpty();
   }
@@ -49,8 +50,8 @@ public class LoadingPointMigrationFutureTimetableIntegrationTest {
   void shouldHaveOnlyVersionsValidOnFutureTimetableDate() {
     atlasCsvLines.forEach(atlasCsvLine -> assertThat(
             DateRange.builder()
-                .from(dateFromString(atlasCsvLine.getValidFrom()))
-                .to(dateFromString(atlasCsvLine.getValidTo()))
+                .from(CsvReader.dateFromString(atlasCsvLine.getValidFrom()))
+                .to(CsvReader.dateFromString(atlasCsvLine.getValidTo()))
                 .build()
                 .contains(FUTURE_TIMETABLE_DATE)
         ).isTrue()

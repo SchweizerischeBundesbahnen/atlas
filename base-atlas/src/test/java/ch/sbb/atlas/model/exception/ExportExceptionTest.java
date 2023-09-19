@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 class ExportExceptionTest {
 
   @Test
-  public void shouldGetExportException() throws IOException {
+  void shouldGetExportException() throws IOException {
     //given
     File file = Files.createTempFile("file", ".csv").toFile();
     //when

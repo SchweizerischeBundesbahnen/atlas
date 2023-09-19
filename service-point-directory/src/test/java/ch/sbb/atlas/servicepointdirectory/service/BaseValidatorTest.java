@@ -11,13 +11,13 @@ public abstract class BaseValidatorTest {
   protected Validator validator;
 
   @BeforeEach
-  public void createValidator() {
+   void createValidator() {
     validatorFactory = Validation.buildDefaultValidatorFactory();
     validator = validatorFactory.getValidator();
   }
 
   @AfterEach
-  public void close() {
+   void close() {
     validatorFactory.close();
   }
 

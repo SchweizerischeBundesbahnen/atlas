@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @IntegrationTest
-public class BusinessOrganisationVersionExportRepositoryTest {
+ class BusinessOrganisationVersionExportRepositoryTest {
 
   private final BusinessOrganisationVersionExportRepository exportRepository;
   private final BusinessOrganisationVersionRepository businessOrganisationVersionRepository;
@@ -23,7 +23,7 @@ public class BusinessOrganisationVersionExportRepositoryTest {
   private final TransportCompanyRelationRepository transportCompanyRelationRepository;
 
   @Autowired
-  public BusinessOrganisationVersionExportRepositoryTest(BusinessOrganisationVersionExportRepository exportRepository,
+   BusinessOrganisationVersionExportRepositoryTest(BusinessOrganisationVersionExportRepository exportRepository,
       BusinessOrganisationVersionRepository businessOrganisationVersionRepository,
       TransportCompanyRepository transportCompanyRepository,
       TransportCompanyRelationRepository transportCompanyRelationRepository) {

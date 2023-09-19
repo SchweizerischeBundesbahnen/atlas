@@ -23,7 +23,7 @@ public class VersionableServiceScenario8Test extends VersionableServiceBaseTest 
    * RESULTAT: |----------------------| Version wird per xx aufgehoben Version:         1
    */
   @Test
-  public void scenario8a() {
+   void scenario8a() {
     //given
     LocalDate editedValidTo = LocalDate.of(2024, 6, 1);
 
@@ -80,7 +80,7 @@ public class VersionableServiceScenario8Test extends VersionableServiceBaseTest 
    * RESULTAT: |----------------------|--------------------------------| Version:         1                             2
    */
   @Test
-  public void scenario8b() {
+   void scenario8b() {
     //given
     LocalDate editedValidTo = LocalDate.of(2024, 6, 1);
 
@@ -164,7 +164,7 @@ public class VersionableServiceScenario8Test extends VersionableServiceBaseTest 
    * RESULTAT: |-------------------------|    |------------------------| Version:             1                             2
    */
   @Test
-  public void scenario8c() {
+   void scenario8c() {
     //given
     LocalDate editedValidTo = LocalDate.of(2025, 2, 1);
     versionableObject4.setValidFrom(LocalDate.of(2025, 6, 1));
@@ -231,7 +231,7 @@ public class VersionableServiceScenario8Test extends VersionableServiceBaseTest 
    * RESULTAT: |--------------------------|    |------------------------| Version:             1                             2
    */
   @Test
-  public void scenario8d() {
+   void scenario8d() {
     //given
     LocalDate editedValidTo = LocalDate.of(2025, 2, 1);
     versionableObject4.setValidFrom(LocalDate.of(2025, 6, 1));
@@ -308,7 +308,7 @@ public class VersionableServiceScenario8Test extends VersionableServiceBaseTest 
    * 3
    */
   @Test
-  public void scenario8e() {
+   void scenario8e() {
     //given
     LocalDate editedValidTo = LocalDate.of(2025, 8, 1);
     versionableObject4.setValidFrom(LocalDate.of(2025, 6, 1));
@@ -395,7 +395,7 @@ public class VersionableServiceScenario8Test extends VersionableServiceBaseTest 
    * 2            3           4       5
    */
   @Test
-  public void scenario8f() {
+   void scenario8f() {
     //given
     LocalDate editedValidTo = LocalDate.of(2025, 6, 1);
     versionableObject1.setValidTo(LocalDate.of(2021, 6, 1));
@@ -514,7 +514,7 @@ public class VersionableServiceScenario8Test extends VersionableServiceBaseTest 
    * 2                    3       4
    */
   @Test
-  public void scenario8g() {
+   void scenario8g() {
     //given
     LocalDate editedValidTo = LocalDate.of(2024, 6, 1);
     versionableObject1.setValidTo(LocalDate.of(2021, 6, 1));

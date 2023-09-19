@@ -20,7 +20,7 @@ import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2AccessToken.TokenType;
 
 @ExtendWith(MockitoExtension.class)
-public class ImportOAuthClientCredentialsFeignManagerTest {
+ class ImportOAuthClientCredentialsFeignManagerTest {
 
   private OAuthClientCredentialsFeignManager oAuthClientCredentialsFeignManager;
 
@@ -33,7 +33,7 @@ public class ImportOAuthClientCredentialsFeignManagerTest {
   private OAuth2AuthorizedClient client;
 
   @BeforeEach
-  public void setUp() {
+   void setUp() {
     MockitoAnnotations.openMocks(this);
 
     oAuthClientCredentialsFeignManager = new OAuthClientCredentialsFeignManager(manager,
@@ -41,7 +41,7 @@ public class ImportOAuthClientCredentialsFeignManagerTest {
   }
 
   @Test
-  public void shouldThrowIllegaleStateExceptionWhenAuthenticationFailed() {
+   void shouldThrowIllegaleStateExceptionWhenAuthenticationFailed() {
     //given
     when(clientRegistration.getRegistrationId()).thenReturn("azure");
 
@@ -51,7 +51,7 @@ public class ImportOAuthClientCredentialsFeignManagerTest {
   }
 
   @Test
-  public void shouldGetTocken() {
+   void shouldGetTocken() {
     //given
     when(clientRegistration.getRegistrationId()).thenReturn("id");
     when(manager.authorize(any())).thenReturn(client);

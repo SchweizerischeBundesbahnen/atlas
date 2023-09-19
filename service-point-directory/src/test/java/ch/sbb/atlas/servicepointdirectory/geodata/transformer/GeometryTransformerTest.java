@@ -1,10 +1,9 @@
 package ch.sbb.atlas.servicepointdirectory.geodata.transformer;
 
-import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
-import ch.sbb.atlas.model.controller.IntegrationTest;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
+import ch.sbb.atlas.model.controller.IntegrationTest;
 import java.util.Map;
 import org.assertj.core.data.Offset;
 import org.junit.jupiter.api.Test;
@@ -14,11 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 @IntegrationTest
 class GeometryTransformerTest {
 
-  public static final Envelope SWISS_AREA_WGS_84 = new Envelope(5.96, 10.49, 45.82, 47.81);
+  static final Envelope SWISS_AREA_WGS_84 = new Envelope(5.96, 10.49, 45.82, 47.81);
   private final GeometryTransformer geometryTransformer;
 
   @Autowired
-  public GeometryTransformerTest(GeometryTransformer geometryTransformer) {
+   GeometryTransformerTest(GeometryTransformer geometryTransformer) {
     this.geometryTransformer = geometryTransformer;
   }
 

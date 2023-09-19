@@ -13,10 +13,10 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class TimetableFieldNumberServiceScenario8Test extends BaseTimetableFieldNumberServiceTest {
+ class TimetableFieldNumberServiceScenario8Test extends BaseTimetableFieldNumberServiceTest {
 
   @Autowired
-  public TimetableFieldNumberServiceScenario8Test(
+   TimetableFieldNumberServiceScenario8Test(
       TimetableFieldNumberVersionRepository versionRepository,
       TimetableFieldNumberService timetableFieldNumberService) {
     super(versionRepository, timetableFieldNumberService);
@@ -32,7 +32,7 @@ public class TimetableFieldNumberServiceScenario8Test extends BaseTimetableField
    * Version:         1
    */
   @Test
-  public void scenario8() {
+   void scenario8() {
     //given
     version1 = versionRepository.save(version1);
     version2 = versionRepository.save(version2);
@@ -108,7 +108,7 @@ public class TimetableFieldNumberServiceScenario8Test extends BaseTimetableField
    * Version:         1                             2
    */
   @Test
-  public void scenario8b() {
+   void scenario8b() {
     //given
     version1 = versionRepository.save(version1);
     version2 = versionRepository.save(version2);
@@ -190,7 +190,7 @@ public class TimetableFieldNumberServiceScenario8Test extends BaseTimetableField
    * Version:             1                             2
    */
   @Test
-  public void scenario8c() {
+   void scenario8c() {
     //given
     version1 = versionRepository.save(version1);
     version2 = versionRepository.save(version2);
@@ -273,7 +273,7 @@ public class TimetableFieldNumberServiceScenario8Test extends BaseTimetableField
    * Version:             1                             2
    */
   @Test
-  public void scenario8d() {
+   void scenario8d() {
     //given
     version1 = versionRepository.save(version1);
     version2 = versionRepository.save(version2);
@@ -357,7 +357,7 @@ public class TimetableFieldNumberServiceScenario8Test extends BaseTimetableField
    * Version:             1                        2            3
    */
   @Test
-  public void scenario8e() {
+   void scenario8e() {
     //given
     version1 = versionRepository.save(version1);
     version2 = versionRepository.save(version2);
@@ -454,7 +454,7 @@ public class TimetableFieldNumberServiceScenario8Test extends BaseTimetableField
    * Version:             1                        2            3           4       5
    */
   @Test
-  public void scenario8f() {
+   void scenario8f() {
     //given
     version1.setValidTo(LocalDate.of(2021,6,1));
     version1 = versionRepository.save(version1);
@@ -551,7 +551,7 @@ public class TimetableFieldNumberServiceScenario8Test extends BaseTimetableField
    * Version:             1                           2                    3       4
    */
   @Test
-  public void scenario8g() {
+   void scenario8g() {
     //given
     version1.setValidTo(LocalDate.of(2021,6,1));
     version1 = versionRepository.save(version1);

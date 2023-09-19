@@ -17,7 +17,7 @@ class ServicePointFotCommentServiceTest {
   private final ServicePointFotCommentService servicePointFotCommentService;
 
   @Autowired
-  public ServicePointFotCommentServiceTest(ServicePointFotCommentService servicePointFotCommentService) {
+   ServicePointFotCommentServiceTest(ServicePointFotCommentService servicePointFotCommentService) {
     this.servicePointFotCommentService = servicePointFotCommentService;
   }
 

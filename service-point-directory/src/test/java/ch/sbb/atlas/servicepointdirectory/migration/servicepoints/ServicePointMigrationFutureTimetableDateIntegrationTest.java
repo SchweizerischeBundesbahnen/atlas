@@ -1,10 +1,10 @@
 package ch.sbb.atlas.servicepointdirectory.migration.servicepoints;
 
-import static ch.sbb.atlas.servicepointdirectory.migration.CsvReader.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.servicepointdirectory.migration.CsvReader;
 import ch.sbb.atlas.servicepointdirectory.migration.DateRange;
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,7 +24,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 @IntegrationTest
 @Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class ServicePointMigrationFutureTimetableDateIntegrationTest {
+ class ServicePointMigrationFutureTimetableDateIntegrationTest {
 
   private static final String DIDOK_CSV_FILE = "DIDOK3_DIENSTSTELLEN_FUTURE_TIMETABLE_V_2_20230906020753.csv";
   private static final String ATLAS_CSV_FILE = "future_timetable-world-service_point-2023-09-06.csv";
@@ -38,14 +38,14 @@ public class ServicePointMigrationFutureTimetableDateIntegrationTest {
   @Order(1)
   void shouldParseCsvsCorrectly() throws IOException {
     try (InputStream csvStream =
-        this.getClass().getResourceAsStream(BASE_PATH + DIDOK_CSV_FILE)) {
-      didokCsvLines.addAll(parseCsv(csvStream, ServicePointDidokCsvModel.class));
+        this.getClass().getResourceAsStream(CsvReader.BASE_PATH + DIDOK_CSV_FILE)) {
+      didokCsvLines.addAll(CsvReader.parseCsv(csvStream, ServicePointDidokCsvModel.class));
     }
     assertThat(didokCsvLines).isNotEmpty();
 
     try (InputStream csvStream =
-        this.getClass().getResourceAsStream(BASE_PATH + ATLAS_CSV_FILE)) {
-      atlasCsvLines.addAll(parseCsv(csvStream, ServicePointAtlasCsvModel.class));
+        this.getClass().getResourceAsStream(CsvReader.BASE_PATH + ATLAS_CSV_FILE)) {
+      atlasCsvLines.addAll(CsvReader.parseCsv(csvStream, ServicePointAtlasCsvModel.class));
     }
     assertThat(atlasCsvLines).isNotEmpty();
 
@@ -75,8 +75,8 @@ public class ServicePointMigrationFutureTimetableDateIntegrationTest {
   void shouldHaveOnlyVersionsValidOnFutureTimetableDate() {
     atlasCsvLines.forEach(atlasCsvLine -> assertThat(
             DateRange.builder()
-                .from(dateFromString(atlasCsvLine.getValidFrom()))
-                .to(dateFromString(atlasCsvLine.getValidTo()))
+                .from(CsvReader.dateFromString(atlasCsvLine.getValidFrom()))
+                .to(CsvReader.dateFromString(atlasCsvLine.getValidTo()))
                 .build()
                 .contains(FUTURE_TIMETABLE_DATE)
         ).isTrue()

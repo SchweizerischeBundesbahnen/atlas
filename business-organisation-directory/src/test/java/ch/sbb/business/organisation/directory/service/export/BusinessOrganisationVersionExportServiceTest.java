@@ -1,27 +1,26 @@
 package ch.sbb.business.organisation.directory.service.export;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.mockito.Mockito.when;
+
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.export.exception.ExportException;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationExportVersionWithTuInfo;
 import ch.sbb.business.organisation.directory.repository.BusinessOrganisationVersionExportRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.mockito.Mockito.when;
-
-public class BusinessOrganisationVersionExportServiceTest {
+ class BusinessOrganisationVersionExportServiceTest {
 
   @Mock
   private BusinessOrganisationVersionExportRepository repository;
@@ -35,13 +34,13 @@ public class BusinessOrganisationVersionExportServiceTest {
   private BusinessOrganisationVersionExportService exportService;
 
   @BeforeEach
-  public void setUp() {
+   void setUp() {
     MockitoAnnotations.openMocks(this);
     exportService = new BusinessOrganisationVersionExportService(fileService, amazonService, repository);
   }
 
   @Test
-  public void shouldGetFullVersionsCsv() throws IOException {
+   void shouldGetFullVersionsCsv() throws IOException {
     //given
     BusinessOrganisationExportVersionWithTuInfo version1 =
         BusinessOrganisationExportVersionWithTuInfo.builder()
@@ -67,7 +66,7 @@ public class BusinessOrganisationVersionExportServiceTest {
   }
 
   @Test
-  public void shouldGetFullVersionsJson() throws IOException {
+   void shouldGetFullVersionsJson() throws IOException {
     //given
     BusinessOrganisationExportVersionWithTuInfo version1 =
             BusinessOrganisationExportVersionWithTuInfo.builder()
@@ -93,7 +92,7 @@ public class BusinessOrganisationVersionExportServiceTest {
   }
 
   @Test
-  public void shouldGetActualVersionsCsv() throws IOException {
+   void shouldGetActualVersionsCsv() throws IOException {
     //given
     BusinessOrganisationExportVersionWithTuInfo version1 =
         BusinessOrganisationExportVersionWithTuInfo.builder()
@@ -118,7 +117,7 @@ public class BusinessOrganisationVersionExportServiceTest {
   }
 
   @Test
-  public void shouldGetActualVersionsJson() throws IOException {
+   void shouldGetActualVersionsJson() throws IOException {
     //given
     BusinessOrganisationExportVersionWithTuInfo version1 =
             BusinessOrganisationExportVersionWithTuInfo.builder()
@@ -143,7 +142,7 @@ public class BusinessOrganisationVersionExportServiceTest {
   }
 
   @Test
-  public void shouldGetFutureTimetableVersionsCsv() throws IOException {
+   void shouldGetFutureTimetableVersionsCsv() throws IOException {
     //given
     BusinessOrganisationExportVersionWithTuInfo version1 =
         BusinessOrganisationExportVersionWithTuInfo.builder()
@@ -169,7 +168,7 @@ public class BusinessOrganisationVersionExportServiceTest {
   }
 
   @Test
-  public void shouldGetFutureTimetableVersionsJson() throws IOException {
+   void shouldGetFutureTimetableVersionsJson() throws IOException {
     //given
     BusinessOrganisationExportVersionWithTuInfo version1 =
             BusinessOrganisationExportVersionWithTuInfo.builder()
