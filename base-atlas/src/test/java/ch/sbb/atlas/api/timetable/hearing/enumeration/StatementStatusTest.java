@@ -4,10 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 
-public class StatementStatusTest {
+class StatementStatusTest {
 
   @Test
-  public void shouldCoverage() {
+  void shouldCoverage() {
     assertThat(StatementStatus.values().length).isEqualTo(9);
   }
 

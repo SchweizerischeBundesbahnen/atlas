@@ -72,7 +72,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.test.web.servlet.MvcResult;
 
-public class TimetableHearingStatementControllerApiTest extends BaseControllerApiTest {
+ class TimetableHearingStatementControllerApiTest extends BaseControllerApiTest {
 
   private static final long YEAR = 2022L;
   private static final TimetableHearingYearModel TIMETABLE_HEARING_YEAR = TimetableHearingYearModel.builder()

@@ -1,12 +1,12 @@
 package ch.sbb.atlas.servicepointdirectory.migration.servicepoints;
 
-import static ch.sbb.atlas.servicepointdirectory.migration.CsvReader.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.atlas.servicepointdirectory.migration.DateRange;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.atlas.servicepointdirectory.migration.CsvReader;
+import ch.sbb.atlas.servicepointdirectory.migration.DateRange;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
@@ -39,14 +39,14 @@ public class ServicePointMigrationActualDateIntegrationTest {
   @Order(1)
   void shouldParseCsvsCorrectly() throws IOException {
     try (InputStream csvStream = this.getClass()
-        .getResourceAsStream(BASE_PATH + DIDOK_CSV_FILE)) {
-      didokCsvLines.addAll(parseCsv(csvStream, ServicePointDidokCsvModel.class));
+        .getResourceAsStream(CsvReader.BASE_PATH + DIDOK_CSV_FILE)) {
+      didokCsvLines.addAll(CsvReader.parseCsv(csvStream, ServicePointDidokCsvModel.class));
     }
     assertThat(didokCsvLines).isNotEmpty();
 
     try (InputStream csvStream = this.getClass()
-        .getResourceAsStream(BASE_PATH + ATLAS_CSV_FILE)) {
-      atlasCsvLines.addAll(parseCsv(csvStream, ServicePointAtlasCsvModel.class));
+        .getResourceAsStream(CsvReader.BASE_PATH + ATLAS_CSV_FILE)) {
+      atlasCsvLines.addAll(CsvReader.parseCsv(csvStream, ServicePointAtlasCsvModel.class));
     }
     assertThat(atlasCsvLines).isNotEmpty();
 
@@ -79,8 +79,8 @@ public class ServicePointMigrationActualDateIntegrationTest {
   void shouldHaveOnlyVersionsValidOnActualDate() {
     atlasCsvLines.forEach(atlasCsvLine -> assertThat(
             DateRange.builder()
-                .from(dateFromString(atlasCsvLine.getValidFrom()))
-                .to(dateFromString(atlasCsvLine.getValidTo()))
+                .from(CsvReader.dateFromString(atlasCsvLine.getValidFrom()))
+                .to(CsvReader.dateFromString(atlasCsvLine.getValidTo()))
                 .build()
                 .contains(ACTUAL_DATE)
         ).isTrue()
