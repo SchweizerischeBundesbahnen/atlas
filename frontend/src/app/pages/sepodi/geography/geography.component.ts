@@ -18,6 +18,7 @@ export class GeographyComponent implements OnInit, OnDestroy {
   @Input() disabled = false;
   @Input() formGroup!: FormGroup<GeographyFormGroup>;
   initFormGroup!: FormGroup<GeographyFormGroup>;
+  spatialReference: SpatialReference = 'LV95';
 
   readonly LV95_MAX_DIGITS = LV95_MAX_DIGITS;
   readonly WGS84_MAX_DIGITS = WGS84_MAX_DIGITS;
@@ -32,24 +33,68 @@ export class GeographyComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    if (this.mapService.marker.getElement().parentNode) {
+      this.mapService.marker.remove();
+    }
     this.initFormGroup = this.formGroup;
     this.initTransformedCoordinatePair();
-    this.spatialReferenceSubscription = this.formGroup.valueChanges.subscribe(() => {
+    this.spatialReferenceSubscription = this.formGroup.valueChanges.subscribe((value) => {
+      const initialCoordinates = {
+        lat: Number(value.north!),
+        lng: Number(value.east!),
+      };
+
+      let finalCoordinates = initialCoordinates;
+
+      if (this.spatialReference === 'LV95') {
+        const converted = this.coordinateTransformationService.transform(
+          { north: initialCoordinates.lat, east: initialCoordinates.lng },
+          'LV95',
+          'WGS84'
+        );
+
+        finalCoordinates = {
+          lat: converted.north,
+          lng: converted.east,
+        };
+      }
+
+      this.mapService.map.flyTo({
+        center: finalCoordinates,
+        speed: 1,
+        zoom: 15,
+      });
+      this.mapService.marker.setLngLat(finalCoordinates).addTo(this.mapService.map);
+
       this.initTransformedCoordinatePair();
     });
+
     this.clickedGeographyCoordinatesSubscription =
       this.mapService.clickedGeographyCoordinates.subscribe((data) => {
-        if (data.north != 0 && data.east != 0) {
-          const lat = Number(data.east.toFixed(4));
-          const lng = Number(data.north.toFixed(4));
-
-          this.formGroup.controls.east.setValue(lat);
-          this.formGroup.controls.north.setValue(lng);
-          this.formGroup.markAsDirty();
-        } else {
-          this.formGroup = this.initFormGroup;
+        if (this.spatialReference === 'LV95' && data.lat !== 0 && data.lng !== 0) {
+          const coordinatePair = {
+            north: data.lat,
+            east: data.lng,
+          };
+          const transformedCoordinates = this.coordinateTransformationService.transform(
+            coordinatePair,
+            'WGS84',
+            'LV95'
+          );
+          this.setFormGroupValue(transformedCoordinates.north, transformedCoordinates.east);
+        } else if (this.spatialReference === 'WGS84') {
+          this.setFormGroupValue(data.lat, data.lng);
         }
       });
+  }
+
+  setFormGroupValue(lat: number, lng: number) {
+    const roundedLat = Number(lat.toFixed(4));
+    const roundedLng = Number(lng.toFixed(4));
+
+    this.formGroup.controls.east.setValue(roundedLng);
+    this.formGroup.controls.north.setValue(roundedLat);
+    this.formGroup.markAsDirty();
   }
 
   ngOnDestroy() {
@@ -89,25 +134,27 @@ export class GeographyComponent implements OnInit, OnDestroy {
   }
 
   switchSpatialReference($event: MatRadioChange) {
-    const newReference: SpatialReference = $event.value;
-    const transformedCoordinatePair = this.coordinateTransformationService.transform(
-      this.currentCoordinates,
-      this.transformedSpatialReference,
-      newReference
-    );
-    this.formGroup.controls.east.setValue(
-      Number(
-        transformedCoordinatePair.east.toFixed(
-          newReference == SpatialReference.Lv95 ? this.LV95_MAX_DIGITS : this.WGS84_MAX_DIGITS
+    if ($event.value) {
+      const newReference: SpatialReference = $event.value;
+      const transformedCoordinatePair = this.coordinateTransformationService.transform(
+        this.currentCoordinates,
+        this.transformedSpatialReference,
+        newReference
+      );
+      this.formGroup.controls.east.setValue(
+        Number(
+          transformedCoordinatePair.east.toFixed(
+            newReference == SpatialReference.Lv95 ? this.LV95_MAX_DIGITS : this.WGS84_MAX_DIGITS
+          )
         )
-      )
-    );
-    this.formGroup.controls.north.setValue(
-      Number(
-        transformedCoordinatePair.north.toFixed(
-          newReference == SpatialReference.Lv95 ? this.LV95_MAX_DIGITS : this.WGS84_MAX_DIGITS
+      );
+      this.formGroup.controls.north.setValue(
+        Number(
+          transformedCoordinatePair.north.toFixed(
+            newReference == SpatialReference.Lv95 ? this.LV95_MAX_DIGITS : this.WGS84_MAX_DIGITS
+          )
         )
-      )
-    );
+      );
+    }
   }
 }
