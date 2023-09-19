@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
+import maplibregl, {
   GeoJSONSource,
   LngLat,
   LngLatLike,
@@ -29,9 +29,14 @@ export class MapService {
   mapInitialized = new BehaviorSubject(false);
   selectedElement = new Subject<GeoJsonProperties>();
   currentMapStyle!: MapStyle;
+  marker = new maplibregl.Marker({ color: '#FF0000' });
 
   isEditMode = new BehaviorSubject(false);
-  clickedGeographyCoordinates = new BehaviorSubject<CoordinatePair>({ north: 0, east: 0 });
+  //TODO: Errormessage
+  clickedGeographyCoordinates = new BehaviorSubject<{ lng: number; lat: number }>({
+    lng: 0,
+    lat: 0,
+  });
 
   popup = new Popup({
     closeButton: true,
