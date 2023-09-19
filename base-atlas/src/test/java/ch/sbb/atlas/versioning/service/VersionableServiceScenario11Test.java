@@ -25,7 +25,7 @@ public class VersionableServiceScenario11Test extends VersionableServiceBaseTest
    * Ergebnis: Versionen an der Grenze werden verlängert
    */
   @Test
-  public void scenario11a() {
+   void scenario11a() {
     //given
     LocalDate editedValidFrom = LocalDate.of(2019, 6, 1);
     LocalDate editedValidTo = LocalDate.of(2024, 6, 1);
@@ -94,7 +94,7 @@ public class VersionableServiceScenario11Test extends VersionableServiceBaseTest
    * Ergebnis: Versionen an der Grenze werden verlängert in der mitte nur properties updated
    */
   @Test
-  public void scenario11b() {
+   void scenario11b() {
     //given
     LocalDate editedValidFrom = LocalDate.of(2019, 6, 1);
     LocalDate editedValidTo = LocalDate.of(2025, 6, 1);
@@ -180,7 +180,7 @@ public class VersionableServiceScenario11Test extends VersionableServiceBaseTest
    * Ergebnis: Versionen an der Grenze werden verlängert in der mitte nur properties updated
    */
   @Test
-  public void scenario11c() {
+   void scenario11c() {
     //given
     LocalDate editedValidFrom = LocalDate.of(2019, 6, 1);
     LocalDate editedValidTo = LocalDate.of(2024, 12, 31);
@@ -266,7 +266,7 @@ public class VersionableServiceScenario11Test extends VersionableServiceBaseTest
    * Ergebnis: Versionen an der Grenze werden verlängert in der mitte nur properties updated
    */
   @Test
-  public void scenario11d() {
+   void scenario11d() {
     //given
     LocalDate editedValidFrom = LocalDate.of(2020, 1, 1);
     LocalDate editedValidTo = LocalDate.of(2025, 6, 1);

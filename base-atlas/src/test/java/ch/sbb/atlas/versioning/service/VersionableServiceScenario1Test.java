@@ -26,7 +26,7 @@ public class VersionableServiceScenario1Test extends VersionableServiceBaseTest 
    * Version:        1                                2
    */
   @Test
-  public void scenario1a() {
+   void scenario1a() {
     //given
     Relation relation1 = Relation.builder().id(1L).value("value1").build();
     Relation relation2 = Relation.builder().id(2L).value("value2").build();
@@ -114,7 +114,7 @@ public class VersionableServiceScenario1Test extends VersionableServiceBaseTest 
    * Version:        1                                2
    */
   @Test
-  public void scenario1aEditedValidFromAndEditedValidToAreEqualsToCurrentValidFromAndCurrentValidTo() {
+   void scenario1aEditedValidFromAndEditedValidToAreEqualsToCurrentValidFromAndCurrentValidTo() {
     //given
     Relation relation1 = Relation.builder().id(1L).value("value1").build();
     Relation relation2 = Relation.builder().id(2L).value("value2").build();
@@ -205,7 +205,7 @@ public class VersionableServiceScenario1Test extends VersionableServiceBaseTest 
    * Version:        1                 2                  3
    */
   @Test
-  public void scenario1b() {
+   void scenario1b() {
     //given
     VersionableObject editedVersion = VersionableObject.builder().property("Ciao-Ciao").build();
     editedVersion.setValidFrom(versionableObject2.getValidFrom());
@@ -272,7 +272,7 @@ public class VersionableServiceScenario1Test extends VersionableServiceBaseTest 
    * Version:        1                 2                  3
    */
   @Test
-  public void scenario1c() {
+   void scenario1c() {
     //given
     VersionableObject editedVersion = VersionableObject.builder().property("Ciao-Ciao").build();
     editedVersion.setValidFrom(versionableObject1.getValidFrom());

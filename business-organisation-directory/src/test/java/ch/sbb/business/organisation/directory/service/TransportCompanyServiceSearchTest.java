@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
 @Transactional
-public class TransportCompanyServiceSearchTest {
+ class TransportCompanyServiceSearchTest {
 
   @Autowired
   private TransportCompanyRepository repository;

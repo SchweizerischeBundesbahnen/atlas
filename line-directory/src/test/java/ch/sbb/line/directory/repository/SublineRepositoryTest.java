@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
 @Transactional
-public class SublineRepositoryTest {
+ class SublineRepositoryTest {
 
   private static final String SLNID = "slnid";
   private final SublineVersionRepository sublineVersionRepository;
@@ -24,7 +24,7 @@ public class SublineRepositoryTest {
   private final LineVersionRepository lineVersionRepository;
 
   @Autowired
-  public SublineRepositoryTest(SublineVersionRepository sublineVersionRepository,
+   SublineRepositoryTest(SublineVersionRepository sublineVersionRepository,
       SublineRepository sublineRepository,
       LineVersionRepository lineVersionRepository) {
     this.sublineVersionRepository = sublineVersionRepository;

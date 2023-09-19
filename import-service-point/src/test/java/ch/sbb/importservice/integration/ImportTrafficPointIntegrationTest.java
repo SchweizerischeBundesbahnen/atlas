@@ -38,7 +38,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 @IntegrationTest
 @AutoConfigureMockMvc(addFilters = false)
-public class ImportTrafficPointIntegrationTest {
+ class ImportTrafficPointIntegrationTest {
 
   @Autowired
   private JobLauncher jobLauncher;

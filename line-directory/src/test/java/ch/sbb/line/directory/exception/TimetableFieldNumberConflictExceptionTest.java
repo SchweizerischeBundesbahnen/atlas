@@ -10,7 +10,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
-public class TimetableFieldNumberConflictExceptionTest {
+ class TimetableFieldNumberConflictExceptionTest {
 
   private static TimetableFieldNumberVersion version() {
     return versionBuilder().build();
