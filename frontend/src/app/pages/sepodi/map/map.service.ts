@@ -87,6 +87,12 @@ export class MapService {
     });
   }
 
+  refreshMap() {
+    this.map.style.sourceCaches[MAP_SOURCE_NAME].clearTiles();
+    this.map.style.sourceCaches[MAP_SOURCE_NAME].update(this.map.transform);
+    this.map.triggerRepaint();
+  }
+
   deselectServicePoint() {
     if (this.map) {
       this.displayCurrentCoordinates();
