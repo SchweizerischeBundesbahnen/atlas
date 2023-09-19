@@ -11,10 +11,10 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class TimetableFieldNumberServiceScenario9Test extends BaseTimetableFieldNumberServiceTest {
+ class TimetableFieldNumberServiceScenario9Test extends BaseTimetableFieldNumberServiceTest {
 
   @Autowired
-  public TimetableFieldNumberServiceScenario9Test(
+   TimetableFieldNumberServiceScenario9Test(
       TimetableFieldNumberVersionRepository versionRepository,
       TimetableFieldNumberService timetableFieldNumberService) {
     super(versionRepository, timetableFieldNumberService);
@@ -30,7 +30,7 @@ public class TimetableFieldNumberServiceScenario9Test extends BaseTimetableField
    * Version ist vom update nicht betroffen
    */
   @Test
-  public void scenario9a() {
+   void scenario9a() {
     //given
     version1 = versionRepository.save(version1);
     TimetableFieldNumberVersion editedVersion = version1Builder().build();
@@ -84,7 +84,7 @@ public class TimetableFieldNumberServiceScenario9Test extends BaseTimetableField
    * Ergebnis: Neue Version wird erstellt (mit Inhalt von Änderung und Version 1)
    */
   @Test
-  public void scenario9b() {
+   void scenario9b() {
     //given
     version1 = versionRepository.save(version1);
     version2 = versionRepository.save(version2);
@@ -150,7 +150,7 @@ public class TimetableFieldNumberServiceScenario9Test extends BaseTimetableField
    * Ergebnis: Version 1 wird verlängert
    */
   @Test
-  public void scenario9c() {
+   void scenario9c() {
     //given
     version1 = versionRepository.save(version1);
     version2 = versionRepository.save(version2);

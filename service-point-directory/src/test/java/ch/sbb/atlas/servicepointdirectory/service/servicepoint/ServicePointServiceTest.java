@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-public class ServicePointServiceTest {
+ class ServicePointServiceTest {
 
   private ServicePointService servicePointService;
 
@@ -79,7 +79,7 @@ public class ServicePointServiceTest {
   }
 
   @Test
-  public void shouldGetCurrentServicePointVersionWhenValidFromPerfectMatch() {
+   void shouldGetCurrentServicePointVersionWhenValidFromPerfectMatch() {
     //given
     ServicePointVersion version = ServicePointVersion.builder()
         .validFrom(LocalDate.of(2000, 1, 1))
@@ -98,7 +98,7 @@ public class ServicePointServiceTest {
   }
 
   @Test
-  public void shouldGetCurrentServicePointVersionWhenValidToPerfectMatch() {
+   void shouldGetCurrentServicePointVersionWhenValidToPerfectMatch() {
     //given
     ServicePointVersion version = ServicePointVersion.builder()
         .validFrom(LocalDate.of(2000, 1, 1))
@@ -117,7 +117,7 @@ public class ServicePointServiceTest {
   }
 
   @Test
-  public void shouldGetCurrentServicePointVersionWhenEditedVersionIsBetweenDbVersion() {
+   void shouldGetCurrentServicePointVersionWhenEditedVersionIsBetweenDbVersion() {
     //given
     ServicePointVersion version = ServicePointVersion.builder()
         .validFrom(LocalDate.of(2000, 1, 1))
@@ -136,7 +136,7 @@ public class ServicePointServiceTest {
   }
 
   @Test
-  public void shouldGetCurrentServicePointVersionWhenFoundMultipleVersionWhenEditedVersionIsBetweenDbVersion() {
+   void shouldGetCurrentServicePointVersionWhenFoundMultipleVersionWhenEditedVersionIsBetweenDbVersion() {
     //given
     ServicePointVersion version1 = ServicePointVersion.builder()
         .validFrom(LocalDate.of(2000, 1, 2))
@@ -165,7 +165,7 @@ public class ServicePointServiceTest {
    * return             |-----------|
    */
   @Test
-  public void shouldGetCurrentServicePointVersionWhenNoCurrentVersionMatchedAndReturnTheLastVersion() {
+   void shouldGetCurrentServicePointVersionWhenNoCurrentVersionMatchedAndReturnTheLastVersion() {
     //given
     ServicePointVersion version1 = ServicePointVersion.builder()
         .validFrom(LocalDate.of(2000, 1, 2))
@@ -196,7 +196,7 @@ public class ServicePointServiceTest {
    * return             |------------|
    */
   @Test
-  public void shouldGetCurrentServicePointVersionWhenNoCurrentVersionMatchedAndReturnTheFirstVersion() {
+   void shouldGetCurrentServicePointVersionWhenNoCurrentVersionMatchedAndReturnTheFirstVersion() {
     //given
     ServicePointVersion version1 = ServicePointVersion.builder()
         .validFrom(LocalDate.of(2000, 1, 2))
@@ -227,7 +227,7 @@ public class ServicePointServiceTest {
    * return |------------|-----------|
    */
   @Test
-  public void shouldReturnTheFirstVersionWhenTheEditVersionMatchExactlyMoreThenOneVersion() {
+   void shouldReturnTheFirstVersionWhenTheEditVersionMatchExactlyMoreThenOneVersion() {
     //given
     ServicePointVersion version1 = ServicePointVersion.builder()
         .validFrom(LocalDate.of(2000, 1, 1))
@@ -250,7 +250,7 @@ public class ServicePointServiceTest {
   }
 
   @Test
-  public void shouldUpdateServicePointVersion() {
+   void shouldUpdateServicePointVersion() {
     //given
     ServicePointVersion version1 = ServicePointVersion.builder()
         .validFrom(LocalDate.of(2000, 1, 1))
@@ -269,7 +269,7 @@ public class ServicePointServiceTest {
   }
 
   @Test
-  public void shouldUpdateServicePointVersionAndThrowException() {
+   void shouldUpdateServicePointVersionAndThrowException() {
     //given
     ServicePointVersion version1 = ServicePointVersion.builder()
         .validFrom(LocalDate.of(2000, 1, 1))

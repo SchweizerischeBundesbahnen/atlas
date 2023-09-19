@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-public class CoverageValidationServiceTest {
+ class CoverageValidationServiceTest {
 
   @Mock
   private CoverageService coverageService;
@@ -33,7 +33,7 @@ public class CoverageValidationServiceTest {
   private CoverageValidationService coverageValidationService;
 
   @BeforeEach()
-  public void setUp() {
+   void setUp() {
     MockitoAnnotations.openMocks(this);
     coverageValidationService = new CoverageValidationService(coverageService,
         sublineVersionRepository, lineVersionRepository);
@@ -46,7 +46,7 @@ public class CoverageValidationServiceTest {
    * Result OK
    */
   @Test
-  public void shouldReturnTrueWhenLineHasNoSublineRelated() {
+   void shouldReturnTrueWhenLineHasNoSublineRelated() {
     //given
     LineVersion lineVersion = LineTestData.lineVersionBuilder().slnid("ch:1000").build();
     List<LineVersion> lineVersions = new ArrayList<>();
@@ -66,7 +66,7 @@ public class CoverageValidationServiceTest {
    * Result OK
    */
   @Test
-  public void shouldReturnTrueWhenALineCoversCompletelyASubline() {
+   void shouldReturnTrueWhenALineCoversCompletelyASubline() {
     //given
     LineVersion lineVersion = LineTestData.lineVersionBuilder()
                                           .validFrom(LocalDate.of(2000, 1, 1))
@@ -99,7 +99,7 @@ public class CoverageValidationServiceTest {
    * Result OK
    */
   @Test
-  public void shouldReturnTrueWhenLinesCoverCompletelySublinesWithoutGap() {
+   void shouldReturnTrueWhenLinesCoverCompletelySublinesWithoutGap() {
     //given
     LineVersion firstLineVersion = LineTestData.lineVersionBuilder()
                                           .validFrom(LocalDate.of(2000, 1, 1))
@@ -154,7 +154,7 @@ public class CoverageValidationServiceTest {
    * Result NOK
    */
   @Test
-  public void shouldReturnFalseWhenSublineRangeIsRightOutsideOfLineRanges() {
+   void shouldReturnFalseWhenSublineRangeIsRightOutsideOfLineRanges() {
     //given
     LineVersion lineVersion = LineTestData.lineVersionBuilder()
                                           .validFrom(LocalDate.of(2000, 1, 1))
@@ -189,7 +189,7 @@ public class CoverageValidationServiceTest {
    * Result NOK
    */
   @Test
-  public void shouldReturnFalseWhenSublineRangeIsLeftOutsideOfLineRanges() {
+   void shouldReturnFalseWhenSublineRangeIsLeftOutsideOfLineRanges() {
     //given
     LineVersion lineVersion = LineTestData.lineVersionBuilder()
                                           .validFrom(LocalDate.of(2000, 1, 2))
@@ -222,7 +222,7 @@ public class CoverageValidationServiceTest {
    * Result OK
    */
   @Test
-  public void shouldReturnFalseWhenLineGapNotCoversSubline() {
+   void shouldReturnFalseWhenLineGapNotCoversSubline() {
     //given
     LineVersion firstLineVersion = LineTestData.lineVersionBuilder()
                                           .validFrom(LocalDate.of(2000, 1, 2))
@@ -260,7 +260,7 @@ public class CoverageValidationServiceTest {
    * Result OK
    */
   @Test
-  public void shouldReturnFalseWhenSubLineGapNotCoversLine() {
+   void shouldReturnFalseWhenSubLineGapNotCoversLine() {
     //given
     LineVersion lineVersion = LineTestData.lineVersionBuilder()
                                           .validFrom(LocalDate.of(2000, 1, 1))
@@ -300,7 +300,7 @@ public class CoverageValidationServiceTest {
    * Result OK
    */
   @Test
-  public void shouldReturnFalseWhenASublineDoesNotCoverTheLineCompletely() {
+   void shouldReturnFalseWhenASublineDoesNotCoverTheLineCompletely() {
     //given
     LineVersion lineVersion = LineTestData.lineVersionBuilder()
                                           .validFrom(LocalDate.of(2000, 1, 1))
@@ -333,7 +333,7 @@ public class CoverageValidationServiceTest {
    * Result OK
    */
   @Test
-  public void shouldReturnFalseWhenSublineAndLineDoesNotMatchTheSameGaps() {
+   void shouldReturnFalseWhenSublineAndLineDoesNotMatchTheSameGaps() {
     //given
     LineVersion firstLineVersion = LineTestData.lineVersionBuilder()
                                                .validFrom(LocalDate.of(2000, 1, 1))
@@ -381,7 +381,7 @@ public class CoverageValidationServiceTest {
    * Result OK
    */
   @Test
-  public void shouldReturnTruWhenSublineAndLineAreCompletelyCoveredWithTheSameGaps() {
+   void shouldReturnTruWhenSublineAndLineAreCompletelyCoveredWithTheSameGaps() {
     //given
     LineVersion firstLineVersion = LineTestData.lineVersionBuilder()
                                                .validFrom(LocalDate.of(2000, 1, 1))
@@ -428,7 +428,7 @@ public class CoverageValidationServiceTest {
    * Result NOK
    */
   @Test
-  public void shouldReturnFalseWhenSublineAndLineAreCompletelyCoveredWithTheSameGaps() {
+   void shouldReturnFalseWhenSublineAndLineAreCompletelyCoveredWithTheSameGaps() {
     //given
     LineVersion firstLineVersion = LineTestData.lineVersionBuilder()
                                                .validFrom(LocalDate.of(1900, 1, 1))
@@ -488,7 +488,7 @@ public class CoverageValidationServiceTest {
    * Result NOK
    */
   @Test
-  public void shouldReturnTrueWhenSublineAndLineAreCompletelyCoveredWithTheSameGap() {
+   void shouldReturnTrueWhenSublineAndLineAreCompletelyCoveredWithTheSameGap() {
     //given
     LineVersion firstLineVersion = LineTestData.lineVersionBuilder()
                                                .validFrom(LocalDate.of(1900, 1, 1))
@@ -543,7 +543,7 @@ public class CoverageValidationServiceTest {
    * Result OK
    */
   @Test
-  public void shouldReturnTrueWhenDifferentSubLineWithTheSameTypeCoverALine() {
+   void shouldReturnTrueWhenDifferentSubLineWithTheSameTypeCoverALine() {
     //given
     LineVersion firstLineVersion = LineTestData.lineVersionBuilder()
                                                .validFrom(LocalDate.of(2000, 1, 2))
@@ -587,7 +587,7 @@ public class CoverageValidationServiceTest {
    * Result OK
    */
   @Test
-  public void shouldReturnFalseWhenDifferentSubLineWithDifferentTypesCoverALine() {
+   void shouldReturnFalseWhenDifferentSubLineWithDifferentTypesCoverALine() {
     //given
     LineVersion firstLineVersion = LineTestData.lineVersionBuilder()
                                                .validFrom(LocalDate.of(2000, 1, 2))
@@ -632,7 +632,7 @@ public class CoverageValidationServiceTest {
    * Result OK
    */
   @Test
-  public void shouldReturnTrueWhenDifferentSubLineWithTheSameTypesCoverALine() {
+   void shouldReturnTrueWhenDifferentSubLineWithTheSameTypesCoverALine() {
     //given
     LineVersion firstLineVersion = LineTestData.lineVersionBuilder()
                                                .validFrom(LocalDate.of(2000, 1, 2))
@@ -685,7 +685,7 @@ public class CoverageValidationServiceTest {
    * Result OK
    */
   @Test
-  public void shouldReturnTrueWhenDifferentSubLineWithTheSameTypesCoverALineDifferent() {
+   void shouldReturnTrueWhenDifferentSubLineWithTheSameTypesCoverALineDifferent() {
     //given
     LineVersion firstLineVersion = LineTestData.lineVersionBuilder()
                                                .validFrom(LocalDate.of(2000, 1, 2))
@@ -740,7 +740,7 @@ public class CoverageValidationServiceTest {
    * Result OK
    */
   @Test
-  public void shouldReturnTrueWhenDifferentSubLineWithTheSameTypesCoverAndMultipleOverlappingALineDifferent() {
+   void shouldReturnTrueWhenDifferentSubLineWithTheSameTypesCoverAndMultipleOverlappingALineDifferent() {
     //given
     LineVersion firstLineVersion = LineTestData.lineVersionBuilder()
                                                .validFrom(LocalDate.of(2000, 1, 2))
@@ -811,7 +811,7 @@ public class CoverageValidationServiceTest {
    * Result OK
    */
   @Test
-  public void shouldReturnTrueWhenDifferentSubLineCoverAMultipleOverlappedALines() {
+   void shouldReturnTrueWhenDifferentSubLineCoverAMultipleOverlappedALines() {
     //given
     LineVersion firstLineVersion = LineTestData.lineVersionBuilder()
                                                .validFrom(LocalDate.of(2000, 1, 1))
@@ -882,7 +882,7 @@ public class CoverageValidationServiceTest {
    * Result NOK
    */
   @Test
-  public void shouldReturnFalseWhenDifferentSubLineCoverAMultipleOverlappedALines() {
+   void shouldReturnFalseWhenDifferentSubLineCoverAMultipleOverlappedALines() {
     //given
     LineVersion firstLineVersion = LineTestData.lineVersionBuilder()
                                                .validFrom(LocalDate.of(2000, 1, 1))
@@ -951,7 +951,7 @@ public class CoverageValidationServiceTest {
    * Result OK
    */
   @Test
-  public void shouldReturnFalseWhenDifferentSubLineWithDifferentTypesCoverLine() {
+   void shouldReturnFalseWhenDifferentSubLineWithDifferentTypesCoverLine() {
     //given
     LineVersion firstLineVersion = LineTestData.lineVersionBuilder()
                                                .validFrom(LocalDate.of(2000, 1, 2))
@@ -1005,7 +1005,7 @@ public class CoverageValidationServiceTest {
    * Result OK
    */
   @Test
-  public void shouldReturnFalseWhenDifferentSubLineWithDifferentTypesCoverLine11d() {
+   void shouldReturnFalseWhenDifferentSubLineWithDifferentTypesCoverLine11d() {
     //given
     LineVersion firstLineVersion = LineTestData.lineVersionBuilder()
                                                .validFrom(LocalDate.of(2000, 1, 2))
@@ -1063,7 +1063,7 @@ public class CoverageValidationServiceTest {
    * Result OK
    */
   @Test
-  public void shouldReturnTruWhenLineAreWithGapWithoutSublines() {
+   void shouldReturnTruWhenLineAreWithGapWithoutSublines() {
     //given
     LineVersion firstLineVersion = LineTestData.lineVersionBuilder()
                                                .validFrom(LocalDate.of(2000, 1, 1))

@@ -39,7 +39,7 @@ class DatesValidatorTest {
   }
 
   @Test
-  public void shouldHaveDateValidationExceptionWhenValidFromIsBefore1700_1_1() {
+  void shouldHaveDateValidationExceptionWhenValidFromIsBefore1700_1_1() {
     //given
     DummyDatesValidator dummyDatesValidator = DummyDatesValidator.builder()
         .validFrom(
@@ -58,7 +58,7 @@ class DatesValidatorTest {
   }
 
   @Test
-  public void shouldHaveDateValidationExceptionWhenValidFromIsAfter2099_12_31() {
+  void shouldHaveDateValidationExceptionWhenValidFromIsAfter2099_12_31() {
     //given
     DummyDatesValidator dummyDatesValidator = DummyDatesValidator.builder()
         .validTo(
@@ -80,7 +80,7 @@ class DatesValidatorTest {
   }
 
   @Test
-  public void shouldHaveDateValidationExceptionWhenValidToIsBefore1700_1_1() {
+  void shouldHaveDateValidationExceptionWhenValidToIsBefore1700_1_1() {
     //given
     DummyDatesValidator dummyDatesValidator = DummyDatesValidator.builder()
         .validFrom(
@@ -102,7 +102,7 @@ class DatesValidatorTest {
   }
 
   @Test
-  public void shouldHaveDateValidationExceptionWhenValidToIsAfter9999_12_31() {
+  void shouldHaveDateValidationExceptionWhenValidToIsAfter9999_12_31() {
     //given
     DummyDatesValidator dummyDatesValidator = DummyDatesValidator.builder()
         .validFrom(

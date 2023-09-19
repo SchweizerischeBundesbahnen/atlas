@@ -18,7 +18,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class TimetableHearingYearControllerApiTest extends BaseControllerApiTest {
+ class TimetableHearingYearControllerApiTest extends BaseControllerApiTest {
 
   private static final long YEAR = 2022L;
   private static final TimetableHearingYearModel TIMETABLE_HEARING_YEAR = TimetableHearingYearModel.builder()

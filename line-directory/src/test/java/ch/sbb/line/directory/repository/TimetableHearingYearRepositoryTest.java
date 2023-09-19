@@ -2,8 +2,8 @@ package ch.sbb.line.directory.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.HearingStatus;
+import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.line.directory.entity.TimetableHearingYear;
 import java.time.LocalDate;
 import org.junit.jupiter.api.AfterEach;
@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @IntegrationTest
-public class TimetableHearingYearRepositoryTest {
+ class TimetableHearingYearRepositoryTest {
 
   private static final long YEAR = 2023L;
 
   private final TimetableHearingYearRepository timetableHearingYearRepository;
 
   @Autowired
-  public TimetableHearingYearRepositoryTest(TimetableHearingYearRepository timetableHearingYearRepository) {
+   TimetableHearingYearRepositoryTest(TimetableHearingYearRepository timetableHearingYearRepository) {
     this.timetableHearingYearRepository = timetableHearingYearRepository;
   }
 

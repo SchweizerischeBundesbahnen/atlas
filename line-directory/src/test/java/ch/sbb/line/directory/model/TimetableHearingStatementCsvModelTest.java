@@ -4,7 +4,7 @@ import ch.sbb.line.directory.model.csv.TimetableHearingStatementCsvModel;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class TimetableHearingStatementCsvModelTest {
+ class TimetableHearingStatementCsvModelTest {
 
     @Test
     void shouldReturnOnlyCityWhenZipNull() {

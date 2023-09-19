@@ -12,8 +12,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.model.exception.NotFoundException;
-import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.atlas.searching.SpecificationBuilder;
+import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.entity.Line;
 import ch.sbb.line.directory.entity.LineVersion;
@@ -263,7 +263,7 @@ class LineServiceTest {
   }
 
   @Test
-  public void shouldThrowStaleExceptionOnDifferentVersion() {
+   void shouldThrowStaleExceptionOnDifferentVersion() {
     //given
     LineVersionBuilder<?, ?> version = LineVersion.builder().slnid("slnid");
 

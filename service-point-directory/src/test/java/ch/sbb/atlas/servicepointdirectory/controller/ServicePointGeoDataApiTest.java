@@ -16,13 +16,13 @@ import org.springframework.http.converter.protobuf.ProtobufHttpMessageConverter;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-public class ServicePointGeoDataApiTest extends BaseControllerApiTest {
+ class ServicePointGeoDataApiTest extends BaseControllerApiTest {
 
   private final ServicePointVersionRepository repository;
   private final ServicePointGeoDataController geoDataController;
 
   @Autowired
-  public ServicePointGeoDataApiTest(ServicePointVersionRepository repository, ServicePointGeoDataController geoDataController) {
+   ServicePointGeoDataApiTest(ServicePointVersionRepository repository, ServicePointGeoDataController geoDataController) {
     this.repository = repository;
     this.geoDataController = geoDataController;
   }

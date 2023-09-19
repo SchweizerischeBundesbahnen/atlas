@@ -2,9 +2,9 @@ package ch.sbb.atlas.user.administration.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
+import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.user.administration.entity.PermissionRestriction;
 import ch.sbb.atlas.user.administration.entity.UserPermission;
@@ -21,7 +21,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 @IntegrationTest
-public class UserAdministrationServiceUserPageTest {
+ class UserAdministrationServiceUserPageTest {
 
   @Autowired private UserPermissionRepository userPermissionRepository;
   @Autowired private UserAdministrationService userAdministrationService;

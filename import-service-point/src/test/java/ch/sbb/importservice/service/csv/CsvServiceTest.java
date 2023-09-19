@@ -19,7 +19,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-public class CsvServiceTest {
+ class CsvServiceTest {
 
   private CsvService<ServicePointCsvModel> csvService;
 
@@ -58,7 +58,7 @@ public class CsvServiceTest {
   }
 
   @Test
-  public void shouldGetActualCsvModelsFromS3() {
+   void shouldGetActualCsvModelsFromS3() {
     //given
     LocalDate date = LocalDate.of(2022, 2, 21);
     File csvFile = new File(this.getClass().getClassLoader().getResource("DIENSTSTELLEN_V3_IMPORT.csv").getFile());
@@ -72,7 +72,7 @@ public class CsvServiceTest {
   }
 
   @Test
-  public void shouldGetActualCsvModels() {
+   void shouldGetActualCsvModels() {
     //given
     File csvFile = new File(this.getClass().getClassLoader().getResource("DIENSTSTELLEN_V3_IMPORT.csv").getFile());
     //when
