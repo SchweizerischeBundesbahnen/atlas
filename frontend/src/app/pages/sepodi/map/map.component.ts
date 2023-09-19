@@ -76,25 +76,14 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   }
 
   handleMapClick() {
-    const marker = new maplibregl.Marker({ color: '#FF0000' });
-
     const onMapClicked = (e: any) => {
       const clickedCoordinates = e.lngLat;
-      const transformedCoordinates = transformCoordinates(clickedCoordinates);
       placeMarkerAndFlyTo(clickedCoordinates);
-      this.mapService.clickedGeographyCoordinates.next(transformedCoordinates);
-    };
-
-    const transformCoordinates = (coordinates: any) => {
-      const coordinatePair = {
-        north: coordinates.lat,
-        east: coordinates.lng,
-      };
-      return this.coordinateTransformationService.transform(coordinatePair, 'WGS84', 'LV95');
+      this.mapService.clickedGeographyCoordinates.next(clickedCoordinates);
     };
 
     const placeMarkerAndFlyTo = (coordinates: any) => {
-      marker.setLngLat(coordinates).addTo(this.map);
+      this.mapService.marker.setLngLat(coordinates).addTo(this.map);
       this.map.flyTo({
         center: coordinates as maplibregl.LngLatLike,
         speed: 0.8,
@@ -112,11 +101,11 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     };
 
     const exitEditMode = () => {
-      marker.remove();
+      this.mapService.marker.remove();
       this.map.off('click', onMapClicked);
       this.map.getCanvas().style.cursor = '';
       this.map.on('mouseleave', MAP_SOURCE_NAME, () => (this.map.getCanvas().style.cursor = ''));
-      this.mapService.clickedGeographyCoordinates.next({ north: 0, east: 0 });
+      this.mapService.clickedGeographyCoordinates.next({ lng: 0, lat: 0 });
     };
 
     this.isEditModeSubsription = this.mapService.isEditMode.subscribe((isEditMode) => {
