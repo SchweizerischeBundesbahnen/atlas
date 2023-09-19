@@ -107,6 +107,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   switchVersion(newIndex: number) {
     this.selectedVersionIndex = newIndex;
     this.selectedVersion = this.servicePointVersions[newIndex];
+    this.cancelMapEditMode();
     this.initSelectedVersion();
   }
 
@@ -171,6 +172,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   }
 
   private displayAndSelectServicePointOnMap() {
+    this.cancelMapEditMode();
     this.mapSubscription = this.mapService.mapInitialized.subscribe((initialized) => {
       if (initialized) {
         if (this.mapService.map.getZoom() <= this.ZOOM_LEVEL_FOR_DETAIL) {
@@ -201,7 +203,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
         } else {
           this.initSelectedVersion();
           this.form.disable();
-          this.mapService.isEditMode.next(false);
+          this.cancelMapEditMode();
         }
       }
     });
@@ -241,11 +243,11 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
       this.form.disable();
       if (this.isNew) {
         this.create(servicePointVersion);
-        this.mapService.isEditMode.next(false);
+        this.cancelMapEditMode();
       } else {
         servicePointVersion.numberWithoutCheckDigit = this.selectedVersion.number.number;
         this.update(this.selectedVersion.id!, servicePointVersion);
-        this.mapService.isEditMode.next(false);
+        this.cancelMapEditMode();
       }
     }
   }
@@ -270,6 +272,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
           .updateServicePoint(id, servicePointVersion)
           .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
           .subscribe(() => {
+            this.mapService.refreshMap();
             this.notificationService.success('SEPODI.SERVICE_POINTS.NOTIFICATION.EDIT_SUCCESS');
             this.router
               .navigate(['..', this.selectedVersion.number.number], { relativeTo: this.route })
@@ -301,5 +304,9 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
       this.form.controls.servicePointGeolocation.controls.spatialReference.setValue(null);
     }
     this.form.markAsDirty();
+  }
+
+  private cancelMapEditMode() {
+    this.mapService.isEditMode.next(false);
   }
 }
