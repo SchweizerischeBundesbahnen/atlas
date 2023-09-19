@@ -13,10 +13,10 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class TimetableFieldNumberServiceScenario3Test extends BaseTimetableFieldNumberServiceTest {
+ class TimetableFieldNumberServiceScenario3Test extends BaseTimetableFieldNumberServiceTest {
 
   @Autowired
-  public TimetableFieldNumberServiceScenario3Test(
+   TimetableFieldNumberServiceScenario3Test(
       TimetableFieldNumberVersionRepository versionRepository,
       TimetableFieldNumberService timetableFieldNumberService) {
     super(versionRepository, timetableFieldNumberService);
@@ -32,7 +32,7 @@ public class TimetableFieldNumberServiceScenario3Test extends BaseTimetableField
    * Version:        1                 2        4     5          3
    */
   @Test
-  public void scenario3UpdateVersion2() {
+   void scenario3UpdateVersion2() {
     //given
     version1.setBusinessOrganisation("SBB1");
     version1 = versionRepository.save(version1);
@@ -141,7 +141,7 @@ public class TimetableFieldNumberServiceScenario3Test extends BaseTimetableField
    * Version:        1                 2        4     5          3
    */
   @Test
-  public void scenario3UpdateVersion3() {
+   void scenario3UpdateVersion3() {
     //given
     version1 = versionRepository.save(version1);
     version2 = versionRepository.save(version2);

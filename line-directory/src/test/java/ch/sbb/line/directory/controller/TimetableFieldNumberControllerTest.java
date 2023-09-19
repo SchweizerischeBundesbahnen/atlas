@@ -6,10 +6,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.atlas.api.model.Container;
-import ch.sbb.atlas.model.exception.NotFoundException;
 import ch.sbb.atlas.api.lidi.TimetableFieldNumberModel;
 import ch.sbb.atlas.api.lidi.TimetableFieldNumberVersionModel;
+import ch.sbb.atlas.api.model.Container;
+import ch.sbb.atlas.model.exception.NotFoundException;
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.model.search.TimetableFieldNumberSearchRestrictions;
@@ -27,7 +27,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
-public class TimetableFieldNumberControllerTest {
+ class TimetableFieldNumberControllerTest {
 
   @Mock
   private TimetableFieldNumberService timetableFieldNumberService;
@@ -78,7 +78,7 @@ public class TimetableFieldNumberControllerTest {
   }
 
   @Test
-  public void shouldSaveNewVersion() {
+   void shouldSaveNewVersion() {
     // Given
     TimetableFieldNumberVersionModel timetableFieldNumberVersionModel = createModel();
 

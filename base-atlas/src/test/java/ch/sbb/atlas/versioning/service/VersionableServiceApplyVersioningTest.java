@@ -36,7 +36,7 @@ public class VersionableServiceApplyVersioningTest extends VersionableServiceBas
   }
 
   @Test
-  public void shouldConvertToEntityAndCallSaveOnUpdate() {
+   void shouldConvertToEntityAndCallSaveOnUpdate() {
     //given
     Relation relation1 = Relation.builder().id(1L).value("value1").build();
     Relation relation2 = Relation.builder().id(2L).value("value2").build();
@@ -73,7 +73,7 @@ public class VersionableServiceApplyVersioningTest extends VersionableServiceBas
   }
 
   @Test
-  public void shouldConvertToEntityAndCallSaveOnNew() {
+   void shouldConvertToEntityAndCallSaveOnNew() {
     //given
     LocalDate editedValidFrom = LocalDate.of(2019, 1, 1);
     LocalDate editedValidTo = LocalDate.of(2019, 6, 1);
@@ -109,7 +109,7 @@ public class VersionableServiceApplyVersioningTest extends VersionableServiceBas
   }
 
   @Test
-  public void shouldConvertToEntityAndCallSaveOnUpdateAndDelete() {
+   void shouldConvertToEntityAndCallSaveOnUpdateAndDelete() {
     //given
     LocalDate editedValidFrom = LocalDate.of(2022, 1, 1);
     LocalDate editedValidTo = LocalDate.of(2023, 12, 31);

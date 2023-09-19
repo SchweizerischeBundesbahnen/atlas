@@ -9,10 +9,10 @@ class CmykColorConverterTest {
 
   private static final CmykColorConverter CYMK_COLOR_CONVERTER = new CmykColorConverter();
   private static final CmykColor COLOR = new CmykColor(10, 11, 12, 13);
-  public static final String COLOR_DB_REPRESENTATION = "10,11,12,13";
+   static final String COLOR_DB_REPRESENTATION = "10,11,12,13";
 
   @Test
-  public void shouldConvertToDbRepresentation() {
+   void shouldConvertToDbRepresentation() {
     // given
 
     // when
@@ -22,7 +22,7 @@ class CmykColorConverterTest {
   }
 
   @Test
-  public void shouldConvertNullToDbRepresentation() {
+   void shouldConvertNullToDbRepresentation() {
     // given
 
     // when
@@ -32,7 +32,7 @@ class CmykColorConverterTest {
   }
 
   @Test
-  public void shouldConvertFromDbRepresentation() {
+   void shouldConvertFromDbRepresentation() {
     // given
 
     // when
@@ -42,7 +42,7 @@ class CmykColorConverterTest {
   }
 
   @Test
-  public void shouldConvertNullFromDbRepresentation() {
+   void shouldConvertNullFromDbRepresentation() {
     // given
 
     // when
@@ -52,7 +52,7 @@ class CmykColorConverterTest {
   }
 
   @Test
-  public void shouldConvertFromJsonRepresentation() {
+   void shouldConvertFromJsonRepresentation() {
     // given
 
     // when
@@ -62,7 +62,7 @@ class CmykColorConverterTest {
   }
 
   @Test
-  public void shouldConvertToJsonRepresentation() {
+   void shouldConvertToJsonRepresentation() {
     // given
 
     // when

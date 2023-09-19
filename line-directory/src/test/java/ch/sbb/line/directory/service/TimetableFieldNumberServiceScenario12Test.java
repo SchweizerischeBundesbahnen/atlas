@@ -11,10 +11,10 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class TimetableFieldNumberServiceScenario12Test extends BaseTimetableFieldNumberServiceTest {
+ class TimetableFieldNumberServiceScenario12Test extends BaseTimetableFieldNumberServiceTest {
 
   @Autowired
-  public TimetableFieldNumberServiceScenario12Test(
+   TimetableFieldNumberServiceScenario12Test(
       TimetableFieldNumberVersionRepository versionRepository,
       TimetableFieldNumberService timetableFieldNumberService) {
     super(versionRepository, timetableFieldNumberService);
@@ -30,7 +30,7 @@ public class TimetableFieldNumberServiceScenario12Test extends BaseTimetableFiel
    * Ergebnis: Version 2 wird verlängert
    */
   @Test
-  public void scenario12() {
+   void scenario12() {
     //given
     version1 = versionRepository.save(version1);
     version2 = versionRepository.save(version2);
