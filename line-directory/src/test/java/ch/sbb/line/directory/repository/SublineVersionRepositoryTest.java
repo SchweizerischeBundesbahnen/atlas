@@ -17,13 +17,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
 @Transactional
-public class SublineVersionRepositoryTest {
+ class SublineVersionRepositoryTest {
 
   private final SublineVersionRepository sublineVersionRepository;
   private SublineVersion defaultSublineVersion;
 
   @Autowired
-  public SublineVersionRepositoryTest(SublineVersionRepository sublineVersionRepository) {
+   SublineVersionRepositoryTest(SublineVersionRepository sublineVersionRepository) {
     this.sublineVersionRepository = sublineVersionRepository;
   }
 

@@ -11,10 +11,10 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class TimetableFieldNumberServiceScenario10Test extends BaseTimetableFieldNumberServiceTest {
+ class TimetableFieldNumberServiceScenario10Test extends BaseTimetableFieldNumberServiceTest {
 
   @Autowired
-  public TimetableFieldNumberServiceScenario10Test(
+   TimetableFieldNumberServiceScenario10Test(
       TimetableFieldNumberVersionRepository versionRepository,
       TimetableFieldNumberService timetableFieldNumberService) {
     super(versionRepository, timetableFieldNumberService);
@@ -30,7 +30,7 @@ public class TimetableFieldNumberServiceScenario10Test extends BaseTimetableFiel
    * Ergebnis: Neue Version wird erstellt (mit Inhalt von Änderung und Version 3)
    */
   @Test
-  public void scenario10a() {
+   void scenario10a() {
     //given
     version1 = versionRepository.save(version1);
     version3 = versionRepository.save(version3);
@@ -96,7 +96,7 @@ public class TimetableFieldNumberServiceScenario10Test extends BaseTimetableFiel
    * Ergebnis: Neue Version wird erstellt (mit Inhalt von Änderung und Version 3)
    */
   @Test
-  public void scenario10aMergeWhenNoPropertiesChanged() {
+   void scenario10aMergeWhenNoPropertiesChanged() {
     //given
     version1 = versionRepository.save(version1);
     version3 = versionRepository.save(version3);
@@ -150,7 +150,7 @@ public class TimetableFieldNumberServiceScenario10Test extends BaseTimetableFiel
    * Ergebnis: In der Lücke wird eine neue Version erstellt (mit Inhalt von Änderung und Version 3)
    */
   @Test
-  public void scenario10b() {
+   void scenario10b() {
     //given
     version1 = versionRepository.save(version1);
     version3 = versionRepository.save(version3);

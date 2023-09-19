@@ -26,7 +26,7 @@ public class VersionableServiceScenario7Test extends VersionableServiceBaseTest 
    * 2
    */
   @Test
-  public void scenario7a() {
+   void scenario7a() {
     //given
     LocalDate editedValidFrom = LocalDate.of(2025, 1, 1);
     LocalDate editedValidTo = LocalDate.of(2025, 12, 31);
@@ -105,7 +105,7 @@ public class VersionableServiceScenario7Test extends VersionableServiceBaseTest 
    * 1
    */
   @Test
-  public void scenario7b() {
+   void scenario7b() {
     //given
     LocalDate editedValidFrom = LocalDate.of(2019, 1, 1);
     LocalDate editedValidTo = LocalDate.of(2019, 12, 31);
@@ -183,7 +183,7 @@ public class VersionableServiceScenario7Test extends VersionableServiceBaseTest 
    * 2
    */
   @Test
-  public void scenario7c() {
+   void scenario7c() {
     //given
     LocalDate editedValidFrom = LocalDate.of(2025, 6, 1);
     LocalDate editedValidTo = LocalDate.of(2025, 12, 31);
@@ -262,7 +262,7 @@ public class VersionableServiceScenario7Test extends VersionableServiceBaseTest 
    * 1
    */
   @Test
-  public void scenario7d() {
+   void scenario7d() {
     //given
     LocalDate editedValidFrom = LocalDate.of(2019, 1, 1);
     LocalDate editedValidTo = LocalDate.of(2019, 5, 31);
@@ -335,7 +335,7 @@ public class VersionableServiceScenario7Test extends VersionableServiceBaseTest 
    * ValidFrom is bigger than validTo: expected exception
    */
   @Test
-  public void scenarioValidFromBiggerThenValidTo() {
+   void scenarioValidFromBiggerThenValidTo() {
     //given
     versionableObject1.setValidFrom(LocalDate.of(2020, 12, 12));
     versionableObject1.setValidTo(LocalDate.of(2029, 12, 8));

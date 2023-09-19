@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @IntegrationTest
-public class BaseEntityTest {
+class BaseEntityTest {
 
   @Autowired
   private DummyBaseEntityRepository dummyBaseEntityRepository;
