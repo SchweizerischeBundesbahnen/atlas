@@ -196,7 +196,7 @@ class SublineServiceTest {
   }
 
   @Test
-  public void shouldThrowStaleExceptionOnDifferentVersion() {
+   void shouldThrowStaleExceptionOnDifferentVersion() {
     //given
     SublineVersionBuilder<?, ?> version = SublineVersion.builder().slnid("slnid");
 

@@ -1,5 +1,10 @@
 package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.service.CrossValidationService;
@@ -10,13 +15,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-
 @ExtendWith(MockitoExtension.class)
-public class CrossValidationServiceTest {
+ class CrossValidationServiceTest {
 
   @Mock
   private ServicePointService servicePointService;
@@ -24,12 +24,12 @@ public class CrossValidationServiceTest {
   private CrossValidationService crossValidationService;
 
   @BeforeEach
-  public void setUp() {
+   void setUp() {
     crossValidationService = new CrossValidationService(servicePointService);
   }
 
   @Test
-  public void shouldThrowExceptionWhenValidateServicePointNumberExists() {
+   void shouldThrowExceptionWhenValidateServicePointNumberExists() {
     when(servicePointService.isServicePointNumberExisting(any())).thenReturn(false);
 
     ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(1234567);
@@ -38,7 +38,7 @@ public class CrossValidationServiceTest {
   }
 
   @Test
-  public void shouldValidateServicePointNumberWhenValidateServicePointNumberExists() {
+   void shouldValidateServicePointNumberWhenValidateServicePointNumberExists() {
     when(servicePointService.isServicePointNumberExisting(any())).thenReturn(true);
 
     ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(1234567);

@@ -1,5 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.entity;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
@@ -10,14 +12,11 @@ import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
-import org.junit.jupiter.api.Test;
-
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
 
 class ServicePointVersionTest {
 
@@ -148,7 +147,7 @@ class ServicePointVersionTest {
   }
 
   @Test
-  public void servicePointSharedEntityIntegrityTest(){
+   void servicePointSharedEntityIntegrityTest(){
     //given
 
     //when

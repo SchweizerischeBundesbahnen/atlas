@@ -9,11 +9,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.atlas.api.bodi.BusinessOrganisationModel;
+import ch.sbb.atlas.api.bodi.TransportCompanyBoRelationModel.Fields;
+import ch.sbb.atlas.api.bodi.TransportCompanyRelationModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.business.organisation.directory.BusinessOrganisationData;
-import ch.sbb.atlas.api.bodi.BusinessOrganisationModel;
-import ch.sbb.atlas.api.bodi.TransportCompanyRelationModel;
-import ch.sbb.atlas.api.bodi.TransportCompanyBoRelationModel.Fields;
 import ch.sbb.business.organisation.directory.entity.TransportCompany;
 import ch.sbb.business.organisation.directory.entity.TransportCompanyRelation;
 import ch.sbb.business.organisation.directory.repository.BusinessOrganisationVersionRepository;
@@ -25,7 +25,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class TransportCompanyRelationControllerApiTest extends BaseControllerApiTest {
+ class TransportCompanyRelationControllerApiTest extends BaseControllerApiTest {
 
   private static final TransportCompanyRelationModel RELATION = TransportCompanyRelationModel.builder()
       .transportCompanyId(5L)
