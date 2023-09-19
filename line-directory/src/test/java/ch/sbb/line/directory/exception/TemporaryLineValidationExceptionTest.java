@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-public class TemporaryLineValidationExceptionTest {
+ class TemporaryLineValidationExceptionTest {
 
   @Test
   void testGetErrorResponseWithMultipleRelatingVersions() {

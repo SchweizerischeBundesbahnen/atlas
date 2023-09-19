@@ -20,12 +20,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionSystemException;
 
 @IntegrationTest
-public class TimetableHearingStatementRepositoryTest {
+ class TimetableHearingStatementRepositoryTest {
 
   private final TimetableHearingStatementRepository timetableHearingStatementRepository;
 
   @Autowired
-  public TimetableHearingStatementRepositoryTest(TimetableHearingStatementRepository timetableHearingStatementRepository) {
+   TimetableHearingStatementRepositoryTest(TimetableHearingStatementRepository timetableHearingStatementRepository) {
     this.timetableHearingStatementRepository = timetableHearingStatementRepository;
   }
 

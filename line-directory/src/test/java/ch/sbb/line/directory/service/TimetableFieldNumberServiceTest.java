@@ -38,7 +38,7 @@ class TimetableFieldNumberServiceTest {
   }
 
   @Test
-  public void shouldThrowStaleExceptionOnDifferentVersion() {
+   void shouldThrowStaleExceptionOnDifferentVersion() {
     //given
     TimetableFieldNumberVersionBuilder<?, ?> version = TimetableFieldNumberVersion.builder().ttfnid("ttfnid");
 

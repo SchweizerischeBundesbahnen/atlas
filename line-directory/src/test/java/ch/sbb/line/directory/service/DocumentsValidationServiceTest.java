@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 
 @IntegrationTest
-public class DocumentsValidationServiceTest {
+ class DocumentsValidationServiceTest {
 
   private final TikaService tikaService = new TikaService();
   private final StatementDocumentFilesValidationService documentsValidationService = new StatementDocumentFilesValidationService(tikaService);
@@ -59,7 +59,7 @@ public class DocumentsValidationServiceTest {
   }
 
   @Test
-  public void givenListOfFilesValidateTheyArePdf() {
+   void givenListOfFilesValidateTheyArePdf() {
     List<File> pdfFiles = new ArrayList<>();
     pdfFiles.add(files.get(0));
     pdfFiles.add(files.get(1));
@@ -69,38 +69,38 @@ public class DocumentsValidationServiceTest {
   }
 
   @Test
-  public void givenListOfFilesValidateTheyAreNotPdf() {
+   void givenListOfFilesValidateTheyAreNotPdf() {
     Executable executable = () -> documentsValidationService.validateAllFilessArePdfs(files);
     Exception exception = assertThrows(PdfDocumentConstraintViolationException.class, executable);
     assertEquals(exception.getMessage(), "The given document: test.txt is not a valid PDF file." + (File.separator) + "The given document: test1.txt is not a valid PDF file.");
   }
 
   @Test
-  public void givenListOfFilesValidateNumberOfFilesIsGreaterThanAllowed() {
+   void givenListOfFilesValidateNumberOfFilesIsGreaterThanAllowed() {
     Executable executable = () -> documentsValidationService.validateMaxNumberOfFiles(files.size());
     Exception exception = assertThrows(PdfDocumentConstraintViolationException.class, executable);
     assertEquals(exception.getMessage(), "Overall number of documents is: 6 which exceeds the number of allowed documents of 3.");
   }
 
   @Test
-  public void givenListOfFilesAndStatementDocumentsValidateSizeOfFilesIsNotGreaterThanAllowed() {
+   void givenListOfFilesAndStatementDocumentsValidateSizeOfFilesIsNotGreaterThanAllowed() {
     assertDoesNotThrow(() -> documentsValidationService.validateMaxSizeOfFiles(files, statementDocumentsWithFilesSize10MB(), MAX_DOCUMENTS_SIZE));
   }
 
   @Test
-  public void givenListOfFilesAndStatementDocumentsValidateSizeOfFilesGreaterThanAllowed() {
+   void givenListOfFilesAndStatementDocumentsValidateSizeOfFilesGreaterThanAllowed() {
     Executable executable = () -> documentsValidationService.validateMaxSizeOfFiles(files, statementDocumentsWithFilesSizeAlmost20MB(), MAX_DOCUMENTS_SIZE);
     Exception exception = assertThrows(PdfDocumentConstraintViolationException.class, executable);
     assertEquals(exception.getMessage(), "The combined size of all documents in bytes is: 21023860 which exceeds the maximum allowed size of 20MB.");
   }
 
   @Test
-  public void givenListOfFilesAndStatementDocumentsValidateThereAreNoDuplicateNames() {
+   void givenListOfFilesAndStatementDocumentsValidateThereAreNoDuplicateNames() {
     assertDoesNotThrow(() -> documentsValidationService.validateNoFileNameDuplicate(files, statementDocumentsWithoutDuplicatedFileNames()));
   }
 
   @Test
-  public void givenListOfFilesAndStatementDocumentsValidateThereAreDuplicateNames() {
+   void givenListOfFilesAndStatementDocumentsValidateThereAreDuplicateNames() {
     Executable executable = () -> documentsValidationService.validateNoFileNameDuplicate(files, statementDocumentsWithDuplicatedFileNames());
     Exception exception = assertThrows(PdfDocumentConstraintViolationException.class, executable);
     assertEquals(exception.getMessage(), "FileName must be unique");

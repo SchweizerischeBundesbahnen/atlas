@@ -6,15 +6,15 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.api.model.Container;
-import ch.sbb.line.directory.SublineTestData;
 import ch.sbb.atlas.api.lidi.SublineModel;
 import ch.sbb.atlas.api.lidi.SublineVersionModel;
-import ch.sbb.line.directory.entity.Subline;
-import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
 import ch.sbb.atlas.api.lidi.enumaration.SublineType;
+import ch.sbb.atlas.api.model.Container;
+import ch.sbb.atlas.model.Status;
+import ch.sbb.line.directory.SublineTestData;
+import ch.sbb.line.directory.entity.Subline;
+import ch.sbb.line.directory.entity.SublineVersion;
 import ch.sbb.line.directory.service.CoverageService;
 import ch.sbb.line.directory.service.SublineService;
 import ch.sbb.line.directory.service.export.SublineVersionExportService;
@@ -31,7 +31,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
-public class SublineControllerTest {
+ class SublineControllerTest {
 
   private static final String[] RECURSIVE_COMPARISION_IGNORE_FIELDS = {"editor", "creator",
       "editionDate", "creationDate", "version", "etagVersion"};
@@ -116,7 +116,7 @@ public class SublineControllerTest {
   }
 
   @Test
-  public void shouldSaveNewVersion() {
+   void shouldSaveNewVersion() {
     // Given
     SublineVersionModel sublineVersionModel = createModel();
 

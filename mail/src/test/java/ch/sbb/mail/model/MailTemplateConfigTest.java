@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 class MailTemplateConfigTest {
 
   @Test
-  public void shouldThrowExceptionWhenMailTypeIsNull() {
+   void shouldThrowExceptionWhenMailTypeIsNull() {
     //when
     assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(
         () -> getMailTemplateConfig(null));
@@ -18,7 +18,7 @@ class MailTemplateConfigTest {
   }
 
   @Test
-  public void shouldReturnAtlasStandardTemplate() {
+   void shouldReturnAtlasStandardTemplate() {
     //when
     MailTemplateConfig result = getMailTemplateConfig(MailType.ATLAS_STANDARD);
     //then
@@ -26,7 +26,7 @@ class MailTemplateConfigTest {
   }
 
   @Test
-  public void shouldReturnTuImportTemplate() {
+   void shouldReturnTuImportTemplate() {
     //when
     MailTemplateConfig result = getMailTemplateConfig(MailType.TU_IMPORT);
     //then
@@ -34,7 +34,7 @@ class MailTemplateConfigTest {
   }
 
   @Test
-  public void shouldReturnSchedulingErrorNotificationTemplate() {
+   void shouldReturnSchedulingErrorNotificationTemplate() {
     //when
     MailTemplateConfig result = getMailTemplateConfig(MailType.SCHEDULING_ERROR_NOTIFICATION);
     //then
@@ -42,7 +42,7 @@ class MailTemplateConfigTest {
   }
 
   @Test
-  public void shouldReturnWorkflowNotification() {
+   void shouldReturnWorkflowNotification() {
     //when
     MailTemplateConfig result = getMailTemplateConfig(MailType.WORKFLOW_NOTIFICATION);
     //then

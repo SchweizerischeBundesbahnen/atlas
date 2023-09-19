@@ -14,13 +14,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @IntegrationTest
-public class ServicePointSearchVersionRepositoryTest {
+ class ServicePointSearchVersionRepositoryTest {
 
     private final ServicePointSearchVersionRepository servicePointSearchVersionRepository;
     private final ServicePointVersionRepository servicePointVersionRepository;
 
     @Autowired
-    public ServicePointSearchVersionRepositoryTest(ServicePointSearchVersionRepository servicePointSearchVersionRepository,
+     ServicePointSearchVersionRepositoryTest(ServicePointSearchVersionRepository servicePointSearchVersionRepository,
                                                    ServicePointVersionRepository servicePointVersionRepository){
         this.servicePointSearchVersionRepository = servicePointSearchVersionRepository;
         this.servicePointVersionRepository = servicePointVersionRepository;
@@ -46,13 +46,13 @@ public class ServicePointSearchVersionRepositoryTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenSearchWithLessThanTwoDigits(){
+     void shouldThrowExceptionWhenSearchWithLessThanTwoDigits(){
         //when & then
         assertThrows(IllegalArgumentException.class, () -> servicePointSearchVersionRepository.searchServicePoints("b"));
     }
 
     @Test
-    public void shouldReturnAllServicePointWithDesignationOfficialBern(){
+     void shouldReturnAllServicePointWithDesignationOfficialBern(){
         //when
         List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("bern");
         //then
@@ -64,7 +64,7 @@ public class ServicePointSearchVersionRepositoryTest {
     }
 
     @Test
-    public void shouldReturnAllServicePointWithDesignationOfficialContainsOst(){
+     void shouldReturnAllServicePointWithDesignationOfficialContainsOst(){
         //when
         List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("ost");
         //then
@@ -74,7 +74,7 @@ public class ServicePointSearchVersionRepositoryTest {
     }
 
     @Test
-    public void shouldReturnAllServicePointWithDesignationOfficialEndsWithEgg(){
+     void shouldReturnAllServicePointWithDesignationOfficialEndsWithEgg(){
         //when
         List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("egg");
         //then
@@ -84,7 +84,7 @@ public class ServicePointSearchVersionRepositoryTest {
     }
 
     @Test
-    public void shouldReturnEmptyListWhenNoMatch(){
+     void shouldReturnEmptyListWhenNoMatch(){
         //when
         List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("milan");
         //then
@@ -93,7 +93,7 @@ public class ServicePointSearchVersionRepositoryTest {
     }
 
     @Test
-    public void shouldReturnAllServicePointWithNumberStartWith85(){
+     void shouldReturnAllServicePointWithNumberStartWith85(){
         //when
         List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("85");
         //then
@@ -106,7 +106,7 @@ public class ServicePointSearchVersionRepositoryTest {
     }
 
     @Test
-    public void shouldReturnAllServicePointWithNumberEndsWith85(){
+     void shouldReturnAllServicePointWithNumberEndsWith85(){
         //when
         List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("61");
         //then
@@ -116,7 +116,7 @@ public class ServicePointSearchVersionRepositoryTest {
     }
 
     @Test
-    public void shouldReturnAllServicePointWithNumberContains7000(){
+     void shouldReturnAllServicePointWithNumberContains7000(){
         //when
         List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("7000");
         //then
@@ -126,7 +126,7 @@ public class ServicePointSearchVersionRepositoryTest {
     }
 
     @Test
-    public void shouldReturnAllServicePointWithDesignationLongNapoli(){
+     void shouldReturnAllServicePointWithDesignationLongNapoli(){
         //when
         List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("napoli");
         //then
@@ -137,7 +137,7 @@ public class ServicePointSearchVersionRepositoryTest {
     }
 
     @Test
-    public void shouldReturnAllServicePointWithDesignationLongNapol(){
+     void shouldReturnAllServicePointWithDesignationLongNapol(){
         //when
         List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("napol");
         //then
@@ -149,7 +149,7 @@ public class ServicePointSearchVersionRepositoryTest {
     }
 
     @Test
-    public void shouldEscapePercent(){
+     void shouldEscapePercent(){
         //when
         String results = servicePointSearchVersionRepository.sanitizeValue("Be%rn");
         //then
@@ -158,7 +158,7 @@ public class ServicePointSearchVersionRepositoryTest {
     }
 
     @Test
-    public void shouldRemoveIfStringContainsOnlyDigits(){
+     void shouldRemoveIfStringContainsOnlyDigits(){
         //when
         String results = servicePointSearchVersionRepository.sanitizeValue("85 07000");
         //then

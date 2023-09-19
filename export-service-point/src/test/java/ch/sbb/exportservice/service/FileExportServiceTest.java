@@ -29,7 +29,7 @@ class FileExportServiceTest {
   private final FileServiceImpl fileService = new FileServiceImpl();
 
   @BeforeEach
-  public void init() {
+   void init() {
     openMocks(this);
     fileExportService = new FileExportService(amazonFileStreamingService, amazonService, fileService);
   }

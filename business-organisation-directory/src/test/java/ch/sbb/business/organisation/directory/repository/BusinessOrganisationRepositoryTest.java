@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
 @Transactional
-public class BusinessOrganisationRepositoryTest {
+ class BusinessOrganisationRepositoryTest {
 
   private static final String SBOID = "sboid";
   private static final String[] IGNORED_FIELDS = {"validFrom", "validTo"};
@@ -23,7 +23,7 @@ public class BusinessOrganisationRepositoryTest {
   private final BusinessOrganisationRepository businessOrganisationRepository;
 
   @Autowired
-  public BusinessOrganisationRepositoryTest(BusinessOrganisationVersionRepository versionRepository,
+   BusinessOrganisationRepositoryTest(BusinessOrganisationVersionRepository versionRepository,
       BusinessOrganisationRepository businessOrganisationRepository) {
     this.versionRepository = versionRepository;
     this.businessOrganisationRepository = businessOrganisationRepository;
