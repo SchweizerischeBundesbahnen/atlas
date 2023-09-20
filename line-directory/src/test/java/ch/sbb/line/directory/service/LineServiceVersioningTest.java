@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
 @Transactional
-public class LineServiceVersioningTest {
+ class LineServiceVersioningTest {
 
   @MockBean
   private SharedBusinessOrganisationService sharedBusinessOrganisationService;
@@ -36,7 +36,7 @@ public class LineServiceVersioningTest {
   private LineVersion version3;
 
   @Autowired
-  public LineServiceVersioningTest(
+   LineServiceVersioningTest(
       LineVersionRepository lineVersionRepository,
       LineService lineService) {
     this.lineVersionRepository = lineVersionRepository;
@@ -89,7 +89,7 @@ public class LineServiceVersioningTest {
    * Version:        1       2         4       5          3
    */
   @Test
-  public void scenario2() {
+   void scenario2() {
     //given
     version1 = lineVersionRepository.save(version1);
     version2 = lineVersionRepository.save(version2);
@@ -162,7 +162,7 @@ public class LineServiceVersioningTest {
    * Änderung:  name=SBB1       number=2
    */
   @Test
-  public void scenarioMergeTwoVersions() {
+   void scenarioMergeTwoVersions() {
     //given
     version1.setSwissLineNumber("1");
     version1 = lineVersionRepository.save(version1);
@@ -212,7 +212,7 @@ public class LineServiceVersioningTest {
    * Version:      1     4              2              5        3
    */
   @Test
-  public void scenario4() {
+   void scenario4() {
     //given
     version1 = lineVersionRepository.save(version1);
     version2 = lineVersionRepository.save(version2);

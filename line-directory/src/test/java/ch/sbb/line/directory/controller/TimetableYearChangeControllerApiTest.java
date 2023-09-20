@@ -9,10 +9,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import org.junit.jupiter.api.Test;
 
-public class TimetableYearChangeControllerApiTest extends BaseControllerApiTest {
+ class TimetableYearChangeControllerApiTest extends BaseControllerApiTest {
 
   @Test
-  public void shouldReturnFutureTimeTable() throws Exception {
+   void shouldReturnFutureTimeTable() throws Exception {
     //given
     String year = "2022";
     //when
@@ -21,7 +21,7 @@ public class TimetableYearChangeControllerApiTest extends BaseControllerApiTest 
   }
 
   @Test
-  public void shouldReturnErrorWhenYearBefore1700() throws Exception {
+   void shouldReturnErrorWhenYearBefore1700() throws Exception {
     //given
     String year = "1699";
     //when
@@ -35,7 +35,7 @@ public class TimetableYearChangeControllerApiTest extends BaseControllerApiTest 
   }
 
   @Test
-  public void shouldReturnErrorWhenYearAfter9999() throws Exception {
+   void shouldReturnErrorWhenYearAfter9999() throws Exception {
     //given
     String year = "10000";
     //when
@@ -49,7 +49,7 @@ public class TimetableYearChangeControllerApiTest extends BaseControllerApiTest 
   }
 
   @Test
-  public void shouldReturnErrorWhenNextFutureTimeTablesIsZero() throws Exception {
+   void shouldReturnErrorWhenNextFutureTimeTablesIsZero() throws Exception {
     //given
     String count = "0";
     //when
@@ -63,7 +63,7 @@ public class TimetableYearChangeControllerApiTest extends BaseControllerApiTest 
   }
 
   @Test
-  public void shouldReturnErrorWhenNextFutureTimeTablesIsMoreThanHundred() throws Exception {
+   void shouldReturnErrorWhenNextFutureTimeTablesIsMoreThanHundred() throws Exception {
     //given
     String count = "101";
     //when
@@ -77,7 +77,7 @@ public class TimetableYearChangeControllerApiTest extends BaseControllerApiTest 
   }
 
   @Test
-  public void shouldReturnNextFutureTimeTables() throws Exception {
+   void shouldReturnNextFutureTimeTables() throws Exception {
     //given
     String count = "10";
     //when

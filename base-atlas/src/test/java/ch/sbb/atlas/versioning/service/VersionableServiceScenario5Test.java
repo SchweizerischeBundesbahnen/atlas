@@ -26,7 +26,7 @@ public class VersionableServiceScenario5Test extends VersionableServiceBaseTest 
    * 3         6      4
    */
   @Test
-  public void scenario5() {
+   void scenario5() {
     //given
     LocalDate editedValidFrom = LocalDate.of(2020, 6, 1);
     LocalDate editedValidTo = LocalDate.of(2025, 6, 1);

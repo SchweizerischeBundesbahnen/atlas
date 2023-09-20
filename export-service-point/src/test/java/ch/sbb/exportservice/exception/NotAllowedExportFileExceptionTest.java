@@ -1,16 +1,16 @@
 package ch.sbb.exportservice.exception;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.exportservice.model.BatchExportFileName;
 import ch.sbb.exportservice.model.ExportType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-public class NotAllowedExportFileExceptionTest {
+ class NotAllowedExportFileExceptionTest {
 
   @Test
-  public void shouldGetNotAllowedExportFileException() {
+   void shouldGetNotAllowedExportFileException() {
     // given
 
     // when

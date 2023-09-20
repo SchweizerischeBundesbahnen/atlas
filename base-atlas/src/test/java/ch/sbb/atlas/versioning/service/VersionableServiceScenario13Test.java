@@ -26,7 +26,7 @@ public class VersionableServiceScenario13Test extends VersionableServiceBaseTest
    * 1          3      2
    */
   @Test
-  public void scenario13a() {
+   void scenario13a() {
     //given
     LocalDate editedValidFrom = versionableObject2.getValidFrom();
     LocalDate editedValidTo = LocalDate.of(2022, 6, 1);
@@ -112,7 +112,7 @@ public class VersionableServiceScenario13Test extends VersionableServiceBaseTest
    * 1          3        2
    */
   @Test
-  public void scenario13b() {
+   void scenario13b() {
     //given
     LocalDate editedValidFrom = LocalDate.of(2020, 6, 1);
     LocalDate editedValidTo = versionableObject1.getValidTo();
@@ -198,7 +198,7 @@ public class VersionableServiceScenario13Test extends VersionableServiceBaseTest
    * Version:      1        2     5     3      4
    */
   @Test
-  public void scenario13c() {
+   void scenario13c() {
     //given
     LocalDate editedValidFrom = versionableObject2.getValidFrom();
     LocalDate editedValidTo = versionableObject3.getValidFrom().plusMonths(2);
@@ -318,7 +318,7 @@ public class VersionableServiceScenario13Test extends VersionableServiceBaseTest
    * Version:      1        2         3      5   4
    */
   @Test
-  public void scenario13d() {
+   void scenario13d() {
     //given
     LocalDate editedValidFrom = versionableObject2.getValidFrom();
     LocalDate editedValidTo = versionableObject4.getValidFrom().plusMonths(2);
@@ -437,7 +437,7 @@ public class VersionableServiceScenario13Test extends VersionableServiceBaseTest
    * Version:       1     2    5      3           4
    */
   @Test
-  public void scenario13e() {
+   void scenario13e() {
     //given
     LocalDate editedValidFrom = versionableObject2.getValidFrom().plusMonths(2);
     LocalDate editedValidTo = versionableObject3.getValidTo();
@@ -556,7 +556,7 @@ public class VersionableServiceScenario13Test extends VersionableServiceBaseTest
    * Version:      1  5     2        3            4
    */
   @Test
-  public void scenario13f() {
+   void scenario13f() {
     //given
     LocalDate editedValidFrom = versionableObject1.getValidFrom().plusMonths(2);
     LocalDate editedValidTo = versionableObject3.getValidTo();

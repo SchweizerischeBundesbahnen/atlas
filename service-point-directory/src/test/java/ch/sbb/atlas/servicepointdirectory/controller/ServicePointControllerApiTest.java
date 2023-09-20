@@ -51,7 +51,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MvcResult;
 
-public class ServicePointControllerApiTest extends BaseControllerApiTest {
+ class ServicePointControllerApiTest extends BaseControllerApiTest {
 
   @MockBean
   private SharedBusinessOrganisationService sharedBusinessOrganisationService;
@@ -62,7 +62,7 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
   private ServicePointVersion servicePointVersion;
 
   @Autowired
-  public ServicePointControllerApiTest(ServicePointVersionRepository repository,
+   ServicePointControllerApiTest(ServicePointVersionRepository repository,
       ServicePointFotCommentRepository fotCommentRepository, ServicePointController servicePointController) {
     this.repository = repository;
     this.fotCommentRepository = fotCommentRepository;
@@ -325,7 +325,7 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
-  public void shouldUpdateServicePointAndCreateMultipleVersions() throws Exception {
+   void shouldUpdateServicePointAndCreateMultipleVersions() throws Exception {
     ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
         ServicePointTestData.getAargauServicePointVersionModel());
     Long id = servicePointVersionModel.getId();
@@ -365,7 +365,7 @@ public class ServicePointControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
-  public void shouldUpdateServicePointAndNotCreateMultipleVersions() throws Exception {
+   void shouldUpdateServicePointAndNotCreateMultipleVersions() throws Exception {
     ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
         ServicePointTestData.getAargauServicePointVersionModel());
     Long id = servicePointVersionModel.getId();
