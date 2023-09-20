@@ -32,7 +32,7 @@ import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.DefaultApplicationArguments;
 
-public class RecoveryJobsRunnerTest {
+ class RecoveryJobsRunnerTest {
 
   private RecoveryJobsRunner recoveryJobsRunner;
 
@@ -73,14 +73,14 @@ public class RecoveryJobsRunnerTest {
   private ImportProcessedItemRepository importProcessedItemRepository;
 
   @BeforeEach
-  public void setUp() {
+   void setUp() {
     MockitoAnnotations.openMocks(this);
     recoveryJobsRunner = new RecoveryJobsRunner(jobExplorer, jobLauncher, jobRepository, importProcessedItemRepository,
         importServicePointCsvJob, importLoadingPointCsvJob, importTrafficPointCsvJob, fileService);
   }
 
   @Test
-  public void shouldNotRecoverAnyJob() throws Exception {
+   void shouldNotRecoverAnyJob() throws Exception {
     //when
     recoveryJobsRunner.run(new DefaultApplicationArguments());
     //then
@@ -91,7 +91,7 @@ public class RecoveryJobsRunnerTest {
   }
 
   @Test
-  public void shouldRecoverImportServicePointCsvJob()
+   void shouldRecoverImportServicePointCsvJob()
       throws Exception {
     //given
     StepExecution stepExecution = new StepExecution("myStep", jobExecution);
@@ -115,7 +115,7 @@ public class RecoveryJobsRunnerTest {
   }
 
   @Test
-  public void shouldRecoverImportLoadingPointCsvJob()
+   void shouldRecoverImportLoadingPointCsvJob()
       throws Exception {
     //given
     StepExecution stepExecution = new StepExecution("myStep", jobExecution);

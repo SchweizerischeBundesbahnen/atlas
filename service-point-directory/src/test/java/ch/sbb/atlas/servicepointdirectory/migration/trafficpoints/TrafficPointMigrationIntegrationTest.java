@@ -1,9 +1,9 @@
 package ch.sbb.atlas.servicepointdirectory.migration.trafficpoints;
 
-import static ch.sbb.atlas.servicepointdirectory.migration.CsvReader.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.servicepointdirectory.migration.CsvReader;
 import ch.sbb.atlas.servicepointdirectory.migration.DateRange;
 import ch.sbb.atlas.servicepointdirectory.migration.Validity;
 import java.io.IOException;
@@ -22,7 +22,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 @IntegrationTest
 @Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class TrafficPointMigrationIntegrationTest {
+ class TrafficPointMigrationIntegrationTest {
 
   private static final String DIDOK_CSV_FILE = "DIDOK3_VERKEHRSPUNKTELEMENTE_ALL_V_1_20230906011933.csv";
   private static final String ATLAS_CSV_FILE = "full-world-traffic_point-2023-09-06.csv";
@@ -33,13 +33,13 @@ public class TrafficPointMigrationIntegrationTest {
   @Test
   @Order(1)
   void shouldParseCsvsCorrectly() throws IOException {
-    try (InputStream csvStream = this.getClass().getResourceAsStream(BASE_PATH + DIDOK_CSV_FILE)) {
-      didokCsvLines.addAll(parseCsv(csvStream, TrafficPointDidokCsvModel.class));
+    try (InputStream csvStream = this.getClass().getResourceAsStream(CsvReader.BASE_PATH + DIDOK_CSV_FILE)) {
+      didokCsvLines.addAll(CsvReader.parseCsv(csvStream, TrafficPointDidokCsvModel.class));
     }
     assertThat(didokCsvLines).isNotEmpty();
 
-    try (InputStream csvStream = this.getClass().getResourceAsStream(BASE_PATH + ATLAS_CSV_FILE)) {
-      trafficPointElementCsvModels.addAll(parseCsv(csvStream, TrafficPointAtlasCsvModel.class));
+    try (InputStream csvStream = this.getClass().getResourceAsStream(CsvReader.BASE_PATH + ATLAS_CSV_FILE)) {
+      trafficPointElementCsvModels.addAll(CsvReader.parseCsv(csvStream, TrafficPointAtlasCsvModel.class));
     }
     assertThat(trafficPointElementCsvModels).isNotEmpty();
   }
@@ -82,8 +82,8 @@ public class TrafficPointMigrationIntegrationTest {
         Collectors.groupingBy(TrafficPointAtlasCsvModel::getSloid, Collectors.collectingAndThen(Collectors.toList(),
             list -> new Validity(
                 list.stream().map(i -> DateRange.builder()
-                    .from(dateFromString(i.getValidFrom()))
-                    .to(dateFromString(i.getValidTo()))
+                    .from(CsvReader.dateFromString(i.getValidFrom()))
+                    .to(CsvReader.dateFromString(i.getValidTo()))
                     .build()
                 ).collect(Collectors.toList())
             ).minify())
@@ -128,8 +128,8 @@ public class TrafficPointMigrationIntegrationTest {
       List<TrafficPointAtlasCsvModel> atlasCsvLines) {
     List<TrafficPointAtlasCsvModel> matchedVersions = atlasCsvLines.stream().filter(
             atlasCsvLine -> DateRange.builder()
-                .from(dateFromString(atlasCsvLine.getValidFrom()))
-                .to(dateFromString(atlasCsvLine.getValidTo()))
+                .from(CsvReader.dateFromString(atlasCsvLine.getValidFrom()))
+                .to(CsvReader.dateFromString(atlasCsvLine.getValidTo()))
                 .build()
                 .contains(didokCsvLine.getValidFrom()))
         .toList();

@@ -1,7 +1,16 @@
 package ch.sbb.atlas.user.administration.service;
 
-import ch.sbb.atlas.api.user.administration.enumeration.UserAccountStatus;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
 import ch.sbb.atlas.api.user.administration.UserModel;
+import ch.sbb.atlas.api.user.administration.enumeration.UserAccountStatus;
 import com.microsoft.graph.models.User;
 import com.microsoft.graph.requests.GraphServiceClient;
 import com.microsoft.graph.requests.UserCollectionPage;
@@ -16,16 +25,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
-public class GraphApiServiceTest {
+ class GraphApiServiceTest {
 
   private GraphApiService graphApiService;
 
@@ -126,7 +126,7 @@ public class GraphApiServiceTest {
   }
 
   static class UserCollectionResponseMockClass extends UserCollectionResponse {
-    public UserCollectionResponseMockClass(List<User> value){
+     UserCollectionResponseMockClass(List<User> value){
       super.value = value;
     }
   }

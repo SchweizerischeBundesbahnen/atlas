@@ -1,5 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
@@ -11,13 +13,6 @@ import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointFotComment;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
-import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.util.Pair;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
@@ -26,13 +21,17 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.util.Pair;
+import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
 @Transactional
 @Slf4j
-public class ServicePointImportServiceTest {
+ class ServicePointImportServiceTest {
 
   private static final String CSV_FILE = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20221222015634.csv";
   private static final String SEPARATOR = "/";
@@ -46,7 +45,7 @@ public class ServicePointImportServiceTest {
   private final ServicePointFotCommentService servicePointFotCommentService;
 
   @Autowired
-  public ServicePointImportServiceTest(ServicePointImportService servicePointImportService,
+   ServicePointImportServiceTest(ServicePointImportService servicePointImportService,
       ServicePointVersionRepository servicePointVersionRepository,
       ServicePointFotCommentService servicePointFotCommentService) {
     this.servicePointImportService = servicePointImportService;
@@ -55,7 +54,7 @@ public class ServicePointImportServiceTest {
   }
 
   @Test
-  public void shouldImportServicePoints() {
+   void shouldImportServicePoints() {
     //given
     List<ServicePointCsvModelContainer> servicePointCsvModelContainers = getServicePointCsvModelContainers();
     Integer didokCode = servicePointCsvModelContainers.get(0).getDidokCode();
@@ -85,7 +84,7 @@ public class ServicePointImportServiceTest {
    * Res  |----------------A---------------|
    */
   @Test
-  public void shouldMergeServicePointByImportServicePointsWithoutGeolocation() throws IOException {
+   void shouldMergeServicePointByImportServicePointsWithoutGeolocation() throws IOException {
     //given
     ServicePointNumber servicePointNumber;
     String firstFile = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20230717021649_without_geolocation.csv";
@@ -119,7 +118,7 @@ public class ServicePointImportServiceTest {
    * Res  |---A---|-------C--------|---B---|
    */
   @Test
-  public void shouldUpdateServicePointByImportServicePoints() throws IOException {
+   void shouldUpdateServicePointByImportServicePoints() throws IOException {
     //given
     ServicePointNumber servicePointNumber;
     String firstFile = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20230717021649_without_geolocation.csv";
@@ -164,7 +163,7 @@ public class ServicePointImportServiceTest {
    * 3) The Result is one ServicePoint version with one Geolocation version -> the sequential versions are merged
    */
   @Test
-  public void shouldMergeServicePointByImportServicePointsWithMergeGeolocation() throws IOException {
+   void shouldMergeServicePointByImportServicePointsWithMergeGeolocation() throws IOException {
     //given
     ServicePointNumber servicePointNumber;
     String firstFile = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20230717021649_geo_with_merge.csv";
@@ -202,7 +201,7 @@ public class ServicePointImportServiceTest {
    * 3) The Result should be one ServicePoint version with one Geolocation version like the second file
    */
   @Test
-  public void shouldMergeServicePointByImportServicePointsWithPremergedGeolocation() throws IOException {
+   void shouldMergeServicePointByImportServicePointsWithPremergedGeolocation() throws IOException {
     //given
     ServicePointNumber servicePointNumber;
     String firstFile = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20230717021649_geo.csv";
@@ -243,7 +242,7 @@ public class ServicePointImportServiceTest {
    * 3) The Result should be one ServicePoint version with one Geolocation version like the second file
    */
   @Test
-  public void shouldMergeServicePointByImportServicePointsWithPremergedGeolocationDataExample() throws IOException {
+   void shouldMergeServicePointByImportServicePointsWithPremergedGeolocationDataExample() throws IOException {
     //given
     ServicePointNumber servicePointNumber;
     String firstFile = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20230717021649.csv";

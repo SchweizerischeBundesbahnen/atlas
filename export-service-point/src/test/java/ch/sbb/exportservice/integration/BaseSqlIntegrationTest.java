@@ -4,21 +4,20 @@ import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.exportservice.DbSchemaCreation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import javax.sql.DataSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 
 @DbSchemaCreation
 @IntegrationTest
 @AutoConfigureMockMvc(addFilters = false)
-public abstract class BaseSqlIntegrationTest {
+ abstract class BaseSqlIntegrationTest {
 
   @Autowired
   @Qualifier("servicePointDataSource")

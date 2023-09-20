@@ -6,13 +6,13 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 
 /**
- * To check which day of the year should be the Actual Future Timetable
- * see <a href="https://www.fahrplanfelder.ch/en/explanations/timetable-year.html">Timetable year</a>
+ * To check which day of the year should be the Actual Future Timetable see <a
+ * href="https://www.fahrplanfelder.ch/en/explanations/timetable-year.html">Timetable year</a>
  */
-public class FutureTimetableHelperTest {
+class FutureTimetableHelperTest {
 
   @Test
-  public void shouldGetActualFutureTimetableDateForYear2022_12_9() {
+  void shouldGetActualFutureTimetableDateForYear2022_12_9() {
     //given
     LocalDate futureTimetableDate2022 = LocalDate.of(2022, 12, 11);
     //when
@@ -23,7 +23,7 @@ public class FutureTimetableHelperTest {
   }
 
   @Test
-  public void shouldGetActualFutureTimetableDateForYear2022_12_10() {
+  void shouldGetActualFutureTimetableDateForYear2022_12_10() {
     //given
     LocalDate futureTimetableDate2022 = LocalDate.of(2022, 12, 11);
     //when
@@ -34,7 +34,7 @@ public class FutureTimetableHelperTest {
   }
 
   @Test
-  public void shouldGetActualFutureTimetableDateForYear2022_12_11() {
+  void shouldGetActualFutureTimetableDateForYear2022_12_11() {
     //given
     LocalDate futureTimetableDate2023 = LocalDate.of(2023, 12, 10);
     //when
@@ -45,7 +45,7 @@ public class FutureTimetableHelperTest {
   }
 
   @Test
-  public void shouldGetActualFutureTimetableDateForYear2022_12_12() {
+  void shouldGetActualFutureTimetableDateForYear2022_12_12() {
     //given
     LocalDate futureTimetableDate2023 = LocalDate.of(2023, 12, 10);
     //when
@@ -56,7 +56,7 @@ public class FutureTimetableHelperTest {
   }
 
   @Test
-  public void shouldGetActualFutureTimetableDateForYear2021() {
+  void shouldGetActualFutureTimetableDateForYear2021() {
     //given
     LocalDate futureTimetableDate2021 = LocalDate.of(2021, 12, 12);
     //when
@@ -67,7 +67,7 @@ public class FutureTimetableHelperTest {
   }
 
   @Test
-  public void shouldGetActualFutureTimetableDateForYear2022() {
+  void shouldGetActualFutureTimetableDateForYear2022() {
     //given
     LocalDate futureTimetableDate2021 = LocalDate.of(2022, 12, 11);
     //when
@@ -78,7 +78,7 @@ public class FutureTimetableHelperTest {
   }
 
   @Test
-  public void shouldGetActualFutureTimetableDateForYear2023() {
+  void shouldGetActualFutureTimetableDateForYear2023() {
     //given
     LocalDate futureTimetableDate2021 = LocalDate.of(2023, 12, 10);
     //when
@@ -89,7 +89,7 @@ public class FutureTimetableHelperTest {
   }
 
   @Test
-  public void shouldGetActualFutureTimetableDateForYear2024() {
+  void shouldGetActualFutureTimetableDateForYear2024() {
     //given
     LocalDate futureTimetableDate2021 = LocalDate.of(2024, 12, 15);
     //when
@@ -100,7 +100,7 @@ public class FutureTimetableHelperTest {
   }
 
   @Test
-  public void shouldGetActualFutureTimetableDateForYear2025() {
+  void shouldGetActualFutureTimetableDateForYear2025() {
     //given
     LocalDate futureTimetableDate2021 = LocalDate.of(2025, 12, 14);
     //when
@@ -111,18 +111,18 @@ public class FutureTimetableHelperTest {
   }
 
   @Test
-  public void shouldGetFirstDayOfTimetableYear2025() {
+  void shouldGetFirstDayOfTimetableYear2025() {
     //when
     LocalDate result = FutureTimetableHelper.getFirstDayOfTimetableYear(2025L);
     //then
-    assertThat(result).isEqualTo(LocalDate.of(2024,12,15));
+    assertThat(result).isEqualTo(LocalDate.of(2024, 12, 15));
   }
 
   @Test
-  public void shouldGetFirstDayOfTimetableYear2023() {
+  void shouldGetFirstDayOfTimetableYear2023() {
     //when
     LocalDate result = FutureTimetableHelper.getFirstDayOfTimetableYear(2023L);
     //then
-    assertThat(result).isEqualTo(LocalDate.of(2022,12,11));
+    assertThat(result).isEqualTo(LocalDate.of(2022, 12, 11));
   }
 }
