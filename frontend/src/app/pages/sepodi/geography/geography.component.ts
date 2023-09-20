@@ -10,6 +10,11 @@ import { MatRadioChange } from '@angular/material/radio';
 export const LV95_MAX_DIGITS = 5;
 export const WGS84_MAX_DIGITS = 11;
 
+interface latLngCoordinates {
+  lat: number;
+  lng: number;
+}
+
 @Component({
   selector: 'sepodi-geography',
   templateUrl: './geography.component.html',
@@ -17,7 +22,6 @@ export const WGS84_MAX_DIGITS = 11;
 export class GeographyComponent implements OnInit, OnDestroy {
   @Input() disabled = false;
   @Input() formGroup!: FormGroup<GeographyFormGroup>;
-  initFormGroup!: FormGroup<GeographyFormGroup>;
   spatialReference: SpatialReference = 'LV95';
 
   readonly LV95_MAX_DIGITS = LV95_MAX_DIGITS;
@@ -33,12 +37,10 @@ export class GeographyComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    if (this.mapService.marker.getElement().parentNode) {
-      this.mapService.marker.remove();
-    }
-    this.initFormGroup = this.formGroup;
     this.initTransformedCoordinatePair();
     this.spatialReferenceSubscription = this.formGroup.valueChanges.subscribe((value) => {
+      this.spatialReference = this.currentSpatialReference;
+
       const initialCoordinates = {
         lat: Number(value.north!),
         lng: Number(value.east!),
@@ -46,43 +48,44 @@ export class GeographyComponent implements OnInit, OnDestroy {
 
       let finalCoordinates = initialCoordinates;
 
-      if (this.spatialReference === 'LV95') {
+      if (this.spatialReference === SpatialReference.Lv95) {
         const converted = this.coordinateTransformationService.transform(
           { north: initialCoordinates.lat, east: initialCoordinates.lng },
-          'LV95',
-          'WGS84'
+          SpatialReference.Lv95,
+          SpatialReference.Wgs84
         );
 
         finalCoordinates = {
           lat: converted.north,
           lng: converted.east,
         };
+        this.placeMarkerAndFlyTo(finalCoordinates);
+      } else if (this.spatialReference === SpatialReference.Wgs84) {
+        if (this.isValidLatLng(finalCoordinates.lat, finalCoordinates.lng)) {
+          this.placeMarkerAndFlyTo(finalCoordinates);
+        }
       }
-
-      this.mapService.map.flyTo({
-        center: finalCoordinates,
-        speed: 1,
-        zoom: 15,
-      });
-      this.mapService.marker.setLngLat(finalCoordinates).addTo(this.mapService.map);
-
       this.initTransformedCoordinatePair();
     });
 
     this.clickedGeographyCoordinatesSubscription =
       this.mapService.clickedGeographyCoordinates.subscribe((data) => {
-        if (this.spatialReference === 'LV95' && data.lat !== 0 && data.lng !== 0) {
+        if (this.spatialReference === SpatialReference.Lv95 && data.lat !== 0 && data.lng !== 0) {
           const coordinatePair = {
             north: data.lat,
             east: data.lng,
           };
           const transformedCoordinates = this.coordinateTransformationService.transform(
             coordinatePair,
-            'WGS84',
-            'LV95'
+            SpatialReference.Wgs84,
+            SpatialReference.Lv95
           );
           this.setFormGroupValue(transformedCoordinates.north, transformedCoordinates.east);
-        } else if (this.spatialReference === 'WGS84') {
+        } else if (
+          this.spatialReference === SpatialReference.Wgs84 &&
+          data.lat !== 0 &&
+          data.lng !== 0
+        ) {
           this.setFormGroupValue(data.lat, data.lng);
         }
       });
@@ -136,6 +139,7 @@ export class GeographyComponent implements OnInit, OnDestroy {
   switchSpatialReference($event: MatRadioChange) {
     if ($event.value) {
       const newReference: SpatialReference = $event.value;
+      this.spatialReference = newReference;
       const transformedCoordinatePair = this.coordinateTransformationService.transform(
         this.currentCoordinates,
         this.transformedSpatialReference,
@@ -156,5 +160,18 @@ export class GeographyComponent implements OnInit, OnDestroy {
         )
       );
     }
+  }
+
+  placeMarkerAndFlyTo(latLngCoordinates: latLngCoordinates) {
+    this.mapService.map.flyTo({
+      center: latLngCoordinates,
+      speed: 1,
+      zoom: 15,
+    });
+    this.mapService.marker.setLngLat(latLngCoordinates).addTo(this.mapService.map);
+  }
+
+  isValidLatLng(lat: number, lng: number): boolean {
+    return lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180;
   }
 }
