@@ -19,7 +19,7 @@ public class VersionableServiceWarningWhenNoChangesTest extends VersionableServi
    * Es wird keine änderung stattfinden
    */
   @Test
-  public void scenario1a() {
+   void scenario1a() {
     //given
     VersionableObject editedVersion = VersionableObject.builder().build();
     editedVersion.setValidFrom(versionableObject1.getValidFrom());

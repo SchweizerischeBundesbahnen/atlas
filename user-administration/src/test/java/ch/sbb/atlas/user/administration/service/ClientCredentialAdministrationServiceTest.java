@@ -18,7 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @IntegrationTest
-public class ClientCredentialAdministrationServiceTest {
+ class ClientCredentialAdministrationServiceTest {
 
   @Autowired
   private ClientCredentialAdministrationService clientCredentialAdministrationService;

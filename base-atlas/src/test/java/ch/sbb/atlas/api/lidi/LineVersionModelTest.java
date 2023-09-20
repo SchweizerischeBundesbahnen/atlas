@@ -128,7 +128,7 @@ class LineVersionModelTest {
   }
 
   @Test
-  public void shouldHaveDateValidationExceptionWhenValidFromIsBefore1700_1_1() {
+   void shouldHaveDateValidationExceptionWhenValidFromIsBefore1700_1_1() {
     //given
     LineVersionModel lineVersionModel = lineVersionModel()
         .validFrom(LocalDate.of(1699, 12, 31))
@@ -144,7 +144,7 @@ class LineVersionModelTest {
   }
 
   @Test
-  public void shouldHaveDateValidationExceptionWhenValidFromIsAfter2099_12_31() {
+   void shouldHaveDateValidationExceptionWhenValidFromIsAfter2099_12_31() {
     //given
     LineVersionModel lineVersionModel = lineVersionModel()
         .validFrom(LocalDate.of(10000, 1, 1))
@@ -164,7 +164,7 @@ class LineVersionModelTest {
   }
 
   @Test
-  public void shouldHaveDateValidationExceptionWhenValidToIsBefore1700_1_1() {
+   void shouldHaveDateValidationExceptionWhenValidToIsBefore1700_1_1() {
     //given
     LineVersionModel lineVersionModel = lineVersionModel()
         .validTo(LocalDate.of(1699, 12, 31))
@@ -184,7 +184,7 @@ class LineVersionModelTest {
   }
 
   @Test
-  public void shouldHaveDateValidationExceptionWhenValidToIsAfter9999_12_31() {
+   void shouldHaveDateValidationExceptionWhenValidToIsAfter9999_12_31() {
     //given
     LineVersionModel lineVersionModel = lineVersionModel()
         .validTo(LocalDate.of(10000, 1, 1))

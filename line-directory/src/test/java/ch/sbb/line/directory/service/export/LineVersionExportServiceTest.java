@@ -33,14 +33,14 @@ class LineVersionExportServiceTest {
   private LineVersionExportService lineVersionExportService;
 
   @BeforeEach
-  public void setUp() {
+   void setUp() {
     MockitoAnnotations.openMocks(this);
     lineVersionExportService = new LineVersionExportService(fileService, amazonService,
         lineVersionRepository);
   }
 
   @Test
-  public void shouldGetFullVersionsCsv() {
+   void shouldGetFullVersionsCsv() {
     //given
     LineVersion lineVersion1 = LineTestData.lineVersionBuilder().build();
     LineVersion lineVersion2 = LineTestData.lineVersionBuilder()
@@ -60,7 +60,7 @@ class LineVersionExportServiceTest {
   }
 
   @Test
-  public void shouldGetActualVersionsCsv() {
+   void shouldGetActualVersionsCsv() {
     //given
     LineVersion lineVersion1 = LineTestData.lineVersionBuilder().build();
     LineVersion lineVersion2 = LineTestData.lineVersionBuilder()
@@ -80,7 +80,7 @@ class LineVersionExportServiceTest {
   }
 
   @Test
-  public void shouldGetFutureTimetableVersionsCsv() {
+   void shouldGetFutureTimetableVersionsCsv() {
     //given
     LineVersion lineVersion1 = LineTestData.lineVersionBuilder().build();
     LineVersion lineVersion2 = LineTestData.lineVersionBuilder()

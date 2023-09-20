@@ -29,7 +29,7 @@ class ServicePointGeolocationRepositoryTest {
   private final ServicePointVersionRepository servicePointVersionRepository;
 
   @Autowired
-  public ServicePointGeolocationRepositoryTest(
+   ServicePointGeolocationRepositoryTest(
       ServicePointGeolocationRepository repository,
       ServicePointVersionRepository servicePointVersionRepository) {
     this.repository = repository;

@@ -25,7 +25,7 @@ public class VersionableServiceScenario3Test extends VersionableServiceBaseTest 
    * 2        4     5          3
    */
   @Test
-  public void scenario3UpdateVersion2() {
+   void scenario3UpdateVersion2() {
     //given
     LocalDate editedValidFrom = LocalDate.of(2023, 6, 1);
     LocalDate editedValidTo = LocalDate.of(2024, 6, 1);
@@ -154,7 +154,7 @@ public class VersionableServiceScenario3Test extends VersionableServiceBaseTest 
    * 2        4     5          3
    */
   @Test
-  public void scenario3UpdateVersion3() {
+   void scenario3UpdateVersion3() {
     //given
     LocalDate editedValidFrom = LocalDate.of(2023, 6, 1);
     LocalDate editedValidTo = LocalDate.of(2024, 6, 1);

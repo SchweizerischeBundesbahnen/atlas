@@ -14,10 +14,10 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class TimetableFieldNumberServiceScenario1Test extends BaseTimetableFieldNumberServiceTest {
+ class TimetableFieldNumberServiceScenario1Test extends BaseTimetableFieldNumberServiceTest {
 
   @Autowired
-  public TimetableFieldNumberServiceScenario1Test(
+   TimetableFieldNumberServiceScenario1Test(
       TimetableFieldNumberVersionRepository versionRepository,
       TimetableFieldNumberService timetableFieldNumberService) {
     super(versionRepository, timetableFieldNumberService);
@@ -33,7 +33,7 @@ public class TimetableFieldNumberServiceScenario1Test extends BaseTimetableField
    * Version:        1                                2
    */
   @Test
-  public void scenario1a() {
+   void scenario1a() {
     //given
     version2.setLineRelations(new HashSet<>(
         Set.of(TimetableFieldLineRelation.builder().slnid(TTFNID).timetableFieldNumberVersion(version2).build(),
@@ -90,7 +90,7 @@ public class TimetableFieldNumberServiceScenario1Test extends BaseTimetableField
    * Version:        1                                2
    */
   @Test
-  public void scenario1aEditedValidFromAndEditedValidToAreEqualsToCurrentValidFromAndCurrentValidTo() {
+   void scenario1aEditedValidFromAndEditedValidToAreEqualsToCurrentValidFromAndCurrentValidTo() {
     //given
     version2.setLineRelations(new HashSet<>(
         Set.of(TimetableFieldLineRelation.builder().slnid(TTFNID).timetableFieldNumberVersion(version2).build(),
@@ -149,7 +149,7 @@ public class TimetableFieldNumberServiceScenario1Test extends BaseTimetableField
    * Version:        1                 2                  3
    */
   @Test
-  public void scenario1b() {
+   void scenario1b() {
     //given
     version1 = versionRepository.save(version1);
     version2 = versionRepository.save(version2);
@@ -209,7 +209,7 @@ public class TimetableFieldNumberServiceScenario1Test extends BaseTimetableField
    * Version:        1                 2                  3
    */
   @Test
-  public void scenario1c() {
+   void scenario1c() {
     //given
     version1 = versionRepository.save(version1);
     version2 = versionRepository.save(version2);
@@ -270,7 +270,7 @@ public class TimetableFieldNumberServiceScenario1Test extends BaseTimetableField
    * Version:        1          2          3          4         5         version 2 und 3 werden nur UPDATED
    */
   @Test
-  public void scenario1d() {
+   void scenario1d() {
     //given
     version1.setDescription("SBB1");
     version1 = versionRepository.save(version1);

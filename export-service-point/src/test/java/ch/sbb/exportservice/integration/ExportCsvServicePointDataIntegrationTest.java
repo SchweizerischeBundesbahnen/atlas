@@ -1,5 +1,11 @@
 package ch.sbb.exportservice.integration;
 
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_SERVICE_POINT_CSV_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TYPE_JOB_PARAMETER;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.imports.DidokCsvMapper;
 import ch.sbb.atlas.model.controller.IntegrationTest;
@@ -9,6 +15,13 @@ import ch.sbb.exportservice.model.ServicePointVersionCsvModel;
 import ch.sbb.exportservice.tasklet.FileCsvDeletingTasklet;
 import ch.sbb.exportservice.utils.JobDescriptionConstants;
 import com.fasterxml.jackson.databind.MappingIterator;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
@@ -21,24 +34,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.List;
-
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_SERVICE_POINT_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TYPE_JOB_PARAMETER;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-
 @BatchDataSourceConfigTest
 @IntegrationTest
 @AutoConfigureMockMvc(addFilters = false)
-public class ExportCsvServicePointDataIntegrationTest {
+ class ExportCsvServicePointDataIntegrationTest {
 
   @Autowired
   private JobLauncher jobLauncher;
@@ -58,7 +57,7 @@ public class ExportCsvServicePointDataIntegrationTest {
   private ArgumentCaptor<File> fileArgumentCaptor;
 
   @Test
-  public void shouldExportServicePointToCsvWithCorrectData() throws Exception {
+   void shouldExportServicePointToCsvWithCorrectData() throws Exception {
     when(amazonService.putZipFile(any(), fileArgumentCaptor.capture(), any())).thenReturn(new URL("https://sbb.ch"));
     when(fileCsvDeletingTasklet.execute(any(), any())).thenReturn(null);
 

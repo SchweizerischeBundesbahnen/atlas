@@ -24,7 +24,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 @BatchDataSourceConfigTest
 @IntegrationTest
 @AutoConfigureMockMvc(addFilters = false)
-public class ExportLoadingPointIntegrationTest {
+ class ExportLoadingPointIntegrationTest {
 
   @Autowired
   private JobLauncher jobLauncher;
@@ -38,7 +38,7 @@ public class ExportLoadingPointIntegrationTest {
   private Job exportLoadingPointJsonJob;
 
   @Test
-  public void shouldExecuteExportLoadingPointCsvJob() throws Exception {
+   void shouldExecuteExportLoadingPointCsvJob() throws Exception {
     // given
     JobParameters jobParameters = new JobParametersBuilder()
         .addString(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, JobDescriptionConstants.EXECUTION_BATCH_PARAMETER)
@@ -55,7 +55,7 @@ public class ExportLoadingPointIntegrationTest {
   }
 
   @Test
-  public void shouldExecuteExportLoadingPointJsonJob() throws Exception {
+   void shouldExecuteExportLoadingPointJsonJob() throws Exception {
     // given
     JobParameters jobParameters = new JobParametersBuilder()
         .addString(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, JobDescriptionConstants.EXECUTION_BATCH_PARAMETER)

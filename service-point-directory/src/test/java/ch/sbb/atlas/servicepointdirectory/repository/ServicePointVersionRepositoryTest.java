@@ -1,5 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.repository;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.Status;
@@ -11,23 +13,20 @@ import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Set;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 @IntegrationTest
-public class ServicePointVersionRepositoryTest {
+ class ServicePointVersionRepositoryTest {
 
   private final ServicePointVersionRepository servicePointVersionRepository;
 
   @Autowired
-  public ServicePointVersionRepositoryTest(
+   ServicePointVersionRepositoryTest(
       ServicePointVersionRepository servicePointVersionRepository) {
     this.servicePointVersionRepository = servicePointVersionRepository;
   }

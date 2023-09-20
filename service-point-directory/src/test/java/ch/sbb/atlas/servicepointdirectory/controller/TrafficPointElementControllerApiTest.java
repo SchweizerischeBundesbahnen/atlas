@@ -41,7 +41,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-public class TrafficPointElementControllerApiTest extends BaseControllerApiTest {
+ class TrafficPointElementControllerApiTest extends BaseControllerApiTest {
 
   @MockBean
   private CrossValidationService crossValidationService;
@@ -53,7 +53,7 @@ public class TrafficPointElementControllerApiTest extends BaseControllerApiTest 
   private TrafficPointElementVersion trafficPointElementVersion;
 
   @Autowired
-  public TrafficPointElementControllerApiTest(TrafficPointElementVersionRepository repository,
+   TrafficPointElementControllerApiTest(TrafficPointElementVersionRepository repository,
       TrafficPointElementController trafficPointElementController,
       ServicePointVersionRepository servicePointVersionRepository) {
     this.repository = repository;
@@ -286,7 +286,7 @@ public class TrafficPointElementControllerApiTest extends BaseControllerApiTest 
   }
 
   @Test
-  public void shouldUpdateTrafficPointAndCreateMultipleVersions() throws Exception {
+   void shouldUpdateTrafficPointAndCreateMultipleVersions() throws Exception {
     repository.deleteAll();
     ReadTrafficPointElementVersionModel trafficPointElementVersionModel = trafficPointElementController.createTrafficPoint(
         TrafficPointTestData.getCreateTrafficPointVersionModel());
@@ -378,7 +378,7 @@ public class TrafficPointElementControllerApiTest extends BaseControllerApiTest 
   }
 
   @Test
-  public void shouldUpdateTrafficPointAndNotCreateMultipleVersions() throws Exception {
+   void shouldUpdateTrafficPointAndNotCreateMultipleVersions() throws Exception {
     repository.deleteAll();
     ReadTrafficPointElementVersionModel trafficPointElementVersionModel = trafficPointElementController
         .createTrafficPoint(TrafficPointTestData.getCreateTrafficPointVersionModel());
@@ -395,7 +395,7 @@ public class TrafficPointElementControllerApiTest extends BaseControllerApiTest 
   }
 
   @Test
-  public void shouldThrowSloidsNotEqualExceptionWhenUpdate() throws Exception {
+   void shouldThrowSloidsNotEqualExceptionWhenUpdate() throws Exception {
     repository.deleteAll();
     // given
     CreateTrafficPointElementVersionModel newTrafficPointElementVersionModel =
@@ -422,7 +422,7 @@ public class TrafficPointElementControllerApiTest extends BaseControllerApiTest 
   }
 
   @Test
-  public void shouldReturnOptimisticLockingErrorResponse() throws Exception {
+   void shouldReturnOptimisticLockingErrorResponse() throws Exception {
     repository.deleteAll();
     // given
     CreateTrafficPointElementVersionModel createTrafficPointElementVersionModel =
