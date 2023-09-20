@@ -29,9 +29,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 
 @EmbeddedKafka(topics = {"atlas.mail"})
-public class WorkflowControllerTest extends BaseControllerApiTest {
+ class WorkflowControllerTest extends BaseControllerApiTest {
 
-  public static final String MAIL_ADDRESS = "marek@hamsik.com";
+   static final String MAIL_ADDRESS = "marek@hamsik.com";
   @Autowired
   private WorkflowController controller;
 
@@ -47,12 +47,12 @@ public class WorkflowControllerTest extends BaseControllerApiTest {
   }
 
   @AfterEach
-  public void tearDown() {
+   void tearDown() {
     workflowRepository.deleteAll();
   }
 
   @Test
-  public void shouldGetWorkflows() throws Exception {
+   void shouldGetWorkflows() throws Exception {
     ClientPersonModel person = ClientPersonModel.builder()
         .firstName("Marek")
         .lastName("Hamsik")
@@ -75,7 +75,7 @@ public class WorkflowControllerTest extends BaseControllerApiTest {
   }
 
   @Test
-  public void shouldGetWorkflowById() throws Exception {
+   void shouldGetWorkflowById() throws Exception {
     Person person = Person.builder()
         .firstName("Marek")
         .lastName("Hamsik")
@@ -102,7 +102,7 @@ public class WorkflowControllerTest extends BaseControllerApiTest {
   }
 
   @Test
-  public void shouldCreateWorkflow() throws Exception {
+   void shouldCreateWorkflow() throws Exception {
     //when
     ClientPersonModel person = ClientPersonModel.builder()
         .firstName("Marek")
@@ -129,7 +129,7 @@ public class WorkflowControllerTest extends BaseControllerApiTest {
   }
 
   @Test
-  public void shouldNotCreateWorkflowWhenWorkflowTypeIsNull() throws Exception {
+   void shouldNotCreateWorkflowWhenWorkflowTypeIsNull() throws Exception {
     //when
     ClientPersonModel person = ClientPersonModel.builder()
         .firstName("Marek")
@@ -163,7 +163,7 @@ public class WorkflowControllerTest extends BaseControllerApiTest {
   }
 
   @Test
-  public void shouldNotCreateWorkflowWhenWorkflowPersonNameHasWrongEncoding() throws Exception {
+   void shouldNotCreateWorkflowWhenWorkflowPersonNameHasWrongEncoding() throws Exception {
     //when
     ClientPersonModel person = ClientPersonModel.builder()
         .firstName("\uD83D\uDE00\uD83D\uDE01\uD83D")
@@ -199,7 +199,7 @@ public class WorkflowControllerTest extends BaseControllerApiTest {
   }
 
   @Test
-  public void shouldNotCreateWorkflowWhenWorkflowWorkflowDescriptionHasWrongEncoding() throws Exception {
+   void shouldNotCreateWorkflowWhenWorkflowWorkflowDescriptionHasWrongEncoding() throws Exception {
     //when
     ClientPersonModel person = ClientPersonModel.builder()
             .firstName("Marek")
@@ -235,7 +235,7 @@ public class WorkflowControllerTest extends BaseControllerApiTest {
   }
 
   @Test
-  public void shouldAcceptWorkflow() throws Exception {
+   void shouldAcceptWorkflow() throws Exception {
     //when
     ClientPersonModel client = ClientPersonModel.builder()
             .firstName("Marek")

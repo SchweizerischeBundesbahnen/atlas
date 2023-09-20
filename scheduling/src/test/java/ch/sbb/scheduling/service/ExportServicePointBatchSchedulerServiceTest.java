@@ -17,7 +17,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 
-public class ExportServicePointBatchSchedulerServiceTest {
+ class ExportServicePointBatchSchedulerServiceTest {
 
   private ExportServicePointBatchSchedulerService exportServicePointBatchSchedulerService;
 
@@ -25,13 +25,13 @@ public class ExportServicePointBatchSchedulerServiceTest {
   private ExportServicePointBatchClient client;
 
   @BeforeEach
-  public void setUp() {
+   void setUp() {
     MockitoAnnotations.openMocks(this);
     exportServicePointBatchSchedulerService = new ExportServicePointBatchSchedulerService(client);
   }
 
   @Test
-  public void shouldPostTriggerExportServicePointBatchSuccessfully() {
+   void shouldPostTriggerExportServicePointBatchSuccessfully() {
     //given
     Response response = Response.builder()
         .status(200)
@@ -51,7 +51,7 @@ public class ExportServicePointBatchSchedulerServiceTest {
   }
 
   @Test
-  public void shouldPostTriggerExportTrafficPointBatchSuccessfully() {
+   void shouldPostTriggerExportTrafficPointBatchSuccessfully() {
     //given
     Response response = Response.builder()
         .status(200)
@@ -71,7 +71,7 @@ public class ExportServicePointBatchSchedulerServiceTest {
   }
 
   @Test
-  public void shouldPostTriggerExportLoadingPointBatchSuccessfully() {
+   void shouldPostTriggerExportLoadingPointBatchSuccessfully() {
     //given
     Response response = Response.builder()
         .status(200)
@@ -91,7 +91,7 @@ public class ExportServicePointBatchSchedulerServiceTest {
   }
 
   @Test
-  public void shouldPostLoadCompaniesFromCRDUnsuccessful() {
+   void shouldPostLoadCompaniesFromCRDUnsuccessful() {
     //given
     Response response = Response.builder()
         .status(HttpStatus.BAD_REQUEST.value())

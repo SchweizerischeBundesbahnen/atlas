@@ -39,7 +39,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 @IntegrationTest
-public class TimetableHearingStatementServiceTest {
+ class TimetableHearingStatementServiceTest {
 
   private static final long YEAR = 2023L;
   private static final TimetableHearingYear TIMETABLE_HEARING_YEAR = TimetableHearingYear.builder()
@@ -56,7 +56,7 @@ public class TimetableHearingStatementServiceTest {
   private final TransportCompanySharingDataAccessor transportCompanySharingDataAccessor;
 
   @Autowired
-  public TimetableHearingStatementServiceTest(TimetableHearingYearRepository timetableHearingYearRepository,
+   TimetableHearingStatementServiceTest(TimetableHearingYearRepository timetableHearingYearRepository,
       TimetableHearingYearService timetableHearingYearService,
       TimetableHearingStatementRepository timetableHearingStatementRepository,
       TimetableHearingStatementService timetableHearingStatementService,

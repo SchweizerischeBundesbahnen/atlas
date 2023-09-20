@@ -3,13 +3,13 @@ package ch.sbb.business.organisation.directory.service;
 import static java.util.List.of;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.api.bodi.enumeration.BusinessType;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.business.organisation.directory.controller.BusinessOrganisationSearchRestrictions;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisation;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationVersion.BusinessOrganisationVersionBuilder;
-import ch.sbb.atlas.api.bodi.enumeration.BusinessType;
 import ch.sbb.business.organisation.directory.repository.BusinessOrganisationVersionRepository;
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -28,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
 @Transactional
-public class BusinessOrganisationServiceSearchTest {
+ class BusinessOrganisationServiceSearchTest {
 
   private final BusinessOrganisationVersionRepository repository;
   private final BusinessOrganisationService service;
@@ -38,14 +38,14 @@ public class BusinessOrganisationServiceSearchTest {
   private BusinessOrganisationVersion version3;
 
   @Autowired
-  public BusinessOrganisationServiceSearchTest(BusinessOrganisationVersionRepository repository,
+   BusinessOrganisationServiceSearchTest(BusinessOrganisationVersionRepository repository,
       BusinessOrganisationService service) {
     this.repository = repository;
     this.service = service;
   }
 
   @BeforeEach
-  public void init() {
+   void init() {
     version1 = BusinessOrganisationVersion.builder()
                                           .sboid("ch:1:sboid:100000")
                                           .abbreviationDe("de1")
@@ -106,7 +106,7 @@ public class BusinessOrganisationServiceSearchTest {
   }
 
   @AfterEach
-  public void cleanUp() {
+   void cleanUp() {
     repository.deleteAll();
   }
 
