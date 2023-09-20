@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 public class WorkflowProcessingStatusTest {
 
   @Test
-  public void shouldReturnEvaluatedWhenWorkflowStatusIsApproved() {
+   void shouldReturnEvaluatedWhenWorkflowStatusIsApproved() {
     //when
     WorkflowProcessingStatus result = WorkflowProcessingStatus.getProcessingStatus(WorkflowStatus.APPROVED);
     //then
@@ -15,7 +15,7 @@ public class WorkflowProcessingStatusTest {
   }
 
   @Test
-  public void shouldReturnEvaluatedWhenWorkflowStatusIsRejected() {
+   void shouldReturnEvaluatedWhenWorkflowStatusIsRejected() {
     //when
     WorkflowProcessingStatus result = WorkflowProcessingStatus.getProcessingStatus(WorkflowStatus.REJECTED);
     //then
@@ -23,7 +23,7 @@ public class WorkflowProcessingStatusTest {
   }
 
   @Test
-  public void shouldReturnInProgressWhenWorkflowStatusIsRevision() {
+   void shouldReturnInProgressWhenWorkflowStatusIsRevision() {
     //when
     WorkflowProcessingStatus result = WorkflowProcessingStatus.getProcessingStatus(WorkflowStatus.REVISION);
     //then
@@ -31,7 +31,7 @@ public class WorkflowProcessingStatusTest {
   }
 
   @Test
-  public void shouldReturnInProgressWhenWorkflowStatusIsHearing() {
+   void shouldReturnInProgressWhenWorkflowStatusIsHearing() {
     //when
     WorkflowProcessingStatus result = WorkflowProcessingStatus.getProcessingStatus(WorkflowStatus.HEARING);
     //then

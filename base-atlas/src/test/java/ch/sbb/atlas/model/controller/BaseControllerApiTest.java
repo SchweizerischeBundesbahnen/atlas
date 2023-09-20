@@ -46,7 +46,7 @@ public abstract class BaseControllerApiTest {
       StandardCharsets.UTF_8);
 
   @BeforeEach
-  public void setUp(WebApplicationContext webApplicationContext,
+   void setUp(WebApplicationContext webApplicationContext,
       RestDocumentationContextProvider restDocumentation) {
     this.mvc = MockMvcBuilders
         .webAppContextSetup(context)

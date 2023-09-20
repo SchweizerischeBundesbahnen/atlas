@@ -14,7 +14,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 
-public class TimetableFieldNumberVersionModelTest {
+class TimetableFieldNumberVersionModelTest {
 
   private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
@@ -29,7 +29,7 @@ public class TimetableFieldNumberVersionModelTest {
   }
 
   @Test
-  public void shouldHaveDateValidationExceptionWhenValidFromIsBefore1700_1_1() {
+  void shouldHaveDateValidationExceptionWhenValidFromIsBefore1700_1_1() {
     //given
     TimetableFieldNumberVersionModel lineVersion = versionModel()
         .validFrom(LocalDate.of(1699, 12, 31))
@@ -45,7 +45,7 @@ public class TimetableFieldNumberVersionModelTest {
   }
 
   @Test
-  public void shouldHaveDateValidationExceptionWhenValidFromIsAfter9999_12_31() {
+  void shouldHaveDateValidationExceptionWhenValidFromIsAfter9999_12_31() {
     //given
     TimetableFieldNumberVersionModel lineVersion = versionModel()
         .validFrom(LocalDate.of(10000, 1, 1))
@@ -65,7 +65,7 @@ public class TimetableFieldNumberVersionModelTest {
   }
 
   @Test
-  public void shouldHaveDateValidationExceptionWhenValidToIsBefore1700_1_1() {
+  void shouldHaveDateValidationExceptionWhenValidToIsBefore1700_1_1() {
     //given
     TimetableFieldNumberVersionModel lineVersion = versionModel()
         .validTo(LocalDate.of(1699, 12, 31))
@@ -85,7 +85,7 @@ public class TimetableFieldNumberVersionModelTest {
   }
 
   @Test
-  public void shouldHaveDateValidationExceptionWhenValidToIsAfter9999_12_31() {
+  void shouldHaveDateValidationExceptionWhenValidToIsAfter9999_12_31() {
     //given
     TimetableFieldNumberVersionModel lineVersion = versionModel()
         .validTo(LocalDate.of(10000, 1, 1))

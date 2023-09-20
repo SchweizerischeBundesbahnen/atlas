@@ -1,5 +1,9 @@
 package ch.sbb.atlas.servicepointdirectory.service.loadingpoint;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+
 import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointCsvModelContainer;
@@ -8,24 +12,19 @@ import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
 import ch.sbb.atlas.servicepointdirectory.repository.LoadingPointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.CrossValidationService;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
 @Transactional
-public class LoadingPointImportServiceTest {
+ class LoadingPointImportServiceTest {
 
   private static final String CSV_FILE = "DIDOK3_LADESTELLEN_20230803011047.csv";
 
@@ -36,7 +35,7 @@ public class LoadingPointImportServiceTest {
   private CrossValidationService crossValidationServiceMock;
 
   @Autowired
-  public LoadingPointImportServiceTest(LoadingPointImportService loadingPointImportService,
+   LoadingPointImportServiceTest(LoadingPointImportService loadingPointImportService,
       LoadingPointVersionRepository loadingPointVersionRepository) {
     this.loadingPointImportService = loadingPointImportService;
     this.loadingPointVersionRepository = loadingPointVersionRepository;

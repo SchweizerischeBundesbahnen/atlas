@@ -16,84 +16,84 @@ import org.junit.jupiter.api.Test;
 class DateValidationsTest {
 
   @Test
-  public void versionsAreOverlappingOverStart() {
+  void versionsAreOverlappingOverStart() {
     DummyVersionable v1 = DummyVersionable.builder()
-                                          .validFrom(LocalDate.of(2000, 1, 1))
-                                          .validTo(LocalDate.of(2000, 12, 31))
-                                          .build();
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 12, 31))
+        .build();
 
     DummyVersionable v2 = DummyVersionable.builder()
-                                          .validFrom(LocalDate.of(1999, 1, 1))
-                                          .validTo(LocalDate.of(2001, 12, 31))
-                                          .build();
+        .validFrom(LocalDate.of(1999, 1, 1))
+        .validTo(LocalDate.of(2001, 12, 31))
+        .build();
 
     List<DummyVersionable> versions = Arrays.asList(v1, v2);
     assertThat(DateValidations.areOverlapping(versions)).isTrue();
   }
 
   @Test
-  public void versionsAreOverlappingOverEnd() {
+  void versionsAreOverlappingOverEnd() {
     DummyVersionable v1 = DummyVersionable.builder()
-                                          .validFrom(LocalDate.of(2000, 1, 1))
-                                          .validTo(LocalDate.of(2000, 12, 31))
-                                          .build();
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 12, 31))
+        .build();
 
     DummyVersionable v2 = DummyVersionable.builder()
-                                          .validFrom(LocalDate.of(2000, 5, 1))
-                                          .validTo(LocalDate.of(2001, 12, 31))
-                                          .build();
+        .validFrom(LocalDate.of(2000, 5, 1))
+        .validTo(LocalDate.of(2001, 12, 31))
+        .build();
 
     List<DummyVersionable> versions = Arrays.asList(v1, v2);
     assertThat(DateValidations.areOverlapping(versions)).isTrue();
   }
 
   @Test
-  public void versionsAreOverlappingCompletely() {
+  void versionsAreOverlappingCompletely() {
     DummyVersionable v1 = DummyVersionable.builder()
-                                          .validFrom(LocalDate.of(2000, 1, 1))
-                                          .validTo(LocalDate.of(2000, 12, 31))
-                                          .build();
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 12, 31))
+        .build();
 
     DummyVersionable v2 = DummyVersionable.builder()
-                                          .validFrom(LocalDate.of(1999, 1, 1))
-                                          .validTo(LocalDate.of(2001, 12, 31))
-                                          .build();
+        .validFrom(LocalDate.of(1999, 1, 1))
+        .validTo(LocalDate.of(2001, 12, 31))
+        .build();
 
     List<DummyVersionable> versions = Arrays.asList(v1, v2);
     assertThat(DateValidations.areOverlapping(versions)).isTrue();
   }
 
   @Test
-  public void versionsAreNotOverlapping() {
+  void versionsAreNotOverlapping() {
     DummyVersionable v1 = DummyVersionable.builder()
-                                          .validFrom(LocalDate.of(2000, 1, 1))
-                                          .validTo(LocalDate.of(2000, 12, 31))
-                                          .build();
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 12, 31))
+        .build();
 
     DummyVersionable v2 = DummyVersionable.builder()
-                                          .validFrom(LocalDate.of(2001, 1, 1))
-                                          .validTo(LocalDate.of(2001, 12, 31))
-                                          .build();
+        .validFrom(LocalDate.of(2001, 1, 1))
+        .validTo(LocalDate.of(2001, 12, 31))
+        .build();
 
     List<DummyVersionable> versions = Arrays.asList(v1, v2);
     assertThat(DateValidations.areOverlapping(versions)).isFalse();
   }
 
   @Test
-  public void versionsAreOverlappingMultiple() {
+  void versionsAreOverlappingMultiple() {
     DummyVersionable v1 = DummyVersionable.builder()
-                                          .validFrom(LocalDate.of(2000, 1, 1))
-                                          .validTo(LocalDate.of(2000, 12, 31))
-                                          .build();
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 12, 31))
+        .build();
 
     DummyVersionable v2 = DummyVersionable.builder()
-                                          .validFrom(LocalDate.of(1999, 1, 1))
-                                          .validTo(LocalDate.of(2001, 12, 31))
-                                          .build();
+        .validFrom(LocalDate.of(1999, 1, 1))
+        .validTo(LocalDate.of(2001, 12, 31))
+        .build();
     DummyVersionable v3 = DummyVersionable.builder()
-                                          .validFrom(LocalDate.of(1998, 1, 1))
-                                          .validTo(LocalDate.of(2002, 12, 31))
-                                          .build();
+        .validFrom(LocalDate.of(1998, 1, 1))
+        .validTo(LocalDate.of(2002, 12, 31))
+        .build();
 
     List<DummyVersionable> versions = Arrays.asList(v1, v2, v3);
     assertThat(DateValidations.areOverlapping(versions)).isTrue();

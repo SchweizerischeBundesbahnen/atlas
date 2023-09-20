@@ -17,7 +17,7 @@ import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.data.util.TypeInformation;
 import org.springframework.security.test.context.support.WithMockUser;
 
-public class TimetableFieldNumberControllerExceptionHandlingTest extends BaseControllerApiTest {
+ class TimetableFieldNumberControllerExceptionHandlingTest extends BaseControllerApiTest {
 
   @MockBean
   private TimetableFieldNumberService timetableFieldNumberService;

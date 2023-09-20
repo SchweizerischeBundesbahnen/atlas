@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 
 @IntegrationTest
-public class BusinessIdGeneratorTest {
+class BusinessIdGeneratorTest {
 
   private final DummyRepository repository;
 

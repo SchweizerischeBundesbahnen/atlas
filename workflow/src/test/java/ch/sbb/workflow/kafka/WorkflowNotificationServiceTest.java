@@ -4,9 +4,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.when;
 
+import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.atlas.workflow.model.WorkflowType;
-import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import ch.sbb.workflow.entity.Workflow;
 import ch.sbb.workflow.service.lidi.LineWorkflowService;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,7 +15,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-public class WorkflowNotificationServiceTest {
+ class WorkflowNotificationServiceTest {
 
   private WorkflowNotificationService notificationService;
 
@@ -26,13 +26,13 @@ public class WorkflowNotificationServiceTest {
   private LineWorkflowService lineWorkflowService;
 
   @BeforeEach
-  public void setUp() {
+   void setUp() {
     MockitoAnnotations.openMocks(this);
     notificationService = new WorkflowNotificationService(mailProducerService, lineWorkflowService);
   }
 
   @Test
-  public void shouldSendEventToMail() {
+   void shouldSendEventToMail() {
     //given
     Workflow workflow = Workflow.builder()
         .workflowType(WorkflowType.LINE)
@@ -49,7 +49,7 @@ public class WorkflowNotificationServiceTest {
   }
 
   @Test
-  public void shouldNotSendEventToMail() {
+   void shouldNotSendEventToMail() {
     //given
     Workflow workflow = Workflow.builder()
         .build();

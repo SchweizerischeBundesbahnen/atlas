@@ -28,7 +28,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseControllerApiTest {
+ class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseControllerApiTest {
 
   @MockBean
   private FileExportService fileExportService;
@@ -44,7 +44,7 @@ public class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseC
 
   @Test
   @Order(1)
-  public void shouldGetJsonSuccessfully() throws Exception {
+   void shouldGetJsonSuccessfully() throws Exception {
     //given
     try (InputStream inputStream = this.getClass().getResourceAsStream("/service-point-data.json")) {
       StreamingResponseBody streamingResponseBody = writeOutputStream(inputStream);
@@ -62,7 +62,7 @@ public class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseC
 
   @Test
   @Order(2)
-  public void shouldGetJsonUnsuccessfully() throws Exception {
+   void shouldGetJsonUnsuccessfully() throws Exception {
     //given
     doThrow(FileException.class).when(fileExportService)
         .streamJsonFile(ExportType.WORLD_FULL, BatchExportFileName.SERVICE_POINT_VERSION);
@@ -75,7 +75,7 @@ public class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseC
 
   @Test
   @Order(3)
-  public void shouldDownloadGzipJsonSuccessfully() throws Exception {
+   void shouldDownloadGzipJsonSuccessfully() throws Exception {
     //given
     try (InputStream inputStream = this.getClass().getResourceAsStream("/service-point.json.gz")) {
       StreamingResponseBody streamingResponseBody = writeOutputStream(inputStream);
@@ -93,7 +93,7 @@ public class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseC
 
   @Test
   @Order(4)
-  public void shouldDownloadGzipJsonUnsuccessfully() throws Exception {
+   void shouldDownloadGzipJsonUnsuccessfully() throws Exception {
     //given
     doThrow(FileException.class).when(fileExportService)
         .streamGzipFile(ExportType.WORLD_FULL, BatchExportFileName.SERVICE_POINT_VERSION);
@@ -106,7 +106,7 @@ public class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseC
 
   @Test
   @Order(5)
-  public void shouldNotDownloadJsonWhenExportTypeIsNotAllowedForTheExportFile() throws Exception {
+   void shouldNotDownloadJsonWhenExportTypeIsNotAllowedForTheExportFile() throws Exception {
     //given
     //when & then
     mvc.perform(get("/v1/export/download-gzip-json/traffic-point-element-version/swiss-only-full")
@@ -122,7 +122,7 @@ public class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseC
 
   @Test
   @Order(6)
-  public void shouldPostServicePointExportBatchSuccessfully() throws Exception {
+   void shouldPostServicePointExportBatchSuccessfully() throws Exception {
     //given
     doNothing().when(exportServicePointJobService).startExportJobs();
 
@@ -134,7 +134,7 @@ public class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseC
 
   @Test
   @Order(7)
-  public void shouldPostTrafficPointExportBatchSuccessfully() throws Exception {
+   void shouldPostTrafficPointExportBatchSuccessfully() throws Exception {
     //given
     doNothing().when(exportTrafficPointElementJobService).startExportJobs();
 
@@ -146,7 +146,7 @@ public class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseC
 
   @Test
   @Order(8)
-  public void shouldPostLoadingPointExportBatchSuccessfully() throws Exception {
+   void shouldPostLoadingPointExportBatchSuccessfully() throws Exception {
     //given
     doNothing().when(exportLoadingPointJobService).startExportJobs();
 

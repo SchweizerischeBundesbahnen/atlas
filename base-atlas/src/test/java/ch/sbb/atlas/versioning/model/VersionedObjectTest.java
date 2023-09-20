@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 public class VersionedObjectTest {
 
   @Test
-  public void shouldThrowVersioningExceptionWhenActionIsNewAndEntityIdIsNotNull() {
+   void shouldThrowVersioningExceptionWhenActionIsNewAndEntityIdIsNotNull() {
     //given
     LocalDate validFrom = LocalDate.of(2021, 1, 1);
     LocalDate validTo = LocalDate.of(2022, 1, 1);
@@ -26,7 +26,7 @@ public class VersionedObjectTest {
   }
 
   @Test
-  public void shouldThrowVersioningExceptionWhenValidFromIsBiggerThenValidTo() {
+   void shouldThrowVersioningExceptionWhenValidFromIsBiggerThenValidTo() {
     //given
     LocalDate validFrom = LocalDate.of(2021, 1, 1);
     LocalDate validTo = LocalDate.of(2020, 1, 1);
