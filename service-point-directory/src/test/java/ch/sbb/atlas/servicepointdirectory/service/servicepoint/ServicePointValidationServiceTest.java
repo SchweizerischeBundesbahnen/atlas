@@ -25,7 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 @IntegrationTest
-public class ServicePointValidationServiceTest {
+ class ServicePointValidationServiceTest {
 
   @MockBean
   private SharedBusinessOrganisationService sharedBusinessOrganisationService;
@@ -34,7 +34,7 @@ public class ServicePointValidationServiceTest {
   private final ServicePointVersionRepository versionRepository;
 
   @Autowired
-  public ServicePointValidationServiceTest(ServicePointValidationService servicePointValidationService,
+   ServicePointValidationServiceTest(ServicePointValidationService servicePointValidationService,
       ServicePointVersionRepository versionRepository) {
     this.servicePointValidationService = servicePointValidationService;
     this.versionRepository = versionRepository;

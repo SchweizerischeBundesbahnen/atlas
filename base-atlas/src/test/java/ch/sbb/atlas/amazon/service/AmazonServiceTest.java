@@ -26,7 +26,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-public class AmazonServiceTest {
+ class AmazonServiceTest {
 
     @Mock
     private AmazonS3 amazonS3;
@@ -39,7 +39,7 @@ public class AmazonServiceTest {
     private AmazonServiceImpl amazonService;
 
     @BeforeEach
-    public void setUp() {
+     void setUp() {
         MockitoAnnotations.openMocks(this);
         List<AmazonBucketClient> amazonBucketClientList = new ArrayList<>();
         amazonBucketClientList.add(amazonBucketClient);
@@ -57,7 +57,7 @@ public class AmazonServiceTest {
     }
 
     @Test
-    public void shouldPutFile() throws IOException {
+     void shouldPutFile() throws IOException {
         //given
         Path tempFile = createTempFile();
         //when
@@ -68,7 +68,7 @@ public class AmazonServiceTest {
     }
 
     @Test
-    public void shouldPutZipFile() throws IOException {
+     void shouldPutZipFile() throws IOException {
         //given
         Path tempFile = createTempFile();
         Path zipFile = createTempFile();
@@ -83,7 +83,7 @@ public class AmazonServiceTest {
     }
 
     @Test
-    public void shouldReturnBucketDir() throws IOException {
+     void shouldReturnBucketDir() throws IOException {
         //when
         String result = amazonService.getFilePathName(createTempFile().toFile(), "dev");
         //then
@@ -106,7 +106,7 @@ public class AmazonServiceTest {
     }
 
     @Test
-    public void shouldPullFile() throws IOException {
+     void shouldPullFile() throws IOException {
         //given
         when(fileService.getDir()).thenReturn("export");
         Path zipFile = createTempFile();

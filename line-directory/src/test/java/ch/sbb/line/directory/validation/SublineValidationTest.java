@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-public class SublineValidationTest {
+ class SublineValidationTest {
 
   @Mock
   private SublineVersionRepository sublineVersionRepository;
@@ -40,7 +40,7 @@ public class SublineValidationTest {
   private SublineValidationService sublineValidationService;
 
   @BeforeEach()
-  public void setUp() {
+   void setUp() {
     MockitoAnnotations.openMocks(this);
     sublineValidationService = new SublineValidationService(sublineVersionRepository,
         lineVersionRepository, coverageValidationService, sharedBusinessOrganisationService);

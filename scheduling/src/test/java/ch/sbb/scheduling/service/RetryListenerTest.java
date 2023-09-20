@@ -36,7 +36,7 @@ class RetryListenerTest {
   private final Throwable throwable = new RuntimeException("Fatal exception");
 
   @Test
-  public void shouldSendEmailOnClose() {
+   void shouldSendEmailOnClose() {
     //given
     doReturn("export").when(retryListener).getJobName(any());
 
@@ -50,7 +50,7 @@ class RetryListenerTest {
   }
 
   @Test
-  public void shouldCallOnError() {
+   void shouldCallOnError() {
     //given
     doReturn("export").when(retryListener).getJobName(any());
 

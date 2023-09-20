@@ -33,14 +33,14 @@ class SublineVersionExportServiceTest {
     private SublineVersionExportService sublineVersionExportService;
 
     @BeforeEach
-    public void setUp() {
+     void setUp() {
         MockitoAnnotations.openMocks(this);
         sublineVersionExportService = new SublineVersionExportService(fileService, amazonService,
             sublineVersionRepository);
     }
 
     @Test
-    public void shouldGetFullVersionsCsv() {
+     void shouldGetFullVersionsCsv() {
         //given
         SublineVersion lineVersion1 = SublineTestData.sublineVersionBuilder().build();
         SublineVersion lineVersion2 = SublineTestData.sublineVersionBuilder()
@@ -60,7 +60,7 @@ class SublineVersionExportServiceTest {
     }
 
     @Test
-    public void shouldGetActualVersionsCsv() {
+     void shouldGetActualVersionsCsv() {
         //given
         SublineVersion lineVersion1 = SublineTestData.sublineVersionBuilder().build();
         SublineVersion lineVersion2 = SublineTestData.sublineVersionBuilder()
@@ -80,7 +80,7 @@ class SublineVersionExportServiceTest {
     }
 
     @Test
-    public void shouldGetFutureTimetableVersionsCsv() {
+     void shouldGetFutureTimetableVersionsCsv() {
         //given
         SublineVersion lineVersion1 = SublineTestData.sublineVersionBuilder().build();
         SublineVersion lineVersion2 = SublineTestData.sublineVersionBuilder()
