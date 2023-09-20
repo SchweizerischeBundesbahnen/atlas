@@ -13,10 +13,10 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 
-public class UserServiceTest {
+class UserServiceTest {
 
   @Test
-  public void shouldReturnSbbUidFromStringPrincipal() {
+  void shouldReturnSbbUidFromStringPrincipal() {
     //given
     Authentication authentication = Mockito.mock(Authentication.class);
     when(authentication.getPrincipal()).thenReturn("User");
@@ -33,7 +33,7 @@ public class UserServiceTest {
   }
 
   @Test
-  public void shouldReturnSbbUidFromJwtPrincipal() {
+  void shouldReturnSbbUidFromJwtPrincipal() {
     //given
     Authentication authentication = Mockito.mock(Authentication.class);
     Jwt jwt = Mockito.mock(Jwt.class);
@@ -51,7 +51,7 @@ public class UserServiceTest {
   }
 
   @Test
-  public void shouldThrowExceptionWithWrongSecurityContext() {
+  void shouldThrowExceptionWithWrongSecurityContext() {
     //given
     Authentication authentication = Mockito.mock(Authentication.class);
     SecurityContext securityContext = Mockito.mock(SecurityContext.class);
@@ -63,7 +63,7 @@ public class UserServiceTest {
   }
 
   @Test
-  public void shouldReturnRoles() {
+  void shouldReturnRoles() {
     //given
     Authentication authentication = Mockito.mock(Authentication.class);
     Jwt jwt = Mockito.mock(Jwt.class);
@@ -81,7 +81,7 @@ public class UserServiceTest {
   }
 
   @Test
-  public void shouldReturnClientCredentialIdFromJwtPrincipal() {
+  void shouldReturnClientCredentialIdFromJwtPrincipal() {
     //given
     Authentication authentication = Mockito.mock(Authentication.class);
     Jwt jwt = Mockito.mock(Jwt.class);

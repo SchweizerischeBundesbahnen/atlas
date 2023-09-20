@@ -25,7 +25,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 
 @IntegrationTest
-public class TimetableFieldNumberServiceSearchTest {
+ class TimetableFieldNumberServiceSearchTest {
 
   private static final LocalDate SEARCH_DATE = LocalDate.now();
   private static final LocalDate START_OF_MONTH_AT_SEARCH_DATE = SEARCH_DATE.withDayOfMonth(1);
@@ -37,7 +37,7 @@ public class TimetableFieldNumberServiceSearchTest {
   private final TimetableFieldNumberService timetableFieldNumberService;
 
   @Autowired
-  public TimetableFieldNumberServiceSearchTest(
+   TimetableFieldNumberServiceSearchTest(
       TimetableFieldNumberVersionRepository versionRepository,
       TimetableFieldNumberService timetableFieldNumberService) {
     this.versionRepository = versionRepository;

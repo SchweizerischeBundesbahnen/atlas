@@ -6,12 +6,12 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.SublineTestData;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.SublineVersion;
-import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.line.directory.exception.LineConflictException;
 import ch.sbb.line.directory.exception.TemporaryLineValidationException;
 import ch.sbb.line.directory.repository.LineVersionRepository;
@@ -24,7 +24,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-public class LineValidationServiceTest {
+ class LineValidationServiceTest {
 
   @Mock
   private SublineVersionRepository sublineVersionRepository;
@@ -41,14 +41,14 @@ public class LineValidationServiceTest {
   private LineValidationService lineValidationService;
 
   @BeforeEach()
-  public void setUp() {
+   void setUp() {
     MockitoAnnotations.openMocks(this);
     lineValidationService = new LineValidationService(lineVersionRepository,
         coverageValidationService, sharedBusinessOrganisationService);
   }
 
   @Test
-  public void shouldThrowLineConflictExceptionWhenFoundSwissLineNumberOverlaps() {
+   void shouldThrowLineConflictExceptionWhenFoundSwissLineNumberOverlaps() {
     //given
     LineVersion lineVersion = LineTestData.lineVersion();
     when(lineVersionRepository.findSwissLineNumberOverlaps(lineVersion)).thenReturn(

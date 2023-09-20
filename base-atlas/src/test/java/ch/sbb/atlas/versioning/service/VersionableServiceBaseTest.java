@@ -16,7 +16,7 @@ public abstract class VersionableServiceBaseTest extends BaseTest {
   protected VersionableObject versionableObject4;
 
   @BeforeEach
-  public void init() {
+   void init() {
     versionableObject1 = VersionableObject
         .builder()
         .id(1L)

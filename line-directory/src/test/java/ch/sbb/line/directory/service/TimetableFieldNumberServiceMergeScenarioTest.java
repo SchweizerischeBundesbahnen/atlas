@@ -13,11 +13,11 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class TimetableFieldNumberServiceMergeScenarioTest extends
+ class TimetableFieldNumberServiceMergeScenarioTest extends
     BaseTimetableFieldNumberServiceTest {
 
   @Autowired
-  public TimetableFieldNumberServiceMergeScenarioTest(
+   TimetableFieldNumberServiceMergeScenarioTest(
       TimetableFieldNumberVersionRepository versionRepository,
       TimetableFieldNumberService timetableFieldNumberService) {
     super(versionRepository, timetableFieldNumberService);
@@ -37,7 +37,7 @@ public class TimetableFieldNumberServiceMergeScenarioTest extends
    * Änderung:  description=SBB1  description=SBB2  description=SBB4
    */
   @Test
-  public void scenarioMergeTwoVersions() {
+   void scenarioMergeTwoVersions() {
     //given
     version1.setDescription("SBB1");
     version1.setNumber("BEX");
@@ -118,7 +118,7 @@ public class TimetableFieldNumberServiceMergeScenarioTest extends
    * Änderung:            description=SBB1
    */
   @Test
-  public void scenarioMergeAllVersions() {
+   void scenarioMergeAllVersions() {
     //given
     version1.setDescription("SBB1");
     version1.setNumber("BEX");
@@ -172,7 +172,7 @@ public class TimetableFieldNumberServiceMergeScenarioTest extends
    * Änderung:            description=SBB1                         description=SBB4
    */
   @Test
-  public void scenarioMergeThroughMultipleVersions() {
+   void scenarioMergeThroughMultipleVersions() {
     //given
     version1.setDescription("SBB1");
     version1.setNumber("BEX");
@@ -244,7 +244,7 @@ public class TimetableFieldNumberServiceMergeScenarioTest extends
    * Änderung:            description=SBB1                 description=SBB1  description=SBB4
    */
   @Test
-  public void scenarioMergeThroughMultipleVersionsWithInterruption() {
+   void scenarioMergeThroughMultipleVersionsWithInterruption() {
     //given
     version1.setDescription("SBB1");
     version1.setNumber("BEX");

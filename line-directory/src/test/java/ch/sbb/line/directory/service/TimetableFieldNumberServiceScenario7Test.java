@@ -15,10 +15,10 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class TimetableFieldNumberServiceScenario7Test extends BaseTimetableFieldNumberServiceTest {
+ class TimetableFieldNumberServiceScenario7Test extends BaseTimetableFieldNumberServiceTest {
 
   @Autowired
-  public TimetableFieldNumberServiceScenario7Test(
+   TimetableFieldNumberServiceScenario7Test(
       TimetableFieldNumberVersionRepository versionRepository,
       TimetableFieldNumberService timetableFieldNumberService) {
     super(versionRepository, timetableFieldNumberService);
@@ -35,7 +35,7 @@ public class TimetableFieldNumberServiceScenario7Test extends BaseTimetableField
    * Version:          1                         2
    */
   @Test
-  public void scenario7a() {
+   void scenario7a() {
     //given
     version1 = versionRepository.save(version1);
     version2 = versionRepository.save(version2);
@@ -131,7 +131,7 @@ public class TimetableFieldNumberServiceScenario7Test extends BaseTimetableField
    * Version:                 2                         1
    */
   @Test
-  public void scenario7b() {
+   void scenario7b() {
     //given
     version1 = versionRepository.save(version1);
     version2 = versionRepository.save(version2);
@@ -226,7 +226,7 @@ public class TimetableFieldNumberServiceScenario7Test extends BaseTimetableField
    * Version:          1                               2
    */
   @Test
-  public void scenario7c() {
+   void scenario7c() {
     //given
     version1 = versionRepository.save(version1);
     version2 = versionRepository.save(version2);
@@ -322,7 +322,7 @@ public class TimetableFieldNumberServiceScenario7Test extends BaseTimetableField
    * Version:                 2                              1
    */
   @Test
-  public void scenario7d() {
+   void scenario7d() {
     //given
     version1 = versionRepository.save(version1);
     version2 = versionRepository.save(version2);
@@ -410,7 +410,7 @@ public class TimetableFieldNumberServiceScenario7Test extends BaseTimetableField
    * ValidFrom is bigger than validTo: expected exception
    */
   @Test
-  public void scenarioValidFromBiggerThenValidTo() {
+   void scenarioValidFromBiggerThenValidTo() {
     //given
     version1.setValidFrom(LocalDate.of(2020, 12, 12));
     version1.setValidTo(LocalDate.of(2029, 12, 8));

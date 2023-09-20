@@ -9,10 +9,10 @@ class RgbColorConverterTest {
 
   private static final RgbColorConverter RGB_COLOR_CONVERTER = new RgbColorConverter();
   private static final RgbColor COLOR = new RgbColor(10, 11, 12);
-  public static final String COLOR_DB_REPRESENTATION = "#0A0B0C";
+   static final String COLOR_DB_REPRESENTATION = "#0A0B0C";
 
   @Test
-  public void shouldConvertToDbRepresentation() {
+   void shouldConvertToDbRepresentation() {
     // given
 
     // when
@@ -22,7 +22,7 @@ class RgbColorConverterTest {
   }
 
   @Test
-  public void shouldConvertNullToDbRepresentation() {
+   void shouldConvertNullToDbRepresentation() {
     // given
 
     // when
@@ -32,7 +32,7 @@ class RgbColorConverterTest {
   }
 
   @Test
-  public void shouldConvertFromDbRepresentation() {
+   void shouldConvertFromDbRepresentation() {
     // given
 
     // when
@@ -42,7 +42,7 @@ class RgbColorConverterTest {
   }
 
   @Test
-  public void shouldConvertNullFromDbRepresentation() {
+   void shouldConvertNullFromDbRepresentation() {
     // given
 
     // when

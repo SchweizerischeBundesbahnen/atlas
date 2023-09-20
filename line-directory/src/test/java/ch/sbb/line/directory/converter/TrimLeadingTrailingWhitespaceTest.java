@@ -3,8 +3,8 @@ package ch.sbb.line.directory.converter;
 import static ch.sbb.line.directory.LineTestData.lineVersionModelBuilder;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.api.lidi.LineVersionModel;
+import ch.sbb.atlas.model.controller.IntegrationTest;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -18,7 +18,7 @@ class TrimLeadingTrailingWhitespaceTest {
   private ObjectMapper objectMapper;
 
   @Test
-  public void shouldTrimLeadingWhitespaceTest() throws IOException {
+   void shouldTrimLeadingWhitespaceTest() throws IOException {
     LineVersionModel lineVersionModel = lineVersionModelBuilder().build();
     lineVersionModel.setAlternativeName("   TEST");
     LineVersionModel deserializedVersionModel = serializeThenDeserializeModel(lineVersionModel);
@@ -26,7 +26,7 @@ class TrimLeadingTrailingWhitespaceTest {
   }
 
   @Test
-  public void shouldTrimTrailingWhitespaceTest() throws IOException {
+   void shouldTrimTrailingWhitespaceTest() throws IOException {
     LineVersionModel lineVersionModel = lineVersionModelBuilder().build();
     lineVersionModel.setAlternativeName("TEST   ");
     LineVersionModel deserializedVersionModel = serializeThenDeserializeModel(lineVersionModel);
@@ -34,7 +34,7 @@ class TrimLeadingTrailingWhitespaceTest {
   }
 
   @Test
-  public void shouldNotTrimWhitespacesBetweenTest() throws IOException {
+   void shouldNotTrimWhitespacesBetweenTest() throws IOException {
     LineVersionModel lineVersionModel = lineVersionModelBuilder().build();
     lineVersionModel.setAlternativeName("   TEST  TEST  . ");
     LineVersionModel deserializedVersionModel = serializeThenDeserializeModel(lineVersionModel);

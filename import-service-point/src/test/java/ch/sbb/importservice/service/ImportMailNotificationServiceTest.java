@@ -27,7 +27,7 @@ class ImportMailNotificationServiceTest {
   private MailNotificationService notificationService;
 
   @Test
-  public void shouldBuildMailNotification() {
+   void shouldBuildMailNotification() {
     //given
     Map<String, Object> expectedMailContent = new HashMap<>();
     expectedMailContent.put("jobName", "import");
@@ -53,7 +53,7 @@ class ImportMailNotificationServiceTest {
   }
 
   @Test
-  public void shouldBuildMailNotificationWhenThrowableIsNull() {
+   void shouldBuildMailNotificationWhenThrowableIsNull() {
     //given
     Map<String, Object> expectedMailContent = new HashMap<>();
     expectedMailContent.put("jobName", "import");

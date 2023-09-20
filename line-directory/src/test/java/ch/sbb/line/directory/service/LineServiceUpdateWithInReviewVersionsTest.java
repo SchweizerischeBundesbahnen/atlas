@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
 @Transactional
-public class LineServiceUpdateWithInReviewVersionsTest {
+ class LineServiceUpdateWithInReviewVersionsTest {
 
   private static final String SLNID = "ch:1:slnid:100000";
 
@@ -39,7 +39,7 @@ public class LineServiceUpdateWithInReviewVersionsTest {
   private LineVersion version3;
 
   @Autowired
-  public LineServiceUpdateWithInReviewVersionsTest(
+   LineServiceUpdateWithInReviewVersionsTest(
       LineVersionRepository lineVersionRepository,
       LineService lineService) {
     this.lineVersionRepository = lineVersionRepository;
@@ -101,7 +101,7 @@ public class LineServiceUpdateWithInReviewVersionsTest {
    *  - Möglich, da Version 1 nicht berührt wird
    */
   @Test
-  public void updateScenario1() {
+   void updateScenario1() {
     //given
     version1.setStatus(Status.IN_REVIEW);
     version1 = lineVersionRepository.save(version1);
@@ -146,7 +146,7 @@ public class LineServiceUpdateWithInReviewVersionsTest {
    *  - Nicht möglich, da IN_REVIEW Version validTo verändert wird
    */
   @Test
-  public void updateScenario2() {
+   void updateScenario2() {
     //given
     version1.setStatus(Status.IN_REVIEW);
     version1 = lineVersionRepository.save(version1);
@@ -174,7 +174,7 @@ public class LineServiceUpdateWithInReviewVersionsTest {
    *  - Nicht möglich da auf 1 validTo verändert wird
    */
   @Test
-  public void updateScenario3() {
+   void updateScenario3() {
     //given
     version1.setStatus(Status.IN_REVIEW);
     version1 = lineVersionRepository.save(version1);
@@ -204,7 +204,7 @@ public class LineServiceUpdateWithInReviewVersionsTest {
    *  - ValidFrom, ValidTo und LineType dürfen nicht verändert werden
    */
   @Test
-  public void updateScenario4() {
+   void updateScenario4() {
     //given
     version1.setStatus(Status.IN_REVIEW);
     version1 = lineVersionRepository.save(version1);
@@ -229,7 +229,7 @@ public class LineServiceUpdateWithInReviewVersionsTest {
    *  - Nicht möglich, da IN_REVIEW Version validFrom verändert wird
    */
   @Test
-  public void updateScenario5() {
+   void updateScenario5() {
     //given
     version1.setStatus(Status.IN_REVIEW);
     version1 = lineVersionRepository.save(version1);
@@ -256,7 +256,7 @@ public class LineServiceUpdateWithInReviewVersionsTest {
    *  - ValidFrom, ValidTo und LineType dürfen nicht verändert werden
    */
   @Test
-  public void updateScenario6() {
+   void updateScenario6() {
     //given
     version1.setStatus(Status.IN_REVIEW);
     version1 = lineVersionRepository.save(version1);
@@ -281,7 +281,7 @@ public class LineServiceUpdateWithInReviewVersionsTest {
    *  - Nicht möglich, da Anhörung tangiert
    */
   @Test
-  public void updateScenario7() {
+   void updateScenario7() {
     //given
     version1 = lineVersionRepository.save(version1);
     version2.setStatus(Status.IN_REVIEW);
@@ -309,7 +309,7 @@ public class LineServiceUpdateWithInReviewVersionsTest {
    *  - Möglich, da Anhörung nicht beeinflusst
    */
   @Test
-  public void updateScenario8() {
+   void updateScenario8() {
     //given
     version1.setStatus(Status.IN_REVIEW);
     version1 = lineVersionRepository.save(version1);
@@ -337,7 +337,7 @@ public class LineServiceUpdateWithInReviewVersionsTest {
    *  - Möglich, da Version 1 validFrom, validTo & lineType
    */
   @Test
-  public void updateScenario9() {
+   void updateScenario9() {
     //given
     version1.setStatus(Status.IN_REVIEW);
     version1 = lineVersionRepository.save(version1);

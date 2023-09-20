@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
 @Transactional
-public class TransportCompanyRepositoryTest {
+ class TransportCompanyRepositoryTest {
 
   private static final long TRANSPORT_COMPANY_ID = 5L;
 

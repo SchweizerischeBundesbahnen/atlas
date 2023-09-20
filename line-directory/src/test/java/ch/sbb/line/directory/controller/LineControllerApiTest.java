@@ -1,37 +1,5 @@
 package ch.sbb.line.directory.controller;
 
-import ch.sbb.atlas.amazon.service.AmazonService;
-import ch.sbb.atlas.api.lidi.LineVersionModel;
-import ch.sbb.atlas.api.lidi.LineVersionModel.Fields;
-import ch.sbb.atlas.api.lidi.LineVersionSnapshotModel;
-import ch.sbb.atlas.api.lidi.SublineVersionModel;
-import ch.sbb.atlas.api.lidi.enumaration.CoverageType;
-import ch.sbb.atlas.api.lidi.enumaration.LineType;
-import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
-import ch.sbb.atlas.api.lidi.enumaration.SublineType;
-import ch.sbb.atlas.api.model.ErrorResponse;
-import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
-import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.model.controller.BaseControllerWithAmazonS3ApiTest;
-import ch.sbb.atlas.workflow.model.WorkflowStatus;
-import ch.sbb.line.directory.LineTestData;
-import ch.sbb.line.directory.entity.LineVersionSnapshot;
-import ch.sbb.line.directory.repository.CoverageRepository;
-import ch.sbb.line.directory.repository.LineVersionRepository;
-import ch.sbb.line.directory.repository.LineVersionSnapshotRepository;
-import ch.sbb.line.directory.repository.SublineVersionRepository;
-import ch.sbb.line.directory.service.export.LineVersionExportService;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
-import org.springframework.test.web.servlet.MvcResult;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
-
 import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.alternativeName;
 import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.businessOrganisation;
 import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.combinationName;
@@ -53,7 +21,38 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
+import ch.sbb.atlas.amazon.service.AmazonService;
+import ch.sbb.atlas.api.lidi.LineVersionModel;
+import ch.sbb.atlas.api.lidi.LineVersionModel.Fields;
+import ch.sbb.atlas.api.lidi.LineVersionSnapshotModel;
+import ch.sbb.atlas.api.lidi.SublineVersionModel;
+import ch.sbb.atlas.api.lidi.enumaration.CoverageType;
+import ch.sbb.atlas.api.lidi.enumaration.LineType;
+import ch.sbb.atlas.api.lidi.enumaration.PaymentType;
+import ch.sbb.atlas.api.lidi.enumaration.SublineType;
+import ch.sbb.atlas.api.model.ErrorResponse;
+import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
+import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.model.controller.BaseControllerWithAmazonS3ApiTest;
+import ch.sbb.atlas.workflow.model.WorkflowStatus;
+import ch.sbb.line.directory.LineTestData;
+import ch.sbb.line.directory.entity.LineVersionSnapshot;
+import ch.sbb.line.directory.repository.CoverageRepository;
+import ch.sbb.line.directory.repository.LineVersionRepository;
+import ch.sbb.line.directory.repository.LineVersionSnapshotRepository;
+import ch.sbb.line.directory.repository.SublineVersionRepository;
+import ch.sbb.line.directory.service.export.LineVersionExportService;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
+import org.springframework.test.web.servlet.MvcResult;
+
+ class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
 
   @MockBean
   private SharedBusinessOrganisationService sharedBusinessOrganisationService;
@@ -83,7 +82,7 @@ public class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
   private AmazonService amazonService;
 
   @AfterEach
-  public void tearDown() {
+   void tearDown() {
     sublineVersionRepository.deleteAll();
     lineVersionRepository.deleteAll();
     coverageRepository.deleteAll();
