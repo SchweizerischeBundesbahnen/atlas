@@ -32,7 +32,6 @@ export class MapService {
   marker = new maplibregl.Marker({ color: '#FF0000' });
 
   isEditMode = new BehaviorSubject(false);
-  //TODO: Errormessage
   clickedGeographyCoordinates = new BehaviorSubject<{ lng: number; lat: number }>({
     lng: 0,
     lat: 0,
