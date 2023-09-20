@@ -1,12 +1,12 @@
 package ch.sbb.atlas.servicepointdirectory.geodata.transformer;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import org.assertj.core.data.Offset;
 import org.junit.jupiter.api.Test;
 import org.locationtech.jts.geom.Envelope;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
 class BoundingBoxTransformerTest {
@@ -14,7 +14,7 @@ class BoundingBoxTransformerTest {
   private final BoundingBoxTransformer boundingBoxTransformer;
 
   @Autowired
-  public BoundingBoxTransformerTest(BoundingBoxTransformer boundingBoxTransformer) {
+   BoundingBoxTransformerTest(BoundingBoxTransformer boundingBoxTransformer) {
     this.boundingBoxTransformer = boundingBoxTransformer;
   }
 

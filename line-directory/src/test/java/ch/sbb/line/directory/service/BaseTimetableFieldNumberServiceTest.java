@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
 @Transactional
-public abstract class BaseTimetableFieldNumberServiceTest {
+ abstract class BaseTimetableFieldNumberServiceTest {
 
   @MockBean
   private TimetableFieldNumberValidationService timetableFieldNumberValidationService;
@@ -31,7 +31,7 @@ public abstract class BaseTimetableFieldNumberServiceTest {
   protected TimetableFieldNumberVersion version5;
 
   @Autowired
-  public BaseTimetableFieldNumberServiceTest(TimetableFieldNumberVersionRepository versionRepository,
+   BaseTimetableFieldNumberServiceTest(TimetableFieldNumberVersionRepository versionRepository,
       TimetableFieldNumberService timetableFieldNumberService) {
     this.versionRepository = versionRepository;
     this.timetableFieldNumberService = timetableFieldNumberService;

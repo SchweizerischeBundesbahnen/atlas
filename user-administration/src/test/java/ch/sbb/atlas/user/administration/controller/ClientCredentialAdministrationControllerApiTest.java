@@ -5,10 +5,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
+import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.user.administration.entity.ClientCredentialPermission;
 import ch.sbb.atlas.user.administration.entity.PermissionRestriction;
@@ -20,10 +20,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 
 @EmbeddedKafka(topics = {"atlas.user.administration"})
-public class ClientCredentialAdministrationControllerApiTest extends BaseControllerApiTest {
+ class ClientCredentialAdministrationControllerApiTest extends BaseControllerApiTest {
 
-  public static final String CLIENT_ID = "1323165464-46465546-14364";
-  public static final String ALIAS = "öV-info.ch";
+   static final String CLIENT_ID = "1323165464-46465546-14364";
+   static final String ALIAS = "öV-info.ch";
 
   @Autowired
   private ClientCredentialPermissionRepository clientCredentialPermissionRepository;

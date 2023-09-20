@@ -14,7 +14,7 @@ class SharedBusinessOrganisationVersionRepositoryTest {
   private final SharedBusinessOrganisationVersionRepository sharedBusinessOrganisationVersionRepository;
 
   @Autowired
-  public SharedBusinessOrganisationVersionRepositoryTest(
+   SharedBusinessOrganisationVersionRepositoryTest(
       SharedBusinessOrganisationVersionRepository sharedBusinessOrganisationVersionRepository) {
     this.sharedBusinessOrganisationVersionRepository = sharedBusinessOrganisationVersionRepository;
   }

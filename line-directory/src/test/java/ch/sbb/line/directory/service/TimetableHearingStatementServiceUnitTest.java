@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-public class TimetableHearingStatementServiceUnitTest {
+ class TimetableHearingStatementServiceUnitTest {
 
   private TimetableHearingStatementService timetableHearingStatementService;
 
