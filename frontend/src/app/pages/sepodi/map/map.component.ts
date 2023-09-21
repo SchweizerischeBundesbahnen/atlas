@@ -5,7 +5,6 @@ import { MAP_STYLES, MapStyle } from './map-options.service';
 import { MapIcon, MapIconsService } from './map-icons.service';
 import { MAP_SOURCE_NAME } from './map-style';
 import { Subscription } from 'rxjs';
-import { CoordinateTransformationService } from '../geography/coordinate-transformation.service';
 
 @Component({
   selector: 'atlas-map',
@@ -25,15 +24,10 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
   map!: Map;
 
-  marker = new maplibregl.Marker({ color: '#FF0000' });
-
   @ViewChild('map')
   private mapContainer!: ElementRef<HTMLElement>;
 
-  constructor(
-    private mapService: MapService,
-    private coordinateTransformationService: CoordinateTransformationService
-  ) {}
+  constructor(private mapService: MapService) {}
 
   ngAfterViewInit() {
     this.map = this.mapService.initMap(this.mapContainer.nativeElement);
@@ -75,44 +69,36 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.showMapStyleSelection = false;
   }
 
+  onMapClicked = (e: any) => {
+    const clickedCoordinates = e.lngLat;
+    this.mapService.placeMarkerAndFlyTo(clickedCoordinates);
+    this.mapService.clickedGeographyCoordinates.next(clickedCoordinates);
+  };
+
+  enterEditMode() {
+    this.map.getCanvas().style.cursor = 'crosshair';
+    this.map.on(
+      'mouseleave',
+      MAP_SOURCE_NAME,
+      () => (this.map.getCanvas().style.cursor = 'crosshair')
+    );
+    this.map.on('click', this.onMapClicked);
+  }
+
+  exitEditMode() {
+    this.mapService.marker.remove();
+    this.map.off('click', this.onMapClicked);
+    this.map.getCanvas().style.cursor = '';
+    this.map.on('mouseleave', MAP_SOURCE_NAME, () => (this.map.getCanvas().style.cursor = ''));
+    this.mapService.clickedGeographyCoordinates.next({ lng: 0, lat: 0 });
+  }
+
   handleMapClick() {
-    const onMapClicked = (e: any) => {
-      const clickedCoordinates = e.lngLat;
-      placeMarkerAndFlyTo(clickedCoordinates);
-      this.mapService.clickedGeographyCoordinates.next(clickedCoordinates);
-    };
-
-    const placeMarkerAndFlyTo = (coordinates: any) => {
-      this.mapService.marker.setLngLat(coordinates).addTo(this.map);
-      this.map.flyTo({
-        center: coordinates as maplibregl.LngLatLike,
-        speed: 0.8,
-      });
-    };
-
-    const enterEditMode = () => {
-      this.map.getCanvas().style.cursor = 'crosshair';
-      this.map.on(
-        'mouseleave',
-        MAP_SOURCE_NAME,
-        () => (this.map.getCanvas().style.cursor = 'crosshair')
-      );
-      this.map.on('click', onMapClicked);
-    };
-
-    const exitEditMode = () => {
-      this.mapService.marker.remove();
-      this.map.off('click', onMapClicked);
-      this.map.getCanvas().style.cursor = '';
-      this.map.on('mouseleave', MAP_SOURCE_NAME, () => (this.map.getCanvas().style.cursor = ''));
-      this.mapService.clickedGeographyCoordinates.next({ lng: 0, lat: 0 });
-    };
-
     this.isEditModeSubsription = this.mapService.isEditMode.subscribe((isEditMode) => {
       if (isEditMode) {
-        enterEditMode();
+        this.enterEditMode();
       } else {
-        exitEditMode();
+        this.exitEditMode();
       }
     });
   }
