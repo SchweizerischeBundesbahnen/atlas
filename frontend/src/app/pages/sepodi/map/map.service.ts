@@ -21,6 +21,11 @@ export const mapZoomLocalStorageKey = 'map-zoom';
 export const mapLocationLocalStorageKey = 'map-location';
 export const mapStyleLocalStorageKey = 'map-style';
 
+interface latLngCoordinates {
+  lat: number;
+  lng: number;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -239,5 +244,13 @@ export class MapService {
 
   setPopupToFixed() {
     this.popup.getElement().classList.add('fixed-popup');
+  }
+
+  placeMarkerAndFlyTo(latLngCoordinates: latLngCoordinates) {
+    this.marker.setLngLat(latLngCoordinates).addTo(this.map);
+    this.map.flyTo({
+      center: latLngCoordinates as maplibregl.LngLatLike,
+      speed: 0.8,
+    });
   }
 }
