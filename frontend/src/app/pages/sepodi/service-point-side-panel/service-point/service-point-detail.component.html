@@ -6,6 +6,7 @@
         *ngIf="showVersionSwitch"
         [currentRecord]="selectedVersion"
         [records]="servicePointVersions"
+        [switchDisabled]="isSwitchVersionDisabled"
       ></app-switch-version>
     </div>
   </div>
