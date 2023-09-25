@@ -3,7 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { CoordinatePair, SpatialReference } from '../../../api';
 import { GeographyFormGroup } from './geography-form-group';
 import { CoordinateTransformationService } from './coordinate-transformation.service';
-import { Subscription } from 'rxjs';
+import { Subscription, debounceTime } from 'rxjs';
 import { MapService } from '../map/map.service';
 import { MatRadioChange } from '@angular/material/radio';
 
@@ -38,36 +38,17 @@ export class GeographyComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.initTransformedCoordinatePair();
-    this.spatialReferenceSubscription = this.formGroup.valueChanges.subscribe((value) => {
-      this.spatialReference = this.currentSpatialReference;
-
-      let latLngCoordinates: LatLngCoordinates = {
-        lat: Number(value.north!),
-        lng: Number(value.east!),
-      };
-
-      if (this.spatialReference === SpatialReference.Lv95) {
-        const { north, east } = this.coordinateTransformationService.transform(
-          { north: latLngCoordinates.lat, east: latLngCoordinates.lng },
-          SpatialReference.Lv95,
-          SpatialReference.Wgs84
-        );
-
-        latLngCoordinates = {
-          lat: north,
-          lng: east,
-        };
-      }
-
-      if (this.isValidLatLng(latLngCoordinates.lat, latLngCoordinates.lng)) {
-        this.mapService.placeMarkerAndFlyTo(latLngCoordinates);
-      }
-      this.initTransformedCoordinatePair();
-    });
+    this.spatialReferenceSubscription = this.formGroup.valueChanges
+      .pipe(debounceTime(500))
+      .subscribe((value) => {
+        this.spatialReference = this.currentSpatialReference;
+        this.onChangeCoordinatesManually({ east: value.east!, north: value.north! });
+        this.initTransformedCoordinatePair();
+      });
 
     this.clickedGeographyCoordinatesSubscription =
-      this.mapService.clickedGeographyCoordinates.subscribe((data) => {
-        this.onMapClick(data);
+      this.mapService.clickedGeographyCoordinates.subscribe((latLngCoordinates) => {
+        this.onMapClick(latLngCoordinates);
       });
   }
 
@@ -143,18 +124,42 @@ export class GeographyComponent implements OnInit, OnDestroy {
     }
   }
 
+  onChangeCoordinatesManually(coordinates: CoordinatePair) {
+    let latLngCoordinates: LatLngCoordinates = {
+      lat: Number(coordinates.north!),
+      lng: Number(coordinates.east!),
+    };
+
+    if (this.spatialReference === SpatialReference.Lv95) {
+      const { north, east } = this.coordinateTransformationService.transform(
+        { north: latLngCoordinates.lat, east: latLngCoordinates.lng },
+        SpatialReference.Lv95,
+        SpatialReference.Wgs84
+      );
+
+      latLngCoordinates = {
+        lat: north,
+        lng: east,
+      };
+    }
+
+    if (this.isValidLatLng(latLngCoordinates.lat, latLngCoordinates.lng)) {
+      this.mapService.placeMarkerAndFlyTo(latLngCoordinates);
+    }
+  }
+
   onMapClick(coordinates: LatLngCoordinates) {
     if (this.isLatLngGreaterThanZero(coordinates)) {
-      let coordinatesToSet = coordinates;
+      let latLngCoordinates = coordinates;
       if (this.spatialReference === SpatialReference.Lv95) {
         const { north, east } = this.coordinateTransformationService.transform(
           { north: coordinates.lat, east: coordinates.lng },
           SpatialReference.Wgs84,
           SpatialReference.Lv95
         );
-        coordinatesToSet = { lat: north, lng: east };
+        latLngCoordinates = { lat: north, lng: east };
       }
-      this.setFormGroupValue(coordinatesToSet.lat, coordinatesToSet.lng);
+      this.setFormGroupValue(latLngCoordinates.lat, latLngCoordinates.lng);
     }
   }
 
