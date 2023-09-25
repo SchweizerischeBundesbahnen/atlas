@@ -83,6 +83,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       () => (this.map.getCanvas().style.cursor = 'crosshair')
     );
     this.map.on('click', this.onMapClicked);
+    this.mapService.initMapEvents();
   }
 
   exitEditMode() {
@@ -91,6 +92,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.map.getCanvas().style.cursor = '';
     this.map.on('mouseleave', MAP_SOURCE_NAME, () => (this.map.getCanvas().style.cursor = ''));
     this.mapService.clickedGeographyCoordinates.next({ lng: 0, lat: 0 });
+    this.mapService.initMapEvents();
   }
 
   handleMapClick() {
@@ -117,7 +119,6 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
   goHome() {
     const swissLongLat = [8.2275, 46.8182];
-
     this.map.flyTo({
       center: swissLongLat as maplibregl.LngLatLike,
       zoom: 7.25,

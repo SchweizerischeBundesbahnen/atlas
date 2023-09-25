@@ -56,6 +56,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   previouslySelectedType!: ServicePointType;
   stopPointTypes = Object.values(StopPointType);
   categories = Object.values(Category);
+  isSwitchVersionDisabled = false;
 
   private readonly ZOOM_LEVEL_FOR_DETAIL = 14;
 
@@ -102,12 +103,13 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   ngOnDestroy() {
     this.mapSubscription?.unsubscribe();
     this.servicePointSubscription?.unsubscribe();
+    this.selectedVersion = null!;
+    this.mapService.deselectServicePoint();
   }
 
   switchVersion(newIndex: number) {
     this.selectedVersionIndex = newIndex;
     this.selectedVersion = this.servicePointVersions[newIndex];
-    this.cancelMapEditMode();
     this.initSelectedVersion();
   }
 
@@ -130,7 +132,6 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
       );
     }
     this.selectedVersionIndex = this.servicePointVersions.indexOf(this.selectedVersion);
-
     this.initSelectedVersion();
   }
 
@@ -174,7 +175,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   private displayAndSelectServicePointOnMap() {
     this.cancelMapEditMode();
     this.mapSubscription = this.mapService.mapInitialized.subscribe((initialized) => {
-      if (initialized) {
+      if (initialized && this.selectedVersion) {
         if (this.mapService.map.getZoom() <= this.ZOOM_LEVEL_FOR_DETAIL) {
           this.mapService.map.setZoom(this.ZOOM_LEVEL_FOR_DETAIL);
         }
@@ -191,6 +192,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
       this.showConfirmationDialog();
     } else {
       this.mapService.isEditMode.next(true);
+      this.isSwitchVersionDisabled = true;
       this.form.enable();
     }
   }
@@ -308,5 +310,6 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
 
   private cancelMapEditMode() {
     this.mapService.isEditMode.next(false);
+    this.isSwitchVersionDisabled = false;
   }
 }
