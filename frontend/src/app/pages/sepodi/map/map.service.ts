@@ -9,7 +9,7 @@ import maplibregl, {
   Popup,
   ResourceType,
 } from 'maplibre-gl';
-import { MAP_LAYER_NAME, MAP_SOURCE_NAME, MAP_STYLE_SPEC, MAP_ZOOM_DETAILS } from './map-style';
+import { MAP_SOURCE_NAME, MAP_STYLE_SPEC, MAP_ZOOM_DETAILS } from './map-style';
 import { GeoJsonProperties, Point } from 'geojson';
 import { MAP_STYLES, MapOptionsService, MapStyle } from './map-options.service';
 import { BehaviorSubject, Subject } from 'rxjs';
@@ -126,14 +126,14 @@ export class MapService {
     });
   }
 
-  private initMapEvents() {
+  initMapEvents() {
     this.map.once('style.load', () => {
       this.initStoredMapBehaviour();
       this.deselectServicePoint();
 
       this.map.on('click', MAP_SOURCE_NAME, (e) => this.onClick(e));
       this.map.on('mouseenter', MAP_SOURCE_NAME, () => {
-        if (this.showDetails()) {
+        if (this.showDetails() && !this.isEditMode.value) {
           this.map.getCanvas().style.cursor = 'pointer';
         }
       });
@@ -156,7 +156,7 @@ export class MapService {
   }
 
   onClick(e: MapMouseEvent & { features?: GeoJSON.Feature[] }) {
-    if (!this.showDetails() || !e.features) {
+    if (!this.showDetails() || !e.features || this.isEditMode.value) {
       return;
     }
     if (e.features.length == 1) {
@@ -201,7 +201,7 @@ export class MapService {
   }
 
   showPopup(event: MapMouseEvent & { features?: MapGeoJSONFeature[] }) {
-    if (!event.features || this.keepPopup) {
+    if (!event.features || this.keepPopup || this.isEditMode.value) {
       return;
     }
     const coordinates = (event.features[0].geometry as Point).coordinates.slice() as LngLatLike;
