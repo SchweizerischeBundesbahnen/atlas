@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { CoordinatePair, SpatialReference } from '../../../api';
 import { GeographyFormGroup } from './geography-form-group';
@@ -19,10 +19,10 @@ interface LatLngCoordinates {
   selector: 'sepodi-geography',
   templateUrl: './geography.component.html',
 })
-export class GeographyComponent implements OnInit, OnDestroy {
+export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
   @Input() disabled = false;
   @Input() formGroup!: FormGroup<GeographyFormGroup>;
-  spatialReference: SpatialReference = SpatialReference.Lv95;
+  @Input() spatialReference!: SpatialReference;
 
   readonly LV95_MAX_DIGITS = LV95_MAX_DIGITS;
   readonly WGS84_MAX_DIGITS = WGS84_MAX_DIGITS;
@@ -37,14 +37,9 @@ export class GeographyComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.spatialReference = this.currentSpatialReference;
     this.initTransformedCoordinatePair();
-    this.spatialReferenceSubscription = this.formGroup.valueChanges
-      .pipe(debounceTime(500))
-      .subscribe((value) => {
-        this.spatialReference = this.currentSpatialReference;
-        this.onChangeCoordinatesManually({ east: value.east!, north: value.north! });
-        this.initTransformedCoordinatePair();
-      });
+    this.setSpartialReferenceSubscription();
 
     this.clickedGeographyCoordinatesSubscription =
       this.mapService.clickedGeographyCoordinates.subscribe((latLngCoordinates) => {
@@ -53,12 +48,18 @@ export class GeographyComponent implements OnInit, OnDestroy {
   }
 
   setFormGroupValue(lat: number, lng: number) {
-    const roundedLat = Number(lat.toFixed(4));
-    const roundedLng = Number(lng.toFixed(4));
+    const roundedLat = Number(lat.toFixed(5));
+    const roundedLng = Number(lng.toFixed(5));
 
     this.formGroup.controls.east.setValue(roundedLng);
     this.formGroup.controls.north.setValue(roundedLat);
     this.formGroup.markAsDirty();
+  }
+
+  ngOnChanges() {
+    this.spatialReference = this.currentSpatialReference;
+    this.initTransformedCoordinatePair();
+    this.setSpartialReferenceSubscription();
   }
 
   ngOnDestroy() {
@@ -67,11 +68,7 @@ export class GeographyComponent implements OnInit, OnDestroy {
   }
 
   private initTransformedCoordinatePair() {
-    if (
-      this.formGroup.value.spatialReference &&
-      this.currentCoordinates.east &&
-      this.currentCoordinates.north
-    ) {
+    if (this.spatialReference && this.currentCoordinates.east && this.currentCoordinates.north) {
       this.transformedCoordinatePair = this.coordinateTransformationService.transform(
         this.currentCoordinates,
         this.currentSpatialReference,
@@ -161,6 +158,13 @@ export class GeographyComponent implements OnInit, OnDestroy {
       }
       this.setFormGroupValue(latLngCoordinates.lat, latLngCoordinates.lng);
     }
+  }
+
+  setSpartialReferenceSubscription() {
+    this.spatialReferenceSubscription = this.formGroup.valueChanges.subscribe((value) => {
+      this.onChangeCoordinatesManually({ east: value.east!, north: value.north! });
+      this.initTransformedCoordinatePair();
+    });
   }
 
   isLatLngGreaterThanZero(coordinates: LatLngCoordinates): boolean {
