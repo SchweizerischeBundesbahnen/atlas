@@ -41,7 +41,7 @@ const routes: Routes = [
     path: Pages.USER_ADMINISTRATION.path,
     loadChildren: () =>
       import('./pages/user-administration/user-administration.module').then(
-        (m) => m.UserAdministrationModule
+        (m) => m.UserAdministrationModule,
       ),
     data: { headerTitle: Pages.USER_ADMINISTRATION.headerTitle },
     canActivate: [AuthGuard, AdminGuard],
