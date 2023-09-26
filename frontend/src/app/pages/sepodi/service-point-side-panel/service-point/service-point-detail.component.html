@@ -179,6 +179,7 @@
   <sepodi-geography
     *ngIf="this.form.value.servicePointGeolocation?.spatialReference"
     [formGroup]="form.controls.servicePointGeolocation"
+    [spatialReference]="spatialReferenceSelectedVersion"
   ></sepodi-geography>
   <div *ngIf="this.form.value.servicePointGeolocation?.spatialReference">
     <div class="font-bold-2xl mt-5">{{ 'SEPODI.GEOLOCATION.ADMINISTRATION' | translate }}</div>
