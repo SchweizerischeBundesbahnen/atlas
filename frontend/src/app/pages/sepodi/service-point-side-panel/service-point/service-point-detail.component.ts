@@ -57,6 +57,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   stopPointTypes = Object.values(StopPointType);
   categories = Object.values(Category);
   isSwitchVersionDisabled = false;
+  spatialReferenceSelectedVersion!: SpatialReference;
 
   private readonly ZOOM_LEVEL_FOR_DETAIL = 14;
 
@@ -144,6 +145,8 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     if (!this.isNew) {
       this.form.disable();
     }
+    this.spatialReferenceSelectedVersion =
+      this.selectedVersion.servicePointGeolocation?.spatialReference!;
     this.displayAndSelectServicePointOnMap();
     this.initTypeChangeInformationDialog();
   }
