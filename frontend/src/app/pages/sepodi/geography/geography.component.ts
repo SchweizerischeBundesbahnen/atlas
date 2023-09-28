@@ -54,7 +54,6 @@ export class GeographyComponent implements OnDestroy, OnChanges {
   ) {}
 
   ngOnInit() {
-    this.spatialReference = this.currentSpatialReference;
     this.clickedGeographyCoordinatesSubscription =
       this.mapService.clickedGeographyCoordinates.subscribe((latLngCoordinates) => {
         this.onMapClick(latLngCoordinates);
@@ -103,6 +102,10 @@ export class GeographyComponent implements OnDestroy, OnChanges {
 
   get currentSpatialReference() {
     return this.formGroup.controls.spatialReference.value!;
+  }
+
+  set currentSpatialReference(currentSpatialReference) {
+    this.spatialReference = currentSpatialReference;
   }
 
   get currentCoordinates(): CoordinatePair {
