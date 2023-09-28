@@ -141,7 +141,7 @@
             <artifactId>mockito-inline</artifactId>
             <groupId>org.mockito</groupId>
             <scope>test</scope>
-            <version>4.11.0</version>
+            <version>5.2.0</version>
          </dependency>
          <dependency>
             <groupId>org.apache.tika</groupId>
