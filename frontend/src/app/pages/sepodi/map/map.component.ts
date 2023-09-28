@@ -3,6 +3,8 @@ import maplibregl, { Map } from 'maplibre-gl';
 import { MapService } from './map.service';
 import { MAP_STYLES, MapStyle } from './map-options.service';
 import { MapIcon, MapIconsService } from './map-icons.service';
+import { Router } from '@angular/router';
+import { Pages } from '../../pages';
 import { MAP_SOURCE_NAME } from './map-style';
 import { Subscription } from 'rxjs';
 
@@ -12,12 +14,12 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./map.component.scss'],
 })
 export class MapComponent implements AfterViewInit, OnDestroy {
+  @Input() public isSidePanelOpen = false;
+
   availableMapStyles = MAP_STYLES;
   currentMapStyle!: MapStyle;
   showMapStyleSelection = false;
   showMapLegend = false;
-  @Input() showSearch!: boolean;
-
   legend!: MapIcon[];
 
   private isEditModeSubsription!: Subscription;
@@ -28,7 +30,10 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   @ViewChild('map')
   private mapContainer!: ElementRef<HTMLElement>;
 
-  constructor(private mapService: MapService) {}
+  constructor(
+    private readonly mapService: MapService,
+    private readonly router: Router,
+  ) {}
 
   ngAfterViewInit() {
     this.map = this.mapService.initMap(this.mapContainer.nativeElement);
@@ -133,5 +138,12 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       zoom: 7.25,
       speed: 0.8,
     });
+  }
+
+  routeToNewSP(): void {
+    this.router
+      .navigate([Pages.SEPODI.path, Pages.SERVICE_POINTS.path])
+      .then()
+      .catch((reason) => console.error('Navigation failed:', reason));
   }
 }

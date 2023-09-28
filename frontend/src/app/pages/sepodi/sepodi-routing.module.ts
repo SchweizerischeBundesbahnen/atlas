@@ -10,12 +10,17 @@ import { TrafficPointElementsDetailComponent } from './service-point-side-panel/
 import { LoadingPointsDetailComponent } from './service-point-side-panel/loading-points/loading-points-detail.component';
 import { FotCommentDetailComponent } from './service-point-side-panel/comment/fot-comment-detail.component';
 import { canLeaveDirtyForm } from '../../core/leave-guard/leave-dirty-form-guard.service';
+import { ServicePointCreationComponent } from './service-point-creation/service-point-creation.component';
 
 const routes: Routes = [
   {
     path: '',
     component: SepodiMapviewComponent,
     children: [
+      {
+        path: Pages.SERVICE_POINTS.path,
+        component: ServicePointCreationComponent,
+      },
       {
         path: Pages.SERVICE_POINTS.path + '/:id',
         component: ServicePointSidePanelComponent,
