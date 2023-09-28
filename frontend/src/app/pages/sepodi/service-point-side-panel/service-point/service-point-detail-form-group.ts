@@ -201,26 +201,32 @@ export class ServicePointFormGroupBuilder {
         if (newSpatialReference) {
           formGroup.controls.servicePointGeolocation.controls.east.setValidators([
             Validators.required,
-            this.getValidatorForCoordinates(newSpatialReference),
+            this.getValidatorForCoordinates(newSpatialReference, true),
           ]);
           formGroup.controls.servicePointGeolocation.controls.north.setValidators([
             Validators.required,
-            this.getValidatorForCoordinates(newSpatialReference),
+            this.getValidatorForCoordinates(newSpatialReference, false),
           ]);
         } else {
           formGroup.controls.servicePointGeolocation.controls.east.clearValidators();
           formGroup.controls.servicePointGeolocation.controls.north.clearValidators();
         }
         formGroup.controls.servicePointGeolocation.controls.east.updateValueAndValidity();
-        formGroup.controls.servicePointGeolocation.controls.north.updateValueAndValidity();
+        formGroup.controls.servicePointGeolocation.controls.north.updateValueAndValidity({
+          emitEvent: false,
+        });
       }
     );
   }
 
-  private static getValidatorForCoordinates(spatialReference?: SpatialReference) {
-    return AtlasCharsetsValidator.decimalWithDigits(
-      spatialReference == SpatialReference.Lv95 ? LV95_MAX_DIGITS : WGS84_MAX_DIGITS
-    );
+  private static getValidatorForCoordinates(spatialReference?: SpatialReference, isLng?: boolean) {
+    if (spatialReference === SpatialReference.Lv95) {
+      return AtlasCharsetsValidator.decimalWithDigits(
+        spatialReference == SpatialReference.Lv95 ? LV95_MAX_DIGITS : WGS84_MAX_DIGITS
+      );
+    } else {
+      return AtlasCharsetsValidator.wgs84Coordinates(isLng!);
+    }
   }
 
   static getWritableServicePoint(
