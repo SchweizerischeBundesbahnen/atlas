@@ -47,6 +47,62 @@ export interface ServicePointDetailFormGroup extends BaseDetailFormGroup {
 }
 
 export class ServicePointFormGroupBuilder {
+  static buildEmptyFormGroup(): FormGroup<ServicePointDetailFormGroup> {
+    const formGroup = new FormGroup<ServicePointDetailFormGroup>(
+      {
+        number: new FormControl(),
+        sloid: new FormControl(''),
+        abbreviation: new FormControl(''),
+        status: new FormControl(),
+        designationOfficial: new FormControl('', [
+          Validators.required,
+          WhitespaceValidator.blankOrEmptySpaceSurrounding,
+          Validators.maxLength(30),
+          Validators.minLength(2),
+        ]),
+        designationLong: new FormControl('', [
+          WhitespaceValidator.blankOrEmptySpaceSurrounding,
+          Validators.maxLength(50),
+          Validators.minLength(2),
+        ]),
+        validFrom: new FormControl(null, [Validators.required]),
+        validTo: new FormControl(null, [Validators.required]),
+        businessOrganisation: new FormControl('', [
+          Validators.required,
+          AtlasFieldLengthValidator.length_50,
+          WhitespaceValidator.blankOrEmptySpaceSurrounding,
+          AtlasCharsetsValidator.iso88591,
+        ]),
+        operatingPointType: new FormControl(''),
+        sortCodeOfDestinationStation: new FormControl('', [Validators.maxLength(5)]),
+        stopPointType: new FormControl(),
+        meansOfTransport: new FormControl([]),
+        categories: new FormControl([]),
+        servicePointGeolocation: new FormGroup<GeographyFormGroup>({
+          east: new FormControl(), // todo: getvalidatorforcoordinates add dynamically
+          north: new FormControl(),
+          height: new FormControl(null, [AtlasCharsetsValidator.decimalWithDigits(4)]),
+          spatialReference: new FormControl(), // todo: mby set default
+        }),
+        operatingPointRouteNetwork: new FormControl(),
+        operatingPointKilometer: new FormControl(),
+        operatingPointKilometerMaster: new FormControl(),
+        selectedType: new FormControl(null, { nonNullable: true }),
+        freightServicePoint: new FormControl(),
+        stopPoint: new FormControl(),
+        operatingPointTrafficPointType: new FormControl(),
+        etagVersion: new FormControl(),
+        creationDate: new FormControl(''),
+        editionDate: new FormControl(''),
+        editor: new FormControl(''),
+        creator: new FormControl(''),
+      },
+      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
+    );
+    this.initConditionalValidators(formGroup);
+    return formGroup;
+  }
+
   static buildFormGroup(version: ReadServicePointVersion): FormGroup {
     const formGroup = new FormGroup<ServicePointDetailFormGroup>(
       {
