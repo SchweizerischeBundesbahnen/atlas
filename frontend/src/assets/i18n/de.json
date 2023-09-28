@@ -211,7 +211,8 @@
     "MIN": "Die Zahl muss mindestens {{min}} sein.",
     "MAX": "Die Zahl darf maximal {{max}} sein.",
     "AT_LEAST_ONE": "Wählen Sie mindestens eine Ausprägung aus.",
-    "DECIMAL_NUMBER": "Geben Sie eine Dezimalzahl mit maximal {{maxDecimalDigits}} Nachkommastellen ein."
+    "DECIMAL_NUMBER": "Geben Sie eine Dezimalzahl mit maximal {{maxDecimalDigits}} Nachkommastellen ein.",
+    "WGS84": "Geben Sie für die Breite eine Zahl zwischen -90 und 90 ein und für die Länge eine Zah zwischen -180 und 180 ein."
   },
   "USER_ADMIN": {
     "SEARCH_FOR_FILTER": "Geschäftsorganisationen und Applikationen",
