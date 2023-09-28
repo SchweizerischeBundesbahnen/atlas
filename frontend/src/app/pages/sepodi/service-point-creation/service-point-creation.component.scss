@@ -1,0 +1,11 @@
+@use 'src/styles/variables';
+
+:host {
+  width: 100%;
+}
+
+.form-box {
+  background-color: white;
+  border-top-right-radius: variables.$border-radius;
+  border-top-left-radius: variables.$border-radius;
+}

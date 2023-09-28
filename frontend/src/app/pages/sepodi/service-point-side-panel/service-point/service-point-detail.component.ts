@@ -8,8 +8,6 @@ import {
   CoordinatePair,
   CreateServicePointVersion,
   GeoDataService,
-  OperatingPointTechnicalTimetableType,
-  OperatingPointType,
   ReadServicePointVersion,
   ServicePointsService,
   SpatialReference,
@@ -22,7 +20,16 @@ import {
 } from './service-point-detail-form-group';
 import { ServicePointType } from './service-point-type';
 import { MapService } from '../../map/map.service';
-import { catchError, debounceTime, EMPTY, merge, Observable, of, Subject } from 'rxjs';
+import {
+  BehaviorSubject,
+  catchError,
+  debounceTime,
+  EMPTY,
+  merge,
+  Observable,
+  of,
+  Subject,
+} from 'rxjs';
 import { Pages } from '../../../pages';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { ValidationService } from '../../../../core/validation/validation.service';
@@ -30,10 +37,9 @@ import { filter, switchMap, takeUntil } from 'rxjs/operators';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { DetailFormComponent } from '../../../../core/leave-guard/leave-dirty-form-guard.service';
 import { AuthService } from '../../../../core/auth/auth.service';
-import { TranslationSortingService } from '../../../../core/translation/translation-sorting.service';
 import { CoordinateTransformationService } from '../../geography/coordinate-transformation.service';
 import { LocationInformation } from './location-information';
-import { ServicePointAbbreviationAllowList } from '././service-point-abbreviation-allow-list';
+import { ServicePointAbbreviationAllowList } from './service-point-abbreviation-allow-list';
 import { Countries } from '../../../../core/country/Countries';
 
 @Component({
@@ -56,10 +62,6 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
 
   types = Object.values(ServicePointType);
 
-  readonly operatingPointTypeValues = (Object.values(OperatingPointType) as string[]).concat(
-    Object.values(OperatingPointTechnicalTimetableType),
-  );
-
   operatingPointTypes!: string[];
 
   previouslySelectedType!: ServicePointType;
@@ -70,6 +72,8 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   currentSpatialReference!: SpatialReference;
 
   locationInformation!: LocationInformation;
+
+  public isFormEnabled$ = new BehaviorSubject<boolean>(false);
 
   private readonly ZOOM_LEVEL_FOR_DETAIL = 14;
 
@@ -83,7 +87,6 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     private notificationService: NotificationService,
     private mapService: MapService,
     private authService: AuthService,
-    private translationSortingService: TranslationSortingService,
     private coordinateTransformationService: CoordinateTransformationService,
     private geoDataService: GeoDataService,
   ) {}
@@ -96,23 +99,8 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
       this.displayAndSelectServicePointOnMap();
     });
 
-    this.initSortedOperatingPointTypes();
     this.mapService.isGeolocationActivated.next(
       !!this.form.controls.servicePointGeolocation.controls.spatialReference.value,
-    );
-  }
-
-  initSortedOperatingPointTypes() {
-    this.setSortedOperatingPointTypes();
-    this.translationSortingService.translateService.onLangChange.subscribe(() =>
-      this.setSortedOperatingPointTypes(),
-    );
-  }
-
-  setSortedOperatingPointTypes() {
-    this.operatingPointTypes = this.translationSortingService.sort(
-      this.operatingPointTypeValues,
-      'SEPODI.SERVICE_POINTS.OPERATING_POINT_TYPES.',
     );
   }
 
@@ -157,7 +145,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
 
     this.form = ServicePointFormGroupBuilder.buildFormGroup(this.selectedVersion);
     if (!this.isNew) {
-      this.form.disable();
+      this.disableForm();
     }
     this.displayAndSelectServicePointOnMap();
     this.initTypeChangeInformationDialog();
@@ -255,7 +243,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     } else {
       this.mapService.isEditMode.next(true);
       this.isSwitchVersionDisabled = true;
-      this.form.enable();
+      this.enableForm();
       if (this.form.controls.operatingPointRouteNetwork.value) {
         this.form.controls.operatingPointKilometer.disable();
       }
@@ -269,11 +257,21 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
           this.closeSidePanel();
         } else {
           this.initSelectedVersion();
-          this.form.disable();
+          this.disableForm();
           this.cancelMapEditMode();
         }
       }
     });
+  }
+
+  private disableForm(): void {
+    this.form.disable();
+    this.isFormEnabled$.next(false);
+  }
+
+  private enableForm(): void {
+    this.form.enable();
+    this.isFormEnabled$.next(true);
   }
 
   confirmLeave(): Observable<boolean> {
@@ -307,7 +305,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     ValidationService.validateForm(this.form);
     if (this.form.valid) {
       const servicePointVersion = ServicePointFormGroupBuilder.getWritableServicePoint(this.form);
-      this.form.disable();
+      this.disableForm();
       if (this.isNew) {
         this.create(servicePointVersion);
       } else {
@@ -320,7 +318,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   private create(servicePointVersion: CreateServicePointVersion) {
     this.servicePointService
       .createServicePoint(servicePointVersion)
-      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
+      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError))
       .subscribe((servicePointVersion) => {
         this.notificationService.success('SEPODI.SERVICE_POINTS.NOTIFICATION.ADD_SUCCESS');
         this.router
@@ -335,7 +333,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
         this.preferredId = id;
         this.servicePointService
           .updateServicePoint(id, servicePointVersion)
-          .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
+          .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError))
           .subscribe(() => {
             this.mapService.refreshMap();
             this.cancelMapEditMode();
@@ -346,20 +344,18 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
               .then();
           });
       } else {
-        this.form.enable();
+        this.enableForm();
       }
     });
   }
 
-  private handleError() {
-    return () => {
-      this.form.enable();
-      if (this.form.controls.operatingPointRouteNetwork.value) {
-        this.form.controls.operatingPointKilometer.disable();
-      }
-      return EMPTY;
-    };
-  }
+  private handleError = () => {
+    this.enableForm();
+    if (this.form.controls.operatingPointRouteNetwork.value) {
+      this.form.controls.operatingPointKilometer.disable();
+    }
+    return EMPTY;
+  };
 
   isFormDirty(): boolean {
     return this.form.dirty;
@@ -447,29 +443,5 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     this.isLatestVersionSelected = !servicePointVersions.some(
       (obj) => obj.validTo > selectedVersion.validTo,
     );
-  }
-
-  setOperatingPointRouteNetwork(isSelected: boolean) {
-    if (isSelected) {
-      this.form.controls.operatingPointRouteNetwork.setValue(true);
-      this.form.controls.operatingPointKilometer.setValue(true);
-      this.form.controls.operatingPointKilometer.disable();
-      this.form.controls.operatingPointKilometerMaster.setValue(this.selectedVersion.number.number);
-      this.form.controls.operatingPointKilometerMaster.disable();
-    } else {
-      this.form.controls.operatingPointRouteNetwork.setValue(false);
-      this.form.controls.operatingPointKilometer.setValue(false);
-      this.form.controls.operatingPointKilometer.enable();
-      this.form.controls.operatingPointKilometerMaster.reset();
-      this.form.controls.operatingPointKilometerMaster.enable();
-    }
-  }
-
-  setOperatingPointKilometer(isSelected: boolean) {
-    if (isSelected) {
-      this.form.controls.operatingPointKilometer.setValue(true);
-    } else {
-      this.form.controls.operatingPointKilometer.setValue(false);
-    }
   }
 }
