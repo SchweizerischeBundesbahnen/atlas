@@ -1,31 +1,4 @@
-<div class="service-point-detail">
-  <div class="col-12 d-flex mt-3">
-    <div class="d-flex flex-column pe-3">
-      <app-switch-version
-        (switchVersion)="switchVersion($event)"
-        *ngIf="showVersionSwitch"
-        [currentRecord]="selectedVersion"
-        [records]="servicePointVersions"
-        [switchDisabled]="isSwitchVersionDisabled"
-      ></app-switch-version>
-    </div>
-  </div>
-
-  <div class="col-12 d-flex mt-5">
-    <div *ngIf="selectedVersion.id" class="form-title-section">
-      <h2 class="font-bold-2xl color-gray-900">
-        {{ 'SEPODI.SERVICE_POINTS.DETAILS' | translate }} - {{ 'COMMON.VERSION' | translate }}
-        {{ selectedVersionIndex + 1 }}
-      </h2>
-      <div>
-        <span class="font-bold-lg color-gray-900">{{ 'COMMON.STATUS' | translate }} </span>
-        <span class="color-gray-900">{{
-          'COMMON.STATUS_TYPES.' + selectedVersion.status | translate
-        }}</span>
-      </div>
-    </div>
-  </div>
-
+<ng-container *ngIf="form">
   <div class="col-12 d-flex mt-3">
     <div class="d-flex flex-column col-6 pe-3">
       <atlas-text-field
@@ -56,16 +29,35 @@
       </atlas-text-field>
     </div>
   </div>
+
   <div class="col-12 d-flex mt-2 flex-column">
-    <div class="font-bold-lg color-gray-900">
-      {{ 'SEPODI.SERVICE_POINTS.ABBREVIATION' | translate }}
-    </div>
     <div class="color-gray-900">
-      {{ selectedVersion.abbreviation ?? '-' }}
+      <atlas-text-field
+        *ngIf="!hasAbbreviation && isAbbreviationAllowed && isLatestVersionSelected"
+        [fieldExamples]="[
+          { label: 'FORM.FOR_EXAMPLE', translate: true },
+          { label: 'BIBD |', translate: false },
+          { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '6' } }
+        ]"
+        [formGroup]="form"
+        [required]="false"
+        controlName="abbreviation"
+        fieldLabel="SEPODI.SERVICE_POINTS.ABBREVIATION"
+      >
+      </atlas-text-field>
+      <div *ngIf="hasAbbreviation || !isAbbreviationAllowed || !isLatestVersionSelected">
+        <div class="font-bold-lg color-gray-900">
+          {{ 'SEPODI.SERVICE_POINTS.ABBREVIATION' | translate }}
+        </div>
+        <div class="color-gray-900">
+          {{ currentVersion?.abbreviation ?? '-' }}
+        </div>
+      </div>
     </div>
   </div>
 
   <div class="font-bold-2xl mt-5">{{ 'FORM.KEY_DATA' | translate }}</div>
+
   <div class="col-12 d-flex">
     <div class="col-6 d-flex pb-3">
       <form-date-range [formGroup]="form"></form-date-range>
@@ -86,9 +78,10 @@
       'SEPODI.SERVICE_POINTS.TYPE' | translate
     }}</mat-label>
   </div>
+
   <div class="col-12 d-flex mt-2" [formGroup]="form">
     <mat-radio-group formControlName="selectedType">
-      <mat-radio-button *ngFor="let option of types" [value]="option">
+      <mat-radio-button *ngFor="let option of servicePointTypes" [value]="option">
         {{ 'SEPODI.SERVICE_POINTS.TYPES.' + option | translate }}
       </mat-radio-button>
     </mat-radio-group>
@@ -127,7 +120,6 @@
         optionTranslateLabelPrefix="SEPODI.SERVICE_POINTS.STOP_POINT_TYPES."
         [options]="stopPointTypes"
         [additionalLabelspace]="false"
-        [required]="true"
       >
       </atlas-select>
       <div class="col-6">
@@ -152,6 +144,7 @@
         controlName="freightServicePoint"
       ></app-atlas-field-error>
     </div>
+
     <div class="d-flex col-12 mt-2" *ngIf="form.value.freightServicePoint">
       <atlas-text-field
         [fieldExamples]="[
@@ -160,7 +153,7 @@
           { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '5' } }
         ]"
         [formGroup]="form"
-        [required]="true"
+        [required]="false"
         controlName="sortCodeOfDestinationStation"
         fieldLabel="SEPODI.SERVICE_POINTS.SORT_CODE_OF_DESTINATION_STATION"
       >
@@ -170,24 +163,19 @@
 
   <div class="font-bold-2xl mt-5">
     {{ 'SEPODI.GEOLOCATION.GEOGRAPHY' | translate }}
-
-    <form-info-icon
-      infoTitle="{{ 'SEPODI.GEOLOCATION.GEOGRAPHY_INFORMATION' | translate }}"
-    ></form-info-icon>
-
     <atlas-slide-toggle
       [toggle]="!!form.value.servicePointGeolocation?.spatialReference"
-      (toggleChange)="handleGeolocationToggle($event)"
+      (toggleChange)="onGeolocationToggleChange($event)"
       [disabled]="form.disabled"
     ></atlas-slide-toggle>
   </div>
 
   <sepodi-geography
-    *ngIf="this.form.value.servicePointGeolocation?.spatialReference"
+    *ngIf="form.value.servicePointGeolocation?.spatialReference"
     [formGroup]="form.controls.servicePointGeolocation"
-    (currentSpatialReferenceEvent)="triggerSpatialReferenceEvent($event)"
   ></sepodi-geography>
-  <div *ngIf="this.form.value.servicePointGeolocation?.spatialReference">
+
+  <div *ngIf="form.value.servicePointGeolocation?.spatialReference && currentVersion">
     <div class="font-bold-2xl mt-5">{{ 'SEPODI.GEOLOCATION.ADMINISTRATION' | translate }}</div>
 
     <div class="d-flex flex-row mt-2">
@@ -196,7 +184,7 @@
           {{ 'SEPODI.GEOLOCATION.COUNTRY' | translate }}
         </div>
         <div class="color-gray-900">
-          {{ locationInformation.isoCountryCode ?? '-' }}
+          {{ currentVersion.servicePointGeolocation?.isoCountryCode ?? '-' }}
         </div>
       </div>
       <div class="col-3 pe-3">
@@ -204,7 +192,7 @@
           {{ 'SEPODI.GEOLOCATION.CANTON' | translate }}
         </div>
         <div class="color-gray-900">
-          {{ locationInformation.canton | displayCanton }}
+          {{ currentVersion.servicePointGeolocation?.swissLocation?.canton | displayCanton }}
         </div>
       </div>
       <div class="col-3 pe-3">
@@ -212,7 +200,10 @@
           {{ 'SEPODI.GEOLOCATION.MUNICIPALITY' | translate }}
         </div>
         <div class="color-gray-900">
-          {{ locationInformation.municipalityName ?? '-' }}
+          {{
+            currentVersion.servicePointGeolocation?.swissLocation?.localityMunicipality
+              ?.municipalityName ?? '-'
+          }}
         </div>
       </div>
       <div class="col-3 pe-3">
@@ -220,7 +211,10 @@
           {{ 'SEPODI.GEOLOCATION.DISTRICT' | translate }}
         </div>
         <div class="color-gray-900">
-          {{ locationInformation.localityName ?? '-' }}
+          {{
+            currentVersion.servicePointGeolocation?.swissLocation?.localityMunicipality
+              ?.localityName ?? '-'
+          }}
         </div>
       </div>
     </div>
@@ -276,7 +270,7 @@
       </mat-checkbox>
     </div>
 
-    <div class="col-8 service-point-search">
+    <div class="ps-2 col-3">
       <service-point-search
         [disabled]="form.disabled || form.controls.operatingPointRouteNetwork.value!"
         class="mt-3 col-12"
@@ -286,49 +280,4 @@
       ></service-point-search>
     </div>
   </div>
-</div>
-
-  <div class="page-footer">
-    <div class="page-footer-actions align-items-center justify-content-center d-flex">
-      <atlas-button
-        buttonDataCy="close-detail"
-        buttonText="SEPODI.BACK_TO_MAP"
-        buttonType="whiteFooterNonEdit"
-        (buttonClicked)="closeSidePanel()"
-        [footerEdit]="(isFormEnabled$ | async) ?? false"
-      >
-      </atlas-button>
-      <atlas-button
-        *ngIf="(isFormEnabled$ | async) === false"
-        (buttonClicked)="toggleEdit()"
-        applicationType="SEPODI"
-        [businessOrganisation]="form.controls.businessOrganisation.value!"
-        [uicCountryCode]="selectedVersion.number.uicCountryCode"
-        [disabled]="selectedVersion.status === 'REVOKED'"
-        buttonDataCy="edit"
-        buttonText="COMMON.EDIT"
-        buttonType="edit"
-        wrapperStyleClass="ms-3"
-      ></atlas-button>
-      <atlas-button
-        [footerEdit]="(isFormEnabled$ | async) ?? false"
-        (buttonClicked)="toggleEdit()"
-        buttonDataCy="cancel"
-        buttonText="COMMON.CANCEL"
-        buttonType="whiteFooterEdit"
-        wrapperStyleClass="ms-3"
-      ></atlas-button>
-      <atlas-button
-        (click)="save()"
-        [footerEdit]="(isFormEnabled$ | async) ?? false"
-        [disabled]="!form.dirty"
-        [submitButton]="true"
-        buttonDataCy="save-item"
-        buttonText="COMMON.SAVE"
-        buttonType="whiteFooterEdit"
-        wrapperStyleClass="ms-3"
-      >
-      </atlas-button>
-    </div>
-  </div>
-</div>
+</ng-container>
