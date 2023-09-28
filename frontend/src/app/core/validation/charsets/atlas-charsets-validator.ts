@@ -1,4 +1,5 @@
 import { AbstractControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { WGS84_MAX_DIGITS } from 'src/app/pages/sepodi/geography/geography.component';
 
 export class AtlasCharsetsValidator {
   static numeric(control: AbstractControl): ValidationErrors | null {
@@ -11,11 +12,48 @@ export class AtlasCharsetsValidator {
 
   static decimalWithDigits(decimalDigits: number): ValidatorFn {
     return (control) => {
-      const patternErrors = Validators.pattern('[0-9]*\\.?[0-9]{0,' + decimalDigits + '}')(control);
+      const patternErrors = Validators.pattern('^-?[0-9]*\\.?[0-9]{0,' + decimalDigits + '}')(
+        control
+      );
       if (patternErrors) {
         const error: ValidationErrors = {
           decimal_number: {
             maxDecimalDigits: decimalDigits,
+          },
+        };
+        return error;
+      }
+      return patternErrors;
+    };
+  }
+
+  static isLngValid(lng: number) {
+    return Number(lng) >= -180 && Number(lng) <= 180;
+  }
+
+  static isLatValid(lat: number) {
+    return Number(lat) >= -90 && Number(lat) <= 90;
+  }
+
+  static wgs84Coordinates(isLng: boolean): ValidatorFn {
+    return (control) => {
+      const patternErrors = Validators.pattern('^-?[0-9]*\\.?[0-9]{0,' + WGS84_MAX_DIGITS + '}')(
+        control
+      );
+
+      if (
+        (isLng && !this.isLngValid(control.value)) ||
+        (!isLng && !this.isLatValid(control.value))
+      ) {
+        const error_lat: ValidationErrors = {
+          WGS84: {},
+        };
+        return error_lat;
+      }
+      if (patternErrors) {
+        const error: ValidationErrors = {
+          decimal_number: {
+            maxDecimalDigits: 11,
           },
         };
         return error;
