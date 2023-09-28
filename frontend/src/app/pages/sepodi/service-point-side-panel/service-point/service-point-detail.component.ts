@@ -79,11 +79,8 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   ngOnInit() {
     this.servicePointSubscription = this.route.parent?.data.subscribe((next) => {
       this.servicePointVersions = next.servicePoint;
-      this.mapSubscription?.unsubscribe();
-
       this.initServicePoint();
     });
-
     this.initSortedOperatingPointTypes();
   }
 
@@ -104,7 +101,6 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   ngOnDestroy() {
     this.mapSubscription?.unsubscribe();
     this.servicePointSubscription?.unsubscribe();
-    this.selectedVersion = null!;
     this.mapService.deselectServicePoint();
   }
 
@@ -177,6 +173,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
 
   private displayAndSelectServicePointOnMap() {
     this.cancelMapEditMode();
+    this.mapSubscription?.unsubscribe();
     this.mapSubscription = this.mapService.mapInitialized.subscribe((initialized) => {
       if (initialized && this.selectedVersion) {
         if (this.mapService.map.getZoom() <= this.ZOOM_LEVEL_FOR_DETAIL) {
@@ -248,12 +245,11 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
       this.form.disable();
       if (this.isNew) {
         this.create(servicePointVersion);
-        this.cancelMapEditMode();
       } else {
         servicePointVersion.numberWithoutCheckDigit = this.selectedVersion.number.number;
         this.update(this.selectedVersion.id!, servicePointVersion);
-        this.cancelMapEditMode();
       }
+      this.cancelMapEditMode();
     }
   }
 
