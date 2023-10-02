@@ -37,7 +37,7 @@ public abstract class FileDeletingTasklet implements Tasklet {
     try {
       Files.delete(Paths.get(fileNamePath));
     } catch (IOException e) {
-      throw new IllegalStateException(e);
+      log.info("File could not be deleted", e);
     }
     log.info("File {} deleted!", fileNamePath);
     return RepeatStatus.FINISHED;
