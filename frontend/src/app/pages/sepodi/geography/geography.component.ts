@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { CoordinatePair, SpatialReference } from '../../../api';
 import { GeographyFormGroup } from './geography-form-group';
@@ -36,8 +36,9 @@ export class GeographyComponent implements OnDestroy, OnChanges {
   get formGroup() {
     return this._formGroup;
   }
-  @Input() disabled = false;
-  @Input() spatialReference!: SpatialReference;
+  spatialReference!: SpatialReference;
+
+  @Output() currentSpatialReferenceEvent = new EventEmitter();
 
   _formGroup!: FormGroup<GeographyFormGroup>;
 
@@ -81,6 +82,7 @@ export class GeographyComponent implements OnDestroy, OnChanges {
   }
 
   private initTransformedCoordinatePair() {
+    this.currentSpatialReferenceEvent.emit(this.currentSpatialReference);
     if (
       this.spatialReference &&
       !this.isLatLngNaN(this.currentCoordinates!) &&
