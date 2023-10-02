@@ -1,6 +1,6 @@
 package ch.sbb.prm.directory.entity;
 
-import ch.sbb.atlas.model.entity.BaseEntity;
+import ch.sbb.atlas.model.entity.BaseDidokImportEntity;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.model.Versionable;
 import jakarta.persistence.Column;
@@ -27,7 +27,7 @@ import lombok.experimental.SuperBuilder;
 @FieldNameConstants
 @Entity(name = "stop_place_version")
 @AtlasVersionable
-public class StopPlaceVersion extends BaseEntity implements Versionable {
+public class StopPlaceVersion extends BaseDidokImportEntity implements Versionable {
 
   private static final String VERSION_SEQ = "stop_place_version_seq";
 

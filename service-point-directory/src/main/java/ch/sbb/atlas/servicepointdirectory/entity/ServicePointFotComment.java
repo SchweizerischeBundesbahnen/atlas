@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.entity;
 
+import ch.sbb.atlas.model.entity.BaseDidokImportEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
