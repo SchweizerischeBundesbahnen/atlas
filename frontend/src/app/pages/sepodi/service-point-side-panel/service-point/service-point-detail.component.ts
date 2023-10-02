@@ -298,8 +298,8 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   }
 
   handleGeolocationToggle(hasGeolocation: boolean) {
-    let lat = this.form.controls.servicePointGeolocation.controls.north.value!;
-    let lng = this.form.controls.servicePointGeolocation.controls.east.value!;
+    const lat = this.form.controls.servicePointGeolocation.controls.north.value!;
+    const lng = this.form.controls.servicePointGeolocation.controls.east.value!;
 
     let coordinates = {
       lat: lat!,
