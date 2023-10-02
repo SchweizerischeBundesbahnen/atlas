@@ -1,18 +1,17 @@
 package ch.sbb.atlas.servicepointdirectory.service;
 
-import ch.sbb.atlas.servicepointdirectory.entity.BaseDidokImportEntity;
+import ch.sbb.atlas.model.entity.BaseDidokImportEntity;
 import ch.sbb.atlas.versioning.model.Property;
 import ch.sbb.atlas.versioning.model.Versionable;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.model.VersioningAction;
 import java.time.LocalDate;
 import java.util.Collections;
-import java.util.stream.Collectors;
-import lombok.experimental.UtilityClass;
-
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class BasePointUtility {
