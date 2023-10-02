@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.entity;
 
+import ch.sbb.atlas.model.entity.BaseDidokImportEntity;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.GeolocationBaseEntity;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
