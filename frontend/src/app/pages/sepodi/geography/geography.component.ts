@@ -120,9 +120,8 @@ export class GeographyComponent implements OnDestroy, OnChanges {
   switchSpatialReference($event: MatRadioChange) {
     if ($event.value && this.isEastNorthGreaterThanZero(this.currentCoordinates!)) {
       const newReference: SpatialReference = $event.value;
-      let transformedCoordinatePair;
       this.spatialReference = newReference;
-      transformedCoordinatePair = this.coordinateTransformationService.transform(
+      const transformedCoordinatePair = this.coordinateTransformationService.transform(
         this.currentCoordinates!,
         this.transformedSpatialReference,
         newReference
