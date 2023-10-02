@@ -81,7 +81,7 @@ export class GeographyComponent implements OnDestroy, OnChanges {
     this.clickedGeographyCoordinatesSubscription?.unsubscribe();
   }
 
-  private initTransformedCoordinatePair() {
+  initTransformedCoordinatePair() {
     this.currentSpatialReferenceEvent.emit(this.currentSpatialReference);
     if (
       this.spatialReference &&
