@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   lidi-db:
-    image: postgres:15.2
+    image: postgres:15.4
     restart: always
     ports:
       - "5433:5432"
@@ -18,7 +18,7 @@ services:
       - "datestyle=iso, ymd"
 
   bodi-db:
-    image: postgres:15.2
+    image: postgres:15.4
     restart: always
     ports:
       - "5435:5432"
@@ -34,7 +34,7 @@ services:
       - "datestyle=iso, ymd"
 
   scheduling-db:
-    image: postgres:15.2
+    image: postgres:15.4
     restart: always
     ports:
       - "5436:5432"
@@ -50,7 +50,7 @@ services:
       - "datestyle=iso, ymd"
 
   user-administration-db:
-    image: postgres:15.2
+    image: postgres:15.4
     restart: always
     ports:
       - "5437:5432"
@@ -66,7 +66,7 @@ services:
       - "datestyle=iso, ymd"
 
   workflow-db:
-    image: postgres:15.2
+    image: postgres:15.4
     restart: always
     ports:
       - "5438:5432"
@@ -82,7 +82,7 @@ services:
       - "datestyle=iso, ymd"
 
   service-point-directory-db:
-    image: postgres:15.2
+    image: postgres:15.4
     restart: always
     ports:
       - "5439:5432"
@@ -98,7 +98,7 @@ services:
       - "datestyle=iso, ymd"
 
   import-service-point-db:
-    image: postgres:15.2
+    image: postgres:15.4
     restart: always
     ports:
       - "5440:5432"
@@ -114,7 +114,7 @@ services:
       - "datestyle=iso, ymd"
 
   export-service-point-db:
-    image: postgres:15.2
+    image: postgres:15.4
     restart: always
     ports:
       - "5441:5432"
