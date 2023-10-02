@@ -2,6 +2,12 @@
 
 mat-paginator {
   float: left;
+
+  mat-select {
+    .mat-mdc-select-trigger {
+      padding: unset;
+    }
+  }
 }
 
 //uses internal Angular Material design API!
