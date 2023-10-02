@@ -1,0 +1,21 @@
+==== Version {version}
+
+* Timetable Field Numbers*
+** _swissTimetableFieldNumber_ and _number_ has to be unique at any point in time.
+* Lines*
+** _swissLineNumber_ has to be unique at any point in time.
+* Sublines*
+** _swissSublineNumber_ has to be unique at any point in time.
+** may be derived from an existing line. The mainline may not be changed after creation.
+
+**Versioning**
+
+Business objects marked with a * may be created and updated using the Atlas Versioning Engine. The rules and supported cases may be found in the user handbook.
+
+==== Timetable Hearings
+
+Timetable Hearings are held each year.
+
+Every year citizens may provide statements on the next iteration of the public transport timetable.
+
+Due to the close coupling between TimetableFieldNumbers and TimetableHearings, they are presented by LineDirectory

@@ -46,6 +46,7 @@
       <module>base-atlas</module>
       <module>user-administration-security</module>
       <!--  Services -->
+      <module>prm-directory</module>
       <module>mail</module>
       <module>scheduling</module>
       <module>line-directory</module>
