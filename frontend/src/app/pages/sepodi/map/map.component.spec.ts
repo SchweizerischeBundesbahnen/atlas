@@ -6,7 +6,6 @@ import { MAP_STYLES } from './map-options.service';
 import { LatLngCoordinates, MapService } from './map.service';
 import maplibregl, { Map, MapLibreGL } from 'maplibre-gl';
 import { BehaviorSubject } from 'rxjs';
-import { CoordinatePair } from 'src/app/api';
 
 const isEditModeSubject = new BehaviorSubject<boolean>(true);
 const clickedGeographyCoordinatesSubject = new BehaviorSubject<LatLngCoordinates>({
@@ -16,7 +15,13 @@ const clickedGeographyCoordinatesSubject = new BehaviorSubject<LatLngCoordinates
 
 const mapCanvasMock = document.createElement('canvas');
 const mapSpy = jasmine.createSpyObj<Map>(['once', 'flyTo', 'getCanvas', 'on', 'off', 'fire']);
-const mapService = jasmine.createSpyObj<MapService>(['initMap', 'switchToStyle', 'removeMap']);
+const mapService = jasmine.createSpyObj<MapService>([
+  'initMap',
+  'switchToStyle',
+  'removeMap',
+  'initMapEvents',
+  'placeMarkerAndFlyTo',
+]);
 const markerSpy = jasmine.createSpyObj('Marker', ['addTo', 'setLngLat', 'remove']);
 
 mapSpy.getCanvas.and.returnValue(mapCanvasMock);
@@ -83,7 +88,7 @@ describe('MapComponent', () => {
     expect(component.showMapLegend).toBeFalse();
   });
 
-  it('should add marker to map on map click', () => {
+  it('should call placeMarkerAndFlyTo on click', () => {
     markerSpy.setLngLat.and.returnValue(markerSpy);
 
     component.handleMapClick();
@@ -96,9 +101,29 @@ describe('MapComponent', () => {
         lat: 10,
       },
     });
-    expect(markerSpy.setLngLat).toHaveBeenCalledWith({ lng: 10, lat: 10 });
-    expect(markerSpy.addTo).toHaveBeenCalledWith(component.map);
+    expect(mapService.placeMarkerAndFlyTo).toHaveBeenCalledWith({ lng: 10, lat: 10 });
   });
+
+  it('should enter edit mode', () => {
+    component.enterEditMode();
+    expect(mapService.isEditMode.value).toBeTrue();
+    expect(mapSpy.getCanvas).toHaveBeenCalled();
+    expect(mapSpy.getCanvas().style.cursor).toBe('crosshair');
+    expect(component.map.on).toHaveBeenCalledWith('click', component.onMapClicked);
+  });
+
+  it('should exit edit mode', () => {
+    mapService.marker = markerSpy;
+    spyOn(mapService.clickedGeographyCoordinates, 'next');
+
+    component.exitEditMode();
+    expect(mapSpy.getCanvas).toHaveBeenCalled();
+    expect(mapSpy.getCanvas().style.cursor).toBe('');
+    expect(component.map.off).toHaveBeenCalledWith('click', component.onMapClicked);
+    expect(mapService.clickedGeographyCoordinates.next).toHaveBeenCalledWith({ lng: 0, lat: 0 });
+    expect(mapService.initMapEvents).toHaveBeenCalled();
+  });
+
   it('should increase zoom when zoomIn() is called', () => {
     component.zoomIn();
     expect(component.map.zoomTo).toHaveBeenCalledWith(component.map.getZoom() + 0.75, {
