@@ -3,15 +3,15 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MapComponent } from './map.component';
 import { AppTestingModule } from '../../../app.testing.module';
 import { MAP_STYLES } from './map-options.service';
-import { MapService } from './map.service';
+import { LatLngCoordinates, MapService } from './map.service';
 import maplibregl, { Map, MapLibreGL } from 'maplibre-gl';
 import { BehaviorSubject } from 'rxjs';
 import { CoordinatePair } from 'src/app/api';
 
 const isEditModeSubject = new BehaviorSubject<boolean>(true);
-const clickedGeographyCoordinatesSubject = new BehaviorSubject<CoordinatePair>({
-  north: 0,
-  east: 0,
+const clickedGeographyCoordinatesSubject = new BehaviorSubject<LatLngCoordinates>({
+  lat: 0,
+  lng: 0,
 });
 
 const mapCanvasMock = document.createElement('canvas');
