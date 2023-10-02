@@ -4,6 +4,8 @@ import ch.sbb.exportservice.model.BatchExportFileName;
 import ch.sbb.exportservice.model.ExportExtensionFileType;
 import ch.sbb.exportservice.model.ExportType;
 import ch.sbb.exportservice.service.FileExportService;
+import java.io.IOException;
+import java.nio.file.Files;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.scope.context.ChunkContext;
@@ -32,7 +34,11 @@ public abstract class FileDeletingTasklet implements Tasklet {
   public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) {
     String fileNamePath = fileExportService.createFileNamePath(getExportFileType(), exportType, exportFileName);
     log.info("File {} deleting...", fileNamePath);
-    Paths.get(fileNamePath).toFile().delete();
+    try {
+      Files.delete(Paths.get(fileNamePath));
+    } catch (IOException e) {
+      throw new IllegalStateException(e);
+    }
     log.info("File {} deleted!", fileNamePath);
     return RepeatStatus.FINISHED;
   }
