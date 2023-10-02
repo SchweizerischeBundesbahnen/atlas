@@ -29,6 +29,7 @@ import { NotificationService } from '../../../../core/notification/notification.
 import { DetailFormComponent } from '../../../../core/leave-guard/leave-dirty-form-guard.service';
 import { AuthService } from '../../../../core/auth/auth.service';
 import { TranslationSortingService } from '../../../../core/translation/translation-sorting.service';
+import { CoordinateTransformationService } from '../../geography/coordinate-transformation.service';
 
 @Component({
   selector: 'app-service-point',
@@ -58,6 +59,8 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   categories = Object.values(Category);
   isSwitchVersionDisabled = false;
 
+  currentSpatialReference!: SpatialReference;
+
   private readonly ZOOM_LEVEL_FOR_DETAIL = 14;
 
   private mapSubscription!: Subscription;
@@ -72,7 +75,8 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     private notificationService: NotificationService,
     private mapService: MapService,
     private authService: AuthService,
-    private translationSortingService: TranslationSortingService
+    private translationSortingService: TranslationSortingService,
+    private coordinateTransformationService: CoordinateTransformationService
   ) {}
 
   ngOnInit() {
@@ -294,18 +298,47 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   }
 
   handleGeolocationToggle(hasGeolocation: boolean) {
+    let lat = this.form.controls.servicePointGeolocation.controls.north.value!;
+    let lng = this.form.controls.servicePointGeolocation.controls.east.value!;
+
+    let coordinates = {
+      lat: lat!,
+      lng: lng!,
+    };
+
     if (hasGeolocation) {
       this.form.controls.servicePointGeolocation.controls.spatialReference.setValue(
-        SpatialReference.Lv95
+        this.currentSpatialReference
       );
+
+      if (this.currentSpatialReference === SpatialReference.Lv95) {
+        const { north, east } = this.coordinateTransformationService.transform(
+          { north: lat, east: lng },
+          SpatialReference.Lv95,
+          SpatialReference.Wgs84
+        );
+
+        coordinates = {
+          lat: north,
+          lng: east,
+        };
+      }
+      this.mapService.placeMarkerAndFlyTo(coordinates);
+      this.mapService.isEditMode.next(true);
     } else {
       this.form.controls.servicePointGeolocation.controls.spatialReference.setValue(null);
+      this.cancelMapEditMode();
     }
+    this.isSwitchVersionDisabled = true;
     this.form.markAsDirty();
   }
 
   private cancelMapEditMode() {
     this.mapService.isEditMode.next(false);
     this.isSwitchVersionDisabled = false;
+  }
+
+  triggerSpatialReferenceEvent(spatialReference: SpatialReference) {
+    this.currentSpatialReference = spatialReference;
   }
 }
