@@ -2,10 +2,19 @@ import { TestBed } from '@angular/core/testing';
 import { MapService } from './map.service';
 import { AuthService } from '../../../core/auth/auth.service';
 import { MAP_STYLES, MapOptionsService } from './map-options.service';
-import { Map, MapGeoJSONFeature, MapMouseEvent, Popup } from 'maplibre-gl';
+import maplibregl, { Map, MapGeoJSONFeature, MapMouseEvent } from 'maplibre-gl';
 
 const authService: Partial<AuthService> = {};
 
+const markerSpy = jasmine.createSpyObj('Marker', ['addTo', 'setLngLat', 'remove']);
+const mapSpy = jasmine.createSpyObj<Map>(['once', 'flyTo', 'getCanvas', 'on', 'off', 'fire']);
+let clickCallback: any;
+mapSpy.on.and.callFake((event: string, callback: any) => {
+  if (event === 'click') {
+    clickCallback = callback;
+  }
+  return mapSpy;
+});
 describe('MapService', () => {
   let service: MapService;
 
@@ -185,5 +194,23 @@ describe('MapService', () => {
     expect(service.selectedElement.next).not.toHaveBeenCalled();
     expect(service.keepPopup).toBeTrue();
     expect(service.setPopupToFixed).toHaveBeenCalled();
+  });
+
+  it('should add marker to map and fly to coordinates', () => {
+    const latLngCoordinates = { lat: 40, lng: -74 };
+    const htmlDivElement = document.createElement('div');
+    service.initMap(htmlDivElement);
+    markerSpy.setLngLat.and.returnValue(markerSpy);
+    service.marker = markerSpy;
+    service.map = mapSpy;
+
+    service.placeMarkerAndFlyTo(latLngCoordinates);
+
+    expect(markerSpy.setLngLat).toHaveBeenCalledWith(latLngCoordinates);
+    expect(markerSpy.addTo).toHaveBeenCalledWith(service.map);
+    expect(mapSpy.flyTo).toHaveBeenCalledWith({
+      center: latLngCoordinates as maplibregl.LngLatLike,
+      speed: 0.8,
+    });
   });
 });
