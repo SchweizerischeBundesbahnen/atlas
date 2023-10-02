@@ -152,7 +152,7 @@
     "HOME_BUSINESS_PLATFORM": "La plateforme SKI Business",
     "TTFN": {
       "TITLE": "Liste des tableaux-horaires",
-      "TITLE_MENU": "Tableaux-horaires",
+      "TITLE_MENU": "Numéros de tableaux-horaires",
       "DESCRIPTION": "Saisie et gestion des données des tableaux-horaires.",
       "PATH_TEXT": "Vers tableaux-horaires"
     },
