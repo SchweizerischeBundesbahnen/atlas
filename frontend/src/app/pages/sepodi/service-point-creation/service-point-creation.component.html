@@ -1,8 +1,39 @@
 <div class="p-3">
   <div class="form-box p-3">
-    <!--    todo: add laendercode selection dropdown (on top of the form) -->
-    <service-point-form [form]="form"></service-point-form>
+    <atlas-select
+      label="COMMON.COUNTRIES"
+      [additionalLabelspace]="false"
+      [optionTranslateLabelPrefix]="'TTH.COUNTRY.'"
+      [displayExtractor]="getCountryEnum"
+      [options]="(countryOptions$ | async) ?? []"
+      [required]="true"
+      [formGroup]="form"
+      [controlName]="'country'"
+    >
+    </atlas-select>
 
-    <!--    todo: footer -->
+    <service-point-form [form]="form"></service-point-form>
   </div>
+
+  <footer class="d-flex justify-content-center align-items-center">
+    <atlas-button
+      (buttonClicked)="({})"
+      [footerEdit]="true"
+      buttonDataCy="cancel"
+      buttonText="COMMON.CANCEL"
+      buttonType="whiteFooterEdit"
+      wrapperStyleClass="ms-3"
+    ></atlas-button>
+    <atlas-button
+      (click)="({})"
+      [footerEdit]="true"
+      [disabled]="!form.dirty"
+      [submitButton]="true"
+      buttonDataCy="save-item"
+      buttonText="COMMON.SAVE"
+      buttonType="whiteFooterEdit"
+      wrapperStyleClass="ms-3"
+    >
+    </atlas-button>
+  </footer>
 </div>
