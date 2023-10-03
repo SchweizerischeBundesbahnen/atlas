@@ -21,6 +21,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   legend!: MapIcon[];
 
   private isEditModeSubsription!: Subscription;
+  private isGeoLocationActiveSubsription!: Subscription;
 
   map!: Map;
 
@@ -40,6 +41,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   ngOnDestroy() {
     this.mapService.removeMap();
     this.isEditModeSubsription.unsubscribe();
+    this.isGeoLocationActiveSubsription.unsubscribe();
   }
 
   toggleStyleSelection() {
@@ -96,8 +98,15 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   }
 
   handleMapClick() {
+    let isActiveGeolocation = true;
+
+    this.isGeoLocationActiveSubsription = this.mapService.isGeolocationActivated.subscribe(
+      (value) => {
+        isActiveGeolocation = value;
+      }
+    );
     this.isEditModeSubsription = this.mapService.isEditMode.subscribe((isEditMode) => {
-      if (isEditMode) {
+      if (isEditMode && isActiveGeolocation) {
         this.enterEditMode();
       } else {
         this.exitEditMode();

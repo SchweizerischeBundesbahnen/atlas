@@ -4,7 +4,7 @@ import { ServicePointDetailComponent } from './service-point-detail.component';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { AuthService } from '../../../../core/auth/auth.service';
 import { ActivatedRoute } from '@angular/router';
-import { of } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { BERN } from '../../service-point-test-data';
 import { FormsModule } from '@angular/forms';
 import { TextFieldComponent } from '../../../../core/form-components/text-field/text-field.component';
@@ -19,14 +19,27 @@ import { AtlasSpacerComponent } from '../../../../core/components/spacer/atlas-s
 import { Record } from '../../../../core/components/base-detail/record';
 import { MockAtlasButtonComponent } from '../../../../app.testing.mocks';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
-import { ApplicationRole, ServicePointsService } from '../../../../api';
+import { ApplicationRole, ServicePointsService, SpatialReference } from '../../../../api';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { ServicePointType } from './service-point-type';
 import { DisplayCantonPipe } from '../../../../core/cantons/display-canton.pipe';
+import { LatLngCoordinates, MapService } from '../../map/map.service';
+import { Map } from 'maplibre-gl';
+import { CoordinateTransformationService } from '../../geography/coordinate-transformation.service';
 
 const dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirm']);
 const servicePointsServiceSpy = jasmine.createSpyObj('ServicePointService', ['updateServicePoint']);
 const notificationServiceSpy = jasmine.createSpyObj('NotificationService', ['success']);
+const mapServiceSpy = jasmine.createSpyObj('MapService', [
+  'placeMarkerAndFlyTo',
+  'deselectServicePoint',
+]);
+const coordinateTransformationServiceSpy = jasmine.createSpyObj<CoordinateTransformationService>([
+  'transform',
+]);
+mapServiceSpy.isGeolocationActivated = new BehaviorSubject<boolean>(false);
+mapServiceSpy.isEditMode = new BehaviorSubject<boolean>(false);
+
 const authServiceMock: Partial<AuthService> = {
   claims: { name: 'Test', email: 'test@test.ch', sbbuid: 'e123456', roles: [] },
   isAdmin: false,
@@ -70,6 +83,8 @@ describe('ServicePointDetailComponent', () => {
         { provide: ServicePointsService, useValue: servicePointsServiceSpy },
         { provide: NotificationService, useValue: notificationServiceSpy },
         { provide: TranslatePipe },
+        { provide: MapService, useValue: mapServiceSpy },
+        { provide: CoordinateTransformationService, useValue: coordinateTransformationServiceSpy },
       ],
     }).compileComponents();
 
@@ -140,5 +155,51 @@ describe('ServicePointDetailComponent', () => {
     // when & then
     component.toggleEdit();
     expect(component.form.enabled).toBeTrue();
+  });
+
+  it('should activate geolocation', () => {
+    const isLatLngCoordinatesValidForTransformationSpy = spyOn(
+      component,
+      'isLatLngCoordinatesValidForTransformation'
+    ).and.returnValue(true);
+    const setSpatialReferenceSpy = spyOn(component, 'setSpatialReference');
+
+    component.currentSpatialReference = SpatialReference.Lv95;
+    component.activateGeolocation();
+
+    expect(setSpatialReferenceSpy).toHaveBeenCalled();
+    expect(mapServiceSpy.isGeolocationActivated.value).toBe(true);
+    expect(isLatLngCoordinatesValidForTransformationSpy).toHaveBeenCalled();
+    expect(mapServiceSpy.placeMarkerAndFlyTo).toHaveBeenCalled();
+    expect(coordinateTransformationServiceSpy.transform).toHaveBeenCalled();
+    expect(mapServiceSpy.isEditMode.value).toBe(true);
+  });
+
+  it('should deactivate geolocation', () => {
+    const cancelMapEditModeSpy = spyOn(component, 'cancelMapEditMode');
+    const setSpatialReferenceSpy = spyOn(component, 'setSpatialReference');
+    component.deactivateGeolocation();
+
+    expect(setSpatialReferenceSpy).toHaveBeenCalledWith(null);
+    expect(mapServiceSpy.isGeolocationActivated.value).toBe(false);
+    expect(cancelMapEditModeSpy).toHaveBeenCalled();
+  });
+
+  it('should not transform if coordinates invalid', () => {
+    const isLatLngCoordinatesValidForTransformationSpy = spyOn(
+      component,
+      'isLatLngCoordinatesValidForTransformation'
+    ).and.returnValue(false);
+    const setSpatialReferenceSpy = spyOn(component, 'setSpatialReference');
+
+    component.currentSpatialReference = SpatialReference.Lv95;
+    component.activateGeolocation();
+
+    expect(setSpatialReferenceSpy).toHaveBeenCalled();
+    expect(mapServiceSpy.isGeolocationActivated.value).toBe(true);
+    expect(isLatLngCoordinatesValidForTransformationSpy).toHaveBeenCalled();
+    expect(mapServiceSpy.placeMarkerAndFlyTo).not.toHaveBeenCalled();
+    expect(coordinateTransformationServiceSpy.transform).not.toHaveBeenCalled();
+    expect(mapServiceSpy.isEditMode.value).toBe(true);
   });
 });

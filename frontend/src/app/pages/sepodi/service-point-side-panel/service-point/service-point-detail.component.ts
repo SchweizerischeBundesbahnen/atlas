@@ -19,7 +19,7 @@ import {
   ServicePointFormGroupBuilder,
 } from './service-point-detail-form-group';
 import { ServicePointType } from './service-point-type';
-import { MapService } from '../../map/map.service';
+import { LatLngCoordinates, MapService } from '../../map/map.service';
 import { catchError, EMPTY, Observable, of, Subject, Subscription } from 'rxjs';
 import { Pages } from '../../../pages';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
@@ -85,6 +85,9 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
       this.initServicePoint();
     });
     this.initSortedOperatingPointTypes();
+    this.mapService.isGeolocationActivated.next(
+      !!this.form.controls.servicePointGeolocation.controls.spatialReference.value
+    );
   }
 
   initSortedOperatingPointTypes() {
@@ -297,48 +300,74 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     return this.form.dirty;
   }
 
-  handleGeolocationToggle(hasGeolocation: boolean) {
+  setSpatialReference(value: SpatialReference | null) {
+    this.form.controls.servicePointGeolocation.controls.spatialReference.setValue(value);
+  }
+
+  activateGeolocation() {
     const lat = this.form.controls.servicePointGeolocation.controls.north.value!;
     const lng = this.form.controls.servicePointGeolocation.controls.east.value!;
 
     let coordinates = {
-      lat: lat!,
-      lng: lng!,
+      lat: Number(lat),
+      lng: Number(lng),
     };
 
-    if (hasGeolocation) {
-      this.form.controls.servicePointGeolocation.controls.spatialReference.setValue(
-        this.currentSpatialReference
+    const isCoordinatesValid = this.isLatLngCoordinatesValidForTransformation(coordinates);
+
+    this.setSpatialReference(this.currentSpatialReference || SpatialReference.Lv95);
+    this.mapService.isGeolocationActivated.next(true);
+
+    if (this.currentSpatialReference === SpatialReference.Lv95 && isCoordinatesValid) {
+      const transformed = this.coordinateTransformationService.transform(
+        { north: coordinates.lat, east: coordinates.lng },
+        SpatialReference.Lv95,
+        SpatialReference.Wgs84
       );
+      coordinates.lat = transformed.north;
+      coordinates.lng = transformed.east;
+    }
 
-      if (this.currentSpatialReference === SpatialReference.Lv95) {
-        const { north, east } = this.coordinateTransformationService.transform(
-          { north: lat, east: lng },
-          SpatialReference.Lv95,
-          SpatialReference.Wgs84
-        );
-
-        coordinates = {
-          lat: north,
-          lng: east,
-        };
-      }
+    if (isCoordinatesValid) {
       this.mapService.placeMarkerAndFlyTo(coordinates);
-      this.mapService.isEditMode.next(true);
+    }
+
+    this.mapService.isEditMode.next(true);
+  }
+
+  deactivateGeolocation() {
+    this.setSpatialReference(null);
+    this.mapService.isGeolocationActivated.next(false);
+    this.cancelMapEditMode();
+  }
+
+  handleGeolocationToggle(hasGeolocation: boolean) {
+    if (hasGeolocation) {
+      this.activateGeolocation();
     } else {
-      this.form.controls.servicePointGeolocation.controls.spatialReference.setValue(null);
-      this.cancelMapEditMode();
+      this.deactivateGeolocation();
     }
     this.isSwitchVersionDisabled = true;
     this.form.markAsDirty();
   }
 
-  private cancelMapEditMode() {
+  cancelMapEditMode() {
     this.mapService.isEditMode.next(false);
     this.isSwitchVersionDisabled = false;
+    this.mapService.isGeolocationActivated.next(
+      !!this.form.controls.servicePointGeolocation.controls.spatialReference.value
+    );
   }
 
   triggerSpatialReferenceEvent(spatialReference: SpatialReference) {
     this.currentSpatialReference = spatialReference;
+  }
+
+  isLatLngCoordinatesValidForTransformation(coordinates: LatLngCoordinates) {
+    return this.isLatLngGreaterThanZero(coordinates) && !!coordinates.lat && !!coordinates.lng;
+  }
+
+  isLatLngGreaterThanZero(coordinates: LatLngCoordinates): boolean {
+    return coordinates.lat !== 0 && coordinates.lng !== 0;
   }
 }
