@@ -1,7 +1,6 @@
 package ch.sbb.prm.directory.entity;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
-import ch.sbb.atlas.model.entity.BaseDidokImportEntity;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.converter.MeanOfTransportConverter;
 import ch.sbb.atlas.servicepoint.converter.ServicePointNumberConverter;
@@ -43,7 +42,7 @@ import lombok.experimental.SuperBuilder;
 @FieldNameConstants
 @Entity(name = "stop_place_version")
 @AtlasVersionable
-public class StopPlaceVersion extends BaseDidokImportEntity implements Versionable {
+public class StopPlaceVersion extends BasePrmImportEntity implements Versionable {
 
   private static final String VERSION_SEQ = "stop_place_version_seq";
 
