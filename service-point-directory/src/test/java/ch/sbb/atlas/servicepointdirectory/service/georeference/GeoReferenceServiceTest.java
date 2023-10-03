@@ -1,0 +1,60 @@
+package ch.sbb.atlas.servicepointdirectory.service.georeference;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
+import ch.sbb.atlas.kafka.model.SwissCanton;
+import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.servicepoint.CoordinatePair;
+import ch.sbb.atlas.servicepoint.Country;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+@IntegrationTest
+class GeoReferenceServiceTest {
+
+  @Autowired
+  private GeoReferenceService geoReferenceService;
+
+  @Test
+  void shouldGetInformationAboutLocationInSwitzerland() {
+    CoordinatePair coordinate = CoordinatePair.builder()
+        .spatialReference(SpatialReference.LV95)
+        .east(2568989.30320000000)
+        .north(1141633.69605000000)
+        .build();
+    GeoReference geoReference = geoReferenceService.getGeoReference(coordinate);
+
+    GeoReference expectedGeoReference = GeoReference.builder()
+        .country(Country.SWITZERLAND)
+        .swissCanton(SwissCanton.VAUD)
+        .swissDistrictNumber(2230)
+        .swissDistrictName("Riviera-Pays-d'Enhaut")
+        .swissMunicipalityNumber(5841)
+        .swissMunicipalityName("Château-d'Oex")
+        .swissLocalityName("La Lécherette")
+        .build();
+
+    assertThat(geoReference).isEqualTo(expectedGeoReference);
+  }
+
+  @Test
+  void shouldGetInformationAboutLocationInSouthTyrol() throws JsonProcessingException {
+    CoordinatePair coordinate = CoordinatePair.builder()
+        .spatialReference(SpatialReference.LV95)
+        .east(2880349.530623)
+        .north(1180195.322008)
+        .build();
+    GeoReference geoReference = geoReferenceService.getGeoReference(coordinate);
+
+    System.out.println(new ObjectMapper().writeValueAsString(geoReference));
+
+    GeoReference expectedGeoReference = GeoReference.builder()
+        .country(Country.ITALY)
+        .build();
+
+    assertThat(geoReference).isEqualTo(expectedGeoReference);
+  }
+}
