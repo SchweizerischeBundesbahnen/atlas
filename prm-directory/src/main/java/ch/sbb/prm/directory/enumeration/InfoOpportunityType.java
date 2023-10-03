@@ -7,12 +7,15 @@ import lombok.RequiredArgsConstructor;
 @Schema(enumAsRef = true, example = "YES")
 @Getter
 @RequiredArgsConstructor
-public enum BasicPrmAttributeStatus {
+public enum InfoOpportunityType {
+
   TO_BE_COMPLETED(0),
-  YES(1),
-  NO(2),
-  NOT_APPLICABLE(3),
-  PARTIALLY(4);
+  STATIC_VISUAL_INFORMATION(15),
+  ELECTRONIC_VISUAL_INFORMATION_DEPARTURES(16),
+  ELECTRONIC_VISUAL_INFORMATION_COMPLETE(17),
+  ACOUSTIC_INFORMATION(18),
+  TEXT_TO_SPEECH_DEPARTURES(19),
+  TEXT_TO_SPEECH_COMPLETE(20);
 
   private final Integer rank;
 
