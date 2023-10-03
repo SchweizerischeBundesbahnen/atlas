@@ -75,3 +75,9 @@ include::{snippets}/ticket-counter-version-controller-api-test/should-get-ticket
 === Get Information Desks - Successfully
 
 include::{snippets}/information-desk-version-controller-api-test/should-get-ticket-counters-version/auto-section.adoc[]
+
+== Parking Lot
+
+=== Get Parking Lots - Successfully
+
+include::{snippets}/parking-lot-version-controller-api-test/should-get-platforms-version/auto-section.adoc[]
