@@ -126,6 +126,7 @@
         optionTranslateLabelPrefix="SEPODI.SERVICE_POINTS.STOP_POINT_TYPES."
         [options]="stopPointTypes"
         [additionalLabelspace]="false"
+        [required]="true"
       >
       </atlas-select>
       <div class="col-6">
@@ -158,7 +159,7 @@
           { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '5' } }
         ]"
         [formGroup]="form"
-        [required]="false"
+        [required]="true"
         controlName="sortCodeOfDestinationStation"
         fieldLabel="SEPODI.SERVICE_POINTS.SORT_CODE_OF_DESTINATION_STATION"
       >
