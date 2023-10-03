@@ -5,11 +5,11 @@ import ch.sbb.atlas.api.model.BaseVersionModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.validation.DatesValidator;
 import ch.sbb.prm.directory.enumeration.BasicAttributeType;
-import ch.sbb.prm.directory.enumeration.BoardingDeviceType;
+import ch.sbb.prm.directory.enumeration.BoardingDeviceAttributeType;
 import ch.sbb.prm.directory.enumeration.BooleanAttributeType;
 import ch.sbb.prm.directory.enumeration.BooleanOptionalAttributeType;
-import ch.sbb.prm.directory.enumeration.InfoOpportunityType;
-import ch.sbb.prm.directory.enumeration.VehicleAccessType;
+import ch.sbb.prm.directory.enumeration.InfoOpportunityAttributeType;
+import ch.sbb.prm.directory.enumeration.VehicleAccessAttributeType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.Valid;
@@ -60,7 +60,7 @@ public class PlatformVersionModel extends BaseVersionModel implements DatesValid
   private LocalDate validTo;
 
   @Schema(description = "Wheelchair aids")
-  private BoardingDeviceType boardingDevice;
+  private BoardingDeviceAttributeType boardingDevice;
 
   @Schema(description = "Information on access to transport")
   private String adviceAccessInfo;
@@ -90,7 +90,7 @@ public class PlatformVersionModel extends BaseVersionModel implements DatesValid
   private Double inclinationWidth;
 
   @Schema(description = "Information options")
-  private List<InfoOpportunityType> infoOpportunities;
+  private List<InfoOpportunityAttributeType> infoOpportunities;
 
   @Schema(description = "Level access")
   private BasicAttributeType levelAccessWheelchair;
@@ -105,7 +105,7 @@ public class PlatformVersionModel extends BaseVersionModel implements DatesValid
   private BooleanOptionalAttributeType tactileSystem;
 
   @Schema(description = "Access to the platform. Getting into the vehicle")
-  private VehicleAccessType vehicleAccess;
+  private VehicleAccessAttributeType vehicleAccess;
 
   @Schema(description = "Wheelchair Area Length [mm]")
   private Double wheelchairAreaLength;
