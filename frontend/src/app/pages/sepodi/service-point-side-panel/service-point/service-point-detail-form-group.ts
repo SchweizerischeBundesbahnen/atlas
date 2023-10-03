@@ -2,6 +2,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseDetailFormGroup } from '../../../../core/components/base-detail/base-detail-form-group';
 import {
   Category,
+  Country,
   CreateServicePointVersion,
   MeanOfTransport,
   OperatingPointTechnicalTimetableType,
@@ -23,6 +24,7 @@ import { AtLeastOneValidator } from '../../../../core/validation/boolean-cross-v
 import { LV95_MAX_DIGITS, WGS84_MAX_DIGITS } from '../../geography/geography.component';
 
 export interface ServicePointDetailFormGroup extends BaseDetailFormGroup {
+  country?: FormControl<Country | null>;
   number: FormControl<number | null | undefined>;
   sloid: FormControl<string | null | undefined>;
   abbreviation: FormControl<string | null | undefined>;
@@ -50,6 +52,7 @@ export class ServicePointFormGroupBuilder {
   static buildEmptyFormGroup(): FormGroup<ServicePointDetailFormGroup> {
     const formGroup = new FormGroup<ServicePointDetailFormGroup>(
       {
+        country: new FormControl(null, [Validators.required]),
         number: new FormControl(),
         sloid: new FormControl(''),
         abbreviation: new FormControl(''),
