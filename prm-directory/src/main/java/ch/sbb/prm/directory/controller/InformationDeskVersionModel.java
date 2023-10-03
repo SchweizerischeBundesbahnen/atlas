@@ -24,8 +24,8 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @FieldNameConstants
-@Schema(name = "TicketCounterVersion")
-public class TicketCounterVersionModel extends BaseVersionModel implements DatesValidator {
+@Schema(name = "InformationDeskVersion")
+public class InformationDeskVersionModel extends BaseVersionModel implements DatesValidator {
 
   @Schema(description = "Technical identifier", accessMode = AccessMode.READ_ONLY, example = "1")
   private Long id;
