@@ -179,14 +179,15 @@ public class AtlasExceptionHandler {
   @ExceptionHandler(MethodArgumentTypeMismatchException.class)
   public ResponseEntity<ErrorResponse> methodArgumentTypeMismatchException(MethodArgumentTypeMismatchException exception) {
     SortedSet<Detail> details = new TreeSet<>();
+    Class<?> requiredType = Objects.requireNonNull(exception.getRequiredType());
     details.add(Detail.builder()
         .field(exception.getName())
         .message("Value {0} could not be converted to {1}")
         .displayInfo(DisplayInfo.builder()
             .code("ERROR.CONSTRAINT")
             .with("rejectedValue", String.valueOf(exception.getValue()))
-            .with("expectedType", Objects.requireNonNull(exception.getRequiredType()).getSimpleName())
-            .with("allowedEnumValues", Arrays.toString(exception.getRequiredType().getEnumConstants()))
+            .with("expectedType", requiredType.getSimpleName())
+            .with("allowedEnumValues", Arrays.toString(requiredType.getEnumConstants()))
             .build())
         .build());
     return ResponseEntity.badRequest()
