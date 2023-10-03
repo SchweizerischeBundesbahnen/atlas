@@ -13,7 +13,9 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.SortedSet;
@@ -33,6 +35,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
@@ -107,9 +110,8 @@ public class AtlasExceptionHandler {
   }
 
   @ExceptionHandler(value = {NotFoundException.class})
-  public ResponseEntity<ErrorResponse> notFoundException(
-      NotFoundException liDiNotFoundException) {
-    ErrorResponse errorResponse = liDiNotFoundException.getErrorResponse();
+  public ResponseEntity<ErrorResponse> notFoundException(NotFoundException notFoundException) {
+    ErrorResponse errorResponse = notFoundException.getErrorResponse();
     return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorResponse.getStatus()));
   }
 
@@ -170,6 +172,29 @@ public class AtlasExceptionHandler {
             .status(HttpStatus.BAD_REQUEST.value())
             .error("Method argument not valid error")
             .message("Constraint for requestbody was violated")
+            .details(details)
+            .build());
+  }
+
+  @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+  public ResponseEntity<ErrorResponse> methodArgumentTypeMismatchException(MethodArgumentTypeMismatchException exception) {
+    SortedSet<Detail> details = new TreeSet<>();
+    Class<?> requiredType = Objects.requireNonNull(exception.getRequiredType());
+    details.add(Detail.builder()
+        .field(exception.getName())
+        .message("Value {0} could not be converted to {1}")
+        .displayInfo(DisplayInfo.builder()
+            .code("ERROR.CONSTRAINT")
+            .with("rejectedValue", String.valueOf(exception.getValue()))
+            .with("expectedType", requiredType.getSimpleName())
+            .with("allowedEnumValues", Arrays.toString(requiredType.getEnumConstants()))
+            .build())
+        .build());
+    return ResponseEntity.badRequest()
+        .body(ErrorResponse.builder()
+            .status(HttpStatus.BAD_REQUEST.value())
+            .error("Method argument type not valid error")
+            .message("Method argument type did not match expected value range")
             .details(details)
             .build());
   }
