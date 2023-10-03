@@ -248,3 +248,29 @@ CREATE SEQUENCE information_desk_version_seq START WITH 1000 INCREMENT BY 1;
 
 ALTER TABLE information_desk_version
     ADD CONSTRAINT information_desk_sloid_unique UNIQUE (sloid, valid_from);
+
+
+------------------ PARKING LOT ---------------------------
+CREATE TABLE parking_lot_version
+(
+    id                              BIGINT       NOT NULL PRIMARY KEY,
+    sloid                           VARCHAR(500) NOT NULL,
+    number                          INTEGER      NOT NULL,
+    parent_service_point_sloid      VARCHAR(500) NOT NULL,
+    designation                     VARCHAR(50),
+    info                            VARCHAR(2000),
+    places_available                VARCHAR(50),
+    prm_places_available            VARCHAR(2000),
+    valid_from                      DATE         NOT NULL,
+    valid_to                        DATE         NOT NULL,
+    creation_date                   TIMESTAMP    NOT NULL,
+    creator                         VARCHAR(50),
+    edition_date                    TIMESTAMP    NOT NULL,
+    editor                          VARCHAR(50),
+    version                         BIGINT       NOT NULL DEFAULT 0
+);
+
+CREATE SEQUENCE parking_lot_version_seq START WITH 1000 INCREMENT BY 1;
+
+ALTER TABLE parking_lot_version
+    ADD CONSTRAINT parking_lot_sloid_unique UNIQUE (sloid, valid_from);
