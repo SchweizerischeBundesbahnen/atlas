@@ -7,13 +7,9 @@ import lombok.RequiredArgsConstructor;
 @Schema(enumAsRef = true, example = "YES")
 @Getter
 @RequiredArgsConstructor
-public enum ReferencePointType {
-  MAIN_STATION_ENTRANCE(0),
-  ALTERNATIVE_STATION_ENTRANCE(1),
-  ASSISTANCE_POINT(2),
-  INFORMATION_DESK(3),
-  PLATFORM(4),
-  NO_REFERENCE_POINT(5);
+public enum BooleanPrmAttributeType {
+  YES(1),
+  NO(2);
 
   private final Integer rank;
 

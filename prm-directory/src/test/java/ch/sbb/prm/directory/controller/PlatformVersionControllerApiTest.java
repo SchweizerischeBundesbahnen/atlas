@@ -6,35 +6,35 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
-import ch.sbb.prm.directory.ReferencePointTestData;
-import ch.sbb.prm.directory.repository.ReferencePointRepository;
+import ch.sbb.prm.directory.PlatformTestData;
+import ch.sbb.prm.directory.repository.PlatformRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
+class PlatformVersionControllerApiTest extends BaseControllerApiTest {
 
-  private final ReferencePointRepository referencePointRepository;
+  private final PlatformRepository platformRepository;
 
   @Autowired
-  ReferencePointVersionControllerApiTest(ReferencePointRepository referencePointRepository){
-    this.referencePointRepository = referencePointRepository;
+  PlatformVersionControllerApiTest(PlatformRepository platformRepository){
+    this.platformRepository = platformRepository;
   }
 
   @BeforeEach()
   void initDB() {
-    referencePointRepository.save(ReferencePointTestData.getReferencePointVersion());
+    platformRepository.save(PlatformTestData.getPlatformVersion());
   }
 
   @AfterEach
   void tearDown() {
-    referencePointRepository.deleteAll();
+    platformRepository.deleteAll();
   }
 
   @Test
-  void shouldGetReferencePointsVersion() throws Exception {
-    mvc.perform(get("/v1/reference-points"))
+  void shouldGetPlatformsVersion() throws Exception {
+    mvc.perform(get("/v1/platforms"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(1)));
   }
