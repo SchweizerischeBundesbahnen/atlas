@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @Schema(enumAsRef = true, example = "YES")
 @Getter
 @RequiredArgsConstructor
-public enum StandardPrmAttributeType {
+public enum StandardAttributeType {
   TO_BE_COMPLETED(0),
   YES(1),
   NO(2),
