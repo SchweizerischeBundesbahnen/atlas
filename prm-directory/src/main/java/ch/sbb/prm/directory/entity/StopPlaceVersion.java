@@ -8,7 +8,7 @@ import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.versioning.model.Versionable;
-import ch.sbb.prm.directory.enumeration.StandardPrmAttributeType;
+import ch.sbb.prm.directory.enumeration.StandardAttributeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.ElementCollection;
@@ -88,36 +88,36 @@ public class StopPlaceVersion extends BasePrmImportEntity implements Versionable
 
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
-  private StandardPrmAttributeType alternativeTransport;
+  private StandardAttributeType alternativeTransport;
 
   @AtlasVersionableProperty
   private String alternativeTransportCondition;
 
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
-  private StandardPrmAttributeType assistanceAvailability;
+  private StandardAttributeType assistanceAvailability;
 
   @AtlasVersionableProperty
   private String alternativeCondition;
 
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
-  private StandardPrmAttributeType assistanceService;
+  private StandardAttributeType assistanceService;
 
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
-  private StandardPrmAttributeType audioTicketMachine;
+  private StandardAttributeType audioTicketMachine;
 
   @AtlasVersionableProperty
   private String additionalInfo;
 
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
-  private StandardPrmAttributeType dynamicAudioSystem;
+  private StandardAttributeType dynamicAudioSystem;
 
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
-  private StandardPrmAttributeType dynamicOpticSystem;
+  private StandardAttributeType dynamicOpticSystem;
 
   @AtlasVersionableProperty
   private String infoTicketMachine;
@@ -130,19 +130,19 @@ public class StopPlaceVersion extends BasePrmImportEntity implements Versionable
 
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
-  private StandardPrmAttributeType visualInfo;
+  private StandardAttributeType visualInfo;
 
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
-  private StandardPrmAttributeType wheelchairTicketMachine;
+  private StandardAttributeType wheelchairTicketMachine;
 
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
-  private StandardPrmAttributeType assistanceRequestFulfilled;
+  private StandardAttributeType assistanceRequestFulfilled;
 
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
-  private StandardPrmAttributeType ticketMachine;
+  private StandardAttributeType ticketMachine;
 
 
 }
