@@ -1,6 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.service;
 
-import ch.sbb.atlas.model.entity.BaseDidokImportEntity;
+import ch.sbb.atlas.servicepointdirectory.entity.BaseDidokImportEntity;
 import ch.sbb.atlas.versioning.model.Property;
 import ch.sbb.atlas.versioning.model.Versionable;
 import ch.sbb.atlas.versioning.model.VersionedObject;
