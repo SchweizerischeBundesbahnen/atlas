@@ -63,3 +63,9 @@ include::{snippets}/platform-version-controller-api-test/should-get-platforms-ve
 === Get Toilets - Successfully
 
 include::{snippets}/toilet-version-controller-api-test/should-get-platforms-version/auto-section.adoc[]
+
+== Ticket Counter
+
+=== Get Ticket Counters - Successfully
+
+include::{snippets}/ticket-counter-version-controller-api-test/should-get-platforms-version/auto-section.adoc[]
