@@ -6,35 +6,35 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
-import ch.sbb.prm.directory.TicketCounterTestData;
-import ch.sbb.prm.directory.repository.TicketCounterRepository;
+import ch.sbb.prm.directory.InformationDeskTestData;
+import ch.sbb.prm.directory.repository.InformationDeskRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-class TicketCounterVersionControllerApiTest extends BaseControllerApiTest {
+class InformationDeskVersionControllerApiTest extends BaseControllerApiTest {
 
-  private final TicketCounterRepository ticketCounterRepository;
+  private final InformationDeskRepository informationDeskRepository;
 
   @Autowired
-  TicketCounterVersionControllerApiTest(TicketCounterRepository ticketCounterRepository){
-    this.ticketCounterRepository = ticketCounterRepository;
+  InformationDeskVersionControllerApiTest(InformationDeskRepository informationDeskRepository){
+    this.informationDeskRepository = informationDeskRepository;
   }
 
   @BeforeEach()
   void initDB() {
-    ticketCounterRepository.save(TicketCounterTestData.getTicketCounter());
+    informationDeskRepository.save(InformationDeskTestData.getInformationDesk());
   }
 
   @AfterEach
   void tearDown() {
-    ticketCounterRepository.deleteAll();
+    informationDeskRepository.deleteAll();
   }
 
   @Test
   void shouldGetTicketCountersVersion() throws Exception {
-    mvc.perform(get("/v1/ticket-counters"))
+    mvc.perform(get("/v1/information-desks"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(1)));
   }
