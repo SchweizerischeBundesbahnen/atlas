@@ -21,7 +21,7 @@ import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
 
 /**
- * Switch back to ch.sbb.atlas.model.entity.BaseEntity once Didok dies.
+ * @deprecated Switch back to ch.sbb.atlas.model.entity.BaseEntity once Didok dies.
  */
 @NoArgsConstructor
 @Getter

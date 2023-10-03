@@ -51,8 +51,10 @@ create table shared_business_organisation_version
     valid_to            date        not null
 );
 
--- PRM Data
+-------------------------------------------------------
+-------------------  PRM Data  ------------------------
 
+------------------  STOP PLACE  -----------------------
 CREATE TABLE stop_place_version
 (
     id                              BIGINT       NOT NULL PRIMARY KEY,
@@ -67,10 +69,10 @@ CREATE TABLE stop_place_version
     assistance_availability         VARCHAR(50)  NOT NULL,
     alternative_condition           VARCHAR(2000),
     assistance_service              VARCHAR(50)  NOT NULL,
-    audio_ticket_machine                 VARCHAR(50)  NOT NULL,
+    audio_ticket_machine            VARCHAR(50)  NOT NULL,
     additional_info                 VARCHAR(2000),
-    dynamic_audio_system               VARCHAR(50)  NOT NULL,
-    dynamic_optic_system               VARCHAR(50)  NOT NULL,
+    dynamic_audio_system            VARCHAR(50)  NOT NULL,
+    dynamic_optic_system            VARCHAR(50)  NOT NULL,
     info_ticket_machine             VARCHAR(2000),
     interoperable                   BOOLEAN,
     URL                             VARCHAR(500),
@@ -98,3 +100,28 @@ CREATE TABLE stop_place_version_means_of_transport
     stop_place_version_id BIGINT      NOT NULL,
     means_of_transport    VARCHAR(50) NOT NULL
 );
+
+-----------------  REFERENCE POINT  ---------------------
+
+CREATE TABLE reference_point_version
+(
+    id                         BIGINT       NOT NULL PRIMARY KEY,
+    sloid                      VARCHAR(500) NOT NULL,
+    parent_service_point_sloid VARCHAR(500) NOT NULL,
+    number                     INTEGER      NOT NULL,
+    designation                VARCHAR(50)  NOT NULL,
+    main_reference_point       BOOLEAN      NOT NULL,
+    reference_point_type       VARCHAR(50)  NOT NULL,
+    valid_from                 DATE         NOT NULL,
+    valid_to                   DATE         NOT NULL,
+    creation_date              TIMESTAMP    NOT NULL,
+    creator                    VARCHAR(50),
+    edition_date               TIMESTAMP    NOT NULL,
+    editor                     VARCHAR(50),
+    version                    BIGINT       NOT NULL DEFAULT 0
+);
+
+CREATE SEQUENCE reference_point_version_seq START WITH 1000 INCREMENT BY 1;
+
+ALTER TABLE reference_point_version
+    ADD CONSTRAINT reference_point_sloid_unique UNIQUE (sloid, valid_from);
