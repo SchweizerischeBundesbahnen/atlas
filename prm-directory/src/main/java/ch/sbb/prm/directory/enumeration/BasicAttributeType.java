@@ -7,10 +7,11 @@ import lombok.RequiredArgsConstructor;
 @Schema(enumAsRef = true, example = "YES")
 @Getter
 @RequiredArgsConstructor
-public enum BooleanOptionalPrmAttributeType {
+public enum BasicAttributeType {
   TO_BE_COMPLETED(0),
   YES(1),
-  NO(2);
+  NO(2),
+  NOT_APPLICABLE(3);
 
   private final Integer rank;
 
