@@ -7,10 +7,10 @@ import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.versioning.model.Versionable;
 import ch.sbb.prm.directory.converter.InfoOpportunityTypeConverter;
-import ch.sbb.prm.directory.enumeration.BasicPrmAttributeType;
+import ch.sbb.prm.directory.enumeration.BasicAttributeType;
 import ch.sbb.prm.directory.enumeration.BoardingDeviceType;
-import ch.sbb.prm.directory.enumeration.BooleanOptionalPrmAttributeType;
-import ch.sbb.prm.directory.enumeration.BooleanPrmAttributeType;
+import ch.sbb.prm.directory.enumeration.BooleanAttributeType;
+import ch.sbb.prm.directory.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.prm.directory.enumeration.InfoOpportunityType;
 import ch.sbb.prm.directory.enumeration.VehicleAccessType;
 import jakarta.persistence.Column;
@@ -90,15 +90,15 @@ public class PlatformVersion extends BasePrmImportEntity implements Versionable 
 
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
-  private BooleanOptionalPrmAttributeType contrastingAreas;
+  private BooleanOptionalAttributeType contrastingAreas;
 
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
-  private BasicPrmAttributeType dynamicAudio;
+  private BasicAttributeType dynamicAudio;
 
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
-  private BasicPrmAttributeType dynamicVisual;
+  private BasicAttributeType dynamicVisual;
 
   @AtlasVersionableProperty
   @Digits(integer = 10, fraction = 3)
@@ -123,11 +123,11 @@ public class PlatformVersion extends BasePrmImportEntity implements Versionable 
 
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
-  private BasicPrmAttributeType levelAccessWheelchair;
+  private BasicAttributeType levelAccessWheelchair;
 
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
-  private BooleanPrmAttributeType partialElevation;
+  private BooleanAttributeType partialElevation;
 
   @AtlasVersionableProperty
   @Digits(integer = 10, fraction = 3)
@@ -135,7 +135,7 @@ public class PlatformVersion extends BasePrmImportEntity implements Versionable 
 
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
-  private BooleanOptionalPrmAttributeType tactileSystem;
+  private BooleanOptionalAttributeType tactileSystem;
 
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
