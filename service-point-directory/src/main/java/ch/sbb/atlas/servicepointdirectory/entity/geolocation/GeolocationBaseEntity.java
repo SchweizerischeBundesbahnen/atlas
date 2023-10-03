@@ -2,8 +2,8 @@ package ch.sbb.atlas.servicepointdirectory.entity.geolocation;
 
 import ch.sbb.atlas.api.servicepoint.TransformableGeolocation;
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
-import ch.sbb.atlas.model.entity.BaseDidokImportEntity;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
+import ch.sbb.atlas.servicepointdirectory.entity.BaseDidokImportEntity;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import jakarta.persistence.EnumType;
