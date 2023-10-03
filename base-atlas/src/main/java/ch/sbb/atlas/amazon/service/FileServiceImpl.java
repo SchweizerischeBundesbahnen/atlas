@@ -50,7 +50,10 @@ public class FileServiceImpl implements FileService {
       log.error("Error during write ZipFile", e);
     }
     if (!zipFile.canRead()) {
-      zipFile.setReadable(true);
+      boolean succeeded = zipFile.setReadable(true);
+      if (!succeeded) {
+        log.error("Could not set file to readable");
+      }
     }
     return zipFile;
   }
