@@ -274,3 +274,29 @@ CREATE SEQUENCE parking_lot_version_seq START WITH 1000 INCREMENT BY 1;
 
 ALTER TABLE parking_lot_version
     ADD CONSTRAINT parking_lot_sloid_unique UNIQUE (sloid, valid_from);
+
+
+------------------ RELATION     ---------------------------
+CREATE TABLE relation_version
+(
+    id                           BIGINT       NOT NULL PRIMARY KEY,
+    sloid                        VARCHAR(500) NOT NULL,
+    number                       INTEGER      NOT NULL,
+    parent_service_point_sloid   VARCHAR(500) NOT NULL,
+    tactile_visual_marks         VARCHAR(50),
+    contrasting_areas            VARCHAR(50),
+    step_free_access               VARCHAR(50),
+    reference_point_element_type VARCHAR(50),
+    valid_from                   DATE         NOT NULL,
+    valid_to                     DATE         NOT NULL,
+    creation_date                TIMESTAMP    NOT NULL,
+    creator                      VARCHAR(50),
+    edition_date                 TIMESTAMP    NOT NULL,
+    editor                       VARCHAR(50),
+    version                      BIGINT       NOT NULL DEFAULT 0
+);
+
+CREATE SEQUENCE relation_version_seq START WITH 1000 INCREMENT BY 1;
+
+ALTER TABLE relation_version
+    ADD CONSTRAINT relation_sloid_unique UNIQUE (sloid, valid_from);
