@@ -4,10 +4,10 @@ import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.model.BaseVersionModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.validation.DatesValidator;
-import ch.sbb.prm.directory.enumeration.BasicPrmAttributeType;
+import ch.sbb.prm.directory.enumeration.BasicAttributeType;
 import ch.sbb.prm.directory.enumeration.BoardingDeviceType;
-import ch.sbb.prm.directory.enumeration.BooleanOptionalPrmAttributeType;
-import ch.sbb.prm.directory.enumeration.BooleanPrmAttributeType;
+import ch.sbb.prm.directory.enumeration.BooleanAttributeType;
+import ch.sbb.prm.directory.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.prm.directory.enumeration.InfoOpportunityType;
 import ch.sbb.prm.directory.enumeration.VehicleAccessType;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -69,13 +69,13 @@ public class PlatformVersionModel extends BaseVersionModel implements DatesValid
   private String additionalInfo;
 
   @Schema(description = "Tactile-visual marking of platform surfaces")
-  private BooleanOptionalPrmAttributeType contrastingAreas;
+  private BooleanOptionalAttributeType contrastingAreas;
 
   @Schema(description = "Acoustic information")
-  private BasicPrmAttributeType dynamicAudio;
+  private BasicAttributeType dynamicAudio;
 
   @Schema(description = "Dynamic optical information")
-  private BasicPrmAttributeType dynamicVisual;
+  private BasicAttributeType dynamicVisual;
 
   @Schema(description = "Height [cm]")
   private Double height;
@@ -93,16 +93,16 @@ public class PlatformVersionModel extends BaseVersionModel implements DatesValid
   private List<InfoOpportunityType> infoOpportunities;
 
   @Schema(description = "Level access")
-  private BasicPrmAttributeType levelAccessWheelchair;
+  private BasicAttributeType levelAccessWheelchair;
 
   @Schema(description = "Partial elevation")
-  private BooleanPrmAttributeType partialElevation;
+  private BooleanAttributeType partialElevation;
 
   @Schema(description = "Track superelevation value [mm]")
   private Double superelevation;
 
   @Schema(description = "Tactile guidance system")
-  private BooleanOptionalPrmAttributeType tactileSystem;
+  private BooleanOptionalAttributeType tactileSystem;
 
   @Schema(description = "Access to the platform. Getting into the vehicle")
   private VehicleAccessType vehicleAccess;
