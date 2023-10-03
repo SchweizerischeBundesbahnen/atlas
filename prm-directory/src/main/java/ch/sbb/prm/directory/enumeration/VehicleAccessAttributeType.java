@@ -4,10 +4,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-@Schema(enumAsRef = true, example = "YES")
+@Schema(enumAsRef = true, example = "PLATFORM_ACCESS_WITHOUT_ASSISTANCE")
 @Getter
 @RequiredArgsConstructor
-public enum VehicleAccessType {
+public enum VehicleAccessAttributeType {
   TO_BE_COMPLETED(0),
   PLATFORM_ACCESS_WITHOUT_ASSISTANCE(11),
   PLATFORM_ACCESS_WITH_ASSISTANCE(12),
