@@ -4,7 +4,7 @@ import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.model.BaseVersionModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.validation.DatesValidator;
-import ch.sbb.prm.directory.enumeration.ReferencePointType;
+import ch.sbb.prm.directory.enumeration.StandardAttributeType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.Valid;
@@ -24,8 +24,8 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @FieldNameConstants
-@Schema(name = "ReferencePointVersion")
-public class ReferencePointVersionModel extends BaseVersionModel implements DatesValidator {
+@Schema(name = "ToiletVersion")
+public class ToiletVersionModel extends BaseVersionModel implements DatesValidator {
 
   @Schema(description = "Technical identifier", accessMode = AccessMode.READ_ONLY, example = "1")
   private Long id;
@@ -40,7 +40,6 @@ public class ReferencePointVersionModel extends BaseVersionModel implements Date
       + "https://transportdatamanagement.ch/standards/", example = "ch:1:sloid:18771")
   private String sloid;
 
-
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
   @Schema(description = "Hierarchical assignment of the TPE which is to be processed to another TPE. It is a 1:1 relationship. "
       + "As key, the SLOID is used.", example = "ch:1:sloid:16161:1")
@@ -54,21 +53,15 @@ public class ReferencePointVersionModel extends BaseVersionModel implements Date
   @NotNull
   private LocalDate validTo;
 
-  @Schema(description = "Long designation of a location. Used primarily in customer information. "
-      + "Not all systems can process names of this length.", example = "Biel/Bienne Bözingenfeld/Champs-de-Boujean")
-  @Size(min = 2, max = AtlasFieldLengths.LENGTH_50)
-  @NotNull
+  @Schema(description = "Designation")
   private String designation;
 
-  @Schema(description = "Main reference point")
-  @NotNull
-  private boolean mainReferencePoint;
+  @Schema(description = "Additional Information")
+  private String info;
 
-  @Schema(description = "Type of reference point")
-  @NotNull
-  private ReferencePointType referencePointType;
+  @Schema(description = "Wheelchair accessible toilet available")
+  private StandardAttributeType wheelchairToilet;
 
   @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)", example = "5")
   private Integer etagVersion;
-
 }
