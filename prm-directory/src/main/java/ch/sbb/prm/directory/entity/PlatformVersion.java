@@ -8,11 +8,11 @@ import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.versioning.model.Versionable;
 import ch.sbb.prm.directory.converter.InfoOpportunityTypeConverter;
 import ch.sbb.prm.directory.enumeration.BasicAttributeType;
-import ch.sbb.prm.directory.enumeration.BoardingDeviceType;
+import ch.sbb.prm.directory.enumeration.BoardingDeviceAttributeType;
 import ch.sbb.prm.directory.enumeration.BooleanAttributeType;
 import ch.sbb.prm.directory.enumeration.BooleanOptionalAttributeType;
-import ch.sbb.prm.directory.enumeration.InfoOpportunityType;
-import ch.sbb.prm.directory.enumeration.VehicleAccessType;
+import ch.sbb.prm.directory.enumeration.InfoOpportunityAttributeType;
+import ch.sbb.prm.directory.enumeration.VehicleAccessAttributeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.ElementCollection;
@@ -80,7 +80,7 @@ public class PlatformVersion extends BasePrmImportEntity implements Versionable 
 
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
-  private BoardingDeviceType boardingDevice;
+  private BoardingDeviceAttributeType boardingDevice;
 
   @AtlasVersionableProperty
   private String additionalInfo;
@@ -117,9 +117,9 @@ public class PlatformVersion extends BasePrmImportEntity implements Versionable 
   private Double inclinationWidth;
 
   @AtlasVersionableProperty
-  @ElementCollection(targetClass = InfoOpportunityType.class, fetch = FetchType.EAGER)
+  @ElementCollection(targetClass = InfoOpportunityAttributeType.class, fetch = FetchType.EAGER)
   @Convert(converter = InfoOpportunityTypeConverter.class)
-  private Set<InfoOpportunityType> infoOpportunities;
+  private Set<InfoOpportunityAttributeType> infoOpportunities;
 
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
@@ -139,7 +139,7 @@ public class PlatformVersion extends BasePrmImportEntity implements Versionable 
 
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
-  private VehicleAccessType vehicleAccess;
+  private VehicleAccessAttributeType vehicleAccess;
 
   @AtlasVersionableProperty
   @Digits(integer = 10, fraction = 3)

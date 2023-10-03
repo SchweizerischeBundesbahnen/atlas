@@ -4,10 +4,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-@Schema(enumAsRef = true, example = "YES")
+@Schema(enumAsRef = true, example = "STATIC_VISUAL_INFORMATION")
 @Getter
 @RequiredArgsConstructor
-public enum InfoOpportunityType {
+public enum InfoOpportunityAttributeType {
 
   TO_BE_COMPLETED(0),
   STATIC_VISUAL_INFORMATION(15),

@@ -4,7 +4,10 @@ import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.model.BaseVersionModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.validation.DatesValidator;
-import ch.sbb.prm.directory.enumeration.ReferencePointAttributeType;
+import ch.sbb.prm.directory.enumeration.ReferencePointElementType;
+import ch.sbb.prm.directory.enumeration.StandardAttributeType;
+import ch.sbb.prm.directory.enumeration.StepFreeAccessAttributeType;
+import ch.sbb.prm.directory.enumeration.TactileVisualAttributeType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.Valid;
@@ -25,7 +28,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldNameConstants
 @Schema(name = "ReferencePointVersion")
-public class ReferencePointVersionModel extends BaseVersionModel implements DatesValidator {
+public class RelationVersionModel extends BaseVersionModel implements DatesValidator {
 
   @Schema(description = "Technical identifier", accessMode = AccessMode.READ_ONLY, example = "1")
   private Long id;
@@ -54,19 +57,17 @@ public class ReferencePointVersionModel extends BaseVersionModel implements Date
   @NotNull
   private LocalDate validTo;
 
-  @Schema(description = "Long designation of a location. Used primarily in customer information. "
-      + "Not all systems can process names of this length.", example = "Biel/Bienne Bözingenfeld/Champs-de-Boujean")
-  @Size(min = 2, max = AtlasFieldLengths.LENGTH_50)
-  @NotNull
-  private String designation;
+  @Schema(description = "Tactile-visual markings")
+  private TactileVisualAttributeType tactileVisualMarks;
 
-  @Schema(description = "Main reference point")
-  @NotNull
-  private boolean mainReferencePoint;
+  @Schema(description = "High contrast markings")
+  private StandardAttributeType contrastingAreas;
 
-  @Schema(description = "Type of reference point")
-  @NotNull
-  private ReferencePointAttributeType referencePointType;
+  @Schema(description = "Step-free access")
+  private StepFreeAccessAttributeType stepFreeAccess;
+
+  @Schema(description = "Reference Point Element Type")
+  private ReferencePointElementType referencePointElementType;
 
   @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)", example = "5")
   private Integer etagVersion;
