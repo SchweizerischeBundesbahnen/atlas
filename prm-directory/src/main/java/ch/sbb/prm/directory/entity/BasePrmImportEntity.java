@@ -1,4 +1,4 @@
-package ch.sbb.atlas.model.entity;
+package ch.sbb.prm.directory.entity;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.service.UserService;
@@ -32,7 +32,7 @@ import lombok.experimental.SuperBuilder;
 @FieldNameConstants
 @AtlasVersionable
 @Deprecated
-public abstract class BaseDidokImportEntity {
+public abstract class BasePrmImportEntity {
 
   @Column(columnDefinition = "TIMESTAMP", updatable = false)
   @AtlasVersionableProperty(ignoreDiff = true)
