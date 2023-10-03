@@ -46,12 +46,12 @@
       <module>base-atlas</module>
       <module>user-administration-security</module>
       <!--  Services -->
-      <module>prm-directory</module>
       <module>mail</module>
       <module>scheduling</module>
       <module>line-directory</module>
       <module>business-organisation-directory</module>
       <module>service-point-directory</module>
+      <module>prm-directory</module>
       <module>export-service-point</module>
       <module>import-service-point</module>
       <module>user-administration</module>
