@@ -110,7 +110,7 @@ describe('GeographyComponent', () => {
       SpatialReference.Wgs84,
       SpatialReference.Lv95
     );
-    expect(component.setFormGroupValue).toHaveBeenCalledWith(12, 12);
+    expect(component.setFormGroupValue).toHaveBeenCalledWith({ lat: 12, lng: 12 });
     expect(component.initTransformedCoordinatePair).toHaveBeenCalled();
   });
 });

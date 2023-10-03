@@ -41,6 +41,7 @@ export class MapService {
     lng: 0,
     lat: 0,
   });
+  isGeolocationActivated = new BehaviorSubject<boolean>(true);
 
   popup = new Popup({
     closeButton: true,
