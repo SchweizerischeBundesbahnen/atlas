@@ -2,13 +2,17 @@ package ch.sbb.prm.directory.entity;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.atlas.servicepoint.converter.MeanOfTransportConverter;
 import ch.sbb.atlas.servicepoint.converter.ServicePointNumberConverter;
-import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.versioning.model.Versionable;
-import ch.sbb.prm.directory.enumeration.StandardPrmAttributeType;
+import ch.sbb.prm.directory.converter.InfoOpportunityTypeConverter;
+import ch.sbb.prm.directory.enumeration.BasicPrmAttributeType;
+import ch.sbb.prm.directory.enumeration.BoardingDeviceType;
+import ch.sbb.prm.directory.enumeration.BooleanOptionalPrmAttributeType;
+import ch.sbb.prm.directory.enumeration.BooleanPrmAttributeType;
+import ch.sbb.prm.directory.enumeration.InfoOpportunityType;
+import ch.sbb.prm.directory.enumeration.VehicleAccessType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.ElementCollection;
@@ -21,6 +25,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
@@ -40,11 +45,11 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @SuperBuilder
 @FieldNameConstants
-@Entity(name = "stop_place_version")
+@Entity(name = "platform_version")
 @AtlasVersionable
-public class StopPlaceVersion extends BasePrmImportEntity implements Versionable {
+public class PlatformVersion extends BasePrmImportEntity implements Versionable {
 
-  private static final String VERSION_SEQ = "stop_place_version_seq";
+  private static final String VERSION_SEQ = "platform_version_seq";
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = VERSION_SEQ)
@@ -54,6 +59,10 @@ public class StopPlaceVersion extends BasePrmImportEntity implements Versionable
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
   @AtlasVersionableProperty
   private String sloid;
+
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
+  @AtlasVersionableProperty
+  private String parentServicePointSloid;
 
   @NotNull
   @AtlasVersionableProperty
@@ -69,80 +78,75 @@ public class StopPlaceVersion extends BasePrmImportEntity implements Versionable
   @Column(columnDefinition = "TIMESTAMP")
   private LocalDate validTo;
 
-  @AtlasVersionableProperty
-  @ElementCollection(targetClass = MeanOfTransport.class, fetch = FetchType.EAGER)
-  @Convert(converter = MeanOfTransportConverter.class)
-  private Set<MeanOfTransport> meansOfTransport;
-
-  @AtlasVersionableProperty
-  private String freeText;
-
-  @AtlasVersionableProperty
-  private String address;
-
-  @AtlasVersionableProperty
-  private String zipCode;
-
-  @AtlasVersionableProperty
-  private String city;
-
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
-  private StandardPrmAttributeType alternativeTransport;
-
-  @AtlasVersionableProperty
-  private String alternativeTransportCondition;
-
-  @Enumerated(EnumType.STRING)
-  @AtlasVersionableProperty
-  private StandardPrmAttributeType assistanceAvailability;
-
-  @AtlasVersionableProperty
-  private String alternativeCondition;
-
-  @Enumerated(EnumType.STRING)
-  @AtlasVersionableProperty
-  private StandardPrmAttributeType assistanceService;
-
-  @Enumerated(EnumType.STRING)
-  @AtlasVersionableProperty
-  private StandardPrmAttributeType audioTicketMachine;
+  private BoardingDeviceType boardingDevice;
 
   @AtlasVersionableProperty
   private String additionalInfo;
 
-  @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
-  private StandardPrmAttributeType dynamicAudioSystem;
+  private String adviceAccessInfo;
 
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
-  private StandardPrmAttributeType dynamicOpticSystem;
-
-  @AtlasVersionableProperty
-  private String infoTicketMachine;
-
-  @AtlasVersionableProperty
-  private boolean interoperable;
-
-  @AtlasVersionableProperty
-  private String url;
+  private BooleanOptionalPrmAttributeType contrastingAreas;
 
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
-  private StandardPrmAttributeType visualInfo;
+  private BasicPrmAttributeType dynamicAudio;
 
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
-  private StandardPrmAttributeType wheelchairTicketMachine;
+  private BasicPrmAttributeType dynamicVisual;
+
+  @AtlasVersionableProperty
+  @Digits(integer = 10, fraction = 3)
+  private Double height;
+
+  @AtlasVersionableProperty
+  @Digits(integer = 10, fraction = 3)
+  private Double inclination;
+
+  @AtlasVersionableProperty
+  @Digits(integer = 10, fraction = 3)
+  private Double inclinationLongitudinal;
+
+  @AtlasVersionableProperty
+  @Digits(integer = 10, fraction = 3)
+  private Double inclinationWidth;
+
+  @AtlasVersionableProperty
+  @ElementCollection(targetClass = InfoOpportunityType.class, fetch = FetchType.EAGER)
+  @Convert(converter = InfoOpportunityTypeConverter.class)
+  private Set<InfoOpportunityType> infoOpportunities;
 
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
-  private StandardPrmAttributeType assistanceRequestFulfilled;
+  private BasicPrmAttributeType levelAccessWheelchair;
 
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
-  private StandardPrmAttributeType ticketMachine;
+  private BooleanPrmAttributeType partialElevation;
 
+  @AtlasVersionableProperty
+  @Digits(integer = 10, fraction = 3)
+  private Double superelevation;
+
+  @Enumerated(EnumType.STRING)
+  @AtlasVersionableProperty
+  private BooleanOptionalPrmAttributeType tactileSystem;
+
+  @Enumerated(EnumType.STRING)
+  @AtlasVersionableProperty
+  private VehicleAccessType vehicleAccess;
+
+  @AtlasVersionableProperty
+  @Digits(integer = 10, fraction = 3)
+  private Double wheelchairAreaLength;
+
+  @AtlasVersionableProperty
+  @Digits(integer = 10, fraction = 3)
+  private Double wheelchairAreaWidth;
 
 }
