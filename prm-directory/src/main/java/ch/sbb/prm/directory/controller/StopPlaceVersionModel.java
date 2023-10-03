@@ -5,7 +5,7 @@ import ch.sbb.atlas.api.model.BaseVersionModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.validation.DatesValidator;
-import ch.sbb.prm.directory.enumeration.BasicPrmAttributeStatus;
+import ch.sbb.prm.directory.enumeration.StandardPrmAttributeType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.Valid;
@@ -68,36 +68,36 @@ public class StopPlaceVersionModel extends BaseVersionModel implements DatesVali
 
   @NotNull
   @Schema(description = "Shuttle service or alternative public transport offer")
-  private BasicPrmAttributeStatus alternativeTransport;
+  private StandardPrmAttributeType alternativeTransport;
 
   @Schema(description = "Information about the shuttle service or alternative public transport options")
   private String alternativeTransportCondition;
 
   @NotNull
   @Schema(description = "Advance registration required for assistance")
-  private BasicPrmAttributeStatus assistanceAvailability;
+  private StandardPrmAttributeType assistanceAvailability;
 
   @Schema(description = "Notes for assistance")
   private String alternativeCondition;
 
   @Schema(description = "Assistance from staff")
   @NotNull
-  private BasicPrmAttributeStatus assistanceService;
+  private StandardPrmAttributeType assistanceService;
 
   @Schema(description = "Acoustic and tactile equipment")
   @NotNull
-  private BasicPrmAttributeStatus audioTicketMachine;
+  private StandardPrmAttributeType audioTicketMachine;
 
   @Schema(description = "Additional information")
   private String additionalInfo;
 
   @NotNull
   @Schema(description = "Acoustically")
-  private BasicPrmAttributeStatus dynamicAudioSystem;
+  private StandardPrmAttributeType dynamicAudioSystem;
 
   @NotNull
   @Schema(description = "Dynamic/optical")
-  private BasicPrmAttributeStatus dynamicOpticSystem;
+  private StandardPrmAttributeType dynamicOpticSystem;
 
   @Schema(description = "Information about the ticket machine")
   private String infoTicketMachine;
@@ -110,19 +110,19 @@ public class StopPlaceVersionModel extends BaseVersionModel implements DatesVali
 
   @NotNull
   @Schema(description = "Static/optical")
-  private BasicPrmAttributeStatus visualInfo;
+  private StandardPrmAttributeType visualInfo;
 
   @NotNull
   @Schema(description = "Barrier-free")
-  private BasicPrmAttributeStatus wheelchairTicketMachine;
+  private StandardPrmAttributeType wheelchairTicketMachine;
 
   @NotNull
   @Schema(description = "requirements fulfilled")
-  private BasicPrmAttributeStatus assistanceRequestFulfilled;
+  private StandardPrmAttributeType assistanceRequestFulfilled;
 
   @NotNull
   @Schema(description = "Ticket machine available")
-  private BasicPrmAttributeStatus ticketMachine;
+  private StandardPrmAttributeType ticketMachine;
 
   @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)", example = "5")
   private Integer etagVersion;

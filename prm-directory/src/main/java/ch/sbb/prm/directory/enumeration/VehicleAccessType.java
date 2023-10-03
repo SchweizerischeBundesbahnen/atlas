@@ -7,13 +7,12 @@ import lombok.RequiredArgsConstructor;
 @Schema(enumAsRef = true, example = "YES")
 @Getter
 @RequiredArgsConstructor
-public enum ReferencePointType {
-  MAIN_STATION_ENTRANCE(0),
-  ALTERNATIVE_STATION_ENTRANCE(1),
-  ASSISTANCE_POINT(2),
-  INFORMATION_DESK(3),
-  PLATFORM(4),
-  NO_REFERENCE_POINT(5);
+public enum VehicleAccessType {
+  TO_BE_COMPLETED(0),
+  PLATFORM_ACCESS_WITHOUT_ASSISTANCE(11),
+  PLATFORM_ACCESS_WITH_ASSISTANCE(12),
+  PLATFORM_ACCESS_WITH_ASSISTANCE_WHEN_NOTIFIED(13),
+  PLATFORM_NOT_WHEELCHAIR_ACCESSIBLE(14);
 
   private final Integer rank;
 
