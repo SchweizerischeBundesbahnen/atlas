@@ -6,12 +6,13 @@ import ch.sbb.atlas.servicepoint.converter.ServicePointNumberConverter;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.versioning.model.Versionable;
-import ch.sbb.prm.directory.enumeration.ReferencePointAttributeType;
+import ch.sbb.prm.directory.enumeration.ReferencePointElementType;
+import ch.sbb.prm.directory.enumeration.StandardAttributeType;
+import ch.sbb.prm.directory.enumeration.StepFreeAccessAttributeType;
+import ch.sbb.prm.directory.enumeration.TactileVisualAttributeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -35,11 +36,11 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @SuperBuilder
 @FieldNameConstants
-@Entity(name = "reference_point_version")
+@Entity(name = "relation_version")
 @AtlasVersionable
-public class ReferencePointVersion extends BasePrmImportEntity implements Versionable {
+public class RelationVersion extends BasePrmImportEntity implements Versionable {
 
-  private static final String VERSION_SEQ = "reference_point_version_seq";
+  private static final String VERSION_SEQ = "relation_version_seq";
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = VERSION_SEQ)
@@ -68,18 +69,16 @@ public class ReferencePointVersion extends BasePrmImportEntity implements Versio
   @Column(columnDefinition = "TIMESTAMP")
   private LocalDate validTo;
 
-  @NotNull
   @AtlasVersionableProperty
-  private String designation;
+  private TactileVisualAttributeType tactileVisualMarks;
 
-  @NotNull
   @AtlasVersionableProperty
-  private boolean mainReferencePoint;
+  private StandardAttributeType contrastingAreas;
 
-  @NotNull
-  @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
-  private ReferencePointAttributeType referencePointType;
+  private StepFreeAccessAttributeType stepFreeAccess;
 
+  @AtlasVersionableProperty
+  private ReferencePointElementType referencePointElementType;
 
 }
