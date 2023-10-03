@@ -100,6 +100,6 @@
     "typescript": "^5.1"
   },
   "optionalDependencies": {
-    "puppeteer": "^20.7.4"
+    "puppeteer": "^21.0.0"
   }
 }
