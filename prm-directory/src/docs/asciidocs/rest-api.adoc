@@ -48,6 +48,12 @@ include::{snippets}/stop-place-version-controller-api-test/should-get-stop-place
 
 == Reference Point
 
-=== Get Reference Point - Successfully
+=== Get Reference Points - Successfully
 
-include::{snippets}/reference-point-version-controller-api-test/should-get-stop-places-version/auto-section.adoc[]
+include::{snippets}/reference-point-version-controller-api-test/should-get-reference-points-version/auto-section.adoc[]
+
+== Platform
+
+=== Get Platforms - Successfully
+
+include::{snippets}/platform-version-controller-api-test/should-get-platforms-version/auto-section.adoc[]

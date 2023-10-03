@@ -3,7 +3,7 @@ package ch.sbb.prm.directory;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.entity.StopPlaceVersion;
-import ch.sbb.prm.directory.enumeration.BasicPrmAttributeStatus;
+import ch.sbb.prm.directory.enumeration.StandardPrmAttributeType;
 import java.time.LocalDate;
 import java.util.Set;
 import lombok.experimental.UtilityClass;
@@ -22,23 +22,23 @@ public class StopPlaceTestData {
         .address("Wylerstrasse 123")
         .zipCode("3014")
         .city("Bern")
-        .alternativeTransport(BasicPrmAttributeStatus.TO_BE_COMPLETED)
+        .alternativeTransport(StandardPrmAttributeType.TO_BE_COMPLETED)
         .alternativeTransportCondition("No way dude!!")
-        .assistanceAvailability(BasicPrmAttributeStatus.YES)
+        .assistanceAvailability(StandardPrmAttributeType.YES)
         .alternativeCondition("No alternative Bro!")
-        .assistanceService(BasicPrmAttributeStatus.NO)
-        .audioTicketMachine(BasicPrmAttributeStatus.PARTIALLY)
+        .assistanceService(StandardPrmAttributeType.NO)
+        .audioTicketMachine(StandardPrmAttributeType.PARTIALLY)
         .additionalInfo("No alternative")
-        .dynamicAudioSystem(BasicPrmAttributeStatus.TO_BE_COMPLETED)
-        .dynamicOpticSystem(BasicPrmAttributeStatus.TO_BE_COMPLETED)
+        .dynamicAudioSystem(StandardPrmAttributeType.TO_BE_COMPLETED)
+        .dynamicOpticSystem(StandardPrmAttributeType.TO_BE_COMPLETED)
         .infoTicketMachine("tick")
         .additionalInfo("additional")
         .interoperable(true)
         .url("https://www.prm.sbb")
-        .visualInfo(BasicPrmAttributeStatus.TO_BE_COMPLETED)
-        .wheelchairTicketMachine(BasicPrmAttributeStatus.TO_BE_COMPLETED)
-        .assistanceRequestFulfilled(BasicPrmAttributeStatus.TO_BE_COMPLETED)
-        .ticketMachine(BasicPrmAttributeStatus.TO_BE_COMPLETED)
+        .visualInfo(StandardPrmAttributeType.TO_BE_COMPLETED)
+        .wheelchairTicketMachine(StandardPrmAttributeType.TO_BE_COMPLETED)
+        .assistanceRequestFulfilled(StandardPrmAttributeType.TO_BE_COMPLETED)
+        .ticketMachine(StandardPrmAttributeType.TO_BE_COMPLETED)
         .build();
 
   }

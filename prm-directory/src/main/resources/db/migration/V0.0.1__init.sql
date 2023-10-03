@@ -125,3 +125,48 @@ CREATE SEQUENCE reference_point_version_seq START WITH 1000 INCREMENT BY 1;
 
 ALTER TABLE reference_point_version
     ADD CONSTRAINT reference_point_sloid_unique UNIQUE (sloid, valid_from);
+
+
+------------------ PLATFORM ---------------------------
+CREATE TABLE platform_version
+(
+    id                              BIGINT       NOT NULL PRIMARY KEY,
+    sloid                           VARCHAR(500) NOT NULL,
+    number                          INTEGER      NOT NULL,
+    parent_service_point_sloid      VARCHAR(500) NOT NULL,
+    boarding_device                 VARCHAR(50),
+    additional_info                 VARCHAR(2000),
+    advice_access_info              VARCHAR(2000),
+    contrasting_areas               VARCHAR(50),
+    dynamic_audio                   VARCHAR(50),
+    dynamic_visual                  VARCHAR(50),
+    height                          NUMERIC(10, 3)   NULL,
+    inclination                     NUMERIC(10, 3)   NULL,
+    inclination_longitudinal        NUMERIC(10, 3)   NULL,
+    inclination_width               NUMERIC(10, 3)   NULL,
+    level_access_wheelchair         VARCHAR(50),
+    partial_elevation               VARCHAR(50),
+    superelevation                  NUMERIC(10, 3)   NULL,
+    tactile_system                  VARCHAR(50),
+    vehicle_access                  VARCHAR(50),
+    wheelchair_area_length          NUMERIC(10, 3)   NULL,
+    wheelchair_area_width           NUMERIC(10, 3)   NULL,
+    valid_from                      DATE         NOT NULL,
+    valid_to                        DATE         NOT NULL,
+    creation_date                   TIMESTAMP    NOT NULL,
+    creator                         VARCHAR(50),
+    edition_date                    TIMESTAMP    NOT NULL,
+    editor                          VARCHAR(50),
+    version                         BIGINT       NOT NULL DEFAULT 0
+);
+
+CREATE SEQUENCE platform_version_seq START WITH 1000 INCREMENT BY 1;
+
+ALTER TABLE platform_version
+    ADD CONSTRAINT platform_sloid_unique UNIQUE (sloid, valid_from);
+
+CREATE TABLE platform_version_info_opportunities
+(
+    platform_version_id BIGINT      NOT NULL,
+    info_opportunities    VARCHAR(50) NOT NULL
+);
