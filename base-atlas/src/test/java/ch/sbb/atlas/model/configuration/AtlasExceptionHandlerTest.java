@@ -6,7 +6,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.api.model.ErrorResponse;
+import ch.sbb.atlas.api.model.ErrorResponse.DisplayInfo;
 import ch.sbb.atlas.configuration.handler.AtlasExceptionHandler;
+import ch.sbb.atlas.export.enumeration.ExportType;
 import java.util.Collections;
 import org.apache.catalina.connector.ClientAbortException;
 import org.hibernate.StaleStateException;
@@ -18,6 +20,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
 public class AtlasExceptionHandlerTest {
@@ -115,5 +118,31 @@ public class AtlasExceptionHandlerTest {
         .first()
         .getDisplayInfo()
         .getCode()).isEqualTo("ERROR.NOTALLOWED");
+  }
+
+  @Test
+  void shouldConvertMethodArgumentTypeMismatchExceptionToErrorResponse() {
+    // Given
+    MethodArgumentTypeMismatchException exception = new MethodArgumentTypeMismatchException("falseValue", ExportType.class,
+        "exportType", mock(MethodParameter.class), new IllegalArgumentException());
+
+    // When
+    ResponseEntity<ErrorResponse> errorResponseEntity = atlasExceptionHandler.methodArgumentTypeMismatchException(exception);
+
+    // Then
+    assertThat(errorResponseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    ErrorResponse responseBody = errorResponseEntity.getBody();
+    assertThat(responseBody).isNotNull();
+    assertThat(responseBody.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+    assertThat(responseBody.getMessage()).isEqualTo("Method argument type did not match expected value range");
+
+    assertThat(responseBody.getDetails()).size().isEqualTo(1);
+    assertThat(responseBody.getDetails().first().getMessage()).isEqualTo("Value falseValue could not be converted to ExportType");
+
+    DisplayInfo displayInfo = responseBody.getDetails().first().getDisplayInfo();
+    assertThat(displayInfo.getCode()).isEqualTo("ERROR.CONSTRAINT");
+    assertThat(displayInfo.getParameters().get(0).getValue()).isEqualTo("falseValue");
+    assertThat(displayInfo.getParameters().get(1).getValue()).isEqualTo("ExportType");
+    assertThat(displayInfo.getParameters().get(2).getValue()).isEqualTo("[FULL, ACTUAL_DATE, FUTURE_TIMETABLE]");
   }
 }
