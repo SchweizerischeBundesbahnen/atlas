@@ -46,6 +46,7 @@ export class SepodiMapviewComponent implements AfterViewInit, OnDestroy {
       const detailContainerDiv = this.detailContainer.nativeElement;
       if (this.routeActive) {
         detailContainerDiv.classList.add('side-panel-open');
+        detailContainerDiv.style.width = '50%';
       } else {
         detailContainerDiv.classList.remove('side-panel-open');
         detailContainerDiv.style.width = 'unset';
