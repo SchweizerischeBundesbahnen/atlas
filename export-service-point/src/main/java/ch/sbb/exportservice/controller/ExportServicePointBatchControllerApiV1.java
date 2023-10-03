@@ -49,8 +49,8 @@ public class ExportServicePointBatchControllerApiV1 {
       @ApiResponse(responseCode = "404", description = "Object with filename myFile not found", content = @Content(schema =
       @Schema(implementation = ErrorResponse.class)))
   })
-  public ResponseEntity<StreamingResponseBody> streamExportJsonFile(@PathVariable("exportFileName") BatchExportFileName exportFileName,
-                                                                    @PathVariable("exportType") ExportType exportType) {
+  public ResponseEntity<StreamingResponseBody> streamExportJsonFile(@PathVariable BatchExportFileName exportFileName,
+                                                                    @PathVariable ExportType exportType) {
     checkInputPath(exportFileName,exportType);
     StreamingResponseBody body = fileExportService.streamJsonFile(exportType,exportFileName);
     return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(body);
@@ -63,8 +63,8 @@ public class ExportServicePointBatchControllerApiV1 {
       @Schema(implementation = ErrorResponse.class)))
   })
   public ResponseEntity<StreamingResponseBody> streamExportGzFile(
-      @PathVariable("exportFileName") BatchExportFileName exportFileName,
-      @PathVariable("exportType") ExportType exportType) throws NotAllowedExportFileException {
+      @PathVariable BatchExportFileName exportFileName,
+      @PathVariable ExportType exportType) throws NotAllowedExportFileException {
     checkInputPath(exportFileName, exportType);
     String fileName = fileExportService.getBaseFileName(exportType, exportFileName);
     HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(fileName);
