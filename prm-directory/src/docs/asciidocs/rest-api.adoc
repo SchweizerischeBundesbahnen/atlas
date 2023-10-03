@@ -40,6 +40,14 @@ include::../release-notes.adoc[]
 
 include::../../../../base-atlas/documentation/servicepoint/when_to_use_files_or_API.adoc[]
 
-== Get Stop Places - Successfully
+== Stop Place
+
+=== Get Stop Places - Successfully
 
 include::{snippets}/stop-place-version-controller-api-test/should-get-stop-places-version/auto-section.adoc[]
+
+== Reference Point
+
+=== Get Reference Point - Successfully
+
+include::{snippets}/reference-point-version-controller-api-test/should-get-stop-places-version/auto-section.adoc[]
