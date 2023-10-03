@@ -26,7 +26,7 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @FieldNameConstants
-@Schema(name = "LineVersion")
+@Schema(name = "StopPlaceVersion")
 public class StopPlaceVersionModel extends BaseVersionModel implements DatesValidator {
 
   @Schema(description = "Technical identifier", accessMode = AccessMode.READ_ONLY, example = "1")

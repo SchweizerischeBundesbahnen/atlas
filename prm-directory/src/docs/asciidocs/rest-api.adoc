@@ -57,3 +57,9 @@ include::{snippets}/reference-point-version-controller-api-test/should-get-refer
 === Get Platforms - Successfully
 
 include::{snippets}/platform-version-controller-api-test/should-get-platforms-version/auto-section.adoc[]
+
+== Toilet
+
+=== Get Toilets - Successfully
+
+include::{snippets}/toilet-version-controller-api-test/should-get-platforms-version/auto-section.adoc[]
