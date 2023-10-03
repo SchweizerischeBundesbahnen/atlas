@@ -9,3 +9,12 @@
   border-top-right-radius: variables.$border-radius;
   border-top-left-radius: variables.$border-radius;
 }
+
+footer {
+  height: 8rem;
+  background-color: white;
+
+  box-shadow: 0px -4px 10px -4px rgba(0, 0, 0, 0.1);
+  border-bottom-left-radius: variables.$border-radius;
+  border-bottom-right-radius: variables.$border-radius;
+}
