@@ -17,8 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -48,14 +46,14 @@ public class BusinessOrganisationVersionExportService extends
 
     @Override
     protected File getFullVersionsCsv() {
-        List<BusinessOrganisationExportVersionWithTuInfo> fullLineVersions = businessOrganisationVersionExportRepository.findAll();
-        return createCsvFile(fullLineVersions, ExportType.FULL);
+        List<BusinessOrganisationExportVersionWithTuInfo> fullBOVersions = businessOrganisationVersionExportRepository.findAll();
+        return createCsvFile(fullBOVersions, ExportType.FULL);
     }
 
     @Override
     protected File getFullVersionsJson() {
-        List<BusinessOrganisationExportVersionWithTuInfo> fullLineVersions = businessOrganisationVersionExportRepository.findAll();
-        return createJsonFile(fullLineVersions, ExportType.FULL);
+        List<BusinessOrganisationExportVersionWithTuInfo> fullBOVersions = businessOrganisationVersionExportRepository.findAll();
+        return createJsonFile(fullBOVersions, ExportType.FULL);
     }
 
     @Override
@@ -69,8 +67,7 @@ public class BusinessOrganisationVersionExportService extends
     protected File getActualVersionsJson() {
         List<BusinessOrganisationExportVersionWithTuInfo> actualBOVersions =
                 businessOrganisationVersionExportRepository.findVersionsValidOn(LocalDate.now());
-        List<BusinessOrganisationExportVersionWithTuInfo> listWithoutBODuplicates = new ArrayList<>(new LinkedHashSet<>(actualBOVersions));
-        return createJsonFile(listWithoutBODuplicates, ExportType.ACTUAL_DATE);
+        return createJsonFile(actualBOVersions, ExportType.ACTUAL_DATE);
     }
 
     @Override
@@ -78,16 +75,14 @@ public class BusinessOrganisationVersionExportService extends
         List<BusinessOrganisationExportVersionWithTuInfo> actualBOVersions =
             businessOrganisationVersionExportRepository.findVersionsValidOn(
                 FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now()));
-        List<BusinessOrganisationExportVersionWithTuInfo> listWithoutBODuplicates = new ArrayList<>(new LinkedHashSet<>(actualBOVersions));
-        return createCsvFile(listWithoutBODuplicates, ExportType.FUTURE_TIMETABLE);
+        return createCsvFile(actualBOVersions, ExportType.FUTURE_TIMETABLE);
     }
 
     @Override
     protected File getFutureTimetableVersionsJson() {
         List<BusinessOrganisationExportVersionWithTuInfo> actualBOVersions = businessOrganisationVersionExportRepository.findVersionsValidOn(
                 FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now()));
-        List<BusinessOrganisationExportVersionWithTuInfo> listWithoutBODuplicates = new ArrayList<>(new LinkedHashSet<>(actualBOVersions));
-        return createJsonFile(listWithoutBODuplicates, ExportType.FUTURE_TIMETABLE);
+        return createJsonFile(actualBOVersions, ExportType.FUTURE_TIMETABLE);
     }
 
     @Override
