@@ -198,14 +198,27 @@ export class ServicePointFormGroupBuilder {
   ) {
     formGroup.controls.servicePointGeolocation.controls.spatialReference.valueChanges.subscribe(
       (newSpatialReference) => {
-        if (newSpatialReference) {
+        if (newSpatialReference === SpatialReference.Wgs84) {
           formGroup.controls.servicePointGeolocation.controls.east.setValidators([
             Validators.required,
-            this.getValidatorForCoordinates(newSpatialReference, true),
+            Validators.min(-180),
+            Validators.max(180),
+            this.getValidatorForCoordinates(newSpatialReference),
           ]);
           formGroup.controls.servicePointGeolocation.controls.north.setValidators([
             Validators.required,
-            this.getValidatorForCoordinates(newSpatialReference, false),
+            Validators.min(-90),
+            Validators.max(90),
+            this.getValidatorForCoordinates(newSpatialReference),
+          ]);
+        } else if (newSpatialReference === SpatialReference.Lv95) {
+          formGroup.controls.servicePointGeolocation.controls.east.setValidators([
+            Validators.required,
+            this.getValidatorForCoordinates(newSpatialReference),
+          ]);
+          formGroup.controls.servicePointGeolocation.controls.north.setValidators([
+            Validators.required,
+            this.getValidatorForCoordinates(newSpatialReference),
           ]);
         } else {
           formGroup.controls.servicePointGeolocation.controls.east.clearValidators();
@@ -219,14 +232,10 @@ export class ServicePointFormGroupBuilder {
     );
   }
 
-  private static getValidatorForCoordinates(spatialReference?: SpatialReference, isLng?: boolean) {
-    if (spatialReference === SpatialReference.Lv95) {
-      return AtlasCharsetsValidator.decimalWithDigits(
-        spatialReference == SpatialReference.Lv95 ? LV95_MAX_DIGITS : WGS84_MAX_DIGITS
-      );
-    } else {
-      return AtlasCharsetsValidator.wgs84Coordinates(isLng!);
-    }
+  private static getValidatorForCoordinates(spatialReference?: SpatialReference) {
+    return AtlasCharsetsValidator.decimalWithDigits(
+      spatialReference == SpatialReference.Lv95 ? LV95_MAX_DIGITS : WGS84_MAX_DIGITS
+    );
   }
 
   static getWritableServicePoint(
