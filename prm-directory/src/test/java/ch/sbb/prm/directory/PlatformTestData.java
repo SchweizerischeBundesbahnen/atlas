@@ -2,10 +2,10 @@ package ch.sbb.prm.directory;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.entity.PlatformVersion;
-import ch.sbb.prm.directory.enumeration.BasicPrmAttributeType;
+import ch.sbb.prm.directory.enumeration.BasicAttributeType;
 import ch.sbb.prm.directory.enumeration.BoardingDeviceType;
-import ch.sbb.prm.directory.enumeration.BooleanOptionalPrmAttributeType;
-import ch.sbb.prm.directory.enumeration.BooleanPrmAttributeType;
+import ch.sbb.prm.directory.enumeration.BooleanAttributeType;
+import ch.sbb.prm.directory.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.prm.directory.enumeration.InfoOpportunityType;
 import ch.sbb.prm.directory.enumeration.VehicleAccessType;
 import java.time.LocalDate;
@@ -24,19 +24,19 @@ public class PlatformTestData {
         .parentServicePointSloid("ch:1.sloid:12345")
         .boardingDevice(BoardingDeviceType.LIFTS)
         .adviceAccessInfo("Access Information Advice")
-        .contrastingAreas(BooleanOptionalPrmAttributeType.YES)
-        .dynamicAudio(BasicPrmAttributeType.NOT_APPLICABLE)
-        .dynamicVisual(BasicPrmAttributeType.TO_BE_COMPLETED)
+        .contrastingAreas(BooleanOptionalAttributeType.YES)
+        .dynamicAudio(BasicAttributeType.NOT_APPLICABLE)
+        .dynamicVisual(BasicAttributeType.TO_BE_COMPLETED)
         .height(123.12)
         .inclination(123.12)
         .inclinationLongitudinal(123.12)
         .inclinationWidth(123.12)
         .infoOpportunities(Set.of(InfoOpportunityType.ACOUSTIC_INFORMATION,
             InfoOpportunityType.ELECTRONIC_VISUAL_INFORMATION_COMPLETE,InfoOpportunityType.TEXT_TO_SPEECH_DEPARTURES))
-        .levelAccessWheelchair(BasicPrmAttributeType.NO)
-        .partialElevation(BooleanPrmAttributeType.NO)
+        .levelAccessWheelchair(BasicAttributeType.NO)
+        .partialElevation(BooleanAttributeType.NO)
         .superelevation(321.123)
-        .tactileSystem(BooleanOptionalPrmAttributeType.TO_BE_COMPLETED)
+        .tactileSystem(BooleanOptionalAttributeType.TO_BE_COMPLETED)
         .vehicleAccess(VehicleAccessType.PLATFORM_ACCESS_WITH_ASSISTANCE_WHEN_NOTIFIED)
         .wheelchairAreaLength(456.321)
         .wheelchairAreaWidth(321.123)
