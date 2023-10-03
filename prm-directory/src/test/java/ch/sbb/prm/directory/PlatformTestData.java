@@ -3,11 +3,11 @@ package ch.sbb.prm.directory;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.entity.PlatformVersion;
 import ch.sbb.prm.directory.enumeration.BasicAttributeType;
-import ch.sbb.prm.directory.enumeration.BoardingDeviceType;
+import ch.sbb.prm.directory.enumeration.BoardingDeviceAttributeType;
 import ch.sbb.prm.directory.enumeration.BooleanAttributeType;
 import ch.sbb.prm.directory.enumeration.BooleanOptionalAttributeType;
-import ch.sbb.prm.directory.enumeration.InfoOpportunityType;
-import ch.sbb.prm.directory.enumeration.VehicleAccessType;
+import ch.sbb.prm.directory.enumeration.InfoOpportunityAttributeType;
+import ch.sbb.prm.directory.enumeration.VehicleAccessAttributeType;
 import java.time.LocalDate;
 import java.util.Set;
 import lombok.experimental.UtilityClass;
@@ -22,7 +22,7 @@ public class PlatformTestData {
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))
         .parentServicePointSloid("ch:1.sloid:12345")
-        .boardingDevice(BoardingDeviceType.LIFTS)
+        .boardingDevice(BoardingDeviceAttributeType.LIFTS)
         .adviceAccessInfo("Access Information Advice")
         .contrastingAreas(BooleanOptionalAttributeType.YES)
         .dynamicAudio(BasicAttributeType.NOT_APPLICABLE)
@@ -31,13 +31,13 @@ public class PlatformTestData {
         .inclination(123.12)
         .inclinationLongitudinal(123.12)
         .inclinationWidth(123.12)
-        .infoOpportunities(Set.of(InfoOpportunityType.ACOUSTIC_INFORMATION,
-            InfoOpportunityType.ELECTRONIC_VISUAL_INFORMATION_COMPLETE,InfoOpportunityType.TEXT_TO_SPEECH_DEPARTURES))
+        .infoOpportunities(Set.of(InfoOpportunityAttributeType.ACOUSTIC_INFORMATION,
+            InfoOpportunityAttributeType.ELECTRONIC_VISUAL_INFORMATION_COMPLETE, InfoOpportunityAttributeType.TEXT_TO_SPEECH_DEPARTURES))
         .levelAccessWheelchair(BasicAttributeType.NO)
         .partialElevation(BooleanAttributeType.NO)
         .superelevation(321.123)
         .tactileSystem(BooleanOptionalAttributeType.TO_BE_COMPLETED)
-        .vehicleAccess(VehicleAccessType.PLATFORM_ACCESS_WITH_ASSISTANCE_WHEN_NOTIFIED)
+        .vehicleAccess(VehicleAccessAttributeType.PLATFORM_ACCESS_WITH_ASSISTANCE_WHEN_NOTIFIED)
         .wheelchairAreaLength(456.321)
         .wheelchairAreaWidth(321.123)
         .build();

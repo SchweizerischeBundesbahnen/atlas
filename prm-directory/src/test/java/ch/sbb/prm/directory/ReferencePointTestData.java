@@ -2,7 +2,7 @@ package ch.sbb.prm.directory;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
-import ch.sbb.prm.directory.enumeration.ReferencePointType;
+import ch.sbb.prm.directory.enumeration.ReferencePointAttributeType;
 import java.time.LocalDate;
 import lombok.experimental.UtilityClass;
 
@@ -18,7 +18,7 @@ public class ReferencePointTestData {
         .designation("designation")
         .mainReferencePoint(true)
         .parentServicePointSloid("ch:1.sloid:12345")
-        .referencePointType(ReferencePointType.PLATFORM)
+        .referencePointType(ReferencePointAttributeType.PLATFORM)
         .build();
   }
 
