@@ -4,23 +4,27 @@ import static ch.sbb.prm.directory.enumeration.ReferencePointElementType.PLATFOR
 
 import ch.sbb.prm.directory.entity.PlatformVersion;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
-import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.repository.PlatformRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
-import ch.sbb.prm.directory.util.RelationUtil;
+import ch.sbb.prm.directory.repository.RelationRepository;
+import ch.sbb.prm.directory.repository.StopPlaceRepository;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@RequiredArgsConstructor
 @Service
 @Transactional
-public class PlatformService {
+public class PlatformService extends BaseRelationService<PlatformVersion> {
 
   private final PlatformRepository platformRepository;
   private final ReferencePointRepository referencePointRepository;
-  private final RelationService relationService;
+
+  public PlatformService(StopPlaceRepository stopPlaceRepository, RelationRepository relationRepository,
+      PlatformRepository platformRepository, ReferencePointRepository referencePointRepository) {
+    super(stopPlaceRepository, relationRepository);
+    this.platformRepository = platformRepository;
+    this.referencePointRepository = referencePointRepository;
+  }
 
   public List<PlatformVersion> getAllPlatforms() {
     return platformRepository.findAll();
@@ -31,13 +35,10 @@ public class PlatformService {
   }
 
   public void createPlatformVersion(PlatformVersion platformVersion) {
-    //TODO: check if PRM SopPlace already exists
+    checkStopPlaceExists(platformVersion.getParentServicePointSloid());
     List<ReferencePointVersion> referencePointVersions = referencePointRepository.findByParentServicePointSloid(
         platformVersion.getParentServicePointSloid());
-    referencePointVersions.forEach(referencePointVersion -> {
-      RelationVersion relationVersion = RelationUtil.buildReleaseVersion(platformVersion, PLATFORM);
-      relationService.createRelation(relationVersion);
-    });
+    createRelation(referencePointVersions, platformVersion, PLATFORM);
     platformRepository.save(platformVersion);
   }
 
