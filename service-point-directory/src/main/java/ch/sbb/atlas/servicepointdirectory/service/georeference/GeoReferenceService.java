@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.service.georeference;
 
+import ch.sbb.atlas.api.servicepoint.GeoReference;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.servicepoint.Country;

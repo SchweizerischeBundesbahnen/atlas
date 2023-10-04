@@ -196,7 +196,7 @@
           {{ 'SEPODI.GEOLOCATION.COUNTRY' | translate }}
         </div>
         <div class="color-gray-900">
-          {{ selectedVersion.servicePointGeolocation?.isoCountryCode ?? '-' }}
+          {{ locationInformation.isoCountryCode ?? '-' }}
         </div>
       </div>
       <div class="col-3 pe-3">
@@ -204,7 +204,7 @@
           {{ 'SEPODI.GEOLOCATION.CANTON' | translate }}
         </div>
         <div class="color-gray-900">
-          {{ selectedVersion.servicePointGeolocation?.swissLocation?.canton | displayCanton }}
+          {{ locationInformation.canton | displayCanton }}
         </div>
       </div>
       <div class="col-3 pe-3">
@@ -212,10 +212,7 @@
           {{ 'SEPODI.GEOLOCATION.MUNICIPALITY' | translate }}
         </div>
         <div class="color-gray-900">
-          {{
-            selectedVersion.servicePointGeolocation?.swissLocation?.localityMunicipality
-              ?.municipalityName ?? '-'
-          }}
+          {{ locationInformation.municipalityName ?? '-' }}
         </div>
       </div>
       <div class="col-3 pe-3">
@@ -223,10 +220,7 @@
           {{ 'SEPODI.GEOLOCATION.DISTRICT' | translate }}
         </div>
         <div class="color-gray-900">
-          {{
-            selectedVersion.servicePointGeolocation?.swissLocation?.localityMunicipality
-              ?.localityName ?? '-'
-          }}
+          {{ locationInformation.localityName ?? '-' }}
         </div>
       </div>
     </div>
