@@ -113,6 +113,7 @@ export class GeographyComponent implements OnDestroy, OnChanges {
     return {
       east: Number(this.formGroup.value.east!),
       north: Number(this.formGroup.value.north!),
+      spatialReference: this.formGroup.value.spatialReference!,
     };
   }
 
