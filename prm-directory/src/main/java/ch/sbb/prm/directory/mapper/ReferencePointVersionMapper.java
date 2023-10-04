@@ -1,6 +1,6 @@
 package ch.sbb.prm.directory.mapper;
 
-import ch.sbb.prm.directory.controller.ReferencePointVersionModel;
+import ch.sbb.prm.directory.controller.model.ReferencePointVersionModel;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import lombok.experimental.UtilityClass;
 

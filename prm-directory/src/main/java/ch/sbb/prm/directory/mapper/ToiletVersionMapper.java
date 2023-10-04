@@ -1,6 +1,6 @@
 package ch.sbb.prm.directory.mapper;
 
-import ch.sbb.prm.directory.controller.ToiletVersionModel;
+import ch.sbb.prm.directory.controller.model.ToiletVersionModel;
 import ch.sbb.prm.directory.entity.ToiletVersion;
 import lombok.experimental.UtilityClass;
 
