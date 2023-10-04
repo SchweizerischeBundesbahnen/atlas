@@ -15,7 +15,7 @@ import { MaterialModule } from '../../../core/module/material.module';
 import { TextFieldComponent } from '../../../core/form-components/text-field/text-field.component';
 import { RemoveCharsDirective } from '../../../core/form-components/text-field/remove-chars.directive';
 import { DecimalNumberPipe } from '../../../core/pipe/decimal-number.pipe';
-import { LatLngCoordinates, MapService } from '../map/map.service';
+import { CoordinatePairWGS84, MapService } from '../map/map.service';
 import { CoordinateTransformationService } from './coordinate-transformation.service';
 import { AppTestingModule } from '../../../app.testing.module';
 import { BehaviorSubject } from 'rxjs';
@@ -24,7 +24,7 @@ const mapService = jasmine.createSpyObj<MapService>(['placeMarkerAndFlyTo']);
 const coordinateTransformationServiceSpy = jasmine.createSpyObj<CoordinateTransformationService>([
   'transform',
 ]);
-const clickedGeographyCoordinatesSubject = new BehaviorSubject<LatLngCoordinates>({
+const clickedGeographyCoordinatesSubject = new BehaviorSubject<CoordinatePairWGS84>({
   lat: 0,
   lng: 0,
 });
@@ -74,7 +74,7 @@ describe('GeographyComponent', () => {
   it('should transform coordinates & place marker and fly to on change manually coordinates', () => {
     const coordinates: CoordinatePair = { north: 20000, east: 10000 };
     component.spatialReference = SpatialReference.Lv95;
-    spyOn(component, 'isLatLngGreaterThanZero').and.returnValue(true);
+    spyOn(component, 'isCoordinatesPairGreaterThanZero').and.returnValue(true);
     coordinateTransformationServiceSpy.transform.and.returnValue({ north: 12, east: 12 });
 
     component.onChangeCoordinatesManually(coordinates);
@@ -88,7 +88,7 @@ describe('GeographyComponent', () => {
   });
 
   it('should not call placeMarkerAndFlyTo if lat/lng not valid', () => {
-    spyOn(component, 'isValidLatLng').and.returnValue(false);
+    spyOn(component, 'isValidCoordinatePair').and.returnValue(false);
 
     component.onChangeCoordinatesManually({ north: 0, east: 0 });
 
@@ -96,21 +96,21 @@ describe('GeographyComponent', () => {
   });
 
   it('should transform coordinates & place marker and fly to on click map', () => {
-    const coordinates: LatLngCoordinates = { lat: 10, lng: 10 };
+    const coordinates: CoordinatePairWGS84 = { lat: 10, lng: 10 };
     component.spatialReference = SpatialReference.Lv95;
-    spyOn(component, 'isLatLngGreaterThanZero').and.returnValue(true);
+    spyOn(component, 'isCoordinatesPairGreaterThanZero').and.returnValue(true);
     spyOn(component, 'setFormGroupValue');
     spyOn(component, 'initTransformedCoordinatePair');
     coordinateTransformationServiceSpy.transform.and.returnValue({ north: 12, east: 12 });
 
-    component.onMapClick(coordinates);
+    component.onMapClick({ north: coordinates.lat, east: coordinates.lng });
 
     expect(coordinateTransformationServiceSpy.transform).toHaveBeenCalledWith(
       { north: 10, east: 10 },
       SpatialReference.Wgs84,
       SpatialReference.Lv95
     );
-    expect(component.setFormGroupValue).toHaveBeenCalledWith({ lat: 12, lng: 12 });
+    expect(component.setFormGroupValue).toHaveBeenCalledWith({ north: 12, east: 12 });
     expect(component.initTransformedCoordinatePair).toHaveBeenCalled();
   });
 });

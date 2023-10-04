@@ -202,21 +202,21 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     }
   }
 
-  private showConfirmationDialog() {
+  showConfirmationDialog() {
     this.confirmLeave().subscribe((confirmed) => {
       if (confirmed) {
         if (this.isNew) {
           this.closeSidePanel();
         } else {
-          this.initSelectedVersion();
           this.form.disable();
+          this.initSelectedVersion();
           this.cancelMapEditMode();
         }
       }
     });
   }
 
-  private confirmLeave(): Observable<boolean> {
+  confirmLeave(): Observable<boolean> {
     if (this.form.dirty) {
       return this.dialogService.confirm({
         title: 'DIALOG.DISCARD_CHANGES_TITLE',
