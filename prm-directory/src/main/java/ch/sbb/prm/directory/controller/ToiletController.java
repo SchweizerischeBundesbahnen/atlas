@@ -1,5 +1,7 @@
 package ch.sbb.prm.directory.controller;
 
+import ch.sbb.prm.directory.api.ToiletApiV1;
+import ch.sbb.prm.directory.controller.model.ToiletVersionModel;
 import ch.sbb.prm.directory.mapper.ToiletVersionMapper;
 import ch.sbb.prm.directory.service.ToiletService;
 import java.util.List;
