@@ -149,16 +149,15 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     }
 
     this.form = ServicePointFormGroupBuilder.buildFormGroup(this.selectedVersion);
+    const servicePointGeolocation = this.selectedVersion.servicePointGeolocation;
     this.locationInformation = {
-      isoCountryCode: this.selectedVersion.servicePointGeolocation?.isoCountryCode,
-      canton: this.selectedVersion.servicePointGeolocation?.swissLocation?.canton,
+      isoCountryCode: servicePointGeolocation?.isoCountryCode,
+      canton: servicePointGeolocation?.swissLocation?.canton,
       municipalityName:
-        this.selectedVersion.servicePointGeolocation?.swissLocation?.localityMunicipality
-          ?.municipalityName,
-      localityName:
-        this.selectedVersion.servicePointGeolocation?.swissLocation?.localityMunicipality
-          ?.localityName,
+        servicePointGeolocation?.swissLocation?.localityMunicipality?.municipalityName,
+      localityName: servicePointGeolocation?.swissLocation?.localityMunicipality?.localityName,
     };
+
     if (!this.isNew) {
       this.form.disable();
     }
