@@ -2,7 +2,7 @@ package ch.sbb.prm.directory.repository;
 
 import static ch.sbb.prm.directory.enumeration.ReferencePointElementType.PARKING_LOT;
 import static ch.sbb.prm.directory.enumeration.ReferencePointElementType.PLATFORM;
-import static ch.sbb.prm.directory.enumeration.ReferencePointElementType.TOILETTE;
+import static ch.sbb.prm.directory.enumeration.ReferencePointElementType.TOILET;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
@@ -62,7 +62,7 @@ class RelationRepositoryTest {
     //when
     List<RelationVersion> result = relationRepository.findAllBySloid("ch:1:sloid:100000:1");
     //then
-    assertThat(result).hasSize(0);
+    assertThat(result).isEmpty();
   }
 
   @Test
@@ -97,8 +97,7 @@ class RelationRepositoryTest {
     //when
     List<RelationVersion> result = relationRepository.findAllBySloidAndReferencePointElementType(relation1Sloid, PARKING_LOT);
     //then
-    assertThat(result)
-        .hasSize(0);
+    assertThat(result).isEmpty();
   }
 
   @Test
@@ -133,8 +132,7 @@ class RelationRepositoryTest {
     //when
     List<RelationVersion> result = relationRepository.findAllByParentServicePointSloid("ch:1:sloid:100000");
     //then
-    assertThat(result)
-        .hasSize(0);
+    assertThat(result).isEmpty();
   }
 
   @Test
@@ -168,10 +166,9 @@ class RelationRepositoryTest {
 
     //when
     List<RelationVersion> result =
-        relationRepository.findAllByParentServicePointSloidAndReferencePointElementType(parentServicePointSloid, TOILETTE);
+        relationRepository.findAllByParentServicePointSloidAndReferencePointElementType(parentServicePointSloid, TOILET);
     //then
-    assertThat(result)
-        .hasSize(0);
+    assertThat(result).isEmpty();
   }
 
 }
