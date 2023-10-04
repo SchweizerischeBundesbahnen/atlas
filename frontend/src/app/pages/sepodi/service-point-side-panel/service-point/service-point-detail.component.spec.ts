@@ -21,10 +21,8 @@ import { MockAtlasButtonComponent } from '../../../../app.testing.mocks';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { ApplicationRole, ServicePointsService, SpatialReference } from '../../../../api';
 import { NotificationService } from '../../../../core/notification/notification.service';
-import { ServicePointType } from './service-point-type';
 import { DisplayCantonPipe } from '../../../../core/cantons/display-canton.pipe';
-import { LatLngCoordinates, MapService } from '../../map/map.service';
-import { Map } from 'maplibre-gl';
+import { MapService } from '../../map/map.service';
 import { CoordinateTransformationService } from '../../geography/coordinate-transformation.service';
 
 const dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirm']);
