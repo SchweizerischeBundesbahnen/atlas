@@ -180,12 +180,17 @@ export class ServicePointFormGroupBuilder {
     formGroup: FormGroup<ServicePointDetailFormGroup>
   ) {
     formGroup.controls.freightServicePoint.valueChanges.subscribe((isFreightServicePoint) => {
-      if (
-        isFreightServicePoint &&
-        String(formGroup.controls.number.value).startsWith('85') &&
-        !formGroup.controls.validFrom.value?.isAfter(moment())
-      ) {
-        formGroup.controls.sortCodeOfDestinationStation.setValidators([Validators.required]);
+      if (isFreightServicePoint) {
+        formGroup.controls.sortCodeOfDestinationStation.setValidators([Validators.maxLength(5)]);
+        if (
+          String(formGroup.controls.number.value).startsWith('85') &&
+          !formGroup.controls.validFrom.value?.isAfter(moment())
+        ) {
+          formGroup.controls.sortCodeOfDestinationStation.setValidators([
+            Validators.required,
+            Validators.maxLength(5),
+          ]);
+        }
       } else {
         formGroup.controls.sortCodeOfDestinationStation.clearValidators();
       }
