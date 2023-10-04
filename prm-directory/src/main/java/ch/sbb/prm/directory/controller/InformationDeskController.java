@@ -1,5 +1,7 @@
 package ch.sbb.prm.directory.controller;
 
+import ch.sbb.prm.directory.api.InformationDeskCounterApiV1;
+import ch.sbb.prm.directory.controller.model.InformationDeskVersionModel;
 import ch.sbb.prm.directory.mapper.InformationDeskVersionMapper;
 import ch.sbb.prm.directory.service.InformationDeskService;
 import java.util.List;
