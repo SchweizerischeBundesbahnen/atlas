@@ -3,12 +3,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MapComponent } from './map.component';
 import { AppTestingModule } from '../../../app.testing.module';
 import { MAP_STYLES } from './map-options.service';
-import { LatLngCoordinates, MapService } from './map.service';
-import maplibregl, { Map, MapLibreGL } from 'maplibre-gl';
+import { CoordinatePairWGS84, MapService } from './map.service';
+import maplibregl, { Map } from 'maplibre-gl';
 import { BehaviorSubject } from 'rxjs';
 
 const isEditModeSubject = new BehaviorSubject<boolean>(true);
-const clickedGeographyCoordinatesSubject = new BehaviorSubject<LatLngCoordinates>({
+const clickedGeographyCoordinatesSubject = new BehaviorSubject<CoordinatePairWGS84>({
   lat: 0,
   lng: 0,
 });
