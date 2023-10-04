@@ -126,16 +126,7 @@ export class GeographyComponent implements OnDestroy {
       this.spatialReference
     );
 
-    const maxDigits =
-      this.spatialReference === SpatialReference.Lv95
-        ? this.LV95_MAX_DIGITS
-        : this.WGS84_MAX_DIGITS;
-
-    const roundedNorth = Number(transformedCoordinatePair.north.toFixed(maxDigits));
-    const roundedEast = Number(transformedCoordinatePair.east.toFixed(maxDigits));
-
-    this.formGroup.controls.north.setValue(roundedNorth);
-    this.formGroup.controls.east.setValue(roundedEast);
+    this.setFormGroupValue(transformedCoordinatePair);
     this.initTransformedCoordinatePair();
   }
 
@@ -176,11 +167,13 @@ export class GeographyComponent implements OnDestroy {
 
   isCoordinatesPairValidForTransformation(coordinates: CoordinatePair) {
     return (
-      this.isCoordinatesGreaterThanZero(coordinates) && !!coordinates.north && !!coordinates.east
+      this.isCoordinatesPairGreaterThanZero(coordinates) &&
+      !!coordinates.north &&
+      !!coordinates.east
     );
   }
 
-  isCoordinatesGreaterThanZero(coordinates: CoordinatePair): boolean {
+  isCoordinatesPairGreaterThanZero(coordinates: CoordinatePair): boolean {
     return coordinates.east !== 0 && coordinates.north !== 0;
   }
 
