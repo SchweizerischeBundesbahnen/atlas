@@ -1,6 +1,6 @@
 package ch.sbb.prm.directory.mapper;
 
-import ch.sbb.prm.directory.controller.StopPlaceVersionModel;
+import ch.sbb.prm.directory.controller.model.StopPlaceVersionModel;
 import ch.sbb.prm.directory.entity.StopPlaceVersion;
 import lombok.experimental.UtilityClass;
 
