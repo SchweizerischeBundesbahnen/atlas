@@ -52,7 +52,7 @@ class PlatformServiceTest {
     //when & then
     String message = assertThrows(IllegalStateException.class,
         () -> platformService.createPlatformVersion(platformVersion)).getLocalizedMessage();
-    assertThat(message).isEqualTo("StopPlace with sloid [ch:1:sloid:70000] not exists!");
+    assertThat(message).isEqualTo("StopPlace with sloid [ch:1:sloid:70000] does not exists!");
   }
 
   @Test
