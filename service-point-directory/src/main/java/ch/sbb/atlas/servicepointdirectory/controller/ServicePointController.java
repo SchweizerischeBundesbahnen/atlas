@@ -2,6 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.controller;
 
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.GeoReference;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel;
 import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
@@ -12,11 +13,13 @@ import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointApiV1;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointFotComment;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
+import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberAlreadyExistsException;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointFotCommentMapper;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
+import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointFotCommentService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointRequestParams;
@@ -39,6 +42,7 @@ public class ServicePointController implements ServicePointApiV1 {
   private final ServicePointService servicePointService;
   private final ServicePointFotCommentService servicePointFotCommentService;
   private final ServicePointImportService servicePointImportService;
+  private final GeoReferenceService geoReferenceService;
 
   @Override
   public Container<ReadServicePointVersionModel> getServicePoints(Pageable pageable,
@@ -93,6 +97,7 @@ public class ServicePointController implements ServicePointApiV1 {
     if (servicePointService.isServicePointNumberExisting(servicePointVersion.getNumber())) {
       throw new ServicePointNumberAlreadyExistsException(servicePointVersion.getNumber());
     }
+    addGeoReferenceInformation(servicePointVersion);
     return ServicePointVersionMapper.toModel(servicePointService.save(servicePointVersion));
   }
 
@@ -101,8 +106,13 @@ public class ServicePointController implements ServicePointApiV1 {
       CreateServicePointVersionModel createServicePointVersionModel) {
     ServicePointVersion servicePointVersionToUpdate = servicePointService.findById(id)
         .orElseThrow(() -> new IdNotFoundException(id));
-    servicePointService.update(servicePointVersionToUpdate, ServicePointVersionMapper.toEntity(createServicePointVersionModel),
+
+    ServicePointVersion editedVersion = ServicePointVersionMapper.toEntity(createServicePointVersionModel);
+    addGeoReferenceInformation(editedVersion);
+
+    servicePointService.update(servicePointVersionToUpdate, editedVersion,
         servicePointService.findAllByNumberOrderByValidFrom(servicePointVersionToUpdate.getNumber()));
+
     return servicePointService.findAllByNumberOrderByValidFrom(servicePointVersionToUpdate.getNumber())
         .stream()
         .map(ServicePointVersionMapper::toModel)
@@ -123,6 +133,21 @@ public class ServicePointController implements ServicePointApiV1 {
 
     ServicePointFotComment entity = ServicePointFotCommentMapper.toEntity(fotComment, number);
     return ServicePointFotCommentMapper.toModel(servicePointFotCommentService.save(entity));
+  }
+
+  private void addGeoReferenceInformation(ServicePointVersion servicePointVersion) {
+    if (servicePointVersion.hasGeolocation()) {
+      ServicePointGeolocation servicePointGeolocation = servicePointVersion.getServicePointGeolocation();
+      GeoReference geoReference = geoReferenceService.getGeoReference(servicePointGeolocation.asCoordinatePair());
+
+      servicePointGeolocation.setCountry(geoReference.getCountry());
+      servicePointGeolocation.setSwissCanton(geoReference.getSwissCanton());
+      servicePointGeolocation.setSwissDistrictNumber(geoReference.getSwissDistrictNumber());
+      servicePointGeolocation.setSwissDistrictName(geoReference.getSwissDistrictName());
+      servicePointGeolocation.setSwissMunicipalityNumber(geoReference.getSwissMunicipalityNumber());
+      servicePointGeolocation.setSwissMunicipalityName(geoReference.getSwissMunicipalityName());
+      servicePointGeolocation.setSwissLocalityName(geoReference.getSwissLocalityName());
+    }
   }
 
 }
