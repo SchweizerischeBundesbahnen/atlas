@@ -69,7 +69,7 @@ export class GeographyComponent implements OnInit, OnDestroy {
 
   switchSpatialReference($event: MatRadioChange) {
     const newReference: SpatialReference = $event.value;
-    if (newReference !== undefined) {
+    if (newReference) {
       const transformedCoordinatePair = this.coordinateTransformationService.transform(
         this.currentCoordinates,
         this.transformedSpatialReference,
