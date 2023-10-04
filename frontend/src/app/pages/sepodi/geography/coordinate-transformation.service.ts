@@ -28,6 +28,7 @@ export class CoordinateTransformationService {
     return {
       east: transformationResult[0],
       north: transformationResult[1],
+      spatialReference: to,
     };
   }
 }
