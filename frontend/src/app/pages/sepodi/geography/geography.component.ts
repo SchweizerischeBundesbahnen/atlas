@@ -36,7 +36,7 @@ export class GeographyComponent implements OnInit, OnDestroy {
     this.spatialReferenceSubscription.unsubscribe();
   }
 
-  private initTransformedCoordinatePair() { // ovaj dio
+  private initTransformedCoordinatePair() {
     if (
       this.formGroup.value.spatialReference &&
       this.currentCoordinates.east &&
@@ -60,7 +60,7 @@ export class GeographyComponent implements OnInit, OnDestroy {
     return this.formGroup.controls.spatialReference.value!;
   }
 
-  get currentCoordinates(): CoordinatePair { // ovaj dio
+  get currentCoordinates(): CoordinatePair {
     return {
       east: Number(this.formGroup.value.east!),
       north: Number(this.formGroup.value.north!),
