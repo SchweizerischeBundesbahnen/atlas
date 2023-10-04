@@ -5,6 +5,7 @@ import {
   ApplicationRole,
   ApplicationType,
   Category,
+  CoordinatePair,
   CreateServicePointVersion,
   OperatingPointTechnicalTimetableType,
   OperatingPointType,
@@ -19,7 +20,7 @@ import {
   ServicePointFormGroupBuilder,
 } from './service-point-detail-form-group';
 import { ServicePointType } from './service-point-type';
-import { LatLngCoordinates, MapService } from '../../map/map.service';
+import { MapService } from '../../map/map.service';
 import { catchError, EMPTY, Observable, of, Subject, Subscription } from 'rxjs';
 import { Pages } from '../../../pages';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
@@ -305,34 +306,32 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   }
 
   activateGeolocation() {
-    const lat = this.form.controls.servicePointGeolocation.controls.north.value!;
-    const lng = this.form.controls.servicePointGeolocation.controls.east.value!;
+    const north = this.form.controls.servicePointGeolocation.controls.north.value!;
+    const east = this.form.controls.servicePointGeolocation.controls.east.value!;
 
-    let coordinates = {
-      lat: Number(lat),
-      lng: Number(lng),
+    let coordinates: CoordinatePair = {
+      north: Number(north),
+      east: Number(east),
     };
 
-    const isCoordinatesValid = this.isLatLngCoordinatesValidForTransformation(coordinates);
-
     this.setSpatialReference(this.currentSpatialReference || SpatialReference.Lv95);
-    this.mapService.isGeolocationActivated.next(true);
 
-    if (this.currentSpatialReference === SpatialReference.Lv95 && isCoordinatesValid) {
+    this.mapService.isGeolocationActivated.next(true);
+    this.mapService.isEditMode.next(true);
+
+    if (!this.isCoordinatesPairValidForTransformation(coordinates)) return;
+
+    if (this.currentSpatialReference === SpatialReference.Lv95) {
       const transformed = this.coordinateTransformationService.transform(
-        { north: coordinates.lat, east: coordinates.lng },
+        coordinates,
         SpatialReference.Lv95,
         SpatialReference.Wgs84
       );
-      coordinates.lat = transformed.north;
-      coordinates.lng = transformed.east;
+      coordinates = transformed;
     }
 
-    if (isCoordinatesValid) {
-      this.mapService.placeMarkerAndFlyTo(coordinates);
-    }
-
-    this.mapService.isEditMode.next(true);
+    const coordinatePairWGS84 = { lat: coordinates.north, lng: coordinates.east };
+    this.mapService.placeMarkerAndFlyTo(coordinatePairWGS84);
   }
 
   deactivateGeolocation() {
@@ -363,11 +362,15 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     this.currentSpatialReference = spatialReference;
   }
 
-  isLatLngCoordinatesValidForTransformation(coordinates: LatLngCoordinates) {
-    return this.isLatLngGreaterThanZero(coordinates) && !!coordinates.lat && !!coordinates.lng;
+  isCoordinatesPairValidForTransformation(coordinates: CoordinatePair) {
+    return (
+      this.isCoordinatesPairGreaterThanZero(coordinates) &&
+      !!coordinates.north &&
+      !!coordinates.east
+    );
   }
 
-  isLatLngGreaterThanZero(coordinates: LatLngCoordinates): boolean {
-    return coordinates.lat !== 0 && coordinates.lng !== 0;
+  isCoordinatesPairGreaterThanZero(coordinates: CoordinatePair): boolean {
+    return coordinates.north !== 0 && coordinates.east !== 0;
   }
 }
