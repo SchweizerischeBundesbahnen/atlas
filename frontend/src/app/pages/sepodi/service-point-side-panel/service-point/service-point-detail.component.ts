@@ -1,12 +1,13 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { VersionsHandlingService } from '../../../../core/versioning/versions-handling.service';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {VersionsHandlingService} from '../../../../core/versioning/versions-handling.service';
 import {
   ApplicationRole,
   ApplicationType,
   Category,
   CoordinatePair,
   CreateServicePointVersion,
+  GeoDataService,
   OperatingPointTechnicalTimetableType,
   OperatingPointType,
   ReadServicePointVersion,
@@ -14,23 +15,22 @@ import {
   SpatialReference,
   StopPointType,
 } from '../../../../api';
-import { FormGroup } from '@angular/forms';
-import {
-  ServicePointDetailFormGroup,
-  ServicePointFormGroupBuilder,
-} from './service-point-detail-form-group';
-import { ServicePointType } from './service-point-type';
-import { MapService } from '../../map/map.service';
-import { catchError, EMPTY, Observable, of, Subject, Subscription } from 'rxjs';
-import { Pages } from '../../../pages';
-import { DialogService } from '../../../../core/components/dialog/dialog.service';
-import { ValidationService } from '../../../../core/validation/validation.service';
-import { takeUntil } from 'rxjs/operators';
-import { NotificationService } from '../../../../core/notification/notification.service';
-import { DetailFormComponent } from '../../../../core/leave-guard/leave-dirty-form-guard.service';
-import { AuthService } from '../../../../core/auth/auth.service';
-import { TranslationSortingService } from '../../../../core/translation/translation-sorting.service';
-import { CoordinateTransformationService } from '../../geography/coordinate-transformation.service';
+import {FormGroup} from '@angular/forms';
+import {ServicePointDetailFormGroup, ServicePointFormGroupBuilder,} from './service-point-detail-form-group';
+import {ServicePointType} from './service-point-type';
+import {MapService} from '../../map/map.service';
+import {catchError, debounceTime, EMPTY, merge, Observable, of, Subject, Subscription,} from 'rxjs';
+import {Pages} from '../../../pages';
+import {DialogService} from '../../../../core/components/dialog/dialog.service';
+import {ValidationService} from '../../../../core/validation/validation.service';
+import {takeUntil} from 'rxjs/operators';
+import {NotificationService} from '../../../../core/notification/notification.service';
+import {DetailFormComponent} from '../../../../core/leave-guard/leave-dirty-form-guard.service';
+import {AuthService} from '../../../../core/auth/auth.service';
+import {TranslationSortingService} from '../../../../core/translation/translation-sorting.service';
+import {CoordinateTransformationService} from '../../geography/coordinate-transformation.service';
+import {LocationInformation} from './location-information';
+import {Countries} from '../../../../core/country/Countries';
 
 @Component({
   selector: 'app-service-point',
@@ -62,6 +62,8 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
 
   currentSpatialReference!: SpatialReference;
 
+  locationInformation!: LocationInformation;
+
   private readonly ZOOM_LEVEL_FOR_DETAIL = 14;
 
   private mapSubscription!: Subscription;
@@ -78,7 +80,8 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     private authService: AuthService,
     private translationSortingService: TranslationSortingService,
     private coordinateTransformationService: CoordinateTransformationService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private geoDataService: GeoDataService
   ) {}
 
   ngOnInit() {
@@ -146,11 +149,22 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     }
 
     this.form = ServicePointFormGroupBuilder.buildFormGroup(this.selectedVersion);
+    this.locationInformation = {
+      isoCountryCode: this.selectedVersion.servicePointGeolocation?.isoCountryCode,
+      canton: this.selectedVersion.servicePointGeolocation?.swissLocation?.canton,
+      municipalityName:
+        this.selectedVersion.servicePointGeolocation?.swissLocation?.localityMunicipality
+          ?.municipalityName,
+      localityName:
+        this.selectedVersion.servicePointGeolocation?.swissLocation?.localityMunicipality
+          ?.localityName,
+    };
     if (!this.isNew) {
       this.form.disable();
     }
     this.displayAndSelectServicePointOnMap();
     this.initTypeChangeInformationDialog();
+    this.initLocationInformationDisplay();
   }
 
   private initTypeChangeInformationDialog() {
@@ -175,6 +189,34 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
         }
       }
     });
+  }
+
+  private initLocationInformationDisplay() {
+    const geolocationControls = this.form.controls.servicePointGeolocation.controls;
+    merge(geolocationControls.north.valueChanges, geolocationControls.east.valueChanges)
+      .pipe(debounceTime(500))
+      .subscribe(() => {
+        if (
+          geolocationControls.east.value &&
+          geolocationControls.north.value &&
+          geolocationControls.spatialReference.value
+        ) {
+          this.geoDataService
+            .getLocationInformation({
+              east: geolocationControls.east.value,
+              north: geolocationControls.north.value,
+              spatialReference: geolocationControls.spatialReference.value,
+            })
+            .subscribe((geoReference) => {
+              this.locationInformation.isoCountryCode = Countries.fromCountry(
+                geoReference.country
+              )?.short;
+              this.locationInformation.canton = geoReference.swissCanton;
+              this.locationInformation.municipalityName = geoReference.swissMunicipalityName;
+              this.locationInformation.localityName = geoReference.swissLocalityName;
+            });
+        }
+      });
   }
 
   private displayAndSelectServicePointOnMap() {
@@ -307,12 +349,12 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   }
 
   activateGeolocation() {
-    const north = this.form.controls.servicePointGeolocation.controls.north.value!;
-    const east = this.form.controls.servicePointGeolocation.controls.east.value!;
+    const locationControls = this.form.controls.servicePointGeolocation.controls;
 
     let coordinates: CoordinatePair = {
-      north: Number(north),
-      east: Number(east),
+      north: Number(locationControls.north.value!),
+      east: Number(locationControls.east.value!),
+      spatialReference: locationControls.spatialReference.value!
     };
 
     this.setSpatialReference(this.currentSpatialReference || SpatialReference.Lv95);
@@ -325,12 +367,11 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     }
 
     if (this.currentSpatialReference === SpatialReference.Lv95) {
-      const transformed = this.coordinateTransformationService.transform(
+      coordinates = this.coordinateTransformationService.transform(
         coordinates,
         SpatialReference.Lv95,
         SpatialReference.Wgs84
       );
-      coordinates = transformed;
     }
 
     const coordinatePairWGS84 = { lat: coordinates.north, lng: coordinates.east };
