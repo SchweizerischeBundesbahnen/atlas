@@ -18,4 +18,12 @@ public class TicketCounterService {
    return ticketCounterRepository.findAll();
   }
 
+  public void createTicketCounter(TicketCounterVersion version){
+    ticketCounterRepository.save(version);
+  }
+
+  public List<TicketCounterVersion> getByServicePointParentSloid(String parentServicePointSloid){
+    return ticketCounterRepository.findByParentServicePointSloid(parentServicePointSloid);
+  }
+
 }
