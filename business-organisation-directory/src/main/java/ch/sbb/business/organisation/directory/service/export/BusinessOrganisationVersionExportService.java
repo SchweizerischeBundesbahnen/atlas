@@ -46,43 +46,43 @@ public class BusinessOrganisationVersionExportService extends
 
     @Override
     protected File getFullVersionsCsv() {
-        List<BusinessOrganisationExportVersionWithTuInfo> fullLineVersions = businessOrganisationVersionExportRepository.findAll();
-        return createCsvFile(fullLineVersions, ExportType.FULL);
+        List<BusinessOrganisationExportVersionWithTuInfo> fullBOVersions = businessOrganisationVersionExportRepository.findAll();
+        return createCsvFile(fullBOVersions, ExportType.FULL);
     }
 
     @Override
     protected File getFullVersionsJson() {
-        List<BusinessOrganisationExportVersionWithTuInfo> fullLineVersions = businessOrganisationVersionExportRepository.findAll();
-        return createJsonFile(fullLineVersions, ExportType.FULL);
+        List<BusinessOrganisationExportVersionWithTuInfo> fullBOVersions = businessOrganisationVersionExportRepository.findAll();
+        return createJsonFile(fullBOVersions, ExportType.FULL);
     }
 
     @Override
     protected File getActualVersionsCsv() {
-        List<BusinessOrganisationExportVersionWithTuInfo> actualLineVersions =
+        List<BusinessOrganisationExportVersionWithTuInfo> actualBOVersions =
             businessOrganisationVersionExportRepository.findVersionsValidOn(LocalDate.now());
-        return createCsvFile(actualLineVersions, ExportType.ACTUAL_DATE);
+        return createCsvFile(actualBOVersions, ExportType.ACTUAL_DATE);
     }
 
     @Override
     protected File getActualVersionsJson() {
-        List<BusinessOrganisationExportVersionWithTuInfo> actualLineVersions =
+        List<BusinessOrganisationExportVersionWithTuInfo> actualBOVersions =
                 businessOrganisationVersionExportRepository.findVersionsValidOn(LocalDate.now());
-        return createJsonFile(actualLineVersions, ExportType.ACTUAL_DATE);
+        return createJsonFile(actualBOVersions, ExportType.ACTUAL_DATE);
     }
 
     @Override
     protected File getFutureTimetableVersionsCsv() {
-        List<BusinessOrganisationExportVersionWithTuInfo> actualLineVersions =
+        List<BusinessOrganisationExportVersionWithTuInfo> actualBOVersions =
             businessOrganisationVersionExportRepository.findVersionsValidOn(
                 FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now()));
-        return createCsvFile(actualLineVersions, ExportType.FUTURE_TIMETABLE);
+        return createCsvFile(actualBOVersions, ExportType.FUTURE_TIMETABLE);
     }
 
     @Override
     protected File getFutureTimetableVersionsJson() {
-        List<BusinessOrganisationExportVersionWithTuInfo> actualLineVersions = businessOrganisationVersionExportRepository.findVersionsValidOn(
+        List<BusinessOrganisationExportVersionWithTuInfo> actualBOVersions = businessOrganisationVersionExportRepository.findVersionsValidOn(
                 FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now()));
-        return createJsonFile(actualLineVersions, ExportType.FUTURE_TIMETABLE);
+        return createJsonFile(actualBOVersions, ExportType.FUTURE_TIMETABLE);
     }
 
     @Override
