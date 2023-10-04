@@ -4,6 +4,8 @@ export * from './companies.service';
 import { CompaniesService } from './companies.service';
 export * from './exportServicePointBatch.service';
 import { ExportServicePointBatchService } from './exportServicePointBatch.service';
+export * from './geoData.service';
+import { GeoDataService } from './geoData.service';
 export * from './importServicePointBatch.service';
 import { ImportServicePointBatchService } from './importServicePointBatch.service';
 export * from './lines.service';
@@ -36,6 +38,7 @@ export const APIS = [
   BusinessOrganisationsService,
   CompaniesService,
   ExportServicePointBatchService,
+  GeoDataService,
   ImportServicePointBatchService,
   LinesService,
   LoadingPointsService,

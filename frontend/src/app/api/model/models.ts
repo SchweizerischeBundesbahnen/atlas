@@ -39,6 +39,7 @@ export * from './errorDetail';
 export * from './errorResponse';
 export * from './examinantWorkflowCheck';
 export * from './exportType';
+export * from './geoReference';
 export * from './geolocation';
 export * from './geolocationCreate';
 export * from './hearingStatus';
