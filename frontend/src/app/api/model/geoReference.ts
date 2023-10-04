@@ -9,22 +9,30 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { SwissCanton } from './swissCanton';
+import { Country } from './country';
 
-export interface ServicePointNumber {
+export interface GeoReference {
+  country?: Country;
+  swissCanton?: SwissCanton;
   /**
-   * DiDok-Number formerly known as UIC-Code, combination of uicCountryCode and numberShort. Size: 7
+   * SwissDistrictNumber the location is in, based on FSO
    */
-  number: number;
+  swissDistrictNumber?: number;
   /**
-   * UicCountryCode, Indicates which country allocated the service point number and is to be interpreted organisationally, not territorially.
+   * SwissDistrictName the location is in
    */
-  uicCountryCode: number;
+  swissDistrictName?: string;
   /**
-   * NumberShort - 5 chars identifying number. Range: 1-99.999
+   * SwissMunicipalityNumber the location is in, based on FSO
    */
-  numberShort: number;
+  swissMunicipalityNumber?: number;
   /**
-   * Calculated value formed from the numberShort. Range: 0-9
+   * SwissMunicipalityName the location is in
    */
-  checkDigit: number;
+  swissMunicipalityName?: string;
+  /**
+   * SwissLocalityName the location is in
+   */
+  swissLocalityName?: string;
 }
