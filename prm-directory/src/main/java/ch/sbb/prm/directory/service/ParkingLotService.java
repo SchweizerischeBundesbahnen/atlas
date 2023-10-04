@@ -18,4 +18,8 @@ public class ParkingLotService {
    return parkingLotRepository.findAll();
   }
 
+  public List<ParkingLotVersion> getByServicePointParentSloid(String parentServicePointSloid){
+    return parkingLotRepository.findByParentServicePointSloid(parentServicePointSloid);
+  }
+
 }

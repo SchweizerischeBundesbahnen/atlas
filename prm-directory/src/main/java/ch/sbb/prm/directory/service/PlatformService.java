@@ -18,4 +18,8 @@ public class PlatformService {
    return platformRepository.findAll();
   }
 
+  public List<PlatformVersion> getByServicePointParentSloid(String parentServicePointSloid){
+    return platformRepository.findByParentServicePointSloid(parentServicePointSloid);
+  }
+
 }

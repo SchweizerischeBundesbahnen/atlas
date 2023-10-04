@@ -1,8 +1,5 @@
 package ch.sbb.prm.directory.entity;
 
-import ch.sbb.atlas.api.AtlasFieldLengths;
-import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.atlas.servicepoint.converter.ServicePointNumberConverter;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.versioning.model.Versionable;
@@ -13,7 +10,6 @@ import ch.sbb.prm.directory.enumeration.BooleanAttributeType;
 import ch.sbb.prm.directory.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.prm.directory.enumeration.InfoOpportunityAttributeType;
 import ch.sbb.prm.directory.enumeration.VehicleAccessAttributeType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
@@ -24,11 +20,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Digits;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import java.time.LocalDate;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -47,7 +39,7 @@ import lombok.experimental.SuperBuilder;
 @FieldNameConstants
 @Entity(name = "platform_version")
 @AtlasVersionable
-public class PlatformVersion extends BasePrmImportEntity implements Versionable {
+public class PlatformVersion extends BasePrmEntityVersion implements Versionable {
 
   private static final String VERSION_SEQ = "platform_version_seq";
 
@@ -55,28 +47,6 @@ public class PlatformVersion extends BasePrmImportEntity implements Versionable 
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = VERSION_SEQ)
   @SequenceGenerator(name = VERSION_SEQ, sequenceName = VERSION_SEQ, allocationSize = 1, initialValue = 1000)
   private Long id;
-
-  @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
-  @AtlasVersionableProperty
-  private String sloid;
-
-  @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
-  @AtlasVersionableProperty
-  private String parentServicePointSloid;
-
-  @NotNull
-  @AtlasVersionableProperty
-  @Convert(converter = ServicePointNumberConverter.class)
-  @Valid
-  private ServicePointNumber number;
-
-  @NotNull
-  @Column(columnDefinition = "TIMESTAMP")
-  private LocalDate validFrom;
-
-  @NotNull
-  @Column(columnDefinition = "TIMESTAMP")
-  private LocalDate validTo;
 
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
