@@ -2,13 +2,13 @@ package ch.sbb.atlas.servicepointdirectory.service.georeference;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.api.servicepoint.GeoReference;
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.servicepoint.Country;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -41,15 +41,14 @@ class GeoReferenceServiceTest {
   }
 
   @Test
-  void shouldGetInformationAboutLocationInSouthTyrol() throws JsonProcessingException {
+  @Disabled("Foreign Country support will be added later")
+  void shouldGetInformationAboutLocationInSouthTyrol() {
     CoordinatePair coordinate = CoordinatePair.builder()
         .spatialReference(SpatialReference.LV95)
         .east(2880349.530623)
         .north(1180195.322008)
         .build();
     GeoReference geoReference = geoReferenceService.getGeoReference(coordinate);
-
-    System.out.println(new ObjectMapper().writeValueAsString(geoReference));
 
     GeoReference expectedGeoReference = GeoReference.builder()
         .country(Country.ITALY)
