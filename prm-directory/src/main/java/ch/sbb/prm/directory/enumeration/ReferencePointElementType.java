@@ -11,8 +11,8 @@ public enum ReferencePointElementType {
 
   PLATFORM,
   TICKET_COUNTER,
-  INFO_DESK,
-  TOILETTE,
+  INFORMATION_DESK,
+  TOILET,
   PARKING_LOT;
 
 }

@@ -24,7 +24,7 @@ class ParkingLotVersionControllerApiTest extends BaseControllerApiTest {
 
   @BeforeEach()
   void initDB() {
-    parkingLotRepository.save(ParkingLotTestData.getTicketCounter());
+    parkingLotRepository.save(ParkingLotTestData.getParkingLot());
   }
 
   @AfterEach

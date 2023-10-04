@@ -18,12 +18,20 @@ public class RelationService {
   public List<RelationVersion> getRelationsBySloid(String sloid) {
    return relationRepository.findAllBySloid(sloid);
   }
+
   public List<RelationVersion> getRelationsBySloidAndReferenceType(String sloid, ReferencePointElementType referencePointType) {
    return relationRepository.findAllBySloidAndReferencePointElementType(sloid,referencePointType);
   }
   public List<RelationVersion> getRelationsByParentServicePointSloidAndReferenceType(String parentServicePointSloid,
       ReferencePointElementType referencePointType) {
    return relationRepository.findAllByParentServicePointSloidAndReferencePointElementType(parentServicePointSloid,referencePointType);
+  }
+  public List<RelationVersion> getRelationsByParentServicePoint(String parentServicePointSloid) {
+   return relationRepository.findAllByParentServicePointSloid(parentServicePointSloid);
+  }
+
+  public void createRelation(RelationVersion relationVersion){
+    relationRepository.save(relationVersion);
   }
 
 }
