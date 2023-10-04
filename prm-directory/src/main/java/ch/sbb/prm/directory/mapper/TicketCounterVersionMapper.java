@@ -1,6 +1,6 @@
 package ch.sbb.prm.directory.mapper;
 
-import ch.sbb.prm.directory.controller.TicketCounterVersionModel;
+import ch.sbb.prm.directory.controller.model.TicketCounterVersionModel;
 import ch.sbb.prm.directory.entity.TicketCounterVersion;
 import lombok.experimental.UtilityClass;
 

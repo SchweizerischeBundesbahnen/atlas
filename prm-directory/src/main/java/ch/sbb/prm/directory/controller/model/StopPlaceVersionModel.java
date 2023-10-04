@@ -1,17 +1,10 @@
-package ch.sbb.prm.directory.controller;
+package ch.sbb.prm.directory.controller.model;
 
-import ch.sbb.atlas.api.AtlasFieldLengths;
-import ch.sbb.atlas.api.model.BaseVersionModel;
-import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.validation.DatesValidator;
 import ch.sbb.prm.directory.enumeration.StandardAttributeType;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import java.time.LocalDate;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,28 +20,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldNameConstants
 @Schema(name = "StopPlaceVersion")
-public class StopPlaceVersionModel extends BaseVersionModel implements DatesValidator {
-
-  @Schema(description = "Technical identifier", accessMode = AccessMode.READ_ONLY, example = "1")
-  private Long id;
-
-  @NotNull
-  @Valid
-  private ServicePointNumber number;
-
-  @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
-  @Schema(description = "Unique code for locations that is used in customer information. The structure is described in the "
-      + "“Swiss Location ID” specification, chapter 4.2. The document is available here. "
-      + "https://transportdatamanagement.ch/standards/", example = "ch:1:sloid:18771")
-  private String sloid;
-
-  @Schema(description = "Valid from")
-  @NotNull
-  private LocalDate validFrom;
-
-  @Schema(description = "Valid to")
-  @NotNull
-  private LocalDate validTo;
+public class StopPlaceVersionModel extends BasePrmVersionModel implements DatesValidator {
 
   @Schema(description = "Means of transport. Indicates for which means of transport a stop is intended/equipped. Mandatory for "
       + "StopPoints")
@@ -123,8 +95,5 @@ public class StopPlaceVersionModel extends BaseVersionModel implements DatesVali
   @NotNull
   @Schema(description = "Ticket machine available")
   private StandardAttributeType ticketMachine;
-
-  @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)", example = "5")
-  private Integer etagVersion;
 
 }

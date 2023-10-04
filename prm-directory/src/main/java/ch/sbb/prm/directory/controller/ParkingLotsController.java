@@ -1,5 +1,7 @@
 package ch.sbb.prm.directory.controller;
 
+import ch.sbb.prm.directory.api.ParkingLotApiV1;
+import ch.sbb.prm.directory.controller.model.ParkingLotVersionModel;
 import ch.sbb.prm.directory.mapper.ParkingLotVersionMapper;
 import ch.sbb.prm.directory.service.ParkingLotService;
 import java.util.List;

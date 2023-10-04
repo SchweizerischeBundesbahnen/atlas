@@ -1,5 +1,7 @@
 package ch.sbb.prm.directory.controller;
 
+import ch.sbb.prm.directory.api.ReferencePointApiV1;
+import ch.sbb.prm.directory.controller.model.ReferencePointVersionModel;
 import ch.sbb.prm.directory.mapper.ReferencePointVersionMapper;
 import ch.sbb.prm.directory.service.ReferencePointService;
 import java.util.List;
