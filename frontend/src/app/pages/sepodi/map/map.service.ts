@@ -21,7 +21,7 @@ export const mapZoomLocalStorageKey = 'map-zoom';
 export const mapLocationLocalStorageKey = 'map-location';
 export const mapStyleLocalStorageKey = 'map-style';
 
-export interface LatLngCoordinates {
+interface CoordinatePairWGS84 {
   lat: number;
   lng: number;
 }
@@ -37,9 +37,9 @@ export class MapService {
   marker = new maplibregl.Marker({ color: '#FF0000' });
 
   isEditMode = new BehaviorSubject(false);
-  clickedGeographyCoordinates = new BehaviorSubject<LatLngCoordinates>({
-    lng: 0,
+  clickedGeographyCoordinates = new BehaviorSubject<CoordinatePairWGS84>({
     lat: 0,
+    lng: 0,
   });
   isGeolocationActivated = new BehaviorSubject<boolean>(true);
 
@@ -247,10 +247,10 @@ export class MapService {
     this.popup.getElement().classList.add('fixed-popup');
   }
 
-  placeMarkerAndFlyTo(latLngCoordinates: LatLngCoordinates) {
-    this.marker.setLngLat(latLngCoordinates).addTo(this.map);
+  placeMarkerAndFlyTo(coordinatePairWGS84: CoordinatePairWGS84) {
+    this.marker.setLngLat(coordinatePairWGS84).addTo(this.map);
     this.map.flyTo({
-      center: latLngCoordinates as maplibregl.LngLatLike,
+      center: coordinatePairWGS84 as maplibregl.LngLatLike,
       speed: 0.8,
     });
   }
