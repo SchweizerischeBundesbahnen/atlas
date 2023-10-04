@@ -21,7 +21,7 @@ export const mapZoomLocalStorageKey = 'map-zoom';
 export const mapLocationLocalStorageKey = 'map-location';
 export const mapStyleLocalStorageKey = 'map-style';
 
-interface CoordinatePairWGS84 {
+export interface CoordinatePairWGS84 {
   lat: number;
   lng: number;
 }
