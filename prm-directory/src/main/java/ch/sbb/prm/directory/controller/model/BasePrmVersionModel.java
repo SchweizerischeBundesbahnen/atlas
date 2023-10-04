@@ -1,10 +1,8 @@
-package ch.sbb.prm.directory.controller;
+package ch.sbb.prm.directory.controller.model;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.model.BaseVersionModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.atlas.validation.DatesValidator;
-import ch.sbb.prm.directory.enumeration.StandardAttributeType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.Valid;
@@ -15,17 +13,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
 
+@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@EqualsAndHashCode(callSuper = true)
 @SuperBuilder
-@FieldNameConstants
-@Schema(name = "ToiletVersion")
-public class ToiletVersionModel extends BaseVersionModel implements DatesValidator {
+public abstract class BasePrmVersionModel extends BaseVersionModel {
 
   @Schema(description = "Technical identifier", accessMode = AccessMode.READ_ONLY, example = "1")
   private Long id;
@@ -40,11 +35,6 @@ public class ToiletVersionModel extends BaseVersionModel implements DatesValidat
       + "https://transportdatamanagement.ch/standards/", example = "ch:1:sloid:18771")
   private String sloid;
 
-  @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
-  @Schema(description = "Hierarchical assignment of the TPE which is to be processed to another TPE. It is a 1:1 relationship. "
-      + "As key, the SLOID is used.", example = "ch:1:sloid:16161:1")
-  private String parentServicePointSloid;
-
   @Schema(description = "Valid from")
   @NotNull
   private LocalDate validFrom;
@@ -53,15 +43,7 @@ public class ToiletVersionModel extends BaseVersionModel implements DatesValidat
   @NotNull
   private LocalDate validTo;
 
-  @Schema(description = "Designation")
-  private String designation;
-
-  @Schema(description = "Additional Information")
-  private String info;
-
-  @Schema(description = "Wheelchair accessible toilet available")
-  private StandardAttributeType wheelchairToilet;
-
   @Schema(description = "Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)", example = "5")
   private Integer etagVersion;
+
 }

@@ -1,5 +1,7 @@
 package ch.sbb.prm.directory.controller;
 
+import ch.sbb.prm.directory.api.PlatformApiV1;
+import ch.sbb.prm.directory.controller.model.PlatformVersionModel;
 import ch.sbb.prm.directory.mapper.PlatformVersionMapper;
 import ch.sbb.prm.directory.service.PlatformService;
 import java.util.List;

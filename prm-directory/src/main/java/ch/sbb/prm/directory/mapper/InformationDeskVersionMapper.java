@@ -1,6 +1,6 @@
 package ch.sbb.prm.directory.mapper;
 
-import ch.sbb.prm.directory.controller.InformationDeskVersionModel;
+import ch.sbb.prm.directory.controller.model.InformationDeskVersionModel;
 import ch.sbb.prm.directory.entity.InformationDeskVersion;
 import lombok.experimental.UtilityClass;
 

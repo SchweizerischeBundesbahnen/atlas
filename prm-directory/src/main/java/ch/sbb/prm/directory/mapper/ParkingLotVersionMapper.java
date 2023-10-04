@@ -1,6 +1,6 @@
 package ch.sbb.prm.directory.mapper;
 
-import ch.sbb.prm.directory.controller.ParkingLotVersionModel;
+import ch.sbb.prm.directory.controller.model.ParkingLotVersionModel;
 import ch.sbb.prm.directory.entity.ParkingLotVersion;
 import lombok.experimental.UtilityClass;
 

@@ -1,5 +1,7 @@
 package ch.sbb.prm.directory.controller;
 
+import ch.sbb.prm.directory.api.TicketCounterApiV1;
+import ch.sbb.prm.directory.controller.model.TicketCounterVersionModel;
 import ch.sbb.prm.directory.mapper.TicketCounterVersionMapper;
 import ch.sbb.prm.directory.service.TicketCounterService;
 import java.util.List;
