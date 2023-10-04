@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
 public interface StopPlaceRepository extends JpaRepository<StopPlaceVersion, String>,
     JpaSpecificationExecutor<StopPlaceVersion> {
 
+    boolean existsBySloid(String sloid);
 }
