@@ -8,7 +8,6 @@ import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.servicepoint.Country;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -35,23 +34,6 @@ class GeoReferenceServiceTest {
         .swissMunicipalityNumber(5841)
         .swissMunicipalityName("Château-d'Oex")
         .swissLocalityName("La Lécherette")
-        .build();
-
-    assertThat(geoReference).isEqualTo(expectedGeoReference);
-  }
-
-  @Test
-  @Disabled("Foreign Country support will be added later")
-  void shouldGetInformationAboutLocationInSouthTyrol() {
-    CoordinatePair coordinate = CoordinatePair.builder()
-        .spatialReference(SpatialReference.LV95)
-        .east(2880349.530623)
-        .north(1180195.322008)
-        .build();
-    GeoReference geoReference = geoReferenceService.getGeoReference(coordinate);
-
-    GeoReference expectedGeoReference = GeoReference.builder()
-        .country(Country.ITALY)
         .build();
 
     assertThat(geoReference).isEqualTo(expectedGeoReference);
