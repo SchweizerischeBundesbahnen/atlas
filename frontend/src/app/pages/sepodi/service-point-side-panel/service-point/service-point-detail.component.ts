@@ -149,15 +149,6 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     }
 
     this.form = ServicePointFormGroupBuilder.buildFormGroup(this.selectedVersion);
-    const servicePointGeolocation = this.selectedVersion.servicePointGeolocation;
-    this.locationInformation = {
-      isoCountryCode: servicePointGeolocation?.isoCountryCode,
-      canton: servicePointGeolocation?.swissLocation?.canton,
-      municipalityName:
-        servicePointGeolocation?.swissLocation?.localityMunicipality?.municipalityName,
-      localityName: servicePointGeolocation?.swissLocation?.localityMunicipality?.localityName,
-    };
-
     if (!this.isNew) {
       this.form.disable();
     }
@@ -191,6 +182,15 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   }
 
   private initLocationInformationDisplay() {
+    const servicePointGeolocation = this.selectedVersion.servicePointGeolocation;
+    this.locationInformation = {
+      isoCountryCode: servicePointGeolocation?.isoCountryCode,
+      canton: servicePointGeolocation?.swissLocation?.canton,
+      municipalityName:
+        servicePointGeolocation?.swissLocation?.localityMunicipality?.municipalityName,
+      localityName: servicePointGeolocation?.swissLocation?.localityMunicipality?.localityName,
+    };
+
     const geolocationControls = this.form.controls.servicePointGeolocation.controls;
     merge(geolocationControls.north.valueChanges, geolocationControls.east.valueChanges)
       .pipe(debounceTime(500))
