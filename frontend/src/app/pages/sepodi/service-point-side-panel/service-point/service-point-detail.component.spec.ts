@@ -37,6 +37,7 @@ const coordinateTransformationServiceSpy = jasmine.createSpyObj<CoordinateTransf
 ]);
 mapServiceSpy.isGeolocationActivated = new BehaviorSubject<boolean>(false);
 mapServiceSpy.isEditMode = new BehaviorSubject<boolean>(false);
+mapServiceSpy.mapInitialized = new BehaviorSubject<boolean>(false);
 
 const authServiceMock: Partial<AuthService> = {
   claims: { name: 'Test', email: 'test@test.ch', sbbuid: 'e123456', roles: [] },
@@ -116,6 +117,7 @@ describe('ServicePointDetailComponent', () => {
 
   it('should switch to readonly mode when not dirty without confirmation', () => {
     component.form.enable();
+
     expect(component.form.enabled).toBeTrue();
     expect(component.form.dirty).toBeFalse();
 
@@ -155,11 +157,11 @@ describe('ServicePointDetailComponent', () => {
     expect(component.form.enabled).toBeTrue();
   });
 
-  it('should activate geolocation', () => {
+  it('should activate geolocation without coordinates', () => {
     const isLatLngCoordinatesValidForTransformationSpy = spyOn(
       component,
-      'isLatLngCoordinatesValidForTransformation'
-    ).and.returnValue(true);
+      'isCoordinatesPairValidForTransformation'
+    ).and.returnValue(false);
     const setSpatialReferenceSpy = spyOn(component, 'setSpatialReference');
 
     component.currentSpatialReference = SpatialReference.Lv95;
@@ -167,10 +169,8 @@ describe('ServicePointDetailComponent', () => {
 
     expect(setSpatialReferenceSpy).toHaveBeenCalled();
     expect(mapServiceSpy.isGeolocationActivated.value).toBe(true);
-    expect(isLatLngCoordinatesValidForTransformationSpy).toHaveBeenCalled();
-    expect(mapServiceSpy.placeMarkerAndFlyTo).toHaveBeenCalled();
-    expect(coordinateTransformationServiceSpy.transform).toHaveBeenCalled();
     expect(mapServiceSpy.isEditMode.value).toBe(true);
+    expect(isLatLngCoordinatesValidForTransformationSpy).toHaveBeenCalled();
   });
 
   it('should deactivate geolocation', () => {
@@ -186,7 +186,7 @@ describe('ServicePointDetailComponent', () => {
   it('should not transform if coordinates invalid', () => {
     const isLatLngCoordinatesValidForTransformationSpy = spyOn(
       component,
-      'isLatLngCoordinatesValidForTransformation'
+      'isCoordinatesPairValidForTransformation'
     ).and.returnValue(false);
     const setSpatialReferenceSpy = spyOn(component, 'setSpatialReference');
 
