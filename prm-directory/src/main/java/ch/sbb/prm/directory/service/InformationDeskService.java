@@ -18,4 +18,8 @@ public class InformationDeskService {
    return informationDeskRepository.findAll();
   }
 
+  public List<InformationDeskVersion> getByServicePointParentSloid(String parentServicePointSloid){
+    return informationDeskRepository.findByParentServicePointSloid(parentServicePointSloid);
+  }
+
 }
