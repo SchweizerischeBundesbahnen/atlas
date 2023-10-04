@@ -1,5 +1,7 @@
 package ch.sbb.prm.directory.controller;
 
+import ch.sbb.prm.directory.api.StopPlaceApiV1;
+import ch.sbb.prm.directory.controller.model.StopPlaceVersionModel;
 import ch.sbb.prm.directory.mapper.StopPlaceVersionMapper;
 import ch.sbb.prm.directory.service.StopPlaceService;
 import java.util.List;

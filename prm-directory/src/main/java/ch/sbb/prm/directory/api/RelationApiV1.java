@@ -1,5 +1,6 @@
-package ch.sbb.prm.directory.controller;
+package ch.sbb.prm.directory.api;
 
+import ch.sbb.prm.directory.controller.model.RelationVersionModel;
 import ch.sbb.prm.directory.enumeration.ReferencePointElementType;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;

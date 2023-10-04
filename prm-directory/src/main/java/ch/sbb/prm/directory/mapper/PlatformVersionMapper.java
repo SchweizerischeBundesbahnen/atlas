@@ -1,6 +1,6 @@
 package ch.sbb.prm.directory.mapper;
 
-import ch.sbb.prm.directory.controller.PlatformVersionModel;
+import ch.sbb.prm.directory.controller.model.PlatformVersionModel;
 import ch.sbb.prm.directory.entity.PlatformVersion;
 import lombok.experimental.UtilityClass;
 
