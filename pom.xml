@@ -26,7 +26,7 @@
       <spring-cloud.version>2022.0.4</spring-cloud.version>
       <spring-openapi-ui.version>2.2.0</spring-openapi-ui.version>
 
-      <swagger-core.version>2.2.15</swagger-core.version>
+      <swagger-core.version>2.2.16</swagger-core.version>
       <tika-core.version>2.9.0</tika-core.version>
 
       <!-- REST Doc -->
