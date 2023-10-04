@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { MapService } from './map.service';
 import { AuthService } from '../../../core/auth/auth.service';
 import { MAP_STYLES, MapOptionsService } from './map-options.service';
-import maplibregl, { Map, MapGeoJSONFeature, MapMouseEvent } from 'maplibre-gl';
+import { Map, MapGeoJSONFeature, MapMouseEvent } from 'maplibre-gl';
 
 const authService: Partial<AuthService> = {};
 
