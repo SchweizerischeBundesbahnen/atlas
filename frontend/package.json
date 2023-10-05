@@ -33,7 +33,7 @@
     "printWidth": 100
   },
   "lint-staged": {
-    "frontend/src/**/*": "frontend/node_modules/prettier/bin-prettier.js --write --ignore-unknown"
+    "frontend/src/**/*": "prettier --write --ignore-unknown"
   },
   "dependencies": {
     "@angular/animations": "16.2.8",
