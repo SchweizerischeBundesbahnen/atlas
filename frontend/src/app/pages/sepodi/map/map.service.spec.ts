@@ -15,6 +15,10 @@ const mapSpy = jasmine.createSpyObj<Map>([
   'off',
   'fire',
   'getSource',
+  'setZoom',
+  'getZoom',
+  'setCenter',
+  'setLayoutProperty',
 ]);
 let clickCallback: any;
 mapSpy.on.and.callFake((event: string, callback: any) => {
