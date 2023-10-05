@@ -6,21 +6,19 @@ import ch.sbb.prm.directory.entity.ParkingLotVersion;
 import ch.sbb.prm.directory.enumeration.ReferencePointElementType;
 import ch.sbb.prm.directory.repository.ParkingLotRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
-import ch.sbb.prm.directory.repository.RelationRepository;
-import ch.sbb.prm.directory.repository.StopPlaceRepository;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class ParkingLotService extends BaseRelatableService<ParkingLotVersion> {
+public class ParkingLotService extends RelatableService<ParkingLotVersion> {
 
   private final ParkingLotRepository parkingLotRepository;
 
-  public ParkingLotService(ParkingLotRepository parkingLotRepository, StopPlaceRepository stopPlaceRepository,
-      RelationRepository relationRepository, ReferencePointRepository referencePointRepository) {
-    super(stopPlaceRepository,relationRepository,referencePointRepository);
+  public ParkingLotService(ParkingLotRepository parkingLotRepository, StopPlaceService stopPlaceService,
+      RelationService relationService, ReferencePointRepository referencePointRepository) {
+    super(stopPlaceService,relationService,referencePointRepository);
     this.parkingLotRepository = parkingLotRepository;
   }
 

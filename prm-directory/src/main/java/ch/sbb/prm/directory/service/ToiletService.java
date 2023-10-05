@@ -5,8 +5,6 @@ import static ch.sbb.prm.directory.enumeration.ReferencePointElementType.TOILET;
 import ch.sbb.prm.directory.entity.ToiletVersion;
 import ch.sbb.prm.directory.enumeration.ReferencePointElementType;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
-import ch.sbb.prm.directory.repository.RelationRepository;
-import ch.sbb.prm.directory.repository.StopPlaceRepository;
 import ch.sbb.prm.directory.repository.ToiletRepository;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -14,13 +12,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class ToiletService extends BaseRelatableService<ToiletVersion> {
+public class ToiletService extends RelatableService<ToiletVersion> {
 
   private final ToiletRepository toiletRepository;
 
-  public ToiletService(ToiletRepository toiletRepository, StopPlaceRepository stopPlaceRepository,
-      RelationRepository relationRepository, ReferencePointRepository referencePointRepository) {
-    super(stopPlaceRepository,relationRepository,referencePointRepository);
+  public ToiletService(ToiletRepository toiletRepository, StopPlaceService stopPlaceService,
+      RelationService relationService, ReferencePointRepository referencePointRepository) {
+    super(stopPlaceService,relationService,referencePointRepository);
     this.toiletRepository = toiletRepository;
   }
 
