@@ -38,13 +38,14 @@ public class ReferencePointService {
   private final ParkingLotRepository parkingLotRepository;
   private final PlatformRepository platformRepository;
   private final RelationService relationService;
+  private final StopPlaceService stopPlaceService;
 
   public List<ReferencePointVersion> getAllReferencePoints() {
     return referencePointRepository.findAll();
   }
 
   public void createReferencePoint(ReferencePointVersion referencePointVersion) {
-    //TODO: check if PRM SopPlace already exists
+    stopPlaceService.checkStopPlaceExists(referencePointVersion.getParentServicePointSloid());
     searchAndUpdatePlatformRelation(referencePointVersion.getParentServicePointSloid());
     searchAndUpdateTicketCounter(referencePointVersion.getParentServicePointSloid());
     searchAndUpdateToiletRelation(referencePointVersion.getParentServicePointSloid());
