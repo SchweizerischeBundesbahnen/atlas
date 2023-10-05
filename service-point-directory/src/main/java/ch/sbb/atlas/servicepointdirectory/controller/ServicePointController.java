@@ -113,6 +113,10 @@ public class ServicePointController implements ServicePointApiV1 {
     ServicePointVersion servicePointVersionToUpdate = servicePointService.findById(id)
         .orElseThrow(() -> new IdNotFoundException(id));
 
+    if (createServicePointVersionModel.isOperatingPointRouteNetwork()) {
+      createServicePointVersionModel.setOperatingPointKilometerMasterNumber(createServicePointVersionModel.getNumberWithoutCheckDigit());
+    }
+
     ServicePointVersion editedVersion = ServicePointVersionMapper.toEntity(createServicePointVersionModel);
     addGeoReferenceInformation(editedVersion);
 
