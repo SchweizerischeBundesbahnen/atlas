@@ -60,12 +60,21 @@ describe('MapService', () => {
   });
 
   it('should deselect service point', () => {
-    const mapSpy = jasmine.createSpyObj<Map>(['removeFeatureState']);
     service.map = mapSpy;
-
+    service.map.getSource = jasmine.createSpy('getSource').and.returnValue({
+      setData: jasmine.createSpy('setData'),
+    });
     service.deselectServicePoint();
 
-    expect(mapSpy.removeFeatureState).toHaveBeenCalled();
+    expect(service.map.getSource).toHaveBeenCalledWith('current_coordinates');
+    expect((service.map.getSource('current_coordinates') as any).setData).toHaveBeenCalledWith({
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [0, 0],
+      },
+      properties: {},
+    });
   });
 
   it('should switch to different map style', () => {
