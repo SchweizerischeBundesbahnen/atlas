@@ -113,27 +113,6 @@ export class GeographyComponent implements OnDestroy, OnChanges {
     if (!$event.value || !this.isCoordinatesPairValidForTransformation(this.currentCoordinates)) {
       return;
     }
-    const newReference: SpatialReference = $event.value;
-    if (newReference) {
-      const transformedCoordinatePair = this.coordinateTransformationService.transform(
-        this.currentCoordinates,
-        newReference
-      );
-      this.formGroup.controls.east.setValue(
-        Number(
-          transformedCoordinatePair.east.toFixed(
-            newReference == SpatialReference.Lv95 ? this.LV95_MAX_DIGITS : this.WGS84_MAX_DIGITS
-          )
-        )
-      );
-      this.formGroup.controls.north.setValue(
-        Number(
-          transformedCoordinatePair.north.toFixed(
-            newReference == SpatialReference.Lv95 ? this.LV95_MAX_DIGITS : this.WGS84_MAX_DIGITS
-          )
-        )
-      );
-    }
 
     this.spatialReference = $event.value;
 
