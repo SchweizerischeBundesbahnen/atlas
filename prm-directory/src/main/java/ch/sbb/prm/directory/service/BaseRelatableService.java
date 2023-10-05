@@ -14,23 +14,26 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
-public abstract class BaseRelationConnectionService<T extends BasePrmEntityVersion> {
+public abstract class BaseRelatableService<T extends BasePrmEntityVersion> {
 
   protected final StopPlaceRepository stopPlaceRepository;
   protected final RelationRepository relationRepository;
   protected final ReferencePointRepository referencePointRepository;
 
-  protected void checkStopPlaceExists(String sloid) {
+  protected abstract ReferencePointElementType getReferencePointElementType();
+
+  private void checkStopPlaceExists(String sloid) {
     if (!stopPlaceRepository.existsBySloid(sloid)) {
       throw new IllegalStateException("StopPlace with sloid [" + sloid + "] does not exists!");
     }
   }
 
-  protected void createRelation(T version, ReferencePointElementType referencePointElementType) {
+  protected void createRelation(T version) {
+    checkStopPlaceExists(version.getParentServicePointSloid());
     List<ReferencePointVersion> referencePointVersions = referencePointRepository.findByParentServicePointSloid(
         version.getParentServicePointSloid());
     referencePointVersions.forEach(referencePointVersion -> {
-      RelationVersion relationVersion = RelationUtil.buildReleaseVersion(version, referencePointElementType);
+      RelationVersion relationVersion = RelationUtil.buildReleaseVersion(version, getReferencePointElementType());
       relationRepository.save(relationVersion);
     });
   }

@@ -3,6 +3,7 @@ package ch.sbb.prm.directory.service;
 import static ch.sbb.prm.directory.enumeration.ReferencePointElementType.PARKING_LOT;
 
 import ch.sbb.prm.directory.entity.ParkingLotVersion;
+import ch.sbb.prm.directory.enumeration.ReferencePointElementType;
 import ch.sbb.prm.directory.repository.ParkingLotRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.RelationRepository;
@@ -13,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class ParkingLotService extends BaseRelationConnectionService<ParkingLotVersion>{
+public class ParkingLotService extends BaseRelatableService<ParkingLotVersion> {
 
   private final ParkingLotRepository parkingLotRepository;
 
@@ -23,13 +24,17 @@ public class ParkingLotService extends BaseRelationConnectionService<ParkingLotV
     this.parkingLotRepository = parkingLotRepository;
   }
 
+  @Override
+  protected ReferencePointElementType getReferencePointElementType() {
+    return PARKING_LOT;
+  }
+
   public List<ParkingLotVersion> getAllParkingLots() {
    return parkingLotRepository.findAll();
   }
 
   public void createParkingLot(ParkingLotVersion version) {
-    checkStopPlaceExists(version.getParentServicePointSloid());
-    createRelation(version, PARKING_LOT);
+    createRelation(version);
     parkingLotRepository.save(version);
   }
 
