@@ -9,11 +9,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum Layers {
 
-  BEZIRK("ch.swisstopo.swissboundaries3d-bezirk-flaeche.fill"),
-  GEMEINDE("ch.swisstopo.swissboundaries3d-gemeinde-flaeche.fill"),
-  KANTON("ch.swisstopo.swissboundaries3d-kanton-flaeche.fill"),
-  LAND("ch.swisstopo.swissboundaries3d-land-flaeche.fill"),
-  ORTSCHAFT("ch.swisstopo-vd.ortschaftenverzeichnis_plz"),
+  DISTRICT("ch.swisstopo.swissboundaries3d-bezirk-flaeche.fill"),
+  MUNICIPALITY("ch.swisstopo.swissboundaries3d-gemeinde-flaeche.fill"),
+  CANTON("ch.swisstopo.swissboundaries3d-kanton-flaeche.fill"),
+  COUNTRY("ch.swisstopo.swissboundaries3d-land-flaeche.fill"),
+  LOCALITY("ch.swisstopo-vd.ortschaftenverzeichnis_plz"),
 
   ;
 
