@@ -3,6 +3,7 @@ package ch.sbb.prm.directory.service;
 import static ch.sbb.prm.directory.enumeration.ReferencePointElementType.PLATFORM;
 
 import ch.sbb.prm.directory.entity.PlatformVersion;
+import ch.sbb.prm.directory.enumeration.ReferencePointElementType;
 import ch.sbb.prm.directory.repository.PlatformRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.RelationRepository;
@@ -13,10 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class PlatformService extends BaseRelationConnectionService<PlatformVersion> {
+public class PlatformService extends BaseRelatableService<PlatformVersion> {
 
   private final PlatformRepository platformRepository;
-
 
   public PlatformService(StopPlaceRepository stopPlaceRepository, RelationRepository relationRepository,
       PlatformRepository platformRepository, ReferencePointRepository referencePointRepository ) {
@@ -24,13 +24,17 @@ public class PlatformService extends BaseRelationConnectionService<PlatformVersi
     this.platformRepository = platformRepository;
   }
 
+  @Override
+  protected ReferencePointElementType getReferencePointElementType() {
+    return PLATFORM;
+  }
+
   public List<PlatformVersion> getAllPlatforms() {
     return platformRepository.findAll();
   }
 
   public void createPlatformVersion(PlatformVersion version) {
-    checkStopPlaceExists(version.getParentServicePointSloid());
-    createRelation(version, PLATFORM);
+    createRelation(version);
     platformRepository.save(version);
   }
 
