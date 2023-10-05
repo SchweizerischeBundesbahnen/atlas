@@ -19,11 +19,11 @@ import {FormGroup} from '@angular/forms';
 import {ServicePointDetailFormGroup, ServicePointFormGroupBuilder,} from './service-point-detail-form-group';
 import {ServicePointType} from './service-point-type';
 import {MapService} from '../../map/map.service';
-import {catchError, debounceTime, EMPTY, merge, Observable, of, Subject, Subscription,} from 'rxjs';
+import {catchError, debounceTime, EMPTY, merge, Observable, of, Subject,} from 'rxjs';
 import {Pages} from '../../../pages';
 import {DialogService} from '../../../../core/components/dialog/dialog.service';
 import {ValidationService} from '../../../../core/validation/validation.service';
-import {takeUntil} from 'rxjs/operators';
+import {filter, switchMap, takeUntil} from 'rxjs/operators';
 import {NotificationService} from '../../../../core/notification/notification.service';
 import {DetailFormComponent} from '../../../../core/leave-guard/leave-dirty-form-guard.service';
 import {AuthService} from '../../../../core/auth/auth.service';
@@ -66,8 +66,6 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
 
   private readonly ZOOM_LEVEL_FOR_DETAIL = 14;
 
-  private mapSubscription!: Subscription;
-  private servicePointSubscription?: Subscription;
   private ngUnsubscribe = new Subject<void>();
 
   constructor(
@@ -85,10 +83,14 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   ) {}
 
   ngOnInit() {
-    this.servicePointSubscription = this.route.parent?.data.subscribe((next) => {
-      this.servicePointVersions = next.servicePoint;
-      this.initServicePoint();
-    });
+    this.route.parent?.data.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((next) => {
+        this.servicePointVersions = next.servicePoint;
+
+        this.initServicePoint();
+        this.displayAndSelectServicePointOnMap();
+      });
+
     this.initSortedOperatingPointTypes();
     this.mapService.isGeolocationActivated.next(
       !!this.form.controls.servicePointGeolocation.controls.spatialReference.value
@@ -110,9 +112,9 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   }
 
   ngOnDestroy() {
-    this.mapSubscription?.unsubscribe();
-    this.servicePointSubscription?.unsubscribe();
     this.mapService.deselectServicePoint();
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   switchVersion(newIndex: number) {
@@ -193,45 +195,46 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
 
     const geolocationControls = this.form.controls.servicePointGeolocation.controls;
     merge(geolocationControls.north.valueChanges, geolocationControls.east.valueChanges)
-      .pipe(debounceTime(500))
-      .subscribe(() => {
-        if (
-          geolocationControls.east.value &&
-          geolocationControls.north.value &&
-          geolocationControls.spatialReference.value
-        ) {
-          this.geoDataService
-            .getLocationInformation({
-              east: geolocationControls.east.value,
-              north: geolocationControls.north.value,
-              spatialReference: geolocationControls.spatialReference.value,
-            })
-            .subscribe((geoReference) => {
-              this.locationInformation.isoCountryCode = Countries.fromCountry(
-                geoReference.country
-              )?.short;
-              this.locationInformation.canton = geoReference.swissCanton;
-              this.locationInformation.municipalityName = geoReference.swissMunicipalityName;
-              this.locationInformation.localityName = geoReference.swissLocalityName;
-            });
-        }
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        debounceTime(500),
+        filter(() => !!(geolocationControls.east.value &&
+            geolocationControls.north.value &&
+            geolocationControls.spatialReference.value)
+        ),
+        switchMap(() => this.geoDataService
+          .getLocationInformation({
+            east: geolocationControls.east.value!,
+            north: geolocationControls.north.value!,
+            spatialReference: geolocationControls.spatialReference.value!,
+          }))
+      )
+      .subscribe((geoReference) => {
+        this.locationInformation.isoCountryCode = Countries.fromCountry(
+          geoReference.country
+        )?.short;
+        this.locationInformation.canton = geoReference.swissCanton;
+        this.locationInformation.municipalityName = geoReference.swissMunicipalityName;
+        this.locationInformation.localityName = geoReference.swissLocalityName;
       });
   }
 
   private displayAndSelectServicePointOnMap() {
     this.cancelMapEditMode();
-    this.mapSubscription?.unsubscribe();
-    this.mapSubscription = this.mapService.mapInitialized.subscribe((initialized) => {
-      if (initialized && this.selectedVersion) {
-        if (this.mapService.map.getZoom() <= this.ZOOM_LEVEL_FOR_DETAIL) {
-          this.mapService.map.setZoom(this.ZOOM_LEVEL_FOR_DETAIL);
+    this.mapService.mapInitialized.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((initialized) => {
+        if (
+          initialized &&
+          this.form.controls.servicePointGeolocation.controls.spatialReference.value
+        ) {
+          if (this.mapService.map.getZoom() <= this.ZOOM_LEVEL_FOR_DETAIL) {
+            this.mapService.map.setZoom(this.ZOOM_LEVEL_FOR_DETAIL);
+          }
+          this.mapService
+            .centerOn(this.selectedVersion.servicePointGeolocation?.wgs84)
+            .then(() => this.mapService.displayCurrentCoordinates(this.selectedVersion.servicePointGeolocation?.wgs84));
         }
-        this.mapService.centerOn(this.selectedVersion.servicePointGeolocation?.wgs84).then();
-        this.mapService.displayCurrentCoordinates(
-          this.selectedVersion.servicePointGeolocation?.wgs84
-        );
-      }
-    });
+      });
   }
 
   toggleEdit() {
@@ -368,7 +371,6 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     if (this.currentSpatialReference === SpatialReference.Lv95) {
       coordinates = this.coordinateTransformationService.transform(
         coordinates,
-        SpatialReference.Lv95,
         SpatialReference.Wgs84
       );
     }
