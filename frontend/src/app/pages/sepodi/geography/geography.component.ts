@@ -172,14 +172,10 @@ export class GeographyComponent implements OnDestroy {
   }
 
   isCoordinatesPairValidForTransformation(coordinates: CoordinatePair) {
-    return (
-      this.isCoordinatesPairGreaterThanZero(coordinates) &&
-      !!coordinates.north &&
-      !!coordinates.east
-    );
+    return this.isCoordinatePairNotZero(coordinates) && !!coordinates.north && !!coordinates.east;
   }
 
-  isCoordinatesPairGreaterThanZero(coordinates: CoordinatePair): boolean {
+  isCoordinatePairNotZero(coordinates: CoordinatePair): boolean {
     return coordinates.east !== 0 && coordinates.north !== 0;
   }
 
