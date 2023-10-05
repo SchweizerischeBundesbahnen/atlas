@@ -1,6 +1,6 @@
 package ch.sbb.prm.directory.service;
 
-import static ch.sbb.prm.directory.enumeration.ReferencePointElementType.PLATFORM;
+import static ch.sbb.prm.directory.enumeration.ReferencePointElementType.TICKET_COUNTER;
 
 import ch.sbb.prm.directory.entity.TicketCounterVersion;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
@@ -29,7 +29,7 @@ public class TicketCounterService extends BaseRelationConnectionService<TicketCo
 
   public void createTicketCounter(TicketCounterVersion version) {
     checkStopPlaceExists(version.getParentServicePointSloid());
-    createRelation(version, PLATFORM);
+    createRelation(version, TICKET_COUNTER);
     ticketCounterRepository.save(version);
   }
 
