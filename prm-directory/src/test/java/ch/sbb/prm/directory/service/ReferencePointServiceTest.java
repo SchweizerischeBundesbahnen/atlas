@@ -7,6 +7,7 @@ import ch.sbb.prm.directory.InformationDeskTestData;
 import ch.sbb.prm.directory.ParkingLotTestData;
 import ch.sbb.prm.directory.PlatformTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
+import ch.sbb.prm.directory.StopPlaceTestData;
 import ch.sbb.prm.directory.TicketCounterTestData;
 import ch.sbb.prm.directory.ToiletTestData;
 import ch.sbb.prm.directory.entity.InformationDeskVersion;
@@ -14,12 +15,14 @@ import ch.sbb.prm.directory.entity.ParkingLotVersion;
 import ch.sbb.prm.directory.entity.PlatformVersion;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
+import ch.sbb.prm.directory.entity.StopPlaceVersion;
 import ch.sbb.prm.directory.entity.TicketCounterVersion;
 import ch.sbb.prm.directory.entity.ToiletVersion;
 import ch.sbb.prm.directory.enumeration.ReferencePointElementType;
 import ch.sbb.prm.directory.repository.InformationDeskRepository;
 import ch.sbb.prm.directory.repository.ParkingLotRepository;
 import ch.sbb.prm.directory.repository.PlatformRepository;
+import ch.sbb.prm.directory.repository.StopPlaceRepository;
 import ch.sbb.prm.directory.repository.TicketCounterRepository;
 import ch.sbb.prm.directory.repository.ToiletRepository;
 import java.util.List;
@@ -40,10 +43,13 @@ class ReferencePointServiceTest {
 
   private final RelationService relationService;
 
+  private final StopPlaceRepository stopPlaceRepository;
+
   @Autowired
   ReferencePointServiceTest(ReferencePointService referencePointService, PlatformRepository platformRepository,
       TicketCounterRepository ticketCounterRepository, ToiletRepository toiletRepository,
-      InformationDeskRepository informationDeskRepository, ParkingLotRepository parkingLotRepository, RelationService relationService){
+      InformationDeskRepository informationDeskRepository, ParkingLotRepository parkingLotRepository, RelationService relationService,
+      StopPlaceRepository stopPlaceRepository){
     this.referencePointService = referencePointService;
     this.platformRepository = platformRepository;
     this.ticketCounterRepository = ticketCounterRepository;
@@ -51,12 +57,16 @@ class ReferencePointServiceTest {
     this.informationDeskRepository = informationDeskRepository;
     this.parkingLotRepository = parkingLotRepository;
     this.relationService = relationService;
+    this.stopPlaceRepository = stopPlaceRepository;
   }
 
   @Test
   void shouldCreateReferencePoint(){
     //given
     String parentServicePointSloid = "ch:1:sloid:70000";
+    StopPlaceVersion stopPlaceVersion = StopPlaceTestData.getStopPlaceVersion();
+    stopPlaceVersion.setSloid(parentServicePointSloid);
+    stopPlaceRepository.save(stopPlaceVersion);
     createAndSavePlatformVersion(parentServicePointSloid);
     createAndSaveTicketCounterVersion(parentServicePointSloid);
     createAndSaveToiletVersion(parentServicePointSloid);
