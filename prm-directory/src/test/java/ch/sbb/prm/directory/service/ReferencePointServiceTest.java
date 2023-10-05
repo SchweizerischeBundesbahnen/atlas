@@ -98,7 +98,7 @@ class ReferencePointServiceTest {
   }
 
   private void createAndSaveTicketCounterVersion(String parentServicePointSloid) {
-    TicketCounterVersion ticketCounterversion = TicketCounterTestData.getTicketCounterversion();
+    TicketCounterVersion ticketCounterversion = TicketCounterTestData.getTicketCounterVersion();
     ticketCounterversion.setParentServicePointSloid(parentServicePointSloid);
     ticketCounterversion.setSloid("ch:1:sloid:70000:2");
     ticketCounterRepository.save(ticketCounterversion);
