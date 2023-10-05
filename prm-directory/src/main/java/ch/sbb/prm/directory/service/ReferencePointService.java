@@ -14,7 +14,12 @@ import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.TicketCounterVersion;
 import ch.sbb.prm.directory.entity.ToiletVersion;
 import ch.sbb.prm.directory.enumeration.ReferencePointElementType;
+import ch.sbb.prm.directory.repository.InformationDeskRepository;
+import ch.sbb.prm.directory.repository.ParkingLotRepository;
+import ch.sbb.prm.directory.repository.PlatformRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
+import ch.sbb.prm.directory.repository.TicketCounterRepository;
+import ch.sbb.prm.directory.repository.ToiletRepository;
 import ch.sbb.prm.directory.util.RelationUtil;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -27,12 +32,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class ReferencePointService {
 
   private final ReferencePointRepository referencePointRepository;
+  private final TicketCounterRepository ticketCounterService;
+  private final ToiletRepository toiletRepository;
+  private final InformationDeskRepository informationDeskRepository;
+  private final ParkingLotRepository parkingLotRepository;
+  private final PlatformRepository platformRepository;
   private final RelationService relationService;
-  private final TicketCounterService ticketCounterService;
-  private final ToiletService toiletService;
-  private final InformationDeskService informationDeskService;
-  private final ParkingLotService parkingLotService;
-  private final PlatformService platformService;
 
   public List<ReferencePointVersion> getAllReferencePoints() {
     return referencePointRepository.findAll();
@@ -49,35 +54,37 @@ public class ReferencePointService {
   }
 
   private void searchAndUpdateParkingLot(String parentServicePointSloid) {
-    List<ParkingLotVersion> parkingLotVersions = parkingLotService.getByServicePointParentSloid(
+    List<ParkingLotVersion> parkingLotVersions = parkingLotRepository.findByParentServicePointSloid(
         parentServicePointSloid);
-    searchAndUpdateVersion(parkingLotVersions,PARKING_LOT);
+    searchAndUpdateVersion(parkingLotVersions, PARKING_LOT);
   }
 
   private void searchAndUpdateInformationDesk(String parentServicePointSloid) {
-    List<InformationDeskVersion> informationDeskVersions = informationDeskService.getByServicePointParentSloid(
+    List<InformationDeskVersion> informationDeskVersions = informationDeskRepository.findByParentServicePointSloid(
         parentServicePointSloid);
     searchAndUpdateVersion(informationDeskVersions, INFORMATION_DESK);
   }
 
   private void searchAndUpdateTicketCounter(String parentServicePointSloid) {
-    List<TicketCounterVersion> ticketCounterVersions = ticketCounterService.getByServicePointParentSloid(parentServicePointSloid);
+    List<TicketCounterVersion> ticketCounterVersions = ticketCounterService.findByParentServicePointSloid(
+        parentServicePointSloid);
     searchAndUpdateVersion(ticketCounterVersions, TICKET_COUNTER);
   }
 
   private void searchAndUpdatePlatformRelation(String parentServicePointSloid) {
-    List<PlatformVersion> platformVersions = platformService.getByServicePointParentSloid(parentServicePointSloid);
+    List<PlatformVersion> platformVersions = platformRepository.findByParentServicePointSloid(parentServicePointSloid);
     searchAndUpdateVersion(platformVersions, PLATFORM);
   }
 
   private void searchAndUpdateToiletRelation(String parentServicePointSloid) {
-    List<ToiletVersion> toiletVersions = toiletService.getByServicePointParentSloid(parentServicePointSloid);
+    List<ToiletVersion> toiletVersions = toiletRepository.findByParentServicePointSloid(parentServicePointSloid);
     searchAndUpdateVersion(toiletVersions, TOILET);
   }
 
   private void searchAndUpdateVersion(List<? extends BasePrmEntityVersion> versions,
-      ReferencePointElementType referencePointElementType){
-    versions.forEach(version -> relationService.createRelation(RelationUtil.buildReleaseVersion(version, referencePointElementType)));
+      ReferencePointElementType referencePointElementType) {
+    versions.forEach(
+        version -> relationService.createRelation(RelationUtil.buildReleaseVersion(version, referencePointElementType)));
   }
 
 }

@@ -9,7 +9,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class TicketCounterTestData {
 
-  public static TicketCounterVersion getTicketCounterversion(){
+  public static TicketCounterVersion getTicketCounterVersion(){
     return TicketCounterVersion.builder()
         .sloid("ch:1.sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
