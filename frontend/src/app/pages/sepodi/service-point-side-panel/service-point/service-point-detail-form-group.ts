@@ -203,7 +203,20 @@ export class ServicePointFormGroupBuilder {
   ) {
     formGroup.controls.servicePointGeolocation.controls.spatialReference.valueChanges.subscribe(
       (newSpatialReference) => {
-        if (newSpatialReference) {
+        if (newSpatialReference === SpatialReference.Wgs84) {
+          formGroup.controls.servicePointGeolocation.controls.east.setValidators([
+            Validators.required,
+            Validators.min(-180),
+            Validators.max(180),
+            this.getValidatorForCoordinates(newSpatialReference),
+          ]);
+          formGroup.controls.servicePointGeolocation.controls.north.setValidators([
+            Validators.required,
+            Validators.min(-90),
+            Validators.max(90),
+            this.getValidatorForCoordinates(newSpatialReference),
+          ]);
+        } else if (newSpatialReference === SpatialReference.Lv95) {
           formGroup.controls.servicePointGeolocation.controls.east.setValidators([
             Validators.required,
             this.getValidatorForCoordinates(newSpatialReference),

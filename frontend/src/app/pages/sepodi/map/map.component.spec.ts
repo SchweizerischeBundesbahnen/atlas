@@ -3,12 +3,52 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MapComponent } from './map.component';
 import { AppTestingModule } from '../../../app.testing.module';
 import { MAP_STYLES } from './map-options.service';
-import { MapService } from './map.service';
-import { Map } from 'maplibre-gl';
+import { CoordinatePairWGS84, MapService } from './map.service';
+import maplibregl, { Map } from 'maplibre-gl';
+import { BehaviorSubject } from 'rxjs';
 
-const mapSpy = jasmine.createSpyObj<Map>(['once', 'getZoom', 'zoomTo', 'flyTo']);
-const mapService = jasmine.createSpyObj<MapService>(['initMap', 'switchToStyle', 'removeMap']);
+const isEditModeSubject = new BehaviorSubject<boolean>(true);
+const clickedGeographyCoordinatesSubject = new BehaviorSubject<CoordinatePairWGS84>({
+  lat: 0,
+  lng: 0,
+});
+
+const mapCanvasMock = document.createElement('canvas');
+const mapSpy = jasmine.createSpyObj<Map>([
+  'once',
+  'flyTo',
+  'getCanvas',
+  'on',
+  'off',
+  'fire',
+  'getZoom',
+  'setZoom',
+  'zoomTo',
+  'zoomOut',
+]);
+const mapService = jasmine.createSpyObj<MapService>([
+  'initMap',
+  'switchToStyle',
+  'removeMap',
+  'initMapEvents',
+  'placeMarkerAndFlyTo',
+]);
+const markerSpy = jasmine.createSpyObj('Marker', ['addTo', 'setLngLat', 'remove']);
+
+mapSpy.getCanvas.and.returnValue(mapCanvasMock);
+mapService.isEditMode = isEditModeSubject;
+mapService.clickedGeographyCoordinates = clickedGeographyCoordinatesSubject; // Weise dem Spion den BehaviorSubject zu
+mapService.isGeolocationActivated = new BehaviorSubject<boolean>(true);
+
 mapService.initMap.and.returnValue(mapSpy);
+
+let clickCallback: any;
+mapSpy.on.and.callFake((event: string, callback: any) => {
+  if (event === 'click') {
+    clickCallback = callback;
+  }
+  return mapSpy;
+});
 
 describe('MapComponent', () => {
   let component: MapComponent;
@@ -20,6 +60,8 @@ describe('MapComponent', () => {
       imports: [AppTestingModule],
       providers: [{ provide: MapService, useValue: mapService }],
     }).compileComponents();
+
+    spyOn(maplibregl, 'Marker').and.returnValue(markerSpy);
 
     fixture = TestBed.createComponent(MapComponent);
     component = fixture.componentInstance;
@@ -56,6 +98,42 @@ describe('MapComponent', () => {
 
     component.toggleLegend();
     expect(component.showMapLegend).toBeFalse();
+  });
+
+  it('should call placeMarkerAndFlyTo on click', () => {
+    markerSpy.setLngLat.and.returnValue(markerSpy);
+
+    component.handleMapClick();
+
+    expect(clickCallback).toBeDefined();
+
+    clickCallback({
+      lngLat: {
+        lng: 10,
+        lat: 10,
+      },
+    });
+    expect(mapService.placeMarkerAndFlyTo).toHaveBeenCalledWith({ lng: 10, lat: 10 });
+  });
+
+  it('should enter edit mode', () => {
+    component.enterEditMode();
+    expect(mapService.isEditMode.value).toBeTrue();
+    expect(mapSpy.getCanvas).toHaveBeenCalled();
+    expect(mapSpy.getCanvas().style.cursor).toBe('crosshair');
+    expect(component.map.on).toHaveBeenCalledWith('click', component.onMapClicked);
+  });
+
+  it('should exit edit mode', () => {
+    mapService.marker = markerSpy;
+    spyOn(mapService.clickedGeographyCoordinates, 'next');
+
+    component.exitEditMode();
+    expect(mapSpy.getCanvas).toHaveBeenCalled();
+    expect(mapSpy.getCanvas().style.cursor).toBe('');
+    expect(component.map.off).toHaveBeenCalledWith('click', component.onMapClicked);
+    expect(mapService.clickedGeographyCoordinates.next).toHaveBeenCalledWith({ lng: 0, lat: 0 });
+    expect(mapService.initMapEvents).toHaveBeenCalled();
   });
 
   it('should increase zoom when zoomIn() is called', () => {
