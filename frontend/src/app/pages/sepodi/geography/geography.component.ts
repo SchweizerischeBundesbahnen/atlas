@@ -82,7 +82,9 @@ export class GeographyComponent implements OnDestroy {
   }
 
   initTransformedCoordinatePair() {
-    if (!this.isCoordinatesPairValidForTransformation(this.currentCoordinates)) return;
+    if (!this.isCoordinatesPairValidForTransformation(this.currentCoordinates)) {
+      return;
+    }
 
     this.spatialReference = this.currentSpatialReference;
     this.currentSpatialReferenceEvent.emit(this.spatialReference);
@@ -114,11 +116,11 @@ export class GeographyComponent implements OnDestroy {
   }
 
   switchSpatialReference($event: MatRadioChange) {
-    if (!$event.value) return;
+    if (!$event.value || !this.isCoordinatesPairValidForTransformation(this.currentCoordinates)) {
+      return;
+    }
 
     this.spatialReference = $event.value;
-
-    if (!this.isCoordinatesPairValidForTransformation(this.currentCoordinates)) return;
 
     const transformedCoordinatePair = this.coordinateTransformationService.transform(
       this.currentCoordinates!,
@@ -131,7 +133,9 @@ export class GeographyComponent implements OnDestroy {
   }
 
   onChangeCoordinatesManually(coordinates: CoordinatePair) {
-    if (!this.isCoordinatesPairValidForTransformation(coordinates)) return;
+    if (!this.isCoordinatesPairValidForTransformation(coordinates)) {
+      return;
+    }
 
     if (this.spatialReference === SpatialReference.Lv95) {
       const transformed = this.coordinateTransformationService.transform(
@@ -150,7 +154,9 @@ export class GeographyComponent implements OnDestroy {
   }
 
   onMapClick(coordinates: CoordinatePair) {
-    if (!this.isCoordinatesPairValidForTransformation(coordinates)) return;
+    if (!this.isCoordinatesPairValidForTransformation(coordinates)) {
+      return;
+    }
 
     if (this.spatialReference === SpatialReference.Lv95) {
       const transformed = this.coordinateTransformationService.transform(
