@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { MapService } from './map.service';
 import { AuthService } from '../../../core/auth/auth.service';
 import { MAP_STYLES, MapOptionsService } from './map-options.service';
-import { Map, MapGeoJSONFeature, MapMouseEvent } from 'maplibre-gl';
+import { GeoJSONSource, Map, MapGeoJSONFeature, MapMouseEvent } from 'maplibre-gl';
 
 const authService: Partial<AuthService> = {};
 
@@ -67,7 +67,9 @@ describe('MapService', () => {
     service.deselectServicePoint();
 
     expect(service.map.getSource).toHaveBeenCalledWith('current_coordinates');
-    expect((service.map.getSource('current_coordinates') as any).setData).toHaveBeenCalledWith({
+    expect(
+      (service.map.getSource('current_coordinates') as GeoJSONSource).setData
+    ).toHaveBeenCalledWith({
       type: 'Feature',
       geometry: {
         type: 'Point',
