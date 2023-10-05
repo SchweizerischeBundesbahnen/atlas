@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {VersionsHandlingService} from '../../../../core/versioning/versions-handling.service';
 import {
@@ -78,7 +78,6 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     private authService: AuthService,
     private translationSortingService: TranslationSortingService,
     private coordinateTransformationService: CoordinateTransformationService,
-    private cd: ChangeDetectorRef,
     private geoDataService: GeoDataService
   ) {}
 
