@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { VersionsHandlingService } from '../../../../core/versioning/versions-handling.service';
 import {
@@ -77,7 +77,8 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     private mapService: MapService,
     private authService: AuthService,
     private translationSortingService: TranslationSortingService,
-    private coordinateTransformationService: CoordinateTransformationService
+    private coordinateTransformationService: CoordinateTransformationService,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -208,8 +209,8 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
         if (this.isNew) {
           this.closeSidePanel();
         } else {
-          this.form.disable();
           this.initSelectedVersion();
+          this.form.disable();
           this.cancelMapEditMode();
         }
       }

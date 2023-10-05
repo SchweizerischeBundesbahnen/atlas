@@ -20,6 +20,9 @@ const mapSpy = jasmine.createSpyObj<Map>([
   'setCenter',
   'setLayoutProperty',
 ]);
+mapSpy.getSource = jasmine.createSpy('getSource').and.returnValue({
+  setData: jasmine.createSpy('setData'),
+});
 let clickCallback: any;
 mapSpy.on.and.callFake((event: string, callback: any) => {
   if (event === 'click') {
