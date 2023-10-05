@@ -17,8 +17,12 @@ public class GeoReferenceService {
 
   public GeoReference getGeoReference(CoordinatePair coordinatePair) {
     GeoAdminResponse geoAdminResponse = geoAdminChClient.getGeoReference(new GeoAdminParams(coordinatePair));
+    return toGeoReference(geoAdminResponse);
+  }
 
+  private static GeoReference toGeoReference(GeoAdminResponse geoAdminResponse) {
     GeoReference result = new GeoReference();
+
     geoAdminResponse.getResultByLayer(Layers.MUNICIPALITY).ifPresent(i -> {
       result.setSwissMunicipalityName(i.getAttributes().getGemname());
       result.setSwissMunicipalityNumber(Integer.parseInt(i.getFeatureId()));
