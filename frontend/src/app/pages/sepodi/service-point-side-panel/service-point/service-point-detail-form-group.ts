@@ -1,5 +1,5 @@
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { BaseDetailFormGroup } from '../../../../core/components/base-detail/base-detail-form-group';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {BaseDetailFormGroup} from '../../../../core/components/base-detail/base-detail-form-group';
 import {
   Category,
   CreateServicePointVersion,
@@ -13,14 +13,14 @@ import {
   StopPointType,
 } from '../../../../api';
 import moment from 'moment';
-import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
-import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
-import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
-import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
-import { GeographyFormGroup } from '../../geography/geography-form-group';
-import { ServicePointType } from './service-point-type';
-import { AtLeastOneValidator } from '../../../../core/validation/boolean-cross-validator/at-least-one-validator';
-import { LV95_MAX_DIGITS, WGS84_MAX_DIGITS } from '../../geography/geography.component';
+import {AtlasFieldLengthValidator} from '../../../../core/validation/field-lengths/atlas-field-length-validator';
+import {WhitespaceValidator} from '../../../../core/validation/whitespace/whitespace-validator';
+import {AtlasCharsetsValidator} from '../../../../core/validation/charsets/atlas-charsets-validator';
+import {DateRangeValidator} from '../../../../core/validation/date-range/date-range-validator';
+import {GeographyFormGroup} from '../../geography/geography-form-group';
+import {ServicePointType} from './service-point-type';
+import {AtLeastOneValidator} from '../../../../core/validation/boolean-cross-validator/at-least-one-validator';
+import {LV95_MAX_DIGITS, WGS84_MAX_DIGITS} from '../../geography/geography.component';
 
 export interface ServicePointDetailFormGroup extends BaseDetailFormGroup {
   number: FormControl<number | null | undefined>;
@@ -290,6 +290,9 @@ export class ServicePointFormGroupBuilder {
         east: value.servicePointGeolocation.east!,
         height: value.servicePointGeolocation.height!,
       };
+    }
+    if (value.operatingPointKilometer ===  false) {
+      writableForm.operatingPointKilometerMasterNumber = undefined;
     }
     return writableForm;
   }
