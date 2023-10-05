@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { CoordinatePair, SpatialReference } from '../../../api';
 import { GeographyFormGroup } from './geography-form-group';
@@ -14,17 +22,8 @@ export const WGS84_MAX_DIGITS = 11;
   selector: 'sepodi-geography',
   templateUrl: './geography.component.html',
 })
-export class GeographyComponent implements OnDestroy {
-  @Input()
-  set formGroup(formGroup: FormGroup<GeographyFormGroup>) {
-    this._formGroup = formGroup;
-  }
-
-  get formGroup() {
-    return this._formGroup;
-  }
-
-  _formGroup!: FormGroup<GeographyFormGroup>;
+export class GeographyComponent implements OnDestroy, OnChanges {
+  @Input() formGroup!: FormGroup<GeographyFormGroup>;
   spatialReference!: SpatialReference;
 
   @Output() currentSpatialReferenceEvent = new EventEmitter();
@@ -41,14 +40,16 @@ export class GeographyComponent implements OnDestroy {
     private mapService: MapService
   ) {}
 
-  ngOnInit() {
+  ngOnChanges(): void {
     this.initTransformedCoordinatePair();
     this.spatialReference = this.currentSpatialReference;
+    this.clickedGeographyCoordinatesSubscription?.unsubscribe();
     this.clickedGeographyCoordinatesSubscription =
       this.mapService.clickedGeographyCoordinates.subscribe((coordinatePairWGS84) => {
         this.onMapClick({ north: coordinatePairWGS84.lat, east: coordinatePairWGS84.lng });
       });
 
+    this.spatialReferenceSubscription?.unsubscribe();
     this.spatialReferenceSubscription = merge(
       this.formGroup.controls.east.valueChanges,
       this.formGroup.controls.north.valueChanges
