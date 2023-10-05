@@ -6,21 +6,19 @@ import ch.sbb.prm.directory.entity.PlatformVersion;
 import ch.sbb.prm.directory.enumeration.ReferencePointElementType;
 import ch.sbb.prm.directory.repository.PlatformRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
-import ch.sbb.prm.directory.repository.RelationRepository;
-import ch.sbb.prm.directory.repository.StopPlaceRepository;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class PlatformService extends BaseRelatableService<PlatformVersion> {
+public class PlatformService extends RelatableService<PlatformVersion> {
 
   private final PlatformRepository platformRepository;
 
-  public PlatformService(StopPlaceRepository stopPlaceRepository, RelationRepository relationRepository,
+  public PlatformService(StopPlaceService stopPlaceService, RelationService relationService,
       PlatformRepository platformRepository, ReferencePointRepository referencePointRepository ) {
-    super(stopPlaceRepository, relationRepository, referencePointRepository);
+    super(stopPlaceService, relationService, referencePointRepository);
     this.platformRepository = platformRepository;
   }
 
