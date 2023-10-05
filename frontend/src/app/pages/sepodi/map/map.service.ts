@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import {
+import maplibregl, {
+  GeoJSONSource,
   LngLat,
   LngLatLike,
   Map,
@@ -8,7 +9,7 @@ import {
   Popup,
   ResourceType,
 } from 'maplibre-gl';
-import { MAP_LAYER_NAME, MAP_SOURCE_NAME, MAP_STYLE_SPEC, MAP_ZOOM_DETAILS } from './map-style';
+import { MAP_SOURCE_NAME, MAP_STYLE_SPEC, MAP_ZOOM_DETAILS } from './map-style';
 import { GeoJsonProperties, Point } from 'geojson';
 import { MAP_STYLES, MapOptionsService, MapStyle } from './map-options.service';
 import { BehaviorSubject, Subject } from 'rxjs';
@@ -20,6 +21,11 @@ export const mapZoomLocalStorageKey = 'map-zoom';
 export const mapLocationLocalStorageKey = 'map-location';
 export const mapStyleLocalStorageKey = 'map-style';
 
+export interface CoordinatePairWGS84 {
+  lat: number;
+  lng: number;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -28,6 +34,14 @@ export class MapService {
   mapInitialized = new BehaviorSubject(false);
   selectedElement = new Subject<GeoJsonProperties>();
   currentMapStyle!: MapStyle;
+  marker = new maplibregl.Marker({ color: '#FF0000' });
+
+  isEditMode = new BehaviorSubject(false);
+  clickedGeographyCoordinates = new BehaviorSubject<CoordinatePairWGS84>({
+    lat: 0,
+    lng: 0,
+  });
+  isGeolocationActivated = new BehaviorSubject<boolean>(true);
 
   popup = new Popup({
     closeButton: true,
@@ -57,7 +71,7 @@ export class MapService {
 
   centerOn(wgs84Coordinates: CoordinatePair | undefined) {
     this.map.resize();
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       if (wgs84Coordinates) {
         this.map
           .flyTo({ center: { lng: wgs84Coordinates.east, lat: wgs84Coordinates.north }, speed: 5 })
@@ -65,37 +79,38 @@ export class MapService {
             resolve(true);
           });
       } else {
-        reject('No Coordinates to go to');
+        resolve(false);
       }
     });
   }
 
-  deselectServicePoint() {
-    if (this.map) {
-      this.map.removeFeatureState({ source: MAP_SOURCE_NAME, sourceLayer: MAP_LAYER_NAME });
-    }
+  displayCurrentCoordinates(coordinates?: CoordinatePair) {
+    const source = this.map.getSource('current_coordinates') as GeoJSONSource;
+    const coordinatesToSet = [coordinates?.east ?? 0, coordinates?.north ?? 0];
+    source.setData({
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: coordinatesToSet,
+      },
+      properties: {},
+    });
   }
 
-  selectServicePoint(servicePointNumber: number) {
-    this.deselectServicePoint();
+  refreshMap() {
+    this.map.style.sourceCaches[MAP_SOURCE_NAME].clearTiles();
+    this.map.style.sourceCaches[MAP_SOURCE_NAME].update(this.map.transform);
+    this.map.triggerRepaint();
+  }
 
-    const renderedFeatures = this.map.queryRenderedFeatures({
-      layers: [MAP_SOURCE_NAME],
-      filter: ['==', 'number', servicePointNumber],
-    });
-
-    this.selectServicePointOnMap(renderedFeatures[0].properties.number);
+  deselectServicePoint() {
+    if (this.map) {
+      this.displayCurrentCoordinates();
+    }
   }
 
   removeMap() {
     this.map.remove();
-  }
-
-  private selectServicePointOnMap(servicePointNumber: string | number) {
-    this.map.setFeatureState(
-      { source: MAP_SOURCE_NAME, sourceLayer: MAP_LAYER_NAME, id: servicePointNumber },
-      { selected: true }
-    );
   }
 
   switchToStyle(style: MapStyle) {
@@ -112,14 +127,14 @@ export class MapService {
     });
   }
 
-  private initMapEvents() {
+  initMapEvents() {
     this.map.once('style.load', () => {
       this.initStoredMapBehaviour();
       this.deselectServicePoint();
 
-      this.map.on('click', 'selected-sepo', (e) => this.onClick(e));
+      this.map.on('click', MAP_SOURCE_NAME, (e) => this.onClick(e));
       this.map.on('mouseenter', MAP_SOURCE_NAME, () => {
-        if (this.showDetails()) {
+        if (this.showDetails() && !this.isEditMode.value) {
           this.map.getCanvas().style.cursor = 'pointer';
         }
       });
@@ -142,7 +157,7 @@ export class MapService {
   }
 
   onClick(e: MapMouseEvent & { features?: GeoJSON.Feature[] }) {
-    if (!this.showDetails() || !e.features) {
+    if (!this.showDetails() || !e.features || this.isEditMode.value) {
       return;
     }
     if (e.features.length == 1) {
@@ -187,7 +202,7 @@ export class MapService {
   }
 
   showPopup(event: MapMouseEvent & { features?: MapGeoJSONFeature[] }) {
-    if (!event.features || this.keepPopup) {
+    if (!event.features || this.keepPopup || this.isEditMode.value) {
       return;
     }
     const coordinates = (event.features[0].geometry as Point).coordinates.slice() as LngLatLike;
@@ -230,5 +245,13 @@ export class MapService {
 
   setPopupToFixed() {
     this.popup.getElement().classList.add('fixed-popup');
+  }
+
+  placeMarkerAndFlyTo(coordinatePairWGS84: CoordinatePairWGS84) {
+    this.marker.setLngLat(coordinatePairWGS84).addTo(this.map);
+    this.map.flyTo({
+      center: coordinatePairWGS84 as maplibregl.LngLatLike,
+      speed: 0.8,
+    });
   }
 }

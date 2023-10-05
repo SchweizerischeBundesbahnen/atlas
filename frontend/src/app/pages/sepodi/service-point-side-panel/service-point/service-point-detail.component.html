@@ -6,6 +6,7 @@
         *ngIf="showVersionSwitch"
         [currentRecord]="selectedVersion"
         [records]="servicePointVersions"
+        [switchDisabled]="isSwitchVersionDisabled"
       ></app-switch-version>
     </div>
   </div>
@@ -169,6 +170,11 @@
 
   <div class="font-bold-2xl mt-5">
     {{ 'SEPODI.GEOLOCATION.GEOGRAPHY' | translate }}
+
+    <form-info-icon
+      infoTitle="{{ 'SEPODI.GEOLOCATION.GEOGRAPHY_INFORMATION' | translate }}"
+    ></form-info-icon>
+
     <atlas-slide-toggle
       [toggle]="!!form.value.servicePointGeolocation?.spatialReference"
       (toggleChange)="handleGeolocationToggle($event)"
@@ -179,6 +185,7 @@
   <sepodi-geography
     *ngIf="this.form.value.servicePointGeolocation?.spatialReference"
     [formGroup]="form.controls.servicePointGeolocation"
+    (currentSpatialReferenceEvent)="triggerSpatialReferenceEvent($event)"
   ></sepodi-geography>
   <div *ngIf="this.form.value.servicePointGeolocation?.spatialReference">
     <div class="font-bold-2xl mt-5">{{ 'SEPODI.GEOLOCATION.ADMINISTRATION' | translate }}</div>
