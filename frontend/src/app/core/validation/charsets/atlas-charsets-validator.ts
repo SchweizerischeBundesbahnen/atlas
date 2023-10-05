@@ -11,7 +11,9 @@ export class AtlasCharsetsValidator {
 
   static decimalWithDigits(decimalDigits: number): ValidatorFn {
     return (control) => {
-      const patternErrors = Validators.pattern('[0-9]*\\.?[0-9]{0,' + decimalDigits + '}')(control);
+      const patternErrors = Validators.pattern('^-?[0-9]*\\.?[0-9]{0,' + decimalDigits + '}')(
+        control
+      );
       if (patternErrors) {
         const error: ValidationErrors = {
           decimal_number: {
