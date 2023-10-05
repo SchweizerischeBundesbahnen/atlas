@@ -8,6 +8,7 @@ import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -287,6 +288,7 @@ import org.springframework.test.web.servlet.MvcResult;
             .contentType(contentType)
             .content(mapper.writeValueAsString(ServicePointTestData.getAargauServicePointVersionModel())))
         .andExpect(status().isCreated())
+        .andDo(print())
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.id, is(servicePointVersion.getId().intValue() + 1)))
         .andExpect(jsonPath("$.number.number", is(8034510)))
         .andExpect(jsonPath("$.number.numberShort", is(34510)))
@@ -312,6 +314,10 @@ import org.springframework.test.web.servlet.MvcResult;
         .andExpect(jsonPath("$.servicePointGeolocation.lv95.east", is(2600783.0)))
         .andExpect(jsonPath("$.servicePointGeolocation.wgs84.north", is(46.96096808019)))
         .andExpect(jsonPath("$.servicePointGeolocation.wgs84.east", is(7.44891972221)))
+        .andExpect(jsonPath("$.servicePointGeolocation.swissLocation.canton", is("BERN")))
+        .andExpect(jsonPath("$.servicePointGeolocation.swissLocation.district.districtName", is("Bern-Mittelland")))
+        .andExpect(jsonPath("$.servicePointGeolocation.swissLocation.localityMunicipality.municipalityName", is("Bern")))
+        .andExpect(jsonPath("$.servicePointGeolocation.swissLocation.localityMunicipality.localityName", is("Bern")))
         .andExpect(jsonPath("$." + ReadServicePointVersionModel.Fields.status, is("VALIDATED")))
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.validFrom, is("2010-12-11")))
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.validTo, is("2019-08-10")))
