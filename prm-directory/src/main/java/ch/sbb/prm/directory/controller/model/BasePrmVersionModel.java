@@ -25,10 +25,12 @@ public abstract class BasePrmVersionModel extends BaseVersionModel {
   @Schema(description = "Technical identifier", accessMode = AccessMode.READ_ONLY, example = "1")
   private Long id;
 
-  @NotNull
+  //TODO: move to ReadModel prmObject
+//  @NotNull
   @Valid
   private ServicePointNumber number;
 
+  //TODO: move to ReadModel prmObject
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
   @Schema(description = "Unique code for locations that is used in customer information. The structure is described in the "
       + "“Swiss Location ID” specification, chapter 4.2. The document is available here. "
