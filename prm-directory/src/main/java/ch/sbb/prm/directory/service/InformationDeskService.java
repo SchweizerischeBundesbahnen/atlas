@@ -1,5 +1,7 @@
 package ch.sbb.prm.directory.service;
 
+import static ch.sbb.prm.directory.enumeration.ReferencePointElementType.INFORMATION_DESK;
+
 import ch.sbb.prm.directory.entity.InformationDeskVersion;
 import ch.sbb.prm.directory.enumeration.ReferencePointElementType;
 import ch.sbb.prm.directory.repository.InformationDeskRepository;
@@ -12,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class InformationDeskService extends BaseRelationConnectionService<InformationDeskVersion>{
+public class InformationDeskService extends BaseRelatableService<InformationDeskVersion> {
 
   private final InformationDeskRepository informationDeskRepository;
 
@@ -22,13 +24,16 @@ public class InformationDeskService extends BaseRelationConnectionService<Inform
     this.informationDeskRepository = informationDeskRepository;
   }
 
+  @Override
+  protected ReferencePointElementType getReferencePointElementType() {
+    return INFORMATION_DESK;
+  }
   public List<InformationDeskVersion> getAllInformationDesks() {
    return informationDeskRepository.findAll();
   }
 
   public void createInformationDesk(InformationDeskVersion version) {
-    checkStopPlaceExists(version.getParentServicePointSloid());
-    createRelation(version, ReferencePointElementType.INFORMATION_DESK);
+    createRelation(version);
     informationDeskRepository.save(version);
   }
 
