@@ -18,7 +18,6 @@ describe('CoordinateTransformationService', () => {
         east: 2600783.0,
         spatialReference: SpatialReference.Lv95,
       },
-      SpatialReference.Lv95,
       SpatialReference.Wgs84
     );
     //then
@@ -37,7 +36,6 @@ describe('CoordinateTransformationService', () => {
         east: 7.448919722210154,
         spatialReference: SpatialReference.Wgs84,
       },
-      SpatialReference.Wgs84,
       SpatialReference.Lv95
     );
     //then
