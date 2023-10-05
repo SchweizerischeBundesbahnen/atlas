@@ -3,6 +3,7 @@ package ch.sbb.prm.directory.service;
 import static ch.sbb.prm.directory.enumeration.ReferencePointElementType.TOILET;
 
 import ch.sbb.prm.directory.entity.ToiletVersion;
+import ch.sbb.prm.directory.enumeration.ReferencePointElementType;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.RelationRepository;
 import ch.sbb.prm.directory.repository.StopPlaceRepository;
@@ -13,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class ToiletService extends BaseRelationConnectionService<ToiletVersion>{
+public class ToiletService extends BaseRelatableService<ToiletVersion> {
 
   private final ToiletRepository toiletRepository;
 
@@ -23,14 +24,19 @@ public class ToiletService extends BaseRelationConnectionService<ToiletVersion>{
     this.toiletRepository = toiletRepository;
   }
 
+  @Override
+  protected ReferencePointElementType getReferencePointElementType() {
+    return TOILET;
+  }
+
   public List<ToiletVersion> getAllToilets() {
    return toiletRepository.findAll();
   }
 
   public void createToilet(ToiletVersion version) {
-    checkStopPlaceExists(version.getParentServicePointSloid());
-    createRelation(version, TOILET);
+    createRelation(version);
     toiletRepository.save(version);
   }
+
 
 }
