@@ -8,7 +8,6 @@ import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -288,7 +287,6 @@ import org.springframework.test.web.servlet.MvcResult;
             .contentType(contentType)
             .content(mapper.writeValueAsString(ServicePointTestData.getAargauServicePointVersionModel())))
         .andExpect(status().isCreated())
-        .andDo(print())
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.id, is(servicePointVersion.getId().intValue() + 1)))
         .andExpect(jsonPath("$.number.number", is(8034510)))
         .andExpect(jsonPath("$.number.numberShort", is(34510)))
