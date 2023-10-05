@@ -18,4 +18,11 @@ public class StopPlaceService {
    return stopPlaceRepository.findAll();
   }
 
+  public void checkStopPlaceExists(String sloid) {
+    if (!stopPlaceRepository.existsBySloid(sloid)) {
+      throw new IllegalStateException("StopPlace with sloid [" + sloid + "] does not exists!");
+    }
+  }
+
+
 }
