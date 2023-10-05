@@ -6,7 +6,6 @@ import static ch.sbb.prm.directory.enumeration.ReferencePointElementType.PLATFOR
 import static ch.sbb.prm.directory.enumeration.ReferencePointElementType.TICKET_COUNTER;
 import static ch.sbb.prm.directory.enumeration.ReferencePointElementType.TOILET;
 
-import ch.sbb.prm.directory.entity.BasePrmEntityVersion;
 import ch.sbb.prm.directory.entity.InformationDeskVersion;
 import ch.sbb.prm.directory.entity.ParkingLotVersion;
 import ch.sbb.prm.directory.entity.PlatformVersion;
@@ -82,7 +81,7 @@ public class ReferencePointService {
     searchAndUpdateVersion(toiletVersions, TOILET);
   }
 
-  private void searchAndUpdateVersion(List<? extends BasePrmEntityVersion> versions,
+  private void searchAndUpdateVersion(List<? extends Relatable> versions,
       ReferencePointElementType referencePointElementType) {
     versions.forEach(
         version -> relationService.createRelation(RelationUtil.buildReleaseVersion(version, referencePointElementType)));

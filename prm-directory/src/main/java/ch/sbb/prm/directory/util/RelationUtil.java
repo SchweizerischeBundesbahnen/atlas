@@ -1,17 +1,17 @@
 package ch.sbb.prm.directory.util;
 
-import ch.sbb.prm.directory.entity.BasePrmEntityVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.enumeration.ReferencePointElementType;
 import ch.sbb.prm.directory.enumeration.StandardAttributeType;
 import ch.sbb.prm.directory.enumeration.StepFreeAccessAttributeType;
 import ch.sbb.prm.directory.enumeration.TactileVisualAttributeType;
+import ch.sbb.prm.directory.service.Relatable;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class RelationUtil {
 
-  public static RelationVersion buildReleaseVersion(BasePrmEntityVersion version,
+  public static RelationVersion buildReleaseVersion(Relatable version,
       ReferencePointElementType referencePointElementType) {
     return RelationVersion.builder()
         .sloid(version.getSloid())

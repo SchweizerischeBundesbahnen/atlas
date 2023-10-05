@@ -4,6 +4,7 @@ import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.versioning.model.Versionable;
 import ch.sbb.prm.directory.enumeration.StandardAttributeType;
+import ch.sbb.prm.directory.service.Relatable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,7 +27,7 @@ import lombok.experimental.SuperBuilder;
 @FieldNameConstants
 @Entity(name = "information_desk_version")
 @AtlasVersionable
-public class InformationDeskVersion extends BasePrmEntityVersion implements Versionable {
+public class InformationDeskVersion extends BasePrmEntityVersion implements Relatable, Versionable {
 
   private static final String VERSION_SEQ = "information_desk_version_seq";
 
