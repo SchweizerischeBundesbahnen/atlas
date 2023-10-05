@@ -230,9 +230,7 @@ export class ServicePointFormGroupBuilder {
           formGroup.controls.servicePointGeolocation.controls.north.clearValidators();
         }
         formGroup.controls.servicePointGeolocation.controls.east.updateValueAndValidity();
-        formGroup.controls.servicePointGeolocation.controls.north.updateValueAndValidity({
-          emitEvent: false,
-        });
+        formGroup.controls.servicePointGeolocation.controls.north.updateValueAndValidity();
       }
     );
   }
