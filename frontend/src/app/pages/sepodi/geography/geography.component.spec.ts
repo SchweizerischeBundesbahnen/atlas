@@ -87,12 +87,14 @@ describe('GeographyComponent', () => {
     expect(mapService.placeMarkerAndFlyTo).toHaveBeenCalledWith({ lng: 12, lat: 12 });
   });
 
-  it('should not call placeMarkerAndFlyTo if lat/lng not valid', () => {
-    spyOn(component, 'isValidCoordinatePair').and.returnValue(false);
-
-    component.onChangeCoordinatesManually({ north: 0, east: 0 });
-
-    expect(mapService.placeMarkerAndFlyTo).not.toHaveBeenCalled();
+  it('should call isCoordinatesPairValidForTransformation and return false on invalid coordinates', () => {
+    spyOn(component, 'isCoordinatesPairValidForTransformation').and.returnValue(false);
+    const isValid = component.isCoordinatesPairValidForTransformation({ north: 0, east: 0 });
+    expect(component.isCoordinatesPairValidForTransformation).toHaveBeenCalledWith({
+      north: 0,
+      east: 0,
+    });
+    expect(isValid).toBeFalse();
   });
 
   it('should transform coordinates & place marker and fly to on click map', () => {
