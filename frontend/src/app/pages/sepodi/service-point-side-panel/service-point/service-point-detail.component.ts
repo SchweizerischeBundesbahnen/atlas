@@ -319,7 +319,9 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     this.mapService.isGeolocationActivated.next(true);
     this.mapService.isEditMode.next(true);
 
-    if (!this.isCoordinatesPairValidForTransformation(coordinates)) return;
+    if (!this.isCoordinatesPairValidForTransformation(coordinates)) {
+      return;
+    }
 
     if (this.currentSpatialReference === SpatialReference.Lv95) {
       const transformed = this.coordinateTransformationService.transform(
@@ -363,14 +365,10 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   }
 
   isCoordinatesPairValidForTransformation(coordinates: CoordinatePair) {
-    return (
-      this.isCoordinatesPairGreaterThanZero(coordinates) &&
-      !!coordinates.north &&
-      !!coordinates.east
-    );
+    return this.isCoordinatePairNonZero(coordinates) && !!coordinates.north && !!coordinates.east;
   }
 
-  isCoordinatesPairGreaterThanZero(coordinates: CoordinatePair): boolean {
+  isCoordinatePairNonZero(coordinates: CoordinatePair): boolean {
     return coordinates.north !== 0 && coordinates.east !== 0;
   }
 }

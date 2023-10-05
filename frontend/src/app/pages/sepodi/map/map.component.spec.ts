@@ -14,7 +14,18 @@ const clickedGeographyCoordinatesSubject = new BehaviorSubject<CoordinatePairWGS
 });
 
 const mapCanvasMock = document.createElement('canvas');
-const mapSpy = jasmine.createSpyObj<Map>(['once', 'flyTo', 'getCanvas', 'on', 'off', 'fire']);
+const mapSpy = jasmine.createSpyObj<Map>([
+  'once',
+  'flyTo',
+  'getCanvas',
+  'on',
+  'off',
+  'fire',
+  'getZoom',
+  'setZoom',
+  'zoomTo',
+  'zoomOut',
+]);
 const mapService = jasmine.createSpyObj<MapService>([
   'initMap',
   'switchToStyle',
@@ -27,6 +38,7 @@ const markerSpy = jasmine.createSpyObj('Marker', ['addTo', 'setLngLat', 'remove'
 mapSpy.getCanvas.and.returnValue(mapCanvasMock);
 mapService.isEditMode = isEditModeSubject;
 mapService.clickedGeographyCoordinates = clickedGeographyCoordinatesSubject; // Weise dem Spion den BehaviorSubject zu
+mapService.isGeolocationActivated = new BehaviorSubject<boolean>(true);
 
 mapService.initMap.and.returnValue(mapSpy);
 
