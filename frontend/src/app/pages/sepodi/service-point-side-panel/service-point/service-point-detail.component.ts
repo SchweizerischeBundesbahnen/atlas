@@ -1,6 +1,6 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {VersionsHandlingService} from '../../../../core/versioning/versions-handling.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { VersionsHandlingService } from '../../../../core/versioning/versions-handling.service';
 import {
   ApplicationRole,
   ApplicationType,
@@ -15,22 +15,25 @@ import {
   SpatialReference,
   StopPointType,
 } from '../../../../api';
-import {FormGroup} from '@angular/forms';
-import {ServicePointDetailFormGroup, ServicePointFormGroupBuilder,} from './service-point-detail-form-group';
-import {ServicePointType} from './service-point-type';
-import {MapService} from '../../map/map.service';
-import {catchError, debounceTime, EMPTY, merge, Observable, of, Subject,} from 'rxjs';
-import {Pages} from '../../../pages';
-import {DialogService} from '../../../../core/components/dialog/dialog.service';
-import {ValidationService} from '../../../../core/validation/validation.service';
-import {filter, switchMap, takeUntil} from 'rxjs/operators';
-import {NotificationService} from '../../../../core/notification/notification.service';
-import {DetailFormComponent} from '../../../../core/leave-guard/leave-dirty-form-guard.service';
-import {AuthService} from '../../../../core/auth/auth.service';
-import {TranslationSortingService} from '../../../../core/translation/translation-sorting.service';
-import {CoordinateTransformationService} from '../../geography/coordinate-transformation.service';
-import {LocationInformation} from './location-information';
-import {Countries} from '../../../../core/country/Countries';
+import { FormGroup } from '@angular/forms';
+import {
+  ServicePointDetailFormGroup,
+  ServicePointFormGroupBuilder,
+} from './service-point-detail-form-group';
+import { ServicePointType } from './service-point-type';
+import { MapService } from '../../map/map.service';
+import { catchError, debounceTime, EMPTY, merge, Observable, of, Subject } from 'rxjs';
+import { Pages } from '../../../pages';
+import { DialogService } from '../../../../core/components/dialog/dialog.service';
+import { ValidationService } from '../../../../core/validation/validation.service';
+import { filter, switchMap, takeUntil } from 'rxjs/operators';
+import { NotificationService } from '../../../../core/notification/notification.service';
+import { DetailFormComponent } from '../../../../core/leave-guard/leave-dirty-form-guard.service';
+import { AuthService } from '../../../../core/auth/auth.service';
+import { TranslationSortingService } from '../../../../core/translation/translation-sorting.service';
+import { CoordinateTransformationService } from '../../geography/coordinate-transformation.service';
+import { LocationInformation } from './location-information';
+import { Countries } from '../../../../core/country/Countries';
 
 @Component({
   selector: 'app-service-point',
@@ -50,7 +53,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   types = Object.values(ServicePointType);
 
   readonly operatingPointTypeValues = (Object.values(OperatingPointType) as string[]).concat(
-    Object.values(OperatingPointTechnicalTimetableType)
+    Object.values(OperatingPointTechnicalTimetableType),
   );
 
   operatingPointTypes!: string[];
@@ -78,35 +81,34 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     private authService: AuthService,
     private translationSortingService: TranslationSortingService,
     private coordinateTransformationService: CoordinateTransformationService,
-    private geoDataService: GeoDataService
+    private geoDataService: GeoDataService,
   ) {}
 
   ngOnInit() {
-    this.route.parent?.data.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((next) => {
-        this.servicePointVersions = next.servicePoint;
+    this.route.parent?.data.pipe(takeUntil(this.ngUnsubscribe)).subscribe((next) => {
+      this.servicePointVersions = next.servicePoint;
 
-        this.initServicePoint();
-        this.displayAndSelectServicePointOnMap();
-      });
+      this.initServicePoint();
+      this.displayAndSelectServicePointOnMap();
+    });
 
     this.initSortedOperatingPointTypes();
     this.mapService.isGeolocationActivated.next(
-      !!this.form.controls.servicePointGeolocation.controls.spatialReference.value
+      !!this.form.controls.servicePointGeolocation.controls.spatialReference.value,
     );
   }
 
   initSortedOperatingPointTypes() {
     this.setSortedOperatingPointTypes();
     this.translationSortingService.translateService.onLangChange.subscribe(() =>
-      this.setSortedOperatingPointTypes()
+      this.setSortedOperatingPointTypes(),
     );
   }
 
   setSortedOperatingPointTypes() {
     this.operatingPointTypes = this.translationSortingService.sort(
       this.operatingPointTypeValues,
-      'SEPODI.SERVICE_POINTS.OPERATING_POINT_TYPES.'
+      'SEPODI.SERVICE_POINTS.OPERATING_POINT_TYPES.',
     );
   }
 
@@ -137,7 +139,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
       this.preferredId = undefined;
     } else {
       this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(
-        this.servicePointVersions
+        this.servicePointVersions,
       );
     }
     this.selectedVersionIndex = this.servicePointVersions.indexOf(this.selectedVersion);
@@ -197,21 +199,25 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
       .pipe(
         takeUntil(this.ngUnsubscribe),
         debounceTime(500),
-        filter(() => !!(geolocationControls.east.value &&
-            geolocationControls.north.value &&
-            geolocationControls.spatialReference.value)
+        filter(
+          () =>
+            !!(
+              geolocationControls.east.value &&
+              geolocationControls.north.value &&
+              geolocationControls.spatialReference.value
+            ),
         ),
-        switchMap(() => this.geoDataService
-          .getLocationInformation({
+        switchMap(() =>
+          this.geoDataService.getLocationInformation({
             east: geolocationControls.east.value!,
             north: geolocationControls.north.value!,
             spatialReference: geolocationControls.spatialReference.value!,
-          }))
+          }),
+        ),
       )
       .subscribe((geoReference) => {
-        this.locationInformation.isoCountryCode = Countries.fromCountry(
-          geoReference.country
-        )?.short;
+        this.locationInformation.isoCountryCode = Countries.fromCountry(geoReference.country)
+          ?.short;
         this.locationInformation.canton = geoReference.swissCanton;
         this.locationInformation.municipalityName = geoReference.swissMunicipalityName;
         this.locationInformation.localityName = geoReference.swissLocalityName;
@@ -220,20 +226,23 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
 
   private displayAndSelectServicePointOnMap() {
     this.cancelMapEditMode();
-    this.mapService.mapInitialized.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((initialized) => {
-        if (
-          initialized &&
-          this.form.controls.servicePointGeolocation.controls.spatialReference.value
-        ) {
-          if (this.mapService.map.getZoom() <= this.ZOOM_LEVEL_FOR_DETAIL) {
-            this.mapService.map.setZoom(this.ZOOM_LEVEL_FOR_DETAIL);
-          }
-          this.mapService
-            .centerOn(this.selectedVersion.servicePointGeolocation?.wgs84)
-            .then(() => this.mapService.displayCurrentCoordinates(this.selectedVersion.servicePointGeolocation?.wgs84));
+    this.mapService.mapInitialized.pipe(takeUntil(this.ngUnsubscribe)).subscribe((initialized) => {
+      if (
+        initialized &&
+        this.form.controls.servicePointGeolocation.controls.spatialReference.value
+      ) {
+        if (this.mapService.map.getZoom() <= this.ZOOM_LEVEL_FOR_DETAIL) {
+          this.mapService.map.setZoom(this.ZOOM_LEVEL_FOR_DETAIL);
         }
-      });
+        this.mapService
+          .centerOn(this.selectedVersion.servicePointGeolocation?.wgs84)
+          .then(() =>
+            this.mapService.displayCurrentCoordinates(
+              this.selectedVersion.servicePointGeolocation?.wgs84,
+            ),
+          );
+      }
+    });
   }
 
   toggleEdit() {
@@ -355,7 +364,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     let coordinates: CoordinatePair = {
       north: Number(locationControls.north.value!),
       east: Number(locationControls.east.value!),
-      spatialReference: locationControls.spatialReference.value!
+      spatialReference: locationControls.spatialReference.value!,
     };
 
     this.setSpatialReference(this.currentSpatialReference || SpatialReference.Lv95);
@@ -370,7 +379,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     if (this.currentSpatialReference === SpatialReference.Lv95) {
       coordinates = this.coordinateTransformationService.transform(
         coordinates,
-        SpatialReference.Wgs84
+        SpatialReference.Wgs84,
       );
     }
 
@@ -398,7 +407,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     this.mapService.isEditMode.next(false);
     this.isSwitchVersionDisabled = false;
     this.mapService.isGeolocationActivated.next(
-      !!this.form.controls.servicePointGeolocation.controls.spatialReference.value
+      !!this.form.controls.servicePointGeolocation.controls.spatialReference.value,
     );
   }
 
