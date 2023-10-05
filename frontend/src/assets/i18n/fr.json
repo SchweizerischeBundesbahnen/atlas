@@ -211,8 +211,7 @@
     "MIN": "La valeur doit être au minimum {{min}}.",
     "MAX": "La valeur doit être au maximum {{max}}.",
     "AT_LEAST_ONE": "Sélectionnez au moins une modalité.",
-    "DECIMAL_NUMBER": "Saisissez un nombre décimal avec un maximum de {{maxDecimalDigits}} chiffres après la virgule.",
-    "WGS84": "Saisissez un nombre entre -90 et 90 pour la largeur et un nombre entre -180 et 180 pour la longueur."
+    "DECIMAL_NUMBER": "Saisissez un nombre décimal avec un maximum de {{maxDecimalDigits}} chiffres après la virgule."
   },
   "USER_ADMIN": {
     "SEARCH_FOR_FILTER": "Organisations commerciales et Applications",
