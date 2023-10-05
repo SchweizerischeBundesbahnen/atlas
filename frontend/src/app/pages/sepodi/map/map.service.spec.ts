@@ -2,10 +2,34 @@ import { TestBed } from '@angular/core/testing';
 import { MapService } from './map.service';
 import { AuthService } from '../../../core/auth/auth.service';
 import { MAP_STYLES, MapOptionsService } from './map-options.service';
-import { Map, MapGeoJSONFeature, MapMouseEvent, Popup } from 'maplibre-gl';
+import { GeoJSONSource, Map, MapGeoJSONFeature, MapMouseEvent } from 'maplibre-gl';
 
 const authService: Partial<AuthService> = {};
 
+const markerSpy = jasmine.createSpyObj('Marker', ['addTo', 'setLngLat', 'remove']);
+const mapSpy = jasmine.createSpyObj<Map>([
+  'once',
+  'flyTo',
+  'getCanvas',
+  'on',
+  'off',
+  'fire',
+  'getSource',
+  'setZoom',
+  'getZoom',
+  'setCenter',
+  'setLayoutProperty',
+]);
+mapSpy.getSource = jasmine.createSpy('getSource').and.returnValue({
+  setData: jasmine.createSpy('setData'),
+});
+let clickCallback: any;
+mapSpy.on.and.callFake((event: string, callback: any) => {
+  if (event === 'click') {
+    clickCallback = callback;
+  }
+  return mapSpy;
+});
 describe('MapService', () => {
   let service: MapService;
 
@@ -43,28 +67,23 @@ describe('MapService', () => {
   });
 
   it('should deselect service point', () => {
-    const mapSpy = jasmine.createSpyObj<Map>(['removeFeatureState']);
     service.map = mapSpy;
-
+    service.map.getSource = jasmine.createSpy('getSource').and.returnValue({
+      setData: jasmine.createSpy('setData'),
+    });
     service.deselectServicePoint();
 
-    expect(mapSpy.removeFeatureState).toHaveBeenCalled();
-  });
-
-  it('should select service point', () => {
-    const mapSpy = jasmine.createSpyObj<Map>([
-      'removeFeatureState',
-      'queryRenderedFeatures',
-      'setFeatureState',
-    ]);
-    const feature = { properties: { number: 8507000 } } as unknown as MapGeoJSONFeature;
-    const renderedFeatures = [feature];
-    mapSpy.queryRenderedFeatures.and.returnValue(renderedFeatures);
-    service.map = mapSpy;
-
-    service.selectServicePoint(8507000);
-
-    expect(mapSpy.removeFeatureState).toHaveBeenCalled();
+    expect(service.map.getSource).toHaveBeenCalledWith('current_coordinates');
+    expect(
+      (service.map.getSource('current_coordinates') as GeoJSONSource).setData
+    ).toHaveBeenCalledWith({
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [0, 0],
+      },
+      properties: {},
+    });
   });
 
   it('should switch to different map style', () => {
@@ -201,5 +220,23 @@ describe('MapService', () => {
     expect(service.selectedElement.next).not.toHaveBeenCalled();
     expect(service.keepPopup).toBeTrue();
     expect(service.setPopupToFixed).toHaveBeenCalled();
+  });
+
+  it('should add marker to map and fly to coordinates', () => {
+    const latLngCoordinates = { lat: 40, lng: -74 };
+    const htmlDivElement = document.createElement('div');
+    service.initMap(htmlDivElement);
+    markerSpy.setLngLat.and.returnValue(markerSpy);
+    service.marker = markerSpy;
+    service.map = mapSpy;
+
+    service.placeMarkerAndFlyTo(latLngCoordinates);
+
+    expect(markerSpy.setLngLat).toHaveBeenCalledWith(latLngCoordinates);
+    expect(markerSpy.addTo).toHaveBeenCalledWith(service.map);
+    expect(mapSpy.flyTo).toHaveBeenCalledWith({
+      center: latLngCoordinates as maplibregl.LngLatLike,
+      speed: 0.8,
+    });
   });
 });

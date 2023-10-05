@@ -960,7 +960,8 @@
       "COUNTRY": "Campagna",
       "CANTON": "Cantone",
       "MUNICIPALITY": "Comune",
-      "DISTRICT": "Località"
+      "DISTRICT": "Località",
+      "GEOGRAPHY_INFORMATION": "Se attivata, la posizione geografica deve essere registrata in uno dei due sistemi di coordinate."
     },
     "MAP_STYLES": {
       "SWISSTOPO": "Swisstopo (Svizzera)",
