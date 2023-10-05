@@ -1,14 +1,17 @@
 package ch.sbb.prm.directory.mapper;
 
-import ch.sbb.prm.directory.controller.model.StopPlaceVersionModel;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.prm.directory.controller.model.CreateStopPlaceVersionModel;
+import ch.sbb.prm.directory.controller.model.ReadStopPlaceVersionModel;
 import ch.sbb.prm.directory.entity.StopPlaceVersion;
+import java.util.HashSet;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class StopPlaceVersionMapper {
 
-  public static StopPlaceVersionModel toModel(StopPlaceVersion version){
-    return StopPlaceVersionModel.builder()
+  public static ReadStopPlaceVersionModel toModel(StopPlaceVersion version){
+    return ReadStopPlaceVersionModel.builder()
         .id(version.getId())
         .sloid(version.getSloid())
         .number(version.getNumber())
@@ -39,6 +42,40 @@ public class StopPlaceVersionMapper {
         .editor(version.getEditor())
         .editionDate(version.getEditionDate())
         .etagVersion(version.getVersion())
+        .build();
+  }
+  public static StopPlaceVersion toEntity(CreateStopPlaceVersionModel model){
+    return StopPlaceVersion.builder()
+        .id(model.getId())
+        .sloid(model.getSloid())
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(model.getNumberWithoutCheckDigit()))
+        .validFrom(model.getValidFrom())
+        .validTo(model.getValidTo())
+        .meansOfTransport(new HashSet<>(model.getMeansOfTransport()))
+        .freeText(model.getFreeText())
+        .address(model.getAddress())
+        .zipCode(model.getZipCode())
+        .city(model.getCity())
+        .alternativeTransport(model.getAlternativeTransport())
+        .alternativeTransportCondition(model.getAlternativeTransportCondition())
+        .assistanceAvailability(model.getAssistanceAvailability())
+        .alternativeCondition(model.getAlternativeCondition())
+        .assistanceService(model.getAssistanceService())
+        .audioTicketMachine(model.getAudioTicketMachine())
+        .additionalInfo(model.getAdditionalInfo())
+        .dynamicAudioSystem(model.getDynamicAudioSystem())
+        .dynamicOpticSystem(model.getDynamicOpticSystem())
+        .infoTicketMachine(model.getInfoTicketMachine())
+        .interoperable(model.isInteroperable())
+        .url(model.getUrl())
+        .visualInfo(model.getVisualInfo())
+        .wheelchairTicketMachine(model.getWheelchairTicketMachine())
+        .assistanceRequestFulfilled(model.getAssistanceRequestFulfilled())
+        .ticketMachine(model.getTicketMachine())
+        .creator(model.getCreator())
+        .creationDate(model.getCreationDate())
+        .editor(model.getEditor())
+        .editionDate(model.getEditionDate())
         .build();
   }
 
