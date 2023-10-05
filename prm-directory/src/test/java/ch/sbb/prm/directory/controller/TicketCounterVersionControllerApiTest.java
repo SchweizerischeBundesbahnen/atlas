@@ -24,7 +24,7 @@ class TicketCounterVersionControllerApiTest extends BaseControllerApiTest {
 
   @BeforeEach()
   void initDB() {
-    ticketCounterRepository.save(TicketCounterTestData.getTicketCounterversion());
+    ticketCounterRepository.save(TicketCounterTestData.getTicketCounterVersion());
   }
 
   @AfterEach

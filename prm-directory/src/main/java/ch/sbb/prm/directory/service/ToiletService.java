@@ -18,8 +18,5 @@ public class ToiletService {
    return toiletRepository.findAll();
   }
 
-  public List<ToiletVersion> getByServicePointParentSloid(String parentServicePointSloid){
-    return toiletRepository.findByParentServicePointSloid(parentServicePointSloid);
-  }
 
 }
