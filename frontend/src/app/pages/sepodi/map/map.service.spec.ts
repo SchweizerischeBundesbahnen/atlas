@@ -7,7 +7,15 @@ import { Map, MapGeoJSONFeature, MapMouseEvent } from 'maplibre-gl';
 const authService: Partial<AuthService> = {};
 
 const markerSpy = jasmine.createSpyObj('Marker', ['addTo', 'setLngLat', 'remove']);
-const mapSpy = jasmine.createSpyObj<Map>(['once', 'flyTo', 'getCanvas', 'on', 'off', 'fire']);
+const mapSpy = jasmine.createSpyObj<Map>([
+  'once',
+  'flyTo',
+  'getCanvas',
+  'on',
+  'off',
+  'fire',
+  'getSource',
+]);
 let clickCallback: any;
 mapSpy.on.and.callFake((event: string, callback: any) => {
   if (event === 'click') {
