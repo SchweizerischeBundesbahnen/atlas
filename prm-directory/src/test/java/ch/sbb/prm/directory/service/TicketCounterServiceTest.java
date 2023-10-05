@@ -1,6 +1,6 @@
 package ch.sbb.prm.directory.service;
 
-import static ch.sbb.prm.directory.enumeration.ReferencePointElementType.PLATFORM;
+import static ch.sbb.prm.directory.enumeration.ReferencePointElementType.TICKET_COUNTER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -108,7 +108,7 @@ class TicketCounterServiceTest {
         parentServicePointSloid);
     assertThat(relationVersions).hasSize(1);
     assertThat(relationVersions.get(0).getParentServicePointSloid()).isEqualTo(parentServicePointSloid);
-    assertThat(relationVersions.get(0).getReferencePointElementType()).isEqualTo(PLATFORM);
+    assertThat(relationVersions.get(0).getReferencePointElementType()).isEqualTo(TICKET_COUNTER);
 
   }
 
