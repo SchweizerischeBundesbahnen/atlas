@@ -19,19 +19,19 @@ public class GeoReferenceService {
     GeoAdminResponse geoAdminResponse = geoAdminChClient.getGeoReference(new GeoAdminParams(coordinatePair));
 
     GeoReference result = new GeoReference();
-    geoAdminResponse.getResultByLayer(Layers.GEMEINDE).ifPresent(i -> {
+    geoAdminResponse.getResultByLayer(Layers.MUNICIPALITY).ifPresent(i -> {
       result.setSwissMunicipalityName(i.getAttributes().getGemname());
       result.setSwissMunicipalityNumber(Integer.parseInt(i.getFeatureId()));
     });
-    geoAdminResponse.getResultByLayer(Layers.BEZIRK).ifPresent(i -> {
+    geoAdminResponse.getResultByLayer(Layers.DISTRICT).ifPresent(i -> {
       result.setSwissDistrictName(i.getAttributes().getName());
       result.setSwissDistrictNumber(Integer.parseInt(i.getFeatureId()));
     });
-    geoAdminResponse.getResultByLayer(Layers.ORTSCHAFT)
+    geoAdminResponse.getResultByLayer(Layers.LOCALITY)
         .ifPresent(i -> result.setSwissLocalityName(i.getAttributes().getLangtext()));
-    geoAdminResponse.getResultByLayer(Layers.KANTON)
+    geoAdminResponse.getResultByLayer(Layers.CANTON)
         .ifPresent(i -> result.setSwissCanton(SwissCanton.fromCantonNumber(Integer.parseInt(i.getFeatureId()))));
-    geoAdminResponse.getResultByLayer(Layers.LAND).ifPresent(i -> result.setCountry(Country.fromIsoCode(i.getId())));
+    geoAdminResponse.getResultByLayer(Layers.COUNTRY).ifPresent(i -> result.setCountry(Country.fromIsoCode(i.getId())));
 
     return result;
   }
