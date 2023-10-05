@@ -3,6 +3,8 @@ import maplibregl, { Map } from 'maplibre-gl';
 import { MapService } from './map.service';
 import { MAP_STYLES, MapStyle } from './map-options.service';
 import { MapIcon, MapIconsService } from './map-icons.service';
+import { MAP_SOURCE_NAME } from './map-style';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'atlas-map',
@@ -18,6 +20,9 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
   legend!: MapIcon[];
 
+  private isEditModeSubsription!: Subscription;
+  private isGeoLocationActiveSubsription!: Subscription;
+
   map!: Map;
 
   @ViewChild('map')
@@ -29,10 +34,14 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.map = this.mapService.initMap(this.mapContainer.nativeElement);
     this.currentMapStyle = this.mapService.currentMapStyle;
     MapIconsService.getIconsAsImages().then((icons) => (this.legend = icons));
+
+    this.handleMapClick();
   }
 
   ngOnDestroy() {
     this.mapService.removeMap();
+    this.isEditModeSubsription.unsubscribe();
+    this.isGeoLocationActiveSubsription.unsubscribe();
   }
 
   toggleStyleSelection() {
@@ -62,6 +71,49 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.showMapStyleSelection = false;
   }
 
+  onMapClicked = (e: any) => {
+    const clickedCoordinates = e.lngLat;
+    this.mapService.placeMarkerAndFlyTo(clickedCoordinates);
+    this.mapService.clickedGeographyCoordinates.next(clickedCoordinates);
+  };
+
+  enterEditMode() {
+    this.map.getCanvas().style.cursor = 'crosshair';
+    this.map.on(
+      'mouseleave',
+      MAP_SOURCE_NAME,
+      () => (this.map.getCanvas().style.cursor = 'crosshair')
+    );
+    this.map.on('click', this.onMapClicked);
+    this.mapService.initMapEvents();
+  }
+
+  exitEditMode() {
+    this.mapService.marker.remove();
+    this.map.off('click', this.onMapClicked);
+    this.map.getCanvas().style.cursor = '';
+    this.map.on('mouseleave', MAP_SOURCE_NAME, () => (this.map.getCanvas().style.cursor = ''));
+    this.mapService.clickedGeographyCoordinates.next({ lng: 0, lat: 0 });
+    this.mapService.initMapEvents();
+  }
+
+  handleMapClick() {
+    let isActiveGeolocation = true;
+
+    this.isGeoLocationActiveSubsription = this.mapService.isGeolocationActivated.subscribe(
+      (value) => {
+        isActiveGeolocation = value;
+      }
+    );
+    this.isEditModeSubsription = this.mapService.isEditMode.subscribe((isEditMode) => {
+      if (isEditMode && isActiveGeolocation) {
+        this.enterEditMode();
+      } else {
+        this.exitEditMode();
+      }
+    });
+  }
+
   zoomIn() {
     const currentZoom = this.map.getZoom();
     const newZoom = currentZoom + 0.75;
@@ -76,7 +128,6 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
   goHome() {
     const swissLongLat = [8.2275, 46.8182];
-
     this.map.flyTo({
       center: swissLongLat as maplibregl.LngLatLike,
       zoom: 7.25,

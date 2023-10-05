@@ -1,10 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { VersionsHandlingService } from '../../../../core/versioning/versions-handling.service';
 import {
   ApplicationRole,
   ApplicationType,
   Category,
+  CoordinatePair,
   CreateServicePointVersion,
   OperatingPointTechnicalTimetableType,
   OperatingPointType,
@@ -29,6 +30,7 @@ import { NotificationService } from '../../../../core/notification/notification.
 import { DetailFormComponent } from '../../../../core/leave-guard/leave-dirty-form-guard.service';
 import { AuthService } from '../../../../core/auth/auth.service';
 import { TranslationSortingService } from '../../../../core/translation/translation-sorting.service';
+import { CoordinateTransformationService } from '../../geography/coordinate-transformation.service';
 
 @Component({
   selector: 'app-service-point',
@@ -56,6 +58,9 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   previouslySelectedType!: ServicePointType;
   stopPointTypes = Object.values(StopPointType);
   categories = Object.values(Category);
+  isSwitchVersionDisabled = false;
+
+  currentSpatialReference!: SpatialReference;
 
   private readonly ZOOM_LEVEL_FOR_DETAIL = 14;
 
@@ -71,19 +76,20 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     private notificationService: NotificationService,
     private mapService: MapService,
     private authService: AuthService,
-    private translationSortingService: TranslationSortingService
+    private translationSortingService: TranslationSortingService,
+    private coordinateTransformationService: CoordinateTransformationService,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
     this.servicePointSubscription = this.route.parent?.data.subscribe((next) => {
       this.servicePointVersions = next.servicePoint;
-      this.mapSubscription?.unsubscribe();
-
       this.initServicePoint();
-      this.displayAndSelectServicePointOnMap();
     });
-
     this.initSortedOperatingPointTypes();
+    this.mapService.isGeolocationActivated.next(
+      !!this.form.controls.servicePointGeolocation.controls.spatialReference.value
+    );
   }
 
   initSortedOperatingPointTypes() {
@@ -103,6 +109,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   ngOnDestroy() {
     this.mapSubscription?.unsubscribe();
     this.servicePointSubscription?.unsubscribe();
+    this.mapService.deselectServicePoint();
   }
 
   switchVersion(newIndex: number) {
@@ -130,7 +137,6 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
       );
     }
     this.selectedVersionIndex = this.servicePointVersions.indexOf(this.selectedVersion);
-
     this.initSelectedVersion();
   }
 
@@ -143,6 +149,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     if (!this.isNew) {
       this.form.disable();
     }
+    this.displayAndSelectServicePointOnMap();
     this.initTypeChangeInformationDialog();
   }
 
@@ -171,17 +178,17 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   }
 
   private displayAndSelectServicePointOnMap() {
+    this.cancelMapEditMode();
+    this.mapSubscription?.unsubscribe();
     this.mapSubscription = this.mapService.mapInitialized.subscribe((initialized) => {
-      if (
-        initialized &&
-        this.form.controls.servicePointGeolocation.controls.spatialReference.value
-      ) {
+      if (initialized && this.selectedVersion) {
         if (this.mapService.map.getZoom() <= this.ZOOM_LEVEL_FOR_DETAIL) {
           this.mapService.map.setZoom(this.ZOOM_LEVEL_FOR_DETAIL);
         }
-        this.mapService
-          .centerOn(this.selectedVersion.servicePointGeolocation?.wgs84)
-          .then(() => this.mapService.selectServicePoint(this.selectedVersion.number.number));
+        this.mapService.centerOn(this.selectedVersion.servicePointGeolocation?.wgs84).then();
+        this.mapService.displayCurrentCoordinates(
+          this.selectedVersion.servicePointGeolocation?.wgs84
+        );
       }
     });
   }
@@ -190,11 +197,13 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     if (this.form.enabled) {
       this.showConfirmationDialog();
     } else {
+      this.mapService.isEditMode.next(true);
+      this.isSwitchVersionDisabled = true;
       this.form.enable();
     }
   }
 
-  private showConfirmationDialog() {
+  showConfirmationDialog() {
     this.confirmLeave().subscribe((confirmed) => {
       if (confirmed) {
         if (this.isNew) {
@@ -202,12 +211,13 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
         } else {
           this.initSelectedVersion();
           this.form.disable();
+          this.cancelMapEditMode();
         }
       }
     });
   }
 
-  private confirmLeave(): Observable<boolean> {
+  confirmLeave(): Observable<boolean> {
     if (this.form.dirty) {
       return this.dialogService.confirm({
         title: 'DIALOG.DISCARD_CHANGES_TITLE',
@@ -245,6 +255,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
         servicePointVersion.numberWithoutCheckDigit = this.selectedVersion.number.number;
         this.update(this.selectedVersion.id!, servicePointVersion);
       }
+      this.cancelMapEditMode();
     }
   }
 
@@ -268,6 +279,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
           .updateServicePoint(id, servicePointVersion)
           .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
           .subscribe(() => {
+            this.mapService.refreshMap();
             this.notificationService.success('SEPODI.SERVICE_POINTS.NOTIFICATION.EDIT_SUCCESS');
             this.router
               .navigate(['..', this.selectedVersion.number.number], { relativeTo: this.route })
@@ -290,14 +302,74 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     return this.form.dirty;
   }
 
+  setSpatialReference(value: SpatialReference | null) {
+    this.form.controls.servicePointGeolocation.controls.spatialReference.setValue(value);
+  }
+
+  activateGeolocation() {
+    const north = this.form.controls.servicePointGeolocation.controls.north.value!;
+    const east = this.form.controls.servicePointGeolocation.controls.east.value!;
+
+    let coordinates: CoordinatePair = {
+      north: Number(north),
+      east: Number(east),
+    };
+
+    this.setSpatialReference(this.currentSpatialReference || SpatialReference.Lv95);
+
+    this.mapService.isGeolocationActivated.next(true);
+    this.mapService.isEditMode.next(true);
+
+    if (!this.isCoordinatesPairValidForTransformation(coordinates)) {
+      return;
+    }
+
+    if (this.currentSpatialReference === SpatialReference.Lv95) {
+      const transformed = this.coordinateTransformationService.transform(
+        coordinates,
+        SpatialReference.Lv95,
+        SpatialReference.Wgs84
+      );
+      coordinates = transformed;
+    }
+
+    const coordinatePairWGS84 = { lat: coordinates.north, lng: coordinates.east };
+    this.mapService.placeMarkerAndFlyTo(coordinatePairWGS84);
+  }
+
+  deactivateGeolocation() {
+    this.setSpatialReference(null);
+    this.mapService.isGeolocationActivated.next(false);
+    this.cancelMapEditMode();
+  }
+
   handleGeolocationToggle(hasGeolocation: boolean) {
     if (hasGeolocation) {
-      this.form.controls.servicePointGeolocation.controls.spatialReference.setValue(
-        SpatialReference.Lv95
-      );
+      this.activateGeolocation();
     } else {
-      this.form.controls.servicePointGeolocation.controls.spatialReference.setValue(null);
+      this.deactivateGeolocation();
     }
+    this.isSwitchVersionDisabled = true;
     this.form.markAsDirty();
+  }
+
+  cancelMapEditMode() {
+    this.mapService.isEditMode.next(false);
+    this.isSwitchVersionDisabled = false;
+    this.mapService.isGeolocationActivated.next(
+      !!this.form.controls.servicePointGeolocation.controls.spatialReference.value
+    );
+  }
+
+  triggerSpatialReferenceEvent(spatialReference: SpatialReference) {
+    this.currentSpatialReference = spatialReference;
+  }
+
+  isCoordinatesPairValidForTransformation(coordinates: CoordinatePair) {
+    return this.isCoordinatePairNotZero(coordinates) && !!coordinates.north && !!coordinates.east;
+  }
+
+  isCoordinatePairNotZero(coordinates: CoordinatePair): boolean {
+    return coordinates.north !== 0 && coordinates.east !== 0;
   }
 }
