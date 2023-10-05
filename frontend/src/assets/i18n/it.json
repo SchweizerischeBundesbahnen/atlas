@@ -211,8 +211,7 @@
     "MIN": "Il valore deve essere minimo {{min}}",
     "MAX": "Il valore può essere massimo {{max}}",
     "AT_LEAST_ONE": "Selezionare almeno un'espressione.",
-    "DECIMAL_NUMBER": "Inserire un numero decimale con un massimo di {{maxDecimalDigits}} cifre decimali.",
-    "WGS84": "Inserire un numero compreso tra -90 e 90 per la larghezza e un numero compreso tra -180 e 180 per la lunghezza."
+    "DECIMAL_NUMBER": "Inserire un numero decimale con un massimo di {{maxDecimalDigits}} cifre decimali."
   },
   "USER_ADMIN": {
     "SEARCH_FOR_FILTER": "Organizzazioni aziendali e Applicazioni",
