@@ -1,29 +1,36 @@
 package ch.sbb.prm.directory.service;
 
+import static ch.sbb.prm.directory.enumeration.ReferencePointElementType.PLATFORM;
+
 import ch.sbb.prm.directory.entity.TicketCounterVersion;
+import ch.sbb.prm.directory.repository.ReferencePointRepository;
+import ch.sbb.prm.directory.repository.RelationRepository;
+import ch.sbb.prm.directory.repository.StopPlaceRepository;
 import ch.sbb.prm.directory.repository.TicketCounterRepository;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@RequiredArgsConstructor
 @Service
 @Transactional
-public class TicketCounterService {
+public class TicketCounterService extends BaseRelationConnectionService<TicketCounterVersion> {
 
   private final TicketCounterRepository ticketCounterRepository;
 
+  public TicketCounterService(TicketCounterRepository ticketCounterRepository, StopPlaceRepository stopPlaceRepository,
+      RelationRepository relationRepository, ReferencePointRepository referencePointRepository) {
+    super(stopPlaceRepository,relationRepository, referencePointRepository);
+    this.ticketCounterRepository = ticketCounterRepository;
+  }
+
   public List<TicketCounterVersion> getAllTicketCounters() {
-   return ticketCounterRepository.findAll();
+    return ticketCounterRepository.findAll();
   }
 
-  public void createTicketCounter(TicketCounterVersion version){
+  public void createTicketCounter(TicketCounterVersion version) {
+    checkStopPlaceExists(version.getParentServicePointSloid());
+    createRelation(version, PLATFORM);
     ticketCounterRepository.save(version);
-  }
-
-  public List<TicketCounterVersion> getByServicePointParentSloid(String parentServicePointSloid){
-    return ticketCounterRepository.findByParentServicePointSloid(parentServicePointSloid);
   }
 
 }
