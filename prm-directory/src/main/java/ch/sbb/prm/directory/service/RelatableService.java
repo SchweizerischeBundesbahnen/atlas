@@ -1,6 +1,5 @@
 package ch.sbb.prm.directory.service;
 
-import ch.sbb.prm.directory.entity.BasePrmEntityVersion;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.enumeration.ReferencePointElementType;
@@ -12,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
-public abstract class RelatableService<T extends BasePrmEntityVersion> {
+public abstract class RelatableService<T extends Relatable> {
 
   protected final StopPlaceService stopPlaceService;
   protected final RelationService relationService;

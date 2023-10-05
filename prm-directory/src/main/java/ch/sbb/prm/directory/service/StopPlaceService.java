@@ -24,5 +24,7 @@ public class StopPlaceService {
     }
   }
 
-
+  public StopPlaceVersion createStopPlace(StopPlaceVersion stopPlaceVersion) {
+    return stopPlaceRepository.saveAndFlush(stopPlaceVersion);
+  }
 }
