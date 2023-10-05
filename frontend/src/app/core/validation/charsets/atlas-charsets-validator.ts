@@ -1,5 +1,4 @@
 import { AbstractControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { WGS84_MAX_DIGITS } from 'src/app/pages/sepodi/geography/geography.component';
 
 export class AtlasCharsetsValidator {
   static numeric(control: AbstractControl): ValidationErrors | null {
