@@ -74,7 +74,7 @@ describe('GeographyComponent', () => {
   it('should transform coordinates & place marker and fly to on change manually coordinates', () => {
     const coordinates: CoordinatePair = { north: 20000, east: 10000 };
     component.spatialReference = SpatialReference.Lv95;
-    spyOn(component, 'isCoordinatesPairGreaterThanZero').and.returnValue(true);
+    spyOn(component, 'isCoordinatePairNotZero').and.returnValue(true);
     coordinateTransformationServiceSpy.transform.and.returnValue({ north: 12, east: 12 });
 
     component.onChangeCoordinatesManually(coordinates);
@@ -98,7 +98,7 @@ describe('GeographyComponent', () => {
   it('should transform coordinates & place marker and fly to on click map', () => {
     const coordinates: CoordinatePairWGS84 = { lat: 10, lng: 10 };
     component.spatialReference = SpatialReference.Lv95;
-    spyOn(component, 'isCoordinatesPairGreaterThanZero').and.returnValue(true);
+    spyOn(component, 'isCoordinatePairNotZero').and.returnValue(true);
     spyOn(component, 'setFormGroupValue');
     spyOn(component, 'initTransformedCoordinatePair');
     coordinateTransformationServiceSpy.transform.and.returnValue({ north: 12, east: 12 });

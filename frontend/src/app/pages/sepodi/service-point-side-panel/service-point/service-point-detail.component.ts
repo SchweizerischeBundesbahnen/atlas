@@ -365,10 +365,10 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   }
 
   isCoordinatesPairValidForTransformation(coordinates: CoordinatePair) {
-    return this.isCoordinatePairNonZero(coordinates) && !!coordinates.north && !!coordinates.east;
+    return this.isCoordinatePairNotZero(coordinates) && !!coordinates.north && !!coordinates.east;
   }
 
-  isCoordinatePairNonZero(coordinates: CoordinatePair): boolean {
+  isCoordinatePairNotZero(coordinates: CoordinatePair): boolean {
     return coordinates.north !== 0 && coordinates.east !== 0;
   }
 }
