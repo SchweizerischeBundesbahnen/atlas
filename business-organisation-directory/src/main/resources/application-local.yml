@@ -8,8 +8,10 @@ spring:
     name: business-organisation-directory
   jpa:
     open-in-view: false
+    show-sql: false
     properties:
       hibernate:
+        format_sql: true
         jdbc:
           batch_size: 500
   jmx:
