@@ -1,6 +1,7 @@
-package ch.sbb.prm.directory.controller.model;
+package ch.sbb.prm.directory.controller.model.create;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.prm.directory.controller.model.StopPlaceVersionModel;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
