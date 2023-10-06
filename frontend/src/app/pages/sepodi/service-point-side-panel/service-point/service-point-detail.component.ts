@@ -46,6 +46,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   preferredId?: number;
   isSwitchVersionDisabled = false;
 
+  public isGeographyOn = false;
   public isFormEnabled$ = new BehaviorSubject<boolean>(false);
   private readonly ZOOM_LEVEL_FOR_DETAIL = 14;
   private ngUnsubscribe = new Subject<void>();
@@ -114,6 +115,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     }
 
     this.form = ServicePointFormGroupBuilder.buildFormGroup(this.selectedVersion);
+    this.isGeographyOn = !!this.form.value.servicePointGeolocation?.spatialReference;
     if (!this.isNew) {
       this.disableForm();
     }
