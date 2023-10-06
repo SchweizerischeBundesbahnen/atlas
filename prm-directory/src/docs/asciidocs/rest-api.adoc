@@ -104,7 +104,11 @@ include::{snippets}/information-desk-version-controller-api-test/should-create-i
 
 === Get Parking Lots - Successfully
 
-include::{snippets}/parking-lot-version-controller-api-test/should-get-platforms-version/auto-section.adoc[]
+include::{snippets}/parking-lot-version-controller-api-test/should-get-parking-lot-version/auto-section.adoc[]
+
+=== Create Parking Lots - Successfully
+
+include::{snippets}/parking-lot-version-controller-api-test/should-create-parking-lot/auto-section.adoc[]
 
 == Relation
 
