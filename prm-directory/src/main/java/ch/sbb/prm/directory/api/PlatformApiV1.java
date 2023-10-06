@@ -1,16 +1,24 @@
 package ch.sbb.prm.directory.api;
 
-import ch.sbb.prm.directory.controller.model.PlatformVersionModel;
+import ch.sbb.prm.directory.controller.model.create.CreatePlatformVersionModel;
+import ch.sbb.prm.directory.controller.model.read.ReadPlatformVersionModel;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Tag(name = "Platform")
 @RequestMapping("v1/platforms")
 public interface PlatformApiV1 {
 
   @GetMapping
-  List<PlatformVersionModel> getPlatforms();
+  List<ReadPlatformVersionModel> getPlatforms();
 
+  @ResponseStatus(HttpStatus.CREATED)
+  @PostMapping
+  ReadPlatformVersionModel createStopPlace(@RequestBody CreatePlatformVersionModel model);
 }
