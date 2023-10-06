@@ -14,7 +14,6 @@ import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.enumeration.StandardAttributeType;
 import ch.sbb.prm.directory.repository.RelationRepository;
 import java.time.LocalDate;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -25,12 +24,6 @@ class RelationVersionControllerApiTest extends BaseControllerApiTest {
   @Autowired
   RelationVersionControllerApiTest(RelationRepository relationRepository){
     this.relationRepository = relationRepository;
-  }
-
-
-  @AfterEach
-  void tearDown() {
-    relationRepository.deleteAll();
   }
 
   @Test

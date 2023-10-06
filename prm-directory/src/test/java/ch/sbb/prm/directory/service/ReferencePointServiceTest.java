@@ -89,13 +89,13 @@ class ReferencePointServiceTest {
   }
 
   private void createAndSaveParkingLotVersion(String parentServicePointSloid) {
-    ParkingLotVersion parkingLot = ParkingLotTestData.getParkingLot();
+    ParkingLotVersion parkingLot = ParkingLotTestData.getParkingLotVersion();
     parkingLot.setParentServicePointSloid(parentServicePointSloid);
     parkingLot.setSloid("ch:1:sloid:70000:5");
     parkingLotRepository.save(parkingLot);
   }
   private void createAndSaveInformationDeskVersion(String parentServicePointSloid) {
-    InformationDeskVersion informationDesk = InformationDeskTestData.getInformationDesk();
+    InformationDeskVersion informationDesk = InformationDeskTestData.getInformationDeskVersion();
     informationDesk.setParentServicePointSloid(parentServicePointSloid);
     informationDesk.setSloid("ch:1:sloid:70000:4");
     informationDeskRepository.save(informationDesk);
