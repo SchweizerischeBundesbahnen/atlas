@@ -17,7 +17,7 @@ import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPlaceTestData;
 import ch.sbb.prm.directory.TicketCounterTestData;
 import ch.sbb.prm.directory.ToiletTestData;
-import ch.sbb.prm.directory.controller.model.create.CreateReferencePointVersionModel;
+import ch.sbb.prm.directory.controller.model.referencepoint.CreateReferencePointVersionModel;
 import ch.sbb.prm.directory.entity.InformationDeskVersion;
 import ch.sbb.prm.directory.entity.ParkingLotVersion;
 import ch.sbb.prm.directory.entity.PlatformVersion;

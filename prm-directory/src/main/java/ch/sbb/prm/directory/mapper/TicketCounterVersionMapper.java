@@ -1,8 +1,8 @@
 package ch.sbb.prm.directory.mapper;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.prm.directory.controller.model.create.CreateTicketCounterVersionModel;
-import ch.sbb.prm.directory.controller.model.read.ReadTicketCounterVersionModel;
+import ch.sbb.prm.directory.controller.model.ticketcounter.CreateTicketCounterVersionModel;
+import ch.sbb.prm.directory.controller.model.ticketcounter.ReadTicketCounterVersionModel;
 import ch.sbb.prm.directory.entity.TicketCounterVersion;
 import lombok.experimental.UtilityClass;
 

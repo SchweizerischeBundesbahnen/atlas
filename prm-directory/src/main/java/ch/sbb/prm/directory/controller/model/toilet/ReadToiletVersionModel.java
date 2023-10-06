@@ -1,8 +1,7 @@
-package ch.sbb.prm.directory.controller.model.read;
+package ch.sbb.prm.directory.controller.model.toilet;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.validation.DatesValidator;
-import ch.sbb.prm.directory.controller.model.ReferencePointVersionModel;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -19,12 +18,11 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @FieldNameConstants
-@Schema(name = "ReadReferencePointVersion")
-public class ReadReferencePointVersionModel extends ReferencePointVersionModel implements DatesValidator {
+@Schema(name = "ReadToiletVersion")
+public class ReadToiletVersionModel extends ToiletVersionModel implements DatesValidator {
 
   @NotNull
   @Valid
   private ServicePointNumber number;
-
 
 }

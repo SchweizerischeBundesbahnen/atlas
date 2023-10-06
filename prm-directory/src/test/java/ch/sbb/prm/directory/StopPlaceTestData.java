@@ -4,7 +4,7 @@ import static java.util.List.of;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
-import ch.sbb.prm.directory.controller.model.create.CreateStopPlaceVersionModel;
+import ch.sbb.prm.directory.controller.model.stopplace.CreateStopPlaceVersionModel;
 import ch.sbb.prm.directory.entity.StopPlaceVersion;
 import ch.sbb.prm.directory.enumeration.StandardAttributeType;
 import java.time.LocalDate;
