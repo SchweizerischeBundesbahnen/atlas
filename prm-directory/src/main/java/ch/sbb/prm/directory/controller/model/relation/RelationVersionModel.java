@@ -1,8 +1,9 @@
-package ch.sbb.prm.directory.controller.model;
+package ch.sbb.prm.directory.controller.model.relation;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.validation.DatesValidator;
+import ch.sbb.prm.directory.controller.model.BasePrmVersionModel;
 import ch.sbb.prm.directory.enumeration.ReferencePointElementType;
 import ch.sbb.prm.directory.enumeration.StandardAttributeType;
 import ch.sbb.prm.directory.enumeration.StepFreeAccessAttributeType;

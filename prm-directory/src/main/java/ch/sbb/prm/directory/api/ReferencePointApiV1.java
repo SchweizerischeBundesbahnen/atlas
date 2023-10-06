@@ -1,7 +1,7 @@
 package ch.sbb.prm.directory.api;
 
-import ch.sbb.prm.directory.controller.model.create.CreateReferencePointVersionModel;
-import ch.sbb.prm.directory.controller.model.read.ReadReferencePointVersionModel;
+import ch.sbb.prm.directory.controller.model.referencepoint.CreateReferencePointVersionModel;
+import ch.sbb.prm.directory.controller.model.referencepoint.ReadReferencePointVersionModel;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.http.HttpStatus;

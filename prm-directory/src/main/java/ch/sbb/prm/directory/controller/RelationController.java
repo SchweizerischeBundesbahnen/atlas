@@ -1,7 +1,7 @@
 package ch.sbb.prm.directory.controller;
 
 import ch.sbb.prm.directory.api.RelationApiV1;
-import ch.sbb.prm.directory.controller.model.RelationVersionModel;
+import ch.sbb.prm.directory.controller.model.relation.RelationVersionModel;
 import ch.sbb.prm.directory.enumeration.ReferencePointElementType;
 import ch.sbb.prm.directory.mapper.RelationVersionMapper;
 import ch.sbb.prm.directory.service.RelationService;

@@ -1,8 +1,9 @@
-package ch.sbb.prm.directory.controller.model;
+package ch.sbb.prm.directory.controller.model.parkinglot;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.validation.DatesValidator;
-import ch.sbb.prm.directory.enumeration.StandardAttributeType;
+import ch.sbb.prm.directory.controller.model.BasePrmVersionModel;
+import ch.sbb.prm.directory.enumeration.BooleanOptionalAttributeType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -18,7 +19,7 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @FieldNameConstants
-public abstract class ToiletVersionModel extends BasePrmVersionModel implements DatesValidator {
+public abstract class ParkingLotVersionModel extends BasePrmVersionModel implements DatesValidator {
 
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
   @Schema(description = "Hierarchical assignment of the TPE which is to be processed to another TPE. It is a 1:1 relationship. "
@@ -31,7 +32,10 @@ public abstract class ToiletVersionModel extends BasePrmVersionModel implements 
   @Schema(description = "Additional Information")
   private String info;
 
-  @Schema(description = "Wheelchair accessible toilet available")
-  private StandardAttributeType wheelchairToilet;
+  @Schema(description = "Availability of parking spaces")
+  private BooleanOptionalAttributeType placesAvailable;
+
+  @Schema(description = "Parking spaces for Person with Reduced Mobility")
+  private BooleanOptionalAttributeType prmPlacesAvailable;
 
 }
