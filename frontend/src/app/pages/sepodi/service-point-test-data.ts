@@ -1,4 +1,4 @@
-import { ReadServicePointVersion } from '../../api';
+import { ReadServicePointVersion, SpatialReference } from '../../api';
 
 export const BERN_WYLEREGG: ReadServicePointVersion = {
   creationDate: '2021-03-22T09:26:29',
@@ -24,9 +24,21 @@ export const BERN_WYLEREGG: ReadServicePointVersion = {
   stopPointType: undefined,
   servicePointGeolocation: {
     spatialReference: 'LV95',
-    lv95: { north: 1201099.0, east: 2600783.0 },
-    lv03: { north: 1201099.0, east: 2600783.0 },
-    wgs84: { north: 46.96096808019183, east: 7.448919722210132 },
+    lv95: {
+      north: 1201099.0,
+      east: 2600783.0,
+      spatialReference: SpatialReference.Lv95,
+    },
+    lv03: {
+      north: 1201099.0,
+      east: 2600783.0,
+      spatialReference: SpatialReference.Lv03,
+    },
+    wgs84: {
+      north: 46.96096808019183,
+      east: 7.448919722210132,
+      spatialReference: SpatialReference.Wgs84,
+    },
     height: 555.0,
     swissLocation: {
       canton: 'BERN',
@@ -78,14 +90,17 @@ export const BERN: ReadServicePointVersion[] = [
       lv95: {
         north: 1199749.0,
         east: 2600037.0,
+        spatialReference: SpatialReference.Lv95,
       },
       lv03: {
         north: 1199749.0,
         east: 2600037.0,
+        spatialReference: SpatialReference.Lv03,
       },
       wgs84: {
         north: 46.9488249863665,
         east: 7.4391184768737615,
+        spatialReference: SpatialReference.Wgs84,
       },
       height: 540.0,
       swissLocation: {
@@ -152,14 +167,17 @@ export const BERN: ReadServicePointVersion[] = [
       lv95: {
         north: 1199748.445,
         east: 2600037.116,
+        spatialReference: SpatialReference.Lv95,
       },
       lv03: {
         north: 1199748.445,
         east: 2600037.116,
+        spatialReference: SpatialReference.Lv03,
       },
       wgs84: {
         north: 46.94881999405051,
         east: 7.439120000642723,
+        spatialReference: SpatialReference.Wgs84,
       },
       height: 540.1,
       swissLocation: {
@@ -226,14 +244,17 @@ export const BERN: ReadServicePointVersion[] = [
       lv95: {
         north: 1199748.445,
         east: 2600037.116,
+        spatialReference: SpatialReference.Lv95,
       },
       lv03: {
         north: 1199748.445,
         east: 2600037.116,
+        spatialReference: SpatialReference.Lv03,
       },
       wgs84: {
         north: 46.94881999405051,
         east: 7.439120000642723,
+        spatialReference: SpatialReference.Wgs84,
       },
       height: 540.1,
       swissLocation: {
@@ -305,14 +326,17 @@ export const BERN: ReadServicePointVersion[] = [
       lv95: {
         north: 1199749.812,
         east: 2600037.945,
+        spatialReference: SpatialReference.Lv95,
       },
       lv03: {
         north: 1199749.812,
         east: 2600037.945,
+        spatialReference: SpatialReference.Lv03,
       },
       wgs84: {
         north: 46.94883229049842,
         east: 7.439130889923937,
+        spatialReference: SpatialReference.Wgs84,
       },
       height: 540.2,
       swissLocation: {
@@ -384,14 +408,17 @@ export const BERN: ReadServicePointVersion[] = [
       lv95: {
         north: 1199749.812,
         east: 2600037.945,
+        spatialReference: SpatialReference.Lv95,
       },
       lv03: {
         north: 1199749.812,
         east: 2600037.945,
+        spatialReference: SpatialReference.Lv03,
       },
       wgs84: {
         north: 46.94883229049842,
         east: 7.439130889923937,
+        spatialReference: SpatialReference.Wgs84,
       },
       height: 540.2,
       swissLocation: {
@@ -463,14 +490,17 @@ export const BERN: ReadServicePointVersion[] = [
       lv95: {
         north: 1199749.812,
         east: 2600037.945,
+        spatialReference: SpatialReference.Lv95,
       },
       lv03: {
         north: 1199749.812,
         east: 2600037.945,
+        spatialReference: SpatialReference.Lv03,
       },
       wgs84: {
         north: 46.94883229049842,
         east: 7.439130889923937,
+        spatialReference: SpatialReference.Wgs84,
       },
       height: 540.2,
       swissLocation: {
