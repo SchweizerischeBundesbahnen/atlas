@@ -72,27 +72,39 @@ describe('GeographyComponent', () => {
   });
 
   it('should transform coordinates & place marker and fly to on change manually coordinates', () => {
-    const coordinates: CoordinatePair = { north: 20000, east: 10000 };
+    const coordinates: CoordinatePair = {
+      north: 20000,
+      east: 10000,
+      spatialReference: SpatialReference.Lv95,
+    };
     component.spatialReference = SpatialReference.Lv95;
     spyOn(component, 'isCoordinatePairNotZero').and.returnValue(true);
-    coordinateTransformationServiceSpy.transform.and.returnValue({ north: 12, east: 12 });
+    coordinateTransformationServiceSpy.transform.and.returnValue({
+      north: 12,
+      east: 12,
+      spatialReference: SpatialReference.Wgs84,
+    });
 
     component.onChangeCoordinatesManually(coordinates);
 
     expect(coordinateTransformationServiceSpy.transform).toHaveBeenCalledWith(
-      { north: 20000, east: 10000 },
-      SpatialReference.Lv95,
-      SpatialReference.Wgs84
+      { north: 20000, east: 10000, spatialReference: SpatialReference.Lv95 },
+      SpatialReference.Wgs84,
     );
     expect(mapService.placeMarkerAndFlyTo).toHaveBeenCalledWith({ lng: 12, lat: 12 });
   });
 
   it('should call isCoordinatesPairValidForTransformation and return false on invalid coordinates', () => {
     spyOn(component, 'isCoordinatesPairValidForTransformation').and.returnValue(false);
-    const isValid = component.isCoordinatesPairValidForTransformation({ north: 0, east: 0 });
+    const isValid = component.isCoordinatesPairValidForTransformation({
+      north: 0,
+      east: 0,
+      spatialReference: SpatialReference.Lv95,
+    });
     expect(component.isCoordinatesPairValidForTransformation).toHaveBeenCalledWith({
       north: 0,
       east: 0,
+      spatialReference: SpatialReference.Lv95,
     });
     expect(isValid).toBeFalse();
   });
@@ -103,16 +115,27 @@ describe('GeographyComponent', () => {
     spyOn(component, 'isCoordinatePairNotZero').and.returnValue(true);
     spyOn(component, 'setFormGroupValue');
     spyOn(component, 'initTransformedCoordinatePair');
-    coordinateTransformationServiceSpy.transform.and.returnValue({ north: 12, east: 12 });
+    coordinateTransformationServiceSpy.transform.and.returnValue({
+      north: 12,
+      east: 12,
+      spatialReference: SpatialReference.Lv95,
+    });
 
-    component.onMapClick({ north: coordinates.lat, east: coordinates.lng });
+    component.onMapClick({
+      north: coordinates.lat,
+      east: coordinates.lng,
+      spatialReference: SpatialReference.Lv95,
+    });
 
     expect(coordinateTransformationServiceSpy.transform).toHaveBeenCalledWith(
-      { north: 10, east: 10 },
-      SpatialReference.Wgs84,
-      SpatialReference.Lv95
+      { north: 10, east: 10, spatialReference: SpatialReference.Lv95 },
+      SpatialReference.Lv95,
     );
-    expect(component.setFormGroupValue).toHaveBeenCalledWith({ north: 12, east: 12 });
+    expect(component.setFormGroupValue).toHaveBeenCalledWith({
+      north: 12,
+      east: 12,
+      spatialReference: SpatialReference.Lv95,
+    });
     expect(component.initTransformedCoordinatePair).toHaveBeenCalled();
   });
 });
