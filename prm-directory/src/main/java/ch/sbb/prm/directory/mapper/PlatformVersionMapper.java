@@ -1,14 +1,17 @@
 package ch.sbb.prm.directory.mapper;
 
-import ch.sbb.prm.directory.controller.model.PlatformVersionModel;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.prm.directory.controller.model.create.CreatePlatformVersionModel;
+import ch.sbb.prm.directory.controller.model.read.ReadPlatformVersionModel;
 import ch.sbb.prm.directory.entity.PlatformVersion;
+import java.util.HashSet;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class PlatformVersionMapper {
 
-  public static PlatformVersionModel toModel(PlatformVersion version){
-    return PlatformVersionModel.builder()
+  public static ReadPlatformVersionModel toModel(PlatformVersion version){
+    return ReadPlatformVersionModel.builder()
         .id(version.getId())
         .sloid(version.getSloid())
         .parentServicePointSloid(version.getParentServicePointSloid())
@@ -37,6 +40,37 @@ public class PlatformVersionMapper {
         .editor(version.getEditor())
         .editionDate(version.getEditionDate())
         .etagVersion(version.getVersion())
+        .build();
+  }
+  public static PlatformVersion toEntity(CreatePlatformVersionModel model){
+    return PlatformVersion.builder()
+        .id(model.getId())
+        .sloid(model.getSloid())
+        .parentServicePointSloid(model.getParentServicePointSloid())
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(model.getNumberWithoutCheckDigit()))
+        .validFrom(model.getValidFrom())
+        .validTo(model.getValidTo())
+        .boardingDevice(model.getBoardingDevice())
+        .additionalInfo(model.getAdditionalInfo())
+        .adviceAccessInfo(model.getAdviceAccessInfo())
+        .dynamicAudio(model.getDynamicAudio())
+        .dynamicVisual(model.getDynamicVisual())
+        .height(model.getHeight())
+        .inclination(model.getInclination())
+        .inclinationLongitudinal(model.getInclinationLongitudinal())
+        .inclinationWidth(model.getInclinationWidth())
+        .infoOpportunities(new HashSet<>(model.getInfoOpportunities()))
+        .levelAccessWheelchair(model.getLevelAccessWheelchair())
+        .partialElevation(model.getPartialElevation())
+        .superelevation(model.getSuperelevation())
+        .tactileSystem(model.getTactileSystem())
+        .vehicleAccess(model.getVehicleAccess())
+        .wheelchairAreaLength(model.getWheelchairAreaLength())
+        .wheelchairAreaWidth(model.getWheelchairAreaWidth())
+        .creator(model.getCreator())
+        .creationDate(model.getCreationDate())
+        .editor(model.getEditor())
+        .editionDate(model.getEditionDate())
         .build();
   }
 

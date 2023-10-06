@@ -1,9 +1,8 @@
 package ch.sbb.prm.directory.controller;
 
 import ch.sbb.prm.directory.api.StopPlaceApiV1;
-import ch.sbb.prm.directory.controller.model.CreateStopPlaceVersionModel;
-import ch.sbb.prm.directory.controller.model.ReadStopPlaceVersionModel;
-import ch.sbb.prm.directory.controller.model.StopPlaceVersionModel;
+import ch.sbb.prm.directory.controller.model.create.CreateStopPlaceVersionModel;
+import ch.sbb.prm.directory.controller.model.read.ReadStopPlaceVersionModel;
 import ch.sbb.prm.directory.entity.StopPlaceVersion;
 import ch.sbb.prm.directory.mapper.StopPlaceVersionMapper;
 import ch.sbb.prm.directory.service.StopPlaceService;
@@ -24,7 +23,7 @@ public class StopPlaceController implements StopPlaceApiV1 {
   }
 
   @Override
-  public StopPlaceVersionModel createStopPlace(CreateStopPlaceVersionModel stopPlaceVersionModel) {
+  public ReadStopPlaceVersionModel createStopPlace(CreateStopPlaceVersionModel stopPlaceVersionModel) {
     StopPlaceVersion stopPlaceVersion = StopPlaceVersionMapper.toEntity(stopPlaceVersionModel);
     StopPlaceVersion savedVersion = stopPlaceService.createStopPlace(stopPlaceVersion);
     return StopPlaceVersionMapper.toModel(savedVersion);
