@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { BusinessOrganisationsService } from './api/businessOrganisations.service';
 import { CompaniesService } from './api/companies.service';
 import { ExportServicePointBatchService } from './api/exportServicePointBatch.service';
+import { GeoDataService } from './api/geoData.service';
 import { ImportServicePointBatchService } from './api/importServicePointBatch.service';
 import { LinesService } from './api/lines.service';
 import { LoadingPointsService } from './api/loadingPoints.service';
