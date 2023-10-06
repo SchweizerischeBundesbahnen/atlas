@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberAlreadyExistsException;
+import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointFotCommentService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
@@ -24,6 +25,8 @@ class ServicePointControllerTest {
   private ServicePointFotCommentService servicePointFotCommentService;
   @Mock
   private ServicePointImportService servicePointImportService;
+  @Mock
+  private GeoReferenceService geoReferenceService;
 
   private ServicePointController servicePointController;
 
@@ -31,7 +34,7 @@ class ServicePointControllerTest {
   void setUp() {
     MockitoAnnotations.openMocks(this);
     servicePointController = new ServicePointController(servicePointService, servicePointFotCommentService,
-        servicePointImportService);
+        servicePointImportService, geoReferenceService);
 
     when(servicePointService.save(any())).then(i -> i.getArgument(0, ServicePointVersion.class));
   }
