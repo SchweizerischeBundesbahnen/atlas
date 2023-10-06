@@ -8,7 +8,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.prm.directory.TicketCounterTestData;
 import ch.sbb.prm.directory.repository.TicketCounterRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +24,6 @@ class TicketCounterVersionControllerApiTest extends BaseControllerApiTest {
   @BeforeEach()
   void initDB() {
     ticketCounterRepository.save(TicketCounterTestData.getTicketCounterVersion());
-  }
-
-  @AfterEach
-  void tearDown() {
-    ticketCounterRepository.deleteAll();
   }
 
   @Test

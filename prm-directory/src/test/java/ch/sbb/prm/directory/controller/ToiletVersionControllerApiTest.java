@@ -8,7 +8,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.prm.directory.ToiletTestData;
 import ch.sbb.prm.directory.repository.ToiletRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +24,6 @@ class ToiletVersionControllerApiTest extends BaseControllerApiTest {
   @BeforeEach()
   void initDB() {
     toiletRepository.save(ToiletTestData.getToiletVersion());
-  }
-
-  @AfterEach
-  void tearDown() {
-    toiletRepository.deleteAll();
   }
 
   @Test

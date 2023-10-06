@@ -1,14 +1,16 @@
 package ch.sbb.prm.directory.mapper;
 
-import ch.sbb.prm.directory.controller.model.ReferencePointVersionModel;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.prm.directory.controller.model.create.CreateReferencePointVersionModel;
+import ch.sbb.prm.directory.controller.model.read.ReadReferencePointVersionModel;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class ReferencePointVersionMapper {
 
-  public static ReferencePointVersionModel toModel(ReferencePointVersion version){
-    return ReferencePointVersionModel.builder()
+  public static ReadReferencePointVersionModel toModel(ReferencePointVersion version){
+    return ReadReferencePointVersionModel.builder()
         .id(version.getId())
         .sloid(version.getSloid())
         .parentServicePointSloid(version.getParentServicePointSloid())
@@ -23,6 +25,24 @@ public class ReferencePointVersionMapper {
         .editor(version.getEditor())
         .editionDate(version.getEditionDate())
         .etagVersion(version.getVersion())
+        .build();
+  }
+
+  public static ReferencePointVersion toEntity(CreateReferencePointVersionModel model){
+    return ReferencePointVersion.builder()
+        .id(model.getId())
+        .sloid(model.getSloid())
+        .parentServicePointSloid(model.getParentServicePointSloid())
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(model.getNumberWithoutCheckDigit()))
+        .validFrom(model.getValidFrom())
+        .validTo(model.getValidTo())
+        .designation(model.getDesignation())
+        .mainReferencePoint(model.isMainReferencePoint())
+        .referencePointType(model.getReferencePointType())
+        .creator(model.getCreator())
+        .creationDate(model.getCreationDate())
+        .editor(model.getEditor())
+        .editionDate(model.getEditionDate())
         .build();
   }
 
