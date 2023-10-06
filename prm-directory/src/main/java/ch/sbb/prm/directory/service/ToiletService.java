@@ -31,9 +31,9 @@ public class ToiletService extends RelatableService<ToiletVersion> {
    return toiletRepository.findAll();
   }
 
-  public void createToilet(ToiletVersion version) {
+  public ToiletVersion createToilet(ToiletVersion version) {
     createRelation(version);
-    toiletRepository.save(version);
+    return  toiletRepository.saveAndFlush(version);
   }
 
 
