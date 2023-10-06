@@ -21,7 +21,6 @@ import ch.sbb.prm.directory.repository.PlatformRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.StopPlaceRepository;
 import ch.sbb.prm.directory.service.RelationService;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -43,13 +42,6 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
     this.stopPlaceRepository = stopPlaceRepository;
     this.referencePointRepository = referencePointRepository;
     this.relationService = relationService;
-  }
-
-  @AfterEach
-  void tearDown() {
-    platformRepository.deleteAll();
-    stopPlaceRepository.deleteAll();
-    referencePointRepository.deleteAll();
   }
 
   @Test
