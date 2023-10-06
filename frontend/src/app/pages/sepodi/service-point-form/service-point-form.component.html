@@ -31,29 +31,7 @@
   </div>
 
   <div class="col-12 d-flex mt-2 flex-column">
-    <div class="color-gray-900">
-      <atlas-text-field
-        *ngIf="!hasAbbreviation && isAbbreviationAllowed && isLatestVersionSelected"
-        [fieldExamples]="[
-          { label: 'FORM.FOR_EXAMPLE', translate: true },
-          { label: 'BIBD |', translate: false },
-          { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '6' } }
-        ]"
-        [formGroup]="form"
-        [required]="false"
-        controlName="abbreviation"
-        fieldLabel="SEPODI.SERVICE_POINTS.ABBREVIATION"
-      >
-      </atlas-text-field>
-      <div *ngIf="hasAbbreviation || !isAbbreviationAllowed || !isLatestVersionSelected">
-        <div class="font-bold-lg color-gray-900">
-          {{ 'SEPODI.SERVICE_POINTS.ABBREVIATION' | translate }}
-        </div>
-        <div class="color-gray-900">
-          {{ currentVersion?.abbreviation ?? '-' }}
-        </div>
-      </div>
-    </div>
+    <ng-content select="[abbreviation]"></ng-content>
   </div>
 
   <div class="font-bold-2xl mt-5">{{ 'FORM.KEY_DATA' | translate }}</div>
@@ -163,6 +141,11 @@
 
   <div class="font-bold-2xl mt-5">
     {{ 'SEPODI.GEOLOCATION.GEOGRAPHY' | translate }}
+
+    <form-info-icon
+      infoTitle="{{ 'SEPODI.GEOLOCATION.GEOGRAPHY_INFORMATION' | translate }}"
+    ></form-info-icon>
+
     <atlas-slide-toggle
       [toggle]="!!form.value.servicePointGeolocation?.spatialReference"
       (toggleChange)="onGeolocationToggleChange($event)"
@@ -184,7 +167,7 @@
           {{ 'SEPODI.GEOLOCATION.COUNTRY' | translate }}
         </div>
         <div class="color-gray-900">
-          {{ currentVersion.servicePointGeolocation?.isoCountryCode ?? '-' }}
+          {{ locationInformation?.isoCountryCode ?? '-' }}
         </div>
       </div>
       <div class="col-3 pe-3">
@@ -192,7 +175,7 @@
           {{ 'SEPODI.GEOLOCATION.CANTON' | translate }}
         </div>
         <div class="color-gray-900">
-          {{ currentVersion.servicePointGeolocation?.swissLocation?.canton | displayCanton }}
+          {{ locationInformation?.canton | displayCanton }}
         </div>
       </div>
       <div class="col-3 pe-3">
@@ -200,10 +183,7 @@
           {{ 'SEPODI.GEOLOCATION.MUNICIPALITY' | translate }}
         </div>
         <div class="color-gray-900">
-          {{
-            currentVersion.servicePointGeolocation?.swissLocation?.localityMunicipality
-              ?.municipalityName ?? '-'
-          }}
+          {{ locationInformation?.municipalityName ?? '-' }}
         </div>
       </div>
       <div class="col-3 pe-3">
@@ -211,10 +191,7 @@
           {{ 'SEPODI.GEOLOCATION.DISTRICT' | translate }}
         </div>
         <div class="color-gray-900">
-          {{
-            currentVersion.servicePointGeolocation?.swissLocation?.localityMunicipality
-              ?.localityName ?? '-'
-          }}
+          {{ locationInformation?.localityName ?? '-' }}
         </div>
       </div>
     </div>
@@ -270,7 +247,7 @@
       </mat-checkbox>
     </div>
 
-    <div class="ps-2 col-3">
+    <div class="col-8 service-point-search">
       <service-point-search
         [disabled]="form.disabled || form.controls.operatingPointRouteNetwork.value!"
         class="mt-3 col-12"
