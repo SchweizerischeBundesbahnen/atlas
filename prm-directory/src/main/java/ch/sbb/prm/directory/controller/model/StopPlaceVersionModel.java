@@ -19,7 +19,6 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @FieldNameConstants
-@Schema(name = "StopPlaceVersion")
 public abstract class StopPlaceVersionModel extends BasePrmVersionModel implements DatesValidator {
 
   @Schema(description = "Means of transport. Indicates for which means of transport a stop is intended/equipped. Mandatory for "
