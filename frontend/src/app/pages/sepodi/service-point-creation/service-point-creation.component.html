@@ -12,7 +12,22 @@
     >
     </atlas-select>
 
-    <service-point-form [form]="form"></service-point-form>
+    <service-point-form [form]="form">
+      <div class="color-gray-900" abbreviation>
+        <atlas-text-field
+          [fieldExamples]="[
+            { label: 'FORM.FOR_EXAMPLE', translate: true },
+            { label: 'BIBD |', translate: false },
+            { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '6' } }
+          ]"
+          [formGroup]="form"
+          [required]="false"
+          controlName="abbreviation"
+          fieldLabel="SEPODI.SERVICE_POINTS.ABBREVIATION"
+        >
+        </atlas-text-field>
+      </div>
+    </service-point-form>
   </div>
 
   <footer class="d-flex justify-content-center align-items-center">
