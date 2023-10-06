@@ -49,7 +49,7 @@ class ParkingLotServiceTest {
   void shouldNotCreateParkingLotWhenStopPlaceDoesNotExists() {
     //given
     String parentServicePointSloid="ch:1:sloid:70000";
-    ParkingLotVersion parkingLot = ParkingLotTestData.getParkingLot();
+    ParkingLotVersion parkingLot = ParkingLotTestData.getParkingLotVersion();
     parkingLot.setParentServicePointSloid(parentServicePointSloid);
 
     //when & then
@@ -65,7 +65,7 @@ class ParkingLotServiceTest {
     StopPlaceVersion stopPlaceVersion = StopPlaceTestData.getStopPlaceVersion();
     stopPlaceVersion.setSloid(parentServicePointSloid);
     stopPlaceRepository.save(stopPlaceVersion);
-    ParkingLotVersion parkingLot = ParkingLotTestData.getParkingLot();
+    ParkingLotVersion parkingLot = ParkingLotTestData.getParkingLotVersion();
     parkingLot.setParentServicePointSloid(parentServicePointSloid);
     //when
     parkingLotService.createParkingLot(parkingLot);
@@ -90,7 +90,7 @@ class ParkingLotServiceTest {
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
     referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
     referencePointRepository.save(referencePointVersion);
-    ParkingLotVersion parkingLot = ParkingLotTestData.getParkingLot();
+    ParkingLotVersion parkingLot = ParkingLotTestData.getParkingLotVersion();
     parkingLot.setParentServicePointSloid(parentServicePointSloid);
 
     //when
