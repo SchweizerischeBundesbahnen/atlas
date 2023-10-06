@@ -1,7 +1,7 @@
 package ch.sbb.prm.directory.api;
 
-import ch.sbb.prm.directory.controller.model.create.CreatePlatformVersionModel;
-import ch.sbb.prm.directory.controller.model.read.ReadPlatformVersionModel;
+import ch.sbb.prm.directory.controller.model.platform.CreatePlatformVersionModel;
+import ch.sbb.prm.directory.controller.model.platform.ReadPlatformVersionModel;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.http.HttpStatus;

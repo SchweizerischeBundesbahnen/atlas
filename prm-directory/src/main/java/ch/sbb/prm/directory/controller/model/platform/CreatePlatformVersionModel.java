@@ -1,8 +1,7 @@
-package ch.sbb.prm.directory.controller.model.create;
+package ch.sbb.prm.directory.controller.model.platform;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.validation.DatesValidator;
-import ch.sbb.prm.directory.controller.model.ReferencePointVersionModel;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -20,8 +19,8 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @FieldNameConstants
-@Schema(name = "CreateReferencePointVersion")
-public class CreateReferencePointVersionModel extends ReferencePointVersionModel implements DatesValidator {
+@Schema(name = "CreatePlatformVersion")
+public class CreatePlatformVersionModel extends PlatformVersionModel implements DatesValidator {
 
   @Schema(description = "Seven digits number. First two digits represent Country Code. "
       + "Last 5 digits represent service point ID.", example = "8034505")
@@ -29,4 +28,5 @@ public class CreateReferencePointVersionModel extends ReferencePointVersionModel
   @Max(AtlasFieldLengths.MAX_SEVEN_DIGITS_NUMBER)
   @NotNull
   private Integer numberWithoutCheckDigit;
+
 }

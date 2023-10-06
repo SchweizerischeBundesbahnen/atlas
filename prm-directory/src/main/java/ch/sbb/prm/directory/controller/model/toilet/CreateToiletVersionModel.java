@@ -1,7 +1,7 @@
-package ch.sbb.prm.directory.controller.model.create;
+package ch.sbb.prm.directory.controller.model.toilet;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
-import ch.sbb.prm.directory.controller.model.StopPlaceVersionModel;
+import ch.sbb.atlas.validation.DatesValidator;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -19,8 +19,8 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @FieldNameConstants
-@Schema(name = "CreateStopPlaceVersion")
-public class CreateStopPlaceVersionModel extends StopPlaceVersionModel {
+@Schema(name = "CreateToiletVersion")
+public class CreateToiletVersionModel extends ToiletVersionModel implements DatesValidator {
 
   @Schema(description = "Seven digits number. First two digits represent Country Code. "
       + "Last 5 digits represent service point ID.", example = "8034505")

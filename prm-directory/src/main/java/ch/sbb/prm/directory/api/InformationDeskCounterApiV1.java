@@ -1,7 +1,7 @@
 package ch.sbb.prm.directory.api;
 
-import ch.sbb.prm.directory.controller.model.create.CreateInformationDeskVersionModel;
-import ch.sbb.prm.directory.controller.model.read.ReadInformationDeskVersionModel;
+import ch.sbb.prm.directory.controller.model.infromationdesk.CreateInformationDeskVersionModel;
+import ch.sbb.prm.directory.controller.model.infromationdesk.ReadInformationDeskVersionModel;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.http.HttpStatus;

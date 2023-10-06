@@ -1,7 +1,7 @@
 package ch.sbb.prm.directory.api;
 
-import ch.sbb.prm.directory.controller.model.create.CreateParkingLotVersionModel;
-import ch.sbb.prm.directory.controller.model.read.ReadParkingLotVersionModel;
+import ch.sbb.prm.directory.controller.model.parkinglot.CreateParkingLotVersionModel;
+import ch.sbb.prm.directory.controller.model.parkinglot.ReadParkingLotVersionModel;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.http.HttpStatus;

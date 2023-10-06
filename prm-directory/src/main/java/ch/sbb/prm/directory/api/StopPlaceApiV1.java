@@ -1,8 +1,8 @@
 package ch.sbb.prm.directory.api;
 
-import ch.sbb.prm.directory.controller.model.StopPlaceVersionModel;
-import ch.sbb.prm.directory.controller.model.create.CreateStopPlaceVersionModel;
-import ch.sbb.prm.directory.controller.model.read.ReadStopPlaceVersionModel;
+import ch.sbb.prm.directory.controller.model.stopplace.CreateStopPlaceVersionModel;
+import ch.sbb.prm.directory.controller.model.stopplace.ReadStopPlaceVersionModel;
+import ch.sbb.prm.directory.controller.model.stopplace.StopPlaceVersionModel;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.http.HttpStatus;

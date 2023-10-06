@@ -1,8 +1,8 @@
 package ch.sbb.prm.directory.controller;
 
 import ch.sbb.prm.directory.api.TicketCounterApiV1;
-import ch.sbb.prm.directory.controller.model.create.CreateTicketCounterVersionModel;
-import ch.sbb.prm.directory.controller.model.read.ReadTicketCounterVersionModel;
+import ch.sbb.prm.directory.controller.model.ticketcounter.CreateTicketCounterVersionModel;
+import ch.sbb.prm.directory.controller.model.ticketcounter.ReadTicketCounterVersionModel;
 import ch.sbb.prm.directory.entity.TicketCounterVersion;
 import ch.sbb.prm.directory.mapper.TicketCounterVersionMapper;
 import ch.sbb.prm.directory.service.TicketCounterService;

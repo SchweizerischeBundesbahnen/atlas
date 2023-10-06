@@ -1,7 +1,8 @@
-package ch.sbb.prm.directory.controller.model;
+package ch.sbb.prm.directory.controller.model.platform;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.validation.DatesValidator;
+import ch.sbb.prm.directory.controller.model.BasePrmVersionModel;
 import ch.sbb.prm.directory.enumeration.BasicAttributeType;
 import ch.sbb.prm.directory.enumeration.BoardingDeviceAttributeType;
 import ch.sbb.prm.directory.enumeration.BooleanAttributeType;

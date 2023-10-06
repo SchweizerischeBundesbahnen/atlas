@@ -8,7 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.prm.directory.StopPlaceTestData;
-import ch.sbb.prm.directory.controller.model.create.CreateStopPlaceVersionModel;
+import ch.sbb.prm.directory.controller.model.stopplace.CreateStopPlaceVersionModel;
 import ch.sbb.prm.directory.repository.StopPlaceRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

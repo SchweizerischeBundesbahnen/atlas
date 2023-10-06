@@ -1,8 +1,9 @@
-package ch.sbb.prm.directory.controller.model;
+package ch.sbb.prm.directory.controller.model.ticketcounter;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.validation.DatesValidator;
-import ch.sbb.prm.directory.enumeration.BooleanOptionalAttributeType;
+import ch.sbb.prm.directory.controller.model.BasePrmVersionModel;
+import ch.sbb.prm.directory.enumeration.StandardAttributeType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -18,7 +19,7 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @FieldNameConstants
-public abstract class ParkingLotVersionModel extends BasePrmVersionModel implements DatesValidator {
+public abstract class TicketCounterVersionModel extends BasePrmVersionModel implements DatesValidator {
 
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
   @Schema(description = "Hierarchical assignment of the TPE which is to be processed to another TPE. It is a 1:1 relationship. "
@@ -31,10 +32,13 @@ public abstract class ParkingLotVersionModel extends BasePrmVersionModel impleme
   @Schema(description = "Additional Information")
   private String info;
 
-  @Schema(description = "Availability of parking spaces")
-  private BooleanOptionalAttributeType placesAvailable;
+  @Schema(description = "Induction amplifier")
+  private StandardAttributeType inductionLoop;
 
-  @Schema(description = "Parking spaces for Person with Reduced Mobility")
-  private BooleanOptionalAttributeType prmPlacesAvailable;
+  @Schema(description = "Opening hours")
+  private String openingHours;
+
+  @Schema(description = "Wheelchair accessibility")
+  private StandardAttributeType wheelchairAccess;
 
 }
