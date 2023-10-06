@@ -6,7 +6,6 @@ import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.prm.directory.InformationDeskTestData;
 import ch.sbb.prm.directory.entity.InformationDeskVersion;
 import java.util.List;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +24,7 @@ class InformationDeskRepositoryTest {
 
   @BeforeEach()
   void initDB() {
-    informationDeskRepository.save(InformationDeskTestData.getInformationDesk());
-  }
-
-  @AfterEach
-  void tearDown() {
-    informationDeskRepository.deleteAll();
+    informationDeskRepository.save(InformationDeskTestData.getInformationDeskVersion());
   }
 
   @Test

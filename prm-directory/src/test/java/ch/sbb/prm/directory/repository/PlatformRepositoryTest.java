@@ -6,7 +6,6 @@ import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.prm.directory.PlatformTestData;
 import ch.sbb.prm.directory.entity.PlatformVersion;
 import java.util.List;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +25,6 @@ class PlatformRepositoryTest {
   @BeforeEach()
   void initDB() {
     platformRepository.save(PlatformTestData.getPlatformVersion());
-  }
-
-  @AfterEach
-  void tearDown() {
-    platformRepository.deleteAll();
   }
 
   @Test

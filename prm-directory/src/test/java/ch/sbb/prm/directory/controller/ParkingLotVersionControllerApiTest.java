@@ -8,7 +8,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.prm.directory.ParkingLotTestData;
 import ch.sbb.prm.directory.repository.ParkingLotRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +23,7 @@ class ParkingLotVersionControllerApiTest extends BaseControllerApiTest {
 
   @BeforeEach()
   void initDB() {
-    parkingLotRepository.save(ParkingLotTestData.getParkingLot());
-  }
-
-  @AfterEach
-  void tearDown() {
-    parkingLotRepository.deleteAll();
+    parkingLotRepository.save(ParkingLotTestData.getParkingLotVersion());
   }
 
   @Test
