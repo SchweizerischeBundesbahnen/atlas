@@ -30,9 +30,9 @@ public class InformationDeskService extends RelatableService<InformationDeskVers
    return informationDeskRepository.findAll();
   }
 
-  public void createInformationDesk(InformationDeskVersion version) {
+  public InformationDeskVersion createInformationDesk(InformationDeskVersion version) {
     createRelation(version);
-    informationDeskRepository.save(version);
+    return informationDeskRepository.saveAndFlush(version);
   }
 
 }
