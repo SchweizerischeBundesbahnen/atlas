@@ -31,9 +31,9 @@ public class PlatformService extends RelatableService<PlatformVersion> {
     return platformRepository.findAll();
   }
 
-  public void createPlatformVersion(PlatformVersion version) {
+  public PlatformVersion createPlatformVersion(PlatformVersion version) {
     createRelation(version);
-    platformRepository.save(version);
+    return platformRepository.saveAndFlush(version);
   }
 
 }

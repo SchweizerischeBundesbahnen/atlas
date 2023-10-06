@@ -3,7 +3,7 @@
 :compat-mode:
 :page-layout!:
 :toc: left
-:toclevels: 1
+:toclevels: 2
 :sectanchors:
 :sectlinks:
 :linkattrs:
@@ -46,6 +46,10 @@ include::../../../../base-atlas/documentation/servicepoint/when_to_use_files_or_
 
 include::{snippets}/stop-place-version-controller-api-test/should-get-stop-places-version/auto-section.adoc[]
 
+=== Create Stop Places - Successfully
+
+include::{snippets}/stop-place-version-controller-api-test/should-create-stop-place/auto-section.adoc[]
+
 == Reference Point
 
 === Get Reference Points - Successfully
@@ -57,6 +61,10 @@ include::{snippets}/reference-point-version-controller-api-test/should-get-refer
 === Get Platforms - Successfully
 
 include::{snippets}/platform-version-controller-api-test/should-get-platforms-version/auto-section.adoc[]
+
+=== Get Platforms - Successfully
+
+include::{snippets}/platform-version-controller-api-test/should-create-platform/auto-section.adoc[]
 
 == Toilet
 

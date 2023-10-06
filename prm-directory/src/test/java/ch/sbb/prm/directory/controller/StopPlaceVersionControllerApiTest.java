@@ -3,13 +3,12 @@ package ch.sbb.prm.directory.controller;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.prm.directory.StopPlaceTestData;
-import ch.sbb.prm.directory.controller.model.CreateStopPlaceVersionModel;
+import ch.sbb.prm.directory.controller.model.create.CreateStopPlaceVersionModel;
 import ch.sbb.prm.directory.repository.StopPlaceRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,7 +48,6 @@ class StopPlaceVersionControllerApiTest extends BaseControllerApiTest {
     //when && then
     mvc.perform(post("/v1/stop-places").contentType(contentType)
             .content(mapper.writeValueAsString(stopPlaceCreateVersionModel)))
-        .andDo(print())
         .andExpect(status().isCreated());
 
   }
