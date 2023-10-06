@@ -82,6 +82,10 @@ include::{snippets}/toilet-version-controller-api-test/should-get-platforms-vers
 
 include::{snippets}/ticket-counter-version-controller-api-test/should-get-ticket-counters-version/auto-section.adoc[]
 
+=== Create Ticket Counters - Successfully
+
+include::{snippets}/ticket-counter-version-controller-api-test/should-create-ticket-counter/auto-section.adoc[]
+
 == Information Desk
 
 === Get Information Desks - Successfully
