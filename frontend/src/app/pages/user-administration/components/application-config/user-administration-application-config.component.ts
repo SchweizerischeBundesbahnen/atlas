@@ -31,10 +31,10 @@ export class UserAdministrationApplicationConfigComponent implements OnInit, OnD
   @Input() role: ApplicationRole = 'READER';
 
   boListener$: Observable<BusinessOrganisation[]> = of([]);
-
   availableOptions: ApplicationRole[] = [];
   selectedIndex = -1;
 
+  public readonly getCountryEnum = Countries.getCountryEnum;
   readonly boFormCtrlName = 'businessOrganisation';
   readonly businessOrganisationForm: FormGroup = new FormGroup({
     [this.boFormCtrlName]: new FormControl<BusinessOrganisation | null>(null),
@@ -63,29 +63,6 @@ export class UserAdministrationApplicationConfigComponent implements OnInit, OnD
     },
   ];
 
-  private filteredCountries(): Country[] {
-    return Object.values(Country).filter(
-      (country) =>
-        country !== Country.Canada &&
-        country !== Country.Congo &&
-        country !== Country.SouthAfrica &&
-        country !== Country.Australia &&
-        country !== Country.Liechtenstein &&
-        country !== Country.Sudan &&
-        country !== Country.Tschad &&
-        country !== Country.Libyen &&
-        country !== Country.Monaco &&
-        country !== Country.Niger &&
-        country !== Country.Nigeria &&
-        country !== Country.Jemen &&
-        country !== Country.Switzerland &&
-        country !== Country.GermanyBus &&
-        country !== Country.AustriaBus &&
-        country !== Country.ItalyBus &&
-        country !== Country.FranceBus
-    );
-  }
-
   private filterAndSortCountries(): Country[] {
     const sortedCountryArray: Country[] = [];
     sortedCountryArray.push(
@@ -93,18 +70,15 @@ export class UserAdministrationApplicationConfigComponent implements OnInit, OnD
       Country.GermanyBus,
       Country.AustriaBus,
       Country.ItalyBus,
-      Country.FranceBus
+      Country.FranceBus,
     );
-    const filteredCountries = this.filteredCountries();
+    const filteredCountries = Countries.filteredCountries();
     filteredCountries.sort(
       (n1, n2) =>
-        this.getCountryNameUicCodeFromCountry(n1) - this.getCountryNameUicCodeFromCountry(n2)
+        Countries.getCountryNameUicCodeFromCountry(n1) -
+        Countries.getCountryNameUicCodeFromCountry(n2),
     );
     return sortedCountryArray.concat(filteredCountries);
-  }
-
-  private getCountryNameUicCodeFromCountry(country: Country): number {
-    return Countries.fromCountry(country)!.uicCode;
   }
 
   private readonly boFormResetEventSubscription: Subscription;
@@ -117,28 +91,28 @@ export class UserAdministrationApplicationConfigComponent implements OnInit, OnD
 
   constructor(
     private readonly boLanguageService: BusinessOrganisationLanguageService,
-    readonly userPermissionManager: UserPermissionManager
+    readonly userPermissionManager: UserPermissionManager,
   ) {
     this.boFormResetEventSubscription = userPermissionManager.boFormResetEvent$.subscribe(() =>
-      this.businessOrganisationForm.reset()
+      this.businessOrganisationForm.reset(),
     );
   }
 
   resetCountries() {
     this.countrySelection = this.userPermissionManager.getRestrictionValues(
-      this.userPermissionManager.getPermissionByApplication(this.application)
+      this.userPermissionManager.getPermissionByApplication(this.application),
     ) as [Country];
   }
 
   ngOnInit() {
     this.availableOptions = this.userPermissionManager.getAvailableApplicationRolesOfApplication(
-      this.application
+      this.application,
     );
     this.boListener$ = this.userPermissionManager.boOfApplicationsSubject$.pipe(
-      map((bosOfApplications) => bosOfApplications[this.application])
+      map((bosOfApplications) => bosOfApplications[this.application]),
     );
     this.cantonSelection = this.userPermissionManager.getRestrictionValues(
-      this.userPermissionManager.getPermissionByApplication(this.application)
+      this.userPermissionManager.getPermissionByApplication(this.application),
     ) as [SwissCanton];
     this.resetCountries();
   }
@@ -162,8 +136,6 @@ export class UserAdministrationApplicationConfigComponent implements OnInit, OnD
 
   readonly getCantonAbbreviation = (canton: SwissCanton) => Cantons.fromSwissCanton(canton)?.short;
 
-  readonly getCountryEnum = (country: Country) => Countries.fromCountry(country)?.enumCountry;
-
   cantonSelectionChanged($event: MatSelectChange) {
     const values = $event.value as SwissCanton[];
     const permissionRestriction = values.map((selection) => ({
@@ -185,22 +157,22 @@ export class UserAdministrationApplicationConfigComponent implements OnInit, OnD
     const businessPermissionRestrictions = this.userPermissionManager
       .getPermissionByApplication(this.application)
       .permissionRestrictions.filter(
-        (sboid) => sboid.type === PermissionRestrictionType.BusinessOrganisation
+        (sboid) => sboid.type === PermissionRestrictionType.BusinessOrganisation,
       );
     const role = this.userPermissionManager.getPermissionByApplication(this.application).role;
-    this.setSboidandCountryPermissions(
+    this.setSboidAndCountryPermissions(
       businessPermissionRestrictions,
       countryPermissionRestrictions,
       role,
-      this.application
+      this.application,
     );
   }
 
-  setSboidandCountryPermissions(
+  setSboidAndCountryPermissions(
     businessPermissionRestrictions: SboidPermissionRestrictionModel[],
     countryPermissionRestrictions: CountryPermissionRestrictionModel[],
     role: ApplicationRole,
-    application: ApplicationType
+    application: ApplicationType,
   ) {
     this.userPermissionManager.setPermissions([
       {

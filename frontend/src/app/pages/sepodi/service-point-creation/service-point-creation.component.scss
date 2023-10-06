@@ -18,3 +18,10 @@ footer {
   border-bottom-left-radius: variables.$border-radius;
   border-bottom-right-radius: variables.$border-radius;
 }
+
+.footer-box {
+  position: sticky;
+  bottom: 0;
+  height: 9rem;
+  background-color: variables.$background;
+}
