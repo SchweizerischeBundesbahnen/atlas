@@ -1,8 +1,10 @@
 package ch.sbb.prm.directory;
 
+import static java.util.List.of;
+
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
-import ch.sbb.prm.directory.controller.model.CreateStopPlaceVersionModel;
+import ch.sbb.prm.directory.controller.model.create.CreateStopPlaceVersionModel;
 import ch.sbb.prm.directory.entity.StopPlaceVersion;
 import ch.sbb.prm.directory.enumeration.StandardAttributeType;
 import java.time.LocalDate;
@@ -50,7 +52,7 @@ public class StopPlaceTestData {
         .numberWithoutCheckDigit(8507000)
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))
-        .meansOfTransport(java.util.List.of(MeanOfTransport.BUS, MeanOfTransport.BOAT))
+        .meansOfTransport(of(MeanOfTransport.BUS, MeanOfTransport.BOAT))
         .freeText("I am a free text!!!")
         .address("Wylerstrasse 123")
         .zipCode("3014")
