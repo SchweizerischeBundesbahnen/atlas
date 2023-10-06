@@ -31,9 +31,9 @@ public class TicketCounterService extends RelatableService<TicketCounterVersion>
     return ticketCounterRepository.findAll();
   }
 
-  public void createTicketCounter(TicketCounterVersion version) {
+  public TicketCounterVersion createTicketCounter(TicketCounterVersion version) {
     createRelation(version);
-    ticketCounterRepository.save(version);
+    return ticketCounterRepository.saveAndFlush(version);
   }
 
 }
