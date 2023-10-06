@@ -1,7 +1,9 @@
 package ch.sbb.prm.directory.controller;
 
 import ch.sbb.prm.directory.api.ParkingLotApiV1;
-import ch.sbb.prm.directory.controller.model.ParkingLotVersionModel;
+import ch.sbb.prm.directory.controller.model.create.CreateParkingLotVersionModel;
+import ch.sbb.prm.directory.controller.model.read.ReadParkingLotVersionModel;
+import ch.sbb.prm.directory.entity.ParkingLotVersion;
 import ch.sbb.prm.directory.mapper.ParkingLotVersionMapper;
 import ch.sbb.prm.directory.service.ParkingLotService;
 import java.util.List;
@@ -17,7 +19,13 @@ public class ParkingLotsController implements ParkingLotApiV1 {
   private final ParkingLotService parkingLotService;
 
   @Override
-  public List<ParkingLotVersionModel> getParkingLots() {
+  public List<ReadParkingLotVersionModel> getParkingLots() {
     return parkingLotService.getAllParkingLots().stream().map(ParkingLotVersionMapper::toModel).sorted().toList();
+  }
+
+  @Override
+  public ReadParkingLotVersionModel createParkingLot(CreateParkingLotVersionModel model) {
+    ParkingLotVersion parkingLotVersion = parkingLotService.createParkingLot(ParkingLotVersionMapper.toEntity(model));
+    return ParkingLotVersionMapper.toModel(parkingLotVersion);
   }
 }

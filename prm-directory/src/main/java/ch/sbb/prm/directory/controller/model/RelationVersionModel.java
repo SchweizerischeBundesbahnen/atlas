@@ -1,12 +1,15 @@
 package ch.sbb.prm.directory.controller.model;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.validation.DatesValidator;
 import ch.sbb.prm.directory.enumeration.ReferencePointElementType;
 import ch.sbb.prm.directory.enumeration.StandardAttributeType;
 import ch.sbb.prm.directory.enumeration.StepFreeAccessAttributeType;
 import ch.sbb.prm.directory.enumeration.TactileVisualAttributeType;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,6 +31,10 @@ public class RelationVersionModel extends BasePrmVersionModel implements DatesVa
   @Schema(description = "Hierarchical assignment of the TPE which is to be processed to another TPE. It is a 1:1 relationship. "
       + "As key, the SLOID is used.", example = "ch:1:sloid:16161:1")
   private String parentServicePointSloid;
+
+  @NotNull
+  @Valid
+  private ServicePointNumber number;
 
   @Schema(description = "Tactile-visual markings")
   private TactileVisualAttributeType tactileVisualMarks;
