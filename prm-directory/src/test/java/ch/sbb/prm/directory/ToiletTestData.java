@@ -1,7 +1,7 @@
 package ch.sbb.prm.directory;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.prm.directory.controller.model.create.CreateToiletVersionModel;
+import ch.sbb.prm.directory.controller.model.toilet.CreateToiletVersionModel;
 import ch.sbb.prm.directory.entity.ToiletVersion;
 import ch.sbb.prm.directory.enumeration.StandardAttributeType;
 import java.time.LocalDate;

@@ -1,8 +1,8 @@
 package ch.sbb.prm.directory.controller;
 
 import ch.sbb.prm.directory.api.ToiletApiV1;
-import ch.sbb.prm.directory.controller.model.create.CreateToiletVersionModel;
-import ch.sbb.prm.directory.controller.model.read.ReadToiletVersionModel;
+import ch.sbb.prm.directory.controller.model.toilet.CreateToiletVersionModel;
+import ch.sbb.prm.directory.controller.model.toilet.ReadToiletVersionModel;
 import ch.sbb.prm.directory.entity.ToiletVersion;
 import ch.sbb.prm.directory.mapper.ToiletVersionMapper;
 import ch.sbb.prm.directory.service.ToiletService;

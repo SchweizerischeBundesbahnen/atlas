@@ -1,7 +1,8 @@
-package ch.sbb.prm.directory.controller.model;
+package ch.sbb.prm.directory.controller.model.toilet;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.validation.DatesValidator;
+import ch.sbb.prm.directory.controller.model.BasePrmVersionModel;
 import ch.sbb.prm.directory.enumeration.StandardAttributeType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Size;
@@ -18,7 +19,7 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @FieldNameConstants
-public abstract class TicketCounterVersionModel extends BasePrmVersionModel implements DatesValidator {
+public abstract class ToiletVersionModel extends BasePrmVersionModel implements DatesValidator {
 
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
   @Schema(description = "Hierarchical assignment of the TPE which is to be processed to another TPE. It is a 1:1 relationship. "
@@ -31,13 +32,7 @@ public abstract class TicketCounterVersionModel extends BasePrmVersionModel impl
   @Schema(description = "Additional Information")
   private String info;
 
-  @Schema(description = "Induction amplifier")
-  private StandardAttributeType inductionLoop;
-
-  @Schema(description = "Opening hours")
-  private String openingHours;
-
-  @Schema(description = "Wheelchair accessibility")
-  private StandardAttributeType wheelchairAccess;
+  @Schema(description = "Wheelchair accessible toilet available")
+  private StandardAttributeType wheelchairToilet;
 
 }

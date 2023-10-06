@@ -1,8 +1,8 @@
 package ch.sbb.prm.directory.mapper;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.prm.directory.controller.model.create.CreateReferencePointVersionModel;
-import ch.sbb.prm.directory.controller.model.read.ReadReferencePointVersionModel;
+import ch.sbb.prm.directory.controller.model.referencepoint.CreateReferencePointVersionModel;
+import ch.sbb.prm.directory.controller.model.referencepoint.ReadReferencePointVersionModel;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import lombok.experimental.UtilityClass;
 
