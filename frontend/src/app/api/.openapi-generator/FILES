@@ -5,6 +5,7 @@ api/api.ts
 api/businessOrganisations.service.ts
 api/companies.service.ts
 api/exportServicePointBatch.service.ts
+api/geoData.service.ts
 api/importServicePointBatch.service.ts
 api/lines.service.ts
 api/loadingPoints.service.ts
@@ -64,6 +65,7 @@ model/errorDetail.ts
 model/errorResponse.ts
 model/examinantWorkflowCheck.ts
 model/exportType.ts
+model/geoReference.ts
 model/geolocation.ts
 model/geolocationCreate.ts
 model/hearingStatus.ts

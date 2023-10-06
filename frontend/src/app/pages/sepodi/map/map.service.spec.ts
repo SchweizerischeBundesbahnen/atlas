@@ -3,6 +3,7 @@ import { MapService } from './map.service';
 import { AuthService } from '../../../core/auth/auth.service';
 import { MAP_STYLES, MapOptionsService } from './map-options.service';
 import { GeoJSONSource, Map, MapGeoJSONFeature, MapMouseEvent } from 'maplibre-gl';
+import { SpatialReference } from '../../../api';
 
 const authService: Partial<AuthService> = {};
 
@@ -60,6 +61,7 @@ describe('MapService', () => {
       .centerOn({
         north: 46.96096807883433,
         east: 7.448919722210154,
+        spatialReference: SpatialReference.Wgs84,
       })
       .then();
 

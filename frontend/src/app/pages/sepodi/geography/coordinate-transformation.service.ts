@@ -14,20 +14,20 @@ export class CoordinateTransformationService {
     );
   }
 
-  transform(
-    coordinatePair: CoordinatePair,
-    from: SpatialReference,
-    to: SpatialReference
-  ): CoordinatePair {
+  transform(coordinatePair: CoordinatePair, to: SpatialReference): CoordinatePair {
     if (!coordinatePair.east || !coordinatePair.north) {
       throw new Error(
         'Could not transform invalid coordinatePair ' + JSON.stringify(coordinatePair)
       );
     }
-    const transformationResult = proj4(from, to, [coordinatePair.east, coordinatePair.north]);
+    const transformationResult = proj4(coordinatePair.spatialReference, to, [
+      coordinatePair.east,
+      coordinatePair.north,
+    ]);
     return {
       east: transformationResult[0],
       north: transformationResult[1],
+      spatialReference: to,
     };
   }
 }
