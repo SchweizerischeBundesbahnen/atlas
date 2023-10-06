@@ -1,7 +1,8 @@
-package ch.sbb.prm.directory.controller.model;
+package ch.sbb.prm.directory.controller.model.referencepoint;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.validation.DatesValidator;
+import ch.sbb.prm.directory.controller.model.BasePrmVersionModel;
 import ch.sbb.prm.directory.enumeration.ReferencePointAttributeType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;

@@ -1,7 +1,7 @@
 package ch.sbb.prm.directory;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.prm.directory.controller.model.create.CreateReferencePointVersionModel;
+import ch.sbb.prm.directory.controller.model.referencepoint.CreateReferencePointVersionModel;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.enumeration.ReferencePointAttributeType;
 import java.time.LocalDate;

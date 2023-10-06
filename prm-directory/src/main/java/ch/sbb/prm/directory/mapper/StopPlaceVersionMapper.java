@@ -1,8 +1,8 @@
 package ch.sbb.prm.directory.mapper;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.prm.directory.controller.model.create.CreateStopPlaceVersionModel;
-import ch.sbb.prm.directory.controller.model.read.ReadStopPlaceVersionModel;
+import ch.sbb.prm.directory.controller.model.stopplace.CreateStopPlaceVersionModel;
+import ch.sbb.prm.directory.controller.model.stopplace.ReadStopPlaceVersionModel;
 import ch.sbb.prm.directory.entity.StopPlaceVersion;
 import java.util.HashSet;
 import lombok.experimental.UtilityClass;

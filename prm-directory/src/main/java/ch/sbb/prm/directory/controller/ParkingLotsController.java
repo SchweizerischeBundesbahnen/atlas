@@ -1,8 +1,8 @@
 package ch.sbb.prm.directory.controller;
 
 import ch.sbb.prm.directory.api.ParkingLotApiV1;
-import ch.sbb.prm.directory.controller.model.create.CreateParkingLotVersionModel;
-import ch.sbb.prm.directory.controller.model.read.ReadParkingLotVersionModel;
+import ch.sbb.prm.directory.controller.model.parkinglot.CreateParkingLotVersionModel;
+import ch.sbb.prm.directory.controller.model.parkinglot.ReadParkingLotVersionModel;
 import ch.sbb.prm.directory.entity.ParkingLotVersion;
 import ch.sbb.prm.directory.mapper.ParkingLotVersionMapper;
 import ch.sbb.prm.directory.service.ParkingLotService;

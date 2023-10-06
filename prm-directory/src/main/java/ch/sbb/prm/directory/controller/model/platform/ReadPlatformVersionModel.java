@@ -1,8 +1,7 @@
-package ch.sbb.prm.directory.controller.model.read;
+package ch.sbb.prm.directory.controller.model.platform;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.validation.DatesValidator;
-import ch.sbb.prm.directory.controller.model.TicketCounterVersionModel;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -19,8 +18,8 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @FieldNameConstants
-@Schema(name = "ReadTicketCounterVersion")
-public class ReadTicketCounterVersionModel extends TicketCounterVersionModel implements DatesValidator {
+@Schema(name = "ReadPlatformVersion")
+public class ReadPlatformVersionModel extends PlatformVersionModel implements DatesValidator {
 
   @NotNull
   @Valid

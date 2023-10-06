@@ -1,8 +1,7 @@
-package ch.sbb.prm.directory.controller.model.read;
+package ch.sbb.prm.directory.controller.model.referencepoint;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.validation.DatesValidator;
-import ch.sbb.prm.directory.controller.model.PlatformVersionModel;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -19,11 +18,12 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @FieldNameConstants
-@Schema(name = "ReadPlatformVersion")
-public class ReadPlatformVersionModel extends PlatformVersionModel implements DatesValidator {
+@Schema(name = "ReadReferencePointVersion")
+public class ReadReferencePointVersionModel extends ReferencePointVersionModel implements DatesValidator {
 
   @NotNull
   @Valid
   private ServicePointNumber number;
+
 
 }

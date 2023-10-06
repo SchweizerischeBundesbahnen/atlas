@@ -1,7 +1,7 @@
 package ch.sbb.prm.directory.api;
 
-import ch.sbb.prm.directory.controller.model.create.CreateTicketCounterVersionModel;
-import ch.sbb.prm.directory.controller.model.read.ReadTicketCounterVersionModel;
+import ch.sbb.prm.directory.controller.model.ticketcounter.CreateTicketCounterVersionModel;
+import ch.sbb.prm.directory.controller.model.ticketcounter.ReadTicketCounterVersionModel;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.http.HttpStatus;

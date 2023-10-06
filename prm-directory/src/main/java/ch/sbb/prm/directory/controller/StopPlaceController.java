@@ -1,8 +1,8 @@
 package ch.sbb.prm.directory.controller;
 
 import ch.sbb.prm.directory.api.StopPlaceApiV1;
-import ch.sbb.prm.directory.controller.model.create.CreateStopPlaceVersionModel;
-import ch.sbb.prm.directory.controller.model.read.ReadStopPlaceVersionModel;
+import ch.sbb.prm.directory.controller.model.stopplace.CreateStopPlaceVersionModel;
+import ch.sbb.prm.directory.controller.model.stopplace.ReadStopPlaceVersionModel;
 import ch.sbb.prm.directory.entity.StopPlaceVersion;
 import ch.sbb.prm.directory.mapper.StopPlaceVersionMapper;
 import ch.sbb.prm.directory.service.StopPlaceService;

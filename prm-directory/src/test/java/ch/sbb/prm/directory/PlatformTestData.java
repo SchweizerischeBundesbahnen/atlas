@@ -5,7 +5,7 @@ import static ch.sbb.prm.directory.enumeration.InfoOpportunityAttributeType.ELEC
 import static ch.sbb.prm.directory.enumeration.InfoOpportunityAttributeType.TEXT_TO_SPEECH_DEPARTURES;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.prm.directory.controller.model.create.CreatePlatformVersionModel;
+import ch.sbb.prm.directory.controller.model.platform.CreatePlatformVersionModel;
 import ch.sbb.prm.directory.entity.PlatformVersion;
 import ch.sbb.prm.directory.enumeration.BasicAttributeType;
 import ch.sbb.prm.directory.enumeration.BoardingDeviceAttributeType;
