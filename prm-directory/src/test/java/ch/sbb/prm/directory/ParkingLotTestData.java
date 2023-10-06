@@ -9,7 +9,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class ParkingLotTestData {
 
-  public static ParkingLotVersion getParkingLot(){
+  public static ParkingLotVersion getParkingLotVersion(){
     return ParkingLotVersion.builder()
         .sloid("ch:1.sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))

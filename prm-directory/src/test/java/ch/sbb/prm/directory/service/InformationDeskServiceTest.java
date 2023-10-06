@@ -48,7 +48,7 @@ class InformationDeskServiceTest {
   void shouldNotCreateInformationDeskWhenStopPlaceDoesNotExists() {
     //given
     String parentServicePointSloid = "ch:1:sloid:70000";
-    InformationDeskVersion informationDesk = InformationDeskTestData.getInformationDesk();
+    InformationDeskVersion informationDesk = InformationDeskTestData.getInformationDeskVersion();
     informationDesk.setParentServicePointSloid(parentServicePointSloid);
 
     //when & then
@@ -64,7 +64,7 @@ class InformationDeskServiceTest {
     StopPlaceVersion stopPlaceVersion = StopPlaceTestData.getStopPlaceVersion();
     stopPlaceVersion.setSloid(parentServicePointSloid);
     stopPlaceRepository.save(stopPlaceVersion);
-    InformationDeskVersion informationDesk = InformationDeskTestData.getInformationDesk();
+    InformationDeskVersion informationDesk = InformationDeskTestData.getInformationDeskVersion();
     informationDesk.setParentServicePointSloid(parentServicePointSloid);
     //when
     informationDeskService.createInformationDesk(informationDesk);
@@ -89,7 +89,7 @@ class InformationDeskServiceTest {
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
     referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
     referencePointRepository.save(referencePointVersion);
-    InformationDeskVersion informationDesk = InformationDeskTestData.getInformationDesk();
+    InformationDeskVersion informationDesk = InformationDeskTestData.getInformationDeskVersion();
     informationDesk.setParentServicePointSloid(parentServicePointSloid);
 
     //when

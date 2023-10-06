@@ -43,14 +43,14 @@ public class ReferencePointService {
     return referencePointRepository.findAll();
   }
 
-  public void createReferencePoint(ReferencePointVersion referencePointVersion) {
+  public ReferencePointVersion createReferencePoint(ReferencePointVersion referencePointVersion) {
     stopPlaceService.checkStopPlaceExists(referencePointVersion.getParentServicePointSloid());
     searchAndUpdatePlatformRelation(referencePointVersion.getParentServicePointSloid());
     searchAndUpdateTicketCounter(referencePointVersion.getParentServicePointSloid());
     searchAndUpdateToiletRelation(referencePointVersion.getParentServicePointSloid());
     searchAndUpdateInformationDesk(referencePointVersion.getParentServicePointSloid());
     searchAndUpdateParkingLot(referencePointVersion.getParentServicePointSloid());
-    referencePointRepository.save(referencePointVersion);
+    return referencePointRepository.saveAndFlush(referencePointVersion);
   }
 
   private void searchAndUpdateParkingLot(String parentServicePointSloid) {
