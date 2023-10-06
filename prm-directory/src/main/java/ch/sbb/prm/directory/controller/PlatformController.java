@@ -30,5 +30,4 @@ public class PlatformController implements PlatformApiV1 {
     return PlatformVersionMapper.toModel(savedVersion);
   }
 
-
 }
