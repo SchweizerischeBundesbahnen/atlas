@@ -7,8 +7,10 @@ import {
 import { AuthService } from '../../../core/auth/auth.service';
 import { ApplicationRole, ApplicationType, Country, PermissionRestrictionType } from '../../../api';
 import { Countries } from '../../../core/country/Countries';
-import { EMPTY, Observable } from 'rxjs';
+import { EMPTY, Observable, take } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { DialogService } from '../../../core/components/dialog/dialog.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-service-point-creation',
@@ -19,8 +21,14 @@ export class ServicePointCreationComponent implements OnInit {
   public form: FormGroup<ServicePointDetailFormGroup> =
     ServicePointFormGroupBuilder.buildEmptyFormGroup();
   public countryOptions$: Observable<Country[]> = EMPTY;
+  public readonly getCountryEnum = Countries.getCountryEnum;
 
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly dialogService: DialogService,
+    private readonly router: Router,
+    private readonly route: ActivatedRoute,
+  ) {}
 
   ngOnInit() {
     this.countryOptions$ = this.authService
@@ -35,7 +43,7 @@ export class ServicePointCreationComponent implements OnInit {
 
     let countryScope: Country[];
     if (sepodiUserPermission.role === ApplicationRole.Supervisor) {
-      countryScope = this.filteredCountries();
+      countryScope = Countries.filteredCountries();
     } else {
       countryScope = sepodiUserPermission.permissionRestrictions
         .filter((restriction) => restriction.type === PermissionRestrictionType.Country)
@@ -57,42 +65,37 @@ export class ServicePointCreationComponent implements OnInit {
 
     countryScope.sort(
       (n1, n2) =>
-        this.getCountryNameUicCodeFromCountry(n1) - this.getCountryNameUicCodeFromCountry(n2),
+        Countries.getCountryNameUicCodeFromCountry(n1) -
+        Countries.getCountryNameUicCodeFromCountry(n2),
     );
 
     return [...firstFive, ...countryScope];
   }
 
-  // todo: duplicate
-  private getCountryNameUicCodeFromCountry(country: Country): number {
-    const countryName = Countries.fromCountry(country);
-    if (!countryName) return -1;
-    return countryName.uicCode;
+  async onCancel(): Promise<void> {
+    if (this.form.dirty) {
+      this.dialogService
+        .confirmLeave()
+        .pipe(take(1))
+        .subscribe(async (result) => {
+          if (result) {
+            await this.router.navigate(['..'], {
+              relativeTo: this.route,
+            });
+          }
+        });
+    } else {
+      await this.router.navigate(['..'], {
+        relativeTo: this.route,
+      });
+    }
   }
-  // todo: duplicate
-  private filteredCountries(): Country[] {
-    return Object.values(Country).filter(
-      (country) =>
-        country !== Country.Canada &&
-        country !== Country.Congo &&
-        country !== Country.SouthAfrica &&
-        country !== Country.Australia &&
-        country !== Country.Liechtenstein &&
-        country !== Country.Sudan &&
-        country !== Country.Tschad &&
-        country !== Country.Libyen &&
-        country !== Country.Monaco &&
-        country !== Country.Niger &&
-        country !== Country.Nigeria &&
-        country !== Country.Jemen &&
-        country !== Country.Switzerland &&
-        country !== Country.GermanyBus &&
-        country !== Country.AustriaBus &&
-        country !== Country.ItalyBus &&
-        country !== Country.FranceBus,
-    );
+
+  onSave(): void {
+    this.form.markAllAsTouched();
+    if (this.form.valid) {
+      // todo: send create request
+      console.log('valid');
+    }
   }
-  // todo: duplicate
-  public readonly getCountryEnum = (country: Country) =>
-    Countries.fromCountry(country)?.enumCountry;
 }

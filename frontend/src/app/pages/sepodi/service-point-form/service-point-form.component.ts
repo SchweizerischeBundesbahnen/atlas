@@ -56,6 +56,8 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
     return this._currentVersion;
   }
 
+  @Input() public isGeographyOn = false;
+
   private _currentVersion?: ReadServicePointVersion;
 
   public servicePointTypes = Object.values(ServicePointType);
