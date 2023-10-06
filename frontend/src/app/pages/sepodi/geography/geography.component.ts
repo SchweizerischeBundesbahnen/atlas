@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { CoordinatePair, SpatialReference } from '../../../api';
 import { GeographyFormGroup } from './geography-form-group';
@@ -16,9 +16,6 @@ export const WGS84_MAX_DIGITS = 11;
 })
 export class GeographyComponent implements OnDestroy, OnChanges {
   @Input() formGroup!: FormGroup<GeographyFormGroup>;
-  spatialReference!: SpatialReference;
-
-  @Output() currentSpatialReferenceEvent = new EventEmitter();
 
   readonly LV95_MAX_DIGITS = LV95_MAX_DIGITS;
   readonly WGS84_MAX_DIGITS = WGS84_MAX_DIGITS;
@@ -34,7 +31,6 @@ export class GeographyComponent implements OnDestroy, OnChanges {
 
   ngOnChanges(): void {
     this.initTransformedCoordinatePair();
-    this.spatialReference = this.currentSpatialReference;
     this.clickedGeographyCoordinatesSubscription?.unsubscribe();
     this.clickedGeographyCoordinatesSubscription =
       this.mapService.clickedGeographyCoordinates.subscribe((coordinatePairWGS84) => {
@@ -55,14 +51,14 @@ export class GeographyComponent implements OnDestroy, OnChanges {
         this.onChangeCoordinatesManually({
           east: Number(this.formGroup.controls.east.value!),
           north: Number(this.formGroup.controls.north.value!),
-          spatialReference: this.spatialReference,
+          spatialReference: this.currentSpatialReference,
         });
       });
   }
 
   setFormGroupValue(coordinates: CoordinatePair) {
     const maxDigits =
-      this.spatialReference === SpatialReference.Lv95
+      this.currentSpatialReference === SpatialReference.Lv95
         ? this.LV95_MAX_DIGITS
         : this.WGS84_MAX_DIGITS;
 
@@ -84,10 +80,7 @@ export class GeographyComponent implements OnDestroy, OnChanges {
       return;
     }
 
-    this.spatialReference = this.currentSpatialReference;
-    this.currentSpatialReferenceEvent.emit(this.spatialReference);
-
-    if (this.spatialReference) {
+    if (this.currentSpatialReference) {
       this.transformedCoordinatePair = this.coordinateTransformationService.transform(
         this.currentCoordinates,
         this.transformedSpatialReference,
@@ -96,20 +89,20 @@ export class GeographyComponent implements OnDestroy, OnChanges {
   }
 
   get transformedSpatialReference() {
-    return this.spatialReference === SpatialReference.Lv95
+    return this.currentSpatialReference === SpatialReference.Lv95
       ? SpatialReference.Wgs84
       : SpatialReference.Lv95;
   }
 
-  get currentSpatialReference() {
-    return this.formGroup.controls.spatialReference.value!;
+  get currentSpatialReference(): SpatialReference | null | undefined {
+    return this.formGroup.controls.spatialReference.value;
   }
 
   get currentCoordinates(): CoordinatePair {
     return {
-      east: Number(this.formGroup.value.east!),
-      north: Number(this.formGroup.value.north!),
-      spatialReference: this.spatialReference,
+      east: Number(this.formGroup.value.east),
+      north: Number(this.formGroup.value.north),
+      spatialReference: this.currentSpatialReference,
     };
   }
 
@@ -123,8 +116,6 @@ export class GeographyComponent implements OnDestroy, OnChanges {
       this.transformedSpatialReference,
     );
 
-    this.spatialReference = $event.value;
-
     this.setFormGroupValue(transformedCoordinatePair);
     this.initTransformedCoordinatePair();
   }
@@ -134,7 +125,7 @@ export class GeographyComponent implements OnDestroy, OnChanges {
       return;
     }
 
-    if (this.spatialReference === SpatialReference.Lv95) {
+    if (this.currentSpatialReference === SpatialReference.Lv95) {
       coordinates = this.coordinateTransformationService.transform(
         coordinates,
         SpatialReference.Wgs84,
@@ -153,7 +144,7 @@ export class GeographyComponent implements OnDestroy, OnChanges {
       return;
     }
 
-    if (this.spatialReference === SpatialReference.Lv95) {
+    if (this.currentSpatialReference === SpatialReference.Lv95) {
       coordinates = this.coordinateTransformationService.transform(
         coordinates,
         SpatialReference.Lv95,
