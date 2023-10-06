@@ -74,7 +74,11 @@ include::{snippets}/platform-version-controller-api-test/should-create-platform/
 
 === Get Toilets - Successfully
 
-include::{snippets}/toilet-version-controller-api-test/should-get-platforms-version/auto-section.adoc[]
+include::{snippets}/toilet-version-controller-api-test/should-get-toilet/auto-section.adoc[]
+
+=== Create Toilets - Successfully
+
+include::{snippets}/toilet-version-controller-api-test/should-create-toilet/auto-section.adoc[]
 
 == Ticket Counter
 
