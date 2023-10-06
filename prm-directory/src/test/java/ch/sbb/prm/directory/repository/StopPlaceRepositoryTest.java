@@ -6,7 +6,6 @@ import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.prm.directory.StopPlaceTestData;
 import ch.sbb.prm.directory.entity.StopPlaceVersion;
 import java.util.List;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +25,6 @@ class StopPlaceRepositoryTest {
   @BeforeEach()
   void initDB() {
     stopPlaceRepository.save(StopPlaceTestData.getStopPlaceVersion());
-  }
-
-  @AfterEach
-  void tearDown() {
-    stopPlaceRepository.deleteAll();
   }
 
   @Test
