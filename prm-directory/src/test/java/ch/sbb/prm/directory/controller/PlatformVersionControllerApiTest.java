@@ -32,6 +32,7 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
 
   private final StopPlaceRepository stopPlaceRepository;
   private final ReferencePointRepository referencePointRepository;
+
   @MockBean
   private final RelationService relationService;
 

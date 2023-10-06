@@ -10,7 +10,6 @@ import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.prm.directory.StopPlaceTestData;
 import ch.sbb.prm.directory.controller.model.create.CreateStopPlaceVersionModel;
 import ch.sbb.prm.directory.repository.StopPlaceRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +26,6 @@ class StopPlaceVersionControllerApiTest extends BaseControllerApiTest {
   @BeforeEach()
   void initDB() {
     stopPlaceRepository.save(StopPlaceTestData.getStopPlaceVersion());
-  }
-
-  @AfterEach
-  void tearDown() {
-    stopPlaceRepository.deleteAll();
   }
 
   @Test
