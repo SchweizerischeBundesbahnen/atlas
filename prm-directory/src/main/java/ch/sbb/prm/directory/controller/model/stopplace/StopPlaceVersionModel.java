@@ -1,7 +1,8 @@
-package ch.sbb.prm.directory.controller.model;
+package ch.sbb.prm.directory.controller.model.stopplace;
 
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.validation.DatesValidator;
+import ch.sbb.prm.directory.controller.model.BasePrmVersionModel;
 import ch.sbb.prm.directory.enumeration.StandardAttributeType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;

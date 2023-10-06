@@ -13,7 +13,7 @@ import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.prm.directory.PlatformTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPlaceTestData;
-import ch.sbb.prm.directory.controller.model.create.CreatePlatformVersionModel;
+import ch.sbb.prm.directory.controller.model.platform.CreatePlatformVersionModel;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.StopPlaceVersion;

@@ -1,8 +1,8 @@
 package ch.sbb.prm.directory.mapper;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.prm.directory.controller.model.create.CreateInformationDeskVersionModel;
-import ch.sbb.prm.directory.controller.model.read.ReadInformationDeskVersionModel;
+import ch.sbb.prm.directory.controller.model.infromationdesk.CreateInformationDeskVersionModel;
+import ch.sbb.prm.directory.controller.model.infromationdesk.ReadInformationDeskVersionModel;
 import ch.sbb.prm.directory.entity.InformationDeskVersion;
 import lombok.experimental.UtilityClass;
 

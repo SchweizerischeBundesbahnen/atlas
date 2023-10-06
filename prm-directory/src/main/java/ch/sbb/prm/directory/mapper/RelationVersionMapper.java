@@ -1,6 +1,6 @@
 package ch.sbb.prm.directory.mapper;
 
-import ch.sbb.prm.directory.controller.model.RelationVersionModel;
+import ch.sbb.prm.directory.controller.model.relation.RelationVersionModel;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import lombok.experimental.UtilityClass;
 
