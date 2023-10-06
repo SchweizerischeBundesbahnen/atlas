@@ -31,9 +31,9 @@ public class ParkingLotService extends RelatableService<ParkingLotVersion> {
    return parkingLotRepository.findAll();
   }
 
-  public void createParkingLot(ParkingLotVersion version) {
+  public ParkingLotVersion createParkingLot(ParkingLotVersion version) {
     createRelation(version);
-    parkingLotRepository.save(version);
+    return parkingLotRepository.saveAndFlush(version);
   }
 
 }
