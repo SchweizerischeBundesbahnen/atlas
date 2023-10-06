@@ -9,7 +9,6 @@ import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.prm.directory.RelationTestData;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import java.util.List;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,11 +22,6 @@ class RelationRepositoryTest {
   @Autowired
   RelationRepositoryTest(RelationRepository relationRepository) {
     this.relationRepository = relationRepository;
-  }
-
-  @AfterEach
-  void tearDown() {
-    relationRepository.deleteAll();
   }
 
   @Test

@@ -9,7 +9,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class InformationDeskTestData {
 
-  public static InformationDeskVersion getInformationDesk(){
+  public static InformationDeskVersion getInformationDeskVersion(){
     return InformationDeskVersion.builder()
         .sloid("ch:1.sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
