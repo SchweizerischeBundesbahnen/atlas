@@ -1,8 +1,8 @@
 package ch.sbb.prm.directory.controller;
 
 import ch.sbb.prm.directory.api.PlatformApiV1;
-import ch.sbb.prm.directory.controller.model.create.CreatePlatformVersionModel;
-import ch.sbb.prm.directory.controller.model.read.ReadPlatformVersionModel;
+import ch.sbb.prm.directory.controller.model.platform.CreatePlatformVersionModel;
+import ch.sbb.prm.directory.controller.model.platform.ReadPlatformVersionModel;
 import ch.sbb.prm.directory.entity.PlatformVersion;
 import ch.sbb.prm.directory.mapper.PlatformVersionMapper;
 import ch.sbb.prm.directory.service.PlatformService;

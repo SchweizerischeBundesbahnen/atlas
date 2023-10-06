@@ -1,7 +1,7 @@
 package ch.sbb.prm.directory.api;
 
-import ch.sbb.prm.directory.controller.model.create.CreateToiletVersionModel;
-import ch.sbb.prm.directory.controller.model.read.ReadToiletVersionModel;
+import ch.sbb.prm.directory.controller.model.toilet.CreateToiletVersionModel;
+import ch.sbb.prm.directory.controller.model.toilet.ReadToiletVersionModel;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.http.HttpStatus;

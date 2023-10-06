@@ -1,8 +1,8 @@
 package ch.sbb.prm.directory.mapper;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.prm.directory.controller.model.create.CreatePlatformVersionModel;
-import ch.sbb.prm.directory.controller.model.read.ReadPlatformVersionModel;
+import ch.sbb.prm.directory.controller.model.platform.CreatePlatformVersionModel;
+import ch.sbb.prm.directory.controller.model.platform.ReadPlatformVersionModel;
 import ch.sbb.prm.directory.entity.PlatformVersion;
 import java.util.HashSet;
 import lombok.experimental.UtilityClass;
