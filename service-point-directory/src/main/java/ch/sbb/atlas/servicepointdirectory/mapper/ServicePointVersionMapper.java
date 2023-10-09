@@ -49,20 +49,13 @@ public class ServicePointVersionMapper {
   }
 
   public static ServicePointVersion toEntity(CreateServicePointVersionModel createServicePointVersionModel) {
-    ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(
-        createServicePointVersionModel.getNumberWithoutCheckDigit());
-
     ServicePointNumber operatingPointKilometerMasterNumber =
         Optional.ofNullable(createServicePointVersionModel.setKilomMasterNumberDependingOnRouteNetworkValue())
             .map(ServicePointNumber::ofNumberWithoutCheckDigit)
             .orElse(null);
 
-    return ServicePointVersion.builder()
+    ServicePointVersion servicePointVersion = ServicePointVersion.builder()
         .id(createServicePointVersionModel.getId())
-        .number(servicePointNumber)
-        .sloid(createServicePointVersionModel.getSloid())
-        .numberShort(servicePointNumber.getNumberShort())
-        .country(servicePointNumber.getCountry())
         .designationLong(createServicePointVersionModel.getDesignationLong())
         .designationOfficial(createServicePointVersionModel.getDesignationOfficial())
         .abbreviation(createServicePointVersionModel.getAbbreviation())
@@ -81,13 +74,24 @@ public class ServicePointVersionMapper {
         .operatingPointTrafficPointType(createServicePointVersionModel.getOperatingPointTrafficPointType())
         .categories(Set.copyOf(createServicePointVersionModel.getCategories()))
         .meansOfTransport(Set.copyOf(createServicePointVersionModel.getMeansOfTransport()))
-        .servicePointGeolocation(ServicePointGeolocationMapper.toEntity(createServicePointVersionModel.getServicePointGeolocation()))
+        .servicePointGeolocation(
+            ServicePointGeolocationMapper.toEntity(createServicePointVersionModel.getServicePointGeolocation()))
         .version(createServicePointVersionModel.getEtagVersion())
         .editor(createServicePointVersionModel.getEditor())
         .editionDate(createServicePointVersionModel.getEditionDate())
         .creator(createServicePointVersionModel.getCreator())
         .creationDate(createServicePointVersionModel.getCreationDate())
         .build();
+
+    if (createServicePointVersionModel.getNumberWithoutCheckDigit() != null) {
+      ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(
+          createServicePointVersionModel.getNumberWithoutCheckDigit());
+      servicePointVersion.setNumber(servicePointNumber);
+      servicePointVersion.setSloid(ServicePointNumber.calculateSloid(servicePointNumber));
+      servicePointVersion.setNumberShort(servicePointNumber.getNumberShort());
+      servicePointVersion.setCountry(servicePointNumber.getCountry());
+    }
+    return servicePointVersion;
   }
 
   private static List<MeanOfTransport> getMeansOfTransportSorted(ServicePointVersion servicePointVersion) {
