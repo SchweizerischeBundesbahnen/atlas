@@ -9,7 +9,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,7 +18,6 @@ import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
 import org.apache.commons.lang3.StringUtils;
 
-import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,16 +29,19 @@ import java.time.LocalDate;
 public class CreateServicePointVersionModel extends ServicePointVersionModel {
 
   @Schema(description = "Seven digits number. First two digits represent Country Code. "
-          + "Last 5 digits represent service point ID.", example = "8034505")
+      + "Last 5 digits represent service point ID.", example = "8034505")
   @Min(AtlasFieldLengths.MIN_SEVEN_DIGITS_NUMBER)
   @Max(AtlasFieldLengths.MAX_SEVEN_DIGITS_NUMBER)
-  @NotNull
   private Integer numberWithoutCheckDigit;
+
+  @Schema(description = "The country for the service point. Only needed if ServicePointNumber is created automatically",
+      example = "SWITZERLAND")
+  private Country country;
 
   @Min(value = AtlasFieldLengths.MIN_SEVEN_DIGITS_NUMBER, message = "Minimum value for number.")
   @Max(value = AtlasFieldLengths.MAX_SEVEN_DIGITS_NUMBER, message = "Maximum value for number.")
   @Schema(description = "Reference to a operatingPointRouteNetwork. OperatingPointKilometer are always related to a "
-          + "operatingPointRouteNetwork", example = "8034505")
+      + "operatingPointRouteNetwork", example = "8034505")
   private Integer operatingPointKilometerMasterNumber;
 
   @Valid
@@ -73,8 +75,8 @@ public class CreateServicePointVersionModel extends ServicePointVersionModel {
     }
     ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(numberWithoutCheckDigit);
     return !(servicePointNumber.getCountry() == Country.SWITZERLAND && super.isFreightServicePoint() && !getValidFrom().isBefore(
-            LocalDate.now()))
-            || StringUtils.isNotBlank(super.getSortCodeOfDestinationStation());
+        LocalDate.now()))
+        || StringUtils.isNotBlank(super.getSortCodeOfDestinationStation());
   }
 
   @JsonIgnore
@@ -86,6 +88,16 @@ public class CreateServicePointVersionModel extends ServicePointVersionModel {
   @AssertTrue(message = "StopPointType only allowed for StopPoint")
   boolean isValidStopPointWithType() {
     return isStopPoint() || getStopPointType() == null;
+  }
+
+  @JsonIgnore
+  @AssertTrue(message = "ServicePointNumber must be present only if country not in (85,11,12,13,14)")
+  public boolean isValidServicePointNumber() {
+    if (numberWithoutCheckDigit == null) {
+      return country != null && ServicePointConstants.AUTOMATIC_SERVICE_POINT_ID.contains(country);
+    } else {
+      return country == null;
+    }
   }
 
 }

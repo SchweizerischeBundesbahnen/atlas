@@ -1,6 +1,7 @@
 package ch.sbb.atlas.api.servicepoint;
 
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
+import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
@@ -204,6 +205,35 @@ class CreateServicePointVersionModelTest {
   @Test
   void shouldNotAllowServicePointVersionWithoutNumber() {
     CreateServicePointVersionModel servicePointVersionModel = CreateServicePointVersionModel.builder()
+        .designationOfficial("Bern")
+        .businessOrganisation("ch:1:sboid:5846489645")
+        .validFrom(LocalDate.of(2022, 1, 1))
+        .validTo(LocalDate.of(2022, 12, 31))
+        .build();
+
+    Set<ConstraintViolation<CreateServicePointVersionModel>> constraintViolations = validator.validate(servicePointVersionModel);
+    assertThat(constraintViolations).hasSize(1);
+  }
+
+  @Test
+  void shouldAllowServicePointVersionWithNumberGeneration() {
+    CreateServicePointVersionModel servicePointVersionModel = CreateServicePointVersionModel.builder()
+        .country(Country.SWITZERLAND)
+        .designationOfficial("Bern")
+        .businessOrganisation("ch:1:sboid:5846489645")
+        .validFrom(LocalDate.of(2022, 1, 1))
+        .validTo(LocalDate.of(2022, 12, 31))
+        .build();
+
+    Set<ConstraintViolation<CreateServicePointVersionModel>> constraintViolations = validator.validate(servicePointVersionModel);
+    assertThat(constraintViolations).isEmpty();
+  }
+
+  @Test
+  void shouldNotAllowServicePointVersionWithNumberAndCountry() {
+    CreateServicePointVersionModel servicePointVersionModel = CreateServicePointVersionModel.builder()
+        .country(Country.SWITZERLAND)
+        .numberWithoutCheckDigit(8507000)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
         .validFrom(LocalDate.of(2022, 1, 1))
