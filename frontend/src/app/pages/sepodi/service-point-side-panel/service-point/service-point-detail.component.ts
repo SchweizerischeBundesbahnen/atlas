@@ -227,10 +227,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   private displayAndSelectServicePointOnMap() {
     this.cancelMapEditMode();
     this.mapService.mapInitialized.pipe(takeUntil(this.ngUnsubscribe)).subscribe((initialized) => {
-      if (
-        initialized &&
-        this.form.controls.servicePointGeolocation.controls.spatialReference.value
-      ) {
+      if (initialized && this.currentSpatialReference) {
         if (this.mapService.map.getZoom() <= this.ZOOM_LEVEL_FOR_DETAIL) {
           this.mapService.map.setZoom(this.ZOOM_LEVEL_FOR_DETAIL);
         }
@@ -364,7 +361,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     let coordinates: CoordinatePair = {
       north: Number(locationControls.north.value!),
       east: Number(locationControls.east.value!),
-      spatialReference: locationControls.spatialReference.value!,
+      spatialReference: this.currentSpatialReference,
     };
 
     this.setSpatialReference(this.currentSpatialReference || SpatialReference.Lv95);
