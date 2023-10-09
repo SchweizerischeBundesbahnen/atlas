@@ -4,6 +4,7 @@ import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.GeoReference;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.ServicePointConstants;
 import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel;
 import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointImportRequestModel;
@@ -22,6 +23,7 @@ import ch.sbb.atlas.servicepointdirectory.service.ServicePointDistributor;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointFotCommentService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
+import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointNumberService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointRequestParams;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchRequest;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchResult;
@@ -45,6 +47,7 @@ public class ServicePointController implements ServicePointApiV1 {
   private final ServicePointImportService servicePointImportService;
   private final GeoReferenceService geoReferenceService;
   private final ServicePointDistributor servicePointDistributor;
+  private final ServicePointNumberService servicePointNumberService;
 
   @Override
   public Container<ReadServicePointVersionModel> getServicePoints(Pageable pageable,
@@ -98,8 +101,21 @@ public class ServicePointController implements ServicePointApiV1 {
   @Override
   public ReadServicePointVersionModel createServicePoint(CreateServicePointVersionModel createServicePointVersionModel) {
     ServicePointVersion servicePointVersion = ServicePointVersionMapper.toEntity(createServicePointVersionModel);
-    if (servicePointService.isServicePointNumberExisting(servicePointVersion.getNumber())) {
+
+    if (!ServicePointConstants.AUTOMATIC_SERVICE_POINT_ID.contains(createServicePointVersionModel.getCountry())
+        && servicePointService.isServicePointNumberExisting(servicePointVersion.getNumber())) {
       throw new ServicePointNumberAlreadyExistsException(servicePointVersion.getNumber());
+    }
+
+    if (ServicePointConstants.AUTOMATIC_SERVICE_POINT_ID.contains(createServicePointVersionModel.getCountry())) {
+      int nextAvailableServicePointId = servicePointNumberService.getNextAvailableServicePointId(createServicePointVersionModel.getCountry());
+
+      ServicePointNumber servicePointNumber = ServicePointNumber.of(createServicePointVersionModel.getCountry(), nextAvailableServicePointId);
+      log.info("Generated new service point number={}", servicePointNumber);
+      servicePointVersion.setNumber(servicePointNumber);
+      servicePointVersion.setCountry(createServicePointVersionModel.getCountry());
+      servicePointVersion.setNumberShort(nextAvailableServicePointId);
+      servicePointVersion.setSloid(ServicePointNumber.calculateSloid(servicePointNumber));
     }
     addGeoReferenceInformation(servicePointVersion);
     ServicePointVersion createdVersion = servicePointService.save(servicePointVersion);
