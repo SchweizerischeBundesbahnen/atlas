@@ -3,6 +3,9 @@
 <!-- toc -->
 
 - [ATLAS](#atlas)
+- [ADR Architecture Decision Record](#adr-architecture-decision-record)
+- [Architecture](#architecture)
+- [DB Compact](#db-compact)
 - [Project Versioning](#project-versioning)
 - [Links](#links)
   * [Localhost](#localhost)
@@ -20,6 +23,19 @@
 This application is part of ATLAS. General documentation is
 available [here](https://code.sbb.ch/projects/KI_ATLAS/repos/atlas-backend/browse/README.md#big-picture)
 .
+
+## ADR Architecture Decision Record
+
+Sie [ADR-0020: PRM (BehiG) Migration](https://confluence.sbb.ch/x/3RTcl)
+
+## Architecture
+
+![PRM-Architecture](documentation/PRM-Architecture-kafka.drawio.svg)
+
+## DB Compact
+
+![PRM-DB-Compact](documentation/PRM-DB-Compact.drawio.svg)
+
 
 ## Project Versioning
 
