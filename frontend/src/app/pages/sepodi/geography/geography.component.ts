@@ -1,11 +1,11 @@
-import {Component, EventEmitter, Input, OnChanges, OnDestroy, Output,} from '@angular/core';
-import {FormGroup} from '@angular/forms';
-import {CoordinatePair, SpatialReference} from '../../../api';
-import {GeographyFormGroup} from './geography-form-group';
-import {CoordinateTransformationService} from './coordinate-transformation.service';
-import {debounceTime, merge, Subscription} from 'rxjs';
-import {MapService} from '../map/map.service';
-import {MatRadioChange} from '@angular/material/radio';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { CoordinatePair, SpatialReference } from '../../../api';
+import { GeographyFormGroup } from './geography-form-group';
+import { CoordinateTransformationService } from './coordinate-transformation.service';
+import { debounceTime, merge, Subscription } from 'rxjs';
+import { MapService } from '../map/map.service';
+import { MatRadioChange } from '@angular/material/radio';
 
 export const LV95_MAX_DIGITS = 5;
 export const WGS84_MAX_DIGITS = 11;
@@ -29,7 +29,7 @@ export class GeographyComponent implements OnDestroy, OnChanges {
 
   constructor(
     private coordinateTransformationService: CoordinateTransformationService,
-    private mapService: MapService
+    private mapService: MapService,
   ) {}
 
   ngOnChanges(): void {
@@ -38,20 +38,24 @@ export class GeographyComponent implements OnDestroy, OnChanges {
     this.clickedGeographyCoordinatesSubscription?.unsubscribe();
     this.clickedGeographyCoordinatesSubscription =
       this.mapService.clickedGeographyCoordinates.subscribe((coordinatePairWGS84) => {
-        this.onMapClick({ north: coordinatePairWGS84.lat, east: coordinatePairWGS84.lng, spatialReference: SpatialReference.Wgs84 });
+        this.onMapClick({
+          north: coordinatePairWGS84.lat,
+          east: coordinatePairWGS84.lng,
+          spatialReference: SpatialReference.Wgs84,
+        });
       });
 
     this.spatialReferenceSubscription?.unsubscribe();
     this.spatialReferenceSubscription = merge(
       this.formGroup.controls.east.valueChanges,
-      this.formGroup.controls.north.valueChanges
+      this.formGroup.controls.north.valueChanges,
     )
       .pipe(debounceTime(500))
       .subscribe(() => {
         this.onChangeCoordinatesManually({
           east: Number(this.formGroup.controls.east.value!),
           north: Number(this.formGroup.controls.north.value!),
-          spatialReference: SpatialReference.Wgs84
+          spatialReference: this.spatialReference,
         });
       });
   }
@@ -86,13 +90,13 @@ export class GeographyComponent implements OnDestroy, OnChanges {
     if (this.spatialReference) {
       this.transformedCoordinatePair = this.coordinateTransformationService.transform(
         this.currentCoordinates,
-        this.transformedSpatialReference
+        this.transformedSpatialReference,
       );
     }
   }
 
   get transformedSpatialReference() {
-    return this.currentSpatialReference === SpatialReference.Lv95
+    return this.spatialReference === SpatialReference.Lv95
       ? SpatialReference.Wgs84
       : SpatialReference.Lv95;
   }
@@ -105,7 +109,7 @@ export class GeographyComponent implements OnDestroy, OnChanges {
     return {
       east: Number(this.formGroup.value.east!),
       north: Number(this.formGroup.value.north!),
-      spatialReference: this.formGroup.value.spatialReference!,
+      spatialReference: this.spatialReference,
     };
   }
 
@@ -114,12 +118,12 @@ export class GeographyComponent implements OnDestroy, OnChanges {
       return;
     }
 
-    this.spatialReference = $event.value;
-
     const transformedCoordinatePair = this.coordinateTransformationService.transform(
       this.currentCoordinates,
-      this.spatialReference
+      this.transformedSpatialReference,
     );
+
+    this.spatialReference = $event.value;
 
     this.setFormGroupValue(transformedCoordinatePair);
     this.initTransformedCoordinatePair();
@@ -133,7 +137,7 @@ export class GeographyComponent implements OnDestroy, OnChanges {
     if (this.spatialReference === SpatialReference.Lv95) {
       coordinates = this.coordinateTransformationService.transform(
         coordinates,
-        SpatialReference.Wgs84
+        SpatialReference.Wgs84,
       );
     }
 
@@ -152,7 +156,7 @@ export class GeographyComponent implements OnDestroy, OnChanges {
     if (this.spatialReference === SpatialReference.Lv95) {
       coordinates = this.coordinateTransformationService.transform(
         coordinates,
-        SpatialReference.Lv95
+        SpatialReference.Lv95,
       );
     }
 
