@@ -13,7 +13,9 @@ import ch.sbb.prm.directory.repository.StopPlaceRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 class StopPlaceVersionControllerApiTest extends BaseControllerApiTest {
 
   private final StopPlaceRepository stopPlaceRepository;
