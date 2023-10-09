@@ -48,8 +48,9 @@ class ReferencePointServiceTest {
   @Autowired
   ReferencePointServiceTest(ReferencePointService referencePointService, PlatformRepository platformRepository,
       TicketCounterRepository ticketCounterRepository, ToiletRepository toiletRepository,
-      InformationDeskRepository informationDeskRepository, ParkingLotRepository parkingLotRepository, RelationService relationService,
-      StopPlaceRepository stopPlaceRepository){
+      InformationDeskRepository informationDeskRepository, ParkingLotRepository parkingLotRepository,
+      RelationService relationService,
+      StopPlaceRepository stopPlaceRepository) {
     this.referencePointService = referencePointService;
     this.platformRepository = platformRepository;
     this.ticketCounterRepository = ticketCounterRepository;
@@ -61,7 +62,7 @@ class ReferencePointServiceTest {
   }
 
   @Test
-  void shouldCreateReferencePoint(){
+  void shouldCreateReferencePoint() {
     //given
     String parentServicePointSloid = "ch:1:sloid:70000";
     StopPlaceVersion stopPlaceVersion = StopPlaceTestData.getStopPlaceVersion();
@@ -80,7 +81,7 @@ class ReferencePointServiceTest {
     referencePointService.createReferencePoint(referencePointVersion);
 
     //then
-    List<RelationVersion> relations = relationService.getRelationsByParentServicePoint(
+    List<RelationVersion> relations = relationService.getRelationsByParentServicePointSloid(
         parentServicePointSloid);
     assertThat(relations).hasSize(5);
     assertThat(relations.stream().map(RelationVersion::getReferencePointElementType)).containsExactlyInAnyOrder(
@@ -94,12 +95,14 @@ class ReferencePointServiceTest {
     parkingLot.setSloid("ch:1:sloid:70000:5");
     parkingLotRepository.save(parkingLot);
   }
+
   private void createAndSaveInformationDeskVersion(String parentServicePointSloid) {
     InformationDeskVersion informationDesk = InformationDeskTestData.getInformationDeskVersion();
     informationDesk.setParentServicePointSloid(parentServicePointSloid);
     informationDesk.setSloid("ch:1:sloid:70000:4");
     informationDeskRepository.save(informationDesk);
   }
+
   private void createAndSaveToiletVersion(String parentServicePointSloid) {
     ToiletVersion toiletVersion = ToiletTestData.getToiletVersion();
     toiletVersion.setParentServicePointSloid(parentServicePointSloid);

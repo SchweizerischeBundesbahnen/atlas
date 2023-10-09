@@ -38,7 +38,7 @@ include::../release-notes.adoc[]
 
 = PRM Person with Reduced Mobility
 
-include::../../../../base-atlas/documentation/servicepoint/when_to_use_files_or_API.adoc[]
+include::../when_to_use_files_or_API.adoc[]
 
 == Stop Place
 
@@ -116,10 +116,14 @@ include::{snippets}/parking-lot-version-controller-api-test/should-create-parkin
 
 include::{snippets}/relation-version-controller-api-test/should-get-relation-by-sloid/auto-section.adoc[]
 
-=== Get Relations by Sloid and Reference Type- Successfully
+=== Get Relations by Sloid and Reference Type - Successfully
 
 include::{snippets}/relation-version-controller-api-test/should-get-relations-by-sloid-and-reference-type/auto-section.adoc[]
 
 === Get Relations by Parent Service Point Sloid  and Reference Type- Successfully
 
 include::{snippets}/relation-version-controller-api-test/should-get-relations-by-parent-service-point-sloid-and-reference-type/auto-section.adoc[]
+
+=== Get Relations by Parent Service Point Sloid - Successfully
+
+include::{snippets}/relation-version-controller-api-test/should-get-relations-by-parent-service-point-sloid/auto-section.adoc[]
