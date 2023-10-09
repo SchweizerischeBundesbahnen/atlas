@@ -260,7 +260,14 @@
     <mat-checkbox formControlName="operatingPointRouteNetwork" data-cy="operatingPointRouteNetwork">
       {{ 'SEPODI.SERVICE_POINTS.ROUTE_NETWORK' | translate }}
     </mat-checkbox>
-    <mat-checkbox formControlName="operatingPointKilometer" data-cy="operatingPointKilometer">
+    <mat-checkbox
+      [checked]="true"
+      [disabled]="true"
+      [disableRipple]="true"
+      (change)="setOperatingPointKilometer()"
+      formControlName="operatingPointKilometer"
+      data-cy="operatingPointKilometer"
+    >
       {{ 'SEPODI.SERVICE_POINTS.OPERATING_POINT_KILOMETER' | translate }}
     </mat-checkbox>
   </div>

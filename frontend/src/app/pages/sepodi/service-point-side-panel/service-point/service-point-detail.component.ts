@@ -11,6 +11,7 @@ import {
   OperatingPointTechnicalTimetableType,
   OperatingPointType,
   ReadServicePointVersion,
+  ServicePointNumber,
   ServicePointsService,
   SpatialReference,
   StopPointType,
@@ -418,5 +419,26 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
 
   isCoordinatePairNotZero(coordinates: CoordinatePair): boolean {
     return coordinates.north !== 0 && coordinates.east !== 0;
+  }
+
+  setOperatingPointKilometer() {
+    console.log(this.selectedVersion.operatingPointKilometer);
+    console.log(this.selectedVersion.operatingPointKilometerMaster);
+    console.log(this.form.controls.operatingPointKilometer.value);
+    console.log(this.form.controls.operatingPointKilometerMaster.value);
+    this.selectedVersion.operatingPointKilometer = true;
+    this.form.controls.operatingPointKilometer.setValue(true);
+    const servicePointNumber: ServicePointNumber = {
+      number: 8500006,
+      numberShort: 6,
+      uicCountryCode: 85,
+      checkDigit: 3,
+    };
+    this.form.controls.operatingPointKilometerMaster.setValue(this.selectedVersion.number.number);
+    this.selectedVersion.operatingPointKilometerMaster = this.selectedVersion.number;
+    console.log(this.selectedVersion.operatingPointKilometer);
+    console.log(this.selectedVersion.operatingPointKilometerMaster);
+    console.log(this.form.controls.operatingPointKilometer.value);
+    console.log(this.form.controls.operatingPointKilometerMaster.value);
   }
 }
