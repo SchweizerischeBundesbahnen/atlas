@@ -26,7 +26,7 @@ public class RelationService {
       ReferencePointElementType referencePointType) {
    return relationRepository.findAllByParentServicePointSloidAndReferencePointElementType(parentServicePointSloid,referencePointType);
   }
-  public List<RelationVersion> getRelationsByParentServicePoint(String parentServicePointSloid) {
+  public List<RelationVersion> getRelationsByParentServicePointSloid(String parentServicePointSloid) {
    return relationRepository.findAllByParentServicePointSloid(parentServicePointSloid);
   }
 
