@@ -1,6 +1,7 @@
 package ch.sbb.prm.directory.service;
 
 import ch.sbb.prm.directory.entity.StopPlaceVersion;
+import ch.sbb.prm.directory.exception.StopPlaceDoesNotExistsException;
 import ch.sbb.prm.directory.repository.StopPlaceRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,7 @@ public class StopPlaceService {
 
   public void checkStopPlaceExists(String sloid) {
     if (!stopPlaceRepository.existsBySloid(sloid)) {
-      throw new IllegalStateException("StopPlace with sloid [" + sloid + "] does not exists!");
+      throw new StopPlaceDoesNotExistsException(sloid);
     }
   }
 
