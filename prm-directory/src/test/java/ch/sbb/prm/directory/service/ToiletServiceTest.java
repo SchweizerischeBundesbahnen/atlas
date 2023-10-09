@@ -12,6 +12,7 @@ import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.StopPlaceVersion;
 import ch.sbb.prm.directory.entity.ToiletVersion;
 import ch.sbb.prm.directory.enumeration.ReferencePointElementType;
+import ch.sbb.prm.directory.exception.StopPlaceDoesNotExistsException;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.RelationRepository;
 import ch.sbb.prm.directory.repository.StopPlaceRepository;
@@ -47,20 +48,19 @@ class ToiletServiceTest {
   @Test
   void shouldNotCreateToiletWhenStopPlaceDoesNotExists() {
     //given
-    String parentServicePointSloid="ch:1:sloid:70000";
+    String parentServicePointSloid = "ch:1:sloid:70000";
     ToiletVersion toiletVersion = ToiletTestData.getToiletVersion();
     toiletVersion.setParentServicePointSloid(parentServicePointSloid);
 
     //when & then
-    String message = assertThrows(IllegalStateException.class,
+    assertThrows(StopPlaceDoesNotExistsException.class,
         () -> toiletService.createToilet(toiletVersion)).getLocalizedMessage();
-    assertThat(message).isEqualTo("StopPlace with sloid [ch:1:sloid:70000] does not exists!");
   }
 
   @Test
   void shouldCreateToiletWhenNoReferencePointExists() {
     //given
-    String parentServicePointSloid="ch:1:sloid:70000";
+    String parentServicePointSloid = "ch:1:sloid:70000";
     StopPlaceVersion stopPlaceVersion = StopPlaceTestData.getStopPlaceVersion();
     stopPlaceVersion.setSloid(parentServicePointSloid);
     stopPlaceRepository.save(stopPlaceVersion);

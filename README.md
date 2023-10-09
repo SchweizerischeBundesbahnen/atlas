@@ -229,7 +229,7 @@ See [Service-Point-Directory documentation](service-point-directory/README.md);
 
 Business service for PRM (Person with Reduced Mobility) Data. All of these business objects use the atlas own
 versioning.
-See [Service-Point-Directory documentation](prm-directory/README.md);
+See [Prm-Directory documentation](prm-directory/README.md);
 
 ### Import Service-Point
 

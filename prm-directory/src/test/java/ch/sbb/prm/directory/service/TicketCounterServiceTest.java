@@ -12,6 +12,7 @@ import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.StopPlaceVersion;
 import ch.sbb.prm.directory.entity.TicketCounterVersion;
+import ch.sbb.prm.directory.exception.StopPlaceDoesNotExistsException;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.RelationRepository;
 import ch.sbb.prm.directory.repository.StopPlaceRepository;
@@ -51,9 +52,8 @@ class TicketCounterServiceTest {
     ticketCounterVersion.setParentServicePointSloid(parentServicePointSloid);
 
     //when & then
-    String message = assertThrows(IllegalStateException.class,
+    assertThrows(StopPlaceDoesNotExistsException.class,
         () -> ticketCounterService.createTicketCounter(ticketCounterVersion)).getLocalizedMessage();
-    assertThat(message).isEqualTo("StopPlace with sloid [ch:1:sloid:70000] does not exists!");
   }
 
   @Test
