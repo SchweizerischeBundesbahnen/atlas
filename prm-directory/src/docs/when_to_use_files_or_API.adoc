@@ -1,0 +1,21 @@
+== Data Consuming Rules
+
+=== When to use CSV or JSON
+ATLAS generates CSV and JSON files so that all PRM objects can be made available to users on a daily basis:
+
+* CSV files are **Human Readable** and are mainly used by **Business People**.
+* JSON files are "Client/Machine Readable" and are consumed by users to import all PRM objects into their service
+
+=== When to use the PRM API
+The API provided by atlas offers the customer the opportunity to obtain data in real time. It is ideal for client-specific
+projections (defined by invocation params), since filtering and sorting can be implemented arbitrarily.
+Customers get exactly the data they want.
+
+*ATTENTION: Our API is not suitable for bulk exports. Customers should therefore use the files to obtain large amounts of data.*
+
+
+=== How to decide between PRM API or File (JSON/CSV)
+If you need every day all data, like all actual PRM objects or all future timetable PRM objects,
+choose CSV or JSON file available on the Export Service, otherwise, use the Service Point API.
+
+For more information see https://confluence.sbb.ch/x/yJLIk .

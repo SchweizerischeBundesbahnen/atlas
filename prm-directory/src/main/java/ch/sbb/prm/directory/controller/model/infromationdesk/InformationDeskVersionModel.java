@@ -22,8 +22,9 @@ import lombok.experimental.SuperBuilder;
 public abstract class InformationDeskVersionModel extends BasePrmVersionModel implements DatesValidator {
 
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
-  @Schema(description = "Hierarchical assignment of the TPE which is to be processed to another TPE. It is a 1:1 relationship. "
-      + "As key, the SLOID is used.", example = "ch:1:sloid:16161:1")
+  @Schema(description = "Parent Service Point Sloid: ServiceUnique code for locations that is used in customer information. The "
+      + "structure is described in the “Swiss Location ID” specification, chapter 4.2. The document is available here. "
+      + "https://transportdatamanagement.ch/standards/", example = "ch:1:sloid:18771")
   private String parentServicePointSloid;
 
   @Schema(description = "Designation")
