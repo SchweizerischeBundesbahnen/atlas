@@ -19,6 +19,9 @@ public interface RelationApiV1 {
   List<RelationVersionModel> getRelationsBySloidAndReferenceType(@PathVariable String sloid,
       @PathVariable ReferencePointElementType referenceType);
 
+  @GetMapping("parent-service-point-sloid/{parentServicePointSloid}")
+  List<RelationVersionModel> getRelationsByParentServicePointSloid(@PathVariable String parentServicePointSloid);
+
   @GetMapping("parent-service-point-sloid/{parentServicePointSloid}/{referenceType}")
   List<RelationVersionModel> getRelationsByParentServicePointSloidAndReferenceType(@PathVariable String parentServicePointSloid,
       @PathVariable ReferencePointElementType referenceType);

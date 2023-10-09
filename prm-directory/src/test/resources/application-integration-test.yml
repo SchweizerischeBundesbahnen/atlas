@@ -44,7 +44,7 @@ logging:
         web: error
 info:
   app:
-    name: line-directory
+    name: prm-directory
     version: @version@
 
 kafka:
