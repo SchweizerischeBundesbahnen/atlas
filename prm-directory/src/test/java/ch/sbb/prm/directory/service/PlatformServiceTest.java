@@ -12,6 +12,7 @@ import ch.sbb.prm.directory.entity.PlatformVersion;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.StopPlaceVersion;
+import ch.sbb.prm.directory.exception.StopPlaceDoesNotExistsException;
 import ch.sbb.prm.directory.repository.PlatformRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.RelationRepository;
@@ -50,9 +51,8 @@ class PlatformServiceTest {
     platformVersion.setParentServicePointSloid(parentServicePointSloid);
 
     //when & then
-    String message = assertThrows(IllegalStateException.class,
+    assertThrows(StopPlaceDoesNotExistsException.class,
         () -> platformService.createPlatformVersion(platformVersion)).getLocalizedMessage();
-    assertThat(message).isEqualTo("StopPlace with sloid [ch:1:sloid:70000] does not exists!");
   }
 
   @Test

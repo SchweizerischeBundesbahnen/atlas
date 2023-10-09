@@ -12,6 +12,7 @@ import ch.sbb.prm.directory.entity.ParkingLotVersion;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.StopPlaceVersion;
+import ch.sbb.prm.directory.exception.StopPlaceDoesNotExistsException;
 import ch.sbb.prm.directory.repository.ParkingLotRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.RelationRepository;
@@ -53,9 +54,8 @@ class ParkingLotServiceTest {
     parkingLot.setParentServicePointSloid(parentServicePointSloid);
 
     //when & then
-    String message = assertThrows(IllegalStateException.class,
+    assertThrows(StopPlaceDoesNotExistsException.class,
         () -> parkingLotService.createParkingLot(parkingLot)).getLocalizedMessage();
-    assertThat(message).isEqualTo("StopPlace with sloid [ch:1:sloid:70000] does not exists!");
   }
 
   @Test
