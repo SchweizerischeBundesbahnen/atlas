@@ -1,6 +1,7 @@
 package ch.sbb.prm.directory.controller;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -114,6 +115,39 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
     //verify that the reference point create 5 relation
     verify(relationService, times(5)).createRelation(any(RelationVersion.class));
 
+  }
+
+  @Test
+  void shouldNotCreateReferencePointWhenStopPlaceDoesNotExists() throws Exception {
+    //given
+    String parentServicePointSloid = "ch:1:sloid:7000";
+    CreateReferencePointVersionModel createReferencePointVersionModel = ReferencePointTestData.getCreateReferencePointVersionModel();
+    createReferencePointVersionModel.setParentServicePointSloid(parentServicePointSloid);
+
+    //Init PRM Relations
+    InformationDeskVersion informationDesk = InformationDeskTestData.getInformationDeskVersion();
+    informationDesk.setParentServicePointSloid(parentServicePointSloid);
+    informationDeskRepository.save(informationDesk);
+    TicketCounterVersion ticketCounterVersion = TicketCounterTestData.getTicketCounterVersion();
+    ticketCounterVersion.setParentServicePointSloid(parentServicePointSloid);
+    ticketCounterRepository.save(ticketCounterVersion);
+    ParkingLotVersion parkingLotVersion = ParkingLotTestData.getParkingLotVersion();
+    parkingLotVersion.setParentServicePointSloid(parentServicePointSloid);
+    parkingLotRepository.save(parkingLotVersion);
+    ToiletVersion toiletVersion = ToiletTestData.getToiletVersion();
+    toiletVersion.setParentServicePointSloid(parentServicePointSloid);
+    toiletRepository.save(toiletVersion);
+    PlatformVersion platformVersion = PlatformTestData.getPlatformVersion();
+    platformVersion.setParentServicePointSloid(parentServicePointSloid);
+    platformRepository.save(platformVersion);
+
+    //when && then
+    mvc.perform(post("/v1/reference-points")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(createReferencePointVersionModel)))
+        .andExpect(status().isPreconditionFailed())
+        .andExpect(jsonPath("$.message", is("The stop place with sloid ch:1:sloid:7000 does not exists.")));
+    verify(relationService, times(0)).createRelation(any(RelationVersion.class));
   }
 
 }

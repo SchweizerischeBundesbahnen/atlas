@@ -1,6 +1,7 @@
 package ch.sbb.prm.directory.controller;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -77,6 +78,27 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
             .content(mapper.writeValueAsString(createPlatformVersionModel)))
         .andExpect(status().isCreated());
     verify(relationService, times(1)).createRelation(any(RelationVersion.class));
+
+  }
+
+  @Test
+  void shouldNotCreatePlatformWhenStopPlaceDoesNotExists() throws Exception {
+    //given
+    String parentServicePointSloid = "ch:1:sloid:7000";
+    ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
+    referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
+    referencePointRepository.save(referencePointVersion);
+
+    CreatePlatformVersionModel createPlatformVersionModel = PlatformTestData.getCreatePlatformVersionModel();
+    createPlatformVersionModel.setParentServicePointSloid(parentServicePointSloid);
+
+    //when && then
+    mvc.perform(post("/v1/platforms")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(createPlatformVersionModel)))
+        .andExpect(status().isPreconditionFailed())
+        .andExpect(jsonPath("$.message", is("The stop place with sloid ch:1:sloid:7000 does not exists.")));
+    verify(relationService, times(0)).createRelation(any(RelationVersion.class));
 
   }
 
