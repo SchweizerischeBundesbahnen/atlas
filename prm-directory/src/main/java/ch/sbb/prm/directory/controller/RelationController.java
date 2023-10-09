@@ -29,6 +29,12 @@ public class RelationController implements RelationApiV1 {
   }
 
   @Override
+  public List<RelationVersionModel> getRelationsByParentServicePointSloid(String parentServicePointSloid) {
+    return referencePointService.getRelationsByParentServicePointSloid(parentServicePointSloid).stream()
+        .map(RelationVersionMapper::toModel).toList();
+  }
+
+  @Override
   public List<RelationVersionModel> getRelationsByParentServicePointSloidAndReferenceType(String parentServicePointSloid, ReferencePointElementType referenceType) {
     return referencePointService.getRelationsByParentServicePointSloidAndReferenceType(parentServicePointSloid, referenceType).stream()
         .map(RelationVersionMapper::toModel).toList();

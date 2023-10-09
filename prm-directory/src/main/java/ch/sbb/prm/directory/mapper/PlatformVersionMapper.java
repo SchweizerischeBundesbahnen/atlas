@@ -4,7 +4,7 @@ import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.controller.model.platform.CreatePlatformVersionModel;
 import ch.sbb.prm.directory.controller.model.platform.ReadPlatformVersionModel;
 import ch.sbb.prm.directory.entity.PlatformVersion;
-import java.util.HashSet;
+import java.util.Set;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -59,7 +59,7 @@ public class PlatformVersionMapper {
         .inclination(model.getInclination())
         .inclinationLongitudinal(model.getInclinationLongitudinal())
         .inclinationWidth(model.getInclinationWidth())
-        .infoOpportunities(new HashSet<>(model.getInfoOpportunities()))
+        .infoOpportunities(Set.copyOf(model.getInfoOpportunities()))
         .levelAccessWheelchair(model.getLevelAccessWheelchair())
         .partialElevation(model.getPartialElevation())
         .superelevation(model.getSuperelevation())

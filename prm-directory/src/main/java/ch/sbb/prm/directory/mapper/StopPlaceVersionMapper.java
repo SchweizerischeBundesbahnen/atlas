@@ -4,7 +4,7 @@ import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.controller.model.stopplace.CreateStopPlaceVersionModel;
 import ch.sbb.prm.directory.controller.model.stopplace.ReadStopPlaceVersionModel;
 import ch.sbb.prm.directory.entity.StopPlaceVersion;
-import java.util.HashSet;
+import java.util.Set;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -51,7 +51,7 @@ public class StopPlaceVersionMapper {
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(model.getNumberWithoutCheckDigit()))
         .validFrom(model.getValidFrom())
         .validTo(model.getValidTo())
-        .meansOfTransport(new HashSet<>(model.getMeansOfTransport()))
+        .meansOfTransport(Set.copyOf(model.getMeansOfTransport()))
         .freeText(model.getFreeText())
         .address(model.getAddress())
         .zipCode(model.getZipCode())
