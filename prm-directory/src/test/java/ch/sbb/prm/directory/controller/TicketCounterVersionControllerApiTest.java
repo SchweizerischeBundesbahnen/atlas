@@ -1,6 +1,7 @@
 package ch.sbb.prm.directory.controller;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -21,7 +22,6 @@ import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.StopPlaceRepository;
 import ch.sbb.prm.directory.repository.TicketCounterRepository;
 import ch.sbb.prm.directory.service.RelationService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -45,11 +45,6 @@ class TicketCounterVersionControllerApiTest extends BaseControllerApiTest {
     this.stopPlaceRepository = stopPlaceRepository;
     this.referencePointRepository = referencePointRepository;
     this.relationService = relationService;
-  }
-
-  @BeforeEach()
-  void initDB() {
-
   }
 
   @Test
@@ -82,6 +77,26 @@ class TicketCounterVersionControllerApiTest extends BaseControllerApiTest {
             .content(mapper.writeValueAsString(model)))
         .andExpect(status().isCreated());
     verify(relationService, times(1)).createRelation(any(RelationVersion.class));
+
+  }
+
+  @Test
+  void shouldNotCreateTicketCounterWhenStopPlaceDoesNotExists() throws Exception {
+    //given
+    String parentServicePointSloid = "ch:1:sloid:7000";
+    ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
+    referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
+    referencePointRepository.save(referencePointVersion);
+
+    CreateTicketCounterVersionModel model = TicketCounterTestData.getCreateTicketCounterVersionVersionModel();
+    model.setParentServicePointSloid(parentServicePointSloid);
+
+    //when && then
+    mvc.perform(post("/v1/ticket-counters").contentType(contentType)
+            .content(mapper.writeValueAsString(model)))
+        .andExpect(status().isPreconditionFailed())
+        .andExpect(jsonPath("$.message", is("The stop place with sloid ch:1:sloid:7000 does not exists.")));
+    verify(relationService, times(0)).createRelation(any(RelationVersion.class));
 
   }
 
