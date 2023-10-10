@@ -66,10 +66,19 @@ public class ServicePointController implements ServicePointApiV1 {
 
   @Override
   public List<ServicePointSearchResult> searchServicePoints(ServicePointSearchRequest searchRequest) {
+    return searchServicePoints(searchRequest, false);
+  }
+
+  private List<ServicePointSearchResult> searchServicePoints(ServicePointSearchRequest searchRequest, boolean isBps) {
     if (searchRequest == null || searchRequest.getValue() == null || searchRequest.getValue().length() < 2) {
       throw new BadRequestException("You must enter at least 2 digits to start a search!");
     }
-    return servicePointService.searchServicePointVersion(searchRequest.getValue());
+    return servicePointService.searchServicePointVersion(searchRequest.getValue(), isBps);
+  }
+
+  @Override
+  public List<ServicePointSearchResult> searchOnlyBpsServicePoints(ServicePointSearchRequest searchRequest, boolean isBps) {
+    return searchServicePoints(searchRequest, isBps);
   }
 
   @Override
