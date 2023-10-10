@@ -257,14 +257,16 @@
     class="d-flex col-12"
     [formGroup]="form"
   >
-    <mat-checkbox formControlName="operatingPointRouteNetwork" data-cy="operatingPointRouteNetwork">
+    <mat-checkbox
+      (change)="setOperatingPointRouteNetwork($event)"
+      formControlName="operatingPointRouteNetwork"
+      data-cy="operatingPointRouteNetwork"
+    >
       {{ 'SEPODI.SERVICE_POINTS.ROUTE_NETWORK' | translate }}
     </mat-checkbox>
     <mat-checkbox
-      [checked]="true"
-      [disabled]="true"
-      [disableRipple]="true"
-      (change)="setOperatingPointKilometer()"
+      (change)="setOperatingPointKilometer($event)"
+      [disabled]="isBpkDisabled!"
       formControlName="operatingPointKilometer"
       data-cy="operatingPointKilometer"
     >
