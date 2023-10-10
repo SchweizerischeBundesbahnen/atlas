@@ -28,6 +28,11 @@
       "artifactoryDockerRepo": "atlas.docker"
     },
     {
+      "dockerFile": "prm-directory/docker/Dockerfile",
+      "imageName": "prm-directory",
+      "artifactoryDockerRepo": "atlas.docker"
+    },
+    {
       "dockerFile": "import-service-point/docker/Dockerfile",
       "imageName": "import-service-point",
       "artifactoryDockerRepo": "atlas.docker"

@@ -1,0 +1,105 @@
+package ch.sbb.prm.directory.controller;
+
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import ch.sbb.atlas.model.controller.BaseControllerApiTest;
+import ch.sbb.prm.directory.PlatformTestData;
+import ch.sbb.prm.directory.ReferencePointTestData;
+import ch.sbb.prm.directory.StopPlaceTestData;
+import ch.sbb.prm.directory.controller.model.platform.CreatePlatformVersionModel;
+import ch.sbb.prm.directory.entity.ReferencePointVersion;
+import ch.sbb.prm.directory.entity.RelationVersion;
+import ch.sbb.prm.directory.entity.StopPlaceVersion;
+import ch.sbb.prm.directory.repository.PlatformRepository;
+import ch.sbb.prm.directory.repository.ReferencePointRepository;
+import ch.sbb.prm.directory.repository.StopPlaceRepository;
+import ch.sbb.prm.directory.service.RelationService;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.transaction.annotation.Transactional;
+
+@Transactional
+class PlatformVersionControllerApiTest extends BaseControllerApiTest {
+
+  private final PlatformRepository platformRepository;
+
+  private final StopPlaceRepository stopPlaceRepository;
+  private final ReferencePointRepository referencePointRepository;
+
+  @MockBean
+  private final RelationService relationService;
+
+  @Autowired
+  PlatformVersionControllerApiTest(PlatformRepository platformRepository, StopPlaceRepository stopPlaceRepository,
+      ReferencePointRepository referencePointRepository, RelationService relationService) {
+    this.platformRepository = platformRepository;
+    this.stopPlaceRepository = stopPlaceRepository;
+    this.referencePointRepository = referencePointRepository;
+    this.relationService = relationService;
+  }
+
+  @Test
+  void shouldGetPlatformsVersion() throws Exception {
+    //given
+    platformRepository.save(PlatformTestData.getPlatformVersion());
+
+    //when & then
+    mvc.perform(get("/v1/platforms"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(1)));
+  }
+
+  @Test
+  void shouldCreatePlatform() throws Exception {
+    //given
+    String parentServicePointSloid = "ch:1:sloid:7000";
+    StopPlaceVersion stopPlaceVersion = StopPlaceTestData.getStopPlaceVersion();
+    stopPlaceVersion.setSloid(parentServicePointSloid);
+    stopPlaceRepository.save(stopPlaceVersion);
+    ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
+    referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
+    referencePointRepository.save(referencePointVersion);
+
+    CreatePlatformVersionModel createPlatformVersionModel = PlatformTestData.getCreatePlatformVersionModel();
+    createPlatformVersionModel.setParentServicePointSloid(parentServicePointSloid);
+
+    //when && then
+    mvc.perform(post("/v1/platforms")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(createPlatformVersionModel)))
+        .andExpect(status().isCreated());
+    verify(relationService, times(1)).createRelation(any(RelationVersion.class));
+
+  }
+
+  @Test
+  void shouldNotCreatePlatformWhenStopPlaceDoesNotExists() throws Exception {
+    //given
+    String parentServicePointSloid = "ch:1:sloid:7000";
+    ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
+    referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
+    referencePointRepository.save(referencePointVersion);
+
+    CreatePlatformVersionModel createPlatformVersionModel = PlatformTestData.getCreatePlatformVersionModel();
+    createPlatformVersionModel.setParentServicePointSloid(parentServicePointSloid);
+
+    //when && then
+    mvc.perform(post("/v1/platforms")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(createPlatformVersionModel)))
+        .andExpect(status().isPreconditionFailed())
+        .andExpect(jsonPath("$.message", is("The stop place with sloid ch:1:sloid:7000 does not exists.")));
+    verify(relationService, times(0)).createRelation(any(RelationVersion.class));
+
+  }
+
+}
