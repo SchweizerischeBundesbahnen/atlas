@@ -39,6 +39,8 @@ import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.Comparator;
@@ -182,6 +184,22 @@ import org.springframework.test.web.servlet.MvcResult;
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.totalCount", is(1)));
   }
+
+     @Test
+     void shouldFindServicePointVersionBycreatedAfterByISODateTime() throws Exception {
+         ZonedDateTime zonedDateTime = servicePointVersion.getCreationDate().plusDays(1).atZone(ZoneId.of("Europe/Berlin"));
+         String createdAfterQueryString = zonedDateTime.format(DateTimeFormatter.ofPattern(AtlasApiConstants.ISO_DATE_TIME_FORMAT_PATTERN));
+
+         mvc.perform(get("/v1/service-points?createdAfter=" + createdAfterQueryString))
+             .andExpect(status().isOk())
+             .andExpect(jsonPath("$.totalCount", is(0)));
+
+         createdAfterQueryString = servicePointVersion.getCreationDate().minusDays(1)
+             .format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN));
+         mvc.perform(get("/v1/service-points?createdAfter=" + createdAfterQueryString))
+             .andExpect(status().isOk())
+             .andExpect(jsonPath("$.totalCount", is(1)));
+     }
 
   @Test
   void shouldFindServicePointVersionByFromAndToDate() throws Exception {
