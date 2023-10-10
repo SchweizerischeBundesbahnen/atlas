@@ -3,12 +3,11 @@ package ch.sbb.prm.directory.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.versioning.service.VersionableService;
+import ch.sbb.prm.directory.StopPlaceTestData;
 import ch.sbb.prm.directory.entity.BasePrmImportEntity.Fields;
 import ch.sbb.prm.directory.entity.StopPlaceVersion;
-import ch.sbb.prm.directory.entity.StopPlaceVersion.StopPlaceVersionBuilder;
 import ch.sbb.prm.directory.enumeration.StandardAttributeType;
 import ch.sbb.prm.directory.repository.StopPlaceRepository;
 import java.time.LocalDate;
@@ -48,12 +47,12 @@ class StopPlaceVersioningTest {
   @Test
   void scenario1a() {
     //given
-    StopPlaceVersion version1 = builderVersion1().build();
-    StopPlaceVersion version2 = builderVersion2().build();
+    StopPlaceVersion version1 = StopPlaceTestData.builderVersion1().build();
+    StopPlaceVersion version2 = StopPlaceTestData.builderVersion2().build();
     StopPlaceVersion savedVersion1 = stopPlaceRepository.saveAndFlush(version1);
     stopPlaceRepository.saveAndFlush(version2);
 
-    StopPlaceVersion editedVersion = builderVersion2().build();
+    StopPlaceVersion editedVersion = StopPlaceTestData.builderVersion2().build();
     editedVersion.setFreeText("I'm no more Free :-(!!!");
     editedVersion.setMeansOfTransport(Set.of(MeanOfTransport.METRO, MeanOfTransport.CABLE_CAR));
     editedVersion.setAddress("Wylerstrasse 123");
@@ -114,14 +113,14 @@ class StopPlaceVersioningTest {
   @Test
   void scenario2a() {
     //given
-    StopPlaceVersion version1 = builderVersion1().build();
-    StopPlaceVersion version2 = builderVersion2().build();
-    StopPlaceVersion version3 = builderVersion3().build();
+    StopPlaceVersion version1 = StopPlaceTestData.builderVersion1().build();
+    StopPlaceVersion version2 = StopPlaceTestData.builderVersion2().build();
+    StopPlaceVersion version3 = StopPlaceTestData.builderVersion3().build();
     StopPlaceVersion savedVersion1 = stopPlaceRepository.saveAndFlush(version1);
     StopPlaceVersion savedVersion2 = stopPlaceRepository.saveAndFlush(version2);
     StopPlaceVersion savedVersion3 = stopPlaceRepository.saveAndFlush(version3);
 
-    StopPlaceVersion editedVersion = builderVersion2().build();
+    StopPlaceVersion editedVersion = StopPlaceTestData.builderVersion2().build();
     editedVersion.setFreeText("I'm no more Free :-(!!!");
     editedVersion.setValidFrom(LocalDate.of(2001, 6, 1));
     editedVersion.setValidTo(LocalDate.of(2002, 6, 1));
@@ -179,12 +178,12 @@ class StopPlaceVersioningTest {
   @Test
   void scenario8a() {
     //given
-    StopPlaceVersion version1 = builderVersion1().build();
-    StopPlaceVersion version2 = builderVersion2().build();
+    StopPlaceVersion version1 = StopPlaceTestData.builderVersion1().build();
+    StopPlaceVersion version2 = StopPlaceTestData.builderVersion2().build();
     StopPlaceVersion savedVersion1 = stopPlaceRepository.saveAndFlush(version1);
     StopPlaceVersion savedVersion2 = stopPlaceRepository.saveAndFlush(version2);
 
-    StopPlaceVersion editedVersion = builderVersion2().build();
+    StopPlaceVersion editedVersion = StopPlaceTestData.builderVersion2().build();
     editedVersion.setValidTo(LocalDate.of(2001, 12, 31));
     editedVersion.setCreationDate(version2.getCreationDate());
     editedVersion.setEditionDate(version2.getEditionDate());
@@ -211,96 +210,6 @@ class StopPlaceVersioningTest {
         .isEqualTo(savedVersion2);
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2001, 12, 31));
 
-  }
-
-  private StopPlaceVersionBuilder<?, ?> builderVersion1() {
-    return StopPlaceVersion.builder()
-        .sloid("ch:1.sloid:12345")
-        .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
-        .validFrom(LocalDate.of(2000, 1, 1))
-        .validTo(LocalDate.of(2000, 12, 31))
-        .meansOfTransport(Set.of(MeanOfTransport.BUS, MeanOfTransport.BOAT))
-        .freeText("I am a free text!!!")
-        .address("Wylerstrasse 123")
-        .zipCode("3014")
-        .city("Bern")
-        .alternativeTransport(StandardAttributeType.TO_BE_COMPLETED)
-        .alternativeTransportCondition("No way dude!!")
-        .assistanceAvailability(StandardAttributeType.YES)
-        .alternativeCondition("No alternative Bro!")
-        .assistanceService(StandardAttributeType.NO)
-        .audioTicketMachine(StandardAttributeType.PARTIALLY)
-        .additionalInfo("No alternative")
-        .dynamicAudioSystem(StandardAttributeType.TO_BE_COMPLETED)
-        .dynamicOpticSystem(StandardAttributeType.TO_BE_COMPLETED)
-        .infoTicketMachine("tick")
-        .additionalInfo("additional")
-        .interoperable(true)
-        .url("https://www.prm.sbb")
-        .visualInfo(StandardAttributeType.TO_BE_COMPLETED)
-        .wheelchairTicketMachine(StandardAttributeType.TO_BE_COMPLETED)
-        .assistanceRequestFulfilled(StandardAttributeType.TO_BE_COMPLETED)
-        .ticketMachine(StandardAttributeType.TO_BE_COMPLETED);
-  }
-
-  private StopPlaceVersionBuilder<?, ?> builderVersion2() {
-    return StopPlaceVersion.builder()
-        .sloid("ch:1.sloid:12345")
-        .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
-        .validFrom(LocalDate.of(2001, 1, 1))
-        .validTo(LocalDate.of(2002, 12, 31))
-        .meansOfTransport(Set.of(MeanOfTransport.BUS, MeanOfTransport.BOAT))
-        .freeText("I am a free text!!!")
-        .address("Wylerstrasse 312")
-        .zipCode("3014")
-        .city("Bern")
-        .alternativeTransport(StandardAttributeType.YES)
-        .alternativeTransportCondition("No way dude!!")
-        .assistanceAvailability(StandardAttributeType.YES)
-        .alternativeCondition("No alternative Bro!")
-        .assistanceService(StandardAttributeType.NO)
-        .audioTicketMachine(StandardAttributeType.PARTIALLY)
-        .additionalInfo("No alternative")
-        .dynamicAudioSystem(StandardAttributeType.TO_BE_COMPLETED)
-        .dynamicOpticSystem(StandardAttributeType.TO_BE_COMPLETED)
-        .infoTicketMachine("tick")
-        .additionalInfo("additional")
-        .interoperable(true)
-        .url("https://www.prm.sbb")
-        .visualInfo(StandardAttributeType.TO_BE_COMPLETED)
-        .wheelchairTicketMachine(StandardAttributeType.TO_BE_COMPLETED)
-        .assistanceRequestFulfilled(StandardAttributeType.TO_BE_COMPLETED)
-        .ticketMachine(StandardAttributeType.TO_BE_COMPLETED);
-  }
-
-  private StopPlaceVersionBuilder<?, ?> builderVersion3() {
-    return StopPlaceVersion.builder()
-        .sloid("ch:1.sloid:12345")
-        .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
-        .validFrom(LocalDate.of(2003, 1, 1))
-        .validTo(LocalDate.of(2003, 12, 31))
-        .meansOfTransport(Set.of(MeanOfTransport.BUS, MeanOfTransport.BOAT))
-        .freeText("I am a free man!!!")
-        .address("Wylerstrasse 666")
-        .zipCode("3014")
-        .city("Bern")
-        .alternativeTransport(StandardAttributeType.YES)
-        .alternativeTransportCondition("No way dude!!")
-        .assistanceAvailability(StandardAttributeType.YES)
-        .alternativeCondition("No alternative Bro!")
-        .assistanceService(StandardAttributeType.NO)
-        .audioTicketMachine(StandardAttributeType.PARTIALLY)
-        .additionalInfo("No alternative")
-        .dynamicAudioSystem(StandardAttributeType.TO_BE_COMPLETED)
-        .dynamicOpticSystem(StandardAttributeType.TO_BE_COMPLETED)
-        .infoTicketMachine("tick")
-        .additionalInfo("additional")
-        .interoperable(true)
-        .url("https://www.prm.sbb")
-        .visualInfo(StandardAttributeType.TO_BE_COMPLETED)
-        .wheelchairTicketMachine(StandardAttributeType.TO_BE_COMPLETED)
-        .assistanceRequestFulfilled(StandardAttributeType.TO_BE_COMPLETED)
-        .ticketMachine(StandardAttributeType.TO_BE_COMPLETED);
   }
 
 }
