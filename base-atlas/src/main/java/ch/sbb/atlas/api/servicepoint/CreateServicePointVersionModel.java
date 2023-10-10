@@ -94,10 +94,14 @@ public class CreateServicePointVersionModel extends ServicePointVersionModel {
   @AssertTrue(message = "ServicePointNumber must be present only if country not in (85,11,12,13,14)")
   public boolean isValidServicePointNumber() {
     if (numberWithoutCheckDigit == null) {
-      return country != null && ServicePointConstants.AUTOMATIC_SERVICE_POINT_ID.contains(country);
+      return shouldGenerateServicePointNumber();
     } else {
       return country == null;
     }
   }
 
+  @JsonIgnore
+  public boolean shouldGenerateServicePointNumber() {
+      return country != null && ServicePointConstants.AUTOMATIC_SERVICE_POINT_ID.contains(country);
+  }
 }
