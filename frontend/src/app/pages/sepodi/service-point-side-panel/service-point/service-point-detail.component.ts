@@ -11,7 +11,6 @@ import {
   OperatingPointTechnicalTimetableType,
   OperatingPointType,
   ReadServicePointVersion,
-  ServicePointNumber,
   ServicePointsService,
   SpatialReference,
   StopPointType,
@@ -35,6 +34,7 @@ import { TranslationSortingService } from '../../../../core/translation/translat
 import { CoordinateTransformationService } from '../../geography/coordinate-transformation.service';
 import { LocationInformation } from './location-information';
 import { Countries } from '../../../../core/country/Countries';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-service-point',
@@ -63,6 +63,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   stopPointTypes = Object.values(StopPointType);
   categories = Object.values(Category);
   isSwitchVersionDisabled = false;
+  isBpkDisabled = false;
 
   currentSpatialReference!: SpatialReference;
 
@@ -250,6 +251,9 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
       this.mapService.isEditMode.next(true);
       this.isSwitchVersionDisabled = true;
       this.form.enable();
+      if (this.form.controls.operatingPointRouteNetwork.value) {
+        this.isBpkDisabled = true;
+      }
     }
   }
 
@@ -421,24 +425,28 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     return coordinates.north !== 0 && coordinates.east !== 0;
   }
 
-  setOperatingPointKilometer() {
-    console.log(this.selectedVersion.operatingPointKilometer);
-    console.log(this.selectedVersion.operatingPointKilometerMaster);
-    console.log(this.form.controls.operatingPointKilometer.value);
-    console.log(this.form.controls.operatingPointKilometerMaster.value);
-    this.selectedVersion.operatingPointKilometer = true;
-    this.form.controls.operatingPointKilometer.setValue(true);
-    const servicePointNumber: ServicePointNumber = {
-      number: 8500006,
-      numberShort: 6,
-      uicCountryCode: 85,
-      checkDigit: 3,
-    };
-    this.form.controls.operatingPointKilometerMaster.setValue(this.selectedVersion.number.number);
-    this.selectedVersion.operatingPointKilometerMaster = this.selectedVersion.number;
-    console.log(this.selectedVersion.operatingPointKilometer);
-    console.log(this.selectedVersion.operatingPointKilometerMaster);
-    console.log(this.form.controls.operatingPointKilometer.value);
-    console.log(this.form.controls.operatingPointKilometerMaster.value);
+  setOperatingPointRouteNetwork(select: MatCheckboxChange) {
+    if (select.checked) {
+      this.form.controls.operatingPointRouteNetwork.setValue(true);
+      this.form.controls.operatingPointKilometer.setValue(true);
+      this.form.controls.operatingPointKilometer.disabled;
+      this.form.controls.operatingPointKilometerMaster.setValue(this.selectedVersion.number.number);
+      this.isBpkDisabled = true;
+    } else {
+      this.form.controls.operatingPointRouteNetwork.setValue(false);
+      this.form.controls.operatingPointKilometer.setValue(false);
+      this.form.controls.operatingPointKilometerMaster.setValue(undefined);
+      this.isBpkDisabled = false;
+    }
+  }
+
+  setOperatingPointKilometer(select: MatCheckboxChange) {
+    if (select.checked) {
+      this.form.controls.operatingPointKilometer.setValue(true);
+      this.form.controls.operatingPointKilometerMaster.setValue(this.selectedVersion.number.number);
+    } else {
+      this.form.controls.operatingPointKilometer.setValue(false);
+      this.form.controls.operatingPointKilometerMaster.setValue(undefined);
+    }
   }
 }
