@@ -3,6 +3,7 @@ package ch.sbb.prm.directory.api;
 import ch.sbb.prm.directory.controller.model.ticketcounter.CreateTicketCounterVersionModel;
 import ch.sbb.prm.directory.controller.model.ticketcounter.ReadTicketCounterVersionModel;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@Tag(name = "TicketCounter")
+@Tag(name = "PRM - Person with Reduced Mobility")
 @RequestMapping("v1/ticket-counters")
 public interface TicketCounterApiV1 {
 
@@ -20,6 +21,6 @@ public interface TicketCounterApiV1 {
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
-  ReadTicketCounterVersionModel createStopPlace(@RequestBody CreateTicketCounterVersionModel ticketCounterVersionModel);
+  ReadTicketCounterVersionModel createStopPlace(@RequestBody @Valid CreateTicketCounterVersionModel ticketCounterVersionModel);
 
 }
