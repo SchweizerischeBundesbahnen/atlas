@@ -26,6 +26,7 @@ This is the repository for business relevant services for ATLAS.
   * [Workflow](#workflow)
   * [User Administration](#user-administration)
   * [Service-Point-Directory](#service-point-directory)
+  * [Prm-Directory](#prm-directory)
   * [Import Service-Point](#import-service-point)
   * [Base Service lib](#base-service-lib)
   * [Frontend](#frontend)
@@ -223,6 +224,12 @@ See [UserAdministration Documentation](user-administration/README.md) for more.
 Business service for `ServicePoints`, `TrafficPointElements` and `LoadingPoints`. All of these business objects use the atlas own
 versioning.
 See [Service-Point-Directory documentation](service-point-directory/README.md);
+
+### Prm-Directory
+
+Business service for PRM (Person with Reduced Mobility) Data. All of these business objects use the atlas own
+versioning.
+See [Prm-Directory documentation](prm-directory/README.md);
 
 ### Import Service-Point
 
