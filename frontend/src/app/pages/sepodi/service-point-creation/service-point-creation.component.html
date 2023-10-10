@@ -12,7 +12,10 @@
     >
     </atlas-select>
 
-    <service-point-form [form]="form" [isGeographyOn]="true">
+    <service-point-form
+      [form]="form"
+      (selectedServicePointTypeChange)="servicePointTypeChanged$.next($event)"
+    >
       <div class="color-gray-900" abbreviation>
         <atlas-text-field
           [fieldExamples]="[
@@ -28,7 +31,6 @@
         </atlas-text-field>
       </div>
     </service-point-form>
-    <!--    todo: define pre selection for isGeographyOn-->
   </div>
 
   <div class="footer-box">

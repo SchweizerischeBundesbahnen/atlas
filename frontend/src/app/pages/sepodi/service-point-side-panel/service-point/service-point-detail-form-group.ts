@@ -82,10 +82,10 @@ export class ServicePointFormGroupBuilder {
         meansOfTransport: new FormControl([]),
         categories: new FormControl([]),
         servicePointGeolocation: new FormGroup<GeographyFormGroup>({
-          east: new FormControl(), // todo: getvalidatorforcoordinates add dynamically
+          east: new FormControl(),
           north: new FormControl(),
           height: new FormControl(null, [AtlasCharsetsValidator.decimalWithDigits(4)]),
-          spatialReference: new FormControl(), // todo: mby set default
+          spatialReference: new FormControl(),
         }),
         operatingPointRouteNetwork: new FormControl(),
         operatingPointKilometer: new FormControl(),
