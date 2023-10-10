@@ -1,17 +1,18 @@
 package ch.sbb.atlas.servicepointdirectory.repository;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchResult;
-import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @IntegrationTest
  class ServicePointSearchVersionRepositoryTest {
@@ -48,13 +49,13 @@ import org.springframework.beans.factory.annotation.Autowired;
     @Test
      void shouldThrowExceptionWhenSearchWithLessThanTwoDigits(){
         //when & then
-        assertThrows(IllegalArgumentException.class, () -> servicePointSearchVersionRepository.searchServicePoints("b"));
+        assertThrows(IllegalArgumentException.class, () -> servicePointSearchVersionRepository.searchServicePoints("b", false));
     }
 
     @Test
      void shouldReturnAllServicePointWithDesignationOfficialBern(){
         //when
-        List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("bern");
+        List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("bern", false);
         //then
         assertThat(results).isNotNull();
         assertThat(results).hasSize(3);
@@ -66,7 +67,7 @@ import org.springframework.beans.factory.annotation.Autowired;
     @Test
      void shouldReturnAllServicePointWithDesignationOfficialContainsOst(){
         //when
-        List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("ost");
+        List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("ost", false);
         //then
         assertThat(results).isNotNull();
         assertThat(results).hasSize(1);
@@ -76,7 +77,7 @@ import org.springframework.beans.factory.annotation.Autowired;
     @Test
      void shouldReturnAllServicePointWithDesignationOfficialEndsWithEgg(){
         //when
-        List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("egg");
+        List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("egg", false);
         //then
         assertThat(results).isNotNull();
         assertThat(results).hasSize(1);
@@ -86,7 +87,7 @@ import org.springframework.beans.factory.annotation.Autowired;
     @Test
      void shouldReturnEmptyListWhenNoMatch(){
         //when
-        List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("milan");
+        List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("milan", false);
         //then
         assertThat(results).isNotNull();
         assertThat(results).isEmpty();
@@ -95,7 +96,7 @@ import org.springframework.beans.factory.annotation.Autowired;
     @Test
      void shouldReturnAllServicePointWithNumberStartWith85(){
         //when
-        List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("85");
+        List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("85", false);
         //then
         assertThat(results).isNotNull();
         assertThat(results).hasSize(4);
@@ -108,7 +109,7 @@ import org.springframework.beans.factory.annotation.Autowired;
     @Test
      void shouldReturnAllServicePointWithNumberEndsWith85(){
         //when
-        List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("61");
+        List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("61", false);
         //then
         assertThat(results).isNotNull();
         assertThat(results).hasSize(1);
@@ -118,7 +119,7 @@ import org.springframework.beans.factory.annotation.Autowired;
     @Test
      void shouldReturnAllServicePointWithNumberContains7000(){
         //when
-        List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("7000");
+        List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("7000", false);
         //then
         assertThat(results).isNotNull();
         assertThat(results).hasSize(1);
@@ -128,7 +129,7 @@ import org.springframework.beans.factory.annotation.Autowired;
     @Test
      void shouldReturnAllServicePointWithDesignationLongNapoli(){
         //when
-        List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("napoli");
+        List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("napoli", false);
         //then
         assertThat(results).isNotNull();
         assertThat(results).hasSize(2);
@@ -139,7 +140,7 @@ import org.springframework.beans.factory.annotation.Autowired;
     @Test
      void shouldReturnAllServicePointWithDesignationLongNapol(){
         //when
-        List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("napol");
+        List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("napol", false);
         //then
         assertThat(results).isNotNull();
         assertThat(results).hasSize(3);
