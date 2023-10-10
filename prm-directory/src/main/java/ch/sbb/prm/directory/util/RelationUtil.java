@@ -11,7 +11,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class RelationUtil {
 
-  public static RelationVersion buildReleaseVersion(Relatable version,
+  public static RelationVersion buildRelationVersion(Relatable version,
       ReferencePointElementType referencePointElementType) {
     return RelationVersion.builder()
         .sloid(version.getSloid())

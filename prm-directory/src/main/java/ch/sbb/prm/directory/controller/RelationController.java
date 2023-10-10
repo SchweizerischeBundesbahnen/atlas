@@ -15,28 +15,28 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class RelationController implements RelationApiV1 {
 
-  private final RelationService referencePointService;
+  private final RelationService relationService;
 
   @Override
   public List<RelationVersionModel> getRelationsBySloid(String sloid) {
-    return referencePointService.getRelationsBySloid(sloid).stream().map(RelationVersionMapper::toModel).sorted().toList();
+    return relationService.getRelationsBySloid(sloid).stream().map(RelationVersionMapper::toModel).sorted().toList();
   }
 
   @Override
   public List<RelationVersionModel> getRelationsBySloidAndReferenceType(String sloid, ReferencePointElementType referenceType) {
-    return referencePointService.getRelationsBySloidAndReferenceType(sloid, referenceType).stream()
+    return relationService.getRelationsBySloidAndReferenceType(sloid, referenceType).stream()
         .map(RelationVersionMapper::toModel).toList();
   }
 
   @Override
   public List<RelationVersionModel> getRelationsByParentServicePointSloid(String parentServicePointSloid) {
-    return referencePointService.getRelationsByParentServicePointSloid(parentServicePointSloid).stream()
+    return relationService.getRelationsByParentServicePointSloid(parentServicePointSloid).stream()
         .map(RelationVersionMapper::toModel).toList();
   }
 
   @Override
   public List<RelationVersionModel> getRelationsByParentServicePointSloidAndReferenceType(String parentServicePointSloid, ReferencePointElementType referenceType) {
-    return referencePointService.getRelationsByParentServicePointSloidAndReferenceType(parentServicePointSloid, referenceType).stream()
+    return relationService.getRelationsByParentServicePointSloidAndReferenceType(parentServicePointSloid, referenceType).stream()
         .map(RelationVersionMapper::toModel).toList();
   }
 

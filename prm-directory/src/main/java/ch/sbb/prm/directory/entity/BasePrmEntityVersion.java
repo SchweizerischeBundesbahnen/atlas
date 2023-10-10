@@ -18,6 +18,7 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
+
 @NoArgsConstructor
 @Getter
 @Setter
@@ -26,7 +27,7 @@ import lombok.experimental.SuperBuilder;
 @MappedSuperclass
 @FieldNameConstants
 @AtlasVersionable
-public abstract class BasePrmEntityVersion extends BasePrmImportEntity{
+public abstract class BasePrmEntityVersion extends BasePrmImportEntity {
 
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
   @AtlasVersionableProperty

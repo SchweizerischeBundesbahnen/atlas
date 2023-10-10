@@ -52,11 +52,11 @@ kafka:
     user:
       administration:
         topic: atlas.user.administration
-        groupId: atlas.kafka.lidi.user.administration.groupId
+        groupId: atlas.kafka.prm.user.administration.groupId
     business:
       organisation:
         topic: atlas.business.organisation
-        groupId: atlas.kafka.lidi.business.organisation.groupId
+        groupId: atlas.kafka.prm.business.organisation.groupId
 
 atlas:
   client:
