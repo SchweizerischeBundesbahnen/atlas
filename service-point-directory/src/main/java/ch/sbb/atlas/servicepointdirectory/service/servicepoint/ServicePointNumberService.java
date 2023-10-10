@@ -19,10 +19,12 @@ public class ServicePointNumberService {
     Integer nextAvailableServicePointNumber;
 
     do {
-      nextAvailableServicePointNumber = servicePointNumberRepository.getNextAvailableServicePointNumber(country.name());
+      nextAvailableServicePointNumber =
+          Objects.requireNonNull(servicePointNumberRepository.getNextAvailableServicePointNumber(country.name()),
+              "nextAvailableServicePointNumber must not be null");
       deleteResult = servicePointNumberRepository.deleteAvailableNumber(nextAvailableServicePointNumber, country.name());
     } while (deleteResult != 1);
 
-    return Objects.requireNonNull(nextAvailableServicePointNumber, "nextNumber must not be null");
+    return nextAvailableServicePointNumber;
   }
 }

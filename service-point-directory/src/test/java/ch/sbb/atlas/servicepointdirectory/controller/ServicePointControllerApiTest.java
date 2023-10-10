@@ -1,5 +1,20 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
+import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.LV95;
+import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.WGS84;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.endsWith;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
@@ -23,15 +38,8 @@ import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointGeolocationMapper;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointFotCommentRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
+import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointNumberService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchRequest;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
-import org.springframework.test.web.servlet.MvcResult;
-
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -42,23 +50,20 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
+import org.springframework.test.web.servlet.MvcResult;
 
-import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.LV95;
-import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.WGS84;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.endsWith;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
- class ServicePointControllerApiTest extends BaseControllerApiTest {
+class ServicePointControllerApiTest extends BaseControllerApiTest {
 
   @MockBean
   private SharedBusinessOrganisationService sharedBusinessOrganisationService;
+  @MockBean
+  private ServicePointNumberService servicePointNumberService;
 
   private final ServicePointVersionRepository repository;
   private final ServicePointFotCommentRepository fotCommentRepository;
@@ -66,7 +71,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
   private ServicePointVersion servicePointVersion;
 
   @Autowired
-   ServicePointControllerApiTest(ServicePointVersionRepository repository,
+  ServicePointControllerApiTest(ServicePointVersionRepository repository,
       ServicePointFotCommentRepository fotCommentRepository, ServicePointController servicePointController) {
     this.repository = repository;
     this.fotCommentRepository = fotCommentRepository;
@@ -75,6 +80,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
   @BeforeEach
   void createDefaultVersion() {
+    when(servicePointNumberService.getNextAvailableServicePointId(any())).thenReturn(1);
     servicePointVersion = repository.save(ServicePointTestData.getBernWyleregg());
   }
 
@@ -390,7 +396,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         .andExpect(jsonPath("$.number.numberShort", is(34510)))
         .andExpect(jsonPath("$.number.checkDigit", is(8)))
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.designationOfficial, is("Aargau Strasse")))
-        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.sloid, is("ch:1:sloid:18771")))
+        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.sloid, nullValue()))
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.designationLong, is("designation long 1")))
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.abbreviation, is("ABC")))
         .andExpect(jsonPath("$.operatingPoint", is(true)))
@@ -750,7 +756,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.id, is(servicePointVersion.getId().intValue() + 1)))
         .andExpect(jsonPath("$.number.number", is(8034510)))
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.designationOfficial, is("Aargau Strasse")))
-        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.sloid, is("ch:1:sloid:18771")))
+        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.sloid, nullValue()))
         .andExpect(jsonPath("$.servicePointGeolocation.spatialReference", is(LV95.toString())))
         .andExpect(jsonPath("$.servicePointGeolocation.lv95.east", is(2600127.58303)))
         .andExpect(jsonPath("$.servicePointGeolocation.lv95.north", is(1199776.88044)))
@@ -775,7 +781,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.id, is(servicePointVersion.getId().intValue() + 1)))
         .andExpect(jsonPath("$.number.number", is(8034510)))
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.designationOfficial, is("Aargau Strasse")))
-        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.sloid, is("ch:1:sloid:18771")))
+        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.sloid, nullValue()))
         .andExpect(jsonPath("$.servicePointGeolocation.spatialReference", is(WGS84.toString())))
         .andExpect(jsonPath("$.servicePointGeolocation.wgs84.north", is(46.94907577445)))
         .andExpect(jsonPath("$.servicePointGeolocation.wgs84.east", is(7.44030833983)))
@@ -783,6 +789,26 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         .andExpect(jsonPath("$.servicePointGeolocation.lv95.north", is(1199776.88159)))
         .andExpect(jsonPath("$.hasGeolocation", is(true)));
   }
+
+   @Test
+   void shouldCreateServicePointAndGenerateServicePointNumber() throws Exception {
+     CreateServicePointVersionModel servicePointVersionModel = CreateServicePointVersionModel.builder()
+         .country(Country.SWITZERLAND)
+         .designationOfficial("Bern")
+         .businessOrganisation("ch:1:sboid:5846489645")
+         .validFrom(LocalDate.of(2022, 1, 1))
+         .validTo(LocalDate.of(2022, 12, 31))
+         .build();
+
+     mvc.perform(post("/v1/service-points")
+             .contentType(contentType)
+             .content(mapper.writeValueAsString(servicePointVersionModel)))
+         .andExpect(status().isCreated())
+         .andExpect(jsonPath("$.number.number", is(8500001)))
+         .andExpect(jsonPath("$.sloid", is("ch:1:sloid:1")));
+   }
+ }
+
   @Test
   void shouldNotUpdateServicePointIfAbbreviationInvalid()  throws Exception{
       CreateServicePointVersionModel testData = ServicePointTestData.getAargauServicePointVersionModel();
@@ -871,6 +897,5 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
              .andExpect(status().isBadRequest());
 
      }
-
 
  }
