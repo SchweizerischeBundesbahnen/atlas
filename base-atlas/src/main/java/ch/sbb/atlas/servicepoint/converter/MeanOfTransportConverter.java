@@ -1,4 +1,4 @@
-package ch.sbb.atlas.servicepointdirectory.converter;
+package ch.sbb.atlas.servicepoint.converter;
 
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import jakarta.persistence.AttributeConverter;
