@@ -33,10 +33,10 @@ public class VersionedObjectDateRequestParams {
   private LocalDate toDate;
 
   @Parameter(description = "creationDate >= [createdAfter]. DateTime format: " + AtlasApiConstants.DATE_TIME_FORMAT_PATTERN)
-  @DateTimeFormat(pattern = AtlasApiConstants.DATE_TIME_FORMAT_PATTERN)
+  @DateTimeFormat(pattern = AtlasApiConstants.DATE_TIME_FORMAT_PATTERN, fallbackPatterns = { AtlasApiConstants.ISO_DATE_TIME_FORMAT_PATTERN })
   private LocalDateTime createdAfter;
 
   @Parameter(description = "editionDate >= [modifiedAfter]. DateTime format: " + AtlasApiConstants.DATE_TIME_FORMAT_PATTERN)
-  @DateTimeFormat(pattern = AtlasApiConstants.DATE_TIME_FORMAT_PATTERN)
+  @DateTimeFormat(pattern = AtlasApiConstants.DATE_TIME_FORMAT_PATTERN, fallbackPatterns = { AtlasApiConstants.ISO_DATE_TIME_FORMAT_PATTERN })
   private LocalDateTime modifiedAfter;
 }
