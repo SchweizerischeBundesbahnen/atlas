@@ -2,12 +2,12 @@ package ch.sbb.prm.directory.api;
 
 import ch.sbb.prm.directory.controller.model.stopplace.CreateStopPlaceVersionModel;
 import ch.sbb.prm.directory.controller.model.stopplace.ReadStopPlaceVersionModel;
-import ch.sbb.prm.directory.controller.model.stopplace.StopPlaceVersionModel;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +22,11 @@ public interface StopPlaceApiV1 {
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
-  StopPlaceVersionModel createStopPlace(@RequestBody @Valid CreateStopPlaceVersionModel stopPlaceVersionModel);
+  ReadStopPlaceVersionModel createStopPlace(@RequestBody @Valid CreateStopPlaceVersionModel stopPlaceVersionModel);
+
+  @ResponseStatus(HttpStatus.OK)
+  @PostMapping(path = "{id}")
+  List<ReadStopPlaceVersionModel> updateStopPlace(@PathVariable Long id,
+      @RequestBody @Valid CreateStopPlaceVersionModel stopPlaceVersionModel);
 
 }

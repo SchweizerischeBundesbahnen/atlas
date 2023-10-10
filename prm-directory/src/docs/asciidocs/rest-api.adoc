@@ -50,6 +50,10 @@ include::{snippets}/stop-place-version-controller-api-test/should-get-stop-place
 
 include::{snippets}/stop-place-version-controller-api-test/should-create-stop-place/auto-section.adoc[]
 
+=== Update Stop Places - Successfully
+
+include::{snippets}/stop-place-version-controller-api-test/should-update-stop-place/auto-section.adoc[]
+
 == Reference Point
 
 === Get Reference Points - Successfully
