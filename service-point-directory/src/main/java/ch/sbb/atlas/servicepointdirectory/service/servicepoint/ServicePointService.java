@@ -37,8 +37,8 @@ public class ServicePointService {
   private final ServicePointSearchVersionRepository servicePointSearchVersionRepository;
   private final ServicePointTerminationService servicePointTerminationService;
 
-  public List<ServicePointSearchResult> searchServicePointVersion(String value){
-    List<ServicePointSearchResult> servicePointSearchResults = servicePointSearchVersionRepository.searchServicePoints(value);
+  public List<ServicePointSearchResult> searchServicePointVersion(String value, boolean isBps){
+    List<ServicePointSearchResult> servicePointSearchResults = servicePointSearchVersionRepository.searchServicePoints(value, isBps);
     if(servicePointSearchResults.size() > SEARCH_RESULT_SIZE){
       return servicePointSearchResults.subList(0,SEARCH_RESULT_SIZE);
     }
