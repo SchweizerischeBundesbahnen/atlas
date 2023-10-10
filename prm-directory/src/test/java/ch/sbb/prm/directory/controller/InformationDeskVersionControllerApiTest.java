@@ -14,7 +14,7 @@ import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.prm.directory.InformationDeskTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPlaceTestData;
-import ch.sbb.prm.directory.controller.model.infromationdesk.CreateInformationDeskVersionModel;
+import ch.sbb.prm.directory.controller.model.informationdesk.CreateInformationDeskVersionModel;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.StopPlaceVersion;

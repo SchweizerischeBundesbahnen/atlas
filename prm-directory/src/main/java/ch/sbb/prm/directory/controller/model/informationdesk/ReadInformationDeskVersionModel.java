@@ -1,4 +1,4 @@
-package ch.sbb.prm.directory.controller.model.infromationdesk;
+package ch.sbb.prm.directory.controller.model.informationdesk;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.validation.DatesValidator;

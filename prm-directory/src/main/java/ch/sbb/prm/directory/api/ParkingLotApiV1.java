@@ -3,6 +3,7 @@ package ch.sbb.prm.directory.api;
 import ch.sbb.prm.directory.controller.model.parkinglot.CreateParkingLotVersionModel;
 import ch.sbb.prm.directory.controller.model.parkinglot.ReadParkingLotVersionModel;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@Tag(name = " ParkingLot")
+@Tag(name = "PRM - Person with Reduced Mobility")
 @RequestMapping("v1/parking-lots")
 public interface ParkingLotApiV1 {
 
@@ -20,5 +21,5 @@ public interface ParkingLotApiV1 {
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
-  ReadParkingLotVersionModel createParkingLot(@RequestBody CreateParkingLotVersionModel model);
+  ReadParkingLotVersionModel createParkingLot(@RequestBody @Valid CreateParkingLotVersionModel model);
 }

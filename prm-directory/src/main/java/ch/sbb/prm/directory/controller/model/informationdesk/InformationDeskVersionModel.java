@@ -1,4 +1,4 @@
-package ch.sbb.prm.directory.controller.model.infromationdesk;
+package ch.sbb.prm.directory.controller.model.informationdesk;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.validation.DatesValidator;
