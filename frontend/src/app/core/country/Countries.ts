@@ -81,6 +81,14 @@ export class Countries {
     { short: 'AT', uicCode: 81, enumCountry: Country.Austria, path: 'at' },
   ];
 
+  public static readonly geolocationCountries: Country[] = [
+    Country.Switzerland,
+    Country.GermanyBus,
+    Country.AustriaBus,
+    Country.ItalyBus,
+    Country.FranceBus,
+  ];
+
   static fromCountry(country: Country | undefined): CountryName | undefined {
     return this.countryNames.find((countryName) => countryName.enumCountry === country);
   }
