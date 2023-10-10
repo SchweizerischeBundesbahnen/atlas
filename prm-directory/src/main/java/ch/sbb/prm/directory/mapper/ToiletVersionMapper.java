@@ -43,6 +43,7 @@ public class ToiletVersionMapper {
         .creationDate(model.getCreationDate())
         .editor(model.getEditor())
         .editionDate(model.getEditionDate())
+        .version(model.getEtagVersion())
         .build();
   }
 

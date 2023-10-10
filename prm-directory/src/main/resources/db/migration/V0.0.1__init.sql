@@ -75,7 +75,7 @@ CREATE TABLE stop_place_version
     dynamic_optic_system            VARCHAR(50)  NOT NULL,
     info_ticket_machine             VARCHAR(2000),
     interoperable                   BOOLEAN,
-    URL                             VARCHAR(500),
+    url                             VARCHAR(500),
     visual_info                     VARCHAR(50)  NOT NULL,
     wheelchair_ticket_machine       VARCHAR(50)  NOT NULL,
     assistance_request_fulfilled    VARCHAR(50)  NOT NULL,
@@ -83,9 +83,9 @@ CREATE TABLE stop_place_version
     valid_from                      DATE         NOT NULL,
     valid_to                        DATE         NOT NULL,
     creation_date                   TIMESTAMP    NOT NULL,
-    creator                         VARCHAR(50),
+    creator                         VARCHAR(50)  NOT NULL,
     edition_date                    TIMESTAMP    NOT NULL,
-    editor                          VARCHAR(50),
+    editor                          VARCHAR(50)  NOT NULL,
     version                         BIGINT       NOT NULL DEFAULT 0
 );
 
@@ -115,9 +115,9 @@ CREATE TABLE reference_point_version
     valid_from                 DATE         NOT NULL,
     valid_to                   DATE         NOT NULL,
     creation_date              TIMESTAMP    NOT NULL,
-    creator                    VARCHAR(50),
+    creator                    VARCHAR(50)  NOT NULL,
     edition_date               TIMESTAMP    NOT NULL,
-    editor                     VARCHAR(50),
+    editor                     VARCHAR(50)  NOT NULL,
     version                    BIGINT       NOT NULL DEFAULT 0
 );
 
@@ -154,9 +154,9 @@ CREATE TABLE platform_version
     valid_from                      DATE         NOT NULL,
     valid_to                        DATE         NOT NULL,
     creation_date                   TIMESTAMP    NOT NULL,
-    creator                         VARCHAR(50),
+    creator                         VARCHAR(50)  NOT NULL,
     edition_date                    TIMESTAMP    NOT NULL,
-    editor                          VARCHAR(50),
+    editor                          VARCHAR(50)  NOT NULL,
     version                         BIGINT       NOT NULL DEFAULT 0
 );
 
@@ -184,9 +184,9 @@ CREATE TABLE toilet_version
     valid_from                      DATE         NOT NULL,
     valid_to                        DATE         NOT NULL,
     creation_date                   TIMESTAMP    NOT NULL,
-    creator                         VARCHAR(50),
+    creator                         VARCHAR(50)  NOT NULL,
     edition_date                    TIMESTAMP    NOT NULL,
-    editor                          VARCHAR(50),
+    editor                          VARCHAR(50)  NOT NULL,
     version                         BIGINT       NOT NULL DEFAULT 0
 );
 
@@ -211,9 +211,9 @@ CREATE TABLE ticket_counter_version
     valid_from                      DATE         NOT NULL,
     valid_to                        DATE         NOT NULL,
     creation_date                   TIMESTAMP    NOT NULL,
-    creator                         VARCHAR(50),
+    creator                         VARCHAR(50)  NOT NULL,
     edition_date                    TIMESTAMP    NOT NULL,
-    editor                          VARCHAR(50),
+    editor                          VARCHAR(50)  NOT NULL,
     version                         BIGINT       NOT NULL DEFAULT 0
 );
 
@@ -238,9 +238,9 @@ CREATE TABLE information_desk_version
     valid_from                      DATE         NOT NULL,
     valid_to                        DATE         NOT NULL,
     creation_date                   TIMESTAMP    NOT NULL,
-    creator                         VARCHAR(50),
+    creator                         VARCHAR(50)  NOT NULL,
     edition_date                    TIMESTAMP    NOT NULL,
-    editor                          VARCHAR(50),
+    editor                          VARCHAR(50)  NOT NULL,
     version                         BIGINT       NOT NULL DEFAULT 0
 );
 
@@ -264,9 +264,9 @@ CREATE TABLE parking_lot_version
     valid_from                      DATE         NOT NULL,
     valid_to                        DATE         NOT NULL,
     creation_date                   TIMESTAMP    NOT NULL,
-    creator                         VARCHAR(50),
+    creator                         VARCHAR(50)  NOT NULL,
     edition_date                    TIMESTAMP    NOT NULL,
-    editor                          VARCHAR(50),
+    editor                          VARCHAR(50)  NOT NULL,
     version                         BIGINT       NOT NULL DEFAULT 0
 );
 
@@ -290,9 +290,9 @@ CREATE TABLE relation_version
     valid_from                   DATE         NOT NULL,
     valid_to                     DATE         NOT NULL,
     creation_date                TIMESTAMP    NOT NULL,
-    creator                      VARCHAR(50),
+    creator                      VARCHAR(50)  NOT NULL,
     edition_date                 TIMESTAMP    NOT NULL,
-    editor                       VARCHAR(50),
+    editor                       VARCHAR(50)  NOT NULL,
     version                      BIGINT       NOT NULL DEFAULT 0
 );
 
