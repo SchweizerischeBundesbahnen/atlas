@@ -29,6 +29,10 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
   @Output()
   geolocationToggleChange: EventEmitter<CoordinatePair> = new EventEmitter<CoordinatePair>();
 
+  @Output()
+  selectedServicePointTypeChange: EventEmitter<ServicePointType | null | undefined> =
+    new EventEmitter<ServicePointType | null | undefined>();
+
   @Input() set form(form: FormGroup<ServicePointDetailFormGroup>) {
     this.formSubscriptionDestroy$.complete();
     this.formSubscriptionDestroy$ = new Subject<void>();
@@ -55,8 +59,6 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
   get currentVersion(): ReadServicePointVersion | undefined {
     return this._currentVersion;
   }
-
-  @Input() public isGeographyOn = false;
 
   private _currentVersion?: ReadServicePointVersion;
 
@@ -192,12 +194,14 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
               .subscribe((result) => {
                 if (result) {
                   this._currentSelectedServicePointType = newType;
+                  this.selectedServicePointTypeChange.emit(this._currentSelectedServicePointType);
                 } else {
                   selectedTypeCtrl.setValue(this._currentSelectedServicePointType);
                 }
               });
           } else {
             this._currentSelectedServicePointType = newType;
+            this.selectedServicePointTypeChange.emit(this._currentSelectedServicePointType);
           }
         }
       });
