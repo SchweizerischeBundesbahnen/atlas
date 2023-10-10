@@ -10,7 +10,7 @@
       <artifactId>atlas</artifactId>
       <groupId>ch.sbb.atlas</groupId>
       <relativePath>../pom.xml</relativePath>
-      <version>1.445.0</version>
+      <version>1.448.0</version>
    </parent>
    <artifactId>prm-directory</artifactId>
    <description>PersonWithReducedMobilityDirectory</description>
