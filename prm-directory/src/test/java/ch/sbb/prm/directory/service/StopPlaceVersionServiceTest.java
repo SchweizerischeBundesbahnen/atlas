@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doReturn;
 
+import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.exception.StopPlaceDoesNotExistsException;
 import ch.sbb.prm.directory.repository.StopPlaceRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,10 +18,12 @@ class StopPlaceVersionServiceTest {
   private StopPlaceRepository stopPlaceRepository;
   private StopPlaceService stopPlaceService;
 
+  private VersionableService versionableService;
+
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    stopPlaceService = new StopPlaceService(stopPlaceRepository);
+    stopPlaceService = new StopPlaceService(stopPlaceRepository, versionableService);
   }
 
   @Test
