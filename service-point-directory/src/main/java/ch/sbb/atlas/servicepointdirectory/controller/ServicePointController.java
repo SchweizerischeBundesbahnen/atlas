@@ -4,7 +4,6 @@ import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.GeoReference;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
-import ch.sbb.atlas.api.servicepoint.ServicePointConstants;
 import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel;
 import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointImportRequestModel;
@@ -102,19 +101,21 @@ public class ServicePointController implements ServicePointApiV1 {
   public ReadServicePointVersionModel createServicePoint(CreateServicePointVersionModel createServicePointVersionModel) {
     ServicePointVersion servicePointVersion = ServicePointVersionMapper.toEntity(createServicePointVersionModel);
 
-    if (!ServicePointConstants.AUTOMATIC_SERVICE_POINT_ID.contains(createServicePointVersionModel.getCountry())
+    if (!createServicePointVersionModel.shouldGenerateServicePointNumber()
         && servicePointService.isServicePointNumberExisting(servicePointVersion.getNumber())) {
       throw new ServicePointNumberAlreadyExistsException(servicePointVersion.getNumber());
     }
 
-    if (ServicePointConstants.AUTOMATIC_SERVICE_POINT_ID.contains(createServicePointVersionModel.getCountry())) {
-      int nextAvailableServicePointId = servicePointNumberService.getNextAvailableServicePointId(createServicePointVersionModel.getCountry());
+    if (createServicePointVersionModel.shouldGenerateServicePointNumber()) {
+      int nextAvailableServicePointId = servicePointNumberService.getNextAvailableServicePointId(
+          createServicePointVersionModel.getCountry());
 
-      ServicePointNumber servicePointNumber = ServicePointNumber.of(createServicePointVersionModel.getCountry(), nextAvailableServicePointId);
+      ServicePointNumber servicePointNumber = ServicePointNumber.of(createServicePointVersionModel.getCountry(),
+          nextAvailableServicePointId);
       log.info("Generated new service point number={}", servicePointNumber);
       servicePointVersion.setNumber(servicePointNumber);
-      servicePointVersion.setCountry(createServicePointVersionModel.getCountry());
-      servicePointVersion.setNumberShort(nextAvailableServicePointId);
+      servicePointVersion.setCountry(servicePointNumber.getCountry());
+      servicePointVersion.setNumberShort(servicePointNumber.getNumberShort());
       servicePointVersion.setSloid(ServicePointNumber.calculateSloid(servicePointNumber));
     }
     addGeoReferenceInformation(servicePointVersion);
