@@ -147,7 +147,7 @@
     ></form-info-icon>
 
     <atlas-slide-toggle
-      [toggle]="isGeographyOn"
+      [toggle]="!!form.controls.servicePointGeolocation.controls.spatialReference.value"
       (toggleChange)="onGeolocationToggleChange($event)"
       [disabled]="form.disabled"
     ></atlas-slide-toggle>

@@ -29,7 +29,6 @@
   <service-point-form
     [form]="form"
     [currentVersion]="selectedVersion"
-    [isGeographyOn]="isGeographyOn"
     (geolocationToggleChange)="$event ? activateGeolocation($event) : deactivateGeolocation()"
   >
     <div class="color-gray-900" abbreviation>
