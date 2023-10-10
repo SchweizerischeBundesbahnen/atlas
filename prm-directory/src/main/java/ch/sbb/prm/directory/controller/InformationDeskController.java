@@ -1,8 +1,8 @@
 package ch.sbb.prm.directory.controller;
 
 import ch.sbb.prm.directory.api.InformationDeskCounterApiV1;
-import ch.sbb.prm.directory.controller.model.infromationdesk.CreateInformationDeskVersionModel;
-import ch.sbb.prm.directory.controller.model.infromationdesk.ReadInformationDeskVersionModel;
+import ch.sbb.prm.directory.controller.model.informationdesk.CreateInformationDeskVersionModel;
+import ch.sbb.prm.directory.controller.model.informationdesk.ReadInformationDeskVersionModel;
 import ch.sbb.prm.directory.entity.InformationDeskVersion;
 import ch.sbb.prm.directory.mapper.InformationDeskVersionMapper;
 import ch.sbb.prm.directory.service.InformationDeskService;

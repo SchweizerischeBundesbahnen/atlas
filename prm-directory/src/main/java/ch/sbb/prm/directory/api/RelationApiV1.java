@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@Tag(name = "Relation")
+@Tag(name = "PRM - Person with Reduced Mobility")
 @RequestMapping("v1/relations")
 public interface RelationApiV1 {
 

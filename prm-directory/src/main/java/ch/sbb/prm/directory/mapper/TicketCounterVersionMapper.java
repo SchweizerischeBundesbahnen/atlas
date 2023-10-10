@@ -47,6 +47,7 @@ public class TicketCounterVersionMapper {
         .creationDate(model.getCreationDate())
         .editor(model.getEditor())
         .editionDate(model.getEditionDate())
+        .version(model.getEtagVersion())
         .build();
   }
 

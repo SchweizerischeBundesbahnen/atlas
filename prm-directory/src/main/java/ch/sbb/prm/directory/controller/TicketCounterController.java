@@ -16,16 +16,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class TicketCounterController implements TicketCounterApiV1 {
 
-  private final TicketCounterService toiletService;
+  private final TicketCounterService ticketCounterService;
 
   @Override
   public List<ReadTicketCounterVersionModel> getTicketCounters() {
-    return toiletService.getAllTicketCounters().stream().map(TicketCounterVersionMapper::toModel).sorted().toList();
+    return ticketCounterService.getAllTicketCounters().stream().map(TicketCounterVersionMapper::toModel).sorted().toList();
   }
 
   @Override
   public ReadTicketCounterVersionModel createStopPlace(CreateTicketCounterVersionModel ticketCounterVersionModel) {
-    TicketCounterVersion ticketCounterVersion = toiletService.createTicketCounter(
+    TicketCounterVersion ticketCounterVersion = ticketCounterService.createTicketCounter(
         TicketCounterVersionMapper.toEntity(ticketCounterVersionModel));
     return TicketCounterVersionMapper.toModel(ticketCounterVersion);
   }
