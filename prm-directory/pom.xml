@@ -111,10 +111,6 @@
          <groupId>capital.scalable</groupId>
          <scope>test</scope>
       </dependency>
-      <dependency>
-         <groupId>org.apache.tika</groupId>
-         <artifactId>tika-core</artifactId>
-      </dependency>
    </dependencies>
    <build>
       <testResources>

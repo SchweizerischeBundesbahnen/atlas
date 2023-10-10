@@ -84,7 +84,7 @@ public class ReferencePointService {
   private void searchAndUpdateVersion(List<? extends Relatable> versions,
       ReferencePointElementType referencePointElementType) {
     versions.forEach(
-        version -> relationService.createRelation(RelationUtil.buildReleaseVersion(version, referencePointElementType)));
+        version -> relationService.createRelation(RelationUtil.buildRelationVersion(version, referencePointElementType)));
   }
 
 }

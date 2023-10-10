@@ -1,8 +1,8 @@
 package ch.sbb.prm.directory.mapper;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.prm.directory.controller.model.infromationdesk.CreateInformationDeskVersionModel;
-import ch.sbb.prm.directory.controller.model.infromationdesk.ReadInformationDeskVersionModel;
+import ch.sbb.prm.directory.controller.model.informationdesk.CreateInformationDeskVersionModel;
+import ch.sbb.prm.directory.controller.model.informationdesk.ReadInformationDeskVersionModel;
 import ch.sbb.prm.directory.entity.InformationDeskVersion;
 import lombok.experimental.UtilityClass;
 
@@ -26,6 +26,7 @@ public class InformationDeskVersionMapper {
         .creationDate(version.getCreationDate())
         .editor(version.getEditor())
         .editionDate(version.getEditionDate())
+        .etagVersion(version.getVersion())
         .build();
   }
 
@@ -46,6 +47,7 @@ public class InformationDeskVersionMapper {
         .creationDate(model.getCreationDate())
         .editor(model.getEditor())
         .editionDate(model.getEditionDate())
+        .version(model.getEtagVersion())
         .build();
   }
 
