@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
-import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.StopPlaceTestData;
 import ch.sbb.prm.directory.entity.BasePrmImportEntity.Fields;
 import ch.sbb.prm.directory.entity.StopPlaceVersion;
@@ -24,15 +23,11 @@ class StopPlaceVersioningTest {
   private final StopPlaceRepository stopPlaceRepository;
   private final StopPlaceService stopPlaceService;
 
-  private final VersionableService versionableService;
-
 
   @Autowired
-  StopPlaceVersioningTest(StopPlaceRepository stopPlaceRepository, StopPlaceService stopPlaceService,
-      VersionableService versionableService) {
+  StopPlaceVersioningTest(StopPlaceRepository stopPlaceRepository, StopPlaceService stopPlaceService) {
     this.stopPlaceRepository = stopPlaceRepository;
     this.stopPlaceService = stopPlaceService;
-    this.versionableService = versionableService;
   }
 
   /**
