@@ -1,8 +1,8 @@
 <div class="search-form">
   <div class="d-flex flex-column">
     <mat-label class="font-bold-sm pb-2">
-      {{ 'SEPODI.SERVICE_POINTS.DIDOK_CODE_SEARCH' | translate }} -
-      {{ 'SEPODI.SERVICE_POINTS.DESIGNATION_OFFICIAL' | translate }}
+      {{ firstLabel | translate }} -
+      {{ secondLabel | translate }}
     </mat-label>
   </div>
 
@@ -12,7 +12,7 @@
     [loading]="loading"
     (change)="navigateToServicePoint($event)"
     (clear)="clearResult()"
-    placeholder="{{ 'SEPODI.SERVICE_POINTS.SERVICE_POINT' | translate }}"
+    placeholder="{{ placeholder | translate }}"
     appearance="outline"
     [notFoundText]="notFoundText"
     [typeToSearchText]="minThermLongText"
@@ -21,11 +21,11 @@
     <ng-template let-item="item" ng-option-tmp>
       <span
         [innerHTML]="
-          item.number.toString() | searchResultHighlight : searchValue | splitServicePointNumber
+          item.number.toString() | searchResultHighlight: searchValue | splitServicePointNumber
         "
       ></span>
       <span>&nbsp;&nbsp;&nbsp;</span>
-      <span [innerHTML]="item.designationOfficial | searchResultHighlight : searchValue"></span>
+      <span [innerHTML]="item.designationOfficial | searchResultHighlight: searchValue"></span>
     </ng-template>
   </ng-select>
 </div>

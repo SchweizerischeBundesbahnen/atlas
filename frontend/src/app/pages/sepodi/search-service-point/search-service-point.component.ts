@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ServicePointSearchResult, ServicePointsService } from '../../../api';
 import {
   catchError,
@@ -23,11 +23,16 @@ export class SearchServicePointComponent implements OnInit {
   private readonly MIN_LENGTH_TERM = 2;
   private readonly _DEBOUNCE_TIME = 500;
 
+  @Input() firstLabel = 'SEPODI.SERVICE_POINTS.DIDOK_CODE_SEARCH';
+  @Input() secondLabel = 'SEPODI.SERVICE_POINTS.DESIGNATION_OFFICIAL';
+  @Input() placeholder = 'SEPODI.SERVICE_POINTS.SERVICE_POINT';
+  @Input() searchAllServicePoints = true;
+
   constructor(
     private readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly servicePointService: ServicePointsService,
-    private readonly translatePipe: TranslatePipe
+    private readonly translatePipe: TranslatePipe,
   ) {}
 
   private _searchValue = '';
@@ -94,12 +99,19 @@ export class SearchServicePointComponent implements OnInit {
           if (term.length < this.MIN_LENGTH_TERM) {
             return of([]).pipe(tap(() => (this.loading = false)));
           }
-          return this.servicePointService.searchServicePoints({ value: term }).pipe(
-            catchError(() => of([])),
-            tap(() => (this.loading = false))
-          );
-        })
-      )
+          if (this.searchAllServicePoints) {
+            return this.servicePointService.searchServicePoints({ value: term }).pipe(
+              catchError(() => of([])),
+              tap(() => (this.loading = false)),
+            );
+          } else {
+            return this.servicePointService.searchServicePoints({ value: term }).pipe(
+              catchError(() => of([])),
+              tap(() => (this.loading = false)),
+            );
+          }
+        }),
+      ),
     );
   }
 
