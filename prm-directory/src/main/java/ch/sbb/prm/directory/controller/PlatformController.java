@@ -1,5 +1,6 @@
 package ch.sbb.prm.directory.controller;
 
+import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.prm.directory.api.PlatformApiV1;
 import ch.sbb.prm.directory.controller.model.platform.CreatePlatformVersionModel;
 import ch.sbb.prm.directory.controller.model.platform.ReadPlatformVersionModel;
@@ -28,6 +29,19 @@ public class PlatformController implements PlatformApiV1 {
     PlatformVersion platformVersion = PlatformVersionMapper.toEntity(model);
     PlatformVersion savedVersion = platformService.createPlatformVersion(platformVersion);
     return PlatformVersionMapper.toModel(savedVersion);
+  }
+
+  @Override
+  public List<ReadPlatformVersionModel> updateStopPlace(Long id, CreatePlatformVersionModel createPlatformVersionModel) {
+    PlatformVersion platformVersion =
+        platformService.getStopPlaceById(id).orElseThrow(() -> new IdNotFoundException(id));
+
+    PlatformVersion editedVersion = PlatformVersionMapper.toEntity(createPlatformVersionModel);
+    platformService.updateStopPlaceVersion(platformVersion, editedVersion);
+
+    return platformService.findAllByNumberOrderByValidFrom(platformVersion.getNumber()).stream()
+        .map(PlatformVersionMapper::toModel).toList();
+
   }
 
 }
