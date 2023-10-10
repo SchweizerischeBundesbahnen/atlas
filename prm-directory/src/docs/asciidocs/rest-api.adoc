@@ -78,6 +78,10 @@ include::{snippets}/platform-version-controller-api-test/should-get-platforms-ve
 
 include::{snippets}/platform-version-controller-api-test/should-create-platform/auto-section.adoc[]
 
+=== Update Platforms - Successfully
+
+include::{snippets}/platform-version-controller-api-test/should-update-platform/auto-section.adoc[]
+
 === Create Platforms without Stop Place- Unsuccessfully
 
 include::{snippets}/platform-version-controller-api-test/should-not-create-platform-when-stop-place-does-not-exists/auto-section.adoc[]
