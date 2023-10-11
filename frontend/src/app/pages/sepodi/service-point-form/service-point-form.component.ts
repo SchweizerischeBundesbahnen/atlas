@@ -61,6 +61,7 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
   }
 
   private _currentVersion?: ReadServicePointVersion;
+  private activeSpatialReference?: SpatialReference;
 
   public servicePointTypes = Object.values(ServicePointType);
   public operatingPointTypes: string[] = [];
@@ -113,14 +114,13 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
       const coordinates: CoordinatePair = {
         north: Number(locationControls.north.value),
         east: Number(locationControls.east.value),
-        spatialReference: locationControls.spatialReference.value!,
+        spatialReference: this.activeSpatialReference!,
       };
 
-      this.spatialRefCtrl?.setValue(
-        locationControls.spatialReference.value || SpatialReference.Lv95,
-      );
+      this.spatialRefCtrl?.setValue(this.activeSpatialReference ?? SpatialReference.Lv95);
       this.geolocationToggleChange.emit(coordinates);
     } else {
+      this.activeSpatialReference = this.spatialRefCtrl?.value;
       this.spatialRefCtrl?.setValue(null);
       this.geolocationToggleChange.emit();
     }
