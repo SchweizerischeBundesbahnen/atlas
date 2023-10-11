@@ -1,7 +1,10 @@
 package ch.sbb.prm.directory.controller;
 
+import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.prm.directory.api.RelationApiV1;
-import ch.sbb.prm.directory.controller.model.relation.RelationVersionModel;
+import ch.sbb.prm.directory.controller.model.relation.CreateRelationVersionModel;
+import ch.sbb.prm.directory.controller.model.relation.ReadRelationVersionModel;
+import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.enumeration.ReferencePointElementType;
 import ch.sbb.prm.directory.mapper.RelationVersionMapper;
 import ch.sbb.prm.directory.service.RelationService;
@@ -18,27 +21,38 @@ public class RelationController implements RelationApiV1 {
   private final RelationService relationService;
 
   @Override
-  public List<RelationVersionModel> getRelationsBySloid(String sloid) {
+  public List<ReadRelationVersionModel> getRelationsBySloid(String sloid) {
     return relationService.getRelationsBySloid(sloid).stream().map(RelationVersionMapper::toModel).sorted().toList();
   }
 
   @Override
-  public List<RelationVersionModel> getRelationsBySloidAndReferenceType(String sloid, ReferencePointElementType referenceType) {
+  public List<ReadRelationVersionModel> getRelationsBySloidAndReferenceType(String sloid, ReferencePointElementType referenceType) {
     return relationService.getRelationsBySloidAndReferenceType(sloid, referenceType).stream()
         .map(RelationVersionMapper::toModel).toList();
   }
 
   @Override
-  public List<RelationVersionModel> getRelationsByParentServicePointSloid(String parentServicePointSloid) {
+  public List<ReadRelationVersionModel> getRelationsByParentServicePointSloid(String parentServicePointSloid) {
     return relationService.getRelationsByParentServicePointSloid(parentServicePointSloid).stream()
         .map(RelationVersionMapper::toModel).toList();
   }
 
   @Override
-  public List<RelationVersionModel> getRelationsByParentServicePointSloidAndReferenceType(String parentServicePointSloid, ReferencePointElementType referenceType) {
+  public List<ReadRelationVersionModel> getRelationsByParentServicePointSloidAndReferenceType(String parentServicePointSloid, ReferencePointElementType referenceType) {
     return relationService.getRelationsByParentServicePointSloidAndReferenceType(parentServicePointSloid, referenceType).stream()
         .map(RelationVersionMapper::toModel).toList();
   }
 
+  @Override
+  public List<ReadRelationVersionModel> updateToiletVersion(Long id, CreateRelationVersionModel model) {
+    RelationVersion stopPlaceVersionToUpdate =
+        relationService.getRelationById(id).orElseThrow(() -> new IdNotFoundException(id));
+
+    RelationVersion editedVersion = RelationVersionMapper.toEntity(model);
+    relationService.updateRelationVersion(stopPlaceVersionToUpdate, editedVersion);
+
+    return relationService.findAllByNumberOrderByValidFrom(stopPlaceVersionToUpdate.getNumber()).stream()
+        .map(RelationVersionMapper::toModel).toList();
+  }
 
 }
