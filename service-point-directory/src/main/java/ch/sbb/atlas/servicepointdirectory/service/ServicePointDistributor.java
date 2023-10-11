@@ -14,11 +14,14 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class ServicePointDistributor extends BaseProducer<SharedServicePointVersionModel> {
 
@@ -66,6 +69,7 @@ public class ServicePointDistributor extends BaseProducer<SharedServicePointVers
 
   public void publishServicePointsWithNumbers(Set<ServicePointNumber> numbers) {
     numbers.forEach(servicePointNumber -> {
+      log.info("Publishing {} to kafka", servicePointNumber);
       List<ServicePointVersion> servicePoint = servicePointService.findAllByNumberOrderByValidFrom(servicePointNumber);
       publishServicePointVersions(servicePoint);
     });
@@ -84,4 +88,8 @@ public class ServicePointDistributor extends BaseProducer<SharedServicePointVers
     produceEvent(sharedServicePointVersionModel, sharedServicePointVersionModel.getServicePointSloid());
   }
 
+  @Async
+  public void syncServicePoints() {
+    servicePointService.batchServicePointNumbers(number -> publishServicePointsWithNumbers(Set.of(number)));
+  }
 }
