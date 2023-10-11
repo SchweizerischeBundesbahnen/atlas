@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import {
   ServicePointDetailFormGroup,
@@ -20,6 +20,8 @@ import { DialogService } from '../../../core/components/dialog/dialog.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ServicePointType } from '../service-point-side-panel/service-point/service-point-type';
 import { MapService } from '../map/map.service';
+import { CoordinateTransformationService } from '../geography/coordinate-transformation.service';
+import { ServicePointFormComponent } from '../service-point-form/service-point-form.component';
 
 @Component({
   selector: 'app-service-point-creation',
@@ -27,6 +29,8 @@ import { MapService } from '../map/map.service';
   styleUrls: ['./service-point-creation.component.scss'],
 })
 export class ServicePointCreationComponent implements OnInit, OnDestroy {
+  @ViewChild(ServicePointFormComponent) servicePointFormComponent!: ServicePointFormComponent;
+
   public form: FormGroup<ServicePointDetailFormGroup> =
     ServicePointFormGroupBuilder.buildEmptyFormGroup();
   public countryOptions$: Observable<Country[]> = EMPTY;
@@ -43,12 +47,11 @@ export class ServicePointCreationComponent implements OnInit, OnDestroy {
     private readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly mapService: MapService,
+    private readonly coordinateTransformationService: CoordinateTransformationService,
   ) {}
 
   ngOnInit() {
-    // todo: handle isActiveGeolocation on mapService correctly
-    this.mapService.isEditMode.next(true);
-    this.mapService.isGeolocationActivated.next(false);
+    this.deactivateGeolocation();
 
     this.countryOptions$ = this.authService.loadPermissions().pipe(
       map(() => this.getCountryOptions()),
@@ -79,9 +82,7 @@ export class ServicePointCreationComponent implements OnInit, OnDestroy {
             ServicePointType.StopPoint,
           ].includes(servicePointType)
         ) {
-          this.form.controls.servicePointGeolocation.controls.spatialReference.setValue(
-            SpatialReference.Lv95,
-          );
+          this.servicePointFormComponent.onGeolocationToggleChange(true);
         }
       });
   }
@@ -90,30 +91,32 @@ export class ServicePointCreationComponent implements OnInit, OnDestroy {
     this.destroySubscriptions$.complete();
   }
 
-  // activateGeolocation(coordinates: CoordinatePair) {
-  //   this.mapService.isGeolocationActivated.next(true);
-  //   // this.mapService.isEditMode.next(true);
-  //
-  //   if (!this.isCoordinatesPairValidForTransformation(coordinates)) {
-  //     return;
-  //   }
-  //
-  //   if (this.currentSpatialReference === SpatialReference.Lv95) {
-  //     coordinates = this.coordinateTransformationService.transform(
-  //       coordinates,
-  //       SpatialReference.Wgs84,
-  //     );
-  //   }
-  //
-  //   const coordinatePairWGS84 = { lat: coordinates.north, lng: coordinates.east };
-  //   this.mapService.placeMarkerAndFlyTo(coordinatePairWGS84);
-  // }
-  //
-  // deactivateGeolocation() {
-  //   this.mapService.isGeolocationActivated.next(false);
-  //   this.cancelMapEditMode();
-  //   this.isSwitchVersionDisabled = true;
-  // }
+  activateGeolocation(coordinates: CoordinatePair) {
+    this.mapService.isGeolocationActivated.next(true);
+    this.mapService.isEditMode.next(true);
+
+    if (
+      !this.coordinateTransformationService.isCoordinatesPairValidForTransformation(coordinates)
+    ) {
+      return;
+    }
+
+    if (coordinates.spatialReference === SpatialReference.Lv95) {
+      coordinates = this.coordinateTransformationService.transform(
+        coordinates,
+        SpatialReference.Wgs84,
+      );
+    }
+
+    const coordinatePairWGS84 = { lat: coordinates.north, lng: coordinates.east };
+    this.mapService.placeMarkerAndFlyTo(coordinatePairWGS84);
+  }
+
+  deactivateGeolocation() {
+    this.mapService.isGeolocationActivated.next(false);
+    this.mapService.isEditMode.next(false);
+    this.mapService.isEditMode.next(true);
+  }
 
   async onCancel(): Promise<void> {
     if (this.form.dirty) {
