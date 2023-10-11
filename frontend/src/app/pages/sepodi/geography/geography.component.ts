@@ -49,9 +49,9 @@ export class GeographyComponent implements OnDestroy, OnChanges {
       .pipe(debounceTime(500))
       .subscribe(() => {
         this.onChangeCoordinatesManually({
-          east: Number(this.formGroup.controls.east.value!),
-          north: Number(this.formGroup.controls.north.value!),
-          spatialReference: this.currentSpatialReference,
+          east: Number(this.formGroup.controls.east.value),
+          north: Number(this.formGroup.controls.north.value),
+          spatialReference: this.currentSpatialReference!,
         });
       });
   }
@@ -102,18 +102,20 @@ export class GeographyComponent implements OnDestroy, OnChanges {
     return {
       east: Number(this.formGroup.value.east),
       north: Number(this.formGroup.value.north),
-      spatialReference: this.currentSpatialReference,
+      spatialReference: this.currentSpatialReference!,
     };
   }
 
   switchSpatialReference($event: MatRadioChange) {
-    if (!$event.value || !this.isCoordinatesPairValidForTransformation(this.currentCoordinates)) {
+    const previousCoordinatePair = this.currentCoordinates;
+    previousCoordinatePair.spatialReference = this.transformedSpatialReference;
+    if (!$event.value || !this.isCoordinatesPairValidForTransformation(previousCoordinatePair)) {
       return;
     }
 
     const transformedCoordinatePair = this.coordinateTransformationService.transform(
-      this.currentCoordinates,
-      this.transformedSpatialReference,
+      previousCoordinatePair,
+      this.currentSpatialReference!,
     );
 
     this.setFormGroupValue(transformedCoordinatePair);
