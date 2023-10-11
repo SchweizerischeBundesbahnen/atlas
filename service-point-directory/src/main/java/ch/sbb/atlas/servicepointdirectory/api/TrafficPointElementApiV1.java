@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@Tag(name = "TrafficPointElements")
+@Tag(name = "SePoDi - Traffic Point Elements")
 @RequestMapping("v1/traffic-point-elements")
 public interface TrafficPointElementApiV1 {
 

@@ -4,6 +4,7 @@ import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import java.time.LocalDate;
+import java.util.stream.Stream;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -78,4 +79,7 @@ public interface ServicePointVersionRepository extends JpaRepository<ServicePoin
 
   List<ServicePointVersion> findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndDesignationLongIgnoreCase(
       LocalDate validFrom, LocalDate validTo, String designationLong);
+
+  @Query("select distinct number from service_point_version")
+  Stream<ServicePointNumber> streamServicePointNumbers();
 }
