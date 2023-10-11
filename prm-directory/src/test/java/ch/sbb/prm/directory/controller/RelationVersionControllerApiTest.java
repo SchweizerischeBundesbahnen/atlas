@@ -5,11 +5,15 @@ import static ch.sbb.prm.directory.enumeration.ReferencePointElementType.PLATFOR
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.prm.directory.RelationTestData;
+import ch.sbb.prm.directory.controller.model.relation.CreateRelationVersionModel;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.enumeration.StandardAttributeType;
 import ch.sbb.prm.directory.repository.RelationRepository;
@@ -65,6 +69,7 @@ class RelationVersionControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[0].sloid", is(relation1Sloid)))
         .andExpect(jsonPath("$[0].referencePointElementType", is(PLATFORM.name())));
   }
+
   @Test
   void shouldGetRelationsByParentServicePointSloidAndReferenceType() throws Exception {
     //given
@@ -113,6 +118,55 @@ class RelationVersionControllerApiTest extends BaseControllerApiTest {
     mvc.perform(get("/v1/relations/parent-service-point-sloid/" + parentServicePointSloid))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(3)));
+  }
+
+  /**
+   * Szenario 8a: Letzte Version terminieren wenn nur validTo ist updated
+   * NEU:      |______________________|
+   * IST:      |-------------------------------------------------------
+   * Version:                            1
+   *
+   * RESULTAT: |----------------------| Version wird per xx aufgehoben
+   * Version:         1
+   */
+  @Test
+  void shouldUpdateRelation() throws Exception {
+    //given
+    String parentServicePointSloid = "ch:1:sloid:8507000";
+    RelationVersion version1 = RelationTestData.builderVersion1().build();
+    version1.setParentServicePointSloid(parentServicePointSloid);
+    relationRepository.saveAndFlush(version1);
+    RelationVersion version2 = RelationTestData.builderVersion2().build();
+    version2.setParentServicePointSloid(parentServicePointSloid);
+    relationRepository.saveAndFlush(version2);
+
+    CreateRelationVersionModel editedVersionModel = new CreateRelationVersionModel();
+    editedVersionModel.setNumberWithoutCheckDigit(version2.getNumber().getNumber());
+    editedVersionModel.setParentServicePointSloid(parentServicePointSloid);
+    editedVersionModel.setSloid(version2.getSloid());
+    editedVersionModel.setValidFrom(version2.getValidFrom());
+    editedVersionModel.setValidTo(version2.getValidTo().minusYears(1));
+    editedVersionModel.setContrastingAreas(version2.getContrastingAreas());
+    editedVersionModel.setReferencePointElementType(version2.getReferencePointElementType());
+    editedVersionModel.setTactileVisualMarks(version2.getTactileVisualMarks());
+    editedVersionModel.setStepFreeAccess(version2.getStepFreeAccess());
+    editedVersionModel.setCreationDate(version2.getCreationDate());
+    editedVersionModel.setEditionDate(version2.getEditionDate());
+    editedVersionModel.setCreator(version2.getCreator());
+    editedVersionModel.setEditor(version2.getEditor());
+    editedVersionModel.setEtagVersion(version2.getVersion());
+
+    //when & then
+    mvc.perform(post("/v1/relations/" + version2.getId()).contentType(contentType)
+            .content(mapper.writeValueAsString(editedVersionModel)))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(2)))
+        .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validFrom, is("2000-01-01")))
+        .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2000-12-31")))
+        .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validFrom, is("2001-01-01")))
+        .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2001-12-31")));
+
   }
 
 }

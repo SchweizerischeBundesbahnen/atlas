@@ -1,7 +1,6 @@
 package ch.sbb.prm.directory.controller.model.relation;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
-import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.validation.DatesValidator;
 import ch.sbb.prm.directory.controller.model.BasePrmVersionModel;
 import ch.sbb.prm.directory.enumeration.ReferencePointElementType;
@@ -9,8 +8,6 @@ import ch.sbb.prm.directory.enumeration.StandardAttributeType;
 import ch.sbb.prm.directory.enumeration.StepFreeAccessAttributeType;
 import ch.sbb.prm.directory.enumeration.TactileVisualAttributeType;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,18 +22,13 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @FieldNameConstants
-@Schema(name = "ReferencePointVersion")
-public class RelationVersionModel extends BasePrmVersionModel implements DatesValidator {
+public abstract class RelationVersionModel extends BasePrmVersionModel implements DatesValidator {
 
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
   @Schema(description = "Parent Service Point Sloid: ServiceUnique code for locations that is used in customer information. The "
       + "structure is described in the “Swiss Location ID” specification, chapter 4.2. The document is available here. "
       + "https://transportdatamanagement.ch/standards/", example = "ch:1:sloid:18771")
   private String parentServicePointSloid;
-
-  @NotNull
-  @Valid
-  private ServicePointNumber number;
 
   @Schema(description = "Tactile-visual markings")
   private TactileVisualAttributeType tactileVisualMarks;
