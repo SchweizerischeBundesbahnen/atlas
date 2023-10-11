@@ -1,4 +1,4 @@
-<div class="search-form">
+<div [ngClass]="searchType === 'SERVICE_POINT' ? 'search-form' : ''">
   <div class="d-flex flex-column">
     <mat-label class="font-bold-sm pb-2">
       {{ firstLabel | translate }} -
@@ -8,6 +8,7 @@
 
   <ng-select
     [items]="servicePointSearchResult$ | async"
+    [readonly]="editable"
     [typeahead]="searchInput$"
     [loading]="loading"
     (change)="navigateToServicePoint($event)"
