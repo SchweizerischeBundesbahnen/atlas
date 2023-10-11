@@ -116,7 +116,7 @@ public class ReferencePointService {
   private void searchAndUpdateVersion(List<? extends Relatable> versions,
       ReferencePointElementType referencePointElementType) {
     versions.forEach(
-        version -> relationService.createRelation(RelationUtil.buildRelationVersion(version, referencePointElementType)));
+        version -> relationService.save(RelationUtil.buildRelationVersion(version, referencePointElementType)));
   }
 
   public Optional<ReferencePointVersion> getReferencePointById(Long id) {

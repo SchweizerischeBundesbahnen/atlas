@@ -1,4 +1,4 @@
-package ch.sbb.prm.directory.controller.model.referencepoint;
+package ch.sbb.prm.directory.controller.model.relation;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.validation.DatesValidator;
@@ -19,7 +19,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldNameConstants
 @Schema(name = "ReadReferencePointVersion")
-public class ReadReferencePointVersionModel extends ReferencePointVersionModel implements DatesValidator {
+public class ReadRelationVersionModel extends RelationVersionModel implements DatesValidator {
 
   @NotNull
   @Valid
