@@ -58,11 +58,22 @@
   </div>
   <div class="col-12 d-flex mt-2 flex-column">
     <div class="font-bold-lg color-gray-900">
-      {{ 'SEPODI.SERVICE_POINTS.ABBREVIATION' | translate }}
+      <atlas-text-field
+        [fieldExamples]="[
+          { label: 'FORM.FOR_EXAMPLE', translate: true },
+          { label: 'TODO |', translate: false },
+          { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '50' } }
+        ]"
+        [formGroup]="form"
+        [required]="false"
+        controlName="abbreviation"
+        fieldLabel="SEPODI.SERVICE_POINTS.ABBREVIATION"
+      >
+      </atlas-text-field>
     </div>
-    <div class="color-gray-900">
-      {{ selectedVersion.abbreviation ?? '-' }}
-    </div>
+    <!-- TODO: Validator für Abkürzung. -->
+    <!-- TODO: Wenn Abkürzung bereits vorhanden, dann kein Inputfeld mehr anzeigen -->
+    <!-- TODO:  -->
   </div>
 
   <div class="font-bold-2xl mt-5">{{ 'FORM.KEY_DATA' | translate }}</div>
