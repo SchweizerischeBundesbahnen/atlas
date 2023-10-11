@@ -29,12 +29,10 @@ import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearc
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -144,11 +142,10 @@ public class ServicePointController implements ServicePointApiV1 {
     return ServicePointFotCommentMapper.toModel(servicePointFotCommentService.save(entity));
   }
 
-  @Async
   @Override
   public void syncServicePoints() {
-    servicePointService.iterateOverAllServicePointNumbers()
-        .forEach(servicePointNumber -> servicePointDistributor.publishServicePointsWithNumbers(Set.of(servicePointNumber)));
+    log.info("Syncing all Service Points");
+    servicePointDistributor.syncServicePoints();
   }
 
   private void addGeoReferenceInformation(ServicePointVersion servicePointVersion) {
