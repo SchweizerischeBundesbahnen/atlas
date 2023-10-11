@@ -12,13 +12,12 @@ import ch.sbb.prm.directory.repository.ParkingLotRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import java.util.List;
 import java.util.Optional;
-import org.hibernate.StaleObjectStateException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class ParkingLotService extends RelatableService<ParkingLotVersion> {
+public class ParkingLotService extends PrmRelatableVersionableService<ParkingLotVersion> {
 
   private final ParkingLotRepository parkingLotRepository;
 
@@ -26,7 +25,7 @@ public class ParkingLotService extends RelatableService<ParkingLotVersion> {
 
   public ParkingLotService(ParkingLotRepository parkingLotRepository, StopPlaceService stopPlaceService,
       RelationService relationService, ReferencePointRepository referencePointRepository, VersionableService versionableService) {
-    super(stopPlaceService,relationService,referencePointRepository);
+    super(versionableService,stopPlaceService,relationService,referencePointRepository);
     this.parkingLotRepository = parkingLotRepository;
     this.versionableService = versionableService;
   }
@@ -36,6 +35,26 @@ public class ParkingLotService extends RelatableService<ParkingLotVersion> {
     return PARKING_LOT;
   }
 
+  @Override
+  protected void incrementVersion(ServicePointNumber servicePointNumber) {
+    parkingLotRepository.incrementVersion(servicePointNumber);
+  }
+
+  @Override
+  protected ParkingLotVersion save(ParkingLotVersion version) {
+    return parkingLotRepository.saveAndFlush(version);
+  }
+
+  @Override
+  protected List<ParkingLotVersion> getAllVersions(ServicePointNumber servicePointNumber) {
+    return this.findAllByNumberOrderByValidFrom(servicePointNumber);
+  }
+
+  @Override
+  protected void applyVersioning(List<VersionedObject> versionedObjects) {
+    versionableService.applyVersioning(ParkingLotVersion.class, versionedObjects,this::save,
+        new ApplyVersioningDeleteByIdLongConsumer(parkingLotRepository));
+  }
   public List<ParkingLotVersion> getAllParkingLots() {
    return parkingLotRepository.findAll();
   }
@@ -45,28 +64,8 @@ public class ParkingLotService extends RelatableService<ParkingLotVersion> {
     return save(version);
   }
 
-  private ParkingLotVersion save(ParkingLotVersion version) {
-    return parkingLotRepository.saveAndFlush(version);
-  }
-
   public ParkingLotVersion updateParkingLotVersion(ParkingLotVersion currentVersion, ParkingLotVersion editedVersion){
-    checkStaleObjectIntegrity(currentVersion, editedVersion);
-    editedVersion.setSloid(currentVersion.getSloid());
-    editedVersion.setNumber(currentVersion.getNumber());
-    List<ParkingLotVersion> existingDbVersions = parkingLotRepository.findAllByNumberOrderByValidFrom(
-        currentVersion.getNumber());
-    List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion,
-        editedVersion, existingDbVersions);
-    versionableService.applyVersioning(ParkingLotVersion.class, versionedObjects,
-        this::save, new ApplyVersioningDeleteByIdLongConsumer(parkingLotRepository));
-    return currentVersion;
-  }
-
-  private void checkStaleObjectIntegrity(ParkingLotVersion currentVersion, ParkingLotVersion editedVersion) {
-    parkingLotRepository.incrementVersion(currentVersion.getNumber());
-    if (editedVersion.getVersion() != null && !currentVersion.getVersion().equals(editedVersion.getVersion())) {
-      throw new StaleObjectStateException(ParkingLotVersion.class.getSimpleName(), "version");
-    }
+    return updateVersion(currentVersion,editedVersion);
   }
 
   public List<ParkingLotVersion> findAllByNumberOrderByValidFrom(ServicePointNumber number) {
