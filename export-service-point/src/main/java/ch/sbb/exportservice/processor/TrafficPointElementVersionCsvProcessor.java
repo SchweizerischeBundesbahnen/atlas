@@ -20,6 +20,7 @@ public class TrafficPointElementVersionCsvProcessor extends BaseServicePointProc
         .sloid(version.getSloid())
         .numberShort(version.getServicePointNumber().getNumberShort())
         .number(version.getServicePointNumber().getNumber())
+        .checkDigit(version.getServicePointNumber().getCheckDigit())
         .uicCountryCode(version.getServicePointNumber().getUicCountryCode())
         .validFrom(DATE_FORMATTER.format(version.getValidFrom()))
         .validTo(DATE_FORMATTER.format(version.getValidTo()))
