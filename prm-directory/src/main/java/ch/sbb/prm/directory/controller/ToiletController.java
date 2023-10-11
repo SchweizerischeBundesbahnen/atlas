@@ -1,5 +1,6 @@
 package ch.sbb.prm.directory.controller;
 
+import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.prm.directory.api.ToiletApiV1;
 import ch.sbb.prm.directory.controller.model.toilet.CreateToiletVersionModel;
 import ch.sbb.prm.directory.controller.model.toilet.ReadToiletVersionModel;
@@ -27,6 +28,18 @@ public class ToiletController implements ToiletApiV1 {
   public ReadToiletVersionModel createToiletVersion(CreateToiletVersionModel toiletVersionModel) {
     ToiletVersion toiletVersion = toiletService.createToilet(ToiletVersionMapper.toEntity(toiletVersionModel));
     return ToiletVersionMapper.toModel(toiletVersion);
+  }
+
+  @Override
+  public List<ReadToiletVersionModel> updateToiletVersion(Long id, CreateToiletVersionModel model) {
+    ToiletVersion toiletVersion =
+        toiletService.getTicketCounterVersionById(id).orElseThrow(() -> new IdNotFoundException(id));
+
+    ToiletVersion editedVersion = ToiletVersionMapper.toEntity(model);
+    toiletService.updateToiletVersion(toiletVersion, editedVersion);
+
+    return toiletService.findAllByNumberOrderByValidFrom(toiletVersion.getNumber()).stream()
+        .map(ToiletVersionMapper::toModel).toList();
   }
 
 }
