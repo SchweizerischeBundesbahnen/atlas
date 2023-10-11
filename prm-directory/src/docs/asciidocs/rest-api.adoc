@@ -146,6 +146,10 @@ include::{snippets}/parking-lot-version-controller-api-test/should-create-parkin
 
 include::{snippets}/parking-lot-version-controller-api-test/should-not-create-parking-lot-when-stop-place-does-not-exists/auto-section.adoc[]
 
+=== Update Parking Lots - Successfully
+
+include::{snippets}/parking-lot-version-controller-api-test/should-update-parking-lot/auto-section.adoc[]
+
 == Relation
 
 === Get Relations by Sloid - Successfully
