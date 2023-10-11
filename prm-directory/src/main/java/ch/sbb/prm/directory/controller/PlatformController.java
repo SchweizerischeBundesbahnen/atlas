@@ -34,7 +34,7 @@ public class PlatformController implements PlatformApiV1 {
   @Override
   public List<ReadPlatformVersionModel> updateStopPlace(Long id, CreatePlatformVersionModel createPlatformVersionModel) {
     PlatformVersion platformVersion =
-        platformService.getStopPlaceById(id).orElseThrow(() -> new IdNotFoundException(id));
+        platformService.getPlatformVersionById(id).orElseThrow(() -> new IdNotFoundException(id));
 
     PlatformVersion editedVersion = PlatformVersionMapper.toEntity(createPlatformVersionModel);
     platformService.updateStopPlaceVersion(platformVersion, editedVersion);

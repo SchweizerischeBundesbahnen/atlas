@@ -6,6 +6,10 @@ import static ch.sbb.prm.directory.enumeration.ReferencePointElementType.PLATFOR
 import static ch.sbb.prm.directory.enumeration.ReferencePointElementType.TICKET_COUNTER;
 import static ch.sbb.prm.directory.enumeration.ReferencePointElementType.TOILET;
 
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
+import ch.sbb.atlas.versioning.model.VersionedObject;
+import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.InformationDeskVersion;
 import ch.sbb.prm.directory.entity.ParkingLotVersion;
 import ch.sbb.prm.directory.entity.PlatformVersion;
@@ -21,7 +25,9 @@ import ch.sbb.prm.directory.repository.TicketCounterRepository;
 import ch.sbb.prm.directory.repository.ToiletRepository;
 import ch.sbb.prm.directory.util.RelationUtil;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.StaleObjectStateException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,6 +44,7 @@ public class ReferencePointService {
   private final PlatformRepository platformRepository;
   private final RelationService relationService;
   private final StopPlaceService stopPlaceService;
+  private final VersionableService versionableService;
 
   public List<ReferencePointVersion> getAllReferencePoints() {
     return referencePointRepository.findAll();
@@ -51,6 +58,31 @@ public class ReferencePointService {
     searchAndUpdateInformationDesk(referencePointVersion.getParentServicePointSloid());
     searchAndUpdateParkingLot(referencePointVersion.getParentServicePointSloid());
     return referencePointRepository.saveAndFlush(referencePointVersion);
+  }
+
+  public ReferencePointVersion updateReferencePointVersion(ReferencePointVersion currentVersion,
+      ReferencePointVersion editedVersion) {
+    checkStaleObjectIntegrity(currentVersion, editedVersion);
+    editedVersion.setSloid(currentVersion.getSloid());
+    editedVersion.setNumber(currentVersion.getNumber());
+    List<ReferencePointVersion> existingDbVersions = referencePointRepository.findAllByNumberOrderByValidFrom(
+        currentVersion.getNumber());
+    List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion,
+        editedVersion, existingDbVersions);
+    versionableService.applyVersioning(ReferencePointVersion.class, versionedObjects,
+        this::saveReferencePoint, new ApplyVersioningDeleteByIdLongConsumer(referencePointRepository));
+    return currentVersion;
+  }
+
+  private ReferencePointVersion saveReferencePoint(ReferencePointVersion referencePointVersion) {
+    return referencePointRepository.saveAndFlush(referencePointVersion);
+  }
+
+  private void checkStaleObjectIntegrity(ReferencePointVersion currentVersion, ReferencePointVersion editedVersion) {
+    platformRepository.incrementVersion(currentVersion.getNumber());
+    if (editedVersion.getVersion() != null && !currentVersion.getVersion().equals(editedVersion.getVersion())) {
+      throw new StaleObjectStateException(PlatformVersion.class.getSimpleName(), "version");
+    }
   }
 
   private void searchAndUpdateParkingLot(String parentServicePointSloid) {
@@ -87,4 +119,11 @@ public class ReferencePointService {
         version -> relationService.createRelation(RelationUtil.buildRelationVersion(version, referencePointElementType)));
   }
 
+  public Optional<ReferencePointVersion> getReferencePointById(Long id) {
+    return referencePointRepository.findById(id);
+  }
+
+  public List<ReferencePointVersion> findAllByNumberOrderByValidFrom(ServicePointNumber number) {
+    return referencePointRepository.findAllByNumberOrderByValidFrom(number);
+  }
 }
