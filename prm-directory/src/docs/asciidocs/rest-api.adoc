@@ -124,6 +124,10 @@ include::{snippets}/information-desk-version-controller-api-test/should-get-info
 
 include::{snippets}/information-desk-version-controller-api-test/should-create-information-desk/auto-section.adoc[]
 
+=== Update Information Desks - Successfully
+
+include::{snippets}/information-desk-version-controller-api-test/should-update-information-desk/auto-section.adoc[]
+
 === Create Information Desks without Stop Place - Successfully
 
 include::{snippets}/information-desk-version-controller-api-test/should-not-create-information-desk-when-stop-place-does-exists/auto-section.adoc[]

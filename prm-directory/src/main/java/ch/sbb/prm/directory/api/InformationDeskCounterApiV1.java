@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,5 +22,10 @@ public interface InformationDeskCounterApiV1 {
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
-  ReadInformationDeskVersionModel createStopPlace(@RequestBody @Valid CreateInformationDeskVersionModel model);
+  ReadInformationDeskVersionModel createInformationDesk(@RequestBody @Valid CreateInformationDeskVersionModel model);
+
+  @ResponseStatus(HttpStatus.OK)
+  @PostMapping(path = "{id}")
+  List<ReadInformationDeskVersionModel> updateInformationDesk(@PathVariable Long id,
+      @RequestBody @Valid CreateInformationDeskVersionModel model);
 }
