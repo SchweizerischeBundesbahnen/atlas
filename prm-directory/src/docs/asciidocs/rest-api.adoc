@@ -160,6 +160,10 @@ include::{snippets}/parking-lot-version-controller-api-test/should-update-parkin
 
 include::{snippets}/relation-version-controller-api-test/should-get-relation-by-sloid/auto-section.adoc[]
 
+=== Update Relation - Successfully
+
+include::{snippets}/relation-version-controller-api-test/should-update-relation/auto-section.adoc[]
+
 === Get Relations by Sloid and Reference Type - Successfully
 
 include::{snippets}/relation-version-controller-api-test/should-get-relations-by-sloid-and-reference-type/auto-section.adoc[]

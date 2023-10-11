@@ -116,7 +116,7 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
             .content(mapper.writeValueAsString(createReferencePointVersionModel)))
         .andExpect(status().isCreated());
     //verify that the reference point create 5 relation
-    verify(relationService, times(5)).createRelation(any(RelationVersion.class));
+    verify(relationService, times(5)).save(any(RelationVersion.class));
 
   }
 
@@ -150,7 +150,7 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
             .content(mapper.writeValueAsString(createReferencePointVersionModel)))
         .andExpect(status().isPreconditionFailed())
         .andExpect(jsonPath("$.message", is("The stop place with sloid ch:1:sloid:7000 does not exists.")));
-    verify(relationService, times(0)).createRelation(any(RelationVersion.class));
+    verify(relationService, times(0)).save(any(RelationVersion.class));
   }
 
   /**

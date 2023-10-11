@@ -25,7 +25,7 @@ public abstract class RelatableService<T extends Relatable> {
         version.getParentServicePointSloid());
     referencePointVersions.forEach(referencePointVersion -> {
       RelationVersion relationVersion = RelationUtil.buildRelationVersion(version, getReferencePointElementType());
-      relationService.createRelation(relationVersion);
+      relationService.save(relationVersion);
     });
   }
 
