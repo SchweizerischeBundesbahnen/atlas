@@ -10,6 +10,7 @@ import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionReposito
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.time.LocalDateTime;
@@ -63,6 +64,7 @@ public class ServicePointService {
   @PreAuthorize("@countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#servicePointVersion, "
       + "T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
   public ServicePointVersion save(ServicePointVersion servicePointVersion) {
+
     servicePointVersion.setStatus(Status.VALIDATED);
     servicePointVersion.setEditionDate(LocalDateTime.now());
     servicePointVersion.setEditor(UserService.getUserIdentifier());
@@ -85,12 +87,17 @@ public class ServicePointService {
   }
 
   public ServicePointVersion updateServicePointVersion(ServicePointVersion currentVersion, ServicePointVersion editedVersion) {
+
+
+
+
     servicePointVersionRepository.incrementVersion(currentVersion.getNumber());
     if (editedVersion.getVersion() != null && !currentVersion.getVersion().equals(editedVersion.getVersion())) {
       throw new StaleObjectStateException(ServicePointVersion.class.getSimpleName(), "version");
     }
     editedVersion.setNumber(currentVersion.getNumber());
     editedVersion.setSloid(currentVersion.getSloid());
+
 
     List<ServicePointVersion> existingDbVersions = findAllByNumberOrderByValidFrom(currentVersion.getNumber());
     List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion,
