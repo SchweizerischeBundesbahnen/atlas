@@ -1,8 +1,7 @@
 <div [ngClass]="searchType === 'SERVICE_POINT' ? 'search-form' : ''">
   <div class="d-flex flex-column">
     <mat-label class="font-bold-sm pb-2">
-      {{ firstLabel | translate }} -
-      {{ secondLabel | translate }}
+      {{ startingLabel | translate }} {{ middleLabel }} {{ endingLabel | translate }}
     </mat-label>
   </div>
 
