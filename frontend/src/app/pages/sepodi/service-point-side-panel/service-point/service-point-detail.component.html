@@ -274,8 +274,17 @@
     >
       {{ 'SEPODI.SERVICE_POINTS.OPERATING_POINT_KILOMETER' | translate }}
     </mat-checkbox>
+
     <div class="ps-2 col-2">
-      <app-search-service-point
+      <service-point-search-1
+        class="mt-3 col-12"
+        [formGroup]="form"
+        controlName="servicePoints"
+        data-cy="servicePoints"
+      ></service-point-search-1>
+    </div>
+    <div class="ps-2 col-2">
+      <service-point-search
         startingLabel="SEPODI.SERVICE_POINTS.OPERATING_POINT_KILOMETER"
         middleLabel=" "
         endingLabel="Master"
@@ -283,7 +292,7 @@
         [searchAllServicePoints]="false"
         searchType="BPK"
         [editable]="!form.enabled"
-      ></app-search-service-point>
+      ></service-point-search>
     </div>
   </div>
 </div>
