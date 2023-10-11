@@ -29,7 +29,7 @@ import { WorkflowService } from './api/workflow.service';
 })
 export class AtlasApiModule {
   public static forRoot(
-    configurationFactory: () => Configuration
+    configurationFactory: () => Configuration,
   ): ModuleWithProviders<AtlasApiModule> {
     return {
       ngModule: AtlasApiModule,
@@ -44,7 +44,7 @@ export class AtlasApiModule {
     if (!http) {
       throw new Error(
         'You need to import the HttpClientModule in your AppModule! \n' +
-          'See also https://github.com/angular/angular/issues/20575'
+          'See also https://github.com/angular/angular/issues/20575',
       );
     }
   }
