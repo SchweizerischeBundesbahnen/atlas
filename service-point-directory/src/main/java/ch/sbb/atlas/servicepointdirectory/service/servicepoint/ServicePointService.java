@@ -13,6 +13,7 @@ import ch.sbb.atlas.versioning.service.VersionableService;
 import java.util.List;
 import java.util.Optional;
 import java.time.LocalDateTime;
+import java.util.stream.Stream;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -98,6 +99,10 @@ public class ServicePointService {
     versionableService.applyVersioning(ServicePointVersion.class, versionedObjects,
         this::save, new ApplyVersioningDeleteByIdLongConsumer(servicePointVersionRepository));
     return currentVersion;
+  }
+
+  public Stream<ServicePointNumber> iterateOverAllServicePointNumbers() {
+    return servicePointVersionRepository.streamServicePointNumbers();
   }
 
 }
