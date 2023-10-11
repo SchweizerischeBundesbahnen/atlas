@@ -28,13 +28,15 @@ export class SearchServicePointComponent implements OnInit {
   private readonly MIN_LENGTH_TERM = 2;
   private readonly _DEBOUNCE_TIME = 500;
 
-  @Input() firstLabel = 'SEPODI.SERVICE_POINTS.DIDOK_CODE_SEARCH';
-  @Input() secondLabel = 'SEPODI.SERVICE_POINTS.DESIGNATION_OFFICIAL';
+  @Input() startingLabel = 'SEPODI.SERVICE_POINTS.DIDOK_CODE_SEARCH';
+  @Input() middleLabel = '-';
+  @Input() endingLabel = 'SEPODI.SERVICE_POINTS.DESIGNATION_OFFICIAL';
   @Input() placeholder = 'SEPODI.SERVICE_POINTS.SERVICE_POINT';
   @Input() searchAllServicePoints = true;
   // @Input() searchType = 'SERVICE_POINT';
   @Input() searchType = ServicePointSearchType.servicePoint;
   @Input() editable = false;
+  // @Input() selectedValue: ServicePointSearchResult = {number:8500006, designationOfficial:""};
   // @Input() _searchValue = '';
 
   constructor(
