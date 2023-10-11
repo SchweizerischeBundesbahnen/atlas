@@ -96,9 +96,9 @@ include::{snippets}/toilet-version-controller-api-test/should-get-toilet/auto-se
 
 include::{snippets}/toilet-version-controller-api-test/should-create-toilet/auto-section.adoc[]
 
-=== Create Toilets without Stop Place - Unsuccessfully
+=== Update Toilets without Stop Place - Unsuccessfully
 
-include::{snippets}/toilet-version-controller-api-test/should-not-create-toilet-when-stop-place-does-not-exists/auto-section.adoc[]
+include::{snippets}/toilet-version-controller-api-test/should-update-ticket-counter/auto-section.adoc[]
 
 == Ticket Counter
 
