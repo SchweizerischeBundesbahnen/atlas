@@ -75,7 +75,7 @@ class InformationDeskVersionControllerApiTest extends BaseControllerApiTest {
             .contentType(contentType)
             .content(mapper.writeValueAsString(createInformationDeskVersionModel)))
         .andExpect(status().isCreated());
-    verify(relationService, times(1)).createRelation(any(RelationVersion.class));
+    verify(relationService, times(1)).save(any(RelationVersion.class));
   }
 
   @Test
@@ -94,7 +94,7 @@ class InformationDeskVersionControllerApiTest extends BaseControllerApiTest {
             .content(mapper.writeValueAsString(createInformationDeskVersionModel)))
         .andExpect(status().isPreconditionFailed())
         .andExpect(jsonPath("$.message", is("The stop place with sloid ch:1:sloid:7000 does not exists.")));
-    verify(relationService, times(0)).createRelation(any(RelationVersion.class));
+    verify(relationService, times(0)).save(any(RelationVersion.class));
   }
 
   /**
