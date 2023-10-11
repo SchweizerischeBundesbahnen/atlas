@@ -12,13 +12,12 @@ import ch.sbb.prm.directory.repository.InformationDeskRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import java.util.List;
 import java.util.Optional;
-import org.hibernate.StaleObjectStateException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class InformationDeskService extends RelatableService<InformationDeskVersion> {
+public class InformationDeskService extends PrmRelatableVersionableService<InformationDeskVersion> {
 
   private final InformationDeskRepository informationDeskRepository;
   private final VersionableService versionableService;
@@ -26,7 +25,7 @@ public class InformationDeskService extends RelatableService<InformationDeskVers
   public InformationDeskService(InformationDeskRepository informationDeskRepository, StopPlaceService stopPlaceService,
       RelationService relationRepository, ReferencePointRepository referencePointRepository,
       VersionableService versionableService) {
-    super(stopPlaceService,relationRepository,referencePointRepository);
+    super(versionableService, stopPlaceService, relationRepository, referencePointRepository);
     this.informationDeskRepository = informationDeskRepository;
     this.versionableService = versionableService;
   }
@@ -35,8 +34,30 @@ public class InformationDeskService extends RelatableService<InformationDeskVers
   protected ReferencePointElementType getReferencePointElementType() {
     return INFORMATION_DESK;
   }
+
+  @Override
+  protected void incrementVersion(ServicePointNumber servicePointNumber) {
+    informationDeskRepository.incrementVersion(servicePointNumber);
+  }
+
+  @Override
+  protected InformationDeskVersion save(InformationDeskVersion version) {
+    return informationDeskRepository.saveAndFlush(version);
+  }
+
+  @Override
+  protected List<InformationDeskVersion> getAllVersions(ServicePointNumber servicePointNumber) {
+    return this.findAllByNumberOrderByValidFrom(servicePointNumber);
+  }
+
+  @Override
+  protected void applyVersioning(List<VersionedObject> versionedObjects) {
+    versionableService.applyVersioning(InformationDeskVersion.class, versionedObjects, this::save,
+        new ApplyVersioningDeleteByIdLongConsumer(informationDeskRepository));
+  }
+
   public List<InformationDeskVersion> getAllInformationDesks() {
-   return informationDeskRepository.findAll();
+    return informationDeskRepository.findAll();
   }
 
   public InformationDeskVersion createInformationDesk(InformationDeskVersion version) {
@@ -44,28 +65,9 @@ public class InformationDeskService extends RelatableService<InformationDeskVers
     return save(version);
   }
 
-  public InformationDeskVersion updateInformationDeskVersion(InformationDeskVersion currentVersion, InformationDeskVersion editedVersion){
-    checkStaleObjectIntegrity(currentVersion, editedVersion);
-    editedVersion.setSloid(currentVersion.getSloid());
-    editedVersion.setNumber(currentVersion.getNumber());
-    List<InformationDeskVersion> existingDbVersions = informationDeskRepository.findAllByNumberOrderByValidFrom(
-        currentVersion.getNumber());
-    List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion,
-        editedVersion, existingDbVersions);
-    versionableService.applyVersioning(InformationDeskVersion.class, versionedObjects,
-        this::save, new ApplyVersioningDeleteByIdLongConsumer(informationDeskRepository));
-    return currentVersion;
-  }
-
-  private InformationDeskVersion save(InformationDeskVersion version) {
-    return informationDeskRepository.saveAndFlush(version);
-  }
-
-  private void checkStaleObjectIntegrity(InformationDeskVersion currentVersion, InformationDeskVersion editedVersion) {
-    informationDeskRepository.incrementVersion(currentVersion.getNumber());
-    if (editedVersion.getVersion() != null && !currentVersion.getVersion().equals(editedVersion.getVersion())) {
-      throw new StaleObjectStateException(InformationDeskVersion.class.getSimpleName(), "version");
-    }
+  public InformationDeskVersion updateInformationDeskVersion(InformationDeskVersion currentVersion,
+      InformationDeskVersion editedVersion) {
+    return updateVersion(currentVersion, editedVersion);
   }
 
   public Optional<InformationDeskVersion> getInformationDeskVersionById(Long id) {
