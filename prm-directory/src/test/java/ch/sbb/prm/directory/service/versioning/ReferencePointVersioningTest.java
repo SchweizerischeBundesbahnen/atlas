@@ -1,20 +1,20 @@
-package ch.sbb.prm.directory.service;
+package ch.sbb.prm.directory.service.versioning;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.prm.directory.ParkingLotTestData;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPlaceTestData;
 import ch.sbb.prm.directory.entity.BasePrmImportEntity.Fields;
-import ch.sbb.prm.directory.entity.ParkingLotVersion;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.StopPlaceVersion;
-import ch.sbb.prm.directory.enumeration.BooleanOptionalAttributeType;
-import ch.sbb.prm.directory.repository.ParkingLotRepository;
+import ch.sbb.prm.directory.enumeration.ReferencePointAttributeType;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.StopPlaceRepository;
+import ch.sbb.prm.directory.service.ReferencePointService;
+import ch.sbb.prm.directory.service.RelationService;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -23,25 +23,20 @@ import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
 @Transactional
-class ParkingLotVersioningTest {
+class ReferencePointVersioningTest {
 
+  private final ReferencePointService referencePointService;
   private final ReferencePointRepository referencePointRepository;
-
+  private final RelationService relationService;
   private final StopPlaceRepository stopPlaceRepository;
 
-  private final ParkingLotService parkingLotService;
-  private final ParkingLotRepository parkingLotRepository;
-  private final RelationService relationService;
-
   @Autowired
-  ParkingLotVersioningTest(ReferencePointRepository referencePointRepository,
-      StopPlaceRepository stopPlaceRepository, ParkingLotService parkingLotService, ParkingLotRepository parkingLotRepository,
-      RelationService relationService) {
+  ReferencePointVersioningTest(ReferencePointService referencePointService, ReferencePointRepository referencePointRepository,
+      RelationService relationService, StopPlaceRepository stopPlaceRepository) {
+    this.referencePointService = referencePointService;
     this.referencePointRepository = referencePointRepository;
-    this.stopPlaceRepository = stopPlaceRepository;
-    this.parkingLotService = parkingLotService;
-    this.parkingLotRepository = parkingLotRepository;
     this.relationService = relationService;
+    this.stopPlaceRepository = stopPlaceRepository;
   }
 
   /**
@@ -60,22 +55,21 @@ class ParkingLotVersioningTest {
     StopPlaceVersion stopPlaceVersion = StopPlaceTestData.getStopPlaceVersion();
     stopPlaceVersion.setSloid(parentServicePointSloid);
     stopPlaceRepository.save(stopPlaceVersion);
-    ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
-    referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
-    referencePointRepository.save(referencePointVersion);
-    ParkingLotVersion version1 = ParkingLotTestData.builderVersion1().build();
-    version1.setParentServicePointSloid(parentServicePointSloid);
-    parkingLotRepository.saveAndFlush(version1);
-    ParkingLotVersion version2 = ParkingLotTestData.builderVersion2().build();
-    version2.setParentServicePointSloid(parentServicePointSloid);
-    parkingLotRepository.saveAndFlush(version2);
 
-    ParkingLotVersion editedVersion = ParkingLotTestData.builderVersion2().build();
+    ReferencePointVersion version1 = ReferencePointTestData.builderVersion1().build();
+    version1.setParentServicePointSloid(parentServicePointSloid);
+    referencePointService.createReferencePoint(version1);
+
+    ReferencePointVersion version2 = ReferencePointTestData.builderVersion2().build();
+    version2.setParentServicePointSloid(parentServicePointSloid);
+    referencePointService.createReferencePoint(version2);
+
+    ReferencePointVersion editedVersion = ReferencePointTestData.builderVersion2().build();
+    editedVersion.setNumber(ServicePointNumber.ofNumberWithoutCheckDigit(1234567));
+    editedVersion.setDesignation("designation never");
+    editedVersion.setMainReferencePoint(false);
     editedVersion.setParentServicePointSloid(parentServicePointSloid);
-    editedVersion.setDesignation("hop yb!");
-    editedVersion.setInfo("No Info");
-    editedVersion.setPlacesAvailable(BooleanOptionalAttributeType.NO);
-    editedVersion.setPrmPlacesAvailable(BooleanOptionalAttributeType.NO);
+    editedVersion.setReferencePointType(ReferencePointAttributeType.PLATFORM);
     editedVersion.setCreationDate(version2.getCreationDate());
     editedVersion.setEditionDate(version2.getEditionDate());
     editedVersion.setCreator(version2.getCreator());
@@ -83,25 +77,31 @@ class ParkingLotVersioningTest {
     editedVersion.setVersion(version2.getVersion());
 
     //when
-    parkingLotService.updateParkingLotVersion(version2,editedVersion);
+    referencePointService.updateReferencePointVersion(version2,editedVersion);
 
     //then
-    List<ParkingLotVersion> result = parkingLotRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
+    List<ReferencePointVersion> result = referencePointRepository.findAllByNumberOrderByValidFrom(
+        version2.getNumber());
     assertThat(result).isNotNull().hasSize(2);
 
-    ParkingLotVersion firstTemporalVersion = result.get(0);
+    ReferencePointVersion firstTemporalVersion = result.get(0);
     assertThat(firstTemporalVersion)
         .usingRecursiveComparison()
         .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate)
         .isEqualTo(version1);
 
-    ParkingLotVersion secondTemporalVersion = result.get(1);
+    ReferencePointVersion secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion)
         .usingRecursiveComparison()
         .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate, Fields.editor, StopPlaceVersion.Fields.id)
         .isEqualTo(editedVersion);
 
+    List<RelationVersion> relations = relationService.getRelationsByParentServicePointSloid(
+        parentServicePointSloid);
+    assertThat(relations).isEmpty();
+
   }
+
   /**
    * Szenario 2: Update innerhalb existierender Version
    * NEU:                       |___________|
@@ -118,60 +118,61 @@ class ParkingLotVersioningTest {
     StopPlaceVersion stopPlaceVersion = StopPlaceTestData.getStopPlaceVersion();
     stopPlaceVersion.setSloid(parentServicePointSloid);
     stopPlaceRepository.save(stopPlaceVersion);
-    ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
-    referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
-    referencePointRepository.save(referencePointVersion);
-    ParkingLotVersion version1 = ParkingLotTestData.builderVersion1().build();
-    version1.setParentServicePointSloid(parentServicePointSloid);
-    parkingLotRepository.saveAndFlush(version1);
-    ParkingLotVersion version2 = ParkingLotTestData.builderVersion2().build();
-    version2.setParentServicePointSloid(parentServicePointSloid);
-    parkingLotRepository.saveAndFlush(version2);
-    ParkingLotVersion version3 = ParkingLotTestData.builderVersion3().build();
-    version3.setParentServicePointSloid(parentServicePointSloid);
-    parkingLotRepository.saveAndFlush(version3);
 
-    ParkingLotVersion editedVersion = ParkingLotTestData.builderVersion2().build();
+    ReferencePointVersion version1 = ReferencePointTestData.builderVersion1().build();
+    version1.setParentServicePointSloid(parentServicePointSloid);
+    referencePointService.createReferencePoint(version1);
+
+    ReferencePointVersion version2 = ReferencePointTestData.builderVersion2().build();
+    version2.setParentServicePointSloid(parentServicePointSloid);
+    referencePointService.createReferencePoint(version2);
+
+    ReferencePointVersion version3 = ReferencePointTestData.builderVersion3().build();
+    version3.setParentServicePointSloid(parentServicePointSloid);
+    referencePointService.createReferencePoint(version3);
+
+    ReferencePointVersion editedVersion = ReferencePointTestData.builderVersion2().build();
     editedVersion.setParentServicePointSloid(parentServicePointSloid);
+    editedVersion.setNumber(ServicePointNumber.ofNumberWithoutCheckDigit(1234567));
     editedVersion.setValidFrom(LocalDate.of(2001, 6, 1));
     editedVersion.setValidTo(LocalDate.of(2002, 6, 1));
-    editedVersion.setDesignation("hop yb!");
-    editedVersion.setPlacesAvailable(BooleanOptionalAttributeType.NO);
-    editedVersion.setPrmPlacesAvailable(BooleanOptionalAttributeType.NO);
+    editedVersion.setDesignation("designation never");
     editedVersion.setCreationDate(version2.getCreationDate());
     editedVersion.setEditionDate(version2.getEditionDate());
     editedVersion.setCreator(version2.getCreator());
     editedVersion.setEditor(version2.getEditor());
     editedVersion.setVersion(version2.getVersion());
 
-    parkingLotService.updateParkingLotVersion(version2,editedVersion);
+    //when
+    referencePointService.updateReferencePointVersion(version2,editedVersion);
 
     //then
-    List<ParkingLotVersion> result = parkingLotRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
+    List<ReferencePointVersion> result = referencePointRepository.findAllByNumberOrderByValidFrom(
+        version2.getNumber());
     assertThat(result).isNotNull().hasSize(5);
 
-    ParkingLotVersion firstTemporalVersion = result.get(0);
+    ReferencePointVersion firstTemporalVersion = result.get(0);
     assertThat(firstTemporalVersion)
         .usingRecursiveComparison()
         .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate)
         .isEqualTo(version1);
 
-    ParkingLotVersion secondTemporalVersion = result.get(1);
+    ReferencePointVersion secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2001, 1, 1));
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2001, 5, 31));
-    assertThat(secondTemporalVersion.getDesignation()).isEqualTo("Designation wrong");
+    assertThat(secondTemporalVersion.getDesignation()).isEqualTo("designation forever");
 
-    ParkingLotVersion thirdTemporalVersion = result.get(2);
+    ReferencePointVersion thirdTemporalVersion = result.get(2);
     assertThat(thirdTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2001, 6, 1));
     assertThat(thirdTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2002, 6, 1));
-    assertThat(thirdTemporalVersion.getDesignation()).isEqualTo("hop yb!");
+    assertThat(thirdTemporalVersion.getDesignation()).isEqualTo("designation never");
 
-    ParkingLotVersion fourthTemporalVersion = result.get(3);
+    ReferencePointVersion fourthTemporalVersion = result.get(3);
     assertThat(fourthTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2002, 6, 2));
     assertThat(fourthTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2002, 12, 31));
-    assertThat(fourthTemporalVersion.getDesignation()).isEqualTo("Designation wrong");
+    assertThat(fourthTemporalVersion.getDesignation()).isEqualTo("designation forever");
 
-    ParkingLotVersion fifthTemporalVersion = result.get(4);
+    ReferencePointVersion fifthTemporalVersion = result.get(4);
     assertThat(fifthTemporalVersion)
         .usingRecursiveComparison()
         .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate)
@@ -194,22 +195,23 @@ class ParkingLotVersioningTest {
    */
   @Test
   void scenario8a() {
+    //given
     String parentServicePointSloid = "ch:1:sloid:70000";
     StopPlaceVersion stopPlaceVersion = StopPlaceTestData.getStopPlaceVersion();
     stopPlaceVersion.setSloid(parentServicePointSloid);
     stopPlaceRepository.save(stopPlaceVersion);
-    ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
-    referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
-    referencePointRepository.save(referencePointVersion);
-    ParkingLotVersion version1 = ParkingLotTestData.builderVersion1().build();
-    version1.setParentServicePointSloid(parentServicePointSloid);
-    parkingLotRepository.saveAndFlush(version1);
-    ParkingLotVersion version2 = ParkingLotTestData.builderVersion2().build();
-    version2.setParentServicePointSloid(parentServicePointSloid);
-    parkingLotRepository.saveAndFlush(version2);
 
-    ParkingLotVersion editedVersion = ParkingLotTestData.builderVersion2().build();
+    ReferencePointVersion version1 = ReferencePointTestData.builderVersion1().build();
+    version1.setParentServicePointSloid(parentServicePointSloid);
+    referencePointService.createReferencePoint(version1);
+
+    ReferencePointVersion version2 = ReferencePointTestData.builderVersion2().build();
+    version2.setParentServicePointSloid(parentServicePointSloid);
+    referencePointService.createReferencePoint(version2);
+
+    ReferencePointVersion editedVersion = ReferencePointTestData.builderVersion2().build();
     editedVersion.setParentServicePointSloid(parentServicePointSloid);
+    editedVersion.setNumber(ServicePointNumber.ofNumberWithoutCheckDigit(1234567));
     editedVersion.setValidTo(LocalDate.of(2001, 12, 31));
     editedVersion.setCreationDate(version2.getCreationDate());
     editedVersion.setEditionDate(version2.getEditionDate());
@@ -218,24 +220,32 @@ class ParkingLotVersioningTest {
     editedVersion.setVersion(version2.getVersion());
 
     //when
-    parkingLotService.updateParkingLotVersion(version2,editedVersion);
+    referencePointService.updateReferencePointVersion(version2,editedVersion);
 
     //then
-    List<ParkingLotVersion> result = parkingLotRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
+    List<ReferencePointVersion> result = referencePointRepository.findAllByNumberOrderByValidFrom(
+        version2.getNumber());
     assertThat(result).isNotNull().hasSize(2);
 
-    ParkingLotVersion firstTemporalVersion = result.get(0);
+    ReferencePointVersion firstTemporalVersion = result.get(0);
     assertThat(firstTemporalVersion)
         .usingRecursiveComparison()
         .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate)
         .isEqualTo(version1);
 
-    ParkingLotVersion secondTemporalVersion = result.get(1);
+    ReferencePointVersion secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion)
         .usingRecursiveComparison()
         .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate, Fields.editor, StopPlaceVersion.Fields.validTo)
         .isEqualTo(version2);
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2001, 12, 31));
+
+    List<RelationVersion> relations = relationService.getRelationsByParentServicePointSloid(
+        parentServicePointSloid);
+    assertThat(relations).isEmpty();
+
   }
+
+
 
 }
