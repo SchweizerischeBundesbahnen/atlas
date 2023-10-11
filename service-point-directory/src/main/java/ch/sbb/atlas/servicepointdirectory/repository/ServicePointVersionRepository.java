@@ -80,6 +80,6 @@ public interface ServicePointVersionRepository extends JpaRepository<ServicePoin
   List<ServicePointVersion> findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndDesignationLongIgnoreCase(
       LocalDate validFrom, LocalDate validTo, String designationLong);
 
-  @Query("select distinct number from service_point_version")
+  @Query(value = "select distinct number from service_point_version")
   Stream<ServicePointNumber> streamServicePointNumbers();
 }

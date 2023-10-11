@@ -10,10 +10,10 @@ import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionReposito
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.time.LocalDateTime;
-import java.util.stream.Stream;
+import java.util.function.Consumer;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -101,8 +101,8 @@ public class ServicePointService {
     return currentVersion;
   }
 
-  public Stream<ServicePointNumber> iterateOverAllServicePointNumbers() {
-    return servicePointVersionRepository.streamServicePointNumbers();
+  public void batchServicePointNumbers(Consumer<ServicePointNumber> consumer) {
+    servicePointVersionRepository.streamServicePointNumbers().forEach(consumer);
   }
 
 }
