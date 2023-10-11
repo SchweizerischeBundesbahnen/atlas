@@ -19,6 +19,7 @@ public class LoadingPointVersionCsvProcessor implements ItemProcessor<LoadingPoi
         .validFrom(BaseServicePointProcessor.DATE_FORMATTER.format(version.getValidFrom()))
         .validTo(BaseServicePointProcessor.DATE_FORMATTER.format(version.getValidTo()))
         .servicePointNumber(version.getServicePointNumber().getNumber())
+        .checkDigit(version.getServicePointNumber().getCheckDigit())
         .parentSloidServicePoint(version.getParentSloidServicePoint())
         .creationDate(BaseServicePointProcessor.LOCAL_DATE_FORMATTER.format(version.getCreationDate()))
         .editionDate(BaseServicePointProcessor.LOCAL_DATE_FORMATTER.format(version.getEditionDate()))
