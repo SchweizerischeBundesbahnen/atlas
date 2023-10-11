@@ -276,10 +276,12 @@
     </mat-checkbox>
     <div class="ps-2 col-2">
       <app-search-service-point
-        [firstLabel]="'SEPODI.SERVICE_POINTS.OPERATING_POINT_KILOMETER'"
-        [secondLabel]="'SEPODI.SERVICE_POINTS.OPERATING_POINT_KILOMETER'"
-        [placeholder]="'SEPODI.SERVICE_POINTS.ROUTE_NETWORK'"
+        firstLabel="SEPODI.SERVICE_POINTS.OPERATING_POINT_KILOMETER"
+        secondLabel="SEPODI.SERVICE_POINTS.OPERATING_POINT_KILOMETER"
+        placeholder="SEPODI.SERVICE_POINTS.ROUTE_NETWORK"
         [searchAllServicePoints]="false"
+        searchType="BPK"
+        [editable]="!form.enabled"
       ></app-search-service-point>
     </div>
   </div>
