@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@Tag(name = "Timetable year change", description = "Generate the Timetable year change based on the [Official Documentation]"
+@Tag(name = "Timetable Year Change", description = "Generate the Timetable year change based on the [Official Documentation]"
     + "(https://www.fahrplanfelder.ch/en/explanations/timetable-year.html)")
 @RequestMapping("v1/timetable-year-change")
 @Validated
