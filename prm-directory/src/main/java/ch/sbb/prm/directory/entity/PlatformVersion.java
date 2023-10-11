@@ -2,7 +2,6 @@ package ch.sbb.prm.directory.entity;
 
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
-import ch.sbb.atlas.versioning.model.Versionable;
 import ch.sbb.prm.directory.converter.InfoOpportunityTypeConverter;
 import ch.sbb.prm.directory.enumeration.BasicAttributeType;
 import ch.sbb.prm.directory.enumeration.BoardingDeviceAttributeType;
@@ -10,6 +9,7 @@ import ch.sbb.prm.directory.enumeration.BooleanAttributeType;
 import ch.sbb.prm.directory.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.prm.directory.enumeration.InfoOpportunityAttributeType;
 import ch.sbb.prm.directory.enumeration.VehicleAccessAttributeType;
+import ch.sbb.prm.directory.service.PrmVersionable;
 import ch.sbb.prm.directory.service.Relatable;
 import jakarta.persistence.Convert;
 import jakarta.persistence.ElementCollection;
@@ -40,7 +40,7 @@ import lombok.experimental.SuperBuilder;
 @FieldNameConstants
 @Entity(name = "platform_version")
 @AtlasVersionable
-public class PlatformVersion extends BasePrmEntityVersion implements Relatable,Versionable {
+public class PlatformVersion extends BasePrmEntityVersion implements Relatable, PrmVersionable {
 
   private static final String VERSION_SEQ = "platform_version_seq";
 

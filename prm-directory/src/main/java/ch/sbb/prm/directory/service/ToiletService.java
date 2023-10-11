@@ -12,28 +12,46 @@ import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.ToiletRepository;
 import java.util.List;
 import java.util.Optional;
-import org.hibernate.StaleObjectStateException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class ToiletService extends RelatableService<ToiletVersion> {
+public class ToiletService extends PrmRelatableVersionableService<ToiletVersion> {
 
   private final ToiletRepository toiletRepository;
 
-  private final VersionableService versionableService;
 
   public ToiletService(ToiletRepository toiletRepository, StopPlaceService stopPlaceService,
       RelationService relationService, ReferencePointRepository referencePointRepository, VersionableService versionableService) {
-    super(stopPlaceService,relationService,referencePointRepository);
+    super(versionableService, stopPlaceService, relationService, referencePointRepository);
     this.toiletRepository = toiletRepository;
-    this.versionableService = versionableService;
   }
 
   @Override
   protected ReferencePointElementType getReferencePointElementType() {
     return TOILET;
+  }
+
+  @Override
+  protected void incrementVersion(ServicePointNumber servicePointNumber) {
+    this.toiletRepository.incrementVersion(servicePointNumber);
+  }
+
+  @Override
+  protected ToiletVersion save(ToiletVersion version) {
+    return toiletRepository.saveAndFlush(version);
+  }
+
+  @Override
+  protected List<ToiletVersion> getAllVersions(ServicePointNumber servicePointNumber) {
+    return this.findAllByNumberOrderByValidFrom(servicePointNumber);
+  }
+
+  @Override
+  protected void applyVersioning(List<VersionedObject> versionedObjects) {
+    versionableService.applyVersioning(ToiletVersion.class, versionedObjects,this::save,
+        new ApplyVersioningDeleteByIdLongConsumer(toiletRepository));
   }
 
   public List<ToiletVersion> getAllToilets() {
@@ -46,26 +64,7 @@ public class ToiletService extends RelatableService<ToiletVersion> {
   }
 
   public ToiletVersion updateToiletVersion(ToiletVersion currentVersion, ToiletVersion editedVersion){
-    checkStaleObjectIntegrity(currentVersion, editedVersion);
-    editedVersion.setSloid(currentVersion.getSloid());
-    editedVersion.setNumber(currentVersion.getNumber());
-    List<ToiletVersion> existingDbVersions = toiletRepository.findAllByNumberOrderByValidFrom(
-        currentVersion.getNumber());
-    List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion,
-        editedVersion, existingDbVersions);
-    versionableService.applyVersioning(ToiletVersion.class, versionedObjects,
-        this::save, new ApplyVersioningDeleteByIdLongConsumer(toiletRepository));
-    return currentVersion;
-  }
-
-  private ToiletVersion save(ToiletVersion version) {
-    return toiletRepository.saveAndFlush(version);
-  }
-  private void checkStaleObjectIntegrity(ToiletVersion currentVersion, ToiletVersion editedVersion) {
-    toiletRepository.incrementVersion(currentVersion.getNumber());
-    if (editedVersion.getVersion() != null && !currentVersion.getVersion().equals(editedVersion.getVersion())) {
-      throw new StaleObjectStateException(ToiletVersion.class.getSimpleName(), "version");
-    }
+    return updateVersion(currentVersion,editedVersion);
   }
 
   public List<ToiletVersion> findAllByNumberOrderByValidFrom(ServicePointNumber number) {
@@ -75,4 +74,5 @@ public class ToiletService extends RelatableService<ToiletVersion> {
   public Optional<ToiletVersion> getTicketCounterVersionById(Long id) {
     return toiletRepository.findById(id);
   }
+
 }
