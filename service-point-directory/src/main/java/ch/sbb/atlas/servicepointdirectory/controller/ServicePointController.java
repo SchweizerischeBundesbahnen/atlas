@@ -19,6 +19,7 @@ import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberNotFoundEx
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointFotCommentMapper;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
+import ch.sbb.atlas.servicepointdirectory.service.ServicePointDistributor;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointFotCommentService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
@@ -28,10 +29,12 @@ import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearc
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -43,6 +46,7 @@ public class ServicePointController implements ServicePointApiV1 {
   private final ServicePointFotCommentService servicePointFotCommentService;
   private final ServicePointImportService servicePointImportService;
   private final GeoReferenceService geoReferenceService;
+  private final ServicePointDistributor servicePointDistributor;
 
   @Override
   public Container<ReadServicePointVersionModel> getServicePoints(Pageable pageable,
@@ -62,7 +66,7 @@ public class ServicePointController implements ServicePointApiV1 {
 
   @Override
   public List<ServicePointSearchResult> searchServicePoints(ServicePointSearchRequest searchRequest) {
-    if(searchRequest == null || searchRequest.getValue() == null || searchRequest.getValue().length() <2 ){
+    if (searchRequest == null || searchRequest.getValue() == null || searchRequest.getValue().length() < 2) {
       throw new BadRequestException("You must enter at least 2 digits to start a search!");
     }
     return servicePointService.searchServicePointVersion(searchRequest.getValue());
@@ -98,7 +102,9 @@ public class ServicePointController implements ServicePointApiV1 {
       throw new ServicePointNumberAlreadyExistsException(servicePointVersion.getNumber());
     }
     addGeoReferenceInformation(servicePointVersion);
-    return ServicePointVersionMapper.toModel(servicePointService.save(servicePointVersion));
+    ServicePointVersion createdVersion = servicePointService.save(servicePointVersion);
+    servicePointDistributor.publishServicePointVersion(createdVersion);
+    return ServicePointVersionMapper.toModel(createdVersion);
   }
 
   @Override
@@ -113,7 +119,10 @@ public class ServicePointController implements ServicePointApiV1 {
     servicePointService.update(servicePointVersionToUpdate, editedVersion,
         servicePointService.findAllByNumberOrderByValidFrom(servicePointVersionToUpdate.getNumber()));
 
-    return servicePointService.findAllByNumberOrderByValidFrom(servicePointVersionToUpdate.getNumber())
+    List<ServicePointVersion> servicePoint = servicePointService.findAllByNumberOrderByValidFrom(
+        servicePointVersionToUpdate.getNumber());
+    servicePointDistributor.publishServicePointVersions(servicePoint);
+    return servicePoint
         .stream()
         .map(ServicePointVersionMapper::toModel)
         .toList();
@@ -133,6 +142,13 @@ public class ServicePointController implements ServicePointApiV1 {
 
     ServicePointFotComment entity = ServicePointFotCommentMapper.toEntity(fotComment, number);
     return ServicePointFotCommentMapper.toModel(servicePointFotCommentService.save(entity));
+  }
+
+  @Async
+  @Override
+  public void syncServicePoints() {
+    servicePointService.iterateOverAllServicePointNumbers()
+        .forEach(servicePointNumber -> servicePointDistributor.publishServicePointsWithNumbers(Set.of(servicePointNumber)));
   }
 
   private void addGeoReferenceInformation(ServicePointVersion servicePointVersion) {
