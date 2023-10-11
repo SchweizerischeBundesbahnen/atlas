@@ -276,7 +276,9 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     this.mapService.isGeolocationActivated.next(true);
     this.mapService.isEditMode.next(true);
 
-    if (!this.isCoordinatesPairValidForTransformation(coordinates)) {
+    if (
+      !this.coordinateTransformationService.isCoordinatesPairValidForTransformation(coordinates)
+    ) {
       return;
     }
 
@@ -304,14 +306,6 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     this.mapService.isGeolocationActivated.next(
       !!this.form.controls.servicePointGeolocation.controls.spatialReference.value,
     );
-  }
-
-  isCoordinatesPairValidForTransformation(coordinates: CoordinatePair) {
-    return this.isCoordinatePairNotZero(coordinates) && !!coordinates.north && !!coordinates.east;
-  }
-
-  isCoordinatePairNotZero(coordinates: CoordinatePair): boolean {
-    return coordinates.north !== 0 && coordinates.east !== 0;
   }
 
   checkIfAbbreviationIsAllowed() {
