@@ -17,8 +17,6 @@ import { TranslatePipe } from '@ngx-translate/core';
 class ServicePointSearchType {
   public static readonly servicePoint = 'SERVICE_POINT';
   public static readonly servicePointBps = 'SERVICE_POINT_BPS';
-  // 'SERVICE_POINT': string;
-  // 'SERVICE_POINT_BPS': string;
 }
 
 @Component({
@@ -36,7 +34,8 @@ export class SearchServicePointComponent implements OnInit {
   @Input() searchAllServicePoints = true;
   // @Input() searchType = 'SERVICE_POINT';
   @Input() searchType = ServicePointSearchType.servicePoint;
-  @Input() editable = true;
+  @Input() editable = false;
+  // @Input() _searchValue = '';
 
   constructor(
     private readonly router: Router,
@@ -115,7 +114,7 @@ export class SearchServicePointComponent implements OnInit {
               tap(() => (this.loading = false)),
             );
           } else {
-            return this.servicePointService.searchServicePoints({ value: term }).pipe(
+            return this.servicePointService.searchOnlyBpsServicePoints(true, { value: term }).pipe(
               catchError(() => of([])),
               tap(() => (this.loading = false)),
             );
