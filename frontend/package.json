@@ -76,7 +76,7 @@
     "@cypress/schematic": "^2.5",
     "@openapitools/openapi-generator-cli": "~2.7.0",
     "@playwright/test": "^1.35",
-    "@types/jasmine": "^4.3",
+    "@types/jasmine": "^5.0.0",
     "@types/node": "^20.3",
     "@types/proj4": "^2.5.2",
     "@typescript-eslint/eslint-plugin": "^5.60",
