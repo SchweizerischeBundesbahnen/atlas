@@ -42,7 +42,7 @@ public class PlatformService extends RelatableService<PlatformVersion> {
 
   public PlatformVersion createPlatformVersion(PlatformVersion version) {
     createRelation(version);
-    return platformRepository.saveAndFlush(version);
+    return save(version);
   }
 
   public PlatformVersion updateStopPlaceVersion(PlatformVersion currentVersion, PlatformVersion editedVersion){
@@ -54,7 +54,7 @@ public class PlatformService extends RelatableService<PlatformVersion> {
     List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion,
         editedVersion, existingDbVersions);
     versionableService.applyVersioning(PlatformVersion.class, versionedObjects,
-        this::createPlatformVersion, new ApplyVersioningDeleteByIdLongConsumer(platformRepository));
+        this::save, new ApplyVersioningDeleteByIdLongConsumer(platformRepository));
     return currentVersion;
   }
 
@@ -63,6 +63,10 @@ public class PlatformService extends RelatableService<PlatformVersion> {
     if (editedVersion.getVersion() != null && !currentVersion.getVersion().equals(editedVersion.getVersion())) {
       throw new StaleObjectStateException(PlatformVersion.class.getSimpleName(), "version");
     }
+  }
+
+  private PlatformVersion save(PlatformVersion version) {
+    return platformRepository.saveAndFlush(version);
   }
 
   public Optional<PlatformVersion> getPlatformVersionById(Long id) {
