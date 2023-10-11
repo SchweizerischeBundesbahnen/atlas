@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
-@Tag(name = "Export Service Point Batch")
+@Tag(name = "SePoDi - Export")
 @RequestMapping("v1/export")
 @RestController
 @AllArgsConstructor

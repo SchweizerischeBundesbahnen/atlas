@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@Tag(name = "Transport Company relations")
+@Tag(name = "BoDi - Transport Companies")
 @RequestMapping("v1/transport-company-relations")
 public interface TransportCompanyRelationApiV1 {
 
