@@ -64,7 +64,7 @@ public class ServicePointVersionMapper {
         .country(servicePointNumber.getCountry())
         .designationLong(createServicePointVersionModel.getDesignationLong())
         .designationOfficial(createServicePointVersionModel.getDesignationOfficial())
-        .abbreviation(createServicePointVersionModel.getAbbreviation())
+        //.abbreviation(createServicePointVersionModel.getAbbreviation())
         .sortCodeOfDestinationStation(createServicePointVersionModel.getSortCodeOfDestinationStation())
         .businessOrganisation(createServicePointVersionModel.getBusinessOrganisation())
         .operatingPointType(createServicePointVersionModel.getOperatingPointType())
