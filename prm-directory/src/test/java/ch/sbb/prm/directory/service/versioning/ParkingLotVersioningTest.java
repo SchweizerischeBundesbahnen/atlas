@@ -1,21 +1,22 @@
-package ch.sbb.prm.directory.service;
+package ch.sbb.prm.directory.service.versioning;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.prm.directory.InformationDeskTestData;
+import ch.sbb.prm.directory.ParkingLotTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPlaceTestData;
 import ch.sbb.prm.directory.entity.BasePrmImportEntity.Fields;
-import ch.sbb.prm.directory.entity.InformationDeskVersion;
+import ch.sbb.prm.directory.entity.ParkingLotVersion;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.StopPlaceVersion;
-import ch.sbb.prm.directory.enumeration.StandardAttributeType;
-import ch.sbb.prm.directory.repository.InformationDeskRepository;
+import ch.sbb.prm.directory.enumeration.BooleanOptionalAttributeType;
+import ch.sbb.prm.directory.repository.ParkingLotRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.StopPlaceRepository;
+import ch.sbb.prm.directory.service.ParkingLotService;
+import ch.sbb.prm.directory.service.RelationService;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -24,25 +25,24 @@ import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
 @Transactional
-class InformationDeskVersioningTest {
+class ParkingLotVersioningTest {
 
   private final ReferencePointRepository referencePointRepository;
 
   private final StopPlaceRepository stopPlaceRepository;
 
-  private final InformationDeskRepository informationDeskRepository;
-  private final InformationDeskService informationDeskService;
-
+  private final ParkingLotService parkingLotService;
+  private final ParkingLotRepository parkingLotRepository;
   private final RelationService relationService;
 
   @Autowired
-  InformationDeskVersioningTest(ReferencePointRepository referencePointRepository, StopPlaceRepository stopPlaceRepository,
-      InformationDeskRepository informationDeskRepository, InformationDeskService informationDeskService,
+  ParkingLotVersioningTest(ReferencePointRepository referencePointRepository,
+      StopPlaceRepository stopPlaceRepository, ParkingLotService parkingLotService, ParkingLotRepository parkingLotRepository,
       RelationService relationService) {
     this.referencePointRepository = referencePointRepository;
     this.stopPlaceRepository = stopPlaceRepository;
-    this.informationDeskRepository = informationDeskRepository;
-    this.informationDeskService = informationDeskService;
+    this.parkingLotService = parkingLotService;
+    this.parkingLotRepository = parkingLotRepository;
     this.relationService = relationService;
   }
 
@@ -65,21 +65,19 @@ class InformationDeskVersioningTest {
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
     referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
     referencePointRepository.save(referencePointVersion);
-    InformationDeskVersion version1 = InformationDeskTestData.builderVersion1().build();
+    ParkingLotVersion version1 = ParkingLotTestData.builderVersion1().build();
     version1.setParentServicePointSloid(parentServicePointSloid);
-    InformationDeskVersion savedVersion1 = informationDeskRepository.saveAndFlush(version1);
-    InformationDeskVersion version2 = InformationDeskTestData.builderVersion2().build();
+    parkingLotRepository.saveAndFlush(version1);
+    ParkingLotVersion version2 = ParkingLotTestData.builderVersion2().build();
     version2.setParentServicePointSloid(parentServicePointSloid);
-    InformationDeskVersion savedVersion2 = informationDeskRepository.saveAndFlush(version2);
+    parkingLotRepository.saveAndFlush(version2);
 
-    InformationDeskVersion editedVersion = InformationDeskTestData.builderVersion2().build();
-    editedVersion.setNumber(ServicePointNumber.ofNumberWithoutCheckDigit(1234567));
+    ParkingLotVersion editedVersion = ParkingLotTestData.builderVersion2().build();
     editedVersion.setParentServicePointSloid(parentServicePointSloid);
-    editedVersion.setDesignation("My designation");
-    editedVersion.setInductionLoop(StandardAttributeType.NOT_APPLICABLE);
-    editedVersion.setOpeningHours("24/7");
-    editedVersion.setInfo("info");
-    editedVersion.setWheelchairAccess(StandardAttributeType.YES);
+    editedVersion.setDesignation("hop yb!");
+    editedVersion.setInfo("No Info");
+    editedVersion.setPlacesAvailable(BooleanOptionalAttributeType.NO);
+    editedVersion.setPrmPlacesAvailable(BooleanOptionalAttributeType.NO);
     editedVersion.setCreationDate(version2.getCreationDate());
     editedVersion.setEditionDate(version2.getEditionDate());
     editedVersion.setCreator(version2.getCreator());
@@ -87,19 +85,19 @@ class InformationDeskVersioningTest {
     editedVersion.setVersion(version2.getVersion());
 
     //when
-    informationDeskService.updateInformationDeskVersion(version2,editedVersion);
+    parkingLotService.updateParkingLotVersion(version2,editedVersion);
 
     //then
-    List<InformationDeskVersion> result = informationDeskRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
+    List<ParkingLotVersion> result = parkingLotRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
     assertThat(result).isNotNull().hasSize(2);
 
-    InformationDeskVersion firstTemporalVersion = result.get(0);
+    ParkingLotVersion firstTemporalVersion = result.get(0);
     assertThat(firstTemporalVersion)
         .usingRecursiveComparison()
         .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate)
-        .isEqualTo(savedVersion1);
+        .isEqualTo(version1);
 
-    InformationDeskVersion secondTemporalVersion = result.get(1);
+    ParkingLotVersion secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion)
         .usingRecursiveComparison()
         .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate, Fields.editor, StopPlaceVersion.Fields.id)
@@ -117,6 +115,7 @@ class InformationDeskVersioningTest {
    */
   @Test
   void scenario2() {
+    //given
     String parentServicePointSloid = "ch:1:sloid:70000";
     StopPlaceVersion stopPlaceVersion = StopPlaceTestData.getStopPlaceVersion();
     stopPlaceVersion.setSloid(parentServicePointSloid);
@@ -124,59 +123,57 @@ class InformationDeskVersioningTest {
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
     referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
     referencePointRepository.save(referencePointVersion);
-    InformationDeskVersion version1 = InformationDeskTestData.builderVersion1().build();
+    ParkingLotVersion version1 = ParkingLotTestData.builderVersion1().build();
     version1.setParentServicePointSloid(parentServicePointSloid);
-    informationDeskRepository.saveAndFlush(version1);
-    InformationDeskVersion version2 = InformationDeskTestData.builderVersion2().build();
+    parkingLotRepository.saveAndFlush(version1);
+    ParkingLotVersion version2 = ParkingLotTestData.builderVersion2().build();
     version2.setParentServicePointSloid(parentServicePointSloid);
-    informationDeskRepository.saveAndFlush(version2);
-    InformationDeskVersion version3 = InformationDeskTestData.builderVersion3().build();
+    parkingLotRepository.saveAndFlush(version2);
+    ParkingLotVersion version3 = ParkingLotTestData.builderVersion3().build();
     version3.setParentServicePointSloid(parentServicePointSloid);
-    informationDeskRepository.saveAndFlush(version3);
+    parkingLotRepository.saveAndFlush(version3);
 
-    InformationDeskVersion editedVersion = InformationDeskTestData.builderVersion2().build();
-    editedVersion.setNumber(ServicePointNumber.ofNumberWithoutCheckDigit(1234567));
+    ParkingLotVersion editedVersion = ParkingLotTestData.builderVersion2().build();
     editedVersion.setParentServicePointSloid(parentServicePointSloid);
     editedVersion.setValidFrom(LocalDate.of(2001, 6, 1));
     editedVersion.setValidTo(LocalDate.of(2002, 6, 1));
-    editedVersion.setDesignation("My designation");
-    editedVersion.setWheelchairAccess(StandardAttributeType.YES);
+    editedVersion.setDesignation("hop yb!");
+    editedVersion.setPlacesAvailable(BooleanOptionalAttributeType.NO);
+    editedVersion.setPrmPlacesAvailable(BooleanOptionalAttributeType.NO);
     editedVersion.setCreationDate(version2.getCreationDate());
     editedVersion.setEditionDate(version2.getEditionDate());
     editedVersion.setCreator(version2.getCreator());
     editedVersion.setEditor(version2.getEditor());
     editedVersion.setVersion(version2.getVersion());
 
-    //when
-    informationDeskService.updateInformationDeskVersion(version2,editedVersion);
+    parkingLotService.updateParkingLotVersion(version2,editedVersion);
 
     //then
-    List<InformationDeskVersion> result = informationDeskRepository.findAllByNumberOrderByValidFrom(
-        version2.getNumber());
+    List<ParkingLotVersion> result = parkingLotRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
     assertThat(result).isNotNull().hasSize(5);
 
-    InformationDeskVersion firstTemporalVersion = result.get(0);
+    ParkingLotVersion firstTemporalVersion = result.get(0);
     assertThat(firstTemporalVersion)
         .usingRecursiveComparison()
         .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate)
         .isEqualTo(version1);
 
-    InformationDeskVersion secondTemporalVersion = result.get(1);
+    ParkingLotVersion secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2001, 1, 1));
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2001, 5, 31));
     assertThat(secondTemporalVersion.getDesignation()).isEqualTo("Designation wrong");
 
-    InformationDeskVersion thirdTemporalVersion = result.get(2);
+    ParkingLotVersion thirdTemporalVersion = result.get(2);
     assertThat(thirdTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2001, 6, 1));
     assertThat(thirdTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2002, 6, 1));
-    assertThat(thirdTemporalVersion.getDesignation()).isEqualTo("My designation");
+    assertThat(thirdTemporalVersion.getDesignation()).isEqualTo("hop yb!");
 
-    InformationDeskVersion fourthTemporalVersion = result.get(3);
+    ParkingLotVersion fourthTemporalVersion = result.get(3);
     assertThat(fourthTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2002, 6, 2));
     assertThat(fourthTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2002, 12, 31));
     assertThat(fourthTemporalVersion.getDesignation()).isEqualTo("Designation wrong");
 
-    InformationDeskVersion fifthTemporalVersion = result.get(4);
+    ParkingLotVersion fifthTemporalVersion = result.get(4);
     assertThat(fifthTemporalVersion)
         .usingRecursiveComparison()
         .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate)
@@ -199,7 +196,6 @@ class InformationDeskVersioningTest {
    */
   @Test
   void scenario8a() {
-    //given
     String parentServicePointSloid = "ch:1:sloid:70000";
     StopPlaceVersion stopPlaceVersion = StopPlaceTestData.getStopPlaceVersion();
     stopPlaceVersion.setSloid(parentServicePointSloid);
@@ -207,15 +203,14 @@ class InformationDeskVersioningTest {
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
     referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
     referencePointRepository.save(referencePointVersion);
-    InformationDeskVersion version1 = InformationDeskTestData.builderVersion1().build();
+    ParkingLotVersion version1 = ParkingLotTestData.builderVersion1().build();
     version1.setParentServicePointSloid(parentServicePointSloid);
-    informationDeskRepository.saveAndFlush(version1);
-    InformationDeskVersion version2 = InformationDeskTestData.builderVersion2().build();
+    parkingLotRepository.saveAndFlush(version1);
+    ParkingLotVersion version2 = ParkingLotTestData.builderVersion2().build();
     version2.setParentServicePointSloid(parentServicePointSloid);
-    informationDeskRepository.saveAndFlush(version2);
+    parkingLotRepository.saveAndFlush(version2);
 
-    InformationDeskVersion editedVersion = InformationDeskTestData.builderVersion2().build();
-    editedVersion.setNumber(ServicePointNumber.ofNumberWithoutCheckDigit(1234567));
+    ParkingLotVersion editedVersion = ParkingLotTestData.builderVersion2().build();
     editedVersion.setParentServicePointSloid(parentServicePointSloid);
     editedVersion.setValidTo(LocalDate.of(2001, 12, 31));
     editedVersion.setCreationDate(version2.getCreationDate());
@@ -225,19 +220,19 @@ class InformationDeskVersioningTest {
     editedVersion.setVersion(version2.getVersion());
 
     //when
-    informationDeskService.updateInformationDeskVersion(version2,editedVersion);
+    parkingLotService.updateParkingLotVersion(version2,editedVersion);
 
     //then
-    List<InformationDeskVersion> result = informationDeskRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
+    List<ParkingLotVersion> result = parkingLotRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
     assertThat(result).isNotNull().hasSize(2);
 
-    InformationDeskVersion firstTemporalVersion = result.get(0);
+    ParkingLotVersion firstTemporalVersion = result.get(0);
     assertThat(firstTemporalVersion)
         .usingRecursiveComparison()
         .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate)
         .isEqualTo(version1);
 
-    InformationDeskVersion secondTemporalVersion = result.get(1);
+    ParkingLotVersion secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion)
         .usingRecursiveComparison()
         .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate, Fields.editor, StopPlaceVersion.Fields.validTo)

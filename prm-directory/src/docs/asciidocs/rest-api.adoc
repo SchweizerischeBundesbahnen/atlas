@@ -110,6 +110,10 @@ include::{snippets}/ticket-counter-version-controller-api-test/should-get-ticket
 
 include::{snippets}/ticket-counter-version-controller-api-test/should-create-ticket-counter/auto-section.adoc[]
 
+=== Update Ticket Counters - Successfully
+
+include::{snippets}/ticket-counter-version-controller-api-test/should-update-ticket-counter/auto-section.adoc[]
+
 === Create Ticket Counters without Stop Place - Unsuccessfully
 
 include::{snippets}/ticket-counter-version-controller-api-test/should-not-create-ticket-counter-when-stop-place-does-not-exists/auto-section.adoc[]
