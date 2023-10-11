@@ -326,6 +326,8 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   }
 
   private update(id: number, servicePointVersion: CreateServicePointVersion) {
+    console.log('business organisation');
+    console.log(this.form.controls.businessOrganisation.value);
     this.confirmBoTransfer().subscribe((confirmed) => {
       if (confirmed) {
         this.preferredId = id;

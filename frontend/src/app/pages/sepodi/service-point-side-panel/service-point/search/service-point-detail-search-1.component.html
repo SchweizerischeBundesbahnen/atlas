@@ -1,0 +1,31 @@
+<form-search-select
+  (changeTrigger)="spSelectionChanged.emit($event)"
+  (searchTrigger)="searchServicePoint($event)"
+  [bindValueInp]="valueExtraction"
+  [controlName]="controlName"
+  [formGroup]="formGroup"
+  [items$]="servicePointSearchResult$"
+  [disabled]="disabled"
+>
+  <div class="d-flex flex-column">
+    <mat-label [ngClass]="formModus ? 'required-indicator' : ''" class="font-bold-lg">{{
+      'BODI.BUSINESS_ORGANISATION.BUSINESS_ORGANISATION' | translate
+    }}</mat-label>
+  </div>
+  <div
+    [ngClass]="formModus ? 'form-mode-label-form-field-space' : 'search-mode-space-between'"
+  ></div>
+  <!--  <ng-template let-item="item" ng-option-tmp>-->
+  <!--      <span-->
+  <!--        [innerHTML]="-->
+  <!--          item.number.toString() | searchResultHighlight: valueExtraction | splitServicePointNumber-->
+  <!--        "-->
+  <!--      ></span>-->
+  <!--    <span>&nbsp;&nbsp;&nbsp;</span>-->
+  <!--    <span [innerHTML]="item.designationOfficial | searchResultHighlight: valueExtraction"></span>-->
+  <!--  </ng-template>-->
+
+  <ng-template #labelOptionTemplates let-item>
+    <div class="text-truncate" [title]="item">{{ item.number }} {{ item.designationOfficial }}</div>
+  </ng-template>
+</form-search-select>
