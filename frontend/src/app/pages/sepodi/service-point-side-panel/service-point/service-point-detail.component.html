@@ -276,22 +276,12 @@
     </mat-checkbox>
 
     <div class="ps-2 col-2">
-      <service-point-search-1
+      <service-point-search
+        [disabled]="!form.enabled"
         class="mt-3 col-12"
         [formGroup]="form"
-        controlName="servicePoints"
-        data-cy="servicePoints"
-      ></service-point-search-1>
-    </div>
-    <div class="ps-2 col-2">
-      <service-point-search
-        startingLabel="SEPODI.SERVICE_POINTS.OPERATING_POINT_KILOMETER"
-        middleLabel=" "
-        endingLabel="Master"
-        placeholder=""
-        [searchAllServicePoints]="false"
-        searchType="BPK"
-        [editable]="!form.enabled"
+        controlName="operatingPointKilometerMaster"
+        data-cy="operatingPointKilometerMaster"
       ></service-point-search>
     </div>
   </div>
