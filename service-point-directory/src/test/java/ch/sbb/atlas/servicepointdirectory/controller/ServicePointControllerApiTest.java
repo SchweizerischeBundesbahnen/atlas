@@ -195,7 +195,22 @@ import org.springframework.test.web.servlet.MvcResult;
              .andExpect(jsonPath("$.totalCount", is(0)));
 
          createdAfterQueryString = servicePointVersion.getCreationDate().minusDays(1)
-             .format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN));
+             .format(DateTimeFormatter.ofPattern(AtlasApiConstants.ISO_DATE_TIME_FORMAT_PATTERN));
+         mvc.perform(get("/v1/service-points?createdAfter=" + createdAfterQueryString))
+             .andExpect(status().isOk())
+             .andExpect(jsonPath("$.totalCount", is(1)));
+     }
+
+     @Test
+     void shouldFindServicePointVersionBycreatedAfterByDateTimeWithT() throws Exception {
+         String createdAfterQueryString = servicePointVersion.getCreationDate().plusDays(1).format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN_WITH_T));
+
+         mvc.perform(get("/v1/service-points?createdAfter=" + createdAfterQueryString))
+             .andExpect(status().isOk())
+             .andExpect(jsonPath("$.totalCount", is(0)));
+
+         createdAfterQueryString = servicePointVersion.getCreationDate().minusDays(1)
+             .format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN_WITH_T));
          mvc.perform(get("/v1/service-points?createdAfter=" + createdAfterQueryString))
              .andExpect(status().isOk())
              .andExpect(jsonPath("$.totalCount", is(1)));
