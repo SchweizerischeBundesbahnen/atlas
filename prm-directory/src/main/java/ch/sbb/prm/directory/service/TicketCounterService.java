@@ -12,20 +12,19 @@ import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.TicketCounterRepository;
 import java.util.List;
 import java.util.Optional;
-import org.hibernate.StaleObjectStateException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class TicketCounterService extends RelatableService<TicketCounterVersion> {
+public class TicketCounterService extends PrmRelatableVersionableService<TicketCounterVersion> {
 
   private final TicketCounterRepository ticketCounterRepository;
   private final VersionableService versionableService;
 
   public TicketCounterService(TicketCounterRepository ticketCounterRepository, StopPlaceService stopPlaceRepository,
       RelationService relationService, ReferencePointRepository referencePointRepository, VersionableService versionableService) {
-    super(stopPlaceRepository,relationService, referencePointRepository);
+    super(versionableService,stopPlaceRepository,relationService,referencePointRepository);
     this.ticketCounterRepository = ticketCounterRepository;
     this.versionableService = versionableService;
   }
@@ -33,6 +32,27 @@ public class TicketCounterService extends RelatableService<TicketCounterVersion>
   @Override
   protected ReferencePointElementType getReferencePointElementType() {
     return TICKET_COUNTER;
+  }
+
+  @Override
+  protected void incrementVersion(ServicePointNumber servicePointNumber) {
+    ticketCounterRepository.incrementVersion(servicePointNumber);
+  }
+
+  @Override
+  protected TicketCounterVersion save(TicketCounterVersion version) {
+    return ticketCounterRepository.saveAndFlush(version);
+  }
+
+  @Override
+  protected List<TicketCounterVersion> getAllVersions(ServicePointNumber servicePointNumber) {
+    return this.findAllByNumberOrderByValidFrom(servicePointNumber);
+  }
+
+  @Override
+  protected void applyVersioning(List<VersionedObject> versionedObjects) {
+    versionableService.applyVersioning(TicketCounterVersion.class, versionedObjects,this::save,
+        new ApplyVersioningDeleteByIdLongConsumer(ticketCounterRepository));
   }
 
   public List<TicketCounterVersion> getAllTicketCounters() {
@@ -45,27 +65,7 @@ public class TicketCounterService extends RelatableService<TicketCounterVersion>
   }
 
   public TicketCounterVersion updateTicketCounterVersion(TicketCounterVersion currentVersion, TicketCounterVersion editedVersion){
-    checkStaleObjectIntegrity(currentVersion, editedVersion);
-    editedVersion.setSloid(currentVersion.getSloid());
-    editedVersion.setNumber(currentVersion.getNumber());
-    List<TicketCounterVersion> existingDbVersions = ticketCounterRepository.findAllByNumberOrderByValidFrom(
-        currentVersion.getNumber());
-    List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion,
-        editedVersion, existingDbVersions);
-    versionableService.applyVersioning(TicketCounterVersion.class, versionedObjects,
-        this::save, new ApplyVersioningDeleteByIdLongConsumer(ticketCounterRepository));
-    return currentVersion;
-  }
-
-  private TicketCounterVersion save(TicketCounterVersion version) {
-    return ticketCounterRepository.saveAndFlush(version);
-  }
-
-  private void checkStaleObjectIntegrity(TicketCounterVersion currentVersion, TicketCounterVersion editedVersion) {
-    ticketCounterRepository.incrementVersion(currentVersion.getNumber());
-    if (editedVersion.getVersion() != null && !currentVersion.getVersion().equals(editedVersion.getVersion())) {
-      throw new StaleObjectStateException(TicketCounterVersion.class.getSimpleName(), "version");
-    }
+    return updateVersion(currentVersion,editedVersion);
   }
 
   public List<TicketCounterVersion> findAllByNumberOrderByValidFrom(ServicePointNumber number) {

@@ -9,18 +9,40 @@ import ch.sbb.prm.directory.exception.StopPlaceDoesNotExistsException;
 import ch.sbb.prm.directory.repository.StopPlaceRepository;
 import java.util.List;
 import java.util.Optional;
-import lombok.RequiredArgsConstructor;
-import org.hibernate.StaleObjectStateException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@RequiredArgsConstructor
 @Service
 @Transactional
-public class StopPlaceService {
+public class StopPlaceService extends PrmVersionableService<StopPlaceVersion> {
 
   private final StopPlaceRepository stopPlaceRepository;
-  private final VersionableService versionableService;
+
+  public StopPlaceService(StopPlaceRepository stopPlaceRepository, VersionableService versionableService) {
+    super(versionableService);
+    this.stopPlaceRepository = stopPlaceRepository;
+  }
+
+  @Override
+  protected void incrementVersion(ServicePointNumber servicePointNumber) {
+    stopPlaceRepository.incrementVersion(servicePointNumber);
+  }
+
+  @Override
+  protected StopPlaceVersion save(StopPlaceVersion version) {
+    return stopPlaceRepository.saveAndFlush(version);
+  }
+
+  @Override
+  protected List<StopPlaceVersion> getAllVersions(ServicePointNumber servicePointNumber) {
+    return this.findAllByNumberOrderByValidFrom(servicePointNumber);
+  }
+
+  @Override
+  protected void applyVersioning(List<VersionedObject> versionedObjects) {
+    versionableService.applyVersioning(StopPlaceVersion.class, versionedObjects,this::save,
+        new ApplyVersioningDeleteByIdLongConsumer(stopPlaceRepository));
+  }
 
   public List<StopPlaceVersion> getAllStopPlaces() {
    return stopPlaceRepository.findAll();
@@ -45,23 +67,9 @@ public class StopPlaceService {
   }
 
   public StopPlaceVersion updateStopPlaceVersion(StopPlaceVersion currentVersion, StopPlaceVersion editedVersion){
-    checkStaleObjectIntegrity(currentVersion, editedVersion);
-    editedVersion.setSloid(currentVersion.getSloid());
-    editedVersion.setNumber(currentVersion.getNumber());
-    List<StopPlaceVersion> existingDbVersions = stopPlaceRepository.findAllByNumberOrderByValidFrom(
-        currentVersion.getNumber());
-    List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion,
-        editedVersion, existingDbVersions);
-    versionableService.applyVersioning(StopPlaceVersion.class, versionedObjects,
-        this::createStopPlace, new ApplyVersioningDeleteByIdLongConsumer(stopPlaceRepository));
-    return currentVersion;
+    return updateVersion(currentVersion,editedVersion);
   }
 
-  private void checkStaleObjectIntegrity(StopPlaceVersion currentVersion, StopPlaceVersion editedVersion) {
-    stopPlaceRepository.incrementVersion(currentVersion.getNumber());
-    if (editedVersion.getVersion() != null && !currentVersion.getVersion().equals(editedVersion.getVersion())) {
-      throw new StaleObjectStateException(StopPlaceVersion.class.getSimpleName(), "version");
-    }
-  }
+
 
 }

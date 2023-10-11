@@ -26,15 +26,12 @@ import ch.sbb.prm.directory.repository.ToiletRepository;
 import ch.sbb.prm.directory.util.RelationUtil;
 import java.util.List;
 import java.util.Optional;
-import lombok.RequiredArgsConstructor;
-import org.hibernate.StaleObjectStateException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@RequiredArgsConstructor
 @Service
 @Transactional
-public class ReferencePointService {
+public class ReferencePointService extends PrmVersionableService<ReferencePointVersion>{
 
   private final ReferencePointRepository referencePointRepository;
   private final TicketCounterRepository ticketCounterService;
@@ -44,7 +41,42 @@ public class ReferencePointService {
   private final PlatformRepository platformRepository;
   private final RelationService relationService;
   private final StopPlaceService stopPlaceService;
-  private final VersionableService versionableService;
+
+  public ReferencePointService(ReferencePointRepository referencePointRepository, TicketCounterRepository ticketCounterService,
+      ToiletRepository toiletRepository, InformationDeskRepository informationDeskRepository,
+      ParkingLotRepository parkingLotRepository, PlatformRepository platformRepository, RelationService relationService,
+      StopPlaceService stopPlaceService, VersionableService versionableService) {
+    super(versionableService);
+    this.referencePointRepository = referencePointRepository;
+    this.ticketCounterService = ticketCounterService;
+    this.toiletRepository = toiletRepository;
+    this.informationDeskRepository = informationDeskRepository;
+    this.parkingLotRepository = parkingLotRepository;
+    this.platformRepository = platformRepository;
+    this.relationService = relationService;
+    this.stopPlaceService = stopPlaceService;
+  }
+
+  @Override
+  protected void incrementVersion(ServicePointNumber servicePointNumber) {
+    platformRepository.incrementVersion(servicePointNumber);
+  }
+
+  @Override
+  protected ReferencePointVersion save(ReferencePointVersion version) {
+    return this.saveReferencePoint(version);
+  }
+
+  @Override
+  protected List<ReferencePointVersion> getAllVersions(ServicePointNumber servicePointNumber) {
+    return this.findAllByNumberOrderByValidFrom(servicePointNumber);
+  }
+
+  @Override
+  protected void applyVersioning(List<VersionedObject> versionedObjects) {
+    versionableService.applyVersioning(ReferencePointVersion.class, versionedObjects,this::save,
+        new ApplyVersioningDeleteByIdLongConsumer(referencePointRepository));
+  }
 
   public List<ReferencePointVersion> getAllReferencePoints() {
     return referencePointRepository.findAll();
@@ -62,28 +94,21 @@ public class ReferencePointService {
 
   public ReferencePointVersion updateReferencePointVersion(ReferencePointVersion currentVersion,
       ReferencePointVersion editedVersion) {
-    checkStaleObjectIntegrity(currentVersion, editedVersion);
-    editedVersion.setSloid(currentVersion.getSloid());
-    editedVersion.setNumber(currentVersion.getNumber());
-    List<ReferencePointVersion> existingDbVersions = referencePointRepository.findAllByNumberOrderByValidFrom(
-        currentVersion.getNumber());
-    List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion,
-        editedVersion, existingDbVersions);
-    versionableService.applyVersioning(ReferencePointVersion.class, versionedObjects,
-        this::saveReferencePoint, new ApplyVersioningDeleteByIdLongConsumer(referencePointRepository));
-    return currentVersion;
+    return updateVersion(currentVersion,editedVersion);
+  }
+
+  public Optional<ReferencePointVersion> getReferencePointById(Long id) {
+    return referencePointRepository.findById(id);
+  }
+
+  public List<ReferencePointVersion> findAllByNumberOrderByValidFrom(ServicePointNumber number) {
+    return referencePointRepository.findAllByNumberOrderByValidFrom(number);
   }
 
   private ReferencePointVersion saveReferencePoint(ReferencePointVersion referencePointVersion) {
     return referencePointRepository.saveAndFlush(referencePointVersion);
   }
 
-  private void checkStaleObjectIntegrity(ReferencePointVersion currentVersion, ReferencePointVersion editedVersion) {
-    platformRepository.incrementVersion(currentVersion.getNumber());
-    if (editedVersion.getVersion() != null && !currentVersion.getVersion().equals(editedVersion.getVersion())) {
-      throw new StaleObjectStateException(PlatformVersion.class.getSimpleName(), "version");
-    }
-  }
 
   private void searchAndUpdateParkingLot(String parentServicePointSloid) {
     List<ParkingLotVersion> parkingLotVersions = parkingLotRepository.findByParentServicePointSloid(
@@ -119,11 +144,4 @@ public class ReferencePointService {
         version -> relationService.save(RelationUtil.buildRelationVersion(version, referencePointElementType)));
   }
 
-  public Optional<ReferencePointVersion> getReferencePointById(Long id) {
-    return referencePointRepository.findById(id);
-  }
-
-  public List<ReferencePointVersion> findAllByNumberOrderByValidFrom(ServicePointNumber number) {
-    return referencePointRepository.findAllByNumberOrderByValidFrom(number);
-  }
 }
