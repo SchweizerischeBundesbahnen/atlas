@@ -14,6 +14,13 @@ import { Pages } from '../../pages';
 import { filter, switchMap, tap } from 'rxjs/operators';
 import { TranslatePipe } from '@ngx-translate/core';
 
+class ServicePointSearchType {
+  public static readonly servicePoint = 'SERVICE_POINT';
+  public static readonly servicePointBps = 'SERVICE_POINT_BPS';
+  // 'SERVICE_POINT': string;
+  // 'SERVICE_POINT_BPS': string;
+}
+
 @Component({
   selector: 'app-search-service-point',
   templateUrl: './search-service-point.component.html',
@@ -27,6 +34,9 @@ export class SearchServicePointComponent implements OnInit {
   @Input() secondLabel = 'SEPODI.SERVICE_POINTS.DESIGNATION_OFFICIAL';
   @Input() placeholder = 'SEPODI.SERVICE_POINTS.SERVICE_POINT';
   @Input() searchAllServicePoints = true;
+  // @Input() searchType = 'SERVICE_POINT';
+  @Input() searchType = ServicePointSearchType.servicePoint;
+  @Input() editable = true;
 
   constructor(
     private readonly router: Router,
