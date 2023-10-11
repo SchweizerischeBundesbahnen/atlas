@@ -1,21 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ServicePointSearchResult, ServicePointsService } from '../../../../../api';
-import {
-  catchError,
-  concat,
-  debounceTime,
-  distinctUntilChanged,
-  Observable,
-  of,
-  Subject,
-} from 'rxjs';
-import { TranslatePipe } from '@ngx-translate/core';
-import { filter, switchMap, tap } from 'rxjs/operators';
-
-class ServicePointSearchType {
-  public static readonly servicePoint = 'SERVICE_POINT';
-  public static readonly servicePointBps = 'SERVICE_POINT_BPS';
-}
+import { Observable, of, Subject, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'service-point-search',
@@ -23,105 +10,55 @@ class ServicePointSearchType {
   styleUrls: ['./service-point-detail-search.component.scss'],
 })
 export class ServicePointDetailSearchComponent implements OnInit {
-  private readonly MIN_LENGTH_TERM = 2;
-  private readonly _DEBOUNCE_TIME = 500;
+  @Input() valueExtraction = 'sboid';
+  @Input() controlName!: string;
+  @Input() formModus = true;
+  @Input() formGroup!: FormGroup;
+  @Input() disabled = false;
 
-  @Input() startingLabel = 'SEPODI.SERVICE_POINTS.DIDOK_CODE_SEARCH';
-  @Input() middleLabel = '-';
-  @Input() endingLabel = 'SEPODI.SERVICE_POINTS.DESIGNATION_OFFICIAL';
-  @Input() placeholder = 'SEPODI.SERVICE_POINTS.SERVICE_POINT';
-  @Input() searchAllServicePoints = true;
-  // @Input() searchType = 'SERVICE_POINT';
-  @Input() searchType = ServicePointSearchType.servicePoint;
-  @Input() editable = false;
-  // @Input() selectedValue: ServicePointSearchResult = {number:8500006, designationOfficial:""};
-  // @Input() _searchValue = '';
-
-  constructor(
-    private readonly servicePointService: ServicePointsService,
-    private readonly translatePipe: TranslatePipe,
-  ) {}
-
-  private _searchValue = '';
-  selectedValue: ServicePointSearchResult = { number: 0, designationOfficial: '' };
-
-  get searchValue(): string {
-    return this._searchValue;
-  }
-
-  get minThermLongText(): string {
-    if (!this._searchValue || this._searchValue.length < this.MIN_LENGTH_TERM) {
-      return this.getTypeToSearchTranslatedLabel();
-    }
-    return this.getNotFoundTranslatedLabel();
-  }
-  get notFoundText(): string {
-    if (!this._searchValue || this._searchValue.length >= this.MIN_LENGTH_TERM) {
-      return this.getNotFoundTranslatedLabel();
-    }
-    return this.getTypeToSearchTranslatedLabel();
-  }
-
-  private getNotFoundTranslatedLabel() {
-    return this.translatePipe.transform('COMMON.NODATAFOUND');
-  }
-
-  private getTypeToSearchTranslatedLabel() {
-    return this.translatePipe.transform('COMMON.TYPE_TO_SEARCH_SHORT');
-  }
+  @Output() selectedServicePointChanged = new EventEmitter();
+  @Output() spSelectionChanged = new EventEmitter<ServicePointSearchResult>();
 
   servicePointSearchResult$: Observable<ServicePointSearchResult[]> = of([]);
-  searchInput$ = new Subject<string>();
-  loading = false;
+  private formSubscription!: Subscription;
 
-  selectedServicePoint(searchResultSelected: ServicePointSearchResult) {
-    this.selectedValue = searchResultSelected;
-    console.log(searchResultSelected);
-  }
+  searchInput$ = new Subject<string>();
+
+  constructor(private readonly servicePointService: ServicePointsService) {}
 
   ngOnInit(): void {
-    this.loadResult();
+    this.init();
   }
 
-  loadResult() {
-    this.servicePointSearchResult$ = concat(
-      of([]),
-      this.searchInput$.pipe(
-        filter((res) => {
-          return res !== null && res.length >= 0;
-        }),
-        distinctUntilChanged(),
-        debounceTime(this._DEBOUNCE_TIME),
-        tap((searchValue) => {
-          this.initSearchValue(searchValue);
-          this.loading = true;
-        }),
-        switchMap((term) => {
-          if (term.length < this.MIN_LENGTH_TERM) {
-            return of([]).pipe(tap(() => (this.loading = false)));
-          }
-          if (this.searchAllServicePoints) {
-            return this.servicePointService.searchServicePoints({ value: term }).pipe(
-              catchError(() => of([])),
-              tap(() => (this.loading = false)),
-            );
-          } else {
-            return this.servicePointService.searchOnlyBpsServicePoints(true, { value: term }).pipe(
-              catchError(() => of([])),
-              tap(() => (this.loading = false)),
-            );
-          }
-        }),
-      ),
-    );
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.formGroup) {
+      if (this.formSubscription) {
+        this.formSubscription.unsubscribe();
+      }
+      this.init();
+    }
   }
 
-  initSearchValue(searchValue: string) {
-    this._searchValue = searchValue == null ? '' : searchValue.trim();
+  init() {
+    const spControl = this.formGroup.get(this.controlName)!;
+    this.formSubscription = spControl.valueChanges.subscribe((change) => {
+      this.selectedServicePointChanged.emit(change);
+      this.searchServicePoint(change);
+    });
+
+    this.searchServicePoint(spControl.value as string);
   }
 
-  clearResult() {
-    this._searchValue = '';
-    this.loadResult();
+  searchServicePoint(searchString: string) {
+    console.log(searchString);
+    if (searchString) {
+      this.servicePointSearchResult$ = this.servicePointService
+        .searchOnlyBpsServicePoints(true, { value: searchString })
+        .pipe(map((values) => values ?? []));
+    }
+  }
+
+  ngOnDestroy() {
+    this.formSubscription.unsubscribe();
   }
 }
