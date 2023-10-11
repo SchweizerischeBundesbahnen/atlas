@@ -1,0 +1,32 @@
+<div [ngClass]="searchType === 'SERVICE_POINT' ? 'search-form' : ''">
+  <div class="d-flex flex-column">
+    <mat-label class="font-bold-sm pb-2">
+      {{ startingLabel | translate }} {{ middleLabel }} {{ endingLabel | translate }}
+    </mat-label>
+  </div>
+
+  <ng-select
+    [items]="servicePointSearchResult$ | async"
+    [typeahead]="searchInput$"
+    (change)="selectedServicePoint($event)"
+    [(ngModel)]="selectedValue"
+    (clear)="clearResult()"
+    appearance="outline"
+    [loading]="loading"
+    [readonly]="editable"
+    [typeToSearchText]="minThermLongText"
+    [notFoundText]="notFoundText"
+    placeholder="{{ placeholder | translate }}"
+    loadingText="{{ 'COMMON.LOADING' | translate }}"
+  >
+    <ng-template let-item="item" ng-option-tmp>
+      <span
+        [innerHTML]="
+          item.number.toString() | searchResultHighlight: searchValue | splitServicePointNumber
+        "
+      ></span>
+      <span>&nbsp;&nbsp;&nbsp;</span>
+      <span [innerHTML]="item.designationOfficial | searchResultHighlight: searchValue"></span>
+    </ng-template>
+  </ng-select>
+</div>
