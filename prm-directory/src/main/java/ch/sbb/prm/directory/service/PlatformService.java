@@ -65,7 +65,7 @@ public class PlatformService extends RelatableService<PlatformVersion> {
     }
   }
 
-  public Optional<PlatformVersion> getStopPlaceById(Long id) {
+  public Optional<PlatformVersion> getPlatformVersionById(Long id) {
     return platformRepository.findById(id);
   }
 
