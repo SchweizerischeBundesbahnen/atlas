@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,5 +23,10 @@ public interface ReferencePointApiV1 {
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   ReadReferencePointVersionModel createReferencePoint(@RequestBody @Valid CreateReferencePointVersionModel model);
+
+  @ResponseStatus(HttpStatus.OK)
+  @PostMapping(path = "{id}")
+  List<ReadReferencePointVersionModel> updateReferencePoint(@PathVariable Long id,
+      @RequestBody @Valid CreateReferencePointVersionModel model);
 
 }
