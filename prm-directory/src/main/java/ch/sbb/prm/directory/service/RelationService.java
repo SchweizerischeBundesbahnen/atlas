@@ -17,12 +17,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class RelationService extends PrmVersionableService<RelationVersion> {
 
   private final RelationRepository relationRepository;
-  private final VersionableService versionableService;
 
   public RelationService(RelationRepository relationRepository, VersionableService versionableService) {
     super(versionableService);
     this.relationRepository = relationRepository;
-    this.versionableService = versionableService;
   }
 
   public List<RelationVersion> getRelationsBySloid(String sloid) {

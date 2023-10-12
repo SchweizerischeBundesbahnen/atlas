@@ -70,6 +70,4 @@ public class StopPlaceService extends PrmVersionableService<StopPlaceVersion> {
     return updateVersion(currentVersion,editedVersion);
   }
 
-
-
 }

@@ -20,13 +20,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class TicketCounterService extends PrmRelatableVersionableService<TicketCounterVersion> {
 
   private final TicketCounterRepository ticketCounterRepository;
-  private final VersionableService versionableService;
 
   public TicketCounterService(TicketCounterRepository ticketCounterRepository, StopPlaceService stopPlaceRepository,
       RelationService relationService, ReferencePointRepository referencePointRepository, VersionableService versionableService) {
     super(versionableService,stopPlaceRepository,relationService,referencePointRepository);
     this.ticketCounterRepository = ticketCounterRepository;
-    this.versionableService = versionableService;
   }
 
   @Override

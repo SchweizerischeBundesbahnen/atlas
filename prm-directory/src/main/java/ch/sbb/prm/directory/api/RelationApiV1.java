@@ -34,6 +34,6 @@ public interface RelationApiV1 {
 
   @ResponseStatus(HttpStatus.OK)
   @PostMapping(path = "{id}")
-  List<ReadRelationVersionModel> updateToiletVersion(@PathVariable Long id,
+  List<ReadRelationVersionModel> updateRelation(@PathVariable Long id,
       @RequestBody @Valid CreateRelationVersionModel model);
 }
