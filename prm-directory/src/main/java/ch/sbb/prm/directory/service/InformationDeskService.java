@@ -20,14 +20,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class InformationDeskService extends PrmRelatableVersionableService<InformationDeskVersion> {
 
   private final InformationDeskRepository informationDeskRepository;
-  private final VersionableService versionableService;
 
   public InformationDeskService(InformationDeskRepository informationDeskRepository, StopPlaceService stopPlaceService,
       RelationService relationRepository, ReferencePointRepository referencePointRepository,
       VersionableService versionableService) {
     super(versionableService, stopPlaceService, relationRepository, referencePointRepository);
     this.informationDeskRepository = informationDeskRepository;
-    this.versionableService = versionableService;
   }
 
   @Override

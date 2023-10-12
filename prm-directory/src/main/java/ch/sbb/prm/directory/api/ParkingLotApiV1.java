@@ -26,6 +26,6 @@ public interface ParkingLotApiV1 {
 
   @ResponseStatus(HttpStatus.OK)
   @PostMapping(path = "{id}")
-  List<ReadParkingLotVersionModel> updateReferencePoint(@PathVariable Long id,
+  List<ReadParkingLotVersionModel> updateParkingLot(@PathVariable Long id,
       @RequestBody @Valid CreateParkingLotVersionModel model);
 }

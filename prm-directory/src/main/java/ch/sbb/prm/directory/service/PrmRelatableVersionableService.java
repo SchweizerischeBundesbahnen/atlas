@@ -16,7 +16,7 @@ public abstract class PrmRelatableVersionableService<T extends Relatable & PrmVe
   protected final RelationService relationService;
   protected final ReferencePointRepository referencePointRepository;
 
-  public PrmRelatableVersionableService(VersionableService versionableService, StopPlaceService stopPlaceService,
+  protected PrmRelatableVersionableService(VersionableService versionableService, StopPlaceService stopPlaceService,
       RelationService relationService, ReferencePointRepository referencePointRepository) {
     super(versionableService);
     this.stopPlaceService = stopPlaceService;
