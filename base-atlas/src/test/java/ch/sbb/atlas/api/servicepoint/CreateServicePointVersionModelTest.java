@@ -24,7 +24,7 @@ class CreateServicePointVersionModelTest {
   @Test
   void shouldAllowMinimalServicePointVersion() {
     CreateServicePointVersionModel servicePointVersionModel = CreateServicePointVersionModel.builder()
-        .numberWithoutCheckDigit(8507000)
+        .numberShort(8507000)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
         .validFrom(LocalDate.of(2022, 1, 1))
@@ -43,7 +43,7 @@ class CreateServicePointVersionModelTest {
   @Test
   void shouldNotAllowMinimalServicePointVersionWithMissingNorth() {
     CreateServicePointVersionModel servicePointVersionModel = CreateServicePointVersionModel.builder()
-        .numberWithoutCheckDigit(8507000)
+        .numberShort(8507000)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
         .validFrom(LocalDate.of(2022, 1, 1))
@@ -61,7 +61,7 @@ class CreateServicePointVersionModelTest {
   @Test
   void shouldAllowMinimalServicePointVersionWithLv95Coordinates() {
     CreateServicePointVersionModel servicePointVersionModel = CreateServicePointVersionModel.builder()
-        .numberWithoutCheckDigit(8507000)
+        .numberShort(8507000)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
         .validFrom(LocalDate.of(2022, 1, 1))
@@ -81,7 +81,7 @@ class CreateServicePointVersionModelTest {
   @Test
   void shouldNotAllowMinimalServicePointVersionWithLv95CoordinatesMoreThanFiveFractions() {
     CreateServicePointVersionModel servicePointVersionModel = CreateServicePointVersionModel.builder()
-        .numberWithoutCheckDigit(8507000)
+        .numberShort(8507000)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
         .validFrom(LocalDate.of(2022, 1, 1))
@@ -101,7 +101,7 @@ class CreateServicePointVersionModelTest {
   @Test
   void shouldAllowMinimalServicePointVersionWithWgs84Coordinates() {
     CreateServicePointVersionModel servicePointVersionModel = CreateServicePointVersionModel.builder()
-        .numberWithoutCheckDigit(8507000)
+        .numberShort(8507000)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
         .validFrom(LocalDate.of(2022, 1, 1))
@@ -121,7 +121,7 @@ class CreateServicePointVersionModelTest {
   @Test
   void shouldNotAllowMinimalServicePointVersionWithWgs84CoordinatesMoreThanElevenFractions() {
     CreateServicePointVersionModel servicePointVersionModel = CreateServicePointVersionModel.builder()
-        .numberWithoutCheckDigit(8507000)
+        .numberShort(8507000)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
         .validFrom(LocalDate.of(2022, 1, 1))
@@ -141,7 +141,7 @@ class CreateServicePointVersionModelTest {
   @Test
   void shouldNotAllowServiceWithOperatingPointTypeAndTechnical() {
     CreateServicePointVersionModel servicePointVersionModel = CreateServicePointVersionModel.builder()
-        .numberWithoutCheckDigit(8507000)
+        .numberShort(8507000)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
         .operatingPointType(OperatingPointType.INVENTORY_POINT)
@@ -157,7 +157,7 @@ class CreateServicePointVersionModelTest {
   @Test
   void shouldNotAllowServiceWithOperatingPointTypeAndTariffPoint() {
     CreateServicePointVersionModel servicePointVersionModel = CreateServicePointVersionModel.builder()
-        .numberWithoutCheckDigit(8507000)
+        .numberShort(8507000)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
         .operatingPointType(OperatingPointType.INVENTORY_POINT)
@@ -173,7 +173,7 @@ class CreateServicePointVersionModelTest {
   @Test
   void shouldNotAllowServiceWithPlainOperatingPointAndStopPoint() {
     CreateServicePointVersionModel servicePointVersionModel = CreateServicePointVersionModel.builder()
-        .numberWithoutCheckDigit(8507000)
+        .numberShort(8507000)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
         .operatingPointType(OperatingPointType.INVENTORY_POINT)
@@ -189,7 +189,7 @@ class CreateServicePointVersionModelTest {
   @Test
   void shouldNotAllowServiceWithPlainOperatingPointAndFreightServicePoint() {
     CreateServicePointVersionModel servicePointVersionModel = CreateServicePointVersionModel.builder()
-        .numberWithoutCheckDigit(8507000)
+        .numberShort(8507000)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
         .operatingPointType(OperatingPointType.INVENTORY_POINT)
@@ -233,7 +233,7 @@ class CreateServicePointVersionModelTest {
   void shouldNotAllowServicePointVersionWithNumberAndCountry() {
     CreateServicePointVersionModel servicePointVersionModel = CreateServicePointVersionModel.builder()
         .country(Country.SWITZERLAND)
-        .numberWithoutCheckDigit(8507000)
+        .numberShort(8507000)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
         .validFrom(LocalDate.of(2022, 1, 1))
