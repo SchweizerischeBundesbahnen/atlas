@@ -52,32 +52,36 @@ export class ServicePointFormGroupBuilder {
   static buildEmptyFormGroup(): FormGroup<ServicePointDetailFormGroup> {
     const formGroup = new FormGroup<ServicePointDetailFormGroup>(
       {
+        number: new FormControl(null, [
+          Validators.min(10000),
+          Validators.max(99999),
+          Validators.pattern('\\d{5}'),
+        ]),
         country: new FormControl(null, [Validators.required]),
-        number: new FormControl(),
-        sloid: new FormControl(''),
-        abbreviation: new FormControl(''),
+        sloid: new FormControl(),
+        abbreviation: new FormControl(),
         status: new FormControl(),
-        designationOfficial: new FormControl('', [
+        designationOfficial: new FormControl(null, [
           Validators.required,
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           Validators.maxLength(30),
           Validators.minLength(2),
         ]),
-        designationLong: new FormControl('', [
+        designationLong: new FormControl(null, [
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           Validators.maxLength(50),
           Validators.minLength(2),
         ]),
         validFrom: new FormControl(null, [Validators.required]),
         validTo: new FormControl(null, [Validators.required]),
-        businessOrganisation: new FormControl('', [
+        businessOrganisation: new FormControl(null, [
           Validators.required,
           AtlasFieldLengthValidator.length_50,
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           AtlasCharsetsValidator.iso88591,
         ]),
-        operatingPointType: new FormControl(''),
-        sortCodeOfDestinationStation: new FormControl('', [Validators.maxLength(5)]),
+        operatingPointType: new FormControl(),
+        sortCodeOfDestinationStation: new FormControl(null, [Validators.maxLength(5)]),
         stopPointType: new FormControl(),
         meansOfTransport: new FormControl([]),
         categories: new FormControl([]),
@@ -90,15 +94,15 @@ export class ServicePointFormGroupBuilder {
         operatingPointRouteNetwork: new FormControl(),
         operatingPointKilometer: new FormControl(),
         operatingPointKilometerMaster: new FormControl(),
-        selectedType: new FormControl(null, { nonNullable: true }),
+        selectedType: new FormControl(null, Validators.required),
         freightServicePoint: new FormControl(),
         stopPoint: new FormControl(),
         operatingPointTrafficPointType: new FormControl(),
         etagVersion: new FormControl(),
-        creationDate: new FormControl(''),
-        editionDate: new FormControl(''),
-        editor: new FormControl(''),
-        creator: new FormControl(''),
+        creationDate: new FormControl(),
+        editionDate: new FormControl(),
+        editor: new FormControl(),
+        creator: new FormControl(),
       },
       [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
     );
@@ -310,7 +314,8 @@ export class ServicePointFormGroupBuilder {
     const value = form.value;
 
     const writableForm: CreateServicePointVersion = {
-      numberWithoutCheckDigit: value.number!,
+      country: value.country!,
+      numberShort: value.number!,
       sloid: value.sloid!,
       designationOfficial: value.designationOfficial!,
       designationLong: value.designationLong ? value.designationLong : undefined,

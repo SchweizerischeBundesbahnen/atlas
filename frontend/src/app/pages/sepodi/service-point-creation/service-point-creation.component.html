@@ -12,6 +12,24 @@
     >
     </atlas-select>
 
+    <!-- todo: display didok-id (numberShort) field, disabled (automatic) else enabled -->
+    <!--    <atlas-text-field-->
+    <!--      [fieldExamples]="[-->
+    <!--        { label: 'FORM.FOR_EXAMPLE', translate: true },-->
+    <!--        { label: '57189 |', translate: false },-->
+    <!--        { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '30' } }-->
+    <!--      ]"-->
+    <!--      [formGroup]="form"-->
+    <!--      controlName="number"-->
+    <!--      fieldLabel="SEPODI.SERVICE_POINTS.SERVICE_POINT_ID"-->
+    <!--    >-->
+    <!--    </atlas-text-field>-->
+
+    <form [formGroup]="form">
+      <input type="number" formControlName="number" />
+      <app-atlas-field-error [form]="form" controlName="number"></app-atlas-field-error>
+    </form>
+
     <service-point-form
       [form]="form"
       (selectedServicePointTypeChange)="servicePointTypeChanged$.next($event)"
