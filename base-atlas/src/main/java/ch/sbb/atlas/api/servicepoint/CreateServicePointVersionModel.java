@@ -28,15 +28,14 @@ import org.apache.commons.lang3.StringUtils;
 @Schema(name = "CreateServicePointVersion")
 public class CreateServicePointVersionModel extends ServicePointVersionModel {
 
-  @Schema(description = "Seven digits number. First two digits represent Country Code. "
-      + "Last 5 digits represent service point ID.", example = "8034505")
-  @Min(AtlasFieldLengths.MIN_SEVEN_DIGITS_NUMBER)
-  @Max(AtlasFieldLengths.MAX_SEVEN_DIGITS_NUMBER)
-  private Integer numberWithoutCheckDigit;
+  @Schema(description = "Five digits number. Represent service point ID.", example = "34505")
+  @Min(AtlasFieldLengths.MIN_FIVE_DIGITS_NUMBER)
+  @Max(AtlasFieldLengths.MAX_FIVE_DIGITS_NUMBER)
+  private Integer numberShort;
 
   @Schema(description = "The country for the service point. Only needed if ServicePointNumber is created automatically",
       example = "SWITZERLAND")
-  private Country country;
+  private Country country; // todo: check if null on create
 
   @Min(value = AtlasFieldLengths.MIN_SEVEN_DIGITS_NUMBER, message = "Minimum value for number.")
   @Max(value = AtlasFieldLengths.MAX_SEVEN_DIGITS_NUMBER, message = "Maximum value for number.")
@@ -70,10 +69,10 @@ public class CreateServicePointVersionModel extends ServicePointVersionModel {
   @JsonIgnore
   @AssertTrue(message = "FreightServicePoint in CH needs sortCodeOfDestinationStation")
   public boolean isValidFreightServicePoint() {
-    if (numberWithoutCheckDigit == null) {
+    if (numberShort == null) {
       return true;
     }
-    ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(numberWithoutCheckDigit);
+    ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(numberShort);
     return !(servicePointNumber.getCountry() == Country.SWITZERLAND && super.isFreightServicePoint() && !getValidFrom().isBefore(
         LocalDate.now()))
         || StringUtils.isNotBlank(super.getSortCodeOfDestinationStation());
@@ -93,7 +92,7 @@ public class CreateServicePointVersionModel extends ServicePointVersionModel {
   @JsonIgnore
   @AssertTrue(message = "ServicePointNumber must be present only if country not in (85,11,12,13,14)")
   public boolean isValidServicePointNumber() {
-    if (numberWithoutCheckDigit == null) {
+    if (numberShort == null) {
       return shouldGenerateServicePointNumber();
     } else {
       return country == null;
@@ -102,6 +101,6 @@ public class CreateServicePointVersionModel extends ServicePointVersionModel {
 
   @JsonIgnore
   public boolean shouldGenerateServicePointNumber() {
-      return country != null && ServicePointConstants.AUTOMATIC_SERVICE_POINT_ID.contains(country);
+    return country != null && ServicePointConstants.AUTOMATIC_SERVICE_POINT_ID.contains(country);
   }
 }
