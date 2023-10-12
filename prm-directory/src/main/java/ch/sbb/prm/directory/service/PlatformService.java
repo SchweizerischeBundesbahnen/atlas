@@ -20,14 +20,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class PlatformService extends PrmRelatableVersionableService<PlatformVersion> {
 
   private final PlatformRepository platformRepository;
-  private final VersionableService versionableService;
-
   public PlatformService(StopPlaceService stopPlaceService, RelationService relationService,
       PlatformRepository platformRepository, ReferencePointRepository referencePointRepository,
       VersionableService versionableService) {
     super(versionableService,stopPlaceService,relationService,referencePointRepository);
     this.platformRepository = platformRepository;
-    this.versionableService = versionableService;
   }
 
   @Override

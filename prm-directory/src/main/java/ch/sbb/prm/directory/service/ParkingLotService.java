@@ -21,13 +21,10 @@ public class ParkingLotService extends PrmRelatableVersionableService<ParkingLot
 
   private final ParkingLotRepository parkingLotRepository;
 
-  private final VersionableService versionableService;
-
   public ParkingLotService(ParkingLotRepository parkingLotRepository, StopPlaceService stopPlaceService,
       RelationService relationService, ReferencePointRepository referencePointRepository, VersionableService versionableService) {
     super(versionableService,stopPlaceService,relationService,referencePointRepository);
     this.parkingLotRepository = parkingLotRepository;
-    this.versionableService = versionableService;
   }
 
   @Override

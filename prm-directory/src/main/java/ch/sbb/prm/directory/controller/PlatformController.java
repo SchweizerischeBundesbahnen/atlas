@@ -25,14 +25,14 @@ public class PlatformController implements PlatformApiV1 {
   }
 
   @Override
-  public ReadPlatformVersionModel createStopPlace(CreatePlatformVersionModel model) {
+  public ReadPlatformVersionModel createPlatform(CreatePlatformVersionModel model) {
     PlatformVersion platformVersion = PlatformVersionMapper.toEntity(model);
     PlatformVersion savedVersion = platformService.createPlatformVersion(platformVersion);
     return PlatformVersionMapper.toModel(savedVersion);
   }
 
   @Override
-  public List<ReadPlatformVersionModel> updateStopPlace(Long id, CreatePlatformVersionModel createPlatformVersionModel) {
+  public List<ReadPlatformVersionModel> updatePlatform(Long id, CreatePlatformVersionModel createPlatformVersionModel) {
     PlatformVersion platformVersion =
         platformService.getPlatformVersionById(id).orElseThrow(() -> new IdNotFoundException(id));
 
