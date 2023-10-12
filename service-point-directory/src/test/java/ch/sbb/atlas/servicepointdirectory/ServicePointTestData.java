@@ -77,7 +77,7 @@ public class ServicePointTestData {
         .creator("fs45117")
         .editionDate(LocalDateTime.of(LocalDate.of(2022, 2, 23), LocalTime.of(17, 10, 10)))
         .editor("fs45117")
-        .build();;
+        .build();
 
     ServicePointVersion servicePoint = ServicePointVersion
         .builder()
@@ -108,7 +108,7 @@ public class ServicePointTestData {
     return servicePoint;
   }
 
-  public static ServicePointVersion getBernOst(){
+  public static ServicePointVersion getBernOst() {
     ServicePointGeolocation geolocation = ServicePointGeolocation
         .builder()
         .spatialReference(SpatialReference.LV95)
@@ -392,7 +392,7 @@ public class ServicePointTestData {
 
   public static CreateServicePointVersionModel getAargauServicePointVersionModel() {
     return CreateServicePointVersionModel.builder()
-        .numberWithoutCheckDigit(8034510)
+        .numberShort(8034510)
         .sloid("ch:1:sloid:18771")
         .designationLong("designation long 1")
         .designationOfficial("Aargau Strasse")

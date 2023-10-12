@@ -34,7 +34,7 @@ class ServicePointTypeTest extends BaseControllerApiTest {
   private final ServicePointController servicePointController;
 
   @Autowired
-   ServicePointTypeTest(ServicePointVersionRepository repository, ServicePointController servicePointController) {
+  ServicePointTypeTest(ServicePointVersionRepository repository, ServicePointController servicePointController) {
     this.repository = repository;
     this.servicePointController = servicePointController;
   }
@@ -52,7 +52,7 @@ class ServicePointTypeTest extends BaseControllerApiTest {
   @Test
   void shouldCreatePlainServicePoint() {
     CreateServicePointVersionModel servicePoint = CreateServicePointVersionModel.builder()
-        .numberWithoutCheckDigit(8507000)
+        .numberShort(8507000)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
         .validFrom(LocalDate.of(2022, 1, 1))
@@ -69,7 +69,7 @@ class ServicePointTypeTest extends BaseControllerApiTest {
   @Test
   void shouldCreateOperatingPointServicePointAsInventoryPoint() {
     CreateServicePointVersionModel servicePoint = CreateServicePointVersionModel.builder()
-        .numberWithoutCheckDigit(8507000)
+        .numberShort(8507000)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
         .operatingPointType(OperatingPointType.INVENTORY_POINT)
@@ -87,7 +87,7 @@ class ServicePointTypeTest extends BaseControllerApiTest {
   @Test
   void shouldCreateOperatingPointServicePointAsOperatingPointBus() {
     CreateServicePointVersionModel servicePoint = CreateServicePointVersionModel.builder()
-        .numberWithoutCheckDigit(8507000)
+        .numberShort(8507000)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
         .operatingPointTechnicalTimetableType(OperatingPointTechnicalTimetableType.OPERATING_POINT_BUS)
@@ -105,7 +105,7 @@ class ServicePointTypeTest extends BaseControllerApiTest {
   @Test
   void shouldCreateStopPointServicePointAsStopPoint() {
     CreateServicePointVersionModel servicePoint = CreateServicePointVersionModel.builder()
-        .numberWithoutCheckDigit(8507000)
+        .numberShort(8507000)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
         .meansOfTransport(List.of(MeanOfTransport.BUS))
@@ -141,7 +141,7 @@ class ServicePointTypeTest extends BaseControllerApiTest {
   @Test
   void shouldCreateServicePointAsTariffPoint() {
     CreateServicePointVersionModel servicePoint = CreateServicePointVersionModel.builder()
-        .numberWithoutCheckDigit(8507000)
+        .numberShort(8507000)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
         .operatingPointTrafficPointType(OperatingPointTrafficPointType.TARIFF_POINT)

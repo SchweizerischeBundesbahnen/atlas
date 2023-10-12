@@ -49,7 +49,7 @@ class ServicePointControllerTest {
   void shouldReturnConflictExceptionWhenNumberAlreadyUsed() {
     when(servicePointService.isServicePointNumberExisting(any())).thenReturn(true);
     CreateServicePointVersionModel servicePointVersionModel = CreateServicePointVersionModel.builder()
-        .numberWithoutCheckDigit(8507000)
+        .numberShort(8507000)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
         .validFrom(LocalDate.of(2022, 1, 1))
