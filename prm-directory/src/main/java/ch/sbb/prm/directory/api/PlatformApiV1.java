@@ -22,10 +22,10 @@ public interface PlatformApiV1 {
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
-  ReadPlatformVersionModel createStopPlace(@RequestBody @Valid CreatePlatformVersionModel model);
+  ReadPlatformVersionModel createPlatform(@RequestBody @Valid CreatePlatformVersionModel model);
 
   @ResponseStatus(HttpStatus.OK)
   @PostMapping(path = "{id}")
-  List<ReadPlatformVersionModel> updateStopPlace(@PathVariable Long id,
+  List<ReadPlatformVersionModel> updatePlatform(@PathVariable Long id,
       @RequestBody @Valid CreatePlatformVersionModel createPlatformVersionModel);
 }

@@ -59,7 +59,7 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
 
   @Override
   protected void incrementVersion(ServicePointNumber servicePointNumber) {
-    platformRepository.incrementVersion(servicePointNumber);
+    referencePointRepository.incrementVersion(servicePointNumber);
   }
 
   @Override
