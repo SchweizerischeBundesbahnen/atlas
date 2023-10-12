@@ -63,6 +63,7 @@
         {{ 'SEPODI.SERVICE_POINTS.TYPES.' + option | translate }}
       </mat-radio-button>
     </mat-radio-group>
+    <app-atlas-field-error [form]="form" controlName="selectedType"></app-atlas-field-error>
   </div>
 
   <div *ngIf="form.value.selectedType === 'OPERATING_POINT'" class="col-12 d-flex mt-2">

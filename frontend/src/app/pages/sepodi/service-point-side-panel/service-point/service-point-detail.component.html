@@ -55,48 +55,48 @@
       </div>
     </div>
   </service-point-form>
+</div>
 
-  <div class="page-footer">
-    <div class="page-footer-actions align-items-center justify-content-center d-flex">
-      <atlas-button
-        buttonDataCy="close-detail"
-        buttonText="SEPODI.BACK_TO_MAP"
-        buttonType="whiteFooterNonEdit"
-        (buttonClicked)="closeSidePanel()"
-        [footerEdit]="(isFormEnabled$ | async) ?? false"
-      >
-      </atlas-button>
-      <atlas-button
-        *ngIf="(isFormEnabled$ | async) === false"
-        (buttonClicked)="toggleEdit()"
-        applicationType="SEPODI"
-        [businessOrganisation]="form.controls.businessOrganisation.value!"
-        [uicCountryCode]="selectedVersion.number.uicCountryCode"
-        [disabled]="selectedVersion.status === 'REVOKED'"
-        buttonDataCy="edit"
-        buttonText="COMMON.EDIT"
-        buttonType="edit"
-        wrapperStyleClass="ms-3"
-      ></atlas-button>
-      <atlas-button
-        [footerEdit]="(isFormEnabled$ | async) ?? false"
-        (buttonClicked)="toggleEdit()"
-        buttonDataCy="cancel"
-        buttonText="COMMON.CANCEL"
-        buttonType="whiteFooterEdit"
-        wrapperStyleClass="ms-3"
-      ></atlas-button>
-      <atlas-button
-        (click)="save()"
-        [footerEdit]="(isFormEnabled$ | async) ?? false"
-        [disabled]="!form.dirty"
-        [submitButton]="true"
-        buttonDataCy="save-item"
-        buttonText="COMMON.SAVE"
-        buttonType="whiteFooterEdit"
-        wrapperStyleClass="ms-3"
-      >
-      </atlas-button>
-    </div>
-  </div>
+<div class="footer-box">
+  <footer class="d-flex align-items-center justify-content-center">
+    <atlas-button
+      buttonDataCy="close-detail"
+      buttonText="SEPODI.BACK_TO_MAP"
+      buttonType="whiteFooterNonEdit"
+      (buttonClicked)="closeSidePanel()"
+      [footerEdit]="(isFormEnabled$ | async) ?? false"
+    >
+    </atlas-button>
+    <atlas-button
+      *ngIf="(isFormEnabled$ | async) === false"
+      (buttonClicked)="toggleEdit()"
+      applicationType="SEPODI"
+      [businessOrganisation]="form.controls.businessOrganisation.value!"
+      [uicCountryCode]="selectedVersion.number.uicCountryCode"
+      [disabled]="selectedVersion.status === 'REVOKED'"
+      buttonDataCy="edit"
+      buttonText="COMMON.EDIT"
+      buttonType="edit"
+      wrapperStyleClass="ms-3"
+    ></atlas-button>
+    <atlas-button
+      [footerEdit]="(isFormEnabled$ | async) ?? false"
+      (buttonClicked)="toggleEdit()"
+      buttonDataCy="cancel"
+      buttonText="COMMON.CANCEL"
+      buttonType="whiteFooterEdit"
+      wrapperStyleClass="ms-3"
+    ></atlas-button>
+    <atlas-button
+      (click)="save()"
+      [footerEdit]="(isFormEnabled$ | async) ?? false"
+      [disabled]="!form.dirty"
+      [submitButton]="true"
+      buttonDataCy="save-item"
+      buttonText="COMMON.SAVE"
+      buttonType="whiteFooterEdit"
+      wrapperStyleClass="ms-3"
+    >
+    </atlas-button>
+  </footer>
 </div>
