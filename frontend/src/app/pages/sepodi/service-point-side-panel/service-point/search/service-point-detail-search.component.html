@@ -14,6 +14,14 @@
   </div>
 
   <ng-template #labelOptionTemplates let-item>
-    <div class="text-truncate" [title]="item">{{ item.number }} {{ item.designationOfficial }}</div>
+    <span
+      [innerHTML]="
+        item.number.toString() | searchResultHighlight: item.number | splitServicePointNumber
+      "
+    ></span>
+    <span>&nbsp;&nbsp;&nbsp;</span>
+    <span
+      [innerHTML]="item.designationOfficial | searchResultHighlight: item.designationOfficial"
+    ></span>
   </ng-template>
 </form-search-select>
