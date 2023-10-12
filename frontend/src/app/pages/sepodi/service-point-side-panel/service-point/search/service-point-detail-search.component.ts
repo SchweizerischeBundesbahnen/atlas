@@ -10,7 +10,7 @@ import { FormGroup } from '@angular/forms';
   styleUrls: ['./service-point-detail-search.component.scss'],
 })
 export class ServicePointDetailSearchComponent implements OnInit {
-  @Input() valueExtraction = 'sboid';
+  @Input() valueExtraction = 'number';
   @Input() controlName!: string;
   @Input() formModus = true;
   @Input() formGroup!: FormGroup;

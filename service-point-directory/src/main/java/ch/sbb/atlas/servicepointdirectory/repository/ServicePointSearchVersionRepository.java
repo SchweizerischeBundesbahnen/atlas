@@ -73,9 +73,9 @@ public class ServicePointSearchVersionRepository {
         String sqlQuery = """
                 select number, designation_official
                 from service_point_version
-                where upper(cast(number as text)) like upper( :contains_value)
+                where (upper(cast(number as text)) like upper( :contains_value)
                     or replace(upper(designation_official), ',','') like replace(upper(:contains_value), ',','')
-                    or replace(upper(designation_long), ',','') like replace(upper(:contains_value), ',','')
+                    or replace(upper(designation_long), ',','') like replace(upper(:contains_value), ',',''))
                 """;
         if (isBps) {
             sqlQuery += " and operating_point_route_network = true ";

@@ -268,14 +268,14 @@
     <label></label>
     <mat-checkbox
       (change)="setOperatingPointKilometer($event)"
-      [disabled]="isBpkDisabled!"
+      [disabled]="disableBpk!"
       formControlName="operatingPointKilometer"
       data-cy="operatingPointKilometer"
     >
       {{ 'SEPODI.SERVICE_POINTS.OPERATING_POINT_KILOMETER' | translate }}
     </mat-checkbox>
 
-    <div class="ps-2 col-2">
+    <div class="ps-2 col-3">
       <service-point-search
         [disabled]="!form.enabled"
         class="mt-3 col-12"
