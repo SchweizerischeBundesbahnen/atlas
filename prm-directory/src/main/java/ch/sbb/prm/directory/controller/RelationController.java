@@ -44,7 +44,7 @@ public class RelationController implements RelationApiV1 {
   }
 
   @Override
-  public List<ReadRelationVersionModel> updateToiletVersion(Long id, CreateRelationVersionModel model) {
+  public List<ReadRelationVersionModel> updateRelation(Long id, CreateRelationVersionModel model) {
     RelationVersion stopPlaceVersionToUpdate =
         relationService.getRelationById(id).orElseThrow(() -> new IdNotFoundException(id));
 
