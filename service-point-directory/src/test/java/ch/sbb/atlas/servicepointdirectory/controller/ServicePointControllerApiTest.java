@@ -140,12 +140,12 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
 
     // when
     mvc.perform(post("/v1/service-points/search")
-                    .content(jsonString)
-                    .contentType(contentType))
-            // then
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$[0].number", is(8589008)))
-            .andExpect(jsonPath("$[0].designationOfficial", is("Bern, Wyleregg")));
+            .content(jsonString)
+            .contentType(contentType))
+        // then
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].number", is(8589008)))
+        .andExpect(jsonPath("$[0].designationOfficial", is("Bern, Wyleregg")));
   }
 
  @Test
@@ -171,11 +171,11 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
 
     // when
     mvc.perform(post("/v1/service-points/search")
-                    .content(jsonString)
-                    .contentType(contentType))
-            // then
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$", hasSize(0)));
+            .content(jsonString)
+            .contentType(contentType))
+        // then
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(0)));
   }
 
  @Test
@@ -201,11 +201,11 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
 
     // when
     mvc.perform(post("/v1/service-points/search")
-                    .content(jsonString)
-                    .contentType(contentType))
-            // then
-            .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
+            .content(jsonString)
+            .contentType(contentType))
+        // then
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
             .andExpect(jsonPath("$.details.[0].message", endsWith("You must enter at least 2 digits to start a search!")));
   }
 
@@ -551,7 +551,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
  }
 
   @Test
-   void shouldUpdateServicePointAndCreateMultipleVersions() throws Exception {
+  void shouldUpdateServicePointAndCreateMultipleVersions() throws Exception {
     ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
         ServicePointTestData.getAargauServicePointVersionModel());
     Long id = servicePointVersionModel.getId();
@@ -591,7 +591,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
-   void shouldUpdateServicePointAndNotCreateMultipleVersions() throws Exception {
+  void shouldUpdateServicePointAndNotCreateMultipleVersions() throws Exception {
     ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
         ServicePointTestData.getAargauServicePointVersionModelWithRouteNetworkFalse());
     Long id = servicePointVersionModel.getId();
@@ -690,7 +690,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
 
     // When first update it is ok
     createServicePointVersionModel.setId(savedServicePoint.getId());
-    createServicePointVersionModel.setNumberWithoutCheckDigit(savedServicePoint.getNumber().getNumber());
+    createServicePointVersionModel.setNumberShort(savedServicePoint.getNumber().getNumber());
     createServicePointVersionModel.setEtagVersion(savedServicePoint.getEtagVersion());
 
     createServicePointVersionModel.setDesignationLong("New and hot service point, ready to roll");
@@ -722,7 +722,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         .fotComment("Very important on demand service point")
         .build();
 
-    mvc.perform(put("/v1/service-points/"+servicePointVersion.getNumber().getValue()+"/fot-comment")
+    mvc.perform(put("/v1/service-points/" + servicePointVersion.getNumber().getValue() + "/fot-comment")
             .contentType(contentType)
             .content(mapper.writeValueAsString(fotComment)))
         .andExpect(status().isOk())
@@ -737,7 +737,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
 
     servicePointController.saveFotComment(servicePointVersion.getNumber().getValue(), fotComment);
 
-    mvc.perform(get("/v1/service-points/"+servicePointVersion.getNumber().getValue()+"/fot-comment"))
+    mvc.perform(get("/v1/service-points/" + servicePointVersion.getNumber().getValue() + "/fot-comment"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$." + Fields.fotComment, is("Very important on demand service point")));
   }
@@ -790,24 +790,24 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.hasGeolocation", is(true)));
   }
 
-   @Test
-   void shouldCreateServicePointAndGenerateServicePointNumber() throws Exception {
-     CreateServicePointVersionModel servicePointVersionModel = CreateServicePointVersionModel.builder()
-         .country(Country.SWITZERLAND)
-         .designationOfficial("Bern")
-         .businessOrganisation("ch:1:sboid:5846489645")
-         .validFrom(LocalDate.of(2022, 1, 1))
-         .validTo(LocalDate.of(2022, 12, 31))
-         .build();
+  @Test
+  void shouldCreateServicePointAndGenerateServicePointNumber() throws Exception {
+    CreateServicePointVersionModel servicePointVersionModel = CreateServicePointVersionModel.builder()
+        .country(Country.SWITZERLAND)
+        .designationOfficial("Bern")
+        .businessOrganisation("ch:1:sboid:5846489645")
+        .validFrom(LocalDate.of(2022, 1, 1))
+        .validTo(LocalDate.of(2022, 12, 31))
+        .build();
 
-     mvc.perform(post("/v1/service-points")
-             .contentType(contentType)
-             .content(mapper.writeValueAsString(servicePointVersionModel)))
-         .andExpect(status().isCreated())
-         .andExpect(jsonPath("$.number.number", is(8500001)))
-         .andExpect(jsonPath("$.sloid", is("ch:1:sloid:1")));
-   }
- }
+    mvc.perform(post("/v1/service-points")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(servicePointVersionModel)))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.number.number", is(8500001)))
+        .andExpect(jsonPath("$.sloid", is("ch:1:sloid:1")));
+  }
+}
 
   @Test
   void shouldNotUpdateServicePointIfAbbreviationInvalid()  throws Exception{
