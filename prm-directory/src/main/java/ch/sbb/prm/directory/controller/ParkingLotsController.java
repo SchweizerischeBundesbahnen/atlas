@@ -31,7 +31,7 @@ public class ParkingLotsController implements ParkingLotApiV1 {
   }
 
   @Override
-  public List<ReadParkingLotVersionModel> updateReferencePoint(Long id, CreateParkingLotVersionModel model) {
+  public List<ReadParkingLotVersionModel> updateParkingLot(Long id, CreateParkingLotVersionModel model) {
     ParkingLotVersion parkingLotVersion =
         parkingLotService.getPlatformVersionById(id).orElseThrow(() -> new IdNotFoundException(id));
 
