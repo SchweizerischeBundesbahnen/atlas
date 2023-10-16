@@ -57,6 +57,10 @@ kafka:
       organisation:
         topic: atlas.business.organisation
         groupId: atlas.kafka.prm.business.organisation.groupId
+    service:
+      point:
+        topic: atlas.service.point
+        groupId: atlas.kafka.prm.service.point.groupId
 
 atlas:
   client:
