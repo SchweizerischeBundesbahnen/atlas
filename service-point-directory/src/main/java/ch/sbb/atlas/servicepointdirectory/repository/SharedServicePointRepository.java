@@ -25,6 +25,10 @@ public class SharedServicePointRepository {
   }
 
   public Set<SharedServicePointVersionModel> getServicePoints(Set<ServicePointNumber> servicePointNumbers) {
+    if (servicePointNumbers.isEmpty()) {
+      return getAllServicePoints();
+    }
+
     String baseQuery = getSqlQuery();
     baseQuery += "sp.numbers in (:numbers)";
 
