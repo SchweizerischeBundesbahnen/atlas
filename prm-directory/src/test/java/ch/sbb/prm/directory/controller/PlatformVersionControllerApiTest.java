@@ -25,6 +25,7 @@ import ch.sbb.prm.directory.repository.PlatformRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.StopPlaceRepository;
 import ch.sbb.prm.directory.service.RelationService;
+import ch.sbb.prm.directory.service.SharedServicePointService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -32,6 +33,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 class PlatformVersionControllerApiTest extends BaseControllerApiTest {
+
+  @MockBean
+  private SharedServicePointService sharedServicePointService;
 
   private final PlatformRepository platformRepository;
 

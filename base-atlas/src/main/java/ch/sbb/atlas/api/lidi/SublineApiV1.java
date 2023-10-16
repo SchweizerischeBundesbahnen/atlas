@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@Tag(name = "Sublines")
+@Tag(name = "LiDi - Sublines")
 @RequestMapping("v1/sublines")
 public interface SublineApiV1 {
 

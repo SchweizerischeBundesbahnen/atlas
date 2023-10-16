@@ -4,6 +4,9 @@ import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.List;
+import java.util.function.Function;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -17,10 +20,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.function.Function;
 
 @Repository
 public interface ServicePointVersionRepository extends JpaRepository<ServicePointVersion, Long>,
@@ -78,4 +77,5 @@ public interface ServicePointVersionRepository extends JpaRepository<ServicePoin
 
   List<ServicePointVersion> findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndDesignationLongIgnoreCase(
       LocalDate validFrom, LocalDate validTo, String designationLong);
+
 }
