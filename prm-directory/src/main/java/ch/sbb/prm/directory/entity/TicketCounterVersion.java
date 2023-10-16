@@ -2,8 +2,8 @@ package ch.sbb.prm.directory.entity;
 
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
-import ch.sbb.atlas.versioning.model.Versionable;
 import ch.sbb.prm.directory.enumeration.StandardAttributeType;
+import ch.sbb.prm.directory.service.PrmVersionable;
 import ch.sbb.prm.directory.service.Relatable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,7 +27,7 @@ import lombok.experimental.SuperBuilder;
 @FieldNameConstants
 @Entity(name = "ticket_counter_version")
 @AtlasVersionable
-public class TicketCounterVersion extends BasePrmEntityVersion implements Relatable,Versionable {
+public class TicketCounterVersion extends BasePrmEntityVersion implements Relatable, PrmVersionable {
 
   private static final String VERSION_SEQ = "ticket_counter_version_seq";
 
