@@ -59,6 +59,7 @@
   <div class="col-12 d-flex mt-2 flex-column">
     <div class="font-bold-lg color-gray-900">
       <atlas-text-field
+        *ngIf="!hasAbbreviation"
         [fieldExamples]="[
           { label: 'FORM.FOR_EXAMPLE', translate: true },
           { label: 'TODO |', translate: false },

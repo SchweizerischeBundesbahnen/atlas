@@ -10,15 +10,19 @@ import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointImportRequestM
 import ch.sbb.atlas.model.exception.BadRequestException;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.atlas.servicepointdirectory.allowedabbreviations.AllowedAbbreviationsByBusinessOrganisations;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointApiV1;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointFotComment;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
+import ch.sbb.atlas.servicepointdirectory.exception.InvalidAbbreviationException;
+import ch.sbb.atlas.servicepointdirectory.exception.AbbreviationUpdateNotAllowedException;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberAlreadyExistsException;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointFotCommentMapper;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
+import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointFotCommentService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
@@ -26,8 +30,8 @@ import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointReque
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchRequest;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchResult;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +49,8 @@ public class ServicePointController implements ServicePointApiV1 {
   private final ServicePointFotCommentService servicePointFotCommentService;
   private final ServicePointImportService servicePointImportService;
   private final GeoReferenceService geoReferenceService;
-  private final Pattern abbreviationPattern = Pattern.compile("^[A-Z0-9]{6}$");
+
+  private final Pattern abbreviationPattern = Pattern.compile("^[A-Z0-9]{1,6}$");
 
   @Override
   public Container<ReadServicePointVersionModel> getServicePoints(Pageable pageable,
@@ -113,53 +118,26 @@ public class ServicePointController implements ServicePointApiV1 {
 
     ServicePointVersion editedVersion = ServicePointVersionMapper.toEntity(createServicePointVersionModel);
 
-    // ----- Mein Teil ------
-    String abbreviation = createServicePointVersionModel.getAbbreviation();
-    boolean isBussinesOrganisationInList = false;
+    String existingAbbreviation = servicePointVersionToUpdate.getAbbreviation();
+    String newAbbreviation = createServicePointVersionModel.getAbbreviation();
 
-    //TODO: Liste mit definierten Geschäftsorganisationen. -> Noch auslagern.
-    //TODO: Beispieldaten mit echten Daten ersetzen -> Liste erhalten
-    List<String> givenBussinesOrganisationsAbbreviationList = new ArrayList<>();
-    givenBussinesOrganisationsAbbreviationList.add("ch:1:sboid:100649");
+    if(newAbbreviation != null){
+      boolean isBussinesOrganisationInList = AllowedAbbreviationsByBusinessOrganisations.SBOIDS
+          .stream()
+          .anyMatch(element -> element.contains(editedVersion.getBusinessOrganisation()));
 
-    //TODO: Check if Bo of new Service Point exist in given List
-    for (String element : givenBussinesOrganisationsAbbreviationList){
-      if (element.contains(editedVersion.getBusinessOrganisation())){
-        //TODO: Naming anpassen
-        isBussinesOrganisationInList = true;
+      if (!isBussinesOrganisationInList || (existingAbbreviation != null && !Objects.equals(existingAbbreviation, newAbbreviation))) {
+        throw new AbbreviationUpdateNotAllowedException();
       }
+
+      if (!isAbbreviationValid(newAbbreviation) ||
+          !servicePointService.isAbbrevitionUnique(newAbbreviation, servicePointVersionToUpdate.getId())) {
+        throw new InvalidAbbreviationException();
+      }
+
+      editedVersion.setAbbreviation(createServicePointVersionModel.getAbbreviation());
     }
 
-    //TODO Check if BO from new SP is in List -> True
-    //TODO Check if current Version is Null -> True
-    //TODO Check if current Version has Abbreviation -> False
-    if (
-        isBussinesOrganisationInList &&
-        servicePointVersionToUpdate.getAbbreviation() == null ||
-            //TODO: Check brauchts diese Prüfung überhaupt
-        servicePointVersionToUpdate.getAbbreviation().equals(createServicePointVersionModel.getAbbreviation())) {
-
-      //TODO: Check Abbreviation if is Valid:
-      //TODO: Check is Abbreviation greater than 6 -> not valid
-      //TODO Check if Abbreviation is null or empty
-      //!abbreviation.equals(abbreviation.toUpperCase() -> can check if all is uppercase
-      if(createServicePointVersionModel.getAbbreviation().length() <= 6 && isAbbreviationValid(abbreviation)){
-        //TODO: Check has Abbreviation small letters or other chars
-
-        //TODO: Set abbreviation
-        editedVersion.setAbbreviation(createServicePointVersionModel.getAbbreviation());
-
-        //TODO: Prüfen ob Abkürzung eindeutig ist.
-      };
-
-    }
-
-    //TODO: Prüfen ob ältere Version eine Abkürzung hat und ob sich diese mit der neuen unterscheidet.
-
-    //TODO: if abbreviation vorhanden -> then not possible to update, change or delete it,
-
-
-    // TODO If Abbrevation Validation Fails, then add exception -  not allowed to change or to delete abbreviation
 
     addGeoReferenceInformation(editedVersion);
 
@@ -173,7 +151,6 @@ public class ServicePointController implements ServicePointApiV1 {
   }
 
 
-  //TODO: In Service Verschieben
   public boolean isAbbreviationValid(String textToCheck) {
     return abbreviationPattern.matcher(textToCheck).matches();
   }
