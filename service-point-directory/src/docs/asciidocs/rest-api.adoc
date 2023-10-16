@@ -71,6 +71,18 @@ include::{snippets}/service-point-controller-api-test/should-return-empty-list-w
 
 == Search ServicePoint when try to search with less than 2 digits
 
+include::{snippets}/service-point-controller-api-test/should-return-bad-request-when-search-bps-with-less-than-two-digit/auto-section.adoc[]
+
+== Search BPS ServicePoint successfully
+
+include::{snippets}/service-point-controller-api-test/should-search-service-point-with-route-network-true-successfully/auto-section.adoc[]
+
+== Search ServicePoint when no match
+
+include::{snippets}/service-point-controller-api-test/should-return-empty-list-when-no-match-bps-found/auto-section.adoc[]
+
+== Search ServicePoint when try to search with less than 2 digits
+
 include::{snippets}/service-point-controller-api-test/should-return-bad-request-when-search-whit-less-than-two-digit/auto-section.adoc[]
 
 == Create ServicePoint
