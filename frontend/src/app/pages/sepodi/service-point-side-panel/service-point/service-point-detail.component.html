@@ -257,7 +257,6 @@
     class="d-flex col-12"
     [formGroup]="form"
   >
-    <label></label>
     <mat-checkbox
       (change)="setOperatingPointRouteNetwork($event)"
       formControlName="operatingPointRouteNetwork"
@@ -265,10 +264,9 @@
     >
       {{ 'SEPODI.SERVICE_POINTS.ROUTE_NETWORK' | translate }}
     </mat-checkbox>
-    <label></label>
     <mat-checkbox
       (change)="setOperatingPointKilometer($event)"
-      [disabled]="isBpsSelected!"
+      [disabled]="isBpsSelected"
       formControlName="operatingPointKilometer"
       data-cy="operatingPointKilometer"
     >
