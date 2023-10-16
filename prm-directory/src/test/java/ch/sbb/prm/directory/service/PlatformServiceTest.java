@@ -38,23 +38,23 @@ class PlatformServiceTest {
 
   private final StopPlaceRepository stopPlaceRepository;
   private final PlatformService platformService;
-  private final ServicePointConsumer servicePointConsumer;
+  private final SharedServicePointConsumer sharedServicePointConsumer;
 
   @Autowired
   PlatformServiceTest(PlatformRepository platformRepository, ReferencePointRepository referencePointRepository,
       RelationRepository relationRepository, StopPlaceRepository stopPlaceRepository, PlatformService platformService,
-      ServicePointConsumer servicePointConsumer) {
+      SharedServicePointConsumer sharedServicePointConsumer) {
     this.platformRepository = platformRepository;
     this.referencePointRepository = referencePointRepository;
     this.relationRepository = relationRepository;
     this.stopPlaceRepository = stopPlaceRepository;
     this.platformService = platformService;
-    this.servicePointConsumer = servicePointConsumer;
+    this.sharedServicePointConsumer = sharedServicePointConsumer;
   }
 
   @BeforeEach
   void setUp() {
-    servicePointConsumer.readServicePointFromKafka(SharedServicePointVersionModel.builder()
+    sharedServicePointConsumer.readServicePointFromKafka(SharedServicePointVersionModel.builder()
         .servicePointSloid(PARENT_SERVICE_POINT_SLOID)
         .sboids(Set.of("ch:1:sboid:100001"))
         .trafficPointSloids(Set.of("ch:1:sloid:12345:1"))

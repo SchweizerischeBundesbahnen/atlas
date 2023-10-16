@@ -18,8 +18,8 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @SuperBuilder
 @FieldNameConstants
-@Entity(name = "service_point")
-public class ServicePoint {
+@Entity(name = "shared_service_point")
+public class SharedServicePoint {
 
   @Id
   private String sloid;
