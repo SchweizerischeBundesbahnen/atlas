@@ -9,6 +9,7 @@ import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElement
 import ch.sbb.atlas.servicepointdirectory.service.BaseImportService;
 import ch.sbb.atlas.servicepointdirectory.service.BasePointUtility;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
+import ch.sbb.atlas.servicepointdirectory.service.ServicePointDistributor;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
 import ch.sbb.atlas.versioning.model.VersionedObject;
@@ -31,6 +32,7 @@ public class TrafficPointElementImportService extends BaseImportService<TrafficP
 
   private final TrafficPointElementService trafficPointElementService;
   private final VersionableService versionableService;
+  private final ServicePointDistributor servicePointDistributor;
 
   @Override
   protected void save(TrafficPointElementVersion trafficPointElementVersion) {
@@ -89,8 +91,10 @@ public class TrafficPointElementImportService extends BaseImportService<TrafficP
           .map(new TrafficPointElementCsvToEntityMapper())
           .sorted(Comparator.comparing(TrafficPointElementVersion::getValidFrom))
           .toList();
+
       List<TrafficPointElementVersion> dbVersions = trafficPointElementService.findBySloidOrderByValidFrom(container.getSloid());
       replaceCsvMergedVersions(dbVersions, trafficPointElementVersions);
+
       for (TrafficPointElementVersion trafficPointElementVersion : trafficPointElementVersions) {
         boolean trafficPointElementExisting = trafficPointElementService.isTrafficPointElementExisting(
             trafficPointElementVersion.getSloid());
@@ -102,6 +106,8 @@ public class TrafficPointElementImportService extends BaseImportService<TrafficP
           importResults.add(saveResult);
         }
       }
+
+      servicePointDistributor.publishTrafficPointElements(trafficPointElementVersions);
     }
     return importResults;
   }
