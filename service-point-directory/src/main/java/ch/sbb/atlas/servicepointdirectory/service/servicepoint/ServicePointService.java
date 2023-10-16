@@ -107,4 +107,12 @@ public class ServicePointService {
     return currentVersion;
   }
 
+
+  public boolean isAbbrevitionUnique (String abbreviation, long id){
+   return servicePointVersionRepository.findServicePointVersionByAbbreviation(abbreviation)
+       .stream()
+       .filter(obj -> !obj.getId().equals(id))
+       .count() == 0;
+  }
+
 }
