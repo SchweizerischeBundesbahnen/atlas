@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ServicePointSearchResult, ServicePointsService } from '../../../api';
 import {
   catchError,
@@ -14,11 +14,6 @@ import { Pages } from '../../pages';
 import { filter, switchMap, tap } from 'rxjs/operators';
 import { TranslatePipe } from '@ngx-translate/core';
 
-class ServicePointSearchType {
-  public static readonly servicePoint = 'SERVICE_POINT';
-  public static readonly servicePointBps = 'SERVICE_POINT_BPS';
-}
-
 @Component({
   selector: 'app-search-service-point',
   templateUrl: './search-service-point.component.html',
@@ -27,17 +22,6 @@ class ServicePointSearchType {
 export class SearchServicePointComponent implements OnInit {
   private readonly MIN_LENGTH_TERM = 2;
   private readonly _DEBOUNCE_TIME = 500;
-
-  @Input() startingLabel = 'SEPODI.SERVICE_POINTS.DIDOK_CODE_SEARCH';
-  @Input() middleLabel = '-';
-  @Input() endingLabel = 'SEPODI.SERVICE_POINTS.DESIGNATION_OFFICIAL';
-  @Input() placeholder = 'SEPODI.SERVICE_POINTS.SERVICE_POINT';
-  @Input() searchAllServicePoints = true;
-  // @Input() searchType = 'SERVICE_POINT';
-  @Input() searchType = ServicePointSearchType.servicePoint;
-  @Input() editable = false;
-  // @Input() selectedValue: ServicePointSearchResult = {number:8500006, designationOfficial:""};
-  // @Input() _searchValue = '';
 
   constructor(
     private readonly router: Router,
@@ -110,17 +94,10 @@ export class SearchServicePointComponent implements OnInit {
           if (term.length < this.MIN_LENGTH_TERM) {
             return of([]).pipe(tap(() => (this.loading = false)));
           }
-          if (this.searchAllServicePoints) {
-            return this.servicePointService.searchServicePoints({ value: term }).pipe(
-              catchError(() => of([])),
-              tap(() => (this.loading = false)),
-            );
-          } else {
-            return this.servicePointService.searchOnlyBpsServicePoints(true, { value: term }).pipe(
-              catchError(() => of([])),
-              tap(() => (this.loading = false)),
-            );
-          }
+          return this.servicePointService.searchServicePoints({ value: term }).pipe(
+            catchError(() => of([])),
+            tap(() => (this.loading = false)),
+          );
         }),
       ),
     );
