@@ -24,18 +24,21 @@ public class RelationService extends PrmVersionableService<RelationVersion> {
   }
 
   public List<RelationVersion> getRelationsBySloid(String sloid) {
-   return relationRepository.findAllBySloid(sloid);
+    return relationRepository.findAllBySloid(sloid);
   }
 
   public List<RelationVersion> getRelationsBySloidAndReferenceType(String sloid, ReferencePointElementType referencePointType) {
-   return relationRepository.findAllBySloidAndReferencePointElementType(sloid,referencePointType);
+    return relationRepository.findAllBySloidAndReferencePointElementType(sloid, referencePointType);
   }
+
   public List<RelationVersion> getRelationsByParentServicePointSloidAndReferenceType(String parentServicePointSloid,
       ReferencePointElementType referencePointType) {
-   return relationRepository.findAllByParentServicePointSloidAndReferencePointElementType(parentServicePointSloid,referencePointType);
+    return relationRepository.findAllByParentServicePointSloidAndReferencePointElementType(parentServicePointSloid,
+        referencePointType);
   }
+
   public List<RelationVersion> getRelationsByParentServicePointSloid(String parentServicePointSloid) {
-   return relationRepository.findAllByParentServicePointSloid(parentServicePointSloid);
+    return relationRepository.findAllByParentServicePointSloid(parentServicePointSloid);
   }
 
   @Override
@@ -44,7 +47,7 @@ public class RelationService extends PrmVersionableService<RelationVersion> {
   }
 
   @Override
-  public RelationVersion save(RelationVersion relationVersion){
+  public RelationVersion save(RelationVersion relationVersion) {
     return relationRepository.saveAndFlush(relationVersion);
   }
 
@@ -55,13 +58,13 @@ public class RelationService extends PrmVersionableService<RelationVersion> {
 
   @Override
   protected void applyVersioning(List<VersionedObject> versionedObjects) {
-    versionableService.applyVersioning(RelationVersion.class, versionedObjects,this::save,
+    versionableService.applyVersioning(RelationVersion.class, versionedObjects, this::save,
         new ApplyVersioningDeleteByIdLongConsumer(relationRepository));
   }
-  public RelationVersion updateRelationVersion(RelationVersion currentVersion, RelationVersion editedVersion){
-    return updateVersion(currentVersion,editedVersion);
-  }
 
+  public RelationVersion updateRelationVersion(RelationVersion currentVersion, RelationVersion editedVersion) {
+    return updateVersion(currentVersion, editedVersion);
+  }
 
   public Optional<RelationVersion> getRelationById(Long id) {
     return relationRepository.findById(id);
