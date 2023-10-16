@@ -101,7 +101,7 @@ public class ServicePointController implements ServicePointApiV1 {
     }
     addGeoReferenceInformation(servicePointVersion);
     ServicePointVersion createdVersion = servicePointService.save(servicePointVersion);
-    servicePointDistributor.publishServicePointVersion(createdVersion);
+    servicePointDistributor.publishServicePointsWithNumbers(createdVersion.getNumber());
     return ServicePointVersionMapper.toModel(createdVersion);
   }
 
@@ -119,7 +119,7 @@ public class ServicePointController implements ServicePointApiV1 {
 
     List<ServicePointVersion> servicePoint = servicePointService.findAllByNumberOrderByValidFrom(
         servicePointVersionToUpdate.getNumber());
-    servicePointDistributor.publishServicePointVersions(servicePoint);
+    servicePointDistributor.publishServicePointsWithNumbers(servicePointVersionToUpdate.getNumber());
     return servicePoint
         .stream()
         .map(ServicePointVersionMapper::toModel)
