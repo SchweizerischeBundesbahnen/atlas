@@ -7,10 +7,12 @@ import static ch.sbb.prm.directory.enumeration.InfoOpportunityAttributeType.TEXT
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.controller.model.platform.CreatePlatformVersionModel;
 import ch.sbb.prm.directory.entity.PlatformVersion;
+import ch.sbb.prm.directory.entity.PlatformVersion.PlatformVersionBuilder;
 import ch.sbb.prm.directory.enumeration.BasicAttributeType;
 import ch.sbb.prm.directory.enumeration.BoardingDeviceAttributeType;
 import ch.sbb.prm.directory.enumeration.BooleanAttributeType;
 import ch.sbb.prm.directory.enumeration.BooleanOptionalAttributeType;
+import ch.sbb.prm.directory.enumeration.InfoOpportunityAttributeType;
 import ch.sbb.prm.directory.enumeration.VehicleAccessAttributeType;
 import java.time.LocalDate;
 import java.util.List;
@@ -75,6 +77,86 @@ public class PlatformTestData {
         .wheelchairAreaWidth(321.123)
         .build();
 
+  }
+
+  public static PlatformVersionBuilder<?, ?> builderVersion1(){
+    return PlatformVersion.builder()
+        .sloid("ch:1.sloid:12345:1")
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 12, 31))
+        .parentServicePointSloid("ch:1.sloid:12345")
+        .boardingDevice(BoardingDeviceAttributeType.LIFTS)
+        .additionalInfo("additional")
+        .adviceAccessInfo("Access Information Advice")
+        .contrastingAreas(BooleanOptionalAttributeType.YES)
+        .dynamicAudio(BasicAttributeType.NOT_APPLICABLE)
+        .dynamicVisual(BasicAttributeType.TO_BE_COMPLETED)
+        .height(123.12)
+        .inclination(123.12)
+        .inclinationLongitudinal(123.12)
+        .inclinationWidth(123.12)
+        .infoOpportunities(Set.of(ACOUSTIC_INFORMATION, ELECTRONIC_VISUAL_INFORMATION_COMPLETE, TEXT_TO_SPEECH_DEPARTURES))
+        .levelAccessWheelchair(BasicAttributeType.NO)
+        .partialElevation(BooleanAttributeType.NO)
+        .superelevation(321.123)
+        .tactileSystem(BooleanOptionalAttributeType.TO_BE_COMPLETED)
+        .vehicleAccess(VehicleAccessAttributeType.PLATFORM_ACCESS_WITH_ASSISTANCE_WHEN_NOTIFIED)
+        .wheelchairAreaLength(456.321)
+        .wheelchairAreaWidth(321.123);
+  }
+  public static PlatformVersionBuilder<?, ?> builderVersion2(){
+    return PlatformVersion.builder()
+        .sloid("ch:1.sloid:12345:1")
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
+        .validFrom(LocalDate.of(2001, 1, 1))
+        .validTo(LocalDate.of(2002, 12, 31))
+        .parentServicePointSloid("ch:1.sloid:12345")
+        .boardingDevice(BoardingDeviceAttributeType.LIFTS)
+        .additionalInfo("additional")
+        .adviceAccessInfo("No Access Information Advice")
+        .contrastingAreas(BooleanOptionalAttributeType.YES)
+        .dynamicAudio(BasicAttributeType.NOT_APPLICABLE)
+        .dynamicVisual(BasicAttributeType.TO_BE_COMPLETED)
+        .height(123.12)
+        .inclination(123.12)
+        .inclinationLongitudinal(123.12)
+        .inclinationWidth(123.12)
+        .infoOpportunities(Set.of(InfoOpportunityAttributeType.TO_BE_COMPLETED))
+        .levelAccessWheelchair(BasicAttributeType.NO)
+        .partialElevation(BooleanAttributeType.NO)
+        .superelevation(321.123)
+        .tactileSystem(BooleanOptionalAttributeType.TO_BE_COMPLETED)
+        .vehicleAccess(VehicleAccessAttributeType.PLATFORM_ACCESS_WITH_ASSISTANCE_WHEN_NOTIFIED)
+        .wheelchairAreaLength(456.321)
+        .wheelchairAreaWidth(321.123);
+  }
+
+  public static PlatformVersionBuilder<?, ?> builderVersion3(){
+    return PlatformVersion.builder()
+        .sloid("ch:1.sloid:12345:1")
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
+        .validFrom(LocalDate.of(2003, 1, 1))
+        .validTo(LocalDate.of(2003, 12, 31))
+        .parentServicePointSloid("ch:1.sloid:12345")
+        .boardingDevice(BoardingDeviceAttributeType.LIFTS)
+        .additionalInfo("additional")
+        .adviceAccessInfo("yes Access Information Advice")
+        .contrastingAreas(BooleanOptionalAttributeType.YES)
+        .dynamicAudio(BasicAttributeType.NOT_APPLICABLE)
+        .dynamicVisual(BasicAttributeType.TO_BE_COMPLETED)
+        .height(123.12)
+        .inclination(123.12)
+        .inclinationLongitudinal(123.12)
+        .inclinationWidth(123.12)
+        .infoOpportunities(Set.of(ACOUSTIC_INFORMATION))
+        .levelAccessWheelchair(BasicAttributeType.NO)
+        .partialElevation(BooleanAttributeType.NO)
+        .superelevation(321.123)
+        .tactileSystem(BooleanOptionalAttributeType.TO_BE_COMPLETED)
+        .vehicleAccess(VehicleAccessAttributeType.PLATFORM_ACCESS_WITH_ASSISTANCE_WHEN_NOTIFIED)
+        .wheelchairAreaLength(456.321)
+        .wheelchairAreaWidth(321.123);
   }
 
 }

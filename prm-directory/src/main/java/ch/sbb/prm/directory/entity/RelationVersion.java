@@ -2,11 +2,11 @@ package ch.sbb.prm.directory.entity;
 
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
-import ch.sbb.atlas.versioning.model.Versionable;
 import ch.sbb.prm.directory.enumeration.ReferencePointElementType;
 import ch.sbb.prm.directory.enumeration.StandardAttributeType;
 import ch.sbb.prm.directory.enumeration.StepFreeAccessAttributeType;
 import ch.sbb.prm.directory.enumeration.TactileVisualAttributeType;
+import ch.sbb.prm.directory.service.PrmVersionable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,7 +29,7 @@ import lombok.experimental.SuperBuilder;
 @FieldNameConstants
 @Entity(name = "relation_version")
 @AtlasVersionable
-public class RelationVersion extends BasePrmEntityVersion implements Versionable {
+public class RelationVersion extends BasePrmEntityVersion implements PrmVersionable {
 
   private static final String VERSION_SEQ = "relation_version_seq";
 

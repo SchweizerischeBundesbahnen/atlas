@@ -50,6 +50,10 @@ include::{snippets}/stop-place-version-controller-api-test/should-get-stop-place
 
 include::{snippets}/stop-place-version-controller-api-test/should-create-stop-place/auto-section.adoc[]
 
+=== Update Stop Places - Successfully
+
+include::{snippets}/stop-place-version-controller-api-test/should-update-stop-place/auto-section.adoc[]
+
 == Reference Point
 
 === Get Reference Points - Successfully
@@ -74,6 +78,10 @@ include::{snippets}/platform-version-controller-api-test/should-get-platforms-ve
 
 include::{snippets}/platform-version-controller-api-test/should-create-platform/auto-section.adoc[]
 
+=== Update Platforms - Successfully
+
+include::{snippets}/platform-version-controller-api-test/should-update-platform/auto-section.adoc[]
+
 === Create Platforms without Stop Place- Unsuccessfully
 
 include::{snippets}/platform-version-controller-api-test/should-not-create-platform-when-stop-place-does-not-exists/auto-section.adoc[]
@@ -88,9 +96,9 @@ include::{snippets}/toilet-version-controller-api-test/should-get-toilet/auto-se
 
 include::{snippets}/toilet-version-controller-api-test/should-create-toilet/auto-section.adoc[]
 
-=== Create Toilets without Stop Place - Unsuccessfully
+=== Update Toilets without Stop Place - Unsuccessfully
 
-include::{snippets}/toilet-version-controller-api-test/should-not-create-toilet-when-stop-place-does-not-exists/auto-section.adoc[]
+include::{snippets}/toilet-version-controller-api-test/should-update-ticket-counter/auto-section.adoc[]
 
 == Ticket Counter
 
@@ -101,6 +109,10 @@ include::{snippets}/ticket-counter-version-controller-api-test/should-get-ticket
 === Create Ticket Counters - Successfully
 
 include::{snippets}/ticket-counter-version-controller-api-test/should-create-ticket-counter/auto-section.adoc[]
+
+=== Update Ticket Counters - Successfully
+
+include::{snippets}/ticket-counter-version-controller-api-test/should-update-ticket-counter/auto-section.adoc[]
 
 === Create Ticket Counters without Stop Place - Unsuccessfully
 
@@ -115,6 +127,10 @@ include::{snippets}/information-desk-version-controller-api-test/should-get-info
 === Create Information Desks - Successfully
 
 include::{snippets}/information-desk-version-controller-api-test/should-create-information-desk/auto-section.adoc[]
+
+=== Update Information Desks - Successfully
+
+include::{snippets}/information-desk-version-controller-api-test/should-update-information-desk/auto-section.adoc[]
 
 === Create Information Desks without Stop Place - Successfully
 
@@ -134,11 +150,19 @@ include::{snippets}/parking-lot-version-controller-api-test/should-create-parkin
 
 include::{snippets}/parking-lot-version-controller-api-test/should-not-create-parking-lot-when-stop-place-does-not-exists/auto-section.adoc[]
 
+=== Update Parking Lots - Successfully
+
+include::{snippets}/parking-lot-version-controller-api-test/should-update-parking-lot/auto-section.adoc[]
+
 == Relation
 
 === Get Relations by Sloid - Successfully
 
 include::{snippets}/relation-version-controller-api-test/should-get-relation-by-sloid/auto-section.adoc[]
+
+=== Update Relation - Successfully
+
+include::{snippets}/relation-version-controller-api-test/should-update-relation/auto-section.adoc[]
 
 === Get Relations by Sloid and Reference Type - Successfully
 
