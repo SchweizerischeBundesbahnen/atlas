@@ -1,5 +1,6 @@
 package ch.sbb.prm.directory.controller;
 
+import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.prm.directory.api.ReferencePointApiV1;
 import ch.sbb.prm.directory.controller.model.referencepoint.CreateReferencePointVersionModel;
 import ch.sbb.prm.directory.controller.model.referencepoint.ReadReferencePointVersionModel;
@@ -28,5 +29,17 @@ public class ReferencePointController implements ReferencePointApiV1 {
     ReferencePointVersion referencePointVersion = ReferencePointVersionMapper.toEntity(model);
     ReferencePointVersion savedReferencePointVersion = referencePointService.createReferencePoint(referencePointVersion);
     return ReferencePointVersionMapper.toModel(savedReferencePointVersion);
+  }
+
+  @Override
+  public List<ReadReferencePointVersionModel> updateReferencePoint(Long id, CreateReferencePointVersionModel model) {
+    ReferencePointVersion referencePointVersion =
+        referencePointService.getReferencePointById(id).orElseThrow(() -> new IdNotFoundException(id));
+
+    ReferencePointVersion editedVersion = ReferencePointVersionMapper.toEntity(model);
+    referencePointService.updateReferencePointVersion(referencePointVersion, editedVersion);
+
+    return referencePointService.findAllByNumberOrderByValidFrom(referencePointVersion.getNumber()).stream()
+        .map(ReferencePointVersionMapper::toModel).toList();
   }
 }

@@ -1,21 +1,28 @@
 package ch.sbb.prm.directory.service;
 
+import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.enumeration.ReferencePointElementType;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.util.RelationUtil;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@RequiredArgsConstructor
-public abstract class RelatableService<T extends Relatable> {
+public abstract class PrmRelatableVersionableService<T extends Relatable & PrmVersionable> extends PrmVersionableService<T> {
 
   protected final StopPlaceService stopPlaceService;
   protected final RelationService relationService;
   protected final ReferencePointRepository referencePointRepository;
+
+  protected PrmRelatableVersionableService(VersionableService versionableService, StopPlaceService stopPlaceService,
+      RelationService relationService, ReferencePointRepository referencePointRepository) {
+    super(versionableService);
+    this.stopPlaceService = stopPlaceService;
+    this.relationService = relationService;
+    this.referencePointRepository = referencePointRepository;
+  }
 
   protected abstract ReferencePointElementType getReferencePointElementType();
 
@@ -25,7 +32,7 @@ public abstract class RelatableService<T extends Relatable> {
         version.getParentServicePointSloid());
     referencePointVersions.forEach(referencePointVersion -> {
       RelationVersion relationVersion = RelationUtil.buildRelationVersion(version, getReferencePointElementType());
-      relationService.createRelation(relationVersion);
+      relationService.save(relationVersion);
     });
   }
 
