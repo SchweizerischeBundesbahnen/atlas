@@ -89,7 +89,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.id, is(servicePointVersion.getId().intValue())))
         .andExpect(jsonPath("$[0].number.number", is(8589008)))
         .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.designationOfficial, is("Bern, Wyleregg")))
-        .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.operatingPointRouteNetwork, is(false)))
+        .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.operatingPointRouteNetwork, is(true)))
 
         // IS_BETRIEBSPUNKT
         .andExpect(jsonPath("$[0].operatingPoint", is(true)))
@@ -141,6 +141,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
             .andExpect(jsonPath("$[0].designationOfficial", is("Bern, Wyleregg")));
   }
 
+ @Test
+ void shouldSearchServicePointWithRouteNetworkTrueSuccessfully() throws Exception {
+     // given
+     ServicePointSearchRequest request = new ServicePointSearchRequest("bern");
+     String jsonString = mapper.writeValueAsString(request);
+
+     // when
+     mvc.perform(post("/v1/service-points/search-bps")
+                     .content(jsonString)
+                     .contentType(contentType))
+             // then
+             .andExpect(status().isOk())
+             .andExpect(jsonPath("$[0].number", is(8589008)))
+             .andExpect(jsonPath("$[0].designationOfficial", is("Bern, Wyleregg")));
+ }
+
   @Test
   void shouldReturnEmptyListWhenNoMatchFound() throws Exception {
     // given
@@ -156,6 +172,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
             .andExpect(jsonPath("$", hasSize(0)));
   }
 
+ @Test
+ void shouldReturnEmptyListWhenNoMatchBpsFound() throws Exception {
+     // given
+     ServicePointSearchRequest request = new ServicePointSearchRequest("zug");
+     String jsonString = mapper.writeValueAsString(request);
+
+     // when
+     mvc.perform(post("/v1/service-points/search-bps")
+                     .content(jsonString)
+                     .contentType(contentType))
+             // then
+             .andExpect(status().isOk())
+             .andExpect(jsonPath("$", hasSize(0)));
+ }
+
   @Test
   void shouldReturnBadRequestWhenSearchWhitLessThanTwoDigit() throws Exception {
     // given
@@ -170,6 +201,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("$.message", is("You must enter at least 2 digits to start a search!")));
   }
+
+ @Test
+ void shouldReturnBadRequestWhenSearchBpsWithLessThanTwoDigit() throws Exception {
+     // given
+     ServicePointSearchRequest request = new ServicePointSearchRequest("b");
+     String jsonString = mapper.writeValueAsString(request);
+
+     // when
+     mvc.perform(post("/v1/service-points/search-bps")
+                     .content(jsonString)
+                     .contentType(contentType))
+             // then
+             .andExpect(status().isBadRequest())
+             .andExpect(jsonPath("$.message", is("You must enter at least 2 digits to start a search!")));
+ }
 
   @Test
   void shouldFindServicePointVersionByModifiedAfter() throws Exception {
