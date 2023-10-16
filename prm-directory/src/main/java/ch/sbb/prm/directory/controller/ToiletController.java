@@ -21,7 +21,7 @@ public class ToiletController implements ToiletApiV1 {
 
   @Override
   public List<ReadToiletVersionModel> getToilets() {
-    return toiletService.getAllToilets().stream().map(ToiletVersionMapper::toModel).sorted().toList();
+    return toiletService.getAllToilets().stream().map(ToiletVersionMapper::toModel).toList();
   }
 
   @Override
