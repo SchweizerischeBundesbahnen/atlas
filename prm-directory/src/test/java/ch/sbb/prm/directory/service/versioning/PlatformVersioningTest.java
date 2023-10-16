@@ -90,7 +90,7 @@ class PlatformVersioningTest {
     editedVersion.setVersion(version2.getVersion());
 
     //when
-    platformService.updateStopPlaceVersion(version2,editedVersion);
+    platformService.updatePlatformVersion(version2,editedVersion);
 
     //then
     List<PlatformVersion> result = platformRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
@@ -149,7 +149,7 @@ class PlatformVersioningTest {
 
 
     //when
-    platformService.updateStopPlaceVersion(version2, editedVersion);
+    platformService.updatePlatformVersion(version2, editedVersion);
     //then
     List<PlatformVersion> result = platformRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
     assertThat(result).isNotNull().hasSize(5);
@@ -217,7 +217,7 @@ class PlatformVersioningTest {
 
 
     //when
-    platformService.updateStopPlaceVersion(version2, editedVersion);
+    platformService.updatePlatformVersion(version2, editedVersion);
     //then
     List<PlatformVersion> result = platformRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
     assertThat(result).isNotNull().hasSize(2);
