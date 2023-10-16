@@ -3,12 +3,8 @@ package ch.sbb.atlas.servicepointdirectory.service;
 import ch.sbb.atlas.kafka.model.service.point.SharedServicePointVersionModel;
 import ch.sbb.atlas.kafka.producer.BaseProducer;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
-import ch.sbb.atlas.servicepointdirectory.model.search.TrafficPointElementSearchRestrictions;
-import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
-import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementRequestParams;
-import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementService;
+import ch.sbb.atlas.servicepointdirectory.repository.SharedServicePointRepository;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -16,9 +12,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Pageable;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -30,31 +24,12 @@ public class ServicePointDistributor extends BaseProducer<SharedServicePointVers
   @Setter
   private String topic;
 
-  private final ServicePointService servicePointService;
-  private final TrafficPointElementService trafficPointElementService;
+  private final SharedServicePointRepository sharedServicePointRepository;
 
   public ServicePointDistributor(KafkaTemplate<String, Object> kafkaTemplate,
-      ServicePointService servicePointService, TrafficPointElementService trafficPointElementService) {
+      SharedServicePointRepository sharedServicePointRepository) {
     super(kafkaTemplate);
-    this.servicePointService = servicePointService;
-    this.trafficPointElementService = trafficPointElementService;
-  }
-
-  public void publishServicePointVersion(ServicePointVersion servicePointVersion) {
-    publishServicePointVersions(List.of(servicePointVersion));
-  }
-
-  public void publishServicePointVersions(List<ServicePointVersion> servicePointVersions) {
-    ServicePointNumber servicePointNumber = servicePointVersions.iterator().next().getNumber();
-
-    List<TrafficPointElementVersion> relatedTrafficPoints =
-        trafficPointElementService.findAll(TrafficPointElementSearchRestrictions.builder()
-            .pageable(Pageable.unpaged())
-            .trafficPointElementRequestParams(TrafficPointElementRequestParams.builder()
-                .servicePointNumbers(List.of(servicePointNumber.asString()))
-                .build()).build()).getContent();
-
-    publish(servicePointVersions, relatedTrafficPoints);
+    this.sharedServicePointRepository = sharedServicePointRepository;
   }
 
   public void publishTrafficPointElement(TrafficPointElementVersion trafficPointElementVersion) {
@@ -67,29 +42,21 @@ public class ServicePointDistributor extends BaseProducer<SharedServicePointVers
     publishServicePointsWithNumbers(servicePointNumbers);
   }
 
-  public void publishServicePointsWithNumbers(Set<ServicePointNumber> numbers) {
-    numbers.forEach(servicePointNumber -> {
-      log.info("Publishing {} to kafka", servicePointNumber);
-      List<ServicePointVersion> servicePoint = servicePointService.findAllByNumberOrderByValidFrom(servicePointNumber);
-      publishServicePointVersions(servicePoint);
-    });
+  public void publishServicePointsWithNumbers(ServicePointNumber number) {
+    publishServicePointsWithNumbers(Set.of(number));
   }
 
-  private void publish(List<ServicePointVersion> servicePoint, List<TrafficPointElementVersion> trafficPoint) {
-    String servicePointSloid = servicePoint.iterator().next().getSloid();
-    Set<String> sboids = servicePoint.stream().map(ServicePointVersion::getBusinessOrganisation).collect(Collectors.toSet());
-    Set<String> trafficPointSloids = trafficPoint.stream().map(TrafficPointElementVersion::getSloid).collect(Collectors.toSet());
+  public void publishServicePointsWithNumbers(Set<ServicePointNumber> numbers) {
+    sharedServicePointRepository.getServicePoints(numbers).forEach(this::publish);
+  }
 
-    SharedServicePointVersionModel sharedServicePointVersionModel = SharedServicePointVersionModel.builder()
-        .servicePointSloid(servicePointSloid)
-        .sboids(sboids)
-        .trafficPointSloids(trafficPointSloids)
-        .build();
+  public void syncServicePoints() {
+    Set<SharedServicePointVersionModel> servicePoints = sharedServicePointRepository.getAllServicePoints();
+    servicePoints.forEach(this::publish);
+  }
+
+  private void publish(SharedServicePointVersionModel sharedServicePointVersionModel) {
     produceEvent(sharedServicePointVersionModel, sharedServicePointVersionModel.getServicePointSloid());
   }
 
-  @Async
-  public void syncServicePoints() {
-    servicePointService.batchServicePointNumbers(number -> publishServicePointsWithNumbers(Set.of(number)));
-  }
 }
