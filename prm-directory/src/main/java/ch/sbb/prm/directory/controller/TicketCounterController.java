@@ -21,7 +21,7 @@ public class TicketCounterController implements TicketCounterApiV1 {
 
   @Override
   public List<ReadTicketCounterVersionModel> getTicketCounters() {
-    return ticketCounterService.getAllTicketCounters().stream().map(TicketCounterVersionMapper::toModel).sorted().toList();
+    return ticketCounterService.getAllTicketCounters().stream().map(TicketCounterVersionMapper::toModel).toList();
   }
 
   @Override
