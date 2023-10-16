@@ -31,7 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class ReferencePointService extends PrmVersionableService<ReferencePointVersion>{
+public class ReferencePointService extends PrmVersionableService<ReferencePointVersion> {
 
   private final ReferencePointRepository referencePointRepository;
   private final TicketCounterRepository ticketCounterService;
@@ -74,7 +74,7 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
 
   @Override
   protected void applyVersioning(List<VersionedObject> versionedObjects) {
-    versionableService.applyVersioning(ReferencePointVersion.class, versionedObjects,this::save,
+    versionableService.applyVersioning(ReferencePointVersion.class, versionedObjects, this::save,
         new ApplyVersioningDeleteByIdLongConsumer(referencePointRepository));
   }
 
@@ -94,7 +94,7 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
 
   public ReferencePointVersion updateReferencePointVersion(ReferencePointVersion currentVersion,
       ReferencePointVersion editedVersion) {
-    return updateVersion(currentVersion,editedVersion);
+    return updateVersion(currentVersion, editedVersion);
   }
 
   public Optional<ReferencePointVersion> getReferencePointById(Long id) {
@@ -108,7 +108,6 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
   private ReferencePointVersion saveReferencePoint(ReferencePointVersion referencePointVersion) {
     return referencePointRepository.saveAndFlush(referencePointVersion);
   }
-
 
   private void searchAndUpdateParkingLot(String parentServicePointSloid) {
     List<ParkingLotVersion> parkingLotVersions = parkingLotRepository.findByParentServicePointSloid(

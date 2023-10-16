@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -19,5 +20,5 @@ public interface ParkingLotRepository extends JpaRepository<ParkingLotVersion, L
 
   @Modifying(clearAutomatically = true)
   @Query("update parking_lot_version v set v.version = (v.version + 1) where v.number = :number")
-  void incrementVersion(ServicePointNumber number);
+  void incrementVersion(@Param("number") ServicePointNumber number);
 }

@@ -33,7 +33,7 @@ public class ToiletController implements ToiletApiV1 {
   @Override
   public List<ReadToiletVersionModel> updateToiletVersion(Long id, CreateToiletVersionModel model) {
     ToiletVersion toiletVersion =
-        toiletService.getTicketCounterVersionById(id).orElseThrow(() -> new IdNotFoundException(id));
+        toiletService.getToiletVersionById(id).orElseThrow(() -> new IdNotFoundException(id));
 
     ToiletVersion editedVersion = ToiletVersionMapper.toEntity(model);
     toiletService.updateToiletVersion(toiletVersion, editedVersion);
