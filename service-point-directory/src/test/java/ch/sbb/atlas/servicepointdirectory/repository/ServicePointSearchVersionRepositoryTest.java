@@ -65,9 +65,20 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
     }
 
     @Test
-     void shouldReturnAllServicePointWithDesignationOfficialContainsOst(){
+    void shouldReturnAllServicePointWithDesignationOfficialBernAndRouteNetworkTrue(){
         //when
-        List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("ost", false);
+        List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("bern", true);
+        //then
+        assertThat(results).isNotNull();
+        assertThat(results).hasSize(2);
+        assertThat(results.get(0).getDesignationOfficial()).isEqualTo("Bern Ost (Spw)");
+        assertThat(results.get(1).getDesignationOfficial()).isEqualTo("Bern, Wyleregg");
+    }
+
+    @Test
+     void shouldReturnAllServicePointWithDesignationOfficialContainsOstAndRouteNetworkTrue(){
+        //when
+        List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("ost", true);
         //then
         assertThat(results).isNotNull();
         assertThat(results).hasSize(1);
