@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@Tag(name = "LoadingPoints")
+@Tag(name = "SePoDi - Loading Points")
 @RequestMapping("v1/loading-points")
 public interface LoadingPointApiV1 {
 

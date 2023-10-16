@@ -163,4 +163,4 @@ services:
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'false'
       KAFKA_DELETE_TOPIC_ENABLE: 'true'
       # atlas.mail will have 1 partition and 1 replicas
-      KAFKA_CREATE_TOPICS: "atlas.mail:1:1,atlas.user.administration:1:1,atlas.business.organisation:1:1,atlas.transport.company:1:1"
+      KAFKA_CREATE_TOPICS: "atlas.mail:1:1,atlas.user.administration:1:1,atlas.business.organisation:1:1,atlas.transport.company:1:1,atlas.service.point:1:1"

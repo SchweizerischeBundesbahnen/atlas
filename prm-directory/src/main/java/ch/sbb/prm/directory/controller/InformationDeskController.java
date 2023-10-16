@@ -21,7 +21,7 @@ public class InformationDeskController implements InformationDeskApiV1 {
 
   @Override
   public List<ReadInformationDeskVersionModel> getInformationDesks() {
-    return informationDeskService.getAllInformationDesks().stream().map(InformationDeskVersionMapper::toModel).sorted().toList();
+    return informationDeskService.getAllInformationDesks().stream().map(InformationDeskVersionMapper::toModel).toList();
   }
 
   @Override

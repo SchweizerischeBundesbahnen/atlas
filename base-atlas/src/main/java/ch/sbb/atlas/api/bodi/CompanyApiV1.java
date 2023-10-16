@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@Tag(name = "Companies")
+@Tag(name = "BoDi - Companies")
 @RequestMapping("v1/companies")
 public interface CompanyApiV1 {
 
