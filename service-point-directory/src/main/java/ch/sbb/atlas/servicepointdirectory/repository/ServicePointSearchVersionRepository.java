@@ -104,35 +104,6 @@ public class ServicePointSearchVersionRepository {
         return sqlQuery.replace("$dynamicCases", getDynamicCases(value));
     }
 
-    private String getSqlQuery(String value) {
-        return """
-                select number, designation_official
-                from service_point_version
-                where upper(cast(number as text)) like upper( :contains_value)
-                    or replace(upper(designation_official), ',','') like replace(upper(:contains_value), ',','')
-                    or replace(upper(designation_long), ',','') like replace(upper(:contains_value), ',','')
-                order by
-                    (case
-                        when cast(number as text) like '85%' then 0
-                        else 1 end),
-                    $dynamicCases
-                    (case
-                        when designation_long = :perfect_match then 0
-                        when upper(designation_long) like upper(:perfect_match) then 1
-                        when designation_long like :starts_with then 2
-                        when upper(designation_long) like upper(:starts_with) then 3
-                        when designation_long like :starts_with_space then 4
-                        when upper(designation_long) like upper(:starts_with_space) then 5
-                        when designation_long like :ends_with then 6
-                        when upper(designation_long) like upper(:ends_with) then 7
-                        when designation_long like :ends_with_space then 8
-                        when upper(designation_long) like upper(:ends_with_space) then 9
-                        when designation_long like :contains_value then 10
-                        else 11 end),
-                    designation_long
-                """.replace("$dynamicCases", getDynamicCases(value));
-    }
-
     private String getDynamicCases(String value) {
         if (NumberUtils.isParsable(value)) {
             return getNumberCase() + ",\n" + getDesignationOfficialCase() + ",\n";
