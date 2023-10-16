@@ -7,6 +7,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -146,7 +147,7 @@ class TicketCounterVersionControllerApiTest extends BaseControllerApiTest {
     editedVersionModel.setEtagVersion(version2.getVersion());
 
     //when & then
-    mvc.perform(post("/v1/ticket-counters/" + version2.getId()).contentType(contentType)
+    mvc.perform(put("/v1/ticket-counters/" + version2.getId()).contentType(contentType)
             .content(mapper.writeValueAsString(editedVersionModel)))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(2)))
