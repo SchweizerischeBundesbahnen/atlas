@@ -268,7 +268,7 @@
     <label></label>
     <mat-checkbox
       (change)="setOperatingPointKilometer($event)"
-      [disabled]="disableBpk!"
+      [disabled]="isBpsSelected!"
       formControlName="operatingPointKilometer"
       data-cy="operatingPointKilometer"
     >
@@ -277,7 +277,7 @@
 
     <div class="ps-2 col-3">
       <service-point-search
-        [disabled]="!form.enabled"
+        [disabled]="form.disabled || isBpsSelected"
         class="mt-3 col-12"
         [formGroup]="form"
         controlName="operatingPointKilometerMaster"
