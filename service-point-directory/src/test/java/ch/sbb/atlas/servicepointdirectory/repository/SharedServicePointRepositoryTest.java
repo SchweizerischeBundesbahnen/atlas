@@ -9,6 +9,7 @@ import ch.sbb.atlas.servicepointdirectory.TrafficPointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import java.util.Set;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -23,6 +24,12 @@ class SharedServicePointRepositoryTest {
 
   @Autowired
   private SharedServicePointRepository sharedServicePointRepository;
+
+  @AfterEach
+  void tearDown() {
+    trafficPointElementVersionRepository.deleteAll();
+    servicePointVersionRepository.deleteAll();
+  }
 
   @Test
   void shouldFindServicePoints() {
