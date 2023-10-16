@@ -1,6 +1,7 @@
 package ch.sbb.prm.directory.controller;
 
-import ch.sbb.prm.directory.api.InformationDeskCounterApiV1;
+import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
+import ch.sbb.prm.directory.api.InformationDeskApiV1;
 import ch.sbb.prm.directory.controller.model.informationdesk.CreateInformationDeskVersionModel;
 import ch.sbb.prm.directory.controller.model.informationdesk.ReadInformationDeskVersionModel;
 import ch.sbb.prm.directory.entity.InformationDeskVersion;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-public class InformationDeskController implements InformationDeskCounterApiV1 {
+public class InformationDeskController implements InformationDeskApiV1 {
 
   private final InformationDeskService informationDeskService;
 
@@ -24,10 +25,22 @@ public class InformationDeskController implements InformationDeskCounterApiV1 {
   }
 
   @Override
-  public ReadInformationDeskVersionModel createStopPlace(CreateInformationDeskVersionModel model) {
+  public ReadInformationDeskVersionModel createInformationDesk(CreateInformationDeskVersionModel model) {
     InformationDeskVersion informationDeskVersion = informationDeskService.createInformationDesk(
         InformationDeskVersionMapper.toEntity(model));
     return InformationDeskVersionMapper.toModel(informationDeskVersion);
+  }
+
+  @Override
+  public List<ReadInformationDeskVersionModel> updateInformationDesk(Long id, CreateInformationDeskVersionModel model) {
+    InformationDeskVersion informationDeskVersion =
+        informationDeskService.getInformationDeskVersionById(id).orElseThrow(() -> new IdNotFoundException(id));
+
+    InformationDeskVersion editedVersion = InformationDeskVersionMapper.toEntity(model);
+    informationDeskService.updateInformationDeskVersion(informationDeskVersion, editedVersion);
+
+    return informationDeskService.findAllByNumberOrderByValidFrom(informationDeskVersion.getNumber()).stream()
+        .map(InformationDeskVersionMapper::toModel).toList();
   }
 
 }

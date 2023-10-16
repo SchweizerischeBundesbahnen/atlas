@@ -1,5 +1,6 @@
 package ch.sbb.prm.directory.controller;
 
+import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.prm.directory.api.TicketCounterApiV1;
 import ch.sbb.prm.directory.controller.model.ticketcounter.CreateTicketCounterVersionModel;
 import ch.sbb.prm.directory.controller.model.ticketcounter.ReadTicketCounterVersionModel;
@@ -24,9 +25,22 @@ public class TicketCounterController implements TicketCounterApiV1 {
   }
 
   @Override
-  public ReadTicketCounterVersionModel createStopPlace(CreateTicketCounterVersionModel ticketCounterVersionModel) {
+  public ReadTicketCounterVersionModel createTicketCounter(CreateTicketCounterVersionModel ticketCounterVersionModel) {
     TicketCounterVersion ticketCounterVersion = ticketCounterService.createTicketCounter(
         TicketCounterVersionMapper.toEntity(ticketCounterVersionModel));
     return TicketCounterVersionMapper.toModel(ticketCounterVersion);
   }
+
+  @Override
+  public List<ReadTicketCounterVersionModel> updateTicketCounter(Long id, CreateTicketCounterVersionModel model) {
+    TicketCounterVersion ticketCounterVersionToUpdate =
+        ticketCounterService.getTicketCounterVersionById(id).orElseThrow(() -> new IdNotFoundException(id));
+
+    TicketCounterVersion editedVersion = TicketCounterVersionMapper.toEntity(model);
+    ticketCounterService.updateTicketCounterVersion(ticketCounterVersionToUpdate, editedVersion);
+
+    return ticketCounterService.findAllByNumberOrderByValidFrom(ticketCounterVersionToUpdate.getNumber()).stream()
+        .map(TicketCounterVersionMapper::toModel).toList();
+  }
+
 }
