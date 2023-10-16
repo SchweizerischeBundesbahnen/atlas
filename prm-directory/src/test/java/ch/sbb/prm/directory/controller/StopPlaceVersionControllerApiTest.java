@@ -4,6 +4,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -97,7 +98,7 @@ class StopPlaceVersionControllerApiTest extends BaseControllerApiTest {
 
 
     //when && then
-    mvc.perform(post("/v1/stop-places/" + version2.getId()).contentType(contentType)
+    mvc.perform(put("/v1/stop-places/" + version2.getId()).contentType(contentType)
             .content(mapper.writeValueAsString(editedVersionModel)))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(2)))
