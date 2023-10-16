@@ -1,8 +1,8 @@
 package ch.sbb.prm.directory.service;
 
 import ch.sbb.atlas.kafka.model.service.point.SharedServicePointVersionModel;
-import ch.sbb.prm.directory.entity.ServicePoint;
-import ch.sbb.prm.directory.repository.ServicePointRepository;
+import ch.sbb.prm.directory.entity.SharedServicePoint;
+import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -15,15 +15,15 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class ServicePointConsumer {
+public class SharedServicePointConsumer {
 
-  private final ServicePointRepository servicePointRepository;
+  private final SharedServicePointRepository sharedServicePointRepository;
   private final ObjectMapper objectMapper;
 
   @KafkaListener(topics = "${kafka.atlas.service.point.topic}", groupId = "${kafka.atlas.service.point.groupId}")
   public void readServicePointFromKafka(SharedServicePointVersionModel sharedServicePointVersionModel) {
     try {
-      servicePointRepository.save(ServicePoint.builder()
+      sharedServicePointRepository.save(SharedServicePoint.builder()
           .sloid(sharedServicePointVersionModel.getServicePointSloid())
           .servicePoint(objectMapper.writeValueAsString(sharedServicePointVersionModel))
           .build());
