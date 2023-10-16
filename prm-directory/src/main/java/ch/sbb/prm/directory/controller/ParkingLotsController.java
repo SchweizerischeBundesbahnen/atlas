@@ -21,7 +21,7 @@ public class ParkingLotsController implements ParkingLotApiV1 {
 
   @Override
   public List<ReadParkingLotVersionModel> getParkingLots() {
-    return parkingLotService.getAllParkingLots().stream().map(ParkingLotVersionMapper::toModel).sorted().toList();
+    return parkingLotService.getAllParkingLots().stream().map(ParkingLotVersionMapper::toModel).toList();
   }
 
   @Override

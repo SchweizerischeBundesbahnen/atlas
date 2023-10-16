@@ -14,12 +14,17 @@ import ch.sbb.prm.directory.StopPlaceTestData;
 import ch.sbb.prm.directory.controller.model.stopplace.CreateStopPlaceVersionModel;
 import ch.sbb.prm.directory.entity.StopPlaceVersion;
 import ch.sbb.prm.directory.repository.StopPlaceRepository;
+import ch.sbb.prm.directory.service.SharedServicePointService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 class StopPlaceVersionControllerApiTest extends BaseControllerApiTest {
+
+  @MockBean
+  private SharedServicePointService sharedServicePointService;
 
   private final StopPlaceRepository stopPlaceRepository;
 
