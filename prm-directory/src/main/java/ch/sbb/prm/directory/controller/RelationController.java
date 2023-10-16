@@ -45,13 +45,13 @@ public class RelationController implements RelationApiV1 {
 
   @Override
   public List<ReadRelationVersionModel> updateRelation(Long id, CreateRelationVersionModel model) {
-    RelationVersion stopPlaceVersionToUpdate =
+    RelationVersion relationVersionToUpdate =
         relationService.getRelationById(id).orElseThrow(() -> new IdNotFoundException(id));
 
     RelationVersion editedVersion = RelationVersionMapper.toEntity(model);
-    relationService.updateRelationVersion(stopPlaceVersionToUpdate, editedVersion);
+    relationService.updateRelationVersion(relationVersionToUpdate, editedVersion);
 
-    return relationService.findAllByNumberOrderByValidFrom(stopPlaceVersionToUpdate.getNumber()).stream()
+    return relationService.findAllByNumberOrderByValidFrom(relationVersionToUpdate.getNumber()).stream()
         .map(RelationVersionMapper::toModel).toList();
   }
 

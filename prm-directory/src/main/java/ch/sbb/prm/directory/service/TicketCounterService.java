@@ -23,7 +23,7 @@ public class TicketCounterService extends PrmRelatableVersionableService<TicketC
 
   public TicketCounterService(TicketCounterRepository ticketCounterRepository, StopPlaceService stopPlaceRepository,
       RelationService relationService, ReferencePointRepository referencePointRepository, VersionableService versionableService) {
-    super(versionableService,stopPlaceRepository,relationService,referencePointRepository);
+    super(versionableService, stopPlaceRepository, relationService, referencePointRepository);
     this.ticketCounterRepository = ticketCounterRepository;
   }
 
@@ -49,7 +49,7 @@ public class TicketCounterService extends PrmRelatableVersionableService<TicketC
 
   @Override
   protected void applyVersioning(List<VersionedObject> versionedObjects) {
-    versionableService.applyVersioning(TicketCounterVersion.class, versionedObjects,this::save,
+    versionableService.applyVersioning(TicketCounterVersion.class, versionedObjects, this::save,
         new ApplyVersioningDeleteByIdLongConsumer(ticketCounterRepository));
   }
 
@@ -62,8 +62,9 @@ public class TicketCounterService extends PrmRelatableVersionableService<TicketC
     return save(version);
   }
 
-  public TicketCounterVersion updateTicketCounterVersion(TicketCounterVersion currentVersion, TicketCounterVersion editedVersion){
-    return updateVersion(currentVersion,editedVersion);
+  public TicketCounterVersion updateTicketCounterVersion(TicketCounterVersion currentVersion,
+      TicketCounterVersion editedVersion) {
+    return updateVersion(currentVersion, editedVersion);
   }
 
   public List<TicketCounterVersion> findAllByNumberOrderByValidFrom(ServicePointNumber number) {

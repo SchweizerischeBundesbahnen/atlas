@@ -21,7 +21,6 @@ public class ToiletService extends PrmRelatableVersionableService<ToiletVersion>
 
   private final ToiletRepository toiletRepository;
 
-
   public ToiletService(ToiletRepository toiletRepository, StopPlaceService stopPlaceService,
       RelationService relationService, ReferencePointRepository referencePointRepository, VersionableService versionableService) {
     super(versionableService, stopPlaceService, relationService, referencePointRepository);
@@ -50,12 +49,12 @@ public class ToiletService extends PrmRelatableVersionableService<ToiletVersion>
 
   @Override
   protected void applyVersioning(List<VersionedObject> versionedObjects) {
-    versionableService.applyVersioning(ToiletVersion.class, versionedObjects,this::save,
+    versionableService.applyVersioning(ToiletVersion.class, versionedObjects, this::save,
         new ApplyVersioningDeleteByIdLongConsumer(toiletRepository));
   }
 
   public List<ToiletVersion> getAllToilets() {
-   return toiletRepository.findAll();
+    return toiletRepository.findAll();
   }
 
   public ToiletVersion createToilet(ToiletVersion version) {
@@ -63,15 +62,15 @@ public class ToiletService extends PrmRelatableVersionableService<ToiletVersion>
     return save(version);
   }
 
-  public ToiletVersion updateToiletVersion(ToiletVersion currentVersion, ToiletVersion editedVersion){
-    return updateVersion(currentVersion,editedVersion);
+  public ToiletVersion updateToiletVersion(ToiletVersion currentVersion, ToiletVersion editedVersion) {
+    return updateVersion(currentVersion, editedVersion);
   }
 
   public List<ToiletVersion> findAllByNumberOrderByValidFrom(ServicePointNumber number) {
     return toiletRepository.findAllByNumberOrderByValidFrom(number);
   }
 
-  public Optional<ToiletVersion> getTicketCounterVersionById(Long id) {
+  public Optional<ToiletVersion> getToiletVersionById(Long id) {
     return toiletRepository.findById(id);
   }
 

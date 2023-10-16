@@ -23,7 +23,7 @@ public class ParkingLotService extends PrmRelatableVersionableService<ParkingLot
 
   public ParkingLotService(ParkingLotRepository parkingLotRepository, StopPlaceService stopPlaceService,
       RelationService relationService, ReferencePointRepository referencePointRepository, VersionableService versionableService) {
-    super(versionableService,stopPlaceService,relationService,referencePointRepository);
+    super(versionableService, stopPlaceService, relationService, referencePointRepository);
     this.parkingLotRepository = parkingLotRepository;
   }
 
@@ -49,11 +49,12 @@ public class ParkingLotService extends PrmRelatableVersionableService<ParkingLot
 
   @Override
   protected void applyVersioning(List<VersionedObject> versionedObjects) {
-    versionableService.applyVersioning(ParkingLotVersion.class, versionedObjects,this::save,
+    versionableService.applyVersioning(ParkingLotVersion.class, versionedObjects, this::save,
         new ApplyVersioningDeleteByIdLongConsumer(parkingLotRepository));
   }
+
   public List<ParkingLotVersion> getAllParkingLots() {
-   return parkingLotRepository.findAll();
+    return parkingLotRepository.findAll();
   }
 
   public ParkingLotVersion createParkingLot(ParkingLotVersion version) {
@@ -61,8 +62,8 @@ public class ParkingLotService extends PrmRelatableVersionableService<ParkingLot
     return save(version);
   }
 
-  public ParkingLotVersion updateParkingLotVersion(ParkingLotVersion currentVersion, ParkingLotVersion editedVersion){
-    return updateVersion(currentVersion,editedVersion);
+  public ParkingLotVersion updateParkingLotVersion(ParkingLotVersion currentVersion, ParkingLotVersion editedVersion) {
+    return updateVersion(currentVersion, editedVersion);
   }
 
   public List<ParkingLotVersion> findAllByNumberOrderByValidFrom(ServicePointNumber number) {
