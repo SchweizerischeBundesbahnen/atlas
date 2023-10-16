@@ -63,7 +63,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   stopPointTypes = Object.values(StopPointType);
   categories = Object.values(Category);
   isSwitchVersionDisabled = false;
-  disableBpk = false;
+  isBpsSelected = false;
 
   currentSpatialReference!: SpatialReference;
 
@@ -252,7 +252,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
       this.isSwitchVersionDisabled = true;
       this.form.enable();
       if (this.form.controls.operatingPointRouteNetwork.value) {
-        this.disableBpk = true;
+        this.isBpsSelected = true;
       }
     }
   }
@@ -326,8 +326,6 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   }
 
   private update(id: number, servicePointVersion: CreateServicePointVersion) {
-    console.log('business organisation');
-    console.log(this.form.controls.businessOrganisation.value);
     this.confirmBoTransfer().subscribe((confirmed) => {
       if (confirmed) {
         this.preferredId = id;
@@ -433,22 +431,22 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
       this.form.controls.operatingPointKilometer.setValue(true);
       this.form.controls.operatingPointKilometer.disabled;
       this.form.controls.operatingPointKilometerMaster.setValue(this.selectedVersion.number.number);
-      this.disableBpk = true;
+      this.form.controls.operatingPointKilometerMaster.disable();
+      this.isBpsSelected = true;
     } else {
       this.form.controls.operatingPointRouteNetwork.setValue(false);
       this.form.controls.operatingPointKilometer.setValue(false);
       this.form.controls.operatingPointKilometerMaster.setValue(undefined);
-      this.disableBpk = false;
+      this.form.controls.operatingPointKilometerMaster.enable();
+      this.isBpsSelected = false;
     }
   }
 
   setOperatingPointKilometer(select: MatCheckboxChange) {
     if (select.checked) {
       this.form.controls.operatingPointKilometer.setValue(true);
-      this.form.controls.operatingPointKilometerMaster.setValue(this.selectedVersion.number.number);
     } else {
       this.form.controls.operatingPointKilometer.setValue(false);
-      this.form.controls.operatingPointKilometerMaster.setValue(undefined);
     }
   }
 }
