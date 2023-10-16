@@ -1,10 +1,10 @@
 package ch.sbb.prm.directory.service;
 
 import ch.sbb.atlas.kafka.model.service.point.SharedServicePointVersionModel;
-import ch.sbb.prm.directory.entity.ServicePoint;
+import ch.sbb.prm.directory.entity.SharedServicePoint;
 import ch.sbb.prm.directory.exception.ServicePointDoesNotExistsException;
 import ch.sbb.prm.directory.exception.TrafficPointElementDoesNotExistsException;
-import ch.sbb.prm.directory.repository.ServicePointRepository;
+import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Optional;
@@ -13,13 +13,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class ServicePointService {
+public class SharedServicePointService {
 
-  private final ServicePointRepository servicePointRepository;
+  private final SharedServicePointRepository sharedServicePointRepository;
   private final ObjectMapper objectMapper;
 
   public Optional<SharedServicePointVersionModel> findServicePoint(String sloid) {
-    Optional<ServicePoint> servicePoint = servicePointRepository.findById(sloid);
+    Optional<SharedServicePoint> servicePoint = sharedServicePointRepository.findById(sloid);
     return servicePoint.map(i -> {
       try {
         return objectMapper.readValue(i.getServicePoint(), SharedServicePointVersionModel.class);

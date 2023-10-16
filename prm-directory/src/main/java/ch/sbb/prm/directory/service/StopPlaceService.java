@@ -17,12 +17,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class StopPlaceService extends PrmVersionableService<StopPlaceVersion> {
 
   private final StopPlaceRepository stopPlaceRepository;
-  private final ServicePointService servicePointService;
+  private final SharedServicePointService sharedServicePointService;
 
-  public StopPlaceService(StopPlaceRepository stopPlaceRepository, VersionableService versionableService, ServicePointService servicePointService) {
+  public StopPlaceService(StopPlaceRepository stopPlaceRepository, VersionableService versionableService, SharedServicePointService sharedServicePointService) {
     super(versionableService);
     this.stopPlaceRepository = stopPlaceRepository;
-    this.servicePointService = servicePointService;
+    this.sharedServicePointService = sharedServicePointService;
   }
 
   @Override
@@ -65,7 +65,7 @@ public class StopPlaceService extends PrmVersionableService<StopPlaceVersion> {
   }
 
   public StopPlaceVersion createStopPlace(StopPlaceVersion stopPlaceVersion) {
-    servicePointService.validateServicePointExists(stopPlaceVersion.getSloid());
+    sharedServicePointService.validateServicePointExists(stopPlaceVersion.getSloid());
 
     return stopPlaceRepository.saveAndFlush(stopPlaceVersion);
   }
