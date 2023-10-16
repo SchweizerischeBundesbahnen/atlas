@@ -22,7 +22,7 @@ public class RelationController implements RelationApiV1 {
 
   @Override
   public List<ReadRelationVersionModel> getRelationsBySloid(String sloid) {
-    return relationService.getRelationsBySloid(sloid).stream().map(RelationVersionMapper::toModel).sorted().toList();
+    return relationService.getRelationsBySloid(sloid).stream().map(RelationVersionMapper::toModel).toList();
   }
 
   @Override

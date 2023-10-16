@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@Tag(name = "Timetable Hearing")
+@Tag(name = "TTH - Timetable Hearing")
 @RequestMapping("v1/timetable-hearing/years")
 public interface TimetableHearingYearApiV1 {
 
