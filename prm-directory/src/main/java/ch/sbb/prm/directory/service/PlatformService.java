@@ -20,10 +20,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class PlatformService extends PrmRelatableVersionableService<PlatformVersion> {
 
   private final PlatformRepository platformRepository;
+
   public PlatformService(StopPlaceService stopPlaceService, RelationService relationService,
       PlatformRepository platformRepository, ReferencePointRepository referencePointRepository,
       VersionableService versionableService) {
-    super(versionableService,stopPlaceService,relationService,referencePointRepository);
+    super(versionableService, stopPlaceService, relationService, referencePointRepository);
     this.platformRepository = platformRepository;
   }
 
@@ -49,7 +50,7 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
 
   @Override
   protected void applyVersioning(List<VersionedObject> versionedObjects) {
-    versionableService.applyVersioning(PlatformVersion.class, versionedObjects,this::save,
+    versionableService.applyVersioning(PlatformVersion.class, versionedObjects, this::save,
         new ApplyVersioningDeleteByIdLongConsumer(platformRepository));
   }
 
@@ -62,7 +63,7 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
     return save(version);
   }
 
-  public PlatformVersion updateStopPlaceVersion(PlatformVersion currentVersion, PlatformVersion editedVersion){
+  public PlatformVersion updatePlatformVersion(PlatformVersion currentVersion, PlatformVersion editedVersion) {
     return updateVersion(currentVersion, editedVersion);
   }
 
