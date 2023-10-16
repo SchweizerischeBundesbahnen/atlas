@@ -7,6 +7,7 @@ import static org.mockito.Mockito.doReturn;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.exception.StopPlaceDoesNotExistsException;
 import ch.sbb.prm.directory.repository.StopPlaceRepository;
+import ch.sbb.prm.directory.service.SharedServicePointService;
 import ch.sbb.prm.directory.service.StopPlaceService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,10 @@ class StopPlaceVersionServiceTest {
 
   @Mock
   private StopPlaceRepository stopPlaceRepository;
+
+  @Mock
+  private SharedServicePointService sharedServicePointService;
+
   private StopPlaceService stopPlaceService;
 
   private VersionableService versionableService;
@@ -24,7 +29,7 @@ class StopPlaceVersionServiceTest {
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    stopPlaceService = new StopPlaceService(stopPlaceRepository, versionableService);
+    stopPlaceService = new StopPlaceService(stopPlaceRepository, versionableService, sharedServicePointService);
   }
 
   @Test
