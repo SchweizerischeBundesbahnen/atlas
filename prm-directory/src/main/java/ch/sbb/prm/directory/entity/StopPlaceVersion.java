@@ -7,8 +7,8 @@ import ch.sbb.atlas.servicepoint.converter.ServicePointNumberConverter;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
-import ch.sbb.atlas.versioning.model.Versionable;
 import ch.sbb.prm.directory.enumeration.StandardAttributeType;
+import ch.sbb.prm.directory.service.PrmVersionable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.ElementCollection;
@@ -42,7 +42,7 @@ import lombok.experimental.SuperBuilder;
 @FieldNameConstants
 @Entity(name = "stop_place_version")
 @AtlasVersionable
-public class StopPlaceVersion extends BasePrmImportEntity implements Versionable {
+public class StopPlaceVersion extends BasePrmImportEntity implements PrmVersionable {
 
   private static final String VERSION_SEQ = "stop_place_version_seq";
 

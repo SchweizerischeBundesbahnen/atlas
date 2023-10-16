@@ -1,5 +1,6 @@
 package ch.sbb.prm.directory.controller;
 
+import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.prm.directory.api.ParkingLotApiV1;
 import ch.sbb.prm.directory.controller.model.parkinglot.CreateParkingLotVersionModel;
 import ch.sbb.prm.directory.controller.model.parkinglot.ReadParkingLotVersionModel;
@@ -28,4 +29,17 @@ public class ParkingLotsController implements ParkingLotApiV1 {
     ParkingLotVersion parkingLotVersion = parkingLotService.createParkingLot(ParkingLotVersionMapper.toEntity(model));
     return ParkingLotVersionMapper.toModel(parkingLotVersion);
   }
+
+  @Override
+  public List<ReadParkingLotVersionModel> updateParkingLot(Long id, CreateParkingLotVersionModel model) {
+    ParkingLotVersion parkingLotVersion =
+        parkingLotService.getPlatformVersionById(id).orElseThrow(() -> new IdNotFoundException(id));
+
+    ParkingLotVersion editedVersion = ParkingLotVersionMapper.toEntity(model);
+    parkingLotService.updateParkingLotVersion(parkingLotVersion, editedVersion);
+
+    return parkingLotService.findAllByNumberOrderByValidFrom(parkingLotVersion.getNumber()).stream()
+        .map(ParkingLotVersionMapper::toModel).toList();
+  }
+
 }

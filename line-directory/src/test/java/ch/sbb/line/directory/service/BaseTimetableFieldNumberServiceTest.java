@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
 @Transactional
- abstract class BaseTimetableFieldNumberServiceTest {
+abstract class BaseTimetableFieldNumberServiceTest {
 
   @MockBean
   private TimetableFieldNumberValidationService timetableFieldNumberValidationService;
