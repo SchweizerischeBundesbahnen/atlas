@@ -47,6 +47,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   selectedVersionIndex!: number;
   form!: FormGroup<ServicePointDetailFormGroup>;
   isNew = true;
+  hasAbbreviation = false;
 
   preferredId?: number;
 
