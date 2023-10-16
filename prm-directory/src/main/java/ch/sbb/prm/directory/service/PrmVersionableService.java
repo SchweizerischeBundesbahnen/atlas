@@ -23,8 +23,7 @@ public abstract class PrmVersionableService<T extends PrmVersionable> {
 
   protected abstract void applyVersioning(List<VersionedObject> versionedObjects);
 
-
-  public T updateVersion(T currentVersion, T editedVersion){
+  public T updateVersion(T currentVersion, T editedVersion) {
     checkStaleObjectIntegrity(currentVersion, editedVersion);
     editedVersion.setSloid(currentVersion.getSloid());
     editedVersion.setNumber(currentVersion.getNumber());
