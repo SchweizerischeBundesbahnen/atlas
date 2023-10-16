@@ -37,7 +37,7 @@ public class PlatformController implements PlatformApiV1 {
         platformService.getPlatformVersionById(id).orElseThrow(() -> new IdNotFoundException(id));
 
     PlatformVersion editedVersion = PlatformVersionMapper.toEntity(createPlatformVersionModel);
-    platformService.updateStopPlaceVersion(platformVersion, editedVersion);
+    platformService.updatePlatformVersion(platformVersion, editedVersion);
 
     return platformService.findAllByNumberOrderByValidFrom(platformVersion.getNumber()).stream()
         .map(PlatformVersionMapper::toModel).toList();

@@ -40,20 +40,20 @@ public class StopPlaceService extends PrmVersionableService<StopPlaceVersion> {
 
   @Override
   protected void applyVersioning(List<VersionedObject> versionedObjects) {
-    versionableService.applyVersioning(StopPlaceVersion.class, versionedObjects,this::save,
+    versionableService.applyVersioning(StopPlaceVersion.class, versionedObjects, this::save,
         new ApplyVersioningDeleteByIdLongConsumer(stopPlaceRepository));
   }
 
   public List<StopPlaceVersion> getAllStopPlaces() {
-   return stopPlaceRepository.findAll();
+    return stopPlaceRepository.findAll();
   }
 
   public List<StopPlaceVersion> findAllByNumberOrderByValidFrom(ServicePointNumber number) {
-   return stopPlaceRepository.findAllByNumberOrderByValidFrom(number);
+    return stopPlaceRepository.findAllByNumberOrderByValidFrom(number);
   }
 
   public Optional<StopPlaceVersion> getStopPlaceById(Long id) {
-   return stopPlaceRepository.findById(id);
+    return stopPlaceRepository.findById(id);
   }
 
   public void checkStopPlaceExists(String sloid) {
@@ -66,8 +66,8 @@ public class StopPlaceService extends PrmVersionableService<StopPlaceVersion> {
     return stopPlaceRepository.saveAndFlush(stopPlaceVersion);
   }
 
-  public StopPlaceVersion updateStopPlaceVersion(StopPlaceVersion currentVersion, StopPlaceVersion editedVersion){
-    return updateVersion(currentVersion,editedVersion);
+  public StopPlaceVersion updateStopPlaceVersion(StopPlaceVersion currentVersion, StopPlaceVersion editedVersion) {
+    return updateVersion(currentVersion, editedVersion);
   }
 
 }

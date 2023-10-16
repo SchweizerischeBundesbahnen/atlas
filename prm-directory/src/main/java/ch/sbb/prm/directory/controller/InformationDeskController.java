@@ -1,7 +1,7 @@
 package ch.sbb.prm.directory.controller;
 
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.prm.directory.api.InformationDeskCounterApiV1;
+import ch.sbb.prm.directory.api.InformationDeskApiV1;
 import ch.sbb.prm.directory.controller.model.informationdesk.CreateInformationDeskVersionModel;
 import ch.sbb.prm.directory.controller.model.informationdesk.ReadInformationDeskVersionModel;
 import ch.sbb.prm.directory.entity.InformationDeskVersion;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-public class InformationDeskController implements InformationDeskCounterApiV1 {
+public class InformationDeskController implements InformationDeskApiV1 {
 
   private final InformationDeskService informationDeskService;
 
