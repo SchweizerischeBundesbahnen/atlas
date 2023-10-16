@@ -30,7 +30,7 @@ public class SharedServicePointRepository {
     }
 
     String baseQuery = getSqlQuery();
-    baseQuery += "sp.numbers in (:numbers)";
+    baseQuery += "and sp.number in (:numbers)";
 
     MapSqlParameterSource parameters = getBaseParameters();
     parameters.addValue("numbers", servicePointNumbers.stream().map(ServicePointNumber::getValue).toList());

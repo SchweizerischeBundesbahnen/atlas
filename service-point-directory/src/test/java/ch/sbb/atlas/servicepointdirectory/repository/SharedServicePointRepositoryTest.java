@@ -51,7 +51,8 @@ class SharedServicePointRepositoryTest {
     trafficPoint.setServicePointNumber(bernWyleregg.getNumber());
     trafficPointElementVersionRepository.saveAndFlush(trafficPoint);
 
-    Set<SharedServicePointVersionModel> sharedServicePoints = sharedServicePointRepository.getAllServicePoints();
+    Set<SharedServicePointVersionModel> sharedServicePoints =
+        sharedServicePointRepository.getServicePoints(Set.of(bernWyleregg.getNumber()));
     assertThat(sharedServicePoints).hasSize(1);
     SharedServicePointVersionModel servicePoint = sharedServicePoints.iterator().next();
     assertThat(servicePoint.getServicePointSloid()).isEqualTo("ch:1:sloid:89008");
