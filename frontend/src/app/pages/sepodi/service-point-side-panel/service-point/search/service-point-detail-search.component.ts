@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ServicePointSearchResult, ServicePointsService } from '../../../../../api';
-import { Observable, of, Subject, Subscription } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FormGroup } from '@angular/forms';
 
@@ -21,8 +21,6 @@ export class ServicePointDetailSearchComponent implements OnInit {
 
   servicePointSearchResult$: Observable<ServicePointSearchResult[]> = of([]);
   private formSubscription!: Subscription;
-
-  searchInput$ = new Subject<string>();
 
   constructor(private readonly servicePointService: ServicePointsService) {}
 
@@ -50,7 +48,6 @@ export class ServicePointDetailSearchComponent implements OnInit {
   }
 
   searchServicePoint(searchString: string) {
-    console.log(searchString);
     if (searchString) {
       this.servicePointSearchResult$ = this.servicePointService
         .searchOnlyBpsServicePoints(true, { value: searchString })

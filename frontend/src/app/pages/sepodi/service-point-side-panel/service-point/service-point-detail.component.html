@@ -254,28 +254,25 @@
     *ngIf="
       form.value.selectedType === 'STOP_POINT' || form.value.selectedType === 'OPERATING_POINT'
     "
-    class="d-flex col-12"
+    class="d-flex col-12 align-items-center"
     [formGroup]="form"
   >
-    <mat-checkbox
-      (change)="setOperatingPointRouteNetwork($event)"
-      formControlName="operatingPointRouteNetwork"
-      data-cy="operatingPointRouteNetwork"
-    >
-      {{ 'SEPODI.SERVICE_POINTS.ROUTE_NETWORK' | translate }}
-    </mat-checkbox>
-    <mat-checkbox
-      (change)="setOperatingPointKilometer($event)"
-      [disabled]="isBpsSelected"
-      formControlName="operatingPointKilometer"
-      data-cy="operatingPointKilometer"
-    >
-      {{ 'SEPODI.SERVICE_POINTS.OPERATING_POINT_KILOMETER' | translate }}
-    </mat-checkbox>
+    <div class="me-5">
+      <mat-checkbox
+        formControlName="operatingPointRouteNetwork"
+        data-cy="operatingPointRouteNetwork"
+      >
+        {{ 'SEPODI.SERVICE_POINTS.ROUTE_NETWORK' | translate }}
+      </mat-checkbox>
+    </div>
+    <div class="me-5">
+      <mat-checkbox formControlName="operatingPointKilometer" data-cy="operatingPointKilometer">
+        {{ 'SEPODI.SERVICE_POINTS.OPERATING_POINT_KILOMETER' | translate }}
+      </mat-checkbox>
+    </div>
 
     <div class="ps-2 col-3">
       <service-point-search
-        [disabled]="form.disabled || isBpsSelected"
         class="mt-3 col-12"
         [formGroup]="form"
         controlName="operatingPointKilometerMaster"
