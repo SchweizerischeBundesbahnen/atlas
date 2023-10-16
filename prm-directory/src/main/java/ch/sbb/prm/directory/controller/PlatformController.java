@@ -21,7 +21,7 @@ public class PlatformController implements PlatformApiV1 {
 
   @Override
   public List<ReadPlatformVersionModel> getPlatforms() {
-    return platformService.getAllPlatforms().stream().map(PlatformVersionMapper::toModel).sorted().toList();
+    return platformService.getAllPlatforms().stream().map(PlatformVersionMapper::toModel).toList();
   }
 
   @Override
