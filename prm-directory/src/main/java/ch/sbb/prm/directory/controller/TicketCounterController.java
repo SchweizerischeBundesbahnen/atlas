@@ -33,13 +33,13 @@ public class TicketCounterController implements TicketCounterApiV1 {
 
   @Override
   public List<ReadTicketCounterVersionModel> updateTicketCounter(Long id, CreateTicketCounterVersionModel model) {
-    TicketCounterVersion parkingLotVersion =
+    TicketCounterVersion ticketCounterVersionToUpdate =
         ticketCounterService.getTicketCounterVersionById(id).orElseThrow(() -> new IdNotFoundException(id));
 
     TicketCounterVersion editedVersion = TicketCounterVersionMapper.toEntity(model);
-    ticketCounterService.updateTicketCounterVersion(parkingLotVersion, editedVersion);
+    ticketCounterService.updateTicketCounterVersion(ticketCounterVersionToUpdate, editedVersion);
 
-    return ticketCounterService.findAllByNumberOrderByValidFrom(parkingLotVersion.getNumber()).stream()
+    return ticketCounterService.findAllByNumberOrderByValidFrom(ticketCounterVersionToUpdate.getNumber()).stream()
         .map(TicketCounterVersionMapper::toModel).toList();
   }
 
