@@ -11,6 +11,7 @@ import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeoloca
 import ch.sbb.atlas.servicepointdirectory.service.BaseImportService;
 import ch.sbb.atlas.servicepointdirectory.service.BasePointUtility;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
+import ch.sbb.atlas.servicepointdirectory.service.ServicePointDistributor;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
 import ch.sbb.atlas.versioning.model.VersionedObject;
@@ -36,6 +37,7 @@ public class ServicePointImportService extends BaseImportService<ServicePointVer
   private final ServicePointService servicePointService;
   private final VersionableService versionableService;
   private final ServicePointFotCommentService servicePointFotCommentService;
+  private final ServicePointDistributor servicePointDistributor;
 
   @Override
   protected void save(ServicePointVersion servicePointVersion) {
@@ -93,9 +95,11 @@ public class ServicePointImportService extends BaseImportService<ServicePointVer
           .stream()
           .map(new ServicePointCsvToEntityMapper())
           .toList();
-      List<ServicePointVersion> dbVersions = servicePointService.findAllByNumberOrderByValidFrom(
-          ServicePointNumber.ofNumberWithoutCheckDigit(container.getDidokCode()));
+
+      ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(container.getDidokCode());
+      List<ServicePointVersion> dbVersions = servicePointService.findAllByNumberOrderByValidFrom(servicePointNumber);
       replaceCsvMergedVersions(dbVersions, servicePointVersions);
+
       for (ServicePointVersion servicePointVersion : servicePointVersions) {
         boolean servicePointNumberExisting = servicePointService.isServicePointNumberExisting(servicePointVersion.getNumber());
         if (servicePointNumberExisting) {
@@ -106,6 +110,7 @@ public class ServicePointImportService extends BaseImportService<ServicePointVer
           importResults.add(saveResult);
         }
       }
+      servicePointDistributor.publishServicePointsWithNumbers(servicePointNumber);
       saveFotComment(container);
     }
     return importResults;

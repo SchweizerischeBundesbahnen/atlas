@@ -21,7 +21,7 @@ public class ReferencePointController implements ReferencePointApiV1 {
 
   @Override
   public List<ReadReferencePointVersionModel> getReferencePoints() {
-    return referencePointService.getAllReferencePoints().stream().map(ReferencePointVersionMapper::toModel).sorted().toList();
+    return referencePointService.getAllReferencePoints().stream().map(ReferencePointVersionMapper::toModel).toList();
   }
 
   @Override
