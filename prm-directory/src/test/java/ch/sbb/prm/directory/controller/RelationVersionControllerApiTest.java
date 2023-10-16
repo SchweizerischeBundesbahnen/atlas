@@ -5,7 +5,7 @@ import static ch.sbb.prm.directory.enumeration.ReferencePointElementType.PLATFOR
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -157,7 +157,7 @@ class RelationVersionControllerApiTest extends BaseControllerApiTest {
     editedVersionModel.setEtagVersion(version2.getVersion());
 
     //when & then
-    mvc.perform(post("/v1/relations/" + version2.getId()).contentType(contentType)
+    mvc.perform(put("/v1/relations/" + version2.getId()).contentType(contentType)
             .content(mapper.writeValueAsString(editedVersionModel)))
         .andDo(print())
         .andExpect(status().isOk())
