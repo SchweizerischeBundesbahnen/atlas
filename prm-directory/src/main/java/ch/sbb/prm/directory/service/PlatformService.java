@@ -20,14 +20,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class PlatformService extends PrmRelatableVersionableService<PlatformVersion> {
 
   private final PlatformRepository platformRepository;
-  private final ServicePointService servicePointService;
+  private final SharedServicePointService sharedServicePointService;
 
   public PlatformService(StopPlaceService stopPlaceService, RelationService relationService,
       PlatformRepository platformRepository, ReferencePointRepository referencePointRepository,
-      VersionableService versionableService, ServicePointService servicePointService) {
+      VersionableService versionableService, SharedServicePointService sharedServicePointService) {
     super(versionableService, stopPlaceService, relationService, referencePointRepository);
     this.platformRepository = platformRepository;
-    this.servicePointService = servicePointService;
+    this.sharedServicePointService = sharedServicePointService;
   }
 
   @Override
@@ -61,7 +61,7 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
   }
 
   public PlatformVersion createPlatformVersion(PlatformVersion version) {
-    servicePointService.validateTrafficPointElementExists(version.getParentServicePointSloid(), version.getSloid());
+    sharedServicePointService.validateTrafficPointElementExists(version.getParentServicePointSloid(), version.getSloid());
 
     createRelation(version);
     return save(version);
