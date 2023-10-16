@@ -117,6 +117,7 @@ export class ServicePointFormGroupBuilder {
       [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
     );
     this.initConditionalValidators(formGroup);
+    this.initOperationgPoint(formGroup);
     return formGroup;
   }
 
@@ -244,7 +245,7 @@ export class ServicePointFormGroupBuilder {
   static getWritableServicePoint(
     form: FormGroup<ServicePointDetailFormGroup>,
   ): CreateServicePointVersion {
-    const value = form.value;
+    const value = form.getRawValue();
 
     const writableForm: CreateServicePointVersion = {
       numberWithoutCheckDigit: value.number!,
@@ -316,5 +317,21 @@ export class ServicePointFormGroupBuilder {
       return form.value.operatingPointType! as OperatingPointType;
     }
     return undefined;
+  }
+
+  private static initOperationgPoint(formGroup: FormGroup<ServicePointDetailFormGroup>) {
+    formGroup.controls.operatingPointRouteNetwork.valueChanges.subscribe((value) => {
+      if (value) {
+        formGroup.controls.operatingPointKilometer.setValue(true);
+        formGroup.controls.operatingPointKilometer.disable();
+        formGroup.controls.operatingPointKilometerMaster.setValue(formGroup.controls.number.value);
+        formGroup.controls.operatingPointKilometerMaster.disable();
+      } else {
+        formGroup.controls.operatingPointKilometer.reset();
+        formGroup.controls.operatingPointKilometer.enable();
+        formGroup.controls.operatingPointKilometerMaster.reset();
+        formGroup.controls.operatingPointKilometerMaster.enable();
+      }
+    });
   }
 }
