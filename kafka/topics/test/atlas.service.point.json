@@ -1,5 +1,5 @@
 {
-  "name": "atlas.dev.service.point",
+  "name": "atlas.test.service.point",
   "replicas": 3,
   "partitions": 1,
   "configs": {
