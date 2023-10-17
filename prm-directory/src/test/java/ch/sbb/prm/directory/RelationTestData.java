@@ -3,10 +3,10 @@ package ch.sbb.prm.directory;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.RelationVersion.RelationVersionBuilder;
-import ch.sbb.prm.directory.enumeration.ReferencePointElementType;
-import ch.sbb.prm.directory.enumeration.StandardAttributeType;
-import ch.sbb.prm.directory.enumeration.StepFreeAccessAttributeType;
-import ch.sbb.prm.directory.enumeration.TactileVisualAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
+import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.StepFreeAccessAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.TactileVisualAttributeType;
 import java.time.LocalDate;
 import lombok.experimental.UtilityClass;
 

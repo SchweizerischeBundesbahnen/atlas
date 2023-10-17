@@ -28,7 +28,8 @@ public abstract class CsvService<T> {
 
   private static final String HASHTAG = "#";
   private static final String CSV_DELIMITER = ";";
-  private static final String EDITED_AT_COLUMN_NAME = "GEAENDERT_AM";
+  protected static final String EDITED_AT_COLUMN_NAME_SERVICE_POINT = "GEAENDERT_AM";
+  protected static final String EDITED_AT_COLUMN_NAME_PRM = "MODIFIED_DATE";
 
   private final FileHelperService fileHelperService;
   private final JobHelperService jobHelperService;
@@ -38,7 +39,9 @@ public abstract class CsvService<T> {
     this.jobHelperService = jobHelperService;
   }
 
-  protected abstract String getFilePrefix();
+  protected abstract CsvFileNameModel defineCsvFileName();
+
+  protected abstract String getModifiedDateHeader();
 
   protected abstract String getImportCsvJobName();
 
@@ -46,11 +49,11 @@ public abstract class CsvService<T> {
 
   public List<T> getActualCsvModelsFromS3() {
     log.info("Downloading file from Amazon S3 Bucket: {}", AmazonBucket.EXPORT);
-    final File importFile = fileHelperService.downloadImportFileFromS3(getFilePrefix());
+    final File importFile = fileHelperService.downloadImportFileFromS3(getFileNameWithTodayDate(defineCsvFileName().getFileName()));
     final LocalDate matchingDate = jobHelperService.getDateForImportFileToDownload(getImportCsvJobName());
     log.info("CSV File to import: {}", importFile.getName());
     final List<T> csvModels = getCsvModelsToUpdate(importFile, matchingDate);
-    log.info("Found {} Csv Models to send to ServicePointDirectory", csvModels.size());
+    log.info("Found {} Csv Models", csvModels.size());
     fileHelperService.deleteConsumedFile(importFile);
     return csvModels;
   }
@@ -97,9 +100,9 @@ public abstract class CsvService<T> {
 
   private int getColumnIndexOfEditedAt(String headerLine) {
     String[] attributes = headerLine.split(CSV_DELIMITER);
-    int editedAtColumnIndex = Arrays.asList(attributes).indexOf(EDITED_AT_COLUMN_NAME);
+    int editedAtColumnIndex = Arrays.asList(attributes).indexOf(getModifiedDateHeader());
     if (editedAtColumnIndex == -1) {
-      throw new CsvException("Not found %s index".formatted(EDITED_AT_COLUMN_NAME));
+      throw new CsvException("Not found %s index".formatted(getModifiedDateHeader()));
     }
     return editedAtColumnIndex;
   }
@@ -136,5 +139,15 @@ public abstract class CsvService<T> {
     }
     return mappedObjects;
   }
+
+  private String getFileNameWithTodayDate(String csvImportFilePrefix) {
+    LocalDate today = LocalDate.now();
+    return csvImportFilePrefix + replaceHyphensWithUnderscores(today.toString());
+  }
+
+  private String replaceHyphensWithUnderscores(String input) {
+    return input.replaceAll("-", "");
+  }
+
 
 }

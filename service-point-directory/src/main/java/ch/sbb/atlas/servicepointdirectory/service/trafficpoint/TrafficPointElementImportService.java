@@ -4,6 +4,7 @@ import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.ItemImportResult.ItemImportResultBuilder;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointCsvModelContainer;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointElementCsvModel;
+import ch.sbb.atlas.imports.util.ImportUtils;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
 import ch.sbb.atlas.servicepointdirectory.service.BaseImportService;
@@ -114,7 +115,7 @@ public class TrafficPointElementImportService extends BaseImportService<TrafficP
 
   void updateTrafficPointElementVersionImport(TrafficPointElementVersion edited) {
     List<TrafficPointElementVersion> dbVersions = trafficPointElementService.findBySloidOrderByValidFrom(edited.getSloid());
-    TrafficPointElementVersion current = BasePointUtility.getCurrentPointVersion(dbVersions, edited);
+    TrafficPointElementVersion current = ImportUtils.getCurrentPointVersion(dbVersions, edited);
     List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(current, edited,
         dbVersions);
     BasePointUtility.overrideEditionDateAndEditorOnVersionedObjects(edited, versionedObjects);

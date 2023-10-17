@@ -1,7 +1,7 @@
 package ch.sbb.prm.directory.api;
 
-import ch.sbb.prm.directory.controller.model.toilet.CreateToiletVersionModel;
-import ch.sbb.prm.directory.controller.model.toilet.ReadToiletVersionModel;
+import ch.sbb.atlas.api.prm.model.toilet.CreateToiletVersionModel;
+import ch.sbb.atlas.api.prm.model.toilet.ReadToiletVersionModel;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
