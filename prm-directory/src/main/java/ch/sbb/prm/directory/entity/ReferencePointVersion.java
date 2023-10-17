@@ -2,7 +2,7 @@ package ch.sbb.prm.directory.entity;
 
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
-import ch.sbb.prm.directory.enumeration.ReferencePointAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.ReferencePointAttributeType;
 import ch.sbb.prm.directory.service.PrmVersionable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

@@ -1,12 +1,14 @@
 package ch.sbb.prm.directory.mapper;
 
+import ch.sbb.atlas.api.prm.model.stopplace.CreateStopPlaceVersionModel;
+import ch.sbb.atlas.api.prm.model.stopplace.ReadStopPlaceVersionModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.prm.directory.controller.model.stopplace.CreateStopPlaceVersionModel;
-import ch.sbb.prm.directory.controller.model.stopplace.ReadStopPlaceVersionModel;
 import ch.sbb.prm.directory.entity.StopPlaceVersion;
 import java.util.Set;
 import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @UtilityClass
 public class StopPlaceVersionMapper {
 
@@ -45,6 +47,9 @@ public class StopPlaceVersionMapper {
         .build();
   }
   public static StopPlaceVersion toEntity(CreateStopPlaceVersionModel model){
+    log.info("StopPlace"+ model);
+    log.info("StopPlace: "+ model.getMeansOfTransport());
+
     return StopPlaceVersion.builder()
         .id(model.getId())
         .sloid(model.getSloid())

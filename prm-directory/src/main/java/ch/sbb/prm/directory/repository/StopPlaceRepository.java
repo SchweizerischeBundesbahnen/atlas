@@ -21,4 +21,6 @@ public interface StopPlaceRepository extends JpaRepository<StopPlaceVersion, Lon
     void incrementVersion(@Param("number") ServicePointNumber number);
 
     List<StopPlaceVersion> findAllByNumberOrderByValidFrom(ServicePointNumber number);
+
+    boolean existsByNumber(ServicePointNumber number);
 }

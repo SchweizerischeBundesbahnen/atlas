@@ -1,7 +1,9 @@
 package ch.sbb.prm.directory.api;
 
-import ch.sbb.prm.directory.controller.model.stopplace.CreateStopPlaceVersionModel;
-import ch.sbb.prm.directory.controller.model.stopplace.ReadStopPlaceVersionModel;
+import ch.sbb.atlas.api.prm.model.stopplace.CreateStopPlaceVersionModel;
+import ch.sbb.atlas.api.prm.model.stopplace.ReadStopPlaceVersionModel;
+import ch.sbb.atlas.imports.prm.stopplace.StopPlaceImportRequestModel;
+import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -29,5 +31,8 @@ public interface StopPlaceApiV1 {
   @PutMapping(path = "{id}")
   List<ReadStopPlaceVersionModel> updateStopPlace(@PathVariable Long id,
       @RequestBody @Valid CreateStopPlaceVersionModel stopPlaceVersionModel);
+
+  @PostMapping("import")
+  List<ItemImportResult> importServicePoints(@RequestBody @Valid StopPlaceImportRequestModel importRequestModel);
 
 }
