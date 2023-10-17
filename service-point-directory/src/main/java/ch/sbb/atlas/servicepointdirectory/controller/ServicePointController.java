@@ -10,7 +10,7 @@ import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointImportRequestM
 import ch.sbb.atlas.model.exception.BadRequestException;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.atlas.servicepointdirectory.allowedabbreviations.AllowedAbbreviationsByBusinessOrganisations;
+import ch.sbb.atlas.servicepointdirectory.abbreviationsallowlist.ServicePointAbbreviationAllowList;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointApiV1;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointFotComment;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
@@ -22,7 +22,6 @@ import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberNotFoundEx
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointFotCommentMapper;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
-import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointFotCommentService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
@@ -50,7 +49,7 @@ public class ServicePointController implements ServicePointApiV1 {
   private final ServicePointImportService servicePointImportService;
   private final GeoReferenceService geoReferenceService;
 
-  private final Pattern abbreviationPattern = Pattern.compile("^[A-Z0-9]{1,6}$");
+  private final Pattern abbreviationPattern = Pattern.compile("^[A-Z0-9]{2,6}$");
 
   @Override
   public Container<ReadServicePointVersionModel> getServicePoints(Pageable pageable,
@@ -105,6 +104,11 @@ public class ServicePointController implements ServicePointApiV1 {
     if (servicePointService.isServicePointNumberExisting(servicePointVersion.getNumber())) {
       throw new ServicePointNumberAlreadyExistsException(servicePointVersion.getNumber());
     }
+
+    String newAbbreviation = createServicePointVersionModel.getAbbreviation();
+
+    validateAndSetAbbreviation(servicePointVersion, newAbbreviation, null, Optional.empty());
+
     addGeoReferenceInformation(servicePointVersion);
     return ServicePointVersionMapper.toModel(servicePointService.save(servicePointVersion));
   }
@@ -121,23 +125,7 @@ public class ServicePointController implements ServicePointApiV1 {
     String existingAbbreviation = servicePointVersionToUpdate.getAbbreviation();
     String newAbbreviation = createServicePointVersionModel.getAbbreviation();
 
-    if(newAbbreviation != null){
-      boolean isBussinesOrganisationInList = AllowedAbbreviationsByBusinessOrganisations.SBOIDS
-          .stream()
-          .anyMatch(element -> element.contains(editedVersion.getBusinessOrganisation()));
-
-      if (!isBussinesOrganisationInList || (existingAbbreviation != null && !Objects.equals(existingAbbreviation, newAbbreviation))) {
-        throw new AbbreviationUpdateNotAllowedException();
-      }
-
-      if (!isAbbreviationValid(newAbbreviation) ||
-          !servicePointService.isAbbrevitionUnique(newAbbreviation, servicePointVersionToUpdate.getId())) {
-        throw new InvalidAbbreviationException();
-      }
-
-      editedVersion.setAbbreviation(createServicePointVersionModel.getAbbreviation());
-    }
-
+    validateAndSetAbbreviation(editedVersion, newAbbreviation, existingAbbreviation, Optional.of(servicePointVersionToUpdate.getId()));
 
     addGeoReferenceInformation(editedVersion);
 
@@ -185,6 +173,28 @@ public class ServicePointController implements ServicePointApiV1 {
       servicePointGeolocation.setSwissMunicipalityName(geoReference.getSwissMunicipalityName());
       servicePointGeolocation.setSwissLocalityName(geoReference.getSwissLocalityName());
     }
+  }
+
+  private void validateAndSetAbbreviation(ServicePointVersion servicePointVersion, String newAbbreviation, String existingAbbreviation, Optional<Long> id) {
+    if (newAbbreviation == null || newAbbreviation.isEmpty()) return;
+
+    boolean isBussinesOrganisationInList = ServicePointAbbreviationAllowList.SBOIDS
+        .stream()
+        .anyMatch(element -> element.contains(servicePointVersion.getBusinessOrganisation()));
+
+    if (!isBussinesOrganisationInList) {
+      throw new AbbreviationUpdateNotAllowedException();
+    }
+
+    if (existingAbbreviation != null && !Objects.equals(existingAbbreviation, newAbbreviation)) {
+      throw new AbbreviationUpdateNotAllowedException();
+    }
+
+    if (id != null && (!isAbbreviationValid(newAbbreviation) || !servicePointService.isAbbrevitionUnique(newAbbreviation, id))) {
+      throw new InvalidAbbreviationException();
+    }
+
+    servicePointVersion.setAbbreviation(newAbbreviation);
   }
 
 }
