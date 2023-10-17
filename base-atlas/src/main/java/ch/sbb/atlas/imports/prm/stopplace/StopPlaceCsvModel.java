@@ -37,7 +37,7 @@ public class StopPlaceCsvModel extends BasePrmCsvModel {
   @JsonProperty("ALTERNATIVE_TRANSPORT")
   private Integer alternativeTransport;
 
-  @JsonProperty("ALTERNATIVE_TRANSPORT_CONDITION")
+  @JsonProperty("ALT_TRANSPORT_CONDITION")
   private String alternativeTransportCondition;
 
   @JsonProperty("ASSISTANCE_AVAILABILITY")
