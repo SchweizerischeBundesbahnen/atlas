@@ -19,6 +19,8 @@ public class LoadingPointVersionCsvModel {
 
   private Integer number;
 
+  private Integer checkDigit;
+
   private String designation;
 
   private String designationLong;

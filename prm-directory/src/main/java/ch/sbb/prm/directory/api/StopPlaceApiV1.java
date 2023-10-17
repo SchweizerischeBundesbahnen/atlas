@@ -1,0 +1,33 @@
+package ch.sbb.prm.directory.api;
+
+import ch.sbb.prm.directory.controller.model.stopplace.CreateStopPlaceVersionModel;
+import ch.sbb.prm.directory.controller.model.stopplace.ReadStopPlaceVersionModel;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import java.util.List;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@Tag(name = "PRM - Person with Reduced Mobility")
+@RequestMapping("v1/stop-places")
+public interface StopPlaceApiV1 {
+
+  @GetMapping
+  List<ReadStopPlaceVersionModel> getAllStopPaces();
+
+  @ResponseStatus(HttpStatus.CREATED)
+  @PostMapping
+  ReadStopPlaceVersionModel createStopPlace(@RequestBody @Valid CreateStopPlaceVersionModel stopPlaceVersionModel);
+
+  @ResponseStatus(HttpStatus.OK)
+  @PutMapping(path = "{id}")
+  List<ReadStopPlaceVersionModel> updateStopPlace(@PathVariable Long id,
+      @RequestBody @Valid CreateStopPlaceVersionModel stopPlaceVersionModel);
+
+}
