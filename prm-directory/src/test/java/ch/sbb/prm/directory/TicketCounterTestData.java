@@ -1,10 +1,10 @@
 package ch.sbb.prm.directory;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.prm.directory.controller.model.ticketcounter.CreateTicketCounterVersionModel;
+import ch.sbb.atlas.api.prm.model.ticketcounter.CreateTicketCounterVersionModel;
 import ch.sbb.prm.directory.entity.TicketCounterVersion;
 import ch.sbb.prm.directory.entity.TicketCounterVersion.TicketCounterVersionBuilder;
-import ch.sbb.prm.directory.enumeration.StandardAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import java.time.LocalDate;
 import lombok.experimental.UtilityClass;
 

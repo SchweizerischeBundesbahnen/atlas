@@ -33,7 +33,7 @@ public class FileHelperService {
 
   public File downloadImportFileFromS3(String csvImportFilePrefix) {
     try {
-      return downloadImportFileWithPrefix(csvImportFilePrefix);
+      return downloadImportFile(csvImportFilePrefix);
     } catch (IOException e) {
       throw new FileException(e);
     }
@@ -57,11 +57,10 @@ public class FileHelperService {
     return input.replaceAll("-", "");
   }
 
-  private File downloadImportFileWithPrefix(String csvImportFilePrefix) throws IOException {
-    String csvImportFilePrefixToday = attachTodayDate(csvImportFilePrefix);
+  private File downloadImportFile(String csvImportFile) throws IOException {
     List<String> foundImportFileKeys = amazonService.getS3ObjectKeysFromPrefix(AmazonBucket.EXPORT, SERVICEPOINT_DIDOK_DIR_NAME,
-        csvImportFilePrefixToday);
-    String fileKeyToDownload = handleImportFileKeysResult(foundImportFileKeys, csvImportFilePrefixToday);
+        csvImportFile);
+    String fileKeyToDownload = handleImportFileKeysResult(foundImportFileKeys, csvImportFile);
     log.info("Found File with name: {}", fileKeyToDownload);
     log.info("Downloading {} ...", fileKeyToDownload);
     File download = amazonService.pullFile(AmazonBucket.EXPORT, fileKeyToDownload);

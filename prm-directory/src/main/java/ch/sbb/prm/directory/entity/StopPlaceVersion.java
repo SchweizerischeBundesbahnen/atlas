@@ -1,13 +1,13 @@
 package ch.sbb.prm.directory.entity;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.converter.MeanOfTransportConverter;
 import ch.sbb.atlas.servicepoint.converter.ServicePointNumberConverter;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
-import ch.sbb.prm.directory.enumeration.StandardAttributeType;
 import ch.sbb.prm.directory.service.PrmVersionable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
@@ -24,6 +24,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -144,5 +145,10 @@ public class StopPlaceVersion extends BasePrmImportEntity implements PrmVersiona
   @AtlasVersionableProperty
   private StandardAttributeType ticketMachine;
 
-
+  public Set<MeanOfTransport> getMeansOfTransport() {
+    if (meansOfTransport == null) {
+      return new HashSet<>();
+    }
+    return meansOfTransport;
+  }
 }

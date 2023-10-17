@@ -1,8 +1,8 @@
 package ch.sbb.prm.directory.mapper;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.prm.directory.controller.model.parkinglot.CreateParkingLotVersionModel;
-import ch.sbb.prm.directory.controller.model.parkinglot.ReadParkingLotVersionModel;
+import ch.sbb.atlas.api.prm.model.parkinglot.CreateParkingLotVersionModel;
+import ch.sbb.atlas.api.prm.model.parkinglot.ReadParkingLotVersionModel;
 import ch.sbb.prm.directory.entity.ParkingLotVersion;
 import lombok.experimental.UtilityClass;
 
