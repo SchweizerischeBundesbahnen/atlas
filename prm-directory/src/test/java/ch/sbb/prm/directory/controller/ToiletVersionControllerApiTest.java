@@ -16,7 +16,7 @@ import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPlaceTestData;
 import ch.sbb.prm.directory.ToiletTestData;
-import ch.sbb.prm.directory.controller.model.toilet.CreateToiletVersionModel;
+import ch.sbb.atlas.api.prm.model.toilet.CreateToiletVersionModel;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.StopPlaceVersion;

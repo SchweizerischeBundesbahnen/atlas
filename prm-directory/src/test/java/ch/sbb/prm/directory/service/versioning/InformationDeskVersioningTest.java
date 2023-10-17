@@ -12,7 +12,7 @@ import ch.sbb.prm.directory.entity.InformationDeskVersion;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.StopPlaceVersion;
-import ch.sbb.prm.directory.enumeration.StandardAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.prm.directory.repository.InformationDeskRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.StopPlaceRepository;

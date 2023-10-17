@@ -2,10 +2,10 @@ package ch.sbb.prm.directory.entity;
 
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
-import ch.sbb.prm.directory.enumeration.ReferencePointElementType;
-import ch.sbb.prm.directory.enumeration.StandardAttributeType;
-import ch.sbb.prm.directory.enumeration.StepFreeAccessAttributeType;
-import ch.sbb.prm.directory.enumeration.TactileVisualAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
+import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.StepFreeAccessAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.TactileVisualAttributeType;
 import ch.sbb.prm.directory.service.PrmVersionable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

@@ -1,9 +1,11 @@
 package ch.sbb.prm.directory.controller;
 
+import ch.sbb.atlas.api.prm.model.stopplace.CreateStopPlaceVersionModel;
+import ch.sbb.atlas.api.prm.model.stopplace.ReadStopPlaceVersionModel;
+import ch.sbb.atlas.imports.prm.stopplace.StopPlaceImportRequestModel;
+import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.prm.directory.api.StopPlaceApiV1;
-import ch.sbb.prm.directory.controller.model.stopplace.CreateStopPlaceVersionModel;
-import ch.sbb.prm.directory.controller.model.stopplace.ReadStopPlaceVersionModel;
 import ch.sbb.prm.directory.entity.StopPlaceVersion;
 import ch.sbb.prm.directory.mapper.StopPlaceVersionMapper;
 import ch.sbb.prm.directory.service.StopPlaceService;
@@ -41,6 +43,11 @@ public class StopPlaceController implements StopPlaceApiV1 {
 
     return stopPlaceService.findAllByNumberOrderByValidFrom(stopPlaceVersionToUpdate.getNumber()).stream()
         .map(StopPlaceVersionMapper::toModel).toList();
+  }
+
+  @Override
+  public List<ItemImportResult> importServicePoints(StopPlaceImportRequestModel importRequestModel) {
+    return stopPlaceService.importServicePoints(importRequestModel.getStopPlaceCsvModelContainers());
   }
 
 }

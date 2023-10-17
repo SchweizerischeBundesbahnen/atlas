@@ -1,8 +1,8 @@
 package ch.sbb.prm.directory.mapper;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.prm.directory.controller.model.toilet.CreateToiletVersionModel;
-import ch.sbb.prm.directory.controller.model.toilet.ReadToiletVersionModel;
+import ch.sbb.atlas.api.prm.model.toilet.CreateToiletVersionModel;
+import ch.sbb.atlas.api.prm.model.toilet.ReadToiletVersionModel;
 import ch.sbb.prm.directory.entity.ToiletVersion;
 import lombok.experimental.UtilityClass;
 

@@ -10,7 +10,7 @@ import ch.sbb.prm.directory.entity.BasePrmImportEntity.Fields;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.StopPlaceVersion;
-import ch.sbb.prm.directory.enumeration.ReferencePointAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.ReferencePointAttributeType;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.StopPlaceRepository;
 import ch.sbb.prm.directory.service.ReferencePointService;

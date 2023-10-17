@@ -16,7 +16,7 @@ import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.prm.directory.ParkingLotTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPlaceTestData;
-import ch.sbb.prm.directory.controller.model.parkinglot.CreateParkingLotVersionModel;
+import ch.sbb.atlas.api.prm.model.parkinglot.CreateParkingLotVersionModel;
 import ch.sbb.prm.directory.entity.ParkingLotVersion;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;

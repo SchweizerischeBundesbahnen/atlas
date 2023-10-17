@@ -1,10 +1,14 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
+
+import ch.sbb.atlas.imports.util.ImportUtils;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointSearchVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
-import ch.sbb.atlas.servicepointdirectory.service.BasePointUtility;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import org.hibernate.StaleObjectStateException;
 import org.junit.jupiter.api.Assertions;
@@ -17,10 +21,6 @@ import java.util.Collections;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.verify;
 
  class ServicePointServiceTest {
 
@@ -107,7 +107,7 @@ import static org.mockito.Mockito.verify;
     List<ServicePointVersion> versions = new ArrayList<>();
     versions.add(version);
     //when
-    ServicePointVersion result = BasePointUtility.getCurrentPointVersion(versions, edited);
+    ServicePointVersion result = ImportUtils.getCurrentPointVersion(versions, edited);
     //then
     assertThat(result).isNotNull();
   }
@@ -126,7 +126,7 @@ import static org.mockito.Mockito.verify;
     List<ServicePointVersion> versions = new ArrayList<>();
     versions.add(version);
     //when
-    ServicePointVersion result = BasePointUtility.getCurrentPointVersion(versions, edited);
+    ServicePointVersion result = ImportUtils.getCurrentPointVersion(versions, edited);
     //then
     assertThat(result).isNotNull();
   }
@@ -145,7 +145,7 @@ import static org.mockito.Mockito.verify;
     List<ServicePointVersion> versions = new ArrayList<>();
     versions.add(version);
     //when
-    ServicePointVersion result = BasePointUtility.getCurrentPointVersion(versions, edited);
+    ServicePointVersion result = ImportUtils.getCurrentPointVersion(versions, edited);
     //then
     assertThat(result).isNotNull();
   }
@@ -169,7 +169,7 @@ import static org.mockito.Mockito.verify;
     versions.add(version1);
     versions.add(version2);
     //when
-    ServicePointVersion result = BasePointUtility.getCurrentPointVersion(versions, edited);
+    ServicePointVersion result = ImportUtils.getCurrentPointVersion(versions, edited);
     //then
     assertThat(result).isNotNull();
   }
@@ -198,7 +198,7 @@ import static org.mockito.Mockito.verify;
     versions.add(version1);
     versions.add(version2);
     //when
-    ServicePointVersion result = BasePointUtility.getCurrentPointVersion(versions, edited);
+    ServicePointVersion result = ImportUtils.getCurrentPointVersion(versions, edited);
     //then
     assertThat(result).isNotNull();
     assertThat(result.getValidFrom()).isEqualTo(LocalDate.of(2000, 6, 2));
@@ -229,7 +229,7 @@ import static org.mockito.Mockito.verify;
     versions.add(version1);
     versions.add(version2);
     //when
-    ServicePointVersion result = BasePointUtility.getCurrentPointVersion(versions, edited);
+    ServicePointVersion result = ImportUtils.getCurrentPointVersion(versions, edited);
     //then
     assertThat(result).isNotNull();
     assertThat(result.getValidFrom()).isEqualTo(LocalDate.of(2000, 1, 2));
@@ -260,7 +260,7 @@ import static org.mockito.Mockito.verify;
     versions.add(version1);
     versions.add(version2);
     //when
-    ServicePointVersion result = BasePointUtility.getCurrentPointVersion(versions, edited);
+    ServicePointVersion result = ImportUtils.getCurrentPointVersion(versions, edited);
     assertThat(result).isNotNull();
   }
 
