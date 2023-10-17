@@ -34,7 +34,6 @@ import { TranslationSortingService } from '../../../../core/translation/translat
 import { CoordinateTransformationService } from '../../geography/coordinate-transformation.service';
 import { LocationInformation } from './location-information';
 import { Countries } from '../../../../core/country/Countries';
-import { MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-service-point',
@@ -427,25 +426,25 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     return coordinates.north !== 0 && coordinates.east !== 0;
   }
 
-  setOperatingPointRouteNetwork(select: MatCheckboxChange) {
-    if (select.checked) {
+  setOperatingPointRouteNetwork(isSelected: boolean) {
+    if (isSelected) {
       this.form.controls.operatingPointRouteNetwork.setValue(true);
       this.form.controls.operatingPointKilometer.setValue(true);
       this.form.controls.operatingPointKilometer.disable();
       this.form.controls.operatingPointKilometerMaster.setValue(this.selectedVersion.number.number);
     } else {
-      this.form.controls.operatingPointRouteNetwork.reset();
-      this.form.controls.operatingPointKilometer.reset();
+      this.form.controls.operatingPointRouteNetwork.setValue(false);
+      this.form.controls.operatingPointKilometer.setValue(false);
       this.form.controls.operatingPointKilometer.enable();
       this.form.controls.operatingPointKilometerMaster.reset();
     }
   }
 
-  setOperatingPointKilometer(select: MatCheckboxChange) {
-    if (select.checked) {
+  setOperatingPointKilometer(isSelected: boolean) {
+    if (isSelected) {
       this.form.controls.operatingPointKilometer.setValue(true);
     } else {
-      this.form.controls.operatingPointKilometer.reset();
+      this.form.controls.operatingPointKilometer.setValue(false);
     }
   }
 }
