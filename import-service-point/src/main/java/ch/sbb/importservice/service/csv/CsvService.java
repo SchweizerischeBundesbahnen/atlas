@@ -39,7 +39,7 @@ public abstract class CsvService<T> {
     this.jobHelperService = jobHelperService;
   }
 
-  protected abstract CsvFileNameModel defineCsvFileName();
+  protected abstract CsvFileNameModel csvFileNameModel();
 
   protected abstract String getModifiedDateHeader();
 
@@ -49,7 +49,7 @@ public abstract class CsvService<T> {
 
   public List<T> getActualCsvModelsFromS3() {
     log.info("Downloading file from Amazon S3 Bucket: {}", AmazonBucket.EXPORT);
-    final File importFile = fileHelperService.downloadImportFileFromS3(getFileNameWithTodayDate(defineCsvFileName().getFileName()));
+    final File importFile = fileHelperService.downloadImportFileFromS3(csvFileNameModel());
     final LocalDate matchingDate = jobHelperService.getDateForImportFileToDownload(getImportCsvJobName());
     log.info("CSV File to import: {}", importFile.getName());
     final List<T> csvModels = getCsvModelsToUpdate(importFile, matchingDate);
@@ -139,15 +139,5 @@ public abstract class CsvService<T> {
     }
     return mappedObjects;
   }
-
-  private String getFileNameWithTodayDate(String csvImportFilePrefix) {
-    LocalDate today = LocalDate.now();
-    return csvImportFilePrefix + replaceHyphensWithUnderscores(today.toString());
-  }
-
-  private String replaceHyphensWithUnderscores(String input) {
-    return input.replaceAll("-", "");
-  }
-
 
 }

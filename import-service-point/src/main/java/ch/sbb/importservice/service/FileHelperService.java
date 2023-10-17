@@ -4,10 +4,10 @@ import ch.sbb.atlas.amazon.exception.FileException;
 import ch.sbb.atlas.amazon.service.AmazonBucket;
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.importservice.service.csv.CsvFileNameModel;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,11 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class FileHelperService {
 
-  public static final String SERVICE_POINT_FILE_PREFIX = "DIDOK3_DIENSTSTELLEN_ALL_V_3_";
-  public static final String LOADING_POINT_FILE_PREFIX = "DIDOK3_LADESTELLEN_";
-  public static final String TRAFFIC_POINT_FILE_PREFIX = "DIDOK3_VERKEHRSPUNKTELEMENTE_ALL_V_1_";
-  private static final String SERVICEPOINT_DIDOK_DIR_NAME = "servicepoint_didok";
-
   private final AmazonService amazonService;
   private final FileService fileService;
 
@@ -31,9 +26,9 @@ public class FileHelperService {
     return fileService.getFileFromMultipart(multipartFile);
   }
 
-  public File downloadImportFileFromS3(String csvImportFilePrefix) {
+  public File downloadImportFileFromS3(CsvFileNameModel csvFileNameModel) {
     try {
-      return downloadImportFile(csvImportFilePrefix);
+      return downloadImportFile(csvFileNameModel);
     } catch (IOException e) {
       throw new FileException(e);
     }
@@ -48,19 +43,10 @@ public class FileHelperService {
     }
   }
 
-  private String attachTodayDate(String csvImportFilePrefix) {
-    LocalDate today = LocalDate.now();
-    return csvImportFilePrefix + replaceHyphensWithUnderscores(today.toString());
-  }
-
-  private String replaceHyphensWithUnderscores(String input) {
-    return input.replaceAll("-", "");
-  }
-
-  private File downloadImportFile(String csvImportFile) throws IOException {
-    List<String> foundImportFileKeys = amazonService.getS3ObjectKeysFromPrefix(AmazonBucket.EXPORT, SERVICEPOINT_DIDOK_DIR_NAME,
-        csvImportFile);
-    String fileKeyToDownload = handleImportFileKeysResult(foundImportFileKeys, csvImportFile);
+  private File downloadImportFile(CsvFileNameModel csvImportFile) throws IOException {
+    List<String> foundImportFileKeys = amazonService.getS3ObjectKeysFromPrefix(AmazonBucket.EXPORT, csvImportFile.getS3BucketDir(),
+        csvImportFile.getFileName());
+    String fileKeyToDownload = handleImportFileKeysResult(foundImportFileKeys, csvImportFile.getFileName());
     log.info("Found File with name: {}", fileKeyToDownload);
     log.info("Downloading {} ...", fileKeyToDownload);
     File download = amazonService.pullFile(AmazonBucket.EXPORT, fileKeyToDownload);
