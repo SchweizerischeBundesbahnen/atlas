@@ -14,6 +14,7 @@ import ch.sbb.atlas.servicepointdirectory.exception.SloidNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.exception.SloidsNotEqualException;
 import ch.sbb.atlas.servicepointdirectory.mapper.TrafficPointElementVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.model.search.TrafficPointElementSearchRestrictions;
+import ch.sbb.atlas.servicepointdirectory.service.ServicePointDistributor;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementImportService;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementRequestParams;
@@ -35,6 +36,7 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
   private final ServicePointService servicePointService;
   private final CrossValidationService crossValidationService;
   private final TrafficPointElementImportService trafficPointElementImportService;
+  private final ServicePointDistributor servicePointDistributor;
 
   @Override
   public Container<ReadTrafficPointElementVersionModel> getTrafficPointElements(Pageable pageable, TrafficPointElementRequestParams trafficPointElementRequestParams ) {
@@ -82,8 +84,9 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
   @Override
   public ReadTrafficPointElementVersionModel createTrafficPoint(
       CreateTrafficPointElementVersionModel trafficPointElementVersionModel) {
-    return TrafficPointElementVersionMapper.toModel(
-        createTrafficPoint(TrafficPointElementVersionMapper.toEntity(trafficPointElementVersionModel)));
+    TrafficPointElementVersion createdTrafficPoint = createTrafficPoint(        TrafficPointElementVersionMapper.toEntity(trafficPointElementVersionModel));
+    servicePointDistributor.publishTrafficPointElement(createdTrafficPoint);
+    return TrafficPointElementVersionMapper.toModel(        createdTrafficPoint);
   }
 
   @Override
@@ -101,7 +104,10 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
     update(trafficPointElementVersionToUpdate,
         TrafficPointElementVersionMapper.toEntity(trafficPointElementVersionModel));
 
-    return trafficPointElementService.findBySloidOrderByValidFrom(trafficPointElementVersionToUpdate.getSloid())
+    List<TrafficPointElementVersion> updatedTrafficPoint = trafficPointElementService.findBySloidOrderByValidFrom(
+        trafficPointElementVersionToUpdate.getSloid());
+    servicePointDistributor.publishTrafficPointElements(updatedTrafficPoint);
+    return updatedTrafficPoint
         .stream()
         .map(TrafficPointElementVersionMapper::toModel)
         .toList();

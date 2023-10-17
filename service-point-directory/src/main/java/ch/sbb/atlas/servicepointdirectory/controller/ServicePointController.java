@@ -22,6 +22,7 @@ import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberNotFoundEx
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointFotCommentMapper;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
+import ch.sbb.atlas.servicepointdirectory.service.ServicePointDistributor;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointFotCommentService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
@@ -48,6 +49,7 @@ public class ServicePointController implements ServicePointApiV1 {
   private final ServicePointFotCommentService servicePointFotCommentService;
   private final ServicePointImportService servicePointImportService;
   private final GeoReferenceService geoReferenceService;
+  private final ServicePointDistributor servicePointDistributor;
 
   private final Pattern abbreviationPattern = Pattern.compile("^[A-Z0-9]{2,6}$");
 
@@ -69,7 +71,7 @@ public class ServicePointController implements ServicePointApiV1 {
 
   @Override
   public List<ServicePointSearchResult> searchServicePoints(ServicePointSearchRequest searchRequest) {
-    if(searchRequest == null || searchRequest.getValue() == null || searchRequest.getValue().length() <2 ){
+    if (searchRequest == null || searchRequest.getValue() == null || searchRequest.getValue().length() < 2) {
       throw new BadRequestException("You must enter at least 2 digits to start a search!");
     }
     return servicePointService.searchServicePointVersion(searchRequest.getValue());
@@ -110,7 +112,9 @@ public class ServicePointController implements ServicePointApiV1 {
     validateAndSetAbbreviation(servicePointVersion, newAbbreviation, null, Optional.empty());
 
     addGeoReferenceInformation(servicePointVersion);
-    return ServicePointVersionMapper.toModel(servicePointService.save(servicePointVersion));
+    ServicePointVersion createdVersion = servicePointService.save(servicePointVersion);
+    servicePointDistributor.publishServicePointsWithNumbers(createdVersion.getNumber());
+    return ServicePointVersionMapper.toModel(createdVersion);
   }
 
   @Override
@@ -132,7 +136,10 @@ public class ServicePointController implements ServicePointApiV1 {
     servicePointService.update(servicePointVersionToUpdate, editedVersion,
         servicePointService.findAllByNumberOrderByValidFrom(servicePointVersionToUpdate.getNumber()));
 
-    return servicePointService.findAllByNumberOrderByValidFrom(servicePointVersionToUpdate.getNumber())
+    List<ServicePointVersion> servicePoint = servicePointService.findAllByNumberOrderByValidFrom(
+        servicePointVersionToUpdate.getNumber());
+    servicePointDistributor.publishServicePointsWithNumbers(servicePointVersionToUpdate.getNumber());
+    return servicePoint
         .stream()
         .map(ServicePointVersionMapper::toModel)
         .toList();
@@ -158,6 +165,12 @@ public class ServicePointController implements ServicePointApiV1 {
 
     ServicePointFotComment entity = ServicePointFotCommentMapper.toEntity(fotComment, number);
     return ServicePointFotCommentMapper.toModel(servicePointFotCommentService.save(entity));
+  }
+
+  @Override
+  public void syncServicePoints() {
+    log.info("Syncing all Service Points");
+    servicePointDistributor.syncServicePoints();
   }
 
   private void addGeoReferenceInformation(ServicePointVersion servicePointVersion) {

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@Tag(name = "Transport Companies")
+@Tag(name = "BoDi - Transport Companies")
 public interface TransportCompanyApiV1 {
 
   String BASE_PATH = "v1/transport-companies";
