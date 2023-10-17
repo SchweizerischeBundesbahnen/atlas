@@ -24,11 +24,13 @@ public class StopPlaceCsvModelContainer {
   private Integer didokCode;
   private List<StopPlaceCsvModel> stopPlaceCsvModels;
   private List<CreateStopPlaceVersionModel> createStopPlaceVersionModels;
-  public Integer getDidokCode(){
+  private boolean hasMergedVersion;
+
+  public Integer getDidokCode() {
     return ServicePointNumber.removeCheckDigit(this.didokCode);
   }
 
-  public List<CreateStopPlaceVersionModel> getCreateStopPlaceVersionModels(){
+  public List<CreateStopPlaceVersionModel> getCreateStopPlaceVersionModels() {
     return stopPlaceCsvModels.stream().map(StopPlaceCsvToModelMapper::toModel).toList();
   }
 
