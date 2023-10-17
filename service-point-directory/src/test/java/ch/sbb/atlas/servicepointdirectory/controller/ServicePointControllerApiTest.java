@@ -28,6 +28,9 @@ import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.atlas.servicepoint.enumeration.Category;
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
+import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointGeolocationMapper;
@@ -527,4 +530,117 @@ import org.springframework.test.web.servlet.MvcResult;
         .andExpect(jsonPath("$.servicePointGeolocation.lv95.north", is(1199776.88159)))
         .andExpect(jsonPath("$.hasGeolocation", is(true)));
   }
-}
+  @Test
+  void shouldNotUpdateServicePointIfAbbreviationInvalid()  throws Exception{
+     ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
+          ServicePointTestData.getBuchsiServicePoint());
+      Long id = servicePointVersionModel.getId();
+
+      CreateServicePointVersionModel buchsiServicePoint = ServicePointTestData.getBuchsiServicePoint();
+      buchsiServicePoint.setId(id);
+
+      buchsiServicePoint.setAbbreviation("dasisteinevielzulangeabkuerzung");
+
+      mvc.perform(put("/v1/service-points/" + buchsiServicePoint.getId())
+          .contentType(contentType)
+          .content(mapper.writeValueAsString(buchsiServicePoint)))
+          .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  void shouldNotUpdateServicePointAbbreviationIfBusinessOrganisationNotAllowed()  throws Exception {
+      ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
+          ServicePointTestData.getBuchsiServicePoint());
+      Long id = servicePointVersionModel.getId();
+
+      CreateServicePointVersionModel buchsiServicePoint = ServicePointTestData.getBuchsiServicePoint();
+      buchsiServicePoint.setId(id);
+
+      buchsiServicePoint.setBusinessOrganisation("dasisteineungueltigebusinessorganisation");
+
+      buchsiServicePoint.setAbbreviation("BUCH");
+
+      mvc.perform(put("/v1/service-points/" + buchsiServicePoint.getId())
+              .contentType(contentType)
+              .content(mapper.writeValueAsString(buchsiServicePoint)))
+          .andExpect(status().isForbidden());
+  }
+
+  @Test
+  void shouldNotUpdateServicePointAbbreviationIfNewAbbreviationNotEqualsOldAbbreviation()  throws Exception {
+      CreateServicePointVersionModel newServicePoint = CreateServicePointVersionModel.builder()
+          .numberWithoutCheckDigit(8596004)
+          .sloid("ch:1:sloid:96004")
+          .designationLong("designation long 1")
+          .designationOfficial("Buchsi Hood")
+          .abbreviation("BUCH")
+          .freightServicePoint(false)
+          .sortCodeOfDestinationStation("39136")
+          .businessOrganisation("ch:1:sboid:100016")
+          .categories(List.of(Category.POINT_OF_SALE))
+          .operatingPointRouteNetwork(false)
+          .operatingPointKilometerMasterNumber(8596004)
+          .meansOfTransport(List.of(MeanOfTransport.TRAIN))
+          .stopPointType(StopPointType.ON_REQUEST)
+          .servicePointGeolocation(
+              ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getServicePointGeolocationBernMittelland()))
+          .validFrom(LocalDate.of(2010, 12, 11))
+          .validTo(LocalDate.of(2099, 8, 10))
+          .build();
+
+      ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(newServicePoint);
+      Long id = servicePointVersionModel.getId();
+
+      newServicePoint.setId(id);
+
+
+      newServicePoint.setAbbreviation("NEU");
+
+      mvc.perform(put("/v1/service-points/" + newServicePoint.getId())
+              .contentType(contentType)
+              .content(mapper.writeValueAsString(newServicePoint)))
+          .andExpect(status().isForbidden());
+  }
+
+     @Test
+     void shouldNotUpdateServicePointAbbreviationIsNotUnique()  throws Exception {
+         CreateServicePointVersionModel servicepoint1 = CreateServicePointVersionModel.builder()
+             .numberWithoutCheckDigit(1111111)
+             .sloid("ch:1:sloid:11111")
+             .designationLong("designation long 2")
+             .designationOfficial("Züri Hood")
+             .abbreviation("TEST")
+             .freightServicePoint(false)
+             .sortCodeOfDestinationStation("39136")
+             .businessOrganisation("ch:1:sboid:100016")
+             .categories(List.of(Category.POINT_OF_SALE))
+             .operatingPointRouteNetwork(false)
+             .operatingPointKilometerMasterNumber(1111111)
+             .meansOfTransport(List.of(MeanOfTransport.TRAIN))
+             .stopPointType(StopPointType.ON_REQUEST)
+             .servicePointGeolocation(
+                 ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getServicePointGeolocationBernMittelland()))
+             .validFrom(LocalDate.of(2010, 12, 11))
+             .validTo(LocalDate.of(2099, 8, 10))
+             .build();
+
+         servicePointController.createServicePoint(servicepoint1);
+
+         ReadServicePointVersionModel servicePointVersionModel2 = servicePointController.createServicePoint(
+             ServicePointTestData.getBuchsiServicePoint());
+         Long id = servicePointVersionModel2.getId();
+
+         CreateServicePointVersionModel buchsiServicePoint = ServicePointTestData.getBuchsiServicePoint();
+         buchsiServicePoint.setId(id);
+
+         buchsiServicePoint.setAbbreviation("TEST");
+
+         mvc.perform(put("/v1/service-points/" + servicePointVersionModel2.getId())
+                 .contentType(contentType)
+                 .content(mapper.writeValueAsString(servicePointVersionModel2)))
+             .andExpect(status().isBadRequest());
+
+     }
+
+
+ }
