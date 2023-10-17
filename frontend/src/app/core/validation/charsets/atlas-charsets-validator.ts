@@ -26,7 +26,7 @@ export class AtlasCharsetsValidator {
     };
   }
 
-  static upperCaseValidator(control: AbstractControl) {
+  static uppercaseNumericLength2To6Validator(control: AbstractControl) {
     return AtlasCharsetsValidator.validateAllowedCharacters(
       control,
       '^[A-Z0-9]{2,6}$',
