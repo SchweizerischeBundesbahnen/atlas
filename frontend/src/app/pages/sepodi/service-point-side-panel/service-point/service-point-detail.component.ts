@@ -433,9 +433,9 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
       this.form.controls.operatingPointKilometer.setValue(true);
       this.form.controls.operatingPointKilometerMaster.setValue(this.selectedVersion.number.number);
     } else {
-      this.form.controls.operatingPointRouteNetwork.setValue(false);
-      this.form.controls.operatingPointKilometer.setValue(false);
-      this.form.controls.operatingPointKilometerMaster.setValue(undefined);
+      this.form.controls.operatingPointRouteNetwork.reset();
+      this.form.controls.operatingPointKilometer.reset();
+      this.form.controls.operatingPointKilometerMaster.reset();
     }
   }
 
@@ -443,7 +443,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     if (select.checked) {
       this.form.controls.operatingPointKilometer.setValue(true);
     } else {
-      this.form.controls.operatingPointKilometer.setValue(false);
+      this.form.controls.operatingPointKilometer.reset();
     }
   }
 }
