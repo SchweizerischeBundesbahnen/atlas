@@ -1,14 +1,13 @@
-package ch.sbb.atlas.servicepointdirectory.service;
-
-import lombok.experimental.UtilityClass;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
+package ch.sbb.atlas.imports.util;
 
 import java.beans.PropertyDescriptor;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import lombok.experimental.UtilityClass;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 
 @UtilityClass
 public class BeanCopyUtil {

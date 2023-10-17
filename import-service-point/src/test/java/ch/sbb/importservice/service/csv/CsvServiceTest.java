@@ -14,7 +14,6 @@ import ch.sbb.importservice.service.JobHelperService;
 import java.io.File;
 import java.time.LocalDate;
 import java.util.List;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -57,17 +56,12 @@ import org.mockito.Mock;
     };
   }
 
-  @AfterEach
-  void teardown() throws Exception {
-    mocks.close();
-  }
-
   @Test
    void shouldGetActualCsvModelsFromS3() {
     //given
     LocalDate date = LocalDate.of(2022, 2, 21);
     File csvFile = new File(this.getClass().getClassLoader().getResource("DIENSTSTELLEN_V3_IMPORT.csv").getFile());
-    when(fileHelperService.downloadImportFileFromS3("TEST_FILE_PREFIX")).thenReturn(csvFile);
+    when(fileHelperService.downloadImportFileFromS3(any())).thenReturn(csvFile);
     doCallRealMethod().when(jobHelperService).isDateMatchedBetweenTodayAndMatchingDate(any(), any());
     when(jobHelperService.getDateForImportFileToDownload("TEST_IMPORT_CSV_JOB")).thenReturn(date);
     //when
