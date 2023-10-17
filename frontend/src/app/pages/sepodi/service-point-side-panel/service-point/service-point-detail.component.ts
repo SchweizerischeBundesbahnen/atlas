@@ -63,7 +63,6 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   stopPointTypes = Object.values(StopPointType);
   categories = Object.values(Category);
   isSwitchVersionDisabled = false;
-  // isBpsSelected = false;
 
   currentSpatialReference!: SpatialReference;
 
@@ -252,9 +251,6 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
       this.isSwitchVersionDisabled = true;
       this.form.enable();
       if (this.form.controls.operatingPointRouteNetwork.value) {
-        console.log('toggle edit');
-        // this.form.controls.operatingPointKilometer.disable();
-        // this.form.controls.operatingPointKilometerMaster.disable();
         this.form.controls.operatingPointKilometer.disable();
       }
     }
@@ -352,9 +348,6 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     return () => {
       this.form.enable();
       if (this.form.controls.operatingPointRouteNetwork.value) {
-        console.log('handle error');
-        // this.form.controls.operatingPointKilometer.disable();
-        // this.form.controls.operatingPointKilometerMaster.disable();
         this.form.controls.operatingPointKilometer.disable();
       }
       return EMPTY;
@@ -439,13 +432,10 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
       this.form.controls.operatingPointRouteNetwork.setValue(true);
       this.form.controls.operatingPointKilometer.setValue(true);
       this.form.controls.operatingPointKilometerMaster.setValue(this.selectedVersion.number.number);
-      // this.isBpsSelected = true;
     } else {
       this.form.controls.operatingPointRouteNetwork.setValue(false);
       this.form.controls.operatingPointKilometer.setValue(false);
-      // this.form.controls.operatingPointKilometer.enable();
       this.form.controls.operatingPointKilometerMaster.setValue(undefined);
-      // this.isBpsSelected = false;
     }
   }
 
