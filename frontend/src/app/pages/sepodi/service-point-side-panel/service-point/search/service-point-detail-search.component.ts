@@ -1,4 +1,13 @@
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { ServicePointSearchResult, ServicePointsService } from '../../../../../api';
 import { Observable, of, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -9,7 +18,7 @@ import { FormGroup } from '@angular/forms';
   templateUrl: './service-point-detail-search.component.html',
   styleUrls: ['./service-point-detail-search.component.scss'],
 })
-export class ServicePointDetailSearchComponent implements OnInit {
+export class ServicePointDetailSearchComponent implements OnInit, OnDestroy, OnChanges {
   @Input() valueExtraction = 'number';
   @Input() controlName!: string;
   @Input() formModus = true;

@@ -259,7 +259,7 @@
   >
     <div class="me-5">
       <mat-checkbox
-        (change)="setOperatingPointRouteNetwork($event)"
+        (change)="setOperatingPointRouteNetwork($event.checked)"
         formControlName="operatingPointRouteNetwork"
         data-cy="operatingPointRouteNetwork"
       >
@@ -268,7 +268,7 @@
     </div>
     <div class="me-5">
       <mat-checkbox
-        (change)="setOperatingPointKilometer($event)"
+        (change)="setOperatingPointKilometer($event.checked)"
         formControlName="operatingPointKilometer"
         data-cy="operatingPointKilometer"
       >
