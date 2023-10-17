@@ -408,6 +408,57 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         .andExpect(jsonPath("$.creator", is("e123456")));
   }
 
+ @Test
+ void shouldCreateServicePointWithRouteNetworkTrue() throws Exception {
+
+     CreateServicePointVersionModel servicePointWithBpsTrue = ServicePointTestData.getAargauServicePointVersionModel();
+     servicePointWithBpsTrue.setOperatingPointRouteNetwork(true);
+
+     mvc.perform(post("/v1/service-points")
+                     .contentType(contentType)
+                     .content(mapper.writeValueAsString(servicePointWithBpsTrue)))
+             .andExpect(status().isCreated())
+             .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.id, is(servicePointVersion.getId().intValue() + 1)))
+             .andExpect(jsonPath("$.number.number", is(8034510)))
+             .andExpect(jsonPath("$.number.numberShort", is(34510)))
+             .andExpect(jsonPath("$.number.checkDigit", is(8)))
+             .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.designationOfficial, is("Aargau Strasse")))
+             .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.sloid, is("ch:1:sloid:18771")))
+             .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.designationLong, is("designation long 1")))
+             .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.abbreviation, is("3")))
+             .andExpect(jsonPath("$.operatingPoint", is(true)))
+             .andExpect(jsonPath("$.operatingPointWithTimetable", is(true)))
+             .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.freightServicePoint, is(false)))
+             .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.sortCodeOfDestinationStation, is("39136")))
+             .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.businessOrganisation, is("ch:1:sboid:100871")))
+             .andExpect(jsonPath("$.categories[0]", is("POINT_OF_SALE")))
+             .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.operatingPointRouteNetwork, is(true)))
+             .andExpect(jsonPath("$.operatingPointKilometerMaster.number", is(8034510)))
+             .andExpect(jsonPath("$.operatingPointKilometerMaster.numberShort", is(34510)))
+             .andExpect(jsonPath("$.operatingPointKilometerMaster.checkDigit", is(8)))
+             .andExpect(jsonPath("$.meansOfTransport[0]", is("TRAIN")))
+             .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.stopPointType, is("ON_REQUEST")))
+             .andExpect(jsonPath("$.servicePointGeolocation.spatialReference", is(LV95.toString())))
+             .andExpect(jsonPath("$.servicePointGeolocation.lv95.north", is(1201099.0)))
+             .andExpect(jsonPath("$.servicePointGeolocation.lv95.east", is(2600783.0)))
+             .andExpect(jsonPath("$.servicePointGeolocation.wgs84.north", is(46.96096808019)))
+             .andExpect(jsonPath("$.servicePointGeolocation.wgs84.east", is(7.44891972221)))
+             .andExpect(jsonPath("$.servicePointGeolocation.swissLocation.canton", is("BERN")))
+             .andExpect(jsonPath("$.servicePointGeolocation.swissLocation.district.districtName", is("Bern-Mittelland")))
+             .andExpect(jsonPath("$.servicePointGeolocation.swissLocation.localityMunicipality.municipalityName", is("Bern")))
+             .andExpect(jsonPath("$.servicePointGeolocation.swissLocation.localityMunicipality.localityName", is("Bern")))
+             .andExpect(jsonPath("$." + ReadServicePointVersionModel.Fields.status, is("VALIDATED")))
+             .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.validFrom, is("2010-12-11")))
+             .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.validTo, is("2019-08-10")))
+             .andExpect(jsonPath("$.operatingPointKilometer", is(true)))
+             .andExpect(jsonPath("$.stopPoint", is(true)))
+             .andExpect(jsonPath("$.fareStop", is(false)))
+             .andExpect(jsonPath("$.borderPoint", is(false)))
+             .andExpect(jsonPath("$.trafficPoint", is(true)))
+             .andExpect(jsonPath("$.hasGeolocation", is(true)))
+             .andExpect(jsonPath("$.creator", is("e123456")));
+ }
+
   @Test
    void shouldUpdateServicePointAndCreateMultipleVersions() throws Exception {
     ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
@@ -464,6 +515,28 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(1)));
   }
+
+ @Test
+ void shouldUpdateServicePointWithRouteNetworkTrueAndNotCreateMultipleVersions() throws Exception {
+     ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
+             ServicePointTestData.getAargauServicePointVersionModel());
+     Long id = servicePointVersionModel.getId();
+
+     CreateServicePointVersionModel newServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
+     newServicePointVersionModel.setServicePointGeolocation(
+             ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation()));
+     newServicePointVersionModel.setOperatingPointRouteNetwork(true);
+
+     mvc.perform(put("/v1/service-points/" + id)
+                     .contentType(contentType)
+                     .content(mapper.writeValueAsString(newServicePointVersionModel)))
+             .andExpect(status().isOk())
+             .andExpect(jsonPath("$[0].operatingPointRouteNetwork", is(true)))
+             .andExpect(jsonPath("$[0].operatingPointKilometerMaster.number", is(8034510)))
+             .andExpect(jsonPath("$[0].operatingPointKilometerMaster.numberShort", is(34510)))
+             .andExpect(jsonPath("$[0].operatingPointKilometerMaster.checkDigit", is(8)))
+             .andExpect(jsonPath("$", hasSize(1)));
+ }
 
  @Test
  void shouldThrowForbiddenDueToChosenServicePointVersionValidationPeriod() throws Exception {
