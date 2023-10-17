@@ -11,7 +11,7 @@
    </parent>
    <groupId>ch.sbb.atlas</groupId>
    <artifactId>atlas</artifactId>
-   <version>1.446.0</version>
+   <version>1.459.0</version>
    <packaging>pom</packaging>
    <name>Atlas</name>
    <description>ATLAS - SKI Business Application</description>
@@ -37,7 +37,7 @@
       <!-- Geo Data Libs -->
       <proj4j.version>1.3.0</proj4j.version>
       <jts.version>1.19.0</jts.version>
-      <protoc.version>3.24.3</protoc.version>
+      <protoc.version>3.24.4</protoc.version>
    </properties>
    <modules>
       <!-- Order is important here -->
@@ -51,6 +51,7 @@
       <module>line-directory</module>
       <module>business-organisation-directory</module>
       <module>service-point-directory</module>
+      <module>prm-directory</module>
       <module>export-service-point</module>
       <module>import-service-point</module>
       <module>user-administration</module>
@@ -122,7 +123,7 @@
          <dependency>
             <artifactId>aws-java-sdk-s3</artifactId>
             <groupId>com.amazonaws</groupId>
-            <version>1.12.564</version>
+            <version>1.12.565</version>
          </dependency>
 
          <dependency>

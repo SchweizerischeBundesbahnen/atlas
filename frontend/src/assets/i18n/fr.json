@@ -961,7 +961,7 @@
       "CANTON": "Canton",
       "MUNICIPALITY": "Commune",
       "DISTRICT": "Localité",
-      "GEOGRAPHY_INFORMATION": "Si elle est activée, la situation géographique doit être saisie dans l'un des deux systèmes de coordonnées."
+      "GEOGRAPHY_INFORMATION": "Si activé, les coordonnées doivent être saisies dans l'un des deux systèmes de coordonnées."
     },
     "MAP_STYLES": {
       "SWISSTOPO": "Swisstopo (Suisse)",

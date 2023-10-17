@@ -234,7 +234,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   private displayAndSelectServicePointOnMap() {
     this.cancelMapEditMode();
     this.mapService.mapInitialized.pipe(takeUntil(this.ngUnsubscribe)).subscribe((initialized) => {
-      if (initialized && this.currentSpatialReference) {
+      if (initialized) {
         if (this.mapService.map.getZoom() <= this.ZOOM_LEVEL_FOR_DETAIL) {
           this.mapService.map.setZoom(this.ZOOM_LEVEL_FOR_DETAIL);
         }
