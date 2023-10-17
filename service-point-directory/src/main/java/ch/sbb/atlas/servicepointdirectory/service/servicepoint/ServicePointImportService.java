@@ -9,7 +9,7 @@ import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointFotComment;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
-import ch.sbb.atlas.servicepointdirectory.service.BaseImportService;
+import ch.sbb.atlas.servicepointdirectory.service.BaseImportServicePointDirectoryService;
 import ch.sbb.atlas.servicepointdirectory.service.BasePointUtility;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
 import ch.sbb.atlas.servicepointdirectory.service.ServicePointDistributor;
@@ -32,7 +32,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class ServicePointImportService extends BaseImportService<ServicePointVersion> {
+public class ServicePointImportService extends BaseImportServicePointDirectoryService<ServicePointVersion> {
 
   private final ServicePointService servicePointService;
   private final VersionableService versionableService;
