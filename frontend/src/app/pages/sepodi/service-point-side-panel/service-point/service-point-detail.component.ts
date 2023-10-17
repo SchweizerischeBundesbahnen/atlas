@@ -33,6 +33,7 @@ import { AuthService } from '../../../../core/auth/auth.service';
 import { TranslationSortingService } from '../../../../core/translation/translation-sorting.service';
 import { CoordinateTransformationService } from '../../geography/coordinate-transformation.service';
 import { LocationInformation } from './location-information';
+import { ServicePointAbbreviationAllowList } from '././service-point-abbreviation-allow-list';
 import { Countries } from '../../../../core/country/Countries';
 
 @Component({
@@ -48,7 +49,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   form!: FormGroup<ServicePointDetailFormGroup>;
   isNew = true;
   hasAbbreviation = false;
-
+  isAbbreviationAllowed = false;
   preferredId?: number;
 
   types = Object.values(ServicePointType);
@@ -91,12 +92,17 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
 
       this.initServicePoint();
       this.displayAndSelectServicePointOnMap();
+      this.isAbbreviationAllowed = ServicePointAbbreviationAllowList.SBOIDS.some((element) =>
+        element.includes(this.selectedVersion.businessOrganisation),
+      );
     });
 
     this.initSortedOperatingPointTypes();
     this.mapService.isGeolocationActivated.next(
       !!this.form.controls.servicePointGeolocation.controls.spatialReference.value,
     );
+
+    this.hasAbbreviation = !!this.form.controls.abbreviation.value;
   }
 
   initSortedOperatingPointTypes() {
@@ -305,7 +311,6 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
         servicePointVersion.numberWithoutCheckDigit = this.selectedVersion.number.number;
         this.update(this.selectedVersion.id!, servicePointVersion);
       }
-      this.cancelMapEditMode();
     }
   }
 
@@ -330,6 +335,12 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
           .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
           .subscribe(() => {
             this.mapService.refreshMap();
+            this.cancelMapEditMode();
+            console.log('this.form ', this.form.controls.abbreviation.value);
+
+            this.hasAbbreviation = !!this.form.controls.abbreviation?.value;
+            console.log('has abbbbbbb ', this.hasAbbreviation);
+
             this.notificationService.success('SEPODI.SERVICE_POINTS.NOTIFICATION.EDIT_SUCCESS');
             this.router
               .navigate(['..', this.selectedVersion.number.number], { relativeTo: this.route })
