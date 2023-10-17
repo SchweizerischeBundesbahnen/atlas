@@ -1,13 +1,13 @@
 package ch.sbb.prm.directory.service;
 
-import static ch.sbb.prm.directory.enumeration.ReferencePointElementType.PARKING_LOT;
+import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PARKING_LOT;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.ParkingLotVersion;
-import ch.sbb.prm.directory.enumeration.ReferencePointElementType;
+import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.prm.directory.repository.ParkingLotRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import java.util.List;

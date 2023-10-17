@@ -1,10 +1,10 @@
 package ch.sbb.prm.directory;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.prm.directory.controller.model.referencepoint.CreateReferencePointVersionModel;
+import ch.sbb.atlas.api.prm.model.referencepoint.CreateReferencePointVersionModel;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.ReferencePointVersion.ReferencePointVersionBuilder;
-import ch.sbb.prm.directory.enumeration.ReferencePointAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.ReferencePointAttributeType;
 import java.time.LocalDate;
 import lombok.experimental.UtilityClass;
 

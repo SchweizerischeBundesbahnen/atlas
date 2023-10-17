@@ -1,13 +1,13 @@
 package ch.sbb.prm.directory.service;
 
-import static ch.sbb.prm.directory.enumeration.ReferencePointElementType.PLATFORM;
+import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PLATFORM;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.PlatformVersion;
-import ch.sbb.prm.directory.enumeration.ReferencePointElementType;
+import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.prm.directory.repository.PlatformRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import java.util.List;

@@ -3,7 +3,7 @@ package ch.sbb.prm.directory.service;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
-import ch.sbb.prm.directory.enumeration.ReferencePointElementType;
+import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.util.RelationUtil;
 import java.util.List;
