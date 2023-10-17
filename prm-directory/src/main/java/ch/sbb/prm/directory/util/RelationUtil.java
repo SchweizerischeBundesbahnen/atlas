@@ -1,10 +1,10 @@
 package ch.sbb.prm.directory.util;
 
 import ch.sbb.prm.directory.entity.RelationVersion;
-import ch.sbb.prm.directory.enumeration.ReferencePointElementType;
-import ch.sbb.prm.directory.enumeration.StandardAttributeType;
-import ch.sbb.prm.directory.enumeration.StepFreeAccessAttributeType;
-import ch.sbb.prm.directory.enumeration.TactileVisualAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
+import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.StepFreeAccessAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.TactileVisualAttributeType;
 import ch.sbb.prm.directory.service.Relatable;
 import lombok.experimental.UtilityClass;
 

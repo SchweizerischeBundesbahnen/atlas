@@ -1,7 +1,7 @@
 package ch.sbb.prm.directory.controller;
 
-import static ch.sbb.prm.directory.enumeration.ReferencePointElementType.PARKING_LOT;
-import static ch.sbb.prm.directory.enumeration.ReferencePointElementType.PLATFORM;
+import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PARKING_LOT;
+import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PLATFORM;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -13,9 +13,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.prm.directory.RelationTestData;
-import ch.sbb.prm.directory.controller.model.relation.CreateRelationVersionModel;
+import ch.sbb.atlas.api.prm.model.relation.CreateRelationVersionModel;
 import ch.sbb.prm.directory.entity.RelationVersion;
-import ch.sbb.prm.directory.enumeration.StandardAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.prm.directory.repository.RelationRepository;
 import java.time.LocalDate;
 import org.junit.jupiter.api.Test;

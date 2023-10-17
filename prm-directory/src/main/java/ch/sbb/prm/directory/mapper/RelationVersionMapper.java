@@ -1,8 +1,8 @@
 package ch.sbb.prm.directory.mapper;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.prm.directory.controller.model.relation.CreateRelationVersionModel;
-import ch.sbb.prm.directory.controller.model.relation.ReadRelationVersionModel;
+import ch.sbb.atlas.api.prm.model.relation.CreateRelationVersionModel;
+import ch.sbb.atlas.api.prm.model.relation.ReadRelationVersionModel;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import lombok.experimental.UtilityClass;
 
