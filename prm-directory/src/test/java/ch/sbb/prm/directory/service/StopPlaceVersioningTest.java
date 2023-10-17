@@ -7,7 +7,7 @@ import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.StopPlaceTestData;
 import ch.sbb.prm.directory.entity.BasePrmImportEntity.Fields;
 import ch.sbb.prm.directory.entity.StopPlaceVersion;
-import ch.sbb.prm.directory.enumeration.StandardAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.prm.directory.repository.StopPlaceRepository;
 import java.time.LocalDate;
 import java.util.List;
