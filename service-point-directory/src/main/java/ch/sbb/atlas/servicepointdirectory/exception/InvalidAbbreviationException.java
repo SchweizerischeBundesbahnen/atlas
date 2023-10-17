@@ -10,7 +10,7 @@ public class InvalidAbbreviationException extends AtlasException {
     public ErrorResponse getErrorResponse() {
         return ErrorResponse.builder()
             .status(HttpStatus.BAD_REQUEST.value())
-            .message("Modification attempt detected: Abbreviations are immutable and cannot be updated or deleted.")
+            .message("The abbreviation must be between 2 and 6 characters long, be in uppercase, and be unique.")
             .build();
     }
 }

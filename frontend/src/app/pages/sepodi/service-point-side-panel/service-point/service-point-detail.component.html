@@ -57,9 +57,9 @@
     </div>
   </div>
   <div class="col-12 d-flex mt-2 flex-column">
-    <div class="font-bold-lg color-gray-900">
+    <div class="color-gray-900">
       <atlas-text-field
-        *ngIf="!hasAbbreviation"
+        *ngIf="!hasAbbreviation && isAbbreviationAllowed"
         [fieldExamples]="[
           { label: 'FORM.FOR_EXAMPLE', translate: true },
           { label: 'TODO |', translate: false },
@@ -71,10 +71,15 @@
         fieldLabel="SEPODI.SERVICE_POINTS.ABBREVIATION"
       >
       </atlas-text-field>
+      <div *ngIf="hasAbbreviation || !isAbbreviationAllowed">
+        <div class="font-bold-lg color-gray-900">
+          {{ 'SEPODI.SERVICE_POINTS.ABBREVIATION' | translate }}
+        </div>
+        <div class="color-gray-900">
+          {{ selectedVersion.abbreviation ?? '-' }}
+        </div>
+      </div>
     </div>
-    <!-- TODO: Validator für Abkürzung. -->
-    <!-- TODO: Wenn Abkürzung bereits vorhanden, dann kein Inputfeld mehr anzeigen -->
-    <!-- TODO:  -->
   </div>
 
   <div class="font-bold-2xl mt-5">{{ 'FORM.KEY_DATA' | translate }}</div>
