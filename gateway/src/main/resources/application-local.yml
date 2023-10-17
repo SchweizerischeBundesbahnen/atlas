@@ -52,3 +52,4 @@ gateway:
     service-point-directory: http://localhost:8088
     import-service-point: http://localhost:8090
     export-service-point: http://localhost:8092
+    prm-directory: http://localhost:8093

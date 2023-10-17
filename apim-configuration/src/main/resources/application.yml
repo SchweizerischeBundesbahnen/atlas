@@ -10,6 +10,7 @@ publishing:
         - export-service-point
         - user-administration
         - workflow
+        - prm-directory
     dev:
       exportDirectory: api-dev
       apis:
@@ -17,6 +18,7 @@ publishing:
         - business-organisation-directory
         - service-point-directory
         - export-service-point
+        - prm-directory
     test:
       exportDirectory: api-test
       apis:
@@ -24,6 +26,7 @@ publishing:
         - business-organisation-directory
         - service-point-directory
         - export-service-point
+        - prm-directory
     int:
       exportDirectory: api-int
       apis:
@@ -31,6 +34,7 @@ publishing:
         - business-organisation-directory
         - service-point-directory
         - export-service-point
+        - prm-directory
       excludePatterns:
         - export/batch
     prod:
@@ -40,6 +44,7 @@ publishing:
         - business-organisation-directory
         - service-point-directory
         - export-service-point
+        - prm-directory
       excludePatterns:
         - timetable-hearing
         - TimetableHearing

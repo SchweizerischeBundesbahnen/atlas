@@ -20,6 +20,8 @@ public class TrafficPointVersionCsvModel {
 
   private Integer number;
 
+  private Integer checkDigit;
+
   private String validFrom;
 
   private String validTo;

@@ -61,3 +61,7 @@ kafka:
       organisation:
         topic: atlas.business.organisation
         groupId: atlas.kafka.spdi.business.organisation.groupId
+    service:
+      point:
+        topic: atlas.service.point
+        groupId: atlas.kafka.spdi.service.point.groupId
