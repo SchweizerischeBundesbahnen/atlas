@@ -244,7 +244,6 @@ export class ServicePointFormGroupBuilder {
   static getWritableServicePoint(
     form: FormGroup<ServicePointDetailFormGroup>,
   ): CreateServicePointVersion {
-    // const value = form.getRawValue();
     const value = form.value;
 
     const writableForm: CreateServicePointVersion = {
