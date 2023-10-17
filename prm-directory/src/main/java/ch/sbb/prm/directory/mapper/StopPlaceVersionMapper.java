@@ -47,9 +47,6 @@ public class StopPlaceVersionMapper {
         .build();
   }
   public static StopPlaceVersion toEntity(CreateStopPlaceVersionModel model){
-    log.info("StopPlace"+ model);
-    log.info("StopPlace: "+ model.getMeansOfTransport());
-
     return StopPlaceVersion.builder()
         .id(model.getId())
         .sloid(model.getSloid())

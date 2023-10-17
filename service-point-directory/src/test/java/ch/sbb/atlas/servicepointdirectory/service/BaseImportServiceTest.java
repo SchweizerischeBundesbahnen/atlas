@@ -14,11 +14,11 @@ import org.junit.jupiter.api.Test;
 
 class BaseImportServiceTest {
 
-  private BaseImportService<ServicePointVersion> baseImportService;
+  private BaseImportServicePointDirectoryService<ServicePointVersion> baseImportService;
 
   @BeforeEach
   void setUp() {
-    baseImportService = new BaseImportService<>() {
+    baseImportService = new BaseImportServicePointDirectoryService<>() {
       @Override
       protected void save(ServicePointVersion element) {
         // not used

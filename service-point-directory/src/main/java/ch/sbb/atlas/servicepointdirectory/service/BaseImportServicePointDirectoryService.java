@@ -1,14 +1,14 @@
 package ch.sbb.atlas.servicepointdirectory.service;
 
-import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
-import ch.sbb.atlas.imports.servicepoint.ItemImportResult.ItemImportResultBuilder;
+import ch.sbb.atlas.imports.BaseImportService;
 import ch.sbb.atlas.servicepointdirectory.entity.BasePointVersion;
 import ch.sbb.atlas.versioning.model.Versionable;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public abstract class BaseImportService<T extends BasePointVersion<T> & Versionable> {
+public abstract class BaseImportServicePointDirectoryService<T extends BasePointVersion<T> & Versionable> extends
+    BaseImportService<T> {
 
   protected abstract void save(T element);
 
@@ -45,11 +45,6 @@ public abstract class BaseImportService<T extends BasePointVersion<T> & Versiona
     throw new IllegalStateException("cannot have geolocation");
   }
 
-  protected abstract ItemImportResult addInfoToItemImportResult(
-      ItemImportResultBuilder itemImportResultBuilder,
-      T element
-  );
-
   /**
    * In case we want to merge 2 or more versions from a CSV File (Import or "Massen Import") first we need to compare the
    * number of the found DB versions with the number of the versions present in the CSV File.
@@ -82,15 +77,6 @@ public abstract class BaseImportService<T extends BasePointVersion<T> & Versiona
     }
   }
 
-  protected ItemImportResult buildSuccessImportResult(T element) {
-    ItemImportResultBuilder successResultBuilder = ItemImportResult.successResultBuilder();
-    return addInfoToItemImportResult(successResultBuilder, element);
-  }
-
-  protected ItemImportResult buildFailedImportResult(T element, Exception exception) {
-    ItemImportResultBuilder failedResultBuilder = ItemImportResult.failedResultBuilder(exception);
-    return addInfoToItemImportResult(failedResultBuilder, element);
-  }
 
   private void updateMergedVersions(T csvVersion, List<T> dbVersionsFoundToBeReplaced) {
     log.info("The properties of the following versions: {}", dbVersionsFoundToBeReplaced);

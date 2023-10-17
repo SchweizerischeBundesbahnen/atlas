@@ -7,7 +7,7 @@ import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointElementCsvMode
 import ch.sbb.atlas.imports.util.ImportUtils;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
-import ch.sbb.atlas.servicepointdirectory.service.BaseImportService;
+import ch.sbb.atlas.servicepointdirectory.service.BaseImportServicePointDirectoryService;
 import ch.sbb.atlas.servicepointdirectory.service.BasePointUtility;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
 import ch.sbb.atlas.servicepointdirectory.service.ServicePointDistributor;
@@ -29,7 +29,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class TrafficPointElementImportService extends BaseImportService<TrafficPointElementVersion> {
+public class TrafficPointElementImportService extends BaseImportServicePointDirectoryService<TrafficPointElementVersion> {
 
   private final TrafficPointElementService trafficPointElementService;
   private final VersionableService versionableService;
