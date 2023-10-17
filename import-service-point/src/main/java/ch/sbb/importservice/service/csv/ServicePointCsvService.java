@@ -23,8 +23,13 @@ public class ServicePointCsvService extends CsvService<ServicePointCsvModel> {
   }
 
   @Override
-  protected String getFilePrefix() {
-    return FileHelperService.SERVICE_POINT_FILE_PREFIX;
+  protected CsvFileNameModel defineCsvFileName() {
+    return CsvFileNameModel.builder().fileName(FileHelperService.SERVICE_POINT_FILE_PREFIX).addDateToPostfix(true).build();
+  }
+
+  @Override
+  protected String getModifiedDateHeader() {
+    return EDITED_AT_COLUMN_NAME_SERVICE_POINT;
   }
 
   @Override

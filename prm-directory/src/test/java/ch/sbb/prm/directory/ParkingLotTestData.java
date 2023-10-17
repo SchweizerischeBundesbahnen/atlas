@@ -1,10 +1,10 @@
 package ch.sbb.prm.directory;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.prm.directory.controller.model.parkinglot.CreateParkingLotVersionModel;
+import ch.sbb.atlas.api.prm.model.parkinglot.CreateParkingLotVersionModel;
 import ch.sbb.prm.directory.entity.ParkingLotVersion;
 import ch.sbb.prm.directory.entity.ParkingLotVersion.ParkingLotVersionBuilder;
-import ch.sbb.prm.directory.enumeration.BooleanOptionalAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import java.time.LocalDate;
 import lombok.experimental.UtilityClass;
 

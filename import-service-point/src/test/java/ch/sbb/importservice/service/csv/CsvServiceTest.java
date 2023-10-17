@@ -36,8 +36,13 @@ import org.mockito.Mock;
     mocks = openMocks(this);
     csvService = new CsvService<>(fileHelperService, jobHelperService) {
       @Override
-      protected String getFilePrefix() {
-        return "TEST_FILE_PREFIX";
+      protected CsvFileNameModel defineCsvFileName() {
+        return CsvFileNameModel.builder().fileName("TEST_FILE_PREFIX").addDateToPostfix(true).build();
+      }
+
+      @Override
+      protected String getModifiedDateHeader() {
+        return EDITED_AT_COLUMN_NAME_SERVICE_POINT;
       }
 
       @Override

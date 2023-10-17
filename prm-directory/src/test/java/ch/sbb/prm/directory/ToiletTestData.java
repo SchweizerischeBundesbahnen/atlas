@@ -1,10 +1,10 @@
 package ch.sbb.prm.directory;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.prm.directory.controller.model.toilet.CreateToiletVersionModel;
+import ch.sbb.atlas.api.prm.model.toilet.CreateToiletVersionModel;
 import ch.sbb.prm.directory.entity.ToiletVersion;
 import ch.sbb.prm.directory.entity.ToiletVersion.ToiletVersionBuilder;
-import ch.sbb.prm.directory.enumeration.StandardAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import java.time.LocalDate;
 import lombok.experimental.UtilityClass;
 
