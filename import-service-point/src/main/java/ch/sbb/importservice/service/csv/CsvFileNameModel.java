@@ -8,7 +8,11 @@ import lombok.Data;
 @Builder
 public class CsvFileNameModel {
 
+  public static final String SERVICEPOINT_DIDOK_DIR_NAME = "servicepoint_didok";
+  public static final String PRM_DIR_NAME = "opendata_didok";
+
   private final String fileName;
+  private final String s3BucketDir;
   private final boolean addDateToPostfix;
 
   private String getFileNameWithTodayDate(String csvImportFilePrefix) {
