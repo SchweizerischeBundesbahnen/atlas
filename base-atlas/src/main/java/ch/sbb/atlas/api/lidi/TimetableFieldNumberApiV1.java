@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@Tag(name = "Timetable field numbers")
+@Tag(name = "TTFN - Timetable Field Numbers")
 @RequestMapping("v1/field-numbers")
 public interface TimetableFieldNumberApiV1 {
 
