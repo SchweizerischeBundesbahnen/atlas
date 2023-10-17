@@ -14,6 +14,7 @@ import java.io.File;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -59,6 +60,9 @@ public class PRMImportBatchConfig {
     }
     final List<StopPlaceCsvModelContainer> stopPlaceCsvModelContainers =
         stopPlaceCsvService.mapToStopPlaceCsvModelContainers(actualStopPlaceCsvModels);
+    long prunedStopPlaceModels = stopPlaceCsvModelContainers.stream()
+        .collect(Collectors.summarizingInt(value -> value.getCreateStopPlaceVersionModels().size())).getSum();
+    log.info("Found " + prunedStopPlaceModels + " stopPlaces to import...");
     log.info("Start sending requests to service-point-directory with chunkSize: {}...", PRM_CHUNK_SIZE);
     return new ThreadSafeListItemReader<>(Collections.synchronizedList(stopPlaceCsvModelContainers));
   }
