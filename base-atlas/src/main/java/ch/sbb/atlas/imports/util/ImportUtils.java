@@ -1,9 +1,12 @@
 package ch.sbb.atlas.imports.util;
 
 import ch.sbb.atlas.versioning.model.Versionable;
+import java.time.LocalDate;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -51,6 +54,20 @@ public class ImportUtils {
     }
 
     return currentVersionMatch.orElseThrow(() -> new RuntimeException("Not found current point version"));
+  }
+
+  public <T extends Versionable> List<T> findVersionsExactlyIncludedBetweenEditedValidFromAndEditedValidTo(
+      LocalDate editedValidFrom, LocalDate editedValidTo, List<T> versions) {
+    List<T> collected = versions.stream()
+        .filter(toVersioning -> !toVersioning.getValidFrom().isAfter(editedValidTo))
+        .filter(toVersioning -> !toVersioning.getValidTo().isBefore(editedValidFrom))
+        .collect(Collectors.toList());
+    if (!collected.isEmpty() &&
+        (collected.get(0).getValidFrom().equals(editedValidFrom) && collected.get(collected.size() - 1).getValidTo()
+            .equals(editedValidTo))) {
+      return collected;
+    }
+    return Collections.emptyList();
   }
 
 }
