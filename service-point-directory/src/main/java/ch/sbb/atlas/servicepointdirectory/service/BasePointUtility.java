@@ -2,13 +2,9 @@ package ch.sbb.atlas.servicepointdirectory.service;
 
 import ch.sbb.atlas.servicepointdirectory.entity.BaseDidokImportEntity;
 import ch.sbb.atlas.versioning.model.Property;
-import ch.sbb.atlas.versioning.model.Versionable;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.model.VersioningAction;
-import java.time.LocalDate;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -64,20 +60,6 @@ public class BasePointUtility {
       editionDate.setValue(version.getEditionDate());
       editor.setValue(version.getEditor());
     });
-  }
-
-  public <T extends Versionable> List<T> findVersionsExactlyIncludedBetweenEditedValidFromAndEditedValidTo(
-      LocalDate editedValidFrom, LocalDate editedValidTo, List<T> versions) {
-    List<T> collected = versions.stream()
-        .filter(toVersioning -> !toVersioning.getValidFrom().isAfter(editedValidTo))
-        .filter(toVersioning -> !toVersioning.getValidTo().isBefore(editedValidFrom))
-        .collect(Collectors.toList());
-    if (!collected.isEmpty() &&
-        (collected.get(0).getValidFrom().equals(editedValidFrom) && collected.get(collected.size() - 1).getValidTo()
-            .equals(editedValidTo))) {
-      return collected;
-    }
-    return Collections.emptyList();
   }
 
   private Property getPropertyFromFieldOnVersionedObject(String fieldName, VersionedObject versionedObject) {

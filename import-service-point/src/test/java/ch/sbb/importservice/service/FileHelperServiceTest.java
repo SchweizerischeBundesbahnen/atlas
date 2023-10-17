@@ -11,7 +11,6 @@ import ch.sbb.atlas.amazon.service.AmazonBucket;
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.amazon.service.FileService;
 import java.io.File;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -39,44 +38,44 @@ import org.mockito.Mock;
   void shouldNotFoundFileToDownload() {
     //given
     String today = LocalDate.now().toString().replaceAll("-", "");
-    when(amazonService.getS3ObjectKeysFromPrefix(eq(AmazonBucket.EXPORT), eq("servicepoint_didok"), eq("PREFIX_" + today))).thenReturn(
+    when(amazonService.getS3ObjectKeysFromPrefix(eq(AmazonBucket.EXPORT), eq("servicepoint_didok"), eq("PREFIX_FILE"))).thenReturn(
         Collections.emptyList());
 
     //when & then
     String exMessage =
         assertThrows(RuntimeException.class,
-            () -> fileHelperService.downloadImportFileFromS3("PREFIX_")).getLocalizedMessage();
-    verify(amazonService).getS3ObjectKeysFromPrefix(eq(AmazonBucket.EXPORT), eq("servicepoint_didok"), eq("PREFIX_" + today));
-    assertThat(exMessage).isEqualTo("[IMPORT]: File PREFIX_" + today + " not found on S3");
+            () -> fileHelperService.downloadImportFileFromS3("PREFIX_FILE")).getLocalizedMessage();
+    verify(amazonService).getS3ObjectKeysFromPrefix(eq(AmazonBucket.EXPORT), eq("servicepoint_didok"), eq("PREFIX_FILE"));
+    assertThat(exMessage).isEqualTo("[IMPORT]: File PREFIX_FILE not found on S3");
   }
 
   @Test
   void shouldFindMoreThanOneFileToDownload() {
     //given
     String today = LocalDate.now().toString().replaceAll("-", "");
-    when(amazonService.getS3ObjectKeysFromPrefix(eq(AmazonBucket.EXPORT), eq("servicepoint_didok"), eq("PREFIX_" + today)))
+    when(amazonService.getS3ObjectKeysFromPrefix(eq(AmazonBucket.EXPORT), eq("servicepoint_didok"), eq("PREFIX_FILE")))
         .thenReturn(List.of("file1", "file2"));
 
     //when & then
     String exMessage =
         assertThrows(RuntimeException.class,
-            () -> fileHelperService.downloadImportFileFromS3("PREFIX_")).getLocalizedMessage();
-    verify(amazonService).getS3ObjectKeysFromPrefix(eq(AmazonBucket.EXPORT), eq("servicepoint_didok"), eq("PREFIX_" + today));
-    assertThat(exMessage).isEqualTo("[IMPORT]: Found more than 1 file PREFIX_" + today + " to download on S3");
+            () -> fileHelperService.downloadImportFileFromS3("PREFIX_FILE")).getLocalizedMessage();
+    verify(amazonService).getS3ObjectKeysFromPrefix(eq(AmazonBucket.EXPORT), eq("servicepoint_didok"), eq("PREFIX_FILE"));
+    assertThat(exMessage).isEqualTo("[IMPORT]: Found more than 1 file PREFIX_FILE to download on S3");
   }
 
   @Test
-  void shouldDownloadJustOneFile() throws IOException {
+  void shouldDownloadJustOneFile() {
     //given
     String today = LocalDate.now().toString().replaceAll("-", "");
-    when(amazonService.getS3ObjectKeysFromPrefix(eq(AmazonBucket.EXPORT), eq("servicepoint_didok"), eq("PREFIX_" + today))).thenReturn(List.of("file"));
+    when(amazonService.getS3ObjectKeysFromPrefix(eq(AmazonBucket.EXPORT), eq("servicepoint_didok"), eq("PREFIX_FILE"))).thenReturn(List.of("file"));
     when(amazonService.pullFile(eq(AmazonBucket.EXPORT), eq("file"))).thenReturn(new File("file"));
 
     //when
-    File file = fileHelperService.downloadImportFileFromS3("PREFIX_");
+    File file = fileHelperService.downloadImportFileFromS3("PREFIX_FILE");
 
     //then
-    verify(amazonService).getS3ObjectKeysFromPrefix(eq(AmazonBucket.EXPORT), eq("servicepoint_didok"), eq("PREFIX_" + today));
+    verify(amazonService).getS3ObjectKeysFromPrefix(eq(AmazonBucket.EXPORT), eq("servicepoint_didok"), eq("PREFIX_FILE"));
     verify(amazonService).pullFile(eq(AmazonBucket.EXPORT), eq("file"));
     assertThat(file.getName()).isEqualTo("file");
   }
