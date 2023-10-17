@@ -26,6 +26,7 @@ This is the repository for business relevant services for ATLAS.
   * [Workflow](#workflow)
   * [User Administration](#user-administration)
   * [Service-Point-Directory](#service-point-directory)
+  * [Prm-Directory](#prm-directory)
   * [Import Service-Point](#import-service-point)
   * [Base Service lib](#base-service-lib)
   * [Frontend](#frontend)
@@ -34,10 +35,14 @@ This is the repository for business relevant services for ATLAS.
 <!-- tocstop -->
 
 Tekton CI/CD
-Status: [![Build Status](https://esta-tekton-controller-atlas-tekton.sbb-cloud.net/api/status/icon/ki-atlas--atlas/build)](https://tekton-control-panel-atlas-tekton.sbb-cloud.net/projects/KI_ATLAS/repositories/atlas)
+Status: [![Build Status](https://esta-tekton-controller-atlas-tekton.sbb-cloud.net/api/status/icon/KI_ATLAS/atlas/build)](https://tekton-control-panel-atlas-tekton.sbb-cloud.net/projects/KI_ATLAS/repositories/atlas)
 
-Quality
-Gate: [![Quality Gate Status](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb.atlas%3Aatlas&metric=alert_status)](https://codequality.sbb.ch/dashboard?id=ch.sbb.atlas%3Aatlas)
+SonarQube:
+[![Quality Gate Status](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb.atlas%3Aatlas&metric=alert_status&token=sqb_ec605dab116926bc9d32354da827978de8b35214)](https://codequality.sbb.ch/dashboard?id=ch.sbb.atlas%3Aatlas)
+[![Maintainability Rating](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb.atlas%3Aatlas&metric=sqale_rating&token=sqb_ec605dab116926bc9d32354da827978de8b35214)](https://codequality.sbb.ch/dashboard?id=ch.sbb.atlas%3Aatlas)
+[![Vulnerabilities](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb.atlas%3Aatlas&metric=vulnerabilities&token=sqb_ec605dab116926bc9d32354da827978de8b35214)](https://codequality.sbb.ch/dashboard?id=ch.sbb.atlas%3Aatlas)
+[![Technical Debt](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb.atlas%3Aatlas&metric=sqale_index&token=sqb_ec605dab116926bc9d32354da827978de8b35214)](https://codequality.sbb.ch/dashboard?id=ch.sbb.atlas%3Aatlas)
+[![Coverage](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb.atlas%3Aatlas&metric=coverage&token=sqb_ec605dab116926bc9d32354da827978de8b35214)](https://codequality.sbb.ch/dashboard?id=ch.sbb.atlas%3Aatlas)
 
 ## Big Picture
 
@@ -223,6 +228,12 @@ See [UserAdministration Documentation](user-administration/README.md) for more.
 Business service for `ServicePoints`, `TrafficPointElements` and `LoadingPoints`. All of these business objects use the atlas own
 versioning.
 See [Service-Point-Directory documentation](service-point-directory/README.md);
+
+### Prm-Directory
+
+Business service for PRM (Person with Reduced Mobility) Data. All of these business objects use the atlas own
+versioning.
+See [Prm-Directory documentation](prm-directory/README.md);
 
 ### Import Service-Point
 
