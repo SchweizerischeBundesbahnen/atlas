@@ -8,6 +8,7 @@ import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.prm.directory.api.StopPlaceApiV1;
 import ch.sbb.prm.directory.entity.StopPlaceVersion;
 import ch.sbb.prm.directory.mapper.StopPlaceVersionMapper;
+import ch.sbb.prm.directory.service.StopPlaceImportService;
 import ch.sbb.prm.directory.service.StopPlaceService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class StopPlaceController implements StopPlaceApiV1 {
 
   private final StopPlaceService stopPlaceService;
+  private final StopPlaceImportService stopPlaceImportService;
 
   @Override
   public List<ReadStopPlaceVersionModel> getAllStopPaces() {
@@ -47,7 +49,7 @@ public class StopPlaceController implements StopPlaceApiV1 {
 
   @Override
   public List<ItemImportResult> importServicePoints(StopPlaceImportRequestModel importRequestModel) {
-    return stopPlaceService.importServicePoints(importRequestModel.getStopPlaceCsvModelContainers());
+    return stopPlaceImportService.importServicePoints(importRequestModel.getStopPlaceCsvModelContainers());
   }
 
 }

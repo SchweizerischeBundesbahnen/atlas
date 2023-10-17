@@ -7,7 +7,7 @@ import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointCsvModelContai
 import ch.sbb.atlas.imports.util.ImportUtils;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
-import ch.sbb.atlas.servicepointdirectory.service.BaseImportService;
+import ch.sbb.atlas.servicepointdirectory.service.BaseImportServicePointDirectoryService;
 import ch.sbb.atlas.servicepointdirectory.service.BasePointUtility;
 import ch.sbb.atlas.servicepointdirectory.service.BeanCopyUtil;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class LoadingPointImportService extends BaseImportService<LoadingPointVersion> {
+public class LoadingPointImportService extends BaseImportServicePointDirectoryService<LoadingPointVersion> {
 
   private final LoadingPointService loadingPointService;
   private final VersionableService versionableService;
