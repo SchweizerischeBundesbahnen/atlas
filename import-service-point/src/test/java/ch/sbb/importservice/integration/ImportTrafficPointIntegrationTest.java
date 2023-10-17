@@ -1,5 +1,6 @@
 package ch.sbb.importservice.integration;
 
+import static ch.sbb.importservice.service.csv.CsvFileNameModel.SERVICEPOINT_DIDOK_DIR_NAME;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_BATCH_PARAMETER;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_TYPE_PARAMETER;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.FULL_PATH_FILENAME_JOB_PARAMETER;
@@ -16,6 +17,7 @@ import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.importservice.client.SePoDiClient;
 import ch.sbb.importservice.service.FileHelperService;
 import ch.sbb.importservice.service.MailProducerService;
+import ch.sbb.importservice.service.csv.CsvFileNameModel;
 import ch.sbb.importservice.service.csv.TrafficPointCsvService;
 import java.io.File;
 import java.util.List;
@@ -59,6 +61,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
   @MockBean
   private MailProducerService mailProducerService;
 
+  private final CsvFileNameModel csvFileNameModel = CsvFileNameModel.builder()
+      .fileName(TrafficPointCsvService.TRAFFIC_POINT_FILE_PREFIX)
+      .s3BucketDir(SERVICEPOINT_DIDOK_DIR_NAME)
+      .addDateToPostfix(true)
+      .build();
+
   @Test
   void shouldExecuteImportTrafficPointJobFromGivenFile()
       throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException,
@@ -89,7 +97,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
       JobRestartException {
     // given
     File file = new File(this.getClass().getClassLoader().getResource("VERKEHRSPUNKTELEMENTE_IMPORT.csv").getFile());
-    when(fileHelperService.downloadImportFileFromS3("DIDOK3_VERKEHRSPUNKTELEMENTE_ALL_V_1_")).thenReturn(file);
+    when(fileHelperService.downloadImportFileFromS3(csvFileNameModel)).thenReturn(file);
     doNothing().when(mailProducerService).produceMailNotification(any());
     when(sePoDiClient.postTrafficPointsImport(any())).thenReturn(List.of());
 

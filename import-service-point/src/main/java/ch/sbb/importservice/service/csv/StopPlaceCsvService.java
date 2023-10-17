@@ -1,5 +1,6 @@
 package ch.sbb.importservice.service.csv;
 
+import static ch.sbb.importservice.service.csv.CsvFileNameModel.PRM_DIR_NAME;
 import static java.util.Comparator.comparing;
 
 import ch.sbb.atlas.imports.prm.BasePrmCsvModel;
@@ -30,8 +31,12 @@ public class StopPlaceCsvService extends CsvService<StopPlaceCsvModel> {
   }
 
   @Override
-  protected CsvFileNameModel defineCsvFileName() {
-    return CsvFileNameModel.builder().fileName(PRM_STOP_PLACES_FILE_NAME).addDateToPostfix(true).build();
+  protected CsvFileNameModel csvFileNameModel() {
+    return CsvFileNameModel.builder()
+        .fileName(PRM_STOP_PLACES_FILE_NAME)
+        .s3BucketDir(PRM_DIR_NAME)
+        .addDateToPostfix(false)
+        .build();
   }
 
   @Override
