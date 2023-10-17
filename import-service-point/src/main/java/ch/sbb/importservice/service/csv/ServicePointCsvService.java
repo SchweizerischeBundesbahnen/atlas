@@ -1,5 +1,7 @@
 package ch.sbb.importservice.service.csv;
 
+import static ch.sbb.importservice.service.csv.CsvFileNameModel.SERVICEPOINT_DIDOK_DIR_NAME;
+
 import ch.sbb.atlas.imports.servicepoint.BaseDidokCsvModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
@@ -18,13 +20,19 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class ServicePointCsvService extends CsvService<ServicePointCsvModel> {
 
+  public static final String SERVICE_POINT_FILE_PREFIX = "DIDOK3_DIENSTSTELLEN_ALL_V_3_";
+
   protected ServicePointCsvService(FileHelperService fileHelperService, JobHelperService jobHelperService) {
     super(fileHelperService, jobHelperService);
   }
 
   @Override
-  protected CsvFileNameModel defineCsvFileName() {
-    return CsvFileNameModel.builder().fileName(FileHelperService.SERVICE_POINT_FILE_PREFIX).addDateToPostfix(true).build();
+  protected CsvFileNameModel csvFileNameModel() {
+    return CsvFileNameModel.builder()
+        .fileName(SERVICE_POINT_FILE_PREFIX)
+        .s3BucketDir(SERVICEPOINT_DIDOK_DIR_NAME)
+        .addDateToPostfix(true)
+        .build();
   }
 
   @Override

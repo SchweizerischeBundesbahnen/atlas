@@ -18,7 +18,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
- class CsvServiceTest {
+class CsvServiceTest {
 
   private CsvService<ServicePointCsvModel> csvService;
 
@@ -35,8 +35,11 @@ import org.mockito.Mock;
     mocks = openMocks(this);
     csvService = new CsvService<>(fileHelperService, jobHelperService) {
       @Override
-      protected CsvFileNameModel defineCsvFileName() {
-        return CsvFileNameModel.builder().fileName("TEST_FILE_PREFIX").addDateToPostfix(true).build();
+      protected CsvFileNameModel csvFileNameModel() {
+        return CsvFileNameModel.builder().fileName("TEST_FILE_PREFIX")
+            .s3BucketDir(ServicePointCsvService.SERVICE_POINT_FILE_PREFIX)
+            .addDateToPostfix(true)
+            .build();
       }
 
       @Override
@@ -57,7 +60,7 @@ import org.mockito.Mock;
   }
 
   @Test
-   void shouldGetActualCsvModelsFromS3() {
+  void shouldGetActualCsvModelsFromS3() {
     //given
     LocalDate date = LocalDate.of(2022, 2, 21);
     File csvFile = new File(this.getClass().getClassLoader().getResource("DIENSTSTELLEN_V3_IMPORT.csv").getFile());
@@ -71,14 +74,14 @@ import org.mockito.Mock;
   }
 
   @Test
-   void shouldGetActualCsvModels() {
+  void shouldGetActualCsvModels() {
     //given
     File csvFile = new File(this.getClass().getClassLoader().getResource("DIENSTSTELLEN_V3_IMPORT.csv").getFile());
     //when
     List<ServicePointCsvModel> result = csvService.getActualCsvModels(csvFile);
     //then
     assertThat(result).hasSize(0);
-    verify(fileHelperService, times(0)).downloadImportFileFromS3("TEST_FILE_PREFIX");
+    verify(fileHelperService, times(0)).downloadImportFileFromS3(csvService.csvFileNameModel());
   }
 
   @Test
