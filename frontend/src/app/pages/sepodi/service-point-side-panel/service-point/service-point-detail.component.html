@@ -259,6 +259,7 @@
   >
     <div class="me-5">
       <mat-checkbox
+        (change)="setOperatingPointRouteNetwork($event)"
         formControlName="operatingPointRouteNetwork"
         data-cy="operatingPointRouteNetwork"
       >
@@ -266,13 +267,19 @@
       </mat-checkbox>
     </div>
     <div class="me-5">
-      <mat-checkbox formControlName="operatingPointKilometer" data-cy="operatingPointKilometer">
+      <mat-checkbox
+        (change)="setOperatingPointKilometer($event)"
+        [disabled]="form.controls.operatingPointRouteNetwork.value!"
+        formControlName="operatingPointKilometer"
+        data-cy="operatingPointKilometer"
+      >
         {{ 'SEPODI.SERVICE_POINTS.OPERATING_POINT_KILOMETER' | translate }}
       </mat-checkbox>
     </div>
 
     <div class="ps-2 col-3">
       <service-point-search
+        [disabled]="form.disabled || form.controls.operatingPointRouteNetwork.value!"
         class="mt-3 col-12"
         [formGroup]="form"
         controlName="operatingPointKilometerMaster"
