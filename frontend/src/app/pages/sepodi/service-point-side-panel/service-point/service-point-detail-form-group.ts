@@ -117,7 +117,7 @@ export class ServicePointFormGroupBuilder {
       [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
     );
     this.initConditionalValidators(formGroup);
-    this.initOperationgPoint(formGroup);
+    // this.initOperationgPoint(formGroup);
     return formGroup;
   }
 
@@ -245,7 +245,8 @@ export class ServicePointFormGroupBuilder {
   static getWritableServicePoint(
     form: FormGroup<ServicePointDetailFormGroup>,
   ): CreateServicePointVersion {
-    const value = form.getRawValue();
+    // const value = form.getRawValue();
+    const value = form.value;
 
     const writableForm: CreateServicePointVersion = {
       numberWithoutCheckDigit: value.number!,
