@@ -1,10 +1,10 @@
 package ch.sbb.prm.directory.service;
 
-import ch.sbb.atlas.imports.BaseImportService;
 import ch.sbb.atlas.imports.prm.stopplace.StopPlaceCsvModelContainer;
 import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.ItemImportResult.ItemImportResultBuilder;
 import ch.sbb.atlas.imports.util.ImportUtils;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
 import ch.sbb.atlas.versioning.model.VersionedObject;
@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Service
 @Transactional
-public class StopPlaceImportService extends BaseImportService<StopPlaceVersion> {
+public class StopPlaceImportService extends BasePrmImportService<StopPlaceVersion> {
 
   private final StopPlaceRepository stopPlaceRepository;
   private final StopPlaceService stopPlaceService;
@@ -55,10 +55,11 @@ public class StopPlaceImportService extends BaseImportService<StopPlaceVersion> 
   public List<ItemImportResult> importServicePoints(@NotNull @NotEmpty List<StopPlaceCsvModelContainer> csvModelContainers) {
     List<ItemImportResult> importResults = new ArrayList<>();
     for (StopPlaceCsvModelContainer container : csvModelContainers) {
-
       List<StopPlaceVersion> stopPlaceVersions =
           container.getCreateStopPlaceVersionModels().stream().map(StopPlaceVersionMapper::toEntity).toList();
-
+      List<StopPlaceVersion> dbVersions = stopPlaceService.findAllByNumberOrderByValidFrom(
+          ServicePointNumber.ofNumberWithoutCheckDigit(container.getDidokCode()));
+      replaceCsvMergedVersions(dbVersions,stopPlaceVersions);
       for (StopPlaceVersion stopPlaceVersion : stopPlaceVersions) {
         boolean stopPlaceExistsByNumber = stopPlaceRepository.existsByNumber(stopPlaceVersion.getNumber());
         ItemImportResult itemImportResult;
