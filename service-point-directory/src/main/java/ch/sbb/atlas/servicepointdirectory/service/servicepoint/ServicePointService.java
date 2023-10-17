@@ -88,16 +88,12 @@ public class ServicePointService {
 
   public ServicePointVersion updateServicePointVersion(ServicePointVersion currentVersion, ServicePointVersion editedVersion) {
 
-
-
-
     servicePointVersionRepository.incrementVersion(currentVersion.getNumber());
     if (editedVersion.getVersion() != null && !currentVersion.getVersion().equals(editedVersion.getVersion())) {
       throw new StaleObjectStateException(ServicePointVersion.class.getSimpleName(), "version");
     }
     editedVersion.setNumber(currentVersion.getNumber());
     editedVersion.setSloid(currentVersion.getSloid());
-
 
     List<ServicePointVersion> existingDbVersions = findAllByNumberOrderByValidFrom(currentVersion.getNumber());
     List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion,
@@ -106,7 +102,6 @@ public class ServicePointService {
         this::save, new ApplyVersioningDeleteByIdLongConsumer(servicePointVersionRepository));
     return currentVersion;
   }
-
 
   public boolean isAbbrevitionUnique (String abbreviation, Optional<Long> id){
    return servicePointVersionRepository.findServicePointVersionByAbbreviation(abbreviation)
