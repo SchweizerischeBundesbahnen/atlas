@@ -1,0 +1,9 @@
+{
+  "name": "atlas.int.service.point",
+  "replicas": 3,
+  "partitions": 1,
+  "configs": {
+    "cleanup.policy": "delete",
+    "min.insync.replicas": "2"
+  }
+}

@@ -11,6 +11,7 @@ import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointRequestParams;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchRequest;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchResult;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -31,7 +32,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@Tag(name = "ServicePoints")
+@Tag(name = "SePoDi - Service Points")
 @RequestMapping("v1/service-points")
 public interface ServicePointApiV1 {
 
@@ -41,6 +42,7 @@ public interface ServicePointApiV1 {
       {ServicePointVersion.Fields.number,
           ServicePointVersion.Fields.validFrom}) Pageable pageable,
       @Valid @ParameterObject ServicePointRequestParams servicePointRequestParams);
+
   @PostMapping("search")
   List<ServicePointSearchResult> searchServicePoints(@RequestBody ServicePointSearchRequest value);
 
@@ -73,4 +75,9 @@ public interface ServicePointApiV1 {
       + ".ApplicationType).SEPODI)")
   ServicePointFotCommentModel saveFotComment(@PathVariable Integer servicePointNumber,
       @Valid @RequestBody ServicePointFotCommentModel fotComment);
+
+  @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
+  @PostMapping("/sync-service-points")
+  @Operation(description = "Write all Service Points to kafka again for redistribution")
+  void syncServicePoints();
 }
