@@ -1,6 +1,8 @@
 package ch.sbb.atlas.servicepointdirectory.service;
 
 import ch.sbb.atlas.imports.BaseImportService;
+import ch.sbb.atlas.imports.util.BeanCopyUtil;
+import ch.sbb.atlas.imports.util.ImportUtils;
 import ch.sbb.atlas.servicepointdirectory.entity.BasePointVersion;
 import ch.sbb.atlas.versioning.model.Versionable;
 import java.util.List;
@@ -67,7 +69,7 @@ public abstract class BaseImportServicePointDirectoryService<T extends BasePoint
           "The CSV versions are less than the versions stored in the DB. A merge may have taken place...");
       for (T csvVersion : csvVersions) {
         List<T> dbVersionsFoundToBeReplaced =
-            BasePointUtility.findVersionsExactlyIncludedBetweenEditedValidFromAndEditedValidTo(csvVersion.getValidFrom(),
+            ImportUtils.findVersionsExactlyIncludedBetweenEditedValidFromAndEditedValidTo(csvVersion.getValidFrom(),
                 csvVersion.getValidTo(),
                 dbVersions);
         if (!dbVersionsFoundToBeReplaced.isEmpty()) {
