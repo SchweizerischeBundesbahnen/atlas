@@ -3,7 +3,10 @@
     {{ label | translate }}
   </mat-label>
   <atlas-spacer *ngIf="label" height="3px"></atlas-spacer>
-  <atlas-spacer *ngIf="additionalLabelspace" height="30px"></atlas-spacer>
+  <atlas-spacer
+    *ngIf="additionalLabelspace"
+    height="{{ additionalLabelspace + 'px' }}"
+  ></atlas-spacer>
   <mat-select
     class="atlas-select-dropdown"
     (selectionChange)="selectChanged.emit($event)"

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@Tag(name = "PRM - Person with Reduced Mobility")
+@Tag(name = "Person with Reduced Mobility")
 @RequestMapping("v1/ticket-counters")
 public interface TicketCounterApiV1 {
 
@@ -23,7 +23,8 @@ public interface TicketCounterApiV1 {
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
-  ReadTicketCounterVersionModel createTicketCounter(@RequestBody @Valid CreateTicketCounterVersionModel ticketCounterVersionModel);
+  ReadTicketCounterVersionModel createTicketCounter(
+      @RequestBody @Valid CreateTicketCounterVersionModel ticketCounterVersionModel);
 
   @ResponseStatus(HttpStatus.OK)
   @PutMapping(path = "{id}")

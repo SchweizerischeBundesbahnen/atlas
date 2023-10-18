@@ -7,10 +7,10 @@ import { debounceTime, merge, Subject, Subscription, take } from 'rxjs';
 import {
   Category,
   CoordinatePair,
-  GeoDataService,
   OperatingPointTechnicalTimetableType,
   OperatingPointType,
   ReadServicePointVersion,
+  ServicePointsService,
   SpatialReference,
   StopPointType,
 } from '../../../api';
@@ -74,7 +74,7 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly translationSortingService: TranslationSortingService,
-    private readonly geoDataService: GeoDataService,
+    private readonly servicePointsService: ServicePointsService,
     private readonly dialogService: DialogService,
   ) {}
 
@@ -160,7 +160,7 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
             ),
         ),
         switchMap(() =>
-          this.geoDataService.getLocationInformation({
+          this.servicePointsService.getLocationInformation({
             east: geolocationControls.east.value!,
             north: geolocationControls.north.value!,
             spatialReference: geolocationControls.spatialReference.value!,
