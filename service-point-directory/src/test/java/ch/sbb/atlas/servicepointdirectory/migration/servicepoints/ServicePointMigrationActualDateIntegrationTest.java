@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.migration.CsvReader;
-import ch.sbb.atlas.servicepointdirectory.migration.DateRange;
+import ch.sbb.atlas.model.DateRange;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;

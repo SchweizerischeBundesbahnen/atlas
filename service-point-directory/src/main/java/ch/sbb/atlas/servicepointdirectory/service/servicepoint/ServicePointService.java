@@ -34,6 +34,7 @@ public class ServicePointService {
   private final VersionableService versionableService;
   private final ServicePointValidationService servicePointValidationService;
   private final ServicePointSearchVersionRepository servicePointSearchVersionRepository;
+  private final ServicePointTerminationService servicePointTerminationService;
 
   public List<ServicePointSearchResult> searchServicePointVersion(String value){
     List<ServicePointSearchResult> servicePointSearchResults = servicePointSearchVersionRepository.searchServicePoints(value);
@@ -81,10 +82,10 @@ public class ServicePointService {
           + "#currentVersions, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
   public void update(ServicePointVersion currentVersion, ServicePointVersion editedVersion,
       List<ServicePointVersion> currentVersions) {
-    updateServicePointVersion(currentVersion, editedVersion);
+    updateServicePointVersion(currentVersion, editedVersion, currentVersions);
   }
 
-  public ServicePointVersion updateServicePointVersion(ServicePointVersion currentVersion, ServicePointVersion editedVersion) {
+  public ServicePointVersion updateServicePointVersion(ServicePointVersion currentVersion, ServicePointVersion editedVersion, List<ServicePointVersion> currentVersions) {
     servicePointVersionRepository.incrementVersion(currentVersion.getNumber());
     if (editedVersion.getVersion() != null && !currentVersion.getVersion().equals(editedVersion.getVersion())) {
       throw new StaleObjectStateException(ServicePointVersion.class.getSimpleName(), "version");
@@ -95,6 +96,8 @@ public class ServicePointService {
     List<ServicePointVersion> existingDbVersions = findAllByNumberOrderByValidFrom(currentVersion.getNumber());
     List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion,
         editedVersion, existingDbVersions);
+
+    servicePointTerminationService.checkTerminationAllowed(editedVersion, currentVersions, versionedObjects);
     versionableService.applyVersioning(ServicePointVersion.class, versionedObjects,
         this::save, new ApplyVersioningDeleteByIdLongConsumer(servicePointVersionRepository));
     return currentVersion;
