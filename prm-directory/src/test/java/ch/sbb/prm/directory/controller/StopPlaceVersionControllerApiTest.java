@@ -8,10 +8,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.atlas.api.prm.model.stopplace.CreateStopPlaceVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.prm.directory.StopPlaceTestData;
-import ch.sbb.atlas.api.prm.model.stopplace.CreateStopPlaceVersionModel;
 import ch.sbb.prm.directory.entity.StopPlaceVersion;
 import ch.sbb.prm.directory.repository.StopPlaceRepository;
 import ch.sbb.prm.directory.service.SharedServicePointService;
@@ -81,14 +81,14 @@ class StopPlaceVersionControllerApiTest extends BaseControllerApiTest {
     editedVersionModel.setAlternativeTransport(version2.getAlternativeTransport());
     editedVersionModel.setAlternativeTransportCondition(version2.getAlternativeTransportCondition());
     editedVersionModel.setAssistanceAvailability(version2.getAssistanceAvailability());
-    editedVersionModel.setAlternativeCondition(version2.getAlternativeCondition());
+    editedVersionModel.setAssistanceCondition(version2.getAssistanceCondition());
     editedVersionModel.setAssistanceService(version2.getAssistanceService());
     editedVersionModel.setAudioTicketMachine(version2.getAudioTicketMachine());
-    editedVersionModel.setAdditionalInfo(version2.getAdditionalInfo());
+    editedVersionModel.setAdditionalInformation(version2.getAdditionalInformation());
     editedVersionModel.setDynamicAudioSystem(version2.getDynamicAudioSystem());
     editedVersionModel.setDynamicOpticSystem(version2.getDynamicOpticSystem());
     editedVersionModel.setInfoTicketMachine(version2.getInfoTicketMachine());
-    editedVersionModel.setAdditionalInfo(version2.getAdditionalInfo());
+    editedVersionModel.setAdditionalInformation(version2.getAdditionalInformation());
     editedVersionModel.setInteroperable(version2.isInteroperable());
     editedVersionModel.setUrl(version2.getUrl());
     editedVersionModel.setVisualInfo(version2.getVisualInfo());

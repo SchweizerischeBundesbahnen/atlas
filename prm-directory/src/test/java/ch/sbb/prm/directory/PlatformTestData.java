@@ -4,16 +4,16 @@ import static ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType.ACOU
 import static ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType.ELECTRONIC_VISUAL_INFORMATION_COMPLETE;
 import static ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType.TEXT_TO_SPEECH_DEPARTURES;
 
-import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.atlas.api.prm.model.platform.CreatePlatformVersionModel;
-import ch.sbb.prm.directory.entity.PlatformVersion;
-import ch.sbb.prm.directory.entity.PlatformVersion.PlatformVersionBuilder;
 import ch.sbb.atlas.api.prm.enumeration.BasicAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
+import ch.sbb.atlas.api.prm.model.platform.CreatePlatformVersionModel;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.prm.directory.entity.PlatformVersion;
+import ch.sbb.prm.directory.entity.PlatformVersion.PlatformVersionBuilder;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
@@ -62,7 +62,7 @@ public class PlatformTestData {
         .contrastingAreas(BooleanOptionalAttributeType.YES)
         .dynamicAudio(BasicAttributeType.NOT_APPLICABLE)
         .dynamicVisual(BasicAttributeType.TO_BE_COMPLETED)
-        .additionalInfo("additional info")
+        .additionalInformation("additional info")
         .height(123.12)
         .inclination(123.12)
         .inclinationLongitudinal(123.12)
@@ -87,7 +87,7 @@ public class PlatformTestData {
         .validTo(LocalDate.of(2000, 12, 31))
         .parentServicePointSloid("ch:1.sloid:12345")
         .boardingDevice(BoardingDeviceAttributeType.LIFTS)
-        .additionalInfo("additional")
+        .additionalInformation("additional")
         .adviceAccessInfo("Access Information Advice")
         .contrastingAreas(BooleanOptionalAttributeType.YES)
         .dynamicAudio(BasicAttributeType.NOT_APPLICABLE)
@@ -113,7 +113,7 @@ public class PlatformTestData {
         .validTo(LocalDate.of(2002, 12, 31))
         .parentServicePointSloid("ch:1.sloid:12345")
         .boardingDevice(BoardingDeviceAttributeType.LIFTS)
-        .additionalInfo("additional")
+        .additionalInformation("additional")
         .adviceAccessInfo("No Access Information Advice")
         .contrastingAreas(BooleanOptionalAttributeType.YES)
         .dynamicAudio(BasicAttributeType.NOT_APPLICABLE)
@@ -140,7 +140,7 @@ public class PlatformTestData {
         .validTo(LocalDate.of(2003, 12, 31))
         .parentServicePointSloid("ch:1.sloid:12345")
         .boardingDevice(BoardingDeviceAttributeType.LIFTS)
-        .additionalInfo("additional")
+        .additionalInformation("additional")
         .adviceAccessInfo("yes Access Information Advice")
         .contrastingAreas(BooleanOptionalAttributeType.YES)
         .dynamicAudio(BasicAttributeType.NOT_APPLICABLE)

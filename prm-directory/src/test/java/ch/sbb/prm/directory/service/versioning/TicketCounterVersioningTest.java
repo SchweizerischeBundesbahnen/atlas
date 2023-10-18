@@ -2,6 +2,7 @@ package ch.sbb.prm.directory.service.versioning;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.ReferencePointTestData;
@@ -12,7 +13,6 @@ import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.StopPlaceVersion;
 import ch.sbb.prm.directory.entity.TicketCounterVersion;
-import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.StopPlaceRepository;
 import ch.sbb.prm.directory.repository.TicketCounterRepository;
@@ -80,7 +80,7 @@ class TicketCounterVersioningTest {
     editedVersion.setDesignation("My designation");
     editedVersion.setInductionLoop(StandardAttributeType.NOT_APPLICABLE);
     editedVersion.setOpeningHours("24/7");
-    editedVersion.setInfo("info");
+    editedVersion.setAdditionalInformation("info");
     editedVersion.setWheelchairAccess(StandardAttributeType.YES);
     editedVersion.setCreationDate(version2.getCreationDate());
     editedVersion.setEditionDate(version2.getEditionDate());

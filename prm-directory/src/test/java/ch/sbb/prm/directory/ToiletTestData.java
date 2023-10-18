@@ -1,10 +1,10 @@
 package ch.sbb.prm.directory;
 
-import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.model.toilet.CreateToiletVersionModel;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.entity.ToiletVersion;
 import ch.sbb.prm.directory.entity.ToiletVersion.ToiletVersionBuilder;
-import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import java.time.LocalDate;
 import lombok.experimental.UtilityClass;
 
@@ -20,7 +20,7 @@ public class ToiletTestData {
         .parentServicePointSloid("ch:1.sloid:12345")
         .designation("Designation")
         .wheelchairToilet(StandardAttributeType.NO)
-        .info("Additional information")
+        .additionalInformation("Additional information")
         .build();
   }
 
@@ -33,7 +33,7 @@ public class ToiletTestData {
         .parentServicePointSloid("ch:1.sloid:12345")
         .designation("Designation")
         .wheelchairToilet(StandardAttributeType.NO)
-        .info("Additional information");
+        .additionalInformation("Additional information");
   }
 
   public static ToiletVersionBuilder<?, ?> builderVersion2(){
@@ -45,7 +45,7 @@ public class ToiletTestData {
         .parentServicePointSloid("ch:1.sloid:12345")
         .designation("Designation Napoli")
         .wheelchairToilet(StandardAttributeType.NO)
-        .info("Additional information");
+        .additionalInformation("Additional information");
   }
 
   public static ToiletVersionBuilder<?, ?> builderVersion3(){
@@ -57,7 +57,7 @@ public class ToiletTestData {
         .parentServicePointSloid("ch:1.sloid:12345")
         .designation("Designation bern")
         .wheelchairToilet(StandardAttributeType.NO)
-        .info("Additional information");
+        .additionalInformation("Additional information");
   }
 
   public static CreateToiletVersionModel getCreateToiletVersionModel(){
@@ -69,7 +69,7 @@ public class ToiletTestData {
         .parentServicePointSloid("ch:1.sloid:12345")
         .designation("Designation")
         .wheelchairToilet(StandardAttributeType.NO)
-        .info("Additional information")
+        .additionalInformation("Additional information")
         .build();
   }
 

@@ -2,12 +2,12 @@ package ch.sbb.prm.directory;
 
 import static java.util.List.of;
 
+import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
+import ch.sbb.atlas.api.prm.model.stopplace.CreateStopPlaceVersionModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
-import ch.sbb.atlas.api.prm.model.stopplace.CreateStopPlaceVersionModel;
 import ch.sbb.prm.directory.entity.StopPlaceVersion;
 import ch.sbb.prm.directory.entity.StopPlaceVersion.StopPlaceVersionBuilder;
-import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import java.time.LocalDate;
 import java.util.Set;
 import lombok.experimental.UtilityClass;
@@ -29,14 +29,13 @@ public class StopPlaceTestData {
         .alternativeTransport(StandardAttributeType.TO_BE_COMPLETED)
         .alternativeTransportCondition("No way dude!!")
         .assistanceAvailability(StandardAttributeType.YES)
-        .alternativeCondition("No alternative Bro!")
+        .assistanceCondition("No alternative Bro!")
         .assistanceService(StandardAttributeType.NO)
         .audioTicketMachine(StandardAttributeType.PARTIALLY)
-        .additionalInfo("No alternative")
         .dynamicAudioSystem(StandardAttributeType.TO_BE_COMPLETED)
         .dynamicOpticSystem(StandardAttributeType.TO_BE_COMPLETED)
         .infoTicketMachine("tick")
-        .additionalInfo("additional")
+        .additionalInformation("additional")
         .interoperable(true)
         .url("https://www.prm.sbb")
         .visualInfo(StandardAttributeType.TO_BE_COMPLETED)
@@ -61,14 +60,13 @@ public class StopPlaceTestData {
         .alternativeTransport(StandardAttributeType.TO_BE_COMPLETED)
         .alternativeTransportCondition("No way dude!!")
         .assistanceAvailability(StandardAttributeType.YES)
-        .alternativeCondition("No alternative Bro!")
+        .assistanceCondition("No alternative Bro!")
         .assistanceService(StandardAttributeType.NO)
         .audioTicketMachine(StandardAttributeType.PARTIALLY)
-        .additionalInfo("No alternative")
         .dynamicAudioSystem(StandardAttributeType.TO_BE_COMPLETED)
         .dynamicOpticSystem(StandardAttributeType.TO_BE_COMPLETED)
         .infoTicketMachine("tick")
-        .additionalInfo("additional")
+        .additionalInformation("additional")
         .interoperable(true)
         .url("https://www.prm.sbb")
         .visualInfo(StandardAttributeType.TO_BE_COMPLETED)
@@ -94,14 +92,13 @@ public class StopPlaceTestData {
         .alternativeTransport(StandardAttributeType.TO_BE_COMPLETED)
         .alternativeTransportCondition("No way dude!!")
         .assistanceAvailability(StandardAttributeType.YES)
-        .alternativeCondition("No alternative Bro!")
+        .assistanceCondition("No alternative Bro!")
         .assistanceService(StandardAttributeType.NO)
         .audioTicketMachine(StandardAttributeType.PARTIALLY)
-        .additionalInfo("No alternative")
         .dynamicAudioSystem(StandardAttributeType.TO_BE_COMPLETED)
         .dynamicOpticSystem(StandardAttributeType.TO_BE_COMPLETED)
         .infoTicketMachine("tick")
-        .additionalInfo("additional")
+        .additionalInformation("additional")
         .interoperable(true)
         .url("https://www.prm.sbb")
         .visualInfo(StandardAttributeType.TO_BE_COMPLETED)
@@ -124,14 +121,13 @@ public class StopPlaceTestData {
         .alternativeTransport(StandardAttributeType.YES)
         .alternativeTransportCondition("No way dude!!")
         .assistanceAvailability(StandardAttributeType.YES)
-        .alternativeCondition("No alternative Bro!")
+        .assistanceCondition("No alternative Bro!")
         .assistanceService(StandardAttributeType.NO)
         .audioTicketMachine(StandardAttributeType.PARTIALLY)
-        .additionalInfo("No alternative")
         .dynamicAudioSystem(StandardAttributeType.TO_BE_COMPLETED)
         .dynamicOpticSystem(StandardAttributeType.TO_BE_COMPLETED)
         .infoTicketMachine("tick")
-        .additionalInfo("additional")
+        .additionalInformation("additional")
         .interoperable(true)
         .url("https://www.prm.sbb")
         .visualInfo(StandardAttributeType.TO_BE_COMPLETED)
@@ -154,14 +150,13 @@ public class StopPlaceTestData {
         .alternativeTransport(StandardAttributeType.YES)
         .alternativeTransportCondition("No way dude!!")
         .assistanceAvailability(StandardAttributeType.YES)
-        .alternativeCondition("No alternative Bro!")
+        .assistanceCondition("No alternative Bro!")
         .assistanceService(StandardAttributeType.NO)
         .audioTicketMachine(StandardAttributeType.PARTIALLY)
-        .additionalInfo("No alternative")
         .dynamicAudioSystem(StandardAttributeType.TO_BE_COMPLETED)
         .dynamicOpticSystem(StandardAttributeType.TO_BE_COMPLETED)
         .infoTicketMachine("tick")
-        .additionalInfo("additional")
+        .additionalInformation("additional")
         .interoperable(true)
         .url("https://www.prm.sbb")
         .visualInfo(StandardAttributeType.TO_BE_COMPLETED)

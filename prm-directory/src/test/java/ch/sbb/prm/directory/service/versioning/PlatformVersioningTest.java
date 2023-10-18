@@ -2,18 +2,18 @@ package ch.sbb.prm.directory.service.versioning;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.prm.directory.PlatformTestData;
-import ch.sbb.prm.directory.StopPlaceTestData;
-import ch.sbb.prm.directory.entity.BasePrmImportEntity.Fields;
-import ch.sbb.prm.directory.entity.PlatformVersion;
-import ch.sbb.prm.directory.entity.StopPlaceVersion;
 import ch.sbb.atlas.api.prm.enumeration.BasicAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
+import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.prm.directory.PlatformTestData;
+import ch.sbb.prm.directory.StopPlaceTestData;
+import ch.sbb.prm.directory.entity.BasePrmImportEntity.Fields;
+import ch.sbb.prm.directory.entity.PlatformVersion;
+import ch.sbb.prm.directory.entity.StopPlaceVersion;
 import ch.sbb.prm.directory.repository.PlatformRepository;
 import ch.sbb.prm.directory.repository.StopPlaceRepository;
 import ch.sbb.prm.directory.service.PlatformService;
@@ -74,7 +74,7 @@ class PlatformVersioningTest {
     editedVersion.setInclination(323.12);
     editedVersion.setInclinationLongitudinal(323.12);
     editedVersion.setInclinationWidth(323.12);
-    editedVersion.setAdditionalInfo("no additional");
+    editedVersion.setAdditionalInformation("no additional");
     editedVersion.setInfoOpportunities(Set.of(InfoOpportunityAttributeType.TEXT_TO_SPEECH_DEPARTURES));
     editedVersion.setLevelAccessWheelchair(BasicAttributeType.YES);
     editedVersion.setPartialElevation(BooleanAttributeType.YES);
@@ -138,7 +138,7 @@ class PlatformVersioningTest {
 
     PlatformVersion editedVersion = PlatformTestData.builderVersion2().build();
     editedVersion.setParentServicePointSloid(parentServicePointSloid);
-    editedVersion.setAdditionalInfo("additionalInfo");
+    editedVersion.setAdditionalInformation("additionalInfo");
     editedVersion.setValidFrom(LocalDate.of(2001, 6, 1));
     editedVersion.setValidTo(LocalDate.of(2002, 6, 1));
     editedVersion.setCreationDate(version2.getCreationDate());
@@ -163,17 +163,17 @@ class PlatformVersioningTest {
     PlatformVersion secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2001, 1, 1));
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2001, 5, 31));
-    assertThat(secondTemporalVersion.getAdditionalInfo()).isEqualTo("additional");
+    assertThat(secondTemporalVersion.getAdditionalInformation()).isEqualTo("additional");
 
     PlatformVersion thirdTemporalVersion = result.get(2);
     assertThat(thirdTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2001, 6, 1));
     assertThat(thirdTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2002, 6, 1));
-    assertThat(thirdTemporalVersion.getAdditionalInfo()).isEqualTo("additionalInfo");
+    assertThat(thirdTemporalVersion.getAdditionalInformation()).isEqualTo("additionalInfo");
 
     PlatformVersion fourthTemporalVersion = result.get(3);
     assertThat(fourthTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2002, 6, 2));
     assertThat(fourthTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2002, 12, 31));
-    assertThat(fourthTemporalVersion.getAdditionalInfo()).isEqualTo("additional");
+    assertThat(fourthTemporalVersion.getAdditionalInformation()).isEqualTo("additional");
 
     PlatformVersion fifthTemporalVersion = result.get(4);
     assertThat(fifthTemporalVersion)
