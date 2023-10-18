@@ -13,18 +13,24 @@ import java.util.stream.Collectors;
 public class Timeline {
 
     private List<TimelineElement> elements;
+    private TimelineElement servicePointTimelineElement;
 
-    public Timeline(List<ServicePointVersion> servicePointVersions) {
+    public Timeline(List<ServicePointVersion> servicePointVersions, ServicePointVersion servicePointVersion) {
+        if (servicePointVersion == null) {
+            throw new IllegalStateException("ServicePointVersion is required to instantiate Timeline.");
+        }
+        servicePointTimelineElement = new TimelineElement(servicePointVersion);
+
         if (servicePointVersions == null) {
             this.elements = new ArrayList<>();
         } else {
-            this.elements = servicePointVersions.stream()
+            this.elements = getMergedTimeline(servicePointVersions.stream()
                     .map(TimelineElement::new)
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toList()));
         }
     }
 
-    public List<TimelineElement> getMergedTimeline() {
+    static List<TimelineElement> getMergedTimeline(List<TimelineElement> elements) {
         List<TimelineElement> result = new ArrayList<>();
 
         for (TimelineElement current : elements) {
@@ -45,33 +51,24 @@ public class Timeline {
         return result;
     }
 
-    public TimelineElement getBpkTimelineElement(ServicePointVersion servicePointVersion) {
-        return new TimelineElement(servicePointVersion);
-    }
-
-    private boolean noGapsBetweenTimelines(TimelineElement current, TimelineElement next) {
+    private static boolean noGapsBetweenTimelines(TimelineElement current, TimelineElement next) {
         return ChronoUnit.DAYS.between(current.endDate, next.startDate) <= 1;
     }
 
-    public boolean isBpkTimelineInsideOfOneBpsTimeline(List<TimelineElement> bpsTimelines, TimelineElement bpkTimeline) {
-        return bpsTimelines.stream()
-                .anyMatch(bps -> isOverlapping(bpkTimeline, bps));
+    public boolean isBpkTimelineInsideOfOneBpsTimeline() {
+        return elements.stream()
+                .anyMatch(bps -> isOverlapping(servicePointTimelineElement, bps));
     }
 
-    public static boolean isOverlapping(TimelineElement bpkTimeline, TimelineElement bpsTimeline) {
+    private static boolean isOverlapping(TimelineElement bpkTimeline, TimelineElement bpsTimeline) {
         return (bpsTimeline.startDate.isBefore(bpkTimeline.startDate) || bpsTimeline.startDate.isEqual(bpkTimeline.startDate))
                 && (bpsTimeline.endDate.isAfter(bpkTimeline.endDate) || bpsTimeline.endDate.isEqual(bpkTimeline.endDate));
     }
 
     @Data
-    public class TimelineElement {
+    static class TimelineElement {
         private final LocalDate startDate;
         private LocalDate endDate;
-
-        public TimelineElement(TimelineElement current, TimelineElement next) {
-            this.startDate = current.getStartDate();
-            this.endDate = next.getEndDate();
-        }
 
         public TimelineElement(ServicePointVersion servicePointVersion) {
             this.startDate = servicePointVersion.getValidFrom();
