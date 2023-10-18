@@ -1,9 +1,9 @@
 package ch.sbb.atlas.api.prm.model.referencepoint;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
-import ch.sbb.atlas.validation.DatesValidator;
-import ch.sbb.atlas.api.prm.model.BasePrmVersionModel;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointAttributeType;
+import ch.sbb.atlas.api.prm.model.BasePrmVersionModel;
+import ch.sbb.atlas.validation.DatesValidator;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -33,6 +33,9 @@ public abstract class ReferencePointVersionModel extends BasePrmVersionModel imp
   @Size(min = 2, max = AtlasFieldLengths.LENGTH_50)
   @NotNull
   private String designation;
+
+  @Schema(description = "Additional Information")
+  private String additionalInformation;
 
   @Schema(description = "Main reference point")
   @NotNull

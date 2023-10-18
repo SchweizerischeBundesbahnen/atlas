@@ -1,9 +1,9 @@
 package ch.sbb.atlas.api.prm.model.toilet;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
-import ch.sbb.atlas.validation.DatesValidator;
-import ch.sbb.atlas.api.prm.model.BasePrmVersionModel;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
+import ch.sbb.atlas.api.prm.model.BasePrmVersionModel;
+import ch.sbb.atlas.validation.DatesValidator;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -31,7 +31,7 @@ public abstract class ToiletVersionModel extends BasePrmVersionModel implements 
   private String designation;
 
   @Schema(description = "Additional Information")
-  private String info;
+  private String additionalInformation;
 
   @Schema(description = "Wheelchair accessible toilet available")
   private StandardAttributeType wheelchairToilet;
