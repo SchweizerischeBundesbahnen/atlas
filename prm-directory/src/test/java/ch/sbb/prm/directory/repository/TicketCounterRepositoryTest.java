@@ -28,7 +28,7 @@ class TicketCounterRepositoryTest {
   }
 
   @Test
-  void shouldReturnStopPlaces() {
+  void shouldReturnStopPoints() {
     //when
    List<TicketCounterVersion> result = ticketCounterRepository.findAll();
    //then

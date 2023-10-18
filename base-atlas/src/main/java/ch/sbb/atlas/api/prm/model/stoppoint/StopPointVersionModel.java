@@ -1,4 +1,4 @@
-package ch.sbb.atlas.api.prm.model.stopplace;
+package ch.sbb.atlas.api.prm.model.stoppoint;
 
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.model.BasePrmVersionModel;
@@ -20,7 +20,7 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @FieldNameConstants
-public abstract class StopPlaceVersionModel extends BasePrmVersionModel implements DatesValidator {
+public abstract class StopPointVersionModel extends BasePrmVersionModel implements DatesValidator {
 
   @NotEmpty
   @Schema(description = "Means of transport. Indicates for which means of transport a stop is intended/equipped. Mandatory for "

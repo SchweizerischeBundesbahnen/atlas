@@ -8,12 +8,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.atlas.api.prm.model.stopplace.CreateStopPlaceVersionModel;
+import ch.sbb.atlas.api.prm.model.stoppoint.CreateStopPointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
-import ch.sbb.prm.directory.StopPlaceTestData;
-import ch.sbb.prm.directory.entity.StopPlaceVersion;
-import ch.sbb.prm.directory.repository.StopPlaceRepository;
+import ch.sbb.prm.directory.StopPointTestData;
+import ch.sbb.prm.directory.entity.StopPointVersion;
+import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.service.SharedServicePointService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,35 +21,35 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
-class StopPlaceVersionControllerApiTest extends BaseControllerApiTest {
+class StopPointVersionControllerApiTest extends BaseControllerApiTest {
 
   @MockBean
   private SharedServicePointService sharedServicePointService;
 
-  private final StopPlaceRepository stopPlaceRepository;
+  private final StopPointRepository stopPointRepository;
 
   @Autowired
-  StopPlaceVersionControllerApiTest(StopPlaceRepository stopPlaceRepository) {
-    this.stopPlaceRepository = stopPlaceRepository;
+  StopPointVersionControllerApiTest(StopPointRepository stopPointRepository) {
+    this.stopPointRepository = stopPointRepository;
   }
 
   @Test
-  void shouldGetStopPlacesVersion() throws Exception {
+  void shouldGetStopPointsVersion() throws Exception {
     //given
-    stopPlaceRepository.save(StopPlaceTestData.getStopPlaceVersion());
+    stopPointRepository.save(StopPointTestData.getStopPointVersion());
     //when & then
-    mvc.perform(get("/v1/stop-places"))
+    mvc.perform(get("/v1/stop-points"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(1)));
   }
 
   @Test
-  void shouldCreateStopPlace() throws Exception {
+  void shouldCreateStopPoint() throws Exception {
     //given
-    CreateStopPlaceVersionModel stopPlaceCreateVersionModel = StopPlaceTestData.getStopPlaceCreateVersionModel();
+    CreateStopPointVersionModel stopPointCreateVersionModel = StopPointTestData.getStopPointCreateVersionModel();
     //when && then
-    mvc.perform(post("/v1/stop-places").contentType(contentType)
-            .content(mapper.writeValueAsString(stopPlaceCreateVersionModel)))
+    mvc.perform(post("/v1/stop-points").contentType(contentType)
+            .content(mapper.writeValueAsString(stopPointCreateVersionModel)))
         .andExpect(status().isCreated());
 
   }
@@ -64,12 +64,12 @@ class StopPlaceVersionControllerApiTest extends BaseControllerApiTest {
    * Version:         1
    */
   @Test
-  void shouldUpdateStopPlace() throws Exception {
+  void shouldUpdateStopPoint() throws Exception {
     //given
-    StopPlaceVersion version1 = stopPlaceRepository.saveAndFlush(StopPlaceTestData.builderVersion1().build());
-    StopPlaceVersion version2 = stopPlaceRepository.saveAndFlush(StopPlaceTestData.builderVersion2().build());
+    StopPointVersion version1 = stopPointRepository.saveAndFlush(StopPointTestData.builderVersion1().build());
+    StopPointVersion version2 = stopPointRepository.saveAndFlush(StopPointTestData.builderVersion2().build());
 
-    CreateStopPlaceVersionModel editedVersionModel = new CreateStopPlaceVersionModel();
+    CreateStopPointVersionModel editedVersionModel = new CreateStopPointVersionModel();
     editedVersionModel.setNumberWithoutCheckDigit(version2.getNumber().getNumber());
     editedVersionModel.setValidFrom(version2.getValidFrom());
     editedVersionModel.setValidTo(version2.getValidTo().minusYears(1));
@@ -103,7 +103,7 @@ class StopPlaceVersionControllerApiTest extends BaseControllerApiTest {
 
 
     //when && then
-    mvc.perform(put("/v1/stop-places/" + version2.getId()).contentType(contentType)
+    mvc.perform(put("/v1/stop-points/" + version2.getId()).contentType(contentType)
             .content(mapper.writeValueAsString(editedVersionModel)))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(2)))
