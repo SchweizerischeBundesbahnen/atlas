@@ -6,6 +6,7 @@ import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PLATFOR
 import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.TICKET_COUNTER;
 import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.TOILET;
 
+import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
@@ -16,7 +17,6 @@ import ch.sbb.prm.directory.entity.PlatformVersion;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.TicketCounterVersion;
 import ch.sbb.prm.directory.entity.ToiletVersion;
-import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.prm.directory.repository.InformationDeskRepository;
 import ch.sbb.prm.directory.repository.ParkingLotRepository;
 import ch.sbb.prm.directory.repository.PlatformRepository;
@@ -40,12 +40,12 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
   private final ParkingLotRepository parkingLotRepository;
   private final PlatformRepository platformRepository;
   private final RelationService relationService;
-  private final StopPlaceService stopPlaceService;
+  private final StopPointService stopPointService;
 
   public ReferencePointService(ReferencePointRepository referencePointRepository, TicketCounterRepository ticketCounterService,
       ToiletRepository toiletRepository, InformationDeskRepository informationDeskRepository,
       ParkingLotRepository parkingLotRepository, PlatformRepository platformRepository, RelationService relationService,
-      StopPlaceService stopPlaceService, VersionableService versionableService) {
+      StopPointService stopPointService, VersionableService versionableService) {
     super(versionableService);
     this.referencePointRepository = referencePointRepository;
     this.ticketCounterService = ticketCounterService;
@@ -54,7 +54,7 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
     this.parkingLotRepository = parkingLotRepository;
     this.platformRepository = platformRepository;
     this.relationService = relationService;
-    this.stopPlaceService = stopPlaceService;
+    this.stopPointService = stopPointService;
   }
 
   @Override
@@ -83,7 +83,7 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
   }
 
   public ReferencePointVersion createReferencePoint(ReferencePointVersion referencePointVersion) {
-    stopPlaceService.checkStopPlaceExists(referencePointVersion.getParentServicePointSloid());
+    stopPointService.checkStopPointExists(referencePointVersion.getParentServicePointSloid());
     searchAndUpdatePlatformRelation(referencePointVersion.getParentServicePointSloid());
     searchAndUpdateTicketCounter(referencePointVersion.getParentServicePointSloid());
     searchAndUpdateToiletRelation(referencePointVersion.getParentServicePointSloid());

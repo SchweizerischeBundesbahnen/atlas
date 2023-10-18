@@ -3,7 +3,7 @@ package ch.sbb.importservice.controller;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_BATCH_PARAMETER;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_TYPE_PARAMETER;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.FULL_PATH_FILENAME_JOB_PARAMETER;
-import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_STOP_PLACE_CSV_JOB_NAME;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_STOP_POINT_CSV_JOB_NAME;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.START_AT_JOB_PARAMETER;
 
 import ch.sbb.atlas.batch.exception.JobExecutionException;
@@ -44,45 +44,45 @@ public class ImportPrmBatchController {
   private final JobLauncher jobLauncher;
   private final FileHelperService fileHelperService;
 
-  @Qualifier(IMPORT_STOP_PLACE_CSV_JOB_NAME)
-  private final Job importStopPlaceCsvJob;
+  @Qualifier(IMPORT_STOP_POINT_CSV_JOB_NAME)
+  private final Job importStopPointCsvJob;
 
-  @PostMapping("stop-place-batch")
+  @PostMapping("stop-point-batch")
   @ResponseStatus(HttpStatus.OK)
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200"),
   })
   @Async
-  public void startStopPlaceImportBatch() {
+  public void startStopPointImportBatch() {
     JobParameters jobParameters = new JobParametersBuilder()
         .addString(EXECUTION_TYPE_PARAMETER, EXECUTION_BATCH_PARAMETER)
         .addLong(START_AT_JOB_PARAMETER, System.currentTimeMillis()).toJobParameters();
     try {
-      JobExecution execution = jobLauncher.run(importStopPlaceCsvJob, jobParameters);
+      JobExecution execution = jobLauncher.run(importStopPointCsvJob, jobParameters);
       log.info("Job executed with status: {}", execution.getExitStatus().getExitCode());
     } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException |
              JobParametersInvalidException e) {
-      throw new JobExecutionException(IMPORT_STOP_PLACE_CSV_JOB_NAME, e);
+      throw new JobExecutionException(IMPORT_STOP_POINT_CSV_JOB_NAME, e);
     }
   }
 
-  @PostMapping("stop-place")
+  @PostMapping("stop-point")
   @ResponseStatus(HttpStatus.OK)
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200"),
   })
-  public ResponseEntity<?> startStopPlaceImport(@RequestParam("file") MultipartFile multipartFile) {
+  public ResponseEntity<?> startStopPointImport(@RequestParam("file") MultipartFile multipartFile) {
     File file = fileHelperService.getFileFromMultipart(multipartFile);
     JobParameters jobParameters = new JobParametersBuilder()
         .addString(FULL_PATH_FILENAME_JOB_PARAMETER, file.getAbsolutePath())
         .addLong(START_AT_JOB_PARAMETER, System.currentTimeMillis()).toJobParameters();
     try {
-      JobExecution execution = jobLauncher.run(importStopPlaceCsvJob, jobParameters);
+      JobExecution execution = jobLauncher.run(importStopPointCsvJob, jobParameters);
       log.info("Job executed with status: {}", execution.getExitStatus().getExitCode());
       return ResponseEntity.ok().body(execution.toString());
     } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException |
              JobParametersInvalidException | IllegalArgumentException e) {
-      throw new JobExecutionException(IMPORT_STOP_PLACE_CSV_JOB_NAME, e);
+      throw new JobExecutionException(IMPORT_STOP_POINT_CSV_JOB_NAME, e);
     } finally {
       file.delete();
     }
