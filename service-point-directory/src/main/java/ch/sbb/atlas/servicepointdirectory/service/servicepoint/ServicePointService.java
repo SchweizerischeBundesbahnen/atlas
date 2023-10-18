@@ -92,6 +92,7 @@ public class ServicePointService {
     }
     editedVersion.setNumber(currentVersion.getNumber());
     editedVersion.setSloid(currentVersion.getSloid());
+    editedVersion.setStatusDidok3(currentVersion.getStatusDidok3());
 
     List<ServicePointVersion> existingDbVersions = findAllByNumberOrderByValidFrom(currentVersion.getNumber());
     List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion,
