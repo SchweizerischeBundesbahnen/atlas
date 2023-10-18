@@ -97,4 +97,4 @@ logging:
     ch:
       sbb:
         atlas:
-          versioning: INFO
+          versioning: ERROR

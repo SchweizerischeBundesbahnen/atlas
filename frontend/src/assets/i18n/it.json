@@ -935,7 +935,7 @@
         "DESIGNATION_OFFICIAL": "La denominazione ufficiale {{designationOfficial}} è già assegnata nel periodo dal {{validFrom}} al {{validTo}} da {{number}}.",
         "DESIGNATION_LONG": "La denominazione lunga {{designationLong}} è già assegnata nel periodo dal {{validFrom}} al {{validTo}} da {{number}}."
       },
-      "TERMINATION_FORBIDDEN": "Sie sind nicht berechtigt die Haltestelle zu terminieren."
+      "TERMINATION_FORBIDDEN": "Non siete autorizzati a terminare la fermata. Utilizzate il modulo all'indirizzo https://www.tp-info.ch/it/soppressione-fermata."
     },
     "TRAFFIC_POINT_ELEMENTS": {
       "TRAFFIC_POINT_ELEMENTS": "Bordi fermata"
