@@ -17,6 +17,7 @@
         [formControlName]="controlName"
         [ngStyle]="customInputNgStyle"
         type="text"
+        placeholder="{{ placeholder | translate }}"
         [attr.data-cy]="controlName"
       />
       <ng-container

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@Tag(name = "PRM - Person with Reduced Mobility")
+@Tag(name = "Person with Reduced Mobility")
 @RequestMapping("v1/toilets")
 public interface ToiletApiV1 {
 
@@ -24,6 +24,7 @@ public interface ToiletApiV1 {
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   ReadToiletVersionModel createToiletVersion(@RequestBody @Valid CreateToiletVersionModel toiletVersionModel);
+
   @ResponseStatus(HttpStatus.OK)
   @PutMapping(path = "{id}")
   List<ReadToiletVersionModel> updateToiletVersion(@PathVariable Long id,

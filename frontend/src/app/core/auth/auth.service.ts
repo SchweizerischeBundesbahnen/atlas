@@ -10,7 +10,7 @@ import { Role } from './role';
 import { ApplicationRole, ApplicationType, Permission, UserAdministrationService } from '../../api';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Cantons } from '../cantons/Cantons';
-import { map, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
