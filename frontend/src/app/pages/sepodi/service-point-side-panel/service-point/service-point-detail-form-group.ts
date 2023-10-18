@@ -55,7 +55,7 @@ export class ServicePointFormGroupBuilder {
         abbreviation: new FormControl(version.abbreviation, [
           Validators.maxLength(6),
           Validators.minLength(2),
-          AtlasCharsetsValidator.upperCaseValidator,
+          AtlasCharsetsValidator.uppercaseNumericLength2To6Validator,
         ]),
         status: new FormControl(version.status),
         designationOfficial: new FormControl(version.designationOfficial, [
