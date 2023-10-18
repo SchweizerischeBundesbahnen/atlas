@@ -1,19 +1,19 @@
 package ch.sbb.prm.directory.mapper;
 
-import ch.sbb.atlas.api.prm.model.stopplace.CreateStopPlaceVersionModel;
-import ch.sbb.atlas.api.prm.model.stopplace.ReadStopPlaceVersionModel;
+import ch.sbb.atlas.api.prm.model.stoppoint.CreateStopPointVersionModel;
+import ch.sbb.atlas.api.prm.model.stoppoint.ReadStopPointVersionModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.prm.directory.entity.StopPlaceVersion;
+import ch.sbb.prm.directory.entity.StopPointVersion;
 import java.util.Set;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @UtilityClass
-public class StopPlaceVersionMapper {
+public class StopPointVersionMapper {
 
-  public static ReadStopPlaceVersionModel toModel(StopPlaceVersion version){
-    return ReadStopPlaceVersionModel.builder()
+  public static ReadStopPointVersionModel toModel(StopPointVersion version){
+    return ReadStopPointVersionModel.builder()
         .id(version.getId())
         .sloid(version.getSloid())
         .number(version.getNumber())
@@ -46,8 +46,8 @@ public class StopPlaceVersionMapper {
         .etagVersion(version.getVersion())
         .build();
   }
-  public static StopPlaceVersion toEntity(CreateStopPlaceVersionModel model){
-    return StopPlaceVersion.builder()
+  public static StopPointVersion toEntity(CreateStopPointVersionModel model){
+    return StopPointVersion.builder()
         .id(model.getId())
         .sloid(model.getSloid())
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(model.getNumberWithoutCheckDigit()))

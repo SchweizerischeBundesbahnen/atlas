@@ -3,20 +3,20 @@ package ch.sbb.prm.directory;
 import static java.util.List.of;
 
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
-import ch.sbb.atlas.api.prm.model.stopplace.CreateStopPlaceVersionModel;
+import ch.sbb.atlas.api.prm.model.stoppoint.CreateStopPointVersionModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
-import ch.sbb.prm.directory.entity.StopPlaceVersion;
-import ch.sbb.prm.directory.entity.StopPlaceVersion.StopPlaceVersionBuilder;
+import ch.sbb.prm.directory.entity.StopPointVersion;
+import ch.sbb.prm.directory.entity.StopPointVersion.StopPointVersionBuilder;
 import java.time.LocalDate;
 import java.util.Set;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class StopPlaceTestData {
+public class StopPointTestData {
 
-  public static StopPlaceVersion getStopPlaceVersion(){
-    return StopPlaceVersion.builder()
+  public static StopPointVersion getStopPointVersion(){
+    return StopPointVersion.builder()
         .sloid("ch:1.sloid:12345")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2000, 1, 1))
@@ -46,8 +46,8 @@ public class StopPlaceTestData {
 
   }
 
-  public static CreateStopPlaceVersionModel getStopPlaceCreateVersionModel(){
-    return CreateStopPlaceVersionModel.builder()
+  public static CreateStopPointVersionModel getStopPointCreateVersionModel(){
+    return CreateStopPointVersionModel.builder()
         .sloid("ch:1.sloid:7000")
         .numberWithoutCheckDigit(8507000)
         .validFrom(LocalDate.of(2000, 1, 1))
@@ -78,8 +78,8 @@ public class StopPlaceTestData {
   }
 
 
-  public StopPlaceVersionBuilder<?, ?> builderVersion1() {
-    return StopPlaceVersion.builder()
+  public StopPointVersionBuilder<?, ?> builderVersion1() {
+    return StopPointVersion.builder()
         .sloid("ch:1.sloid:12345")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2000, 1, 1))
@@ -107,8 +107,8 @@ public class StopPlaceTestData {
         .ticketMachine(StandardAttributeType.TO_BE_COMPLETED);
   }
 
-  public StopPlaceVersionBuilder<?, ?> builderVersion2() {
-    return StopPlaceVersion.builder()
+  public StopPointVersionBuilder<?, ?> builderVersion2() {
+    return StopPointVersion.builder()
         .sloid("ch:1.sloid:12345")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2001, 1, 1))
@@ -136,8 +136,8 @@ public class StopPlaceTestData {
         .ticketMachine(StandardAttributeType.TO_BE_COMPLETED);
   }
 
-  public StopPlaceVersionBuilder<?, ?> builderVersion3() {
-    return StopPlaceVersion.builder()
+  public StopPointVersionBuilder<?, ?> builderVersion3() {
+    return StopPointVersion.builder()
         .sloid("ch:1.sloid:12345")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2003, 1, 1))

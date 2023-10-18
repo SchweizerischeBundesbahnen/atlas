@@ -7,16 +7,16 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.prm.directory.ParkingLotTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
-import ch.sbb.prm.directory.StopPlaceTestData;
+import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.entity.ParkingLotVersion;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
-import ch.sbb.prm.directory.entity.StopPlaceVersion;
-import ch.sbb.prm.directory.exception.StopPlaceDoesNotExistsException;
+import ch.sbb.prm.directory.entity.StopPointVersion;
+import ch.sbb.prm.directory.exception.StopPointDoesNotExistsException;
 import ch.sbb.prm.directory.repository.ParkingLotRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.RelationRepository;
-import ch.sbb.prm.directory.repository.StopPlaceRepository;
+import ch.sbb.prm.directory.repository.StopPointRepository;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ class ParkingLotServiceTest {
   private final ReferencePointRepository referencePointRepository;
   private final RelationRepository relationRepository;
 
-  private final StopPlaceRepository stopPlaceRepository;
+  private final StopPointRepository stopPointRepository;
 
   private final ParkingLotRepository parkingLotRepository;
 
@@ -37,24 +37,24 @@ class ParkingLotServiceTest {
 
   @Autowired
   ParkingLotServiceTest(ReferencePointRepository referencePointRepository,
-      RelationRepository relationRepository, StopPlaceRepository stopPlaceRepository,
+      RelationRepository relationRepository, StopPointRepository stopPointRepository,
       ParkingLotRepository parkingLotRepository, ParkingLotService parkingLotService) {
     this.referencePointRepository = referencePointRepository;
     this.relationRepository = relationRepository;
-    this.stopPlaceRepository = stopPlaceRepository;
+    this.stopPointRepository = stopPointRepository;
     this.parkingLotRepository = parkingLotRepository;
     this.parkingLotService = parkingLotService;
   }
 
   @Test
-  void shouldNotCreateParkingLotWhenStopPlaceDoesNotExists() {
+  void shouldNotCreateParkingLotWhenStopPointDoesNotExists() {
     //given
     String parentServicePointSloid="ch:1:sloid:70000";
     ParkingLotVersion parkingLot = ParkingLotTestData.getParkingLotVersion();
     parkingLot.setParentServicePointSloid(parentServicePointSloid);
 
     //when & then
-    assertThrows(StopPlaceDoesNotExistsException.class,
+    assertThrows(StopPointDoesNotExistsException.class,
         () -> parkingLotService.createParkingLot(parkingLot)).getLocalizedMessage();
   }
 
@@ -62,9 +62,9 @@ class ParkingLotServiceTest {
   void shouldCreateParkingLotWhenNoReferencePointExists() {
     //given
     String parentServicePointSloid="ch:1:sloid:70000";
-    StopPlaceVersion stopPlaceVersion = StopPlaceTestData.getStopPlaceVersion();
-    stopPlaceVersion.setSloid(parentServicePointSloid);
-    stopPlaceRepository.save(stopPlaceVersion);
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointRepository.save(stopPointVersion);
     ParkingLotVersion parkingLot = ParkingLotTestData.getParkingLotVersion();
     parkingLot.setParentServicePointSloid(parentServicePointSloid);
     //when
@@ -84,9 +84,9 @@ class ParkingLotServiceTest {
   void shouldCreateParkingLotWhenReferencePointExists() {
     //given
     String parentServicePointSloid = "ch:1:sloid:70000";
-    StopPlaceVersion stopPlaceVersion = StopPlaceTestData.getStopPlaceVersion();
-    stopPlaceVersion.setSloid(parentServicePointSloid);
-    stopPlaceRepository.save(stopPlaceVersion);
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointRepository.save(stopPointVersion);
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
     referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
     referencePointRepository.save(referencePointVersion);

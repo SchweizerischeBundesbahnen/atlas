@@ -1,4 +1,4 @@
-package ch.sbb.atlas.imports.prm.stopplace;
+package ch.sbb.atlas.imports.prm.stoppoint;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
@@ -11,12 +11,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Schema(name = "StopPlaceImportRequestModel")
-public class StopPlaceImportRequestModel {
+@Schema(name = "StopPointImportRequestModel")
+public class StopPointImportRequestModel {
 
-  @Schema(name = "List of StopPlaceCsvModelContainer to import")
+  @Schema(name = "List of StopPointCsvModelContainer to import")
   @NotNull
   @NotEmpty
-  private List<StopPlaceCsvModelContainer> stopPlaceCsvModelContainers;
+  private List<StopPointCsvModelContainer> stopPointCsvModelContainers;
 
 }
