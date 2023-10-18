@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ServicePointTerminationService {
 
-  private final BusinessOrganisationBasedUserAdministrationService userAdministrationService;
+  private final BusinessOrganisationBasedUserAdministrationService businessOrganisationBasedUserAdministrationService;
 
   public void checkTerminationAllowed(ServicePointVersion editedVersion, List<ServicePointVersion> currentVersions,
       List<VersionedObject> versionedObjects) {
@@ -25,7 +25,7 @@ public class ServicePointTerminationService {
 
     boolean isTermination = isTermination(editedVersion, currentVersions, preUpdateRange, postUpdateRange);
 
-    if (isTermination && !userAdministrationService.isAtLeastSupervisor(ApplicationType.SEPODI)) {
+    if (isTermination && !businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(ApplicationType.SEPODI)) {
       throw new TerminationNotAllowedException(editedVersion);
     }
   }
@@ -46,17 +46,19 @@ public class ServicePointTerminationService {
   }
 
   private DateRange getPreUpdateRange(List<ServicePointVersion> currentVersions) {
-    currentVersions.sort(Comparator.comparing(ServicePointVersion::getValidFrom));
-    LocalDate preUpdateRangeFrom = currentVersions.get(0).getValidFrom();
-    LocalDate preUpdateRangeTo = currentVersions.get(currentVersions.size() - 1).getValidTo();
+    List<ServicePointVersion> sortedVersions = currentVersions.stream()
+        .sorted(Comparator.comparing(ServicePointVersion::getValidFrom)).toList();
+    LocalDate preUpdateRangeFrom = sortedVersions.get(0).getValidFrom();
+    LocalDate preUpdateRangeTo = sortedVersions.get(currentVersions.size() - 1).getValidTo();
 
     return DateRange.builder().from(preUpdateRangeFrom).to(preUpdateRangeTo).build();
   }
 
   private DateRange getPostUpdateRange(List<VersionedObject> versionedObjects) {
-    versionedObjects.sort(Comparator.comparing(VersionedObject::getValidFrom));
-    LocalDate postUpdateRangeFrom = versionedObjects.get(0).getValidFrom();
-    LocalDate postUpdateRangeTo = versionedObjects.get(versionedObjects.size() - 1).getValidTo();
+    List<VersionedObject> sortedObjects = versionedObjects.stream().sorted(Comparator.comparing(VersionedObject::getValidFrom))
+        .toList();
+    LocalDate postUpdateRangeFrom = sortedObjects.get(0).getValidFrom();
+    LocalDate postUpdateRangeTo = sortedObjects.get(versionedObjects.size() - 1).getValidTo();
 
     return DateRange.builder().from(postUpdateRangeFrom).to(postUpdateRangeTo).build();
   }
