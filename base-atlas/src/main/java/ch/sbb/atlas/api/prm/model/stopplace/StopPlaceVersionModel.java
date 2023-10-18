@@ -49,9 +49,8 @@ public abstract class StopPlaceVersionModel extends BasePrmVersionModel implemen
   @Schema(description = "Advance registration required for assistance")
   private StandardAttributeType assistanceAvailability;
 
-  //TODO: rename to assistanceCondition
   @Schema(description = "Notes for assistance")
-  private String alternativeCondition;
+  private String assistanceCondition;
 
   @Schema(description = "Assistance from staff")
   @NotNull
@@ -62,7 +61,7 @@ public abstract class StopPlaceVersionModel extends BasePrmVersionModel implemen
   private StandardAttributeType audioTicketMachine;
 
   @Schema(description = "Additional information")
-  private String additionalInfo;
+  private String additionalInformation;
 
   @NotNull
   @Schema(description = "Acoustically")
