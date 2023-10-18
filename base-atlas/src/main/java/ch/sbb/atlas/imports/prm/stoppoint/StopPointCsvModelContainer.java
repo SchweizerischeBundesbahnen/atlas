@@ -1,7 +1,7 @@
-package ch.sbb.atlas.imports.prm.stopplace;
+package ch.sbb.atlas.imports.prm.stoppoint;
 
-import ch.sbb.atlas.api.prm.model.stopplace.CreateStopPlaceVersionModel;
-import ch.sbb.atlas.imports.prm.stopplace.mapper.StopPlaceCsvToModelMapper;
+import ch.sbb.atlas.api.prm.model.stoppoint.CreateStopPointVersionModel;
+import ch.sbb.atlas.imports.prm.stoppoint.mapper.StopPointCsvToModelMapper;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.List;
@@ -19,19 +19,19 @@ import lombok.extern.slf4j.Slf4j;
 @Builder
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class StopPlaceCsvModelContainer {
+public class StopPointCsvModelContainer {
 
   private Integer didokCode;
-  private List<StopPlaceCsvModel> stopPlaceCsvModels;
-  private List<CreateStopPlaceVersionModel> createStopPlaceVersionModels;
+  private List<StopPointCsvModel> stopPointCsvModels;
+  private List<CreateStopPointVersionModel> createStopPointVersionModels;
   private boolean hasMergedVersion;
 
   public Integer getDidokCode() {
     return ServicePointNumber.removeCheckDigit(this.didokCode);
   }
 
-  public List<CreateStopPlaceVersionModel> getCreateStopPlaceVersionModels() {
-    return stopPlaceCsvModels.stream().map(StopPlaceCsvToModelMapper::toModel).toList();
+  public List<CreateStopPointVersionModel> getCreateStopPointVersionModels() {
+    return stopPointCsvModels.stream().map(StopPointCsvToModelMapper::toModel).toList();
   }
 
 }

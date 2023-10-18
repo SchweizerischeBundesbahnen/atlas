@@ -10,12 +10,12 @@ import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.prm.directory.PlatformTestData;
-import ch.sbb.prm.directory.StopPlaceTestData;
+import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.entity.BasePrmImportEntity.Fields;
 import ch.sbb.prm.directory.entity.PlatformVersion;
-import ch.sbb.prm.directory.entity.StopPlaceVersion;
+import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.repository.PlatformRepository;
-import ch.sbb.prm.directory.repository.StopPlaceRepository;
+import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.service.PlatformService;
 import java.time.LocalDate;
 import java.util.List;
@@ -30,14 +30,14 @@ class PlatformVersioningTest {
 
   private final PlatformRepository platformRepository;
   private final PlatformService platformService;
-  private final StopPlaceRepository stopPlaceRepository;
+  private final StopPointRepository stopPointRepository;
 
   @Autowired
   PlatformVersioningTest(PlatformRepository platformRepository, PlatformService platformService,
-      StopPlaceRepository stopPlaceRepository) {
+      StopPointRepository stopPointRepository) {
     this.platformRepository = platformRepository;
     this.platformService = platformService;
-    this.stopPlaceRepository = stopPlaceRepository;
+    this.stopPointRepository = stopPointRepository;
   }
 
   /**
@@ -53,9 +53,9 @@ class PlatformVersioningTest {
   void scenario1a() {
     //given
     String parentServicePointSloid = "ch:1:sloid:7000";
-    StopPlaceVersion stopPlaceVersion = StopPlaceTestData.getStopPlaceVersion();
-    stopPlaceVersion.setSloid(parentServicePointSloid);
-    stopPlaceRepository.save(stopPlaceVersion);
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointRepository.save(stopPointVersion);
     PlatformVersion version1 = PlatformTestData.builderVersion1().build();
     version1.setParentServicePointSloid(parentServicePointSloid);
     PlatformVersion version2 = PlatformTestData.builderVersion2().build();
@@ -105,7 +105,7 @@ class PlatformVersioningTest {
     PlatformVersion secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate, Fields.editor, StopPlaceVersion.Fields.id)
+        .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate, Fields.editor, StopPointVersion.Fields.id)
         .isEqualTo(editedVersion);
 
   }
@@ -123,9 +123,9 @@ class PlatformVersioningTest {
   void scenario2a() {
     //given
     String parentServicePointSloid = "ch:1:sloid:7000";
-    StopPlaceVersion stopPlaceVersion = StopPlaceTestData.getStopPlaceVersion();
-    stopPlaceVersion.setSloid(parentServicePointSloid);
-    stopPlaceRepository.save(stopPlaceVersion);
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointRepository.save(stopPointVersion);
     PlatformVersion version1 = PlatformTestData.builderVersion1().build();
     version1.setParentServicePointSloid(parentServicePointSloid);
     PlatformVersion version2 = PlatformTestData.builderVersion2().build();
@@ -196,9 +196,9 @@ class PlatformVersioningTest {
   void scenario8a() {
     //given
     String parentServicePointSloid = "ch:1:sloid:7000";
-    StopPlaceVersion stopPlaceVersion = StopPlaceTestData.getStopPlaceVersion();
-    stopPlaceVersion.setSloid(parentServicePointSloid);
-    stopPlaceRepository.save(stopPlaceVersion);
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointRepository.save(stopPointVersion);
     PlatformVersion version1 = PlatformTestData.builderVersion1().build();
     version1.setParentServicePointSloid(parentServicePointSloid);
     PlatformVersion version2 = PlatformTestData.builderVersion2().build();
@@ -231,7 +231,7 @@ class PlatformVersioningTest {
     PlatformVersion secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate, Fields.editor, StopPlaceVersion.Fields.validTo)
+        .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate, Fields.editor, StopPointVersion.Fields.validTo)
         .isEqualTo(savedVersion2);
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2001, 12, 31));
 
