@@ -11,12 +11,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.atlas.api.prm.model.toilet.CreateToiletVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPlaceTestData;
 import ch.sbb.prm.directory.ToiletTestData;
-import ch.sbb.atlas.api.prm.model.toilet.CreateToiletVersionModel;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.StopPlaceVersion;
@@ -138,7 +138,7 @@ class ToiletVersionControllerApiTest extends BaseControllerApiTest {
     editedVersionModel.setValidTo(version2.getValidTo().minusYears(1));
     editedVersionModel.setNumberWithoutCheckDigit(version2.getNumber().getNumber());
     editedVersionModel.setDesignation(version2.getDesignation());
-    editedVersionModel.setInfo(version2.getInfo());
+    editedVersionModel.setAdditionalInformation(version2.getAdditionalInformation());
     editedVersionModel.setWheelchairToilet(version2.getWheelchairToilet());
     editedVersionModel.setCreationDate(version2.getCreationDate());
     editedVersionModel.setEditionDate(version2.getEditionDate());

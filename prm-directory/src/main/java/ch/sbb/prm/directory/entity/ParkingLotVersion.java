@@ -1,8 +1,8 @@
 package ch.sbb.prm.directory.entity;
 
+import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
-import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.prm.directory.service.PrmVersionable;
 import ch.sbb.prm.directory.service.Relatable;
 import jakarta.persistence.Entity;
@@ -37,7 +37,7 @@ public class ParkingLotVersion extends BasePrmEntityVersion implements Relatable
   private Long id;
 
   @AtlasVersionableProperty
-  private String info;
+  private String additionalInformation;
 
   @AtlasVersionableProperty
   private String designation;

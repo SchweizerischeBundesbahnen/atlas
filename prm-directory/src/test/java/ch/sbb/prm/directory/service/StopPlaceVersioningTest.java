@@ -2,12 +2,12 @@ package ch.sbb.prm.directory.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.StopPlaceTestData;
 import ch.sbb.prm.directory.entity.BasePrmImportEntity.Fields;
 import ch.sbb.prm.directory.entity.StopPlaceVersion;
-import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.prm.directory.repository.StopPlaceRepository;
 import java.time.LocalDate;
 import java.util.List;
@@ -56,14 +56,14 @@ class StopPlaceVersioningTest {
     editedVersion.setAlternativeTransport(StandardAttributeType.TO_BE_COMPLETED);
     editedVersion.setAlternativeTransportCondition("No way dude!!");
     editedVersion.setAssistanceAvailability(StandardAttributeType.YES);
-    editedVersion.setAlternativeCondition("No alternative Bro!");
+    editedVersion.setAssistanceCondition("No alternative Bro!");
     editedVersion.setAssistanceService(StandardAttributeType.NO);
     editedVersion.setAudioTicketMachine(StandardAttributeType.PARTIALLY);
-    editedVersion.setAdditionalInfo("No alternative");
+    editedVersion.setAdditionalInformation("No alternative");
     editedVersion.setDynamicAudioSystem(StandardAttributeType.TO_BE_COMPLETED);
     editedVersion.setDynamicOpticSystem(StandardAttributeType.TO_BE_COMPLETED);
     editedVersion.setInfoTicketMachine("tick");
-    editedVersion.setAdditionalInfo("additional");
+    editedVersion.setAdditionalInformation("additional");
     editedVersion.setInteroperable(true);
     editedVersion.setUrl("https://www.prm.sbb");
     editedVersion.setVisualInfo(StandardAttributeType.TO_BE_COMPLETED);
