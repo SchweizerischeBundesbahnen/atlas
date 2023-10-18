@@ -133,16 +133,17 @@ public class ServicePointController implements ServicePointApiV1 {
 
   private void checkIfChosenOperatingPointKilometerMasterIsAllowedToBeAssigned(
           CreateServicePointVersionModel createServicePointVersionModel, ServicePointVersion servicePointVersion) {
-    ServicePointNumber bpsServicePointNumber = ServicePointNumber
+
+    ServicePointNumber operatingPointKilometerMasterServicePointNumber = ServicePointNumber
             .ofNumberWithoutCheckDigit(createServicePointVersionModel.getOperatingPointKilometerMasterNumber());
 
-    List<ServicePointVersion> allBpsServicePointsWithNumber = servicePointService
+    List<ServicePointVersion> allOperatingPointKilometerMasterNumbers = servicePointService
             .findAllByNumberAndOperatingPointRouteNetworkTrueOrderByValidFrom(
-                    bpsServicePointNumber);
+                    operatingPointKilometerMasterServicePointNumber);
 
 
-    if (!servicePointService.checkIfBpsCanBeAssignedToBpk(allBpsServicePointsWithNumber, servicePointVersion)) {
-      throw new ForbiddenDueToChosenServicePointVersionValidationPeriodException(bpsServicePointNumber);
+    if (!servicePointService.checkIfOperatingPointKilometerMasterCanBeAssigned(allOperatingPointKilometerMasterNumbers, servicePointVersion)) {
+      throw new ForbiddenDueToChosenServicePointVersionValidationPeriodException(operatingPointKilometerMasterServicePointNumber);
     }
   }
 
