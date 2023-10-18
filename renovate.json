@@ -4,5 +4,27 @@
     "local>KD_ESTA/esta-renovate-preset"
   ],
   "branchPrefix": "feature/renovate/",
-  "dependencyDashboard": false
+  "dependencyDashboard": false,
+  "packageRules": [
+    {
+      "groupName": "MAVEN Dependencies",
+      "matchManagers": [
+        "maven"
+      ],
+      "matchUpdateTypes": [
+        "patch",
+        "minor"
+      ]
+    },
+    {
+      "groupName": "NPM Dependencies",
+      "matchManagers": [
+        "npm"
+      ],
+      "matchUpdateTypes": [
+        "patch",
+        "minor"
+      ]
+    }
+  ]
 }
