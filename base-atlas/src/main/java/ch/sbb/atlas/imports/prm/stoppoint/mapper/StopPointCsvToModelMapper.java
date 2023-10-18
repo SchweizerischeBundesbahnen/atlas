@@ -1,9 +1,9 @@
-package ch.sbb.atlas.imports.prm.stopplace.mapper;
+package ch.sbb.atlas.imports.prm.stoppoint.mapper;
 
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
-import ch.sbb.atlas.api.prm.model.stopplace.CreateStopPlaceVersionModel;
-import ch.sbb.atlas.api.prm.model.stopplace.CreateStopPlaceVersionModel.CreateStopPlaceVersionModelBuilder;
-import ch.sbb.atlas.imports.prm.stopplace.StopPlaceCsvModel;
+import ch.sbb.atlas.api.prm.model.stoppoint.CreateStopPointVersionModel;
+import ch.sbb.atlas.api.prm.model.stoppoint.CreateStopPointVersionModel.CreateStopPointVersionModelBuilder;
+import ch.sbb.atlas.imports.prm.stoppoint.StopPointCsvModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import java.util.Arrays;
@@ -12,11 +12,10 @@ import java.util.stream.Collectors;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class StopPlaceCsvToModelMapper {
+public class StopPointCsvToModelMapper {
 
-  public static CreateStopPlaceVersionModel toModel(StopPlaceCsvModel csvModel){
-    CreateStopPlaceVersionModelBuilder<?, ?> builder = CreateStopPlaceVersionModel.builder();
-
+  public static CreateStopPointVersionModel toModel(StopPointCsvModel csvModel){
+    CreateStopPointVersionModelBuilder<?, ?> builder = CreateStopPointVersionModel.builder();
         builder.sloid(csvModel.getDsSloid());
         builder.numberWithoutCheckDigit(ServicePointNumber.removeCheckDigit(csvModel.getDidokCode()));
         builder.validFrom(csvModel.getValidFrom());
