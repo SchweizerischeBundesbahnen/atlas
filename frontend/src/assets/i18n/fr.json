@@ -14,6 +14,7 @@
     "CORRELATION_ID": "Si les problèmes persistent, contactez le service Atlas avec le numéro d'identification suivant: {{correlationId}}"
   },
   "COMMON": {
+    "AUTOMATICALLY_ASSIGNED": "Attribuer automatiquement",
     "MAINTENANCE_WINDOW": "Fenêtre de maintenance tous les mercredis de 16 à 17 heures, des interruptions du système peuvent survenir.",
     "LOADING": "Chargement...",
     "BACK_TO_OVERVIEW": "Retour au sommaire",
@@ -99,6 +100,7 @@
   },
   "FORM": {
     "MAX_CHARS": "{{numberOfChars}} caractères max.",
+    "NUMBER_OF_DIGITS": "{{numberOfDigits}} numéros",
     "DROPDOWN_PLACEHOLDER": "sélectionner",
     "FOR_EXAMPLE": "p.ex.:",
     "DESIGN_INFORMATION": "Informations sur la création",
@@ -833,6 +835,7 @@
       "DIDOK_CODE": "Code DiDok (code et numéro du pays)",
       "DIDOK_CODE_SEARCH": "Code DiDok",
       "SERVICE_POINT": "Service",
+      "SERVICE_POINT_ID": "ID service",
       "NEW_SERVICE_POINT": "Nouveau service",
       "AREAS": "Zones d'arrêt",
       "FOT_COMMENT": "Commentaire OFT",

@@ -1,34 +1,37 @@
 <div class="pt-3 ps-3 pe-3">
   <div class="form-box p-3">
-    <atlas-select
-      label="COMMON.COUNTRIES"
-      [additionalLabelspace]="false"
-      [optionTranslateLabelPrefix]="'TTH.COUNTRY.'"
-      [displayExtractor]="getCountryEnum"
-      [options]="(countryOptions$ | async) ?? []"
-      [required]="true"
-      [formGroup]="form"
-      [controlName]="'country'"
-    >
-    </atlas-select>
+    <div class="d-flex">
+      <atlas-select
+        class="col-6 pe-3"
+        label="COMMON.COUNTRIES"
+        [additionalLabelspace]="25"
+        [optionTranslateLabelPrefix]="'TTH.COUNTRY.'"
+        [displayExtractor]="getCountryEnum"
+        [options]="(countryOptions$ | async) ?? []"
+        [required]="true"
+        [formGroup]="form"
+        [controlName]="'country'"
+      >
+      </atlas-select>
 
-    <!-- todo: display didok-id (numberShort) field, disabled (automatic) else enabled -->
-    <!--    <atlas-text-field-->
-    <!--      [fieldExamples]="[-->
-    <!--        { label: 'FORM.FOR_EXAMPLE', translate: true },-->
-    <!--        { label: '57189 |', translate: false },-->
-    <!--        { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '30' } }-->
-    <!--      ]"-->
-    <!--      [formGroup]="form"-->
-    <!--      controlName="number"-->
-    <!--      fieldLabel="SEPODI.SERVICE_POINTS.SERVICE_POINT_ID"-->
-    <!--    >-->
-    <!--    </atlas-text-field>-->
-
-    <form [formGroup]="form">
-      <input type="number" formControlName="number" />
-      <app-atlas-field-error [form]="form" controlName="number"></app-atlas-field-error>
-    </form>
+      <atlas-text-field
+        class="col-6"
+        [fieldExamples]="[
+          { label: 'FORM.FOR_EXAMPLE', translate: true },
+          { label: '57189 |', translate: false },
+          {
+            label: 'FORM.NUMBER_OF_DIGITS',
+            translate: true,
+            arg: { key: 'numberOfDigits', value: '5' }
+          }
+        ]"
+        [formGroup]="form"
+        controlName="number"
+        fieldLabel="SEPODI.SERVICE_POINTS.SERVICE_POINT_ID"
+        [placeholder]="form.controls.number.disabled ? 'COMMON.AUTOMATICALLY_ASSIGNED' : ''"
+      >
+      </atlas-text-field>
+    </div>
 
     <service-point-form
       [form]="form"
@@ -63,10 +66,10 @@
         wrapperStyleClass="ms-3"
       ></atlas-button>
       <atlas-button
-        (click)="onSave()"
+        (buttonClicked)="onSave()"
         [footerEdit]="true"
         [disabled]="!form.dirty"
-        [submitButton]="true"
+        [submitButton]="false"
         buttonDataCy="save-item"
         buttonText="COMMON.SAVE"
         buttonType="whiteFooterEdit"
