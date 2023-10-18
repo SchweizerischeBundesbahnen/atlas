@@ -11,7 +11,6 @@ import ch.sbb.atlas.servicepointdirectory.exception.TerminationNotAllowedExcepti
 import ch.sbb.atlas.user.administration.security.service.BusinessOrganisationBasedUserAdministrationService;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
@@ -36,11 +35,9 @@ class ServicePointTerminationServiceTest {
   }
 
   /**
-   * Currently StopPoint
-   * |-----------------|
+   * Currently StopPoint |-----------------|
    * <p>
-   * Update on ValidTo only to shorten
-   * |-------------|
+   * Update on ValidTo only to shorten |-------------|
    */
   @Test
   void shouldReportTerminationNotAllowedForWriterOnEnd() {
@@ -50,14 +47,14 @@ class ServicePointTerminationServiceTest {
         .validTo(LocalDate.of(2020, 12, 20))
         .build();
 
-    List<ServicePointVersion> currentVersions = new ArrayList<>(List.of(ServicePointVersion.builder()
+    List<ServicePointVersion> currentVersions = List.of(ServicePointVersion.builder()
         .meansOfTransport(Set.of(MeanOfTransport.BUS))
         .validFrom(LocalDate.of(2020, 1, 1))
         .validTo(LocalDate.of(2020, 12, 31))
-        .build()));
-    List<VersionedObject> versionedObjects = new ArrayList<>(List.of(VersionedObject.builder()
+        .build());
+    List<VersionedObject> versionedObjects = List.of(VersionedObject.builder()
         .validFrom(LocalDate.of(2020, 1, 1))
-        .validTo(LocalDate.of(2020, 12, 20)).build()));
+        .validTo(LocalDate.of(2020, 12, 20)).build());
 
     ThrowingCallable terminationCheck = () -> servicePointTerminationService.checkTerminationAllowed(editedServicePoint,
         currentVersions, versionedObjects);
@@ -68,11 +65,9 @@ class ServicePointTerminationServiceTest {
   }
 
   /**
-   * Not a StopPoint
-   * |-----------------|
+   * Not a StopPoint |-----------------|
    * <p>
-   * Update on ValidTo only to shorten
-   * |-------------|
+   * Update on ValidTo only to shorten |-------------|
    */
   @Test
   void shouldReportNoTerminationIfNotStopPoint() {
@@ -81,13 +76,13 @@ class ServicePointTerminationServiceTest {
         .validTo(LocalDate.of(2020, 12, 20))
         .build();
 
-    List<ServicePointVersion> currentVersions = new ArrayList<>(List.of(ServicePointVersion.builder()
+    List<ServicePointVersion> currentVersions = List.of(ServicePointVersion.builder()
         .validFrom(LocalDate.of(2020, 1, 1))
         .validTo(LocalDate.of(2020, 12, 31))
-        .build()));
-    List<VersionedObject> versionedObjects = new ArrayList<>(List.of(VersionedObject.builder()
+        .build());
+    List<VersionedObject> versionedObjects = List.of(VersionedObject.builder()
         .validFrom(LocalDate.of(2020, 1, 1))
-        .validTo(LocalDate.of(2020, 12, 20)).build()));
+        .validTo(LocalDate.of(2020, 12, 20)).build());
 
     ThrowingCallable terminationCheck = () -> servicePointTerminationService.checkTerminationAllowed(editedServicePoint,
         currentVersions, versionedObjects);
@@ -98,11 +93,9 @@ class ServicePointTerminationServiceTest {
   }
 
   /**
-   * Currently StopPoint
-   * |-----------------|
+   * Currently StopPoint |-----------------|
    * <p>
-   * Update on ValidFrom only to shorten
-   *     |-------------|
+   * Update on ValidFrom only to shorten |-------------|
    */
   @Test
   void shouldReportTerminationNotAllowedForWriterOnBeginning() {
@@ -112,14 +105,14 @@ class ServicePointTerminationServiceTest {
         .validTo(LocalDate.of(2020, 12, 31))
         .build();
 
-    List<ServicePointVersion> currentVersions = new ArrayList<>(List.of(ServicePointVersion.builder()
+    List<ServicePointVersion> currentVersions = List.of(ServicePointVersion.builder()
         .meansOfTransport(Set.of(MeanOfTransport.BUS))
         .validFrom(LocalDate.of(2020, 1, 1))
         .validTo(LocalDate.of(2020, 12, 31))
-        .build()));
-    List<VersionedObject> versionedObjects = new ArrayList<>(List.of(VersionedObject.builder()
+        .build());
+    List<VersionedObject> versionedObjects = List.of(VersionedObject.builder()
         .validFrom(LocalDate.of(2020, 1, 5))
-        .validTo(LocalDate.of(2020, 12, 31)).build()));
+        .validTo(LocalDate.of(2020, 12, 31)).build());
 
     ThrowingCallable terminationCheck = () -> servicePointTerminationService.checkTerminationAllowed(editedServicePoint,
         currentVersions, versionedObjects);
