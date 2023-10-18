@@ -1,10 +1,30 @@
 package ch.sbb.importservice.recovery;
 
+import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_BATCH_PARAMETER;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_TYPE_PARAMETER;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.FULL_PATH_FILENAME_JOB_PARAMETER;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_LOADING_POINT_CSV_JOB_NAME;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_SERVICE_POINT_CSV_JOB_NAME;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_STOP_PLACE_CSV_JOB_NAME;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_TRAFFIC_POINT_CSV_JOB_NAME;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.START_AT_JOB_PARAMETER;
+
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.importservice.repository.ImportProcessedItemRepository;
+import java.util.Map;
+import java.util.Optional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.batch.core.*;
+import org.springframework.batch.core.BatchStatus;
+import org.springframework.batch.core.ExitStatus;
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobExecution;
+import org.springframework.batch.core.JobInstance;
+import org.springframework.batch.core.JobParameter;
+import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.core.JobParametersBuilder;
+import org.springframework.batch.core.JobParametersInvalidException;
+import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.explore.JobExplorer;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
@@ -15,11 +35,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
-
-import java.util.Map;
-import java.util.Optional;
-
-import static ch.sbb.importservice.utils.JobDescriptionConstants.*;
 
 @Component
 @AllArgsConstructor
@@ -43,6 +58,9 @@ public class RecoveryJobsRunner implements ApplicationRunner {
   @Qualifier(IMPORT_TRAFFIC_POINT_CSV_JOB_NAME)
   private final Job importTrafficPointCsvJob;
 
+  @Qualifier(IMPORT_STOP_PLACE_CSV_JOB_NAME)
+  private final Job importStopPlaceCsvJob;
+
   private final FileService fileService;
 
   @Override
@@ -52,6 +70,7 @@ public class RecoveryJobsRunner implements ApplicationRunner {
     recoverJob(IMPORT_SERVICE_POINT_CSV_JOB_NAME);
     recoverJob(IMPORT_LOADING_POINT_CSV_JOB_NAME);
     recoverJob(IMPORT_TRAFFIC_POINT_CSV_JOB_NAME);
+    recoverJob(IMPORT_STOP_PLACE_CSV_JOB_NAME);
   }
 
   void recoverJob(String jobName)
@@ -121,6 +140,9 @@ public class RecoveryJobsRunner implements ApplicationRunner {
     }
     if (IMPORT_TRAFFIC_POINT_CSV_JOB_NAME.equals(jobName)) {
       return importTrafficPointCsvJob;
+    }
+    if (IMPORT_STOP_PLACE_CSV_JOB_NAME.equals(jobName)) {
+      return importStopPlaceCsvJob;
     }
     throw new IllegalStateException("No job found with name: " + jobName);
   }

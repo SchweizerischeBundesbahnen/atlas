@@ -103,4 +103,41 @@ import org.springframework.http.HttpStatus;
     assertThrows(SchedulingExecutionException.class,
         () -> importServicePointBatchSchedulerService.triggerImportTrafficPointBatch().close());
   }
+
+  @Test
+  void shouldTriggerImportStopPlaceBatchSuccessfully() {
+   //given
+   Response response = Response.builder()
+       .status(200)
+       .reason("OK")
+       .request(
+           Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+               null, Util.UTF_8, null))
+       .build();
+   when(client.triggerImportStopPlaceBatch()).thenReturn(response);
+
+   //when
+   Response result = importServicePointBatchSchedulerService.triggerImportStopPlaceBatch();
+
+   //then
+   assertThat(result).isNotNull();
+   assertThat(result.status()).isEqualTo(200);
+  }
+
+  @Test
+  void shouldTriggerImportStopPlaceBatchUnsuccessfully() {
+   //given
+   Response response = Response.builder()
+       .status(HttpStatus.BAD_REQUEST.value())
+       .reason("Bad Request")
+       .request(
+           Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+               null, Util.UTF_8, null))
+       .build();
+   when(client.triggerImportStopPlaceBatch()).thenReturn(response);
+
+   //when & then
+   assertThrows(SchedulingExecutionException.class,
+       () -> importServicePointBatchSchedulerService.triggerImportStopPlaceBatch().close());
+  }
 }

@@ -46,30 +46,30 @@ class FileHelperServiceTest {
   void shouldNotFoundFileToDownload() {
     //given
     when(
-        amazonService.getS3ObjectKeysFromPrefix(eq(AmazonBucket.EXPORT), eq(csvFileNameModel.getS3BucketDir()),
-            eq(csvFileNameModel.getFileName()))).thenReturn(
+        amazonService.getS3ObjectKeysFromPrefix(AmazonBucket.EXPORT, csvFileNameModel.getS3BucketDir(),
+            csvFileNameModel.getFileName())).thenReturn(
         Collections.emptyList());
 
     //when & then
     String exMessage =
         assertThrows(RuntimeException.class,
             () -> fileHelperService.downloadImportFileFromS3(csvFileNameModel)).getLocalizedMessage();
-    verify(amazonService).getS3ObjectKeysFromPrefix(eq(AmazonBucket.EXPORT), eq(csvFileNameModel.getS3BucketDir()),
-        eq(csvFileNameModel.getFileName()));
+    verify(amazonService).getS3ObjectKeysFromPrefix(AmazonBucket.EXPORT, csvFileNameModel.getS3BucketDir(),
+        csvFileNameModel.getFileName());
     assertThat(exMessage).isEqualTo("[IMPORT]: File "+ csvFileNameModel.getFileName()+" not found on S3");
   }
 
   @Test
   void shouldFindMoreThanOneFileToDownload() {
     //given
-    when(amazonService.getS3ObjectKeysFromPrefix(eq(AmazonBucket.EXPORT), eq(csvFileNameModel.getS3BucketDir()), eq(csvFileNameModel.getFileName())))
+    when(amazonService.getS3ObjectKeysFromPrefix(AmazonBucket.EXPORT, csvFileNameModel.getS3BucketDir(), csvFileNameModel.getFileName()))
         .thenReturn(List.of("file1", "file2"));
 
     //when & then
     String exMessage =
         assertThrows(RuntimeException.class,
             () -> fileHelperService.downloadImportFileFromS3(csvFileNameModel)).getLocalizedMessage();
-    verify(amazonService).getS3ObjectKeysFromPrefix(eq(AmazonBucket.EXPORT), eq(csvFileNameModel.getS3BucketDir()), eq(csvFileNameModel.getFileName()));
+    verify(amazonService).getS3ObjectKeysFromPrefix(AmazonBucket.EXPORT, csvFileNameModel.getS3BucketDir(), csvFileNameModel.getFileName());
     assertThat(exMessage).isEqualTo("[IMPORT]: Found more than 1 file " + csvFileNameModel.getFileName()+ " to download on S3");
   }
 
@@ -77,16 +77,16 @@ class FileHelperServiceTest {
   void shouldDownloadJustOneFile() {
     //given
     when(
-        amazonService.getS3ObjectKeysFromPrefix(eq(AmazonBucket.EXPORT), eq(csvFileNameModel.getS3BucketDir()),
-            eq(csvFileNameModel.getFileName()))).thenReturn(
+        amazonService.getS3ObjectKeysFromPrefix(AmazonBucket.EXPORT, csvFileNameModel.getS3BucketDir(),
+            csvFileNameModel.getFileName())).thenReturn(
         List.of("file"));
-    when(amazonService.pullFile(eq(AmazonBucket.EXPORT), eq("file"))).thenReturn(new File("file"));
+    when(amazonService.pullFile(AmazonBucket.EXPORT, "file")).thenReturn(new File("file"));
 
     //when
     File file = fileHelperService.downloadImportFileFromS3(csvFileNameModel);
 
     //then
-    verify(amazonService).getS3ObjectKeysFromPrefix(eq(AmazonBucket.EXPORT), eq(csvFileNameModel.getS3BucketDir()), eq(csvFileNameModel.getFileName()));
+    verify(amazonService).getS3ObjectKeysFromPrefix(AmazonBucket.EXPORT, csvFileNameModel.getS3BucketDir(), csvFileNameModel.getFileName());
     verify(amazonService).pullFile(eq(AmazonBucket.EXPORT), eq("file"));
     assertThat(file.getName()).isEqualTo("file");
   }
