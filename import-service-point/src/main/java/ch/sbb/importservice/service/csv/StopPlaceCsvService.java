@@ -56,7 +56,9 @@ public class StopPlaceCsvService extends CsvService<StopPlaceCsvModel> {
 
   public List<StopPlaceCsvModelContainer> mapToStopPlaceCsvModelContainers(
       List<StopPlaceCsvModel> stopPlaceCsvModels) {
-    List<StopPlaceCsvModel> activeStopPlaces = filterActiveStopPlaces(stopPlaceCsvModels);
+
+    List<StopPlaceCsvModel> activeStopPlaces = filterStopPlaces(stopPlaceCsvModels);
+
     Map<Integer, List<StopPlaceCsvModel>> stopPlaceGroupedByDidokCode = activeStopPlaces.stream()
         .collect(Collectors.groupingBy(StopPlaceCsvModel::getDidokCode));
     List<StopPlaceCsvModelContainer> stopPlaceCsvModelContainers = new ArrayList<>();
@@ -69,9 +71,19 @@ public class StopPlaceCsvService extends CsvService<StopPlaceCsvModel> {
       stopPlaceCsvModelContainers.add(servicePointCsvModelContainer);
     });
 
+    mergeStopPlaces(stopPlaceCsvModelContainers);
+    return stopPlaceCsvModelContainers;
+  }
+
+  private void mergeStopPlaces(List<StopPlaceCsvModelContainer> stopPlaceCsvModelContainers) {
     mergeSequentialEqualsVersions(stopPlaceCsvModelContainers);
     mergeEqualsVersions(stopPlaceCsvModelContainers);
-    return stopPlaceCsvModelContainers;
+  }
+
+  private static List<StopPlaceCsvModel> filterStopPlaces(List<StopPlaceCsvModel> stopPlaceCsvModels) {
+    List<StopPlaceCsvModel> activeStopPlaces = filterActiveStopPlaces(stopPlaceCsvModels);
+    replaceWrongMeansOfTransportCode(stopPlaceCsvModels);
+    return activeStopPlaces;
   }
 
   private void mergeSequentialEqualsVersions(List<StopPlaceCsvModelContainer> servicePointCsvModelContainers) {
@@ -95,12 +107,9 @@ public class StopPlaceCsvService extends CsvService<StopPlaceCsvModel> {
   }
 
   private static List<StopPlaceCsvModel> filterActiveStopPlaces(List<StopPlaceCsvModel> models) {
-    List<StopPlaceCsvModel> stopPlaceCsvModels = removeWrongMeansOfTransportCode(models);
-    log.info("Found and removed {} StopPlace versions with [~0~] TRANSPORTATION_MEANS code.",
-        models.size() - stopPlaceCsvModels.size());
-    List<StopPlaceCsvModel> activeStopPlaceVersions = getActiveStopPlaceVersions(stopPlaceCsvModels);
+    List<StopPlaceCsvModel> activeStopPlaceVersions = getActiveStopPlaceVersions(models);
     log.info("Found and removed {} inactive (STATUS=0) StopPlace versions.",
-        stopPlaceCsvModels.size() - activeStopPlaceVersions.size());
+        models.size() - activeStopPlaceVersions.size());
     return activeStopPlaceVersions;
   }
 
@@ -109,10 +118,14 @@ public class StopPlaceCsvService extends CsvService<StopPlaceCsvModel> {
         .filter(stopPlaceCsvModel -> stopPlaceCsvModel.getStatus() == ACTIVE_STATUS).toList();
   }
 
-  private static List<StopPlaceCsvModel> removeWrongMeansOfTransportCode(List<StopPlaceCsvModel> stopPlaceCsvModels) {
-    return stopPlaceCsvModels.stream()
-        .filter(stopPlaceCsvModel -> !stopPlaceCsvModel.getTransportationMeans().equals(UNKNOWN_MEANS_OF_TRANSPORT_CODE))
-        .toList();
+  private static void replaceWrongMeansOfTransportCode(List<StopPlaceCsvModel> stopPlaceCsvModels) {
+    stopPlaceCsvModels.forEach(stopPlaceCsvModel -> {
+      if(stopPlaceCsvModel.getTransportationMeans().equals(UNKNOWN_MEANS_OF_TRANSPORT_CODE)){
+        stopPlaceCsvModel.setTransportationMeans("~U~");
+        log.info("Found StopPlace versions {} with [~0~] TRANSPORTATION_MEANS code and change to UNKNOWN ({})",
+            stopPlaceCsvModel.getDidokCode(),stopPlaceCsvModel.getTransportationMeans());
+      }
+    });
   }
 
   public List<StopPlaceCsvModel> mergeSequentialEqualsStopPlaceVersions(List<StopPlaceCsvModel> stopPlaceCsvModels,
