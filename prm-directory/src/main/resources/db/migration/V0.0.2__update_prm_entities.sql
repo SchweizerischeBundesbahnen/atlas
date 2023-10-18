@@ -21,3 +21,9 @@ ALTER TABLE toilet_version
 
 ALTER TABLE reference_point_version
     ADD COLUMN additional_information VARCHAR(2000);
+
+ALTER TABLE stop_place_version
+    ALTER COLUMN city TYPE VARCHAR(75);
+
+ALTER TABLE parking_lot_version
+    ALTER COLUMN prm_places_available TYPE VARCHAR(50);
