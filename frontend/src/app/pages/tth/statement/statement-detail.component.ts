@@ -1,13 +1,14 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   ApplicationRole,
   ApplicationType,
   HearingStatus,
   StatementStatus,
   SwissCanton,
-  TimetableHearingService,
   TimetableHearingStatement,
   TimetableHearingStatementDocument,
+  TimetableHearingStatementsService,
+  TimetableHearingYearsService,
   TimetableYearChangeService,
 } from '../../../api';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -59,14 +60,14 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
     private router: Router,
     private route: ActivatedRoute,
     private dialogService: DialogService,
-    private timetableHearingService: TimetableHearingService,
+    private timetableHearingYearsService: TimetableHearingYearsService,
+    private readonly timetableHearingStatementsService: TimetableHearingStatementsService,
     private notificationService: NotificationService,
     private authService: AuthService,
     private timetableYearChangeService: TimetableYearChangeService,
     private readonly statementDialogService: StatementDialogService,
     private readonly openStatementInMailService: OpenStatementInMailService,
     private readonly statementShareService: StatementShareService,
-    private readonly elementRef: ElementRef<HTMLElement>
   ) {}
 
   isFormDirty() {
@@ -100,7 +101,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
     this.uploadedFiles = [];
 
     if (this.hearingStatus === HearingStatus.Active) {
-      this.isStatementEditable = this.timetableHearingService
+      this.isStatementEditable = this.timetableHearingYearsService
         .getHearingYears([HearingStatus.Active])
         .pipe(
           map((timetableHearingYears) => {
@@ -109,7 +110,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
               return foundTimetableHearingYears[0].statementEditable;
             }
             return false;
-          })
+          }),
         );
     }
 
@@ -169,7 +170,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
           queryParams: {
             year: this.statement?.timetableYear,
           },
-        }
+        },
       )
       .then();
   }
@@ -181,7 +182,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
       statementStatus: new FormControl(statement?.statementStatus, [Validators.required]),
       ttfnid: new FormControl(statement?.ttfnid),
       responsibleTransportCompanies: new FormControl(
-        statement?.responsibleTransportCompanies ?? []
+        statement?.responsibleTransportCompanies ?? [],
       ),
       swissCanton: new FormControl(statement?.swissCanton, [Validators.required]),
       stopPlace: new FormControl(statement?.stopPlace, [
@@ -224,7 +225,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
       ]),
       comment: new FormControl(statement?.comment, [AtlasFieldLengthValidator.length_280]),
       documents: new FormArray(
-        statement?.documents?.map((document) => new FormControl(document)) ?? []
+        statement?.documents?.map((document) => new FormControl(document)) ?? [],
       ),
       etagVersion: new FormControl(statement?.etagVersion),
     });
@@ -242,7 +243,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
   }
 
   downloadFile(fileName: string) {
-    this.timetableHearingService
+    this.timetableHearingStatementsService
       .getStatementDocument(this.statement!.id!, fileName)
       .subscribe((response) => FileDownloadService.downloadFile(fileName, response));
   }
@@ -253,12 +254,12 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
 
   private downloadLocalFile(
     id: number,
-    documents: Array<TimetableHearingStatementDocument> | undefined
+    documents: Array<TimetableHearingStatementDocument> | undefined,
   ) {
     if (documents!.length > 0) {
       this.isLoading = true;
       for (let i = 0; i < documents!.length!; i++) {
-        this.timetableHearingService
+        this.timetableHearingStatementsService
           .getStatementDocument(id, documents![i].fileName)
           .pipe(takeUntil(this.ngUnsubscribe))
           .subscribe((response) => {
@@ -272,7 +273,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
   }
 
   private initYearOptions() {
-    this.timetableHearingService
+    this.timetableHearingYearsService
       .getHearingYears([HearingStatus.Active, HearingStatus.Planned])
       .subscribe((timetableHearingYears) => {
         let years = timetableHearingYears.map((year) => year.timetableYear);
@@ -293,7 +294,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
   private initCantonOptions() {
     if (this.isNew) {
       const tthPermissions = this.authService.getApplicationUserPermission(
-        ApplicationType.TimetableHearing
+        ApplicationType.TimetableHearing,
       );
       if (tthPermissions.role === ApplicationRole.Supervisor || this.authService.isAdmin) {
         this.CANTON_OPTIONS = Cantons.cantons;
@@ -358,7 +359,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
   private initResponsibleTransportCompanyPrefill() {
     this.form.controls.ttfnid.valueChanges.subscribe((ttfnid) => {
       if (ttfnid) {
-        this.timetableHearingService
+        this.timetableHearingStatementsService
           .getResponsibleTransportCompanies(ttfnid, this.form.value.timetableYear! - 1)
           .subscribe((result) => {
             this.form.controls.responsibleTransportCompanies.setValue(result);
@@ -369,7 +370,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
 
   private createStatement(statement: TimetableHearingStatement) {
     this.isLoading = true;
-    this.timetableHearingService
+    this.timetableHearingStatementsService
       .createStatement(statement, this.uploadedFiles)
       .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
       .subscribe((statement) => {
@@ -381,7 +382,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
 
   private updateStatement(id: number, statement: TimetableHearingStatement) {
     this.isLoading = true;
-    this.timetableHearingService
+    this.timetableHearingStatementsService
       .updateHearingStatement(id, statement, this.uploadedFiles)
       .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
       .subscribe((statement) => {

@@ -14,6 +14,7 @@
     "CORRELATION_ID": "Bei anhaltenden Problemen wenden Sie sich mit folgender Identifikationsnummer an die Fachstelle Atlas: {{correlationId}}"
   },
   "COMMON": {
+    "AUTOMATICALLY_ASSIGNED": "Automatisch vergeben",
     "MAINTENANCE_WINDOW": "Wartungsfenster jeweils mittwochs von 16 - 17 Uhr, es kann zu Systemunterbrüchen kommen.",
     "LOADING": "Wird geladen...",
     "BACK_TO_OVERVIEW": "Zurück zur Übersicht",
@@ -99,6 +100,7 @@
   },
   "FORM": {
     "MAX_CHARS": "{{numberOfChars}} Zeichen max.",
+    "NUMBER_OF_DIGITS": "{{numberOfDigits}} Zahlen",
     "DROPDOWN_PLACEHOLDER": "auswählen",
     "FOR_EXAMPLE": "z.B.:",
     "DESIGN_INFORMATION": "Angaben zur Gestaltung",
