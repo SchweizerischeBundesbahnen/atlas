@@ -11,12 +11,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.atlas.api.prm.model.informationdesk.CreateInformationDeskVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.prm.directory.InformationDeskTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPlaceTestData;
-import ch.sbb.atlas.api.prm.model.informationdesk.CreateInformationDeskVersionModel;
 import ch.sbb.prm.directory.entity.InformationDeskVersion;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
@@ -132,7 +132,7 @@ class InformationDeskVersionControllerApiTest extends BaseControllerApiTest {
     editedVersionModel.setValidTo(version2.getValidTo().minusYears(1));
     editedVersionModel.setNumberWithoutCheckDigit(version2.getNumber().getNumber());
     editedVersionModel.setDesignation(version2.getDesignation());
-    editedVersionModel.setInfo(version2.getInfo());
+    editedVersionModel.setAdditionalInformation(version2.getAdditionalInformation());
     editedVersionModel.setInductionLoop(version2.getInductionLoop());
     editedVersionModel.setOpeningHours(version2.getOpeningHours());
     editedVersionModel.setWheelchairAccess(version2.getWheelchairAccess());

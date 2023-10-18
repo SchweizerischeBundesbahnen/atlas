@@ -29,10 +29,10 @@ public class StopPlaceCsvToModelMapper {
         builder.alternativeTransport(StandardAttributeType.from(csvModel.getAlternativeTransport()));
         builder.alternativeTransportCondition(csvModel.getAlternativeTransportCondition());
         builder.assistanceAvailability(StandardAttributeType.from(csvModel.getAssistanceAvailability()));
-        builder.alternativeCondition(csvModel.getAssistanceCondition());
+        builder.assistanceCondition(csvModel.getAssistanceCondition());
         builder.assistanceService(StandardAttributeType.from(csvModel.getAssistanceService()));
         builder.audioTicketMachine(StandardAttributeType.from(csvModel.getAudioTickMach()));
-        builder.additionalInfo(csvModel.getCompInfos());
+        builder.additionalInformation(csvModel.getCompInfos());
         builder.dynamicAudioSystem(StandardAttributeType.from(csvModel.getDynamicAudioSys()));
         builder.dynamicOpticSystem(StandardAttributeType.from(csvModel.getDynamicOpticSys()));
         builder.infoTicketMachine(csvModel.getInfoTickMach());
