@@ -12,6 +12,7 @@ import ch.sbb.atlas.servicepointdirectory.service.BasePointUtility;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import org.hibernate.StaleObjectStateException;
 import org.junit.jupiter.api.Assertions;
@@ -34,15 +35,16 @@ import org.mockito.MockitoAnnotations;
   private ServicePointValidationService servicePointValidationService;
 
   @Mock
-  private ServicePointSearchVersionRepository servicePointSearchVersionRepository;
+  private ServicePointTerminationService servicePointTerminationService;
 
-  private AutoCloseable mocks;
+  @Mock
+  private ServicePointSearchVersionRepository servicePointSearchVersionRepository;
 
   @BeforeEach
   void initMocksAndService() {
     MockitoAnnotations.openMocks(this);
     servicePointService = new ServicePointService(servicePointVersionRepositoryMock, versionableServiceMock,
-        servicePointValidationService, servicePointSearchVersionRepository);
+        servicePointValidationService, servicePointSearchVersionRepository, servicePointTerminationService);
   }
 
   @Test
@@ -261,7 +263,7 @@ import org.mockito.MockitoAnnotations;
         .validTo(LocalDate.of(2000, 12, 30))
         .build();
     //when
-    ServicePointVersion result = servicePointService.updateServicePointVersion(version1, edited);
+    ServicePointVersion result = servicePointService.updateServicePointVersion(version1, edited, Collections.emptyList());
     //then
     assertThat(result).isNotNull();
     assertThat(result.getValidFrom()).isEqualTo(LocalDate.of(2000, 1, 1));
@@ -282,9 +284,7 @@ import org.mockito.MockitoAnnotations;
         .build();
     version2.setVersion(2);
     // when then
-    Assertions.assertThrows(StaleObjectStateException.class, () -> {
-      servicePointService.updateServicePointVersion(version1, version2);
-    });
+    Assertions.assertThrows(StaleObjectStateException.class, () -> servicePointService.updateServicePointVersion(version1, version2, Collections.emptyList()));
   }
 
 }
