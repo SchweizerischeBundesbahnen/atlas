@@ -92,17 +92,16 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
 
       this.initServicePoint();
       this.displayAndSelectServicePointOnMap();
-      this.isAbbreviationAllowed = ServicePointAbbreviationAllowList.SBOIDS.some((element) =>
+      /*       this.isAbbreviationAllowed = ServicePointAbbreviationAllowList.SBOIDS.some((element) =>
         element.includes(this.selectedVersion.businessOrganisation),
       );
+      this.hasAbbreviation = !!this.form.controls.abbreviation.value; */
     });
 
     this.initSortedOperatingPointTypes();
     this.mapService.isGeolocationActivated.next(
       !!this.form.controls.servicePointGeolocation.controls.spatialReference.value,
     );
-
-    this.hasAbbreviation = !!this.form.controls.abbreviation.value;
   }
 
   initSortedOperatingPointTypes() {
@@ -165,6 +164,14 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     this.displayAndSelectServicePointOnMap();
     this.initTypeChangeInformationDialog();
     this.initLocationInformationDisplay();
+
+    this.isAbbreviationAllowed = ServicePointAbbreviationAllowList.SBOIDS.some((element) =>
+      element.includes(this.selectedVersion.businessOrganisation),
+    );
+    this.hasAbbreviation = !!this.form.controls.abbreviation.value;
+
+    console.log('isAbbreviationAllowed ', this.isAbbreviationAllowed);
+    console.log('has abbreviation ', this.hasAbbreviation);
   }
 
   private initTypeChangeInformationDialog() {
