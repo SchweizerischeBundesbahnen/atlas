@@ -1,8 +1,9 @@
-package ch.sbb.atlas.servicepointdirectory.service;
+package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
+
 
 import ch.sbb.atlas.servicepointdirectory.ServicePointVersionsTimelineTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
-import ch.sbb.atlas.servicepointdirectory.service.servicepoint.Timeline;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.locationtech.jts.util.Assert;
 
@@ -10,7 +11,17 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 public class TimelineTest {
+
+    @Test
+    void shouldFailWhenMissingServicePoint() {
+        var exception = Assertions.assertThrows(IllegalStateException.class, () -> new Timeline(null, null));
+        assertThat(exception.getMessage(), is(equalTo("ServicePointVersion is required to instantiate Timeline.")));
+    }
 
     @Test
     void bpsTimelinesCombinationWithAndWithoutGaps() {
@@ -26,8 +37,8 @@ public class TimelineTest {
         servicePointVersionList.add(ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel9());
         servicePointVersionList.add(ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel10());
 
-        Timeline timeline = new Timeline(servicePointVersionList);
-        List<Timeline.TimelineElement> mergedTimeline = timeline.getMergedTimeline();
+        Timeline timeline = new Timeline(servicePointVersionList, ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel1());
+        List<Timeline.TimelineElement> mergedTimeline = timeline.getElements();
         Assert.equals(6, mergedTimeline.size());
         Assert.equals(LocalDate.of(2010, 12, 11), mergedTimeline.get(0).getStartDate());
         Assert.equals(LocalDate.of(2013, 8, 10), mergedTimeline.get(0).getEndDate());
@@ -45,9 +56,8 @@ public class TimelineTest {
 
     @Test
     void bpsTimelinesWithNull() {
-
-        Timeline timeline = new Timeline(null);
-        List<Timeline.TimelineElement> mergedTimeline = timeline.getMergedTimeline();
+        Timeline timeline = new Timeline(null, ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel1());
+        List<Timeline.TimelineElement> mergedTimeline = timeline.getElements();
         Assert.equals(0, mergedTimeline.size());
     }
 
@@ -55,8 +65,8 @@ public class TimelineTest {
     void bpsTimelinesWithEmptyList() {
         List<ServicePointVersion> servicePointVersionList = new ArrayList<>();
 
-        Timeline timeline = new Timeline(servicePointVersionList);
-        List<Timeline.TimelineElement> mergedTimeline = timeline.getMergedTimeline();
+        Timeline timeline = new Timeline(servicePointVersionList, ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel1());
+        List<Timeline.TimelineElement> mergedTimeline = timeline.getElements();
         Assert.equals(0, mergedTimeline.size());
     }
 
@@ -67,8 +77,8 @@ public class TimelineTest {
         servicePointVersionList.add(ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel3());
         servicePointVersionList.add(ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel5());
 
-        Timeline timeline = new Timeline(servicePointVersionList);
-        List<Timeline.TimelineElement> mergedTimeline = timeline.getMergedTimeline();
+        Timeline timeline = new Timeline(servicePointVersionList, ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel1());
+        List<Timeline.TimelineElement> mergedTimeline = timeline.getElements();
         Assert.equals(3, mergedTimeline.size());
         Assert.equals(LocalDate.of(2010, 12, 11), mergedTimeline.get(0).getStartDate());
         Assert.equals(LocalDate.of(2011, 8, 10), mergedTimeline.get(0).getEndDate());
@@ -87,8 +97,8 @@ public class TimelineTest {
         servicePointVersionList.add(ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel3());
         servicePointVersionList.add(ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel4());
 
-        Timeline timeline = new Timeline(servicePointVersionList);
-        List<Timeline.TimelineElement> mergedTimeline = timeline.getMergedTimeline();
+        Timeline timeline = new Timeline(servicePointVersionList, ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel1());
+        List<Timeline.TimelineElement> mergedTimeline = timeline.getElements();
         Assert.equals(3, mergedTimeline.size());
         Assert.equals(LocalDate.of(2008, 12, 11), mergedTimeline.get(0).getStartDate());
         Assert.equals(LocalDate.of(2009, 8, 10), mergedTimeline.get(0).getEndDate());
@@ -105,8 +115,8 @@ public class TimelineTest {
         servicePointVersionList.add(ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel2());
         servicePointVersionList.add(ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel3());
 
-        Timeline timeline = new Timeline(servicePointVersionList);
-        List<Timeline.TimelineElement> mergedTimeline = timeline.getMergedTimeline();
+        Timeline timeline = new Timeline(servicePointVersionList, ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel1());
+        List<Timeline.TimelineElement> mergedTimeline = timeline.getElements();
         Assert.equals(1, mergedTimeline.size());
         Assert.equals(LocalDate.of(2010, 12, 11), mergedTimeline.get(0).getStartDate());
         Assert.equals(LocalDate.of(2013, 8, 10), mergedTimeline.get(0).getEndDate());
