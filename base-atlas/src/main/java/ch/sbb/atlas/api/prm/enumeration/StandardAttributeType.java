@@ -19,10 +19,6 @@ public enum StandardAttributeType {
   private final Integer rank;
 
   public static StandardAttributeType from(Integer rank) {
-    if(rank == null){
-      return TO_BE_COMPLETED;
-    }
-
     Stream<StandardAttributeType> stream = Arrays.stream(StandardAttributeType.values());
     return stream.filter(standardAttributeType -> standardAttributeType.getRank().equals(rank))
         .findFirst().orElseThrow(() -> new IllegalArgumentException("You have to provide one of the following value: " + stream.map(
