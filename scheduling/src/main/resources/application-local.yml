@@ -96,6 +96,8 @@ scheduler:
       chron: "0 30 3 * * ?" #At 03:30:00am every day
     loading-point-trigger-batch:
       chron: "0 0 4 * * ?" #At 04:00:00am every day
+    stop-place-trigger-batch:
+      chron: "0 30 4 * * ?" #At 04:30:00am every day
 
   lidi:
     export:
