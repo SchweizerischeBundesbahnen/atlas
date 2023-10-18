@@ -27,7 +27,7 @@
         <div class="d-flex flex-row col-12 mb-4 mt-5">
           <div class="d-flex flex-column col-6 pe-3">
             <atlas-select
-              [additionalLabelspace]="false"
+              [additionalLabelspace]="0"
               [formGroup]="form"
               [options]="YEAR_OPTIONS"
               [required]="true"
@@ -39,7 +39,7 @@
           </div>
           <div class="d-flex flex-column col-6">
             <atlas-select
-              [additionalLabelspace]="false"
+              [additionalLabelspace]="0"
               [displayExtractor]="extractShort"
               [formGroup]="form"
               [options]="CANTON_OPTIONS"
@@ -262,7 +262,7 @@
         <div class="d-flex flex-row col-12 mb-5">
           <div class="d-flex flex-column col-6">
             <atlas-select
-              [additionalLabelspace]="false"
+              [additionalLabelspace]="0"
               [formGroup]="form"
               [options]="STATUS_OPTIONS"
               [required]="true"

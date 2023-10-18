@@ -2,7 +2,7 @@
   <div *ngFor="let row of filterConfigurations; let rowIndex = index" class="search-row">
     <ng-container *ngFor="let filterConfig of row; let filterConfigIndex = index">
       <div
-        *ngIf="filterConfig | instanceOf : TableFilterChipClass as chipSearch"
+        *ngIf="filterConfig | instanceOf: TableFilterChipClass as chipSearch"
         [class]="chipSearch.elementWidthCssClass"
         class="d-flex flex-column search-box"
       >
@@ -37,7 +37,7 @@
       </div>
 
       <div
-        *ngIf="filterConfig | instanceOf : TableFilterSearchSelectClass as searchSelect"
+        *ngIf="filterConfig | instanceOf: TableFilterSearchSelectClass as searchSelect"
         [class]="searchSelect.elementWidthCssClass"
       >
         <bo-select
@@ -69,12 +69,12 @@
       </div>
 
       <div
-        *ngIf="filterConfig | instanceOf : TableFilterMultiSelectClass as multiSelect"
+        *ngIf="filterConfig | instanceOf: TableFilterMultiSelectClass as multiSelect"
         [class]="multiSelect.elementWidthCssClass"
       >
         <atlas-select
           (selectChanged)="multiSelect.setActiveSearch($event.value); emitSearch()"
-          [additionalLabelspace]="false"
+          [additionalLabelspace]="0"
           [disabled]="!!multiSelect.disabled"
           [label]="multiSelect.labelTranslationKey"
           [multiple]="true"
@@ -86,7 +86,7 @@
       </div>
 
       <div
-        *ngIf="filterConfig | instanceOf : TableFilterDateSelectClass as dateSelect"
+        *ngIf="filterConfig | instanceOf: TableFilterDateSelectClass as dateSelect"
         [class]="dateSelect.elementWidthCssClass"
       >
         <mat-label class="font-bold-lg">{{ 'COMMON.SEARCH.VALIDITY' | translate }}</mat-label>

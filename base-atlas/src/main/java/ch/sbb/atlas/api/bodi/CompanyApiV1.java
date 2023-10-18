@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import java.util.List;
 
 @Tag(name = "Companies")
@@ -31,6 +30,5 @@ public interface CompanyApiV1 {
 
   @GetMapping("{uic}")
   CompanyModel getCompany(@PathVariable Long uic);
-
 
 }
