@@ -32,6 +32,7 @@ public class StopPointVersionMapper {
         .audioTicketMachine(version.getAudioTicketMachine())
         .additionalInformation(version.getAdditionalInformation())
         .dynamicAudioSystem(version.getDynamicAudioSystem())
+        .dynamicOpticSystem(version.getDynamicOpticSystem())
         .infoTicketMachine(version.getInfoTicketMachine())
         .interoperable(version.isInteroperable())
         .url(version.getUrl())
