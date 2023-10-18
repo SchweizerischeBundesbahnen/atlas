@@ -2,6 +2,7 @@ package ch.sbb.prm.directory.service.versioning;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.prm.directory.ParkingLotTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
@@ -11,7 +12,6 @@ import ch.sbb.prm.directory.entity.ParkingLotVersion;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.StopPlaceVersion;
-import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.prm.directory.repository.ParkingLotRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.StopPlaceRepository;
@@ -75,7 +75,7 @@ class ParkingLotVersioningTest {
     ParkingLotVersion editedVersion = ParkingLotTestData.builderVersion2().build();
     editedVersion.setParentServicePointSloid(parentServicePointSloid);
     editedVersion.setDesignation("hop yb!");
-    editedVersion.setInfo("No Info");
+    editedVersion.setAdditionalInformation("No Info");
     editedVersion.setPlacesAvailable(BooleanOptionalAttributeType.NO);
     editedVersion.setPrmPlacesAvailable(BooleanOptionalAttributeType.NO);
     editedVersion.setCreationDate(version2.getCreationDate());

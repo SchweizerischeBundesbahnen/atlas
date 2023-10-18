@@ -99,7 +99,7 @@ public class StopPlaceVersion extends BasePrmImportEntity implements PrmVersiona
   private StandardAttributeType assistanceAvailability;
 
   @AtlasVersionableProperty
-  private String alternativeCondition;
+  private String assistanceCondition;
 
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
@@ -110,7 +110,7 @@ public class StopPlaceVersion extends BasePrmImportEntity implements PrmVersiona
   private StandardAttributeType audioTicketMachine;
 
   @AtlasVersionableProperty
-  private String additionalInfo;
+  private String additionalInformation;
 
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
