@@ -6,7 +6,10 @@ import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.atlas.servicepoint.enumeration.*;
+import ch.sbb.atlas.servicepoint.enumeration.Category;
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
+import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
+import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointGeolocationMapper;
@@ -396,8 +399,8 @@ public class ServicePointTestData {
         .sortCodeOfDestinationStation("39136")
         .businessOrganisation("ch:1:sboid:100871")
         .categories(List.of(Category.POINT_OF_SALE))
-        .operatingPointRouteNetwork(false)
-        .operatingPointKilometerMasterNumber(8034511)
+        .operatingPointRouteNetwork(true)
+        .operatingPointKilometerMasterNumber(8034510)
         .meansOfTransport(List.of(MeanOfTransport.TRAIN))
         .stopPointType(StopPointType.ON_REQUEST)
         .servicePointGeolocation(

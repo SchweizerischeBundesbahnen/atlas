@@ -14,6 +14,7 @@ import ch.sbb.atlas.servicepointdirectory.api.ServicePointApiV1;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointFotComment;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
+import ch.sbb.atlas.servicepointdirectory.exception.ForbiddenDueToChosenServicePointVersionValidationPeriodException;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberAlreadyExistsException;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointFotCommentMapper;
@@ -27,13 +28,14 @@ import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointReque
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchRequest;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchResult;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
-import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @Slf4j
@@ -111,6 +113,9 @@ public class ServicePointController implements ServicePointApiV1 {
     ServicePointVersion servicePointVersionToUpdate = servicePointService.findById(id)
         .orElseThrow(() -> new IdNotFoundException(id));
 
+    checkIfChosenOperatingPointKilometerMasterIsAllowedToBeAssigned(
+            createServicePointVersionModel, servicePointVersionToUpdate);
+
     ServicePointVersion editedVersion = ServicePointVersionMapper.toEntity(createServicePointVersionModel);
     addGeoReferenceInformation(editedVersion);
 
@@ -124,6 +129,21 @@ public class ServicePointController implements ServicePointApiV1 {
         .stream()
         .map(ServicePointVersionMapper::toModel)
         .toList();
+  }
+
+  private void checkIfChosenOperatingPointKilometerMasterIsAllowedToBeAssigned(
+          CreateServicePointVersionModel createServicePointVersionModel, ServicePointVersion servicePointVersion) {
+    ServicePointNumber bpsServicePointNumber = ServicePointNumber
+            .ofNumberWithoutCheckDigit(createServicePointVersionModel.getOperatingPointKilometerMasterNumber());
+
+    List<ServicePointVersion> allBpsServicePointsWithNumber = servicePointService
+            .findAllByNumberAndOperatingPointRouteNetworkTrueOrderByValidFrom(
+                    bpsServicePointNumber);
+
+
+    if (!servicePointService.checkIfBpsCanBeAssignedToBpk(allBpsServicePointsWithNumber, servicePointVersion)) {
+      throw new ForbiddenDueToChosenServicePointVersionValidationPeriodException(bpsServicePointNumber);
+    }
   }
 
   @Override
