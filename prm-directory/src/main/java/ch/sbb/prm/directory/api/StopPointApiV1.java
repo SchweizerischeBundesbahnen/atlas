@@ -1,8 +1,8 @@
 package ch.sbb.prm.directory.api;
 
-import ch.sbb.atlas.api.prm.model.stopplace.CreateStopPlaceVersionModel;
-import ch.sbb.atlas.api.prm.model.stopplace.ReadStopPlaceVersionModel;
-import ch.sbb.atlas.imports.prm.stopplace.StopPlaceImportRequestModel;
+import ch.sbb.atlas.api.prm.model.stoppoint.CreateStopPointVersionModel;
+import ch.sbb.atlas.api.prm.model.stoppoint.ReadStopPointVersionModel;
+import ch.sbb.atlas.imports.prm.stoppoint.StopPointImportRequestModel;
 import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -17,22 +17,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Tag(name = "PRM - Person with Reduced Mobility")
-@RequestMapping("v1/stop-places")
-public interface StopPlaceApiV1 {
+@RequestMapping("v1/stop-points")
+public interface StopPointApiV1 {
 
   @GetMapping
-  List<ReadStopPlaceVersionModel> getAllStopPaces();
+  List<ReadStopPointVersionModel> getAllStopPoints();
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
-  ReadStopPlaceVersionModel createStopPlace(@RequestBody @Valid CreateStopPlaceVersionModel stopPlaceVersionModel);
+  ReadStopPointVersionModel createStopPoint(@RequestBody @Valid CreateStopPointVersionModel stopPointVersionModel);
 
   @ResponseStatus(HttpStatus.OK)
   @PutMapping(path = "{id}")
-  List<ReadStopPlaceVersionModel> updateStopPlace(@PathVariable Long id,
-      @RequestBody @Valid CreateStopPlaceVersionModel stopPlaceVersionModel);
+  List<ReadStopPointVersionModel> updateStopPoint(@PathVariable Long id,
+      @RequestBody @Valid CreateStopPointVersionModel stopPointVersionModel);
 
   @PostMapping("import")
-  List<ItemImportResult> importServicePoints(@RequestBody @Valid StopPlaceImportRequestModel importRequestModel);
+  List<ItemImportResult> importStopPoints(@RequestBody @Valid StopPointImportRequestModel importRequestModel);
 
 }

@@ -105,7 +105,7 @@ import org.springframework.http.HttpStatus;
   }
 
   @Test
-  void shouldTriggerImportStopPlaceBatchSuccessfully() {
+  void shouldTriggerImportStopPointBatchSuccessfully() {
    //given
    Response response = Response.builder()
        .status(200)
@@ -114,10 +114,10 @@ import org.springframework.http.HttpStatus;
            Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
                null, Util.UTF_8, null))
        .build();
-   when(client.triggerImportStopPlaceBatch()).thenReturn(response);
+   when(client.triggerImportStopPointBatch()).thenReturn(response);
 
    //when
-   Response result = importServicePointBatchSchedulerService.triggerImportStopPlaceBatch();
+   Response result = importServicePointBatchSchedulerService.triggerImportStopPointBatch();
 
    //then
    assertThat(result).isNotNull();
@@ -125,7 +125,7 @@ import org.springframework.http.HttpStatus;
   }
 
   @Test
-  void shouldTriggerImportStopPlaceBatchUnsuccessfully() {
+  void shouldTriggerImportStopPointBatchUnsuccessfully() {
    //given
    Response response = Response.builder()
        .status(HttpStatus.BAD_REQUEST.value())
@@ -134,10 +134,10 @@ import org.springframework.http.HttpStatus;
            Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
                null, Util.UTF_8, null))
        .build();
-   when(client.triggerImportStopPlaceBatch()).thenReturn(response);
+   when(client.triggerImportStopPointBatch()).thenReturn(response);
 
    //when & then
    assertThrows(SchedulingExecutionException.class,
-       () -> importServicePointBatchSchedulerService.triggerImportStopPlaceBatch().close());
+       () -> importServicePointBatchSchedulerService.triggerImportStopPointBatch().close());
   }
 }

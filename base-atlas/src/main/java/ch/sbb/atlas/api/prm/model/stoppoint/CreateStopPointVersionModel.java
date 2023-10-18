@@ -1,4 +1,4 @@
-package ch.sbb.atlas.api.prm.model.stopplace;
+package ch.sbb.atlas.api.prm.model.stoppoint;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -18,8 +18,8 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @FieldNameConstants
-@Schema(name = "CreateStopPlaceVersion")
-public class CreateStopPlaceVersionModel extends StopPlaceVersionModel {
+@Schema(name = "CreateStopPointVersion")
+public class CreateStopPointVersionModel extends StopPointVersionModel {
 
   @Schema(description = "Seven digits number. First two digits represent Country Code. "
       + "Last 5 digits represent service point ID.", example = "8034505")

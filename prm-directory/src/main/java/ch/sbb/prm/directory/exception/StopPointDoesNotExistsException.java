@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 
 @RequiredArgsConstructor
 @Getter
-public class StopPlaceDoesNotExistsException extends AtlasException {
+public class StopPointDoesNotExistsException extends AtlasException {
 
   private final String sloid;
 
