@@ -26,28 +26,30 @@ public class StopPlaceCsvToModelMapper {
         builder.address(csvModel.getAddress());
         builder.zipCode(csvModel.getZipCode());
         builder.city(csvModel.getCity());
-        builder.alternativeTransport(StandardAttributeType.from(csvModel.getAlternativeTransport()));
+        builder.alternativeTransport(mapStandardAttributeType(csvModel.getAlternativeTransport()));
         builder.alternativeTransportCondition(csvModel.getAlternativeTransportCondition());
-        builder.assistanceAvailability(StandardAttributeType.from(csvModel.getAssistanceAvailability()));
+        builder.assistanceAvailability(mapStandardAttributeType(csvModel.getAssistanceAvailability()));
         builder.assistanceCondition(csvModel.getAssistanceCondition());
-        builder.assistanceService(StandardAttributeType.from(csvModel.getAssistanceService()));
-        builder.audioTicketMachine(StandardAttributeType.from(csvModel.getAudioTickMach()));
+        builder.assistanceService(mapStandardAttributeType(csvModel.getAssistanceService()));
+        builder.audioTicketMachine(mapStandardAttributeType(csvModel.getAudioTickMach()));
         builder.additionalInformation(csvModel.getCompInfos());
-        builder.dynamicAudioSystem(StandardAttributeType.from(csvModel.getDynamicAudioSys()));
-        builder.dynamicOpticSystem(StandardAttributeType.from(csvModel.getDynamicOpticSys()));
+        builder.dynamicAudioSystem(mapStandardAttributeType(csvModel.getDynamicAudioSys()));
+        builder.dynamicOpticSystem(mapStandardAttributeType(csvModel.getDynamicOpticSys()));
         builder.infoTicketMachine(csvModel.getInfoTickMach());
         builder.interoperable(mapInteroperable(csvModel.getInteroperable()));
         builder.url(csvModel.getUrl());
-        builder.visualInfo(StandardAttributeType.from(csvModel.getVisualInfos()));
-        builder.wheelchairTicketMachine(StandardAttributeType.from(csvModel.getWheelchairTickMach()));
-        builder.assistanceRequestFulfilled(StandardAttributeType.from(csvModel.getAssistanceReqsFulfilled()));
-        builder.ticketMachine(StandardAttributeType.from(csvModel.getTicketMachine()));
+        builder.visualInfo(mapStandardAttributeType(csvModel.getVisualInfos()));
+        builder.wheelchairTicketMachine(mapStandardAttributeType(csvModel.getWheelchairTickMach()));
+        builder.assistanceRequestFulfilled(mapStandardAttributeType(csvModel.getAssistanceReqsFulfilled()));
+        builder.ticketMachine(mapStandardAttributeType(csvModel.getTicketMachine()));
         builder.creationDate(csvModel.getCreatedAt());
         builder.editionDate(csvModel.getModifiedAt());
     return builder.build();
 
   }
-
+  StandardAttributeType mapStandardAttributeType(Integer standardAttributeTypeCode){
+    return standardAttributeTypeCode!=null ? StandardAttributeType.from(standardAttributeTypeCode) : null;
+  }
   boolean mapInteroperable(Integer interoperable){
     if(interoperable == null || interoperable.equals(0)){
       return false;

@@ -27,3 +27,15 @@ ALTER TABLE stop_place_version
 
 ALTER TABLE parking_lot_version
     ALTER COLUMN prm_places_available TYPE VARCHAR(50);
+
+--------------------- Remove NOT_NULL Constraints -----------------------
+ALTER TABLE stop_place_version ALTER COLUMN alternative_transport DROP NOT NULL;
+ALTER TABLE stop_place_version ALTER COLUMN assistance_availability DROP NOT NULL;
+ALTER TABLE stop_place_version ALTER COLUMN assistance_service DROP NOT NULL;
+ALTER TABLE stop_place_version ALTER COLUMN audio_ticket_machine DROP NOT NULL;
+ALTER TABLE stop_place_version ALTER COLUMN dynamic_audio_system DROP NOT NULL;
+ALTER TABLE stop_place_version ALTER COLUMN dynamic_optic_system DROP NOT NULL;
+ALTER TABLE stop_place_version ALTER COLUMN visual_info DROP NOT NULL;
+ALTER TABLE stop_place_version ALTER COLUMN wheelchair_ticket_machine DROP NOT NULL;
+ALTER TABLE stop_place_version ALTER COLUMN assistance_request_fulfilled DROP NOT NULL;
+ALTER TABLE stop_place_version ALTER COLUMN ticket_machine DROP NOT NULL;
