@@ -28,7 +28,7 @@ class ReferencePointRepositoryTest {
   }
 
   @Test
-  void shouldReturnStopPlaces() {
+  void shouldReturnStopPoints() {
     //when
    List<ReferencePointVersion> result = referencePointRepository.findAll();
    //then

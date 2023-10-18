@@ -15,14 +15,14 @@ import ch.sbb.atlas.api.prm.model.toilet.CreateToiletVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.prm.directory.ReferencePointTestData;
-import ch.sbb.prm.directory.StopPlaceTestData;
+import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.ToiletTestData;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
-import ch.sbb.prm.directory.entity.StopPlaceVersion;
+import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.entity.ToiletVersion;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
-import ch.sbb.prm.directory.repository.StopPlaceRepository;
+import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.repository.ToiletRepository;
 import ch.sbb.prm.directory.service.RelationService;
 import org.junit.jupiter.api.Test;
@@ -34,7 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 class ToiletVersionControllerApiTest extends BaseControllerApiTest {
 
   private final ToiletRepository toiletRepository;
-  private final StopPlaceRepository stopPlaceRepository;
+  private final StopPointRepository stopPointRepository;
 
   private final ReferencePointRepository referencePointRepository;
 
@@ -43,10 +43,10 @@ class ToiletVersionControllerApiTest extends BaseControllerApiTest {
 
 
   @Autowired
-  ToiletVersionControllerApiTest(ToiletRepository toiletRepository, StopPlaceRepository stopPlaceRepository,
+  ToiletVersionControllerApiTest(ToiletRepository toiletRepository, StopPointRepository stopPointRepository,
       ReferencePointRepository referencePointRepository, RelationService relationService){
     this.toiletRepository = toiletRepository;
-    this.stopPlaceRepository = stopPlaceRepository;
+    this.stopPointRepository = stopPointRepository;
     this.referencePointRepository = referencePointRepository;
     this.relationService = relationService;
   }
@@ -66,9 +66,9 @@ class ToiletVersionControllerApiTest extends BaseControllerApiTest {
   void shouldCreateToilet() throws Exception {
     //given
     String parentServicePointSloid = "ch:1:sloid:7000";
-    StopPlaceVersion stopPlaceVersion = StopPlaceTestData.getStopPlaceVersion();
-    stopPlaceVersion.setSloid(parentServicePointSloid);
-    stopPlaceRepository.save(stopPlaceVersion);
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointRepository.save(stopPointVersion);
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
     referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
     referencePointRepository.save(referencePointVersion);
@@ -85,7 +85,7 @@ class ToiletVersionControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldNotCreateToiletWhenStopPlaceDoesNotExists() throws Exception {
+  void shouldNotCreateToiletWhenStopPointDoesNotExists() throws Exception {
     //given
     String parentServicePointSloid = "ch:1:sloid:7000";
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
@@ -117,9 +117,9 @@ class ToiletVersionControllerApiTest extends BaseControllerApiTest {
   void shouldUpdateTicketCounter() throws Exception {
     //given
     String parentServicePointSloid = "ch:1:sloid:7000";
-    StopPlaceVersion stopPlaceVersion = StopPlaceTestData.getStopPlaceVersion();
-    stopPlaceVersion.setSloid(parentServicePointSloid);
-    stopPlaceRepository.save(stopPlaceVersion);
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointRepository.save(stopPointVersion);
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
     referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
     referencePointRepository.save(referencePointVersion);

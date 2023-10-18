@@ -28,14 +28,43 @@ ALTER TABLE stop_place_version
 ALTER TABLE parking_lot_version
     ALTER COLUMN prm_places_available TYPE VARCHAR(50);
 
---------------------- Remove NOT_NULL Constraints -----------------------
-ALTER TABLE stop_place_version ALTER COLUMN alternative_transport DROP NOT NULL;
-ALTER TABLE stop_place_version ALTER COLUMN assistance_availability DROP NOT NULL;
-ALTER TABLE stop_place_version ALTER COLUMN assistance_service DROP NOT NULL;
-ALTER TABLE stop_place_version ALTER COLUMN audio_ticket_machine DROP NOT NULL;
-ALTER TABLE stop_place_version ALTER COLUMN dynamic_audio_system DROP NOT NULL;
-ALTER TABLE stop_place_version ALTER COLUMN dynamic_optic_system DROP NOT NULL;
-ALTER TABLE stop_place_version ALTER COLUMN visual_info DROP NOT NULL;
-ALTER TABLE stop_place_version ALTER COLUMN wheelchair_ticket_machine DROP NOT NULL;
-ALTER TABLE stop_place_version ALTER COLUMN assistance_request_fulfilled DROP NOT NULL;
-ALTER TABLE stop_place_version ALTER COLUMN ticket_machine DROP NOT NULL;
+------------------- Remove NOT_NULL Constraints -----------------------
+ALTER TABLE stop_place_version
+    ALTER COLUMN alternative_transport DROP NOT NULL;
+ALTER TABLE stop_place_version
+    ALTER COLUMN assistance_availability DROP NOT NULL;
+ALTER TABLE stop_place_version
+    ALTER COLUMN assistance_service DROP NOT NULL;
+ALTER TABLE stop_place_version
+    ALTER COLUMN audio_ticket_machine DROP NOT NULL;
+ALTER TABLE stop_place_version
+    ALTER COLUMN dynamic_audio_system DROP NOT NULL;
+ALTER TABLE stop_place_version
+    ALTER COLUMN dynamic_optic_system DROP NOT NULL;
+ALTER TABLE stop_place_version
+    ALTER COLUMN visual_info DROP NOT NULL;
+ALTER TABLE stop_place_version
+    ALTER COLUMN wheelchair_ticket_machine DROP NOT NULL;
+ALTER TABLE stop_place_version
+    ALTER COLUMN assistance_request_fulfilled DROP NOT NULL;
+ALTER TABLE stop_place_version
+    ALTER COLUMN ticket_machine DROP NOT NULL;
+
+------------------ Rename StopPlace to StopPoint -----
+
+DROP SEQUENCE IF EXISTS stop_place_version_seq;
+
+CREATE SEQUENCE stop_point_version_seq START WITH 1000 INCREMENT BY 1;
+
+ALTER TABLE stop_place_version
+    RENAME CONSTRAINT stop_place_sloid_unique TO stop_point_sloid_unique;
+
+ALTER TABLE stop_place_version
+    RENAME TO stop_point_version;
+
+ALTER TABLE stop_place_version_means_of_transport
+    RENAME TO stop_point_version_means_of_transport;
+
+ALTER TABLE stop_point_version_means_of_transport
+    RENAME COLUMN stop_place_version_id to stop_point_version_id;
+

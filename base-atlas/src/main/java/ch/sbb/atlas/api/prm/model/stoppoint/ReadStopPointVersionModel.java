@@ -1,4 +1,4 @@
-package ch.sbb.atlas.api.prm.model.stopplace;
+package ch.sbb.atlas.api.prm.model.stoppoint;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -17,8 +17,8 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @FieldNameConstants
-@Schema(name = "ReadStopPlaceVersion")
-public class ReadStopPlaceVersionModel extends StopPlaceVersionModel {
+@Schema(name = "ReadStopPointVersion")
+public class ReadStopPointVersionModel extends StopPointVersionModel {
 
   @NotNull
   @Valid
