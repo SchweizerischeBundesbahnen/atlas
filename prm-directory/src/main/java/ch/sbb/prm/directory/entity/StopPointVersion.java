@@ -41,11 +41,11 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @SuperBuilder
 @FieldNameConstants
-@Entity(name = "stop_place_version")
+@Entity(name = "stop_point_version")
 @AtlasVersionable
-public class StopPlaceVersion extends BasePrmImportEntity implements PrmVersionable {
+public class StopPointVersion extends BasePrmImportEntity implements PrmVersionable {
 
-  private static final String VERSION_SEQ = "stop_place_version_seq";
+  private static final String VERSION_SEQ = "stop_point_version_seq";
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = VERSION_SEQ)

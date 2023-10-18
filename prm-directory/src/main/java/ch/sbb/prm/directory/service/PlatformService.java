@@ -2,12 +2,12 @@ package ch.sbb.prm.directory.service;
 
 import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PLATFORM;
 
+import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.PlatformVersion;
-import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.prm.directory.repository.PlatformRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import java.util.List;
@@ -22,10 +22,10 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
   private final PlatformRepository platformRepository;
   private final SharedServicePointService sharedServicePointService;
 
-  public PlatformService(StopPlaceService stopPlaceService, RelationService relationService,
+  public PlatformService(StopPointService stopPointService, RelationService relationService,
       PlatformRepository platformRepository, ReferencePointRepository referencePointRepository,
       VersionableService versionableService, SharedServicePointService sharedServicePointService) {
-    super(versionableService, stopPlaceService, relationService, referencePointRepository);
+    super(versionableService, stopPointService, relationService, referencePointRepository);
     this.platformRepository = platformRepository;
     this.sharedServicePointService = sharedServicePointService;
   }

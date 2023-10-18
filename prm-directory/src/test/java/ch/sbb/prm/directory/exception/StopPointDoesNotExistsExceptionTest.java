@@ -6,12 +6,12 @@ import ch.sbb.atlas.api.model.ErrorResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
-class StopPlaceDoesNotExistsExceptionTest {
+class StopPointDoesNotExistsExceptionTest {
 
   @Test
   void shouldPrintErrorMessage(){
     //when
-    StopPlaceDoesNotExistsException result = new StopPlaceDoesNotExistsException("ch:1:sloid:8000");
+    StopPointDoesNotExistsException result = new StopPointDoesNotExistsException("ch:1:sloid:8000");
 
     //then
     ErrorResponse errorResponse = result.getErrorResponse();

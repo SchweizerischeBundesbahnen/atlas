@@ -5,7 +5,7 @@ import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_TYPE_
 import static ch.sbb.importservice.utils.JobDescriptionConstants.FULL_PATH_FILENAME_JOB_PARAMETER;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_LOADING_POINT_CSV_JOB_NAME;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_SERVICE_POINT_CSV_JOB_NAME;
-import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_STOP_PLACE_CSV_JOB_NAME;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_STOP_POINT_CSV_JOB_NAME;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_TRAFFIC_POINT_CSV_JOB_NAME;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.START_AT_JOB_PARAMETER;
 
@@ -58,8 +58,8 @@ public class RecoveryJobsRunner implements ApplicationRunner {
   @Qualifier(IMPORT_TRAFFIC_POINT_CSV_JOB_NAME)
   private final Job importTrafficPointCsvJob;
 
-  @Qualifier(IMPORT_STOP_PLACE_CSV_JOB_NAME)
-  private final Job importStopPlaceCsvJob;
+  @Qualifier(IMPORT_STOP_POINT_CSV_JOB_NAME)
+  private final Job importStopPointCsvJob;
 
   private final FileService fileService;
 
@@ -70,7 +70,7 @@ public class RecoveryJobsRunner implements ApplicationRunner {
     recoverJob(IMPORT_SERVICE_POINT_CSV_JOB_NAME);
     recoverJob(IMPORT_LOADING_POINT_CSV_JOB_NAME);
     recoverJob(IMPORT_TRAFFIC_POINT_CSV_JOB_NAME);
-    recoverJob(IMPORT_STOP_PLACE_CSV_JOB_NAME);
+    recoverJob(IMPORT_STOP_POINT_CSV_JOB_NAME);
   }
 
   void recoverJob(String jobName)
@@ -141,8 +141,8 @@ public class RecoveryJobsRunner implements ApplicationRunner {
     if (IMPORT_TRAFFIC_POINT_CSV_JOB_NAME.equals(jobName)) {
       return importTrafficPointCsvJob;
     }
-    if (IMPORT_STOP_PLACE_CSV_JOB_NAME.equals(jobName)) {
-      return importStopPlaceCsvJob;
+    if (IMPORT_STOP_POINT_CSV_JOB_NAME.equals(jobName)) {
+      return importStopPointCsvJob;
     }
     throw new IllegalStateException("No job found with name: " + jobName);
   }

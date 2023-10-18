@@ -2,12 +2,12 @@ package ch.sbb.prm.directory.service;
 
 import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.TOILET;
 
+import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.ToiletVersion;
-import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.ToiletRepository;
 import java.util.List;
@@ -21,9 +21,9 @@ public class ToiletService extends PrmRelatableVersionableService<ToiletVersion>
 
   private final ToiletRepository toiletRepository;
 
-  public ToiletService(ToiletRepository toiletRepository, StopPlaceService stopPlaceService,
+  public ToiletService(ToiletRepository toiletRepository, StopPointService stopPointService,
       RelationService relationService, ReferencePointRepository referencePointRepository, VersionableService versionableService) {
-    super(versionableService, stopPlaceService, relationService, referencePointRepository);
+    super(versionableService, stopPointService, relationService, referencePointRepository);
     this.toiletRepository = toiletRepository;
   }
 

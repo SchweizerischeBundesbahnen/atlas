@@ -1,4 +1,4 @@
-package ch.sbb.atlas.imports.prm.stopplace;
+package ch.sbb.atlas.imports.prm.stoppoint;
 
 import ch.sbb.atlas.imports.prm.BasePrmCsvModel;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -17,7 +17,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class StopPlaceCsvModel extends BasePrmCsvModel {
+public class StopPointCsvModel extends BasePrmCsvModel {
 
   @JsonProperty("DIDOK_CODE")
   private Integer didokCode;
