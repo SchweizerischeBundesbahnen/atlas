@@ -84,8 +84,10 @@ public class ServicePointVersionMapper {
         .build();
 
     if (createServicePointVersionModel.getNumberShort() != null) {
-      ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(
-          createServicePointVersionModel.getNumberShort());
+      ServicePointNumber servicePointNumber = ServicePointNumber.of(
+          createServicePointVersionModel.getCountry(),
+          createServicePointVersionModel.getNumberShort()
+      );
       servicePointVersion.setNumber(servicePointNumber);
       servicePointVersion.setSloid(ServicePointNumber.calculateSloid(servicePointNumber));
       servicePointVersion.setNumberShort(servicePointNumber.getNumberShort());
@@ -103,5 +105,3 @@ public class ServicePointVersionMapper {
   }
 
 }
-
-
