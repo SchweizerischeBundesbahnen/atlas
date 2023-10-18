@@ -31,7 +31,7 @@ public class TerminationNotAllowedException extends AtlasException {
         .field("termination")
         .message("You are not allowed to terminate {0}")
         .displayInfo(DisplayInfo.builder()
-            .code("SEPODI.SERVICE_POINT.TERMINATION_FORBIDDEN")
+            .code("SEPODI.SERVICE_POINTS.TERMINATION_FORBIDDEN")
             .with("number", String.valueOf(editedVersion.getNumber().getNumber()))
             .build())
         .build());
