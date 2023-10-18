@@ -5,7 +5,7 @@ import ch.sbb.atlas.api.prm.model.BasePrmVersionModel;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.validation.DatesValidator;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotEmpty;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,6 +22,7 @@ import lombok.experimental.SuperBuilder;
 @FieldNameConstants
 public abstract class StopPlaceVersionModel extends BasePrmVersionModel implements DatesValidator {
 
+  @NotEmpty
   @Schema(description = "Means of transport. Indicates for which means of transport a stop is intended/equipped. Mandatory for "
       + "StopPoints")
   private List<MeanOfTransport> meansOfTransport;
@@ -38,14 +39,12 @@ public abstract class StopPlaceVersionModel extends BasePrmVersionModel implemen
   @Schema(description = "Stop Place City")
   private String city;
 
-  @NotNull
   @Schema(description = "Shuttle service or alternative public transport offer")
   private StandardAttributeType alternativeTransport;
 
   @Schema(description = "Information about the shuttle service or alternative public transport options")
   private String alternativeTransportCondition;
 
-  @NotNull
   @Schema(description = "Advance registration required for assistance")
   private StandardAttributeType assistanceAvailability;
 
@@ -53,21 +52,17 @@ public abstract class StopPlaceVersionModel extends BasePrmVersionModel implemen
   private String assistanceCondition;
 
   @Schema(description = "Assistance from staff")
-  @NotNull
   private StandardAttributeType assistanceService;
 
   @Schema(description = "Acoustic and tactile equipment")
-  @NotNull
   private StandardAttributeType audioTicketMachine;
 
   @Schema(description = "Additional information")
   private String additionalInformation;
 
-  @NotNull
   @Schema(description = "Acoustically")
   private StandardAttributeType dynamicAudioSystem;
 
-  @NotNull
   @Schema(description = "Dynamic/optical")
   private StandardAttributeType dynamicOpticSystem;
 
@@ -80,19 +75,15 @@ public abstract class StopPlaceVersionModel extends BasePrmVersionModel implemen
   @Schema(description = "Website with additional information")
   private String url;
 
-  @NotNull
   @Schema(description = "Static/optical")
   private StandardAttributeType visualInfo;
 
-  @NotNull
   @Schema(description = "Barrier-free")
   private StandardAttributeType wheelchairTicketMachine;
 
-  @NotNull
   @Schema(description = "requirements fulfilled")
   private StandardAttributeType assistanceRequestFulfilled;
 
-  @NotNull
   @Schema(description = "Ticket machine available")
   private StandardAttributeType ticketMachine;
 
