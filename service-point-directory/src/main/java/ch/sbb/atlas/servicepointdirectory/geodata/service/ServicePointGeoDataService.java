@@ -72,7 +72,7 @@ public class ServicePointGeoDataService {
     log.debug("Finding service points");
     Set<ServicePointGeoData> servicePoints = getServicePointGeoData(validAtDate, geoDataAreas);
 
-    log.info("mapping {} service points", servicePoints.size());
+    log.debug("mapping {} service points", servicePoints.size());
     return servicePointGeoDataMapper.mapToWgs84WebGeometry(servicePoints);
   }
 
