@@ -1,7 +1,5 @@
 package ch.sbb.atlas.servicepointdirectory.repository;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.Status;
@@ -13,12 +11,16 @@ import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+import org.locationtech.jts.util.Assert;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
  class ServicePointVersionRepositoryTest {
@@ -332,4 +334,73 @@ import org.springframework.beans.factory.annotation.Autowired;
     assertThat(result.get(0).hasGeolocation()).isTrue();
     assertThat(result.get(0).getServicePointGeolocation()).isNotNull();
   }
+
+    @Test
+    void shouldFindAllByNumberAndRouteNetworkTrue() {
+        // given
+
+        ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(8507000);
+        ServicePointVersion servicePoint = ServicePointVersion
+                .builder()
+                .number(servicePointNumber)
+                .numberShort(1)
+                .country(Country.SWITZERLAND)
+                .designationLong("long designation")
+                .designationOfficial("official designation")
+                .abbreviation("BE")
+                .businessOrganisation("somesboid")
+                .status(Status.VALIDATED)
+                .validFrom(LocalDate.of(2020, 1, 1))
+                .validTo(LocalDate.of(2020, 12, 31))
+                .categories(Set.of(Category.BORDER_POINT, Category.DISTRIBUTION_POINT))
+                .meansOfTransport(Set.of(MeanOfTransport.BUS, MeanOfTransport.TRAIN))
+                .build();
+        servicePointVersionRepository.save(servicePoint);
+
+        ServicePointVersion servicePointVersion1 = ServicePointVersion
+                .builder()
+                .number(servicePointNumber)
+                .numberShort(1)
+                .country(Country.SWITZERLAND)
+                .designationLong("long designation1")
+                .designationOfficial("official designation1")
+                .abbreviation("BE")
+                .businessOrganisation("somesboid")
+                .operatingPointRouteNetwork(true)
+                .status(Status.VALIDATED)
+                .validFrom(LocalDate.of(2021, 1, 1))
+                .validTo(LocalDate.of(2021, 12, 31))
+                .categories(Set.of(Category.POINT_OF_SALE))
+                .meansOfTransport(Set.of(MeanOfTransport.TRAM))
+                .build();
+        servicePointVersionRepository.save(servicePointVersion1);
+
+        ServicePointVersion servicePointVersion2 = ServicePointVersion
+                .builder()
+                .number(servicePointNumber)
+                .numberShort(1)
+                .country(Country.SWITZERLAND)
+                .designationLong("long designation2")
+                .designationOfficial("official designation2")
+                .abbreviation("BE")
+                .businessOrganisation("somesboid")
+                .operatingPointRouteNetwork(true)
+                .status(Status.VALIDATED)
+                .validFrom(LocalDate.of(2022, 1, 1))
+                .validTo(LocalDate.of(2022, 12, 31))
+                .categories(Set.of(Category.POINT_OF_SALE))
+                .meansOfTransport(Set.of(MeanOfTransport.BOAT))
+                .build();
+        servicePointVersionRepository.save(servicePointVersion2);
+
+        // when
+        List<ServicePointVersion> result = servicePointVersionRepository
+                .findAllByNumberAndOperatingPointRouteNetworkTrueOrderByValidFrom(servicePointNumber);
+
+        // then
+        assertThat(result).hasSize(2);
+        Assert.equals("long designation1", result.get(0).getDesignationLong());
+        Assert.equals("long designation2", result.get(1).getDesignationLong());
+    }
+
 }
