@@ -2,13 +2,13 @@ package ch.sbb.atlas.api.servicepoint;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.servicepoint.Country;
-import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,13 +29,14 @@ import org.apache.commons.lang3.StringUtils;
 public class CreateServicePointVersionModel extends ServicePointVersionModel {
 
   @Schema(description = "Five digits number. Represent service point ID.", example = "34505")
-  @Min(AtlasFieldLengths.MIN_FIVE_DIGITS_NUMBER)
+  @Min(AtlasFieldLengths.MIN_NUMBER)
   @Max(AtlasFieldLengths.MAX_FIVE_DIGITS_NUMBER)
   private Integer numberShort;
 
   @Schema(description = "The country for the service point. Only needed if ServicePointNumber is created automatically",
       example = "SWITZERLAND")
-  private Country country; // todo: check if null on create
+  @NotNull
+  private Country country;
 
   @Min(value = AtlasFieldLengths.MIN_SEVEN_DIGITS_NUMBER, message = "Minimum value for number.")
   @Max(value = AtlasFieldLengths.MAX_SEVEN_DIGITS_NUMBER, message = "Maximum value for number.")
@@ -72,8 +73,7 @@ public class CreateServicePointVersionModel extends ServicePointVersionModel {
     if (numberShort == null) {
       return true;
     }
-    ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(numberShort);
-    return !(servicePointNumber.getCountry() == Country.SWITZERLAND && super.isFreightServicePoint() && !getValidFrom().isBefore(
+    return !(getCountry() == Country.SWITZERLAND && super.isFreightServicePoint() && !getValidFrom().isBefore(
         LocalDate.now()))
         || StringUtils.isNotBlank(super.getSortCodeOfDestinationStation());
   }
@@ -95,12 +95,13 @@ public class CreateServicePointVersionModel extends ServicePointVersionModel {
     if (numberShort == null) {
       return shouldGenerateServicePointNumber();
     } else {
-      return country == null;
+      return !ServicePointConstants.AUTOMATIC_SERVICE_POINT_ID.contains(country);
     }
   }
 
   @JsonIgnore
   public boolean shouldGenerateServicePointNumber() {
-    return country != null && ServicePointConstants.AUTOMATIC_SERVICE_POINT_ID.contains(country);
+    return ServicePointConstants.AUTOMATIC_SERVICE_POINT_ID.contains(country);
   }
+
 }

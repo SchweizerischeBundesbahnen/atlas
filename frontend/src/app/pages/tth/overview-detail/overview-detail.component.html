@@ -14,7 +14,7 @@
       >
         <atlas-select
           (selectChanged)="changeSelectedYearFromDropdown($event)"
-          [additionalLabelspace]="false"
+          [additionalLabelspace]="0"
           [options]="YEAR_DROPDOWN_OPTIONS"
           [value]="yearSelection"
           dataCy="selectTthYear"
@@ -25,7 +25,7 @@
       <div *ngIf="!noTimetableHearingYearFound" class="d-flex flex-column col-3 pe-3 pb-2 mb-2">
         <atlas-select
           (selectChanged)="changeSelectedCantonFromDropdown($event)"
-          [additionalLabelspace]="false"
+          [additionalLabelspace]="0"
           [disabled]="isCheckBoxModeActive"
           [options]="CANTON_DROPDOWN_OPTIONS"
           [value]="defaultDropdownCantonSelection"
@@ -152,14 +152,14 @@
             <span *ngIf="isHearingYearActive && isSwissCanton" class="font-bold-lg">
               {{
                 'TTH.TABLE_RESULT_ACTUAL_HEARING_HEADING_PREFIX'
-                  | translate : { totalCount: totalCount$ }
+                  | translate: { totalCount: totalCount$ }
               }}
               {{ 'TTH.WHOLE_SWISS' | translate }}
             </span>
             <span *ngIf="isHearingYearActive && !isSwissCanton" class="font-bold-lg">
               {{
                 'TTH.TABLE_RESULT_ACTUAL_HEARING_HEADING_PREFIX'
-                  | translate : { totalCount: totalCount$ }
+                  | translate: { totalCount: totalCount$ }
               }}
               {{ 'TTH.SWISS_CANTON' | translate }}
               {{ 'TTH.CANTON.' + cantonShort.toUpperCase() | translate }}
@@ -190,7 +190,7 @@
           <atlas-select
             (selectChanged)="collectingActions($event)"
             *ngIf="showCollectingActionButton"
-            [additionalLabelspace]="false"
+            [additionalLabelspace]="0"
             [disabled]="totalCount$ === 0 || !statementEditable"
             [options]="COLLECTING_ACTION_DROPDOWN_OPTIONS"
             dataCy="collect-action-type"
@@ -228,7 +228,7 @@
           <div *ngIf="statusChangeCollectingActionsEnabled" class="d-flex flex-column col-6 mt-2">
             <atlas-select
               (selectChanged)="collectingStatusChangeAction($event)"
-              [additionalLabelspace]="false"
+              [additionalLabelspace]="0"
               [disabled]="selectedItems.length === 0"
               [options]="STATUS_OPTIONS"
               dataCy="collect-status-change-action-type"
@@ -240,7 +240,7 @@
           <div *ngIf="cantonDeliveryCollectingActionsEnabled" class="d-flex flex-column col-6 mt-2">
             <atlas-select
               (selectChanged)="collectingCantonDeliveryAction($event)"
-              [additionalLabelspace]="false"
+              [additionalLabelspace]="0"
               [disabled]="selectedItems.length === 0"
               [options]="CANTON_DROPDOWN_OPTIONS_WITHOUT_SWISS"
               optionTranslateLabelPrefix="TTH.CANTON."

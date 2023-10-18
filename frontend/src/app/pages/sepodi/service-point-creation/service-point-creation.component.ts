@@ -11,10 +11,11 @@ import {
   CoordinatePair,
   Country,
   PermissionRestrictionType,
+  ServicePointsService,
   SpatialReference,
 } from '../../../api';
 import { Countries } from '../../../core/country/Countries';
-import { EMPTY, mergeWith, Observable, Subject, take } from 'rxjs';
+import { catchError, EMPTY, mergeWith, Observable, Subject, take } from 'rxjs';
 import { filter, map, takeUntil, tap } from 'rxjs/operators';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -22,6 +23,7 @@ import { ServicePointType } from '../service-point-side-panel/service-point/serv
 import { MapService } from '../map/map.service';
 import { CoordinateTransformationService } from '../geography/coordinate-transformation.service';
 import { ServicePointFormComponent } from '../service-point-form/service-point-form.component';
+import { NotificationService } from '../../../core/notification/notification.service';
 
 @Component({
   selector: 'app-service-point-creation',
@@ -48,6 +50,8 @@ export class ServicePointCreationComponent implements OnInit, OnDestroy {
     private readonly route: ActivatedRoute,
     private readonly mapService: MapService,
     private readonly coordinateTransformationService: CoordinateTransformationService,
+    private readonly servicePointService: ServicePointsService,
+    private readonly notificationService: NotificationService,
   ) {}
 
   ngOnInit() {
@@ -83,6 +87,18 @@ export class ServicePointCreationComponent implements OnInit, OnDestroy {
           ].includes(servicePointType)
         ) {
           this.servicePointFormComponent.onGeolocationToggleChange(true);
+        }
+      });
+
+    this.form.controls.country?.valueChanges
+      .pipe(takeUntil(this.destroySubscriptions$))
+      .subscribe((country) => {
+        if (!country) return;
+        if (Countries.geolocationCountries.includes(country)) {
+          this.form.controls.number.disable();
+          this.form.controls.number.reset();
+        } else {
+          this.form.controls.number.enable();
         }
       });
   }
@@ -136,10 +152,27 @@ export class ServicePointCreationComponent implements OnInit, OnDestroy {
   onSave(): void {
     this.form.markAllAsTouched();
     if (this.form.valid) {
-      // todo: send create request
-      console.log('valid');
+      const servicePointVersion = ServicePointFormGroupBuilder.getWritableServicePoint(this.form);
+      this.form.disable();
+      this.servicePointService
+        .createServicePoint(servicePointVersion)
+        .pipe(catchError(this.handleError))
+        .subscribe(async (servicePointVersion) => {
+          this.notificationService.success('SEPODI.SERVICE_POINTS.NOTIFICATION.ADD_SUCCESS');
+          await this.router.navigate([servicePointVersion.number.number], {
+            relativeTo: this.route,
+          });
+        });
+
+      // this.cancelMapEditMode(); // todo: check if needed
     }
   }
+
+  private readonly handleError = (err: any) => {
+    console.error(err);
+    this.form.enable();
+    return EMPTY;
+  };
 
   private getCountryOptions(): Country[] {
     const sepodiUserPermission = this.authService.getApplicationUserPermission(
@@ -147,7 +180,7 @@ export class ServicePointCreationComponent implements OnInit, OnDestroy {
     );
 
     let countryScope: Country[];
-    if (sepodiUserPermission.role === ApplicationRole.Supervisor) {
+    if (sepodiUserPermission.role === ApplicationRole.Supervisor || this.authService.isAdmin) {
       countryScope = Countries.filteredCountries();
     } else {
       countryScope = sepodiUserPermission.permissionRestrictions
@@ -163,7 +196,7 @@ export class ServicePointCreationComponent implements OnInit, OnDestroy {
       Country.FranceBus,
     ];
 
-    if (sepodiUserPermission.role !== ApplicationRole.Supervisor) {
+    if (sepodiUserPermission.role !== ApplicationRole.Supervisor && !this.authService.isAdmin) {
       firstFive = firstFive.filter((country) => countryScope.includes(country));
       countryScope = countryScope.filter((country) => !firstFive.includes(country));
     }

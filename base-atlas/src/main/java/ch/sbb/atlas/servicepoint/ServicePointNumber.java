@@ -51,8 +51,6 @@ public final class ServicePointNumber {
   }
 
   public static String calculateSloid(ServicePointNumber servicePointNumber) {
-    // todo: darf User manuell eine schweizer Didok-ID eingeben wenn er ein ausländisches Land auswählt?
-    // kann so ausgetrickst werden, dass man trotzdem manuell eine ch didok-id vergeben kann
     if (Country.SWITZERLAND.getUicCode().equals(servicePointNumber.getUicCountryCode())) {
       return SLOID_PREFIX + servicePointNumber.getNumberShort();
     }
