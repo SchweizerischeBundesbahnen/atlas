@@ -934,7 +934,8 @@
       "CONFLICT": {
         "DESIGNATION_OFFICIAL": "Die offizielle Bezeichnung {{designationOfficial}} ist bereits von {{validFrom}} bis {{validTo}} durch {{number}} vergeben.",
         "DESIGNATION_LONG": "Die lange Bezeichnung {{designationLong}} ist bereits von {{validFrom}} bis {{validTo}} durch {{number}} vergeben."
-      }
+      },
+      "TERMINATION_FORBIDDEN": "Sie sind nicht berechtigt die Haltestelle zu terminieren."
     },
     "TRAFFIC_POINT_ELEMENTS": {
       "TRAFFIC_POINT_ELEMENTS": "Haltekanten"
