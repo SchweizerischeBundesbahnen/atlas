@@ -55,7 +55,7 @@ public class ServicePointServiceTimelinesTest {
 
         ServicePointVersion servicePointVersion = ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel4();
 
-        boolean result = servicePointService.checkIfBpsCanBeAssignedToBpk(servicePointVersionList, servicePointVersion);
+        boolean result = servicePointService.checkIfOperatingPointKilometerMasterCanBeAssigned(servicePointVersionList, servicePointVersion);
         Assert.equals(true, result);
     }
 
@@ -77,7 +77,7 @@ public class ServicePointServiceTimelinesTest {
         ServicePointVersion servicePointVersion = ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel4();
         servicePointVersion.setValidTo(LocalDate.of(2014, 8, 18));
 
-        boolean result = servicePointService.checkIfBpsCanBeAssignedToBpk(servicePointVersionList, servicePointVersion);
+        boolean result = servicePointService.checkIfOperatingPointKilometerMasterCanBeAssigned(servicePointVersionList, servicePointVersion);
         Assert.equals(false, result);
     }
 
@@ -99,7 +99,7 @@ public class ServicePointServiceTimelinesTest {
         ServicePointVersion servicePointVersion = ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel4();
         servicePointVersion.setValidFrom(LocalDate.of(2013, 8, 12));
 
-        boolean result = servicePointService.checkIfBpsCanBeAssignedToBpk(servicePointVersionList, servicePointVersion);
+        boolean result = servicePointService.checkIfOperatingPointKilometerMasterCanBeAssigned(servicePointVersionList, servicePointVersion);
         Assert.equals(false, result);
     }
 
@@ -122,7 +122,7 @@ public class ServicePointServiceTimelinesTest {
         servicePointVersion.setValidFrom(LocalDate.of(2013, 8, 20));
         servicePointVersion.setValidTo(LocalDate.of(2014, 8, 10));
 
-        boolean result = servicePointService.checkIfBpsCanBeAssignedToBpk(servicePointVersionList, servicePointVersion);
+        boolean result = servicePointService.checkIfOperatingPointKilometerMasterCanBeAssigned(servicePointVersionList, servicePointVersion);
         Assert.equals(true, result);
     }
 
@@ -145,7 +145,7 @@ public class ServicePointServiceTimelinesTest {
         servicePointVersion.setValidFrom(LocalDate.of(2011, 1, 1));
         servicePointVersion.setValidTo(LocalDate.of(2013, 1, 1));
 
-        boolean result = servicePointService.checkIfBpsCanBeAssignedToBpk(servicePointVersionList, servicePointVersion);
+        boolean result = servicePointService.checkIfOperatingPointKilometerMasterCanBeAssigned(servicePointVersionList, servicePointVersion);
         Assert.equals(true, result);
     }
 
@@ -168,7 +168,7 @@ public class ServicePointServiceTimelinesTest {
         servicePointVersion.setValidFrom(LocalDate.of(2013, 8, 1));
         servicePointVersion.setValidTo(LocalDate.of(2014, 8, 1));
 
-        boolean result = servicePointService.checkIfBpsCanBeAssignedToBpk(servicePointVersionList, servicePointVersion);
+        boolean result = servicePointService.checkIfOperatingPointKilometerMasterCanBeAssigned(servicePointVersionList, servicePointVersion);
         Assert.equals(false, result);
     }
 
@@ -191,7 +191,7 @@ public class ServicePointServiceTimelinesTest {
         servicePointVersion.setValidFrom(LocalDate.of(2013, 8, 15));
         servicePointVersion.setValidTo(LocalDate.of(2014, 8, 20));
 
-        boolean result = servicePointService.checkIfBpsCanBeAssignedToBpk(servicePointVersionList, servicePointVersion);
+        boolean result = servicePointService.checkIfOperatingPointKilometerMasterCanBeAssigned(servicePointVersionList, servicePointVersion);
         Assert.equals(false, result);
     }
 

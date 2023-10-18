@@ -58,13 +58,8 @@ public class ServicePointService {
     return servicePointVersionRepository.findAllByNumberAndOperatingPointRouteNetworkTrueOrderByValidFrom(servicePointNumber);
   }
 
-  public boolean checkIfBpsCanBeAssignedToBpk(List<ServicePointVersion> listOfBpsServicePoints, ServicePointVersion bpkServicePoint) {
-    Timeline bpsTimeline = new Timeline(listOfBpsServicePoints);
-
-    List<Timeline.TimelineElement> bpsTimelineElements = bpsTimeline.getMergedTimeline();
-    Timeline.TimelineElement bpkTimelineElement = bpsTimeline.getBpkTimelineElement(bpkServicePoint);
-
-    return bpsTimeline.isBpkTimelineInsideOfOneBpsTimeline(bpsTimelineElements, bpkTimelineElement);
+  public boolean checkIfOperatingPointKilometerMasterCanBeAssigned(List<ServicePointVersion> operatingPointKilometerMasterNumbers, ServicePointVersion servicePointVersion) {
+    return new Timeline(operatingPointKilometerMasterNumbers, servicePointVersion).isBpkTimelineInsideOfOneBpsTimeline();
   }
 
   public boolean isServicePointNumberExisting(ServicePointNumber servicePointNumber) {
