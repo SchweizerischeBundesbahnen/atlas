@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.atlas.api.prm.model.referencepoint.CreateReferencePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.prm.directory.InformationDeskTestData;
@@ -20,7 +21,6 @@ import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPlaceTestData;
 import ch.sbb.prm.directory.TicketCounterTestData;
 import ch.sbb.prm.directory.ToiletTestData;
-import ch.sbb.atlas.api.prm.model.referencepoint.CreateReferencePointVersionModel;
 import ch.sbb.prm.directory.entity.InformationDeskVersion;
 import ch.sbb.prm.directory.entity.ParkingLotVersion;
 import ch.sbb.prm.directory.entity.PlatformVersion;
@@ -185,6 +185,7 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
     editedVersionModel.setMainReferencePoint(version2.isMainReferencePoint());
     editedVersionModel.setReferencePointType(version2.getReferencePointType());
     editedVersionModel.setDesignation(version2.getDesignation());
+    editedVersionModel.setAdditionalInformation(version2.getAdditionalInformation());
     editedVersionModel.setValidFrom(version2.getValidFrom());
     editedVersionModel.setValidTo(LocalDate.of(2001, 12, 31));
     editedVersionModel.setCreationDate(version2.getCreationDate());

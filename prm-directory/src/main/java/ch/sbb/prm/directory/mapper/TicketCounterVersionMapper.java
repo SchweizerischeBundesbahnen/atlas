@@ -1,8 +1,8 @@
 package ch.sbb.prm.directory.mapper;
 
-import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.api.prm.model.ticketcounter.CreateTicketCounterVersionModel;
 import ch.sbb.atlas.api.prm.model.ticketcounter.ReadTicketCounterVersionModel;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.entity.TicketCounterVersion;
 import lombok.experimental.UtilityClass;
 
@@ -18,7 +18,7 @@ public class TicketCounterVersionMapper {
         .validFrom(version.getValidFrom())
         .validTo(version.getValidTo())
         .designation(version.getDesignation())
-        .info(version.getInfo())
+        .additionalInformation(version.getAdditionalInformation())
         .inductionLoop(version.getInductionLoop())
         .openingHours(version.getOpeningHours())
         .wheelchairAccess(version.getWheelchairAccess())
@@ -39,7 +39,7 @@ public class TicketCounterVersionMapper {
         .validFrom(model.getValidFrom())
         .validTo(model.getValidTo())
         .designation(model.getDesignation())
-        .info(model.getInfo())
+        .additionalInformation(model.getAdditionalInformation())
         .inductionLoop(model.getInductionLoop())
         .openingHours(model.getOpeningHours())
         .wheelchairAccess(model.getWheelchairAccess())

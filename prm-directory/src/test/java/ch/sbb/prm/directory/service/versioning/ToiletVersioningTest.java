@@ -77,7 +77,7 @@ class ToiletVersioningTest {
     editedVersion.setNumber(ServicePointNumber.ofNumberWithoutCheckDigit(1234567));
     editedVersion.setParentServicePointSloid(parentServicePointSloid);
     editedVersion.setDesignation("My designation");
-    editedVersion.setInfo("info");
+    editedVersion.setAdditionalInformation("info");
     editedVersion.setCreationDate(version2.getCreationDate());
     editedVersion.setEditionDate(version2.getEditionDate());
     editedVersion.setCreator(version2.getCreator());

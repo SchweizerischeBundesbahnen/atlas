@@ -1,10 +1,10 @@
 package ch.sbb.prm.directory;
 
-import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.atlas.api.prm.enumeration.ReferencePointAttributeType;
 import ch.sbb.atlas.api.prm.model.referencepoint.CreateReferencePointVersionModel;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.ReferencePointVersion.ReferencePointVersionBuilder;
-import ch.sbb.atlas.api.prm.enumeration.ReferencePointAttributeType;
 import java.time.LocalDate;
 import lombok.experimental.UtilityClass;
 
@@ -18,6 +18,7 @@ public class ReferencePointTestData {
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))
         .designation("designation")
+        .additionalInformation("additional")
         .mainReferencePoint(true)
         .parentServicePointSloid("ch:1.sloid:12345")
         .referencePointType(ReferencePointAttributeType.PLATFORM)
@@ -30,6 +31,7 @@ public class ReferencePointTestData {
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))
         .designation("designation")
+        .additionalInformation("additional")
         .mainReferencePoint(true)
         .parentServicePointSloid("ch:1.sloid:12345")
         .referencePointType(ReferencePointAttributeType.PLATFORM);
@@ -42,6 +44,7 @@ public class ReferencePointTestData {
         .validFrom(LocalDate.of(2001, 1, 1))
         .validTo(LocalDate.of(2002, 12, 31))
         .designation("designation forever")
+        .additionalInformation("additional")
         .mainReferencePoint(true)
         .parentServicePointSloid("ch:1.sloid:12345")
         .referencePointType(ReferencePointAttributeType.PLATFORM);
@@ -54,6 +57,7 @@ public class ReferencePointTestData {
         .validFrom(LocalDate.of(2003, 1, 1))
         .validTo(LocalDate.of(2003, 12, 31))
         .designation("designation forever yb")
+        .additionalInformation("additional")
         .mainReferencePoint(true)
         .parentServicePointSloid("ch:1.sloid:12345")
         .referencePointType(ReferencePointAttributeType.PLATFORM);
@@ -66,6 +70,7 @@ public class ReferencePointTestData {
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))
         .designation("designation")
+        .additionalInformation("additional")
         .mainReferencePoint(true)
         .parentServicePointSloid("ch:1.sloid:12345")
         .referencePointType(ReferencePointAttributeType.PLATFORM)

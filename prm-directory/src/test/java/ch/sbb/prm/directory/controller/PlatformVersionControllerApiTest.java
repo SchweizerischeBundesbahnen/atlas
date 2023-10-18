@@ -11,12 +11,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.atlas.api.prm.model.platform.CreatePlatformVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.prm.directory.PlatformTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPlaceTestData;
-import ch.sbb.atlas.api.prm.model.platform.CreatePlatformVersionModel;
 import ch.sbb.prm.directory.entity.PlatformVersion;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
@@ -139,7 +139,7 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
     editedVersionModel.setValidTo(version2.getValidTo().minusYears(1));
     editedVersionModel.setParentServicePointSloid(parentServicePointSloid);
     editedVersionModel.setBoardingDevice(version2.getBoardingDevice());
-    editedVersionModel.setAdditionalInfo(version2.getAdditionalInfo());
+    editedVersionModel.setAdditionalInformation(version2.getAdditionalInformation());
     editedVersionModel.setAdviceAccessInfo(version2.getAdviceAccessInfo());
     editedVersionModel.setContrastingAreas(version2.getContrastingAreas());
     editedVersionModel.setDynamicAudio(version2.getDynamicAudio());
