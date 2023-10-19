@@ -28,6 +28,15 @@ ALTER TABLE stop_place_version
 ALTER TABLE parking_lot_version
     ALTER COLUMN prm_places_available TYPE VARCHAR(50);
 
+ALTER TABLE relation_version
+    ADD COLUMN reference_point_sloid VARCHAR(500) NOT NULL;
+
+ALTER TABLE relation_version
+    DROP CONSTRAINT relation_sloid_unique;
+
+ALTER TABLE relation_version
+    ADD CONSTRAINT relation_sloids_unique UNIQUE (sloid, reference_point_sloid, valid_from);
+
 ------------------- Remove NOT_NULL Constraints -----------------------
 ALTER TABLE stop_place_version
     ALTER COLUMN alternative_transport DROP NOT NULL;
