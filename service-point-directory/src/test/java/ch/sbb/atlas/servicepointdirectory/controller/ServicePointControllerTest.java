@@ -1,12 +1,17 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
+import ch.sbb.atlas.servicepointdirectory.exception.AbbreviationUpdateNotAllowedException;
+import ch.sbb.atlas.servicepointdirectory.exception.InvalidAbbreviationException;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberAlreadyExistsException;
+import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.service.ServicePointDistributor;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointFotCommentService;
@@ -55,5 +60,90 @@ class ServicePointControllerTest {
 
     assertThrows(ServicePointNumberAlreadyExistsException.class,
         () -> servicePointController.createServicePoint(servicePointVersionModel));
+  }
+
+  @Test
+  public void testWhenNewAbbreviationIsBlank() {
+    CreateServicePointVersionModel createServicePointVersionModel = CreateServicePointVersionModel.builder()
+        .numberWithoutCheckDigit(8507111)
+        .designationOfficial("Bern")
+        .businessOrganisation("ch:1:sboid:123456")
+        .validFrom(LocalDate.of(2022, 1, 1))
+        .validTo(LocalDate.of(2022, 12, 31))
+        .build();
+
+    ServicePointVersion servicePointVersion = ServicePointVersionMapper.toEntity(createServicePointVersionModel);
+
+    assertDoesNotThrow(() -> servicePointController.validateAndSetAbbreviation(servicePointVersion, createServicePointVersionModel.getAbbreviation(), "existing"));
+  }
+  @Test
+  void testWhenBusinessOrganisationNotInList(){
+    CreateServicePointVersionModel createServicePointVersionModel = CreateServicePointVersionModel.builder()
+        .numberWithoutCheckDigit(8507111)
+        .designationOfficial("Bern")
+        .businessOrganisation("ch:1:sboid:123456")
+        .abbreviation("TEST")
+        .validFrom(LocalDate.of(2022, 1, 1))
+        .validTo(LocalDate.of(2022, 12, 31))
+        .build();
+
+    ServicePointVersion servicePointVersion = ServicePointVersionMapper.toEntity(createServicePointVersionModel);
+
+
+    assertThrows(AbbreviationUpdateNotAllowedException.class,
+        () -> servicePointController.validateAndSetAbbreviation(servicePointVersion, createServicePointVersionModel.getAbbreviation(), "TEST"));
+  }
+
+  @Test
+  public void testWhenExistingAbbreviationDoesNotMatchNewAbbreviation() {
+    CreateServicePointVersionModel createServicePointVersionModel = CreateServicePointVersionModel.builder()
+        .numberWithoutCheckDigit(8507111)
+        .designationOfficial("Bern")
+        .businessOrganisation("ch:1:sboid:100016")
+        .abbreviation("TEST")
+        .validFrom(LocalDate.of(2022, 1, 1))
+        .validTo(LocalDate.of(2022, 12, 31))
+        .build();
+
+    ServicePointVersion servicePointVersion = ServicePointVersionMapper.toEntity(createServicePointVersionModel);
+
+    assertThrows(AbbreviationUpdateNotAllowedException.class,
+        () -> servicePointController.validateAndSetAbbreviation(servicePointVersion, createServicePointVersionModel.getAbbreviation(), "BUCH"));
+  }
+
+  @Test
+  public void testWhenAbbreviationIsNotUnique() {
+    CreateServicePointVersionModel createServicePointVersionModel = CreateServicePointVersionModel.builder()
+        .numberWithoutCheckDigit(8507111)
+        .designationOfficial("Bern")
+        .businessOrganisation("ch:1:sboid:100016")
+        .abbreviation("TEST")
+        .validFrom(LocalDate.of(2022, 1, 1))
+        .validTo(LocalDate.of(2022, 12, 31))
+        .build();
+
+    ServicePointVersion servicePointVersion = ServicePointVersionMapper.toEntity(createServicePointVersionModel);
+
+    when(servicePointService.isAbbrevitionUnique(servicePointVersion.getAbbreviation(), servicePointVersion.getNumber())).thenReturn(false);
+    assertThrows(InvalidAbbreviationException.class,
+        () -> servicePointController.validateAndSetAbbreviation(servicePointVersion, createServicePointVersionModel.getAbbreviation(), null));
+  }
+
+  @Test
+  public void testSuccessfullAbbreviationUpdate() {
+    CreateServicePointVersionModel createServicePointVersionModel = CreateServicePointVersionModel.builder()
+        .numberWithoutCheckDigit(8507111)
+        .designationOfficial("Bern")
+        .businessOrganisation("ch:1:sboid:100016")
+        .abbreviation("TEST")
+        .validFrom(LocalDate.of(2022, 1, 1))
+        .validTo(LocalDate.of(2022, 12, 31))
+        .build();
+
+    ServicePointVersion servicePointVersion = ServicePointVersionMapper.toEntity(createServicePointVersionModel);
+
+    when(servicePointService.isAbbrevitionUnique(createServicePointVersionModel.getAbbreviation(), servicePointVersion.getNumber())).thenReturn(true);
+    assertDoesNotThrow(() -> servicePointController.validateAndSetAbbreviation(servicePointVersion, createServicePointVersionModel.getAbbreviation(), "TEST"));
+    assertEquals(servicePointVersion.getAbbreviation(), servicePointVersion.getAbbreviation());
   }
 }

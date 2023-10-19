@@ -1,10 +1,14 @@
 package ch.sbb.atlas.servicepointdirectory.abbreviationsallowlist;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import lombok.experimental.UtilityClass;
 
+@UtilityClass
 public final class ServicePointAbbreviationAllowList {
-    public static final List<String> SBOIDS = Arrays.asList(
+    public static final Set<String> SBOIDS = new HashSet<>(Arrays.asList(
 
         "ch:1:sboid:100016",
         "ch:1:sboid:100015",
@@ -27,9 +31,5 @@ public final class ServicePointAbbreviationAllowList {
         "ch:1:sboid:100042",
         "ch:1:sboid:100053"
 
-    );
-
-    private ServicePointAbbreviationAllowList() {
-        throw new UnsupportedOperationException("This class is not intended to be instantiated.");
-    }
+    ));
 }
