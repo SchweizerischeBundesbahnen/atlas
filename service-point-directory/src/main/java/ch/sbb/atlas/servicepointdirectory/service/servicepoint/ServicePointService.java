@@ -103,11 +103,10 @@ public class ServicePointService {
     return currentVersion;
   }
 
-  public boolean isAbbrevitionUnique (String abbreviation, Optional<Long> id){
-   return servicePointVersionRepository.findServicePointVersionByAbbreviation(abbreviation)
+  public boolean isAbbrevitionUnique (String abbreviation, ServicePointNumber number){
+   return servicePointVersionRepository.findServicePointVersionByAbbreviationAndNumber(abbreviation, number)
        .stream()
-       .filter(obj -> !id.isPresent() || !obj.getId().equals(id))
-       .count() == 0;
+       .noneMatch(obj -> !obj.getNumber().equals(number));
   }
 
 }
