@@ -1,17 +1,19 @@
 package ch.sbb.prm.directory.entity;
 
-import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
-import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
+import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.StepFreeAccessAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.TactileVisualAttributeType;
+import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
+import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.prm.directory.service.PrmVersionable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,6 +39,10 @@ public class RelationVersion extends BasePrmEntityVersion implements PrmVersiona
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = VERSION_SEQ)
   @SequenceGenerator(name = VERSION_SEQ, sequenceName = VERSION_SEQ, allocationSize = 1, initialValue = 1000)
   private Long id;
+
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
+  @AtlasVersionableProperty
+  private String referencePointSloid;
 
   @AtlasVersionableProperty
   private TactileVisualAttributeType tactileVisualMarks;
