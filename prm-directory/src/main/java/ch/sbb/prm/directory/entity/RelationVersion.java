@@ -9,6 +9,8 @@ import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.prm.directory.service.PrmVersionable;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -44,15 +46,19 @@ public class RelationVersion extends BasePrmEntityVersion implements PrmVersiona
   @AtlasVersionableProperty
   private String referencePointSloid;
 
+  @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private TactileVisualAttributeType tactileVisualMarks;
 
+  @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType contrastingAreas;
 
+  @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StepFreeAccessAttributeType stepFreeAccess;
 
+  @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private ReferencePointElementType referencePointElementType;
 
