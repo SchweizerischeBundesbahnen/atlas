@@ -31,7 +31,8 @@ public abstract class PrmRelatableVersionableService<T extends Relatable & PrmVe
     List<ReferencePointVersion> referencePointVersions = referencePointRepository.findByParentServicePointSloid(
         version.getParentServicePointSloid());
     referencePointVersions.forEach(referencePointVersion -> {
-      RelationVersion relationVersion = RelationUtil.buildRelationVersion(version, getReferencePointElementType());
+      RelationVersion relationVersion = RelationUtil.buildRelationVersion(version,
+          referencePointVersion.getSloid(), getReferencePointElementType());
       relationService.save(relationVersion);
     });
   }
