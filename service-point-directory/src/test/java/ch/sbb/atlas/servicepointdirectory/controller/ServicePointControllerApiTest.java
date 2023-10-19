@@ -330,7 +330,7 @@ import org.springframework.test.web.servlet.MvcResult;
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.designationOfficial, is("Aargau Strasse")))
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.sloid, is("ch:1:sloid:18771")))
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.designationLong, is("designation long 1")))
-        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.abbreviation, is("3")))
+        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.abbreviation, is("ABCD")))
         .andExpect(jsonPath("$.operatingPoint", is(true)))
         .andExpect(jsonPath("$.operatingPointWithTimetable", is(true)))
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.freightServicePoint, is(false)))
@@ -582,14 +582,16 @@ import org.springframework.test.web.servlet.MvcResult;
 
   @Test
   void shouldNotUpdateServicePointAbbreviationIfBusinessOrganisationNotAllowed()  throws Exception {
-      ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
-          ServicePointTestData.getBuchsiServicePoint());
+
+      CreateServicePointVersionModel testData = ServicePointTestData.getBuchsiServicePoint();
+      testData.setBusinessOrganisation("dasisteineungueltigebusinessorganisation");
+
+      ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(testData);
       Long id = servicePointVersionModel.getId();
 
       CreateServicePointVersionModel buchsiServicePoint = ServicePointTestData.getBuchsiServicePoint();
       buchsiServicePoint.setId(id);
 
-      buchsiServicePoint.setBusinessOrganisation("dasisteineungueltigebusinessorganisation");
 
       buchsiServicePoint.setAbbreviation("BUCH");
 
@@ -601,37 +603,22 @@ import org.springframework.test.web.servlet.MvcResult;
 
   @Test
   void shouldNotUpdateServicePointAbbreviationIfNewAbbreviationNotEqualsOldAbbreviation()  throws Exception {
-      CreateServicePointVersionModel newServicePoint = CreateServicePointVersionModel.builder()
-          .numberWithoutCheckDigit(8596004)
-          .sloid("ch:1:sloid:96004")
-          .designationLong("designation long 1")
-          .designationOfficial("Buchsi Hood")
-          .abbreviation("BUCH")
-          .freightServicePoint(false)
-          .sortCodeOfDestinationStation("39136")
-          .businessOrganisation("ch:1:sboid:100016")
-          .categories(List.of(Category.POINT_OF_SALE))
-          .operatingPointRouteNetwork(false)
-          .operatingPointKilometerMasterNumber(8596004)
-          .meansOfTransport(List.of(MeanOfTransport.TRAIN))
-          .stopPointType(StopPointType.ON_REQUEST)
-          .servicePointGeolocation(
-              ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getServicePointGeolocationBernMittelland()))
-          .validFrom(LocalDate.of(2010, 12, 11))
-          .validTo(LocalDate.of(2099, 8, 10))
-          .build();
+      CreateServicePointVersionModel testData = ServicePointTestData.getBuchsiServicePoint();
+      testData.setAbbreviation("BUCH");
 
-      ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(newServicePoint);
+      ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(testData);
+
       Long id = servicePointVersionModel.getId();
 
-      newServicePoint.setId(id);
+      CreateServicePointVersionModel buchsiServicePoint = ServicePointTestData.getBuchsiServicePoint();
+      buchsiServicePoint.setId(id);
 
 
-      newServicePoint.setAbbreviation("NEU");
+      buchsiServicePoint.setAbbreviation("NEU");
 
-      mvc.perform(put("/v1/service-points/" + newServicePoint.getId())
+      mvc.perform(put("/v1/service-points/" + id)
               .contentType(contentType)
-              .content(mapper.writeValueAsString(newServicePoint)))
+              .content(mapper.writeValueAsString(buchsiServicePoint)))
           .andExpect(status().isForbidden());
   }
 

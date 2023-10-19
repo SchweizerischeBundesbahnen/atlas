@@ -58,13 +58,12 @@
   </div>
   <div class="col-12 d-flex mt-2 flex-column">
     <div class="color-gray-900">
-      <!-- TODO: Label anpassen -->
       <atlas-text-field
         *ngIf="!hasAbbreviation && isAbbreviationAllowed"
         [fieldExamples]="[
           { label: 'FORM.FOR_EXAMPLE', translate: true },
-          { label: 'TODO |', translate: false },
-          { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '50' } }
+          { label: 'BIBD |', translate: false },
+          { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '6' } }
         ]"
         [formGroup]="form"
         [required]="false"
