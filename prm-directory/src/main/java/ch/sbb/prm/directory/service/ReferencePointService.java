@@ -84,11 +84,11 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
 
   public ReferencePointVersion createReferencePoint(ReferencePointVersion referencePointVersion) {
     stopPointService.checkStopPointExists(referencePointVersion.getParentServicePointSloid());
-    searchAndUpdatePlatformRelation(referencePointVersion.getParentServicePointSloid());
-    searchAndUpdateTicketCounter(referencePointVersion.getParentServicePointSloid());
-    searchAndUpdateToiletRelation(referencePointVersion.getParentServicePointSloid());
-    searchAndUpdateInformationDesk(referencePointVersion.getParentServicePointSloid());
-    searchAndUpdateParkingLot(referencePointVersion.getParentServicePointSloid());
+    searchAndUpdatePlatformRelation(referencePointVersion.getParentServicePointSloid(), referencePointVersion.getSloid());
+    searchAndUpdateTicketCounter(referencePointVersion.getParentServicePointSloid(), referencePointVersion.getSloid());
+    searchAndUpdateToiletRelation(referencePointVersion.getParentServicePointSloid(), referencePointVersion.getSloid());
+    searchAndUpdateInformationDesk(referencePointVersion.getParentServicePointSloid(), referencePointVersion.getSloid());
+    searchAndUpdateParkingLot(referencePointVersion.getParentServicePointSloid(), referencePointVersion.getSloid());
     return referencePointRepository.saveAndFlush(referencePointVersion);
   }
 
@@ -109,38 +109,39 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
     return referencePointRepository.saveAndFlush(referencePointVersion);
   }
 
-  private void searchAndUpdateParkingLot(String parentServicePointSloid) {
+  private void searchAndUpdateParkingLot(String parentServicePointSloid, String referencePointSloid) {
     List<ParkingLotVersion> parkingLotVersions = parkingLotRepository.findByParentServicePointSloid(
         parentServicePointSloid);
-    searchAndUpdateVersion(parkingLotVersions, PARKING_LOT);
+    searchAndUpdateVersion(parkingLotVersions, referencePointSloid,PARKING_LOT);
   }
 
-  private void searchAndUpdateInformationDesk(String parentServicePointSloid) {
+  private void searchAndUpdateInformationDesk(String parentServicePointSloid, String referencePointSloid) {
     List<InformationDeskVersion> informationDeskVersions = informationDeskRepository.findByParentServicePointSloid(
         parentServicePointSloid);
-    searchAndUpdateVersion(informationDeskVersions, INFORMATION_DESK);
+    searchAndUpdateVersion(informationDeskVersions, referencePointSloid,INFORMATION_DESK);
   }
 
-  private void searchAndUpdateTicketCounter(String parentServicePointSloid) {
+  private void searchAndUpdateTicketCounter(String parentServicePointSloid, String referencePointSloid) {
     List<TicketCounterVersion> ticketCounterVersions = ticketCounterService.findByParentServicePointSloid(
         parentServicePointSloid);
-    searchAndUpdateVersion(ticketCounterVersions, TICKET_COUNTER);
+    searchAndUpdateVersion(ticketCounterVersions, referencePointSloid,TICKET_COUNTER);
   }
 
-  private void searchAndUpdatePlatformRelation(String parentServicePointSloid) {
+  private void searchAndUpdatePlatformRelation(String parentServicePointSloid, String referencePointSloid) {
     List<PlatformVersion> platformVersions = platformRepository.findByParentServicePointSloid(parentServicePointSloid);
-    searchAndUpdateVersion(platformVersions, PLATFORM);
+    searchAndUpdateVersion(platformVersions, referencePointSloid,PLATFORM);
   }
 
-  private void searchAndUpdateToiletRelation(String parentServicePointSloid) {
+  private void searchAndUpdateToiletRelation(String parentServicePointSloid, String referencePointSloid) {
     List<ToiletVersion> toiletVersions = toiletRepository.findByParentServicePointSloid(parentServicePointSloid);
-    searchAndUpdateVersion(toiletVersions, TOILET);
+    searchAndUpdateVersion(toiletVersions, referencePointSloid,TOILET);
   }
 
-  private void searchAndUpdateVersion(List<? extends Relatable> versions,
+  private void searchAndUpdateVersion(List<? extends Relatable> versions, String referencePointSloid,
       ReferencePointElementType referencePointElementType) {
     versions.forEach(
-        version -> relationService.save(RelationUtil.buildRelationVersion(version, referencePointElementType)));
+        version -> relationService.save(RelationUtil.buildRelationVersion(version, referencePointSloid,
+            referencePointElementType)));
   }
 
 }
