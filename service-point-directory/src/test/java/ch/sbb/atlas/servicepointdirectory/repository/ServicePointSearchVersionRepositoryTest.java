@@ -49,13 +49,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
     @Test
      void shouldThrowExceptionWhenSearchWithLessThanTwoDigits(){
         //when & then
-        assertThrows(IllegalArgumentException.class, () -> servicePointSearchVersionRepository.searchServicePoints("b", false));
+        assertThrows(IllegalArgumentException.class, () -> servicePointSearchVersionRepository.searchServicePoints("b"));
     }
 
     @Test
      void shouldReturnAllServicePointWithDesignationOfficialBern(){
         //when
-        List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("bern", false);
+        List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("bern");
         //then
         assertThat(results).isNotNull();
         assertThat(results).hasSize(3);
@@ -67,7 +67,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
     @Test
     void shouldReturnAllServicePointWithDesignationOfficialBernAndRouteNetworkTrue(){
         //when
-        List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("bern", true);
+        List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePointsWithRouteNetworkTrue("bern");
         //then
         assertThat(results).isNotNull();
         assertThat(results).hasSize(2);
@@ -78,7 +78,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
     @Test
      void shouldReturnAllServicePointWithDesignationOfficialContainsOstAndRouteNetworkTrue(){
         //when
-        List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("ost", true);
+        List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePointsWithRouteNetworkTrue("ost");
         //then
         assertThat(results).isNotNull();
         assertThat(results).hasSize(1);
@@ -88,7 +88,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
     @Test
      void shouldReturnAllServicePointWithDesignationOfficialEndsWithEgg(){
         //when
-        List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("egg", false);
+        List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("egg");
         //then
         assertThat(results).isNotNull();
         assertThat(results).hasSize(1);
@@ -98,7 +98,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
     @Test
      void shouldReturnEmptyListWhenNoMatch(){
         //when
-        List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("milan", false);
+        List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("milan");
         //then
         assertThat(results).isNotNull();
         assertThat(results).isEmpty();
@@ -107,7 +107,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
     @Test
      void shouldReturnAllServicePointWithNumberStartWith85(){
         //when
-        List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("85", false);
+        List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("85");
         //then
         assertThat(results).isNotNull();
         assertThat(results).hasSize(4);
@@ -120,7 +120,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
     @Test
      void shouldReturnAllServicePointWithNumberEndsWith85(){
         //when
-        List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("61", false);
+        List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("61");
         //then
         assertThat(results).isNotNull();
         assertThat(results).hasSize(1);
@@ -130,7 +130,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
     @Test
      void shouldReturnAllServicePointWithNumberContains7000(){
         //when
-        List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("7000", false);
+        List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("7000");
         //then
         assertThat(results).isNotNull();
         assertThat(results).hasSize(1);
@@ -140,7 +140,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
     @Test
      void shouldReturnAllServicePointWithDesignationLongNapoli(){
         //when
-        List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("napoli", false);
+        List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("napoli");
         //then
         assertThat(results).isNotNull();
         assertThat(results).hasSize(2);
@@ -151,7 +151,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
     @Test
      void shouldReturnAllServicePointWithDesignationLongNapol(){
         //when
-        List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("napol", false);
+        List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("napol");
         //then
         assertThat(results).isNotNull();
         assertThat(results).hasSize(3);
