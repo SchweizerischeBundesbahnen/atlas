@@ -12,19 +12,19 @@ import java.util.stream.Collectors;
 @Data
 public class Timeline {
 
-    private List<TimelineElement> elements;
+    private List<TimelineElement> kilometerMasterTimelineElements;
     private TimelineElement servicePointTimelineElement;
 
-    public Timeline(List<ServicePointVersion> servicePointVersions, ServicePointVersion servicePointVersion) {
+    public Timeline(List<ServicePointVersion> allKilometerMasterNumberVersions, ServicePointVersion servicePointVersion) {
         if (servicePointVersion == null) {
             throw new IllegalStateException("ServicePointVersion is required to instantiate Timeline.");
         }
         servicePointTimelineElement = new TimelineElement(servicePointVersion);
 
-        if (servicePointVersions == null) {
-            this.elements = new ArrayList<>();
+        if (allKilometerMasterNumberVersions == null) {
+            this.kilometerMasterTimelineElements = new ArrayList<>();
         } else {
-            this.elements = getMergedTimeline(servicePointVersions.stream()
+            this.kilometerMasterTimelineElements = getMergedTimeline(allKilometerMasterNumberVersions.stream()
                     .map(TimelineElement::new)
                     .collect(Collectors.toList()));
         }
@@ -55,14 +55,14 @@ public class Timeline {
         return ChronoUnit.DAYS.between(current.endDate, next.startDate) <= 1;
     }
 
-    public boolean isBpkTimelineInsideOfOneBpsTimeline() {
-        return elements.stream()
-                .anyMatch(bps -> isOverlapping(servicePointTimelineElement, bps));
+    public boolean isSePoTimelineInsideOrEqOfOneOfKilomMasterTimelines() {
+        return kilometerMasterTimelineElements.stream()
+                .anyMatch(kilMasterTimelineElement -> isSePoTimelineInsideOrEqOfKilomMasterTimeline(servicePointTimelineElement, kilMasterTimelineElement));
     }
 
-    private static boolean isOverlapping(TimelineElement bpkTimeline, TimelineElement bpsTimeline) {
-        return (bpsTimeline.startDate.isBefore(bpkTimeline.startDate) || bpsTimeline.startDate.isEqual(bpkTimeline.startDate))
-                && (bpsTimeline.endDate.isAfter(bpkTimeline.endDate) || bpsTimeline.endDate.isEqual(bpkTimeline.endDate));
+    private static boolean isSePoTimelineInsideOrEqOfKilomMasterTimeline(TimelineElement sePoTimelineElement, TimelineElement kilomMasterTimelineElement) {
+        return (kilomMasterTimelineElement.startDate.isBefore(sePoTimelineElement.startDate) || kilomMasterTimelineElement.startDate.isEqual(sePoTimelineElement.startDate))
+                && (kilomMasterTimelineElement.endDate.isAfter(sePoTimelineElement.endDate) || kilomMasterTimelineElement.endDate.isEqual(sePoTimelineElement.endDate));
     }
 
     @Data
