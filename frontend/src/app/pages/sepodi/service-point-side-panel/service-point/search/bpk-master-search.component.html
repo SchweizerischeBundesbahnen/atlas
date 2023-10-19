@@ -14,14 +14,8 @@
   </div>
 
   <ng-template #labelOptionTemplates let-item>
-    <span
-      [innerHTML]="
-        item.number.toString() | searchResultHighlight: item.number | splitServicePointNumber
-      "
-    ></span>
+    <span [innerHTML]="item.number.toString() | splitServicePointNumber"></span>
     <span>&nbsp;&nbsp;&nbsp;</span>
-    <span
-      [innerHTML]="item.designationOfficial | searchResultHighlight: item.designationOfficial"
-    ></span>
+    <span [innerHTML]="item.designationOfficial"></span>
   </ng-template>
 </form-search-select>

@@ -15,10 +15,10 @@ import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'service-point-search',
-  templateUrl: './service-point-detail-search.component.html',
-  styleUrls: ['./service-point-detail-search.component.scss'],
+  templateUrl: './bpk-master-search.component.html',
+  styleUrls: ['./bpk-master-search.component.scss'],
 })
-export class ServicePointDetailSearchComponent implements OnInit, OnDestroy, OnChanges {
+export class BpkMasterSearchComponent implements OnInit, OnDestroy, OnChanges {
   @Input() valueExtraction = 'number';
   @Input() controlName!: string;
   @Input() formModus = true;
