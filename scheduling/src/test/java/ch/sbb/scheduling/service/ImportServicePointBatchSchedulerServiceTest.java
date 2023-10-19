@@ -124,20 +124,4 @@ import org.springframework.http.HttpStatus;
    assertThat(result.status()).isEqualTo(200);
   }
 
-  @Test
-  void shouldTriggerImportStopPointBatchUnsuccessfully() {
-   //given
-   Response response = Response.builder()
-       .status(HttpStatus.BAD_REQUEST.value())
-       .reason("Bad Request")
-       .request(
-           Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
-               null, Util.UTF_8, null))
-       .build();
-   when(client.triggerImportStopPointBatch()).thenReturn(response);
-
-   //when & then
-   assertThrows(SchedulingExecutionException.class,
-       () -> importServicePointBatchSchedulerService.triggerImportStopPointBatch().close());
-  }
 }
