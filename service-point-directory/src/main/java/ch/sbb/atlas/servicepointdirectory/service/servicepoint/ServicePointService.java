@@ -58,8 +58,8 @@ public class ServicePointService {
     return servicePointVersionRepository.findAllByNumberAndOperatingPointRouteNetworkTrueOrderByValidFrom(servicePointNumber);
   }
 
-  public boolean checkIfOperatingPointKilometerMasterCanBeAssigned(List<ServicePointVersion> operatingPointKilometerMasterNumbers, ServicePointVersion servicePointVersion) {
-    return new Timeline(operatingPointKilometerMasterNumbers, servicePointVersion).isBpkTimelineInsideOfOneBpsTimeline();
+  public boolean checkIfKilometerMasterNumberCanBeAssigned(List<ServicePointVersion> allKilometerMasterNumberVersions, ServicePointVersion servicePointVersion) {
+    return new Timeline(allKilometerMasterNumberVersions, servicePointVersion).isSePoTimelineInsideOrEqOfOneOfKilomMasterTimelines();
   }
 
   public boolean isServicePointNumberExisting(ServicePointNumber servicePointNumber) {
