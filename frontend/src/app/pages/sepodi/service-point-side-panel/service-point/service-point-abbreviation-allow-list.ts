@@ -1,7 +1,5 @@
 export class ServicePointAbbreviationAllowList {
   public static readonly SBOIDS: string[] = [
-    'ch:1:sboid:100649',
-
     'ch:1:sboid:100016',
     'ch:1:sboid:100015',
     'ch:1:sboid:100026',
