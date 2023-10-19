@@ -92,10 +92,6 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
 
       this.initServicePoint();
       this.displayAndSelectServicePointOnMap();
-      /*       this.isAbbreviationAllowed = ServicePointAbbreviationAllowList.SBOIDS.some((element) =>
-        element.includes(this.selectedVersion.businessOrganisation),
-      );
-      this.hasAbbreviation = !!this.form.controls.abbreviation.value; */
     });
 
     this.initSortedOperatingPointTypes();
@@ -152,7 +148,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     this.initSelectedVersion();
   }
 
-  private initSelectedVersion() {
+  public initSelectedVersion() {
     if (this.selectedVersion.id) {
       this.isNew = false;
     }
@@ -165,13 +161,8 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     this.initTypeChangeInformationDialog();
     this.initLocationInformationDisplay();
 
-    this.isAbbreviationAllowed = ServicePointAbbreviationAllowList.SBOIDS.some((element) =>
-      element.includes(this.selectedVersion.businessOrganisation),
-    );
+    this.checkIfAbbreviationIsAllowed();
     this.hasAbbreviation = !!this.form.controls.abbreviation.value;
-
-    console.log('isAbbreviationAllowed ', this.isAbbreviationAllowed);
-    console.log('has abbreviation ', this.hasAbbreviation);
   }
 
   private initTypeChangeInformationDialog() {
@@ -433,5 +424,11 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
 
   isCoordinatePairNotZero(coordinates: CoordinatePair): boolean {
     return coordinates.north !== 0 && coordinates.east !== 0;
+  }
+
+  checkIfAbbreviationIsAllowed() {
+    this.isAbbreviationAllowed = ServicePointAbbreviationAllowList.SBOIDS.some((element) =>
+      element.includes(this.selectedVersion.businessOrganisation),
+    );
   }
 }
