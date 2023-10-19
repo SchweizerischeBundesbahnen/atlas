@@ -18,7 +18,15 @@ public class ServicePointSearchVersionRepository {
     public static final int MIN_DIGIT_SEARCH = 2;
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
-    public List<ServicePointSearchResult> searchServicePoints(String value, boolean isBps) {
+    public List<ServicePointSearchResult> searchServicePoints(String value) {
+        return searchServicePoints(value, false);
+    }
+
+    public List<ServicePointSearchResult> searchServicePointsWithRouteNetworkTrue(String value) {
+        return searchServicePoints(value, true);
+    }
+
+    private List<ServicePointSearchResult> searchServicePoints(String value, boolean isOperationPointRouteNetworkTrue) {
 
         validateInput(value);
         String sanitizeValue = sanitizeValue(value);
@@ -30,7 +38,7 @@ public class ServicePointSearchVersionRepository {
         mapSqlParameterSource.addValue("ends_with_space", "% " + sanitizeValue);
         mapSqlParameterSource.addValue("contains_value", "%" + sanitizeValue + "%");
 
-        String query = getSqlQuery(value, isBps);
+        String query = getSqlQuery(value, isOperationPointRouteNetworkTrue);
 
         List<ServicePointSearchResult> servicePointSearchResults = jdbcTemplate.query(
                 query,
@@ -69,7 +77,7 @@ public class ServicePointSearchVersionRepository {
         return value.replaceAll("%", "\\\\%");
     }
 
-    private String getSqlQuery(String value, boolean isBps) {
+    private String getSqlQuery(String value, boolean isOperationPointRouteNetworkTrue) {
         String sqlQuery = """
                 select number, designation_official
                 from service_point_version
@@ -77,7 +85,7 @@ public class ServicePointSearchVersionRepository {
                     or replace(upper(designation_official), ',','') like replace(upper(:contains_value), ',','')
                     or replace(upper(designation_long), ',','') like replace(upper(:contains_value), ',',''))
                 """;
-        if (isBps) {
+        if (isOperationPointRouteNetworkTrue) {
             sqlQuery += " and operating_point_route_network = true ";
         }
         sqlQuery += """
