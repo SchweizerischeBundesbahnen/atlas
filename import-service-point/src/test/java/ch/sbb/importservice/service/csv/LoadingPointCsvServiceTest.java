@@ -1,19 +1,17 @@
 package ch.sbb.importservice.service.csv;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.MockitoAnnotations.openMocks;
+
 import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointCsvModelContainer;
 import ch.sbb.importservice.service.FileHelperService;
 import ch.sbb.importservice.service.JobHelperService;
-import org.junit.jupiter.api.AfterEach;
+import java.time.LocalDate;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-
-import java.time.LocalDate;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.MockitoAnnotations.openMocks;
 
 class LoadingPointCsvServiceTest {
 
@@ -25,17 +23,10 @@ class LoadingPointCsvServiceTest {
   @Mock
   private JobHelperService jobHelperService;
 
-  private AutoCloseable mocks;
-
   @BeforeEach
   void setUp() {
-    mocks = openMocks(this);
+    openMocks(this);
     loadingPointCsvService = new LoadingPointCsvService(fileHelperService, jobHelperService);
-  }
-
-  @AfterEach
-  void teardown() throws Exception {
-    mocks.close();
   }
 
   @Test
