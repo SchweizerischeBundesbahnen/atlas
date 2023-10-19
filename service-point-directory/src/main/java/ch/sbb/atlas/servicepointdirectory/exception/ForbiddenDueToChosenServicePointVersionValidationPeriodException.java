@@ -22,7 +22,7 @@ public class ForbiddenDueToChosenServicePointVersionValidationPeriodException ex
         return ErrorResponse.builder()
                 .status(HttpStatus.FORBIDDEN.value())
                 .message("Operation not allowed")
-                .error("The validation period of all versions of servicePointNumber: " + servicePointNumber.getNumber() +
+                .error("The validation period of all versions of kilometarMasterNumber: " + servicePointNumber.getNumber() +
                         " don't match with your own servicePointVersion validation period.")
                 .details(new TreeSet<>(getErrorDetails()))
                 .build();
@@ -30,9 +30,9 @@ public class ForbiddenDueToChosenServicePointVersionValidationPeriodException ex
 
     private List<ErrorResponse.Detail> getErrorDetails() {
         return List.of(ErrorResponse.Detail.builder()
-                .message("The validation period of all versions of servicePointNumber: " + servicePointNumber.getNumber() +
+                .message("The validation period of all versions of kilometarMasterNumber: " + servicePointNumber.getNumber() +
                         " don't match with your own servicePointVersion validation period. " +
-                        "Please check validation period of chosen servicePointVersion.")
+                        "Please check validation period of chosen servicePointVersion and kilometerMasterNumber.")
                 .field(ServicePointVersion.Fields.number)
                 .displayInfo(builder().code("TTH.NOTIFICATION.OPERATION_NOT_ALLOWED_DUE_TO_TTH_YEAR_SETTINGS").build())
                 .build());

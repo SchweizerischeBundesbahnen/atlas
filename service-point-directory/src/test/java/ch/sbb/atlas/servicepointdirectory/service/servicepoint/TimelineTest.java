@@ -24,7 +24,7 @@ public class TimelineTest {
     }
 
     @Test
-    void bpsTimelinesCombinationWithAndWithoutGaps() {
+    void shouldCreateTimelineElementsListWhenKilMasterTimelinesCombinationWithAndWithoutGaps() {
         List<ServicePointVersion> servicePointVersionList = new ArrayList<>();
         servicePointVersionList.add(ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel1());
         servicePointVersionList.add(ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel2());
@@ -38,7 +38,7 @@ public class TimelineTest {
         servicePointVersionList.add(ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel10());
 
         Timeline timeline = new Timeline(servicePointVersionList, ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel1());
-        List<Timeline.TimelineElement> mergedTimeline = timeline.getElements();
+        List<Timeline.TimelineElement> mergedTimeline = timeline.getKilometerMasterTimelineElements();
         Assert.equals(6, mergedTimeline.size());
         Assert.equals(LocalDate.of(2010, 12, 11), mergedTimeline.get(0).getStartDate());
         Assert.equals(LocalDate.of(2013, 8, 10), mergedTimeline.get(0).getEndDate());
@@ -55,30 +55,30 @@ public class TimelineTest {
     }
 
     @Test
-    void bpsTimelinesWithNull() {
+    void shouldCreateEmptyListWhenKilMasterTimelinesWithNull() {
         Timeline timeline = new Timeline(null, ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel1());
-        List<Timeline.TimelineElement> mergedTimeline = timeline.getElements();
+        List<Timeline.TimelineElement> mergedTimeline = timeline.getKilometerMasterTimelineElements();
         Assert.equals(0, mergedTimeline.size());
     }
 
     @Test
-    void bpsTimelinesWithEmptyList() {
+    void shouldCreateEmptyListWhenKilMasterTimelinesWithEmptyList() {
         List<ServicePointVersion> servicePointVersionList = new ArrayList<>();
 
         Timeline timeline = new Timeline(servicePointVersionList, ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel1());
-        List<Timeline.TimelineElement> mergedTimeline = timeline.getElements();
+        List<Timeline.TimelineElement> mergedTimeline = timeline.getKilometerMasterTimelineElements();
         Assert.equals(0, mergedTimeline.size());
     }
 
     @Test
-    void bpsTimelinesWithGapsBetween() {
+    void shouldCreateKilMasterTimelineElementsWhenGapsBetweenKilMasterNumbers() {
         List<ServicePointVersion> servicePointVersionList = new ArrayList<>();
         servicePointVersionList.add(ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel1());
         servicePointVersionList.add(ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel3());
         servicePointVersionList.add(ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel5());
 
         Timeline timeline = new Timeline(servicePointVersionList, ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel1());
-        List<Timeline.TimelineElement> mergedTimeline = timeline.getElements();
+        List<Timeline.TimelineElement> mergedTimeline = timeline.getKilometerMasterTimelineElements();
         Assert.equals(3, mergedTimeline.size());
         Assert.equals(LocalDate.of(2010, 12, 11), mergedTimeline.get(0).getStartDate());
         Assert.equals(LocalDate.of(2011, 8, 10), mergedTimeline.get(0).getEndDate());
@@ -89,7 +89,7 @@ public class TimelineTest {
     }
 
     @Test
-    void bpsTimelinesWithGapAfterFirstTimeline() {
+    void shouldCreateKilMasterTimelinesWhenGapAfterFirstKilMasterNumber() {
         List<ServicePointVersion> servicePointVersionList = new ArrayList<>();
         servicePointVersionList.add(ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel0());
         servicePointVersionList.add(ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel1());
@@ -98,7 +98,7 @@ public class TimelineTest {
         servicePointVersionList.add(ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel4());
 
         Timeline timeline = new Timeline(servicePointVersionList, ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel1());
-        List<Timeline.TimelineElement> mergedTimeline = timeline.getElements();
+        List<Timeline.TimelineElement> mergedTimeline = timeline.getKilometerMasterTimelineElements();
         Assert.equals(3, mergedTimeline.size());
         Assert.equals(LocalDate.of(2008, 12, 11), mergedTimeline.get(0).getStartDate());
         Assert.equals(LocalDate.of(2009, 8, 10), mergedTimeline.get(0).getEndDate());
@@ -109,14 +109,14 @@ public class TimelineTest {
     }
 
     @Test
-    void bpsTimelinesWithoutGapsBetween() {
+    void shouldCreateKilMasterTimelinesWhenGapsBetweenKilMasterNumbers() {
         List<ServicePointVersion> servicePointVersionList = new ArrayList<>();
         servicePointVersionList.add(ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel1());
         servicePointVersionList.add(ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel2());
         servicePointVersionList.add(ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel3());
 
         Timeline timeline = new Timeline(servicePointVersionList, ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel1());
-        List<Timeline.TimelineElement> mergedTimeline = timeline.getElements();
+        List<Timeline.TimelineElement> mergedTimeline = timeline.getKilometerMasterTimelineElements();
         Assert.equals(1, mergedTimeline.size());
         Assert.equals(LocalDate.of(2010, 12, 11), mergedTimeline.get(0).getStartDate());
         Assert.equals(LocalDate.of(2013, 8, 10), mergedTimeline.get(0).getEndDate());
