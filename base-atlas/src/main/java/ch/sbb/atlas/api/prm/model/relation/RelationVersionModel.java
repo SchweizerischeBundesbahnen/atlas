@@ -1,12 +1,12 @@
 package ch.sbb.atlas.api.prm.model.relation;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
-import ch.sbb.atlas.validation.DatesValidator;
-import ch.sbb.atlas.api.prm.model.BasePrmVersionModel;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.StepFreeAccessAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.TactileVisualAttributeType;
+import ch.sbb.atlas.api.prm.model.BasePrmVersionModel;
+import ch.sbb.atlas.validation.DatesValidator;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -25,10 +25,16 @@ import lombok.experimental.SuperBuilder;
 public abstract class RelationVersionModel extends BasePrmVersionModel implements DatesValidator {
 
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
-  @Schema(description = "Parent Service Point Sloid: ServiceUnique code for locations that is used in customer information. The "
+  @Schema(description = "Parent Service Point Sloid: Unique code for locations that is used in customer information. The "
       + "structure is described in the “Swiss Location ID” specification, chapter 4.2. The document is available here. "
       + "https://transportdatamanagement.ch/standards/", example = "ch:1:sloid:18771")
   private String parentServicePointSloid;
+
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
+  @Schema(description = "Reference Point Sloid: Unique code for locations that is used in customer information. The "
+      + "structure is described in the “Swiss Location ID” specification, chapter 4.2. The document is available here. "
+      + "https://transportdatamanagement.ch/standards/", example = "ch:1:sloid:18771")
+  private String referencePointSloid;
 
   @Schema(description = "Tactile-visual markings")
   private TactileVisualAttributeType tactileVisualMarks;
