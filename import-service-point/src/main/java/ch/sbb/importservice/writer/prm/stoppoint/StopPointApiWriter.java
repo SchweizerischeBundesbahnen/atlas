@@ -25,7 +25,7 @@ public class StopPointApiWriter extends BaseApiWriter implements ItemWriter<Stop
     Long stepExecutionId = stepExecution.getId();
     List<ItemImportResult> importResults = prmClient.postStopPointImport(importRequestModel);
     for (ItemImportResult response : importResults) {
-      saveItemProcessed(stepExecutionId, response.getItemNumber().toString(), response.getStatus(), response.getMessage());
+      saveItemProcessed(stepExecutionId, response.getItemNumber(), response.getStatus(), response.getMessage());
     }
   }
 }
