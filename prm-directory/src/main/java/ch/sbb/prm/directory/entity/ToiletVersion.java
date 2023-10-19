@@ -6,6 +6,8 @@ import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.prm.directory.service.PrmVersionable;
 import ch.sbb.prm.directory.service.Relatable;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -42,6 +44,7 @@ public class ToiletVersion extends BasePrmEntityVersion implements Relatable, Pr
   @AtlasVersionableProperty
   private String additionalInformation;
 
+  @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType wheelchairToilet;
 
