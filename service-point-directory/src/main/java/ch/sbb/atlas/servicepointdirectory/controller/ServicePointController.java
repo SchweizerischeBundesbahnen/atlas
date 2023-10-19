@@ -113,7 +113,7 @@ public class ServicePointController implements ServicePointApiV1 {
     ServicePointVersion servicePointVersionToUpdate = servicePointService.findById(id)
         .orElseThrow(() -> new IdNotFoundException(id));
 
-    checkIfChosenOperatingPointKilometerMasterIsAllowedToBeAssigned(
+    checkIfChosenKilometerMasterNumberIsAllowedToBeAssigned(
             createServicePointVersionModel, servicePointVersionToUpdate);
 
     ServicePointVersion editedVersion = ServicePointVersionMapper.toEntity(createServicePointVersionModel);
@@ -131,19 +131,19 @@ public class ServicePointController implements ServicePointApiV1 {
         .toList();
   }
 
-  private void checkIfChosenOperatingPointKilometerMasterIsAllowedToBeAssigned(
+  private void checkIfChosenKilometerMasterNumberIsAllowedToBeAssigned(
           CreateServicePointVersionModel createServicePointVersionModel, ServicePointVersion servicePointVersion) {
 
-    ServicePointNumber operatingPointKilometerMasterServicePointNumber = ServicePointNumber
+    ServicePointNumber kilometerMasterNumber = ServicePointNumber
             .ofNumberWithoutCheckDigit(createServicePointVersionModel.getOperatingPointKilometerMasterNumber());
 
-    List<ServicePointVersion> allOperatingPointKilometerMasterNumbers = servicePointService
+    List<ServicePointVersion> allKilometerMasterNumberVersions = servicePointService
             .findAllByNumberAndOperatingPointRouteNetworkTrueOrderByValidFrom(
-                    operatingPointKilometerMasterServicePointNumber);
+                    kilometerMasterNumber);
 
 
-    if (!servicePointService.checkIfOperatingPointKilometerMasterCanBeAssigned(allOperatingPointKilometerMasterNumbers, servicePointVersion)) {
-      throw new ForbiddenDueToChosenServicePointVersionValidationPeriodException(operatingPointKilometerMasterServicePointNumber);
+    if (!servicePointService.checkIfKilometerMasterNumberCanBeAssigned(allKilometerMasterNumberVersions, servicePointVersion)) {
+      throw new ForbiddenDueToChosenServicePointVersionValidationPeriodException(kilometerMasterNumber);
     }
   }
 

@@ -39,7 +39,7 @@ public class ServicePointServiceTimelinesTest {
     }
 
     @Test
-    void testScenarion1BpkIsEquallyLongAsOneBpsVersion() {
+    void testScenarion1SePoTimelineIsEquallyLongAsOneOfKilMasterTimelines() {
         List<ServicePointVersion> servicePointVersionList = new ArrayList<>();
         servicePointVersionList.add(ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel0());
         servicePointVersionList.add(ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel1());
@@ -55,12 +55,12 @@ public class ServicePointServiceTimelinesTest {
 
         ServicePointVersion servicePointVersion = ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel4();
 
-        boolean result = servicePointService.checkIfOperatingPointKilometerMasterCanBeAssigned(servicePointVersionList, servicePointVersion);
+        boolean result = servicePointService.checkIfKilometerMasterNumberCanBeAssigned(servicePointVersionList, servicePointVersion);
         Assert.equals(true, result);
     }
 
     @Test
-    void testScenarion2BpkValidToIsLongerThanBpsVersionValidTo() {
+    void testScenarion2SePoTimelineValidToIsLongerThanOneOfKilMasterTimelineValidTo() {
         List<ServicePointVersion> servicePointVersionList = new ArrayList<>();
         servicePointVersionList.add(ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel0());
         servicePointVersionList.add(ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel1());
@@ -77,12 +77,12 @@ public class ServicePointServiceTimelinesTest {
         ServicePointVersion servicePointVersion = ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel4();
         servicePointVersion.setValidTo(LocalDate.of(2014, 8, 18));
 
-        boolean result = servicePointService.checkIfOperatingPointKilometerMasterCanBeAssigned(servicePointVersionList, servicePointVersion);
+        boolean result = servicePointService.checkIfKilometerMasterNumberCanBeAssigned(servicePointVersionList, servicePointVersion);
         Assert.equals(false, result);
     }
 
     @Test
-    void testScenarion3BpkValidFromIsBeforeThanBpsVersionValidFrom() {
+    void testScenarion3SePoTimelineValidFromIsBeforeThanBpsKilMasterTimelineValidFrom() {
         List<ServicePointVersion> servicePointVersionList = new ArrayList<>();
         servicePointVersionList.add(ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel0());
         servicePointVersionList.add(ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel1());
@@ -99,12 +99,12 @@ public class ServicePointServiceTimelinesTest {
         ServicePointVersion servicePointVersion = ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel4();
         servicePointVersion.setValidFrom(LocalDate.of(2013, 8, 12));
 
-        boolean result = servicePointService.checkIfOperatingPointKilometerMasterCanBeAssigned(servicePointVersionList, servicePointVersion);
+        boolean result = servicePointService.checkIfKilometerMasterNumberCanBeAssigned(servicePointVersionList, servicePointVersion);
         Assert.equals(false, result);
     }
 
     @Test
-    void testScenarion4BpkTimelineIsInsideOfBpsTimeline() {
+    void testScenarion4SePoTimelineIsInsideOfKilMasterTimeline() {
         List<ServicePointVersion> servicePointVersionList = new ArrayList<>();
         servicePointVersionList.add(ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel0());
         servicePointVersionList.add(ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel1());
@@ -122,12 +122,12 @@ public class ServicePointServiceTimelinesTest {
         servicePointVersion.setValidFrom(LocalDate.of(2013, 8, 20));
         servicePointVersion.setValidTo(LocalDate.of(2014, 8, 10));
 
-        boolean result = servicePointService.checkIfOperatingPointKilometerMasterCanBeAssigned(servicePointVersionList, servicePointVersion);
+        boolean result = servicePointService.checkIfKilometerMasterNumberCanBeAssigned(servicePointVersionList, servicePointVersion);
         Assert.equals(true, result);
     }
 
     @Test
-    void testScenarion5BpkTimelineIsInsideOfBpsTimelines() {
+    void testScenarion5SePoTimelineIsInsideOfKilMasterTimelines() {
         List<ServicePointVersion> servicePointVersionList = new ArrayList<>();
         servicePointVersionList.add(ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel0());
         servicePointVersionList.add(ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel1());
@@ -145,12 +145,12 @@ public class ServicePointServiceTimelinesTest {
         servicePointVersion.setValidFrom(LocalDate.of(2011, 1, 1));
         servicePointVersion.setValidTo(LocalDate.of(2013, 1, 1));
 
-        boolean result = servicePointService.checkIfOperatingPointKilometerMasterCanBeAssigned(servicePointVersionList, servicePointVersion);
+        boolean result = servicePointService.checkIfKilometerMasterNumberCanBeAssigned(servicePointVersionList, servicePointVersion);
         Assert.equals(true, result);
     }
 
     @Test
-    void testScenarion6BpsTimelineWithAGapWhereBpkTimeline() {
+    void testScenarion6SePoTimelineIncludesKilMasterTimelineWithGap() {
         List<ServicePointVersion> servicePointVersionList = new ArrayList<>();
         servicePointVersionList.add(ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel0());
         servicePointVersionList.add(ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel1());
@@ -168,12 +168,12 @@ public class ServicePointServiceTimelinesTest {
         servicePointVersion.setValidFrom(LocalDate.of(2013, 8, 1));
         servicePointVersion.setValidTo(LocalDate.of(2014, 8, 1));
 
-        boolean result = servicePointService.checkIfOperatingPointKilometerMasterCanBeAssigned(servicePointVersionList, servicePointVersion);
+        boolean result = servicePointService.checkIfKilometerMasterNumberCanBeAssigned(servicePointVersionList, servicePointVersion);
         Assert.equals(false, result);
     }
 
     @Test
-    void testScenarion7BpsTimelineWithAGapWhereBpkTimeline() {
+    void testScenarion7SepoTimelineGoesOverKilMasterTimelineWithGap() {
         List<ServicePointVersion> servicePointVersionList = new ArrayList<>();
         servicePointVersionList.add(ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel0());
         servicePointVersionList.add(ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel1());
@@ -191,7 +191,7 @@ public class ServicePointServiceTimelinesTest {
         servicePointVersion.setValidFrom(LocalDate.of(2013, 8, 15));
         servicePointVersion.setValidTo(LocalDate.of(2014, 8, 20));
 
-        boolean result = servicePointService.checkIfOperatingPointKilometerMasterCanBeAssigned(servicePointVersionList, servicePointVersion);
+        boolean result = servicePointService.checkIfKilometerMasterNumberCanBeAssigned(servicePointVersionList, servicePointVersion);
         Assert.equals(false, result);
     }
 
