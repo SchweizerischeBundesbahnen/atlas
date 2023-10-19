@@ -31,7 +31,7 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
   }
 
   @Override
-  protected StopPointVersion save(StopPointVersion version) {
+  public StopPointVersion save(StopPointVersion version) {
     return stopPointRepository.saveAndFlush(version);
   }
 
