@@ -160,7 +160,7 @@ describe('ServicePointDetailComponent', () => {
   it('should activate geolocation without coordinates', () => {
     const isLatLngCoordinatesValidForTransformationSpy = spyOn(
       component,
-      'isCoordinatesPairValidForTransformation'
+      'isCoordinatesPairValidForTransformation',
     ).and.returnValue(false);
     const setSpatialReferenceSpy = spyOn(component, 'setSpatialReference');
 
@@ -186,7 +186,7 @@ describe('ServicePointDetailComponent', () => {
   it('should not transform if coordinates invalid', () => {
     const isLatLngCoordinatesValidForTransformationSpy = spyOn(
       component,
-      'isCoordinatesPairValidForTransformation'
+      'isCoordinatesPairValidForTransformation',
     ).and.returnValue(false);
     const setSpatialReferenceSpy = spyOn(component, 'setSpatialReference');
 
@@ -199,5 +199,41 @@ describe('ServicePointDetailComponent', () => {
     expect(mapServiceSpy.placeMarkerAndFlyTo).not.toHaveBeenCalled();
     expect(coordinateTransformationServiceSpy.transform).not.toHaveBeenCalled();
     expect(mapServiceSpy.isEditMode.value).toBe(true);
+  });
+
+  it('should set isAbbreviationAllowed based on selectedVersion.businessOrganisation', () => {
+    component.selectedVersion = {
+      businessOrganisation: 'ch:1:sboid:100016',
+      designationOfficial: 'abcd',
+      validFrom: new Date(2020 - 10 - 1),
+      validTo: new Date(2099 - 10 - 1),
+      number: {
+        number: 123456,
+        numberShort: 31,
+        uicCountryCode: 0,
+        checkDigit: 0,
+      },
+      status: 'VALIDATED',
+    };
+
+    component.checkIfAbbreviationIsAllowed();
+
+    expect(component.isAbbreviationAllowed).toBeTrue();
+
+    component.selectedVersion = {
+      businessOrganisation: 'falseBusinessOrganisation',
+      designationOfficial: 'abcd',
+      validFrom: new Date(2020 - 10 - 1),
+      validTo: new Date(2099 - 10 - 1),
+      number: {
+        number: 123456,
+        numberShort: 31,
+        uicCountryCode: 0,
+        checkDigit: 0,
+      },
+      status: 'VALIDATED',
+    };
+    component.checkIfAbbreviationIsAllowed();
+    expect(component.isAbbreviationAllowed).toBeFalse();
   });
 });

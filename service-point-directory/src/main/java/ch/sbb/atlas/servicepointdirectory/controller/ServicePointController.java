@@ -36,6 +36,7 @@ import java.util.Optional;
 import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
@@ -50,8 +51,6 @@ public class ServicePointController implements ServicePointApiV1 {
   private final ServicePointImportService servicePointImportService;
   private final GeoReferenceService geoReferenceService;
   private final ServicePointDistributor servicePointDistributor;
-
-  private final Pattern abbreviationPattern = Pattern.compile("^[A-Z0-9]{2,6}$");
 
   @Override
   public Container<ReadServicePointVersionModel> getServicePoints(Pageable pageable,
@@ -109,7 +108,7 @@ public class ServicePointController implements ServicePointApiV1 {
 
     String newAbbreviation = createServicePointVersionModel.getAbbreviation();
 
-    validateAndSetAbbreviation(servicePointVersion, newAbbreviation, null, Optional.empty());
+    validateAndSetAbbreviation(servicePointVersion, newAbbreviation, null);
 
     addGeoReferenceInformation(servicePointVersion);
     ServicePointVersion createdVersion = servicePointService.save(servicePointVersion);
@@ -129,7 +128,7 @@ public class ServicePointController implements ServicePointApiV1 {
     String existingAbbreviation = servicePointVersionToUpdate.getAbbreviation();
     String newAbbreviation = createServicePointVersionModel.getAbbreviation();
 
-    validateAndSetAbbreviation(editedVersion, newAbbreviation, existingAbbreviation, Optional.of(servicePointVersionToUpdate.getId()));
+    validateAndSetAbbreviation(servicePointVersionToUpdate, newAbbreviation, existingAbbreviation);
 
     addGeoReferenceInformation(editedVersion);
 
@@ -144,12 +143,6 @@ public class ServicePointController implements ServicePointApiV1 {
         .map(ServicePointVersionMapper::toModel)
         .toList();
   }
-
-
-  public boolean isAbbreviationValid(String textToCheck) {
-    return abbreviationPattern.matcher(textToCheck).matches();
-  }
-
 
   @Override
   public Optional<ServicePointFotCommentModel> getFotComment(Integer servicePointNumber) {
@@ -188,12 +181,12 @@ public class ServicePointController implements ServicePointApiV1 {
     }
   }
 
-  private void validateAndSetAbbreviation(ServicePointVersion servicePointVersion, String newAbbreviation, String existingAbbreviation, Optional<Long> id) {
-    if (newAbbreviation == null || newAbbreviation.isEmpty()) return;
+  public void validateAndSetAbbreviation(ServicePointVersion servicePointVersion, String newAbbreviation, String existingAbbreviation) {
+    if (StringUtils.isBlank(newAbbreviation)) {
+      return;
+    }
 
-    boolean isBussinesOrganisationInList = ServicePointAbbreviationAllowList.SBOIDS
-        .stream()
-        .anyMatch(element -> element.contains(servicePointVersion.getBusinessOrganisation()));
+    boolean isBussinesOrganisationInList = ServicePointAbbreviationAllowList.SBOIDS.contains(servicePointVersion.getBusinessOrganisation());
 
     if (!isBussinesOrganisationInList) {
       throw new AbbreviationUpdateNotAllowedException();
@@ -203,7 +196,7 @@ public class ServicePointController implements ServicePointApiV1 {
       throw new AbbreviationUpdateNotAllowedException();
     }
 
-    if (id != null && (!isAbbreviationValid(newAbbreviation) || !servicePointService.isAbbrevitionUnique(newAbbreviation, id))) {
+    if (!servicePointService.isAbbrevitionUnique(newAbbreviation, servicePointVersion.getNumber())) {
       throw new InvalidAbbreviationException();
     }
 
