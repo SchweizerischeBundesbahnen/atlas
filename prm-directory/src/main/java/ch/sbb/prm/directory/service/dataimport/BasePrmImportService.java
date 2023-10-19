@@ -1,4 +1,4 @@
-package ch.sbb.prm.directory.service;
+package ch.sbb.prm.directory.service.dataimport;
 
 import ch.sbb.atlas.imports.BaseImportService;
 import ch.sbb.atlas.imports.util.BeanCopyUtil;

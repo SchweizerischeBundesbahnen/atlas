@@ -1,4 +1,4 @@
-package ch.sbb.prm.directory.service;
+package ch.sbb.prm.directory.service.dataimport;
 
 import ch.sbb.atlas.imports.prm.stoppoint.StopPointCsvModelContainer;
 import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
@@ -12,6 +12,7 @@ import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.mapper.StopPointVersionMapper;
 import ch.sbb.prm.directory.repository.StopPointRepository;
+import ch.sbb.prm.directory.service.StopPointService;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
