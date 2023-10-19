@@ -6,19 +6,15 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { MaterialModule } from '../../../../../core/module/material.module';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormControl, FormGroup } from '@angular/forms';
-import { ServicePointDetailSearchComponent } from './service-point-detail-search.component';
+import { BpkMasterSearchComponent } from './bpk-master-search.component';
 
 describe('ServicePointDetailSearchComponent', () => {
-  let component: ServicePointDetailSearchComponent;
-  let fixture: ComponentFixture<ServicePointDetailSearchComponent>;
+  let component: BpkMasterSearchComponent;
+  let fixture: ComponentFixture<BpkMasterSearchComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        ServicePointDetailSearchComponent,
-        SearchSelectComponent,
-        AtlasFieldErrorComponent,
-      ],
+      declarations: [BpkMasterSearchComponent, SearchSelectComponent, AtlasFieldErrorComponent],
       imports: [
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
@@ -29,7 +25,7 @@ describe('ServicePointDetailSearchComponent', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ServicePointDetailSearchComponent);
+    fixture = TestBed.createComponent(BpkMasterSearchComponent);
     component = fixture.componentInstance;
     component.formGroup = new FormGroup({
       testControl: new FormControl(null),

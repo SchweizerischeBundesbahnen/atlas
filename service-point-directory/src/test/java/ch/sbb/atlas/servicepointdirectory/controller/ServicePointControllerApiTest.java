@@ -148,7 +148,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
      String jsonString = mapper.writeValueAsString(request);
 
      // when
-     mvc.perform(post("/v1/service-points/search-bps")
+     mvc.perform(post("/v1/service-points/search-sp-with-route-network")
                      .content(jsonString)
                      .contentType(contentType))
              // then
@@ -173,13 +173,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
   }
 
  @Test
- void shouldReturnEmptyListWhenNoMatchBpsFound() throws Exception {
+ void shouldReturnEmptyListWhenNoSePoWithRouteNetworkTrueFound() throws Exception {
      // given
      ServicePointSearchRequest request = new ServicePointSearchRequest("zug");
      String jsonString = mapper.writeValueAsString(request);
 
      // when
-     mvc.perform(post("/v1/service-points/search-bps")
+     mvc.perform(post("/v1/service-points/search-sp-with-route-network")
                      .content(jsonString)
                      .contentType(contentType))
              // then
@@ -203,13 +203,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
   }
 
  @Test
- void shouldReturnBadRequestWhenSearchBpsWithLessThanTwoDigit() throws Exception {
+ void shouldReturnBadRequestWhenSearchSePoWithNetworkTrueWithLessThanTwoDigit() throws Exception {
      // given
      ServicePointSearchRequest request = new ServicePointSearchRequest("b");
      String jsonString = mapper.writeValueAsString(request);
 
      // when
-     mvc.perform(post("/v1/service-points/search-bps")
+     mvc.perform(post("/v1/service-points/search-sp-with-route-network")
                      .content(jsonString)
                      .contentType(contentType))
              // then
@@ -411,12 +411,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  @Test
  void shouldCreateServicePointWithRouteNetworkTrue() throws Exception {
 
-     CreateServicePointVersionModel servicePointWithBpsTrue = ServicePointTestData.getAargauServicePointVersionModel();
-     servicePointWithBpsTrue.setOperatingPointRouteNetwork(true);
+     CreateServicePointVersionModel servicePointWithOperationPointRouteNetworkTrue = ServicePointTestData.getAargauServicePointVersionModel();
+     servicePointWithOperationPointRouteNetworkTrue.setOperatingPointRouteNetwork(true);
 
      mvc.perform(post("/v1/service-points")
                      .contentType(contentType)
-                     .content(mapper.writeValueAsString(servicePointWithBpsTrue)))
+                     .content(mapper.writeValueAsString(servicePointWithOperationPointRouteNetworkTrue)))
              .andExpect(status().isCreated())
              .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.id, is(servicePointVersion.getId().intValue() + 1)))
              .andExpect(jsonPath("$.number.number", is(8034510)))
