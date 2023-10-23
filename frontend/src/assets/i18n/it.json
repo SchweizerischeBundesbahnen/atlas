@@ -929,7 +929,8 @@
       "OPERATING_POINT_KILOMETER": "PE-chilometrico",
       "NOTIFICATION": {
         "ADD_SUCCESS": "Il posto di servizio è stato aggiunto con successo.",
-        "EDIT_SUCCESS": "Il posto di servizio è stato salvato con successo."
+        "EDIT_SUCCESS": "Il posto di servizio è stato salvato con successo.",
+        "OPERATION_NOT_ALLOWED_DUE_TO_VALIDATION_PERIOD": "Questa operazione non è possibile a causa del periodo di convalida."
       },
       "CONFLICT": {
         "DESIGNATION_OFFICIAL": "La denominazione ufficiale {{designationOfficial}} è già assegnata nel periodo dal {{validFrom}} al {{validTo}} da {{number}}.",

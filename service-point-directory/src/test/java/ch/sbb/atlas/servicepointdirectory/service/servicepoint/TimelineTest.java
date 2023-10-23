@@ -11,16 +11,11 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-
 public class TimelineTest {
 
     @Test
     void shouldFailWhenMissingServicePoint() {
-        var exception = Assertions.assertThrows(IllegalStateException.class, () -> new Timeline(null, null));
-        assertThat(exception.getMessage(), is(equalTo("ServicePointVersion is required to instantiate Timeline.")));
+        Assertions.assertThrows(NullPointerException.class, () -> new Timeline(null, null));
     }
 
     @Test
