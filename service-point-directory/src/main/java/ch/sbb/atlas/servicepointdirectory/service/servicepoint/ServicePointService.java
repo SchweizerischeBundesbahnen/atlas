@@ -59,7 +59,7 @@ public class ServicePointService {
   }
 
   public boolean checkIfKilometerMasterNumberCanBeAssigned(List<ServicePointVersion> allKilometerMasterNumberVersions, ServicePointVersion servicePointVersion) {
-    return new Timeline(allKilometerMasterNumberVersions, servicePointVersion).isSePoTimelineInsideOrEqOfOneOfKilomMasterTimelines();
+    return servicePointValidationService.checkIfKilometerMasterNumberCanBeAssigned(allKilometerMasterNumberVersions, servicePointVersion);
   }
 
   public boolean isServicePointNumberExisting(ServicePointNumber servicePointNumber) {
