@@ -1,9 +1,10 @@
 package ch.sbb.prm.directory.service.dataimport;
 
+import ch.sbb.atlas.imports.ItemImportResult;
+import ch.sbb.atlas.imports.ItemImportResult.ItemImportResultBuilder;
 import ch.sbb.atlas.imports.prm.stoppoint.StopPointCsvModelContainer;
-import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
-import ch.sbb.atlas.imports.servicepoint.ItemImportResult.ItemImportResultBuilder;
 import ch.sbb.atlas.imports.util.ImportUtils;
+import ch.sbb.atlas.model.exception.AtlasException;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
@@ -19,11 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
-@Transactional
 public class StopPointImportService extends BasePrmImportService<StopPointVersion> {
 
   private final StopPointRepository stopPointRepository;
@@ -104,7 +103,7 @@ public class StopPointImportService extends BasePrmImportService<StopPointVersio
     try {
       StopPointVersion stopPointVersion = stopPointService.save(servicePointVersion);
       return buildSuccessImportResult(stopPointVersion);
-    } catch (Exception exception) {
+    } catch (AtlasException exception) {
       log.error("[Stop-Place Import]: Error during save", exception);
       return buildFailedImportResult(servicePointVersion, exception);
     }

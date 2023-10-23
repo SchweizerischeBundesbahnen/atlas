@@ -2,8 +2,8 @@ package ch.sbb.prm.directory.controller;
 
 import ch.sbb.atlas.api.prm.model.stoppoint.CreateStopPointVersionModel;
 import ch.sbb.atlas.api.prm.model.stoppoint.ReadStopPointVersionModel;
+import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.prm.stoppoint.StopPointImportRequestModel;
-import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.prm.directory.api.StopPointApiV1;
 import ch.sbb.prm.directory.entity.StopPointVersion;
@@ -31,7 +31,7 @@ public class StopPointController implements StopPointApiV1 {
   @Override
   public ReadStopPointVersionModel createStopPoint(CreateStopPointVersionModel stopPointVersionModel) {
     StopPointVersion stopPointVersion = StopPointVersionMapper.toEntity(stopPointVersionModel);
-    StopPointVersion savedVersion = stopPointService.createStopPoint(stopPointVersion);
+    StopPointVersion savedVersion = stopPointService.save(stopPointVersion);
     return StopPointVersionMapper.toModel(savedVersion);
   }
 
