@@ -5,7 +5,7 @@ import static org.mockito.MockitoAnnotations.openMocks;
 
 import ch.sbb.atlas.imports.prm.stoppoint.StopPointCsvModel;
 import ch.sbb.atlas.imports.prm.stoppoint.StopPointCsvModelContainer;
-import ch.sbb.importservice.StopPointCsvTestData;
+import ch.sbb.atlas.testdata.prm.StopPointCsvTestData;
 import ch.sbb.importservice.service.FileHelperService;
 import ch.sbb.importservice.service.JobHelperService;
 import java.time.LocalDate;
