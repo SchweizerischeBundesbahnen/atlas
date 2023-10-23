@@ -14,10 +14,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import java.net.URL;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -33,7 +29,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@Tag(name = "LiDi - Lines")
+import java.net.URL;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+
+@Tag(name = "Lines")
 @RequestMapping("v1/lines")
 public interface LineApiV1 {
 

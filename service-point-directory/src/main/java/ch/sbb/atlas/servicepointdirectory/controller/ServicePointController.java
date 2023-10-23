@@ -66,18 +66,20 @@ public class ServicePointController implements ServicePointApiV1 {
 
   @Override
   public List<ServicePointSearchResult> searchServicePoints(ServicePointSearchRequest searchRequest) {
-    if (searchRequest == null || searchRequest.getValue() == null || searchRequest.getValue().length() < 2) {
-      throw new BadRequestException("You must enter at least 2 digits to start a search!");
-    }
+    validateServicePointSearchInput(searchRequest);
     return servicePointService.searchServicePointVersion(searchRequest.getValue());
   }
 
   @Override
   public List<ServicePointSearchResult> searchServicePointsWithRouteNetworkTrue(ServicePointSearchRequest searchRequest) {
+    validateServicePointSearchInput(searchRequest);
+    return servicePointService.searchServicePointsWithRouteNetworkTrue(searchRequest.getValue());
+  }
+
+  private static void validateServicePointSearchInput(ServicePointSearchRequest searchRequest) {
     if (searchRequest == null || searchRequest.getValue() == null || searchRequest.getValue().length() < 2) {
       throw new BadRequestException("You must enter at least 2 digits to start a search!");
     }
-    return servicePointService.searchServicePointsWithRouteNetworkTrue(searchRequest.getValue());
   }
 
   @Override
@@ -105,7 +107,6 @@ public class ServicePointController implements ServicePointApiV1 {
 
   @Override
   public ReadServicePointVersionModel createServicePoint(CreateServicePointVersionModel createServicePointVersionModel) {
-    setKilometerMasterNumberToNumberIfRouteNetworkTrue(createServicePointVersionModel);
     ServicePointVersion servicePointVersion = ServicePointVersionMapper.toEntity(createServicePointVersionModel);
     if (servicePointService.isServicePointNumberExisting(servicePointVersion.getNumber())) {
       throw new ServicePointNumberAlreadyExistsException(servicePointVersion.getNumber());
@@ -122,8 +123,6 @@ public class ServicePointController implements ServicePointApiV1 {
     ServicePointVersion servicePointVersionToUpdate = servicePointService.findById(id)
         .orElseThrow(() -> new IdNotFoundException(id));
 
-    setKilometerMasterNumberToNumberIfRouteNetworkTrue(createServicePointVersionModel);
-
     ServicePointVersion editedVersion = ServicePointVersionMapper.toEntity(createServicePointVersionModel);
     addGeoReferenceInformation(editedVersion);
 
@@ -137,12 +136,6 @@ public class ServicePointController implements ServicePointApiV1 {
         .stream()
         .map(ServicePointVersionMapper::toModel)
         .toList();
-  }
-
-  private static void setKilometerMasterNumberToNumberIfRouteNetworkTrue(CreateServicePointVersionModel createServicePointVersionModel) {
-    if (createServicePointVersionModel.isOperatingPointRouteNetwork()) {
-      createServicePointVersionModel.setOperatingPointKilometerMasterNumber(createServicePointVersionModel.getNumberWithoutCheckDigit());
-    }
   }
 
   @Override

@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import java.util.List;
 import java.util.Optional;
 
-@Tag(name = "SePoDi - Service Points")
+@Tag(name = "ServicePoints")
 @RequestMapping("v1/service-points")
 public interface ServicePointApiV1 {
 
