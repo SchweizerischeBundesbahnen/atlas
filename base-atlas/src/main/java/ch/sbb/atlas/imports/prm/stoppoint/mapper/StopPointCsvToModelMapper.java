@@ -6,9 +6,6 @@ import ch.sbb.atlas.api.prm.model.stoppoint.CreateStopPointVersionModel.CreateSt
 import ch.sbb.atlas.imports.prm.stoppoint.StopPointCsvModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -20,7 +17,7 @@ public class StopPointCsvToModelMapper {
         builder.numberWithoutCheckDigit(ServicePointNumber.removeCheckDigit(csvModel.getDidokCode()));
         builder.validFrom(csvModel.getValidFrom());
         builder.validTo(csvModel.getValidTo());
-        builder.meansOfTransport(mapToMeansOfTransport(csvModel.getTransportationMeans()));
+        builder.meansOfTransport(MeanOfTransport.fromCode(csvModel.getTransportationMeans()).stream().toList());
         builder.freeText(csvModel.getFreeText());
         builder.address(csvModel.getAddress());
         builder.zipCode(csvModel.getZipCode());
@@ -54,13 +51,6 @@ public class StopPointCsvToModelMapper {
       return false;
     }
     return true;
-  }
-
-  List<MeanOfTransport> mapToMeansOfTransport(String csvMeansOfTransports){
-    List<MeanOfTransport> meansOfTransports;
-    String meansOfTransportCode = csvMeansOfTransports.substring(1, csvMeansOfTransports.length() - 1);
-    meansOfTransports = Arrays.stream(meansOfTransportCode.split("~")).map(MeanOfTransport::from).collect(Collectors.toList());
-    return meansOfTransports;
   }
 
 }
