@@ -73,7 +73,7 @@ include::{snippets}/service-point-controller-api-test/should-return-empty-list-w
 
 include::{snippets}/service-point-controller-api-test/should-return-bad-request-when-search-se-po-with-network-true-with-less-than-two-digit/auto-section.adoc[]
 
-== Search BPS ServicePoint successfully
+== Search ServicePoint with route network true successfully
 
 include::{snippets}/service-point-controller-api-test/should-search-service-point-with-operation-point-route-network-true-successfully/auto-section.adoc[]
 
