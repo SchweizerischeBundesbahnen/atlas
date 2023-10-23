@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.migration;
 
+import ch.sbb.atlas.model.DateRange;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
