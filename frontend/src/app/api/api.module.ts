@@ -9,6 +9,7 @@ import { GeoDataService } from './api/geoData.service';
 import { ImportServicePointBatchService } from './api/importServicePointBatch.service';
 import { LinesService } from './api/lines.service';
 import { LoadingPointsService } from './api/loadingPoints.service';
+import { PRMPersonWithReducedMobilityService } from './api/pRMPersonWithReducedMobility.service';
 import { ServicePointsService } from './api/servicePoints.service';
 import { SublinesService } from './api/sublines.service';
 import { TimetableFieldNumbersService } from './api/timetableFieldNumbers.service';
