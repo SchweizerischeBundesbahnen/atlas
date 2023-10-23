@@ -16,8 +16,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.prm.stoppoint.StopPointCsvModel;
-import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.testdata.prm.StopPointCsvTestData;
 import ch.sbb.importservice.client.PrmClient;
