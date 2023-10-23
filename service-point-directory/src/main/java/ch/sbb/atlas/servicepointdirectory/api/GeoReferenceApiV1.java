@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@Tag(name = "SePoDi - Service Points")
+@Tag(name = "GeoData")
 @RequestMapping("v1/geodata")
 public interface GeoReferenceApiV1 {
 
