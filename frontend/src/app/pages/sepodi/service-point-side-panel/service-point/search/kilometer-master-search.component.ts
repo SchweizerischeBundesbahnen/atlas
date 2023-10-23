@@ -15,10 +15,10 @@ import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'service-point-search',
-  templateUrl: './bpk-master-search.component.html',
-  styleUrls: ['./bpk-master-search.component.scss'],
+  templateUrl: './kilometer-master-search.component.html',
+  styleUrls: ['./kilometer-master-search.component.scss'],
 })
-export class BpkMasterSearchComponent implements OnInit, OnDestroy, OnChanges {
+export class KilometerMasterSearchComponent implements OnInit, OnDestroy, OnChanges {
   @Input() valueExtraction = 'number';
   @Input() controlName!: string;
   @Input() formModus = true;
@@ -59,7 +59,7 @@ export class BpkMasterSearchComponent implements OnInit, OnDestroy, OnChanges {
   searchServicePoint(searchString: string) {
     if (searchString) {
       this.servicePointSearchResult$ = this.servicePointService
-        .searchOnlyBpsServicePoints(true, { value: searchString })
+        .searchServicePointsWithRouteNetworkTrue({ value: searchString })
         .pipe(map((values) => values ?? []));
     }
   }
