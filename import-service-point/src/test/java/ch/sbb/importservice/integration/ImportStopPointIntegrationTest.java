@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
 import ch.sbb.atlas.imports.prm.stoppoint.StopPointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
 import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.importservice.StopPointCsvTestData;
+import ch.sbb.atlas.testdata.prm.StopPointCsvTestData;
 import ch.sbb.importservice.client.PrmClient;
 import ch.sbb.importservice.service.FileHelperService;
 import ch.sbb.importservice.service.MailProducerService;

@@ -9,6 +9,7 @@ import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.entity.StopPointVersion.StopPointVersionBuilder;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 import lombok.experimental.UtilityClass;
 
@@ -16,12 +17,16 @@ import lombok.experimental.UtilityClass;
 public class StopPointTestData {
 
   public static StopPointVersion getStopPointVersion(){
+    Set<MeanOfTransport> meanOfTransport = new HashSet<>();
+    meanOfTransport.add(MeanOfTransport.BUS);
+    meanOfTransport.add(MeanOfTransport.BOAT);
+
     return StopPointVersion.builder()
         .sloid("ch:1.sloid:12345")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))
-        .meansOfTransport(Set.of(MeanOfTransport.BUS, MeanOfTransport.BOAT))
+        .meansOfTransport(meanOfTransport)
         .freeText("I am a free text!!!")
         .address("Wylerstrasse 123")
         .zipCode("3014")
