@@ -58,10 +58,6 @@ public class ServicePointService {
     return servicePointVersionRepository.findAllByNumberAndOperatingPointRouteNetworkTrueOrderByValidFrom(servicePointNumber);
   }
 
-  public boolean checkIfKilometerMasterNumberCanBeAssigned(List<ServicePointVersion> allKilometerMasterNumberVersions, ServicePointVersion servicePointVersion) {
-    return servicePointValidationService.checkIfKilometerMasterNumberCanBeAssigned(allKilometerMasterNumberVersions, servicePointVersion);
-  }
-
   public boolean isServicePointNumberExisting(ServicePointNumber servicePointNumber) {
     return servicePointVersionRepository.existsByNumber(servicePointNumber);
   }
