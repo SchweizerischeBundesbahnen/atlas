@@ -6,7 +6,7 @@ import { Pages } from '../pages';
 import { servicePointResolver } from './service-point-side-panel/service-point-detail.resolver';
 import { ServicePointDetailComponent } from './service-point-side-panel/service-point/service-point-detail.component';
 import { AreasDetailComponent } from './service-point-side-panel/areas/areas-detail.component';
-import { TrafficPointElementsDetailComponent } from './service-point-side-panel/traffic-point-elements/traffic-point-elements-detail.component';
+import { TrafficPointElementsTableComponent } from './service-point-side-panel/traffic-point-elements/traffic-point-elements-table.component';
 import { LoadingPointsDetailComponent } from './service-point-side-panel/loading-points/loading-points-detail.component';
 import { FotCommentDetailComponent } from './service-point-side-panel/comment/fot-comment-detail.component';
 import { canLeaveDirtyForm } from '../../core/leave-guard/leave-dirty-form-guard.service';
@@ -56,7 +56,7 @@ const routes: Routes = [
           },
           {
             path: 'traffic-point-elements',
-            component: TrafficPointElementsDetailComponent,
+            component: TrafficPointElementsTableComponent,
           },
           {
             path: 'loading-points',

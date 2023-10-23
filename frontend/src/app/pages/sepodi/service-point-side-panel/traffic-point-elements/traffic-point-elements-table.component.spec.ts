@@ -1,21 +1,21 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TrafficPointElementsDetailComponent } from './traffic-point-elements-detail.component';
+import { TrafficPointElementsTableComponent } from './traffic-point-elements-table.component';
 import { AuthService } from '../../../../core/auth/auth.service';
 
 const authService: Partial<AuthService> = {};
 
-describe('TrafficPointElementsDetailComponent', () => {
-  let component: TrafficPointElementsDetailComponent;
-  let fixture: ComponentFixture<TrafficPointElementsDetailComponent>;
+describe('TrafficPointElementsTableComponent', () => {
+  let component: TrafficPointElementsTableComponent;
+  let fixture: ComponentFixture<TrafficPointElementsTableComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TrafficPointElementsDetailComponent],
+      declarations: [TrafficPointElementsTableComponent],
       providers: [{ provide: AuthService, useValue: authService }],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(TrafficPointElementsDetailComponent);
+    fixture = TestBed.createComponent(TrafficPointElementsTableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
