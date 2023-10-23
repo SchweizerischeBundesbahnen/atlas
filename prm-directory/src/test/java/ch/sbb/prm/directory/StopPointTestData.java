@@ -53,7 +53,7 @@ public class StopPointTestData {
 
   public static CreateStopPointVersionModel getStopPointCreateVersionModel(){
     return CreateStopPointVersionModel.builder()
-        .sloid("ch:1.sloid:7000")
+        .sloid("ch:1:sloid:7000")
         .numberWithoutCheckDigit(8507000)
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))

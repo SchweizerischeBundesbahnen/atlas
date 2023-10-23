@@ -12,24 +12,24 @@ import ch.sbb.atlas.api.prm.model.stoppoint.CreateStopPointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.prm.directory.StopPointTestData;
+import ch.sbb.prm.directory.entity.SharedServicePoint;
 import ch.sbb.prm.directory.entity.StopPointVersion;
+import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
-import ch.sbb.prm.directory.service.SharedServicePointService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 class StopPointVersionControllerApiTest extends BaseControllerApiTest {
 
-  @MockBean
-  private SharedServicePointService sharedServicePointService;
+  private final SharedServicePointRepository sharedServicePointRepository;
 
   private final StopPointRepository stopPointRepository;
 
   @Autowired
-  StopPointVersionControllerApiTest(StopPointRepository stopPointRepository) {
+  StopPointVersionControllerApiTest(SharedServicePointRepository sharedServicePointRepository, StopPointRepository stopPointRepository) {
+    this.sharedServicePointRepository = sharedServicePointRepository;
     this.stopPointRepository = stopPointRepository;
   }
 
@@ -47,10 +47,27 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
   void shouldCreateStopPoint() throws Exception {
     //given
     CreateStopPointVersionModel stopPointCreateVersionModel = StopPointTestData.getStopPointCreateVersionModel();
+    SharedServicePoint servicePoint = SharedServicePoint.builder()
+        .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:7000\",\"sboids\":[\"ch:1:sboid:100602\"],\"trafficPointSloids\":[]}")
+        .sloid("ch:1:sloid:7000")
+        .build();
+    sharedServicePointRepository.saveAndFlush(servicePoint);
     //when && then
     mvc.perform(post("/v1/stop-points").contentType(contentType)
             .content(mapper.writeValueAsString(stopPointCreateVersionModel)))
         .andExpect(status().isCreated());
+
+  }
+
+  @Test
+  void shouldNotCreateStopPointWhenServicePointDoesNotExists() throws Exception {
+    //given
+    CreateStopPointVersionModel stopPointCreateVersionModel = StopPointTestData.getStopPointCreateVersionModel();
+    //when && then
+    mvc.perform(post("/v1/stop-points").contentType(contentType)
+            .content(mapper.writeValueAsString(stopPointCreateVersionModel)))
+        .andExpect(status().isPreconditionFailed())
+        .andExpect(jsonPath("$.message", is("The service point with sloid ch:1:sloid:7000 does not exists.")));
 
   }
 
