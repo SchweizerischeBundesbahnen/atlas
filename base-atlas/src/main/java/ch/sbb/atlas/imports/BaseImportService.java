@@ -1,7 +1,6 @@
 package ch.sbb.atlas.imports;
 
-import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
-import ch.sbb.atlas.imports.servicepoint.ItemImportResult.ItemImportResultBuilder;
+import ch.sbb.atlas.imports.ItemImportResult.ItemImportResultBuilder;
 import ch.sbb.atlas.versioning.model.Versionable;
 import lombok.extern.slf4j.Slf4j;
 
