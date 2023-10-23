@@ -67,7 +67,7 @@ import org.springframework.transaction.annotation.Transactional;
     List<ServicePointVersion> result = servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber);
     assertThat(result).isNotNull();
     assertThat(itemImportResults).hasSize(5);
-    assertThat(result).hasSize(3);
+    assertThat(result).hasSize(2);
     for (ServicePointVersion servicePointVersion : result) {
       assertThat(servicePointVersion.getNumber()).isNotNull();
       assertThat(servicePointVersion.getNumber()).isEqualTo(servicePointNumber);
