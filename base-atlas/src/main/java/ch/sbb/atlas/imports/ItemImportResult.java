@@ -1,4 +1,4 @@
-package ch.sbb.atlas.imports.servicepoint;
+package ch.sbb.atlas.imports;
 
 import ch.sbb.atlas.imports.servicepoint.enumeration.ItemImportResponseStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
