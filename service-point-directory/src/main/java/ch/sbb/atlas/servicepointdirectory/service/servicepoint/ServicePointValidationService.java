@@ -5,10 +5,11 @@ import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointDesignationLongConflictException;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointDesignationOfficialConflictException;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @Slf4j
@@ -22,6 +23,10 @@ public class ServicePointValidationService {
     validateDesignationOfficialUniqueness(servicePointVersion);
     validateDesignationLongUniqueness(servicePointVersion);
     sharedBusinessOrganisationService.validateSboidExists(servicePointVersion.getBusinessOrganisation());
+  }
+
+  public boolean checkIfKilometerMasterNumberCanBeAssigned(List<ServicePointVersion> allKilometerMasterNumberVersions, ServicePointVersion servicePointVersion) {
+    return new Timeline(allKilometerMasterNumberVersions, servicePointVersion).isSePoTimelineInsideOrEqToOneOfKilomMastTimelines();
   }
 
   private void validateDesignationOfficialUniqueness(ServicePointVersion servicePointVersion) {
@@ -41,4 +46,5 @@ public class ServicePointValidationService {
       }
     }
   }
+
 }
