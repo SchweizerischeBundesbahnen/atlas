@@ -113,9 +113,6 @@ public class ServicePointController implements ServicePointApiV1 {
     ServicePointVersion servicePointVersionToUpdate = servicePointService.findById(id)
         .orElseThrow(() -> new IdNotFoundException(id));
 
-    checkIfChosenKilometerMasterNumberIsAllowedToBeAssigned(
-            createServicePointVersionModel, servicePointVersionToUpdate);
-
     ServicePointVersion editedVersion = ServicePointVersionMapper.toEntity(createServicePointVersionModel);
     addGeoReferenceInformation(editedVersion);
 
@@ -129,22 +126,6 @@ public class ServicePointController implements ServicePointApiV1 {
         .stream()
         .map(ServicePointVersionMapper::toModel)
         .toList();
-  }
-
-  private void checkIfChosenKilometerMasterNumberIsAllowedToBeAssigned(
-          CreateServicePointVersionModel createServicePointVersionModel, ServicePointVersion servicePointVersion) {
-
-    ServicePointNumber kilometerMasterNumber = ServicePointNumber
-            .ofNumberWithoutCheckDigit(createServicePointVersionModel.getOperatingPointKilometerMasterNumber());
-
-    List<ServicePointVersion> allKilometerMasterNumberVersions = servicePointService
-            .findAllByNumberAndOperatingPointRouteNetworkTrueOrderByValidFrom(
-                    kilometerMasterNumber);
-
-
-    if (!servicePointService.checkIfKilometerMasterNumberCanBeAssigned(allKilometerMasterNumberVersions, servicePointVersion)) {
-      throw new ForbiddenDueToChosenServicePointVersionValidationPeriodException(kilometerMasterNumber);
-    }
   }
 
   @Override

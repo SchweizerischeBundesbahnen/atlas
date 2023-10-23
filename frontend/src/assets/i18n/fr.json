@@ -930,7 +930,7 @@
       "NOTIFICATION": {
         "ADD_SUCCESS": "Le service a été ajouté avec succès.",
         "EDIT_SUCCESS": "Le service a été enregistré avec succès.",
-        "OPERATION_NOT_ALLOWED_DUE_TO_VALIDATION_PERIOD": "Cette opération n'est pas possible en raison de la période de validation."
+        "OPERATION_NOT_ALLOWED_DUE_TO_VALIDATION_PERIOD": "Cette opération n'est pas possible. La période de validation du point de service sélectionnée ne correspond à aucune période de validation du point de service kilométrique principal sélectionnée."
       },
       "CONFLICT": {
         "DESIGNATION_OFFICIAL": "Le désignation officielle {{designationOfficial}} est déjà attribué de {{validFrom}} à {{validTo}} par {{number}}.",
