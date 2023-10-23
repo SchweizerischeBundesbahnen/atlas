@@ -1,7 +1,8 @@
-package ch.sbb.atlas.servicepointdirectory.migration;
+package ch.sbb.atlas.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.model.DateRange;
 import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 
