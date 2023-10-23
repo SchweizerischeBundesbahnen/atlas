@@ -2,6 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.migration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.model.DateRange;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;

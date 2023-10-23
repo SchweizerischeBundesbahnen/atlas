@@ -126,7 +126,7 @@ public class ServicePointVersion extends BasePointVersion<ServicePointVersion> i
   @Pattern(regexp = AtlasCharacterSetsRegex.ABBREVIATION_PATTERN)
   private String abbreviation;
 
-  @AtlasVersionableProperty
+  @AtlasVersionableProperty(ignoreDiff = true)
   @Enumerated(EnumType.STRING)
   private ServicePointStatus statusDidok3;
 
