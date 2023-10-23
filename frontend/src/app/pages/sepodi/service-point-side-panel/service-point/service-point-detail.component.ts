@@ -50,6 +50,8 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   isNew = true;
   hasAbbreviation = false;
   isAbbreviationAllowed = false;
+
+  isLatestVersionSelected = false;
   preferredId?: number;
 
   types = Object.values(ServicePointType);
@@ -160,7 +162,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     this.displayAndSelectServicePointOnMap();
     this.initTypeChangeInformationDialog();
     this.initLocationInformationDisplay();
-
+    this.isSelectedVersionHighDate(this.servicePointVersions, this.selectedVersion);
     this.checkIfAbbreviationIsAllowed();
     this.hasAbbreviation = !!this.form.controls.abbreviation.value;
   }
@@ -429,6 +431,15 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   checkIfAbbreviationIsAllowed() {
     this.isAbbreviationAllowed = ServicePointAbbreviationAllowList.SBOIDS.some((element) =>
       element.includes(this.selectedVersion.businessOrganisation),
+    );
+  }
+
+  isSelectedVersionHighDate(
+    servicePointVersions: ReadServicePointVersion[],
+    selectedVersion: ReadServicePointVersion,
+  ) {
+    this.isLatestVersionSelected = !servicePointVersions.some(
+      (obj) => obj.validTo > selectedVersion.validTo,
     );
   }
 }

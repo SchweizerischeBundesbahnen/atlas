@@ -10,13 +10,13 @@ import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionReposito
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
-import java.util.ArrayList;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.StaleObjectStateException;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -104,9 +104,20 @@ public class ServicePointService {
   }
 
   public boolean isAbbrevitionUnique (String abbreviation, ServicePointNumber number){
-   return servicePointVersionRepository.findServicePointVersionByAbbreviationAndNumber(abbreviation, number)
+   return servicePointVersionRepository.findServicePointVersionByAbbreviation(abbreviation)
        .stream()
        .noneMatch(obj -> !obj.getNumber().equals(number));
   }
 
+  public boolean isHighDateVersion(ServicePointVersion servicePointVersion){
+    return servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointVersion.getNumber())
+        .stream()
+        .anyMatch(obj -> obj.getValidTo().compareTo(servicePointVersion.getValidTo()) > 0);
+  }
+
+  public boolean hasServicePointVersionAbbreviation(ServicePointVersion servicePointVersion, String abbreviation){
+   return servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointVersion.getNumber())
+        .stream()
+        .anyMatch(obj -> StringUtils.isNotBlank(obj.getAbbreviation()) && !obj.getAbbreviation().equals(abbreviation));
+  }
 }
