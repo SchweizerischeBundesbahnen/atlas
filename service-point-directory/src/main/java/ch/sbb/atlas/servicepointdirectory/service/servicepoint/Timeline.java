@@ -2,31 +2,29 @@ package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import lombok.Data;
+import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
 @Data
 public class Timeline {
 
-    private List<TimelineElement> kilometerMasterTimelineElements;
-    private TimelineElement servicePointTimelineElement;
+    private final List<TimelineElement> kilometerMasterTimelineElements = new ArrayList<>();
+    private final TimelineElement servicePointTimelineElement;
 
     public Timeline(List<ServicePointVersion> allKilometerMasterNumberVersions, ServicePointVersion servicePointVersion) {
-        if (servicePointVersion == null) {
-            throw new IllegalStateException("ServicePointVersion is required to instantiate Timeline.");
-        }
+        Objects.requireNonNull(servicePointVersion);
         servicePointTimelineElement = new TimelineElement(servicePointVersion);
 
-        if (allKilometerMasterNumberVersions == null) {
-            this.kilometerMasterTimelineElements = new ArrayList<>();
-        } else {
-            this.kilometerMasterTimelineElements = getMergedTimeline(allKilometerMasterNumberVersions.stream()
+        if (!CollectionUtils.isEmpty(allKilometerMasterNumberVersions)) {
+            List<TimelineElement> list = allKilometerMasterNumberVersions.stream()
                     .map(TimelineElement::new)
-                    .collect(Collectors.toList()));
+                    .toList();
+            this.kilometerMasterTimelineElements.addAll(getMergedTimeline(list));
         }
     }
 
@@ -55,12 +53,12 @@ public class Timeline {
         return ChronoUnit.DAYS.between(current.endDate, next.startDate) <= 1;
     }
 
-    public boolean isSePoTimelineInsideOrEqOfOneOfKilomMasterTimelines() {
+    public boolean isSePoTimelineInsideOrEqToOneOfKilomMastTimelines() {
         return kilometerMasterTimelineElements.stream()
-                .anyMatch(kilMasterTimelineElement -> isSePoTimelineInsideOrEqOfKilomMasterTimeline(servicePointTimelineElement, kilMasterTimelineElement));
+                .anyMatch(kilMasterTimelineElement -> isSePoTimelineInsideOrEqToKilomMastTimeline(servicePointTimelineElement, kilMasterTimelineElement));
     }
 
-    private static boolean isSePoTimelineInsideOrEqOfKilomMasterTimeline(TimelineElement sePoTimelineElement, TimelineElement kilomMasterTimelineElement) {
+    private static boolean isSePoTimelineInsideOrEqToKilomMastTimeline(TimelineElement sePoTimelineElement, TimelineElement kilomMasterTimelineElement) {
         return (kilomMasterTimelineElement.startDate.isBefore(sePoTimelineElement.startDate) || kilomMasterTimelineElement.startDate.isEqual(sePoTimelineElement.startDate))
                 && (kilomMasterTimelineElement.endDate.isAfter(sePoTimelineElement.endDate) || kilomMasterTimelineElement.endDate.isEqual(sePoTimelineElement.endDate));
     }
