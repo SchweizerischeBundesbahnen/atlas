@@ -120,7 +120,7 @@ public class ServicePointVersion extends BasePointVersion<ServicePointVersion> i
   @AtlasVersionableProperty
   private String abbreviation;
 
-  @AtlasVersionableProperty
+  @AtlasVersionableProperty(ignoreDiff = true)
   @Enumerated(EnumType.STRING)
   private ServicePointStatus statusDidok3;
 
