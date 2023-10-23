@@ -156,7 +156,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
              .andExpect(jsonPath("$[0].number", is(8589008)))
              .andExpect(jsonPath("$[0].designationOfficial", is("Bern, Wyleregg")));
  }
-
   @Test
   void shouldReturnEmptyListWhenNoMatchFound() throws Exception {
     // given
@@ -413,6 +412,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
      CreateServicePointVersionModel servicePointWithOperationPointRouteNetworkTrue = ServicePointTestData.getAargauServicePointVersionModel();
      servicePointWithOperationPointRouteNetworkTrue.setOperatingPointRouteNetwork(true);
+     servicePointWithOperationPointRouteNetworkTrue.setOperatingPointKilometerMasterNumber(8034510);
 
      mvc.perform(post("/v1/service-points")
                      .contentType(contentType)
@@ -526,6 +526,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
      newServicePointVersionModel.setServicePointGeolocation(
              ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation()));
      newServicePointVersionModel.setOperatingPointRouteNetwork(true);
+     newServicePointVersionModel.setOperatingPointKilometerMasterNumber(8034510);
 
      mvc.perform(put("/v1/service-points/" + id)
                      .contentType(contentType)
