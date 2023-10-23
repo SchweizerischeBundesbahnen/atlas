@@ -929,7 +929,8 @@
       "OPERATING_POINT_KILOMETER": "BP-Kilometrierung",
       "NOTIFICATION": {
         "ADD_SUCCESS": "Die Dienststelle wurde erfolgreich hinzugefügt.",
-        "EDIT_SUCCESS": "Die Dienststelle wurde erfolgreich gespeichert."
+        "EDIT_SUCCESS": "Die Dienststelle wurde erfolgreich gespeichert.",
+        "OPERATION_NOT_ALLOWED_DUE_TO_VALIDATION_PERIOD": "Diese Operation ist wegen die Validation Period nicht möglich."
       },
       "CONFLICT": {
         "DESIGNATION_OFFICIAL": "Die offizielle Bezeichnung {{designationOfficial}} ist bereits von {{validFrom}} bis {{validTo}} durch {{number}} vergeben.",
