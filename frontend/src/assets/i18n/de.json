@@ -945,7 +945,8 @@
       "TERMINATION_FORBIDDEN": "Sie sind nicht berechtigt die Haltestelle zu terminieren. Benutzen Sie hierzu bitte das Formular auf https://www.öv-info.ch/de/aufhebung-haltestelle."
     },
     "TRAFFIC_POINT_ELEMENTS": {
-      "TRAFFIC_POINT_ELEMENTS": "Haltekanten"
+      "TRAFFIC_POINT_ELEMENTS": "Haltekanten",
+      "NEW": "Neue Haltekante erfassen"
     },
     "LOADING_POINTS": {
       "LOADING_POINTS": "Ladestellen"

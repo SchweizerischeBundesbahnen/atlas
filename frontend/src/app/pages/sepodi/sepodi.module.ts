@@ -7,7 +7,7 @@ import { ServicePointSidePanelComponent } from './service-point-side-panel/servi
 import { CoreModule } from '../../core/module/core.module';
 import { ServicePointDetailComponent } from './service-point-side-panel/service-point/service-point-detail.component';
 import { AreasDetailComponent } from './service-point-side-panel/areas/areas-detail.component';
-import { TrafficPointElementsDetailComponent } from './service-point-side-panel/traffic-point-elements/traffic-point-elements-detail.component';
+import { TrafficPointElementsTableComponent } from './service-point-side-panel/traffic-point-elements/traffic-point-elements-table.component';
 import { LoadingPointsDetailComponent } from './service-point-side-panel/loading-points/loading-points-detail.component';
 import { FormModule } from '../../core/module/form.module';
 import { FormsModule } from '@angular/forms';
@@ -27,7 +27,7 @@ import { ServicePointFormComponent } from './service-point-form/service-point-fo
     ServicePointDetailComponent,
     KilometerMasterSearchComponent,
     AreasDetailComponent,
-    TrafficPointElementsDetailComponent,
+    TrafficPointElementsTableComponent,
     LoadingPointsDetailComponent,
     MapComponent,
     MeansOfTransportPickerComponent,
