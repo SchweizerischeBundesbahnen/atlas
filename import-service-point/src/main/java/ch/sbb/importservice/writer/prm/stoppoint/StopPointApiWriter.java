@@ -1,8 +1,8 @@
 package ch.sbb.importservice.writer.prm.stoppoint;
 
+import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.prm.stoppoint.StopPointCsvModelContainer;
 import ch.sbb.atlas.imports.prm.stoppoint.StopPointImportRequestModel;
-import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
 import ch.sbb.importservice.writer.BaseApiWriter;
 import java.util.ArrayList;
 import java.util.List;

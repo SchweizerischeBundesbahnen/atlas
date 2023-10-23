@@ -1,8 +1,8 @@
 package ch.sbb.atlas.testdata.prm;
 
+import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.prm.stoppoint.StopPointCsvModel;
 import ch.sbb.atlas.imports.prm.stoppoint.StopPointCsvModelContainer;
-import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.enumeration.ItemImportResponseStatus;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
