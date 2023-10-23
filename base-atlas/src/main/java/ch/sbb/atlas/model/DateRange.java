@@ -2,13 +2,18 @@ package ch.sbb.atlas.model;
 
 import ch.sbb.atlas.versioning.date.DateHelper;
 import java.time.LocalDate;
+
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.Setter;
 
 @Builder
 @EqualsAndHashCode
 @Getter
+@AllArgsConstructor
+@Setter
 public class DateRange {
 
   private LocalDate from;
