@@ -35,6 +35,7 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
 
   @Override
   public StopPointVersion save(StopPointVersion version) {
+    sharedServicePointService.validateServicePointExists(version.getSloid());
     return stopPointRepository.saveAndFlush(version);
   }
 
@@ -65,11 +66,6 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
     if (!stopPointRepository.existsBySloid(sloid)) {
       throw new StopPointDoesNotExistsException(sloid);
     }
-  }
-
-  public StopPointVersion createStopPoint(StopPointVersion stopPointVersion) {
-    sharedServicePointService.validateServicePointExists(stopPointVersion.getSloid());
-    return stopPointRepository.saveAndFlush(stopPointVersion);
   }
 
   public StopPointVersion updateStopPointVersion(StopPointVersion currentVersion, StopPointVersion editedVersion) {

@@ -6,4 +6,8 @@ public abstract class AtlasException extends RuntimeException {
 
   public abstract ErrorResponse getErrorResponse();
 
+  public String getMessage(){
+    return getErrorResponse().getMessage();
+  }
+
 }

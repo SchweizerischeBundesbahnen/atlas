@@ -1,7 +1,7 @@
 package ch.sbb.importservice.client;
 
+import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.prm.stoppoint.StopPointImportRequestModel;
-import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
 import ch.sbb.importservice.config.OAuthFeignConfig;
 import java.util.List;
 import org.springframework.cloud.openfeign.FeignClient;
