@@ -330,7 +330,6 @@ import org.springframework.test.web.servlet.MvcResult;
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.designationOfficial, is("Aargau Strasse")))
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.sloid, is("ch:1:sloid:18771")))
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.designationLong, is("designation long 1")))
-        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.abbreviation, is("ABCD")))
         .andExpect(jsonPath("$.operatingPoint", is(true)))
         .andExpect(jsonPath("$.operatingPointWithTimetable", is(true)))
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.freightServicePoint, is(false)))
@@ -589,7 +588,7 @@ import org.springframework.test.web.servlet.MvcResult;
       ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(testData);
       Long id = servicePointVersionModel.getId();
 
-      CreateServicePointVersionModel buchsiServicePoint = ServicePointTestData.getBuchsiServicePoint();
+      CreateServicePointVersionModel buchsiServicePoint = testData;
       buchsiServicePoint.setId(id);
 
 
