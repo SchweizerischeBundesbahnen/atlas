@@ -1,4 +1,4 @@
-package ch.sbb.importservice;
+package ch.sbb.atlas.testdata.prm;
 
 import ch.sbb.atlas.imports.prm.stoppoint.StopPointCsvModel;
 import ch.sbb.atlas.imports.prm.stoppoint.StopPointCsvModelContainer;
@@ -23,7 +23,7 @@ public class StopPointCsvTestData {
   public StopPointCsvModel getStopPointCsvModel() {
     return StopPointCsvModel.builder()
         .address("address")
-        .didokCode(123456)
+        .didokCode(1234567)
         .alternativeTransport(0)
         .transportationMeans("~T~")
         .alternativeTransportCondition("no-alternative")

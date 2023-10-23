@@ -21,6 +21,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
@@ -71,6 +72,7 @@ public class StopPointVersion extends BasePrmImportEntity implements PrmVersiona
   private LocalDate validTo;
 
   @AtlasVersionableProperty
+  @NotEmpty
   @ElementCollection(targetClass = MeanOfTransport.class, fetch = FetchType.EAGER)
   @Convert(converter = MeanOfTransportConverter.class)
   private Set<MeanOfTransport> meansOfTransport;
