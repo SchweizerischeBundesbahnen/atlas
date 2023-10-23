@@ -1,7 +1,10 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
+import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
+import ch.sbb.atlas.servicepointdirectory.exception.ForbiddenDueToChosenServicePointVersionValidationPeriodException;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointDesignationLongConflictException;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointDesignationOfficialConflictException;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
@@ -20,13 +23,22 @@ public class ServicePointValidationService {
   private final ServicePointVersionRepository servicePointVersionRepository;
 
   public void validateServicePointPreconditionBusinessRule(ServicePointVersion servicePointVersion) {
+    if (servicePointVersion.getOperatingPointKilometerMaster() != null && !servicePointVersion.getOperatingPointKilometerMaster().getNumber().equals(servicePointVersion.getNumber().getNumber())) {
+      checkIfKilometerMasterNumberCanBeAssigned(servicePointVersion.getOperatingPointKilometerMaster(), servicePointVersion);
+    }
     validateDesignationOfficialUniqueness(servicePointVersion);
     validateDesignationLongUniqueness(servicePointVersion);
     sharedBusinessOrganisationService.validateSboidExists(servicePointVersion.getBusinessOrganisation());
   }
 
-  public boolean checkIfKilometerMasterNumberCanBeAssigned(List<ServicePointVersion> allKilometerMasterNumberVersions, ServicePointVersion servicePointVersion) {
-    return new Timeline(allKilometerMasterNumberVersions, servicePointVersion).isSePoTimelineInsideOrEqToOneOfKilomMastTimelines();
+  public void checkIfKilometerMasterNumberCanBeAssigned(ServicePointNumber kilometerMasterNumber, ServicePointVersion servicePointVersion) {
+    List<ServicePointVersion> allKilometerMasterNumberVersions = servicePointVersionRepository
+            .findAllByNumberAndOperatingPointRouteNetworkTrueOrderByValidFrom(
+                    kilometerMasterNumber);
+    boolean result = new Timeline(allKilometerMasterNumberVersions, servicePointVersion).isSePoTimelineInsideOrEqToOneOfKilomMastTimelines();
+    if (!result) {
+      throw new ForbiddenDueToChosenServicePointVersionValidationPeriodException(kilometerMasterNumber);
+    }
   }
 
   private void validateDesignationOfficialUniqueness(ServicePointVersion servicePointVersion) {
