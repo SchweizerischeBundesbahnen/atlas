@@ -75,7 +75,7 @@ public interface ServicePointVersionRepository extends JpaRepository<ServicePoin
         .toList();
   }
 
-  List<ServicePointVersion> findServicePointVersionByAbbreviationAndNumber(String abbreviation, ServicePointNumber number);
+  List<ServicePointVersion> findServicePointVersionByAbbreviation(String abbreviation);
 
   List<ServicePointVersion> findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndDesignationLongIgnoreCase(
       LocalDate validFrom, LocalDate validTo, String designationLong);
