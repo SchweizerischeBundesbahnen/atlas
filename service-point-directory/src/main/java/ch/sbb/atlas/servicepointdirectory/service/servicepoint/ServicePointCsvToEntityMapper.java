@@ -5,12 +5,16 @@ import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.atlas.servicepoint.enumeration.*;
+import ch.sbb.atlas.servicepoint.enumeration.Category;
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
+import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
+import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
+import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
+import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.mapper.GeolocationMapper;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointStatus;
-
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
@@ -26,16 +30,6 @@ public class ServicePointCsvToEntityMapper implements
             ? servicePointCsvModel.getDsKategorienIds().split("\\|") :
             new String[]{})
         .map(categoryIdStr -> Category.from(Integer.parseInt(categoryIdStr)))
-        .filter(Objects::nonNull)
-        .collect(Collectors.toSet());
-  }
-
-  private static Set<MeanOfTransport> getMeansOfTransport(
-      ServicePointCsvModel servicePointCsvModel) {
-    return Arrays.stream(Objects.nonNull(servicePointCsvModel.getBpvhVerkehrsmittel())
-            ? servicePointCsvModel.getBpvhVerkehrsmittel().split("~") :
-            new String[]{})
-        .map(MeanOfTransport::from)
         .filter(Objects::nonNull)
         .collect(Collectors.toSet());
   }
@@ -77,7 +71,7 @@ public class ServicePointCsvToEntityMapper implements
   }
 
   ServicePointVersion mapServicePointVersion(ServicePointCsvModel servicePointCsvModel) {
-    Set<MeanOfTransport> meansOfTransport = getMeansOfTransport(servicePointCsvModel);
+    Set<MeanOfTransport> meansOfTransport = MeanOfTransport.fromCode(servicePointCsvModel.getBpvhVerkehrsmittel());
     return ServicePointVersion
         .builder()
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(servicePointCsvModel.getDidokCode()))

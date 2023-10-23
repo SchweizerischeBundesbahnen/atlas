@@ -4,7 +4,7 @@ import ch.sbb.atlas.api.prm.model.stoppoint.CreateStopPointVersionModel;
 import ch.sbb.atlas.api.prm.model.stoppoint.ReadStopPointVersionModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.entity.StopPointVersion;
-import java.util.Set;
+import java.util.HashSet;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
@@ -54,7 +54,7 @@ public class StopPointVersionMapper {
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(model.getNumberWithoutCheckDigit()))
         .validFrom(model.getValidFrom())
         .validTo(model.getValidTo())
-        .meansOfTransport(Set.copyOf(model.getMeansOfTransport()))
+        .meansOfTransport(new HashSet<>(model.getMeansOfTransport()))
         .freeText(model.getFreeText())
         .address(model.getAddress())
         .zipCode(model.getZipCode())
