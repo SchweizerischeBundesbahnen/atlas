@@ -46,6 +46,7 @@ import java.util.List;
 import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.LV95;
 import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.WGS84;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -142,7 +143,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
   }
 
  @Test
- void shouldSearchServicePointWithRouteNetworkTrueSuccessfully() throws Exception {
+ void whenSearchRequestForSearchSePoWithNetworkTrueValidThenShouldFindServicePointSuccessfully() throws Exception {
      // given
      ServicePointSearchRequest request = new ServicePointSearchRequest("bern");
      String jsonString = mapper.writeValueAsString(request);
@@ -172,7 +173,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
   }
 
  @Test
- void shouldReturnEmptyListWhenNoSePoWithRouteNetworkTrueFound() throws Exception {
+ void whenSearchRequestForSearchSePoWithNetworkTrueValidThenShouldReturnEmptyList() throws Exception {
      // given
      ServicePointSearchRequest request = new ServicePointSearchRequest("zug");
      String jsonString = mapper.writeValueAsString(request);
@@ -202,7 +203,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
   }
 
  @Test
- void shouldReturnBadRequestWhenSearchSePoWithNetworkTrueWithLessThanTwoDigit() throws Exception {
+ void whenSearchRequestForSearchSePoWithNetworkTrueWithLessThanTwoDigitsThenShouldReturnBadRequest() throws Exception {
      // given
      ServicePointSearchRequest request = new ServicePointSearchRequest("b");
      String jsonString = mapper.writeValueAsString(request);
@@ -213,7 +214,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
                      .contentType(contentType))
              // then
              .andExpect(status().isBadRequest())
-             .andExpect(jsonPath("$.message", is("You must enter at least 2 digits to start a search!")));
+             .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
+             .andExpect(jsonPath("$.details.[0].message", endsWith("You must enter at least 2 digits to start a search!")));
+ }
+
+ @Test
+ void whenSearchRequestForSearchSePoWithNetworkTrueNullThenShouldReturnBadRequest() throws Exception {
+     // given
+     ServicePointSearchRequest request = new ServicePointSearchRequest(null);
+     String jsonString = mapper.writeValueAsString(request);
+
+     // when
+     mvc.perform(post("/v1/service-points/search-sp-with-route-network")
+                     .content(jsonString)
+                     .contentType(contentType))
+             // then
+             .andExpect(status().isBadRequest())
+             .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
+             .andExpect(jsonPath("$.details.[0].message", endsWith("You must enter at least 2 digits to start a search!")));
  }
 
   @Test

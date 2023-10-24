@@ -48,7 +48,7 @@ public interface ServicePointApiV1 {
   List<ServicePointSearchResult> searchServicePoints(@RequestBody ServicePointSearchRequest value);
 
   @PostMapping("search-sp-with-route-network")
-  List<ServicePointSearchResult> searchServicePointsWithRouteNetworkTrue(@RequestBody ServicePointSearchRequest value);
+  List<ServicePointSearchResult> searchServicePointsWithRouteNetworkTrue(@RequestBody @Valid ServicePointSearchRequest value);
 
   @GetMapping("{servicePointNumber}")
   List<ReadServicePointVersionModel> getServicePointVersions(@PathVariable Integer servicePointNumber);
