@@ -8,7 +8,6 @@ public final class ServicePointAbbreviationAllowList {
     public static final Set<String> SBOIDS = Set.of(
 
         "ch:1:sboid:100016",
-        "ch:1:sboid:100649",
         "ch:1:sboid:100015",
         "ch:1:sboid:100026",
         "ch:1:sboid:100609",
