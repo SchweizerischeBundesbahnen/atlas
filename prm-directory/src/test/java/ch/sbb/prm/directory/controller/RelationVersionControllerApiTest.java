@@ -144,14 +144,12 @@ class RelationVersionControllerApiTest extends BaseControllerApiTest {
     relationRepository.saveAndFlush(version2);
 
     CreateRelationVersionModel editedVersionModel = new CreateRelationVersionModel();
-    editedVersionModel.setNumberWithoutCheckDigit(version2.getNumber().getNumber());
     editedVersionModel.setParentServicePointSloid(parentServicePointSloid);
     editedVersionModel.setSloid(version2.getSloid());
     editedVersionModel.setReferencePointSloid(version2.getReferencePointSloid());
     editedVersionModel.setValidFrom(version2.getValidFrom());
     editedVersionModel.setValidTo(version2.getValidTo().minusYears(1));
     editedVersionModel.setContrastingAreas(version2.getContrastingAreas());
-    editedVersionModel.setReferencePointElementType(version2.getReferencePointElementType());
     editedVersionModel.setTactileVisualMarks(version2.getTactileVisualMarks());
     editedVersionModel.setStepFreeAccess(version2.getStepFreeAccess());
     editedVersionModel.setCreationDate(version2.getCreationDate());
