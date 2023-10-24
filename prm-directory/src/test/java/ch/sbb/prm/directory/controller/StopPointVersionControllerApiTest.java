@@ -117,7 +117,11 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
     editedVersionModel.setCreator(version2.getCreator());
     editedVersionModel.setEditor(version2.getEditor());
     editedVersionModel.setEtagVersion(version2.getVersion());
-
+    SharedServicePoint servicePoint = SharedServicePoint.builder()
+        .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:12345\",\"sboids\":[\"ch:1:sboid:100602\"],\"trafficPointSloids\":[]}")
+        .sloid("ch:1:sloid:12345")
+        .build();
+    sharedServicePointRepository.saveAndFlush(servicePoint);
 
     //when && then
     mvc.perform(put("/v1/stop-points/" + version2.getId()).contentType(contentType)
