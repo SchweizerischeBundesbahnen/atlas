@@ -1,0 +1,21 @@
+<form-search-select
+  (changeTrigger)="spSelectionChanged.emit($event)"
+  (searchTrigger)="searchServicePoint($event)"
+  [bindValueInp]="valueExtraction"
+  [controlName]="controlName"
+  [formGroup]="formGroup"
+  [items$]="servicePointSearchResult$"
+  [disabled]="disabled"
+>
+  <div class="d-flex flex-column">
+    <mat-label class="font-bold-sm pb-2">
+      {{ 'SEPODI.SERVICE_POINTS.OPERATING_POINT_KILOMETER' | translate }} {{ 'Master' }}
+    </mat-label>
+  </div>
+
+  <ng-template #labelOptionTemplates let-item>
+    <span [innerHTML]="item.number.toString() | splitServicePointNumber"></span>
+    <span>&nbsp;&nbsp;&nbsp;</span>
+    <span [innerHTML]="item.designationOfficial"></span>
+  </ng-template>
+</form-search-select>
