@@ -100,7 +100,7 @@
   },
   "FORM": {
     "MAX_CHARS": "{{numberOfChars}} Zeichen max.",
-    "NUMBER_OF_DIGITS": "{{numberOfDigits}} Zahlen",
+    "MAX_NUMBER_OF_DIGITS": "{{numberOfDigits}} Zahlen max.",
     "DROPDOWN_PLACEHOLDER": "auswählen",
     "FOR_EXAMPLE": "z.B.:",
     "DESIGN_INFORMATION": "Angaben zur Gestaltung",

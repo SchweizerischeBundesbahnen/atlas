@@ -22,7 +22,6 @@ import { GeographyFormGroup } from '../../geography/geography-form-group';
 import { ServicePointType } from './service-point-type';
 import { AtLeastOneValidator } from '../../../../core/validation/boolean-cross-validator/at-least-one-validator';
 import { LV95_MAX_DIGITS, WGS84_MAX_DIGITS } from '../../geography/geography.component';
-import { servicePointResolver } from '../service-point-detail.resolver';
 
 export interface ServicePointDetailFormGroup extends BaseDetailFormGroup {
   country?: FormControl<Country | null>;
@@ -54,9 +53,10 @@ export class ServicePointFormGroupBuilder {
     const formGroup = new FormGroup<ServicePointDetailFormGroup>(
       {
         number: new FormControl({ value: null, disabled: true }, [
-          Validators.min(10000),
+          Validators.min(1),
           Validators.max(99999),
           AtlasCharsetsValidator.numeric,
+          Validators.required,
         ]),
         country: new FormControl(null, [Validators.required]),
         sloid: new FormControl(),
@@ -114,7 +114,7 @@ export class ServicePointFormGroupBuilder {
   static buildFormGroup(version: ReadServicePointVersion): FormGroup {
     const formGroup = new FormGroup<ServicePointDetailFormGroup>(
       {
-        number: new FormControl(version.number.number), // todo: numberShort
+        number: new FormControl(version.number.numberShort),
         country: new FormControl(version.country),
         sloid: new FormControl(version.sloid),
         abbreviation: new FormControl(version.abbreviation, [
@@ -314,6 +314,7 @@ export class ServicePointFormGroupBuilder {
     form: FormGroup<ServicePointDetailFormGroup>,
   ): CreateServicePointVersion {
     const value = form.value;
+    console.log(value);
 
     const writableForm: CreateServicePointVersion = {
       country: value.country!,
