@@ -2,6 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.controller;
 
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.GeoReference;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel;
@@ -126,11 +127,11 @@ public class ServicePointController implements ServicePointApiV1 {
 
   @Override
   public List<ReadServicePointVersionModel> updateServicePoint(Long id,
-      CreateServicePointVersionModel createServicePointVersionModel) {
+      UpdateServicePointVersionModel updateServicePointVersionModel) {
     ServicePointVersion servicePointVersionToUpdate = servicePointService.findById(id)
         .orElseThrow(() -> new IdNotFoundException(id));
 
-    ServicePointVersion editedVersion = ServicePointVersionMapper.toEntity(createServicePointVersionModel);
+    ServicePointVersion editedVersion = ServicePointVersionMapper.toEntity(updateServicePointVersionModel);
     addGeoReferenceInformation(editedVersion);
 
     servicePointService.update(servicePointVersionToUpdate, editedVersion,
