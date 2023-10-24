@@ -101,6 +101,7 @@ public class ServicePointService {
     editedVersion.setStatusDidok3(currentVersion.getStatusDidok3());
 
     servicePointValidationService.validateAndSetAbbreviationForUpdate(currentVersion, editedVersion);
+
     List<ServicePointVersion> existingDbVersions = findAllByNumberOrderByValidFrom(currentVersion.getNumber());
     List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion,
         editedVersion, existingDbVersions);

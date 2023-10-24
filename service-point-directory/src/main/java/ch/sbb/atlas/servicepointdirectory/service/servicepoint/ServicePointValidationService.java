@@ -1,13 +1,11 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
-import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.abbreviationsallowlist.ServicePointAbbreviationAllowList;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.AbbreviationUpdateNotAllowedException;
 import ch.sbb.atlas.servicepointdirectory.exception.InvalidAbbreviationException;
-import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.ForbiddenDueToChosenServicePointVersionValidationPeriodException;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointDesignationLongConflictException;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointDesignationOfficialConflictException;
@@ -72,7 +70,9 @@ public class ServicePointValidationService {
   }
 
   public void validateAndSetAbbreviationForUpdate(ServicePointVersion existingServicePointVersion, ServicePointVersion editedVersion) {
-    if (StringUtils.isBlank(editedVersion.getAbbreviation()) && StringUtils.isBlank(existingServicePointVersion.getAbbreviation())) {
+    String existingAbbreviation = existingServicePointVersion.getAbbreviation();
+    String newAbbreviation = editedVersion.getAbbreviation();
+    if ((StringUtils.isBlank(newAbbreviation) && StringUtils.isBlank(existingAbbreviation)) || existingAbbreviation.equals(newAbbreviation)) {
       return;
     }
 
@@ -80,7 +80,7 @@ public class ServicePointValidationService {
       throw new AbbreviationUpdateNotAllowedException();
     }
 
-    if(isHighDateVersion(editedVersion)) {
+    if(isServicePointHighDateVersion(editedVersion)) {
       throw new InvalidAbbreviationException();
     }
 
@@ -93,18 +93,18 @@ public class ServicePointValidationService {
       throw new AbbreviationUpdateNotAllowedException();
     }
 
-    if(!isAbbrevitionUnique(servicePointVersion)) {
+    if(!isAbbreviationUnique(servicePointVersion)) {
       throw new InvalidAbbreviationException();
     }
   }
 
-  private boolean isAbbrevitionUnique(ServicePointVersion servicePointVersion){
+  private boolean isAbbreviationUnique(ServicePointVersion servicePointVersion){
     return servicePointVersionRepository.findServicePointVersionByAbbreviation(servicePointVersion.getAbbreviation())
         .stream()
         .noneMatch(obj -> !obj.getNumber().equals(servicePointVersion.getNumber()));
   }
 
-  private boolean isHighDateVersion(ServicePointVersion servicePointVersion){
+  private boolean isServicePointHighDateVersion(ServicePointVersion servicePointVersion){
     return servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointVersion.getNumber())
         .stream()
         .anyMatch(obj -> obj.getValidTo().isAfter(servicePointVersion.getValidTo()));
