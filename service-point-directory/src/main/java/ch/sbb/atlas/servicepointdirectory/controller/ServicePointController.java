@@ -106,8 +106,6 @@ public class ServicePointController implements ServicePointApiV1 {
       throw new ServicePointNumberAlreadyExistsException(servicePointVersion.getNumber());
     }
 
-    validateAndSetAbbreviationForCreate(servicePointVersion, createServicePointVersionModel.getAbbreviation());
-
     addGeoReferenceInformation(servicePointVersion);
     ServicePointVersion createdVersion = servicePointService.save(servicePointVersion);
     servicePointDistributor.publishServicePointsWithNumbers(createdVersion.getNumber());
@@ -122,8 +120,6 @@ public class ServicePointController implements ServicePointApiV1 {
         .orElseThrow(() -> new IdNotFoundException(id));
 
     ServicePointVersion editedVersion = ServicePointVersionMapper.toEntity(createServicePointVersionModel);
-
-    validateAndSetAbbreviationForUpdate(servicePointVersionToUpdate,  editedVersion, createServicePointVersionModel.getAbbreviation());
 
     addGeoReferenceInformation(editedVersion);
 
@@ -175,42 +171,5 @@ public class ServicePointController implements ServicePointApiV1 {
       servicePointGeolocation.setSwissLocalityName(geoReference.getSwissLocalityName());
     }
   }
-  public void validateAndSetAbbreviationForCreate(ServicePointVersion servicePointVersion, String abbreviation) {
-    if (StringUtils.isBlank(abbreviation)) {
-      return;
-    }
-    commonAbbreviationValidations(servicePointVersion, abbreviation);
-    servicePointVersion.setAbbreviation(abbreviation);
-  }
 
-  public void validateAndSetAbbreviationForUpdate(ServicePointVersion existingServicePointVersion, ServicePointVersion editedVersion, String newAbbreviation) {
-    String existingAbbreviation = existingServicePointVersion.getAbbreviation();
-
-
-    if (StringUtils.isBlank(newAbbreviation) && StringUtils.isBlank(existingAbbreviation)) {
-      return;
-    }
-
-    if(servicePointService.hasServicePointVersionAbbreviation(existingServicePointVersion, newAbbreviation)){
-      throw new AbbreviationUpdateNotAllowedException();
-    }
-
-    if(servicePointService.isHighDateVersion(editedVersion)) {
-      throw new InvalidAbbreviationException();
-    }
-
-    commonAbbreviationValidations(editedVersion, newAbbreviation);
-    editedVersion.setAbbreviation(newAbbreviation);
-  }
-
-  public void commonAbbreviationValidations(ServicePointVersion servicePointVersion, String abbreviation) {
-    boolean isBussinesOrganisationInList = ServicePointAbbreviationAllowList.SBOIDS.contains(servicePointVersion.getBusinessOrganisation());
-    if(!isBussinesOrganisationInList) {
-      throw new AbbreviationUpdateNotAllowedException();
-    }
-
-    if(!servicePointService.isAbbrevitionUnique(abbreviation, servicePointVersion.getNumber())) {
-      throw new InvalidAbbreviationException();
-    }
-  }
 }

@@ -39,8 +39,6 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.AssertTrue;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -120,10 +118,8 @@ public class ServicePointVersion extends BasePointVersion<ServicePointVersion> i
   @AtlasVersionableProperty
   private String designationOfficial;
 
-
-  @AtlasVersionableProperty
-  @Size(min = AtlasFieldLengths.LENGTH_2, max = AtlasFieldLengths.LENGTH_6)
   @Pattern(regexp = AtlasCharacterSetsRegex.ABBREVIATION_PATTERN)
+  @AtlasVersionableProperty
   private String abbreviation;
 
   @AtlasVersionableProperty(ignoreDiff = true)
