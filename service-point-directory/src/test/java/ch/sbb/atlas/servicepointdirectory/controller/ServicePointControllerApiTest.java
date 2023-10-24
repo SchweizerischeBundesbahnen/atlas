@@ -584,45 +584,47 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
   }
   @Test
   void shouldNotUpdateServicePointIfAbbreviationInvalid()  throws Exception{
-     ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
-          ServicePointTestData.getBuchsiServicePoint());
+      CreateServicePointVersionModel testData = ServicePointTestData.getAargauServicePointVersionModel();
+      testData.setAbbreviation(null);
+     ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(testData);
       Long id = servicePointVersionModel.getId();
 
-      CreateServicePointVersionModel buchsiServicePoint = ServicePointTestData.getBuchsiServicePoint();
-      buchsiServicePoint.setId(id);
+      CreateServicePointVersionModel aargauServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
+      aargauServicePointVersionModel.setId(id);
 
-      buchsiServicePoint.setAbbreviation("dasisteinevielzulangeabkuerzung");
+      aargauServicePointVersionModel.setAbbreviation("dasisteinevielzulangeabkuerzung");
 
-      mvc.perform(put("/v1/service-points/" + buchsiServicePoint.getId())
+      mvc.perform(put("/v1/service-points/" + aargauServicePointVersionModel.getId())
           .contentType(contentType)
-          .content(mapper.writeValueAsString(buchsiServicePoint)))
+          .content(mapper.writeValueAsString(aargauServicePointVersionModel)))
           .andExpect(status().isBadRequest());
   }
 
   @Test
   void shouldNotUpdateServicePointAbbreviationIfBusinessOrganisationNotAllowed()  throws Exception {
 
-      CreateServicePointVersionModel testData = ServicePointTestData.getBuchsiServicePoint();
+      CreateServicePointVersionModel testData = ServicePointTestData.getAargauServicePointVersionModel();
       testData.setBusinessOrganisation("dasisteineungueltigebusinessorganisation");
+      testData.setAbbreviation(null);
 
       ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(testData);
       Long id = servicePointVersionModel.getId();
 
-      CreateServicePointVersionModel buchsiServicePoint = testData;
-      buchsiServicePoint.setId(id);
+      CreateServicePointVersionModel aargauServicePoint = testData;
+      aargauServicePoint.setId(id);
 
 
-      buchsiServicePoint.setAbbreviation("BUCH");
+      aargauServicePoint.setAbbreviation("BUCH");
 
-      mvc.perform(put("/v1/service-points/" + buchsiServicePoint.getId())
+      mvc.perform(put("/v1/service-points/" + aargauServicePoint.getId())
               .contentType(contentType)
-              .content(mapper.writeValueAsString(buchsiServicePoint)))
+              .content(mapper.writeValueAsString(aargauServicePoint)))
           .andExpect(status().isForbidden());
   }
 
   @Test
   void shouldNotUpdateServicePointAbbreviationIfNewAbbreviationNotEqualsOldAbbreviation()  throws Exception {
-      CreateServicePointVersionModel testData = ServicePointTestData.getBuchsiServicePoint();
+      CreateServicePointVersionModel testData = ServicePointTestData.getAargauServicePointVersionModel();
       testData.setAbbreviation("BUCH");
 
       ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(testData);
@@ -643,40 +645,28 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
      @Test
      void shouldNotUpdateServicePointAbbreviationIsNotUnique()  throws Exception {
-         CreateServicePointVersionModel servicepoint1 = CreateServicePointVersionModel.builder()
-             .numberWithoutCheckDigit(1111111)
-             .sloid("ch:1:sloid:11111")
-             .designationLong("designation long 2")
-             .designationOfficial("Züri Hood")
-             .abbreviation("TEST")
-             .freightServicePoint(false)
-             .sortCodeOfDestinationStation("39136")
-             .businessOrganisation("ch:1:sboid:100016")
-             .categories(List.of(Category.POINT_OF_SALE))
-             .operatingPointRouteNetwork(false)
-             .operatingPointKilometerMasterNumber(1111111)
-             .meansOfTransport(List.of(MeanOfTransport.TRAIN))
-             .stopPointType(StopPointType.ON_REQUEST)
-             .servicePointGeolocation(
-                 ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getServicePointGeolocationBernMittelland()))
-             .validFrom(LocalDate.of(2010, 12, 11))
-             .validTo(LocalDate.of(2099, 8, 10))
-             .build();
+         CreateServicePointVersionModel testData = ServicePointTestData.getAargauServicePointVersionModel();
+         testData.setAbbreviation("BUCH");
+         ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(testData);
 
-         servicePointController.createServicePoint(servicepoint1);
+         CreateServicePointVersionModel testData2 = ServicePointTestData.getAargauServicePointVersionModel();
+         testData2.setNumberWithoutCheckDigit(1111111);
+         testData2.setAbbreviation(null);
+         testData2.setSloid("ch:1:sloid:18772");
+         testData2.setDesignationLong("designation long 1");
+         testData2.setDesignationOfficial("Aargau Strasse");
+         ReadServicePointVersionModel servicePointVersionModel2 = servicePointController.createServicePoint(testData2);
 
-         ReadServicePointVersionModel servicePointVersionModel2 = servicePointController.createServicePoint(
-             ServicePointTestData.getBuchsiServicePoint());
-         Long id = servicePointVersionModel2.getId();
 
-         CreateServicePointVersionModel buchsiServicePoint = ServicePointTestData.getBuchsiServicePoint();
-         buchsiServicePoint.setId(id);
 
-         buchsiServicePoint.setAbbreviation("TEST");
+         CreateServicePointVersionModel aargauVersionModel = testData2;
+         aargauVersionModel.setId(servicePointVersionModel2.getId());
 
-         mvc.perform(put("/v1/service-points/" + servicePointVersionModel2.getId())
+         aargauVersionModel.setAbbreviation("BUCH");
+
+         mvc.perform(put("/v1/service-points/" + aargauVersionModel.getId())
                  .contentType(contentType)
-                 .content(mapper.writeValueAsString(servicePointVersionModel2)))
+                 .content(mapper.writeValueAsString(aargauVersionModel)))
              .andExpect(status().isBadRequest());
 
      }
