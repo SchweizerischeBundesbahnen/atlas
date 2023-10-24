@@ -7,9 +7,11 @@ import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.exception.StopPointDoesNotExistsException;
 import ch.sbb.prm.directory.repository.StopPointRepository;
+import ch.sbb.prm.directory.search.StopPointSearchRestrictions;
 import java.util.List;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -72,4 +74,7 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
     return updateVersion(currentVersion, editedVersion);
   }
 
+  public Page<StopPointVersion> findAll(StopPointSearchRestrictions searchRestrictions) {
+    return stopPointRepository.findAll(searchRestrictions.getSpecification(),searchRestrictions.getPageable());
+  }
 }
