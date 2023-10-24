@@ -2,6 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.api;
 
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel;
 import ch.sbb.atlas.configuration.Role;
@@ -67,7 +68,7 @@ public interface ServicePointApiV1 {
   @PutMapping(path = "{id}")
   List<ReadServicePointVersionModel> updateServicePoint(
       @PathVariable Long id,
-      @RequestBody @Valid CreateServicePointVersionModel servicePointVersionModel
+      @RequestBody @Valid UpdateServicePointVersionModel servicePointVersionModel
   );
 
   @GetMapping("{servicePointNumber}/fot-comment")
