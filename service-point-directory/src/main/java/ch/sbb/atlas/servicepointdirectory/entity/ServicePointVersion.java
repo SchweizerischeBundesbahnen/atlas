@@ -118,6 +118,7 @@ public class ServicePointVersion extends BasePointVersion<ServicePointVersion> i
   @AtlasVersionableProperty
   private String designationOfficial;
 
+  @Size(min = AtlasFieldLengths.LENGTH_2, max = AtlasFieldLengths.LENGTH_6)
   @Pattern(regexp = AtlasCharacterSetsRegex.ABBREVIATION_PATTERN)
   @AtlasVersionableProperty
   private String abbreviation;
