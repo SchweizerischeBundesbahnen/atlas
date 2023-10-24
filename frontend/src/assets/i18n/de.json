@@ -946,7 +946,11 @@
     },
     "TRAFFIC_POINT_ELEMENTS": {
       "TRAFFIC_POINT_ELEMENTS": "Haltekanten",
-      "NEW": "Neue Haltekante erfassen"
+      "NEW": "Neue Haltekante erfassen",
+      "DESIGNATION": "Bezeichnung Kunden",
+      "DESIGNATION_OPERATIONAL": "Bezeichnung betrieblich",
+      "HEADER": "Haltekante / Gleis",
+      "SERVICE_POINT_NAME": "Haltestellenname"
     },
     "LOADING_POINTS": {
       "LOADING_POINTS": "Ladestellen"
