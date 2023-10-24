@@ -205,7 +205,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
         versionRepository.deleteAll();
         ServicePointVersion servicePointVersion = ServicePointTestData.getBernWyleregg();
         servicePointVersion.setDesignationLong("Wyleregg, Loraine, Bern");
-        servicePointVersion.setAbbreviation("ABCD");
+        servicePointVersion.setAbbreviation(null);
         servicePointVersion.setBusinessOrganisation("ch:1:sboid:100016");
 
         ServicePointVersion createdServicePoint = versionRepository.save(servicePointVersion);
