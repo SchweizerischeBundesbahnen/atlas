@@ -71,6 +71,8 @@ public class ServicePointService {
     servicePointVersion.setEditor(UserService.getUserIdentifier());
 
     servicePointValidationService.validateServicePointPreconditionBusinessRule(servicePointVersion);
+    servicePointValidationService.validateAndSetAbbreviationForCreate(servicePointVersion);
+
     return servicePointVersionRepository.saveAndFlush(servicePointVersion);
   }
 
@@ -96,6 +98,8 @@ public class ServicePointService {
     editedVersion.setSloid(currentVersion.getSloid());
     editedVersion.setStatusDidok3(currentVersion.getStatusDidok3());
 
+    servicePointValidationService.validateAndSetAbbreviationForUpdate(currentVersion, editedVersion);
+    
     List<ServicePointVersion> existingDbVersions = findAllByNumberOrderByValidFrom(currentVersion.getNumber());
     List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion,
         editedVersion, existingDbVersions);
@@ -106,21 +110,5 @@ public class ServicePointService {
     return currentVersion;
   }
 
-  public boolean isAbbrevitionUnique (String abbreviation, ServicePointNumber number){
-   return servicePointVersionRepository.findServicePointVersionByAbbreviation(abbreviation)
-       .stream()
-       .noneMatch(obj -> !obj.getNumber().equals(number));
-  }
 
-  public boolean isHighDateVersion(ServicePointVersion servicePointVersion){
-    return servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointVersion.getNumber())
-        .stream()
-        .anyMatch(obj -> obj.getValidTo().compareTo(servicePointVersion.getValidTo()) > 0);
-  }
-
-  public boolean hasServicePointVersionAbbreviation(ServicePointVersion servicePointVersion, String abbreviation){
-   return servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointVersion.getNumber())
-        .stream()
-        .anyMatch(obj -> StringUtils.isNotBlank(obj.getAbbreviation()) && !obj.getAbbreviation().equals(abbreviation));
-  }
 }
