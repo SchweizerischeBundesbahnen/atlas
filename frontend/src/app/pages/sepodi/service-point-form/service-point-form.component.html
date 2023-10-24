@@ -57,7 +57,7 @@
     }}</mat-label>
   </div>
 
-  <div class="col-12 d-flex mt-2" [formGroup]="form">
+  <div class="col-12 mt-2 d-flex flex-column" [formGroup]="form">
     <mat-radio-group formControlName="selectedType">
       <mat-radio-button *ngFor="let option of servicePointTypes" [value]="option">
         {{ 'SEPODI.SERVICE_POINTS.TYPES.' + option | translate }}

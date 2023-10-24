@@ -18,6 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel.Fields;
@@ -256,36 +257,38 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.totalCount", is(1)));
   }
 
-     @Test
-     void shouldFindServicePointVersionBycreatedAfterByISODateTime() throws Exception {
-         ZonedDateTime zonedDateTime = servicePointVersion.getCreationDate().plusDays(1).atZone(ZoneId.of("Europe/Berlin"));
-         String createdAfterQueryString = zonedDateTime.format(DateTimeFormatter.ofPattern(AtlasApiConstants.ISO_DATE_TIME_FORMAT_PATTERN));
+  @Test
+  void shouldFindServicePointVersionBycreatedAfterByISODateTime() throws Exception {
+    ZonedDateTime zonedDateTime = servicePointVersion.getCreationDate().plusDays(1).atZone(ZoneId.of("Europe/Berlin"));
+    String createdAfterQueryString = zonedDateTime.format(
+        DateTimeFormatter.ofPattern(AtlasApiConstants.ISO_DATE_TIME_FORMAT_PATTERN));
 
-         mvc.perform(get("/v1/service-points?createdAfter=" + createdAfterQueryString))
-             .andExpect(status().isOk())
-             .andExpect(jsonPath("$.totalCount", is(0)));
+    mvc.perform(get("/v1/service-points?createdAfter=" + createdAfterQueryString))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.totalCount", is(0)));
 
-         createdAfterQueryString = servicePointVersion.getCreationDate().minusDays(1)
-             .format(DateTimeFormatter.ofPattern(AtlasApiConstants.ISO_DATE_TIME_FORMAT_PATTERN));
-         mvc.perform(get("/v1/service-points?createdAfter=" + createdAfterQueryString))
-             .andExpect(status().isOk())
-             .andExpect(jsonPath("$.totalCount", is(1)));
-     }
+    createdAfterQueryString = servicePointVersion.getCreationDate().minusDays(1)
+        .format(DateTimeFormatter.ofPattern(AtlasApiConstants.ISO_DATE_TIME_FORMAT_PATTERN));
+    mvc.perform(get("/v1/service-points?createdAfter=" + createdAfterQueryString))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.totalCount", is(1)));
+  }
 
-     @Test
-     void shouldFindServicePointVersionBycreatedAfterByDateTimeWithT() throws Exception {
-         String createdAfterQueryString = servicePointVersion.getCreationDate().plusDays(1).format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN_WITH_T));
+  @Test
+  void shouldFindServicePointVersionBycreatedAfterByDateTimeWithT() throws Exception {
+    String createdAfterQueryString = servicePointVersion.getCreationDate().plusDays(1)
+        .format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN_WITH_T));
 
-         mvc.perform(get("/v1/service-points?createdAfter=" + createdAfterQueryString))
-             .andExpect(status().isOk())
-             .andExpect(jsonPath("$.totalCount", is(0)));
+    mvc.perform(get("/v1/service-points?createdAfter=" + createdAfterQueryString))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.totalCount", is(0)));
 
-         createdAfterQueryString = servicePointVersion.getCreationDate().minusDays(1)
-             .format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN_WITH_T));
-         mvc.perform(get("/v1/service-points?createdAfter=" + createdAfterQueryString))
-             .andExpect(status().isOk())
-             .andExpect(jsonPath("$.totalCount", is(1)));
-     }
+    createdAfterQueryString = servicePointVersion.getCreationDate().minusDays(1)
+        .format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN_WITH_T));
+    mvc.perform(get("/v1/service-points?createdAfter=" + createdAfterQueryString))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.totalCount", is(1)));
+  }
 
   @Test
   void shouldFindServicePointVersionByFromAndToDate() throws Exception {
@@ -556,7 +559,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         ServicePointTestData.getAargauServicePointVersionModel());
     Long id = servicePointVersionModel.getId();
 
-    CreateServicePointVersionModel newServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
+    UpdateServicePointVersionModel newServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
     newServicePointVersionModel.setServicePointGeolocation(
         ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation()));
     newServicePointVersionModel.setValidFrom(LocalDate.of(2011, 12, 11));
@@ -613,7 +616,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
              ServicePointTestData.getAargauServicePointVersionModel());
      Long id = servicePointVersionModel.getId();
 
-     CreateServicePointVersionModel newServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
+     UpdateServicePointVersionModel newServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
      newServicePointVersionModel.setServicePointGeolocation(
              ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation()));
      newServicePointVersionModel.setOperatingPointRouteNetwork(true);
@@ -684,8 +687,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldReturnOptimisticLockingErrorResponse() throws Exception {
     //given
-    CreateServicePointVersionModel createServicePointVersionModel =
-        ServicePointTestData.getAargauServicePointVersionModelWithRouteNetworkFalse();
+    CreateServicePointVersionModel createServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModelWithRouteNetworkFalse();
     ReadServicePointVersionModel savedServicePoint = servicePointController.createServicePoint(createServicePointVersionModel);
 
     // When first update it is ok
@@ -744,7 +746,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
 
   @Test
   void shouldCreateServicePointWithLv03ConvertingToLv95() throws Exception {
-    CreateServicePointVersionModel aargauServicePointVersion = ServicePointTestData.getAargauServicePointVersionModelWithRouteNetworkFalse();
+    UpdateServicePointVersionModel aargauServicePointVersion = ServicePointTestData.getAargauServicePointVersionModelWithRouteNetworkFalse();
     aargauServicePointVersion.getServicePointGeolocation().setSpatialReference(SpatialReference.LV03);
     aargauServicePointVersion.getServicePointGeolocation().setEast(600127.58303);
     aargauServicePointVersion.getServicePointGeolocation().setNorth(199776.88044);
@@ -769,7 +771,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
 
   @Test
   void shouldCreateServicePointWithWgs84webConvertingToWgs84() throws Exception {
-    CreateServicePointVersionModel aargauServicePointVersion = ServicePointTestData.getAargauServicePointVersionModelWithRouteNetworkFalse();
+    UpdateServicePointVersionModel aargauServicePointVersion = ServicePointTestData.getAargauServicePointVersionModelWithRouteNetworkFalse();
     aargauServicePointVersion.getServicePointGeolocation().setSpatialReference(SpatialReference.WGS84WEB);
     aargauServicePointVersion.getServicePointGeolocation().setEast(828251.335735);
     aargauServicePointVersion.getServicePointGeolocation().setNorth(5933765.900287);
@@ -792,7 +794,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
 
   @Test
   void shouldCreateServicePointAndGenerateServicePointNumber() throws Exception {
-    CreateServicePointVersionModel servicePointVersionModel = CreateServicePointVersionModel.builder()
+    UpdateServicePointVersionModel servicePointVersionModel = UpdateServicePointVersionModel.builder()
         .country(Country.SWITZERLAND)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
