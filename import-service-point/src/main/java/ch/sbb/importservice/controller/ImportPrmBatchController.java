@@ -12,6 +12,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -71,7 +73,7 @@ public class ImportPrmBatchController {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200"),
   })
-  public ResponseEntity<?> startStopPointImport(@RequestParam("file") MultipartFile multipartFile) {
+  public ResponseEntity<String> startStopPointImport(@RequestParam("file") MultipartFile multipartFile) throws IOException {
     File file = fileHelperService.getFileFromMultipart(multipartFile);
     JobParameters jobParameters = new JobParametersBuilder()
         .addString(FULL_PATH_FILENAME_JOB_PARAMETER, file.getAbsolutePath())
@@ -84,7 +86,7 @@ public class ImportPrmBatchController {
              JobParametersInvalidException | IllegalArgumentException e) {
       throw new JobExecutionException(IMPORT_STOP_POINT_CSV_JOB_NAME, e);
     } finally {
-      file.delete();
+      Files.delete(file.toPath());
     }
   }
 
