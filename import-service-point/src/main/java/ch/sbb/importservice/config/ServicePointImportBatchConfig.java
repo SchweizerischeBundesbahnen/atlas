@@ -23,8 +23,6 @@ import ch.sbb.importservice.writer.TrafficPointApiWriter;
 import java.io.File;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ThreadPoolExecutor;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -36,23 +34,15 @@ import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.task.TaskExecutor;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
-@AllArgsConstructor
 @Slf4j
-public class ServicePointImportBatchConfig {
+public class ServicePointImportBatchConfig extends BaseImportBatchJob{
 
   private static final int SERVICE_POINT_CHUNK_SIZE = 20;
   private static final int TRAFFIC_POINT_CHUNK_SIZE = 50;
   private static final int LOADING_POINT_CHUNK_SIZE = 50;
-
-  private static final int THREAD_EXECUTION_SIZE = 64;
-
-  private final JobRepository jobRepository;
-  private final PlatformTransactionManager transactionManager;
 
   private final ServicePointApiWriter servicePointApiWriter;
   private final LoadingPointApiWriter loadingPointApiWriter;
@@ -62,12 +52,23 @@ public class ServicePointImportBatchConfig {
   private final LoadingPointCsvService loadingPointCsvService;
   private final TrafficPointCsvService trafficPointCsvService;
 
-  private final JobCompletionListener jobCompletionListener;
-  private final StepTracerListener stepTracerListener;
+  protected ServicePointImportBatchConfig(JobRepository jobRepository, PlatformTransactionManager transactionManager,
+      JobCompletionListener jobCompletionListener, StepTracerListener stepTracerListener,
+      ServicePointApiWriter servicePointApiWriter, LoadingPointApiWriter loadingPointApiWriter,
+      TrafficPointApiWriter trafficPointApiWriter, ServicePointCsvService servicePointCsvService,
+      LoadingPointCsvService loadingPointCsvService, TrafficPointCsvService trafficPointCsvService) {
+    super(jobRepository, transactionManager, jobCompletionListener, stepTracerListener);
+    this.servicePointApiWriter = servicePointApiWriter;
+    this.loadingPointApiWriter = loadingPointApiWriter;
+    this.trafficPointApiWriter = trafficPointApiWriter;
+    this.servicePointCsvService = servicePointCsvService;
+    this.loadingPointCsvService = loadingPointCsvService;
+    this.trafficPointCsvService = trafficPointCsvService;
+  }
 
   @StepScope
   @Bean
-  public ThreadSafeListItemReader<ServicePointCsvModelContainer> servicePointlistItemReader(
+  public ThreadSafeListItemReader<ServicePointCsvModelContainer> servicePointListItemReader(
       @Value("#{jobParameters[fullPathFileName]}") String pathToFile) {
     final List<ServicePointCsvModel> actualServicePointCsvModels;
     if (pathToFile != null) {
@@ -84,7 +85,7 @@ public class ServicePointImportBatchConfig {
 
   @StepScope
   @Bean
-  public ThreadSafeListItemReader<LoadingPointCsvModelContainer> loadingPointlistItemReader(
+  public ThreadSafeListItemReader<LoadingPointCsvModelContainer> loadingPointListItemReader(
       @Value("#{jobParameters[fullPathFileName]}") String pathToFile) {
     final List<LoadingPointCsvModel> actualLoadingPointCsvModels;
     if (pathToFile != null) {
@@ -115,11 +116,11 @@ public class ServicePointImportBatchConfig {
   }
 
   @Bean
-  public Step parseServicePointCsvStep(ThreadSafeListItemReader<ServicePointCsvModelContainer> servicePointlistItemReader) {
+  public Step parseServicePointCsvStep(ThreadSafeListItemReader<ServicePointCsvModelContainer> servicePointListItemReader) {
     String stepName = "parseServicePointCsvStep";
     return new StepBuilder(stepName, jobRepository)
         .<ServicePointCsvModelContainer, ServicePointCsvModelContainer>chunk(SERVICE_POINT_CHUNK_SIZE, transactionManager)
-        .reader(servicePointlistItemReader)
+        .reader(servicePointListItemReader)
         .writer(servicePointApiWriter)
         .faultTolerant()
         .backOffPolicy(StepUtils.getBackOffPolicy(stepName))
@@ -130,11 +131,11 @@ public class ServicePointImportBatchConfig {
   }
 
   @Bean
-  public Step parseLoadingPointCsvStep(ThreadSafeListItemReader<LoadingPointCsvModelContainer> loadingPointlistItemReader) {
+  public Step parseLoadingPointCsvStep(ThreadSafeListItemReader<LoadingPointCsvModelContainer> loadingPointListItemReader) {
     String stepName = "parseLoadingPointCsvStep";
     return new StepBuilder(stepName, jobRepository)
         .<LoadingPointCsvModelContainer, LoadingPointCsvModelContainer>chunk(LOADING_POINT_CHUNK_SIZE, transactionManager)
-        .reader(loadingPointlistItemReader)
+        .reader(loadingPointListItemReader)
         .writer(loadingPointApiWriter)
         .faultTolerant()
         .backOffPolicy(StepUtils.getBackOffPolicy(stepName))
@@ -160,21 +161,21 @@ public class ServicePointImportBatchConfig {
   }
 
   @Bean
-  public Job importServicePointCsvJob(ThreadSafeListItemReader<ServicePointCsvModelContainer> servicePointlistItemReader) {
+  public Job importServicePointCsvJob(ThreadSafeListItemReader<ServicePointCsvModelContainer> servicePointListItemReader) {
     return new JobBuilder(IMPORT_SERVICE_POINT_CSV_JOB_NAME, jobRepository)
         .listener(jobCompletionListener)
         .incrementer(new RunIdIncrementer())
-        .flow(parseServicePointCsvStep(servicePointlistItemReader))
+        .flow(parseServicePointCsvStep(servicePointListItemReader))
         .end()
         .build();
   }
 
   @Bean
-  public Job importLoadingPointCsvJob(ThreadSafeListItemReader<LoadingPointCsvModelContainer> loadingPointlistItemReader) {
+  public Job importLoadingPointCsvJob(ThreadSafeListItemReader<LoadingPointCsvModelContainer> loadingPointListItemReader) {
     return new JobBuilder(IMPORT_LOADING_POINT_CSV_JOB_NAME, jobRepository)
         .listener(jobCompletionListener)
         .incrementer(new RunIdIncrementer())
-        .flow(parseLoadingPointCsvStep(loadingPointlistItemReader))
+        .flow(parseLoadingPointCsvStep(loadingPointListItemReader))
         .end()
         .build();
   }
@@ -187,17 +188,6 @@ public class ServicePointImportBatchConfig {
         .flow(parseTrafficPointCsvStep(trafficPointListItemReader))
         .end()
         .build();
-  }
-
-  @Bean
-  public TaskExecutor asyncTaskExecutor() {
-    ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
-    taskExecutor.setCorePoolSize(THREAD_EXECUTION_SIZE);
-    taskExecutor.setMaxPoolSize(THREAD_EXECUTION_SIZE);
-    taskExecutor.setQueueCapacity(THREAD_EXECUTION_SIZE);
-    taskExecutor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
-    taskExecutor.setThreadNamePrefix("Thread-");
-    return taskExecutor;
   }
 
 }
