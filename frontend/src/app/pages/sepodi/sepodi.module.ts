@@ -19,6 +19,7 @@ import { SplitServicePointNumberPipe } from './search-service-point/split-servic
 import { KilometerMasterSearchComponent } from './service-point-side-panel/service-point/search/kilometer-master-search.component';
 import { ServicePointCreationComponent } from './service-point-creation/service-point-creation.component';
 import { ServicePointFormComponent } from './service-point-form/service-point-form.component';
+import { TrafficPointElementsDetailComponent } from './traffic-point-elements/traffic-point-elements-detail.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { ServicePointFormComponent } from './service-point-form/service-point-fo
     SplitServicePointNumberPipe,
     ServicePointCreationComponent,
     ServicePointFormComponent,
+    TrafficPointElementsDetailComponent,
   ],
   imports: [CoreModule, FormModule, FormsModule, SepodiRoutingModule],
 })

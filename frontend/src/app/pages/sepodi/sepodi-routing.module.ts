@@ -13,6 +13,8 @@ import { canLeaveDirtyForm } from '../../core/leave-guard/leave-dirty-form-guard
 import { ServicePointCreationComponent } from './service-point-creation/service-point-creation.component';
 import { AuthService } from '../../core/auth/auth.service';
 import { ApplicationType } from '../../api';
+import {TrafficPointElementsDetailComponent} from "./traffic-point-elements/traffic-point-elements-detail.component";
+import {trafficPointResolver} from "./traffic-point-elements/traffic-point-elements-detail-resolver.service";
 
 @Injectable()
 class CanActivateServicePointCreationGuard {
@@ -71,6 +73,12 @@ const routes: Routes = [
             redirectTo: 'service-point',
           },
         ],
+      },
+      {
+        path: Pages.TRAFFIC_POINT_ELEMENTS.path + '/:id',
+        component: TrafficPointElementsDetailComponent,
+        resolve: { trafficPoint: trafficPointResolver },
+        runGuardsAndResolvers: 'always',
       },
     ],
   },
