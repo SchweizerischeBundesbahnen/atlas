@@ -50,6 +50,10 @@ include::{snippets}/stop-point-version-controller-api-test/should-get-stop-point
 
 include::{snippets}/stop-point-version-controller-api-test/should-create-stop-point/auto-section.adoc[]
 
+=== Create Stop Places - Unsuccessfully
+
+include::{snippets}/stop-point-version-controller-api-test/should-not-create-stop-point-when-service-point-does-not-exists/auto-section.adoc[]
+
 === Update Stop Places - Successfully
 
 include::{snippets}/stop-point-version-controller-api-test/should-update-stop-point/auto-section.adoc[]
