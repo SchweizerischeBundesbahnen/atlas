@@ -17,13 +17,13 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class CreateServicePointVersionModelTest {
+class UpdateServicePointVersionModelTest {
 
   private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
   @Test
   void shouldAllowMinimalServicePointVersion() {
-    CreateServicePointVersionModel servicePointVersionModel = CreateServicePointVersionModel.builder()
+    UpdateServicePointVersionModel servicePointVersionModel = UpdateServicePointVersionModel.builder()
         .numberShort(8507000)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
@@ -31,7 +31,7 @@ class CreateServicePointVersionModelTest {
         .validTo(LocalDate.of(2022, 12, 31))
         .build();
 
-    Set<ConstraintViolation<CreateServicePointVersionModel>> constraintViolations = validator.validate(servicePointVersionModel);
+    Set<ConstraintViolation<UpdateServicePointVersionModel>> constraintViolations = validator.validate(servicePointVersionModel);
     assertThat(constraintViolations).isEmpty();
 
     assertThat(servicePointVersionModel.isRawServicePoint()).isTrue();
@@ -42,7 +42,7 @@ class CreateServicePointVersionModelTest {
 
   @Test
   void shouldNotAllowMinimalServicePointVersionWithMissingNorth() {
-    CreateServicePointVersionModel servicePointVersionModel = CreateServicePointVersionModel.builder()
+    UpdateServicePointVersionModel servicePointVersionModel = UpdateServicePointVersionModel.builder()
         .numberShort(8507000)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
@@ -54,13 +54,13 @@ class CreateServicePointVersionModelTest {
             .build())
         .build();
 
-    Set<ConstraintViolation<CreateServicePointVersionModel>> constraintViolations = validator.validate(servicePointVersionModel);
+    Set<ConstraintViolation<UpdateServicePointVersionModel>> constraintViolations = validator.validate(servicePointVersionModel);
     assertThat(constraintViolations).hasSize(1);
   }
 
   @Test
   void shouldAllowMinimalServicePointVersionWithLv95Coordinates() {
-    CreateServicePointVersionModel servicePointVersionModel = CreateServicePointVersionModel.builder()
+    UpdateServicePointVersionModel servicePointVersionModel = UpdateServicePointVersionModel.builder()
         .numberShort(8507000)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
@@ -74,13 +74,13 @@ class CreateServicePointVersionModelTest {
             .build())
         .build();
 
-    Set<ConstraintViolation<CreateServicePointVersionModel>> constraintViolations = validator.validate(servicePointVersionModel);
+    Set<ConstraintViolation<UpdateServicePointVersionModel>> constraintViolations = validator.validate(servicePointVersionModel);
     assertThat(constraintViolations).isEmpty();
   }
 
   @Test
   void shouldNotAllowMinimalServicePointVersionWithLv95CoordinatesMoreThanFiveFractions() {
-    CreateServicePointVersionModel servicePointVersionModel = CreateServicePointVersionModel.builder()
+    UpdateServicePointVersionModel servicePointVersionModel = UpdateServicePointVersionModel.builder()
         .numberShort(8507000)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
@@ -94,13 +94,13 @@ class CreateServicePointVersionModelTest {
             .build())
         .build();
 
-    Set<ConstraintViolation<CreateServicePointVersionModel>> constraintViolations = validator.validate(servicePointVersionModel);
+    Set<ConstraintViolation<UpdateServicePointVersionModel>> constraintViolations = validator.validate(servicePointVersionModel);
     assertThat(constraintViolations).hasSize(1);
   }
 
   @Test
   void shouldAllowMinimalServicePointVersionWithWgs84Coordinates() {
-    CreateServicePointVersionModel servicePointVersionModel = CreateServicePointVersionModel.builder()
+    UpdateServicePointVersionModel servicePointVersionModel = UpdateServicePointVersionModel.builder()
         .numberShort(8507000)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
@@ -114,13 +114,13 @@ class CreateServicePointVersionModelTest {
             .build())
         .build();
 
-    Set<ConstraintViolation<CreateServicePointVersionModel>> constraintViolations = validator.validate(servicePointVersionModel);
+    Set<ConstraintViolation<UpdateServicePointVersionModel>> constraintViolations = validator.validate(servicePointVersionModel);
     assertThat(constraintViolations).isEmpty();
   }
 
   @Test
   void shouldNotAllowMinimalServicePointVersionWithWgs84CoordinatesMoreThanElevenFractions() {
-    CreateServicePointVersionModel servicePointVersionModel = CreateServicePointVersionModel.builder()
+    UpdateServicePointVersionModel servicePointVersionModel = UpdateServicePointVersionModel.builder()
         .numberShort(8507000)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
@@ -134,13 +134,13 @@ class CreateServicePointVersionModelTest {
             .build())
         .build();
 
-    Set<ConstraintViolation<CreateServicePointVersionModel>> constraintViolations = validator.validate(servicePointVersionModel);
+    Set<ConstraintViolation<UpdateServicePointVersionModel>> constraintViolations = validator.validate(servicePointVersionModel);
     assertThat(constraintViolations).hasSize(1);
   }
 
   @Test
   void shouldNotAllowServiceWithOperatingPointTypeAndTechnical() {
-    CreateServicePointVersionModel servicePointVersionModel = CreateServicePointVersionModel.builder()
+    UpdateServicePointVersionModel servicePointVersionModel = UpdateServicePointVersionModel.builder()
         .numberShort(8507000)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
@@ -150,13 +150,13 @@ class CreateServicePointVersionModelTest {
         .validTo(LocalDate.of(2022, 12, 31))
         .build();
 
-    Set<ConstraintViolation<CreateServicePointVersionModel>> constraintViolations = validator.validate(servicePointVersionModel);
+    Set<ConstraintViolation<UpdateServicePointVersionModel>> constraintViolations = validator.validate(servicePointVersionModel);
     assertThat(constraintViolations).isNotEmpty();
   }
 
   @Test
   void shouldNotAllowServiceWithOperatingPointTypeAndTariffPoint() {
-    CreateServicePointVersionModel servicePointVersionModel = CreateServicePointVersionModel.builder()
+    UpdateServicePointVersionModel servicePointVersionModel = UpdateServicePointVersionModel.builder()
         .numberShort(8507000)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
@@ -166,13 +166,13 @@ class CreateServicePointVersionModelTest {
         .validTo(LocalDate.of(2022, 12, 31))
         .build();
 
-    Set<ConstraintViolation<CreateServicePointVersionModel>> constraintViolations = validator.validate(servicePointVersionModel);
+    Set<ConstraintViolation<UpdateServicePointVersionModel>> constraintViolations = validator.validate(servicePointVersionModel);
     assertThat(constraintViolations).isNotEmpty();
   }
 
   @Test
   void shouldNotAllowServiceWithPlainOperatingPointAndStopPoint() {
-    CreateServicePointVersionModel servicePointVersionModel = CreateServicePointVersionModel.builder()
+    UpdateServicePointVersionModel servicePointVersionModel = UpdateServicePointVersionModel.builder()
         .numberShort(8507000)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
@@ -182,13 +182,13 @@ class CreateServicePointVersionModelTest {
         .validTo(LocalDate.of(2022, 12, 31))
         .build();
 
-    Set<ConstraintViolation<CreateServicePointVersionModel>> constraintViolations = validator.validate(servicePointVersionModel);
+    Set<ConstraintViolation<UpdateServicePointVersionModel>> constraintViolations = validator.validate(servicePointVersionModel);
     assertThat(constraintViolations).isNotEmpty();
   }
 
   @Test
   void shouldNotAllowServiceWithPlainOperatingPointAndFreightServicePoint() {
-    CreateServicePointVersionModel servicePointVersionModel = CreateServicePointVersionModel.builder()
+    UpdateServicePointVersionModel servicePointVersionModel = UpdateServicePointVersionModel.builder()
         .numberShort(8507000)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
@@ -198,26 +198,26 @@ class CreateServicePointVersionModelTest {
         .validTo(LocalDate.of(2022, 12, 31))
         .build();
 
-    Set<ConstraintViolation<CreateServicePointVersionModel>> constraintViolations = validator.validate(servicePointVersionModel);
+    Set<ConstraintViolation<UpdateServicePointVersionModel>> constraintViolations = validator.validate(servicePointVersionModel);
     assertThat(constraintViolations).isNotEmpty();
   }
 
   @Test
   void shouldNotAllowServicePointVersionWithoutNumber() {
-    CreateServicePointVersionModel servicePointVersionModel = CreateServicePointVersionModel.builder()
+    UpdateServicePointVersionModel servicePointVersionModel = UpdateServicePointVersionModel.builder()
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2022, 12, 31))
         .build();
 
-    Set<ConstraintViolation<CreateServicePointVersionModel>> constraintViolations = validator.validate(servicePointVersionModel);
+    Set<ConstraintViolation<UpdateServicePointVersionModel>> constraintViolations = validator.validate(servicePointVersionModel);
     assertThat(constraintViolations).hasSize(1);
   }
 
   @Test
   void shouldAllowServicePointVersionWithNumberGeneration() {
-    CreateServicePointVersionModel servicePointVersionModel = CreateServicePointVersionModel.builder()
+    UpdateServicePointVersionModel servicePointVersionModel = UpdateServicePointVersionModel.builder()
         .country(Country.SWITZERLAND)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
@@ -225,13 +225,13 @@ class CreateServicePointVersionModelTest {
         .validTo(LocalDate.of(2022, 12, 31))
         .build();
 
-    Set<ConstraintViolation<CreateServicePointVersionModel>> constraintViolations = validator.validate(servicePointVersionModel);
+    Set<ConstraintViolation<UpdateServicePointVersionModel>> constraintViolations = validator.validate(servicePointVersionModel);
     assertThat(constraintViolations).isEmpty();
   }
 
   @Test
   void shouldNotAllowServicePointVersionWithNumberAndCountry() {
-    CreateServicePointVersionModel servicePointVersionModel = CreateServicePointVersionModel.builder()
+    UpdateServicePointVersionModel servicePointVersionModel = UpdateServicePointVersionModel.builder()
         .country(Country.SWITZERLAND)
         .numberShort(8507000)
         .designationOfficial("Bern")
@@ -240,34 +240,34 @@ class CreateServicePointVersionModelTest {
         .validTo(LocalDate.of(2022, 12, 31))
         .build();
 
-    Set<ConstraintViolation<CreateServicePointVersionModel>> constraintViolations = validator.validate(servicePointVersionModel);
+    Set<ConstraintViolation<UpdateServicePointVersionModel>> constraintViolations = validator.validate(servicePointVersionModel);
     assertThat(constraintViolations).hasSize(1);
   }
 
   @Test
   void shouldSetOperatingPointKilometerMasterToNumberWithoutCheckDigitIfRouteNetworkTrue() {
-    int numberWithoutCheckDigit = 8034510;
-    int operatingPointKilometerMasterNumber = 8034511;
     CreateServicePointVersionModel createServicePointVersionModel =
-            CreateServicePointVersionModel.builder()
-                    .numberWithoutCheckDigit(numberWithoutCheckDigit)
-                    .operatingPointRouteNetwork(true)
-                    .operatingPointKilometerMasterNumber(operatingPointKilometerMasterNumber)
-                    .build();
-    assertThat(createServicePointVersionModel.setKilomMasterNumberDependingOnRouteNetworkValue()).isEqualTo(numberWithoutCheckDigit);
+        CreateServicePointVersionModel.builder()
+            .country(Country.GERMANY)
+            .numberShort(34510)
+            .operatingPointRouteNetwork(true)
+            .operatingPointKilometerMasterNumber(8034511)
+            .build();
+    assertThat(createServicePointVersionModel.setKilomMasterNumberDependingOnRouteNetworkValue()).isEqualTo(8034510);
   }
 
   @Test
   void shouldSetOperatingPointKilometerMasterToOperatingPointKilometerMasterIfRouteNetworkFalse() {
-    int numberWithoutCheckDigit = 8034510;
     int operatingPointKilometerMasterNumber = 8034511;
     CreateServicePointVersionModel createServicePointVersionModel =
-            CreateServicePointVersionModel.builder()
-                    .numberWithoutCheckDigit(numberWithoutCheckDigit)
-                    .operatingPointRouteNetwork(false)
-                    .operatingPointKilometerMasterNumber(operatingPointKilometerMasterNumber)
-                    .build();
-    assertThat(createServicePointVersionModel.setKilomMasterNumberDependingOnRouteNetworkValue()).isEqualTo(operatingPointKilometerMasterNumber);
+        CreateServicePointVersionModel.builder()
+            .country(Country.GERMANY)
+            .numberShort(34510)
+            .operatingPointRouteNetwork(false)
+            .operatingPointKilometerMasterNumber(operatingPointKilometerMasterNumber)
+            .build();
+    assertThat(createServicePointVersionModel.setKilomMasterNumberDependingOnRouteNetworkValue()).isEqualTo(
+        operatingPointKilometerMasterNumber);
   }
 
 }

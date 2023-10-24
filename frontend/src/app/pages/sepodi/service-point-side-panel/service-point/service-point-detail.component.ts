@@ -215,7 +215,6 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
       if (this.isNew) {
         this.create(servicePointVersion);
       } else {
-        servicePointVersion.numberShort = this.selectedVersion.number.number;
         this.update(this.selectedVersion.id!, servicePointVersion);
       }
     }
