@@ -15,8 +15,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import java.util.List;
-import java.util.Optional;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
@@ -32,7 +30,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@Tag(name = "SePoDi - Service Points")
+import java.util.List;
+import java.util.Optional;
+
+@Tag(name = "ServicePoints")
 @RequestMapping("v1/service-points")
 public interface ServicePointApiV1 {
 
@@ -44,7 +45,10 @@ public interface ServicePointApiV1 {
       @Valid @ParameterObject ServicePointRequestParams servicePointRequestParams);
 
   @PostMapping("search")
-  List<ServicePointSearchResult> searchServicePoints(@RequestBody ServicePointSearchRequest value);
+  List<ServicePointSearchResult> searchServicePoints(@RequestBody @Valid ServicePointSearchRequest value);
+
+  @PostMapping("search-sp-with-route-network")
+  List<ServicePointSearchResult> searchServicePointsWithRouteNetworkTrue(@RequestBody @Valid ServicePointSearchRequest value);
 
   @GetMapping("{servicePointNumber}")
   List<ReadServicePointVersionModel> getServicePointVersions(@PathVariable Integer servicePointNumber);

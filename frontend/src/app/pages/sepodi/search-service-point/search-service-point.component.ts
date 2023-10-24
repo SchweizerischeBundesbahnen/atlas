@@ -27,7 +27,7 @@ export class SearchServicePointComponent implements OnInit {
     private readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly servicePointService: ServicePointsService,
-    private readonly translatePipe: TranslatePipe
+    private readonly translatePipe: TranslatePipe,
   ) {}
 
   private _searchValue = '';
@@ -96,10 +96,10 @@ export class SearchServicePointComponent implements OnInit {
           }
           return this.servicePointService.searchServicePoints({ value: term }).pipe(
             catchError(() => of([])),
-            tap(() => (this.loading = false))
+            tap(() => (this.loading = false)),
           );
-        })
-      )
+        }),
+      ),
     );
   }
 

@@ -9,14 +9,15 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import java.time.LocalDate;
-import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@Tag(name = "Timetable Year Change", description = "Generate the Timetable year change based on the [Official Documentation]"
+import java.time.LocalDate;
+import java.util.List;
+
+@Tag(name = "Timetable year change", description = "Generate the Timetable year change based on the [Official Documentation]"
     + "(https://www.fahrplanfelder.ch/en/explanations/timetable-year.html)")
 @RequestMapping("v1/timetable-year-change")
 @Validated
