@@ -4,7 +4,6 @@ import ch.sbb.atlas.searching.SpecificationBuilder;
 import ch.sbb.atlas.searching.specification.ValidOrEditionTimerangeSpecification;
 import ch.sbb.prm.directory.controller.StopPointElementRequestParams;
 import ch.sbb.prm.directory.entity.StopPointVersion;
-import ch.sbb.prm.directory.entity.StopPointVersion.Fields;
 import ch.sbb.prm.directory.entity.StopPointVersion_;
 import java.util.List;
 import java.util.Optional;
@@ -30,7 +29,7 @@ public class StopPointSearchRestrictions {
     return specBuilder().searchCriteriaSpecification(searchCriterias)
         .and(specBuilder().validOnSpecification(Optional.ofNullable(stopPointElementRequestParams.getValidOn())))
         .and(specBuilder().inSpecification(stopPointElementRequestParams.getServicePointNumbers(), StopPointVersion.Fields.number))
-        .and(specBuilder().inSpecification(stopPointElementRequestParams.getSloids(), Fields.sloid))
+        .and(specBuilder().inSpecification(stopPointElementRequestParams.getSloids(), StopPointVersion.Fields.sloid))
         .and(new ValidOrEditionTimerangeSpecification<>(
             stopPointElementRequestParams.getFromDate(),
             stopPointElementRequestParams.getToDate(),
