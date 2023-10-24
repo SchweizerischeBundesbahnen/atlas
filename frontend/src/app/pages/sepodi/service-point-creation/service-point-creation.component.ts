@@ -163,8 +163,6 @@ export class ServicePointCreationComponent implements OnInit, OnDestroy {
             relativeTo: this.route,
           });
         });
-
-      // this.cancelMapEditMode(); // todo: check if needed
     }
   }
 

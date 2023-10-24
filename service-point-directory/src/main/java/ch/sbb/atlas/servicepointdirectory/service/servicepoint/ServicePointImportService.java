@@ -143,6 +143,7 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
 
   private ItemImportResult saveServicePointVersion(ServicePointVersion servicePointVersion) {
     try {
+      // todo: delete available service point number
       ServicePointVersion savedServicePointVersion = servicePointService.saveWithoutValidationForImportOnly(servicePointVersion);
       return buildSuccessImportResult(savedServicePointVersion);
     } catch (Exception exception) {
