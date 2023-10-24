@@ -52,10 +52,6 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
         new ApplyVersioningDeleteByIdLongConsumer(stopPointRepository));
   }
 
-  public List<StopPointVersion> getAllStopPoints() {
-    return stopPointRepository.findAll();
-  }
-
   public List<StopPointVersion> findAllByNumberOrderByValidFrom(ServicePointNumber number) {
     return stopPointRepository.findAllByNumberOrderByValidFrom(number);
   }
