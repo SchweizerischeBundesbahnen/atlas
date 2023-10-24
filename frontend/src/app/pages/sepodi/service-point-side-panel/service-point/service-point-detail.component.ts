@@ -249,6 +249,9 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
       this.mapService.isEditMode.next(true);
       this.isSwitchVersionDisabled = true;
       this.form.enable();
+      if (this.form.controls.operatingPointRouteNetwork.value) {
+        this.form.controls.operatingPointKilometer.disable();
+      }
     }
   }
 
@@ -343,6 +346,9 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   private handleError() {
     return () => {
       this.form.enable();
+      if (this.form.controls.operatingPointRouteNetwork.value) {
+        this.form.controls.operatingPointKilometer.disable();
+      }
       return EMPTY;
     };
   }
@@ -418,5 +424,27 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
 
   isCoordinatePairNotZero(coordinates: CoordinatePair): boolean {
     return coordinates.north !== 0 && coordinates.east !== 0;
+  }
+
+  setOperatingPointRouteNetwork(isSelected: boolean) {
+    if (isSelected) {
+      this.form.controls.operatingPointRouteNetwork.setValue(true);
+      this.form.controls.operatingPointKilometer.setValue(true);
+      this.form.controls.operatingPointKilometer.disable();
+      this.form.controls.operatingPointKilometerMaster.setValue(this.selectedVersion.number.number);
+    } else {
+      this.form.controls.operatingPointRouteNetwork.setValue(false);
+      this.form.controls.operatingPointKilometer.setValue(false);
+      this.form.controls.operatingPointKilometer.enable();
+      this.form.controls.operatingPointKilometerMaster.reset();
+    }
+  }
+
+  setOperatingPointKilometer(isSelected: boolean) {
+    if (isSelected) {
+      this.form.controls.operatingPointKilometer.setValue(true);
+    } else {
+      this.form.controls.operatingPointKilometer.setValue(false);
+    }
   }
 }
