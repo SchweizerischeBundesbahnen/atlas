@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.prm.model.stoppoint.CreateStopPointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
@@ -16,6 +17,8 @@ import ch.sbb.prm.directory.entity.SharedServicePoint;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,15 +37,64 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldGetStopPointsVersion() throws Exception {
+  void shouldGetStopPointsVersionWithoutFilter() throws Exception {
     //given
-    stopPointRepository.save(StopPointTestData.getStopPointVersion());
+    StopPointVersion version = stopPointRepository.save(StopPointTestData.getStopPointVersion());
     //when & then
     mvc.perform(get("/v1/stop-points"))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$", hasSize(1)));
+        .andExpect(jsonPath("$.totalCount", is(1)))
+        .andExpect(jsonPath("$.objects[0].id", is(version.getId().intValue())))
+        .andExpect(jsonPath("$.objects[0].number.number", is(version.getNumber().getNumber())));
   }
 
+  @Test
+  void shouldGetStopPointVersionsWithFilter() throws Exception {
+    //given
+    StopPointVersion version = stopPointRepository.save(StopPointTestData.getStopPointVersion());
+    //when & then
+    mvc.perform(get("/v1/stop-points" +
+            "?numbers=1234567" +
+            "&sloids=ch:1:sloid:12345" +
+            "&fromDate=" + version.getValidFrom() +
+            "&toDate=" + version.getValidTo()+
+            "&validOn=" + LocalDate.of(2000, 6, 28) +
+            "&createdAfter=" + version.getCreationDate().minusSeconds(1).format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN)) +
+            "&modifiedAfter=" + version.getEditionDate().format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN))
+            ))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.totalCount", is(1)))
+        .andExpect(jsonPath("$.objects[0].id" , is(version.getId().intValue())));
+  }
+
+  @Test
+  void shouldGetStopPointVersionsWithArrayInFilter() throws Exception {
+    //given
+    StopPointVersion version = stopPointRepository.save(StopPointTestData.getStopPointVersion());
+    //when & then
+    mvc.perform(get("/v1/stop-points" +
+            "?numbers=1234567&numbers=1000000" +
+            "&sloids=ch:1:sloid:12345&sloids=ch:1:sloid:54321" +
+            "&fromDate=" + version.getValidFrom() +
+            "&toDate=" + version.getValidTo()+
+            "&validOn=" + LocalDate.of(2000, 6, 28) +
+            "&createdAfter=" + version.getCreationDate().minusSeconds(1).format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN)) +
+            "&modifiedAfter=" + version.getEditionDate().format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN))
+            ))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.totalCount", is(1)))
+        .andExpect(jsonPath("$.objects[0].id" , is(version.getId().intValue())));
+  }
+
+  @Test
+  void shouldNotGetStopPointVersionsWithFilter() throws Exception {
+    //given
+    stopPointRepository.save(StopPointTestData.getStopPointVersion());
+    //when
+    mvc.perform(get("/v1/stop-points?numbers=1000000"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.totalCount", is(0)));
+  }
   @Test
   void shouldCreateStopPoint() throws Exception {
     //given
