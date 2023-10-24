@@ -412,7 +412,7 @@ public class ServicePointTestData {
 
   public static CreateServicePointVersionModel getBuchsiServicePoint() {
     return CreateServicePointVersionModel.builder()
-        .numberWithoutCheckDigit(8034510)
+        .numberWithoutCheckDigit(8034511)
         .sloid("ch:1:sloid:18771")
         .designationLong("designation long 1")
         .designationOfficial("Buchsi Hood")
@@ -421,7 +421,7 @@ public class ServicePointTestData {
         .sortCodeOfDestinationStation("39136")
         .businessOrganisation("ch:1:sboid:100016")
         .categories(List.of(Category.POINT_OF_SALE))
-        .operatingPointRouteNetwork(false)
+        .operatingPointRouteNetwork(true)
         .operatingPointKilometerMasterNumber(8034511)
         .meansOfTransport(List.of(MeanOfTransport.TRAIN))
         .stopPointType(StopPointType.ON_REQUEST)
