@@ -183,62 +183,72 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
     @Test
     public void shouldThrowExceptionWhenTryToChangeExistingAbbreviation() {
-        ServicePointVersion existingServicePointVersion = versionRepository.findById(1000L).get();
+        versionRepository.deleteAll();
+        ServicePointVersion servicePointVersion = ServicePointTestData.getBernWyleregg();
+        servicePointVersion.setDesignationLong("Wyleregg, Loraine, Bern");
+        servicePointVersion.setAbbreviation("ABCD");
+        servicePointVersion.setBusinessOrganisation("ch:1:sboid:100016");
 
-        ServicePointVersion servicePointVersion = ServicePointVersion.builder()
-            .number(ServicePointNumber.ofNumberWithoutCheckDigit(2031231))
-            .designationOfficial("Bern")
-            .businessOrganisation("ch:1:sboid:100016")
-            .abbreviation("ABCD")
-            .validFrom(LocalDate.of(2022, 1, 1))
-            .validTo(LocalDate.of(2022, 12, 31))
+        ServicePointVersion createdServicePoint = versionRepository.save(servicePointVersion);
+
+        ServicePointVersion servicePointVersion2 = ServicePointVersion.builder()
+            .number(createdServicePoint.getNumber())
+            .designationOfficial(createdServicePoint.getDesignationOfficial())
+            .businessOrganisation(createdServicePoint.getBusinessOrganisation())
+            .abbreviation("BIBD")
+            .validFrom(createdServicePoint.getValidFrom())
+            .validTo(createdServicePoint.getValidTo())
             .build();
 
 
         assertThrows(AbbreviationUpdateNotAllowedException.class,
-            () -> servicePointValidationService.validateAndSetAbbreviationForUpdate(existingServicePointVersion, servicePointVersion));
+            () -> servicePointValidationService.validateAndSetAbbreviationForUpdate(createdServicePoint, servicePointVersion2));
     }
 
     @Test
     public void shouldThrowExceptionWhenAddingAbbreviationToServicePointWithNonHighestDate() {
-        ServicePointVersion existingServicePointVersion = versionRepository.findById(1000L).get();
+        versionRepository.deleteAll();
+        ServicePointVersion servicePointVersion = ServicePointTestData.getBernWyleregg();
+        servicePointVersion.setDesignationLong("Wyleregg, Loraine, Bern");
+        servicePointVersion.setAbbreviation("ABCD");
+        servicePointVersion.setBusinessOrganisation("ch:1:sboid:100016");
 
-        ServicePointVersion servicePointVersion = ServicePointVersion.builder()
-            .number(existingServicePointVersion.getNumber())
-            .designationOfficial("Wylerggggg 1")
-            .businessOrganisation("ch:1:sboid:100016")
-            .abbreviation("TEST")
+        ServicePointVersion createdServicePoint = versionRepository.save(servicePointVersion);
+
+        ServicePointVersion servicePointVersion2 = ServicePointVersion.builder()
+            .number(createdServicePoint.getNumber())
+            .designationOfficial(createdServicePoint.getDesignationOfficial())
+            .businessOrganisation(createdServicePoint.getBusinessOrganisation())
+            .abbreviation("ABCD")
             .validFrom(LocalDate.of(2005, 1, 1))
             .validTo(LocalDate.of(2006, 12, 31))
             .build();
 
         assertThrows(InvalidAbbreviationException.class,
-            () -> servicePointValidationService.validateAndSetAbbreviationForUpdate(existingServicePointVersion, servicePointVersion));
+            () -> servicePointValidationService.validateAndSetAbbreviationForUpdate(createdServicePoint, servicePointVersion2));
     }
 
     @Test
     public void shouldSuccessfullyAddAbbreviationAndUpdateServicePoint() {
-
         versionRepository.deleteAll();
-
         ServicePointVersion servicePointVersion = ServicePointTestData.getBernWyleregg();
+        servicePointVersion.setDesignationLong("Wyleregg, Loraine, Bern");
+        servicePointVersion.setAbbreviation(null);
         servicePointVersion.setBusinessOrganisation("ch:1:sboid:100016");
 
-        versionRepository.save(servicePointVersion);
-
-        ServicePointVersion existingServicePoint = versionRepository.findById(1001L).get();
+        ServicePointVersion createdServicePoint = versionRepository.save(servicePointVersion);
 
 
         ServicePointVersion editedVersion = ServicePointVersion.builder()
-            .number(servicePointVersion.getNumber())
-            .designationOfficial(servicePointVersion.getDesignationOfficial())
-            .businessOrganisation(servicePointVersion.getBusinessOrganisation())
+            .number(createdServicePoint.getNumber())
+            .designationOfficial(createdServicePoint.getDesignationOfficial())
+            .businessOrganisation(createdServicePoint.getBusinessOrganisation())
             .abbreviation("ABCD")
-            .validFrom(servicePointVersion.getValidFrom())
-            .validTo(servicePointVersion.getValidTo())
+            .validFrom(createdServicePoint.getValidFrom())
+            .validTo(createdServicePoint.getValidTo())
             .build();
 
 
-        assertDoesNotThrow(() -> servicePointValidationService.validateAndSetAbbreviationForUpdate(existingServicePoint, editedVersion));
+        assertDoesNotThrow(() -> servicePointValidationService.validateAndSetAbbreviationForUpdate(createdServicePoint, editedVersion));
     }
 }
