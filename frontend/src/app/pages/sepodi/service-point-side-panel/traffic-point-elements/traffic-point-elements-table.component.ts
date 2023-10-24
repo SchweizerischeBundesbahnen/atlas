@@ -1,14 +1,10 @@
 import { Component } from '@angular/core';
 import { TableColumn } from '../../../../core/components/table/table-column';
-import {
-  TimetableFieldNumber,
-  TimetableFieldNumbersService,
-  TrafficPointElementsService,
-} from '../../../../api';
+import { ReadTrafficPointElementVersionModel, TrafficPointElementsService } from '../../../../api';
 import { TablePagination } from '../../../../core/components/table/table-pagination';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TableService } from '../../../../core/components/table/table.service';
-import { map } from 'rxjs/operators';
+import { VersionsHandlingService } from '../../../../core/versioning/versions-handling.service';
+import { Pages } from '../../../pages';
 
 @Component({
   selector: 'app-service-point-traffic-point-elements-table',
@@ -16,21 +12,18 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./traffic-point-elements-table.component.scss'],
 })
 export class TrafficPointElementsTableComponent {
-  tableColumns: TableColumn<TimetableFieldNumber>[] = [
-    { headerTitle: 'TTFN.NUMBER', value: 'number' },
-    { headerTitle: 'TTFN.DESCRIPTION', value: 'description' },
-    { headerTitle: 'TTFN.SWISS_TIMETABLE_FIELD_NUMBER', value: 'swissTimetableFieldNumber' },
-    { headerTitle: 'TTFN.TTFNID', value: 'ttfnid' },
+  tableColumns: TableColumn<ReadTrafficPointElementVersionModel>[] = [
+    { headerTitle: 'SEPODI.TRAFFIC_POINT_ELEMENTS.DESIGNATION', value: 'designation' },
+    { headerTitle: 'SEPODI.SERVICE_POINTS.SLOID', value: 'sloid' },
     {
-      headerTitle: 'COMMON.STATUS',
-      value: 'status',
-      translate: { withPrefix: 'COMMON.STATUS_TYPES.' },
+      headerTitle: 'SEPODI.TRAFFIC_POINT_ELEMENTS.DESIGNATION_OPERATIONAL',
+      value: 'designationOperational',
     },
     { headerTitle: 'COMMON.VALID_FROM', value: 'validFrom', formatAsDate: true },
     { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
   ];
 
-  timetableFieldNumbers: TimetableFieldNumber[] = [];
+  trafficPointElementRows: ReadTrafficPointElementVersionModel[] = [];
   totalCount$ = 0;
 
   constructor(
@@ -39,29 +32,46 @@ export class TrafficPointElementsTableComponent {
     private router: Router,
   ) {}
 
-  newTrafficPointElement() {
-    this.router
-      .navigate(['add'], {
-        relativeTo: this.route,
-      })
-      .then();
-  }
-
   getOverview(pagination: TablePagination) {
-    const servicePointNumber = '8507000';
+    const servicePointNumber = this.route.parent!.snapshot.params['id'];
     this.trafficPointElementService
       .getTrafficPointElements(undefined, [servicePointNumber])
       .subscribe((container) => {
         const versions = container.objects!;
-        const groupedVersions = new Map(versions.map((i) => [i.servicePointNumber.number, i]));
+        const trafficPointRows = this.groupDisplayRows(versions);
+
+        this.trafficPointElementRows = trafficPointRows;
+        this.totalCount$ = trafficPointRows.length;
       });
   }
 
-  editVersion($event: TimetableFieldNumber) {
+  private groupDisplayRows(
+    versions: ReadTrafficPointElementVersionModel[],
+  ): ReadTrafficPointElementVersionModel[] {
+    const trafficPointRows: ReadTrafficPointElementVersionModel[] = [];
+    const map = VersionsHandlingService.groupVersionsByKey(versions, 'sloid');
+
+    Object.values(map).forEach((value) => {
+      const maxValidity = VersionsHandlingService.getMaxValidity(value);
+      const rowToDisplay = VersionsHandlingService.determineDefaultVersionByValidity(
+        value,
+      ) as ReadTrafficPointElementVersionModel;
+      rowToDisplay.validFrom = maxValidity.validFrom;
+      rowToDisplay.validTo = maxValidity.validTo;
+
+      trafficPointRows.push(rowToDisplay);
+    });
+
+    return trafficPointRows;
+  }
+
+  newTrafficPointElement() {
+    this.router.navigate([Pages.SEPODI.path, Pages.TRAFFIC_POINT_ELEMENTS.path, 'add']).then();
+  }
+
+  editVersion($event: ReadTrafficPointElementVersionModel) {
     this.router
-      .navigate([$event.ttfnid], {
-        relativeTo: this.route,
-      })
+      .navigate([Pages.SEPODI.path, Pages.TRAFFIC_POINT_ELEMENTS.path, $event.sloid])
       .then();
   }
 }
