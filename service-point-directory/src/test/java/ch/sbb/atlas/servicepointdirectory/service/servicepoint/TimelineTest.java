@@ -6,11 +6,12 @@ import ch.sbb.atlas.servicepointdirectory.ServicePointVersionsTimelineTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.locationtech.jts.util.Assert;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class TimelineTest {
 
@@ -35,26 +36,26 @@ public class TimelineTest {
 
         Timeline timeline = new Timeline(servicePointVersionList, ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel1());
         List<DateRange> mergedTimeline = timeline.getKilometerMasterTimelineElements();
-        Assert.equals(6, mergedTimeline.size());
-        Assert.equals(LocalDate.of(2010, 12, 11), mergedTimeline.get(0).getFrom());
-        Assert.equals(LocalDate.of(2013, 8, 10), mergedTimeline.get(0).getTo());
-        Assert.equals(LocalDate.of(2013, 8, 14), mergedTimeline.get(1).getFrom());
-        Assert.equals(LocalDate.of(2014, 8, 14), mergedTimeline.get(1).getTo());
-        Assert.equals(LocalDate.of(2014, 8, 18), mergedTimeline.get(2).getFrom());
-        Assert.equals(LocalDate.of(2015, 8, 18), mergedTimeline.get(2).getTo());
-        Assert.equals(LocalDate.of(2015, 8, 20), mergedTimeline.get(3).getFrom());
-        Assert.equals(LocalDate.of(2018, 8, 20), mergedTimeline.get(3).getTo());
-        Assert.equals(LocalDate.of(2018, 8, 25), mergedTimeline.get(4).getFrom());
-        Assert.equals(LocalDate.of(2019, 8, 20), mergedTimeline.get(4).getTo());
-        Assert.equals(LocalDate.of(2019, 8, 25), mergedTimeline.get(5).getFrom());
-        Assert.equals(LocalDate.of(2020, 8, 20), mergedTimeline.get(5).getTo());
+        assertThat(mergedTimeline.size()).isEqualTo(6);
+        assertThat(mergedTimeline.get(0).getFrom()).isEqualTo(LocalDate.of(2010, 12, 11));
+        assertThat(mergedTimeline.get(0).getTo()).isEqualTo(LocalDate.of(2013, 8, 10));
+        assertThat(mergedTimeline.get(1).getFrom()).isEqualTo(LocalDate.of(2013, 8, 14));
+        assertThat(mergedTimeline.get(1).getTo()).isEqualTo(LocalDate.of(2014, 8, 14));
+        assertThat(mergedTimeline.get(2).getFrom()).isEqualTo(LocalDate.of(2014, 8, 18));
+        assertThat(mergedTimeline.get(2).getTo()).isEqualTo(LocalDate.of(2015, 8, 18));
+        assertThat(mergedTimeline.get(3).getFrom()).isEqualTo(LocalDate.of(2015, 8, 20));
+        assertThat(mergedTimeline.get(3).getTo()).isEqualTo(LocalDate.of(2018, 8, 20));
+        assertThat(mergedTimeline.get(4).getFrom()).isEqualTo(LocalDate.of(2018, 8, 25));
+        assertThat(mergedTimeline.get(4).getTo()).isEqualTo(LocalDate.of(2019, 8, 20));
+        assertThat(mergedTimeline.get(5).getFrom()).isEqualTo(LocalDate.of(2019, 8, 25));
+        assertThat(mergedTimeline.get(5).getTo()).isEqualTo(LocalDate.of(2020, 8, 20));
     }
 
     @Test
     void shouldCreateEmptyListWhenKilMasterTimelinesWithNull() {
         Timeline timeline = new Timeline(null, ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel1());
         List<DateRange> mergedTimeline = timeline.getKilometerMasterTimelineElements();
-        Assert.equals(0, mergedTimeline.size());
+        assertThat(mergedTimeline.size()).isEqualTo(0);
     }
 
     @Test
@@ -63,7 +64,7 @@ public class TimelineTest {
 
         Timeline timeline = new Timeline(servicePointVersionList, ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel1());
         List<DateRange> mergedTimeline = timeline.getKilometerMasterTimelineElements();
-        Assert.equals(0, mergedTimeline.size());
+        assertThat(mergedTimeline.size()).isEqualTo(0);
     }
 
     @Test
@@ -75,13 +76,13 @@ public class TimelineTest {
 
         Timeline timeline = new Timeline(servicePointVersionList, ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel1());
         List<DateRange> mergedTimeline = timeline.getKilometerMasterTimelineElements();
-        Assert.equals(3, mergedTimeline.size());
-        Assert.equals(LocalDate.of(2010, 12, 11), mergedTimeline.get(0).getFrom());
-        Assert.equals(LocalDate.of(2011, 8, 10), mergedTimeline.get(0).getTo());
-        Assert.equals(LocalDate.of(2012, 8, 11), mergedTimeline.get(1).getFrom());
-        Assert.equals(LocalDate.of(2013, 8, 10), mergedTimeline.get(1).getTo());
-        Assert.equals(LocalDate.of(2014, 8, 18), mergedTimeline.get(2).getFrom());
-        Assert.equals(LocalDate.of(2015, 8, 18), mergedTimeline.get(2).getTo());
+        assertThat(mergedTimeline.size()).isEqualTo(3);
+        assertThat(mergedTimeline.get(0).getFrom()).isEqualTo(LocalDate.of(2010, 12, 11));
+        assertThat(mergedTimeline.get(0).getTo()).isEqualTo(LocalDate.of(2011, 8, 10));
+        assertThat(mergedTimeline.get(1).getFrom()).isEqualTo(LocalDate.of(2012, 8, 11));
+        assertThat(mergedTimeline.get(1).getTo()).isEqualTo(LocalDate.of(2013, 8, 10));
+        assertThat(mergedTimeline.get(2).getFrom()).isEqualTo(LocalDate.of(2014, 8, 18));
+        assertThat(mergedTimeline.get(2).getTo()).isEqualTo(LocalDate.of(2015, 8, 18));
     }
 
     @Test
@@ -95,13 +96,13 @@ public class TimelineTest {
 
         Timeline timeline = new Timeline(servicePointVersionList, ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel1());
         List<DateRange> mergedTimeline = timeline.getKilometerMasterTimelineElements();
-        Assert.equals(3, mergedTimeline.size());
-        Assert.equals(LocalDate.of(2008, 12, 11), mergedTimeline.get(0).getFrom());
-        Assert.equals(LocalDate.of(2009, 8, 10), mergedTimeline.get(0).getTo());
-        Assert.equals(LocalDate.of(2010, 12, 11), mergedTimeline.get(1).getFrom());
-        Assert.equals(LocalDate.of(2013, 8, 10), mergedTimeline.get(1).getTo());
-        Assert.equals(LocalDate.of(2013, 8, 14), mergedTimeline.get(2).getFrom());
-        Assert.equals(LocalDate.of(2014, 8, 14), mergedTimeline.get(2).getTo());
+        assertThat(mergedTimeline.size()).isEqualTo(3);
+        assertThat(mergedTimeline.get(0).getFrom()).isEqualTo(LocalDate.of(2008, 12, 11));
+        assertThat(mergedTimeline.get(0).getTo()).isEqualTo(LocalDate.of(2009, 8, 10));
+        assertThat(mergedTimeline.get(1).getFrom()).isEqualTo(LocalDate.of(2010, 12, 11));
+        assertThat(mergedTimeline.get(1).getTo()).isEqualTo(LocalDate.of(2013, 8, 10));
+        assertThat(mergedTimeline.get(2).getFrom()).isEqualTo(LocalDate.of(2013, 8, 14));
+        assertThat(mergedTimeline.get(2).getTo()).isEqualTo(LocalDate.of(2014, 8, 14));
     }
 
     @Test
@@ -113,9 +114,9 @@ public class TimelineTest {
 
         Timeline timeline = new Timeline(servicePointVersionList, ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel1());
         List<DateRange> mergedTimeline = timeline.getKilometerMasterTimelineElements();
-        Assert.equals(1, mergedTimeline.size());
-        Assert.equals(LocalDate.of(2010, 12, 11), mergedTimeline.get(0).getFrom());
-        Assert.equals(LocalDate.of(2013, 8, 10), mergedTimeline.get(0).getTo());
+        assertThat(mergedTimeline.size()).isEqualTo(1);
+        assertThat(mergedTimeline.get(0).getFrom()).isEqualTo(LocalDate.of(2010, 12, 11));
+        assertThat(mergedTimeline.get(0).getTo()).isEqualTo(LocalDate.of(2013, 8, 10));
     }
 
 }

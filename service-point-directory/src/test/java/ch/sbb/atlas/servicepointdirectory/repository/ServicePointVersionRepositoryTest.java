@@ -13,7 +13,6 @@ import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.locationtech.jts.util.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
@@ -399,8 +398,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
         // then
         assertThat(result).hasSize(2);
-        Assert.equals("long designation1", result.get(0).getDesignationLong());
-        Assert.equals("long designation2", result.get(1).getDesignationLong());
+        assertThat(result.get(0).getDesignationLong()).isEqualTo("long designation1");
+        assertThat(result.get(1).getDesignationLong()).isEqualTo("long designation2");
     }
 
 }
