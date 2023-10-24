@@ -206,9 +206,11 @@ describe('ServicePointDetailComponent', () => {
 
     expect(component.form.controls.operatingPointRouteNetwork.value).toBe(true);
     expect(component.form.controls.operatingPointKilometer.value).toBe(true);
+    expect(component.form.controls.operatingPointKilometer.disable).toBe(true);
     expect(component.form.controls.operatingPointKilometerMaster.value).toBe(
       component.form.controls.number.value,
     );
+    expect(component.form.controls.operatingPointKilometerMaster.disable).toBe(true);
   });
 
   it('should test component method setOperatingPointRouteNetwork with argument false', () => {
@@ -216,7 +218,9 @@ describe('ServicePointDetailComponent', () => {
 
     expect(component.form.controls.operatingPointRouteNetwork.value).toBe(false);
     expect(component.form.controls.operatingPointKilometer.value).toBe(false);
+    expect(component.form.controls.operatingPointKilometer.enable).toBe(true);
     expect(component.form.controls.operatingPointKilometerMaster.value).toBe(null);
+    expect(component.form.controls.operatingPointKilometerMaster.enable).toBe(true);
   });
 
   it('should test component method setOperatingPointKilometer with argument true', () => {
