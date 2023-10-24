@@ -87,15 +87,13 @@ public class StopPointImportService extends BasePrmImportService<StopPointVersio
     try {
       updateStopPointVersionForImportService(stopPointVersion);
       return buildSuccessImportResult(stopPointVersion);
+    } catch (VersioningNoChangesException exception) {
+      log.info("Found version {} to import without modification: {}", stopPointVersion.getNumber().getValue(),
+          exception.getMessage());
+      return buildSuccessImportResult(stopPointVersion);
     } catch (Exception exception) {
-      if (exception instanceof VersioningNoChangesException) {
-        log.info("Found version {} to import without modification: {}",
-            stopPointVersion.getNumber().getValue(), exception.getMessage());
-        return buildSuccessImportResult(stopPointVersion);
-      } else {
-        log.error("[Stop-Place Import]: Error during update", exception);
-        return buildFailedImportResult(stopPointVersion, exception);
-      }
+      log.error("[Stop-Place Import]: Error during update", exception);
+      return buildFailedImportResult(stopPointVersion, exception);
     }
   }
 
