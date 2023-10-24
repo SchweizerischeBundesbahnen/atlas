@@ -1,6 +1,5 @@
 package ch.sbb.atlas.api;
 
-import java.util.regex.Pattern;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
