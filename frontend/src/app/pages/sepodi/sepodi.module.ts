@@ -16,12 +16,14 @@ import { GeographyComponent } from './geography/geography.component';
 import { SearchServicePointComponent } from './search-service-point/search-service-point.component';
 import { SearchResultHighlightPipe } from './search-service-point/search-result-highlight.pipe';
 import { SplitServicePointNumberPipe } from './search-service-point/split-service-point-number.pipe';
+import { KilometerMasterSearchComponent } from './service-point-side-panel/service-point/search/kilometer-master-search.component';
 
 @NgModule({
   declarations: [
     SepodiMapviewComponent,
     ServicePointSidePanelComponent,
     ServicePointDetailComponent,
+    KilometerMasterSearchComponent,
     AreasDetailComponent,
     TrafficPointElementsDetailComponent,
     LoadingPointsDetailComponent,
