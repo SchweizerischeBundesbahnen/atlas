@@ -3,10 +3,6 @@ package ch.sbb.atlas.servicepointdirectory.repository;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
-import java.time.LocalDate;
-import java.util.Collection;
-import java.util.List;
-import java.util.function.Function;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +17,11 @@ import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuer
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+import java.util.Collection;
+import java.util.List;
+import java.util.function.Function;
+
 @Repository
 public interface ServicePointVersionRepository extends JpaRepository<ServicePointVersion, Long>,
     JpaSpecificationExecutor<ServicePointVersion> {
@@ -28,6 +29,8 @@ public interface ServicePointVersionRepository extends JpaRepository<ServicePoin
   @EntityGraph(attributePaths = {ServicePointVersion.Fields.servicePointGeolocation, ServicePointVersion.Fields.categories,
       ServicePointVersion.Fields.meansOfTransport})
   List<ServicePointVersion> findAllByNumberOrderByValidFrom(ServicePointNumber number);
+
+  List<ServicePointVersion> findAllByNumberAndOperatingPointRouteNetworkTrueOrderByValidFrom(ServicePointNumber number);
 
   boolean existsByNumber(ServicePointNumber servicePointNumber);
 
