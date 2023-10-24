@@ -199,7 +199,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
                     .contentType(contentType))
             // then
             .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("$.message", is("You must enter at least 2 digits to start a search!")));
+            .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
+            .andExpect(jsonPath("$.details.[0].message", endsWith("You must enter at least 2 digits to start a search!")));
   }
 
  @Test
