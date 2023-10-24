@@ -22,7 +22,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @SuperBuilder
 @ToString
-public class StopPointElementRequestParams extends VersionedObjectDateRequestParams {
+public class StopPointRequestParams extends VersionedObjectDateRequestParams {
 
   @Parameter(description = "Unique key for stop points which is used in the customer information.")
   @Singular(ignoreNullCollections = true)
