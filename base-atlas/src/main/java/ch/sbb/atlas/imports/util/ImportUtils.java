@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -61,7 +60,7 @@ public class ImportUtils {
     List<T> collected = versions.stream()
         .filter(toVersioning -> !toVersioning.getValidFrom().isAfter(editedValidTo))
         .filter(toVersioning -> !toVersioning.getValidTo().isBefore(editedValidFrom))
-        .collect(Collectors.toList());
+        .toList();
     if (!collected.isEmpty() &&
         (collected.get(0).getValidFrom().equals(editedValidFrom) && collected.get(collected.size() - 1).getValidTo()
             .equals(editedValidTo))) {
