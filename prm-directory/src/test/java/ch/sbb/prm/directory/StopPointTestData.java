@@ -85,7 +85,7 @@ public class StopPointTestData {
 
   public StopPointVersionBuilder<?, ?> builderVersion1() {
     return StopPointVersion.builder()
-        .sloid("ch:1.sloid:12345")
+        .sloid("ch:1:sloid:12345")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))
@@ -114,7 +114,7 @@ public class StopPointTestData {
 
   public StopPointVersionBuilder<?, ?> builderVersion2() {
     return StopPointVersion.builder()
-        .sloid("ch:1.sloid:12345")
+        .sloid("ch:1:sloid:12345")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2001, 1, 1))
         .validTo(LocalDate.of(2002, 12, 31))
@@ -143,7 +143,7 @@ public class StopPointTestData {
 
   public StopPointVersionBuilder<?, ?> builderVersion3() {
     return StopPointVersion.builder()
-        .sloid("ch:1.sloid:12345")
+        .sloid("ch:1:sloid:12345")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2003, 1, 1))
         .validTo(LocalDate.of(2003, 12, 31))
