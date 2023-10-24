@@ -1,16 +1,5 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
-import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.LV95;
-import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.WGS84;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
@@ -38,6 +27,14 @@ import ch.sbb.atlas.servicepointdirectory.repository.ServicePointFotCommentRepos
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchRequest;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
+import org.springframework.test.web.servlet.MvcResult;
+
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -48,13 +45,17 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
-import org.springframework.test.web.servlet.MvcResult;
+
+import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.LV95;
+import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.WGS84;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
  class ServicePointControllerApiTest extends BaseControllerApiTest {
 
@@ -336,10 +337,10 @@ import org.springframework.test.web.servlet.MvcResult;
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.sortCodeOfDestinationStation, is("39136")))
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.businessOrganisation, is("ch:1:sboid:100871")))
         .andExpect(jsonPath("$.categories[0]", is("POINT_OF_SALE")))
-        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.operatingPointRouteNetwork, is(false)))
-        .andExpect(jsonPath("$.operatingPointKilometerMaster.number", is(8034511)))
-        .andExpect(jsonPath("$.operatingPointKilometerMaster.numberShort", is(34511)))
-        .andExpect(jsonPath("$.operatingPointKilometerMaster.checkDigit", is(6)))
+        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.operatingPointRouteNetwork, is(true)))
+        .andExpect(jsonPath("$.operatingPointKilometerMaster.number", is(8034510)))
+        .andExpect(jsonPath("$.operatingPointKilometerMaster.numberShort", is(34510)))
+        .andExpect(jsonPath("$.operatingPointKilometerMaster.checkDigit", is(8)))
         .andExpect(jsonPath("$.meansOfTransport[0]", is("TRAIN")))
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.stopPointType, is("ON_REQUEST")))
         .andExpect(jsonPath("$.servicePointGeolocation.spatialReference", is(LV95.toString())))
@@ -419,6 +420,24 @@ import org.springframework.test.web.servlet.MvcResult;
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(1)));
   }
+
+ @Test
+ void shouldThrowForbiddenDueToChosenServicePointVersionValidationPeriod() throws Exception {
+     ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
+             ServicePointTestData.getAargauServicePointVersionModel());
+     Long id = servicePointVersionModel.getId();
+
+     CreateServicePointVersionModel newServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
+     newServicePointVersionModel.setServicePointGeolocation(
+             ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation()));
+     newServicePointVersionModel.setOperatingPointRouteNetwork(false);
+     newServicePointVersionModel.setOperatingPointKilometerMasterNumber(8034511);
+
+     mvc.perform(put("/v1/service-points/" + id)
+                     .contentType(contentType)
+                     .content(mapper.writeValueAsString(newServicePointVersionModel)))
+             .andExpect(status().is4xxClientError());
+ }
 
   @Test
   void shouldReadServicePointWithOperatingPointFalseCorrectly() throws Exception {
