@@ -20,7 +20,7 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @FieldNameConstants
-@Schema(name = "ReadTrafficPointElementVersionModel")
+@Schema(name = "ReadTrafficPointElementVersion")
 public class ReadTrafficPointElementVersionModel extends TrafficPointElementVersionModel {
 
   @NotNull
