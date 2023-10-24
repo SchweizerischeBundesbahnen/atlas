@@ -1,12 +1,20 @@
 package ch.sbb.prm.directory.api;
 
+import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.prm.model.stoppoint.CreateStopPointVersionModel;
 import ch.sbb.atlas.api.prm.model.stoppoint.ReadStopPointVersionModel;
 import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.prm.stoppoint.StopPointImportRequestModel;
+import ch.sbb.prm.directory.controller.StopPointElementRequestParams;
+import ch.sbb.prm.directory.entity.StopPointVersion.Fields;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springdoc.core.converters.models.PageableAsQueryParam;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +29,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public interface StopPointApiV1 {
 
   @GetMapping
-  List<ReadStopPointVersionModel> getAllStopPoints();
+  @PageableAsQueryParam
+  Container<ReadStopPointVersionModel> getStopPoints(
+      @Parameter(hidden = true) @PageableDefault(sort = {Fields.number, Fields.validFrom}) Pageable pageable,
+      @Valid @ParameterObject StopPointElementRequestParams stopPointElementRequestParams);
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
