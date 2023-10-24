@@ -14,7 +14,9 @@ import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.testdata.prm.StopPointCsvTestData;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.StopPointTestData;
+import ch.sbb.prm.directory.entity.SharedServicePoint;
 import ch.sbb.prm.directory.entity.StopPointVersion;
+import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import java.time.LocalDate;
 import java.util.List;
@@ -33,17 +35,28 @@ class StopPointImportServiceTest {
   private final VersionableService versionableService;
 
   private final StopPointImportService stopPointImportService;
+  private final SharedServicePointRepository sharedServicePointRepository;
+
 
   @Autowired
   StopPointImportServiceTest(StopPointRepository stopPointRepository, VersionableService versionableService,
-      StopPointImportService stopPointImportService) {
+      StopPointImportService stopPointImportService, SharedServicePointRepository sharedServicePointRepository) {
     this.stopPointRepository = stopPointRepository;
     this.versionableService = versionableService;
     this.stopPointImportService = stopPointImportService;
+    this.sharedServicePointRepository = sharedServicePointRepository;
   }
 
   @Test
   void shouldImportWhenStopPointsDoesNotExists() {
+    //given
+    SharedServicePoint servicePoint = SharedServicePoint.builder()
+        .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:123456\",\"sboids\":[\"ch:1:sboid:100602\"],"
+            + "\"trafficPointSloids\":[]}")
+        .sloid("ch:1:sloid:123456")
+        .build();
+    sharedServicePointRepository.saveAndFlush(servicePoint);
+
     //when
     List<ItemImportResult> result = stopPointImportService.importServicePoints(
         List.of(StopPointCsvTestData.getStopPointCsvModelContainer()));

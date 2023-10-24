@@ -120,7 +120,7 @@ public class StopPointCsvService extends CsvService<StopPointCsvModel> {
 
   private static void replaceWrongMeansOfTransportCode(List<StopPointCsvModel> stopPointCsvModels) {
     stopPointCsvModels.forEach(stopPointCsvModel -> {
-      if(stopPointCsvModel.getTransportationMeans().equals(UNKNOWN_MEANS_OF_TRANSPORT_CODE)){
+      if (stopPointCsvModel.getTransportationMeans().equals(UNKNOWN_MEANS_OF_TRANSPORT_CODE)) {
         stopPointCsvModel.setTransportationMeans("~U~");
         log.info("Found StopPoint versions {} with [~0~] TRANSPORTATION_MEANS code and change to UNKNOWN ({})",
             stopPointCsvModel.getDidokCode(), stopPointCsvModel.getTransportationMeans());
@@ -128,15 +128,15 @@ public class StopPointCsvService extends CsvService<StopPointCsvModel> {
     });
   }
 
-  public List<StopPointCsvModel> mergeSequentialEqualsStopPointVersions(List<StopPointCsvModel> stopPointCsvModels,
+  private List<StopPointCsvModel> mergeSequentialEqualsStopPointVersions(List<StopPointCsvModel> stopPointCsvModels,
       List<Integer> mergedDidokNumbers) {
     List<StopPointCsvModel> stopPointCsvModelListMerged = new ArrayList<>();
-    if (stopPointCsvModels.size() == 1){
-        return stopPointCsvModels;
+    if (stopPointCsvModels.size() == 1) {
+      return stopPointCsvModels;
     }
     if (stopPointCsvModels.size() > 1) {
       stopPointCsvModels.sort(comparing(StopPointCsvModel::getValidFrom));
-       stopPointCsvModelListMerged = new ArrayList<>(List.of(stopPointCsvModels.get(0)));
+      stopPointCsvModelListMerged = new ArrayList<>(List.of(stopPointCsvModels.get(0)));
       for (int currentIndex = 1; currentIndex < stopPointCsvModels.size(); currentIndex++) {
         final StopPointCsvModel previous = stopPointCsvModelListMerged.get(stopPointCsvModelListMerged.size() - 1);
         final StopPointCsvModel current = stopPointCsvModels.get(currentIndex);
@@ -152,10 +152,10 @@ public class StopPointCsvService extends CsvService<StopPointCsvModel> {
     return stopPointCsvModelListMerged;
   }
 
-  public List<StopPointCsvModel> mergeEqualsStopPointVersions(List<StopPointCsvModel> stopPointCsvModels,
+  private List<StopPointCsvModel> mergeEqualsStopPointVersions(List<StopPointCsvModel> stopPointCsvModels,
       List<Integer> mergedDidokNumbers) {
     List<StopPointCsvModel> stopPointCsvModelListMerged = new ArrayList<>();
-    if (stopPointCsvModels.size() == 1){
+    if (stopPointCsvModels.size() == 1) {
       return stopPointCsvModels;
     }
     if (stopPointCsvModels.size() > 1) {
