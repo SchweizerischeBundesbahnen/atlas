@@ -10,6 +10,7 @@ import ch.sbb.atlas.servicepointdirectory.exception.ForbiddenDueToChosenServiceP
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointDesignationLongConflictException;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointDesignationOfficialConflictException;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -72,7 +73,8 @@ public class ServicePointValidationService {
   public void validateAndSetAbbreviationForUpdate(ServicePointVersion existingServicePointVersion, ServicePointVersion editedVersion) {
     String existingAbbreviation = existingServicePointVersion.getAbbreviation();
     String newAbbreviation = editedVersion.getAbbreviation();
-    if ((StringUtils.isBlank(newAbbreviation) && StringUtils.isBlank(existingAbbreviation)) || existingAbbreviation.equals(newAbbreviation)) {
+    if ((StringUtils.isBlank(newAbbreviation) && StringUtils.isBlank(existingAbbreviation)) || Objects.equals(existingAbbreviation, newAbbreviation)
+    ) {
       return;
     }
 
