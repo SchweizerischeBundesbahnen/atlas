@@ -1,4 +1,4 @@
-package ch.sbb.prm.directory.service.versioning;
+package ch.sbb.prm.directory.service;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -7,8 +7,6 @@ import static org.mockito.Mockito.doReturn;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.exception.StopPointDoesNotExistsException;
 import ch.sbb.prm.directory.repository.StopPointRepository;
-import ch.sbb.prm.directory.service.SharedServicePointService;
-import ch.sbb.prm.directory.service.StopPointService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

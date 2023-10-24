@@ -16,9 +16,9 @@ public abstract class BaseImportBatchJob {
 
   protected final JobRepository jobRepository;
   protected final PlatformTransactionManager transactionManager;
-
   protected final JobCompletionListener jobCompletionListener;
   protected final StepTracerListener stepTracerListener;
+
   protected BaseImportBatchJob(JobRepository jobRepository, PlatformTransactionManager transactionManager,
       JobCompletionListener jobCompletionListener, StepTracerListener stepTracerListener) {
     this.jobRepository = jobRepository;
