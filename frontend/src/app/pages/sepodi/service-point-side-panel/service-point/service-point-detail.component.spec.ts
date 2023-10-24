@@ -160,7 +160,7 @@ describe('ServicePointDetailComponent', () => {
   it('should activate geolocation without coordinates', () => {
     const isLatLngCoordinatesValidForTransformationSpy = spyOn(
       component,
-      'isCoordinatesPairValidForTransformation'
+      'isCoordinatesPairValidForTransformation',
     ).and.returnValue(false);
     const setSpatialReferenceSpy = spyOn(component, 'setSpatialReference');
 
@@ -186,7 +186,7 @@ describe('ServicePointDetailComponent', () => {
   it('should not transform if coordinates invalid', () => {
     const isLatLngCoordinatesValidForTransformationSpy = spyOn(
       component,
-      'isCoordinatesPairValidForTransformation'
+      'isCoordinatesPairValidForTransformation',
     ).and.returnValue(false);
     const setSpatialReferenceSpy = spyOn(component, 'setSpatialReference');
 
@@ -199,5 +199,35 @@ describe('ServicePointDetailComponent', () => {
     expect(mapServiceSpy.placeMarkerAndFlyTo).not.toHaveBeenCalled();
     expect(coordinateTransformationServiceSpy.transform).not.toHaveBeenCalled();
     expect(mapServiceSpy.isEditMode.value).toBe(true);
+  });
+
+  it('should test component method setOperatingPointRouteNetwork with argument true', () => {
+    component.setOperatingPointRouteNetwork(true);
+
+    expect(component.form.controls.operatingPointRouteNetwork.value).toBe(true);
+    expect(component.form.controls.operatingPointKilometer.value).toBe(true);
+    expect(component.form.controls.operatingPointKilometerMaster.value).toBe(
+      component.form.controls.number.value,
+    );
+  });
+
+  it('should test component method setOperatingPointRouteNetwork with argument false', () => {
+    component.setOperatingPointRouteNetwork(false);
+
+    expect(component.form.controls.operatingPointRouteNetwork.value).toBe(false);
+    expect(component.form.controls.operatingPointKilometer.value).toBe(false);
+    expect(component.form.controls.operatingPointKilometerMaster.value).toBe(null);
+  });
+
+  it('should test component method setOperatingPointKilometer with argument true', () => {
+    component.setOperatingPointKilometer(true);
+
+    expect(component.form.controls.operatingPointKilometer.value).toBe(true);
+  });
+
+  it('should test component method setOperatingPointKilometer with argument false', () => {
+    component.setOperatingPointKilometer(false);
+
+    expect(component.form.controls.operatingPointKilometer.value).toBe(false);
   });
 });
