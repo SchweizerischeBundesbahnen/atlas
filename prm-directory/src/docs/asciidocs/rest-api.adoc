@@ -42,9 +42,21 @@ include::../when_to_use_files_or_API.adoc[]
 
 == Stop Place
 
-=== Get Stop Places - Successfully
+=== Get Stop Places without filter - Successfully
 
-include::{snippets}/stop-point-version-controller-api-test/should-get-stop-points-version/auto-section.adoc[]
+include::{snippets}/stop-point-version-controller-api-test/should-get-stop-points-version-without-filter/auto-section.adoc[]
+
+=== Get Stop Places with filter - Successfully
+
+include::{snippets}/stop-point-version-controller-api-test/should-get-stop-point-versions-with-filter/auto-section.adoc[]
+
+=== Get Stop Places with filter without match - Successfully
+
+include::{snippets}/stop-point-version-controller-api-test/should-not-get-stop-point-versions-with-filter/auto-section.adoc[]
+
+=== Get Stop Places with filter array filter - Successfully
+
+include::{snippets}/stop-point-version-controller-api-test/should-get-stop-point-versions-with-array-in-filter/auto-section.adoc[]
 
 === Create Stop Places - Successfully
 

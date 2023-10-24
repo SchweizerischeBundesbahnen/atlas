@@ -6,7 +6,7 @@ import ch.sbb.atlas.api.prm.model.stoppoint.ReadStopPointVersionModel;
 import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.prm.stoppoint.StopPointImportRequestModel;
 import ch.sbb.prm.directory.controller.StopPointElementRequestParams;
-import ch.sbb.prm.directory.entity.StopPointVersion.Fields;
+import ch.sbb.prm.directory.entity.StopPointVersion;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -31,7 +31,7 @@ public interface StopPointApiV1 {
   @GetMapping
   @PageableAsQueryParam
   Container<ReadStopPointVersionModel> getStopPoints(
-      @Parameter(hidden = true) @PageableDefault(sort = {Fields.number, Fields.validFrom}) Pageable pageable,
+      @Parameter(hidden = true) @PageableDefault(sort = {StopPointVersion.Fields.number, StopPointVersion.Fields.validFrom}) Pageable pageable,
       @Valid @ParameterObject StopPointElementRequestParams stopPointElementRequestParams);
 
   @ResponseStatus(HttpStatus.CREATED)
