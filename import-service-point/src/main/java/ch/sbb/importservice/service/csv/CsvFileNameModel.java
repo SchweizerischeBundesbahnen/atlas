@@ -21,7 +21,7 @@ public class CsvFileNameModel {
   }
 
   private String replaceHyphensWithUnderscores(String input) {
-    return input.replaceAll("-", "");
+    return input.replace("-", "");
   }
 
   public String getFileName(){
