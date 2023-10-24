@@ -67,7 +67,7 @@ export class ServicePointFormGroupBuilder {
         ]),
         validFrom: new FormControl(
           version.validFrom ? moment(version.validFrom) : version.validFrom,
-          [Validators.required]
+          [Validators.required],
         ),
         validTo: new FormControl(version.validTo ? moment(version.validTo) : version.validTo, [
           Validators.required,
@@ -79,7 +79,7 @@ export class ServicePointFormGroupBuilder {
           AtlasCharsetsValidator.iso88591,
         ]),
         operatingPointType: new FormControl(
-          version.operatingPointType ?? version.operatingPointTechnicalTimetableType
+          version.operatingPointType ?? version.operatingPointTechnicalTimetableType,
         ),
         sortCodeOfDestinationStation: new FormControl(version.sortCodeOfDestinationStation, [
           Validators.maxLength(5),
@@ -102,7 +102,7 @@ export class ServicePointFormGroupBuilder {
         operatingPointRouteNetwork: new FormControl(version.operatingPointRouteNetwork),
         operatingPointKilometer: new FormControl(version.operatingPointKilometer),
         operatingPointKilometerMaster: new FormControl(
-          version.operatingPointKilometerMaster?.number
+          version.operatingPointKilometerMaster?.number,
         ),
         selectedType: new FormControl(this.determineType(version), { nonNullable: true }),
         freightServicePoint: new FormControl(version.freightServicePoint),
@@ -114,7 +114,7 @@ export class ServicePointFormGroupBuilder {
         editor: new FormControl(version.editor),
         creator: new FormControl(version.creator),
       },
-      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
+      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
     );
     this.initConditionalValidators(formGroup);
     return formGroup;
@@ -177,7 +177,7 @@ export class ServicePointFormGroupBuilder {
   }
 
   private static initFreightServicePointValidation(
-    formGroup: FormGroup<ServicePointDetailFormGroup>
+    formGroup: FormGroup<ServicePointDetailFormGroup>,
   ) {
     formGroup.controls.freightServicePoint.valueChanges.subscribe((isFreightServicePoint) => {
       if (isFreightServicePoint) {
@@ -199,7 +199,7 @@ export class ServicePointFormGroupBuilder {
   }
 
   private static initConditionalLocationValidators(
-    formGroup: FormGroup<ServicePointDetailFormGroup>
+    formGroup: FormGroup<ServicePointDetailFormGroup>,
   ) {
     formGroup.controls.servicePointGeolocation.controls.spatialReference.valueChanges.subscribe(
       (newSpatialReference) => {
@@ -231,18 +231,18 @@ export class ServicePointFormGroupBuilder {
         }
         formGroup.controls.servicePointGeolocation.controls.east.updateValueAndValidity();
         formGroup.controls.servicePointGeolocation.controls.north.updateValueAndValidity();
-      }
+      },
     );
   }
 
   private static getValidatorForCoordinates(spatialReference?: SpatialReference) {
     return AtlasCharsetsValidator.decimalWithDigits(
-      spatialReference == SpatialReference.Lv95 ? LV95_MAX_DIGITS : WGS84_MAX_DIGITS
+      spatialReference == SpatialReference.Lv95 ? LV95_MAX_DIGITS : WGS84_MAX_DIGITS,
     );
   }
 
   static getWritableServicePoint(
-    form: FormGroup<ServicePointDetailFormGroup>
+    form: FormGroup<ServicePointDetailFormGroup>,
   ): CreateServicePointVersion {
     const value = form.value;
 
@@ -295,11 +295,11 @@ export class ServicePointFormGroupBuilder {
   }
 
   private static getOperatingPointTechnicalTimetableType(
-    form: FormGroup<ServicePointDetailFormGroup>
+    form: FormGroup<ServicePointDetailFormGroup>,
   ) {
     if (
       Object.values(OperatingPointTechnicalTimetableType).includes(
-        form.value.operatingPointType as OperatingPointTechnicalTimetableType
+        form.value.operatingPointType as OperatingPointTechnicalTimetableType,
       )
     ) {
       return form.value.operatingPointType! as OperatingPointTechnicalTimetableType;
@@ -310,7 +310,7 @@ export class ServicePointFormGroupBuilder {
   private static getOperatingPointType(form: FormGroup<ServicePointDetailFormGroup>) {
     if (
       Object.values(OperatingPointType).includes(
-        form.value.operatingPointType as OperatingPointType
+        form.value.operatingPointType as OperatingPointType,
       )
     ) {
       return form.value.operatingPointType! as OperatingPointType;

@@ -1,17 +1,18 @@
 package ch.sbb.atlas.servicepointdirectory.repository;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchResult;
-import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @IntegrationTest
  class ServicePointSearchVersionRepositoryTest {
@@ -64,9 +65,20 @@ import org.springframework.beans.factory.annotation.Autowired;
     }
 
     @Test
-     void shouldReturnAllServicePointWithDesignationOfficialContainsOst(){
+    void shouldReturnAllServicePointWithDesignationOfficialBernAndRouteNetworkTrue(){
         //when
-        List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("ost");
+        List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePointsWithRouteNetworkTrue("bern");
+        //then
+        assertThat(results).isNotNull();
+        assertThat(results).hasSize(2);
+        assertThat(results.get(0).getDesignationOfficial()).isEqualTo("Bern Ost (Spw)");
+        assertThat(results.get(1).getDesignationOfficial()).isEqualTo("Bern, Wyleregg");
+    }
+
+    @Test
+     void shouldReturnAllServicePointWithDesignationOfficialContainsOstAndRouteNetworkTrue(){
+        //when
+        List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePointsWithRouteNetworkTrue("ost");
         //then
         assertThat(results).isNotNull();
         assertThat(results).hasSize(1);
