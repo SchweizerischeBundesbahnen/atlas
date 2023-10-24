@@ -67,7 +67,7 @@ import org.springframework.transaction.annotation.Transactional;
     List<ServicePointVersion> result = servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber);
     assertThat(result).isNotNull();
     assertThat(itemImportResults).hasSize(5);
-    assertThat(result).hasSize(2);
+    assertThat(result).hasSize(3);
     for (ServicePointVersion servicePointVersion : result) {
       assertThat(servicePointVersion.getNumber()).isNotNull();
       assertThat(servicePointVersion.getNumber()).isEqualTo(servicePointNumber);
@@ -437,14 +437,14 @@ import org.springframework.transaction.annotation.Transactional;
         .nummer(didokCode)
         .laendercode(80)
         .status(1)
-        .abkuerzung("ABCD")
+        .abkuerzung("TEST")
         .didokCode(didokCode)
         .comment("BAV-Kommentar")
         .build();
     ServicePointCsvModel notVirtualWithoutGeolocation = ServicePointCsvModel.builder()
         .validFrom(LocalDate.of(2001, 1, 1))
         .validTo(LocalDate.of(2001, 12, 31))
-        .abkuerzung("ABCD")
+        .abkuerzung("TEST1")
         .bezeichnungLang("Bern, Wyleregg")
         .bezeichnungOffiziell("Bern, Wyleregg")
         .isBedienpunkt(true)
@@ -459,7 +459,7 @@ import org.springframework.transaction.annotation.Transactional;
     ServicePointCsvModel virtualWithoutGeolocation = ServicePointCsvModel.builder()
         .validFrom(LocalDate.of(2002, 1, 1))
         .validTo(LocalDate.of(2002, 12, 31))
-        .abkuerzung("ABCD")
+        .abkuerzung("TEST2")
         .bezeichnungLang("Bern, Wyleregg")
         .bezeichnungOffiziell("Bern, Wyleregg")
         .isBedienpunkt(true)
@@ -474,7 +474,7 @@ import org.springframework.transaction.annotation.Transactional;
     ServicePointCsvModel virtualWithoutGeolocation2 = ServicePointCsvModel.builder()
         .validFrom(LocalDate.of(2002, 1, 1))
         .validTo(LocalDate.of(2002, 12, 31))
-        .abkuerzung("ABCD")
+        .abkuerzung("TEST2")
         .bezeichnungLang("Bern, Wankdorf")
         .bezeichnungOffiziell("Bern, Wankdorf")
         .isBedienpunkt(true)
@@ -489,7 +489,7 @@ import org.springframework.transaction.annotation.Transactional;
     ServicePointCsvModel virtualWithoutGeolocation3 = ServicePointCsvModel.builder()
         .validFrom(LocalDate.of(2002, 1, 1))
         .validTo(LocalDate.of(2002, 12, 31))
-        .abkuerzung("ABCD")
+        .abkuerzung("TEST2")
         .bezeichnungLang("Bern, Wankdorf")
         .bezeichnungOffiziell("Bern, Wankdorf")
         .isBedienpunkt(true)
