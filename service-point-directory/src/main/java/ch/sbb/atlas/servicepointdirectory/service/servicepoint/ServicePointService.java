@@ -16,7 +16,6 @@ import java.util.Optional;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.hibernate.StaleObjectStateException;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -65,14 +64,12 @@ public class ServicePointService {
   @PreAuthorize("@countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#servicePointVersion, "
       + "T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
   public ServicePointVersion save(ServicePointVersion servicePointVersion) {
-
     servicePointVersion.setStatus(Status.VALIDATED);
     servicePointVersion.setEditionDate(LocalDateTime.now());
     servicePointVersion.setEditor(UserService.getUserIdentifier());
 
     servicePointValidationService.validateServicePointPreconditionBusinessRule(servicePointVersion);
     servicePointValidationService.validateAndSetAbbreviationForCreate(servicePointVersion);
-
     return servicePointVersionRepository.saveAndFlush(servicePointVersion);
   }
 
@@ -99,7 +96,6 @@ public class ServicePointService {
     editedVersion.setStatusDidok3(currentVersion.getStatusDidok3());
 
     servicePointValidationService.validateAndSetAbbreviationForUpdate(currentVersion, editedVersion);
-    
     List<ServicePointVersion> existingDbVersions = findAllByNumberOrderByValidFrom(currentVersion.getNumber());
     List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion,
         editedVersion, existingDbVersions);
@@ -109,6 +105,5 @@ public class ServicePointService {
         this::save, new ApplyVersioningDeleteByIdLongConsumer(servicePointVersionRepository));
     return currentVersion;
   }
-
 
 }
