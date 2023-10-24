@@ -30,10 +30,10 @@ public class StopPointController implements StopPointApiV1 {
 
   @Override
   public Container<ReadStopPointVersionModel> getStopPoints(Pageable pageable,
-      StopPointElementRequestParams stopPointElementRequestParams) {
+      StopPointRequestParams stopPointRequestParams) {
     StopPointSearchRestrictions searchRestrictions = StopPointSearchRestrictions.builder()
         .pageable(pageable)
-        .stopPointElementRequestParams(stopPointElementRequestParams)
+        .stopPointRequestParams(stopPointRequestParams)
         .build();
     Page<StopPointVersion> stopPointVersions = stopPointService.findAll(searchRestrictions);
 
