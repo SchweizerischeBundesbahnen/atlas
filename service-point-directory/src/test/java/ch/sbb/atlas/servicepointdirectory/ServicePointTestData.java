@@ -391,6 +391,7 @@ public class ServicePointTestData {
         .sloid("ch:1:sloid:18771")
         .designationLong("designation long 1")
         .designationOfficial("Aargau Strasse")
+        .abbreviation("ABC")
         .freightServicePoint(false)
         .sortCodeOfDestinationStation("39136")
         .businessOrganisation("ch:1:sboid:100871")
