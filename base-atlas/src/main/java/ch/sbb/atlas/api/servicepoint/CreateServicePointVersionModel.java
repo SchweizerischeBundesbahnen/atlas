@@ -10,7 +10,6 @@ import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,6 +17,8 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
 import org.apache.commons.lang3.StringUtils;
+
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -53,6 +54,19 @@ public class CreateServicePointVersionModel extends ServicePointVersionModel {
   public boolean isOperatingPointWithTimetable() {
     return isOperatingPoint() && getOperatingPointType() == null;
   }
+
+  @JsonIgnore
+  @AssertTrue(message = "If OperatingPointRouteNetwork is true, then operatingPointKilometerMaster will be set to the same value as numberWithoutCheckDigit and it should not be sent in the request")
+  public boolean isKilometerMasterNotGivenIfOperatingPointRouteNetworkTrue() {
+    return !isOperatingPointRouteNetwork() || operatingPointKilometerMasterNumber == null;
+  }
+
+//  public Integer getOperatingPointKilometerMasterNumber() {
+//    if (this.isOperatingPointRouteNetwork()) {
+//      return this.numberWithoutCheckDigit;
+//    }
+//    return this.operatingPointKilometerMasterNumber;
+//  }
 
   @JsonIgnore
   @AssertTrue(message = "FreightServicePoint in CH needs sortCodeOfDestinationStation")
