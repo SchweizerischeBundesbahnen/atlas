@@ -9,6 +9,7 @@ import { GeoDataService } from './api/geoData.service';
 import { ImportServicePointBatchService } from './api/importServicePointBatch.service';
 import { LinesService } from './api/lines.service';
 import { LoadingPointsService } from './api/loadingPoints.service';
+import { PRMPersonWithReducedMobilityService } from './api/pRMPersonWithReducedMobility.service';
 import { ServicePointsService } from './api/servicePoints.service';
 import { SublinesService } from './api/sublines.service';
 import { TimetableFieldNumbersService } from './api/timetableFieldNumbers.service';
@@ -29,7 +30,7 @@ import { WorkflowService } from './api/workflow.service';
 })
 export class AtlasApiModule {
   public static forRoot(
-    configurationFactory: () => Configuration
+    configurationFactory: () => Configuration,
   ): ModuleWithProviders<AtlasApiModule> {
     return {
       ngModule: AtlasApiModule,
@@ -44,7 +45,7 @@ export class AtlasApiModule {
     if (!http) {
       throw new Error(
         'You need to import the HttpClientModule in your AppModule! \n' +
-          'See also https://github.com/angular/angular/issues/20575'
+          'See also https://github.com/angular/angular/issues/20575',
       );
     }
   }
