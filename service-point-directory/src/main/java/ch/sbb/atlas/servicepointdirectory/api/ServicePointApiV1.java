@@ -45,7 +45,7 @@ public interface ServicePointApiV1 {
       @Valid @ParameterObject ServicePointRequestParams servicePointRequestParams);
 
   @PostMapping("search")
-  List<ServicePointSearchResult> searchServicePoints(@RequestBody ServicePointSearchRequest value);
+  List<ServicePointSearchResult> searchServicePoints(@RequestBody @Valid ServicePointSearchRequest value);
 
   @PostMapping("search-sp-with-route-network")
   List<ServicePointSearchResult> searchServicePointsWithRouteNetworkTrue(@RequestBody @Valid ServicePointSearchRequest value);
