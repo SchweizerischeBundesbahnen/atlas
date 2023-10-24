@@ -13,9 +13,7 @@ import ch.sbb.importservice.writer.prm.stoppoint.StopPointApiWriter;
 import java.io.File;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ThreadPoolExecutor;
 import java.util.stream.Collectors;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -27,25 +25,23 @@ import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.task.TaskExecutor;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
-@AllArgsConstructor
 @Slf4j
-public class PRMImportBatchConfig {
+public class PRMImportBatchConfig extends BaseImportBatchJob {
 
   private static final int PRM_CHUNK_SIZE = 20;
-
-  private static final int THREAD_EXECUTION_SIZE = 64;
-
-  private final JobRepository jobRepository;
-  private final PlatformTransactionManager transactionManager;
   private final StopPointApiWriter stopPointApiWriter;
   private final StopPointCsvService stopPointCsvService;
-  private final JobCompletionListener jobCompletionListener;
-  private final StepTracerListener stepTracerListener;
+
+  protected PRMImportBatchConfig(JobRepository jobRepository, PlatformTransactionManager transactionManager,
+      JobCompletionListener jobCompletionListener, StepTracerListener stepTracerListener,
+      StopPointApiWriter stopPointApiWriter, StopPointCsvService stopPointCsvService) {
+    super(jobRepository, transactionManager,jobCompletionListener,stepTracerListener);
+    this.stopPointApiWriter = stopPointApiWriter;
+    this.stopPointCsvService = stopPointCsvService;
+  }
 
   @StepScope
   @Bean
@@ -78,7 +74,7 @@ public class PRMImportBatchConfig {
         .backOffPolicy(StepUtils.getBackOffPolicy(stepName))
         .retryPolicy(StepUtils.getRetryPolicy(stepName))
         .listener(stepTracerListener)
-        .taskExecutor(prmAsyncTaskExecutor())
+        .taskExecutor(asyncTaskExecutor())
         .build();
   }
 
@@ -90,17 +86,6 @@ public class PRMImportBatchConfig {
         .flow(parseStopPointCsvStep(stopPointListItemReader))
         .end()
         .build();
-  }
-
-  @Bean
-  public TaskExecutor prmAsyncTaskExecutor() {
-    ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
-    taskExecutor.setCorePoolSize(THREAD_EXECUTION_SIZE);
-    taskExecutor.setMaxPoolSize(THREAD_EXECUTION_SIZE);
-    taskExecutor.setQueueCapacity(THREAD_EXECUTION_SIZE);
-    taskExecutor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
-    taskExecutor.setThreadNamePrefix("Thread-");
-    return taskExecutor;
   }
 
 }
