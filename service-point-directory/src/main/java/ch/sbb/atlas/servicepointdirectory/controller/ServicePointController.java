@@ -95,15 +95,8 @@ public class ServicePointController implements ServicePointApiV1 {
     return servicePointImportService.importServicePoints(servicePointImportRequestModel.getServicePointCsvModelContainers());
   }
 
-  private static void setKilometerMasterNumberToNumberIfRouteNetworkTrue(CreateServicePointVersionModel createServicePointVersionModel) {
-    if (createServicePointVersionModel.isOperatingPointRouteNetwork()) {
-      createServicePointVersionModel.setOperatingPointKilometerMasterNumber(createServicePointVersionModel.getNumberWithoutCheckDigit());
-    }
-  }
-
   @Override
   public ReadServicePointVersionModel createServicePoint(CreateServicePointVersionModel createServicePointVersionModel) {
-    setKilometerMasterNumberToNumberIfRouteNetworkTrue(createServicePointVersionModel);
     ServicePointVersion servicePointVersion = ServicePointVersionMapper.toEntity(createServicePointVersionModel);
     if (servicePointService.isServicePointNumberExisting(servicePointVersion.getNumber())) {
       throw new ServicePointNumberAlreadyExistsException(servicePointVersion.getNumber());
@@ -117,7 +110,6 @@ public class ServicePointController implements ServicePointApiV1 {
   @Override
   public List<ReadServicePointVersionModel> updateServicePoint(Long id,
       CreateServicePointVersionModel createServicePointVersionModel) {
-    setKilometerMasterNumberToNumberIfRouteNetworkTrue(createServicePointVersionModel);
     ServicePointVersion servicePointVersionToUpdate = servicePointService.findById(id)
         .orElseThrow(() -> new IdNotFoundException(id));
 

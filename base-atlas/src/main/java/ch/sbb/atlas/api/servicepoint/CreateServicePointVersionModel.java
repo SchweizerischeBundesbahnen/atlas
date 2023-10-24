@@ -55,18 +55,12 @@ public class CreateServicePointVersionModel extends ServicePointVersionModel {
     return isOperatingPoint() && getOperatingPointType() == null;
   }
 
-  @JsonIgnore
-  @AssertTrue(message = "If OperatingPointRouteNetwork is true, then operatingPointKilometerMaster will be set to the same value as numberWithoutCheckDigit and it should not be sent in the request")
-  public boolean isKilometerMasterNotGivenIfOperatingPointRouteNetworkTrue() {
-    return !isOperatingPointRouteNetwork() || operatingPointKilometerMasterNumber == null;
+  public Integer getOperatingPointKilometerMasterNumber() {
+    if (isOperatingPointRouteNetwork()) {
+      return numberWithoutCheckDigit;
+    }
+    return operatingPointKilometerMasterNumber;
   }
-
-//  public Integer getOperatingPointKilometerMasterNumber() {
-//    if (this.isOperatingPointRouteNetwork()) {
-//      return this.numberWithoutCheckDigit;
-//    }
-//    return this.operatingPointKilometerMasterNumber;
-//  }
 
   @JsonIgnore
   @AssertTrue(message = "FreightServicePoint in CH needs sortCodeOfDestinationStation")
