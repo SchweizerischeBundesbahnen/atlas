@@ -12,6 +12,8 @@ export * from './lines.service';
 import { LinesService } from './lines.service';
 export * from './loadingPoints.service';
 import { LoadingPointsService } from './loadingPoints.service';
+export * from './pRMPersonWithReducedMobility.service';
+import { PRMPersonWithReducedMobilityService } from './pRMPersonWithReducedMobility.service';
 export * from './servicePoints.service';
 import { ServicePointsService } from './servicePoints.service';
 export * from './sublines.service';
@@ -42,6 +44,7 @@ export const APIS = [
   ImportServicePointBatchService,
   LinesService,
   LoadingPointsService,
+  PRMPersonWithReducedMobilityService,
   ServicePointsService,
   SublinesService,
   TimetableFieldNumbersService,

@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 
-import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
+import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointCsvModelContainer;
 import ch.sbb.atlas.model.controller.IntegrationTest;

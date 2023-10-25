@@ -1,5 +1,7 @@
 package ch.sbb.importservice.service.csv;
 
+import static ch.sbb.importservice.service.csv.CsvFileNameModel.SERVICEPOINT_DIDOK_DIR_NAME;
+
 import ch.sbb.atlas.imports.servicepoint.BaseDidokCsvModel;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointCsvModelContainer;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointElementCsvModel;
@@ -17,14 +19,24 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class TrafficPointCsvService extends CsvService<TrafficPointElementCsvModel> {
 
+  public static final String TRAFFIC_POINT_FILE_PREFIX = "DIDOK3_VERKEHRSPUNKTELEMENTE_ALL_V_1_";
+
   protected TrafficPointCsvService(FileHelperService fileHelperService,
       JobHelperService jobHelperService) {
     super(fileHelperService, jobHelperService);
   }
 
   @Override
-  protected String getFilePrefix() {
-    return FileHelperService.TRAFFIC_POINT_FILE_PREFIX;
+  protected CsvFileNameModel csvFileNameModel() {
+    return CsvFileNameModel.builder()
+        .fileName(TRAFFIC_POINT_FILE_PREFIX)
+        .s3BucketDir(SERVICEPOINT_DIDOK_DIR_NAME)
+        .addDateToPostfix(true).build();
+  }
+
+  @Override
+  protected String getModifiedDateHeader() {
+    return EDITED_AT_COLUMN_NAME_SERVICE_POINT;
   }
 
   @Override

@@ -33,7 +33,7 @@ public class ForbiddenDueToChosenServicePointVersionValidationPeriodException ex
                         " doesn't match with your own servicePointVersion validation period. " +
                         "Please check validation period of chosen servicePointVersion and kilometerMasterNumber.")
                 .field(servicePointNumber.getNumber().toString())
-                .displayInfo(builder().code("SEPODI.NOTIFICATION.OPERATION_NOT_ALLOWED_DUE_TO_VALIDATION_PERIOD").build())
+                .displayInfo(builder().code("SEPODI.SERVICE_POINTS.NOTIFICATION.OPERATION_NOT_ALLOWED_DUE_TO_VALIDATION_PERIOD").build())
                 .build());
     }
 }

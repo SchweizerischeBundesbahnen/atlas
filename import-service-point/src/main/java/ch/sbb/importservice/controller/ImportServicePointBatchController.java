@@ -3,10 +3,10 @@ package ch.sbb.importservice.controller;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_BATCH_PARAMETER;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_TYPE_PARAMETER;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.FULL_PATH_FILENAME_JOB_PARAMETER;
-import static ch.sbb.importservice.utils.JobDescriptionConstants.START_AT_JOB_PARAMETER;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_LOADING_POINT_CSV_JOB_NAME;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_SERVICE_POINT_CSV_JOB_NAME;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_TRAFFIC_POINT_CSV_JOB_NAME;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.START_AT_JOB_PARAMETER;
 
 import ch.sbb.atlas.batch.exception.JobExecutionException;
 import ch.sbb.importservice.service.FileHelperService;
@@ -14,6 +14,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -79,7 +81,7 @@ public class ImportServicePointBatchController {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200"),
   })
-  public ResponseEntity<?> startServicePointImport(@RequestParam("file") MultipartFile multipartFile) {
+  public ResponseEntity<String> startServicePointImport(@RequestParam("file") MultipartFile multipartFile) throws IOException {
     File file = fileHelperService.getFileFromMultipart(multipartFile);
     JobParameters jobParameters = new JobParametersBuilder()
         .addString(FULL_PATH_FILENAME_JOB_PARAMETER, file.getAbsolutePath())
@@ -92,7 +94,7 @@ public class ImportServicePointBatchController {
              JobParametersInvalidException | IllegalArgumentException e) {
       throw new JobExecutionException(IMPORT_SERVICE_POINT_CSV_JOB_NAME, e);
     } finally {
-      file.delete();
+      Files.delete(file.toPath());
     }
   }
 
@@ -120,7 +122,7 @@ public class ImportServicePointBatchController {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200"),
   })
-  public ResponseEntity<?> startLoadingPointImport(@RequestParam("file") MultipartFile multipartFile) {
+  public ResponseEntity<String> startLoadingPointImport(@RequestParam("file") MultipartFile multipartFile) throws IOException {
     File file = fileHelperService.getFileFromMultipart(multipartFile);
     JobParameters jobParameters = new JobParametersBuilder()
         .addString(FULL_PATH_FILENAME_JOB_PARAMETER, file.getAbsolutePath())
@@ -133,7 +135,7 @@ public class ImportServicePointBatchController {
              JobParametersInvalidException e) {
       throw new JobExecutionException(IMPORT_LOADING_POINT_CSV_JOB_NAME, e);
     } finally {
-      file.delete();
+      Files.delete(file.toPath());
     }
   }
 
@@ -161,7 +163,7 @@ public class ImportServicePointBatchController {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200"),
   })
-  public ResponseEntity<?> startTrafficPointImport(@RequestParam("file") MultipartFile multipartFile) {
+  public ResponseEntity<String> startTrafficPointImport(@RequestParam("file") MultipartFile multipartFile) throws IOException {
     File file = fileHelperService.getFileFromMultipart(multipartFile);
     JobParameters jobParameters = new JobParametersBuilder()
         .addString(FULL_PATH_FILENAME_JOB_PARAMETER, file.getAbsolutePath())
@@ -174,7 +176,7 @@ public class ImportServicePointBatchController {
              JobParametersInvalidException e) {
       throw new JobExecutionException(IMPORT_TRAFFIC_POINT_CSV_JOB_NAME, e);
     } finally {
-      file.delete();
+      Files.delete(file.toPath());
     }
   }
 

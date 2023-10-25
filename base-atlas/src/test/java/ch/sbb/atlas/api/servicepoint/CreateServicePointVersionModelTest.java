@@ -1,7 +1,5 @@
 package ch.sbb.atlas.api.servicepoint;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
@@ -10,10 +8,13 @@ import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
+import org.junit.jupiter.api.Test;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
-import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class CreateServicePointVersionModelTest {
 
@@ -212,4 +213,31 @@ class CreateServicePointVersionModelTest {
     Set<ConstraintViolation<CreateServicePointVersionModel>> constraintViolations = validator.validate(servicePointVersionModel);
     assertThat(constraintViolations).hasSize(1);
   }
+
+  @Test
+  void shouldSetOperatingPointKilometerMasterToNumberWithoutCheckDigitIfRouteNetworkTrue() {
+    int numberWithoutCheckDigit = 8034510;
+    int operatingPointKilometerMasterNumber = 8034511;
+    CreateServicePointVersionModel createServicePointVersionModel =
+            CreateServicePointVersionModel.builder()
+                    .numberWithoutCheckDigit(numberWithoutCheckDigit)
+                    .operatingPointRouteNetwork(true)
+                    .operatingPointKilometerMasterNumber(operatingPointKilometerMasterNumber)
+                    .build();
+    assertThat(createServicePointVersionModel.setKilomMasterNumberDependingOnRouteNetworkValue()).isEqualTo(numberWithoutCheckDigit);
+  }
+
+  @Test
+  void shouldSetOperatingPointKilometerMasterToOperatingPointKilometerMasterIfRouteNetworkFalse() {
+    int numberWithoutCheckDigit = 8034510;
+    int operatingPointKilometerMasterNumber = 8034511;
+    CreateServicePointVersionModel createServicePointVersionModel =
+            CreateServicePointVersionModel.builder()
+                    .numberWithoutCheckDigit(numberWithoutCheckDigit)
+                    .operatingPointRouteNetwork(false)
+                    .operatingPointKilometerMasterNumber(operatingPointKilometerMasterNumber)
+                    .build();
+    assertThat(createServicePointVersionModel.setKilomMasterNumberDependingOnRouteNetworkValue()).isEqualTo(operatingPointKilometerMasterNumber);
+  }
+
 }

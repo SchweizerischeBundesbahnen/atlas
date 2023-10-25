@@ -4,7 +4,7 @@ import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.CreateTrafficPointElementVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadTrafficPointElementVersionModel;
 import ch.sbb.atlas.configuration.Role;
-import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
+import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointImportRequestModel;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion.Fields;
@@ -13,7 +13,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import java.util.List;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
@@ -29,7 +28,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@Tag(name = "SePoDi - Traffic Point Elements")
+import java.util.List;
+
+@Tag(name = "TrafficPointElements")
 @RequestMapping("v1/traffic-point-elements")
 public interface TrafficPointElementApiV1 {
 

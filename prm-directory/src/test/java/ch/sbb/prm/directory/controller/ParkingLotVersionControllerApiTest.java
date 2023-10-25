@@ -11,19 +11,19 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.atlas.api.prm.model.parkinglot.CreateParkingLotVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.prm.directory.ParkingLotTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
-import ch.sbb.prm.directory.StopPlaceTestData;
-import ch.sbb.prm.directory.controller.model.parkinglot.CreateParkingLotVersionModel;
+import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.entity.ParkingLotVersion;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
-import ch.sbb.prm.directory.entity.StopPlaceVersion;
+import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.repository.ParkingLotRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
-import ch.sbb.prm.directory.repository.StopPlaceRepository;
+import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.service.RelationService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,17 +34,17 @@ import org.springframework.transaction.annotation.Transactional;
 class ParkingLotVersionControllerApiTest extends BaseControllerApiTest {
 
   private final ParkingLotRepository parkingLotRepository;
-  private final StopPlaceRepository stopPlaceRepository;
+  private final StopPointRepository stopPointRepository;
   private final ReferencePointRepository referencePointRepository;
 
   @MockBean
   private final RelationService relationService;
 
   @Autowired
-  ParkingLotVersionControllerApiTest(ParkingLotRepository parkingLotRepository, StopPlaceRepository stopPlaceRepository,
+  ParkingLotVersionControllerApiTest(ParkingLotRepository parkingLotRepository, StopPointRepository stopPointRepository,
       ReferencePointRepository referencePointRepository, RelationService relationService){
     this.parkingLotRepository = parkingLotRepository;
-    this.stopPlaceRepository = stopPlaceRepository;
+    this.stopPointRepository = stopPointRepository;
     this.referencePointRepository = referencePointRepository;
     this.relationService = relationService;
   }
@@ -63,9 +63,9 @@ class ParkingLotVersionControllerApiTest extends BaseControllerApiTest {
   void shouldCreateParkingLot() throws Exception {
     //given
     String parentServicePointSloid = "ch:1:sloid:7000";
-    StopPlaceVersion stopPlaceVersion = StopPlaceTestData.getStopPlaceVersion();
-    stopPlaceVersion.setSloid(parentServicePointSloid);
-    stopPlaceRepository.save(stopPlaceVersion);
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointRepository.save(stopPointVersion);
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
     referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
     referencePointRepository.save(referencePointVersion);
@@ -83,7 +83,7 @@ class ParkingLotVersionControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldNotCreateParkingLotWhenStopPlaceDoesNotExists() throws Exception {
+  void shouldNotCreateParkingLotWhenStopPointDoesNotExists() throws Exception {
     //given
     String parentServicePointSloid = "ch:1:sloid:7000";
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
@@ -116,9 +116,9 @@ class ParkingLotVersionControllerApiTest extends BaseControllerApiTest {
   void shouldUpdateParkingLot() throws Exception {
     //given
     String parentServicePointSloid = "ch:1:sloid:70000";
-    StopPlaceVersion stopPlaceVersion = StopPlaceTestData.getStopPlaceVersion();
-    stopPlaceVersion.setSloid(parentServicePointSloid);
-    stopPlaceRepository.save(stopPlaceVersion);
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointRepository.save(stopPointVersion);
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
     referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
     referencePointRepository.save(referencePointVersion);
@@ -136,7 +136,7 @@ class ParkingLotVersionControllerApiTest extends BaseControllerApiTest {
     editedVersionModel.setValidTo(version2.getValidTo().minusYears(1));
     editedVersionModel.setNumberWithoutCheckDigit(version2.getNumber().getNumber());
     editedVersionModel.setDesignation(version2.getDesignation());
-    editedVersionModel.setInfo(version2.getInfo());
+    editedVersionModel.setAdditionalInformation(version2.getAdditionalInformation());
     editedVersionModel.setPlacesAvailable(version2.getPlacesAvailable());
     editedVersionModel.setPrmPlacesAvailable(version2.getPrmPlacesAvailable());
     editedVersionModel.setCreationDate(version2.getCreationDate());
