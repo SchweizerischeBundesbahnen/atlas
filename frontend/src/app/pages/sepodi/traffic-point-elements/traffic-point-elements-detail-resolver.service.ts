@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, ResolveFn, Router } from '@angular/router';
 import { catchError, Observable, of } from 'rxjs';
-import { ReadTrafficPointElementVersionModel, TrafficPointElementsService } from '../../../api';
+import { ReadTrafficPointElementVersion, TrafficPointElementsService } from '../../../api';
 import { Pages } from '../../pages';
 
 @Injectable({ providedIn: 'root' })
@@ -11,7 +11,7 @@ export class TrafficPointElementsDetailResolver {
     private readonly router: Router,
   ) {}
 
-  resolve(route: ActivatedRouteSnapshot): Observable<Array<ReadTrafficPointElementVersionModel>> {
+  resolve(route: ActivatedRouteSnapshot): Observable<Array<ReadTrafficPointElementVersion>> {
     const idParameter = route.paramMap.get('id') || '';
     return idParameter === 'add'
       ? of([])
@@ -27,6 +27,6 @@ export class TrafficPointElementsDetailResolver {
   }
 }
 
-export const trafficPointResolver: ResolveFn<Array<ReadTrafficPointElementVersionModel>> = (
+export const trafficPointResolver: ResolveFn<Array<ReadTrafficPointElementVersion>> = (
   route: ActivatedRouteSnapshot,
 ) => inject(TrafficPointElementsDetailResolver).resolve(route);

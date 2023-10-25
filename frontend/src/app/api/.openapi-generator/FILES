@@ -54,7 +54,11 @@ model/containerLineVersionSnapshot.ts
 model/containerReadLoadingPointVersion.ts
 model/containerReadServicePointVersion.ts
 model/containerReadStopPointVersion.ts
+<<<<<<< HEAD
 model/containerReadTrafficPointElementVersionModel.ts
+=======
+model/containerReadTrafficPointElementVersion.ts
+>>>>>>> 0d5a2f109 (ATLAS-1307: Write type enum to DB)
 model/containerSubline.ts
 model/containerTimetableFieldNumber.ts
 model/containerTimetableHearingStatement.ts
@@ -75,7 +79,7 @@ model/createServicePointVersion.ts
 model/createStopPointVersion.ts
 model/createTicketCounterVersion.ts
 model/createToiletVersion.ts
-model/createTrafficPointElementVersionModel.ts
+model/createTrafficPointElementVersion.ts
 model/displayInfo.ts
 model/district.ts
 model/errorDetail.ts
@@ -126,7 +130,11 @@ model/readServicePointVersion.ts
 model/readStopPointVersion.ts
 model/readTicketCounterVersion.ts
 model/readToiletVersion.ts
+<<<<<<< HEAD
 model/readTrafficPointElementVersionModel.ts
+=======
+model/readTrafficPointElementVersion.ts
+>>>>>>> 0d5a2f109 (ATLAS-1307: Write type enum to DB)
 model/referencePointAttributeType.ts
 model/referencePointElementType.ts
 model/sboidPermissionRestrictionModel.ts
