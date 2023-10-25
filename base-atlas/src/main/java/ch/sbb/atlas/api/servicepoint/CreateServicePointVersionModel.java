@@ -55,11 +55,14 @@ public class CreateServicePointVersionModel extends ServicePointVersionModel {
     return isOperatingPoint() && getOperatingPointType() == null;
   }
 
-  public Integer getOperatingPointKilometerMasterNumber() {
-    if (isOperatingPointRouteNetwork()) {
-      return numberWithoutCheckDigit;
-    }
-    return operatingPointKilometerMasterNumber;
+  @JsonIgnore
+  @AssertTrue(message = "If OperatingPointRouteNetwork is true, then operatingPointKilometerMaster will be set to the same value as numberWithoutCheckDigit and it should not be sent in the request")
+  public boolean isKilometerMasterNotGivenIfOperatingPointRouteNetworkTrue() {
+    return !isOperatingPointRouteNetwork() || operatingPointKilometerMasterNumber == null;
+  }
+
+  public Integer setKilomMasterNumberDependingOnRouteNetworkValue() {
+    return isOperatingPointRouteNetwork() ? numberWithoutCheckDigit : operatingPointKilometerMasterNumber;
   }
 
   @JsonIgnore
