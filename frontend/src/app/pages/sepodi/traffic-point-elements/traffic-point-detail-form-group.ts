@@ -17,24 +17,31 @@ export interface TrafficPointElementDetailFormGroup extends BaseDetailFormGroup 
   boardingAreaHeight: FormControl<number | null | undefined>;
   compassDirection: FormControl<number | null | undefined>;
   etagVersion: FormControl<number | null | undefined>;
-  servicePointGeolocation: FormGroup<GeographyFormGroup>;
+  trafficPointGeolocation: FormGroup<GeographyFormGroup>;
 }
 
 export class TrafficPointElementFormGroupBuilder {
-  static buildFormGroup(version: ReadTrafficPointElementVersionModel): FormGroup {
+  static buildFormGroup(
+    version: ReadTrafficPointElementVersionModel,
+  ): FormGroup<TrafficPointElementDetailFormGroup> {
     const formGroup = new FormGroup<TrafficPointElementDetailFormGroup>(
       {
         sloid: new FormControl(version.sloid),
-        designationOperational: new FormControl(version.designationOperational),
-        parentSloid: new FormControl(version.parentSloid),
-        length: new FormControl(version.length),
-        boardingAreaHeight: new FormControl(version.boardingAreaHeight),
-        compassDirection: new FormControl(version.compassDirection),
-        designation: new FormControl(version.designation, [
-          Validators.required,
+        designationOperational: new FormControl(version.designationOperational, [
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
-          Validators.maxLength(30),
-          Validators.minLength(2),
+          Validators.maxLength(20),
+        ]),
+        parentSloid: new FormControl(version.parentSloid),
+        length: new FormControl(version.length, [AtlasCharsetsValidator.decimalWithDigits(3)]),
+        boardingAreaHeight: new FormControl(version.boardingAreaHeight, [
+          AtlasCharsetsValidator.decimalWithDigits(2),
+        ]),
+        compassDirection: new FormControl(version.compassDirection, [
+          AtlasCharsetsValidator.decimalWithDigits(2),
+        ]),
+        designation: new FormControl(version.designation, [
+          WhitespaceValidator.blankOrEmptySpaceSurrounding,
+          Validators.maxLength(40),
         ]),
         validFrom: new FormControl(
           version.validFrom ? moment(version.validFrom) : version.validFrom,
@@ -43,7 +50,7 @@ export class TrafficPointElementFormGroupBuilder {
         validTo: new FormControl(version.validTo ? moment(version.validTo) : version.validTo, [
           Validators.required,
         ]),
-        servicePointGeolocation: new FormGroup<GeographyFormGroup>({
+        trafficPointGeolocation: new FormGroup<GeographyFormGroup>({
           east: new FormControl(this.getCoordinates(version)?.east, [
             this.getValidatorForCoordinates(
               version.trafficPointElementGeolocation?.spatialReference,
