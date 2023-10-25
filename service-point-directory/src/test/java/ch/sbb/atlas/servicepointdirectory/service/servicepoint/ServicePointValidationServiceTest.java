@@ -139,7 +139,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
       ServicePointVersion servicePointVersion = ServicePointVersionMapper.toEntity(createServicePointVersionModel);
 
-      assertDoesNotThrow(() -> servicePointValidationService.validateAndSetAbbreviationForCreate(servicePointVersion));
+      assertDoesNotThrow(() -> servicePointValidationService.validateAndSetAbbreviation(servicePointVersion));
   }
     @Test
     void shouldThrowExceptionWhenServicePointBusinessOrganisationIsNotInAllowedList(){
@@ -156,7 +156,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 
         assertThrows(AbbreviationUpdateNotAllowedException.class,
-            () -> servicePointValidationService.commonAbbreviationValidation(servicePointVersion));
+            () -> servicePointValidationService.validateAndSetAbbreviation(servicePointVersion));
     }
 
     @Test
@@ -173,7 +173,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
         ServicePointVersion servicePointVersion = ServicePointVersionMapper.toEntity(createServicePointVersionModel);
 
         assertThrows(InvalidAbbreviationException.class,
-            () -> servicePointValidationService.commonAbbreviationValidation(servicePointVersion));
+            () -> servicePointValidationService.validateAndSetAbbreviation(servicePointVersion));
     }
 
     @Test
@@ -197,7 +197,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 
         assertThrows(AbbreviationUpdateNotAllowedException.class,
-            () -> servicePointValidationService.validateAndSetAbbreviationForUpdate(createdServicePoint, servicePointVersion2));
+            () -> servicePointValidationService.validateAndSetAbbreviation(servicePointVersion2));
     }
 
     @Test
@@ -220,7 +220,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
             .build();
 
         assertThrows(InvalidAbbreviationException.class,
-            () -> servicePointValidationService.validateAndSetAbbreviationForUpdate(createdServicePoint, servicePointVersion2));
+            () -> servicePointValidationService.validateAndSetAbbreviation(servicePointVersion2));
     }
 
     @Test
@@ -244,6 +244,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
             .build();
 
 
-        assertDoesNotThrow(() -> servicePointValidationService.validateAndSetAbbreviationForUpdate(createdServicePoint, editedVersion));
+        assertDoesNotThrow(() -> servicePointValidationService.validateAndSetAbbreviation(editedVersion));
     }
 }
