@@ -48,6 +48,7 @@ public class ServicePointTestData {
         .meansOfTransport(Set.of(MeanOfTransport.BUS))
         .operatingPoint(true)
         .operatingPointWithTimetable(true)
+        .operatingPointRouteNetwork(true)
         .creationDate(LocalDateTime.of(LocalDate.of(2021, 3, 22), LocalTime.of(9, 26, 29)))
         .creator("fs45117")
         .editionDate(LocalDateTime.of(LocalDate.of(2022, 2, 23), LocalTime.of(17, 10, 10)))
@@ -145,6 +146,7 @@ public class ServicePointTestData {
         .categories(new HashSet<>())
         .meansOfTransport(Collections.emptySet())
         .operatingPoint(true)
+        .operatingPointRouteNetwork(true)
         .operatingPointWithTimetable(true)
         .operatingPointTechnicalTimetableType(OperatingPointTechnicalTimetableType.LANE_CHANGE)
         .creationDate(LocalDateTime.of(LocalDate.of(2018, 1, 31), LocalTime.of(13, 2, 54)))
@@ -430,6 +432,12 @@ public class ServicePointTestData {
         .validFrom(LocalDate.of(2010, 12, 11))
         .validTo(LocalDate.of(2099, 8, 10))
         .build();
+  }
+
+  public static CreateServicePointVersionModel getAargauServicePointVersionModelWithRouteNetworkFalse() {
+    CreateServicePointVersionModel createServicePointVersionModel = getAargauServicePointVersionModel();
+    createServicePointVersionModel.setOperatingPointRouteNetwork(false);
+    return createServicePointVersionModel;
   }
 
 }

@@ -46,6 +46,7 @@ import java.util.List;
 import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.LV95;
 import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.WGS84;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -89,7 +90,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.id, is(servicePointVersion.getId().intValue())))
         .andExpect(jsonPath("$[0].number.number", is(8589008)))
         .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.designationOfficial, is("Bern, Wyleregg")))
-        .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.operatingPointRouteNetwork, is(false)))
+        .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.operatingPointRouteNetwork, is(true)))
 
         // IS_BETRIEBSPUNKT
         .andExpect(jsonPath("$[0].operatingPoint", is(true)))
@@ -141,6 +142,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
             .andExpect(jsonPath("$[0].designationOfficial", is("Bern, Wyleregg")));
   }
 
+ @Test
+ void whenSearchRequestForSearchSePoWithNetworkTrueValidThenShouldFindServicePointSuccessfully() throws Exception {
+     // given
+     ServicePointSearchRequest request = new ServicePointSearchRequest("bern");
+     String jsonString = mapper.writeValueAsString(request);
+
+     // when
+     mvc.perform(post("/v1/service-points/search-sp-with-route-network")
+                     .content(jsonString)
+                     .contentType(contentType))
+             // then
+             .andExpect(status().isOk())
+             .andExpect(jsonPath("$[0].number", is(8589008)))
+             .andExpect(jsonPath("$[0].designationOfficial", is("Bern, Wyleregg")));
+ }
   @Test
   void shouldReturnEmptyListWhenNoMatchFound() throws Exception {
     // given
@@ -156,6 +172,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
             .andExpect(jsonPath("$", hasSize(0)));
   }
 
+ @Test
+ void whenSearchRequestForSearchSePoWithNetworkTrueValidThenShouldReturnEmptyList() throws Exception {
+     // given
+     ServicePointSearchRequest request = new ServicePointSearchRequest("zug");
+     String jsonString = mapper.writeValueAsString(request);
+
+     // when
+     mvc.perform(post("/v1/service-points/search-sp-with-route-network")
+                     .content(jsonString)
+                     .contentType(contentType))
+             // then
+             .andExpect(status().isOk())
+             .andExpect(jsonPath("$", hasSize(0)));
+ }
+
   @Test
   void shouldReturnBadRequestWhenSearchWhitLessThanTwoDigit() throws Exception {
     // given
@@ -168,8 +199,41 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
                     .contentType(contentType))
             // then
             .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("$.message", is("You must enter at least 2 digits to start a search!")));
+            .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
+            .andExpect(jsonPath("$.details.[0].message", endsWith("You must enter at least 2 digits to start a search!")));
   }
+
+ @Test
+ void whenSearchRequestForSearchSePoWithNetworkTrueWithLessThanTwoDigitsThenShouldReturnBadRequest() throws Exception {
+     // given
+     ServicePointSearchRequest request = new ServicePointSearchRequest("b");
+     String jsonString = mapper.writeValueAsString(request);
+
+     // when
+     mvc.perform(post("/v1/service-points/search-sp-with-route-network")
+                     .content(jsonString)
+                     .contentType(contentType))
+             // then
+             .andExpect(status().isBadRequest())
+             .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
+             .andExpect(jsonPath("$.details.[0].message", endsWith("You must enter at least 2 digits to start a search!")));
+ }
+
+ @Test
+ void whenSearchRequestForSearchSePoWithNetworkTrueNullThenShouldReturnBadRequest() throws Exception {
+     // given
+     ServicePointSearchRequest request = new ServicePointSearchRequest(null);
+     String jsonString = mapper.writeValueAsString(request);
+
+     // when
+     mvc.perform(post("/v1/service-points/search-sp-with-route-network")
+                     .content(jsonString)
+                     .contentType(contentType))
+             // then
+             .andExpect(status().isBadRequest())
+             .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
+             .andExpect(jsonPath("$.details.[0].message", endsWith("You must enter at least 2 digits to start a search!")));
+ }
 
   @Test
   void shouldFindServicePointVersionByModifiedAfter() throws Exception {
@@ -362,6 +426,124 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         .andExpect(jsonPath("$.creator", is("e123456")));
   }
 
+ @Test
+ void shouldThrowExceptionWhenOperatingPointRouteNetworkTrueAndOperatingPointKilometerMasterNotNull() throws Exception {
+     CreateServicePointVersionModel aargauServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
+     aargauServicePointVersionModel.setOperatingPointKilometerMasterNumber(8034511);
+     mvc.perform(post("/v1/service-points")
+                     .contentType(contentType)
+                     .content(mapper.writeValueAsString(aargauServicePointVersionModel)))
+             .andExpect(status().isBadRequest())
+             .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
+             .andExpect(jsonPath("$.details.[0].message", endsWith("If OperatingPointRouteNetwork is true, then operatingPointKilometerMaster will be set to the same value as numberWithoutCheckDigit and it should not be sent in the request")));
+ }
+
+ @Test
+ void shouldCreateServicePointWhenOperatingPointRouteNetworkTrueAndOperatingPointKilometerMasterNull() throws Exception {
+     CreateServicePointVersionModel aargauServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
+     aargauServicePointVersionModel.setOperatingPointKilometerMasterNumber(null);
+     mvc.perform(post("/v1/service-points")
+                     .contentType(contentType)
+                     .content(mapper.writeValueAsString(aargauServicePointVersionModel)))
+             .andExpect(status().isCreated())
+             .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.id, is(servicePointVersion.getId().intValue() + 1)))
+             .andExpect(jsonPath("$.number.number", is(8034510)))
+             .andExpect(jsonPath("$.number.numberShort", is(34510)))
+             .andExpect(jsonPath("$.number.checkDigit", is(8)))
+             .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.operatingPointRouteNetwork, is(true)))
+             .andExpect(jsonPath("$.operatingPointKilometerMaster.number", is(8034510)))
+             .andExpect(jsonPath("$.operatingPointKilometerMaster.numberShort", is(34510)))
+             .andExpect(jsonPath("$.operatingPointKilometerMaster.checkDigit", is(8)));
+ }
+
+ @Test
+ void shouldCreateServicePointWhenOperatingPointRouteNetworkFalseAndOperatingPointKilometerMasterNotNull() throws Exception {
+     CreateServicePointVersionModel aargauServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
+     aargauServicePointVersionModel.setOperatingPointRouteNetwork(false);
+     aargauServicePointVersionModel.setOperatingPointKilometerMasterNumber(8589008);
+     aargauServicePointVersionModel.setValidFrom(LocalDate.of(2014, 12, 14));
+     aargauServicePointVersionModel.setValidTo(LocalDate.of(2021, 3, 31));
+     mvc.perform(post("/v1/service-points")
+                     .contentType(contentType)
+                     .content(mapper.writeValueAsString(aargauServicePointVersionModel)))
+             .andExpect(status().isCreated())
+             .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.id, is(servicePointVersion.getId().intValue() + 1)))
+             .andExpect(jsonPath("$.number.number", is(8034510)))
+             .andExpect(jsonPath("$.number.numberShort", is(34510)))
+             .andExpect(jsonPath("$.number.checkDigit", is(8)))
+             .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.operatingPointRouteNetwork, is(false)))
+             .andExpect(jsonPath("$.operatingPointKilometerMaster.number", is(8589008)))
+             .andExpect(jsonPath("$.operatingPointKilometerMaster.numberShort", is(89008)))
+             .andExpect(jsonPath("$.operatingPointKilometerMaster.checkDigit", is(7)));
+ }
+
+ @Test
+ void shouldCreateServicePointWhenOperatingPointRouteNetworkFalseAndOperatingPointKilometerMasterNull() throws Exception {
+     CreateServicePointVersionModel aargauServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
+     aargauServicePointVersionModel.setOperatingPointRouteNetwork(false);
+     aargauServicePointVersionModel.setOperatingPointKilometerMasterNumber(null);
+     mvc.perform(post("/v1/service-points")
+                     .contentType(contentType)
+                     .content(mapper.writeValueAsString(aargauServicePointVersionModel)))
+             .andExpect(status().isCreated())
+             .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.id, is(servicePointVersion.getId().intValue() + 1)))
+             .andExpect(jsonPath("$.number.number", is(8034510)))
+             .andExpect(jsonPath("$.number.numberShort", is(34510)))
+             .andExpect(jsonPath("$.number.checkDigit", is(8)))
+             .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.operatingPointRouteNetwork, is(false)));
+ }
+
+ @Test
+ void shouldCreateServicePointWithRouteNetworkTrue() throws Exception {
+
+     CreateServicePointVersionModel servicePointWithOperationPointRouteNetworkTrue = ServicePointTestData.getAargauServicePointVersionModel();
+     servicePointWithOperationPointRouteNetworkTrue.setOperatingPointRouteNetwork(true);
+
+     mvc.perform(post("/v1/service-points")
+                     .contentType(contentType)
+                     .content(mapper.writeValueAsString(servicePointWithOperationPointRouteNetworkTrue)))
+             .andExpect(status().isCreated())
+             .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.id, is(servicePointVersion.getId().intValue() + 1)))
+             .andExpect(jsonPath("$.number.number", is(8034510)))
+             .andExpect(jsonPath("$.number.numberShort", is(34510)))
+             .andExpect(jsonPath("$.number.checkDigit", is(8)))
+             .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.designationOfficial, is("Aargau Strasse")))
+             .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.sloid, is("ch:1:sloid:18771")))
+             .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.designationLong, is("designation long 1")))
+             .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.abbreviation, is("3")))
+             .andExpect(jsonPath("$.operatingPoint", is(true)))
+             .andExpect(jsonPath("$.operatingPointWithTimetable", is(true)))
+             .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.freightServicePoint, is(false)))
+             .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.sortCodeOfDestinationStation, is("39136")))
+             .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.businessOrganisation, is("ch:1:sboid:100871")))
+             .andExpect(jsonPath("$.categories[0]", is("POINT_OF_SALE")))
+             .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.operatingPointRouteNetwork, is(true)))
+             .andExpect(jsonPath("$.operatingPointKilometerMaster.number", is(8034510)))
+             .andExpect(jsonPath("$.operatingPointKilometerMaster.numberShort", is(34510)))
+             .andExpect(jsonPath("$.operatingPointKilometerMaster.checkDigit", is(8)))
+             .andExpect(jsonPath("$.meansOfTransport[0]", is("TRAIN")))
+             .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.stopPointType, is("ON_REQUEST")))
+             .andExpect(jsonPath("$.servicePointGeolocation.spatialReference", is(LV95.toString())))
+             .andExpect(jsonPath("$.servicePointGeolocation.lv95.north", is(1201099.0)))
+             .andExpect(jsonPath("$.servicePointGeolocation.lv95.east", is(2600783.0)))
+             .andExpect(jsonPath("$.servicePointGeolocation.wgs84.north", is(46.96096808019)))
+             .andExpect(jsonPath("$.servicePointGeolocation.wgs84.east", is(7.44891972221)))
+             .andExpect(jsonPath("$.servicePointGeolocation.swissLocation.canton", is("BERN")))
+             .andExpect(jsonPath("$.servicePointGeolocation.swissLocation.district.districtName", is("Bern-Mittelland")))
+             .andExpect(jsonPath("$.servicePointGeolocation.swissLocation.localityMunicipality.municipalityName", is("Bern")))
+             .andExpect(jsonPath("$.servicePointGeolocation.swissLocation.localityMunicipality.localityName", is("Bern")))
+             .andExpect(jsonPath("$." + ReadServicePointVersionModel.Fields.status, is("VALIDATED")))
+             .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.validFrom, is("2010-12-11")))
+             .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.validTo, is("2019-08-10")))
+             .andExpect(jsonPath("$.operatingPointKilometer", is(true)))
+             .andExpect(jsonPath("$.stopPoint", is(true)))
+             .andExpect(jsonPath("$.fareStop", is(false)))
+             .andExpect(jsonPath("$.borderPoint", is(false)))
+             .andExpect(jsonPath("$.trafficPoint", is(true)))
+             .andExpect(jsonPath("$.hasGeolocation", is(true)))
+             .andExpect(jsonPath("$.creator", is("e123456")));
+ }
+
   @Test
    void shouldUpdateServicePointAndCreateMultipleVersions() throws Exception {
     ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
@@ -405,10 +587,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
   @Test
    void shouldUpdateServicePointAndNotCreateMultipleVersions() throws Exception {
     ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
-        ServicePointTestData.getAargauServicePointVersionModel());
+        ServicePointTestData.getAargauServicePointVersionModelWithRouteNetworkFalse());
     Long id = servicePointVersionModel.getId();
 
-    CreateServicePointVersionModel newServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
+    CreateServicePointVersionModel newServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModelWithRouteNetworkFalse();
     newServicePointVersionModel.setServicePointGeolocation(
         ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation()));
 
@@ -418,6 +600,28 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(1)));
   }
+
+ @Test
+ void shouldUpdateServicePointWithRouteNetworkTrueAndNotCreateMultipleVersions() throws Exception {
+     ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
+             ServicePointTestData.getAargauServicePointVersionModel());
+     Long id = servicePointVersionModel.getId();
+
+     CreateServicePointVersionModel newServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
+     newServicePointVersionModel.setServicePointGeolocation(
+             ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation()));
+     newServicePointVersionModel.setOperatingPointRouteNetwork(true);
+
+     mvc.perform(put("/v1/service-points/" + id)
+                     .contentType(contentType)
+                     .content(mapper.writeValueAsString(newServicePointVersionModel)))
+             .andExpect(status().isOk())
+             .andExpect(jsonPath("$[0].operatingPointRouteNetwork", is(true)))
+             .andExpect(jsonPath("$[0].operatingPointKilometerMaster.number", is(8034510)))
+             .andExpect(jsonPath("$[0].operatingPointKilometerMaster.numberShort", is(34510)))
+             .andExpect(jsonPath("$[0].operatingPointKilometerMaster.checkDigit", is(8)))
+             .andExpect(jsonPath("$", hasSize(1)));
+ }
 
  @Test
  void shouldThrowForbiddenDueToChosenServicePointVersionValidationPeriod() throws Exception {
@@ -475,7 +679,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
   void shouldReturnOptimisticLockingErrorResponse() throws Exception {
     //given
     CreateServicePointVersionModel createServicePointVersionModel =
-        ServicePointTestData.getAargauServicePointVersionModel();
+        ServicePointTestData.getAargauServicePointVersionModelWithRouteNetworkFalse();
     ReadServicePointVersionModel savedServicePoint = servicePointController.createServicePoint(createServicePointVersionModel);
 
     // When first update it is ok
@@ -534,7 +738,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
   @Test
   void shouldCreateServicePointWithLv03ConvertingToLv95() throws Exception {
-    CreateServicePointVersionModel aargauServicePointVersion = ServicePointTestData.getAargauServicePointVersionModel();
+    CreateServicePointVersionModel aargauServicePointVersion = ServicePointTestData.getAargauServicePointVersionModelWithRouteNetworkFalse();
     aargauServicePointVersion.getServicePointGeolocation().setSpatialReference(SpatialReference.LV03);
     aargauServicePointVersion.getServicePointGeolocation().setEast(600127.58303);
     aargauServicePointVersion.getServicePointGeolocation().setNorth(199776.88044);
@@ -559,7 +763,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
   @Test
   void shouldCreateServicePointWithWgs84webConvertingToWgs84() throws Exception {
-    CreateServicePointVersionModel aargauServicePointVersion = ServicePointTestData.getAargauServicePointVersionModel();
+    CreateServicePointVersionModel aargauServicePointVersion = ServicePointTestData.getAargauServicePointVersionModelWithRouteNetworkFalse();
     aargauServicePointVersion.getServicePointGeolocation().setSpatialReference(SpatialReference.WGS84WEB);
     aargauServicePointVersion.getServicePointGeolocation().setEast(828251.335735);
     aargauServicePointVersion.getServicePointGeolocation().setNorth(5933765.900287);
