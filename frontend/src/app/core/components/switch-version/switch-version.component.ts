@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { Record } from '../base-detail/record';
 import { DateService } from '../../date/date.service';
 import { TableColumn } from '../table/table-column';
@@ -10,30 +10,40 @@ import { TranslatePipe } from '@ngx-translate/core';
   templateUrl: './switch-version.component.html',
   styleUrls: ['./switch-version.component.scss'],
 })
-export class SwitchVersionComponent implements OnChanges {
+export class SwitchVersionComponent implements OnInit, OnChanges {
   @Input() records!: Array<Record>;
   @Input() currentRecord!: Record;
   @Input() switchDisabled = false;
+  @Input() showStatus = true;
   @Output() switchVersion = new EventEmitter<number>();
 
   currentIndex: number;
-  tableColumns: TableColumn<Record>[] = [
-    {
-      headerTitle: 'VERSION_TABLE.VERSION_DESCRIPTION',
-      value: 'versionNumber',
-      translate: { withKey: 'COMMON.VERSION' },
-    },
-    { headerTitle: 'COMMON.VALID_FROM', value: 'validFrom', formatAsDate: true },
-    { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
-    {
-      headerTitle: 'COMMON.STATUS',
-      value: 'status',
-      translate: { withPrefix: 'COMMON.STATUS_TYPES.' },
-    },
-  ];
+  tableColumns: TableColumn<Record>[] = [];
 
   constructor(private readonly translatePipe: TranslatePipe) {
     this.currentIndex = 0;
+  }
+
+  ngOnInit() {
+    this.tableColumns = [
+      {
+        headerTitle: 'VERSION_TABLE.VERSION_DESCRIPTION',
+        value: 'versionNumber',
+        translate: { withKey: 'COMMON.VERSION' },
+      },
+      { headerTitle: 'COMMON.VALID_FROM', value: 'validFrom', formatAsDate: true },
+      { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
+    ];
+    if (this.showStatus) {
+      this.tableColumns = [
+        ...this.tableColumns,
+        {
+          headerTitle: 'COMMON.STATUS',
+          value: 'status',
+          translate: { withPrefix: 'COMMON.STATUS_TYPES.' },
+        },
+      ];
+    }
   }
 
   ngOnChanges() {
