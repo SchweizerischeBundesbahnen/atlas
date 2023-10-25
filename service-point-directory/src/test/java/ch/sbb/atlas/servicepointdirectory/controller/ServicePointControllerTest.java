@@ -5,6 +5,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
+import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberAlreadyExistsException;
 import ch.sbb.atlas.servicepointdirectory.service.ServicePointDistributor;
@@ -49,7 +50,8 @@ class ServicePointControllerTest {
   void shouldReturnConflictExceptionWhenNumberAlreadyUsed() {
     when(servicePointService.isServicePointNumberExisting(any())).thenReturn(true);
     CreateServicePointVersionModel servicePointVersionModel = CreateServicePointVersionModel.builder()
-        .numberShort(8507000)
+        .numberShort(7000)
+        .country(Country.JAPAN)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
         .validFrom(LocalDate.of(2022, 1, 1))

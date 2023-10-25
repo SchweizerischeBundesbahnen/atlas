@@ -38,4 +38,13 @@ export class CoordinateTransformationService {
   private isCoordinatePairNotZero(coordinates: CoordinatePair): boolean {
     return coordinates.north !== 0 && coordinates.east !== 0;
   }
+
+  isValidCoordinatePair(coordinates: CoordinatePair): boolean {
+    return (
+      coordinates.north >= -90 &&
+      coordinates.north <= 90 &&
+      coordinates.east >= -180 &&
+      coordinates.east <= 180
+    );
+  }
 }

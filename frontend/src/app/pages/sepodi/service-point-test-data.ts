@@ -1,4 +1,4 @@
-import { ReadServicePointVersion, SpatialReference } from '../../api';
+import { Country, ReadServicePointVersion, SpatialReference } from '../../api';
 
 export const BERN_WYLEREGG: ReadServicePointVersion = {
   creationDate: '2021-03-22T09:26:29',
@@ -53,6 +53,7 @@ export const BERN_WYLEREGG: ReadServicePointVersion = {
   validTo: new Date('2021-03-31'),
   etagVersion: 0,
   number: { number: 8589008, checkDigit: 7, uicCountryCode: 85, numberShort: 89008 },
+  country: Country.Switzerland,
   operatingPointKilometerMaster: undefined,
   operatingPointKilometer: false,
   stopPoint: true,
@@ -132,6 +133,7 @@ export const BERN: ReadServicePointVersion[] = [
       checkDigit: 3,
       uicCountryCode: 85,
     },
+    country: Country.Switzerland,
     operatingPointKilometerMaster: undefined,
     operatingPointKilometer: false,
     borderPoint: false,
@@ -209,6 +211,7 @@ export const BERN: ReadServicePointVersion[] = [
       checkDigit: 3,
       uicCountryCode: 85,
     },
+    country: Country.Switzerland,
     operatingPointKilometerMaster: undefined,
     operatingPointKilometer: false,
     borderPoint: false,
@@ -286,6 +289,7 @@ export const BERN: ReadServicePointVersion[] = [
       checkDigit: 3,
       uicCountryCode: 85,
     },
+    country: Country.Switzerland,
     operatingPointKilometerMaster: {
       number: 8507000,
       numberShort: 7000,
@@ -368,6 +372,7 @@ export const BERN: ReadServicePointVersion[] = [
       checkDigit: 3,
       uicCountryCode: 85,
     },
+    country: Country.Switzerland,
     operatingPointKilometerMaster: {
       number: 8507000,
       numberShort: 7000,
@@ -450,6 +455,7 @@ export const BERN: ReadServicePointVersion[] = [
       checkDigit: 3,
       uicCountryCode: 85,
     },
+    country: Country.Switzerland,
     operatingPointKilometerMaster: {
       number: 8507000,
       numberShort: 7000,
@@ -532,6 +538,7 @@ export const BERN: ReadServicePointVersion[] = [
       checkDigit: 3,
       uicCountryCode: 85,
     },
+    country: Country.Switzerland,
     operatingPointKilometerMaster: {
       number: 8507000,
       numberShort: 7000,
