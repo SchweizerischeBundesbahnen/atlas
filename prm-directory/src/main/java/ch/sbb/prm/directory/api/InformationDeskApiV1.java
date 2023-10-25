@@ -1,7 +1,7 @@
 package ch.sbb.prm.directory.api;
 
-import ch.sbb.prm.directory.controller.model.informationdesk.CreateInformationDeskVersionModel;
-import ch.sbb.prm.directory.controller.model.informationdesk.ReadInformationDeskVersionModel;
+import ch.sbb.atlas.api.prm.model.informationdesk.CreateInformationDeskVersionModel;
+import ch.sbb.atlas.api.prm.model.informationdesk.ReadInformationDeskVersionModel;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;

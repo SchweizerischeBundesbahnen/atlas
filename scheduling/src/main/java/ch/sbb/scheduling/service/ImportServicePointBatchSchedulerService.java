@@ -52,4 +52,15 @@ public class ImportServicePointBatchSchedulerService extends BaseSchedulerServic
         "Trigger Import Loading Point Batch");
   }
 
+
+  @SpanTracing
+  @Retryable(label = "triggerImportStopPointBatch", retryFor = SchedulingExecutionException.class, maxAttempts = 4, backoff =
+  @Backoff(delay = 65000))
+  @Scheduled(cron = "${scheduler.import-service-point.stop-point-trigger-batch.chron}", zone = "${scheduler.zone}")
+  @SchedulerLock(name = "triggerImportStopPointBatch", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
+  public Response triggerImportStopPointBatch() {
+    return executeRequest(importServicePointBatchClient::triggerImportStopPointBatch,
+        "Trigger Import Stop Point Batch");
+  }
+
 }

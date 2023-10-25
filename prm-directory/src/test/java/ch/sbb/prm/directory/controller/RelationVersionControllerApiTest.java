@@ -1,7 +1,7 @@
 package ch.sbb.prm.directory.controller;
 
-import static ch.sbb.prm.directory.enumeration.ReferencePointElementType.PARKING_LOT;
-import static ch.sbb.prm.directory.enumeration.ReferencePointElementType.PLATFORM;
+import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PARKING_LOT;
+import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PLATFORM;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -10,12 +10,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
+import ch.sbb.atlas.api.prm.model.relation.CreateRelationVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.prm.directory.RelationTestData;
-import ch.sbb.prm.directory.controller.model.relation.CreateRelationVersionModel;
 import ch.sbb.prm.directory.entity.RelationVersion;
-import ch.sbb.prm.directory.enumeration.StandardAttributeType;
 import ch.sbb.prm.directory.repository.RelationRepository;
 import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
@@ -133,17 +133,21 @@ class RelationVersionControllerApiTest extends BaseControllerApiTest {
   void shouldUpdateRelation() throws Exception {
     //given
     String parentServicePointSloid = "ch:1:sloid:8507000";
+    String referencePointSloid = "ch:1:sloid:8507000:1";
     RelationVersion version1 = RelationTestData.builderVersion1().build();
     version1.setParentServicePointSloid(parentServicePointSloid);
+    version1.setReferencePointSloid(referencePointSloid);
     relationRepository.saveAndFlush(version1);
     RelationVersion version2 = RelationTestData.builderVersion2().build();
     version2.setParentServicePointSloid(parentServicePointSloid);
+    version2.setReferencePointSloid(referencePointSloid);
     relationRepository.saveAndFlush(version2);
 
     CreateRelationVersionModel editedVersionModel = new CreateRelationVersionModel();
     editedVersionModel.setNumberWithoutCheckDigit(version2.getNumber().getNumber());
     editedVersionModel.setParentServicePointSloid(parentServicePointSloid);
     editedVersionModel.setSloid(version2.getSloid());
+    editedVersionModel.setReferencePointSloid(version2.getReferencePointSloid());
     editedVersionModel.setValidFrom(version2.getValidFrom());
     editedVersionModel.setValidTo(version2.getValidTo().minusYears(1));
     editedVersionModel.setContrastingAreas(version2.getContrastingAreas());

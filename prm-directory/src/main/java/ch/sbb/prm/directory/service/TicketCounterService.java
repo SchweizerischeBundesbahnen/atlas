@@ -1,13 +1,13 @@
 package ch.sbb.prm.directory.service;
 
-import static ch.sbb.prm.directory.enumeration.ReferencePointElementType.TICKET_COUNTER;
+import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.TICKET_COUNTER;
 
+import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.TicketCounterVersion;
-import ch.sbb.prm.directory.enumeration.ReferencePointElementType;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.TicketCounterRepository;
 import java.util.List;
@@ -21,9 +21,9 @@ public class TicketCounterService extends PrmRelatableVersionableService<TicketC
 
   private final TicketCounterRepository ticketCounterRepository;
 
-  public TicketCounterService(TicketCounterRepository ticketCounterRepository, StopPlaceService stopPlaceRepository,
+  public TicketCounterService(TicketCounterRepository ticketCounterRepository, StopPointService stopPointService,
       RelationService relationService, ReferencePointRepository referencePointRepository, VersionableService versionableService) {
-    super(versionableService, stopPlaceRepository, relationService, referencePointRepository);
+    super(versionableService, stopPointService, relationService, referencePointRepository);
     this.ticketCounterRepository = ticketCounterRepository;
   }
 
