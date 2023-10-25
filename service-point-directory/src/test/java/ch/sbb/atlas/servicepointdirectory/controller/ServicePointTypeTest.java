@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
-import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
@@ -53,7 +52,8 @@ class ServicePointTypeTest extends BaseControllerApiTest {
   @Test
   void shouldCreatePlainServicePoint() {
     CreateServicePointVersionModel servicePoint = CreateServicePointVersionModel.builder()
-        .numberShort(8507000)
+        .numberShort(7000)
+        .country(Country.SWITZERLAND)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
         .validFrom(LocalDate.of(2022, 1, 1))
@@ -70,7 +70,8 @@ class ServicePointTypeTest extends BaseControllerApiTest {
   @Test
   void shouldCreateOperatingPointServicePointAsInventoryPoint() {
     CreateServicePointVersionModel servicePoint = CreateServicePointVersionModel.builder()
-        .numberShort(8507000)
+        .numberShort(7000)
+        .country(Country.SWITZERLAND)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
         .operatingPointType(OperatingPointType.INVENTORY_POINT)
@@ -88,7 +89,8 @@ class ServicePointTypeTest extends BaseControllerApiTest {
   @Test
   void shouldCreateOperatingPointServicePointAsOperatingPointBus() {
     CreateServicePointVersionModel servicePoint = CreateServicePointVersionModel.builder()
-        .numberShort(8507000)
+        .numberShort(7000)
+        .country(Country.SWITZERLAND)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
         .operatingPointTechnicalTimetableType(OperatingPointTechnicalTimetableType.OPERATING_POINT_BUS)
@@ -106,7 +108,8 @@ class ServicePointTypeTest extends BaseControllerApiTest {
   @Test
   void shouldCreateStopPointServicePointAsStopPoint() {
     CreateServicePointVersionModel servicePoint = CreateServicePointVersionModel.builder()
-        .numberShort(8507000)
+        .numberShort(7000)
+        .country(Country.SWITZERLAND)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
         .meansOfTransport(List.of(MeanOfTransport.BUS))
@@ -142,7 +145,8 @@ class ServicePointTypeTest extends BaseControllerApiTest {
   @Test
   void shouldCreateServicePointAsTariffPoint() {
     CreateServicePointVersionModel servicePoint = CreateServicePointVersionModel.builder()
-        .numberShort(8507000)
+        .numberShort(7000)
+        .country(Country.SWITZERLAND)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
         .operatingPointTrafficPointType(OperatingPointTrafficPointType.TARIFF_POINT)

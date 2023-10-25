@@ -7,9 +7,10 @@ import { DisplayDatePipe } from '../../../core/pipe/display-date.pipe';
 import {
   ContainerTimetableHearingStatement,
   HearingStatus,
-  TimetableHearingService,
   TimetableHearingStatement,
+  TimetableHearingStatementsService,
   TimetableHearingYear,
+  TimetableHearingYearsService,
 } from '../../../api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
@@ -39,10 +40,13 @@ class MockAppTthOverviewTabHeadingComponent {
   @Input() noPlannedTimetableHearingYearFound!: boolean;
 }
 
-const mockTimetableHearingService = jasmine.createSpyObj('timetableHearingService', [
+const mockTimetableHearingYearsService = jasmine.createSpyObj('timetableHearingYearsService', [
   'getHearingYears',
-  'getStatements',
 ]);
+const mockTimetableHearingStatementsService = jasmine.createSpyObj(
+  'timetableHearingStatementsService',
+  ['getStatements'],
+);
 
 let router: Router;
 
@@ -102,10 +106,13 @@ const authServiceMock: Partial<AuthService> = {
 };
 
 async function baseTestConfiguration() {
-  mockTimetableHearingService.getHearingYears.and.returnValue(
-    of([hearingYear2000, hearingYear2001])
+  mockTimetableHearingStatementsService.getStatements.and.returnValue(
+    of(containerTimetableHearingStatement),
   );
-  mockTimetableHearingService.getStatements.and.returnValue(of(containerTimetableHearingStatement));
+
+  mockTimetableHearingYearsService.getHearingYears.and.returnValue(
+    of([hearingYear2000, hearingYear2001]),
+  );
 
   await TestBed.configureTestingModule({
     declarations: [
@@ -119,7 +126,11 @@ async function baseTestConfiguration() {
     ],
     imports: [AppTestingModule],
     providers: [
-      { provide: TimetableHearingService, useValue: mockTimetableHearingService },
+      {
+        provide: TimetableHearingStatementsService,
+        useValue: mockTimetableHearingStatementsService,
+      },
+      { provide: TimetableHearingYearsService, useValue: mockTimetableHearingYearsService },
       { provide: TranslatePipe },
       { provide: DisplayDatePipe },
       { provide: AuthService, useValue: authServiceMock },
@@ -231,7 +242,7 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       const routerNavigateSpy = spyOn(router, 'navigate').and.returnValue(
         new Promise((resolve) => {
           resolve(true);
-        })
+        }),
       );
       route.snapshot.queryParams = { year: 2002 };
       //when
@@ -283,7 +294,7 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       hearingTo: moment().toDate(),
     };
     const hearingYears: TimetableHearingYear[] = [hearingYear, hearingYear];
-    mockTimetableHearingService.getHearingYears.and.returnValue(of(hearingYears));
+    mockTimetableHearingYearsService.getHearingYears.and.returnValue(of(hearingYears));
     beforeEach(async () => {
       fixture = await baseTestConfiguration();
       route = TestBed.inject(ActivatedRoute);
@@ -327,7 +338,7 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       hearingTo: moment().toDate(),
     };
     const hearingYears: TimetableHearingYear[] = [hearingYear, hearingYear];
-    mockTimetableHearingService.getHearingYears.and.returnValue(of(hearingYears));
+    mockTimetableHearingYearsService.getHearingYears.and.returnValue(of(hearingYears));
     beforeEach(async () => {
       fixture = await baseTestConfiguration();
       route = TestBed.inject(ActivatedRoute);
