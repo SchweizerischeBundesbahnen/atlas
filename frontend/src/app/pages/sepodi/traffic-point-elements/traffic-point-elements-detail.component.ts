@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ReadTrafficPointElementVersionModel, ServicePointsService } from '../../../api';
+import { ReadTrafficPointElementVersion, ServicePointsService } from '../../../api';
 import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
 import { DateRange } from '../../../core/versioning/date-range';
 import { MapService } from '../map/map.service';
@@ -18,8 +18,8 @@ import {
   styleUrls: ['./traffic-point-elements-detail.component.scss'],
 })
 export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
-  trafficPointVersions!: ReadTrafficPointElementVersionModel[];
-  selectedVersion!: ReadTrafficPointElementVersionModel;
+  trafficPointVersions!: ReadTrafficPointElementVersion[];
+  selectedVersion!: ReadTrafficPointElementVersion;
 
   maxValidity!: DateRange;
   servicePointName!: string;
