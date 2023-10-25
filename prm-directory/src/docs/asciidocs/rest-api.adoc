@@ -40,33 +40,33 @@ include::../release-notes.adoc[]
 
 include::../when_to_use_files_or_API.adoc[]
 
-== Stop Place
+== Stop Point
 
-=== Get Stop Places without filter - Successfully
+=== Get Stop Points without filter - Successfully
 
 include::{snippets}/stop-point-version-controller-api-test/should-get-stop-points-version-without-filter/auto-section.adoc[]
 
-=== Get Stop Places with filter - Successfully
+=== Get Stop Points with filter - Successfully
 
 include::{snippets}/stop-point-version-controller-api-test/should-get-stop-point-versions-with-filter/auto-section.adoc[]
 
-=== Get Stop Places with filter without match - Successfully
+=== Get Stop Points with filter without match - Successfully
 
 include::{snippets}/stop-point-version-controller-api-test/should-not-get-stop-point-versions-with-filter/auto-section.adoc[]
 
-=== Get Stop Places with filter array filter - Successfully
+=== Get Stop Points with filter array filter - Successfully
 
 include::{snippets}/stop-point-version-controller-api-test/should-get-stop-point-versions-with-array-in-filter/auto-section.adoc[]
 
-=== Create Stop Places - Successfully
+=== Create Stop Points - Successfully
 
 include::{snippets}/stop-point-version-controller-api-test/should-create-stop-point/auto-section.adoc[]
 
-=== Create Stop Places - Unsuccessfully
+=== Create Stop Points - Unsuccessfully
 
 include::{snippets}/stop-point-version-controller-api-test/should-not-create-stop-point-when-service-point-does-not-exists/auto-section.adoc[]
 
-=== Update Stop Places - Successfully
+=== Update Stop Points - Successfully
 
 include::{snippets}/stop-point-version-controller-api-test/should-update-stop-point/auto-section.adoc[]
 
