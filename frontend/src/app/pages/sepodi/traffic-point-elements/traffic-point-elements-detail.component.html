@@ -76,14 +76,18 @@
         </atlas-text-field>
       </div>
       <div class="d-flex flex-column col-4">
-        <atlas-text-field
-          [fieldExamples]="[{ label: 'SLOID', translate: false }]"
+        <atlas-select
           [formGroup]="form"
-          [required]="false"
           controlName="parentSloid"
-          fieldLabel="SEPODI.TRAFFIC_POINT_ELEMENTS.PARENT_SLOID"
+          dataCy="parentSloid"
+          label="SEPODI.TRAFFIC_POINT_ELEMENTS.PARENT_SLOID"
+          [options]="areaOptions"
+          [required]="false"
+          [valueExtractor]="extractSloid"
+          [displayExtractor]="displayExtractor"
+          placeHolderLabel=""
         >
-        </atlas-text-field>
+        </atlas-select>
       </div>
     </div>
 
