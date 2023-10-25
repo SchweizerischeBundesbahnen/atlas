@@ -1,10 +1,10 @@
 package ch.sbb.prm.directory;
 
+import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
+import ch.sbb.atlas.api.prm.model.parkinglot.CreateParkingLotVersionModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.prm.directory.controller.model.parkinglot.CreateParkingLotVersionModel;
 import ch.sbb.prm.directory.entity.ParkingLotVersion;
 import ch.sbb.prm.directory.entity.ParkingLotVersion.ParkingLotVersionBuilder;
-import ch.sbb.prm.directory.enumeration.BooleanOptionalAttributeType;
 import java.time.LocalDate;
 import lombok.experimental.UtilityClass;
 
@@ -19,7 +19,7 @@ public class ParkingLotTestData {
         .validTo(LocalDate.of(2000, 12, 31))
         .parentServicePointSloid("ch:1.sloid:12345")
         .designation("Designation")
-        .info("Additional information")
+        .additionalInformation("Additional information")
         .placesAvailable(BooleanOptionalAttributeType.YES)
         .prmPlacesAvailable(BooleanOptionalAttributeType.TO_BE_COMPLETED)
         .build();
@@ -33,7 +33,7 @@ public class ParkingLotTestData {
         .validTo(LocalDate.of(2000, 12, 31))
         .parentServicePointSloid("ch:1.sloid:12345")
         .designation("Designation")
-        .info("Additional information")
+        .additionalInformation("Additional information")
         .placesAvailable(BooleanOptionalAttributeType.YES)
         .prmPlacesAvailable(BooleanOptionalAttributeType.TO_BE_COMPLETED);
   }
@@ -46,7 +46,7 @@ public class ParkingLotTestData {
         .validTo(LocalDate.of(2002, 12, 31))
         .parentServicePointSloid("ch:1.sloid:12345")
         .designation("Designation wrong")
-        .info("Additional information")
+        .additionalInformation("Additional information")
         .placesAvailable(BooleanOptionalAttributeType.YES)
         .prmPlacesAvailable(BooleanOptionalAttributeType.TO_BE_COMPLETED);
   }
@@ -59,7 +59,7 @@ public class ParkingLotTestData {
         .validTo(LocalDate.of(2003, 12, 31))
         .parentServicePointSloid("ch:1.sloid:12345")
         .designation("Designation ok")
-        .info("Additional information")
+        .additionalInformation("Additional information")
         .placesAvailable(BooleanOptionalAttributeType.YES)
         .prmPlacesAvailable(BooleanOptionalAttributeType.TO_BE_COMPLETED);
   }
@@ -72,7 +72,7 @@ public class ParkingLotTestData {
         .validTo(LocalDate.of(2000, 12, 31))
         .parentServicePointSloid("ch:1.sloid:12345")
         .designation("Designation")
-        .info("Additional information")
+        .additionalInformation("Additional information")
         .placesAvailable(BooleanOptionalAttributeType.YES)
         .prmPlacesAvailable(BooleanOptionalAttributeType.TO_BE_COMPLETED)
         .build();
