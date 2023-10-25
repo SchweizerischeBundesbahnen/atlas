@@ -22,7 +22,7 @@ public class StopPointTestData {
     meanOfTransport.add(MeanOfTransport.BOAT);
 
     return StopPointVersion.builder()
-        .sloid("ch:1.sloid:12345")
+        .sloid("ch:1:sloid:12345")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))
