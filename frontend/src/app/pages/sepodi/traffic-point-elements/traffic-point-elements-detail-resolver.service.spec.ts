@@ -1,10 +1,9 @@
 import { ActivatedRouteSnapshot, convertToParamMap } from '@angular/router';
 import { of } from 'rxjs';
-import { ServicePointsService, Status, TrafficPointElementsService } from '../../../api';
+import { TrafficPointElementsService } from '../../../api';
 import { TestBed } from '@angular/core/testing';
 import { AppTestingModule } from '../../../app.testing.module';
 import { TrafficPointElementsDetailResolver } from './traffic-point-elements-detail-resolver.service';
-import { BERN_WYLEREGG } from '../service-point-test-data';
 import { BERN_WYLEREGG_TRAFFIC_POINTS } from '../traffic-point-element-test-data';
 
 describe('TrafficPointElementsDetailResolver', () => {

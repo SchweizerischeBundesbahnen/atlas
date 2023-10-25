@@ -1,5 +1,5 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ReadTrafficPointElementVersionModel, SpatialReference } from '../../../api';
+import { ReadTrafficPointElementVersion, SpatialReference } from '../../../api';
 import moment from 'moment';
 import { BaseDetailFormGroup } from '../../../core/components/base-detail/base-detail-form-group';
 import { GeographyFormGroup } from '../geography/geography-form-group';
@@ -22,7 +22,7 @@ export interface TrafficPointElementDetailFormGroup extends BaseDetailFormGroup 
 
 export class TrafficPointElementFormGroupBuilder {
   static buildFormGroup(
-    version: ReadTrafficPointElementVersionModel,
+    version: ReadTrafficPointElementVersion,
   ): FormGroup<TrafficPointElementDetailFormGroup> {
     const formGroup = new FormGroup<TrafficPointElementDetailFormGroup>(
       {
@@ -79,7 +79,7 @@ export class TrafficPointElementFormGroupBuilder {
     return formGroup;
   }
 
-  private static getCoordinates(version: ReadTrafficPointElementVersionModel) {
+  private static getCoordinates(version: ReadTrafficPointElementVersion) {
     if (version.trafficPointElementGeolocation?.spatialReference === SpatialReference.Wgs84) {
       return version.trafficPointElementGeolocation?.wgs84;
     }
