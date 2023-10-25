@@ -1,8 +1,7 @@
 package ch.sbb.prm.directory.mapper;
 
-import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.prm.directory.controller.model.relation.CreateRelationVersionModel;
-import ch.sbb.prm.directory.controller.model.relation.ReadRelationVersionModel;
+import ch.sbb.atlas.api.prm.model.relation.CreateRelationVersionModel;
+import ch.sbb.atlas.api.prm.model.relation.ReadRelationVersionModel;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import lombok.experimental.UtilityClass;
 
@@ -13,6 +12,7 @@ public class RelationVersionMapper {
     return ReadRelationVersionModel.builder()
         .id(version.getId())
         .sloid(version.getSloid())
+        .referencePointSloid(version.getReferencePointSloid())
         .parentServicePointSloid(version.getParentServicePointSloid())
         .number(version.getNumber())
         .validFrom(version.getValidFrom())
@@ -33,14 +33,13 @@ public class RelationVersionMapper {
     return RelationVersion.builder()
         .id(model.getId())
         .sloid(model.getSloid())
+        .referencePointSloid(model.getReferencePointSloid())
         .parentServicePointSloid(model.getParentServicePointSloid())
-        .number(ServicePointNumber.ofNumberWithoutCheckDigit(model.getNumberWithoutCheckDigit()))
         .validFrom(model.getValidFrom())
         .validTo(model.getValidTo())
         .tactileVisualMarks(model.getTactileVisualMarks())
         .contrastingAreas(model.getContrastingAreas())
         .stepFreeAccess(model.getStepFreeAccess())
-        .referencePointElementType(model.getReferencePointElementType())
         .creator(model.getCreator())
         .creationDate(model.getCreationDate())
         .editor(model.getEditor())

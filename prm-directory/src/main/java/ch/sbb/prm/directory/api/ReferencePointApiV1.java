@@ -1,7 +1,7 @@
 package ch.sbb.prm.directory.api;
 
-import ch.sbb.prm.directory.controller.model.referencepoint.CreateReferencePointVersionModel;
-import ch.sbb.prm.directory.controller.model.referencepoint.ReadReferencePointVersionModel;
+import ch.sbb.atlas.api.prm.model.referencepoint.CreateReferencePointVersionModel;
+import ch.sbb.atlas.api.prm.model.referencepoint.ReadReferencePointVersionModel;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;

@@ -1,13 +1,13 @@
 package ch.sbb.prm.directory.service;
 
-import static ch.sbb.prm.directory.enumeration.ReferencePointElementType.INFORMATION_DESK;
+import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.INFORMATION_DESK;
 
+import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.InformationDeskVersion;
-import ch.sbb.prm.directory.enumeration.ReferencePointElementType;
 import ch.sbb.prm.directory.repository.InformationDeskRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import java.util.List;
@@ -21,10 +21,10 @@ public class InformationDeskService extends PrmRelatableVersionableService<Infor
 
   private final InformationDeskRepository informationDeskRepository;
 
-  public InformationDeskService(InformationDeskRepository informationDeskRepository, StopPlaceService stopPlaceService,
+  public InformationDeskService(InformationDeskRepository informationDeskRepository, StopPointService stopPointService,
       RelationService relationRepository, ReferencePointRepository referencePointRepository,
       VersionableService versionableService) {
-    super(versionableService, stopPlaceService, relationRepository, referencePointRepository);
+    super(versionableService, stopPointService, relationRepository, referencePointRepository);
     this.informationDeskRepository = informationDeskRepository;
   }
 

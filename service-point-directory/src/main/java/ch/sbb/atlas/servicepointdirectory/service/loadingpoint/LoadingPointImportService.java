@@ -1,34 +1,34 @@
 package ch.sbb.atlas.servicepointdirectory.service.loadingpoint;
 
-import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
-import ch.sbb.atlas.imports.servicepoint.ItemImportResult.ItemImportResultBuilder;
+import ch.sbb.atlas.imports.ItemImportResult;
+import ch.sbb.atlas.imports.ItemImportResult.ItemImportResultBuilder;
 import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointCsvModelContainer;
+import ch.sbb.atlas.imports.util.BeanCopyUtil;
+import ch.sbb.atlas.imports.util.ImportUtils;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
-import ch.sbb.atlas.servicepointdirectory.service.BaseImportService;
+import ch.sbb.atlas.servicepointdirectory.service.BaseImportServicePointDirectoryService;
 import ch.sbb.atlas.servicepointdirectory.service.BasePointUtility;
-import ch.sbb.atlas.servicepointdirectory.service.BeanCopyUtil;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import com.fasterxml.jackson.databind.MappingIterator;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class LoadingPointImportService extends BaseImportService<LoadingPointVersion> {
+public class LoadingPointImportService extends BaseImportServicePointDirectoryService<LoadingPointVersion> {
 
   private final LoadingPointService loadingPointService;
   private final VersionableService versionableService;
@@ -106,7 +106,7 @@ public class LoadingPointImportService extends BaseImportService<LoadingPointVer
     final List<LoadingPointVersion> dbVersions =
         loadingPointService.findLoadingPoint(loadingPointVersionEdited.getServicePointNumber(),
             loadingPointVersionEdited.getNumber());
-    final LoadingPointVersion current = BasePointUtility.getCurrentPointVersion(dbVersions, loadingPointVersionEdited);
+    final LoadingPointVersion current = ImportUtils.getCurrentPointVersion(dbVersions, loadingPointVersionEdited);
     final List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(current,
         loadingPointVersionEdited, dbVersions);
     BasePointUtility.overrideEditionDateAndEditorOnVersionedObjects(loadingPointVersionEdited, versionedObjects);

@@ -1,7 +1,7 @@
 package ch.sbb.prm.directory.api;
 
-import ch.sbb.prm.directory.controller.model.ticketcounter.CreateTicketCounterVersionModel;
-import ch.sbb.prm.directory.controller.model.ticketcounter.ReadTicketCounterVersionModel;
+import ch.sbb.atlas.api.prm.model.ticketcounter.CreateTicketCounterVersionModel;
+import ch.sbb.atlas.api.prm.model.ticketcounter.ReadTicketCounterVersionModel;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;

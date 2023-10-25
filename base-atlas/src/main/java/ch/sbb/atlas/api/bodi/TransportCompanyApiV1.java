@@ -5,7 +5,6 @@ import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.configuration.Role;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.List;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.annotation.Secured;
@@ -14,7 +13,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@Tag(name = "BoDi - Transport Companies")
+import java.util.List;
+
+@Tag(name = "Transport Companies")
 public interface TransportCompanyApiV1 {
 
   String BASE_PATH = "v1/transport-companies";

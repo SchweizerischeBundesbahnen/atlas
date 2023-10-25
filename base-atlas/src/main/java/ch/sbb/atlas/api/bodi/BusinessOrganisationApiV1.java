@@ -38,7 +38,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-@Tag(name = "BoDi - Business Organisations")
+@Tag(name = "Business Organisations")
 @RequestMapping("v1/business-organisations")
 public interface BusinessOrganisationApiV1 {
 
