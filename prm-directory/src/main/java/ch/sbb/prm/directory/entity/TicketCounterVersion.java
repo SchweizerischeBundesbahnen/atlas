@@ -1,11 +1,13 @@
 package ch.sbb.prm.directory.entity;
 
+import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
-import ch.sbb.prm.directory.enumeration.StandardAttributeType;
 import ch.sbb.prm.directory.service.PrmVersionable;
 import ch.sbb.prm.directory.service.Relatable;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -40,14 +42,16 @@ public class TicketCounterVersion extends BasePrmEntityVersion implements Relata
   private String designation;
 
   @AtlasVersionableProperty
-  private String info;
+  private String additionalInformation;
 
+  @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType inductionLoop;
 
   @AtlasVersionableProperty
   private String openingHours;
 
+  @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType wheelchairAccess;
 

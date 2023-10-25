@@ -3,19 +3,19 @@ package ch.sbb.prm.directory.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.prm.directory.ReferencePointTestData;
-import ch.sbb.prm.directory.StopPlaceTestData;
+import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.ToiletTestData;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
-import ch.sbb.prm.directory.entity.StopPlaceVersion;
+import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.entity.ToiletVersion;
-import ch.sbb.prm.directory.enumeration.ReferencePointElementType;
-import ch.sbb.prm.directory.exception.StopPlaceDoesNotExistsException;
+import ch.sbb.prm.directory.exception.StopPointDoesNotExistsException;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.RelationRepository;
-import ch.sbb.prm.directory.repository.StopPlaceRepository;
+import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.repository.ToiletRepository;
 import java.util.List;
 import org.assertj.core.api.AbstractComparableAssert;
@@ -30,30 +30,30 @@ class ToiletServiceTest {
   private final ReferencePointRepository referencePointRepository;
   private final RelationRepository relationRepository;
 
-  private final StopPlaceRepository stopPlaceRepository;
+  private final StopPointRepository stopPointRepository;
   private final ToiletRepository toiletRepository;
 
   private final ToiletService toiletService;
 
   @Autowired
   ToiletServiceTest(ReferencePointRepository referencePointRepository, RelationRepository relationRepository,
-      StopPlaceRepository stopPlaceRepository, ToiletRepository toiletRepository, ToiletService toiletService) {
+      StopPointRepository stopPointRepository, ToiletRepository toiletRepository, ToiletService toiletService) {
     this.referencePointRepository = referencePointRepository;
     this.relationRepository = relationRepository;
-    this.stopPlaceRepository = stopPlaceRepository;
+    this.stopPointRepository = stopPointRepository;
     this.toiletRepository = toiletRepository;
     this.toiletService = toiletService;
   }
 
   @Test
-  void shouldNotCreateToiletWhenStopPlaceDoesNotExists() {
+  void shouldNotCreateToiletWhenStopPointDoesNotExists() {
     //given
     String parentServicePointSloid = "ch:1:sloid:70000";
     ToiletVersion toiletVersion = ToiletTestData.getToiletVersion();
     toiletVersion.setParentServicePointSloid(parentServicePointSloid);
 
     //when & then
-    assertThrows(StopPlaceDoesNotExistsException.class,
+    assertThrows(StopPointDoesNotExistsException.class,
         () -> toiletService.createToilet(toiletVersion)).getLocalizedMessage();
   }
 
@@ -61,9 +61,9 @@ class ToiletServiceTest {
   void shouldCreateToiletWhenNoReferencePointExists() {
     //given
     String parentServicePointSloid = "ch:1:sloid:70000";
-    StopPlaceVersion stopPlaceVersion = StopPlaceTestData.getStopPlaceVersion();
-    stopPlaceVersion.setSloid(parentServicePointSloid);
-    stopPlaceRepository.save(stopPlaceVersion);
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointRepository.save(stopPointVersion);
     ToiletVersion toiletVersion = ToiletTestData.getToiletVersion();
     toiletVersion.setParentServicePointSloid(parentServicePointSloid);
     //when
@@ -83,9 +83,9 @@ class ToiletServiceTest {
   void shouldCreateToiletWhenReferencePointExists() {
     //given
     String parentServicePointSloid = "ch:1:sloid:70000";
-    StopPlaceVersion stopPlaceVersion = StopPlaceTestData.getStopPlaceVersion();
-    stopPlaceVersion.setSloid(parentServicePointSloid);
-    stopPlaceRepository.save(stopPlaceVersion);
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointRepository.save(stopPointVersion);
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
     referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
     referencePointRepository.save(referencePointVersion);

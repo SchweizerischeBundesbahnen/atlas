@@ -1,8 +1,8 @@
 package ch.sbb.prm.directory.repository;
 
-import static ch.sbb.prm.directory.enumeration.ReferencePointElementType.PARKING_LOT;
-import static ch.sbb.prm.directory.enumeration.ReferencePointElementType.PLATFORM;
-import static ch.sbb.prm.directory.enumeration.ReferencePointElementType.TOILET;
+import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PARKING_LOT;
+import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PLATFORM;
+import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.TOILET;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
