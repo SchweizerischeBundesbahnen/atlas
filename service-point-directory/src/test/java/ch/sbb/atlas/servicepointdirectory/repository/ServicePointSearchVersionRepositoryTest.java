@@ -68,8 +68,7 @@ import org.springframework.beans.factory.annotation.Autowired;
         //when
         List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("ost");
         //then
-        assertThat(results).isNotNull();
-        assertThat(results).hasSize(1);
+        assertThat(results).isNotNull().hasSize(1);
         assertThat(results.get(0).getDesignationOfficial()).isEqualTo("Bern Ost (Spw)");
     }
 
@@ -110,8 +109,7 @@ import org.springframework.beans.factory.annotation.Autowired;
         //when
         List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("61");
         //then
-        assertThat(results).isNotNull();
-        assertThat(results).hasSize(1);
+        assertThat(results).isNotNull().hasSize(1);
         assertThat(results.get(0).getNumber()).isEqualTo(8519761);
     }
 
@@ -120,8 +118,7 @@ import org.springframework.beans.factory.annotation.Autowired;
         //when
         List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("7000");
         //then
-        assertThat(results).isNotNull();
-        assertThat(results).hasSize(1);
+        assertThat(results).isNotNull().hasSize(1);
         assertThat(results.get(0).getNumber()).isEqualTo(8507000);
     }
 
@@ -130,8 +127,7 @@ import org.springframework.beans.factory.annotation.Autowired;
         //when
         List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("napoli");
         //then
-        assertThat(results).isNotNull();
-        assertThat(results).hasSize(2);
+        assertThat(results).isNotNull().hasSize(2);
         assertThat(results.get(0).getDesignationOfficial()).isEqualTo("Bern");
         assertThat(results.get(1).getDesignationOfficial()).isEqualTo("Bern, Wyleregg");
     }
@@ -141,8 +137,7 @@ import org.springframework.beans.factory.annotation.Autowired;
         //when
         List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchServicePoints("napol");
         //then
-        assertThat(results).isNotNull();
-        assertThat(results).hasSize(3);
+        assertThat(results).isNotNull().hasSize(3);
         assertThat(results.get(0).getDesignationOfficial()).isEqualTo("Bern");
         assertThat(results.get(1).getDesignationOfficial()).isEqualTo("Bern Ost (Spw)");
         assertThat(results.get(2).getDesignationOfficial()).isEqualTo("Bern, Wyleregg");
