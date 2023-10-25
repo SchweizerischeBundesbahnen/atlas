@@ -28,7 +28,7 @@ class PlatformRepositoryTest {
   }
 
   @Test
-  void shouldReturnStopPlaces() {
+  void shouldReturnStopPoints() {
     //when
    List<PlatformVersion> result = platformRepository.findAll();
    //then

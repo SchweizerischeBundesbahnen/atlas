@@ -14,12 +14,11 @@ import ch.sbb.importservice.service.JobHelperService;
 import java.io.File;
 import java.time.LocalDate;
 import java.util.List;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
- class CsvServiceTest {
+class CsvServiceTest {
 
   private CsvService<ServicePointCsvModel> csvService;
 
@@ -36,8 +35,16 @@ import org.mockito.Mock;
     mocks = openMocks(this);
     csvService = new CsvService<>(fileHelperService, jobHelperService) {
       @Override
-      protected String getFilePrefix() {
-        return "TEST_FILE_PREFIX";
+      protected CsvFileNameModel csvFileNameModel() {
+        return CsvFileNameModel.builder().fileName("TEST_FILE_PREFIX")
+            .s3BucketDir(ServicePointCsvService.SERVICE_POINT_FILE_PREFIX)
+            .addDateToPostfix(true)
+            .build();
+      }
+
+      @Override
+      protected String getModifiedDateHeader() {
+        return EDITED_AT_COLUMN_NAME_SERVICE_POINT;
       }
 
       @Override
@@ -52,17 +59,12 @@ import org.mockito.Mock;
     };
   }
 
-  @AfterEach
-  void teardown() throws Exception {
-    mocks.close();
-  }
-
   @Test
-   void shouldGetActualCsvModelsFromS3() {
+  void shouldGetActualCsvModelsFromS3() {
     //given
     LocalDate date = LocalDate.of(2022, 2, 21);
     File csvFile = new File(this.getClass().getClassLoader().getResource("DIENSTSTELLEN_V3_IMPORT.csv").getFile());
-    when(fileHelperService.downloadImportFileFromS3("TEST_FILE_PREFIX")).thenReturn(csvFile);
+    when(fileHelperService.downloadImportFileFromS3(any())).thenReturn(csvFile);
     doCallRealMethod().when(jobHelperService).isDateMatchedBetweenTodayAndMatchingDate(any(), any());
     when(jobHelperService.getDateForImportFileToDownload("TEST_IMPORT_CSV_JOB")).thenReturn(date);
     //when
@@ -72,14 +74,14 @@ import org.mockito.Mock;
   }
 
   @Test
-   void shouldGetActualCsvModels() {
+  void shouldGetActualCsvModels() {
     //given
     File csvFile = new File(this.getClass().getClassLoader().getResource("DIENSTSTELLEN_V3_IMPORT.csv").getFile());
     //when
     List<ServicePointCsvModel> result = csvService.getActualCsvModels(csvFile);
     //then
     assertThat(result).hasSize(0);
-    verify(fileHelperService, times(0)).downloadImportFileFromS3("TEST_FILE_PREFIX");
+    verify(fileHelperService, times(0)).downloadImportFileFromS3(csvService.csvFileNameModel());
   }
 
   @Test

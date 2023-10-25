@@ -1,8 +1,8 @@
 package ch.sbb.prm.directory.entity;
 
+import ch.sbb.atlas.api.prm.enumeration.ReferencePointAttributeType;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
-import ch.sbb.prm.directory.enumeration.ReferencePointAttributeType;
 import ch.sbb.prm.directory.service.PrmVersionable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -41,6 +41,9 @@ public class ReferencePointVersion extends BasePrmEntityVersion implements PrmVe
   @NotNull
   @AtlasVersionableProperty
   private String designation;
+
+  @AtlasVersionableProperty
+  private String additionalInformation;
 
   @NotNull
   @AtlasVersionableProperty
