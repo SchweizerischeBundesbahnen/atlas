@@ -1,5 +1,6 @@
 package ch.sbb.prm.directory.controller;
 
+import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.prm.model.stoppoint.CreateStopPointVersionModel;
 import ch.sbb.atlas.api.prm.model.stoppoint.ReadStopPointVersionModel;
 import ch.sbb.atlas.imports.ItemImportResult;
@@ -8,11 +9,14 @@ import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.prm.directory.api.StopPointApiV1;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.mapper.StopPointVersionMapper;
+import ch.sbb.prm.directory.search.StopPointSearchRestrictions;
 import ch.sbb.prm.directory.service.StopPointService;
 import ch.sbb.prm.directory.service.dataimport.StopPointImportService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -23,9 +27,20 @@ public class StopPointController implements StopPointApiV1 {
   private final StopPointService stopPointService;
   private final StopPointImportService stopPointImportService;
 
+
   @Override
-  public List<ReadStopPointVersionModel> getAllStopPoints() {
-    return stopPointService.getAllStopPoints().stream().map(StopPointVersionMapper::toModel).toList();
+  public Container<ReadStopPointVersionModel> getStopPoints(Pageable pageable,
+      StopPointRequestParams stopPointRequestParams) {
+    StopPointSearchRestrictions searchRestrictions = StopPointSearchRestrictions.builder()
+        .pageable(pageable)
+        .stopPointRequestParams(stopPointRequestParams)
+        .build();
+    Page<StopPointVersion> stopPointVersions = stopPointService.findAll(searchRestrictions);
+
+    return Container.<ReadStopPointVersionModel>builder()
+        .objects(stopPointVersions.stream().map(StopPointVersionMapper::toModel).toList())
+        .totalCount(stopPointVersions.getTotalElements())
+        .build();
   }
 
   @Override
