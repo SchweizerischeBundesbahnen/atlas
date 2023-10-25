@@ -3,7 +3,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TthChangeStatusDialogComponent } from './tth-change-status-dialog.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AppTestingModule } from '../../../../app.testing.module';
-import { SwissCanton, TimetableHearingService, TimetableHearingStatement } from '../../../../api';
+import {
+  SwissCanton,
+  TimetableHearingStatement,
+  TimetableHearingStatementsService,
+} from '../../../../api';
 import { of } from 'rxjs';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
@@ -16,9 +20,10 @@ import { By } from '@angular/platform-browser';
 import { BaseChangeDialogComponent } from '../base-change-dialog/base-change-dialog.component';
 import { MaintenanceIconComponent } from '../../../../core/components/header/maintenance-icon/maintenance-icon.component';
 
-const mockTimetableHearingService = jasmine.createSpyObj('timetableHearingService', [
-  'updateHearingStatementStatus',
-]);
+const mockTimetableHearingStatementsService = jasmine.createSpyObj(
+  'timetableHearingStatementsService',
+  ['updateHearingStatementStatus'],
+);
 const dialogServiceSpy = jasmine.createSpyObj(DialogService, { confirmLeave: of({}) });
 const dialogRefSpy = jasmine.createSpyObj(['close']);
 const notificationServiceSpy = jasmine.createSpyObj(['success']);
@@ -36,8 +41,9 @@ describe('TthChangeStatusDialogComponent', () => {
   let component: TthChangeStatusDialogComponent;
   let fixture: ComponentFixture<TthChangeStatusDialogComponent>;
 
+  mockTimetableHearingStatementsService.updateHearingStatementStatus.and.returnValue(of(statement));
+
   beforeEach(async () => {
-    mockTimetableHearingService.updateHearingStatementStatus.and.returnValue(of(statement));
     await TestBed.configureTestingModule({
       declarations: [
         TthChangeStatusDialogComponent,
@@ -64,7 +70,10 @@ describe('TthChangeStatusDialogComponent', () => {
         { provide: MatDialogRef, useValue: dialogRefSpy },
         { provide: DialogService, useValue: dialogServiceSpy },
         { provide: NotificationService, useValue: notificationServiceSpy },
-        { provide: TimetableHearingService, useValue: mockTimetableHearingService },
+        {
+          provide: TimetableHearingStatementsService,
+          useValue: mockTimetableHearingStatementsService,
+        },
         { provide: TranslatePipe },
       ],
     }).compileComponents();
@@ -84,7 +93,7 @@ describe('TthChangeStatusDialogComponent', () => {
     //then
     expect(dialogRefSpy.close).toHaveBeenCalled();
     expect(notificationServiceSpy.success).toHaveBeenCalledWith(
-      'TTH.NOTIFICATION.STATUS_CHANGE.SUCCESS'
+      'TTH.NOTIFICATION.STATUS_CHANGE.SUCCESS',
     );
   });
 

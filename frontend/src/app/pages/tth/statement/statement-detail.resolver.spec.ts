@@ -3,12 +3,12 @@ import { ActivatedRouteSnapshot, convertToParamMap } from '@angular/router';
 import {
   HearingStatus,
   SwissCanton,
-  TimetableHearingService,
   TimetableHearingStatement,
+  TimetableHearingStatementsService,
 } from '../../../api';
 import { StatementDetailResolver } from './statement-detail.resolver';
-import { of } from 'rxjs';
 import { AppTestingModule } from '../../../app.testing.module';
+import { of } from 'rxjs';
 
 const statement: TimetableHearingStatement = {
   id: 1234,
@@ -20,10 +20,11 @@ const statement: TimetableHearingStatement = {
 };
 
 describe('StatementDetailResolver', () => {
-  const timetableHearingServiceSpy = jasmine.createSpyObj('timetableHearingService', [
-    'getStatement',
-  ]);
-  timetableHearingServiceSpy.getStatement.and.returnValue(of(statement));
+  const timetableHearingStatementsServiceSpy = jasmine.createSpyObj(
+    'timetableHearingStatementsService',
+    ['getStatement'],
+  );
+  timetableHearingStatementsServiceSpy.getStatement.and.returnValue(of(statement));
 
   let resolver: StatementDetailResolver;
 
@@ -32,7 +33,10 @@ describe('StatementDetailResolver', () => {
       imports: [AppTestingModule],
       providers: [
         StatementDetailResolver,
-        { provide: TimetableHearingService, useValue: timetableHearingServiceSpy },
+        {
+          provide: TimetableHearingStatementsService,
+          useValue: timetableHearingStatementsServiceSpy,
+        },
       ],
     });
     resolver = TestBed.inject(StatementDetailResolver);
