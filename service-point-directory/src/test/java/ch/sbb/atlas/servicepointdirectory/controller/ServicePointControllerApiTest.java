@@ -601,13 +601,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
   void shouldNotUpdateServicePointAbbreviationIfBusinessOrganisationNotAllowed()  throws Exception {
 
       CreateServicePointVersionModel testData = ServicePointTestData.getAargauServicePointVersionModel();
-      testData.setBusinessOrganisation("dasisteineungueltigebusinessorganisation");
       testData.setAbbreviation(null);
 
       ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(testData);
       Long id = servicePointVersionModel.getId();
 
       CreateServicePointVersionModel aargauServicePoint = testData;
+      aargauServicePoint.setBusinessOrganisation("dasisteineungueltigebusinessorganisation");
       aargauServicePoint.setId(id);
 
 

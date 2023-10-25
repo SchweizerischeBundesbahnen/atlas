@@ -1,5 +1,6 @@
 package ch.sbb.atlas.api.servicepoint;
 
+import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.model.BaseVersionModel;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
@@ -14,6 +15,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -54,9 +56,10 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
           , example = "Biel/Bienne Bözingenfeld/Champ", maxLength = 30)
   private String designationOfficial;
 
-  @Size(max = AtlasFieldLengths.LENGTH_6)
+  @Size(min = AtlasFieldLengths.LENGTH_2, max = AtlasFieldLengths.LENGTH_6)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ABBREVIATION_PATTERN)
   @Schema(description = "Location abbreviation. Mainly used by the railways. Abbreviations may not be used as a code for "
-          + "identifying locations.", example = "BIBD", maxLength = 6)
+          + "identifying locations.", example = "BIBD", minLength = 2, maxLength = 6)
   private String abbreviation;
 
   @Schema(description = "Indicates if this a Service Point for freights.")
