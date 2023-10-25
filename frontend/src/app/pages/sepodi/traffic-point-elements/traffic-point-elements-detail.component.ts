@@ -1,6 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ReadTrafficPointElementVersion, ServicePointsService } from '../../../api';
+import {
+  ReadTrafficPointElementVersion,
+  ServicePointsService,
+  TrafficPointElementsService,
+  TrafficPointElementType,
+} from '../../../api';
 import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
 import { DateRange } from '../../../core/versioning/date-range';
 import { MapService } from '../map/map.service';
@@ -12,12 +17,20 @@ import {
   TrafficPointElementFormGroupBuilder,
 } from './traffic-point-detail-form-group';
 
+interface AreaOption {
+  sloid: string | undefined;
+  displayText: string;
+}
+
 @Component({
   selector: 'app-traffic-point-elements',
   templateUrl: './traffic-point-elements-detail.component.html',
   styleUrls: ['./traffic-point-elements-detail.component.scss'],
 })
 export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
+  readonly extractSloid = (option: AreaOption) => option.sloid;
+  readonly displayExtractor = (option: AreaOption) => option.displayText;
+
   trafficPointVersions!: ReadTrafficPointElementVersion[];
   selectedVersion!: ReadTrafficPointElementVersion;
 
@@ -31,12 +44,14 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
   isNew = false;
   isSwitchVersionDisabled = false;
   private subscription?: Subscription;
+  areaOptions: AreaOption[] = [];
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private mapService: MapService,
     private servicePointService: ServicePointsService,
+    private trafficPointElementsService: TrafficPointElementsService,
   ) {}
 
   ngOnInit() {
@@ -59,8 +74,14 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
     );
     this.selectedVersionIndex = this.trafficPointVersions.indexOf(this.selectedVersion);
 
+    this.initServicePointInformation();
+    this.initSelectedVersion();
+  }
+
+  private initServicePointInformation() {
+    const servicePointNumber = this.selectedVersion.servicePointNumber.number;
     this.servicePointService
-      .getServicePointVersions(this.selectedVersion.servicePointNumber.number)
+      .getServicePointVersions(servicePointNumber)
       .subscribe((servicePoint) => {
         this.servicePointName =
           VersionsHandlingService.determineDefaultVersionByValidity(
@@ -68,7 +89,33 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
           ).designationOfficial;
       });
 
-    this.initSelectedVersion();
+    this.trafficPointElementsService
+      .getTrafficPointElements(
+        undefined,
+        [String(servicePointNumber)],
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        TrafficPointElementType.Area,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        500,
+        ['sloid,asc'],
+      )
+      .subscribe((areas) => {
+        const options: AreaOption[] = [{ sloid: undefined, displayText: '' }];
+        options.push(
+          ...areas.objects!.map((i) => {
+            return { sloid: i.sloid, displayText: `${i.designation} - ${i.sloid}` };
+          }),
+        );
+        this.areaOptions = options;
+      });
   }
 
   closeSidePanel() {
