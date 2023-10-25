@@ -1,6 +1,6 @@
 package ch.sbb.prm.directory.converter;
 
-import ch.sbb.prm.directory.enumeration.InfoOpportunityAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 

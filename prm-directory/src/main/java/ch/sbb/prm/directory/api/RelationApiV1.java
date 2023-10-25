@@ -1,8 +1,8 @@
 package ch.sbb.prm.directory.api;
 
-import ch.sbb.prm.directory.controller.model.relation.CreateRelationVersionModel;
-import ch.sbb.prm.directory.controller.model.relation.ReadRelationVersionModel;
-import ch.sbb.prm.directory.enumeration.ReferencePointElementType;
+import ch.sbb.atlas.api.prm.model.relation.CreateRelationVersionModel;
+import ch.sbb.atlas.api.prm.model.relation.ReadRelationVersionModel;
+import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;

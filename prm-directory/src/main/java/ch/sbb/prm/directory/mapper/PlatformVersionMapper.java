@@ -1,8 +1,8 @@
 package ch.sbb.prm.directory.mapper;
 
+import ch.sbb.atlas.api.prm.model.platform.CreatePlatformVersionModel;
+import ch.sbb.atlas.api.prm.model.platform.ReadPlatformVersionModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.prm.directory.controller.model.platform.CreatePlatformVersionModel;
-import ch.sbb.prm.directory.controller.model.platform.ReadPlatformVersionModel;
 import ch.sbb.prm.directory.entity.PlatformVersion;
 import java.util.Set;
 import lombok.experimental.UtilityClass;
@@ -20,7 +20,7 @@ public class PlatformVersionMapper {
         .validTo(version.getValidTo())
         .contrastingAreas(version.getContrastingAreas())
         .boardingDevice(version.getBoardingDevice())
-        .additionalInfo(version.getAdditionalInfo())
+        .additionalInformation(version.getAdditionalInformation())
         .adviceAccessInfo(version.getAdviceAccessInfo())
         .dynamicAudio(version.getDynamicAudio())
         .dynamicVisual(version.getDynamicVisual())
@@ -53,7 +53,7 @@ public class PlatformVersionMapper {
         .validTo(model.getValidTo())
         .contrastingAreas(model.getContrastingAreas())
         .boardingDevice(model.getBoardingDevice())
-        .additionalInfo(model.getAdditionalInfo())
+        .additionalInformation(model.getAdditionalInformation())
         .adviceAccessInfo(model.getAdviceAccessInfo())
         .dynamicAudio(model.getDynamicAudio())
         .dynamicVisual(model.getDynamicVisual())
