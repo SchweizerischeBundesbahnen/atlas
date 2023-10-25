@@ -6,6 +6,9 @@
     "buildCacheSize": "10Gi",
     "taggingWorkspaceSize": "2Gi"
   },
+  "builder": {
+    "node": "18"
+  },
   "mvn": {
     "parentPom": "pom.xml",
     "deployableArtifactsPom": "pom.xml",
