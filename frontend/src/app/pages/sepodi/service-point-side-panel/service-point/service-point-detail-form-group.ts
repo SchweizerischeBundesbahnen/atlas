@@ -314,7 +314,6 @@ export class ServicePointFormGroupBuilder {
     form: FormGroup<ServicePointDetailFormGroup>,
   ): CreateServicePointVersion {
     const value = form.value;
-    console.log(value);
 
     const writableForm: CreateServicePointVersion = {
       country: value.country!,

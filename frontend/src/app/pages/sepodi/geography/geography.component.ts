@@ -76,7 +76,11 @@ export class GeographyComponent implements OnDestroy, OnChanges {
   }
 
   initTransformedCoordinatePair() {
-    if (!this.isCoordinatesPairValidForTransformation(this.currentCoordinates)) {
+    if (
+      !this.coordinateTransformationService.isCoordinatesPairValidForTransformation(
+        this.currentCoordinates,
+      )
+    ) {
       return;
     }
 
@@ -109,7 +113,12 @@ export class GeographyComponent implements OnDestroy, OnChanges {
   switchSpatialReference($event: MatRadioChange) {
     const previousCoordinatePair = this.currentCoordinates;
     previousCoordinatePair.spatialReference = this.transformedSpatialReference;
-    if (!$event.value || !this.isCoordinatesPairValidForTransformation(previousCoordinatePair)) {
+    if (
+      !$event.value ||
+      !this.coordinateTransformationService.isCoordinatesPairValidForTransformation(
+        previousCoordinatePair,
+      )
+    ) {
       return;
     }
 
@@ -123,7 +132,9 @@ export class GeographyComponent implements OnDestroy, OnChanges {
   }
 
   onChangeCoordinatesManually(coordinates: CoordinatePair) {
-    if (!this.isCoordinatesPairValidForTransformation(coordinates)) {
+    if (
+      !this.coordinateTransformationService.isCoordinatesPairValidForTransformation(coordinates)
+    ) {
       return;
     }
 
@@ -134,7 +145,7 @@ export class GeographyComponent implements OnDestroy, OnChanges {
       );
     }
 
-    if (this.isValidCoordinatePair(coordinates)) {
+    if (this.coordinateTransformationService.isValidCoordinatePair(coordinates)) {
       const coordinatePairWGS84 = { lat: coordinates.north, lng: coordinates.east };
       this.mapService.placeMarkerAndFlyTo(coordinatePairWGS84);
     }
@@ -142,7 +153,9 @@ export class GeographyComponent implements OnDestroy, OnChanges {
   }
 
   onMapClick(coordinates: CoordinatePair) {
-    if (!this.isCoordinatesPairValidForTransformation(coordinates)) {
+    if (
+      !this.coordinateTransformationService.isCoordinatesPairValidForTransformation(coordinates)
+    ) {
       return;
     }
 
@@ -155,22 +168,5 @@ export class GeographyComponent implements OnDestroy, OnChanges {
 
     this.setFormGroupValue(coordinates);
     this.initTransformedCoordinatePair();
-  }
-
-  isCoordinatesPairValidForTransformation(coordinates: CoordinatePair) {
-    return this.isCoordinatePairNotZero(coordinates) && !!coordinates.north && !!coordinates.east;
-  }
-
-  isCoordinatePairNotZero(coordinates: CoordinatePair): boolean {
-    return coordinates.east !== 0 && coordinates.north !== 0;
-  }
-
-  isValidCoordinatePair(coordinates: CoordinatePair): boolean {
-    return (
-      coordinates.north >= -90 &&
-      coordinates.north <= 90 &&
-      coordinates.east >= -180 &&
-      coordinates.east <= 180
-    );
   }
 }

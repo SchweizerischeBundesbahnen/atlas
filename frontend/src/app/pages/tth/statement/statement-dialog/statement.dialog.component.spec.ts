@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { SwissCanton, TimetableHearingService, TimetableHearingStatement } from '../../../../api';
-import { of } from 'rxjs';
+import {
+  SwissCanton,
+  TimetableHearingStatement,
+  TimetableHearingStatementsService,
+} from '../../../../api';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -10,10 +13,12 @@ import { FormModule } from '../../../../core/module/form.module';
 import { FormControl, FormGroup } from '@angular/forms';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { MockAtlasButtonComponent } from '../../../../app.testing.mocks';
+import { of } from 'rxjs';
 
-const mockTimetableHearingService = jasmine.createSpyObj('timetableHearingService', [
-  'updateHearingStatement',
-]);
+const mockTimetableHearingStatementsService = jasmine.createSpyObj(
+  'timetableHearingStatementsService',
+  ['updateHearingStatement'],
+);
 const dialogRefSpy = jasmine.createSpyObj(['close']);
 const notificationServiceSpy = jasmine.createSpyObj(['success']);
 const statement: TimetableHearingStatement = {
@@ -35,9 +40,9 @@ describe('StatementDialogComponent', () => {
   let component: StatementDialogComponent;
   let fixture: ComponentFixture<StatementDialogComponent>;
 
-  beforeEach(async () => {
-    mockTimetableHearingService.updateHearingStatement.and.returnValue(of(statement));
+  mockTimetableHearingStatementsService.updateHearingStatement.and.returnValue(of(statement));
 
+  beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [StatementDialogComponent, MockAtlasButtonComponent],
       imports: [AppTestingModule, FormModule],
@@ -45,7 +50,10 @@ describe('StatementDialogComponent', () => {
         { provide: MAT_DIALOG_DATA, useValue: form },
         { provide: NotificationService, useValue: notificationServiceSpy },
         { provide: MatDialogRef, useValue: dialogRefSpy },
-        { provide: TimetableHearingService, useValue: mockTimetableHearingService },
+        {
+          provide: TimetableHearingStatementsService,
+          useValue: mockTimetableHearingStatementsService,
+        },
         { provide: TranslatePipe },
       ],
     }).compileComponents();
@@ -65,7 +73,7 @@ describe('StatementDialogComponent', () => {
     //then
     expect(dialogRefSpy.close).toHaveBeenCalled();
     expect(notificationServiceSpy.success).toHaveBeenCalledWith(
-      'TTH.STATEMENT.NOTIFICATION.EDIT_SUCCESS'
+      'TTH.STATEMENT.NOTIFICATION.EDIT_SUCCESS',
     );
   });
 
