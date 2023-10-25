@@ -80,7 +80,7 @@ include::{snippets}/reference-point-version-controller-api-test/should-get-refer
 
 include::{snippets}/reference-point-version-controller-api-test/should-create-reference-point/auto-section.adoc[]
 
-=== Create Reference Points without Stop Place- Unsuccessfully
+=== Create Reference Points without Stop Point- Unsuccessfully
 
 include::{snippets}/reference-point-version-controller-api-test/should-not-create-reference-point-when-stop-point-does-not-exists/auto-section.adoc[]
 
@@ -98,7 +98,7 @@ include::{snippets}/platform-version-controller-api-test/should-create-platform/
 
 include::{snippets}/platform-version-controller-api-test/should-update-platform/auto-section.adoc[]
 
-=== Create Platforms without Stop Place- Unsuccessfully
+=== Create Platforms without Stop Point- Unsuccessfully
 
 include::{snippets}/platform-version-controller-api-test/should-not-create-platform-when-stop-point-does-not-exists/auto-section.adoc[]
 
@@ -112,7 +112,7 @@ include::{snippets}/toilet-version-controller-api-test/should-get-toilet/auto-se
 
 include::{snippets}/toilet-version-controller-api-test/should-create-toilet/auto-section.adoc[]
 
-=== Update Toilets without Stop Place - Unsuccessfully
+=== Update Toilets without Stop Point - Unsuccessfully
 
 include::{snippets}/toilet-version-controller-api-test/should-update-ticket-counter/auto-section.adoc[]
 
@@ -130,7 +130,7 @@ include::{snippets}/ticket-counter-version-controller-api-test/should-create-tic
 
 include::{snippets}/ticket-counter-version-controller-api-test/should-update-ticket-counter/auto-section.adoc[]
 
-=== Create Ticket Counters without Stop Place - Unsuccessfully
+=== Create Ticket Counters without Stop Point - Unsuccessfully
 
 include::{snippets}/ticket-counter-version-controller-api-test/should-not-create-ticket-counter-when-stop-point-does-not-exists/auto-section.adoc[]
 
@@ -148,7 +148,7 @@ include::{snippets}/information-desk-version-controller-api-test/should-create-i
 
 include::{snippets}/information-desk-version-controller-api-test/should-update-information-desk/auto-section.adoc[]
 
-=== Create Information Desks without Stop Place - Successfully
+=== Create Information Desks without Stop Point - Successfully
 
 include::{snippets}/information-desk-version-controller-api-test/should-not-create-information-desk-when-stop-point-does-exists/auto-section.adoc[]
 
