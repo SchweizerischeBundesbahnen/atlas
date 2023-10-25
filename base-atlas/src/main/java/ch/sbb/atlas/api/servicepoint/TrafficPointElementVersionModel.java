@@ -49,6 +49,7 @@ public abstract class TrafficPointElementVersionModel extends BaseVersionModel i
   @Digits(integer = 5, fraction = 2)
   private Double compassDirection;
 
+  @NotNull
   private TrafficPointElementType trafficPointElementType;
 
   @NotNull

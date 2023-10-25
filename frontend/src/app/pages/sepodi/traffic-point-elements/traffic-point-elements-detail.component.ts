@@ -7,7 +7,10 @@ import { MapService } from '../map/map.service';
 import { Subscription } from 'rxjs';
 import { Pages } from '../../pages';
 import { FormGroup } from '@angular/forms';
-import { TrafficPointElementFormGroupBuilder } from './traffic-point-detail-form-group';
+import {
+  TrafficPointElementDetailFormGroup,
+  TrafficPointElementFormGroupBuilder,
+} from './traffic-point-detail-form-group';
 
 @Component({
   selector: 'app-traffic-point-elements',
@@ -24,7 +27,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
   showVersionSwitch = false;
   selectedVersionIndex!: number;
 
-  form!: FormGroup;
+  form!: FormGroup<TrafficPointElementDetailFormGroup>;
   isNew = false;
   isSwitchVersionDisabled = false;
   private subscription?: Subscription;
@@ -54,6 +57,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
     this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(
       this.trafficPointVersions,
     );
+    this.selectedVersionIndex = this.trafficPointVersions.indexOf(this.selectedVersion);
 
     this.servicePointService
       .getServicePointVersions(this.selectedVersion.servicePointNumber.number)
