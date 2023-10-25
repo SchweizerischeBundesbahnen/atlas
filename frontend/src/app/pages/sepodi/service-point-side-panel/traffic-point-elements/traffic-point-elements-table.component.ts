@@ -5,6 +5,7 @@ import { TablePagination } from '../../../../core/components/table/table-paginat
 import { ActivatedRoute, Router } from '@angular/router';
 import { VersionsHandlingService } from '../../../../core/versioning/versions-handling.service';
 import { Pages } from '../../../pages';
+import { naturalCompare } from '../../../../core/util/sorting';
 
 @Component({
   selector: 'app-service-point-traffic-point-elements-table',
@@ -35,12 +36,38 @@ export class TrafficPointElementsTableComponent {
   getOverview(pagination: TablePagination) {
     const servicePointNumber = this.route.parent!.snapshot.params['id'];
     this.trafficPointElementService
-      .getTrafficPointElements(undefined, [servicePointNumber])
+      .getTrafficPointElements(
+        undefined,
+        [servicePointNumber],
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        500,
+        ['sloid,asc'],
+      )
       .subscribe((container) => {
         const versions = container.objects!;
         const trafficPointRows = this.groupDisplayRows(versions);
 
-        this.trafficPointElementRows = trafficPointRows;
+        trafficPointRows.sort((a: any, b: any) => {
+          const sort =
+            pagination.sort?.substring(0, pagination.sort?.indexOf(',')) || 'designation';
+          const direction = (pagination.sort?.substring(pagination.sort?.indexOf(',') + 1) ||
+            'asc') as 'asc' | 'desc';
+
+          return naturalCompare(a[sort], b[sort], direction);
+        });
+
+        const start = pagination.page * pagination.size;
+        const end = start + pagination.size;
+        this.trafficPointElementRows = trafficPointRows.slice(start, end);
         this.totalCount$ = trafficPointRows.length;
       });
   }
