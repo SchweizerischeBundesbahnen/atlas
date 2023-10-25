@@ -24,7 +24,11 @@ public class CreateServicePointVersionModel extends UpdateServicePointVersionMod
     if (super.getNumberShort() == null) {
       return shouldGenerateServicePointNumber();
     } else {
-      return !ServicePointConstants.AUTOMATIC_SERVICE_POINT_ID.contains(super.getCountry());
+      try {
+        return !ServicePointConstants.AUTOMATIC_SERVICE_POINT_ID.contains(super.getCountry());
+      } catch (NullPointerException exception) {
+        return false;
+      }
     }
   }
 

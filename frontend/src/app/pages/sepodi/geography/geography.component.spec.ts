@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import {
   TranslateFakeLoader,
   TranslateLoader,
@@ -23,6 +22,8 @@ import { BehaviorSubject } from 'rxjs';
 const mapService = jasmine.createSpyObj<MapService>(['placeMarkerAndFlyTo']);
 const coordinateTransformationServiceSpy = jasmine.createSpyObj<CoordinateTransformationService>([
   'transform',
+  'isCoordinatesPairValidForTransformation',
+  'isValidCoordinatePair',
 ]);
 const clickedGeographyCoordinatesSubject = new BehaviorSubject<CoordinatePairWGS84>({
   lat: 0,
@@ -77,13 +78,15 @@ describe('GeographyComponent', () => {
       east: 10000,
       spatialReference: SpatialReference.Lv95,
     };
-    component.spatialReference = SpatialReference.Lv95;
-    spyOn(component, 'isCoordinatePairNotZero').and.returnValue(true);
+    coordinateTransformationServiceSpy.isCoordinatesPairValidForTransformation.and.returnValue(
+      true,
+    );
     coordinateTransformationServiceSpy.transform.and.returnValue({
       north: 12,
       east: 12,
       spatialReference: SpatialReference.Wgs84,
     });
+    coordinateTransformationServiceSpy.isValidCoordinatePair.and.returnValue(true);
 
     component.onChangeCoordinatesManually(coordinates);
 
@@ -95,13 +98,17 @@ describe('GeographyComponent', () => {
   });
 
   it('should call isCoordinatesPairValidForTransformation and return false on invalid coordinates', () => {
-    spyOn(component, 'isCoordinatesPairValidForTransformation').and.returnValue(false);
-    const isValid = component.isCoordinatesPairValidForTransformation({
+    coordinateTransformationServiceSpy.isCoordinatesPairValidForTransformation.and.returnValue(
+      false,
+    );
+    const isValid = coordinateTransformationServiceSpy.isCoordinatesPairValidForTransformation({
       north: 0,
       east: 0,
       spatialReference: SpatialReference.Lv95,
     });
-    expect(component.isCoordinatesPairValidForTransformation).toHaveBeenCalledWith({
+    expect(
+      coordinateTransformationServiceSpy.isCoordinatesPairValidForTransformation,
+    ).toHaveBeenCalledWith({
       north: 0,
       east: 0,
       spatialReference: SpatialReference.Lv95,
@@ -111,8 +118,9 @@ describe('GeographyComponent', () => {
 
   it('should transform coordinates & place marker and fly to on click map', () => {
     const coordinates: CoordinatePairWGS84 = { lat: 10, lng: 10 };
-    component.spatialReference = SpatialReference.Lv95;
-    spyOn(component, 'isCoordinatePairNotZero').and.returnValue(true);
+    coordinateTransformationServiceSpy.isCoordinatesPairValidForTransformation.and.returnValue(
+      true,
+    );
     spyOn(component, 'setFormGroupValue');
     spyOn(component, 'initTransformedCoordinatePair');
     coordinateTransformationServiceSpy.transform.and.returnValue({

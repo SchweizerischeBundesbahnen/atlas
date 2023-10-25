@@ -107,6 +107,7 @@ export class ServicePointCreationComponent implements OnInit, OnDestroy {
     this.destroySubscriptions$.complete();
   }
 
+  // todo: test
   activateGeolocation(coordinates: CoordinatePair) {
     this.mapService.isGeolocationActivated.next(true);
     this.mapService.isEditMode.next(true);
@@ -149,6 +150,7 @@ export class ServicePointCreationComponent implements OnInit, OnDestroy {
     }
   }
 
+  // todo: test
   onSave(): void {
     this.form.markAllAsTouched();
     if (this.form.valid) {
@@ -166,12 +168,12 @@ export class ServicePointCreationComponent implements OnInit, OnDestroy {
     }
   }
 
-  private readonly handleError = (err: any) => {
-    console.error(err);
+  private readonly handleError = () => {
     this.form.enable();
     return EMPTY;
   };
 
+  // todo: test
   private getCountryOptions(): Country[] {
     const sepodiUserPermission = this.authService.getApplicationUserPermission(
       ApplicationType.Sepodi,
