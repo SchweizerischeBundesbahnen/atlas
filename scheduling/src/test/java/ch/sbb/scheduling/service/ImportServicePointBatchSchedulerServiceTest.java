@@ -103,4 +103,25 @@ import org.springframework.http.HttpStatus;
     assertThrows(SchedulingExecutionException.class,
         () -> importServicePointBatchSchedulerService.triggerImportTrafficPointBatch().close());
   }
+
+  @Test
+  void shouldTriggerImportStopPointBatchSuccessfully() {
+   //given
+   Response response = Response.builder()
+       .status(200)
+       .reason("OK")
+       .request(
+           Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+               null, Util.UTF_8, null))
+       .build();
+   when(client.triggerImportStopPointBatch()).thenReturn(response);
+
+   //when
+   Response result = importServicePointBatchSchedulerService.triggerImportStopPointBatch();
+
+   //then
+   assertThat(result).isNotNull();
+   assertThat(result.status()).isEqualTo(200);
+  }
+
 }

@@ -2,8 +2,8 @@ package ch.sbb.prm.directory.controller;
 
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.prm.directory.api.InformationDeskApiV1;
-import ch.sbb.prm.directory.controller.model.informationdesk.CreateInformationDeskVersionModel;
-import ch.sbb.prm.directory.controller.model.informationdesk.ReadInformationDeskVersionModel;
+import ch.sbb.atlas.api.prm.model.informationdesk.CreateInformationDeskVersionModel;
+import ch.sbb.atlas.api.prm.model.informationdesk.ReadInformationDeskVersionModel;
 import ch.sbb.prm.directory.entity.InformationDeskVersion;
 import ch.sbb.prm.directory.mapper.InformationDeskVersionMapper;
 import ch.sbb.prm.directory.service.InformationDeskService;
