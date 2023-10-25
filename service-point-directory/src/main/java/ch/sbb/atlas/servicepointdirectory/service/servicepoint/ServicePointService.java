@@ -73,8 +73,8 @@ public class ServicePointService {
     servicePointVersion.setEditionDate(LocalDateTime.now());
     servicePointVersion.setEditor(UserService.getUserIdentifier());
 
+    servicePointValidationService.validateAndSetAbbreviation(servicePointVersion);
     servicePointValidationService.validateServicePointPreconditionBusinessRule(servicePointVersion);
-    servicePointValidationService.validateAndSetAbbreviationForCreate(servicePointVersion);
     return servicePointVersionRepository.saveAndFlush(servicePointVersion);
   }
 
@@ -100,7 +100,6 @@ public class ServicePointService {
     editedVersion.setSloid(currentVersion.getSloid());
     editedVersion.setStatusDidok3(currentVersion.getStatusDidok3());
 
-    servicePointValidationService.validateAndSetAbbreviationForUpdate(currentVersion, editedVersion);
 
     List<ServicePointVersion> existingDbVersions = findAllByNumberOrderByValidFrom(currentVersion.getNumber());
     List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion,
