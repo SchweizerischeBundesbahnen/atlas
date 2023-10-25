@@ -1,11 +1,12 @@
 package ch.sbb.prm.directory.service;
 
-import static ch.sbb.prm.directory.enumeration.ReferencePointElementType.INFORMATION_DESK;
-import static ch.sbb.prm.directory.enumeration.ReferencePointElementType.PARKING_LOT;
-import static ch.sbb.prm.directory.enumeration.ReferencePointElementType.PLATFORM;
-import static ch.sbb.prm.directory.enumeration.ReferencePointElementType.TICKET_COUNTER;
-import static ch.sbb.prm.directory.enumeration.ReferencePointElementType.TOILET;
+import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.INFORMATION_DESK;
+import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PARKING_LOT;
+import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PLATFORM;
+import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.TICKET_COUNTER;
+import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.TOILET;
 
+import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
@@ -16,7 +17,6 @@ import ch.sbb.prm.directory.entity.PlatformVersion;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.TicketCounterVersion;
 import ch.sbb.prm.directory.entity.ToiletVersion;
-import ch.sbb.prm.directory.enumeration.ReferencePointElementType;
 import ch.sbb.prm.directory.repository.InformationDeskRepository;
 import ch.sbb.prm.directory.repository.ParkingLotRepository;
 import ch.sbb.prm.directory.repository.PlatformRepository;
@@ -40,12 +40,12 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
   private final ParkingLotRepository parkingLotRepository;
   private final PlatformRepository platformRepository;
   private final RelationService relationService;
-  private final StopPlaceService stopPlaceService;
+  private final StopPointService stopPointService;
 
   public ReferencePointService(ReferencePointRepository referencePointRepository, TicketCounterRepository ticketCounterService,
       ToiletRepository toiletRepository, InformationDeskRepository informationDeskRepository,
       ParkingLotRepository parkingLotRepository, PlatformRepository platformRepository, RelationService relationService,
-      StopPlaceService stopPlaceService, VersionableService versionableService) {
+      StopPointService stopPointService, VersionableService versionableService) {
     super(versionableService);
     this.referencePointRepository = referencePointRepository;
     this.ticketCounterService = ticketCounterService;
@@ -54,7 +54,7 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
     this.parkingLotRepository = parkingLotRepository;
     this.platformRepository = platformRepository;
     this.relationService = relationService;
-    this.stopPlaceService = stopPlaceService;
+    this.stopPointService = stopPointService;
   }
 
   @Override
@@ -83,12 +83,12 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
   }
 
   public ReferencePointVersion createReferencePoint(ReferencePointVersion referencePointVersion) {
-    stopPlaceService.checkStopPlaceExists(referencePointVersion.getParentServicePointSloid());
-    searchAndUpdatePlatformRelation(referencePointVersion.getParentServicePointSloid());
-    searchAndUpdateTicketCounter(referencePointVersion.getParentServicePointSloid());
-    searchAndUpdateToiletRelation(referencePointVersion.getParentServicePointSloid());
-    searchAndUpdateInformationDesk(referencePointVersion.getParentServicePointSloid());
-    searchAndUpdateParkingLot(referencePointVersion.getParentServicePointSloid());
+    stopPointService.checkStopPointExists(referencePointVersion.getParentServicePointSloid());
+    searchAndUpdatePlatformRelation(referencePointVersion.getParentServicePointSloid(), referencePointVersion.getSloid());
+    searchAndUpdateTicketCounter(referencePointVersion.getParentServicePointSloid(), referencePointVersion.getSloid());
+    searchAndUpdateToiletRelation(referencePointVersion.getParentServicePointSloid(), referencePointVersion.getSloid());
+    searchAndUpdateInformationDesk(referencePointVersion.getParentServicePointSloid(), referencePointVersion.getSloid());
+    searchAndUpdateParkingLot(referencePointVersion.getParentServicePointSloid(), referencePointVersion.getSloid());
     return referencePointRepository.saveAndFlush(referencePointVersion);
   }
 
@@ -109,38 +109,39 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
     return referencePointRepository.saveAndFlush(referencePointVersion);
   }
 
-  private void searchAndUpdateParkingLot(String parentServicePointSloid) {
+  private void searchAndUpdateParkingLot(String parentServicePointSloid, String referencePointSloid) {
     List<ParkingLotVersion> parkingLotVersions = parkingLotRepository.findByParentServicePointSloid(
         parentServicePointSloid);
-    searchAndUpdateVersion(parkingLotVersions, PARKING_LOT);
+    searchAndUpdateVersion(parkingLotVersions, referencePointSloid,PARKING_LOT);
   }
 
-  private void searchAndUpdateInformationDesk(String parentServicePointSloid) {
+  private void searchAndUpdateInformationDesk(String parentServicePointSloid, String referencePointSloid) {
     List<InformationDeskVersion> informationDeskVersions = informationDeskRepository.findByParentServicePointSloid(
         parentServicePointSloid);
-    searchAndUpdateVersion(informationDeskVersions, INFORMATION_DESK);
+    searchAndUpdateVersion(informationDeskVersions, referencePointSloid,INFORMATION_DESK);
   }
 
-  private void searchAndUpdateTicketCounter(String parentServicePointSloid) {
+  private void searchAndUpdateTicketCounter(String parentServicePointSloid, String referencePointSloid) {
     List<TicketCounterVersion> ticketCounterVersions = ticketCounterService.findByParentServicePointSloid(
         parentServicePointSloid);
-    searchAndUpdateVersion(ticketCounterVersions, TICKET_COUNTER);
+    searchAndUpdateVersion(ticketCounterVersions, referencePointSloid,TICKET_COUNTER);
   }
 
-  private void searchAndUpdatePlatformRelation(String parentServicePointSloid) {
+  private void searchAndUpdatePlatformRelation(String parentServicePointSloid, String referencePointSloid) {
     List<PlatformVersion> platformVersions = platformRepository.findByParentServicePointSloid(parentServicePointSloid);
-    searchAndUpdateVersion(platformVersions, PLATFORM);
+    searchAndUpdateVersion(platformVersions, referencePointSloid,PLATFORM);
   }
 
-  private void searchAndUpdateToiletRelation(String parentServicePointSloid) {
+  private void searchAndUpdateToiletRelation(String parentServicePointSloid, String referencePointSloid) {
     List<ToiletVersion> toiletVersions = toiletRepository.findByParentServicePointSloid(parentServicePointSloid);
-    searchAndUpdateVersion(toiletVersions, TOILET);
+    searchAndUpdateVersion(toiletVersions, referencePointSloid,TOILET);
   }
 
-  private void searchAndUpdateVersion(List<? extends Relatable> versions,
+  private void searchAndUpdateVersion(List<? extends Relatable> versions, String referencePointSloid,
       ReferencePointElementType referencePointElementType) {
     versions.forEach(
-        version -> relationService.save(RelationUtil.buildRelationVersion(version, referencePointElementType)));
+        version -> relationService.save(RelationUtil.buildRelationVersion(version, referencePointSloid,
+            referencePointElementType)));
   }
 
 }

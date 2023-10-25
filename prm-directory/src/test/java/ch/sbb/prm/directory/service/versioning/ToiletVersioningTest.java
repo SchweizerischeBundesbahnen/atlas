@@ -5,15 +5,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.ReferencePointTestData;
-import ch.sbb.prm.directory.StopPlaceTestData;
+import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.ToiletTestData;
 import ch.sbb.prm.directory.entity.BasePrmImportEntity.Fields;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
-import ch.sbb.prm.directory.entity.StopPlaceVersion;
+import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.entity.ToiletVersion;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
-import ch.sbb.prm.directory.repository.StopPlaceRepository;
+import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.repository.ToiletRepository;
 import ch.sbb.prm.directory.service.RelationService;
 import ch.sbb.prm.directory.service.ToiletService;
@@ -29,7 +29,7 @@ class ToiletVersioningTest {
 
   private final ReferencePointRepository referencePointRepository;
 
-  private final StopPlaceRepository stopPlaceRepository;
+  private final StopPointRepository stopPointRepository;
   private final ToiletRepository toiletRepository;
 
   private final ToiletService toiletService;
@@ -37,10 +37,10 @@ class ToiletVersioningTest {
 
 
   @Autowired
-  ToiletVersioningTest(ReferencePointRepository referencePointRepository, StopPlaceRepository stopPlaceRepository,
+  ToiletVersioningTest(ReferencePointRepository referencePointRepository, StopPointRepository stopPointRepository,
       ToiletRepository toiletRepository, ToiletService toiletService, RelationService relationService) {
     this.referencePointRepository = referencePointRepository;
-    this.stopPlaceRepository = stopPlaceRepository;
+    this.stopPointRepository = stopPointRepository;
     this.toiletRepository = toiletRepository;
     this.toiletService = toiletService;
     this.relationService = relationService;
@@ -59,9 +59,9 @@ class ToiletVersioningTest {
   void scenario1a() {
     //given
     String parentServicePointSloid = "ch:1:sloid:70000";
-    StopPlaceVersion stopPlaceVersion = StopPlaceTestData.getStopPlaceVersion();
-    stopPlaceVersion.setSloid(parentServicePointSloid);
-    stopPlaceRepository.save(stopPlaceVersion);
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointRepository.save(stopPointVersion);
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
     referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
     referencePointRepository.save(referencePointVersion);
@@ -77,7 +77,7 @@ class ToiletVersioningTest {
     editedVersion.setNumber(ServicePointNumber.ofNumberWithoutCheckDigit(1234567));
     editedVersion.setParentServicePointSloid(parentServicePointSloid);
     editedVersion.setDesignation("My designation");
-    editedVersion.setInfo("info");
+    editedVersion.setAdditionalInformation("info");
     editedVersion.setCreationDate(version2.getCreationDate());
     editedVersion.setEditionDate(version2.getEditionDate());
     editedVersion.setCreator(version2.getCreator());
@@ -100,7 +100,7 @@ class ToiletVersioningTest {
     ToiletVersion secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate, Fields.editor, StopPlaceVersion.Fields.id)
+        .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate, Fields.editor, StopPointVersion.Fields.id)
         .isEqualTo(editedVersion);
 
   }
@@ -118,9 +118,9 @@ class ToiletVersioningTest {
   void scenario2() {
     //given
     String parentServicePointSloid = "ch:1:sloid:70000";
-    StopPlaceVersion stopPlaceVersion = StopPlaceTestData.getStopPlaceVersion();
-    stopPlaceVersion.setSloid(parentServicePointSloid);
-    stopPlaceRepository.save(stopPlaceVersion);
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointRepository.save(stopPointVersion);
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
     referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
     referencePointRepository.save(referencePointVersion);

@@ -11,18 +11,18 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.atlas.api.prm.model.ticketcounter.CreateTicketCounterVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.prm.directory.ReferencePointTestData;
-import ch.sbb.prm.directory.StopPlaceTestData;
+import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.TicketCounterTestData;
-import ch.sbb.prm.directory.controller.model.ticketcounter.CreateTicketCounterVersionModel;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
-import ch.sbb.prm.directory.entity.StopPlaceVersion;
+import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.entity.TicketCounterVersion;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
-import ch.sbb.prm.directory.repository.StopPlaceRepository;
+import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.repository.TicketCounterRepository;
 import ch.sbb.prm.directory.service.RelationService;
 import org.junit.jupiter.api.Test;
@@ -34,7 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 class TicketCounterVersionControllerApiTest extends BaseControllerApiTest {
 
   private final TicketCounterRepository ticketCounterRepository;
-  private final StopPlaceRepository stopPlaceRepository;
+  private final StopPointRepository stopPointRepository;
 
   private final ReferencePointRepository referencePointRepository;
 
@@ -42,10 +42,10 @@ class TicketCounterVersionControllerApiTest extends BaseControllerApiTest {
   private final RelationService relationService;
 
   @Autowired
-  TicketCounterVersionControllerApiTest(TicketCounterRepository ticketCounterRepository, StopPlaceRepository stopPlaceRepository,
+  TicketCounterVersionControllerApiTest(TicketCounterRepository ticketCounterRepository, StopPointRepository stopPointRepository,
       ReferencePointRepository referencePointRepository, RelationService relationService){
     this.ticketCounterRepository = ticketCounterRepository;
-    this.stopPlaceRepository = stopPlaceRepository;
+    this.stopPointRepository = stopPointRepository;
     this.referencePointRepository = referencePointRepository;
     this.relationService = relationService;
   }
@@ -65,9 +65,9 @@ class TicketCounterVersionControllerApiTest extends BaseControllerApiTest {
   void shouldCreateTicketCounter() throws Exception {
     //given
     String parentServicePointSloid = "ch:1:sloid:7000";
-    StopPlaceVersion stopPlaceVersion = StopPlaceTestData.getStopPlaceVersion();
-    stopPlaceVersion.setSloid(parentServicePointSloid);
-    stopPlaceRepository.save(stopPlaceVersion);
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointRepository.save(stopPointVersion);
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
     referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
     referencePointRepository.save(referencePointVersion);
@@ -84,7 +84,7 @@ class TicketCounterVersionControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldNotCreateTicketCounterWhenStopPlaceDoesNotExists() throws Exception {
+  void shouldNotCreateTicketCounterWhenStopPointDoesNotExists() throws Exception {
     //given
     String parentServicePointSloid = "ch:1:sloid:7000";
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
@@ -115,9 +115,9 @@ class TicketCounterVersionControllerApiTest extends BaseControllerApiTest {
   void shouldUpdateTicketCounter() throws Exception {
     //given
     String parentServicePointSloid = "ch:1:sloid:7000";
-    StopPlaceVersion stopPlaceVersion = StopPlaceTestData.getStopPlaceVersion();
-    stopPlaceVersion.setSloid(parentServicePointSloid);
-    stopPlaceRepository.save(stopPlaceVersion);
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointRepository.save(stopPointVersion);
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
     referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
     referencePointRepository.save(referencePointVersion);
@@ -136,7 +136,7 @@ class TicketCounterVersionControllerApiTest extends BaseControllerApiTest {
     editedVersionModel.setValidTo(version2.getValidTo().minusYears(1));
     editedVersionModel.setNumberWithoutCheckDigit(version2.getNumber().getNumber());
     editedVersionModel.setDesignation(version2.getDesignation());
-    editedVersionModel.setInfo(version2.getInfo());
+    editedVersionModel.setAdditionalInformation(version2.getAdditionalInformation());
     editedVersionModel.setInductionLoop(version2.getInductionLoop());
     editedVersionModel.setOpeningHours(version2.getOpeningHours());
     editedVersionModel.setWheelchairAccess(version2.getWheelchairAccess());

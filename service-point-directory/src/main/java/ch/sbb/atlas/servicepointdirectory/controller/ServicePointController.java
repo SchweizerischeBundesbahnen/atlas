@@ -5,16 +5,14 @@ import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.GeoReference;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel;
-import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
+import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointImportRequestModel;
-import ch.sbb.atlas.model.exception.BadRequestException;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointApiV1;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointFotComment;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
-import ch.sbb.atlas.servicepointdirectory.exception.ForbiddenDueToChosenServicePointVersionValidationPeriodException;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberAlreadyExistsException;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointFotCommentMapper;
@@ -66,10 +64,12 @@ public class ServicePointController implements ServicePointApiV1 {
 
   @Override
   public List<ServicePointSearchResult> searchServicePoints(ServicePointSearchRequest searchRequest) {
-    if (searchRequest == null || searchRequest.getValue() == null || searchRequest.getValue().length() < 2) {
-      throw new BadRequestException("You must enter at least 2 digits to start a search!");
-    }
     return servicePointService.searchServicePointVersion(searchRequest.getValue());
+  }
+
+  @Override
+  public List<ServicePointSearchResult> searchServicePointsWithRouteNetworkTrue(ServicePointSearchRequest searchRequest) {
+    return servicePointService.searchServicePointsWithRouteNetworkTrue(searchRequest.getValue());
   }
 
   @Override
