@@ -930,7 +930,7 @@
       "NOTIFICATION": {
         "ADD_SUCCESS": "Il posto di servizio è stato aggiunto con successo.",
         "EDIT_SUCCESS": "Il posto di servizio è stato salvato con successo.",
-        "OPERATION_NOT_ALLOWED_DUE_TO_VALIDATION_PERIOD": "Questa operazione non è possibile. Il periodo di convalida del punto di servizio selezionato non corrisponde ad alcun periodo di convalida del punto di servizio Master chilometraggio selezionato."
+        "OPERATION_NOT_ALLOWED_DUE_TO_VALIDATION_PERIOD": "Il salvataggio non è possibile. Il BP-S di riferimento (master) non è valido per tutta la durata della validità del BP-K."
       },
       "CONFLICT": {
         "DESIGNATION_OFFICIAL": "La denominazione ufficiale {{designationOfficial}} è già assegnata nel periodo dal {{validFrom}} al {{validTo}} da {{number}}.",
