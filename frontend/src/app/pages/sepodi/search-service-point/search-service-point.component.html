@@ -21,11 +21,11 @@
     <ng-template let-item="item" ng-option-tmp>
       <span
         [innerHTML]="
-          item.number.toString() | searchResultHighlight : searchValue | splitServicePointNumber
+          item.number.toString() | searchResultHighlight: searchValue | splitServicePointNumber
         "
       ></span>
       <span>&nbsp;&nbsp;&nbsp;</span>
-      <span [innerHTML]="item.designationOfficial | searchResultHighlight : searchValue"></span>
+      <span [innerHTML]="item.designationOfficial | searchResultHighlight: searchValue"></span>
     </ng-template>
   </ng-select>
 </div>

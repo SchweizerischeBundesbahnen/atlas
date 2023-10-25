@@ -37,10 +37,18 @@ public class ServicePointService {
   private final ServicePointSearchVersionRepository servicePointSearchVersionRepository;
   private final ServicePointTerminationService servicePointTerminationService;
 
-  public List<ServicePointSearchResult> searchServicePointVersion(String value){
+  public List<ServicePointSearchResult> searchServicePointVersion(String value) {
     List<ServicePointSearchResult> servicePointSearchResults = servicePointSearchVersionRepository.searchServicePoints(value);
-    if(servicePointSearchResults.size() > SEARCH_RESULT_SIZE){
-      return servicePointSearchResults.subList(0,SEARCH_RESULT_SIZE);
+    if (servicePointSearchResults.size() > SEARCH_RESULT_SIZE) {
+      return servicePointSearchResults.subList(0, SEARCH_RESULT_SIZE);
+    }
+    return servicePointSearchResults;
+  }
+
+  public List<ServicePointSearchResult> searchServicePointsWithRouteNetworkTrue(String value) {
+    List<ServicePointSearchResult> servicePointSearchResults = servicePointSearchVersionRepository.searchServicePointsWithRouteNetworkTrue(value);
+    if (servicePointSearchResults.size() > SEARCH_RESULT_SIZE) {
+      return servicePointSearchResults.subList(0, SEARCH_RESULT_SIZE);
     }
     return servicePointSearchResults;
   }

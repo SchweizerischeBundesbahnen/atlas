@@ -256,6 +256,9 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
       this.mapService.isEditMode.next(true);
       this.isSwitchVersionDisabled = true;
       this.form.enable();
+      if (this.form.controls.operatingPointRouteNetwork.value) {
+        this.form.controls.operatingPointKilometer.disable();
+      }
     }
   }
 
@@ -351,6 +354,9 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   private handleError() {
     return () => {
       this.form.enable();
+      if (this.form.controls.operatingPointRouteNetwork.value) {
+        this.form.controls.operatingPointKilometer.disable();
+      }
       return EMPTY;
     };
   }
@@ -441,5 +447,29 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     this.isLatestVersionSelected = !servicePointVersions.some(
       (obj) => obj.validTo > selectedVersion.validTo,
     );
+  }
+
+  setOperatingPointRouteNetwork(isSelected: boolean) {
+    if (isSelected) {
+      this.form.controls.operatingPointRouteNetwork.setValue(true);
+      this.form.controls.operatingPointKilometer.setValue(true);
+      this.form.controls.operatingPointKilometer.disable();
+      this.form.controls.operatingPointKilometerMaster.setValue(this.selectedVersion.number.number);
+      this.form.controls.operatingPointKilometerMaster.disable();
+    } else {
+      this.form.controls.operatingPointRouteNetwork.setValue(false);
+      this.form.controls.operatingPointKilometer.setValue(false);
+      this.form.controls.operatingPointKilometer.enable();
+      this.form.controls.operatingPointKilometerMaster.reset();
+      this.form.controls.operatingPointKilometerMaster.enable();
+    }
+  }
+
+  setOperatingPointKilometer(isSelected: boolean) {
+    if (isSelected) {
+      this.form.controls.operatingPointKilometer.setValue(true);
+    } else {
+      this.form.controls.operatingPointKilometer.setValue(false);
+    }
   }
 }

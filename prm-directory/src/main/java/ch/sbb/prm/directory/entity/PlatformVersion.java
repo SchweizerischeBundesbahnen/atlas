@@ -1,14 +1,14 @@
 package ch.sbb.prm.directory.entity;
 
+import ch.sbb.atlas.api.prm.enumeration.BasicAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.BooleanAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.prm.directory.converter.InfoOpportunityTypeConverter;
-import ch.sbb.prm.directory.enumeration.BasicAttributeType;
-import ch.sbb.prm.directory.enumeration.BoardingDeviceAttributeType;
-import ch.sbb.prm.directory.enumeration.BooleanAttributeType;
-import ch.sbb.prm.directory.enumeration.BooleanOptionalAttributeType;
-import ch.sbb.prm.directory.enumeration.InfoOpportunityAttributeType;
-import ch.sbb.prm.directory.enumeration.VehicleAccessAttributeType;
 import ch.sbb.prm.directory.service.PrmVersionable;
 import ch.sbb.prm.directory.service.Relatable;
 import jakarta.persistence.Convert;
@@ -54,7 +54,7 @@ public class PlatformVersion extends BasePrmEntityVersion implements Relatable, 
   private BoardingDeviceAttributeType boardingDevice;
 
   @AtlasVersionableProperty
-  private String additionalInfo;
+  private String additionalInformation;
 
   @AtlasVersionableProperty
   private String adviceAccessInfo;
