@@ -104,6 +104,7 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
     );
   };
 
+  // todo: test
   onGeolocationToggleChange(hasGeolocation: boolean): void {
     const spatialRefCtrl = this.spatialRefCtrl;
     if (!spatialRefCtrl) return;

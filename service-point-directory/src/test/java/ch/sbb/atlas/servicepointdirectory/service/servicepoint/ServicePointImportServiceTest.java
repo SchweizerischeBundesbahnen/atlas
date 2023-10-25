@@ -12,6 +12,7 @@ import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointFotComment;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
+import ch.sbb.atlas.servicepointdirectory.repository.ServicePointNumberRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,6 +24,7 @@ import java.util.List;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.util.Pair;
@@ -31,7 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 @IntegrationTest
 @Transactional
 @Slf4j
- class ServicePointImportServiceTest {
+class ServicePointImportServiceTest {
 
   private static final String CSV_FILE = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20221222015634.csv";
   private static final String SEPARATOR = "/";
@@ -40,12 +42,15 @@ import org.springframework.transaction.annotation.Transactional;
   @MockBean
   private SharedBusinessOrganisationService sharedBusinessOrganisationService;
 
+  @MockBean
+  private ServicePointNumberRepository servicePointNumberRepository;
+
   private final ServicePointImportService servicePointImportService;
   private final ServicePointVersionRepository servicePointVersionRepository;
   private final ServicePointFotCommentService servicePointFotCommentService;
 
   @Autowired
-   ServicePointImportServiceTest(ServicePointImportService servicePointImportService,
+  ServicePointImportServiceTest(ServicePointImportService servicePointImportService,
       ServicePointVersionRepository servicePointVersionRepository,
       ServicePointFotCommentService servicePointFotCommentService) {
     this.servicePointImportService = servicePointImportService;
@@ -54,7 +59,44 @@ import org.springframework.transaction.annotation.Transactional;
   }
 
   @Test
-   void shouldImportServicePoints() {
+  void shouldDeleteAvailableServicePointNumbersOnSave() {
+    // given
+    int didokCode = 85070001;
+    final List<ServicePointCsvModel> csvModels = List.of(
+        ServicePointCsvModel.builder()
+            .validFrom(LocalDate.of(2002, 1, 1))
+            .validTo(LocalDate.of(2002, 6, 15))
+            .abkuerzung("BWYG")
+            .bezeichnungLang("Bern, Wyleregg")
+            .bezeichnungOffiziell("Bern, Wyleregg")
+            .isBedienpunkt(true)
+            .isBetriebspunkt(true)
+            .isFahrplan(true)
+            .nummer(didokCode)
+            .laendercode(85)
+            .status(1)
+            .didokCode(didokCode)
+            .comment("BAV-Kommentar")
+            .createdAt(LocalDateTime.of(2020, 1, 1, 1, 1))
+            .createdBy("fs11111")
+            .editedAt(LocalDateTime.of(2023, 1, 1, 1, 1))
+            .editedBy("fs22222")
+            .build()
+    );
+    final ServicePointCsvModelContainer container = new ServicePointCsvModelContainer();
+    container.setDidokCode(didokCode);
+    container.setServicePointCsvModelList(csvModels);
+    final List<ServicePointCsvModelContainer> containers = List.of(container);
+
+    // when
+    servicePointImportService.importServicePoints(containers);
+
+    // then
+    Mockito.verify(servicePointNumberRepository).deleteAvailableNumber(7000, "SWITZERLAND");
+  }
+
+  @Test
+  void shouldImportServicePoints() {
     //given
     List<ServicePointCsvModelContainer> servicePointCsvModelContainers = getServicePointCsvModelContainers();
     Integer didokCode = servicePointCsvModelContainers.get(0).getDidokCode();
@@ -84,7 +126,7 @@ import org.springframework.transaction.annotation.Transactional;
    * Res  |----------------A---------------|
    */
   @Test
-   void shouldMergeServicePointByImportServicePointsWithoutGeolocation() throws IOException {
+  void shouldMergeServicePointByImportServicePointsWithoutGeolocation() throws IOException {
     //given
     ServicePointNumber servicePointNumber;
     String firstFile = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20230717021649_without_geolocation.csv";
@@ -118,7 +160,7 @@ import org.springframework.transaction.annotation.Transactional;
    * Res  |---A---|-------C--------|---B---|
    */
   @Test
-   void shouldUpdateServicePointByImportServicePoints() throws IOException {
+  void shouldUpdateServicePointByImportServicePoints() throws IOException {
     //given
     ServicePointNumber servicePointNumber;
     String firstFile = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20230717021649_without_geolocation.csv";
@@ -163,7 +205,7 @@ import org.springframework.transaction.annotation.Transactional;
    * 3) The Result is one ServicePoint version with one Geolocation version -> the sequential versions are merged
    */
   @Test
-   void shouldMergeServicePointByImportServicePointsWithMergeGeolocation() throws IOException {
+  void shouldMergeServicePointByImportServicePointsWithMergeGeolocation() throws IOException {
     //given
     ServicePointNumber servicePointNumber;
     String firstFile = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20230717021649_geo_with_merge.csv";
@@ -201,7 +243,7 @@ import org.springframework.transaction.annotation.Transactional;
    * 3) The Result should be one ServicePoint version with one Geolocation version like the second file
    */
   @Test
-   void shouldMergeServicePointByImportServicePointsWithPremergedGeolocation() throws IOException {
+  void shouldMergeServicePointByImportServicePointsWithPremergedGeolocation() throws IOException {
     //given
     ServicePointNumber servicePointNumber;
     String firstFile = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20230717021649_geo.csv";
@@ -242,7 +284,7 @@ import org.springframework.transaction.annotation.Transactional;
    * 3) The Result should be one ServicePoint version with one Geolocation version like the second file
    */
   @Test
-   void shouldMergeServicePointByImportServicePointsWithPremergedGeolocationDataExample() throws IOException {
+  void shouldMergeServicePointByImportServicePointsWithPremergedGeolocationDataExample() throws IOException {
     //given
     ServicePointNumber servicePointNumber;
     String firstFile = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20230717021649.csv";

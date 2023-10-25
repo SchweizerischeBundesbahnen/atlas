@@ -23,10 +23,9 @@ import {
 import { CustomHttpParameterCodec } from '../encoder';
 import { Observable } from 'rxjs';
 
-import { ClientCredential } from '../model/models';
-import { ClientCredentialPermissionCreate } from '../model/models';
-import { ContainerClientCredential } from '../model/models';
+import { BatchExportFileName } from '../model/models';
 import { ErrorResponse } from '../model/models';
+import { ExportType } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
 import { Configuration } from '../configuration';
@@ -34,7 +33,7 @@ import { Configuration } from '../configuration';
 @Injectable({
   providedIn: 'root',
 })
-export class ClientCredentialAdministrationService {
+export class ExportServicePointService {
   protected basePath = 'http://localhost';
   public defaultHeaders = new HttpHeaders();
   public configuration = new Configuration();
@@ -101,44 +100,29 @@ export class ClientCredentialAdministrationService {
   }
 
   /**
-   * Register a client with given permissions
-   * @param clientCredentialPermissionCreate
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
-  public createClientCredential(
-    clientCredentialPermissionCreate: ClientCredentialPermissionCreate,
+  public startExportLoadingPointBatch(
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' },
-  ): Observable<ClientCredential>;
-  public createClientCredential(
-    clientCredentialPermissionCreate: ClientCredentialPermissionCreate,
+  ): Observable<any>;
+  public startExportLoadingPointBatch(
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' },
-  ): Observable<HttpResponse<ClientCredential>>;
-  public createClientCredential(
-    clientCredentialPermissionCreate: ClientCredentialPermissionCreate,
+  ): Observable<HttpResponse<any>>;
+  public startExportLoadingPointBatch(
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' },
-  ): Observable<HttpEvent<ClientCredential>>;
-  public createClientCredential(
-    clientCredentialPermissionCreate: ClientCredentialPermissionCreate,
+  ): Observable<HttpEvent<any>>;
+  public startExportLoadingPointBatch(
     observe: any = 'body',
     reportProgress: boolean = false,
     options?: { httpHeaderAccept?: '*/*' },
   ): Observable<any> {
-    if (
-      clientCredentialPermissionCreate === null ||
-      clientCredentialPermissionCreate === undefined
-    ) {
-      throw new Error(
-        'Required parameter clientCredentialPermissionCreate was null or undefined when calling createClientCredential.',
-      );
-    }
-
     let headers = this.defaultHeaders;
 
     let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -151,22 +135,14 @@ export class ClientCredentialAdministrationService {
       headers = headers.set('Accept', httpHeaderAcceptSelected);
     }
 
-    // to determine the Content-Type header
-    const consumes: string[] = ['application/json'];
-    const httpContentTypeSelected: string | undefined =
-      this.configuration.selectHeaderContentType(consumes);
-    if (httpContentTypeSelected !== undefined) {
-      headers = headers.set('Content-Type', httpContentTypeSelected);
-    }
-
     let responseType_: 'text' | 'json' = 'json';
     if (httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
       responseType_ = 'text';
     }
 
-    return this.httpClient.post<ClientCredential>(
-      `${this.configuration.basePath}/user-administration/v1/client-credentials`,
-      clientCredentialPermissionCreate,
+    return this.httpClient.post<any>(
+      `${this.configuration.basePath}/export-service-point/v1/export/loading-point-batch`,
+      null,
       {
         responseType: <any>responseType_,
         withCredentials: this.configuration.withCredentials,
@@ -178,38 +154,155 @@ export class ClientCredentialAdministrationService {
   }
 
   /**
-   * Retrieve Information for a given clientId
-   * @param clientId
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
-  public getClientCredential(
-    clientId: string,
+  public startExportServicePointBatch(
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' },
-  ): Observable<ClientCredential>;
-  public getClientCredential(
-    clientId: string,
+  ): Observable<any>;
+  public startExportServicePointBatch(
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' },
-  ): Observable<HttpResponse<ClientCredential>>;
-  public getClientCredential(
-    clientId: string,
+  ): Observable<HttpResponse<any>>;
+  public startExportServicePointBatch(
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' },
-  ): Observable<HttpEvent<ClientCredential>>;
-  public getClientCredential(
-    clientId: string,
+  ): Observable<HttpEvent<any>>;
+  public startExportServicePointBatch(
     observe: any = 'body',
     reportProgress: boolean = false,
     options?: { httpHeaderAccept?: '*/*' },
   ): Observable<any> {
-    if (clientId === null || clientId === undefined) {
+    let headers = this.defaultHeaders;
+
+    let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+    if (httpHeaderAcceptSelected === undefined) {
+      // to determine the Accept header
+      const httpHeaderAccepts: string[] = ['*/*'];
+      httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+    }
+    if (httpHeaderAcceptSelected !== undefined) {
+      headers = headers.set('Accept', httpHeaderAcceptSelected);
+    }
+
+    let responseType_: 'text' | 'json' = 'json';
+    if (httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+      responseType_ = 'text';
+    }
+
+    return this.httpClient.post<any>(
+      `${this.configuration.basePath}/export-service-point/v1/export/service-point-batch`,
+      null,
+      {
+        responseType: <any>responseType_,
+        withCredentials: this.configuration.withCredentials,
+        headers: headers,
+        observe: observe,
+        reportProgress: reportProgress,
+      },
+    );
+  }
+
+  /**
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public startExportTrafficPointElementBatch(
+    observe?: 'body',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: '*/*' },
+  ): Observable<any>;
+  public startExportTrafficPointElementBatch(
+    observe?: 'response',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: '*/*' },
+  ): Observable<HttpResponse<any>>;
+  public startExportTrafficPointElementBatch(
+    observe?: 'events',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: '*/*' },
+  ): Observable<HttpEvent<any>>;
+  public startExportTrafficPointElementBatch(
+    observe: any = 'body',
+    reportProgress: boolean = false,
+    options?: { httpHeaderAccept?: '*/*' },
+  ): Observable<any> {
+    let headers = this.defaultHeaders;
+
+    let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+    if (httpHeaderAcceptSelected === undefined) {
+      // to determine the Accept header
+      const httpHeaderAccepts: string[] = ['*/*'];
+      httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+    }
+    if (httpHeaderAcceptSelected !== undefined) {
+      headers = headers.set('Accept', httpHeaderAcceptSelected);
+    }
+
+    let responseType_: 'text' | 'json' = 'json';
+    if (httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+      responseType_ = 'text';
+    }
+
+    return this.httpClient.post<any>(
+      `${this.configuration.basePath}/export-service-point/v1/export/traffic-point-batch`,
+      null,
+      {
+        responseType: <any>responseType_,
+        withCredentials: this.configuration.withCredentials,
+        headers: headers,
+        observe: observe,
+        reportProgress: reportProgress,
+      },
+    );
+  }
+
+  /**
+   * @param exportFileName
+   * @param exportType
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public streamExportGzFile(
+    exportFileName: BatchExportFileName,
+    exportType: ExportType,
+    observe?: 'body',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: '*/*' },
+  ): Observable<object>;
+  public streamExportGzFile(
+    exportFileName: BatchExportFileName,
+    exportType: ExportType,
+    observe?: 'response',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: '*/*' },
+  ): Observable<HttpResponse<object>>;
+  public streamExportGzFile(
+    exportFileName: BatchExportFileName,
+    exportType: ExportType,
+    observe?: 'events',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: '*/*' },
+  ): Observable<HttpEvent<object>>;
+  public streamExportGzFile(
+    exportFileName: BatchExportFileName,
+    exportType: ExportType,
+    observe: any = 'body',
+    reportProgress: boolean = false,
+    options?: { httpHeaderAccept?: '*/*' },
+  ): Observable<any> {
+    if (exportFileName === null || exportFileName === undefined) {
       throw new Error(
-        'Required parameter clientId was null or undefined when calling getClientCredential.',
+        'Required parameter exportFileName was null or undefined when calling streamExportGzFile.',
+      );
+    }
+    if (exportType === null || exportType === undefined) {
+      throw new Error(
+        'Required parameter exportType was null or undefined when calling streamExportGzFile.',
       );
     }
 
@@ -230,10 +323,12 @@ export class ClientCredentialAdministrationService {
       responseType_ = 'text';
     }
 
-    return this.httpClient.get<ClientCredential>(
+    return this.httpClient.get<object>(
       `${
         this.configuration.basePath
-      }/user-administration/v1/client-credentials/${encodeURIComponent(String(clientId))}`,
+      }/export-service-point/v1/export/download-gzip-json/${encodeURIComponent(
+        String(exportFileName),
+      )}/${encodeURIComponent(String(exportType))}`,
       {
         responseType: <any>responseType_,
         withCredentials: this.configuration.withCredentials,
@@ -245,124 +340,47 @@ export class ClientCredentialAdministrationService {
   }
 
   /**
-   * Retrieve Overview for all the managed Users
-   * @param page Zero-based page index (0..N)
-   * @param size The size of the page to be returned
-   * @param sort Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+   * @param exportFileName
+   * @param exportType
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
-  public getClientCredentials(
-    page?: number,
-    size?: number,
-    sort?: Array<string>,
+  public streamExportJsonFile(
+    exportFileName: BatchExportFileName,
+    exportType: ExportType,
     observe?: 'body',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: '*/*' },
-  ): Observable<ContainerClientCredential>;
-  public getClientCredentials(
-    page?: number,
-    size?: number,
-    sort?: Array<string>,
+    options?: { httpHeaderAccept?: '*/*' | 'application/json' },
+  ): Observable<object>;
+  public streamExportJsonFile(
+    exportFileName: BatchExportFileName,
+    exportType: ExportType,
     observe?: 'response',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: '*/*' },
-  ): Observable<HttpResponse<ContainerClientCredential>>;
-  public getClientCredentials(
-    page?: number,
-    size?: number,
-    sort?: Array<string>,
+    options?: { httpHeaderAccept?: '*/*' | 'application/json' },
+  ): Observable<HttpResponse<object>>;
+  public streamExportJsonFile(
+    exportFileName: BatchExportFileName,
+    exportType: ExportType,
     observe?: 'events',
     reportProgress?: boolean,
-    options?: { httpHeaderAccept?: '*/*' },
-  ): Observable<HttpEvent<ContainerClientCredential>>;
-  public getClientCredentials(
-    page?: number,
-    size?: number,
-    sort?: Array<string>,
+    options?: { httpHeaderAccept?: '*/*' | 'application/json' },
+  ): Observable<HttpEvent<object>>;
+  public streamExportJsonFile(
+    exportFileName: BatchExportFileName,
+    exportType: ExportType,
     observe: any = 'body',
     reportProgress: boolean = false,
-    options?: { httpHeaderAccept?: '*/*' },
+    options?: { httpHeaderAccept?: '*/*' | 'application/json' },
   ): Observable<any> {
-    let queryParameters = new HttpParams({ encoder: this.encoder });
-    if (page !== undefined && page !== null) {
-      queryParameters = this.addToHttpParams(queryParameters, <any>page, 'page');
-    }
-    if (size !== undefined && size !== null) {
-      queryParameters = this.addToHttpParams(queryParameters, <any>size, 'size');
-    }
-    if (sort) {
-      sort.forEach((element) => {
-        queryParameters = this.addToHttpParams(queryParameters, <any>element, 'sort');
-      });
-    }
-
-    let headers = this.defaultHeaders;
-
-    let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-    if (httpHeaderAcceptSelected === undefined) {
-      // to determine the Accept header
-      const httpHeaderAccepts: string[] = ['*/*'];
-      httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-    }
-    if (httpHeaderAcceptSelected !== undefined) {
-      headers = headers.set('Accept', httpHeaderAcceptSelected);
-    }
-
-    let responseType_: 'text' | 'json' = 'json';
-    if (httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-      responseType_ = 'text';
-    }
-
-    return this.httpClient.get<ContainerClientCredential>(
-      `${this.configuration.basePath}/user-administration/v1/client-credentials`,
-      {
-        params: queryParameters,
-        responseType: <any>responseType_,
-        withCredentials: this.configuration.withCredentials,
-        headers: headers,
-        observe: observe,
-        reportProgress: reportProgress,
-      },
-    );
-  }
-
-  /**
-   * Update the user permissions of a user
-   * @param clientCredentialPermissionCreate
-   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-   * @param reportProgress flag to report request and response progress.
-   */
-  public updateClientCredential(
-    clientCredentialPermissionCreate: ClientCredentialPermissionCreate,
-    observe?: 'body',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: '*/*' },
-  ): Observable<ClientCredential>;
-  public updateClientCredential(
-    clientCredentialPermissionCreate: ClientCredentialPermissionCreate,
-    observe?: 'response',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: '*/*' },
-  ): Observable<HttpResponse<ClientCredential>>;
-  public updateClientCredential(
-    clientCredentialPermissionCreate: ClientCredentialPermissionCreate,
-    observe?: 'events',
-    reportProgress?: boolean,
-    options?: { httpHeaderAccept?: '*/*' },
-  ): Observable<HttpEvent<ClientCredential>>;
-  public updateClientCredential(
-    clientCredentialPermissionCreate: ClientCredentialPermissionCreate,
-    observe: any = 'body',
-    reportProgress: boolean = false,
-    options?: { httpHeaderAccept?: '*/*' },
-  ): Observable<any> {
-    if (
-      clientCredentialPermissionCreate === null ||
-      clientCredentialPermissionCreate === undefined
-    ) {
+    if (exportFileName === null || exportFileName === undefined) {
       throw new Error(
-        'Required parameter clientCredentialPermissionCreate was null or undefined when calling updateClientCredential.',
+        'Required parameter exportFileName was null or undefined when calling streamExportJsonFile.',
+      );
+    }
+    if (exportType === null || exportType === undefined) {
+      throw new Error(
+        'Required parameter exportType was null or undefined when calling streamExportJsonFile.',
       );
     }
 
@@ -371,19 +389,11 @@ export class ClientCredentialAdministrationService {
     let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
     if (httpHeaderAcceptSelected === undefined) {
       // to determine the Accept header
-      const httpHeaderAccepts: string[] = ['*/*'];
+      const httpHeaderAccepts: string[] = ['*/*', 'application/json'];
       httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
     }
     if (httpHeaderAcceptSelected !== undefined) {
       headers = headers.set('Accept', httpHeaderAcceptSelected);
-    }
-
-    // to determine the Content-Type header
-    const consumes: string[] = ['application/json'];
-    const httpContentTypeSelected: string | undefined =
-      this.configuration.selectHeaderContentType(consumes);
-    if (httpContentTypeSelected !== undefined) {
-      headers = headers.set('Content-Type', httpContentTypeSelected);
     }
 
     let responseType_: 'text' | 'json' = 'json';
@@ -391,9 +401,10 @@ export class ClientCredentialAdministrationService {
       responseType_ = 'text';
     }
 
-    return this.httpClient.put<ClientCredential>(
-      `${this.configuration.basePath}/user-administration/v1/client-credentials`,
-      clientCredentialPermissionCreate,
+    return this.httpClient.get<object>(
+      `${this.configuration.basePath}/export-service-point/v1/export/json/${encodeURIComponent(
+        String(exportFileName),
+      )}/${encodeURIComponent(String(exportType))}`,
       {
         responseType: <any>responseType_,
         withCredentials: this.configuration.withCredentials,
