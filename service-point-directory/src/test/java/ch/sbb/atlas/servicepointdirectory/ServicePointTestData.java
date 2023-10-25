@@ -392,7 +392,7 @@ public class ServicePointTestData {
 
   public static CreateServicePointVersionModel getAargauServicePointVersionModel() {
     return CreateServicePointVersionModel.builder()
-        .numberShort(8034510)
+        .country(Country.SWITZERLAND)
         .sloid("ch:1:sloid:18771")
         .designationLong("designation long 1")
         .designationOfficial("Aargau Strasse")

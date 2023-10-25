@@ -24,7 +24,8 @@ class UpdateServicePointVersionModelTest {
   @Test
   void shouldAllowMinimalServicePointVersion() {
     UpdateServicePointVersionModel servicePointVersionModel = UpdateServicePointVersionModel.builder()
-        .numberShort(8507000)
+        .numberShort(7000)
+        .country(Country.SWITZERLAND)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
         .validFrom(LocalDate.of(2022, 1, 1))
@@ -43,7 +44,8 @@ class UpdateServicePointVersionModelTest {
   @Test
   void shouldNotAllowMinimalServicePointVersionWithMissingNorth() {
     UpdateServicePointVersionModel servicePointVersionModel = UpdateServicePointVersionModel.builder()
-        .numberShort(8507000)
+        .numberShort(7000)
+        .country(Country.SWITZERLAND)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
         .validFrom(LocalDate.of(2022, 1, 1))
@@ -61,7 +63,8 @@ class UpdateServicePointVersionModelTest {
   @Test
   void shouldAllowMinimalServicePointVersionWithLv95Coordinates() {
     UpdateServicePointVersionModel servicePointVersionModel = UpdateServicePointVersionModel.builder()
-        .numberShort(8507000)
+        .numberShort(7000)
+        .country(Country.SWITZERLAND)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
         .validFrom(LocalDate.of(2022, 1, 1))
@@ -81,7 +84,8 @@ class UpdateServicePointVersionModelTest {
   @Test
   void shouldNotAllowMinimalServicePointVersionWithLv95CoordinatesMoreThanFiveFractions() {
     UpdateServicePointVersionModel servicePointVersionModel = UpdateServicePointVersionModel.builder()
-        .numberShort(8507000)
+        .numberShort(7000)
+        .country(Country.SWITZERLAND)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
         .validFrom(LocalDate.of(2022, 1, 1))
@@ -101,7 +105,8 @@ class UpdateServicePointVersionModelTest {
   @Test
   void shouldAllowMinimalServicePointVersionWithWgs84Coordinates() {
     UpdateServicePointVersionModel servicePointVersionModel = UpdateServicePointVersionModel.builder()
-        .numberShort(8507000)
+        .numberShort(7000)
+        .country(Country.SWITZERLAND)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
         .validFrom(LocalDate.of(2022, 1, 1))
@@ -121,7 +126,8 @@ class UpdateServicePointVersionModelTest {
   @Test
   void shouldNotAllowMinimalServicePointVersionWithWgs84CoordinatesMoreThanElevenFractions() {
     UpdateServicePointVersionModel servicePointVersionModel = UpdateServicePointVersionModel.builder()
-        .numberShort(8507000)
+        .numberShort(7000)
+        .country(Country.SWITZERLAND)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
         .validFrom(LocalDate.of(2022, 1, 1))
