@@ -11,7 +11,7 @@ import lombok.experimental.SuperBuilder;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
-@Schema(name = "CreateRelationPointVersion")
+@Schema(name = "CreateRelationVersion")
 public class CreateRelationVersionModel extends RelationVersionModel implements DatesValidator {
 
 }
