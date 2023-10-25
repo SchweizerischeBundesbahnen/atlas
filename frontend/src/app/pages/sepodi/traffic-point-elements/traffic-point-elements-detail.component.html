@@ -32,6 +32,7 @@
           [currentRecord]="selectedVersion"
           [records]="trafficPointVersions"
           [switchDisabled]="isSwitchVersionDisabled"
+          [showStatus]="false"
         ></app-switch-version>
       </div>
     </div>
@@ -86,6 +87,7 @@
           [valueExtractor]="extractSloid"
           [displayExtractor]="displayExtractor"
           placeHolderLabel=""
+          labelSpaceHeight="25px"
         >
         </atlas-select>
       </div>
