@@ -2,8 +2,8 @@ package ch.sbb.prm.directory.controller;
 
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.prm.directory.api.ReferencePointApiV1;
-import ch.sbb.prm.directory.controller.model.referencepoint.CreateReferencePointVersionModel;
-import ch.sbb.prm.directory.controller.model.referencepoint.ReadReferencePointVersionModel;
+import ch.sbb.atlas.api.prm.model.referencepoint.CreateReferencePointVersionModel;
+import ch.sbb.atlas.api.prm.model.referencepoint.ReadReferencePointVersionModel;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.mapper.ReferencePointVersionMapper;
 import ch.sbb.prm.directory.service.ReferencePointService;

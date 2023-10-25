@@ -2,6 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.imports.util.BeanCopyUtil;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import org.junit.jupiter.api.Test;

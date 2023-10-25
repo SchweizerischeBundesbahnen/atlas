@@ -2,7 +2,7 @@ package ch.sbb.prm.directory.repository;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.entity.RelationVersion;
-import ch.sbb.prm.directory.enumeration.ReferencePointElementType;
+import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;

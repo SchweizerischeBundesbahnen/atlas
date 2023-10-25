@@ -1,12 +1,13 @@
 package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
 
-import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
-import ch.sbb.atlas.imports.servicepoint.ItemImportResult.ItemImportResultBuilder;
+import ch.sbb.atlas.imports.ItemImportResult;
+import ch.sbb.atlas.imports.ItemImportResult.ItemImportResultBuilder;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointCsvModelContainer;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointElementCsvModel;
+import ch.sbb.atlas.imports.util.ImportUtils;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
-import ch.sbb.atlas.servicepointdirectory.service.BaseImportService;
+import ch.sbb.atlas.servicepointdirectory.service.BaseImportServicePointDirectoryService;
 import ch.sbb.atlas.servicepointdirectory.service.BasePointUtility;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
 import ch.sbb.atlas.servicepointdirectory.service.ServicePointDistributor;
@@ -28,7 +29,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class TrafficPointElementImportService extends BaseImportService<TrafficPointElementVersion> {
+public class TrafficPointElementImportService extends BaseImportServicePointDirectoryService<TrafficPointElementVersion> {
 
   private final TrafficPointElementService trafficPointElementService;
   private final VersionableService versionableService;
@@ -114,7 +115,7 @@ public class TrafficPointElementImportService extends BaseImportService<TrafficP
 
   void updateTrafficPointElementVersionImport(TrafficPointElementVersion edited) {
     List<TrafficPointElementVersion> dbVersions = trafficPointElementService.findBySloidOrderByValidFrom(edited.getSloid());
-    TrafficPointElementVersion current = BasePointUtility.getCurrentPointVersion(dbVersions, edited);
+    TrafficPointElementVersion current = ImportUtils.getCurrentPointVersion(dbVersions, edited);
     List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(current, edited,
         dbVersions);
     BasePointUtility.overrideEditionDateAndEditorOnVersionedObjects(edited, versionedObjects);
