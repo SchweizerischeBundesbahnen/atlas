@@ -402,7 +402,6 @@ public class ServicePointTestData {
         .businessOrganisation("ch:1:sboid:100871")
         .categories(List.of(Category.POINT_OF_SALE))
         .operatingPointRouteNetwork(true)
-        .operatingPointKilometerMasterNumber(8034510)
         .meansOfTransport(List.of(MeanOfTransport.TRAIN))
         .stopPointType(StopPointType.ON_REQUEST)
         .servicePointGeolocation(
@@ -410,6 +409,12 @@ public class ServicePointTestData {
         .validFrom(LocalDate.of(2010, 12, 11))
         .validTo(LocalDate.of(2019, 8, 10))
         .build();
+  }
+
+  public static CreateServicePointVersionModel getAargauServicePointVersionModelWithRouteNetworkFalse() {
+    CreateServicePointVersionModel createServicePointVersionModel = getAargauServicePointVersionModel();
+    createServicePointVersionModel.setOperatingPointRouteNetwork(false);
+    return createServicePointVersionModel;
   }
 
 }
