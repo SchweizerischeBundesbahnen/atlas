@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
 import { TableColumn } from '../../../../core/components/table/table-column';
-import { ReadTrafficPointElementVersionModel, TrafficPointElementsService } from '../../../../api';
+import {
+  ReadTrafficPointElementVersion,
+  TrafficPointElementsService,
+  TrafficPointElementType,
+} from '../../../../api';
 import { TablePagination } from '../../../../core/components/table/table-pagination';
 import { ActivatedRoute, Router } from '@angular/router';
 import { VersionsHandlingService } from '../../../../core/versioning/versions-handling.service';
@@ -13,7 +17,7 @@ import { naturalCompare } from '../../../../core/util/sorting';
   styleUrls: ['./traffic-point-elements-table.component.scss'],
 })
 export class TrafficPointElementsTableComponent {
-  tableColumns: TableColumn<ReadTrafficPointElementVersionModel>[] = [
+  tableColumns: TableColumn<ReadTrafficPointElementVersion>[] = [
     { headerTitle: 'SEPODI.TRAFFIC_POINT_ELEMENTS.DESIGNATION', value: 'designation' },
     { headerTitle: 'SEPODI.SERVICE_POINTS.SLOID', value: 'sloid' },
     {
@@ -24,7 +28,7 @@ export class TrafficPointElementsTableComponent {
     { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
   ];
 
-  trafficPointElementRows: ReadTrafficPointElementVersionModel[] = [];
+  trafficPointElementRows: ReadTrafficPointElementVersion[] = [];
   totalCount$ = 0;
 
   constructor(
@@ -43,6 +47,7 @@ export class TrafficPointElementsTableComponent {
         undefined,
         undefined,
         undefined,
+        TrafficPointElementType.Platform,
         undefined,
         undefined,
         undefined,
@@ -73,16 +78,16 @@ export class TrafficPointElementsTableComponent {
   }
 
   private groupDisplayRows(
-    versions: ReadTrafficPointElementVersionModel[],
-  ): ReadTrafficPointElementVersionModel[] {
-    const trafficPointRows: ReadTrafficPointElementVersionModel[] = [];
+    versions: ReadTrafficPointElementVersion[],
+  ): ReadTrafficPointElementVersion[] {
+    const trafficPointRows: ReadTrafficPointElementVersion[] = [];
     const map = VersionsHandlingService.groupVersionsByKey(versions, 'sloid');
 
     Object.values(map).forEach((value) => {
       const maxValidity = VersionsHandlingService.getMaxValidity(value);
       const rowToDisplay = VersionsHandlingService.determineDefaultVersionByValidity(
         value,
-      ) as ReadTrafficPointElementVersionModel;
+      ) as ReadTrafficPointElementVersion;
       rowToDisplay.validFrom = maxValidity.validFrom;
       rowToDisplay.validTo = maxValidity.validTo;
 
@@ -96,7 +101,7 @@ export class TrafficPointElementsTableComponent {
     this.router.navigate([Pages.SEPODI.path, Pages.TRAFFIC_POINT_ELEMENTS.path, 'add']).then();
   }
 
-  editVersion($event: ReadTrafficPointElementVersionModel) {
+  editVersion($event: ReadTrafficPointElementVersion) {
     this.router
       .navigate([Pages.SEPODI.path, Pages.TRAFFIC_POINT_ELEMENTS.path, $event.sloid])
       .then();
