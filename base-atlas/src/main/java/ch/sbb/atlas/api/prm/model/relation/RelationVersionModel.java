@@ -1,7 +1,6 @@
 package ch.sbb.atlas.api.prm.model.relation;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
-import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.StepFreeAccessAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.TactileVisualAttributeType;
@@ -45,7 +44,6 @@ public abstract class RelationVersionModel extends BasePrmVersionModel implement
   @Schema(description = "Step-free access")
   private StepFreeAccessAttributeType stepFreeAccess;
 
-  @Schema(description = "Reference Point Element Type")
-  private ReferencePointElementType referencePointElementType;
+
 
 }
