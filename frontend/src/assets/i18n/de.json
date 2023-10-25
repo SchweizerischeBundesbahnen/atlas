@@ -102,6 +102,7 @@
   "FORM": {
     "MAX_CHARS": "{{numberOfChars}} Zeichen max.",
     "MAX_NUMBER_OF_DIGITS": "{{numberOfDigits}} Zahlen max.",
+    "MAX_DIGITS": "max. {{amount}} Nachkommastellen",
     "DROPDOWN_PLACEHOLDER": "auswählen",
     "FOR_EXAMPLE": "z.B.:",
     "DESIGN_INFORMATION": "Angaben zur Gestaltung",
@@ -950,7 +951,13 @@
       "DESIGNATION": "Bezeichnung Kunden",
       "DESIGNATION_OPERATIONAL": "Bezeichnung betrieblich",
       "HEADER": "Haltekante / Gleis",
-      "SERVICE_POINT_NAME": "Haltestellenname"
+      "SERVICE_POINT_NAME": "Haltestellenname",
+      "DETAILS": "Angaben zur",
+      "PARENT_SLOID": "Gehört zu Bereich",
+      "CONSTRUCTION_INFORMATION": "Bauliche Informationen",
+      "LENGTH": "Länge [m]",
+      "BOARDING_AREA_HEIGHT": "Kantenhöhe  [cm]",
+      "COMPASS_DIRECTION": "Kompassrichtung [°]"
     },
     "LOADING_POINTS": {
       "LOADING_POINTS": "Ladestellen"
