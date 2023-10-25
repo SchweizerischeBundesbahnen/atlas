@@ -1,7 +1,7 @@
 package ch.sbb.prm.directory.api;
 
-import ch.sbb.prm.directory.controller.model.parkinglot.CreateParkingLotVersionModel;
-import ch.sbb.prm.directory.controller.model.parkinglot.ReadParkingLotVersionModel;
+import ch.sbb.atlas.api.prm.model.parkinglot.CreateParkingLotVersionModel;
+import ch.sbb.atlas.api.prm.model.parkinglot.ReadParkingLotVersionModel;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;

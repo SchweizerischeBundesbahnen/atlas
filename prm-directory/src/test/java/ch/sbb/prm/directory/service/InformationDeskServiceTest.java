@@ -3,20 +3,20 @@ package ch.sbb.prm.directory.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.prm.directory.InformationDeskTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
-import ch.sbb.prm.directory.StopPlaceTestData;
+import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.entity.InformationDeskVersion;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
-import ch.sbb.prm.directory.entity.StopPlaceVersion;
-import ch.sbb.prm.directory.enumeration.ReferencePointElementType;
-import ch.sbb.prm.directory.exception.StopPlaceDoesNotExistsException;
+import ch.sbb.prm.directory.entity.StopPointVersion;
+import ch.sbb.prm.directory.exception.StopPointDoesNotExistsException;
 import ch.sbb.prm.directory.repository.InformationDeskRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.RelationRepository;
-import ch.sbb.prm.directory.repository.StopPlaceRepository;
+import ch.sbb.prm.directory.repository.StopPointRepository;
 import java.util.List;
 import org.assertj.core.api.AbstractComparableAssert;
 import org.junit.jupiter.api.Test;
@@ -30,30 +30,30 @@ class InformationDeskServiceTest {
   private final ReferencePointRepository referencePointRepository;
   private final RelationRepository relationRepository;
 
-  private final StopPlaceRepository stopPlaceRepository;
+  private final StopPointRepository stopPointRepository;
 
   private final InformationDeskRepository informationDeskRepository;
   private final InformationDeskService informationDeskService;
 
   @Autowired
   InformationDeskServiceTest(ReferencePointRepository referencePointRepository, RelationRepository relationRepository,
-      StopPlaceRepository stopPlaceRepository, InformationDeskRepository informationDeskRepository, InformationDeskService informationDeskService) {
+      StopPointRepository stopPointRepository, InformationDeskRepository informationDeskRepository, InformationDeskService informationDeskService) {
     this.referencePointRepository = referencePointRepository;
     this.relationRepository = relationRepository;
-    this.stopPlaceRepository = stopPlaceRepository;
+    this.stopPointRepository = stopPointRepository;
     this.informationDeskRepository = informationDeskRepository;
     this.informationDeskService = informationDeskService;
   }
 
   @Test
-  void shouldNotCreateInformationDeskWhenStopPlaceDoesNotExists() {
+  void shouldNotCreateInformationDeskWhenStopPointDoesNotExists() {
     //given
     String parentServicePointSloid = "ch:1:sloid:70000";
     InformationDeskVersion informationDesk = InformationDeskTestData.getInformationDeskVersion();
     informationDesk.setParentServicePointSloid(parentServicePointSloid);
 
     //when & then
-    assertThrows(StopPlaceDoesNotExistsException.class,
+    assertThrows(StopPointDoesNotExistsException.class,
         () -> informationDeskService.createInformationDesk(informationDesk)).getLocalizedMessage();
   }
 
@@ -61,9 +61,9 @@ class InformationDeskServiceTest {
   void shouldCreateInformationDeskWhenNoReferencePointExists() {
     //given
     String parentServicePointSloid = "ch:1:sloid:70000";
-    StopPlaceVersion stopPlaceVersion = StopPlaceTestData.getStopPlaceVersion();
-    stopPlaceVersion.setSloid(parentServicePointSloid);
-    stopPlaceRepository.save(stopPlaceVersion);
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointRepository.save(stopPointVersion);
     InformationDeskVersion informationDesk = InformationDeskTestData.getInformationDeskVersion();
     informationDesk.setParentServicePointSloid(parentServicePointSloid);
     //when
@@ -83,9 +83,9 @@ class InformationDeskServiceTest {
   void shouldCreateToiletWhenReferencePointExists() {
     //given
     String parentServicePointSloid = "ch:1:sloid:70000";
-    StopPlaceVersion stopPlaceVersion = StopPlaceTestData.getStopPlaceVersion();
-    stopPlaceVersion.setSloid(parentServicePointSloid);
-    stopPlaceRepository.save(stopPlaceVersion);
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointRepository.save(stopPointVersion);
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
     referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
     referencePointRepository.save(referencePointVersion);

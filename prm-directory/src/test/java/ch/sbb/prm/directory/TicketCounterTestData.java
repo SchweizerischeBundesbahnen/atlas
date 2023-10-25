@@ -1,10 +1,10 @@
 package ch.sbb.prm.directory;
 
+import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
+import ch.sbb.atlas.api.prm.model.ticketcounter.CreateTicketCounterVersionModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.prm.directory.controller.model.ticketcounter.CreateTicketCounterVersionModel;
 import ch.sbb.prm.directory.entity.TicketCounterVersion;
 import ch.sbb.prm.directory.entity.TicketCounterVersion.TicketCounterVersionBuilder;
-import ch.sbb.prm.directory.enumeration.StandardAttributeType;
 import java.time.LocalDate;
 import lombok.experimental.UtilityClass;
 
@@ -19,7 +19,7 @@ public class TicketCounterTestData {
         .validTo(LocalDate.of(2000, 12, 31))
         .parentServicePointSloid("ch:1.sloid:12345")
         .designation("Designation")
-        .info("Additional information")
+        .additionalInformation("Additional information")
         .inductionLoop(StandardAttributeType.NOT_APPLICABLE)
         .openingHours("10:00-22:00")
         .wheelchairAccess(StandardAttributeType.YES)
@@ -34,7 +34,7 @@ public class TicketCounterTestData {
         .validTo(LocalDate.of(2000, 12, 31))
         .parentServicePointSloid("ch:1.sloid:12345")
         .designation("Designation")
-        .info("Additional information")
+        .additionalInformation("Additional information")
         .inductionLoop(StandardAttributeType.NOT_APPLICABLE)
         .openingHours("10:00-22:00")
         .wheelchairAccess(StandardAttributeType.YES);
@@ -48,7 +48,7 @@ public class TicketCounterTestData {
         .validTo(LocalDate.of(2002, 12, 31))
         .parentServicePointSloid("ch:1.sloid:12345")
         .designation("Designation Napoli")
-        .info("Additional information")
+        .additionalInformation("Additional information")
         .inductionLoop(StandardAttributeType.NOT_APPLICABLE)
         .openingHours("10:00-22:00")
         .wheelchairAccess(StandardAttributeType.YES);
@@ -62,7 +62,7 @@ public class TicketCounterTestData {
         .validTo(LocalDate.of(2003, 12, 31))
         .parentServicePointSloid("ch:1.sloid:12345")
         .designation("Designation bern")
-        .info("Additional information")
+        .additionalInformation("Additional information")
         .inductionLoop(StandardAttributeType.NOT_APPLICABLE)
         .openingHours("10:00-22:00")
         .wheelchairAccess(StandardAttributeType.YES);
@@ -76,7 +76,7 @@ public class TicketCounterTestData {
         .validTo(LocalDate.of(2001, 12, 31))
         .parentServicePointSloid("ch:1.sloid:12345")
         .designation("Designation")
-        .info("Additional information")
+        .additionalInformation("Additional information")
         .inductionLoop(StandardAttributeType.NOT_APPLICABLE)
         .openingHours("10:00-22:00")
         .wheelchairAccess(StandardAttributeType.YES)

@@ -2,16 +2,16 @@ package ch.sbb.prm.directory.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
+import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.StepFreeAccessAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.TactileVisualAttributeType;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.RelationTestData;
 import ch.sbb.prm.directory.entity.BasePrmImportEntity.Fields;
 import ch.sbb.prm.directory.entity.RelationVersion;
-import ch.sbb.prm.directory.entity.StopPlaceVersion;
-import ch.sbb.prm.directory.enumeration.ReferencePointElementType;
-import ch.sbb.prm.directory.enumeration.StandardAttributeType;
-import ch.sbb.prm.directory.enumeration.StepFreeAccessAttributeType;
-import ch.sbb.prm.directory.enumeration.TactileVisualAttributeType;
+import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.repository.RelationRepository;
 import java.time.LocalDate;
 import java.util.List;
@@ -82,7 +82,7 @@ class RelationServiceTest {
     RelationVersion secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate, Fields.editor, StopPlaceVersion.Fields.id)
+        .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate, Fields.editor, StopPointVersion.Fields.id)
         .isEqualTo(editedVersion);
   }
 
@@ -203,7 +203,7 @@ class RelationServiceTest {
     RelationVersion secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate, Fields.editor, StopPlaceVersion.Fields.validTo)
+        .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate, Fields.editor, StopPointVersion.Fields.validTo)
         .isEqualTo(version2);
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2001, 12, 31));
   }
