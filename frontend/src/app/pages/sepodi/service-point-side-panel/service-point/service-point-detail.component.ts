@@ -432,11 +432,13 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
       this.form.controls.operatingPointKilometer.setValue(true);
       this.form.controls.operatingPointKilometer.disable();
       this.form.controls.operatingPointKilometerMaster.setValue(this.selectedVersion.number.number);
+      this.form.controls.operatingPointKilometerMaster.disable();
     } else {
       this.form.controls.operatingPointRouteNetwork.setValue(false);
       this.form.controls.operatingPointKilometer.setValue(false);
       this.form.controls.operatingPointKilometer.enable();
       this.form.controls.operatingPointKilometerMaster.reset();
+      this.form.controls.operatingPointKilometerMaster.enable();
     }
   }
 
