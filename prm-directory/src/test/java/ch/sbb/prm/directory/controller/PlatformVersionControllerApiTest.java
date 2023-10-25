@@ -11,19 +11,19 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.atlas.api.prm.model.platform.CreatePlatformVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.prm.directory.PlatformTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
-import ch.sbb.prm.directory.StopPlaceTestData;
-import ch.sbb.prm.directory.controller.model.platform.CreatePlatformVersionModel;
+import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.entity.PlatformVersion;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
-import ch.sbb.prm.directory.entity.StopPlaceVersion;
+import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.repository.PlatformRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
-import ch.sbb.prm.directory.repository.StopPlaceRepository;
+import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.service.RelationService;
 import ch.sbb.prm.directory.service.SharedServicePointService;
 import org.junit.jupiter.api.Test;
@@ -39,17 +39,17 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
 
   private final PlatformRepository platformRepository;
 
-  private final StopPlaceRepository stopPlaceRepository;
+  private final StopPointRepository stopPointRepository;
   private final ReferencePointRepository referencePointRepository;
 
   @MockBean
   private final RelationService relationService;
 
   @Autowired
-  PlatformVersionControllerApiTest(PlatformRepository platformRepository, StopPlaceRepository stopPlaceRepository,
+  PlatformVersionControllerApiTest(PlatformRepository platformRepository, StopPointRepository stopPointRepository,
       ReferencePointRepository referencePointRepository, RelationService relationService) {
     this.platformRepository = platformRepository;
-    this.stopPlaceRepository = stopPlaceRepository;
+    this.stopPointRepository = stopPointRepository;
     this.referencePointRepository = referencePointRepository;
     this.relationService = relationService;
   }
@@ -69,9 +69,9 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
   void shouldCreatePlatform() throws Exception {
     //given
     String parentServicePointSloid = "ch:1:sloid:7000";
-    StopPlaceVersion stopPlaceVersion = StopPlaceTestData.getStopPlaceVersion();
-    stopPlaceVersion.setSloid(parentServicePointSloid);
-    stopPlaceRepository.save(stopPlaceVersion);
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointRepository.save(stopPointVersion);
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
     referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
     referencePointRepository.save(referencePointVersion);
@@ -89,7 +89,7 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldNotCreatePlatformWhenStopPlaceDoesNotExists() throws Exception {
+  void shouldNotCreatePlatformWhenStopPointDoesNotExists() throws Exception {
     //given
     String parentServicePointSloid = "ch:1:sloid:7000";
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
@@ -122,9 +122,9 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
   void shouldUpdatePlatform() throws Exception {
     //given
     String parentServicePointSloid = "ch:1:sloid:7000";
-    StopPlaceVersion stopPlaceVersion = StopPlaceTestData.getStopPlaceVersion();
-    stopPlaceVersion.setSloid(parentServicePointSloid);
-    stopPlaceRepository.saveAndFlush(stopPlaceVersion);
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointRepository.saveAndFlush(stopPointVersion);
     PlatformVersion version1 = PlatformTestData.builderVersion1().build();
     version1.setParentServicePointSloid(parentServicePointSloid);
     platformRepository.saveAndFlush(version1);
@@ -139,7 +139,7 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
     editedVersionModel.setValidTo(version2.getValidTo().minusYears(1));
     editedVersionModel.setParentServicePointSloid(parentServicePointSloid);
     editedVersionModel.setBoardingDevice(version2.getBoardingDevice());
-    editedVersionModel.setAdditionalInfo(version2.getAdditionalInfo());
+    editedVersionModel.setAdditionalInformation(version2.getAdditionalInformation());
     editedVersionModel.setAdviceAccessInfo(version2.getAdviceAccessInfo());
     editedVersionModel.setContrastingAreas(version2.getContrastingAreas());
     editedVersionModel.setDynamicAudio(version2.getDynamicAudio());

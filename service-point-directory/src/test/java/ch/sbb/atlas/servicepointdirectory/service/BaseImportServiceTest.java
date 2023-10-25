@@ -2,8 +2,8 @@ package ch.sbb.atlas.servicepointdirectory.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.imports.servicepoint.ItemImportResult;
-import ch.sbb.atlas.imports.servicepoint.ItemImportResult.ItemImportResultBuilder;
+import ch.sbb.atlas.imports.ItemImportResult;
+import ch.sbb.atlas.imports.ItemImportResult.ItemImportResultBuilder;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion.Fields;
@@ -14,11 +14,11 @@ import org.junit.jupiter.api.Test;
 
 class BaseImportServiceTest {
 
-  private BaseImportService<ServicePointVersion> baseImportService;
+  private BaseImportServicePointDirectoryService<ServicePointVersion> baseImportService;
 
   @BeforeEach
   void setUp() {
-    baseImportService = new BaseImportService<>() {
+    baseImportService = new BaseImportServicePointDirectoryService<>() {
       @Override
       protected void save(ServicePointVersion element) {
         // not used
