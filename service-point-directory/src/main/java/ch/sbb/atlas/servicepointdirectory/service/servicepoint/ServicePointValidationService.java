@@ -63,39 +63,19 @@ public class ServicePointValidationService {
     }
   }
 
-  public void validateAndSetAbbreviationForCreate(ServicePointVersion servicePointVersion) {
-    if (StringUtils.isBlank(servicePointVersion.getAbbreviation())) {
-      return;
-    }
-    commonAbbreviationValidation(servicePointVersion);
-  }
+  public void validateAndSetAbbreviation(ServicePointVersion editedVersion) {
+    boolean isBussinesOrganisationInList = ServicePointAbbreviationAllowList.SBOIDS.contains(editedVersion.getBusinessOrganisation());
 
-  public void validateAndSetAbbreviationForUpdate(ServicePointVersion existingServicePointVersion, ServicePointVersion editedVersion) {
-    String existingAbbreviation = existingServicePointVersion.getAbbreviation();
-    String newAbbreviation = editedVersion.getAbbreviation();
-    if ((StringUtils.isBlank(newAbbreviation) && StringUtils.isBlank(existingAbbreviation)) || Objects.equals(existingAbbreviation, newAbbreviation)
-    ) {
+
+    if ((isAbbreviationEqualWithPreviousVersions(editedVersion) || isServicePointNew(editedVersion))) {
       return;
     }
 
-    if(hasServicePointVersionAbbreviation(existingServicePointVersion, editedVersion)){
+    if(!isBussinesOrganisationInList || hasServicePointVersionsAbbreviation(editedVersion)) {
       throw new AbbreviationUpdateNotAllowedException();
     }
 
-    if(isServicePointHighDateVersion(editedVersion)) {
-      throw new InvalidAbbreviationException();
-    }
-
-    commonAbbreviationValidation(editedVersion);
-  }
-
-  public void commonAbbreviationValidation(ServicePointVersion servicePointVersion) {
-    boolean isBussinesOrganisationInList = ServicePointAbbreviationAllowList.SBOIDS.contains(servicePointVersion.getBusinessOrganisation());
-    if(!isBussinesOrganisationInList) {
-      throw new AbbreviationUpdateNotAllowedException();
-    }
-
-    if(!isAbbreviationUnique(servicePointVersion)) {
+    if(isServicePointHighDateVersion(editedVersion) || !isAbbreviationUnique(editedVersion) ) {
       throw new InvalidAbbreviationException();
     }
   }
@@ -112,9 +92,19 @@ public class ServicePointValidationService {
         .anyMatch(obj -> obj.getValidTo().isAfter(servicePointVersion.getValidTo()));
   }
 
-  private boolean hasServicePointVersionAbbreviation(ServicePointVersion servicePointVersion, ServicePointVersion editedVersion){
-    return servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointVersion.getNumber())
+  private boolean isAbbreviationEqualWithPreviousVersions(ServicePointVersion editedVersion){
+    return servicePointVersionRepository.findAllByNumberOrderByValidFrom(editedVersion.getNumber())
         .stream()
-        .anyMatch(obj -> StringUtils.isNotBlank(obj.getAbbreviation()) && !obj.getAbbreviation().equals(editedVersion.getAbbreviation()));
+        .anyMatch(obj -> Objects.equals(obj.getAbbreviation(), editedVersion.getAbbreviation()));
+  }
+
+  private boolean isServicePointNew(ServicePointVersion editedVersion){
+    return servicePointVersionRepository.findAllByNumberOrderByValidFrom(editedVersion.getNumber()).isEmpty() && StringUtils.isBlank(editedVersion.getAbbreviation());
+  }
+
+  private boolean hasServicePointVersionsAbbreviation(ServicePointVersion editedVersion){
+    return servicePointVersionRepository.findAllByNumberOrderByValidFrom(editedVersion.getNumber())
+        .stream()
+        .anyMatch(obj -> StringUtils.isNotBlank(obj.getAbbreviation()) && !Objects.equals(obj.getAbbreviation(), editedVersion.getAbbreviation()));
   }
 }
