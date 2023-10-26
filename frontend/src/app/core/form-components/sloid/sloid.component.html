@@ -1,0 +1,28 @@
+<div class="d-flex flex-row">
+  <div class="d-flex flex-column me-3">
+    <div class="label-and-toggle d-flex flex-row">
+      <div class="font-bold-lg">{{ 'SEPODI.SERVICE_POINTS.SLOID' | translate }}</div>
+      <div class="d-flex ps-2 align-items-center">
+        <atlas-slide-toggle [(toggle)]="automaticSloid"></atlas-slide-toggle>
+      </div>
+    </div>
+    <ng-container *ngIf="automaticSloid">
+      <div class="fst-italic">{{ 'SEPODI.AUTOMATIC_SLOID' | translate }}</div>
+    </ng-container>
+    <ng-container *ngIf="!automaticSloid">
+      <atlas-text-field
+        [fieldExamples]="[
+          { label: 'FORM.FOR_EXAMPLE', translate: true },
+          { label: 'ch:1:sloid:7000:1234:088946', translate: false }
+        ]"
+        [formGroup]="form"
+        [required]="false"
+        controlName="sloid"
+      >
+        <ng-template #customChildInputPrefixTemplate>
+          <div class="pe-1">{{ fixedSloidPart }}</div>
+        </ng-template>
+      </atlas-text-field>
+    </ng-container>
+  </div>
+</div>
