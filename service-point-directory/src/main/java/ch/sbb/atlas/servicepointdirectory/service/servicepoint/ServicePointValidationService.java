@@ -2,13 +2,18 @@ package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.atlas.servicepointdirectory.abbreviationsallowlist.ServicePointAbbreviationAllowList;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
+import ch.sbb.atlas.servicepointdirectory.exception.AbbreviationUpdateNotAllowedException;
+import ch.sbb.atlas.servicepointdirectory.exception.InvalidAbbreviationException;
 import ch.sbb.atlas.servicepointdirectory.exception.ForbiddenDueToChosenServicePointVersionValidationPeriodException;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointDesignationLongConflictException;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointDesignationOfficialConflictException;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -58,4 +63,48 @@ public class ServicePointValidationService {
     }
   }
 
+  public void validateAndSetAbbreviation(ServicePointVersion editedVersion) {
+    boolean isBussinesOrganisationInList = ServicePointAbbreviationAllowList.SBOIDS.contains(editedVersion.getBusinessOrganisation());
+
+
+    if ((isAbbreviationEqualWithPreviousVersions(editedVersion) || isServicePointNew(editedVersion))) {
+      return;
+    }
+
+    if(!isBussinesOrganisationInList || hasServicePointVersionsAbbreviation(editedVersion)) {
+      throw new AbbreviationUpdateNotAllowedException();
+    }
+
+    if(isServicePointHighDateVersion(editedVersion) || !isAbbreviationUnique(editedVersion) ) {
+      throw new InvalidAbbreviationException();
+    }
+  }
+
+  private boolean isAbbreviationUnique(ServicePointVersion servicePointVersion){
+    return servicePointVersionRepository.findServicePointVersionByAbbreviation(servicePointVersion.getAbbreviation())
+        .stream()
+        .noneMatch(obj -> !obj.getNumber().equals(servicePointVersion.getNumber()));
+  }
+
+  private boolean isServicePointHighDateVersion(ServicePointVersion servicePointVersion){
+    return servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointVersion.getNumber())
+        .stream()
+        .anyMatch(obj -> obj.getValidTo().isAfter(servicePointVersion.getValidTo()));
+  }
+
+  private boolean isAbbreviationEqualWithPreviousVersions(ServicePointVersion editedVersion){
+    return servicePointVersionRepository.findAllByNumberOrderByValidFrom(editedVersion.getNumber())
+        .stream()
+        .anyMatch(obj -> Objects.equals(obj.getAbbreviation(), editedVersion.getAbbreviation()));
+  }
+
+  private boolean isServicePointNew(ServicePointVersion editedVersion){
+    return servicePointVersionRepository.findAllByNumberOrderByValidFrom(editedVersion.getNumber()).isEmpty() && StringUtils.isBlank(editedVersion.getAbbreviation());
+  }
+
+  private boolean hasServicePointVersionsAbbreviation(ServicePointVersion editedVersion){
+    return servicePointVersionRepository.findAllByNumberOrderByValidFrom(editedVersion.getNumber())
+        .stream()
+        .anyMatch(obj -> StringUtils.isNotBlank(obj.getAbbreviation()) && !Objects.equals(obj.getAbbreviation(), editedVersion.getAbbreviation()));
+  }
 }

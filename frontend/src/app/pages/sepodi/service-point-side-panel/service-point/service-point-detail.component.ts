@@ -33,6 +33,7 @@ import { AuthService } from '../../../../core/auth/auth.service';
 import { TranslationSortingService } from '../../../../core/translation/translation-sorting.service';
 import { CoordinateTransformationService } from '../../geography/coordinate-transformation.service';
 import { LocationInformation } from './location-information';
+import { ServicePointAbbreviationAllowList } from '././service-point-abbreviation-allow-list';
 import { Countries } from '../../../../core/country/Countries';
 
 @Component({
@@ -47,7 +48,10 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   selectedVersionIndex!: number;
   form!: FormGroup<ServicePointDetailFormGroup>;
   isNew = true;
+  hasAbbreviation = false;
+  isAbbreviationAllowed = false;
 
+  isLatestVersionSelected = false;
   preferredId?: number;
 
   types = Object.values(ServicePointType);
@@ -146,7 +150,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     this.initSelectedVersion();
   }
 
-  private initSelectedVersion() {
+  public initSelectedVersion() {
     if (this.selectedVersion.id) {
       this.isNew = false;
     }
@@ -158,6 +162,9 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     this.displayAndSelectServicePointOnMap();
     this.initTypeChangeInformationDialog();
     this.initLocationInformationDisplay();
+    this.isSelectedVersionHighDate(this.servicePointVersions, this.selectedVersion);
+    this.checkIfAbbreviationIsAllowed();
+    this.hasAbbreviation = !!this.form.controls.abbreviation.value;
   }
 
   private initTypeChangeInformationDialog() {
@@ -307,7 +314,6 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
         servicePointVersion.numberWithoutCheckDigit = this.selectedVersion.number.number;
         this.update(this.selectedVersion.id!, servicePointVersion);
       }
-      this.cancelMapEditMode();
     }
   }
 
@@ -332,6 +338,8 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
           .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
           .subscribe(() => {
             this.mapService.refreshMap();
+            this.cancelMapEditMode();
+            this.hasAbbreviation = !!this.form.controls.abbreviation?.value;
             this.notificationService.success('SEPODI.SERVICE_POINTS.NOTIFICATION.EDIT_SUCCESS');
             this.router
               .navigate(['..', this.selectedVersion.number.number], { relativeTo: this.route })
@@ -424,6 +432,21 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
 
   isCoordinatePairNotZero(coordinates: CoordinatePair): boolean {
     return coordinates.north !== 0 && coordinates.east !== 0;
+  }
+
+  checkIfAbbreviationIsAllowed() {
+    this.isAbbreviationAllowed = ServicePointAbbreviationAllowList.SBOIDS.some((element) =>
+      element.includes(this.selectedVersion.businessOrganisation),
+    );
+  }
+
+  isSelectedVersionHighDate(
+    servicePointVersions: ReadServicePointVersion[],
+    selectedVersion: ReadServicePointVersion,
+  ) {
+    this.isLatestVersionSelected = !servicePointVersions.some(
+      (obj) => obj.validTo > selectedVersion.validTo,
+    );
   }
 
   setOperatingPointRouteNetwork(isSelected: boolean) {
