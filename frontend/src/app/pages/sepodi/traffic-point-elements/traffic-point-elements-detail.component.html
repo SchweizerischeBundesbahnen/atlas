@@ -169,10 +169,39 @@
     <div class="page-footer-actions align-items-center justify-content-center d-flex">
       <atlas-button
         buttonDataCy="close-detail"
-        buttonText="SEPODI.BACK_TO_MAP"
+        buttonText="COMMON.BACK"
         buttonType="whiteFooterNonEdit"
-        (buttonClicked)="closeSidePanel()"
+        (buttonClicked)="backToServicePoint()"
         [footerEdit]="form.enabled"
+      >
+      </atlas-button>
+      <atlas-button
+        *ngIf="form.disabled"
+        (buttonClicked)="toggleEdit()"
+        applicationType="SEPODI"
+        buttonDataCy="edit"
+        buttonText="COMMON.EDIT"
+        buttonType="edit-service-point-dependent"
+        [businessOrganisations]="servicePointBusinessOrganisations"
+        wrapperStyleClass="ms-3"
+      ></atlas-button>
+      <atlas-button
+        [footerEdit]="form.enabled"
+        (buttonClicked)="toggleEdit()"
+        buttonDataCy="cancel"
+        buttonText="COMMON.CANCEL"
+        buttonType="whiteFooterEdit"
+        wrapperStyleClass="ms-3"
+      ></atlas-button>
+      <atlas-button
+        (click)="save()"
+        [disabled]="!this.form.dirty"
+        [footerEdit]="form.enabled"
+        [submitButton]="true"
+        buttonDataCy="save-item"
+        buttonText="COMMON.SAVE"
+        buttonType="whiteFooterEdit"
+        wrapperStyleClass="ms-3"
       >
       </atlas-button>
     </div>
