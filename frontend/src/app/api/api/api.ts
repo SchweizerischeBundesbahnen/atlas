@@ -6,6 +6,8 @@ export * from './exportServicePointBatch.service';
 import { ExportServicePointBatchService } from './exportServicePointBatch.service';
 export * from './geoData.service';
 import { GeoDataService } from './geoData.service';
+export * from './importPrmBatch.service';
+import { ImportPrmBatchService } from './importPrmBatch.service';
 export * from './importServicePointBatch.service';
 import { ImportServicePointBatchService } from './importServicePointBatch.service';
 export * from './lines.service';
@@ -41,6 +43,7 @@ export const APIS = [
   CompaniesService,
   ExportServicePointBatchService,
   GeoDataService,
+  ImportPrmBatchService,
   ImportServicePointBatchService,
   LinesService,
   LoadingPointsService,
