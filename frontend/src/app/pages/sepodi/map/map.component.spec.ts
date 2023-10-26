@@ -6,6 +6,7 @@ import { MAP_STYLES } from './map-options.service';
 import { CoordinatePairWGS84, MapService } from './map.service';
 import maplibregl, { Map } from 'maplibre-gl';
 import { BehaviorSubject } from 'rxjs';
+import { Component } from '@angular/core';
 
 const isEditModeSubject = new BehaviorSubject<boolean>(true);
 const clickedGeographyCoordinatesSubject = new BehaviorSubject<CoordinatePairWGS84>({
@@ -50,13 +51,19 @@ mapSpy.on.and.callFake((event: string, callback: any) => {
   return mapSpy;
 });
 
+@Component({
+  selector: 'app-search-service-point',
+  template: '<h1>SearchServicePointMockComponent</h1>',
+})
+class SearchServicePointMockComponent {}
+
 describe('MapComponent', () => {
   let component: MapComponent;
   let fixture: ComponentFixture<MapComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [MapComponent],
+      declarations: [MapComponent, SearchServicePointMockComponent],
       imports: [AppTestingModule],
       providers: [{ provide: MapService, useValue: mapService }],
     }).compileComponents();
