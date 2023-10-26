@@ -22,6 +22,7 @@ import { TimetableFieldNumberSelectComponent } from '../form-components/ttfn-sel
 import { TimetableFieldNumberSelectOptionPipe } from '../form-components/ttfn-select/ttfn-select-option.pipe';
 import { TransportCompanySelectComponent } from '../form-components/tu-select/transport-company-select.component';
 import { AtlasSlideToggleComponent } from '../form-components/atlas-slide-toggle/atlas-slide-toggle.component';
+import { SloidComponent } from '../form-components/sloid/sloid.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { AtlasSlideToggleComponent } from '../form-components/atlas-slide-toggle
     AtlasFieldErrorComponent,
     AtlasLabelFieldComponent,
     AtlasSlideToggleComponent,
+    SloidComponent,
   ],
   imports: [CommonModule, MaterialModule, TranslateModule],
   exports: [
@@ -66,6 +68,7 @@ import { AtlasSlideToggleComponent } from '../form-components/atlas-slide-toggle
     AtlasFieldErrorComponent,
     AtlasLabelFieldComponent,
     AtlasSlideToggleComponent,
+    SloidComponent,
   ],
 })
 export class FormModule {}
