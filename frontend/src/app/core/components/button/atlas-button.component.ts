@@ -13,6 +13,7 @@ import { Countries } from '../../country/Countries';
 export class AtlasButtonComponent {
   @Input() applicationType!: ApplicationType;
   @Input() businessOrganisation!: string;
+  @Input() businessOrganisations: string[] = [];
   @Input() canton!: string;
   @Input() uicCountryCode?: number;
   @Input() disabled!: boolean;
@@ -37,6 +38,9 @@ export class AtlasButtonComponent {
     }
     if (this.buttonType === AtlasButtonType.EDIT) {
       return this.mayEdit();
+    }
+    if (this.buttonType === AtlasButtonType.EDIT_SERVICE_POINT_DEPENDENT) {
+      return this.mayEditServicePointDependentObject();
     }
     if (
       [
@@ -88,7 +92,7 @@ export class AtlasButtonComponent {
       this.authService.hasPermissionsToWrite(this.applicationType, this.businessOrganisation) &&
       this.authService.hasPermissionsToWrite(
         this.applicationType,
-        Countries.fromUicCode(this.uicCountryCode!).enumCountry
+        Countries.fromUicCode(this.uicCountryCode!).enumCountry,
       )
     );
   }
@@ -132,5 +136,13 @@ export class AtlasButtonComponent {
       return 'atlas-primary-btn primary-color-btn';
     }
     return 'atlas-primary-btn';
+  }
+
+  private mayEditServicePointDependentObject() {
+    return this.businessOrganisations
+      .map((organisation) =>
+        this.authService.hasPermissionsToWrite(this.applicationType, organisation),
+      )
+      .includes(true);
   }
 }
