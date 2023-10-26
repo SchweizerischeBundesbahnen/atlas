@@ -1,18 +1,13 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ServicePointFormComponent } from './service-point-form.component';
+import SpyObj = jasmine.SpyObj;
 
 describe('ServicePointFormComponent', () => {
   let component: ServicePointFormComponent;
-  let fixture: ComponentFixture<ServicePointFormComponent>;
+  let spy: SpyObj<any>;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [ServicePointFormComponent],
-    });
-    fixture = TestBed.createComponent(ServicePointFormComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    spy = jasmine.createSpyObj(['test']);
+    component = new ServicePointFormComponent(spy, spy, spy);
   });
 
   it('should create', () => {

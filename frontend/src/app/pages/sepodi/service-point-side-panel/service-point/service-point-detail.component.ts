@@ -109,15 +109,11 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   }
 
   public initSelectedVersion() {
-    console.log('hallo');
     if (this.selectedVersion.id) {
       this.isNew = false;
     }
 
     this.form = ServicePointFormGroupBuilder.buildFormGroup(this.selectedVersion);
-    this.form.statusChanges.subscribe((state) =>
-      console.log('status changed: ' + this.form.disabled, state),
-    );
     if (!this.isNew) {
       this.disableForm();
     }
@@ -175,15 +171,12 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   }
 
   private disableForm(): void {
-    console.log('disable');
-    this.form.disable(); // todo: emitEvent false and also in enableForm
-    console.log('after disable: ' + this.form.disabled);
+    this.form.disable({ emitEvent: false });
     this.isFormEnabled$.next(false);
   }
 
   private enableForm(): void {
-    console.log('enable');
-    this.form.enable();
+    this.form.enable({ emitEvent: false });
     this.isFormEnabled$.next(true);
   }
 
