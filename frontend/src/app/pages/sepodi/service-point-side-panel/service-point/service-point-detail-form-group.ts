@@ -52,7 +52,11 @@ export class ServicePointFormGroupBuilder {
       {
         number: new FormControl(version.number.number),
         sloid: new FormControl(version.sloid),
-        abbreviation: new FormControl(version.abbreviation),
+        abbreviation: new FormControl(version.abbreviation, [
+          Validators.maxLength(6),
+          Validators.minLength(2),
+          AtlasCharsetsValidator.uppercaseNumericLength2To6Validator,
+        ]),
         status: new FormControl(version.status),
         designationOfficial: new FormControl(version.designationOfficial, [
           Validators.required,

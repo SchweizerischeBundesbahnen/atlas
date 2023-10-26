@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.entity;
 
+import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.model.CountryAndBusinessOrganisationAssociated;
 import ch.sbb.atlas.model.Status;
@@ -40,6 +41,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -116,7 +118,8 @@ public class ServicePointVersion extends BasePointVersion<ServicePointVersion> i
   @AtlasVersionableProperty
   private String designationOfficial;
 
-  @Size(max = AtlasFieldLengths.LENGTH_6)
+  @Size(min = AtlasFieldLengths.LENGTH_2, max = AtlasFieldLengths.LENGTH_6)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ABBREVIATION_PATTERN)
   @AtlasVersionableProperty
   private String abbreviation;
 

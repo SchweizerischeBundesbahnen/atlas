@@ -57,11 +57,28 @@
     </div>
   </div>
   <div class="col-12 d-flex mt-2 flex-column">
-    <div class="font-bold-lg color-gray-900">
-      {{ 'SEPODI.SERVICE_POINTS.ABBREVIATION' | translate }}
-    </div>
     <div class="color-gray-900">
-      {{ selectedVersion.abbreviation ?? '-' }}
+      <atlas-text-field
+        *ngIf="!hasAbbreviation && isAbbreviationAllowed && isLatestVersionSelected"
+        [fieldExamples]="[
+          { label: 'FORM.FOR_EXAMPLE', translate: true },
+          { label: 'BIBD |', translate: false },
+          { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '6' } }
+        ]"
+        [formGroup]="form"
+        [required]="false"
+        controlName="abbreviation"
+        fieldLabel="SEPODI.SERVICE_POINTS.ABBREVIATION"
+      >
+      </atlas-text-field>
+      <div *ngIf="hasAbbreviation || !isAbbreviationAllowed || !isLatestVersionSelected">
+        <div class="font-bold-lg color-gray-900">
+          {{ 'SEPODI.SERVICE_POINTS.ABBREVIATION' | translate }}
+        </div>
+        <div class="color-gray-900">
+          {{ selectedVersion.abbreviation ?? '-' }}
+        </div>
+      </div>
     </div>
   </div>
 
