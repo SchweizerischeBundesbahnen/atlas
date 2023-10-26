@@ -52,7 +52,6 @@ public abstract class TrafficPointElementVersionModel extends BaseVersionModel i
   @NotNull
   private TrafficPointElementType trafficPointElementType;
 
-  @NotNull
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_128)
   @Schema(description = "Unique code for traffic point element (TPE) that is used in customer information.\n" +
       "By means of this ID, the connection between stops and bus / station stop area or boarding area can be established.\n\n" +
