@@ -234,7 +234,8 @@
       "TTFN": "Numéros de champs d'horaires",
       "BODI": "Organisations commerciales",
       "TIMETABLE_HEARING": "Consultations sur les horaires",
-      "SEPODI": "Départements"
+      "SEPODI": "Départements",
+      "PRM": "LHand"
     },
     "ACCOUNT_STATUS_TYPE": {
       "ACTIVE": "Actif",
