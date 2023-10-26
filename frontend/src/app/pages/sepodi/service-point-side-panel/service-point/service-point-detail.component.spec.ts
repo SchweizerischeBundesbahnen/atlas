@@ -118,7 +118,7 @@ describe('ServicePointDetailComponent', () => {
     expect((component.servicePointVersions[0] as Record).versionNumber).toBeTruthy();
   });
 
-  fit('should initialize form correctly', () => {
+  it('should initialize form correctly', () => {
     expect(component.isNew).toBeFalse();
     expect(component.form.disabled).toBeTrue();
   });
