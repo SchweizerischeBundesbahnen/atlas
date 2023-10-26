@@ -396,7 +396,7 @@ public class ServicePointTestData {
         .sloid("ch:1:sloid:18771")
         .designationLong("designation long 1")
         .designationOfficial("Aargau Strasse")
-        .abbreviation("3")
+        .abbreviation("ABC")
         .freightServicePoint(false)
         .sortCodeOfDestinationStation("39136")
         .businessOrganisation("ch:1:sboid:100871")
@@ -408,6 +408,27 @@ public class ServicePointTestData {
             ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getServicePointGeolocationBernMittelland()))
         .validFrom(LocalDate.of(2010, 12, 11))
         .validTo(LocalDate.of(2019, 8, 10))
+        .build();
+  }
+
+  public static CreateServicePointVersionModel getBuchsiServicePoint() {
+    return CreateServicePointVersionModel.builder()
+        .numberWithoutCheckDigit(8034511)
+        .sloid("ch:1:sloid:18771")
+        .designationLong("designation long 1")
+        .designationOfficial("Buchsi Hood")
+        .abbreviation(null)
+        .freightServicePoint(false)
+        .sortCodeOfDestinationStation("39136")
+        .businessOrganisation("ch:1:sboid:100016")
+        .categories(List.of(Category.POINT_OF_SALE))
+        .operatingPointRouteNetwork(true)
+        .meansOfTransport(List.of(MeanOfTransport.TRAIN))
+        .stopPointType(StopPointType.ON_REQUEST)
+        .servicePointGeolocation(
+            ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getServicePointGeolocationBernMittelland()))
+        .validFrom(LocalDate.of(2010, 12, 11))
+        .validTo(LocalDate.of(2099, 8, 10))
         .build();
   }
 

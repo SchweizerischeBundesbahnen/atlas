@@ -392,7 +392,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.designationOfficial, is("Aargau Strasse")))
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.sloid, is("ch:1:sloid:18771")))
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.designationLong, is("designation long 1")))
-        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.abbreviation, is("3")))
+        .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.abbreviation, is("ABC")))
         .andExpect(jsonPath("$.operatingPoint", is(true)))
         .andExpect(jsonPath("$.operatingPointWithTimetable", is(true)))
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.freightServicePoint, is(false)))
@@ -510,7 +510,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
              .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.designationOfficial, is("Aargau Strasse")))
              .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.sloid, is("ch:1:sloid:18771")))
              .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.designationLong, is("designation long 1")))
-             .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.abbreviation, is("3")))
+             .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.abbreviation, is("ABC")))
              .andExpect(jsonPath("$.operatingPoint", is(true)))
              .andExpect(jsonPath("$.operatingPointWithTimetable", is(true)))
              .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.freightServicePoint, is(false)))
@@ -783,4 +783,94 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         .andExpect(jsonPath("$.servicePointGeolocation.lv95.north", is(1199776.88159)))
         .andExpect(jsonPath("$.hasGeolocation", is(true)));
   }
-}
+  @Test
+  void shouldNotUpdateServicePointIfAbbreviationInvalid()  throws Exception{
+      CreateServicePointVersionModel testData = ServicePointTestData.getAargauServicePointVersionModel();
+      testData.setAbbreviation(null);
+     ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(testData);
+      Long id = servicePointVersionModel.getId();
+
+      CreateServicePointVersionModel aargauServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
+      aargauServicePointVersionModel.setId(id);
+
+      aargauServicePointVersionModel.setAbbreviation("dasisteinevielzulangeabkuerzung");
+
+      mvc.perform(put("/v1/service-points/" + aargauServicePointVersionModel.getId())
+          .contentType(contentType)
+          .content(mapper.writeValueAsString(aargauServicePointVersionModel)))
+          .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  void shouldNotUpdateServicePointAbbreviationIfBusinessOrganisationNotAllowed()  throws Exception {
+
+      CreateServicePointVersionModel testData = ServicePointTestData.getAargauServicePointVersionModel();
+      testData.setAbbreviation(null);
+
+      ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(testData);
+      Long id = servicePointVersionModel.getId();
+
+      CreateServicePointVersionModel aargauServicePoint = testData;
+      aargauServicePoint.setBusinessOrganisation("dasisteineungueltigebusinessorganisation");
+      aargauServicePoint.setId(id);
+
+
+      aargauServicePoint.setAbbreviation("BUCH");
+
+      mvc.perform(put("/v1/service-points/" + aargauServicePoint.getId())
+              .contentType(contentType)
+              .content(mapper.writeValueAsString(aargauServicePoint)))
+          .andExpect(status().isForbidden());
+  }
+
+  @Test
+  void shouldNotUpdateServicePointAbbreviationIfNewAbbreviationNotEqualsOldAbbreviation()  throws Exception {
+      CreateServicePointVersionModel testData = ServicePointTestData.getAargauServicePointVersionModel();
+      testData.setAbbreviation("BUCH");
+
+      ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(testData);
+
+      Long id = servicePointVersionModel.getId();
+
+      CreateServicePointVersionModel buchsiServicePoint = ServicePointTestData.getBuchsiServicePoint();
+      buchsiServicePoint.setId(id);
+
+
+      buchsiServicePoint.setAbbreviation("NEU");
+
+      mvc.perform(put("/v1/service-points/" + id)
+              .contentType(contentType)
+              .content(mapper.writeValueAsString(buchsiServicePoint)))
+          .andExpect(status().isForbidden());
+  }
+
+     @Test
+     void shouldNotUpdateServicePointAbbreviationIsNotUnique()  throws Exception {
+         CreateServicePointVersionModel testData = ServicePointTestData.getAargauServicePointVersionModel();
+         testData.setAbbreviation("BUCH");
+         ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(testData);
+
+         CreateServicePointVersionModel testData2 = ServicePointTestData.getAargauServicePointVersionModel();
+         testData2.setNumberWithoutCheckDigit(1111111);
+         testData2.setAbbreviation(null);
+         testData2.setSloid("ch:1:sloid:18772");
+         testData2.setDesignationLong("designation long 1");
+         testData2.setDesignationOfficial("Aargau Strasse");
+         ReadServicePointVersionModel servicePointVersionModel2 = servicePointController.createServicePoint(testData2);
+
+
+
+         CreateServicePointVersionModel aargauVersionModel = testData2;
+         aargauVersionModel.setId(servicePointVersionModel2.getId());
+
+         aargauVersionModel.setAbbreviation("BUCH");
+
+         mvc.perform(put("/v1/service-points/" + aargauVersionModel.getId())
+                 .contentType(contentType)
+                 .content(mapper.writeValueAsString(aargauVersionModel)))
+             .andExpect(status().isBadRequest());
+
+     }
+
+
+ }
