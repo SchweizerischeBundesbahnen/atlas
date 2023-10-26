@@ -402,7 +402,6 @@ public class ServicePointTestData {
         .businessOrganisation("ch:1:sboid:100871")
         .categories(List.of(Category.POINT_OF_SALE))
         .operatingPointRouteNetwork(true)
-        .operatingPointKilometerMasterNumber(8034510)
         .meansOfTransport(List.of(MeanOfTransport.TRAIN))
         .stopPointType(StopPointType.ON_REQUEST)
         .servicePointGeolocation(
@@ -424,7 +423,6 @@ public class ServicePointTestData {
         .businessOrganisation("ch:1:sboid:100016")
         .categories(List.of(Category.POINT_OF_SALE))
         .operatingPointRouteNetwork(true)
-        .operatingPointKilometerMasterNumber(8034511)
         .meansOfTransport(List.of(MeanOfTransport.TRAIN))
         .stopPointType(StopPointType.ON_REQUEST)
         .servicePointGeolocation(
