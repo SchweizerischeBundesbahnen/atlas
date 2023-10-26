@@ -957,7 +957,11 @@
       "CONSTRUCTION_INFORMATION": "Bauliche Informationen",
       "LENGTH": "Länge [m]",
       "BOARDING_AREA_HEIGHT": "Kantenhöhe  [cm]",
-      "COMPASS_DIRECTION": "Kompassrichtung [°]"
+      "COMPASS_DIRECTION": "Kompassrichtung [°]",
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Die Haltekante wurde erfolgreich hinzugefügt.",
+        "EDIT_SUCCESS": "Die Haltekante wurde erfolgreich gespeichert."
+      }
     },
     "LOADING_POINTS": {
       "LOADING_POINTS": "Ladestellen"
