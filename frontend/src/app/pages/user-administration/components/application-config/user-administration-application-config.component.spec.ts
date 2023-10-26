@@ -37,9 +37,10 @@ describe('UserAdministrationApplicationConfigComponent', () => {
           BODI: [],
           TIMETABLE_HEARING: [],
           SEPODI: [],
+          PRM: [],
         }),
         boFormResetEvent$: of(),
-      }
+      },
     );
     await TestBed.configureTestingModule({
       declarations: [
