@@ -30,6 +30,7 @@ public class TrafficPointElementService {
   private final TrafficPointElementVersionRepository trafficPointElementVersionRepository;
   private final VersionableService versionableService;
   private final CrossValidationService crossValidationService;
+  private final TrafficPointElementSloidService trafficPointElementSloidService;
 
   public Page<TrafficPointElementVersion> findAll(TrafficPointElementSearchRestrictions searchRestrictions) {
     return trafficPointElementVersionRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
@@ -52,6 +53,9 @@ public class TrafficPointElementService {
       (#servicePointVersions,T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
   public TrafficPointElementVersion create(TrafficPointElementVersion trafficPointElementVersion,
       List<ServicePointVersion> servicePointVersions) {
+    if (trafficPointElementVersion.getSloid() == null) {
+      trafficPointElementVersion.setSloid(trafficPointElementSloidService.getNextSloidForPlatform(trafficPointElementVersion.getServicePointNumber()));
+    }
     return save(trafficPointElementVersion);
   }
 
@@ -63,7 +67,7 @@ public class TrafficPointElementService {
   @PreAuthorize("""
       @countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreateOrEditServicePointDependentObject
       (#currentVersions, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
-  public void checkPermissionRightsAndUpdate(TrafficPointElementVersion currentVersion, TrafficPointElementVersion editedVersion,
+  public void update(TrafficPointElementVersion currentVersion, TrafficPointElementVersion editedVersion,
       List<ServicePointVersion> currentVersions) {
     updateTrafficPointElementVersion(currentVersion, editedVersion);
   }
