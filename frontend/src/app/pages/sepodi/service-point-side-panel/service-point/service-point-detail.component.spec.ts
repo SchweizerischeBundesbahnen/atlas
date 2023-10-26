@@ -19,7 +19,13 @@ import { AtlasSpacerComponent } from '../../../../core/components/spacer/atlas-s
 import { Record } from '../../../../core/components/base-detail/record';
 import { MockAtlasButtonComponent } from '../../../../app.testing.mocks';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
-import { ApplicationRole, ServicePointsService, SpatialReference } from '../../../../api';
+import {
+  ApplicationRole,
+  ReadServicePointVersion,
+  ServicePointsService,
+  SpatialReference,
+  Status,
+} from '../../../../api';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { DisplayCantonPipe } from '../../../../core/cantons/display-canton.pipe';
 import { MapService } from '../../map/map.service';
@@ -201,6 +207,106 @@ describe('ServicePointDetailComponent', () => {
     expect(mapServiceSpy.isEditMode.value).toBe(true);
   });
 
+  it('should set isAbbreviationAllowed based on selectedVersion.businessOrganisation', () => {
+    component.selectedVersion = {
+      businessOrganisation: 'ch:1:sboid:100016',
+      designationOfficial: 'abcd',
+      validFrom: new Date(2020 - 10 - 1),
+      validTo: new Date(2099 - 10 - 1),
+      number: {
+        number: 123456,
+        numberShort: 31,
+        uicCountryCode: 0,
+        checkDigit: 0,
+      },
+      status: 'VALIDATED',
+    };
+
+    component.checkIfAbbreviationIsAllowed();
+
+    expect(component.isAbbreviationAllowed).toBeTrue();
+
+    component.selectedVersion = {
+      businessOrganisation: 'falseBusinessOrganisation',
+      designationOfficial: 'abcd',
+      validFrom: new Date(2020 - 10 - 1),
+      validTo: new Date(2099 - 10 - 1),
+      number: {
+        number: 123456,
+        numberShort: 31,
+        uicCountryCode: 0,
+        checkDigit: 0,
+      },
+      status: 'VALIDATED',
+    };
+    component.checkIfAbbreviationIsAllowed();
+    expect(component.isAbbreviationAllowed).toBeFalse();
+  });
+
+  it('should set isLatestVersionSelected to true if selected version is the latest', () => {
+    const selectedVersion: ReadServicePointVersion = {
+      businessOrganisation: 'ch:1:sboid:100016',
+      designationOfficial: 'abcd',
+      validFrom: new Date(2001, 4, 1),
+      validTo: new Date(2004, 11, 31),
+      number: {
+        number: 123456,
+        numberShort: 31,
+        uicCountryCode: 0,
+        checkDigit: 0,
+      },
+      status: Status.Validated,
+    };
+
+    const versions: ReadServicePointVersion[] = [
+      {
+        businessOrganisation: 'ch:1:sboid:100016',
+        designationOfficial: 'efgh',
+        validFrom: new Date(1999, 0, 1),
+        validTo: new Date(2002, 0, 1),
+        number: { number: 123457, numberShort: 32, uicCountryCode: 0, checkDigit: 0 },
+        status: Status.Validated,
+      },
+      selectedVersion,
+    ];
+
+    component.isSelectedVersionHighDate(versions, selectedVersion);
+
+    expect(component.isLatestVersionSelected).toBeTrue();
+  });
+
+  it('should set isLatestVersionSelected to false if selected version is not the latest', () => {
+    const selectedVersion: ReadServicePointVersion = {
+      businessOrganisation: 'ch:1:sboid:100016',
+      designationOfficial: 'abcd',
+      validFrom: new Date(2001, 4, 1),
+      validTo: new Date(2004, 11, 31),
+      number: {
+        number: 123456,
+        numberShort: 31,
+        uicCountryCode: 0,
+        checkDigit: 0,
+      },
+      status: Status.Validated,
+    };
+
+    const versions: ReadServicePointVersion[] = [
+      {
+        businessOrganisation: 'ch:1:sboid:100016',
+        designationOfficial: 'efgh',
+        validFrom: new Date(2020, 0, 1),
+        validTo: new Date(2099, 0, 1),
+        number: { number: 123457, numberShort: 32, uicCountryCode: 0, checkDigit: 0 },
+        status: Status.Validated,
+      },
+      selectedVersion,
+    ];
+
+    component.isSelectedVersionHighDate(versions, selectedVersion);
+
+    expect(component.isLatestVersionSelected).toBeFalse();
+  });
+
   it('should test component method setOperatingPointRouteNetwork with argument true', () => {
     component.setOperatingPointRouteNetwork(true);
 
@@ -231,7 +337,6 @@ describe('ServicePointDetailComponent', () => {
 
   it('should test component method setOperatingPointKilometer with argument false', () => {
     component.setOperatingPointKilometer(false);
-
     expect(component.form.controls.operatingPointKilometer.value).toBe(false);
   });
 });
