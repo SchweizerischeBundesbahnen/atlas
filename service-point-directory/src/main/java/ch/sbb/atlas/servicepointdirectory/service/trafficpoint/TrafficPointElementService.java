@@ -47,11 +47,10 @@ public class TrafficPointElementService {
     return trafficPointElementVersionRepository.existsBySloid(sloid);
   }
 
-  @PreAuthorize(
-      "@countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreateOrEditServicePointDependentObject"
-          + "(#servicePointVersions, "
-          + "T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
-  public TrafficPointElementVersion checkPermissionRightsAndSave(TrafficPointElementVersion trafficPointElementVersion,
+  @PreAuthorize("""
+      @countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreateOrEditServicePointDependentObject
+      (#servicePointVersions,T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
+  public TrafficPointElementVersion create(TrafficPointElementVersion trafficPointElementVersion,
       List<ServicePointVersion> servicePointVersions) {
     return save(trafficPointElementVersion);
   }
@@ -61,15 +60,12 @@ public class TrafficPointElementService {
     return trafficPointElementVersionRepository.saveAndFlush(trafficPointElementVersion);
   }
 
-  @PreAuthorize(
-      "@countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreateOrEditServicePointDependentObject"
-          + "(#currentVersions, "
-          + "T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
-  public void checkPermissionRightsAndUpdate(
-      TrafficPointElementVersion currentVersionTPEV,
-      TrafficPointElementVersion editedVersionTPEV,
+  @PreAuthorize("""
+      @countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreateOrEditServicePointDependentObject
+      (#currentVersions, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
+  public void checkPermissionRightsAndUpdate(TrafficPointElementVersion currentVersion, TrafficPointElementVersion editedVersion,
       List<ServicePointVersion> currentVersions) {
-    updateTrafficPointElementVersion(currentVersionTPEV, editedVersionTPEV);
+    updateTrafficPointElementVersion(currentVersion, editedVersion);
   }
 
   public void updateTrafficPointElementVersion(TrafficPointElementVersion currentVersion,
@@ -78,6 +74,9 @@ public class TrafficPointElementService {
     if (editedVersion.getVersion() != null && !currentVersion.getVersion().equals(editedVersion.getVersion())) {
       throw new StaleObjectStateException(ServicePointVersion.class.getSimpleName(), "version");
     }
+
+    editedVersion.setServicePointNumber(currentVersion.getServicePointNumber());
+    editedVersion.setSloid(currentVersion.getSloid());
 
     List<TrafficPointElementVersion> dbVersions = findBySloidOrderByValidFrom(currentVersion.getSloid());
     List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion, editedVersion,

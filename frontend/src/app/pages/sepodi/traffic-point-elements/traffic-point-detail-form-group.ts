@@ -22,68 +22,66 @@ export interface TrafficPointElementDetailFormGroup extends BaseDetailFormGroup 
 
 export class TrafficPointElementFormGroupBuilder {
   static buildFormGroup(
-    version: ReadTrafficPointElementVersion,
+    version?: ReadTrafficPointElementVersion,
   ): FormGroup<TrafficPointElementDetailFormGroup> {
-    const formGroup = new FormGroup<TrafficPointElementDetailFormGroup>(
+    return new FormGroup<TrafficPointElementDetailFormGroup>(
       {
-        sloid: new FormControl(version.sloid),
-        designationOperational: new FormControl(version.designationOperational, [
+        sloid: new FormControl(version?.sloid),
+        designationOperational: new FormControl(version?.designationOperational, [
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           Validators.maxLength(20),
         ]),
-        parentSloid: new FormControl(version.parentSloid),
-        length: new FormControl(version.length, [AtlasCharsetsValidator.decimalWithDigits(3)]),
-        boardingAreaHeight: new FormControl(version.boardingAreaHeight, [
+        parentSloid: new FormControl(version?.parentSloid),
+        length: new FormControl(version?.length, [AtlasCharsetsValidator.decimalWithDigits(3)]),
+        boardingAreaHeight: new FormControl(version?.boardingAreaHeight, [
           AtlasCharsetsValidator.decimalWithDigits(2),
         ]),
-        compassDirection: new FormControl(version.compassDirection, [
+        compassDirection: new FormControl(version?.compassDirection, [
           AtlasCharsetsValidator.decimalWithDigits(2),
         ]),
-        designation: new FormControl(version.designation, [
+        designation: new FormControl(version?.designation, [
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           Validators.maxLength(40),
         ]),
-        validFrom: new FormControl(
-          version.validFrom ? moment(version.validFrom) : version.validFrom,
-          [Validators.required],
-        ),
-        validTo: new FormControl(version.validTo ? moment(version.validTo) : version.validTo, [
+        validFrom: new FormControl(version?.validFrom ? moment(version.validFrom) : null, [
+          Validators.required,
+        ]),
+        validTo: new FormControl(version?.validTo ? moment(version.validTo) : null, [
           Validators.required,
         ]),
         trafficPointGeolocation: new FormGroup<GeographyFormGroup>({
           east: new FormControl(this.getCoordinates(version)?.east, [
             this.getValidatorForCoordinates(
-              version.trafficPointElementGeolocation?.spatialReference,
+              version?.trafficPointElementGeolocation?.spatialReference,
             ),
           ]),
           north: new FormControl(this.getCoordinates(version)?.north, [
             this.getValidatorForCoordinates(
-              version.trafficPointElementGeolocation?.spatialReference,
+              version?.trafficPointElementGeolocation?.spatialReference,
             ),
           ]),
-          height: new FormControl(version.trafficPointElementGeolocation?.height, [
+          height: new FormControl(version?.trafficPointElementGeolocation?.height, [
             AtlasCharsetsValidator.decimalWithDigits(4),
           ]),
           spatialReference: new FormControl(
-            version.trafficPointElementGeolocation?.spatialReference,
+            version?.trafficPointElementGeolocation?.spatialReference,
           ),
         }),
-        etagVersion: new FormControl(version.etagVersion),
-        creationDate: new FormControl(version.creationDate),
-        editionDate: new FormControl(version.editionDate),
-        editor: new FormControl(version.editor),
-        creator: new FormControl(version.creator),
+        etagVersion: new FormControl(version?.etagVersion),
+        creationDate: new FormControl(version?.creationDate),
+        editionDate: new FormControl(version?.editionDate),
+        editor: new FormControl(version?.editor),
+        creator: new FormControl(version?.creator),
       },
       [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
     );
-    return formGroup;
   }
 
-  private static getCoordinates(version: ReadTrafficPointElementVersion) {
-    if (version.trafficPointElementGeolocation?.spatialReference === SpatialReference.Wgs84) {
+  private static getCoordinates(version?: ReadTrafficPointElementVersion) {
+    if (version?.trafficPointElementGeolocation?.spatialReference === SpatialReference.Wgs84) {
       return version.trafficPointElementGeolocation?.wgs84;
     }
-    return version.trafficPointElementGeolocation?.lv95;
+    return version?.trafficPointElementGeolocation?.lv95;
   }
 
   private static getValidatorForCoordinates(spatialReference?: SpatialReference) {

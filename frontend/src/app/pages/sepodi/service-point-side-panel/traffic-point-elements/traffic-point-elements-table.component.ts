@@ -38,11 +38,10 @@ export class TrafficPointElementsTableComponent {
   ) {}
 
   getOverview(pagination: TablePagination) {
-    const servicePointNumber = this.route.parent!.snapshot.params['id'];
     this.trafficPointElementService
       .getTrafficPointElements(
         undefined,
-        [servicePointNumber],
+        [this.servicePointNumber],
         undefined,
         undefined,
         undefined,
@@ -98,12 +97,22 @@ export class TrafficPointElementsTableComponent {
   }
 
   newTrafficPointElement() {
-    this.router.navigate([Pages.SEPODI.path, Pages.TRAFFIC_POINT_ELEMENTS.path, 'add']).then();
+    this.router
+      .navigate([Pages.SEPODI.path, Pages.TRAFFIC_POINT_ELEMENTS.path, 'add'], {
+        state: { servicePointNumber: this.servicePointNumber },
+      })
+      .then();
   }
 
   editVersion($event: ReadTrafficPointElementVersion) {
     this.router
-      .navigate([Pages.SEPODI.path, Pages.TRAFFIC_POINT_ELEMENTS.path, $event.sloid])
+      .navigate([Pages.SEPODI.path, Pages.TRAFFIC_POINT_ELEMENTS.path, $event.sloid], {
+        state: { servicePointNumber: this.servicePointNumber },
+      })
       .then();
+  }
+
+  get servicePointNumber() {
+    return this.route.parent!.snapshot.params['id'];
   }
 }
