@@ -21,25 +21,32 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 @RequiredArgsConstructor
 public class FileExportService {
 
+  private static final String JSON_GZ_EXTENSION = ".json.gz";
+  private static final String CSV_ZIP_EXTENSION = ".csv.zip";
+
   private final AmazonFileStreamingService amazonFileStreamingService;
   private final AmazonService amazonService;
   private final FileService fileService;
 
   public StreamingResponseBody streamJsonFile(ExportType exportType, BatchExportFileName exportFileName) {
-    String fileToStream = getFileToStream(exportType, exportFileName);
+    String fileToStream = getFileToStream(exportType, exportFileName,JSON_GZ_EXTENSION);
     return amazonFileStreamingService.streamFileAndDecompress(AmazonBucket.EXPORT, fileToStream);
   }
 
   public StreamingResponseBody streamGzipFile(ExportType exportType, BatchExportFileName exportFileName) {
-    String fileToStream = getFileToStream(exportType, exportFileName);
+    String fileToStream = getFileToStream(exportType, exportFileName,JSON_GZ_EXTENSION);
     return amazonFileStreamingService.streamFile(AmazonBucket.EXPORT, fileToStream);
   }
 
-  private String getFileToStream(ExportType exportType, BatchExportFileName exportFileName) {
+  public File downloadCsvFile(ExportType exportType, BatchExportFileName exportFileName) {
+    String fileToStream = getFileToStream(exportType, exportFileName,CSV_ZIP_EXTENSION);
+    return amazonFileStreamingService.downloadFile(AmazonBucket.EXPORT, fileToStream);
+  }
+
+  private String getFileToStream(ExportType exportType, BatchExportFileName exportFileName, String extension) {
     return exportFileName.getBaseDir() + "/" +
         exportType.getDir() + "/" +
-        getBaseFileName(exportType, exportFileName)+
-        ".json.gz";
+        getBaseFileName(exportType, exportFileName)+ extension;
   }
 
   public void exportFile(File file, ExportType exportType, BatchExportFileName exportFileName,

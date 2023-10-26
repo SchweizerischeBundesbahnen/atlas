@@ -1,7 +1,7 @@
 package ch.sbb.exportservice.writer;
 
-import ch.sbb.exportservice.model.LoadingPointVersionCsvModel.Fields;
 import ch.sbb.exportservice.model.StopPointVersionCsvModel;
+import ch.sbb.exportservice.model.StopPointVersionCsvModel.Fields;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -10,13 +10,12 @@ public class CsvStopPointVersionWriter extends BaseCsvWriter<StopPointVersionCsv
   @Override
   String[] getCsvHeader() {
     return new String[]{
-        Fields.number, Fields.designation, Fields.validFrom, Fields.validTo, Fields.checkDigit, Fields.parentSloidServicePoint, Fields.creationDate, Fields.editionDate,
-//        Fields.servicePointBusinessOrganisation,
-//        Fields.servicePointBusinessOrganisationNumber,
-//        Fields.servicePointBusinessOrganisationAbbreviationDe, Fields.servicePointBusinessOrganisationAbbreviationFr,
-//        Fields.servicePointBusinessOrganisationAbbreviationIt, Fields.servicePointBusinessOrganisationAbbreviationEn,
-//        Fields.servicePointBusinessOrganisationDescriptionDe, Fields.servicePointBusinessOrganisationDescriptionFr,
-//        Fields.servicePointBusinessOrganisationDescriptionIt, Fields.servicePointBusinessOrganisationDescriptionEn
+        Fields.sloid, Fields.number, Fields.meansOfTransport, Fields.address, Fields.zipCode, Fields.city,
+        Fields.alternativeTransport, Fields.assistanceAvailability, Fields.alternativeTransportCondition,
+        Fields.assistanceCondition, Fields.assistanceService, Fields.audioTicketMachine, Fields.additionalInformation,
+        Fields.dynamicAudioSystem, Fields.dynamicOpticSystem, Fields.freeText, Fields.infoTicketMachine, Fields.interoperable,
+        Fields.assistanceRequestFulfilled, Fields.ticketMachine, Fields.url, Fields.visualInfo, Fields.wheelchairTicketMachine,
+        Fields.validFrom, Fields.validTo, Fields.creationDate, Fields.creator, Fields.editionDate, Fields.editor
     };
   }
 
