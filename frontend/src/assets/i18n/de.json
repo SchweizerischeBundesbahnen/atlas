@@ -1000,6 +1000,7 @@
       "OPERATING_POINT_TECHNICAL": "Fahrplanpunkt",
       "SERVICE_POINT": "Dienststelle"
     },
-    "BACK_TO_MAP": "Schliessen"
+    "BACK_TO_MAP": "Schliessen",
+    "AUTOMATIC_SLOID": "wird automatisch vergeben"
   }
 }

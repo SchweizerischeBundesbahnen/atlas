@@ -49,6 +49,7 @@ import { DateRangeTextComponent } from '../versioning/date-range-text/date-range
 import { DisplayCantonPipe } from '../cantons/display-canton.pipe';
 import { RemoveCharsDirective } from '../form-components/text-field/remove-chars.directive';
 import { DecimalNumberPipe } from '../pipe/decimal-number.pipe';
+import { SloidComponent } from '../form-components/sloid/sloid.component';
 
 const coreComponents = [
   WorkflowFormComponent,
