@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
-  CreateServicePointVersion,
   CreateTrafficPointElementVersion,
   ReadServicePointVersion,
   ReadTrafficPointElementVersion,
@@ -12,7 +11,7 @@ import {
 import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
 import { DateRange } from '../../../core/versioning/date-range';
 import { MapService } from '../map/map.service';
-import { catchError, EMPTY, Observable, of, Subject, Subscription } from 'rxjs';
+import { catchError, EMPTY, Observable, of, Subject } from 'rxjs';
 import { Pages } from '../../pages';
 import { FormGroup } from '@angular/forms';
 import {
@@ -21,7 +20,6 @@ import {
 } from './traffic-point-detail-form-group';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import { ValidationService } from '../../../core/validation/validation.service';
-import { ServicePointFormGroupBuilder } from '../service-point-side-panel/service-point/service-point-detail-form-group';
 import { takeUntil } from 'rxjs/operators';
 import { NotificationService } from '../../../core/notification/notification.service';
 
@@ -52,6 +50,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
   isNew = false;
   isSwitchVersionDisabled = false;
   areaOptions: AreaOption[] = [];
+  servicePointNumber!: number;
   servicePoint: ReadServicePointVersion[] = [];
   servicePointBusinessOrganisations: string[] = [];
 
@@ -75,65 +74,80 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.mapService.deselectServicePoint();
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }
 
   private initTrafficPoint() {
-    VersionsHandlingService.addVersionNumbers(this.trafficPointVersions);
-    this.maxValidity = VersionsHandlingService.getMaxValidity(this.trafficPointVersions);
-    this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(
-      this.trafficPointVersions,
-    );
-    this.selectedVersionIndex = this.trafficPointVersions.indexOf(this.selectedVersion);
+    if (this.trafficPointVersions.length == 0) {
+      this.isNew = true;
+      this.form = TrafficPointElementFormGroupBuilder.buildFormGroup();
+    } else {
+      this.isNew = false;
+      VersionsHandlingService.addVersionNumbers(this.trafficPointVersions);
+      this.maxValidity = VersionsHandlingService.getMaxValidity(this.trafficPointVersions);
+      this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(
+        this.trafficPointVersions,
+      );
+      this.selectedVersionIndex = this.trafficPointVersions.indexOf(this.selectedVersion);
 
+      this.initSelectedVersion();
+    }
     this.initServicePointInformation();
-    this.initSelectedVersion();
   }
 
   private initServicePointInformation() {
-    const servicePointNumber = this.selectedVersion.servicePointNumber.number;
-    this.servicePointService
-      .getServicePointVersions(servicePointNumber)
-      .subscribe((servicePoint) => {
-        this.servicePoint = servicePoint;
-        this.servicePointName =
-          VersionsHandlingService.determineDefaultVersionByValidity(
-            servicePoint,
-          ).designationOfficial;
-        this.servicePointBusinessOrganisations = this.servicePoint.map((i) => {
-          return i.businessOrganisation;
-        });
-      });
+    this.servicePointNumber =
+      history.state.servicePointNumber ?? this.selectedVersion?.servicePointNumber?.number;
 
-    this.trafficPointElementsService
-      .getTrafficPointElements(
-        undefined,
-        [String(servicePointNumber)],
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        TrafficPointElementType.Area,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        500,
-        ['sloid,asc'],
-      )
-      .subscribe((areas) => {
-        const options: AreaOption[] = [{ sloid: undefined, displayText: '' }];
-        options.push(
-          ...areas.objects!.map((i) => {
-            return { sloid: i.sloid, displayText: `${i.designation} - ${i.sloid}` };
-          }),
-        );
-        this.areaOptions = options;
-      });
+    if (!this.servicePointNumber) {
+      this.router.navigate([Pages.SEPODI.path]).then();
+    } else {
+      this.servicePointService
+        .getServicePointVersions(this.servicePointNumber)
+        .subscribe((servicePoint) => {
+          this.servicePoint = servicePoint;
+          this.servicePointName =
+            VersionsHandlingService.determineDefaultVersionByValidity(
+              servicePoint,
+            ).designationOfficial;
+          this.servicePointBusinessOrganisations = this.servicePoint.map((i) => {
+            return i.businessOrganisation;
+          });
+        });
+
+      this.trafficPointElementsService
+        .getTrafficPointElements(
+          undefined,
+          [this.servicePointNumberAsString],
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          TrafficPointElementType.Area,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          500,
+          ['sloid,asc'],
+        )
+        .subscribe((areas) => {
+          const options: AreaOption[] = [{ sloid: undefined, displayText: '' }];
+          options.push(
+            ...areas.objects!.map((i) => {
+              return { sloid: i.sloid, displayText: `${i.designation} - ${i.sloid}` };
+            }),
+          );
+          this.areaOptions = options;
+        });
+    }
+  }
+
+  get servicePointNumberAsString() {
+    return String(this.servicePointNumber);
   }
 
   backToServicePoint() {
@@ -154,9 +168,6 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
   }
 
   private initSelectedVersion() {
-    if (this.selectedVersion.id) {
-      this.isNew = false;
-    }
     this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.trafficPointVersions);
     this.form = TrafficPointElementFormGroupBuilder.buildFormGroup(this.selectedVersion);
     if (!this.isNew) {
@@ -203,11 +214,10 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
         .value as unknown as CreateTrafficPointElementVersion;
       trafficPointElementVersion.trafficPointElementType = TrafficPointElementType.Platform;
       this.form.disable();
+      trafficPointElementVersion.numberWithoutCheckDigit = this.servicePointNumber;
       if (this.isNew) {
         this.create(trafficPointElementVersion);
       } else {
-        trafficPointElementVersion.numberWithoutCheckDigit =
-          this.selectedVersion.servicePointNumber.number;
         this.update(this.selectedVersion.id!, trafficPointElementVersion);
       }
     }
