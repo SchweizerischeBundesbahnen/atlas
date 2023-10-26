@@ -26,6 +26,11 @@ spring:
       username: user
       password: pwd
       driver-class-name: org.postgresql.Driver
+    prm:
+      url: jdbc:postgresql://localhost:5442/prm-directory?currentSchema=prm_directory
+      username: user
+      password: pwd
+      driver-class-name: org.postgresql.Driver
     hikari:
       minimumIdle: 2
       maximumPoolSize: 10

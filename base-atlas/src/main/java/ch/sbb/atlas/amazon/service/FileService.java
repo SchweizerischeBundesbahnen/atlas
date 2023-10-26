@@ -19,6 +19,7 @@ public interface FileService {
   StreamingResponseBody toStreamingResponse(File fileToCleanUp, InputStream inputStream);
 
   byte[] gzipDecompress(File file);
+  File zipDecompress(File file);
 
   byte[] gzipCompress(byte[] bytes) throws IOException;
 }
