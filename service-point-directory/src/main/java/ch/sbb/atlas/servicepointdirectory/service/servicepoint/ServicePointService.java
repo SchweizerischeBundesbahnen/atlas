@@ -30,7 +30,8 @@ import java.util.Optional;
 @Transactional
 public class ServicePointService {
 
-  public static final int SEARCH_RESULT_SIZE = 200;
+  private static final int SEARCH_RESULT_SIZE = 200;
+
   private final ServicePointVersionRepository servicePointVersionRepository;
   private final VersionableService versionableService;
   private final ServicePointValidationService servicePointValidationService;
