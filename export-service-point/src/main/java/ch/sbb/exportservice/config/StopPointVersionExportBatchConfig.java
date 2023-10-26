@@ -141,7 +141,7 @@ public class StopPointVersionExportBatchConfig {
 
   @Bean
   @Qualifier(EXPORT_STOP_POINT_JSON_JOB_NAME)
-  public Job exportLoadingPointJsonJob(ItemReader<StopPointVersion> itemReader) {
+  public Job exportStopPointJsonJob(ItemReader<StopPointVersion> itemReader) {
     return new JobBuilder(EXPORT_STOP_POINT_JSON_JOB_NAME, jobRepository)
         .listener(jobCompletionListener)
         .incrementer(new RunIdIncrementer())
