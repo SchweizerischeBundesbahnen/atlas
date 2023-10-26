@@ -1,6 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
+  CreateServicePointVersion,
+  CreateTrafficPointElementVersion,
+  ReadServicePointVersion,
   ReadTrafficPointElementVersion,
   ServicePointsService,
   TrafficPointElementsService,
@@ -9,13 +12,18 @@ import {
 import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
 import { DateRange } from '../../../core/versioning/date-range';
 import { MapService } from '../map/map.service';
-import { Subscription } from 'rxjs';
+import { catchError, EMPTY, Observable, of, Subject, Subscription } from 'rxjs';
 import { Pages } from '../../pages';
 import { FormGroup } from '@angular/forms';
 import {
   TrafficPointElementDetailFormGroup,
   TrafficPointElementFormGroupBuilder,
 } from './traffic-point-detail-form-group';
+import { DialogService } from '../../../core/components/dialog/dialog.service';
+import { ValidationService } from '../../../core/validation/validation.service';
+import { ServicePointFormGroupBuilder } from '../service-point-side-panel/service-point/service-point-detail-form-group';
+import { takeUntil } from 'rxjs/operators';
+import { NotificationService } from '../../../core/notification/notification.service';
 
 interface AreaOption {
   sloid: string | undefined;
@@ -43,8 +51,11 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
   form!: FormGroup<TrafficPointElementDetailFormGroup>;
   isNew = false;
   isSwitchVersionDisabled = false;
-  private subscription?: Subscription;
   areaOptions: AreaOption[] = [];
+  servicePoint: ReadServicePointVersion[] = [];
+  servicePointBusinessOrganisations: string[] = [];
+
+  private ngUnsubscribe = new Subject<void>();
 
   constructor(
     private route: ActivatedRoute,
@@ -52,10 +63,12 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
     private mapService: MapService,
     private servicePointService: ServicePointsService,
     private trafficPointElementsService: TrafficPointElementsService,
+    private dialogService: DialogService,
+    private notificationService: NotificationService,
   ) {}
 
   ngOnInit() {
-    this.subscription = this.route.data.subscribe((next) => {
+    this.route.data.pipe(takeUntil(this.ngUnsubscribe)).subscribe((next) => {
       this.trafficPointVersions = next.trafficPoint;
       this.initTrafficPoint();
     });
@@ -63,7 +76,8 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.mapService.deselectServicePoint();
-    this.subscription?.unsubscribe();
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   private initTrafficPoint() {
@@ -83,10 +97,14 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
     this.servicePointService
       .getServicePointVersions(servicePointNumber)
       .subscribe((servicePoint) => {
+        this.servicePoint = servicePoint;
         this.servicePointName =
           VersionsHandlingService.determineDefaultVersionByValidity(
             servicePoint,
           ).designationOfficial;
+        this.servicePointBusinessOrganisations = this.servicePoint.map((i) => {
+          return i.businessOrganisation;
+        });
       });
 
     this.trafficPointElementsService
@@ -118,8 +136,15 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
       });
   }
 
-  closeSidePanel() {
-    this.router.navigate([Pages.SEPODI.path]).then();
+  backToServicePoint() {
+    this.router
+      .navigate([
+        Pages.SEPODI.path,
+        Pages.SERVICE_POINTS.path,
+        this.selectedVersion.servicePointNumber.number,
+        'traffic-point-elements',
+      ])
+      .then();
   }
 
   switchVersion(newIndex: number) {
@@ -137,5 +162,83 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
     if (!this.isNew) {
       this.form.disable();
     }
+  }
+
+  toggleEdit() {
+    if (this.form.enabled) {
+      this.showConfirmationDialog();
+    } else {
+      this.isSwitchVersionDisabled = true;
+      this.form.enable();
+    }
+  }
+
+  private showConfirmationDialog() {
+    this.confirmLeave().subscribe((confirmed) => {
+      if (confirmed) {
+        if (this.isNew) {
+          this.backToServicePoint();
+        } else {
+          this.initSelectedVersion();
+          this.form.disable();
+        }
+      }
+    });
+  }
+
+  private confirmLeave(): Observable<boolean> {
+    if (this.form.dirty) {
+      return this.dialogService.confirm({
+        title: 'DIALOG.DISCARD_CHANGES_TITLE',
+        message: 'DIALOG.LEAVE_SITE',
+      });
+    }
+    return of(true);
+  }
+
+  save() {
+    ValidationService.validateForm(this.form);
+    if (this.form.valid) {
+      const trafficPointElementVersion = this.form
+        .value as unknown as CreateTrafficPointElementVersion;
+      trafficPointElementVersion.trafficPointElementType = TrafficPointElementType.Platform;
+      this.form.disable();
+      if (this.isNew) {
+        this.create(trafficPointElementVersion);
+      } else {
+        trafficPointElementVersion.numberWithoutCheckDigit =
+          this.selectedVersion.servicePointNumber.number;
+        this.update(this.selectedVersion.id!, trafficPointElementVersion);
+      }
+    }
+  }
+
+  private create(trafficPointElementVersion: CreateTrafficPointElementVersion) {
+    this.trafficPointElementsService
+      .createTrafficPoint(trafficPointElementVersion)
+      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
+      .subscribe((trafficPointElementVersion) => {
+        this.notificationService.success('SEPODI.TRAFFIC_POINT_ELEMENTS.NOTIFICATION.ADD_SUCCESS');
+        this.router
+          .navigate(['..', trafficPointElementVersion.sloid], { relativeTo: this.route })
+          .then();
+      });
+  }
+
+  private update(id: number, trafficPointElementVersion: CreateTrafficPointElementVersion) {
+    this.trafficPointElementsService
+      .updateTrafficPoint(id, trafficPointElementVersion)
+      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
+      .subscribe(() => {
+        this.notificationService.success('SEPODI.TRAFFIC_POINT_ELEMENTS.NOTIFICATION.EDIT_SUCCESS');
+        this.router.navigate(['..', this.selectedVersion.sloid], { relativeTo: this.route }).then();
+      });
+  }
+
+  private handleError() {
+    return () => {
+      this.form.enable();
+      return EMPTY;
+    };
   }
 }
