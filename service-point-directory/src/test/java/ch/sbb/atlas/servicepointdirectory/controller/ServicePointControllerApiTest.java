@@ -510,7 +510,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
              .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.designationOfficial, is("Aargau Strasse")))
              .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.sloid, is("ch:1:sloid:18771")))
              .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.designationLong, is("designation long 1")))
-             .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.abbreviation, is("3")))
+             .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.abbreviation, is("ABC")))
              .andExpect(jsonPath("$.operatingPoint", is(true)))
              .andExpect(jsonPath("$.operatingPointWithTimetable", is(true)))
              .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.freightServicePoint, is(false)))
