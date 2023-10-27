@@ -118,7 +118,11 @@ public class ServicePointController implements ServicePointApiV1 {
       servicePointVersion.setCountry(servicePointNumber.getCountry());
       servicePointVersion.setNumberShort(servicePointNumber.getNumberShort());
       servicePointVersion.setSloid(ServicePointNumber.calculateSloid(servicePointNumber));
+      if (createServicePointVersionModel.isOperatingPointRouteNetwork()) {
+        servicePointVersion.setOperatingPointKilometerMaster(servicePointNumber);
+      }
     }
+
     addGeoReferenceInformation(servicePointVersion);
     ServicePointVersion createdVersion = servicePointService.save(servicePointVersion);
     servicePointDistributor.publishServicePointsWithNumbers(createdVersion.getNumber());

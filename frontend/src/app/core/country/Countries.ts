@@ -128,4 +128,7 @@ export class Countries {
 
   static readonly getCountryEnum = (country: Country) =>
     Countries.fromCountry(country)?.enumCountry;
+
+  public static readonly compareFn = (n1: Country, n2: Country) =>
+    Countries.getCountryNameUicCodeFromCountry(n1) - Countries.getCountryNameUicCodeFromCountry(n2);
 }

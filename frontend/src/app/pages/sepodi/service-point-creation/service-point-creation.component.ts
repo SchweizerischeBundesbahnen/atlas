@@ -10,6 +10,7 @@ import {
   ApplicationType,
   CoordinatePair,
   Country,
+  Permission,
   PermissionRestrictionType,
   ServicePointsService,
   SpatialReference,
@@ -107,7 +108,6 @@ export class ServicePointCreationComponent implements OnInit, OnDestroy {
     this.destroySubscriptions$.complete();
   }
 
-  // todo: test
   activateGeolocation(coordinates: CoordinatePair) {
     this.mapService.isGeolocationActivated.next(true);
     this.mapService.isEditMode.next(true);
@@ -150,7 +150,6 @@ export class ServicePointCreationComponent implements OnInit, OnDestroy {
     }
   }
 
-  // todo: test
   onSave(): void {
     this.form.markAllAsTouched();
     if (this.form.valid) {
@@ -173,42 +172,33 @@ export class ServicePointCreationComponent implements OnInit, OnDestroy {
     return EMPTY;
   };
 
-  // todo: test
   private getCountryOptions(): Country[] {
     const sepodiUserPermission = this.authService.getApplicationUserPermission(
       ApplicationType.Sepodi,
     );
+    return this.getCountryScope(sepodiUserPermission);
+  }
 
-    let countryScope: Country[];
-    if (sepodiUserPermission.role === ApplicationRole.Supervisor || this.authService.isAdmin) {
-      countryScope = Countries.filteredCountries();
+  private getCountryScope(sepodiUserPermission: Permission): Country[] {
+    if (this.isSupervisorOrAdmin(sepodiUserPermission)) {
+      const countryScope = Countries.filteredCountries().sort(Countries.compareFn);
+      return [...Countries.geolocationCountries, ...countryScope];
     } else {
-      countryScope = sepodiUserPermission.permissionRestrictions
+      let countryScope = sepodiUserPermission.permissionRestrictions
         .filter((restriction) => restriction.type === PermissionRestrictionType.Country)
         .map((restriction) => restriction.valueAsString as Country);
+      const geolocationCountries = Countries.geolocationCountries.filter((country) =>
+        countryScope.includes(country),
+      );
+      countryScope = countryScope
+        .filter((country) => !geolocationCountries.includes(country))
+        .sort(Countries.compareFn);
+      return [...geolocationCountries, ...countryScope];
     }
-
-    let firstFive: Country[] = [
-      Country.Switzerland,
-      Country.GermanyBus,
-      Country.AustriaBus,
-      Country.ItalyBus,
-      Country.FranceBus,
-    ];
-
-    if (sepodiUserPermission.role !== ApplicationRole.Supervisor && !this.authService.isAdmin) {
-      firstFive = firstFive.filter((country) => countryScope.includes(country));
-      countryScope = countryScope.filter((country) => !firstFive.includes(country));
-    }
-
-    countryScope.sort(
-      (n1, n2) =>
-        Countries.getCountryNameUicCodeFromCountry(n1) -
-        Countries.getCountryNameUicCodeFromCountry(n2),
-    );
-
-    return [...firstFive, ...countryScope];
   }
+
+  private readonly isSupervisorOrAdmin = (sepodiUserPermission: Permission) =>
+    sepodiUserPermission.role === ApplicationRole.Supervisor || this.authService.isAdmin;
 
   private async leaveCreation(): Promise<void> {
     await this.router.navigate(['..'], {

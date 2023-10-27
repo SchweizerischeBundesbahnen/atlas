@@ -93,6 +93,7 @@ public class ServicePointVersionMapper {
       servicePointVersion.setNumberShort(servicePointNumber.getNumberShort());
       servicePointVersion.setCountry(servicePointNumber.getCountry());
     }
+
     return servicePointVersion;
   }
 
