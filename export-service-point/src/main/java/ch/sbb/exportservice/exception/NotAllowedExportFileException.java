@@ -1,9 +1,9 @@
 package ch.sbb.exportservice.exception;
 
 import ch.sbb.atlas.api.model.ErrorResponse;
-import ch.sbb.exportservice.model.BatchExportFileName;
 import ch.sbb.atlas.model.exception.AtlasException;
-import ch.sbb.exportservice.model.ExportType;
+import ch.sbb.exportservice.model.BatchExportFileName;
+import ch.sbb.exportservice.model.SePoDiExportType;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
@@ -11,20 +11,20 @@ import org.springframework.http.HttpStatus;
 public class NotAllowedExportFileException extends AtlasException {
 
   private final BatchExportFileName exportFileName;
-  private final ExportType exportType;
+  private final SePoDiExportType sePoDiExportType;
 
-  public NotAllowedExportFileException(BatchExportFileName exportFileName, ExportType exportType) {
+  public NotAllowedExportFileException(BatchExportFileName exportFileName, SePoDiExportType sePoDiExportType) {
     this.exportFileName = exportFileName;
-    this.exportType = exportType;
+    this.sePoDiExportType = sePoDiExportType;
   }
 
   @Override
   public ErrorResponse getErrorResponse() {
     return ErrorResponse.builder()
         .status(HttpStatus.BAD_REQUEST.value())
-        .message("Download file [" + exportFileName + "] with export type [" + exportType + "] not allowed!")
+        .message("Download file [" + exportFileName + "] with export type [" + sePoDiExportType + "] not allowed!")
         .error("To download the file [" + exportFileName + "] are only allowed the following export types: "
-            + ExportType.getWorldOnly())
+            + SePoDiExportType.getWorldOnly())
         .build();
   }
 }
