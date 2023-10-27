@@ -102,6 +102,7 @@
   "FORM": {
     "MAX_CHARS": "{{numberOfChars}} caractères max.",
     "MAX_NUMBER_OF_DIGITS": "{{numberOfDigits}} numéros max.",
+    "MAX_DIGITS": "max. {{amount}} chiffres après la virgule.",
     "DROPDOWN_PLACEHOLDER": "sélectionner",
     "FOR_EXAMPLE": "p.ex.:",
     "DESIGN_INFORMATION": "Informations sur la création",
@@ -945,7 +946,22 @@
       "TERMINATION_FORBIDDEN": "Vous n'êtes pas autorisé à planifier l'arrêt. Pour ce faire, veuillez utiliser le formulaire disponible sur https://www.tp-info.ch/fr/suppression-dun-arret."
     },
     "TRAFFIC_POINT_ELEMENTS": {
-      "TRAFFIC_POINT_ELEMENTS": "Bordures d’arrêts"
+      "TRAFFIC_POINT_ELEMENTS": "Bordures d’arrêts",
+      "NEW": "Saisir un nouveau bord d'arrêt",
+      "DESIGNATION": "Désignation Clients",
+      "DESIGNATION_OPERATIONAL": "Désignation opérationnelle",
+      "HEADER": "Bord d'arrêt / voie",
+      "SERVICE_POINT_NAME": "Nom de l'arrêt",
+      "DETAILS": "Données relatives à la",
+      "PARENT_SLOID": "Appartient au domaine",
+      "CONSTRUCTION_INFORMATION": "Informations sur la construction",
+      "LENGTH": "Longueur [m]",
+      "BOARDING_AREA_HEIGHT": "Hauteur de la bordure [cm]",
+      "COMPASS_DIRECTION": "Direction du compas [°]",
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Le bord de retenue a été ajouté avec succès.",
+        "EDIT_SUCCESS": "Le bord d'arrêt a été enregistré avec succès."
+      }
     },
     "LOADING_POINTS": {
       "LOADING_POINTS": "Places de chargement"
@@ -984,6 +1000,8 @@
       "OPERATING_POINT_TECHNICAL": "Point horaire",
       "SERVICE_POINT": "Service"
     },
-    "BACK_TO_MAP": "Fermer"
+    "BACK_TO_MAP": "Fermer",
+    "AUTOMATIC_SLOID": "Elle est indiquée automatiquement.",
+    "SLOID_ALREADY_USED": "{{sloid}} est déjà pris."
   }
 }
