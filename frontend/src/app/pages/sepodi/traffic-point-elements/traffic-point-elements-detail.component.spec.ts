@@ -46,7 +46,7 @@ describe('TrafficPointElementsDetailComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should display current designationOfficial and validity', () => {
+  it('should display current designationOperational and validity', () => {
     expect(component.selectedVersion).toBeTruthy();
 
     expect(component.selectedVersion.designationOperational).toEqual('1');
