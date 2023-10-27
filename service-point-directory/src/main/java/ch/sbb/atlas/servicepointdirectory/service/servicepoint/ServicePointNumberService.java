@@ -1,6 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
 import ch.sbb.atlas.servicepoint.Country;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointNumberRepository;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
@@ -27,4 +28,9 @@ public class ServicePointNumberService {
 
     return nextAvailableServicePointNumber;
   }
+
+  public void deleteAvailableNumber(ServicePointNumber servicePointNumber, Country country) {
+    servicePointNumberRepository.deleteAvailableNumber(servicePointNumber.getNumberShort(), country.name());
+  }
+
 }

@@ -7,6 +7,8 @@ import { CoordinatePairWGS84, MapService } from './map.service';
 import maplibregl, { Map } from 'maplibre-gl';
 import { BehaviorSubject } from 'rxjs';
 import { Component } from '@angular/core';
+import { AuthService } from '../../../core/auth/auth.service';
+import SpyObj = jasmine.SpyObj;
 
 const isEditModeSubject = new BehaviorSubject<boolean>(true);
 const clickedGeographyCoordinatesSubject = new BehaviorSubject<CoordinatePairWGS84>({
@@ -61,11 +63,19 @@ describe('MapComponent', () => {
   let component: MapComponent;
   let fixture: ComponentFixture<MapComponent>;
 
+  let authServiceSpy: SpyObj<AuthService>;
+
   beforeEach(async () => {
+    authServiceSpy = jasmine.createSpyObj(['hasPermissionsToCreate']);
+    authServiceSpy.hasPermissionsToCreate.and.returnValue(true);
+
     await TestBed.configureTestingModule({
       declarations: [MapComponent, SearchServicePointMockComponent],
       imports: [AppTestingModule],
-      providers: [{ provide: MapService, useValue: mapService }],
+      providers: [
+        { provide: MapService, useValue: mapService },
+        { provide: AuthService, useValue: authServiceSpy },
+      ],
     }).compileComponents();
 
     spyOn(maplibregl, 'Marker').and.returnValue(markerSpy);
