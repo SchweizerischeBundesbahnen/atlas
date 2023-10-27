@@ -10,6 +10,7 @@ import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.api.prm.model.BasePrmVersionModel;
 import ch.sbb.atlas.validation.DatesValidator;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Size;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -52,15 +53,19 @@ public abstract class PlatformVersionModel extends BasePrmVersionModel implement
   private BasicAttributeType dynamicVisual;
 
   @Schema(description = "Height [cm]")
+  @Digits(integer = 10, fraction = 3)
   private Double height;
 
   @Schema(description = "Cross-platform slope [%]")
+  @Digits(integer = 10, fraction = 3)
   private Double inclination;
 
   @Schema(description = "Longitudinal inclination of the holding edge [%]")
+  @Digits(integer = 10, fraction = 3)
   private Double inclinationLongitudinal;
 
   @Schema(description = "Platform longitudinal inclination [%]")
+  @Digits(integer = 10, fraction = 3)
   private Double inclinationWidth;
 
   @Schema(description = "Information options")
@@ -73,6 +78,7 @@ public abstract class PlatformVersionModel extends BasePrmVersionModel implement
   private BooleanAttributeType partialElevation;
 
   @Schema(description = "Track superelevation value [mm]")
+  @Digits(integer = 10, fraction = 3)
   private Double superelevation;
 
   @Schema(description = "Tactile guidance system")
@@ -82,9 +88,11 @@ public abstract class PlatformVersionModel extends BasePrmVersionModel implement
   private VehicleAccessAttributeType vehicleAccess;
 
   @Schema(description = "Wheelchair Area Length [mm]")
+  @Digits(integer = 10, fraction = 3)
   private Double wheelchairAreaLength;
 
   @Schema(description = "Wheelchair Area Width [mm]")
+  @Digits(integer = 10, fraction = 3)
   private Double wheelchairAreaWidth;
 
 }
