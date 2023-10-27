@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.exportservice.entity.LoadingPointVersion;
-import ch.sbb.exportservice.model.ExportType;
+import ch.sbb.exportservice.model.SePoDiExportType;
 import ch.sbb.exportservice.reader.LoadingPointVersionRowMapper;
 import ch.sbb.exportservice.reader.LoadingPointVersionSqlQueryUtil;
 import java.sql.Connection;
@@ -31,7 +31,7 @@ import org.junit.jupiter.api.Test;
     insertLoadingPoint(50, servicePointNumber, now.minusMonths(5), now.minusMonths(4));
     insertLoadingPoint(60, servicePointNumber, now, now);
     insertLoadingPoint(70, servicePointNumber, now.plusMonths(4), now.plusMonths(5));
-    final String sqlQuery = LoadingPointVersionSqlQueryUtil.getSqlQuery(ExportType.WORLD_FULL);
+    final String sqlQuery = LoadingPointVersionSqlQueryUtil.getSqlQuery(SePoDiExportType.WORLD_FULL);
 
     // when
     final List<LoadingPointVersion> result = executeQuery(sqlQuery);
@@ -58,7 +58,7 @@ import org.junit.jupiter.api.Test;
     insertSharedBusinessOrganisation(sboid, "testIt", now, now);
     insertLoadingPoint(50, servicePointNumber, now.minusMonths(5), now.minusMonths(4));
     insertLoadingPoint(60, servicePointNumber, now, now);
-    final String sqlQuery = LoadingPointVersionSqlQueryUtil.getSqlQuery(ExportType.WORLD_ONLY_ACTUAL);
+    final String sqlQuery = LoadingPointVersionSqlQueryUtil.getSqlQuery(SePoDiExportType.WORLD_ONLY_ACTUAL);
 
     // when
     final List<LoadingPointVersion> result = executeQuery(sqlQuery);
@@ -81,7 +81,7 @@ import org.junit.jupiter.api.Test;
     insertSharedBusinessOrganisation(sboid, "testIt", futureDate, futureDate);
     insertLoadingPoint(50, servicePointNumber, futureDate, futureDate);
     insertLoadingPoint(60, servicePointNumber, futureDate.minusMonths(5), futureDate.minusMonths(4));
-    final String sqlQuery = LoadingPointVersionSqlQueryUtil.getSqlQuery(ExportType.WORLD_ONLY_TIMETABLE_FUTURE);
+    final String sqlQuery = LoadingPointVersionSqlQueryUtil.getSqlQuery(SePoDiExportType.WORLD_ONLY_TIMETABLE_FUTURE);
 
     // when
     final List<LoadingPointVersion> result = executeQuery(sqlQuery);
@@ -104,7 +104,7 @@ import org.junit.jupiter.api.Test;
     insertSharedBusinessOrganisation(sboid, "testIt", futureDate.minusMonths(5), futureDate.minusMonths(4));
     insertLoadingPoint(50, servicePointNumber, futureDate, futureDate);
     insertLoadingPoint(60, servicePointNumber, futureDate.minusMonths(5), futureDate.minusMonths(4));
-    final String sqlQuery = LoadingPointVersionSqlQueryUtil.getSqlQuery(ExportType.WORLD_ONLY_TIMETABLE_FUTURE);
+    final String sqlQuery = LoadingPointVersionSqlQueryUtil.getSqlQuery(SePoDiExportType.WORLD_ONLY_TIMETABLE_FUTURE);
 
     // when
     final List<LoadingPointVersion> result = executeQuery(sqlQuery);
@@ -126,7 +126,7 @@ import org.junit.jupiter.api.Test;
     insertServicePoint(servicePointNumber, futureDate.minusMonths(5), futureDate.minusMonths(4), Country.AFGHANISTAN);
     insertSharedBusinessOrganisation(sboid, "testIt", futureDate.minusMonths(5), futureDate.minusMonths(4));
     insertLoadingPoint(60, servicePointNumber, futureDate.minusMonths(5), futureDate.minusMonths(4));
-    final String sqlQuery = LoadingPointVersionSqlQueryUtil.getSqlQuery(ExportType.WORLD_ONLY_TIMETABLE_FUTURE);
+    final String sqlQuery = LoadingPointVersionSqlQueryUtil.getSqlQuery(SePoDiExportType.WORLD_ONLY_TIMETABLE_FUTURE);
 
     // when
     final List<LoadingPointVersion> result = executeQuery(sqlQuery);

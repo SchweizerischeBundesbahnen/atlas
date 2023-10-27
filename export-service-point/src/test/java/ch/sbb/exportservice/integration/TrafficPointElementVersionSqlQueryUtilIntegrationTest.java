@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.exportservice.entity.TrafficPointElementVersion;
-import ch.sbb.exportservice.model.ExportType;
+import ch.sbb.exportservice.model.SePoDiExportType;
 import ch.sbb.exportservice.reader.TrafficPointElementVersionRowMapper;
 import ch.sbb.exportservice.reader.TrafficPointElementVersionSqlQueryUtil;
 import java.sql.Connection;
@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test;
     insertTrafficPoint("ch:1:sloid:2", LocalDate.of(2020, 1, 1), LocalDate.of(2030, 1, 1));
     insertTrafficPoint("ch:1:sloid:3", LocalDate.of(2050, 1, 1), LocalDate.of(2060, 1, 1));
 
-    final String sqlQuery = TrafficPointElementVersionSqlQueryUtil.getSqlQuery(ExportType.WORLD_FULL);
+    final String sqlQuery = TrafficPointElementVersionSqlQueryUtil.getSqlQuery(SePoDiExportType.WORLD_FULL);
 
     //when
     final List<TrafficPointElementVersion> result = executeQuery(sqlQuery);
@@ -52,7 +52,7 @@ import org.junit.jupiter.api.Test;
     final String sloid = "ch:1:sloid:77559:0:2";
     insertTrafficPoint(sloid, futureDate, futureDate);
     insertTrafficPoint("ch:1:sloid:1", futureDate.minusMonths(5), futureDate.minusMonths(4));
-    final String sqlQuery = TrafficPointElementVersionSqlQueryUtil.getSqlQuery(ExportType.WORLD_ONLY_TIMETABLE_FUTURE);
+    final String sqlQuery = TrafficPointElementVersionSqlQueryUtil.getSqlQuery(SePoDiExportType.WORLD_ONLY_TIMETABLE_FUTURE);
 
     //when
     final List<TrafficPointElementVersion> result = executeQuery(sqlQuery);
@@ -77,7 +77,7 @@ import org.junit.jupiter.api.Test;
     final String sloid = "ch:1:sloid:77559:0:2";
     insertTrafficPoint(sloid, now, now);
     insertTrafficPoint("ch:1:sloid:1", now.minusMonths(5), now.minusMonths(4));
-    final String sqlQuery = TrafficPointElementVersionSqlQueryUtil.getSqlQuery(ExportType.WORLD_ONLY_ACTUAL);
+    final String sqlQuery = TrafficPointElementVersionSqlQueryUtil.getSqlQuery(SePoDiExportType.WORLD_ONLY_ACTUAL);
 
     //when
     final List<TrafficPointElementVersion> result = executeQuery(sqlQuery);
