@@ -2,7 +2,6 @@ package ch.sbb.atlas.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.model.DateRange;
 import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 
@@ -66,4 +65,13 @@ class DateRangeTest {
     assertThat(dateRange.overlapsWith(other)).isTrue();
   }
 
+  @Test
+  void shouldEvaluateDateRangeContains() {
+    DateRange dateRange = DateRange.builder().from(LocalDate.of(2013, 1, 25)).to(LocalDate.of(2018, 2, 17)).build();
+    DateRange other = DateRange.builder().from(LocalDate.of(2014, 2, 17)).to(LocalDate.of(2015, 1, 25)).build();
+
+    assertThat(dateRange.containsEveryDateOf(other)).isTrue();
+    assertThat(dateRange.containsEveryDateOf(dateRange)).isTrue();
+    assertThat(other.containsEveryDateOf(dateRange)).isFalse();
+  }
 }
