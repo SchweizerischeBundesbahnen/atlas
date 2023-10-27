@@ -956,7 +956,7 @@
       "PARENT_SLOID": "Gehört zu Bereich",
       "CONSTRUCTION_INFORMATION": "Bauliche Informationen",
       "LENGTH": "Länge [m]",
-      "BOARDING_AREA_HEIGHT": "Kantenhöhe  [cm]",
+      "BOARDING_AREA_HEIGHT": "Kantenhöhe [cm]",
       "COMPASS_DIRECTION": "Kompassrichtung [°]",
       "NOTIFICATION": {
         "ADD_SUCCESS": "Die Haltekante wurde erfolgreich hinzugefügt.",
