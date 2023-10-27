@@ -1,4 +1,12 @@
-import { AfterViewInit, Component, ElementRef, Input, OnDestroy, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import maplibregl, { Map } from 'maplibre-gl';
 import { MapService } from './map.service';
 import { MAP_STYLES, MapStyle } from './map-options.service';
@@ -7,15 +15,18 @@ import { Router } from '@angular/router';
 import { Pages } from '../../pages';
 import { MAP_SOURCE_NAME } from './map-style';
 import { Subscription } from 'rxjs';
+import { AuthService } from '../../../core/auth/auth.service';
+import { ApplicationType } from '../../../api';
 
 @Component({
   selector: 'atlas-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
 })
-export class MapComponent implements AfterViewInit, OnDestroy {
+export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() public isSidePanelOpen = false;
 
+  public canCreateServicePoint = false;
   availableMapStyles = MAP_STYLES;
   currentMapStyle!: MapStyle;
   showMapStyleSelection = false;
@@ -33,7 +44,12 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   constructor(
     private readonly mapService: MapService,
     private readonly router: Router,
+    private readonly authService: AuthService,
   ) {}
+
+  ngOnInit() {
+    this.canCreateServicePoint = this.authService.hasPermissionsToCreate(ApplicationType.Sepodi);
+  }
 
   ngAfterViewInit() {
     this.map = this.mapService.initMap(this.mapContainer.nativeElement);
@@ -87,7 +103,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.map.on(
       'mouseleave',
       MAP_SOURCE_NAME,
-      () => (this.map.getCanvas().style.cursor = 'crosshair')
+      () => (this.map.getCanvas().style.cursor = 'crosshair'),
     );
     this.map.on('click', this.onMapClicked);
     this.mapService.initMapEvents();
@@ -108,7 +124,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.isGeoLocationActiveSubsription = this.mapService.isGeolocationActivated.subscribe(
       (value) => {
         isActiveGeolocation = value;
-      }
+      },
     );
     this.isEditModeSubsription = this.mapService.isEditMode.subscribe((isEditMode) => {
       if (isEditMode && isActiveGeolocation) {
