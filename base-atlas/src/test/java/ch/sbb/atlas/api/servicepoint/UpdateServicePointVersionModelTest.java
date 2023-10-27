@@ -252,27 +252,27 @@ class UpdateServicePointVersionModelTest {
 
   @Test
   void shouldSetOperatingPointKilometerMasterToNumberWithoutCheckDigitIfRouteNetworkTrue() {
-    CreateServicePointVersionModel createServicePointVersionModel =
-        CreateServicePointVersionModel.builder()
+    UpdateServicePointVersionModel updateServicePointVersionModel =
+        UpdateServicePointVersionModel.builder()
             .country(Country.GERMANY)
             .numberShort(34510)
             .operatingPointRouteNetwork(true)
             .operatingPointKilometerMasterNumber(8034511)
             .build();
-    assertThat(createServicePointVersionModel.setKilomMasterNumberDependingOnRouteNetworkValue()).isEqualTo(8034510);
+    assertThat(updateServicePointVersionModel.setKilomMasterNumberDependingOnRouteNetworkValue()).isEqualTo(8034510);
   }
 
   @Test
   void shouldSetOperatingPointKilometerMasterToOperatingPointKilometerMasterIfRouteNetworkFalse() {
     int operatingPointKilometerMasterNumber = 8034511;
-    CreateServicePointVersionModel createServicePointVersionModel =
-        CreateServicePointVersionModel.builder()
+    UpdateServicePointVersionModel updateServicePointVersionModel =
+        UpdateServicePointVersionModel.builder()
             .country(Country.GERMANY)
             .numberShort(34510)
             .operatingPointRouteNetwork(false)
             .operatingPointKilometerMasterNumber(operatingPointKilometerMasterNumber)
             .build();
-    assertThat(createServicePointVersionModel.setKilomMasterNumberDependingOnRouteNetworkValue()).isEqualTo(
+    assertThat(updateServicePointVersionModel.setKilomMasterNumberDependingOnRouteNetworkValue()).isEqualTo(
         operatingPointKilometerMasterNumber);
   }
 

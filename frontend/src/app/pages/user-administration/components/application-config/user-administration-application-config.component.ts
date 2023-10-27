@@ -73,11 +73,7 @@ export class UserAdministrationApplicationConfigComponent implements OnInit, OnD
       Country.FranceBus,
     );
     const filteredCountries = Countries.filteredCountries();
-    filteredCountries.sort(
-      (n1, n2) =>
-        Countries.getCountryNameUicCodeFromCountry(n1) -
-        Countries.getCountryNameUicCodeFromCountry(n2),
-    );
+    filteredCountries.sort(Countries.compareFn);
     return sortedCountryArray.concat(filteredCountries);
   }
 

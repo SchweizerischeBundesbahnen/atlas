@@ -65,8 +65,12 @@ public class UpdateServicePointVersionModel extends ServicePointVersionModel {
   }
 
   public Integer setKilomMasterNumberDependingOnRouteNetworkValue() {
-    return isOperatingPointRouteNetwork() ? ServicePointNumber.of(country, numberShort).getNumber()
-        : operatingPointKilometerMasterNumber;
+    if (!isOperatingPointRouteNetwork()) {
+      return operatingPointKilometerMasterNumber;
+    } else if (numberShort != null) {
+      return ServicePointNumber.of(country, numberShort).getNumber();
+    }
+    return null;
   }
 
   @JsonIgnore
