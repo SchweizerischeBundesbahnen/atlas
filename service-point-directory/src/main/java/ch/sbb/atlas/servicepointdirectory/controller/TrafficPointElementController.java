@@ -84,9 +84,10 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
   @Override
   public ReadTrafficPointElementVersionModel createTrafficPoint(
       CreateTrafficPointElementVersionModel trafficPointElementVersionModel) {
-    TrafficPointElementVersion createdTrafficPoint = createTrafficPoint(        TrafficPointElementVersionMapper.toEntity(trafficPointElementVersionModel));
+    TrafficPointElementVersion createdTrafficPoint = createTrafficPoint(
+        TrafficPointElementVersionMapper.toEntity(trafficPointElementVersionModel));
     servicePointDistributor.publishTrafficPointElement(createdTrafficPoint);
-    return TrafficPointElementVersionMapper.toModel(        createdTrafficPoint);
+    return TrafficPointElementVersionMapper.toModel(createdTrafficPoint);
   }
 
   @Override
@@ -115,7 +116,7 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
 
   private TrafficPointElementVersion createTrafficPoint(TrafficPointElementVersion trafficPointElementVersion) {
     ServicePointNumber servicePointNumber = trafficPointElementVersion.getServicePointNumber();
-    crossValidationService.validateServicePointNumberExists(trafficPointElementVersion.getServicePointNumber());
+    crossValidationService.validateServicePointNumberExists(servicePointNumber);
     return trafficPointElementService.create(trafficPointElementVersion, servicePointService.findAllByNumberOrderByValidFrom(servicePointNumber));
   }
 

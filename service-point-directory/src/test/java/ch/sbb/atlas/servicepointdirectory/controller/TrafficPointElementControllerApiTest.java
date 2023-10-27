@@ -4,6 +4,7 @@ import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.LV9
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.startsWith;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -254,11 +255,13 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
   }
 
   @Test
-  void shouldCreateTrafficPointElement() throws Exception {
+  void shouldCreateTrafficPointElementPlatformWithGivenSloid() throws Exception {
     repository.deleteAll();
+    CreateTrafficPointElementVersionModel platformToCreate =        TrafficPointTestData.getCreateTrafficPointVersionModel();
+
     mvc.perform(post("/v1/traffic-point-elements")
             .contentType(contentType)
-            .content(mapper.writeValueAsString(TrafficPointTestData.getCreateTrafficPointVersionModel())))
+            .content(mapper.writeValueAsString(platformToCreate)))
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$." + TrafficPointElementVersion.Fields.id, is(trafficPointElementVersion.getId().intValue() + 1)))
         .andExpect(jsonPath("$.servicePointNumber.number", is(1400015)))
@@ -284,6 +287,24 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
         .andExpect(jsonPath("$.trafficPointElementGeolocation.wgs84.east", is(6.21113066932)))
         .andExpect(jsonPath("$.trafficPointElementGeolocation.height", is(-9999.0)));
   }
+
+   @Test
+   void shouldCreateTrafficPointElementPlatformWithAutomaticSloid() throws Exception {
+     repository.deleteAll();
+     CreateTrafficPointElementVersionModel platformToCreate =        TrafficPointTestData.getCreateTrafficPointVersionModel();
+     platformToCreate.setSloid(null);
+
+     mvc.perform(post("/v1/traffic-point-elements")
+             .contentType(contentType)
+             .content(mapper.writeValueAsString(platformToCreate)))
+         .andExpect(status().isCreated())
+         .andExpect(jsonPath("$.servicePointNumber.number", is(1400015)))
+         .andExpect(
+             jsonPath("$." + TrafficPointElementVersion.Fields.designation, is(platformToCreate.getDesignation())))
+         .andExpect(jsonPath("$." + TrafficPointElementVersion.Fields.designationOperational,
+             is(platformToCreate.getDesignationOperational())))
+         .andExpect(jsonPath("$." + TrafficPointElementVersion.Fields.sloid, startsWith("ch:1:sloid:1400015:0:")));
+   }
 
   @Test
    void shouldUpdateTrafficPointAndCreateMultipleVersions() throws Exception {
