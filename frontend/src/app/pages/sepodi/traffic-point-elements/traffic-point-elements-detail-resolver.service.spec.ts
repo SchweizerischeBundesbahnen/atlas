@@ -38,8 +38,8 @@ describe('TrafficPointElementsDetailResolver', () => {
 
     resolvedVersion.subscribe((versions) => {
       expect(versions.length).toBe(1);
-      expect(versions[0].id).toBe(1000);
-      expect(versions[0].sloid).toBe('ch:1:sloid:89008');
+      expect(versions[0].id).toBe(9298);
+      expect(versions[0].sloid).toBe('ch:1:sloid:89008:0:1');
     });
   });
 });
