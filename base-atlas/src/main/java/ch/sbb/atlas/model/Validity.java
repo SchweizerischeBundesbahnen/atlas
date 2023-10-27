@@ -33,6 +33,9 @@ public class Validity {
   }
 
   private boolean areDatesSequential(List<LocalDate> markesOfRanges) {
+    if (markesOfRanges.isEmpty()) {
+      return true;
+    }
     Iterator<LocalDate> iter = markesOfRanges.iterator();
     LocalDate current, previous = iter.next();
     while (iter.hasNext()) {
@@ -53,6 +56,9 @@ public class Validity {
   }
 
   private Validity minifyNotOverlappingSortedRanges() {
+    if (dateRanges.isEmpty()) {
+      return this;
+    }
     List<DateRange> minifiedRanges = new ArrayList<>();
     minifiedRanges.add(dateRanges.get(0));
 
