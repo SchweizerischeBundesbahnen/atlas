@@ -10,7 +10,7 @@ import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.imports.DidokCsvMapper;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.exportservice.BatchDataSourceConfigTest;
-import ch.sbb.exportservice.model.ExportType;
+import ch.sbb.exportservice.model.SePoDiExportType;
 import ch.sbb.exportservice.model.ServicePointVersionCsvModel;
 import ch.sbb.exportservice.tasklet.FileCsvDeletingTasklet;
 import ch.sbb.exportservice.utils.JobDescriptionConstants;
@@ -63,7 +63,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
     JobParameters jobParameters = new JobParametersBuilder()
         .addString(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, JobDescriptionConstants.EXECUTION_BATCH_PARAMETER)
-        .addString(EXPORT_TYPE_JOB_PARAMETER, ExportType.WORLD_FULL.toString())
+        .addString(EXPORT_TYPE_JOB_PARAMETER, SePoDiExportType.WORLD_FULL.toString())
         .addLong(JobDescriptionConstants.START_AT_JOB_PARAMETER, System.currentTimeMillis()).toJobParameters();
 
     // when

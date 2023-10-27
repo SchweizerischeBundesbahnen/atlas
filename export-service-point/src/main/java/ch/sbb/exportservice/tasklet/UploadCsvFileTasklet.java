@@ -1,12 +1,12 @@
 package ch.sbb.exportservice.tasklet;
 
+import ch.sbb.atlas.export.enumeration.ExportTypeBase;
 import ch.sbb.exportservice.model.BatchExportFileName;
 import ch.sbb.exportservice.model.ExportExtensionFileType;
-import ch.sbb.exportservice.model.ExportType;
 
-public class UploadCsvFileTasklet extends FileUploadTasklet {
+public class UploadCsvFileTasklet extends FileUploadTasklet<ExportTypeBase> {
 
-  public UploadCsvFileTasklet(ExportType exportType, BatchExportFileName exportFileName) {
+  public UploadCsvFileTasklet(ExportTypeBase exportType, BatchExportFileName exportFileName) {
     super(exportType, exportFileName);
   }
 
