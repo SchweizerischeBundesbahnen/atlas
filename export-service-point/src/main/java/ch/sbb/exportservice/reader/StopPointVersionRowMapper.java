@@ -9,11 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import org.springframework.jdbc.core.RowMapper;
 
 public class StopPointVersionRowMapper extends BaseRowMapper implements RowMapper<StopPointVersion> {
@@ -71,20 +67,10 @@ public class StopPointVersionRowMapper extends BaseRowMapper implements RowMappe
 
   void setMeansOfTransport(StopPointVersionBuilder<?, ?> stopPointVersionBuilder, String listOfMeansOfTransport) {
     if (listOfMeansOfTransport != null) {
-      Set<MeanOfTransport> meansOfTransport = stringToSet(listOfMeansOfTransport, MeanOfTransport::valueOf);
-
+      Set<MeanOfTransport> meansOfTransport = RowMapperUtil.stringToSet(listOfMeansOfTransport, MeanOfTransport::valueOf);
       stopPointVersionBuilder.meansOfTransport(meansOfTransport);
-      stopPointVersionBuilder.meansOfTransportPipeList(toPipedString(meansOfTransport));
+      stopPointVersionBuilder.meansOfTransportPipeList(RowMapperUtil.toPipedString(meansOfTransport));
     }
-  }
-
-  //TODO: remove duplication
-  private <T> Set<T> stringToSet(String values, Function<String, T> enumType) {
-    return Arrays.stream(values.split("\\|")).map(enumType).collect(Collectors.toSet());
-  }
-
-  private String toPipedString(Collection<? extends Enum<?>> collection) {
-    return collection.stream().map(Enum::name).sorted().collect(Collectors.joining("|"));
   }
 
 }

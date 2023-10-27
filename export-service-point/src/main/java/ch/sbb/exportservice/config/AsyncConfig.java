@@ -1,6 +1,7 @@
 package ch.sbb.exportservice.config;
 
-import ch.sbb.exportservice.model.ExportType;
+import ch.sbb.exportservice.model.BatchExportFileName;
+import ch.sbb.exportservice.model.SePoDiExportType;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
@@ -32,7 +33,7 @@ public class AsyncConfig implements AsyncConfigurer {
 
   /**
    * When using {@link org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody}
-   * {@link ch.sbb.exportservice.controller.ExportServicePointBatchControllerApiV1#streamJsonFile(ExportType)},
+   * {@link ch.sbb.exportservice.controller.ExportServicePointBatchControllerApiV1#streamExportJsonFile(BatchExportFileName, SePoDiExportType)},
    * it is highly recommended to configure TaskExecutor used in Spring MVC for executing asynchronous requests.
    *
    * @return taskExecutor
