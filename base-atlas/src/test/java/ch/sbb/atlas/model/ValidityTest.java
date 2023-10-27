@@ -1,8 +1,7 @@
-package ch.sbb.atlas.servicepointdirectory.migration;
+package ch.sbb.atlas.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.model.DateRange;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -118,6 +117,57 @@ class ValidityTest {
     validity = validity.minify();
     assertThat(validity.getDateRanges()).hasSize(1);
     assertThat(validity.getDateRanges().get(0).getFrom()).isEqualTo(LocalDate.of(1993, 1, 18));
+  }
+
+  @Test
+  void shouldContainOneSameValidity() {
+    Validity validity = new Validity(new ArrayList<>(List.of(DateRange.builder()
+            .from(LocalDate.of(2020, 1, 1))
+            .to(LocalDate.of(2020, 12, 30))
+            .build()))).minify();
+
+    Validity other = new Validity(new ArrayList<>(List.of(DateRange.builder()
+        .from(LocalDate.of(2020, 1, 1))
+        .to(LocalDate.of(2020, 12, 30))
+        .build()))).minify();
+
+    assertThat(validity.containsEveryDateOf(other)).isTrue();
+  }
+
+  @Test
+  void shouldContainOneValidityIfOtherIsSmaller() {
+    Validity validity = new Validity(new ArrayList<>(List.of(DateRange.builder()
+        .from(LocalDate.of(2020, 1, 1))
+        .to(LocalDate.of(2020, 12, 31))
+        .build()))).minify();
+
+    Validity other = new Validity(new ArrayList<>(List.of(DateRange.builder()
+        .from(LocalDate.of(2020, 1, 1))
+        .to(LocalDate.of(2020, 12, 30))
+        .build()))).minify();
+
+    assertThat(validity.containsEveryDateOf(other)).isTrue();
+    assertThat(other.containsEveryDateOf(validity)).isFalse();
+  }
+
+  @Test
+  void shouldContainOneValidityIfOtherHasGap() {
+    Validity validity = new Validity(new ArrayList<>(List.of(DateRange.builder()
+        .from(LocalDate.of(2020, 1, 1))
+        .to(LocalDate.of(2020, 12, 31))
+        .build()))).minify();
+
+    Validity other = new Validity(new ArrayList<>(List.of(DateRange.builder()
+            .from(LocalDate.of(2020, 1, 1))
+            .to(LocalDate.of(2020, 4, 30))
+            .build(),
+        DateRange.builder()
+            .from(LocalDate.of(2020, 6, 1))
+            .to(LocalDate.of(2020, 12, 30))
+            .build()))).minify();
+
+    assertThat(validity.containsEveryDateOf(other)).isTrue();
+    assertThat(other.containsEveryDateOf(validity)).isFalse();
   }
 
 }
