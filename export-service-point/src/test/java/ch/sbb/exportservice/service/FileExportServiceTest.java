@@ -7,9 +7,10 @@ import ch.sbb.atlas.amazon.service.AmazonBucket;
 import ch.sbb.atlas.amazon.service.AmazonFileStreamingService;
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.amazon.service.FileServiceImpl;
+import ch.sbb.atlas.export.enumeration.ExportTypeBase;
 import ch.sbb.exportservice.model.BatchExportFileName;
 import ch.sbb.exportservice.model.ExportExtensionFileType;
-import ch.sbb.exportservice.model.ExportType;
+import ch.sbb.exportservice.model.SePoDiExportType;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -19,7 +20,7 @@ import org.mockito.Mock;
 
 class FileExportServiceTest {
 
-  private FileExportService fileExportService;
+  private FileExportService<ExportTypeBase> fileExportService;
 
   @Mock
   private AmazonService amazonService;
@@ -31,7 +32,7 @@ class FileExportServiceTest {
   @BeforeEach
    void init() {
     openMocks(this);
-    fileExportService = new FileExportService(amazonFileStreamingService, amazonService, fileService);
+    fileExportService = new FileExportService<>(amazonFileStreamingService, amazonService, fileService);
   }
 
   @Test
@@ -39,7 +40,7 @@ class FileExportServiceTest {
     //given
     File file = new File(this.getClass().getResource("/service-point.json.gzip").getFile());
     //when
-    fileExportService.exportFile(file, ExportType.WORLD_FULL, BatchExportFileName.SERVICE_POINT_VERSION,
+    fileExportService.exportFile(file, SePoDiExportType.WORLD_FULL, BatchExportFileName.SERVICE_POINT_VERSION,
         ExportExtensionFileType.JSON_EXTENSION);
     //then
     verify(amazonService).putGzipFile(AmazonBucket.EXPORT, file, "service_point/full");
@@ -50,7 +51,7 @@ class FileExportServiceTest {
     //given
     File file = new File(this.getClass().getResource("/service-point-data.json").getFile());
     //when
-    fileExportService.exportFile(file, ExportType.WORLD_FULL, BatchExportFileName.SERVICE_POINT_VERSION,
+    fileExportService.exportFile(file, SePoDiExportType.WORLD_FULL, BatchExportFileName.SERVICE_POINT_VERSION,
         ExportExtensionFileType.CSV_EXTENSION);
     //then
     verify(amazonService).putZipFile(AmazonBucket.EXPORT, file, "service_point/full");
@@ -58,14 +59,14 @@ class FileExportServiceTest {
 
   @Test
   void shouldStreamJsonFileWhileDecompressing() {
-    fileExportService.streamJsonFile(ExportType.WORLD_FULL, BatchExportFileName.SERVICE_POINT_VERSION);
+    fileExportService.streamJsonFile(SePoDiExportType.WORLD_FULL, BatchExportFileName.SERVICE_POINT_VERSION);
     verify(amazonFileStreamingService).streamFileAndDecompress(AmazonBucket.EXPORT,
         "service_point/full/full-world-service_point-" + LocalDate.now() + ".json.gz");
   }
 
   @Test
   void shouldStreamGzipFile() {
-    fileExportService.streamGzipFile(ExportType.WORLD_FULL, BatchExportFileName.SERVICE_POINT_VERSION);
+    fileExportService.streamGzipFile(SePoDiExportType.WORLD_FULL, BatchExportFileName.SERVICE_POINT_VERSION);
     verify(amazonFileStreamingService).streamFile(AmazonBucket.EXPORT,
         "service_point/full/full-world-service_point-" + LocalDate.now() + ".json.gz");
   }

@@ -8,7 +8,7 @@ import ch.sbb.atlas.api.prm.model.stoppoint.ReadStopPointVersionModel;
 import ch.sbb.exportservice.entity.StopPointVersion;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
-import ch.sbb.exportservice.model.ExportType;
+import ch.sbb.exportservice.model.PrmExportType;
 import ch.sbb.exportservice.model.StopPointVersionCsvModel;
 import ch.sbb.exportservice.processor.StopPointVersionCsvProcessor;
 import ch.sbb.exportservice.processor.StopPointVersionJsonProcessor;
@@ -56,7 +56,7 @@ public class StopPointVersionExportBatchConfig {
   @StepScope
   public JdbcCursorItemReader<StopPointVersion> stopPointReader(
       @Autowired @Qualifier("prmDataSource") DataSource dataSource,
-      @Value("#{jobParameters[exportType]}") ExportType exportType
+      @Value("#{jobParameters[exportType]}") PrmExportType exportType
   ) {
     JdbcCursorItemReader<StopPointVersion> itemReader = new JdbcCursorItemReader<>();
     itemReader.setDataSource(dataSource);
@@ -89,7 +89,7 @@ public class StopPointVersionExportBatchConfig {
   @Bean
   @StepScope
   public FlatFileItemWriter<StopPointVersionCsvModel> stopPointCsvWriter(
-      @Value("#{jobParameters[exportType]}") ExportType exportType
+      @Value("#{jobParameters[exportType]}") PrmExportType exportType
   ) {
     return csvStopPointVersionWriter.csvWriter(exportType, STOP_POINT_VERSION);
   }
@@ -118,7 +118,7 @@ public class StopPointVersionExportBatchConfig {
   @Bean
   @StepScope
   public UploadCsvFileTasklet uploadStopPointCsvFileTasklet(
-      @Value("#{jobParameters[exportType]}") ExportType exportType
+      @Value("#{jobParameters[exportType]}") PrmExportType exportType
   ) {
     return new UploadCsvFileTasklet(exportType, STOP_POINT_VERSION);
   }
@@ -134,7 +134,7 @@ public class StopPointVersionExportBatchConfig {
   @Bean
   @StepScope
   public FileCsvDeletingTasklet stopPointCsvFileDeletingTasklet(
-      @Value("#{jobParameters[exportType]}") ExportType exportType
+      @Value("#{jobParameters[exportType]}") PrmExportType exportType
   ) {
     return new FileCsvDeletingTasklet(exportType, STOP_POINT_VERSION);
   }
@@ -163,7 +163,7 @@ public class StopPointVersionExportBatchConfig {
   @Bean
   @StepScope
   public UploadJsonFileTasklet uploadStopPointJsonFileTasklet(
-      @Value("#{jobParameters[exportType]}") ExportType exportType) {
+      @Value("#{jobParameters[exportType]}") PrmExportType exportType) {
     return new UploadJsonFileTasklet(exportType, STOP_POINT_VERSION);
   }
 
@@ -178,7 +178,7 @@ public class StopPointVersionExportBatchConfig {
   @Bean
   @StepScope
   public FileJsonDeletingTasklet fileStopPointJsonDeletingTasklet(
-      @Value("#{jobParameters[exportType]}") ExportType exportType) {
+      @Value("#{jobParameters[exportType]}") PrmExportType exportType) {
     return new FileJsonDeletingTasklet(exportType, STOP_POINT_VERSION);
   }
 
@@ -205,7 +205,7 @@ public class StopPointVersionExportBatchConfig {
   @Bean
   @StepScope
   public JsonFileItemWriter<ReadStopPointVersionModel> stopPointJsonFileItemWriter(
-      @Value("#{jobParameters[exportType]}") ExportType exportType) {
+      @Value("#{jobParameters[exportType]}") PrmExportType exportType) {
     return jsonStopPointVersionWriter.getWriter(exportType, STOP_POINT_VERSION);
   }
 
