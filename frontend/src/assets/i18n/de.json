@@ -1001,6 +1001,7 @@
       "SERVICE_POINT": "Dienststelle"
     },
     "BACK_TO_MAP": "Schliessen",
-    "AUTOMATIC_SLOID": "wird automatisch vergeben"
+    "AUTOMATIC_SLOID": "wird automatisch vergeben",
+    "SLOID_ALREADY_USED": "{{sloid}} ist bereits vergeben."
   }
 }
