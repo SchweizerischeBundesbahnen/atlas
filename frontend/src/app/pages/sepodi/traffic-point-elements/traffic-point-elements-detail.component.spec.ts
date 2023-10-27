@@ -50,7 +50,7 @@ describe('TrafficPointElementsDetailComponent', () => {
     expect(component.selectedVersion).toBeTruthy();
 
     expect(component.selectedVersion.designationOperational).toEqual('1');
-    expect(component.maxValidity.validFrom).toEqual(new Date('2014-12-14'));
-    expect(component.maxValidity.validTo).toEqual(new Date('2021-03-31'));
+    expect(component.maxValidity.validFrom).toEqual(new Date('2019-07-22'));
+    expect(component.maxValidity.validTo).toEqual(new Date('2099-12-31'));
   });
 });

@@ -1,6 +1,6 @@
-import { ReadTrafficPointElementVersionModel } from '../../api';
+import { ReadTrafficPointElementVersion } from '../../api';
 
-export const BERN_WYLEREGG_TRAFFIC_POINTS: ReadTrafficPointElementVersionModel[] = [
+export const BERN_WYLEREGG_TRAFFIC_POINTS: ReadTrafficPointElementVersion[] = [
   {
     creationDate: '2019-07-22T14:30:55',
     creator: 'fs45117',
