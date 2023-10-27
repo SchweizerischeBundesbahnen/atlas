@@ -1,8 +1,8 @@
 package ch.sbb.exportservice.tasklet;
 
+import ch.sbb.atlas.export.enumeration.ExportTypeBase;
 import ch.sbb.exportservice.model.BatchExportFileName;
 import ch.sbb.exportservice.model.ExportExtensionFileType;
-import ch.sbb.exportservice.model.ExportType;
 import ch.sbb.exportservice.service.FileExportService;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -16,14 +16,14 @@ import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Slf4j
-public abstract class FileDeletingTasklet implements Tasklet {
+public abstract class FileDeletingTasklet<T extends ExportTypeBase> implements Tasklet {
 
   @Autowired
-  private FileExportService fileExportService;
-  private final ExportType exportType;
+  private FileExportService<T> fileExportService;
+  private final T exportType;
   private final BatchExportFileName exportFileName;
 
-  protected FileDeletingTasklet(ExportType exportType, BatchExportFileName exportFileName) {
+  protected FileDeletingTasklet(T exportType, BatchExportFileName exportFileName) {
     this.exportType = exportType;
     this.exportFileName = exportFileName;
   }
