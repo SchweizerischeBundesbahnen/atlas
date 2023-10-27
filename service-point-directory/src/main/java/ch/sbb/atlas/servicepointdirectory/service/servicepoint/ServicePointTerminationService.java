@@ -20,7 +20,6 @@ public class ServicePointTerminationService {
   private final BusinessOrganisationBasedUserAdministrationService businessOrganisationBasedUserAdministrationService;
 
   public void checkTerminationAllowed(List<ServicePointVersion> currentVersions, List<ServicePointVersion> afterUpdate) {
-
     boolean isTermination = isTermination(currentVersions, afterUpdate);
     ServicePointNumber number = currentVersions.iterator().next().getNumber();
     log.info("Update on {}. isTermination={}", number, isTermination);

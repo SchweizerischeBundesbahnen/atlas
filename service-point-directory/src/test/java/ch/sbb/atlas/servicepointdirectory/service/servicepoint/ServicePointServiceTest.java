@@ -1,6 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 
@@ -281,6 +282,8 @@ import java.util.List;
     assertThat(result).isNotNull();
     assertThat(result.getValidFrom()).isEqualTo(LocalDate.of(2000, 1, 1));
     assertThat(result.getValidTo()).isEqualTo(LocalDate.of(2000, 6, 1));
+
+    verify(servicePointTerminationService).checkTerminationAllowed(anyList(), anyList());
   }
 
   @Test
