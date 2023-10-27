@@ -95,7 +95,7 @@
     "karma-jasmine": "^5.1",
     "karma-jasmine-html-reporter": "^2.1",
     "karma-sonarqube-reporter": "^1.4",
-    "lint-staged": "^14.0.0",
+    "lint-staged": "^15.0.0",
     "prettier": "^3.0.0",
     "typescript": "^5.1"
   },
