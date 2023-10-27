@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
 
+import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,8 +16,15 @@ public class TrafficPointElementSloidService {
     Long randomSixDigits = trafficPointElementVersionRepository.getNextRandomNumberForSloid();
     String result;
     do {
-      result = "ch:1:sloid:" + servicePointNumber.getNumber() + ":0:" + randomSixDigits;
+      result =
+          "ch:1:sloid:" + getServicePointIdentifier(servicePointNumber) + ":0:" + randomSixDigits;
     } while (trafficPointElementVersionRepository.existsBySloid(result));
     return result;
+  }
+
+  private int getServicePointIdentifier(ServicePointNumber servicePointNumber) {
+    return servicePointNumber.getCountry() == Country.SWITZERLAND ?
+        servicePointNumber.getNumberShort() :
+        servicePointNumber.getNumber();
   }
 }
