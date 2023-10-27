@@ -24,14 +24,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@Tag(name = "PRM - Person with Reduced Mobility")
+// todo: generate frontend api and delete pRM service.ts file
+@Tag(name = "Person with Reduced Mobility")
 @RequestMapping("v1/stop-points")
 public interface StopPointApiV1 {
 
   @GetMapping
   @PageableAsQueryParam
   Container<ReadStopPointVersionModel> getStopPoints(
-      @Parameter(hidden = true) @PageableDefault(sort = {StopPointVersion.Fields.number, StopPointVersion.Fields.validFrom}) Pageable pageable,
+      @Parameter(hidden = true) @PageableDefault(sort = {StopPointVersion.Fields.number,
+          StopPointVersion.Fields.validFrom}) Pageable pageable,
       @Valid @ParameterObject StopPointRequestParams stopPointRequestParams);
 
   @ResponseStatus(HttpStatus.CREATED)
