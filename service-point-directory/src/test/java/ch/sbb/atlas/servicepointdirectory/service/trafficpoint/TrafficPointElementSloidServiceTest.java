@@ -14,8 +14,14 @@ class TrafficPointElementSloidServiceTest {
   private TrafficPointElementSloidService trafficPointElementSloidService;
 
   @Test
-  void shouldGenerateNewSloid() {
+  void shouldGenerateNewSloidInSwitzerland() {
     String sloid = trafficPointElementSloidService.getNextSloidForPlatform(ServicePointNumber.ofNumberWithoutCheckDigit(8507000));
-    assertThat(sloid).isNotNull().startsWith("ch:1:sloid:8507000:0:");
+    assertThat(sloid).isNotNull().startsWith("ch:1:sloid:7000:0:");
+  }
+
+  @Test
+  void shouldGenerateNewSloidNotInSwitzerland() {
+    String sloid = trafficPointElementSloidService.getNextSloidForPlatform(ServicePointNumber.ofNumberWithoutCheckDigit(1407000));
+    assertThat(sloid).isNotNull().startsWith("ch:1:sloid:1407000:0:");
   }
 }
