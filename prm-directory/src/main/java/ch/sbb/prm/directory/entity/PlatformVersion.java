@@ -21,7 +21,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
-import jakarta.validation.constraints.Digits;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -72,19 +71,15 @@ public class PlatformVersion extends BasePrmEntityVersion implements Relatable, 
   private BasicAttributeType dynamicVisual;
 
   @AtlasVersionableProperty
-  @Digits(integer = 10, fraction = 3)
   private Double height;
 
   @AtlasVersionableProperty
-  @Digits(integer = 10, fraction = 3)
   private Double inclination;
 
   @AtlasVersionableProperty
-  @Digits(integer = 10, fraction = 3)
   private Double inclinationLongitudinal;
 
   @AtlasVersionableProperty
-  @Digits(integer = 10, fraction = 3)
   private Double inclinationWidth;
 
   @AtlasVersionableProperty
@@ -101,7 +96,6 @@ public class PlatformVersion extends BasePrmEntityVersion implements Relatable, 
   private BooleanAttributeType partialElevation;
 
   @AtlasVersionableProperty
-  @Digits(integer = 10, fraction = 3)
   private Double superelevation;
 
   @Enumerated(EnumType.STRING)
@@ -113,11 +107,9 @@ public class PlatformVersion extends BasePrmEntityVersion implements Relatable, 
   private VehicleAccessAttributeType vehicleAccess;
 
   @AtlasVersionableProperty
-  @Digits(integer = 10, fraction = 3)
   private Double wheelchairAreaLength;
 
   @AtlasVersionableProperty
-  @Digits(integer = 10, fraction = 3)
   private Double wheelchairAreaWidth;
 
 }
