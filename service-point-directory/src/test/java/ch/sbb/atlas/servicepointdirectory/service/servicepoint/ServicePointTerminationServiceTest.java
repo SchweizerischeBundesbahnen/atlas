@@ -9,7 +9,6 @@ import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.TerminationNotAllowedException;
 import ch.sbb.atlas.user.administration.security.service.BusinessOrganisationBasedUserAdministrationService;
-import ch.sbb.atlas.versioning.model.VersionedObject;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
@@ -41,23 +40,19 @@ class ServicePointTerminationServiceTest {
    */
   @Test
   void shouldReportTerminationNotAllowedForWriterOnEnd() {
-    ServicePointVersion editedServicePoint = ServicePointVersion.builder()
-        .meansOfTransport(Set.of(MeanOfTransport.BUS))
-        .validFrom(LocalDate.of(2020, 1, 1))
-        .validTo(LocalDate.of(2020, 12, 20))
-        .build();
-
     List<ServicePointVersion> currentVersions = List.of(ServicePointVersion.builder()
         .meansOfTransport(Set.of(MeanOfTransport.BUS))
         .validFrom(LocalDate.of(2020, 1, 1))
         .validTo(LocalDate.of(2020, 12, 31))
         .build());
-    List<VersionedObject> versionedObjects = List.of(VersionedObject.builder()
+    List<ServicePointVersion> afterUpdate = List.of(ServicePointVersion.builder()
+        .meansOfTransport(Set.of(MeanOfTransport.BUS))
         .validFrom(LocalDate.of(2020, 1, 1))
-        .validTo(LocalDate.of(2020, 12, 20)).build());
+        .validTo(LocalDate.of(2020, 12, 30))
+        .build());
 
-    ThrowingCallable terminationCheck = () -> servicePointTerminationService.checkTerminationAllowed(editedServicePoint,
-        currentVersions, versionedObjects);
+    ThrowingCallable terminationCheck = () -> servicePointTerminationService.checkTerminationAllowed(currentVersions,
+        afterUpdate);
     assertThatExceptionOfType(TerminationNotAllowedException.class).isThrownBy(terminationCheck);
 
     when(userAdministrationService.isAtLeastSupervisor(ApplicationType.SEPODI)).thenReturn(true);
@@ -71,21 +66,17 @@ class ServicePointTerminationServiceTest {
    */
   @Test
   void shouldReportNoTerminationIfNotStopPoint() {
-    ServicePointVersion editedServicePoint = ServicePointVersion.builder()
-        .validFrom(LocalDate.of(2020, 1, 1))
-        .validTo(LocalDate.of(2020, 12, 20))
-        .build();
-
     List<ServicePointVersion> currentVersions = List.of(ServicePointVersion.builder()
         .validFrom(LocalDate.of(2020, 1, 1))
         .validTo(LocalDate.of(2020, 12, 31))
         .build());
-    List<VersionedObject> versionedObjects = List.of(VersionedObject.builder()
+    List<ServicePointVersion> afterUpdate = List.of(ServicePointVersion.builder()
         .validFrom(LocalDate.of(2020, 1, 1))
-        .validTo(LocalDate.of(2020, 12, 20)).build());
+        .validTo(LocalDate.of(2020, 12, 30))
+        .build());
 
-    ThrowingCallable terminationCheck = () -> servicePointTerminationService.checkTerminationAllowed(editedServicePoint,
-        currentVersions, versionedObjects);
+    ThrowingCallable terminationCheck = () -> servicePointTerminationService.checkTerminationAllowed(currentVersions,
+        afterUpdate);
     assertThatNoException().isThrownBy(terminationCheck);
 
     when(userAdministrationService.isAtLeastSupervisor(ApplicationType.SEPODI)).thenReturn(true);
@@ -99,23 +90,44 @@ class ServicePointTerminationServiceTest {
    */
   @Test
   void shouldReportTerminationNotAllowedForWriterOnBeginning() {
-    ServicePointVersion editedServicePoint = ServicePointVersion.builder()
-        .meansOfTransport(Set.of(MeanOfTransport.BUS))
-        .validFrom(LocalDate.of(2020, 1, 5))
-        .validTo(LocalDate.of(2020, 12, 31))
-        .build();
-
     List<ServicePointVersion> currentVersions = List.of(ServicePointVersion.builder()
         .meansOfTransport(Set.of(MeanOfTransport.BUS))
         .validFrom(LocalDate.of(2020, 1, 1))
         .validTo(LocalDate.of(2020, 12, 31))
         .build());
-    List<VersionedObject> versionedObjects = List.of(VersionedObject.builder()
-        .validFrom(LocalDate.of(2020, 1, 5))
-        .validTo(LocalDate.of(2020, 12, 31)).build());
+    List<ServicePointVersion> afterUpdate = List.of(ServicePointVersion.builder()
+        .meansOfTransport(Set.of(MeanOfTransport.BUS))
+        .validFrom(LocalDate.of(2020, 1, 10))
+        .validTo(LocalDate.of(2020, 12, 31))
+        .build());
 
-    ThrowingCallable terminationCheck = () -> servicePointTerminationService.checkTerminationAllowed(editedServicePoint,
-        currentVersions, versionedObjects);
+    ThrowingCallable terminationCheck = () -> servicePointTerminationService.checkTerminationAllowed(currentVersions,
+        afterUpdate);
+    assertThatExceptionOfType(TerminationNotAllowedException.class).isThrownBy(terminationCheck);
+
+    when(userAdministrationService.isAtLeastSupervisor(ApplicationType.SEPODI)).thenReturn(true);
+    assertThatNoException().isThrownBy(terminationCheck);
+  }
+
+  /**
+   * Currently StopPoint |-----------------|
+   * <p>
+   * Update to not a StopPoint
+   */
+  @Test
+  void shouldReportTerminationNotAllowedForWriterWhenSwitchingToNonStopPoint() {
+    List<ServicePointVersion> currentVersions = List.of(ServicePointVersion.builder()
+        .meansOfTransport(Set.of(MeanOfTransport.BUS))
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 12, 31))
+        .build());
+    List<ServicePointVersion> afterUpdate = List.of(ServicePointVersion.builder()
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 12, 31))
+        .build());
+
+    ThrowingCallable terminationCheck = () -> servicePointTerminationService.checkTerminationAllowed(currentVersions,
+        afterUpdate);
     assertThatExceptionOfType(TerminationNotAllowedException.class).isThrownBy(terminationCheck);
 
     when(userAdministrationService.isAtLeastSupervisor(ApplicationType.SEPODI)).thenReturn(true);
