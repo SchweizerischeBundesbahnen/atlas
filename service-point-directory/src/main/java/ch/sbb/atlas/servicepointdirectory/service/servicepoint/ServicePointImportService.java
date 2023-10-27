@@ -10,7 +10,6 @@ import ch.sbb.atlas.servicepointdirectory.entity.ServicePointFotComment;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.service.BaseImportServicePointDirectoryService;
-import ch.sbb.atlas.servicepointdirectory.repository.ServicePointNumberRepository;
 import ch.sbb.atlas.servicepointdirectory.service.BasePointUtility;
 import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
 import ch.sbb.atlas.servicepointdirectory.service.ServicePointDistributor;
@@ -39,7 +38,7 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
   private final VersionableService versionableService;
   private final ServicePointFotCommentService servicePointFotCommentService;
   private final ServicePointDistributor servicePointDistributor;
-  private final ServicePointNumberRepository servicePointNumberRepository;
+  private final ServicePointNumberService servicePointNumberService;
 
   @Override
   protected void save(ServicePointVersion servicePointVersion) {
@@ -146,8 +145,8 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
   private ItemImportResult saveServicePointVersion(ServicePointVersion servicePointVersion) {
     try {
       ServicePointVersion savedServicePointVersion = servicePointService.saveWithoutValidationForImportOnly(servicePointVersion);
-      servicePointNumberRepository.deleteAvailableNumber(savedServicePointVersion.getNumber().getNumberShort(),
-          savedServicePointVersion.getCountry().name());
+      servicePointNumberService.deleteAvailableNumber(savedServicePointVersion.getNumber(),
+          savedServicePointVersion.getCountry());
       return buildSuccessImportResult(savedServicePointVersion);
     } catch (Exception exception) {
       log.error("[Service-Point Import]: Error during save", exception);
