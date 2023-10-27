@@ -1,7 +1,9 @@
 package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
 
+import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
+import ch.sbb.atlas.servicepointdirectory.exception.SloidAlreadyExistsException;
 import ch.sbb.atlas.servicepointdirectory.model.search.TrafficPointElementSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.CrossValidationService;
@@ -53,7 +55,10 @@ public class TrafficPointElementService {
       (#servicePointVersions,T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
   public TrafficPointElementVersion create(TrafficPointElementVersion trafficPointElementVersion,
       List<ServicePointVersion> servicePointVersions) {
-    if (trafficPointElementVersion.getSloid() == null) {
+    if (trafficPointElementVersion.getSloid() != null && isTrafficPointElementExisting(trafficPointElementVersion.getSloid())) {
+      throw new SloidAlreadyExistsException(trafficPointElementVersion.getSloid());
+    }
+    if (trafficPointElementVersion.getSloid() == null && trafficPointElementVersion.getTrafficPointElementType() == TrafficPointElementType.BOARDING_PLATFORM) {
       trafficPointElementVersion.setSloid(trafficPointElementSloidService.getNextSloidForPlatform(trafficPointElementVersion.getServicePointNumber()));
     }
     return save(trafficPointElementVersion);
