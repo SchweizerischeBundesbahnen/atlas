@@ -22,7 +22,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
@@ -78,15 +77,12 @@ public class TrafficPointElementVersion extends BasePointVersion<TrafficPointEle
   private String designationOperational;
 
   @AtlasVersionableProperty
-  @Digits(integer = 13, fraction = 3)
   private Double length;
 
   @AtlasVersionableProperty
-  @Digits(integer = 5, fraction = 2)
   private Double boardingAreaHeight;
 
   @AtlasVersionableProperty
-  @Digits(integer = 5, fraction = 2)
   private Double compassDirection;
 
   @AtlasVersionableProperty
