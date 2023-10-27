@@ -9,7 +9,6 @@ import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.MappedSuperclass;
-import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -37,16 +36,13 @@ public abstract class GeolocationBaseEntity extends BaseDidokImportEntity implem
 
   @AtlasVersionableProperty
   @NotNull
-  @Digits(integer = 19, fraction = 11)
   private Double east;
 
   @AtlasVersionableProperty
   @NotNull
-  @Digits(integer = 19, fraction = 11)
   private Double north;
 
   @AtlasVersionableProperty
-  @Digits(integer = 10, fraction = 4)
   private Double height;
 
   public CoordinatePair asCoordinatePair() {
