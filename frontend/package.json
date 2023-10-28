@@ -54,7 +54,7 @@
     "angular-oauth2-oidc": "^15.0",
     "angular-server-side-configuration": "^16.0",
     "bootstrap": "^5.3",
-    "jwt-decode": "^3.1",
+    "jwt-decode": "^4.0.0",
     "maplibre-gl": "^3.1",
     "moment": "^2.29",
     "ngx-color-picker": "^15.0.0",
