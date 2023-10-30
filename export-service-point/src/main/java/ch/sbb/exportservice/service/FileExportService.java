@@ -24,26 +24,35 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 public class FileExportService<T extends ExportTypeBase> {
 
   private static final String JSON_GZ_EXTENSION = ".json.gz";
+  public static final String S3_BUCKET_PATH_SEPARATOR = "/";
 
   private final AmazonFileStreamingService amazonFileStreamingService;
   private final AmazonService amazonService;
   private final FileService fileService;
 
-
   public StreamingResponseBody streamJsonFile(T exportTypeBase, BatchExportFileName exportFileName) {
-    String fileToStream = getFileToStream(exportTypeBase, exportFileName,JSON_GZ_EXTENSION);
+    String fileToStream = getFileToStream(exportTypeBase, exportFileName, JSON_GZ_EXTENSION);
     return amazonFileStreamingService.streamFileAndDecompress(AmazonBucket.EXPORT, fileToStream);
   }
 
-  public  StreamingResponseBody streamGzipFile(T exportTypeBase, BatchExportFileName exportFileName) {
-    String fileToStream = getFileToStream(exportTypeBase, exportFileName,JSON_GZ_EXTENSION);
+  public StreamingResponseBody streamGzipFile(T exportTypeBase, BatchExportFileName exportFileName) {
+    String fileToStream = getFileToStream(exportTypeBase, exportFileName, JSON_GZ_EXTENSION);
     return amazonFileStreamingService.streamFile(AmazonBucket.EXPORT, fileToStream);
+  }
+
+  public StreamingResponseBody streamLatestGzipFile(String fileToStream) {
+    return amazonFileStreamingService.streamFile(AmazonBucket.EXPORT, fileToStream);
+  }
+
+
+  public StreamingResponseBody streamLatestJsonFile(String fileToStream) {
+    return amazonFileStreamingService.streamFileAndDecompress(AmazonBucket.EXPORT, fileToStream);
   }
 
   private String getFileToStream(T sePoDiExportType, BatchExportFileName exportFileName, String extension) {
     return exportFileName.getBaseDir() + "/" +
         sePoDiExportType.getDir() + "/" +
-        getBaseFileName(sePoDiExportType, exportFileName)+ extension;
+        getBaseFileName(sePoDiExportType, exportFileName) + extension;
   }
 
   public void exportFile(File file, T exportType, BatchExportFileName exportFileName,
@@ -73,15 +82,19 @@ public class FileExportService<T extends ExportTypeBase> {
   }
 
   public String getBaseFileName(T exportType, BatchExportFileName exportFileName) {
-    if(exportType instanceof PrmExportType){
+    if (exportType instanceof PrmExportType) {
       String actualDate = LocalDate.now().format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN));
       return exportType.getDir() + "_" + exportFileName.getFileName() + "-" + actualDate;
     }
-    if(exportType instanceof SePoDiExportType){
+    if (exportType instanceof SePoDiExportType) {
       String actualDate = LocalDate.now().format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN));
       return exportType.getDir() + "-" + exportType.getFileTypePrefix() + "-" + exportFileName.getFileName() + "-" + actualDate;
     }
-    throw new IllegalArgumentException("The Given value is not allowed!" );
+    throw new IllegalArgumentException("The Given value is not allowed!");
+  }
+
+  public String getLatestUploadedFileName(String filePathPrefix, String fileName) {
+    return amazonService.getLatestJsonUploadedObject(AmazonBucket.EXPORT, filePathPrefix, fileName);
   }
 
 }
