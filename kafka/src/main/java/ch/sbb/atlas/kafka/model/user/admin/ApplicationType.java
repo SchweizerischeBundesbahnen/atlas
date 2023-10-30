@@ -12,6 +12,7 @@ public enum ApplicationType {
   LIDI,
   BODI,
   TIMETABLE_HEARING,
-  SEPODI
+  SEPODI,
+  PRM
 
 }
