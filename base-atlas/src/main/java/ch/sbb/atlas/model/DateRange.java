@@ -36,8 +36,8 @@ public class DateRange {
     return !to.isBefore(dateRange.getFrom()) && !from.isAfter(dateRange.getTo());
   }
 
-  public boolean containsEveryDateOf(DateRange other) {
-    return !from.isAfter(other.getFrom()) && !to.isBefore(other.getTo());
+  public boolean containsEveryDateOf(DateRange otherDateRange) {
+    return !from.isAfter(otherDateRange.getFrom()) && !to.isBefore(otherDateRange.getTo());
   }
 
   public static DateRange fromVersionable(Versionable versionable) {

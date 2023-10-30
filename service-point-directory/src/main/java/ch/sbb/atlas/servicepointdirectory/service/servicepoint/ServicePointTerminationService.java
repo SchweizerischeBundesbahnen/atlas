@@ -29,12 +29,15 @@ public class ServicePointTerminationService {
     }
   }
 
-  private static boolean isTermination(List<ServicePointVersion> currentVersions, List<ServicePointVersion> afterUpdate) {
-    Validity preUpdateStopPointValidity = new Validity(
-        currentVersions.stream().filter(ServicePointVersion::isStopPoint).map(DateRange::fromVersionable).toList()).minify();
-    Validity afterUpdateStopPointValidity = new Validity(
-        afterUpdate.stream().filter(ServicePointVersion::isStopPoint).map(DateRange::fromVersionable).toList()).minify();
+  private static boolean isTermination(List<ServicePointVersion> currentVersions, List<ServicePointVersion> afterUpdateVersions) {
+    Validity preUpdateStopPointValidity = getValidityOfStopPoint(currentVersions);
+    Validity afterUpdateStopPointValidity = getValidityOfStopPoint(afterUpdateVersions);
     return !afterUpdateStopPointValidity.containsEveryDateOf(preUpdateStopPointValidity);
+  }
+
+  private static Validity getValidityOfStopPoint(List<ServicePointVersion> servicePoint) {
+    return new Validity(
+        servicePoint.stream().filter(ServicePointVersion::isStopPoint).map(DateRange::fromVersionable).toList()).minify();
   }
 
 }
