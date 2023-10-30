@@ -1,5 +1,8 @@
 package ch.sbb.exportservice.controller;
 
+import static ch.sbb.atlas.api.controller.GzipFileDownloadHttpHeader.extractFileNameFromS3ObjectName;
+import static ch.sbb.exportservice.service.FileExportService.S3_BUCKET_PATH_SEPARATOR;
+
 import ch.sbb.atlas.api.controller.GzipFileDownloadHttpHeader;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.exportservice.exception.NotAllowedExportFileException;
@@ -45,15 +48,30 @@ public class ExportStopPointBatchControllerApiV1 {
       @Schema(implementation = ErrorResponse.class)))
   })
   public ResponseEntity<StreamingResponseBody> streamExportJsonFile(@PathVariable BatchExportFileName exportFileName,
-                                                                    @PathVariable PrmExportType prmExportType) {
-    StreamingResponseBody body = fileExportService.streamJsonFile(prmExportType,exportFileName);
+      @PathVariable PrmExportType prmExportType) {
+    StreamingResponseBody body = fileExportService.streamJsonFile(prmExportType, exportFileName);
+    return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(body);
+  }
+
+  @GetMapping(value = "json/latest/{exportFileName}/{prmExportType}", produces = MediaType.APPLICATION_JSON_VALUE)
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200",description = "Returns the today generated file as Stream"),
+      @ApiResponse(responseCode = "404", description = "No generated files found", content = @Content(schema =
+      @Schema(implementation = ErrorResponse.class)))
+  })
+  public ResponseEntity<StreamingResponseBody> streamLatestExportJsonFile(@PathVariable BatchExportFileName exportFileName,
+      @PathVariable PrmExportType prmExportType) {
+    String buildBucketDirPathPrefix = s3BucketDirPathPrefix(exportFileName, prmExportType);
+    String fileName = fileExportService.getLatestUploadedFileName(buildBucketDirPathPrefix,
+        prmExportType.getFileTypePrefix());
+    StreamingResponseBody body = fileExportService.streamLatestJsonFile(fileName);
     return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(body);
   }
 
   @GetMapping(value = "download-gzip-json/{exportFileName}/{prmExportType}")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200"),
-      @ApiResponse(responseCode = "404", description = "filename myFile not found", content = @Content(schema =
+      @ApiResponse(responseCode = "200", description = "Returns the today generated file"),
+      @ApiResponse(responseCode = "404", description = "No filed found for today date", content = @Content(schema =
       @Schema(implementation = ErrorResponse.class)))
   })
   public ResponseEntity<StreamingResponseBody> streamExportGzFile(
@@ -65,6 +83,29 @@ public class ExportStopPointBatchControllerApiV1 {
     return ResponseEntity.ok().headers(headers).body(body);
   }
 
+  @GetMapping(value = "download-gzip-json/latest/{exportFileName}/{prmExportType}")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Returns the latest generated file"),
+      @ApiResponse(responseCode = "404", description = "No generated files found", content = @Content(schema =
+      @Schema(implementation = ErrorResponse.class)))
+  })
+  public ResponseEntity<StreamingResponseBody> streamLatestExportGzFile(
+      @PathVariable BatchExportFileName exportFileName,
+      @PathVariable PrmExportType prmExportType) throws NotAllowedExportFileException {
+    String buildBucketDirPathPrefix = s3BucketDirPathPrefix(exportFileName, prmExportType);
+    String fileName = fileExportService.getLatestUploadedFileName(buildBucketDirPathPrefix,
+        prmExportType.getFileTypePrefix());
+    HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(extractFileNameFromS3ObjectName(fileName));
+    StreamingResponseBody body = fileExportService.streamGzipFile(prmExportType, exportFileName);
+    return ResponseEntity.ok().headers(headers).body(body);
+  }
+
+  private static String s3BucketDirPathPrefix(BatchExportFileName exportFileName, PrmExportType prmExportType) {
+    String buildBucketDirPathPrefix =
+        exportFileName.getBaseDir() + S3_BUCKET_PATH_SEPARATOR + prmExportType.getDir();
+    return buildBucketDirPathPrefix;
+  }
+
   @PostMapping("stop-point-batch")
   @ResponseStatus(HttpStatus.OK)
   @ApiResponses(value = {
@@ -74,6 +115,5 @@ public class ExportStopPointBatchControllerApiV1 {
   public void startExportServicePointBatch() {
     exportStopPointJobService.startExportJobs();
   }
-
 
 }
