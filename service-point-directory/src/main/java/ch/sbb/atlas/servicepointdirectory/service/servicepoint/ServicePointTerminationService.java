@@ -2,65 +2,42 @@ package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.model.DateRange;
+import ch.sbb.atlas.model.Validity;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.TerminationNotAllowedException;
 import ch.sbb.atlas.user.administration.security.service.BusinessOrganisationBasedUserAdministrationService;
-import ch.sbb.atlas.versioning.model.VersionedObject;
-import java.time.LocalDate;
-import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class ServicePointTerminationService {
 
   private final BusinessOrganisationBasedUserAdministrationService businessOrganisationBasedUserAdministrationService;
 
-  public void checkTerminationAllowed(ServicePointVersion editedVersion, List<ServicePointVersion> currentVersions,
-      List<VersionedObject> versionedObjects) {
-    DateRange preUpdateRange = getPreUpdateRange(currentVersions);
-    DateRange postUpdateRange = getPostUpdateRange(versionedObjects);
-
-    boolean isTermination = isTermination(editedVersion, currentVersions, preUpdateRange, postUpdateRange);
+  public void checkTerminationAllowed(List<ServicePointVersion> currentVersions, List<ServicePointVersion> afterUpdateVersions) {
+    boolean isTermination = isTermination(currentVersions, afterUpdateVersions);
+    ServicePointNumber number = currentVersions.iterator().next().getNumber();
+    log.info("Update on {}. isTermination={}", number, isTermination);
 
     if (isTermination && !businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(ApplicationType.SEPODI)) {
-      throw new TerminationNotAllowedException(editedVersion);
+      throw new TerminationNotAllowedException(number);
     }
   }
 
-  private static boolean isTermination(ServicePointVersion editedVersion, List<ServicePointVersion> currentVersions,
-      DateRange preUpdateRange, DateRange postUpdateRange) {
-    if (postUpdateRange.getFrom().isAfter(preUpdateRange.getFrom())) {
-      return currentVersions.stream()
-          .filter(i -> i.getValidFrom().isBefore(editedVersion.getValidFrom()))
-          .anyMatch(ServicePointVersion::isStopPoint);
-    }
-    if (postUpdateRange.getTo().isBefore(preUpdateRange.getTo())) {
-      return currentVersions.stream()
-          .filter(i -> i.getValidTo().isAfter(editedVersion.getValidTo()))
-          .anyMatch(ServicePointVersion::isStopPoint);
-    }
-    return false;
+  private static boolean isTermination(List<ServicePointVersion> currentVersions, List<ServicePointVersion> afterUpdateVersions) {
+    Validity preUpdateStopPointValidity = getValidityOfStopPoint(currentVersions);
+    Validity afterUpdateStopPointValidity = getValidityOfStopPoint(afterUpdateVersions);
+    return !afterUpdateStopPointValidity.containsEveryDateOf(preUpdateStopPointValidity);
   }
 
-  private DateRange getPreUpdateRange(List<ServicePointVersion> currentVersions) {
-    List<ServicePointVersion> sortedVersions = currentVersions.stream()
-        .sorted(Comparator.comparing(ServicePointVersion::getValidFrom)).toList();
-    LocalDate preUpdateRangeFrom = sortedVersions.get(0).getValidFrom();
-    LocalDate preUpdateRangeTo = sortedVersions.get(currentVersions.size() - 1).getValidTo();
-
-    return DateRange.builder().from(preUpdateRangeFrom).to(preUpdateRangeTo).build();
-  }
-
-  private DateRange getPostUpdateRange(List<VersionedObject> versionedObjects) {
-    List<VersionedObject> sortedObjects = versionedObjects.stream().sorted(Comparator.comparing(VersionedObject::getValidFrom))
-        .toList();
-    LocalDate postUpdateRangeFrom = sortedObjects.get(0).getValidFrom();
-    LocalDate postUpdateRangeTo = sortedObjects.get(versionedObjects.size() - 1).getValidTo();
-
-    return DateRange.builder().from(postUpdateRangeFrom).to(postUpdateRangeTo).build();
+  private static Validity getValidityOfStopPoint(List<ServicePointVersion> servicePoint) {
+    return new Validity(
+        servicePoint.stream().filter(ServicePointVersion::isStopPoint).map(DateRange::fromVersionable).toList()).minify();
   }
 
 }

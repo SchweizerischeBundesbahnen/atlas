@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepointdirectory.migration.CsvReader;
 import ch.sbb.atlas.model.DateRange;
-import ch.sbb.atlas.servicepointdirectory.migration.Validity;
+import ch.sbb.atlas.model.Validity;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
