@@ -6,6 +6,7 @@ api/businessOrganisations.service.ts
 api/companies.service.ts
 api/exportServicePointBatch.service.ts
 api/geoData.service.ts
+api/importPrmBatch.service.ts
 api/importServicePointBatch.service.ts
 api/lines.service.ts
 api/loadingPoints.service.ts
@@ -50,6 +51,7 @@ model/containerLine.ts
 model/containerLineVersionSnapshot.ts
 model/containerReadLoadingPointVersion.ts
 model/containerReadServicePointVersion.ts
+model/containerReadStopPointVersion.ts
 model/containerReadTrafficPointElementVersionModel.ts
 model/containerSubline.ts
 model/containerTimetableFieldNumber.ts
@@ -66,8 +68,9 @@ model/createLoadingPointVersion.ts
 model/createParkingLotVersion.ts
 model/createPlatformVersion.ts
 model/createReferencePointVersion.ts
+model/createRelationVersion.ts
 model/createServicePointVersion.ts
-model/createStopPlaceVersion.ts
+model/createStopPointVersion.ts
 model/createTicketCounterVersion.ts
 model/createToiletVersion.ts
 model/createTrafficPointElementVersionModel.ts
@@ -88,6 +91,7 @@ model/inlineObject2.ts
 model/inlineObject3.ts
 model/inlineObject4.ts
 model/inlineObject5.ts
+model/inlineObject6.ts
 model/itemImportResponseStatus.ts
 model/itemImportResult.ts
 model/line.ts
@@ -115,11 +119,13 @@ model/readLoadingPointVersion.ts
 model/readParkingLotVersion.ts
 model/readPlatformVersion.ts
 model/readReferencePointVersion.ts
+model/readRelationVersion.ts
 model/readServicePointVersion.ts
-model/readStopPlaceVersion.ts
+model/readStopPointVersion.ts
 model/readTicketCounterVersion.ts
 model/readToiletVersion.ts
 model/readTrafficPointElementVersionModel.ts
+model/referencePointAttributeType.ts
 model/referencePointElementType.ts
 model/sboidPermissionRestrictionModel.ts
 model/servicePointCsvModel.ts
@@ -135,6 +141,9 @@ model/standardAttributeType.ts
 model/statementStatus.ts
 model/status.ts
 model/stepFreeAccessAttributeType.ts
+model/stopPointCsvModel.ts
+model/stopPointCsvModelContainer.ts
+model/stopPointImportRequestModel.ts
 model/stopPointType.ts
 model/subline.ts
 model/sublineType.ts
