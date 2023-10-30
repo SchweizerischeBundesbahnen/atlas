@@ -31,10 +31,5 @@ public class AmazonFileStreamingServiceImpl implements AmazonFileStreamingServic
     }
   }
 
-  @Override
-  public File downloadFile(AmazonBucket amazonBucket, String fileToStream) {
-    File gzFile = amazonService.pullFile(amazonBucket, fileToStream);
-    return fileService.zipDecompress(gzFile);
-  }
 
 }

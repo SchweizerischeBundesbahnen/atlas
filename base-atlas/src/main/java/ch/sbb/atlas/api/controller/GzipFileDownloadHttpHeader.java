@@ -14,4 +14,8 @@ public final class GzipFileDownloadHttpHeader {
     headers.add("Cache-Control", "no-cache");
     return headers;
   }
+
+  public static String extractFileNameFromS3ObjectName(String fileName) {
+    return fileName.substring(fileName.lastIndexOf("/") + 1, fileName.indexOf("."));
+  }
 }

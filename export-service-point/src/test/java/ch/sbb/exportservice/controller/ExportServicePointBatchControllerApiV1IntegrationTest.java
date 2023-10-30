@@ -156,6 +156,42 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
         .andExpect(status().isOk());
   }
 
+  @Test
+  @Order(9)
+  void shouldDownloadLatestGzipJsonSuccessfully() throws Exception {
+    //given
+    try (InputStream inputStream = this.getClass().getResourceAsStream("/service-point.json.gz")) {
+      StreamingResponseBody streamingResponseBody = writeOutputStream(inputStream);
+      doReturn(streamingResponseBody).when(fileExportService)
+          .streamGzipFile(SePoDiExportType.WORLD_FULL, BatchExportFileName.SERVICE_POINT_VERSION);
+      doReturn("service_point/full/full-swiss-only-service_point-2023-09-30.csv.json").when(fileExportService)
+          .getLatestUploadedFileName("service_point/full",SePoDiExportType.WORLD_FULL.getFileTypePrefix());
+      //when & then
+      mvc.perform(get("/v1/export/download-gzip-json/latest/service-point-version/world-full")
+              .contentType(contentType))
+          .andExpect(status().isOk())
+          .andExpect(content().contentType("application/gzip"));
+    }
+  }
+
+  @Test
+  @Order(10)
+  void shouldDownloadLatestJsonSuccessfully() throws Exception {
+    //given
+    try (InputStream inputStream = this.getClass().getResourceAsStream("/service-point.json.gz")) {
+      StreamingResponseBody streamingResponseBody = writeOutputStream(inputStream);
+      doReturn(streamingResponseBody).when(fileExportService)
+          .streamGzipFile(SePoDiExportType.WORLD_FULL, BatchExportFileName.SERVICE_POINT_VERSION);
+      doReturn("service_point/full/full-swiss-only-service_point-2023-09-30.csv.json").when(fileExportService)
+          .getLatestUploadedFileName("service_point/full",SePoDiExportType.WORLD_FULL.getFileTypePrefix());
+      //when & then
+      mvc.perform(get("/v1/export/json/latest/service-point-version/world-full")
+              .contentType(contentType))
+          .andExpect(status().isOk())
+          .andExpect(content().contentType("application/json"));
+    }
+  }
+
   private StreamingResponseBody writeOutputStream(InputStream inputStream) {
     return outputStream -> {
       int len;
