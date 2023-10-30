@@ -73,6 +73,7 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
 
   private boolean checkIfHasJobsToRecover(List<String> exportJobsName) {
     log.info("Start checking {} jobs to recover...", exportJobsName);
+    //We want to avoid that the jobs are started when we start the Export-Service with an Empty Data-DB (e.g. local)
     if (!isTheFirstJobsExecution(exportJobsName)) {
       List<JobExecution> todayExecutedJobs = getTodayJobExecutions(exportJobsName);
       for (JobExecution jobExecution : todayExecutedJobs) {

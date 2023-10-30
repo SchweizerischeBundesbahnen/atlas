@@ -17,6 +17,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
+import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,9 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class AmazonServiceImpl implements AmazonService {
 
+  public static final String JSON_FILE_EXTENSION = "json";
+  public static final String GZ_EXTENSION = ".gz";
+  public static final String CONTENT_TYPE = "application/gzip";
   private final List<AmazonBucketClient> amazonBucketClients;
   private final FileService fileService;
 
@@ -47,7 +51,7 @@ public class AmazonServiceImpl implements AmazonService {
   public URL putZipFile(AmazonBucket bucket, File file, String dir) throws IOException {
     File zipFile = fileService.zipFile(file);
     ObjectMetadata metadata = new ObjectMetadata();
-    metadata.setContentType("application/zip");
+    metadata.setContentType(CONTENT_TYPE);
     metadata.setContentLength(zipFile.length());
     URL url = putFileToBucket(bucket, zipFile, dir, metadata);
     Files.deleteIfExists(file.toPath());
@@ -99,6 +103,21 @@ public class AmazonServiceImpl implements AmazonService {
     return result.stream().map(S3ObjectSummary::getKey).toList();
   }
 
+  @Override
+  public String getLatestJsonUploadedObject(AmazonBucket bucket, String pathPrefix, String fileTypePrefix) {
+    List<S3ObjectSummary> objectSummaries = getClient(bucket).listObjectsV2(getAmazonBucketConfig(bucket).getBucketName(),
+        pathPrefix).getObjectSummaries();
+    List<String> fileNameList = objectSummaries.stream()
+        .filter(s3ObjectSummary -> s3ObjectSummary.getKey().contains(fileTypePrefix) && s3ObjectSummary.getKey().contains(
+            JSON_FILE_EXTENSION)).sorted(Comparator.comparing(S3ObjectSummary::getLastModified).reversed()).map(
+            S3ObjectSummary::getKey).toList();
+    if (!fileNameList.isEmpty() && fileNameList.get(0) != null) {
+      return fileNameList.get(0);
+    }
+    throw new FileNotFoundException(
+        "File with path prefix [{" + pathPrefix + "}] does not found on bucket [{" + bucket.getProperty() + "}]");
+  }
+
   private URL putFileToBucket(AmazonBucket bucket, File file, String dir, ObjectMetadata metadata) throws IOException {
     PutObjectRequest putObjectRequest;
     try (FileInputStream inputStream = new FileInputStream(file)) {
@@ -112,10 +131,10 @@ public class AmazonServiceImpl implements AmazonService {
   private URL putGzipFileToBucket(AmazonBucket bucket, File file, String dir) throws IOException {
     PutObjectRequest putObjectRequest;
     try (FileInputStream inputStream = new FileInputStream(file)) {
-      String filePathName = getFilePathName(file, dir) + ".gz";
+      String filePathName = getFilePathName(file, dir) + GZ_EXTENSION;
       byte[] zippedBytes = fileService.gzipCompress(inputStream.readAllBytes());
       ObjectMetadata metadata = new ObjectMetadata();
-      metadata.setContentType("application/gzip");
+      metadata.setContentType(CONTENT_TYPE);
       metadata.setContentLength(zippedBytes.length);
       putObjectRequest = new PutObjectRequest(getAmazonBucketConfig(bucket).getBucketName(), filePathName,
           new ByteArrayInputStream(zippedBytes),
