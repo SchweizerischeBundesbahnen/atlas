@@ -80,8 +80,8 @@ public class Validity {
     return new Validity(minifiedRanges);
   }
 
-  public boolean containsEveryDateOf(Validity other) {
-    for (DateRange dateRange : other.getDateRanges()) {
+  public boolean containsEveryDateOf(Validity otherValidity) {
+    for (DateRange dateRange : otherValidity.getDateRanges()) {
       boolean dateRangeContained = dateRanges.stream().anyMatch(range -> range.containsEveryDateOf(dateRange));
       if (!dateRangeContained) {
         return false;
