@@ -6,6 +6,7 @@ import { BusinessOrganisationsService } from './api/businessOrganisations.servic
 import { CompaniesService } from './api/companies.service';
 import { ExportServicePointBatchService } from './api/exportServicePointBatch.service';
 import { GeoDataService } from './api/geoData.service';
+import { ImportPrmBatchService } from './api/importPrmBatch.service';
 import { ImportServicePointBatchService } from './api/importServicePointBatch.service';
 import { LinesService } from './api/lines.service';
 import { LoadingPointsService } from './api/loadingPoints.service';
