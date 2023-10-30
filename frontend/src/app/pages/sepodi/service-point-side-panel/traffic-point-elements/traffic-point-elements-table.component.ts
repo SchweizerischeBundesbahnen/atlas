@@ -115,4 +115,8 @@ export class TrafficPointElementsTableComponent {
   get servicePointNumber() {
     return this.route.parent!.snapshot.params['id'];
   }
+
+  closeSidePanel() {
+    this.router.navigate([Pages.SEPODI.path]).then();
+  }
 }

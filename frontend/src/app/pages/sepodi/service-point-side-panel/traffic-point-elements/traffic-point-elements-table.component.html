@@ -1,4 +1,4 @@
-<div class="traffic-point-element-table p-5">
+<div class="traffic-point-element-table p-5 position-relative">
   <atlas-button
     (buttonClicked)="newTrafficPointElement()"
     applicationType="SEPODI"
@@ -23,4 +23,16 @@
     (tableChanged)="getOverview($event)"
     (tableInitialized)="getOverview($event)"
   ></app-table>
+</div>
+
+<div class="page-footer">
+  <div class="page-footer-actions align-items-center justify-content-center d-flex">
+    <atlas-button
+      buttonDataCy="close-detail"
+      buttonText="SEPODI.BACK_TO_MAP"
+      buttonType="whiteFooterNonEdit"
+      (buttonClicked)="closeSidePanel()"
+    >
+    </atlas-button>
+  </div>
 </div>
