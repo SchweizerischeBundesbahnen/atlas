@@ -4,7 +4,7 @@ import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.model.ErrorResponse.Detail;
 import ch.sbb.atlas.api.model.ErrorResponse.DisplayInfo;
 import ch.sbb.atlas.model.exception.AtlasException;
-import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import lombok.RequiredArgsConstructor;
@@ -13,13 +13,13 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public class TerminationNotAllowedException extends AtlasException {
 
-  private final ServicePointVersion editedVersion;
+  private final ServicePointNumber servicePointNumber;
 
   @Override
   public ErrorResponse getErrorResponse() {
     return ErrorResponse.builder()
         .status(HttpStatus.FORBIDDEN.value())
-        .message("You are not allowed to terminate the stopPoint with number=" + editedVersion.getNumber().getNumber())
+        .message("You are not allowed to terminate the stopPoint with number=" + servicePointNumber.getNumber())
         .error("Termination not allowed")
         .details(getErrorDetails())
         .build();
@@ -32,7 +32,7 @@ public class TerminationNotAllowedException extends AtlasException {
         .message("You are not allowed to terminate {0}")
         .displayInfo(DisplayInfo.builder()
             .code("SEPODI.SERVICE_POINTS.TERMINATION_FORBIDDEN")
-            .with("number", String.valueOf(editedVersion.getNumber().getNumber()))
+            .with("number", String.valueOf(servicePointNumber.getNumber()))
             .build())
         .build());
     return errorDetails;

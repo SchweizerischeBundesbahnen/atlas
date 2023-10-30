@@ -113,9 +113,11 @@ public class ServicePointService {
     List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion,
         editedVersion, existingDbVersions);
 
-    servicePointTerminationService.checkTerminationAllowed(editedVersion, currentVersions, versionedObjects);
     versionableService.applyVersioning(ServicePointVersion.class, versionedObjects,
         this::save, new ApplyVersioningDeleteByIdLongConsumer(servicePointVersionRepository));
+
+    List<ServicePointVersion> afterUpdateServicePoint = findAllByNumberOrderByValidFrom(currentVersion.getNumber());
+    servicePointTerminationService.checkTerminationAllowed(currentVersions, afterUpdateServicePoint);
     return currentVersion;
   }
 
