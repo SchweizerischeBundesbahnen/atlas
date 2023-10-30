@@ -1,6 +1,7 @@
 package ch.sbb.atlas.model;
 
 import ch.sbb.atlas.versioning.date.DateHelper;
+import ch.sbb.atlas.versioning.model.Versionable;
 import java.time.LocalDate;
 
 import lombok.AllArgsConstructor;
@@ -33,6 +34,14 @@ public class DateRange {
 
   public boolean overlapsWith(DateRange dateRange) {
     return !to.isBefore(dateRange.getFrom()) && !from.isAfter(dateRange.getTo());
+  }
+
+  public boolean containsEveryDateOf(DateRange otherDateRange) {
+    return !from.isAfter(otherDateRange.getFrom()) && !to.isBefore(otherDateRange.getTo());
+  }
+
+  public static DateRange fromVersionable(Versionable versionable) {
+    return DateRange.builder().from(versionable.getValidFrom()).to(versionable.getValidTo()).build();
   }
 
 }
