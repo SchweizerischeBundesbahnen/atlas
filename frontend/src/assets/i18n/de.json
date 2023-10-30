@@ -234,7 +234,8 @@
       "TTFN": "Fahrplanfeldnummern",
       "BODI": "Geschäftsorganisationen",
       "TIMETABLE_HEARING": "Fahrplananhörungen",
-      "SEPODI": "Dienststellen"
+      "SEPODI": "Dienststellen",
+      "PRM": "BehiG"
     },
     "ACCOUNT_STATUS_TYPE": {
       "ACTIVE": "Aktiv",
