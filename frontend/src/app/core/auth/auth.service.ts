@@ -4,7 +4,7 @@ import { OAuthService } from 'angular-oauth2-oidc';
 import { environment } from '../../../environments/environment';
 import { User } from '../components/user/user';
 import { Pages } from '../../pages/pages';
-import jwtDecode from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import { Role } from './role';
 import { ApplicationRole, ApplicationType, Permission, UserAdministrationService } from '../../api';
 import { BehaviorSubject } from 'rxjs';
@@ -22,7 +22,7 @@ export class AuthService {
   constructor(
     private oauthService: OAuthService,
     private router: Router,
-    private userAdministrationService: UserAdministrationService
+    private userAdministrationService: UserAdministrationService,
   ) {
     this.oauthService.configure(environment.authConfig);
     this.oauthService.setupAutomaticSilentRefresh();
@@ -62,7 +62,7 @@ export class AuthService {
   get roles(): Role[] {
     if (this.accessToken) {
       return this.decodeAccessToken().roles.filter((role) =>
-        Object.values(Role).includes(role as Role)
+        Object.values(Role).includes(role as Role),
       ) as Role[];
     }
     return [];
@@ -76,17 +76,17 @@ export class AuthService {
   static hasPermissionsToCreateWithPermissions(
     applicationType: ApplicationType,
     permissions: Permission[],
-    isAdmin: boolean
+    isAdmin: boolean,
   ): boolean {
     if (isAdmin) {
       return true;
     }
     const applicationPermission = AuthService.getApplicationPermission(
       permissions,
-      applicationType
+      applicationType,
     );
     return AuthService.getRolesAllowedToCreate(applicationType).includes(
-      applicationPermission.role!
+      applicationPermission.role!,
     );
   }
 
@@ -94,7 +94,7 @@ export class AuthService {
     applicationType: ApplicationType,
     canton: string | undefined,
     permissions: Permission[],
-    isAdmin: boolean
+    isAdmin: boolean,
   ): boolean {
     if (!canton || !applicationType) {
       throw new Error('Canton button needs canton and applicationtype');
@@ -102,14 +102,14 @@ export class AuthService {
 
     const applicationUserPermission = AuthService.getApplicationPermission(
       permissions,
-      applicationType
+      applicationType,
     );
     if (isAdmin || applicationUserPermission.role === ApplicationRole.Supervisor) {
       return true;
     }
     if (applicationUserPermission.role === ApplicationRole.Writer) {
       const allowedSwissCantons = applicationUserPermission.permissionRestrictions.map(
-        (restriction) => restriction.valueAsString
+        (restriction) => restriction.valueAsString,
       );
       return allowedSwissCantons.includes(Cantons.getSwissCantonEnum(canton));
     }
@@ -121,14 +121,14 @@ export class AuthService {
     applicationType: ApplicationType,
     sboid: string | undefined,
     permissions: Permission[],
-    isAdmin: boolean
+    isAdmin: boolean,
   ): boolean {
     if (isAdmin) {
       return true;
     }
     const applicationPermission = AuthService.getApplicationPermission(
       permissions,
-      applicationType
+      applicationType,
     );
     if (
       AuthService.getRolesAllowedToUpdate(applicationType).includes(applicationPermission.role!)
@@ -171,10 +171,10 @@ export class AuthService {
 
   private static getApplicationPermission(
     permissions: Permission[],
-    applicationType: ApplicationType
+    applicationType: ApplicationType,
   ): Permission {
     const applicationPermissions = permissions.filter(
-      (permission) => permission.application === applicationType
+      (permission) => permission.application === applicationType,
     );
     if (applicationPermissions.length === 1) {
       return applicationPermissions[0];
@@ -218,7 +218,7 @@ export class AuthService {
     return AuthService.hasPermissionsToCreateWithPermissions(
       applicationType,
       this.permissions,
-      this.isAdmin
+      this.isAdmin,
     );
   }
 
@@ -227,19 +227,19 @@ export class AuthService {
       applicationType,
       sboid,
       this.permissions,
-      this.isAdmin
+      this.isAdmin,
     );
   }
 
   hasWritePermissionsToForCanton(
     applicationType: ApplicationType,
-    canton: string | undefined
+    canton: string | undefined,
   ): boolean {
     return AuthService.hasPermissionToWriteOnCanton(
       applicationType,
       canton,
       this.permissions,
-      this.isAdmin
+      this.isAdmin,
     );
   }
 
@@ -254,12 +254,12 @@ export class AuthService {
 
   mayAccessTimetableHearing() {
     const applicationUserPermission = this.getApplicationUserPermission(
-      ApplicationType.TimetableHearing
+      ApplicationType.TimetableHearing,
     );
     return (
       this.isAdmin ||
       [ApplicationRole.Supervisor, ApplicationRole.Writer, ApplicationRole.ExplicitReader].includes(
-        applicationUserPermission.role
+        applicationUserPermission.role,
       )
     );
   }
