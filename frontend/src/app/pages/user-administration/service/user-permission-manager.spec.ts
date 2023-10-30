@@ -12,7 +12,7 @@ describe('UserPermissionManager', () => {
   beforeEach(() => {
     userPermissionManager = new UserPermissionManager(businessOrganisationMockService);
     businessOrganisationMockService.getAllBusinessOrganisations.and.returnValue(
-      of({ objects: [{ sboid: 'ch:1:sboid:test' }] })
+      of({ objects: [{ sboid: 'ch:1:sboid:test' }] }),
     );
   });
 
@@ -62,6 +62,16 @@ describe('UserPermissionManager', () => {
           },
         ],
       },
+      {
+        application: 'PRM',
+        role: 'WRITER',
+        permissionRestrictions: [
+          {
+            valueAsString: 'ch:5:sboid:writer',
+            type: PermissionRestrictionType.BusinessOrganisation,
+          },
+        ],
+      },
     ]);
     tick();
     userPermissionManager.clearPermisRestrIfNotWriterAndRemoveBOPermisRestrIfSepodiAndSuperUser();
@@ -74,6 +84,9 @@ describe('UserPermissionManager', () => {
     ]);
     expect(userPermissionManager.userPermission.permissions[4].permissionRestrictions).toEqual([
       { valueAsString: Country.Canada, type: PermissionRestrictionType.Country },
+    ]);
+    expect(userPermissionManager.userPermission.permissions[5].permissionRestrictions).toEqual([
+      { valueAsString: 'ch:5:sboid:writer', type: PermissionRestrictionType.BusinessOrganisation },
     ]);
   }));
 
