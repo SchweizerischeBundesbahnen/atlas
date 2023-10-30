@@ -1,23 +1,25 @@
-package ch.sbb.atlas.servicepointdirectory.migration;
+package ch.sbb.atlas.model;
 
-import ch.sbb.atlas.model.DateRange;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
-import lombok.AllArgsConstructor;
+import java.util.Objects;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
-@AllArgsConstructor
 @EqualsAndHashCode
 @Getter
 public class Validity {
 
-  private List<DateRange> dateRanges;
+  private final List<DateRange> dateRanges;
 
-  public boolean isNotOverlapping() {
+  public Validity(List<DateRange> dateRanges) {
+    this.dateRanges = new ArrayList<>(Objects.requireNonNull(dateRanges));
+  }
+
+  boolean isNotOverlapping() {
     dateRanges.sort(Comparator.comparing(DateRange::getFrom));
 
     List<LocalDate> markesOfRanges = new ArrayList<>();
@@ -31,6 +33,9 @@ public class Validity {
   }
 
   private boolean areDatesSequential(List<LocalDate> markesOfRanges) {
+    if (markesOfRanges.isEmpty()) {
+      return true;
+    }
     Iterator<LocalDate> iter = markesOfRanges.iterator();
     LocalDate current, previous = iter.next();
     while (iter.hasNext()) {
@@ -51,6 +56,9 @@ public class Validity {
   }
 
   private Validity minifyNotOverlappingSortedRanges() {
+    if (dateRanges.isEmpty()) {
+      return this;
+    }
     List<DateRange> minifiedRanges = new ArrayList<>();
     minifiedRanges.add(dateRanges.get(0));
 
@@ -70,6 +78,16 @@ public class Validity {
     }
 
     return new Validity(minifiedRanges);
+  }
+
+  public boolean containsEveryDateOf(Validity otherValidity) {
+    for (DateRange dateRange : otherValidity.getDateRanges()) {
+      boolean dateRangeContained = dateRanges.stream().anyMatch(range -> range.containsEveryDateOf(dateRange));
+      if (!dateRangeContained) {
+        return false;
+      }
+    }
+    return true;
   }
 
 }
