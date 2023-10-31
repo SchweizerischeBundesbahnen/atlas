@@ -31,7 +31,7 @@ mapSpy.on.and.callFake((event: string, callback: any) => {
   }
   return mapSpy;
 });
-xdescribe('MapService', () => {
+describe('MapService', () => {
   let service: MapService;
 
   beforeEach(() => {
