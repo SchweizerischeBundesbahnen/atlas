@@ -26,21 +26,21 @@ public class StopPointVersionRowMapper extends BaseRowMapper implements RowMappe
     builder.city(rs.getString("city"));
     builder.alternativeTransport(
         rs.getObject("alternative_transport") != null ? StandardAttributeType.valueOf(rs.getString("alternative_transport")) : null);
-    builder.city(rs.getString("alternative_transport_condition"));
+    builder.alternativeTransportCondition(rs.getString("alternative_transport_condition"));
     builder.assistanceAvailability(
         rs.getObject("assistance_availability") != null ? StandardAttributeType.valueOf(rs.getString("assistance_availability"))
             : null);
-    builder.city(rs.getString("assistance_condition"));
+    builder.assistanceCondition(rs.getString("assistance_condition"));
     builder.assistanceService(
         rs.getObject("assistance_service") != null ? StandardAttributeType.valueOf(rs.getString("assistance_service")) : null);
     builder.audioTicketMachine(
         rs.getObject("audio_ticket_machine") != null ? StandardAttributeType.valueOf(rs.getString("audio_ticket_machine")) : null);
-    builder.city(rs.getString("additional_information"));
+    builder.additionalInformation(rs.getString("additional_information"));
     builder.dynamicAudioSystem(
         rs.getObject("dynamic_audio_system") != null ? StandardAttributeType.valueOf(rs.getString("dynamic_audio_system")) : null);
     builder.dynamicOpticSystem(
         rs.getObject("dynamic_optic_system") != null ? StandardAttributeType.valueOf(rs.getString("dynamic_optic_system")) : null);
-    builder.city(rs.getString("info_ticket_machine"));
+    builder.infoTicketMachine(rs.getString("info_ticket_machine"));
     builder.interoperable(rs.getBoolean("interoperable"));
     builder.url(rs.getString("url"));
     builder.wheelchairTicketMachine(

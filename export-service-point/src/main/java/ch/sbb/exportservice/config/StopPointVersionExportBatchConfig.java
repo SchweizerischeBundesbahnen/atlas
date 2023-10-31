@@ -5,11 +5,11 @@ import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_STOP_POI
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_STOP_POINT_JSON_JOB_NAME;
 
 import ch.sbb.atlas.api.prm.model.stoppoint.ReadStopPointVersionModel;
+import ch.sbb.atlas.export.model.prm.StopPointVersionCsvModel;
 import ch.sbb.exportservice.entity.StopPointVersion;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
 import ch.sbb.exportservice.model.PrmExportType;
-import ch.sbb.exportservice.model.StopPointVersionCsvModel;
 import ch.sbb.exportservice.processor.StopPointVersionCsvProcessor;
 import ch.sbb.exportservice.processor.StopPointVersionJsonProcessor;
 import ch.sbb.exportservice.reader.StopPointVersionRowMapper;
