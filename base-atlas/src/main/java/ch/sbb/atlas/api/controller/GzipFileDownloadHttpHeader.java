@@ -18,4 +18,5 @@ public final class GzipFileDownloadHttpHeader {
   public static String extractFileNameFromS3ObjectName(String fileName) {
     return fileName.substring(fileName.lastIndexOf("/") + 1, fileName.indexOf("."));
   }
+
 }

@@ -21,6 +21,7 @@ public interface AmazonService {
   void deleteFile(AmazonBucket bucket, String filePath);
 
   List<String> getS3ObjectKeysFromPrefix(AmazonBucket bucket, String dirPath, String prefix);
+
   String getLatestJsonUploadedObject(AmazonBucket bucket, String pathPrefix, String fileTypePrefix);
 
 }
