@@ -1,0 +1,85 @@
+<div class="pt-3 ps-3 pe-3">
+  <div class="font-bold-4xl mb-3">
+    {{ 'SEPODI.SERVICE_POINTS.NEW_SERVICE_POINT' | translate }}
+  </div>
+
+  <div class="form-box p-3">
+    <div class="d-flex">
+      <atlas-select
+        class="col-6 pe-3"
+        label="COMMON.COUNTRY"
+        [additionalLabelspace]="25"
+        [optionTranslateLabelPrefix]="'TTH.COUNTRY.'"
+        [displayExtractor]="getCountryEnum"
+        [options]="(countryOptions$ | async) ?? []"
+        [required]="true"
+        [formGroup]="form"
+        [controlName]="'country'"
+      >
+      </atlas-select>
+
+      <atlas-text-field
+        class="col-6"
+        [fieldExamples]="[
+          { label: 'FORM.FOR_EXAMPLE', translate: true },
+          { label: '57189 |', translate: false },
+          {
+            label: 'FORM.MAX_NUMBER_OF_DIGITS',
+            translate: true,
+            arg: { key: 'numberOfDigits', value: '5' }
+          }
+        ]"
+        [formGroup]="form"
+        controlName="number"
+        fieldLabel="SEPODI.SERVICE_POINTS.SERVICE_POINT_ID"
+        [placeholder]="form.controls.number.disabled ? 'COMMON.AUTOMATICALLY_ASSIGNED' : ''"
+      >
+      </atlas-text-field>
+    </div>
+
+    <service-point-form
+      [form]="form"
+      (selectedServicePointTypeChange)="servicePointTypeChanged$.next($event)"
+      (geolocationToggleChange)="$event ? activateGeolocation($event) : deactivateGeolocation()"
+    >
+      <div class="color-gray-900" abbreviation>
+        <atlas-text-field
+          [fieldExamples]="[
+            { label: 'FORM.FOR_EXAMPLE', translate: true },
+            { label: 'BIBD |', translate: false },
+            { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '6' } }
+          ]"
+          [formGroup]="form"
+          [required]="false"
+          controlName="abbreviation"
+          fieldLabel="SEPODI.SERVICE_POINTS.ABBREVIATION"
+        >
+        </atlas-text-field>
+      </div>
+    </service-point-form>
+  </div>
+
+  <div class="footer-box">
+    <footer class="d-flex justify-content-center align-items-center">
+      <atlas-button
+        (buttonClicked)="onCancel()"
+        [footerEdit]="true"
+        buttonDataCy="cancel"
+        buttonText="COMMON.CANCEL"
+        buttonType="whiteFooterEdit"
+        wrapperStyleClass="ms-3"
+      ></atlas-button>
+      <atlas-button
+        (buttonClicked)="onSave()"
+        [footerEdit]="true"
+        [disabled]="!form.dirty"
+        [submitButton]="false"
+        buttonDataCy="save-item"
+        buttonText="COMMON.SAVE"
+        buttonType="whiteFooterEdit"
+        wrapperStyleClass="ms-3"
+      >
+      </atlas-button>
+    </footer>
+  </div>
+</div>

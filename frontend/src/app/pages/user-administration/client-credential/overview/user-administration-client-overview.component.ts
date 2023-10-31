@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { ClientCredential, UserAdministrationService } from '../../../../api';
+import { ClientCredential, ClientCredentialAdministrationService } from '../../../../api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { tableColumns } from './table-column-definition';
@@ -19,17 +19,17 @@ export class UserAdministrationClientOverviewComponent implements OnDestroy {
   private credentialsSubscription?: Subscription;
 
   constructor(
-    private userAdministrationService: UserAdministrationService,
+    private clientCredentialAdministrationService: ClientCredentialAdministrationService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
   ) {}
 
   getOverview(pagination: TablePagination) {
-    this.credentialsSubscription = this.userAdministrationService
+    this.credentialsSubscription = this.clientCredentialAdministrationService
       .getClientCredentials(
         pagination.page,
         pagination.size,
-        addElementsToArrayWhenNotUndefined(pagination.sort, 'clientCredentialId,asc')
+        addElementsToArrayWhenNotUndefined(pagination.sort, 'clientCredentialId,asc'),
       )
       .subscribe((clientContainer) => {
         this.clientCredentials = clientContainer.objects!;
