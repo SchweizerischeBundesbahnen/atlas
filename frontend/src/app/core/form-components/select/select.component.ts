@@ -33,7 +33,7 @@ export class SelectComponent<TYPE> implements OnInit, OnChanges {
     return option;
   }
 
-  @Input() additionalLabelspace = true;
+  @Input() additionalLabelspace = 30;
   @Input() isSelectAllEnabled = false;
   @Input() required = false;
 
