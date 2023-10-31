@@ -62,7 +62,8 @@ public interface BusinessOrganisationApiV1 {
       @PathVariable String sboid);
 
   @PostMapping("{sboid}/revoke")
-  @PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).BODI)")
+  @PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin"
+      + ".ApplicationType).BODI)")
   List<BusinessOrganisationVersionModel> revokeBusinessOrganisation(@PathVariable String sboid);
 
   @PostMapping("versions")
@@ -70,7 +71,8 @@ public interface BusinessOrganisationApiV1 {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201"),
   })
-  @PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).BODI)")
+  @PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin"
+      + ".ApplicationType).BODI)")
   BusinessOrganisationVersionModel createBusinessOrganisationVersion(
       @RequestBody @Valid BusinessOrganisationVersionModel newVersion);
 
@@ -79,7 +81,8 @@ public interface BusinessOrganisationApiV1 {
       @ApiResponse(responseCode = "200"),
   })
 
-  @PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).BODI)")
+  @PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin"
+      + ".ApplicationType).BODI)")
   List<BusinessOrganisationVersionModel> updateBusinessOrganisationVersion(
       @PathVariable Long id,
       @RequestBody @Valid BusinessOrganisationVersionModel newVersion);
@@ -91,12 +94,13 @@ public interface BusinessOrganisationApiV1 {
   @PostMapping(value = "/export/full", produces = MediaType.APPLICATION_JSON_VALUE)
   List<URL> exportFullBusinessOrganisationVersions();
 
-  @Operation(description = "Export all actual Business Organisations versions as csv, zip and gz file to the ATLAS Amazon S3 Bucket")
+  @Operation(description = "Export all actual Business Organisations versions as csv, zip and gz file to the ATLAS Amazon S3 "
+      + "Bucket")
   @PostMapping(value = "/export/actual", produces = MediaType.APPLICATION_JSON_VALUE)
   List<URL> exportActualBusinessOrganisationVersions();
 
   @Operation(description = "Export all Business Organisations versions for the current timetable year change as csv, zip and gz "
-          + "file to the ATLAS Amazon S3 Bucket")
+      + "file to the ATLAS Amazon S3 Bucket")
   @PostMapping(value = "/export/timetable-year-change", produces = MediaType.APPLICATION_JSON_VALUE)
   List<URL> exportFutureTimetableBusinessOrganisationVersions();
 
@@ -107,17 +111,17 @@ public interface BusinessOrganisationApiV1 {
 
   @GetMapping(value = "/export/download-gz-json/{exportType}")
   @ApiResponses(value = {
-          @ApiResponse(responseCode = "200"),
-          @ApiResponse(responseCode = "404", description = "filename myFile not found", content = @Content(schema =
-          @Schema(implementation = ErrorResponse.class)))
+      @ApiResponse(responseCode = "200"),
+      @ApiResponse(responseCode = "404", description = "filename myFile not found", content = @Content(schema =
+      @Schema(implementation = ErrorResponse.class)))
   })
-    ResponseEntity<StreamingResponseBody> streamGzipFile(@PathVariable("exportType") ExportType exportType);
+  ResponseEntity<StreamingResponseBody> streamGzipFile(@PathVariable("exportType") ExportType exportType);
 
   @GetMapping(value = "/export/download-json/{exportType}")
   @ApiResponses(value = {
-          @ApiResponse(responseCode = "200"),
-          @ApiResponse(responseCode = "404", description = "filename myFile not found", content = @Content(schema =
-          @Schema(implementation = ErrorResponse.class)))
+      @ApiResponse(responseCode = "200"),
+      @ApiResponse(responseCode = "404", description = "filename myFile not found", content = @Content(schema =
+      @Schema(implementation = ErrorResponse.class)))
   })
   ResponseEntity<StreamingResponseBody> streamJsonFile(@PathVariable("exportType") ExportType exportType);
 

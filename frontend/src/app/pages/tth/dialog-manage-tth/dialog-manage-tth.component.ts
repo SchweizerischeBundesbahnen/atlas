@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { TimetableHearingService, TimetableHearingYear } from '../../../api';
+import { TimetableHearingYear, TimetableHearingYearsService } from '../../../api';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { take } from 'rxjs';
 import { NotificationService } from '../../../core/notification/notification.service';
@@ -27,16 +27,16 @@ export class DialogManageTthComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private readonly matDialogData: number,
-    private readonly tthService: TimetableHearingService,
+    private readonly timetableHearingYearsService: TimetableHearingYearsService,
     private readonly notificationService: NotificationService,
-    private readonly dialogRef: MatDialogRef<DialogManageTthComponent, boolean>
+    private readonly dialogRef: MatDialogRef<DialogManageTthComponent, boolean>,
   ) {
     this.year = matDialogData;
   }
 
   ngOnInit() {
     this.currentView = this.loadingView;
-    this.tthService
+    this.timetableHearingYearsService
       .getHearingYear(this.year)
       .pipe(take(1))
       .subscribe({
@@ -81,14 +81,14 @@ export class DialogManageTthComponent implements OnInit {
       this.statementEditableSliderValue,
     ];
 
-    this.tthService
+    this.timetableHearingYearsService
       .updateTimetableHearingSettings(this.year, this.timetableHearingYear)
       .pipe(take(1))
       .subscribe({
         next: () => {
           this.dialogRef.close(true);
           this.notificationService.success(
-            'TTH.MANAGE_TIMETABLE_HEARING.SUCCESSFUL_SAVE_NOTIFICATION'
+            'TTH.MANAGE_TIMETABLE_HEARING.SUCCESSFUL_SAVE_NOTIFICATION',
           );
         },
         error: (err) => {
@@ -108,14 +108,14 @@ export class DialogManageTthComponent implements OnInit {
 
   handleCloseViewTthCloseClick(): void {
     this.actionButtonsDisabled = true;
-    this.tthService
+    this.timetableHearingYearsService
       .closeTimetableHearing(this.year)
       .pipe(take(1))
       .subscribe({
         next: () => {
           this.dialogRef.close(true);
           this.notificationService.success(
-            'TTH.CLOSE_TIMETABLE_HEARING.SUCCESSFUL_CLOSE_NOTIFICATION'
+            'TTH.CLOSE_TIMETABLE_HEARING.SUCCESSFUL_CLOSE_NOTIFICATION',
           );
         },
         error: (err) => {

@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.util.List;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
@@ -28,9 +29,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import java.util.List;
-
-@Tag(name = "TrafficPointElements")
+@Tag(name = "Traffic Point Elements")
 @RequestMapping("v1/traffic-point-elements")
 public interface TrafficPointElementApiV1 {
 
@@ -38,7 +37,8 @@ public interface TrafficPointElementApiV1 {
   @PageableAsQueryParam
   @Operation(description = "INFO: Versions of DiDok3 were merged during migration, so there are now a few versions less here.")
   Container<ReadTrafficPointElementVersionModel> getTrafficPointElements(
-      @Parameter(hidden = true) @PageableDefault(sort = {TrafficPointElementVersion.Fields.sloid, Fields.validFrom}, direction = Direction.ASC) Pageable pageable,
+      @Parameter(hidden = true) @PageableDefault(sort = {TrafficPointElementVersion.Fields.sloid,
+          Fields.validFrom}, direction = Direction.ASC) Pageable pageable,
       @Valid @ParameterObject TrafficPointElementRequestParams trafficPointElementRequestParams);
 
   @GetMapping("{sloid}")

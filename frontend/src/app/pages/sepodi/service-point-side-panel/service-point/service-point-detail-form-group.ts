@@ -2,6 +2,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseDetailFormGroup } from '../../../../core/components/base-detail/base-detail-form-group';
 import {
   Category,
+  Country,
   CreateServicePointVersion,
   MeanOfTransport,
   OperatingPointTechnicalTimetableType,
@@ -23,6 +24,7 @@ import { AtLeastOneValidator } from '../../../../core/validation/boolean-cross-v
 import { LV95_MAX_DIGITS, WGS84_MAX_DIGITS } from '../../geography/geography.component';
 
 export interface ServicePointDetailFormGroup extends BaseDetailFormGroup {
+  country?: FormControl<Country | null>;
   number: FormControl<number | null | undefined>;
   sloid: FormControl<string | null | undefined>;
   abbreviation: FormControl<string | null | undefined>;
@@ -47,10 +49,73 @@ export interface ServicePointDetailFormGroup extends BaseDetailFormGroup {
 }
 
 export class ServicePointFormGroupBuilder {
+  static buildEmptyFormGroup(): FormGroup<ServicePointDetailFormGroup> {
+    const formGroup = new FormGroup<ServicePointDetailFormGroup>(
+      {
+        number: new FormControl({ value: null, disabled: true }, [
+          Validators.min(1),
+          Validators.max(99999),
+          AtlasCharsetsValidator.numeric,
+          Validators.required,
+        ]),
+        country: new FormControl(null, [Validators.required]),
+        sloid: new FormControl(),
+        abbreviation: new FormControl(),
+        status: new FormControl(),
+        designationOfficial: new FormControl(null, [
+          Validators.required,
+          WhitespaceValidator.blankOrEmptySpaceSurrounding,
+          Validators.maxLength(30),
+          Validators.minLength(2),
+        ]),
+        designationLong: new FormControl(null, [
+          WhitespaceValidator.blankOrEmptySpaceSurrounding,
+          Validators.maxLength(50),
+          Validators.minLength(2),
+        ]),
+        validFrom: new FormControl(null, [Validators.required]),
+        validTo: new FormControl(null, [Validators.required]),
+        businessOrganisation: new FormControl(null, [
+          Validators.required,
+          AtlasFieldLengthValidator.length_50,
+          WhitespaceValidator.blankOrEmptySpaceSurrounding,
+          AtlasCharsetsValidator.iso88591,
+        ]),
+        operatingPointType: new FormControl(),
+        sortCodeOfDestinationStation: new FormControl(null, [Validators.maxLength(5)]),
+        stopPointType: new FormControl(),
+        meansOfTransport: new FormControl([]),
+        categories: new FormControl([]),
+        servicePointGeolocation: new FormGroup<GeographyFormGroup>({
+          east: new FormControl(),
+          north: new FormControl(),
+          height: new FormControl(null, [AtlasCharsetsValidator.decimalWithDigits(4)]),
+          spatialReference: new FormControl(),
+        }),
+        operatingPointRouteNetwork: new FormControl(),
+        operatingPointKilometer: new FormControl(),
+        operatingPointKilometerMaster: new FormControl(),
+        selectedType: new FormControl(null, Validators.required),
+        freightServicePoint: new FormControl(),
+        stopPoint: new FormControl(),
+        operatingPointTrafficPointType: new FormControl(),
+        etagVersion: new FormControl(),
+        creationDate: new FormControl(),
+        editionDate: new FormControl(),
+        editor: new FormControl(),
+        creator: new FormControl(),
+      },
+      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
+    );
+    this.initConditionalValidators(formGroup);
+    return formGroup;
+  }
+
   static buildFormGroup(version: ReadServicePointVersion): FormGroup {
     const formGroup = new FormGroup<ServicePointDetailFormGroup>(
       {
-        number: new FormControl(version.number.number),
+        number: new FormControl(version.number.numberShort),
+        country: new FormControl(version.country),
         sloid: new FormControl(version.sloid),
         abbreviation: new FormControl(version.abbreviation, [
           Validators.maxLength(6),
@@ -251,11 +316,15 @@ export class ServicePointFormGroupBuilder {
     const value = form.value;
 
     const writableForm: CreateServicePointVersion = {
-      numberWithoutCheckDigit: value.number!,
+      country: value.country!,
+      numberShort: value.number!,
       sloid: value.sloid!,
       designationOfficial: value.designationOfficial!,
       designationLong: value.designationLong ? value.designationLong : undefined,
-      abbreviation: value.abbreviation!,
+      abbreviation:
+        value.abbreviation && value.abbreviation.trim().length !== 0
+          ? value.abbreviation
+          : undefined,
       businessOrganisation: value.businessOrganisation!,
       categories: value.categories!,
       operatingPointRouteNetwork: value.operatingPointRouteNetwork!,
