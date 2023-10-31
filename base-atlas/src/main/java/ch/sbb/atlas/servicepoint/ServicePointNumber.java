@@ -36,25 +36,25 @@ public final class ServicePointNumber {
   private final int value;
 
   public static ServicePointNumber ofNumberWithoutCheckDigit(int number) {
-    if(String.valueOf(number).length() != SERVICE_POINT_NUMBER_LENGTH){
-      throw new IllegalArgumentException("The number size must be 7!["+number +"]");
+    if (String.valueOf(number).length() != SERVICE_POINT_NUMBER_LENGTH) {
+      throw new IllegalArgumentException("The number size must be 7![" + number + "]");
     }
     return new ServicePointNumber(number);
   }
 
   public static ServicePointNumber of(Country country, int servicePointId) {
-    if(country.getUicCode() == null){
+    if (country.getUicCode() == null) {
       throw new IllegalArgumentException("Country " + country + " does not provide any uicCountryCode!");
     }
     String formattedId = String.format("%05d", servicePointId);
     return ServicePointNumber.fromString(country.getUicCode() + formattedId);
   }
 
-  public static String calculateSloid(ServicePointNumber servicePointNumber){
-    if(Country.SWITZERLAND.getUicCode().equals(servicePointNumber.getUicCountryCode())){
+  public static String calculateSloid(ServicePointNumber servicePointNumber) {
+    if (Country.SWITZERLAND.getUicCode().equals(servicePointNumber.getUicCountryCode())) {
       return SLOID_PREFIX + servicePointNumber.getNumberShort();
     }
-    if(Country.SLOID_COMPATIBLE_COUNTRY_CODES.contains(servicePointNumber.getUicCountryCode())){
+    if (Country.SLOID_COMPATIBLE_COUNTRY_CODES.contains(servicePointNumber.getUicCountryCode())) {
       return SLOID_PREFIX + servicePointNumber.getNumber();
     }
     return null;
@@ -64,12 +64,12 @@ public final class ServicePointNumber {
    * @deprecated used until Didok CSV File are imported.
    */
   @Deprecated
-  public static Integer removeCheckDigit(Integer didokCode){
+  public static Integer removeCheckDigit(Integer didokCode) {
     String didokCodeAsString = Integer.toString(didokCode);
-    if(didokCodeAsString.length() == SERVICE_POINT_NUMBER_LENGTH){
+    if (didokCodeAsString.length() == SERVICE_POINT_NUMBER_LENGTH) {
       return didokCode;
     }
-    return Integer.parseInt(didokCodeAsString.substring(0, didokCodeAsString.length() -1));
+    return Integer.parseInt(didokCodeAsString.substring(0, didokCodeAsString.length() - 1));
   }
 
   private static ServicePointNumber fromString(String number) {

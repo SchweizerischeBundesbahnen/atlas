@@ -13,13 +13,15 @@ import { Subscription } from 'rxjs';
 export class SepodiMapviewComponent implements AfterViewInit, OnDestroy {
   @ViewChild('detailContainer') detailContainer!: ElementRef<HTMLElement>;
 
-  private routeActive = false;
+  public isSidePanelOpen = false;
   private selectedElementSubscription!: Subscription;
-  showSearch = true;
 
-  constructor(private router: Router, private mapService: MapService) {
+  constructor(
+    private router: Router,
+    private mapService: MapService,
+  ) {
     this.selectedElementSubscription = this.mapService.selectedElement.subscribe((selectedPoint) =>
-      this.servicePointClicked(selectedPoint)
+      this.servicePointClicked(selectedPoint),
     );
   }
 
@@ -36,15 +38,14 @@ export class SepodiMapviewComponent implements AfterViewInit, OnDestroy {
   }
 
   setRouteActive(value: boolean) {
-    this.routeActive = value;
-    this.showSearch = !value;
+    this.isSidePanelOpen = value;
     this.styleDetailContainer();
   }
 
   private styleDetailContainer() {
     if (this.detailContainer) {
       const detailContainerDiv = this.detailContainer.nativeElement;
-      if (this.routeActive) {
+      if (this.isSidePanelOpen) {
         detailContainerDiv.classList.add('side-panel-open');
         detailContainerDiv.style.width = '50%';
       } else {
