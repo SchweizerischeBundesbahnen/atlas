@@ -22,6 +22,7 @@ import { DialogService } from '../../../core/components/dialog/dialog.service';
 import { ValidationService } from '../../../core/validation/validation.service';
 import { takeUntil } from 'rxjs/operators';
 import { NotificationService } from '../../../core/notification/notification.service';
+import { DateService } from '../../../core/date/date.service';
 
 interface AreaOption {
   sloid: string | undefined;
@@ -210,17 +211,41 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
   save() {
     ValidationService.validateForm(this.form);
     if (this.form.valid) {
-      const trafficPointElementVersion = this.form
-        .value as unknown as CreateTrafficPointElementVersion;
-      trafficPointElementVersion.trafficPointElementType = TrafficPointElementType.Platform;
-      this.form.disable();
-      trafficPointElementVersion.numberWithoutCheckDigit = this.servicePointNumber;
-      if (this.isNew) {
-        this.create(trafficPointElementVersion);
-      } else {
-        this.update(this.selectedVersion.id!, trafficPointElementVersion);
-      }
+      this.confirmValidityOverServicePoint().subscribe((confirmed) => {
+        if (confirmed) {
+          const trafficPointElementVersion = this.form
+            .value as unknown as CreateTrafficPointElementVersion;
+          trafficPointElementVersion.trafficPointElementType = TrafficPointElementType.Platform;
+          this.form.disable();
+          trafficPointElementVersion.numberWithoutCheckDigit = this.servicePointNumber;
+          if (this.isNew) {
+            this.create(trafficPointElementVersion);
+          } else {
+            this.update(this.selectedVersion.id!, trafficPointElementVersion);
+          }
+        }
+      });
     }
+  }
+
+  private confirmValidityOverServicePoint(): Observable<boolean> {
+    const servicePointValidity = VersionsHandlingService.getMaxValidity(this.servicePoint);
+    if (
+      this.form.controls.validFrom.value?.isBefore(servicePointValidity.validFrom) ||
+      this.form.controls.validTo.value?.isAfter(servicePointValidity.validTo)
+    ) {
+      return this.dialogService.confirm({
+        title: 'SEPODI.TRAFFIC_POINT_ELEMENTS.VALIDITY_CONFIRMATION.TITLE',
+        message: 'SEPODI.TRAFFIC_POINT_ELEMENTS.VALIDITY_CONFIRMATION.MESSAGE',
+        messageArgs: {
+          validFrom: DateService.getDateFormatted(servicePointValidity.validFrom),
+          validTo: DateService.getDateFormatted(servicePointValidity.validTo),
+        },
+        confirmText: 'COMMON.SAVE',
+        cancelText: 'COMMON.CANCEL',
+      });
+    }
+    return of(true);
   }
 
   private create(trafficPointElementVersion: CreateTrafficPointElementVersion) {
