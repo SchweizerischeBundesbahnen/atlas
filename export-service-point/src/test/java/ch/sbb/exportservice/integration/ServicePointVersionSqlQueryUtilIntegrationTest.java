@@ -17,10 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
- class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationTest {
+class ServicePointVersionSqlQueryUtilIntegrationTest extends BaseSqlIntegrationTest {
 
   @Test
-   void shouldReturnWorldOnlyActualWithActualBusinessOrganisationData() throws SQLException {
+  void shouldReturnWorldOnlyActualWithActualBusinessOrganisationData() throws SQLException {
     //given
     LocalDate now = LocalDate.now();
     int servicePointNumber = 1905886;
@@ -42,7 +42,7 @@ import org.junit.jupiter.api.Test;
   }
 
   @Test
-   void shouldReturnWorldOnlyActualWithoutBusinessOrganisationData() throws SQLException {
+  void shouldReturnWorldOnlyActualWithoutBusinessOrganisationData() throws SQLException {
     //given
     LocalDate now = LocalDate.now();
     int servicePointNumber = 1905886;
@@ -63,7 +63,7 @@ import org.junit.jupiter.api.Test;
   }
 
   @Test
-   void shouldReturnWorldFullData() throws SQLException {
+  void shouldReturnWorldFullData() throws SQLException {
     //given
     final LocalDate now = LocalDate.now();
     insertServicePoint(1956734, now, now, Country.ALBANIA);
@@ -80,7 +80,7 @@ import org.junit.jupiter.api.Test;
   }
 
   @Test
-   void shouldReturnWorldOnlyActualData() throws SQLException {
+  void shouldReturnWorldOnlyActualData() throws SQLException {
     //given
     LocalDate now = LocalDate.now();
     int servicePointNumber = 1905886;
@@ -97,7 +97,7 @@ import org.junit.jupiter.api.Test;
   }
 
   @Test
-   void shouldReturnWorldOnlyTimetableFutureData() throws SQLException {
+  void shouldReturnWorldOnlyTimetableFutureData() throws SQLException {
     //given
     LocalDate now = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
     int servicePointNumber = 1905886;
@@ -114,7 +114,7 @@ import org.junit.jupiter.api.Test;
   }
 
   @Test
-   void shouldReturnSwissOnlyTimetableFutureData() throws SQLException {
+  void shouldReturnSwissOnlyTimetableFutureData() throws SQLException {
     //given
     LocalDate now = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
     int servicePointNumberAfghanistan = 6805886;
@@ -133,7 +133,7 @@ import org.junit.jupiter.api.Test;
   }
 
   @Test
-   void shouldReturnSwissOnlyActualData() throws SQLException {
+  void shouldReturnSwissOnlyActualData() throws SQLException {
     //given
     LocalDate now = LocalDate.now();
     int servicePointNumber = 8572299;
@@ -150,7 +150,7 @@ import org.junit.jupiter.api.Test;
   }
 
   @Test
-   void shouldReturnSwissOnlyFullData() throws SQLException {
+  void shouldReturnSwissOnlyFullData() throws SQLException {
     //given
     final LocalDate now = LocalDate.now();
     int servicePointNumberAfghanistan = 6805886;
