@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-// todo: generate frontend api and delete pRM service.ts file
 @Tag(name = "Person with Reduced Mobility")
 @RequestMapping("v1/stop-points")
 public interface StopPointApiV1 {
