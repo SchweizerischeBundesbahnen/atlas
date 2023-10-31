@@ -413,7 +413,8 @@ public class ServicePointTestData {
 
   public static CreateServicePointVersionModel getBuchsiServicePoint() {
     return CreateServicePointVersionModel.builder()
-        .numberWithoutCheckDigit(8034511)
+        .numberShort(34511)
+        .country(Country.GERMANY)
         .sloid("ch:1:sloid:18771")
         .designationLong("designation long 1")
         .designationOfficial("Buchsi Hood")
