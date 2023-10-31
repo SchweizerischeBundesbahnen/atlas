@@ -1,6 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.migration.loadingpoints;
 
-import static ch.sbb.atlas.servicepointdirectory.migration.CsvReader.*;
+import static ch.sbb.atlas.imports.util.CsvReader.dateFromString;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
