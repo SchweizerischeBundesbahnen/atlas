@@ -1,7 +1,6 @@
-package ch.sbb.atlas.servicepointdirectory.migration;
+package ch.sbb.atlas.imports.util;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
-import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
 import com.fasterxml.jackson.databind.MappingIterator;
 import java.io.IOException;
 import java.io.InputStream;

@@ -1,8 +1,8 @@
 package ch.sbb.exportservice.processor;
 
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
+import ch.sbb.atlas.export.model.prm.StopPointVersionCsvModel;
 import ch.sbb.exportservice.entity.StopPointVersion;
-import ch.sbb.exportservice.model.StopPointVersionCsvModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemProcessor;
 

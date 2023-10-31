@@ -1,4 +1,4 @@
-package ch.sbb.exportservice.model;
+package ch.sbb.atlas.export.model.prm;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
