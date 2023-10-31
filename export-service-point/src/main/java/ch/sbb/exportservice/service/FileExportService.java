@@ -84,7 +84,7 @@ public class FileExportService<T extends ExportTypeBase> {
   public String getBaseFileName(T exportType, BatchExportFileName exportFileName) {
     if (exportType instanceof PrmExportType) {
       String actualDate = LocalDate.now().format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN));
-      return exportType.getDir() + "_" + exportFileName.getFileName() + "-" + actualDate;
+      return exportType.getDir() + "-" + exportFileName.getFileName() + "-" + actualDate;
     }
     if (exportType instanceof SePoDiExportType) {
       String actualDate = LocalDate.now().format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN));

@@ -47,7 +47,7 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
       mvc.perform(get("/v1/export/prm/json/stop-point-version/full")
               .contentType(contentType))
           .andExpect(status().isOk())
-          .andExpect(jsonPath("$", hasSize(5)));
+          .andExpect(jsonPath("$", hasSize(1)));
     }
   }
 
