@@ -38,6 +38,7 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
   private final VersionableService versionableService;
   private final ServicePointFotCommentService servicePointFotCommentService;
   private final ServicePointDistributor servicePointDistributor;
+  private final ServicePointNumberService servicePointNumberService;
 
   @Override
   protected void save(ServicePointVersion servicePointVersion) {
@@ -144,6 +145,8 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
   private ItemImportResult saveServicePointVersion(ServicePointVersion servicePointVersion) {
     try {
       ServicePointVersion savedServicePointVersion = servicePointService.saveWithoutValidationForImportOnly(servicePointVersion);
+      servicePointNumberService.deleteAvailableNumber(savedServicePointVersion.getNumber(),
+          savedServicePointVersion.getCountry());
       return buildSuccessImportResult(savedServicePointVersion);
     } catch (Exception exception) {
       log.error("[Service-Point Import]: Error during save", exception);

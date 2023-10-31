@@ -46,7 +46,9 @@ public class ServicePointService {
   }
 
   public List<ServicePointSearchResult> searchServicePointsWithRouteNetworkTrue(String value) {
-    List<ServicePointSearchResult> servicePointSearchResults = servicePointSearchVersionRepository.searchServicePointsWithRouteNetworkTrue(value);
+    List<ServicePointSearchResult> servicePointSearchResults =
+        servicePointSearchVersionRepository.searchServicePointsWithRouteNetworkTrue(
+        value);
     if (servicePointSearchResults.size() > SEARCH_RESULT_SIZE) {
       return servicePointSearchResults.subList(0, SEARCH_RESULT_SIZE);
     }
@@ -62,7 +64,8 @@ public class ServicePointService {
     return servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber);
   }
 
-  public List<ServicePointVersion> findAllByNumberAndOperatingPointRouteNetworkTrueOrderByValidFrom(ServicePointNumber servicePointNumber) {
+  public List<ServicePointVersion> findAllByNumberAndOperatingPointRouteNetworkTrueOrderByValidFrom(
+      ServicePointNumber servicePointNumber) {
     return servicePointVersionRepository.findAllByNumberAndOperatingPointRouteNetworkTrueOrderByValidFrom(servicePointNumber);
   }
 
@@ -99,7 +102,8 @@ public class ServicePointService {
     updateServicePointVersion(currentVersion, editedVersion, currentVersions);
   }
 
-  public ServicePointVersion updateServicePointVersion(ServicePointVersion currentVersion, ServicePointVersion editedVersion, List<ServicePointVersion> currentVersions) {
+  public ServicePointVersion updateServicePointVersion(ServicePointVersion currentVersion, ServicePointVersion editedVersion,
+      List<ServicePointVersion> currentVersions) {
     servicePointVersionRepository.incrementVersion(currentVersion.getNumber());
     if (editedVersion.getVersion() != null && !currentVersion.getVersion().equals(editedVersion.getVersion())) {
       throw new StaleObjectStateException(ServicePointVersion.class.getSimpleName(), "version");
@@ -107,7 +111,8 @@ public class ServicePointService {
     editedVersion.setNumber(currentVersion.getNumber());
     editedVersion.setSloid(currentVersion.getSloid());
     editedVersion.setStatusDidok3(currentVersion.getStatusDidok3());
-
+    editedVersion.setNumberShort(currentVersion.getNumberShort());
+    editedVersion.setCountry(currentVersion.getCountry());
 
     List<ServicePointVersion> existingDbVersions = findAllByNumberOrderByValidFrom(currentVersion.getNumber());
     List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion,
