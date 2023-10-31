@@ -961,6 +961,10 @@
       "NOTIFICATION": {
         "ADD_SUCCESS": "Le bord de retenue a été ajouté avec succès.",
         "EDIT_SUCCESS": "Le bord d'arrêt a été enregistré avec succès."
+      },
+      "VALIDITY_CONFIRMATION": {
+        "TITLE": "Validité ",
+        "MESSAGE": "Attention, l'arrêt attribué est valable de {{validFrom}} à {{validTo}}. Veuillez adapter la validité en conséquence."
       }
     },
     "LOADING_POINTS": {
