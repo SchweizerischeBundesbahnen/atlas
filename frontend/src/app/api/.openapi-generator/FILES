@@ -3,6 +3,7 @@ README.md
 api.module.ts
 api/api.ts
 api/businessOrganisations.service.ts
+api/clientCredentialAdministration.service.ts
 api/companies.service.ts
 api/exportServicePointBatch.service.ts
 api/geoData.service.ts
@@ -10,11 +11,12 @@ api/importPrmBatch.service.ts
 api/importServicePointBatch.service.ts
 api/lines.service.ts
 api/loadingPoints.service.ts
-api/pRMPersonWithReducedMobility.service.ts
+api/personWithReducedMobility.service.ts
 api/servicePoints.service.ts
 api/sublines.service.ts
 api/timetableFieldNumbers.service.ts
-api/timetableHearing.service.ts
+api/timetableHearingStatements.service.ts
+api/timetableHearingYears.service.ts
 api/timetableYearChange.service.ts
 api/trafficPointElements.service.ts
 api/transportCompanies.service.ts
@@ -168,6 +170,7 @@ model/transportCompanyRelation.ts
 model/transportCompanyStatus.ts
 model/updateHearingCanton.ts
 model/updateHearingStatementStatus.ts
+model/updateServicePointVersion.ts
 model/updateTransportCompanyRelation.ts
 model/user.ts
 model/userAccountStatus.ts

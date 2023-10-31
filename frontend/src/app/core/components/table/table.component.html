@@ -55,18 +55,18 @@
               class="table-cell bordered-cell"
               mat-cell
             >
-              {{ value[column.value] | format : column }}
+              {{ value[column.value] | format: column }}
             </td>
           </ng-template>
 
           <ng-template [ngSwitchCase]="false">
             <td
               *matCellDef="let value"
-              [title]="value[column.value] | showTitle : column"
+              [title]="value[column.value] | showTitle: column"
               class="table-cell bordered-cell"
               mat-cell
             >
-              {{ value[column.value] | format : column }}
+              {{ value[column.value] | format: column }}
             </td>
           </ng-template>
         </div>
@@ -74,8 +74,8 @@
           <td *matCellDef="let value" class="table-cell bordered-cell" mat-cell>
             <atlas-select
               (click)="stopPropagation($event)"
-              (selectChanged)="changeDropdownEvent.emit({$event,value})"
-              [additionalLabelspace]="false"
+              (selectChanged)="changeDropdownEvent.emit({ $event, value })"
+              [additionalLabelspace]="0"
               [disabled]="column.dropdown.disabled"
               [optionTranslateLabelPrefix]="column.dropdown.translate.withPrefix"
               [options]="column.dropdown.options"

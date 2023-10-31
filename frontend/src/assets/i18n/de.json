@@ -14,6 +14,7 @@
     "CORRELATION_ID": "Bei anhaltenden Problemen wenden Sie sich mit folgender Identifikationsnummer an die Fachstelle Atlas: {{correlationId}}"
   },
   "COMMON": {
+    "AUTOMATICALLY_ASSIGNED": "Automatisch vergeben",
     "MAINTENANCE_WINDOW": "Wartungsfenster jeweils mittwochs von 16 - 17 Uhr, es kann zu Systemunterbrüchen kommen.",
     "LOADING": "Wird geladen...",
     "BACK_TO_OVERVIEW": "Zurück zur Übersicht",
@@ -52,6 +53,7 @@
     "STATUS": "Status",
     "CANTONS": "Kantone",
     "COUNTRIES": "Länder",
+    "COUNTRY": "Land",
     "STATUS_TYPES": {
       "DRAFT": "Entwurf",
       "VALIDATED": "Validiert",
@@ -99,6 +101,7 @@
   },
   "FORM": {
     "MAX_CHARS": "{{numberOfChars}} Zeichen max.",
+    "MAX_NUMBER_OF_DIGITS": "{{numberOfDigits}} Zahlen max.",
     "DROPDOWN_PLACEHOLDER": "auswählen",
     "FOR_EXAMPLE": "z.B.:",
     "DESIGN_INFORMATION": "Angaben zur Gestaltung",
@@ -833,6 +836,8 @@
       "DIDOK_CODE": "Didok-Code (Ländercode & Nummer)",
       "DIDOK_CODE_SEARCH": "Didok-Code",
       "SERVICE_POINT": "Dienststelle",
+      "SERVICE_POINT_ID": "Dienststellen-ID",
+      "NEW_SERVICE_POINT": "Neue Dienststelle",
       "AREAS": "Bereiche",
       "FOT_COMMENT": "BAV-Kommentar",
       "DETAILS": "Angaben zur Dienststelle",
