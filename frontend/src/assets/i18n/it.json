@@ -53,6 +53,7 @@
     "STATUS": "Stato",
     "CANTONS": "Cantoni",
     "COUNTRIES": "Paesi",
+    "COUNTRY": "Paese",
     "STATUS_TYPES": {
       "DRAFT": "Bozza",
       "VALIDATED": "Convalidato",
