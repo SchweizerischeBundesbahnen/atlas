@@ -53,6 +53,7 @@
     "STATUS": "Statut",
     "CANTONS": "Cantons",
     "COUNTRIES": "Des pays",
+    "COUNTRY": "Pays",
     "STATUS_TYPES": {
       "DRAFT": "Projet",
       "VALIDATED": "Validé",
