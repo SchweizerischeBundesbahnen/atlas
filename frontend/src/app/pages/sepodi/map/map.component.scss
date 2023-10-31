@@ -69,13 +69,13 @@ $map-overlay-element-shadow: 0 0 5px 1px variables.$gray-700;
     display: flex;
 
     button {
-      margin-right: 1rem;
+      margin-left: 1rem;
       border: none;
       background-color: white;
       display: flex;
       align-items: center;
       height: fit-content;
-      padding: 0.5rem;
+      padding: 0.5rem 0.5rem 0.5rem 0;
       border-radius: variables.$border-radius-small;
       box-shadow: $map-overlay-element-shadow;
 

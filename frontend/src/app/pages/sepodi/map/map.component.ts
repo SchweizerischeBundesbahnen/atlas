@@ -14,9 +14,10 @@ import { MapIcon, MapIconsService } from './map-icons.service';
 import { Router } from '@angular/router';
 import { Pages } from '../../pages';
 import { MAP_SOURCE_NAME } from './map-style';
-import { Subscription } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 import { AuthService } from '../../../core/auth/auth.service';
 import { ApplicationType } from '../../../api';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'atlas-map',
@@ -48,7 +49,16 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.canCreateServicePoint = this.authService.hasPermissionsToCreate(ApplicationType.Sepodi);
+    this.authService.permissionsLoaded
+      .pipe(
+        filter((loaded) => loaded),
+        take(1),
+      )
+      .subscribe(() => {
+        this.canCreateServicePoint = this.authService.hasPermissionsToCreate(
+          ApplicationType.Sepodi,
+        );
+      });
   }
 
   ngAfterViewInit() {
