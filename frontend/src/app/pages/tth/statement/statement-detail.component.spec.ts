@@ -1,9 +1,10 @@
 import {
   HearingStatus,
   SwissCanton,
-  TimetableHearingService,
   TimetableHearingStatement,
+  TimetableHearingStatementsService,
   TimetableHearingYear,
+  TimetableHearingYearsService,
 } from '../../../api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
@@ -51,12 +52,14 @@ let component: StatementDetailComponent;
 let fixture: ComponentFixture<StatementDetailComponent>;
 let router: Router;
 
-const mockTimetableHearingService = jasmine.createSpyObj('timetableHearingService', [
+const mockTimetableHearingYearsService = jasmine.createSpyObj('timetableHearingYearsService', [
   'getHearingYears',
-  'getResponsibleTransportCompanies',
-  'createStatement',
-  'updateHearingStatement',
 ]);
+
+const mockTimetableHearingStatementsService = jasmine.createSpyObj(
+  'timetableHearingStatementsService',
+  ['createStatement'],
+);
 
 @Component({
   selector: 'app-user-detail-info',
@@ -129,13 +132,13 @@ describe('test editButton', () => {
     };
     setupTestBed(mockRoute);
 
-    mockTimetableHearingService.getHearingYears.and.returnValue(
+    mockTimetableHearingYearsService.getHearingYears.and.returnValue(
       of([
         {
           ...years[0],
           statementEditable: true,
         },
-      ])
+      ]),
     );
 
     fixture = TestBed.createComponent(StatementDetailComponent);
@@ -153,7 +156,7 @@ describe('test editButton', () => {
     const buttons = fixture.debugElement.queryAll(By.css('atlas-button'));
     expect(buttons.length).toBe(4);
     const buttonsText = buttons.map(
-      (button) => button.nativeElement.attributes['buttontext'].value
+      (button) => button.nativeElement.attributes['buttontext'].value,
     );
     expect(buttonsText).not.toContain('COMMON.EDIT');
   });
@@ -162,7 +165,7 @@ describe('test editButton', () => {
     const buttons = fixture.debugElement.queryAll(By.css('atlas-button'));
     expect(buttons.length).toBe(5);
     const buttonsText = buttons.map(
-      (button) => button.nativeElement.attributes['buttontext'].value
+      (button) => button.nativeElement.attributes['buttontext'].value,
     );
     expect(buttonsText).toContain('COMMON.EDIT');
   });
@@ -196,7 +199,7 @@ describe('StatementDetailComponent for new statement', () => {
   describe('create new statement', () => {
     it('successfully', () => {
       spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
-      mockTimetableHearingService.createStatement.and.returnValue(of(existingStatement));
+      mockTimetableHearingStatementsService.createStatement.and.returnValue(of(existingStatement));
 
       component.form.controls.swissCanton.setValue(SwissCanton.Bern);
       component.form.controls.statement.setValue('my yb busses');
@@ -204,7 +207,7 @@ describe('StatementDetailComponent for new statement', () => {
       fixture.detectChanges();
 
       component.save();
-      expect(mockTimetableHearingService.createStatement).toHaveBeenCalled();
+      expect(mockTimetableHearingStatementsService.createStatement).toHaveBeenCalled();
 
       fixture.detectChanges();
 
@@ -221,7 +224,7 @@ describe('StatementDetailComponent for new statement', () => {
 function setupTestBed(activatedRoute: {
   snapshot: { data: { statement: undefined | TimetableHearingStatement } };
 }) {
-  mockTimetableHearingService.getHearingYears.and.returnValue(of(years));
+  mockTimetableHearingYearsService.getHearingYears.and.returnValue(of(years));
 
   TestBed.configureTestingModule({
     declarations: [
@@ -244,7 +247,11 @@ function setupTestBed(activatedRoute: {
     imports: [AppTestingModule, FormModule],
     providers: [
       { provide: FormBuilder },
-      { provide: TimetableHearingService, useValue: mockTimetableHearingService },
+      { provide: TimetableHearingYearsService, useValue: mockTimetableHearingYearsService },
+      {
+        provide: TimetableHearingStatementsService,
+        useValue: mockTimetableHearingStatementsService,
+      },
       { provide: AuthService, useValue: authServiceMock },
       { provide: TranslatePipe },
       {

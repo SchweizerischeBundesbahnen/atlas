@@ -1,6 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.mapper;
 
-import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
@@ -48,46 +48,53 @@ public class ServicePointVersionMapper {
         .build();
   }
 
-  public static ServicePointVersion toEntity(CreateServicePointVersionModel createServicePointVersionModel) {
-    ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(
-        createServicePointVersionModel.getNumberWithoutCheckDigit());
-
+  public static ServicePointVersion toEntity(UpdateServicePointVersionModel updateServicePointVersionModel) {
     ServicePointNumber operatingPointKilometerMasterNumber =
-        Optional.ofNullable(createServicePointVersionModel.setKilomMasterNumberDependingOnRouteNetworkValue())
+        Optional.ofNullable(updateServicePointVersionModel.setKilomMasterNumberDependingOnRouteNetworkValue())
             .map(ServicePointNumber::ofNumberWithoutCheckDigit)
             .orElse(null);
 
-    return ServicePointVersion.builder()
-        .id(createServicePointVersionModel.getId())
-        .number(servicePointNumber)
-        .sloid(createServicePointVersionModel.getSloid())
-        .numberShort(servicePointNumber.getNumberShort())
-        .country(servicePointNumber.getCountry())
-        .designationLong(createServicePointVersionModel.getDesignationLong())
-        .designationOfficial(createServicePointVersionModel.getDesignationOfficial())
-        .abbreviation(createServicePointVersionModel.getAbbreviation())
-        .sortCodeOfDestinationStation(createServicePointVersionModel.getSortCodeOfDestinationStation())
-        .businessOrganisation(createServicePointVersionModel.getBusinessOrganisation())
-        .operatingPointType(createServicePointVersionModel.getOperatingPointType())
-        .stopPointType(createServicePointVersionModel.getStopPointType())
+    ServicePointVersion servicePointVersion = ServicePointVersion.builder()
+        .id(updateServicePointVersionModel.getId())
+        .designationLong(updateServicePointVersionModel.getDesignationLong())
+        .designationOfficial(updateServicePointVersionModel.getDesignationOfficial())
+        .abbreviation(updateServicePointVersionModel.getAbbreviation())
+        .sortCodeOfDestinationStation(updateServicePointVersionModel.getSortCodeOfDestinationStation())
+        .businessOrganisation(updateServicePointVersionModel.getBusinessOrganisation())
+        .operatingPointType(updateServicePointVersionModel.getOperatingPointType())
+        .stopPointType(updateServicePointVersionModel.getStopPointType())
         .operatingPointKilometerMaster(operatingPointKilometerMasterNumber)
-        .operatingPointRouteNetwork(createServicePointVersionModel.isOperatingPointRouteNetwork())
-        .validFrom(createServicePointVersionModel.getValidFrom())
-        .validTo(createServicePointVersionModel.getValidTo())
-        .freightServicePoint(createServicePointVersionModel.isFreightServicePoint())
-        .operatingPoint(createServicePointVersionModel.isOperatingPoint())
-        .operatingPointWithTimetable(createServicePointVersionModel.isOperatingPointWithTimetable())
-        .operatingPointTechnicalTimetableType(createServicePointVersionModel.getOperatingPointTechnicalTimetableType())
-        .operatingPointTrafficPointType(createServicePointVersionModel.getOperatingPointTrafficPointType())
-        .categories(Set.copyOf(createServicePointVersionModel.getCategories()))
-        .meansOfTransport(Set.copyOf(createServicePointVersionModel.getMeansOfTransport()))
-        .servicePointGeolocation(ServicePointGeolocationMapper.toEntity(createServicePointVersionModel.getServicePointGeolocation()))
-        .version(createServicePointVersionModel.getEtagVersion())
-        .editor(createServicePointVersionModel.getEditor())
-        .editionDate(createServicePointVersionModel.getEditionDate())
-        .creator(createServicePointVersionModel.getCreator())
-        .creationDate(createServicePointVersionModel.getCreationDate())
+        .operatingPointRouteNetwork(updateServicePointVersionModel.isOperatingPointRouteNetwork())
+        .validFrom(updateServicePointVersionModel.getValidFrom())
+        .validTo(updateServicePointVersionModel.getValidTo())
+        .freightServicePoint(updateServicePointVersionModel.isFreightServicePoint())
+        .operatingPoint(updateServicePointVersionModel.isOperatingPoint())
+        .operatingPointWithTimetable(updateServicePointVersionModel.isOperatingPointWithTimetable())
+        .operatingPointTechnicalTimetableType(updateServicePointVersionModel.getOperatingPointTechnicalTimetableType())
+        .operatingPointTrafficPointType(updateServicePointVersionModel.getOperatingPointTrafficPointType())
+        .categories(Set.copyOf(updateServicePointVersionModel.getCategories()))
+        .meansOfTransport(Set.copyOf(updateServicePointVersionModel.getMeansOfTransport()))
+        .servicePointGeolocation(
+            ServicePointGeolocationMapper.toEntity(updateServicePointVersionModel.getServicePointGeolocation()))
+        .version(updateServicePointVersionModel.getEtagVersion())
+        .editor(updateServicePointVersionModel.getEditor())
+        .editionDate(updateServicePointVersionModel.getEditionDate())
+        .creator(updateServicePointVersionModel.getCreator())
+        .creationDate(updateServicePointVersionModel.getCreationDate())
         .build();
+
+    if (updateServicePointVersionModel.getNumberShort() != null) {
+      ServicePointNumber servicePointNumber = ServicePointNumber.of(
+          updateServicePointVersionModel.getCountry(),
+          updateServicePointVersionModel.getNumberShort()
+      );
+      servicePointVersion.setNumber(servicePointNumber);
+      servicePointVersion.setSloid(ServicePointNumber.calculateSloid(servicePointNumber));
+      servicePointVersion.setNumberShort(servicePointNumber.getNumberShort());
+      servicePointVersion.setCountry(servicePointNumber.getCountry());
+    }
+
+    return servicePointVersion;
   }
 
   private static List<MeanOfTransport> getMeansOfTransportSorted(ServicePointVersion servicePointVersion) {
@@ -99,5 +106,3 @@ public class ServicePointVersionMapper {
   }
 
 }
-
-
