@@ -29,4 +29,5 @@ public class PrmDataSourceConfiguration {
   public JdbcTransactionManager prmTransactionManager() {
     return new JdbcTransactionManager(prmDataSource());
   }
+
 }
