@@ -66,7 +66,9 @@ describe('MapComponent', () => {
   let authServiceSpy: SpyObj<AuthService>;
 
   beforeEach(async () => {
-    authServiceSpy = jasmine.createSpyObj(['hasPermissionsToCreate']);
+    authServiceSpy = jasmine.createSpyObj(['hasPermissionsToCreate'], {
+      permissionsLoaded: new BehaviorSubject(true),
+    });
     authServiceSpy.hasPermissionsToCreate.and.returnValue(true);
 
     await TestBed.configureTestingModule({
