@@ -6,7 +6,7 @@
 <div class="dialog" data-cy="dialog">
   <h1 class="font-bold-4xl">{{ data.title | translate }}</h1>
   <mat-dialog-content class="font-regular-base message">{{
-    data.message | translate
+    data.message | translate: data.messageArgs
   }}</mat-dialog-content>
   <mat-dialog-actions class="justify-content-end">
     <button
