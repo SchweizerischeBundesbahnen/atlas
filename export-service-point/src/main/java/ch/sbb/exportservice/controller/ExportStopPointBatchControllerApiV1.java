@@ -100,12 +100,6 @@ public class ExportStopPointBatchControllerApiV1 {
     return ResponseEntity.ok().headers(headers).body(body);
   }
 
-  private static String s3BucketDirPathPrefix(BatchExportFileName exportFileName, PrmExportType prmExportType) {
-    String buildBucketDirPathPrefix =
-        exportFileName.getBaseDir() + S3_BUCKET_PATH_SEPARATOR + prmExportType.getDir();
-    return buildBucketDirPathPrefix;
-  }
-
   @PostMapping("stop-point-batch")
   @ResponseStatus(HttpStatus.OK)
   @ApiResponses(value = {
@@ -114,6 +108,10 @@ public class ExportStopPointBatchControllerApiV1 {
   @Async
   public void startExportServicePointBatch() {
     exportStopPointJobService.startExportJobs();
+  }
+
+  private static String s3BucketDirPathPrefix(BatchExportFileName exportFileName, PrmExportType prmExportType) {
+    return exportFileName.getBaseDir() + S3_BUCKET_PATH_SEPARATOR + prmExportType.getDir();
   }
 
 }
