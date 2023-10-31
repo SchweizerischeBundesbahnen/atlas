@@ -18,10 +18,7 @@ import { AtlasSpacerComponent } from '../../../../core/components/spacer/atlas-s
 import { Record } from '../../../../core/components/base-detail/record';
 import { MockAtlasButtonComponent } from '../../../../app.testing.mocks';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
-import {
-  ReadServicePointVersion,
-  Status,
-} from '../../../../api';
+import { Country, ReadServicePointVersion, Status } from '../../../../api';
 import { ApplicationRole, ServicePointsService } from '../../../../api';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { DisplayCantonPipe } from '../../../../core/cantons/display-canton.pipe';
@@ -202,6 +199,7 @@ describe('ServicePointDetailComponent', () => {
     expect(mapServiceSpy.placeMarkerAndFlyTo).not.toHaveBeenCalled();
     expect(coordinateTransformationServiceSpy.transform).not.toHaveBeenCalled();
   });
+
   it('should set isAbbreviationAllowed based on selectedVersion.businessOrganisation', () => {
     component.selectedVersion = {
       businessOrganisation: 'ch:1:sboid:100016',
@@ -215,6 +213,7 @@ describe('ServicePointDetailComponent', () => {
         checkDigit: 0,
       },
       status: 'VALIDATED',
+      country: Country.Switzerland,
     };
 
     component.checkIfAbbreviationIsAllowed();
@@ -233,6 +232,7 @@ describe('ServicePointDetailComponent', () => {
         checkDigit: 0,
       },
       status: 'VALIDATED',
+      country: Country.Switzerland,
     };
     component.checkIfAbbreviationIsAllowed();
     expect(component.isAbbreviationAllowed).toBeFalse();
@@ -251,6 +251,7 @@ describe('ServicePointDetailComponent', () => {
         checkDigit: 0,
       },
       status: Status.Validated,
+      country: Country.Switzerland,
     };
 
     const versions: ReadServicePointVersion[] = [
@@ -261,6 +262,7 @@ describe('ServicePointDetailComponent', () => {
         validTo: new Date(2002, 0, 1),
         number: { number: 123457, numberShort: 32, uicCountryCode: 0, checkDigit: 0 },
         status: Status.Validated,
+        country: Country.Switzerland,
       },
       selectedVersion,
     ];
@@ -283,6 +285,7 @@ describe('ServicePointDetailComponent', () => {
         checkDigit: 0,
       },
       status: Status.Validated,
+      country: Country.Switzerland,
     };
 
     const versions: ReadServicePointVersion[] = [
@@ -293,6 +296,7 @@ describe('ServicePointDetailComponent', () => {
         validTo: new Date(2099, 0, 1),
         number: { number: 123457, numberShort: 32, uicCountryCode: 0, checkDigit: 0 },
         status: Status.Validated,
+        country: Country.Switzerland,
       },
       selectedVersion,
     ];
