@@ -20,8 +20,8 @@ public enum PrmExportType implements ExportTypeBase {
   private static class Constants {
 
     private static final String FULL_DIR_NAME = "full";
-    private static final String ACTUAL_DATE_DIR_NAME = "actual_date";
-    private static final String FUTURE_TIMETABLE_DIR_NAME = "future_timetable";
+    private static final String ACTUAL_DATE_DIR_NAME = "actual-date";
+    private static final String FUTURE_TIMETABLE_DIR_NAME = "future-timetable";
 
   }
 }
