@@ -321,7 +321,10 @@ export class ServicePointFormGroupBuilder {
       sloid: value.sloid!,
       designationOfficial: value.designationOfficial!,
       designationLong: value.designationLong ? value.designationLong : undefined,
-      abbreviation: value.abbreviation!,
+      abbreviation:
+        value.abbreviation && value.abbreviation.trim().length !== 0
+          ? value.abbreviation
+          : undefined,
       businessOrganisation: value.businessOrganisation!,
       categories: value.categories!,
       operatingPointRouteNetwork: value.operatingPointRouteNetwork!,
