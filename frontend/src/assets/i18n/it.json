@@ -961,6 +961,10 @@
       "NOTIFICATION": {
         "ADD_SUCCESS": "Il bordo di contenimento è stato aggiunto con successo.",
         "EDIT_SUCCESS": "Il bordo di contenimento è stato salvato con successo."
+      },
+      "VALIDITY_CONFIRMATION": {
+        "TITLE": "Validità ",
+        "MESSAGE": "Attenzione, la fermata assegnata è valida da {{validFrom}} a {{validTo}}. Si prega di regolare la validità di conseguenza."
       }
     },
     "LOADING_POINTS": {
