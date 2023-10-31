@@ -135,7 +135,7 @@ export default class CommonUtils {
   static assertTableHeader(
     tableNumber: number,
     columnHeaderNumber: number,
-    columnHeaderContent: string
+    columnHeaderContent: string,
   ) {
     cy.get('table')
       .eq(tableNumber)
@@ -148,7 +148,7 @@ export default class CommonUtils {
   static assertTableSearch(
     tableNumber: number,
     fieldNumber: number,
-    fieldLabelExpectation: string
+    fieldLabelExpectation: string,
   ) {
     cy.get('app-table')
       .eq(tableNumber)
@@ -252,22 +252,24 @@ export default class CommonUtils {
    * It is also checked if all options that are not given have the state unchecked.
    */
   static assertItemsFromDropdownAreChecked(selector: string, checkedOptionNames: string[]) {
-    cy.get(selector)
-      .click()
-      .get('mat-option')
-      .then(($dropDownElement) => {
-        for (const element of $dropDownElement) {
-          const elementName = element.innerText.trim();
-          const message = 'State of checkbox "' + elementName + '"';
+    const dropDownElements = cy
+      .get(selector)
+      .click() // open dropdown menu
+      .get('mat-option'); // get all dropdown-elements
 
-          const checkBoxState = element.getAttribute('aria-selected') == 'true';
-          if (checkedOptionNames.includes(elementName)) {
-            expect(checkBoxState, message).to.be.true;
-          } else {
-            expect(checkBoxState, message).to.be.false;
-          }
+    dropDownElements.should(($dropDownElement) => {
+      for (const element of $dropDownElement) {
+        const elementName = element.innerText.trim();
+        const message = 'State of checkbox "' + elementName + '"';
+
+        const checkBoxState = element.getAttribute('aria-selected') == 'true';
+        if (checkedOptionNames.includes(elementName)) {
+          expect(checkBoxState, message).to.be.true;
+        } else {
+          expect(checkBoxState, message).to.be.false;
         }
-      });
+      }
+    });
     // Workaround to close the dropDown-menu again after all checks are done
     cy.get(selector).type('{esc}');
   }
