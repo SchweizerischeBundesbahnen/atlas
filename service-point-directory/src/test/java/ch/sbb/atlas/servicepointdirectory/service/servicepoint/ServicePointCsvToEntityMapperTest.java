@@ -4,6 +4,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
+import ch.sbb.atlas.imports.util.DidokCsvMapper;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.Country;
@@ -17,7 +18,6 @@ import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointStatus;
-import ch.sbb.atlas.servicepointdirectory.service.DidokCsvMapper;
 import com.fasterxml.jackson.databind.MappingIterator;
 import java.io.IOException;
 import java.time.LocalDate;

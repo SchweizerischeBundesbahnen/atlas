@@ -1,7 +1,7 @@
 package ch.sbb.exportservice.writer;
 
-import ch.sbb.exportservice.model.StopPointVersionCsvModel;
-import ch.sbb.exportservice.model.StopPointVersionCsvModel.Fields;
+import ch.sbb.atlas.export.model.prm.StopPointVersionCsvModel;
+import ch.sbb.atlas.export.model.prm.StopPointVersionCsvModel.Fields;
 import org.springframework.stereotype.Component;
 
 @Component
