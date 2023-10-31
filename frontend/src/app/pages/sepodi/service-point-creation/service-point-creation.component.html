@@ -1,9 +1,13 @@
 <div class="pt-3 ps-3 pe-3">
+  <div class="font-bold-4xl mb-3">
+    {{ 'SEPODI.SERVICE_POINTS.NEW_SERVICE_POINT' | translate }}
+  </div>
+
   <div class="form-box p-3">
     <div class="d-flex">
       <atlas-select
         class="col-6 pe-3"
-        label="COMMON.COUNTRIES"
+        label="COMMON.COUNTRY"
         [additionalLabelspace]="25"
         [optionTranslateLabelPrefix]="'TTH.COUNTRY.'"
         [displayExtractor]="getCountryEnum"
