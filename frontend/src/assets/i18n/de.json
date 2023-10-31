@@ -961,6 +961,10 @@
       "NOTIFICATION": {
         "ADD_SUCCESS": "Die Haltekante wurde erfolgreich hinzugefügt.",
         "EDIT_SUCCESS": "Die Haltekante wurde erfolgreich gespeichert."
+      },
+      "VALIDITY_CONFIRMATION": {
+        "TITLE": "Gültigkeit",
+        "MESSAGE": "Achtung, die zugeordnete Haltestelle ist von {{validFrom}} bis {{validTo}} gültig. Bitte passen Sie die Gültigkeit entsprechend an."
       }
     },
     "LOADING_POINTS": {
