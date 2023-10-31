@@ -108,9 +108,11 @@ public class AmazonServiceImpl implements AmazonService {
     List<S3ObjectSummary> objectSummaries = getClient(bucket).listObjectsV2(getAmazonBucketConfig(bucket).getBucketName(),
         pathPrefix).getObjectSummaries();
     List<String> fileNameList = objectSummaries.stream()
-        .filter(s3ObjectSummary -> s3ObjectSummary.getKey().contains(fileTypePrefix) && s3ObjectSummary.getKey().contains(
-            JSON_FILE_EXTENSION)).sorted(Comparator.comparing(S3ObjectSummary::getLastModified).reversed()).map(
-            S3ObjectSummary::getKey).toList();
+        .filter(s3ObjectSummary ->
+            s3ObjectSummary.getKey().contains(fileTypePrefix) && s3ObjectSummary.getKey().contains(JSON_FILE_EXTENSION))
+        .sorted(Comparator.comparing(S3ObjectSummary::getLastModified).reversed())
+        .map(S3ObjectSummary::getKey)
+        .toList();
     if (!fileNameList.isEmpty() && fileNameList.get(0) != null) {
       return fileNameList.get(0);
     }
