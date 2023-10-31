@@ -109,11 +109,6 @@ public class ExportServicePointBatchControllerApiV1 {
     return ResponseEntity.ok().headers(headers).body(body);
   }
 
-  private static String s3BucketFilePathPrefix(BatchExportFileName exportFileName, SePoDiExportType sePoDiExportType) {
-    String buildBucketFilePathPrefix = exportFileName.getFileName() + S3_BUCKET_PATH_SEPARATOR + sePoDiExportType.getDir();
-    return buildBucketFilePathPrefix;
-  }
-
   @PostMapping("service-point-batch")
   @ResponseStatus(HttpStatus.OK)
   @ApiResponses(value = {
@@ -152,6 +147,10 @@ public class ExportServicePointBatchControllerApiV1 {
     if (worldOnlyTypes.contains(exportFileName) && !SePoDiExportType.getWorldOnly().contains(sePoDiExportType)) {
       throw new NotAllowedExportFileException(exportFileName, sePoDiExportType);
     }
+  }
+
+  private static String s3BucketFilePathPrefix(BatchExportFileName exportFileName, SePoDiExportType sePoDiExportType) {
+    return exportFileName.getFileName() + S3_BUCKET_PATH_SEPARATOR + sePoDiExportType.getDir();
   }
 
 }
