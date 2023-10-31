@@ -26,6 +26,8 @@ spring:
           issuer-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0
   kafka:
     bootstrap-servers: .bootstrap-servers=${spring.embedded.kafka.brokers}
+    producer:
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
 auth:
   audience:

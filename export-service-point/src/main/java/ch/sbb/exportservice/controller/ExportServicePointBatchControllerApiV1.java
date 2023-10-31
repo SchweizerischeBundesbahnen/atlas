@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -28,8 +29,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
-
-import java.util.List;
 
 @Tag(name = "Export Service Point Batch")
 @RequestMapping("v1/export")
@@ -51,9 +50,9 @@ public class ExportServicePointBatchControllerApiV1 {
       @Schema(implementation = ErrorResponse.class)))
   })
   public ResponseEntity<StreamingResponseBody> streamExportJsonFile(@PathVariable BatchExportFileName exportFileName,
-                                                                    @PathVariable ExportType exportType) {
-    checkInputPath(exportFileName,exportType);
-    StreamingResponseBody body = fileExportService.streamJsonFile(exportType,exportFileName);
+      @PathVariable ExportType exportType) {
+    checkInputPath(exportFileName, exportType);
+    StreamingResponseBody body = fileExportService.streamJsonFile(exportType, exportFileName);
     return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(body);
   }
 

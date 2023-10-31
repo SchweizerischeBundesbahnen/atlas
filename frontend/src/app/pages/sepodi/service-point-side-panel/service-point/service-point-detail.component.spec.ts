@@ -1,12 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ServicePointDetailComponent } from './service-point-detail.component';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { AuthService } from '../../../../core/auth/auth.service';
 import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, of } from 'rxjs';
 import { BERN } from '../../service-point-test-data';
-import { FormsModule } from '@angular/forms';
+import { FormGroup, FormsModule } from '@angular/forms';
 import { TextFieldComponent } from '../../../../core/form-components/text-field/text-field.component';
 import { MeansOfTransportPickerComponent } from '../../means-of-transport-picker/means-of-transport-picker.component';
 import { SelectComponent } from '../../../../core/form-components/select/select.component';
@@ -19,17 +18,13 @@ import { AtlasSpacerComponent } from '../../../../core/components/spacer/atlas-s
 import { Record } from '../../../../core/components/base-detail/record';
 import { MockAtlasButtonComponent } from '../../../../app.testing.mocks';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
-import {
-  ApplicationRole,
-  ReadServicePointVersion,
-  ServicePointsService,
-  SpatialReference,
-  Status,
-} from '../../../../api';
+import { Country, ReadServicePointVersion, Status } from '../../../../api';
+import { ApplicationRole, ServicePointsService } from '../../../../api';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { DisplayCantonPipe } from '../../../../core/cantons/display-canton.pipe';
 import { MapService } from '../../map/map.service';
 import { CoordinateTransformationService } from '../../geography/coordinate-transformation.service';
+import { Component, Input } from '@angular/core';
 
 const dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirm']);
 const servicePointsServiceSpy = jasmine.createSpyObj('ServicePointService', ['updateServicePoint']);
@@ -40,6 +35,7 @@ const mapServiceSpy = jasmine.createSpyObj('MapService', [
 ]);
 const coordinateTransformationServiceSpy = jasmine.createSpyObj<CoordinateTransformationService>([
   'transform',
+  'isCoordinatesPairValidForTransformation',
 ]);
 mapServiceSpy.isGeolocationActivated = new BehaviorSubject<boolean>(false);
 mapServiceSpy.isEditMode = new BehaviorSubject<boolean>(false);
@@ -58,6 +54,15 @@ const authServiceMock: Partial<AuthService> = {
   },
   logout: () => Promise.resolve(true),
 };
+
+@Component({
+  selector: 'service-point-form',
+  template: '<h1>ServicePointFormMockComponent</h1>',
+})
+class ServicePointFormMockComponent {
+  @Input() form?: FormGroup;
+  @Input() currentVersion?: object;
+}
 
 describe('ServicePointDetailComponent', () => {
   let component: ServicePointDetailComponent;
@@ -79,6 +84,7 @@ describe('ServicePointDetailComponent', () => {
         AtlasSlideToggleComponent,
         MockAtlasButtonComponent,
         DisplayCantonPipe,
+        ServicePointFormMockComponent,
       ],
       imports: [AppTestingModule, FormsModule],
       providers: [
@@ -164,47 +170,34 @@ describe('ServicePointDetailComponent', () => {
   });
 
   it('should activate geolocation without coordinates', () => {
-    const isLatLngCoordinatesValidForTransformationSpy = spyOn(
-      component,
-      'isCoordinatesPairValidForTransformation',
-    ).and.returnValue(false);
-    const setSpatialReferenceSpy = spyOn(component, 'setSpatialReference');
+    component.activateGeolocation(undefined!);
 
-    component.currentSpatialReference = SpatialReference.Lv95;
-    component.activateGeolocation();
-
-    expect(setSpatialReferenceSpy).toHaveBeenCalled();
     expect(mapServiceSpy.isGeolocationActivated.value).toBe(true);
     expect(mapServiceSpy.isEditMode.value).toBe(true);
-    expect(isLatLngCoordinatesValidForTransformationSpy).toHaveBeenCalled();
+    expect(
+      coordinateTransformationServiceSpy.isCoordinatesPairValidForTransformation,
+    ).toHaveBeenCalled();
   });
 
   it('should deactivate geolocation', () => {
     const cancelMapEditModeSpy = spyOn(component, 'cancelMapEditMode');
-    const setSpatialReferenceSpy = spyOn(component, 'setSpatialReference');
     component.deactivateGeolocation();
 
-    expect(setSpatialReferenceSpy).toHaveBeenCalledWith(null);
     expect(mapServiceSpy.isGeolocationActivated.value).toBe(false);
+    expect(component.isSwitchVersionDisabled).toBeTrue();
     expect(cancelMapEditModeSpy).toHaveBeenCalled();
   });
 
   it('should not transform if coordinates invalid', () => {
-    const isLatLngCoordinatesValidForTransformationSpy = spyOn(
-      component,
-      'isCoordinatesPairValidForTransformation',
-    ).and.returnValue(false);
-    const setSpatialReferenceSpy = spyOn(component, 'setSpatialReference');
+    component.activateGeolocation(undefined!);
 
-    component.currentSpatialReference = SpatialReference.Lv95;
-    component.activateGeolocation();
-
-    expect(setSpatialReferenceSpy).toHaveBeenCalled();
     expect(mapServiceSpy.isGeolocationActivated.value).toBe(true);
-    expect(isLatLngCoordinatesValidForTransformationSpy).toHaveBeenCalled();
+    expect(mapServiceSpy.isEditMode.value).toBe(true);
+    expect(
+      coordinateTransformationServiceSpy.isCoordinatesPairValidForTransformation,
+    ).toHaveBeenCalled();
     expect(mapServiceSpy.placeMarkerAndFlyTo).not.toHaveBeenCalled();
     expect(coordinateTransformationServiceSpy.transform).not.toHaveBeenCalled();
-    expect(mapServiceSpy.isEditMode.value).toBe(true);
   });
 
   it('should set isAbbreviationAllowed based on selectedVersion.businessOrganisation', () => {
@@ -220,6 +213,7 @@ describe('ServicePointDetailComponent', () => {
         checkDigit: 0,
       },
       status: 'VALIDATED',
+      country: Country.Switzerland,
     };
 
     component.checkIfAbbreviationIsAllowed();
@@ -238,6 +232,7 @@ describe('ServicePointDetailComponent', () => {
         checkDigit: 0,
       },
       status: 'VALIDATED',
+      country: Country.Switzerland,
     };
     component.checkIfAbbreviationIsAllowed();
     expect(component.isAbbreviationAllowed).toBeFalse();
@@ -256,6 +251,7 @@ describe('ServicePointDetailComponent', () => {
         checkDigit: 0,
       },
       status: Status.Validated,
+      country: Country.Switzerland,
     };
 
     const versions: ReadServicePointVersion[] = [
@@ -266,6 +262,7 @@ describe('ServicePointDetailComponent', () => {
         validTo: new Date(2002, 0, 1),
         number: { number: 123457, numberShort: 32, uicCountryCode: 0, checkDigit: 0 },
         status: Status.Validated,
+        country: Country.Switzerland,
       },
       selectedVersion,
     ];
@@ -288,6 +285,7 @@ describe('ServicePointDetailComponent', () => {
         checkDigit: 0,
       },
       status: Status.Validated,
+      country: Country.Switzerland,
     };
 
     const versions: ReadServicePointVersion[] = [
@@ -298,6 +296,7 @@ describe('ServicePointDetailComponent', () => {
         validTo: new Date(2099, 0, 1),
         number: { number: 123457, numberShort: 32, uicCountryCode: 0, checkDigit: 0 },
         status: Status.Validated,
+        country: Country.Switzerland,
       },
       selectedVersion,
     ];
@@ -305,38 +304,5 @@ describe('ServicePointDetailComponent', () => {
     component.isSelectedVersionHighDate(versions, selectedVersion);
 
     expect(component.isLatestVersionSelected).toBeFalse();
-  });
-
-  it('should test component method setOperatingPointRouteNetwork with argument true', () => {
-    component.setOperatingPointRouteNetwork(true);
-
-    expect(component.form.controls.operatingPointRouteNetwork.value).toBe(true);
-    expect(component.form.controls.operatingPointKilometer.value).toBe(true);
-    expect(component.form.controls.operatingPointKilometer.disabled).toBe(true);
-    expect(component.form.controls.operatingPointKilometerMaster.value).toBe(
-      component.form.controls.number.value,
-    );
-    expect(component.form.controls.operatingPointKilometerMaster.disabled).toBe(true);
-  });
-
-  it('should test component method setOperatingPointRouteNetwork with argument false', () => {
-    component.setOperatingPointRouteNetwork(false);
-
-    expect(component.form.controls.operatingPointRouteNetwork.value).toBe(false);
-    expect(component.form.controls.operatingPointKilometer.value).toBe(false);
-    expect(component.form.controls.operatingPointKilometer.enabled).toBe(true);
-    expect(component.form.controls.operatingPointKilometerMaster.value).toBe(null);
-    expect(component.form.controls.operatingPointKilometerMaster.enabled).toBe(true);
-  });
-
-  it('should test component method setOperatingPointKilometer with argument true', () => {
-    component.setOperatingPointKilometer(true);
-
-    expect(component.form.controls.operatingPointKilometer.value).toBe(true);
-  });
-
-  it('should test component method setOperatingPointKilometer with argument false', () => {
-    component.setOperatingPointKilometer(false);
-    expect(component.form.controls.operatingPointKilometer.value).toBe(false);
   });
 });

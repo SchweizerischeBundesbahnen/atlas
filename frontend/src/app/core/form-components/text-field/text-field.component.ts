@@ -21,4 +21,5 @@ export class TextFieldComponent {
   customChildInputPostfixTemplate!: TemplateRef<any>;
   @ContentChild('customChildInputPrefixTemplate') customChildInputPrefixTemplate!: TemplateRef<any>;
   @Input() formGroup!: FormGroup;
+  @Input() placeholder = '';
 }
