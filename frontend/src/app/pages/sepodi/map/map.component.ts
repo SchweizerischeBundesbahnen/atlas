@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, Input, OnDestroy, ViewChild } from '@angular/core';
-import maplibregl, { Map } from 'maplibre-gl';
+import { Map } from 'maplibre-gl';
 import { MapService } from './map.service';
 import { MAP_STYLES, MapStyle } from './map-options.service';
 import { MapIcon, MapIconsService } from './map-icons.service';
@@ -33,8 +33,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   ngAfterViewInit() {
     this.map = this.mapService.initMap(this.mapContainer.nativeElement);
     this.currentMapStyle = this.mapService.currentMapStyle;
-    MapIconsService.getIconsAsImages().then((icons) => (this.legend = icons));
-
+    MapIconsService.getIconsAsImages().then((icons) => this.legend = icons);
     this.handleMapClick();
   }
 

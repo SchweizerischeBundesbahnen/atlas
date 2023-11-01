@@ -107,29 +107,29 @@ export const MAP_STYLE_SPEC: StyleSpecification = {
       id: MAP_SOURCE_NAME,
       'source-layer': MAP_LAYER_NAME,
       source: MAP_SOURCE_NAME,
-      type: 'symbol',
-      layout: {
-        'icon-image': ['get', 'type'],
-        'icon-size': [
+      type: 'circle',
+      paint: {
+        'circle-radius': [
           'interpolate',
           ['linear'],
           ['zoom'],
-          // zoom is 9 (or less) -> icon-size will be 0.2
-          9,
-          0.2,
-          10,
-          0.4,
-          12,
-          0.6,
-          14,
-          0.8,
-          // zoom is 16 (or greater) -> icon-size will be 1
-          16,
-          1,
+          9, 0.2 * 10,
+          10, 0.4 * 10, 
+          12, 0.6 * 10, 
+          14, 0.8 * 10, 
+          16, 1 * 10
         ],
-        'icon-allow-overlap': true,
-        'icon-ignore-placement': true,
-      },
+        'circle-color': [
+          'match',
+          ['get', 'type'],
+          'STOP_POINT', '#1c429c',
+          'FREIGHT_SERVICE_POINT', '#1c429c',
+          'STOP_POINT_AND_FREIGHT_SERVICE_POINT', '#1c429c',
+          'SERVICE_POINT', '#e3bd63',
+          'OPERATING_POINT_TECHNICAL', '#008000',
+          'rgba(0, 0, 0, 0)' // 100% transparentes Schwarz
+        ],
+      }
     },
     {
       id: 'current_coordinates',
