@@ -32,11 +32,9 @@ export class CoordinateTransformationService {
   }
 
   isCoordinatesPairValidForTransformation(coordinates: CoordinatePair) {
-    return this.isCoordinatePairNotZero(coordinates) && !!coordinates.north && !!coordinates.east;
-  }
-
-  private isCoordinatePairNotZero(coordinates: CoordinatePair): boolean {
-    return coordinates.north !== 0 && coordinates.east !== 0;
+    return (
+      coordinates.north !== 0 && coordinates.east !== 0 && !!coordinates.north && !!coordinates.east
+    );
   }
 
   isValidCoordinatePair(coordinates: CoordinatePair): boolean {
