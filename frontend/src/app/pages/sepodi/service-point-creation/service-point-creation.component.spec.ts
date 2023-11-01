@@ -84,7 +84,7 @@ describe('ServicePointCreationComponent', () => {
 
     expect(mapServiceSpy.placeMarkerAndFlyTo).toHaveBeenCalledOnceWith({ lat: 2, lng: 2 });
     expect(mapServiceSpy.isGeolocationActivated.next).toHaveBeenCalledOnceWith(true);
-    expect(mapServiceSpy.isEditMode.next).toHaveBeenCalledOnceWith(true);
+    expect(mapServiceSpy.coordinateSelectionMode.next).toHaveBeenCalledOnceWith(true);
   });
 
   it('should save', () => {
