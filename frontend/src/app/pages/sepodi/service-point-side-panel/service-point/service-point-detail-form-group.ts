@@ -18,7 +18,10 @@ import { AtlasFieldLengthValidator } from '../../../../core/validation/field-len
 import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
 import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
 import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
-import { GeographyFormGroup } from '../../geography/geography-form-group';
+import {
+  GeographyFormGroup,
+  GeographyFormGroupBuilder,
+} from '../../geography/geography-form-group';
 import { ServicePointType } from './service-point-type';
 import { AtLeastOneValidator } from '../../../../core/validation/boolean-cross-validator/at-least-one-validator';
 import { LV95_MAX_DIGITS, WGS84_MAX_DIGITS } from '../../geography/geography.component';
@@ -86,12 +89,7 @@ export class ServicePointFormGroupBuilder {
         stopPointType: new FormControl(),
         meansOfTransport: new FormControl([]),
         categories: new FormControl([]),
-        servicePointGeolocation: new FormGroup<GeographyFormGroup>({
-          east: new FormControl(),
-          north: new FormControl(),
-          height: new FormControl(null, [AtlasCharsetsValidator.decimalWithDigits(4)]),
-          spatialReference: new FormControl(),
-        }),
+        servicePointGeolocation: GeographyFormGroupBuilder.buildFormGroup(),
         operatingPointRouteNetwork: new FormControl(),
         operatingPointKilometer: new FormControl(),
         operatingPointKilometerMaster: new FormControl(),
@@ -156,18 +154,9 @@ export class ServicePointFormGroupBuilder {
         stopPointType: new FormControl(version.stopPointType),
         meansOfTransport: new FormControl(version.meansOfTransport),
         categories: new FormControl(version.categories),
-        servicePointGeolocation: new FormGroup<GeographyFormGroup>({
-          east: new FormControl(this.getCoordinates(version)?.east, [
-            this.getValidatorForCoordinates(version.servicePointGeolocation?.spatialReference),
-          ]),
-          north: new FormControl(this.getCoordinates(version)?.north, [
-            this.getValidatorForCoordinates(version.servicePointGeolocation?.spatialReference),
-          ]),
-          height: new FormControl(version.servicePointGeolocation?.height, [
-            AtlasCharsetsValidator.decimalWithDigits(4),
-          ]),
-          spatialReference: new FormControl(version.servicePointGeolocation?.spatialReference),
-        }),
+        servicePointGeolocation: GeographyFormGroupBuilder.buildFormGroup(
+          version.servicePointGeolocation,
+        ),
         operatingPointRouteNetwork: new FormControl(version.operatingPointRouteNetwork),
         operatingPointKilometer: new FormControl(version.operatingPointKilometer),
         operatingPointKilometerMaster: new FormControl(
@@ -189,13 +178,6 @@ export class ServicePointFormGroupBuilder {
     return formGroup;
   }
 
-  private static getCoordinates(version: ReadServicePointVersion) {
-    if (version.servicePointGeolocation?.spatialReference === SpatialReference.Wgs84) {
-      return version.servicePointGeolocation?.wgs84;
-    }
-    return version.servicePointGeolocation?.lv95;
-  }
-
   private static determineType(version: ReadServicePointVersion) {
     if (version.operatingPointType || version.operatingPointTechnicalTimetableType) {
       return ServicePointType.OperatingPoint;
@@ -213,7 +195,6 @@ export class ServicePointFormGroupBuilder {
     this.initSelectedTypeValidation(formGroup);
     this.initStopPointValidation(formGroup);
     this.initFreightServicePointValidation(formGroup);
-    this.initConditionalLocationValidators(formGroup);
   }
 
   private static initSelectedTypeValidation(formGroup: FormGroup<ServicePointDetailFormGroup>) {
@@ -265,49 +246,6 @@ export class ServicePointFormGroupBuilder {
       }
       formGroup.controls.sortCodeOfDestinationStation.updateValueAndValidity();
     });
-  }
-
-  private static initConditionalLocationValidators(
-    formGroup: FormGroup<ServicePointDetailFormGroup>,
-  ) {
-    formGroup.controls.servicePointGeolocation.controls.spatialReference.valueChanges.subscribe(
-      (newSpatialReference) => {
-        if (newSpatialReference === SpatialReference.Wgs84) {
-          formGroup.controls.servicePointGeolocation.controls.east.setValidators([
-            Validators.required,
-            Validators.min(-180),
-            Validators.max(180),
-            this.getValidatorForCoordinates(newSpatialReference),
-          ]);
-          formGroup.controls.servicePointGeolocation.controls.north.setValidators([
-            Validators.required,
-            Validators.min(-90),
-            Validators.max(90),
-            this.getValidatorForCoordinates(newSpatialReference),
-          ]);
-        } else if (newSpatialReference === SpatialReference.Lv95) {
-          formGroup.controls.servicePointGeolocation.controls.east.setValidators([
-            Validators.required,
-            this.getValidatorForCoordinates(newSpatialReference),
-          ]);
-          formGroup.controls.servicePointGeolocation.controls.north.setValidators([
-            Validators.required,
-            this.getValidatorForCoordinates(newSpatialReference),
-          ]);
-        } else {
-          formGroup.controls.servicePointGeolocation.controls.east.clearValidators();
-          formGroup.controls.servicePointGeolocation.controls.north.clearValidators();
-        }
-        formGroup.controls.servicePointGeolocation.controls.east.updateValueAndValidity();
-        formGroup.controls.servicePointGeolocation.controls.north.updateValueAndValidity();
-      },
-    );
-  }
-
-  private static getValidatorForCoordinates(spatialReference?: SpatialReference) {
-    return AtlasCharsetsValidator.decimalWithDigits(
-      spatialReference == SpatialReference.Lv95 ? LV95_MAX_DIGITS : WGS84_MAX_DIGITS,
-    );
   }
 
   static getWritableServicePoint(
