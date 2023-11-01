@@ -31,15 +31,15 @@ describe('Company', { testIsolation: false }, () => {
     CommonUtils.typeSearchInput(
       '/business-organisation-directory/v1/companies?**',
       DataCy.TABLE_FILTER_CHIP_INPUT,
-      'SBB-Passengers'
+      'SBB-Passengers',
     );
     cy.get('table tbody')
       .find('tr')
       .first()
       .find('td')
       .first()
-      .then((tdElement) => {
-        tdElement.trigger('click');
+      .should(($tdElement) => {
+        $tdElement.trigger('click');
       });
   });
 });

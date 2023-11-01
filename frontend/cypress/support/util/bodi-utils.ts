@@ -1,5 +1,5 @@
 import CommonUtils from './common-utils';
-import {DataCy} from '../data-cy';
+import { DataCy } from '../data-cy';
 import AngularMaterialConstants from './angular-material-constants';
 
 export default class BodiUtils {
@@ -62,24 +62,24 @@ export default class BodiUtils {
     CommonUtils.typeSearchInput(
       pathToIntercept,
       DataCy.BODI_BUSINESS_ORGANISATION + ' ' + DataCy.TABLE_FILTER_CHIP_INPUT,
-      businessOrganisation.organisationNumber
+      businessOrganisation.organisationNumber,
     );
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
       DataCy.BODI_BUSINESS_ORGANISATION + ' ' + DataCy.TABLE_FILTER_CHIP_INPUT,
-      businessOrganisation.descriptionDe
+      businessOrganisation.descriptionDe,
     );
 
     CommonUtils.selectItemFromDropdownSearchItem(
       DataCy.BODI_BUSINESS_ORGANISATION + ' ' + DataCy.TABLE_FILTER_MULTI_SELECT(1, 0),
-      'Aktiv'
+      'Aktiv',
     );
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
       DataCy.BODI_BUSINESS_ORGANISATION + ' ' + DataCy.TABLE_FILTER_DATE_INPUT(1, 1),
-      businessOrganisation.validTo
+      businessOrganisation.validTo,
     );
   }
 
@@ -107,7 +107,7 @@ export default class BodiUtils {
     CommonUtils.assertItemValue(DataCy.CONTACT_ENTERPRISE_EMAIL, version.contactEnterpriseEmail);
     CommonUtils.assertItemText(
       DataCy.BUSINESS_TYPES + AngularMaterialConstants.MAT_SELECT_TEXT_DEEP_SELECT,
-      version.businessTypes[0] + ', ' + version.businessTypes[1] + ', ' + version.businessTypes[2]
+      version.businessTypes[0] + ', ' + version.businessTypes[1] + ', ' + version.businessTypes[2],
     );
 
     cy.get(DataCy.EDIT_ITEM).should('not.be.disabled');
@@ -123,7 +123,7 @@ export default class BodiUtils {
 
   static saveBusinessOrganisation() {
     CommonUtils.saveVersionWithWait(
-      'business-organisation-directory/v1/business-organisations/versions/*'
+      'business-organisation-directory/v1/business-organisations/versions/*',
     );
   }
 
@@ -186,24 +186,26 @@ export default class BodiUtils {
 
   static interceptGetTransportCompanyRelations(selector: string) {
     cy.intercept('GET', '/business-organisation-directory/v1/transport-company-relations/**').as(
-      'loadRelations'
+      'loadRelations',
     );
     cy.get(selector).click();
     cy.wait('@loadRelations').its('response.statusCode').should('eq', 200);
   }
 
   private static interceptBusinessOrganisations(visitSelector: string) {
+    const selector = cy.get(visitSelector);
+    selector.scrollIntoView();
+
+    selector.should('be.visible');
+    selector.focus();
+    selector.should('be.focused');
+
     cy.intercept('GET', '/business-organisation-directory/v1/business-organisations?**').as(
-      'getBusinessOrganisations'
+      'getBusinessOrganisations',
     );
-    cy.get(visitSelector).scrollIntoView();
-    cy.get(visitSelector)
-      .should('be.visible')
-      .should(($el) => expect(Cypress.dom.isFocusable($el)).to.be.true)
-      .click();
-    cy.wait('@getBusinessOrganisations').then((interception) => {
-      cy.wrap(interception.response?.statusCode).should('eq', 200);
-      cy.url().should('contain', '/business-organisation-directory/business-organisations');
-    });
+    selector.click();
+    cy.wait('@getBusinessOrganisations').its('response.statusCode').should('eq', 200);
+
+    cy.url().should('contain', '/business-organisation-directory/business-organisations');
   }
 }

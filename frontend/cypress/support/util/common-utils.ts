@@ -162,32 +162,23 @@ export default class CommonUtils {
   }
 
   static selectItemFromDropDown(selector: string, value: string) {
-    cy.get(selector)
-      .should('be.visible')
-      .first()
-      .click()
-      .then(() => {
-        // simulate click event on the drop down item (mat-option)
-        CommonUtils.chooseMatOptionByText(value);
-      });
+    cy.get(selector).should('be.visible').first().click();
+    // simulate click event on the drop down item (mat-option)
+    CommonUtils.chooseMatOptionByText(value);
   }
 
   static selectFirstItemFromDropDown(selector: string) {
     cy.get(selector).should('be.visible');
-    cy.get(selector)
-      .first()
-      .click()
-      .then((el) => {
-        // simulate click event on the drop down item (mat-option)
-        CommonUtils.chooseMatOptionByText(undefined);
-      });
+    cy.get(selector).first().click();
+    // simulate click event on the drop down item (mat-option)
+    CommonUtils.chooseMatOptionByText(undefined);
   }
 
   static chooseMatOptionByText(value: string | undefined) {
     cy.get('mat-option > span')
       .should('be.visible')
-      .then((options) => {
-        for (const option of options) {
+      .should(($options) => {
+        for (const option of $options) {
           if (value) {
             if (option.innerText === value) {
               option.click(); // this is jquery click() not cypress click()
@@ -204,8 +195,8 @@ export default class CommonUtils {
     // deselect all
 
     // Deselect all selected dropDownElements
-    cy.get('mat-option').then((options) => {
-      for (const option of options) {
+    cy.get('mat-option').should(($options) => {
+      for (const option of $options) {
         if (option.getAttribute('aria-selected') == 'true') {
           option.click(); // this is jquery click() not cypress click()
         }
@@ -314,13 +305,5 @@ export default class CommonUtils {
   private static clickCancelOnDetailView(overviewPath: string) {
     cy.get(DataCy.CANCEL).click();
     cy.url().should('eq', Cypress.config().baseUrl + '/' + overviewPath);
-  }
-
-  private static openSideMenu() {
-    cy.get('.sidenav-menu-btn span').then(($sidemenuBtnSpan) => {
-      if ($sidemenuBtnSpan.text() === 'Menü') {
-        $sidemenuBtnSpan.trigger('click');
-      }
-    });
   }
 }
