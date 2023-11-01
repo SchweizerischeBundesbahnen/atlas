@@ -8,7 +8,7 @@ import ch.sbb.exportservice.model.BatchExportFileName;
 import ch.sbb.exportservice.entity.LoadingPointVersion;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
-import ch.sbb.exportservice.model.ExportType;
+import ch.sbb.exportservice.model.SePoDiExportType;
 import ch.sbb.exportservice.model.LoadingPointVersionCsvModel;
 import ch.sbb.exportservice.processor.LoadingPointVersionCsvProcessor;
 import ch.sbb.exportservice.processor.LoadingPointVersionJsonProcessor;
@@ -56,11 +56,11 @@ public class LoadingPointVersionExportBatchConfig {
   @StepScope
   public JdbcCursorItemReader<LoadingPointVersion> loadingPointReader(
       @Autowired @Qualifier("servicePointDataSource") DataSource dataSource,
-      @Value("#{jobParameters[exportType]}") ExportType exportType
+      @Value("#{jobParameters[exportType]}") SePoDiExportType sePoDiExportType
   ) {
     JdbcCursorItemReader<LoadingPointVersion> itemReader = new JdbcCursorItemReader<>();
     itemReader.setDataSource(dataSource);
-    itemReader.setSql(LoadingPointVersionSqlQueryUtil.getSqlQuery(exportType));
+    itemReader.setSql(LoadingPointVersionSqlQueryUtil.getSqlQuery(sePoDiExportType));
     itemReader.setFetchSize(StepUtils.FETCH_SIZE);
     itemReader.setRowMapper(new LoadingPointVersionRowMapper());
     return itemReader;
@@ -89,9 +89,9 @@ public class LoadingPointVersionExportBatchConfig {
   @Bean
   @StepScope
   public FlatFileItemWriter<LoadingPointVersionCsvModel> loadingPointCsvWriter(
-      @Value("#{jobParameters[exportType]}") ExportType exportType
+      @Value("#{jobParameters[exportType]}") SePoDiExportType sePoDiExportType
   ) {
-    return csvLoadingPointVersionWriter.csvWriter(exportType, BatchExportFileName.LOADING_POINT_VERSION);
+    return csvLoadingPointVersionWriter.csvWriter(sePoDiExportType, BatchExportFileName.LOADING_POINT_VERSION);
   }
 
   @Bean
@@ -118,9 +118,9 @@ public class LoadingPointVersionExportBatchConfig {
   @Bean
   @StepScope
   public UploadCsvFileTasklet uploadLoadingPointCsvFileTasklet(
-      @Value("#{jobParameters[exportType]}") ExportType exportType
+      @Value("#{jobParameters[exportType]}") SePoDiExportType sePoDiExportType
   ) {
-    return new UploadCsvFileTasklet(exportType, BatchExportFileName.LOADING_POINT_VERSION);
+    return new UploadCsvFileTasklet(sePoDiExportType, BatchExportFileName.LOADING_POINT_VERSION);
   }
 
   @Bean
@@ -134,9 +134,9 @@ public class LoadingPointVersionExportBatchConfig {
   @Bean
   @StepScope
   public FileCsvDeletingTasklet loadingPointCsvFileDeletingTasklet(
-      @Value("#{jobParameters[exportType]}") ExportType exportType
+      @Value("#{jobParameters[exportType]}") SePoDiExportType sePoDiExportType
   ) {
-    return new FileCsvDeletingTasklet(exportType, BatchExportFileName.LOADING_POINT_VERSION);
+    return new FileCsvDeletingTasklet(sePoDiExportType, BatchExportFileName.LOADING_POINT_VERSION);
   }
 
   @Bean
@@ -163,8 +163,8 @@ public class LoadingPointVersionExportBatchConfig {
   @Bean
   @StepScope
   public UploadJsonFileTasklet uploadLoadingPointJsonFileTasklet(
-      @Value("#{jobParameters[exportType]}") ExportType exportType) {
-    return new UploadJsonFileTasklet(exportType, BatchExportFileName.LOADING_POINT_VERSION);
+      @Value("#{jobParameters[exportType]}") SePoDiExportType sePoDiExportType) {
+    return new UploadJsonFileTasklet(sePoDiExportType, BatchExportFileName.LOADING_POINT_VERSION);
   }
 
   @Bean
@@ -178,8 +178,8 @@ public class LoadingPointVersionExportBatchConfig {
   @Bean
   @StepScope
   public FileJsonDeletingTasklet fileLoadingPointJsonDeletingTasklet(
-      @Value("#{jobParameters[exportType]}") ExportType exportType) {
-    return new FileJsonDeletingTasklet(exportType, BatchExportFileName.LOADING_POINT_VERSION);
+      @Value("#{jobParameters[exportType]}") SePoDiExportType sePoDiExportType) {
+    return new FileJsonDeletingTasklet(sePoDiExportType, BatchExportFileName.LOADING_POINT_VERSION);
   }
 
   @Bean
@@ -205,8 +205,8 @@ public class LoadingPointVersionExportBatchConfig {
   @Bean
   @StepScope
   public JsonFileItemWriter<ReadLoadingPointVersionModel> loadingPointJsonFileItemWriter(
-      @Value("#{jobParameters[exportType]}") ExportType exportType) {
-    return jsonLoadingPointVersionWriter.getWriter(exportType, BatchExportFileName.LOADING_POINT_VERSION);
+      @Value("#{jobParameters[exportType]}") SePoDiExportType sePoDiExportType) {
+    return jsonLoadingPointVersionWriter.getWriter(sePoDiExportType, BatchExportFileName.LOADING_POINT_VERSION);
   }
 
 }

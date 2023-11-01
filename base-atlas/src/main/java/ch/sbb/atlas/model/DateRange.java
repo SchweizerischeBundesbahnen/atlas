@@ -3,17 +3,18 @@ package ch.sbb.atlas.model;
 import ch.sbb.atlas.versioning.date.DateHelper;
 import ch.sbb.atlas.versioning.model.Versionable;
 import java.time.LocalDate;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Builder
 @EqualsAndHashCode
 @Getter
 @AllArgsConstructor
+@ToString
 @Setter
 public class DateRange {
 
