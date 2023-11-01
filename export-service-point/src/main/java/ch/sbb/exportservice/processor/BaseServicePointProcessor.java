@@ -1,12 +1,12 @@
 package ch.sbb.exportservice.processor;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
-import ch.sbb.atlas.api.servicepoint.GeolocationBaseReadModel;
-import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationReadModel;
-import ch.sbb.atlas.api.servicepoint.SwissLocation;
 import ch.sbb.atlas.api.servicepoint.Canton;
 import ch.sbb.atlas.api.servicepoint.DistrictModel;
+import ch.sbb.atlas.api.servicepoint.GeolocationBaseReadModel;
 import ch.sbb.atlas.api.servicepoint.LocalityMunicipalityModel;
+import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationReadModel;
+import ch.sbb.atlas.api.servicepoint.SwissLocation;
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
@@ -19,6 +19,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Stream;
 
 public abstract class BaseServicePointProcessor {
@@ -29,8 +30,8 @@ public abstract class BaseServicePointProcessor {
 
   CoordinateTransformer coordinateTransformer = new CoordinateTransformer();
 
-  protected static List<MeanOfTransport> getMeansOfTransportSorted(ServicePointVersion servicePointVersion) {
-    return servicePointVersion.getMeansOfTransport().stream().sorted().toList();
+  protected static List<MeanOfTransport> getMeansOfTransportSorted(Set<MeanOfTransport> meanOfTransports) {
+    return meanOfTransports.stream().sorted().toList();
   }
 
   protected static List<Category> getCategoriesSorted(ServicePointVersion servicePointVersion) {

@@ -18,6 +18,8 @@
 - [Jobs](#jobs)
   * [Export ServicePointVersions](#export-servicepointversions)
   * [Export TrafficPointElementVersions](#export-trafficpointelementversions)
+  * [Export LoadingPointVersions](#export-loadingpointversions)
+  * [Export StopPointVersions](#export-stoppointversions)
   * [Jobs Recovery](#jobs-recovery)
 - [Tech Stack](#tech-stack)
 
@@ -109,7 +111,7 @@ Job is responsible to:
 * read [ServicePointVersion](src/main/java/ch/sbb/exportservice/entity/ServicePointVersion.java) data from ServicePoint
   dataSource
 * generate zipped CSV and gzipped JSON Files based
-  on [ExportType.java](src/main/java/ch/sbb/exportservice/model/ExportType.java):
+  on [ExportType.java](src/main/java/ch/sbb/exportservice/model/SePoDiExportType.java):
     * actual-date
         * world
         * swiss-only
@@ -129,13 +131,45 @@ Job is responsible to:
 * read [TrafficPointElementVersions](src/main/java/ch/sbb/exportservice/entity/TrafficPointElementVersion.java) data
   from ServicePoint dataSource
 * generate zipped CSV and gzipped JSON Files based
-  on [ExportType.java](src/main/java/ch/sbb/exportservice/model/ExportType.java):
+  on [ExportType.java](src/main/java/ch/sbb/exportservice/model/SePoDiExportType.java):
     * actual-date
         * world
     * full
         * world
     * future-timetable
         * world
+
+
+### Export LoadingPointVersions
+
+The
+export [LoadingPointVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/config/LoadingPointVersionExportBatchConfig.java)
+Job is responsible to:
+
+* read [LoadingPointVersions](src/main/java/ch/sbb/exportservice/entity/LoadingPointVersion.java) data
+  from ServicePoint dataSource
+* generate zipped CSV and gzipped JSON Files based
+  on [ExportType.java](src/main/java/ch/sbb/exportservice/model/SePoDiExportType.java):
+    * actual-date
+        * world
+    * full
+        * world
+    * future-timetable
+        * world
+
+### Export StopPointVersions
+
+The
+export [StopPointVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/config/StopPointVersionExportBatchConfig.java)
+Job is responsible to:
+
+* read [StopPointVersions](src/main/java/ch/sbb/exportservice/entity/StopPointVersion.java) data
+  from Prm dataSource
+* generate zipped CSV and gzipped JSON Files based
+  on [PrmExportType.java](src/main/java/ch/sbb/exportservice/model/PrmExportType.java):
+    * actual-date
+    * full
+    * future-timetable
 
 ### Jobs Recovery
 

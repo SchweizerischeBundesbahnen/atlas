@@ -1,4 +1,4 @@
-package ch.sbb.atlas.servicepointdirectory.service;
+package ch.sbb.atlas.imports.util;
 
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvParser.Feature;

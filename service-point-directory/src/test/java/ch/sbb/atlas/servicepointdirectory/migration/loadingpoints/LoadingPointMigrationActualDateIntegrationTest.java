@@ -2,9 +2,9 @@ package ch.sbb.atlas.servicepointdirectory.migration.loadingpoints;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.atlas.servicepointdirectory.migration.CsvReader;
+import ch.sbb.atlas.imports.util.CsvReader;
 import ch.sbb.atlas.model.DateRange;
+import ch.sbb.atlas.model.controller.IntegrationTest;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;

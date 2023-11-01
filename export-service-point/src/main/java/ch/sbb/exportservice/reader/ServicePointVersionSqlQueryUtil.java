@@ -2,7 +2,7 @@ package ch.sbb.exportservice.reader;
 
 import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.versioning.date.DateHelper;
-import ch.sbb.exportservice.model.ExportType;
+import ch.sbb.exportservice.model.SePoDiExportType;
 import java.time.LocalDate;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
@@ -37,11 +37,11 @@ public class ServicePointVersionSqlQueryUtil {
       + "'%s' between spv.valid_from and spv.valid_to ";
   private static final String WORLD_ONLY_ACTUAL_WHERE_STATEMENT = " WHERE '%s' between spv.valid_from and spv.valid_to ";
 
-  public String getSqlQuery(ExportType exportType) {
-    log.info("ExportType: {}", exportType);
-    StringBuilder sqlQueryBuilder = new StringBuilder(getFromStatementQuery(exportType));
-    if (getSqlWhereClause(exportType) != null) {
-      sqlQueryBuilder.append(getSqlWhereClause(exportType));
+  public String getSqlQuery(SePoDiExportType sePoDiExportType) {
+    log.info("ExportType: {}", sePoDiExportType);
+    StringBuilder sqlQueryBuilder = new StringBuilder(getFromStatementQuery(sePoDiExportType));
+    if (getSqlWhereClause(sePoDiExportType) != null) {
+      sqlQueryBuilder.append(getSqlWhereClause(sePoDiExportType));
     }
     sqlQueryBuilder.append(GROUP_BY_STATEMENT);
     String sqlQuery = sqlQueryBuilder.toString();
@@ -49,9 +49,9 @@ public class ServicePointVersionSqlQueryUtil {
     return sqlQuery;
   }
 
-  private String getSqlWhereClause(ExportType exportType) {
+  private String getSqlWhereClause(SePoDiExportType sePoDiExportType) {
     LocalDate nextTimetableYearStartDate = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
-    return switch (exportType) {
+    return switch (sePoDiExportType) {
       case SWISS_ONLY_FULL -> SWISS_ONLY_FULL_WHERE_STATEMENT;
       case SWISS_ONLY_ACTUAL -> String.format(SWISS_ONLY_ACTUAL_WHERE_STATEMENT, DateHelper.getDateAsSqlString(LocalDate.now()));
       case SWISS_ONLY_TIMETABLE_FUTURE ->
@@ -63,9 +63,9 @@ public class ServicePointVersionSqlQueryUtil {
     };
   }
 
-  private String getFromStatementQuery(ExportType exportType) {
+  private String getFromStatementQuery(SePoDiExportType sePoDiExportType) {
     LocalDate nextTimetableYearStartDate = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
-    return switch (exportType) {
+    return switch (sePoDiExportType) {
       case SWISS_ONLY_FULL, SWISS_ONLY_ACTUAL,
           WORLD_FULL, WORLD_ONLY_ACTUAL ->
           String.format(SELECT_AND_JOIN_STATEMENT, DateHelper.getDateAsSqlString(LocalDate.now()));

@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.versioning.date.DateHelper;
-import ch.sbb.exportservice.model.ExportType;
+import ch.sbb.exportservice.model.SePoDiExportType;
 import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +18,7 @@ class SqlQueryUtilTest {
     // given
     // when
     final String query = SqlQueryUtil.getFromStatementQueryForWorldOnlyTypes(
-        ExportType.WORLD_ONLY_TIMETABLE_FUTURE, FROM_STATEMENT);
+        SePoDiExportType.WORLD_ONLY_TIMETABLE_FUTURE, FROM_STATEMENT);
 
     // then
     final LocalDate expectedDate = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
@@ -31,7 +31,7 @@ class SqlQueryUtilTest {
     // given
     // when
     final String query = SqlQueryUtil.getFromStatementQueryForWorldOnlyTypes(
-        ExportType.WORLD_FULL, FROM_STATEMENT);
+        SePoDiExportType.WORLD_FULL, FROM_STATEMENT);
 
     // then
     final LocalDate expectedDate = LocalDate.now();
@@ -44,7 +44,7 @@ class SqlQueryUtilTest {
     // given
     // when
     final String query = SqlQueryUtil.getFromStatementQueryForWorldOnlyTypes(
-        ExportType.WORLD_ONLY_ACTUAL, FROM_STATEMENT);
+        SePoDiExportType.WORLD_ONLY_ACTUAL, FROM_STATEMENT);
 
     // then
     final LocalDate expectedDate = LocalDate.now();
@@ -56,7 +56,7 @@ class SqlQueryUtilTest {
   void shouldReturnWhereClauseForWorldOnlyFutureTimetable() {
     // given
     // when
-    final String query = SqlQueryUtil.getWhereClauseForWorldOnlyTypes(ExportType.WORLD_ONLY_TIMETABLE_FUTURE, WHERE_CLAUSE);
+    final String query = SqlQueryUtil.getWhereClauseForWorldOnlyTypes(SePoDiExportType.WORLD_ONLY_TIMETABLE_FUTURE, WHERE_CLAUSE);
 
     // then
     final LocalDate expectedDate = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
@@ -68,7 +68,7 @@ class SqlQueryUtilTest {
   void shouldReturnWhereClauseForWorldOnlyFull() {
     // given
     // when
-    final String query = SqlQueryUtil.getWhereClauseForWorldOnlyTypes(ExportType.WORLD_FULL, WHERE_CLAUSE);
+    final String query = SqlQueryUtil.getWhereClauseForWorldOnlyTypes(SePoDiExportType.WORLD_FULL, WHERE_CLAUSE);
 
     // then
     assertThat(query).isEqualTo("");
@@ -78,7 +78,7 @@ class SqlQueryUtilTest {
   void shouldReturnWhereClauseForWorldOnlyActual() {
     // given
     // when
-    final String query = SqlQueryUtil.getWhereClauseForWorldOnlyTypes(ExportType.WORLD_ONLY_ACTUAL, WHERE_CLAUSE);
+    final String query = SqlQueryUtil.getWhereClauseForWorldOnlyTypes(SePoDiExportType.WORLD_ONLY_ACTUAL, WHERE_CLAUSE);
 
     // then
     final LocalDate expectedDate = LocalDate.now();
