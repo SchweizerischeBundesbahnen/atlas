@@ -8,12 +8,13 @@ public class StopPointUtil {
 
   public static final String TILDE_SEPARATOR = "~";
   public static final String EMPTY_CHAR = "";
+  public static final int ONE_TRANSPORTATION_MEAN_CODE_LENGTH = 3;
 
   /**
    * To be able to compare correctly two versions we need to sort the transportationMeans
    */
   public static String sortTransportationMeans(String transportationMeans) {
-    if (transportationMeans != null && transportationMeans.length() > 3) {
+    if (transportationMeans != null && transportationMeans.length() > ONE_TRANSPORTATION_MEAN_CODE_LENGTH) {
       char[] charArray = transportationMeans.replace(TILDE_SEPARATOR, EMPTY_CHAR).toCharArray();
       Arrays.sort(charArray);
       StringBuilder builder = new StringBuilder(TILDE_SEPARATOR);
