@@ -39,7 +39,7 @@ const mapService = jasmine.createSpyObj<MapService>([
 const markerSpy = jasmine.createSpyObj('Marker', ['addTo', 'setLngLat', 'remove']);
 
 mapSpy.getCanvas.and.returnValue(mapCanvasMock);
-mapService.isEditMode = isEditModeSubject;
+mapService.coordinateSelectionMode = isEditModeSubject;
 mapService.clickedGeographyCoordinates = clickedGeographyCoordinatesSubject; // Weise dem Spion den BehaviorSubject zu
 mapService.isGeolocationActivated = new BehaviorSubject<boolean>(true);
 
@@ -137,7 +137,7 @@ describe('MapComponent', () => {
 
   it('should enter edit mode', () => {
     component.enterEditMode();
-    expect(mapService.isEditMode.value).toBeTrue();
+    expect(mapService.coordinateSelectionMode.value).toBeTrue();
     expect(mapSpy.getCanvas).toHaveBeenCalled();
     expect(mapSpy.getCanvas().style.cursor).toBe('crosshair');
     expect(component.map.on).toHaveBeenCalledWith('click', component.onMapClicked);
