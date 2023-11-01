@@ -94,7 +94,7 @@ public class ImportServicePointBatchController {
              JobParametersInvalidException | IllegalArgumentException e) {
       throw new JobExecutionException(IMPORT_SERVICE_POINT_CSV_JOB_NAME, e);
     } finally {
-      Files.delete(file.toPath());
+      Files.deleteIfExists(file.toPath());
     }
   }
 
@@ -135,7 +135,7 @@ public class ImportServicePointBatchController {
              JobParametersInvalidException e) {
       throw new JobExecutionException(IMPORT_LOADING_POINT_CSV_JOB_NAME, e);
     } finally {
-      Files.delete(file.toPath());
+      Files.deleteIfExists(file.toPath());
     }
   }
 
@@ -176,7 +176,7 @@ public class ImportServicePointBatchController {
              JobParametersInvalidException e) {
       throw new JobExecutionException(IMPORT_TRAFFIC_POINT_CSV_JOB_NAME, e);
     } finally {
-      Files.delete(file.toPath());
+      Files.deleteIfExists(file.toPath());
     }
   }
 
