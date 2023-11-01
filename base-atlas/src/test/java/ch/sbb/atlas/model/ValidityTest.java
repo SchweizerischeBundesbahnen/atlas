@@ -1,8 +1,7 @@
-package ch.sbb.atlas.migration;
+package ch.sbb.atlas.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.model.DateRange;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
