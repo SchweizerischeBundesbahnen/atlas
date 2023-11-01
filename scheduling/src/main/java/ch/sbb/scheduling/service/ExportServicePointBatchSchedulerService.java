@@ -15,10 +15,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class ExportServicePointBatchSchedulerService extends BaseSchedulerService {
 
-  private final ExportServicePointBatchClient importServicePointBatchClient;
+  private final ExportServicePointBatchClient exportServicePointBatchClient;
 
-  public ExportServicePointBatchSchedulerService(ExportServicePointBatchClient importServicePointBatchClient) {
-    this.importServicePointBatchClient = importServicePointBatchClient;
+  public ExportServicePointBatchSchedulerService(ExportServicePointBatchClient exportServicePointBatchClient) {
+    this.exportServicePointBatchClient = exportServicePointBatchClient;
     this.clientName = "ExportServicePointBatch-Client";
   }
 
@@ -28,7 +28,7 @@ public class ExportServicePointBatchSchedulerService extends BaseSchedulerServic
   @Scheduled(cron = "${scheduler.export-service-point.service-point-trigger-batch.chron}", zone = "${scheduler.zone}")
   @SchedulerLock(name = "triggerImportServicePointBatch", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
   public Response postTriggerExportServicePointBatch() {
-    return executeRequest(importServicePointBatchClient::postTriggerExportServicePointBatch,
+    return executeRequest(exportServicePointBatchClient::postTriggerExportServicePointBatch,
         "Trigger Export Service Point Batch");
   }
 
@@ -38,7 +38,7 @@ public class ExportServicePointBatchSchedulerService extends BaseSchedulerServic
   @Scheduled(cron = "${scheduler.export-service-point.traffic-point-trigger-batch.chron}", zone = "${scheduler.zone}")
   @SchedulerLock(name = "triggerImportTrafficPointBatch", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
   public Response postTriggerExportTrafficPointBatch() {
-    return executeRequest(importServicePointBatchClient::postTriggerExportTrafficPointBatch,
+    return executeRequest(exportServicePointBatchClient::postTriggerExportTrafficPointBatch,
         "Trigger Export Traffic Point Batch");
   }
 
@@ -48,7 +48,17 @@ public class ExportServicePointBatchSchedulerService extends BaseSchedulerServic
   @Scheduled(cron = "${scheduler.export-service-point.loading-point-trigger-batch.chron}", zone = "${scheduler.zone}")
   @SchedulerLock(name = "triggerImportLoadingPointBatch", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
   public Response postTriggerExportLoadingPointBatch() {
-    return executeRequest(importServicePointBatchClient::postTriggerExportLoadingPointBatch,
+    return executeRequest(exportServicePointBatchClient::postTriggerExportLoadingPointBatch,
+        "Trigger Export Loading Point Batch");
+  }
+
+  @SpanTracing
+  @Retryable(label = "triggerExportStopPointBatch", retryFor = SchedulingExecutionException.class, maxAttempts = 4, backoff =
+  @Backoff(delay = 65000))
+  @Scheduled(cron = "${scheduler.export-service-point.stop-point-trigger-batch.chron}", zone = "${scheduler.zone}")
+  @SchedulerLock(name = "triggerImportStopPointBatch", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
+  public Response postTriggerExportStopPointBatch() {
+    return executeRequest(exportServicePointBatchClient::postTriggerExportStopPointBatch,
         "Trigger Export Loading Point Batch");
   }
 
