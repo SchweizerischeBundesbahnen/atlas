@@ -24,11 +24,7 @@ export * from './containerLineVersionSnapshot';
 export * from './containerReadLoadingPointVersion';
 export * from './containerReadServicePointVersion';
 export * from './containerReadStopPointVersion';
-<<<<<<< HEAD
-export * from './containerReadTrafficPointElementVersionModel';
-=======
 export * from './containerReadTrafficPointElementVersion';
->>>>>>> 0d5a2f109 (ATLAS-1307: Write type enum to DB)
 export * from './containerSubline';
 export * from './containerTimetableFieldNumber';
 export * from './containerTimetableHearingStatement';
@@ -99,11 +95,7 @@ export * from './readServicePointVersion';
 export * from './readStopPointVersion';
 export * from './readTicketCounterVersion';
 export * from './readToiletVersion';
-<<<<<<< HEAD
-export * from './readTrafficPointElementVersionModel';
-=======
 export * from './readTrafficPointElementVersion';
->>>>>>> 0d5a2f109 (ATLAS-1307: Write type enum to DB)
 export * from './referencePointAttributeType';
 export * from './referencePointElementType';
 export * from './sboidPermissionRestrictionModel';
