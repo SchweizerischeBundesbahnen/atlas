@@ -141,23 +141,9 @@
     </div>
   </div>
 
-  <div class="font-bold-2xl mt-5">
-    {{ 'SEPODI.GEOLOCATION.GEOGRAPHY' | translate }}
-
-    <form-info-icon
-      infoTitle="{{ 'SEPODI.GEOLOCATION.GEOGRAPHY_INFORMATION' | translate }}"
-    ></form-info-icon>
-
-    <atlas-slide-toggle
-      [toggle]="!!form.controls.servicePointGeolocation.controls.spatialReference.value"
-      (toggleChange)="onGeolocationToggleChange($event)"
-      [disabled]="form.disabled"
-    ></atlas-slide-toggle>
-  </div>
-
   <sepodi-geography
-    *ngIf="form.value.servicePointGeolocation?.spatialReference"
     [formGroup]="form.controls.servicePointGeolocation"
+    [editMode]="form.enabled"
   ></sepodi-geography>
 
   <div *ngIf="form.value.servicePointGeolocation?.spatialReference && currentVersion">
