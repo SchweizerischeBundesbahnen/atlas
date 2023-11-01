@@ -1,8 +1,5 @@
 package ch.sbb.prm.directory.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
@@ -18,11 +15,16 @@ import ch.sbb.prm.directory.repository.InformationDeskRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.RelationRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
-import java.util.List;
+import org.assertj.core.api.AbstractComparableAssert;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @IntegrationTest
 @Transactional
@@ -55,7 +57,7 @@ class InformationDeskServiceTest {
 
     //when & then
     assertThrows(StopPointDoesNotExistsException.class,
-        () -> informationDeskService.createInformationDesk(informationDesk)).getLocalizedMessage();
+        () -> informationDeskService.createInformationDesk(informationDesk, null)).getLocalizedMessage();
   }
 
   @Test
@@ -68,7 +70,7 @@ class InformationDeskServiceTest {
     InformationDeskVersion informationDesk = InformationDeskTestData.getInformationDeskVersion();
     informationDesk.setParentServicePointSloid(parentServicePointSloid);
     //when
-    informationDeskService.createInformationDesk(informationDesk);
+    informationDeskService.createInformationDesk(informationDesk, null);
 
     //then
     List<InformationDeskVersion> informationDeskVersions = informationDeskRepository.findByParentServicePointSloid(
@@ -94,7 +96,7 @@ class InformationDeskServiceTest {
     informationDesk.setParentServicePointSloid(parentServicePointSloid);
 
     //when
-    informationDeskService.createInformationDesk(informationDesk);
+    informationDeskService.createInformationDesk(informationDesk, null);
 
     //then
     List<InformationDeskVersion> informationDeskVersions = informationDeskRepository.findByParentServicePointSloid(
