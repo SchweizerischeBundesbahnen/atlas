@@ -1,6 +1,9 @@
 package ch.sbb.atlas.user.administration.security.service;
 
+import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
+import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationModel;
+import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionModel;
 import ch.sbb.atlas.servicepoint.SharedServicePointVersionModel;
 import ch.sbb.atlas.user.administration.security.UserPermissionHolder;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.Optional;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -45,6 +49,57 @@ public class PrmBusinessOrganisationBasedUserAdministrationServiceTest {
                 getSomeSharedServicePointVersionModels(), ApplicationType.PRM);
 
         assertThat(permissionsToCreate).isTrue();
+    }
+
+    @Test
+    void shouldAllowCreateToSuperVisorUser() {
+        when(userPermissionHolder.getCurrentUser()).thenReturn(Optional.of(UserAdministrationModel.builder()
+                .userId("e123456")
+                .permissions(Set.of(
+                        UserAdministrationPermissionModel.builder()
+                                .application(ApplicationType.PRM)
+                                .role(ApplicationRole.SUPERVISOR)
+                                .build()))
+                .build()));
+
+        boolean permissionsToCreate = prmBOBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations(
+                getSomeSharedServicePointVersionModels(), ApplicationType.PRM);
+
+        assertThat(permissionsToCreate).isTrue();
+    }
+
+    @Test
+    void shouldAllowCreateToSuperUser() {
+        when(userPermissionHolder.getCurrentUser()).thenReturn(Optional.of(UserAdministrationModel.builder()
+                .userId("e123456")
+                .permissions(Set.of(
+                        UserAdministrationPermissionModel.builder()
+                                .application(ApplicationType.PRM)
+                                .role(ApplicationRole.SUPER_USER)
+                                .build()))
+                .build()));
+
+        boolean permissionsToCreate = prmBOBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations(
+                getSomeSharedServicePointVersionModels(), ApplicationType.PRM);
+
+        assertThat(permissionsToCreate).isTrue();
+    }
+
+    @Test
+    void shouldNotAllowCreateToReaderUser() {
+        when(userPermissionHolder.getCurrentUser()).thenReturn(Optional.of(UserAdministrationModel.builder()
+                .userId("e123456")
+                .permissions(Set.of(
+                        UserAdministrationPermissionModel.builder()
+                                .application(ApplicationType.PRM)
+                                .role(ApplicationRole.READER)
+                                .build()))
+                .build()));
+
+        boolean permissionsToCreate = prmBOBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations(
+                getSomeSharedServicePointVersionModels(), ApplicationType.PRM);
+
+        assertThat(permissionsToCreate).isFalse();
     }
 
 }
