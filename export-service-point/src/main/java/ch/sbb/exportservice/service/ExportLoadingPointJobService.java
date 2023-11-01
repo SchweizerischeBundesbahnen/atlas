@@ -3,7 +3,8 @@ package ch.sbb.exportservice.service;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_LOADING_POINT_CSV_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_LOADING_POINT_JSON_JOB_NAME;
 
-import ch.sbb.exportservice.model.ExportType;
+import ch.sbb.atlas.export.enumeration.ExportTypeBase;
+import ch.sbb.exportservice.model.SePoDiExportType;
 import java.util.List;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.launch.JobLauncher;
@@ -22,8 +23,8 @@ public class ExportLoadingPointJobService extends BaseExportJobService {
   }
 
   @Override
-  protected List<ExportType> getExportTypes() {
-    return ExportType.getWorldOnly();
+  protected List<ExportTypeBase> getExportTypes() {
+    return SePoDiExportType.getWorldOnly();
   }
 
 }

@@ -1,6 +1,6 @@
 package ch.sbb.exportservice.reader;
 
-import ch.sbb.exportservice.model.ExportType;
+import ch.sbb.exportservice.model.SePoDiExportType;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,10 +20,10 @@ public class TrafficPointElementVersionSqlQueryUtil extends SqlQueryUtil {
   private static final String WHERE_STATEMENT = "WHERE '%s' between tpev.valid_from and tpev.valid_to ";
   private static final String GROUP_BY_STATEMENT = "GROUP BY spv.id, tpev.id, sbov.id, tpevg.id ";
 
-  public String getSqlQuery(ExportType exportType) {
-    log.info("ExportType: {}", exportType);
-    final String sqlQuery = getFromStatementQueryForWorldOnlyTypes(exportType, SELECT_AND_JOIN_STATEMENT)
-        + getWhereClauseForWorldOnlyTypes(exportType, WHERE_STATEMENT)
+  public String getSqlQuery(SePoDiExportType sePoDiExportType) {
+    log.info("ExportType: {}", sePoDiExportType);
+    final String sqlQuery = getFromStatementQueryForWorldOnlyTypes(sePoDiExportType, SELECT_AND_JOIN_STATEMENT)
+        + getWhereClauseForWorldOnlyTypes(sePoDiExportType, WHERE_STATEMENT)
         + GROUP_BY_STATEMENT;
     log.info("Execution SQL query: {}\n", sqlQuery);
     return sqlQuery;

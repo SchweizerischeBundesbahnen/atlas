@@ -120,7 +120,7 @@ public class FileServiceImpl implements FileService {
   @Override
   public byte[] gzipCompress(byte[] bytes) throws IOException {
     try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        GZIPOutputStream out = new GZIPOutputStream(baos)){
+        GZIPOutputStream out = new GZIPOutputStream(baos)) {
       out.write(bytes, 0, bytes.length);
       out.finish();
 

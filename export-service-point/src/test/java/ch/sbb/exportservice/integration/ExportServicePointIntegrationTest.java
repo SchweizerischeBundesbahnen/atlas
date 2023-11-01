@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.exportservice.BatchDataSourceConfigTest;
-import ch.sbb.exportservice.model.ExportType;
+import ch.sbb.exportservice.model.SePoDiExportType;
 import ch.sbb.exportservice.utils.JobDescriptionConstants;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;
@@ -42,7 +42,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
     // given
     JobParameters jobParameters = new JobParametersBuilder()
         .addString(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, JobDescriptionConstants.EXECUTION_BATCH_PARAMETER)
-        .addString(EXPORT_TYPE_JOB_PARAMETER, ExportType.WORLD_FULL.toString())
+        .addString(EXPORT_TYPE_JOB_PARAMETER, SePoDiExportType.WORLD_FULL.toString())
         .addLong(JobDescriptionConstants.START_AT_JOB_PARAMETER, System.currentTimeMillis()).toJobParameters();
     // when
     JobExecution jobExecution = jobLauncher.run(exportServicePointCsvJob, jobParameters);
@@ -59,7 +59,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
     // given
     JobParameters jobParameters = new JobParametersBuilder()
         .addString(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, JobDescriptionConstants.EXECUTION_BATCH_PARAMETER)
-        .addString(EXPORT_TYPE_JOB_PARAMETER, ExportType.WORLD_FULL.toString())
+        .addString(EXPORT_TYPE_JOB_PARAMETER, SePoDiExportType.WORLD_FULL.toString())
         .addLong(JobDescriptionConstants.START_AT_JOB_PARAMETER, System.currentTimeMillis()).toJobParameters();
     // when
     JobExecution jobExecution = jobLauncher.run(exportServicePointJsonJob, jobParameters);
