@@ -4,12 +4,15 @@ import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import ch.sbb.exportservice.service.MailNotificationService;
 import ch.sbb.exportservice.service.MailProducerService;
 import jakarta.validation.constraints.NotNull;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.batch.core.*;
+import org.springframework.batch.core.BatchStatus;
+import org.springframework.batch.core.ExitStatus;
+import org.springframework.batch.core.JobExecution;
+import org.springframework.batch.core.JobExecutionListener;
+import org.springframework.batch.core.StepExecution;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -29,11 +32,11 @@ public class JobCompletionListener implements JobExecutionListener {
     if (ExitStatus.FAILED.equals(jobExecution.getExitStatus())) {
       Optional<StepExecution> failedStepExecution = jobExecution.getStepExecutions().stream()
           .filter(stepExecution -> stepExecution.getStatus() == BatchStatus.FAILED).findFirst();
-      failedStepExecution.ifPresent(this::sendUnsuccessffulyNotification);
+      failedStepExecution.ifPresent(this::sendUnsuccessfulNotification);
     }
   }
 
-  private void sendUnsuccessffulyNotification(StepExecution stepExecution) {
+  private void sendUnsuccessfulNotification(StepExecution stepExecution) {
     String jobName = getJobName(stepExecution);
     MailNotification mailNotification = mailNotificationService.buildMailErrorNotification(jobName, stepExecution);
     mailProducerService.produceMailNotification(mailNotification);
