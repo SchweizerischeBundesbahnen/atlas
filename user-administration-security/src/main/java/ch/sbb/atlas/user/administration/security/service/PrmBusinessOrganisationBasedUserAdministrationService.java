@@ -23,7 +23,7 @@ public class PrmBusinessOrganisationBasedUserAdministrationService extends BaseU
     }
 
     public boolean hasUserPermissionsForBusinessOrganisations(SboidsAssociated businessObjects,
-                                                             ApplicationType applicationType) {
+                                                              ApplicationType applicationType) {
         if (businessObjects == null || businessObjects.getSboids().isEmpty()) {
             log.error("List of ServicePointVersions was empty. Cannot perform check permissions. Will deny operation");
             return false;
@@ -33,7 +33,7 @@ public class PrmBusinessOrganisationBasedUserAdministrationService extends BaseU
     }
 
 
-    public boolean hasUserPermissionsForBusinessOrganisation(String sboid,
+    private boolean hasUserPermissionsForBusinessOrganisation(String sboid,
                                                              ApplicationType applicationType) {
         log.info("Checking if user {} may create object with sboid {}",
                 getCurrentUserSbbUid(),
