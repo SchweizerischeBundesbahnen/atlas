@@ -37,7 +37,7 @@ public abstract class FileDeletingTasklet<T extends ExportTypeBase> implements T
     try {
       Path path = Paths.get(fileNamePath);
       if(Files.exists(path)){
-        Files.delete(path);
+        Files.deleteIfExists(path);
       }
     } catch (IOException e) {
       log.info("File could not be deleted", e);
