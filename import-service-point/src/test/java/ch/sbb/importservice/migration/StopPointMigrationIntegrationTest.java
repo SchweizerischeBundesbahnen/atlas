@@ -28,7 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @IntegrationTest
 @Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class StopPointMigrationIntegrationTest {
+class StopPointMigrationIntegrationTest {
 
   private static final String DIDOK_STOP_PLACE_CSV_FILE = "PRM_STOP_PLACES.csv";
   private static final String ATLAS_STOP_POINT_CSV_FILE = "full-stop-point-2023-10-31.csv";
@@ -129,9 +129,10 @@ public class StopPointMigrationIntegrationTest {
   @Test
   @Order(5)
   void shouldHaveMappedFieldsToAtlasCorrectly() {
+    assertThat(atlasStopPointCsvLines).isNotEmpty();
     Map<Integer, List<StopPointVersionCsvModel>> groupedAtlasStopPoints = atlasStopPointCsvLines.stream()
         .collect(Collectors.groupingBy(StopPointVersionCsvModel::getNumber));
-
+    assertThat(didokStopPointCsvLines).isNotEmpty();
     didokStopPointCsvLines.forEach(didokCsvLine -> {
       StopPointVersionCsvModel atlasCsvLine = findCorrespondingAtlasStopPointVersion(didokCsvLine,
           groupedAtlasStopPoints.get(MigrationUtil.removeCheckDigit(didokCsvLine.getDidokCode())));
