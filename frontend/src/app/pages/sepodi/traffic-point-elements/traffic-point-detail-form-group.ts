@@ -2,7 +2,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ReadTrafficPointElementVersion, SpatialReference } from '../../../api';
 import moment from 'moment';
 import { BaseDetailFormGroup } from '../../../core/components/base-detail/base-detail-form-group';
-import { GeographyFormGroup } from '../geography/geography-form-group';
+import { GeographyFormGroup, GeographyFormGroupBuilder } from '../geography/geography-form-group';
 import { WhitespaceValidator } from '../../../core/validation/whitespace/whitespace-validator';
 import { AtlasCharsetsValidator } from '../../../core/validation/charsets/atlas-charsets-validator';
 import { DateRangeValidator } from '../../../core/validation/date-range/date-range-validator';
@@ -49,24 +49,9 @@ export class TrafficPointElementFormGroupBuilder {
         validTo: new FormControl(version?.validTo ? moment(version.validTo) : null, [
           Validators.required,
         ]),
-        trafficPointGeolocation: new FormGroup<GeographyFormGroup>({
-          east: new FormControl(this.getCoordinates(version)?.east, [
-            this.getValidatorForCoordinates(
-              version?.trafficPointElementGeolocation?.spatialReference,
-            ),
-          ]),
-          north: new FormControl(this.getCoordinates(version)?.north, [
-            this.getValidatorForCoordinates(
-              version?.trafficPointElementGeolocation?.spatialReference,
-            ),
-          ]),
-          height: new FormControl(version?.trafficPointElementGeolocation?.height, [
-            AtlasCharsetsValidator.decimalWithDigits(4),
-          ]),
-          spatialReference: new FormControl(
-            version?.trafficPointElementGeolocation?.spatialReference,
-          ),
-        }),
+        trafficPointGeolocation: GeographyFormGroupBuilder.buildFormGroup(
+          version?.trafficPointElementGeolocation,
+        ),
         etagVersion: new FormControl(version?.etagVersion),
         creationDate: new FormControl(version?.creationDate),
         editionDate: new FormControl(version?.editionDate),

@@ -35,12 +35,11 @@ export class MapService {
   currentMapStyle!: MapStyle;
   marker = new maplibregl.Marker({ color: '#FF0000' });
 
-  isEditMode = new BehaviorSubject(false);
+  coordinateSelectionMode = false;
   clickedGeographyCoordinates = new BehaviorSubject<CoordinatePairWGS84>({
     lat: 0,
     lng: 0,
   });
-  isGeolocationActivated = new BehaviorSubject<boolean>(true);
 
   popup = new Popup({
     closeButton: true,
@@ -132,7 +131,7 @@ export class MapService {
 
       this.map.on('click', MAP_SOURCE_NAME, (e) => this.onClick(e));
       this.map.on('mouseenter', MAP_SOURCE_NAME, () => {
-        if (this.showDetails() && !this.isEditMode.value) {
+        if (this.showDetails() && !this.coordinateSelectionMode) {
           this.map.getCanvas().style.cursor = 'pointer';
         }
       });
@@ -155,7 +154,7 @@ export class MapService {
   }
 
   onClick(e: MapMouseEvent & { features?: GeoJSON.Feature[] }) {
-    if (!this.showDetails() || !e.features || this.isEditMode.value) {
+    if (!this.showDetails() || !e.features || this.coordinateSelectionMode) {
       return;
     }
     if (e.features.length == 1) {
@@ -200,7 +199,7 @@ export class MapService {
   }
 
   showPopup(event: MapMouseEvent & { features?: MapGeoJSONFeature[] }) {
-    if (!event.features || this.keepPopup || this.isEditMode.value) {
+    if (!event.features || this.keepPopup || this.coordinateSelectionMode) {
       return;
     }
     const coordinates = (event.features[0].geometry as Point).coordinates.slice() as LngLatLike;
@@ -252,4 +251,31 @@ export class MapService {
       speed: 0.8,
     });
   }
+
+  enterCoordinateSelectionMode() {
+    this.coordinateSelectionMode = true;
+    this.map.getCanvas().style.cursor = 'crosshair';
+    this.map.on(
+      'mouseleave',
+      MAP_SOURCE_NAME,
+      () => (this.map.getCanvas().style.cursor = 'crosshair'),
+    );
+    this.map.on('click', this.onMapClicked);
+    this.initMapEvents();
+  }
+
+  exitCoordinateSelectionMode() {
+    this.coordinateSelectionMode = false;
+    this.marker.remove();
+    this.map.off('click', this.onMapClicked);
+    this.map.getCanvas().style.cursor = '';
+    this.map.on('mouseleave', MAP_SOURCE_NAME, () => (this.map.getCanvas().style.cursor = ''));
+    this.initMapEvents();
+  }
+
+  private onMapClicked = (e: MapMouseEvent) => {
+    const clickedCoordinates = e.lngLat;
+    this.placeMarkerAndFlyTo(clickedCoordinates);
+    this.clickedGeographyCoordinates.next(clickedCoordinates);
+  };
 }
