@@ -91,5 +91,8 @@ public class StopPointCsvModel extends BasePrmCsvModel {
   @JsonProperty("WHEELCHAIR_TICK_MACH")
   private Integer wheelchairTickMach;
 
+  public String getTransportationMeans() {
+    return StopPointUtil.sortTransportationMeans(this.transportationMeans);
+  }
 
 }

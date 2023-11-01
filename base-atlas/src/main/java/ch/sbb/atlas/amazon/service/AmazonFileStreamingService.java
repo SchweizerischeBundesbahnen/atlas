@@ -7,4 +7,5 @@ public interface AmazonFileStreamingService {
   StreamingResponseBody streamFileAndDecompress(AmazonBucket amazonBucket, String fileToStream);
 
   StreamingResponseBody streamFile(AmazonBucket amazonBucket, String fileToStream);
+
 }
