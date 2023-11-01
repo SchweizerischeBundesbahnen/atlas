@@ -30,4 +30,5 @@ public class AmazonFileStreamingServiceImpl implements AmazonFileStreamingServic
       throw new IllegalStateException(exception);
     }
   }
+
 }

@@ -91,6 +91,26 @@ import org.springframework.http.HttpStatus;
   }
 
   @Test
+   void shouldPostTriggerExportStopPointBatchSuccessfully() {
+    //given
+    Response response = Response.builder()
+        .status(200)
+        .reason("OK")
+        .request(
+            Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                null, Util.UTF_8, null))
+        .build();
+    when(client.postTriggerExportStopPointBatch()).thenReturn(response);
+
+    //when
+    Response result = exportServicePointBatchSchedulerService.postTriggerExportStopPointBatch();
+
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.status()).isEqualTo(200);
+  }
+
+  @Test
    void shouldPostLoadCompaniesFromCRDUnsuccessful() {
     //given
     Response response = Response.builder()
