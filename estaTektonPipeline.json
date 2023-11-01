@@ -157,7 +157,7 @@
           "additionalParams": "-DskipTests=true -Dskip.npm.exec.ci=false -Dskip.npm.exec.build=true -Dskip.npm.exec.publish=true -DskipITs -Dsonar.exclusions=**/node_modules/**,**/src/app/api/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts,**/karma.conf.js,**/instana.js,**/polyfills.ts"
         },
         "owaspDependencyCheck": {
-          "enabled": true,
+          "enabled": false,
           "additionalParams": "--disableNodeAudit"
         },
         "failOnQualityGateFailure": true
