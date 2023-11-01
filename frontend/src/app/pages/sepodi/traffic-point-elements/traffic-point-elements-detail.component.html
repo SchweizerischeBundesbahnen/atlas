@@ -94,7 +94,7 @@
           [valueExtractor]="extractSloid"
           [displayExtractor]="displayExtractor"
           placeHolderLabel=""
-          labelSpaceHeight="25px"
+          [additionalLabelspace]="25"
         >
         </atlas-select>
       </div>
@@ -105,22 +105,9 @@
       <form-date-range [formGroup]="form"></form-date-range>
     </div>
 
-    <div class="font-bold-2xl mt-5">
-      {{ 'SEPODI.GEOLOCATION.GEOGRAPHY' | translate }}
-
-      <form-info-icon
-        infoTitle="{{ 'SEPODI.GEOLOCATION.GEOGRAPHY_INFORMATION' | translate }}"
-      ></form-info-icon>
-
-      <atlas-slide-toggle
-        [toggle]="!!form.value.trafficPointGeolocation?.spatialReference"
-        [disabled]="form.disabled"
-      ></atlas-slide-toggle>
-    </div>
-
     <sepodi-geography
-      *ngIf="this.form.value.trafficPointGeolocation?.spatialReference"
       [formGroup]="form.controls.trafficPointGeolocation"
+      [editMode]="form.enabled"
     ></sepodi-geography>
 
     <div class="font-bold-2xl mt-5">
