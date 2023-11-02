@@ -1,6 +1,6 @@
 package ch.sbb.importservice.service.csv;
 
-import static ch.sbb.importservice.service.csv.CsvFileNameModel.PRM_DIR_NAME;
+import static ch.sbb.importservice.service.csv.CsvFileNameModel.SERVICEPOINT_DIDOK_DIR_NAME;
 import static java.util.Comparator.comparing;
 
 import ch.sbb.atlas.imports.prm.BasePrmCsvModel;
@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class StopPointCsvService extends CsvService<StopPointCsvModel> {
 
-  public static final String PRM_STOP_PLACES_FILE_NAME = "PRM_STOP_PLACES";
+  public static final String PRM_STOP_PLACES_FILE_NAME = "PRM_STOP_PLACES_";
   public static final int ACTIVE_STATUS = 1;
   public static final String UNKNOWN_MEANS_OF_TRANSPORT_CODE = "~0~";
 
@@ -34,8 +34,8 @@ public class StopPointCsvService extends CsvService<StopPointCsvModel> {
   protected CsvFileNameModel csvFileNameModel() {
     return CsvFileNameModel.builder()
         .fileName(PRM_STOP_PLACES_FILE_NAME)
-        .s3BucketDir(PRM_DIR_NAME)
-        .addDateToPostfix(false)
+        .s3BucketDir(SERVICEPOINT_DIDOK_DIR_NAME)
+        .addDateToPostfix(true)
         .build();
   }
 

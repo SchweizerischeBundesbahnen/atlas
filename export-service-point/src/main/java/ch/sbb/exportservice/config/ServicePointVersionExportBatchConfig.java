@@ -7,7 +7,7 @@ import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.exportservice.entity.ServicePointVersion;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
-import ch.sbb.exportservice.model.BatchExportFileName;
+import ch.sbb.exportservice.model.SePoDiBatchExportFileName;
 import ch.sbb.exportservice.model.SePoDiExportType;
 import ch.sbb.exportservice.model.ServicePointVersionCsvModel;
 import ch.sbb.exportservice.processor.ServicePointVersionCsvServicePointProcessor;
@@ -73,14 +73,14 @@ public class ServicePointVersionExportBatchConfig {
   @StepScope
   public JsonFileItemWriter<ReadServicePointVersionModel> jsonFileItemWriter(
       @Value("#{jobParameters[exportType]}") SePoDiExportType sePoDiExportType) {
-    return jsonServicePointVersionWriter.getWriter(sePoDiExportType, BatchExportFileName.SERVICE_POINT_VERSION);
+    return jsonServicePointVersionWriter.getWriter(sePoDiExportType, SePoDiBatchExportFileName.SERVICE_POINT_VERSION);
   }
 
   @Bean
   @StepScope
   public FlatFileItemWriter<ServicePointVersionCsvModel> csvWriter(
       @Value("#{jobParameters[exportType]}") SePoDiExportType sePoDiExportType) {
-    return csvServicePointVersionWriter.csvWriter(sePoDiExportType, BatchExportFileName.SERVICE_POINT_VERSION);
+    return csvServicePointVersionWriter.csvWriter(sePoDiExportType, SePoDiBatchExportFileName.SERVICE_POINT_VERSION);
   }
 
   @Bean
@@ -152,27 +152,27 @@ public class ServicePointVersionExportBatchConfig {
   @Bean
   @StepScope
   public UploadCsvFileTasklet uploadCsvFileTasklet(@Value("#{jobParameters[exportType]}") SePoDiExportType sePoDiExportType) {
-    return new UploadCsvFileTasklet(sePoDiExportType, BatchExportFileName.SERVICE_POINT_VERSION);
+    return new UploadCsvFileTasklet(sePoDiExportType, SePoDiBatchExportFileName.SERVICE_POINT_VERSION);
   }
 
   @Bean
   @StepScope
   public UploadJsonFileTasklet uploadJsonFileTasklet(@Value("#{jobParameters[exportType]}") SePoDiExportType sePoDiExportType) {
-    return new UploadJsonFileTasklet(sePoDiExportType, BatchExportFileName.SERVICE_POINT_VERSION);
+    return new UploadJsonFileTasklet(sePoDiExportType, SePoDiBatchExportFileName.SERVICE_POINT_VERSION);
   }
 
   @Bean
   @StepScope
   public FileJsonDeletingTasklet fileJsonDeletingTasklet(
       @Value("#{jobParameters[exportType]}") SePoDiExportType sePoDiExportType) {
-    return new FileJsonDeletingTasklet(sePoDiExportType, BatchExportFileName.SERVICE_POINT_VERSION);
+    return new FileJsonDeletingTasklet(sePoDiExportType, SePoDiBatchExportFileName.SERVICE_POINT_VERSION);
   }
 
   @Bean
   @StepScope
   @Qualifier("fileCsvDeletingTasklet")
   public FileCsvDeletingTasklet fileCsvDeletingTasklet(@Value("#{jobParameters[exportType]}") SePoDiExportType sePoDiExportType) {
-    return new FileCsvDeletingTasklet(sePoDiExportType, BatchExportFileName.SERVICE_POINT_VERSION);
+    return new FileCsvDeletingTasklet(sePoDiExportType, SePoDiBatchExportFileName.SERVICE_POINT_VERSION);
   }
 
   @Bean
