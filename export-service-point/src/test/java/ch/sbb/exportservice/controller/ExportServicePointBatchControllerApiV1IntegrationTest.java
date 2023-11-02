@@ -13,7 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.sbb.atlas.amazon.exception.FileException;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
-import ch.sbb.exportservice.model.BatchExportFileName;
+import ch.sbb.exportservice.model.SePoDiBatchExportFileName;
 import ch.sbb.exportservice.model.SePoDiExportType;
 import ch.sbb.exportservice.service.ExportLoadingPointJobService;
 import ch.sbb.exportservice.service.ExportServicePointJobService;
@@ -50,7 +50,7 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
       StreamingResponseBody streamingResponseBody = writeOutputStream(inputStream);
 
       doReturn(streamingResponseBody).when(fileExportService)
-          .streamJsonFile(SePoDiExportType.WORLD_FULL, BatchExportFileName.SERVICE_POINT_VERSION);
+          .streamJsonFile(SePoDiExportType.WORLD_FULL, SePoDiBatchExportFileName.SERVICE_POINT_VERSION);
 
       //when & then
       mvc.perform(get("/v1/export/json/service-point-version/world-full")
@@ -65,7 +65,7 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
    void shouldGetJsonUnsuccessfully() throws Exception {
     //given
     doThrow(FileException.class).when(fileExportService)
-        .streamJsonFile(SePoDiExportType.WORLD_FULL, BatchExportFileName.SERVICE_POINT_VERSION);
+        .streamJsonFile(SePoDiExportType.WORLD_FULL, SePoDiBatchExportFileName.SERVICE_POINT_VERSION);
 
     //when & then
     mvc.perform(get("/v1/export/json/service-point-version/world-full")
@@ -80,9 +80,9 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
     try (InputStream inputStream = this.getClass().getResourceAsStream("/service-point.json.gz")) {
       StreamingResponseBody streamingResponseBody = writeOutputStream(inputStream);
       doReturn(streamingResponseBody).when(fileExportService)
-          .streamGzipFile(SePoDiExportType.WORLD_FULL, BatchExportFileName.SERVICE_POINT_VERSION);
+          .streamGzipFile(SePoDiExportType.WORLD_FULL, SePoDiBatchExportFileName.SERVICE_POINT_VERSION);
       doReturn("service-point").when(fileExportService)
-          .getBaseFileName(SePoDiExportType.WORLD_FULL, BatchExportFileName.SERVICE_POINT_VERSION);
+          .getBaseFileName(SePoDiExportType.WORLD_FULL, SePoDiBatchExportFileName.SERVICE_POINT_VERSION);
       //when & then
       mvc.perform(get("/v1/export/download-gzip-json/service-point-version/world-full")
               .contentType(contentType))
@@ -96,7 +96,7 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
    void shouldDownloadGzipJsonUnsuccessfully() throws Exception {
     //given
     doThrow(FileException.class).when(fileExportService)
-        .streamGzipFile(SePoDiExportType.WORLD_FULL, BatchExportFileName.SERVICE_POINT_VERSION);
+        .streamGzipFile(SePoDiExportType.WORLD_FULL, SePoDiBatchExportFileName.SERVICE_POINT_VERSION);
 
     //when & then
     mvc.perform(get("/v1/export/download-gzip-json/service-point-version/world-full")
@@ -163,7 +163,7 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
     try (InputStream inputStream = this.getClass().getResourceAsStream("/service-point.json.gz")) {
       StreamingResponseBody streamingResponseBody = writeOutputStream(inputStream);
       doReturn(streamingResponseBody).when(fileExportService)
-          .streamGzipFile(SePoDiExportType.WORLD_FULL, BatchExportFileName.SERVICE_POINT_VERSION);
+          .streamGzipFile(SePoDiExportType.WORLD_FULL, SePoDiBatchExportFileName.SERVICE_POINT_VERSION);
       doReturn("service_point/full/full-swiss-only-service_point-2023-09-30.csv.json").when(fileExportService)
           .getLatestUploadedFileName("service_point/full",SePoDiExportType.WORLD_FULL.getFileTypePrefix());
       //when & then
@@ -181,7 +181,7 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
     try (InputStream inputStream = this.getClass().getResourceAsStream("/service-point.json.gz")) {
       StreamingResponseBody streamingResponseBody = writeOutputStream(inputStream);
       doReturn(streamingResponseBody).when(fileExportService)
-          .streamGzipFile(SePoDiExportType.WORLD_FULL, BatchExportFileName.SERVICE_POINT_VERSION);
+          .streamGzipFile(SePoDiExportType.WORLD_FULL, SePoDiBatchExportFileName.SERVICE_POINT_VERSION);
       doReturn("service_point/full/full-swiss-only-service_point-2023-09-30.csv.json").when(fileExportService)
           .getLatestUploadedFileName("service_point/full",SePoDiExportType.WORLD_FULL.getFileTypePrefix());
       //when & then
