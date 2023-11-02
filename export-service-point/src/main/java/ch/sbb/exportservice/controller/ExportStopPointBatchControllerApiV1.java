@@ -5,8 +5,9 @@ import static ch.sbb.exportservice.service.FileExportService.S3_BUCKET_PATH_SEPA
 
 import ch.sbb.atlas.api.controller.GzipFileDownloadHttpHeader;
 import ch.sbb.atlas.api.model.ErrorResponse;
+import ch.sbb.atlas.export.enumeration.ExportFileName;
 import ch.sbb.exportservice.exception.NotAllowedExportFileException;
-import ch.sbb.exportservice.model.BatchExportFileName;
+import ch.sbb.exportservice.model.PrmBatchExportFileName;
 import ch.sbb.exportservice.model.PrmExportType;
 import ch.sbb.exportservice.service.ExportStopPointJobService;
 import ch.sbb.exportservice.service.FileExportService;
@@ -30,7 +31,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
-@Tag(name = "SePoDi - Export")
+@Tag(name = "Person with Reduced Mobility - Export")
 @RequestMapping("v1/export/prm")
 @RestController
 @AllArgsConstructor
@@ -47,7 +48,7 @@ public class ExportStopPointBatchControllerApiV1 {
       @ApiResponse(responseCode = "404", description = "Object with filename myFile not found", content = @Content(schema =
       @Schema(implementation = ErrorResponse.class)))
   })
-  public ResponseEntity<StreamingResponseBody> streamExportJsonFile(@PathVariable BatchExportFileName exportFileName,
+  public ResponseEntity<StreamingResponseBody> streamExportJsonFile(@PathVariable PrmBatchExportFileName exportFileName,
       @PathVariable PrmExportType prmExportType) {
     StreamingResponseBody body = fileExportService.streamJsonFile(prmExportType, exportFileName);
     return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(body);
@@ -59,7 +60,7 @@ public class ExportStopPointBatchControllerApiV1 {
       @ApiResponse(responseCode = "404", description = "No generated files found", content = @Content(schema =
       @Schema(implementation = ErrorResponse.class)))
   })
-  public ResponseEntity<StreamingResponseBody> streamLatestExportJsonFile(@PathVariable BatchExportFileName exportFileName,
+  public ResponseEntity<StreamingResponseBody> streamLatestExportJsonFile(@PathVariable PrmBatchExportFileName exportFileName,
       @PathVariable PrmExportType prmExportType) {
     String buildBucketDirPathPrefix = s3BucketDirPathPrefix(exportFileName, prmExportType);
     String fileName = fileExportService.getLatestUploadedFileName(buildBucketDirPathPrefix,
@@ -75,7 +76,7 @@ public class ExportStopPointBatchControllerApiV1 {
       @Schema(implementation = ErrorResponse.class)))
   })
   public ResponseEntity<StreamingResponseBody> streamExportGzFile(
-      @PathVariable BatchExportFileName exportFileName,
+      @PathVariable PrmBatchExportFileName exportFileName,
       @PathVariable PrmExportType prmExportType) throws NotAllowedExportFileException {
     String fileName = fileExportService.getBaseFileName(prmExportType, exportFileName);
     HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(fileName);
@@ -90,7 +91,7 @@ public class ExportStopPointBatchControllerApiV1 {
       @Schema(implementation = ErrorResponse.class)))
   })
   public ResponseEntity<StreamingResponseBody> streamLatestExportGzFile(
-      @PathVariable BatchExportFileName exportFileName,
+      @PathVariable PrmBatchExportFileName exportFileName,
       @PathVariable PrmExportType prmExportType) throws NotAllowedExportFileException {
     String buildBucketDirPathPrefix = s3BucketDirPathPrefix(exportFileName, prmExportType);
     String fileName = fileExportService.getLatestUploadedFileName(buildBucketDirPathPrefix,
@@ -110,7 +111,7 @@ public class ExportStopPointBatchControllerApiV1 {
     exportStopPointJobService.startExportJobs();
   }
 
-  private static String s3BucketDirPathPrefix(BatchExportFileName exportFileName, PrmExportType prmExportType) {
+  private static String s3BucketDirPathPrefix(ExportFileName exportFileName, PrmExportType prmExportType) {
     return exportFileName.getBaseDir() + S3_BUCKET_PATH_SEPARATOR + prmExportType.getDir();
   }
 
