@@ -3,7 +3,7 @@ package ch.sbb.importservice.service.csv;
 import java.time.LocalDate;
 import lombok.Builder;
 import lombok.Data;
-
+//TODO: add tests
 @Data
 @Builder
 public class CsvFileNameModel {
