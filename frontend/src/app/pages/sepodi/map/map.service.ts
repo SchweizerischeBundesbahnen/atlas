@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import maplibregl, {
   GeoJSONSource,
   LngLat,
@@ -9,12 +9,12 @@ import maplibregl, {
   Popup,
   ResourceType,
 } from 'maplibre-gl';
-import { MAP_SOURCE_NAME, MAP_STYLE_SPEC, MAP_ZOOM_DETAILS } from './map-style';
-import { GeoJsonProperties, Point } from 'geojson';
-import { MAP_STYLES, MapOptionsService, MapStyle } from './map-options.service';
-import { BehaviorSubject, Subject } from 'rxjs';
-import { CoordinatePair } from '../../../api';
-import { Pages } from '../../pages';
+import {MAP_SOURCE_NAME, MAP_STYLE_SPEC, MAP_ZOOM_DETAILS} from './map-style';
+import {GeoJsonProperties, Point} from 'geojson';
+import {MAP_STYLES, MapOptionsService, MapStyle} from './map-options.service';
+import {BehaviorSubject, Subject} from 'rxjs';
+import {CoordinatePair, SpatialReference} from '../../../api';
+import {Pages} from '../../pages';
 
 export const mapZoomLocalStorageKey = 'map-zoom';
 export const mapLocationLocalStorageKey = 'map-location';
@@ -36,10 +36,7 @@ export class MapService {
   marker = new maplibregl.Marker({ color: '#FF0000' });
 
   coordinateSelectionMode = false;
-  clickedGeographyCoordinates = new BehaviorSubject<CoordinatePairWGS84>({
-    lat: 0,
-    lng: 0,
-  });
+  clickedGeographyCoordinates = new Subject<CoordinatePairWGS84>();
 
   popup = new Popup({
     closeButton: true,
@@ -68,17 +65,12 @@ export class MapService {
 
   centerOn(wgs84Coordinates: CoordinatePair | undefined) {
     this.map.resize();
-    return new Promise((resolve) => {
-      if (wgs84Coordinates) {
-        this.map
-          .flyTo({ center: { lng: wgs84Coordinates.east, lat: wgs84Coordinates.north }, speed: 5 })
-          .once('moveend', () => {
-            resolve(true);
-          });
-      } else {
-        resolve(false);
-      }
-    });
+    if (wgs84Coordinates) {
+      this.map.flyTo({
+        center: { lng: wgs84Coordinates.east, lat: wgs84Coordinates.north },
+        speed: 5,
+      });
+    }
   }
 
   displayCurrentCoordinates(coordinates?: CoordinatePair) {
@@ -245,11 +237,20 @@ export class MapService {
   }
 
   placeMarkerAndFlyTo(coordinatePairWGS84: CoordinatePairWGS84) {
-    this.marker.setLngLat(coordinatePairWGS84).addTo(this.map);
-    this.map.flyTo({
-      center: coordinatePairWGS84 as maplibregl.LngLatLike,
-      speed: 0.8,
-    });
+    if (
+      this.coordinateSelectionMode &&
+      coordinatePairWGS84.lat >= -90 &&
+      coordinatePairWGS84.lat <= 90 &&
+      coordinatePairWGS84.lng >= -180 &&
+      coordinatePairWGS84.lng <= 180
+    ) {
+      this.marker.setLngLat(coordinatePairWGS84).addTo(this.map);
+      this.centerOn({
+        north: coordinatePairWGS84.lat,
+        east: coordinatePairWGS84.lng,
+        spatialReference: SpatialReference.Wgs84,
+      });
+    }
   }
 
   enterCoordinateSelectionMode() {
@@ -261,7 +262,6 @@ export class MapService {
       () => (this.map.getCanvas().style.cursor = 'crosshair'),
     );
     this.map.on('click', this.onMapClicked);
-    this.initMapEvents();
   }
 
   exitCoordinateSelectionMode() {
@@ -274,8 +274,10 @@ export class MapService {
   }
 
   private onMapClicked = (e: MapMouseEvent) => {
-    const clickedCoordinates = e.lngLat;
-    this.placeMarkerAndFlyTo(clickedCoordinates);
-    this.clickedGeographyCoordinates.next(clickedCoordinates);
+    if (this.coordinateSelectionMode) {
+      const clickedCoordinates = e.lngLat;
+      this.placeMarkerAndFlyTo(clickedCoordinates);
+      this.clickedGeographyCoordinates.next(clickedCoordinates);
+    }
   };
 }
