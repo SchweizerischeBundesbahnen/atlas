@@ -1,12 +1,11 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ReadTrafficPointElementVersion, SpatialReference } from '../../../api';
+import { ReadTrafficPointElementVersion } from '../../../api';
 import moment from 'moment';
 import { BaseDetailFormGroup } from '../../../core/components/base-detail/base-detail-form-group';
 import { GeographyFormGroup, GeographyFormGroupBuilder } from '../geography/geography-form-group';
 import { WhitespaceValidator } from '../../../core/validation/whitespace/whitespace-validator';
 import { AtlasCharsetsValidator } from '../../../core/validation/charsets/atlas-charsets-validator';
 import { DateRangeValidator } from '../../../core/validation/date-range/date-range-validator';
-import { LV95_MAX_DIGITS, WGS84_MAX_DIGITS } from '../geography/geography.component';
 
 export interface TrafficPointElementDetailFormGroup extends BaseDetailFormGroup {
   sloid: FormControl<string | null | undefined>;
@@ -17,7 +16,7 @@ export interface TrafficPointElementDetailFormGroup extends BaseDetailFormGroup 
   boardingAreaHeight: FormControl<number | null | undefined>;
   compassDirection: FormControl<number | null | undefined>;
   etagVersion: FormControl<number | null | undefined>;
-  trafficPointGeolocation: FormGroup<GeographyFormGroup>;
+  trafficPointElementGeolocation: FormGroup<GeographyFormGroup>;
 }
 
 export class TrafficPointElementFormGroupBuilder {
@@ -49,7 +48,7 @@ export class TrafficPointElementFormGroupBuilder {
         validTo: new FormControl(version?.validTo ? moment(version.validTo) : null, [
           Validators.required,
         ]),
-        trafficPointGeolocation: GeographyFormGroupBuilder.buildFormGroup(
+        trafficPointElementGeolocation: GeographyFormGroupBuilder.buildFormGroup(
           version?.trafficPointElementGeolocation,
         ),
         etagVersion: new FormControl(version?.etagVersion),
@@ -59,19 +58,6 @@ export class TrafficPointElementFormGroupBuilder {
         creator: new FormControl(version?.creator),
       },
       [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
-    );
-  }
-
-  private static getCoordinates(version?: ReadTrafficPointElementVersion) {
-    if (version?.trafficPointElementGeolocation?.spatialReference === SpatialReference.Wgs84) {
-      return version.trafficPointElementGeolocation?.wgs84;
-    }
-    return version?.trafficPointElementGeolocation?.lv95;
-  }
-
-  private static getValidatorForCoordinates(spatialReference?: SpatialReference) {
-    return AtlasCharsetsValidator.decimalWithDigits(
-      spatialReference == SpatialReference.Lv95 ? LV95_MAX_DIGITS : WGS84_MAX_DIGITS,
     );
   }
 }

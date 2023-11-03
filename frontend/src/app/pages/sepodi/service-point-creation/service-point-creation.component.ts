@@ -14,7 +14,7 @@ import {
   ServicePointsService,
 } from '../../../api';
 import { Countries } from '../../../core/country/Countries';
-import { catchError, EMPTY, Observable, Subject, take } from 'rxjs';
+import { catchError, EMPTY, mergeWith, Observable, Subject, take } from 'rxjs';
 import { map, takeUntil, tap } from 'rxjs/operators';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -58,6 +58,25 @@ export class ServicePointCreationComponent implements OnInit, OnDestroy {
         }
       }),
     );
+
+    this.form.controls.country?.valueChanges
+      .pipe(mergeWith(this.servicePointTypeChanged$), takeUntil(this.destroySubscriptions$))
+      .subscribe(() => {
+        const country = this.form.controls.country?.value;
+        const servicePointType = this.form.controls.selectedType.value;
+        if (
+          country &&
+          Countries.geolocationCountries.includes(country) &&
+          servicePointType &&
+          [
+            ServicePointType.ServicePoint,
+            ServicePointType.OperatingPoint,
+            ServicePointType.StopPoint,
+          ].includes(servicePointType)
+        ) {
+          this.servicePointFormComponent.geographyActive = true;
+        }
+      });
 
     this.form.controls.country?.valueChanges
       .pipe(takeUntil(this.destroySubscriptions$))
