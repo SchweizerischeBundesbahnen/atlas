@@ -230,6 +230,7 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
       this.form.controls.operatingPointKilometer.setValue(true);
     } else {
       this.form.controls.operatingPointKilometer.setValue(false);
+      this.form.controls.operatingPointKilometerMaster.reset();
     }
   }
 }
