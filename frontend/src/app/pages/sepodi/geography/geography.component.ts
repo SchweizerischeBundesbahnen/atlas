@@ -1,4 +1,12 @@
-import { Component, Input, OnChanges, OnDestroy } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { CoordinatePair, SpatialReference } from '../../../api';
 import { GeographyFormGroup } from './geography-form-group';
@@ -14,7 +22,7 @@ export const WGS84_MAX_DIGITS = 11;
   selector: 'sepodi-geography',
   templateUrl: './geography.component.html',
 })
-export class GeographyComponent implements OnDestroy, OnChanges {
+export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
   readonly LV95_MAX_DIGITS = LV95_MAX_DIGITS;
   readonly WGS84_MAX_DIGITS = WGS84_MAX_DIGITS;
 
@@ -23,6 +31,9 @@ export class GeographyComponent implements OnDestroy, OnChanges {
 
   private _geographyActive = true;
 
+  @Output()
+  geographyActiveChange = new EventEmitter<boolean>();
+
   @Input()
   get geographyActive() {
     return this._geographyActive;
@@ -30,12 +41,16 @@ export class GeographyComponent implements OnDestroy, OnChanges {
 
   set geographyActive(value: boolean) {
     this._geographyActive = value;
-    if (this.geographyActive) {
-      this.formGroup.enable();
-    } else {
-      this.formGroup.disable();
+    this.geographyActiveChange.emit(value);
+
+    if (this.editMode) {
+      if (this.geographyActive) {
+        this.formGroup.enable();
+      } else {
+        this.formGroup.disable();
+      }
+      this.updateMapInteractionMode();
     }
-    this.updateMapInteractionMode();
   }
 
   transformedCoordinatePair?: CoordinatePair;
@@ -48,10 +63,7 @@ export class GeographyComponent implements OnDestroy, OnChanges {
     private mapService: MapService,
   ) {}
 
-  ngOnChanges(): void {
-    this.updateMapInteractionMode();
-    this.initTransformedCoordinatePair();
-
+  ngOnInit() {
     this.clickedGeographyCoordinatesSubscription?.unsubscribe();
     this.clickedGeographyCoordinatesSubscription =
       this.mapService.clickedGeographyCoordinates.subscribe((coordinatePairWGS84) => {
@@ -61,6 +73,11 @@ export class GeographyComponent implements OnDestroy, OnChanges {
           spatialReference: SpatialReference.Wgs84,
         });
       });
+  }
+
+  ngOnChanges(): void {
+    this.updateMapInteractionMode();
+    this.initTransformedCoordinatePair();
 
     this.spatialReferenceSubscription?.unsubscribe();
     this.spatialReferenceSubscription = merge(
