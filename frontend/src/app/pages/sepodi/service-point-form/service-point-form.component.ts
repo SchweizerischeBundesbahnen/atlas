@@ -48,6 +48,9 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
 
   @Input() set currentVersion(version: ReadServicePointVersion) {
     this._currentVersion = version;
+    if (this.currentVersion?.servicePointGeolocation?.spatialReference) {
+      this.geographyActive = true;
+    }
 
     this.initLocationInformationDisplay();
   }
@@ -62,6 +65,7 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
   public stopPointTypes = Object.values(StopPointType);
   public categories = Object.values(Category);
   public locationInformation?: LocationInformation;
+  public geographyActive = false;
 
   private langChangeSubscription?: Subscription;
   private formSubscriptionDestroy$: Subject<void> = new Subject<void>();
@@ -140,13 +144,21 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
       });
   }
 
+  get isNew(): boolean {
+    return !this.currentVersion?.id;
+  }
+
   private initTypeChangeInformationDialog(
     selectedTypeCtrl: FormControl<ServicePointType | null | undefined>,
   ) {
     selectedTypeCtrl.valueChanges
       .pipe(takeUntil(this.formSubscriptionDestroy$))
       .subscribe((newType) => {
-        if (this._currentSelectedServicePointType != newType) {
+        if (this.isNew) {
+          this._currentSelectedServicePointType = newType;
+          this.selectedServicePointTypeChange.emit(this._currentSelectedServicePointType);
+        }
+        if (!this.isNew && this._currentSelectedServicePointType != newType) {
           if (this._currentSelectedServicePointType != ServicePointType.ServicePoint) {
             this.dialogService
               .confirm({
