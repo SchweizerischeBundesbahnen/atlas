@@ -14,35 +14,23 @@ export class CoordinateTransformationService {
     );
   }
 
-  transform(coordinatePair: CoordinatePair, to: SpatialReference): CoordinatePair {
-    if (!coordinatePair.east || !coordinatePair.north) {
-      throw new Error(
-        'Could not transform invalid coordinatePair ' + JSON.stringify(coordinatePair),
-      );
+  transform(coordinatePair: CoordinatePair, to: SpatialReference): CoordinatePair | undefined {
+    if (
+      !!coordinatePair.north &&
+      !!coordinatePair.east &&
+      coordinatePair.north !== 0 &&
+      coordinatePair.east !== 0
+    ) {
+      const transformationResult = proj4(coordinatePair.spatialReference, to, [
+        coordinatePair.east,
+        coordinatePair.north,
+      ]);
+      return {
+        east: transformationResult[0],
+        north: transformationResult[1],
+        spatialReference: to,
+      };
     }
-    const transformationResult = proj4(coordinatePair.spatialReference, to, [
-      coordinatePair.east,
-      coordinatePair.north,
-    ]);
-    return {
-      east: transformationResult[0],
-      north: transformationResult[1],
-      spatialReference: to,
-    };
-  }
-
-  isCoordinatesPairValidForTransformation(coordinates: CoordinatePair) {
-    return (
-      coordinates.north !== 0 && coordinates.east !== 0 && !!coordinates.north && !!coordinates.east
-    );
-  }
-
-  isValidCoordinatePair(coordinates: CoordinatePair): boolean {
-    return (
-      coordinates.north >= -90 &&
-      coordinates.north <= 90 &&
-      coordinates.east >= -180 &&
-      coordinates.east <= 180
-    );
+    return undefined;
   }
 }
