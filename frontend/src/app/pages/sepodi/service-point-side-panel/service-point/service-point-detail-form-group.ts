@@ -9,7 +9,6 @@ import {
   OperatingPointTrafficPointType,
   OperatingPointType,
   ReadServicePointVersion,
-  SpatialReference,
   Status,
   StopPointType,
 } from '../../../../api';
@@ -24,7 +23,6 @@ import {
 } from '../../geography/geography-form-group';
 import { ServicePointType } from './service-point-type';
 import { AtLeastOneValidator } from '../../../../core/validation/boolean-cross-validator/at-least-one-validator';
-import { LV95_MAX_DIGITS, WGS84_MAX_DIGITS } from '../../geography/geography.component';
 
 export interface ServicePointDetailFormGroup extends BaseDetailFormGroup {
   country?: FormControl<Country | null>;
