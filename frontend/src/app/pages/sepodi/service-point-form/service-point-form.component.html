@@ -144,6 +144,7 @@
   <sepodi-geography
     [formGroup]="form.controls.servicePointGeolocation"
     [editMode]="form.enabled"
+    [(geographyActive)]="geographyActive"
   ></sepodi-geography>
 
   <div *ngIf="form.value.servicePointGeolocation?.spatialReference && currentVersion">
