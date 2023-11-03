@@ -97,6 +97,7 @@ describe('ServicePointFormComponent', () => {
   it('should test component method setOperatingPointKilometer with argument false', () => {
     const form = new FormGroup({
       operatingPointKilometer: new FormControl(null),
+      operatingPointKilometerMaster: new FormControl(5),
     });
     (
       spyOnProperty<ServicePointFormComponent, 'form'>(component, 'form', 'get') as jasmine.Spy<
@@ -107,6 +108,7 @@ describe('ServicePointFormComponent', () => {
     component.setOperatingPointKilometer(false);
 
     expect(component.form?.controls.operatingPointKilometer.value).toBe(false);
+    expect(component.form?.controls.operatingPointKilometerMaster.value).toBe(null);
   });
 
   it('hasGeolocation false', () => {
