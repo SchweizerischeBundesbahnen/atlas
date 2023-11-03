@@ -121,13 +121,10 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
         if (this.mapService.map.getZoom() <= this.ZOOM_LEVEL_FOR_DETAIL) {
           this.mapService.map.setZoom(this.ZOOM_LEVEL_FOR_DETAIL);
         }
-        this.mapService
-          .centerOn(this.selectedVersion.servicePointGeolocation?.wgs84)
-          .then(() =>
-            this.mapService.displayCurrentCoordinates(
-              this.selectedVersion.servicePointGeolocation?.wgs84,
-            ),
-          );
+        this.mapService.centerOn(this.selectedVersion.servicePointGeolocation?.wgs84);
+        this.mapService.displayCurrentCoordinates(
+          this.selectedVersion.servicePointGeolocation?.wgs84,
+        );
       }
     });
   }
