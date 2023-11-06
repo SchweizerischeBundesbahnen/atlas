@@ -5,20 +5,16 @@ import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
-import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
-import org.apache.commons.lang3.StringUtils;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -32,10 +28,10 @@ public class ReadServicePointVersionModel extends ServicePointVersionModel {
   @NotNull
   @Valid
   private ServicePointNumber number;
-  
+
   @Valid
   @Schema(description = "Reference to a operatingPointRouteNetwork. OperatingPointKilometer are always related to a "
-          + "operatingPointRouteNetwork")
+      + "operatingPointRouteNetwork")
   private ServicePointNumber operatingPointKilometerMaster;
 
   @NotNull
@@ -51,6 +47,12 @@ public class ReadServicePointVersionModel extends ServicePointVersionModel {
   private ServicePointGeolocationReadModel servicePointGeolocation;
 
   @JsonInclude
+  @NotNull
+  public Country getCountry() {
+    return number.getCountry();
+  }
+
+  @JsonInclude
   @Schema(description = "ServicePoint has a Geolocation")
   public boolean isHasGeolocation() {
     return servicePointGeolocation != null;
@@ -59,7 +61,7 @@ public class ReadServicePointVersionModel extends ServicePointVersionModel {
   @JsonInclude
   @Schema(description = "ServicePoint is OperatingPointKilometer")
   public boolean isOperatingPointKilometer() {
-      return operatingPointKilometerMaster != null;
+    return operatingPointKilometerMaster != null;
   }
 
   @JsonInclude
@@ -84,14 +86,6 @@ public class ReadServicePointVersionModel extends ServicePointVersionModel {
   @Schema(description = "ServicePoint is BorderPoint", example = "false")
   public boolean isBorderPoint() {
     return getOperatingPointTechnicalTimetableType() == OperatingPointTechnicalTimetableType.COUNTRY_BORDER;
-  }
-
-  @JsonIgnore
-  @AssertTrue(message = "FreightServicePoint in CH needs sortCodeOfDestinationStation")
-  public boolean isValidFreightServicePoint() {
-    return !(getNumber().getCountry() == Country.SWITZERLAND && super.isFreightServicePoint() && !getValidFrom().isBefore(
-            LocalDate.now()))
-            || StringUtils.isNotBlank(super.getSortCodeOfDestinationStation());
   }
 
 }

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@Tag(name = "PRM - Person with Reduced Mobility")
+@Tag(name = "Person with Reduced Mobility")
 @RequestMapping("v1/relations")
 public interface RelationApiV1 {
 
@@ -29,7 +29,8 @@ public interface RelationApiV1 {
   List<ReadRelationVersionModel> getRelationsByParentServicePointSloid(@PathVariable String parentServicePointSloid);
 
   @GetMapping("parent-service-point-sloid/{parentServicePointSloid}/{referenceType}")
-  List<ReadRelationVersionModel> getRelationsByParentServicePointSloidAndReferenceType(@PathVariable String parentServicePointSloid,
+  List<ReadRelationVersionModel> getRelationsByParentServicePointSloidAndReferenceType(
+      @PathVariable String parentServicePointSloid,
       @PathVariable ReferencePointElementType referenceType);
 
   @ResponseStatus(HttpStatus.OK)

@@ -1,23 +1,21 @@
 @use 'src/styles/variables' as variables;
 
 .service-point-detail {
-  padding: 30px;
+  padding: 30px 30px 0 30px;
 }
 
-.page-footer {
-  height: calc(#{variables.$footerHeight} + 56px);
-  width: 100%;
-  background-color: variables.$background;
+footer {
+  height: variables.$footerHeight;
+  background-color: white;
 
+  box-shadow: 0px -4px 10px -4px rgba(0, 0, 0, 0.1);
+  border-bottom-left-radius: variables.$border-radius;
+  border-bottom-right-radius: variables.$border-radius;
+}
+
+.footer-box {
   position: sticky;
   bottom: 0;
-
-  .page-footer-actions {
-    height: variables.$footerHeight;
-    background-color: white;
-
-    box-shadow: 0px -4px 10px -4px rgba(0, 0, 0, 0.1);
-    border-bottom-left-radius: variables.$border-radius;
-    border-bottom-right-radius: variables.$border-radius;
-  }
+  height: calc(#{variables.$footerHeight} + 1rem);
+  background-color: variables.$background;
 }

@@ -5,23 +5,23 @@ import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.atlas.servicepoint.enumeration.*;
+import ch.sbb.atlas.servicepoint.enumeration.Category;
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
+import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
+import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
+import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
+import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.exportservice.entity.ServicePointVersion;
 import ch.sbb.exportservice.entity.ServicePointVersion.ServicePointVersionBuilder;
 import ch.sbb.exportservice.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.exportservice.entity.geolocation.ServicePointGeolocation.ServicePointGeolocationBuilder;
-import org.springframework.jdbc.core.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import org.springframework.jdbc.core.RowMapper;
 
 public class ServicePointVersionRowMapper extends BaseRowMapper implements RowMapper<ServicePointVersion> {
 
@@ -113,28 +113,22 @@ public class ServicePointVersionRowMapper extends BaseRowMapper implements RowMa
 
   void setCategories(ServicePointVersionBuilder<?, ?> servicePointVersionBuilder, String listOfCategories) {
     if (listOfCategories != null) {
-      Set<Category> categories = stringToSet(listOfCategories, Category::valueOf);
+      Set<Category> categories = RowMapperUtil.stringToSet(listOfCategories, Category::valueOf);
 
       servicePointVersionBuilder.categories(categories);
-      servicePointVersionBuilder.categoriesPipeList(toPipedString(categories));
+      servicePointVersionBuilder.categoriesPipeList(RowMapperUtil.toPipedString(categories));
     }
   }
 
   void setMeansOfTransport(ServicePointVersionBuilder<?, ?> servicePointVersionBuilder, String listOfMeansOfTransport) {
     if (listOfMeansOfTransport != null) {
-      Set<MeanOfTransport> meansOfTransport = stringToSet(listOfMeansOfTransport, MeanOfTransport::valueOf);
+      Set<MeanOfTransport> meansOfTransport = RowMapperUtil.stringToSet(listOfMeansOfTransport, MeanOfTransport::valueOf);
 
       servicePointVersionBuilder.meansOfTransport(meansOfTransport);
-      servicePointVersionBuilder.meansOfTransportPipeList(toPipedString(meansOfTransport));
+      servicePointVersionBuilder.meansOfTransportPipeList(RowMapperUtil.toPipedString(meansOfTransport));
     }
   }
 
-  private <T> Set<T> stringToSet(String values, Function<String, T> enumType) {
-    return Arrays.stream(values.split("\\|")).map(enumType).collect(Collectors.toSet());
-  }
 
-  private String toPipedString(Collection<? extends Enum<?>> collection) {
-    return collection.stream().map(Enum::name).sorted().collect(Collectors.joining("|"));
-  }
 
 }

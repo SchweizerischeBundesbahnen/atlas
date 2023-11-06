@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@Tag(name = "PRM - Person with Reduced Mobility")
+@Tag(name = "Person with Reduced Mobility")
 @RequestMapping("v1/reference-points")
 public interface ReferencePointApiV1 {
 

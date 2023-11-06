@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class ServicePointCsvService extends CsvService<ServicePointCsvModel> {
 
-  public static final String SERVICE_POINT_FILE_PREFIX = "DIDOK3_DIENSTSTELLEN_ALL_V_3_";
+  public static final String SERVICE_POINT_FILE_PREFIX = "DIDOK3_DIENSTSTELLEN_ALL_V_3";
 
   protected ServicePointCsvService(FileHelperService fileHelperService, JobHelperService jobHelperService) {
     super(fileHelperService, jobHelperService);

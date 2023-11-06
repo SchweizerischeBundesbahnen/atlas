@@ -1,13 +1,13 @@
 package ch.sbb.exportservice.tasklet;
 
-import ch.sbb.exportservice.model.BatchExportFileName;
+import ch.sbb.atlas.export.enumeration.ExportFileName;
+import ch.sbb.atlas.export.enumeration.ExportTypeBase;
 import ch.sbb.exportservice.model.ExportExtensionFileType;
-import ch.sbb.exportservice.model.ExportType;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 
-public class FileCsvDeletingTasklet extends FileDeletingTasklet implements Tasklet {
+public class FileCsvDeletingTasklet extends FileDeletingTasklet<ExportTypeBase> implements Tasklet {
 
-  public FileCsvDeletingTasklet(ExportType exportType, BatchExportFileName exportFileName) {
+  public FileCsvDeletingTasklet(ExportTypeBase exportType, ExportFileName exportFileName) {
     super(exportType, exportFileName);
   }
 

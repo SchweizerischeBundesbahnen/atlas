@@ -39,7 +39,9 @@ public class StopPointCsvToModelMapper {
         builder.assistanceRequestFulfilled(mapStandardAttributeType(csvModel.getAssistanceReqsFulfilled()));
         builder.ticketMachine(mapStandardAttributeType(csvModel.getTicketMachine()));
         builder.creationDate(csvModel.getCreatedAt());
+        builder.creator(csvModel.getAddedBy());
         builder.editionDate(csvModel.getModifiedAt());
+        builder.editor(csvModel.getModifiedBy());
     return builder.build();
 
   }

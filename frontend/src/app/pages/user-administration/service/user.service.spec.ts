@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { UserService } from './user.service';
 import {
+  ClientCredentialAdministrationService,
   ContainerUser,
   User,
   UserAdministrationService,
@@ -25,9 +26,16 @@ describe('UserService', () => {
     searchUsers: any = undefined;
   }
 
+  let clientCredentialAdministrationServiceSpy;
+
   beforeEach(() => {
     userAdministrationServiceMock = new UserAdministrationServiceMock();
     userInformationServiceMock = new UserInformationServiceMock();
+    clientCredentialAdministrationServiceSpy = jasmine.createSpyObj([
+      'getClientCredential',
+      'createClientCredential',
+      'updateClientCredential',
+    ]);
     TestBed.configureTestingModule({
       providers: [
         {
@@ -37,6 +45,10 @@ describe('UserService', () => {
         {
           provide: UserInformationService,
           useValue: userInformationServiceMock,
+        },
+        {
+          provide: ClientCredentialAdministrationService,
+          useValue: clientCredentialAdministrationServiceSpy,
         },
       ],
     });
@@ -52,7 +64,7 @@ describe('UserService', () => {
       of<ContainerUser>({
         totalCount: 5,
         objects: [{ sbbUserId: 'u123456' }, { sbbUserId: 'u654321' }],
-      })
+      }),
     );
 
     service.getUsers(10, 10).subscribe((res) => {
@@ -111,7 +123,7 @@ describe('UserService', () => {
             permissionRestrictions: [],
           },
         ],
-      } as UserPermissionCreate)
+      } as UserPermissionCreate),
     );
     const hasUserPermissions = service.hasUserPermissions('u123456');
     hasUserPermissions.subscribe((val) => {
@@ -146,7 +158,7 @@ describe('UserService', () => {
     userAdministrationServiceMock.createUserPermission = jasmine.createSpy().and.returnValue(
       of({
         sbbUserId: 'u123456',
-      } as User)
+      } as User),
     );
     const createPermissionResult = service.createUserPermission({
       sbbUserId: 'u123456',

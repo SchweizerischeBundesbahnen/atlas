@@ -3,12 +3,14 @@ import { Router } from '@angular/router';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { environment } from '../../../environments/environment';
 import { User } from '../components/user/user';
+import { User as UserAPI } from '../../api/model/user';
 import { Pages } from '../../pages/pages';
 import { jwtDecode } from 'jwt-decode';
 import { Role } from './role';
 import { ApplicationRole, ApplicationType, Permission, UserAdministrationService } from '../../api';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Cantons } from '../cantons/Cantons';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -31,7 +33,11 @@ export class AuthService {
       if (this.loggedIn) {
         this.eventUserComponentNotification.emit(this.claims);
         if (this.accessToken) {
-          this.loadPermissions();
+          this.loadPermissions().subscribe(() => {
+            if (this.mayAccessTimetableHearing()) {
+              Pages.viewablePages.push(Pages.TTH);
+            }
+          });
         }
         if (this.hasRole(Role.AtlasAdmin)) {
           Pages.viewablePages = [...Pages.pages, ...Pages.adminPages];
@@ -198,16 +204,14 @@ export class AuthService {
     return this.router.navigate([Pages.HOME.path]);
   }
 
-  loadPermissions() {
-    this.userAdministrationService.getCurrentUser().subscribe((response) => {
-      this.permissions = response.permissions ? Array.from(response.permissions) : [];
-      this.eventUserComponentNotification.emit(this.claims);
-
-      if (this.mayAccessTimetableHearing()) {
-        Pages.viewablePages.push(Pages.TTH);
-      }
-      this.permissionsLoaded.next(true);
-    });
+  loadPermissions(): Observable<UserAPI> {
+    return this.userAdministrationService.getCurrentUser().pipe(
+      tap((response) => {
+        this.permissions = response.permissions ? Array.from(response.permissions) : [];
+        this.eventUserComponentNotification.emit(this.claims);
+        this.permissionsLoaded.next(true);
+      }),
+    );
   }
 
   getPermissions() {
