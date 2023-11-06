@@ -119,23 +119,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
         });
 
       this.trafficPointElementsService
-        .getTrafficPointElements(
-          undefined,
-          [this.servicePointNumberAsString],
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          TrafficPointElementType.Area,
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          500,
-          ['sloid,asc'],
-        )
+        .getAreasOfServicePoint(this.servicePointNumber)
         .subscribe((areas) => {
           const options: AreaOption[] = [{ sloid: undefined, displayText: '' }];
           options.push(
