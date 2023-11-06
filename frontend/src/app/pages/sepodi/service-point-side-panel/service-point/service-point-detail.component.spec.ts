@@ -18,12 +18,16 @@ import { AtlasSpacerComponent } from '../../../../core/components/spacer/atlas-s
 import { Record } from '../../../../core/components/base-detail/record';
 import { MockAtlasButtonComponent } from '../../../../app.testing.mocks';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
-import { Country, ReadServicePointVersion, Status } from '../../../../api';
-import { ApplicationRole, ServicePointsService } from '../../../../api';
+import {
+  ApplicationRole,
+  Country,
+  ReadServicePointVersion,
+  ServicePointsService,
+  Status,
+} from '../../../../api';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { DisplayCantonPipe } from '../../../../core/cantons/display-canton.pipe';
 import { MapService } from '../../map/map.service';
-import { CoordinateTransformationService } from '../../geography/coordinate-transformation.service';
 import { Component, Input } from '@angular/core';
 
 const dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirm']);
@@ -33,11 +37,6 @@ const mapServiceSpy = jasmine.createSpyObj('MapService', [
   'placeMarkerAndFlyTo',
   'deselectServicePoint',
 ]);
-const coordinateTransformationServiceSpy = jasmine.createSpyObj<CoordinateTransformationService>([
-  'transform',
-]);
-mapServiceSpy.isGeolocationActivated = new BehaviorSubject<boolean>(false);
-mapServiceSpy.isEditMode = new BehaviorSubject<boolean>(false);
 mapServiceSpy.mapInitialized = new BehaviorSubject<boolean>(false);
 
 const authServiceMock: Partial<AuthService> = {
@@ -94,7 +93,6 @@ describe('ServicePointDetailComponent', () => {
         { provide: NotificationService, useValue: notificationServiceSpy },
         { provide: TranslatePipe },
         { provide: MapService, useValue: mapServiceSpy },
-        { provide: CoordinateTransformationService, useValue: coordinateTransformationServiceSpy },
       ],
     }).compileComponents();
 
