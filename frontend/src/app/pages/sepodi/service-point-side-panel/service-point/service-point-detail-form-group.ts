@@ -328,7 +328,9 @@ export class ServicePointFormGroupBuilder {
       businessOrganisation: value.businessOrganisation!,
       categories: value.categories!,
       operatingPointRouteNetwork: value.operatingPointRouteNetwork!,
-      operatingPointKilometerMasterNumber: value.operatingPointKilometerMaster!,
+      operatingPointKilometerMasterNumber: value.operatingPointRouteNetwork
+        ? undefined
+        : value.operatingPointKilometerMaster!,
       meansOfTransport: [],
       validFrom: value.validFrom!.toDate(),
       validTo: value.validTo!.toDate(),
