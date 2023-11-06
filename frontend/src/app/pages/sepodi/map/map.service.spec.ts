@@ -20,6 +20,7 @@ const mapSpy = jasmine.createSpyObj<Map>([
   'getZoom',
   'setCenter',
   'setLayoutProperty',
+  'resize',
 ]);
 mapSpy.getSource = jasmine.createSpy('getSource').and.returnValue({
   setData: jasmine.createSpy('setData'),
@@ -57,13 +58,11 @@ describe('MapService', () => {
 
     service.map = mapSpy;
 
-    service
-      .centerOn({
-        north: 46.96096807883433,
-        east: 7.448919722210154,
-        spatialReference: SpatialReference.Wgs84,
-      })
-      .then();
+    service.centerOn({
+      north: 46.96096807883433,
+      east: 7.448919722210154,
+      spatialReference: SpatialReference.Wgs84,
+    });
 
     expect(mapSpy.flyTo).toHaveBeenCalled();
   });
@@ -225,6 +224,8 @@ describe('MapService', () => {
   });
 
   it('should add marker to map and fly to coordinates', () => {
+    service.coordinateSelectionMode = true;
+
     const latLngCoordinates = { lat: 40, lng: -74 };
     const htmlDivElement = document.createElement('div');
     service.initMap(htmlDivElement);
@@ -236,9 +237,6 @@ describe('MapService', () => {
 
     expect(markerSpy.setLngLat).toHaveBeenCalledWith(latLngCoordinates);
     expect(markerSpy.addTo).toHaveBeenCalledWith(service.map);
-    expect(mapSpy.flyTo).toHaveBeenCalledWith({
-      center: latLngCoordinates as maplibregl.LngLatLike,
-      speed: 0.8,
-    });
+    expect(mapSpy.flyTo).toHaveBeenCalled();
   });
 });

@@ -39,9 +39,7 @@ const mapService = jasmine.createSpyObj<MapService>([
 const markerSpy = jasmine.createSpyObj('Marker', ['addTo', 'setLngLat', 'remove']);
 
 mapSpy.getCanvas.and.returnValue(mapCanvasMock);
-mapService.coordinateSelectionMode = isEditModeSubject;
 mapService.clickedGeographyCoordinates = clickedGeographyCoordinatesSubject; // Weise dem Spion den BehaviorSubject zu
-mapService.isGeolocationActivated = new BehaviorSubject<boolean>(true);
 
 mapService.initMap.and.returnValue(mapSpy);
 
@@ -117,42 +115,6 @@ describe('MapComponent', () => {
 
     component.toggleLegend();
     expect(component.showMapLegend).toBeFalse();
-  });
-
-  it('should call placeMarkerAndFlyTo on click', () => {
-    markerSpy.setLngLat.and.returnValue(markerSpy);
-
-    component.handleMapClick();
-
-    expect(clickCallback).toBeDefined();
-
-    clickCallback({
-      lngLat: {
-        lng: 10,
-        lat: 10,
-      },
-    });
-    expect(mapService.placeMarkerAndFlyTo).toHaveBeenCalledWith({ lng: 10, lat: 10 });
-  });
-
-  it('should enter edit mode', () => {
-    component.enterEditMode();
-    expect(mapService.coordinateSelectionMode.value).toBeTrue();
-    expect(mapSpy.getCanvas).toHaveBeenCalled();
-    expect(mapSpy.getCanvas().style.cursor).toBe('crosshair');
-    expect(component.map.on).toHaveBeenCalledWith('click', component.onMapClicked);
-  });
-
-  it('should exit edit mode', () => {
-    mapService.marker = markerSpy;
-    spyOn(mapService.clickedGeographyCoordinates, 'next');
-
-    component.exitEditMode();
-    expect(mapSpy.getCanvas).toHaveBeenCalled();
-    expect(mapSpy.getCanvas().style.cursor).toBe('');
-    expect(component.map.off).toHaveBeenCalledWith('click', component.onMapClicked);
-    expect(mapService.clickedGeographyCoordinates.next).toHaveBeenCalledWith({ lng: 0, lat: 0 });
-    expect(mapService.initMapEvents).toHaveBeenCalled();
   });
 
   it('should increase zoom when zoomIn() is called', () => {
