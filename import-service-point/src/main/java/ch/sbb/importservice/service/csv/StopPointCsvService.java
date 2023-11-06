@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class StopPointCsvService extends CsvService<StopPointCsvModel> {
 
-  public static final String PRM_STOP_PLACES_FILE_NAME = "PRM_STOP_PLACES_";
+  public static final String PRM_STOP_PLACES_FILE_NAME = "PRM_STOP_PLACES";
   public static final int ACTIVE_STATUS = 1;
   public static final String UNKNOWN_MEANS_OF_TRANSPORT_CODE = "~0~";
 
