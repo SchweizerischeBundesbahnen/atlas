@@ -2,7 +2,7 @@ import { CountryName } from './CountryName';
 import { Country } from '../../api';
 
 export class Countries {
-  public static countryNames: CountryName[] = [
+  public static readonly countryNames: CountryName[] = [
     { short: 'AZ', uicCode: 57, enumCountry: Country.Azerbaijan, path: 'az' },
     { short: 'BE', uicCode: 88, enumCountry: Country.Belgium, path: 'ag' },
     { short: 'BY', uicCode: 21, enumCountry: Country.Belarus, path: 'ag' },
@@ -81,11 +81,54 @@ export class Countries {
     { short: 'AT', uicCode: 81, enumCountry: Country.Austria, path: 'at' },
   ];
 
-  public static fromCountry(country: Country | undefined): CountryName | undefined {
+  public static readonly geolocationCountries: Country[] = [
+    Country.Switzerland,
+    Country.GermanyBus,
+    Country.AustriaBus,
+    Country.ItalyBus,
+    Country.FranceBus,
+  ];
+
+  static fromCountry(country: Country | undefined): CountryName | undefined {
     return this.countryNames.find((countryName) => countryName.enumCountry === country);
   }
 
   static fromUicCode(uicCountryCode: number) {
     return this.countryNames.find((countryName) => countryName.uicCode === uicCountryCode)!;
   }
+
+  static getCountryNameUicCodeFromCountry(country: Country): number {
+    const countryName = Countries.fromCountry(country);
+    if (!countryName) return -1;
+    return countryName.uicCode;
+  }
+
+  static filteredCountries(): Country[] {
+    const countriesToFilterOut: Country[] = [
+      Country.Canada,
+      Country.Congo,
+      Country.SouthAfrica,
+      Country.Australia,
+      Country.Liechtenstein,
+      Country.Sudan,
+      Country.Tschad,
+      Country.Libyen,
+      Country.Monaco,
+      Country.Niger,
+      Country.Nigeria,
+      Country.Jemen,
+      Country.Switzerland,
+      Country.GermanyBus,
+      Country.AustriaBus,
+      Country.ItalyBus,
+      Country.FranceBus,
+    ];
+    return Object.values(Country).filter((country) => !countriesToFilterOut.includes(country));
+  }
+
+  static readonly getCountryEnum = (country: Country) =>
+    Countries.fromCountry(country)?.enumCountry;
+
+  public static readonly compareFn = (n1: Country, n2: Country) =>
+    Countries.getCountryNameUicCodeFromCountry(n1) - Countries.getCountryNameUicCodeFromCountry(n2);
 }
