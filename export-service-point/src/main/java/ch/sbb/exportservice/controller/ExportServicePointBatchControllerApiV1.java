@@ -1,7 +1,6 @@
 package ch.sbb.exportservice.controller;
 
 import static ch.sbb.atlas.api.controller.GzipFileDownloadHttpHeader.extractFileNameFromS3ObjectName;
-import static ch.sbb.exportservice.service.FileExportService.S3_BUCKET_PATH_SEPARATOR;
 
 import ch.sbb.atlas.api.controller.GzipFileDownloadHttpHeader;
 import ch.sbb.atlas.api.model.ErrorResponse;
@@ -68,9 +67,7 @@ public class ExportServicePointBatchControllerApiV1 {
   public ResponseEntity<StreamingResponseBody> streamLatestExportJsonFile(@PathVariable SePoDiBatchExportFileName exportFileName,
                                                                     @PathVariable SePoDiExportType sePoDiExportType) {
     checkInputPath(exportFileName, sePoDiExportType);
-    String buildBucketFilePathPrefix = s3BucketFilePathPrefix(exportFileName, sePoDiExportType);
-    String fileName = fileExportService.getLatestUploadedFileName(buildBucketFilePathPrefix,
-        sePoDiExportType.getFileTypePrefix());
+    String fileName = fileExportService.getLatestUploadedFileName(exportFileName, sePoDiExportType);
     StreamingResponseBody body = fileExportService.streamLatestJsonFile(fileName);
     return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(body);
   }
@@ -101,9 +98,7 @@ public class ExportServicePointBatchControllerApiV1 {
       @PathVariable SePoDiBatchExportFileName exportFileName,
       @PathVariable SePoDiExportType sePoDiExportType) throws NotAllowedExportFileException {
     checkInputPath(exportFileName, sePoDiExportType);
-    String buildBucketFilePathPrefix = s3BucketFilePathPrefix(exportFileName, sePoDiExportType);
-    String fileName = fileExportService.getLatestUploadedFileName(buildBucketFilePathPrefix,
-        sePoDiExportType.getFileTypePrefix());
+    String fileName = fileExportService.getLatestUploadedFileName(exportFileName, sePoDiExportType);
     HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(extractFileNameFromS3ObjectName(fileName));
     StreamingResponseBody body = fileExportService.streamLatestGzipFile(fileName);
     return ResponseEntity.ok().headers(headers).body(body);
@@ -147,10 +142,6 @@ public class ExportServicePointBatchControllerApiV1 {
     if (worldOnlyTypes.contains(exportFileName) && !SePoDiExportType.getWorldOnly().contains(sePoDiExportType)) {
       throw new NotAllowedExportFileException(exportFileName, sePoDiExportType);
     }
-  }
-
-  private static String s3BucketFilePathPrefix(SePoDiBatchExportFileName exportFileName, SePoDiExportType sePoDiExportType) {
-    return exportFileName.getFileName() + S3_BUCKET_PATH_SEPARATOR + sePoDiExportType.getDir();
   }
 
 }
