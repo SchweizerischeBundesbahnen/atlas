@@ -14,6 +14,7 @@
     "CORRELATION_ID": "Se i problemi persistono, contattare il reparto Atlas con il seguente numero di identificazione: {{correlationId}}"
   },
   "COMMON": {
+    "AUTOMATICALLY_ASSIGNED": "Assegnato automaticamente",
     "MAINTENANCE_WINDOW": "Finestra di manutenzione ogni mercoledì dalle 16.00 alle 17.00, potrebbero verificarsi interruzioni del sistema.",
     "LOADING": "Caricamento...",
     "BACK_TO_OVERVIEW": "Torna al sommario",
@@ -52,6 +53,7 @@
     "STATUS": "Stato",
     "CANTONS": "Cantoni",
     "COUNTRIES": "Paesi",
+    "COUNTRY": "Paese",
     "STATUS_TYPES": {
       "DRAFT": "Bozza",
       "VALIDATED": "Convalidato",
@@ -99,6 +101,7 @@
   },
   "FORM": {
     "MAX_CHARS": "{{numberOfChars}} caratteri max.",
+    "MAX_NUMBER_OF_DIGITS": "{{numberOfDigits}} numeri max.",
     "DROPDOWN_PLACEHOLDER": "selezionare",
     "FOR_EXAMPLE": "p.e.:",
     "DESIGN_INFORMATION": "Informazioni sulla creazione",
@@ -833,6 +836,8 @@
       "DIDOK_CODE": "Codice DiDok (codice paese e numero)",
       "DIDOK_CODE_SEARCH": "Codice DiDok",
       "SERVICE_POINT": "Posto di servizio",
+      "SERVICE_POINT_ID": "ID del posto di servizio",
+      "NEW_SERVICE_POINT": "Nuovo posto di servizio",
       "AREAS": "Zoni di fermata",
       "FOT_COMMENT": "Commento UFT",
       "DETAILS": "Informazioni sul posto di servizio",

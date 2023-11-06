@@ -1,5 +1,7 @@
 export * from './businessOrganisations.service';
 import { BusinessOrganisationsService } from './businessOrganisations.service';
+export * from './clientCredentialAdministration.service';
+import { ClientCredentialAdministrationService } from './clientCredentialAdministration.service';
 export * from './companies.service';
 import { CompaniesService } from './companies.service';
 export * from './exportServicePointBatch.service';
@@ -14,16 +16,18 @@ export * from './lines.service';
 import { LinesService } from './lines.service';
 export * from './loadingPoints.service';
 import { LoadingPointsService } from './loadingPoints.service';
-export * from './pRMPersonWithReducedMobility.service';
-import { PRMPersonWithReducedMobilityService } from './pRMPersonWithReducedMobility.service';
+export * from './personWithReducedMobility.service';
+import { PersonWithReducedMobilityService } from './personWithReducedMobility.service';
 export * from './servicePoints.service';
 import { ServicePointsService } from './servicePoints.service';
 export * from './sublines.service';
 import { SublinesService } from './sublines.service';
 export * from './timetableFieldNumbers.service';
 import { TimetableFieldNumbersService } from './timetableFieldNumbers.service';
-export * from './timetableHearing.service';
-import { TimetableHearingService } from './timetableHearing.service';
+export * from './timetableHearingStatements.service';
+import { TimetableHearingStatementsService } from './timetableHearingStatements.service';
+export * from './timetableHearingYears.service';
+import { TimetableHearingYearsService } from './timetableHearingYears.service';
 export * from './timetableYearChange.service';
 import { TimetableYearChangeService } from './timetableYearChange.service';
 export * from './trafficPointElements.service';
@@ -40,6 +44,7 @@ export * from './workflow.service';
 import { WorkflowService } from './workflow.service';
 export const APIS = [
   BusinessOrganisationsService,
+  ClientCredentialAdministrationService,
   CompaniesService,
   ExportServicePointBatchService,
   GeoDataService,
@@ -47,11 +52,12 @@ export const APIS = [
   ImportServicePointBatchService,
   LinesService,
   LoadingPointsService,
-  PRMPersonWithReducedMobilityService,
+  PersonWithReducedMobilityService,
   ServicePointsService,
   SublinesService,
   TimetableFieldNumbersService,
-  TimetableHearingService,
+  TimetableHearingStatementsService,
+  TimetableHearingYearsService,
   TimetableYearChangeService,
   TrafficPointElementsService,
   TransportCompaniesService,

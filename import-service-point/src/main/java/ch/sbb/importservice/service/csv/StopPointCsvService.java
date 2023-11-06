@@ -1,6 +1,6 @@
 package ch.sbb.importservice.service.csv;
 
-import static ch.sbb.importservice.service.csv.CsvFileNameModel.PRM_DIR_NAME;
+import static ch.sbb.importservice.service.csv.CsvFileNameModel.SERVICEPOINT_DIDOK_DIR_NAME;
 import static java.util.Comparator.comparing;
 
 import ch.sbb.atlas.imports.prm.BasePrmCsvModel;
@@ -34,8 +34,8 @@ public class StopPointCsvService extends CsvService<StopPointCsvModel> {
   protected CsvFileNameModel csvFileNameModel() {
     return CsvFileNameModel.builder()
         .fileName(PRM_STOP_PLACES_FILE_NAME)
-        .s3BucketDir(PRM_DIR_NAME)
-        .addDateToPostfix(false)
+        .s3BucketDir(SERVICEPOINT_DIDOK_DIR_NAME)
+        .addDateToPostfix(true)
         .build();
   }
 

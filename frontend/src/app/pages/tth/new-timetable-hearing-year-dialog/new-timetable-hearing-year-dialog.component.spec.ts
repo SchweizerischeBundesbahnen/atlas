@@ -3,7 +3,7 @@ import { AppTestingModule } from '../../../app.testing.module';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { By } from '@angular/platform-browser';
 import { NewTimetableHearingYearDialogComponent } from './new-timetable-hearing-year-dialog.component';
-import { TimetableHearingService, TimetableHearingYear } from '../../../api';
+import { TimetableHearingYear, TimetableHearingYearsService } from '../../../api';
 import moment from 'moment/moment';
 import { of } from 'rxjs';
 import { SelectComponent } from '../../../core/form-components/select/select.component';
@@ -15,7 +15,7 @@ import { DateIconComponent } from '../../../core/form-components/date-icon/date-
 import { TranslatePipe } from '@ngx-translate/core';
 import { InfoIconComponent } from '../../../core/form-components/info-icon/info-icon.component';
 
-const mockTimetableHearingService = jasmine.createSpyObj('timetableHearingService', [
+const mockTimetableHearingYearsService = jasmine.createSpyObj('timetableHearingService', [
   'getHearingYears',
 ]);
 
@@ -58,7 +58,9 @@ describe('NewTimetableHearingYearDialogComponent', () => {
   }
 
   beforeEach(async () => {
-    mockTimetableHearingService.getHearingYears.and.returnValue(of(getTimetableHearingYears()));
+    mockTimetableHearingYearsService.getHearingYears.and.returnValue(
+      of(getTimetableHearingYears()),
+    );
     await TestBed.configureTestingModule({
       declarations: [
         NewTimetableHearingYearDialogComponent,
@@ -74,7 +76,7 @@ describe('NewTimetableHearingYearDialogComponent', () => {
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: { title: 'Title' } },
         { provide: MatDialogRef, useValue: {} },
-        { provide: TimetableHearingService, useValue: mockTimetableHearingService },
+        { provide: TimetableHearingYearsService, useValue: mockTimetableHearingYearsService },
         TranslatePipe,
       ],
     }).compileComponents();
@@ -120,14 +122,14 @@ describe('NewTimetableHearingYearDialogComponent', () => {
   it('should get active year', () => {
     const timetableHearingYears: TimetableHearingYear[] = getTimetableHearingYears();
     expect(newTimetableHearingYearDialogComponent.getActiveYear(timetableHearingYears)).toEqual(
-      currentYear
+      currentYear,
     );
   });
 
   it('should get all planned and archived years', () => {
     const timetableHearingYears: TimetableHearingYear[] = getTimetableHearingYears();
     expect(
-      newTimetableHearingYearDialogComponent.getAllPlanedAndArchivedYears(timetableHearingYears)
+      newTimetableHearingYearDialogComponent.getAllPlanedAndArchivedYears(timetableHearingYears),
     ).toEqual([timetableHearingYears[1], timetableHearingYears[2], timetableHearingYears[3]]);
   });
 
@@ -136,8 +138,8 @@ describe('NewTimetableHearingYearDialogComponent', () => {
     expect(
       newTimetableHearingYearDialogComponent.isYearAlreadyPlannedOrArchived(
         currentYear + 1,
-        timetableHearingYears
-      )
+        timetableHearingYears,
+      ),
     ).toBeTrue();
   });
 
@@ -146,8 +148,8 @@ describe('NewTimetableHearingYearDialogComponent', () => {
     expect(
       newTimetableHearingYearDialogComponent.isYearAlreadyPlannedOrArchived(
         currentYear + 4,
-        timetableHearingYears
-      )
+        timetableHearingYears,
+      ),
     ).toBeFalse();
   });
 
@@ -156,8 +158,8 @@ describe('NewTimetableHearingYearDialogComponent', () => {
     expect(
       newTimetableHearingYearDialogComponent.calculateProposedYears(
         currentYear,
-        timetableHearingYears
-      )
+        timetableHearingYears,
+      ),
     ).toEqual([
       currentYear + 4,
       currentYear + 5,
